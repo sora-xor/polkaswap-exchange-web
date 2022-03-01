@@ -20,32 +20,11 @@
         <token-logo class="setting__logo" v-bind="nodeLogo" />
       </s-button>
       <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
-      <s-button
-        type="action"
-        class="setting"
-        :tooltip="t('headerMenu.switchTheme', { theme: t(themeTitle) })"
-        :icon="themeIcon"
-        size="medium"
-        @click="handleSwitchTheme"
-      />
-      <s-button
-        type="action"
-        class="setting"
-        :tooltip="t('headerMenu.switchLanguage')"
-        :icon="'basic-globe-24'"
-        @click="showSelectLanguageDialog = true"
-      />
-      <s-button
-        type="action"
-        class="setting"
-        :tooltip="hideBalancesText"
-        :icon="hideBalancesIcon"
-        @click="toggleHideBalance"
-      />
+      <app-header-menu />
     </div>
 
     <select-node-dialog />
-    <select-language-dialog :visible.sync="showSelectLanguageDialog" />
+    <select-language-dialog />
 
     <template v-if="moonpayEnabled">
       <moonpay />
@@ -58,10 +37,9 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import { KnownSymbols } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
@@ -70,18 +48,13 @@ import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
 import { lazyComponent, goTo } from '@/router';
 import { PageNames, Components, LogoSize } from '@/consts';
 
-enum HeaderMenuType {
-  HideBalances = 'hide-balances',
-  Theme = 'theme',
-  Language = 'language',
-}
-
 @Component({
   components: {
     WalletAvatar: components.WalletAvatar as any,
     PolkaswapLogo,
     AccountButton: lazyComponent(Components.AccountButton),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
+    AppHeaderMenu: lazyComponent(Components.AppHeaderMenu),
     MarketMakerCountdown: lazyComponent(Components.MarketMakerCountdown),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
@@ -94,22 +67,17 @@ enum HeaderMenuType {
 })
 export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {
   readonly PageNames = PageNames;
-  readonly iconSize = 28;
-  readonly HeaderMenuType = HeaderMenuType;
 
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
 
-  @Getter shouldBalanceBeHidden!: boolean;
   @Getter libraryTheme!: Theme;
   @Getter isLoggedIn!: boolean;
   @Getter account!: WALLET_TYPES.Account;
   @Getter moonpayEnabled!: boolean;
 
-  @Action toggleHideBalance!: AsyncVoidFn;
   @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayVisibility!: (flag: boolean) => Promise<void>;
 
   goTo = goTo;
-  showSelectLanguageDialog = false;
 
   get nodeTooltip(): string {
     if (this.nodeIsConnected) {
@@ -121,24 +89,8 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   get nodeLogo() {
     return {
       size: LogoSize.MEDIUM,
-      tokenSymbol: KnownSymbols.XOR,
+      tokenSymbol: XOR.symbol,
     };
-  }
-
-  get themeIcon(): string {
-    return this.libraryTheme === Theme.LIGHT ? 'various-moon-24' : 'various-brightness-low-24';
-  }
-
-  get themeTitle(): string {
-    return this.libraryTheme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
-  }
-
-  get hideBalancesIcon(): string {
-    return this.shouldBalanceBeHidden ? 'basic-eye-no-24' : 'basic-filterlist-24';
-  }
-
-  get hideBalancesText(): string {
-    return this.t(`headerMenu.${this.shouldBalanceBeHidden ? 'showBalances' : 'hideBalances'}`);
   }
 
   openNodeSelectionDialog(): void {
@@ -157,79 +109,12 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   toggleMenu(): void {
     this.$emit('toggle-menu');
   }
-
-  handleClickHeaderMenu(): void {
-    const dropdown = (this.$refs.headerMenu as any).dropdown;
-    dropdown.visible ? dropdown.hide() : dropdown.show();
-  }
-
-  handleSelectHeaderMenu(value: HeaderMenuType): void {
-    switch (value) {
-      case HeaderMenuType.HideBalances:
-        this.toggleHideBalance();
-        break;
-      case HeaderMenuType.Theme:
-        switchTheme();
-        break;
-      case HeaderMenuType.Language:
-        this.showSelectLanguageDialog = true;
-        break;
-    }
-  }
-
-  handleSwitchTheme(): void {
-    switchTheme();
-  }
 }
 </script>
 
 <style lang="scss">
-$icon-size: 28px;
-
 .settings-control:hover > span > .header-menu__button i {
   color: var(--s-color-base-content-secondary);
-}
-
-.header-menu {
-  $dropdown-background: var(--s-color-utility-body);
-  $dropdown-margin: 24px;
-  $dropdown-item-line-height: 42px;
-
-  &.el-dropdown-menu.el-popper {
-    margin-top: $dropdown-margin;
-    background-color: $dropdown-background;
-    border-color: var(--s-color-base-border-secondary);
-    .popper__arrow {
-      display: none;
-    }
-  }
-  &__button i {
-    font-size: $icon-size !important; // cuz font-size is inline style
-  }
-  &__item.el-dropdown-menu__item {
-    line-height: $dropdown-item-line-height;
-    font-weight: 300;
-    font-size: var(--s-font-size-small);
-    letter-spacing: var(--s-letter-spacing-small);
-    font-feature-settings: 'case' on;
-    color: var(--s-color-base-content-secondary);
-    display: flex;
-    align-items: center;
-    i {
-      color: var(--s-color-base-content-tertiary);
-      font-size: $icon-size;
-    }
-    &:not(.is-disabled) {
-      &:hover,
-      &:focus {
-        background-color: transparent;
-        &,
-        i {
-          color: var(--s-color-base-content-secondary);
-        }
-      }
-    }
-  }
 }
 
 .moonpay-button {

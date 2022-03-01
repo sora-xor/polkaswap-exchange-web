@@ -51,14 +51,13 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Getter, Action, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { XOR } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { AccountMarketMakerInfo } from '@sora-substrate/util/build/rewards/types';
 
 import Countdown from './Countdown.vue';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { Links, ZeroStringValue } from '@/consts';
-
-import type { AccountMarketMakerInfo } from '@sora-substrate/util';
 
 const REQUIRED_TX_COUNT = 500;
 const BLOCKS_IN_DAY = 14400;

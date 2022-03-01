@@ -134,7 +134,8 @@
             "frozen": "Gelé",
             "locked": "- Verrouillé",
             "reserved": "- Réservé",
-            "total": "Total"
+            "total": "Total",
+            "bonded": "- Lié"
         },
         "totalAssetsValue": "Valeur total de vos actifs:",
         "details": "Détails"
@@ -197,6 +198,45 @@
         "extensibleSupply": {
             "placeholder": "Approvisionnement extensible",
             "desc": "Possibilité de miner plus de jetons."
+        },
+        "titleCommon": "Créer",
+        "confirmTokenTitleCommon": "Créer un jeton",
+        "confirmTokenTitleNFT": "Créer NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Fournir du contenu",
+        "selectLocalFile": "Sélectionnez le fichier local",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "La source",
+                "value": "Fichiers locaux",
+                "limit": "Choisissez un autre fichier"
+            },
+            "link": {
+                "placeholder": "Lien IPFS",
+                "copyLink": "Copier le lien",
+                "tooltip": "IPFS est un système distribué de stockage et d'accès aux fichiers, permettant d'accéder aux fichiers à partir de nombreux emplacements qui ne sont pas gérés par une seule organisation."
+            },
+            "image": {
+                "placeholderNoImage": "Téléchargez le fichier en saisissant un lien ou en choisissant dans le stockage local",
+                "placeholderBadSource": "Le fichier n'a pas pu être traité",
+                "placeholderBadSourceAddition": "ou il n'est pas encore téléchargé sur IPFS",
+                "placeholderFileLimit": "La taille du fichier dépasse la limite de {value} Mo"
+            },
+            "supply": {
+                "placeholder": "Offre de jetons",
+                "desc": "Quantité de NFT que vous allez obtenir.",
+                "quantity": "Quantité"
+            },
+            "description": {
+                "placeholder": "Description"
+            }
+        },
+        "enterTokenDescription": "Entrez la description",
+        "divisible": {
+            "placeholder": "Divisible",
+            "desc": "Capacité de NFT à se diviser en parties fractionnaires. Le provisionnement de liquidité ne fonctionne qu'avec des actifs divisibles"
         }
     },
     "transaction": {
@@ -227,7 +267,9 @@
             "sorascan": "Afficher dans SORAScan",
             "subscan": "Visualisez dans Subscan"
         },
-        "txId": "Id de la transaction"
+        "txId": "Id de la transaction",
+        "referrer": "Référent",
+        "referral": "Référence"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -570,7 +612,8 @@
         "title": "Transaction de pont",
         "expectedMetaMaskAddress": "Adresse attendue dans MetaMask:",
         "allowToken": "Autoriser @:appName à utiliser votre {tokenSymbol}",
-        "approveToken": "Veuillez noter qu'il n'est nécessaire d'approuver le jeton qu'une seule fois. Si votre extension a plusieurs demandes d'approbation de jetons, assurez-vous de ne confirmer que la dernière tout en rejetant le reste."
+        "approveToken": "Veuillez noter qu'il n'est nécessaire d'approuver le jeton qu'une seule fois. Si votre extension a plusieurs demandes d'approbation de jetons, assurez-vous de ne confirmer que la dernière tout en rejetant le reste.",
+        "blocksLeft": "{count} blocs restants..."
     },
     "bridgeHistory": {
         "title": "Historique",
@@ -578,7 +621,8 @@
         "clearHistory": "Effacer l'historique",
         "empty": "Vos transactions apparaîtront ici.",
         "filterPlaceholder": "Filtrer par ID d'actif ou symbole",
-        "restoreHistory": "Restaurer l'historique"
+        "restoreHistory": "Restaurer l'historique",
+        "statusAction": "Action nécessaire"
     },
     "selectToken": {
         "title": "Sélectionnez un jeton",
@@ -833,11 +877,11 @@
     },
     "blockNumberText": "Numéro de bloc",
     "referralProgram": {
-        "title": "Programme de référence",
+        "title": "Références",
         "connectAccount": "Pour inviter des utilisateurs, vous devez connecter votre compte SORA.",
         "bondedXOR": "XOR Vérouillé",
         "referralsNumber": "{number} références",
-        "startInviting": "Pour commencer à inviter, liez n’importe quelle quantité de XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">En savoir plus<\/a>",
+        "startInviting": "Pour commencer à inviter, liez n'importe quelle quantité de XOR.",
         "preview": "Invitez de nouveaux utilisateurs et obtenez 10% de leurs frais de transaction. <br \/> Pour commencer, collez n'importe quel montant de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> En savoir plus <\/a>",
         "deposit": "Déposer",
         "balance": "Solde",
@@ -864,11 +908,15 @@
             "text": "Confirmer",
             "bond": "Confirmer le lien",
             "unbond": "Confirmer la dissociation",
-            "inviteTitle": "Vous avez été invité à Polkaswap par une référence",
-            "inviteDescription": "Lorsque vous paierez des frais de transaction, 10 % iront à votre filleul. C'est totalement gratuit.",
-            "signInvitation": "Signer la transaction d'approbation",
-            "freeOfCharge": "Cette action est gratuite"
+            "inviteTitle": "Vous avez été invité à Polkaswap",
+            "inviteDescription": "Pour chaque transaction, 10% des frais iront à votre parrain, sans frais supplémentaires pour vous.",
+            "signInvitation": "Approuver",
+            "freeOfCharge": "Cette action est gratuite",
+            "hasReferrerTitle": "Vous avez déjà défini votre référent",
+            "hasReferrerDescription": "Malheureusement, vous ne pouvez définir qu'un seul",
+            "ok": "OK"
         }
     },
-    "transactionDetailsText": "Détails de la transaction"
+    "transactionDetailsText": "Détails de la transaction",
+    "createTokenTextNFT": "Créer NFT"
 }

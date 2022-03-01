@@ -39,7 +39,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import type { Asset } from '@sora-substrate/util';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';

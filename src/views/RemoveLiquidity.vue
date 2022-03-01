@@ -112,7 +112,7 @@
           {{ t('exchange.insufficientBalance', { tokenSymbol: t('removeLiquidity.liquidity') }) }}
         </template>
         <template v-else-if="isInsufficientXorForFee">
-          {{ t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
+          {{ t('exchange.insufficientBalance', { tokenSymbol: XOR_SYMBOL }) }}
         </template>
         <template v-else>
           {{ t('removeLiquidity.remove') }}
@@ -143,17 +143,11 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
-import {
-  FPNumber,
-  KnownSymbols,
-  AccountLiquidity,
-  CodecString,
-  Operation,
-  NetworkFeesObject,
-  Asset,
-  AccountAsset,
-} from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber, CodecString, Operation } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
@@ -184,7 +178,7 @@ export default class RemoveLiquidity extends Mixins(
   ConfirmDialogMixin,
   NetworkFeeDialogMixin
 ) {
-  readonly KnownSymbols = KnownSymbols;
+  readonly XOR_SYMBOL = XOR.symbol;
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   @State((state) => state[namespace].liquidityAmount) liquidityAmount!: string;

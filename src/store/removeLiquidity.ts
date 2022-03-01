@@ -66,14 +66,14 @@ const getters = {
   liquidityDecimals(state: RemoveLiquidityState, getters) {
     return getters.liquidity?.decimals ?? 0;
   },
-  firstToken(state: RemoveLiquidityState, getters, rootGetters) {
-    return getters.liquidity && rootGetters.assets.assets
-      ? rootGetters.assets.assets.find((t) => t.address === getters.liquidity.firstAddress) || {}
+  firstToken(state: RemoveLiquidityState, getters, rootState, rootGetters) {
+    return getters.liquidity && rootGetters.assets
+      ? rootGetters.assets.find((t) => t.address === getters.liquidity.firstAddress) || {}
       : {};
   },
-  secondToken(state: RemoveLiquidityState, getters, rootGetters) {
-    return getters.liquidity && rootGetters.assets.assets
-      ? rootGetters.assets.assets.find((t) => t.address === getters.liquidity.secondAddress) || {}
+  secondToken(state: RemoveLiquidityState, getters, rootState, rootGetters) {
+    return getters.liquidity && rootGetters.assets
+      ? rootGetters.assets.find((t) => t.address === getters.liquidity.secondAddress) || {}
       : {};
   },
   firstTokenBalance(state: RemoveLiquidityState, getters) {
@@ -235,19 +235,20 @@ const actions = {
   async getLiquidityReserves({ commit, state }) {
     try {
       commit(types.GET_LIQUIDITY_RESERVE_REQUEST);
-      const [reserveA, reserveB] = await api.getLiquidityReserves(state.firstTokenAddress, state.secondTokenAddress);
+      const [reserveA, reserveB] = await api.poolXyk.getReserves(state.firstTokenAddress, state.secondTokenAddress);
       commit(types.GET_LIQUIDITY_RESERVE_SUCCESS, { reserveA, reserveB });
     } catch (error) {
       commit(types.GET_LIQUIDITY_RESERVE_FAILURE, error);
     }
   },
 
-  async getTotalSupply({ commit, state }) {
+  async getTotalSupply({ commit, state, getters }) {
     try {
       commit(types.GET_TOTAL_SUPPLY_REQUEST);
-      const [_, pts] = await api.estimatePoolTokensMinted(
-        state.firstTokenAddress,
-        state.secondTokenAddress,
+      const { firstToken, secondToken } = getters;
+      const [_, pts] = await api.poolXyk.estimatePoolTokensMinted(
+        firstToken,
+        secondToken,
         state.firstTokenAmount,
         state.secondTokenAmount,
         state.reserveA,
@@ -261,10 +262,11 @@ const actions = {
     }
   },
 
-  async removeLiquidity({ rootGetters, state }) {
-    await api.removeLiquidity(
-      state.firstTokenAddress,
-      state.secondTokenAddress,
+  async removeLiquidity({ rootGetters, state, getters }) {
+    const { firstToken, secondToken } = getters;
+    await api.poolXyk.remove(
+      firstToken,
+      secondToken,
       state.liquidityAmount,
       state.reserveA,
       state.reserveB,
