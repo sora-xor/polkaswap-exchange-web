@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@sora-substrate/util';
 
 import { PageNames, BridgeChildPages } from '@/consts';
 import store from '@/store';
@@ -48,20 +49,26 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/bridge',
-    name: PageNames.Bridge,
-    component: lazyView(PageNames.Bridge),
-  },
-  {
-    path: '/bridge/transaction',
-    name: PageNames.BridgeTransaction,
-    component: lazyView(PageNames.BridgeTransaction),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/bridge/history',
-    name: PageNames.BridgeTransactionsHistory,
-    component: lazyView(PageNames.BridgeTransactionsHistory),
-    meta: { requiresAuth: true },
+    component: lazyView(PageNames.BridgeContainer),
+    children: [
+      {
+        path: '',
+        name: PageNames.Bridge,
+        component: lazyView(PageNames.Bridge),
+      },
+      {
+        path: 'history',
+        name: PageNames.BridgeTransactionsHistory,
+        component: lazyView(PageNames.BridgeTransactionsHistory),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'transaction',
+        name: PageNames.BridgeTransaction,
+        component: lazyView(PageNames.BridgeTransaction),
+        meta: { requiresAuth: true },
+      },
+    ],
   },
   {
     path: '/pool',
@@ -95,7 +102,38 @@ const routes: Array<RouteConfig> = [
   {
     path: '/rewards',
     name: PageNames.Rewards,
-    component: lazyView(PageNames.Rewards),
+    component: lazyView(PageNames.RewardsTabs),
+  },
+  {
+    path: '/referral/bond',
+    name: PageNames.ReferralBonding,
+    component: lazyView(PageNames.ReferralBonding),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/referral/unbond',
+    name: PageNames.ReferralUnbonding,
+    component: lazyView(PageNames.ReferralBonding),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/referral',
+    name: PageNames.Referral,
+    component: lazyView(PageNames.RewardsTabs),
+    meta: { isReferralProgram: true },
+    children: [
+      {
+        path: ':referralAddress?',
+        meta: {
+          isInvitationRoute: true,
+          requiresAuth: true,
+        },
+      },
+    ],
   },
   {
     path: '/tokens',
@@ -137,6 +175,16 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const prev = from.name;
+  if (to.matched.some((record) => record.meta.isInvitationRoute)) {
+    if (api.validateAddress(to.params.referralAddress)) {
+      store.dispatch('referrals/setReferral', to.params.referralAddress);
+    }
+    if (store.getters.isLoggedIn) {
+      next({ name: PageNames.Referral });
+      store.dispatch('router/setRoute', { prev, current: PageNames.Referral });
+      return;
+    }
+  }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (
       BridgeChildPages.includes(to.name as PageNames) &&

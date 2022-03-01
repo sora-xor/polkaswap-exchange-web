@@ -1,17 +1,15 @@
 <template>
   <div class="amount-header">
-    <template v-for="{ asset, amount } in items">
-      <div :key="asset.symbol" class="amount-block">
-        <formatted-amount
-          class="amount-block__amount"
-          symbol-as-decimal
-          value-can-be-hidden
-          :value="formatStringValue(amount, asset.decimal)"
-          :font-size-rate="FontSizeRate.MEDIUM"
-          :asset-symbol="asset.symbol"
-        />
-      </div>
-    </template>
+    <div v-for="{ asset, amount } in items" :key="asset.symbol" class="amount-block">
+      <formatted-amount
+        class="amount-block__amount"
+        symbol-as-decimal
+        value-can-be-hidden
+        :value="formatStringValue(amount, asset.decimals)"
+        :font-size-rate="FontSizeRate.MEDIUM"
+        :asset-symbol="asset.symbol"
+      />
+    </div>
     <formatted-amount is-fiat-value value-can-be-hidden :value="totalFiatValue" />
   </div>
 </template>
@@ -19,7 +17,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Asset } from '@sora-substrate/util';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import { RewardsAmountHeaderItem } from '@/types/rewards';
 

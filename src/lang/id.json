@@ -134,7 +134,8 @@
             "frozen": "Dibekukan",
             "locked": "- Terkunci",
             "reserved": "- Dicadangkan",
-            "total": "Total"
+            "total": "Total",
+            "bonded": "- Berikat"
         },
         "totalAssetsValue": "Nilai total aset Anda:",
         "details": "Rincian"
@@ -197,6 +198,45 @@
         "extensibleSupply": {
             "placeholder": "Suplai yang dapat diperluas",
             "desc": "Kemampuan untuk mencetak lebih banyak token."
+        },
+        "titleCommon": "Membuat",
+        "confirmTokenTitleCommon": "Buat Token",
+        "confirmTokenTitleNFT": "Buat NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Menyediakan konten",
+        "selectLocalFile": "Pilih file lokal",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Sumber",
+                "value": "File lokal",
+                "limit": "Pilih file lain"
+            },
+            "link": {
+                "placeholder": "Tautan IPFS",
+                "copyLink": "Salin link",
+                "tooltip": "IPFS adalah sistem terdistribusi untuk menyimpan dan mengakses file, memungkinkan untuk mengakses file dari banyak lokasi yang tidak dikelola oleh satu organisasi."
+            },
+            "image": {
+                "placeholderNoImage": "Unggah file dengan memasukkan tautan atau memilih dari penyimpanan lokal",
+                "placeholderBadSource": "File gagal diproses",
+                "placeholderBadSourceAddition": "atau belum diupload ke IPFS",
+                "placeholderFileLimit": "Ukuran file melebihi batas {value} mb"
+            },
+            "supply": {
+                "placeholder": "Suplai Token",
+                "desc": "Jumlah NFT yang akan Anda dapatkan.",
+                "quantity": "Kuantitas"
+            },
+            "description": {
+                "placeholder": "Deskripsi"
+            }
+        },
+        "enterTokenDescription": "Masukkan deskripsi",
+        "divisible": {
+            "placeholder": "Terbagi",
+            "desc": "Kemampuan NFT untuk membagi menjadi bagian-bagian pecahan. Penyediaan likuiditas hanya berfungsi dengan aset yang dapat dibagi"
         }
     },
     "transaction": {
@@ -227,7 +267,9 @@
             "sorascan": "Lihat di Sorascan",
             "subscan": "Lihat di Subscan"
         },
-        "txId": "Id transaksi"
+        "txId": "Id transaksi",
+        "referrer": "Perujuk",
+        "referral": "Rujukan"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -571,7 +613,8 @@
         "title": "Jembatan Transaksi",
         "expectedMetaMaskAddress": "Alamat yang diharapkan di metamask",
         "allowToken": "Izinkan @:appName untuk menggunakan {tokenSymbol}",
-        "approveToken": "Harap dicatat bahwa itu hanya diperlukan untuk menyetujui token sekali. Jika ekstensi Anda memiliki beberapa permintaan persetujuan token, pastikan untuk hanya mengonfirmasi yang terakhir sambil menolak sisanya."
+        "approveToken": "Harap dicatat bahwa itu hanya diperlukan untuk menyetujui token sekali. Jika ekstensi Anda memiliki beberapa permintaan persetujuan token, pastikan untuk hanya mengonfirmasi yang terakhir sambil menolak sisanya.",
+        "blocksLeft": "{count} blok kiri..."
     },
     "bridgeHistory": {
         "title": "Riwayat",
@@ -579,7 +622,8 @@
         "clearHistory": "Bersihkan riwayat",
         "empty": "Transaksi Anda akan muncul di sini.",
         "filterPlaceholder": "Filter menurut ID Aset atau Simbol Ticker",
-        "restoreHistory": "Pulihkan riwayat"
+        "restoreHistory": "Pulihkan riwayat",
+        "statusAction": "Diperlukan tindakan"
     },
     "selectToken": {
         "title": "Pilih token",
@@ -838,7 +882,7 @@
         "connectAccount": "Untuk mengundang pengguna, Anda perlu menghubungkan akun SORA Anda.",
         "bondedXOR": "Ikatan XOR",
         "referralsNumber": "{number} rujukan",
-        "startInviting": "Untuk mulai mengundang, ikat sejumlah XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\"> Pelajari lebih lanjut <\/a>",
+        "startInviting": "Untuk mulai mengundang, ikat sejumlah XOR.",
         "preview": "Undang pengguna baru dan dapatkan 10% dari biaya transaksi mereka.<br \/>Untuk mulai, beri obligasi dalam jumlah XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Saldo",
@@ -850,7 +894,7 @@
             "connectWallet": "@:connectWalletText",
             "empty": "Masukkan jumlah {tokenSymbol}",
             "startInviting": "Ikatan {tokenSymbol} untuk mulai mengundang",
-            "bondMore": "Ikatan Lebih Banyak",
+            "bondMore": "Bond More",
             "bond": "Ikatan",
             "unbond": "Tidak terikat",
             "copyLink": "Salin link"
@@ -865,10 +909,13 @@
             "text": "Konfirmasi",
             "bond": "Konfirmasi ikatan",
             "unbond": "Konfirmasi pelepasan ikatan",
-            "inviteTitle": "Anda telah diundang ke Polkaswap oleh referensi",
-            "inviteDescription": "Ketika Anda akan membayar biaya untuk transaksi, 10% akan masuk ke referral Anda. Ini benar-benar gratis.",
-            "signInvitation": "Menandatangani transaksi persetujuan",
-            "freeOfCharge": "Tindakan ini tidak dipungut biaya"
+            "inviteTitle": "Anda telah diundang ke Polkaswap",
+            "inviteDescription": "Untuk setiap transaksi, 10% dari biaya akan masuk ke perujuk Anda, tanpa biaya tambahan apa pun kepada Anda.",
+            "signInvitation": "Menyetujui",
+            "freeOfCharge": "Tindakan ini tidak dipungut biaya",
+            "hasReferrerTitle": "Anda telah menetapkan perujuk Anda",
+            "hasReferrerDescription": "Sayangnya, Anda hanya dapat mengatur satu",
+            "ok": "Oke"
         }
     },
     "transactionDetailsText": "Detil transaksi",
@@ -888,5 +935,6 @@
         },
         "save": "Save",
         "reset": "Reset"
-    }
+    },
+    "createTokenTextNFT": "Buat NFT"
 }

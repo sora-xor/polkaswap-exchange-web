@@ -1,5 +1,5 @@
 <template>
-  <s-scrollbar :class="['app-menu', 'app-sidebar-scrollbar', { visible }]">
+  <s-scrollbar class="app-menu app-sidebar-scrollbar" :class="{ visible, 'app-menu__about': isAboutPageOpened }">
     <aside class="app-sidebar">
       <slot name="head"></slot>
       <div class="app-sidebar-menu">
@@ -63,7 +63,15 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import { PageNames, PoolChildPages, BridgeChildPages, SidebarMenuGroups, FaucetLink, Components } from '@/consts';
+import {
+  PageNames,
+  PoolChildPages,
+  BridgeChildPages,
+  RewardsChildPages,
+  SidebarMenuGroups,
+  FaucetLink,
+  Components,
+} from '@/consts';
 
 import router, { lazyComponent } from '@/router';
 
@@ -75,6 +83,7 @@ import router, { lazyComponent } from '@/router';
 })
 export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isAboutPageOpened!: boolean;
   @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
 
   @State((state) => state.settings.faucetUrl) faucetUrl!: string;
@@ -93,6 +102,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
     if (BridgeChildPages.includes(router.currentRoute.name as PageNames)) {
       return PageNames.Bridge;
+    }
+    if (RewardsChildPages.includes(router.currentRoute.name as PageNames)) {
+      return PageNames.Rewards;
     }
     return router.currentRoute.name as string;
   }
@@ -218,6 +230,12 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     @include tablet {
       position: absolute;
       right: initial;
+    }
+
+    &__about {
+      @include tablet {
+        position: relative;
+      }
     }
   }
 

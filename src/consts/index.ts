@@ -1,5 +1,6 @@
 import invert from 'lodash/fp/invert';
-import { LiquiditySourceTypes } from '@sora-substrate/util';
+import { KnownAssets, KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
+import { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
 
 import pkg from '../../package.json';
 import { KnownBridgeAsset } from '../utils/ethers-util';
@@ -101,7 +102,13 @@ export enum PageNames {
   RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
   Rewards = 'Rewards',
+  Referral = 'Referral',
+  RewardsTabs = 'RewardsTabs',
+  ReferralProgram = 'ReferralProgram',
+  ReferralBonding = 'ReferralBonding',
+  ReferralUnbonding = 'ReferralUnbonding',
   PageNotFound = 'PageNotFound',
+  BridgeContainer = 'BridgeContainer',
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
@@ -113,6 +120,7 @@ export enum PageNames {
 export enum Components {
   GenericPageHeader = 'GenericPageHeader',
   AppHeader = 'App/Header/AppHeader',
+  AppHeaderMenu = 'App/Header/AppHeaderMenu',
   AccountButton = 'App/Header/AccountButton',
   AppLogoButton = 'App/Header/AppLogoButton',
   MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
@@ -148,6 +156,8 @@ export enum Components {
   TokensRow = 'Rewards/TokensRow',
   RewardsAmountHeader = 'Rewards/AmountHeader',
   RewardsAmountTable = 'Rewards/AmountTable',
+  ReferralsConfirmBonding = 'Referrals/ConfirmBonding',
+  ReferralsConfirmInviteUser = 'Referrals/ConfirmInviteUser',
   TokenSelectButton = 'Input/TokenSelectButton',
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
@@ -163,6 +173,11 @@ export enum Components {
   RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
+}
+
+export enum RewardsTabsItems {
+  Rewards = PageNames.Rewards,
+  ReferralProgram = PageNames.ReferralProgram,
 }
 
 interface SidebarMenuItem {
@@ -264,6 +279,12 @@ export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
 export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
+export const RewardsChildPages = [
+  PageNames.Rewards,
+  PageNames.Referral,
+  PageNames.ReferralBonding,
+  PageNames.ReferralUnbonding,
+];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',
@@ -308,18 +329,18 @@ const gasLimit = {
 export const EthereumGasLimits = [
   // ETH -> SORA
   {
-    XOR: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    VAL: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    PSWAP: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    ETH: gasLimit.sendEthToSidechain,
+    [XOR.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.sendEthToSidechain,
     [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
   },
   // SORA -> ETH
   {
-    XOR: gasLimit.mintTokensByPeers,
-    VAL: gasLimit.mintTokensByPeers,
-    PSWAP: gasLimit.receiveBySidechainAssetId,
-    ETH: gasLimit.receiveByEthereumAssetAddress,
+    [XOR.address]: gasLimit.mintTokensByPeers,
+    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.mintTokensByPeers,
+    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.receiveBySidechainAssetId,
+    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.receiveByEthereumAssetAddress,
     [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
   },
 ];

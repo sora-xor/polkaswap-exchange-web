@@ -1,6 +1,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
-import { BridgeNetworks, RegisteredAccountAsset, CodecString, Operation } from '@sora-substrate/util';
+import { BridgeNetworks, Operation } from '@sora-substrate/util';
+import type { BridgeHistory, CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
@@ -10,8 +11,6 @@ import { MoonpayNotifications } from '@/components/Moonpay/consts';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 
-import type { Asset, BridgeHistory } from '@sora-substrate/util';
-import type { ApiKeysObject } from '@/store/settings';
 import type { MoonpayTransaction } from '@/utils/moonpay';
 
 const createError = (text: string, notification: MoonpayNotifications) => {
@@ -23,16 +22,8 @@ const createError = (text: string, notification: MoonpayNotifications) => {
 @Component
 export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, WalletConnectMixin) {
   @State((state) => state.moonpay.api) moonpayApi!: MoonpayApi;
-  @State((state) => state.settings.apiKeys) apiKeys!: ApiKeysObject;
   @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: Nullable<BridgeHistory>;
-
-  @Action('getEvmNetworkFee', { namespace: 'web3' }) fetchEvmNetworkFee!: ({
-    asset,
-    isSoraToEvm,
-  }: {
-    asset: Asset;
-    isSoraToEvm: boolean;
-  }) => Promise<CodecString>;
+  @State((state) => state.web3.evmBalance) evmBalance!: CodecString;
 
   @Action('getTransactionTranserData', { namespace: 'moonpay' }) getTransactionTranserData!: (
     hash: string
@@ -58,7 +49,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   }) => Promise<void>;
 
   @Getter soraNetwork!: string; // wallet
-  @Getter('evmBalance', { namespace: 'web3' }) evmBalance!: CodecString;
+  @Getter moonpayApiKey!: string;
 
   async prepareEvmNetwork(networkId = BridgeNetworks.ETH_NETWORK_ID): Promise<void> {
     await this.setEvmNetwork(networkId); // WalletConnectMixin
@@ -67,7 +58,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   }
 
   initMoonpayApi(): void {
-    this.moonpayApi.publicKey = this.apiKeys.moonpay;
+    this.moonpayApi.publicKey = this.moonpayApiKey;
     this.moonpayApi.soraNetwork = this.soraNetwork;
   }
 
@@ -101,7 +92,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   }
 
   getBridgeHistoryItemByMoonpayId(moonpayId: string): Nullable<BridgeHistory> {
-    return this.bridgeHistory.find((item) => item.payload?.moonpayId === moonpayId);
+    return this.history.find((item) => item.payload?.moonpayId === moonpayId);
   }
 
   async startBridgeForMoonpayTransaction(): Promise<void> {
@@ -148,10 +139,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         );
       }
 
-      const evmNetworkFee: CodecString = await this.fetchEvmNetworkFee({
-        asset: registeredAsset as Asset,
-        isSoraToEvm: false,
-      });
+      const evmNetworkFee: CodecString = await ethersUtil.fetchEvmNetworkFee(registeredAsset.address, false);
       const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(this.evmBalance, evmNetworkFee);
 
       if (!hasEthForFee) {

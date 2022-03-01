@@ -132,9 +132,10 @@
         "balance": {
             "transferable": "Overdraagbaar",
             "frozen": "Bevroren",
-            "locked": " - Vergrendeld",
-            "reserved": " - Gereserveerd",
-            "total": "Totaal"
+            "locked": "- Vergrendeld",
+            "reserved": "- Gereserveerd",
+            "total": "Totaal",
+            "bonded": "- Gebonden"
         },
         "totalAssetsValue": "Totale waarde van bezittingen:",
         "details": "Details"
@@ -197,6 +198,45 @@
         "extensibleSupply": {
             "placeholder": "Uitbreidbaar aanbod",
             "desc": "Mogelijkheid om meer tokens te munten."
+        },
+        "titleCommon": "Creëren",
+        "confirmTokenTitleCommon": "Token maken",
+        "confirmTokenTitleNFT": "NFT maken",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Inhoud bieden",
+        "selectLocalFile": "Selecteer lokaal bestand",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Bron",
+                "value": "Lokale bestanden",
+                "limit": "Kies een ander bestand"
+            },
+            "link": {
+                "placeholder": "IPFS-link",
+                "copyLink": "Kopieer link",
+                "tooltip": "IPFS is een gedistribueerd systeem voor het opslaan en openen van bestanden, waardoor het mogelijk is om toegang te krijgen tot bestanden vanaf veel locaties die niet door één organisatie worden beheerd."
+            },
+            "image": {
+                "placeholderNoImage": "Upload het bestand door een link in te voeren of te kiezen uit lokale opslag",
+                "placeholderBadSource": "Het bestand kan niet worden verwerkt",
+                "placeholderBadSourceAddition": "of het is nog niet geüpload naar IPFS",
+                "placeholderFileLimit": "De bestandsgrootte overschrijdt de limiet van {value} mb"
+            },
+            "supply": {
+                "placeholder": "Tokenvoorraad",
+                "desc": "Het aantal NFT's dat u gaat krijgen.",
+                "quantity": "Hoeveelheid"
+            },
+            "description": {
+                "placeholder": "Omschrijving"
+            }
+        },
+        "enterTokenDescription": "Voer beschrijving in",
+        "divisible": {
+            "placeholder": "Deelbaar",
+            "desc": "Mogelijkheid van NFT om te verdelen in fractionele delen. Liquiditeitsvoorziening werkt alleen met deelbare activa"
         }
     },
     "transaction": {
@@ -227,7 +267,9 @@
             "sorascan": "Bekijk in Sorascan",
             "subscan": "Bekijk in Subscan"
         },
-        "txId": "Transactie ID"
+        "txId": "Transactie ID",
+        "referrer": "Verwijzer",
+        "referral": "Verwijzing"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -571,7 +613,8 @@
         "title": "Bridge-transactie",
         "expectedMetaMaskAddress": "Verwacht adres in Metamask:",
         "allowToken": "Sta @:appName toe om je {tokenSymbol}",
-        "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om het token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst."
+        "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om het token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst.",
+        "blocksLeft": "{count} blokken over..."
     },
     "bridgeHistory": {
         "title": "Geschiedenis",
@@ -579,7 +622,8 @@
         "clearHistory": "Geschiedenis wissen",
         "empty": "Uw transacties zullen hier verschijnen.",
         "filterPlaceholder": "Filter op Asset-ID of Tickersymbool",
-        "restoreHistory": "Geschiedenis herstellen"
+        "restoreHistory": "Geschiedenis herstellen",
+        "statusAction": "Actie nodig"
     },
     "selectToken": {
         "title": "Kies een token",
@@ -834,11 +878,11 @@
     },
     "blockNumberText": "Bloknummer",
     "referralProgram": {
-        "title": "Verwijzingsprogramma",
+        "title": "Referral Program",
         "connectAccount": "Om gebruikers uit te nodigen, moet u uw SORA-account koppelen.",
         "bondedXOR": "XOR Gebonden",
         "referralsNumber": "{number} verwijzingen",
-        "startInviting": "Om te beginnen met uitnodigen, bond een willekeurige hoeveelheid XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Meer informatie<\/a>",
+        "startInviting": "Bind een willekeurig bedrag aan XOR om uit te nodigen.",
         "preview": "Nodig nieuwe gebruikers uit en ontvang 10% van hun transactiekosten.<br \/>Om te beginnen, borg elk bedrag van XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Meer informatie<\/a>",
         "deposit": "Storting",
         "balance": "Saldo",
@@ -865,10 +909,13 @@
             "text": "Bevestigen",
             "bond": "Bevestig obligatie",
             "unbond": "Ontbinding bevestigen",
-            "inviteTitle": "U bent uitgenodigd voor Polkaswap door een verwijzing",
-            "inviteDescription": "Wanneer u transactiekosten betaalt, gaat 10% naar uw verwijzing. Het is helemaal gratis.",
-            "signInvitation": "Goedkeuringstransactie ondertekenen",
-            "freeOfCharge": "Deze actie is gratis"
+            "inviteTitle": "Je bent uitgenodigd voor Polkaswap",
+            "inviteDescription": "Voor elke transactie gaat 10% van de vergoeding naar uw verwijzer, zonder extra kosten voor u.",
+            "signInvitation": "Goedkeuren",
+            "freeOfCharge": "Deze actie is gratis",
+            "hasReferrerTitle": "Je hebt je verwijzer al ingesteld",
+            "hasReferrerDescription": "Helaas kun je er maar één instellen",
+            "ok": "OK"
         }
     },
     "transactionDetailsText": "Transactie Details",
@@ -888,5 +935,6 @@
         },
         "save": "Save",
         "reset": "Reset"
-    }
+    },
+    "createTokenTextNFT": "NFT maken"
 }
