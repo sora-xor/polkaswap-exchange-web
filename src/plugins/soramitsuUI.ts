@@ -39,6 +39,7 @@ import STabs from '@soramitsu/soramitsu-js-ui/lib/components/Tab/STabs';
 import STable from '@soramitsu/soramitsu-js-ui/lib/components/Table/STable';
 import STableColumn from '@soramitsu/soramitsu-js-ui/lib/components/Table/STableColumn';
 import STooltip from '@soramitsu/soramitsu-js-ui/lib/components/Tooltip';
+import SDatePicker from '@soramitsu/soramitsu-js-ui/lib/components/DatePicker/SDatePicker';
 
 import ElProgress from 'element-ui/lib/progress';
 import ElPopover from 'element-ui/lib/popover';
@@ -83,6 +84,7 @@ Vue.use(STabs);
 Vue.use(STable);
 Vue.use(STableColumn);
 Vue.use(STooltip);
+Vue.use(SDatePicker);
 Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$message = Message;

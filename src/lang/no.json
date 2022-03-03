@@ -321,7 +321,8 @@
         "Stats": "Statistikk",
         "Support": "Brukerstøtte",
         "CreatePair": "Opprett par",
-        "Tokens": "Tokens"
+        "Tokens": "Tokens",
+        "KYC": "KYC"
     },
     "social": {
         "twitter": "Twitter",
@@ -918,5 +919,22 @@
         }
     },
     "transactionDetailsText": "Transaksjonsdetaljer",
+    "kyc": {
+        "title": "KYC Data",
+        "form": {
+            "name": "Name",
+            "surname": "Surname",
+            "country": "Citizenship",
+            "address": "Residential Address",
+            "dob": "Date of Birth",
+            "id": "ID Number"
+        },
+        "notification": {
+            "saved": "KYC Data successfully saved",
+            "reset": "KYC Data cleared"
+        },
+        "save": "Save",
+        "reset": "Reset"
+    },
     "createTokenTextNFT": "Lag NFT"
 }

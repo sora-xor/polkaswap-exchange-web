@@ -114,6 +114,7 @@ export enum PageNames {
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
+  KYC = 'KYC',
 }
 
 export enum Components {
@@ -216,6 +217,10 @@ const AccountMenu: Array<SidebarMenuItem> = [
   {
     icon: 'basic-circle-star-24',
     title: PageNames.Rewards,
+  },
+  {
+    icon: 'basic-user-24',
+    title: PageNames.KYC,
   },
 ];
 
