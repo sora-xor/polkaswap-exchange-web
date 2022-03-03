@@ -29,18 +29,18 @@
         </template>
       </s-dropdown>
     </s-button>
-    <template v-else>
+    <div class="app-header-menu_panel" v-else>
       <s-button
         v-for="{ value, icon, text } in headerMenuItems"
         :key="value"
         type="action"
-        class="s-pressed"
+        class="s-pressed app-header-menu__button"
         :tooltip="text"
         @click="handleSelectHeaderMenu(value)"
       >
         <s-icon :name="icon" :size="iconSize" />
       </s-button>
-    </template>
+    </div>
   </div>
 </template>
 
@@ -214,6 +214,46 @@ $icon-size: 28px;
           color: var(--s-color-base-content-secondary);
         }
       }
+    }
+  }
+}
+</style>
+
+<style scoped lang="scss">
+.app-header-menu {
+  .app-header-menu_panel {
+    &:not(:last-child) {
+      margin-right: $inner-spacing-mini;
+    }
+
+    & > *:not(:last-child) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    & > *:not(:first-child) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    .el-button {
+      + .el-button {
+        margin-left: 0;
+      }
+    }
+
+    @include desktop {
+      margin-left: auto;
+    }
+
+    border-radius: var(--s-border-radius-small);
+
+    & > *:not(:last-child) {
+      border-right: 1px solid var(--s-color-base-content-tertiary) !important;
+    }
+
+    & > * {
+      box-shadow: none !important;
     }
   }
 }

@@ -1,6 +1,10 @@
 // This file includes mixins for usage in different components
 $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0, 0, 0.05);
 
+$primary-button-color:linear-gradient(180deg, #2EEEA9 0%, #0D9999 100%);
+$primary-button-color-hover: linear-gradient(180deg, #0D9999 0%, #35D7D7 100%);
+$primary-button-box-shadow: 0px 0px 20px #0D9991;
+
 // TODO 4 alexnatalia: Right now this is just a mixin because there are no appropriate focus behaviour for some elements (tabs for example) and we need more time to investigate the problem
 @mixin focus {
   &:focus {
@@ -199,6 +203,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &--max {
       margin-right: $inner-spacing-mini / 2;
       margin-left: $inner-spacing-mini / 2;
+      background-color: var(--s-color-theme-secondary);
       &.el-button.neumorphic {
         box-shadow: $button-custom-shadow;
       }
@@ -210,7 +215,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
           background-color: var(--s-color-utility-surface);
         }
         &:hover, &:active, &:focus, &.focusing, &.s-pressed {
-          box-shadow: 1px 1px 5px rgba(255, 255, 255, 0.7), -1px -1px 5px #FFFFFF, 0px 0px 20px rgba(247, 84, 163, 0.5);
+          box-shadow: var(--s-shadow-element-pressed);
         }
       }
       &, &:hover, &:active, &:focus, &.focusing, &.s-pressed {
@@ -224,6 +229,12 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   .#{$buttonClass} {
     margin-top: $marginTop;
     width: 100%;
+    background: $primary-button-color;
+
+    &:hover {
+      background: $primary-button-color-hover;
+      box-shadow: $primary-button-box-shadow;
+    }
   }
 }
 

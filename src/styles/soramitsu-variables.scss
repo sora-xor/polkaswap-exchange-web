@@ -1,31 +1,51 @@
 $s-color-brand-day: #A19A9D; // 0d0248
 // Primary theme colors
-$s-color-theme-accent: #F8087B; // NEU bright pink fluro
-$s-color-theme-accent-hover: #F754A3; // NEU pale quartz pink
-$s-color-theme-accent-pressed: #bf065f;
-$s-color-theme-accent-focused: #ab0555;
+$s-color-theme-accent: #2DBEC7; // NEU bright pink fluro
+$s-color-theme-accent-hover: #5CC9D0; // NEU pale quartz pink
+$s-color-theme-accent-pressed: #229198;
+$s-color-theme-accent-focused: #3DAEB5;
+
+$s-color-theme-accent--dark: #2DBEC7; // NEU bright pink fluro
+$s-color-theme-accent-hover--dark: #5CC9D0; // NEU pale quartz pink
+$s-color-theme-accent-pressed--dark: #229198;
+$s-color-theme-accent-focused--dark: #3DAEB5;
 // Secondary theme colors
-$s-color-theme-secondary: #44E5B2;
-$s-color-theme-secondary-hover: #24DAA0;
+$s-color-theme-secondary: #ADA2D8;
+$s-color-theme-secondary-hover: #8069DB;
 $s-color-theme-secondary-pressed: #24DAA0;
 $s-color-theme-secondary-focused: #24DAA0;
+
+$s-color-theme-secondary--dark: #ADA2D8;
+$s-color-theme-secondary-hover--dark: #8069DB;
 // Base content colors
-$s-color-base-content-primary: #2A171F;
-$s-color-base-content-secondary: #A19A9D;
-$s-color-base-content-tertiary: #D5CDD0;
+$s-color-base-content-primary: #1A2F2F;
+$s-color-base-content-secondary: #546161;
+$s-color-base-content-tertiary: #C0CECE;
 $s-color-base-content-quaternary: #75787b;
+
+$s-color-base-content-primary--dark: #CACECE;
+$s-color-base-content-secondary--dark: #B0C8C8;
+$s-color-base-content-tertiary--dark: #889B9B;
+$s-color-base-content-quaternary--dark: #75787b;
 // Base misc colors
-$s-color-base-background: #FAF4F8;
-$s-color-base-border-primary: #F7F3F4;
-$s-color-base-border-secondary: #EDE4E7;
+$s-color-base-background: #EBF2F2;
+$s-color-base-border-primary: #ECF2F2;
+$s-color-base-border-secondary: #DAE3E3;
 $s-color-base-background-hover: #F7F3F4;
-$s-color-base-disabled: #FDF7FB;
-$s-color-base-on-disabled: #A19A9D;
+$s-color-base-disabled: #EAF1F1;
+$s-color-base-on-disabled: #9CACAC;
 $s-color-base-on-accent: #FFFFFF;
+
+$s-color-base-background--dark: #222727;
+$s-color-base-border-secondary--dark: #2D3636;
+$s-color-base-on-accent--dark: #2F3C3C;
 // Utility colors
-$s-color-utility-body: #F7F3F4;
-$s-color-utility-surface: #FDF7FB;
-$s-color-utility-overlay: rgba(42, 23, 31, 0.1);
+$s-color-utility-body: #E8EEEE;
+$s-color-utility-surface: #ECF5F5;
+$s-color-utility-overlay: rgba(26, 47, 47, 0.1);
+
+$s-color-utility-body--dark: #0B0D0D;
+$s-color-utility-surface--dark: #111515;
 // Status colors
 $s-color-status-success: #34AD87;
 $s-color-status-warning: #479AEF;
@@ -34,7 +54,7 @@ $s-color-status-success-background: #B9EBDB;
 $s-color-status-warning-background: #C6E2FF;
 $s-color-status-error-background: #FFD8EB;
 // Fiat colors
-$s-color-fiat-value: rgba(71, 154, 239, 1) !default;
+$s-color-fiat-value: #BDAFF3 !default;
 $s-color-rewards: #c0e2ff !default;
 // Sizes
 $s-size-mini: 24px;
@@ -48,8 +68,16 @@ $s-shadow-tab: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1); // 0px
 $s-shadow-dropdown: 0px 4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-tap-bar: 0px -4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-side-menu: -4px 4px 8px rgba(19, 19, 19, 0.15);
+
+$s-shadow-dialog: -5px -5px 30px rgba(152, 240, 224, 0.25), 10px 10px 60px rgba(159, 93, 244, 0.15), inset 1px 1px 10px #FFFFFF;
+$s-shadow-element: 1px 1px 5px #FFFFFF, inset -5px -5px 5px rgba(159, 93, 244, 0.05), inset 1px 1px 10px rgba(159, 93, 244, 0.1);
+$s-shadow-element-pressed: -5px -5px 5px rgba(152, 240, 224, 0.2), 1px 1px 25px rgba(159, 93, 244, 0.25), inset 1px 1px 10px #FFFFFF;
+
+$s-shadow-dialog--dark: -10px -10px 30px rgba(0, 255, 209, 0.25), 20px 20px 60px rgba(111, 0, 255, 0.25), inset 1px 1px 10px #1F2626;
+$s-shadow-element--dark: 1px 1px 2px rgba(255, 255, 255, 0.1), inset -5px -5px 5px rgba(111, 0, 255, 0.1), inset 1px 1px 10px rgba(111, 0, 255, 0.33);
+$s-shadow-element-pressed--dark: -5px -5px 5px rgba(0, 255, 209, 0.15), 2px 2px 25px rgba(111, 0, 255, 0.55), inset 1px 1px 2px #3D5252;
 // Border Radius
-$s-border-radius-base: 16px;
+$s-border-radius-base: 4px;
 $s-border-radius-mini: $s-border-radius-base;
 $s-border-radius-small: $s-border-radius-base * 1.5;
 $s-border-radius-medium: $s-border-radius-base * 2;

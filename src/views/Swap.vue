@@ -662,6 +662,10 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   }
 }
 
+.el-button--switch-tokens {
+  border-radius: 100%;
+}
+
 .page-header--swap {
   justify-content: space-between;
   align-items: center;
