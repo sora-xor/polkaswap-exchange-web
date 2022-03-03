@@ -45,16 +45,11 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, State } from 'vuex-class';
-import {
-  KnownAssets,
-  KnownSymbols,
-  CodecString,
-  AccountAsset,
-  LPRewardsInfo,
-  Operation,
-  NetworkFeesObject,
-} from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
+import { XOR, KnownAssets } from '@sora-substrate/util/build/assets/consts';
+import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
@@ -93,7 +88,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   get swapRoute(): Array<string> {
     const fromToken: string = this.tokenFrom?.symbol ?? '';
     const toToken: string = this.tokenTo?.symbol ?? '';
-    const xorToken: string = KnownSymbols.XOR;
+    const xorToken: string = XOR.symbol;
 
     return [...new Set([fromToken, xorToken, toToken])];
   }
@@ -156,7 +151,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   }
 
   get xorSymbol(): string {
-    return ' ' + KnownSymbols.XOR;
+    return ' ' + XOR.symbol;
   }
 
   get getAssetSymbolText(): string {

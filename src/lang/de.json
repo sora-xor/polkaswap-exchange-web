@@ -7,7 +7,7 @@
     "importText": "Importieren",
     "settingsText": "Einstellungen",
     "addAssetText": "Asset hinzufügen",
-    "createTokenText": "Token erstellen",
+    "createTokenText": "Erstellen",
     "comingSoonText": "Demnächst verfügbar",
     "successText": "Erfolgreich abgelaufen",
     "warningText": "Warnung",
@@ -41,9 +41,9 @@
             "CreatePair": "{amount} {symbol} und {amount2} {symbol2} bereitgestellt",
             "RegisterAsset": "Registriertes {symbol} Asset",
             "ClaimRewards": "Belohnung erfolgreich beansprucht {rewards}",
-            "ReferralReserveXor": "Gebundenes XOR erfolgreich",
-            "ReferralUnreserveXor": "Ungebundenes XOR erfolgreich",
-            "ReferralSetInvitedUser": "Überweisung ist erfolgreich eingestellt"
+            "ReferralReserveXor": "Bonden von XOR erfolgreich",
+            "ReferralUnreserveXor": "Unbonden von XOR erfolgreich",
+            "ReferralSetInvitedUser": "Referral wurde erfolgreich eingerichtet"
         },
         "error": {
             "Transfer": "Senden von {amount} {symbol} an {address} fehlgeschlagen",
@@ -53,13 +53,13 @@
             "CreatePair": "Fehler bei der Bereitstellung von {amount} {symbol} und {amount2} {symbol2}",
             "RegisterAsset": "Fehler beim Registrieren des {symbol} -Assets",
             "ClaimRewards": "Belohnungen konnten nicht beansprucht werden {rewards}",
-            "ReferralReserveXor": "XOR-Bindung fehlgeschlagen",
-            "ReferralUnreserveXor": "Die Bindung von XOR konnte nicht aufgehoben werden",
-            "ReferralSetInvitedUser": "Verweisung konnte nicht eingestellt werden"
+            "ReferralReserveXor": "Bonden von XOR fehlgeschlagen",
+            "ReferralUnreserveXor": "Unbonden von XOR fehlgeschlagen",
+            "ReferralSetInvitedUser": "Festlegen des Referrals fehlgeschlagen"
         },
-        "ReferralReserveXor": "Bindung XOR",
-        "ReferralUnreserveXor": "Ungebundene XOR",
-        "ReferralSetInvitedUser": "Verweis einstellen"
+        "ReferralReserveXor": "Bonde XOR",
+        "ReferralUnreserveXor": "Unbonde XOR",
+        "ReferralSetInvitedUser": "Referral festlegen"
     },
     "polkadotjs": {
         "noExtensions": "Es wurde keine Polkadot.js-Erweiterung gefunden. Bitte installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -133,11 +133,12 @@
             "transferable": "Übertragbar",
             "frozen": "Eingefroren",
             "locked": "- Gesperrt",
-            "reserved": " Reserviert",
-            "total": "Gesamt"
+            "reserved": "- Reserviert",
+            "total": "Gesamt",
+            "bonded": "- Gebunden"
         },
         "totalAssetsValue": "Gesamtwert deiner Assets:",
-        "details": "Einzelheiten"
+        "details": "Details"
     },
     "asset": {
         "remove": "Asset entfernen"
@@ -197,6 +198,45 @@
         "extensibleSupply": {
             "placeholder": "Erweiterbarer Vorrat",
             "desc": "Fähigkeit, mehr Token zu minten."
+        },
+        "titleCommon": "Erstellen",
+        "confirmTokenTitleCommon": "Token erstellen",
+        "confirmTokenTitleNFT": "NFT erstellen",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Inhalt bereitstellen",
+        "selectLocalFile": "Lokale Datei auswählen",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Quelle",
+                "value": "Lokale Dateien",
+                "limit": "Wählen Sie eine andere Datei"
+            },
+            "link": {
+                "placeholder": "IPFS-Link",
+                "copyLink": "Link kopieren",
+                "tooltip": "IPFS ist ein verteiltes System zum Speichern und Zugreifen auf Dateien, das den Zugriff auf Dateien von vielen Standorten aus ermöglicht, die nicht von einer Organisation verwaltet werden."
+            },
+            "image": {
+                "placeholderNoImage": "Lade die Datei hoch, indem du entweder einen Link eingibst oder aus dem lokalen Speicher auswählst",
+                "placeholderBadSource": "Die Datei konnte nicht verarbeitet werden",
+                "placeholderBadSourceAddition": "oder es wurde noch nicht auf IPFS hochgeladen",
+                "placeholderFileLimit": "Die Dateigröße überschreitet das Limit von {value} MB"
+            },
+            "supply": {
+                "placeholder": "Token Vorrat",
+                "desc": "Anzahl der NFTs, die Sie erhalten werden.",
+                "quantity": "Menge"
+            },
+            "description": {
+                "placeholder": "Beschreibung"
+            }
+        },
+        "enterTokenDescription": "Beschreibung eingeben",
+        "divisible": {
+            "placeholder": "Teilbar",
+            "desc": "Fähigkeit von NFT, in Bruchteile zu unterteilen. Liquiditätsvorsorge funktioniert nur mit teilbaren Vermögenswerten"
         }
     },
     "transaction": {
@@ -227,7 +267,9 @@
             "sorascan": "Auf SORAScan ansehen",
             "subscan": "Auf Subscan ansehen"
         },
-        "txId": "Transaktions-ID"
+        "txId": "Transaktions-ID",
+        "referrer": "Referrer",
+        "referral": "Verweisung"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -279,8 +321,7 @@
         "Stats": "Statistiken",
         "Support": "Support",
         "CreatePair": "Erstelle ein Paar",
-        "Tokens": "Token",
-        "Send": "Send"
+        "Tokens": "Token"
     },
     "social": {
         "twitter": "Twitter",
@@ -433,20 +474,6 @@
         "confirm": "Bestätigen",
         "ok": "OK"
     },
-    "send": {
-        "Exchange": "Exchange",
-        "Send": "Send",
-        "Pool": "Pool",
-        "balance": "Balance",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "price": "Price",
-        "transactionSubmitted": "Transaction submitted",
-        "transactionMessage": "{firstToken} and {secondToken}",
-        "confirm": "Confirm",
-        "ok": "OK",
-        "exchange": "Exchange",
-        "exchangeAndSend": "Exchange & Send"
-    },
     "swap": {
         "connectWallet": "@:connectWalletText",
         "estimated": "geschätzt",
@@ -585,7 +612,8 @@
         "title": "Bridge-Transaktion",
         "expectedMetaMaskAddress": "In MetaMask erwartete Adresse:",
         "allowToken": "Erlaube @:appName, deine {tokenSymbol} zu verwenden",
-        "approveToken": "Bitte beachte, dass du den Token nur einmal genehmigen musst. Wenn deine Erweiterung mehrere Token-Genehmigungsanfragen hat, stell bitte sicher, dass du nur die Letzte bestätigst und die Übrigen ablehnst."
+        "approveToken": "Bitte beachte, dass du den Token nur einmal genehmigen musst. Wenn deine Erweiterung mehrere Token-Genehmigungsanfragen hat, stell bitte sicher, dass du nur die Letzte bestätigst und die Übrigen ablehnst.",
+        "blocksLeft": "{count} Blöcke übrig..."
     },
     "bridgeHistory": {
         "title": "Verlauf",
@@ -593,7 +621,8 @@
         "clearHistory": "Verlauf löschen",
         "empty": "Deine Transaktionen werden hier angezeigt.",
         "filterPlaceholder": "Filter nach Asset-ID oder Ticker-Symbol",
-        "restoreHistory": "Verlauf wiederherstellen"
+        "restoreHistory": "Verlauf wiederherstellen",
+        "statusAction": "Handlungsbedarf"
     },
     "selectToken": {
         "title": "Wähle ein Token",
@@ -834,56 +863,60 @@
     "learnMoreText": "Mehr erfahren",
     "marketMakerCountdown": {
         "title": "Market Maker Countdown",
-        "blocks": "Blöcke",
+        "blocks": "Blocks",
         "daysLeft": "Tage übrig",
         "txs": "TXs",
         "volume": "MM TX-Volume",
         "description": "20 Millionen PSWAP \/ Monat werden an Market Makers mit mindestens 500 tx \/ Monat im Wert von über 1 XOR verteilt."
     },
     "confirmNextTxFailure": {
-        "header": "Beachtung",
-        "info": "Ihr XOR-Guthaben beträgt nach dieser Transaktion {fee} Sie können die Netzwerkgebühr für eine andere Transaktion nicht bezahlen.",
-        "payoff": "Sie müssten die Bridge verwenden, um XOR von anderen Netzwerken zu erhalten, XOR von einem anderen SORA-Konto gesendet zu bekommen oder einen anderen Token, der sich bereits in Ihrem Konto befindet, in XOR einzutauschen.",
+        "header": "Achtung",
+        "info": "Dein XOR Saldo beträgt nach dieser Transaktion weniger als {fee} XOR. Du kannst die Netzwerkgebühr für eine andere Transaktion nicht mehr bezahlen.",
+        "payoff": "Du musst die Bridge verwenden, um XOR von anderen Netzwerken zu erhalten, XOR von einem anderen SORA-Konto gesendet zu bekommen oder einen anderen Token, der sich bereits auf deinem Konto befindet, in XOR einzutauschen.",
         "button": "Ja, ich verstehe das Risiko"
     },
     "blockNumberText": "Blocknummer",
     "referralProgram": {
-        "title": "Empfehlungsprogramm",
-        "connectAccount": "Um Benutzer einzuladen, müssen Sie Ihr SORA-Konto verbinden.",
-        "bondedXOR": "XOR Bonded",
+        "title": "Referral Program",
+        "connectAccount": "Um Benutzer einzuladen, musst du dein SORA-Konto verbinden.",
+        "bondedXOR": "XOR gebonded",
         "referralsNumber": "{number} Empfehlungen",
-        "startInviting": "Um mit der Einladung zu beginnen, binden Sie eine beliebige Menge an XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Mehr erfahren<\/a>",
-        "preview": "Laden Sie neue Benutzer ein und erhalten Sie 10% von ihren Transaktionsgebühren.<br \/>Anleihen Sie zunächst einen beliebigen XOR-Betrag. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Mehr erfahren<\/a>",
+        "startInviting": "Um mit dem Einladen zu beginnen, bonde eine beliebige Menge XOR.",
+        "preview": "Lade neue Nutzer ein und erhalte 10% von deren Transaktionsgebühren.<br \/>Um zu beginnen, bonde eine beliebige Menge an XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Mehr erfahren<\/a>",
         "deposit": "Einzahlung",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
         "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
-        "insufficientBondedBalance": "Unzureichendes gebundenes Gleichgewicht",
+        "insufficientBondedBalance": "Gebondeter Saldo unzureichend",
         "action": {
             "connectWallet": "@:connectWalletText",
-            "empty": "Geben Sie den Betrag von {tokenSymbol}",
-            "startInviting": "Binden Sie {tokenSymbol} an, um mit der Einladung zu beginnen",
-            "bondMore": "Bond Mehr",
-            "bond": "Anleihe",
-            "unbond": "Ungebunden",
+            "empty": "Betrag von {tokenSymbol} eingeben",
+            "startInviting": "Bonde {tokenSymbol}, um mit der Einladung zu beginnen",
+            "bondMore": "Mehr bonden",
+            "bond": "Bond",
+            "unbond": "Unbond",
             "copyLink": "Link kopieren"
         },
         "transactionDetails": "Transaktionsdetails",
         "receivedRewards": "Erhaltene Belohnungen",
-        "invitationLink": "Einladungs-Link",
-        "successCopy": "Verweislink wird in die Zwischenablage kopiert",
-        "bondTitle": "Bindung XOR",
-        "unbondTitle": "Ungebundene XOR",
+        "invitationLink": "Einladungslink",
+        "successCopy": "Promotionslink wird in die Zwischenablage kopiert",
+        "bondTitle": "XOR bonden",
+        "unbondTitle": "XOR unbonden",
         "confirm": {
             "text": "Bestätigen",
-            "bond": "Anleihe bestätigen",
-            "unbond": "Aufhebung der Bindung bestätigen",
-            "inviteTitle": "Sie wurden von einer Empfehlung zu Polkaswap eingeladen",
-            "inviteDescription": "Wenn Sie eine Transaktionsgebühr zahlen, gehen 10 % an Ihre Empfehlung. Es ist völlig kostenlos.",
-            "signInvitation": "Genehmigungstransaktion unterschreiben",
-            "freeOfCharge": "Diese Aktion ist kostenlos"
+            "bond": "Bonden bestätigen",
+            "unbond": "Unbonden bestätigen",
+            "inviteTitle": "Du wurdest zu Polkaswap eingeladen",
+            "inviteDescription": "Für jede Transaktion gehen 10% der Gebühr an deinen Referrer, ohne dass dir zusätzliche Kosten entstehen.",
+            "signInvitation": "Genehmigen",
+            "freeOfCharge": "Diese Aktion ist kostenfrei",
+            "hasReferrerTitle": "Du hast deinen Referrer bereits festgelegt",
+            "hasReferrerDescription": "Leider kann man nur einen festlegen",
+            "ok": "OK"
         }
     },
-    "transactionDetailsText": "Transaktionsdetails"
+    "transactionDetailsText": "Transaktionsdetails",
+    "createTokenTextNFT": "NFT erstellen"
 }

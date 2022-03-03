@@ -33,7 +33,9 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
-import { AccountAsset, KnownSymbols, CodecString } from '@sora-substrate/util';
+import { CodecString } from '@sora-substrate/util';
+import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
 // import TransactionMixin from '@/components/mixins/TransactionMixin'
 import DialogMixin from '@/components/mixins/DialogMixin';
@@ -78,7 +80,7 @@ export default class ConfirmSend extends Mixins(mixins.TransactionMixin, DialogM
       this.$emit('confirm');
     } else {
       try {
-        await this.withNotifications(async () => await api.transfer(this.tokenFrom.address, this.to, this.fromValue));
+        await this.withNotifications(async () => await api.transfer(this.tokenFrom as Asset, this.to, this.fromValue));
         this.$emit('confirm', true);
       } catch (error) {
         this.$emit('confirm');

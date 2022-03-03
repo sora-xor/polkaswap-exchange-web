@@ -1,2 +1,2 @@
-FROM nginx:stable
-COPY ./dist /usr/share/nginx/html
+FROM    nginxinc/nginx-unprivileged:1.20
+COPY    ./dist /usr/share/nginx/html

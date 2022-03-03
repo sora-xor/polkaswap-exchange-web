@@ -134,7 +134,8 @@
             "frozen": "Fryst",
             "locked": "- Låst",
             "reserved": "- Reservert",
-            "total": "Totalt"
+            "total": "Totalt",
+            "bonded": "- Bundet"
         },
         "totalAssetsValue": "Totalverdi aktiva:",
         "details": "Detaljer"
@@ -197,6 +198,45 @@
         "extensibleSupply": {
             "placeholder": "Utvidbar forsyning",
             "desc": "Evne til å lage flere tokens."
+        },
+        "titleCommon": "Skape",
+        "confirmTokenTitleCommon": "Opprett token",
+        "confirmTokenTitleNFT": "Lag NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Gi innhold",
+        "selectLocalFile": "Velg lokal fil",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Kilde",
+                "value": "Lokale filer",
+                "limit": "Velg en annen fil"
+            },
+            "link": {
+                "placeholder": "IPFS-kobling",
+                "copyLink": "Kopier link",
+                "tooltip": "IPFS er et distribuert system for lagring og tilgang til filer, som gjør det mulig å få tilgang til filer fra mange steder som ikke administreres av én organisasjon."
+            },
+            "image": {
+                "placeholderNoImage": "Last opp filen ved enten å skrive inn en lenke eller velge fra lokal lagring",
+                "placeholderBadSource": "Filen kunne ikke behandles",
+                "placeholderBadSourceAddition": "eller det er ikke lastet opp til IPFS ennå",
+                "placeholderFileLimit": "Filstørrelsen overskrider grensen på {value} mb"
+            },
+            "supply": {
+                "placeholder": "Token forsyning",
+                "desc": "Antall NFT-er du kommer til å få.",
+                "quantity": "Mengde"
+            },
+            "description": {
+                "placeholder": "Beskrivelse"
+            }
+        },
+        "enterTokenDescription": "Skriv inn beskrivelse",
+        "divisible": {
+            "placeholder": "Delelig",
+            "desc": "NFTs evne til å dele opp i brøkdeler. Likviditetsavsetning fungerer kun med delbare eiendeler"
         }
     },
     "transaction": {
@@ -227,7 +267,9 @@
             "sorascan": "Vis i SORAScan",
             "subscan": "Vis i Subscan"
         },
-        "txId": "Transaksjons ID"
+        "txId": "Transaksjons ID",
+        "referrer": "Henviser",
+        "referral": "Henvisning"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -279,8 +321,7 @@
         "Stats": "Statistikk",
         "Support": "Brukerstøtte",
         "CreatePair": "Opprett par",
-        "Tokens": "Tokens",
-        "Send": "Send"
+        "Tokens": "Tokens"
     },
     "social": {
         "twitter": "Twitter",
@@ -433,20 +474,6 @@
         "confirm": "Bekrefte",
         "ok": "OK"
     },
-    "send": {
-        "Exchange": "Exchange",
-        "Send": "Send",
-        "Pool": "Pool",
-        "balance": "Balance",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "price": "Price",
-        "transactionSubmitted": "Transaction submitted",
-        "transactionMessage": "{firstToken} and {secondToken}",
-        "confirm": "Confirm",
-        "ok": "OK",
-        "exchange": "Exchange",
-        "exchangeAndSend": "Exchange & Send"
-    },
     "swap": {
         "connectWallet": "@:connectWalletText",
         "estimated": "estimert",
@@ -585,7 +612,8 @@
         "title": "Bro Transaksjon",
         "expectedMetaMaskAddress": "Forventet adresse i MetaMask:",
         "allowToken": "Tillat @:appName å bruke {tokenSymbol}",
-        "approveToken": "Vær oppmerksom på at det bare er nødvendig å godkjenne tokenet én gang. Hvis utvidelsen din har flere forespørsler om godkjenning av token, må du bare bekrefte den siste mens du avviser resten."
+        "approveToken": "Vær oppmerksom på at det bare er nødvendig å godkjenne tokenet én gang. Hvis utvidelsen din har flere forespørsler om godkjenning av token, må du bare bekrefte den siste mens du avviser resten.",
+        "blocksLeft": "{count} blokker igjen..."
     },
     "bridgeHistory": {
         "title": "Historie",
@@ -593,7 +621,8 @@
         "clearHistory": "Slett historikk",
         "empty": "Transaksjonene dine vises her.",
         "filterPlaceholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol",
-        "restoreHistory": "Gjenopprett historikk"
+        "restoreHistory": "Gjenopprett historikk",
+        "statusAction": "Handling nødvendig"
     },
     "selectToken": {
         "title": "Velg token",
@@ -848,11 +877,11 @@
     },
     "blockNumberText": "Blokknummer",
     "referralProgram": {
-        "title": "Henvisningprogram",
+        "title": "Referral Program",
         "connectAccount": "For å invitere brukere må du koble til SORA-kontoen din.",
         "bondedXOR": "XOR Bundet",
         "referralsNumber": "{number}-henvisninger",
-        "startInviting": "For å begynne å invitere, bind en hvilken som helst mengde XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\"> Lær mer <\/a>",
+        "startInviting": "For å begynne å invitere, bind en hvilken som helst mengde XOR.",
         "preview": "Inviter nye brukere og få 10% fra deres transaksjonsgebyrer.<br \/>For å starte, obligasjon et hvilket som helst beløp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Lær mer<\/a>",
         "deposit": "Innskudd",
         "balance": "Balanse",
@@ -879,11 +908,15 @@
             "text": "Bekrefte",
             "bond": "Bekreft obligasjon",
             "unbond": "Bekreft frigjøring",
-            "inviteTitle": "Du har blitt invitert til Polkaswap med en henvisning",
-            "inviteDescription": "Når du betaler et gebyr for transaksjonen, vil 10% gå til henvisningen din. Det er helt gratis.",
-            "signInvitation": "Signer godkjenningstransaksjonen",
-            "freeOfCharge": "Denne handlingen er gratis"
+            "inviteTitle": "Du har blitt invitert til Polkaswap",
+            "inviteDescription": "For hver transaksjon vil 10% av gebyret gå til din henvisning, uten ekstra kostnad for deg.",
+            "signInvitation": "Vedta",
+            "freeOfCharge": "Denne handlingen er gratis",
+            "hasReferrerTitle": "Du har allerede angitt henvisningsadressen din",
+            "hasReferrerDescription": "Dessverre kan du bare angi én",
+            "ok": "OK"
         }
     },
-    "transactionDetailsText": "Transaksjonsdetaljer"
+    "transactionDetailsText": "Transaksjonsdetaljer",
+    "createTokenTextNFT": "Lag NFT"
 }

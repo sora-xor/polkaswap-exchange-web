@@ -16,7 +16,8 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import { AccountAsset, XOR } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 

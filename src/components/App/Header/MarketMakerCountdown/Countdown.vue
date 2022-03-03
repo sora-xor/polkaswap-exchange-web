@@ -70,7 +70,7 @@ $countdown-box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.1), inset -5px -5px 5px
     justify-content: center;
     color: white;
     line-height: 1;
-    font-size: 10px;
+    font-size: $s-heading3-caps-font-size;
 
     &__count {
       font-weight: 600;

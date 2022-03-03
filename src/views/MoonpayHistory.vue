@@ -79,7 +79,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, State, Getter } from 'vuex-class';
 import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web';
-import { BridgeHistory } from '@sora-substrate/util';
+import type { BridgeHistory } from '@sora-substrate/util';
 
 import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin';

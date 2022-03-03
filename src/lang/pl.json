@@ -26,7 +26,7 @@
     "transactionSubmittedText": "Transakcja została złożona.",
     "operations": {
         "Swap": "Zamień",
-        "Transfer": "Przelewy",
+        "Transfer": "Transfer",
         "AddLiquidity": "Dodaj płynność",
         "RemoveLiquidity": "Usuń płynność",
         "CreatePair": "Utwórz parę",
@@ -40,10 +40,10 @@
             "RemoveLiquidity": "Usunięto {amount} {symbol} i {amount2} {symbol2}",
             "CreatePair": "Dodano {amount} {symbol} i {amount2} {symbol2}",
             "RegisterAsset": "Zarejestrowana waluta {symbol}",
-            "ClaimRewards": "Wynagrodzenie odebrane pomyślnie {rewards}.",
-            "ReferralReserveXor": "Pomyślnie związał XOR",
-            "ReferralUnreserveXor": "Pomyślnie niezwiązany XOR",
-            "ReferralSetInvitedUser": "Polecenie zostało pomyślnie ustawione"
+            "ClaimRewards": "Wynagrodzenie odebrano z powodzeniem {rewards}",
+            "ReferralReserveXor": "Rezerwy w walucie XOR utworzono z powodzeniem",
+            "ReferralUnreserveXor": "Rezerwy w walucie XOR uwolniono z powodzeniem",
+            "ReferralSetInvitedUser": "Kod polecający został utworzony z powodzeniem"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -53,13 +53,13 @@
             "CreatePair": "Nie udało się dodać {amount} {symbol} i {amount2} {symbol2}.",
             "RegisterAsset": "Nie udało się zarejestrować waluty {symbol}.",
             "ClaimRewards": "Nie udało się odebrać wynagrodzenia {rewards}.",
-            "ReferralReserveXor": "Nie udało się powiązać XOR",
-            "ReferralUnreserveXor": "Nie udało się odłączyć XOR",
-            "ReferralSetInvitedUser": "Nie udało się ustawić polecenia"
+            "ReferralReserveXor": "Nie udało się utworzyć rezerw w walucie XOR",
+            "ReferralUnreserveXor": "Nie udało się uwolnić rezerw w walucie XOR",
+            "ReferralSetInvitedUser": "Nie udało się utworzyć kodu polecającego."
         },
-        "ReferralReserveXor": "Obligacja XOR",
-        "ReferralUnreserveXor": "Odłącz XOR",
-        "ReferralSetInvitedUser": "Ustaw polecenie"
+        "ReferralReserveXor": "Utwórz rezerwy XOR",
+        "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
+        "ReferralSetInvitedUser": "Utwórz kod polecający"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -69,7 +69,7 @@
     "connection": {
         "title": "Konto sieci SORA",
         "text": "Podłącz swoje konta sieci SORA lub utwórz nowe za pomocą rozszerzenia przeglądarki polkadot{.js}. To rozszerzenie umożliwia bezpieczne podpisywanie transakcji i zarządzanie zasobami w sieci SORA.",
-        "install": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">odśwież<\/a> stronę.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
+        "install": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">odśwież<\/a> stronę<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>.",
         "noPermissions": "Przypadkowo odrzuciłeś(-łaś) prośbę o pozwolenie? <\/br> Rozszerzenie polkadot{.js} nie posiada obecnie zarządzania uprawnieniami. Aby obejść ten problem, możesz restartować przeglądarkę i ponownie odwiedzić tę stronę w celu kontynuowania autoryzacji.",
         "noAccounts": "W Twoim rozszerzeniu przeglądarki polkadot{.js} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
@@ -104,7 +104,7 @@
         "errorAddress": "Nieprawidłowy adres. Sprawdź go i spróbuj ponownie.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Wysyłaj tokeny między kontami sieci SORA",
-        "addressWarning": "Tokeny zostaną wysłane na poniższy adres w sieci SORA. Upewnij się, czy odbiorca może uzyskać dostęp do sieci SORA, aby korzystać z tokenów:",
+        "addressWarning": "Tokeny zostaną wysłane na poniższy adres sieci SORA. Upewnij się, czy odbiorca może uzyskać dostęp do sieci SORA, aby korzystać z tokenów:",
         "addressError": "Nie możesz wysyłać tokenów na konto, które jest teraz właśnie podłączone."
     },
     "account": {
@@ -115,7 +115,7 @@
     "history": {
         "clearHistory": "Wyczyść historię",
         "filterPlaceholder": "Filtruj według adresu, symbolu, typu lub identyfikatora bloku",
-        "empty": "Twoje transakcje pojawią się tutaj.",
+        "empty": "Tutaj pojawią się Twoje transakcje.",
         "emptySearch": "Nie znaleziono transakcji."
     },
     "assets": {
@@ -132,9 +132,10 @@
         "balance": {
             "transferable": "Transferowalne",
             "frozen": "Zamrożono",
-            "locked": " – Zablokowano",
-            "reserved": " – Zarezerwowano",
-            "total": "Łącznie"
+            "locked": "- Zablokowano",
+            "reserved": "- Zarezerwowano",
+            "total": "Łącznie",
+            "bonded": "- Objęte rezerwami"
         },
         "totalAssetsValue": "Twoja łączna wartość walut:",
         "details": "Szczegóły"
@@ -145,7 +146,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Waluta została dodana pomyślnie!",
+        "success": "Walutę dodano z powodzeniem!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtruj według identyfikatora waluty, nazwy lub symbolu giełdowego"
@@ -197,6 +198,45 @@
         "extensibleSupply": {
             "placeholder": "Rozszerzalna podaż",
             "desc": "Możliwość wybicia większej liczby tokenów."
+        },
+        "titleCommon": "Utwórz",
+        "confirmTokenTitleCommon": "Utwórz token",
+        "confirmTokenTitleNFT": "Utwórz token NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Podaj treść",
+        "selectLocalFile": "Wybierz plik lokalny",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Źródło",
+                "value": "Pliki lokalne",
+                "limit": "Wybierz inny plik"
+            },
+            "link": {
+                "placeholder": "Łącze IPFS",
+                "copyLink": "Kopiuj link",
+                "tooltip": "IPFS to rozproszony system przechowywania i uzyskiwania dostępu do plików, umożliwiający dostęp do plików z wielu lokalizacji, które nie są zarządzane przez jedną organizację."
+            },
+            "image": {
+                "placeholderNoImage": "Prześlij plik, wprowadzając link lub wybierając go z lokalnego magazynu danych.",
+                "placeholderBadSource": "Nie udało się przetworzyć pliku",
+                "placeholderBadSourceAddition": "lub nie został on jeszcze załadowany do systemu IPFS",
+                "placeholderFileLimit": "Rozmiar pliku przekracza limit {value} mb"
+            },
+            "supply": {
+                "placeholder": "Podaż tokenów",
+                "desc": "Ilość tokenów NFT, którą otrzymasz.",
+                "quantity": "Ilość"
+            },
+            "description": {
+                "placeholder": "Opis"
+            }
+        },
+        "enterTokenDescription": "Wprowadź opis",
+        "divisible": {
+            "placeholder": "Podzielny",
+            "desc": "Zdolność NFT do podziału na części ułamkowe. Zapewnienie płynności działa tylko w przypadku aktywów podzielnych"
         }
     },
     "transaction": {
@@ -227,7 +267,9 @@
             "sorascan": "Pokaż w SORAScanie",
             "subscan": "Pokaż w Subscanie"
         },
-        "txId": "Identyfikator transakcji"
+        "txId": "Identyfikator transakcji",
+        "referrer": "Osoba polecająca",
+        "referral": "Polecenie"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -240,7 +282,7 @@
     "connectWalletTextTooltip": "Połącz się z siecią @:soraText za pomocą polkadot{.js}",
     "selectNodeText": "Wybierz węzeł sieci",
     "bridgeText": "Most",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Zastrzeżenie<\/span>: Niniejsza strona internetowa jest prowadzona przez społeczność @:(soraText). Zanim zaczniesz korzystać z tej witryny, zapoznaj się z @:polkaswapFaqLink i dokumentacją, która zawiera szczegółowe wyjaśnienia dotyczące działania giełdy Polkaswap, a także z @:memorandumLink oraz @:(privacylink). Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z Polkaswap, potwierdzasz, że przeczytałeś(-łaś) i rozumiesz przedstawione dokumenty. Potwierdzasz również, co następuje: 1) ponosisz wyłączną odpowiedzialność związaną z przestrzeganiem wszystkich przepisów, które mogą mieć zastosowanie do korzystania z Polkaswap w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja Polkaswap jest wersją alfa: nie została w pełni przetestowana, a niektóre jej funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z Polkaswap, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj @:polkaswapFaqLink, @:memorandumLink oraz @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Zastrzeżenie<\/span>: Niniejsza strona internetowa jest prowadzona przez społeczność sieci @:(soraText). Zanim zaczniesz korzystać z tej witryny, zapoznaj się z @:polkaswapFaqLink i dokumentacją, która zawiera szczegółowe wyjaśnienia dotyczące działania giełdy Polkaswap. Przeczytaj także @:memorandumLink oraz tekst @:(privacyLink). Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z Polkaswap, potwierdzasz, że przeczytałeś(-łaś) i rozumiesz przedstawione dokumenty. Potwierdzasz również, co następuje: 1) ponosisz wyłączną odpowiedzialność związaną z przestrzeganiem wszystkich przepisów, które mogą mieć zastosowanie do korzystania z Polkaswap w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja Polkaswap jest wersją alfa: nie została w pełni przetestowana, a niektóre jej funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z Polkaswap, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj @:polkaswapFaqLink, @:memorandumLink, a także tekst @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Technologia:",
     "confirmTransactionText": "Potwierdź transakcję w {direction}",
@@ -279,8 +321,7 @@
         "Stats": "Statystyki",
         "Support": "Pomoc",
         "CreatePair": "Utwórz parę",
-        "Tokens": "Tokeny",
-        "Send": "Send"
+        "Tokens": "Tokeny"
     },
     "social": {
         "twitter": "Twitter",
@@ -408,7 +449,7 @@
         "pswap": {
             "title": "Tokeny PSWAP",
             "first": "PSWAP powstał w wyniku głosowania społeczności nad jego wydaniem. Jest to token użytkowy i zarządzający, służący do wynagradzania dostarczycieli płynności na giełdzie Polkaswap. W przeciwieństwie do większości innych tokenów wynagrodzeniowych, PSWAP jest spalany w transakcjach, co zmniejsza jego podaż.",
-            "second": "Opłata w wysokości {percent}% od każdej wymiany na giełdzie Polkaswap DEX jest przeznaczana na odkupienie tokenów PSWAP, które są następnie spalane. Początkowo 90% spalonych tokenów PSWAP jest wybijane ponownie w celu alokacji dla dostarczycieli płynności, ale z czasem ten odsetek będzie się zmniejszał do 35% w ciągu 4 lat."
+            "second": "Opłata w wysokości {percent}% od każdej wymiany na giełdzie Polkaswap DEX jest przeznaczana na odkupienie tokenów PSWAP, które są następnie spalane. Początkowo 90% spalonych tokenów PSWAP będzie wybijane ponownie w celu alokacji dla dostarczycieli płynności, ale z czasem ten odsetek będzie się zmniejszał do 35% w ciągu 4 lat."
         },
         "links": {
             "first": {
@@ -433,20 +474,6 @@
         "confirm": "Potwierdź",
         "ok": "OK"
     },
-    "send": {
-        "Exchange": "Exchange",
-        "Send": "Send",
-        "Pool": "Pool",
-        "balance": "Balance",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "price": "Price",
-        "transactionSubmitted": "Transaction submitted",
-        "transactionMessage": "{firstToken} and {secondToken}",
-        "confirm": "Confirm",
-        "ok": "OK",
-        "exchange": "Exchange",
-        "exchangeAndSend": "Exchange & Send"
-    },
     "swap": {
         "connectWallet": "@:connectWalletText",
         "estimated": "według szacunku",
@@ -462,11 +489,11 @@
         "pairIsNotCreated": "@:pairIsNotCreated",
         "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
-        "insufficientAmount": "Niewystarczająca kwota w {tokenSymbol}",
+        "insufficientAmount": "Niewystarczająca kwota w walucie {tokenSymbol}",
         "insufficientLiquidity": "Niewystarczająca płynność",
         "confirmSwap": "Potwierdź zamianę",
         "swapOutputMessage": "Wynik jest szacunkowy. Otrzymasz co najmniej {transactionValue} lub transakcja zostanie anulowana.",
-        "rewardsForSwap": "Wynagrodzenie strategiczne w PSWAP",
+        "rewardsForSwap": "Wynagrodzenie strategiczne w walucie PSWAP",
         "swapInputMessage": "Wprowadzone dane są szacunkowe. Sprzedasz maksymalnie {transactionValue} lub transakcja zostanie anulowana.",
         "route": "Kierunek"
     },
@@ -482,7 +509,7 @@
         "poolShare": "Twój udział w puli",
         "unknownAsset": "Nieznana waluta",
         "description": "Po dodaniu płynności otrzymasz tokeny puli reprezentujące Twoją pozycję. Tokeny te automatycznie zarabiają na opłatach proporcjonalne do Twojego udziału w puli i mogą zostać wypłacone w dowolnym momencie.",
-        "strategicBonusApy": "Procentowa roczna stopa dochodu premii strategicznej"
+        "strategicBonusApy": "Procentowa roczna stopa dochodu bonusu strategicznego"
     },
     "bridge": {
         "title": "Most HASHI",
@@ -494,8 +521,8 @@
         "changeNetwork": "@:changeNetworkText",
         "next": "Dalej",
         "connectWallets": "Połącz z portfelami, aby zobaczyć historię poszczególnych transakcji.",
-        "soraNetworkFee": "Opłata sieciowa @:soraText",
-        "ethereumNetworkFee": "Opłata sieciowa @:ethereumText",
+        "soraNetworkFee": "Opłata sieciowa sieci @:soraText",
+        "ethereumNetworkFee": "Opłata sieciowa sieci @:ethereumText",
         "tooltipValue": "@:comingSoonText",
         "total": "Łącznie",
         "viewHistory": "Pokaż historię transakcji",
@@ -518,7 +545,7 @@
         },
         "customAsset": {
             "title": "Niestandardowe",
-            "customInfo": "Ważne! Niestandardowe tokeny muszą być zarejestrowane w @:(soraText).",
+            "customInfo": "Ważne! Niestandardowe tokeny muszą być zarejestrowane w sieci @:(soraText).",
             "registerToken": "Zarejestruj token",
             "addressPlaceholder": "Identyfikator waluty",
             "symbolPlaceholder": "Symbol tokena",
@@ -581,19 +608,21 @@
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText w portfelu @:metamask",
-        "expectedAddress": "Spodziewany adres w @:metamask",
+        "expectedAddress": "Spodziewany adres w portfelu @:metamask",
         "title": "Transakcja mostowa",
-        "expectedMetaMaskAddress": "Oczekiwany adres w portfelu MetaMask:",
+        "expectedMetaMaskAddress": "Spodziewany adres w portfelu MetaMask:",
         "allowToken": "Zezwól @:appName na użycie Twojego {tokenSymbol}",
-        "approveToken": "Pamiętaj, że wystarczy raz zatwierdzić token. Jeśli Twoje rozszerzenie otrzymuje wiele żądań o zatwierdzenie tokena, pamiętaj, by potwierdzić tylko ostatnią, a pozostałe odrzucić."
+        "approveToken": "Pamiętaj, że wystarczy raz zatwierdzić token. Jeśli Twoje rozszerzenie otrzymuje wiele żądań o zatwierdzenie tokena, pamiętaj, by potwierdzić tylko ostatnią, a pozostałe odrzucić.",
+        "blocksLeft": "pozostało {count} bloków..."
     },
     "bridgeHistory": {
         "title": "Historia",
         "showHistory": "Pokaż historię",
         "clearHistory": "Wyczyść historię",
-        "empty": "Twoje transakcje pojawią się tutaj.",
+        "empty": "Tutaj pojawią się Twoje transakcje.",
         "filterPlaceholder": "Filtruj według identyfikatora waluty lub symbolu giełdowego",
-        "restoreHistory": "Przywróć historię"
+        "restoreHistory": "Przywróć historię",
+        "statusAction": "Potrzebne działanie"
     },
     "selectToken": {
         "title": "Wybierz token",
@@ -613,7 +642,7 @@
         }
     },
     "createPair": {
-        "title": "Tworzenie pary",
+        "title": "Utwórz parę",
         "deposit": "Depozyt",
         "balance": "Saldo",
         "pricePool": "Ceny i opłaty",
@@ -709,17 +738,17 @@
             "accounts": "Twoich kont, to odpowiednio @:soraText i @:ethereumText"
         },
         "hint": {
-            "connectExternalAccount": "Połącz z kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie w PSWAP i VAL.",
-            "connectAccounts": "Aby odebrać swoje wynagrodzenie w PSWAP i VAL, musisz połączyć zarówno konto @:soraText, jak i @:(ethereumText).",
-            "connectAnotherAccount": "Połącz z innym kontem @:ethereumText, aby sprawdzić dostępne wynagrodzenie w PSWAP i VAL.",
-            "howToClaimRewards": "Aby odebrać swoje wynagrodzenie w {symbols}, musisz podpisać {count} {transactions} dotyczące {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto sieci @:(soraText)."
+            "connectExternalAccount": "Połącz z kontem sieci @:ethereumText, aby sprawdzić dostępne wynagrodzenie w walutach PSWAP i VAL.",
+            "connectAccounts": "Aby odebrać swoje wynagrodzenie w walutach PSWAP i VAL, musisz połączyć zarówno konto sieci @:soraText, jak i @:(ethereumText).",
+            "connectAnotherAccount": "Połącz z innym kontem sieci @:ethereumText, aby sprawdzić dostępne wynagrodzenie w walutach PSWAP i VAL.",
+            "howToClaimRewards": "Aby odebrać swoje wynagrodzenie w walucie {symbols}, musisz podpisać {count} {transactions} dotyczące {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto sieci @:(soraText)."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
-            "connectExternalWallet": "Połącz z kontem @:ethereumText",
+            "connectExternalWallet": "Połącz z kontem sieci @:ethereumText",
             "signAndClaim": "Podpisz i odbierz",
-            "pendingInternal": "Transakcja @:soraText w toku...",
-            "pendingExternal": "Transakcja @:ethereumText w toku...",
+            "pendingInternal": "Transakcja sieci @:soraText w toku...",
+            "pendingExternal": "Transakcja sieci @:ethereumText w toku...",
             "retry": "@:retryText",
             "checkRewards": "Sprawdź",
             "insufficientBalance": "@:insufficientBalanceText"
@@ -730,10 +759,10 @@
         "events": {
             "XorErc20": "XOR ERC-20",
             "SoraFarmHarvest": "Zbiory @:(soraText).farm",
-            "NtfAirdrop": "Zrzut NFT",
+            "NtfAirdrop": "Zrzut tokenów NFT",
             "LiquidityProvision": "Opłaty uzyskane z tytułu zapewniania płynności",
             "BuyOnBondingCurve": "Zakup z TBC",
-            "NftAirdrop": "Zrzut NFT",
+            "NftAirdrop": "Zrzut tokenów NFT",
             "MarketMakerVolume": "Animacja rynku",
             "LiquidityProvisionFarming": "Farming"
         },
@@ -743,13 +772,13 @@
         "claimableAmountDoneVesting": "Przysługujące wynagrodzenie dostępne do wypłaty",
         "groups": {
             "strategic": "Wynagrodzenie strategiczne",
-            "external": "Wynagrodzenie dla podłączonego konta Ethereum"
+            "external": "Wynagrodzenie dla podłączonego konta sieci Ethereum"
         },
         "Rewards": "Wynagrodzenie",
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "Dostawca usług @:ethereumText",
+        "default": "Dostawca usług sieci @:ethereumText",
         "metamask": "@:metamask",
         "messages": {
             "checkExtension": "Rozszerzenie {name} jest zajęte, sprawdź je.",
@@ -779,7 +808,7 @@
         "notifications": {
             "success": {
                 "title": "Tokeny zostały zakupione.",
-                "text": "Zakup tokena został ukończony. Gdy tylko tokeny pojawią się na podłączonym koncie Ethereum, transakcja przez most HASHI rozpocznie się automatycznie. Bezpiecznie jest zamknąć to okno i kontynuować korzystanie z Polkaswap. Gdy transakcja mostowa zostanie przygotowana, pojawi się o niej powiadomienie."
+                "text": "Zakup tokena został ukończony. Gdy tylko tokeny pojawią się na podłączonym koncie sieci Ethereum, transakcja przez most HASHI rozpocznie się automatycznie. Bezpiecznie jest zamknąć to okno i kontynuować korzystanie z Polkaswap. Gdy transakcja mostowa zostanie przygotowana, pojawi się o niej powiadomienie."
             },
             "supportError": {
                 "title": "Token nie jest obsługiwany.",
@@ -794,8 +823,8 @@
                 "text": "Niestety, wygląda na to, że transakcja @:moonpayText nie powiodła się. Spróbuj ponownie. Aby uzyskać pomoc od @:moonpayText, przejdź do <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https:\/\/support.moonpay.com<\/a>"
             },
             "amountError": {
-                "title": "Niewystarczająca ilość środków",
-                "text": "Niestety, transakcja przez most HASHI nie powiodła się z powodu braku wystarczającej liczby tokenów dla przeprowadzenia transakcji. Sprawdź saldo swojego konta Ethereum i spróbuj ponownie."
+                "title": "Niewystarczające saldo",
+                "text": "Niestety, transakcja przez most HASHI nie powiodła się z powodu braku wystarczającej ilości tokenów dla przeprowadzenia transakcji. Sprawdź saldo swojego konta sieci Ethereum i spróbuj ponownie."
             },
             "accountAddressError": {
                 "title": "Niewłaściwe konto sieci Ethereum",
@@ -816,7 +845,7 @@
             "txReady": "Transakcja gotowa do transferu przez most."
         },
         "tooltips": {
-            "transfer": "Pomyślnie zakupiono tokeny!\nKliknij, aby rozpocząć transakcję mostową"
+            "transfer": "Tokeny zakupiono z powodzeniem!\nKliknij, aby rozpocząć transakcję mostową"
         }
     },
     "recievedText": "Otrzymano",
@@ -835,55 +864,59 @@
     "marketMakerCountdown": {
         "title": "Odliczanie dla animatora rynku",
         "blocks": "bloków",
-        "daysLeft": "pozostało dni",
+        "daysLeft": "dni do końca odliczania",
         "txs": "transakcji",
         "volume": "Wolumen transakcji animatora rynku",
-        "description": "20 milionów PSWAP na miesiąc trafi do animatorów rynku z co najmniej 500 transakcjami na miesiąc o wartości powyżej 1 XOR każda."
+        "description": "20 milionów tokenów PSWAP trafiać będzie co miesiąc do animatorów rynku, którzy wykonali co najmniej 500 transakcji miesięcznie o wartości powyżej 1 XOR każda."
     },
     "confirmNextTxFailure": {
         "header": "Uwaga",
-        "info": "Po tej transakcji Twoje saldo XOR będzie mniejsze niż {fee} XOR. Nie będziesz w stanie uiścić opłaty sieciowej za kolejną transakcję.",
+        "info": "Po tej transakcji Twoje saldo w walucie XOR będzie mniejsze niż {fee} XOR. Nie będziesz w stanie uiścić opłaty sieciowej za kolejną transakcję.",
         "payoff": "Będziesz musiał użyć mostu, aby uzyskać XOR z innych sieci, wysłać XOR z innego konta sieci SORA lub zamienić dowolny token, znajdujący się już na Twoim koncie, na XOR.",
         "button": "Tak, rozumiem ryzyko."
     },
     "blockNumberText": "Numer bloku",
     "referralProgram": {
-        "title": "Program polecający",
+        "title": "Progr. polecający",
         "connectAccount": "Aby zaprosić użytkowników, musisz podłączyć swoje konto sieci SORA.",
-        "bondedXOR": "XOR Wiązanie",
+        "bondedXOR": "Rezerwy w XOR",
         "referralsNumber": "{number} zaproszonych",
-        "startInviting": "Aby zacząć zapraszać, zwiąż dowolną ilość XOR. <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\">Dowiedz się więcej<\/a>",
-        "preview": "Zaproś nowych użytkowników i otrzymaj 10% z ich opłat transakcyjnych.<br \/>Aby rozpocząć, połącz dowolną kwotę XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej<\/a>",
+        "startInviting": "Aby zacząć zapraszać, utwórz rezerwy w dowolnej kwocie waluty XOR.",
+        "preview": "Zaproś nowych użytkowników, by otrzymać 10% z ich opłat transakcyjnych.<br \/>Aby rozpocząć, utwórz rezerwy w dowolnej kwocie waluty XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej.<\/a>",
         "deposit": "Deponuj",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
         "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
-        "insufficientBondedBalance": "Niewystarczająca równowaga wiązania",
+        "insufficientBondedBalance": "Niewystarczające rezerwy",
         "action": {
             "connectWallet": "@:connectWalletText",
             "empty": "Wprowadź kwotę {tokenSymbol}",
-            "startInviting": "Obligacja {tokenSymbol}, aby rozpocząć zapraszanie",
-            "bondMore": "Wiązanie Więcej",
-            "bond": "Więź",
-            "unbond": "Niezwiązany",
+            "startInviting": "Utwórz rezerwy w walucie {tokenSymbol}, aby rozpocząć zapraszanie.",
+            "bondMore": "Więcej rezerw",
+            "bond": "Utwórz rezerwy",
+            "unbond": "Uwolnij rezerwy",
             "copyLink": "Kopiuj link"
         },
         "transactionDetails": "Szczegóły transakcji",
         "receivedRewards": "Otrzymane wynagrodzenie",
         "invitationLink": "Link polecający",
         "successCopy": "Link polecający został skopiowany do schowka.",
-        "bondTitle": "Obligacja XOR",
-        "unbondTitle": "Odłącz XOR",
+        "bondTitle": "Utwórz rezerwy XOR",
+        "unbondTitle": "Uwolnij rezerwy XOR",
         "confirm": {
             "text": "Potwierdź",
-            "bond": "Potwierdź więź",
-            "unbond": "Potwierdź ",
-            "inviteTitle": "Zostałeś zaproszony do giełdy Polkaswap przez osobę polecającą.",
-            "inviteDescription": "Zawsze, kiedy będziesz uiszczał opłatę transakcyjną, 10% z niej trafi do osoby polecającej. Ta aktywność nie jest to obciążona żadnymi kosztami.",
-            "signInvitation": "Podpisz transakcję zatwierdzenia",
-            "freeOfCharge": "Ta transakcja nie jest obciążona żadnymi kosztami."
+            "bond": "Potwierdź utworzenie rezerw",
+            "unbond": "Potwierdź uwolnienie rezerw",
+            "inviteTitle": "Zostałeś zaproszony do Polkaswap",
+            "inviteDescription": "Zawsze, kiedy będziesz uiszczał opłatę transakcyjną, 10% z niej trafi do osoby polecającej. Nie poniesiesz z tego tytułu żadnych kosztów.",
+            "signInvitation": "Przyjmij",
+            "freeOfCharge": "Ta transakcja nie jest obciążona żadnymi kosztami.",
+            "hasReferrerTitle": "Wskazałeś już swoją osobę polecającą",
+            "hasReferrerDescription": "Niestety możesz wskazać tylko jedną osobę polecającą",
+            "ok": "OK"
         }
     },
-    "transactionDetailsText": "Szczegóły transakcji"
+    "transactionDetailsText": "Szczegóły transakcji",
+    "createTokenTextNFT": "Utwórz token NFT"
 }

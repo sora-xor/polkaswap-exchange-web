@@ -33,12 +33,15 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
-import { KnownAssets, KnownSymbols, CodecString, AccountAsset, LPRewardsInfo } from '@sora-substrate/util';
+import { CodecString } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
 const namespace = 'swap';
 

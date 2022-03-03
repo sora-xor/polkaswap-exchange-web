@@ -79,9 +79,9 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
-import { Asset } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';

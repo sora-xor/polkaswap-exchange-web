@@ -134,7 +134,8 @@
             "frozen": "Սառեցված է",
             "locked": "- կողպված է",
             "reserved": "- վերապահված է",
-            "total": "Ընդհանուր"
+            "total": "Ընդհանուր",
+            "bonded": "- Խճճված"
         },
         "totalAssetsValue": "Ձեր ակտիվների ընդհանուր արժեքը.",
         "details": "Մանրամասներ"
@@ -197,6 +198,45 @@
         "extensibleSupply": {
             "placeholder": "Ընդարձակվող մատակարարում",
             "desc": "Ավելի շատ նշաններ հատելու ունակություն:"
+        },
+        "titleCommon": "Ստեղծել",
+        "confirmTokenTitleCommon": "Ստեղծեք նշան",
+        "confirmTokenTitleNFT": "Ստեղծեք NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Տրամադրել բովանդակություն",
+        "selectLocalFile": "Ընտրեք տեղական ֆայլը",
+        "CreateSimpleToken": "Նշան",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Աղբյուր",
+                "value": "Տեղական ֆայլեր",
+                "limit": "Ընտրեք մեկ այլ ֆայլ"
+            },
+            "link": {
+                "placeholder": "IPFS հղում",
+                "copyLink": "Պատճենել հղումը",
+                "tooltip": "IPFS-ը ֆայլեր պահելու և մուտք գործելու բաշխված համակարգ է, որը հնարավորություն է տալիս մուտք գործել ֆայլեր բազմաթիվ վայրերից, որոնք չեն կառավարվում մեկ կազմակերպության կողմից:"
+            },
+            "image": {
+                "placeholderNoImage": "Վերբեռնեք ֆայլը՝ մուտքագրելով հղում կամ ընտրելով տեղական պահեստից",
+                "placeholderBadSource": "Ֆայլը չհաջողվեց մշակել",
+                "placeholderBadSourceAddition": "կամ այն դեռ վերբեռնված չէ IPFS-ում",
+                "placeholderFileLimit": "Ֆայլի չափը գերազանցում է {value} մբ սահմանաչափը"
+            },
+            "supply": {
+                "placeholder": "Տոկենի մատակարարում",
+                "desc": "NFT-ների քանակը, որոնք դուք պատրաստվում եք ստանալ:",
+                "quantity": "Քանակ"
+            },
+            "description": {
+                "placeholder": "Նկարագրություն"
+            }
+        },
+        "enterTokenDescription": "Մուտքագրեք նկարագրությունը",
+        "divisible": {
+            "placeholder": "Բաժանելի",
+            "desc": "NFT-ի կոտորակային մասերի բաժանվելու ունակությունը: Իրացվելիության տրամադրումն աշխատում է միայն բաժանելի ակտիվների հետ"
         }
     },
     "transaction": {
@@ -227,7 +267,9 @@
             "sorascan": "Դիտել SORAScan- ում",
             "subscan": "Դիտել Subscan- ում"
         },
-        "txId": "Գործարքի ID"
+        "txId": "Գործարքի ID",
+        "referrer": "Ուղղորդող",
+        "referral": "Ուղղորդում"
     },
     "appName": "Polkaswap (Փոլքասվափ)",
     "soraText": "Սորա",
@@ -279,8 +321,7 @@
         "Stats": "Վիճակագրություն",
         "Support": "Աջակցություն",
         "CreatePair": "Ստեղծել զույգ",
-        "Tokens": "Տոկեններ",
-        "Send": "Send"
+        "Tokens": "Տոկեններ"
     },
     "social": {
         "twitter": "Twitter (Թվիթթեր)",
@@ -433,20 +474,6 @@
         "confirm": "Հաստատել",
         "ok": "Լավ"
     },
-    "send": {
-        "Exchange": "Exchange",
-        "Send": "Send",
-        "Pool": "Pool",
-        "balance": "Balance",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "price": "Price",
-        "transactionSubmitted": "Transaction submitted",
-        "transactionMessage": "{firstToken} and {secondToken}",
-        "confirm": "Confirm",
-        "ok": "OK",
-        "exchange": "Exchange",
-        "exchangeAndSend": "Exchange & Send"
-    },
     "swap": {
         "connectWallet": "@:connectWalletText",
         "estimated": "գնահատված",
@@ -585,7 +612,8 @@
         "title": "Կամուրջի գործարք",
         "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask",
         "allowToken": "Թույլ տվեք @:appName ին օգտագործել ձեր {tokenSymbol}",
-        "approveToken": "Խնդրում ենք նկատի ունենալ, որ անհրաժեշտ է միայն մեկ անգամ հաստատել նշանը: Եթե ձեր ընդլայնումն ունի նշանների հաստատման բազմաթիվ խնդրանքներ, համոզվեք, որ միայն վերջինը հաստատեք ՝ մնացածը մերժելով:"
+        "approveToken": "Խնդրում ենք նկատի ունենալ, որ անհրաժեշտ է միայն մեկ անգամ հաստատել նշանը: Եթե ձեր ընդլայնումն ունի նշանների հաստատման բազմաթիվ խնդրանքներ, համոզվեք, որ միայն վերջինը հաստատեք ՝ մնացածը մերժելով:",
+        "blocksLeft": "{count} բլոկները մնացել են..."
     },
     "bridgeHistory": {
         "title": "Պատմություն",
@@ -593,7 +621,8 @@
         "clearHistory": "Մաքրել պատմությունը",
         "empty": "Ձեր գործարքները կհայտնվեն այստեղ:",
         "filterPlaceholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի",
-        "restoreHistory": "Վերականգնել պատմությունը"
+        "restoreHistory": "Վերականգնել պատմությունը",
+        "statusAction": "Գործողություն է անհրաժեշտ"
     },
     "selectToken": {
         "title": "Ընտրեք տոկեն",
@@ -852,7 +881,7 @@
         "connectAccount": "Օգտագործողներին հրավիրելու համար անհրաժեշտ է միացնել ձեր SORA հաշիվը:",
         "bondedXOR": "XOR Խճճված",
         "referralsNumber": "{number} ուղղորդումներ",
-        "startInviting": "Հրավիրելը սկսելու համար կապեք XOR-ի ցանկացած քանակություն: <a class=\"link\" href=\"#\" target=\"_blank\" rel=\"nofollow noopener\"> Իմացեք ավելին <\/a>",
+        "startInviting": "Հրավիրելը սկսելու համար կապեք XOR-ի ցանկացած քանակություն:",
         "preview": "Հրավիրեք նոր օգտվողներ և ստացեք 10% նրանց գործարքների վճարներից: <br \/> Սկսելու համար կապեք XOR-ի ցանկացած քանակություն: <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Իմացեք ավելին <\/a>",
         "deposit": "Ավանդ",
         "balance": "Բալանս",
@@ -879,11 +908,15 @@
             "text": "Հաստատել",
             "bond": "Հաստատել պարտատոմ",
             "unbond": "Հաստատել չպարտատոմսը",
-            "inviteTitle": "Դուք հրավիրվել եք Պոլկասվապի մոտ՝ հղումով",
-            "inviteDescription": "Երբ գործարքի համար վճար կվճարեք, 10%-ը կգնա ձեր ուղղորդմանը: Դա լիովին անվճար է:",
-            "signInvitation": "Ստորագրեք հաստատման գործարքը",
-            "freeOfCharge": "Այս գործողությունը անվճար է"
+            "inviteTitle": "Դուք հրավիրվել եք Polkaswap",
+            "inviteDescription": "Յուրաքանչյուր գործարքի համար միջնորդավճարի 10%-ը կգնա ձեր ուղղորդողին՝ առանց ձեզ համար հավելյալ ծախսերի:",
+            "signInvitation": "Հաստատել",
+            "freeOfCharge": "Այս գործողությունը անվճար է",
+            "hasReferrerTitle": "Դուք արդեն սահմանել եք ձեր ուղղորդիչը",
+            "hasReferrerDescription": "Ցավոք, դուք կարող եք սահմանել միայն մեկը",
+            "ok": "Լավ"
         }
     },
-    "transactionDetailsText": "Գործարքի մանրամասները"
+    "transactionDetailsText": "Գործարքի մանրամասները",
+    "createTokenTextNFT": "Ստեղծեք NFT"
 }
