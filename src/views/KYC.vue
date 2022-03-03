@@ -47,7 +47,6 @@ import { Action, State } from 'vuex-class';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
-import { settingsStorage } from '@/utils/storage';
 import { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 
@@ -73,9 +72,7 @@ export default class KYC extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   model: any = { ...KYCModel };
 
   async created(): Promise<void> {
-    // await this.withApi(async () => {
     this.getKYCData();
-
     this.model = Object.keys(KYCModel).reduce(
       (result, key) => ({
         ...result,
@@ -83,7 +80,6 @@ export default class KYC extends Mixins(TranslationMixin, mixins.LoadingMixin) {
       }),
       {}
     );
-    // })
   }
 
   get formDataChanged(): boolean {
