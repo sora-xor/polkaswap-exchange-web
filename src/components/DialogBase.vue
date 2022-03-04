@@ -25,7 +25,9 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
+import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 
@@ -44,6 +46,18 @@ export default class DialogBase extends Mixins(DialogMixin) {
     }
     return cssClasses.join(' ');
   }
+
+  async mounted(): Promise<void> {
+    await this.$nextTick();
+    const dialogWrapper = this.$el;
+    const dialog = this.$el.childNodes[0];
+    const Scrollbar = Vue.extend(SScrollbar);
+    const scrollbar = new Scrollbar();
+    scrollbar.$mount();
+    dialogWrapper.appendChild(scrollbar.$el);
+    const scrollbarView = scrollbar.$el.getElementsByClassName('el-scrollbar__view')[0];
+    scrollbarView.appendChild(dialog);
+  }
 }
 </script>
 
@@ -53,6 +67,17 @@ $el-dialog-button-size: var(--s-size-medium);
 $el-dialog-max-width: 496px;
 
 .dialog-wrapper {
+  @include scrollbar;
+
+  > .el-scrollbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+  }
+
   #{$el-dialog-class} {
     background: var(--s-color-utility-surface);
     max-width: $el-dialog-max-width;
