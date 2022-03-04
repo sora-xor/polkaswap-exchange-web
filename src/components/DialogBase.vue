@@ -1,5 +1,6 @@
 <template>
   <s-dialog
+    class="dialog-wrapper"
     :visible.sync="isVisible"
     :title="title"
     :custom-class="computedCustomClasses"
@@ -9,7 +10,6 @@
       borderRadius: 'medium',
       ...$attrs,
     }"
-    class="dialog-wrapper"
   >
     <template #title>
       <slot name="title">
@@ -51,12 +51,30 @@ export default class DialogBase extends Mixins(DialogMixin) {
     await this.$nextTick();
     const dialogWrapper = this.$el;
     const dialog = this.$el.childNodes[0];
+    const handleClickOutside = (event: Event) => this.handleClickOutside(event, dialog);
+    // Create scrollbar component dinamically. It should be done in js-ui-library
     const Scrollbar = Vue.extend(SScrollbar);
-    const scrollbar = new Scrollbar();
+    const scrollbar = new Scrollbar({
+      mounted: function () {
+        this.$el.addEventListener('click', handleClickOutside);
+      },
+      destroyed: function () {
+        this.$el.removeEventListener('click', handleClickOutside);
+      },
+    });
     scrollbar.$mount();
     dialogWrapper.appendChild(scrollbar.$el);
     const scrollbarView = scrollbar.$el.getElementsByClassName('el-scrollbar__view')[0];
     scrollbarView.appendChild(dialog);
+  }
+
+  /**
+   * It's required cuz we've added scrollbar between dialog layers and default click outside directive doesn't work
+   */
+  private handleClickOutside(event: Event, el: Node): void {
+    if (!(el === event.target || el.contains(event.target as Node)) && this.isVisible) {
+      this.closeDialog();
+    }
   }
 }
 </script>
