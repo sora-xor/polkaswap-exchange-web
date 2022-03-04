@@ -55,6 +55,19 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
+type PriceValue = {
+  id: 'from' | 'to';
+  label: string;
+  value: string;
+};
+
+type RewardValue = {
+  value: string;
+  fiatValue: Nullable<string>;
+  assetSymbol: string;
+  label: string;
+};
+
 const namespace = 'swap';
 
 @Component({
@@ -93,7 +106,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
     return [...new Set([fromToken, xorToken, toToken])];
   }
 
-  get priceValues(): Array<object> {
+  get priceValues(): Array<PriceValue> {
     const fromSymbol = this.tokenFrom?.symbol ?? '';
     const toSymbol = this.tokenTo?.symbol ?? '';
 
@@ -115,7 +128,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
     return this.formatStringValue(this.priceImpact);
   }
 
-  get rewardsValues(): Array<any> {
+  get rewardsValues(): Array<RewardValue> {
     return this.rewards.map((reward, index) => {
       const asset = KnownAssets.get(reward.currency);
       const value = this.formatCodecNumber(reward.amount);
