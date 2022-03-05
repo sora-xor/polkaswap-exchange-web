@@ -42,7 +42,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
+import { Components, PageNames } from '@/consts';
 
 const namespace = 'referrals';
 
@@ -57,8 +57,11 @@ export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixi
   @State((state) => state[namespace].xorValue) xorValue!: string;
 
   @Getter networkFees!: NetworkFeesObject;
-  @Getter('isBond', { namespace }) isBond!: boolean;
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
+
+  get isBond(): boolean {
+    return this.$route.name === PageNames.ReferralBonding;
+  }
 
   get formattedXorValue(): string {
     return this.formatStringValue(this.xorValue, this.tokenXOR?.decimals);

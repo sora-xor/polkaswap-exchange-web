@@ -148,7 +148,6 @@ export default class ReferralProgram extends Mixins(
   @Action('resetInvitedUsersSubscription', { namespace }) resetInvitedUsersSubscription!: AsyncVoidFn;
   @Action('subscribeInvitedUsers', { namespace }) subscribeInvitedUsers!: (referrerId: string) => AsyncVoidFn;
   @Action('unsubscribeInvitedUsers', { namespace }) unsubscribeInvitedUsers!: AsyncVoidFn;
-  @Action('setBound', { namespace }) setBound!: (isBond: boolean) => Promise<void>;
 
   @Watch('isSoraAccountConnected')
   private async updateSubscriptions(value: boolean) {
@@ -232,8 +231,7 @@ export default class ReferralProgram extends Mixins(
     }
   }
 
-  handleBonding(isBond: boolean): void {
-    this.setBound(!!isBond);
+  handleBonding(isBond = false): void {
     router.push({ name: isBond ? PageNames.ReferralBonding : PageNames.ReferralUnbonding });
   }
 
