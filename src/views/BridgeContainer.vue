@@ -1,7 +1,7 @@
 <template>
   <router-view
     v-bind="{
-      parentLoading: bridgeLoading,
+      parentLoading: loading,
       ...$attrs,
     }"
     v-on="$listeners"
@@ -32,35 +32,33 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   private unwatchEthereum!: VoidFunction;
   private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
 
-  get bridgeLoading(): boolean {
-    return this.parentLoading || this.loading;
-  }
-
   async mounted(): Promise<void> {
     await this.syncExternalAccountWithAppState();
 
-    this.withParentLoading(async () => {
-      await this.setEvmNetwork(bridgeApi.externalNetwork);
-      await this.onEvmNetworkTypeChange();
+    this.withLoading(() =>
+      this.withParentLoading(async () => {
+        await this.setEvmNetwork(bridgeApi.externalNetwork);
+        await this.onEvmNetworkTypeChange();
 
-      this.unwatchEthereum = await ethersUtil.watchEthereum({
-        onAccountChange: (addressList: string[]) => {
-          if (addressList.length) {
-            this.switchExternalAccount({ address: addressList[0] });
-            this.updateExternalBalances();
-          } else {
+        this.unwatchEthereum = await ethersUtil.watchEthereum({
+          onAccountChange: (addressList: string[]) => {
+            if (addressList.length) {
+              this.switchExternalAccount({ address: addressList[0] });
+              this.updateExternalBalances();
+            } else {
+              this.disconnectExternalAccount();
+            }
+          },
+          onNetworkChange: (networkHex: string) => {
+            this.onEvmNetworkTypeChange(networkHex);
+          },
+          onDisconnect: () => {
             this.disconnectExternalAccount();
-          }
-        },
-        onNetworkChange: (networkHex: string) => {
-          this.onEvmNetworkTypeChange(networkHex);
-        },
-        onDisconnect: () => {
-          this.disconnectExternalAccount();
-        },
-      });
-      this.subscribeToEvmBlockHeaders();
-    });
+          },
+        });
+        this.subscribeToEvmBlockHeaders();
+      })
+    );
   }
 
   beforeDestroy(): void {

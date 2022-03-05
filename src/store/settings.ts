@@ -226,7 +226,7 @@ const actions = {
     const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting;
 
     const connectionOnDisconnected = async () => {
-      await connection.close();
+      await connection.close(false);
 
       if (typeof onDisconnect === 'function') {
         onDisconnect(node as Node);
@@ -262,7 +262,7 @@ const actions = {
 
       await dispatch('setBlockNumber');
 
-      const nodeChainGenesisHash = connection.api.genesisHash.toHex();
+      const nodeChainGenesisHash = connection.api?.genesisHash.toHex();
 
       // if connected node is custom node, we should check genesis hash
       if (!isTrustedEndpoint) {
