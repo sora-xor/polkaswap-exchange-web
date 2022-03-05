@@ -12,7 +12,6 @@ import storage from '@/utils/storage';
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
-    'SET_BOND',
     'SET_XOR_VALUE',
     'SET_REFERRAL',
     'SET_INVITED_USERS_INFO',
@@ -28,7 +27,6 @@ interface ReferralsState {
   referral: string;
   invitedUsers: Nullable<Array<string>>;
   invitedUsersUpdates: Nullable<Subscription>;
-  isBond: boolean;
   xorValue: string;
   storageReferral: string;
 }
@@ -38,7 +36,6 @@ function initialState(): ReferralsState {
     referral: '',
     invitedUsers: null,
     invitedUsersUpdates: null,
-    isBond: true,
     xorValue: '',
     storageReferral: storage.get('storageReferral') || '',
   };
@@ -52,9 +49,6 @@ const getters = {
   },
   invitedUsers(state: ReferralsState) {
     return state.invitedUsers;
-  },
-  isBond(state: ReferralsState) {
-    return state.isBond;
   },
   storageReferral(state: ReferralsState) {
     return state.storageReferral;
@@ -91,10 +85,6 @@ const mutations = {
     Object.keys(s).forEach((key) => {
       state[key] = s[key];
     });
-  },
-
-  [types.SET_BOND](state: ReferralsState, isBond: boolean) {
-    state.isBond = isBond;
   },
 
   [types.SET_XOR_VALUE](state: ReferralsState, xorValue: string) {
@@ -134,9 +124,6 @@ const actions = {
   },
   resetInvitedUsersSubscription({ commit }) {
     commit(types.RESET_INVITED_USERS_SUBSCRIPTION);
-  },
-  setBound({ commit }, isBound: boolean) {
-    commit(types.SET_BOND, isBound);
   },
   setXorValue({ commit }, xorValue: string) {
     commit(types.SET_XOR_VALUE, xorValue);
