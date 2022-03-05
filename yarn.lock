@@ -2432,39 +2432,39 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api-derive@^1.7.37":
-  version "1.7.37"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-1.7.37.tgz#60db39123f7223156ed5f2760af8f7593b53a1c7"
-  integrity sha512-hZG4Jn50Jm8eZlwcqPgRQCLuvsk4XJrCZ8sH/I3oWixsK06URljprDpdtSIUwPRMidemNOkUc4jSRYaGIzeK7w==
+"@sora-substrate/api-derive@^1.7.48":
+  version "1.7.48"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-1.7.48.tgz#38261e8b99693f59fd26e87725a051036eac28f7"
+  integrity sha512-niO0FH49G/fmM92okzPnmRAK0jiefkIrbWpG3u+lY6B9WKi1TZ97VcFhhCTjOoAfzwQtg4utygnk8KIK4Fwzxw==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@polkadot/api-derive" "^4.10.1"
-    "@sora-substrate/types" "^1.7.37"
+    "@sora-substrate/types" "^1.7.48"
     rxjs "^6.5.5"
 
-"@sora-substrate/api@^1.7.37":
-  version "1.7.37"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.7.37.tgz#c9163d6a4e9d41ca407462843a948f449487eaf0"
-  integrity sha512-HGPgaOeDSuY8hln+K86OUHD5oR8ouKCOprKbntavMtxHwhoBycBUOaKucH4xoAiC/rcZeDUUsQO7K79R1bRjiA==
+"@sora-substrate/api@^1.7.48":
+  version "1.7.48"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.7.48.tgz#23f89979fe0ef912698743783fa7664bd03141da"
+  integrity sha512-FqR+Yks9MhlZWGk1IjhK36ltDjDeFuSu0WJUkkAtLbsRibDpWPFv0JcA9+fAnK+jAsTUQ1m3oEizHbbo5BDiWA==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/orml-api-derive" "^0.8.2-9"
     "@polkadot/api" "^4.10.1"
     "@polkadot/rpc-core" "^4.10.1"
-    "@sora-substrate/api-derive" "^1.7.37"
-    "@sora-substrate/types" "^1.7.37"
+    "@sora-substrate/api-derive" "^1.7.48"
+    "@sora-substrate/types" "^1.7.48"
 
-"@sora-substrate/type-definitions@^1.7.37":
-  version "1.7.37"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.7.37.tgz#a94e4e0496cd9387a66b0c29cc2ccbcce6847e55"
-  integrity sha512-HFkNB9XCrqv2LjExJx6HKefj6+OZ8uPNs6bDTFdAnf+16+cxKnN/seaTvg0n724gEOo86/1FM16URhO7ldoiVQ==
+"@sora-substrate/type-definitions@^1.7.48":
+  version "1.7.48"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.7.48.tgz#433bb751bd2afd12b8493f24d6cdc34555dcbe5e"
+  integrity sha512-KuxW9qmzNmrbG5iWi88jCzXeiUb2Ww2p9Z77+P9i+xI5bD8j7jOeXDdTlDJhNNXoLT5NxiWyjbYHhbrotTRwKQ==
   dependencies:
     "@open-web3/orml-type-definitions" "^0.9.4-35"
 
-"@sora-substrate/types@^1.7.37":
-  version "1.7.37"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.7.37.tgz#1c6ac5cb40a84b7f564d4ac3039dc906aa37b877"
-  integrity sha512-bM7zuuyWvlP4uT3P22opqtPXLT/h1xSYlxqFho3evPB54+/n7tANn8uTUyknlXJ71NqydPPtrIppwqiwwWyJfA==
+"@sora-substrate/types@^1.7.48":
+  version "1.7.48"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.7.48.tgz#2b9b535538e0a3d75a48b7ca8568c443899687c9"
+  integrity sha512-YpbndVQP94DsVGQCOV4IL6mUUj1gCNN8XlUHQ7o4blprizbCyEmTdS3FmK6yPOM/RnaYQDW55llh0syKY0gpVw==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/api-mobx" "^0.8.2-9"
@@ -2472,24 +2472,24 @@
     "@polkadot/api" "^4.10.1"
     "@polkadot/typegen" "^4.10.1"
     "@polkadot/types" "^4.10.1"
-    "@sora-substrate/type-definitions" "^1.7.37"
+    "@sora-substrate/type-definitions" "^1.7.48"
 
-"@sora-substrate/util@^1.7.37":
-  version "1.7.37"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.7.37.tgz#019182b2e01356c63890b1cac4bc12e6d8c1fc74"
-  integrity sha512-8Zr9HgEhKSzux9CJrPSOnOSRXYkBiGLth7qUSxAiscu/u18Ey3asKAcP2wW2/IZCOjo+yRCGvy1bGcaqVieybw==
+"@sora-substrate/util@^1.7.48":
+  version "1.7.48"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.7.48.tgz#adc1da773ed7d64ecd6a6272cc9987a2ab78cec2"
+  integrity sha512-JVZetDpxUo+aWHmRJ4hpGUpOyRlmGvktgsmzBER9dqrGwl1+oQ2/7gqTWnc6DbJwFX0Q4aZXqE9B32rH6VxuZQ==
   dependencies:
     "@polkadot/ui-keyring" "^0.77.1"
-    "@sora-substrate/api" "^1.7.37"
+    "@sora-substrate/api" "^1.7.48"
     axios "^0.21.1"
     bignumber.js "^9.0.1"
     crypto-js "^4.0.0"
     lodash "^4.17.15"
 
-"@soramitsu/soramitsu-js-ui@^1.0.28":
-  version "1.0.28"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.28.tgz#23e77cab0641284e993290c66199f7c14f726a0a"
-  integrity sha512-86BR4zojM8Tg6AMyC/FnxVW7qkVnNFiD5Tz5QA+KuG5bRdeygNr8bzoy4AyQyOROHHOsAGoJaQStmWFs2F+sfg==
+"@soramitsu/soramitsu-js-ui@^1.0.29":
+  version "1.0.29"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.29.tgz#d9f48405e04fa7dbc4002fd1e3d45562b54cfef4"
+  integrity sha512-oiFKh0MQjP+dskmoDoKDafezMdy1nUL5fgWnH49xuZ3n6v1pCmC9hsgmFOuXglBKefN80G+B1OoF8Ni2iPX3Qw==
   dependencies:
     core-js "^3.6.4"
     element-resize-detector "^1.2.1"
@@ -2504,15 +2504,15 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^1.7.24":
-  version "1.7.24"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.7.24.tgz#4491c94fa3f911349579d52c5e72eee9417bac8c"
-  integrity sha512-f6CNymbxAb6NzU3rcYZkPV42cBQnWYfg4QJq58yOsO1ReNuzJrYfs/fD/v0Dvpoo6UT0EGEoh+VMWFctvmXA7w==
+"@soramitsu/soraneo-wallet-web@^1.7.27":
+  version "1.7.27"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.7.27.tgz#a1a5266ecc25b0255b2ecdff1d160da2a512f3cb"
+  integrity sha512-MTvMA6kwWXURJiriYAiv9e8r4L/oRGEKou4YHoXxtpCi+WpPYYU0Ld9Qcf3jLI8CZD755OxLQWp7GdiCNQdtFw==
   dependencies:
     "@polkadot/extension-dapp" "^0.42.2"
     "@polkadot/vue-identicon" "^0.72.1"
-    "@sora-substrate/util" "^1.7.37"
-    "@soramitsu/soramitsu-js-ui" "^1.0.28"
+    "@sora-substrate/util" "^1.7.48"
+    "@soramitsu/soramitsu-js-ui" "^1.0.29"
     core-js "^3.6.4"
     dayjs "^1.10.5"
     lodash "^4.17.21"
