@@ -32,11 +32,11 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   private unwatchEthereum!: VoidFunction;
   private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
 
-  async mounted(): Promise<void> {
-    await this.syncExternalAccountWithAppState();
+  async created(): Promise<void> {
+    await this.withLoading(async () => {
+      await this.syncExternalAccountWithAppState();
 
-    this.withLoading(() =>
-      this.withParentLoading(async () => {
+      await this.withParentLoading(async () => {
         await this.setEvmNetwork(bridgeApi.externalNetwork);
         await this.onEvmNetworkTypeChange();
 
@@ -57,8 +57,8 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
           },
         });
         this.subscribeToEvmBlockHeaders();
-      })
-    );
+      });
+    });
   }
 
   beforeDestroy(): void {

@@ -16,7 +16,7 @@
     <s-table :data="tableItems" :highlight-current-row="false" size="small" class="tokens-table">
       <s-table-column label="#" width="48">
         <template #header>
-          <span @click="resetSort" :class="['tokens-item-head-index', { active: isDefaultSort }]">#</span>
+          <span @click="handleResetSort" :class="['tokens-item-head-index', { active: isDefaultSort }]">#</span>
         </template>
         <template v-slot="{ $index }">
           <span class="tokens-item-index">{{ $index + startIndex + 1 }}</span>
@@ -88,7 +88,6 @@ import { lazyComponent } from '@/router';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
-import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 import SortButton from '@/components/SortButton.vue';
 
 @Component({
@@ -101,9 +100,9 @@ import SortButton from '@/components/SortButton.vue';
 })
 export default class Tokens extends Mixins(
   mixins.LoadingMixin,
+  mixins.PaginationSearchMixin,
   TranslationMixin,
-  AssetsSearchMixin,
-  PaginationSearchMixin
+  AssetsSearchMixin
 ) {
   @Getter('whitelistAssets', { namespace: 'assets' }) items!: Array<Asset>;
 
@@ -146,9 +145,13 @@ export default class Tokens extends Mixins(
     this.property = property;
   }
 
-  resetSort(): void {
-    this.order = '';
-    this.property = '';
+  handleResetSort(): void {
+    this.changeSort();
+  }
+
+  handleResetSearch(): void {
+    this.resetPage();
+    this.resetSearch();
   }
 }
 </script>

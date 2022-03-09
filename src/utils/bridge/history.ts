@@ -154,9 +154,22 @@ export class EthBridgeHistory {
   public async fetchHistoryElements(address: string, timestamp = 0): Promise<HistoryElement[]> {
     const operations = [Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming];
     const filter = historyElementsFilter({ address, operations, timestamp });
-    const variables = { filter };
-    const { edges } = await SubqueryExplorerService.getAccountTransactions(variables);
-    const history = edges.map((edge) => edge.node);
+    const history: HistoryElement[] = [];
+
+    let hasNext = true;
+    let after = '';
+
+    do {
+      const variables = { after, filter, first: 100 };
+      const {
+        edges,
+        pageInfo: { hasNextPage, endCursor },
+      } = await SubqueryExplorerService.getAccountTransactions(variables);
+      const elements = edges.map((edge) => edge.node) as HistoryElement[];
+      hasNext = hasNextPage;
+      after = endCursor;
+      history.push(...elements);
+    } while (hasNext);
 
     return history as HistoryElement[];
   }
