@@ -160,7 +160,7 @@ export class EthBridgeHistory {
     let after = '';
 
     do {
-      const variables = { filter, after };
+      const variables = { after, filter, first: 100 };
       const {
         edges,
         pageInfo: { hasNextPage, endCursor },
