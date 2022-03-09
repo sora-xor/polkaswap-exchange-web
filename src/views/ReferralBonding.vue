@@ -126,13 +126,16 @@ export default class ReferralBonding extends Mixins(
   @State((state) => state[namespace].xorValue) xorValue!: string;
 
   @Getter networkFees!: NetworkFeesObject;
-  @Getter('isBond', { namespace }) isBond!: boolean;
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
 
   @Action('setXorValue', { namespace }) setXorValue!: (xorValue: string) => Promise<void>;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   showConfirmBondDialog = false;
+
+  get isBond(): boolean {
+    return this.$route.name === PageNames.ReferralBonding;
+  }
 
   get isTokenXorSet(): boolean {
     return !!this.tokenXOR;

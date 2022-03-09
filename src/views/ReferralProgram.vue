@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="parentLoading" class="referral-program">
+  <div v-loading="loading" class="referral-program">
     <template v-if="isSoraAccountConnected">
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
@@ -51,23 +51,25 @@
               {{ t('referralProgram.referralsNumber', { number: invitedUsersNumber }) }}
             </h3>
           </template>
-          <info-line
-            v-for="invitedUser in invitedUsers"
-            value-can-be-hidden
-            :key="invitedUser.toString()"
-            :value="getInvitedUserReward(invitedUser.toString())"
-            :asset-symbol="xorSymbol"
-            :fiat-value="getFiatAmountByCodecString(getInvitedUserReward(invitedUser.toString()))"
-            is-formatted
-          >
-            <template #info-line-prefix>
-              <s-tooltip :content="t('account.copy')">
-                <span class="info-line-address" @click="handleCopyAddress($event)">
-                  {{ formatRereffalAddress(invitedUser.toString()) }}
-                </span>
-              </s-tooltip>
-            </template>
-          </info-line>
+          <template v-if="invitedUsers && invitedUsers.length">
+            <info-line
+              v-for="invitedUser in invitedUsers"
+              value-can-be-hidden
+              :key="invitedUser.toString()"
+              :value="getInvitedUserReward(invitedUser.toString())"
+              :asset-symbol="xorSymbol"
+              :fiat-value="getFiatAmountByCodecString(getInvitedUserReward(invitedUser.toString()))"
+              is-formatted
+            >
+              <template #info-line-prefix>
+                <s-tooltip :content="t('account.copy')">
+                  <span class="info-line-address" @click="handleCopyAddress($event)">
+                    {{ formatRereffalAddress(invitedUser.toString()) }}
+                  </span>
+                </s-tooltip>
+              </template>
+            </info-line>
+          </template>
         </s-collapse-item>
       </s-collapse>
       <s-card
@@ -107,7 +109,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { CodecString } from '@sora-substrate/util';
@@ -141,17 +143,27 @@ export default class ReferralProgram extends Mixins(
   readonly LogoSize = LogoSize;
 
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
-  @Getter('invitedUsers', { namespace }) invitedUsers!: Array<string>;
+  @Getter('invitedUsers', { namespace }) invitedUsers!: Nullable<Array<string>>;
 
-  @Action('getInvitedUsers', { namespace }) getInvitedUsers!: (referralId: string) => Promise<void>;
-  @Action('setBound', { namespace }) setBound!: (isBond: boolean) => Promise<void>;
+  @Action('resetInvitedUsersSubscription', { namespace }) resetInvitedUsersSubscription!: AsyncVoidFn;
+  @Action('subscribeInvitedUsers', { namespace }) subscribeInvitedUsers!: (referrerId: string) => AsyncVoidFn;
+  @Action('unsubscribeInvitedUsers', { namespace }) unsubscribeInvitedUsers!: AsyncVoidFn;
+
+  @Watch('isSoraAccountConnected')
+  private async updateSubscriptions(value: boolean) {
+    if (value) {
+      await this.subscribeInvitedUsers(this.account?.address);
+    } else {
+      await this.unsubscribeInvitedUsers();
+    }
+  }
 
   get rewards(): string {
     return this.referralRewards?.rewards.toLocaleString() || '0';
   }
 
   get xorTokenPrice(): Nullable<CodecString> {
-    return this.getAssetFiatPrice(this.tokenXOR);
+    return this.tokenXOR ? this.getAssetFiatPrice(this.tokenXOR) : null;
   }
 
   get invitedUserRewards(): any {
@@ -167,7 +179,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   get invitedUsersNumber(): number {
-    return this.invitedUsers.length;
+    return this.invitedUsers ? this.invitedUsers.length : 0;
   }
 
   get invitedUsersClasses(): Array<string> {
@@ -183,16 +195,20 @@ export default class ReferralProgram extends Mixins(
   get referralLink(): any {
     const routerMode = router.mode === 'hash' ? '#/' : '';
     return {
-      href: `${detectBaseUrl(router)}${routerMode}referral/${this.account.address}`,
-      label: `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${this.account.address}`,
-      isVisible: +this.bondedXOR > 0,
+      href: `${detectBaseUrl(router)}${routerMode}referral/${this.account?.address}`,
+      label: `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${this.account?.address}`,
+      isVisible: this.account && +this.bondedXOR > 0,
     };
+  }
+
+  destroyed(): void {
+    this.resetInvitedUsersSubscription();
   }
 
   async created(): Promise<void> {
     this.withApi(async () => {
       if (this.isSoraAccountConnected) {
-        await this.getInvitedUsers(this.account.address);
+        await this.subscribeInvitedUsers(this.account.address);
         await this.getAccountReferralRewards();
       }
     });
@@ -203,7 +219,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   getInvitedUserReward(invitedUser: string): string {
-    if (this.invitedUserRewards[invitedUser]?.rewards) {
+    if (typeof invitedUser === 'string' && this.invitedUserRewards[invitedUser]?.rewards) {
       return this.formatCodecNumber(this.invitedUserRewards[invitedUser].rewards.toCodecString());
     }
     return this.formatCodecNumber('0');
@@ -215,8 +231,7 @@ export default class ReferralProgram extends Mixins(
     }
   }
 
-  handleBonding(isBond: boolean): void {
-    this.setBound(!!isBond);
+  handleBonding(isBond = false): void {
     router.push({ name: isBond ? PageNames.ReferralBonding : PageNames.ReferralUnbonding });
   }
 
@@ -245,6 +260,17 @@ $referral-collapse-icon-size: 36px;
 .referral-program {
   @include collapse-items(false);
   margin-top: $inner-spacing-mini;
+  &.el-loading-parent--relative {
+    .el-collapse-item,
+    .el-collapse-item__header {
+      box-shadow: none;
+    }
+  }
+  .el-loading-mask {
+    margin-right: auto;
+    margin-left: auto;
+    width: calc(100% - #{$inner-spacing-big} * 2);
+  }
   .el-collapse-item__content {
     padding-bottom: 0;
   }
