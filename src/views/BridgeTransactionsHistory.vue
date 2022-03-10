@@ -10,8 +10,14 @@
             prefix="s-icon-search-16"
             size="big"
           >
-            <template #suffix v-if="query">
-              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
+            <template #suffix>
+              <s-button
+                v-show="query"
+                type="link"
+                class="s-button--clear"
+                icon="clear-X-16"
+                @click="handleResetSearch"
+              />
             </template>
           </s-input>
         </s-form-item>
