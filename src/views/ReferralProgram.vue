@@ -274,7 +274,7 @@ $referral-collapse-icon-size: 36px;
     width: calc(100% - #{$inner-spacing-big} * 2);
   }
   .el-collapse-item__content {
-    padding-bottom: 0;
+    padding: 0 0 $inner-spacing-mini;
   }
   @include element-size('token-logo--medium', $referral-collapse-icon-size);
   @include element-size('invited-users-icon', $referral-collapse-icon-size);
@@ -289,6 +289,8 @@ $referral-collapse-icon-size: 36px;
   }
   &-list {
     max-height: 165px;
+    padding-right: $inner-spacing-medium;
+    padding-left: $inner-spacing-medium;
   }
   &-collapse-title {
     padding-left: $inner-spacing-medium;
