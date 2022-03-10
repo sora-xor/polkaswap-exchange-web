@@ -51,25 +51,27 @@
               {{ t('referralProgram.referralsNumber', { number: invitedUsersNumber }) }}
             </h3>
           </template>
-          <template v-if="invitedUsers && invitedUsers.length">
-            <info-line
-              v-for="invitedUser in invitedUsers"
-              value-can-be-hidden
-              :key="invitedUser.toString()"
-              :value="getInvitedUserReward(invitedUser.toString())"
-              :asset-symbol="xorSymbol"
-              :fiat-value="getFiatAmountByCodecString(getInvitedUserReward(invitedUser.toString()))"
-              is-formatted
-            >
-              <template #info-line-prefix>
-                <s-tooltip :content="t('account.copy')">
-                  <span class="info-line-address" @click="handleCopyAddress($event)">
-                    {{ formatRereffalAddress(invitedUser.toString()) }}
-                  </span>
-                </s-tooltip>
-              </template>
-            </info-line>
-          </template>
+          <s-scrollbar v-if="invitedUsers && invitedUsers.length" class="invited-users-scrollbar">
+            <div class="invited-users-list">
+              <info-line
+                v-for="invitedUser in invitedUsers"
+                value-can-be-hidden
+                :key="invitedUser.toString()"
+                :value="getInvitedUserReward(invitedUser.toString())"
+                :asset-symbol="xorSymbol"
+                :fiat-value="getFiatAmountByCodecString(getInvitedUserReward(invitedUser.toString()))"
+                is-formatted
+              >
+                <template #info-line-prefix>
+                  <s-tooltip :content="t('account.copy')">
+                    <span class="info-line-address" @click="handleCopyAddress($event)">
+                      {{ formatRereffalAddress(invitedUser.toString()) }}
+                    </span>
+                  </s-tooltip>
+                </template>
+              </info-line>
+            </div>
+          </s-scrollbar>
         </s-collapse-item>
       </s-collapse>
       <s-card
@@ -282,6 +284,12 @@ $referral-collapse-icon-size: 36px;
 }
 .bonded,
 .invited-users {
+  &-scrollbar {
+    @include scrollbar;
+  }
+  &-list {
+    max-height: 165px;
+  }
   &-collapse-title {
     padding-left: $inner-spacing-medium;
     font-size: var(--s-font-size-large);
