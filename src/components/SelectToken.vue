@@ -11,8 +11,14 @@
             prefix="s-icon-search-16"
             size="big"
           >
-            <template #suffix v-if="query">
-              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+            <template #suffix>
+              <s-button
+                v-show="query"
+                type="link"
+                class="s-button--clear"
+                icon="clear-X-16"
+                @click="handleClearSearch"
+              />
             </template>
           </s-input>
         </div>
@@ -72,16 +78,18 @@
             size="big"
             @input="debouncedCustomAssetSearch"
           >
-            <template #suffix v-if="customAddress">
-              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="resetCustomAssetFields" />
+            <template #suffix>
+              <s-button
+                v-show="customAddress"
+                type="link"
+                class="s-button--clear"
+                icon="clear-X-16"
+                @click="resetCustomAssetFields"
+              />
             </template>
           </s-input>
         </div>
-        <s-scrollbar
-          v-if="sortedNonWhitelistAccountAssets.length"
-          :key="'filtered' + sortedNonWhitelistAccountAssets.length"
-          class="token-list-scrollbar"
-        >
+        <s-scrollbar class="token-list-scrollbar">
           <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
           <div class="asset-select__info" v-else-if="!customAsset && customAddress">
             {{ t('selectToken.custom.notFound') }}
