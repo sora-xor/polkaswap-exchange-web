@@ -67,7 +67,6 @@ import { lazyComponent } from '@/router';
 @Component({
   components: {
     DialogBase,
-    InfoLine: components.InfoLine,
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
   },
 })
