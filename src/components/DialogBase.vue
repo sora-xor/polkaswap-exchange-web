@@ -72,6 +72,8 @@ export default class DialogBase extends Mixins(DialogMixin) {
    * It's required cuz we've added scrollbar between dialog layers and default click outside directive doesn't work
    */
   private handleClickOutside(event: Event, el: Node): void {
+    // IMPORTANT: If something was used with v-if and this node was removed -> dialog will be closed by default.
+    // Need to stop event propagation in this case
     if (!(el === event.target || el.contains(event.target as Node)) && this.isVisible) {
       this.closeDialog();
     }
