@@ -71,7 +71,6 @@ const namespace = 'swap';
 @Component({
   components: {
     DialogBase,
-    SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
   },

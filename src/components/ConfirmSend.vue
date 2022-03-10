@@ -32,7 +32,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
-import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { CodecString } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
@@ -48,7 +48,7 @@ const namespace = 'swap';
 @Component({
   components: {
     DialogBase,
-    InfoLine: lazyComponent(Components.InfoLine),
+    InfoLine: components.InfoLine,
     TokenLogo: lazyComponent(Components.TokenLogo),
   },
 })

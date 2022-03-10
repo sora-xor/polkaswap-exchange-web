@@ -54,7 +54,6 @@ const namespace = 'removeLiquidity';
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
     RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
-    InfoLine: components.InfoLine,
   },
 })
 export default class ConfirmRemoveLiquidity extends Mixins(

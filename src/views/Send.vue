@@ -32,7 +32,9 @@
           <span
             class="input-title--uppercase input-title--primary"
             v-if="areTokensSelected && !isZeroToAmount && isExchangeB"
-          >({{ t('swap.estimated') }})</span>
+          >
+            ({{ t('swap.estimated') }})
+          </span>
         </div>
         <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-title">
           <span class="input-title--uppercase input-title--desc">{{ t('send.balance') }}</span>
@@ -97,7 +99,9 @@
           <span
             class="input-title--uppercase input-title--primary"
             v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB"
-          >({{ t('swap.estimated') }})</span>
+          >
+            ({{ t('swap.estimated') }})
+          </span>
         </div>
         <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-title">
           <span class="input-title--uppercase input-title--desc">{{ t('send.balance') }}</span>
@@ -136,7 +140,11 @@
 
     <template v-if="!isSend || isSwapAndSend">
       <slippage-tolerance class="slippage-tolerance-settings" />
-      <swap-info v-if="areTokensSelected && !hasZeroAmount" class="info-line-container" />
+      <swap-transaction-details
+        v-if="areTokensSelected && !hasZeroAmount"
+        class="info-line-container"
+        :info-only="false"
+      />
     </template>
     <template v-else>
       <info-line
@@ -231,7 +239,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
-import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
 import type { Subscription } from '@polkadot/x-rxjs';
 
@@ -262,7 +270,6 @@ const namespace = 'swap';
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SettingsDialog: lazyComponent(Components.SettingsDialog),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
@@ -270,7 +277,8 @@ const namespace = 'swap';
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
-    InfoLine: lazyComponent(Components.InfoLine),
+    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
+    InfoLine: components.InfoLine,
   },
 })
 export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.NumberFormatterMixin) {
