@@ -89,11 +89,7 @@
             </template>
           </s-input>
         </div>
-        <s-scrollbar
-          v-if="sortedNonWhitelistAccountAssets.length"
-          :key="'filtered' + sortedNonWhitelistAccountAssets.length"
-          class="token-list-scrollbar"
-        >
+        <s-scrollbar class="token-list-scrollbar">
           <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
           <div class="asset-select__info" v-else-if="!customAsset && customAddress">
             {{ t('selectToken.custom.notFound') }}
