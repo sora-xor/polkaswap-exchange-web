@@ -1,6 +1,6 @@
 <template>
   <div :class="headerClasses">
-    <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack" />
+    <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack($event)" />
     <h3 class="page-header-title">
       <slot name="title">
         {{ title }}
@@ -43,8 +43,8 @@ export default class GenericPageHeader extends Mixins(TranslationMixin) {
     return classes.join(' ');
   }
 
-  handleBack(): void {
-    this.$emit('back');
+  handleBack(event?: Event): void {
+    this.$emit('back', event);
   }
 }
 </script>
