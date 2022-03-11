@@ -125,7 +125,6 @@ export enum Components {
   MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
   AppMenu = 'App/Menu/AppMenu',
   AppInfoPopper = 'App/Menu/AppInfoPopper',
-  SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',
   TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
