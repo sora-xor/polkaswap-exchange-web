@@ -322,7 +322,8 @@
         "Support": "Support",
         "CreatePair": "Create Pair",
         "Tokens": "Tokens",
-        "Send": "Отправить"
+        "Send": "Send",
+        "KYC": "KYC"
     },
     "social": {
         "twitter": "Twitter",
@@ -920,19 +921,38 @@
     },
     "transactionDetailsText": "Transaction Details",
     "createTokenTextNFT": "Create NFT",    
-    "send": {
-        "Exchange": "Exchange",
-        "Send": "Send",
-        "Pool": "Pool",
-        "balance": "Balance",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "price": "Price",
-        "transactionSubmitted": "Transaction submitted",
-        "transactionMessage": "{firstToken} and {secondToken}",
-        "confirm": "Confirm",
-        "ok": "OK",
-        "exchange": "Exchange",
-        "exchangeAndSend": "Exchange & Send",
-        "confirmSwapAndSend": "Confirm"
-    }
+    "adar": {
+        "send": {
+            "Exchange": "Exchange",
+            "Send": "Send",
+            "Pool": "Pool",
+            "balance": "Balance",
+            "insufficientBalance": "@:insufficientBalanceText",
+            "price": "Price",
+            "transactionSubmitted": "Transaction submitted",
+            "transactionMessage": "{firstToken} and {secondToken}",
+            "confirm": "Confirm",
+            "ok": "OK",
+            "exchange": "Exchange",
+            "exchangeAndSend": "Exchange & Send",
+            "confirmSwapAndSend": "Confirm"
+        },
+        "kyc": {
+            "title": "KYC Data",
+            "form": {
+                "name": "Name",
+                "surname": "Surname",
+                "country": "Citizenship",
+                "address": "Residential Address",
+                "dob": "Date of Birth",
+                "id": "ID Number"
+            },
+            "notification": {
+                "saved": "KYC Data successfully saved",
+                "reset": "KYC Data cleared"
+            },
+            "save": "Save",
+            "reset": "Reset"
+        }
+    }    
 }

@@ -321,7 +321,8 @@
         "Stats": "Statistik",
         "Support": "Dukungan",
         "CreatePair": "Buat Pair",
-        "Tokens": "Token"
+        "Tokens": "Token",
+        "KYC": "KYC"
     },
     "social": {
         "twitter": "Twitter",

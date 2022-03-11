@@ -322,7 +322,8 @@
         "Support": "Поддержка",
         "CreatePair": "Создать пару",
         "Tokens": "Токены",
-        "Send": "Отправить"
+        "Send": "Отправить",
+        "KYC": "KYC"
     },
     "social": {
         "twitter": "Twitter",
@@ -919,20 +920,5 @@
         }
     },
     "transactionDetailsText": "Детали транзакции",
-    "createTokenTextNFT": "Создать NFT",    
-    "send": {
-        "Exchange": "Exchange",
-        "Send": "Send",
-        "Pool": "Pool",
-        "balance": "Balance",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "price": "Price",
-        "transactionSubmitted": "Transaction submitted",
-        "transactionMessage": "{firstToken} and {secondToken}",
-        "confirm": "Confirm",
-        "ok": "OK",
-        "exchange": "Exchange",
-        "confirmSwapAndSend": "Confirm",
-        "exchangeAndSend": "Exchange & Send"
-    }
+    "createTokenTextNFT": "Создать NFT"
 }

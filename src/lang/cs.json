@@ -321,7 +321,8 @@
         "Stats": "Statistiky",
         "Support": "Podpora",
         "CreatePair": "Vytvořit pár",
-        "Tokens": "Tokeny"
+        "Tokens": "Tokeny",
+        "KYC": "KYC"
     },
     "social": {
         "twitter": "Twitter",
@@ -918,5 +919,5 @@
         }
     },
     "transactionDetailsText": "Detaily transakce",
-    "createTokenTextNFT": "Vytvořte NFT"
+    "createTokenTextNFT": "Vytvořte NFT" 
 }

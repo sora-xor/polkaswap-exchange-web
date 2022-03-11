@@ -321,7 +321,8 @@
         "Stats": "Statistikk",
         "Support": "Brukerstøtte",
         "CreatePair": "Opprett par",
-        "Tokens": "Tokens"
+        "Tokens": "Tokens",
+        "KYC": "KYC"
     },
     "social": {
         "twitter": "Twitter",
