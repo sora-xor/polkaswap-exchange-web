@@ -1,10 +1,5 @@
 <template>
-  <dialog-base
-    :visible.sync="visibility"
-    :before-close="beforeClose"
-    :title="t('selectLanguageDialog.title')"
-    class="select-language-dialog"
-  >
+  <dialog-base :visible.sync="visibility" :title="t('selectLanguageDialog.title')" class="select-language-dialog">
     <s-scrollbar class="select-language-scrollbar">
       <s-radio-group v-model="selectedLang" class="select-language-list s-flex">
         <s-radio
@@ -65,10 +60,6 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin) {
 
   set selectedLang(value: Language) {
     this.setLanguage(value);
-  }
-
-  beforeClose(closeFn: VoidFunction): void {
-    closeFn();
   }
 }
 </script>

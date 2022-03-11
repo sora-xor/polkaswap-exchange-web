@@ -1,7 +1,6 @@
 <template>
   <dialog-base
     :visible.sync="visibility"
-    :before-close="beforeClose"
     :title="t('selectNodeDialog.title')"
     :class="['select-node-dialog', dialogCustomClass]"
   >
@@ -74,6 +73,9 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
 
   set visibility(flag: boolean) {
     this.setSelectNodeDialogVisibility(flag);
+    if (!flag) {
+      this.handleBack();
+    }
   }
 
   get connectedNodeAddress(): string {
@@ -136,14 +138,9 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     }
   }
 
-  navigateToNodeInfo(node: NodeItem | undefined): void {
+  navigateToNodeInfo(node?: NodeItem): void {
     this.selectedNode = node || {};
     this.changeView(NodeInfoView);
-  }
-
-  beforeClose(closeFn: VoidFunction): void {
-    closeFn();
-    this.handleBack();
   }
 
   handleBack(): void {

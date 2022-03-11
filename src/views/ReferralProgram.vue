@@ -51,25 +51,27 @@
               {{ t('referralProgram.referralsNumber', { number: invitedUsersNumber }) }}
             </h3>
           </template>
-          <template v-if="invitedUsers && invitedUsers.length">
-            <info-line
-              v-for="invitedUser in invitedUsers"
-              value-can-be-hidden
-              :key="invitedUser.toString()"
-              :value="getInvitedUserReward(invitedUser.toString())"
-              :asset-symbol="xorSymbol"
-              :fiat-value="getFiatAmountByCodecString(getInvitedUserReward(invitedUser.toString()))"
-              is-formatted
-            >
-              <template #info-line-prefix>
-                <s-tooltip :content="t('account.copy')">
-                  <span class="info-line-address" @click="handleCopyAddress($event)">
-                    {{ formatRereffalAddress(invitedUser.toString()) }}
-                  </span>
-                </s-tooltip>
-              </template>
-            </info-line>
-          </template>
+          <s-scrollbar v-if="invitedUsers && invitedUsers.length" class="invited-users-scrollbar">
+            <div class="invited-users-list">
+              <info-line
+                v-for="invitedUser in invitedUsers"
+                value-can-be-hidden
+                :key="invitedUser.toString()"
+                :value="getInvitedUserReward(invitedUser.toString())"
+                :asset-symbol="xorSymbol"
+                :fiat-value="getFiatAmountByCodecString(getInvitedUserReward(invitedUser.toString()))"
+                is-formatted
+              >
+                <template #info-line-prefix>
+                  <s-tooltip :content="t('account.copy')">
+                    <span class="info-line-address" @click="handleCopyAddress($event)">
+                      {{ formatRereffalAddress(invitedUser.toString()) }}
+                    </span>
+                  </s-tooltip>
+                </template>
+              </info-line>
+            </div>
+          </s-scrollbar>
         </s-collapse-item>
       </s-collapse>
       <s-card
@@ -148,7 +150,6 @@ export default class ReferralProgram extends Mixins(
   @Action('resetInvitedUsersSubscription', { namespace }) resetInvitedUsersSubscription!: AsyncVoidFn;
   @Action('subscribeInvitedUsers', { namespace }) subscribeInvitedUsers!: (referrerId: string) => AsyncVoidFn;
   @Action('unsubscribeInvitedUsers', { namespace }) unsubscribeInvitedUsers!: AsyncVoidFn;
-  @Action('setBound', { namespace }) setBound!: (isBond: boolean) => Promise<void>;
 
   @Watch('isSoraAccountConnected')
   private async updateSubscriptions(value: boolean) {
@@ -232,8 +233,7 @@ export default class ReferralProgram extends Mixins(
     }
   }
 
-  handleBonding(isBond: boolean): void {
-    this.setBound(!!isBond);
+  handleBonding(isBond = false): void {
     router.push({ name: isBond ? PageNames.ReferralBonding : PageNames.ReferralUnbonding });
   }
 
@@ -273,8 +273,8 @@ $referral-collapse-icon-size: 36px;
     margin-left: auto;
     width: calc(100% - #{$inner-spacing-big} * 2);
   }
-  .el-collapse-item__content {
-    padding-bottom: 0;
+  .invited-users-container .el-collapse-item__content {
+    padding: 0 0 $inner-spacing-mini;
   }
   @include element-size('token-logo--medium', $referral-collapse-icon-size);
   @include element-size('invited-users-icon', $referral-collapse-icon-size);
@@ -284,6 +284,14 @@ $referral-collapse-icon-size: 36px;
 }
 .bonded,
 .invited-users {
+  &-scrollbar {
+    @include scrollbar;
+  }
+  &-list {
+    max-height: 165px;
+    padding-right: $inner-spacing-medium;
+    padding-left: $inner-spacing-medium;
+  }
   &-collapse-title {
     padding-left: $inner-spacing-medium;
     font-size: var(--s-font-size-large);
