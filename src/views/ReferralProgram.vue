@@ -273,7 +273,7 @@ $referral-collapse-icon-size: 36px;
     margin-left: auto;
     width: calc(100% - #{$inner-spacing-big} * 2);
   }
-  .el-collapse-item__content {
+  .invited-users-container .el-collapse-item__content {
     padding: 0 0 $inner-spacing-mini;
   }
   @include element-size('token-logo--medium', $referral-collapse-icon-size);
