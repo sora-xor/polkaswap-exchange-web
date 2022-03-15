@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { KnownSymbols } from '@sora-substrate/util';
+import type { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
 @Component
 export default class GradientBox extends Vue {

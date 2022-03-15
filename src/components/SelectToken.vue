@@ -11,8 +11,14 @@
             prefix="s-icon-search-16"
             size="big"
           >
-            <template #suffix v-if="query">
-              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+            <template #suffix>
+              <s-button
+                v-show="query"
+                type="link"
+                class="s-button--clear"
+                icon="clear-X-16"
+                @click="handleClearSearch"
+              />
             </template>
           </s-input>
         </div>
@@ -72,16 +78,18 @@
             size="big"
             @input="debouncedCustomAssetSearch"
           >
-            <template #suffix v-if="customAddress">
-              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="resetCustomAssetFields" />
+            <template #suffix>
+              <s-button
+                v-show="customAddress"
+                type="link"
+                class="s-button--clear"
+                icon="clear-X-16"
+                @click="resetCustomAssetFields"
+              />
             </template>
           </s-input>
         </div>
-        <s-scrollbar
-          v-if="sortedNonWhitelistAccountAssets.length"
-          :key="'filtered' + sortedNonWhitelistAccountAssets.length"
-          class="token-list-scrollbar"
-        >
+        <s-scrollbar class="token-list-scrollbar">
           <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
           <div class="asset-select__info" v-else-if="!customAsset && customAddress">
             {{ t('selectToken.custom.notFound') }}
@@ -178,8 +186,8 @@
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { Asset, AccountAsset, isBlacklistAsset } from '@sora-substrate/util';
 import { api, mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
@@ -224,8 +232,8 @@ export default class SelectToken extends Mixins(
   @Prop({ default: false, type: Boolean }) readonly notNullBalanceOnly!: boolean;
 
   @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>;
-  @Getter('nonWhitelistAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>;
-  @Getter('nonWhitelistAssets', { namespace }) nonWhitelistAssets!: Array<Asset>;
+  @Getter('nonWhitelistDivisibleAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>;
+  @Getter('nonWhitelistDivisibleAssets', { namespace }) nonWhitelistAssets!: Array<Asset>;
   // Wallet store
   @Getter shouldBalanceBeHidden!: boolean;
   @Getter whitelistIdsBySymbol!: any;
@@ -308,7 +316,7 @@ export default class SelectToken extends Mixins(
     if (!this.customAsset) {
       return '';
     }
-    const isBlacklist = isBlacklistAsset(this.customAsset, this.whitelistIdsBySymbol);
+    const isBlacklist = api.assets.isBlacklist(this.customAsset, this.whitelistIdsBySymbol);
     if (isBlacklist) {
       return this.t('addAsset.scam');
     }
@@ -339,9 +347,9 @@ export default class SelectToken extends Mixins(
     this.resetCustomAssetFields();
   }
 
-  handleRemoveCustomAsset(asset: Asset, event: Event): void {
+  handleRemoveCustomAsset(asset: AccountAsset, event: Event): void {
     event.stopImmediatePropagation();
-    api.removeAsset(asset.address);
+    api.assets.removeAccountAsset(asset.address);
     if (this.customAddress) {
       this.searchCustomAsset();
     }

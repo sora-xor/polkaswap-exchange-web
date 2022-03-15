@@ -1,4 +1,5 @@
-import { AccountAsset, Asset, KnownSymbols, WhitelistArrayItem } from '@sora-substrate/util';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { AccountAsset, Asset, WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 import { LogoSize } from '@/consts';
 import { MOCK_ACCOUNT_ASSETS } from './tokens';

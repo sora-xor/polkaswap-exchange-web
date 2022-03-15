@@ -141,7 +141,6 @@
       </div>
     </s-float-input>
     <slippage-tolerance class="slippage-tolerance-settings" />
-    <swap-info v-if="areTokensSelected && !hasZeroAmount" class="info-line-container" />
     <s-button
       v-if="!isLoggedIn"
       type="primary"
@@ -179,6 +178,11 @@
         {{ t('exchange.Swap') }}
       </template>
     </s-button>
+    <swap-transaction-details
+      v-if="areTokensSelected && !hasZeroAmount"
+      class="info-line-container"
+      :info-only="false"
+    />
     <select-token
       :visible.sync="showSelectTokenDialog"
       :connected="isLoggedIn"
@@ -198,18 +202,14 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { KnownSymbols, FPNumber, Operation, quote, XOR } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/util';
+import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Subscription } from '@polkadot/x-rxjs';
-import type {
-  AccountAsset,
-  CodecString,
-  LiquiditySourceTypes,
-  LPRewardsInfo,
-  NetworkFeesObject,
-  QuotePaths,
-  QuotePayload,
-  PrimaryMarketsEnabledAssets,
-} from '@sora-substrate/util';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
+import type { QuotePaths, QuotePayload, PrimaryMarketsEnabledAssets } from '@sora-substrate/util/build/swap/types';
+import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -232,7 +232,6 @@ const namespace = 'swap';
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SettingsDialog: lazyComponent(Components.SettingsDialog),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
@@ -240,6 +239,7 @@ const namespace = 'swap';
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
+    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
@@ -272,7 +272,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>;
   @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>;
   @Action('reset', { namespace }) reset!: AsyncVoidFn;
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
 
   @Action('setPrimaryMarketsEnabledAssets', { namespace }) setPrimaryMarketsEnabledAssets!: (
     assets: PrimaryMarketsEnabledAssets
@@ -438,8 +437,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
 
   created() {
     this.withApi(async () => {
-      await this.getAssets();
-
       if (!this.tokenFrom) {
         await this.setTokenFromAddress(XOR.address);
         await this.setTokenToAddress();
@@ -500,11 +497,12 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
     const oppositeToken = this.isExchangeB ? this.tokenFrom : this.tokenTo;
 
     try {
-      const { amount, fee, rewards, amountWithoutImpact } = quote(
-        this.tokenFrom.address,
-        this.tokenTo.address,
+      // TODO: [ARCH] Asset -> AccountAsset
+      const { amount, fee, rewards, amountWithoutImpact } = api.swap.getResult(
+        this.tokenFrom as Asset,
+        this.tokenTo as Asset,
         value,
-        !this.isExchangeB,
+        this.isExchangeB,
         [this.liquiditySource].filter(Boolean),
         this.paths,
         this.payload
@@ -530,8 +528,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
 
   private subscribeOnEnabledAssets(): void {
     this.cleanEnabledAssetsSubscription();
-
-    this.enabledAssetsSubscription = api
+    this.enabledAssetsSubscription = api.swap
       .subscribeOnPrimaryMarketsEnabledAssets()
       .subscribe(this.setPrimaryMarketsEnabledAssets);
   }
@@ -547,9 +544,8 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
   private subscribeOnSwapReserves(): void {
     this.cleanSwapReservesSubscription();
     if (!this.areTokensSelected) return;
-
-    this.liquidityReservesSubscription = api
-      .subscribeOnSwapReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
+    this.liquidityReservesSubscription = api.swap
+      .subscribeOnReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
       .subscribe(this.onChangeSwapReserves);
   }
 

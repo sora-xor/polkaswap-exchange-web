@@ -1,6 +1,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
-import { BridgeNetworks } from '@sora-substrate/util';
+import type { BridgeNetworks } from '@sora-substrate/util';
 
 import router from '@/router';
 import { getWalletAddress, formatAddress } from '@/utils';
