@@ -1,5 +1,6 @@
 <template>
   <s-dialog
+    class="dialog-wrapper"
     :visible.sync="isVisible"
     :title="title"
     :custom-class="computedCustomClasses"
@@ -9,7 +10,6 @@
       borderRadius: 'medium',
       ...$attrs,
     }"
-    class="dialog-wrapper"
   >
     <template #title>
       <slot name="title">
@@ -25,7 +25,9 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
+import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 
@@ -44,6 +46,38 @@ export default class DialogBase extends Mixins(DialogMixin) {
     }
     return cssClasses.join(' ');
   }
+
+  async mounted(): Promise<void> {
+    await this.$nextTick();
+    const dialogWrapper = this.$el;
+    const dialog = this.$el.childNodes[0];
+    const handleClickOutside = (event: Event) => this.handleClickOutside(event, dialog);
+    // Create scrollbar component dinamically. It should be done in js-ui-library
+    const Scrollbar = Vue.extend(SScrollbar);
+    const scrollbar = new Scrollbar({
+      mounted: function () {
+        this.$el.addEventListener('click', handleClickOutside);
+      },
+      destroyed: function () {
+        this.$el.removeEventListener('click', handleClickOutside);
+      },
+    });
+    scrollbar.$mount();
+    dialogWrapper.appendChild(scrollbar.$el);
+    const scrollbarView = scrollbar.$el.getElementsByClassName('el-scrollbar__view')[0];
+    scrollbarView.appendChild(dialog);
+  }
+
+  /**
+   * It's required cuz we've added scrollbar between dialog layers and default click outside directive doesn't work
+   */
+  private handleClickOutside(event: Event, el: Node): void {
+    // IMPORTANT: If something was used with v-if and this node was removed -> dialog will be closed by default.
+    // Need to stop event propagation in this case
+    if (!(el === event.target || el.contains(event.target as Node)) && this.isVisible) {
+      this.closeDialog();
+    }
+  }
 }
 </script>
 
@@ -53,6 +87,17 @@ $el-dialog-button-size: var(--s-size-medium);
 $el-dialog-max-width: 496px;
 
 .dialog-wrapper {
+  @include scrollbar;
+
+  > .el-scrollbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+  }
+
   #{$el-dialog-class} {
     background: var(--s-color-utility-surface);
     max-width: $el-dialog-max-width;

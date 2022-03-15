@@ -1,5 +1,6 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class AssetsSearchMixin extends Vue {

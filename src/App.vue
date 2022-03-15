@@ -2,12 +2,17 @@
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
     <app-header :loading="loading" @toggle-menu="toggleMenu" />
     <div class="app-main">
-      <app-menu @click.native="handleAppMenuClick" :visible="menuVisibility" :on-select="goTo">
+      <app-menu
+        :visible="menuVisibility"
+        :on-select="goTo"
+        :is-about-page-opened="isAboutPage"
+        @click.native="handleAppMenuClick"
+      >
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
       </app-menu>
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar">
-          <div v-if="blockNumber" class="block-number">
+          <div v-if="blockNumber && !isAboutPage" class="block-number">
             <s-tooltip :content="t('blockNumberText')" placement="bottom">
               <a class="block-number-link" :href="soraExplorerLink" target="_blank" rel="nofollow noopener">
                 <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
@@ -29,6 +34,7 @@
         </s-scrollbar>
       </div>
     </div>
+    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
   </s-design-system-provider>
 </template>
 
@@ -36,7 +42,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { FPNumber, History, connection } from '@sora-substrate/util';
-import { mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
@@ -57,6 +63,7 @@ import type { SubNetwork } from '@/utils/ethers-util';
     AppHeader: lazyComponent(Components.AppHeader),
     AppMenu: lazyComponent(Components.AppMenu),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
+    ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
@@ -64,33 +71,36 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   readonly PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
 
   menuVisibility = false;
+  showConfirmInviteUser = false;
 
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
   @Getter firstReadyTransaction!: History;
   @Getter blockNumber!: number;
+  @Getter('isLoggedIn') isSoraAccountConnected!: boolean;
+  @Getter('storageReferral', { namespace: 'referrals' }) storageReferral!: string;
+  @Getter('referral', { namespace: 'referrals' }) referral!: string;
 
   // Wallet
-  @Action resetAccountAssetsSubscription!: AsyncVoidFn;
-  @Action trackActiveTransactions!: AsyncVoidFn;
-  @Action resetActiveTransactions!: AsyncVoidFn;
-  @Action resetRuntimeVersionSubscription!: AsyncVoidFn;
-  @Action resetFiatPriceAndApySubscription!: AsyncVoidFn;
+  @Action activateNetwokSubscriptions!: AsyncVoidFn;
+  @Action resetNetworkSubscriptions!: AsyncVoidFn;
+  @Action resetInternalSubscriptions!: AsyncVoidFn;
+  @Action setSoraNetwork!: (networkType: string) => Promise<void>;
+  @Action setApiKeys!: (options: WALLET_TYPES.ApiKeysObject) => Promise<void>;
 
-  @Action updateAccountAssets!: AsyncVoidFn;
-  @Action setSoraNetwork!: (networkType: string) => Promise<void>; // wallet
   @Action setDefaultNodes!: (nodes: any) => Promise<void>;
   @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>;
   @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @Action setFaucetUrl!: (url: string) => Promise<void>;
   @Action setLanguage!: (lang: Language) => Promise<void>;
-  @Action setApiKeys!: (options: any) => Promise<void>;
   @Action setFeatureFlags!: (options: any) => Promise<void>;
   @Action resetBlockNumberSubscription!: AsyncVoidFn;
   @Action('unsubscribeAccountMarketMakerInfo', { namespace: 'rewards' }) unsubscribeMarketMakerInfo!: AsyncVoidFn;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
+  @Action('getReferral', { namespace: 'referrals' }) getReferral!: (invitedUserId: string) => Promise<void>;
+  @Action('setReferral', { namespace: 'referrals' }) setReferral!: (value: string) => Promise<void>;
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History): void {
     this.handleChangeTransaction(value);
@@ -99,9 +109,37 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean): void {
     if (nodeConnected) {
-      this.updateAccountAssets();
+      // after app load, the first connection to the node occurs before the wallet is loaded
+      if (this.isWalletLoaded) {
+        this.activateNetwokSubscriptions();
+      }
     } else {
-      this.resetAccountAssetsSubscription();
+      this.resetNetworkSubscriptions();
+    }
+  }
+
+  @Watch('isSoraAccountConnected')
+  private async confirmInviteUserIfConnected(isSoraConnected: boolean): Promise<void> {
+    if (isSoraConnected) {
+      await this.confirmInvititation();
+    }
+  }
+
+  @Watch('storageReferral', { immediate: true })
+  private async confirmInviteUserIfHasStorage(storageReferralValue: string): Promise<void> {
+    if (this.isSoraAccountConnected && storageReferralValue?.length) {
+      await this.confirmInvititation();
+    }
+  }
+
+  async confirmInvititation(): Promise<void> {
+    await this.getReferral(this.account.address);
+    if (this.storageReferral) {
+      if (this.storageReferral === this.account.address) {
+        this.setReferral('');
+      } else {
+        this.showConfirmInviteUser = true;
+      }
     }
   }
 
@@ -137,8 +175,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // connection to node
       await this.runAppConnectionToNode();
     });
-
-    this.trackActiveTransactions();
   }
 
   get isAboutPage(): boolean {
@@ -176,10 +212,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
-    await this.resetFiatPriceAndApySubscription();
-    await this.resetActiveTransactions();
-    await this.resetAccountAssetsSubscription();
-    await this.resetRuntimeVersionSubscription();
+    await this.resetInternalSubscriptions();
+    await this.resetNetworkSubscriptions();
     await this.resetBlockNumberSubscription();
     await this.unsubscribeMarketMakerInfo();
     await connection.close();

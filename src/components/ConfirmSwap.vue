@@ -27,7 +27,7 @@
       "
     />
     <s-divider />
-    <swap-info />
+    <swap-transaction-details />
     <template #footer>
       <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmSwap">
         {{ t('exchange.confirm') }}
@@ -40,7 +40,9 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, State } from 'vuex-class';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
-import { CodecString, AccountAsset, LiquiditySourceTypes } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
@@ -52,8 +54,8 @@ const namespace = 'swap';
 @Component({
   components: {
     DialogBase,
-    SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
+    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
   },
 })
 export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogMixin) {
@@ -93,9 +95,9 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogM
       try {
         await this.withNotifications(
           async () =>
-            await api.swap(
-              this.tokenFrom.address,
-              this.tokenTo.address,
+            await api.swap.execute(
+              this.tokenFrom,
+              this.tokenTo,
               this.fromValue,
               this.toValue,
               this.slippageTolerance,

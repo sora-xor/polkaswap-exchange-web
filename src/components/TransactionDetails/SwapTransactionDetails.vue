@@ -1,74 +1,84 @@
 <template>
-  <div class="swap-info-container">
-    <info-line v-for="{ id, label, value } in priceValues" :key="id" :label="label" :value="value" />
-    <info-line
-      :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
-      :label-tooltip="t('swap.minReceivedTooltip')"
-      :value="formattedMinMaxReceived"
-      :asset-symbol="getAssetSymbolText"
-      :fiat-value="getFiatAmountByCodecString(minMaxReceived, isExchangeB ? tokenFrom : tokenTo)"
-      is-formatted
-    />
-    <info-line v-for="(reward, index) in rewardsValues" :key="index" v-bind="reward" />
-    <info-line :label="t('swap.priceImpact')" :label-tooltip="t('swap.priceImpactTooltip')">
-      <value-status-wrapper :value="priceImpact">
-        <formatted-amount class="swap-value" :value="priceImpactFormatted">%</formatted-amount>
-      </value-status-wrapper>
-    </info-line>
-    <info-line :label="t('swap.route')">
-      <div v-for="token in swapRoute" class="liquidity-route swap-value" :key="token">
-        <span>{{ token }}</span>
-        <s-icon name="el-icon el-icon-arrow-right" />
-      </div>
-    </info-line>
-    <info-line
-      :label="t('swap.liquidityProviderFee')"
-      :label-tooltip="liquidityProviderFeeTooltipText"
-      :value="formattedLiquidityProviderFee"
-      :asset-symbol="xorSymbol"
-      is-formatted
-    />
-    <!-- TODO 4 alexnatalia: Show if logged in and have info about Network Fee -->
-    <info-line
-      v-if="isLoggedIn"
-      :label="t('swap.networkFee')"
-      :label-tooltip="t('swap.networkFeeTooltip')"
-      :value="formattedNetworkFee"
-      :asset-symbol="xorSymbol"
-      :fiat-value="getFiatAmountByCodecString(networkFee)"
-      is-formatted
-    />
-  </div>
+  <transaction-details :info-only="infoOnly">
+    <div class="swap-info-container">
+      <info-line v-for="{ id, label, value } in priceValues" :key="id" :label="label" :value="value" />
+      <info-line
+        :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
+        :label-tooltip="t('swap.minReceivedTooltip')"
+        :value="formattedMinMaxReceived"
+        :asset-symbol="getAssetSymbolText"
+        :fiat-value="getFiatAmountByCodecString(minMaxReceived, isExchangeB ? tokenFrom : tokenTo)"
+        is-formatted
+      />
+      <info-line v-for="(reward, index) in rewardsValues" :key="index" v-bind="reward" />
+      <info-line :label="t('swap.priceImpact')" :label-tooltip="t('swap.priceImpactTooltip')">
+        <value-status-wrapper :value="priceImpact">
+          <formatted-amount class="swap-value" :value="priceImpactFormatted">%</formatted-amount>
+        </value-status-wrapper>
+      </info-line>
+      <info-line :label="t('swap.route')">
+        <div v-for="token in swapRoute" class="liquidity-route swap-value" :key="token">
+          <span>{{ token }}</span>
+          <s-icon name="el-icon el-icon-arrow-right route-icon" />
+        </div>
+      </info-line>
+      <info-line
+        :label="t('swap.liquidityProviderFee')"
+        :label-tooltip="liquidityProviderFeeTooltipText"
+        :value="formattedLiquidityProviderFee"
+        :asset-symbol="xorSymbol"
+        is-formatted
+      />
+      <info-line
+        v-if="isLoggedIn"
+        :label="t('swap.networkFee')"
+        :label-tooltip="t('swap.networkFeeTooltip')"
+        :value="formattedNetworkFee"
+        :asset-symbol="xorSymbol"
+        :fiat-value="getFiatAmountByCodecString(networkFee)"
+        is-formatted
+      />
+    </div>
+  </transaction-details>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, State } from 'vuex-class';
-import {
-  KnownAssets,
-  KnownSymbols,
-  CodecString,
-  AccountAsset,
-  LPRewardsInfo,
-  Operation,
-  NetworkFeesObject,
-} from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
+import { XOR, KnownAssets } from '@sora-substrate/util/build/assets/consts';
+import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+
+type PriceValue = {
+  id: 'from' | 'to';
+  label: string;
+  value: string;
+};
+
+type RewardValue = {
+  value: string;
+  fiatValue: Nullable<string>;
+  assetSymbol: string;
+  label: string;
+};
 
 const namespace = 'swap';
 
 @Component({
   components: {
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
+    TransactionDetails: lazyComponent(Components.TransactionDetails),
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
   },
 })
-export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   @State((state) => state[namespace].liquidityProviderFee) liquidityProviderFee!: CodecString;
   @State((state) => state[namespace].isExchangeB) isExchangeB!: boolean;
   @State((state) => state[namespace].rewards) rewards!: Array<LPRewardsInfo>;
@@ -82,6 +92,8 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
   @Getter('price', { namespace }) price!: string;
   @Getter('priceReversed', { namespace }) priceReversed!: string;
 
+  @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
+
   get liquidityProviderFeeTooltipText(): string {
     return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue });
   }
@@ -89,12 +101,12 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
   get swapRoute(): Array<string> {
     const fromToken: string = this.tokenFrom?.symbol ?? '';
     const toToken: string = this.tokenTo?.symbol ?? '';
-    const xorToken: string = KnownSymbols.XOR;
+    const xorToken: string = XOR.symbol;
 
     return [...new Set([fromToken, xorToken, toToken])];
   }
 
-  get priceValues(): Array<object> {
+  get priceValues(): Array<PriceValue> {
     const fromSymbol = this.tokenFrom?.symbol ?? '';
     const toSymbol = this.tokenTo?.symbol ?? '';
 
@@ -116,7 +128,7 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
     return this.formatStringValue(this.priceImpact);
   }
 
-  get rewardsValues(): Array<any> {
+  get rewardsValues(): Array<RewardValue> {
     return this.rewards.map((reward, index) => {
       const asset = KnownAssets.get(reward.currency);
       const value = this.formatCodecNumber(reward.amount);
@@ -151,22 +163,8 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
     return this.formatCodecNumber(this.minMaxReceived, decimals);
   }
 
-  // TODO: [Release 2]
-  // get priceImpact (): string {
-  //   return '0'
-  // }
-  // get priceImpactClass (): string {
-  //   if (+this.priceImpact > 0) {
-  //     return 'price-impact-positive'
-  //   }
-  //   if (+this.priceImpact < 0) {
-  //     return 'price-impact-negative'
-  //   }
-  //   return ''
-  // }
-
   get xorSymbol(): string {
-    return ' ' + KnownSymbols.XOR;
+    return ' ' + XOR.symbol;
   }
 
   get getAssetSymbolText(): string {
@@ -175,7 +173,7 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @include info-line;
 .swap-info {
   &-value.el-button {
@@ -189,7 +187,13 @@ export default class SwapInfo extends Mixins(mixins.FormattedAmountMixin, Transl
   font-weight: 600;
 }
 
+.route-icon {
+  color: var(--s-color-base-content-primary) !important;
+  font-size: 12px !important;
+  margin: 0 !important;
+}
+
 .liquidity-route:last-child .el-icon {
-  display: none;
+  display: none !important;
 }
 </style>
