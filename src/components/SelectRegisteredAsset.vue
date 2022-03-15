@@ -10,8 +10,8 @@
         size="big"
         @focus="handleSearchFocus"
       >
-        <template #suffix v-if="query">
-          <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+        <template #suffix>
+          <s-button v-show="query" type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
         </template>
       </s-input>
     </s-form-item>
@@ -119,9 +119,10 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
-import { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util';
+import { Action, Getter, State } from 'vuex-class';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
@@ -164,10 +165,12 @@ export default class SelectRegisteredAsset extends Mixins(
 
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
+  @State((state) => state.bridge.isSoraToEvm) isSoraToEvm!: boolean;
+
   @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>;
-  @Getter('isSoraToEvm', { namespace: 'bridge' }) isSoraToEvm!: boolean;
   @Getter('registeredAssets', { namespace }) registeredAssets!: Array<RegisteredAccountAsset>;
   // Wallet store
+  @Getter assets!: Array<Asset>;
   @Getter accountAssetsAddressTable;
   @Getter shouldBalanceBeHidden!: boolean;
 
@@ -270,7 +273,7 @@ export default class SelectRegisteredAsset extends Mixins(
       return;
     }
     const search = value.trim().toLowerCase();
-    const asset = await this.getAsset({ address: search });
+    const asset = this.assets.find((asset) => asset.address === search);
     if (this.assetsList.find((asset) => asset[this.addressSymbol] === search)) {
       this.selectedCustomAsset = null;
       this.customSymbol = '';

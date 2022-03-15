@@ -1,19 +1,13 @@
 import debounce from 'lodash/debounce';
-import {
-  Asset,
-  AccountAsset,
-  RegisteredAccountAsset,
-  AccountLiquidity,
-  KnownSymbols,
-  FPNumber,
-  CodecString,
-  KnownAssets,
-} from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import { RegisteredAccountAsset, FPNumber, CodecString } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import router from '@/router';
 import i18n from '@/lang';
-import { app, ZeroStringValue } from '@/consts';
+import { app } from '@/consts';
 
 import storage from './storage';
 
@@ -30,7 +24,7 @@ export const formatAddress = (address: string, length = address.length / 2): str
 };
 
 export const isXorAccountAsset = (asset: Asset | AccountAsset | RegisteredAccountAsset | AccountLiquidity): boolean => {
-  return asset ? asset.address === KnownAssets.get(KnownSymbols.XOR).address : false;
+  return asset ? asset.address === XOR.address : false;
 };
 
 export const isEthereumAddress = (address: string): boolean => {
@@ -63,9 +57,10 @@ const getMaxBalance = (
   asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity, // TODO: [Release 1.7] fix RegisteredAccountAsset
   fee: CodecString,
   isExternalBalance = false,
-  parseAsLiquidity = false
+  parseAsLiquidity = false,
+  isBondedBalance = false
 ): FPNumber => {
-  const balance = getAssetBalance(asset, { internal: !isExternalBalance, parseAsLiquidity });
+  const balance = getAssetBalance(asset, { internal: !isExternalBalance, parseAsLiquidity, isBondedBalance });
   const decimals: number = asset[isExternalBalance ? 'externalDecimals' : 'decimals'];
 
   if (asZeroValue(balance)) return FPNumber.ZERO;
@@ -75,7 +70,8 @@ const getMaxBalance = (
   if (
     !asZeroValue(fee) &&
     ((!isExternalBalance && isXorAccountAsset(asset)) ||
-      (isExternalBalance && isEthereumAddress((asset as RegisteredAccountAsset).externalAddress)))
+      (isExternalBalance && isEthereumAddress((asset as RegisteredAccountAsset).externalAddress))) &&
+    !isBondedBalance
   ) {
     const fpFee = FPNumber.fromCodecValue(fee);
     fpResult = fpResult.sub(fpFee);
@@ -87,19 +83,21 @@ const getMaxBalance = (
 export const getMaxValue = (
   asset: AccountAsset | RegisteredAccountAsset,
   fee: CodecString,
-  isExternalBalance = false
+  isExternalBalance = false,
+  isBondedBalance = false
 ): string => {
-  return getMaxBalance(asset, fee, isExternalBalance).toString();
+  return getMaxBalance(asset, fee, isExternalBalance, false, isBondedBalance).toString();
 };
 
 export const hasInsufficientBalance = (
   asset: AccountAsset | RegisteredAccountAsset,
   amount: string | number,
   fee: CodecString,
-  isExternalBalance = false
+  isExternalBalance = false,
+  isBondedBalance = false
 ): boolean => {
   const fpAmount = new FPNumber(amount, asset.decimals);
-  const fpMaxBalance = getMaxBalance(asset, fee, isExternalBalance);
+  const fpMaxBalance = getMaxBalance(asset, fee, isExternalBalance, false, isBondedBalance);
 
   return FPNumber.lt(fpMaxBalance, fpAmount);
 };
@@ -141,7 +139,10 @@ export const asZeroValue = (value: any): boolean => {
   return !Number.isFinite(+value) || +value === 0;
 };
 
-export const getAssetBalance = (asset: any, { internal = true, parseAsLiquidity = false } = {}) => {
+export const getAssetBalance = (
+  asset: any,
+  { internal = true, parseAsLiquidity = false, isBondedBalance = false } = {}
+) => {
   if (!internal) {
     return asset?.externalBalance;
   }
@@ -150,20 +151,38 @@ export const getAssetBalance = (asset: any, { internal = true, parseAsLiquidity 
     return asset?.balance;
   }
 
+  if (isBondedBalance) {
+    return asset?.balance?.bonded;
+  }
+
   return asset?.balance?.transferable;
+};
+
+export const getAssetDecimals = (asset: any, { internal = true } = {}): number | undefined => {
+  if (!asset) return undefined;
+
+  return internal ? asset.decimals : asset.externalDecimals;
 };
 
 export const formatAssetBalance = (
   asset: any,
-  { internal = true, parseAsLiquidity = false, formattedZero = '', showZeroBalance = true } = {}
+  {
+    internal = true,
+    parseAsLiquidity = false,
+    formattedZero = '',
+    showZeroBalance = true,
+    isBondedBalance = false,
+  } = {}
 ): string => {
   if (!asset) return formattedZero;
 
-  const balance = getAssetBalance(asset, { internal, parseAsLiquidity });
+  const balance = getAssetBalance(asset, { internal, parseAsLiquidity, isBondedBalance });
 
   if (!balance || (!showZeroBalance && asZeroValue(balance))) return formattedZero;
 
-  return FPNumber.fromCodecValue(balance, asset.decimals).toLocaleString();
+  const decimals = getAssetDecimals(asset, { internal });
+
+  return FPNumber.fromCodecValue(balance, decimals).toLocaleString();
 };
 
 export const findAssetInCollection = (asset, collection) => {
@@ -213,25 +232,6 @@ export const toQueryString = (params: any): string => {
   return Object.entries(params)
     .map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`)
     .join('&');
-};
-
-export const divideAssets = (
-  firstAsset: Asset,
-  secondAsset: Asset,
-  firstAmount: CodecString,
-  secondAmount: CodecString,
-  reversed = false
-): string => {
-  if (!firstAsset || !secondAsset || !firstAmount || !secondAmount) return ZeroStringValue;
-
-  const one = new FPNumber(1);
-  const firstAmountNum = new FPNumber(firstAmount, firstAsset.decimals);
-  const secondAmountNum = new FPNumber(secondAmount, secondAsset.decimals);
-  const result = !reversed
-    ? firstAmountNum.div(!secondAmountNum.isZero() ? secondAmountNum : one)
-    : secondAmountNum.div(!firstAmountNum.isZero() ? firstAmountNum : one);
-
-  return result.format();
 };
 
 export const waitForAccountPair = async (func: VoidFunction): Promise<any> => {

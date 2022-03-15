@@ -1,17 +1,7 @@
 <template>
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
-      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
-        <!-- <s-button
-          class="base-title_settings"
-          type="action"
-          icon="basic-trash-24"
-          :disabled="!hasHistory"
-          :tooltip="t('bridgeHistory.clearHistory')"
-          tooltip-placement="bottom-end"
-          @click="handleClearHistory"
-        /> -->
-      </generic-page-header>
+      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack" />
       <s-form class="history-form" :show-message="false">
         <s-form-item v-if="history.length" class="history--search">
           <s-input
@@ -20,12 +10,18 @@
             prefix="s-icon-search-16"
             size="big"
           >
-            <template #suffix v-if="query">
-              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
+            <template #suffix>
+              <s-button
+                v-show="query"
+                type="link"
+                class="s-button--clear"
+                icon="clear-X-16"
+                @click="handleResetSearch"
+              />
             </template>
           </s-input>
         </s-form-item>
-        <div v-loading="loading" class="history-items">
+        <div class="history-items">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -51,7 +47,10 @@
                 </div>
                 <div class="history-item-date">{{ formatHistoryDate(item) }}</div>
               </div>
-              <div :class="historyStatusIconClasses(item.type, item.transactionState)" />
+              <div :class="historyStatusClasses(item)">
+                <div class="history-item-status-text">{{ historyStatusText(item) }}</div>
+                <s-icon class="history-item-status-icon" :name="historyStatusIconName(item)" size="16" />
+              </div>
             </div>
           </template>
           <p v-else class="history-empty p4">{{ t('bridgeHistory.empty') }}</p>
@@ -66,14 +65,6 @@
           @next-click="handleNextClick"
         />
       </s-form>
-      <s-button
-        v-if="!restored"
-        class="s-button--restore s-typography-button--large"
-        :disabled="loading"
-        @click="handleRestoreHistory"
-      >
-        {{ t('bridgeHistory.restoreHistory') }}
-      </s-button>
     </s-card>
   </div>
 </template>
@@ -81,17 +72,19 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class';
-import { RegisteredAccountAsset, Operation, BridgeHistory, FPNumber } from '@sora-substrate/util';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { BridgeTxStatus } from '@sora-substrate/util';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { STATES } from '@/utils/fsm';
+import { isUnsignedToPart, isRejectedForeverFromPart } from '@/utils/bridge';
+
+import type { BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
 const namespace = 'bridge';
 
@@ -103,19 +96,15 @@ const namespace = 'bridge';
 })
 export default class BridgeTransactionsHistory extends Mixins(
   TranslationMixin,
+  BridgeMixin,
   BridgeHistoryMixin,
   NetworkFormatterMixin,
-  PaginationSearchMixin
+  mixins.PaginationSearchMixin,
+  mixins.NumberFormatterMixin
 ) {
   @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
-  @Getter('history', { namespace }) history!: Nullable<Array<BridgeHistory>>;
-  @Getter('restored', { namespace }) restored!: boolean;
 
-  @Action('getRestoredFlag', { namespace }) getRestoredFlag!: AsyncVoidFn;
-  @Action('getRestoredHistory', { namespace }) getRestoredHistory!: AsyncVoidFn;
-  @Action('clearHistory', { namespace }) clearHistory!: AsyncVoidFn;
-
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn;
+  @Action('updateHistory', { namespace }) updateHistory!: AsyncVoidFn;
 
   PageNames = PageNames;
   pageAmount = 8; // override PaginationSearchMixin
@@ -123,9 +112,9 @@ export default class BridgeTransactionsHistory extends Mixins(
   get filteredHistory(): Array<BridgeHistory> {
     if (!this.history?.length) return [];
 
-    const historyCopy = this.history
-      .filter((item) => !!item.transactionStep)
-      .sort((a: BridgeHistory, b: BridgeHistory) => (a.startTime && b.startTime ? b.startTime - a.startTime : 0));
+    const historyCopy = [...this.history].sort((a: BridgeHistory, b: BridgeHistory) =>
+      a.startTime && b.startTime ? b.startTime - a.startTime : 0
+    );
 
     return this.getFilteredHistory(historyCopy);
   }
@@ -139,10 +128,9 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   async created(): Promise<void> {
-    this.withApi(async () => {
-      await this.updateRegisteredAssets();
-      await this.getRestoredFlag();
+    await this.withParentLoading(async () => {
       await this.getHistory();
+      await this.updateHistory();
     });
   }
 
@@ -163,48 +151,66 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   formatAmount(historyItem: any): string {
-    return historyItem.amount
-      ? new FPNumber(
-          historyItem.amount,
-          this.registeredAssets?.find((asset) => asset.address === historyItem.address)?.decimals
-        ).toLocaleString()
-      : '';
+    if (!historyItem.amount) return '';
+
+    const decimals = this.registeredAssets?.find((asset) => asset.address === historyItem.address)?.decimals;
+
+    return this.formatStringValue(historyItem.amount, decimals);
   }
 
   formatHistoryDate(response: any): string {
     // We use current date if request is failed
-    const date = response && response.startTime ? new Date(response.startTime) : new Date();
-    return this.formatDate(date.getTime());
+    return this.formatDate(response?.startTime ?? Date.now());
   }
 
-  historyStatusIconClasses(type: Operation, state: STATES): string {
-    const iconClass = 'history-item-icon';
+  isWaitingForAction(tx: BridgeHistory): boolean {
+    return tx.status === BridgeTxStatus.Failed && !isRejectedForeverFromPart(tx) && isUnsignedToPart(tx);
+  }
+
+  historyStatusClasses(item: BridgeHistory): string {
+    const iconClass = 'history-item-status';
     const classes = [iconClass];
-    if ([STATES.SORA_REJECTED, STATES.EVM_REJECTED].includes(state)) {
+
+    if (this.isWaitingForAction(item)) {
+      classes.push(`${iconClass}--warning`);
+    } else if (item.status === BridgeTxStatus.Failed) {
       classes.push(`${iconClass}--error`);
-      return classes.join(' ');
-    }
-    if (!(this.isOutgoingType(type) ? state === STATES.EVM_COMMITED : state === STATES.SORA_COMMITED)) {
+    } else if (item.status === BridgeTxStatus.Done) {
+      classes.push(`${iconClass}--success`);
+    } else {
       classes.push(`${iconClass}--pending`);
-      return classes.join(' ');
     }
+
     return classes.join(' ');
   }
 
-  async handleClearHistory(): Promise<void> {
-    await this.clearHistory();
+  historyStatusIconName(item: BridgeHistory): string {
+    if (this.isWaitingForAction(item)) {
+      return 'notifications-alert-triangle-24';
+    } else if (item.status === BridgeTxStatus.Failed) {
+      return 'basic-clear-X-24';
+    } else if (item.status === BridgeTxStatus.Done) {
+      return 'basic-check-marks-24';
+    } else {
+      return 'time-time-24';
+    }
   }
 
-  async handleRestoreHistory(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.getRestoredHistory();
-      await this.getRestoredFlag();
-      await this.getHistory();
-    });
+  historyStatusText(item: BridgeHistory): string {
+    if (this.isWaitingForAction(item)) {
+      return this.t('bridgeHistory.statusAction');
+    } else {
+      return '';
+    }
   }
 
   handleBack(): void {
     router.push({ name: PageNames.Bridge });
+  }
+
+  handleResetSearch(): void {
+    this.resetPage();
+    this.resetSearch();
   }
 }
 </script>
@@ -279,10 +285,11 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
 @include search-item('history--search');
 .history-item {
   display: flex;
+  align-items: center;
   margin-right: -#{$inner-spacing-small};
   margin-left: -#{$inner-spacing-small};
   min-height: $history-item-height;
-  padding: $inner-spacing-mini $inner-spacing-big;
+  padding: $inner-spacing-mini $inner-spacing-medium;
   border-radius: var(--s-border-radius-small);
 
   &:not(:first-child) {
@@ -314,7 +321,8 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   }
   &-title {
     line-height: var(--s-line-height-big);
-    word-break: break-all;
+    white-space: nowrap;
+
     .s-icon {
       &--network {
         margin-left: $separator-margin;
@@ -335,13 +343,40 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     color: var(--s-color-base-content-secondary);
     line-height: var(--s-line-height-mini);
   }
-  @include status-icon(true);
-  &-icon {
-    flex-shrink: 0;
-    align-self: flex-start;
-    margin-top: $inner-spacing-mini / 2;
-    margin-right: $inner-spacing-mini;
+  &-status {
+    display: flex;
+    align-items: center;
     margin-left: auto;
+    max-width: 25%;
+
+    &--success {
+      color: var(--s-color-status-success);
+    }
+    &--error {
+      color: var(--s-color-status-error);
+    }
+    &--warning {
+      color: var(--s-color-status-warning);
+    }
+    &--pending {
+      color: var(--s-color-base-content-secondary);
+    }
+
+    &-text {
+      text-transform: uppercase;
+      font-size: $s-heading3-caps-font-size;
+      line-height: var(--s-line-height-reset);
+      text-align: right;
+    }
+
+    &-icon {
+      flex-shrink: 0;
+      color: inherit;
+    }
+
+    &-text + &-icon {
+      margin-left: $inner-spacing-mini / 2;
+    }
   }
 }
 .el-pagination {

@@ -40,7 +40,10 @@
             "RemoveLiquidity": "{bedrag} {symbool} en {bedrag2} {symbool2} werden verwijderd",
             "CreatePair": "{bedrag} {symbool} en {bedrag2} {symbool2} werden geleverd",
             "RegisterAsset": "Geregistreerd {symbool} asset",
-            "ClaimRewards": "Beloning succesvol geclaimd {rewards}"
+            "ClaimRewards": "Beloning succesvol geclaimd {rewards}",
+            "ReferralReserveXor": "Bonded XOR met succes",
+            "ReferralUnreserveXor": "Unbonded XOR met succes",
+            "ReferralSetInvitedUser": "Verwijzing is succesvol ingesteld"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Het is niet gelukt om {amount} {symbol} en {amount2} {symbol2}",
             "CreatePair": "Kon {bedrag} {symbool} en {bedrag2} {symbool2} niet toevoegen",
             "RegisterAsset": "Mislukt om {symbool} asset te registreren",
-            "ClaimRewards": "Kan geen beloningen claimen {beloningen}"
-        }
+            "ClaimRewards": "Kan geen beloningen claimen {beloningen}",
+            "ReferralReserveXor": "Kan XOR niet binden",
+            "ReferralUnreserveXor": "Kan de obligatie niet ongedaan maken XOR",
+            "ReferralSetInvitedUser": "Kan verwijzing niet instellen"
+        },
+        "ReferralReserveXor": "Bond XOR",
+        "ReferralUnreserveXor": "Ontbonden XOR",
+        "ReferralSetInvitedUser": "Verwijzing instellen"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen Polkadot.js-extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
@@ -116,16 +125,17 @@
         "send": "@:sendText",
         "receive": "@:account.copy",
         "liquidity": "Liquiditeit toevoegen",
-        "bridge": "Brug",
+        "bridge": "Bridge",
         "copy": "Asset-ID kopiëren",
         "successCopy": "{symbool} Asset ID is gekopieerd naar het klembord",
         "copied": "Gekopieerd!",
         "balance": {
             "transferable": "Overdraagbaar",
             "frozen": "Bevroren",
-            "locked": " - Vergrendeld",
-            "reserved": " - Gereserveerd",
-            "total": "Totaal"
+            "locked": "- Vergrendeld",
+            "reserved": "- Gereserveerd",
+            "total": "Totaal",
+            "bonded": "- Gebonden"
         },
         "totalAssetsValue": "Totale waarde van bezittingen:",
         "details": "Details"
@@ -188,6 +198,45 @@
         "extensibleSupply": {
             "placeholder": "Uitbreidbaar aanbod",
             "desc": "Mogelijkheid om meer tokens te munten."
+        },
+        "titleCommon": "Creëren",
+        "confirmTokenTitleCommon": "Token maken",
+        "confirmTokenTitleNFT": "NFT maken",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Inhoud bieden",
+        "selectLocalFile": "Selecteer lokaal bestand",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Bron",
+                "value": "Lokale bestanden",
+                "limit": "Kies een ander bestand"
+            },
+            "link": {
+                "placeholder": "IPFS-link",
+                "copyLink": "Kopieer link",
+                "tooltip": "IPFS is een gedistribueerd systeem voor het opslaan en openen van bestanden, waardoor het mogelijk is om toegang te krijgen tot bestanden vanaf veel locaties die niet door één organisatie worden beheerd."
+            },
+            "image": {
+                "placeholderNoImage": "Upload het bestand door een link in te voeren of te kiezen uit lokale opslag",
+                "placeholderBadSource": "Het bestand kan niet worden verwerkt",
+                "placeholderBadSourceAddition": "of het is nog niet geüpload naar IPFS",
+                "placeholderFileLimit": "De bestandsgrootte overschrijdt de limiet van {value} mb"
+            },
+            "supply": {
+                "placeholder": "Tokenvoorraad",
+                "desc": "Het aantal NFT's dat u gaat krijgen.",
+                "quantity": "Hoeveelheid"
+            },
+            "description": {
+                "placeholder": "Omschrijving"
+            }
+        },
+        "enterTokenDescription": "Voer beschrijving in",
+        "divisible": {
+            "placeholder": "Deelbaar",
+            "desc": "Mogelijkheid van NFT om te verdelen in fractionele delen. Liquiditeitsvoorziening werkt alleen met deelbare activa"
         }
     },
     "transaction": {
@@ -218,7 +267,9 @@
             "sorascan": "Bekijk in Sorascan",
             "subscan": "Bekijk in Subscan"
         },
-        "txId": "Transactie ID"
+        "txId": "Transactie ID",
+        "referrer": "Verwijzer",
+        "referral": "Verwijzing"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -230,7 +281,7 @@
     "connectedText": "Verbonden",
     "connectWalletTextTooltip": "Maak verbinding met @:soraText Network met polkadot {.js}",
     "selectNodeText": "Selecteer node",
-    "bridgeText": "Brug",
+    "bridgeText": "Bridge",
     "disclaimer": "<span class=\"app-disclaimer__title\"> Disclaimer <\/span> : Deze website wordt onderhouden door de @:(soraText)-gemeenschap. Voordat u doorgaat met het gebruiken van deze website, dient u de @:polkaswapFaqLink en documentatie te lezen, die een gedetailleerde uitleg bevat over hoe Polkaswap werkt, evenals de @:memorandumLink en @:(privacyLink). Deze documenten zijn cruciaal voor een veilige en positieve gebruikerservaring. Door Polkaswap te gebruiken, erkent u deze documenten te hebben gelezen en begrepen. U erkent ook het volgende: 1) uw enige verantwoordelijkheid voor de naleving van alle wetten die van toepassing kunnen zijn op uw specifieke gebruik van Polkaswap in uw rechtsgebied; 2) uw begrip dat de huidige versie van Polkaswap een alfaversie is: deze is niet volledig getest en sommige functies werken mogelijk niet zoals bedoeld; en 3) uw begrip en vrijwillige aanvaarding van de risico's die verbonden zijn aan het gebruik van Polkaswap, inclusief, maar niet beperkt tot, het risico van verlies van tokens. Ga alsjeblieft niet verder zonder de @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"Polkaswap FAQ\">Polkaswap FAQ<\/a>",
     "poweredBy": "Powered by",
@@ -379,7 +430,7 @@
         "description": "Cross-chain uitwisseling van assets, eenvoudige creatie en notering van nieuwe assets en de gemakkelijkste swaps beschikbaar. De interoperabele toekomst van Polkadot is hier en wij lopen voorop!",
         "trading": {
             "title": "Sneller traden",
-            "first": "Polkaswap is een non-custodial, cross-chain AMM DEX-protocol voor het swappen van tokens op basis van Polkadot- en Kusama relay chains, Polkadot- en Kusama parachains en blockchains die rechtstreeks zijn verbonden via bruggen.",
+            "first": "Polkaswap is een non-custodial, cross-chain AMM DEX-protocol voor het swappen van tokens op basis van Polkadot- en Kusama relay chains, Polkadot- en Kusama parachains en blockchains die rechtstreeks zijn verbonden via Bridges.",
             "second": "Polkaswap verwijdert vertrouwde tussenpersonen en biedt de mogelijkheid tot sneller traden",
             "third": "Polkaswap is een community project en ontwikkelaars werken samen aan de open source code met behulp van de"
         },
@@ -461,7 +512,7 @@
         "strategicBonusApy": "Strategische Bonus APY"
     },
     "bridge": {
-        "title": "HASHI Brug",
+        "title": "HASHI Bridge",
         "info": "Converteer tokens tussen de @:(soraText)-en @:(ethereumText)-netwerken.",
         "balance": "Saldo",
         "connectWallet": "@:connectWalletText",
@@ -479,7 +530,7 @@
         "transactionMessage": "{assetA} voor {assetB}",
         "notRegisteredAsset": "Asset {assetSymbol} is niet geregistreerd",
         "selectNetwork": "Selecteer netwerk",
-        "networkInfo": "Brug @:soraText Netwerk met:",
+        "networkInfo": "Bridge @:soraText Netwerk met:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC"
     },
@@ -561,7 +612,8 @@
         "title": "Bridge-transactie",
         "expectedMetaMaskAddress": "Verwacht adres in Metamask:",
         "allowToken": "Sta @:appName toe om je {tokenSymbol}",
-        "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om het token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst."
+        "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om het token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst.",
+        "blocksLeft": "{count} blokken over..."
     },
     "bridgeHistory": {
         "title": "Geschiedenis",
@@ -569,7 +621,8 @@
         "clearHistory": "Geschiedenis wissen",
         "empty": "Uw transacties zullen hier verschijnen.",
         "filterPlaceholder": "Filter op Asset-ID of Tickersymbool",
-        "restoreHistory": "Geschiedenis herstellen"
+        "restoreHistory": "Geschiedenis herstellen",
+        "statusAction": "Actie nodig"
     },
     "selectToken": {
         "title": "Kies een token",
@@ -710,17 +763,19 @@
             "LiquidityProvision": "Vergoedingen verkregen uit liquiditeitsvoorziening",
             "BuyOnBondingCurve": "kopen van de TBC",
             "NftAirdrop": "NFT Airdrop",
-            "MarketMakerVolume": "Marktmaker",
-            "LiquidityProvisionFarming": "Landbouw"
+            "MarketMakerVolume": "Market Making",
+            "LiquidityProvisionFarming": "Farming"
         },
         "vested": "Gevestigde",
         "forText": "voor",
         "totalVested": "Totale beloningen",
-        "claimableAmountDoneVesting": "Opeisbaar bedrag (klaar onvoorwaardelijk)",
+        "claimableAmountDoneVesting": "Opeisbare beloningen",
         "groups": {
             "strategic": "Strategische beloningen",
             "external": "Beloningen voor het verbonden ethereum-account"
-        }
+        },
+        "Rewards": "Beloningen",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText provider",
@@ -753,15 +808,15 @@
         "notifications": {
             "success": {
                 "title": "Tokens gekocht",
-                "text": "Tokenaankoop is voltooid. De HASHI-bridgetransactie start automatisch zodra de tokens zijn ontvangen op het gekoppelde Ethereum-account. Het is veilig om dit venster te sluiten en Polkaswap te blijven gebruiken. Er komt een melding over de overbruggingstransactie wanneer deze gereed is."
+                "text": "Tokenaankoop is voltooid. De HASHI-bridgetransactie start automatisch zodra de tokens zijn ontvangen op het gekoppelde Ethereum-account. Het is veilig om dit venster te sluiten en Polkaswap te blijven gebruiken. Er komt een melding over de bridge transactie wanneer deze gereed is."
             },
             "supportError": {
                 "title": "Token niet ondersteund",
-                "text": "Helaas wordt het token gekocht via @:moonpayText nog niet ondersteund door de HASHI-brug in Polkaswap. Normaal gesproken zouden alleen de ondersteunde tokens beschikbaar moeten zijn voor aankoop via MoonPay in Polkaswap, dus er moet ergens iets mis zijn gegaan. Aarzel niet om de community op de hoogte te stellen van deze zaak in de <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Polkaswap Telegram-groep <\/a> ."
+                "text": "Helaas wordt het token gekocht via @:moonpayText nog niet ondersteund door de HASHI-bridge in Polkaswap. Normaal gesproken zouden alleen de ondersteunde tokens beschikbaar moeten zijn voor aankoop via MoonPay in Polkaswap, dus er moet ergens iets mis zijn gegaan. Aarzel niet om de community op de hoogte te stellen van deze zaak in de <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Polkaswap Telegram-groep <\/a> ."
             },
             "feeError": {
                 "title": "Niet genoeg ETH voor de bridge tx",
-                "text": "Helaas is de HASHI-brugtransactie mislukt omdat er niet genoeg ETH is om de transactiekosten van het Ethereum-netwerk te betalen. Voeg meer ETH toe en probeer het opnieuw."
+                "text": "Helaas is de HASHI-bridge transactie mislukt omdat er niet genoeg ETH is om de transactiekosten van het Ethereum-netwerk te betalen. Voeg meer ETH toe en probeer het opnieuw."
             },
             "transactionError": {
                 "title": "Transactie is mislukt",
@@ -769,25 +824,25 @@
             },
             "amountError": {
                 "title": "Onvoldoende balans",
-                "text": "Helaas is de HASHI-brugtransactie mislukt omdat er niet genoeg tokens zijn voor de transactie. Controleer uw Ethereum-accountsaldo en probeer het opnieuw."
+                "text": "Helaas is de HASHI-bridgetransactie mislukt omdat er niet genoeg tokens zijn voor de transactie. Controleer uw Ethereum-accountsaldo en probeer het opnieuw."
             },
             "accountAddressError": {
                 "title": "Verkeerd Ethereum-account",
-                "text": "Helaas is de HASHI-brugtransactie mislukt omdat het adres van de ontvanger van de tokens in de @:moonpayText bestelling niet overeenkomt met uw huidige Ethereum-accountadres. Schakel het Ethereum-account in extensie en probeer het opnieuw."
+                "text": "Helaas is de HASHI-bridgetransactie mislukt omdat het adres van de ontvanger van de tokens in de @:moonpayText bestelling niet overeenkomt met uw huidige Ethereum-accountadres. Verander het Ethereum-account in de extensie en probeer het opnieuw."
             }
         },
         "buttons": {
             "buy": "Kopen",
             "history": "Geschiedenis",
-            "transfer": "Brug starten",
+            "transfer": "Bridge starten",
             "view": "Bridgetransactie transactie bekijken"
         },
         "history": {
-            "title": "Aankoop geschiedenis",
+            "title": "Aankoopgeschiedenis",
             "empty": "Geen informatie"
         },
         "confirmations": {
-            "txReady": "Transactie klaar voor brug"
+            "txReady": "Transactie klaar voor bridge"
         },
         "tooltips": {
             "transfer": "Tokens succesvol gekocht!\n Klik om de bridge transactie te starten"
@@ -807,7 +862,7 @@
     "sentText": "Verzonden",
     "learnMoreText": "Kom meer te weten",
     "marketMakerCountdown": {
-        "title": "Market Maker aftellen",
+        "title": "Market Maker Countdown",
         "blocks": "blokken",
         "daysLeft": "resterende dagen",
         "txs": "TX's",
@@ -820,5 +875,48 @@
         "payoff": "Je zou de Bridge moeten gebruiken om XOR van andere netwerken te krijgen, XOR van een ander SORA-account te ontvangen, of een ander token dat al in je account staat om te wisselen naar XOR.",
         "button": "Ja, ik begrijp het risico"
     },
-    "blockNumberText": "Bloknummer"
+    "blockNumberText": "Bloknummer",
+    "referralProgram": {
+        "title": "Referral Program",
+        "connectAccount": "Om gebruikers uit te nodigen, moet u uw SORA-account koppelen.",
+        "bondedXOR": "XOR Gebonden",
+        "referralsNumber": "{number} verwijzingen",
+        "startInviting": "Bind een willekeurig bedrag aan XOR om uit te nodigen.",
+        "preview": "Nodig nieuwe gebruikers uit en ontvang 10% van hun transactiekosten.<br \/>Om te beginnen, borg elk bedrag van XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Meer informatie<\/a>",
+        "deposit": "Storting",
+        "balance": "Saldo",
+        "networkFee": "@:netwerkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Onvoldoende gebonden saldo",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Voer het bedrag van {tokenSymbol}",
+            "startInviting": "Bond {tokenSymbol} om te beginnen met uitnodigen",
+            "bondMore": "Bond Meer",
+            "bond": "Bond",
+            "unbond": "Ontkoppelen",
+            "copyLink": "Kopieer link"
+        },
+        "transactionDetails": "Transactiegegevens",
+        "receivedRewards": "Beloningen ontvangen",
+        "invitationLink": "Uitnodiging link",
+        "successCopy": "Verwijzingslink wordt gekopieerd naar het klembord",
+        "bondTitle": "Bond XOR",
+        "unbondTitle": "Ontbonden XOR",
+        "confirm": {
+            "text": "Bevestigen",
+            "bond": "Bevestig obligatie",
+            "unbond": "Ontbinding bevestigen",
+            "inviteTitle": "Je bent uitgenodigd voor Polkaswap",
+            "inviteDescription": "Voor elke transactie gaat 10% van de vergoeding naar uw verwijzer, zonder extra kosten voor u.",
+            "signInvitation": "Goedkeuren",
+            "freeOfCharge": "Deze actie is gratis",
+            "hasReferrerTitle": "Je hebt je verwijzer al ingesteld",
+            "hasReferrerDescription": "Helaas kun je er maar één instellen",
+            "ok": "OK"
+        }
+    },
+    "transactionDetailsText": "Transactie Details",
+    "createTokenTextNFT": "NFT maken"
 }

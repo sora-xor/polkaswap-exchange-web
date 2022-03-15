@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Fjernet {amount} {symbol} og {amount2} {symbol2}",
             "CreatePair": "Levert {amount} {symbol} og {amount2} {symbol2}",
             "RegisterAsset": "Registrert {symbol} aktivum",
-            "ClaimRewards": "Innhenting av belønning var vellykket {rewards}"
+            "ClaimRewards": "Innhenting av belønning var vellykket {rewards}",
+            "ReferralReserveXor": "Bondet XOR vellykket",
+            "ReferralUnreserveXor": "Ubundet XOR vellykket",
+            "ReferralSetInvitedUser": "Henvisning er satt"
         },
         "error": {
             "Transfer": "Kunne ikke sende {amount} {symbol} til {address}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Kunne ikke fjerne {amount} {symbol} og {amount2} {symbol2}",
             "CreatePair": "Kunne ikke levere {amount} {symbol} og {amount2} {symbol2}",
             "RegisterAsset": "Kunne ikke registrere {symbol} ressurs",
-            "ClaimRewards": "Kunne ikke kreve belønninger {rewards}"
-        }
+            "ClaimRewards": "Kunne ikke kreve belønninger {rewards}",
+            "ReferralReserveXor": "Kunne ikke binde XOR",
+            "ReferralUnreserveXor": "Kunne ikke frigjøre XOR",
+            "ReferralSetInvitedUser": "Kunne ikke angi henvisning"
+        },
+        "ReferralReserveXor": "Knytte bånd XOR",
+        "ReferralUnreserveXor": "Koble ut XOR",
+        "ReferralSetInvitedUser": "Angi henvisning"
     },
     "polkadotjs": {
         "noExtensions": "Finner ingen Polkadot.js utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -125,7 +134,8 @@
             "frozen": "Fryst",
             "locked": "- Låst",
             "reserved": "- Reservert",
-            "total": "Totalt"
+            "total": "Totalt",
+            "bonded": "- Bundet"
         },
         "totalAssetsValue": "Totalverdi aktiva:",
         "details": "Detaljer"
@@ -188,6 +198,45 @@
         "extensibleSupply": {
             "placeholder": "Utvidbar forsyning",
             "desc": "Evne til å lage flere tokens."
+        },
+        "titleCommon": "Skape",
+        "confirmTokenTitleCommon": "Opprett token",
+        "confirmTokenTitleNFT": "Lag NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Gi innhold",
+        "selectLocalFile": "Velg lokal fil",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Kilde",
+                "value": "Lokale filer",
+                "limit": "Velg en annen fil"
+            },
+            "link": {
+                "placeholder": "IPFS-kobling",
+                "copyLink": "Kopier link",
+                "tooltip": "IPFS er et distribuert system for lagring og tilgang til filer, som gjør det mulig å få tilgang til filer fra mange steder som ikke administreres av én organisasjon."
+            },
+            "image": {
+                "placeholderNoImage": "Last opp filen ved enten å skrive inn en lenke eller velge fra lokal lagring",
+                "placeholderBadSource": "Filen kunne ikke behandles",
+                "placeholderBadSourceAddition": "eller det er ikke lastet opp til IPFS ennå",
+                "placeholderFileLimit": "Filstørrelsen overskrider grensen på {value} mb"
+            },
+            "supply": {
+                "placeholder": "Token forsyning",
+                "desc": "Antall NFT-er du kommer til å få.",
+                "quantity": "Mengde"
+            },
+            "description": {
+                "placeholder": "Beskrivelse"
+            }
+        },
+        "enterTokenDescription": "Skriv inn beskrivelse",
+        "divisible": {
+            "placeholder": "Delelig",
+            "desc": "NFTs evne til å dele opp i brøkdeler. Likviditetsavsetning fungerer kun med delbare eiendeler"
         }
     },
     "transaction": {
@@ -218,7 +267,9 @@
             "sorascan": "Vis i SORAScan",
             "subscan": "Vis i Subscan"
         },
-        "txId": "Transaksjons ID"
+        "txId": "Transaksjons ID",
+        "referrer": "Henviser",
+        "referral": "Henvisning"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -561,7 +612,8 @@
         "title": "Bro Transaksjon",
         "expectedMetaMaskAddress": "Forventet adresse i MetaMask:",
         "allowToken": "Tillat @:appName å bruke {tokenSymbol}",
-        "approveToken": "Vær oppmerksom på at det bare er nødvendig å godkjenne tokenet én gang. Hvis utvidelsen din har flere forespørsler om godkjenning av token, må du bare bekrefte den siste mens du avviser resten."
+        "approveToken": "Vær oppmerksom på at det bare er nødvendig å godkjenne tokenet én gang. Hvis utvidelsen din har flere forespørsler om godkjenning av token, må du bare bekrefte den siste mens du avviser resten.",
+        "blocksLeft": "{count} blokker igjen..."
     },
     "bridgeHistory": {
         "title": "Historie",
@@ -569,7 +621,8 @@
         "clearHistory": "Slett historikk",
         "empty": "Transaksjonene dine vises her.",
         "filterPlaceholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol",
-        "restoreHistory": "Gjenopprett historikk"
+        "restoreHistory": "Gjenopprett historikk",
+        "statusAction": "Handling nødvendig"
     },
     "selectToken": {
         "title": "Velg token",
@@ -720,7 +773,9 @@
         "groups": {
             "strategic": "Strategiske belønninger",
             "external": "Belønninger for tilkoblet ethereum konto"
-        }
+        },
+        "Rewards": "Belønninger",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText leverandør",
@@ -820,5 +875,48 @@
         "payoff": "Du må bruke broen for å få XOR fra andre nettverk, få tilsendt XOR fra en annen SORA-konto, eller bytte et hvilket som helst annet token som allerede er på kontoen din til XOR.",
         "button": "Ja, jeg forstår risikoen"
     },
-    "blockNumberText": "Blokknummer"
+    "blockNumberText": "Blokknummer",
+    "referralProgram": {
+        "title": "Referral Program",
+        "connectAccount": "For å invitere brukere må du koble til SORA-kontoen din.",
+        "bondedXOR": "XOR Bundet",
+        "referralsNumber": "{number}-henvisninger",
+        "startInviting": "For å begynne å invitere, bind en hvilken som helst mengde XOR.",
+        "preview": "Inviter nye brukere og få 10% fra deres transaksjonsgebyrer.<br \/>For å starte, obligasjon et hvilket som helst beløp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Lær mer<\/a>",
+        "deposit": "Innskudd",
+        "balance": "Balanse",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Utilstrekkelig bundet balanse",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Angi mengden {tokenSymbol}",
+            "startInviting": "Bond {tokenSymbol} for å begynne å invitere",
+            "bondMore": "Bond mer",
+            "bond": "Knytte bånd",
+            "unbond": "Koble ut",
+            "copyLink": "Kopier link"
+        },
+        "transactionDetails": "Transaksjonsdetaljer",
+        "receivedRewards": "Mottatte belønninger",
+        "invitationLink": "Invitasjonslenke",
+        "successCopy": "Henvisningslenken er kopiert til utklippstavlen",
+        "bondTitle": "Knytte bånd XOR",
+        "unbondTitle": "Koble ut XOR",
+        "confirm": {
+            "text": "Bekrefte",
+            "bond": "Bekreft obligasjon",
+            "unbond": "Bekreft frigjøring",
+            "inviteTitle": "Du har blitt invitert til Polkaswap",
+            "inviteDescription": "For hver transaksjon vil 10% av gebyret gå til din henvisning, uten ekstra kostnad for deg.",
+            "signInvitation": "Vedta",
+            "freeOfCharge": "Denne handlingen er gratis",
+            "hasReferrerTitle": "Du har allerede angitt henvisningsadressen din",
+            "hasReferrerDescription": "Dessverre kan du bare angi én",
+            "ok": "OK"
+        }
+    },
+    "transactionDetailsText": "Transaksjonsdetaljer",
+    "createTokenTextNFT": "Lag NFT"
 }

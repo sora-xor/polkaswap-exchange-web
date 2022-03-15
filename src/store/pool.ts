@@ -5,7 +5,7 @@ import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import type { Subscription } from '@polkadot/x-rxjs';
-import type { AccountLiquidity } from '@sora-substrate/util';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import { waitForAccountPair } from '@/utils';
 
@@ -75,7 +75,7 @@ const actions = {
     if (!rootGetters.isLoggedIn) return;
 
     await waitForAccountPair(() => {
-      const userPoolsSubscription = api.getUserPoolsSubscription();
+      const userPoolsSubscription = api.poolXyk.getUserPoolsSubscription();
       commit(types.SET_ACCOUNT_LIQUIDITY_LIST, userPoolsSubscription);
     });
   },
@@ -85,8 +85,8 @@ const actions = {
     if (!rootGetters.isLoggedIn) return;
 
     await waitForAccountPair(() => {
-      const liquidityUpdatedSubscription = api.liquidityUpdated.subscribe(() => {
-        commit(types.SET_ACCOUNT_LIQUIDITY, api.accountLiquidity);
+      const liquidityUpdatedSubscription = api.poolXyk.updated.subscribe(() => {
+        commit(types.SET_ACCOUNT_LIQUIDITY, api.poolXyk.accountLiquidity);
       });
 
       commit(types.SET_ACCOUNT_LIQUIDITY_UPDATES, liquidityUpdatedSubscription);
@@ -96,7 +96,7 @@ const actions = {
     commit(types.RESET_ACCOUNT_LIQUIDITY_LIST);
     commit(types.RESET_ACCOUNT_LIQUIDITY_UPDATES);
     commit(types.SET_ACCOUNT_LIQUIDITY, []); // reset account liquidity
-    api.unsubscribeFromAllLiquidityUpdates();
+    api.poolXyk.unsubscribeFromAllUpdates();
   },
 };
 

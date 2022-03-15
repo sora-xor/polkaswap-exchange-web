@@ -21,13 +21,7 @@
       {{ t('removeLiquidity.outputMessage', { slippageTolerance: formatStringValue(`${slippageTolerance}`) }) }}
     </p>
     <s-divider />
-    <info-line :label="t('removeLiquidity.shareOfPool')" :value="`${shareOfPool}%`" />
-    <info-line
-      :label="t('removeLiquidity.price')"
-      :value="`1 ${firstToken.symbol} = ${formatStringValue(priceReversed)}`"
-      :asset-symbol="secondToken.symbol"
-    />
-    <info-line :value="`1 ${secondToken.symbol} = ${formatStringValue(price)}`" :asset-symbol="firstToken.symbol" />
+    <remove-liquidity-transaction-details />
     <template #footer>
       <s-button
         type="primary"
@@ -45,7 +39,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import type { Asset } from '@sora-substrate/util';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
@@ -59,7 +53,7 @@ const namespace = 'removeLiquidity';
   components: {
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
-    InfoLine: components.InfoLine,
+    RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
   },
 })
 export default class ConfirmRemoveLiquidity extends Mixins(

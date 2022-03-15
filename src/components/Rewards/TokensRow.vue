@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { KnownSymbols } from '@sora-substrate/util';
+import type { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
 import { lazyComponent } from '@/router';
 import { Components, LogoSize } from '@/consts';

@@ -78,10 +78,9 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Action, State, Getter } from 'vuex-class';
-import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web';
-import { BridgeHistory } from '@sora-substrate/util';
+import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
+import type { BridgeHistory } from '@sora-substrate/util';
 
-import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
 
@@ -107,7 +106,7 @@ const DetailsView = 'details';
     MoonpayWidget: lazyComponent(Components.MoonpayWidget),
   },
 })
-export default class MoonpayHistory extends Mixins(PaginationSearchMixin, MoonpayBridgeInitMixin) {
+export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin, MoonpayBridgeInitMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
   @State((state) => state[namespace].transactions) transactions!: Array<MoonpayTransaction>;
@@ -119,7 +118,7 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
 
   private unwatchEthereum!: VoidFunction;
 
-  pageAmount = 5;
+  pageAmount = 5; // override PaginationSearchMixin
   currentView = HistoryView;
   selectedItem: any = {};
 

@@ -86,9 +86,9 @@
 
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator';
-import { RewardInfo } from '@sora-substrate/util';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type { RewardInfo } from '@sora-substrate/util/build/rewards/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards';
@@ -148,6 +148,8 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
 </script>
 
 <style lang="scss">
+$tooltip-placements: 'left', 'right';
+
 .amount-table {
   & .el-checkbox {
     color: inherit;
@@ -207,8 +209,10 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
     font-size: var(--s-font-size-medium);
     font-weight: 600;
     margin-right: auto;
+
     &-icon {
       margin-left: $inner-spacing-mini / 2;
+      color: var(--s-color-base-content-tertiary);
     }
   }
 
@@ -229,10 +233,12 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
     background-color: var(--s-color-status-success);
     padding: $inner-spacing-mini $inner-spacing-small;
 
-    &[x-placement^='right'] .popper__arrow {
-      border-right-color: var(--s-color-base-border-secondary);
-      &:after {
-        border-right-color: var(--s-color-status-success);
+    @each $placement in $tooltip-placements {
+      &[x-placement^='#{$placement}'] .popper__arrow {
+        border-#{$placement}-color: var(--s-color-base-border-secondary);
+        &:after {
+          border-#{$placement}-color: var(--s-color-status-success);
+        }
       }
     }
   }

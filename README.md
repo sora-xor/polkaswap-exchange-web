@@ -50,10 +50,32 @@ yarn test:unit
 yarn test:e2e
 ```
 
+### Run all tests
+```
+yarn test:all
+```
+
 ### Lints and fixes files
 ```
 yarn lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Desktop scripts
+
+### Compiles and hot-reloads for development
+```
+yarn electron:serve
+```
+
+### Compiles and minifies for production
+```
+yarn electron:build
+```
+
+### Build for all platforms
+
+```
+yarn electron:build --linux --mac zip dmg --win portable --x64 --ia32
+```
+
+Executable files (`.exe`, `.dmg` or `.snap`) will be located in `dist_electron` folder.
