@@ -21,9 +21,9 @@
       />
       <p class="gradient trading">{{ t('about.trading.title') }}</p>
       <p class="text" style="margin-top: 15px">{{ t('about.trading.first') }}</p>
-      <s-image :src="images.about02_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px" />
+      <s-image :src="images.about02_1" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
       <p class="text">{{ t('about.trading.second') }}</p>
-      <s-image :src="images.about02_2" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px" />
+      <s-image :src="images.about02_2" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
       <p class="text">
         {{ t('about.trading.third') }}
         <a
@@ -46,9 +46,9 @@
       />
       <p class="gradient liquidity">{{ t('about.liquidity.title') }}</p>
       <p class="text" style="margin-top: 15px">{{ t('about.liquidity.first') }}</p>
-      <s-image :src="images.about03_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px" />
+      <s-image :src="images.about03_1" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
       <p class="text">{{ t('about.liquidity.second') }}</p>
-      <s-image :src="images.about03_2" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px" />
+      <s-image :src="images.about03_2" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
       <p class="text">{{ t('about.liquidity.third') }}</p>
 
       <s-image
@@ -61,9 +61,9 @@
       />
       <p class="gradient swap">{{ t('about.swap.title') }}</p>
       <p class="text" style="margin-top: 15px">{{ t('about.swap.first') }}</p>
-      <s-image :src="images.about04_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px" />
+      <s-image :src="images.about04_1" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
       <p class="text">{{ t('about.swap.second') }}</p>
-      <s-image :src="images.about04_2" lazy draggable="false" class="unselectable bubble-icon" style="height: 280px" />
+      <s-image :src="images.about04_2" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
       <p class="text">{{ t('about.swap.third') }}</p>
 
       <s-image
@@ -76,7 +76,7 @@
       />
       <p class="gradient pswap">{{ t('about.pswap.title') }}</p>
       <p class="text">{{ t('about.pswap.first') }}</p>
-      <s-image :src="images.about05_1" lazy draggable="false" class="unselectable bubble-icon" style="height: 281px" />
+      <s-image :src="images.about05_1" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
       <p class="text" style="margin-bottom: 120px">{{ t('about.pswap.second', { percent: feePercent }) }}</p>
 
       <div class="about-video" style="margin-bottom: 120px">
@@ -203,6 +203,12 @@ export default class About extends Mixins(TranslationMixin) {
       width: 100%;
     }
   }
+
+  .bubble-icon {
+    width: 150px;
+    margin-top: calc(var(--s-basic-spacing) * 2);
+    margin-bottom: calc(var(--s-basic-spacing) * -0.75);
+  }
 }
 </style>
 
@@ -247,14 +253,6 @@ export default class About extends Mixins(TranslationMixin) {
 .bubble-block {
   display: flex;
   align-items: center;
-
-  & > :first-child {
-    max-width: 120px;
-  }
-
-  .bubble-icon {
-    width: 30%;
-  }
 }
 
 .about {
@@ -602,9 +600,6 @@ export default class About extends Mixins(TranslationMixin) {
 
 .content p {
   max-width: 640px;
-}
-.content .s-image.bubble-icon {
-  margin: -60px;
 }
 
 .app-footer {

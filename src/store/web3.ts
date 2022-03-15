@@ -4,7 +4,8 @@ import flatMap from 'lodash/fp/flatMap';
 import concat from 'lodash/fp/concat';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
-import { FPNumber, BridgeNetworks, KnownAssets } from '@sora-substrate/util';
+import { ethers } from 'ethers';
+import { FPNumber, BridgeNetworks } from '@sora-substrate/util';
 
 import { bridgeApi } from '@/utils/bridge';
 import ethersUtil, {
@@ -16,11 +17,8 @@ import ethersUtil, {
   SubNetwork,
   OtherContractType,
 } from '@/utils/ethers-util';
-import { ZeroStringValue, EthereumGasLimits } from '@/consts';
+import { ZeroStringValue } from '@/consts';
 import { isEthereumAddress } from '@/utils';
-import { ethers } from 'ethers';
-
-import type { Asset, CodecString } from '@sora-substrate/util';
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -29,30 +27,20 @@ const types = flow(
     'SET_ETHEREUM_SMART_CONTRACTS',
     'SET_ENERGY_SMART_CONTRACTS',
     'SET_EVM_BALANCE',
-    'SET_DEFAULT_NETWORK_TYPE',
     'SET_SUB_NETWORKS',
     'SET_ENV_NETWORK',
   ]),
   map((x) => [x, x]),
   fromPairs
-)([
-  'CONNECT_EVM_WALLET',
-  'SWITCH_EVM_WALLET',
-  'SET_NETWORK_TYPE',
-  'DISCONNECT_EVM_WALLET',
-  'GET_BALANCE',
-  'GET_EVM_TOKEN_ADDRESS',
-  'GET_ALLOWANCE',
-]);
+)(['CONNECT_EVM_WALLET', 'SWITCH_EVM_WALLET', 'SET_NETWORK_TYPE', 'DISCONNECT_EVM_WALLET']);
 
 function initialState() {
   return {
     evmAddress: ethersUtil.getEvmUserAddress(),
     evmBalance: ZeroStringValue,
     networkType: ethersUtil.getEvmNetworkTypeFromStorage(),
-    defaultNetworkType: BridgeNetworks.ETH_NETWORK_ID,
     subNetworks: [],
-    evmNetwork: 0,
+    evmNetwork: BridgeNetworks.ETH_NETWORK_ID,
     contractAddress: {
       [BridgeNetworks.ETH_NETWORK_ID]: {
         XOR: '',
@@ -91,30 +79,21 @@ const getters = {
   evmAddress(state) {
     return state.evmAddress;
   },
-  evmBalance(state) {
-    return state.evmBalance;
-  },
-  networkType(state) {
-    return state.networkType;
-  },
   defaultNetworkType(state) {
-    return state.defaultNetworkType;
-  },
-  subNetworks(state) {
-    return state.subNetworks;
+    return state.subNetworks?.find((network) => network.id === state.evmNetwork)?.defaultType;
   },
   evmNetwork(state) {
     return state.evmNetwork;
   },
-  isValidNetworkType(state) {
-    return state.networkType === state.defaultNetworkType;
+  isValidNetworkType(state, getters) {
+    return state.networkType === getters.defaultNetworkType;
   },
 };
 
 const mutations = {
   [types.RESET](state) {
     // we shouldn't reset networks, setted from env & contracts
-    const networkSettingsKeys = ['defaultNetworkType', 'contractAddress', 'subNetworks', 'smartContracts'];
+    const networkSettingsKeys = ['contractAddress', 'subNetworks', 'smartContracts'];
     const s = initialState();
 
     Object.keys(s)
@@ -142,10 +121,6 @@ const mutations = {
   },
   [types.SET_NETWORK_TYPE_FAILURE]() {},
 
-  [types.SET_DEFAULT_NETWORK_TYPE](state, networkType) {
-    state.defaultNetworkType = networkType;
-  },
-
   [types.SET_SUB_NETWORKS](state, networks) {
     state.subNetworks = networks;
   },
@@ -153,12 +128,6 @@ const mutations = {
   [types.SET_ENV_NETWORK](state, network) {
     state.evmNetwork = network;
   },
-
-  [types.SET_NETWORK_TYPE_REQUEST]() {},
-  [types.SET_NETWORK_TYPE_SUCCESS](state, network) {
-    state.networkType = network;
-  },
-  [types.SET_NETWORK_TYPE_FAILURE]() {},
 
   [types.DISCONNECT_EVM_WALLET_REQUEST]() {},
   [types.DISCONNECT_EVM_WALLET_SUCCESS](state) {
@@ -191,45 +160,27 @@ const mutations = {
   [types.SET_EVM_BALANCE](state, balance) {
     state.evmBalance = balance;
   },
-
-  [types.GET_BALANCE_REQUEST](state) {},
-  [types.GET_BALANCE_SUCCESS](state) {},
-  [types.GET_BALANCE_FAILURE](state) {},
-
-  [types.GET_EVM_TOKEN_ADDRESS_REQUEST](state) {},
-  [types.GET_EVM_TOKEN_ADDRESS_SUCCESS](state) {},
-  [types.GET_EVM_TOKEN_ADDRESS_FAILURE](state) {},
-
-  [types.GET_ALLOWANCE_REQUEST](state) {},
-  [types.GET_ALLOWANCE_SUCCESS](state) {},
-  [types.GET_ALLOWANCE_FAILURE](state) {},
 };
 
 const actions = {
-  async connectExternalAccount({ commit, getters, dispatch }, { provider }) {
+  async connectExternalAccount({ commit }, { provider }) {
     commit(types.CONNECT_EVM_WALLET_REQUEST);
     try {
       const address = await ethersUtil.onConnect({ provider });
       ethersUtil.storeEvmUserAddress(address);
       commit(types.CONNECT_EVM_WALLET_SUCCESS, address);
-
-      // get ethereum balance
-      await dispatch('getEvmBalance');
     } catch (error) {
       commit(types.CONNECT_EVM_WALLET_FAILURE);
       throw error;
     }
   },
 
-  async switchExternalAccount({ commit, dispatch }, { address = '' } = {}) {
+  async switchExternalAccount({ commit }, { address = '' } = {}) {
     commit(types.SWITCH_EVM_WALLET_REQUEST);
     try {
       ethersUtil.removeEvmUserAddress();
       ethersUtil.storeEvmUserAddress(address);
       commit(types.SWITCH_EVM_WALLET_SUCCESS, address);
-
-      // get ethereum balance
-      await dispatch('getEvmBalance');
     } catch (error) {
       commit(types.SWITCH_EVM_WALLET_FAILURE);
       throw error;
@@ -240,15 +191,9 @@ const actions = {
     commit(types.SET_SUB_NETWORKS, subNetworks);
   },
 
-  async setEvmNetwork({ commit, dispatch }, networkId: BridgeNetworks) {
+  async setEvmNetwork({ commit }, networkId: BridgeNetworks) {
     bridgeApi.externalNetwork = networkId;
-    await dispatch('setDefaultNetworkType', networkId);
     commit(types.SET_ENV_NETWORK, networkId);
-  },
-
-  async setDefaultNetworkType({ commit, getters }, networkId: BridgeNetworks) {
-    const network: SubNetwork | undefined = getters.subNetworks.find((network: SubNetwork) => network.id === networkId);
-    commit(types.SET_DEFAULT_NETWORK_TYPE, network?.defaultType);
   },
 
   async setEvmNetworkType({ commit }, network) {
@@ -275,7 +220,7 @@ const actions = {
     }
   },
 
-  async setSmartContracts({ commit, dispatch }, subNetworks: Array<SubNetwork>) {
+  async setSmartContracts({ dispatch }, subNetworks: Array<SubNetwork>) {
     for (const network of subNetworks) {
       switch (network.id) {
         case BridgeNetworks.ETH_NETWORK_ID:
@@ -322,26 +267,6 @@ const actions = {
     });
   },
 
-  /**
-   * Fetch EVM Network fee for passed asset
-   */
-  async getEvmNetworkFee(_, { asset, isSoraToEvm }: { asset: Asset; isSoraToEvm: boolean }): Promise<CodecString> {
-    try {
-      const ethersInstance = await ethersUtil.getEthersInstance();
-      const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
-      const isKnownAsset = !!KnownAssets.get(asset.address);
-      const gasLimits = EthereumGasLimits[+isSoraToEvm];
-      const key = isKnownAsset && asset.symbol in gasLimits ? asset.symbol : KnownBridgeAsset.Other;
-      const gasLimit = gasLimits[key];
-      const fpFee = FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasLimit)).toCodecString();
-
-      return fpFee;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  },
-
   async getEvmBalance({ commit, getters }) {
     let value = ZeroStringValue;
     try {
@@ -361,14 +286,13 @@ const actions = {
     return value;
   },
 
-  async getBalanceByEvmAddress({ commit, getters, dispatch }, { address }) {
+  async getBalanceByEvmAddress({ getters, dispatch }, { address }) {
     let value = ZeroStringValue;
     let decimals = 18;
     const account = getters.evmAddress;
     if (!account) {
       return { value, decimals };
     }
-    commit(types.GET_BALANCE_REQUEST);
     try {
       const ethersInstance = await ethersUtil.getEthersInstance();
       const isNativeEvmToken = isEthereumAddress(address);
@@ -381,19 +305,16 @@ const actions = {
         decimals = await tokenInstance.decimals();
         value = FPNumber.fromCodecValue(balance._hex, +decimals).toCodecString();
       }
-      commit(types.GET_BALANCE_SUCCESS);
     } catch (error) {
       console.error(`There was a problem with "${address}" token registration flow`, error);
-      commit(types.GET_BALANCE_FAILURE);
     }
 
     return { value, decimals };
   },
-  async getEvmTokenAddressByAssetId({ commit, getters }, { address }) {
-    commit(types.GET_EVM_TOKEN_ADDRESS_REQUEST);
+
+  async getEvmTokenAddressByAssetId({ getters }, { address }) {
     try {
       if (!address) {
-        commit(types.GET_EVM_TOKEN_ADDRESS_SUCCESS);
         return '';
       }
       const ethersInstance = await ethersUtil.getEthersInstance();
@@ -402,16 +323,14 @@ const actions = {
       const contractInstance = new ethers.Contract(contractAddress, contractAbi, ethersInstance.getSigner());
       const methodArgs = [address];
       const externalAddress = await contractInstance._sidechainTokens(...methodArgs);
-      commit(types.GET_EVM_TOKEN_ADDRESS_SUCCESS);
       return externalAddress;
     } catch (error) {
       console.error(error);
-      commit(types.GET_EVM_TOKEN_ADDRESS_FAILURE);
       return '';
     }
   },
-  async getAllowanceByEvmAddress({ commit, getters }, { address }) {
-    commit(types.GET_ALLOWANCE_REQUEST);
+
+  async getAllowanceByEvmAddress({ getters }, { address }) {
     try {
       const contractAddress = getters.contractAddress(KnownBridgeAsset.Other);
       const ethersInstance = await ethersUtil.getEthersInstance();
@@ -419,11 +338,9 @@ const actions = {
       const account = getters.evmAddress;
       const methodArgs = [account, contractAddress];
       const allowance = await tokenInstance.allowance(...methodArgs);
-      commit(types.GET_ALLOWANCE_SUCCESS);
       return FPNumber.fromCodecValue(allowance._hex).toString();
     } catch (error) {
       console.error(error);
-      commit(types.GET_ALLOWANCE_FAILURE);
       throw error;
     }
   },

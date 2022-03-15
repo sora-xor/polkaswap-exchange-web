@@ -7,7 +7,7 @@
     "importText": "Importar",
     "settingsText": "Ajustes",
     "addAssetText": "Añadir Activo",
-    "createTokenText": "Crear token",
+    "createTokenText": "Crear",
     "comingSoonText": "Próximamente",
     "successText": "Éxito",
     "warningText": "Advertencia",
@@ -40,7 +40,10 @@
             "RemoveLiquidity": "Se eliminó {amount} {symbol} y {amount2} {symbol2}",
             "CreatePair": "Se proporcionó {amount} {symbol} y {amount2} {symbol2}",
             "RegisterAsset": "Activo {symbol} registrado",
-            "ClaimRewards": "{rewards} Recompensa reclamada correctamente"
+            "ClaimRewards": "{rewards} Recompensa reclamada correctamente",
+            "ReferralReserveXor": "XOR viculado con éxito",
+            "ReferralUnreserveXor": "XOR desvinculado con éxito",
+            "ReferralSetInvitedUser": "La referencia se estableció correctamente"
         },
         "error": {
             "Transfer": "Fallo en {acción} {importe} {símbolo} {dirección} {dirección}",
@@ -49,8 +52,14 @@
             "RemoveLiquidity": "Fallo al eliminar {amount} {symbol} y {amount2} {symbol2}",
             "CreatePair": "Fallo al suministrar {amount} {symbol} y {amount2} {symbol2}",
             "RegisterAsset": "Fallo al registrar el Activo {symbol}",
-            "ClaimRewards": "Fallo al reclamar Recompensas {rewards}"
-        }
+            "ClaimRewards": "Fallo al reclamar Recompensas {rewards}",
+            "ReferralReserveXor": "Error al vincular XOR",
+            "ReferralUnreserveXor": "Error al desvincular XOR",
+            "ReferralSetInvitedUser": "No se pudo establecer la referencia"
+        },
+        "ReferralReserveXor": "Vincular XOR",
+        "ReferralUnreserveXor": "Desvincular XOR",
+        "ReferralSetInvitedUser": "Establecer referencia"
     },
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión Polkadot.js. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
@@ -125,7 +134,8 @@
             "frozen": "Congelado",
             "locked": "- Bloqueado",
             "reserved": "- Reservado",
-            "total": "Total"
+            "total": "Total",
+            "bonded": "- Vinculado"
         },
         "totalAssetsValue": "El valor total de sus activos:",
         "details": "Detalles"
@@ -188,6 +198,45 @@
         "extensibleSupply": {
             "placeholder": "Suministro extensible",
             "desc": "habilidad de acuñar más Tokens."
+        },
+        "titleCommon": "Crear",
+        "confirmTokenTitleCommon": "Crear token",
+        "confirmTokenTitleNFT": "Crear NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Proporcionar contenido",
+        "selectLocalFile": "Seleccionar archivo local",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Fuente",
+                "value": "Archivos locales",
+                "limit": "Elige otro archivo"
+            },
+            "link": {
+                "placeholder": "enlace IPFS",
+                "copyLink": "Copiar enlace",
+                "tooltip": "IPFS es un sistema distribuido para almacenar y acceder a archivos, lo que hace posible acceder a archivos desde muchas ubicaciones que no están administradas por una organización."
+            },
+            "image": {
+                "placeholderNoImage": "Cargue el archivo ingresando un enlace o eligiendo desde el almacenamiento local",
+                "placeholderBadSource": "No se pudo procesar el archivo",
+                "placeholderBadSourceAddition": "o aún no está subido a IPFS",
+                "placeholderFileLimit": "El tamaño del archivo excede el límite de {value} mb"
+            },
+            "supply": {
+                "placeholder": "Suministro de tokens",
+                "desc": "Cantidad de NFT que obtendrá.",
+                "quantity": "Cantidad"
+            },
+            "description": {
+                "placeholder": "Descripción"
+            }
+        },
+        "enterTokenDescription": "Introduce la descripción",
+        "divisible": {
+            "placeholder": "Divisible",
+            "desc": "Capacidad de NFT para dividir en partes fraccionarias. La provisión de liquidez solo funciona con activos divisibles"
         }
     },
     "transaction": {
@@ -218,7 +267,9 @@
             "sorascan": "Ver en SORAscan",
             "subscan": "Ver en Subscan"
         },
-        "txId": "ID de transacción"
+        "txId": "ID de transacción",
+        "referrer": "Referente",
+        "referral": "Referencia"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -231,7 +282,7 @@
     "connectWalletTextTooltip": "Conectar a la Red @:soraText con polkadot{.js}",
     "selectNodeText": "Seleccione el nodo de red",
     "bridgeText": "Puente",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Descargo de responsabilidad<\/span>: Este sitio web es mantenido por la comunidad @:(soraText). Antes de continuar utilizando este sitio web, por favor revise el @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre el funcionamiento de Polkaswap, así como el @:memorandumLink, y el @:(privacyLink). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de Polkaswap, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡por favor no continúe sin leer el @:polkaswapFaqLink, el @:memorandumLink y el @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Aviso legal<\/span>: Este sitio web es mantenido por la comunidad @:(soraText). Antes de continuar utilizando este sitio web, por favor revise las @:polkaswapFaqLink y la documentación, que incluye una explicación detallada sobre el funcionamiento de Polkaswap, así como el @:memorandumLink, y la @:(privacyLink). Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar Polkaswap, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de Polkaswap en su jurisdicción legal; 2) su comprensión de que la versión actual de Polkaswap es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de Polkaswap, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡por favor no continúe sin leer el @:polkaswapFaqLink, las @:memorandumLink y la @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Desarrollado por",
     "confirmTransactionText": "Confirmar transacción en {direction}",
@@ -453,7 +504,7 @@
         "addLiquidity": "Añadir Liquidez",
         "removeLiquidity": "Remover Liquidez",
         "createPair": "Crear un par",
-        "pooledToken": "{tokenSymbol} Mancomunado",
+        "pooledToken": "{tokenSymbol} Agrupado",
         "pairTokens": "{pair} Tokens del Fondo común",
         "poolShare": "Su Participación en el Fondo común",
         "unknownAsset": "Activo desconocido",
@@ -561,7 +612,8 @@
         "title": "Transacción puente",
         "expectedMetaMaskAddress": "Dirección esperada en @:metamask",
         "allowToken": "Permitir que @:appName utilice su {tokenSymbol}",
-        "approveToken": "Tenga en cuenta que sólo es necesario aprobar el token una vez. Si su extensión tiene varias solicitudes de aprobación de tokens, asegúrese de confirmar solo la última y rechazar el resto."
+        "approveToken": "Tenga en cuenta que sólo es necesario aprobar el token una vez. Si su extensión tiene varias solicitudes de aprobación de tokens, asegúrese de confirmar solo la última y rechazar el resto.",
+        "blocksLeft": "{count} bloques faltantes"
     },
     "bridgeHistory": {
         "title": "Historial",
@@ -569,7 +621,8 @@
         "clearHistory": "Limpiar historial",
         "empty": "Sus transacciones aparecerán aquí.",
         "filterPlaceholder": "Filtrar por ID del Activo o el símbolo bursátil (ticker)",
-        "restoreHistory": "Restaurar historial"
+        "restoreHistory": "Restaurar historial",
+        "statusAction": "Acción necesaria"
     },
     "selectToken": {
         "title": "Seleccione un token",
@@ -655,7 +708,7 @@
         "port": "PUERTO",
         "min": "MIN",
         "marketAlgorithms": {
-            "SMART": "El enrutamiento de liquidez<span class=\"algorithm\">SMART<\/span> asegura el mejor precio para cualquier transacción combinando sólo las mejores opciones de precio de todos los mercados disponibles. Cuando esté disponible, se utilizará la Curva de Vinculación de Tokens (<span class=\"algorithm\">TBC<\/span>) para la Liquidez siempre que el precio del Activo sea más asequible que el de otras fuentes, sobre las que se utiliza el Fondo común <span class=\"algorithm\">XYK<\/span>.",
+            "SMART": "El enrutamiento de liquidez <span class=\"algorithm\">SMART<\/span> asegura el mejor precio para cualquier transacción combinando sólo las mejores opciones de precio de todos los mercados disponibles. Cuando esté disponible, se utilizará la Curva de Vinculación de Tokens (<span class=\"algorithm\">TBC<\/span>) para la Liquidez siempre que el precio del Activo sea más asequible que el de otras fuentes, sobre las que se utiliza el Fondo común <span class=\"algorithm\">XYK<\/span>.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> — comprar sólo en la Curva de Vinculación de Tokens (Mercado primario). Existe la posibilidad de que el precio se vuelva desfavorable en comparación con el Fondo común <span class=\"algorithm\">XYK<\/span> (Mercado secundario), pero el valor recibido de las Recompensas adquiridas podría resultar mucho más favorable con el tiempo.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — comprar sólo en el Fondo común XYK (Mercado secundario). Intercambio del Fondo común tradicional XYK."
         }
@@ -720,7 +773,9 @@
         "groups": {
             "strategic": "Recompensas estratégicas",
             "external": "Recompensas para la cuenta de Ethereum conectada"
-        }
+        },
+        "Rewards": "Recompensas",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText proveedor",
@@ -820,5 +875,48 @@
         "payoff": "Tendrías que utilizar el Puente para obtener XOR de otras redes, conseguir que te envíen XOR desde otra cuenta SORA, o cambiar cualquier otro token que ya tengas en tu cuenta por XOR.",
         "button": "Si, entiendo el riesgo"
     },
-    "blockNumberText": "Número de bloque"
+    "blockNumberText": "Número de bloque",
+    "referralProgram": {
+        "title": "Referral Program",
+        "connectAccount": "Para invitar a usuarios, debe conectar su cuenta SORA.",
+        "bondedXOR": "XOR Vinculado",
+        "referralsNumber": "{number} referencias",
+        "startInviting": "Para comenzar a invitar, vincule cualquier cantidad de XOR.",
+        "preview": "Invite a nuevos usuarios y obtenga el 10% de sus tarifas de transacción.<br \/>Para comenzar, vincule cualquier cantidad de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Más información<\/a>",
+        "deposit": "Depositar",
+        "balance": "balance",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "balance vinculado insuficiente",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Ingrese la cantidad de {tokenSymbol}",
+            "startInviting": "Vincula {tokenSymbol} para comenzar a invitar",
+            "bondMore": "Vincular más",
+            "bond": "Vinculación",
+            "unbond": "Desvinculación",
+            "copyLink": "Copiar enlace"
+        },
+        "transactionDetails": "Detalles de la transacción",
+        "receivedRewards": "Recompensas recibidas",
+        "invitationLink": "Enlace de invitación",
+        "successCopy": "El enlace de referencia se copia en el portapapeles",
+        "bondTitle": "Vincular XOR",
+        "unbondTitle": "Desvincular XOR",
+        "confirm": {
+            "text": "Confirmar",
+            "bond": "Confirmar vinculación",
+            "unbond": "Confirmar desvinculación",
+            "inviteTitle": "Has sido invitado a Polkaswap",
+            "inviteDescription": "Por cada transacción, el 10% de la tarifa se destinará a su referente, sin ningún costo adicional para usted.",
+            "signInvitation": "Aprobar",
+            "freeOfCharge": "Esta acción es gratuita",
+            "hasReferrerTitle": "Ya has configurado tu referente",
+            "hasReferrerDescription": "Desafortunadamente, solo puedes configurar uno",
+            "ok": "OK"
+        }
+    },
+    "transactionDetailsText": "Detalles de la transacción",
+    "createTokenTextNFT": "Crear NFT"
 }

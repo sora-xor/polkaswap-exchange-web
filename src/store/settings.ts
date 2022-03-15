@@ -20,10 +20,6 @@ import { updateFpNumberLocale, updateDocumentTitle } from '@/utils';
 
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 
-export type ApiKeysObject = {
-  [key: string]: string;
-};
-
 const NODE_CONNECTION_TIMEOUT = 60000;
 
 const types = flow(
@@ -38,8 +34,8 @@ const types = flow(
     'RESET_NODE',
     'SET_NETWORK_CHAIN_GENESIS_HASH',
     'SET_SELECT_NODE_DIALOG_VISIBILIY',
+    'SET_SELECT_LANGUAGE_DIALOG_VISIBILIY',
     'SET_LANGUAGE',
-    'SET_API_KEYS',
     'SET_FEATURE_FLAGS',
     'SET_BLOCK_NUMBER',
     'SET_BLOCK_NUMBER_UPDATES',
@@ -51,7 +47,6 @@ const types = flow(
 
 function initialState() {
   return {
-    apiKeys: {},
     featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: storage.get('marketAlgorithm') || DefaultMarketAlgorithm,
@@ -65,6 +60,7 @@ function initialState() {
     chainGenesisHash: '',
     faucetUrl: '',
     selectNodeDialogVisibility: false,
+    selectLanguageDialogVisibility: false,
     blockNumber: 0,
     blockNumberUpdates: null,
   };
@@ -97,8 +93,11 @@ const getters = {
   language(state) {
     return state.language;
   },
-  moonpayEnabled(state) {
-    return !!state.apiKeys.moonpay && !!state.featureFlags.moonpay;
+  moonpayApiKey(state, getters, rootState, rootGetters) {
+    return rootState.Settings.apiKeys.moonpay;
+  },
+  moonpayEnabled(state, getters) {
+    return !!getters.moonpayApiKey && !!state.featureFlags.moonpay;
   },
   blockNumber(state): number {
     return state.blockNumber;
@@ -149,15 +148,15 @@ const mutations = {
   [types.SET_FAUCET_URL](state, url) {
     state.faucetUrl = url;
   },
-  [types.SET_SELECT_NODE_DIALOG_VISIBILIY](state, flag) {
+  [types.SET_SELECT_NODE_DIALOG_VISIBILIY](state, flag: boolean) {
     state.selectNodeDialogVisibility = flag;
+  },
+  [types.SET_SELECT_LANGUAGE_DIALOG_VISIBILIY](state, flag: boolean) {
+    state.selectLanguageDialogVisibility = flag;
   },
   [types.SET_LANGUAGE](state, lang: Language) {
     state.language = lang;
     settingsStorage.set('language', lang);
-  },
-  [types.SET_API_KEYS](state, keys = {}) {
-    state.apiKeys = { ...state.apiKeys, ...keys };
   },
   [types.SET_FEATURE_FLAGS](state, featureFlags = {}) {
     state.featureFlags = { ...state.featureFlags, ...featureFlags };
@@ -191,8 +190,6 @@ const actions = {
       if (!rootGetters.isWalletLoaded) {
         try {
           await initWallet({ permissions: WalletPermissions });
-          // TODO [tech]: maybe we should replace it, cuz it executes twice except bridge screens
-          await dispatch('assets/getAssets', undefined, { root: true });
         } catch (error) {
           console.error(error);
           throw error;
@@ -229,7 +226,7 @@ const actions = {
     const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting;
 
     const connectionOnDisconnected = async () => {
-      await connection.close();
+      await connection.close(false);
 
       if (typeof onDisconnect === 'function') {
         onDisconnect(node as Node);
@@ -265,7 +262,7 @@ const actions = {
 
       await dispatch('setBlockNumber');
 
-      const nodeChainGenesisHash = connection.api.genesisHash.toHex();
+      const nodeChainGenesisHash = connection.api?.genesisHash.toHex();
 
       // if connected node is custom node, we should check genesis hash
       if (!isTrustedEndpoint) {
@@ -355,6 +352,9 @@ const actions = {
   setSelectNodeDialogVisibility({ commit }, flag: boolean) {
     commit(types.SET_SELECT_NODE_DIALOG_VISIBILIY, flag);
   },
+  setSelectLanguageDialogVisibility({ commit }, flag: boolean) {
+    commit(types.SET_SELECT_LANGUAGE_DIALOG_VISIBILIY, flag);
+  },
   async setLanguage({ commit }, lang: Language) {
     const locale = getSupportedLocale(lang);
     // we should import dayjs locale first, then i18n
@@ -365,16 +365,13 @@ const actions = {
     updateFpNumberLocale(locale);
     commit(types.SET_LANGUAGE, locale);
   },
-  setApiKeys({ commit }, keys) {
-    commit(types.SET_API_KEYS, keys);
-  },
   setFeatureFlags({ commit }, featureFlags) {
     commit(types.SET_FEATURE_FLAGS, featureFlags);
   },
   setBlockNumber({ commit }) {
     commit(types.RESET_BLOCK_NUMBER_UPDATES);
 
-    const blockNumberSubscription = api.getSystemBlockNumberObservable().subscribe((blockNumber) => {
+    const blockNumberSubscription = api.system.getBlockNumberObservable().subscribe((blockNumber) => {
       commit(types.SET_BLOCK_NUMBER, Number(blockNumber));
     });
 
