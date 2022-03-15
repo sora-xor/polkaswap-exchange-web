@@ -113,6 +113,7 @@ export enum PageNames {
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
+  Charts = 'Charts',
   MoonpayHistory = 'MoonpayHistory',
 }
 
@@ -171,6 +172,7 @@ export enum Components {
   RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
+  Charts = 'Charts',
 }
 
 export enum RewardsTabsItems {

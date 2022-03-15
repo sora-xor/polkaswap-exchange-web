@@ -136,6 +136,11 @@ const routes: Array<RouteConfig> = [
     ],
   },
   {
+    path: '/charts',
+    name: PageNames.Charts,
+    component: lazyView(PageNames.Charts),
+  },
+  {
     path: '/tokens',
     name: PageNames.Tokens,
     component: lazyView(PageNames.Tokens),
