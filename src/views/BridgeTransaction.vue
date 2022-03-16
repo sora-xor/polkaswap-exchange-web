@@ -172,7 +172,10 @@
                 <span v-if="isTransactionFromCompleted" :class="secondTxIconStatusClasses" />
               </div>
             </template>
-            <div v-if="isSoraToEvm && !isTxEvmAccount" class="transaction-error">
+            <div
+              v-if="isSoraToEvm && !isTxEvmAccount && !isTransactionToPending && !isTransactionToCompleted"
+              class="transaction-error"
+            >
               <span class="transaction-error__title">{{ t('bridgeTransaction.expectedMetaMaskAddress') }}</span>
               <span class="transaction-error__value">{{ transactionEvmAddress }}</span>
             </div>
