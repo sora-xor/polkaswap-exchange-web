@@ -102,8 +102,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action('getReferral', { namespace: 'referrals' }) getReferral!: (invitedUserId: string) => Promise<void>;
   @Action('setReferral', { namespace: 'referrals' }) setReferral!: (value: string) => Promise<void>;
   @Watch('firstReadyTransaction', { deep: true })
-  private handleNotifyAboutTransaction(value: History): void {
-    this.handleChangeTransaction(value);
+  private handleNotifyAboutTransaction(value: History, oldValue: History): void {
+    this.handleChangeTransaction(value, oldValue);
   }
 
   @Watch('nodeIsConnected')
