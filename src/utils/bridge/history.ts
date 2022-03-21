@@ -231,7 +231,11 @@ export class EthBridgeHistory {
       const to = isOutgoing ? historyElementData.sidechainAddress : recieptData?.from;
       const ethereumNetworkFee = recieptData?.ethereumNetworkFee;
       const blockHeight = ethereumTx ? String(ethereumTx.blockNumber) : undefined;
-      const evmTimestamp = ethereumTx?.timestamp ? ethereumTx.timestamp * 1000 : Date.now();
+      const evmTimestamp = ethereumTx?.timestamp
+        ? ethereumTx.timestamp * 1000
+        : ethereumTx?.blockNumber
+        ? (await ethersUtil.getBlock(ethereumTx.blockNumber)).timestamp * 1000
+        : Date.now();
 
       const [startTime, endTime] = isOutgoing ? [soraTimestamp, evmTimestamp] : [evmTimestamp, soraTimestamp];
 
