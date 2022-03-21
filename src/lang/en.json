@@ -918,5 +918,11 @@
         }
     },
     "transactionDetailsText": "Transaction Details",
-    "createTokenTextNFT": "Create NFT"
+    "createTokenTextNFT": "Create NFT",
+    "charts": {
+        "title": "Charts",
+        "candlestick": "Show Candlestick type",
+        "chartTitle": "Token {assetSymbol} historical prices",
+        "date": "Date"
+    }
 }

@@ -1,30 +1,32 @@
 <template>
-  <div class="container" v-loading="parentLoading">
-    <generic-page-header :title="t('charts')" class="page-header-title--tokens" />
-    <v-chart class="chart" :option="option" />
-    <v-chart class="chart" :option="optionCandleStick" />
+  <div class="container container--charts" v-loading="parentLoading">
+    <generic-page-header :title="t('charts.title')" class="page-header-title--tokens" />
+    <div class="charts-confirm">
+      <s-switch v-model="isCandlestickType" :disabled="loading" />
+      <span>{{ t('charts.candlestick') }}</span>
+    </div>
+    <v-chart class="chart" :option="isCandlestickType ? optionCandleStick : chartData" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { mixins, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
+import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { CodecString } from '@sora-substrate/util';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
 import SortButton from '@/components/SortButton.vue';
 
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart, CandlestickChart } from 'echarts/charts';
 import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
-import VChart, { THEME_KEY } from 'vue-echarts';
+import VChart from 'vue-echarts';
 
 use([CanvasRenderer, LineChart, CandlestickChart, TitleComponent, TooltipComponent, LegendComponent]);
 
@@ -34,29 +36,45 @@ use([CanvasRenderer, LineChart, CandlestickChart, TitleComponent, TooltipCompone
     SortButton,
     VChart,
   },
-  provide: {
-    // [THEME_KEY]: 'dark',
-  },
 })
-export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin, AssetsSearchMixin) {
-  get option(): any {
+export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin, mixins.NumberFormatterMixin) {
+  isCandlestickType = true;
+  // Set XOR asset as default
+  currentAsset: Asset = KnownAssets.get(KnownSymbols.XOR);
+  chartSeriesData: number[] = [];
+  chartXAxisData: string[] = [];
+  candleChartXAxisData: string[] = [];
+  candleStickSeriesData: Array<Array<number>> = [];
+  candleTimeStep = 4;
+
+  yAxeLimits = {
+    min: 45,
+    max: 70,
+  };
+
+  get chartTitle(): string {
+    return this.t('charts.chartTitle', { assetSymbol: this.currentAsset?.symbol });
+  }
+
+  get chartData(): any {
     return {
       title: {
-        text: `Asset price`,
+        text: this.chartTitle,
       },
       xAxis: {
         type: 'category',
-        name: 'Date',
-        data: this.getGraphDates(7),
+        name: this.t('charts.date'),
+        data: this.chartXAxisData,
       },
       yAxis: {
         type: 'value',
+        min: this.yAxeLimits.min,
+        max: this.yAxeLimits.max,
       },
       series: [
         {
           type: 'line',
-          name: 'Price',
-          data: [1, 4, 2, 5, 4, 2, 2, 5, 4],
+          data: this.chartSeriesData,
         },
       ],
     };
@@ -65,21 +83,19 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
   get optionCandleStick(): any {
     return {
       title: {
-        text: `Asset price`,
+        text: this.chartTitle,
       },
       xAxis: {
-        data: ['2017-10-24', '2017-10-25', '2017-10-26', '2017-10-27'],
+        data: this.candleChartXAxisData,
       },
-      yAxis: {},
+      yAxis: {
+        min: this.yAxeLimits.min,
+        max: this.yAxeLimits.max,
+      },
       series: [
         {
           type: 'candlestick',
-          data: [
-            [20, 34, 10, 38],
-            [40, 35, 30, 50],
-            [31, 38, 33, 44],
-            [38, 15, 5, 42],
-          ],
+          data: this.candleStickSeriesData,
         },
       ],
     };
@@ -87,19 +103,53 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
 
   created() {
     this.withApi(async () => {
-      // add charts subquery call here
-      // const pricesData = await SubqueryExplorerService;
+      try {
+        const data = await SubqueryExplorerService.getHistoricalPriceForAsset(this.currentAsset.address, 100);
+        if (data) {
+          const prices = Object.entries(data).reverse();
+
+          // Sort prices to identify min and max yAxe values
+          const sortedPrices = [...prices];
+          sortedPrices.sort((a, b) => {
+            return +a[1] - +b[1];
+          });
+
+          this.yAxeLimits.min = Math.round(+this.getFPNumberFromCodec(sortedPrices[0][1])) - 1;
+          this.yAxeLimits.max = Math.round(+this.getFPNumberFromCodec(sortedPrices[sortedPrices.length - 1][1])) + 1;
+
+          const closeIndex = this.candleTimeStep - 1;
+          for (let i = 0; i < prices.length; i++) {
+            const date = new Date(+prices[i][0]);
+            this.chartXAxisData.push(`
+              ${date.getUTCDate()}/${this.formatDateItem(date.getUTCMonth() + 1)}
+              ${this.formatDateItem(date.getUTCHours())}:${this.formatDateItem(date.getUTCMinutes())}
+            `);
+            this.chartSeriesData.push(this.formatPrice(prices[i][1]));
+
+            if ((i === 0 || i % closeIndex === 0) && i + closeIndex - 1 < prices.length - 2) {
+              this.candleChartXAxisData.push(this.chartXAxisData[i]);
+              const mediumPrices = [...prices.slice(i + 1, i + closeIndex - 1)].map((item) => item[1]).sort();
+              this.candleStickSeriesData.push([
+                this.formatPrice(prices[i + closeIndex][1]),
+                this.formatPrice(prices[i][1]),
+                this.formatPrice(mediumPrices[mediumPrices.length - 1]),
+                this.formatPrice(mediumPrices[0]),
+              ]);
+            }
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
     });
   }
 
-  getGraphDates(daysNumber?: number): Array<string> {
-    const now = new Date();
-    const days: Array<string> = [];
-    for (let i = daysNumber || 7; i > 0; i--) {
-      const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-      days.push(`${date.getUTCDate()}/${date.getUTCMonth()}/${date.getUTCFullYear().toString().substr(-2, 2)}`);
-    }
-    return days;
+  formatPrice(price: any): number {
+    return +this.getFPNumberFromCodec((price as CodecString).toString());
+  }
+
+  formatDateItem(dateItem: number): string {
+    return (dateItem.toString().length < 2 ? '0' : '') + dateItem;
   }
 }
 </script>
@@ -108,5 +158,12 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
 .chart {
   margin-top: 32px;
   height: 400px;
+}
+.charts-confirm {
+  display: flex;
+  align-items: center;
+  .s-switch {
+    margin-right: $inner-spacing-mini;
+  }
 }
 </style>
