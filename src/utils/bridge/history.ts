@@ -65,12 +65,14 @@ export class EthBridgeHistory {
     this.etherscanInstance = new ethers.providers.EtherscanProvider(network, this.etherscanApiKey);
   }
 
-  private async getEthStartBlock(timestamp: number) {
+  private async getEthStartBlock(timestampMs: number): Promise<number> {
+    const timestamp = Math.round(timestampMs / 1000); // in seconds
+
     if (!this.ethStartBlock[timestamp]) {
       this.ethStartBlock[timestamp] = +(await this.etherscanInstance.fetch('block', {
         action: 'getblocknobytime',
         closest: 'before',
-        timestamp: Math.round(timestamp / 1000),
+        timestamp,
       }));
     }
     return this.ethStartBlock[timestamp];
