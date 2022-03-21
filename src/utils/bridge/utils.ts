@@ -243,3 +243,15 @@ export const getEvmTxRecieptByHash = async (
     return null;
   }
 };
+
+export const getSoraBlockTimestamp = async (blockHash: string): Promise<number> => {
+  const timestamp = (await bridgeApi.api.query.timestamp.now.at(blockHash)).toNumber();
+
+  return timestamp;
+};
+
+export const getSoraBlockHash = async (blockNumber: number): Promise<string> => {
+  const hash = (await bridgeApi.api.rpc.chain.getBlockHash(blockNumber)).toString();
+
+  return hash;
+};
