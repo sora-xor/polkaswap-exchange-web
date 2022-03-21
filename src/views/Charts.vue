@@ -2,15 +2,25 @@
   <div class="container container--charts" v-loading="parentLoading">
     <generic-page-header :title="t('charts.title')" class="page-header-title--tokens" />
     <div class="charts-confirm">
-      <s-switch v-model="isCandlestickType" :disabled="loading" />
-      <span>{{ t('charts.candlestick') }}</span>
+      <div class="charts-confirm-settings">
+        <div class="line">
+          <s-switch v-model="isCandlestickType" :disabled="loading" />
+          <span>{{ t('charts.candlestick') }}</span>
+        </div>
+        <div v-if="isCandlestickType" class="line">
+          <s-radio-group v-model="candleTimeStep">
+            <s-radio v-for="step in candleTimeSteps" :key="step" :label="step" :value="step" size="medium" />
+          </s-radio-group>
+          <span>{{ t('charts.candleTimeStep') }}</span>
+        </div>
+      </div>
     </div>
     <v-chart class="chart" :option="isCandlestickType ? optionCandleStick : chartData" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { mixins, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
@@ -38,19 +48,26 @@ use([CanvasRenderer, LineChart, CandlestickChart, TitleComponent, TooltipCompone
   },
 })
 export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin, mixins.NumberFormatterMixin) {
-  isCandlestickType = true;
+  isCandlestickType = false;
   // Set XOR asset as default
+  prices: Array<[string, any]> = [];
   currentAsset: Asset = KnownAssets.get(KnownSymbols.XOR);
   chartSeriesData: number[] = [];
   chartXAxisData: string[] = [];
   candleChartXAxisData: string[] = [];
   candleStickSeriesData: Array<Array<number>> = [];
-  candleTimeStep = 4;
+  candleTimeSteps = [4, 8, 12, 24];
+  candleTimeStep = this.candleTimeSteps[0];
 
   yAxeLimits = {
     min: 45,
     max: 70,
   };
+
+  @Watch('candleTimeStep')
+  private handleChangeTimeStep(value: number): void {
+    this.updateCandleGraph();
+  }
 
   get chartTitle(): string {
     return this.t('charts.chartTitle', { assetSymbol: this.currentAsset?.symbol });
@@ -106,10 +123,9 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
       try {
         const data = await SubqueryExplorerService.getHistoricalPriceForAsset(this.currentAsset.address, 100);
         if (data) {
-          const prices = Object.entries(data).reverse();
-
+          this.prices = Object.entries(data).reverse();
           // Sort prices to identify min and max yAxe values
-          const sortedPrices = [...prices];
+          const sortedPrices = [...this.prices];
           sortedPrices.sort((a, b) => {
             return +a[1] - +b[1];
           });
@@ -117,31 +133,46 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
           this.yAxeLimits.min = Math.round(+this.getFPNumberFromCodec(sortedPrices[0][1])) - 1;
           this.yAxeLimits.max = Math.round(+this.getFPNumberFromCodec(sortedPrices[sortedPrices.length - 1][1])) + 1;
 
-          const closeIndex = this.candleTimeStep - 1;
-          for (let i = 0; i < prices.length; i++) {
-            const date = new Date(+prices[i][0]);
-            this.chartXAxisData.push(`
-              ${date.getUTCDate()}/${this.formatDateItem(date.getUTCMonth() + 1)}
-              ${this.formatDateItem(date.getUTCHours())}:${this.formatDateItem(date.getUTCMinutes())}
-            `);
-            this.chartSeriesData.push(this.formatPrice(prices[i][1]));
-
-            if ((i === 0 || i % closeIndex === 0) && i + closeIndex - 1 < prices.length - 2) {
-              this.candleChartXAxisData.push(this.chartXAxisData[i]);
-              const mediumPrices = [...prices.slice(i + 1, i + closeIndex - 1)].map((item) => item[1]).sort();
-              this.candleStickSeriesData.push([
-                this.formatPrice(prices[i + closeIndex][1]),
-                this.formatPrice(prices[i][1]),
-                this.formatPrice(mediumPrices[mediumPrices.length - 1]),
-                this.formatPrice(mediumPrices[0]),
-              ]);
-            }
-          }
+          this.updateGraphs();
+          this.updateCandleGraph();
         }
       } catch (error) {
         console.error(error);
       }
     });
+  }
+
+  updateGraphs(): void {
+    const closeIndex = this.candleTimeStep - 1;
+    for (let i = 0; i < this.prices.length; i++) {
+      const date = new Date(+this.prices[i][0]);
+      this.chartXAxisData.push(`
+        ${date.getUTCDate()}/${this.formatDateItem(date.getUTCMonth() + 1)}
+        ${this.formatDateItem(date.getUTCHours())}:${this.formatDateItem(date.getUTCMinutes())}
+      `);
+      this.chartSeriesData.push(this.formatPrice(this.prices[i][1]));
+      this.updateCandleGraph();
+    }
+  }
+
+  updateCandleGraph(): void {
+    if (this.candleChartXAxisData.length) {
+      this.candleChartXAxisData = [];
+      this.candleStickSeriesData = [];
+    }
+    const closeIndex = this.candleTimeStep - 1;
+    for (let i = 0; i < this.prices.length; i++) {
+      if ((i === 0 || i % closeIndex === 0) && i + closeIndex - 1 < this.prices.length - 2) {
+        this.candleChartXAxisData.push(this.chartXAxisData[i]);
+        const mediumPrices = [...this.prices.slice(i + 1, i + closeIndex - 1)].map((item) => item[1]).sort();
+        this.candleStickSeriesData.push([
+          this.formatPrice(this.prices[i + closeIndex][1]),
+          this.formatPrice(this.prices[i][1]),
+          this.formatPrice(mediumPrices[mediumPrices.length - 1]),
+          this.formatPrice(mediumPrices[0]),
+        ]);
+      }
+    }
   }
 
   formatPrice(price: any): number {
@@ -164,6 +195,30 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
   align-items: center;
   .s-switch {
     margin-right: $inner-spacing-mini;
+  }
+  &-settings {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    .line {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      &:first-child {
+        margin-bottom: $inner-spacing-medium;
+        + .line {
+          height: 32px;
+          margin-bottom: -40px;
+          margin-top: -#{$inner-spacing-mini};
+        }
+      }
+    }
+    .el-radio {
+      margin-right: $inner-spacing-mini;
+      &-group {
+        display: flex;
+      }
+    }
   }
 }
 </style>
