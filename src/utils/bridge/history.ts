@@ -8,7 +8,13 @@ import { SubqueryExplorerService, historyElementsFilter, SUBQUERY_TYPES } from '
 import ethersUtil from '@/utils/ethers-util';
 import { bridgeApi } from './api';
 import { STATES } from './types';
-import { isOutgoingTransaction, getSoraHashByEthereumHash, getEvmTxRecieptByHash } from './utils';
+import {
+  isOutgoingTransaction,
+  getSoraHashByEthereumHash,
+  getEvmTxRecieptByHash,
+  getSoraBlockHash,
+  getSoraBlockTimestamp,
+} from './utils';
 import { ZeroStringValue } from '@/consts';
 
 import type { BridgeHistory, NetworkFeesObject, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';
@@ -64,7 +70,7 @@ export class EthBridgeHistory {
       this.ethStartBlock[timestamp] = +(await this.etherscanInstance.fetch('block', {
         action: 'getblocknobytime',
         closest: 'before',
-        timestamp,
+        timestamp: Math.round(timestamp / 1000),
       }));
     }
     return this.ethStartBlock[timestamp];
@@ -116,6 +122,20 @@ export class EthBridgeHistory {
       buffer[data] = true;
       return buffer;
     }, {});
+  }
+
+  private async getFromTimestamp(historyElements: HistoryElement[]) {
+    const historyElement = last(historyElements) as HistoryElement;
+
+    // if the last item is Incoming trasfer, timestamp will be sora network start time
+    if (historyElement.module === SUBQUERY_TYPES.ModuleNames.BridgeMultisig) {
+      const soraStartBlock = await getSoraBlockHash(1);
+      const soraStartTimestamp = await getSoraBlockTimestamp(soraStartBlock);
+
+      return soraStartTimestamp;
+    }
+
+    return historyElement.timestamp * 1000;
   }
 
   public async findEthTxBySoraHash(
@@ -188,7 +208,7 @@ export class EthBridgeHistory {
 
     const { externalNetwork } = this;
 
-    const fromTimestamp = last(historyElements)?.timestamp as number;
+    const fromTimestamp = await this.getFromTimestamp(historyElements);
     const historySyncTimestampUpdated = first(historyElements)?.timestamp as number;
 
     for (const historyElement of historyElements) {
