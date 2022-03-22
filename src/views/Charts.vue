@@ -1,17 +1,17 @@
 <template>
   <div class="container container--charts" v-loading="parentLoading">
-    <generic-page-header :title="t('charts.title')" class="page-header-title--tokens" />
+    <generic-page-header title="Charts" class="page-header-title--tokens" />
     <div class="charts-confirm">
       <div class="charts-confirm-settings">
         <div class="line">
           <s-switch v-model="isCandlestickType" :disabled="loading" />
-          <span>{{ t('charts.candlestick') }}</span>
+          <span>Show Candlestick type</span>
         </div>
         <div v-if="isCandlestickType" class="line">
           <s-radio-group v-model="candleTimeStep">
             <s-radio v-for="step in candleTimeSteps" :key="step" :label="step" :value="step" size="medium" />
           </s-radio-group>
-          <span>{{ t('charts.candleTimeStep') }}</span>
+          <span>Candle Time Step</span>
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
   }
 
   get chartTitle(): string {
-    return this.t('charts.chartTitle', { assetSymbol: this.currentAsset?.symbol });
+    return `Token ${this.currentAsset?.symbol} historical prices`;
   }
 
   get chartData(): any {
@@ -80,7 +80,7 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
       },
       xAxis: {
         type: 'category',
-        name: this.t('charts.date'),
+        name: 'Date',
         data: this.chartXAxisData,
       },
       yAxis: {
@@ -144,26 +144,20 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
           this.yAxeLimits.min = Math.round(+this.getFPNumberFromCodec(sortedPrices[0][1])) - 1;
           this.yAxeLimits.max = Math.round(+this.getFPNumberFromCodec(sortedPrices[sortedPrices.length - 1][1])) + 1;
 
-          this.updateGraphs();
-          this.updateCandleGraph();
+          for (let i = 0; i < this.prices.length; i++) {
+            const date = new Date(+this.prices[i][0]);
+            this.chartXAxisData.push(`
+              ${date.getUTCDate()}/${this.formatDateItem(date.getUTCMonth() + 1)}
+              ${this.formatDateItem(date.getUTCHours())}:${this.formatDateItem(date.getUTCMinutes())}
+            `);
+            this.chartSeriesData.push(this.formatPrice(this.prices[i][1]));
+            this.updateCandleGraph();
+          }
         }
       } catch (error) {
         console.error(error);
       }
     });
-  }
-
-  updateGraphs(): void {
-    const closeIndex = this.candleTimeStep - 1;
-    for (let i = 0; i < this.prices.length; i++) {
-      const date = new Date(+this.prices[i][0]);
-      this.chartXAxisData.push(`
-        ${date.getUTCDate()}/${this.formatDateItem(date.getUTCMonth() + 1)}
-        ${this.formatDateItem(date.getUTCHours())}:${this.formatDateItem(date.getUTCMinutes())}
-      `);
-      this.chartSeriesData.push(this.formatPrice(this.prices[i][1]));
-      this.updateCandleGraph();
-    }
   }
 
   updateCandleGraph(): void {
@@ -172,8 +166,9 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
       this.candleStickSeriesData = [];
     }
     const closeIndex = this.candleTimeStep - 1;
-    for (let i = 0; i < this.prices.length; i++) {
-      if ((i === 0 || i % closeIndex === 0) && i + closeIndex - 1 < this.prices.length - 2) {
+    let i = 0;
+    while (i + closeIndex - 1 < this.prices.length - 2) {
+      if (i % closeIndex === 0) {
         this.candleChartXAxisData.push(this.chartXAxisData[i]);
         const mediumPrices = [...this.prices.slice(i + 1, i + closeIndex - 1)].map((item) => item[1]).sort();
         this.candleStickSeriesData.push([
@@ -183,6 +178,7 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
           this.formatPrice(mediumPrices[0]),
         ]);
       }
+      i++;
     }
   }
 

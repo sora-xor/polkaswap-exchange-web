@@ -729,11 +729,4 @@ export default {
       ok: 'OK',
     },
   },
-  charts: {
-    title: 'Charts',
-    candlestick: 'Show Candlestick type',
-    candleTimeStep: 'Candle Time Step',
-    chartTitle: 'Token {assetSymbol} historical prices',
-    date: 'Date',
-  },
 };
