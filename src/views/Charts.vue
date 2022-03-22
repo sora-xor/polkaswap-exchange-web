@@ -4,6 +4,12 @@
     <div class="charts-confirm">
       <div class="charts-confirm-settings">
         <div class="line">
+          <token-select-button
+            class="el-button--select-token"
+            icon="chevron-down-rounded-16"
+            :token="currentAsset"
+            @click="openSelectTokenDialog"
+          />
           <s-switch v-model="isCandlestickType" :disabled="loading" />
           <span>Show Candlestick type</span>
         </div>
@@ -16,6 +22,7 @@
       </div>
     </div>
     <v-chart class="chart" :option="isCandlestickType ? optionCandleStick : chartData" />
+    <select-token :visible.sync="showSelectTokenDialog" :asset="currentAsset" @select="selectToken" />
   </div>
 </template>
 
@@ -43,12 +50,15 @@ use([CanvasRenderer, LineChart, CandlestickChart, TitleComponent, TooltipCompone
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    SelectToken: lazyComponent(Components.SelectToken),
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     SortButton,
     VChart,
   },
 })
 export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin, mixins.NumberFormatterMixin) {
   isCandlestickType = false;
+  showSelectTokenDialog = false;
   // Set XOR asset as default
   prices: Array<[string, any]> = [];
   currentAsset: Asset = KnownAssets.get(KnownSymbols.XOR);
@@ -130,6 +140,21 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
   }
 
   created() {
+    this.getHistoricalPrices();
+  }
+
+  openSelectTokenDialog(): void {
+    this.showSelectTokenDialog = true;
+  }
+
+  async selectToken(token: Asset): Promise<void> {
+    if (token) {
+      this.currentAsset = token;
+      this.getHistoricalPrices();
+    }
+  }
+
+  getHistoricalPrices(): void {
     this.withApi(async () => {
       try {
         const data = await SubqueryExplorerService.getHistoricalPriceForAsset(this.currentAsset.address, 100);
@@ -213,12 +238,17 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
       width: 100%;
       &:first-child {
         margin-bottom: $inner-spacing-medium;
+
         + .line {
+          justify-content: end;
           height: 32px;
           margin-bottom: -40px;
           margin-top: -#{$inner-spacing-mini};
         }
       }
+    }
+    .el-button {
+      margin-right: auto;
     }
     .el-radio {
       margin-right: $inner-spacing-mini;
