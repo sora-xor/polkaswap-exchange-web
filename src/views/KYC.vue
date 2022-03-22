@@ -32,7 +32,9 @@
         native-type="submit"
         class="kyc-form-button s-typography-button--large"
         :disabled="!formDataChanged"
-      >{{ t('kyc.save') }}</s-button>
+      >
+        {{ t('kyc.save') }}
+      </s-button>
       <s-button type="secondary" class="kyc-form-button s-typography-button--large" @click="resetForm">{{
         t('kyc.reset')
       }}</s-button>
