@@ -5,7 +5,6 @@ import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString } from '@sora-substrate/util';
-import { KnownAssets } from '@sora-substrate/util/build/assets/consts';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import { ZeroStringValue } from '@/consts';
@@ -164,11 +163,10 @@ const actions = {
     commit(types.SET_FIRST_TOKEN_VALUE, '');
     commit(types.SET_SECOND_TOKEN_VALUE, '');
     await dispatch('checkLiquidity');
-    await dispatch('estimateMinted');
   },
 
   async setSecondTokenAddress({ commit, dispatch, getters, rootGetters }, address: string) {
-    const updateBalance = (balance) => commit(types.SET_SECOND_TOKEN_BALANCE, balance);
+    const updateBalance = (balance: Nullable<AccountBalance>) => commit(types.SET_SECOND_TOKEN_BALANCE, balance);
 
     commit(types.SET_SECOND_TOKEN_ADDRESS, address);
     commit(types.SET_FIRST_TOKEN_VALUE, '');
@@ -181,7 +179,6 @@ const actions = {
     }
 
     await dispatch('checkLiquidity');
-    await dispatch('estimateMinted');
   },
 
   async checkReserve({ commit, getters, dispatch }) {
@@ -192,7 +189,7 @@ const actions = {
         const reserve = await api.poolXyk.getReserves(firstToken?.address, secondToken?.address);
         commit(types.GET_RESERVE_SUCCESS, reserve);
 
-        dispatch('estimateMinted');
+        await dispatch('estimateMinted');
       } catch (error) {
         commit(types.GET_RESERVE_FAILURE, error);
       }
@@ -300,13 +297,15 @@ const actions = {
     { dispatch },
     { firstAddress, secondAddress }: { firstAddress: string; secondAddress: string }
   ) {
-    const findAssetAddress = (address) => {
-      const asset = KnownAssets.get(address) ?? api.assets.accountAssets.find((a) => a.address === address);
+    const findAssetAddress = async (address: string): Promise<string> => {
+      const asset = await api.assets.getAssetInfo(address);
       return asset?.address ?? '';
     };
 
-    dispatch('setFirstTokenAddress', findAssetAddress(firstAddress));
-    dispatch('setSecondTokenAddress', findAssetAddress(secondAddress));
+    const [first, second] = await Promise.all([findAssetAddress(firstAddress), findAssetAddress(secondAddress)]);
+
+    await dispatch('setFirstTokenAddress', first);
+    await dispatch('setSecondTokenAddress', second);
   },
 
   resetFocusedField({ commit }) {
@@ -315,7 +314,7 @@ const actions = {
 
   resetData({ commit }, withAssets = false) {
     balanceSubscriptions.remove('second', {
-      updateBalance: (balance) => commit(types.SET_SECOND_TOKEN_BALANCE, balance),
+      updateBalance: (balance: Nullable<AccountBalance>) => commit(types.SET_SECOND_TOKEN_BALANCE, balance),
     });
 
     if (!withAssets) {

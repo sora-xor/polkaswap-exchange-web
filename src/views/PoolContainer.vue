@@ -52,12 +52,12 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
    * If this page is loaded first time by url, "watch" & "mounted" call this method
    */
   private async updateLiquiditySubscription(): Promise<void> {
-    // wait for node connection & wallet init (App.vue)
-    await this.withParentLoading(async () => {
-      // return if updateLiquiditySubscription is already called by "watch" or "mounted"
-      if (this.loading) return;
+    // return if updateLiquiditySubscription is already called by "watch" or "mounted"
+    if (this.loading) return;
 
-      await this.withLoading(async () => {
+    await this.withLoading(async () => {
+      // wait for node connection & wallet init (App.vue)
+      await this.withParentLoading(async () => {
         await this.subscribeOnAccountLiquidityList();
         await this.subscribeOnAccountLiquidityUpdates();
       });
