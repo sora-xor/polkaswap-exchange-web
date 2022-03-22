@@ -94,6 +94,10 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
         axisPointer: {
           type: 'cross',
         },
+        valueFormatter: (value) => {
+          const strValue = value.toString();
+          return `$${strValue.substring(0, strValue.indexOf('.') + 3)}`;
+        },
       },
       series: [
         {
