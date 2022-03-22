@@ -88,6 +88,13 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
         min: this.yAxeLimits.min,
         max: this.yAxeLimits.max,
       },
+      tooltip: {
+        show: true,
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+        },
+      },
       series: [
         {
           type: 'line',
