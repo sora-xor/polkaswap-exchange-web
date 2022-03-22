@@ -35,7 +35,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/swap',
     name: PageNames.Swap,
-    component: lazyView(PageNames.Swap),
+    component: lazyView(PageNames.Send),
   },
   {
     path: '/about',

@@ -1,7 +1,7 @@
 <template>
   <dialog-base
     :visible.sync="isVisible"
-    :title="isSwapAndSend ? t(`send.confirmSwapAndSend`) : t('swap.confirmSwap')"
+    :title="isSwapAndSend ? t('adar.send.confirmSwapAndSend') : t('swap.confirmSwap')"
     custom-class="dialog--confirm-swap"
   >
     <div class="tokens">
@@ -44,7 +44,7 @@
       "
     />
     <s-divider />
-    <swap-transaction-details />
+    <swap-transaction-details :operation="operation" />
     <template #footer>
       <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmSwap">
         {{ t('exchange.confirm') }}
@@ -57,7 +57,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, State } from 'vuex-class';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
-import type { CodecString } from '@sora-substrate/util';
+import { CodecString, Operation } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
 
@@ -91,6 +91,10 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogM
   @Prop({ default: '', type: String }) readonly from!: string;
   @Prop({ default: '', type: String }) readonly to!: string;
   @Prop({ default: '', type: String }) readonly valueTo!: string;
+
+  get operation(): Operation {
+    return this.isSwapAndSend ? Operation.SwapAndSend : Operation.Swap;
+  }
 
   get formattedFromValue(): string {
     return this.formatStringValue(this.fromValue, this.tokenFrom?.decimals);

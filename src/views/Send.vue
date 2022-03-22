@@ -1,7 +1,7 @@
 <template>
   <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
-    <generic-page-header class="page-header--swap" :title="t(`send.${isSend ? PageNames.Send : PageNames.Exchange}`)">
-      <status-action-badge v-if="!isSend || isSwapAndSend">
+    <generic-page-header class="page-header--swap" :title="t(`adar.send.${isSend ? PageNames.Send : PageNames.Swap}`)">
+      <status-action-badge v-if="!assetsAreEqual">
         <template #label>{{ t('marketText') }}:</template>
         <template #value>{{ swapMarketAlgorithm }}</template>
         <template #action>
@@ -9,7 +9,7 @@
             class="el-button--settings"
             type="action"
             icon="basic-settings-24"
-            :disabled="!pairLiquiditySourcesAvailable"
+            :disabled="!marketAlgorithmsAvailable"
             @click="openSettingsDialog"
           />
         </template>
@@ -28,25 +28,29 @@
     >
       <div slot="top" class="input-line">
         <div class="input-title">
-          <span class="input-title--uppercase input-title--primary input-title--label">{{ t('transfers.from') }}</span>
+          <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
           <span
-            class="input-title--uppercase input-title--primary"
             v-if="areTokensSelected && !isZeroToAmount && isExchangeB"
+            class="input-title--uppercase input-title--primary"
           >
             ({{ t('swap.estimated') }})
           </span>
         </div>
-        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-title">
-          <span class="input-title--uppercase input-title--desc">{{ t('send.balance') }}</span>
-          <span class="input-title--uppercase input-title--primary input-title--value">{{
-            formatBalance(tokenFrom)
-          }}</span>
+        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-value">
+          <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
+          <formatted-amount-with-fiat-value
+            value-can-be-hidden
+            with-left-shift
+            value-class="input-value--primary"
+            :value="formatBalance(tokenFrom)"
+            :fiat-value="getFiatBalance(tokenFrom)"
+          />
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
         <s-button
           v-if="tokenFrom && isMaxSwapAvailable"
-          class="el-button--max s-typography-button--extra-small"
+          class="el-button--max s-typography-button--small"
           type="primary"
           alternative
           size="mini"
@@ -63,31 +67,30 @@
         />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
+        <formatted-amount v-if="tokenFrom && tokenFromPrice" is-fiat-value :value="fromFiatAmount" />
         <token-address
           v-if="tokenFrom"
           :name="tokenFrom.name"
           :symbol="tokenFrom.symbol"
           :address="tokenFrom.address"
-          class="input-title"
+          class="input-value"
         />
       </div>
     </s-float-input>
-
     <s-button
       class="el-button--switch-tokens"
       type="action"
       icon="arrows-swap-90-24"
-      :disabled="!areTokensSelected || assetsAreEqual || isRecountingProcess"
+      :disabled="!areTokensSelected || assetsAreEqual"
       @click="handleSwitchTokens"
     />
-
     <s-float-input
       class="s-input--token-value"
-      has-locale-string
       size="medium"
       :value="valueToDisplayed"
-      :decimals="(tokenTo || {}).decimals"
       :disabled="assetsAreEqual"
+      :decimals="(tokenTo || {}).decimals"
+      has-locale-string
       :delimiters="delimiters"
       :max="getMax((tokenTo || {}).address)"
       @input="handleInputFieldTo"
@@ -95,19 +98,23 @@
     >
       <div slot="top" class="input-line">
         <div class="input-title">
-          <span class="input-title--uppercase input-title--primary input-title--label">{{ t('transfers.to') }}</span>
+          <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
           <span
+            v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB && !assetsAreEqual"
             class="input-title--uppercase input-title--primary"
-            v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB"
           >
             ({{ t('swap.estimated') }})
           </span>
         </div>
-        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-title">
-          <span class="input-title--uppercase input-title--desc">{{ t('send.balance') }}</span>
-          <span class="input-title--uppercase input-title--primary input-title--value">{{
-            formatBalance(tokenTo)
-          }}</span>
+        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-value">
+          <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
+          <formatted-amount-with-fiat-value
+            value-can-be-hidden
+            with-left-shift
+            value-class="input-value--primary"
+            :value="formatBalance(tokenTo)"
+            :fiat-value="getFiatBalance(tokenTo)"
+          />
         </div>
       </div>
       <div slot="right" class="s-flex el-buttons">
@@ -119,16 +126,22 @@
         />
       </div>
       <div slot="bottom" class="input-line input-line--footer">
+        <div v-if="tokenTo && tokenToPrice && !assetsAreEqual" class="price-difference">
+          <formatted-amount is-fiat-value :value="toFiatAmount" />
+          <value-status-wrapper :value="fiatDifference" class="price-difference__value">
+            (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
+          </value-status-wrapper>
+        </div>
         <token-address
           v-if="tokenTo"
           :name="tokenTo.name"
           :symbol="tokenTo.symbol"
           :address="tokenTo.address"
-          class="input-title"
+          class="input-value"
         />
       </div>
     </s-float-input>
-
+    <!-- SEND -->
     <s-input
       v-if="isSend"
       class="address-input"
@@ -137,24 +150,7 @@
       border-radius="mini"
       v-model="address"
     />
-
-    <template v-if="!isSend || isSwapAndSend">
-      <slippage-tolerance class="slippage-tolerance-settings" />
-      <swap-transaction-details
-        v-if="areTokensSelected && !hasZeroAmount"
-        class="info-line-container"
-        :info-only="false"
-      />
-    </template>
-    <template v-else>
-      <info-line
-        v-if="isLoggedIn"
-        :label="t('swap.networkFee')"
-        :tooltip-content="t('swap.networkFeeTooltip')"
-        :value="formattedNetworkFee"
-        :asset-symbol="KnownSymbols.XOR"
-      />
-    </template>
+    <slippage-tolerance v-if="!isSend || !assetsAreEqual" class="slippage-tolerance-settings" />
     <s-button
       v-if="!isLoggedIn"
       type="primary"
@@ -164,26 +160,13 @@
       {{ t('swap.connectWallet') }}
     </s-button>
     <s-button
-      v-else-if="isSend"
-      type="primary"
-      class="action-button s-typography-button--large"
-      :disabled="sendButtonDisabled"
-      @click="handleConfirm"
-    >
-      {{ sendButtonText }}
-    </s-button>
-    <s-button
       v-else
+      class="action-button s-typography-button--large"
       type="primary"
       :disabled="isConfirmSwapDisabled"
-      :loading="isRecountingProcess || isAvailableChecking"
-      class="action-button s-typography-button--large"
       @click="handleConfirm"
     >
-      <template v-if="!validAddress">
-        {{ t('walletSend.badAddress') }}
-      </template>
-      <template v-else-if="!areTokensSelected">
+      <template v-if="!areTokensSelected">
         {{ t('buttons.chooseTokens') }}
       </template>
       <template v-else-if="!isAvailable">
@@ -192,30 +175,43 @@
       <template v-else-if="areZeroAmounts">
         {{ t('buttons.enterAmount') }}
       </template>
-      <template v-else-if="isAvailable && isInsufficientLiquidity">
+      <template v-else-if="isInsufficientLiquidity">
         {{ t('swap.insufficientLiquidity') }}
       </template>
-      <template v-else-if="isInsufficientAmount">
-        {{ t('swap.insufficientAmount', { tokenSymbol: insufficientAmountTokenSymbol }) }}
-      </template>
       <template v-else-if="isInsufficientBalance">
-        {{ t('send.insufficientBalance', { tokenSymbol: tokenFrom.symbol }) }}
+        {{ t('exchange.insufficientBalance', { tokenSymbol: tokenFrom.symbol }) }}
       </template>
       <template v-else-if="isInsufficientXorForFee">
-        {{ t('send.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
+        {{ t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
+      </template>
+      <template v-else-if="isSend && emptyAddress">
+        {{ t('walletSend.enterAddress') }}
+      </template>
+      <template v-else-if="isSend && !validAddress">
+        {{ t('walletSend.badAddress') }}
+      </template>
+      <template v-else-if="isSwapAndSend">
+        {{ t('adar.send.exchangeAndSend') }}
+      </template>
+      <template v-else-if="assetsAreEqual">
+        {{ t('walletSend.title') }}
       </template>
       <template v-else>
-        {{ t('send.exchange') }}
+        {{ t('adar.send.exchange') }}
       </template>
     </s-button>
-
+    <swap-transaction-details
+      v-if="areTokensSelected && !hasZeroAmount && validAddress"
+      class="info-line-container"
+      :info-only="false"
+      :operation="operation"
+    />
     <select-token
       :visible.sync="showSelectTokenDialog"
       :connected="isLoggedIn"
       :asset="excludedAsset"
       @select="selectToken"
     />
-
     <confirm-swap
       :visible.sync="showConfirmSwapDialog"
       :isInsufficientBalance="isInsufficientBalance"
@@ -239,16 +235,17 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
-import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { CodecString, FPNumber } from '@sora-substrate/util';
+import { api, components, mixins, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber, Operation } from '@sora-substrate/util';
+import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Subscription } from '@polkadot/x-rxjs';
-
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
-import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
-import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import type { QuotePaths, QuotePayload, PrimaryMarketsEnabledAssets } from '@sora-substrate/util/build/swap/types';
+import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
+
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import {
   isMaxButtonAvailable,
@@ -261,7 +258,6 @@ import {
 } from '@/utils';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-// import { bridgeApi } from '@/utils/bridge';
 
 const namespace = 'swap';
 
@@ -277,134 +273,55 @@ const namespace = 'swap';
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     TokenAddress: lazyComponent(Components.TokenAddress),
+    ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
-    InfoLine: components.InfoLine,
+    FormattedAmount: components.FormattedAmount,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.NumberFormatterMixin) {
+export default class Send extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, mixins.LoadingMixin) {
+  // SEND _____________________________________________________
   readonly PageNames = PageNames;
+  address = '';
+  showConfirmSendDialog = false;
 
-  @Getter account!: any;
-  @Getter nodeIsConnected!: boolean;
-  @Getter isLoggedIn!: boolean;
-  @Getter slippageTolerance!: string;
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
-  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
-  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
-  @Getter('fromValue', { namespace }) fromValue!: string;
-  @Getter('toValue', { namespace }) toValue!: string;
-  @Getter('isExchangeB', { namespace }) isExchangeB!: boolean;
-  @Getter('networkFee', { namespace }) networkFee!: CodecString;
-  @Getter('liquidityProviderFee', { namespace }) liquidityProviderFee!: CodecString;
-  @Getter('isAvailableSend', { namespace }) isAvailable!: boolean;
-  @Getter('isAvailableChecking', { namespace }) isAvailableChecking!: boolean;
-  @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
-  @Getter('pairLiquiditySourcesAvailable', { namespace }) pairLiquiditySourcesAvailable!: boolean;
-  @Getter('swapMarketAlgorithm', { namespace }) swapMarketAlgorithm!: string;
+  @Getter account!: WALLET_TYPES.Account;
   @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString;
 
-  @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>;
-  @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>;
-  @Action('setFromValue', { namespace }) setFromValue!: (value: string) => Promise<void>;
-  @Action('setToValue', { namespace }) setToValue!: (value: string) => Promise<void>;
-  @Action('setMinMaxReceived', { namespace }) setMinMaxReceived!: (value: CodecString) => Promise<void>;
-  @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>;
-  @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>;
-  @Action('setNetworkFee', { namespace }) setNetworkFee!: (value: CodecString) => Promise<void>;
-  @Action('checkSwap', { namespace }) checkSwap!: AsyncVoidFn;
-  @Action('reset', { namespace }) reset!: AsyncVoidFn;
-  @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>;
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn;
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
-  @Action('setPairLiquiditySources', { namespace }) setPairLiquiditySources!: (
-    liquiditySources: Array<LiquiditySourceTypes>
-  ) => Promise<void>;
-
-  @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>;
-  @Action('resetSubscriptions', { namespace }) resetSubscriptions!: AsyncVoidFn;
-  @Action('updateSubscriptions', { namespace }) updateSubscriptions!: AsyncVoidFn;
-  @Action('setSubscriptionPayload', { namespace }) setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
-  @Action('setPrimaryMarketsEnabledAssets', { namespace }) setPrimaryMarketsEnabledAssets!: (
-    assets: PrimaryMarketsEnabledAssets
-  ) => Promise<void>;
-
-  @State((state) => state[namespace].paths) paths!: QuotePaths;
-  @State((state) => state[namespace].payload) payload!: QuotePayload;
-
-  @Watch('slippageTolerance')
-  private handleSlippageToleranceChange(): void {
-    this.calcMinMaxRecieved();
-  }
-
-  @Watch('liquiditySource')
-  private handleLiquiditySourceChange(): void {
-    this.subscribeOnSwapReserves();
-  }
-
-  @Watch('isLoggedIn')
-  private handleLoggedInStateChange(isLoggedIn: boolean, wasLoggedIn: boolean): void {
-    if (!wasLoggedIn && isLoggedIn) {
-      this.getNetworkFee();
-      this.recountSwapValues();
-    }
-  }
-
-  @Watch('nodeIsConnected')
-  private updateConnectionSubsriptions(nodeConnected: boolean) {
-    if (nodeConnected) {
-      this.updateSubscriptions();
-      this.subscribeOnSwapReserves();
-      this.subscribeOnEnabledAssets();
-    } else {
-      this.resetSubscriptions();
-      this.cleanSwapReservesSubscription();
-      this.cleanEnabledAssetsSubscription();
-    }
-  }
-
-  @Watch('isSwapAndSend')
-  private updateFee() {
-    this.getNetworkFee();
-  }
-
   @Watch('isSend')
-  private updateView() {
-    this.resetPage();
-    // this.initPage();
+  private updateView(value: boolean): void {
+    this.cleanSwapReservesSubscription();
+    this.resetAddress();
+    this.reset();
+    if (!this.tokenFrom) {
+      this.setTokenFromAddress(XOR.address);
+    }
+    if (this.assetsAreEqual && !value) {
+      this.setTokenToAddress();
+    }
+    this.subscribeOnEnabledAssets();
   }
 
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-  KnownSymbols = KnownSymbols;
-  isInsufficientAmount = false;
-  insufficientAmountTokenSymbol = '';
-  isTokenFromSelected = false;
-  showSettings = false;
-  showSelectTokenDialog = false;
-  showConfirmSwapDialog = false;
-  showConfirmSendDialog = false;
-  isRecountingProcess = false;
-  liquidityReservesSubscription: Nullable<Subscription> = null;
-  address = '';
-  enabledAssetsSubscription: Nullable<Subscription> = null;
+  get emptyAddress(): boolean {
+    return !this.address.trim();
+  }
+
+  get validAddress(): boolean {
+    if (!this.isSend) return true;
+
+    return !this.emptyAddress && api.validateAddress(this.address) && this.account.address !== this.address;
+  }
 
   get isSend(): boolean {
     return this.$route.name === PageNames.Send;
   }
 
-  get assetsAreEqual(): boolean {
-    return this.areTokensSelected && this.tokenFrom.address === this.tokenTo.address;
-  }
-
-  get excludedAsset(): AccountAsset | undefined {
-    if (!this.isSend) {
-      return this.isTokenFromSelected ? this.tokenTo : this.tokenFrom;
-    }
-
-    return undefined;
-  }
-
   get isSwapAndSend(): boolean {
     return this.isSend && this.areTokensSelected && !this.assetsAreEqual && !this.emptyAddress;
+  }
+
+  get assetsAreEqual(): boolean {
+    return this.areTokensSelected && this.tokenFrom.address === this.tokenTo.address;
   }
 
   get valueToDisplayed(): string {
@@ -419,74 +336,112 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
     return this.toValue;
   }
 
-  get emptyAddress(): boolean {
-    return !this.address.trim();
+  get excludedAsset(): AccountAsset | undefined {
+    if (!this.isSend) {
+      return this.isTokenFromSelected ? this.tokenTo : this.tokenFrom;
+    }
+
+    return undefined;
   }
 
-  get validAddress(): boolean {
-    const check = (address: string): boolean => api.validateAddress(address) && this.account.address !== address;
-
-    return this.isSend ? !this.emptyAddress && check(this.address) : this.emptyAddress || check(this.address);
+  get operation(): Operation {
+    if (!this.isSend) {
+      return Operation.Swap;
+    }
+    return this.assetsAreEqual ? Operation.Transfer : Operation.SwapAndSend;
   }
 
-  get sendButtonDisabled(): boolean {
-    return (
-      (!this.assetsAreEqual && (this.isInsufficientLiquidity || !this.isAvailable)) ||
-      !this.validAddress ||
-      this.isZeroFromAmount ||
-      this.isInsufficientXorForFee ||
-      this.isInsufficientBalance ||
-      this.isInsufficientAmount ||
-      this.hasZeroAmount ||
-      !this.areTokensSelected
-    );
-
-    // !validAddress ||
-    //     !areTokensSelected ||
-    //     !isAvailable ||
-    //     hasZeroAmount ||
-    //     isInsufficientLiquidity ||
-    //     isInsufficientAmount ||
-    //     isInsufficientBalance ||
-    //     isInsufficientXorForFee
+  resetAddress(): void {
+    this.address = '';
   }
 
-  get sendButtonText(): string {
-    if (!this.assetsAreEqual) {
-      if (!this.isAvailable) {
-        return this.t('swap.pairIsNotCreated');
-      }
-      if (this.isInsufficientLiquidity) {
-        return this.t('swap.insufficientLiquidity');
-      }
+  confirmSend(isSendConfirmed: boolean): void {
+    if (isSendConfirmed) {
+      this.resetFieldFrom();
+      this.resetAddress();
     }
-
-    if (this.isZeroFromAmount) {
-      return this.t('walletSend.enterAmount');
-    }
-
-    if (!this.validAddress) {
-      return this.t(`walletSend.${this.emptyAddress ? 'enterAddress' : 'badAddress'}`);
-    }
-
-    if (this.isInsufficientXorForFee) {
-      return this.t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR });
-    }
-
-    if (this.isInsufficientBalance) {
-      return this.t('exchange.insufficientBalance', { tokenSymbol: this.tokenFrom.symbol });
-    }
-
-    if (this.isSwapAndSend) {
-      return this.t('send.exchangeAndSend');
-    }
-
-    return this.t('exchange.send');
   }
 
-  get formattedNetworkFee(): string {
-    return this.formatCodecNumber(this.networkFee);
+  handleConfirm(): void {
+    if (!this.isSend || this.isSwapAndSend) {
+      this.showConfirmSwapDialog = true;
+    } else {
+      this.showConfirmSendDialog = true;
+    }
   }
+  // __________________________________________________________
+
+  @State((state) => state[namespace].paths) paths!: QuotePaths;
+  @State((state) => state[namespace].liquidityProviderFee) liquidityProviderFee!: CodecString;
+  @State((state) => state[namespace].isExchangeB) isExchangeB!: boolean;
+  @State((state) => state[namespace].payload) payload!: QuotePayload;
+  @State((state) => state[namespace].fromValue) fromValue!: string;
+  @State((state) => state[namespace].toValue) toValue!: string;
+
+  @Getter networkFees!: NetworkFeesObject;
+  @Getter nodeIsConnected!: boolean;
+  @Getter isLoggedIn!: boolean;
+  @Getter slippageTolerance!: string;
+  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
+  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
+  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
+  @Getter('isAvailable', { namespace }) isAvailable!: boolean;
+  @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
+  @Getter('marketAlgorithmsAvailable', { namespace }) marketAlgorithmsAvailable!: boolean;
+  @Getter('swapMarketAlgorithm', { namespace }) swapMarketAlgorithm!: string;
+
+  @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>;
+  @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>;
+  @Action('setFromValue', { namespace }) setFromValue!: (value: string) => Promise<void>;
+  @Action('setToValue', { namespace }) setToValue!: (value: string) => Promise<void>;
+  @Action('setAmountWithoutImpact', { namespace }) setAmountWithoutImpact!: (amount: CodecString) => Promise<void>;
+  @Action('setExchangeB', { namespace }) setExchangeB!: (isExchangeB: boolean) => Promise<void>;
+  @Action('setLiquidityProviderFee', { namespace }) setLiquidityProviderFee!: (value: CodecString) => Promise<void>;
+  @Action('reset', { namespace }) reset!: AsyncVoidFn;
+
+  @Action('setPrimaryMarketsEnabledAssets', { namespace }) setPrimaryMarketsEnabledAssets!: (
+    assets: PrimaryMarketsEnabledAssets
+  ) => Promise<void>;
+
+  @Action('setRewards', { namespace }) setRewards!: (rewards: Array<LPRewardsInfo>) => Promise<void>;
+  @Action('setSubscriptionPayload', { namespace }) setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
+  @Action('resetSubscriptions', { namespace }) resetSubscriptions!: AsyncVoidFn;
+  @Action('updateSubscriptions', { namespace }) updateSubscriptions!: AsyncVoidFn;
+
+  @Watch('liquiditySource')
+  private handleLiquiditySourceChange(): void {
+    this.subscribeOnSwapReserves();
+  }
+
+  @Watch('isLoggedIn')
+  private handleLoggedInStateChange(isLoggedIn: boolean, wasLoggedIn: boolean): void {
+    if (!wasLoggedIn && isLoggedIn) {
+      this.recountSwapValues();
+    }
+  }
+
+  @Watch('nodeIsConnected')
+  private updateConnectionSubsriptions(nodeConnected: boolean) {
+    if (nodeConnected) {
+      this.updateSubscriptions();
+      this.subscribeOnEnabledAssets();
+      this.subscribeOnSwapReserves();
+    } else {
+      this.resetSubscriptions();
+      this.cleanEnabledAssetsSubscription();
+      this.cleanSwapReservesSubscription();
+    }
+  }
+
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+  KnownSymbols = KnownSymbols;
+  isTokenFromSelected = false;
+  showSettings = false;
+  showSelectTokenDialog = false;
+  showConfirmSwapDialog = false;
+  liquidityReservesSubscription: Nullable<Subscription> = null;
+  enabledAssetsSubscription: Nullable<Subscription> = null;
+  recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
   get areTokensSelected(): boolean {
     return !!(this.tokenFrom && this.tokenTo);
@@ -501,22 +456,51 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
   }
 
   get hasZeroAmount(): boolean {
-    return !this.assetsAreEqual && (this.isZeroFromAmount || this.isZeroToAmount);
+    return this.isZeroFromAmount || this.isZeroToAmount;
   }
 
   get areZeroAmounts(): boolean {
     return this.isZeroFromAmount && this.isZeroToAmount;
   }
 
+  get fromFiatAmount(): string {
+    return this.fromValue ? this.getFiatAmountByString(this.fromValue, this.tokenFrom) || '0' : '0';
+  }
+
+  get toFiatAmount(): string {
+    return this.toValue ? this.getFiatAmountByString(this.toValue, this.tokenTo) || '0' : '0';
+  }
+
+  get fiatDifference(): string {
+    const thousandRegExp = new RegExp(`\\${FPNumber.DELIMITERS_CONFIG.thousand}`, 'g');
+    const decimalsRegExp = new RegExp(`\\${FPNumber.DELIMITERS_CONFIG.decimal}`, 'g');
+    const toNumberString = (value: string) => value.replace(thousandRegExp, '').replace(decimalsRegExp, '.');
+
+    const a = toNumberString(this.fromFiatAmount);
+    const b = toNumberString(this.toFiatAmount);
+
+    if (asZeroValue(a) || asZeroValue(b)) return '0';
+
+    const from = new FPNumber(a);
+    const to = new FPNumber(b);
+    const difference = to.sub(from).div(from).mul(this.Hundred).toFixed(2);
+
+    return difference;
+  }
+
+  get fiatDifferenceFormatted(): string {
+    return this.formatStringValue(this.fiatDifference);
+  }
+
   get isXorOutputSwap(): boolean {
-    return this.tokenTo?.address === KnownAssets.get(KnownSymbols.XOR)?.address;
+    return this.tokenTo?.address === XOR.address;
   }
 
   get isMaxSwapAvailable(): boolean {
     return (
       this.isLoggedIn &&
       isMaxButtonAvailable(
-        this.isSend || this.areTokensSelected,
+        this.areTokensSelected,
         this.tokenFrom,
         this.fromValue,
         this.networkFee,
@@ -528,16 +512,12 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
   }
 
   get preparedForSwap(): boolean {
-    return this.isLoggedIn && (this.isSend ? !!this.tokenFrom : this.areTokensSelected);
+    return this.isLoggedIn && this.areTokensSelected;
   }
 
   get isInsufficientLiquidity(): boolean {
     return (
-      this.isAvailable &&
-      this.preparedForSwap &&
-      !this.areZeroAmounts &&
-      this.hasZeroAmount &&
-      asZeroValue(this.liquidityProviderFee)
+      !this.assetsAreEqual && this.isAvailable && this.preparedForSwap && !this.areZeroAmounts && this.hasZeroAmount
     );
   }
 
@@ -547,27 +527,36 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
 
   get isInsufficientXorForFee(): boolean {
     const isInsufficientXorForFee =
-      this.preparedForSwap &&
-      hasInsufficientXorForFee(this.tokenXOR, this.networkFee, this.isXorOutputSwap && !this.isSwapAndSend);
-
+      this.preparedForSwap && hasInsufficientXorForFee(this.tokenXOR, this.networkFee, this.isXorOutputSwap);
     if (isInsufficientXorForFee || !this.isXorOutputSwap) {
       return isInsufficientXorForFee;
     }
     // It's required for XOR output without XOR or with XOR balance < network fee
-    const zero = this.getFPNumber(0, this.tokenXOR.decimals);
     const xorBalance = this.getFPNumberFromCodec(this.tokenXOR.balance.transferable, this.tokenXOR.decimals);
     const fpNetworkFee = this.getFPNumberFromCodec(this.networkFee, this.tokenXOR.decimals).sub(xorBalance);
     const fpAmount = this.getFPNumber(this.valueToDisplayed, this.tokenXOR.decimals).sub(
-      FPNumber.gt(fpNetworkFee, zero) ? fpNetworkFee : zero
+      FPNumber.gt(fpNetworkFee, this.Zero) ? fpNetworkFee : this.Zero
     );
+    return FPNumber.lte(fpAmount, this.Zero);
+  }
 
-    return FPNumber.lte(fpAmount, zero);
+  get tokenFromPrice(): Nullable<CodecString> {
+    return this.tokenFrom ? this.getAssetFiatPrice(this.tokenFrom) : null;
+  }
+
+  get tokenToPrice(): Nullable<CodecString> {
+    return this.tokenTo ? this.getAssetFiatPrice(this.tokenTo) : null;
+  }
+
+  get networkFee(): CodecString {
+    return this.networkFees[this.operation];
   }
 
   get isConfirmSwapDisabled(): boolean {
     return (
       !this.areTokensSelected ||
       !this.isAvailable ||
+      !this.validAddress ||
       this.areZeroAmounts ||
       this.isInsufficientLiquidity ||
       this.isInsufficientBalance ||
@@ -575,56 +564,22 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
     );
   }
 
-  // created() {
-  //   this.withApi(async () => {
-  //     await this.getAssets();
-  //     await this.initPage();
-  //     if (!this.enabledAssetsSubscription) {
-  //       this.subscribeOnEnabledAssets();
-  //     }
-  //   });
-  // }
-
   created() {
     this.withApi(async () => {
-      // await this.getAssets();
       if (!this.tokenFrom) {
-        const xorAddress = KnownAssets.get(KnownSymbols.XOR)?.address;
-        await this.setTokenFromAddress(xorAddress);
+        await this.setTokenFromAddress(XOR.address);
+      }
+      if (this.assetsAreEqual && !this.isSend) {
         await this.setTokenToAddress();
       }
 
       if (!this.enabledAssetsSubscription) {
         this.subscribeOnEnabledAssets();
       }
-      // await this.getNetworkFee();
-      await Promise.all([this.updatePairLiquiditySources(), this.getNetworkFee()]);
-      await this.checkSwap();
     });
   }
 
-  // async initPage(): Promise<void> {
-  //   if (!this.tokenFrom) {
-  //     const xorAddress = KnownAssets.get(KnownSymbols.XOR)?.address;
-  //     await this.setTokenFromAddress(xorAddress);
-
-  //     if (this.isSend) {
-  //       await this.setTokenToAddress(xorAddress);
-  //     }
-  //   }
-  //   if (this.areTokensSelected && !this.isSend) {
-  //     await this.checkSwap();
-  //   }
-  //   await Promise.all([this.updatePairLiquiditySources(), this.getNetworkFee()]);
-  // }
-
-  resetPage(): void {
-    this.reset();
-    this.resetAddress();
-    this.cleanSwapReservesSubscription();
-  }
-
-  formatBalance(token): string {
+  formatBalance(token: AccountAsset): string {
     return formatAssetBalance(token);
   }
 
@@ -636,133 +591,45 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
     this.setToValue('');
   }
 
-  resetAddress(): void {
-    this.address = '';
-  }
-
-  async getNetworkFee(): Promise<void> {
-    if (!this.isLoggedIn) return;
-
-    if (this.isSwapAndSend) {
-      this.setNetworkFee(this.calcSwapAndSendFee);
-    } else if (this.isSend) {
-      this.setNetworkFee(this.calcSendFee);
-    } else {
-      this.setNetworkFee(this.calcExchangeFee);
-    }
-  }
-
-  get calcSendFee(): string {
-    return api.NetworkFee.Transfer;
-  }
-
-  get calcExchangeFee(): string {
-    return api.NetworkFee.Swap;
-  }
-
-  get calcSwapAndSendFee(): string {
-    return api.NetworkFee.SwapAndSend;
-  }
-
-  async updatePairLiquiditySources(): Promise<void> {
-    const isPair = !!this.tokenFrom?.address && !!this.tokenTo?.address;
-
-    //  const sources = isPair
-    //   ? await api.getListEnabledSourcesForPath(this.tokenFrom?.address, this.tokenTo?.address)
-    //   : [];
-
-    //  const sources = isPair
-    //       ?
-    //           await (bridgeApi.api.rpc as any).liquidityProxy.listEnabledSourcesForPath(
-    //             0,
-    //             this.tokenFrom?.address,
-    //             this.tokenTo?.address
-    //           )
-    //   : [];
-
-    const sources = isPair
-      ? await api.swap.getEnabledLiquiditySourcesForPair(this.tokenFrom?.address, this.tokenTo?.address)
-      : [];
-
-    // await this.setPairLiquiditySources(sources.toJSON() as Array<LiquiditySourceTypes>);
-    await this.setPairLiquiditySources(sources);
-  }
-
-  private async onChangeSwapReserves(payload: QuotePayload): Promise<void> {
-    await this.setSubscriptionPayload(payload);
-
-    this.runRecountSwapValues();
-  }
-
-  private subscribeOnSwapReserves(): void {
-    this.cleanSwapReservesSubscription();
-    if (!this.areTokensSelected) return;
-    this.liquidityReservesSubscription = api.swap
-      .subscribeOnReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
-      .subscribe(this.onChangeSwapReserves);
-  }
-
-  // private subscribeOnSwapReserves(): void {
-  //   this.cleanSwapReservesSubscription();
-  //   if (!this.areTokensSelected) return;
-
-  //   this.liquidityReservesSubscription = api.swap
-  //     .subscribeOnReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
-  //     .subscribe(this.runRecountSwapValues);
-  // }
-
-  private subscribeOnEnabledAssets(): void {
-    this.cleanEnabledAssetsSubscription();
-    this.enabledAssetsSubscription = api.swap
-      .subscribeOnPrimaryMarketsEnabledAssets()
-      .subscribe(this.setPrimaryMarketsEnabledAssets);
-  }
-
-  private cleanEnabledAssetsSubscription(): void {
-    if (!this.enabledAssetsSubscription) {
-      return;
-    }
-    this.enabledAssetsSubscription.unsubscribe();
-    this.enabledAssetsSubscription = null;
-  }
-
-  async handleInputFieldFrom(value): Promise<any> {
+  handleInputFieldFrom(value: string, recount = true): void {
     if (!this.areTokensSelected || asZeroValue(value)) {
       this.resetFieldTo();
     }
 
-    if (value !== this.fromValue) {
-      this.setFromValue(value);
-      await this.recountSwapValues();
+    if (value === this.fromValue) return;
+
+    this.setFromValue(value);
+
+    if (recount) {
+      this.recountSwapValues();
     }
   }
 
-  async handleInputFieldTo(value): Promise<any> {
+  handleInputFieldTo(value: string, recount = true): void {
     if (!this.areTokensSelected || asZeroValue(value)) {
       this.resetFieldFrom();
     }
 
-    if (value !== this.toValue) {
-      this.setToValue(value);
-      await this.recountSwapValues();
+    if (value === this.toValue) return;
+
+    this.setToValue(value);
+
+    if (recount) {
+      this.recountSwapValues();
     }
   }
 
-  private async runRecountSwapValues(): Promise<void> {
-    if (this.isRecountingProcess) return;
-
+  private runRecountSwapValues(): void {
     const value = this.isExchangeB ? this.toValue : this.fromValue;
-    if (!this.areTokensSelected || asZeroValue(value)) return;
+    if (!this.areTokensSelected || asZeroValue(value) || this.assetsAreEqual) return;
 
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue;
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo;
     const oppositeToken = this.isExchangeB ? this.tokenFrom : this.tokenTo;
 
     try {
-      this.isRecountingProcess = true;
-      this.isInsufficientAmount = false;
-
-      const { amount, fee, rewards } = await api.swap.getResult(
+      // TODO: [ARCH] Asset -> AccountAsset
+      const { amount, fee, rewards, amountWithoutImpact } = api.swap.getResult(
         this.tokenFrom as Asset,
         this.tokenTo as Asset,
         value,
@@ -773,21 +640,29 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
       );
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
+      this.setAmountWithoutImpact(amountWithoutImpact);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
-
-      await Promise.all([this.calcMinMaxRecieved(), this.updatePrices()]);
     } catch (error: any) {
+      console.error(error);
       resetOppositeValue();
-      if (!this.isInsufficientAmountError(oppositeToken.symbol as string, error.message)) {
-        throw error;
-      }
-    } finally {
-      this.isRecountingProcess = false;
     }
   }
 
-  recountSwapValues = debouncedInputHandler(this.runRecountSwapValues);
+  private cleanEnabledAssetsSubscription(): void {
+    if (!this.enabledAssetsSubscription) {
+      return;
+    }
+    this.enabledAssetsSubscription.unsubscribe();
+    this.enabledAssetsSubscription = null;
+  }
+
+  private subscribeOnEnabledAssets(): void {
+    this.cleanEnabledAssetsSubscription();
+    this.enabledAssetsSubscription = api.swap
+      .subscribeOnPrimaryMarketsEnabledAssets()
+      .subscribe(this.setPrimaryMarketsEnabledAssets);
+  }
 
   private cleanSwapReservesSubscription(): void {
     if (!this.liquidityReservesSubscription) {
@@ -797,44 +672,25 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
     this.liquidityReservesSubscription = null;
   }
 
-  private async calcMinMaxRecieved(): Promise<void> {
-    const minMaxReceived = await api.swap.getMinMaxValue(
-      this.tokenFrom as Asset,
-      this.tokenTo as Asset,
-      this.fromValue,
-      this.toValue,
-      this.isExchangeB,
-      this.slippageTolerance
-    );
-
-    this.setMinMaxReceived(minMaxReceived);
+  private subscribeOnSwapReserves(): void {
+    this.cleanSwapReservesSubscription();
+    if (!this.areTokensSelected || this.assetsAreEqual) return;
+    this.liquidityReservesSubscription = api.swap
+      .subscribeOnReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
+      .subscribe(this.onChangeSwapReserves);
   }
 
-  private async updatePrices(): Promise<void> {
-    if (this.areTokensSelected) {
-      await this.getPrices({
-        assetAAddress: this.tokenFrom.address,
-        assetBAddress: this.tokenTo.address,
-        amountA: this.fromValue,
-        amountB: this.toValue,
-      });
-    }
+  private async onChangeSwapReserves(payload: QuotePayload): Promise<void> {
+    await this.setSubscriptionPayload(payload);
+
+    this.runRecountSwapValues();
   }
 
-  isInsufficientAmountError(tokenSymbol: string, errorMessage): boolean {
-    // TODO: If an input field has too many symbols this is a way to avoid an error, find another approach later
-    if (errorMessage.indexOf('invalid string input for fixed point number') !== -1) {
-      this.isInsufficientAmount = true;
-      this.insufficientAmountTokenSymbol = tokenSymbol;
-      this.resetPrices();
-    }
-    return this.isInsufficientAmount;
-  }
-
-  async handleFocusField(isExchangeB = false): Promise<void> {
+  handleFocusField(isExchangeB = false): void {
     const isZeroValue = isExchangeB ? this.isZeroToAmount : this.isZeroFromAmount;
     const prevFocus = this.isExchangeB;
 
+    // SEND
     if (isExchangeB) {
       this.setToValue(this.valueToDisplayed);
     }
@@ -847,7 +703,7 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
     }
 
     if (prevFocus !== this.isExchangeB) {
-      await this.recountSwapValues();
+      this.recountSwapValues();
     }
   }
 
@@ -856,8 +712,6 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
 
     await this.setTokenFromAddress(toAddress);
     await this.setTokenToAddress(fromAddress);
-
-    await this.updatePairLiquiditySources();
 
     if (this.isExchangeB) {
       this.setExchangeB(false);
@@ -870,7 +724,7 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
     this.subscribeOnSwapReserves();
   }
 
-  async handleMaxValue(): Promise<void> {
+  handleMaxValue(): void {
     this.setExchangeB(false);
 
     const max = getMaxValue(this.tokenFrom, this.networkFee);
@@ -887,24 +741,14 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
     this.showSelectTokenDialog = true;
   }
 
-  async selectToken(token: any): Promise<void> {
+  async selectToken(token: AccountAsset): Promise<void> {
     if (token) {
       if (this.isTokenFromSelected) {
         await this.setTokenFromAddress(token.address);
       } else {
         await this.setTokenToAddress(token.address);
       }
-      await Promise.all([this.checkSwap(), this.updatePairLiquiditySources()]);
-      await this.checkSwap();
       this.subscribeOnSwapReserves();
-    }
-  }
-
-  handleConfirm(): void {
-    if (!this.isSend || this.isSwapAndSend) {
-      this.showConfirmSwapDialog = true;
-    } else {
-      this.showConfirmSendDialog = true;
     }
   }
 
@@ -912,16 +756,8 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
     if (isSwapConfirmed) {
       this.resetFieldFrom();
       this.resetFieldTo();
-      this.resetPrices();
-      this.resetAddress();
+      this.resetAddress(); // SEND
       await this.setExchangeB(false);
-    }
-  }
-
-  async confirmSend(isSendConfirmed: boolean): Promise<void> {
-    if (isSendConfirmed) {
-      this.resetFieldFrom();
-      this.resetAddress();
     }
   }
 
@@ -929,23 +765,58 @@ export default class Swap extends Mixins(TranslationMixin, mixins.LoadingMixin, 
     this.showSettings = true;
   }
 
+  beforeDestroy(): void {
+    this.cleanEnabledAssetsSubscription();
+    this.cleanSwapReservesSubscription();
+  }
+
   destroyed(): void {
-    this.resetPage();
+    this.reset();
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .el-form--actions {
-  @include generic-input-lines;
   @include buttons;
   @include full-width-button('action-button');
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
 }
 
+.el-button.neumorphic.s-action:disabled {
+  &,
+  &:hover {
+    &.el-button--switch-tokens.loading {
+      border-color: transparent;
+      box-shadow: var(--s-shadow-element-pressed);
+    }
+  }
+}
+
+.el-button--switch-tokens {
+  border-radius: 100%;
+}
+
 .page-header--swap {
   justify-content: space-between;
   align-items: center;
+}
+.price-difference {
+  display: flex;
+  align-items: center;
+
+  & > * {
+    flex-shrink: 0;
+  }
+
+  &__value {
+    font-weight: 600;
+    font-size: var(--s-font-size-small);
+
+    & > span {
+      padding-right: 2px;
+    }
+  }
 }
 
 .address-input {

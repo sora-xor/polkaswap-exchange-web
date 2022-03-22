@@ -920,10 +920,10 @@
         }
     },
     "transactionDetailsText": "Transaction Details",
-    "createTokenTextNFT": "Create NFT",    
+    "createTokenTextNFT": "Create NFT",
     "adar": {
         "send": {
-            "Exchange": "Exchange",
+            "Swap": "Exchange",
             "Send": "Send",
             "Pool": "Pool",
             "balance": "Balance",
