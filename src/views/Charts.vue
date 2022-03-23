@@ -70,7 +70,7 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
   candleTimeStep = this.candleTimeSteps[0];
 
   yAxeLimits = {
-    min: 45,
+    min: 0,
     max: 70,
   };
 
@@ -166,9 +166,13 @@ export default class Charts extends Mixins(mixins.LoadingMixin, TranslationMixin
             return +a[1] - +b[1];
           });
 
-          this.yAxeLimits.min = Math.round(+this.getFPNumberFromCodec(sortedPrices[0][1])) - 1;
-          this.yAxeLimits.max = Math.round(+this.getFPNumberFromCodec(sortedPrices[sortedPrices.length - 1][1])) + 1;
+          this.yAxeLimits.min = Math.round(+this.getFPNumberFromCodec(sortedPrices[0][1]));
+          this.yAxeLimits.max = Math.round(+this.getFPNumberFromCodec(sortedPrices[sortedPrices.length - 1][1]));
 
+          if (this.chartXAxisData.length) {
+            this.chartXAxisData = [];
+            this.chartSeriesData = [];
+          }
           for (let i = 0; i < this.prices.length; i++) {
             const date = new Date(+this.prices[i][0]);
             this.chartXAxisData.push(`
