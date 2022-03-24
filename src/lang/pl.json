@@ -141,7 +141,9 @@
         "details": "Szczegóły"
     },
     "asset": {
-        "remove": "Usuń walutę"
+        "remove": "Usuń walutę",
+        "select": "Wybierz walutę",
+        "recieve": "Odbierz {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -222,7 +224,7 @@
                 "placeholderNoImage": "Prześlij plik, wprowadzając link lub wybierając go z lokalnego magazynu danych.",
                 "placeholderBadSource": "Nie udało się przetworzyć pliku",
                 "placeholderBadSourceAddition": "lub nie został on jeszcze załadowany do systemu IPFS",
-                "placeholderFileLimit": "Rozmiar pliku przekracza limit {value} mb"
+                "placeholderFileLimit": "Rozmiar pliku przekracza limit {value} MB."
             },
             "supply": {
                 "placeholder": "Podaż tokenów",
@@ -236,7 +238,7 @@
         "enterTokenDescription": "Wprowadź opis",
         "divisible": {
             "placeholder": "Podzielny",
-            "desc": "Zdolność NFT do podziału na części ułamkowe. Zapewnienie płynności działa tylko w przypadku aktywów podzielnych"
+            "desc": "Zdolność tokenu NFT do podziału na części ułamkowe. Zapewnienie płynności działa tylko w przypadku aktywów podzielnych."
         }
     },
     "transaction": {
@@ -269,7 +271,7 @@
         },
         "txId": "Identyfikator transakcji",
         "referrer": "Osoba polecająca",
-        "referral": "Polecenie"
+        "referral": "Kod polecający"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -362,7 +364,7 @@
     },
     "node": {
         "errors": {
-            "connection": "Wystąpił błąd podczas łączenia się z węzłem\n{address}\n",
+            "connection": "Wystąpił błąd podczas łączenia się z węzłem\n {address}\n",
             "network": "Węzeł\n {address}\n pochodzi z innej sieci\n",
             "existing": "Ten węzeł został już dodany: '{title}'\n"
         },
@@ -400,7 +402,7 @@
     },
     "transfers": {
         "from": "Z",
-        "to": "Do"
+        "to": "Na"
     },
     "pageNotFound": {
         "title": "Nie znaleziono strony.",
@@ -643,7 +645,7 @@
     },
     "createPair": {
         "title": "Utwórz parę",
-        "deposit": "Depozyt",
+        "deposit": "– depozyt",
         "balance": "Saldo",
         "pricePool": "Ceny i opłaty",
         "shareOfPool": "Udział w puli",
@@ -912,11 +914,17 @@
             "inviteDescription": "Zawsze, kiedy będziesz uiszczał opłatę transakcyjną, 10% z niej trafi do osoby polecającej. Nie poniesiesz z tego tytułu żadnych kosztów.",
             "signInvitation": "Przyjmij",
             "freeOfCharge": "Ta transakcja nie jest obciążona żadnymi kosztami.",
-            "hasReferrerTitle": "Wskazałeś już swoją osobę polecającą",
-            "hasReferrerDescription": "Niestety możesz wskazać tylko jedną osobę polecającą",
+            "hasReferrerTitle": "Wskazałeś już swoją osobę polecającą.",
+            "hasReferrerDescription": "Niestety możesz wskazać tylko jedną osobę polecającą.",
             "ok": "OK"
         }
     },
     "transactionDetailsText": "Szczegóły transakcji",
-    "createTokenTextNFT": "Utwórz token NFT"
+    "createTokenTextNFT": "Utwórz token NFT",
+    "code": {
+        "download": "Pobierz kod QR",
+        "upload": "Skanowanie kodu QR",
+        "recieve": "Odbierać",
+        "invalid": "Nieprawidłowy kod QR"
+    }
 }

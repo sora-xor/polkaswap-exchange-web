@@ -31,7 +31,7 @@
         "RemoveLiquidity": "Hapus Likuiditas",
         "CreatePair": "Buat Pair",
         "RegisterAsset": "Daftarkan Aset",
-        "ClaimRewards": "Klaim Reward",
+        "ClaimRewards": "Klaim Hadiah",
         "andText": "dan",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
@@ -40,7 +40,7 @@
             "RemoveLiquidity": "Dihapus {amount} {symbol} dan {amount2} {symbol2}",
             "CreatePair": "Disuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RegisterAsset": "Aset {symbol} terdaftar",
-            "ClaimRewards": "Reward berhasil diklaim {rewards}",
+            "ClaimRewards": "Hadiah berhasil diklaim {rewards}",
             "ReferralReserveXor": "Terikat XOR dengan sukses",
             "ReferralUnreserveXor": "XOR tidak terikat berhasil",
             "ReferralSetInvitedUser": "Referensi berhasil disetel"
@@ -52,7 +52,7 @@
             "RemoveLiquidity": "Gagal menghapus {amount} {symbol} dan {amount2} {symbol2}",
             "CreatePair": "Gagal menyuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RegisterAsset": "Gagal mendaftarkan aset {symbol}",
-            "ClaimRewards": "Gagal mengklaim reward {rewards}",
+            "ClaimRewards": "Gagal mengklaim hadiah {rewards}",
             "ReferralReserveXor": "Gagal mengikat XOR",
             "ReferralUnreserveXor": "Gagal melepaskan ikatan XOR",
             "ReferralSetInvitedUser": "Gagal menyetel rujukan"
@@ -141,7 +141,9 @@
         "details": "Rincian"
     },
     "asset": {
-        "remove": "Hapus aset"
+        "remove": "Hapus aset",
+        "select": "Pilih aset",
+        "recieve": "Terima {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -316,7 +318,7 @@
         "Bridge": "@:bridgeText",
         "Farming": "Farming",
         "Wallet": "Akun",
-        "Rewards": "Reward",
+        "Rewards": "Hadiah",
         "About": "Tentang",
         "Stats": "Statistik",
         "Support": "Dukungan",
@@ -448,13 +450,13 @@
         },
         "pswap": {
             "title": "Token PSWAP",
-            "first": "PSWAP diciptakan oleh komunitas governance dengan cara vote pada saat rilis. Merupakan token utilitas dan governance yang digunakan untuk memberi reward kepada penyedia likuiditas di Polkaswap. Tidak seperti kebanyakan token reward lainnya, PSWAP akan diburn setiap kali terjadi transaksi dan penyusutan suplai dari waktu ke waktu.",
+            "first": "PSWAP diciptakan oleh komunitas governance dengan cara vote pada saat rilis. Merupakan token utilitas dan governance yang digunakan untuk memberi hadiah kepada penyedia likuiditas di Polkaswap. Tidak seperti kebanyakan token hadiah lainnya, PSWAP akan diburn setiap kali terjadi transaksi dan penyusutan suplai dari waktu ke waktu.",
             "second": "Biaya {persen}% untuk setiap swap pada Polkaswap DEX digunakan untuk membeli kembali token PSWAP, yang kemudian dibakar. Pada awalnya, 90% token PSWAP yang terbakar diolah untuk mengalokasikan ke penyedia likuiditas, tetapi seiring waktu persentase ini akan menurun menjadi 35% setelah 4 tahun."
         },
         "links": {
             "first": {
                 "title": "Menjadi Validator SORA",
-                "desc": "Amankan masa depan jaringan SORA dan aplikasi terdesentralisasi seperti Polkaswap, dan dapatkan reward disepanjang perjalanan dengan menjadi validator SORA."
+                "desc": "Amankan masa depan jaringan SORA dan aplikasi terdesentralisasi seperti Polkaswap, dan dapatkan hadiah disepanjang perjalanan dengan menjadi validator SORA."
             },
             "second": {
                 "title": "Hubungkan Chain ke SORA",
@@ -493,7 +495,7 @@
         "insufficientLiquidity": "Likuiditas tidak mencukupi",
         "confirmSwap": "Konfirmasi swap",
         "swapOutputMessage": "Keluaran diperkirakan. Anda akan menerima setidaknya {transactionValue} atau transaksi akan dibatalkan.",
-        "rewardsForSwap": "Reward Strategis PSWAP",
+        "rewardsForSwap": "PSWAP Strategic Rewards",
         "swapInputMessage": "Masukan diperkirakan. Anda akan menjual maksimum {transactionValue} atau transaksi akan kembali.",
         "route": "Rute"
     },
@@ -709,7 +711,7 @@
         "min": "MIN",
         "marketAlgorithms": {
             "SMART": "<span class=\"algorithm\"> SMART <\/span> memastikan harga terbaik untuk setiap transaksi dengan hanya menggabungkan opsi harga terbaik dari semua pasar yang tersedia. Jika tersedia, Token Bonding Curve ( <span class=\"algorithm\"> TBC <\/span> ) akan digunakan untuk likuiditas selama harga aset lebih terjangkau daripada dari sumber lain, di mana <span class=\"algorithm\"> XYK <\/span> pool digunakan.",
-            "TBC": "<span class=\"algorithm\"> TBC <\/span> — hanya membeli dari Token Bonding Curve (Pasar Utama). Ada kemungkinan bahwa harga dapat menjadi tidak menguntungkan dibandingkan dengan dari Pool <span class=\"algorithm\">XYK<\/span> (Pasar Sekunder), akan tetapi nilai yang diterima dari vested reward mungkin berubah menjadi jauh lebih menguntungkan dari waktu ke waktu.",
+            "TBC": "<span class=\"algorithm\"> TBC <\/span> — hanya membeli dari Token Bonding Curve (Pasar Utama). Ada kemungkinan bahwa harga dapat menjadi tidak menguntungkan dibandingkan dengan dari Pool <span class=\"algorithm\">XYK<\/span> (Pasar Sekunder), akan tetapi nilai yang diterima dari vested rewards mungkin berubah menjadi jauh lebih menguntungkan dari waktu ke waktu.",
             "XYK": "<span class=\"algorithm\"> XYK <\/span> — membeli hanya dari Pool XYK (Pasar Sekunder). Swap pool XYK tradisional."
         }
     },
@@ -718,7 +720,7 @@
         "ok": "OK"
     },
     "rewards": {
-        "title": "Klaim Reward",
+        "title": "Klaim Hadiah",
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
@@ -738,7 +740,7 @@
             "accounts": "akun @:soraText dan @:ethereumText Anda masing-masing"
         },
         "hint": {
-            "connectExternalAccount": "Hubungkan akun @:ethereumText untuk memeriksa reward PSWAP dan VAL yang tersedia.",
+            "connectExternalAccount": "Hubungkan akun @:ethereumText untuk memeriksa hadiah PSWAP dan VAL yang tersedia.",
             "connectAccounts": "Untuk mengklaim hasil PSWAP dan VAL Anda, Anda perlu menghubungkan akun @:soraText dan @:ethereumText Anda.",
             "connectAnotherAccount": "Hubungkan akun @:ethereumText lain untuk memeriksa hasil PSWAP dan VAL yang tersedia.",
             "howToClaimRewards": "Untuk mengklaim {symbols} Anda harus menandatangani {count} {transactions} di {destination}. Hasil akan disetorkan ke akun @:soraText Anda."
@@ -918,5 +920,11 @@
         }
     },
     "transactionDetailsText": "Detil transaksi",
-    "createTokenTextNFT": "Buat NFT"
+    "createTokenTextNFT": "Buat NFT",
+    "code": {
+        "download": "Unduh Kode QR",
+        "upload": "Pindai QR",
+        "recieve": "Menerima",
+        "invalid": "Kode QR tidak valid"
+    }
 }
