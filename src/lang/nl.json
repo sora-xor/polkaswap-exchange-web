@@ -141,7 +141,9 @@
         "details": "Details"
     },
     "asset": {
-        "remove": "Asset verwijderen"
+        "remove": "Asset verwijderen",
+        "select": "Selecteer een bezit",
+        "recieve": "Ontvang {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -918,5 +920,11 @@
         }
     },
     "transactionDetailsText": "Transactie Details",
-    "createTokenTextNFT": "NFT maken"
+    "createTokenTextNFT": "NFT maken",
+    "code": {
+        "download": "Downloaden QR-code",
+        "upload": "QR code scannen",
+        "recieve": "Ontvangen",
+        "invalid": "Ongeldige QR-code"
+    }
 }

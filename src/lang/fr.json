@@ -141,7 +141,9 @@
         "details": "Détails"
     },
     "asset": {
-        "remove": "Retirer l'actif"
+        "remove": "Retirer l'actif",
+        "select": "Sélectionnez un actif",
+        "recieve": "Recevoir {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -918,5 +920,11 @@
         }
     },
     "transactionDetailsText": "Détails de la transaction",
-    "createTokenTextNFT": "Créer NFT"
+    "createTokenTextNFT": "Créer NFT",
+    "code": {
+        "download": "Télécharger QR Code",
+        "upload": "Scanner le QR code",
+        "recieve": "Recevoir",
+        "invalid": "Code QR invalide"
+    }
 }
