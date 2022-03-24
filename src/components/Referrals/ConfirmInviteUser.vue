@@ -38,13 +38,13 @@ import DialogBase from '@/components/DialogBase.vue';
   components: { DialogBase },
 })
 export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, DialogMixin) {
-  @Getter('referral', { namespace: 'referrals' }) referral!: string;
-  @Getter('storageReferral', { namespace: 'referrals' }) storageReferral!: string;
+  @Getter('referrer', { namespace: 'referrals' }) referrer!: string;
+  @Getter('storageReferrer', { namespace: 'referrals' }) storageReferrer!: string;
 
-  @Action('setReferral', { namespace: 'referrals' }) setReferral!: (value: string) => Promise<void>;
+  @Action('setReferrer', { namespace: 'referrals' }) setReferrer!: (value: string) => Promise<void>;
 
   get hasReferrer(): boolean {
-    return !!this.referral;
+    return !!this.referrer;
   }
 
   get computedIconClasses(): Array<string> {
@@ -58,7 +58,7 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, D
   async handleConfirmInviteUser(): Promise<void> {
     if (!this.hasReferrer) {
       try {
-        await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferral));
+        await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferrer));
         this.$emit('confirm', true);
       } catch (error) {
         this.$emit('confirm');
@@ -69,8 +69,8 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, D
 
   @Watch('isVisible')
   private async isDialogVisible(isVisible: boolean): Promise<void> {
-    if (!isVisible && this.storageReferral) {
-      this.setReferral('');
+    if (!isVisible && this.storageReferrer) {
+      this.setReferrer('');
     }
   }
 }

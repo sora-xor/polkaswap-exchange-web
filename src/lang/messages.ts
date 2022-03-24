@@ -693,7 +693,7 @@ export default {
     referralsNumber: '{number} referrals',
     startInviting: 'To start inviting, bond any amount of XOR.',
     preview:
-      'Invite new users and get 10% from their transaction fees.<br />To start, bond any amount of XOR. <a href="#" target="_blank" rel="nofollow noopener" class="link" title="Learn more">Learn more</a>',
+      'Invite new users and get 10% from their transaction fees.<br/>To start, bond any amount of XOR. <a href="#" target="_blank" rel="nofollow noopener" class="link" title="Learn more">Learn more</a>',
     deposit: 'Deposit',
     balance: 'Balance',
     networkFee: '@:networkFeeText',
@@ -715,6 +715,18 @@ export default {
     successCopy: 'Referral link is copied to the clipboard',
     bondTitle: 'Bond XOR',
     unbondTitle: 'Unbond XOR',
+    referrer: {
+      title: 'Add your referrer',
+      titleReferrer: 'Your referrer',
+      placeholder: 'Enter invitation link or code',
+      label: 'Invitation link or code',
+      approve: 'Approve',
+      approved: 'Approved',
+      description: 'You can get referred to Polkaswap,<br/>type in the link or code of the referrer',
+      referredBy: 'You’ve been referred by {referrer}',
+      info: 'When you’ll pay a fee for transaction,<br/>10% will  go to your referrer',
+      referredLablel: 'Referred address',
+    },
     confirm: {
       text: '@:confirmText',
       bond: 'Confirm bond',

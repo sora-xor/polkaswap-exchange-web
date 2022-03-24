@@ -13,7 +13,7 @@ const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
   concat([
     'SET_XOR_VALUE',
-    'SET_REFERRAL',
+    'SET_REFERRER',
     'SET_INVITED_USERS_INFO',
     'SET_INVITED_USERS_UPDATES',
     'RESET_INVITED_USERS_UPDATES',
@@ -21,49 +21,49 @@ const types = flow(
   ]),
   map((x) => [x, x]),
   fromPairs
-)(['GET_REFERRAL']);
+)(['GET_REFERRER']);
 
 interface ReferralsState {
-  referral: string;
+  referrer: string;
   invitedUsers: Nullable<Array<string>>;
   invitedUsersUpdates: Nullable<Subscription>;
   xorValue: string;
-  storageReferral: string;
+  storageReferrer: string;
 }
 
 function initialState(): ReferralsState {
   return {
-    referral: '',
+    referrer: '',
     invitedUsers: null,
     invitedUsersUpdates: null,
     xorValue: '',
-    storageReferral: storage.get('storageReferral') || '',
+    storageReferrer: storage.get('storageReferrer') || '',
   };
 }
 
 const state = initialState();
 
 const getters = {
-  referral(state: ReferralsState) {
-    return state.referral;
+  referrer(state: ReferralsState) {
+    return state.referrer;
   },
   invitedUsers(state: ReferralsState) {
     return state.invitedUsers;
   },
-  storageReferral(state: ReferralsState) {
-    return state.storageReferral;
+  storageReferrer(state: ReferralsState) {
+    return state.storageReferrer;
   },
 };
 
 const mutations = {
-  [types.GET_REFERRAL_REQUEST](state: ReferralsState) {
-    state.referral = '';
+  [types.GET_REFERRER_REQUEST](state: ReferralsState) {
+    state.referrer = '';
   },
-  [types.GET_REFERRAL_SUCCESS](state: ReferralsState, referral: string) {
-    state.referral = referral;
+  [types.GET_REFERRER_SUCCESS](state: ReferralsState, referrer: string) {
+    state.referrer = referrer;
   },
-  [types.GET_REFERRAL_FAILURE](state: ReferralsState) {
-    state.referral = '';
+  [types.GET_REFERRER_FAILURE](state: ReferralsState) {
+    state.referrer = '';
   },
 
   [types.SET_INVITED_USERS_INFO](state: ReferralsState, info: Nullable<Array<string>>) {
@@ -91,20 +91,21 @@ const mutations = {
     state.xorValue = xorValue;
   },
 
-  [types.SET_REFERRAL](state: ReferralsState, value: string) {
-    state.storageReferral = value;
-    storage.set('storageReferral', value);
+  [types.SET_REFERRER](state: ReferralsState, value: string) {
+    state.storageReferrer = value;
+    storage.set('storageReferrer', value);
   },
 };
 
 const actions = {
-  async getReferral({ commit }, invitedUserId: string) {
-    commit(types.GET_REFERRAL_REQUEST);
+  async getReferrer({ commit }, invitedUserId: string) {
+    commit(types.GET_REFERRER_REQUEST);
     try {
-      const referral = await api.referralSystem.getReferral(invitedUserId);
-      commit(types.GET_REFERRAL_SUCCESS, referral);
+      // TODO: Change getReferral to getReferrer after lib versions update
+      const referrer = await api.referralSystem.getReferral(invitedUserId);
+      commit(types.GET_REFERRER_SUCCESS, referrer);
     } catch (error) {
-      commit(types.GET_REFERRAL_FAILURE);
+      commit(types.GET_REFERRER_FAILURE);
     }
   },
   async subscribeInvitedUsers({ commit, rootGetters }, referrerId: string) {
@@ -128,8 +129,8 @@ const actions = {
   setXorValue({ commit }, xorValue: string) {
     commit(types.SET_XOR_VALUE, xorValue);
   },
-  setReferral({ commit }, value: string) {
-    commit(types.SET_REFERRAL, value);
+  setReferrer({ commit }, value: string) {
+    commit(types.SET_REFERRER, value);
   },
 };
 

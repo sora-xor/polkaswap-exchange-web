@@ -79,8 +79,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Getter firstReadyTransaction!: History;
   @Getter blockNumber!: number;
   @Getter('isLoggedIn') isSoraAccountConnected!: boolean;
-  @Getter('storageReferral', { namespace: 'referrals' }) storageReferral!: string;
-  @Getter('referral', { namespace: 'referrals' }) referral!: string;
+  @Getter('storageReferrer', { namespace: 'referrals' }) storageReferrer!: string;
+  @Getter('referrer', { namespace: 'referrals' }) referrer!: string;
 
   // Wallet
   @Action activateNetwokSubscriptions!: AsyncVoidFn;
@@ -99,8 +99,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action('unsubscribeAccountMarketMakerInfo', { namespace: 'rewards' }) unsubscribeMarketMakerInfo!: AsyncVoidFn;
   @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
   @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
-  @Action('getReferral', { namespace: 'referrals' }) getReferral!: (invitedUserId: string) => Promise<void>;
-  @Action('setReferral', { namespace: 'referrals' }) setReferral!: (value: string) => Promise<void>;
+  @Action('getReferrer', { namespace: 'referrals' }) getReferrer!: (invitedUserId: string) => Promise<void>;
+  @Action('setReferrer', { namespace: 'referrals' }) setReferrer!: (value: string) => Promise<void>;
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History, oldValue: History): void {
     this.handleChangeTransaction(value, oldValue);
@@ -125,7 +125,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  @Watch('storageReferral', { immediate: true })
+  @Watch('storageReferrer', { immediate: true })
   private async confirmInviteUserIfHasStorage(storageReferralValue: string): Promise<void> {
     if (this.isSoraAccountConnected && storageReferralValue?.length) {
       await this.confirmInvititation();
@@ -133,10 +133,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async confirmInvititation(): Promise<void> {
-    await this.getReferral(this.account.address);
-    if (this.storageReferral) {
-      if (this.storageReferral === this.account.address) {
-        this.setReferral('');
+    await this.getReferrer(this.account.address);
+    if (this.storageReferrer) {
+      if (this.storageReferrer === this.account.address) {
+        this.setReferrer('');
       } else {
         this.showConfirmInviteUser = true;
       }

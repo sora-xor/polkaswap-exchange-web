@@ -127,7 +127,7 @@ const routes: Array<RouteConfig> = [
     meta: { isReferralProgram: true },
     children: [
       {
-        path: ':referralAddress?',
+        path: ':referrerAddress?',
         meta: {
           isInvitationRoute: true,
           requiresAuth: true,
@@ -171,8 +171,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const prev = from.name;
   if (to.matched.some((record) => record.meta.isInvitationRoute)) {
-    if (api.validateAddress(to.params.referralAddress)) {
-      store.dispatch('referrals/setReferral', to.params.referralAddress);
+    if (api.validateAddress(to.params.referrerAddress)) {
+      store.dispatch('referrals/setReferrer', to.params.referrerAddress);
     }
     if (store.getters.isLoggedIn) {
       next({ name: PageNames.Referral });
