@@ -401,8 +401,8 @@
         "enterAmount": "Введите сумму"
     },
     "transfers": {
-        "from": "От",
-        "to": "Кому"
+        "from": "Из",
+        "to": "На"
     },
     "pageNotFound": {
         "title": "Страница не найдена",
