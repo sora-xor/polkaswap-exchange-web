@@ -141,7 +141,9 @@
         "details": "Awọn alaye"
     },
     "asset": {
-        "remove": "Yọ dukia kuro"
+        "remove": "Yọ dukia kuro",
+        "select": "Yan dukia",
+        "recieve": "Gba {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -918,5 +920,11 @@
         }
     },
     "transactionDetailsText": "Idunadura Awọn alaye",
-    "createTokenTextNFT": "Ṣẹda NFT"
+    "createTokenTextNFT": "Ṣẹda NFT",
+    "code": {
+        "download": "Ṣe igbasilẹ koodu QR",
+        "upload": "Ṣayẹwo QR",
+        "recieve": "Gba",
+        "invalid": "Koodu QR ti ko tọ"
+    }
 }

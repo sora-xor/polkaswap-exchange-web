@@ -141,7 +141,9 @@
         "details": "Детали"
     },
     "asset": {
-        "remove": "Удалить актив"
+        "remove": "Удалить актив",
+        "select": "Выберите актив",
+        "recieve": "Получить {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -399,8 +401,8 @@
         "enterAmount": "Введите сумму"
     },
     "transfers": {
-        "from": "От",
-        "to": "Кому"
+        "from": "Из",
+        "to": "На"
     },
     "pageNotFound": {
         "title": "Страница не найдена",
@@ -918,5 +920,11 @@
         }
     },
     "transactionDetailsText": "Детали транзакции",
-    "createTokenTextNFT": "Создать NFT"
+    "createTokenTextNFT": "Создать NFT",
+    "code": {
+        "download": "Скачать QR-код",
+        "upload": "Сканировать QR-код",
+        "recieve": "Получить",
+        "invalid": "Неверный QR-код"
+    }
 }

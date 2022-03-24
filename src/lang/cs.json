@@ -141,7 +141,9 @@
         "details": "Podrobnosti"
     },
     "asset": {
-        "remove": "Odebrat aktivum"
+        "remove": "Odebrat aktivum",
+        "select": "Vyberte aktivum",
+        "recieve": "Přijmout {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -918,5 +920,11 @@
         }
     },
     "transactionDetailsText": "Detaily transakce",
-    "createTokenTextNFT": "Vytvořte NFT"
+    "createTokenTextNFT": "Vytvořte NFT",
+    "code": {
+        "download": "Stáhnout QR kód",
+        "upload": "Skenovat QR",
+        "recieve": "Příjem",
+        "invalid": "Neplatný QR kód"
+    }
 }

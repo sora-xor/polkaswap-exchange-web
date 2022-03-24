@@ -141,7 +141,9 @@
         "details": "Detaljer"
     },
     "asset": {
-        "remove": "Fjern aktiva"
+        "remove": "Fjern aktiva",
+        "select": "Velg aktivum",
+        "recieve": "Motta {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -918,5 +920,11 @@
         }
     },
     "transactionDetailsText": "Transaksjonsdetaljer",
-    "createTokenTextNFT": "Lag NFT"
+    "createTokenTextNFT": "Lag NFT",
+    "code": {
+        "download": "Last ned QR-kode",
+        "upload": "Skann QR",
+        "recieve": "Motta",
+        "invalid": "Ugyldig QR-kode"
+    }
 }
