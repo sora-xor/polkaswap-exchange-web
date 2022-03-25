@@ -774,7 +774,8 @@
         "claimableAmountDoneVesting": "Beanspruchbare Belohnungen",
         "groups": {
             "strategic": "Strategische Belohnungen",
-            "external": "Belohnungen für das verbundene Ethereum-Konto"
+            "external": "Belohnungen für das verbundene Ethereum-Konto",
+            "crowdloan": "Crowdloan Belohnungen"
         },
         "Rewards": "Belohnungen",
         "ReferralProgram": "@:referralProgram.title"

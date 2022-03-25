@@ -774,7 +774,8 @@
         "claimableAmountDoneVesting": "Importo che puoi ottenere (maturazione effettuata)",
         "groups": {
             "strategic": "Strategic Rewards",
-            "external": "Ricompense per l'account ethereum connesso"
+            "external": "Ricompense per l'account ethereum connesso",
+            "crowdloan": "Premi Crowdloan"
         },
         "Rewards": "Ricompense",
         "ReferralProgram": "@:referralProgram.title"

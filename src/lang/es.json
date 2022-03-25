@@ -774,7 +774,8 @@
         "claimableAmountDoneVesting": "Recompensas reclamables",
         "groups": {
             "strategic": "Recompensas estratégicas",
-            "external": "Recompensas para la cuenta de Ethereum conectada"
+            "external": "Recompensas para la cuenta de Ethereum conectada",
+            "crowdloan": "Recompensas de Crowdloan"
         },
         "Rewards": "Recompensas",
         "ReferralProgram": "@:referralProgram.title"

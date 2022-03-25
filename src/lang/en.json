@@ -774,7 +774,8 @@
         "claimableAmountDoneVesting": "Claimable rewards",
         "groups": {
             "strategic": "Strategic Rewards",
-            "external": "Rewards for the connected ethereum account"
+            "external": "Rewards for the connected ethereum account",
+            "crowdloan": "Crowdloan rewards"
         },
         "Rewards": "Rewards",
         "ReferralProgram": "@:referralProgram.title"

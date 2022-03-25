@@ -774,7 +774,8 @@
         "claimableAmountDoneVesting": "Требуемая сумма (наделение завершено)",
         "groups": {
             "strategic": "Стратегические вознаграждения",
-            "external": "Вознаграждения за подключенный аккаунт Ethereum"
+            "external": "Вознаграждения за подключенный аккаунт Ethereum",
+            "crowdloan": "Crowdloan вознаграждения"
         },
         "Rewards": "Награды",
         "ReferralProgram": "@:referralProgram.title"
