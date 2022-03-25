@@ -172,6 +172,7 @@ export enum Components {
   RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
+  BridgeTransferNotification = 'Bridge/TransferNotification',
 }
 
 export enum RewardsTabsItems {

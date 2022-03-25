@@ -272,8 +272,7 @@ async function addToken(address: string, symbol: string, decimals: number, image
   const ethereum = (window as any).ethereum;
 
   try {
-    // wasAdded is a boolean. Like any RPC method, an error may be thrown.
-    const wasAdded = await ethereum.request({
+    await ethereum.request({
       method: 'wallet_watchAsset',
       params: {
         type: 'ERC20', // Initially only supports ERC20, but eventually more!
@@ -285,14 +284,8 @@ async function addToken(address: string, symbol: string, decimals: number, image
         },
       },
     });
-
-    if (wasAdded) {
-      console.log('Thanks for your interest!');
-    } else {
-      console.log('Your loss!');
-    }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 

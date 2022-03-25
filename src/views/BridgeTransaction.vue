@@ -320,7 +320,6 @@ import {
   isUnsignedFromPart,
   isRejectedForeverFromPart,
 } from '@/utils/bridge';
-import ethersUtil from '@/utils/ethers-util';
 
 const FORMATTED_HASH_LENGTH = 24;
 const namespace = 'bridge';
