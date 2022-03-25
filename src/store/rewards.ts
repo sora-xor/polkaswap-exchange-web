@@ -13,7 +13,7 @@ import type { RewardInfo, RewardsInfo, AccountMarketMakerInfo } from '@sora-subs
 
 import ethersUtil from '@/utils/ethers-util';
 import { asZeroValue, waitForAccountPair } from '@/utils';
-import type { RewardsAmountHeaderItem } from '@/types/rewards';
+import type { RewardsAmountHeaderItem, SelectedRewards } from '@/types/rewards';
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -224,7 +224,7 @@ const actions = {
     commit(types.SET_TRANSACTION_STEP, transactionStep);
   },
 
-  async setSelectedRewards({ commit, dispatch }, params) {
+  async setSelectedRewards({ commit, dispatch }, params: SelectedRewards) {
     commit(types.SET_SELECTED_REWARDS, params);
     await dispatch('getNetworkFee');
   },
@@ -240,25 +240,27 @@ const actions = {
     }
   },
 
-  async getRewards({ commit, dispatch, getters }, address) {
+  async getRewards({ commit, dispatch, getters }, address: string) {
     commit(types.GET_REWARDS_REQUEST);
     try {
       const [internal, vested, crowdloan, external] = await Promise.all([
         api.rewards.checkLiquidityProvision(),
         api.rewards.checkVested(),
         api.rewards.checkCrowdloan(),
-        address ? api.rewards.checkForExternalAccount(address) : [],
+        address ? api.rewards.checkForExternalAccount(address) : ([] as Array<RewardInfo>),
       ]);
 
       commit(types.GET_REWARDS_SUCCESS, { internal, external, vested, crowdloan });
 
-      // select all rewards by default
-      await dispatch('setSelectedRewards', {
+      const selectedRewards: SelectedRewards = {
         internal: getters.internalRewardsAvailable ? internal : null,
         external,
         vested: getters.vestedRewardsAvailable ? vested : null,
         crowdloan: crowdloan.filter((item) => !asZeroValue(item.amount)),
-      });
+      };
+
+      // select all rewards by default
+      await dispatch('setSelectedRewards', selectedRewards);
     } catch (error) {
       console.error(error);
       commit(types.GET_REWARDS_FAILURE);

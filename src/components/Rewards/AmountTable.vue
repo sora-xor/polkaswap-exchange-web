@@ -97,6 +97,8 @@
 import { Component, Prop, Mixins, ModelSync } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type ElCheckbox from 'element-ui/lib/checkbox';
 import type { RewardInfo } from '@sora-substrate/util/build/rewards/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -128,16 +130,16 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
     return this.formatItem(this.item);
   }
 
-  get tableGroupComponent() {
+  get tableGroupComponent(): ElCheckbox | HTMLDivElement {
     return this.complexGroup ? 'div' : 'el-checkbox';
   }
 
-  get tableItemComponent() {
+  get tableItemComponent(): ElCheckbox | HTMLDivElement {
     return this.complexGroup ? 'el-checkbox' : 'div';
   }
 
   formatItem(item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
-    const toLimit = (amount, asset) => ({ amount, asset });
+    const toLimit = (amount: string, asset: Asset): { amount: string; asset: Asset } => ({ amount, asset });
 
     const key = `rewards.events.${item.type}`;
     const title = this.te(key) ? this.t(key) : item.type;

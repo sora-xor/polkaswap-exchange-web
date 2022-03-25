@@ -105,9 +105,9 @@ import ethersUtil from '@/utils/ethers-util';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { hasInsufficientXorForFee } from '@/utils';
-import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards';
-
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+
+import type { RewardsAmountHeaderItem, RewardInfoGroup, SelectedRewards } from '@/types/rewards';
 
 @Component({
   components: {
@@ -147,7 +147,10 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number;
 
   @Action('reset', { namespace: 'rewards' }) reset!: AsyncVoidFn;
-  @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params: any) => Promise<void>;
+  @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (
+    params: SelectedRewards
+  ) => Promise<void>;
+
   @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<Array<RewardInfo>>;
   @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>;
 
@@ -216,7 +219,7 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
     };
   }
 
-  get crowdloanRewardsGroupItem() {
+  get crowdloanRewardsGroupItem(): RewardInfoGroup {
     return {
       type: this.t('rewards.groups.crowdloan'),
       rewards: this.crowdloanRewards,
@@ -265,7 +268,7 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
     this.setSelectedRewards({ ...this.selectedRewards, crowdloan });
   }
 
-  get selectedRewards(): object {
+  get selectedRewards(): SelectedRewards {
     return {
       internal: this.selectedInternalRewards,
       external: this.selectedExternalRewards,
