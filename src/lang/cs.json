@@ -774,7 +774,8 @@
         "claimableAmountDoneVesting": "Nárokovatelné odměny",
         "groups": {
             "strategic": "Strategické odměny",
-            "external": "Odměny za připojený účet ethereum"
+            "external": "Odměny za připojený účet ethereum",
+            "crowdloan": "Crowdloan odměny"
         },
         "Rewards": "Odměny",
         "ReferralProgram": "@:referralProgram.title"

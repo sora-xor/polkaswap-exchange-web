@@ -774,7 +774,8 @@
         "claimableAmountDoneVesting": "Պահանջվող գումարը (կատարված ապահովումը)",
         "groups": {
             "strategic": "PSWAP ստրատեգիական պարգևատրումներ",
-            "external": "Պարգևատրումներ կապված ethereum հաշվի համար"
+            "external": "Պարգևատրումներ կապված ethereum հաշվի համար",
+            "crowdloan": "Crowdloan պարգևներ"
         },
         "Rewards": "Պարգեւներ",
         "ReferralProgram": "@:referralProgram.title"

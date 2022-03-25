@@ -774,7 +774,8 @@
         "claimableAmountDoneVesting": "Iye ti o ni ẹtọ (ti a ṣe)",
         "groups": {
             "strategic": "Ere Awọn ilana",
-            "external": "Awọn ere fun iroyin ethereum ti a sopọ"
+            "external": "Awọn ere fun iroyin ethereum ti a sopọ",
+            "crowdloan": "Crowdloan ere"
         },
         "Rewards": "Ere",
         "ReferralProgram": "@:referralProgram.title"
