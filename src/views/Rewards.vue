@@ -218,7 +218,7 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
 
   get crowdloanRewardsGroupItem() {
     return {
-      type: 'Вознаграждения за Crowdloan',
+      type: this.t('rewards.groups.crowdloan'),
       rewards: this.crowdloanRewards,
     };
   }

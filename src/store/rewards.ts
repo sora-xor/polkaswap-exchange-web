@@ -243,7 +243,7 @@ const actions = {
   async getRewards({ commit, dispatch, getters }, address) {
     commit(types.GET_REWARDS_REQUEST);
     try {
-      const [internal, vested, external, crowdloan] = await Promise.all([
+      const [internal, vested, crowdloan, external] = await Promise.all([
         api.rewards.checkLiquidityProvision(),
         api.rewards.checkVested(),
         api.rewards.checkCrowdloan(),

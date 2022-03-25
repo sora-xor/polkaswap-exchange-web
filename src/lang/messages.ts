@@ -613,6 +613,7 @@ export default {
     groups: {
       strategic: 'Strategic Rewards',
       external: 'Rewards for the connected ethereum account',
+      crowdloan: 'Crowdloan rewards',
     },
   },
   moonpay: {

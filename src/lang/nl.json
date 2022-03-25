@@ -774,7 +774,8 @@
         "claimableAmountDoneVesting": "Opeisbare beloningen",
         "groups": {
             "strategic": "Strategische beloningen",
-            "external": "Beloningen voor het verbonden ethereum-account"
+            "external": "Beloningen voor het verbonden ethereum-account",
+            "crowdloan": "Crowdloan beloningen"
         },
         "Rewards": "Beloningen",
         "ReferralProgram": "@:referralProgram.title"

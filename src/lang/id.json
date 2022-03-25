@@ -774,7 +774,8 @@
         "claimableAmountDoneVesting": "Jumlah yang dapat diklaim (selesai vesting)",
         "groups": {
             "strategic": "Imbalan Strategis",
-            "external": "Hadiah untuk akun ethereum yang terhubung"
+            "external": "Hadiah untuk akun ethereum yang terhubung",
+            "crowdloan": "Hadiah Crowdloan"
         },
         "Rewards": "Hadiah",
         "ReferralProgram": "@:referralProgram.title"
