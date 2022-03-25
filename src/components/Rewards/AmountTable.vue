@@ -4,60 +4,69 @@
       <div class="amount-table-item__title">{{ formatted.title }}</div>
       <template v-if="showTable">
         <div v-if="formatted.subtitle" class="amount-table-item__subtitle">{{ formatted.subtitle }}</div>
-        <s-checkbox class="amount-table-item-group" v-model="innerModel" :disabled="disabled" size="big">
-          <div class="amount-table-item-content">
-            <div class="amount-table-item-content__header">
-              <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
-                <formatted-amount-with-fiat-value
-                  value-class="amount-table-value"
-                  with-left-shift
-                  value-can-be-hidden
-                  :value="
-                    isCodecString
-                      ? getFPNumberFromCodec(item.amount, item.asset.decimals).toLocaleString()
-                      : item.amount
-                  "
-                  :font-size-rate="FontSizeRate.MEDIUM"
-                  :asset-symbol="item.asset.symbol"
-                  :fiat-value="
-                    isCodecString
-                      ? getFiatAmountByCodecString(item.amount, item.asset)
-                      : getFiatAmountByString(item.amount, item.asset)
-                  "
-                  :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                >
-                  <el-popover
-                    v-if="formatted.total && index === 0"
-                    popper-class="amount-table-tooltip"
-                    placement="right"
-                    trigger="hover"
+        <el-checkbox-group v-model="innerModel">
+          <component :is="tableGroupComponent" class="amount-table-item-group" :disabled="disabled" size="big">
+            <div class="amount-table-item-content">
+              <div class="amount-table-item-content__header">
+                <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
+                  <formatted-amount-with-fiat-value
+                    value-class="amount-table-value"
+                    with-left-shift
+                    value-can-be-hidden
+                    :value="
+                      isCodecString
+                        ? getFPNumberFromCodec(item.amount, item.asset.decimals).toLocaleString()
+                        : item.amount
+                    "
+                    :font-size-rate="FontSizeRate.MEDIUM"
+                    :asset-symbol="item.asset.symbol"
+                    :fiat-value="
+                      isCodecString
+                        ? getFiatAmountByCodecString(item.amount, item.asset)
+                        : getFiatAmountByString(item.amount, item.asset)
+                    "
+                    :fiat-font-size-rate="FontSizeRate.MEDIUM"
                   >
-                    <div class="amount-table-tooltip-content">
-                      <div>{{ t('rewards.totalVested') }}:</div>
-                      <formatted-amount
-                        class="amount-table-value"
-                        value-can-be-hidden
-                        symbol-as-decimal
-                        :value="formatted.total.amount"
-                        :font-size-rate="FontSizeRate.MEDIUM"
-                        :asset-symbol="formatted.total.asset.symbol"
-                      />
-                    </div>
-                    <s-icon slot="reference" name="info-16" size="14px" class="amount-table-value-icon" />
-                  </el-popover>
-                </formatted-amount-with-fiat-value>
+                    <el-popover
+                      v-if="formatted.total && index === 0"
+                      popper-class="amount-table-tooltip"
+                      placement="right"
+                      trigger="hover"
+                    >
+                      <div class="amount-table-tooltip-content">
+                        <div>{{ t('rewards.totalVested') }}:</div>
+                        <formatted-amount
+                          class="amount-table-value"
+                          value-can-be-hidden
+                          symbol-as-decimal
+                          :value="formatted.total.amount"
+                          :font-size-rate="FontSizeRate.MEDIUM"
+                          :asset-symbol="formatted.total.asset.symbol"
+                        />
+                      </div>
+                      <s-icon slot="reference" name="info-16" size="14px" class="amount-table-value-icon" />
+                    </el-popover>
+                  </formatted-amount-with-fiat-value>
+                </div>
               </div>
-            </div>
-            <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
-              <div v-for="(item, index) in formatted.rewards" :key="item.type">
-                <s-divider v-if="!simpleGroup || index === 0" :class="['amount-table-divider', theme]" />
-                <div class="amount-table-subitem">
+              <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
+                <component
+                  :is="tableItemComponent"
+                  v-for="(item, index) in formatted.rewards"
+                  :key="item.type"
+                  :label="item.type"
+                  :disabled="isDisabledRewardItem(item)"
+                  :class="['amount-table-subitem', { complex: complexGroup }]"
+                >
+                  <s-divider v-if="!simpleGroup || index === 0" :class="['amount-table-divider', theme]" />
                   <div class="amount-table-subitem__title">
                     <template v-if="simpleGroup">—</template>
                     <template v-else-if="formatted.total">
                       {{ t('rewards.totalVested') }} {{ t('rewards.forText') }}
                     </template>
-                    {{ item.title }}
+                    <template v-if="!complexGroup">
+                      {{ item.title }}
+                    </template>
                   </div>
                   <template v-if="!simpleGroup">
                     <div v-for="(item, index) in item.limit" :key="index" class="amount-table-subitem__row">
@@ -73,11 +82,11 @@
                       />
                     </div>
                   </template>
-                </div>
+                </component>
               </div>
             </div>
-          </div>
-        </s-checkbox>
+          </component>
+        </el-checkbox-group>
       </template>
     </div>
     <slot />
@@ -85,13 +94,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Mixins } from 'vue-property-decorator';
+import { Component, Prop, Mixins, ModelSync } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { RewardInfo } from '@sora-substrate/util/build/rewards/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards';
+import { asZeroValue } from '@/utils';
 
 @Component({
   components: {
@@ -105,21 +115,25 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
   @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo;
   @Prop({ default: true, type: Boolean }) showTable!: boolean;
   @Prop({ default: false, type: Boolean }) simpleGroup!: boolean;
-  @Prop({ default: false, type: Boolean }) value!: boolean;
+  @Prop({ default: false, type: Boolean }) complexGroup!: boolean;
+  @Prop({ default: false, type: [Boolean, Array] }) value!: boolean | string[];
   @Prop({ default: false, type: Boolean }) isCodecString!: boolean;
   @Prop({ default: false, type: Boolean }) disabled!: boolean;
   @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme;
 
-  get innerModel(): any {
-    return this.value;
-  }
-
-  set innerModel(value: any) {
-    this.$emit('input', value);
-  }
+  @ModelSync('value', 'input', { type: [Boolean, Array] })
+  readonly innerModel!: boolean | string[];
 
   get formatted(): RewardsAmountTableItem {
     return this.formatItem(this.item);
+  }
+
+  get tableGroupComponent() {
+    return this.complexGroup ? 'div' : 'el-checkbox';
+  }
+
+  get tableItemComponent() {
+    return this.complexGroup ? 'el-checkbox' : 'div';
   }
 
   formatItem(item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
@@ -144,6 +158,10 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
       rewards,
     };
   }
+
+  isDisabledRewardItem(item: RewardsAmountTableItem): boolean {
+    return asZeroValue(item.limit?.[0]?.amount);
+  }
 }
 </script>
 
@@ -162,6 +180,7 @@ $tooltip-placements: 'left', 'right';
       white-space: normal;
       display: flex;
       flex: 1;
+      flex-flow: column nowrap;
       color: inherit !important;
       padding-left: $inner-spacing-mini;
     }
@@ -226,6 +245,14 @@ $tooltip-placements: 'left', 'right';
     }
   }
 
+  &-subitem {
+    &.complex {
+      .el-checkbox__input {
+        margin-top: $inner-spacing-small;
+      }
+    }
+  }
+
   &-tooltip.el-popover.el-popper {
     border-color: var(--s-color-base-border-secondary);
     border-radius: var(--s-border-radius-mini);
@@ -280,10 +307,6 @@ $tooltip-placements: 'left', 'right';
         flex: 1;
         flex-flow: column nowrap;
       }
-
-      &__body {
-        margin-top: $inner-spacing-small;
-      }
     }
 
     &__title {
@@ -316,6 +339,11 @@ $tooltip-placements: 'left', 'right';
     font-weight: 300;
     text-transform: uppercase;
 
+    &.complex {
+      display: flex;
+      flex-flow: row nowrap;
+    }
+
     &__title {
       line-height: var(--s-line-height-reset);
     }
@@ -330,6 +358,8 @@ $tooltip-placements: 'left', 'right';
 
   &-divider {
     opacity: 0.5;
+    margin-top: 0;
+    margin-bottom: $inner-spacing-mini;
   }
 
   &-tooltip-content {
@@ -337,7 +367,5 @@ $tooltip-placements: 'left', 'right';
     line-height: var(--s-line-height-small);
     text-transform: uppercase;
   }
-
-  @include vertical-divider('amount-table-divider', 0);
 }
 </style>

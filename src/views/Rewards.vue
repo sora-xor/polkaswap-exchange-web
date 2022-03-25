@@ -29,11 +29,19 @@
               />
               <rewards-amount-table
                 class="rewards-table"
+                v-model="selectedCrowdloanRewardsModel"
+                :item="crowdloanRewardsGroupItem"
+                :theme="libraryTheme"
+                complex-group
+                is-codec-string
+              />
+              <rewards-amount-table
+                class="rewards-table"
                 v-model="selectedExternalRewardsModel"
                 :item="externalRewardsGroupItem"
                 :show-table="!!externalRewards.length"
-                :simple-group="true"
                 :theme="libraryTheme"
+                simple-group
               >
                 <div class="rewards-footer">
                   <s-divider />
@@ -123,9 +131,11 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @State((state) => state.rewards.internalRewards) internalRewards!: RewardInfo;
   @State((state) => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>;
   @State((state) => state.rewards.vestedRewards) vestedRewards!: RewardsInfo;
+  @State((state) => state.rewards.crowdloanRewards) crowdloanRewards!: Array<RewardInfo>;
   @State((state) => state.rewards.selectedVestedRewards) selectedVestedRewards!: Nullable<RewardsInfo>;
   @State((state) => state.rewards.selectedInternalRewards) selectedInternalRewards!: Nullable<RewardInfo>;
   @State((state) => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>;
+  @State((state) => state.rewards.selectedCrowdloanRewards) selectedCrowdloanRewards!: Array<RewardInfo>;
 
   @Getter libraryTheme!: Theme;
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
@@ -206,13 +216,20 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
     };
   }
 
+  get crowdloanRewardsGroupItem() {
+    return {
+      type: 'Вознаграждения за Crowdloan',
+      rewards: this.crowdloanRewards,
+    };
+  }
+
   get selectedInternalRewardsModel(): boolean {
     return this.internalRewardsAvailable && this.selectedInternalRewards !== null;
   }
 
   set selectedInternalRewardsModel(flag: boolean) {
     const internal = flag ? this.internalRewards : null;
-    this.setSelectedRewards({ internal, external: this.selectedExternalRewards, vested: this.selectedVestedRewards });
+    this.setSelectedRewards({ ...this.selectedRewards, internal });
   }
 
   get selectedExternalRewardsModel(): boolean {
@@ -221,7 +238,7 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
 
   set selectedExternalRewardsModel(flag: boolean) {
     const external = flag ? this.externalRewards : [];
-    this.setSelectedRewards({ internal: this.selectedInternalRewards, external, vested: this.selectedVestedRewards });
+    this.setSelectedRewards({ ...this.selectedRewards, external });
   }
 
   get selectedVestedRewardsModel(): boolean {
@@ -230,7 +247,31 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
 
   set selectedVestedRewardsModel(flag: boolean) {
     const vested = flag ? this.vestedRewards : null;
-    this.setSelectedRewards({ internal: this.selectedInternalRewards, external: this.selectedExternalRewards, vested });
+    this.setSelectedRewards({ ...this.selectedRewards, vested });
+  }
+
+  get selectedCrowdloanRewardsModel(): Array<string> {
+    return this.selectedCrowdloanRewards.map((item) => item.type);
+  }
+
+  set selectedCrowdloanRewardsModel(value: Array<string>) {
+    const crowdloan = this.crowdloanRewards.reduce<RewardInfo[]>((buffer, item) => {
+      if (value.includes(item.type)) {
+        buffer.push(item);
+      }
+      return buffer;
+    }, []);
+
+    this.setSelectedRewards({ ...this.selectedRewards, crowdloan });
+  }
+
+  get selectedRewards(): object {
+    return {
+      internal: this.selectedInternalRewards,
+      external: this.selectedExternalRewards,
+      vested: this.selectedVestedRewards,
+      crowdloan: this.selectedCrowdloanRewards,
+    };
   }
 
   get isInsufficientBalance(): boolean {

@@ -42,6 +42,8 @@ interface RewardsState {
   selectedInternalRewards: Nullable<RewardInfo>;
   vestedRewards: Nullable<RewardsInfo>;
   selectedVestedRewards: Nullable<RewardsInfo>;
+  crowdloanRewards: Array<RewardInfo>;
+  selectedCrowdloanRewards: Array<RewardInfo>;
   rewardsFetching: boolean;
   rewardsClaiming: boolean;
   rewardsRecieved: boolean;
@@ -59,9 +61,11 @@ function initialState(): RewardsState {
     externalRewards: [],
     internalRewards: null,
     vestedRewards: null,
+    crowdloanRewards: [],
     selectedVestedRewards: null,
     selectedInternalRewards: null,
     selectedExternalRewards: [],
+    selectedCrowdloanRewards: [],
     rewardsFetching: false,
     rewardsClaiming: false,
     rewardsRecieved: false,
@@ -77,7 +81,10 @@ const state = initialState();
 
 const getters = {
   claimableRewards(state: RewardsState): Array<RewardInfo | RewardsInfo> {
-    const buffer: Array<RewardInfo | RewardsInfo> = [...state.selectedExternalRewards];
+    const buffer: Array<RewardInfo | RewardsInfo> = [
+      ...state.selectedExternalRewards,
+      ...state.selectedCrowdloanRewards,
+    ];
 
     if (state.selectedInternalRewards) {
       buffer.push(state.selectedInternalRewards);
@@ -155,16 +162,21 @@ const mutations = {
   [types.GET_REWARDS_REQUEST](state: RewardsState) {
     state.rewardsFetching = true;
   },
-  [types.GET_REWARDS_SUCCESS](state: RewardsState, { internal = null, external = [], vested = null } = {}) {
+  [types.GET_REWARDS_SUCCESS](
+    state: RewardsState,
+    { internal = null, external = [], vested = null, crowdloan = [] } = {}
+  ) {
     state.internalRewards = internal;
     state.externalRewards = external;
     state.vestedRewards = vested;
+    state.crowdloanRewards = crowdloan;
     state.rewardsFetching = false;
   },
   [types.GET_REWARDS_FAILURE](state: RewardsState) {
     state.internalRewards = null;
     state.externalRewards = [];
     state.vestedRewards = null;
+    state.crowdloanRewards = [];
     state.rewardsFetching = false;
   },
 
@@ -179,10 +191,14 @@ const mutations = {
     state.feeFetching = false;
   },
 
-  [types.SET_SELECTED_REWARDS](state: RewardsState, { internal = null, external = [], vested = null } = {}) {
+  [types.SET_SELECTED_REWARDS](
+    state: RewardsState,
+    { internal = null, external = [], vested = null, crowdloan = [] } = {}
+  ) {
     state.selectedExternalRewards = [...external];
     state.selectedInternalRewards = internal;
     state.selectedVestedRewards = vested;
+    state.selectedCrowdloanRewards = [...crowdloan];
   },
 
   [types.SET_ACCOUNT_MARKET_MAKER_INFO](state: RewardsState, info: Nullable<AccountMarketMakerInfo>) {
@@ -227,19 +243,21 @@ const actions = {
   async getRewards({ commit, dispatch, getters }, address) {
     commit(types.GET_REWARDS_REQUEST);
     try {
-      const [internal, vested, external] = await Promise.all([
+      const [internal, vested, external, crowdloan] = await Promise.all([
         api.rewards.checkLiquidityProvision(),
         api.rewards.checkVested(),
-        address ? await api.rewards.checkForExternalAccount(address) : [],
+        api.rewards.checkCrowdloan(),
+        address ? api.rewards.checkForExternalAccount(address) : [],
       ]);
 
-      commit(types.GET_REWARDS_SUCCESS, { internal, external, vested });
+      commit(types.GET_REWARDS_SUCCESS, { internal, external, vested, crowdloan });
 
       // select all rewards by default
       await dispatch('setSelectedRewards', {
         internal: getters.internalRewardsAvailable ? internal : null,
         external,
         vested: getters.vestedRewardsAvailable ? vested : null,
+        crowdloan: crowdloan.filter((item) => !asZeroValue(item.amount)),
       });
     } catch (error) {
       console.error(error);
