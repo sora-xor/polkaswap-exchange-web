@@ -7,9 +7,9 @@ import { KnownBridgeAsset } from '../utils/ethers-util';
 
 export const app = {
   version: pkg.version,
-  name: 'Polkaswap',
+  name: 'ADAR',
   email: 'jihoon@tutanota.de',
-  title: 'Polkaswap — The DEX for the Interoperable Future.',
+  title: 'ADAR — Pay employees anywhere, instantly',
 };
 
 export const WalletPermissions = {
