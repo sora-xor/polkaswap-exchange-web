@@ -160,6 +160,7 @@ export enum Components {
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
   ValueStatusWrapper = 'ValueStatusWrapper',
+  SimpleNotification = 'SimpleNotification',
   Moonpay = 'Moonpay/Moonpay',
   MoonpayWidget = 'Moonpay/MoonpayWidget',
   MoonpayNotification = 'Moonpay/MoonpayNotification',
