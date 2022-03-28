@@ -918,6 +918,18 @@
             "hasReferrerTitle": "Anda telah menetapkan perujuk Anda",
             "hasReferrerDescription": "Sayangnya, Anda hanya dapat mengatur satu",
             "ok": "Oke"
+        },
+        "referrer": {
+            "title": "Tambahkan pengarah Anda",
+            "titleReferrer": "Perujuk Anda",
+            "placeholder": "Masukkan tautan atau kode undangan",
+            "label": "Tautan atau kode undangan",
+            "approve": "Menyetujui",
+            "approved": "Disetujui",
+            "description": "Anda dapat dirujuk ke Polkaswap,<br\/>ketikkan tautan atau kode perujuk",
+            "referredBy": "Anda telah dirujuk oleh {referrer}",
+            "info": "Ketika Anda akan membayar biaya untuk transaksi,<br\/>10% akan masuk ke perujuk Anda",
+            "referredLablel": "Alamat yang dirujuk"
         }
     },
     "transactionDetailsText": "Detil transaksi",

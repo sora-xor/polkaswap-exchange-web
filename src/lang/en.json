@@ -907,18 +907,6 @@
         "successCopy": "Referral link is copied to the clipboard",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",
-        "referrer": {
-            "title": "Add your referrer",
-            "titleReferrer": "Your referrer",
-            "placeholder": "Enter invitation link or code",
-            "label": "Invitation link or code",
-            "approve": "Approve",
-            "approved": "Approved",
-            "description": "You can get referred to Polkaswap,<br\/>type in the link or code of the referrer",
-            "referredBy": "You’ve been referred by {referrer}",
-            "info": "When you’ll pay a fee for transaction,<br\/>10% will go to your referrer",
-            "referredLablel": "Referred address"
-        },
         "confirm": {
             "text": "Confirm",
             "bond": "Confirm bond",
@@ -930,6 +918,18 @@
             "hasReferrerTitle": "You’ve already set your referrer",
             "hasReferrerDescription": "Unfortunately, you can only set one",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Add your referrer",
+            "titleReferrer": "Your referrer",
+            "placeholder": "Enter invitation link or code",
+            "label": "Invitation link or code",
+            "approve": "Approve",
+            "approved": "Approved",
+            "description": "You can get referred to Polkaswap,<br\/>type in the link or code of the referrer",
+            "referredBy": "You’ve been referred by {referrer}",
+            "info": "When you’ll pay a fee for transaction,<br\/>10% will go to your referrer",
+            "referredLablel": "Referred address"
         }
     },
     "transactionDetailsText": "Transaction Details",

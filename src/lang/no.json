@@ -918,6 +918,18 @@
             "hasReferrerTitle": "Du har allerede angitt henvisningsadressen din",
             "hasReferrerDescription": "Dessverre kan du bare angi én",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Legg til henvisningsadressen din",
+            "titleReferrer": "Din henvisning",
+            "placeholder": "Skriv inn invitasjonslenke eller kode",
+            "label": "Invitasjonslenke eller kode",
+            "approve": "Vedta",
+            "approved": "Godkjent",
+            "description": "Du kan bli henvist til Polkaswap,<br\/>skriv inn lenken eller koden til refereren",
+            "referredBy": "Du har blitt henvist av {referrer}",
+            "info": "Når du betaler et gebyr for transaksjonen,<br\/>går 10% til henvisningsadressen din",
+            "referredLablel": "Henvist adresse"
         }
     },
     "transactionDetailsText": "Transaksjonsdetaljer",

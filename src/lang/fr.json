@@ -918,6 +918,18 @@
             "hasReferrerTitle": "Vous avez déjà défini votre référent",
             "hasReferrerDescription": "Malheureusement, vous ne pouvez définir qu'un seul",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Ajoutez votre référent",
+            "titleReferrer": "Votre référent",
+            "placeholder": "Entrez le lien ou le code d'invitation",
+            "label": "Lien ou code d'invitation",
+            "approve": "Approuver",
+            "approved": "Approuvé",
+            "description": "Vous pouvez être référé à Polkaswap,<br\/>saisissez le lien ou le code du référent",
+            "referredBy": "Vous avez été référé par {referrer}",
+            "info": "Lorsque vous paierez des frais pour la transaction,<br\/>10% iront à votre parrain",
+            "referredLablel": "Adresse référencée"
         }
     },
     "transactionDetailsText": "Détails de la transaction",

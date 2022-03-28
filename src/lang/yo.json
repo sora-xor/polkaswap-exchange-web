@@ -918,6 +918,18 @@
             "hasReferrerTitle": "O ti ṣeto olutọka rẹ tẹlẹ",
             "hasReferrerDescription": "Laanu, o le ṣeto ọkan nikan",
             "ok": "O DARA"
+        },
+        "referrer": {
+            "title": "Ṣafikun olutọka rẹ",
+            "titleReferrer": "Olutọka rẹ",
+            "placeholder": "Tẹ ọna asopọ ifiwepe tabi koodu sii",
+            "label": "Asopọmọra ifiwepe tabi koodu",
+            "approve": "Fi ọwọ si",
+            "approved": "Ti fọwọsi",
+            "description": "O le tọka si Polkaswap,<br\/>tẹ ọna asopọ tabi koodu ti olutọkasi",
+            "referredBy": "{referrer} ti tọka si ọ",
+            "info": "Nigbati o ba san owo fun idunadura,<br\/>10% yoo lọ si olutọkasi rẹ",
+            "referredLablel": "Adirẹsi ti a tọka si"
         }
     },
     "transactionDetailsText": "Idunadura Awọn alaye",

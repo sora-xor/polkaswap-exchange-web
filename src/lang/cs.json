@@ -918,6 +918,18 @@
             "hasReferrerTitle": "Již jste nastavili svého referrera",
             "hasReferrerDescription": "Bohužel můžete nastavit pouze jeden",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Přidejte svého referrera",
+            "titleReferrer": "Váš referrer",
+            "placeholder": "Zadejte odkaz nebo kód pozvánky",
+            "label": "Odkaz nebo kód pozvánky",
+            "approve": "Schválit",
+            "approved": "Schválený",
+            "description": "Můžete získat doporučení na Polkaswap,<br\/>zadejte odkaz nebo kód referrera",
+            "referredBy": "Doporučil vám {referrer}",
+            "info": "Když zaplatíte poplatek za transakci,<br\/>10% dostane váš referrer",
+            "referredLablel": "Doporučená adresa"
         }
     },
     "transactionDetailsText": "Detaily transakce",

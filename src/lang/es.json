@@ -918,6 +918,18 @@
             "hasReferrerTitle": "Ya has configurado tu referente",
             "hasReferrerDescription": "Desafortunadamente, solo puedes configurar uno",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Agrega tu referente",
+            "titleReferrer": "Su referente",
+            "placeholder": "Introduce el enlace o el código de invitación",
+            "label": "Enlace o código de invitación",
+            "approve": "Aprobar",
+            "approved": "Aprobado",
+            "description": "Puede ser referido a Polkaswap,<br\/>escriba el enlace o el código del remitente",
+            "referredBy": "Has sido referido por {referrer}",
+            "info": "Cuando pague una tarifa por la transacción,<br\/>el 10% se destinará a su referente",
+            "referredLablel": "Dirección de referencia"
         }
     },
     "transactionDetailsText": "Detalles de la transacción",
