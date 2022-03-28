@@ -141,7 +141,9 @@
         "details": "Awọn alaye"
     },
     "asset": {
-        "remove": "Yọ dukia kuro"
+        "remove": "Yọ dukia kuro",
+        "select": "Yan dukia",
+        "recieve": "Gba {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -772,7 +774,8 @@
         "claimableAmountDoneVesting": "Iye ti o ni ẹtọ (ti a ṣe)",
         "groups": {
             "strategic": "Ere Awọn ilana",
-            "external": "Awọn ere fun iroyin ethereum ti a sopọ"
+            "external": "Awọn ere fun iroyin ethereum ti a sopọ",
+            "crowdloan": "Crowdloan ere"
         },
         "Rewards": "Ere",
         "ReferralProgram": "@:referralProgram.title"
@@ -918,5 +921,11 @@
         }
     },
     "transactionDetailsText": "Idunadura Awọn alaye",
-    "createTokenTextNFT": "Ṣẹda NFT"
+    "createTokenTextNFT": "Ṣẹda NFT",
+    "code": {
+        "download": "Ṣe igbasilẹ koodu QR",
+        "upload": "Ṣayẹwo QR",
+        "recieve": "Gba",
+        "invalid": "Koodu QR ti ko tọ"
+    }
 }

@@ -141,7 +141,9 @@
         "details": "Մանրամասներ"
     },
     "asset": {
-        "remove": "Հեռացնել ակտիվը"
+        "remove": "Հեռացնել ակտիվը",
+        "select": "Ընտրեք ակտիվ",
+        "recieve": "Ստանալ {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -772,7 +774,8 @@
         "claimableAmountDoneVesting": "Պահանջվող գումարը (կատարված ապահովումը)",
         "groups": {
             "strategic": "PSWAP ստրատեգիական պարգևատրումներ",
-            "external": "Պարգևատրումներ կապված ethereum հաշվի համար"
+            "external": "Պարգևատրումներ կապված ethereum հաշվի համար",
+            "crowdloan": "Crowdloan պարգևներ"
         },
         "Rewards": "Պարգեւներ",
         "ReferralProgram": "@:referralProgram.title"
@@ -918,5 +921,11 @@
         }
     },
     "transactionDetailsText": "Գործարքի մանրամասները",
-    "createTokenTextNFT": "Ստեղծեք NFT"
+    "createTokenTextNFT": "Ստեղծեք NFT",
+    "code": {
+        "download": "Ներբեռնեք QR կոդը",
+        "upload": "Սկան QR",
+        "recieve": "Ստանալ",
+        "invalid": "Անվավեր QR կոդը"
+    }
 }

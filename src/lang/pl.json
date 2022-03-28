@@ -141,7 +141,9 @@
         "details": "Szczegóły"
     },
     "asset": {
-        "remove": "Usuń walutę"
+        "remove": "Usuń walutę",
+        "select": "Wybierz walutę",
+        "recieve": "Odbierz {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -772,7 +774,8 @@
         "claimableAmountDoneVesting": "Przysługujące wynagrodzenie dostępne do wypłaty",
         "groups": {
             "strategic": "Wynagrodzenie strategiczne",
-            "external": "Wynagrodzenie dla podłączonego konta sieci Ethereum"
+            "external": "Wynagrodzenie dla podłączonego konta sieci Ethereum",
+            "crowdloan": "Nagrody Crowdloan"
         },
         "Rewards": "Wynagrodzenie",
         "ReferralProgram": "@:referralProgram.title"
@@ -918,5 +921,11 @@
         }
     },
     "transactionDetailsText": "Szczegóły transakcji",
-    "createTokenTextNFT": "Utwórz token NFT"
+    "createTokenTextNFT": "Utwórz token NFT",
+    "code": {
+        "download": "Pobierz kod QR",
+        "upload": "Skanowanie kodu QR",
+        "recieve": "Odbierać",
+        "invalid": "Nieprawidłowy kod QR"
+    }
 }

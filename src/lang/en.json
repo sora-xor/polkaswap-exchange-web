@@ -141,7 +141,9 @@
         "details": "Details"
     },
     "asset": {
-        "remove": "Remove asset"
+        "remove": "Remove asset",
+        "select": "Select an asset",
+        "recieve": "Receive {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -772,7 +774,8 @@
         "claimableAmountDoneVesting": "Claimable rewards",
         "groups": {
             "strategic": "Strategic Rewards",
-            "external": "Rewards for the connected ethereum account"
+            "external": "Rewards for the connected ethereum account",
+            "crowdloan": "Crowdloan rewards"
         },
         "Rewards": "Rewards",
         "ReferralProgram": "@:referralProgram.title"
@@ -930,5 +933,11 @@
         }
     },
     "transactionDetailsText": "Transaction Details",
-    "createTokenTextNFT": "Create NFT"
+    "createTokenTextNFT": "Create NFT",
+    "code": {
+        "download": "Download QR Code",
+        "upload": "Scan QR",
+        "recieve": "Receive",
+        "invalid": "Invalid QR Code"
+    }
 }

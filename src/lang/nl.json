@@ -141,7 +141,9 @@
         "details": "Details"
     },
     "asset": {
-        "remove": "Asset verwijderen"
+        "remove": "Asset verwijderen",
+        "select": "Selecteer een bezit",
+        "recieve": "Ontvang {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -772,7 +774,8 @@
         "claimableAmountDoneVesting": "Opeisbare beloningen",
         "groups": {
             "strategic": "Strategische beloningen",
-            "external": "Beloningen voor het verbonden ethereum-account"
+            "external": "Beloningen voor het verbonden ethereum-account",
+            "crowdloan": "Crowdloan beloningen"
         },
         "Rewards": "Beloningen",
         "ReferralProgram": "@:referralProgram.title"
@@ -918,5 +921,11 @@
         }
     },
     "transactionDetailsText": "Transactie Details",
-    "createTokenTextNFT": "NFT maken"
+    "createTokenTextNFT": "NFT maken",
+    "code": {
+        "download": "Downloaden QR-code",
+        "upload": "QR code scannen",
+        "recieve": "Ontvangen",
+        "invalid": "Ongeldige QR-code"
+    }
 }

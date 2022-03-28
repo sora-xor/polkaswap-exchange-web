@@ -141,7 +141,9 @@
         "details": "Детали"
     },
     "asset": {
-        "remove": "Удалить актив"
+        "remove": "Удалить актив",
+        "select": "Выберите актив",
+        "recieve": "Получить {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -399,8 +401,8 @@
         "enterAmount": "Введите сумму"
     },
     "transfers": {
-        "from": "От",
-        "to": "Кому"
+        "from": "Из",
+        "to": "На"
     },
     "pageNotFound": {
         "title": "Страница не найдена",
@@ -772,7 +774,8 @@
         "claimableAmountDoneVesting": "Требуемая сумма (наделение завершено)",
         "groups": {
             "strategic": "Стратегические вознаграждения",
-            "external": "Вознаграждения за подключенный аккаунт Ethereum"
+            "external": "Вознаграждения за подключенный аккаунт Ethereum",
+            "crowdloan": "Crowdloan вознаграждения"
         },
         "Rewards": "Награды",
         "ReferralProgram": "@:referralProgram.title"
@@ -918,5 +921,11 @@
         }
     },
     "transactionDetailsText": "Детали транзакции",
-    "createTokenTextNFT": "Создать NFT"
+    "createTokenTextNFT": "Создать NFT",
+    "code": {
+        "download": "Скачать QR-код",
+        "upload": "Сканировать QR-код",
+        "recieve": "Получить",
+        "invalid": "Неверный QR-код"
+    }
 }

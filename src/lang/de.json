@@ -141,7 +141,9 @@
         "details": "Details"
     },
     "asset": {
-        "remove": "Asset entfernen"
+        "remove": "Asset entfernen",
+        "select": "Wählen Sie ein Asset",
+        "recieve": "Erhalte {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -772,7 +774,8 @@
         "claimableAmountDoneVesting": "Beanspruchbare Belohnungen",
         "groups": {
             "strategic": "Strategische Belohnungen",
-            "external": "Belohnungen für das verbundene Ethereum-Konto"
+            "external": "Belohnungen für das verbundene Ethereum-Konto",
+            "crowdloan": "Crowdloan Belohnungen"
         },
         "Rewards": "Belohnungen",
         "ReferralProgram": "@:referralProgram.title"
@@ -918,5 +921,11 @@
         }
     },
     "transactionDetailsText": "Transaktionsdetails",
-    "createTokenTextNFT": "NFT erstellen"
+    "createTokenTextNFT": "NFT erstellen",
+    "code": {
+        "download": "QR-Code herunterladen",
+        "upload": "QR scannen",
+        "recieve": "Erhalten",
+        "invalid": "Ungültiger QR-Code"
+    }
 }
