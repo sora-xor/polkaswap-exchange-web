@@ -294,13 +294,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { Getter, Action, State } from 'vuex-class';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type {
-  CodecString,
-  BridgeHistory,
-  RegisteredAccountAsset,
-  RegisteredAsset,
-  BridgeNetworks,
-} from '@sora-substrate/util';
+import type { CodecString, BridgeHistory, RegisteredAccountAsset, BridgeNetworks } from '@sora-substrate/util';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -336,7 +330,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @State((state) => state[namespace].waitingForApprove) waitingForApprove!: any;
   @State((state) => state[namespace].inProgressIds) inProgressIds!: any;
 
-  @Getter whitelist!: any;
   @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
   @Getter('getAssetDataByAddress', { namespace: 'assets' }) getAssetDataByAddress!: (
     address: string
@@ -682,12 +675,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     }
 
     await this.withParentLoading(async () => {
-      // if (this.asset) {
-      //   const { externalAddress: address, externalDecimals: decimals, symbol, address: internal } = this.asset as RegisteredAccountAsset & RegisteredAsset;
-      //   const image = this.whitelist[internal]?.icon;
-      //   await ethersUtil.addToken(address, symbol, +decimals, image);
-      // }
-
       const withAutoStart =
         !this.txInProcess && (!this.isTransferStarted || this.isTransactionFromPending || this.isTransactionToPending);
 
