@@ -918,6 +918,18 @@
             "hasReferrerTitle": "Hai già impostato il tuo referrer",
             "hasReferrerDescription": "Sfortunatamente, puoi impostarne solo uno",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Aggiungi il tuo referrer",
+            "titleReferrer": "Il tuo referente",
+            "placeholder": "Inserisci il link o il codice dell'invito",
+            "label": "Link o codice di invito",
+            "approve": "Approvare",
+            "approved": "Approvato",
+            "description": "Puoi essere indirizzato a Polkaswap,<br\/>digita il link o il codice del referrer",
+            "referredBy": "Sei stato indirizzato da {referrer}",
+            "info": "Quando pagherai una commissione per la transazione,<br\/>10% andrà al tuo referrer",
+            "referredLablel": "Indirizzo di riferimento"
         }
     },
     "transactionDetailsText": "Dettagli di Transazione",
@@ -927,5 +939,9 @@
         "upload": "Scansiona QR",
         "recieve": "Ricevere",
         "invalid": "Codice QR non valido"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Aggiungi {symbol} a @:metamask",
+        "title": "Transazione ponte riuscita"
     }
 }

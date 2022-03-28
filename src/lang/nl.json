@@ -918,6 +918,18 @@
             "hasReferrerTitle": "Je hebt je verwijzer al ingesteld",
             "hasReferrerDescription": "Helaas kun je er maar één instellen",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Voeg uw verwijzer toe",
+            "titleReferrer": "Uw verwijzer",
+            "placeholder": "Voer uitnodigingslink of code in",
+            "label": "Uitnodigingslink of code",
+            "approve": "Goedkeuren",
+            "approved": "Goedgekeurd",
+            "description": "U kunt doorverwezen worden naar Polkaswap,<br\/>typ de link of code van de verwijzer in",
+            "referredBy": "U bent doorverwezen door {referrer}",
+            "info": "Wanneer u transactiekosten betaalt,<br\/>gaat 10% naar uw verwijzer",
+            "referredLablel": "Doorverwezen adres"
         }
     },
     "transactionDetailsText": "Transactie Details",
@@ -927,5 +939,9 @@
         "upload": "QR code scannen",
         "recieve": "Ontvangen",
         "invalid": "Ongeldige QR-code"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Voeg {symbol} toe aan @:metamask",
+        "title": "Overbrugtransactie succesvol"
     }
 }
