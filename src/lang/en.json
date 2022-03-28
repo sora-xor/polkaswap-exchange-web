@@ -617,6 +617,10 @@
         "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.",
         "blocksLeft": "{count} blocks left..."
     },
+    "bridgeTransferNotification": {
+        "addToken": "Add {symbol} to @:metamask",
+        "title": "Bridge transaction successful"
+    },
     "bridgeHistory": {
         "title": "History",
         "showHistory": "Show history",

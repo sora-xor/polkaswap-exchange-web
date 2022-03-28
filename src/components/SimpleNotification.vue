@@ -4,11 +4,11 @@
     <div class="simple-notification__title">
       <slot name="title"></slot>
     </div>
-    <div class="simple-notification__text">
+    <div v-if="$slots.text" class="simple-notification__text">
       <slot name="text"></slot>
     </div>
     <slot />
-    <s-button class="simple-notification__button s-typography-button--large" @click="close">{{
+    <s-button type="primary" class="simple-notification__button s-typography-button--large" @click="close">{{
       t('closeText')
     }}</s-button>
   </div>
@@ -41,7 +41,7 @@ export default class SimpleNotification extends Mixins(TranslationMixin) {
   text-align: center;
 
   & > *:not(:last-child) {
-    margin-bottom: $inner-spacing-medium;
+    margin-bottom: $inner-spacing-big;
   }
 
   &-icon {
