@@ -50,7 +50,7 @@ export const updateHistoryParams = async (id: string, params = {}) => {
   bridgeApi.saveHistory({ ...tx, ...params });
 };
 
-export const isOutgoingTransaction = (tx: BridgeHistory): boolean => {
+export const isOutgoingTransaction = (tx: Nullable<BridgeHistory>): boolean => {
   return tx?.type === Operation.EthBridgeOutgoing;
 };
 

@@ -35,6 +35,7 @@
       </div>
     </div>
     <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
+    <bridge-transfer-notification />
   </s-design-system-provider>
 </template>
 
@@ -64,6 +65,7 @@ import type { SubNetwork } from '@/utils/ethers-util';
     AppMenu: lazyComponent(Components.AppMenu),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
+    BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {

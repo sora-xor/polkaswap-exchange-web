@@ -30,6 +30,7 @@ const types = flow(
     'ADD_TX_ID_IN_APPROVE',
     'REMOVE_TX_ID_FROM_PROGRESS',
     'REMOVE_TX_ID_FROM_APPROVE',
+    'SET_NOTIFICATION_DATA',
   ]),
   map((x) => [x, x]),
   fromPairs
@@ -55,6 +56,7 @@ function initialState() {
     historyLoading: false,
     waitingForApprove: {},
     inProgressIds: {},
+    notificationData: null,
   };
 }
 
@@ -140,6 +142,9 @@ const mutations = {
   },
   [types.SET_HISTORY_LOADING](state, flag: boolean) {
     state.historyLoading = flag;
+  },
+  [types.SET_NOTIFICATION_DATA](state, data: Nullable<BridgeHistory> = null) {
+    state.notificationData = data;
   },
 };
 
@@ -466,6 +471,10 @@ const actions = {
     await appBridge.handleTransaction(id);
 
     commit(types.REMOVE_TX_ID_FROM_PROGRESS, id);
+  },
+
+  setNotificationData({ commit }, tx: Nullable<BridgeHistory> = null) {
+    commit(types.SET_NOTIFICATION_DATA, tx);
   },
 };
 

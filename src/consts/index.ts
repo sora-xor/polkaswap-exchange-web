@@ -160,6 +160,7 @@ export enum Components {
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
   ValueStatusWrapper = 'ValueStatusWrapper',
+  SimpleNotification = 'SimpleNotification',
   Moonpay = 'Moonpay/Moonpay',
   MoonpayWidget = 'Moonpay/MoonpayWidget',
   MoonpayNotification = 'Moonpay/MoonpayNotification',
@@ -171,6 +172,7 @@ export enum Components {
   RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
+  BridgeTransferNotification = 'Bridge/TransferNotification',
 }
 
 export enum RewardsTabsItems {
