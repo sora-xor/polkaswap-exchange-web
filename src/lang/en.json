@@ -44,7 +44,7 @@
             "ReferralReserveXor": "Bonded XOR successfully",
             "ReferralUnreserveXor": "Unbonded XOR successfully",
             "ReferralSetInvitedUser": "Referral is set successfully",
-            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and sent to {address}"
+            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Failed to bond XOR",
             "ReferralUnreserveXor": "Failed to unbond XOR",
             "ReferralSetInvitedUser": "Failed to set referral",
-            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and send to {address}"
+            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",

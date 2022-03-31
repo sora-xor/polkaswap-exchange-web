@@ -44,7 +44,7 @@
             "ReferralReserveXor": "XOR legato con successo",
             "ReferralUnreserveXor": "XOR non legato con successo",
             "ReferralSetInvitedUser": "Il referral è impostato correttamente",
-            "SwapAndSend": "Scambiato {amount} {symbol} con {amount2} {symbol2} e inviato a {address}"
+            "SwapAndSend": "Scambiato {amount} {symbol} con {amount2} {symbol2} e {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Impossibile inviare {amount} {symbol} a {address}",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Fallito il legame XOR",
             "ReferralUnreserveXor": "Impossibile disaggregare XOR",
             "ReferralSetInvitedUser": "Impossibile impostare il rinvio",
-            "SwapAndSend": "Impossibile scambiare {amount} {symbol} con {amount2} {symbol2} e inviare a {address}"
+            "SwapAndSend": "Impossibile scambiare {amount} {symbol} con {amount2} {symbol2} e {action} {direction} {address}"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",

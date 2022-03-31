@@ -44,7 +44,7 @@
             "ReferralReserveXor": "Rezerwy w walucie XOR utworzono z powodzeniem",
             "ReferralUnreserveXor": "Rezerwy w walucie XOR uwolniono z powodzeniem",
             "ReferralSetInvitedUser": "Kod polecający został utworzony z powodzeniem",
-            "SwapAndSend": "Zamieniono {amount} {symbol} na {amount2} {symbol2} i wysłano na {address}"
+            "SwapAndSend": "Zamieniono {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Nie udało się utworzyć rezerw w walucie XOR",
             "ReferralUnreserveXor": "Nie udało się uwolnić rezerw w walucie XOR",
             "ReferralSetInvitedUser": "Nie udało się utworzyć kodu polecającego.",
-            "SwapAndSend": "Nie udało się zamienić {amount} {symbol} na {amount2} {symbol2} i wysłać na {address}"
+            "SwapAndSend": "Nie udało się zamienić {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",

@@ -44,7 +44,7 @@
             "ReferralReserveXor": "XOR-ը հաջողությամբ կապակցվեց",
             "ReferralUnreserveXor": "XOR-ը հաջողությամբ ունբոնդ",
             "ReferralSetInvitedUser": "Հղումը դրվում է հաջողությամբ",
-            "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և ուղարկվեց {address}"
+            "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Չհաջողվեց կապել XOR-ը",
             "ReferralUnreserveXor": "Ունբոնդ Ձախողվել է XOR-ը",
             "ReferralSetInvitedUser": "Չհաջողվեց սահմանել ուղղորդում",
-            "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և ուղարկել {address}"
+            "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",

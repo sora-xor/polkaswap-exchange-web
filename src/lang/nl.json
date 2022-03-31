@@ -44,7 +44,7 @@
             "ReferralReserveXor": "Bonded XOR met succes",
             "ReferralUnreserveXor": "Unbonded XOR met succes",
             "ReferralSetInvitedUser": "Verwijzing is succesvol ingesteld",
-            "SwapAndSend": "{amount} {symbol} geruild voor {amount2} {symbol2} en verzonden naar {address}"
+            "SwapAndSend": "{amount} {symbol} geruild voor {amount2} {symbol2} en {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Kan XOR niet binden",
             "ReferralUnreserveXor": "Kan de obligatie niet ongedaan maken XOR",
             "ReferralSetInvitedUser": "Kan verwijzing niet instellen",
-            "SwapAndSend": "Kan {amount} {symbol} niet omwisselen voor {amount2} {symbol2} en verzenden naar {address}"
+            "SwapAndSend": "Kan {amount} {symbol} niet omwisselen voor {amount2} {symbol2} en {action} {direction} {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",

@@ -44,7 +44,7 @@
             "ReferralReserveXor": "Bondet XOR vellykket",
             "ReferralUnreserveXor": "Ubundet XOR vellykket",
             "ReferralSetInvitedUser": "Henvisning er satt",
-            "SwapAndSend": "Byttet {amount} {symbol} med {amount2} {symbol2} og sendt til {address}"
+            "SwapAndSend": "Byttet {amount} {symbol} med {amount2} {symbol2} og {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Kunne ikke sende {amount} {symbol} til {address}",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Kunne ikke binde XOR",
             "ReferralUnreserveXor": "Kunne ikke frigjøre XOR",
             "ReferralSetInvitedUser": "Kunne ikke angi henvisning",
-            "SwapAndSend": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2} og sende til {address}"
+            "SwapAndSend": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2} og {action} {direction} {address}"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",

@@ -44,7 +44,7 @@
             "ReferralReserveXor": "Terikat XOR dengan sukses",
             "ReferralUnreserveXor": "XOR tidak terikat berhasil",
             "ReferralSetInvitedUser": "Referensi berhasil disetel",
-            "SwapAndSend": "Tukar {amount} {symbol} untuk {amount2} {symbol2} dan dikirim ke {address}"
+            "SwapAndSend": "Tukar {amount} {symbol} untuk {amount2} {symbol2} dan {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Gagal mengirim {amount} {symbol} ke {address}",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Gagal mengikat XOR",
             "ReferralUnreserveXor": "Gagal melepaskan ikatan XOR",
             "ReferralSetInvitedUser": "Gagal menyetel rujukan",
-            "SwapAndSend": "Gagal menukar {amount} {symbol} dengan {amount2} {symbol2} dan mengirim ke {address}"
+            "SwapAndSend": "Gagal menukar {amount} {symbol} dengan {amount2} {symbol2} dan{action} {direction} {address}"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",

@@ -44,7 +44,7 @@
             "ReferralReserveXor": "XOR viculado con éxito",
             "ReferralUnreserveXor": "XOR desvinculado con éxito",
             "ReferralSetInvitedUser": "La referencia se estableció correctamente",
-            "SwapAndSend": "Se cambió {amount} {symbol} por {amount2} {symbol2} y se envió a {address}"
+            "SwapAndSend": "Se cambió {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Fallo en {acción} {importe} {símbolo} {dirección} {dirección}",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Error al vincular XOR",
             "ReferralUnreserveXor": "Error al desvincular XOR",
             "ReferralSetInvitedUser": "No se pudo establecer la referencia",
-            "SwapAndSend": "Error al cambiar {amount} {symbol} por {amount2} {symbol2} y enviar a {address}"
+            "SwapAndSend": "Error al cambiar {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}"
         },
         "ReferralReserveXor": "Vincular XOR",
         "ReferralUnreserveXor": "Desvincular XOR",

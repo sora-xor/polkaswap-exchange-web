@@ -44,7 +44,7 @@
             "ReferralReserveXor": "XOR успешно зарезервированы",
             "ReferralUnreserveXor": "XOR успешно выведены из резерва",
             "ReferralSetInvitedUser": "Реферал успешно установлен",
-            "SwapAndSend": "Совершен обмен {amount} {symbol} на {amount2} {symbol2} и отправлено на {address}"
+            "SwapAndSend": "Совершен обмен {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Не удалось зарезервировать XOR",
             "ReferralUnreserveXor": "Не удалось вывести XOR из резерва",
             "ReferralSetInvitedUser": "Не удалось установить реферала",
-            "SwapAndSend": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2} и отправить на {address}"
+            "SwapAndSend": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",

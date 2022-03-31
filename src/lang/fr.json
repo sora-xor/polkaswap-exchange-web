@@ -44,7 +44,7 @@
             "ReferralReserveXor": "XOR lié avec succès",
             "ReferralUnreserveXor": "XOR avec succès délié",
             "ReferralSetInvitedUser": "La référence est définie avec succès",
-            "SwapAndSend": "Échange de {amount} {symbol} contre {amount2} {symbol2} et envoyé à {address}"
+            "SwapAndSend": "Échange de {amount} {symbol} contre {amount2} {symbol2} et {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Échec de l'envoi de {amount} {symbol} à {address}",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Échec de la liaison XOR",
             "ReferralUnreserveXor": "Échec de la dissociation XOR",
             "ReferralSetInvitedUser": "Échec de la définition de la référence",
-            "SwapAndSend": "Échec de l'échange de {amount} {symbol} contre {amount2} {symbol2} et de l'envoi à {address}"
+            "SwapAndSend": "Échec de l'échange de {amount} {symbol} contre {amount2} {symbol2} et {action} {direction} {address}"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",

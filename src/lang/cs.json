@@ -44,7 +44,7 @@
             "ReferralReserveXor": "Vazba XOR byla úspěšná",
             "ReferralUnreserveXor": "Zrušení vazby XOR bylo úspěšné",
             "ReferralSetInvitedUser": "Doporučení bylo úspěšně nastaveno",
-            "SwapAndSend": "Vyměněno {amount} {symbol} za {amount2} {symbol2} a odesláno na {address}"
+            "SwapAndSend": "Vyměněno {amount} {symbol} za {amount2} {symbol2} a {action} {direction} {address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol}  {direction} {address} se nezdařilo.",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Vazba XOR se nezdařila",
             "ReferralUnreserveXor": "Nepodařilo se zrušit vazbu XOR",
             "ReferralSetInvitedUser": "Nepodařilo se nastavit doporučení",
-            "SwapAndSend": "Nepodařilo se vyměnit {amount} {symbol} za {amount2} {symbol2} a odeslat na {address}"
+            "SwapAndSend": "Nepodařilo se vyměnit {amount} {symbol} za {amount2} {symbol2} a {action} {direction} {address}"
         },
         "ReferralReserveXor": "Vázat XOR",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
