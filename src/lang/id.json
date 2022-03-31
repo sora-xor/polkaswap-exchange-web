@@ -43,7 +43,8 @@
             "ClaimRewards": "Hadiah berhasil diklaim {rewards}",
             "ReferralReserveXor": "Terikat XOR dengan sukses",
             "ReferralUnreserveXor": "XOR tidak terikat berhasil",
-            "ReferralSetInvitedUser": "Referensi berhasil disetel"
+            "ReferralSetInvitedUser": "Referensi berhasil disetel",
+            "SwapAndSend": "Tukar {amount} {symbol} untuk {amount2} {symbol2} dan dikirim ke {address}"
         },
         "error": {
             "Transfer": "Gagal mengirim {amount} {symbol} ke {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Gagal mengklaim hadiah {rewards}",
             "ReferralReserveXor": "Gagal mengikat XOR",
             "ReferralUnreserveXor": "Gagal melepaskan ikatan XOR",
-            "ReferralSetInvitedUser": "Gagal menyetel rujukan"
+            "ReferralSetInvitedUser": "Gagal menyetel rujukan",
+            "SwapAndSend": "Gagal menukar {amount} {symbol} dengan {amount2} {symbol2} dan mengirim ke {address}"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
-        "ReferralSetInvitedUser": "Tetapkan Rujukan"
+        "ReferralSetInvitedUser": "Tetapkan Rujukan",
+        "SwapAndSend": "Tukar dan Kirim"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi Polkadot.js yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",

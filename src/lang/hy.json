@@ -43,7 +43,8 @@
             "ClaimRewards": "Պարգևատրումը հաջողությամբ հաստատված է {rewards}",
             "ReferralReserveXor": "XOR-ը հաջողությամբ կապակցվեց",
             "ReferralUnreserveXor": "XOR-ը հաջողությամբ ունբոնդ",
-            "ReferralSetInvitedUser": "Հղումը դրվում է հաջողությամբ"
+            "ReferralSetInvitedUser": "Հղումը դրվում է հաջողությամբ",
+            "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և ուղարկվեց {address}"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Չհաջողվեց հաստատել պարգեւատրումները {rewards}",
             "ReferralReserveXor": "Չհաջողվեց կապել XOR-ը",
             "ReferralUnreserveXor": "Ունբոնդ Ձախողվել է XOR-ը",
-            "ReferralSetInvitedUser": "Չհաջողվեց սահմանել ուղղորդում"
+            "ReferralSetInvitedUser": "Չհաջողվեց սահմանել ուղղորդում",
+            "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և ուղարկել {address}"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
-        "ReferralSetInvitedUser": "Սահմանել ուղղորդում"
+        "ReferralSetInvitedUser": "Սահմանել ուղղորդում",
+        "SwapAndSend": "Փոխանակեք և ուղարկեք"
     },
     "polkadotjs": {
         "noExtensions": "Polkadot.js- ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",

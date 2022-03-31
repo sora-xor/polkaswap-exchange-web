@@ -43,7 +43,8 @@
             "ClaimRewards": "Odměna byla úspěšně nárokována {rewards}.",
             "ReferralReserveXor": "Vazba XOR byla úspěšná",
             "ReferralUnreserveXor": "Zrušení vazby XOR bylo úspěšné",
-            "ReferralSetInvitedUser": "Doporučení bylo úspěšně nastaveno"
+            "ReferralSetInvitedUser": "Doporučení bylo úspěšně nastaveno",
+            "SwapAndSend": "Vyměněno {amount} {symbol} za {amount2} {symbol2} a odesláno na {address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol}  {direction} {address} se nezdařilo.",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Nepodařilo se získat odměny {rewards}",
             "ReferralReserveXor": "Vazba XOR se nezdařila",
             "ReferralUnreserveXor": "Nepodařilo se zrušit vazbu XOR",
-            "ReferralSetInvitedUser": "Nepodařilo se nastavit doporučení"
+            "ReferralSetInvitedUser": "Nepodařilo se nastavit doporučení",
+            "SwapAndSend": "Nepodařilo se vyměnit {amount} {symbol} za {amount2} {symbol2} a odeslat na {address}"
         },
         "ReferralReserveXor": "Vázat XOR",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
-        "ReferralSetInvitedUser": "Nastavit odkaz"
+        "ReferralSetInvitedUser": "Nastavit odkaz",
+        "SwapAndSend": "Vyměnit a odeslat"
     },
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření Polkadot.js. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",

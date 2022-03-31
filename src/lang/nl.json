@@ -43,7 +43,8 @@
             "ClaimRewards": "Beloning succesvol geclaimd {rewards}",
             "ReferralReserveXor": "Bonded XOR met succes",
             "ReferralUnreserveXor": "Unbonded XOR met succes",
-            "ReferralSetInvitedUser": "Verwijzing is succesvol ingesteld"
+            "ReferralSetInvitedUser": "Verwijzing is succesvol ingesteld",
+            "SwapAndSend": "{amount} {symbol} geruild voor {amount2} {symbol2} en verzonden naar {address}"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Kan geen beloningen claimen {beloningen}",
             "ReferralReserveXor": "Kan XOR niet binden",
             "ReferralUnreserveXor": "Kan de obligatie niet ongedaan maken XOR",
-            "ReferralSetInvitedUser": "Kan verwijzing niet instellen"
+            "ReferralSetInvitedUser": "Kan verwijzing niet instellen",
+            "SwapAndSend": "Kan {amount} {symbol} niet omwisselen voor {amount2} {symbol2} en verzenden naar {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
-        "ReferralSetInvitedUser": "Verwijzing instellen"
+        "ReferralSetInvitedUser": "Verwijzing instellen",
+        "SwapAndSend": "Ruilen en verzenden"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen Polkadot.js-extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
