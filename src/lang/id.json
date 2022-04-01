@@ -43,7 +43,8 @@
             "ClaimRewards": "Hadiah berhasil diklaim {rewards}",
             "ReferralReserveXor": "Terikat XOR dengan sukses",
             "ReferralUnreserveXor": "XOR tidak terikat berhasil",
-            "ReferralSetInvitedUser": "Referensi berhasil disetel"
+            "ReferralSetInvitedUser": "Referensi berhasil disetel",
+            "SwapAndSend": "Tukar {amount} {symbol} untuk {amount2} {symbol2} dan {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Gagal mengirim {amount} {symbol} ke {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Gagal mengklaim hadiah {rewards}",
             "ReferralReserveXor": "Gagal mengikat XOR",
             "ReferralUnreserveXor": "Gagal melepaskan ikatan XOR",
-            "ReferralSetInvitedUser": "Gagal menyetel rujukan"
+            "ReferralSetInvitedUser": "Gagal menyetel rujukan",
+            "SwapAndSend": "Gagal menukar {amount} {symbol} dengan {amount2} {symbol2} dan{action} {direction} {address}"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
-        "ReferralSetInvitedUser": "Tetapkan Rujukan"
+        "ReferralSetInvitedUser": "Tetapkan Rujukan",
+        "SwapAndSend": "Tukar dan Kirim"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi Polkadot.js yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
@@ -884,7 +887,7 @@
         "connectAccount": "Untuk mengundang pengguna, Anda perlu menghubungkan akun SORA Anda.",
         "bondedXOR": "Ikatan XOR",
         "referralsNumber": "{number} rujukan",
-        "startInviting": "Untuk mulai mengundang, ikat sejumlah XOR.",
+        "startInviting": "Obligasi XOR untuk merujuk orang lain",
         "preview": "Undang pengguna baru dan dapatkan 10% dari biaya transaksi mereka.<br \/>Untuk mulai, beri obligasi dalam jumlah XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Saldo",

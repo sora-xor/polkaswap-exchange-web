@@ -43,7 +43,8 @@
             "ClaimRewards": "{rewards} Recompensa reclamada correctamente",
             "ReferralReserveXor": "XOR viculado con éxito",
             "ReferralUnreserveXor": "XOR desvinculado con éxito",
-            "ReferralSetInvitedUser": "La referencia se estableció correctamente"
+            "ReferralSetInvitedUser": "La referencia se estableció correctamente",
+            "SwapAndSend": "Se cambió {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Fallo en {acción} {importe} {símbolo} {dirección} {dirección}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Fallo al reclamar Recompensas {rewards}",
             "ReferralReserveXor": "Error al vincular XOR",
             "ReferralUnreserveXor": "Error al desvincular XOR",
-            "ReferralSetInvitedUser": "No se pudo establecer la referencia"
+            "ReferralSetInvitedUser": "No se pudo establecer la referencia",
+            "SwapAndSend": "Error al cambiar {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}"
         },
         "ReferralReserveXor": "Vincular XOR",
         "ReferralUnreserveXor": "Desvincular XOR",
-        "ReferralSetInvitedUser": "Establecer referencia"
+        "ReferralSetInvitedUser": "Establecer referencia",
+        "SwapAndSend": "Intercambiar y enviar"
     },
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión Polkadot.js. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
@@ -775,7 +778,7 @@
         "groups": {
             "strategic": "Recompensas estratégicas",
             "external": "Recompensas para la cuenta de Ethereum conectada",
-            "crowdloan": "Recompensas de Crowdloan"
+            "crowdloan": "Recompensas de préstamo colectivo"
         },
         "Rewards": "Recompensas",
         "ReferralProgram": "@:referralProgram.title"
@@ -884,8 +887,8 @@
         "connectAccount": "Para invitar a usuarios, debe conectar su cuenta SORA.",
         "bondedXOR": "XOR Vinculado",
         "referralsNumber": "{number} referencias",
-        "startInviting": "Para comenzar a invitar, vincule cualquier cantidad de XOR.",
-        "preview": "Invite a nuevos usuarios y obtenga el 10% de sus tarifas de transacción.<br \/>Para comenzar, vincule cualquier cantidad de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Más información<\/a>",
+        "startInviting": "Bonos XOR para referir a otros",
+        "preview": "Invite a nuevos usuarios y obtenga el 10% de sus tarifas de transacción.<br\/>Para comenzar, vincule cualquier cantidad de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Más información<\/a>",
         "deposit": "Depositar",
         "balance": "balance",
         "networkFee": "@:networkFeeText",
@@ -926,7 +929,7 @@
             "label": "Enlace o código de invitación",
             "approve": "Aprobar",
             "approved": "Aprobado",
-            "description": "Puede ser referido a Polkaswap,<br\/>escriba el enlace o el código del remitente",
+            "description": "Puede ser referido a Polkaswap,<br\/>escriba el enlace o el código del referente",
             "referredBy": "Has sido referido por {referrer}",
             "info": "Cuando pague una tarifa por la transacción,<br\/>el 10% se destinará a su referente",
             "referredLablel": "Dirección de referencia"

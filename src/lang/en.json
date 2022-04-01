@@ -43,7 +43,8 @@
             "ClaimRewards": "Reward claimed successfully {rewards}",
             "ReferralReserveXor": "Bonded XOR successfully",
             "ReferralUnreserveXor": "Unbonded XOR successfully",
-            "ReferralSetInvitedUser": "Referral is set successfully"
+            "ReferralSetInvitedUser": "Referral is set successfully",
+            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Failed to claim rewards {rewards}",
             "ReferralReserveXor": "Failed to bond XOR",
             "ReferralUnreserveXor": "Failed to unbond XOR",
-            "ReferralSetInvitedUser": "Failed to set referral"
+            "ReferralSetInvitedUser": "Failed to set referral",
+            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
-        "ReferralSetInvitedUser": "Set Referral"
+        "ReferralSetInvitedUser": "Set Referral",
+        "SwapAndSend": "Swap and Send"
     },
     "polkadotjs": {
         "noExtensions": "No Polkadot.js extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -884,7 +887,7 @@
         "connectAccount": "To invite users you need to connect your SORA account.",
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} referrals",
-        "startInviting": "To start inviting, bond any amount of XOR.",
+        "startInviting": "Bond XOR to refer others",
         "preview": "Invite new users and get 10% from their transaction fees.<br\/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Balance",

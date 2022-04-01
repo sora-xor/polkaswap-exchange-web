@@ -43,7 +43,8 @@
             "ClaimRewards": "Wynagrodzenie odebrano z powodzeniem {rewards}",
             "ReferralReserveXor": "Rezerwy w walucie XOR utworzono z powodzeniem",
             "ReferralUnreserveXor": "Rezerwy w walucie XOR uwolniono z powodzeniem",
-            "ReferralSetInvitedUser": "Kod polecający został utworzony z powodzeniem"
+            "ReferralSetInvitedUser": "Kod polecający został utworzony z powodzeniem",
+            "SwapAndSend": "Zamieniono {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Nie udało się odebrać wynagrodzenia {rewards}.",
             "ReferralReserveXor": "Nie udało się utworzyć rezerw w walucie XOR",
             "ReferralUnreserveXor": "Nie udało się uwolnić rezerw w walucie XOR",
-            "ReferralSetInvitedUser": "Nie udało się utworzyć kodu polecającego."
+            "ReferralSetInvitedUser": "Nie udało się utworzyć kodu polecającego.",
+            "SwapAndSend": "Nie udało się zamienić {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
-        "ReferralSetInvitedUser": "Utwórz kod polecający"
+        "ReferralSetInvitedUser": "Utwórz kod polecający",
+        "SwapAndSend": "Zamień i wyślij"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -884,7 +887,7 @@
         "connectAccount": "Aby zaprosić użytkowników, musisz podłączyć swoje konto sieci SORA.",
         "bondedXOR": "Rezerwy w XOR",
         "referralsNumber": "{number} zaproszonych",
-        "startInviting": "Aby zacząć zapraszać, utwórz rezerwy w dowolnej kwocie waluty XOR.",
+        "startInviting": "Bond XOR, aby polecić innym",
         "preview": "Zaproś nowych użytkowników, by otrzymać 10% z ich opłat transakcyjnych.<br \/>Aby rozpocząć, utwórz rezerwy w dowolnej kwocie waluty XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej.<\/a>",
         "deposit": "Deponuj",
         "balance": "Saldo",
