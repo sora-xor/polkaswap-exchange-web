@@ -939,5 +939,9 @@
         "upload": "Skanowanie kodu QR",
         "recieve": "Odbierać",
         "invalid": "Nieprawidłowy kod QR"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Dodaj {symbol} do @:metamask",
+        "title": "Transakcja pomostowa powiodła się"
     }
 }

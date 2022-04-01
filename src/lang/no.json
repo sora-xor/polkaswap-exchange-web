@@ -939,5 +939,9 @@
         "upload": "Skann QR",
         "recieve": "Motta",
         "invalid": "Ugyldig QR-kode"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Legg til {symbol} til @:metamask",
+        "title": "Brotransaksjonen ble vellykket"
     }
 }

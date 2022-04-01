@@ -2432,39 +2432,39 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api-derive@^1.7.49":
-  version "1.7.49"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-1.7.49.tgz#0952739dbe6a9d8b38645ac6b85436fcf71e3b48"
-  integrity sha512-jQzIG1/d3JHqWLbbGz95piB9aj+DTl3iPkoo31OG8Zb2No375GFzx0CgtGgsldD+xyjZY79xGS5SZO5Qqe2FZQ==
+"@sora-substrate/api-derive@^1.8.4":
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-1.8.4.tgz#070eefdb199a8fa6d4f5520e4fb3d008e3a57fd5"
+  integrity sha512-M6iNoQdeWQyhqEY17ty+zJfTiuIHv1SjJsoegSxks5FbX1q8wAo6fLHvy3awYTo77AUwE0ABveFPHuF86CMcsg==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@polkadot/api-derive" "^4.10.1"
-    "@sora-substrate/types" "^1.7.49"
+    "@sora-substrate/types" "^1.8.4"
     rxjs "^6.5.5"
 
-"@sora-substrate/api@^1.7.49":
-  version "1.7.49"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.7.49.tgz#722471596cced760384cbc8f8395804adea07ce7"
-  integrity sha512-aTIaSfII2mNff9zqa6Ao2oDL3LPnoZAKTjCKC2e01d129AvnMUSmiORQGuHCOf1lEJgjsJPyInZAjLkn5AKBdQ==
+"@sora-substrate/api@^1.8.4":
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.8.4.tgz#6380e6f2aec9bebd6288022fd72ead1fd6f43ac3"
+  integrity sha512-JoY2w4WFICxw9fnoLwTCjEOFKV1L8aq8mYt6gcOLABO7OjXUrsf+/DA1uqb874LxhocUp7avAbRbZUMT0WrN3w==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/orml-api-derive" "^0.8.2-9"
     "@polkadot/api" "^4.10.1"
     "@polkadot/rpc-core" "^4.10.1"
-    "@sora-substrate/api-derive" "^1.7.49"
-    "@sora-substrate/types" "^1.7.49"
+    "@sora-substrate/api-derive" "^1.8.4"
+    "@sora-substrate/types" "^1.8.4"
 
-"@sora-substrate/type-definitions@^1.7.49":
-  version "1.7.49"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.7.49.tgz#0890115daedc371eb57947d5eec9fcc33e5f89de"
-  integrity sha512-gFKrun5ClR7nAaXKd/BB+BZxYakCCK246sn3chXeebArBi3HHP6uoq/0hahoaSVrcFLBOk54W1z9cg+7/gEWkA==
+"@sora-substrate/type-definitions@^1.8.4":
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.8.4.tgz#1390555058821daa5fd636da766d1c6024811ef2"
+  integrity sha512-KMXaNp6+a+GWMgHM+5EXDdlhFWIIkrPDd9OnquQdFQu4CPMHrReUHMp6I5mqiZdsNeIJzW1sQIo7PHin8IjZzw==
   dependencies:
     "@open-web3/orml-type-definitions" "^0.9.4-35"
 
-"@sora-substrate/types@^1.7.49":
-  version "1.7.49"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.7.49.tgz#013e077a2cc86b229d72ba91d45ebfd149c30f67"
-  integrity sha512-834FnhEW0rnTXqXXa9eaZd9BNJc7D1OeeSD8NZi56r1VMru43vqcJAXvVtimFTctw+6TZPklqaiyYQLTb3t+Og==
+"@sora-substrate/types@^1.8.4":
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.8.4.tgz#cf9532fbfbef1eb02f32d21dd9838115626f1019"
+  integrity sha512-FWdkQyis7isFVWyT9Djmd2z9ogLaktJhkap/4y2fMhO9Pe3vEAYUHHFqEv+BOO1RDAr9cBYxd5MVPKMhSD/d2Q==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/api-mobx" "^0.8.2-9"
@@ -2472,24 +2472,24 @@
     "@polkadot/api" "^4.10.1"
     "@polkadot/typegen" "^4.10.1"
     "@polkadot/types" "^4.10.1"
-    "@sora-substrate/type-definitions" "^1.7.49"
+    "@sora-substrate/type-definitions" "^1.8.4"
 
-"@sora-substrate/util@^1.7.49":
-  version "1.7.49"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.7.49.tgz#f25ac620b5abad1a6589515c06fa3436a28537ec"
-  integrity sha512-3jkAqMNY++Oe6xL2u5sa/8PGvJ12+ggSIbx8IG2iKSpXFOklsALmGw3VInKWVNdWfaHAc4GXl8kt8UrGipAEFg==
+"@sora-substrate/util@^1.8.4":
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.8.4.tgz#aad1a23c46778a9d1a742f9e82113522b13cb990"
+  integrity sha512-nYnk4fyplB25YKJ83ZC2uXsGU6nl/hCfo7RVcjYu3RenrZgog4INo/y8k+s4YnV2CiffmEY3RzIlBCdFil2wpA==
   dependencies:
     "@polkadot/ui-keyring" "^0.77.1"
-    "@sora-substrate/api" "^1.7.49"
+    "@sora-substrate/api" "^1.8.4"
     axios "^0.21.1"
     bignumber.js "^9.0.1"
     crypto-js "^4.0.0"
     lodash "^4.17.15"
 
-"@soramitsu/soramitsu-js-ui@^1.0.29":
-  version "1.0.29"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.29.tgz#d9f48405e04fa7dbc4002fd1e3d45562b54cfef4"
-  integrity sha512-oiFKh0MQjP+dskmoDoKDafezMdy1nUL5fgWnH49xuZ3n6v1pCmC9hsgmFOuXglBKefN80G+B1OoF8Ni2iPX3Qw==
+"@soramitsu/soramitsu-js-ui@^1.0.30":
+  version "1.0.30"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.30.tgz#7620213f2a74b445abd630a3d317657e69cc35b4"
+  integrity sha512-yIX9i7q+3Q8inSOYJU+XAPuwSSCLrmqz9nTXgBj7L32pH94xzu1C3WC5nTyRaqLdl0VvGKVibXBH/i4S5E7Plg==
   dependencies:
     core-js "^3.6.4"
     element-resize-detector "^1.2.1"
@@ -2504,17 +2504,20 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^1.8.1":
-  version "1.8.1"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.8.1.tgz#f6116eef01c90558e98c1ffb4a9b4cd0c3fef066"
-  integrity sha512-mMw9ymLU7/5dgvAAHkDrxx9Hqz8yF/o2SC7Vlhuqnq1ByMsOh43r/OMlQQC3zC71G30RTAkFz3CqSh0+48ev/A==
+"@soramitsu/soraneo-wallet-web@^1.8.8":
+  version "1.8.8"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.8.8.tgz#b2db880af1c018966a26b2bdbde576fc1d93c4dc"
+  integrity sha512-FDFmvjVVdMoZFf4t2JxopwO+3rgofK2dW2JA2lBdmfDxqFw8ebvGRARkb7xnHEl+1lGruilsV6rG3nErt0rn9w==
   dependencies:
     "@polkadot/extension-dapp" "^0.42.2"
     "@polkadot/vue-identicon" "^0.72.1"
-    "@sora-substrate/util" "^1.7.49"
-    "@soramitsu/soramitsu-js-ui" "^1.0.29"
+    "@sora-substrate/util" "^1.8.4"
+    "@soramitsu/soramitsu-js-ui" "^1.0.30"
+    "@zxing/browser" "^0.0.10"
+    "@zxing/library" "^0.18.6"
     core-js "^3.6.4"
     dayjs "^1.10.5"
+    file-saver "^2.0.5"
     lodash "^4.17.21"
     maska "^1.4.0"
     nft.storage "^5.2.0"
@@ -2522,6 +2525,7 @@
     vue-class-component "^7.2.6"
     vue-i18n "^8.11.2"
     vue-property-decorator "^9.1.2"
+    vue-virtual-scroller "^1.0.10"
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
@@ -3816,7 +3820,23 @@
     bs58 "^4.0.1"
     hash.js "^1.1.7"
 
-"@zxing/text-encoding@0.9.0":
+"@zxing/browser@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@zxing/browser/-/browser-0.0.10.tgz#63c0a762fc2fd4ee946a20953ef24fab225698a9"
+  integrity sha512-P2wQc5fs+cjSc39zFS4UDhejWqdikf4FjuWIlFrzXD8fOsZ4ASfmLDKGeg7mRgmJq11oMKcVXvFFI6kcIKtxuQ==
+  optionalDependencies:
+    "@zxing/text-encoding" "^0.9.0"
+
+"@zxing/library@^0.18.6":
+  version "0.18.6"
+  resolved "https://registry.yarnpkg.com/@zxing/library/-/library-0.18.6.tgz#717af8c6c1fd982865e21051afdd7b470ae6674c"
+  integrity sha512-bulZ9JHoLFd9W36pi+7e7DnEYNJhljYjZ1UTsKPOoLMU3qtC+REHITeCRNx40zTRJZx18W5TBRXt5pq2Uopjsw==
+  dependencies:
+    ts-custom-error "^3.0.0"
+  optionalDependencies:
+    "@zxing/text-encoding" "~0.9.0"
+
+"@zxing/text-encoding@0.9.0", "@zxing/text-encoding@^0.9.0", "@zxing/text-encoding@~0.9.0":
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/@zxing/text-encoding/-/text-encoding-0.9.0.tgz#fb50ffabc6c7c66a0c96b4c03e3d9be74864b70b"
   integrity sha512-U/4aVJ2mxI0aDNI8Uq0wEhMgY+u4CNtEb0om3+y3+niDAsoTCOB33UF0sxpzqzdqXLqmvc+vZyAt4O8pPdfkwA==
@@ -7692,6 +7712,11 @@ file-loader@^6.1.1:
   dependencies:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
+
+file-saver@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
+  integrity sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==
 
 file-uri-to-path@1.0.0:
   version "1.0.0"
@@ -13289,6 +13314,11 @@ schema-utils@^3.0.0, schema-utils@^3.1.0, schema-utils@^3.1.1:
     ajv "^6.12.5"
     ajv-keywords "^3.5.2"
 
+scrollparent@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/scrollparent/-/scrollparent-2.0.1.tgz#715d5b9cc57760fb22bdccc3befb5bfe06b1a317"
+  integrity sha1-cV1bnMV3YPsivczDvvtb/gaxoxc=
+
 scrypt-js@3.0.1, scrypt-js@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/scrypt-js/-/scrypt-js-3.0.1.tgz#d314a57c2aef69d1ad98a138a21fe9eafa9ee312"
@@ -14444,6 +14474,11 @@ truncate-utf8-bytes@^1.0.0:
   dependencies:
     utf8-byte-length "^1.0.1"
 
+ts-custom-error@^3.0.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/ts-custom-error/-/ts-custom-error-3.2.0.tgz#ff8f80a3812bab9dc448536312da52dce1b720fb"
+  integrity sha512-cBvC2QjtvJ9JfWLvstVnI45Y46Y5dMxIaG1TDMGAD/R87hpvqFL+7LhvUDhnRCfOnx/xitollFWWvUKKKhbN0A==
+
 ts-jest@^27.0.5:
   version "27.0.5"
   resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-27.0.5.tgz#0b0604e2271167ec43c12a69770f0bb65ad1b750"
@@ -14939,10 +14974,20 @@ vue-loader@^16.4.0:
     hash-sum "^2.0.0"
     loader-utils "^2.0.0"
 
+vue-observe-visibility@^0.4.4:
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/vue-observe-visibility/-/vue-observe-visibility-0.4.6.tgz#878cb8ebcf3078e40807af29774e97105ebd519e"
+  integrity sha512-xo0CEVdkjSjhJoDdLSvoZoQrw/H2BlzB5jrCBKGZNXN2zdZgMuZ9BKrxXDjNP2AxlcCoKc8OahI3F3r3JGLv2Q==
+
 vue-property-decorator@^9.1.2:
   version "9.1.2"
   resolved "https://registry.yarnpkg.com/vue-property-decorator/-/vue-property-decorator-9.1.2.tgz#266a2eac61ba6527e2e68a6933cfb98fddab5457"
   integrity sha512-xYA8MkZynPBGd/w5QFJ2d/NM0z/YeegMqYTphy7NJQXbZcuU6FC6AOdUAcy4SXP+YnkerC6AfH+ldg7PDk9ESQ==
+
+vue-resize@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/vue-resize/-/vue-resize-0.4.5.tgz#4777a23042e3c05620d9cbda01c0b3cc5e32dcea"
+  integrity sha512-bhP7MlgJQ8TIkZJXAfDf78uJO+mEI3CaLABLjv0WNzr4CcGRGPIAItyWYnP6LsPA4Oq0WE+suidNs6dgpO4RHg==
 
 vue-router@^3.5.3:
   version "3.5.3"
@@ -14969,6 +15014,15 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
+
+vue-virtual-scroller@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/vue-virtual-scroller/-/vue-virtual-scroller-1.0.10.tgz#fdf243240001f05bd79aa77f2e2e60403760e2fb"
+  integrity sha512-Hn4qSBDhRY4XdngPioYy/ykDjrLX/NMm1fQXm/4UQQ/Xv1x8JbHGFZNftQowTcfICgN7yc31AKnUk1UGLJ2ndA==
+  dependencies:
+    scrollparent "^2.0.1"
+    vue-observe-visibility "^0.4.4"
+    vue-resize "^0.4.5"
 
 vue@^2.6.11, vue@^2.6.14:
   version "2.6.14"

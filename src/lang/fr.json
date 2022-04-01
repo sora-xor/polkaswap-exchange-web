@@ -939,5 +939,9 @@
         "upload": "Scanner le QR code",
         "recieve": "Recevoir",
         "invalid": "Code QR invalide"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Ajouter {symbol} à @:metamask",
+        "title": "Transaction relais réussie"
     }
 }

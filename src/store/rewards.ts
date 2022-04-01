@@ -13,7 +13,7 @@ import type { RewardInfo, RewardsInfo, AccountMarketMakerInfo } from '@sora-subs
 
 import ethersUtil from '@/utils/ethers-util';
 import { asZeroValue, waitForAccountPair } from '@/utils';
-import type { RewardsAmountHeaderItem } from '@/types/rewards';
+import type { RewardsAmountHeaderItem, SelectedRewards } from '@/types/rewards';
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
@@ -42,6 +42,8 @@ interface RewardsState {
   selectedInternalRewards: Nullable<RewardInfo>;
   vestedRewards: Nullable<RewardsInfo>;
   selectedVestedRewards: Nullable<RewardsInfo>;
+  crowdloanRewards: Array<RewardInfo>;
+  selectedCrowdloanRewards: Array<RewardInfo>;
   rewardsFetching: boolean;
   rewardsClaiming: boolean;
   rewardsRecieved: boolean;
@@ -59,9 +61,11 @@ function initialState(): RewardsState {
     externalRewards: [],
     internalRewards: null,
     vestedRewards: null,
+    crowdloanRewards: [],
     selectedVestedRewards: null,
     selectedInternalRewards: null,
     selectedExternalRewards: [],
+    selectedCrowdloanRewards: [],
     rewardsFetching: false,
     rewardsClaiming: false,
     rewardsRecieved: false,
@@ -77,7 +81,10 @@ const state = initialState();
 
 const getters = {
   claimableRewards(state: RewardsState): Array<RewardInfo | RewardsInfo> {
-    const buffer: Array<RewardInfo | RewardsInfo> = [...state.selectedExternalRewards];
+    const buffer: Array<RewardInfo | RewardsInfo> = [
+      ...state.selectedExternalRewards,
+      ...state.selectedCrowdloanRewards,
+    ];
 
     if (state.selectedInternalRewards) {
       buffer.push(state.selectedInternalRewards);
@@ -155,16 +162,21 @@ const mutations = {
   [types.GET_REWARDS_REQUEST](state: RewardsState) {
     state.rewardsFetching = true;
   },
-  [types.GET_REWARDS_SUCCESS](state: RewardsState, { internal = null, external = [], vested = null } = {}) {
+  [types.GET_REWARDS_SUCCESS](
+    state: RewardsState,
+    { internal = null, external = [], vested = null, crowdloan = [] } = {}
+  ) {
     state.internalRewards = internal;
     state.externalRewards = external;
     state.vestedRewards = vested;
+    state.crowdloanRewards = crowdloan;
     state.rewardsFetching = false;
   },
   [types.GET_REWARDS_FAILURE](state: RewardsState) {
     state.internalRewards = null;
     state.externalRewards = [];
     state.vestedRewards = null;
+    state.crowdloanRewards = [];
     state.rewardsFetching = false;
   },
 
@@ -179,10 +191,14 @@ const mutations = {
     state.feeFetching = false;
   },
 
-  [types.SET_SELECTED_REWARDS](state: RewardsState, { internal = null, external = [], vested = null } = {}) {
+  [types.SET_SELECTED_REWARDS](
+    state: RewardsState,
+    { internal = null, external = [], vested = null, crowdloan = [] } = {}
+  ) {
     state.selectedExternalRewards = [...external];
     state.selectedInternalRewards = internal;
     state.selectedVestedRewards = vested;
+    state.selectedCrowdloanRewards = [...crowdloan];
   },
 
   [types.SET_ACCOUNT_MARKET_MAKER_INFO](state: RewardsState, info: Nullable<AccountMarketMakerInfo>) {
@@ -208,7 +224,7 @@ const actions = {
     commit(types.SET_TRANSACTION_STEP, transactionStep);
   },
 
-  async setSelectedRewards({ commit, dispatch }, params) {
+  async setSelectedRewards({ commit, dispatch }, params: SelectedRewards) {
     commit(types.SET_SELECTED_REWARDS, params);
     await dispatch('getNetworkFee');
   },
@@ -224,23 +240,27 @@ const actions = {
     }
   },
 
-  async getRewards({ commit, dispatch, getters }, address) {
+  async getRewards({ commit, dispatch, getters }, address: string) {
     commit(types.GET_REWARDS_REQUEST);
     try {
-      const [internal, vested, external] = await Promise.all([
+      const [internal, vested, crowdloan, external] = await Promise.all([
         api.rewards.checkLiquidityProvision(),
         api.rewards.checkVested(),
-        address ? await api.rewards.checkForExternalAccount(address) : [],
+        api.rewards.checkCrowdloan(),
+        address ? api.rewards.checkForExternalAccount(address) : ([] as Array<RewardInfo>),
       ]);
 
-      commit(types.GET_REWARDS_SUCCESS, { internal, external, vested });
+      commit(types.GET_REWARDS_SUCCESS, { internal, external, vested, crowdloan });
 
-      // select all rewards by default
-      await dispatch('setSelectedRewards', {
+      const selectedRewards: SelectedRewards = {
         internal: getters.internalRewardsAvailable ? internal : null,
         external,
         vested: getters.vestedRewardsAvailable ? vested : null,
-      });
+        crowdloan: crowdloan.filter((item) => !asZeroValue(item.amount)),
+      };
+
+      // select all rewards by default
+      await dispatch('setSelectedRewards', selectedRewards);
     } catch (error) {
       console.error(error);
       commit(types.GET_REWARDS_FAILURE);

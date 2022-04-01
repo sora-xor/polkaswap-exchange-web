@@ -939,5 +939,9 @@
         "upload": "QR code scannen",
         "recieve": "Ontvangen",
         "invalid": "Ongeldige QR-code"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Voeg {symbol} toe aan @:metamask",
+        "title": "Overbrugtransactie succesvol"
     }
 }

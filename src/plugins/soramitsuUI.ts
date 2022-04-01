@@ -42,6 +42,8 @@ import STooltip from '@soramitsu/soramitsu-js-ui/lib/components/Tooltip';
 
 import ElProgress from 'element-ui/lib/progress';
 import ElPopover from 'element-ui/lib/popover';
+import ElCheckbox from 'element-ui/lib/checkbox';
+import ElCheckboxGroup from 'element-ui/lib/checkbox-group';
 
 import store from '@/store';
 
@@ -49,6 +51,8 @@ Vue.use(ElementUIPlugin);
 Vue.use(SoramitsuUIStorePlugin, { store });
 Vue.use(ElProgress);
 Vue.use(ElPopover);
+Vue.use(ElCheckbox);
+Vue.use(ElCheckboxGroup);
 Vue.use(SButton);
 Vue.use(SCard);
 Vue.use(SCheckbox);

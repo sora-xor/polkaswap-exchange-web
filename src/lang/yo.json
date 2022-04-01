@@ -939,5 +939,9 @@
         "upload": "Ṣayẹwo QR",
         "recieve": "Gba",
         "invalid": "Koodu QR ti ko tọ"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Ṣafikun {symbol} si @:metamask",
+        "title": "Idunadura Bridge aseyori"
     }
 }

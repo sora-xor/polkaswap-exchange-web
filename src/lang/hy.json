@@ -939,5 +939,9 @@
         "upload": "Սկան QR",
         "recieve": "Ստանալ",
         "invalid": "Անվավեր QR կոդը"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Ավելացնել {symbol} է @:metamask",
+        "title": "Կամուրջի գործարքը հաջողվեց"
     }
 }

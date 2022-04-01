@@ -28,9 +28,11 @@ type SignEvm = (id: string) => Promise<SignedEvmTxResult>;
 type GetAssetByAddress = (address: string) => RegisteredAsset;
 type GetActiveHistoryItem = () => Nullable<BridgeHistory>;
 type GetBridgeHistoryInstance = () => Promise<EthBridgeHistory>;
+type ShowNotification = (tx: BridgeHistory) => Promise<void>;
 
 interface BridgeCommonOptions {
   updateHistory: AsyncVoidFn;
+  showNotification: ShowNotification;
   getAssetByAddress: GetAssetByAddress;
   getActiveHistoryItem: GetActiveHistoryItem;
   getBridgeHistoryInstance: GetBridgeHistoryInstance;
@@ -50,6 +52,7 @@ interface BridgeReducerOptions extends BridgeCommonOptions {
 class BridgeTransactionStateHandler {
   protected readonly signEvm!: SignEvm;
   protected readonly updateHistory!: AsyncVoidFn;
+  protected readonly showNotification!: ShowNotification;
   protected readonly getAssetByAddress!: GetAssetByAddress;
   protected readonly getActiveHistoryItem!: GetActiveHistoryItem;
   protected readonly getBridgeHistoryInstance!: GetBridgeHistoryInstance;
@@ -57,12 +60,14 @@ class BridgeTransactionStateHandler {
   constructor({
     signEvm,
     updateHistory,
+    showNotification,
     getAssetByAddress,
     getActiveHistoryItem,
     getBridgeHistoryInstance,
   }: BridgeReducerOptions) {
     this.signEvm = signEvm;
     this.updateHistory = updateHistory;
+    this.showNotification = showNotification;
     this.getAssetByAddress = getAssetByAddress;
     this.getActiveHistoryItem = getActiveHistoryItem;
     this.getBridgeHistoryInstance = getBridgeHistoryInstance;
@@ -104,6 +109,7 @@ class BridgeTransactionStateHandler {
 
   async onComplete(id: string): Promise<void> {
     await this.updateTransactionParams(id, { endTime: Date.now() });
+    await this.showNotification(getTransaction(id));
   }
 
   async updateTransactionStep(id: string): Promise<void> {
@@ -424,6 +430,7 @@ const appBridge = new Bridge({
     [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch('bridge/signEvmTransactionSoraToEvm', id),
   },
   updateHistory: () => store.dispatch('bridge/getHistory'),
+  showNotification: (tx: BridgeHistory) => store.dispatch('bridge/setNotificationData', tx),
   getAssetByAddress: (address: string) => store.getters['assets/getAssetDataByAddress'](address),
   getActiveHistoryItem: () => store.getters['bridge/historyItem'],
   getBridgeHistoryInstance: () => store.dispatch('bridge/getBridgeHistoryInstance'),

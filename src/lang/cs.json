@@ -939,5 +939,9 @@
         "upload": "Skenovat QR",
         "recieve": "Příjem",
         "invalid": "Neplatný QR kód"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Přidejte {symbol} do @:metamask",
+        "title": "Transakce mostu úspěšná"
     }
 }

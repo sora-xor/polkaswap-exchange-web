@@ -939,5 +939,9 @@
         "upload": "Сканировать QR-код",
         "recieve": "Получить",
         "invalid": "Неверный QR-код"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Добавить {symbol} в @:metamask",
+        "title": "Транзакция моста прошла успешно"
     }
 }

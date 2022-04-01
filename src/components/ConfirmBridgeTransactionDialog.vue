@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, BridgeNetworks } from '@sora-substrate/util';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 

@@ -939,5 +939,9 @@
         "upload": "Pindai QR",
         "recieve": "Menerima",
         "invalid": "Kode QR tidak valid"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Tambahkan {symbol} ke @:metamask",
+        "title": "Transaksi jembatan berhasil"
     }
 }
