@@ -14,6 +14,7 @@ const types = flow(
   concat([
     'SET_XOR_VALUE',
     'SET_REFERRER',
+    'APPROVE_REFERRER',
     'SET_INVITED_USERS_INFO',
     'SET_INVITED_USERS_UPDATES',
     'RESET_INVITED_USERS_UPDATES',
@@ -25,6 +26,7 @@ const types = flow(
 
 interface ReferralsState {
   referrer: string;
+  isReferrerApproved: boolean;
   invitedUsers: Nullable<Array<string>>;
   invitedUsersUpdates: Nullable<Subscription>;
   xorValue: string;
@@ -34,6 +36,7 @@ interface ReferralsState {
 function initialState(): ReferralsState {
   return {
     referrer: '',
+    isReferrerApproved: false,
     invitedUsers: null,
     invitedUsersUpdates: null,
     xorValue: '',
@@ -46,6 +49,9 @@ const state = initialState();
 const getters = {
   referrer(state: ReferralsState) {
     return state.referrer;
+  },
+  isReferrerApproved(state: ReferralsState) {
+    return state.isReferrerApproved;
   },
   invitedUsers(state: ReferralsState) {
     return state.invitedUsers;
@@ -91,6 +97,10 @@ const mutations = {
     state.xorValue = xorValue;
   },
 
+  [types.APPROVE_REFERRER](state: ReferralsState, isReferrerApproved: boolean) {
+    state.isReferrerApproved = isReferrerApproved;
+  },
+
   [types.SET_REFERRER](state: ReferralsState, value: string) {
     state.storageReferrer = value;
     storage.set('storageReferrer', value);
@@ -131,6 +141,9 @@ const actions = {
   },
   setReferrer({ commit }, value: string) {
     commit(types.SET_REFERRER, value);
+  },
+  approveReferrer({ commit }, value: boolean) {
+    commit(types.APPROVE_REFERRER, value);
   },
 };
 

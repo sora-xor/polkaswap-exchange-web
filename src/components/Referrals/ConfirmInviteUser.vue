@@ -34,14 +34,17 @@ import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
+const namespace = 'referrals';
+
 @Component({
   components: { DialogBase },
 })
 export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, DialogMixin) {
-  @Getter('referrer', { namespace: 'referrals' }) referrer!: string;
-  @Getter('storageReferrer', { namespace: 'referrals' }) storageReferrer!: string;
+  @Getter('referrer', { namespace }) referrer!: string;
+  @Getter('storageReferrer', { namespace }) storageReferrer!: string;
 
-  @Action('setReferrer', { namespace: 'referrals' }) setReferrer!: (value: string) => Promise<void>;
+  @Action('setReferrer', { namespace }) setReferrer!: (value: string) => Promise<void>;
+  @Action('approveReferrer', { namespace }) approveReferrer!: (value: boolean) => Promise<void>;
 
   get hasReferrer(): boolean {
     return !!this.referrer;
@@ -57,10 +60,12 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, D
 
   async handleConfirmInviteUser(): Promise<void> {
     if (!this.hasReferrer) {
+      this.approveReferrer(true);
       try {
         await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferrer));
         this.$emit('confirm', true);
       } catch (error) {
+        this.approveReferrer(false);
         this.$emit('confirm');
       }
     }
