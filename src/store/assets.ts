@@ -2,6 +2,7 @@ import map from 'lodash/fp/map';
 import flatMap from 'lodash/fp/flatMap';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
+import concat from 'lodash/fp/concat';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
@@ -22,6 +23,7 @@ const DISABLED_ASSETS_FOR_BRIDGE = [
 
 const types = flow(
   flatMap((x) => [x + '_REQUEST', x + '_SUCCESS', x + '_FAILURE']),
+  concat(['SET_SELECT_ASSET_LOADING']),
   map((x) => [x, x]),
   fromPairs
 )(['GET_REGISTERED_ASSETS']);
@@ -30,6 +32,7 @@ function initialState() {
   return {
     registeredAssets: [],
     registeredAssetsFetching: false,
+    isSelectAssetLoading: false,
   };
 }
 
@@ -93,6 +96,9 @@ const getters = {
       return getters.assetsDataTable[address];
     };
   },
+  isSelectAssetLoading(state) {
+    return state.isSelectAssetLoading;
+  },
 };
 
 const mutations = {
@@ -106,6 +112,9 @@ const mutations = {
   [types.GET_REGISTERED_ASSETS_FAILURE](state) {
     state.registeredAssets = [];
     state.registeredAssetsFetching = false;
+  },
+  [types.SET_SELECT_ASSET_LOADING](state, value: boolean) {
+    state.isSelectAssetLoading = value;
   },
 };
 
@@ -160,6 +169,9 @@ const actions = {
       console.error(error);
       commit(types.GET_REGISTERED_ASSETS_FAILURE);
     }
+  },
+  setSelectAssetLoading({ commit }, value: boolean) {
+    commit(types.SET_SELECT_ASSET_LOADING, value);
   },
 };
 

@@ -120,6 +120,7 @@
         type="primary"
         class="action-button s-typography-button--large"
         :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable"
+        :loading="isSelectAssetLoading"
         @click="handleCreatePair"
       >
         <template v-if="!areTokensSelected">

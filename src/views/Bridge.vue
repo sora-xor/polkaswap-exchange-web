@@ -162,6 +162,7 @@
           class="el-button--next s-typography-button--large"
           type="primary"
           :disabled="isConfirmTxDisabled"
+          :loading="isSelectAssetLoading"
           @click="handleConfirmTransaction"
         >
           <template v-if="!isAssetSelected">
@@ -237,6 +238,7 @@ import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
+import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
@@ -278,7 +280,8 @@ export default class Bridge extends Mixins(
   BridgeMixin,
   TranslationMixin,
   NetworkFormatterMixin,
-  NetworkFeeDialogMixin
+  NetworkFeeDialogMixin,
+  TokenSelectMixin
 ) {
   @State((state) => state.web3.subNetworks) subNetworks!: Array<SubNetwork>;
   @State((state) => state[namespace].amount) amount!: string;
@@ -484,8 +487,10 @@ export default class Bridge extends Mixins(
 
   async selectAsset(selectedAsset: any): Promise<void> {
     if (selectedAsset) {
+      this.setSelectAssetLoading(true);
       await this.setAssetAddress(selectedAsset?.address ?? '');
       await this.getEvmNetworkFee();
+      this.setSelectAssetLoading(false);
     }
   }
 

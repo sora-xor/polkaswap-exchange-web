@@ -166,6 +166,7 @@ const actions = {
   },
 
   async setSecondTokenAddress({ commit, dispatch, getters, rootGetters }, address: string) {
+    await dispatch('assets/setSelectAssetLoading', true, { root: true });
     const updateBalance = (balance: Nullable<AccountBalance>) => commit(types.SET_SECOND_TOKEN_BALANCE, balance);
 
     commit(types.SET_SECOND_TOKEN_ADDRESS, address);
@@ -179,6 +180,7 @@ const actions = {
     }
 
     await dispatch('checkLiquidity');
+    await dispatch('assets/setSelectAssetLoading', true, { root: false });
   },
 
   async checkReserve({ commit, getters, dispatch }) {
