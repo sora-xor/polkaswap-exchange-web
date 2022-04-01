@@ -1,183 +1,104 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="t('selectToken.title')" custom-class="asset-select">
     <s-tabs v-model="tabValue" class="s-tabs--exchange" type="rounded" @click="handleTabClick">
-      <s-tab :label="t('selectToken.assets.title')" name="assets">
-        <div class="asset-select__search">
-          <s-input
-            ref="search"
-            v-model="query"
-            :placeholder="t('selectToken.searchPlaceholder')"
-            class="token-search"
-            prefix="s-icon-search-16"
-            size="big"
-          >
-            <template #suffix>
-              <s-button
-                v-show="query"
-                type="link"
-                class="s-button--clear"
-                icon="clear-X-16"
-                @click="handleClearSearch"
-              />
-            </template>
-          </s-input>
-        </div>
-        <s-scrollbar v-if="filteredWhitelistTokens.length" class="token-list-scrollbar">
-          <div class="token-list">
-            <div
-              v-for="token in filteredWhitelistTokens"
-              @click="selectToken(token)"
-              :key="token.address"
-              class="token-item"
-            >
-              <s-col>
-                <s-row flex justify="start" align="middle">
-                  <token-logo :token="token" size="big" />
-                  <div class="token-item__info s-flex">
-                    <div class="token-item__symbol">{{ token.symbol }}</div>
-                    <token-address
-                      :name="token.name"
-                      :symbol="token.symbol"
-                      :address="token.address"
-                      class="token-item__details"
-                    />
-                  </div>
-                </s-row>
-              </s-col>
-              <div v-if="connected" class="token-item__balance-container">
-                <formatted-amount-with-fiat-value
-                  v-if="formatBalance(token) !== FormattedZeroSymbol"
-                  value-class="token-item__balance"
-                  value-can-be-hidden
-                  :value="formatBalance(token)"
-                  :font-size-rate="FontSizeRate.MEDIUM"
-                  :has-fiat-value="shouldFiatBeShown(token)"
-                  :fiat-value="getFiatBalance(token)"
-                  :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                  :fiat-font-weight-rate="FontWeightRate.MEDIUM"
-                />
-                <span v-else class="token-item__balance">
-                  {{ shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </s-scrollbar>
-        <div v-else key="empty" class="token-list token-list__empty">
-          <span class="empty-results-icon" />
-          {{ t('selectToken.emptyListMessage') }}
-        </div>
-      </s-tab>
-      <s-tab :label="t('selectToken.custom.title')" name="custom">
-        <div class="asset-select__search">
-          <s-input
-            v-model="customAddress"
-            :placeholder="t('selectToken.custom.search')"
-            class="token-search"
-            prefix="s-icon-search-16"
-            size="big"
-            @input="debouncedCustomAssetSearch"
-          >
-            <template #suffix>
-              <s-button
-                v-show="customAddress"
-                type="link"
-                class="s-button--clear"
-                icon="clear-X-16"
-                @click="resetCustomAssetFields"
-              />
-            </template>
-          </s-input>
-        </div>
-        <s-scrollbar class="token-list-scrollbar">
-          <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
-          <div class="asset-select__info" v-else-if="!customAsset && customAddress">
-            {{ t('selectToken.custom.notFound') }}
-          </div>
-          <div class="add-asset-details" v-if="customAsset">
-            <s-card shadow="always" size="small" border-radius="mini">
-              <div class="add-asset-details_asset">
-                <token-logo :token="customAsset" />
-                <div class="asset-description s-flex">
-                  <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
-                  <token-address
-                    :name="customAsset.name"
-                    :symbol="customAsset.symbol"
-                    :address="customAsset.address"
-                    class="asset-description_info"
-                  />
-                  <s-card size="mini" :status="assetCardStatus">
-                    <div class="asset-nature">{{ assetNatureText }}</div>
-                  </s-card>
-                </div>
-              </div>
-            </s-card>
-            <template v-if="connected">
-              <s-card status="warning" shadow="always" pressed class="add-asset-details_text">
-                <div class="p2">{{ t('addAsset.warningTitle') }}</div>
-                <div class="warning-text p4">{{ t('addAsset.warningMessage') }}</div>
-              </s-card>
-              <div class="add-asset-details_confirm">
-                <s-switch v-model="isConfirmed" :disabled="loading" />
-                <span>{{ t('addAsset.understand') }}</span>
-              </div>
-              <s-button
-                class="add-asset-details_action s-typography-button--large"
-                type="primary"
-                :disabled="!customAsset || !isConfirmed || loading"
-                @click="handleAddAsset"
-              >
-                {{ t('addAsset.action') }}
-              </s-button>
-            </template>
-          </div>
-          <template v-if="connected && nonWhitelistAccountAssets">
-            <div class="token-list_text">{{ nonWhitelistAccountAssets.length }} {{ t('selectToken.custom.text') }}</div>
-            <div class="token-list" :class="customAsset && 'token-list--with-input'">
-              <div
-                v-for="token in sortedNonWhitelistAccountAssets"
-                @click="selectToken(token)"
-                :key="token.address"
-                class="token-item"
-              >
-                <s-col>
-                  <s-row flex justify="start" align="middle">
-                    <token-logo :token="token" />
-                    <div class="token-item__info s-flex">
-                      <div class="token-item__symbol">{{ token.symbol }}</div>
-                      <token-address
-                        :name="token.name"
-                        :symbol="token.symbol"
-                        :address="token.address"
-                        class="token-item__details"
-                      />
-                    </div>
-                  </s-row>
-                </s-col>
-                <div v-if="connected" class="token-item__balance-container">
-                  <formatted-amount-with-fiat-value
-                    v-if="formatBalance(token) !== FormattedZeroSymbol"
-                    value-class="token-item__balance"
-                    value-can-be-hidden
-                    :value="formatBalance(token)"
-                    :font-size-rate="FontSizeRate.MEDIUM"
-                    :has-fiat-value="shouldFiatBeShown(token)"
-                    :fiat-value="getFiatBalance(token)"
-                    :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                    :fiat-font-weight-rate="FontWeightRate.MEDIUM"
-                  />
-                  <span v-else class="token-item__balance">
-                    {{ shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol }}
-                  </span>
-                </div>
-                <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
-                  <s-icon name="basic-trash-24" />
-                </div>
-              </div>
-            </div>
+      <div class="asset-select__search">
+        <s-input
+          ref="search"
+          v-model="query"
+          :placeholder="activeSearchPlaceholder"
+          class="token-search"
+          prefix="s-icon-search-16"
+          size="big"
+        >
+          <template #suffix>
+            <s-button v-show="query" type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
           </template>
-        </s-scrollbar>
+        </s-input>
+      </div>
+
+      <s-tab :label="t('selectToken.assets.title')" name="assets"></s-tab>
+
+      <s-tab :label="t('selectToken.custom.title')" name="custom">
+        <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
+        <div class="asset-select__info" v-else-if="!customAsset && searchQuery">
+          {{ t('selectToken.custom.notFound') }}
+        </div>
+
+        <div class="add-asset-details" v-if="customAsset && !alreadyAttached">
+          <s-card shadow="always" size="small" border-radius="mini">
+            <div class="add-asset-details_asset">
+              <token-logo :token="customAsset" />
+              <div class="asset-description s-flex">
+                <div class="asset-description_symbol">{{ customAsset.symbol }}</div>
+                <token-address
+                  :name="customAsset.name"
+                  :symbol="customAsset.symbol"
+                  :address="customAsset.address"
+                  class="asset-description_info"
+                />
+                <s-card size="mini" :status="assetCardStatus">
+                  <div class="asset-nature">{{ assetNatureText }}</div>
+                </s-card>
+              </div>
+            </div>
+          </s-card>
+          <template v-if="connected">
+            <s-card status="warning" shadow="always" pressed class="add-asset-details_text">
+              <div class="p2">{{ t('addAsset.warningTitle') }}</div>
+              <div class="warning-text p4">{{ t('addAsset.warningMessage') }}</div>
+            </s-card>
+            <div class="add-asset-details_confirm">
+              <s-switch v-model="isConfirmed" :disabled="loading" />
+              <span>{{ t('addAsset.understand') }}</span>
+            </div>
+            <s-button
+              class="add-asset-details_action s-typography-button--large"
+              type="primary"
+              :disabled="!customAsset || !isConfirmed || loading"
+              @click="handleAddAsset"
+            >
+              {{ t('addAsset.action') }}
+            </s-button>
+          </template>
+        </div>
+
+        <template v-if="connected && sortedNonWhitelistAccountAssets.length">
+          <div class="token-list_text">
+            {{ sortedNonWhitelistAccountAssets.length }} {{ t('selectToken.custom.text') }}
+          </div>
+        </template>
       </s-tab>
+
+      <asset-list :assets="activeAssetsList" :items="6" @click="selectToken">
+        <template #list-empty>
+          <div key="empty" class="token-list__empty">
+            <span class="empty-results-icon" />
+            {{ t('selectToken.emptyListMessage') }}
+          </div>
+        </template>
+
+        <template #default="token">
+          <div v-if="connected" class="asset__balance-container">
+            <formatted-amount-with-fiat-value
+              v-if="formatBalance(token) !== FormattedZeroSymbol"
+              value-class="asset__balance"
+              value-can-be-hidden
+              :value="formatBalance(token)"
+              :font-size-rate="FontSizeRate.MEDIUM"
+              :has-fiat-value="shouldFiatBeShown(token)"
+              :fiat-value="getFiatBalance(token)"
+              :fiat-font-size-rate="FontSizeRate.MEDIUM"
+              :fiat-font-weight-rate="FontWeightRate.MEDIUM"
+            />
+            <span v-else class="asset__balance">
+              {{ shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol }}
+            </span>
+          </div>
+          <div v-if="isCustomTabActive" class="token-item__remove" @click.stop="handleRemoveCustomAsset(token)">
+            <s-icon name="basic-trash-24" />
+          </div>
+        </template>
+      </asset-list>
     </s-tabs>
   </dialog-base>
 </template>
@@ -194,13 +115,19 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-import { formatAssetBalance, debouncedInputHandler } from '@/utils';
+import { formatAssetBalance } from '@/utils';
 
 const namespace = 'assets';
+
+enum Tabs {
+  Assets = 'assets',
+  Custom = 'custom',
+}
 
 @Component({
   components: {
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
+    AssetList: components.AssetList,
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress),
@@ -213,7 +140,7 @@ export default class SelectToken extends Mixins(
   mixins.LoadingMixin
 ) {
   readonly FormattedZeroSymbol = '-';
-  readonly tokenTabs = ['assets', 'custom'];
+  readonly tokenTabs = [Tabs.Assets, Tabs.Custom];
 
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
@@ -221,10 +148,8 @@ export default class SelectToken extends Mixins(
 
   tabValue = first(this.tokenTabs);
   query = '';
-  customAddress = '';
-  alreadyAttached = false;
+
   isConfirmed = false;
-  customAsset: Nullable<Asset> = null;
 
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset;
@@ -242,13 +167,6 @@ export default class SelectToken extends Mixins(
   // Wallet
   @Action addAsset!: (address?: string) => Promise<void>;
 
-  resetCustomAssetFields(): void {
-    this.isConfirmed = false;
-    this.alreadyAttached = false;
-    this.customAsset = null;
-    this.customAddress = '';
-  }
-
   @Watch('visible')
   async handleVisibleChangeToFocusSearch(value: boolean): Promise<void> {
     await this.$nextTick();
@@ -256,12 +174,8 @@ export default class SelectToken extends Mixins(
     if (!value) return;
 
     this.tabValue = first(this.tokenTabs);
-    this.resetCustomAssetFields();
+    this.handleClearSearch();
     this.focusSearchInput();
-  }
-
-  handleTabClick({ name }): void {
-    this.tabValue = name;
   }
 
   get whitelistAssetsList(): Array<AccountAsset> {
@@ -286,11 +200,67 @@ export default class SelectToken extends Mixins(
     return this.filterAssetsByQuery(this.whitelistAssetsList)(this.query) as Array<AccountAsset>;
   }
 
+  get isCustomTabActive(): boolean {
+    return this.tabValue === Tabs.Custom;
+  }
+
+  get activeAssetsList(): Array<AccountAsset> {
+    return this.isCustomTabActive ? this.sortedNonWhitelistAccountAssets : this.filteredWhitelistTokens;
+  }
+
+  get activeSearchPlaceholder(): string {
+    return this.t(this.isCustomTabActive ? 'selectToken.custom.search' : 'selectToken.searchPlaceholder');
+  }
+
+  get searchQuery(): string {
+    return this.query.trim().toLowerCase();
+  }
+
+  get alreadyAttached(): boolean {
+    return !!this.nonWhitelistAccountAssets[this.searchQuery];
+  }
+
+  get customAsset(): Nullable<Asset> {
+    return this.nonWhitelistAssets[this.searchQuery] ?? null;
+  }
+
+  get customAssetBlacklisted(): boolean {
+    return !!this.customAsset && api.assets.isBlacklist(this.customAsset, this.whitelistIdsBySymbol);
+  }
+
+  get sortedNonWhitelistAccountAssets(): Array<AccountAsset> {
+    return Object.values(this.nonWhitelistAccountAssets).sort(this.sortByBalance());
+  }
+
+  get assetCardStatus(): string {
+    return !this.customAsset ? 'success' : 'error';
+  }
+
+  get assetNatureText(): string {
+    if (!this.customAsset) {
+      return '';
+    }
+
+    return this.t(`addAsset.${this.customAssetBlacklisted ? 'scam' : 'unknown'}`);
+  }
+
+  async handleAddAsset(): Promise<void> {
+    await this.withLoading(async () => await this.addAsset((this.customAsset || {}).address));
+    this.handleClearSearch();
+  }
+
+  handleRemoveCustomAsset(asset: AccountAsset): void {
+    api.assets.removeAccountAsset(asset.address);
+  }
+
+  shouldFiatBeShown(asset: AccountAsset): boolean {
+    return !!this.getAssetFiatPrice(asset);
+  }
+
   selectToken(token: AccountAsset): void {
-    this.query = '';
+    this.handleClearSearch();
     this.$emit('select', token);
-    this.$emit('close');
-    this.isVisible = false;
+    this.closeDialog();
   }
 
   formatBalance(token: AccountAsset): string {
@@ -302,61 +272,12 @@ export default class SelectToken extends Mixins(
 
   handleClearSearch(): void {
     this.query = '';
+    this.isConfirmed = false;
   }
 
-  get sortedNonWhitelistAccountAssets(): Array<AccountAsset> {
-    return this.nonWhitelistAccountAssets.sort(this.sortByBalance());
-  }
-
-  get assetCardStatus(): string {
-    return !this.customAsset ? 'success' : 'error';
-  }
-
-  get assetNatureText(): string {
-    if (!this.customAsset) {
-      return '';
-    }
-    const isBlacklist = api.assets.isBlacklist(this.customAsset, this.whitelistIdsBySymbol);
-    if (isBlacklist) {
-      return this.t('addAsset.scam');
-    }
-    return this.t('addAsset.unknown');
-  }
-
-  searchCustomAsset(): void {
-    const value = this.customAddress;
-    this.alreadyAttached = false;
-    if (!value.trim()) {
-      this.customAsset = null;
-      return;
-    }
-    const search = value.trim().toLowerCase();
-    if (this.nonWhitelistAccountAssets.find(({ address }) => address.toLowerCase() === search)) {
-      this.customAsset = null;
-      this.alreadyAttached = true;
-      return;
-    }
-    const asset = this.nonWhitelistAssets.find(({ address }) => address.toLowerCase() === search);
-    this.customAsset = asset ?? null;
-  }
-
-  debouncedCustomAssetSearch = debouncedInputHandler(this.searchCustomAsset);
-
-  async handleAddAsset(): Promise<void> {
-    await this.withLoading(async () => await this.addAsset((this.customAsset || {}).address));
-    this.resetCustomAssetFields();
-  }
-
-  handleRemoveCustomAsset(asset: AccountAsset, event: Event): void {
-    event.stopImmediatePropagation();
-    api.assets.removeAccountAsset(asset.address);
-    if (this.customAddress) {
-      this.searchCustomAsset();
-    }
-  }
-
-  shouldFiatBeShown(asset: AccountAsset): boolean {
-    return !!this.getAssetFiatPrice(asset);
+  handleTabClick({ name }): void {
+    this.tabValue = name;
+    this.handleClearSearch();
   }
 }
 </script>
@@ -364,10 +285,7 @@ export default class SelectToken extends Mixins(
 <style lang="scss">
 .asset-select {
   @include exchange-tabs();
-  @include select-asset;
-}
-.token-list-scrollbar {
-  @include scrollbar(0, 0);
+  @include select-asset('asset');
 }
 </style>
 
@@ -380,10 +298,12 @@ export default class SelectToken extends Mixins(
   margin-bottom: $inner-spacing-medium;
   width: calc(100% - 2 * #{$inner-spacing-big});
 }
+
 .token-list_text {
   font-weight: 800;
   color: var(--s-color-base-content-secondary);
 }
+
 .token-list_text,
 .add-asset-details,
 .asset-select__info {
@@ -393,7 +313,7 @@ export default class SelectToken extends Mixins(
   color: var(--s-color-base-content-secondary);
   margin-bottom: $inner-spacing-medium;
 }
-@include select-asset-scoped;
+
 .token-item__remove {
   margin-top: -5px;
   margin-left: $inner-spacing-medium;
@@ -401,12 +321,8 @@ export default class SelectToken extends Mixins(
     @include icon-styles(true);
   }
 }
-.token-list {
-  max-height: calc(#{$select-asset-item-height} * 6);
-  &--with-input {
-    max-height: calc(#{$select-asset-item-height} * 2);
-  }
 
+.token-list {
   &__empty {
     display: flex;
     align-items: center;
@@ -423,6 +339,7 @@ export default class SelectToken extends Mixins(
     background: url('~@/assets/img/no-results.svg') center no-repeat;
   }
 }
+
 .add-asset-details {
   & > * {
     margin-bottom: $inner-spacing-medium;

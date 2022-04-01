@@ -39,23 +39,21 @@ const getters = {
   whitelistAssets(state, getters, rootState, rootGetters) {
     return rootGetters.assets.filter((asset: Asset) => api.assets.isWhitelist(asset, rootGetters.whitelist));
   },
-  nonWhitelistAssets(state, getters, rootState, rootGetters) {
-    return rootGetters.assets.filter((asset: Asset) => !api.assets.isWhitelist(asset, rootGetters.whitelist));
-  },
   nonWhitelistDivisibleAssets(state, getters, rootState, rootGetters) {
-    return rootGetters.assets.filter(
-      (asset: Asset) => !api.assets.isWhitelist(asset, rootGetters.whitelist) && asset.decimals
-    );
-  },
-  nonWhitelistAccountAssets(state, getters, rootState, rootGetters) {
-    return rootGetters.accountAssets.filter(
-      (asset: AccountAsset) => !api.assets.isWhitelist(asset, rootGetters.whitelist)
-    );
+    return rootGetters.assets.reduce((buffer, asset: Asset) => {
+      if (!api.assets.isWhitelist(asset, rootGetters.whitelist) && asset.decimals) {
+        buffer[asset.address] = asset;
+      }
+      return buffer;
+    }, {});
   },
   nonWhitelistDivisibleAccountAssets(state, getters, rootState, rootGetters) {
-    return rootGetters.accountAssets.filter(
-      (asset: AccountAsset) => !api.assets.isWhitelist(asset, rootGetters.whitelist) && asset.decimals
-    );
+    return rootGetters.accountAssets.reduce((buffer, asset: AccountAsset) => {
+      if (!api.assets.isWhitelist(asset, rootGetters.whitelist) && asset.decimals) {
+        buffer[asset.address] = asset;
+      }
+      return buffer;
+    }, {});
   },
   tokenXOR(state, getters, rootState, rootGetters) {
     return rootGetters['assets/getAssetDataByAddress'](XOR.address);
