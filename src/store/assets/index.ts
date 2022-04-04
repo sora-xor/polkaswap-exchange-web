@@ -5,7 +5,7 @@ import state from './state';
 import getters from './getters';
 import actions from './actions';
 
-const web3 = defineModule({
+const assets = defineModule({
   namespaced: true,
   state,
   mutations,
@@ -13,8 +13,8 @@ const web3 = defineModule({
   actions,
 });
 
-const web3GetterContext = (args: [any, any, any, any]) => localGetterContext(args, web3);
-const web3ActionContext = (context: any) => localActionContext(context, web3);
+const assetsGetterContext = (args: [any, any, any, any]) => localGetterContext(args, assets);
+const assetsActionContext = (context: any) => localActionContext(context, assets);
 
-export { web3GetterContext, web3ActionContext };
-export default web3;
+export { assetsGetterContext, assetsActionContext };
+export default assets;

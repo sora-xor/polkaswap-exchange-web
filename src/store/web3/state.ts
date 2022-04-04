@@ -1,7 +1,10 @@
+import { BridgeNetworks } from '@sora-substrate/util';
+
 import { ZeroStringValue } from '@/consts';
 import ethersUtil from '@/utils/ethers-util';
+import type { Web3State } from './types';
 
-function initialState() {
+export function initialState(): Web3State {
   return {
     evmAddress: ethersUtil.getEvmUserAddress(),
     evmBalance: ZeroStringValue,

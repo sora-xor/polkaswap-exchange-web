@@ -5,7 +5,7 @@ import state from './state';
 import getters from './getters';
 import actions from './actions';
 
-const web3 = defineModule({
+const swap = defineModule({
   namespaced: true,
   state,
   mutations,
@@ -13,8 +13,8 @@ const web3 = defineModule({
   actions,
 });
 
-const web3GetterContext = (args: [any, any, any, any]) => localGetterContext(args, web3);
-const web3ActionContext = (context: any) => localActionContext(context, web3);
+const swapGetterContext = (args: [any, any, any, any]) => localGetterContext(args, swap);
+const swapActionContext = (context: any) => localActionContext(context, swap);
 
-export { web3GetterContext, web3ActionContext };
-export default web3;
+export { swapGetterContext, swapActionContext };
+export default swap;

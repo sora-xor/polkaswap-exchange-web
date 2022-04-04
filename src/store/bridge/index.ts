@@ -5,7 +5,7 @@ import state from './state';
 import getters from './getters';
 import actions from './actions';
 
-const web3 = defineModule({
+const bridge = defineModule({
   namespaced: true,
   state,
   mutations,
@@ -13,8 +13,8 @@ const web3 = defineModule({
   actions,
 });
 
-const web3GetterContext = (args: [any, any, any, any]) => localGetterContext(args, web3);
-const web3ActionContext = (context: any) => localActionContext(context, web3);
+const bridgeGetterContext = (args: [any, any, any, any]) => localGetterContext(args, bridge);
+const bridgeActionContext = (context: any) => localActionContext(context, bridge);
 
-export { web3GetterContext, web3ActionContext };
-export default web3;
+export { bridgeGetterContext, bridgeActionContext };
+export default bridge;
