@@ -26,52 +26,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin select-asset ($class: "token-item") {
-  .#{$class} {
-    padding: 0 $inner-spacing-big;
-    cursor: pointer;
-    transition: var(--s-transition-default);
-
-    &:hover {
-      background-color: var(--s-color-base-background-hover);
-    }
-
-    &__balance {
-      line-height: var(--s-line-height-small);
-      letter-spacing: var(--s-letter-spacing-small);
-      font-weight: 800;
-    }
-
-    &__balance-container {
-      text-align: right;
-      min-width: 40%;
-
-      .formatted-amount__container {
-        flex-direction: column;
-        align-items: flex-end;
-      }
-    }
-    .formatted-amount {
-      display: block;
-      width: 100%;
-      &__integer {
-        font-size: var(--s-font-size-big);
-        font-weight: 800;
-      }
-      &__decimal {
-        font-weight: 600;
-      }
-      &.formatted-amount--fiat-value {
-        line-height: var(--s-line-height-reset);
-        word-break: break-all;
-        .formatted-amount__integer {
-          font-size: var(--s-font-size-small);
-        }
-      }
-    }
-  }
-}
-
 @mixin element-size($className: "", $width: 40px, $height: $width) {
   .#{$className} {
     height: $height;

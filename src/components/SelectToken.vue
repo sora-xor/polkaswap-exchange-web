@@ -69,36 +69,20 @@
         </template>
       </s-tab>
 
-      <asset-list :assets="activeAssetsList" :items="6" @click="selectToken">
-        <template #list-empty>
-          <div key="empty" class="token-list__empty">
-            <span class="empty-results-icon" />
-            {{ t('selectToken.emptyListMessage') }}
-          </div>
-        </template>
-
-        <template #default="token">
-          <div v-if="connected" class="asset__balance-container">
-            <formatted-amount-with-fiat-value
-              v-if="formatBalance(token) !== FormattedZeroSymbol"
-              value-class="asset__balance"
-              value-can-be-hidden
-              :value="formatBalance(token)"
-              :font-size-rate="FontSizeRate.MEDIUM"
-              :has-fiat-value="shouldFiatBeShown(token)"
-              :fiat-value="getFiatBalance(token)"
-              :fiat-font-size-rate="FontSizeRate.MEDIUM"
-              :fiat-font-weight-rate="FontWeightRate.MEDIUM"
-            />
-            <span v-else class="asset__balance">
-              {{ shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol }}
-            </span>
-          </div>
+      <select-asset-list
+        :assets="activeAssetsList"
+        :items="6"
+        :connected="connected"
+        :should-balance-be-hidden="shouldBalanceBeHidden"
+        has-fiat-value
+        @click="selectToken"
+      >
+        <template #action="token">
           <div v-if="isCustomTabActive" class="token-item__remove" @click.stop="handleRemoveCustomAsset(token)">
             <s-icon name="basic-trash-24" />
           </div>
         </template>
-      </asset-list>
+      </select-asset-list>
     </s-tabs>
   </dialog-base>
 </template>
@@ -107,7 +91,7 @@
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { api, mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -115,7 +99,6 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-import { formatAssetBalance } from '@/utils';
 
 const namespace = 'assets';
 
@@ -126,25 +109,14 @@ enum Tabs {
 
 @Component({
   components: {
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    AssetList: components.AssetList,
+    SelectAssetList: lazyComponent(Components.SelectAssetList),
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress),
   },
 })
-export default class SelectToken extends Mixins(
-  mixins.FormattedAmountMixin,
-  TranslationMixin,
-  SelectAssetMixin,
-  mixins.LoadingMixin
-) {
-  readonly FormattedZeroSymbol = '-';
+export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
   readonly tokenTabs = [Tabs.Assets, Tabs.Custom];
-
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
-  readonly HiddenValue = WALLET_CONSTS.HiddenValue;
 
   tabValue = first(this.tokenTabs);
   query = '';
@@ -253,21 +225,10 @@ export default class SelectToken extends Mixins(
     api.assets.removeAccountAsset(asset.address);
   }
 
-  shouldFiatBeShown(asset: AccountAsset): boolean {
-    return !!this.getAssetFiatPrice(asset);
-  }
-
   selectToken(token: AccountAsset): void {
     this.handleClearSearch();
     this.$emit('select', token);
     this.closeDialog();
-  }
-
-  formatBalance(token: AccountAsset): string {
-    return formatAssetBalance(token, {
-      showZeroBalance: false,
-      formattedZero: this.FormattedZeroSymbol,
-    });
   }
 
   handleClearSearch(): void {
@@ -285,7 +246,6 @@ export default class SelectToken extends Mixins(
 <style lang="scss">
 .asset-select {
   @include exchange-tabs();
-  @include select-asset('asset');
 }
 </style>
 
@@ -319,24 +279,6 @@ export default class SelectToken extends Mixins(
   margin-left: $inner-spacing-medium;
   [class^='s-icon-'] {
     @include icon-styles(true);
-  }
-}
-
-.token-list {
-  &__empty {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding-top: $inner-spacing-big;
-    color: var(--s-color-base-content-tertiary);
-    line-height: var(--s-line-height-big);
-  }
-  .empty-results-icon {
-    margin-bottom: $inner-spacing-medium;
-    display: block;
-    height: 70px;
-    width: 70px;
-    background: url('~@/assets/img/no-results.svg') center no-repeat;
   }
 }
 
