@@ -1,5 +1,5 @@
 import isNil from 'lodash/fp/isNil';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -10,6 +10,22 @@ import { asZeroValue, getAssetBalance } from '@/utils';
 
 @Component
 export default class SelectAsset extends Mixins(DialogMixin, AssetsSearchMixin) {
+  @Watch('visible')
+  async handleVisibleChangeToFocusSearch(value: boolean): Promise<void> {
+    await this.$nextTick();
+
+    if (!value) return;
+
+    this.handleClearSearch();
+    this.focusSearchInput();
+  }
+
+  query = '';
+
+  public handleClearSearch(): void {
+    this.query = '';
+  }
+
   public sortByBalance(external = false) {
     const isEmpty = (a): boolean => (external ? !+a.externalBalance : isNil(a.balance) || !+a.balance.transferable);
 
@@ -54,5 +70,11 @@ export default class SelectAsset extends Mixins(DialogMixin, AssetsSearchMixin) 
 
       return [...result, prepared];
     }, []);
+  }
+
+  public selectAsset(asset: RegisteredAccountAsset | AccountAsset): void {
+    this.handleClearSearch();
+    this.$emit('select', asset);
+    this.closeDialog();
   }
 }

@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, State } from 'vuex-class';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
@@ -52,8 +52,6 @@ const namespace = 'assets';
   },
 })
 export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
-  query = '';
-
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
   @State((state) => state.bridge.isSoraToEvm) isSoraToEvm!: boolean;
@@ -64,16 +62,6 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
   @Getter assets!: Array<Asset>;
   @Getter accountAssetsAddressTable;
   @Getter shouldBalanceBeHidden!: boolean;
-
-  @Watch('visible')
-  async handleVisibleChangeToFocusSearch(value: boolean): Promise<void> {
-    await this.$nextTick();
-
-    if (!value) return;
-
-    this.handleClearSearch();
-    this.focusSearchInput();
-  }
 
   get assetsList(): Array<RegisteredAccountAsset> {
     const { registeredAssets: assets, accountAssetsAddressTable, asset: excludeAsset } = this;
@@ -90,16 +78,6 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
   get hasFilteredAssets(): boolean {
     return Array.isArray(this.filteredAssets) && this.filteredAssets.length > 0;
   }
-
-  selectAsset(asset: RegisteredAccountAsset): void {
-    this.handleClearSearch();
-    this.$emit('select', asset);
-    this.closeDialog();
-  }
-
-  handleClearSearch(): void {
-    this.query = '';
-  }
 }
 </script>
 
@@ -115,8 +93,6 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
 </style>
 
 <style lang="scss" scoped>
-$select-asset-horizontal-spacing: $inner-spacing-big;
-
 .asset-search,
 .network-label {
   margin-left: $inner-spacing-big;
