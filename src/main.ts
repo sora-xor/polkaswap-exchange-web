@@ -2,7 +2,10 @@ import Vue from 'vue';
 
 import App from './App.vue';
 import router from './router';
+
 import store from './store';
+import './store/decorators';
+
 import i18n from './lang';
 import { updateDocumentTitle } from './utils';
 
@@ -20,6 +23,6 @@ router.beforeEach((to, from, next): void => {
 new Vue({
   i18n,
   router,
-  store,
+  store: store.original,
   render: (h) => h(App),
 }).$mount('#app');

@@ -20,6 +20,23 @@ import rewards from './rewards';
 
 Vue.use(Vuex);
 
+const Modules = [
+  'prices',
+  'router',
+  'web3',
+  'assets',
+  'settings',
+  'swap',
+  'referrals',
+  'pool',
+  'moonpay',
+  'bridge',
+  'addLiquidity',
+  'createPair',
+  'removeLiquidity',
+  'rewards',
+];
+
 const modules = {
   wallet: vuex.walletModules.wallet,
   prices,
@@ -51,6 +68,6 @@ const { store, rootActionContext, rootGetterContext } = createDirectStore({
 //   }
 // }
 
-export { modules, rootActionContext, rootGetterContext };
+export { modules, Modules, rootActionContext, rootGetterContext };
 
 export default store;
