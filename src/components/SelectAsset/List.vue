@@ -49,7 +49,7 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
   @Prop({ default: () => [], type: Array }) readonly assets!: AccountAsset;
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
   @Prop({ default: false, type: Boolean }) readonly shouldBalanceBeHidden!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly hasFiatValue!: boolean;
+  @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
 
   readonly FormattedZeroSymbol = '-';
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
@@ -58,13 +58,14 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
 
   formatBalance(token: AccountAsset): string {
     return formatAssetBalance(token, {
+      internal: this.isSoraToEvm,
       showZeroBalance: false,
       formattedZero: this.FormattedZeroSymbol,
     });
   }
 
   shouldFiatBeShown(asset: AccountAsset): boolean {
-    return !!this.hasFiatValue && !!this.getAssetFiatPrice(asset);
+    return !!this.isSoraToEvm && !!this.getAssetFiatPrice(asset);
   }
 }
 </script>

@@ -1,20 +1,13 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="t('selectToken.title')" custom-class="asset-select">
     <s-tabs v-model="tabValue" class="s-tabs--exchange" type="rounded" @click="handleTabClick">
-      <div class="asset-select__search">
-        <s-input
-          ref="search"
-          v-model="query"
-          :placeholder="activeSearchPlaceholder"
-          class="token-search"
-          prefix="s-icon-search-16"
-          size="big"
-        >
-          <template #suffix>
-            <s-button v-show="query" type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
-          </template>
-        </s-input>
-      </div>
+      <search-input
+        ref="search"
+        v-model="query"
+        :placeholder="activeSearchPlaceholder"
+        @clear="handleClearSearch"
+        class="token-search"
+      />
 
       <s-tab :label="t('selectToken.assets.title')" name="assets"></s-tab>
 
@@ -109,8 +102,9 @@ enum Tabs {
 
 @Component({
   components: {
-    SelectAssetList: lazyComponent(Components.SelectAssetList),
     DialogBase,
+    SelectAssetList: lazyComponent(Components.SelectAssetList),
+    SearchInput: lazyComponent(Components.SearchInput),
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress),
   },
@@ -245,13 +239,18 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
 <style lang="scss">
 .asset-select {
+  .el-dialog {
+    overflow: hidden;
+    &__body {
+      padding: $inner-spacing-mini 0 $inner-spacing-big !important;
+    }
+  }
+
   @include exchange-tabs();
 }
 </style>
 
 <style lang="scss" scoped>
-@include search-item('asset-select__search');
-
 .token-search {
   // TODO: Fix input styles (paddings and icon position)
   margin-left: $inner-spacing-big;

@@ -1,18 +1,13 @@
 <template>
   <div class="container" v-loading="parentLoading">
     <generic-page-header :title="t('tokens.title')" class="page-header-title--tokens" />
-    <s-input
+    <search-input
       ref="search"
       v-model="query"
       :placeholder="t('selectToken.searchPlaceholder')"
+      @clear="handleResetSearch"
       class="tokens-table-search"
-      prefix="el-icon-search"
-      size="big"
-    >
-      <template #suffix>
-        <s-button v-show="query" type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
-      </template>
-    </s-input>
+    />
     <s-table :data="tableItems" :highlight-current-row="false" size="small" class="tokens-table">
       <s-table-column label="#" width="48">
         <template #header>
@@ -95,6 +90,7 @@ import SortButton from '@/components/SortButton.vue';
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress),
+    SearchInput: lazyComponent(Components.SearchInput),
     SortButton,
   },
 })
@@ -221,8 +217,6 @@ export default class Tokens extends Mixins(
 
 <style lang="scss" scoped>
 $icon-size: 36px;
-
-@include search-item('tokens-table-search');
 
 .tokens-table {
   display: flex;

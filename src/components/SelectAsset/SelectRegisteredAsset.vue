@@ -1,19 +1,12 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="t('selectRegisteredAsset.title')" custom-class="asset-select">
-    <s-form-item class="el-form-item--search">
-      <s-input
-        ref="search"
-        v-model="query"
-        :placeholder="t('selectRegisteredAsset.search.placeholder')"
-        class="asset-search"
-        prefix="s-icon-search-16"
-        size="big"
-      >
-        <template #suffix>
-          <s-button v-show="query" type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
-        </template>
-      </s-input>
-    </s-form-item>
+    <search-input
+      ref="search"
+      v-model="query"
+      :placeholder="t('selectRegisteredAsset.search.placeholder')"
+      @clear="handleClearSearch"
+      class="asset-search"
+    />
 
     <div class="asset-lists-container">
       <h3 v-if="hasFilteredAssets" class="network-label">
@@ -27,7 +20,7 @@
       <select-asset-list
         :assets="filteredAssets"
         :should-balance-be-hidden="shouldBalanceBeHidden"
-        :has-fiat-value="isSoraToEvm"
+        :is-sora-to-evm="isSoraToEvm"
         connected
         @click="selectAsset"
       />
@@ -52,8 +45,9 @@ const namespace = 'assets';
 
 @Component({
   components: {
-    SelectAssetList: lazyComponent(Components.SelectAssetList),
     DialogBase,
+    SelectAssetList: lazyComponent(Components.SelectAssetList),
+    SearchInput: lazyComponent(Components.SearchInput),
   },
 })
 export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
@@ -76,6 +70,7 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
 
     if (!value) return;
 
+    this.handleClearSearch();
     this.focusSearchInput();
   }
 
@@ -107,10 +102,20 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
 }
 </script>
 
+<style lang="scss">
+.asset-select {
+  .el-dialog {
+    overflow: hidden;
+    &__body {
+      padding: $inner-spacing-mini 0 $inner-spacing-big !important;
+    }
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 $select-asset-horizontal-spacing: $inner-spacing-big;
 
-@include search-item;
 .asset-search,
 .network-label {
   margin-left: $inner-spacing-big;

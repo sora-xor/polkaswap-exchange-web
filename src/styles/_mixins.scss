@@ -328,12 +328,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 @mixin exchange-tabs {
   $tabs-class: ".el-tabs";
 
-  .el-dialog {
-    overflow: hidden;
-    &__body {
-      padding: $inner-spacing-mini 0 $inner-spacing-big !important;
-    }
-  }
   .s-tabs.s-tabs--exchange {
     &#{$tabs-class} {
       #{$tabs-class}__header {
