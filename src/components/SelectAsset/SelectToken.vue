@@ -5,6 +5,7 @@
         ref="search"
         v-model="query"
         :placeholder="activeSearchPlaceholder"
+        autofocus
         @clear="handleClearSearch"
         class="token-search"
       />
@@ -84,7 +85,7 @@
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
-import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -104,9 +105,9 @@ enum Tabs {
   components: {
     DialogBase,
     SelectAssetList: lazyComponent(Components.SelectAssetList),
-    SearchInput: lazyComponent(Components.SearchInput),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    TokenAddress: lazyComponent(Components.TokenAddress),
+    TokenAddress: components.TokenAddress,
+    SearchInput: components.SearchInput,
   },
 })
 export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {

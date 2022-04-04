@@ -111,11 +111,11 @@ const namespace = 'referrals';
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress),
     ReferralsConfirmBonding: lazyComponent(Components.ReferralsConfirmBonding),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
+    TokenAddress: components.TokenAddress,
   },
 })
 export default class ReferralBonding extends Mixins(

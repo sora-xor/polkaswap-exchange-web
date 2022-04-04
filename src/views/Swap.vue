@@ -237,11 +237,11 @@ const namespace = 'swap';
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
+    TokenAddress: components.TokenAddress,
   },
 })
 export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, mixins.LoadingMixin) {

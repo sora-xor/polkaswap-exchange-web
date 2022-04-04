@@ -167,8 +167,8 @@ const namespace = 'removeLiquidity';
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress),
     InfoLine: components.InfoLine,
+    TokenAddress: components.TokenAddress,
   },
 })
 export default class RemoveLiquidity extends Mixins(

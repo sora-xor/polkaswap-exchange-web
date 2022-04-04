@@ -2,9 +2,9 @@
   <div class="container" v-loading="parentLoading">
     <generic-page-header :title="t('tokens.title')" class="page-header-title--tokens" />
     <search-input
-      ref="search"
       v-model="query"
       :placeholder="t('selectToken.searchPlaceholder')"
+      autofocus
       @clear="handleResetSearch"
       class="tokens-table-search"
     />
@@ -74,7 +74,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
@@ -89,9 +89,9 @@ import SortButton from '@/components/SortButton.vue';
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenLogo: lazyComponent(Components.TokenLogo),
-    TokenAddress: lazyComponent(Components.TokenAddress),
-    SearchInput: lazyComponent(Components.SearchInput),
     SortButton,
+    TokenAddress: components.TokenAddress,
+    SearchInput: components.SearchInput,
   },
 })
 export default class Tokens extends Mixins(
@@ -104,10 +104,6 @@ export default class Tokens extends Mixins(
 
   order = '';
   property = '';
-
-  mounted(): void {
-    this.focusSearchInput();
-  }
 
   get isDefaultSort(): boolean {
     return !this.order || !this.property;
@@ -288,6 +284,7 @@ $icon-size: 36px;
 
     &__value {
       font-weight: 600;
+      font-size: var(--s-font-size-extra-mini);
     }
   }
 

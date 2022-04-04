@@ -4,6 +4,7 @@
       ref="search"
       v-model="query"
       :placeholder="t('selectRegisteredAsset.search.placeholder')"
+      autofocus
       @clear="handleClearSearch"
       class="asset-search"
     />
@@ -31,7 +32,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 import { Getter, State } from 'vuex-class';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -47,7 +48,7 @@ const namespace = 'assets';
   components: {
     DialogBase,
     SelectAssetList: lazyComponent(Components.SelectAssetList),
-    SearchInput: lazyComponent(Components.SearchInput),
+    SearchInput: components.SearchInput,
   },
 })
 export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {

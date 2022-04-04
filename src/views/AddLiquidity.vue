@@ -204,11 +204,11 @@ const TokenPairMixin = TokenPairMixinInstance(namespace);
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress),
     AddLiquidityTransactionDetails: lazyComponent(Components.AddLiquidityTransactionDetails),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
+    TokenAddress: components.TokenAddress,
   },
 })
 export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {

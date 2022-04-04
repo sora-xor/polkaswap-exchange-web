@@ -155,8 +155,6 @@ export enum Components {
   ReferralsConfirmBonding = 'Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'Referrals/ConfirmInviteUser',
   TokenSelectButton = 'Input/TokenSelectButton',
-  TokenAddress = 'Input/TokenAddress',
-  SearchInput = 'Input/SearchInput',
   SelectLanguageDialog = 'SelectLanguageDialog',
   SelectAssetList = 'SelectAsset/List',
   SelectToken = 'SelectAsset/SelectToken',

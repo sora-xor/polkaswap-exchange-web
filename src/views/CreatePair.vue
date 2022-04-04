@@ -206,10 +206,10 @@ const TokenPairMixin = TokenPairMixinInstance(namespace);
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     CreatePairTransactionDetails: lazyComponent(Components.CreatePairTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
+    TokenAddress: components.TokenAddress,
   },
 })
 export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {

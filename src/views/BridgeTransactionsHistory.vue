@@ -4,10 +4,10 @@
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack" />
       <s-form class="history-form" :show-message="false">
         <search-input
-          ref="search"
           v-if="history.length"
           v-model="query"
           :placeholder="t('bridgeHistory.filterPlaceholder')"
+          autofocus
           @clear="handleResetSearch"
           class="history--search"
         />
@@ -82,7 +82,7 @@ const namespace = 'bridge';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    SearchInput: lazyComponent(Components.SearchInput),
+    SearchInput: components.SearchInput,
     FormattedAmount: components.FormattedAmount,
   },
 })
