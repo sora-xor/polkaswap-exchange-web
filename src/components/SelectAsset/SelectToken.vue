@@ -178,7 +178,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
       await this.withLoading(async () => await this.addAsset((this.customAsset || {}).address));
       this.handleClearSearch();
     } else {
-      this.selectToken(this.customAsset);
+      this.selectAsset(this.customAsset);
     }
   }
 
