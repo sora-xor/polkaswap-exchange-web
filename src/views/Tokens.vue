@@ -110,7 +110,7 @@ export default class Tokens extends Mixins(
   }
 
   get filteredItems(): Array<Asset> {
-    return this.filterAssetsByQuery(this.items)(this.query) as Array<Asset>;
+    return this.filterAssetsByQuery(this.items)(this.searchQuery) as Array<Asset>;
   }
 
   get sortedItems(): Array<Asset> {

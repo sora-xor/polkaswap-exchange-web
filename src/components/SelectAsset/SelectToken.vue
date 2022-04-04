@@ -138,7 +138,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get filteredWhitelistTokens(): Array<AccountAsset> {
-    return this.filterAssetsByQuery(this.whitelistAssetsList)(this.query) as Array<AccountAsset>;
+    return this.filterAssetsByQuery(this.whitelistAssetsList)(this.searchQuery) as Array<AccountAsset>;
   }
 
   get isCustomTabActive(): boolean {
@@ -157,10 +157,6 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     return this.t(this.isCustomTabActive ? 'selectToken.custom.search' : 'selectToken.searchPlaceholder');
   }
 
-  get searchQuery(): string {
-    return this.query.trim().toLowerCase();
-  }
-
   get alreadyAttached(): boolean {
     return !!this.nonWhitelistAccountAssets[this.searchQuery];
   }
@@ -174,6 +170,8 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   async handleAddAsset(): Promise<void> {
+    if (!this.customAsset) return;
+
     if (this.isLoggedIn) {
       await this.withLoading(async () => await this.addAsset((this.customAsset || {}).address));
       this.handleClearSearch();

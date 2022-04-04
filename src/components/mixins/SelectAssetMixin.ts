@@ -22,6 +22,10 @@ export default class SelectAsset extends Mixins(DialogMixin, AssetsSearchMixin) 
 
   query = '';
 
+  get searchQuery(): string {
+    return this.query.trim().toLowerCase();
+  }
+
   public handleClearSearch(): void {
     this.query = '';
   }
@@ -72,7 +76,7 @@ export default class SelectAsset extends Mixins(DialogMixin, AssetsSearchMixin) 
     }, []);
   }
 
-  public selectAsset(asset: RegisteredAccountAsset | AccountAsset): void {
+  public selectAsset(asset: RegisteredAccountAsset | AccountAsset | Asset): void {
     this.handleClearSearch();
     this.$emit('select', asset);
     this.closeDialog();

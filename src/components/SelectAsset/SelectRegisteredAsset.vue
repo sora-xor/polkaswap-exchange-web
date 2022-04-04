@@ -72,7 +72,10 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
   }
 
   get filteredAssets(): Array<RegisteredAccountAsset> {
-    return this.filterAssetsByQuery(this.assetsList, !this.isSoraToEvm)(this.query) as Array<RegisteredAccountAsset>;
+    return this.filterAssetsByQuery(
+      this.assetsList,
+      !this.isSoraToEvm
+    )(this.searchQuery) as Array<RegisteredAccountAsset>;
   }
 
   get hasFilteredAssets(): boolean {
