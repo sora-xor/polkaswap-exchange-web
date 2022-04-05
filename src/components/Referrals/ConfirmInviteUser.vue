@@ -28,20 +28,20 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
+import { state, mutation } from '@/store/decorators';
 
 @Component({
   components: { DialogBase },
 })
 export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, DialogMixin) {
-  @Getter('referral', { namespace: 'referrals' }) referral!: string;
-  @Getter('storageReferral', { namespace: 'referrals' }) storageReferral!: string;
+  @state.referrals.referral referral!: string;
+  @state.referrals.storageReferral storageReferral!: string;
 
-  @Action('setReferral', { namespace: 'referrals' }) setReferral!: (value: string) => Promise<void>;
+  @mutation.referrals.resetStorageReferral resetStorageReferral!: VoidFunction;
 
   get hasReferrer(): boolean {
     return !!this.referral;
@@ -70,7 +70,7 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, D
   @Watch('isVisible')
   private async isDialogVisible(isVisible: boolean): Promise<void> {
     if (!isVisible && this.storageReferral) {
-      this.setReferral('');
+      this.resetStorageReferral();
     }
   }
 }

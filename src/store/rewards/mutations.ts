@@ -75,6 +75,13 @@ const mutations = defineMutations<RewardsState>()({
     }
     state.accountMarketMakerUpdates = null;
   },
+  unsubscribeAccountMarketMakerInfo(state): void {
+    if (state.accountMarketMakerUpdates) {
+      state.accountMarketMakerUpdates.unsubscribe();
+    }
+    state.accountMarketMakerUpdates = null;
+    state.accountMarketMakerInfo = null;
+  },
 });
 
 export default mutations;

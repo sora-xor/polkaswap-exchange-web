@@ -142,7 +142,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
@@ -154,9 +153,10 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { hasInsufficientXorForFee, getAssetBalance } from '@/utils';
-
-const namespace = 'removeLiquidity';
+import { hasInsufficientXorForFee } from '@/utils';
+import { getter, state, mutation, action } from '@/store/decorators';
+import type { LiquidityParams } from '@/store/pool/types';
+import type { PricesPayload } from '@/store/prices/types';
 
 @Component({
   components: {
@@ -181,40 +181,38 @@ export default class RemoveLiquidity extends Mixins(
   readonly XOR_SYMBOL = XOR.symbol;
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  @State((state) => state[namespace].liquidityAmount) liquidityAmount!: string;
-  @State((state) => state[namespace].firstTokenAmount) firstTokenAmount!: string;
-  @State((state) => state[namespace].secondTokenAmount) secondTokenAmount!: string;
-  @State((state) => state[namespace].removePart) removePart!: number;
-  @State((state) => state[namespace].focusedField) focusedField!: string;
+  @state.removeLiquidity.liquidityAmount liquidityAmount!: string;
+  @state.removeLiquidity.firstTokenAmount firstTokenAmount!: string;
+  @state.removeLiquidity.secondTokenAmount secondTokenAmount!: string;
+  @state.removeLiquidity.removePart removePart!: number;
+  @state.removeLiquidity.focusedField focusedField!: string;
+  @state.prices.price price!: string;
+  @state.prices.priceReversed priceReversed!: string;
 
-  @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity;
-  @Getter('firstToken', { namespace }) firstToken!: Asset;
-  @Getter('secondToken', { namespace }) secondToken!: Asset;
-  @Getter('liquidityBalance', { namespace }) liquidityBalance!: CodecString;
-  @Getter('firstTokenBalance', { namespace }) firstTokenBalance!: CodecString;
-  @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString;
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string;
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
-  @Getter('price', { namespace: 'prices' }) price!: string;
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string;
+  @getter.removeLiquidity.liquidity liquidity!: AccountLiquidity;
+  @getter.removeLiquidity.firstToken firstToken!: Asset;
+  @getter.removeLiquidity.secondToken secondToken!: Asset;
+  @getter.removeLiquidity.liquidityBalance liquidityBalance!: CodecString;
+  @getter.removeLiquidity.firstTokenBalance firstTokenBalance!: CodecString;
+  @getter.removeLiquidity.secondTokenBalance secondTokenBalance!: CodecString;
+  @getter.removeLiquidity.shareOfPool shareOfPool!: string;
+  @getter.assets.xor xor!: AccountAsset;
 
-  @Action('setLiquidity', { namespace }) setLiquidity!: ({
-    firstAddress,
-    secondAddress,
-  }: {
-    firstAddress: string;
-    secondAddress: string;
-  }) => Promise<void>;
+  @mutation.removeLiquidity.setFocusedField setFocusedField!: (field?: string) => void;
 
-  @Action('setRemovePart', { namespace }) setRemovePart!: (removePart: number) => Promise<void>;
-  @Action('setFirstTokenAmount', { namespace }) setFirstTokenAmount!: (amount: string) => Promise<void>;
-  @Action('setSecondTokenAmount', { namespace }) setSecondTokenAmount!: (amount: string) => Promise<void>;
-  @Action('setFocusedField', { namespace }) setFocusedField!: (field: string) => Promise<void>;
-  @Action('resetFocusedField', { namespace }) resetFocusedField!: AsyncVoidFn;
-  @Action('removeLiquidity', { namespace }) removeLiquidity!: AsyncVoidFn;
-  @Action('resetData', { namespace }) resetData!: AsyncVoidFn;
-  @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>;
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn;
+  @action.removeLiquidity.setRemovePart setRemovePart!: (removePart: number) => Promise<void>;
+  @action.removeLiquidity.setLiquidity setLiquidity!: (args: LiquidityParams) => Promise<void>;
+  @action.removeLiquidity.setFirstTokenAmount setFirstTokenAmount!: (amount: string) => Promise<void>;
+  @action.removeLiquidity.setSecondTokenAmount setSecondTokenAmount!: (amount: string) => Promise<void>;
+  @action.removeLiquidity.removeLiquidity removeLiquidity!: AsyncVoidFn;
+  @action.removeLiquidity.resetData resetData!: AsyncVoidFn;
+
+  @mutation.prices.resetPrices resetPrices!: VoidFunction;
+  @action.prices.getPrices getPrices!: (options?: PricesPayload) => Promise<void>;
+
+  resetFocusedField(): void {
+    this.setFocusedField();
+  }
 
   @Watch('removePart')
   private removePartChange(newValue: number): void {
@@ -297,7 +295,7 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.networkFee);
+    return hasInsufficientXorForFee(this.xor, this.networkFee);
   }
 
   get removePartCharClass(): string {
@@ -319,10 +317,8 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isXorSufficientForNextOperation(): boolean {
-    const firstTokenAmount = this.getFPNumber(this.firstTokenAmount);
     return this.isXorSufficientForNextTx({
       type: Operation.RemoveLiquidity,
-      xorBalance: this.getFPNumberFromCodec(getAssetBalance(this.tokenXOR)).add(firstTokenAmount),
     });
   }
 

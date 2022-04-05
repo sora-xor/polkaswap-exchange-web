@@ -1,13 +1,14 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import type { CodecString } from '@sora-substrate/util';
+import { CodecString, FPNumber } from '@sora-substrate/util';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import ConfirmDialogMixin from './ConfirmDialogMixin';
-import BaseTokenPairMixinInstance from './BaseTokenPairMixin';
+import BaseTokenPairMixinInstance, { TokenPairNamespace } from './BaseTokenPairMixin';
 
 import router from '@/router';
 import { PageNames } from '@/consts';
+import { state, getter, mutation, action } from '@/store/decorators';
 import {
   getMaxValue,
   isMaxButtonAvailable,
@@ -16,27 +17,30 @@ import {
   formatAssetBalance,
   getAssetBalance,
 } from '@/utils';
+import type { PricesPayload } from '@/store/prices/types';
 
-const TokenPairMixinInstance = (namespace: string) => {
+const TokenPairMixinInstance = (namespace: TokenPairNamespace) => {
+  const namespacedAction = action[namespace];
+  const namespacedGetter = getter[namespace];
+
   const BaseTokenPairMixin = BaseTokenPairMixinInstance(namespace);
 
   @Component
   class TokenPairMixin extends Mixins(mixins.TransactionMixin, BaseTokenPairMixin, ConfirmDialogMixin) {
-    @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: any;
+    @state.settings.slippageTolerance slippageTolerance!: string;
 
-    @Getter('minted', { namespace }) minted!: CodecString;
+    @getter.assets.xor private xor!: AccountAsset;
+    @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+    @namespacedGetter.minted minted!: CodecString;
 
-    @Getter slippageTolerance!: string;
-    @Getter isLoggedIn!: boolean;
+    @mutation.prices.resetPrices resetPrices!: VoidFunction;
+    @action.prices.getPrices getPrices!: (options?: PricesPayload) => Promise<void>;
 
-    @Action('setFirstTokenAddress', { namespace }) setFirstTokenAddress;
-    @Action('setSecondTokenAddress', { namespace }) setSecondTokenAddress;
-    @Action('setFirstTokenValue', { namespace }) setFirstTokenValue;
-    @Action('setSecondTokenValue', { namespace }) setSecondTokenValue;
-    @Action('resetData', { namespace }) resetData;
-
-    @Action('getPrices', { namespace: 'prices' }) getPrices;
-    @Action('resetPrices', { namespace: 'prices' }) resetPrices;
+    @namespacedAction.setFirstTokenAddress setFirstTokenAddress!: (address: string) => Promise<void>;
+    @namespacedAction.setSecondTokenAddress setSecondTokenAddress!: (address: string) => Promise<void>;
+    @namespacedAction.setFirstTokenValue setFirstTokenValue!: (address: string) => Promise<void>;
+    @namespacedAction.setSecondTokenValue setSecondTokenValue!: (address: string) => Promise<void>;
+    @namespacedAction.resetData resetData!: (withAssets?: boolean) => Promise<void>;
 
     @Watch('isLoggedIn')
     private handleLoggedInStateChange(isLoggedIn: boolean, wasLoggedIn: boolean): void {
@@ -51,7 +55,7 @@ const TokenPairMixinInstance = (namespace: string) => {
     destroyed(): void {
       const params = router.currentRoute.params;
       this.resetPrices();
-      this.resetData(params?.assetBAddress && params?.assetBAddress);
+      this.resetData(!!params?.assetBAddress && !!params?.assetBAddress);
     }
 
     get formattedMinted(): string {
@@ -63,32 +67,26 @@ const TokenPairMixinInstance = (namespace: string) => {
     }
 
     get isFirstMaxButtonAvailable(): boolean {
+      if (!this.firstToken) return false;
+
       return (
         this.isLoggedIn &&
-        isMaxButtonAvailable(
-          this.areTokensSelected,
-          this.firstToken,
-          this.firstTokenValue,
-          this.networkFee,
-          this.tokenXOR
-        )
+        isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.networkFee, this.xor)
       );
     }
 
     get isSecondMaxButtonAvailable(): boolean {
+      if (!this.secondToken) return false;
+
       return (
         this.isLoggedIn &&
-        isMaxButtonAvailable(
-          this.areTokensSelected,
-          this.secondToken,
-          this.secondTokenValue,
-          this.networkFee,
-          this.tokenXOR
-        )
+        isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.networkFee, this.xor)
       );
     }
 
     get isInsufficientBalance(): boolean {
+      if (!(this.firstToken && this.secondToken)) return false;
+
       if (this.isLoggedIn && this.areTokensSelected) {
         if (isXorAccountAsset(this.firstToken) || isXorAccountAsset(this.secondToken)) {
           if (hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.networkFee)) {
@@ -105,11 +103,31 @@ const TokenPairMixinInstance = (namespace: string) => {
       return false;
     }
 
+    get firstTokenAddress(): string {
+      return this.firstToken?.address ?? '';
+    }
+
+    get secondTokenAddress(): string {
+      return this.secondToken?.address ?? '';
+    }
+
+    get firstTokenDecimals(): number {
+      return this.firstToken?.decimals ?? FPNumber.DEFAULT_PRECISION;
+    }
+
+    get secondTokenDecimals(): number {
+      return this.secondToken?.decimals ?? FPNumber.DEFAULT_PRECISION;
+    }
+
     get firstTokenPrice(): Nullable<CodecString> {
+      if (!this.firstToken) return null;
+
       return this.getAssetFiatPrice(this.firstToken);
     }
 
     get secondTokenPrice(): Nullable<CodecString> {
+      if (!this.secondToken) return null;
+
       return this.getAssetFiatPrice(this.secondToken);
     }
 

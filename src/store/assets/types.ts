@@ -1,4 +1,4 @@
-import type { RegisteredAsset, RegisteredAccountAsset, CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset, CodecString } from '@sora-substrate/util';
 
 export type RegisterAssetWithExternalBalance = {
   address: string;

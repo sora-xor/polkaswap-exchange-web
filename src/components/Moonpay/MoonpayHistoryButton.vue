@@ -13,7 +13,6 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, State } from 'vuex-class';
 import type { BridgeHistory } from '@sora-substrate/util';
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
@@ -21,14 +20,14 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import router from '@/router';
 import { PageNames } from '@/consts';
+import { state, mutation } from '@/store/decorators';
 
 @Component
 export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, TranslationMixin) {
-  @State((state) => state.moonpay.bridgeTransactionData) bridgeTransactionData!: Nullable<BridgeHistory>;
-  @State((state) => state.moonpay.startBridgeButtonVisibility) startBridgeButtonVisibility!: boolean;
-  @Action('setConfirmationVisibility', { namespace: 'moonpay' }) setConfirmationVisibility!: (
-    flag: boolean
-  ) => Promise<void>;
+  @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<BridgeHistory>;
+  @state.moonpay.startBridgeButtonVisibility startBridgeButtonVisibility!: boolean;
+
+  @mutation.moonpay.setConfirmationVisibility setConfirmationVisibility!: (flag: boolean) => void;
 
   get active(): boolean {
     return this.$route.name === PageNames.MoonpayHistory;
@@ -56,7 +55,7 @@ export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, Tra
 
   async handleClick(): Promise<void> {
     if (this.isReadyForTransfer) {
-      await this.setConfirmationVisibility(true);
+      this.setConfirmationVisibility(true);
     } else {
       router.push({ name: PageNames.MoonpayHistory });
     }

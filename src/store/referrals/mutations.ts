@@ -28,8 +28,8 @@ const mutations = defineMutations<ReferralsState>()({
   setInvitedUsersSubscription(state, subscription: Subscription): void {
     state.invitedUsersSubscription = subscription;
   },
-  resetInputValue(state, value: string): void {
-    state.inputValue = value;
+  resetInputValue(state): void {
+    state.inputValue = '';
   },
   setInputValue(state, value: string): void {
     state.inputValue = value;
@@ -37,6 +37,10 @@ const mutations = defineMutations<ReferralsState>()({
   setStorageReferral(state, value: string): void {
     state.storageReferral = value;
     storage.set('storageReferral', value);
+  },
+  resetStorageReferral(state): void {
+    state.storageReferral = '';
+    storage.set('storageReferral', '');
   },
   reset(state): void {
     const s = omit(['invitedUsers', 'invitedUsersUpdates'], initialState());

@@ -89,7 +89,6 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
@@ -98,8 +97,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-
-const namespace = 'pool';
+import { getter, state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -113,11 +111,10 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
-  // Wallet
-  @Getter isLoggedIn!: boolean;
-  @Getter assets!: Array<Asset>;
+  @state.wallet.account.assets private assets!: Array<Asset>;
+  @state.pool.accountLiquidity accountLiquidity!: Array<AccountLiquidity>;
 
-  @Getter('accountLiquidity', { namespace }) accountLiquidity!: Array<AccountLiquidity>;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   getAsset(address): any {
     return this.assets.find((a) => a.address === address);

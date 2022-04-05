@@ -2,7 +2,7 @@ import { defineGetters } from 'direct-vuex';
 
 import { web3GetterContext } from '@/store/web3';
 import type { Web3State } from './types';
-import type { KnownBridgeAsset } from '@/utils/ethers-util';
+import type { EvmNetworkType, KnownBridgeAsset } from '@/utils/ethers-util';
 
 const getters = defineGetters<Web3State>()({
   contractAbi(...args): (asset: KnownBridgeAsset) => Nullable<any> {
@@ -21,7 +21,7 @@ const getters = defineGetters<Web3State>()({
     const { state } = web3GetterContext(args);
     return !!state.evmAddress && state.evmAddress !== 'undefined';
   },
-  defaultNetworkType(...args): Nullable<string> {
+  defaultNetworkType(...args): Nullable<EvmNetworkType> {
     const { state } = web3GetterContext(args);
     return state.subNetworks?.find((network: any) => network.id === state.evmNetwork)?.defaultType;
   },

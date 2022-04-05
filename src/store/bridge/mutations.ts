@@ -32,7 +32,7 @@ const mutations = defineMutations<BridgeState>()({
     state.evmNetworkFeeFetching = false;
   },
   setHistory(state): void {
-    state.history = bridgeApi.historyList as Array<BridgeHistory>;
+    state.history = [...bridgeApi.historyList] as Array<BridgeHistory>;
   },
   setHistoryId(state, id?: string): void {
     state.historyId = id || '';

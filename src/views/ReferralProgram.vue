@@ -3,7 +3,7 @@
     <template v-if="isSoraAccountConnected">
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
-        <token-logo class="token-logo" :token="tokenXOR" :size="LogoSize.BIG" />
+        <token-logo class="token-logo" :token="xor" :size="LogoSize.BIG" />
         <formatted-amount
           class="rewards-value"
           value-can-be-hidden
@@ -24,16 +24,16 @@
       <s-collapse :borders="true">
         <s-collapse-item class="bonded-container" name="bondedXOR">
           <template #title>
-            <token-logo class="token-logo" :token="tokenXOR" />
+            <token-logo class="token-logo" :token="xor" />
             <h3 class="bonded-collapse-title">{{ t('referralProgram.bondedXOR') }}</h3>
           </template>
           <info-line
-            v-if="bondedXOR"
+            v-if="bondedXor"
             is-formatted
             value-can-be-hidden
             :label="t('referralProgram.bondedXOR')"
-            :value="formatCodecNumber(bondedXOR)"
-            :fiat-value="getFiatAmountByCodecString(bondedXOR)"
+            :value="formatCodecNumber(bondedXor)"
+            :fiat-value="getFiatAmountByCodecString(bondedXor)"
           />
           <div class="bonded--buttons">
             <s-button type="secondary" class="s-typography-button--medium" @click="handleBonding(true)">
@@ -51,7 +51,7 @@
               {{ t('referralProgram.referralsNumber', { number: invitedUsersNumber }) }}
             </h3>
           </template>
-          <s-scrollbar v-if="invitedUsers && invitedUsers.length" class="invited-users-scrollbar">
+          <s-scrollbar v-if="invitedUsersNumber" class="invited-users-scrollbar">
             <div class="invited-users-list">
               <info-line
                 v-for="invitedUser in invitedUsers"
@@ -122,6 +122,7 @@ import router, { lazyComponent, lazyView } from '@/router';
 import { PageNames, Components, LogoSize } from '@/consts';
 import { detectBaseUrl } from '@/api';
 import { copyToClipboard } from '@/utils';
+import { getter, state, mutation, action } from '@/store/decorators';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 
@@ -144,19 +145,19 @@ export default class ReferralProgram extends Mixins(
 ) {
   readonly LogoSize = LogoSize;
 
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
-  @Getter('invitedUsers', { namespace }) invitedUsers!: Nullable<Array<string>>;
+  @state.referrals.invitedUsers invitedUsers!: Array<string>;
+  @getter.assets.xor xor!: AccountAsset;
 
-  @Action('resetInvitedUsersSubscription', { namespace }) resetInvitedUsersSubscription!: AsyncVoidFn;
-  @Action('subscribeInvitedUsers', { namespace }) subscribeInvitedUsers!: (referrerId: string) => AsyncVoidFn;
-  @Action('unsubscribeInvitedUsers', { namespace }) unsubscribeInvitedUsers!: AsyncVoidFn;
+  @mutation.referrals.reset private reset!: VoidFunction;
+  @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
+  @action.referrals.subscribeOnInvitedUsers private subscribeOnInvitedUsers!: (referrerId: string) => Promise<void>;
 
   @Watch('isSoraAccountConnected')
   private async updateSubscriptions(value: boolean) {
     if (value) {
-      await this.subscribeInvitedUsers(this.account?.address);
+      await this.subscribeOnInvitedUsers(this.account?.address);
     } else {
-      await this.unsubscribeInvitedUsers();
+      this.unsubscribeFromInvitedUsers();
     }
   }
 
@@ -165,15 +166,15 @@ export default class ReferralProgram extends Mixins(
   }
 
   get xorTokenPrice(): Nullable<CodecString> {
-    return this.tokenXOR ? this.getAssetFiatPrice(this.tokenXOR) : null;
+    return this.getAssetFiatPrice(this.xor);
   }
 
   get invitedUserRewards(): any {
     return this.referralRewards?.invitedUserRewards;
   }
 
-  get bondedXOR(): string {
-    return this.tokenXOR?.balance?.bonded || '';
+  get bondedXor(): string {
+    return this.xor.balance?.bonded ?? '';
   }
 
   get xorSymbol(): string {
@@ -181,7 +182,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   get invitedUsersNumber(): number {
-    return this.invitedUsers ? this.invitedUsers.length : 0;
+    return this.invitedUsers.length;
   }
 
   get invitedUsersClasses(): Array<string> {
@@ -199,18 +200,18 @@ export default class ReferralProgram extends Mixins(
     return {
       href: `${detectBaseUrl(router)}${routerMode}referral/${this.account?.address}`,
       label: `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${this.account?.address}`,
-      isVisible: this.account && +this.bondedXOR > 0,
+      isVisible: this.account && +this.bondedXor > 0,
     };
   }
 
   destroyed(): void {
-    this.resetInvitedUsersSubscription();
+    this.reset();
   }
 
   async created(): Promise<void> {
     this.withApi(async () => {
       if (this.isSoraAccountConnected) {
-        await this.subscribeInvitedUsers(this.account.address);
+        await this.subscribeOnInvitedUsers(this.account.address);
         await this.getAccountReferralRewards();
       }
     });

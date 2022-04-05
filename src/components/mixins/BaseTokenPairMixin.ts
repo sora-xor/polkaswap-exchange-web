@@ -1,24 +1,40 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
-const BaseTokenPairMixinInstance = (namespace: string) => {
+import { state, getter } from '@/store/decorators';
+
+export enum TokenPairNamespace {
+  AddLiquidity = 'addLiquidity',
+  CreatePair = 'createPair',
+}
+
+const BaseTokenPairMixinInstance = (namespace: TokenPairNamespace) => {
+  const namespacedState = state[namespace];
+  const namespacedGetter = getter[namespace];
   @Component
   class BaseTokenPairMixin extends Mixins(mixins.TranslationMixin, mixins.FormattedAmountMixin) {
     readonly XOR_SYMBOL = XOR.symbol;
 
-    @Getter networkFees!: NetworkFeesObject;
+    @state.prices.price price!: string;
+    @state.prices.priceReversed priceReversed!: string;
+    @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
+    @namespacedState.firstTokenValue firstTokenValue!: string;
+    @namespacedState.secondTokenValue secondTokenValue!: string;
+    @namespacedState.isAvailable isAvailable!: boolean;
 
-    @Getter('firstTokenValue', { namespace }) firstTokenValue!: string;
-    @Getter('secondTokenValue', { namespace }) secondTokenValue!: string;
-    @Getter('firstToken', { namespace }) firstToken!: any;
-    @Getter('secondToken', { namespace }) secondToken!: any;
-    @Getter('isAvailable', { namespace }) isAvailable!: boolean;
+    @namespacedGetter.firstToken firstToken!: Nullable<AccountAsset>;
+    @namespacedGetter.secondToken secondToken!: Nullable<AccountAsset>;
 
-    @Getter('price', { namespace: 'prices' }) price!: string;
-    @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string;
+    get firstTokenSymbol(): string {
+      return this.firstToken?.symbol ?? '';
+    }
+
+    get secondTokenSymbol(): string {
+      return this.secondToken?.symbol ?? '';
+    }
 
     get networkFee(): CodecString {
       return this.networkFees[Operation[namespace.charAt(0).toUpperCase() + namespace.slice(1)]];
@@ -37,10 +53,12 @@ const BaseTokenPairMixinInstance = (namespace: string) => {
     }
 
     get fiatFirstAmount(): Nullable<string> {
+      if (!this.firstToken) return null;
       return this.getFiatAmount(this.firstTokenValue, this.firstToken);
     }
 
     get fiatSecondAmount(): Nullable<string> {
+      if (!this.secondToken) return null;
       return this.getFiatAmount(this.secondTokenValue, this.secondToken);
     }
 
@@ -54,7 +72,7 @@ const BaseTokenPairMixinInstance = (namespace: string) => {
     }
 
     get areTokensSelected(): boolean {
-      return this.firstToken && this.secondToken;
+      return !!this.firstToken && !!this.secondToken;
     }
   }
 

@@ -6,3 +6,8 @@ export type PoolState = {
   accountLiquidityList: Nullable<Subscription>;
   accountLiquidityUpdates: Nullable<Subscription>;
 };
+
+export type LiquidityParams = {
+  firstAddress: string;
+  secondAddress: string;
+};

@@ -31,7 +31,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
@@ -41,8 +40,7 @@ import TranslationMixin from '../mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-
-const namespace = 'removeLiquidity';
+import { state, getter } from '@/store/decorators';
 
 @Component({
   components: { InfoLine: components.InfoLine, TransactionDetails: lazyComponent(Components.TransactionDetails) },
@@ -50,12 +48,13 @@ const namespace = 'removeLiquidity';
 export default class RemoveLiquidityTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   readonly XOR_SYMBOL = XOR.symbol;
 
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string;
-  @Getter('price', { namespace: 'prices' }) price!: string;
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string;
-  @Getter('firstToken', { namespace }) firstToken!: Asset;
-  @Getter('secondToken', { namespace }) secondToken!: Asset;
-  @Getter networkFees!: NetworkFeesObject;
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.prices.priceReversed priceReversed!: string;
+  @state.prices.price price!: string;
+
+  @getter.removeLiquidity.shareOfPool shareOfPool!: string;
+  @getter.removeLiquidity.firstToken firstToken!: Asset;
+  @getter.removeLiquidity.secondToken secondToken!: Asset;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
 

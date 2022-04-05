@@ -58,7 +58,7 @@ const actions = defineActions({
     const address = await ethersUtil.onConnect({ provider });
     commit.setEvmAddress(address);
   },
-  async setEvmNetworkType(context, network: string): Promise<void> {
+  async setEvmNetworkType(context, network?: string): Promise<void> {
     const { commit } = web3ActionContext(context);
     let networkType = '';
     if (!network) {

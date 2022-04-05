@@ -22,3 +22,8 @@ export type RewardsState = {
   accountMarketMakerInfo: Nullable<AccountMarketMakerInfo>;
   accountMarketMakerUpdates: Nullable<Subscription>;
 };
+
+export type ClaimRewardsParams = Partial<{
+  internalAddress: string;
+  externalAddress: string;
+}>;

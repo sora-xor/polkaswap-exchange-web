@@ -5,9 +5,10 @@ import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards
 import { rewardsActionContext } from '@/store/rewards';
 import { rootActionContext } from '@/store';
 import { SelectedRewards } from '@/types/rewards';
-import { asZeroValue } from '@/utils';
+import { asZeroValue, waitForAccountPair } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 import { ethers } from 'ethers';
+import type { ClaimRewardsParams } from './types';
 
 const actions = defineActions({
   async getNetworkFee(context): Promise<void> {
@@ -54,7 +55,7 @@ const actions = defineActions({
       commit.getRewardsFailure();
     }
   },
-  async claimRewards(context, { internalAddress = '', externalAddress = '' } = {}): Promise<void> {
+  async claimRewards(context, { internalAddress = '', externalAddress = '' }: ClaimRewardsParams = {}): Promise<void> {
     const { commit, getters, state } = rewardsActionContext(context);
     const { rootState } = rootActionContext(context);
     if (!internalAddress) return;
@@ -97,6 +98,21 @@ const actions = defineActions({
       commit.setRewardsClaiming(false);
       throw error;
     }
+  },
+  async subscribeOnAccountMarketMakerInfo(context): Promise<void> {
+    const { commit } = rewardsActionContext(context);
+    const { rootGetters } = rootActionContext(context);
+    commit.resetAccountMarketMakerUpdates();
+
+    if (!rootGetters.wallet.account.isLoggedIn) return;
+
+    await waitForAccountPair(() => {
+      const subscription = api.rewards.subscribeOnAccountMarketMakerInfo().subscribe((info) => {
+        commit.setAccountMarketMakerInfo(info);
+      });
+
+      commit.setAccountMarketMakerUpdates(subscription);
+    });
   },
 });
 

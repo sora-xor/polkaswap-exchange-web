@@ -11,10 +11,10 @@
         class="s-input--token-value"
         size="medium"
         :value="firstTokenValue"
-        :decimals="(firstToken || {}).decimals"
+        :decimals="firstTokenDecimals"
         has-locale-string
         :delimiters="delimiters"
-        :max="getMax((firstToken || {}).address)"
+        :max="getMax(firstTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setFirstTokenValue)"
         @blur="resetFocusedField"
@@ -64,10 +64,10 @@
         class="s-input--token-value"
         size="medium"
         :value="secondTokenValue"
-        :decimals="(secondToken || {}).decimals"
+        :decimals="secondTokenDecimals"
         has-locale-string
         :delimiters="delimiters"
-        :max="getMax((secondToken || {}).address)"
+        :max="getMax(secondTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setSecondTokenValue)"
         @blur="resetFocusedField"
@@ -179,7 +179,6 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
@@ -190,8 +189,11 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { getter, action, mutation } from '@/store/decorators';
+import { TokenPairNamespace } from '@/components/mixins/BaseTokenPairMixin';
+import type { LiquidityParams } from '@/store/pool/types';
 
-const namespace = 'addLiquidity';
+const namespace = TokenPairNamespace.AddLiquidity;
 
 const TokenPairMixin = TokenPairMixinInstance(namespace);
 
@@ -212,19 +214,20 @@ const TokenPairMixin = TokenPairMixinInstance(namespace);
   },
 })
 export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string;
-  @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity;
+  @getter.addLiquidity.shareOfPool shareOfPool!: string;
+  @getter.addLiquidity.liquidityInfo liquidityInfo!: Nullable<AccountLiquidity>;
 
-  @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity!: (params: any) => Promise<void>;
-  @Action('addLiquidity', { namespace }) addLiquidity!: AsyncVoidFn;
-  @Action('resetFocusedField', { namespace }) resetFocusedField!: AsyncVoidFn;
+  @action.addLiquidity.addLiquidity private addLiquidity!: AsyncVoidFn;
+  @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>;
+
+  @mutation.addLiquidity.setVocusedField resetFocusedField!: VoidFunction;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
       if (this.firstAddress && this.secondAddress) {
-        await this.setDataFromLiquidity({
+        await this.setData({
           firstAddress: this.firstAddress,
           secondAddress: this.secondAddress,
         });
@@ -265,7 +268,6 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
     return this.isXorSufficientForNextTx({
       type: Operation.AddLiquidity,
       amount: this.getFPNumber(this.firstTokenValue),
-      xorBalance: this.getFPNumberFromCodec(this.getTokenBalance(this.firstToken)),
     });
   }
 

@@ -7,6 +7,7 @@ import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import { addLiquidityActionContext } from '@/store/addLiquidity';
 import { rootActionContext } from '@/store';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
+import type { LiquidityParams } from '@/store/pool/types';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -152,10 +153,7 @@ const actions = defineActions({
       rootState.settings.slippageTolerance
     );
   },
-  async setDataFromLiquidity(
-    context,
-    { firstAddress, secondAddress }: { firstAddress: string; secondAddress: string }
-  ): Promise<void> {
+  async setDataFromLiquidity(context, { firstAddress, secondAddress }: LiquidityParams): Promise<void> {
     const { dispatch } = addLiquidityActionContext(context);
 
     const findAssetAddress = async (address: string): Promise<string> => {

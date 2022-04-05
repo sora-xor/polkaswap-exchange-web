@@ -15,10 +15,10 @@ const lazyView = (name: string) => () => import(`@/views/${name}.vue`);
 
 function goTo(name: PageNames): void {
   if (name === PageNames.Wallet) {
-    if (!store.getters.isLoggedIn) {
-      store.dispatch('navigate', { name: WALLET_CONSTS.RouteNames.WalletConnection });
-    } else if (store.getters.currentRoute !== WALLET_DEFAULT_ROUTE) {
-      store.dispatch('navigate', { name: WALLET_DEFAULT_ROUTE });
+    if (!store.getters.wallet.account.isLoggedIn) {
+      store.commit.wallet.router.navigate({ name: WALLET_CONSTS.RouteNames.WalletConnection });
+    } else if (store.state.wallet.router.currentRoute !== WALLET_DEFAULT_ROUTE) {
+      store.commit.wallet.router.navigate({ name: WALLET_DEFAULT_ROUTE });
     }
   }
   if (router.currentRoute.name === name) {
@@ -169,34 +169,35 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const prev = from.name;
+  const prev = from.name as Nullable<PageNames>;
+  const isLoggedIn = store.getters.wallet.account.isLoggedIn;
   if (to.matched.some((record) => record.meta.isInvitationRoute)) {
     if (api.validateAddress(to.params.referralAddress)) {
-      store.dispatch('referrals/setReferral', to.params.referralAddress);
+      store.commit.referrals.setStorageReferral(to.params.referralAddress);
     }
-    if (store.getters.isLoggedIn) {
+    if (isLoggedIn) {
       next({ name: PageNames.Referral });
-      store.dispatch('router/setRoute', { prev, current: PageNames.Referral });
+      store.commit.router.setRoute({ prev, current: PageNames.Referral });
       return;
     }
   }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (
       BridgeChildPages.includes(to.name as PageNames) &&
-      store.getters.isLoggedIn &&
-      !store.getters['web3/isExternalAccountConnected']
+      isLoggedIn &&
+      !store.getters.web3.isExternalAccountConnected
     ) {
       next({ name: PageNames.Bridge });
-      store.dispatch('router/setRoute', { prev, current: PageNames.Bridge });
+      store.commit.router.setRoute({ prev, current: PageNames.Bridge });
       return;
     }
-    if (!store.getters.isLoggedIn) {
+    if (!isLoggedIn) {
       next({ name: PageNames.Wallet });
-      store.dispatch('router/setRoute', { prev, current: PageNames.Wallet });
+      store.commit.router.setRoute({ prev, current: PageNames.Wallet });
       return;
     }
   }
-  store.dispatch('router/setRoute', { prev, current: to.name });
+  store.commit.router.setRoute({ prev, current: to.name as PageNames });
   next();
 });
 

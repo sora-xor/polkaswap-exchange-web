@@ -33,7 +33,7 @@
           :value="amount"
           :decimals="getDecimals(isSoraToEvm)"
           :delimiters="delimiters"
-          :max="getMax((asset || {}).address)"
+          :max="getMax(assetAddress)"
           :disabled="!areNetworksConnected || !isAssetSelected"
           class="s-input--token-value"
           has-locale-string
@@ -53,7 +53,7 @@
                 with-left-shift
                 value-class="input-value--primary"
                 :value="formatBalance(isSoraToEvm)"
-                :fiat-value="isSoraToEvm ? getFiatBalance(asset) : undefined"
+                :fiat-value="firstFieldFiatBalance"
               />
             </div>
           </div>
@@ -107,7 +107,7 @@
           :value="amount"
           :decimals="getDecimals(!isSoraToEvm)"
           :delimiters="delimiters"
-          :max="getMax((asset || {}).address)"
+          :max="getMax(assetAddress)"
           class="s-input--token-value"
           has-locale-string
           size="medium"
@@ -126,7 +126,7 @@
                 with-left-shift
                 value-class="input-value--primary"
                 :value="formatBalance(!isSoraToEvm)"
-                :fiat-value="!isSoraToEvm ? getFiatBalance(asset) : undefined"
+                :fiat-value="secondFieldFiatBalance"
               />
             </div>
           </div>
@@ -228,7 +228,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
@@ -238,6 +237,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
+import { getter, action, mutation, state } from '@/store/decorators';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import {
@@ -253,8 +253,8 @@ import {
 
 import type { SubNetwork } from '@/utils/ethers-util';
 import type { BridgeHistory } from '@sora-substrate/util';
-
-const namespace = 'bridge';
+import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -280,25 +280,25 @@ export default class Bridge extends Mixins(
   NetworkFormatterMixin,
   NetworkFeeDialogMixin
 ) {
-  @State((state) => state.web3.subNetworks) subNetworks!: Array<SubNetwork>;
-  @State((state) => state[namespace].amount) amount!: string;
-  @State((state) => state[namespace].isSoraToEvm) isSoraToEvm!: boolean;
-  @State((state) => state[namespace].evmNetworkFeeFetching) evmNetworkFeeFetching!: boolean;
+  @state.bridge.evmNetworkFeeFetching private evmNetworkFeeFetching!: boolean;
+  @state.web3.subNetworks subNetworks!: Array<SubNetwork>;
+  @state.bridge.amount amount!: string;
+  @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
 
-  @Action('setSoraToEvm', { namespace }) setSoraToEvm!: (value: boolean) => Promise<void>;
-  @Action('setAssetAddress', { namespace }) setAssetAddress!: (value: string) => Promise<void>;
-  @Action('setAmount', { namespace }) setAmount;
-  @Action('resetBridgeForm', { namespace }) resetBridgeForm;
-  @Action('resetBalanceSubscription', { namespace }) resetBalanceSubscription!: AsyncVoidFn;
-  @Action('updateBalanceSubscription', { namespace }) updateBalanceSubscription!: AsyncVoidFn;
-  @Action('getEvmNetworkFee', { namespace }) getEvmNetworkFee!: AsyncVoidFn;
+  @getter.bridge.asset asset!: Nullable<RegisteredAccountAssetWithDecimals>;
+  @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
-  @Action('generateHistoryItem', { namespace }) generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
-  @Action('setHistoryItem', { namespace }) setHistoryItem!: (id?: string) => Promise<void>;
+  @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;
+  @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
+  @mutation.bridge.setAmount setAmount!: (value: string) => void;
 
-  @Getter('asset', { namespace }) asset!: any;
-  @Getter('isRegisteredAsset', { namespace }) isRegisteredAsset!: boolean;
-  @Getter nodeIsConnected!: boolean;
+  @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
+  @action.bridge.resetBridgeForm private resetBridgeForm!: (withAddress?: boolean) => Promise<void>;
+  @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncVoidFn;
+  @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncVoidFn;
+  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
+  @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
 
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean) {
@@ -316,6 +316,20 @@ export default class Bridge extends Mixins(
   showSelectNetworkDialog = false;
   showConfirmTransactionDialog = false;
 
+  get assetAddress(): string {
+    if (!this.asset) return '';
+
+    return this.asset.address;
+  }
+
+  get firstFieldFiatBalance(): Nullable<string> {
+    return this.isSoraToEvm ? this.getFiatBalance(this.asset as AccountAsset) : undefined;
+  }
+
+  get secondFieldFiatBalance(): Nullable<string> {
+    return !this.isSoraToEvm ? this.getFiatBalance(this.asset as AccountAsset) : undefined;
+  }
+
   get isNetworkAConnected() {
     return this.isSoraToEvm ? this.isSoraAccountConnected : this.isExternalAccountConnected;
   }
@@ -329,7 +343,7 @@ export default class Bridge extends Mixins(
   }
 
   get isMaxAvailable(): boolean {
-    if (!this.areNetworksConnected || !this.isRegisteredAsset) {
+    if (!this.areNetworksConnected || !this.isRegisteredAsset || !this.asset) {
       return false;
     }
     const balance = getAssetBalance(this.asset, { internal: this.isSoraToEvm });
@@ -352,7 +366,7 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.soraNetworkFee);
+    return hasInsufficientXorForFee(this.xor, this.soraNetworkFee);
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
@@ -360,6 +374,8 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientBalance(): boolean {
+    if (!this.asset) return false;
+
     const fee = this.isSoraToEvm ? this.soraNetworkFee : this.evmNetworkFee;
 
     return (
@@ -397,11 +413,12 @@ export default class Bridge extends Mixins(
   }
 
   get isXorSufficientForNextOperation(): boolean {
+    if (!this.asset) return false;
+
     return this.isXorSufficientForNextTx({
       type: this.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
       isXorAccountAsset: isXorAccountAsset(this.asset),
       amount: this.getFPNumber(this.amount),
-      xorBalance: this.getFPNumberFromCodec(getAssetBalance(this.tokenXOR)),
     });
   }
 
@@ -438,7 +455,7 @@ export default class Bridge extends Mixins(
   }
 
   async handleSwitchItems(): Promise<void> {
-    await this.setSoraToEvm(!this.isSoraToEvm);
+    this.setSoraToEvm(!this.isSoraToEvm);
     await this.getEvmNetworkFee();
   }
 
@@ -479,12 +496,12 @@ export default class Bridge extends Mixins(
 
   async selectNetwork(network: number): Promise<void> {
     this.showSelectNetworkDialog = false;
-    await this.setEvmNetwork(network);
+    this.setEvmNetwork(network);
   }
 
-  async selectAsset(selectedAsset: any): Promise<void> {
+  async selectAsset(selectedAsset?: RegisterAssetWithExternalBalance): Promise<void> {
     if (selectedAsset) {
-      await this.setAssetAddress(selectedAsset?.address ?? '');
+      await this.setAssetAddress(selectedAsset?.address);
       await this.getEvmNetworkFee();
     }
   }
@@ -495,7 +512,7 @@ export default class Bridge extends Mixins(
     await this.checkConnectionToExternalAccount(async () => {
       // create new history item
       const tx = await this.generateHistoryItem();
-      await this.setHistoryItem(tx.id as string);
+      this.setHistoryId(tx.id);
       router.push({ name: PageNames.BridgeTransaction });
     });
   }

@@ -1,6 +1,7 @@
 import { defineMutations } from 'direct-vuex';
 
 import type { MoonpayCurrency, MoonpayTransaction } from '@/utils/moonpay';
+import type { MoonpayNotifications } from '@/components/Moonpay/consts';
 import type { BridgeTxData, MoonpayState } from './types';
 
 const mutations = defineMutations<MoonpayState>()({
@@ -13,7 +14,7 @@ const mutations = defineMutations<MoonpayState>()({
   setNotificationVisibility(state, value: boolean): void {
     state.notificationVisibility = value;
   },
-  setNotificationKey(state, value: string): void {
+  setNotificationKey(state, value: MoonpayNotifications): void {
     state.notificationKey = value;
   },
   setConfirmationVisibility(state, value: boolean): void {

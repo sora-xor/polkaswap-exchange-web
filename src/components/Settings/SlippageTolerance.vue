@@ -37,13 +37,13 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
 import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { state, mutation } from '@/store/decorators';
 
 @Component({
   components: {
@@ -66,11 +66,11 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
   slippageToleranceFocused = false;
   slippageToleranceOpened = true;
 
-  @Getter slippageTolerance!: string;
-  @Getter transactionDeadline!: number;
-  @Getter nodeAddress!: { ip: string; port: number };
-  @Action setSlippageTolerance!: (value: string) => Promise<void>;
-  @Action setTransactionDeadline!: any;
+  @state.settings.slippageTolerance slippageTolerance!: string;
+  @state.settings.transactionDeadline transactionDeadline!: number;
+
+  @mutation.settings.setSlippageTolerance setSlippageTolerance!: (value: string) => void;
+  @mutation.settings.setTransactionDeadline setTransactionDeadline!: (value: number) => void;
 
   get customSlippageTolerance(): string {
     const suffix = this.slippageToleranceFocused ? '' : '%';

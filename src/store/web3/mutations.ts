@@ -5,6 +5,7 @@ import { BridgeNetworks, CodecString } from '@sora-substrate/util';
 import ethersUtil from '@/utils/ethers-util';
 import { bridgeApi } from '@/utils/bridge';
 import { initialState } from './state';
+import type { SubNetwork } from '@/utils/ethers-util';
 import type { Web3State } from './types';
 
 const mutations = defineMutations<Web3State>()({
@@ -31,7 +32,7 @@ const mutations = defineMutations<Web3State>()({
     state.networkType = networkType;
     ethersUtil.storeEvmNetworkType(networkType);
   },
-  setSubNetworks(state, subNetworks: Array<any>): void {
+  setSubNetworks(state, subNetworks: Array<SubNetwork>): void {
     state.subNetworks = subNetworks;
   },
   setEvmNetwork(state, network: BridgeNetworks): void {

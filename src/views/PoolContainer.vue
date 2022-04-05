@@ -10,20 +10,20 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+
+import { action, getter } from '@/store/decorators';
 
 const namespace = 'pool';
 
 @Component
 export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
-  @Action('subscribeOnAccountLiquidityList', { namespace }) subscribeOnAccountLiquidityList!: AsyncVoidFn;
-  @Action('subscribeOnAccountLiquidityUpdates', { namespace }) subscribeOnAccountLiquidityUpdates!: AsyncVoidFn;
-  @Action('unsubscribeAccountLiquidityListAndUpdates', { namespace })
-  unsubscribeAccountLiquidityListAndUpdates!: AsyncVoidFn;
+  @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncVoidFn;
+  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncVoidFn;
+  @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribe!: AsyncVoidFn;
 
-  @Getter isLoggedIn!: boolean;
-  @Getter nodeIsConnected!: boolean;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @Watch('isLoggedIn')
   @Watch('nodeIsConnected')
@@ -31,7 +31,7 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
     if (value) {
       await this.updateLiquiditySubscription();
     } else {
-      await this.unsubscribeAccountLiquidityListAndUpdates();
+      await this.unsubscribe();
     }
   }
 
@@ -44,7 +44,7 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
   }
 
   async beforeDestroy(): Promise<void> {
-    await this.unsubscribeAccountLiquidityListAndUpdates();
+    await this.unsubscribe();
   }
 
   /**

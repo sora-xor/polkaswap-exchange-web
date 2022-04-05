@@ -8,7 +8,7 @@
         :is-about-page-opened="isAboutPage"
         @click.native="handleAppMenuClick"
       >
-        <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
+        <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap" />
       </app-menu>
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar">
@@ -41,8 +41,8 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
-import { FPNumber, History, connection } from '@sora-substrate/util';
+import { Getter } from 'vuex-class';
+import { FPNumber, History, connection, HistoryItem } from '@sora-substrate/util';
 import { mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
@@ -53,10 +53,12 @@ import SoraLogo from '@/components/logo/Sora.vue';
 import { PageNames, Components, Language } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { goTo, lazyComponent } from '@/router';
+import { action, getter, mutation, state } from '@/store/decorators';
 import { preloadFontFace } from '@/utils';
 import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions } from '@/types/nodes';
 import type { SubNetwork } from '@/utils/ethers-util';
+import type { FeatureFlags } from '@/store/settings/types';
 
 @Component({
   components: {
@@ -69,40 +71,38 @@ import type { SubNetwork } from '@/utils/ethers-util';
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
-  readonly PageNames = PageNames;
-  readonly PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
-
   menuVisibility = false;
   showConfirmInviteUser = false;
 
-  @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter libraryTheme!: Theme;
   @Getter libraryDesignSystem!: DesignSystem;
-  @Getter firstReadyTransaction!: History;
-  @Getter blockNumber!: number;
-  @Getter('isLoggedIn') isSoraAccountConnected!: boolean;
-  @Getter('storageReferral', { namespace: 'referrals' }) storageReferral!: string;
-  @Getter('referral', { namespace: 'referrals' }) referral!: string;
 
-  // Wallet
-  @Action activateNetwokSubscriptions!: AsyncVoidFn;
-  @Action resetNetworkSubscriptions!: AsyncVoidFn;
-  @Action resetInternalSubscriptions!: AsyncVoidFn;
-  @Action setSoraNetwork!: (networkType: string) => Promise<void>;
-  @Action setApiKeys!: (options: WALLET_TYPES.ApiKeysObject) => Promise<void>;
+  @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.referrals.storageReferral storageReferral!: string;
+  @state.settings.blockNumber blockNumber!: number;
 
-  @Action setDefaultNodes!: (nodes: any) => Promise<void>;
-  @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>;
-  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
-  @Action setFaucetUrl!: (url: string) => Promise<void>;
-  @Action setLanguage!: (lang: Language) => Promise<void>;
-  @Action setFeatureFlags!: (options: any) => Promise<void>;
-  @Action resetBlockNumberSubscription!: AsyncVoidFn;
-  @Action('unsubscribeAccountMarketMakerInfo', { namespace: 'rewards' }) unsubscribeMarketMakerInfo!: AsyncVoidFn;
-  @Action('setSubNetworks', { namespace: 'web3' }) setSubNetworks!: (data: Array<SubNetwork>) => Promise<void>;
-  @Action('setSmartContracts', { namespace: 'web3' }) setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
-  @Action('getReferral', { namespace: 'referrals' }) getReferral!: (invitedUserId: string) => Promise<void>;
-  @Action('setReferral', { namespace: 'referrals' }) setReferral!: (value: string) => Promise<void>;
+  @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
+  @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
+
+  @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
+  @mutation.settings.setDefaultNodes private setDefaultNodes!: (nodes: Array<Node>) => void;
+  @mutation.settings.setNetworkChainGenesisHash private setNetworkChainGenesisHash!: (hash?: string) => void;
+  @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
+  @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
+  @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
+  @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: VoidFunction;
+  @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
+  @mutation.referrals.resetStorageReferral private resetStorageReferral!: VoidFunction;
+
+  @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
+  @action.wallet.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncVoidFn;
+  @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncVoidFn;
+  @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncVoidFn;
+  @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
+  @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
+  @action.web3.setSmartContracts private setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
+  @action.referrals.getReferral getReferral!: (invitedUserId: string) => Promise<void>;
+
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History, oldValue: History): void {
     this.handleChangeTransaction(value, oldValue);
@@ -138,7 +138,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     await this.getReferral(this.account.address);
     if (this.storageReferral) {
       if (this.storageReferral === this.account.address) {
-        this.setReferral('');
+        this.resetStorageReferral();
       } else {
         this.showConfirmInviteUser = true;
       }
@@ -151,7 +151,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
     updateBaseUrl(router);
 
-    await this.setLanguage(getLocale() as any);
+    await this.setLanguage(getLocale() as Language);
 
     await this.withLoading(async () => {
       const { data } = await axiosInstance.get('/env.json');
@@ -161,17 +161,17 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       }
 
       await this.setApiKeys(data?.API_KEYS);
-      await this.setFeatureFlags(data?.FEATURE_FLAGS);
-      await this.setSoraNetwork(data.NETWORK_TYPE);
-      await this.setDefaultNodes(data?.DEFAULT_NETWORKS);
-      await this.setSubNetworks(data.SUB_NETWORKS);
+      this.setFeatureFlags(data?.FEATURE_FLAGS);
+      this.setSoraNetwork(data.NETWORK_TYPE);
+      this.setDefaultNodes(data?.DEFAULT_NETWORKS);
+      this.setSubNetworks(data.SUB_NETWORKS);
       await this.setSmartContracts(data.SUB_NETWORKS);
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);
       }
       if (data.CHAIN_GENESIS_HASH) {
-        await this.setNetworkChainGenesisHash(data.CHAIN_GENESIS_HASH);
+        this.setNetworkChainGenesisHash(data.CHAIN_GENESIS_HASH);
       }
 
       // connection to node
@@ -196,6 +196,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     this.closeMenu();
   }
 
+  goToSwap(): void {
+    this.goTo(PageNames.Swap);
+  }
+
   toggleMenu(): void {
     this.menuVisibility = !this.menuVisibility;
   }
@@ -216,8 +220,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async beforeDestroy(): Promise<void> {
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
-    await this.resetBlockNumberSubscription();
-    await this.unsubscribeMarketMakerInfo();
+    this.resetBlockNumberSubscription();
+    this.unsubscribeMarketMakerInfo();
     await connection.close();
   }
 

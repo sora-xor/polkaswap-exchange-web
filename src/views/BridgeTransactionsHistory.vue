@@ -82,11 +82,10 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
+import { action, state } from '@/store/decorators';
 import { isUnsignedToPart, isRejectedForeverFromPart } from '@/utils/bridge';
 
 import type { BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
-
-const namespace = 'bridge';
 
 @Component({
   components: {
@@ -102,9 +101,9 @@ export default class BridgeTransactionsHistory extends Mixins(
   mixins.PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
-  @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
+  @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;
 
-  @Action('updateHistory', { namespace }) updateHistory!: AsyncVoidFn;
+  @action.bridge.updateHistory updateHistory!: AsyncVoidFn;
 
   PageNames = PageNames;
   pageAmount = 8; // override PaginationSearchMixin
@@ -129,7 +128,7 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   async created(): Promise<void> {
     await this.withParentLoading(async () => {
-      await this.getHistory();
+      this.setHistory();
       await this.updateHistory();
     });
   }

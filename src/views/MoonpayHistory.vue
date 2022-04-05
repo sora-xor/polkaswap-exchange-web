@@ -77,7 +77,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, State, Getter } from 'vuex-class';
+import { Getter } from 'vuex-class';
 import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { BridgeHistory } from '@sora-substrate/util';
 
@@ -89,11 +89,10 @@ import { getCssVariableValue, toQueryString } from '@/utils';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { MoonpayTransactionStatus } from '@/utils/moonpay';
+import { action, getter, state } from '@/store/decorators';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { MoonpayTransaction, MoonpayCurrenciesById } from '@/utils/moonpay';
-
-const namespace = 'moonpay';
 
 const HistoryView = 'history';
 const DetailsView = 'details';
@@ -109,12 +108,14 @@ const DetailsView = 'details';
 export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin, MoonpayBridgeInitMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
-  @State((state) => state[namespace].transactions) transactions!: Array<MoonpayTransaction>;
+  @state.moonpay.transactions transactions!: Array<MoonpayTransaction>;
+
   @Getter libraryTheme!: Theme;
-  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
-  @Getter('currenciesById', { namespace }) currenciesById!: MoonpayCurrenciesById;
-  @Action('getTransactions', { namespace }) getTransactions!: AsyncVoidFn;
-  @Action('getCurrencies', { namespace }) getCurrencies!: AsyncVoidFn;
+  @getter.web3.isValidNetworkType private isValidNetworkType!: boolean;
+  @getter.moonpay.currenciesById private currenciesById!: MoonpayCurrenciesById;
+
+  @action.moonpay.getTransactions private getTransactions!: AsyncVoidFn;
+  @action.moonpay.getCurrencies private getCurrencies!: AsyncVoidFn;
 
   private unwatchEthereum!: VoidFunction;
 
@@ -126,7 +127,8 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     this.withApi(async () => {
       this.initMoonpayApi(); // MoonpayBridgeInitMixin
 
-      await Promise.all([this.getTransactions(), this.getCurrencies(), this.getHistory()]);
+      await Promise.all([this.getTransactions(), this.getCurrencies()]);
+      this.setHistory();
 
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {

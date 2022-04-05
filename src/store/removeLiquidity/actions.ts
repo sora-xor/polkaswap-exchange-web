@@ -6,6 +6,7 @@ import type { ActionContext } from 'vuex';
 
 import { removeLiquidityActionContext } from '@/store/removeLiquidity';
 import { rootActionContext } from '@/store';
+import type { LiquidityParams } from '../pool/types';
 
 async function getTotalSupply(context: ActionContext<any, any>): Promise<void> {
   const { state, getters, commit } = removeLiquidityActionContext(context);
@@ -50,10 +51,7 @@ const getRemoveLiquidityData = debounce(
 );
 
 const actions = defineActions({
-  async setLiquidity(
-    context,
-    { firstAddress, secondAddress }: { firstAddress: string; secondAddress: string }
-  ): Promise<void> {
+  async setLiquidity(context, { firstAddress, secondAddress }: LiquidityParams): Promise<void> {
     const { commit } = removeLiquidityActionContext(context);
     try {
       commit.setAddresses({ firstAddress, secondAddress });

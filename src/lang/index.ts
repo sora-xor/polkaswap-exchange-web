@@ -34,7 +34,7 @@ export const getSupportedLocale = (locale: Language): string => {
 export function getLocale(): string {
   const locale = settingsStorage.get('language') || ((navigator.language || (navigator as any).userLanguage) as string);
 
-  return getSupportedLocale(locale as any);
+  return getSupportedLocale(locale as Language);
 }
 
 export async function setDayJsLocale(lang: Language): Promise<void> {

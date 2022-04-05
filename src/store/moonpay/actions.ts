@@ -40,7 +40,7 @@ const actions = defineActions({
       commit.updateTxsFailure();
     }
   },
-  async createTransactionsPolling(context): Promise<() => void> {
+  async createTransactionsPolling(context): Promise<VoidFunction> {
     const { dispatch, commit } = moonpayActionContext(context);
     commit.setPollingTimestamp();
 
@@ -56,7 +56,7 @@ const actions = defineActions({
 
     return stopPolling;
   },
-  async getTransactionTranserData(context, hash: string): Promise<Nullable<MoonpayEVMTransferAssetData>> {
+  async getTransactionTranserData(_, hash: string): Promise<Nullable<MoonpayEVMTransferAssetData>> {
     try {
       const confirmations = 1;
       const timeout = 0;

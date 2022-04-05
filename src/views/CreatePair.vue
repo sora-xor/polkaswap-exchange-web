@@ -11,10 +11,10 @@
         class="s-input--token-value"
         size="medium"
         :value="firstTokenValue"
-        :decimals="(firstToken || {}).decimals"
+        :decimals="firstTokenDecimals"
         has-locale-string
         :delimiters="delimiters"
-        :max="getMax((firstToken || {}).address)"
+        :max="getMax(firstTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setFirstTokenValue)"
       >
@@ -63,10 +63,10 @@
         class="s-input--token-value"
         size="medium"
         :value="secondTokenValue"
-        :decimals="(secondToken || {}).decimals"
+        :decimals="secondTokenDecimals"
         has-locale-string
         :delimiters="delimiters"
-        :max="getMax((secondToken || {}).address)"
+        :max="getMax(secondTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setSecondTokenValue)"
       >
@@ -190,10 +190,13 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import TokenPairMixinInstance from '@/components/mixins/TokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
+import { TokenPairNamespace } from '@/components/mixins/BaseTokenPairMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { action } from '@/store/decorators';
 
-const namespace = 'createPair';
+const namespace = TokenPairNamespace.CreatePair;
+
 const TokenPairMixin = TokenPairMixinInstance(namespace);
 
 @Component({
@@ -213,7 +216,7 @@ const TokenPairMixin = TokenPairMixinInstance(namespace);
   },
 })
 export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {
-  @Action('createPair', { namespace }) createPair;
+  @action.createPair.createPair private createPair!: AsyncVoidFn;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
@@ -229,7 +232,6 @@ export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, To
     return this.isXorSufficientForNextTx({
       type: Operation.CreatePair,
       amount: this.getFPNumber(this.firstTokenValue),
-      xorBalance: this.getFPNumberFromCodec(this.getTokenBalance(this.firstToken)),
     });
   }
 
