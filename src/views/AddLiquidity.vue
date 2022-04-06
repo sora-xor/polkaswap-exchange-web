@@ -122,6 +122,7 @@
         type="primary"
         class="action-button s-typography-button--large"
         :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable"
+        :loading="isSelectAssetLoading"
         @click="handleAddLiquidity"
       >
         <template v-if="!areTokensSelected">
@@ -151,7 +152,7 @@
       :visible.sync="showSelectSecondTokenDialog"
       :connected="isLoggedIn"
       :asset="firstToken"
-      @select="setSecondTokenAddress($event.address)"
+      @select="selectSecondTokenAddress($event.address)"
     />
 
     <confirm-token-pair-dialog
