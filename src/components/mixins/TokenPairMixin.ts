@@ -150,7 +150,7 @@ const TokenPairMixinInstance = (namespace: string) => {
       this.showSelectSecondTokenDialog = true;
     }
 
-    async selectTokenAddress(address: string): Promise<void> {
+    async selectSecondTokenAddress(address: string): Promise<void> {
       await this.withSelectAssetLoading(async () => {
         this.setSecondTokenAddress(address);
       });

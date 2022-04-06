@@ -152,7 +152,7 @@
       :visible.sync="showSelectSecondTokenDialog"
       :connected="isLoggedIn"
       :asset="firstToken"
-      @select="selectTokenAddress($event.address)"
+      @select="selectSecondTokenAddress($event.address)"
     />
 
     <confirm-token-pair-dialog
