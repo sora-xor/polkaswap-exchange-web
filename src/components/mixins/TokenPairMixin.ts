@@ -150,6 +150,12 @@ const TokenPairMixinInstance = (namespace: string) => {
       this.showSelectSecondTokenDialog = true;
     }
 
+    async selectTokenAddress(address: string): Promise<void> {
+      await this.withSelectAssetLoading(async () => {
+        this.setSecondTokenAddress(address);
+      });
+    }
+
     async handleConfirm(func: AsyncVoidFn): Promise<void> {
       await this.handleConfirmDialog(async () => {
         await this.withNotifications(func);

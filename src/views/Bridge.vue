@@ -487,10 +487,10 @@ export default class Bridge extends Mixins(
 
   async selectAsset(selectedAsset: any): Promise<void> {
     if (selectedAsset) {
-      this.setSelectAssetLoading(true);
-      await this.setAssetAddress(selectedAsset?.address ?? '');
-      await this.getEvmNetworkFee();
-      this.setSelectAssetLoading(false);
+      await this.withSelectAssetLoading(async () => {
+        await this.setAssetAddress(selectedAsset?.address ?? '');
+        await this.getEvmNetworkFee();
+      });
     }
   }
 

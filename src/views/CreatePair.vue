@@ -157,7 +157,7 @@
       :visible.sync="showSelectSecondTokenDialog"
       :connected="isLoggedIn"
       :asset="firstToken"
-      @select="setSecondTokenAddress($event.address)"
+      @select="selectTokenAddress($event.address)"
     />
 
     <confirm-token-pair-dialog
@@ -191,6 +191,7 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import TokenPairMixinInstance from '@/components/mixins/TokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
+
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 

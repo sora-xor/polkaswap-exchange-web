@@ -614,15 +614,14 @@ export default class Swap extends Mixins(
 
   async selectToken(token: AccountAsset): Promise<void> {
     if (token) {
-      this.setSelectAssetLoading(true);
-      if (this.isTokenFromSelected) {
-        await this.setTokenFromAddress(token.address);
-      } else {
-        await this.setTokenToAddress(token.address);
-      }
-
-      this.subscribeOnSwapReserves();
-      this.setSelectAssetLoading(false);
+      await this.withSelectAssetLoading(async () => {
+        if (this.isTokenFromSelected) {
+          await this.setTokenFromAddress(token.address);
+        } else {
+          await this.setTokenToAddress(token.address);
+        }
+        this.subscribeOnSwapReserves();
+      });
     }
   }
 
