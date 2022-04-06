@@ -101,7 +101,7 @@ const actions = {
   async getReferral({ commit }, invitedUserId: string) {
     commit(types.GET_REFERRAL_REQUEST);
     try {
-      const referral = await api.referralSystem.getReferral(invitedUserId);
+      const referral = await api.referralSystem.getReferrer(invitedUserId);
       commit(types.GET_REFERRAL_SUCCESS, referral);
     } catch (error) {
       commit(types.GET_REFERRAL_FAILURE);
