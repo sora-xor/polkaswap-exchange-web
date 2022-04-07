@@ -4,11 +4,11 @@ import { Vue, Component } from 'vue-property-decorator';
 export default class TokenSelectMixin extends Vue {
   isSelectAssetLoading = false;
 
-  async withSelectAssetLoading(func: AsyncVoidFn | VoidFunction): Promise<any> {
+  async withSelectAssetLoading(func: AsyncVoidFn | VoidFunction): Promise<void> {
     this.isSelectAssetLoading = true;
 
     try {
-      return await func();
+      await func();
     } catch (e) {
       console.error(e);
       throw e;
