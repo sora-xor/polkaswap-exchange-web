@@ -1,6 +1,7 @@
 import { defineModule } from 'direct-vuex';
 
 import { localActionContext } from '@/store';
+import { Module } from '@/store/consts';
 
 import mutations from './mutations';
 import state from './state';
@@ -13,7 +14,7 @@ const prices = defineModule({
   actions,
 });
 
-const pricesActionContext = (context: any) => localActionContext(context, 'prices', prices);
+const pricesActionContext = (context: any) => localActionContext(context, Module.Prices, prices);
 
 export { pricesActionContext };
 export default prices;

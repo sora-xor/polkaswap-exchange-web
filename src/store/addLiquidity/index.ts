@@ -1,6 +1,7 @@
 import { defineModule } from 'direct-vuex';
 
 import { localActionContext, localGetterContext } from '@/store';
+import { Module } from '@/store/consts';
 
 import mutations from './mutations';
 import state from './state';
@@ -16,8 +17,8 @@ const addLiquidity = defineModule({
 });
 
 const addLiquidityGetterContext = (args: [any, any, any, any]) =>
-  localGetterContext(args, 'addLiquidity', addLiquidity);
-const addLiquidityActionContext = (context: any) => localActionContext(context, 'addLiquidity', addLiquidity);
+  localGetterContext(args, Module.AddLiquidity, addLiquidity);
+const addLiquidityActionContext = (context: any) => localActionContext(context, Module.AddLiquidity, addLiquidity);
 
 export { addLiquidityGetterContext, addLiquidityActionContext };
 export default addLiquidity;
