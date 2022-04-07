@@ -154,6 +154,7 @@
       class="action-button s-typography-button--large"
       type="primary"
       :disabled="isConfirmSwapDisabled"
+      :loading="isSelectAssetLoading"
       @click="handleConfirmSwap"
     >
       <template v-if="!areTokensSelected">
@@ -211,6 +212,7 @@ import type { QuotePaths, QuotePayload, PrimaryMarketsEnabledAssets } from '@sor
 import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 
 import {
   isMaxButtonAvailable,
@@ -242,7 +244,12 @@ import { action, getter, mutation, state } from '@/store/decorators';
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class Swap extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, mixins.LoadingMixin) {
+export default class Swap extends Mixins(
+  mixins.FormattedAmountMixin,
+  mixins.LoadingMixin,
+  TranslationMixin,
+  TokenSelectMixin
+) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.swap.paths private paths!: QuotePaths;
   @state.swap.payload private payload!: QuotePayload;
@@ -630,13 +637,14 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, Translatio
 
   async selectToken(token: AccountAsset): Promise<void> {
     if (token) {
-      if (this.isTokenFromSelected) {
-        await this.setTokenFromAddress(token.address);
-      } else {
-        await this.setTokenToAddress(token.address);
-      }
-
-      this.subscribeOnSwapReserves();
+      await this.withSelectAssetLoading(async () => {
+        if (this.isTokenFromSelected) {
+          await this.setTokenFromAddress(token.address);
+        } else {
+          await this.setTokenToAddress(token.address);
+        }
+        this.subscribeOnSwapReserves();
+      });
     }
   }
 

@@ -5,6 +5,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import ConfirmDialogMixin from './ConfirmDialogMixin';
 import BaseTokenPairMixinInstance, { TokenPairNamespace } from './BaseTokenPairMixin';
+import TokenSelectMixin from './TokenSelectMixin';
 
 import router from '@/router';
 import { PageNames } from '@/consts';
@@ -26,7 +27,12 @@ const TokenPairMixinInstance = (namespace: TokenPairNamespace) => {
   const BaseTokenPairMixin = BaseTokenPairMixinInstance(namespace);
 
   @Component
-  class TokenPairMixin extends Mixins(mixins.TransactionMixin, BaseTokenPairMixin, ConfirmDialogMixin) {
+  class TokenPairMixin extends Mixins(
+    mixins.TransactionMixin,
+    BaseTokenPairMixin,
+    ConfirmDialogMixin,
+    TokenSelectMixin
+  ) {
     @state.settings.slippageTolerance slippageTolerance!: string;
 
     @getter.assets.xor private xor!: AccountAsset;
@@ -160,6 +166,12 @@ const TokenPairMixinInstance = (namespace: TokenPairNamespace) => {
 
     openSelectSecondTokenDialog(): void {
       this.showSelectSecondTokenDialog = true;
+    }
+
+    async selectSecondTokenAddress(address: string): Promise<void> {
+      await this.withSelectAssetLoading(async () => {
+        this.setSecondTokenAddress(address);
+      });
     }
 
     async handleConfirm(func: AsyncVoidFn): Promise<void> {

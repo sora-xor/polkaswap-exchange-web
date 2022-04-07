@@ -43,7 +43,8 @@
             "ClaimRewards": "Награды получены успешно {rewards}",
             "ReferralReserveXor": "XOR успешно зарезервированы",
             "ReferralUnreserveXor": "XOR успешно выведены из резерва",
-            "ReferralSetInvitedUser": "Реферал успешно установлен"
+            "ReferralSetInvitedUser": "Реферал успешно установлен",
+            "SwapAndSend": "Совершен обмен {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Не удалось получить вознаграждения {rewards}",
             "ReferralReserveXor": "Не удалось зарезервировать XOR",
             "ReferralUnreserveXor": "Не удалось вывести XOR из резерва",
-            "ReferralSetInvitedUser": "Не удалось установить реферала"
+            "ReferralSetInvitedUser": "Не удалось установить реферала",
+            "SwapAndSend": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
-        "ReferralSetInvitedUser": "Установить реферала"
+        "ReferralSetInvitedUser": "Установить реферала",
+        "SwapAndSend": "Обменять и отправить"
     },
     "polkadotjs": {
         "noExtensions": "Расширение Polkadot.js не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",

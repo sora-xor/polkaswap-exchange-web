@@ -43,7 +43,8 @@
             "ClaimRewards": "Innhenting av belønning var vellykket {rewards}",
             "ReferralReserveXor": "Bondet XOR vellykket",
             "ReferralUnreserveXor": "Ubundet XOR vellykket",
-            "ReferralSetInvitedUser": "Henvisning er satt"
+            "ReferralSetInvitedUser": "Henvisning er satt",
+            "SwapAndSend": "Byttet {amount} {symbol} med {amount2} {symbol2} og {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Kunne ikke sende {amount} {symbol} til {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Kunne ikke kreve belønninger {rewards}",
             "ReferralReserveXor": "Kunne ikke binde XOR",
             "ReferralUnreserveXor": "Kunne ikke frigjøre XOR",
-            "ReferralSetInvitedUser": "Kunne ikke angi henvisning"
+            "ReferralSetInvitedUser": "Kunne ikke angi henvisning",
+            "SwapAndSend": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2} og {action} {direction} {address}"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
-        "ReferralSetInvitedUser": "Angi henvisning"
+        "ReferralSetInvitedUser": "Angi henvisning",
+        "SwapAndSend": "Bytt og send"
     },
     "polkadotjs": {
         "noExtensions": "Finner ingen Polkadot.js utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",

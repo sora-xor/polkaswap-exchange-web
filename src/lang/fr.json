@@ -43,7 +43,8 @@
             "ClaimRewards": "Récompense réclamée avec succès {rewards}",
             "ReferralReserveXor": "XOR lié avec succès",
             "ReferralUnreserveXor": "XOR avec succès délié",
-            "ReferralSetInvitedUser": "La référence est définie avec succès"
+            "ReferralSetInvitedUser": "La référence est définie avec succès",
+            "SwapAndSend": "Échange de {amount} {symbol} contre {amount2} {symbol2} et {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Échec de l'envoi de {amount} {symbol} à {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Échec de la réclamation des récompenses {rewards}",
             "ReferralReserveXor": "Échec de la liaison XOR",
             "ReferralUnreserveXor": "Échec de la dissociation XOR",
-            "ReferralSetInvitedUser": "Échec de la définition de la référence"
+            "ReferralSetInvitedUser": "Échec de la définition de la référence",
+            "SwapAndSend": "Échec de l'échange de {amount} {symbol} contre {amount2} {symbol2} et {action} {direction} {address}"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
-        "ReferralSetInvitedUser": "Définir la référence"
+        "ReferralSetInvitedUser": "Définir la référence",
+        "SwapAndSend": "Échanger et envoyer"
     },
     "polkadotjs": {
         "noExtensions": "Aucune extension Polkadot.js n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",

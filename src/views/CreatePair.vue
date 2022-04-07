@@ -120,6 +120,7 @@
         type="primary"
         class="action-button s-typography-button--large"
         :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable"
+        :loading="isSelectAssetLoading"
         @click="handleCreatePair"
       >
         <template v-if="!areTokensSelected">
@@ -156,7 +157,7 @@
       :visible.sync="showSelectSecondTokenDialog"
       :connected="isLoggedIn"
       :asset="firstToken"
-      @select="setSecondTokenAddress($event.address)"
+      @select="selectSecondTokenAddress($event.address)"
     />
 
     <confirm-token-pair-dialog
@@ -190,6 +191,7 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import TokenPairMixinInstance from '@/components/mixins/TokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import { TokenPairNamespace } from '@/components/mixins/BaseTokenPairMixin';
+
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { action } from '@/store/decorators';
