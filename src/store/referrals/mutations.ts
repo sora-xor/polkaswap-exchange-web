@@ -43,7 +43,7 @@ const mutations = defineMutations<ReferralsState>()({
     storage.set('storageReferral', '');
   },
   reset(state): void {
-    const s = omit(['invitedUsers', 'invitedUsersUpdates'], initialState());
+    const s = omit(['invitedUsers', 'invitedUsersSubscription'], initialState());
 
     Object.keys(s).forEach((key) => {
       state[key] = s[key];
