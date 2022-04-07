@@ -515,20 +515,19 @@ export default class Swap extends Mixins(
 
   private runRecountSwapValues(): void {
     const value = this.isExchangeB ? this.toValue : this.fromValue;
-    if (!this.areTokensSelected || !this.liquiditySource || asZeroValue(value)) return;
-
+    if (!this.areTokensSelected || asZeroValue(value)) return;
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue;
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo;
     const oppositeToken = (this.isExchangeB ? this.tokenFrom : this.tokenTo) as AccountAsset;
 
     try {
-      // TODO: [ARCH] Asset -> AccountAsset
+      // TODO: [ARCH] Asset -> Asset | AccountAsset
       const { amount, fee, rewards, amountWithoutImpact } = api.swap.getResult(
         this.tokenFrom as Asset,
         this.tokenTo as Asset,
         value,
         this.isExchangeB,
-        [this.liquiditySource].filter(Boolean),
+        [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
         this.paths,
         this.payload
       );
@@ -566,12 +565,12 @@ export default class Swap extends Mixins(
 
   private subscribeOnSwapReserves(): void {
     this.cleanSwapReservesSubscription();
-    if (!(this.areTokensSelected && this.liquiditySource)) return;
+    if (!this.areTokensSelected) return;
     this.liquidityReservesSubscription = api.swap
       .subscribeOnReserves(
         (this.tokenFrom as AccountAsset).address,
         (this.tokenTo as AccountAsset).address,
-        this.liquiditySource
+        this.liquiditySource as LiquiditySourceTypes // TODO: Add Nullable<LiquiditySourceTypes> to the lib
       )
       .subscribe(this.onChangeSwapReserves);
   }
@@ -656,7 +655,7 @@ export default class Swap extends Mixins(
     if (isSwapConfirmed) {
       this.resetFieldFrom();
       this.resetFieldTo();
-      await this.setExchangeB(false);
+      this.setExchangeB(false);
     }
   }
 
