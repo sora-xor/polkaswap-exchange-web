@@ -65,7 +65,7 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogM
   @getter.swap.minMaxReceived private minMaxReceived!: CodecString;
   @getter.swap.swapLiquiditySource private liquiditySource!: LiquiditySourceTypes;
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
-  @getter.swap.tokenFrom tokenTo!: AccountAsset;
+  @getter.swap.tokenTo tokenTo!: AccountAsset;
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
 
