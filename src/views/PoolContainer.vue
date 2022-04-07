@@ -14,8 +14,6 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import { action, getter } from '@/store/decorators';
 
-const namespace = 'pool';
-
 @Component
 export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
   @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncVoidFn;

@@ -107,7 +107,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     }
     this.isExternalWalletConnecting = true;
     try {
-      await this.switchExternalAccount(options);
+      this.switchExternalAccount(options);
     } catch (error) {
       console.error(error);
     } finally {

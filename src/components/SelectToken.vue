@@ -196,8 +196,6 @@ import { lazyComponent } from '@/router';
 import { formatAssetBalance, debouncedInputHandler } from '@/utils';
 import { getter, state, action } from '@/store/decorators';
 
-const namespace = 'assets';
-
 @Component({
   components: {
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
@@ -342,7 +340,7 @@ export default class SelectToken extends Mixins(
   debouncedCustomAssetSearch = debouncedInputHandler(this.searchCustomAsset);
 
   async handleAddAsset(): Promise<void> {
-    await this.withLoading(async () => await this.addAsset((this.customAsset || {}).address));
+    await this.withLoading(async () => await this.addAsset(this.customAsset?.address));
     this.resetCustomAssetFields();
   }
 
