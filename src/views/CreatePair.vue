@@ -167,7 +167,6 @@
       :second-token="secondToken"
       :first-token-value="firstTokenValue"
       :second-token-value="secondTokenValue"
-      :minted="formattedMinted"
       :price="price"
       :price-reversed="priceReversed"
       :slippage-tolerance="slippageTolerance"

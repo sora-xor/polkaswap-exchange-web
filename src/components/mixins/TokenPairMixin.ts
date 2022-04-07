@@ -64,10 +64,6 @@ const TokenPairMixinInstance = (namespace: TokenPairNamespace) => {
       this.resetData(!!(params?.assetBAddress && params?.assetBAddress));
     }
 
-    get formattedMinted(): string {
-      return this.formatCodecNumber(this.minted);
-    }
-
     get isEmptyBalance(): boolean {
       return +this.firstTokenValue === 0 || +this.secondTokenValue === 0;
     }
