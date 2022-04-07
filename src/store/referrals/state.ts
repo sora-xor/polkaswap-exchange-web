@@ -6,7 +6,7 @@ export function initialState(): ReferralsState {
     referral: '',
     invitedUsers: [],
     invitedUsersSubscription: null,
-    inputValue: '',
+    amount: '',
     storageReferral: storage.get('storageReferral') || '',
   };
 }

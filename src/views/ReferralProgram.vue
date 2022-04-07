@@ -9,15 +9,15 @@
           value-can-be-hidden
           :font-size-rate="FontSizeRate.MEDIUM"
           symbol-as-decimal
-          :value="rewards"
+          :value="formattedRewards"
           :asset-symbol="xorSymbol"
         />
         <formatted-amount
-          v-if="xorTokenPrice"
+          v-if="isPriceAvailable"
           is-fiat-value
           value-can-be-hidden
           :font-size-rate="FontSizeRate.MEDIUM"
-          :value="rewards"
+          :value="formattedRewards"
           is-formatted
         />
       </div>
@@ -28,12 +28,12 @@
             <h3 class="bonded-collapse-title">{{ t('referralProgram.bondedXOR') }}</h3>
           </template>
           <info-line
-            v-if="bondedXor"
+            v-if="bondedXorCodecBalance"
             is-formatted
             value-can-be-hidden
             :label="t('referralProgram.bondedXOR')"
-            :value="formatCodecNumber(bondedXor)"
-            :fiat-value="getFiatAmountByCodecString(bondedXor)"
+            :value="formatCodecNumber(bondedXorCodecBalance)"
+            :fiat-value="getFiatAmountByCodecString(bondedXorCodecBalance)"
           />
           <div class="bonded--buttons">
             <s-button type="secondary" class="s-typography-button--medium" @click="handleBonding(true)">
@@ -48,24 +48,24 @@
           <template #title>
             <span class="invited-users-icon" />
             <h3 class="invited-users-collapse-title">
-              {{ t('referralProgram.referralsNumber', { number: invitedUsersNumber }) }}
+              {{ t('referralProgram.referralsNumber', { number: invitedUsersCount }) }}
             </h3>
           </template>
-          <s-scrollbar v-if="invitedUsersNumber" class="invited-users-scrollbar">
+          <s-scrollbar v-if="invitedUsersCount" class="invited-users-scrollbar">
             <div class="invited-users-list">
               <info-line
                 v-for="invitedUser in invitedUsers"
                 value-can-be-hidden
-                :key="invitedUser.toString()"
-                :value="getInvitedUserReward(invitedUser.toString())"
+                :key="invitedUser"
+                :value="getInvitedUserReward(invitedUser)"
                 :asset-symbol="xorSymbol"
-                :fiat-value="getFiatAmountByCodecString(getInvitedUserReward(invitedUser.toString()))"
+                :fiat-value="getFiatAmountByCodecString(getInvitedUserReward(invitedUser))"
                 is-formatted
               >
                 <template #info-line-prefix>
                   <s-tooltip :content="t('account.copy')">
                     <span class="info-line-address" @click="handleCopyAddress($event)">
-                      {{ formatRereffalAddress(invitedUser.toString()) }}
+                      {{ formatReferralAddress(invitedUser) }}
                     </span>
                   </s-tooltip>
                 </template>
@@ -113,12 +113,11 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString, FPNumber } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import router, { lazyComponent, lazyView } from '@/router';
-import { PageNames, Components, LogoSize } from '@/consts';
+import { PageNames, Components, LogoSize, ZeroStringValue } from '@/consts';
 import { detectBaseUrl } from '@/api';
 import { copyToClipboard } from '@/utils';
 import { getter, state, mutation, action } from '@/store/decorators';
@@ -158,46 +157,46 @@ export default class ReferralProgram extends Mixins(
     }
   }
 
-  get rewards(): string {
-    return this.referralRewards?.rewards.toLocaleString() || '0';
+  get formattedRewards(): string {
+    return this.referralRewards?.rewards.toLocaleString() || ZeroStringValue;
   }
 
-  get xorTokenPrice(): Nullable<CodecString> {
-    return this.getAssetFiatPrice(this.xor);
+  get isPriceAvailable(): boolean {
+    return !!this.getAssetFiatPrice(this.xor);
   }
 
-  get invitedUserRewards(): any {
+  get invitedUserRewards(): Record<string, { rewards: FPNumber }> {
     return this.referralRewards?.invitedUserRewards;
   }
 
-  get bondedXor(): string {
+  get bondedXorCodecBalance(): CodecString {
     return this.xor.balance?.bonded ?? '';
   }
 
   get xorSymbol(): string {
-    return KnownSymbols.XOR;
+    return this.xor.symbol;
   }
 
-  get invitedUsersNumber(): number {
+  get invitedUsersCount(): number {
     return this.invitedUsers.length;
   }
 
   get invitedUsersClasses(): Array<string> {
     const baseClass = 'invited-users-container';
     const cssClasses: Array<string> = [baseClass];
-    if (!this.invitedUsersNumber) {
+    if (!this.invitedUsersCount) {
       cssClasses.push('is-active');
       cssClasses.push(`${baseClass}--empty`);
     }
     return cssClasses;
   }
 
-  get referralLink(): any {
+  get referralLink() {
     const routerMode = router.mode === 'hash' ? '#/' : '';
     return {
       href: `${detectBaseUrl(router)}${routerMode}referral/${this.account?.address}`,
       label: `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${this.account?.address}`,
-      isVisible: this.account && +this.bondedXor > 0,
+      isVisible: this.account && +this.bondedXorCodecBalance > 0,
     };
   }
 
@@ -214,7 +213,7 @@ export default class ReferralProgram extends Mixins(
     });
   }
 
-  formatRereffalAddress(invitedUser: string): string {
+  formatReferralAddress(invitedUser: string): string {
     return this.formatAddress(invitedUser, 12);
   }
 
@@ -222,7 +221,7 @@ export default class ReferralProgram extends Mixins(
     if (typeof invitedUser === 'string' && this.invitedUserRewards[invitedUser]?.rewards) {
       return this.formatCodecNumber(this.invitedUserRewards[invitedUser].rewards.toCodecString());
     }
-    return this.formatCodecNumber('0');
+    return ZeroStringValue;
   }
 
   async handleConnect(): Promise<void> {

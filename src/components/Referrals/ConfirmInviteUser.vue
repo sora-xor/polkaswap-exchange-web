@@ -38,10 +38,10 @@ import { state, mutation } from '@/store/decorators';
   components: { DialogBase },
 })
 export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, DialogMixin) {
-  @state.referrals.referral referral!: string;
-  @state.referrals.storageReferral storageReferral!: string;
+  @state.referrals.referral private referral!: string;
+  @state.referrals.storageReferral private storageReferral!: string;
 
-  @mutation.referrals.resetStorageReferral resetStorageReferral!: VoidFunction;
+  @mutation.referrals.resetStorageReferral private resetStorageReferral!: VoidFunction;
 
   get hasReferrer(): boolean {
     return !!this.referral;

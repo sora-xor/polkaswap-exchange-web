@@ -7,10 +7,10 @@
   >
     <div class="tokens">
       <div class="tokens-info-container">
-        <span class="token-value">{{ formattedXorValue }}</span>
+        <span class="token-value">{{ formattedAmount }}</span>
         <div class="token">
           <token-logo :token="xor" />
-          {{ xor.symbol }}
+          {{ xorSymbol }}
         </div>
       </div>
     </div>
@@ -35,7 +35,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Operation, CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
@@ -52,21 +51,21 @@ import { getter, state } from '@/store/decorators';
   },
 })
 export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixins.FormattedAmountMixin, DialogMixin) {
-  @state.referrals.inputValue private inputValue!: string;
+  @state.referrals.amount private amount!: string;
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
 
-  @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
   @getter.assets.xor xor!: AccountAsset;
+
+  get xorSymbol(): string {
+    return this.xor.symbol;
+  }
 
   get isBond(): boolean {
     return this.$route.name === PageNames.ReferralBonding;
   }
 
-  get formattedXorValue(): string {
-    return this.formatStringValue(this.inputValue, this.xor.decimals);
-  }
-
-  get xorSymbol(): string {
-    return ' ' + KnownSymbols.XOR;
+  get formattedAmount(): string {
+    return this.formatStringValue(this.amount, this.xor.decimals);
   }
 
   get networkFee(): CodecString {
@@ -82,8 +81,8 @@ export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixi
       await this.withNotifications(
         async () =>
           await (this.isBond
-            ? api.referralSystem.reserveXor(this.inputValue)
-            : api.referralSystem.unreserveXor(this.inputValue))
+            ? api.referralSystem.reserveXor(this.amount)
+            : api.referralSystem.unreserveXor(this.amount))
       );
       this.$emit('confirm', true);
     } catch (error) {
