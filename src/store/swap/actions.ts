@@ -5,7 +5,6 @@ import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { QuotePayload } from '@sora-substrate/util/build/swap/types';
 
 import { swapActionContext } from '@/store/swap';
-import { rootActionContext } from '@/store';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 enum Direction {
@@ -16,8 +15,7 @@ enum Direction {
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
 function updateTokenSubscription(context: ActionContext<any, any>, dir: Direction): void {
-  const { getters, commit } = swapActionContext(context);
-  const { rootGetters } = rootActionContext(context);
+  const { getters, commit, rootGetters } = swapActionContext(context);
   const { tokenFrom, tokenTo } = getters;
   const { setTokenFromBalance, setTokenToBalance } = commit;
 
@@ -59,8 +57,7 @@ const actions = defineActions({
     updateTokenSubscription(context, Direction.To);
   },
   async setSubscriptionPayload(context, payload: QuotePayload): Promise<void> {
-    const { state, getters, commit } = swapActionContext(context);
-    const { rootGetters, rootCommit } = rootActionContext(context);
+    const { state, getters, commit, rootGetters, rootCommit } = swapActionContext(context);
     commit.setSubscriptionPayload(payload);
     // Update paths
     const inputAssetId = getters.tokenFrom?.address;

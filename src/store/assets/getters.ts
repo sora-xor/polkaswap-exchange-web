@@ -4,50 +4,42 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 
 import { assetsGetterContext } from '@/store/assets';
-import { rootGetterContext } from '@/store';
 import { findAssetInCollection } from '@/utils';
 import type { AssetsState, RegisteredAccountAssetObject, RegisteredAccountAssetWithDecimals } from './types';
 
 const getters = defineGetters<AssetsState>()({
   whitelistAssets(...args): Array<Asset> {
-    const [state, getters] = args;
-    const { rootState, rootGetters } = rootGetterContext([state, getters]);
+    const { rootState, rootGetters } = assetsGetterContext(args);
     return rootState.wallet.account.assets.filter((asset: Asset) =>
       api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist)
     );
   },
   nonWhitelistAssets(...args): Array<Asset> {
-    const [state, getters] = args;
-    const { rootState, rootGetters } = rootGetterContext([state, getters]);
+    const { rootState, rootGetters } = assetsGetterContext(args);
     return rootState.wallet.account.assets.filter(
       (asset: Asset) => !api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist)
     );
   },
   nonWhitelistDivisibleAssets(...args): Array<Asset> {
-    const [state, getters] = args;
-    const { rootState, rootGetters } = rootGetterContext([state, getters]);
+    const { rootState, rootGetters } = assetsGetterContext(args);
     return rootState.wallet.account.assets.filter(
       (asset: Asset) => !api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist) && asset.decimals
     );
   },
   nonWhitelistAccountAssets(...args): Array<AccountAsset> {
-    const [state, getters] = args;
-    const { rootState, rootGetters } = rootGetterContext([state, getters]);
+    const { rootState, rootGetters } = assetsGetterContext(args);
     return rootState.wallet.account.accountAssets.filter(
       (asset: AccountAsset) => !api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist)
     );
   },
   nonWhitelistDivisibleAccountAssets(...args): Array<AccountAsset> {
-    const [state, getters] = args;
-    const { rootState, rootGetters } = rootGetterContext([state, getters]);
+    const { rootState, rootGetters } = assetsGetterContext(args);
     return rootState.wallet.account.accountAssets.filter(
       (asset: AccountAsset) => !api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist) && asset.decimals
     );
   },
   assetsDataTable(...args): RegisteredAccountAssetObject {
-    const [stateArg, gettersArg] = args;
-    const { state } = assetsGetterContext(args);
-    const { rootState, rootGetters } = rootGetterContext([stateArg, gettersArg]);
+    const { state, rootState, rootGetters } = assetsGetterContext(args);
     const { accountAssetsAddressTable } = rootGetters.wallet.account;
     const { assets } = rootState.wallet.account;
     const { registeredAssets } = state;
@@ -80,8 +72,6 @@ const getters = defineGetters<AssetsState>()({
     };
   },
   xor(...args): RegisteredAccountAssetWithDecimals {
-    const [stateArg, gettersArg] = args;
-    const { rootState } = rootGetterContext([stateArg, gettersArg]);
     const { getters } = assetsGetterContext(args);
     // XOR asset cannot be nullable
     return getters.assetDataByAddress(XOR.address) as RegisteredAccountAssetWithDecimals;

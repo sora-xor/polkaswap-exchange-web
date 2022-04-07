@@ -1,4 +1,6 @@
-import { defineModule, localGetterContext, localActionContext } from 'direct-vuex';
+import { defineModule } from 'direct-vuex';
+
+import { localActionContext, localGetterContext } from '@/store';
 
 import mutations from './mutations';
 import state from './state';
@@ -13,8 +15,8 @@ const settings = defineModule({
   actions,
 });
 
-const settingsGetterContext = (args: [any, any, any, any]) => localGetterContext(args, settings);
-const settingsActionContext = (context: any) => localActionContext(context, settings);
+const settingsGetterContext = (args: [any, any, any, any]) => localGetterContext(args, 'settings', settings);
+const settingsActionContext = (context: any) => localActionContext(context, 'settings', settings);
 
 export { settingsGetterContext, settingsActionContext };
 export default settings;

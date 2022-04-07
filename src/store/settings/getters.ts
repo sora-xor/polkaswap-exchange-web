@@ -3,7 +3,6 @@ import { connection } from '@soramitsu/soraneo-wallet-web';
 import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
 
 import { settingsGetterContext } from '@/store/settings';
-import { rootGetterContext } from '@/store';
 import { LiquiditySourceForMarketAlgorithm } from '@/consts';
 import type { NodesHashTable, SettingsState } from './types';
 import type { Node } from '@/types/nodes';
@@ -30,8 +29,7 @@ const getters = defineGetters<SettingsState>()({
     return LiquiditySourceForMarketAlgorithm[state.marketAlgorithm];
   },
   moonpayApiKey(...args): string {
-    const [state, getters] = args;
-    const { rootState } = rootGetterContext([state, getters]);
+    const { rootState } = settingsGetterContext(args);
     return rootState.wallet.settings.apiKeys.moonpay;
   },
   moonpayEnabled(...args): boolean {

@@ -1,4 +1,6 @@
-import { defineModule, localGetterContext, localActionContext } from 'direct-vuex';
+import { defineModule } from 'direct-vuex';
+
+import { localActionContext, localGetterContext } from '@/store';
 
 import mutations from './mutations';
 import state from './state';
@@ -13,8 +15,9 @@ const removeLiquidity = defineModule({
   actions,
 });
 
-const removeLiquidityGetterContext = (args: [any, any, any, any]) => localGetterContext(args, removeLiquidity);
-const removeLiquidityActionContext = (context: any) => localActionContext(context, removeLiquidity);
+const removeLiquidityGetterContext = (args: [any, any, any, any]) =>
+  localGetterContext(args, 'removeLiquidity', removeLiquidity);
+const removeLiquidityActionContext = (context: any) => localActionContext(context, 'removeLiquidity', removeLiquidity);
 
 export { removeLiquidityGetterContext, removeLiquidityActionContext };
 export default removeLiquidity;

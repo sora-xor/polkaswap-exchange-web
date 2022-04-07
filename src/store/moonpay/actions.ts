@@ -3,7 +3,6 @@ import { FPNumber } from '@sora-substrate/util';
 import { ethers } from 'ethers';
 
 import { moonpayActionContext } from '@/store/moonpay';
-import { rootActionContext } from '@/store';
 import ethersUtil from '@/utils/ethers-util';
 import { EthAddress } from '@/consts';
 import type { MoonpayEVMTransferAssetData } from '@/utils/moonpay';
@@ -25,8 +24,7 @@ const actions = defineActions({
     }
   },
   async getTransactions(context, clearTransactions: Nullable<boolean> = false): Promise<void> {
-    const { state, commit } = moonpayActionContext(context);
-    const { rootGetters, rootState } = rootActionContext(context);
+    const { state, commit, rootGetters, rootState } = moonpayActionContext(context);
     if (!rootGetters.wallet.account.isLoggedIn || state.transactionsFetching || !state.api.publicKey) return;
 
     commit.updateTxsRequest(clearTransactions);
@@ -110,7 +108,7 @@ const actions = defineActions({
     context,
     externalAddress: string
   ): Promise<Nullable<RegisterAssetWithExternalBalance>> {
-    const { rootState, rootDispatch } = rootActionContext(context);
+    const { rootState, rootDispatch } = moonpayActionContext(context);
     if (!externalAddress) return undefined;
 
     await rootDispatch.assets.updateRegisteredAssets();

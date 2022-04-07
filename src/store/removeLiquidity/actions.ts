@@ -5,7 +5,6 @@ import { FPNumber } from '@sora-substrate/util';
 import type { ActionContext } from 'vuex';
 
 import { removeLiquidityActionContext } from '@/store/removeLiquidity';
-import { rootActionContext } from '@/store';
 import type { LiquidityParams } from '../pool/types';
 
 async function getTotalSupply(context: ActionContext<any, any>): Promise<void> {
@@ -129,8 +128,7 @@ const actions = defineActions({
     }
   },
   async removeLiquidity(context): Promise<void> {
-    const { state, getters } = removeLiquidityActionContext(context);
-    const { rootState } = rootActionContext(context);
+    const { state, getters, rootState } = removeLiquidityActionContext(context);
     const { firstToken, secondToken } = getters;
     if (!(firstToken && secondToken)) {
       return;

@@ -1,4 +1,6 @@
-import { defineModule, localActionContext } from 'direct-vuex';
+import { defineModule } from 'direct-vuex';
+
+import { localActionContext } from '@/store';
 
 import mutations from './mutations';
 import state from './state';
@@ -11,7 +13,7 @@ const pool = defineModule({
   actions,
 });
 
-const poolActionContext = (context: any) => localActionContext(context, pool);
+const poolActionContext = (context: any) => localActionContext(context, 'pool', pool);
 
 export { poolActionContext };
 export default pool;

@@ -2,13 +2,11 @@ import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 
 import { poolActionContext } from '@/store/pool';
-import { rootActionContext } from '@/store';
 import { waitForAccountPair } from '@/utils';
 
 const actions = defineActions({
   async subscribeOnAccountLiquidityList(context): Promise<void> {
-    const { commit } = poolActionContext(context);
-    const { rootGetters } = rootActionContext(context);
+    const { commit, rootGetters } = poolActionContext(context);
     commit.resetAccountLiquidityList();
 
     if (!rootGetters.wallet.account.isLoggedIn) return;
@@ -19,8 +17,7 @@ const actions = defineActions({
     });
   },
   async subscribeOnAccountLiquidityUpdates(context): Promise<void> {
-    const { commit } = poolActionContext(context);
-    const { rootGetters } = rootActionContext(context);
+    const { commit, rootGetters } = poolActionContext(context);
     commit.resetAccountLiquidityUpdates();
 
     if (!rootGetters.wallet.account.isLoggedIn) return;

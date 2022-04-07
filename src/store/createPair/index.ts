@@ -1,4 +1,6 @@
-import { defineModule, localGetterContext, localActionContext } from 'direct-vuex';
+import { defineModule } from 'direct-vuex';
+
+import { localActionContext, localGetterContext } from '@/store';
 
 import mutations from './mutations';
 import state from './state';
@@ -13,8 +15,8 @@ const createPair = defineModule({
   actions,
 });
 
-const createPairGetterContext = (args: [any, any, any, any]) => localGetterContext(args, createPair);
-const createPairActionContext = (context: any) => localActionContext(context, createPair);
+const createPairGetterContext = (args: [any, any, any, any]) => localGetterContext(args, 'createPair', createPair);
+const createPairActionContext = (context: any) => localActionContext(context, 'createPair', createPair);
 
 export { createPairGetterContext, createPairActionContext };
 export default createPair;

@@ -2,7 +2,6 @@ import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 
 import { referralsActionContext } from '@/store/referrals';
-import { rootActionContext } from '@/store';
 
 const actions = defineActions({
   async getReferral(context, invitedUserId: string): Promise<void> {
@@ -16,8 +15,7 @@ const actions = defineActions({
     }
   },
   async subscribeOnInvitedUsers(context, referrerId: string): Promise<void> {
-    const { commit } = referralsActionContext(context);
-    const { rootGetters } = rootActionContext(context);
+    const { commit, rootGetters } = referralsActionContext(context);
 
     commit.resetInvitedUsersSubscription();
 

@@ -1,4 +1,6 @@
-import { defineModule, localGetterContext, localActionContext } from 'direct-vuex';
+import { defineModule } from 'direct-vuex';
+
+import { localActionContext, localGetterContext } from '@/store';
 
 import mutations from './mutations';
 import state from './state';
@@ -13,8 +15,8 @@ const bridge = defineModule({
   actions,
 });
 
-const bridgeGetterContext = (args: [any, any, any, any]) => localGetterContext(args, bridge);
-const bridgeActionContext = (context: any) => localActionContext(context, bridge);
+const bridgeGetterContext = (args: [any, any, any, any]) => localGetterContext(args, 'bridge', bridge);
+const bridgeActionContext = (context: any) => localActionContext(context, 'bridge', bridge);
 
 export { bridgeGetterContext, bridgeActionContext };
 export default bridge;

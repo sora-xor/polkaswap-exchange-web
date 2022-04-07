@@ -3,7 +3,6 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 
 import { rewardsActionContext } from '@/store/rewards';
-import { rootActionContext } from '@/store';
 import { SelectedRewards } from '@/types/rewards';
 import { asZeroValue, waitForAccountPair } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
@@ -56,8 +55,7 @@ const actions = defineActions({
     }
   },
   async claimRewards(context, { internalAddress = '', externalAddress = '' }: ClaimRewardsParams = {}): Promise<void> {
-    const { commit, getters, state } = rewardsActionContext(context);
-    const { rootState } = rootActionContext(context);
+    const { commit, getters, state, rootState } = rewardsActionContext(context);
     if (!internalAddress) return;
 
     try {
@@ -100,8 +98,7 @@ const actions = defineActions({
     }
   },
   async subscribeOnAccountMarketMakerInfo(context): Promise<void> {
-    const { commit } = rewardsActionContext(context);
-    const { rootGetters } = rootActionContext(context);
+    const { commit, rootGetters } = rewardsActionContext(context);
     commit.resetAccountMarketMakerUpdates();
 
     if (!rootGetters.wallet.account.isLoggedIn) return;

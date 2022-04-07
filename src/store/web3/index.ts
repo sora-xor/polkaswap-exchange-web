@@ -1,4 +1,6 @@
-import { defineModule, localGetterContext, localActionContext } from 'direct-vuex';
+import { defineModule } from 'direct-vuex';
+
+import { localActionContext, localGetterContext } from '@/store';
 
 import mutations from './mutations';
 import state from './state';
@@ -13,8 +15,8 @@ const web3 = defineModule({
   actions,
 });
 
-const web3GetterContext = (args: [any, any, any, any]) => localGetterContext(args, web3);
-const web3ActionContext = (context: any) => localActionContext(context, web3);
+const web3GetterContext = (args: [any, any, any, any]) => localGetterContext(args, 'web3', web3);
+const web3ActionContext = (context: any) => localActionContext(context, 'web3', web3);
 
 export { web3GetterContext, web3ActionContext };
 export default web3;

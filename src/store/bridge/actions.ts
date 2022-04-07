@@ -6,7 +6,6 @@ import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import { bridgeActionContext } from '@/store/bridge';
-import { rootActionContext } from '@/store';
 import { MaxUint256 } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { appBridge, bridgeApi, EthBridgeHistory, STATES, waitForApprovedRequest } from '@/utils/bridge';
@@ -17,7 +16,7 @@ import type { SignTxResult } from './types';
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
 function checkEvmNetwork(context: ActionContext<any, any>): void {
-  const { rootGetters } = rootActionContext(context);
+  const { rootGetters } = bridgeActionContext(context);
   if (!rootGetters.web3.isValidNetworkType) {
     throw new Error('Change evm network in Metamask');
   }
@@ -27,8 +26,7 @@ function bridgeDataToHistoryItem(
   context: ActionContext<any, any>,
   { date = Date.now(), step = 1, payload = {}, ...params } = {}
 ): BridgeHistory {
-  const { getters, state } = bridgeActionContext(context);
-  const { rootState } = rootActionContext(context);
+  const { getters, state, rootState } = bridgeActionContext(context);
 
   return {
     type: (params as any).type ?? (state.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming),
@@ -52,8 +50,7 @@ function bridgeDataToHistoryItem(
 
 const actions = defineActions({
   async updateBalanceSubscription(context): Promise<void> {
-    const { getters, commit } = bridgeActionContext(context);
-    const { rootGetters } = rootActionContext(context);
+    const { getters, commit, rootGetters } = bridgeActionContext(context);
     const updateBalance = (balance: AccountBalance) => commit.setAssetBalance(balance);
 
     balanceSubscriptions.remove('asset', { updateBalance });
@@ -92,7 +89,7 @@ const actions = defineActions({
     commit.setEvmBlockNumber(blockNumber);
   },
   async getBridgeHistoryInstance(context): Promise<EthBridgeHistory> {
-    const { rootState } = rootActionContext(context);
+    const { rootState } = bridgeActionContext(context);
     const etherscanApiKey = rootState.wallet.settings.apiKeys?.etherscan;
     const bridgeHistory = new EthBridgeHistory(etherscanApiKey);
 
@@ -102,8 +99,7 @@ const actions = defineActions({
   },
   // TODO: Need to restore transactions for all networks
   async updateHistory(context): Promise<void> {
-    const { commit, state, dispatch } = bridgeActionContext(context);
-    const { rootState, rootGetters } = rootActionContext(context);
+    const { commit, state, dispatch, rootState, rootGetters } = bridgeActionContext(context);
     if (state.historyLoading) return;
 
     commit.setHistoryLoading(true);
@@ -152,8 +148,7 @@ const actions = defineActions({
     return historyItem;
   },
   async signEvmTransactionSoraToEvm(context, id: string): Promise<SignTxResult> {
-    const { getters } = bridgeActionContext(context);
-    const { rootState, rootGetters } = rootActionContext(context);
+    const { getters, rootState, rootGetters } = bridgeActionContext(context);
     const tx = bridgeApi.getHistory(id) as Nullable<BridgeHistory>;
 
     if (!tx?.hash) throw new Error('TX ID cannot be empty!');
@@ -231,8 +226,7 @@ const actions = defineActions({
     };
   },
   async signEvmTransactionEvmToSora(context, id: string): Promise<SignTxResult> {
-    const { commit } = bridgeActionContext(context);
-    const { rootState, rootGetters, rootDispatch } = rootActionContext(context);
+    const { commit, rootState, rootGetters, rootDispatch } = bridgeActionContext(context);
     const tx = bridgeApi.getHistory(id);
 
     if (!tx?.id) throw new Error('TX cannot be empty!');

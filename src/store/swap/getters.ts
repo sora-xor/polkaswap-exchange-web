@@ -5,7 +5,6 @@ import { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
 import type { CodecString } from '@sora-substrate/util';
 
 import { swapGetterContext } from '@/store/swap';
-import { rootGetterContext } from '@/store';
 import {
   LiquiditySourceForMarketAlgorithm,
   MarketAlgorithmForLiquiditySource,
@@ -17,9 +16,7 @@ import type { RegisteredAccountAssetWithDecimals } from '../assets/types';
 
 const getters = defineGetters<SwapState>()({
   tokenFrom(...args): Nullable<RegisteredAccountAssetWithDecimals> {
-    const [stateArgs, gettersArgs] = args;
-    const { state } = swapGetterContext(args);
-    const { rootGetters } = rootGetterContext([stateArgs, gettersArgs]);
+    const { state, rootGetters } = swapGetterContext(args);
     const token = rootGetters.assets.assetDataByAddress(state.tokenFromAddress);
     const balance = state.tokenFromBalance;
     if (balance) {
@@ -28,9 +25,7 @@ const getters = defineGetters<SwapState>()({
     return token;
   },
   tokenTo(...args): Nullable<RegisteredAccountAssetWithDecimals> {
-    const [stateArgs, gettersArgs] = args;
-    const { state } = swapGetterContext(args);
-    const { rootGetters } = rootGetterContext([stateArgs, gettersArgs]);
+    const { state, rootGetters } = swapGetterContext(args);
     const token = rootGetters.assets.assetDataByAddress(state.tokenToAddress);
     const balance = state.tokenToBalance;
     if (balance) {
@@ -55,9 +50,7 @@ const getters = defineGetters<SwapState>()({
     return getters.marketAlgorithms.length > 1;
   },
   swapLiquiditySource(...args): Nullable<LiquiditySourceTypes> {
-    const [stateArgs, gettersArgs] = args;
-    const { getters } = swapGetterContext(args);
-    const { rootGetters } = rootGetterContext([stateArgs, gettersArgs]);
+    const { getters, rootGetters } = swapGetterContext(args);
     if (!getters.marketAlgorithmsAvailable || !rootGetters.settings.liquiditySource) return undefined;
 
     return rootGetters.settings.liquiditySource;
@@ -96,9 +89,7 @@ const getters = defineGetters<SwapState>()({
     return api.swap.getPriceImpact(tokenFrom, tokenTo, fromValue, toValue, amountWithoutImpact, isExchangeB);
   },
   minMaxReceived(...args): CodecString {
-    const [stateArgs, gettersArgs] = args;
-    const { state, getters } = swapGetterContext(args);
-    const { rootState } = rootGetterContext([stateArgs, gettersArgs]);
+    const { state, getters, rootState } = swapGetterContext(args);
     const { fromValue, toValue, isExchangeB } = state;
     const { tokenFrom, tokenTo } = getters;
     if (!(tokenFrom && tokenTo)) {

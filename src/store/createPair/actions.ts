@@ -4,7 +4,6 @@ import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import { createPairActionContext } from '@/store/createPair';
-import { rootActionContext } from '@/store';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { ZeroStringValue } from '@/consts';
 
@@ -56,8 +55,7 @@ const actions = defineActions({
   },
 
   async setSecondTokenAddress(context, address: string): Promise<void> {
-    const { getters, commit } = createPairActionContext(context);
-    const { rootGetters } = rootActionContext(context);
+    const { getters, commit, rootGetters } = createPairActionContext(context);
     const updateBalance = (balance: Nullable<AccountBalance>) => commit.setSecondTokenBalance(balance);
 
     commit.setSecondTokenAddress(address);
@@ -84,8 +82,7 @@ const actions = defineActions({
     await estimateMinted(context);
   },
   async createPair(context): Promise<void> {
-    const { getters, state } = createPairActionContext(context);
-    const { rootState } = rootActionContext(context);
+    const { getters, state, rootState } = createPairActionContext(context);
     const { firstToken, secondToken } = getters;
     if (!(firstToken && secondToken)) {
       return;

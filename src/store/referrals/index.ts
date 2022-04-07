@@ -1,4 +1,6 @@
-import { defineModule, localActionContext } from 'direct-vuex';
+import { defineModule } from 'direct-vuex';
+
+import { localActionContext } from '@/store';
 
 import mutations from './mutations';
 import state from './state';
@@ -11,7 +13,7 @@ const referrals = defineModule({
   actions,
 });
 
-const referralsActionContext = (context: any) => localActionContext(context, referrals);
+const referralsActionContext = (context: any) => localActionContext(context, 'referrals', referrals);
 
 export { referralsActionContext };
 export default referrals;

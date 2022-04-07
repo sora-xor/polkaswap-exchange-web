@@ -3,22 +3,17 @@ import { CodecString, FPNumber } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import { addLiquidityGetterContext } from '@/store/addLiquidity';
-import { rootGetterContext } from '@/store';
 import { ZeroStringValue } from '@/consts';
 import type { AddLiquidityState } from './types';
 import type { RegisteredAccountAssetWithDecimals } from '../assets/types';
 
 const getters = defineGetters<AddLiquidityState>()({
   firstToken(...args): Nullable<RegisteredAccountAssetWithDecimals> {
-    const [stateArgs, gettersArgs] = args;
-    const { state } = addLiquidityGetterContext(args);
-    const { rootGetters } = rootGetterContext([stateArgs, gettersArgs]);
+    const { state, rootGetters } = addLiquidityGetterContext(args);
     return rootGetters.assets.assetDataByAddress(state.firstTokenAddress);
   },
   secondToken(...args): Nullable<RegisteredAccountAssetWithDecimals> {
-    const [stateArgs, gettersArgs] = args;
-    const { state } = addLiquidityGetterContext(args);
-    const { rootGetters } = rootGetterContext([stateArgs, gettersArgs]);
+    const { state, rootGetters } = addLiquidityGetterContext(args);
     const token = rootGetters.assets.assetDataByAddress(state.secondTokenAddress);
     const balance = state.secondTokenBalance;
     if (balance) {
@@ -27,9 +22,7 @@ const getters = defineGetters<AddLiquidityState>()({
     return token;
   },
   liquidityInfo(...args): Nullable<AccountLiquidity> {
-    const [stateArgs, gettersArgs] = args;
-    const { state } = addLiquidityGetterContext(args);
-    const { rootState } = rootGetterContext([stateArgs, gettersArgs]);
+    const { state, rootState } = addLiquidityGetterContext(args);
     return rootState.pool.accountLiquidity.find(
       (liquidity) =>
         liquidity.firstAddress === state.firstTokenAddress && liquidity.secondAddress === state.secondTokenAddress

@@ -3,7 +3,6 @@ import { initWallet, connection, api } from '@soramitsu/soraneo-wallet-web';
 import type { ActionContext } from 'vuex';
 
 import { settingsActionContext } from '@/store/settings';
-import { rootActionContext } from '@/store';
 import { Language, WalletPermissions } from '@/consts';
 import { getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { updateDocumentTitle, updateFpNumberLocale } from '@/utils';
@@ -38,8 +37,7 @@ async function setBlockNumber(context: ActionContext<any, any>): Promise<void> {
 
 const actions = defineActions({
   async connectToNode(context, options: ConnectToNodeOptions = {}): Promise<void> {
-    const { dispatch, commit, state } = settingsActionContext(context);
-    const { rootState } = rootActionContext(context);
+    const { dispatch, commit, state, rootState } = settingsActionContext(context);
     if (!state.nodeConnectionAllowance) return;
 
     const { node, onError, ...restOptions } = options;

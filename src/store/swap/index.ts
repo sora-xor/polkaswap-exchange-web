@@ -1,4 +1,6 @@
-import { defineModule, localGetterContext, localActionContext } from 'direct-vuex';
+import { defineModule } from 'direct-vuex';
+
+import { localActionContext, localGetterContext } from '@/store';
 
 import mutations from './mutations';
 import state from './state';
@@ -13,8 +15,8 @@ const swap = defineModule({
   actions,
 });
 
-const swapGetterContext = (args: [any, any, any, any]) => localGetterContext(args, swap);
-const swapActionContext = (context: any) => localActionContext(context, swap);
+const swapGetterContext = (args: [any, any, any, any]) => localGetterContext(args, 'swap', swap);
+const swapActionContext = (context: any) => localActionContext(context, 'swap', swap);
 
 export { swapGetterContext, swapActionContext };
 export default swap;

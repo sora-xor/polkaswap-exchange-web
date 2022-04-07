@@ -1,7 +1,6 @@
 import { defineActions } from 'direct-vuex';
 
 import { assetsActionContext } from '@/store/assets';
-import { rootActionContext } from '@/store';
 import { bridgeApi } from '@/utils/bridge';
 import { ZeroStringValue } from '@/consts';
 import type { RegisterAssetWithExternalBalance } from './types';
@@ -18,8 +17,7 @@ const DISABLED_ASSETS_FOR_BRIDGE = [
 
 const actions = defineActions({
   async updateRegisteredAssets(context): Promise<void> {
-    const { state, commit } = assetsActionContext(context);
-    const { rootDispatch } = rootActionContext(context);
+    const { state, commit, rootDispatch } = assetsActionContext(context);
     try {
       if (state.registeredAssetsFetching) return;
 

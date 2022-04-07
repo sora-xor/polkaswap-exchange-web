@@ -1,4 +1,6 @@
-import { defineModule, localGetterContext, localActionContext } from 'direct-vuex';
+import { defineModule } from 'direct-vuex';
+
+import { localActionContext, localGetterContext } from '@/store';
 
 import mutations from './mutations';
 import state from './state';
@@ -13,8 +15,8 @@ const moonpay = defineModule({
   actions,
 });
 
-const moonpayGetterContext = (args: [any, any, any, any]) => localGetterContext(args, moonpay);
-const moonpayActionContext = (context: any) => localActionContext(context, moonpay);
+const moonpayGetterContext = (args: [any, any, any, any]) => localGetterContext(args, 'moonpay', moonpay);
+const moonpayActionContext = (context: any) => localActionContext(context, 'moonpay', moonpay);
 
 export { moonpayGetterContext, moonpayActionContext };
 export default moonpay;

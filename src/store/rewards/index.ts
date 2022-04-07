@@ -1,4 +1,6 @@
-import { defineModule, localGetterContext, localActionContext } from 'direct-vuex';
+import { defineModule } from 'direct-vuex';
+
+import { localActionContext, localGetterContext } from '@/store';
 
 import mutations from './mutations';
 import state from './state';
@@ -13,8 +15,8 @@ const rewards = defineModule({
   actions,
 });
 
-const rewardsGetterContext = (args: [any, any, any, any]) => localGetterContext(args, rewards);
-const rewardsActionContext = (context: any) => localActionContext(context, rewards);
+const rewardsGetterContext = (args: [any, any, any, any]) => localGetterContext(args, 'rewards', rewards);
+const rewardsActionContext = (context: any) => localActionContext(context, 'rewards', rewards);
 
 export { rewardsGetterContext, rewardsActionContext };
 export default rewards;

@@ -1,4 +1,6 @@
-import { defineModule, localGetterContext, localActionContext } from 'direct-vuex';
+import { defineModule } from 'direct-vuex';
+
+import { localActionContext, localGetterContext } from '@/store';
 
 import mutations from './mutations';
 import state from './state';
@@ -13,8 +15,8 @@ const assets = defineModule({
   actions,
 });
 
-const assetsGetterContext = (args: [any, any, any, any]) => localGetterContext(args, assets);
-const assetsActionContext = (context: any) => localActionContext(context, assets);
+const assetsGetterContext = (args: [any, any, any, any]) => localGetterContext(args, 'assets', assets);
+const assetsActionContext = (context: any) => localActionContext(context, 'assets', assets);
 
 export { assetsGetterContext, assetsActionContext };
 export default assets;
