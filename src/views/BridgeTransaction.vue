@@ -796,9 +796,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   handleBack(): void {
-    if (!this.prevRoute) return;
-
-    router.push({ name: this.prevRoute });
+    router.push({ name: this.prevRoute as string | undefined });
   }
 }
 </script>

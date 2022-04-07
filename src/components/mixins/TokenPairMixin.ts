@@ -61,7 +61,7 @@ const TokenPairMixinInstance = (namespace: TokenPairNamespace) => {
     destroyed(): void {
       const params = router.currentRoute.params;
       this.resetPrices();
-      this.resetData(!!params?.assetBAddress && !!params?.assetBAddress);
+      this.resetData(!!(params?.assetBAddress && params?.assetBAddress));
     }
 
     get formattedMinted(): string {

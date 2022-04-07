@@ -72,7 +72,7 @@ const BaseTokenPairMixinInstance = (namespace: TokenPairNamespace) => {
     }
 
     get areTokensSelected(): boolean {
-      return !!this.firstToken && !!this.secondToken;
+      return !!(this.firstToken && this.secondToken);
     }
   }
 

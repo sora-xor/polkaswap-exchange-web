@@ -56,8 +56,6 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   }
 
   handleBack(): void {
-    if (!this.prevRoute) return;
-
-    router.push({ name: this.prevRoute });
+    router.push({ name: this.prevRoute as string | undefined });
   }
 }
