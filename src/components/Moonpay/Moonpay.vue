@@ -9,7 +9,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
@@ -37,11 +36,10 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
   widgetUrl = '';
   transactionsPolling!: VoidFunction;
 
-  @Getter libraryTheme!: Theme;
-
   @getter.wallet.account.account private account!: WALLET_TYPES.Account;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.moonpay.lastCompletedTransaction lastCompletedTransaction!: Nullable<MoonpayTransaction>;
+  @getter.libraryTheme libraryTheme!: Theme;
 
   @state.moonpay.pollingTimestamp private pollingTimestamp!: number;
   @state.moonpay.dialogVisibility private dialogVisibility!: boolean;

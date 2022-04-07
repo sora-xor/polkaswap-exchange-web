@@ -93,7 +93,6 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
@@ -122,37 +121,37 @@ import type { ClaimRewardsParams } from '@/store/rewards/types';
   },
 })
 export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletConnectMixin, mixins.TransactionMixin) {
+  @state.rewards.feeFetching private feeFetching!: boolean;
+  @state.rewards.rewardsFetching private rewardsFetching!: boolean;
+  @state.rewards.rewardsClaiming private rewardsClaiming!: boolean;
+  @state.rewards.transactionError private transactionError!: boolean;
+  @state.rewards.transactionStep private transactionStep!: number;
   @state.rewards.fee fee!: CodecString;
-  @state.rewards.feeFetching feeFetching!: boolean;
-  @state.rewards.rewardsFetching rewardsFetching!: boolean;
-  @state.rewards.rewardsClaiming rewardsClaiming!: boolean;
   @state.rewards.rewardsRecieved rewardsRecieved!: boolean;
-  @state.rewards.transactionError transactionError!: boolean;
-  @state.rewards.transactionStep transactionStep!: number;
 
+  @state.rewards.vestedRewards private vestedRewards!: RewardsInfo;
+  @state.rewards.crowdloanRewards private crowdloanRewards!: Array<RewardInfo>;
+  @state.rewards.selectedVestedRewards private selectedVestedRewards!: Nullable<RewardsInfo>;
+  @state.rewards.selectedInternalRewards private selectedInternalRewards!: Nullable<RewardInfo>;
+  @state.rewards.selectedExternalRewards private selectedExternalRewards!: Array<RewardInfo>;
+  @state.rewards.selectedCrowdloanRewards private selectedCrowdloanRewards!: Array<RewardInfo>;
   @state.rewards.internalRewards internalRewards!: RewardInfo;
   @state.rewards.externalRewards externalRewards!: Array<RewardInfo>;
-  @state.rewards.vestedRewards vestedRewards!: RewardsInfo;
-  @state.rewards.crowdloanRewards crowdloanRewards!: Array<RewardInfo>;
-  @state.rewards.selectedVestedRewards selectedVestedRewards!: Nullable<RewardsInfo>;
-  @state.rewards.selectedInternalRewards selectedInternalRewards!: Nullable<RewardInfo>;
-  @state.rewards.selectedExternalRewards selectedExternalRewards!: Array<RewardInfo>;
-  @state.rewards.selectedCrowdloanRewards selectedCrowdloanRewards!: Array<RewardInfo>;
 
-  @Getter libraryTheme!: Theme;
-  @getter.assets.xor xor!: AccountAsset;
+  @getter.assets.xor private xor!: AccountAsset;
+  @getter.rewards.transactionStepsCount private transactionStepsCount!: number;
+  @getter.rewards.externalRewardsAvailable private externalRewardsAvailable!: boolean;
   @getter.rewards.rewardsAvailable rewardsAvailable!: boolean;
   @getter.rewards.internalRewardsAvailable internalRewardsAvailable!: boolean;
   @getter.rewards.vestedRewardsAvailable vestedRewardsAvailable!: boolean;
-  @getter.rewards.externalRewardsAvailable externalRewardsAvailable!: boolean;
   @getter.rewards.rewardsByAssetsList rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
-  @getter.rewards.transactionStepsCount transactionStepsCount!: number;
+  @getter.libraryTheme libraryTheme!: Theme;
 
-  @mutation.rewards.reset reset!: VoidFunction;
+  @mutation.rewards.reset private reset!: VoidFunction;
 
-  @action.rewards.setSelectedRewards setSelectedRewards!: (args: SelectedRewards) => Promise<void>;
-  @action.rewards.getRewards getRewards!: (address: string) => Promise<void>;
-  @action.rewards.claimRewards claimRewards!: (options: ClaimRewardsParams) => Promise<void>;
+  @action.rewards.setSelectedRewards private setSelectedRewards!: (args: SelectedRewards) => Promise<void>;
+  @action.rewards.getRewards private getRewards!: (address: string) => Promise<void>;
+  @action.rewards.claimRewards private claimRewards!: (options: ClaimRewardsParams) => Promise<void>;
 
   private unwatchEthereum!: VoidFunction;
 

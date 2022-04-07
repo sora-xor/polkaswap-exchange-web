@@ -36,7 +36,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
@@ -71,7 +70,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
 
-  @Getter libraryTheme!: Theme;
+  @getter.libraryTheme libraryTheme!: Theme;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
 

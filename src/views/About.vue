@@ -138,13 +138,14 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { FPNumber } from '@sora-substrate/util';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import Web3Logo from '@/components/logo/Web3.vue';
+
+import { getter } from '@/store/decorators';
 
 @Component({
   components: {
@@ -179,7 +180,7 @@ export default class About extends Mixins(TranslationMixin) {
     };
   }, {});
 
-  @Getter libraryTheme!: Theme;
+  @getter.libraryTheme libraryTheme!: Theme;
 
   get images(): Record<string, string> {
     return this.IMAGES[this.libraryTheme];

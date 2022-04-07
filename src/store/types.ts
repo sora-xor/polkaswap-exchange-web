@@ -1,3 +1,4 @@
+import type { VueDecorator } from 'vue-class-component';
 import type { VUEX_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import type store from '@/store';
@@ -53,7 +54,7 @@ export type GettersDecorators = BaseModuleDecorator<
   typeof store.getters.removeLiquidity,
   typeof store.getters.rewards
 > &
-  VUEX_TYPES.WalletGettersDecorators;
+  VUEX_TYPES.WalletGettersDecorators & { libraryDesignSystem: VueDecorator; libraryTheme: VueDecorator };
 
 export type CommitDecorators = BaseModuleDecorator<
   typeof store.commit.prices,

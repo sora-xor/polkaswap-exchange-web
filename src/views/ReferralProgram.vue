@@ -112,10 +112,9 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import type { CodecString } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import router, { lazyComponent, lazyView } from '@/router';
@@ -125,8 +124,6 @@ import { copyToClipboard } from '@/utils';
 import { getter, state, mutation, action } from '@/store/decorators';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-
-const namespace = 'referrals';
 
 @Component({
   components: {

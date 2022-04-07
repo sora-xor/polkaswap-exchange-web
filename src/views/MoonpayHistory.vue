@@ -77,7 +77,6 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { BridgeHistory } from '@sora-substrate/util';
 
@@ -110,9 +109,9 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
 
   @state.moonpay.transactions transactions!: Array<MoonpayTransaction>;
 
-  @Getter libraryTheme!: Theme;
   @getter.web3.isValidNetworkType private isValidNetworkType!: boolean;
   @getter.moonpay.currenciesById private currenciesById!: MoonpayCurrenciesById;
+  @getter.libraryTheme libraryTheme!: Theme;
 
   @action.moonpay.getTransactions private getTransactions!: AsyncVoidFn;
   @action.moonpay.getCurrencies private getCurrencies!: AsyncVoidFn;

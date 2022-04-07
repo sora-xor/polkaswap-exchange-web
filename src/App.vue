@@ -41,7 +41,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { FPNumber, History, connection, HistoryItem } from '@sora-substrate/util';
 import { mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
@@ -74,15 +73,14 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   menuVisibility = false;
   showConfirmInviteUser = false;
 
-  @Getter libraryTheme!: Theme;
-  @Getter libraryDesignSystem!: DesignSystem;
-
   @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @state.referrals.storageReferral storageReferral!: string;
   @state.settings.blockNumber blockNumber!: number;
 
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
+  @getter.libraryTheme libraryTheme!: Theme;
+  @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;
 
   @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
   @mutation.settings.setDefaultNodes private setDefaultNodes!: (nodes: Array<Node>) => void;
@@ -91,6 +89,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
   @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: VoidFunction;
+  @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
   @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
   @mutation.referrals.resetStorageReferral private resetStorageReferral!: VoidFunction;
 
@@ -221,6 +220,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
     this.resetBlockNumberSubscription();
+    this.unsubscribeFromInvitedUsers();
     this.unsubscribeMarketMakerInfo();
     await connection.close();
   }

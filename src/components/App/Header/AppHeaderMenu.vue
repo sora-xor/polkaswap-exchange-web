@@ -46,12 +46,11 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { mutation, state } from '@/store/decorators';
+import { getter, mutation, state } from '@/store/decorators';
 
 enum HeaderMenuType {
   HideBalances = 'hide-balances',
@@ -73,7 +72,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly HeaderMenuType = HeaderMenuType;
 
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
-  @Getter libraryTheme!: Theme;
+  @getter.libraryTheme private libraryTheme!: Theme;
 
   @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: AsyncVoidFn;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;

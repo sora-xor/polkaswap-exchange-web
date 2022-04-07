@@ -12,7 +12,6 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -21,7 +20,7 @@ import { lazyComponent } from '@/router';
 import DialogBase from '@/components/DialogBase.vue';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
 
-import { mutation, state } from '@/store/decorators';
+import { mutation, state, getter } from '@/store/decorators';
 import { Components } from '@/consts';
 import { MoonpayNotifications } from './consts';
 
@@ -33,10 +32,9 @@ import { MoonpayNotifications } from './consts';
   },
 })
 export default class MoonpayNotification extends Mixins(TranslationMixin) {
-  @Getter libraryTheme!: Theme;
-
   @state.moonpay.notificationKey private notificationKey!: MoonpayNotifications;
   @state.moonpay.notificationVisibility private notificationVisibility!: boolean;
+  @getter.libraryTheme libraryTheme!: Theme;
 
   @mutation.moonpay.setNotificationVisibility private setNotificationVisibility!: (flag: boolean) => void;
 

@@ -24,7 +24,6 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, State } from 'vuex-class';
 
 import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
@@ -43,11 +42,11 @@ import type { Whitelist } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) {
-  @state.moonpay.confirmationVisibility confirmationVisibility!: boolean;
+  @state.moonpay.confirmationVisibility private confirmationVisibility!: boolean;
 
-  @Getter libraryTheme!: Theme;
-  @getter.wallet.account.whitelist whitelist!: Whitelist;
-  @getter.web3.isValidNetworkType isValidNetworkType!: boolean;
+  @getter.wallet.account.whitelist private whitelist!: Whitelist;
+  @getter.web3.isValidNetworkType private isValidNetworkType!: boolean;
+  @getter.libraryTheme libraryTheme!: Theme;
 
   get visibility(): boolean {
     return this.confirmationVisibility;

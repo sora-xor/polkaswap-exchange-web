@@ -58,7 +58,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -74,7 +73,7 @@ import {
 } from '@/consts';
 
 import router, { lazyComponent } from '@/router';
-import { state } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -88,7 +87,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
 
   @state.settings.faucetUrl faucetUrl!: string;
-  @Getter libraryTheme!: Theme;
+  @getter.libraryTheme private libraryTheme!: Theme;
 
   readonly SidebarMenuGroups = SidebarMenuGroups;
   readonly FaucetLink = FaucetLink;
