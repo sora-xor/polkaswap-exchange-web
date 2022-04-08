@@ -49,7 +49,7 @@
         </div>
         <div slot="bottom" class="input-line input-line--footer">
           <formatted-amount v-if="xorPrice" is-fiat-value :value="formattedFiatAmount" />
-          <token-address :name="xor.name" :symbol="xorSymbol" :address="xorAddress" class="input-value" />
+          <token-address :name="xorName" :symbol="xorSymbol" :address="xorAddress" class="input-value" />
         </div>
       </s-float-input>
       <s-button
@@ -88,6 +88,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, AccountBalance } from '@sora-substrate/util/build/assets/types';
 
@@ -95,7 +96,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getMaxValue, hasInsufficientBalance, asZeroValue, formatAssetBalance } from '@/utils';
 import router, { lazyComponent } from '@/router';
-import { Components, PageNames } from '@/consts';
+import { Components, PageNames, ZeroStringValue } from '@/consts';
 import { getter, mutation, state } from '@/store/decorators';
 
 @Component({
@@ -117,7 +118,7 @@ export default class ReferralBonding extends Mixins(
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.referrals.amount amount!: string;
 
-  @getter.assets.xor xor!: AccountAsset;
+  @getter.assets.xor xor!: Nullable<AccountAsset>;
 
   @mutation.referrals.setAmount private setAmount!: (amount: string) => void;
   @mutation.referrals.resetAmount private resetAmount!: VoidFunction;
@@ -126,23 +127,31 @@ export default class ReferralBonding extends Mixins(
   showConfirmBondDialog = false;
 
   get xorSymbol(): string {
-    return this.xor.symbol;
+    return XOR.symbol;
   }
 
   get xorDecimals(): number {
-    return this.xor.decimals;
+    return XOR.decimals;
   }
 
   get xorAddress(): string {
-    return this.xor.address;
+    return XOR.address;
+  }
+
+  get xorName(): string {
+    return XOR.name;
   }
 
   get xorMaxValue(): string {
     return this.getMax(this.xorAddress);
   }
 
+  get xorPrice(): Nullable<CodecString> {
+    return this.getAssetFiatPrice(XOR);
+  }
+
   get xorBalance(): Nullable<AccountBalance> {
-    return this.xor.balance;
+    return this.xor?.balance;
   }
 
   get xorFormattedBondedBalance(): Nullable<string> {
@@ -151,7 +160,7 @@ export default class ReferralBonding extends Mixins(
 
   get xorFormattedFiatBalance(): Nullable<string> {
     return this.isBond
-      ? this.getFiatBalance(this.xor)
+      ? this.getFiatBalance(this.xor as AccountAsset | undefined) // TODO: [arch] getFiatBalance(asset: Nullable<...>)
       : this.getFiatAmountByCodecString(this.xorBalance?.bonded ?? '0');
   }
 
@@ -168,40 +177,35 @@ export default class ReferralBonding extends Mixins(
   }
 
   get formattedFiatAmount(): string {
-    return this.amount ? this.getFiatAmountByString(this.amount, this.xor) ?? '0' : '0';
+    return this.amount ? this.getFiatAmountByString(this.amount, XOR) ?? ZeroStringValue : ZeroStringValue;
   }
 
   get isMaxButtonAvailable(): boolean {
-    const balance = this.getFPNumberFromCodec(this.xorBalance?.transferable ?? '0', this.xorDecimals);
+    const balance = this.getFPNumberFromCodec(this.xorBalance?.transferable ?? ZeroStringValue, this.xorDecimals);
     const amount = this.getFPNumber(this.amount, this.xorDecimals);
     if (this.fpNumberNetworkFee.isZero()) {
       return false;
     }
     if (this.isBondedBalance) {
-      return (
-        !FPNumber.eq(this.getFPNumberFromCodec(this.xorBalance?.bonded ?? '0', this.xorDecimals), this.Zero) &&
-        FPNumber.gt(balance, this.fpNumberNetworkFee)
-      );
+      const bonded = this.xorBalance?.bonded ?? ZeroStringValue;
+      const isBondedZero = this.getFPNumberFromCodec(bonded, this.xorDecimals).isZero();
+      return !isBondedZero && FPNumber.gt(balance, this.fpNumberNetworkFee);
     }
     return !FPNumber.eq(this.fpNumberNetworkFee, balance.sub(amount)) && FPNumber.gt(balance, this.fpNumberNetworkFee);
   }
 
   get isInsufficientBondedXor(): boolean {
-    return !!hasInsufficientBalance(this.xor, this.amount, this.networkFee, false, this.isBondedBalance);
+    return !!this.xor && hasInsufficientBalance(this.xor, this.amount, this.networkFee, false, this.isBondedBalance);
   }
 
   get isInsufficientXorForFee(): boolean {
     if (this.isBondedBalance) {
       return FPNumber.gt(
         this.fpNumberNetworkFee,
-        this.getFPNumberFromCodec(this.xorBalance?.transferable ?? '0', this.xorDecimals)
+        this.getFPNumberFromCodec(this.xorBalance?.transferable ?? ZeroStringValue, this.xorDecimals)
       );
     }
-    return !!hasInsufficientBalance(this.xor, this.amount, this.networkFee);
-  }
-
-  get xorPrice(): Nullable<CodecString> {
-    return this.getAssetFiatPrice(this.xor);
+    return !!this.xor && hasInsufficientBalance(this.xor, this.amount, this.networkFee);
   }
 
   get networkFee(): CodecString {
@@ -226,6 +230,8 @@ export default class ReferralBonding extends Mixins(
   }
 
   handleMaxValue(): void {
+    if (!this.xor) return;
+
     this.handleInputXor(getMaxValue(this.xor, this.networkFee, false, this.isBondedBalance));
   }
 

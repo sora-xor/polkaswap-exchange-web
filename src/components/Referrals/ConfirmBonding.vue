@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO: Add tooltip when the text will be added -->
   <dialog-base
     :visible.sync="isVisible"
     :title="t(`referralProgram.confirm.${isBond ? 'bond' : 'unbond'}`)"
@@ -35,13 +34,13 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Operation, CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { getter, state } from '@/store/decorators';
+import { state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -51,13 +50,13 @@ import { getter, state } from '@/store/decorators';
   },
 })
 export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixins.FormattedAmountMixin, DialogMixin) {
+  readonly xor = XOR;
+
   @state.referrals.amount private amount!: string;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
 
-  @getter.assets.xor xor!: AccountAsset;
-
   get xorSymbol(): string {
-    return this.xor.symbol;
+    return XOR.symbol;
   }
 
   get isBond(): boolean {
@@ -65,7 +64,7 @@ export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixi
   }
 
   get formattedAmount(): string {
-    return this.formatStringValue(this.amount, this.xor.decimals);
+    return this.formatStringValue(this.amount, XOR.decimals);
   }
 
   get networkFee(): CodecString {

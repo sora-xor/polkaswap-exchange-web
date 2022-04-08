@@ -4,11 +4,12 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { referralsActionContext } from '@/store/referrals';
 
 const actions = defineActions({
+  /** TODO: Fix naming issues for the referral system */
   async getReferral(context, invitedUserId: string): Promise<void> {
     const { commit } = referralsActionContext(context);
     commit.resetReferral();
     try {
-      const referral = await api.referralSystem.getReferral(invitedUserId);
+      const referral = await api.referralSystem.getReferrer(invitedUserId);
       commit.setReferral(referral);
     } catch (error) {
       commit.resetReferral();

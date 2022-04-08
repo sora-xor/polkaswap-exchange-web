@@ -113,6 +113,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { CodecString, FPNumber } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -142,7 +143,7 @@ export default class ReferralProgram extends Mixins(
   readonly LogoSize = LogoSize;
 
   @state.referrals.invitedUsers invitedUsers!: Array<string>;
-  @getter.assets.xor xor!: AccountAsset;
+  @getter.assets.xor xor!: Nullable<AccountAsset>;
 
   @mutation.referrals.reset private reset!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
@@ -157,12 +158,16 @@ export default class ReferralProgram extends Mixins(
     }
   }
 
-  get formattedRewards(): string {
-    return this.referralRewards?.rewards.toLocaleString() || ZeroStringValue;
+  get isPriceAvailable(): boolean {
+    return !!this.getAssetFiatPrice(XOR);
   }
 
-  get isPriceAvailable(): boolean {
-    return !!this.getAssetFiatPrice(this.xor);
+  get xorSymbol(): string {
+    return XOR.symbol;
+  }
+
+  get formattedRewards(): string {
+    return this.referralRewards?.rewards.toLocaleString() || ZeroStringValue;
   }
 
   get invitedUserRewards(): Record<string, { rewards: FPNumber }> {
@@ -170,11 +175,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   get bondedXorCodecBalance(): CodecString {
-    return this.xor.balance?.bonded ?? '';
-  }
-
-  get xorSymbol(): string {
-    return this.xor.symbol;
+    return this.xor?.balance?.bonded ?? '';
   }
 
   get invitedUsersCount(): number {

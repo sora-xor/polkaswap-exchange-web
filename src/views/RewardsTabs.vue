@@ -37,10 +37,7 @@ export default class RewardsTabs extends Mixins(TranslationMixin) {
   currentTab: RewardsTabsItems = RewardsTabsItems.Rewards;
 
   created(): void {
-    if (!this.prevRoute) {
-      return;
-    }
-    if (ReferralSystemPages.includes(this.prevRoute) || this.currentRoute === PageNames.Referral) {
+    if (ReferralSystemPages.includes(this.prevRoute as PageNames) || this.currentRoute === PageNames.Referral) {
       this.currentTab = RewardsTabsItems.ReferralProgram;
     }
   }
