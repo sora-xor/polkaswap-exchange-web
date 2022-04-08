@@ -327,6 +327,12 @@ const FORMATTED_HASH_LENGTH = 24;
   },
 })
 export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixin, BridgeMixin, NetworkFormatterMixin) {
+  readonly KnownSymbols = KnownSymbols;
+  readonly collapseItems = {
+    from: 'step-from',
+    to: 'step-to',
+  };
+
   @state.bridge.waitingForApprove private waitingForApprove!: Record<string, boolean>;
   @state.bridge.inProgressIds private inProgressIds!: Record<string, boolean>;
   @state.router.prev private prevRoute!: Nullable<PageNames>;
@@ -337,12 +343,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
   @action.bridge.handleBridgeTx private handleBridgeTx!: (id: string) => Promise<void>;
-
-  readonly KnownSymbols = KnownSymbols;
-  readonly collapseItems = {
-    from: 'step-from',
-    to: 'step-to',
-  };
 
   get txInProcess(): boolean {
     if (!this.historyItem?.id) return false;

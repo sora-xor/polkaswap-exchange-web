@@ -214,6 +214,8 @@ const TokenPairMixin = TokenPairMixinInstance(namespace);
   },
 })
 export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+
   @getter.addLiquidity.shareOfPool shareOfPool!: string;
   @getter.addLiquidity.liquidityInfo liquidityInfo!: Nullable<AccountLiquidity>;
 
@@ -221,8 +223,6 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
   @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>;
 
   @mutation.addLiquidity.setVocusedField resetFocusedField!: VoidFunction;
-
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {

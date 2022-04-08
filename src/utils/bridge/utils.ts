@@ -1,13 +1,12 @@
 import { Operation, BridgeTxStatus } from '@sora-substrate/util';
 import { ethers } from 'ethers';
 import type { Subscription } from 'rxjs';
+import type { BridgeHistory, BridgeApprovedRequest, BridgeNetworks } from '@sora-substrate/util';
 
 import { bridgeApi } from './api';
 
 import { delay } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
-
-import type { BridgeHistory, BridgeApprovedRequest, BridgeNetworks } from '@sora-substrate/util';
 
 const SORA_REQUESTS_TIMEOUT = 6_000; // Block production time
 

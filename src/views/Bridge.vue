@@ -232,6 +232,8 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { BridgeHistory } from '@sora-substrate/util';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -252,11 +254,8 @@ import {
   asZeroValue,
   isEthereumAddress,
 } from '@/utils';
-
 import type { SubNetwork } from '@/utils/ethers-util';
-import type { BridgeHistory } from '@sora-substrate/util';
 import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -283,6 +282,9 @@ export default class Bridge extends Mixins(
   NetworkFeeDialogMixin,
   TokenSelectMixin
 ) {
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+  readonly KnownSymbols = KnownSymbols;
+
   @state.bridge.evmNetworkFeeFetching private evmNetworkFeeFetching!: boolean;
   @state.web3.subNetworks subNetworks!: Array<SubNetwork>;
   @state.bridge.amount amount!: string;
@@ -312,9 +314,6 @@ export default class Bridge extends Mixins(
     }
   }
 
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-
-  KnownSymbols = KnownSymbols;
   showSelectTokenDialog = false;
   showSelectNetworkDialog = false;
   showConfirmTransactionDialog = false;

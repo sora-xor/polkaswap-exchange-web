@@ -100,7 +100,6 @@ const TokenPairMixinInstance = (namespace: TokenPairNamespace) => {
             return true;
           }
         }
-        // TODO: [Release 2] Add check for pair without XOR
       }
       return false;
     }

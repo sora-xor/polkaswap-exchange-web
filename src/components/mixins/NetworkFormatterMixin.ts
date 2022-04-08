@@ -1,6 +1,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { BridgeNetworks } from '@sora-substrate/util';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+
 import { EvmNetworkType } from '@/utils/ethers-util';
 import { state, getter } from '@/store/decorators';
 

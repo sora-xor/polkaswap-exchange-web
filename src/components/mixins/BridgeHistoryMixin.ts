@@ -1,13 +1,12 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import type { BridgeHistory, CodecString } from '@sora-substrate/util';
 
 import router from '@/router';
 import { PageNames, ZeroStringValue } from '@/consts';
 import { bridgeApi } from '@/utils/bridge';
 import { state, mutation, action } from '@/store/decorators';
-
-import type { BridgeHistory, CodecString } from '@sora-substrate/util';
 
 @Component
 export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {

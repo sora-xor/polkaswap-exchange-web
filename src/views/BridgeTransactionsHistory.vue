@@ -71,8 +71,9 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { BridgeTxStatus } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { BridgeTxStatus } from '@sora-substrate/util';
+import type { BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -83,8 +84,6 @@ import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { action, state } from '@/store/decorators';
 import { isUnsignedToPart, isRejectedForeverFromPart } from '@/utils/bridge';
-
-import type { BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
 @Component({
   components: {
@@ -102,9 +101,8 @@ export default class BridgeTransactionsHistory extends Mixins(
 ) {
   @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;
 
-  @action.bridge.updateHistory updateHistory!: AsyncVoidFn;
+  @action.bridge.updateHistory private updateHistory!: AsyncVoidFn;
 
-  PageNames = PageNames;
   pageAmount = 8; // override PaginationSearchMixin
 
   get filteredHistory(): Array<BridgeHistory> {
