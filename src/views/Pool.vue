@@ -126,6 +126,10 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
   }
 
   handleAddLiquidity(first?: string, second?: string): void {
+    if (!(first || second)) {
+      router.push({ name: PageNames.AddLiquidity });
+      return;
+    }
     const firstAddress = first || '';
     const secondAddress = second || '';
     router.push({ name: PageNames.AddLiquidity, params: { firstAddress, secondAddress } });
