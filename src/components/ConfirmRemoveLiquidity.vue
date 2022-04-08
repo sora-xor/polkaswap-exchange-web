@@ -18,7 +18,7 @@
       </div>
     </div>
     <p class="transaction-message">
-      {{ t('removeLiquidity.outputMessage', { slippageTolerance: formatStringValue(`${slippageTolerance}`) }) }}
+      {{ t('removeLiquidity.outputMessage', { slippageTolerance: formatStringValue(slippageTolerance) }) }}
     </p>
     <s-divider />
     <remove-liquidity-transaction-details />

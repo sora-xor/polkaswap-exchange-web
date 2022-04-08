@@ -11,7 +11,7 @@
         </template>
         <div :class="slippageToleranceClasses">
           <div class="slippage-tolerance-default">
-            <settings-tabs :value="String(slippageTolerance)" :tabs="SlippageToleranceTabs" @click="selectTab" />
+            <settings-tabs :value="slippageTolerance" :tabs="SlippageToleranceTabs" @click="selectTab" />
           </div>
           <div class="slippage-tolerance-custom">
             <s-float-input
@@ -44,6 +44,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { state, mutation } from '@/store/decorators';
+import type { TabItem } from '@/types/tabs';
 
 @Component({
   components: {
@@ -53,8 +54,8 @@ import { state, mutation } from '@/store/decorators';
 })
 export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixin, TranslationMixin) {
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-  readonly SlippageToleranceTabs: Array<object> = ['0.1', '0.5', '1'].map((name) => ({
-    name: String(name),
+  readonly SlippageToleranceTabs: Array<TabItem> = ['0.1', '0.5', '1'].map((name) => ({
+    name: name,
     label: `${this.formatStringValue(name)}%`,
   }));
 
