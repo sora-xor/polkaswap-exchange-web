@@ -125,12 +125,11 @@ const actions = defineActions({
       if (!value) {
         commit.setFirstTokenValue();
       } else if (getters.isNotFirstLiquidityProvider) {
-        commit.setFirstTokenValue(
-          new FPNumber(value)
-            .mul(FPNumber.fromCodecValue(getters.reserveA))
-            .div(FPNumber.fromCodecValue(getters.reserveB))
-            .toString()
-        );
+        const firstTokenValue = new FPNumber(value)
+          .mul(FPNumber.fromCodecValue(getters.reserveA))
+          .div(FPNumber.fromCodecValue(getters.reserveB))
+          .toString();
+        commit.setFirstTokenValue(firstTokenValue);
       }
 
       estimateMinted(context);

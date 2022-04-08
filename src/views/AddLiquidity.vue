@@ -17,7 +17,7 @@
         :max="getMax(firstTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setFirstTokenValue)"
-        @blur="resetFocusedField"
+        @blur="resetFocusedField()"
       >
         <div slot="top" class="input-line">
           <div class="input-title">
@@ -70,7 +70,7 @@
         :max="getMax(secondTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setSecondTokenValue)"
-        @blur="resetFocusedField"
+        @blur="resetFocusedField()"
       >
         <div slot="top" class="input-line">
           <div class="input-title">

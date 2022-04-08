@@ -132,12 +132,12 @@ const TokenPairMixinInstance = (namespace: TokenPairNamespace) => {
       return this.getAssetFiatPrice(this.secondToken);
     }
 
-    async handleMaxValue(token: any, setValue: (v: any) => void): Promise<void> {
+    async handleMaxValue(token: any, setValue: (v: string) => Promise<void>): Promise<void> {
       setValue(getMaxValue(token, this.networkFee));
       this.updatePrices();
     }
 
-    async handleTokenChange(value: string, setValue: (v: any) => Promise<void>): Promise<void> {
+    async handleTokenChange(value: string, setValue: (v: string) => Promise<void>): Promise<void> {
       await setValue(value);
       this.updatePrices();
     }
