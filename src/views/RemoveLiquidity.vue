@@ -123,7 +123,7 @@
         class="info-line-container"
         v-if="price || priceReversed || networkFee || shareOfPool"
         :info-only="false"
-      ></remove-liquidity-transaction-details>
+      />
     </s-form>
 
     <confirm-remove-liquidity
@@ -181,34 +181,34 @@ export default class RemoveLiquidity extends Mixins(
   readonly XOR_SYMBOL = XOR.symbol;
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  @state.removeLiquidity.liquidityAmount liquidityAmount!: string;
+  @state.removeLiquidity.liquidityAmount private liquidityAmount!: string;
+  @state.removeLiquidity.focusedField private focusedField!: string;
   @state.removeLiquidity.firstTokenAmount firstTokenAmount!: string;
   @state.removeLiquidity.secondTokenAmount secondTokenAmount!: string;
   @state.removeLiquidity.removePart removePart!: number;
-  @state.removeLiquidity.focusedField focusedField!: string;
   @state.prices.price price!: string;
   @state.prices.priceReversed priceReversed!: string;
 
+  @getter.assets.xor private xor!: AccountAsset;
+  @getter.removeLiquidity.liquidityBalance private liquidityBalance!: CodecString;
   @getter.removeLiquidity.liquidity liquidity!: AccountLiquidity;
   @getter.removeLiquidity.firstToken firstToken!: Asset;
   @getter.removeLiquidity.secondToken secondToken!: Asset;
-  @getter.removeLiquidity.liquidityBalance liquidityBalance!: CodecString;
   @getter.removeLiquidity.firstTokenBalance firstTokenBalance!: CodecString;
   @getter.removeLiquidity.secondTokenBalance secondTokenBalance!: CodecString;
   @getter.removeLiquidity.shareOfPool shareOfPool!: string;
-  @getter.assets.xor xor!: AccountAsset;
 
   @mutation.removeLiquidity.setFocusedField setFocusedField!: (field?: string) => void;
 
-  @action.removeLiquidity.setRemovePart setRemovePart!: (removePart: number) => Promise<void>;
-  @action.removeLiquidity.setLiquidity setLiquidity!: (args: LiquidityParams) => Promise<void>;
+  @action.removeLiquidity.setRemovePart private setRemovePart!: (removePart: number) => Promise<void>;
+  @action.removeLiquidity.setLiquidity private setLiquidity!: (args: LiquidityParams) => Promise<void>;
+  @action.removeLiquidity.removeLiquidity private removeLiquidity!: AsyncVoidFn;
+  @action.removeLiquidity.resetData private resetData!: AsyncVoidFn;
   @action.removeLiquidity.setFirstTokenAmount setFirstTokenAmount!: (amount: string) => Promise<void>;
   @action.removeLiquidity.setSecondTokenAmount setSecondTokenAmount!: (amount: string) => Promise<void>;
-  @action.removeLiquidity.removeLiquidity removeLiquidity!: AsyncVoidFn;
-  @action.removeLiquidity.resetData resetData!: AsyncVoidFn;
 
-  @mutation.prices.resetPrices resetPrices!: VoidFunction;
-  @action.prices.getPrices getPrices!: (options?: PricesPayload) => Promise<void>;
+  @mutation.prices.resetPrices private resetPrices!: VoidFunction;
+  @action.prices.getPrices private getPrices!: (options?: PricesPayload) => Promise<void>;
 
   resetFocusedField(): void {
     this.setFocusedField();
@@ -262,7 +262,7 @@ export default class RemoveLiquidity extends Mixins(
     });
   }
 
-  async beforeDestroy(): Promise<void> {
+  beforeDestroy(): void {
     this.removeListenerFromSliderDragButton();
     this.resetData();
     this.resetPrices();

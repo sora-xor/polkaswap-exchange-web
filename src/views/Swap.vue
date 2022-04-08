@@ -258,12 +258,12 @@ export default class Swap extends Mixins(
   @state.swap.toValue toValue!: string;
 
   @getter.assets.xor private xor!: AccountAsset;
+  @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.swap.isAvailable isAvailable!: boolean;
-  @getter.swap.swapLiquiditySource liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.swap.marketAlgorithmsAvailable marketAlgorithmsAvailable!: boolean;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
 
