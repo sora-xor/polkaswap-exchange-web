@@ -12,7 +12,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 const checkExtensionKey = 'provider.messages.checkExtension';
 const installExtensionKey = 'provider.messages.installExtension';
 
-const getProviderName = (provider) => {
+const getProviderName = (provider: Provider) => {
   switch (provider) {
     case Provider.Metamask:
       return 'provider.metamask';

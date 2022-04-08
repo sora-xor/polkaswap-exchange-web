@@ -116,11 +116,11 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
-  getAsset(address): any {
-    return this.assets.find((a) => a.address === address);
+  getAsset(address: string): Asset {
+    return this.assets.find((a) => a.address === address) as Asset;
   }
 
-  getAssetSymbol(address): string {
+  getAssetSymbol(address: string): string {
     const asset = this.assets.find((a) => a.address === address);
     return asset ? asset.symbol : this.t('pool.unknownAsset');
   }
@@ -135,7 +135,7 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
     router.push({ name: PageNames.CreatePair });
   }
 
-  handleRemoveLiquidity(firstAddress, secondAddress): void {
+  handleRemoveLiquidity(firstAddress: string, secondAddress: string): void {
     router.push({ name: PageNames.RemoveLiquidity, params: { firstAddress, secondAddress } });
   }
 
@@ -143,9 +143,9 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
     router.push({ name: PageNames.Wallet });
   }
 
-  getPairTitle(firstToken, secondToken): string {
-    if (firstToken && secondToken) {
-      return `${firstToken}-${secondToken}`;
+  getPairTitle(firstTokenSymbol?: string, secondTokenSymbol?: string): string {
+    if (firstTokenSymbol && secondTokenSymbol) {
+      return `${firstTokenSymbol}-${secondTokenSymbol}`;
     }
     return '';
   }
