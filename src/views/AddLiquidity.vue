@@ -17,7 +17,8 @@
         :max="getMax(firstTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setFirstTokenValue)"
-        @blur="resetFocusedField()"
+        @focus="setVocusedField('firstTokenValue')"
+        @blur="resetFocusedField"
       >
         <div slot="top" class="input-line">
           <div class="input-title">
@@ -42,7 +43,7 @@
             alternative
             size="mini"
             border-radius="mini"
-            @click="handleMaxValue(firstToken, setFirstTokenValue)"
+            @click="handleAddLiquidityMaxValue(firstToken, setFirstTokenValue)"
           >
             {{ t('buttons.max') }}
           </s-button>
@@ -70,7 +71,8 @@
         :max="getMax(secondTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setSecondTokenValue)"
-        @blur="resetFocusedField()"
+        @focus="setVocusedField('secondTokenValue')"
+        @blur="resetFocusedField"
       >
         <div slot="top" class="input-line">
           <div class="input-title">
@@ -95,7 +97,7 @@
             alternative
             size="mini"
             border-radius="mini"
-            @click="handleMaxValue(secondToken, setSecondTokenValue)"
+            @click="handleAddLiquidityMaxValue(secondToken, setSecondTokenValue)"
           >
             {{ t('buttons.max') }}
           </s-button>
@@ -183,15 +185,17 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TokenPairMixinInstance from '@/components/mixins/TokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { getter, action, mutation } from '@/store/decorators';
+import { getter, action, mutation, state } from '@/store/decorators';
 import { TokenPairNamespace } from '@/components/mixins/BaseTokenPairMixin';
 import type { LiquidityParams } from '@/store/pool/types';
+import type { FocusedField } from '@/store/addLiquidity/types';
 
 const namespace = TokenPairNamespace.AddLiquidity;
 
@@ -216,13 +220,16 @@ const TokenPairMixin = TokenPairMixinInstance(namespace);
 export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
+  @state.addLiquidity.focusedField private focusedField!: FocusedField;
+
   @getter.addLiquidity.shareOfPool shareOfPool!: string;
   @getter.addLiquidity.liquidityInfo liquidityInfo!: Nullable<AccountLiquidity>;
 
   @action.addLiquidity.addLiquidity private addLiquidity!: AsyncVoidFn;
   @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>;
 
-  @mutation.addLiquidity.setVocusedField resetFocusedField!: VoidFunction;
+  @mutation.addLiquidity.setVocusedField setVocusedField!: (value: FocusedField) => void;
+  @mutation.addLiquidity.resetVocusedField resetFocusedField!: VoidFunction;
 
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
@@ -233,7 +240,7 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
         });
         // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
         if (!this.liquidityInfo) {
-          return this.handleBack();
+          this.handleBack();
         }
       } else {
         await this.setFirstTokenAddress(XOR.address);
@@ -269,6 +276,13 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
       type: Operation.AddLiquidity,
       amount: this.getFPNumber(this.firstTokenValue),
     });
+  }
+
+  handleAddLiquidityMaxValue(token: Nullable<AccountAsset>, setValue: (v: string) => Promise<void>): void {
+    if (this.focusedField) {
+      this.resetFocusedField();
+    }
+    this.handleMaxValue(token, setValue);
   }
 
   async handleAddLiquidity(): Promise<void> {

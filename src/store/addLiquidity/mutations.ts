@@ -3,7 +3,7 @@ import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import { ZeroStringValue } from '@/consts';
-import type { AddLiquidityState } from './types';
+import type { AddLiquidityState, FocusedField } from './types';
 
 const mutations = defineMutations<AddLiquidityState>()({
   setFirstTokenAddress(state, value?: Nullable<string>): void {
@@ -32,8 +32,11 @@ const mutations = defineMutations<AddLiquidityState>()({
     state.minted = ZeroStringValue;
     state.totalSupply = ZeroStringValue;
   },
-  setVocusedField(state, value?: Nullable<string>): void {
+  setVocusedField(state, value: FocusedField): void {
     state.focusedField = value;
+  },
+  resetVocusedField(state): void {
+    state.focusedField = null;
   },
   setIsAvailable(state, value: boolean): void {
     state.isAvailable = value;
