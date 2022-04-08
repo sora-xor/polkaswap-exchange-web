@@ -237,7 +237,7 @@ export default class SelectToken extends Mixins(
   @getter.wallet.account.accountAssetsAddressTable private accountAssetsAddressTable!: WALLET_TYPES.AccountAssetsTable;
   @getter.assets.nonWhitelistDivisibleAccountAssets nonWhitelistAccountAssets!: Array<AccountAsset>;
 
-  @action.wallet.account.addAsset addAsset!: (address?: string) => Promise<void>;
+  @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
 
   resetCustomAssetFields(): void {
     this.isConfirmed = false;

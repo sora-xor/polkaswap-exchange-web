@@ -24,10 +24,10 @@ import { state, mutation } from '@/store/decorators';
 
 @Component
 export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, TranslationMixin) {
-  @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<BridgeHistory>;
-  @state.moonpay.startBridgeButtonVisibility startBridgeButtonVisibility!: boolean;
+  @state.moonpay.bridgeTransactionData private bridgeTransactionData!: Nullable<BridgeHistory>;
+  @state.moonpay.startBridgeButtonVisibility private startBridgeButtonVisibility!: boolean;
 
-  @mutation.moonpay.setConfirmationVisibility setConfirmationVisibility!: (flag: boolean) => void;
+  @mutation.moonpay.setConfirmationVisibility private setConfirmationVisibility!: (flag: boolean) => void;
 
   get active(): boolean {
     return this.$route.name === PageNames.MoonpayHistory;
