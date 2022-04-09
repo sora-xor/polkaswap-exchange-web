@@ -5,10 +5,7 @@
       <p v-if="!isLoggedIn" class="pool-info-container pool-info-container--empty">
         {{ t('pool.connectToWallet') }}
       </p>
-      <p
-        v-else-if="!accountLiquidity || !accountLiquidity.length || parentLoading"
-        class="pool-info-container pool-info-container--empty"
-      >
+      <p v-else-if="!accountLiquidity.length || parentLoading" class="pool-info-container pool-info-container--empty">
         {{ t('pool.liquidityNotFound') }}
       </p>
       <s-collapse v-else class="pool-list" :borders="true">
