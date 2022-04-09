@@ -9,6 +9,7 @@
       :size="tokenComponentSize"
       class="token-select-button__logo"
     />
+    <nft-token-logo :asset="token" class="nft-image" />
     <span class="token-select-button__text">{{ buttonText }}</span>
     <s-icon v-if="icon" class="token-select-button__icon" :name="icon" size="18" />
   </s-button>
@@ -17,6 +18,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '../mixins/TranslationMixin';
 
@@ -27,6 +29,7 @@ import { Components } from '@/consts';
   components: {
     TokenLogo: lazyComponent(Components.TokenLogo),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    NftTokenLogo: components.NftTokenLogo,
   },
 })
 export default class TokenSelectButton extends Mixins(TranslationMixin) {
@@ -119,5 +122,15 @@ $baseClass: '.token-select-button';
       color: var(--s-color-base-content-primary);
     }
   }
+}
+
+.nft-image {
+  border-radius: 50%;
+  object-fit: cover;
+  width: var(--s-size-mini);
+  height: var(--s-size-mini);
+  left: 0;
+  position: absolute;
+  background-color: var(--s-color-base-background);
 }
 </style>

@@ -26,9 +26,10 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin select-asset ($class: "token-item") {
+@mixin select-asset($class: 'token-item') {
   .#{$class} {
-    &__symbol, &__balance {
+    &__symbol,
+    &__balance {
       line-height: var(--s-line-height-small);
       letter-spacing: var(--s-letter-spacing-small);
       font-weight: 800;
@@ -60,7 +61,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin select-asset-scoped ($class: "token-item") {
+@mixin select-asset-scoped($class: 'token-item') {
   .#{$class} {
     display: flex;
     justify-content: space-between;
@@ -102,7 +103,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin element-size($className: "", $width: 40px, $height: $width) {
+@mixin element-size($className: '', $width: 40px, $height: $width) {
   .#{$className} {
     height: $height;
     width: $width;
@@ -126,7 +127,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   overflow: hidden;
 }
 
-@mixin generic-input-lines($inputLineClass: "input-line") {
+@mixin generic-input-lines($inputLineClass: 'input-line') {
   .#{$inputLineClass} {
     display: flex;
     justify-content: space-between;
@@ -206,14 +207,28 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &--select-token {
       margin-left: $inner-spacing-mini / 2;
       &.token-select-button--token {
-        &, &:hover, &:active, &:focus, &.focusing, &.s-pressed {
+        &,
+        &:hover,
+        &:active,
+        &:focus,
+        &.focusing,
+        &.s-pressed {
           background-color: var(--s-color-utility-surface);
         }
-        &:hover, &:active, &:focus, &.focusing, &.s-pressed {
-          box-shadow: 1px 1px 5px rgba(255, 255, 255, 0.7), -1px -1px 5px #FFFFFF, 0px 0px 20px rgba(247, 84, 163, 0.5);
+        &:hover,
+        &:active,
+        &:focus,
+        &.focusing,
+        &.s-pressed {
+          box-shadow: 1px 1px 5px rgba(255, 255, 255, 0.7), -1px -1px 5px #ffffff, 0px 0px 20px rgba(247, 84, 163, 0.5);
         }
       }
-      &, &:hover, &:active, &:focus, &.focusing, &.s-pressed {
+      &,
+      &:hover,
+      &:active,
+      &:focus,
+      &.focusing,
+      &.s-pressed {
         box-shadow: $button-custom-shadow;
       }
     }
@@ -234,7 +249,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin info-line ($class: 'swap-info') {
+@mixin info-line($class: 'swap-info') {
   .#{$class} {
     display: flex;
     align-items: center;
@@ -290,7 +305,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin search-item ($class: 'el-form-item--search') {
+@mixin search-item($class: 'el-form-item--search') {
   .#{$class} {
     margin-bottom: 0;
     position: relative;
@@ -314,7 +329,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin bridge-content ($min-height: 400px) {
+@mixin bridge-content($min-height: 400px) {
   min-height: $min-height;
   margin-top: $basic-spacing * 2;
   width: 100%;
@@ -327,7 +342,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   letter-spacing: var(--s-letter-spacing-small);
 }
 
-@mixin svg-icon ($url: '', $width: var(--s-icon-font-size-mini), $height: $width) {
+@mixin svg-icon($url: '', $width: var(--s-icon-font-size-mini), $height: $width) {
   display: block;
   width: $width;
   height: $height;
@@ -339,7 +354,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   background-size: 100%;
 }
 
-@mixin status-icon ($withLoading: false) {
+@mixin status-icon($withLoading: false) {
   &-icon {
     align-self: center;
     @include svg-icon;
@@ -348,15 +363,15 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       @if $withLoading == true {
         @include loading;
       }
-      background-image: url("~@/assets/img/status-pending.svg");
+      background-image: url('~@/assets/img/status-pending.svg');
       height: var(--s-font-size-mini);
       width: var(--s-font-size-mini);
     }
     &--error {
-      background-image: url("~@/assets/img/status-error.svg");
+      background-image: url('~@/assets/img/status-error.svg');
     }
     &--success {
-      background-image: url("~@/assets/img/status-success.svg");
+      background-image: url('~@/assets/img/status-success.svg');
     }
   }
 }
@@ -376,7 +391,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 // TODO 4 alexnatalia: Check these styles later
 @mixin button-styles {
   font-weight: 600 !important;
-  text-transform:  uppercase;
+  text-transform: uppercase;
   font-size: $s-font-size-button;
   line-height: var(--s-line-height-small);
   letter-spacing: var(--s-letter-spacing-small);
@@ -402,7 +417,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 }
 
 @mixin exchange-tabs {
-  $tabs-class: ".el-tabs";
+  $tabs-class: '.el-tabs';
 
   .el-dialog {
     overflow: hidden;
@@ -435,7 +450,9 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
               box-shadow: none !important;
             }
             &.is-disabled {
-              &, &:hover, &:focus.is-focus {
+              &,
+              &:hover,
+              &:focus.is-focus {
                 color: var(--s-color-base-content-tertiary);
               }
             }
@@ -534,7 +551,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   font-weight: 600;
 }
 
-@mixin scrollbar ($marginOffset: 0, $verticalRight: 2px) {
+@mixin scrollbar($marginOffset: 0, $verticalRight: 2px) {
   &.el-scrollbar {
     margin-left: $marginOffset;
     margin-right: $marginOffset;
@@ -543,7 +560,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       overflow-x: hidden;
       margin-bottom: 0px !important; // to disable element-ui negative margin
     }
-    .el-scrollbar__wrap, .el-scrollbar__view {
+    .el-scrollbar__wrap,
+    .el-scrollbar__view {
       display: flex;
       flex: 1;
       flex-flow: column nowrap;
@@ -556,7 +574,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin icon-styles ($hasPointerCursor: false) {
+@mixin icon-styles($hasPointerCursor: false) {
   color: var(--s-color-base-content-tertiary);
   transition: var(--s-transition-default);
   @if $hasPointerCursor == true {

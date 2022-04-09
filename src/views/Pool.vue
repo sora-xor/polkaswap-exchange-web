@@ -188,7 +188,7 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
   @include collapse-items;
   .el-collapse-item__header {
     .pair-logo {
-      margin-right: $inner-spacing-medium;
+      margin-right: 28px;
     }
   }
 }

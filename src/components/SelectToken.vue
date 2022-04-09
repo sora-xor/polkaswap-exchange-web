@@ -142,7 +142,8 @@
               >
                 <s-col>
                   <s-row flex justify="start" align="middle">
-                    <token-logo :token="token" />
+                    <token-logo :token="token" size="big" />
+                    <nft-token-logo :asset="token" class="nft-image" />
                     <div class="token-item__info s-flex">
                       <div class="token-item__symbol">{{ token.symbol }}</div>
                       <token-address
@@ -204,6 +205,7 @@ const namespace = 'assets';
     DialogBase,
     TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: lazyComponent(Components.TokenAddress),
+    NftTokenLogo: components.NftTokenLogo,
   },
 })
 export default class SelectToken extends Mixins(
@@ -481,5 +483,15 @@ export default class SelectToken extends Mixins(
     width: 100%;
     margin-bottom: $inner-spacing-medium;
   }
+}
+
+.nft-image {
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  width: var(--s-size-medium);
+  height: var(--s-size-medium);
+  position: absolute;
+  background-color: var(--s-color-base-background);
 }
 </style>
