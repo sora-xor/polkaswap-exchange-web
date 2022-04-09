@@ -36,11 +36,11 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @mutation.moonpay.setNotificationKey setNotificationKey!: (key: string) => void;
   @mutation.moonpay.setBridgeTxData setBridgeTxData!: (options?: BridgeTxData) => void;
 
-  @action.moonpay.getTransactionTranserData getTransactionTranserData!: (
+  @action.moonpay.getTransactionTranserData private getTransactionTranserData!: (
     hash: string
   ) => Promise<Nullable<MoonpayEVMTransferAssetData>>;
 
-  @action.moonpay.findRegisteredAssetByExternalAddress findRegisteredAssetByExternalAddress!: (
+  @action.moonpay.findRegisteredAssetByExternalAddress private findRegisteredAssetByExternalAddress!: (
     address: string
   ) => Promise<Nullable<RegisterAssetWithExternalBalance>>;
 

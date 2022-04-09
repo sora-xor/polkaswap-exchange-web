@@ -55,8 +55,8 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @mutation.web3.setEvmNetwork setEvmNetwork!: (networkId: BridgeNetworks) => void;
   @mutation.web3.setEvmAddress switchExternalAccount!: (address: string) => void;
 
+  @action.web3.connectExternalAccount private connectExternalAccount!: (provider: Provider) => Promise<void>;
   @action.web3.setEvmNetworkType setEvmNetworkType!: (network?: string) => Promise<void>;
-  @action.web3.connectExternalAccount connectExternalAccount!: (provider: Provider) => Promise<void>;
 
   getWalletAddress = getWalletAddress;
   formatAddress = formatAddress;

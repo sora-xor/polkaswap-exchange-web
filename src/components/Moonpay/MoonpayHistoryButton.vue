@@ -22,6 +22,7 @@ import router from '@/router';
 import { PageNames } from '@/consts';
 import { state, mutation } from '@/store/decorators';
 
+// TODO: [arch] Is BridgeHistoryMixin used OR not?
 @Component
 export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, TranslationMixin) {
   @state.moonpay.bridgeTransactionData private bridgeTransactionData!: Nullable<BridgeHistory>;

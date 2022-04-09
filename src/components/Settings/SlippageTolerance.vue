@@ -70,8 +70,8 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
   @state.settings.slippageTolerance slippageTolerance!: string;
   @state.settings.transactionDeadline transactionDeadline!: number;
 
-  @mutation.settings.setSlippageTolerance setSlippageTolerance!: (value: string) => void;
-  @mutation.settings.setTransactionDeadline setTransactionDeadline!: (value: number) => void;
+  @mutation.settings.setSlippageTolerance private setSlippageTolerance!: (value: string) => void;
+  @mutation.settings.setTransactionDeadline private setTransactionDeadline!: (value: number) => void;
 
   get customSlippageTolerance(): string {
     const suffix = this.slippageToleranceFocused ? '' : '%';
