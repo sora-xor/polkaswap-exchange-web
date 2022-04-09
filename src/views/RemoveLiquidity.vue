@@ -153,7 +153,7 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { hasInsufficientXorForFee } from '@/utils';
+import { delay, hasInsufficientXorForFee } from '@/utils';
 import { getter, state, mutation, action } from '@/store/decorators';
 import type { LiquidityParams } from '@/store/pool/types';
 import type { PricesPayload } from '@/store/prices/types';
@@ -254,7 +254,7 @@ export default class RemoveLiquidity extends Mixins(
       });
       // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
       if (!this.liquidity) {
-        this.handleBack();
+        return this.handleBack();
       }
       this.updatePrices();
       this.addListenerToSliderDragButton();

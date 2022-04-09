@@ -6,13 +6,15 @@
       :label="t('removeLiquidity.shareOfPool')"
       :value="`${shareOfPool}%`"
     />
-    <info-line
-      v-if="priceReversed"
-      :label="t('removeLiquidity.price')"
-      :value="`1 ${firstTokenSymbol} = ${formattedPriceReversed}`"
-      :asset-symbol="secondTokenSymbol"
-    />
-    <info-line v-if="price" :value="`1 ${secondTokenSymbol} = ${formattedPrice}`" :asset-symbol="firstTokenSymbol" />
+    <template v-if="firstTokenSymbol && secondTokenSymbol">
+      <info-line
+        v-if="priceReversed"
+        :label="t('removeLiquidity.price')"
+        :value="`1 ${firstTokenSymbol} = ${formattedPriceReversed}`"
+        :asset-symbol="secondTokenSymbol"
+      />
+      <info-line v-if="price" :value="`1 ${secondTokenSymbol} = ${formattedPrice}`" :asset-symbol="firstTokenSymbol" />
+    </template>
     <info-line
       v-if="networkFee"
       :label="t('createPair.networkFee')"
@@ -49,17 +51,17 @@ export default class RemoveLiquidityTransactionDetails extends Mixins(mixins.For
   @state.prices.price price!: string;
 
   @getter.removeLiquidity.shareOfPool shareOfPool!: string;
-  @getter.removeLiquidity.firstToken firstToken!: Asset;
-  @getter.removeLiquidity.secondToken secondToken!: Asset;
+  @getter.removeLiquidity.firstToken firstToken!: Nullable<Asset>;
+  @getter.removeLiquidity.secondToken secondToken!: Nullable<Asset>;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
 
-  get firstTokenSymbol(): string {
-    return this.firstToken.symbol;
+  get firstTokenSymbol(): Nullable<string> {
+    return this.firstToken?.symbol;
   }
 
-  get secondTokenSymbol(): string {
-    return this.secondToken.symbol;
+  get secondTokenSymbol(): Nullable<string> {
+    return this.secondToken?.symbol;
   }
 
   get formattedPrice(): string {

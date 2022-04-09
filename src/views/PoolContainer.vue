@@ -13,6 +13,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import { action, getter } from '@/store/decorators';
+import { delay } from '@/utils';
 
 @Component
 export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
@@ -58,6 +59,8 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
       await this.withParentLoading(async () => {
         await this.subscribeOnAccountLiquidityList();
         await this.subscribeOnAccountLiquidityUpdates();
+        await delay(500); // TODO: [arch] we need to wait until all liquidity items will be loaded
+        // when we had account liquidity in local storage it wasn't a problem
       });
     });
   }

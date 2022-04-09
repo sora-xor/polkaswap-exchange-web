@@ -240,7 +240,7 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
         });
         // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
         if (!this.liquidityInfo) {
-          this.handleBack();
+          return this.handleBack();
         }
       } else {
         await this.setFirstTokenAddress(XOR.address);
