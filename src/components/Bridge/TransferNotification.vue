@@ -65,7 +65,7 @@ export default class TransferNotification extends Mixins(TranslationMixin) {
   }
 
   get assetSymbol(): string {
-    return this.asset?.address ?? '';
+    return this.asset?.symbol ?? '';
   }
 
   get addTokenBtnVisibility(): boolean {
