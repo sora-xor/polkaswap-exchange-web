@@ -157,6 +157,7 @@ import { hasInsufficientXorForFee } from '@/utils';
 import { getter, state, mutation, action } from '@/store/decorators';
 import type { LiquidityParams } from '@/store/pool/types';
 import type { PricesPayload } from '@/store/prices/types';
+import type { FocusedField } from '@/store/removeLiquidity/types';
 
 @Component({
   components: {
@@ -189,7 +190,7 @@ export default class RemoveLiquidity extends Mixins(
   @state.prices.price price!: string;
   @state.prices.priceReversed priceReversed!: string;
 
-  @getter.assets.xor private xor!: AccountAsset;
+  @getter.assets.xor private xor!: Nullable<AccountAsset>;
   @getter.removeLiquidity.liquidityBalance private liquidityBalance!: CodecString;
   @getter.removeLiquidity.liquidity liquidity!: AccountLiquidity;
   @getter.removeLiquidity.firstToken firstToken!: Asset;
@@ -198,7 +199,8 @@ export default class RemoveLiquidity extends Mixins(
   @getter.removeLiquidity.secondTokenBalance secondTokenBalance!: CodecString;
   @getter.removeLiquidity.shareOfPool shareOfPool!: string;
 
-  @mutation.removeLiquidity.setFocusedField setFocusedField!: (field?: string) => void;
+  @mutation.removeLiquidity.setFocusedField setFocusedField!: (field: FocusedField) => void;
+  @mutation.removeLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
 
   @action.removeLiquidity.setRemovePart private setRemovePart!: (removePart: number) => Promise<void>;
   @action.removeLiquidity.setLiquidity private setLiquidity!: (args: LiquidityParams) => Promise<void>;
@@ -209,10 +211,6 @@ export default class RemoveLiquidity extends Mixins(
 
   @mutation.prices.resetPrices private resetPrices!: VoidFunction;
   @action.prices.getPrices private getPrices!: (options?: PricesPayload) => Promise<void>;
-
-  resetFocusedField(): void {
-    this.setFocusedField();
-  }
 
   @Watch('removePart')
   private removePartChange(newValue: number): void {
@@ -239,6 +237,7 @@ export default class RemoveLiquidity extends Mixins(
       }
       default: {
         this.handleRemovePartChange(String(this.removePart));
+        break;
       }
     }
   }
@@ -255,7 +254,7 @@ export default class RemoveLiquidity extends Mixins(
       });
       // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
       if (!this.liquidity) {
-        return this.handleBack();
+        this.handleBack();
       }
       this.updatePrices();
       this.addListenerToSliderDragButton();
@@ -295,7 +294,7 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.xor, this.networkFee);
+    return !!this.xor && hasInsufficientXorForFee(this.xor, this.networkFee);
   }
 
   get removePartCharClass(): string {

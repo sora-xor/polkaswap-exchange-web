@@ -2,7 +2,7 @@ import { defineMutations } from 'direct-vuex';
 import type { CodecString } from '@sora-substrate/util';
 
 import { ZeroStringValue } from '@/consts';
-import type { RemoveLiquidityState } from './types';
+import type { FocusedField, RemoveLiquidityState } from './types';
 
 const mutations = defineMutations<RemoveLiquidityState>()({
   setAddresses(state, { firstAddress, secondAddress }: { firstAddress: string; secondAddress: string }): void {
@@ -28,8 +28,11 @@ const mutations = defineMutations<RemoveLiquidityState>()({
     state.reserveA = reserveA;
     state.reserveB = reserveB;
   },
-  setFocusedField(state, value?: Nullable<string>): void {
-    state.focusedField = value || '';
+  setFocusedField(state, value: Nullable<FocusedField>): void {
+    state.focusedField = value;
+  },
+  resetFocusedField(state): void {
+    state.focusedField = null;
   },
 });
 
