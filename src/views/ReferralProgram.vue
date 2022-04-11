@@ -67,10 +67,10 @@
               {{ t('referralProgram.referralsNumber', { number: invitedUsersNumber }) }}
             </h3>
           </template>
-          <s-scrollbar v-if="invitedUsers && invitedUsers.length" class="invited-users-scrollbar">
+          <template v-if="invitedUsers && invitedUsers.length">
             <div class="invited-users-list">
               <info-line
-                v-for="invitedUser in invitedUsers"
+                v-for="invitedUser in filteredInvitedUsers"
                 value-can-be-hidden
                 :key="invitedUser.toString()"
                 :value="getInvitedUserReward(invitedUser.toString())"
@@ -87,7 +87,15 @@
                 </template>
               </info-line>
             </div>
-          </s-scrollbar>
+            <s-pagination
+              layout="total, prev, next"
+              :current-page.sync="currentPage"
+              :page-size="pageAmount"
+              :total="invitedUsers.length"
+              @prev-click="handlePrevClick"
+              @next-click="handleNextClick"
+            />
+          </template>
         </s-collapse-item>
         <s-collapse-item class="referrer-link-container" name="referrer">
           <template #title>
@@ -177,11 +185,13 @@ export default class ReferralProgram extends Mixins(
   mixins.TransactionMixin,
   mixins.FormattedAmountMixin,
   mixins.ReferralRewardsMixin,
+  mixins.PaginationSearchMixin,
   WalletConnectMixin
 ) {
   readonly LogoSize = LogoSize;
   referrerLinkOrCode = '';
   referrerHasApproved = false;
+  pageAmount = 5; // override PaginationSearchMixin
 
   @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
   @Getter('invitedUsers', { namespace }) invitedUsers!: Nullable<Array<string>>;
@@ -239,13 +249,6 @@ export default class ReferralProgram extends Mixins(
     return `${detectBaseUrl(router)}${this.routerMode}referral/`;
   }
 
-  get referralLink(): any {
-    return {
-      href: `${this.linkHrefBase}${this.account?.address}`,
-      label: this.getLinkLabel(this.account?.address),
-    };
-  }
-
   get hasBondedXor(): boolean {
     return this.account && +this.bondedXOR > 0;
   }
@@ -290,7 +293,11 @@ export default class ReferralProgram extends Mixins(
     return this.referrerLinkOrCode === this.referrerLink.href;
   }
 
-  get referrerLink(): any {
+  get filteredInvitedUsers(): Array<string> {
+    return this.invitedUsers ? this.getPageItems(this.invitedUsers) : [];
+  }
+
+  get referralLink(): any {
     return {
       href: `${this.linkHrefBase}${this.referrerAddress}`,
       label: this.getLinkLabel(this.referrerAddress),
@@ -380,8 +387,58 @@ $referral-collapse-icon-size: 36px;
     margin-left: auto;
     width: calc(100% - #{$inner-spacing-big} * 2);
   }
-  .invited-users-container .el-collapse-item__content {
-    padding: 0 0 $inner-spacing-mini;
+  .invited-users-container {
+    .el-collapse-item__content {
+      padding: 0 0 $inner-spacing-mini;
+    }
+    .el-pagination {
+      display: flex;
+      justify-content: space-between;
+      padding: #{$inner-spacing-mini / 2} $inner-spacing-medium 0;
+      &__total {
+        margin-right: auto;
+        padding-left: 0;
+        padding-right: 0;
+        font-size: var(--s-font-size-extra-small);
+        color: var(--s-color-base-content-secondary);
+        font-weight: 800;
+      }
+      .btn-prev,
+      .btn-next,
+      .el-icon-arrow-right,
+      .el-icon-arrow-left {
+        width: var(--s-icon-font-size-medium);
+        height: var(--s-icon-font-size-medium);
+      }
+      .btn-prev,
+      .btn-next {
+        color: var(--s-color-base-content-tertiary);
+        padding: 0;
+        min-width: var(--s-icon-font-size-medium);
+        &:disabled {
+          opacity: 0.4;
+        }
+      }
+      .btn-next {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .el-icon {
+        font-size: var(--s-icon-font-size-mini);
+        line-height: var(--s-icon-font-size-medium);
+        font-weight: 600;
+        &-arrow-right,
+        &-arrow-left {
+          background-color: transparent;
+          box-shadow: none;
+        }
+      }
+    }
+    &--empty {
+      .el-collapse-item__content {
+        padding-bottom: 0;
+      }
+    }
   }
   @include element-size('token-logo--medium', $referral-collapse-icon-size);
   @include element-size('invited-users-icon', $referral-collapse-icon-size);
@@ -391,18 +448,9 @@ $referral-collapse-icon-size: 36px;
   }
 }
 .bonded,
-.invited-users,
-.referrer {
-  &-scrollbar {
-    @include scrollbar;
-  }
-  &-container {
-    .el-collapse-item__wrap {
-      padding-top: 10px;
-    }
-  }
+.invited-users {
   &-list {
-    max-height: 165px;
+    min-height: 165px;
     padding-right: $inner-spacing-medium;
     padding-left: $inner-spacing-medium;
   }
