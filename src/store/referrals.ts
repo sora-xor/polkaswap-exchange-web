@@ -111,9 +111,8 @@ const actions = {
   async getReferrer({ commit }, invitedUserId: string) {
     commit(types.GET_REFERRER_REQUEST);
     try {
-      // TODO: Change getReferral to getReferrer after lib versions update
-      const referrer = await api.referralSystem.getReferral(invitedUserId);
-      commit(types.GET_REFERRER_SUCCESS, referrer);
+      const referral = await api.referralSystem.getReferrer(invitedUserId);
+      commit(types.GET_REFERRER_SUCCESS, referral);
     } catch (error) {
       commit(types.GET_REFERRER_FAILURE);
     }
