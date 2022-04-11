@@ -114,7 +114,7 @@
                     size="small"
                     type="primary"
                     :disabled="!isValidReferrerLink || isReferrerApproved"
-                    @click="handleSetReferrer($event)"
+                    @click.stop="handleSetReferrer"
                   >
                     {{ t(`referralProgram.referrer.${isReferrerApproved ? 'approved' : 'approve'}`) }}
                   </s-button>
@@ -224,7 +224,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   get hasInvitedUsers(): boolean {
-    return !!(this.invitedUsers && this.invitedUsers.length);
+    return !!(Array.isArray(this.invitedUsers) && this.invitedUsers.length);
   }
 
   get invitedUsersNumber(): number {
@@ -358,8 +358,7 @@ export default class ReferralProgram extends Mixins(
     }
   }
 
-  async handleSetReferrer(event: Event): Promise<void> {
-    event.stopImmediatePropagation();
+  async handleSetReferrer(): Promise<void> {
     this.setReferrer(this.referrerAddress);
   }
 }
