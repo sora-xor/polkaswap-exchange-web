@@ -68,7 +68,7 @@
             </h3>
           </template>
           <template v-if="invitedUsers && invitedUsers.length">
-            <div class="invited-users-list">
+            <div :class="invitedUsersClasses">
               <info-line
                 v-for="invitedUser in filteredInvitedUsers"
                 value-can-be-hidden
@@ -88,6 +88,7 @@
               </info-line>
             </div>
             <s-pagination
+              v-if="hasMultipleInvitedUsersPages"
               layout="total, prev, next"
               :current-page.sync="currentPage"
               :page-size="pageAmount"
@@ -99,7 +100,7 @@
         </s-collapse-item>
         <s-collapse-item class="referrer-link-container" name="referrer">
           <template #title>
-            <WalletAvatar v-if="referrer" class="referrer-icon" :size="'36px'" :address="referrer" />
+            <WalletAvatar v-if="referrer" class="referrer-icon" :size="36" :address="referrer" />
             <h3 class="referrer-collapse-title">
               {{ t(`referralProgram.referrer.${referrer ? 'titleReferrer' : 'title'}`) }}
             </h3>
@@ -238,7 +239,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   get invitedUsersNumber(): number {
-    return this.invitedUsers ? this.invitedUsers.length : 0;
+    return Array.isArray(this.invitedUsers) ? this.invitedUsers.length : 0;
   }
 
   get routerMode(): string {
@@ -247,6 +248,13 @@ export default class ReferralProgram extends Mixins(
 
   get linkHrefBase(): string {
     return `${detectBaseUrl(router)}${this.routerMode}referral/`;
+  }
+
+  get referralLink(): any {
+    return {
+      href: `${this.linkHrefBase}${this.account?.address}`,
+      label: this.getLinkLabel(this.account?.address),
+    };
   }
 
   get hasBondedXor(): boolean {
@@ -294,10 +302,25 @@ export default class ReferralProgram extends Mixins(
   }
 
   get filteredInvitedUsers(): Array<string> {
-    return this.invitedUsers ? this.getPageItems(this.invitedUsers) : [];
+    return Array.isArray(this.invitedUsers) ? this.getPageItems(this.invitedUsers) : [];
   }
 
-  get referralLink(): any {
+  get hasMultipleInvitedUsersPages(): boolean {
+    return Array.isArray(this.invitedUsers) ? this.invitedUsers.length > this.pageAmount : false;
+  }
+
+  get invitedUsersClasses(): Array<string> {
+    const baseClass = 'invited-users-list';
+    const cssClasses: Array<string> = [baseClass];
+
+    if (this.hasMultipleInvitedUsersPages) {
+      cssClasses.push(`${baseClass}--multiple-pages`);
+    }
+
+    return cssClasses;
+  }
+
+  get referrerLink(): any {
     return {
       href: `${this.linkHrefBase}${this.referrerAddress}`,
       label: this.getLinkLabel(this.referrerAddress),
@@ -448,12 +471,8 @@ $referral-collapse-icon-size: 36px;
   }
 }
 .bonded,
-.invited-users {
-  &-list {
-    min-height: 165px;
-    padding-right: $inner-spacing-medium;
-    padding-left: $inner-spacing-medium;
-  }
+.invited-users,
+.referrer {
   &-collapse-title {
     &:not(:first-child) {
       padding-left: $inner-spacing-medium;
@@ -462,6 +481,13 @@ $referral-collapse-icon-size: 36px;
     line-height: var(--s-line-height-reset);
     letter-spacing: var(--s-letter-spacing-small);
     font-weight: 700;
+  }
+}
+.bonded,
+.invited-users {
+  &-list {
+    padding-right: $inner-spacing-medium;
+    padding-left: $inner-spacing-medium;
   }
   &-icon {
     background: var(--s-color-base-content-tertiary) url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
@@ -481,14 +507,19 @@ $referral-collapse-icon-size: 36px;
     padding-bottom: $inner-spacing-big;
   }
 }
-.invited-users-container {
-  .info-line {
-    &:last-child {
-      margin-bottom: $inner-spacing-medium;
+.invited-users {
+  &-container {
+    .info-line {
+      &:last-child {
+        margin-bottom: $inner-spacing-medium;
+      }
+      &-address {
+        cursor: pointer;
+      }
     }
-    &-address {
-      cursor: pointer;
-    }
+  }
+  &-list--multiple-pages {
+    min-height: 165px;
   }
 }
 .referral,
