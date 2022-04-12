@@ -237,7 +237,6 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 
@@ -277,7 +276,6 @@ export default class Bridge extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.NetworkFeeWarningMixin,
   BridgeMixin,
-  TranslationMixin,
   NetworkFormatterMixin,
   NetworkFeeDialogMixin,
   TokenSelectMixin
@@ -304,6 +302,7 @@ export default class Bridge extends Mixins(
   @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncVoidFn;
   @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
+  @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
 
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean) {
@@ -516,7 +515,15 @@ export default class Bridge extends Mixins(
     await this.checkConnectionToExternalAccount(async () => {
       // create new history item
       const tx = await this.generateHistoryItem();
-      this.setHistoryId(tx.id);
+      const { assetAddress, type, id } = tx;
+      if (type === Operation.EthBridgeOutgoing && assetAddress) {
+        const asset = this.accountAssetsAddressTable[assetAddress];
+        if (!asset) {
+          // Add asset to account assets for balances subscriptions
+          await this.addAssetToAccountAssets(assetAddress);
+        }
+      }
+      this.setHistoryId(id);
       router.push({ name: PageNames.BridgeTransaction });
     });
   }

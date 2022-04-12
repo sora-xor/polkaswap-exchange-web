@@ -71,10 +71,9 @@ const getters = defineGetters<AssetsState>()({
       return getters.assetsDataTable[address];
     };
   },
-  xor(...args): RegisteredAccountAssetWithDecimals {
+  xor(...args): Nullable<RegisteredAccountAssetWithDecimals> {
     const { getters } = assetsGetterContext(args);
-    // XOR asset cannot be nullable
-    return getters.assetDataByAddress(XOR.address) as RegisteredAccountAssetWithDecimals;
+    return getters.assetDataByAddress(XOR.address);
   },
 });
 

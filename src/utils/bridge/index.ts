@@ -108,7 +108,16 @@ class BridgeTransactionStateHandler {
 
   onComplete(id: string): void {
     this.updateTransactionParams(id, { endTime: Date.now() });
-    this.showNotification(getTransaction(id));
+    const tx = getTransaction(id);
+    const { type, assetAddress } = tx;
+    if (type === Operation.EthBridgeIncoming && assetAddress) {
+      const asset = store.getters.wallet.account.accountAssetsAddressTable[assetAddress];
+      if (!asset) {
+        // Add asset to account assets
+        store.dispatch.wallet.account.addAsset(assetAddress);
+      }
+    }
+    this.showNotification(tx);
   }
 
   updateTransactionStep(id: string): void {
