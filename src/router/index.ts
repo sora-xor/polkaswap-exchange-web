@@ -127,7 +127,7 @@ const routes: Array<RouteConfig> = [
     meta: { isReferralProgram: true },
     children: [
       {
-        path: ':referralAddress?',
+        path: ':referrerAddress?',
         meta: {
           isInvitationRoute: true,
           requiresAuth: true,
@@ -172,8 +172,8 @@ router.beforeEach((to, from, next) => {
   const prev = from.name as Nullable<PageNames>;
   const isLoggedIn = store.getters.wallet.account.isLoggedIn;
   if (to.matched.some((record) => record.meta.isInvitationRoute)) {
-    if (api.validateAddress(to.params.referralAddress)) {
-      store.commit.referrals.setStorageReferral(to.params.referralAddress);
+    if (api.validateAddress(to.params.referrerAddress)) {
+      store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
     }
     if (isLoggedIn) {
       next({ name: PageNames.Referral });

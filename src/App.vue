@@ -74,7 +74,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showConfirmInviteUser = false;
 
   @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
-  @state.referrals.storageReferral storageReferral!: string;
+  @state.referrals.storageReferrer storageReferrer!: string;
   @state.settings.blockNumber blockNumber!: number;
 
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
@@ -91,7 +91,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
   @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
-  @mutation.referrals.resetStorageReferral private resetStorageReferral!: VoidFunction;
+  @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
 
   @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
   @action.wallet.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncVoidFn;
@@ -100,7 +100,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
   @action.web3.setSmartContracts private setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
-  @action.referrals.getReferral private getReferral!: (invitedUserId: string) => Promise<void>;
+  @action.referrals.getReferrer private getReferrer!: (invitedUserId: string) => Promise<void>;
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History, oldValue: History): void {
@@ -126,18 +126,18 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  @Watch('storageReferral', { immediate: true })
-  private async confirmInviteUserIfHasStorage(storageReferralValue: string): Promise<void> {
-    if (this.isSoraAccountConnected && storageReferralValue?.length) {
+  @Watch('storageReferrer', { immediate: true })
+  private async confirmInviteUserIfHasStorage(storageReferrerValue: string): Promise<void> {
+    if (this.isSoraAccountConnected && !!storageReferrerValue) {
       await this.confirmInvititation();
     }
   }
 
   async confirmInvititation(): Promise<void> {
-    await this.getReferral(this.account.address);
-    if (this.storageReferral) {
-      if (this.storageReferral === this.account.address) {
-        this.resetStorageReferral();
+    await this.getReferrer(this.account.address);
+    if (this.storageReferrer) {
+      if (this.storageReferrer === this.account.address) {
+        this.resetStorageReferrer();
       } else {
         this.showConfirmInviteUser = true;
       }

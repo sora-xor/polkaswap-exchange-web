@@ -3,11 +3,11 @@ import type { ReferralsState } from './types';
 
 export function initialState(): ReferralsState {
   return {
-    referral: '',
+    referrer: '',
     invitedUsers: [],
     invitedUsersSubscription: null,
     amount: '',
-    storageReferral: storage.get('storageReferral') || '',
+    storageReferrer: storage.get('storageReferral') || '',
   };
 }
 

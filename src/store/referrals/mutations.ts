@@ -7,11 +7,11 @@ import { initialState } from './state';
 import type { ReferralsState } from './types';
 
 const mutations = defineMutations<ReferralsState>()({
-  resetReferral(state): void {
-    state.referral = '';
+  resetReferrer(state): void {
+    state.referrer = '';
   },
-  setReferral(state, value: string): void {
-    state.referral = value;
+  setReferrer(state, value: string): void {
+    state.referrer = value;
   },
   resetInvitedUsers(state): void {
     state.invitedUsers = [];
@@ -34,12 +34,12 @@ const mutations = defineMutations<ReferralsState>()({
   setAmount(state, value: string): void {
     state.amount = value;
   },
-  setStorageReferral(state, value: string): void {
-    state.storageReferral = value;
+  setStorageReferrer(state, value: string): void {
+    state.storageReferrer = value;
     storage.set('storageReferral', value);
   },
-  resetStorageReferral(state): void {
-    state.storageReferral = '';
+  resetStorageReferrer(state): void {
+    state.storageReferrer = '';
     storage.set('storageReferral', '');
   },
   reset(state): void {
