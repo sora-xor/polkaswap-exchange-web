@@ -6,4 +6,5 @@ export type ReferralsState = {
   invitedUsersSubscription: Nullable<Subscription>;
   amount: string;
   storageReferrer: string;
+  isReferrerApproved: boolean;
 };

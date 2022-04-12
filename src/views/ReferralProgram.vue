@@ -3,11 +3,11 @@
     <template v-if="isSoraAccountConnected">
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
-        <token-logo class="token-logo" :token="xor" :size="LogoSize.BIG" />
+        <token-logo :token="xor" :size="LogoSize.BIG" />
         <formatted-amount
           class="rewards-value"
           value-can-be-hidden
-          :font-size-rate="FontSizeRate.MEDIUM"
+          :font-size-rate="FontSizeRate.SMALL"
           symbol-as-decimal
           :value="formattedRewards"
           :asset-symbol="xorSymbol"
@@ -21,14 +21,30 @@
           is-formatted
         />
       </div>
+      <s-card v-if="hasBondedXor" class="referral-link-container" shadow="always" size="small" border-radius="medium">
+        <div class="referral-link-details">
+          <div class="referral-link-label">{{ t('referralProgram.invitationLink') }}</div>
+          <div class="referral-link" v-html="referralLink.label" />
+        </div>
+        <s-button class="s-typography-button--mini" size="small" type="primary" @click="handleCopyAddress($event)">
+          {{ t('referralProgram.action.copyLink') }}
+          <s-icon name="copy-16" size="16" />
+        </s-button>
+      </s-card>
       <s-collapse :borders="true">
-        <s-collapse-item class="bonded-container" name="bondedXOR">
-          <template #title>
+        <s-collapse-item :class="bondedContainerClasses" :disabled="!hasBondedXor" name="bondedXOR">
+          <template v-if="hasBondedXor" #title>
             <token-logo class="token-logo" :token="xor" />
             <h3 class="bonded-collapse-title">{{ t('referralProgram.bondedXOR') }}</h3>
           </template>
+          <div v-if="!hasBondedXor" class="unbonded-info">
+            <token-logo class="token-logo" :token="xor" />
+            <p
+              class="referral-program-hint referral-program-hint--connected"
+              v-html="t('referralProgram.startInviting')"
+            />
+          </div>
           <info-line
-            v-if="bondedXorCodecBalance"
             is-formatted
             value-can-be-hidden
             :label="t('referralProgram.bondedXOR')"
@@ -36,25 +52,25 @@
             :fiat-value="getFiatAmountByCodecString(bondedXorCodecBalance)"
           />
           <div class="bonded--buttons">
-            <s-button type="secondary" class="s-typography-button--medium" @click="handleBonding(true)">
+            <s-button :type="bondButtonType" class="s-typography-button--medium" @click="handleBonding(true)">
               {{ t('referralProgram.action.bondMore') }}
             </s-button>
-            <s-button type="secondary" class="s-typography-button--medium" @click="handleBonding()">
+            <s-button v-if="hasBondedXor" type="secondary" class="s-typography-button--medium" @click="handleBonding()">
               {{ t('referralProgram.action.unbond') }}
             </s-button>
           </div>
         </s-collapse-item>
-        <s-collapse-item :class="invitedUsersClasses" name="invitedUsers">
+        <s-collapse-item v-if="invitedUsersCount" class="invited-users-container" name="invitedUsers">
           <template #title>
             <span class="invited-users-icon" />
             <h3 class="invited-users-collapse-title">
               {{ t('referralProgram.referralsNumber', { number: invitedUsersCount }) }}
             </h3>
           </template>
-          <s-scrollbar v-if="invitedUsersCount" class="invited-users-scrollbar">
-            <div class="invited-users-list">
+          <template v-if="invitedUsers && invitedUsers.length">
+            <div :class="invitedUsersClasses">
               <info-line
-                v-for="invitedUser in invitedUsers"
+                v-for="invitedUser in filteredInvitedUsers"
                 value-can-be-hidden
                 :key="invitedUser"
                 :value="getInvitedUserReward(invitedUser)"
@@ -71,30 +87,59 @@
                 </template>
               </info-line>
             </div>
-          </s-scrollbar>
+            <s-pagination
+              v-if="hasMultipleInvitedUsersPages"
+              layout="total, prev, next"
+              :current-page.sync="currentPage"
+              :page-size="pageAmount"
+              :total="invitedUsers.length"
+              @prev-click="handlePrevClick"
+              @next-click="handleNextClick"
+            />
+          </template>
+        </s-collapse-item>
+        <s-collapse-item class="referrer-link-container" name="referrer">
+          <template #title>
+            <WalletAvatar v-if="referrer" class="referrer-icon" :size="36" :address="referrer" />
+            <h3 class="referrer-collapse-title">
+              {{ t(`referralProgram.referrer.${referrer ? 'titleReferrer' : 'title'}`) }}
+            </h3>
+          </template>
+          <template v-if="referrer">
+            <h5>{{ t('referralProgram.referrer.referredBy', { referrer: referrerFormatted }) }}</h5>
+            <p class="referrer-description" v-html="t('referralProgram.referrer.info')" />
+          </template>
+          <template v-else>
+            <div class="referrer-link-details">
+              <s-input
+                class="referrer-link-code"
+                :placeholder="t(`referralProgram.referrer.${emptyReferrerLink ? 'placeholder' : 'label'}`)"
+                v-model="referrerLinkOrCode"
+              >
+                <template #right>
+                  <s-button
+                    v-if="!emptyReferrerLink"
+                    class="s-typography-button--mini s-button--approve"
+                    size="small"
+                    type="primary"
+                    :disabled="!isValidReferrerLink || isReferrerApproved"
+                    @click.stop="handleSetReferrer"
+                  >
+                    {{ t(`referralProgram.referrer.${isReferrerApproved ? 'approved' : 'approve'}`) }}
+                  </s-button>
+                </template>
+              </s-input>
+            </div>
+            <p class="referrer-description" v-html="t('referralProgram.referrer.description')" />
+          </template>
+          <s-card v-if="referrer" shadow="always" size="small" border-radius="medium">
+            <div class="referrer-link-details">
+              <div class="referral-link-label">{{ t('referralProgram.referrer.referredLablel') }}</div>
+              <div class="referral-link" v-html="referrerLink.label" />
+            </div>
+          </s-card>
         </s-collapse-item>
       </s-collapse>
-      <s-card
-        v-if="referralLink.isVisible"
-        class="referral-link-container"
-        shadow="always"
-        size="small"
-        border-radius="medium"
-      >
-        <div class="referral-link-details">
-          <div class="referral-link-label">{{ t('referralProgram.invitationLink') }}</div>
-          <div class="referral-link" v-html="referralLink.label" />
-        </div>
-        <s-button class="s-typography-button--mini" size="small" type="primary" @click="handleCopyAddress($event)">
-          {{ t('referralProgram.action.copyLink') }}
-          <s-icon name="copy-16" size="16" />
-        </s-button>
-      </s-card>
-      <p
-        v-else
-        class="referral-program-hint referral-program-hint--connected"
-        v-html="t('referralProgram.startInviting')"
-      />
     </template>
     <template v-else>
       <p class="referral-program-hint" v-html="t('referralProgram.connectAccount')" />
@@ -112,18 +157,21 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { Action, Getter } from 'vuex-class';
+import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import type { CodecString, FPNumber } from '@sora-substrate/util';
+import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import router, { lazyComponent, lazyView } from '@/router';
 import { PageNames, Components, LogoSize, ZeroStringValue } from '@/consts';
 import { detectBaseUrl } from '@/api';
-import { copyToClipboard } from '@/utils';
-import { getter, state, mutation, action } from '@/store/decorators';
+import { copyToClipboard, formatAddress } from '@/utils';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import { action, getter, mutation, state } from '@/store/decorators';
+
+const namespace = 'referrals';
 
 @Component({
   components: {
@@ -131,6 +179,7 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
     InfoLine: components.InfoLine,
     TokenLogo: lazyComponent(Components.TokenLogo),
     ReferralBonding: lazyView(PageNames.ReferralBonding),
+    WalletAvatar: components.WalletAvatar,
   },
 })
 export default class ReferralProgram extends Mixins(
@@ -138,16 +187,24 @@ export default class ReferralProgram extends Mixins(
   mixins.TransactionMixin,
   mixins.FormattedAmountMixin,
   mixins.ReferralRewardsMixin,
+  mixins.PaginationSearchMixin,
   WalletConnectMixin
 ) {
   readonly LogoSize = LogoSize;
+  referrerLinkOrCode = '';
+  referrerHasApproved = false;
+  pageAmount = 5; // override PaginationSearchMixin
 
   @state.referrals.invitedUsers invitedUsers!: Array<string>;
+  @state.referrals.referrer referrer!: string;
+  @state.referrals.isReferrerApproved isReferrerApproved!: boolean;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
 
   @mutation.referrals.reset private reset!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
+  @mutation.referrals.setReferrer private setReferrer!: (value: string) => void;
   @action.referrals.subscribeOnInvitedUsers private subscribeOnInvitedUsers!: (referrerId: string) => Promise<void>;
+  @action.referrals.getReferrer private getReferrer!: (account: string) => Promise<void>;
 
   @Watch('isSoraAccountConnected')
   private async updateSubscriptions(value: boolean) {
@@ -183,22 +240,92 @@ export default class ReferralProgram extends Mixins(
   }
 
   get invitedUsersClasses(): Array<string> {
-    const baseClass = 'invited-users-container';
+    const baseClass = 'invited-users-list';
     const cssClasses: Array<string> = [baseClass];
-    if (!this.invitedUsersCount) {
-      cssClasses.push('is-active');
-      cssClasses.push(`${baseClass}--empty`);
+
+    if (this.hasMultipleInvitedUsersPages) {
+      cssClasses.push(`${baseClass}--multiple-pages`);
     }
+
     return cssClasses;
   }
 
-  get referralLink() {
-    const routerMode = router.mode === 'hash' ? '#/' : '';
+  get routerMode(): string {
+    return router.mode === 'hash' ? '#/' : '';
+  }
+
+  get linkHrefBase(): string {
+    return `${detectBaseUrl(router)}${this.routerMode}referral/`;
+  }
+
+  get referralLink(): any {
     return {
-      href: `${detectBaseUrl(router)}${routerMode}referral/${this.account?.address}`,
-      label: `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${this.account?.address}`,
-      isVisible: this.account && +this.bondedXorCodecBalance > 0,
+      href: `${this.linkHrefBase}${this.account?.address}`,
+      label: this.getLinkLabel(this.account?.address),
     };
+  }
+
+  get hasBondedXor(): boolean {
+    return this.account && +this.bondedXorCodecBalance > 0;
+  }
+
+  get bondedContainerClasses(): Array<string> {
+    const baseClass = 'bonded-container';
+    const cssClasses: Array<string> = [baseClass];
+
+    if (!this.hasBondedXor) {
+      cssClasses.push('is-active');
+      cssClasses.push(`${baseClass}--visible-content`);
+    }
+
+    return cssClasses;
+  }
+
+  get emptyReferrerLink(): boolean {
+    if (!this.referrerLinkOrCode.trim()) {
+      return true;
+    }
+    return false;
+  }
+
+  get referrerFormatted(): string {
+    return this.referrer ? formatAddress(this.referrer, 8) : '';
+  }
+
+  get referrerAddress(): string {
+    return this.referrer ? this.referrer : this.referrerLinkOrCode.substr(-49);
+  }
+
+  get isValidReferrerLink(): boolean {
+    if (this.emptyReferrerLink) {
+      return false;
+    }
+    if (!api.validateAddress(this.referrerAddress) || this.referrerAddress === this.account?.address) {
+      return false;
+    }
+    if (this.referrerLinkOrCode === this.referrerAddress) {
+      return true;
+    }
+    return this.referrerLinkOrCode === this.referrerLink.href;
+  }
+
+  get filteredInvitedUsers(): Array<string> {
+    return Array.isArray(this.invitedUsers) ? this.getPageItems(this.invitedUsers) : [];
+  }
+
+  get hasMultipleInvitedUsersPages(): boolean {
+    return Array.isArray(this.invitedUsers) ? this.invitedUsers.length > this.pageAmount : false;
+  }
+
+  get referrerLink(): any {
+    return {
+      href: `${this.linkHrefBase}${this.referrerAddress}`,
+      label: this.getLinkLabel(this.referrerAddress),
+    };
+  }
+
+  get bondButtonType(): string {
+    return this.hasBondedXor ? 'secondary' : 'primary';
   }
 
   destroyed(): void {
@@ -210,6 +337,8 @@ export default class ReferralProgram extends Mixins(
       if (this.isSoraAccountConnected) {
         await this.subscribeOnInvitedUsers(this.account.address);
         await this.getAccountReferralRewards();
+        await this.getReferrer(this.account.address);
+        console.log(this.filteredInvitedUsers);
       }
     });
   }
@@ -218,9 +347,14 @@ export default class ReferralProgram extends Mixins(
     return this.formatAddress(invitedUser, 12);
   }
 
+  getLinkLabel(address: string): string {
+    return `<span class="referral-link-address">Polkaswap.io/</span>${this.routerMode}referral/${address}`;
+  }
+
   getInvitedUserReward(invitedUser: string): string {
-    if (typeof invitedUser === 'string' && this.invitedUserRewards[invitedUser]?.rewards) {
-      return this.formatCodecNumber(this.invitedUserRewards[invitedUser].rewards.toCodecString());
+    const rewards = this.invitedUserRewards[invitedUser]?.rewards;
+    if (typeof invitedUser === 'string' && rewards) {
+      return this.formatCodecNumber(rewards.toCodecString());
     }
     return ZeroStringValue;
   }
@@ -252,13 +386,17 @@ export default class ReferralProgram extends Mixins(
       });
     }
   }
+
+  async handleSetReferrer(): Promise<void> {
+    this.setReferrer(this.referrerAddress);
+  }
 }
 </script>
 
 <style lang="scss">
 $referral-collapse-icon-size: 36px;
 .referral-program {
-  @include collapse-items(false);
+  @include collapse-items(false, true);
   margin-top: $inner-spacing-mini;
   &.el-loading-parent--relative {
     .el-collapse-item,
@@ -271,31 +409,84 @@ $referral-collapse-icon-size: 36px;
     margin-left: auto;
     width: calc(100% - #{$inner-spacing-big} * 2);
   }
-  .invited-users-container .el-collapse-item__content {
-    padding: 0 0 $inner-spacing-mini;
+  .invited-users-container {
+    .el-collapse-item__content {
+      padding: 0 0 $inner-spacing-mini;
+    }
+    .el-pagination {
+      display: flex;
+      justify-content: space-between;
+      padding: #{$inner-spacing-mini / 2} $inner-spacing-medium 0;
+      &__total {
+        margin-right: auto;
+        padding-left: 0;
+        padding-right: 0;
+        font-size: var(--s-font-size-extra-small);
+        color: var(--s-color-base-content-secondary);
+        font-weight: 800;
+      }
+      .btn-prev,
+      .btn-next,
+      .el-icon-arrow-right,
+      .el-icon-arrow-left {
+        width: var(--s-icon-font-size-medium);
+        height: var(--s-icon-font-size-medium);
+      }
+      .btn-prev,
+      .btn-next {
+        color: var(--s-color-base-content-tertiary);
+        padding: 0;
+        min-width: var(--s-icon-font-size-medium);
+        &:disabled {
+          opacity: 0.4;
+        }
+      }
+      .btn-next {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .el-icon {
+        font-size: var(--s-icon-font-size-mini);
+        line-height: var(--s-icon-font-size-medium);
+        font-weight: 600;
+        &-arrow-right,
+        &-arrow-left {
+          background-color: transparent;
+          box-shadow: none;
+        }
+      }
+    }
+    &--empty {
+      .el-collapse-item__content {
+        padding-bottom: 0;
+      }
+    }
   }
   @include element-size('token-logo--medium', $referral-collapse-icon-size);
   @include element-size('invited-users-icon', $referral-collapse-icon-size);
+  @include element-size('referrer-icon', $referral-collapse-icon-size);
   &-hint--connected .link {
     color: var(--s-color-theme-accent);
   }
 }
 .bonded,
-.invited-users {
-  &-scrollbar {
-    @include scrollbar;
-  }
-  &-list {
-    max-height: 165px;
-    padding-right: $inner-spacing-medium;
-    padding-left: $inner-spacing-medium;
-  }
+.invited-users,
+.referrer {
   &-collapse-title {
-    padding-left: $inner-spacing-medium;
+    &:not(:first-child) {
+      padding-left: $inner-spacing-medium;
+    }
     font-size: var(--s-font-size-large);
     line-height: var(--s-line-height-reset);
     letter-spacing: var(--s-letter-spacing-small);
     font-weight: 700;
+  }
+}
+.bonded,
+.invited-users {
+  &-list {
+    padding-right: $inner-spacing-medium;
+    padding-left: $inner-spacing-medium;
   }
   &-icon {
     background: var(--s-color-base-content-tertiary) url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
@@ -303,53 +494,78 @@ $referral-collapse-icon-size: 36px;
   }
 }
 .bonded-container {
-  margin-top: $inner-spacing-medium;
+  &--visible-content {
+    .el-collapse-item__header {
+      display: none;
+    }
+    .el-collapse-item__wrap {
+      display: block !important;
+    }
+  }
   .el-collapse-item__content {
     padding-bottom: $inner-spacing-big;
   }
 }
-.invited-users-container {
-  &--empty.is-active {
-    .el-collapse-item__header {
-      cursor: default;
-    }
-    .el-collapse-item__arrow {
-      display: none;
+.invited-users {
+  &-container {
+    .info-line {
+      &:last-child {
+        margin-bottom: $inner-spacing-medium;
+      }
+      &-address {
+        cursor: pointer;
+      }
     }
   }
-  .info-line {
-    &:last-child {
-      margin-bottom: $inner-spacing-medium;
+  &-list--multiple-pages {
+    min-height: 165px;
+  }
+}
+.referral,
+.referrer {
+  &-link {
+    &-container {
+      .el-card__body {
+        display: flex;
+        align-items: center;
+      }
+      .el-button.neumorphic {
+        border-color: var(--s-color-theme-accent);
+        &:hover,
+        &:focus,
+        &.focusing {
+          border-color: var(--s-color-theme-accent-hover);
+        }
+        &:active,
+        &.s-pressed {
+          border-color: var(--s-color-theme-accent-pressed);
+        }
+      }
+      .s-icon-copy-16 {
+        margin-left: calc(#{$inner-spacing-small} / 2);
+      }
     }
     &-address {
-      cursor: pointer;
+      color: var(--s-color-base-content-primary);
     }
   }
 }
-.referral-link {
-  &-container {
-    .el-card__body {
-      display: flex;
-      align-items: center;
-    }
-    .el-button.neumorphic {
-      border-color: var(--s-color-theme-accent);
-      &:hover,
-      &:focus,
-      &.focusing {
-        border-color: var(--s-color-theme-accent-hover);
-      }
-      &:active,
-      &.s-pressed {
-        border-color: var(--s-color-theme-accent-pressed);
-      }
-    }
-    .s-icon-copy-16 {
-      margin-left: calc(#{$inner-spacing-small} / 2);
-    }
+
+.referral-link,
+.referrer-link-container .el-input__inner {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.referrer {
+  &-icon svg circle:first-child {
+    fill: var(--s-color-utility-surface);
   }
-  &-address {
-    color: var(--s-color-base-content-primary);
+  &-link-container {
+    .el-input__inner {
+      font-size: var(--s-font-size-medium);
+    }
   }
 }
 </style>
@@ -359,20 +575,27 @@ $referral-collapse-icon-size: 36px;
   @include buttons;
   @include full-width-button('connect-button');
   @include rewards-hint(46px, true);
-  &-hint--connected {
-    padding-right: 0;
-    padding-left: 0;
+  &-hint {
+    margin-bottom: $inner-spacing-small;
+    &--connected {
+      padding-right: 0;
+      padding-left: 0;
+    }
   }
 }
 
+.rewards-container,
+.unbonded-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
 .rewards {
   &-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
-    .token-logo,
+    margin-bottom: $inner-spacing-medium;
+    @include element-size('token-logo', 48px);
     .rewards-value {
       margin-top: $inner-spacing-small;
     }
@@ -384,13 +607,15 @@ $referral-collapse-icon-size: 36px;
     }
   }
   &-title {
+    margin-bottom: $inner-spacing-mini;
     color: var(--s-color-base-content-secondary);
     font-weight: 400;
+    line-height: var(--s-line-height-medium);
     text-transform: uppercase;
   }
   &-value {
     font-size: var(--s-font-size-large);
-    line-height: var(--s-line-height-reset);
+    line-height: var(--s-line-height-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
     font-weight: 800;
   }
@@ -400,33 +625,96 @@ $referral-collapse-icon-size: 36px;
   &--buttons {
     .el-button {
       margin-top: $inner-spacing-medium;
-      width: calc(50% - #{$inner-spacing-small / 2});
+      &.s-secondary {
+        width: calc(50% - #{$inner-spacing-small / 2});
+      }
+      &.s-primary {
+        width: 100%;
+      }
     }
   }
 }
 
-.referral-link {
-  display: block;
-  width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  font-size: var(--s-font-size-medium);
-  line-height: var(--s-line-height-medium);
-  white-space: nowrap;
-  &-container {
-    text-overflow: ellipsis;
+.unbonded-info {
+  .token-logo {
+    margin-bottom: $inner-spacing-medium;
+    margin-top: $inner-spacing-medium;
+    height: var(--s-heading1-font-size);
+    width: var(--s-heading1-font-size);
   }
-  &-details {
-    display: flex;
-    flex-direction: column;
-    margin-right: $inner-spacing-mini;
-    overflow: hidden;
-    color: var(--s-color-theme-accent);
+  .referral-program-hint {
+    font-size: var(--s-heading3-font-size);
+    font-weight: 700;
   }
-  &-label {
-    color: var(--s-color-base-content-secondary);
-    font-size: var(--s-font-size-mini);
+}
+
+.referral-link-container.s-card.neumorphic,
+.referrer-link-container .s-card.neumorphic {
+  padding: #{$inner-spacing-mini * 0.75} $inner-spacing-medium;
+}
+
+.referral,
+.referrer {
+  &-link {
+    display: block;
+    width: 100%;
+    font-size: var(--s-font-size-medium);
+    &-container {
+      text-overflow: ellipsis;
+    }
+    &-details {
+      display: flex;
+      flex-direction: column;
+      margin-right: $inner-spacing-mini;
+      overflow: hidden;
+      color: var(--s-color-theme-accent);
+    }
+    &,
+    &-label {
+      line-height: var(--s-line-height-medium);
+      letter-spacing: var(--s-letter-spacing-small);
+    }
+    &-label {
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-mini);
+      text-align: left;
+    }
+  }
+}
+
+.referrer {
+  &-link {
+    &-container {
+      margin-top: $inner-spacing-medium;
+      h5 {
+        letter-spacing: var(--s-letter-spacing-small);
+        + .referrer-description {
+          margin-top: $inner-spacing-small;
+        }
+      }
+      .s-card {
+        margin-top: $inner-spacing-medium;
+      }
+    }
+    &-details {
+      .s-button--approve {
+        margin-left: $inner-spacing-mini;
+        &.is-disabled {
+          &,
+          &:hover {
+            background-color: var(--s-color-base-disabled);
+            border-color: var(--s-color-base-disabled);
+            box-shadow: $button-custom-shadow;
+            color: var(--s-color-brand-day);
+          }
+        }
+      }
+    }
+  }
+  &-description {
+    margin-top: $inner-spacing-medium;
     line-height: var(--s-line-height-medium);
+    letter-spacing: var(--s-letter-spacing-small);
   }
 }
 </style>
