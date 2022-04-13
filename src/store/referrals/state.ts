@@ -7,7 +7,7 @@ export function initialState(): ReferralsState {
     invitedUsers: [],
     invitedUsersSubscription: null,
     amount: '',
-    storageReferrer: storage.get('storageReferral') || '',
+    storageReferrer: storage.get('storageReferral') || '', // storageReferrer
     isReferrerApproved: false,
   };
 }
