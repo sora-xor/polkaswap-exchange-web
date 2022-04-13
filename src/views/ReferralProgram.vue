@@ -199,6 +199,7 @@ export default class ReferralProgram extends Mixins(
   WalletConnectMixin
 ) {
   readonly LogoSize = LogoSize;
+
   referrerLinkOrCode = '';
   referrerHasApproved = false;
   pageAmount = 5; // override PaginationSearchMixin
