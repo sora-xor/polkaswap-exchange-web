@@ -4,22 +4,17 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type { Asset, AccountAsset, Whitelist, WhitelistItem } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { LogoSize, ObjectInit } from '@/consts';
-
-// TODO: move to js lib
-type WhitelistIdsBySymbol = {
-  [key: string]: string;
-};
+import { getter } from '@/store/decorators';
 
 @Component
 export default class TokenLogo extends Mixins(TranslationMixin) {
-  @Getter whitelist!: Whitelist;
-  @Getter whitelistIdsBySymbol!: WhitelistIdsBySymbol;
+  @getter.wallet.account.whitelist private whitelist!: Whitelist;
+  @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
 
   @Prop({ type: String, default: '' }) readonly tokenSymbol!: string;
   @Prop({ type: Object, default: ObjectInit }) readonly token!: AccountAsset | Asset;

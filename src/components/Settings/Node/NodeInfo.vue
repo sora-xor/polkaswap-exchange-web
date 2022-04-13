@@ -60,6 +60,8 @@ import { NodeModel } from './consts';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
+import type { Node } from '@/types/nodes';
+
 const checkAddress = (
   translate: TranslationMixin['t']
 ): ((rule: unknown, value: Nullable<string>, callback: (error?: Error) => void) => void) => {
@@ -107,7 +109,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     address: [{ validator: checkAddress(this.t), trigger: 'blur' }],
   };
 
-  nodeModel: any = { ...NodeModel };
+  nodeModel: Partial<Node> = { ...NodeModel };
 
   created(): void {
     this.nodeModel = Object.keys(NodeModel).reduce(
@@ -156,7 +158,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
 
       const preparedModel = {
         ...this.nodeModel,
-        address: stripEndingSlash(this.nodeModel.address),
+        address: stripEndingSlash((this.nodeModel as Node).address),
       };
 
       this.handleNode(preparedModel, !this.existing || this.nodeDataChanged);

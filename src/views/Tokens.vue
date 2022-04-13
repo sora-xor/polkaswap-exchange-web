@@ -78,13 +78,13 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
+import { getter } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
@@ -104,7 +104,7 @@ export default class Tokens extends Mixins(
   TranslationMixin,
   AssetsSearchMixin
 ) {
-  @Getter('whitelistAssets', { namespace: 'assets' }) items!: Array<Asset>;
+  @getter.assets.whitelistAssets private items!: Array<Asset>;
 
   order = '';
   property = '';

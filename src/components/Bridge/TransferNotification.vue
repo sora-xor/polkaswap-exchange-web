@@ -8,7 +8,7 @@
         @click="addToken"
         class="add-token-btn s-typography-button--big"
       >
-        <span>{{ t('bridgeTransferNotification.addToken', { symbol: asset.symbol }) }}</span>
+        <span>{{ t('bridgeTransferNotification.addToken', { symbol: assetSymbol }) }}</span>
         <div class="token-icons">
           <token-logo :token="asset" />
           <token-logo class="metamask-icon" />
@@ -20,7 +20,6 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, State, Getter } from 'vuex-class';
 
 import DialogBase from '@/components/DialogBase.vue';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -29,6 +28,7 @@ import { Components } from '@/consts';
 
 import ethersUtil from '@/utils/ethers-util';
 import { isOutgoingTransaction } from '@/utils/bridge';
+import { getter, state, mutation } from '@/store/decorators';
 
 import type { BridgeHistory, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';
 import type { Whitelist } from '@sora-substrate/util/build/assets/types';
@@ -41,15 +41,12 @@ import type { Whitelist } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class TransferNotification extends Mixins(TranslationMixin) {
-  @State((state) => state.bridge.notificationData) tx!: Nullable<BridgeHistory>;
-  @Getter whitelist!: Whitelist;
-  @Getter('getAssetDataByAddress', { namespace: 'assets' }) getAssetDataByAddress!: (
-    address: string
-  ) => RegisteredAccountAsset;
+  @state.bridge.notificationData private tx!: Nullable<BridgeHistory>;
 
-  @Action('setNotificationData', { namespace: 'bridge' }) setNotificationData!: (
-    tx: Nullable<BridgeHistory>
-  ) => Promise<void>;
+  @getter.wallet.account.whitelist private whitelist!: Whitelist;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+
+  @mutation.bridge.setNotificationData private setNotificationData!: (tx?: BridgeHistory) => void;
 
   get visibility(): boolean {
     return !!this.tx;
@@ -57,14 +54,18 @@ export default class TransferNotification extends Mixins(TranslationMixin) {
 
   set visibility(flag: boolean) {
     if (!flag) {
-      this.setNotificationData(null);
+      this.setNotificationData();
     }
   }
 
   get asset(): Nullable<RegisteredAccountAsset> {
     if (!this.tx?.assetAddress) return null;
 
-    return this.getAssetDataByAddress(this.tx.assetAddress);
+    return this.getAsset(this.tx.assetAddress);
+  }
+
+  get assetSymbol(): string {
+    return this.asset?.symbol ?? '';
   }
 
   get addTokenBtnVisibility(): boolean {
