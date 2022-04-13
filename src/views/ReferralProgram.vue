@@ -306,7 +306,7 @@ export default class ReferralProgram extends Mixins(
   get referrerAddress(): string {
     if (this.referrer) return this.referrer;
 
-    return last(this.referrerLinkOrCode.split('/')) as string;
+    return last(this.referrerLinkOrCode.split('/')) ?? '';
   }
 
   get isValidReferrerLink(): boolean {
