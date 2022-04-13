@@ -345,7 +345,7 @@ export default class ReferralProgram extends Mixins(
     this.reset();
   }
 
-  async created(): Promise<void> {
+  created(): void {
     this.withApi(async () => {
       if (this.isSoraAccountConnected) {
         await this.subscribeOnInvitedUsers();
