@@ -54,8 +54,8 @@
             is-formatted
             value-can-be-hidden
             :label="t('referralProgram.bondedXOR')"
-            :value="formatCodecNumber(bondedXorCodecBalance)"
-            :fiat-value="getFiatAmountByCodecString(bondedXorCodecBalance)"
+            :value="formattedBondedXorBalance"
+            :fiat-value="formattedBondedXorFiatValue"
           />
           <div class="bonded--buttons">
             <s-button :type="bondButtonType" class="s-typography-button--medium" @click="handleBonding(true)">
@@ -247,6 +247,18 @@ export default class ReferralProgram extends Mixins(
 
   get bondedXorCodecBalance(): CodecString {
     return this.xor?.balance?.bonded ?? '';
+  }
+
+  get formattedBondedXorBalance(): string {
+    if (!this.bondedXorCodecBalance) return ZeroStringValue;
+
+    return this.formatCodecNumber(this.bondedXorCodecBalance);
+  }
+
+  get formattedBondedXorFiatValue(): Nullable<string> {
+    if (!this.bondedXorCodecBalance) return null;
+
+    return this.getFiatAmountByCodecString(this.bondedXorCodecBalance);
   }
 
   get invitedUsersCount(): number {
