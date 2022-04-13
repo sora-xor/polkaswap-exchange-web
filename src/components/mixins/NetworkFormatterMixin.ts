@@ -8,12 +8,12 @@ import { state, getter } from '@/store/decorators';
 @Component
 export default class NetworkFormatterMixin extends Vue {
   @state.web3.networkType networkType!: EvmNetworkType;
-  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   @getter.web3.defaultNetworkType defaultNetworkType!: Nullable<EvmNetworkType>;
 
   formatNetwork(isSora: boolean, isDefaultNetworkType = false): string {
-    if (isSora) {
+    if (isSora && this.soraNetwork) {
       return `sora.${this.soraNetwork}`;
     }
 

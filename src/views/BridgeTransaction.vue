@@ -630,6 +630,9 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get soraExpolrerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    if (!this.soraNetwork) {
+      return [];
+    }
     const baseLinks = getExplorerLinks(this.soraNetwork);
     const txId = this.soraTxId || this.soraTxBlockId;
     if (!txId) {

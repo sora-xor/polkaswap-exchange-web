@@ -27,7 +27,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @state.moonpay.api moonpayApi!: MoonpayApi;
   @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<BridgeHistory>;
   @state.web3.evmBalance evmBalance!: CodecString;
-  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   @getter.settings.moonpayApiKey moonpayApiKey!: string;
 
@@ -52,7 +52,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
 
   initMoonpayApi(): void {
     this.moonpayApi.publicKey = this.moonpayApiKey;
-    this.moonpayApi.soraNetwork = this.soraNetwork;
+    this.moonpayApi.soraNetwork = this.soraNetwork ?? '';
   }
 
   async prepareMoonpayTxForBridgeTransfer(tx: MoonpayTransaction, startBridgeButtonVisibility = false): Promise<void> {

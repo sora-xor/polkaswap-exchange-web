@@ -73,7 +73,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   menuVisibility = false;
   showConfirmInviteUser = false;
 
-  @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.referrals.storageReferrer storageReferrer!: string;
   @state.settings.blockNumber blockNumber!: number;
 
@@ -100,7 +100,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
   @action.web3.setSmartContracts private setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
-  @action.referrals.getReferrer private getReferrer!: (invitedUserId: string) => Promise<void>;
+  @action.referrals.getReferrer private getReferrer!: AsyncVoidFn;
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History, oldValue: History): void {
@@ -134,7 +134,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async confirmInvititation(): Promise<void> {
-    await this.getReferrer(this.account.address);
+    await this.getReferrer();
     if (this.storageReferrer) {
       if (this.storageReferrer === this.account.address) {
         this.resetStorageReferrer();

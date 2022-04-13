@@ -57,7 +57,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   @state.settings.nodeAddressConnecting private nodeAddressConnecting!: string;
   @state.settings.selectNodeDialogVisibility private selectNodeDialogVisibility!: boolean;
   @state.settings.nodeConnectionAllowance nodeConnectionAllowance!: boolean;
-  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   @getter.settings.nodeList private nodeList!: Array<Node>;
 
