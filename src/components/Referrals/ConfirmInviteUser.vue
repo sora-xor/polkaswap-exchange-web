@@ -71,7 +71,7 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, D
   }
 
   @Watch('isVisible')
-  private async isDialogVisible(isVisible: boolean): Promise<void> {
+  private isDialogVisible(isVisible: boolean): void {
     if (!isVisible && this.storageReferrer) {
       this.resetStorageReferrer();
     }

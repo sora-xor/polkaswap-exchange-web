@@ -21,7 +21,13 @@
           is-formatted
         />
       </div>
-      <s-card v-if="hasBondedXor" class="referral-link-container" shadow="always" size="small" border-radius="medium">
+      <s-card
+        v-if="hasAccountWithBondedXor"
+        class="referral-link-container"
+        shadow="always"
+        size="small"
+        border-radius="medium"
+      >
         <div class="referral-link-details">
           <div class="referral-link-label">{{ t('referralProgram.invitationLink') }}</div>
           <div class="referral-link" v-html="referralLink.label" />
@@ -32,12 +38,12 @@
         </s-button>
       </s-card>
       <s-collapse :borders="true">
-        <s-collapse-item :class="bondedContainerClasses" :disabled="!hasBondedXor" name="bondedXOR">
-          <template v-if="hasBondedXor" #title>
+        <s-collapse-item :class="bondedContainerClasses" :disabled="!hasAccountWithBondedXor" name="bondedXOR">
+          <template v-if="hasAccountWithBondedXor" #title>
             <token-logo class="token-logo" :token="xor" />
             <h3 class="bonded-collapse-title">{{ t('referralProgram.bondedXOR') }}</h3>
           </template>
-          <div v-if="!hasBondedXor" class="unbonded-info">
+          <div v-if="!hasAccountWithBondedXor" class="unbonded-info">
             <token-logo class="token-logo" :token="xor" />
             <p
               class="referral-program-hint referral-program-hint--connected"
@@ -55,7 +61,12 @@
             <s-button :type="bondButtonType" class="s-typography-button--medium" @click="handleBonding(true)">
               {{ t('referralProgram.action.bondMore') }}
             </s-button>
-            <s-button v-if="hasBondedXor" type="secondary" class="s-typography-button--medium" @click="handleBonding()">
+            <s-button
+              v-if="hasAccountWithBondedXor"
+              type="secondary"
+              class="s-typography-button--medium"
+              @click="handleBonding()"
+            >
               {{ t('referralProgram.action.unbond') }}
             </s-button>
           </div>
@@ -67,7 +78,7 @@
               {{ t('referralProgram.referralsNumber', { number: invitedUsersCount }) }}
             </h3>
           </template>
-          <template v-if="invitedUsers && invitedUsers.length">
+          <template v-if="invitedUsersCount">
             <div :class="invitedUsersClasses">
               <info-line
                 v-for="invitedUser in filteredInvitedUsers"
@@ -92,7 +103,7 @@
               layout="total, prev, next"
               :current-page.sync="currentPage"
               :page-size="pageAmount"
-              :total="invitedUsers.length"
+              :total="invitedUsersCount"
               @prev-click="handlePrevClick"
               @next-click="handleNextClick"
             />
@@ -113,12 +124,12 @@
             <div class="referrer-link-details">
               <s-input
                 class="referrer-link-code"
-                :placeholder="t(`referralProgram.referrer.${emptyReferrerLink ? 'placeholder' : 'label'}`)"
+                :placeholder="t(`referralProgram.referrer.${isReferrerLinkEmpty ? 'placeholder' : 'label'}`)"
                 v-model="referrerLinkOrCode"
               >
                 <template #right>
                   <s-button
-                    v-if="!emptyReferrerLink"
+                    v-if="!isReferrerLinkEmpty"
                     class="s-typography-button--mini s-button--approve"
                     size="small"
                     type="primary"
@@ -156,11 +167,11 @@
 </template>
 
 <script lang="ts">
+import last from 'lodash/fp/last';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
-import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, api, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { CodecString, FPNumber } from '@sora-substrate/util';
-import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import router, { lazyComponent, lazyView } from '@/router';
@@ -170,8 +181,6 @@ import { copyToClipboard, formatAddress } from '@/utils';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { action, getter, mutation, state } from '@/store/decorators';
-
-const namespace = 'referrals';
 
 @Component({
   components: {
@@ -184,7 +193,6 @@ const namespace = 'referrals';
 })
 export default class ReferralProgram extends Mixins(
   mixins.LoadingMixin,
-  mixins.TransactionMixin,
   mixins.FormattedAmountMixin,
   mixins.ReferralRewardsMixin,
   mixins.PaginationSearchMixin,
@@ -199,17 +207,22 @@ export default class ReferralProgram extends Mixins(
   @state.referrals.referrer referrer!: string;
   @state.referrals.isReferrerApproved isReferrerApproved!: boolean;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
+  @getter.wallet.account.account private account!: WALLET_TYPES.Account;
 
   @mutation.referrals.reset private reset!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
-  @mutation.referrals.setReferrer private setReferrer!: (value: string) => void;
-  @action.referrals.subscribeOnInvitedUsers private subscribeOnInvitedUsers!: (referrerId: string) => Promise<void>;
-  @action.referrals.getReferrer private getReferrer!: (account: string) => Promise<void>;
+  @mutation.referrals.setStorageReferrer private setStorageReferrer!: (value: string) => void;
+  @action.referrals.subscribeOnInvitedUsers private subscribeOnInvitedUsers!: AsyncVoidFn;
+  @action.referrals.getReferrer private getReferrer!: AsyncVoidFn;
 
   @Watch('isSoraAccountConnected')
-  private async updateSubscriptions(value: boolean) {
+  private async updateSubscriptions(value: boolean): Promise<void> {
     if (value) {
-      await this.subscribeOnInvitedUsers(this.account?.address);
+      if (this.isSoraAccountConnected) {
+        await this.subscribeOnInvitedUsers();
+        await this.getAccountReferralRewards();
+        await this.getReferrer();
+      }
     } else {
       this.unsubscribeFromInvitedUsers();
     }
@@ -258,14 +271,14 @@ export default class ReferralProgram extends Mixins(
     return `${detectBaseUrl(router)}${this.routerMode}referral/`;
   }
 
-  get referralLink(): any {
+  get referralLink() {
     return {
-      href: `${this.linkHrefBase}${this.account?.address}`,
-      label: this.getLinkLabel(this.account?.address),
+      href: `${this.linkHrefBase}${this.account.address}`,
+      label: this.getLinkLabel(this.account.address),
     };
   }
 
-  get hasBondedXor(): boolean {
+  get hasAccountWithBondedXor(): boolean {
     return this.account && +this.bondedXorCodecBalance > 0;
   }
 
@@ -273,7 +286,7 @@ export default class ReferralProgram extends Mixins(
     const baseClass = 'bonded-container';
     const cssClasses: Array<string> = [baseClass];
 
-    if (!this.hasBondedXor) {
+    if (!this.hasAccountWithBondedXor) {
       cssClasses.push('is-active');
       cssClasses.push(`${baseClass}--visible-content`);
     }
@@ -281,11 +294,8 @@ export default class ReferralProgram extends Mixins(
     return cssClasses;
   }
 
-  get emptyReferrerLink(): boolean {
-    if (!this.referrerLinkOrCode.trim()) {
-      return true;
-    }
-    return false;
+  get isReferrerLinkEmpty(): boolean {
+    return !this.referrerLinkOrCode.trim();
   }
 
   get referrerFormatted(): string {
@@ -293,11 +303,13 @@ export default class ReferralProgram extends Mixins(
   }
 
   get referrerAddress(): string {
-    return this.referrer ? this.referrer : this.referrerLinkOrCode.substr(-49);
+    if (this.referrer) return this.referrer;
+
+    return last(this.referrerLinkOrCode.split('/')) as string;
   }
 
   get isValidReferrerLink(): boolean {
-    if (this.emptyReferrerLink) {
+    if (this.isReferrerLinkEmpty) {
       return false;
     }
     if (!api.validateAddress(this.referrerAddress) || this.referrerAddress === this.account?.address) {
@@ -310,14 +322,14 @@ export default class ReferralProgram extends Mixins(
   }
 
   get filteredInvitedUsers(): Array<string> {
-    return Array.isArray(this.invitedUsers) ? this.getPageItems(this.invitedUsers) : [];
+    return this.getPageItems(this.invitedUsers);
   }
 
   get hasMultipleInvitedUsersPages(): boolean {
-    return Array.isArray(this.invitedUsers) ? this.invitedUsers.length > this.pageAmount : false;
+    return this.invitedUsers.length > this.pageAmount;
   }
 
-  get referrerLink(): any {
+  get referrerLink() {
     return {
       href: `${this.linkHrefBase}${this.referrerAddress}`,
       label: this.getLinkLabel(this.referrerAddress),
@@ -325,7 +337,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   get bondButtonType(): string {
-    return this.hasBondedXor ? 'secondary' : 'primary';
+    return this.hasAccountWithBondedXor ? 'secondary' : 'primary';
   }
 
   destroyed(): void {
@@ -335,10 +347,9 @@ export default class ReferralProgram extends Mixins(
   async created(): Promise<void> {
     this.withApi(async () => {
       if (this.isSoraAccountConnected) {
-        await this.subscribeOnInvitedUsers(this.account.address);
+        await this.subscribeOnInvitedUsers();
         await this.getAccountReferralRewards();
-        await this.getReferrer(this.account.address);
-        console.log(this.filteredInvitedUsers);
+        await this.getReferrer();
       }
     });
   }
@@ -359,9 +370,9 @@ export default class ReferralProgram extends Mixins(
     return ZeroStringValue;
   }
 
-  async handleConnect(): Promise<void> {
+  handleConnect(): void {
     if (!this.isSoraAccountConnected) {
-      return this.connectInternalWallet();
+      this.connectInternalWallet();
     }
   }
 
@@ -387,8 +398,8 @@ export default class ReferralProgram extends Mixins(
     }
   }
 
-  async handleSetReferrer(): Promise<void> {
-    this.setReferrer(this.referrerAddress);
+  handleSetReferrer(): void {
+    this.setStorageReferrer(this.referrerAddress);
   }
 }
 </script>
