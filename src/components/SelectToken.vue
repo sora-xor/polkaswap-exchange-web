@@ -170,7 +170,7 @@
                     {{ shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol }}
                   </span>
                 </div>
-                <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
+                <div class="token-item__remove" @click.stop="handleRemoveCustomAsset(token)">
                   <s-icon name="basic-trash-24" />
                 </div>
               </div>
@@ -344,8 +344,7 @@ export default class SelectToken extends Mixins(
     this.resetCustomAssetFields();
   }
 
-  handleRemoveCustomAsset(asset: AccountAsset, event: Event): void {
-    event.stopImmediatePropagation();
+  handleRemoveCustomAsset(asset: AccountAsset): void {
     api.assets.removeAccountAsset(asset.address);
     if (this.customAddress) {
       this.searchCustomAsset();
