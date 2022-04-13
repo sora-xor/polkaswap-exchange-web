@@ -96,7 +96,7 @@ const actions = defineActions({
     const { commit, getters, state } = addLiquidityActionContext(context);
 
     if ((!state.focusedField || state.focusedField === 'firstTokenValue') && value !== state.firstTokenValue) {
-      commit.setVocusedField('firstTokenValue');
+      commit.setFocusedField('firstTokenValue');
 
       commit.setFirstTokenValue(value);
 
@@ -118,7 +118,7 @@ const actions = defineActions({
     const { commit, getters, state } = addLiquidityActionContext(context);
 
     if ((!state.focusedField || state.focusedField === 'secondTokenValue') && value !== state.secondTokenValue) {
-      commit.setVocusedField('secondTokenValue');
+      commit.setFocusedField('secondTokenValue');
 
       commit.setSecondTokenValue(value);
 

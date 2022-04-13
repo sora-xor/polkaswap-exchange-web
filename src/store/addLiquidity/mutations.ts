@@ -32,10 +32,10 @@ const mutations = defineMutations<AddLiquidityState>()({
     state.minted = ZeroStringValue;
     state.totalSupply = ZeroStringValue;
   },
-  setVocusedField(state, value: FocusedField): void {
+  setFocusedField(state, value: FocusedField): void {
     state.focusedField = value;
   },
-  resetVocusedField(state): void {
+  resetFocusedField(state): void {
     state.focusedField = null;
   },
   setIsAvailable(state, value: boolean): void {

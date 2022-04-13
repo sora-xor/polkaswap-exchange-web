@@ -17,7 +17,7 @@
         :max="getMax(firstTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setFirstTokenValue)"
-        @focus="setVocusedField('firstTokenValue')"
+        @focus="setFocusedField('firstTokenValue')"
         @blur="resetFocusedField"
       >
         <div slot="top" class="input-line">
@@ -71,7 +71,7 @@
         :max="getMax(secondTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setSecondTokenValue)"
-        @focus="setVocusedField('secondTokenValue')"
+        @focus="setFocusedField('secondTokenValue')"
         @blur="resetFocusedField"
       >
         <div slot="top" class="input-line">
@@ -228,8 +228,8 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
   @action.addLiquidity.addLiquidity private addLiquidity!: AsyncVoidFn;
   @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>;
 
-  @mutation.addLiquidity.setVocusedField setVocusedField!: (value: FocusedField) => void;
-  @mutation.addLiquidity.resetVocusedField resetFocusedField!: VoidFunction;
+  @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
+  @mutation.addLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
 
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
