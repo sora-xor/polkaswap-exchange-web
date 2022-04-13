@@ -36,6 +36,7 @@
     </div>
     <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
     <bridge-transfer-notification />
+    <mobile-popup :visible.sync="showMobilePopup" />
   </s-design-system-provider>
 </template>
 
@@ -66,6 +67,7 @@ import type { SubNetwork } from '@/utils/ethers-util';
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
+    MobilePopup: lazyComponent(Components.MobilePopup),
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
@@ -74,6 +76,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   menuVisibility = false;
   showConfirmInviteUser = false;
+  showMobilePopup = true;
 
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter libraryTheme!: Theme;

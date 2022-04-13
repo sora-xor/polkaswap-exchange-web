@@ -173,6 +173,7 @@ export enum Components {
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
   BridgeTransferNotification = 'Bridge/TransferNotification',
+  MobilePopup = 'MobilePopup/MobilePopup',
 }
 
 export enum RewardsTabsItems {
@@ -265,6 +266,11 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     href: 'https://github.com/sora-xor',
   },
 ];
+
+export const StoreLinks = {
+  AppStore: 'https://apps.apple.com/us/app/sora-dae/id1457566711',
+  GooglePlay: 'https://play.google.com/store/apps/details?id=jp.co.soramitsu.sora&hl=en&gl=US',
+};
 
 export const FaucetLink: SidebarMenuItemLink = {
   icon: 'software-terminal-24',
