@@ -32,7 +32,7 @@
           <div class="referral-link-label">{{ t('referralProgram.invitationLink') }}</div>
           <div class="referral-link" v-html="referralLink.label" />
         </div>
-        <s-button class="s-typography-button--mini" size="small" type="primary" @click="handleCopyAddress($event)">
+        <s-button class="s-typography-button--mini" size="small" type="primary" @click.stop="handleCopyAddress()">
           {{ t('referralProgram.action.copyLink') }}
           <s-icon name="copy-16" size="16" />
         </s-button>
@@ -91,7 +91,7 @@
               >
                 <template #info-line-prefix>
                   <s-tooltip :content="t('account.copy')">
-                    <span class="info-line-address" @click="handleCopyAddress($event)">
+                    <span class="info-line-address" @click.stop="handleCopyAddress(invitedUser)">
                       {{ formatReferralAddress(invitedUser) }}
                     </span>
                   </s-tooltip>
@@ -381,12 +381,14 @@ export default class ReferralProgram extends Mixins(
     router.push({ name: isBond ? PageNames.ReferralBonding : PageNames.ReferralUnbonding });
   }
 
-  async handleCopyAddress(event: Event): Promise<void> {
-    event.stopImmediatePropagation();
+  async handleCopyAddress(accountId?: string): Promise<void> {
+    const message = accountId
+      ? this.t('transaction.successCopy', { value: this.t('transaction.referral') })
+      : this.t('referralProgram.successCopy');
     try {
-      await copyToClipboard(this.referralLink.href);
+      await copyToClipboard(accountId ?? this.referralLink.href);
       this.$notify({
-        message: this.t('referralProgram.successCopy'),
+        message,
         type: 'success',
         title: '',
       });
