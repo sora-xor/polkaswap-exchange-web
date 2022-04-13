@@ -6,7 +6,7 @@
     class="node-info s-flex"
     @submit.native.prevent="submitForm"
   >
-    <generic-page-header has-button-back :title="title" @back="handleClickBack($event)">
+    <generic-page-header has-button-back :title="title" @back.stop="handleBack">
       <template v-if="existing && removable">
         <s-button type="action" icon="basic-trash-24" @click="removeNode(nodeModel)" />
       </template>
@@ -143,13 +143,6 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
 
   get nodeDataChanged(): boolean {
     return this.nodeModel.name !== this.node.name || this.nodeModel.address !== this.node.address;
-  }
-
-  handleClickBack(event?: Event): void {
-    if (event) {
-      event.stopImmediatePropagation();
-    }
-    this.handleBack();
   }
 
   async submitForm(): Promise<void> {
