@@ -322,6 +322,7 @@
         "Support": "Support",
         "CreatePair": "Create Pair",
         "Tokens": "Tokens",
+        "Send": "Send",
         "KYC": "KYC"
     },
     "social": {
@@ -919,22 +920,39 @@
         }
     },
     "transactionDetailsText": "Transaction Details",
-    "kyc": {
-        "title": "KYC Data",
-        "form": {
-            "name": "Name",
-            "surname": "Surname",
-            "country": "Citizenship",
-            "address": "Residential Address",
-            "dob": "Date of Birth",
-            "id": "ID Number"
+    "createTokenTextNFT": "Create NFT",
+    "adar": {
+        "send": {
+            "Swap": "Exchange",
+            "Send": "Send",
+            "Pool": "Pool",
+            "balance": "Balance",
+            "insufficientBalance": "@:insufficientBalanceText",
+            "price": "Price",
+            "transactionSubmitted": "Transaction submitted",
+            "transactionMessage": "{firstToken} and {secondToken}",
+            "confirm": "Confirm",
+            "ok": "OK",
+            "exchange": "Exchange",
+            "exchangeAndSend": "Exchange & Send",
+            "confirmSwapAndSend": "Confirm"
         },
-        "notification": {
-            "saved": "KYC Data successfully saved",
-            "reset": "KYC Data cleared"
-        },
-        "save": "Save",
-        "reset": "Reset"
-    },
-    "createTokenTextNFT": "Create NFT"
+        "kyc": {
+            "title": "KYC Data",
+            "form": {
+                "name": "Name",
+                "surname": "Surname",
+                "country": "Citizenship",
+                "address": "Residential Address",
+                "dob": "Date of Birth",
+                "id": "ID Number"
+            },
+            "notification": {
+                "saved": "KYC Data successfully saved",
+                "reset": "KYC Data cleared"
+            },
+            "save": "Save",
+            "reset": "Reset"
+        }
+    }    
 }

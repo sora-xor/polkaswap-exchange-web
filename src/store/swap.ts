@@ -114,6 +114,7 @@ const getters = {
     return rootGetters.liquiditySource;
   },
   isAvailable(state: SwapState) {
+    if (state.tokenFromAddress === state.tokenToAddress) return true; // ADAR
     return !isEmpty(state.paths) && Object.values(state.paths).every((paths) => !isEmpty(paths));
   },
   swapMarketAlgorithm(state: SwapState, getters) {

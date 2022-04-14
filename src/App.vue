@@ -468,7 +468,6 @@ $sora-logo-width: 173.7px;
 
   &-content {
     flex: 1;
-    margin: auto;
 
     .app-disclaimer {
       margin-left: $basic-spacing-medium;

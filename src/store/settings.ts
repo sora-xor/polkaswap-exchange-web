@@ -64,7 +64,7 @@ function initialState() {
     selectLanguageDialogVisibility: false,
     blockNumber: 0,
     blockNumberUpdates: null,
-    kycData: {},
+    kycData: JSON.parse(storage.get('kyc')) || {},
   };
 }
 
@@ -177,6 +177,7 @@ const mutations = {
   },
   [types.SET_KYC_DATA](state, data) {
     state.kycData = { ...data };
+    storage.set('kyc', JSON.stringify(state.kycData));
   },
 };
 
@@ -386,29 +387,7 @@ const actions = {
     commit(types.RESET_BLOCK_NUMBER_UPDATES);
   },
 
-  getKYCData({ commit }) {
-    let data: any;
-    // const storage = (api as any).accountStorage
-    const storage = localStorage;
-
-    if (storage) {
-      // data = JSON.parse(storage.get('kyc')) || {}
-      data = JSON.parse(storage.getItem('kyc') ?? '') || {};
-    } else {
-      data = {};
-    }
-
-    commit(types.SET_KYC_DATA, data);
-  },
   setKycData({ commit }, data) {
-    // const storage = (api as any).accountStorage
-    const storage = localStorage;
-
-    if (storage) {
-      // storage.set('kyc', JSON.stringify(data))
-      storage.setItem('kyc', JSON.stringify(data));
-    }
-
     commit(types.SET_KYC_DATA, data);
   },
 };

@@ -1,5 +1,9 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('swap.confirmSwap')" custom-class="dialog--confirm-swap">
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="isSwapAndSend ? t('adar.send.confirmSwapAndSend') : t('swap.confirmSwap')"
+    custom-class="dialog--confirm-swap"
+  >
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
@@ -16,8 +20,21 @@
           {{ tokenTo.symbol }}
         </div>
       </div>
+      <template v-if="isSwapAndSend">
+        <div v-if="isSwapAndSend && from" class="confirm-from">{{ from }}</div>
+        <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
+        <div class="tokens-info-container">
+          <span class="token-value">{{ formattedToValue }}</span>
+          <div v-if="tokenTo" class="token">
+            <token-logo :token="tokenTo" />
+            {{ tokenTo.symbol }}
+          </div>
+        </div>
+        <div v-if="isSwapAndSend && to" class="confirm-to">{{ to }}</div>
+      </template>
     </div>
     <p
+      v-if="!isSwapAndSend"
       class="transaction-message"
       :class="{ 'transaction-message--min-received': !isExchangeB }"
       v-html="
@@ -27,7 +44,7 @@
       "
     />
     <s-divider />
-    <swap-transaction-details />
+    <swap-transaction-details :operation="operation" />
     <template #footer>
       <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmSwap">
         {{ t('exchange.confirm') }}
@@ -40,7 +57,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Getter, State } from 'vuex-class';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
-import type { CodecString } from '@sora-substrate/util';
+import { CodecString, Operation } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
 
@@ -54,7 +71,6 @@ const namespace = 'swap';
 @Component({
   components: {
     DialogBase,
-    SwapInfo: lazyComponent(Components.SwapInfo),
     TokenLogo: lazyComponent(Components.TokenLogo),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
   },
@@ -71,6 +87,14 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogM
   @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isSwapAndSend!: boolean;
+  @Prop({ default: '', type: String }) readonly from!: string;
+  @Prop({ default: '', type: String }) readonly to!: string;
+  @Prop({ default: '', type: String }) readonly valueTo!: string;
+
+  get operation(): Operation {
+    return this.isSwapAndSend ? Operation.SwapAndSend : Operation.Swap;
+  }
 
   get formattedFromValue(): string {
     return this.formatStringValue(this.fromValue, this.tokenFrom?.decimals);
@@ -94,8 +118,20 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogM
       this.$emit('confirm');
     } else {
       try {
-        await this.withNotifications(
-          async () =>
+        await this.withNotifications(async () => {
+          if (this.isSwapAndSend) {
+            await api.swap.executeSwapAndSend(
+              this.tokenFrom,
+              this.tokenTo,
+              this.fromValue,
+              this.toValue,
+              this.valueTo,
+              this.to,
+              this.slippageTolerance,
+              this.isExchangeB,
+              this.liquiditySource
+            );
+          } else {
             await api.swap.execute(
               this.tokenFrom,
               this.tokenTo,
@@ -104,8 +140,9 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogM
               this.slippageTolerance,
               this.isExchangeB,
               this.liquiditySource
-            )
-        );
+            );
+          }
+        });
         this.$emit('confirm', true);
       } catch (error) {
         this.$emit('confirm');
@@ -118,6 +155,16 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogM
 
 <style lang="scss">
 .dialog--confirm-swap {
+  .transaction-message {
+    .min-received-label {
+      display: none;
+    }
+    &--min-received {
+      .min-received-label {
+        display: inline;
+      }
+    }
+  }
   .transaction-number {
     color: var(--s-color-base-content-primary);
     font-weight: 600;
@@ -157,6 +204,16 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogM
   margin-top: $inner-spacing-mini;
   color: var(--s-color-base-content-primary);
   line-height: var(--s-line-height-big);
+}
+
+.confirm {
+  &-from,
+  &-to {
+    font-size: var(--s-font-size-mini);
+    font-weight: 500;
+    line-height: var(--s-line-height-small);
+    margin-top: $inner-spacing-mini;
+  }
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');

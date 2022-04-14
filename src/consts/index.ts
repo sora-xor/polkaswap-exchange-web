@@ -7,9 +7,9 @@ import { KnownBridgeAsset } from '../utils/ethers-util';
 
 export const app = {
   version: pkg.version,
-  name: 'Polkaswap',
+  name: 'ADAR',
   email: 'jihoon@tutanota.de',
-  title: 'Polkaswap — The DEX for the Interoperable Future.',
+  title: 'ADAR — Pay employees anywhere, instantly',
 };
 
 export const WalletPermissions = {
@@ -114,6 +114,7 @@ export enum PageNames {
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
+  Send = 'Send',
   KYC = 'KYC',
 }
 
@@ -126,7 +127,6 @@ export enum Components {
   MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
   AppMenu = 'App/Menu/AppMenu',
   AppInfoPopper = 'App/Menu/AppInfoPopper',
-  SwapInfo = 'SwapInfo',
   SelectToken = 'SelectToken',
   TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
@@ -173,6 +173,7 @@ export enum Components {
   RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
+  ConfirmSend = 'ConfirmSend',
 }
 
 export enum RewardsTabsItems {
@@ -194,6 +195,10 @@ const MainMenu: Array<SidebarMenuItem> = [
   {
     icon: 'arrows-swap-90-24',
     title: PageNames.Swap,
+  },
+  {
+    icon: 'finance-send-24',
+    title: PageNames.Send,
   },
   {
     icon: 'basic-drop-24',
@@ -311,6 +316,11 @@ export enum LogoSize {
 export enum EvmSymbol {
   ETH = 'ETH',
   VT = 'VT',
+}
+
+export enum InfoTooltipPosition {
+  LEFT = 'left',
+  RIGHT = 'right',
 }
 
 const gasLimit = {

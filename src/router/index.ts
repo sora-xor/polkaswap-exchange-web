@@ -35,7 +35,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/swap',
     name: PageNames.Swap,
-    component: lazyView(PageNames.Swap),
+    component: lazyView(PageNames.Send),
   },
   {
     path: '/about',
@@ -46,6 +46,11 @@ const routes: Array<RouteConfig> = [
     path: '/wallet',
     name: PageNames.Wallet,
     component: lazyView(PageNames.Wallet),
+  },
+  {
+    path: '/send',
+    name: PageNames.Send,
+    component: lazyView(PageNames.Send),
   },
   {
     path: '/bridge',

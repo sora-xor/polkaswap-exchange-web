@@ -919,22 +919,5 @@
         }
     },
     "transactionDetailsText": "Idunadura Awọn alaye",
-    "kyc": {
-        "title": "KYC Data",
-        "form": {
-            "name": "Name",
-            "surname": "Surname",
-            "country": "Citizenship",
-            "address": "Residential Address",
-            "dob": "Date of Birth",
-            "id": "ID Number"
-        },
-        "notification": {
-            "saved": "KYC Data successfully saved",
-            "reset": "KYC Data cleared"
-        },
-        "save": "Save",
-        "reset": "Reset"
-    },
     "createTokenTextNFT": "Ṣẹda NFT"
 }

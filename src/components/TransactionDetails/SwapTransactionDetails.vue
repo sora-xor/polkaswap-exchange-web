@@ -1,34 +1,36 @@
 <template>
   <transaction-details :info-only="infoOnly">
     <div class="swap-info-container">
-      <info-line v-for="{ id, label, value } in priceValues" :key="id" :label="label" :value="value" />
-      <info-line
-        :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
-        :label-tooltip="t('swap.minReceivedTooltip')"
-        :value="formattedMinMaxReceived"
-        :asset-symbol="getAssetSymbolText"
-        :fiat-value="getFiatAmountByCodecString(minMaxReceived, isExchangeB ? tokenFrom : tokenTo)"
-        is-formatted
-      />
-      <info-line v-for="(reward, index) in rewardsValues" :key="index" v-bind="reward" />
-      <info-line :label="t('swap.priceImpact')" :label-tooltip="t('swap.priceImpactTooltip')">
-        <value-status-wrapper :value="priceImpact">
-          <formatted-amount class="swap-value" :value="priceImpactFormatted">%</formatted-amount>
-        </value-status-wrapper>
-      </info-line>
-      <info-line :label="t('swap.route')">
-        <div v-for="token in swapRoute" class="liquidity-route swap-value" :key="token">
-          <span>{{ token }}</span>
-          <s-icon name="el-icon el-icon-arrow-right route-icon" />
-        </div>
-      </info-line>
-      <info-line
-        :label="t('swap.liquidityProviderFee')"
-        :label-tooltip="liquidityProviderFeeTooltipText"
-        :value="formattedLiquidityProviderFee"
-        :asset-symbol="xorSymbol"
-        is-formatted
-      />
+      <template v-if="isSwapInfoVisible">
+        <info-line v-for="{ id, label, value } in priceValues" :key="id" :label="label" :value="value" />
+        <info-line
+          :label="t(`swap.${isExchangeB ? 'maxSold' : 'minReceived'}`)"
+          :label-tooltip="t('swap.minReceivedTooltip')"
+          :value="formattedMinMaxReceived"
+          :asset-symbol="getAssetSymbolText"
+          :fiat-value="getFiatAmountByCodecString(minMaxReceived, isExchangeB ? tokenFrom : tokenTo)"
+          is-formatted
+        />
+        <info-line v-for="(reward, index) in rewardsValues" :key="index" v-bind="reward" />
+        <info-line :label="t('swap.priceImpact')" :label-tooltip="t('swap.priceImpactTooltip')">
+          <value-status-wrapper :value="priceImpact">
+            <formatted-amount class="swap-value" :value="priceImpactFormatted">%</formatted-amount>
+          </value-status-wrapper>
+        </info-line>
+        <info-line :label="t('swap.route')">
+          <div v-for="token in swapRoute" class="liquidity-route swap-value" :key="token">
+            <span>{{ token }}</span>
+            <s-icon name="el-icon el-icon-arrow-right route-icon" />
+          </div>
+        </info-line>
+        <info-line
+          :label="t('swap.liquidityProviderFee')"
+          :label-tooltip="liquidityProviderFeeTooltipText"
+          :value="formattedLiquidityProviderFee"
+          :asset-symbol="xorSymbol"
+          is-formatted
+        />
+      </template>
       <info-line
         v-if="isLoggedIn"
         :label="t('swap.networkFee')"
@@ -80,6 +82,11 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   @Getter('priceReversed', { namespace }) priceReversed!: string;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
+  @Prop({ default: '', type: String }) readonly operation!: Operation;
+
+  get isSwapInfoVisible(): boolean {
+    return this.operation !== Operation.Transfer;
+  }
 
   get liquidityProviderFeeTooltipText(): string {
     return this.t('swap.liquidityProviderFeeTooltip', { liquidityProviderFee: this.liquidityProviderFeeValue });
@@ -130,7 +137,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   }
 
   get networkFee(): CodecString {
-    return this.networkFees[Operation.Swap];
+    return this.networkFees[this.operation || Operation.Swap];
   }
 
   get formattedNetworkFee(): string {

@@ -1,19 +1,19 @@
 <template>
   <div v-loading="parentLoading" class="container">
-    <generic-page-header :title="t('kyc.title')" />
+    <generic-page-header :title="t('adar.kyc.title')" />
     <s-form :model="model" class="kyc-form" @submit.native.prevent="submitForm">
       <s-form-item prop="name">
-        <s-input :placeholder="t('kyc.form.name')" v-model="model.name" />
+        <s-input :placeholder="t('adar.kyc.form.name')" v-model="model.name" />
       </s-form-item>
       <s-form-item prop="surname">
-        <s-input :placeholder="t('kyc.form.surname')" v-model="model.surname" />
+        <s-input :placeholder="t('adar.kyc.form.surname')" v-model="model.surname" />
       </s-form-item>
       <s-form-item prop="address">
-        <s-input :placeholder="t('kyc.form.address')" v-model="model.address" />
+        <s-input :placeholder="t('adar.kyc.form.address')" v-model="model.address" />
       </s-form-item>
       <s-form-item prop="dob">
         <s-date-picker
-          :placeholder="t('kyc.form.dob')"
+          :placeholder="t('adar.kyc.form.dob')"
           v-model="model.dob"
           size="big"
           :clearable="false"
@@ -21,10 +21,10 @@
         />
       </s-form-item>
       <s-form-item prop="id">
-        <s-input :placeholder="t('kyc.form.id')" v-model="model.id" />
+        <s-input :placeholder="t('adar.kyc.form.id')" v-model="model.id" />
       </s-form-item>
       <s-form-item prop="country">
-        <s-input :placeholder="t('kyc.form.country')" v-model="model.country" />
+        <s-input :placeholder="t('adar.kyc.form.country')" v-model="model.country" />
       </s-form-item>
 
       <s-button
@@ -32,9 +32,11 @@
         native-type="submit"
         class="kyc-form-button s-typography-button--large"
         :disabled="!formDataChanged"
-      >{{ t('kyc.save') }}</s-button>
+      >
+        {{ t('adar.kyc.save') }}
+      </s-button>
       <s-button type="secondary" class="kyc-form-button s-typography-button--large" @click="resetForm">{{
-        t('kyc.reset')
+        t('adar.kyc.reset')
       }}</s-button>
     </s-form>
   </div>
@@ -67,12 +69,10 @@ const KYCModel = {
 export default class KYC extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @State((state) => state.settings.kycData) kycData!: any;
   @Action setKycData!: (model: any) => void;
-  @Action getKYCData!: () => void;
 
   model: any = { ...KYCModel };
 
   async created(): Promise<void> {
-    this.getKYCData();
     this.model = Object.keys(KYCModel).reduce(
       (result, key) => ({
         ...result,
@@ -89,7 +89,7 @@ export default class KYC extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   submitForm(): void {
     this.setKycData(this.model);
     this.$notify({
-      message: this.t('kyc.notification.saved'),
+      message: this.t('adar.kyc.notification.saved'),
       type: 'success',
       title: '',
     });
@@ -99,7 +99,7 @@ export default class KYC extends Mixins(TranslationMixin, mixins.LoadingMixin) {
     this.model = { ...KYCModel };
     this.setKycData(this.model);
     this.$notify({
-      message: this.t('kyc.notification.reset'),
+      message: this.t('adar.kyc.notification.reset'),
       type: 'success',
       title: '',
     });
