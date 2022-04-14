@@ -231,7 +231,7 @@ $icon-size: 28px;
       border-bottom-right-radius: 0;
     }
 
-    & > *:not(:first-child) {
+    & > * {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
@@ -249,7 +249,8 @@ $icon-size: 28px;
     border-radius: var(--s-border-radius-small);
 
     & > *:not(:last-child) {
-      border-right: 1px solid var(--s-color-base-content-tertiary) !important;
+      // border-right: 1px solid var(--s-color-base-content-tertiary) !important;
+      margin-right: 2px;
     }
 
     & > * {
