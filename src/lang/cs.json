@@ -76,7 +76,7 @@
         "noPermissions": "Omylem zamítnutá žádost o povolení?<\/br> V současné době nemá rozšíření polkadot{.js} správu oprávnění. Jako alternativní řešení můžete restartovat prohlížeč a znovu navštívit tuto stránku, abyste mohli pokračovat v autorizaci.",
         "noAccounts": "V rozšíření prohlížeče polkadot{.js} nebyl nalezen žádný účet. Přidejte prosím účet a zkuste to znovu.",
         "selectAccount": "Vyberte účet, se kterým chcete pracovat",
-        "loadingTitle": "Čekáme, až povolíte přístup k rozšíření polkadot{.js}..",
+        "loadingTitle": "Čekáme, až povolíte přístup k rozšíření polkadot{.js}.",
         "action": {
             "install": "Nainstalovat rozšíření",
             "learnMore": "Zjistit více",
@@ -269,7 +269,7 @@
             "confirmed": "Transakce potvrzena"
         },
         "viewIn": {
-            "sorascan": "Zobrazit v SORAScanu",
+            "sorascan": "Zobrazit v SORAScan",
             "subscan": "Zobrazit v Subscan"
         },
         "txId": "Id transakce",
@@ -358,7 +358,7 @@
         "learnMore": "@:learnMoreText",
         "network": {
             "title": "Co je to @:soraText?",
-            "description": "Polkaswap je postaven na síti @:soraText a token @:soraText (XOR) se používá pro placení gasu\/poplatků a pro poskytování likvidity na Polkaswapu. Síť @:soraText umožňuje snížení poplatků, rychlejší transakce a jednodušší finalizaci konsensu a zaměřuje se na zajištění interoperability napříč ostatními blockchain ekosystémy, jako je @:(ethereumText)."
+            "description": "Polkaswap je postaven na síti @:soraText a token @:soraText (XOR) se používá pro placení gasu\/poplatků a pro poskytování likvidity na Polkaswap. Síť @:soraText umožňuje snížení poplatků, rychlejší transakce a jednodušší finalizaci konsensu a zaměřuje se na zajištění interoperability napříč ostatními blockchain ekosystémy, jako je @:(ethereumText)."
         },
         "polkadot": {
             "title": "Co je to polkadot{.js}?",
@@ -453,7 +453,7 @@
         },
         "pswap": {
             "title": "PSWAP tokeny",
-            "first": "PSWAP byl vytvořen skrze komunitní governance prostřednictvím hlasování o jeho vydání. Jedná se o utility a governance token, který slouží k odměňování poskytovatelů likvidity na Polkaswapu. Na rozdíl od většiny ostatních odměnových tokenů je PSWAP pálen při transakcích a jeho nabídka v průběhu času klesá.",
+            "first": "PSWAP byl vytvořen skrze komunitní governance prostřednictvím hlasování o jeho vydání. Jedná se o utility a governance token, který slouží k odměňování poskytovatelů likvidity na Polkaswap. Na rozdíl od většiny ostatních odměnových tokenů je PSWAP pálen při transakcích a jeho nabídka v průběhu času klesá.",
             "second": "{percent}% poplatek za každý swap na Polkaswap DEX se použije na zpětný odkup PSWAP tokenů, které se následně spálí. Zpočátku se 90 % spálených PSWAP tokenů znovu vytiskne a přiděluje poskytovatelům likvidity, ale postupem času se toto procento snižuje až na 35 % po 4 letech."
         },
         "links": {
@@ -463,7 +463,7 @@
             },
             "second": {
                 "title": "Připojte chain k síti SORA",
-                "desc": "Rozšiřte decentralizovanou světovou ekonomiku připojením dalších chainů k síti SORA a Polkaswapu pomocí protokolu HASHI bridge."
+                "desc": "Rozšiřte decentralizovanou světovou ekonomiku připojením dalších chainů k síti SORA a Polkaswap pomocí protokolu HASHI bridge."
             }
         },
         "network": "Polkaswap je postaven na síti SORA a zaměřuje se na interoperabilitu pro připojení zbytku krypto ekosystému k Polkadotu."
@@ -577,8 +577,8 @@
         },
         "status": {
             "pending": "{step} čekající transakce...",
-            "failed": "{step} transakce se nezdařily. @:( retryText).",
-            "confirm": "Potvrďte 2. ze 2 transakcí ...",
+            "failed": "{step} transakce se nezdařily. @:(retryText).",
+            "confirm": "Potvrďte 2. ze 2 transakcí...",
             "complete": "Hotovo",
             "convertionComplete": "Převod je dokončen"
         },
@@ -616,7 +616,7 @@
         "expectedAddress": "Očekávaná adresa v @:metamask",
         "title": "Bridge transakce",
         "expectedMetaMaskAddress": "Očekávaná adresa v MetaMask:",
-        "allowToken": "Povolit @: appName používat vaše {tokenSymbol}",
+        "allowToken": "Povolit @:appName používat vaše {tokenSymbol}",
         "approveToken": "Upozorňujeme, že token je nutné schválit pouze jednou. Pokud má vaše rozšíření více žádostí o schválení tokenu, nezapomeňte potvrdit pouze poslední a zbytek odmítnout.",
         "blocksLeft": "Zbývá {count} bloků..."
     },
@@ -826,7 +826,7 @@
             },
             "transactionError": {
                 "title": "Transakce se nezdařila",
-                "text": "Bohužel se zdá, že transakce @:moonpayText selhala. Prosím zkuste to znovu. Podporu @: moonpayText najdete na <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https: \/\/ support.moonpay.com <\/a>"
+                "text": "Bohužel se zdá, že transakce @:moonpayText selhala. Prosím zkuste to znovu. Podporu @:moonpayText najdete na <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https: \/\/ support.moonpay.com <\/a>"
             },
             "amountError": {
                 "title": "Nedostatečný zůstatek",
@@ -887,7 +887,7 @@
         "connectAccount": "Chcete-li pozvat uživatele, musíte připojit svůj účet SORA.",
         "bondedXOR": "Vázané XOR",
         "referralsNumber": "{number} doporučení",
-        "startInviting": "Chcete-li začít zvát, spojte libovolné množství XOR.",
+        "startInviting": "Bond XOR doporučit ostatním",
         "preview": "Pozvěte nové uživatele a získejte 10 % z jejich transakčních poplatků.<br \/>Pro začátek se zavažte libovolnou částkou XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Zjistěte více<\/a>",
         "deposit": "Vklad",
         "balance": "Zůstatek",

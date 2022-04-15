@@ -76,7 +76,7 @@
         "noPermissions": "Ved et uhell avvist tillatelsesforespørsel?<\/br> Polkadot{.js}-utvidelsen har for øyeblikket ikke nødvendig tillatelse. For å unngå dette kan du starte nettleseren på nytt og gå tilbake til denne siden for å fortsette med autorisasjon.",
         "noAccounts": "Finner ingen konto i nettleserutvidelsen polkadot{.js}. Legg til en konto, og prøv på nytt.",
         "selectAccount": "Velg kontoen du vil arbeide med",
-        "loadingTitle": "Venter på at du skal gi tilgang til polkadot{.js} utvidelsen..",
+        "loadingTitle": "Venter på at du skal gi tilgang til polkadot{.js} utvidelsen.",
         "action": {
             "install": "Installer utvidelse",
             "learnMore": "Lær mer",
@@ -578,7 +578,7 @@
         "status": {
             "pending": "{step} transaksjoner venter ...",
             "failed": "{step} transaksjoner mislyktes. @:(retryText).",
-            "confirm": "Bekreft 2\/2 transaksjoner ...",
+            "confirm": "Bekreft 2\/2 transaksjoner...",
             "complete": "Ferdig",
             "convertionComplete": "Konvertering er fullført"
         },
@@ -887,7 +887,7 @@
         "connectAccount": "For å invitere brukere må du koble til SORA-kontoen din.",
         "bondedXOR": "XOR Bundet",
         "referralsNumber": "{number}-henvisninger",
-        "startInviting": "For å begynne å invitere, bind en hvilken som helst mengde XOR.",
+        "startInviting": "Bond XOR for å henvise andre",
         "preview": "Inviter nye brukere og få 10% fra deres transaksjonsgebyrer.<br \/>For å starte, obligasjon et hvilket som helst beløp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Lær mer<\/a>",
         "deposit": "Innskudd",
         "balance": "Balanse",

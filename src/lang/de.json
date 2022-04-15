@@ -44,7 +44,7 @@
             "ReferralReserveXor": "Bonden von XOR erfolgreich",
             "ReferralUnreserveXor": "Unbonden von XOR erfolgreich",
             "ReferralSetInvitedUser": "Referral wurde erfolgreich eingerichtet",
-            "SwapAndSend": "{amount} {symbol} gegen {amount2} {symbol2} und {action} {direction} {address}"
+            "SwapAndSend": "{amount} {symbol} gegen {amount2} {symbol2} und {action} {direction} {address} getauscht"
         },
         "error": {
             "Transfer": "Senden von {amount} {symbol} an {address} fehlgeschlagen",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Bonden von XOR fehlgeschlagen",
             "ReferralUnreserveXor": "Unbonden von XOR fehlgeschlagen",
             "ReferralSetInvitedUser": "Festlegen des Referrals fehlgeschlagen",
-            "SwapAndSend": "{amount} {symbol} konnte nicht gegen {amount2} {symbol2} und {action} {direction} {address}"
+            "SwapAndSend": "{amount} {symbol} konnte nicht gegen {amount2} {symbol2} und {action} {direction} {address} getauscht werden"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
@@ -76,7 +76,7 @@
         "noPermissions": "Berechtigungsanfrage versehentlich abgelehnt?<\/br>Derzeit verfügt die Polkadot{.js} -Erweiterung nicht über eine Berechtigungsverwaltung. Um dies zu umgehen, kannst du deinen Browser neu starten und diese Seite erneut aufrufen, um mit der Autorisierung fortzufahren.",
         "noAccounts": "Es wurde kein Konto in deiner Polkadot{.js} -Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
-        "loadingTitle": "Warten darauf, dass du den Zugriff auf die Polkadot{.js} -Erweiterung freigibst...",
+        "loadingTitle": "Warten darauf, dass du den Zugriff auf die Polkadot{.js} -Erweiterung freigibst.",
         "action": {
             "install": "Erweiterung installieren",
             "learnMore": "Mehr erfahren",
@@ -145,7 +145,7 @@
     },
     "asset": {
         "remove": "Asset entfernen",
-        "select": "Wählen Sie ein Asset",
+        "select": "Wähle ein Asset",
         "recieve": "Erhalte {symbol}"
     },
     "addAsset": {
@@ -887,7 +887,7 @@
         "connectAccount": "Um Benutzer einzuladen, musst du dein SORA-Konto verbinden.",
         "bondedXOR": "XOR gebonded",
         "referralsNumber": "{number} Referrals",
-        "startInviting": "Um mit dem Einladen zu beginnen, bonde eine beliebige Menge XOR.",
+        "startInviting": "Bonde XOR, um andere zu empfehlen",
         "preview": "Lade neue Nutzer ein und erhalte 10% von deren Transaktionsgebühren.<br \/>Um zu beginnen, bonde eine beliebige Menge an XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Mehr erfahren<\/a>",
         "deposit": "Einzahlung",
         "balance": "Saldo",
@@ -923,16 +923,16 @@
             "ok": "OK"
         },
         "referrer": {
-            "title": "Fügen Sie Ihren Referrer hinzu",
-            "titleReferrer": "Ihr Referrer",
+            "title": "Fügen deinen Referrer hinzu",
+            "titleReferrer": "Dein Referrer",
             "placeholder": "Einladungslink oder Code eingeben",
             "label": "Einladungslink oder - code",
             "approve": "Genehmigen",
-            "approved": "Zugelassen",
-            "description": "Sie können auf Polkaswap verwiesen werden,<br\/>den Link oder Code des Referrers ein",
-            "referredBy": "Sie wurden von {referrer}",
-            "info": "Wenn Sie eine Transaktionsgebühr zahlen,<br\/>gehen 10% an Ihren Referrer",
-            "referredLablel": "Angesprochene Adresse"
+            "approved": "Genehmigt",
+            "description": "Du kannst auf Polkaswap verwiesen werden,<br\/>den Link oder Code des Referrers eingeben",
+            "referredBy": "Du wurdest von {referrer} empfohlen",
+            "info": "Wenn du eine Transaktionsgebühr zahlst,<br\/>gehen 10% an deinen Referrer",
+            "referredLablel": "Empfohlene Adresse"
         }
     },
     "transactionDetailsText": "Transaktionsdetails",
@@ -944,7 +944,7 @@
         "invalid": "Ungültiger QR-Code"
     },
     "bridgeTransferNotification": {
-        "addToken": "Fügen Sie {symbol} zu @:metamask hinzu",
+        "addToken": "Füge {symbol} zu @:metamask hinzu",
         "title": "Bridge-Transaktion erfolgreich"
     }
 }
