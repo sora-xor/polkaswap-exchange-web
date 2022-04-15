@@ -2,6 +2,7 @@ import isNil from 'lodash/fp/isNil';
 import { Component, Mixins } from 'vue-property-decorator';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
@@ -31,7 +32,7 @@ export default class SelectAsset extends Mixins(DialogMixin, AssetsSearchMixin) 
     excludeAsset,
   }: {
     assets: Array<Asset | RegisteredAccountAsset>;
-    accountAssetsAddressTable: any;
+    accountAssetsAddressTable: WALLET_TYPES.AccountAssetsTable;
     notNullBalanceOnly?: boolean;
     accountAssetsOnly?: boolean;
     excludeAsset?: Asset | AccountAsset;

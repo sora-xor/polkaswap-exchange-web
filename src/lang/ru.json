@@ -43,7 +43,8 @@
             "ClaimRewards": "Награды получены успешно {rewards}",
             "ReferralReserveXor": "XOR успешно зарезервированы",
             "ReferralUnreserveXor": "XOR успешно выведены из резерва",
-            "ReferralSetInvitedUser": "Реферал успешно установлен"
+            "ReferralSetInvitedUser": "Реферал успешно установлен",
+            "SwapAndSend": "Совершен обмен {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Не удалось получить вознаграждения {rewards}",
             "ReferralReserveXor": "Не удалось зарезервировать XOR",
             "ReferralUnreserveXor": "Не удалось вывести XOR из резерва",
-            "ReferralSetInvitedUser": "Не удалось установить реферала"
+            "ReferralSetInvitedUser": "Не удалось установить реферала",
+            "SwapAndSend": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
-        "ReferralSetInvitedUser": "Установить реферала"
+        "ReferralSetInvitedUser": "Установить реферала",
+        "SwapAndSend": "Обменять и отправить"
     },
     "polkadotjs": {
         "noExtensions": "Расширение Polkadot.js не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
@@ -141,7 +144,9 @@
         "details": "Детали"
     },
     "asset": {
-        "remove": "Удалить актив"
+        "remove": "Удалить актив",
+        "select": "Выберите актив",
+        "recieve": "Получить {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -401,8 +406,8 @@
         "enterAmount": "Введите сумму"
     },
     "transfers": {
-        "from": "От",
-        "to": "Кому"
+        "from": "Из",
+        "to": "На"
     },
     "pageNotFound": {
         "title": "Страница не найдена",
@@ -774,7 +779,8 @@
         "claimableAmountDoneVesting": "Требуемая сумма (наделение завершено)",
         "groups": {
             "strategic": "Стратегические вознаграждения",
-            "external": "Вознаграждения за подключенный аккаунт Ethereum"
+            "external": "Вознаграждения за подключенный аккаунт Ethereum",
+            "crowdloan": "Crowdloan вознаграждения"
         },
         "Rewards": "Награды",
         "ReferralProgram": "@:referralProgram.title"
@@ -917,8 +923,30 @@
             "hasReferrerTitle": "Вы уже установили реферера",
             "hasReferrerDescription": "К сожалению, вы можете установить только одного реферера",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Добавьте реферера",
+            "titleReferrer": "Ваш реферер",
+            "placeholder": "Введите ссылку или код приглашения",
+            "label": "Пригласительная ссылка или код",
+            "approve": "Подписать",
+            "approved": "Подтвержденный",
+            "description": "Чтобы быть привлеченным на Polkaswap,<br\/>введите ссылку или код реферера",
+            "referredBy": "Вы привлечены {referrer}",
+            "info": "Когда вы заплатите комиссию за транзакцию,<br\/>10% перейдет вашему рефереру",
+            "referredLablel": "Адрес реферера"
         }
     },
     "transactionDetailsText": "Детали транзакции",
-    "createTokenTextNFT": "Создать NFT"
+    "createTokenTextNFT": "Создать NFT",
+    "code": {
+        "download": "Скачать QR-код",
+        "upload": "Сканировать QR-код",
+        "recieve": "Получить",
+        "invalid": "Неверный QR-код"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Добавить {symbol} в @:metamask",
+        "title": "Транзакция моста прошла успешно"
+    }
 }

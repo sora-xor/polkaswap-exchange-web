@@ -1,7 +1,6 @@
 <template>
   <dialog-base
     :visible.sync="visibility"
-    :before-close="beforeClose"
     :title="t('selectNodeDialog.title')"
     :class="['select-node-dialog', dialogCustomClass]"
   >
@@ -30,14 +29,14 @@
 <script lang="ts">
 import pick from 'lodash/fp/pick';
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, Getter, State } from 'vuex-class';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { NodeModel } from '@/components/Settings/Node/consts';
 import { Node, NodeItem, ConnectToNodeOptions } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
+import { getter, state, action } from '@/store/decorators';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import DialogBase from './DialogBase.vue';
@@ -54,19 +53,21 @@ const NodeInfoView = 'NodeInfoView';
   },
 })
 export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.LoadingMixin) {
-  @Getter nodeList!: Array<Node>;
-  @Getter soraNetwork!: string; // wallet
-  @State((state) => state.settings.defaultNodes) defaultNodes!: Array<Node>;
-  @State((state) => state.settings.nodeAddressConnecting) nodeAddressConnecting!: string;
-  @State((state) => state.settings.nodeConnectionAllowance) nodeConnectionAllowance!: boolean;
-  @State((state) => state.settings.selectNodeDialogVisibility) selectNodeDialogVisibility!: boolean;
-  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
-  @Action addCustomNode!: (node: Node) => Promise<void>;
-  @Action updateCustomNode!: (options: any) => Promise<void>;
-  @Action removeCustomNode!: (node: any) => Promise<void>;
+  @state.settings.defaultNodes private defaultNodes!: Array<Node>;
+  @state.settings.nodeAddressConnecting private nodeAddressConnecting!: string;
+  @state.settings.selectNodeDialogVisibility private selectNodeDialogVisibility!: boolean;
+  @state.settings.nodeConnectionAllowance nodeConnectionAllowance!: boolean;
+  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+
+  @getter.settings.nodeList private nodeList!: Array<Node>;
+
+  @action.settings.connectToNode private connectToNode!: (args: ConnectToNodeOptions) => Promise<void>;
+  @action.settings.addCustomNode private addCustomNode!: (node: Node) => Promise<void>;
+  @action.settings.updateCustomNode private updateCustomNode!: (args: { address: string; node: Node }) => Promise<void>;
+  @action.settings.removeCustomNode private removeCustomNode!: (node: Node) => Promise<void>;
 
   currentView = NodeListView;
-  selectedNode: any = {};
+  selectedNode: Partial<NodeItem> = {};
 
   get visibility(): boolean {
     return this.selectNodeDialogVisibility;
@@ -74,10 +75,13 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
 
   set visibility(flag: boolean) {
     this.setSelectNodeDialogVisibility(flag);
+    if (!flag) {
+      this.handleBack();
+    }
   }
 
   get connectedNodeAddress(): string {
-    return this.node.address;
+    return this.node?.address ?? '';
   }
 
   set connectedNodeAddress(address: string) {
@@ -101,7 +105,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   }
 
   get existingNodeIsSelected(): boolean {
-    return !!this.findNodeInListByAddress(this.selectedNode?.address);
+    return !!this.findNodeInListByAddress(this.selectedNode?.address ?? '');
   }
 
   get isNodeListView(): boolean {
@@ -136,14 +140,9 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     }
   }
 
-  navigateToNodeInfo(node: NodeItem | undefined): void {
+  navigateToNodeInfo(node?: NodeItem): void {
     this.selectedNode = node || {};
     this.changeView(NodeInfoView);
-  }
-
-  beforeClose(closeFn: VoidFunction): void {
-    closeFn();
-    this.handleBack();
   }
 
   handleBack(): void {

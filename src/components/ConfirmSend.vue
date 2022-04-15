@@ -31,7 +31,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter, State } from 'vuex-class';
 import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
@@ -41,8 +40,7 @@ import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-
-const namespace = 'swap';
+import { state, getter } from '@/store/decorators';
 
 @Component({
   components: {
@@ -52,10 +50,9 @@ const namespace = 'swap';
   },
 })
 export default class ConfirmSend extends Mixins(mixins.TransactionMixin, DialogMixin) {
-  @State((state) => state[namespace].fromValue) fromValue!: string;
-
-  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
-  @Getter networkFees!: NetworkFeesObject;
+  @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
+  @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
+  @state.swap.fromValue fromValue!: string;
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: '', type: String }) readonly from!: string;

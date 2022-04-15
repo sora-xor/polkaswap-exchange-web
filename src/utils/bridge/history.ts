@@ -8,10 +8,17 @@ import { SubqueryExplorerService, historyElementsFilter, SUBQUERY_TYPES } from '
 import ethersUtil from '@/utils/ethers-util';
 import { bridgeApi } from './api';
 import { STATES } from './types';
-import { isOutgoingTransaction, getSoraHashByEthereumHash, getEvmTxRecieptByHash } from './utils';
+import {
+  isOutgoingTransaction,
+  getSoraHashByEthereumHash,
+  getEvmTxRecieptByHash,
+  getSoraBlockHash,
+  getSoraBlockTimestamp,
+} from './utils';
 import { ZeroStringValue } from '@/consts';
 
-import type { BridgeHistory, NetworkFeesObject, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';
+import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
+import type { RegisteredAccountAssetObject } from '@/store/assets/types';
 
 type DataMap<T> = {
   [key: string]: T;
@@ -59,7 +66,9 @@ export class EthBridgeHistory {
     this.etherscanInstance = new ethers.providers.EtherscanProvider(network, this.etherscanApiKey);
   }
 
-  private async getEthStartBlock(timestamp: number) {
+  private async getEthStartBlock(timestampMs: number): Promise<number> {
+    const timestamp = Math.round(timestampMs / 1000); // in seconds
+
     if (!this.ethStartBlock[timestamp]) {
       this.ethStartBlock[timestamp] = +(await this.etherscanInstance.fetch('block', {
         action: 'getblocknobytime',
@@ -118,6 +127,20 @@ export class EthBridgeHistory {
     }, {});
   }
 
+  private async getFromTimestamp(historyElements: HistoryElement[]) {
+    const historyElement = last(historyElements) as HistoryElement;
+
+    // if the last item is Incoming trasfer, timestamp will be sora network start time
+    if (historyElement.module === SUBQUERY_TYPES.ModuleNames.BridgeMultisig) {
+      const soraStartBlock = await getSoraBlockHash(1);
+      const soraStartTimestamp = await getSoraBlockTimestamp(soraStartBlock);
+
+      return soraStartTimestamp;
+    }
+
+    return historyElement.timestamp * 1000;
+  }
+
   public async findEthTxBySoraHash(
     address: string,
     hash: string,
@@ -154,19 +177,32 @@ export class EthBridgeHistory {
   public async fetchHistoryElements(address: string, timestamp = 0): Promise<HistoryElement[]> {
     const operations = [Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming];
     const filter = historyElementsFilter({ address, operations, timestamp });
-    const variables = { filter };
-    const { edges } = await SubqueryExplorerService.getAccountTransactions(variables);
-    const history = edges.map((edge) => edge.node);
+    const history: HistoryElement[] = [];
+
+    let hasNext = true;
+    let after = '';
+
+    do {
+      const variables = { after, filter, first: 100 };
+      const {
+        edges,
+        pageInfo: { hasNextPage, endCursor },
+      } = await SubqueryExplorerService.getAccountTransactions(variables);
+      const elements = edges.map((edge) => edge.node) as HistoryElement[];
+      hasNext = hasNextPage;
+      after = endCursor;
+      history.push(...elements);
+    } while (hasNext);
 
     return history as HistoryElement[];
   }
 
   public async updateAccountHistory(
     address: string,
-    assets: { [key: string]: RegisteredAccountAsset & RegisteredAsset },
+    assets: RegisteredAccountAssetObject,
     networkFees: NetworkFeesObject,
     contracts?: string[],
-    updateCallback?: AsyncVoidFn
+    updateCallback?: AsyncVoidFn | VoidFunction
   ): Promise<void> {
     const currentHistory = bridgeApi.historyList as BridgeHistory[];
     const historyElements = await this.fetchHistoryElements(address, this.historySyncTimestamp);
@@ -175,7 +211,7 @@ export class EthBridgeHistory {
 
     const { externalNetwork } = this;
 
-    const fromTimestamp = last(historyElements)?.timestamp as number;
+    const fromTimestamp = await this.getFromTimestamp(historyElements);
     const historySyncTimestampUpdated = first(historyElements)?.timestamp as number;
 
     for (const historyElement of historyElements) {
@@ -218,7 +254,11 @@ export class EthBridgeHistory {
       const to = isOutgoing ? historyElementData.sidechainAddress : recieptData?.from;
       const ethereumNetworkFee = recieptData?.ethereumNetworkFee;
       const blockHeight = ethereumTx ? String(ethereumTx.blockNumber) : undefined;
-      const evmTimestamp = ethereumTx?.timestamp ? ethereumTx.timestamp * 1000 : Date.now();
+      const evmTimestamp = ethereumTx?.timestamp
+        ? ethereumTx.timestamp * 1000
+        : ethereumTx?.blockNumber
+        ? (await ethersUtil.getBlock(ethereumTx.blockNumber)).timestamp * 1000
+        : Date.now();
 
       const [startTime, endTime] = isOutgoing ? [soraTimestamp, evmTimestamp] : [evmTimestamp, soraTimestamp];
 

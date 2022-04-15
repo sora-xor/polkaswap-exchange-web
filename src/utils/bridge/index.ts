@@ -15,22 +15,23 @@ import {
   getEvmTxRecieptByHash,
 } from './utils';
 
-import type { BridgeHistory, RegisteredAsset } from '@sora-substrate/util';
+import type { BridgeHistory } from '@sora-substrate/util';
 import type { HandleTransactionPayload } from './types';
 import type { EthBridgeHistory } from './history';
+import type { SignTxResult } from '@/store/bridge/types';
+import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
-type SignedEvmTxResult = {
-  hash: string;
-  fee?: string;
-};
+type SignedEvmTxResult = SignTxResult;
 
 type SignEvm = (id: string) => Promise<SignedEvmTxResult>;
-type GetAssetByAddress = (address: string) => RegisteredAsset;
+type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAssetWithDecimals>;
 type GetActiveHistoryItem = () => Nullable<BridgeHistory>;
 type GetBridgeHistoryInstance = () => Promise<EthBridgeHistory>;
+type ShowNotification = (tx: BridgeHistory) => void;
 
 interface BridgeCommonOptions {
-  updateHistory: AsyncVoidFn;
+  updateHistory: VoidFunction;
+  showNotification: ShowNotification;
   getAssetByAddress: GetAssetByAddress;
   getActiveHistoryItem: GetActiveHistoryItem;
   getBridgeHistoryInstance: GetBridgeHistoryInstance;
@@ -49,7 +50,8 @@ interface BridgeReducerOptions extends BridgeCommonOptions {
 
 class BridgeTransactionStateHandler {
   protected readonly signEvm!: SignEvm;
-  protected readonly updateHistory!: AsyncVoidFn;
+  protected readonly updateHistory!: VoidFunction;
+  protected readonly showNotification!: ShowNotification;
   protected readonly getAssetByAddress!: GetAssetByAddress;
   protected readonly getActiveHistoryItem!: GetActiveHistoryItem;
   protected readonly getBridgeHistoryInstance!: GetBridgeHistoryInstance;
@@ -57,12 +59,14 @@ class BridgeTransactionStateHandler {
   constructor({
     signEvm,
     updateHistory,
+    showNotification,
     getAssetByAddress,
     getActiveHistoryItem,
     getBridgeHistoryInstance,
   }: BridgeReducerOptions) {
     this.signEvm = signEvm;
     this.updateHistory = updateHistory;
+    this.showNotification = showNotification;
     this.getAssetByAddress = getAssetByAddress;
     this.getActiveHistoryItem = getActiveHistoryItem;
     this.getBridgeHistoryInstance = getBridgeHistoryInstance;
@@ -74,21 +78,21 @@ class BridgeTransactionStateHandler {
 
       if (transaction.status === BridgeTxStatus.Done) return;
       if (status && transaction.status !== status) {
-        await this.updateTransactionParams(id, { status });
+        this.updateTransactionParams(id, { status });
       }
 
       if (typeof handler === 'function') {
         await handler(id);
       }
 
-      await this.updateTransactionParams(id, { transactionState: nextState });
+      this.updateTransactionParams(id, { transactionState: nextState });
     } catch (error) {
       console.error(error);
 
       const transaction = getTransaction(id);
       const failed = transaction.status === BridgeTxStatus.Failed;
 
-      await this.updateTransactionParams(id, {
+      this.updateTransactionParams(id, {
         status: BridgeTxStatus.Failed,
         transactionState: rejectState,
         endTime: failed ? transaction.endTime : Date.now(),
@@ -96,18 +100,28 @@ class BridgeTransactionStateHandler {
     }
   }
 
-  async updateTransactionParams(id: string, params = {}): Promise<void> {
+  updateTransactionParams(id: string, params = {}): void {
     updateHistoryParams(id, params);
 
-    await this.updateHistory();
+    this.updateHistory();
   }
 
-  async onComplete(id: string): Promise<void> {
-    await this.updateTransactionParams(id, { endTime: Date.now() });
+  onComplete(id: string): void {
+    this.updateTransactionParams(id, { endTime: Date.now() });
+    const tx = getTransaction(id);
+    const { type, assetAddress } = tx;
+    if (type === Operation.EthBridgeIncoming && assetAddress) {
+      const asset = store.getters.wallet.account.accountAssetsAddressTable[assetAddress];
+      if (!asset) {
+        // Add asset to account assets
+        store.dispatch.wallet.account.addAsset(assetAddress);
+      }
+    }
+    this.showNotification(tx);
   }
 
-  async updateTransactionStep(id: string): Promise<void> {
-    await this.updateTransactionParams(id, { transactionStep: 2 });
+  updateTransactionStep(id: string): void {
+    this.updateTransactionParams(id, { transactionStep: 2 });
   }
 
   async beforeSubmit(id: string): Promise<void> {
@@ -125,16 +139,16 @@ class BridgeTransactionStateHandler {
     const { ethereumNetworkFee, blockHeight } = (await getEvmTxRecieptByHash(tx.ethereumHash as string)) || {};
 
     if (!ethereumNetworkFee || !blockHeight) {
-      await this.updateTransactionParams(id, { ethereumHash: undefined, ethereumNetworkFee: undefined });
+      this.updateTransactionParams(id, { ethereumHash: undefined, ethereumNetworkFee: undefined });
       throw new Error(`[Bridge]: Ethereum transaction not found, hash: ${tx.ethereumHash}. 'ethereumHash' is reset`);
     }
 
     // In BridgeHistory 'blockHeight' will store evm block number
-    await this.updateTransactionParams(id, { ethereumNetworkFee, blockHeight });
+    this.updateTransactionParams(id, { ethereumNetworkFee, blockHeight });
   }
 
   async onEvmSubmitted(id: string): Promise<void> {
-    await this.updateTransactionParams(id, { transactionState: STATES.EVM_PENDING });
+    this.updateTransactionParams(id, { transactionState: STATES.EVM_PENDING });
 
     const tx = getTransaction(id);
 
@@ -144,7 +158,7 @@ class BridgeTransactionStateHandler {
       try {
         const { hash: ethereumHash, fee } = await this.signEvm(id);
 
-        await this.updateTransactionParams(id, {
+        this.updateTransactionParams(id, {
           ethereumHash,
           ethereumNetworkFee: fee ?? tx.ethereumNetworkFee,
         });
@@ -160,7 +174,7 @@ class BridgeTransactionStateHandler {
           );
 
           if (transaction) {
-            await this.updateTransactionParams(id, { ethereumHash: transaction.hash });
+            this.updateTransactionParams(id, { ethereumHash: transaction.hash });
             return;
           }
         }
@@ -190,7 +204,7 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
           rejectState: STATES.SORA_REJECTED,
           handler: async (id: string) => {
             await this.beforeSubmit(id);
-            await this.updateTransactionParams(id, { transactionState: STATES.SORA_PENDING });
+            this.updateTransactionParams(id, { transactionState: STATES.SORA_PENDING });
 
             const { blockId, to, amount, assetAddress } = getTransaction(id);
 
@@ -218,13 +232,13 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
           handler: async (id: string) => {
             const hash = await waitForSoraTransactionHash(id);
 
-            await this.updateTransactionParams(id, { hash });
+            this.updateTransactionParams(id, { hash });
 
             const tx = getTransaction(id);
 
             const { to } = await waitForApprovedRequest(tx);
 
-            await this.updateTransactionParams(id, { to });
+            this.updateTransactionParams(id, { to });
           },
         });
       }
@@ -233,7 +247,7 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
         return await this.handleState(transaction.id, {
           nextState: STATES.EVM_SUBMITTED,
           rejectState: STATES.SORA_REJECTED,
-          handler: async (id: string) => await this.updateTransactionStep(id),
+          handler: async (id: string) => this.updateTransactionStep(id),
         });
       }
 
@@ -266,7 +280,7 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
           status: BridgeTxStatus.Done,
           nextState: STATES.EVM_COMMITED,
           rejectState: STATES.EVM_REJECTED,
-          handler: async (id: string) => await this.onComplete(id),
+          handler: async (id: string) => this.onComplete(id),
         });
       }
 
@@ -315,7 +329,7 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
         return await this.handleState(transaction.id, {
           nextState: STATES.SORA_SUBMITTED,
           rejectState: STATES.EVM_REJECTED,
-          handler: async (id: string) => await this.updateTransactionStep(id),
+          handler: async (id: string) => this.updateTransactionStep(id),
         });
       }
 
@@ -342,7 +356,7 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
           handler: async (id: string) => {
             const tx = getTransaction(id);
             const { hash, blockId } = await waitForIncomingRequest(tx);
-            await this.updateTransactionParams(id, { hash, blockId });
+            this.updateTransactionParams(id, { hash, blockId });
           },
         });
       }
@@ -352,7 +366,7 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
           status: BridgeTxStatus.Done,
           nextState: STATES.SORA_COMMITED,
           rejectState: STATES.SORA_REJECTED,
-          handler: async (id: string) => await this.onComplete(id),
+          handler: async (id: string) => this.onComplete(id),
         });
       }
 
@@ -420,13 +434,14 @@ class Bridge {
 
 const appBridge = new Bridge({
   sign: {
-    [Operation.EthBridgeIncoming]: (id: string) => store.dispatch('bridge/signEvmTransactionEvmToSora', id),
-    [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch('bridge/signEvmTransactionSoraToEvm', id),
+    [Operation.EthBridgeIncoming]: (id: string) => store.dispatch.bridge.signEvmTransactionEvmToSora(id),
+    [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEvmTransactionSoraToEvm(id),
   },
-  updateHistory: () => store.dispatch('bridge/getHistory'),
-  getAssetByAddress: (address: string) => store.getters['assets/getAssetDataByAddress'](address),
-  getActiveHistoryItem: () => store.getters['bridge/historyItem'],
-  getBridgeHistoryInstance: () => store.dispatch('bridge/getBridgeHistoryInstance'),
+  updateHistory: () => store.commit.bridge.setHistory(),
+  showNotification: (tx: BridgeHistory) => store.commit.bridge.setNotificationData(tx),
+  getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
+  getActiveHistoryItem: () => store.getters.bridge.historyItem,
+  getBridgeHistoryInstance: () => store.dispatch.bridge.getBridgeHistoryInstance(),
 });
 
 export { bridgeApi, appBridge };

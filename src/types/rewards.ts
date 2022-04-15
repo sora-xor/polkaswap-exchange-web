@@ -1,5 +1,5 @@
 import type { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
-import type { RewardInfo } from '@sora-substrate/util/build/rewards/types';
+import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 export interface RewardsAmountHeaderItem {
@@ -9,7 +9,7 @@ export interface RewardsAmountHeaderItem {
 
 export interface RewardInfoGroup {
   type: RewardingEvents | string;
-  limit: Array<RewardsAmountHeaderItem>;
+  limit?: Array<RewardsAmountHeaderItem>;
   total?: RewardsAmountHeaderItem;
   title?: string;
   rewards?: Array<RewardInfo>;
@@ -23,3 +23,10 @@ export interface RewardsAmountTableItem {
   limit?: Array<RewardsAmountHeaderItem>;
   rewards?: Array<RewardsAmountTableItem>;
 }
+
+export type SelectedRewards = {
+  internal: Nullable<RewardInfo>;
+  vested: Nullable<RewardsInfo>;
+  crowdloan: Array<RewardInfo>;
+  external: Array<RewardInfo>;
+};

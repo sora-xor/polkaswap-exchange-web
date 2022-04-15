@@ -43,7 +43,8 @@
             "ClaimRewards": "Beloning succesvol geclaimd {rewards}",
             "ReferralReserveXor": "Bonded XOR met succes",
             "ReferralUnreserveXor": "Unbonded XOR met succes",
-            "ReferralSetInvitedUser": "Verwijzing is succesvol ingesteld"
+            "ReferralSetInvitedUser": "Verwijzing is succesvol ingesteld",
+            "SwapAndSend": "{amount} {symbol} geruild voor {amount2} {symbol2} en {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Kan geen beloningen claimen {beloningen}",
             "ReferralReserveXor": "Kan XOR niet binden",
             "ReferralUnreserveXor": "Kan de obligatie niet ongedaan maken XOR",
-            "ReferralSetInvitedUser": "Kan verwijzing niet instellen"
+            "ReferralSetInvitedUser": "Kan verwijzing niet instellen",
+            "SwapAndSend": "Kan {amount} {symbol} niet omwisselen voor {amount2} {symbol2} en {action} {direction} {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
-        "ReferralSetInvitedUser": "Verwijzing instellen"
+        "ReferralSetInvitedUser": "Verwijzing instellen",
+        "SwapAndSend": "Ruilen en verzenden"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen Polkadot.js-extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
@@ -141,7 +144,9 @@
         "details": "Details"
     },
     "asset": {
-        "remove": "Asset verwijderen"
+        "remove": "Asset verwijderen",
+        "select": "Selecteer een bezit",
+        "recieve": "Ontvang {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -773,7 +778,8 @@
         "claimableAmountDoneVesting": "Opeisbare beloningen",
         "groups": {
             "strategic": "Strategische beloningen",
-            "external": "Beloningen voor het verbonden ethereum-account"
+            "external": "Beloningen voor het verbonden ethereum-account",
+            "crowdloan": "Crowdloan beloningen"
         },
         "Rewards": "Beloningen",
         "ReferralProgram": "@:referralProgram.title"
@@ -916,8 +922,30 @@
             "hasReferrerTitle": "Je hebt je verwijzer al ingesteld",
             "hasReferrerDescription": "Helaas kun je er maar één instellen",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Voeg uw verwijzer toe",
+            "titleReferrer": "Uw verwijzer",
+            "placeholder": "Voer uitnodigingslink of code in",
+            "label": "Uitnodigingslink of code",
+            "approve": "Goedkeuren",
+            "approved": "Goedgekeurd",
+            "description": "U kunt doorverwezen worden naar Polkaswap,<br\/>typ de link of code van de verwijzer in",
+            "referredBy": "U bent doorverwezen door {referrer}",
+            "info": "Wanneer u transactiekosten betaalt,<br\/>gaat 10% naar uw verwijzer",
+            "referredLablel": "Doorverwezen adres"
         }
     },
     "transactionDetailsText": "Transactie Details",
-    "createTokenTextNFT": "NFT maken"
+    "createTokenTextNFT": "NFT maken",
+    "code": {
+        "download": "Downloaden QR-code",
+        "upload": "QR code scannen",
+        "recieve": "Ontvangen",
+        "invalid": "Ongeldige QR-code"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Voeg {symbol} toe aan @:metamask",
+        "title": "Overbrugtransactie succesvol"
+    }
 }

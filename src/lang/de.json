@@ -43,7 +43,8 @@
             "ClaimRewards": "Belohnung erfolgreich beansprucht {rewards}",
             "ReferralReserveXor": "Bonden von XOR erfolgreich",
             "ReferralUnreserveXor": "Unbonden von XOR erfolgreich",
-            "ReferralSetInvitedUser": "Referral wurde erfolgreich eingerichtet"
+            "ReferralSetInvitedUser": "Referral wurde erfolgreich eingerichtet",
+            "SwapAndSend": "{amount} {symbol} gegen {amount2} {symbol2} und {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Senden von {amount} {symbol} an {address} fehlgeschlagen",
@@ -55,23 +56,25 @@
             "ClaimRewards": "Belohnungen konnten nicht beansprucht werden {rewards}",
             "ReferralReserveXor": "Bonden von XOR fehlgeschlagen",
             "ReferralUnreserveXor": "Unbonden von XOR fehlgeschlagen",
-            "ReferralSetInvitedUser": "Festlegen des Referrals fehlgeschlagen"
+            "ReferralSetInvitedUser": "Festlegen des Referrals fehlgeschlagen",
+            "SwapAndSend": "{amount} {symbol} konnte nicht gegen {amount2} {symbol2} und {action} {direction} {address}"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
-        "ReferralSetInvitedUser": "Referral festlegen"
+        "ReferralSetInvitedUser": "Referral festlegen",
+        "SwapAndSend": "Tauschen und senden"
     },
     "polkadotjs": {
-        "noExtensions": "Es wurde keine Polkadot.js-Erweiterung gefunden. Bitte installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Es scheint keine Konten in deiner Polkadot.js-Erweiterung zu geben. Bitte füge ein Konto hinzu und versuche es erneut.",
-        "noAccount": "Polkadot.js Kontofehler. Bitte überprüfe dein Konto in der Polkadot.js-Erweiterung"
+        "noExtensions": "Es wurde keine Polkadot.js-Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Es scheint keine Konten in deiner Polkadot.js-Erweiterung zu geben. Bitte, füge ein Konto hinzu und versuche es erneut.",
+        "noAccount": "Polkadot.js Kontofehler. Bitte, überprüfe dein Konto in der Polkadot.js-Erweiterung"
     },
     "connection": {
         "title": "SORA-Netzwerk-Konto",
         "text": "Verbinde deine SORA-Netzwerk-Konten oder erstelle neue Konten mit der Polkadot{.js} -Browser-Erweiterung. Diese Erweiterung ermöglicht es dir, Transaktionen sicher zu unterzeichnen und Assets im SORA-Netzwerk zu verwalten.",
-        "install": "Es wurde keine Polkadot.js-Erweiterung gefunden. Bitte installiere die Erweiterung und <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">lade<\/a> diese Seite erneut.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
+        "install": "Es wurde keine Polkadot.js-Erweiterung gefunden. Bitte, installiere die Erweiterung und <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">lade<\/a> diese Seite erneut.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
         "noPermissions": "Berechtigungsanfrage versehentlich abgelehnt?<\/br>Derzeit verfügt die Polkadot{.js} -Erweiterung nicht über eine Berechtigungsverwaltung. Um dies zu umgehen, kannst du deinen Browser neu starten und diese Seite erneut aufrufen, um mit der Autorisierung fortzufahren.",
-        "noAccounts": "Es wurde kein Konto in deiner Polkadot{.js} -Browser-Erweiterung gefunden. Bitte füge ein Konto hinzu und versuche es nochmal.",
+        "noAccounts": "Es wurde kein Konto in deiner Polkadot{.js} -Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
         "loadingTitle": "Warten darauf, dass du den Zugriff auf die Polkadot{.js} -Erweiterung freigibst...",
         "action": {
@@ -135,13 +138,15 @@
             "locked": "- Gesperrt",
             "reserved": "- Reserviert",
             "total": "Gesamt",
-            "bonded": "- Gebunden"
+            "bonded": "- Gebonded"
         },
         "totalAssetsValue": "Gesamtwert deiner Assets:",
         "details": "Details"
     },
     "asset": {
-        "remove": "Asset entfernen"
+        "remove": "Asset entfernen",
+        "select": "Wählen Sie ein Asset",
+        "recieve": "Erhalte {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -222,11 +227,11 @@
                 "placeholderNoImage": "Lade die Datei hoch, indem du entweder einen Link eingibst oder aus dem lokalen Speicher auswählst",
                 "placeholderBadSource": "Die Datei konnte nicht verarbeitet werden",
                 "placeholderBadSourceAddition": "oder es wurde noch nicht auf IPFS hochgeladen",
-                "placeholderFileLimit": "Die Dateigröße überschreitet das Limit von {value} MB"
+                "placeholderFileLimit": "Die Dateigröße überschreitet das Limit von {value}MB"
             },
             "supply": {
                 "placeholder": "Token Vorrat",
-                "desc": "Anzahl der NFTs, die Sie erhalten werden.",
+                "desc": "Anzahl der NFTs, die du erhalten wirst.",
                 "quantity": "Menge"
             },
             "description": {
@@ -236,7 +241,7 @@
         "enterTokenDescription": "Beschreibung eingeben",
         "divisible": {
             "placeholder": "Teilbar",
-            "desc": "Fähigkeit von NFT, in Bruchteile zu unterteilen. Liquiditätsvorsorge funktioniert nur mit teilbaren Vermögenswerten"
+            "desc": "Fähigkeit von NFT, in Bruchteile zu unterteilen. Liquiditätsbereitstellung funktioniert nur mit teilbaren Assets"
         }
     },
     "transaction": {
@@ -269,7 +274,7 @@
         },
         "txId": "Transaktions-ID",
         "referrer": "Referrer",
-        "referral": "Verweisung"
+        "referral": "Referral"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -280,16 +285,16 @@
     "changeAccountText": "Konto wechseln",
     "connectedText": "Verbunden",
     "connectWalletTextTooltip": "Verbindung zum @:soraText -Netzwerk mit Polkadot{.js}",
-    "selectNodeText": "Netzwerkknoten auswählen",
+    "selectNodeText": "Netzwerk Node auswählen",
     "bridgeText": "Bridge",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Haftungsausschluss<\/span>: Diese Website wird von der @:soraText -Community verwaltet. Bevor du diese Website weiter nutzt, ließ bitte den @:polkaswapFaqLink und die Dokumentation, die eine detaillierte Erklärung zur Funktionsweise von Polkaswap enthält, sowie den @:memorandumLink und @:(privacyLink). Diese Dokumente sind entscheidend für eine sichere und positive Benutzererfahrung. Durch die Nutzung von Polkaswap bestätigst du, dass du diese Dokumente gelesen und verstanden hast. Du erkennst außerdem Folgendes an: 1) Deine alleinige Verantwortung für die Einhaltung aller Gesetze, die für deine spezielle Nutzung von Polkaswap in deiner Rechtsordnung gelten; 2) Dein Verständnis, dass die aktuelle Version von Polkaswap eine Alpha-Version ist: Sie wurde nicht vollständig getestet und einige Funktionen können möglicherweise nicht wie vorgesehen verlaufen; und 3) Dein Verständnis und deine freiwillige Akzeptanz der Risiken, die mit der Verwendung von Polkaswap verbunden sind, einschließlich, aber nicht beschränkt auf das Risiko des Verlustes von Token. Noch einmal: Bitte fahre nicht fort, ohne @:polkaswapFaqLink, @:memorandumLink und @:privacyLink gelesen zu haben!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Haftungsausschluss<\/span>: Diese Website wird von der @:soraText -Community verwaltet. Bevor du diese Website weiter nutzt, lies bitte den @:polkaswapFaqLink und die Dokumentation, die eine detaillierte Erklärung zur Funktionsweise von Polkaswap enthält, sowie den @:memorandumLink und @:(privacyLink). Diese Dokumente sind entscheidend für eine sichere und positive Benutzererfahrung. Durch die Nutzung von Polkaswap bestätigst du, dass du diese Dokumente gelesen und verstanden hast. Du erkennst außerdem Folgendes an: 1) Deine alleinige Verantwortung für die Einhaltung aller Gesetze, die für deine spezielle Nutzung von Polkaswap in deiner Rechtsordnung gelten; 2) Dein Verständnis, dass die aktuelle Version von Polkaswap eine Alpha-Version ist: Sie wurde nicht vollständig getestet und einige Funktionen können möglicherweise nicht wie vorgesehen verlaufen; und 3) Dein Verständnis und deine freiwillige Akzeptanz der Risiken, die mit der Verwendung von Polkaswap verbunden sind, einschließlich, aber nicht beschränkt auf das Risiko des Verlustes von Token. Noch einmal: Bitte, fahre nicht fort, ohne @:polkaswapFaqLink, @:memorandumLink und @:privacyLink gelesen zu haben!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Bereitgestellt von",
     "confirmTransactionText": "Bestätige die Transaktion in {direction}",
     "retryText": "Wiederholen",
     "networkFeeText": "Netzwerkgebühr",
     "networkFeeTooltipText": "Die Netzwerkgebühr wird verwendet, um das Wachstum und eine stabile Leistung des @:soraText -Systems sicherzustellen.",
-    "ethNetworkFeeTooltipText": "Bitte beachte, dass die auf Polkaswap angezeigten Ethereum-Netzwerkgebühren nur grobe Schätzungen sind. Du kannst den korrekten Gebührenbetrag in deinem verbundenen Ethereum-Wallet sehen, bevor du die Transaktion bestätigst.",
+    "ethNetworkFeeTooltipText": "Bitte, beachte, dass die auf Polkaswap angezeigten Ethereum-Netzwerkgebühren nur grobe Schätzungen sind. Du kannst den korrekten Gebührenbetrag in deinem verbundenen Ethereum-Wallet sehen, bevor du die Transaktion bestätigst.",
     "marketText": "Markt",
     "marketAlgorithmText": "Marktalgorithmus",
     "firstPerSecond": "{first} pro {second}",
@@ -369,7 +374,7 @@
         },
         "messages": {
             "connected": "Verbindung mit dem Node hergestellt\n {address}\n",
-            "selectNode": "Bitte wähle den zu verbindenden Node aus der Nodeliste"
+            "selectNode": "Bitte, wähle den zu verbindenden Node aus der Nodeliste"
         },
         "warnings": {
             "disconnect": "Verbindung zu der Node ist verloren gegangen. Verbindung wird wiederhergestellt..."
@@ -385,8 +390,8 @@
         "selectNodeForEnvironment": "Wähle einen Node für das {environment} Umfeld:",
         "nodeTitle": "{chain} gehostet von {name}",
         "messages": {
-            "emptyName": "Bitte gebe den Namen des Nodes ein",
-            "emptyAddress": "Bitte gebe die Adresse des Nodes ein",
+            "emptyName": "Bitte, gebe den Namen des Nodes ein",
+            "emptyAddress": "Bitte, gebe die Adresse des Nodes ein",
             "incorrectProtocol": "Die Adresse sollte mit ws:\/\/ oder wss:\/\/ beginnen",
             "incorrectAddress": "Falsche Adresse"
         },
@@ -471,7 +476,7 @@
         "insufficientBalance": "@:insufficientBalanceText",
         "price": "Preis",
         "transactionSubmitted": "Transaktion übermittelt",
-        "transactionMessage": "{firstToken} und {secondToken}\n",
+        "transactionMessage": "{firstToken} und {secondToken}",
         "confirm": "Bestätigen",
         "ok": "OK"
     },
@@ -546,7 +551,7 @@
         },
         "customAsset": {
             "title": "Benutzerdefiniert",
-            "customInfo": "Wichtig! Benutzerdefinierte Token müssen in @:soraText registriert sein.",
+            "customInfo": "Wichtig! Benutzerdefinierte Token müssen in @:(soraText) registriert sein.",
             "registerToken": "Token registrieren",
             "addressPlaceholder": "Asset-ID",
             "symbolPlaceholder": "Token Symbol",
@@ -587,7 +592,7 @@
             "done": "Erfolgreich",
             "waitingForConfirmation": "Warten auf Bestätigung..."
         },
-        "wait30Block": "Bitte warte 30 Blockbestätigungen",
+        "wait30Block": "Bitte, warte 30 Blockbestätigungen",
         "viewInEtherscan": "Auf Etherscan anzeigen",
         "networkTitle": "{network} Transaktion",
         "transactionHash": "Transaktions-ID",
@@ -741,7 +746,7 @@
         "hint": {
             "connectExternalAccount": "Verbinde ein @:ethereumText Konto, um nach verfügbaren PSWAP und VAL Belohnungen zu prüfen.",
             "connectAccounts": "Um PSWAP und VAL Belohnungen zu beanspruchen, musst du sowohl dein @:soraText Konto als auch dein @:ethereumText Konto verbinden.",
-            "connectAnotherAccount": "Anderes @:ethereumText Konto verbinden um es auf PSWAP und VAL Belohnungen zu prüfen",
+            "connectAnotherAccount": "Anderes @:ethereumText Konto verbinden um es auf PSWAP und VAL Belohnungen zu prüfen.",
             "howToClaimRewards": "Um deine {symbols} Belohnungen zu beanspruchen, musst du {count} {transactions} zu {destination} signieren. Die Belohnungen werden auf dein @:soraText Konto eingezahlt."
         },
         "action": {
@@ -773,7 +778,8 @@
         "claimableAmountDoneVesting": "Beanspruchbare Belohnungen",
         "groups": {
             "strategic": "Strategische Belohnungen",
-            "external": "Belohnungen für das verbundene Ethereum-Konto"
+            "external": "Belohnungen für das verbundene Ethereum-Konto",
+            "crowdloan": "Crowdloan Belohnungen"
         },
         "Rewards": "Belohnungen",
         "ReferralProgram": "@:referralProgram.title"
@@ -783,8 +789,8 @@
         "metamask": "@:metamask",
         "messages": {
             "checkExtension": "{name} Erweiterung wird ausgeführt, bitte überprüfen",
-            "extensionLogin": "Bitte bei der {name} Erweiterung anmelden",
-            "installExtension": "{name} Erweiterung nicht gefunden. Bitte installiere sie!\nErweiterung schon installiert? Bitte die Seite neu laden",
+            "extensionLogin": "Bitte, bei der {name} Erweiterung anmelden",
+            "installExtension": "{name} Erweiterung nicht gefunden. Bitte, installiere sie!\n\nErweiterung schon installiert? Bitte, die Seite neu laden",
             "reloadPage": "Seite neu laden"
         }
     },
@@ -813,23 +819,23 @@
             },
             "supportError": {
                 "title": "Token wird nicht unterstützt",
-                "text": "Leider wird der über @:moonpayText gekaufte Token noch nicht von der HASHI-Bridge in Polkaswap unterstützt. Normalerweise sollten nur die unterstützten Token über MoonPay in Polkaswap zum Kauf verfügbar sein, daher muss irgendwo etwas schief gelaufen sein. Bitte zögere nicht, die Community über diesen Fall im <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">Polkaswap Telegram group<\/a> zu informieren."
+                "text": "Leider wird der über @:moonpayText gekaufte Token noch nicht von der HASHI-Bridge in Polkaswap unterstützt. Normalerweise sollten nur die unterstützten Token über MoonPay in Polkaswap zum Kauf verfügbar sein, daher muss irgendwo etwas schief gelaufen sein. Bitte, zögere nicht, die Community über diesen Fall im <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">Polkaswap Telegram group<\/a> zu informieren."
             },
             "feeError": {
-                "title": "Nicht genügend ETH für die Brückentransaktion",
-                "text": "Leider ist die HASHI-Bridge-Transaktion fehlgeschlagen, da nicht genügend ETH vorhanden waren, um die Transaktionsgebühren des Ethereum-Netzwerks zu bezahlen. Bitte füge mehr ETH hinzu und versuche es erneut."
+                "title": "Nicht genügend ETH für die Bridge-Transaktion",
+                "text": "Leider ist die HASHI-Bridge-Transaktion fehlgeschlagen, da nicht genügend ETH vorhanden waren, um die Transaktionsgebühren des Ethereum-Netzwerks zu bezahlen. Bitte, füge mehr ETH hinzu und versuche es erneut."
             },
             "transactionError": {
                 "title": "Transaktion fehlgeschlagen",
-                "text": "Leider scheint die @:moonpayText Transaktion fehlgeschlagen zu sein. Bitte versuche es erneut. Für @:moonpayText Support besuche <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https:\/\/support.moonpay.com<\/a>"
+                "text": "Leider scheint die @:moonpayText Transaktion fehlgeschlagen zu sein. Bitte, versuche es erneut. Für @:moonpayText Support besuche <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\">https:\/\/support.moonpay.com<\/a>"
             },
             "amountError": {
                 "title": "Unzureichender Saldo",
-                "text": "Leider ist die HASHI-Bridge-Transaktion fehlgeschlagen, da nicht genügend Token für die Transaktion vorhanden waren. Bitte überprüfe deinen Ethereum-Kontostand und versuche es erneut."
+                "text": "Leider ist die HASHI-Bridge-Transaktion fehlgeschlagen, da nicht genügend Token für die Transaktion vorhanden waren. Bitte, überprüfe deinen Ethereum-Kontostand und versuche es erneut."
             },
             "accountAddressError": {
                 "title": "Falsches Ethereum-Konto",
-                "text": "Leider ist die HASHI-Bridge-Transaktion fehlgeschlagen, da die Empfängeradresse der Token in der @:moonpayText Order nicht mit deiner aktuellen Ethereum-Kontoadresse übereinstimmt. Bitte wechsle das Ethereum-Konto in der Erweiterung und versuche es erneut."
+                "text": "Leider ist die HASHI-Bridge-Transaktion fehlgeschlagen, da die Empfängeradresse der Token in der @:moonpayText Order nicht mit deiner aktuellen Ethereum-Kontoadresse übereinstimmt. Bitte, wechsle das Ethereum-Konto in der Erweiterung und versuche es erneut."
             }
         },
         "buttons": {
@@ -846,7 +852,7 @@
             "txReady": "Transaktion bereit für Bridge"
         },
         "tooltips": {
-            "transfer": "Token erfolgreich gekauft!\nKlicke hier, um die Bridge-Transaktion zu starten."
+            "transfer": "Token erfolgreich gekauft!\nKlicke hier, um die Bridge-Transaktion zu starten"
         }
     },
     "recievedText": "Erhalten",
@@ -866,9 +872,9 @@
         "title": "Market Maker Countdown",
         "blocks": "Blocks",
         "daysLeft": "Tage übrig",
-        "txs": "TXs",
-        "volume": "MM TX-Volume",
-        "description": "20 Millionen PSWAP \/ Monat werden an Market Makers mit mindestens 500 tx \/ Monat im Wert von über 1 XOR verteilt."
+        "txs": "Transaktionen",
+        "volume": "MM Transaktions-Volume",
+        "description": "20 Millionen PSWAP \/ Monat werden an Market Makers mit mindestens 500 Transaktionen \/ Monat im Wert von über 1 XOR verteilt."
     },
     "confirmNextTxFailure": {
         "header": "Achtung",
@@ -878,10 +884,10 @@
     },
     "blockNumberText": "Blocknummer",
     "referralProgram": {
-        "title": "Referral Program",
+        "title": "Referral Programm",
         "connectAccount": "Um Benutzer einzuladen, musst du dein SORA-Konto verbinden.",
         "bondedXOR": "XOR gebonded",
-        "referralsNumber": "{number} Empfehlungen",
+        "referralsNumber": "{number} Referrals",
         "startInviting": "Um mit dem Einladen zu beginnen, bonde eine beliebige Menge XOR.",
         "preview": "Lade neue Nutzer ein und erhalte 10% von deren Transaktionsgebühren.<br \/>Um zu beginnen, bonde eine beliebige Menge an XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Mehr erfahren<\/a>",
         "deposit": "Einzahlung",
@@ -902,7 +908,7 @@
         "transactionDetails": "Transaktionsdetails",
         "receivedRewards": "Erhaltene Belohnungen",
         "invitationLink": "Einladungslink",
-        "successCopy": "Promotionslink wird in die Zwischenablage kopiert",
+        "successCopy": "Referral-Adresse wird in die Zwischenablage kopiert",
         "bondTitle": "XOR bonden",
         "unbondTitle": "XOR unbonden",
         "confirm": {
@@ -910,14 +916,36 @@
             "bond": "Bonden bestätigen",
             "unbond": "Unbonden bestätigen",
             "inviteTitle": "Du wurdest zu Polkaswap eingeladen",
-            "inviteDescription": "Für jede Transaktion gehen 10% der Gebühr an deinen Referrer, ohne dass dir zusätzliche Kosten entstehen.",
+            "inviteDescription": "Für jede Transaktion, gehen 10% der Gebühr an deinen Referrer, ohne dass dir zusätzliche Kosten entstehen.",
             "signInvitation": "Genehmigen",
             "freeOfCharge": "Diese Aktion ist kostenfrei",
             "hasReferrerTitle": "Du hast deinen Referrer bereits festgelegt",
-            "hasReferrerDescription": "Leider kann man nur einen festlegen",
+            "hasReferrerDescription": "Du kannst leider nur einen festlegen",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Fügen Sie Ihren Referrer hinzu",
+            "titleReferrer": "Ihr Referrer",
+            "placeholder": "Einladungslink oder Code eingeben",
+            "label": "Einladungslink oder - code",
+            "approve": "Genehmigen",
+            "approved": "Zugelassen",
+            "description": "Sie können auf Polkaswap verwiesen werden,<br\/>den Link oder Code des Referrers ein",
+            "referredBy": "Sie wurden von {referrer}",
+            "info": "Wenn Sie eine Transaktionsgebühr zahlen,<br\/>gehen 10% an Ihren Referrer",
+            "referredLablel": "Angesprochene Adresse"
         }
     },
     "transactionDetailsText": "Transaktionsdetails",
-    "createTokenTextNFT": "NFT erstellen"
+    "createTokenTextNFT": "NFT erstellen",
+    "code": {
+        "download": "QR-Code herunterladen",
+        "upload": "QR scannen",
+        "recieve": "Erhalten",
+        "invalid": "Ungültiger QR-Code"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Fügen Sie {symbol} zu @:metamask hinzu",
+        "title": "Bridge-Transaktion erfolgreich"
+    }
 }

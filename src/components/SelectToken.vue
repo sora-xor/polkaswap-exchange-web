@@ -11,8 +11,14 @@
             prefix="s-icon-search-16"
             size="big"
           >
-            <template #suffix v-if="query">
-              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleClearSearch" />
+            <template #suffix>
+              <s-button
+                v-show="query"
+                type="link"
+                class="s-button--clear"
+                icon="clear-X-16"
+                @click="handleClearSearch"
+              />
             </template>
           </s-input>
         </div>
@@ -72,16 +78,18 @@
             size="big"
             @input="debouncedCustomAssetSearch"
           >
-            <template #suffix v-if="customAddress">
-              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="resetCustomAssetFields" />
+            <template #suffix>
+              <s-button
+                v-show="customAddress"
+                type="link"
+                class="s-button--clear"
+                icon="clear-X-16"
+                @click="resetCustomAssetFields"
+              />
             </template>
           </s-input>
         </div>
-        <s-scrollbar
-          v-if="sortedNonWhitelistAccountAssets.length"
-          :key="'filtered' + sortedNonWhitelistAccountAssets.length"
-          class="token-list-scrollbar"
-        >
+        <s-scrollbar class="token-list-scrollbar">
           <div class="asset-select__info" v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</div>
           <div class="asset-select__info" v-else-if="!customAsset && customAddress">
             {{ t('selectToken.custom.notFound') }}
@@ -162,7 +170,7 @@
                     {{ shouldBalanceBeHidden ? HiddenValue : FormattedZeroSymbol }}
                   </span>
                 </div>
-                <div class="token-item__remove" @click="handleRemoveCustomAsset(token, $event)">
+                <div class="token-item__remove" @click.stop="handleRemoveCustomAsset(token)">
                   <s-icon name="basic-trash-24" />
                 </div>
               </div>
@@ -177,8 +185,7 @@
 <script lang="ts">
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
-import { api, mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins, components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -187,8 +194,7 @@ import DialogBase from '@/components/DialogBase.vue';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { formatAssetBalance, debouncedInputHandler } from '@/utils';
-
-const namespace = 'assets';
+import { getter, state, action } from '@/store/decorators';
 
 @Component({
   components: {
@@ -223,16 +229,15 @@ export default class SelectToken extends Mixins(
   @Prop({ default: false, type: Boolean }) readonly accountAssetsOnly!: boolean;
   @Prop({ default: false, type: Boolean }) readonly notNullBalanceOnly!: boolean;
 
-  @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>;
-  @Getter('nonWhitelistDivisibleAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>;
-  @Getter('nonWhitelistDivisibleAssets', { namespace }) nonWhitelistAssets!: Array<Asset>;
-  // Wallet store
-  @Getter shouldBalanceBeHidden!: boolean;
-  @Getter whitelistIdsBySymbol!: any;
-  @Getter accountAssetsAddressTable!: any;
+  @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
 
-  // Wallet
-  @Action addAsset!: (address?: string) => Promise<void>;
+  @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
+  @getter.assets.nonWhitelistDivisibleAssets private nonWhitelistAssets!: Array<Asset>;
+  @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
+  @getter.wallet.account.accountAssetsAddressTable private accountAssetsAddressTable!: WALLET_TYPES.AccountAssetsTable;
+  @getter.assets.nonWhitelistDivisibleAccountAssets nonWhitelistAccountAssets!: Array<AccountAsset>;
+
+  @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
 
   resetCustomAssetFields(): void {
     this.isConfirmed = false;
@@ -335,12 +340,11 @@ export default class SelectToken extends Mixins(
   debouncedCustomAssetSearch = debouncedInputHandler(this.searchCustomAsset);
 
   async handleAddAsset(): Promise<void> {
-    await this.withLoading(async () => await this.addAsset((this.customAsset || {}).address));
+    await this.withLoading(async () => await this.addAsset(this.customAsset?.address));
     this.resetCustomAssetFields();
   }
 
-  handleRemoveCustomAsset(asset: AccountAsset, event: Event): void {
-    event.stopImmediatePropagation();
+  handleRemoveCustomAsset(asset: AccountAsset): void {
     api.assets.removeAccountAsset(asset.address);
     if (this.customAddress) {
       this.searchCustomAsset();

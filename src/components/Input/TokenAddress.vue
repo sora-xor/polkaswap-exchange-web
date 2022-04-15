@@ -2,7 +2,7 @@
   <div class="token-address">
     <span v-if="showName" class="token-address__name">{{ tokenName }}</span>
     <s-tooltip :content="t('selectToken.copy')" border-radius="mini" placement="bottom-end">
-      <span class="token-address__value" @click="handleCopy">({{ formattedAddress }})</span>
+      <span class="token-address__value" @click.stop="handleCopy">({{ formattedAddress }})</span>
     </s-tooltip>
   </div>
 </template>
@@ -35,8 +35,7 @@ export default class TokenAddress extends Mixins(TranslationMixin) {
     return formatAddress(this.tokenAddress, 10);
   }
 
-  async handleCopy(event: Event): Promise<void> {
-    event.stopImmediatePropagation();
+  async handleCopy(): Promise<void> {
     try {
       await copyToClipboard(this.tokenAddress);
       this.$notify({

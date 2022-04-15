@@ -29,11 +29,19 @@
               />
               <rewards-amount-table
                 class="rewards-table"
+                v-model="selectedCrowdloanRewardsModel"
+                :item="crowdloanRewardsGroupItem"
+                :theme="libraryTheme"
+                complex-group
+                is-codec-string
+              />
+              <rewards-amount-table
+                class="rewards-table"
                 v-model="selectedExternalRewardsModel"
                 :item="externalRewardsGroupItem"
                 :show-table="!!externalRewards.length"
-                :simple-group="true"
                 :theme="libraryTheme"
+                simple-group
               >
                 <div class="rewards-footer">
                   <s-divider />
@@ -85,7 +93,6 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, Getter, State } from 'vuex-class';
 import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
@@ -97,9 +104,11 @@ import ethersUtil from '@/utils/ethers-util';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { hasInsufficientXorForFee } from '@/utils';
-import { RewardsAmountHeaderItem, RewardInfoGroup } from '@/types/rewards';
-
+import { action, getter, mutation, state } from '@/store/decorators';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+
+import type { RewardsAmountHeaderItem, RewardInfoGroup, SelectedRewards } from '@/types/rewards';
+import type { ClaimRewardsParams } from '@/store/rewards/types';
 
 @Component({
   components: {
@@ -112,34 +121,37 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
   },
 })
 export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletConnectMixin, mixins.TransactionMixin) {
-  @State((state) => state.rewards.fee) fee!: CodecString;
-  @State((state) => state.rewards.feeFetching) feeFetching!: boolean;
-  @State((state) => state.rewards.rewardsFetching) rewardsFetching!: boolean;
-  @State((state) => state.rewards.rewardsClaiming) rewardsClaiming!: boolean;
-  @State((state) => state.rewards.rewardsRecieved) rewardsRecieved!: boolean;
-  @State((state) => state.rewards.transactionError) transactionError!: boolean;
-  @State((state) => state.rewards.transactionStep) transactionStep!: number;
+  @state.rewards.feeFetching private feeFetching!: boolean;
+  @state.rewards.rewardsFetching private rewardsFetching!: boolean;
+  @state.rewards.rewardsClaiming private rewardsClaiming!: boolean;
+  @state.rewards.transactionError private transactionError!: boolean;
+  @state.rewards.transactionStep private transactionStep!: number;
+  @state.rewards.fee fee!: CodecString;
+  @state.rewards.rewardsRecieved rewardsRecieved!: boolean;
 
-  @State((state) => state.rewards.internalRewards) internalRewards!: RewardInfo;
-  @State((state) => state.rewards.externalRewards) externalRewards!: Array<RewardInfo>;
-  @State((state) => state.rewards.vestedRewards) vestedRewards!: RewardsInfo;
-  @State((state) => state.rewards.selectedVestedRewards) selectedVestedRewards!: Nullable<RewardsInfo>;
-  @State((state) => state.rewards.selectedInternalRewards) selectedInternalRewards!: Nullable<RewardInfo>;
-  @State((state) => state.rewards.selectedExternalRewards) selectedExternalRewards!: Array<RewardInfo>;
+  @state.rewards.vestedRewards private vestedRewards!: RewardsInfo;
+  @state.rewards.crowdloanRewards private crowdloanRewards!: Array<RewardInfo>;
+  @state.rewards.selectedVestedRewards private selectedVestedRewards!: Nullable<RewardsInfo>;
+  @state.rewards.selectedInternalRewards private selectedInternalRewards!: Nullable<RewardInfo>;
+  @state.rewards.selectedExternalRewards private selectedExternalRewards!: Array<RewardInfo>;
+  @state.rewards.selectedCrowdloanRewards private selectedCrowdloanRewards!: Array<RewardInfo>;
+  @state.rewards.internalRewards internalRewards!: RewardInfo;
+  @state.rewards.externalRewards externalRewards!: Array<RewardInfo>;
 
-  @Getter libraryTheme!: Theme;
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
-  @Getter('rewardsAvailable', { namespace: 'rewards' }) rewardsAvailable!: boolean;
-  @Getter('internalRewardsAvailable', { namespace: 'rewards' }) internalRewardsAvailable!: boolean;
-  @Getter('vestedRewardsAvailable', { namespace: 'rewards' }) vestedRewardsAvailable!: boolean;
-  @Getter('externalRewardsAvailable', { namespace: 'rewards' }) externalRewardsAvailable!: boolean;
-  @Getter('rewardsByAssetsList', { namespace: 'rewards' }) rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
-  @Getter('transactionStepsCount', { namespace: 'rewards' }) transactionStepsCount!: number;
+  @getter.assets.xor private xor!: AccountAsset;
+  @getter.rewards.transactionStepsCount private transactionStepsCount!: number;
+  @getter.rewards.externalRewardsAvailable private externalRewardsAvailable!: boolean;
+  @getter.rewards.rewardsAvailable rewardsAvailable!: boolean;
+  @getter.rewards.internalRewardsAvailable internalRewardsAvailable!: boolean;
+  @getter.rewards.vestedRewardsAvailable vestedRewardsAvailable!: boolean;
+  @getter.rewards.rewardsByAssetsList rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
+  @getter.libraryTheme libraryTheme!: Theme;
 
-  @Action('reset', { namespace: 'rewards' }) reset!: AsyncVoidFn;
-  @Action('setSelectedRewards', { namespace: 'rewards' }) setSelectedRewards!: (params: any) => Promise<void>;
-  @Action('getRewards', { namespace: 'rewards' }) getRewards!: (address: string) => Promise<Array<RewardInfo>>;
-  @Action('claimRewards', { namespace: 'rewards' }) claimRewards!: (options: any) => Promise<void>;
+  @mutation.rewards.reset private reset!: VoidFunction;
+
+  @action.rewards.setSelectedRewards private setSelectedRewards!: (args: SelectedRewards) => Promise<void>;
+  @action.rewards.getRewards private getRewards!: (address: string) => Promise<void>;
+  @action.rewards.claimRewards private claimRewards!: (options: ClaimRewardsParams) => Promise<void>;
 
   private unwatchEthereum!: VoidFunction;
 
@@ -206,13 +218,20 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
     };
   }
 
+  get crowdloanRewardsGroupItem(): RewardInfoGroup {
+    return {
+      type: this.t('rewards.groups.crowdloan'),
+      rewards: this.crowdloanRewards,
+    };
+  }
+
   get selectedInternalRewardsModel(): boolean {
     return this.internalRewardsAvailable && this.selectedInternalRewards !== null;
   }
 
   set selectedInternalRewardsModel(flag: boolean) {
     const internal = flag ? this.internalRewards : null;
-    this.setSelectedRewards({ internal, external: this.selectedExternalRewards, vested: this.selectedVestedRewards });
+    this.setSelectedRewards({ ...this.selectedRewards, internal });
   }
 
   get selectedExternalRewardsModel(): boolean {
@@ -221,7 +240,7 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
 
   set selectedExternalRewardsModel(flag: boolean) {
     const external = flag ? this.externalRewards : [];
-    this.setSelectedRewards({ internal: this.selectedInternalRewards, external, vested: this.selectedVestedRewards });
+    this.setSelectedRewards({ ...this.selectedRewards, external });
   }
 
   get selectedVestedRewardsModel(): boolean {
@@ -230,11 +249,35 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
 
   set selectedVestedRewardsModel(flag: boolean) {
     const vested = flag ? this.vestedRewards : null;
-    this.setSelectedRewards({ internal: this.selectedInternalRewards, external: this.selectedExternalRewards, vested });
+    this.setSelectedRewards({ ...this.selectedRewards, vested });
+  }
+
+  get selectedCrowdloanRewardsModel(): Array<string> {
+    return this.selectedCrowdloanRewards.map((item) => item.type);
+  }
+
+  set selectedCrowdloanRewardsModel(value: Array<string>) {
+    const crowdloan = this.crowdloanRewards.reduce<RewardInfo[]>((buffer, item) => {
+      if (value.includes(item.type)) {
+        buffer.push(item);
+      }
+      return buffer;
+    }, []);
+
+    this.setSelectedRewards({ ...this.selectedRewards, crowdloan });
+  }
+
+  get selectedRewards(): SelectedRewards {
+    return {
+      internal: this.selectedInternalRewards,
+      external: this.selectedExternalRewards,
+      vested: this.selectedVestedRewards,
+      crowdloan: this.selectedCrowdloanRewards,
+    };
   }
 
   get isInsufficientBalance(): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.fee);
+    return hasInsufficientXorForFee(this.xor, this.fee);
   }
 
   get feeInfo(): object {

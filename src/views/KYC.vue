@@ -44,13 +44,12 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, State } from 'vuex-class';
-
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import { lazyComponent } from '@/router';
-import { Components, PageNames } from '@/consts';
+import { Components } from '@/consts';
+import { state, mutation } from '@/store/decorators';
 
 const KYCModel = {
   name: '',
@@ -67,8 +66,8 @@ const KYCModel = {
   },
 })
 export default class KYC extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @State((state) => state.settings.kycData) kycData!: any;
-  @Action setKycData!: (model: any) => void;
+  @mutation.settings.setKYCData private setKycData!: (model: any) => void;
+  @state.settings.kycData private kycData!: any;
 
   model: any = { ...KYCModel };
 
