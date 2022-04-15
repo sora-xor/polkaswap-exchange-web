@@ -8,22 +8,22 @@
           <component :is="tableGroupComponent" class="amount-table-item-group" :disabled="disabled" size="big">
             <div class="amount-table-item-content">
               <div class="amount-table-item-content__header">
-                <div v-for="(item, index) in formatted.limit" class="amount-table-item__amount" :key="index">
+                <div v-for="(limitItem, index) in formatted.limit" class="amount-table-item__amount" :key="index">
                   <formatted-amount-with-fiat-value
                     value-class="amount-table-value"
                     with-left-shift
                     value-can-be-hidden
                     :value="
                       isCodecString
-                        ? getFPNumberFromCodec(item.amount, item.asset.decimals).toLocaleString()
-                        : item.amount
+                        ? getFPNumberFromCodec(limitItem.amount, limitItem.asset.decimals).toLocaleString()
+                        : limitItem.amount
                     "
                     :font-size-rate="FontSizeRate.MEDIUM"
-                    :asset-symbol="item.asset.symbol"
+                    :asset-symbol="limitItem.asset.symbol"
                     :fiat-value="
                       isCodecString
-                        ? getFiatAmountByCodecString(item.amount, item.asset)
-                        : getFiatAmountByString(item.amount, item.asset)
+                        ? getFiatAmountByCodecString(limitItem.amount, limitItem.asset)
+                        : getFiatAmountByString(limitItem.amount, limitItem.asset)
                     "
                     :fiat-font-size-rate="FontSizeRate.MEDIUM"
                   >
@@ -49,13 +49,13 @@
                   </formatted-amount-with-fiat-value>
                 </div>
               </div>
-              <div v-if="formatted.rewards.length !== 0" class="amount-table-item-content__body">
+              <div v-if="formatted.rewards && formatted.rewards.length !== 0" class="amount-table-item-content__body">
                 <component
                   :is="tableItemComponent"
-                  v-for="(item, index) in formatted.rewards"
-                  :key="item.type"
-                  :label="item.type"
-                  :disabled="isDisabledRewardItem(item)"
+                  v-for="(rewardItem, index) in formatted.rewards"
+                  :key="rewardItem.type"
+                  :label="rewardItem.type"
+                  :disabled="isDisabledRewardItem(rewardItem)"
                   :class="['amount-table-subitem', { complex: complexGroup }]"
                 >
                   <s-divider v-if="!simpleGroup || index === 0" :class="['amount-table-divider', theme]" />
@@ -65,19 +65,19 @@
                       {{ t('rewards.totalVested') }} {{ t('rewards.forText') }}
                     </template>
                     <template v-if="!complexGroup">
-                      {{ item.title }}
+                      {{ rewardItem.title }}
                     </template>
                   </div>
-                  <template v-if="!simpleGroup">
-                    <div v-for="(item, index) in item.limit" :key="index" class="amount-table-subitem__row">
+                  <template v-if="!simpleGroup && rewardItem.limit">
+                    <div v-for="(limitItem, index) in rewardItem.limit" :key="index" class="amount-table-subitem__row">
                       <formatted-amount-with-fiat-value
                         value-class="amount-table-value"
                         with-left-shift
                         value-can-be-hidden
-                        :value="formatCodecNumber(item.amount)"
+                        :value="formatCodecNumber(limitItem.amount)"
                         :font-size-rate="FontSizeRate.MEDIUM"
-                        :asset-symbol="item.asset.symbol"
-                        :fiat-value="getFiatAmountByCodecString(item.amount, item.asset)"
+                        :asset-symbol="limitItem.asset.symbol"
+                        :fiat-value="getFiatAmountByCodecString(limitItem.amount, limitItem.asset)"
                         :fiat-font-size-rate="FontSizeRate.MEDIUM"
                       />
                     </div>

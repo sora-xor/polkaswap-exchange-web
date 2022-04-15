@@ -5,10 +5,7 @@
       <p v-if="!isLoggedIn" class="pool-info-container pool-info-container--empty">
         {{ t('pool.connectToWallet') }}
       </p>
-      <p
-        v-else-if="!accountLiquidity || !accountLiquidity.length || parentLoading"
-        class="pool-info-container pool-info-container--empty"
-      >
+      <p v-else-if="!accountLiquidity.length || parentLoading" class="pool-info-container pool-info-container--empty">
         {{ t('pool.liquidityNotFound') }}
       </p>
       <s-collapse v-else class="pool-list" :borders="true">
@@ -89,7 +86,6 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
@@ -98,8 +94,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-
-const namespace = 'pool';
+import { getter, state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -113,22 +108,25 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
-  // Wallet
-  @Getter isLoggedIn!: boolean;
-  @Getter assets!: Array<Asset>;
+  @state.wallet.account.assets private assets!: Array<Asset>;
+  @state.pool.accountLiquidity accountLiquidity!: Array<AccountLiquidity>;
 
-  @Getter('accountLiquidity', { namespace }) accountLiquidity!: Array<AccountLiquidity>;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
-  getAsset(address): any {
-    return this.assets.find((a) => a.address === address);
+  getAsset(address: string): Asset {
+    return this.assets.find((a) => a.address === address) as Asset;
   }
 
-  getAssetSymbol(address): string {
+  getAssetSymbol(address: string): string {
     const asset = this.assets.find((a) => a.address === address);
     return asset ? asset.symbol : this.t('pool.unknownAsset');
   }
 
   handleAddLiquidity(first?: string, second?: string): void {
+    if (!(first || second)) {
+      router.push({ name: PageNames.AddLiquidity });
+      return;
+    }
     const firstAddress = first || '';
     const secondAddress = second || '';
     router.push({ name: PageNames.AddLiquidity, params: { firstAddress, secondAddress } });
@@ -138,7 +136,7 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
     router.push({ name: PageNames.CreatePair });
   }
 
-  handleRemoveLiquidity(firstAddress, secondAddress): void {
+  handleRemoveLiquidity(firstAddress: string, secondAddress: string): void {
     router.push({ name: PageNames.RemoveLiquidity, params: { firstAddress, secondAddress } });
   }
 
@@ -146,9 +144,9 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
     router.push({ name: PageNames.Wallet });
   }
 
-  getPairTitle(firstToken, secondToken): string {
-    if (firstToken && secondToken) {
-      return `${firstToken}-${secondToken}`;
+  getPairTitle(firstTokenSymbol?: string, secondTokenSymbol?: string): string {
+    if (firstTokenSymbol && secondTokenSymbol) {
+      return `${firstTokenSymbol}-${secondTokenSymbol}`;
     }
     return '';
   }

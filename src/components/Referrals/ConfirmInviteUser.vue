@@ -28,23 +28,24 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
+import { state, mutation } from '@/store/decorators';
 
 @Component({
   components: { DialogBase },
 })
 export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, DialogMixin) {
-  @Getter('referral', { namespace: 'referrals' }) referral!: string;
-  @Getter('storageReferral', { namespace: 'referrals' }) storageReferral!: string;
+  @state.referrals.referrer private referrer!: string;
+  @state.referrals.storageReferrer private storageReferrer!: string;
 
-  @Action('setReferral', { namespace: 'referrals' }) setReferral!: (value: string) => Promise<void>;
+  @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
+  @mutation.referrals.approveReferrer private approveReferrer!: (value: boolean) => void;
 
   get hasReferrer(): boolean {
-    return !!this.referral;
+    return !!this.referrer;
   }
 
   get computedIconClasses(): Array<string> {
@@ -57,10 +58,12 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, D
 
   async handleConfirmInviteUser(): Promise<void> {
     if (!this.hasReferrer) {
+      this.approveReferrer(true);
       try {
-        await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferral));
+        await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferrer));
         this.$emit('confirm', true);
       } catch (error) {
+        this.approveReferrer(false);
         this.$emit('confirm');
       }
     }
@@ -68,9 +71,9 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, D
   }
 
   @Watch('isVisible')
-  private async isDialogVisible(isVisible: boolean): Promise<void> {
-    if (!isVisible && this.storageReferral) {
-      this.setReferral('');
+  private isDialogVisible(isVisible: boolean): void {
+    if (!isVisible && this.storageReferrer) {
+      this.resetStorageReferrer();
     }
   }
 }

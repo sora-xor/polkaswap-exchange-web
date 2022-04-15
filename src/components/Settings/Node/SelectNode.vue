@@ -31,13 +31,13 @@
               type="action"
               alternative
               icon="arrows-chevron-right-rounded-24"
-              @click="handleClick($event, node)"
+              @click.stop="handleNode(node)"
             />
           </div>
         </s-radio>
       </s-radio-group>
     </s-scrollbar>
-    <s-button class="select-node-button s-typography-button--large" @click="handleClick($event)">
+    <s-button class="select-node-button s-typography-button--large" @click.stop="handleNode()">
       {{ t('selectNodeDialog.addNode') }}
     </s-button>
   </div>
@@ -59,13 +59,6 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 
   @ModelSync('value', 'input', { type: String })
   readonly currentAddressValue!: string;
-
-  handleClick(event?: Event, node?: NodeItem) {
-    if (event) {
-      event.stopImmediatePropagation();
-    }
-    this.handleNode(node);
-  }
 }
 </script>
 

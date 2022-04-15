@@ -9,11 +9,11 @@
       <s-float-input
         class="s-input--token-value"
         size="medium"
-        :value="xorValue"
-        :decimals="(tokenXOR || {}).decimals"
+        :value="amount"
+        :decimals="xorDecimals"
         has-locale-string
         :delimiters="delimiters"
-        :max="getMax((tokenXOR || {}).address)"
+        :max="xorMaxValue"
         @input="handleInputXor"
       >
         <div slot="top" class="input-line">
@@ -22,20 +22,20 @@
               {{ t(`referralProgram.${isBond ? 'deposit' : 'action.unbond'}`) }}
             </span>
           </div>
-          <div v-if="tokenXOR && tokenXOR.balance" class="input-value">
+          <div v-if="xorBalance && xorBalance.transferable" class="input-value">
             <span class="input-value--uppercase">{{ t('referralProgram.balance') }}</span>
             <formatted-amount-with-fiat-value
               value-can-be-hidden
               with-left-shift
               value-class="input-value--primary"
-              :value="xorBalance"
-              :fiat-value="fiatXorBalance"
+              :value="xorFormattedBondedBalance"
+              :fiat-value="xorFormattedFiatBalance"
             />
           </div>
         </div>
         <div slot="right" class="s-flex el-buttons">
           <s-button
-            v-if="tokenXOR && isMaxButtonAvailable"
+            v-if="isMaxButtonAvailable"
             class="el-button--max s-typography-button--small"
             type="primary"
             alternative
@@ -45,17 +45,11 @@
           >
             {{ t('buttons.max') }}
           </s-button>
-          <token-select-button class="el-button--select-token" :token="tokenXOR" />
+          <token-select-button class="el-button--select-token" :token="xor" />
         </div>
         <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="tokenXOR && tokenXorPrice" is-fiat-value :value="tokenXorFiatAmount" />
-          <token-address
-            v-if="tokenXOR"
-            :name="tokenXOR.name"
-            :symbol="tokenXOR.symbol"
-            :address="tokenXOR.address"
-            class="input-value"
-          />
+          <formatted-amount v-if="xorPrice" is-fiat-value :value="formattedFiatAmount" />
+          <token-address :name="xorName" :symbol="xorSymbol" :address="xorAddress" class="input-value" />
         </div>
       </s-float-input>
       <s-button
@@ -92,20 +86,18 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, Getter, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
-import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getMaxValue, hasInsufficientBalance, asZeroValue, formatAssetBalance } from '@/utils';
 import router, { lazyComponent } from '@/router';
-import { Components, PageNames } from '@/consts';
-
-const namespace = 'referrals';
+import { Components, PageNames, ZeroStringValue } from '@/consts';
+import { getter, mutation, state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -123,84 +115,97 @@ export default class ReferralBonding extends Mixins(
   TranslationMixin,
   mixins.LoadingMixin
 ) {
-  @State((state) => state[namespace].xorValue) xorValue!: string;
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.referrals.amount amount!: string;
 
-  @Getter networkFees!: NetworkFeesObject;
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
+  @getter.assets.xor xor!: Nullable<AccountAsset>;
 
-  @Action('setXorValue', { namespace }) setXorValue!: (xorValue: string) => Promise<void>;
+  @mutation.referrals.setAmount private setAmount!: (amount: string) => void;
+  @mutation.referrals.resetAmount private resetAmount!: VoidFunction;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   showConfirmBondDialog = false;
 
-  get isBond(): boolean {
-    return this.$route.name === PageNames.ReferralBonding;
+  get xorSymbol(): string {
+    return XOR.symbol;
   }
 
-  get isTokenXorSet(): boolean {
-    return !!this.tokenXOR;
+  get xorDecimals(): number {
+    return XOR.decimals;
+  }
+
+  get xorAddress(): string {
+    return XOR.address;
+  }
+
+  get xorName(): string {
+    return XOR.name;
+  }
+
+  get xorMaxValue(): string {
+    return this.getMax(this.xorAddress);
+  }
+
+  get xorPrice(): Nullable<CodecString> {
+    return this.getAssetFiatPrice(XOR);
+  }
+
+  get xorBalance(): Nullable<AccountBalance> {
+    return this.xor?.balance;
+  }
+
+  get xorFormattedBondedBalance(): Nullable<string> {
+    return formatAssetBalance(this.xor, { isBondedBalance: this.isBondedBalance });
+  }
+
+  get xorFormattedFiatBalance(): Nullable<string> {
+    return this.isBond
+      ? this.getFiatBalance(this.xor as AccountAsset | undefined) // TODO: [arch] getFiatBalance(asset: Nullable<...>)
+      : this.getFiatAmountByCodecString(this.xorBalance?.bonded ?? '0');
+  }
+
+  get isBond(): boolean {
+    return this.$route.name === PageNames.ReferralBonding;
   }
 
   get isBondedBalance(): boolean {
     return !this.isBond;
   }
 
-  get xorSymbol(): string {
-    return ` ${KnownSymbols.XOR}`;
-  }
-
-  get bondedXOR(): string {
-    return this.tokenXOR?.balance?.bonded || '';
-  }
-
-  get xorBalance(): Nullable<string> {
-    return formatAssetBalance(this.tokenXOR, { isBondedBalance: this.isBondedBalance });
-  }
-
-  get fiatXorBalance(): Nullable<string> {
-    return this.isBond ? this.getFiatBalance(this.tokenXOR) : this.getFiatAmountByCodecString(this.bondedXOR);
-  }
-
   get hasZeroAmount(): boolean {
-    return asZeroValue(this.xorValue);
+    return asZeroValue(this.amount);
   }
 
-  get tokenXorFiatAmount(): string {
-    return this.xorValue ? this.getFiatAmountByString(this.xorValue, this.tokenXOR) || '0' : '0';
+  get formattedFiatAmount(): string {
+    return this.amount ? this.getFiatAmountByString(this.amount, XOR) ?? ZeroStringValue : ZeroStringValue;
   }
 
   get isMaxButtonAvailable(): boolean {
-    const decimals = this.tokenXOR.decimals;
-    const balance = this.getFPNumberFromCodec(this.tokenXOR.balance.transferable, decimals);
-    const amount = this.getFPNumber(this.xorValue, decimals);
+    const balance = this.getFPNumberFromCodec(this.xorBalance?.transferable ?? ZeroStringValue, this.xorDecimals);
+    const amount = this.getFPNumber(this.amount, this.xorDecimals);
     if (this.fpNumberNetworkFee.isZero()) {
       return false;
     }
     if (this.isBondedBalance) {
-      return (
-        !FPNumber.eq(this.getFPNumberFromCodec(this.tokenXOR.balance.bonded, decimals), FPNumber.ZERO) &&
-        FPNumber.gt(balance, this.fpNumberNetworkFee)
-      );
+      const bonded = this.xorBalance?.bonded ?? ZeroStringValue;
+      const isBondedZero = this.getFPNumberFromCodec(bonded, this.xorDecimals).isZero();
+      return !isBondedZero && FPNumber.gt(balance, this.fpNumberNetworkFee);
     }
     return !FPNumber.eq(this.fpNumberNetworkFee, balance.sub(amount)) && FPNumber.gt(balance, this.fpNumberNetworkFee);
   }
 
   get isInsufficientBondedXor(): boolean {
-    return !!hasInsufficientBalance(this.tokenXOR, this.xorValue, this.networkFee, false, this.isBondedBalance);
+    return !!this.xor && hasInsufficientBalance(this.xor, this.amount, this.networkFee, false, this.isBondedBalance);
   }
 
   get isInsufficientXorForFee(): boolean {
     if (this.isBondedBalance) {
       return FPNumber.gt(
         this.fpNumberNetworkFee,
-        this.getFPNumberFromCodec(this.tokenXOR.balance.transferable, this.tokenXOR.decimals)
+        this.getFPNumberFromCodec(this.xorBalance?.transferable ?? ZeroStringValue, this.xorDecimals)
       );
     }
-    return !!hasInsufficientBalance(this.tokenXOR, this.xorValue, this.networkFee);
-  }
-
-  get tokenXorPrice(): Nullable<CodecString> {
-    return this.tokenXOR ? this.getAssetFiatPrice(this.tokenXOR) : null;
+    return !!this.xor && hasInsufficientBalance(this.xor, this.amount, this.networkFee);
   }
 
   get networkFee(): CodecString {
@@ -216,16 +221,18 @@ export default class ReferralBonding extends Mixins(
   }
 
   get isConfirmBondDisabled(): boolean {
-    return !this.isTokenXorSet || this.hasZeroAmount || this.isInsufficientXorForFee || this.isInsufficientBondedXor;
+    return this.hasZeroAmount || this.isInsufficientXorForFee || this.isInsufficientBondedXor;
   }
 
   handleInputXor(value: string): void {
-    if (value === this.xorValue) return;
-    this.setXorValue(value);
+    if (value === this.amount) return;
+    this.setAmount(value);
   }
 
   handleMaxValue(): void {
-    this.handleInputXor(getMaxValue(this.tokenXOR, this.networkFee, false, this.isBondedBalance));
+    if (!this.xor) return;
+
+    this.handleInputXor(getMaxValue(this.xor, this.networkFee, false, this.isBondedBalance));
   }
 
   handleConfirmBond(): void {
@@ -234,7 +241,7 @@ export default class ReferralBonding extends Mixins(
 
   async confirmBond(isBondConfirmed: boolean): Promise<void> {
     if (isBondConfirmed) {
-      this.setXorValue('');
+      this.resetAmount();
       this.handleBack();
     }
   }
@@ -244,7 +251,7 @@ export default class ReferralBonding extends Mixins(
   }
 
   destroyed(): void {
-    this.setXorValue('');
+    this.resetAmount();
   }
 }
 </script>
