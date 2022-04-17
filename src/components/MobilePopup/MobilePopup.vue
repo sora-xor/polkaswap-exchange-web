@@ -2,14 +2,11 @@
   <dialog-base class="popup" :visible.sync="isVisible">
     <div class="popup-mobile">
       <div class="popup-info">
-        <h3 class="popup-info__headline">
-          Download SORA Wallet with <span class="popup-info__headline--highlight">Polkaswap</span> features
-        </h3>
+        <h3 class="popup-info__headline" v-html="t('mobilePopup.header')" />
         <p class="popup-info__text">
-          Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from
-          exchange fees.
+          {{ t('mobilePopup.info') }}
         </p>
-        <div class="links">
+        <div>
           <a :href="StoreLinks.AppStore" target="_blank" rel="nofollow noopener">
             <s-button class="logo logo__app-store">App Store</s-button>
           </a>
@@ -58,6 +55,21 @@ export default class MobilePopup extends Mixins(DialogMixin, TranslationMixin) {
   max-width: 660px;
   margin-top: 22vh !important;
 }
+
+.popup-info {
+  &__headline {
+    margin-bottom: $basic-spacing;
+    font-weight: 500;
+    text-transform: unset;
+    &--highlight {
+      color: var(--s-color-theme-accent);
+    }
+  }
+
+  &__text {
+    margin-bottom: $basic-spacing;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -67,40 +79,28 @@ export default class MobilePopup extends Mixins(DialogMixin, TranslationMixin) {
   align-items: flex-start;
 }
 
-.links {
-  display: flex;
-}
-
-.popup-info {
-  &__headline {
-    margin-bottom: 16px;
-    font-weight: 500;
-    text-transform: unset;
-    &--highlight {
-      color: var(--s-color-theme-accent);
-    }
-  }
-
-  &__text {
-    margin-bottom: 16px;
-  }
-}
 .logo {
   font-size: 12px;
+
   &__app-store {
-    background: url('./app-store-logo.svg') no-repeat center left !important;
+    background: url('@/assets/img/mobile/app-store-logo.svg') no-repeat !important;
+    background-position: 10% center !important;
     background-size: 12px !important;
     color: var(--s-color-base-content-secondary) !important;
-    width: 130px;
-    height: 10px;
+    width: 110px;
+    height: var(--s-size-small) !important;
+    margin-right: $inner-spacing-mini;
+    padding-left: 30px !important;
   }
 
   &__google-play {
-    background: url('./google-play-logo.svg') no-repeat center left !important;
+    background: url('@/assets/img/mobile/google-play-logo.svg') no-repeat !important;
+    background-position: 10% center !important;
     background-size: 12px !important;
     color: var(--s-color-base-content-secondary) !important;
-    width: 130px;
-    height: 10px;
+    width: 128px;
+    padding-left: 30px !important;
+    height: var(--s-size-small) !important;
   }
 }
 
@@ -118,7 +118,7 @@ export default class MobilePopup extends Mixins(DialogMixin, TranslationMixin) {
     left: 40%;
   }
   &__qr-code {
-    background: url('./qr_code_to_store.svg') no-repeat;
+    background: url('@/assets/img/mobile/qr_code_to_store.svg') no-repeat;
     margin: auto;
     height: 30px;
     width: 30px;
@@ -128,13 +128,13 @@ export default class MobilePopup extends Mixins(DialogMixin, TranslationMixin) {
     transform: scale(3) translate(-13.5%, -12%);
   }
   &__left-image {
-    background: url('./sora-app-left.svg') no-repeat;
+    background: url('@/assets/img/mobile/sora-app-left.svg') no-repeat;
     height: 320px;
     width: 200px;
     margin-top: -50px;
   }
   &__right-image {
-    background: url('./sora-app-right.svg') no-repeat;
+    background: url('@/assets/img/mobile/sora-app-right.svg') no-repeat;
     height: 260px;
     width: 150px;
     margin-left: -50px;

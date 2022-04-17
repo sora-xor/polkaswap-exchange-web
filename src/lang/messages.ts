@@ -730,4 +730,9 @@ export default {
       ok: 'OK',
     },
   },
+  mobilePopup: {
+    sideMenu: 'Get SORA Wallet App',
+    header: 'Download SORA Wallet with Polkaswap features',
+    info: 'Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees.',
+  },
 };

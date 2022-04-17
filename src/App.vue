@@ -6,6 +6,7 @@
         :visible="menuVisibility"
         :on-select="goTo"
         :is-about-page-opened="isAboutPage"
+        @openDownloadDialog="openDownloadDialog"
         @click.native="handleAppMenuClick"
       >
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
@@ -50,6 +51,7 @@ import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
+import MobilePopup from '@/components/MobilePopup/MobilePopup.vue';
 
 import { PageNames, Components, Language } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
@@ -67,7 +69,7 @@ import type { SubNetwork } from '@/utils/ethers-util';
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
-    MobilePopup: lazyComponent(Components.MobilePopup),
+    MobilePopup,
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
@@ -76,7 +78,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   menuVisibility = false;
   showConfirmInviteUser = false;
-  showMobilePopup = true;
+  showMobilePopup = false;
 
   @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter libraryTheme!: Theme;
@@ -214,6 +216,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     if (!sidebar) {
       this.closeMenu();
     }
+  }
+
+  openDownloadDialog(): void {
+    this.showMobilePopup = true;
   }
 
   async beforeDestroy(): Promise<void> {
