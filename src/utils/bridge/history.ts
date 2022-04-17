@@ -17,7 +17,8 @@ import {
 } from './utils';
 import { ZeroStringValue } from '@/consts';
 
-import type { BridgeHistory, NetworkFeesObject, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';
+import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
+import type { RegisteredAccountAssetObject } from '@/store/assets/types';
 
 type DataMap<T> = {
   [key: string]: T;
@@ -198,10 +199,10 @@ export class EthBridgeHistory {
 
   public async updateAccountHistory(
     address: string,
-    assets: { [key: string]: RegisteredAccountAsset & RegisteredAsset },
+    assets: RegisteredAccountAssetObject,
     networkFees: NetworkFeesObject,
     contracts?: string[],
-    updateCallback?: AsyncVoidFn
+    updateCallback?: AsyncVoidFn | VoidFunction
   ): Promise<void> {
     const currentHistory = bridgeApi.historyList as BridgeHistory[];
     const historyElements = await this.fetchHistoryElements(address, this.historySyncTimestamp);

@@ -119,8 +119,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
-import { Action, Getter, State } from 'vuex-class';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -130,8 +129,7 @@ import DialogBase from '@/components/DialogBase.vue';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { formatAssetBalance } from '@/utils';
-
-const namespace = 'assets';
+import { state, getter } from '@/store/decorators';
 
 // TODO: Combine SelectToken & this component
 @Component({
@@ -165,16 +163,12 @@ export default class SelectRegisteredAsset extends Mixins(
 
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
-  @State((state) => state.bridge.isSoraToEvm) isSoraToEvm!: boolean;
+  @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;
+  @state.wallet.account.assets private assets!: Array<Asset>;
+  @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
+  @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
 
-  @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>;
-  @Getter('registeredAssets', { namespace }) registeredAssets!: Array<RegisteredAccountAsset>;
-  // Wallet store
-  @Getter assets!: Array<Asset>;
-  @Getter accountAssetsAddressTable;
-  @Getter shouldBalanceBeHidden!: boolean;
-
-  @Action('getCustomAsset', { namespace }) getAsset;
+  @getter.wallet.account.accountAssetsAddressTable private accountAssetsAddressTable!: WALLET_TYPES.AccountAssetsTable;
 
   @Watch('visible')
   async handleVisibleChangeToFocusSearch(value: boolean): Promise<void> {

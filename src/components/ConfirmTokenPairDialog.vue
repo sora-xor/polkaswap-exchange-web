@@ -53,6 +53,7 @@ import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -69,11 +70,10 @@ export default class ConfirmTokenPairDialog extends Mixins(
   DialogMixin
 ) {
   @Prop({ type: String, default: '100' }) readonly shareOfPool!: string;
-  @Prop({ type: Object }) readonly firstToken!: any;
-  @Prop({ type: Object }) readonly secondToken!: any;
+  @Prop({ type: Object }) readonly firstToken!: Nullable<AccountAsset>;
+  @Prop({ type: Object }) readonly secondToken!: Nullable<AccountAsset>;
   @Prop({ type: String }) readonly firstTokenValue!: string;
   @Prop({ type: String }) readonly secondTokenValue!: string;
-  @Prop({ type: String }) readonly minted!: string;
   @Prop({ type: String }) readonly price!: string;
   @Prop({ type: String }) readonly priceReversed!: string;
   @Prop({ type: String }) readonly slippageTolerance!: string;
@@ -87,10 +87,14 @@ export default class ConfirmTokenPairDialog extends Mixins(
   }
 
   get fiatFirstAmount(): Nullable<string> {
+    if (!this.firstToken) return null;
+
     return this.getFiatAmount(this.firstTokenValue, this.firstToken);
   }
 
   get fiatSecondAmount(): Nullable<string> {
+    if (!this.secondToken) return null;
+
     return this.getFiatAmount(this.secondTokenValue, this.secondToken);
   }
 
@@ -107,6 +111,7 @@ export default class ConfirmTokenPairDialog extends Mixins(
   }
 
   get strategicBonusApy(): Nullable<string> {
+    if (!this.secondToken) return null;
     // It won't be in template when not defined
     const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy;
     if (!strategicBonusApy) {
