@@ -40,7 +40,7 @@ export enum Language {
   SV = 'sv',
   VI = 'vi',
   YO = 'yo',
-  ZH_CN = 'zh_CN',
+  ZH_CN = 'zh-CN',
 }
 
 export const Languages = [
