@@ -31,8 +31,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter, State } from 'vuex-class';
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -41,8 +40,7 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-
-const namespace = 'assets';
+import { state, getter } from '@/store/decorators';
 
 @Component({
   components: {
@@ -54,14 +52,11 @@ const namespace = 'assets';
 export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
-  @State((state) => state.bridge.isSoraToEvm) isSoraToEvm!: boolean;
-
-  @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>;
-  @Getter('registeredAssets', { namespace }) registeredAssets!: Array<RegisteredAccountAsset>;
-  // Wallet store
-  @Getter assets!: Array<Asset>;
-  @Getter accountAssetsAddressTable;
-  @Getter shouldBalanceBeHidden!: boolean;
+  @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;
+  @state.wallet.account.assets private assets!: Array<Asset>;
+  @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
+  @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
+  @getter.wallet.account.accountAssetsAddressTable private accountAssetsAddressTable!: WALLET_TYPES.AccountAssetsTable;
 
   get assetsList(): Array<RegisteredAccountAsset> {
     const { registeredAssets: assets, accountAssetsAddressTable, asset: excludeAsset } = this;

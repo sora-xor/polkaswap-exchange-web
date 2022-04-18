@@ -55,8 +55,7 @@
 <script lang="ts">
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
-import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
@@ -65,18 +64,12 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-
-const namespace = 'assets';
+import { getter, state, action } from '@/store/decorators';
 
 enum Tabs {
   Assets = 'assets',
   Custom = 'custom',
 }
-
-// TODO: move to js lib
-type WhitelistIdsBySymbol = {
-  [key: string]: string;
-};
 
 @Component({
   components: {
@@ -98,19 +91,18 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Prop({ default: false, type: Boolean }) readonly accountAssetsOnly!: boolean;
   @Prop({ default: false, type: Boolean }) readonly notNullBalanceOnly!: boolean;
 
-  @Getter('whitelistAssets', { namespace }) whitelistAssets!: Array<Asset>;
-  @Getter('nonWhitelistDivisibleAccountAssets', { namespace }) nonWhitelistAccountAssets!: Array<AccountAsset>;
-  @Getter('nonWhitelistDivisibleAssets', { namespace }) nonWhitelistAssets!: Array<Asset>;
-  // Wallet store
-  @Getter isLoggedIn!: boolean;
-  @Getter libraryTheme!: Theme;
-  @Getter whitelist!: Whitelist;
-  @Getter whitelistIdsBySymbol!: WhitelistIdsBySymbol;
-  @Getter shouldBalanceBeHidden!: boolean;
-  @Getter accountAssetsAddressTable!: any;
+  @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
 
-  // Wallet
-  @Action addAsset!: (address?: string) => Promise<void>;
+  @getter.libraryTheme libraryTheme!: Theme;
+  @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
+  @getter.assets.nonWhitelistDivisibleAssets private nonWhitelistAssets!: { [key: string]: Asset };
+  @getter.assets.nonWhitelistDivisibleAccountAssets private nonWhitelistAccountAssets!: { [key: string]: AccountAsset };
+  @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
+  @getter.wallet.account.whitelist public whitelist!: Whitelist;
+  @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
+  @getter.wallet.account.accountAssetsAddressTable private accountAssetsAddressTable!: WALLET_TYPES.AccountAssetsTable;
+
+  @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
 
   @Watch('visible')
   async handleTabChange(value: boolean): Promise<void> {

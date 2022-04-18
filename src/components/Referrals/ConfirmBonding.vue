@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO: Add tooltip when the text will be added -->
   <dialog-base
     :visible.sync="isVisible"
     :title="t(`referralProgram.confirm.${isBond ? 'bond' : 'unbond'}`)"
@@ -7,10 +6,10 @@
   >
     <div class="tokens">
       <div class="tokens-info-container">
-        <span class="token-value">{{ formattedXorValue }}</span>
-        <div v-if="tokenXOR" class="token">
-          <token-logo :token="tokenXOR" />
-          {{ tokenXOR.symbol }}
+        <span class="token-value">{{ formattedAmount }}</span>
+        <div class="token">
+          <token-logo :token="xor" />
+          {{ xorSymbol }}
         </div>
       </div>
     </div>
@@ -33,18 +32,15 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, State } from 'vuex-class';
 import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Operation, CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-
-const namespace = 'referrals';
+import { state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -54,21 +50,21 @@ const namespace = 'referrals';
   },
 })
 export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixins.FormattedAmountMixin, DialogMixin) {
-  @State((state) => state[namespace].xorValue) xorValue!: string;
+  readonly xor = XOR;
 
-  @Getter networkFees!: NetworkFeesObject;
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
+  @state.referrals.amount private amount!: string;
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+
+  get xorSymbol(): string {
+    return XOR.symbol;
+  }
 
   get isBond(): boolean {
     return this.$route.name === PageNames.ReferralBonding;
   }
 
-  get formattedXorValue(): string {
-    return this.formatStringValue(this.xorValue, this.tokenXOR?.decimals);
-  }
-
-  get xorSymbol(): string {
-    return ' ' + KnownSymbols.XOR;
+  get formattedAmount(): string {
+    return this.formatStringValue(this.amount, XOR.decimals);
   }
 
   get networkFee(): CodecString {
@@ -84,8 +80,8 @@ export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixi
       await this.withNotifications(
         async () =>
           await (this.isBond
-            ? api.referralSystem.reserveXor(this.xorValue)
-            : api.referralSystem.unreserveXor(this.xorValue))
+            ? api.referralSystem.reserveXor(this.amount)
+            : api.referralSystem.unreserveXor(this.amount))
       );
       this.$emit('confirm', true);
     } catch (error) {
