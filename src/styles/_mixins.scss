@@ -203,7 +203,7 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
     &--max {
       margin-right: $inner-spacing-mini / 2;
       margin-left: $inner-spacing-mini / 2;
-      background-color: var(--s-color-theme-secondary);
+      background-color: var(--s-color-theme-accent) !important;
       &.el-button.neumorphic {
         box-shadow: $button-custom-shadow;
       }
@@ -222,6 +222,9 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
         box-shadow: $button-custom-shadow;
       }
     }
+    // &--primary.neumorphic {
+    //   box-shadow: none;
+    // }
   }
 }
 
@@ -233,7 +236,6 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
 
     &:hover {
       background: $primary-button-color-hover;
-      box-shadow: none;
     }
   }
 }

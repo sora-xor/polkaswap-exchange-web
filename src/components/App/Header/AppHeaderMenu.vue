@@ -221,6 +221,10 @@ $icon-size: 28px;
 
 <style scoped lang="scss">
 .app-header-menu {
+  .settings-control {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
   .app-header-menu_panel {
     &:not(:last-child) {
       margin-right: $inner-spacing-mini;

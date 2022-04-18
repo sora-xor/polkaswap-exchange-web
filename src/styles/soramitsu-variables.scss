@@ -15,8 +15,8 @@ $s-color-theme-secondary-hover: #BBDD55;
 $s-color-theme-secondary-pressed: #24DAA0;
 $s-color-theme-secondary-focused: #24DAA0;
 
-$s-color-theme-secondary--dark: #ADA2D8;
-$s-color-theme-secondary-hover--dark: #8069DB;
+$s-color-theme-secondary--dark: #DDFF77;
+$s-color-theme-secondary-hover--dark: #BBDD55;
 // Base content colors
 $s-color-base-content-primary: #221111;
 $s-color-base-content-secondary: #665555;
@@ -39,6 +39,7 @@ $s-color-base-on-accent: #FFFFFF;
 $s-color-base-background--dark: #222727;
 $s-color-base-border-secondary--dark: #2D3636;
 $s-color-base-on-accent--dark: #2F3C3C;
+$s-color-base-background-hover--dark: #ddff771f;
 // Utility colors
 $s-color-utility-body: #F6F2F2;
 $s-color-utility-surface: #F8F4F4;
@@ -46,6 +47,7 @@ $s-color-utility-overlay: rgba(26, 47, 47, 0.1);
 
 $s-color-utility-body--dark: #0D0D0B;
 $s-color-utility-surface--dark: #131311;
+$s-color-utility-overlay--dark: #131311;
 // Status colors
 $s-color-status-success: #34AD87;
 $s-color-status-warning: #8997A6;
@@ -56,6 +58,13 @@ $s-color-status-error-background: #FFD8EB;
 // Fiat colors
 $s-color-fiat-value: #C1D2E3 !default;
 $s-color-rewards: #c0e2ff !default;
+
+//Shadow colors
+$s-shadow-color-primary: #FF6622;
+$s-shadow-color-secondary: #FF9955;
+
+$s-shadow-color-primary--dark: #DDFF77;
+$s-shadow-color-secondary--dark: #BBDD55;
 
 // Sizes
 $s-size-mini: 24px;
@@ -77,6 +86,7 @@ $s-shadow-element-pressed: -5px -5px 5px rgba(255, 102, 34, 0.05), 1px 1px 25px 
 $s-shadow-dialog--dark: -10px -10px 30px rgba(221, 255, 34, 0.1), 20px 20px 60px rgba(221, 255, 34, 0.15);
 $s-shadow-element--dark: 1px 1px 2px rgba(255, 255, 255, 0.1), inset -5px -5px 5px rgba(221, 255, 34, 0.05), inset 1px 1px 10px rgba(221, 255, 34, 0.05);
 $s-shadow-element-pressed--dark: -5px -5px 5px rgba(221, 255, 34, 0.05), 2px 2px 25px rgba(221, 255, 34, 0.33), inset 1px 1px 2px #52523D;
+
 // Border Radius
 $s-border-radius-base: 16px;
 $s-border-radius-mini: $s-border-radius-base;
@@ -98,6 +108,10 @@ $s-font-feature-settings-input: normal;
 $s-font-feature-settings-button: normal;
 // Transition
 $s-transition-default: all 0.125s ease-in-out;
+//neu shadows
+$neu-button-primary-box-shadow--dark: 1px 1px 5px $s-color-base-background--dark, -1px -1px 5px $s-color-base-background--dark;
+$neu-button-primary-box-shadow-hover: 1px 1px 5px rgba(255, 255, 255, 0.7), -1px -1px 5px white, 0px 0px 20px $s-color-theme-accent;
+$neu-button-primary-box-shadow-hover--dark: 1px 1px 5px rgba(0, 0, 0, 0.7), -1px -1px 5px black, 0px 0px 20px $s-color-theme-accent--dark;
 
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
 
