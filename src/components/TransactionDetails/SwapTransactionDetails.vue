@@ -86,7 +86,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   @getter.swap.priceReversed private priceReversed!: string;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
-  @getter.swap.tokenFrom tokenTo!: AccountAsset;
+  @getter.swap.tokenTo tokenTo!: AccountAsset;
   @getter.swap.minMaxReceived minMaxReceived!: CodecString;
   @getter.swap.priceImpact priceImpact!: string;
 
@@ -101,7 +101,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
     const toToken: string = this.tokenTo?.symbol ?? '';
     const xorToken: string = XOR.symbol;
 
-    return [...new Set([fromToken, xorToken, toToken])];
+    return [...new Set([fromToken, xorToken, toToken])]; // To remove doubled XOR if the route is simple
   }
 
   get priceValues(): Array<PriceValue> {
