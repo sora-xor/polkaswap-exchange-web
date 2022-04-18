@@ -287,7 +287,7 @@
     "connectWalletTextTooltip": "Kết nối tới Mạng @:soraText với polkadot{.js}",
     "selectNodeText": "Chọn node",
     "bridgeText": "Cầu nối",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Tuyên bố miễn trừ trách nhiệm<\/span>: Trang web này được duy trì bởi cộng đồng @:(soraText). Trước khi tiếp tục sử dụng, vui lòng đọc @:polkaswapFaqLink và xem tài liệu liên quan, trong đó có giải thích chi tiết cơ chế hoạt động của Polkaswap, cũng như @:memorandumLink và @:(privacyLink). Những tài liệu này rất quan trọng đối với trải nghiệm người dùng an toàn và tích cực. Một khi đã sử dụng Polkaswap, bạn thừa nhận rằng bạn đã đọc và hiểu những tài liệu này. Bạn cũng thừa nhận những điều sau đây: 1) bạn tự chịu trách nhiệm đối với việc tuân thủ tất cả các luật có thể có liên quan đến việc sử dụng Polkaswap; 2) bạn ý thức rằng phiên bản hiện tại của Polkaswap là một phiên bản thử nghiệm: nó chưa được kiểm tra đầy đủ và một số chức năng có thể không hoạt động như thiết kế; và 3) bạn ý thức được chuyện chấp nhận các rủi ro liên quan đến việc sử dụng Polkaswap, bao gồm cả nguy cơ mất tokens. Một lần nữa, vui lòng thoát ra khi chưa đọc kỹ @:polkaswapFaqLink, @:memorandumLink và @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\"> Tuyên bố miễn trừ trách nhiệm <\/span>: Trang web này được duy trì bởi cộng đồng @:soraText. Trước khi tiếp tục sử dụng trang web này, vui lòng xem lại @:polkaswapFaqLink và tài liệu, bao gồm giải thích chi tiết về cách Polkaswap hoạt động, cũng như @:memorandumLink và @:(privacyLink). Những tài liệu này rất quan trọng đối với trải nghiệm người dùng an toàn và tích cực. Bằng cách sử dụng Polkaswap, bạn xác nhận rằng bạn đã đọc và hiểu các tài liệu này. Bạn cũng thừa nhận những điều sau: 1) trách nhiệm duy nhất của bạn đối với việc tuân thủ tất cả các luật có thể áp dụng cho việc sử dụng Polkaswap cụ thể của bạn trong khu vực pháp lý của bạn; 2) bạn hiểu rằng phiên bản Polkaswap hiện tại là phiên bản alpha: nó chưa được kiểm tra đầy đủ và một số chức năng có thể không hoạt động như thiết kế; và 3) sự hiểu biết của bạn và tự nguyện chấp nhận các rủi ro liên quan đến việc sử dụng Polkaswap, bao gồm, nhưng không giới hạn, rủi ro mất token. Vui lòng không tiếp tục mà không đọc @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Được cung cấp bởi",
     "confirmTransactionText": "Xác nhận giao dịch {direction}",
@@ -376,7 +376,7 @@
             "selectNode": "Vui lòng chọn node để kết nối từ danh sách"
         },
         "warnings": {
-            "disconnect": "Kết nối lại với node đã bị mất. Đang kết nối lại..."
+            "disconnect": "Kết nối với node đã bị mất. Đang kết nối lại..."
         }
     },
     "selectNodeDialog": {
@@ -669,7 +669,7 @@
     },
     "confirmSupply": {
         "title": "Bạn sẽ góp vào pool:",
-        "outputDescription": "Số đầu ra là ước đoán. Nếu giá biến động hơn {slippageTolerance}% thì giao dịch của bạn sẽ hoàn tác.",
+        "outputDescription": "Kết quả là ước lượng. Nếu giá biến động hơn {slippageTolerance}% thì giao dịch của bạn sẽ hoàn tác.",
         "poolTokensBurned": "Pool {first}-{second} tokens bị đốt",
         "price": "Giá"
     },
@@ -818,7 +818,7 @@
             },
             "supportError": {
                 "title": "Token chưa được hỗ trợ",
-                "text": "Rất tiếc, mã thông báo được mua qua @:moonpayText chưa được hỗ trợ bởi cầu nối HASHI trong Polkaswap. Thông thường, chỉ những mã thông báo được hỗ trợ mới có sẵn để mua qua MoonPay ở Polkaswap, do đó, chắc chắn đã xảy ra sự cố ở đâu đó. Vui lòng cho cộng đồng biết về trường hợp này trong <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> nhóm Telegram Polkaswap <\/a> ."
+                "text": "Rất tiếc, mã thông báo được mua qua @:moonpayText chưa được hỗ trợ bởi cầu HASHI trong Polkaswap. Thông thường, chỉ những token được hỗ trợ mới có thể mua qua MoonPay ở Polkaswap, do đó, chắc chắn đã xảy ra sự cố ở đâu đó. Vui lòng cho cộng đồng biết về trường hợp này trong <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Polkaswap Telegram nhóm <\/a> ."
             },
             "feeError": {
                 "title": "Không đủ ETH cho cấu nối tx",
@@ -834,7 +834,7 @@
             },
             "accountAddressError": {
                 "title": "Tài khoản Ethereum không đúng",
-                "text": "Rất tiếc, giao dịch qua cầu nối HASHI không thành công do địa chỉ người nhận token trong đơn đặt hàng @:moonpayText không khớp với địa chỉ tài khoản Ethereum hiện tại của bạn. Vui lòng chuyển đổi tài khoản Ethereum trong phần mở rộng (extension) và thử lại."
+                "text": "Rất tiếc, giao dịch qua cầu nối HASHI không thành công do địa chỉ nhận token trong đơn đặt hàng @:moonpayText không khớp với địa chỉ tài khoản Ethereum hiện tại của bạn. Vui lòng chuyển đổi tài khoản Ethereum trong phần mở rộng (extension) và thử lại."
             }
         },
         "buttons": {

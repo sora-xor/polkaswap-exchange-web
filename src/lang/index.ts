@@ -45,7 +45,7 @@ export async function setDayJsLocale(lang: Language): Promise<void> {
     // importing dayjs locale file automatically runs `dayjs.locale(code)`
     // "webpackInclude" - optimization to exclude unused files from "chunk-vendors"
     await import(
-      /* webpackInclude: /(en|ru|cs|de|es|fr|hy|id|it|nl|no|pl|yo)\.js$/ */
+      /* webpackInclude: /(en|ru|cs|de|es|fr|hr|hu|hy|id|it|nl|no|pl|sk|sr|sv|vi|yo|zh_CN)\.js$/ */
       /* webpackChunkName: "dayjs-locale-[request]" */
       /* webpackMode: "lazy" */
       `dayjs/locale/${code}.js`
