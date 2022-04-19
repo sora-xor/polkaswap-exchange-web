@@ -591,7 +591,6 @@
             "done": "Վերջացված է",
             "waitingForConfirmation": "Հաստատման սպասում..."
         },
-        "wait30Block": "Խնդրում ենք սպասել 30 բլոկի հաստատատման",
         "viewInEtherscan": "Դիտել Etherscan- ում",
         "networkTitle": "{network} գործարք",
         "transactionHash": "Գործարքի հաշ(կոդ)",

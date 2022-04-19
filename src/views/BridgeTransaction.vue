@@ -513,6 +513,9 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   get statusFrom(): string {
     if (this.isTransactionFromPending) {
+      if (!this.isSoraToEvm && !this.transactionFromHash) {
+        return this.t('bridgeTransaction.statuses.waitingForConfirmation');
+      }
       return this.t('bridgeTransaction.statuses.pending') + '...';
     }
     if (this.isTransactionFromFailed) {
@@ -526,15 +529,11 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get statusTo(): string {
-    if (!this.isTransactionFromCompleted) {
-      return this.t('bridgeTransaction.statuses.waiting') + '...';
-    }
     if (this.isTransactionToPending) {
-      const message = this.t('bridgeTransaction.statuses.pending') + '...';
-      if (this.isSoraToEvm) {
-        return message;
+      if (this.isSoraToEvm && !this.transactionToHash) {
+        return this.t('bridgeTransaction.statuses.waitingForConfirmation');
       }
-      return `${message} (${this.t('bridgeTransaction.wait30Block')})`;
+      return this.t('bridgeTransaction.statuses.pending') + '...';
     }
     if (this.isTransactionToFailed) {
       return this.t('bridgeTransaction.statuses.failed');
@@ -542,7 +541,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     if (this.isTransactionToCompleted) {
       return this.t('bridgeTransaction.statuses.done');
     }
-    return this.t('bridgeTransaction.statuses.waitingForConfirmation');
+    return this.t('bridgeTransaction.statuses.waiting') + '...';
   }
 
   get transactionEvmAddress(): string {
