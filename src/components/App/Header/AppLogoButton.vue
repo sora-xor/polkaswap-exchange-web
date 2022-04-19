@@ -1,5 +1,5 @@
 <template>
-  <s-button :class="['app-logo', { responsive }]" type="link" size="large" v-on="$listeners">
+  <s-button :class="['app-logo', { responsive }, { dark }]" type="link" size="large" v-on="$listeners">
     <adar-logo :theme="theme" class="app-logo__image" />
   </s-button>
 </template>
@@ -18,6 +18,10 @@ import AdarLogo from '@/components/logo/Adar.vue';
 export default class AppLogoButton extends Vue {
   @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme;
   @Prop({ default: false, type: Boolean }) responsive!: boolean;
+
+  get dark() {
+    return this.theme === Theme.DARK;
+  }
 }
 </script>
 
@@ -49,6 +53,21 @@ $logo-full-height: 46px;
       height: $logo-full-height;
     }
 
+    .app-logo__image {
+      visibility: hidden;
+
+      @include tablet {
+        visibility: visible;
+      }
+    }
+  }
+
+  &.dark {
+    background-image: url('~@/assets/img/adar-dark.svg');
+
+    @include tablet {
+      background-image: none;
+    }
     .app-logo__image {
       visibility: hidden;
 

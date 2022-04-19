@@ -2,7 +2,11 @@
   <header class="header">
     <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
-    <div v-if="moonpayEnabled" class="app-controls app-controls--moonpay s-flex">
+    <div
+      v-if="moonpayEnabled"
+      class="app-controls app-controls--moonpay s-flex"
+      :class="{ 'app-controls--moonpay--dark': themeIsDark }"
+    >
       <s-button
         type="tertiary"
         size="medium"
@@ -14,7 +18,10 @@
       </s-button>
       <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
     </div>
-    <div class="app-controls app-controls--settings-panel s-flex">
+    <div
+      class="app-controls app-controls--settings-panel s-flex"
+      :class="{ 'app-controls--settings-panel--dark': themeIsDark }"
+    >
       <!-- <market-maker-countdown /> -->
       <s-button type="action" class="setting" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
         <token-logo class="setting__logo" v-bind="nodeLogo" />
@@ -38,7 +45,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
@@ -92,6 +99,10 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
     };
   }
 
+  get themeIsDark() {
+    return this.libraryTheme === Theme.DARK;
+  }
+
   openNodeSelectionDialog(): void {
     this.setSelectNodeDialogVisibility(true);
   }
@@ -124,7 +135,8 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   &--buy {
     max-width: 114px;
-    border-right: 1px solid var(--s-color-base-content-tertiary) !important;
+    // border-right: 1px solid var(--s-color-base-content-tertiary) !important;
+    margin-right: 1px;
   }
 
   &--history {
@@ -156,9 +168,13 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 </style>
 
 <style lang="scss" scoped>
-$app-controls-filter: drop-shadow(-5px -5px 5px rgba(152, 240, 224, 0.2))
-  drop-shadow(1px 1px 25px rgba(159, 93, 244, 0.25));
+$app-controls-filter: drop-shadow(-5px -5px 5px rgba(255, 102, 34, 0.05))
+  drop-shadow(1px 1px 25px rgba(255, 102, 34, 0.1));
 $app-controls-shadow: inset 1px 1px 10px #ffffff;
+
+$app-controls-filter--dark: drop-shadow(-5px -5px 5px rgba(221, 255, 34, 0.05))
+  drop-shadow(2px 2px 25px rgba(221, 255, 34, 0.33));
+$app-controls-shadow--dark: inset 1px 1px 2px #52523d;
 .header {
   display: flex;
   align-items: center;
@@ -244,12 +260,19 @@ $app-controls-shadow: inset 1px 1px 10px #ffffff;
     border-radius: var(--s-border-radius-small);
 
     & > *:not(:last-child) {
-      border-right: 1px solid var(--s-color-base-content-tertiary) !important;
+      // border-right: 1px solid var(--s-color-base-content-tertiary) !important;
+      margin-right: 1px;
     }
 
     & > * {
       box-shadow: none !important;
     }
+  }
+
+  &--moonpay--dark,
+  &--settings-panel--dark {
+    box-shadow: $app-controls-shadow--dark;
+    filter: $app-controls-filter--dark;
   }
 }
 

@@ -1,61 +1,71 @@
 $s-color-brand-day: #A19A9D; // 0d0248
 // Primary theme colors
-$s-color-theme-accent: #2DBEC7; // NEU bright pink fluro
-$s-color-theme-accent-hover: #5CC9D0; // NEU pale quartz pink
-$s-color-theme-accent-pressed: #229198;
-$s-color-theme-accent-focused: #3DAEB5;
+$s-color-theme-accent: #FF6622; // NEU bright pink fluro
+$s-color-theme-accent-hover: #FF9955; // NEU pale quartz pink
+$s-color-theme-accent-pressed: #DD4400;
+$s-color-theme-accent-focused: #EE5511;
 
-$s-color-theme-accent--dark: #2DBEC7; // NEU bright pink fluro
-$s-color-theme-accent-hover--dark: #5CC9D0; // NEU pale quartz pink
+$s-color-theme-accent--dark: #DDFF77; // NEU bright pink fluro
+$s-color-theme-accent-hover--dark: #BBDD55; // NEU pale quartz pink
 $s-color-theme-accent-pressed--dark: #229198;
-$s-color-theme-accent-focused--dark: #3DAEB5;
+$s-color-theme-accent-focused--dark: #DDFF77;
 // Secondary theme colors
-$s-color-theme-secondary: #ADA2D8;
-$s-color-theme-secondary-hover: #8069DB;
+$s-color-theme-secondary: #DDFF77;
+$s-color-theme-secondary-hover: #BBDD55;
 $s-color-theme-secondary-pressed: #24DAA0;
 $s-color-theme-secondary-focused: #24DAA0;
 
-$s-color-theme-secondary--dark: #ADA2D8;
-$s-color-theme-secondary-hover--dark: #8069DB;
+$s-color-theme-secondary--dark: #DDFF77;
+$s-color-theme-secondary-hover--dark: #BBDD55;
 // Base content colors
-$s-color-base-content-primary: #1A2F2F;
-$s-color-base-content-secondary: #546161;
-$s-color-base-content-tertiary: #C0CECE;
-$s-color-base-content-quaternary: #75787b;
+$s-color-base-content-primary: #221111;
+$s-color-base-content-secondary: #665555;
+$s-color-base-content-tertiary: #CCBBBB;
+$s-color-base-content-quaternary: #A3A4A8;
 
 $s-color-base-content-primary--dark: #CACECE;
 $s-color-base-content-secondary--dark: #B0C8C8;
 $s-color-base-content-tertiary--dark: #889B9B;
 $s-color-base-content-quaternary--dark: #75787b;
 // Base misc colors
-$s-color-base-background: #EBF2F2;
-$s-color-base-border-primary: #ECF2F2;
-$s-color-base-border-secondary: #DAE3E3;
-$s-color-base-background-hover: #F7F3F4;
-$s-color-base-disabled: #EAF1F1;
-$s-color-base-on-disabled: #9CACAC;
+$s-color-base-background: #F4F0F0;
+$s-color-base-border-primary: #F2F0F0;
+$s-color-base-border-secondary: #EAEAE8;
+$s-color-base-background-hover: #F2E9EF;
+$s-color-base-disabled: #F1ECEC;
+$s-color-base-on-disabled: #998888;
 $s-color-base-on-accent: #FFFFFF;
 
 $s-color-base-background--dark: #222727;
 $s-color-base-border-secondary--dark: #2D3636;
 $s-color-base-on-accent--dark: #2F3C3C;
+$s-color-base-background-hover--dark: #ddff771f;
 // Utility colors
-$s-color-utility-body: #E8EEEE;
-$s-color-utility-surface: #ECF5F5;
+$s-color-utility-body: #F6F2F2;
+$s-color-utility-surface: #F8F4F4;
 $s-color-utility-overlay: rgba(26, 47, 47, 0.1);
 
-$s-color-utility-body--dark: #0B0D0D;
-$s-color-utility-surface--dark: #111515;
+$s-color-utility-body--dark: #0D0D0B;
+$s-color-utility-surface--dark: #131311;
+$s-color-utility-overlay--dark: #131311;
 // Status colors
 $s-color-status-success: #34AD87;
-$s-color-status-warning: #479AEF;
-$s-color-status-error: #F754A3;
+$s-color-status-warning: #8997A6;
+$s-color-status-error: #FE5360;
 $s-color-status-success-background: #B9EBDB;
-$s-color-status-warning-background: #C6E2FF;
+$s-color-status-warning-background: #C1D2E3;
 $s-color-status-error-background: #FFD8EB;
 // Fiat colors
-$s-color-fiat-value: #BDAFF3 !default;
+$s-color-fiat-value: #C1D2E3 !default;
 $s-color-rewards: #c0e2ff !default;
+
+//Shadow colors
+$s-shadow-color-primary: #FF6622;
+$s-shadow-color-secondary: #FF9955;
+
+$s-shadow-color-primary--dark: #DDFF77;
+$s-shadow-color-secondary--dark: #BBDD55;
+
 // Sizes
 $s-size-mini: 24px;
 $s-size-small: 32px;
@@ -69,15 +79,16 @@ $s-shadow-dropdown: 0px 4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-tap-bar: 0px -4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-side-menu: -4px 4px 8px rgba(19, 19, 19, 0.15);
 
-$s-shadow-dialog: -5px -5px 30px rgba(152, 240, 224, 0.25), 10px 10px 60px rgba(159, 93, 244, 0.15), inset 1px 1px 10px #FFFFFF;
-$s-shadow-element: 1px 1px 5px #FFFFFF, inset -5px -5px 5px rgba(159, 93, 244, 0.05), inset 1px 1px 10px rgba(159, 93, 244, 0.1);
-$s-shadow-element-pressed: -5px -5px 5px rgba(152, 240, 224, 0.2), 1px 1px 25px rgba(159, 93, 244, 0.25), inset 1px 1px 10px #FFFFFF;
+$s-shadow-dialog: -5px -5px 30px rgba(255, 102, 34, 0.02), 10px 10px 60px rgba(255, 102, 34, 0.1), inset 1px 1px 10px #FFFFFF;
+$s-shadow-element: 1px 1px 5px #FFFFFF, inset -5px -5px 5px rgba(255, 102, 34, 0.05), inset 1px 1px 10px rgba(255, 102, 34, 0.05);
+$s-shadow-element-pressed: -5px -5px 5px rgba(255, 102, 34, 0.05), 1px 1px 25px rgba(255, 102, 34, 0.1), inset 1px 1px 10px #FFFFFF;
 
-$s-shadow-dialog--dark: -10px -10px 30px rgba(0, 255, 209, 0.25), 20px 20px 60px rgba(111, 0, 255, 0.25), inset 1px 1px 10px #1F2626;
-$s-shadow-element--dark: 1px 1px 2px rgba(255, 255, 255, 0.1), inset -5px -5px 5px rgba(111, 0, 255, 0.1), inset 1px 1px 10px rgba(111, 0, 255, 0.33);
-$s-shadow-element-pressed--dark: -5px -5px 5px rgba(0, 255, 209, 0.15), 2px 2px 25px rgba(111, 0, 255, 0.55), inset 1px 1px 2px #3D5252;
+$s-shadow-dialog--dark: -10px -10px 30px rgba(221, 255, 34, 0.1), 20px 20px 60px rgba(221, 255, 34, 0.15);
+$s-shadow-element--dark: 1px 1px 2px rgba(255, 255, 255, 0.1), inset -5px -5px 5px rgba(221, 255, 34, 0.05), inset 1px 1px 10px rgba(221, 255, 34, 0.05);
+$s-shadow-element-pressed--dark: -5px -5px 5px rgba(221, 255, 34, 0.05), 2px 2px 25px rgba(221, 255, 34, 0.33), inset 1px 1px 2px #52523D;
+
 // Border Radius
-$s-border-radius-base: 4px;
+$s-border-radius-base: 16px;
 $s-border-radius-mini: $s-border-radius-base;
 $s-border-radius-small: $s-border-radius-base * 1.5;
 $s-border-radius-medium: $s-border-radius-base * 2;
@@ -97,6 +108,10 @@ $s-font-feature-settings-input: normal;
 $s-font-feature-settings-button: normal;
 // Transition
 $s-transition-default: all 0.125s ease-in-out;
+//neu shadows
+$neu-button-primary-box-shadow--dark: 1px 1px 5px $s-color-base-background--dark, -1px -1px 5px $s-color-base-background--dark;
+$neu-button-primary-box-shadow-hover: 1px 1px 5px rgba(255, 255, 255, 0.7), -1px -1px 5px white, 0px 0px 20px $s-color-theme-accent;
+$neu-button-primary-box-shadow-hover--dark: 1px 1px 5px rgba(0, 0, 0, 0.7), -1px -1px 5px black, 0px 0px 20px $s-color-theme-accent--dark;
 // Asset item height
 $s-asset-item-height: 71px;
 $s-asset-item-height--fiat: 86px;
