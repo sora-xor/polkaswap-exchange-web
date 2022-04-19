@@ -43,7 +43,8 @@
             "ClaimRewards": "Ricompensa richiesta con successo {rewards}",
             "ReferralReserveXor": "XOR legato con successo",
             "ReferralUnreserveXor": "XOR non legato con successo",
-            "ReferralSetInvitedUser": "Il referral è impostato correttamente"
+            "ReferralSetInvitedUser": "Il referral è impostato correttamente",
+            "SwapAndSend": "Scambiato {amount} {symbol} con {amount2} {symbol2} e {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Impossibile inviare {amount} {symbol} a {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Impossibile richiedere i premi {rewards}",
             "ReferralReserveXor": "Fallito il legame XOR",
             "ReferralUnreserveXor": "Impossibile disaggregare XOR",
-            "ReferralSetInvitedUser": "Impossibile impostare il rinvio"
+            "ReferralSetInvitedUser": "Impossibile impostare il rinvio",
+            "SwapAndSend": "Impossibile scambiare {amount} {symbol} con {amount2} {symbol2} e {action} {direction} {address}"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
-        "ReferralSetInvitedUser": "Imposta referral"
+        "ReferralSetInvitedUser": "Imposta referral",
+        "SwapAndSend": "Scambia e invia"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione Polkadot.js trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -141,7 +144,9 @@
         "details": "Dettagli"
     },
     "asset": {
-        "remove": "Rimuovi l'asset"
+        "remove": "Rimuovi l'asset",
+        "select": "Seleziona una risorsa",
+        "recieve": "Ricevi {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -773,7 +778,8 @@
         "claimableAmountDoneVesting": "Importo che puoi ottenere (maturazione effettuata)",
         "groups": {
             "strategic": "Strategic Rewards",
-            "external": "Ricompense per l'account ethereum connesso"
+            "external": "Ricompense per l'account ethereum connesso",
+            "crowdloan": "Premi Crowdloan"
         },
         "Rewards": "Ricompense",
         "ReferralProgram": "@:referralProgram.title"
@@ -916,8 +922,30 @@
             "hasReferrerTitle": "Hai già impostato il tuo referrer",
             "hasReferrerDescription": "Sfortunatamente, puoi impostarne solo uno",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Aggiungi il tuo referrer",
+            "titleReferrer": "Il tuo referente",
+            "placeholder": "Inserisci il link o il codice dell'invito",
+            "label": "Link o codice di invito",
+            "approve": "Approvare",
+            "approved": "Approvato",
+            "description": "Puoi essere indirizzato a Polkaswap,<br\/>digita il link o il codice del referrer",
+            "referredBy": "Sei stato indirizzato da {referrer}",
+            "info": "Quando pagherai una commissione per la transazione,<br\/>10% andrà al tuo referrer",
+            "referredLablel": "Indirizzo di riferimento"
         }
     },
     "transactionDetailsText": "Dettagli di Transazione",
-    "createTokenTextNFT": "Crea NFT"
+    "createTokenTextNFT": "Crea NFT",
+    "code": {
+        "download": "Scarica QR Code",
+        "upload": "Scansiona QR",
+        "recieve": "Ricevere",
+        "invalid": "Codice QR non valido"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Aggiungi {symbol} a @:metamask",
+        "title": "Transazione ponte riuscita"
+    }
 }

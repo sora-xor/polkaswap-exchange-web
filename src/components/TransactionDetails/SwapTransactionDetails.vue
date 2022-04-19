@@ -46,7 +46,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR, KnownAssets } from '@sora-substrate/util/build/assets/consts';
@@ -56,8 +55,20 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { getter, state } from '@/store/decorators';
 
-const namespace = 'swap';
+type PriceValue = {
+  id: 'from' | 'to';
+  label: string;
+  value: string;
+};
+
+type RewardValue = {
+  value: string;
+  fiatValue: Nullable<string>;
+  assetSymbol: string;
+  label: string;
+};
 
 @Component({
   components: {
@@ -68,18 +79,18 @@ const namespace = 'swap';
   },
 })
 export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  @State((state) => state[namespace].liquidityProviderFee) liquidityProviderFee!: CodecString;
-  @State((state) => state[namespace].isExchangeB) isExchangeB!: boolean;
-  @State((state) => state[namespace].rewards) rewards!: Array<LPRewardsInfo>;
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.swap.liquidityProviderFee private liquidityProviderFee!: CodecString;
+  @state.swap.rewards private rewards!: Array<LPRewardsInfo>;
+  @state.swap.isExchangeB isExchangeB!: boolean;
 
-  @Getter isLoggedIn!: boolean;
-  @Getter networkFees!: NetworkFeesObject;
-  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
-  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
-  @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString;
-  @Getter('priceImpact', { namespace }) priceImpact!: string;
-  @Getter('price', { namespace }) price!: string;
-  @Getter('priceReversed', { namespace }) priceReversed!: string;
+  @getter.swap.price private price!: string;
+  @getter.swap.priceReversed private priceReversed!: string;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
+  @getter.swap.tokenFrom tokenTo!: AccountAsset;
+  @getter.swap.minMaxReceived minMaxReceived!: CodecString;
+  @getter.swap.priceImpact priceImpact!: string;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
   @Prop({ default: '', type: String }) readonly operation!: Operation;
@@ -100,7 +111,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
     return [...new Set([fromToken, xorToken, toToken])];
   }
 
-  get priceValues(): Array<object> {
+  get priceValues(): Array<PriceValue> {
     const fromSymbol = this.tokenFrom?.symbol ?? '';
     const toSymbol = this.tokenTo?.symbol ?? '';
 
@@ -122,7 +133,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
     return this.formatStringValue(this.priceImpact);
   }
 
-  get rewardsValues(): Array<any> {
+  get rewardsValues(): Array<RewardValue> {
     return this.rewards.map((reward, index) => {
       const asset = KnownAssets.get(reward.currency);
       const value = this.formatCodecNumber(reward.amount);

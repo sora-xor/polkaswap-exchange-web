@@ -10,40 +10,37 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
 import { ethers } from 'ethers';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import ethersUtil from '@/utils/ethers-util';
 import { bridgeApi } from '@/utils/bridge';
+import { action } from '@/store/decorators';
 
 @Component
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
-  @Action('getEvmBalance', { namespace: 'web3' }) getEvmBalance!: AsyncVoidFn;
-  @Action('getEvmNetworkFee', { namespace: 'bridge' }) getEvmNetworkFee!: AsyncVoidFn;
-  @Action('updateEvmBlockNumber', { namespace: 'bridge' }) updateEvmBlockNumber!: (
-    blockNumber?: number
-  ) => Promise<void>;
-
-  @Action('getRegisteredAssets', { namespace: 'assets' }) getRegisteredAssets!: AsyncVoidFn;
-  @Action('updateRegisteredAssets', { namespace: 'assets' }) updateRegisteredAssets!: AsyncVoidFn;
+  @action.web3.getEvmBalance private getEvmBalance!: AsyncVoidFn;
+  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
+  @action.bridge.updateEvmBlockNumber private updateEvmBlockNumber!: (block?: number) => Promise<void>;
+  @action.assets.getRegisteredAssets private getRegisteredAssets!: AsyncVoidFn;
+  @action.assets.updateRegisteredAssets private updateRegisteredAssets!: AsyncVoidFn;
 
   private unwatchEthereum!: VoidFunction;
   private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
 
-  async mounted(): Promise<void> {
-    await this.syncExternalAccountWithAppState();
+  async created(): Promise<void> {
+    await this.withLoading(async () => {
+      await this.syncExternalAccountWithAppState();
 
-    this.withLoading(() =>
-      this.withParentLoading(async () => {
-        await this.setEvmNetwork(bridgeApi.externalNetwork);
+      await this.withParentLoading(async () => {
+        this.setEvmNetwork(bridgeApi.externalNetwork);
         await this.onEvmNetworkTypeChange();
 
         this.unwatchEthereum = await ethersUtil.watchEthereum({
           onAccountChange: (addressList: string[]) => {
             if (addressList.length) {
-              this.switchExternalAccount({ address: addressList[0] });
+              this.switchExternalAccount(addressList[0]);
               this.updateExternalBalances();
             } else {
               this.disconnectExternalAccount();
@@ -57,8 +54,8 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
           },
         });
         this.subscribeToEvmBlockHeaders();
-      })
-    );
+      });
+    });
   }
 
   beforeDestroy(): void {

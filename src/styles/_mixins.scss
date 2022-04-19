@@ -488,12 +488,16 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   }
 }
 
-@mixin collapse-items($withBottomMargin: true) {
+@mixin collapse-items($withBottomMargin: true, $withChildrenTopMargin: false) {
   $collapse-icon-height: 36px;
 
   .el-collapse-item {
     width: 100%;
-    margin-bottom: $inner-spacing-medium;
+    @if $withChildrenTopMargin == true {
+      margin-top: $inner-spacing-medium;
+    } @else {
+      margin-bottom: $inner-spacing-medium;
+    }
     padding: 0;
     background: var(--s-color-utility-surface);
     border-radius: var(--s-border-radius-small);

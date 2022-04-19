@@ -14,11 +14,13 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { PageNames, RewardsTabsItems } from '@/consts';
 import router, { lazyView } from '@/router';
+import { state } from '@/store/decorators';
+
+const ReferralSystemPages = [PageNames.ReferralBonding, PageNames.ReferralUnbonding];
 
 @Component({
   components: {
@@ -29,16 +31,13 @@ import router, { lazyView } from '@/router';
 export default class RewardsTabs extends Mixins(TranslationMixin) {
   readonly RewardsTabsItems = RewardsTabsItems;
 
-  @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
-  @Getter('current', { namespace: 'router' }) currentRoute!: PageNames;
+  @state.router.prev private prevRoute!: Nullable<PageNames>;
+  @state.router.current private currentRoute!: PageNames;
 
   currentTab: RewardsTabsItems = RewardsTabsItems.Rewards;
 
   created(): void {
-    if (
-      [PageNames.ReferralBonding, PageNames.ReferralUnbonding].includes(this.prevRoute) ||
-      PageNames.Referral === this.currentRoute
-    ) {
+    if (ReferralSystemPages.includes(this.prevRoute as PageNames) || this.currentRoute === PageNames.Referral) {
       this.currentTab = RewardsTabsItems.ReferralProgram;
     }
   }

@@ -31,13 +31,13 @@
               type="action"
               alternative
               icon="arrows-chevron-right-rounded-24"
-              @click="handleNode(node)"
+              @click.stop="handleNode(node)"
             />
           </div>
         </s-radio>
       </s-radio-group>
     </s-scrollbar>
-    <s-button class="select-node-button s-typography-button--large" @click="handleNode()">
+    <s-button class="select-node-button s-typography-button--large" @click.stop="handleNode()">
       {{ t('selectNodeDialog.addNode') }}
     </s-button>
   </div>
@@ -53,7 +53,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 @Component
 export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) nodes!: Array<NodeItem>;
-  @Prop({ default: () => {}, type: Function }) handleNode!: (node: NodeItem) => void;
+  @Prop({ default: () => {}, type: Function }) handleNode!: (node?: NodeItem) => void;
   @Prop({ default: '', type: String }) environment!: string;
   @Prop({ default: false, type: Boolean }) disableSelect!: boolean;
 

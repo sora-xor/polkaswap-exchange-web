@@ -162,6 +162,7 @@ export enum Components {
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
   ValueStatusWrapper = 'ValueStatusWrapper',
+  SimpleNotification = 'SimpleNotification',
   Moonpay = 'Moonpay/Moonpay',
   MoonpayWidget = 'Moonpay/MoonpayWidget',
   MoonpayNotification = 'Moonpay/MoonpayNotification',
@@ -174,6 +175,7 @@ export enum Components {
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
   ConfirmSend = 'ConfirmSend',
+  BridgeTransferNotification = 'Bridge/TransferNotification',
 }
 
 export enum RewardsTabsItems {

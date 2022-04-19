@@ -43,7 +43,8 @@
             "ClaimRewards": "Պարգևատրումը հաջողությամբ հաստատված է {rewards}",
             "ReferralReserveXor": "XOR-ը հաջողությամբ կապակցվեց",
             "ReferralUnreserveXor": "XOR-ը հաջողությամբ ունբոնդ",
-            "ReferralSetInvitedUser": "Հղումը դրվում է հաջողությամբ"
+            "ReferralSetInvitedUser": "Հղումը դրվում է հաջողությամբ",
+            "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Չհաջողվեց հաստատել պարգեւատրումները {rewards}",
             "ReferralReserveXor": "Չհաջողվեց կապել XOR-ը",
             "ReferralUnreserveXor": "Ունբոնդ Ձախողվել է XOR-ը",
-            "ReferralSetInvitedUser": "Չհաջողվեց սահմանել ուղղորդում"
+            "ReferralSetInvitedUser": "Չհաջողվեց սահմանել ուղղորդում",
+            "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
-        "ReferralSetInvitedUser": "Սահմանել ուղղորդում"
+        "ReferralSetInvitedUser": "Սահմանել ուղղորդում",
+        "SwapAndSend": "Փոխանակեք և ուղարկեք"
     },
     "polkadotjs": {
         "noExtensions": "Polkadot.js- ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
@@ -141,7 +144,9 @@
         "details": "Մանրամասներ"
     },
     "asset": {
-        "remove": "Հեռացնել ակտիվը"
+        "remove": "Հեռացնել ակտիվը",
+        "select": "Ընտրեք ակտիվ",
+        "recieve": "Ստանալ {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -773,7 +778,8 @@
         "claimableAmountDoneVesting": "Պահանջվող գումարը (կատարված ապահովումը)",
         "groups": {
             "strategic": "PSWAP ստրատեգիական պարգևատրումներ",
-            "external": "Պարգևատրումներ կապված ethereum հաշվի համար"
+            "external": "Պարգևատրումներ կապված ethereum հաշվի համար",
+            "crowdloan": "Crowdloan պարգևներ"
         },
         "Rewards": "Պարգեւներ",
         "ReferralProgram": "@:referralProgram.title"
@@ -916,8 +922,30 @@
             "hasReferrerTitle": "Դուք արդեն սահմանել եք ձեր ուղղորդիչը",
             "hasReferrerDescription": "Ցավոք, դուք կարող եք սահմանել միայն մեկը",
             "ok": "Լավ"
+        },
+        "referrer": {
+            "title": "Ավելացրեք ձեր ուղղորդիչը",
+            "titleReferrer": "Ձեր ուղղորդողը",
+            "placeholder": "Մուտքագրեք հրավերի հղումը կամ կոդը",
+            "label": "Հրավերի հղում կամ ծածկագիր",
+            "approve": "Հաստատել",
+            "approved": "Հաստատված է",
+            "description": "Դուք կարող եք հղում կատարել Polkaswap-ին,<br\/>մուտքագրեք հղումը կամ ուղղորդողի կոդը",
+            "referredBy": "Ձեզ ուղղորդել է {referrer} ը",
+            "info": "Երբ գործարքի համար վճար կվճարեք,<br\/>10%-ը կգնա ձեր ուղղորդողին",
+            "referredLablel": "Նշված հասցեն"
         }
     },
     "transactionDetailsText": "Գործարքի մանրամասները",
-    "createTokenTextNFT": "Ստեղծեք NFT"
+    "createTokenTextNFT": "Ստեղծեք NFT",
+    "code": {
+        "download": "Ներբեռնեք QR կոդը",
+        "upload": "Սկան QR",
+        "recieve": "Ստանալ",
+        "invalid": "Անվավեր QR կոդը"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Ավելացնել {symbol} է @:metamask",
+        "title": "Կամուրջի գործարքը հաջողվեց"
+    }
 }

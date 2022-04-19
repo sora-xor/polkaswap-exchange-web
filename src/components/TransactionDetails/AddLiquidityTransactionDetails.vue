@@ -15,11 +15,11 @@
     <div v-if="areTokensSelected && isAvailable && !emptyAssets" class="info-line-container">
       <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
       <info-line
-        :label="t('addLiquidity.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })"
+        :label="t('addLiquidity.firstPerSecond', { first: firstTokenSymbol, second: secondTokenSymbol })"
         :value="formattedPrice"
       />
       <info-line
-        :label="t('addLiquidity.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })"
+        :label="t('addLiquidity.firstPerSecond', { first: secondTokenSymbol, second: firstTokenSymbol })"
         :value="formattedPriceReversed"
       />
       <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
@@ -38,14 +38,14 @@
       <info-line
         is-formatted
         value-can-be-hidden
-        :label="firstToken.symbol"
+        :label="firstTokenSymbol"
         :value="formattedFirstTokenPosition"
         :fiat-value="fiatFirstTokenPosition"
       />
       <info-line
         is-formatted
         value-can-be-hidden
-        :label="secondToken.symbol"
+        :label="secondTokenSymbol"
         :value="formattedSecondTokenPosition"
         :fiat-value="fiatSecondTokenPosition"
       />
@@ -56,18 +56,18 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
-import BaseTokenPairMixinInstance from '../mixins/BaseTokenPairMixin';
+import BaseTokenPairMixinInstance, { TokenPairNamespace } from '../mixins/BaseTokenPairMixin';
 import TranslationMixin from '../mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { getter } from '@/store/decorators';
 
-const namespace = 'addLiquidity';
+const namespace = TokenPairNamespace.AddLiquidity;
 
 const BaseTokenPairMixin = BaseTokenPairMixinInstance(namespace);
 
@@ -78,9 +78,9 @@ const BaseTokenPairMixin = BaseTokenPairMixinInstance(namespace);
   },
 })
 export default class AddLiquidityTransactionDetails extends Mixins(TranslationMixin, BaseTokenPairMixin) {
-  @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean;
-  @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity;
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string;
+  @getter.addLiquidity.liquidityInfo private liquidityInfo!: Nullable<AccountLiquidity>;
+  @getter.addLiquidity.isNotFirstLiquidityProvider isNotFirstLiquidityProvider!: boolean;
+  @getter.addLiquidity.shareOfPool shareOfPool!: string;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
 
@@ -93,6 +93,7 @@ export default class AddLiquidityTransactionDetails extends Mixins(TranslationMi
   }
 
   get strategicBonusApy(): Nullable<string> {
+    if (!this.secondToken) return null;
     // It won't be in template when not defined
     const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy;
     if (!strategicBonusApy) {
@@ -110,10 +111,14 @@ export default class AddLiquidityTransactionDetails extends Mixins(TranslationMi
   }
 
   get fiatFirstTokenPosition(): Nullable<string> {
+    if (!this.firstToken) return null;
+
     return this.getFiatAmountByFPNumber(this.firstTokenPosition, this.firstToken);
   }
 
   get fiatSecondTokenPosition(): Nullable<string> {
+    if (!this.secondToken) return null;
+
     return this.getFiatAmountByFPNumber(this.secondTokenPosition, this.secondToken);
   }
 

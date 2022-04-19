@@ -112,6 +112,9 @@ $s-transition-default: all 0.125s ease-in-out;
 $neu-button-primary-box-shadow--dark: 1px 1px 5px $s-color-base-background--dark, -1px -1px 5px $s-color-base-background--dark;
 $neu-button-primary-box-shadow-hover: 1px 1px 5px rgba(255, 255, 255, 0.7), -1px -1px 5px white, 0px 0px 20px $s-color-theme-accent;
 $neu-button-primary-box-shadow-hover--dark: 1px 1px 5px rgba(0, 0, 0, 0.7), -1px -1px 5px black, 0px 0px 20px $s-color-theme-accent--dark;
+// Asset item height
+$s-asset-item-height: 71px;
+$s-asset-item-height--fiat: 86px;
 
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
 
@@ -121,4 +124,7 @@ $neu-button-primary-box-shadow-hover--dark: 1px 1px 5px rgba(0, 0, 0, 0.7), -1px
   // Fiat colors
   --s-color-fiat-value: #{$s-color-fiat-value};
   --s-color-rewards: #{$s-color-rewards};
+  // Asset item height
+  --s-asset-item-height: #{$s-asset-item-height};
+  --s-asset-item-height--fiat: #{$s-asset-item-height--fiat};
 }

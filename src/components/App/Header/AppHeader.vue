@@ -43,9 +43,8 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
@@ -54,6 +53,7 @@ import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
 
 import { lazyComponent, goTo } from '@/router';
 import { PageNames, Components, LogoSize } from '@/consts';
+import { getter, mutation } from '@/store/decorators';
 
 @Component({
   components: {
@@ -77,12 +77,11 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
 
-  @Getter libraryTheme!: Theme;
-  @Getter isLoggedIn!: boolean;
-  @Getter account!: WALLET_TYPES.Account;
-  @Getter moonpayEnabled!: boolean;
+  @getter.libraryTheme libraryTheme!: Theme;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
 
-  @Action('setDialogVisibility', { namespace: 'moonpay' }) setMoonpayVisibility!: (flag: boolean) => Promise<void>;
+  @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
 
   goTo = goTo;
 
@@ -113,7 +112,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
       return this.connectInternalWallet();
     }
     await this.checkConnectionToExternalAccount(async () => {
-      await this.setMoonpayVisibility(true);
+      this.setMoonpayVisibility(true);
     });
   }
 

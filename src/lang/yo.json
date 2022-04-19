@@ -43,7 +43,8 @@
             "ClaimRewards": "A ti gba ere ni aseyori {rewards}",
             "ReferralReserveXor": "XOR ti sopọ ni aṣeyọri",
             "ReferralUnreserveXor": "XOR ti ko ni asopọ ni aṣeyọri",
-            "ReferralSetInvitedUser": "Itọkasi ti ṣeto ni aṣeyọri"
+            "ReferralSetInvitedUser": "Itọkasi ti ṣeto ni aṣeyọri",
+            "SwapAndSend": "Paarọ {amount} {symbol} fun {amount2} {symbol2} ati {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Kuna lati fi {amount} {symbol} ranṣẹ si {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Kuna lati beere awọn ere {rewards}",
             "ReferralReserveXor": "Ti kuna lati ṣopọ mọ XOR",
             "ReferralUnreserveXor": "O kuna lati yọkuro XOR",
-            "ReferralSetInvitedUser": "Kuna lati ṣeto itọkasi"
+            "ReferralSetInvitedUser": "Kuna lati ṣeto itọkasi",
+            "SwapAndSend": "O kuna lati paarọ {amount} {symbol} fun {amount2} {symbol2} ati {action} {direction} {address}"
         },
         "ReferralReserveXor": "Iwe adehun XOR",
         "ReferralUnreserveXor": "Yọ XOR kuro",
-        "ReferralSetInvitedUser": "Ṣeto itọkasi"
+        "ReferralSetInvitedUser": "Ṣeto itọkasi",
+        "SwapAndSend": "Siwopu ati Firanṣẹ"
     },
     "polkadotjs": {
         "noExtensions": "A ko rii itẹsiwaju Polkadot.js. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
@@ -141,7 +144,9 @@
         "details": "Awọn alaye"
     },
     "asset": {
-        "remove": "Yọ dukia kuro"
+        "remove": "Yọ dukia kuro",
+        "select": "Yan dukia",
+        "recieve": "Gba {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -773,7 +778,8 @@
         "claimableAmountDoneVesting": "Iye ti o ni ẹtọ (ti a ṣe)",
         "groups": {
             "strategic": "Ere Awọn ilana",
-            "external": "Awọn ere fun iroyin ethereum ti a sopọ"
+            "external": "Awọn ere fun iroyin ethereum ti a sopọ",
+            "crowdloan": "Crowdloan ere"
         },
         "Rewards": "Ere",
         "ReferralProgram": "@:referralProgram.title"
@@ -916,8 +922,30 @@
             "hasReferrerTitle": "O ti ṣeto olutọka rẹ tẹlẹ",
             "hasReferrerDescription": "Laanu, o le ṣeto ọkan nikan",
             "ok": "O DARA"
+        },
+        "referrer": {
+            "title": "Ṣafikun olutọka rẹ",
+            "titleReferrer": "Olutọka rẹ",
+            "placeholder": "Tẹ ọna asopọ ifiwepe tabi koodu sii",
+            "label": "Asopọmọra ifiwepe tabi koodu",
+            "approve": "Fi ọwọ si",
+            "approved": "Ti fọwọsi",
+            "description": "O le tọka si Polkaswap,<br\/>tẹ ọna asopọ tabi koodu ti olutọkasi",
+            "referredBy": "{referrer} ti tọka si ọ",
+            "info": "Nigbati o ba san owo fun idunadura,<br\/>10% yoo lọ si olutọkasi rẹ",
+            "referredLablel": "Adirẹsi ti a tọka si"
         }
     },
     "transactionDetailsText": "Idunadura Awọn alaye",
-    "createTokenTextNFT": "Ṣẹda NFT"
+    "createTokenTextNFT": "Ṣẹda NFT",
+    "code": {
+        "download": "Ṣe igbasilẹ koodu QR",
+        "upload": "Ṣayẹwo QR",
+        "recieve": "Gba",
+        "invalid": "Koodu QR ti ko tọ"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Ṣafikun {symbol} si @:metamask",
+        "title": "Idunadura Bridge aseyori"
+    }
 }

@@ -43,7 +43,8 @@
             "ClaimRewards": "Reward claimed successfully {rewards}",
             "ReferralReserveXor": "Bonded XOR successfully",
             "ReferralUnreserveXor": "Unbonded XOR successfully",
-            "ReferralSetInvitedUser": "Referral is set successfully"
+            "ReferralSetInvitedUser": "Referral is set successfully",
+            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Failed to claim rewards {rewards}",
             "ReferralReserveXor": "Failed to bond XOR",
             "ReferralUnreserveXor": "Failed to unbond XOR",
-            "ReferralSetInvitedUser": "Failed to set referral"
+            "ReferralSetInvitedUser": "Failed to set referral",
+            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
-        "ReferralSetInvitedUser": "Set Referral"
+        "ReferralSetInvitedUser": "Set Referral",
+        "SwapAndSend": "Swap and Send"
     },
     "polkadotjs": {
         "noExtensions": "No Polkadot.js extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -141,7 +144,9 @@
         "details": "Details"
     },
     "asset": {
-        "remove": "Remove asset"
+        "remove": "Remove asset",
+        "select": "Select an asset",
+        "recieve": "Receive {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -774,7 +779,8 @@
         "claimableAmountDoneVesting": "Claimable rewards",
         "groups": {
             "strategic": "Strategic Rewards",
-            "external": "Rewards for the connected ethereum account"
+            "external": "Rewards for the connected ethereum account",
+            "crowdloan": "Crowdloan rewards"
         },
         "Rewards": "Rewards",
         "ReferralProgram": "@:referralProgram.title"
@@ -884,7 +890,7 @@
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} referrals",
         "startInviting": "To start inviting, bond any amount of XOR.",
-        "preview": "Invite new users and get 10% from their transaction fees.<br \/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
+        "preview": "Invite new users and get 10% from their transaction fees.<br\/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Balance",
         "networkFee": "@:networkFeeText",
@@ -917,6 +923,18 @@
             "hasReferrerTitle": "You’ve already set your referrer",
             "hasReferrerDescription": "Unfortunately, you can only set one",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Add your referrer",
+            "titleReferrer": "Your referrer",
+            "placeholder": "Enter invitation link or code",
+            "label": "Invitation link or code",
+            "approve": "Approve",
+            "approved": "Approved",
+            "description": "You can get referred to Polkaswap,<br\/>type in the link or code of the referrer",
+            "referredBy": "You’ve been referred by {referrer}",
+            "info": "When you’ll pay a fee for transaction,<br\/>10% will go to your referrer",
+            "referredLablel": "Referred address"
         }
     },
     "transactionDetailsText": "Transaction Details",
@@ -954,5 +972,15 @@
             "save": "Save",
             "reset": "Reset"
         }
-    }    
+    },    
+    "code": {
+        "download": "Download QR Code",
+        "upload": "Scan QR",
+        "recieve": "Receive",
+        "invalid": "Invalid QR Code"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Add {symbol} to @:metamask",
+        "title": "Bridge transaction successful"
+    }
 }

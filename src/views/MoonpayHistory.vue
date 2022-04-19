@@ -77,11 +77,9 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, State, Getter } from 'vuex-class';
-import { WALLET_CONSTS, components } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { BridgeHistory } from '@sora-substrate/util';
 
-import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
 
@@ -90,11 +88,10 @@ import { getCssVariableValue, toQueryString } from '@/utils';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { MoonpayTransactionStatus } from '@/utils/moonpay';
+import { action, getter, state } from '@/store/decorators';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { MoonpayTransaction, MoonpayCurrenciesById } from '@/utils/moonpay';
-
-const namespace = 'moonpay';
 
 const HistoryView = 'history';
 const DetailsView = 'details';
@@ -107,19 +104,21 @@ const DetailsView = 'details';
     MoonpayWidget: lazyComponent(Components.MoonpayWidget),
   },
 })
-export default class MoonpayHistory extends Mixins(PaginationSearchMixin, MoonpayBridgeInitMixin) {
+export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin, MoonpayBridgeInitMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
-  @State((state) => state[namespace].transactions) transactions!: Array<MoonpayTransaction>;
-  @Getter libraryTheme!: Theme;
-  @Getter('isValidNetworkType', { namespace: 'web3' }) isValidNetworkType!: boolean;
-  @Getter('currenciesById', { namespace }) currenciesById!: MoonpayCurrenciesById;
-  @Action('getTransactions', { namespace }) getTransactions!: AsyncVoidFn;
-  @Action('getCurrencies', { namespace }) getCurrencies!: AsyncVoidFn;
+  @state.moonpay.transactions transactions!: Array<MoonpayTransaction>;
+
+  @getter.web3.isValidNetworkType private isValidNetworkType!: boolean;
+  @getter.moonpay.currenciesById private currenciesById!: MoonpayCurrenciesById;
+  @getter.libraryTheme libraryTheme!: Theme;
+
+  @action.moonpay.getTransactions private getTransactions!: AsyncVoidFn;
+  @action.moonpay.getCurrencies private getCurrencies!: AsyncVoidFn;
 
   private unwatchEthereum!: VoidFunction;
 
-  pageAmount = 5;
+  pageAmount = 5; // override PaginationSearchMixin
   currentView = HistoryView;
   selectedItem: any = {};
 
@@ -127,7 +126,8 @@ export default class MoonpayHistory extends Mixins(PaginationSearchMixin, Moonpa
     this.withApi(async () => {
       this.initMoonpayApi(); // MoonpayBridgeInitMixin
 
-      await Promise.all([this.getTransactions(), this.getCurrencies(), this.getHistory()]);
+      await Promise.all([this.getTransactions(), this.getCurrencies()]);
+      this.setHistory();
 
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {

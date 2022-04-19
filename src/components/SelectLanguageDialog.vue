@@ -1,10 +1,5 @@
 <template>
-  <dialog-base
-    :visible.sync="visibility"
-    :before-close="beforeClose"
-    :title="t('selectLanguageDialog.title')"
-    class="select-language-dialog"
-  >
+  <dialog-base :visible.sync="visibility" :title="t('selectLanguageDialog.title')" class="select-language-dialog">
     <s-scrollbar class="select-language-scrollbar">
       <s-radio-group v-model="selectedLang" class="select-language-list s-flex">
         <s-radio
@@ -31,9 +26,9 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, State } from 'vuex-class';
 
 import { Language, Languages } from '@/consts';
+import { state, action, mutation } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogBase from './DialogBase.vue';
@@ -46,17 +41,17 @@ import DialogBase from './DialogBase.vue';
 export default class SelectLanguageDialog extends Mixins(TranslationMixin) {
   readonly languages = Languages;
 
-  @State((state) => state.settings.selectLanguageDialogVisibility) selectLanguageDialogVisibility!: boolean;
+  @state.settings.selectLanguageDialogVisibility private selectLanguageDialogVisibility!: boolean;
 
-  @Action setLanguage!: (lang: Language) => Promise<void>;
-  @Action setSelectLanguageDialogVisibility!: (flag: boolean) => Promise<void>;
+  @mutation.settings.setSelectLanguageDialogVisibility private setDialogVisibility!: (flag: boolean) => void;
+  @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
 
   get visibility(): boolean {
     return this.selectLanguageDialogVisibility;
   }
 
   set visibility(flag: boolean) {
-    this.setSelectLanguageDialogVisibility(flag);
+    this.setDialogVisibility(flag);
   }
 
   get selectedLang(): Language {
@@ -65,10 +60,6 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin) {
 
   set selectedLang(value: Language) {
     this.setLanguage(value);
-  }
-
-  beforeClose(closeFn: VoidFunction): void {
-    closeFn();
   }
 }
 </script>

@@ -55,7 +55,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter, State } from 'vuex-class';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, Operation } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -65,8 +64,7 @@ import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-
-const namespace = 'swap';
+import { state, getter } from '@/store/decorators';
 
 @Component({
   components: {
@@ -76,15 +74,15 @@ const namespace = 'swap';
   },
 })
 export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogMixin) {
-  @State((state) => state[namespace].fromValue) fromValue!: string;
-  @State((state) => state[namespace].toValue) toValue!: string;
-  @State((state) => state[namespace].isExchangeB) isExchangeB!: boolean;
+  @state.settings.slippageTolerance private slippageTolerance!: string;
+  @state.swap.fromValue private fromValue!: string;
+  @state.swap.toValue private toValue!: string;
+  @state.swap.isExchangeB isExchangeB!: boolean;
 
-  @Getter slippageTolerance!: string;
-  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
-  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
-  @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString;
-  @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
+  @getter.swap.minMaxReceived private minMaxReceived!: CodecString;
+  @getter.swap.swapLiquiditySource private liquiditySource!: LiquiditySourceTypes;
+  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
+  @getter.swap.tokenTo tokenTo!: AccountAsset;
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSwapAndSend!: boolean;
@@ -121,15 +119,15 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogM
         await this.withNotifications(async () => {
           if (this.isSwapAndSend) {
             await api.swap.executeSwapAndSend(
+              this.to,
               this.tokenFrom,
               this.tokenTo,
               this.fromValue,
               this.toValue,
-              this.valueTo,
-              this.to,
+              // this.valueTo,
               this.slippageTolerance,
-              this.isExchangeB,
-              this.liquiditySource
+              this.isExchangeB
+              // this.liquiditySource
             );
           } else {
             await api.swap.execute(

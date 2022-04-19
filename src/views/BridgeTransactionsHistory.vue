@@ -10,8 +10,14 @@
             prefix="s-icon-search-16"
             size="big"
           >
-            <template #suffix v-if="query">
-              <s-button type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
+            <template #suffix>
+              <s-button
+                v-show="query"
+                type="link"
+                class="s-button--clear"
+                icon="clear-X-16"
+                @click="handleResetSearch"
+              />
             </template>
           </s-input>
         </s-form-item>
@@ -65,23 +71,19 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
-import { BridgeTxStatus } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { BridgeTxStatus } from '@sora-substrate/util';
+import type { BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import PaginationSearchMixin from '@/components/mixins/PaginationSearchMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
+import { action, state } from '@/store/decorators';
 import { isUnsignedToPart, isRejectedForeverFromPart } from '@/utils/bridge';
-
-import type { BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
-
-const namespace = 'bridge';
 
 @Component({
   components: {
@@ -94,14 +96,13 @@ export default class BridgeTransactionsHistory extends Mixins(
   BridgeMixin,
   BridgeHistoryMixin,
   NetworkFormatterMixin,
-  PaginationSearchMixin,
+  mixins.PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
-  @Getter('registeredAssets', { namespace: 'assets' }) registeredAssets!: Array<RegisteredAccountAsset>;
+  @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;
 
-  @Action('updateHistory', { namespace }) updateHistory!: AsyncVoidFn;
+  @action.bridge.updateHistory private updateHistory!: AsyncVoidFn;
 
-  PageNames = PageNames;
   pageAmount = 8; // override PaginationSearchMixin
 
   get filteredHistory(): Array<BridgeHistory> {
@@ -124,7 +125,7 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   async created(): Promise<void> {
     await this.withParentLoading(async () => {
-      await this.getHistory();
+      this.setHistory();
       await this.updateHistory();
     });
   }
@@ -201,6 +202,11 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   handleBack(): void {
     router.push({ name: PageNames.Bridge });
+  }
+
+  handleResetSearch(): void {
+    this.resetPage();
+    this.resetSearch();
   }
 }
 </script>
