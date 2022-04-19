@@ -591,7 +591,6 @@
             "done": "Compleet",
             "waitingForConfirmation": "Wachten op bevestiging..."
         },
-        "wait30Block": "Gelieve 30 blokbevestigingen te wachten",
         "viewInEtherscan": "Bekijk in Etherscan",
         "networkTitle": "{Netwerk} transactie",
         "transactionHash": "Transactie hash",

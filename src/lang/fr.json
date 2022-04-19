@@ -591,7 +591,6 @@
             "done": "Compléter",
             "waitingForConfirmation": "En attente de confirmation..."
         },
-        "wait30Block": "Veuillez attendre 30 confirmations de block",
         "viewInEtherscan": "Afficher dans Etherscan",
         "networkTitle": "transaction {network}",
         "transactionHash": "Hash de transaction",
