@@ -591,7 +591,6 @@
             "done": "Выполнено",
             "waitingForConfirmation": "Ожидание подтверждения..."
         },
-        "wait30Block": "Пожалуйста, дождитесь 30 подтверждений блока",
         "viewInEtherscan": "Посмотреть в Etherscan",
         "networkTitle": "{network} транзакция",
         "transactionHash": "Хеш транзакции",
