@@ -39,13 +39,16 @@ export function getLocale(): string {
 
 export async function setDayJsLocale(lang: Language): Promise<void> {
   const locale = getSupportedLocale(lang);
-  const code = first(locale.split('-')) as string;
+  let code = first(locale.split('-')) as string;
+  if (code === 'zh') {
+    code = 'zh-cn';
+  }
 
   try {
     // importing dayjs locale file automatically runs `dayjs.locale(code)`
     // "webpackInclude" - optimization to exclude unused files from "chunk-vendors"
     await import(
-      /* webpackInclude: /(en|ru|cs|de|es|fr|hr|hu|hy|id|it|nl|no|pl|sk|sr|sv|vi|yo|zh-CN)\.js$/ */
+      /* webpackInclude: /(en|ru|cs|de|es|fr|hr|hu|hy|id|it|nl|no|pl|sk|sr|sv|vi|yo|zh-cn)\.js$/ */
       /* webpackChunkName: "dayjs-locale-[request]" */
       /* webpackMode: "lazy" */
       `dayjs/locale/${code}.js`
