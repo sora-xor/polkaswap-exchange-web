@@ -591,7 +591,6 @@
             "done": "Potpuno",
             "waitingForConfirmation": "Čeka se potvrda..."
         },
-        "wait30Block": "Pričekajte 30 potvrda bloka",
         "viewInEtherscan": "Prikažite u Etherscanu",
         "networkTitle": "{network} transakcija",
         "transactionHash": "Hash transakcije",

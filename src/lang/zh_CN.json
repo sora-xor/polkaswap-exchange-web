@@ -591,7 +591,6 @@
             "done": "完成",
             "waitingForConfirmation": "等待确认..."
         },
-        "wait30Block": "请等待 30 个区块确认",
         "viewInEtherscan": "在Etherscan中查看",
         "networkTitle": "{network}交易",
         "transactionHash": "交易哈希值",

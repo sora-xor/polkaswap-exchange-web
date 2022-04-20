@@ -591,7 +591,6 @@
             "done": "Teljesítve",
             "waitingForConfirmation": "Megerősítésre vár..."
         },
-        "wait30Block": "Kérjük, várj 30 blokk megerősítést",
         "viewInEtherscan": "Megtekintés Etherscanen",
         "networkTitle": "{network} tranzakció",
         "transactionHash": "Tranzakciós hash",

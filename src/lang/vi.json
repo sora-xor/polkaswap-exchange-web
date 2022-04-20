@@ -287,7 +287,7 @@
     "connectWalletTextTooltip": "Kết nối tới Mạng @:soraText với polkadot{.js}",
     "selectNodeText": "Chọn node",
     "bridgeText": "Cầu nối",
-    "disclaimer": "<span class=\"app-disclaimer__title\"> Tuyên bố miễn trừ trách nhiệm <\/span>: Trang web này được duy trì bởi cộng đồng @:soraText. Trước khi tiếp tục sử dụng trang web này, vui lòng xem lại @:polkaswapFaqLink và tài liệu, bao gồm giải thích chi tiết về cách Polkaswap hoạt động, cũng như @:memorandumLink và @:(privacyLink). Những tài liệu này rất quan trọng đối với trải nghiệm người dùng an toàn và tích cực. Bằng cách sử dụng Polkaswap, bạn xác nhận rằng bạn đã đọc và hiểu các tài liệu này. Bạn cũng thừa nhận những điều sau: 1) trách nhiệm duy nhất của bạn đối với việc tuân thủ tất cả các luật có thể áp dụng cho việc sử dụng Polkaswap cụ thể của bạn trong khu vực pháp lý của bạn; 2) bạn hiểu rằng phiên bản Polkaswap hiện tại là phiên bản alpha: nó chưa được kiểm tra đầy đủ và một số chức năng có thể không hoạt động như thiết kế; và 3) sự hiểu biết của bạn và tự nguyện chấp nhận các rủi ro liên quan đến việc sử dụng Polkaswap, bao gồm, nhưng không giới hạn, rủi ro mất token. Vui lòng không tiếp tục mà không đọc @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\"> Tuyên bố miễn trừ trách nhiệm <\/span>: Trang web này được duy trì bởi cộng đồng @:(soraText). Trước khi tiếp tục sử dụng trang web này, vui lòng xem lại @:polkaswapFaqLink và tài liệu, bao gồm giải thích chi tiết về cách Polkaswap hoạt động, cũng như @:memorandumLink và @:(privacyLink). Những tài liệu này rất quan trọng đối với trải nghiệm người dùng an toàn và tích cực. Bằng cách sử dụng Polkaswap, bạn xác nhận rằng bạn đã đọc và hiểu các tài liệu này. Bạn cũng thừa nhận những điều sau: 1) trách nhiệm duy nhất của bạn đối với việc tuân thủ tất cả các luật có thể áp dụng cho việc sử dụng Polkaswap cụ thể của bạn trong khu vực pháp lý của bạn; 2) bạn hiểu rằng phiên bản Polkaswap hiện tại là phiên bản alpha: nó chưa được kiểm tra đầy đủ và một số chức năng có thể không hoạt động như thiết kế; và 3) sự hiểu biết của bạn và tự nguyện chấp nhận các rủi ro liên quan đến việc sử dụng Polkaswap, bao gồm, nhưng không giới hạn, rủi ro mất token. Vui lòng không tiếp tục mà không đọc @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Được cung cấp bởi",
     "confirmTransactionText": "Xác nhận giao dịch {direction}",
@@ -591,7 +591,6 @@
             "done": "Hoàn tất",
             "waitingForConfirmation": "Đang chờ xác nhận..."
         },
-        "wait30Block": "Vui lòng chờ 30 block xác nhận",
         "viewInEtherscan": "Xem trên Etherscan",
         "networkTitle": "giao dịch {network}",
         "transactionHash": "Chi tiết giao dịch",
@@ -883,7 +882,7 @@
     },
     "blockNumberText": "Số khối",
     "referralProgram": {
-        "title": "Chương trình giới thiệu",
+        "title": "Referral Program",
         "connectAccount": "Để mời người dùng, bạn cần kết nối tài khoản SORA của mình.",
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} giới thiệu",

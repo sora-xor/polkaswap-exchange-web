@@ -591,7 +591,6 @@
             "done": "Dokončené",
             "waitingForConfirmation": "Čaká sa na potvrdenie…"
         },
-        "wait30Block": "Čakajte, prosím, dokým nebude potvrdených 30 blokov",
         "viewInEtherscan": "Zobraziť v Etherscan",
         "networkTitle": "{network} transakcia",
         "transactionHash": "Hash transakcie",
@@ -883,7 +882,7 @@
     },
     "blockNumberText": "Číslo bloku",
     "referralProgram": {
-        "title": "Program odporúčaní",
+        "title": "Referral Program",
         "connectAccount": "Ak chcete pozvať používateľov, musíte pripojiť svoj účet SORA.",
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} odporúčaní",

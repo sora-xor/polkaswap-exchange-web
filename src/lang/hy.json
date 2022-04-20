@@ -331,15 +331,15 @@
     "social": {
         "twitter": "Twitter",
         "telegram": "Telegram",
-        "medium": "Միջին",
-        "reddit": "Reddit(Րեդդիթ)",
-        "github": "GitHub(Գիթհաբ)",
-        "wiki": "@:soraText Վիքին"
+        "medium": "Medium",
+        "reddit": "Reddit",
+        "github": "GitHub",
+        "wiki": "@:soraText Wiki"
     },
     "footerMenu": {
         "faucet": "Faucet(Ֆասեթ)",
-        "github": "GitHub(Գիթհաբ)",
-        "sorawiki": "@:soraText Վիքին",
+        "github": "GitHub",
+        "sorawiki": "@:soraText Wiki",
         "memorandum": "Polkaswap- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
         "privacy": "Գաղտնիության քաղաքականություն",
         "info": "Ինֆո & Հասարակություն"
@@ -357,7 +357,7 @@
         "title": "Մասին",
         "learnMore": "Իմանալ ավելին",
         "network": {
-            "title": "Ի՞նչ է @:soraText- ը:",
+            "title": "Ի՞նչ է @:soraText ը:",
             "description": "Polkaswap- ը կառուցված է @:soraText ցանցի հիման վրա, իսկ @:soraText տոկենը (XOR) օգտագործվում է Polkaswap- ում գազի \/ վճարների և իրացվելիության ապահովման համար: @:soraText ցանցը թույլ է տալիս նվազեցնել վճարները, արագացնել գործարքները և ավելի պարզ համաձայնության հասնելը և կենտրոնացած է այլ բլոկչեյն էկոհամակարգերի միջև փոխգործունակության ապահովման վրա, ինչպիսիք են @:(ethereumText):"
         },
         "polkadot": {
