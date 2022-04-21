@@ -26,6 +26,28 @@ module.exports = {
       config.output.chunkFilename = `js/[name].[contenthash:8].${buildDateTime}.js`;
     }
   },
+  chainWebpack: (config) => {
+    const svgRule = config.module.rule('svg');
+    // clear default loaders
+    svgRule.uses.clear();
+    // add new loaders
+    config.module
+      .rule('svg')
+      .oneOf('inline-svg')
+      .resourceQuery(/inline/)
+      .use('babel')
+      .loader('babel-loader')
+      .end()
+      .use('vue-svg-loader')
+      .loader('vue-svg-loader')
+      .end()
+      .end()
+      .oneOf('file')
+      .use('file-loader')
+      .loader('file-loader')
+      .end()
+      .end();
+  },
   css: {
     loaderOptions: {
       sass: {
