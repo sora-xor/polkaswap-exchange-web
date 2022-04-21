@@ -17,9 +17,7 @@
       </div>
       <div class="popup-app">
         <div class="popup-app__left-image"></div>
-        <div class="popup-app__link">
-          <div class="popup-app__qr-code"></div>
-        </div>
+        <div class="popup-app__qr-code"></div>
         <div class="popup-app__right-image"></div>
       </div>
     </div>
@@ -107,25 +105,13 @@ export default class MobilePopup extends Mixins(DialogMixin, TranslationMixin) {
 .popup-app {
   display: flex;
   position: relative;
-  &__link {
-    background-color: white;
-    width: 105px;
-    height: 105px;
-    position: absolute;
-    border-radius: 10%;
-    box-shadow: -2px -2px 2px #ffffff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
-    top: 15%;
-    left: 40%;
-  }
   &__qr-code {
-    background: url('@/assets/img/mobile/qr_code_to_store.svg') no-repeat;
-    margin: auto;
-    height: 30px;
-    width: 30px;
+    background: url('@/assets/img/mobile/qr-code.svg') no-repeat;
+    width: 164px;
+    height: 164px;
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: scale(3) translate(-13.5%, -12%);
+    left: 20%;
+    border-radius: 8%;
   }
   &__left-image {
     background: url('@/assets/img/mobile/sora-app-left.svg') no-repeat;

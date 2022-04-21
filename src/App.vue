@@ -6,7 +6,7 @@
         :visible="menuVisibility"
         :on-select="goTo"
         :is-about-page-opened="isAboutPage"
-        @openDownloadDialog="openDownloadDialog"
+        @open-download-dialog="openDownloadDialog"
         @click.native="handleAppMenuClick"
       >
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap" />

@@ -115,7 +115,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   openSoraDownloadDialog(): void {
-    this.$emit('openDownloadDialog');
+    this.$emit('open-download-dialog');
   }
 }
 </script>
