@@ -34,7 +34,7 @@ import DialogMixin from '../mixins/DialogMixin';
 import TranslationMixin from '../mixins/TranslationMixin';
 import { StoreLinks } from '../../consts';
 
-import LeftImage from './sora-app-left.svg';
+import LeftImage from './sora-app-left.svg?inline';
 
 @Component({
   components: {

@@ -1,4 +1,5 @@
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const path = require('path');
 
 module.exports = {
   publicPath: './',
@@ -28,14 +29,25 @@ module.exports = {
   },
   chainWebpack: (config) => {
     const svgRule = config.module.rule('svg');
-
-    // clear all existing loaders.
-    // if you don't do this, the loader below will be appended to
-    // existing loaders of the rule.
+    // clear default loaders
     svgRule.uses.clear();
-
-    // add replacement loader(s)
-    svgRule.use('vue-svg-loader').loader('vue-svg-loader');
+    // add new loaders
+    config.module
+      .rule('svg')
+      .oneOf('inline-svg')
+      .resourceQuery(/inline/)
+      .use('babel')
+      .loader('babel-loader')
+      .end()
+      .use('vue-svg-loader')
+      .loader('vue-svg-loader')
+      .end()
+      .end()
+      .oneOf('file')
+      .use('file-loader')
+      .loader('file-loader')
+      .end()
+      .end();
   },
   css: {
     loaderOptions: {
