@@ -10,6 +10,7 @@ import i18n from '@/lang';
 import { app } from '@/consts';
 
 import storage from './storage';
+import type { RegisterAssetWithExternalBalance } from '@/store/assets/types';
 
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
@@ -54,7 +55,7 @@ export const isMaxButtonAvailable = (
 };
 
 const getMaxBalance = (
-  asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity, // TODO: [Release 1.7] fix RegisteredAccountAsset
+  asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity | RegisterAssetWithExternalBalance, // TODO: [Release 1.7] fix RegisteredAccountAsset
   fee: CodecString,
   isExternalBalance = false,
   parseAsLiquidity = false,
@@ -81,7 +82,7 @@ const getMaxBalance = (
 };
 
 export const getMaxValue = (
-  asset: AccountAsset | RegisteredAccountAsset,
+  asset: AccountAsset | RegisteredAccountAsset | RegisterAssetWithExternalBalance,
   fee: CodecString,
   isExternalBalance = false,
   isBondedBalance = false
