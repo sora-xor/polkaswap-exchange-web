@@ -266,10 +266,10 @@ import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecima
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
+    TokenAddress: components.TokenAddress,
   },
 })
 export default class Bridge extends Mixins(
