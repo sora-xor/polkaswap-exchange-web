@@ -16,6 +16,7 @@
         </div>
       </div>
       <div class="popup-app">
+        <left-image />
         <div class="popup-app__left-image"></div>
         <div class="popup-app__link">
           <div class="popup-app__qr-code"></div>
@@ -33,9 +34,12 @@ import DialogMixin from '../mixins/DialogMixin';
 import TranslationMixin from '../mixins/TranslationMixin';
 import { StoreLinks } from '../../consts';
 
+import LeftImage from './sora-app-left.svg';
+
 @Component({
   components: {
     DialogBase,
+    LeftImage,
   },
 })
 export default class MobilePopup extends Mixins(DialogMixin, TranslationMixin) {
