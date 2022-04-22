@@ -248,10 +248,11 @@ export class EthBridgeHistory {
           BridgeTxStatus.Ready;
       const transactionStep = soraPartCompleted ? 2 : 1;
 
-      const ethereumTx =
-        isOutgoing && soraPartCompleted
+      const ethereumTx = isOutgoing
+        ? soraPartCompleted
           ? await this.findEthTxBySoraHash(historyElementData.sidechainAddress, hash, fromTimestamp, contracts)
-          : await this.findEthTxByEthereumHash(requestHash);
+          : null
+        : await this.findEthTxByEthereumHash(requestHash);
 
       const ethereumHash = ethereumTx?.hash ?? '';
       const recieptData = ethereumHash ? await getEvmTxRecieptByHash(ethereumHash) : null;
