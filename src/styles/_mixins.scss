@@ -26,82 +26,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin select-asset ($class: "token-item") {
-  .#{$class} {
-    &__symbol, &__balance {
-      line-height: var(--s-line-height-small);
-      letter-spacing: var(--s-letter-spacing-small);
-      font-weight: 800;
-    }
-    &__balance-container {
-      .formatted-amount__container {
-        flex-direction: column;
-        align-items: flex-end;
-      }
-    }
-    .formatted-amount {
-      display: block;
-      width: 100%;
-      &__integer {
-        font-size: var(--s-font-size-big);
-        font-weight: 800;
-      }
-      &__decimal {
-        font-weight: 600;
-      }
-      &.formatted-amount--fiat-value {
-        line-height: var(--s-line-height-reset);
-        word-break: break-all;
-        .formatted-amount__integer {
-          font-size: var(--s-font-size-small);
-        }
-      }
-    }
-  }
-}
-
-@mixin select-asset-scoped ($class: "token-item") {
-  .#{$class} {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: $select-asset-item-height;
-    padding: 0 $inner-spacing-big;
-    cursor: pointer;
-    transition: var(--s-transition-default);
-    &:hover {
-      background-color: var(--s-color-base-background-hover);
-    }
-    &__info {
-      flex-direction: column;
-    }
-    &__details {
-      color: var(--s-color-base-content-quaternary);
-      font-size: var(--s-font-size-mini);
-      line-height: var(--s-line-height-medium);
-    }
-    &__address,
-    &__symbol {
-      white-space: nowrap;
-    }
-    &__symbol {
-      font-size: var(--s-font-size-big);
-      white-space: nowrap;
-    }
-    &__balance-container {
-      text-align: right;
-      min-width: 40%;
-    }
-    .s-col {
-      padding-right: $inner-spacing-small;
-    }
-    .token-logo {
-      margin-right: $inner-spacing-mini;
-      flex-shrink: 0;
-    }
-  }
-}
-
 @mixin element-size($className: "", $width: 40px, $height: $width) {
   .#{$className} {
     height: $height;
@@ -404,12 +328,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 @mixin exchange-tabs {
   $tabs-class: ".el-tabs";
 
-  .el-dialog {
-    overflow: hidden;
-    &__body {
-      padding: $inner-spacing-mini 0 $inner-spacing-big !important;
-    }
-  }
   .s-tabs.s-tabs--exchange {
     &#{$tabs-class} {
       #{$tabs-class}__header {

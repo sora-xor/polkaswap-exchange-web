@@ -591,7 +591,6 @@
             "done": "Berhasil",
             "waitingForConfirmation": "Menunggu konfirmasi..."
         },
-        "wait30Block": "Silakan tunggu 30 blok terkonfirmasi",
         "viewInEtherscan": "Lihat di Etherscan",
         "networkTitle": "Transaksi {network}",
         "transactionHash": "Hash transaksi",

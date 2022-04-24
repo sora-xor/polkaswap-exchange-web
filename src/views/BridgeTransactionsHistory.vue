@@ -3,24 +3,15 @@
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack" />
       <s-form class="history-form" :show-message="false">
-        <s-form-item v-if="history.length" class="history--search">
-          <s-input
-            v-model="query"
-            :placeholder="t('bridgeHistory.filterPlaceholder')"
-            prefix="s-icon-search-16"
-            size="big"
-          >
-            <template #suffix>
-              <s-button
-                v-show="query"
-                type="link"
-                class="s-button--clear"
-                icon="clear-X-16"
-                @click="handleResetSearch"
-              />
-            </template>
-          </s-input>
-        </s-form-item>
+        <search-input
+          v-if="history.length"
+          v-model="query"
+          :placeholder="t('bridgeHistory.filterPlaceholder')"
+          autofocus
+          @clear="handleResetSearch"
+          class="history--search"
+        />
+
         <div class="history-items">
           <template v-if="hasHistory">
             <div
@@ -88,6 +79,7 @@ import { isUnsignedToPart, isRejectedForeverFromPart } from '@/utils/bridge';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    SearchInput: components.SearchInput,
     FormattedAmount: components.FormattedAmount,
   },
 })
@@ -256,7 +248,7 @@ $page-amount: 8;
 $history-item-top-border-height: 1px;
 $separator-margin: calc(var(--s-basic-spacing) / 2);
 .history {
-  &--search.el-form-item {
+  &--search {
     margin-bottom: $inner-spacing-medium;
   }
   &-container {
@@ -278,7 +270,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     @include empty-search;
   }
 }
-@include search-item('history--search');
+
 .history-item {
   display: flex;
   align-items: center;

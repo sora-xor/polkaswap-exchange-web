@@ -591,7 +591,6 @@
             "done": "Ferdig",
             "waitingForConfirmation": "Venter på bekreftelse..."
         },
-        "wait30Block": "Vent på 30 blokkbekreftelser",
         "viewInEtherscan": "Vis i Etherscan",
         "networkTitle": "{network} transaksjon",
         "transactionHash": "Transaksjon hash",

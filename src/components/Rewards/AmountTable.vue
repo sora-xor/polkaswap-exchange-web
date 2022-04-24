@@ -27,25 +27,11 @@
                     "
                     :fiat-font-size-rate="FontSizeRate.MEDIUM"
                   >
-                    <el-popover
+                    <reward-item-tooltip
                       v-if="formatted.total && index === 0"
-                      popper-class="amount-table-tooltip"
-                      placement="right"
-                      trigger="hover"
-                    >
-                      <div class="amount-table-tooltip-content">
-                        <div>{{ t('rewards.totalVested') }}:</div>
-                        <formatted-amount
-                          class="amount-table-value"
-                          value-can-be-hidden
-                          symbol-as-decimal
-                          :value="formatted.total.amount"
-                          :font-size-rate="FontSizeRate.MEDIUM"
-                          :asset-symbol="formatted.total.asset.symbol"
-                        />
-                      </div>
-                      <s-icon slot="reference" name="info-16" size="14px" class="amount-table-value-icon" />
-                    </el-popover>
+                      :value="formatted.total.amount"
+                      :asset="formatted.total.asset"
+                    />
                   </formatted-amount-with-fiat-value>
                 </div>
               </div>
@@ -79,7 +65,9 @@
                         :asset-symbol="limitItem.asset.symbol"
                         :fiat-value="getFiatAmountByCodecString(limitItem.amount, limitItem.asset)"
                         :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                      />
+                      >
+                        <reward-item-tooltip v-if="limitItem.total" :value="limitItem.total" :asset="limitItem.asset" />
+                      </formatted-amount-with-fiat-value>
                     </div>
                   </template>
                 </component>
@@ -104,11 +92,14 @@ import type { RewardInfo } from '@sora-substrate/util/build/rewards/types';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards';
 import { asZeroValue } from '@/utils';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
+    RewardItemTooltip: lazyComponent(Components.RewardItemTooltip),
   },
 })
 export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
@@ -139,7 +130,11 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
   }
 
   formatItem(item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
-    const toLimit = (amount: string, asset: Asset): { amount: string; asset: Asset } => ({ amount, asset });
+    const toLimit = (asset: Asset, amount: string, total: string): { asset: Asset; amount: string; total: string } => ({
+      amount,
+      asset,
+      total,
+    });
 
     const key = `rewards.events.${item.type}`;
     const title = this.te(key) ? this.t(key) : item.type;
@@ -149,7 +144,13 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
     const limit =
       'rewards' in item && Array.isArray(item.rewards)
         ? (item as RewardInfoGroup).limit
-        : [toLimit((item as RewardInfo).amount, (item as RewardInfo).asset)];
+        : [
+            toLimit(
+              (item as RewardInfo).asset,
+              (item as RewardInfo).amount,
+              (item as any).total // TODO: remove any
+            ),
+          ];
 
     return {
       type: item.type,
@@ -168,8 +169,6 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
 </script>
 
 <style lang="scss">
-$tooltip-placements: 'left', 'right';
-
 .amount-table {
   & .el-checkbox {
     color: inherit;
@@ -230,11 +229,6 @@ $tooltip-placements: 'left', 'right';
     font-size: var(--s-font-size-medium);
     font-weight: 600;
     margin-right: auto;
-
-    &-icon {
-      margin-left: $inner-spacing-mini / 2;
-      color: var(--s-color-base-content-tertiary);
-    }
   }
 
   &-item {
@@ -251,23 +245,6 @@ $tooltip-placements: 'left', 'right';
     &.complex {
       .el-checkbox__input {
         margin-top: $inner-spacing-small;
-      }
-    }
-  }
-
-  &-tooltip.el-popover.el-popper {
-    border-color: var(--s-color-base-border-secondary);
-    border-radius: var(--s-border-radius-mini);
-    box-shadow: var(--s-shadow-dialog);
-    background-color: var(--s-color-status-success);
-    padding: $inner-spacing-mini $inner-spacing-small;
-
-    @each $placement in $tooltip-placements {
-      &[x-placement^='#{$placement}'] .popper__arrow {
-        border-#{$placement}-color: var(--s-color-base-border-secondary);
-        &:after {
-          border-#{$placement}-color: var(--s-color-status-success);
-        }
       }
     }
   }
@@ -362,12 +339,6 @@ $tooltip-placements: 'left', 'right';
     opacity: 0.5;
     margin-top: 0;
     margin-bottom: $inner-spacing-mini;
-  }
-
-  &-tooltip-content {
-    font-size: var(--s-font-size-small);
-    line-height: var(--s-line-height-small);
-    text-transform: uppercase;
   }
 }
 </style>
