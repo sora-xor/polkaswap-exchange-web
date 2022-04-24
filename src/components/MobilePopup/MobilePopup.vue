@@ -16,10 +16,9 @@
         </div>
       </div>
       <div class="popup-app">
-        <left-image />
-        <div class="popup-app__left-image"></div>
-        <div class="popup-app__qr-code"></div>
-        <div class="popup-app__right-image"></div>
+        <left-image class="popup-app__left-image" />
+        <qr-code class="popup-app__qr-code" />
+        <right-image class="popup-app__right-image" />
       </div>
     </div>
   </dialog-base>
@@ -32,12 +31,16 @@ import DialogMixin from '../mixins/DialogMixin';
 import TranslationMixin from '../mixins/TranslationMixin';
 import { StoreLinks } from '../../consts';
 
-import LeftImage from '@/assets/img/mobile/sora-app-left.svg?inline';
+import LeftImage from '../../assets/img/mobile/sora-app-left.svg?inline';
+import QrCode from '../../assets/img/mobile/qr-code.svg?inline';
+import RightImage from '../../assets/img/mobile/sora-app-right.svg?inline';
 
 @Component({
   components: {
     DialogBase,
     LeftImage,
+    RightImage,
+    QrCode,
   },
 })
 export default class MobilePopup extends Mixins(DialogMixin, TranslationMixin) {
@@ -110,7 +113,6 @@ export default class MobilePopup extends Mixins(DialogMixin, TranslationMixin) {
   display: flex;
   position: relative;
   &__qr-code {
-    background: url('@/assets/img/mobile/qr-code.svg') no-repeat;
     width: 164px;
     height: 164px;
     position: absolute;
@@ -118,13 +120,11 @@ export default class MobilePopup extends Mixins(DialogMixin, TranslationMixin) {
     border-radius: 8%;
   }
   &__left-image {
-    background: url('@/assets/img/mobile/sora-app-left.svg') no-repeat;
     height: 320px;
     width: 200px;
     margin-top: -50px;
   }
   &__right-image {
-    background: url('@/assets/img/mobile/sora-app-right.svg') no-repeat;
     height: 260px;
     width: 150px;
     margin-left: -50px;
