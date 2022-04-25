@@ -76,7 +76,7 @@
         "noPermissions": "Przypadkowo odrzuciłeś(-łaś) prośbę o pozwolenie? <\/br> Rozszerzenie polkadot{.js} nie posiada obecnie zarządzania uprawnieniami. Aby obejść ten problem, możesz restartować przeglądarkę i ponownie odwiedzić tę stronę w celu kontynuowania autoryzacji.",
         "noAccounts": "W Twoim rozszerzeniu przeglądarki polkadot{.js} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
-        "loadingTitle": "Czekam, aż zezwolisz na dostęp do rozszerzenia polkadot{.js}...",
+        "loadingTitle": "Czekam, aż zezwolisz na dostęp do rozszerzenia polkadot{.js}.",
         "action": {
             "install": "Zainstaluj rozszerzenie",
             "learnMore": "Dowiedz się więcej",
@@ -269,7 +269,7 @@
             "confirmed": "Transakcja potwierdzona"
         },
         "viewIn": {
-            "sorascan": "Pokaż w SORAScanie",
+            "sorascan": "Pokaż w SORAScan",
             "subscan": "Pokaż w Subscanie"
         },
         "txId": "Identyfikator transakcji",
@@ -886,7 +886,7 @@
         "connectAccount": "Aby zaprosić użytkowników, musisz podłączyć swoje konto sieci SORA.",
         "bondedXOR": "Rezerwy w XOR",
         "referralsNumber": "{number} zaproszonych",
-        "startInviting": "Aby zacząć zapraszać, utwórz rezerwy w dowolnej kwocie waluty XOR.",
+        "startInviting": "Bond XOR, aby polecić innym",
         "preview": "Zaproś nowych użytkowników, by otrzymać 10% z ich opłat transakcyjnych.<br \/>Aby rozpocząć, utwórz rezerwy w dowolnej kwocie waluty XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej.<\/a>",
         "deposit": "Deponuj",
         "balance": "Saldo",
