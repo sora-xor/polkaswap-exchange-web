@@ -41,9 +41,9 @@
             "CreatePair": "Tillhandahöll {amount} {symbol} och {amount2} {symbol2}",
             "RegisterAsset": "Registrerade {symbol} tillgång",
             "ClaimRewards": "Belöning hävdad framgångsrikt {rewards}",
-            "ReferralReserveXor": "XOR bundet framgångsrikt",
-            "ReferralUnreserveXor": "XOR obundet framgångsrikt",
-            "ReferralSetInvitedUser": "Inbjudan tillämpades framgångsrikt",
+            "ReferralReserveXor": "XOR Bonded framgångsrikt",
+            "ReferralUnreserveXor": "XOR Unbonded framgångsrikt",
+            "ReferralSetInvitedUser": "Hänvisning tillämpades framgångsrikt",
             "SwapAndSend": "Bytte {amount} {symbol} mot {amount2} {symbol2}"
         },
         "error": {
@@ -54,9 +54,9 @@
             "CreatePair": "Misslyckades med att tillhandahålla {amount} {symbol} och {amount2} {symbol2}",
             "RegisterAsset": "Misslyckades med att registrera {symbol} tillgång",
             "ClaimRewards": "Misslyckades med att begära belöningar {rewards}",
-            "ReferralReserveXor": "Misslyckades med att binda XOR",
-            "ReferralUnreserveXor": "Misslyckades med att \"unbond\" XOR",
-            "ReferralSetInvitedUser": "Misslyckades med att tillämpa inbjudning",
+            "ReferralReserveXor": "Misslyckades med att bond XOR",
+            "ReferralUnreserveXor": "Misslyckades med att unbond XOR",
+            "ReferralSetInvitedUser": "Misslyckades med att tillämpa hänvisning",
             "SwapAndSend": "Misslyckades med att byta {amount} {symbol} mot {amount2} {symbol2}"
         },
         "ReferralReserveXor": "Bond XOR",
@@ -898,7 +898,7 @@
             "connectWallet": "@:connectWalletText",
             "empty": "Ange belopp för {tokenSymbol}",
             "startInviting": "Bind {tokenSymbol} för att börja bjuda in",
-            "bondMore": "Bind Mer",
+            "bondMore": "Bond Mera",
             "bond": "Bind",
             "unbond": "Unbond",
             "copyLink": "Kopiera länk"
@@ -912,26 +912,26 @@
         "confirm": {
             "text": "Bekräfta",
             "bond": "Bekräfta bindning",
-            "unbond": "Bekräfta frigöring",
+            "unbond": "Bekräfta unbond",
             "inviteTitle": "Du har blivit inbjuden till Polkaswap",
             "inviteDescription": "För varje transaktion kommer 10% av avgiften att gå till din hänvisare, utan någon extra kostnad för dig.",
-            "signInvitation": "Godkänna",
+            "signInvitation": "Godkänn",
             "freeOfCharge": "Denna åtgärd är kostnadsfri",
             "hasReferrerTitle": "Du har redan ställt in din inbjudare",
             "hasReferrerDescription": "Tyvärr kan du bara ställa in en",
             "ok": "OK"
         },
         "referrer": {
-            "title": "Lägg till din referent",
-            "titleReferrer": "Din referent",
+            "title": "Lägg till den person som hänvisade dig",
+            "titleReferrer": "Den person som hänvisade dig",
             "placeholder": "Ange inbjudningslänk eller kod",
             "label": "Inbjudningslänk eller kod",
             "approve": "Godkänn",
             "approved": "Godkänd",
-            "description": "Du kan bli hänvisad till Polkaswap,<br\/>skriv in länken eller koden från referenten",
+            "description": "Du kan bli hänvisad till Polkaswap,<br\/>skriv in länken eller koden från den som hänvisade dig",
             "referredBy": "Du har blivit hänvisad av {referrer}",
-            "info": "När du kommer att betala en avgift för transaktion så kommer<br\/>10 % att gå till din referent",
-            "referredLablel": "Refererad adress"
+            "info": "När du kommer att betala en avgift för transaktion så kommer<br\/>10 % att gå till den som hänvisade dig",
+            "referredLablel": "Hänvisad adress"
         }
     },
     "transactionDetailsText": "Detaljerad Transaktions Information",

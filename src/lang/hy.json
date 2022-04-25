@@ -745,7 +745,7 @@
             "connectExternalAccount": "Միացրեք @:ethereumText հաշվին՝ ստուգելու համար առկա PSWAP եւ VAL պարգեւատրումները:",
             "connectAccounts": "Ձեր PSWAP և VAL պարգևւատրումները հաստատելու համար անհրաժեշտ է միացնել և՛ ձեր @:soraText և՛ @:ethereumText հաշիվները:",
             "connectAnotherAccount": "Միացեք այլ @:ethereumText հաշվին ստուգելու համար առկա PSWAP և VAL պարգևատրումները:",
-            "howToClaimRewards": "Ձեր պարգևատրումը հաստատելու{symbols} համար, Դուք պետք է մուտք {transactions}գործեք{destination}: Պարգևատրումները կկուտակվեն Ձեր @:sotaText հաշվում:"
+            "howToClaimRewards": "Ձեր պարգևատրումը հաստատելու{symbols} համար, Դուք պետք է մուտք {transactions}գործեք{destination}: Պարգևատրումները կկուտակվեն Ձեր @:soraText հաշվում:"
         },
         "action": {
             "connectWallet": "@:connectWalletText",
