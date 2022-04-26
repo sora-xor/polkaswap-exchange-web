@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Adja hozzá a {symbol} -ot a @:metamask -hoz",
         "title": "A hídtranzakció sikeres"
+    },
+    "mobilePopup": {
+        "sideMenu": "Szerezze be a SORA Wallet alkalmazást",
+        "header": "A SORA Wallet letöltése <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funkcióival",
+        "info": "Cserélje ki a tokeneket különböző hálózatokból - SORA, Ethereum, Polkadot, Kusama. Biztosítson likviditási készletet, és keressen %-ot a cseredíjakból."
     }
 }

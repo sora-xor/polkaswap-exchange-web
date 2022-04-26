@@ -731,7 +731,7 @@ export default {
   },
   mobilePopup: {
     sideMenu: 'Get SORA Wallet App',
-    header: 'Download SORA Wallet with Polkaswap features',
+    header: 'Download SORA Wallet with <span class="popup-info__headline--highlight">Polkaswap</span> features',
     info: 'Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees.',
   },
 };
