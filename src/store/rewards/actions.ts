@@ -10,6 +10,40 @@ import { ethers } from 'ethers';
 import type { ClaimRewardsParams } from './types';
 
 const actions = defineActions({
+  // async subscribeOnRewards(context): Promise<void> {
+  //   const { commit, dispatch, rootGetters } = rewardsActionContext(context);
+
+  //   dispatch.unsubscribeFromRewards()
+
+  //   if (!rootGetters.wallet.account.isLoggedIn) return;
+
+  //   await waitForAccountPair(() => {
+  //     const liquidityProvisionRewardsSubscription = api.rewards.getLiquidityProvisionRewardsSubscription().subscribe((value) => {
+  //       commit.setInternalRewards(value);
+  //     });
+
+  //     const vestedRewardsSubscription = api.rewards.getVestedRewardsSubscription().subscribe((value) => {
+  //       commit.setVestedRewards(value);
+  //     });
+
+  //     const crowdloanRewardsSubscription = api.rewards.getCrowdloanRewardsSubscription().subscribe((value) => {
+  //       commit.setCrowdloanRewards(value);
+  //     });
+
+  //     commit.setLiquidityProvisionRewardsUpdates(liquidityProvisionRewardsSubscription);
+  //     commit.setVestedRewardsUpdates(vestedRewardsSubscription);
+  //     commit.setCrowdloanRewardsUpdates(crowdloanRewardsSubscription);
+  //   });
+  // },
+
+  unsubscribeFromRewards(context): void {
+    const { commit } = rewardsActionContext(context);
+
+    commit.resetLiquidityProvisionRewardsUpdates();
+    commit.resetVestedRewardsUpdates();
+    commit.resetCrowdloanRewardsUpdates();
+  },
+
   async getNetworkFee(context): Promise<void> {
     const { commit, getters } = rewardsActionContext(context);
     commit.getFeeRequest();
@@ -99,7 +133,7 @@ const actions = defineActions({
   },
   async subscribeOnAccountMarketMakerInfo(context): Promise<void> {
     const { commit, rootGetters } = rewardsActionContext(context);
-    commit.resetAccountMarketMakerUpdates();
+    commit.unsubscribeAccountMarketMakerInfo();
 
     if (!rootGetters.wallet.account.isLoggedIn) return;
 

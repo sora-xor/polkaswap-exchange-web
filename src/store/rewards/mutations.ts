@@ -33,6 +33,21 @@ const mutations = defineMutations<RewardsState>()({
   getRewardsRequest(state): void {
     state.rewardsFetching = true;
   },
+
+  setInternalRewards(state, internal = null): void {
+    state.internalRewards = internal;
+  },
+  setExternalRewards(state, external = []): void {
+    state.externalRewards = external;
+  },
+  setVestedRewards(state, vested = null): void {
+    state.vestedRewards = vested;
+  },
+  setCrowdloanRewards(state, crowdloan = []): void {
+    state.crowdloanRewards = crowdloan;
+  },
+
+  // TODO: remove
   getRewardsSuccess(state, { internal = null, external = [], vested = null, crowdloan = [] } = {}): void {
     state.internalRewards = internal;
     state.externalRewards = external;
@@ -69,18 +84,37 @@ const mutations = defineMutations<RewardsState>()({
   setAccountMarketMakerUpdates(state, subscription: Subscription): void {
     state.accountMarketMakerUpdates = subscription;
   },
-  resetAccountMarketMakerUpdates(state): void {
-    if (state.accountMarketMakerUpdates) {
-      state.accountMarketMakerUpdates.unsubscribe();
-    }
-    state.accountMarketMakerUpdates = null;
-  },
   unsubscribeAccountMarketMakerInfo(state): void {
-    if (state.accountMarketMakerUpdates) {
-      state.accountMarketMakerUpdates.unsubscribe();
-    }
+    state.accountMarketMakerUpdates?.unsubscribe();
     state.accountMarketMakerUpdates = null;
     state.accountMarketMakerInfo = null;
+  },
+  // pswap distribution subscription
+  setLiquidityProvisionRewardsUpdates(state, subscription: Subscription): void {
+    state.liquidityProvisionRewardsSubscription = subscription;
+  },
+  resetLiquidityProvisionRewardsUpdates(state) {
+    state.liquidityProvisionRewardsSubscription?.unsubscribe();
+    state.liquidityProvisionRewardsSubscription = null;
+    state.internalRewards = null;
+  },
+  // vested rewards subscription
+  setVestedRewardsUpdates(state, subscription: Subscription): void {
+    state.vestedRewardsSubscription = subscription;
+  },
+  resetVestedRewardsUpdates(state) {
+    state.vestedRewardsSubscription?.unsubscribe();
+    state.vestedRewardsSubscription = null;
+    state.vestedRewards = null;
+  },
+  // crowdloan rewards subscription
+  setCrowdloanRewardsUpdates(state, subscription: Subscription): void {
+    state.crowdloanRewardsSubscription = subscription;
+  },
+  resetCrowdloanRewardsUpdates(state) {
+    state.crowdloanRewardsSubscription?.unsubscribe();
+    state.crowdloanRewardsSubscription = null;
+    state.crowdloanRewards = [];
   },
 });
 

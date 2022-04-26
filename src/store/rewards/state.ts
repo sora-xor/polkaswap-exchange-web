@@ -20,6 +20,9 @@ export function initialState(): RewardsState {
     signature: '',
     accountMarketMakerInfo: null,
     accountMarketMakerUpdates: null,
+    liquidityProvisionRewardsSubscription: null,
+    vestedRewardsSubscription: null,
+    crowdloanRewardsSubscription: null,
   };
 }
 

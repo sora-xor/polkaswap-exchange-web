@@ -21,6 +21,9 @@ export type RewardsState = {
   signature: string;
   accountMarketMakerInfo: Nullable<AccountMarketMakerInfo>;
   accountMarketMakerUpdates: Nullable<Subscription>;
+  liquidityProvisionRewardsSubscription: Nullable<Subscription>;
+  vestedRewardsSubscription: Nullable<Subscription>;
+  crowdloanRewardsSubscription: Nullable<Subscription>;
 };
 
 export type ClaimRewardsParams = Partial<{
