@@ -302,6 +302,7 @@ export enum LogoSize {
   SMALL = 'small',
   MEDIUM = 'medium',
   BIG = 'big',
+  BIGGER = 'bigger',
   LARGE = 'large',
 }
 

@@ -3,7 +3,7 @@
     <template v-if="isSoraAccountConnected">
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
-        <token-logo :token="xor" :size="LogoSize.BIG" />
+        <token-logo :token="xor" :size="LogoSize.BIGGER" />
         <formatted-amount
           class="rewards-value"
           value-can-be-hidden
@@ -40,7 +40,7 @@
       <s-collapse :borders="true">
         <s-collapse-item :class="bondedContainerClasses" :disabled="!hasAccountWithBondedXor" name="bondedXOR">
           <template v-if="hasAccountWithBondedXor" #title>
-            <token-logo class="token-logo" :token="xor" />
+            <token-logo :token="xor" />
             <h3 class="bonded-collapse-title">{{ t('referralProgram.bondedXOR') }}</h3>
           </template>
           <div v-if="!hasAccountWithBondedXor" class="unbonded-info">
@@ -186,9 +186,10 @@ import { action, getter, mutation, state } from '@/store/decorators';
   components: {
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    // TokenLogo: lazyComponent(Components.TokenLogo),
     ReferralBonding: lazyView(PageNames.ReferralBonding),
     WalletAvatar: components.WalletAvatar,
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class ReferralProgram extends Mixins(
@@ -488,9 +489,9 @@ $referral-collapse-icon-size: 36px;
       }
     }
   }
-  @include element-size('token-logo--medium', $referral-collapse-icon-size);
-  @include element-size('invited-users-icon', $referral-collapse-icon-size);
-  @include element-size('referrer-icon', $referral-collapse-icon-size);
+  // @include element-size('token-logo--medium', $referral-collapse-icon-size);
+  // @include element-size('invited-users-icon', $referral-collapse-icon-size);
+  // @include element-size('referrer-icon', $referral-collapse-icon-size);
   &-hint--connected .link {
     color: var(--s-color-theme-accent);
   }
@@ -517,6 +518,8 @@ $referral-collapse-icon-size: 36px;
   &-icon {
     background: var(--s-color-base-content-tertiary) url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
     border-radius: 50%;
+    width: 32px;
+    height: 32px;
   }
 }
 .bonded-container {
@@ -621,7 +624,7 @@ $referral-collapse-icon-size: 36px;
 .rewards {
   &-container {
     margin-bottom: $inner-spacing-medium;
-    @include element-size('token-logo', 48px);
+    // @include element-size('token-logo', 48px);
     .rewards-value {
       margin-top: $inner-spacing-small;
     }
@@ -662,7 +665,7 @@ $referral-collapse-icon-size: 36px;
 }
 
 .unbonded-info {
-  .token-logo {
+  .asset-logo {
     margin-bottom: $inner-spacing-medium;
     margin-top: $inner-spacing-medium;
     height: var(--s-heading1-font-size);

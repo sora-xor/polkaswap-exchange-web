@@ -2504,10 +2504,10 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@1.8.16":
-  version "1.8.16"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.8.16.tgz#daea266ef9d7ecfc5c80e25b2909329d91b853f9"
-  integrity sha512-zXfiW5Ci+pvWgCLp8XRRsJY+Wv0CqK2VdrrZDPOqie4e9Q+HLIYVbHuC64NkOjmvy3SR/zVHLDx/Ksbxocdblw==
+"@soramitsu/soraneo-wallet-web@^1.8.17":
+  version "1.8.17"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.8.17.tgz#c3c0cb75f407758aec19e48b8f9781fe7e45b08c"
+  integrity sha512-JijLULHsA2M3gjuMOGGQ5FKWsf19WXQwxMY47oWgapKvnyYmRBWaVoBjYezOiAyBfIK251v3/T0tQGBKlQlWtA==
   dependencies:
     "@polkadot/extension-dapp" "^0.42.2"
     "@polkadot/vue-identicon" "^0.72.1"
@@ -2524,6 +2524,7 @@
     nft.storage "^5.2.0"
     vue "^2.6.14"
     vue-class-component "^7.2.6"
+    vue-fragment "^1.5.2"
     vue-i18n "^8.11.2"
     vue-property-decorator "^9.1.2"
     vue-virtual-scroller "^1.0.10"
@@ -14959,6 +14960,11 @@ vue-eslint-parser@^7.0.0, vue-eslint-parser@^7.10.0:
     esquery "^1.4.0"
     lodash "^4.17.21"
     semver "^6.3.0"
+
+vue-fragment@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/vue-fragment/-/vue-fragment-1.5.2.tgz#310017170c564c4aad95da14c185c92c6784fd3c"
+  integrity sha512-KEW0gkeNOLJjtXN4jqJhTazez5jtrwimHkE5Few/VxblH4F9EcvJiEsahrV5kg5uKd5U8du4ORKS6QjGE0piYA==
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
