@@ -92,7 +92,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
@@ -131,12 +131,13 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
 
   @state.rewards.vestedRewards private vestedRewards!: RewardsInfo;
   @state.rewards.crowdloanRewards private crowdloanRewards!: Array<RewardInfo>;
-  @state.rewards.selectedVestedRewards private selectedVestedRewards!: Nullable<RewardsInfo>;
-  @state.rewards.selectedInternalRewards private selectedInternalRewards!: Nullable<RewardInfo>;
-  @state.rewards.selectedExternalRewards private selectedExternalRewards!: Array<RewardInfo>;
-  @state.rewards.selectedCrowdloanRewards private selectedCrowdloanRewards!: Array<RewardInfo>;
   @state.rewards.internalRewards internalRewards!: RewardInfo;
   @state.rewards.externalRewards externalRewards!: Array<RewardInfo>;
+
+  @state.rewards.selectedVested private selectedVestedRewards!: Nullable<RewardsInfo>;
+  @state.rewards.selectedInternal private selectedInternalRewards!: Nullable<RewardInfo>;
+  @state.rewards.selectedExternal private selectedExternalRewards!: Array<RewardInfo>;
+  @state.rewards.selectedCrowdloan private selectedCrowdloanRewards!: Array<RewardInfo>;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.rewards.transactionStepsCount private transactionStepsCount!: number;
@@ -146,12 +147,25 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @getter.rewards.vestedRewardsAvailable vestedRewardsAvailable!: boolean;
   @getter.rewards.rewardsByAssetsList rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
   @getter.libraryTheme libraryTheme!: Theme;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @mutation.rewards.reset private reset!: VoidFunction;
 
   @action.rewards.setSelectedRewards private setSelectedRewards!: (args: SelectedRewards) => Promise<void>;
-  @action.rewards.getRewards private getRewards!: (address: string) => Promise<void>;
+  @action.rewards.getExternalRewards private getExternalRewards!: (address: string) => Promise<void>;
   @action.rewards.claimRewards private claimRewards!: (options: ClaimRewardsParams) => Promise<void>;
+  @action.rewards.subscribeOnRewards private subscribeOnRewards!: AsyncVoidFn;
+  @action.rewards.unsubscribeFromRewards private unsubscribeFromRewards!: AsyncVoidFn;
+
+  @Watch('isSoraAccountConnected')
+  @Watch('nodeIsConnected')
+  private async updateSubscriptions(value: boolean) {
+    if (value) {
+      await this.subscribeOnRewards();
+    } else {
+      await this.unsubscribeFromRewards();
+    }
+  }
 
   private unwatchEthereum!: VoidFunction;
 
@@ -163,7 +177,8 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
     await this.withApi(async () => {
       await this.setEvmNetworkType();
       await this.syncExternalAccountWithAppState();
-      await this.checkAccountRewards();
+      await this.checkExternalRewards();
+      await this.subscribeOnRewards();
 
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
@@ -184,6 +199,8 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   beforeDestroy(): void {
+    this.unsubscribeFromRewards();
+
     if (typeof this.unwatchEthereum === 'function') {
       this.unwatchEthereum();
     }
@@ -221,7 +238,10 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   get crowdloanRewardsGroupItem(): RewardInfoGroup {
     return {
       type: this.t('rewards.groups.crowdloan'),
-      rewards: this.crowdloanRewards,
+      rewards: this.crowdloanRewards.map((item) => ({
+        ...item,
+        total: FPNumber.fromCodecValue(item.total ?? 0, item.asset.decimals).toLocaleString(),
+      })),
     };
   }
 
@@ -230,8 +250,8 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   set selectedInternalRewardsModel(flag: boolean) {
-    const internal = flag ? this.internalRewards : null;
-    this.setSelectedRewards({ ...this.selectedRewards, internal });
+    const selectedInternal = flag ? this.internalRewards : null;
+    this.setSelectedRewards({ selectedInternal });
   }
 
   get selectedExternalRewardsModel(): boolean {
@@ -239,8 +259,8 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   set selectedExternalRewardsModel(flag: boolean) {
-    const external = flag ? this.externalRewards : [];
-    this.setSelectedRewards({ ...this.selectedRewards, external });
+    const selectedExternal = flag ? this.externalRewards : [];
+    this.setSelectedRewards({ selectedExternal });
   }
 
   get selectedVestedRewardsModel(): boolean {
@@ -248,8 +268,8 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   set selectedVestedRewardsModel(flag: boolean) {
-    const vested = flag ? this.vestedRewards : null;
-    this.setSelectedRewards({ ...this.selectedRewards, vested });
+    const selectedVested = flag ? this.vestedRewards : null;
+    this.setSelectedRewards({ selectedVested });
   }
 
   get selectedCrowdloanRewardsModel(): Array<string> {
@@ -257,23 +277,14 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   set selectedCrowdloanRewardsModel(value: Array<string>) {
-    const crowdloan = this.crowdloanRewards.reduce<RewardInfo[]>((buffer, item) => {
+    const selectedCrowdloan = this.crowdloanRewards.reduce<RewardInfo[]>((buffer, item) => {
       if (value.includes(item.type)) {
         buffer.push(item);
       }
       return buffer;
     }, []);
 
-    this.setSelectedRewards({ ...this.selectedRewards, crowdloan });
-  }
-
-  get selectedRewards(): SelectedRewards {
-    return {
-      internal: this.selectedInternalRewards,
-      external: this.selectedExternalRewards,
-      vested: this.selectedVestedRewards,
-      crowdloan: this.selectedCrowdloanRewards,
-    };
+    this.setSelectedRewards({ selectedCrowdloan });
   }
 
   get isInsufficientBalance(): boolean {
@@ -340,7 +351,6 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
     if (this.actionButtonLoading) return '';
     if (!this.isSoraAccountConnected) return this.t('rewards.action.connectWallet');
     if (this.transactionError) return this.t('rewards.action.retry');
-    if (!this.rewardsAvailable) return this.t('rewards.action.checkRewards');
     if (this.isInsufficientBalance)
       return this.t('rewards.action.insufficientBalance', { tokenSymbol: KnownSymbols.XOR });
     if (!this.rewardsClaiming) return this.t('rewards.action.signAndClaim');
@@ -354,29 +364,28 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   get actionButtonDisabled(): boolean {
-    return this.rewardsClaiming || (this.rewardsAvailable && this.isInsufficientBalance);
+    return (
+      this.rewardsClaiming || (this.isSoraAccountConnected && (!this.rewardsAvailable || this.isInsufficientBalance))
+    );
   }
 
   async handleAction(): Promise<void> {
     if (!this.isSoraAccountConnected) {
       return this.connectInternalWallet();
     }
-    if (!this.rewardsAvailable) {
-      return await this.checkAccountRewards(true);
-    }
     if (this.rewardsAvailable) {
       return await this.claimRewardsProcess();
     }
   }
 
-  private async checkAccountRewards(showNotification = false): Promise<void> {
+  private async checkExternalRewards(showNotification = false): Promise<void> {
     if (this.isSoraAccountConnected) {
       await this.getRewardsProcess(showNotification);
     }
   }
 
   private async getRewardsProcess(showNotification = false): Promise<void> {
-    await this.getRewards(this.evmAddress);
+    await this.getExternalRewards(this.evmAddress);
 
     if (!this.rewardsAvailable && showNotification) {
       this.$notify({
@@ -388,17 +397,17 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
 
   async connectExternalAccountProcess(): Promise<void> {
     await this.connectExternalWallet();
-    await this.checkAccountRewards();
+    await this.checkExternalRewards();
   }
 
   private async disconnectExternalAccountProcess(): Promise<void> {
     this.disconnectExternalAccount();
-    await this.checkAccountRewards();
+    await this.checkExternalRewards();
   }
 
   private async changeExternalAccountProcess(options?: any): Promise<void> {
     await this.changeExternalWallet(options);
-    await this.checkAccountRewards();
+    await this.checkExternalRewards();
   }
 
   private async claimRewardsProcess(): Promise<void> {

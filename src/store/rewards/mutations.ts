@@ -6,10 +6,20 @@ import type { AccountMarketMakerInfo } from '@sora-substrate/util/build/rewards/
 
 import { initialState } from './state';
 import type { RewardsState } from './types';
+import type { SelectedRewards, AccountRewards } from '@/types/rewards';
 
 const mutations = defineMutations<RewardsState>()({
   reset(state): void {
-    const s = omit(['accountMarketMakerUpdates', 'accountMarketMakerInfo'], initialState());
+    const s = omit(
+      [
+        'accountMarketMakerUpdates',
+        'accountMarketMakerInfo',
+        'liquidityProvisionRewardsSubscription',
+        'vestedRewardsSubscription',
+        'crowdloanRewardsSubscription',
+      ],
+      initialState()
+    );
 
     Object.keys(s).forEach((key) => {
       state[key] = s[key];
@@ -30,38 +40,14 @@ const mutations = defineMutations<RewardsState>()({
   setSignature(state, value: string): void {
     state.signature = value;
   },
-  getRewardsRequest(state): void {
-    state.rewardsFetching = true;
+  // set rewards & select rewards
+  setRewards(state, rewards: AccountRewards): void {
+    Object.assign(state, rewards);
   },
-
-  setInternalRewards(state, internal = null): void {
-    state.internalRewards = internal;
+  setSelectedRewards(state, selected: SelectedRewards): void {
+    Object.assign(state, selected);
   },
-  setExternalRewards(state, external = []): void {
-    state.externalRewards = external;
-  },
-  setVestedRewards(state, vested = null): void {
-    state.vestedRewards = vested;
-  },
-  setCrowdloanRewards(state, crowdloan = []): void {
-    state.crowdloanRewards = crowdloan;
-  },
-
-  // TODO: remove
-  getRewardsSuccess(state, { internal = null, external = [], vested = null, crowdloan = [] } = {}): void {
-    state.internalRewards = internal;
-    state.externalRewards = external;
-    state.vestedRewards = vested;
-    state.crowdloanRewards = crowdloan;
-    state.rewardsFetching = false;
-  },
-  getRewardsFailure(state): void {
-    state.internalRewards = null;
-    state.externalRewards = [];
-    state.vestedRewards = null;
-    state.crowdloanRewards = [];
-    state.rewardsFetching = false;
-  },
+  // fee
   getFeeRequest(state): void {
     state.feeFetching = true;
   },
@@ -72,12 +58,7 @@ const mutations = defineMutations<RewardsState>()({
   getFeeFailure(state): void {
     state.feeFetching = false;
   },
-  setSelectedRewards(state, { internal = null, external = [], vested = null, crowdloan = [] } = {}): void {
-    state.selectedExternalRewards = [...external];
-    state.selectedInternalRewards = internal;
-    state.selectedVestedRewards = vested;
-    state.selectedCrowdloanRewards = [...crowdloan];
-  },
+  // market maker subscription
   setAccountMarketMakerInfo(state, info: Nullable<AccountMarketMakerInfo>): void {
     state.accountMarketMakerInfo = info;
   },

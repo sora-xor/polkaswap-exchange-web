@@ -1,40 +1,92 @@
 import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type { Subscription } from '@polkadot/x-rxjs';
 
 import { rewardsActionContext } from '@/store/rewards';
-import { SelectedRewards } from '@/types/rewards';
-import { asZeroValue, waitForAccountPair } from '@/utils';
+import { waitForAccountPair } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 import { ethers } from 'ethers';
 import type { ClaimRewardsParams } from './types';
+import type { SelectedRewards } from '@/types/rewards';
+import state from './state';
 
 const actions = defineActions({
-  // async subscribeOnRewards(context): Promise<void> {
-  //   const { commit, dispatch, rootGetters } = rewardsActionContext(context);
+  async subscribeOnRewards(context): Promise<void> {
+    const { commit, dispatch, getters, rootGetters } = rewardsActionContext(context);
 
-  //   dispatch.unsubscribeFromRewards()
+    dispatch.unsubscribeFromRewards();
 
-  //   if (!rootGetters.wallet.account.isLoggedIn) return;
+    if (!rootGetters.wallet.account.isLoggedIn) return;
 
-  //   await waitForAccountPair(() => {
-  //     const liquidityProvisionRewardsSubscription = api.rewards.getLiquidityProvisionRewardsSubscription().subscribe((value) => {
-  //       commit.setInternalRewards(value);
-  //     });
+    const getCrowdloanRewardsSubscription = async (): Promise<Subscription> => {
+      const observable = await api.rewards.getCrowdloanRewardsSubscription();
 
-  //     const vestedRewardsSubscription = api.rewards.getVestedRewardsSubscription().subscribe((value) => {
-  //       commit.setVestedRewards(value);
-  //     });
+      return new Promise<Subscription>((resolve) => {
+        const subscription = observable.subscribe((crowdloanRewards) => {
+          commit.setRewards({ crowdloanRewards });
+          const crowdloanRewardsAreAvailable = getters.crowdloanRewardsAvailable.length;
 
-  //     const crowdloanRewardsSubscription = api.rewards.getCrowdloanRewardsSubscription().subscribe((value) => {
-  //       commit.setCrowdloanRewards(value);
-  //     });
+          // select available rewards for first time
+          if (!state.crowdloanRewardsSubscription && crowdloanRewardsAreAvailable) {
+            dispatch.setSelectedRewards({ selectedCrowdloan: [...getters.crowdloanRewardsAvailable] });
+          }
+          // deselect if no rewards after update
+          if (state.selectedCrowdloan.length && !crowdloanRewardsAreAvailable) {
+            dispatch.setSelectedRewards({ selectedCrowdloan: [] });
+          }
+          resolve(subscription);
+        });
+      });
+    };
 
-  //     commit.setLiquidityProvisionRewardsUpdates(liquidityProvisionRewardsSubscription);
-  //     commit.setVestedRewardsUpdates(vestedRewardsSubscription);
-  //     commit.setCrowdloanRewardsUpdates(crowdloanRewardsSubscription);
-  //   });
-  // },
+    const getVestedRewardsSubscription = (): Promise<Subscription> => {
+      return new Promise<Subscription>((resolve) => {
+        const subscription = api.rewards.getVestedRewardsSubscription().subscribe((vestedRewards) => {
+          commit.setRewards({ vestedRewards });
+          // select available rewards for first time
+          if (!state.vestedRewardsSubscription && getters.vestedRewardsAvailable) {
+            dispatch.setSelectedRewards({ selectedVested: vestedRewards });
+          }
+          // deselect if no rewards after update
+          if (state.selectedVested && !getters.vestedRewardsAvailable) {
+            dispatch.setSelectedRewards({ selectedVested: null });
+          }
+          resolve(subscription);
+        });
+      });
+    };
+
+    const getLiquidityProvisionRewardsSubscription = (): Promise<Subscription> => {
+      return new Promise<Subscription>((resolve) => {
+        const subscription = api.rewards.getLiquidityProvisionRewardsSubscription().subscribe((internalRewards) => {
+          commit.setRewards({ internalRewards });
+          // select available rewards for first time
+          if (!state.liquidityProvisionRewardsSubscription && getters.internalRewardsAvailable) {
+            dispatch.setSelectedRewards({ selectedInternal: internalRewards });
+          }
+          // deselect if no rewards after update
+          if (state.selectedInternal && !getters.internalRewardsAvailable) {
+            dispatch.setSelectedRewards({ selectedInternal: null });
+          }
+          resolve(subscription);
+        });
+      });
+    };
+
+    await waitForAccountPair(async () => {
+      const [liquidityProvisionRewardsSubscription, vestedRewardsSubscription, crowdloanRewardsSubscription] =
+        await Promise.all([
+          getLiquidityProvisionRewardsSubscription(),
+          getVestedRewardsSubscription(),
+          getCrowdloanRewardsSubscription(),
+        ]);
+
+      commit.setLiquidityProvisionRewardsUpdates(liquidityProvisionRewardsSubscription);
+      commit.setVestedRewardsUpdates(vestedRewardsSubscription);
+      commit.setCrowdloanRewardsUpdates(crowdloanRewardsSubscription);
+    });
+  },
 
   unsubscribeFromRewards(context): void {
     const { commit } = rewardsActionContext(context);
@@ -56,38 +108,28 @@ const actions = defineActions({
       commit.getFeeFailure();
     }
   },
+
   async setSelectedRewards(context, params: SelectedRewards): Promise<void> {
     const { commit, dispatch } = rewardsActionContext(context);
     commit.setSelectedRewards(params);
     await dispatch.getNetworkFee();
   },
-  async getRewards(context, address: string): Promise<void> {
-    const { commit, getters, dispatch } = rewardsActionContext(context);
-    commit.getRewardsRequest();
+
+  async getExternalRewards(context, address: string): Promise<void> {
+    const { commit, dispatch } = rewardsActionContext(context);
+
     try {
-      const [internal, vested, crowdloan, external] = await Promise.all([
-        api.rewards.checkLiquidityProvision(),
-        api.rewards.checkVested(),
-        api.rewards.checkCrowdloan(),
-        address ? api.rewards.checkForExternalAccount(address) : ([] as Array<RewardInfo>),
-      ]);
+      const externalRewards = address ? await api.rewards.checkForExternalAccount(address) : [];
 
-      commit.getRewardsSuccess({ internal, external, vested, crowdloan });
+      commit.setRewards({ externalRewards });
 
-      const selectedRewards: SelectedRewards = {
-        internal: getters.internalRewardsAvailable ? internal : null,
-        external,
-        vested: getters.vestedRewardsAvailable ? vested : null,
-        crowdloan: crowdloan.filter((item) => !asZeroValue(item.amount)),
-      };
-
-      // select all rewards by default
-      await dispatch.setSelectedRewards(selectedRewards);
+      await dispatch.setSelectedRewards({ selectedExternal: externalRewards });
     } catch (error) {
       console.error(error);
-      commit.getRewardsFailure();
+      commit.setRewards({ externalRewards: [] });
     }
   },
+
   async claimRewards(context, { internalAddress = '', externalAddress = '' }: ClaimRewardsParams = {}): Promise<void> {
     const { commit, getters, state, rootState } = rewardsActionContext(context);
     if (!internalAddress) return;
@@ -131,6 +173,7 @@ const actions = defineActions({
       throw error;
     }
   },
+
   async subscribeOnAccountMarketMakerInfo(context): Promise<void> {
     const { commit, rootGetters } = rewardsActionContext(context);
     commit.unsubscribeAccountMarketMakerInfo();
