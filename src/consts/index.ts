@@ -27,28 +27,42 @@ export enum Language {
   DE = 'de',
   ES = 'es',
   FR = 'fr',
+  HR = 'hr',
+  HU = 'hu',
   HY = 'hy',
   ID = 'id',
   IT = 'it',
   NL = 'nl',
   NO = 'no',
   PL = 'pl',
+  SK = 'sk',
+  SR = 'sr',
+  SV = 'sv',
+  VI = 'vi',
   YO = 'yo',
+  ZH_CN = 'zh-CN',
 }
 
 export const Languages = [
   { key: Language.EN, value: 'English', name: 'English (UK)' },
   { key: Language.HY, value: 'Armenian', name: 'հայերեն' },
+  { key: Language.ZH_CN, value: 'Chinese Simplified', name: '简体中文' },
+  { key: Language.HR, value: 'Croatian', name: 'Hrvatski' },
   { key: Language.CS, value: 'Czech', name: 'Čeština' },
   { key: Language.NL, value: 'Dutch', name: 'Nederlands' },
   { key: Language.FR, value: 'French', name: 'Français' },
   { key: Language.DE, value: 'German', name: 'Deutsch' },
+  { key: Language.HU, value: 'Hungarian', name: 'Magyar' },
   { key: Language.ID, value: 'Indonesian', name: 'bahasa Indonesia' },
   { key: Language.IT, value: 'Italian', name: 'Italiano' },
   { key: Language.NO, value: 'Norwegian', name: 'Norsk' },
   { key: Language.PL, value: 'Polish', name: 'Polski' },
   { key: Language.RU, value: 'Russian', name: 'Русский' },
+  { key: Language.SR, value: 'Serbian', name: 'Српски' },
+  { key: Language.SK, value: 'Slovak', name: 'Slovenský' },
   { key: Language.ES, value: 'Spanish', name: 'Español' },
+  { key: Language.SV, value: 'Swedish', name: 'Svenska' },
+  { key: Language.VI, value: 'Vietnamese', name: 'Tiếng Việt' },
   { key: Language.YO, value: 'Yoruba', name: 'Yoruba' },
 ];
 
@@ -174,6 +188,7 @@ export enum Components {
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
   BridgeTransferNotification = 'Bridge/TransferNotification',
+  MobilePopup = 'MobilePopup/MobilePopup',
 }
 
 export enum RewardsTabsItems {
@@ -266,6 +281,11 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     href: 'https://github.com/sora-xor',
   },
 ];
+
+export const StoreLinks = {
+  AppStore: 'https://apps.apple.com/us/app/sora-dae/id1457566711',
+  GooglePlay: 'https://play.google.com/store/apps/details?id=jp.co.soramitsu.sora',
+};
 
 export const FaucetLink: SidebarMenuItemLink = {
   icon: 'software-terminal-24',

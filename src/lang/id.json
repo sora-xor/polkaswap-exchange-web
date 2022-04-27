@@ -76,7 +76,7 @@
         "noPermissions": "Permintaan izin ditolak secara tidak sengaja? <\/br> Saat ini ekstensi polkadot{.js} tidak memiliki manajemen izin. Sebagai solusinya, Anda dapat memulai ulang browser dan mengunjungi kembali halaman ini untuk melanjutkan dengan memberikan izin.",
         "noAccounts": "Tidak ada akun yang ditemukan di ekstensi browser polkadot{.js} Anda. Silakan tambahkan akun, lalu coba kembali.",
         "selectAccount": "Pilih akun untuk dikerjakan",
-        "loadingTitle": "Menunggu Anda untuk mengizinkan akses ke ekstensi polkadot{.js}..",
+        "loadingTitle": "Menunggu Anda untuk mengizinkan akses ke ekstensi polkadot{.js}.",
         "action": {
             "install": "Instal ekstensi",
             "learnMore": "Pelajari lebih lanjut",
@@ -454,7 +454,7 @@
         "pswap": {
             "title": "Token PSWAP",
             "first": "PSWAP diciptakan oleh komunitas governance dengan cara vote pada saat rilis. Merupakan token utilitas dan governance yang digunakan untuk memberi hadiah kepada penyedia likuiditas di Polkaswap. Tidak seperti kebanyakan token hadiah lainnya, PSWAP akan diburn setiap kali terjadi transaksi dan penyusutan suplai dari waktu ke waktu.",
-            "second": "Biaya {persen}% untuk setiap swap pada Polkaswap DEX digunakan untuk membeli kembali token PSWAP, yang kemudian dibakar. Pada awalnya, 90% token PSWAP yang terbakar diolah untuk mengalokasikan ke penyedia likuiditas, tetapi seiring waktu persentase ini akan menurun menjadi 35% setelah 4 tahun."
+            "second": "Biaya {percent}% untuk setiap swap pada Polkaswap DEX digunakan untuk membeli kembali token PSWAP, yang kemudian dibakar. Pada awalnya, 90% token PSWAP yang terbakar diolah untuk mengalokasikan ke penyedia likuiditas, tetapi seiring waktu persentase ini akan menurun menjadi 35% setelah 4 tahun."
         },
         "links": {
             "first": {
@@ -886,7 +886,7 @@
         "connectAccount": "Untuk mengundang pengguna, Anda perlu menghubungkan akun SORA Anda.",
         "bondedXOR": "Ikatan XOR",
         "referralsNumber": "{number} rujukan",
-        "startInviting": "Untuk mulai mengundang, ikat sejumlah XOR.",
+        "startInviting": "Obligasi XOR untuk merujuk orang lain",
         "preview": "Undang pengguna baru dan dapatkan 10% dari biaya transaksi mereka.<br \/>Untuk mulai, beri obligasi dalam jumlah XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Saldo",
@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Tambahkan {symbol} ke @:metamask",
         "title": "Transaksi jembatan berhasil"
+    },
+    "mobilePopup": {
+        "sideMenu": "Dapatkan Aplikasi Dompet SORA",
+        "header": "Unduh SORA Wallet dengan fitur <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Tukar token dari jaringan yang berbeda - SORA, Ethereum, Polkadot, Kusama. Sediakan kumpulan likuiditas dan dapatkan % dari biaya pertukaran."
     }
 }

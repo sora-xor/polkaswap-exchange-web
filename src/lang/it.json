@@ -39,7 +39,7 @@
             "AddLiquidity": "Fornito {amount} {symbol} e {amount2} {symbol2}",
             "RemoveLiquidity": "Rimossi {amount} {symbol} e {amount2} {symbol2}",
             "CreatePair": "Fornito {amount} {symbol} e {amount2} {symbol2}",
-            "RegisterAsset": "Asset registrato {simbolo}",
+            "RegisterAsset": "Asset registrato {symbol}",
             "ClaimRewards": "Ricompensa richiesta con successo {rewards}",
             "ReferralReserveXor": "XOR legato con successo",
             "ReferralUnreserveXor": "XOR non legato con successo",
@@ -76,7 +76,7 @@
         "noPermissions": "Richiesta di autorizzazione accidentalmente rifiutata? <\/br> Attualmente polkadot{.js} non ha la gestione dei permessi. Come soluzione alternativa puoi riavviare il browser e visitare nuovamente questa pagina per procedere con l'autorizzazione.",
         "noAccounts": "Nessun account trovato nell'estensione del browser polkadot{.js} Aggiungi un account e riprova.",
         "selectAccount": "Seleziona l'account con cui lavorare",
-        "loadingTitle": "In attesa che tu garantisca l'accesso all'estensione polkadot{.js}...",
+        "loadingTitle": "In attesa che tu garantisca l'accesso all'estensione polkadot{.js}.",
         "action": {
             "install": "Installa l'estensione",
             "learnMore": "Per saperne di più",
@@ -97,7 +97,7 @@
         "amount": "@:amountText",
         "balance": "Saldo",
         "max": "MAX",
-        "fee": "Fee della transazione",
+        "fee": "@:networkFeeText",
         "enterAddress": "Inserisci l'indirizzo",
         "badAddress": "Indirizzo errato",
         "enterAmount": "Inserire l'importo",
@@ -361,7 +361,7 @@
             "description": "Polkaswap è costruito sulla rete @:soraText e il token @:soraText (XOR) viene utilizzato per gas\/fees e per la fornitura di liquidità su Polkaswap. @:soraText Network consente commissioni ridotte, transazioni più veloci e più semplice finalizzazione del consenso. Si concentra sulla produzione di interoperabilità tra altri ecosistemi blockchain come @:(ethereumText)."
         },
         "polkadot": {
-            "title": "Che cos'è Polkadot{.js} ?",
+            "title": "Che cos'è Polkadot{.js}?",
             "description": "Polkadot{.js} è un'estensione del browser disponibile per Firefox e Chrome dedicata alla gestione degli account per le chain basate su Substrate, tra cui @:soraText, Polkadot e Kusama. Puoi aggiungere, importare ed esportare account e firmare transazioni o extrinsics che hai inizializzato da siti Web che hai autorizzato."
         }
     },
@@ -886,7 +886,7 @@
         "connectAccount": "Per invitare gli utenti è necessario collegare il tuo account SORA.",
         "bondedXOR": "XOR legato",
         "referralsNumber": "{number} referenze",
-        "startInviting": "Per iniziare a invitare, vincola qualsiasi importo di XOR.",
+        "startInviting": "Bond XOR per fare riferimento ad altri",
         "preview": "Invita nuovi utenti e ottieni il 10% dalle loro commissioni di transazione.<br \/>Per iniziare, lega qualsiasi quantità di XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Per saperne di più<\/a>",
         "deposit": "Deposita",
         "balance": "Bilancia",
@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Aggiungi {symbol} a @:metamask",
         "title": "Transazione ponte riuscita"
+    },
+    "mobilePopup": {
+        "sideMenu": "Ottieni l'app SORA Wallet",
+        "header": "Scarica SORA Wallet con <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Scambia token da reti diverse: SORA, Ethereum, Polkadot, Kusama. Fornisci un pool di liquidità e guadagna % dalle commissioni di cambio."
     }
 }

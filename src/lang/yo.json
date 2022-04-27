@@ -22,7 +22,7 @@
     "confirmText": "Jẹrisi",
     "errorText": "Aṣiṣe",
     "insufficientBalanceText": "Iye {tokenSymbol} Oto",
-    "unknownErrorText": "ASISE Nkankan ti ko to ti sele ...",
+    "unknownErrorText": "ASISE Nkankan ti ko to ti sele...",
     "transactionSubmittedText": "A ti fi isowo sile",
     "operations": {
         "Swap": "Iŕopo",
@@ -66,7 +66,7 @@
     },
     "polkadotjs": {
         "noExtensions": "A ko rii itẹsiwaju Polkadot.js. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {.js}polkadot re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
+        "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju polkadot{.js} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
         "noAccount": "Polkadot.js aṣiṣe ifowosi. Jọwọ ṣayẹwo akọọlẹ rẹ ninu itẹsiwaju Polkadot.js"
     },
     "connection": {
@@ -76,7 +76,7 @@
         "noPermissions": "Lairotẹlẹ kọ aiye igbanilaaye? <\/br> Lọwọlọwọ polkadot {.js} itẹsiwaju ko ni iṣakoso igbanilaaye. Bi iṣẹ-ṣiṣe o le tun aṣàwákiri rẹ bẹrẹ ki o tun ṣabẹwo si oju-iwe yii lati tẹsiwaju pẹlu asẹ.",
         "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {.js}polkadot re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
         "selectAccount": "Yan ifowosi lati ṣiṣẹ pẹlu rẹ",
-        "loadingTitle": "Nduro fun ọ lati gba aaye laaye si itẹsiwaju {.js} polkadot ",
+        "loadingTitle": "Nduro fun ọ lati gba aaye laaye si itẹsiwaju polkadot{.js}.",
         "action": {
             "install": "Fi sori ẹrọ itẹsiwaju",
             "learnMore": "Kọ ẹkọ si",
@@ -97,7 +97,7 @@
         "amount": "@:amountText",
         "balance": "Iśeku",
         "max": "To poju",
-        "fee": "Owo Iṣowo",
+        "fee": "@:networkFeeText",
         "enterAddress": "Tẹ adirẹsi sii",
         "badAddress": "Adirẹsi ti ko tọ",
         "enterAmount": "Tẹ iye sii",
@@ -284,7 +284,7 @@
     "connectWalletText": "So ifowisi pọ",
     "changeAccountText": "Yi Ifowosi pada",
     "connectedText": "Ti sopọ",
-    "connectWalletTextTooltip": "Sopọ si Nẹtiwọọki @:soraText pẹlu polkadot {.js}",
+    "connectWalletTextTooltip": "Sopọ si Nẹtiwọọki @:soraText pẹlu polkadot{.js}",
     "selectNodeText": "Yan ipade",
     "bridgeText": "Afara",
     "disclaimer": "<span class=\"app-disclaimer__title\">Akiyesi<\/span>: Oju opo wẹẹbu yii ni itọju nipasẹ agbegbe @:(soraText). Ṣaaju ki o to tẹsiwaju lati lo oju opo wẹẹbu yii, jọwọ ṣe atunyẹwo @:polkaswapFaqLink ati iwe, eyiti o ni alaye alaye lori bi Polkaswap ṣe n ṣiṣẹ, ati pẹlu @:memorandumLink, ati @:(privacyLink). Awọn iwe aṣẹ wọnyi jẹ pataki si aabo olumulo ati aabo olumulo. Nipa lilo Polkaswap, o gba pe o ti ka ati loye awọn iwe wọnyi. O tun gba eleyi: Ikini)  ojuṣe rẹ nikan fun ibamu pẹlu gbogbo awọn ofin ti o le kan si lilo rẹ pato ti Polkaswap ni aṣẹ ofin rẹ; Ikeji)  oye rẹ pe ẹya lọwọlọwọ ti Polkaswap jẹ ẹya alpha: ko ti ni idanwo ni kikun, ati pe awọn iṣẹ kan le ma ṣe bi a ti ṣe apẹrẹ; ati Iketa)  oye rẹ ati gbigba iyọọda ti awọn eewu ti o wa ninu lilo Polkaswap, pẹlu, ṣugbọn kii ṣe opin si, eewu ti awọn ami tokini  padanu. Lẹẹkan si, jọwọ maṣe tẹsiwaju laisi kika @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!",
@@ -358,11 +358,11 @@
         "learnMore": "Kọ ẹkọ si",
         "network": {
             "title": "Kini @:soraText?",
-            "description": "Polkaswap ti wa ni itumọ lori oke ti Nẹtiwọọki @:soraText, ati pe @:soraText token (XOR) ti lo fun gaasi \/ owo ati ipese oloomi lori Polkaswap. @:soraText Nẹtiwọọki ngbanilaaye fun awọn owo ti o dinku, awọn iṣowo yiyara ati ipari ipari ipohunpo rọrun ati pe o wa ni idojukọ fifiranṣẹ ibaraenisepo kọja awọn ilolupo eda abemi-idena miiran bi @:(ethereumText)"
+            "description": "Polkaswap ti wa ni itumọ lori oke ti Nẹtiwọọki @:soraText, ati pe @:soraText token (XOR) ti lo fun gaasi \/ owo ati ipese oloomi lori Polkaswap. @:soraText Nẹtiwọọki ngbanilaaye fun awọn owo ti o dinku, awọn iṣowo yiyara ati ipari ipari ipohunpo rọrun ati pe o wa ni idojukọ fifiranṣẹ ibaraenisepo kọja awọn ilolupo eda abemi-idena miiran bi @:(ethereumText)."
         },
         "polkadot": {
-            "title": "Kini polkadot {.js} ?",
-            "description": "Itẹsiwaju Polkadot {.js} jẹ itẹsiwaju aṣawakiri ti o wa fun Firefox ati Chrome ti a ṣe igbẹhin si iṣakoso awọn iroyin fun Awọn ẹwọn ti o da lori Substrate, pẹlu @:soraText, Polkadot ati Kusama. O le ṣafikun, gbe wọle, ati gbejade awọn iroyin ati buwọlu awọn iṣowo tabi awọn nkan elekeji ti o ti bẹrẹ lati awọn oju opo wẹẹbu ti o fun ni aṣẹ."
+            "title": "Kini polkadot{.js}?",
+            "description": "Itẹsiwaju Polkadot{.js} jẹ itẹsiwaju aṣawakiri ti o wa fun Firefox ati Chrome ti a ṣe igbẹhin si iṣakoso awọn iroyin fun Awọn ẹwọn ti o da lori Substrate, pẹlu @:soraText, Polkadot ati Kusama. O le ṣafikun, gbe wọle, ati gbejade awọn iroyin ati buwọlu awọn iṣowo tabi awọn nkan elekeji ti o ti bẹrẹ lati awọn oju opo wẹẹbu ti o fun ni aṣẹ."
         }
     },
     "node": {
@@ -376,7 +376,7 @@
             "selectNode": "Jọwọ yan oju ipade lati sopọ lati atokọ ipade"
         },
         "warnings": {
-            "disconnect": "Asopọ si ipade ti sọnu. A n tun sopọ ..."
+            "disconnect": "Asopọ si ipade ti sọnu. A n tun sopọ..."
         }
     },
     "selectNodeDialog": {
@@ -454,7 +454,7 @@
         "pswap": {
             "title": "Awọn Tokini PSWAP",
             "first": "PSWAP ni a ṣẹda nipasẹ iṣakoso ijọba agbegbe nipasẹ didibo lori itusilẹ rẹ. O jẹ iwulo ati ami ijọba ti a lo lati san awọn olupese olupese oloomi lori lori Polkaswap. Ko dabi awọn ami ẹbun miiran miiran, PSWAP ti jo pẹlu awọn iṣowo ati dinku ni ipese pelu akoko.",
-            "second": "{percent} % fun gbogbo swap lori Polkaswap DEX ni a lo lati ra awọn Tokini PSWAP pada, eyiti wọn dana sun. Ni akọkọ, 90% ti awọn ami PSWAP ti a sun ni a ṣe iranti lati pin si awọn olupese oloomi, ṣugbọn pẹlu akoko yii ipin ogorun yii yoo dinku si 35% lẹhin ọdun mẹrin."
+            "second": "{percent}% fun gbogbo swap lori Polkaswap DEX ni a lo lati ra awọn Tokini PSWAP pada, eyiti wọn dana sun. Ni akọkọ, 90% ti awọn ami PSWAP ti a sun ni a ṣe iranti lati pin si awọn olupese oloomi, ṣugbọn pẹlu akoko yii ipin ogorun yii yoo dinku si 35% lẹhin ọdun mẹrin."
         },
         "links": {
             "first": {
@@ -489,7 +489,7 @@
         "priceImpact": "Ipa Iye",
         "priceImpactTooltip": "Iyato laarin idiyele ọja ati idiyele ti a pinnu nitori iwọn iṣowo.",
         "liquidityProviderFee": "Ọya Olupese Liquidity",
-        "liquidityProviderFeeTooltip": "Apakan ti iṣowo kọọkan ( {liquidityProviderFee} %) lọ si awọn olupese liquidity bi iwuri ilana kan.",
+        "liquidityProviderFeeTooltip": "Apakan ti iṣowo kọọkan ({liquidityProviderFee}%) lọ si awọn olupese liquidity bi iwuri ilana kan.",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
         "networkFeeTooltip": "@:networkFeeTooltipText",
@@ -578,7 +578,7 @@
         "status": {
             "pending": "{step} Idunadura n sunmọtosi ...",
             "failed": "{step} idunadura kuna. @:(retryText).",
-            "confirm": "Jẹrisi ikeji ninu awọn iṣowo meji ...",
+            "confirm": "Jẹrisi ikeji ninu awọn iṣowo meji...",
             "complete": "Pari",
             "convertionComplete": "Iyipada ti pari"
         },
@@ -589,7 +589,7 @@
             "frozen": "Fisi itimole",
             "failed": "Idunadura kuna",
             "done": "Pari",
-            "waitingForConfirmation": "Nduro fun idaniloju ..."
+            "waitingForConfirmation": "Nduro fun idaniloju..."
         },
         "viewInEtherscan": "Wo ni Etherscan",
         "networkTitle": "idunadura {network}",
@@ -668,7 +668,7 @@
     },
     "confirmSupply": {
         "title": "Iwo yoo gba",
-        "outputDescription": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance} % iṣowo rẹ yoo pada.",
+        "outputDescription": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance}% iṣowo rẹ yoo pada.",
         "poolTokensBurned": "{first} - {second} Awọn Pool Tokens ta ti sun",
         "price": "Iye"
     },
@@ -693,7 +693,7 @@
     },
     "dexSettings": {
         "title": "Awọn eto iṣowo",
-        "marketAlgorithm": "@.oke:ọjaAlugoridimu Text",
+        "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- aṣayan lati yan laarin ọja Alakọbẹrẹ (TBC), Ile-iwe Atẹle (XYK) tabi algorithm ọlọgbọn apapọ fun idiyele ti o dara julọ fun iṣeduro eyikeyi ti a fun."
         },
@@ -733,12 +733,12 @@
             "success": "Beere ni aṣeyọri"
         },
         "transactions": {
-            "confimation": "Jẹrisi {order} ti {total} iṣowo ...",
+            "confimation": "Jẹrisi {order} ti {total} iṣowo...",
             "success": "Iwọ yoo gba awọn ẹsan rẹ laipẹ",
             "failed": "{order} ti {total} iṣowo ti kuna. @:retryText"
         },
         "signing": {
-            "extension": "polkadot {.js} itẹsiwaju burausa",
+            "extension": "polkadot{.js} itẹsiwaju burausa",
             "accounts": "rẹ @:soraText ati @:ethereumText awọn iroyin lẹsẹsẹ"
         },
         "hint": {
@@ -886,7 +886,7 @@
         "connectAccount": "Lati pe awọn olumulo o nilo lati so akọọlẹ SORA rẹ pọ.",
         "bondedXOR": "XOR ti o ni asopọ",
         "referralsNumber": "awọn itọkasi {number}",
-        "startInviting": "Lati bẹrẹ pipe si, di eyikeyi iye ti XOR.",
+        "startInviting": "Bond XOR lati tọka si awọn miiran",
         "preview": "Pe awọn olumulo titun ati gba 10% lati awọn idiyele idunadura wọn. <br \/> Lati bẹrẹ, di eyikeyi iye ti XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Kọ ẹkọ diẹ sii <\/a>",
         "deposit": "Idogo",
         "balance": "Iwontunwonsi",
@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Ṣafikun {symbol} si @:metamask",
         "title": "Idunadura Bridge aseyori"
+    },
+    "mobilePopup": {
+        "sideMenu": "Gba ohun elo apamọwọ SORA",
+        "header": "Ṣe igbasilẹ apamọwọ SORA pẹlu <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> awọn ẹya ara ẹrọ",
+        "info": "Siwopu àmi lati yatọ si nẹtiwọki - SORA, Ethereum, Polkadot, Kusama. Pese adagun oloomi ati jo'gun% lati awọn idiyele paṣipaarọ."
     }
 }
