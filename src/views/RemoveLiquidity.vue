@@ -162,7 +162,6 @@ import type { FocusedField } from '@/store/removeLiquidity/types';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    TokenLogo: lazyComponent(Components.TokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),

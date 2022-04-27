@@ -32,7 +32,7 @@
           <s-icon name="various-bone-24" size="14px" class="tokens-table--center" />
         </template>
         <template v-slot="{ row }">
-          <token-logo class="tokens-item-logo" :token="row" />
+          <token-logo class="tokens-item-logo" :token-symbol="row.symbol" />
         </template>
       </s-table-column>
       <s-table-column>
