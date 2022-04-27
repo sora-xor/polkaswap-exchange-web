@@ -7,18 +7,6 @@ module.exports = {
     // bundle all dependencies from node_modules to vendors
     config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
     config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
-    // prepare icons content to unicode
-    config.module.rules
-      .filter((rule) => {
-        return rule.test.toString().indexOf('scss') !== -1;
-      })
-      .forEach((rule) => {
-        rule.oneOf.forEach((oneOfRule) => {
-          oneOfRule.use.splice(oneOfRule.use.indexOf(require.resolve('sass-loader')), 0, {
-            loader: require.resolve('css-unicode-loader'),
-          });
-        });
-      });
 
     if (process.env.NODE_ENV === 'production') {
       const buildDateTime = Date.now();
@@ -26,28 +14,48 @@ module.exports = {
       config.output.chunkFilename = `js/[name].[contenthash:8].${buildDateTime}.js`;
     }
   },
+  /* eslint-disable */
   chainWebpack: (config) => {
+    // prepare icons content to unicode
+    config.module.rule('scss')
+      .oneOf('vue-modules')
+        .use('css-unicode-loader')
+          .loader('css-unicode-loader')
+          .before('sass-loader')
+        .end()
+      .end();
+
     const svgRule = config.module.rule('svg');
-    // clear default loaders
     svgRule.uses.clear();
-    // add new loaders
-    config.module
-      .rule('svg')
+    config.module.rule('svg')
       .oneOf('inline-svg')
-      .resourceQuery(/inline/)
-      .use('babel')
-      .loader('babel-loader')
-      .end()
-      .use('vue-svg-loader')
-      .loader('vue-svg-loader')
-      .end()
+        .resourceQuery(/inline/)
+        .use('babel')
+          .loader('babel-loader')
+        .end()
+        .use('vue-svg-loader')
+          .loader('vue-svg-loader')
+        .end()
       .end()
       .oneOf('file')
-      .use('file-loader')
-      .loader('file-loader')
+        .use('file-loader')
+          .loader('file-loader')
+        .end()
+      .end();
+
+    // https://webpack.js.org/guides/asset-modules/
+    const imagesRule = config.module.rule('images');
+    imagesRule.uses.clear();
+    config.module.rule('images')
+      .oneOf('asset-inline')
+        .resourceQuery(/inline/)
+        .type('asset/inline')
       .end()
+      .oneOf('asset')
+        .type('asset')
       .end();
   },
+  /* eslint-enable */
   css: {
     loaderOptions: {
       sass: {
