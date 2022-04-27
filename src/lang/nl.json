@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Asset is succesvol toegevoegd!",
+        "success": "Asset {symbol} is succesvol toegevoegd!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filter op Asset-ID, naam of Tickersymbool"

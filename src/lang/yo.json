@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "A fi dukia kun ni aṣeyọri!",
+        "success": "A fi dukia {symbol} kun ni aṣeyọri!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Àlẹmọ nipasẹ Idanimo dukia, Orukọ tabi Aami Ticker"

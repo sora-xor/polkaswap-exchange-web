@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Sredstvo je uspješno dodano!",
+        "success": "Sredstvo {symbol} je uspješno dodano!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtrirajte prema ID-u sredstva, nazivu ili simbolu oznake"

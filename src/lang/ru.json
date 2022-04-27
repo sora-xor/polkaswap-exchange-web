@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Актив был добавлен успешно!",
+        "success": "Актив {symbol} был добавлен успешно!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Фильтр по ID актива, имени или символу тикера"

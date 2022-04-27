@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Ressursen ble lagt til.",
+        "success": "Ressursen {symbol} ble lagt til.",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol"

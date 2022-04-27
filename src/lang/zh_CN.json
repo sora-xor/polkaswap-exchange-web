@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "资产添加成功！",
+        "success": "资产{symbol}添加成功！",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "按资产 ID、名称或代币符号进行筛选"
