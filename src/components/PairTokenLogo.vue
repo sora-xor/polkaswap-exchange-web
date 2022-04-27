@@ -1,7 +1,7 @@
 <template>
   <div :class="computedClasses">
-    <token-logo :token="firstToken" :size="size" />
-    <token-logo :token="secondToken" :size="size" />
+    <token-logo :token="firstToken" class="token-logo" :size="size" />
+    <token-logo :token="secondToken" class="token-logo" :size="size" />
   </div>
 </template>
 
@@ -10,13 +10,12 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { LogoSize, Components, ObjectInit } from '@/consts';
-import { lazyComponent } from '@/router';
+import { LogoSize, ObjectInit } from '@/consts';
+
 import { components } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
   components: {
-    // TokenLogo: lazyComponent(Components.TokenLogo),
     TokenLogo: components.TokenLogo,
   },
 })
