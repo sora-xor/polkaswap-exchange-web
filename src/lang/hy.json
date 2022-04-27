@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Ավելացնել {symbol} է @:metamask",
         "title": "Կամուրջի գործարքը հաջողվեց"
+    },
+    "mobilePopup": {
+        "sideMenu": "Ստացեք SORA Wallet հավելվածը",
+        "header": "Ներբեռնեք SORA դրամապանակը <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> հատկանիշներով",
+        "info": "Փոխանակեք նշաններ տարբեր ցանցերից՝ SORA, Ethereum, Polkadot, Kusama: Ապահովեք իրացվելիության ֆոնդ և վաստակեք տոկոս փոխանակման վճարներից:"
     }
 }

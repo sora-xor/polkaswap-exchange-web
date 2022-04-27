@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Ṣafikun {symbol} si @:metamask",
         "title": "Idunadura Bridge aseyori"
+    },
+    "mobilePopup": {
+        "sideMenu": "Gba ohun elo apamọwọ SORA",
+        "header": "Ṣe igbasilẹ apamọwọ SORA pẹlu <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> awọn ẹya ara ẹrọ",
+        "info": "Siwopu àmi lati yatọ si nẹtiwọki - SORA, Ethereum, Polkadot, Kusama. Pese adagun oloomi ati jo'gun% lati awọn idiyele paṣipaarọ."
     }
 }

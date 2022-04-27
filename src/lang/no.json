@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Legg til {symbol} til @:metamask",
         "title": "Brotransaksjonen ble vellykket"
+    },
+    "mobilePopup": {
+        "sideMenu": "Få SORA Wallet-appen",
+        "header": "Last ned SORA Wallet med <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funksjoner",
+        "info": "Bytt ut tokens fra forskjellige nettverk - SORA, Ethereum, Polkadot, Kusama. Gi likviditetspool og tjen % fra vekslingsgebyrer."
     }
 }

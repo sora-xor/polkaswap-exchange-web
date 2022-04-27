@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Dodaj {symbol} do @:metamask",
         "title": "Transakcja pomostowa powiodła się"
+    },
+    "mobilePopup": {
+        "sideMenu": "Pobierz aplikację Portfel SORA",
+        "header": "Pobierz portfel SORA z <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Zamień tokeny z różnych sieci - SORA, Ethereum, Polkadot, Kusama. Zapewnij pulę płynności i zarabiaj % na opłatach za wymianę."
     }
 }

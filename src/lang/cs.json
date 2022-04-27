@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Přidejte {symbol} do @:metamask",
         "title": "Transakce mostu úspěšná"
+    },
+    "mobilePopup": {
+        "sideMenu": "Získejte aplikaci SORA Wallet App",
+        "header": "Stáhněte si peněženku SORA s <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Swap tokeny z různých sítí - SORA, Ethereum, Polkadot, Kusama. Poskytněte fond likvidity a získejte % z poplatků za směnu."
     }
 }
