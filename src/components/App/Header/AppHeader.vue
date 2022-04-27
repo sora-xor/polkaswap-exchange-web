@@ -195,10 +195,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
       display: block;
       margin: auto;
     }
-
-    .token-logo {
-      margin: auto;
-    }
   }
 
   .el-button {
