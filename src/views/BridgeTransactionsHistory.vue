@@ -74,7 +74,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { action, state } from '@/store/decorators';
-import { isUnsignedToPart, isRejectedForeverFromPart } from '@/utils/bridge';
+import { isUnsignedToPart } from '@/utils/bridge';
 
 @Component({
   components: {
@@ -152,7 +152,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   isWaitingForAction(tx: BridgeHistory): boolean {
-    return tx.status === BridgeTxStatus.Failed && !isRejectedForeverFromPart(tx) && isUnsignedToPart(tx);
+    return tx.status === BridgeTxStatus.Failed && isUnsignedToPart(tx);
   }
 
   historyStatusClasses(item: BridgeHistory): string {
