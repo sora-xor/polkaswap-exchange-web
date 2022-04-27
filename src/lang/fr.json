@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "L'actif a été ajouté avec succès!",
+        "success": "L'actif {symbol} a été ajouté avec succès!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtrer par ID d'actif, nom ou symbole"

@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Tài sản đã được thêm vào thành công!",
+        "success": "Tài {symbol} sản đã được thêm vào thành công!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Lọc theo Id Tài sản, Tên hoặc Mã token"

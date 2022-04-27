@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Az eszköz sikeresen hozzáadva!",
+        "success": "Az eszköz {symbol} sikeresen hozzáadva!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Szűrés eszközazonosító, név vagy szimbólum alapján"

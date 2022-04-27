@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Aktívum bolo úspešne pridané!",
+        "success": "Aktívum {symbol} bolo úspešne pridané!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtrovať podľa ID, názvu alebo symbolu aktíva"

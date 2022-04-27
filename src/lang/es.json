@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "¡El Activo se ha añadido con éxito!",
+        "success": "¡El Activo {symbol} se ha añadido con éxito!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtrar por ID de Activo, Nombre o Símbolo bursátil (ticker)"

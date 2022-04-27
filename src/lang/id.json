@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Aset berhasil ditambahkan!",
+        "success": "Aset {symbol} berhasil ditambahkan!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filter menurut ID Aset, Nama, atau Simbol Ticker"

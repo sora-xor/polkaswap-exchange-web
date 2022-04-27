@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "L' asset è stato aggiunto con successo!",
+        "success": "L' asset {symbol} è stato aggiunto con successo!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtra per Asset ID, Nome o Simbolo Ticker"
