@@ -161,7 +161,10 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @Watch('nodeIsConnected')
   private async updateSubscriptions(value: boolean) {
     if (value) {
-      await this.subscribeOnRewards();
+      // to prevent second call after created hook
+      if (!this.loading) {
+        await this.subscribeOnRewards();
+      }
     } else {
       await this.unsubscribeFromRewards();
     }
