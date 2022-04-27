@@ -4,7 +4,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
         <div v-if="tokenFrom" class="token">
-          <token-logo :token="tokenFrom" />
+          <token-logo class="token-logo" :token="tokenFrom" />
           {{ tokenFrom.symbol }}
         </div>
       </div>
@@ -12,7 +12,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedToValue }}</span>
         <div v-if="tokenTo" class="token">
-          <token-logo :token="tokenTo" />
+          <token-logo class="token-logo" :token="tokenTo" />
           {{ tokenTo.symbol }}
         </div>
       </div>
@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
@@ -52,8 +52,8 @@ import { state, getter } from '@/store/decorators';
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogMixin) {

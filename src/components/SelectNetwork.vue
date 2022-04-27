@@ -12,18 +12,17 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
 import { SubNetwork } from '@/utils/ethers-util';
 
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin) {

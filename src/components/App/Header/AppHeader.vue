@@ -17,7 +17,7 @@
     <div class="app-controls s-flex">
       <market-maker-countdown />
       <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
-        <token-logo class="node-control__logo" v-bind="nodeLogo" />
+        <token-logo class="node-control__logo token-logo" v-bind="nodeLogo" :token="XOR" />
       </s-button>
       <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
       <app-header-menu />
@@ -62,7 +62,7 @@ import { getter, mutation } from '@/store/decorators';
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {
@@ -77,6 +77,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
 
   goTo = goTo;
+  XOR = XOR;
 
   get nodeTooltip(): string {
     if (this.nodeIsConnected) {
@@ -190,9 +191,13 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   }
 
   .node-control {
-    @include element-size('token-logo', 28px);
+    @include element-size('token-logo', 32px);
     &__logo {
       display: block;
+      margin: auto;
+    }
+
+    .token-logo {
       margin: auto;
     }
   }

@@ -3,7 +3,7 @@
     <div class="rewards-content" v-loading="!parentLoading && loading">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">
         <div :class="['rewards-box', libraryTheme]">
-          <tokens-row :symbols="rewardTokenSymbols" />
+          <tokens-row :tokens="rewardTokens" />
           <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
             {{ claimingStatusMessage }}
           </div>
@@ -96,7 +96,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
@@ -310,6 +310,10 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
 
   get rewardTokenSymbols(): Array<KnownSymbols> {
     return this.rewardsByAssetsList.map((item) => item.asset.symbol as KnownSymbols);
+  }
+
+  get rewardTokens(): Array<Asset> {
+    return this.rewardsByAssetsList.map((item) => item.asset as Asset);
   }
 
   get gradientSymbol(): string {

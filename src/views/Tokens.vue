@@ -32,7 +32,7 @@
           <s-icon name="various-bone-24" size="14px" class="tokens-table--center" />
         </template>
         <template v-slot="{ row }">
-          <token-logo class="tokens-item-logo" :token-symbol="row.symbol" />
+          <token-logo class="tokens-item-logo" :token="row" />
         </template>
       </s-table-column>
       <s-table-column>
@@ -88,10 +88,10 @@ import SortButton from '@/components/SortButton.vue';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    TokenLogo: lazyComponent(Components.TokenLogo),
     SortButton,
     TokenAddress: components.TokenAddress,
     SearchInput: components.SearchInput,
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class Tokens extends Mixins(

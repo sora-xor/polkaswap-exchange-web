@@ -1787,7 +1787,7 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.20.tgz#111b5db0f501aa89b05076fa31f0ea0e0c292cd3"
   integrity sha512-88p7+M0QGxKpmnkfXjS4V26AnoC/eiqZutE8GLdaI5X12NY75bXSdTY9NkmYb2Xyk1O+MmkuO6Frmsj84V6I8Q==
 
-"@polkadot/api-derive@4.17.1", "@polkadot/api-derive@^4.10.1":
+"@polkadot/api-derive@4.17.1":
   version "4.17.1"
   resolved "https://registry.yarnpkg.com/@polkadot/api-derive/-/api-derive-4.17.1.tgz#7902ab73159f89a4f1a896ce856dd7377318d275"
   integrity sha512-mgq57F1yAiZjuiA0vrR2zWidyyd+mGe7Kbs4SxVeDWLsNbLc9+eASIfX7Hch2SDHIn3CQpv6DQqJH00uDfw9Lw==
@@ -2432,39 +2432,37 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api-derive@^1.8.22":
-  version "1.8.22"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api-derive/-/api-derive-1.8.22.tgz#2d66ecf7860379ef5afa101e9efcc03865047016"
-  integrity sha512-DIQ1pkS8kTa5GvzQbUuPkwSr8f7olchZxl3r3EFATiTMovIPwopS0sbRWS4WjryGwvCKdX+xlevd7dmQpluWGA==
-  dependencies:
-    "@babel/runtime" "^7.10.2"
-    "@polkadot/api-derive" "^4.10.1"
-    "@sora-substrate/types" "^1.8.22"
-    rxjs "^6.5.5"
-
-"@sora-substrate/api@^1.8.22":
-  version "1.8.22"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.8.22.tgz#39d911111d8bada1be524847de571a7a2b4f09fe"
-  integrity sha512-iRq5ANG8udhFZO7ubLLr04WF7+3RG36cr3BEyG3Zy52Tg/Xt0qFnCBlYkiO5ymH3BdQqt18fHINNOD5yex8bag==
+"@sora-substrate/api@^1.8.26":
+  version "1.8.26"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.8.26.tgz#dd5913dd4c6b24097a54234893eed4d980fbe713"
+  integrity sha512-FbCFApuyYmDn+N3Ne3/bwrskdSXyk/3bA51HCUxys28eS3qEKTfn/7flhs6byHMmnVMPaWMdsD50NCP/Wf0saQ==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/orml-api-derive" "^0.8.2-9"
     "@polkadot/api" "^4.10.1"
     "@polkadot/rpc-core" "^4.10.1"
-    "@sora-substrate/api-derive" "^1.8.22"
-    "@sora-substrate/types" "^1.8.22"
+    "@sora-substrate/types" "^1.8.26"
 
-"@sora-substrate/type-definitions@^1.8.22":
-  version "1.8.22"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.8.22.tgz#091c13f7e25f0766124ac26f22dc1076c2f629c9"
-  integrity sha512-AIjcnjIXeohtNeTAPIGnmvyteHe+XgjOUPfCccTWej4Vn1n7fXLs5+Ia3JuHuuRvAxqt+FFIVuppgkR0RHQLtA==
+"@sora-substrate/math@^1.8.26":
+  version "1.8.26"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.8.26.tgz#5d53941c2904f5afe8009df40e29e8d2fb1eb67a"
+  integrity sha512-0WUs+S3icQWa9EaVzl7hr/3SiXTs5kkcmbSI/GWdimYv/KiregeWiwegEsv1rLklQtxcsEPfUw1DXajdNLRWiw==
+  dependencies:
+    "@polkadot/types" "^4.10.1"
+    bignumber.js "^9.0.1"
+    lodash "^4.17.15"
+
+"@sora-substrate/type-definitions@^1.8.26":
+  version "1.8.26"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.8.26.tgz#64fa4afa51721c4b2ee5195f86b249bbbc78b1f6"
+  integrity sha512-yUCyEyvtjP/dHi9dYkMlDhYKhWoV3KyozHUK0HJWibSnY1pRiyjrmH91gsDbDqAsXWpyom65IX3P5LSm2eiKKA==
   dependencies:
     "@open-web3/orml-type-definitions" "^0.9.4-35"
 
-"@sora-substrate/types@^1.8.22":
-  version "1.8.22"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.8.22.tgz#4fa672063486249d3576c9a43ae657d938f27b0b"
-  integrity sha512-pVmEkRJWpblUGVn6lbx0HQ39WyvGWt/8wDNvdGQir9m2Et47HWf+zRDUOwAEG951p3Bw6jqA0ubLHOQ8PWnp1A==
+"@sora-substrate/types@^1.8.26":
+  version "1.8.26"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.8.26.tgz#f6f50aa6f96efc87def24fbd13544db89a4841d0"
+  integrity sha512-ESHGVrhjSKV+6p5ealjjQEYBR24CEsDB4pCkAUBewr/GGcykXqBCkT/VK7xBm1+o89A0F7oTSEj2Od+PUR5RWA==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/api-mobx" "^0.8.2-9"
@@ -2472,29 +2470,30 @@
     "@polkadot/api" "^4.10.1"
     "@polkadot/typegen" "^4.10.1"
     "@polkadot/types" "^4.10.1"
-    "@sora-substrate/type-definitions" "^1.8.22"
+    "@sora-substrate/type-definitions" "^1.8.26"
 
-"@sora-substrate/util@^1.8.22":
-  version "1.8.22"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.8.22.tgz#72097fbfb48649b2522a7c214399e91ea487e689"
-  integrity sha512-g0Ol/nMy/RKcOYknJHt5eIpueYZJ4rMmPL1NZ7IkLscId5HDL9o18tYbQyTQmU/d/4XZFKFjwpBs7Rro7+Ixsg==
+"@sora-substrate/util@^1.8.25":
+  version "1.8.26"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.8.26.tgz#b2db87834e7e430cfd85f95e81bc86c384d4ad70"
+  integrity sha512-Z/GzjlnVaKQR92puQHif1j3WK/X1ikaU6ytVjqUaqJbkm4QJzSAG5W0zynY+6fvXQRAphK55EKdft4Em28eTQg==
   dependencies:
     "@polkadot/ui-keyring" "^0.77.1"
-    "@sora-substrate/api" "^1.8.22"
+    "@sora-substrate/api" "^1.8.26"
+    "@sora-substrate/math" "^1.8.26"
     axios "^0.21.1"
     bignumber.js "^9.0.1"
     crypto-js "^4.0.0"
     lodash "^4.17.15"
 
-"@soramitsu/soramitsu-js-ui@^1.0.30":
-  version "1.0.30"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.30.tgz#7620213f2a74b445abd630a3d317657e69cc35b4"
-  integrity sha512-yIX9i7q+3Q8inSOYJU+XAPuwSSCLrmqz9nTXgBj7L32pH94xzu1C3WC5nTyRaqLdl0VvGKVibXBH/i4S5E7Plg==
+"@soramitsu/soramitsu-js-ui@^1.0.32":
+  version "1.0.32"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.32.tgz#826d53df97e77097b94dccaad38e331db213d101"
+  integrity sha512-rFV8zje6t+JhqM8aiAj7yVEEAeEffV6xYa3flWHoF5ORPgb6hDnPfZIRg/enzI/fpIgXw8qlbSa55aCay8KSWg==
   dependencies:
     core-js "^3.6.4"
     element-resize-detector "^1.2.1"
     element-ui "^2.15.5"
-    lodash "^4.17.15"
+    lodash "^4.17.21"
     throttle-debounce "^1.0.1"
     v-jsoneditor "^1.4.1"
     vue "^2.6.11"
@@ -2504,15 +2503,15 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@1.8.16":
-  version "1.8.16"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.8.16.tgz#daea266ef9d7ecfc5c80e25b2909329d91b853f9"
-  integrity sha512-zXfiW5Ci+pvWgCLp8XRRsJY+Wv0CqK2VdrrZDPOqie4e9Q+HLIYVbHuC64NkOjmvy3SR/zVHLDx/Ksbxocdblw==
+"@soramitsu/soraneo-wallet-web@^1.8.19":
+  version "1.8.19"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.8.19.tgz#ae4a63f5a96221ba1ea80820a61a11332dc23957"
+  integrity sha512-LR8jOOVKgTpXpjZHppClQVzqBljUNnimAoRad/HUusewFaIyDo4ozT4aH8OrFBPae6gKpioF8GkE4ApwJnFc1A==
   dependencies:
     "@polkadot/extension-dapp" "^0.42.2"
     "@polkadot/vue-identicon" "^0.72.1"
-    "@sora-substrate/util" "^1.8.22"
-    "@soramitsu/soramitsu-js-ui" "^1.0.30"
+    "@sora-substrate/util" "^1.8.25"
+    "@soramitsu/soramitsu-js-ui" "^1.0.32"
     "@zxing/browser" "^0.0.10"
     "@zxing/library" "^0.18.6"
     core-js "^3.6.4"
@@ -2524,6 +2523,7 @@
     nft.storage "^5.2.0"
     vue "^2.6.14"
     vue-class-component "^7.2.6"
+    vue-fragment "^1.5.2"
     vue-i18n "^8.11.2"
     vue-property-decorator "^9.1.2"
     vue-virtual-scroller "^1.0.10"
@@ -13207,7 +13207,7 @@ rustbn.js@~0.2.0:
   resolved "https://registry.yarnpkg.com/rustbn.js/-/rustbn.js-0.2.0.tgz#8082cb886e707155fd1cb6f23bd591ab8d55d0ca"
   integrity sha512-4VlvkRUuCJvr2J6Y0ImW7NvTCriMi7ErOAqWk1y69vAdoNIzCF3yPmgeNzx+RQTLEDFq5sHfscn1MwHxP9hNfA==
 
-rxjs@6, rxjs@^6.3.3, rxjs@^6.5.5, rxjs@^6.6.3, rxjs@^6.6.7:
+rxjs@6, rxjs@^6.3.3, rxjs@^6.6.3, rxjs@^6.6.7:
   version "6.6.7"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.7.tgz#90ac018acabf491bf65044235d5863c4dab804c9"
   integrity sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==
@@ -14959,6 +14959,11 @@ vue-eslint-parser@^7.0.0, vue-eslint-parser@^7.10.0:
     esquery "^1.4.0"
     lodash "^4.17.21"
     semver "^6.3.0"
+
+vue-fragment@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/vue-fragment/-/vue-fragment-1.5.2.tgz#310017170c564c4aad95da14c185c92c6784fd3c"
+  integrity sha512-KEW0gkeNOLJjtXN4jqJhTazez5jtrwimHkE5Few/VxblH4F9EcvJiEsahrV5kg5uKd5U8du4ORKS6QjGE0piYA==
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"

@@ -12,10 +12,12 @@ import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/type
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { LogoSize, Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
   components: {
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    // TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class PairTokenLogo extends Mixins(TranslationMixin) {
