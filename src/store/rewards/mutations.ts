@@ -6,10 +6,20 @@ import type { AccountMarketMakerInfo } from '@sora-substrate/util/build/rewards/
 
 import { initialState } from './state';
 import type { RewardsState } from './types';
+import type { SelectedRewards, AccountRewards } from '@/types/rewards';
 
 const mutations = defineMutations<RewardsState>()({
   reset(state): void {
-    const s = omit(['accountMarketMakerUpdates', 'accountMarketMakerInfo'], initialState());
+    const s = omit(
+      [
+        'accountMarketMakerUpdates',
+        'accountMarketMakerInfo',
+        'liquidityProvisionRewardsSubscription',
+        'vestedRewardsSubscription',
+        'crowdloanRewardsSubscription',
+      ],
+      initialState()
+    );
 
     Object.keys(s).forEach((key) => {
       state[key] = s[key];
@@ -30,23 +40,14 @@ const mutations = defineMutations<RewardsState>()({
   setSignature(state, value: string): void {
     state.signature = value;
   },
-  getRewardsRequest(state): void {
-    state.rewardsFetching = true;
+  // set rewards & select rewards
+  setRewards(state, rewards: AccountRewards): void {
+    Object.assign(state, rewards);
   },
-  getRewardsSuccess(state, { internal = null, external = [], vested = null, crowdloan = [] } = {}): void {
-    state.internalRewards = internal;
-    state.externalRewards = external;
-    state.vestedRewards = vested;
-    state.crowdloanRewards = crowdloan;
-    state.rewardsFetching = false;
+  setSelectedRewards(state, selected: SelectedRewards): void {
+    Object.assign(state, selected);
   },
-  getRewardsFailure(state): void {
-    state.internalRewards = null;
-    state.externalRewards = [];
-    state.vestedRewards = null;
-    state.crowdloanRewards = [];
-    state.rewardsFetching = false;
-  },
+  // fee
   getFeeRequest(state): void {
     state.feeFetching = true;
   },
@@ -57,30 +58,44 @@ const mutations = defineMutations<RewardsState>()({
   getFeeFailure(state): void {
     state.feeFetching = false;
   },
-  setSelectedRewards(state, { internal = null, external = [], vested = null, crowdloan = [] } = {}): void {
-    state.selectedExternalRewards = [...external];
-    state.selectedInternalRewards = internal;
-    state.selectedVestedRewards = vested;
-    state.selectedCrowdloanRewards = [...crowdloan];
-  },
+  // market maker subscription
   setAccountMarketMakerInfo(state, info: Nullable<AccountMarketMakerInfo>): void {
     state.accountMarketMakerInfo = info;
   },
   setAccountMarketMakerUpdates(state, subscription: Subscription): void {
     state.accountMarketMakerUpdates = subscription;
   },
-  resetAccountMarketMakerUpdates(state): void {
-    if (state.accountMarketMakerUpdates) {
-      state.accountMarketMakerUpdates.unsubscribe();
-    }
-    state.accountMarketMakerUpdates = null;
-  },
   unsubscribeAccountMarketMakerInfo(state): void {
-    if (state.accountMarketMakerUpdates) {
-      state.accountMarketMakerUpdates.unsubscribe();
-    }
+    state.accountMarketMakerUpdates?.unsubscribe();
     state.accountMarketMakerUpdates = null;
     state.accountMarketMakerInfo = null;
+  },
+  // pswap distribution subscription
+  setLiquidityProvisionRewardsUpdates(state, subscription: Subscription): void {
+    state.liquidityProvisionRewardsSubscription = subscription;
+  },
+  resetLiquidityProvisionRewardsUpdates(state) {
+    state.liquidityProvisionRewardsSubscription?.unsubscribe();
+    state.liquidityProvisionRewardsSubscription = null;
+    state.internalRewards = null;
+  },
+  // vested rewards subscription
+  setVestedRewardsUpdates(state, subscription: Subscription): void {
+    state.vestedRewardsSubscription = subscription;
+  },
+  resetVestedRewardsUpdates(state) {
+    state.vestedRewardsSubscription?.unsubscribe();
+    state.vestedRewardsSubscription = null;
+    state.vestedRewards = null;
+  },
+  // crowdloan rewards subscription
+  setCrowdloanRewardsUpdates(state, subscription: Subscription): void {
+    state.crowdloanRewardsSubscription = subscription;
+  },
+  resetCrowdloanRewardsUpdates(state) {
+    state.crowdloanRewardsSubscription?.unsubscribe();
+    state.crowdloanRewardsSubscription = null;
+    state.crowdloanRewards = [];
   },
 });
 
