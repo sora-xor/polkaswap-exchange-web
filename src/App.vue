@@ -92,6 +92,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setNetworkChainGenesisHash private setNetworkChainGenesisHash!: (hash?: string) => void;
   @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
+  @mutation.settings.setSubqueryEndpoint private setSubqueryEndpoint!: (endpoint: string) => void;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
   @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
@@ -167,6 +168,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       await this.setApiKeys(data?.API_KEYS);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
       this.setSoraNetwork(data.NETWORK_TYPE);
+      this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.setSubNetworks(data.SUB_NETWORKS);
       await this.setSmartContracts(data.SUB_NETWORKS);
