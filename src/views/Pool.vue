@@ -249,7 +249,7 @@ $pair-icon-height: 36px;
         margin-top: $inner-spacing-medium;
       }
     }
-    & > .token-logo {
+    & > .asset-logo {
       margin-right: $inner-spacing-mini;
     }
     &--buttons {

@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
 import DialogBase from '@/components/DialogBase.vue';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -37,7 +38,7 @@ import type { Whitelist } from '@sora-substrate/util/build/assets/types';
   components: {
     DialogBase,
     SimpleNotification: lazyComponent(Components.SimpleNotification),
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class TransferNotification extends Mixins(TranslationMixin) {

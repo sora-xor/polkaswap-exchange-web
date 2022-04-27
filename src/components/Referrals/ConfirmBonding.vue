@@ -8,7 +8,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
         <div class="token">
-          <token-logo :token="xor" />
+          <token-logo class="token-logo" :token="xor" />
           {{ xorSymbol }}
         </div>
       </div>
@@ -38,15 +38,14 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
-import { lazyComponent } from '@/router';
-import { Components, PageNames } from '@/consts';
+import { PageNames } from '@/consts';
 import { state } from '@/store/decorators';
 
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo),
     InfoLine: components.InfoLine,
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixins.FormattedAmountMixin, DialogMixin) {

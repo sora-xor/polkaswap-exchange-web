@@ -3,7 +3,7 @@
     <template v-if="isSoraAccountConnected">
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
-        <token-logo :token="xor" :size="LogoSize.BIG" />
+        <token-logo :token="xor" :size="LogoSize.BIGGER" />
         <formatted-amount
           class="rewards-value"
           value-can-be-hidden
@@ -40,11 +40,11 @@
       <s-collapse :borders="true">
         <s-collapse-item :class="bondedContainerClasses" :disabled="!hasAccountWithBondedXor" name="bondedXOR">
           <template v-if="hasAccountWithBondedXor" #title>
-            <token-logo class="token-logo" :token="xor" />
+            <token-logo :token="xor" />
             <h3 class="bonded-collapse-title">{{ t('referralProgram.bondedXOR') }}</h3>
           </template>
           <div v-if="!hasAccountWithBondedXor" class="unbonded-info">
-            <token-logo class="token-logo" :token="xor" />
+            <token-logo :token="xor" />
             <p
               class="referral-program-hint referral-program-hint--connected"
               v-html="t('referralProgram.startInviting')"
@@ -111,7 +111,7 @@
         </s-collapse-item>
         <s-collapse-item class="referrer-link-container" name="referrer">
           <template #title>
-            <WalletAvatar v-if="referrer" class="referrer-icon" :size="36" :address="referrer" />
+            <WalletAvatar v-if="referrer" class="referrer-icon" :size="32" :address="referrer" />
             <h3 class="referrer-collapse-title">
               {{ t(`referralProgram.referrer.${referrer ? 'titleReferrer' : 'title'}`) }}
             </h3>
@@ -174,8 +174,8 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { CodecString, FPNumber } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
-import router, { lazyComponent, lazyView } from '@/router';
-import { PageNames, Components, LogoSize, ZeroStringValue } from '@/consts';
+import router, { lazyView } from '@/router';
+import { PageNames, LogoSize, ZeroStringValue } from '@/consts';
 import { detectBaseUrl } from '@/api';
 import { copyToClipboard, formatAddress } from '@/utils';
 
@@ -186,9 +186,9 @@ import { action, getter, mutation, state } from '@/store/decorators';
   components: {
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
-    TokenLogo: lazyComponent(Components.TokenLogo),
     ReferralBonding: lazyView(PageNames.ReferralBonding),
     WalletAvatar: components.WalletAvatar,
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class ReferralProgram extends Mixins(
@@ -420,7 +420,6 @@ export default class ReferralProgram extends Mixins(
 </script>
 
 <style lang="scss">
-$referral-collapse-icon-size: 36px;
 .referral-program {
   @include collapse-items(false, true);
   margin-top: $inner-spacing-mini;
@@ -488,9 +487,8 @@ $referral-collapse-icon-size: 36px;
       }
     }
   }
-  @include element-size('token-logo--medium', $referral-collapse-icon-size);
-  @include element-size('invited-users-icon', $referral-collapse-icon-size);
-  @include element-size('referrer-icon', $referral-collapse-icon-size);
+
+  @include element-size('referrer-icon', var(--s-size-small));
   &-hint--connected .link {
     color: var(--s-color-theme-accent);
   }
@@ -517,6 +515,8 @@ $referral-collapse-icon-size: 36px;
   &-icon {
     background: var(--s-color-base-content-tertiary) url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
     border-radius: 50%;
+    width: var(--s-size-small);
+    height: var(--s-size-small);
   }
 }
 .bonded-container {
@@ -594,6 +594,13 @@ $referral-collapse-icon-size: 36px;
     }
   }
 }
+
+.unbonded-info {
+  .asset-logo {
+    margin-top: $basic-spacing;
+    margin-bottom: $basic-spacing;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -621,7 +628,6 @@ $referral-collapse-icon-size: 36px;
 .rewards {
   &-container {
     margin-bottom: $inner-spacing-medium;
-    @include element-size('token-logo', 48px);
     .rewards-value {
       margin-top: $inner-spacing-small;
     }
@@ -662,7 +668,7 @@ $referral-collapse-icon-size: 36px;
 }
 
 .unbonded-info {
-  .token-logo {
+  .asset-logo {
     margin-bottom: $inner-spacing-medium;
     margin-top: $inner-spacing-medium;
     height: var(--s-heading1-font-size);
