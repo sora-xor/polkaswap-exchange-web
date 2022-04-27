@@ -12,17 +12,14 @@ const getters = defineGetters<RewardsState>()({
   claimableRewards(...args): Array<RewardInfo | RewardsInfo> {
     const { state } = rewardsGetterContext(args);
 
-    const buffer: Array<RewardInfo | RewardsInfo> = [
-      ...state.selectedExternalRewards,
-      ...state.selectedCrowdloanRewards,
-    ];
+    const buffer: Array<RewardInfo | RewardsInfo> = [...state.selectedExternal, ...state.selectedCrowdloan];
 
-    if (state.selectedInternalRewards) {
-      buffer.push(state.selectedInternalRewards);
+    if (state.selectedInternal) {
+      buffer.push(state.selectedInternal);
     }
 
-    if (state.selectedVestedRewards) {
-      buffer.push(state.selectedVestedRewards);
+    if (state.selectedVested) {
+      buffer.push(state.selectedVested);
     }
 
     return buffer;
@@ -43,9 +40,13 @@ const getters = defineGetters<RewardsState>()({
     const { state } = rewardsGetterContext(args);
     return state.externalRewards.length !== 0;
   },
+  crowdloanRewardsAvailable(...args): Array<RewardInfo> {
+    const { state } = rewardsGetterContext(args);
+    return state.crowdloanRewards.filter((item) => !asZeroValue(item.amount));
+  },
   externalRewardsSelected(...args): boolean {
     const { state } = rewardsGetterContext(args);
-    return state.selectedExternalRewards.length !== 0;
+    return state.selectedExternal.length !== 0;
   },
   transactionStepsCount(...args): number {
     const { getters } = rewardsGetterContext(args);

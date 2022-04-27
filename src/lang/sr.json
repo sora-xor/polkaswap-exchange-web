@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Средство је успешно додатo!",
+        "success": "Средство {symbol} је успешно додатo!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Филтрирајте према ИД-у средства, имену или симболу ознаке"
@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Додајте {symbol} у @:metamask",
         "title": "Мост трансакција је успела"
+    },
+    "mobilePopup": {
+        "sideMenu": "Преузмите апликацију СОРА Валлет",
+        "header": "Преузмите СОРА новчаник са <span class=\"popup-info__headline--highlight\"> Полкасвап <\/span>",
+        "info": "Замените токене са различитих мрежа - СОРА, Етхереум, Полкадот, Кусама. Обезбедите фонд ликвидности и зарадите % од провизија."
     }
 }

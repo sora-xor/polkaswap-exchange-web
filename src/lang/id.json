@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Aset berhasil ditambahkan!",
+        "success": "Aset {symbol} berhasil ditambahkan!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filter menurut ID Aset, Nama, atau Simbol Ticker"
@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Tambahkan {symbol} ke @:metamask",
         "title": "Transaksi jembatan berhasil"
+    },
+    "mobilePopup": {
+        "sideMenu": "Dapatkan Aplikasi Dompet SORA",
+        "header": "Unduh SORA Wallet dengan fitur <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Tukar token dari jaringan yang berbeda - SORA, Ethereum, Polkadot, Kusama. Sediakan kumpulan likuiditas dan dapatkan % dari biaya pertukaran."
     }
 }

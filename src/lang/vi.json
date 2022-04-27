@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Tài sản đã được thêm vào thành công!",
+        "success": "Tài {symbol} sản đã được thêm vào thành công!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Lọc theo Id Tài sản, Tên hoặc Mã token"
@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Thêm {symbol} vào @:metamask",
         "title": "Giao dịch cầu nối thành công"
+    },
+    "mobilePopup": {
+        "sideMenu": "Tải ứng dụng Ví SORA",
+        "header": "Tải xuống Ví SORA với các tính năng của <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Trao đổi mã thông báo từ các mạng khác nhau - SORA, Ethereum, Polkadot, Kusama. Cung cấp nhóm thanh khoản và kiếm% từ phí trao đổi."
     }
 }

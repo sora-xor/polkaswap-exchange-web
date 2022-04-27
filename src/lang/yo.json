@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "A fi dukia kun ni aṣeyọri!",
+        "success": "A fi dukia {symbol} kun ni aṣeyọri!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Àlẹmọ nipasẹ Idanimo dukia, Orukọ tabi Aami Ticker"
@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Ṣafikun {symbol} si @:metamask",
         "title": "Idunadura Bridge aseyori"
+    },
+    "mobilePopup": {
+        "sideMenu": "Gba ohun elo apamọwọ SORA",
+        "header": "Ṣe igbasilẹ apamọwọ SORA pẹlu <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> awọn ẹya ara ẹrọ",
+        "info": "Siwopu àmi lati yatọ si nẹtiwọki - SORA, Ethereum, Polkadot, Kusama. Pese adagun oloomi ati jo'gun% lati awọn idiyele paṣipaarọ."
     }
 }

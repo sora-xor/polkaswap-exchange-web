@@ -6,6 +6,7 @@
         :visible="menuVisibility"
         :on-select="goTo"
         :is-about-page-opened="isAboutPage"
+        @open-download-dialog="openDownloadDialog"
         @click.native="handleAppMenuClick"
       >
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap" />
@@ -36,6 +37,7 @@
     </div>
     <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
     <bridge-transfer-notification />
+    <mobile-popup :visible.sync="showMobilePopup" />
   </s-design-system-provider>
 </template>
 
@@ -48,6 +50,7 @@ import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
+import MobilePopup from '@/components/MobilePopup/MobilePopup.vue';
 
 import { PageNames, Components, Language } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
@@ -67,11 +70,13 @@ import type { FeatureFlags } from '@/store/settings/types';
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
+    MobilePopup,
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
   menuVisibility = false;
   showConfirmInviteUser = false;
+  showMobilePopup = false;
 
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.referrals.storageReferrer storageReferrer!: string;
@@ -83,6 +88,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;
 
   @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
+  @mutation.wallet.settings.setSubqueryEndpoint private setSubqueryEndpoint!: (endpoint: string) => void;
   @mutation.settings.setDefaultNodes private setDefaultNodes!: (nodes: Array<Node>) => void;
   @mutation.settings.setNetworkChainGenesisHash private setNetworkChainGenesisHash!: (hash?: string) => void;
   @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
@@ -162,6 +168,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       await this.setApiKeys(data?.API_KEYS);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
       this.setSoraNetwork(data.NETWORK_TYPE);
+      this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.setSubNetworks(data.SUB_NETWORKS);
       await this.setSmartContracts(data.SUB_NETWORKS);
@@ -214,6 +221,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     if (!sidebar) {
       this.closeMenu();
     }
+  }
+
+  openDownloadDialog(): void {
+    this.showMobilePopup = true;
   }
 
   async beforeDestroy(): Promise<void> {

@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "L' asset è stato aggiunto con successo!",
+        "success": "L' asset {symbol} è stato aggiunto con successo!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtra per Asset ID, Nome o Simbolo Ticker"
@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Aggiungi {symbol} a @:metamask",
         "title": "Transazione ponte riuscita"
+    },
+    "mobilePopup": {
+        "sideMenu": "Ottieni l'app SORA Wallet",
+        "header": "Scarica SORA Wallet con <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Scambia token da reti diverse: SORA, Ethereum, Polkadot, Kusama. Fornisci un pool di liquidità e guadagna % dalle commissioni di cambio."
     }
 }

@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "资产添加成功！",
+        "success": "资产{symbol}添加成功！",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "按资产 ID、名称或代币符号进行筛选"
@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "将{symbol}添加到 @:metamask",
         "title": "桥接交易成功"
+    },
+    "mobilePopup": {
+        "sideMenu": "获取 SORA 钱包应用",
+        "header": "下载具有<span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>功能的 SORA 钱包",
+        "info": "交换来自不同网络的代币 - SORA、以太坊、Polkadot、Kusama。提供流动资金池并从交易所费用中赚取 %。"
     }
 }

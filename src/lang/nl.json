@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Asset is succesvol toegevoegd!",
+        "success": "Asset {symbol} is succesvol toegevoegd!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filter op Asset-ID, naam of Tickersymbool"
@@ -945,5 +945,10 @@
     "bridgeTransferNotification": {
         "addToken": "Voeg {symbol} toe aan @:metamask",
         "title": "Overbrugtransactie succesvol"
+    },
+    "mobilePopup": {
+        "sideMenu": "Download de SORA Wallet-app",
+        "header": "Download SORA Wallet met <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> -functies",
+        "info": "Ruil tokens van verschillende netwerken - SORA, Ethereum, Polkadot, Kusama. Bied een liquiditeitspool en verdien % aan wisselkosten."
     }
 }
