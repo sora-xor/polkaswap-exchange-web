@@ -76,7 +76,7 @@
         "noPermissions": "Accidentally rejected permission request?<\/br>Currently polkadot{.js} extension doesn’t have permission managment. As a workaround you can restart your browser and revisit this page to proceed with authorization.",
         "noAccounts": "No account found in your polkadot{.js} browser extension. Please add an account and try again.",
         "selectAccount": "Select account to work with",
-        "loadingTitle": "Waiting for you to allow access to polkadot{.js} extension..",
+        "loadingTitle": "Waiting for you to allow access to polkadot{.js} extension.",
         "action": {
             "install": "Install extension",
             "learnMore": "Learn more",
@@ -886,7 +886,7 @@
         "connectAccount": "To invite users you need to connect your SORA account.",
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} referrals",
-        "startInviting": "To start inviting, bond any amount of XOR.",
+        "startInviting": "Bond XOR to refer others",
         "preview": "Invite new users and get 10% from their transaction fees.<br\/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Balance",
