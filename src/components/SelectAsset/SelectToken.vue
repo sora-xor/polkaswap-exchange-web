@@ -75,7 +75,6 @@ enum Tabs {
   components: {
     DialogBase,
     SelectAssetList: lazyComponent(Components.SelectAssetList),
-    TokenLogo: lazyComponent(Components.TokenLogo),
     TokenAddress: components.TokenAddress,
     SearchInput: components.SearchInput,
     AddAssetDetailsCard: components.AddAssetDetailsCard,

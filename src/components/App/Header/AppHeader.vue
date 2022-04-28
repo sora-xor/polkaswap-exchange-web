@@ -17,7 +17,7 @@
     <div class="app-controls s-flex">
       <market-maker-countdown />
       <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
-        <token-logo class="node-control__logo token-logo" v-bind="nodeLogo" :token="XOR" />
+        <token-logo class="node-control__logo token-logo" v-bind="nodeLogo" />
       </s-button>
       <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
       <app-header-menu />
@@ -77,7 +77,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
 
   goTo = goTo;
-  XOR = XOR;
 
   get nodeTooltip(): string {
     if (this.nodeIsConnected) {
@@ -194,10 +193,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
     @include element-size('token-logo', 32px);
     &__logo {
       display: block;
-      margin: auto;
-    }
-
-    .token-logo {
       margin: auto;
     }
   }
