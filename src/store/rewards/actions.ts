@@ -22,8 +22,10 @@ const actions = defineActions({
     const getCrowdloanRewardsSubscription = async (): Promise<Subscription> => {
       const observable = await api.rewards.getCrowdloanRewardsSubscription();
 
-      return new Promise<Subscription>((resolve) => {
-        const subscription = observable.subscribe((crowdloanRewards) => {
+      let subscription!: Subscription;
+
+      await new Promise<void>((resolve) => {
+        subscription = observable.subscribe((crowdloanRewards) => {
           commit.setRewards({ crowdloanRewards });
           const crowdloanRewardsAreAvailable = getters.crowdloanRewardsAvailable.length;
 
@@ -35,14 +37,18 @@ const actions = defineActions({
           if (state.selectedCrowdloan.length && !crowdloanRewardsAreAvailable) {
             dispatch.setSelectedRewards({ selectedCrowdloan: [] });
           }
-          resolve(subscription);
+          resolve();
         });
       });
+
+      return subscription;
     };
 
-    const getVestedRewardsSubscription = (): Promise<Subscription> => {
-      return new Promise<Subscription>((resolve) => {
-        const subscription = api.rewards.getVestedRewardsSubscription().subscribe((vestedRewards) => {
+    const getVestedRewardsSubscription = async (): Promise<Subscription> => {
+      let subscription!: Subscription;
+
+      await new Promise<void>((resolve) => {
+        subscription = api.rewards.getVestedRewardsSubscription().subscribe((vestedRewards) => {
           commit.setRewards({ vestedRewards });
           // select available rewards for first time
           if (!state.vestedRewardsSubscription && getters.vestedRewardsAvailable) {
@@ -52,14 +58,18 @@ const actions = defineActions({
           if (state.selectedVested && !getters.vestedRewardsAvailable) {
             dispatch.setSelectedRewards({ selectedVested: null });
           }
-          resolve(subscription);
+          resolve();
         });
       });
+
+      return subscription;
     };
 
-    const getLiquidityProvisionRewardsSubscription = (): Promise<Subscription> => {
-      return new Promise<Subscription>((resolve) => {
-        const subscription = api.rewards.getLiquidityProvisionRewardsSubscription().subscribe((internalRewards) => {
+    const getLiquidityProvisionRewardsSubscription = async (): Promise<Subscription> => {
+      let subscription!: Subscription;
+
+      await new Promise<void>((resolve) => {
+        subscription = api.rewards.getLiquidityProvisionRewardsSubscription().subscribe((internalRewards) => {
           commit.setRewards({ internalRewards });
           // select available rewards for first time
           if (!state.liquidityProvisionRewardsSubscription && getters.internalRewardsAvailable) {
@@ -69,9 +79,11 @@ const actions = defineActions({
           if (state.selectedInternal && !getters.internalRewardsAvailable) {
             dispatch.setSelectedRewards({ selectedInternal: null });
           }
-          resolve(subscription);
+          resolve();
         });
       });
+
+      return subscription;
     };
 
     await waitForAccountPair(async () => {
