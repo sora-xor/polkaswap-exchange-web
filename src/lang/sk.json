@@ -947,7 +947,7 @@
         "title": "Most transakcia úspešná"
     },
     "mobilePopup": {
-        "sideMenu": "Získajte aplikáciu SORA Wallet",
+        "sideMenu": "Získajte SORA Wallet",
         "header": "Stiahnite si peňaženku SORA s <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Vymieňajte si tokeny z rôznych sietí – SORA, Ethereum, Polkadot, Kusama. Poskytnite fond likvidity a získajte % z poplatkov za výmenu."
     }

@@ -947,7 +947,7 @@
         "title": "Կամուրջի գործարքը հաջողվեց"
     },
     "mobilePopup": {
-        "sideMenu": "Ստացեք SORA Wallet հավելվածը",
+        "sideMenu": "Ստացեք SORA Wallet",
         "header": "Ներբեռնեք SORA դրամապանակը <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> հատկանիշներով",
         "info": "Փոխանակեք նշաններ տարբեր ցանցերից՝ SORA, Ethereum, Polkadot, Kusama: Ապահովեք իրացվելիության ֆոնդ և վաստակեք տոկոս փոխանակման վճարներից:"
     }
