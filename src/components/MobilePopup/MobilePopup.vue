@@ -16,9 +16,9 @@
         </div>
       </div>
       <div class="popup-app">
-        <left-image class="popup-app__left-image" />
+        <img src="@/assets/img/mobile/sora-app-left.png?inline" class="popup-app__left-image" />
         <qr-code class="popup-app__qr-code" />
-        <right-image class="popup-app__right-image" />
+        <img src="@/assets/img/mobile/sora-app-right.png?inline" class="popup-app__right-image" />
       </div>
     </div>
   </dialog-base>
@@ -31,15 +31,11 @@ import DialogMixin from '../mixins/DialogMixin';
 import TranslationMixin from '../mixins/TranslationMixin';
 import { StoreLinks } from '../../consts';
 
-import LeftImage from '../../assets/img/mobile/sora-app-left.svg?inline';
 import QrCode from '../../assets/img/mobile/qr-code.svg?inline';
-import RightImage from '../../assets/img/mobile/sora-app-right.svg?inline';
 
 @Component({
   components: {
     DialogBase,
-    LeftImage,
-    RightImage,
     QrCode,
   },
 })
