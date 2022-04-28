@@ -1,18 +1,19 @@
 import { Vue, Component } from 'vue-property-decorator';
-import { Getter, State } from 'vuex-class';
 import { BridgeNetworks } from '@sora-substrate/util';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+
 import { EvmNetworkType } from '@/utils/ethers-util';
+import { state, getter } from '@/store/decorators';
 
 @Component
 export default class NetworkFormatterMixin extends Vue {
-  @State((state) => state.web3.networkType) networkType!: EvmNetworkType;
+  @state.web3.networkType networkType!: EvmNetworkType;
+  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
-  @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
-  @Getter('defaultNetworkType', { namespace: 'web3' }) defaultNetworkType!: EvmNetworkType;
+  @getter.web3.defaultNetworkType defaultNetworkType!: Nullable<EvmNetworkType>;
 
   formatNetwork(isSora: boolean, isDefaultNetworkType = false): string {
-    if (isSora) {
+    if (isSora && this.soraNetwork) {
       return `sora.${this.soraNetwork}`;
     }
 
@@ -21,7 +22,7 @@ export default class NetworkFormatterMixin extends Vue {
     return network ? `evm.${network}` : '';
   }
 
-  getEvmIcon(externalNetwork: BridgeNetworks): string {
+  getEvmIcon(externalNetwork?: BridgeNetworks): string {
     if (externalNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
       return 'energy';
     }

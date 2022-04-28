@@ -10,20 +10,18 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
-const namespace = 'pool';
+import { action, getter } from '@/store/decorators';
 
 @Component
 export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
-  @Action('subscribeOnAccountLiquidityList', { namespace }) subscribeOnAccountLiquidityList!: AsyncVoidFn;
-  @Action('subscribeOnAccountLiquidityUpdates', { namespace }) subscribeOnAccountLiquidityUpdates!: AsyncVoidFn;
-  @Action('unsubscribeAccountLiquidityListAndUpdates', { namespace })
-  unsubscribeAccountLiquidityListAndUpdates!: AsyncVoidFn;
+  @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncVoidFn;
+  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncVoidFn;
+  @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribe!: AsyncVoidFn;
 
-  @Getter isLoggedIn!: boolean;
-  @Getter nodeIsConnected!: boolean;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @Watch('isLoggedIn')
   @Watch('nodeIsConnected')
@@ -31,7 +29,7 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
     if (value) {
       await this.updateLiquiditySubscription();
     } else {
-      await this.unsubscribeAccountLiquidityListAndUpdates();
+      await this.unsubscribe();
     }
   }
 
@@ -44,7 +42,7 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
   }
 
   async beforeDestroy(): Promise<void> {
-    await this.unsubscribeAccountLiquidityListAndUpdates();
+    await this.unsubscribe();
   }
 
   /**
@@ -52,14 +50,16 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
    * If this page is loaded first time by url, "watch" & "mounted" call this method
    */
   private async updateLiquiditySubscription(): Promise<void> {
-    // wait for node connection & wallet init (App.vue)
-    await this.withParentLoading(async () => {
-      // return if updateLiquiditySubscription is already called by "watch" or "mounted"
-      if (this.loading) return;
+    // return if updateLiquiditySubscription is already called by "watch" or "mounted"
+    if (this.loading) return;
 
-      await this.withLoading(async () => {
-        await this.subscribeOnAccountLiquidityList();
+    await this.withLoading(async () => {
+      // wait for node connection & wallet init (App.vue)
+      await this.withParentLoading(async () => {
+        // at first we should subscribe on liquidities updates,
+        // because subscriptions are created during liquidity list update
         await this.subscribeOnAccountLiquidityUpdates();
+        await this.subscribeOnAccountLiquidityList();
       });
     });
   }

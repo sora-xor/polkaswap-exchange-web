@@ -12,12 +12,12 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, State, Getter } from 'vuex-class';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components, MarketAlgorithms } from '@/consts';
+import { state, getter, mutation } from '@/store/decorators';
 
 import type { TabItem } from '@/types/tabs';
 
@@ -28,9 +28,9 @@ import type { TabItem } from '@/types/tabs';
   },
 })
 export default class MarketAlgorithm extends Mixins(TranslationMixin) {
-  @State((state) => state.settings.marketAlgorithm) marketAlgorithm!: MarketAlgorithms;
-  @Getter('marketAlgorithms', { namespace: 'swap' }) marketAlgorithms!: Array<MarketAlgorithms>;
-  @Action('setMarketAlgorithm') setMarketAlgorithm!: (name: string) => Promise<void>;
+  @state.settings.marketAlgorithm marketAlgorithm!: MarketAlgorithms;
+  @getter.swap.marketAlgorithms private marketAlgorithms!: Array<MarketAlgorithms>;
+  @mutation.settings.setMarketAlgorithm private setMarketAlgorithm!: (name: MarketAlgorithms) => void;
 
   get marketAlgorithmTabs(): Array<TabItem> {
     return this.marketAlgorithms.map((name) => ({

@@ -69,6 +69,9 @@ $s-font-feature-settings-input: normal;
 $s-font-feature-settings-button: normal;
 // Transition
 $s-transition-default: all 0.125s ease-in-out;
+// Asset item height
+$s-asset-item-height: 71px;
+$s-asset-item-height--fiat: 86px;
 
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
 
@@ -78,4 +81,7 @@ $s-transition-default: all 0.125s ease-in-out;
   // Fiat colors
   --s-color-fiat-value: #{$s-color-fiat-value};
   --s-color-rewards: #{$s-color-rewards};
+  // Asset item height
+  --s-asset-item-height: #{$s-asset-item-height};
+  --s-asset-item-height--fiat: #{$s-asset-item-height--fiat};
 }

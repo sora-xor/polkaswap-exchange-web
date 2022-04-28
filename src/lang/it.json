@@ -39,11 +39,12 @@
             "AddLiquidity": "Fornito {amount} {symbol} e {amount2} {symbol2}",
             "RemoveLiquidity": "Rimossi {amount} {symbol} e {amount2} {symbol2}",
             "CreatePair": "Fornito {amount} {symbol} e {amount2} {symbol2}",
-            "RegisterAsset": "Asset registrato {simbolo}",
+            "RegisterAsset": "Asset registrato {symbol}",
             "ClaimRewards": "Ricompensa richiesta con successo {rewards}",
             "ReferralReserveXor": "XOR legato con successo",
             "ReferralUnreserveXor": "XOR non legato con successo",
-            "ReferralSetInvitedUser": "Il referral è impostato correttamente"
+            "ReferralSetInvitedUser": "Il referral è impostato correttamente",
+            "SwapAndSend": "Scambiato {amount} {symbol} con {amount2} {symbol2} e {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Impossibile inviare {amount} {symbol} a {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Impossibile richiedere i premi {rewards}",
             "ReferralReserveXor": "Fallito il legame XOR",
             "ReferralUnreserveXor": "Impossibile disaggregare XOR",
-            "ReferralSetInvitedUser": "Impossibile impostare il rinvio"
+            "ReferralSetInvitedUser": "Impossibile impostare il rinvio",
+            "SwapAndSend": "Impossibile scambiare {amount} {symbol} con {amount2} {symbol2} e {action} {direction} {address}"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
-        "ReferralSetInvitedUser": "Imposta referral"
+        "ReferralSetInvitedUser": "Imposta referral",
+        "SwapAndSend": "Scambia e invia"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione Polkadot.js trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -73,7 +76,7 @@
         "noPermissions": "Richiesta di autorizzazione accidentalmente rifiutata? <\/br> Attualmente polkadot{.js} non ha la gestione dei permessi. Come soluzione alternativa puoi riavviare il browser e visitare nuovamente questa pagina per procedere con l'autorizzazione.",
         "noAccounts": "Nessun account trovato nell'estensione del browser polkadot{.js} Aggiungi un account e riprova.",
         "selectAccount": "Seleziona l'account con cui lavorare",
-        "loadingTitle": "In attesa che tu garantisca l'accesso all'estensione polkadot{.js}...",
+        "loadingTitle": "In attesa che tu garantisca l'accesso all'estensione polkadot{.js}.",
         "action": {
             "install": "Installa l'estensione",
             "learnMore": "Per saperne di più",
@@ -94,7 +97,7 @@
         "amount": "@:amountText",
         "balance": "Saldo",
         "max": "MAX",
-        "fee": "Fee della transazione",
+        "fee": "@:networkFeeText",
         "enterAddress": "Inserisci l'indirizzo",
         "badAddress": "Indirizzo errato",
         "enterAmount": "Inserire l'importo",
@@ -141,12 +144,14 @@
         "details": "Dettagli"
     },
     "asset": {
-        "remove": "Rimuovi l'asset"
+        "remove": "Rimuovi l'asset",
+        "select": "Seleziona una risorsa",
+        "recieve": "Ricevi {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "L' asset è stato aggiunto con successo!",
+        "success": "L' asset {symbol} è stato aggiunto con successo!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtra per Asset ID, Nome o Simbolo Ticker"
@@ -356,7 +361,7 @@
             "description": "Polkaswap è costruito sulla rete @:soraText e il token @:soraText (XOR) viene utilizzato per gas\/fees e per la fornitura di liquidità su Polkaswap. @:soraText Network consente commissioni ridotte, transazioni più veloci e più semplice finalizzazione del consenso. Si concentra sulla produzione di interoperabilità tra altri ecosistemi blockchain come @:(ethereumText)."
         },
         "polkadot": {
-            "title": "Che cos'è Polkadot{.js} ?",
+            "title": "Che cos'è Polkadot{.js}?",
             "description": "Polkadot{.js} è un'estensione del browser disponibile per Firefox e Chrome dedicata alla gestione degli account per le chain basate su Substrate, tra cui @:soraText, Polkadot e Kusama. Puoi aggiungere, importare ed esportare account e firmare transazioni o extrinsics che hai inizializzato da siti Web che hai autorizzato."
         }
     },
@@ -586,7 +591,6 @@
             "done": "Completata",
             "waitingForConfirmation": "In attesa di conferma..."
         },
-        "wait30Block": "Si prega di attendere 30 blocchi di conferma",
         "viewInEtherscan": "Visualizza in Etherscan",
         "networkTitle": "transazione {network}",
         "transactionHash": "Hash della transazione",
@@ -772,7 +776,8 @@
         "claimableAmountDoneVesting": "Importo che puoi ottenere (maturazione effettuata)",
         "groups": {
             "strategic": "Strategic Rewards",
-            "external": "Ricompense per l'account ethereum connesso"
+            "external": "Ricompense per l'account ethereum connesso",
+            "crowdloan": "Premi Crowdloan"
         },
         "Rewards": "Ricompense",
         "ReferralProgram": "@:referralProgram.title"
@@ -881,7 +886,7 @@
         "connectAccount": "Per invitare gli utenti è necessario collegare il tuo account SORA.",
         "bondedXOR": "XOR legato",
         "referralsNumber": "{number} referenze",
-        "startInviting": "Per iniziare a invitare, vincola qualsiasi importo di XOR.",
+        "startInviting": "Bond XOR per fare riferimento ad altri",
         "preview": "Invita nuovi utenti e ottieni il 10% dalle loro commissioni di transazione.<br \/>Per iniziare, lega qualsiasi quantità di XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Per saperne di più<\/a>",
         "deposit": "Deposita",
         "balance": "Bilancia",
@@ -915,8 +920,35 @@
             "hasReferrerTitle": "Hai già impostato il tuo referrer",
             "hasReferrerDescription": "Sfortunatamente, puoi impostarne solo uno",
             "ok": "OK"
+        },
+        "referrer": {
+            "title": "Aggiungi il tuo referrer",
+            "titleReferrer": "Il tuo referente",
+            "placeholder": "Inserisci il link o il codice dell'invito",
+            "label": "Link o codice di invito",
+            "approve": "Approvare",
+            "approved": "Approvato",
+            "description": "Puoi essere indirizzato a Polkaswap,<br\/>digita il link o il codice del referrer",
+            "referredBy": "Sei stato indirizzato da {referrer}",
+            "info": "Quando pagherai una commissione per la transazione,<br\/>10% andrà al tuo referrer",
+            "referredLablel": "Indirizzo di riferimento"
         }
     },
     "transactionDetailsText": "Dettagli di Transazione",
-    "createTokenTextNFT": "Crea NFT"
+    "createTokenTextNFT": "Crea NFT",
+    "code": {
+        "download": "Scarica QR Code",
+        "upload": "Scansiona QR",
+        "recieve": "Ricevere",
+        "invalid": "Codice QR non valido"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Aggiungi {symbol} a @:metamask",
+        "title": "Transazione ponte riuscita"
+    },
+    "mobilePopup": {
+        "sideMenu": "Ottieni SORA Wallet",
+        "header": "Scarica SORA Wallet con <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Scambia token da reti diverse: SORA, Ethereum, Polkadot, Kusama. Fornisci un pool di liquidità e guadagna % dalle commissioni di cambio."
+    }
 }
