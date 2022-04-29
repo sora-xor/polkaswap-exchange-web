@@ -2,11 +2,11 @@
   <div class="tokens-row">
     <div class="tokens-row-container">
       <token-logo
-        v-for="(token, index) in tokens"
-        :token="token"
-        :key="token.symbol"
+        v-for="(symbol, index) in symbols"
+        :key="symbol"
+        :token-symbol="symbol"
         :size="size"
-        :style="{ zIndex: tokens.length - index }"
+        :style="{ zIndex: symbols.length - index }"
         class="tokens-row__item"
       />
     </div>
@@ -16,7 +16,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import { Asset } from '@sora-substrate/util/build/assets/types';
+import type { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
 import { LogoSize } from '@/consts';
 
@@ -26,7 +26,7 @@ import { LogoSize } from '@/consts';
   },
 })
 export default class TokensRow extends Vue {
-  @Prop({ default: () => [], type: Array }) tokens!: Array<Asset>;
+  @Prop({ default: () => [], type: Array }) symbols!: Array<KnownSymbols>;
   @Prop({ default: LogoSize.LARGE, type: String }) readonly size!: LogoSize;
 }
 </script>

@@ -8,6 +8,19 @@ module.exports = {
     config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
     config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
 
+    // prepare icons content to unicode
+    config.module.rules
+      .filter((rule) => {
+        return rule.test.toString().indexOf('scss') !== -1;
+      })
+      .forEach((rule) => {
+        rule.oneOf.forEach((oneOfRule) => {
+          oneOfRule.use.splice(oneOfRule.use.indexOf(require.resolve('sass-loader')), 0, {
+            loader: require.resolve('css-unicode-loader'),
+          });
+        });
+      });
+
     if (process.env.NODE_ENV === 'production') {
       const buildDateTime = Date.now();
       config.output.filename = `js/[name].[contenthash:8].${buildDateTime}.js`;
@@ -16,15 +29,6 @@ module.exports = {
   },
   /* eslint-disable */
   chainWebpack: (config) => {
-    // prepare icons content to unicode
-    config.module.rule('scss')
-      .oneOf('vue-modules')
-        .use('css-unicode-loader')
-          .loader('css-unicode-loader')
-          .before('sass-loader')
-        .end()
-      .end();
-
     const svgRule = config.module.rule('svg');
     svgRule.uses.clear();
     config.module.rule('svg')

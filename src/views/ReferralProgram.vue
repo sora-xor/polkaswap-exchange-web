@@ -13,11 +13,12 @@
           :asset-symbol="xorSymbol"
         />
         <formatted-amount
-          v-if="isPriceAvailable"
+          v-if="formattedRewardsFiatValue"
           is-fiat-value
+          fiat-default-rounding
           value-can-be-hidden
           :font-size-rate="FontSizeRate.MEDIUM"
-          :value="formattedRewards"
+          :value="formattedRewardsFiatValue"
           is-formatted
         />
       </div>
@@ -86,7 +87,6 @@
                 :key="invitedUser"
                 :value="getInvitedUserReward(invitedUser)"
                 :asset-symbol="xorSymbol"
-                :fiat-value="getFiatAmountByCodecString(getInvitedUserReward(invitedUser))"
                 is-formatted
               >
                 <template #info-line-prefix>
@@ -239,6 +239,12 @@ export default class ReferralProgram extends Mixins(
 
   get formattedRewards(): string {
     return this.referralRewards?.rewards.toLocaleString() || ZeroStringValue;
+  }
+
+  get formattedRewardsFiatValue(): Nullable<string> {
+    if (!this.referralRewards?.rewards) return null;
+
+    return this.getFiatAmountByFPNumber(this.referralRewards.rewards);
   }
 
   get invitedUserRewards(): Record<string, { rewards: FPNumber }> {

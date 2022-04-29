@@ -947,7 +947,7 @@
         "title": "Bryggtransaktion lyckad"
     },
     "mobilePopup": {
-        "sideMenu": "Skaffa SORA Wallet App",
+        "sideMenu": "Skaffa SORA Wallet",
         "header": "Ladda ner SORA Wallet med <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funktioner",
         "info": "Byt ut tokens från olika nätverk - SORA, Ethereum, Polkadot, Kusama. Tillhandahåll likviditetspool och tjäna % från växlingsavgifter."
     }
