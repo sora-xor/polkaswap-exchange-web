@@ -1,18 +1,13 @@
 <template>
   <div class="container" v-loading="parentLoading">
     <generic-page-header :title="t('tokens.title')" class="page-header-title--tokens" />
-    <s-input
-      ref="search"
+    <search-input
       v-model="query"
       :placeholder="t('selectToken.searchPlaceholder')"
+      autofocus
+      @clear="handleResetSearch"
       class="tokens-table-search"
-      prefix="el-icon-search"
-      size="big"
-    >
-      <template #suffix>
-        <s-button v-show="query" type="link" class="s-button--clear" icon="clear-X-16" @click="handleResetSearch" />
-      </template>
-    </s-input>
+    />
     <s-table :data="tableItems" :highlight-current-row="false" size="small" class="tokens-table">
       <s-table-column label="#" width="48">
         <template #header>
@@ -78,13 +73,13 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
+import { getter } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
@@ -93,9 +88,10 @@ import SortButton from '@/components/SortButton.vue';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    TokenLogo: lazyComponent(Components.TokenLogo),
-    TokenAddress: lazyComponent(Components.TokenAddress),
     SortButton,
+    TokenAddress: components.TokenAddress,
+    SearchInput: components.SearchInput,
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class Tokens extends Mixins(
@@ -104,21 +100,17 @@ export default class Tokens extends Mixins(
   TranslationMixin,
   AssetsSearchMixin
 ) {
-  @Getter('whitelistAssets', { namespace: 'assets' }) items!: Array<Asset>;
+  @getter.assets.whitelistAssets private items!: Array<Asset>;
 
   order = '';
   property = '';
-
-  mounted(): void {
-    this.focusSearchInput();
-  }
 
   get isDefaultSort(): boolean {
     return !this.order || !this.property;
   }
 
   get filteredItems(): Array<Asset> {
-    return this.filterAssetsByQuery(this.items)(this.query) as Array<Asset>;
+    return this.filterAssetsByQuery(this.items)(this.searchQuery) as Array<Asset>;
   }
 
   get sortedItems(): Array<Asset> {
@@ -222,8 +214,6 @@ export default class Tokens extends Mixins(
 <style lang="scss" scoped>
 $icon-size: 36px;
 
-@include search-item('tokens-table-search');
-
 .tokens-table {
   display: flex;
   flex-flow: column nowrap;
@@ -294,6 +284,7 @@ $icon-size: 36px;
 
     &__value {
       font-weight: 600;
+      font-size: var(--s-font-size-extra-mini);
     }
   }
 

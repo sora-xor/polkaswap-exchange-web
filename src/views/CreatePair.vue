@@ -11,10 +11,10 @@
         class="s-input--token-value"
         size="medium"
         :value="firstTokenValue"
-        :decimals="(firstToken || {}).decimals"
+        :decimals="firstTokenDecimals"
         has-locale-string
         :delimiters="delimiters"
-        :max="getMax((firstToken || {}).address)"
+        :max="getMax(firstTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setFirstTokenValue)"
       >
@@ -63,10 +63,10 @@
         class="s-input--token-value"
         size="medium"
         :value="secondTokenValue"
-        :decimals="(secondToken || {}).decimals"
+        :decimals="secondTokenDecimals"
         has-locale-string
         :delimiters="delimiters"
-        :max="getMax((secondToken || {}).address)"
+        :max="getMax(secondTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setSecondTokenValue)"
       >
@@ -120,6 +120,7 @@
         type="primary"
         class="action-button s-typography-button--large"
         :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable"
+        :loading="isSelectAssetLoading"
         @click="handleCreatePair"
       >
         <template v-if="!areTokensSelected">
@@ -156,7 +157,7 @@
       :visible.sync="showSelectSecondTokenDialog"
       :connected="isLoggedIn"
       :asset="firstToken"
-      @select="setSecondTokenAddress($event.address)"
+      @select="selectSecondTokenAddress($event.address)"
     />
 
     <confirm-token-pair-dialog
@@ -166,7 +167,6 @@
       :second-token="secondToken"
       :first-token-value="firstTokenValue"
       :second-token-value="secondTokenValue"
-      :minted="formattedMinted"
       :price="price"
       :price-reversed="priceReversed"
       :slippage-tolerance="slippageTolerance"
@@ -183,37 +183,39 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import TokenPairMixinInstance from '@/components/mixins/TokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
+import { TokenPairNamespace } from '@/components/mixins/BaseTokenPairMixin';
+
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { action } from '@/store/decorators';
 
-const namespace = 'createPair';
+const namespace = TokenPairNamespace.CreatePair;
+
 const TokenPairMixin = TokenPairMixinInstance(namespace);
 
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
-    TokenLogo: lazyComponent(Components.TokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     CreatePairTransactionDetails: lazyComponent(Components.CreatePairTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
+    TokenAddress: components.TokenAddress,
   },
 })
 export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {
-  @Action('createPair', { namespace }) createPair;
+  @action.createPair.createPair private createPair!: AsyncVoidFn;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
@@ -229,7 +231,6 @@ export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, To
     return this.isXorSufficientForNextTx({
       type: Operation.CreatePair,
       amount: this.getFPNumber(this.firstTokenValue),
-      xorBalance: this.getFPNumberFromCodec(this.getTokenBalance(this.firstToken)),
     });
   }
 
