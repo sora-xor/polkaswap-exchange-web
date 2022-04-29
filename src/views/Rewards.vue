@@ -80,6 +80,7 @@
       <s-button
         v-if="!(rewardsRecieved || loading)"
         class="rewards-block rewards-action-button s-typography-button--large"
+        data-test-name="LoginAndGet"
         type="primary"
         @click="handleAction"
         :loading="actionButtonLoading"

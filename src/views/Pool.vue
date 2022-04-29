@@ -14,6 +14,9 @@
           :key="liquidityItem.address"
           :name="liquidityItem.address"
           class="pool-info-container"
+          :data-test-name="
+            getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress))
+          "
         >
           <template #title>
             <pair-token-logo
@@ -51,6 +54,7 @@
             <s-button
               type="secondary"
               class="s-typography-button--medium"
+              data-test-name="addLiquidity"
               @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
             >
               {{ t('pool.addLiquidity') }}
@@ -58,6 +62,7 @@
             <s-button
               type="secondary"
               class="s-typography-button--medium"
+              data-test-name="removeLiquidity"
               @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
             >
               {{ t('pool.removeLiquidity') }}
@@ -69,12 +74,18 @@
     <template v-if="isLoggedIn">
       <s-button
         class="el-button--add-liquidity s-typography-button--large"
+        data-test-name="addLiquidity"
         type="primary"
         @click="handleAddLiquidity()"
       >
         {{ t('pool.addLiquidity') }}
       </s-button>
-      <s-button class="el-button--create-pair s-typography-button--large" type="secondary" @click="handleCreatePair">
+      <s-button
+        class="el-button--create-pair s-typography-button--large"
+        data-test-name="createPair"
+        type="secondary"
+        @click="handleCreatePair"
+      >
         {{ t('pool.createPair') }}
       </s-button>
     </template>

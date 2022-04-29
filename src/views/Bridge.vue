@@ -36,6 +36,7 @@
           :max="getMax(assetAddress)"
           :disabled="!areNetworksConnected || !isAssetSelected"
           class="s-input--token-value"
+          data-test-name="bridgeFrom"
           has-locale-string
           size="medium"
           @input="setAmount"
@@ -93,6 +94,7 @@
             <s-button
               v-else
               class="el-button--connect s-typography-button--large"
+              data-test-name="connectPolkadot"
               type="primary"
               @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()"
             >
@@ -101,7 +103,13 @@
           </template>
         </s-float-input>
 
-        <s-button class="s-button--switch" type="action" icon="arrows-swap-90-24" @click="handleSwitchItems" />
+        <s-button
+          class="s-button--switch"
+          data-test-name="switchToken"
+          type="action"
+          icon="arrows-swap-90-24"
+          @click="handleSwitchItems"
+        />
 
         <s-float-input
           :value="amount"
@@ -109,6 +117,7 @@
           :delimiters="delimiters"
           :max="getMax(assetAddress)"
           class="s-input--token-value"
+          data-test-name="bridgeTo"
           has-locale-string
           size="medium"
           disabled
@@ -150,6 +159,7 @@
             <s-button
               v-else
               class="el-button--connect s-typography-button--large"
+              data-test-name="connectMetamask"
               type="primary"
               @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()"
             >
@@ -160,6 +170,7 @@
 
         <s-button
           class="el-button--next s-typography-button--large"
+          data-test-name="nextButton"
           type="primary"
           :disabled="isConfirmTxDisabled"
           :loading="isSelectAssetLoading"
