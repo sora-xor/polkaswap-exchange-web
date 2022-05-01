@@ -23,9 +23,7 @@ const mutations = defineMutations<ReferralsState>()({
     state.invitedUsers = value;
   },
   resetInvitedUsersSubscription(state): void {
-    if (state.invitedUsersSubscription) {
-      state.invitedUsersSubscription.unsubscribe();
-    }
+    state.invitedUsersSubscription?.unsubscribe();
     state.invitedUsersSubscription = null;
   },
   setInvitedUsersSubscription(state, subscription: Subscription): void {
@@ -53,9 +51,7 @@ const mutations = defineMutations<ReferralsState>()({
     });
   },
   unsubscribeFromInvitedUsers(state): void {
-    if (state.invitedUsersSubscription) {
-      state.invitedUsersSubscription.unsubscribe();
-    }
+    state.invitedUsersSubscription?.unsubscribe();
     state.invitedUsersSubscription = null;
     state.invitedUsers = [];
   },

@@ -112,7 +112,7 @@ const actions = defineActions({
       if (connectingNodeChanged()) return;
 
       console.info('Connected to node', connection.endpoint);
-      await setBlockNumber(context);
+
       const nodeChainGenesisHash = connection.api?.genesisHash.toHex();
       // if connected node is custom node, we should check genesis hash
       if (!isTrustedEndpoint) {
