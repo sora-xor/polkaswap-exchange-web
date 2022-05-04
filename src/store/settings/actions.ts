@@ -24,16 +24,6 @@ async function updateNetworkChainGenesisHash(context: ActionContext<any, any>): 
   }
 }
 
-async function setBlockNumber(context: ActionContext<any, any>): Promise<void> {
-  const { commit } = settingsActionContext(context);
-  commit.resetBlockNumberSubscription();
-
-  const blockNumberSubscription = api.system.getBlockNumberObservable().subscribe((blockNumber) => {
-    commit.setBlockNumber(Number(blockNumber));
-  });
-  commit.setBlockNumberUpdates(blockNumberSubscription);
-}
-
 const actions = defineActions({
   async connectToNode(context, options: ConnectToNodeOptions = {}): Promise<void> {
     const { dispatch, commit, state, rootState } = settingsActionContext(context);
@@ -178,6 +168,15 @@ const actions = defineActions({
     updateDocumentTitle();
     updateFpNumberLocale(locale);
     commit.setLanguage(locale);
+  },
+  async setBlockNumber(context): Promise<void> {
+    const { commit } = settingsActionContext(context);
+    commit.resetBlockNumberSubscription();
+
+    const blockNumberSubscription = api.system.getBlockNumberObservable().subscribe((blockNumber) => {
+      commit.setBlockNumber(blockNumber);
+    });
+    commit.setBlockNumberUpdates(blockNumberSubscription);
   },
 });
 

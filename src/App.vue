@@ -105,7 +105,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncVoidFn;
   @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
-  @action.settings.setBlockNumber private setBlockNumber!: () => Promise<void>;
+  @action.settings.setBlockNumber private setBlockNumber!: AsyncVoidFn;
   @action.web3.setSmartContracts private setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @action.referrals.getReferrer private getReferrer!: AsyncVoidFn;
 
@@ -120,11 +120,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // after app load, the first connection to the node occurs before the wallet is loaded
       if (this.isWalletLoaded) {
         this.activateNetwokSubscriptions();
-        this.setBlockNumber();
       }
+      this.setBlockNumber();
     } else {
       this.resetNetworkSubscriptions();
-      this.resetBlockNumberSubscription();
     }
   }
 
