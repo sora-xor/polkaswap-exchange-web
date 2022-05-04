@@ -90,44 +90,34 @@ export default class TransferNotification extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .dialog-wrapper.bridge-transfer-notification {
+  $metamask-icon-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.8);
+  $metamask-icon-filter: drop-shadow(-5px -5px 10px #ffffff) drop-shadow(1px 1px 10px rgba(0, 0, 0, 0.1));
+
   .el-dialog .el-dialog__body {
     padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-big;
+
+    .metamask-icon > .asset-logo {
+      background-color: var(--s-color-base-content-secondary);
+      background-image: url('~@/assets/img/metamask.svg');
+      box-shadow: $metamask-icon-shadow;
+      filter: $metamask-icon-filter;
+
+      &:before {
+        content: '';
+      }
+    }
   }
 }
 </style>
 
 <style lang="scss" scoped>
-$token-size: 26px;
-$metamask-icon-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.8);
-$metamask-icon-filter: drop-shadow(-5px -5px 10px #ffffff) drop-shadow(1px 1px 10px rgba(0, 0, 0, 0.1));
-
 .add-token-btn {
   .token-icons {
     display: flex;
     margin-left: $inner-spacing-mini;
 
-    .token-logo {
-      &--medium {
-        width: $token-size;
-        height: $token-size;
-      }
-    }
-
     .metamask-icon {
       margin-left: -$inner-spacing-mini / 2;
-    }
-  }
-}
-
-.token-logo {
-  &.metamask-icon {
-    background-color: var(--s-color-base-content-secondary);
-    background-image: url('~@/assets/img/metamask.svg');
-    box-shadow: $metamask-icon-shadow;
-    filter: $metamask-icon-filter;
-
-    &:before {
-      content: '';
     }
   }
 }
