@@ -692,6 +692,7 @@ export default {
     bondedXOR: 'XOR Bonded',
     referralsNumber: '{number} referrals',
     startInviting: 'To start inviting, bond any amount of XOR.',
+    insufficientBondedAmount: 'To invite more referrals, bond at least {inviteUserFee} XOR',
     preview:
       'Invite new users and get 10% from their transaction fees.<br />To start, bond any amount of XOR. <a href="#" target="_blank" rel="nofollow noopener" class="link" title="Learn more">Learn more</a>',
     deposit: 'Deposit',

@@ -27,8 +27,8 @@
     "operations": {
         "Swap": "Замените",
         "Transfer": "Пренос",
-        "AddLiquidity": "Додајте ликвидност",
-        "RemoveLiquidity": "Уклоните ликвидност",
+        "AddLiquidity": "Додати ликвидност",
+        "RemoveLiquidity": "Уклони ликвидност",
         "CreatePair": "Креирате Пар",
         "RegisterAsset": "Региструјте средство",
         "ClaimRewards": "Захтевајте награде",
@@ -127,7 +127,7 @@
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
-        "liquidity": "Додајте ликвидност",
+        "liquidity": "Додати ликвидност",
         "bridge": "Мост",
         "copy": "Копирајте ИД средства",
         "successCopy": "{symbol} ИД средства се копира у међуспремник",
@@ -308,9 +308,9 @@
         "Support": "Подршка",
         "Wallet": "Новчаник",
         "CreatePair": "Направите пар",
-        "AddLiquidity": "Додајте ликвидност",
-        "AddLiquidityId": "Додајте ликвидност",
-        "RemoveLiquidity": "Уклоните ликвидност",
+        "AddLiquidity": "Додати ликвидност",
+        "AddLiquidityId": "Додати ликвидност",
+        "RemoveLiquidity": "Уклони ликвидност",
         "PageNotFound": "Страница није пронађена",
         "Tokens": "Токени",
         "Rewards": "Награде"
@@ -506,8 +506,8 @@
         "connectWallet": "@:connectWalletText",
         "connectToWallet": "Повежите рачун да бисте видели своју ликвидност.",
         "liquidityNotFound": "Није пронађена ликвидност.",
-        "addLiquidity": "Додајте ликвидност",
-        "removeLiquidity": "Уклоните ликвидност",
+        "addLiquidity": "Додати ликвидност",
+        "removeLiquidity": "Уклони ликвидност",
         "createPair": "Направите пар",
         "pooledToken": "{tokenSymbol}",
         "pairTokens": "{pair} Токени пула",
@@ -673,12 +673,12 @@
         "price": "Цена"
     },
     "addLiquidity": {
-        "title": "Додајте ликвидност",
+        "title": "Додати ликвидност",
         "pairIsNotCreated": "@:pairIsNotCreated",
         "firstPerSecond": "@:firstPerSecond"
     },
     "removeLiquidity": {
-        "title": "Уклоните ликвидност",
+        "title": "Уклони ликвидност",
         "liquidity": "ликвидност",
         "balance": "Салдо",
         "amount": "Износ",
@@ -932,7 +932,8 @@
             "referredBy": "Препоручио вас је {referrer}",
             "info": "Када платите накнаду за трансакцију, <br\/> 10% ће отићи вашем рефереру",
             "referredLablel": "Препоручена адреса"
-        }
+        },
+        "insufficientBondedAmount": "Da biste pozvali više preporuka, najmanje se zbližite {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Детаљи трансакције",
     "createTokenTextNFT": "Креирајте НФТ",
