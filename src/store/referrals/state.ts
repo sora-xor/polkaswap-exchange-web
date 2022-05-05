@@ -4,6 +4,7 @@ import type { ReferralsState } from './types';
 export function initialState(): ReferralsState {
   return {
     referrer: '',
+    referrerSubscription: null,
     invitedUsers: [],
     invitedUsersSubscription: null,
     amount: '',

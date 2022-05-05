@@ -13,6 +13,15 @@ const mutations = defineMutations<ReferralsState>()({
   setReferrer(state, value: string): void {
     state.referrer = value;
   },
+  setReferrerSubscription(state, subscription: Subscription): void {
+    state.referrerSubscription = subscription;
+  },
+  resetReferrerSubscription(state): void {
+    if (state.referrerSubscription) {
+      state.referrerSubscription.unsubscribe();
+    }
+    state.referrerSubscription = null;
+  },
   approveReferrer(state, value: boolean): void {
     state.isReferrerApproved = value;
   },
