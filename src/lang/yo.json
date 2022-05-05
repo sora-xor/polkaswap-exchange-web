@@ -932,7 +932,8 @@
             "referredBy": "{referrer} ti tọka si ọ",
             "info": "Nigbati o ba san owo fun idunadura,<br\/>10% yoo lọ si olutọkasi rẹ",
             "referredLablel": "Adirẹsi ti a tọka si"
-        }
+        },
+        "insufficientBondedAmount": "Lati pe awọn itọka si diẹ sii, di o kere ju {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Idunadura Awọn alaye",
     "createTokenTextNFT": "Ṣẹda NFT",

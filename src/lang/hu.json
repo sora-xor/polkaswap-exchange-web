@@ -27,8 +27,8 @@
     "operations": {
         "Swap": "Váltás",
         "Transfer": "Átvitel",
-        "AddLiquidity": "Likviditás hozzáadása",
-        "RemoveLiquidity": "Likviditás eltávolítása",
+        "AddLiquidity": "Hozzáadás",
+        "RemoveLiquidity": "Eltávolítás",
         "CreatePair": "Pár létrehozása",
         "RegisterAsset": "Eszköz regisztrálása",
         "ClaimRewards": "Jutalmak igénylése",
@@ -127,7 +127,7 @@
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
-        "liquidity": "Likviditás hozzáadása",
+        "liquidity": "Poolhoz hozzáadás",
         "bridge": "Híd",
         "copy": "Eszközazonosító másolása",
         "successCopy": "{symbol} Az eszköz azonosítója a vágólapra másolva",
@@ -308,9 +308,9 @@
         "Support": "Támogatás",
         "Wallet": "Tárca",
         "CreatePair": "Pár létrehozása",
-        "AddLiquidity": "Likviditás hozzáadása",
-        "AddLiquidityId": "Likviditás hozzáadása",
-        "RemoveLiquidity": "Likviditás eltávolítása",
+        "AddLiquidity": "Poolhoz hozzáadás",
+        "AddLiquidityId": "Poolhoz hozzáadás",
+        "RemoveLiquidity": "Poolból eltávolítás",
         "PageNotFound": "Az oldal nem található",
         "Tokens": "Tokenek",
         "Rewards": "Jutalmak"
@@ -506,8 +506,8 @@
         "connectWallet": "@:connectWalletText",
         "connectToWallet": "Csatlakoztass egy fiókot a likviditásod megtekintéséhez.",
         "liquidityNotFound": "Nem található likviditás.",
-        "addLiquidity": "Likviditás hozzáadása",
-        "removeLiquidity": "Likviditás eltávolítása",
+        "addLiquidity": "Poolhoz hozzáadás",
+        "removeLiquidity": "Poolból eltávolítás",
         "createPair": "Pár létrehozása",
         "pooledToken": "{tokenSymbol} Poolban lévő",
         "pairTokens": "{pair} Pool tokenek",
@@ -673,12 +673,12 @@
         "price": "Ár"
     },
     "addLiquidity": {
-        "title": "Likviditás hozzáadása",
+        "title": "Hozzáadás",
         "pairIsNotCreated": "@:pairIsNotCreated",
         "firstPerSecond": "@:firstPerSecond"
     },
     "removeLiquidity": {
-        "title": "Likviditás eltávolítása",
+        "title": "Eltávolítás",
         "liquidity": "likviditás",
         "balance": "Egyenleg",
         "amount": "Mennyiség",
@@ -837,8 +837,8 @@
             }
         },
         "buttons": {
-            "buy": "Tokenek vásárlása",
-            "history": "Korábbi tranzakciók",
+            "buy": "Vásárlás",
+            "history": "Előzmények",
             "transfer": "Áthidalás indítása",
             "view": "Tranzakció megtekintése"
         },
@@ -932,7 +932,8 @@
             "referredBy": "Önt {referrer} ajánlotta.",
             "info": "Amikor tranzakciós díjat fizet, a <br\/> 10%-ot kap az ajánlója.",
             "referredLablel": "Ajánlói cím"
-        }
+        },
+        "insufficientBondedAmount": "További hivatkozások meghívásához legalább {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Tranzakció részletei",
     "createTokenTextNFT": "NFT létrehozása",
