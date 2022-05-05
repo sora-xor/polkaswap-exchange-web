@@ -932,7 +932,8 @@
             "referredBy": "Du har blivit hänvisad av {referrer}",
             "info": "När du kommer att betala en avgift för transaktion så kommer<br\/>10 % att gå till den som hänvisade dig",
             "referredLablel": "Hänvisad adress"
-        }
+        },
+        "insufficientBondedAmount": "För att bjuda in fler hänvisningar, binda minst {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaktions Detaljer",
     "createTokenTextNFT": "Skapa NFT",

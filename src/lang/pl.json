@@ -932,7 +932,8 @@
             "referredBy": "Zostałeś polecony przez {referrer}",
             "info": "Kiedy zapłacisz opłatę za transakcję,<br\/>10% trafi do Twojego polecającego",
             "referredLablel": "Polecony adres"
-        }
+        },
+        "insufficientBondedAmount": "Aby zaprosić więcej poleconych, zwiąż co najmniej {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Szczegóły transakcji",
     "createTokenTextNFT": "Utwórz token NFT",

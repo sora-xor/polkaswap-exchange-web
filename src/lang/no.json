@@ -932,7 +932,8 @@
             "referredBy": "Du har blitt henvist av {referrer}",
             "info": "Når du betaler et gebyr for transaksjonen,<br\/>går 10% til henvisningsadressen din",
             "referredLablel": "Henvist adresse"
-        }
+        },
+        "insufficientBondedAmount": "Hvis du vil invitere flere henvisninger, binder du minst {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaksjonsdetaljer",
     "createTokenTextNFT": "Lag NFT",

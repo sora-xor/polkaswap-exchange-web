@@ -932,7 +932,8 @@
             "referredBy": "Bạn đã được giới thiệu bởi {referrer}",
             "info": "Khi bạn trả phí giao dịch, <br\/> 10% sẽ được chuyển đến người giới thiệu của bạn",
             "referredLablel": "Địa chỉ giới thiệu"
-        }
+        },
+        "insufficientBondedAmount": "Để mời thêm giới thiệu, hãy liên kết ít nhất {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Chi tiết giao dịch",
     "createTokenTextNFT": "Tạo NFT",

@@ -932,7 +932,8 @@
             "referredBy": "Препоручио вас је {referrer}",
             "info": "Када платите накнаду за трансакцију, <br\/> 10% ће отићи вашем рефереру",
             "referredLablel": "Препоручена адреса"
-        }
+        },
+        "insufficientBondedAmount": "Da biste pozvali više preporuka, najmanje se zbližite {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Детаљи трансакције",
     "createTokenTextNFT": "Креирајте НФТ",

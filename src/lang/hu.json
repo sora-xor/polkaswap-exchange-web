@@ -932,7 +932,8 @@
             "referredBy": "Önt {referrer} ajánlotta.",
             "info": "Amikor tranzakciós díjat fizet, a <br\/> 10%-ot kap az ajánlója.",
             "referredLablel": "Ajánlói cím"
-        }
+        },
+        "insufficientBondedAmount": "További hivatkozások meghívásához legalább {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Tranzakció részletei",
     "createTokenTextNFT": "NFT létrehozása",
