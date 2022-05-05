@@ -22,7 +22,7 @@
     "confirmText": "Xác nhận",
     "errorText": "Lỗi",
     "insufficientBalanceText": "Số dư {tokenSymbol} không đủ",
-    "unknownErrorText": "LỖI - Có gì đó không ổn...",
+    "unknownErrorText": "LỖI Có gì đó không ổn...",
     "transactionSubmittedText": "Giao dịch đã được gửi",
     "operations": {
         "Swap": "Hoán đổi",
@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Tài {symbol} sản đã được thêm vào thành công!",
+        "success": "Tài sản {symbol} đã được thêm vào thành công!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Lọc theo Id Tài sản, Tên hoặc Mã token"
@@ -168,7 +168,7 @@
         "warningMessage": "Bất cứ ai cũng có thể tạo mã token, kể cả tạo ra các phiên bản giả mạo của các token hiện có và nhận vơ có liên quan tới các dự án đang chạy.\nNếu bạn mua token này, có thể bạn không thể bán được.",
         "approved": "Tài sản được cộng đồng phê duyệt",
         "unknown": "Nguồn không xác định",
-        "scam": "SCAM",
+        "scam": "LỪA ĐẢO",
         "next": "Kế tiếp"
     },
     "createToken": {
@@ -246,7 +246,7 @@
     },
     "transaction": {
         "title": "Chi tiết giao dịch",
-        "blockId": "Mã khối",
+        "blockId": "Block Id",
         "status": "Trạng thái",
         "statuses": {
             "pending": "Đang chờ xử lý",
@@ -287,7 +287,7 @@
     "connectWalletTextTooltip": "Kết nối tới Mạng @:soraText với polkadot{.js}",
     "selectNodeText": "Chọn node",
     "bridgeText": "Cầu nối",
-    "disclaimer": "<span class=\"app-disclaimer__title\"> Tuyên bố miễn trừ trách nhiệm <\/span>: Trang web này được duy trì bởi cộng đồng @:(soraText). Trước khi tiếp tục sử dụng trang web này, vui lòng xem lại @:polkaswapFaqLink và tài liệu, bao gồm giải thích chi tiết về cách Polkaswap hoạt động, cũng như @:memorandumLink và @:(privacyLink). Những tài liệu này rất quan trọng đối với trải nghiệm người dùng an toàn và tích cực. Bằng cách sử dụng Polkaswap, bạn xác nhận rằng bạn đã đọc và hiểu các tài liệu này. Bạn cũng thừa nhận những điều sau: 1) trách nhiệm duy nhất của bạn đối với việc tuân thủ tất cả các luật có thể áp dụng cho việc sử dụng Polkaswap cụ thể của bạn trong khu vực pháp lý của bạn; 2) bạn hiểu rằng phiên bản Polkaswap hiện tại là phiên bản alpha: nó chưa được kiểm tra đầy đủ và một số chức năng có thể không hoạt động như thiết kế; và 3) sự hiểu biết của bạn và tự nguyện chấp nhận các rủi ro liên quan đến việc sử dụng Polkaswap, bao gồm, nhưng không giới hạn, rủi ro mất token. Vui lòng không tiếp tục mà không đọc @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Disclaimer<\/span>: Trang web này được duy trì bởi cộng đồng @:(soraText). Trước khi tiếp tục sử dụng trang web này, vui lòng xem lại @:polkaswapFaqLink và tài liệu, bao gồm một lời giải thích chi tiết về cách Polkaswap hoạt động, cũng như @:memorandumLink và @:(privacyLink). Những tài liệu này rất quan trọng đối với trải nghiệm người dùng an toàn và tích cực. Bằng cách sử dụng Polkaswap, bạn thừa nhận rằng bạn đã đọc và hiểu những tài liệu này. Bạn cũng thừa nhận những điều sau đây: 1) trách nhiệm duy nhất của bạn về việc tuân thủ tất cả các luật có thể áp dụng cho việc sử dụng Polkaswap cụ thể của bạn trong thẩm quyền pháp lý của bạn; 2) sự hiểu biết của bạn rằng phiên bản hiện tại của Polkaswap là một phiên bản alpha: nó chưa được thử nghiệm đầy đủ và một số chức năng có thể không hoạt động như thiết kế; và 3) sự hiểu biết của bạn và tự nguyện chấp nhận các rủi ro liên quan đến việc sử dụng Polkaswap, bao gồm, nhưng không giới hạn, nguy cơ mất token. Vui lòng không tiếp tục mà không đọc @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Được cung cấp bởi",
     "confirmTransactionText": "Xác nhận giao dịch {direction}",
@@ -297,7 +297,7 @@
     "ethNetworkFeeTooltipText": "Xin lưu ý rằng phí mạng Ethereum được hiển thị trên Polkaswap chỉ là ước tính sơ bộ, bạn có thể thấy chi phí chính xác trong ví Ethereum của mình trước khi xác nhận giao dịch.",
     "marketText": "Thị trường",
     "marketAlgorithmText": "Thuật toán thị trường",
-    "firstPerSecond": "{first} - {second}",
+    "firstPerSecond": "{first} mỗi {second}",
     "pairIsNotCreated": "Cặp token này chưa được tạo",
     "pageTitle": {
         "Swap": "Hoán đổi",
@@ -308,9 +308,9 @@
         "Support": "Hỗ trợ",
         "Wallet": "Ví",
         "CreatePair": "Tạo một cặp token",
-        "AddLiquidity": "Thêm thanh khoản",
-        "AddLiquidityId": "Thêm thanh khoản",
-        "RemoveLiquidity": "Rút thanh khoản",
+        "AddLiquidity": "Thêm Thanh Khoản",
+        "AddLiquidityId": "Thêm Thanh Khoản",
+        "RemoveLiquidity": "Rút Thanh Khoản",
         "PageNotFound": "Trang không tìm thấy",
         "Tokens": "Tokens",
         "Rewards": "Phần thưởng"
@@ -448,7 +448,7 @@
         "swap": {
             "title": "Hoán đổi Bất kỳ Token nào",
             "first": "Vượt lên khỏi giới hạn của các DEX hiện tại bằng cách thêm tokens từ hệ sinh thái Polkadot cũng như các blockchain khác.",
-            "second": "Tạo, niêm yết và giao dịch tokens của riêng bạn trên Mạng SORA.",
+            "second": "Tạo, niêm yết và giao dịch token của riêng bạn trên Mạng SORA.",
             "third": "Cơ sở hạ tầng cốt lõi của chúng tôi sử dụng Parity Substrate, có khả năng mở rộng hơn Ethereum và không sử dụng cơ chế đồng thuận đắt đỏ."
         },
         "pswap": {
@@ -545,7 +545,7 @@
             "title": "Tokens",
             "placeholder": "Lọc theo Id Tài sản, Tên hoặc Mã token",
             "networkLabelSora": "Token mạng @:soraText",
-            "networkLabelEthereum": "token tương ứng trên mạng @:ethereumText",
+            "networkLabelEthereum": "Token tương ứng trên mạng @:ethereumText",
             "emptyListMessage": "Không có kết quả"
         },
         "customAsset": {
@@ -614,7 +614,7 @@
         "changeAccount": "@:changeAccountText trong @:metamask",
         "expectedAddress": "Địa chỉ dự kiến trên @:metamask",
         "title": "Giao dịch cầu nối",
-        "expectedMetaMaskAddress": "Địa chỉ dự kiến trên Metamask",
+        "expectedMetaMaskAddress": "Địa chỉ dự kiến trên Metamask:",
         "allowToken": "Cho phép @:appName được dùng {tokenSymbol} của bạn",
         "approveToken": "Xin lưu ý rằng chỉ cần phê duyệt token một lần. Nếu tiện ích mở rộng của bạn có nhiều yêu cầu phê duyệt token, hãy đảm bảo chỉ xác nhận yêu cầu cuối cùng trong khi từ chối phần còn lại.",
         "blocksLeft": "{count} block còn lại..."
@@ -642,7 +642,7 @@
             "search": "Nhập ID tài sản",
             "text": "TOKEN TÙY CHỈNH",
             "alreadyAttached": "Token này đã được thêm vào",
-            "notFound": "Không tìm thấy Token này"
+            "notFound": "Không tìm thấy token này"
         }
     },
     "createPair": {
@@ -745,13 +745,13 @@
             "connectExternalAccount": "Kết nối với 1 tài khoản @:ethereumText để kiểm tra phần thường PSWAP và VAL khả dụng",
             "connectAccounts": "Để yêu cầu phần thưởng PSWAP và VAL, bạn cần kết nối với cả 2 tài khoản @:soraText và @:ethereumText của bạn.",
             "connectAnotherAccount": "Kết nối với tài khoản @:ethereumText khác để kiểm tra phần thường PSWAP và VAL khả dụng",
-            "howToClaimRewards": "Để yêu cầu phần thưởng {symbols} bạn cần ký tên {count} {transactions} tại {destination}. Phần thưởng sẽ được chuyển đến tài khoản @:soraText account của bạn. "
+            "howToClaimRewards": "Để yêu cầu phần thưởng {symbols} bạn cần ký tên {count} {transactions} tại {destination}. Phần thưởng sẽ được chuyển đến tài khoản @:soraText của bạn. "
         },
         "action": {
             "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Kết nối tài khoản @:ethereumText",
-            "signAndClaim": "Ký tên và xác nhận quyền sở hữu",
-            "pendingInternal": "Giao dịch @:soraText  đang chờ xử lý...",
+            "signAndClaim": "Ký và nhận phần thưởng",
+            "pendingInternal": "Giao dịch @:soraText đang chờ xử lý...",
             "pendingExternal": "Giao dịch @:ethereumText đang chờ xử lý...",
             "retry": "@:retryText",
             "checkRewards": "Kiểm tra",
@@ -773,7 +773,7 @@
         "vested": "được tặng",
         "forText": "cho",
         "totalVested": "Tổng giải thưởng",
-        "claimableAmountDoneVesting": "Phần thưởng có thể yêu cầu",
+        "claimableAmountDoneVesting": "Phần thưởng có thể nhận",
         "groups": {
             "strategic": "Phần thưởng chiến lược",
             "external": "Phần thưởng cho tài khoản ethereum được kết nối",
@@ -850,7 +850,7 @@
             "txReady": "Sẵn sàng cho giao dịch qua Cầu nối"
         },
         "tooltips": {
-            "transfer": "Đã mua thành công tokens!\nNhấp để bắt đầu giao dịch cầu nối"
+            "transfer": "Đã mua thành công token!\nNhấp để bắt đầu giao dịch cầu nối"
         }
     },
     "recievedText": "Nhận được",
@@ -880,9 +880,9 @@
         "payoff": "Bạn sẽ phải sử dụng Cầu nối (Bridge) để nhận XOR từ các mạng khác, nhận XOR từ tài khoản SORA khác hoặc hoán đổi bất kỳ mã thông báo nào khác đã có trong tài khoản của bạn thành XOR.",
         "button": "Vâng, tôi hiểu về rủi ro"
     },
-    "blockNumberText": "Số khối",
+    "blockNumberText": "Số block",
     "referralProgram": {
-        "title": "Referral Program",
+        "title": "Chương trình giới thiệu",
         "connectAccount": "Để mời người dùng, bạn cần kết nối tài khoản SORA của mình.",
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} giới thiệu",
@@ -949,6 +949,6 @@
     "mobilePopup": {
         "sideMenu": "Tải xuống Ví SORA",
         "header": "Tải xuống Ví SORA với các tính năng của <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
-        "info": "Trao đổi mã thông báo từ các mạng khác nhau - SORA, Ethereum, Polkadot, Kusama. Cung cấp nhóm thanh khoản và kiếm% từ phí trao đổi."
+        "info": "Hoán đổi token từ các mạng khác nhau - SORA, Ethereum, Polkadot, Kusama. Cung cấp nhóm thanh khoản và kiếm % từ phí trao đổi."
     }
 }
