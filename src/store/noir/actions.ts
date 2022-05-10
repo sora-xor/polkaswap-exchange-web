@@ -13,12 +13,6 @@ const actions = defineActions({
     const { commit } = noirActionContext(context);
     try {
       const totalRedeemed = await SubqueryExplorerService.getNoirTotalRedeemed(NOIR_ADDRESS_ID, NOIR_TOKEN_ADDRESS);
-
-      if (!totalRedeemed) {
-        commit.setRedemptionDataFailure();
-        return;
-      }
-
       const totalSupply = await (api.api.rpc as any).assets.totalSupply(NOIR_TOKEN_ADDRESS);
       const noirTotalSupply = new FPNumber(totalSupply);
       const [_, noirReserve] = await api.poolXyk.getReserves(XOR.address, NOIR_TOKEN_ADDRESS);

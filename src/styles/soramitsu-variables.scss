@@ -85,6 +85,9 @@ $s-font-feature-settings-input: normal;
 $s-font-feature-settings-button: normal;
 // Transition
 $s-transition-default: color 0.3s, background-color 0.3s, transform 0.3s;
+// Asset item height
+$s-asset-item-height: 71px;
+$s-asset-item-height--fiat: 86px;
 
 // Noir primary Button
 $neu-button-primary-border-width: 0px;
@@ -108,4 +111,7 @@ $neu-button-secondary-box-shadow: inset 0px 4px 25px rgba(0, 0, 0, 0.1);
   // Fiat colors
   --s-color-fiat-value: #{$s-color-fiat-value};
   --s-color-rewards: #{$s-color-rewards};
+  // Asset item height
+  --s-asset-item-height: #{$s-asset-item-height};
+  --s-asset-item-height--fiat: #{$s-asset-item-height--fiat};
 }
