@@ -158,14 +158,15 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, State, Getter } from 'vuex-class';
 import { Operation } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import type { AccountAsset, CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
+import { action, mutation, state, getter } from '@/store/decorators';
 import { lazyComponent } from '@/router';
 import {
   Components,
@@ -193,19 +194,21 @@ enum Steps {
   },
 })
 export default class RedeemDialog extends Mixins(DialogMixin, mixins.TransactionMixin, mixins.NumberFormatterMixin) {
-  @State((state) => state.noir.redeemDialogVisibility) redeemDialogVisibility!: boolean;
-  @State((state) => state.noir.agreementSigned) agreementSigned!: boolean;
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.noir.redeemDialogVisibility redeemDialogVisibility!: boolean;
+  @state.noir.agreementSigned agreementSigned!: boolean;
 
-  @Getter networkFees!: NetworkFeesObject;
-  @Getter('tokenTo', { namespace: 'swap' }) token!: AccountAsset;
-  @Getter('tokenFrom', { namespace: 'swap' }) tokenFrom!: AccountAsset;
+  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
+  @getter.swap.tokenTo token!: AccountAsset;
 
-  @Action('setRedeemDialogVisibility', { namespace: 'noir' }) setVisibility!: (flag: boolean) => Promise<void>;
-  @Action('setAgreement', { namespace: 'noir' }) setAgreement!: (flag: boolean) => Promise<void>;
-  @Action('redeem', { namespace: 'noir' }) redeem!: (count: number) => Promise<void>;
-  @Action('setCongratulationsDialogVisibility', { namespace: 'noir' }) setCongratulationsDialogVisibility!: (
+  @mutation.noir.setRedeemDialogVisibility private setVisibility!: (flag: boolean) => void;
+  @mutation.noir.setCongratulationsDialogVisibility private setCongratulationsDialogVisibility!: (
     flag: boolean
-  ) => Promise<void>;
+  ) => void;
+
+  @mutation.noir.setAgreement private setAgreement!: (flag: boolean) => void;
+
+  @action.noir.redeem private redeem!: (count: number) => Promise<void>;
 
   readonly validationRules = {
     name: [{ required: true, message: 'Name is required', trigger: 'blur' }],

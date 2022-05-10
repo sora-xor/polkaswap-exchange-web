@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Action, State } from 'vuex-class';
+import { state, mutation } from '@/store/decorators';
 
 import DialogMixin from './mixins/DialogMixin';
 import DialogBase from './DialogBase.vue';
@@ -19,8 +19,8 @@ import DialogBase from './DialogBase.vue';
 export default class WalletDialog extends Mixins(DialogMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean;
 
-  @State((state) => state.settings.walletDialogVisibility) walletDialogVisibility!: boolean;
-  @Action setWalletDialogVisibility!: (flag: boolean) => void;
+  @state.noir.walletDialogVisibility private walletDialogVisibility!: boolean;
+  @mutation.noir.setWalletDialogVisibility private setWalletDialogVisibility!: (flag: boolean) => void;
 
   get visibility(): boolean {
     return this.walletDialogVisibility;

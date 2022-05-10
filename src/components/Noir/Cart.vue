@@ -125,7 +125,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter, State } from 'vuex-class';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
@@ -137,11 +136,10 @@ import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/const
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 
+import { action, getter, mutation, state } from '@/store/decorators';
 import { hasInsufficientBalance, asZeroValue, formatAssetBalance, debouncedInputHandler } from '@/utils';
 import { lazyComponent } from '@/router';
 import { Components, NOIR_TOKEN_ADDRESS } from '@/consts';
-
-const namespace = 'swap';
 
 @Component({
   components: {
@@ -150,48 +148,38 @@ const namespace = 'swap';
     CountInput: lazyComponent(Components.CountInput),
   },
 })
-export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.TransactionMixin, WalletConnectMixin) {
-  @State((state) => state[namespace].paths) paths!: QuotePaths;
-  @State((state) => state[namespace].payload) payload!: QuotePayload;
-  @State((state) => state[namespace].fromValue) fromValue!: string;
-  @State((state) => state[namespace].fromValueReversed) fromValueReversed!: string;
-  @State((state) => state[namespace].toValue) toValue!: string;
+export default class Cart extends Mixins(mixins.FormattedAmountMixin, mixins.TransactionMixin, WalletConnectMixin) {
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.settings.slippageTolerance private slippageTolerance!: string;
+  @state.swap.paths private paths!: QuotePaths;
+  @state.swap.payload private payload!: QuotePayload;
+  @state.swap.fromValue private fromValue!: string;
+  @state.swap.fromValueReversed private fromValueReversed!: string;
+  @state.swap.toValue private toValue!: string;
+  @state.noir.total total!: number;
 
-  @Getter networkFees!: NetworkFeesObject;
-  @Getter nodeIsConnected!: boolean;
-  @Getter isLoggedIn!: boolean;
-  @Getter slippageTolerance!: string;
-  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
-  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
-  @Getter('isAvailable', { namespace }) isAvailable!: boolean;
-  @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
+  @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
+  @getter.swap.tokenTo tokenTo!: AccountAsset;
+  @getter.swap.isAvailable isAvailable!: boolean;
+  @getter.noir.noirBalance noirBalance!: CodecString;
+  @getter.noir.xorBalance xorBalance!: CodecString;
 
-  @Getter('noir/total') total!: number;
-  @Getter('noir/xorBalance') xorBalance!: CodecString;
-  @Getter('noir/noirBalance') noirBalance!: CodecString;
+  @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
+  @mutation.swap.setFromValueReversed private setFromValueReversed!: (value: string) => void;
+  @mutation.swap.setToValue private setToValue!: (value: string) => void;
+  @mutation.swap.setPrimaryMarketsEnabledAssets private setEnabledAssets!: (args: PrimaryMarketsEnabledAssets) => void;
+  @mutation.noir.setRedeemDialogVisibility private setRedeemDialogVisibility!: (flag: boolean) => void;
+  @mutation.noir.setEditionDialogVisibility private setEditionDialogVisibility!: (flag: boolean) => void;
 
-  @Action('setTokenFromAddress', { namespace }) setTokenFromAddress!: (address?: string) => Promise<void>;
-  @Action('setTokenToAddress', { namespace }) setTokenToAddress!: (address?: string) => Promise<void>;
-  @Action('setFromValue', { namespace }) setFromValue!: (value: string) => Promise<void>;
-  @Action('setFromValueReversed', { namespace }) setFromValueReversed!: (value: string) => Promise<void>;
-  @Action('setToValue', { namespace }) setToValue!: (value: string) => Promise<void>;
-  @Action('reset', { namespace }) reset!: AsyncVoidFn;
-
-  @Action('setPrimaryMarketsEnabledAssets', { namespace }) setPrimaryMarketsEnabledAssets!: (
-    assets: PrimaryMarketsEnabledAssets
-  ) => Promise<void>;
-
-  @Action('setSubscriptionPayload', { namespace }) setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
-  @Action('resetSubscriptions', { namespace }) resetSubscriptions!: AsyncVoidFn;
-  @Action('updateSubscriptions', { namespace }) updateSubscriptions!: AsyncVoidFn;
-
-  @Action('setRedeemDialogVisibility', { namespace: 'noir' }) setRedeemDialogVisibility!: (
-    flag: boolean
-  ) => Promise<void>;
-
-  @Action('setEditionDialogVisibility', { namespace: 'noir' }) setEditionDialogVisibility!: (
-    flag: boolean
-  ) => Promise<void>;
+  @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
+  @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
+  @action.swap.reset private reset!: AsyncVoidFn;
+  @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
+  @action.swap.resetSubscriptions private resetSubscriptions!: AsyncVoidFn;
+  @action.swap.updateSubscriptions private updateSubscriptions!: AsyncVoidFn;
 
   @Watch('liquiditySource')
   private handleLiquiditySourceChange(): void {
@@ -280,7 +268,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   }
 
   get availableForRedemption(): number {
-    if (!this.payload) return 0;
+    if (!this.payload || !this.tokenTo) return 0;
 
     const reserves = this.payload.reserves.xyk[this.tokenTo.address][1];
     const value = this.getFPNumberFromCodec(reserves, this.tokenTo.decimals).toNumber();
@@ -320,7 +308,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
       const xorAddress = XOR.address;
       await this.setTokenFromAddress(xorAddress);
       await this.setTokenToAddress(NOIR_TOKEN_ADDRESS);
-      await this.setToValue('1');
+      this.setToValue('1');
 
       if (!this.enabledAssetsSubscription) {
         this.subscribeOnEnabledAssets();
@@ -346,21 +334,21 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   private runRecountSwapValues(): void {
     try {
       const { amount: amountBuy } = api.swap.getResult(
-        this.tokenFrom,
-        this.tokenTo,
+        this.tokenFrom as AccountAsset,
+        this.tokenTo as AccountAsset,
         this.toValue,
         false,
-        [this.liquiditySource].filter(Boolean),
+        [this.liquiditySource].filter(Boolean) as LiquiditySourceTypes[],
         this.paths,
         this.payload
       );
 
       const { amount: amountSell } = api.swap.getResult(
-        this.tokenTo,
-        this.tokenFrom,
+        this.tokenTo as AccountAsset,
+        this.tokenFrom as AccountAsset,
         this.toValue,
         true,
-        [this.liquiditySource].filter(Boolean),
+        [this.liquiditySource].filter(Boolean) as LiquiditySourceTypes[],
         this.paths,
         this.payload
       );
@@ -384,9 +372,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   private subscribeOnEnabledAssets(): void {
     this.cleanEnabledAssetsSubscription();
 
-    this.enabledAssetsSubscription = api.swap
-      .subscribeOnPrimaryMarketsEnabledAssets()
-      .subscribe(this.setPrimaryMarketsEnabledAssets);
+    this.enabledAssetsSubscription = api.swap.subscribeOnPrimaryMarketsEnabledAssets().subscribe(this.setEnabledAssets);
   }
 
   private cleanSwapReservesSubscription(): void {
@@ -403,7 +389,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
     if (!this.areTokensSelected) return;
 
     this.liquidityReservesSubscription = api.swap
-      .subscribeOnReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
+      .subscribeOnReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource as LiquiditySourceTypes)
       .subscribe(this.onChangeSwapReserves);
   }
 
@@ -419,13 +405,13 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
       await this.withNotifications(
         async () =>
           await api.swap.execute(
-            this.tokenFrom, // XOR
-            this.tokenTo, // NOIR
+            this.tokenFrom as AccountAsset, // XOR
+            this.tokenTo as AccountAsset, // NOIR
             this.fromValue,
             this.toValue,
             this.slippageTolerance,
             true,
-            this.liquiditySource
+            this.liquiditySource as LiquiditySourceTypes
           )
       );
     } catch (error) {
@@ -444,7 +430,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
             this.fromValueReversed,
             this.slippageTolerance,
             false,
-            this.liquiditySource
+            this.liquiditySource as LiquiditySourceTypes
           )
       );
     } catch (error) {
@@ -452,12 +438,12 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
     }
   }
 
-  async redeem(): Promise<void> {
-    await this.setRedeemDialogVisibility(true);
+  redeem(): void {
+    this.setRedeemDialogVisibility(true);
   }
 
-  async openEditionDialog(): Promise<void> {
-    await this.setEditionDialogVisibility(true);
+  openEditionDialog(): void {
+    this.setEditionDialogVisibility(true);
   }
 
   beforeDestroy(): void {

@@ -34,7 +34,8 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Action, State } from 'vuex-class';
+
+import { mutation, state } from '@/store/decorators';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
@@ -49,8 +50,8 @@ import confetti from './confetti.js';
 export default class CongratulationsDialog extends Mixins(DialogMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean;
 
-  @State((state) => state.noir.congratulationsDialogVisibility) dialogVisibility!: boolean;
-  @Action('setCongratulationsDialogVisibility', { namespace: 'noir' }) setVisibility!: (flag: boolean) => Promise<void>;
+  @state.noir.congratulationsDialogVisibility private dialogVisibility!: boolean;
+  @mutation.noir.setCongratulationsDialogVisibility private setVisibility!: (flag: boolean) => Promise<void>;
 
   get visibility(): boolean {
     return this.dialogVisibility;

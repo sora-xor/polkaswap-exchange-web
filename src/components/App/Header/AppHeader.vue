@@ -21,8 +21,8 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { getter, state } from '@/store/decorators';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
@@ -39,10 +39,9 @@ import { Components } from '@/consts';
 export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
 
-  @Getter isLoggedIn!: boolean;
-  @Getter account!: WALLET_TYPES.Account;
-
-  @Getter('noir/totalRedeemed') totalRedeemed!: number;
+  @state.noir.totalRedeemed totalRedeemed!: number;
+  @getter.wallet.account.account account!: WALLET_TYPES.Account;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 }
 </script>
 
