@@ -62,7 +62,6 @@ export enum Components {
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
-  ExternalLink = 'ExternalLink',
   WalletDialog = 'WalletDialog',
   TokenSelectButton = 'Input/TokenSelectButton',
   TokenAddress = 'Input/TokenAddress',

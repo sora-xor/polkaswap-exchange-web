@@ -87,7 +87,6 @@ const stripEndingSlash = (str: string): string => (str.charAt(str.length - 1) ==
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    ExternalLink: lazyComponent(Components.ExternalLink),
   },
 })
 export default class NodeInfo extends Mixins(TranslationMixin) {
