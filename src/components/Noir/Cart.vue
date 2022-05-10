@@ -136,6 +136,7 @@ import type {
   NetworkFeesObject,
   QuotePaths,
   QuotePayload,
+  PrimaryMarketsEnabledAssets,
 } from '@sora-substrate/util';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
