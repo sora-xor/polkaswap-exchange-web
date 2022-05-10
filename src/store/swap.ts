@@ -4,8 +4,9 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import isEmpty from 'lodash/fp/isEmpty';
-import intersection from 'lodash/fp/intersection';
-import { FPNumber, isDirectExchange, XOR, LiquiditySourceTypes } from '@sora-substrate/util';
+import { api } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber } from '@sora-substrate/util';
+import { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
 
 import {
   MarketAlgorithms,
@@ -16,13 +17,9 @@ import {
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { divideAssets } from '@/utils';
 
-import type {
-  AccountBalance,
-  CodecString,
-  QuotePaths,
-  QuotePayload,
-  PrimaryMarketsEnabledAssets,
-} from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { QuotePaths, PrimaryMarketsEnabledAssets, QuotePayload } from '@sora-substrate/util/build/swap/types';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -84,26 +81,6 @@ function initialState(): SwapState {
     payload: null,
   };
 }
-
-const getSources = (
-  address: string,
-  payload: QuotePayload,
-  enabledAssets: PrimaryMarketsEnabledAssets
-): Array<LiquiditySourceTypes> => {
-  const rules = {
-    [LiquiditySourceTypes.MulticollateralBondingCurvePool]: () => enabledAssets.tbc.includes(address),
-    [LiquiditySourceTypes.XYKPool]: () => payload.reserves.xyk[address].every((tokenReserve) => !!Number(tokenReserve)),
-    [LiquiditySourceTypes.XSTPool]: () => enabledAssets.xst.includes(address),
-  };
-
-  return Object.entries(rules).reduce((acc: LiquiditySourceTypes[], entry) => {
-    const [source, rule] = entry;
-    if (rule()) {
-      acc.push(source as LiquiditySourceTypes);
-    }
-    return acc;
-  }, []);
-};
 
 const state = initialState();
 
@@ -295,47 +272,34 @@ const actions = {
     }
   },
 
-  updatePaths({ commit, getters, state }) {
+  async setSubscriptionPayload({ commit, dispatch, getters, rootGetters }, payload: QuotePayload) {
+    commit(types.SET_SUBSCRIPTION_PAYLOAD, payload);
+
+    // Update paths
     const inputAssetId = getters.tokenFrom?.address;
     const outputAssetId = getters.tokenTo?.address;
-    const quotePaths: QuotePaths = {};
-    const pairLiquiditySources: Array<LiquiditySourceTypes> = [];
-
-    try {
-      if (inputAssetId && outputAssetId) {
-        const xor = XOR.address;
-
-        if (isDirectExchange(inputAssetId, outputAssetId)) {
-          const nonXor = inputAssetId === xor ? outputAssetId : inputAssetId;
-          const path = getSources(nonXor, state.payload, state.enabledAssets);
-
-          quotePaths[nonXor] = path;
-          pairLiquiditySources.push(...path);
-        } else {
-          const [inputPaths, outputPaths] = [
-            getSources(inputAssetId, state.payload, state.enabledAssets),
-            getSources(outputAssetId, state.payload, state.enabledAssets),
-          ];
-
-          quotePaths[inputAssetId] = inputPaths;
-          quotePaths[outputAssetId] = outputPaths;
-          pairLiquiditySources.push(...intersection(inputPaths, outputPaths));
-        }
-      }
-
-      commit(types.SET_PATHS, quotePaths);
-      commit(types.SET_PAIR_LIQUIDITY_SOURCES, pairLiquiditySources);
-    } catch (error) {
-      console.error(error);
-      commit(types.SET_PATHS, {});
-      commit(types.SET_PAIR_LIQUIDITY_SOURCES, []);
+    if (!(inputAssetId && outputAssetId && state.payload)) {
+      return;
     }
-  },
 
-  async setSubscriptionPayload({ commit, dispatch }, payload: QuotePayload) {
-    commit(types.SET_SUBSCRIPTION_PAYLOAD, payload);
-    await dispatch('updatePaths');
-    await dispatch('checkMarketAlgorithmUpdate');
+    const { paths, liquiditySources } = api.swap.getPathsAndPairLiquiditySources(
+      inputAssetId,
+      outputAssetId,
+      state.payload,
+      state.enabledAssets
+    );
+
+    commit(types.SET_PATHS, paths);
+    commit(types.SET_PAIR_LIQUIDITY_SOURCES, liquiditySources);
+
+    // Check market algorithm updates
+    // reset market algorithm to default, if related liquiditySource is not available
+    if (
+      state.pairLiquiditySources.length &&
+      !state.pairLiquiditySources.includes(rootGetters.settings.liquiditySource)
+    ) {
+      await dispatch('setMarketAlgorithm', undefined, { root: true });
+    }
   },
 
   async setPrimaryMarketsEnabledAssets({ commit }, assets: PrimaryMarketsEnabledAssets) {

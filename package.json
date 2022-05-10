@@ -14,7 +14,7 @@
     "generate-lang-json": "ts-node ./scripts/generateLocaleJson.ts"
   },
   "dependencies": {
-    "@soramitsu/soraneo-wallet-web": "1.6.41",
+    "@soramitsu/soraneo-wallet-web": "1.8.22",
     "core-js": "^3.6.4",
     "lodash": "^4.17.21",
     "vue": "^2.6.14",

@@ -3,7 +3,7 @@ import flatMap from 'lodash/fp/flatMap';
 import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
-import { api, connection, initWallet } from '@soramitsu/soraneo-wallet-web';
+import { connection, initWallet } from '@soramitsu/soraneo-wallet-web';
 
 import storage, { settingsStorage } from '@/utils/storage';
 import { AppHandledError } from '@/utils/error';
@@ -228,7 +228,7 @@ const actions = {
 
       console.info('Connected to node', connection.endpoint);
 
-      const nodeChainGenesisHash = connection.api.genesisHash.toHex();
+      const nodeChainGenesisHash = connection.api?.genesisHash.toHex();
 
       // if connected node is custom node, we should check genesis hash
       if (!isTrustedEndpoint) {

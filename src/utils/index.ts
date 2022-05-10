@@ -1,15 +1,11 @@
 import debounce from 'lodash/debounce';
-import {
-  Asset,
-  AccountAsset,
-  RegisteredAccountAsset,
-  AccountLiquidity,
-  KnownSymbols,
-  FPNumber,
-  CodecString,
-  KnownAssets,
-} from '@sora-substrate/util';
+import { RegisteredAccountAsset, FPNumber, CodecString } from '@sora-substrate/util';
+
 import { api } from '@soramitsu/soraneo-wallet-web';
+
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import { ZeroStringValue } from '@/consts';
 
@@ -28,7 +24,7 @@ export const formatAddress = (address: string, length = address.length / 2): str
 };
 
 export const isXorAccountAsset = (asset: Asset | AccountAsset | RegisteredAccountAsset | AccountLiquidity): boolean => {
-  return asset ? asset.address === KnownAssets.get(KnownSymbols.XOR).address : false;
+  return asset ? asset.address === XOR.address : false;
 };
 
 export const isEthereumAddress = (address: string): boolean => {

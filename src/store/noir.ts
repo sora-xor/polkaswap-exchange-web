@@ -4,7 +4,8 @@ import fromPairs from 'lodash/fp/fromPairs';
 import flow from 'lodash/fp/flow';
 import concat from 'lodash/fp/concat';
 import { SubqueryExplorerService, api } from '@soramitsu/soraneo-wallet-web';
-import { CodecString, FPNumber, XOR } from '@sora-substrate/util';
+import { CodecString, FPNumber } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import {
   NOIR_TOKEN_ADDRESS,
@@ -131,7 +132,7 @@ const actions = {
       }
       const totalSupply = await (api.api.rpc as any).assets.totalSupply(NOIR_TOKEN_ADDRESS);
       const noirTotalSupply = new FPNumber(totalSupply);
-      const [_, noirReserve] = await api.getLiquidityReserves(XOR.address, NOIR_TOKEN_ADDRESS);
+      const [_, noirReserve] = await api.poolXyk.getReserves(XOR.address, NOIR_TOKEN_ADDRESS);
 
       commit(types.GET_REDEMPTION_DATA_SUCCESS, {
         totalRedeemed,
@@ -169,7 +170,7 @@ const actions = {
   },
 
   async redeem({ dispatch }, count: number) {
-    await api.transfer(NOIR_TOKEN_ADDRESS, NOIR_ADDRESS_ID, count);
+    // await api.transfer(NOIR_TOKEN_ADDRESS, NOIR_ADDRESS_ID, count);
   },
 };
 

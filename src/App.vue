@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Action, Getter, State } from 'vuex-class';
 import { History, connection } from '@sora-substrate/util';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
@@ -60,9 +60,9 @@ import type { ConnectToNodeOptions } from '@/types/nodes';
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
   @Getter isLoggedIn!: boolean;
-  @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @Getter libraryDesignSystem!: DesignSystem;
-  @Getter firstReadyTransaction!: History;
+  @State((state) => state.wallet.settings.soraNetwork) soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+  @Getter('firstReadyTransaction', { namespace: 'wallet/transactions' }) firstReadyTransaction!: History;
 
   // Wallet
   @Action resetAccountAssetsSubscription!: AsyncVoidFn;
@@ -70,6 +70,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action resetActiveTransactions!: AsyncVoidFn;
   @Action resetRuntimeVersionSubscription!: AsyncVoidFn;
   @Action resetFiatPriceAndApySubscription!: AsyncVoidFn;
+  @Action activateNetwokSubscriptions!: AsyncVoidFn;
+  @Action resetNetworkSubscriptions!: AsyncVoidFn;
 
   @Action updateAccountAssets!: AsyncVoidFn;
   @Action setSoraNetwork!: (networkType: string) => Promise<void>; // wallet
@@ -82,17 +84,20 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @Action('noir/resetRedemptionDataSubscription') resetRedemptionDataSubscription!: AsyncVoidFn;
 
   @Watch('firstReadyTransaction', { deep: true })
-  private handleNotifyAboutTransaction(value: History): void {
-    this.handleChangeTransaction(value);
+  private handleNotifyAboutTransaction(value: History, oldValue: History): void {
+    this.handleChangeTransaction(value, oldValue);
   }
 
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean): void {
     if (nodeConnected) {
-      this.updateAccountAssets();
+      // after app load, the first connection to the node occurs before the wallet is loaded
+      if (this.isWalletLoaded) {
+        this.activateNetwokSubscriptions();
+      }
       this.subscribeOnRedemptionDataUpdates();
     } else {
-      this.resetAccountAssetsSubscription();
+      this.resetNetworkSubscriptions();
       this.resetRedemptionDataSubscription();
     }
   }
@@ -130,10 +135,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
-    await this.resetFiatPriceAndApySubscription();
-    await this.resetActiveTransactions();
-    await this.resetAccountAssetsSubscription();
-    await this.resetRuntimeVersionSubscription();
+    await this.resetNetworkSubscriptions();
     await connection.close();
   }
 

@@ -1,6 +1,6 @@
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { en as walletEn, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Operation, TransactionStatus, RewardingEvents } from '@sora-substrate/util';
+import { Operation, TransactionStatus } from '@sora-substrate/util';
 
 import { PageNames } from '../consts';
 
@@ -553,15 +553,6 @@ export default {
     },
     notification: {
       empty: 'No available claims for this account',
-    },
-    events: {
-      [RewardingEvents.XorErc20]: 'XOR ERC-20',
-      [RewardingEvents.SoraFarmHarvest]: '@:(soraText).farm harvest',
-      [RewardingEvents.NftAirdrop]: 'NFT Airdrop',
-      [RewardingEvents.LiquidityProvision]: 'Fees gained from liquidity provision',
-      [RewardingEvents.BuyOnBondingCurve]: 'buying from the TBC',
-      [RewardingEvents.MarketMakerVolume]: 'Market Making',
-      [RewardingEvents.LiquidityProvisionFarming]: 'Farming',
     },
     groups: {
       strategic: 'Strategic Rewards',

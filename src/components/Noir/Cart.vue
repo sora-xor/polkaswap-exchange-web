@@ -127,17 +127,13 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter, State } from 'vuex-class';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { KnownAssets, KnownSymbols, FPNumber, Operation, quote } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/util';
+import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Subscription } from '@polkadot/x-rxjs';
-import type {
-  AccountAsset,
-  CodecString,
-  LiquiditySourceTypes,
-  NetworkFeesObject,
-  QuotePaths,
-  QuotePayload,
-  PrimaryMarketsEnabledAssets,
-} from '@sora-substrate/util';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { QuotePaths, QuotePayload, PrimaryMarketsEnabledAssets } from '@sora-substrate/util/build/swap/types';
+import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 
@@ -180,7 +176,6 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   @Action('setFromValueReversed', { namespace }) setFromValueReversed!: (value: string) => Promise<void>;
   @Action('setToValue', { namespace }) setToValue!: (value: string) => Promise<void>;
   @Action('reset', { namespace }) reset!: AsyncVoidFn;
-  @Action('getAssets', { namespace: 'assets' }) getAssets!: AsyncVoidFn;
 
   @Action('setPrimaryMarketsEnabledAssets', { namespace }) setPrimaryMarketsEnabledAssets!: (
     assets: PrimaryMarketsEnabledAssets
@@ -322,9 +317,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
 
   created() {
     this.withApi(async () => {
-      await this.getAssets();
-
-      const xorAddress = KnownAssets.get(KnownSymbols.XOR)?.address;
+      const xorAddress = XOR.address;
       await this.setTokenFromAddress(xorAddress);
       await this.setTokenToAddress(NOIR_TOKEN_ADDRESS);
       await this.setToValue('1');
@@ -352,9 +345,9 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
 
   private runRecountSwapValues(): void {
     try {
-      const { amount: amountBuy } = quote(
-        this.tokenFrom.address,
-        this.tokenTo.address,
+      const { amount: amountBuy } = api.swap.getResult(
+        this.tokenFrom,
+        this.tokenTo,
         this.toValue,
         false,
         [this.liquiditySource].filter(Boolean),
@@ -362,9 +355,9 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
         this.payload
       );
 
-      const { amount: amountSell } = quote(
-        this.tokenTo.address,
-        this.tokenFrom.address,
+      const { amount: amountSell } = api.swap.getResult(
+        this.tokenTo,
+        this.tokenFrom,
         this.toValue,
         true,
         [this.liquiditySource].filter(Boolean),
@@ -391,7 +384,7 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   private subscribeOnEnabledAssets(): void {
     this.cleanEnabledAssetsSubscription();
 
-    this.enabledAssetsSubscription = api
+    this.enabledAssetsSubscription = api.swap
       .subscribeOnPrimaryMarketsEnabledAssets()
       .subscribe(this.setPrimaryMarketsEnabledAssets);
   }
@@ -409,8 +402,8 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
 
     if (!this.areTokensSelected) return;
 
-    this.liquidityReservesSubscription = api
-      .subscribeOnSwapReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
+    this.liquidityReservesSubscription = api.swap
+      .subscribeOnReserves(this.tokenFrom.address, this.tokenTo.address, this.liquiditySource)
       .subscribe(this.onChangeSwapReserves);
   }
 
@@ -425,9 +418,9 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
     try {
       await this.withNotifications(
         async () =>
-          await api.swap(
-            this.tokenFrom.address, // XOR
-            this.tokenTo.address, // NOIR
+          await api.swap.execute(
+            this.tokenFrom, // XOR
+            this.tokenTo, // NOIR
             this.fromValue,
             this.toValue,
             this.slippageTolerance,
@@ -444,9 +437,9 @@ export default class Swap extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
     try {
       await this.withNotifications(
         async () =>
-          await api.swap(
-            this.tokenTo.address, // NOIR
-            this.tokenFrom.address, // XOR
+          await api.swap.execute(
+            this.tokenTo, // NOIR
+            this.tokenFrom, // XOR
             this.toValue,
             this.fromValueReversed,
             this.slippageTolerance,
