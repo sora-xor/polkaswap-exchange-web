@@ -13,6 +13,15 @@
       <cart />
     </div>
 
+    <footer class="app-footer">
+      <div class="sora-logo">
+        <span class="sora-logo__title">{{ t('poweredBy') }}</span>
+        <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
+          <sora-logo theme="dark" />
+        </a>
+      </div>
+    </footer>
+
     <wallet-dialog />
     <edition-dialog />
     <redeem-dialog />
@@ -28,6 +37,7 @@ import { History, connection } from '@sora-substrate/util';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
+import SoraLogo from '@/components/Logo/Sora.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 
 import { Components, Language } from '@/consts';
@@ -38,6 +48,7 @@ import type { ConnectToNodeOptions } from '@/types/nodes';
 
 @Component({
   components: {
+    SoraLogo,
     AppHeader: lazyComponent(Components.AppHeader),
     Cart: lazyComponent(Components.Cart),
     WalletDialog: lazyComponent(Components.WalletDialog),
@@ -141,6 +152,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 </script>
 
 <style lang="scss">
+$sora-logo-height: 36px;
+$sora-logo-width: 173.7px;
+
 .app {
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
@@ -153,6 +167,33 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         display: none;
       }
     }
+  }
+
+  &-footer {
+    min-width: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 $basic-spacing-medium $basic-spacing-medium;
+  }
+}
+
+.sora-logo {
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
+  &__title {
+    text-transform: uppercase;
+    font-weight: 200;
+    color: var(--s-color-base-content-secondary);
+    font-size: 15px;
+    line-height: 16px;
+    margin-right: $basic-spacing;
+    white-space: nowrap;
+  }
+  &__image {
+    width: $sora-logo-width;
+    height: $sora-logo-height;
   }
 }
 
