@@ -9,8 +9,8 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { getter } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -22,8 +22,8 @@ import { formatAddress } from '@/utils';
   },
 })
 export default class AccountButton extends Mixins(TranslationMixin) {
-  @Getter account!: WALLET_TYPES.Account;
-  @Getter isLoggedIn!: boolean;
+  @getter.wallet.account.account account!: WALLET_TYPES.Account;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   get accountInfo(): string {
     if (!this.isLoggedIn) {

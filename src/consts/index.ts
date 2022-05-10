@@ -1,5 +1,5 @@
 import invert from 'lodash/fp/invert';
-import { LiquiditySourceTypes } from '@sora-substrate/util';
+import { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
 
 export const WalletPermissions = {
   addAssets: false,
@@ -9,7 +9,9 @@ export const WalletPermissions = {
   swapAssets: false, // enable 'swap' button in assets list
 };
 
-// navigator.language values, f.e. ('es', 'eu-ES')
+/**
+ * `navigator.language` values, f.e. ('es', 'eu-ES')
+ */
 export enum Language {
   EN = 'en',
 }
@@ -54,15 +56,10 @@ export enum Components {
   AppHeader = 'App/Header/AppHeader',
   AccountButton = 'App/Header/AccountButton',
   AppLogoButton = 'App/Header/AppLogoButton',
-  TokenLogo = 'TokenLogo',
-  PairTokenLogo = 'PairTokenLogo',
-  ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
-  ExternalLink = 'ExternalLink',
   WalletDialog = 'WalletDialog',
-  TokenSelectButton = 'Input/TokenSelectButton',
   TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
   // NOIR

@@ -1,4 +1,7 @@
-import { Vue, Component } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { state } from '@/store/decorators';
 
 const OrdinalRules = {
   en: (v) => {
@@ -17,18 +20,8 @@ const OrdinalRules = {
 };
 
 @Component
-export default class TranslationMixin extends Vue {
-  t(key: string, values?: any): string {
-    return this.$root.$t(key, values) as string;
-  }
-
-  tc(key: string, choice?: number, values?: any): string {
-    return this.$root.$tc(key, choice, values);
-  }
-
-  te(key: string): boolean {
-    return this.$root.$te(key);
-  }
+export default class TranslationMixin extends Mixins(mixins.TranslationMixin) {
+  @state.settings.language language!: string;
 
   tOrdinal(n) {
     return OrdinalRules[this.$i18n.locale]?.(n) ?? n;

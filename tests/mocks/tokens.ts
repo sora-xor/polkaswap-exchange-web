@@ -1,3 +1,7 @@
+import { FPNumber } from '@sora-substrate/util';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+
 export const tokens = [
   {
     name: 'Sora',
@@ -30,5 +34,50 @@ export const tokens = [
     balance: 20000.45,
     price: 0.0099,
     priceChange: -12,
+  },
+];
+
+export const MOCK_ACCOUNT_ASSETS: Array<AccountAsset> = [
+  {
+    address: '0x0200000000000000000000000000000000000000000000000000000000000000',
+    symbol: KnownSymbols.XOR,
+    name: 'SORA',
+    decimals: FPNumber.DEFAULT_PRECISION,
+    balance: {
+      transferable: '123400000000000000000',
+      total: '123400000000000000000',
+      reserved: '0',
+      frozen: '0',
+      locked: '0',
+      bonded: '0',
+    },
+  },
+  {
+    address: '0x0200040000000000000000000000000000000000000000000000000000000000',
+    symbol: KnownSymbols.VAL,
+    name: 'SORA Validator Token',
+    decimals: FPNumber.DEFAULT_PRECISION,
+    balance: {
+      transferable: '0',
+      total: '0',
+      reserved: '0',
+      frozen: '0',
+      locked: '0',
+      bonded: '0',
+    },
+  },
+  {
+    address: '0x0200050000000000000000000000000000000000000000000000000000000000',
+    symbol: KnownSymbols.PSWAP,
+    name: 'Polkaswap',
+    decimals: FPNumber.DEFAULT_PRECISION,
+    balance: {
+      transferable: '1000000000000',
+      total: '1000000000000',
+      reserved: '0',
+      frozen: '0',
+      locked: '0',
+      bonded: '0',
+    },
   },
 ];

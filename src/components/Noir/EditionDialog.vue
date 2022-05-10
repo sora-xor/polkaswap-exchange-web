@@ -37,8 +37,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Action, State } from 'vuex-class';
-
+import { mutation, state } from '@/store/decorators';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
@@ -50,8 +49,9 @@ import DialogBase from '@/components/DialogBase.vue';
 export default class WalletDialog extends Mixins(DialogMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean;
 
-  @State((state) => state.noir.editionDialogVisibility) dialogVisibility!: boolean;
-  @Action('setEditionDialogVisibility', { namespace: 'noir' }) setVisibility!: (flag: boolean) => Promise<void>;
+  @state.noir.editionDialogVisibility private dialogVisibility!: boolean;
+
+  @mutation.noir.setEditionDialogVisibility private setVisibility!: (flag: boolean) => void;
 
   get visibility(): boolean {
     return this.dialogVisibility;

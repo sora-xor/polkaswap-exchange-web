@@ -1,15 +1,14 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
 
+import { getter, mutation } from '@/store/decorators';
 import { getWalletAddress, formatAddress } from '@/utils';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
-  @Getter('isLoggedIn') isSoraAccountConnected!: boolean;
-
-  @Action setWalletDialogVisibility!: (flag: boolean) => void;
+  @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
+  @mutation.noir.setWalletDialogVisibility private setWalletDialogVisibility!: (flag: boolean) => void;
 
   getWalletAddress = getWalletAddress;
   formatAddress = formatAddress;

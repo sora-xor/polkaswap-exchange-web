@@ -7,7 +7,7 @@
     "importText": "Import",
     "settingsText": "Settings",
     "addAssetText": "Add asset",
-    "createTokenText": "Create token",
+    "createTokenText": "Create",
     "comingSoonText": "Coming Soon",
     "successText": "Success",
     "warningText": "Warning",
@@ -40,7 +40,11 @@
             "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
             "CreatePair": "Supplied {amount} {symbol} and {amount2} {symbol2}",
             "RegisterAsset": "Registered {symbol} asset",
-            "ClaimRewards": "Reward claimed successfully {rewards}"
+            "ClaimRewards": "Reward claimed successfully {rewards}",
+            "ReferralReserveXor": "Bonded XOR successfully",
+            "ReferralUnreserveXor": "Unbonded XOR successfully",
+            "ReferralSetInvitedUser": "Referral is set successfully",
+            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -49,8 +53,16 @@
             "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
             "CreatePair": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
             "RegisterAsset": "Failed to register {symbol} asset",
-            "ClaimRewards": "Failed to claim rewards {rewards}"
-        }
+            "ClaimRewards": "Failed to claim rewards {rewards}",
+            "ReferralReserveXor": "Failed to bond XOR",
+            "ReferralUnreserveXor": "Failed to unbond XOR",
+            "ReferralSetInvitedUser": "Failed to set referral",
+            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
+        },
+        "ReferralReserveXor": "Bond XOR",
+        "ReferralUnreserveXor": "Unbond XOR",
+        "ReferralSetInvitedUser": "Set Referral",
+        "SwapAndSend": "Swap and Send"
     },
     "polkadotjs": {
         "noExtensions": "No Polkadot.js extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -64,7 +76,7 @@
         "noPermissions": "Accidentally rejected permission request?<\/br>Currently polkadot{.js} extension doesn’t have permission managment. As a workaround you can restart your browser and revisit this page to proceed with authorization.",
         "noAccounts": "No account found in your polkadot{.js} browser extension. Please add an account and try again.",
         "selectAccount": "Select account to work with",
-        "loadingTitle": "Waiting for you to allow access to polkadot{.js} extension..",
+        "loadingTitle": "Waiting for you to allow access to polkadot{.js} extension.",
         "action": {
             "install": "Install extension",
             "learnMore": "Learn more",
@@ -123,19 +135,23 @@
         "balance": {
             "transferable": "Transferable",
             "frozen": "Frozen",
-            "locked": " - Locked",
-            "reserved": " - Reserved",
-            "total": "Total"
+            "locked": "- Locked",
+            "reserved": "- Reserved",
+            "total": "Total",
+            "bonded": "- Bonded"
         },
-        "totalAssetsValue": "Your total assets value:"
+        "totalAssetsValue": "Your total assets value:",
+        "details": "Details"
     },
     "asset": {
-        "remove": "Remove asset"
+        "remove": "Remove asset",
+        "select": "Select an asset",
+        "recieve": "Receive {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Asset was added successfully!",
+        "success": "Asset {symbol} was added successfully!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filter by Asset ID, Name or Ticker Symbol"
@@ -187,6 +203,45 @@
         "extensibleSupply": {
             "placeholder": "Extensible supply",
             "desc": "Ability to mint more tokens."
+        },
+        "titleCommon": "Create",
+        "confirmTokenTitleCommon": "Create Token",
+        "confirmTokenTitleNFT": "Create NFT",
+        "actionNFT": "@:createTokenTextNFT",
+        "provideContent": "Provide content",
+        "selectLocalFile": "Select local file",
+        "CreateSimpleToken": "Token",
+        "CreateNftToken": "NFT",
+        "nft": {
+            "source": {
+                "label": "Source",
+                "value": "Local files",
+                "limit": "Choose another file"
+            },
+            "link": {
+                "placeholder": "IPFS link",
+                "copyLink": "Copy link",
+                "tooltip": "IPFS is a distributed system for storing and accessing files, making it possible to access files from many locations that aren't managed by one organization."
+            },
+            "image": {
+                "placeholderNoImage": "Upload the file by either entering a link or choosing from local storage",
+                "placeholderBadSource": "The file failed to be processed",
+                "placeholderBadSourceAddition": "or it’s not uploaded to IPFS yet",
+                "placeholderFileLimit": "The file size exceeds the limit of {value}mb"
+            },
+            "supply": {
+                "placeholder": "Token supply",
+                "desc": "Amount of NFTs you’re going to get.",
+                "quantity": "Quantity"
+            },
+            "description": {
+                "placeholder": "Description"
+            }
+        },
+        "enterTokenDescription": "Enter description",
+        "divisible": {
+            "placeholder": "Divisible",
+            "desc": "Ability of NFT to divide into fractional parts. Liquidity provisioning only works with divisible assets"
         }
     },
     "transaction": {
@@ -217,7 +272,9 @@
             "sorascan": "View in SORAScan",
             "subscan": "View in Subscan"
         },
-        "txId": "Transaction Id"
+        "txId": "Transaction Id",
+        "referrer": "Referrer",
+        "referral": "Referral"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -230,7 +287,7 @@
     "connectWalletTextTooltip": "Connect to @:soraText Network with polkadot{.js}",
     "selectNodeText": "Select Network Node",
     "bridgeText": "Bridge",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Disclaimer<\/span>: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the @:memorandumLink, and @:(privacyLink). These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Once more, please do not continue without reading the @:polkaswapFaqLink, @:memorandumLink, and @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Disclaimer<\/span>: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the @:memorandumLink, and @:(privacyLink). These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Please do not continue without reading the @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Powered by",
     "confirmTransactionText": "Confirm transaction in {direction}",
@@ -300,12 +357,12 @@
         "title": "About",
         "learnMore": "@:learnMoreText",
         "network": {
-            "title": "What is @:(soraText)?",
+            "title": "What is @:soraText?",
             "description": "Polkaswap is built on top of the @:soraText Network, and the @:soraText token (XOR) is used for gas\/fees and liquidity provision on Polkaswap. @:soraText Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like @:(ethereumText)."
         },
         "polkadot": {
             "title": "What is polkadot{.js}?",
-            "description": "Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:(soraText), Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized."
+            "description": "Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:soraText, Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized."
         }
     },
     "node": {
@@ -534,7 +591,6 @@
             "done": "Complete",
             "waitingForConfirmation": "Waiting for confirmation..."
         },
-        "wait30Block": "Please wait 30 block confirmations",
         "viewInEtherscan": "View in Etherscan",
         "networkTitle": "{network} transaction",
         "transactionHash": "Transaction hash",
@@ -560,21 +616,8 @@
         "title": "Bridge Transaction",
         "expectedMetaMaskAddress": "Expected address in MetaMask:",
         "allowToken": "Allow @:appName to use your {tokenSymbol}",
-        "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest."
-    },
-    "months": {
-        "0": "Jan",
-        "1": "Feb",
-        "2": "Mar",
-        "3": "Apr",
-        "4": "May",
-        "5": "Jun",
-        "6": "Jul",
-        "7": "Aug",
-        "8": "Sep",
-        "9": "Oct",
-        "10": "Nov",
-        "11": "Dec"
+        "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.",
+        "blocksLeft": "{count} blocks left..."
     },
     "bridgeHistory": {
         "title": "History",
@@ -582,7 +625,8 @@
         "clearHistory": "Clear history",
         "empty": "Your transactions will appear here.",
         "filterPlaceholder": "Filter by Asset ID or Ticker Symbol",
-        "restoreHistory": "Restore history"
+        "restoreHistory": "Restore history",
+        "statusAction": "Action Needed"
     },
     "selectToken": {
         "title": "Select a token",
@@ -732,8 +776,11 @@
         "claimableAmountDoneVesting": "Claimable rewards",
         "groups": {
             "strategic": "Strategic Rewards",
-            "external": "Rewards for the connected ethereum account"
-        }
+            "external": "Rewards for the connected ethereum account",
+            "crowdloan": "Crowdloan rewards"
+        },
+        "Rewards": "Rewards",
+        "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
         "default": "@:ethereumText provider",
@@ -826,5 +873,83 @@
         "txs": "TXs",
         "volume": "MM TX volume",
         "description": "20 million PSWAP \/ month will be distributed to market makers with at least 500 tx \/ month valued over 1 XOR."
+    },
+    "confirmNextTxFailure": {
+        "header": "Attention",
+        "info": "Your XOR balance will be less than {fee} XOR after this transaction. You won’t be able to pay for the network fee for another transaction.",
+        "payoff": "You would have to use the Bridge to get XOR from other networks, get sent XOR from another SORA account, or swap any other token already in your account into XOR.",
+        "button": "Yes, I understand the risk"
+    },
+    "blockNumberText": "Block number",
+    "referralProgram": {
+        "title": "Referral Program",
+        "connectAccount": "To invite users you need to connect your SORA account.",
+        "bondedXOR": "XOR Bonded",
+        "referralsNumber": "{number} referrals",
+        "startInviting": "Bond XOR to refer others",
+        "preview": "Invite new users and get 10% from their transaction fees.<br\/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
+        "deposit": "Deposit",
+        "balance": "Balance",
+        "networkFee": "@:networkFeeText",
+        "networkFeeTooltip": "@:networkFeeTooltipText",
+        "insufficientBalance": "@:insufficientBalanceText",
+        "insufficientBondedBalance": "Insufficient bonded balance",
+        "action": {
+            "connectWallet": "@:connectWalletText",
+            "empty": "Enter amount of {tokenSymbol}",
+            "startInviting": "Bond {tokenSymbol} to start inviting",
+            "bondMore": "Bond More",
+            "bond": "Bond",
+            "unbond": "Unbond",
+            "copyLink": "Copy link"
+        },
+        "transactionDetails": "Transaction Details",
+        "receivedRewards": "Received rewards",
+        "invitationLink": "Invitation link",
+        "successCopy": "Referral link is copied to the clipboard",
+        "bondTitle": "Bond XOR",
+        "unbondTitle": "Unbond XOR",
+        "confirm": {
+            "text": "Confirm",
+            "bond": "Confirm bond",
+            "unbond": "Confirm unbond",
+            "inviteTitle": "You have been invited to Polkaswap",
+            "inviteDescription": "For every transaction, 10% of the fee will go to your referrer, without any extra cost to you.",
+            "signInvitation": "Approve",
+            "freeOfCharge": "This action is free of charge",
+            "hasReferrerTitle": "You’ve already set your referrer",
+            "hasReferrerDescription": "Unfortunately, you can only set one",
+            "ok": "OK"
+        },
+        "referrer": {
+            "title": "Add your referrer",
+            "titleReferrer": "Your referrer",
+            "placeholder": "Enter invitation link or code",
+            "label": "Invitation link or code",
+            "approve": "Approve",
+            "approved": "Approved",
+            "description": "You can get referred to Polkaswap,<br\/>type in the link or code of the referrer",
+            "referredBy": "You’ve been referred by {referrer}",
+            "info": "When you’ll pay a fee for transaction,<br\/>10% will go to your referrer",
+            "referredLablel": "Referred address"
+        },
+        "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR"
+    },
+    "transactionDetailsText": "Transaction Details",
+    "createTokenTextNFT": "Create NFT",
+    "code": {
+        "download": "Download QR Code",
+        "upload": "Scan QR",
+        "recieve": "Receive",
+        "invalid": "Invalid QR Code"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Add {symbol} to @:metamask",
+        "title": "Bridge transaction successful"
+    },
+    "mobilePopup": {
+        "sideMenu": "Get SORA Wallet",
+        "header": "Download SORA Wallet with <span class=\"popup-info__headline--highlight\">Polkaswap<\/span> features",
+        "info": "Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees."
     }
 }

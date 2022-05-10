@@ -34,6 +34,10 @@ button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-m
 }
 
 // Button
+.el-button span {
+  font-weight: 400 !important;
+}
+
 .el-button + .el-button {
   margin-left: 0px !important;
 }
@@ -137,6 +141,14 @@ button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-m
     }
   }
 
+  .account .account-details {
+    .qr-code-download {
+      &, & + button {
+        display: none;
+      }
+    }
+  }
+
   .wallet-assets {
     .total-fiat-values {
       background: rgba(0, 0, 0, 0.2);
@@ -146,7 +158,7 @@ button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-m
       height: 64px;
       align-items: center !important;
 
-      & + .wallet-assets-item_divider {
+      & + .wallet-assets-divider {
         display: none !important;
       }
 

@@ -13,6 +13,15 @@
       <cart />
     </div>
 
+    <footer class="app-footer">
+      <div class="sora-logo">
+        <span class="sora-logo__title">{{ t('poweredBy') }}</span>
+        <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
+          <sora-logo theme="dark" />
+        </a>
+      </div>
+    </footer>
+
     <wallet-dialog />
     <edition-dialog />
     <redeem-dialog />
@@ -23,21 +32,23 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
-import { History, connection } from '@sora-substrate/util';
+import { History, connection, HistoryItem } from '@sora-substrate/util';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
+import SoraLogo from '@/components/Logo/Sora.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 
 import { Components, Language } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { lazyComponent } from '@/router';
+import { action, getter, mutation, state } from '@/store/decorators';
 import { preloadFontFace } from '@/utils';
 import type { ConnectToNodeOptions } from '@/types/nodes';
 
 @Component({
   components: {
+    SoraLogo,
     AppHeader: lazyComponent(Components.AppHeader),
     Cart: lazyComponent(Components.Cart),
     WalletDialog: lazyComponent(Components.WalletDialog),
@@ -48,39 +59,39 @@ import type { ConnectToNodeOptions } from '@/types/nodes';
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
-  @Getter isLoggedIn!: boolean;
-  @Getter soraNetwork!: WALLET_CONSTS.SoraNetwork;
-  @Getter libraryDesignSystem!: DesignSystem;
-  @Getter firstReadyTransaction!: History;
+  @getter.wallet.transactions.firstReadyTx public firstReadyTransaction!: Nullable<HistoryItem>;
+  @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;
 
   // Wallet
-  @Action resetAccountAssetsSubscription!: AsyncVoidFn;
-  @Action trackActiveTransactions!: AsyncVoidFn;
-  @Action resetActiveTransactions!: AsyncVoidFn;
-  @Action resetFiatPriceAndApySubscription!: AsyncVoidFn;
+  @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
+  @mutation.wallet.settings.setSubqueryEndpoint private setSubqueryEndpoint!: (endpoint: string) => void;
+  @mutation.settings.setDefaultNodes private setDefaultNodes!: (nodes: Array<Node>) => void;
+  @mutation.settings.setNetworkChainGenesisHash private setNetworkChainGenesisHash!: (hash?: string) => void;
+  @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
+  @mutation.noir.resetRedemptionDataSubscription private resetRedemptionDataSubscription!: AsyncVoidFn;
 
-  @Action updateAccountAssets!: AsyncVoidFn;
-  @Action setSoraNetwork!: (networkType: string) => Promise<void>; // wallet
-  @Action setDefaultNodes!: (nodes: any) => Promise<void>;
-  @Action setNetworkChainGenesisHash!: (hash: string) => Promise<void>;
-  @Action connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
-  @Action setFaucetUrl!: (url: string) => Promise<void>;
-  @Action setLanguage!: (lang: Language) => Promise<void>;
-  @Action('noir/subscribeOnRedemptionDataUpdates') subscribeOnRedemptionDataUpdates!: AsyncVoidFn;
-  @Action('noir/resetRedemptionDataSubscription') resetRedemptionDataSubscription!: AsyncVoidFn;
+  @action.wallet.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncVoidFn;
+  @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncVoidFn;
+  @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncVoidFn;
+  @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
+  @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
+  @action.noir.subscribeOnRedemptionDataUpdates private subscribeOnRedemptionDataUpdates!: AsyncVoidFn;
 
   @Watch('firstReadyTransaction', { deep: true })
-  private handleNotifyAboutTransaction(value: History): void {
-    this.handleChangeTransaction(value);
+  private handleNotifyAboutTransaction(value: History, oldValue: History): void {
+    this.handleChangeTransaction(value, oldValue);
   }
 
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean): void {
     if (nodeConnected) {
-      this.updateAccountAssets();
+      // after app load, the first connection to the node occurs before the wallet is loaded
+      if (this.isWalletLoaded) {
+        this.activateNetwokSubscriptions();
+      }
       this.subscribeOnRedemptionDataUpdates();
     } else {
-      this.resetAccountAssetsSubscription();
+      this.resetNetworkSubscriptions();
       this.resetRedemptionDataSubscription();
     }
   }
@@ -100,27 +111,25 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         throw new Error('NETWORK_TYPE is not set');
       }
 
-      await this.setSoraNetwork(data.NETWORK_TYPE);
-      await this.setDefaultNodes(data?.DEFAULT_NETWORKS);
+      this.setSoraNetwork(data.NETWORK_TYPE);
+      this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
+      this.setDefaultNodes(data?.DEFAULT_NETWORKS);
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);
       }
       if (data.CHAIN_GENESIS_HASH) {
-        await this.setNetworkChainGenesisHash(data.CHAIN_GENESIS_HASH);
+        this.setNetworkChainGenesisHash(data.CHAIN_GENESIS_HASH);
       }
 
       // connection to node
       await this.runAppConnectionToNode();
     });
-
-    this.trackActiveTransactions();
   }
 
   async beforeDestroy(): Promise<void> {
-    await this.resetFiatPriceAndApySubscription();
-    await this.resetActiveTransactions();
-    await this.resetAccountAssetsSubscription();
+    await this.resetInternalSubscriptions();
+    await this.resetNetworkSubscriptions();
     await connection.close();
   }
 
@@ -139,6 +148,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 </script>
 
 <style lang="scss">
+$sora-logo-height: 36px;
+$sora-logo-width: 173.7px;
+
 .app {
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
@@ -151,6 +163,33 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         display: none;
       }
     }
+  }
+
+  &-footer {
+    min-width: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 $basic-spacing-medium $basic-spacing-medium;
+  }
+}
+
+.sora-logo {
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
+  &__title {
+    text-transform: uppercase;
+    font-weight: 200;
+    color: var(--s-color-base-content-secondary);
+    font-size: 15px;
+    line-height: 16px;
+    margin-right: $basic-spacing;
+    white-space: nowrap;
+  }
+  &__image {
+    width: $sora-logo-width;
+    height: $sora-logo-height;
   }
 }
 

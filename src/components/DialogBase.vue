@@ -37,6 +37,7 @@ export default class DialogBase extends Mixins(DialogMixin) {
   @Prop({ default: '', type: String }) readonly customClass!: string;
   @Prop({ default: '', type: String }) readonly title!: string;
   @Prop({ default: '', type: String }) readonly width!: string;
+  @Prop({ default: true, type: Boolean }) readonly showCloseButton!: boolean;
 
   get computedCustomClasses(): string {
     const cssClasses: Array<string> = [];

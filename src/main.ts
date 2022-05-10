@@ -14,6 +14,6 @@ Vue.config.devtools = process.env.NODE_ENV === 'development';
 new Vue({
   i18n,
   router,
-  store,
+  store: store.original,
   render: (h) => h(App),
 }).$mount('#app');

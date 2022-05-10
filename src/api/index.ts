@@ -1,11 +1,12 @@
-import { axiosInstance, XOR } from '@sora-substrate/util';
+import { axiosInstance } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import VueRouter from 'vue-router';
 
 import { NOIR_TOKEN_ADDRESS } from '@/consts';
 
 // DEFINE 2 assets in wallet
-api.accountDefaultAssetsAddresses = [XOR.address, NOIR_TOKEN_ADDRESS];
+api.assets.accountDefaultAssetsAddresses = [XOR.address, NOIR_TOKEN_ADDRESS];
 
 export const BASE_URL = process.env.BASE_URL;
 
