@@ -932,7 +932,8 @@
             "referredBy": "Du wurdest von {referrer} empfohlen",
             "info": "Wenn du eine Transaktionsgebühr zahlst,<br\/>gehen 10% an deinen Referrer",
             "referredLablel": "Empfohlene Adresse"
-        }
+        },
+        "insufficientBondedAmount": "Um weitere Empfehlungen einzuladen, verbinden Sie mindestens {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaktionsdetails",
     "createTokenTextNFT": "NFT erstellen",

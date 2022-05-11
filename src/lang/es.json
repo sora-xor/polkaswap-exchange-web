@@ -932,7 +932,8 @@
             "referredBy": "Has sido referido por {referrer}",
             "info": "Cuando pague una tarifa por la transacción,<br\/>el 10% se destinará a su referente",
             "referredLablel": "Dirección de referencia"
-        }
+        },
+        "insufficientBondedAmount": "Para invitar a más referencias, vincule al menos {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detalles de la transacción",
     "createTokenTextNFT": "Crear NFT",

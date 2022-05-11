@@ -838,12 +838,12 @@
         },
         "buttons": {
             "buy": "Գնել",
-            "history": "Tx Պատմություն",
+            "history": "Գնումներ",
             "transfer": "Սկսել կամուրջը",
             "view": "Դիտել գործարքը"
         },
         "history": {
-            "title": "Գնումների պատմություն",
+            "title": "Գնումներ պատմություն",
             "empty": "Տվյալներ չկան"
         },
         "confirmations": {
@@ -932,7 +932,8 @@
             "referredBy": "Ձեզ ուղղորդել է {referrer} ը",
             "info": "Երբ գործարքի համար վճար կվճարեք,<br\/>10%-ը կգնա ձեր ուղղորդողին",
             "referredLablel": "Նշված հասցեն"
-        }
+        },
+        "insufficientBondedAmount": "Ավելի շատ referrals հրավիրելու համար, bond առնվազն {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Գործարքի մանրամասները",
     "createTokenTextNFT": "Ստեղծեք NFT",

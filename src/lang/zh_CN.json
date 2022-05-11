@@ -932,7 +932,8 @@
             "referredBy": "您是由{推荐人}推荐的。",
             "info": "当您支付交易费用时， <br\/> 10% 将归您的推荐人",
             "referredLablel": "推荐地址"
-        }
+        },
+        "insufficientBondedAmount": "要邀请更多推荐，请至少绑定 {inviteUserFee} XOR"
     },
     "transactionDetailsText": "交易详情",
     "createTokenTextNFT": "创建 NFT",
