@@ -270,7 +270,6 @@ import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecima
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    TokenLogo: lazyComponent(Components.TokenLogo),
     SelectNetwork: lazyComponent(Components.SelectNetwork),
     SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),

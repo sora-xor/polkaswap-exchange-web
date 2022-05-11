@@ -947,7 +947,7 @@
         "title": "Giao dịch cầu nối thành công"
     },
     "mobilePopup": {
-        "sideMenu": "Tải ứng dụng Ví SORA",
+        "sideMenu": "Tải xuống Ví SORA",
         "header": "Tải xuống Ví SORA với các tính năng của <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Trao đổi mã thông báo từ các mạng khác nhau - SORA, Ethereum, Polkadot, Kusama. Cung cấp nhóm thanh khoản và kiếm% từ phí trao đổi."
     }
