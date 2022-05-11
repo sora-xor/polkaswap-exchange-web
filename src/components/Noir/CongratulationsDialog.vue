@@ -1,34 +1,31 @@
 <template>
   <dialog-base :visible.sync="visibility" custom-class="cart--8">
-    <div class="cart__row m-b-32">
-      <div class="corner">
-        <div class="wrap-confetti active">
-          <canvas ref="confetti" id="confetti" class="confetti"></canvas>
-        </div>
-        <div class="corner__inner">
-          <div class="corner__circle">
-            <img src="img/corner-circle-stroke.png" loading="lazy" alt="" class="corner__circle-stroke first" />
-            <img src="img/corner-circle-stroke.png" loading="lazy" alt="" class="corner__circle-stroke second" />
-          </div>
-        </div>
+    <div class="cart__row m-b-26">
+      <div class="wrap-confetti active">
+        <canvas ref="confetti" id="confetti" class="confetti"></canvas>
+      </div>
+      <div class="congratulations-image">
+        <img src="img/noir-nft.png" loading="lazy" alt="" />
       </div>
     </div>
 
-    <div class="cart__row m-b-10 t-a-c">
-      <div class="h3">- Noir</div>
+    <div class="cart__row m-b-14 t-a-c">
+      <div class="h3">Cheers!</div>
     </div>
 
-    <div class="cart__row m-b-26 text-2 t-a-c">We will contact you shortly</div>
-
-    <div class="cart__row m-b-44 text-1 t-a-c">
+    <div class="cart__row m-b-44 text-2 t-a-c t-t-u f-f-neuemontreal">
       Congratulations on your purchase of the
       <br />
       world's first sparkling wine
     </div>
 
+    <div class="cart__row m-b-26 text-2 t-a-c t-t-u">We will contact you shortly</div>
+
     <div class="cart__row">
-      <s-button type="secondary" size="big" class="btn w-100">Join the Noir Telegram Group</s-button>
+      <a target="_blank" href="https://t.me/noirdigitalgroup" class="el-button neumorphic s-secondary btn w-100">Join the Noir Telegram Group</a>
     </div>
+
+    <!-- <video id="player" class="video-overlay__video" loop="" muted="" autoplay="" playsinline="" src="video/confetti.webm"></video> -->
   </dialog-base>
 </template>
 
@@ -40,7 +37,7 @@ import { mutation, state } from '@/store/decorators';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
-import confetti from './confetti.js';
+// import confetti from './confetti.js';
 
 @Component({
   components: {
@@ -61,26 +58,32 @@ export default class CongratulationsDialog extends Mixins(DialogMixin) {
     this.setVisibility(flag);
   }
 
-  confetti: any = null;
+  // confetti: any = null;
 
-  mounted(): void {
-    this.$watch('visibility', (flag) => {
-      this.updateConfetti(flag);
-    });
-  }
+  // mounted(): void {
+  //   this.$watch('visibility', (flag) => {
+  //     this.updateConfetti(flag);
+  //   });
+  // }
 
-  async updateConfetti(flag: boolean): Promise<void> {
-    if (!this.confetti) {
-      this.confetti = confetti();
-    }
+  // async updateConfetti(flag: boolean): Promise<void> {
+  //   if (!this.confetti) {
+  //     this.confetti = confetti();
+  //   }
 
-    await this.$nextTick();
+  //   await this.$nextTick();
 
-    if (flag) {
-      this.confetti.run();
-    } else {
-      this.confetti.stop();
-    }
-  }
+  //   if (flag) {
+  //     this.confetti.run();
+  //   } else {
+  //     this.confetti.stop();
+  //   }
+  // }
 }
 </script>
+
+<style scoped lang="scss">
+.congratulations-image img {
+  max-width: 100%;
+}
+</style>

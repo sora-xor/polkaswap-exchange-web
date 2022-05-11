@@ -7,7 +7,7 @@
     <div class="blur-circle-1"></div>
     <div class="blur-circle-2"></div>
 
-    <img src="img/cart-float-img.png" loading="lazy" alt="" class="cart__float-img" />
+    <!-- <img src="img/cart-float-img.png" loading="lazy" alt="" class="cart__float-img" /> -->
 
     <div class="cart__content">
       <div class="cart__corner corner">
@@ -27,7 +27,7 @@
       </div>
 
       <div class="cart__row">
-        <div class="cart__title">New Moon Edition <span class="color-pink">1</span></div>
+        <div class="cart__title">NEW MOON EDITION 1</div>
       </div>
 
       <div :class="[isLoggedIn ? 'cart__spacer-2' : 'cart__spacer']"></div>
@@ -35,7 +35,7 @@
       <div v-if="!isLoggedIn" class="cart__row">
         <div class="pricing-stats">
           <div
-            class="qwest pricing-stats__qwest"
+            class="qwest pricing-stats__qwest pointer"
             data-text="Dynamic Pricing Stats Dynamic Pricing Stats Dynamic Pricing Stats"
           >
             ?
@@ -64,12 +64,12 @@
       <template v-if="isLoggedIn && tokenFrom && tokenTo">
         <table class="text-title-1 w-100 m-b-20">
           <tr>
-            <td class="opacity-03">XOR Balance</td>
+            <td>XOR Balance</td>
             <td class="t-a-r">{{ formattedXorBalance }} XOR</td>
           </tr>
 
           <tr>
-            <td class="opacity-03">NOIR Balance</td>
+            <td>NOIR Balance</td>
             <td class="t-a-r">{{ formattedNoirBalance }} NOIR</td>
           </tr>
         </table>
@@ -78,11 +78,11 @@
 
         <table v-if="tokenFrom" class="text-title-1 w-100 m-b-20">
           <tr>
-            <td class="opacity-03">Buy For:</td>
+            <td>Buy For:</td>
             <td class="t-a-r">{{ formatStringValue(fromValue) }} XOR</td>
           </tr>
           <tr>
-            <td class="opacity-03">Sell For:</td>
+            <td>Sell For:</td>
             <td class="t-a-r">{{ formatStringValue(fromValueReversed) }} XOR</td>
           </tr>
         </table>
@@ -91,7 +91,7 @@
 
         <table v-if="tokenFrom" class="text-title-1 w-100 m-b-20">
           <tr>
-            <td class="opacity-03">Network fee:</td>
+            <td>Network fee:</td>
             <td class="t-a-r">{{ formattedSwapNetworkFee }} XOR</td>
           </tr>
         </table>
@@ -105,7 +105,7 @@
             Buy and sell the first phygital wine with digital currency.
             <br />
             Delivered on demand worldwide.
-            <a class="color-pink" @click="openEditionDialog">Learn more</a>
+            <a class="color-pink pointer" @click="openEditionDialog">Learn more</a>
           </div>
         </div>
       </template>
@@ -214,8 +214,6 @@ export default class Cart extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
   liquidityReservesSubscription: Nullable<Subscription> = null;
   enabledAssetsSubscription: Nullable<Subscription> = null;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
-
-  redeemDialogVisibility = false;
 
   get formattedXorBalance(): string {
     return this.formatCodecNumber(this.xorBalance);
@@ -489,5 +487,10 @@ export default class Cart extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
 .bottle-animation {
   width: 203px;
   height: 504px;
+  background: transparent;
+
+  canvas {
+    background: transparent;
+  }
 }
 </style>

@@ -14,7 +14,7 @@
 
         <div class="cart__row m-b-26 text-1">
           <s-scrollbar class="custom-scroll">
-            <div class="max-h-300">
+            <div class="max-h-300 p-r-20">
               <p>
                 1. The Sale of Alcoholic Beverages The Company does not sell alcohol to persons under the age of 21. By
                 using this site you are representing that you are over the age of 21. The Company makes every effort to
@@ -60,7 +60,7 @@
       </template>
 
       <template v-else-if="currentStep === Steps.SelectCount">
-        <div class="cart__row text-title-1 p-t-20 t-a-c m-b-46">
+        <div class="cart__row text-title-2 p-t-20 t-a-c m-b-46 t-t-u">
           You must have a balance greater
           <br />
           than 1 NOIR to redeem.
@@ -70,7 +70,7 @@
           <big-counter v-model="redeemedCount" :min="1" :max="max" />
         </div>
 
-        <div class="cart__row text-1 t-a-c m-b-38">
+        <div class="cart__row text-1 t-a-c m-b-38 t-t-u">
           How many Noir would you like to
           <br />
           redeem at this time?
@@ -87,7 +87,7 @@
             <div class="h3 t-a-c">DHL Shipping Info</div>
           </div>
 
-          <div class="cart-row t-a-c m-b-20 text-1">
+          <div class="cart-row t-a-c m-b-20 text-2 t-t-u f-f-neuemontreal">
             If you wish to arrange for pickup, storage, or
             <br />
             courier service, it is fine to leave just an email.
@@ -111,17 +111,17 @@
           <div class="cart__row df-jcc m-b-20">
             <table class="table">
               <tr>
-                <td class="t-a-r text-2 p-r-20">NOIR Redeemed</td>
+                <td class="t-a-r text-1 p-r-20">NOIR Redeemed</td>
                 <td class="text-title-1 color-pink">{{ redeemedCount }} NOIR</td>
               </tr>
               <tr>
-                <td class="t-a-r text-2 p-r-20">XOR Transaction fee</td>
+                <td class="t-a-r text-1 p-r-20">XOR Transaction fee</td>
                 <td class="text-title-1 color-pink">{{ formatCodecNumber(transferNetworkFee) }} XOR</td>
               </tr>
             </table>
           </div>
 
-          <div class="cart__row m-b-12">
+          <div class="cart__row m-b-26">
             <s-button
               v-if="currentStep === Steps.ConfirmTx"
               native-type="submit"
@@ -145,7 +145,7 @@
             </a>
           </div>
 
-          <div class="cart-row t-a-c text-1">
+          <div class="cart-row t-a-c text-1 t-t-u">
             Acknowledge that I am over 21 years of age and
             <br />
             I am not acting in violation of my country's laws.

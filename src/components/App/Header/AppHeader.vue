@@ -7,12 +7,12 @@
         <img src="img/logo.svg" width="54" height="50" loading="lazy" alt="" class="logo__img" />
       </router-link>
 
-      <div class="redeem">
+      <!-- <div class="redeem">
         <img src="img/fire.png" loading="lazy" alt="" class="redeem__img" />
         <div class="redeem__text">
           <span class="color-pink">{{ totalRedeemed }}</span> <span>Redeemed</span>
         </div>
-      </div>
+      </div> -->
 
       <account-button class="account-btn" :disabled="loading" @click="connectInternalWallet" />
     </div>

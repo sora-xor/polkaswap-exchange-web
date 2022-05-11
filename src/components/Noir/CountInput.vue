@@ -1,5 +1,6 @@
 <template>
   <div class="quantity">
+    <div class="quantity-bg" />
     <button class="quantity__minus" @click="decrease">-</button>
     <s-float-input
       :value="String(count)"
@@ -47,6 +48,10 @@ export default class CountInput extends Vue {
 
 <style lang="scss">
 .quantity input {
+  font-family: 'Bon Vivant Family Serif' !important;
+  font-size: 20px !important;
+  line-height: 25px !important;
+  letter-spacing: 0.05em !important;
   text-align: center !important;
 }
 </style>
