@@ -22,7 +22,7 @@
     <div class="cart__row m-b-26 text-2 t-a-c t-t-u">We will contact you shortly</div>
 
     <div class="cart__row">
-      <a target="_blank" href="https://t.me/noirdigital" class="el-button neumorphic s-secondary btn w-100">Join the Noir Telegram Group</a>
+      <a target="_blank" href="https://t.me/noirdigitalgroup" class="el-button neumorphic s-secondary btn w-100">Join the Noir Telegram Group</a>
     </div>
 
     <!-- <video id="player" class="video-overlay__video" loop="" muted="" autoplay="" playsinline="" src="video/confetti.webm"></video> -->

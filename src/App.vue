@@ -15,10 +15,10 @@
 
     <footer class="app-footer">
       <div class="social-links">
-        <a class="social-link" target="_blank" href="" rel="noopener noreferrer">
+        <a class="social-link" target="_blank" href="http://twitter.com/drinknoir" rel="noopener noreferrer">
           <img src="img/twitter.svg" alt="" />
         </a>
-        <a class="social-link" target="_blank" href="https://t.me/noirdigital" rel="noopener noreferrer">
+        <a class="social-link" target="_blank" href="https://t.me/noirdigitalgroup" rel="noopener noreferrer">
           <img src="img/telegram.svg" alt="" />
         </a>
         <a class="social-link" target="_blank" href="https://www.instagram.com/drinknoir/" rel="noopener noreferrer">
