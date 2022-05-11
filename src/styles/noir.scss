@@ -589,7 +589,7 @@ html,
 body {
   color: #ffffff;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 14px;
   font-family: 'Sora', sans-serif;
 }
@@ -599,6 +599,8 @@ body {
 }
 
 .page {
+  display: flex;
+  flex-flow: column;
   background-image: url("../../public/img/noise-07-small.png"), linear-gradient(325.83deg, #0c0d13 14.58%, #586695 114.3%);
   min-height: 100vh;
   overflow-x: hidden;
@@ -789,6 +791,10 @@ a:hover {
   text-decoration: underline;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .btn {
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -944,6 +950,10 @@ a:hover {
   text-align: center;
 }
 
+.t-a-j {
+  text-align: justify;
+}
+
 .t-a-r {
   text-align: right;
 }
@@ -963,20 +973,31 @@ a:hover {
 
 .h3 {
   color: #ffffff;
+  font-family: 'Bon Vivant Family Serif';
   font-size: 27px;
-  font-weight: bold;
-  letter-spacing: 0.02em;
+  font-weight: 400;
+  letter-spacing: 0.05em;
   line-height: 40px;
+  text-transform: uppercase;
 }
 
 .text-title-1 {
   color: #ffffff;
   font-size: 15px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
   line-height: 18px;
-  font-family: 'Bon Vivant Family Serif';
+  font-family: 'Neue Montreal';
   font-weight: 400;
-  text-transform: uppercase;
+}
+
+.text-title-2 {
+  font-family: 'Bon Vivant Family Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 25px;
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
 }
 
 .text-title-1.color-pink {
@@ -985,12 +1006,11 @@ a:hover {
 
 .text-1 {
   color: white;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 20px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
   font-family: 'Neue Montreal';
   font-weight: 400;
-  text-transform: uppercase;
 }
 
 .text-1 p {
@@ -1003,9 +1023,11 @@ a:hover {
 }
 
 .text-2 {
+  font-family: 'Bon Vivant Family Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
   color: white;
-  font-size: 12px;
-  font-weight: 600;
   letter-spacing: 0.05em;
   line-height: 20px;
 }
@@ -1016,24 +1038,12 @@ a:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
-.max-h-200 {
-  max-height: 200px;
-  overflow-y: auto;
-}
-
 .max-h-250 {
   max-height: 250px;
-  overflow-y: auto;
 }
 
 .max-h-300 {
   max-height: 300px;
-  overflow-y: auto;
-}
-
-.max-h-350 {
-  max-height: 350px;
-  overflow-y: auto;
 }
 
 .max-w-300 {
@@ -1754,12 +1764,13 @@ a:hover {
 }
 
 .cart__currency {
+  font-size: 14px;
   font-family: 'Bon Vivant Family Serif';
   font-style: normal;
   font-weight: 400;
   line-height: 40px;
+  letter-spacing: 0.05em;
   max-width: 160px;
-  opacity: 0.3;
 }
 
 @media screen and (max-width: 640px) {
@@ -1774,7 +1785,8 @@ a:hover {
   font-size: 27px;
   font-weight: 400;
   line-height: 40px;
-  max-width: 160px;
+  letter-spacing: 0.05em;
+  max-width: 175px;
 }
 
 @media screen and (max-width: 640px) {
@@ -1824,11 +1836,13 @@ a:hover {
 }
 
 .cart__description {
-  color: rgba(255, 255, 255, 0.4);
-  font-weight: 600;
+  font-family: 'Neue Montreal';
+  font-weight: 400;
   line-height: 20px;
   margin-bottom: 16px;
+  letter-spacing: 0.05em;
   text-align: center;
+  text-transform: uppercase;
 }
 
 @media screen and (max-width: 640px) {
@@ -2048,9 +2062,11 @@ a:hover {
 }
 
 .cart .pricing-stats__text {
-  font-family: 'Bon Vivant Family Serif';
+  font-size: 10px;
+  font-family: 'Neue Montreal';
   font-weight: 400;
-  opacity: 0.5;
+  line-height: 15px;
+  letter-spacing: 0.05em;
 }
 
 .cart .available {
@@ -2174,8 +2190,7 @@ a:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  min-height: 100vh;
-  padding: 260px 0 150px 0;
+  padding: 260px 0 75px 0;
   position: relative;
 }
 
@@ -2241,7 +2256,7 @@ a:hover {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   -webkit-backdrop-filter: blur(25px);
           backdrop-filter: blur(25px);
   border-radius: 15px;
@@ -2255,12 +2270,11 @@ a:hover {
   z-index: 2;
 }
 
-.quantity::before {
-  content: '';
+.quantity-bg {
   position: absolute;
   width: 134px;
   height: 50px;
-  background: rgba(255, 255, 255, 0.1);
+  // background: rgba(255, 255, 255, 0.1);
   -webkit-backdrop-filter: blur(25px);
           backdrop-filter: blur(25px);
   border-radius: 15px;
@@ -2526,6 +2540,7 @@ a:hover {
 }
 
 .checkbox__text {
+  font-family: 'Bon Vivant Family Serif';
   -webkit-transition: color 0.3s;
   transition: color 0.3s;
 }

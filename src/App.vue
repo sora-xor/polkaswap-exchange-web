@@ -1,6 +1,6 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="page">
-    <img src="/img/greed.png" alt="" class="greed-img" />
+    <!-- <img src="/img/greed.png" alt="" class="greed-img" /> -->
 
     <app-header :loading="loading" />
 
@@ -14,6 +14,17 @@
     </div>
 
     <footer class="app-footer">
+      <div class="social-links">
+        <a class="social-link" target="_blank" href="" rel="noopener noreferrer">
+          <img src="img/twitter.svg" alt="" />
+        </a>
+        <a class="social-link" target="_blank" href="https://t.me/noirdigital" rel="noopener noreferrer">
+          <img src="img/telegram.svg" alt="" />
+        </a>
+        <a class="social-link" target="_blank" href="https://www.instagram.com/drinknoir/" rel="noopener noreferrer">
+          <img src="img/instagram.svg" alt="" />
+        </a>
+      </div>
       <div class="sora-logo">
         <span class="sora-logo__title">{{ t('poweredBy') }}</span>
         <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
@@ -89,10 +100,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (this.isWalletLoaded) {
         this.activateNetwokSubscriptions();
       }
-      this.subscribeOnRedemptionDataUpdates();
     } else {
       this.resetNetworkSubscriptions();
-      this.resetRedemptionDataSubscription();
     }
   }
 
@@ -140,6 +149,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         onDisconnect: this.handleNodeDisconnect,
         onReconnect: this.handleNodeReconnect,
       });
+
+      this.subscribeOnRedemptionDataUpdates();
     } catch (error) {
       // we handled error using callback, do nothing
     }
@@ -168,9 +179,16 @@ $sora-logo-width: 173.7px;
   &-footer {
     min-width: 800px;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     padding: 0 $basic-spacing-medium $basic-spacing-medium;
+  }
+}
+
+.social-link {
+  & + & {
+    margin-left: 20px;
   }
 }
 
@@ -181,7 +199,7 @@ $sora-logo-width: 173.7px;
   &__title {
     text-transform: uppercase;
     font-weight: 200;
-    color: var(--s-color-base-content-secondary);
+    color: var(--s-color-base-content-tertiary);
     font-size: 15px;
     line-height: 16px;
     margin-right: $basic-spacing;
