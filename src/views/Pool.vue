@@ -1,7 +1,7 @@
 <template>
   <div v-loading="parentLoading" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
-    <div v-loading="parentLoading" class="pool-wrapper">
+    <div v-loading="parentLoading" class="pool-wrapper" data-test-name="Pools">
       <p v-if="!isLoggedIn" class="pool-info-container pool-info-container--empty">
         {{ t('pool.connectToWallet') }}
       </p>
@@ -14,9 +14,6 @@
           :key="liquidityItem.address"
           :name="liquidityItem.address"
           class="pool-info-container"
-          :data-test-name="
-            getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress))
-          "
         >
           <template #title>
             <pair-token-logo
