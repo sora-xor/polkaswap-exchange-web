@@ -18,7 +18,8 @@
           </div>
         </div>
 
-        <img src="img/bottle.png" loading="lazy" alt="" class="corner__bottle-img" />
+        <!-- <img src="img/bottle.png" loading="lazy" alt="" class="corner__bottle-img" /> -->
+        <div id="bottle" class="corner__bottle-img bottle-animation" width="203" height="504" />
       </div>
 
       <div class="cart__row">
@@ -140,6 +141,8 @@ import { action, getter, mutation, state } from '@/store/decorators';
 import { hasInsufficientBalance, asZeroValue, formatAssetBalance, debouncedInputHandler } from '@/utils';
 import { lazyComponent } from '@/router';
 import { Components, NOIR_TOKEN_ADDRESS } from '@/consts';
+
+import bottle from './bottle.js';
 
 @Component({
   components: {
@@ -319,6 +322,10 @@ export default class Cart extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
     });
   }
 
+  mounted(): void {
+    bottle();
+  }
+
   formatBalance(token: AccountAsset): string {
     return formatAssetBalance(token);
   }
@@ -477,5 +484,10 @@ export default class Cart extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
 
 .cart .available {
   text-align: right;
+}
+
+.bottle-animation {
+  width: 203px;
+  height: 504px;
 }
 </style>
