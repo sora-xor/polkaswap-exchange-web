@@ -114,6 +114,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber } from '@sora-substrate/util';
 import type { CodecString } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -161,7 +162,9 @@ export default class ReferralProgram extends Mixins(
   }
 
   get rewards(): string {
-    return this.referralRewards?.rewards.toLocaleString() || '0';
+    if (!this.referralRewards?.rewards) return '0';
+
+    return FPNumber.fromCodecValue(this.referralRewards.rewards.toString()).toLocaleString();
   }
 
   get xorTokenPrice(): Nullable<CodecString> {
@@ -222,7 +225,7 @@ export default class ReferralProgram extends Mixins(
 
   getInvitedUserReward(invitedUser: string): string {
     if (typeof invitedUser === 'string' && this.invitedUserRewards[invitedUser]?.rewards) {
-      return this.formatCodecNumber(this.invitedUserRewards[invitedUser].rewards.toCodecString());
+      return this.formatCodecNumber(this.invitedUserRewards[invitedUser].rewards.toString());
     }
     return this.formatCodecNumber('0');
   }
