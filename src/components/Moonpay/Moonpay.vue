@@ -9,7 +9,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, State, Getter } from 'vuex-class';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
@@ -21,11 +20,10 @@ import MoonpayBridgeInitMixin from './MoonpayBridgeInitMixin';
 import { getCssVariableValue } from '@/utils';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { getter, state, mutation, action } from '@/store/decorators';
 import { MoonpayNotifications } from '@/components/Moonpay/consts';
 
 import type { MoonpayTransaction } from '@/utils/moonpay';
-
-const namespace = 'moonpay';
 
 @Component({
   components: {
@@ -38,17 +36,16 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
   widgetUrl = '';
   transactionsPolling!: VoidFunction;
 
-  @Getter account!: WALLET_TYPES.Account;
-  @Getter isLoggedIn!: boolean;
-  @Getter libraryTheme!: Theme;
-  @Getter('lastCompletedTransaction', { namespace }) lastCompletedTransaction!: MoonpayTransaction;
+  @getter.wallet.account.account private account!: WALLET_TYPES.Account;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.moonpay.lastCompletedTransaction lastCompletedTransaction!: Nullable<MoonpayTransaction>;
+  @getter.libraryTheme libraryTheme!: Theme;
 
-  @State((state) => state[namespace].pollingTimestamp) pollingTimestamp!: number;
-  @State((state) => state[namespace].dialogVisibility) dialogVisibility!: boolean;
-  @State((state) => state[namespace].notificationVisibility) notificationVisibility!: boolean;
+  @state.moonpay.pollingTimestamp private pollingTimestamp!: number;
+  @state.moonpay.dialogVisibility private dialogVisibility!: boolean;
 
-  @Action('setDialogVisibility', { namespace: 'moonpay' }) setDialogVisibility!: (flag: boolean) => Promise<void>;
-  @Action('createTransactionsPolling', { namespace }) createTransactionsPolling!: () => Promise<VoidFunction>;
+  @mutation.moonpay.setDialogVisibility private setDialogVisibility!: (flag: boolean) => void;
+  @action.moonpay.createTransactionsPolling private createTransactionsPolling!: () => Promise<VoidFunction>;
 
   @Watch('isLoggedIn', { immediate: true })
   private handleLoggedInStateChange(isLoggedIn: boolean): void {

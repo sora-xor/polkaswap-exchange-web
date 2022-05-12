@@ -7,6 +7,7 @@ module.exports = {
     // bundle all dependencies from node_modules to vendors
     config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
     config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
+
     // prepare icons content to unicode
     config.module.rules
       .filter((rule) => {
@@ -26,6 +27,39 @@ module.exports = {
       config.output.chunkFilename = `js/[name].[contenthash:8].${buildDateTime}.js`;
     }
   },
+  /* eslint-disable */
+  chainWebpack: (config) => {
+    const svgRule = config.module.rule('svg');
+    svgRule.uses.clear();
+    config.module.rule('svg')
+      .oneOf('inline-svg')
+        .resourceQuery(/inline/)
+        .use('babel')
+          .loader('babel-loader')
+        .end()
+        .use('vue-svg-loader')
+          .loader('vue-svg-loader')
+        .end()
+      .end()
+      .oneOf('file')
+        .use('file-loader')
+          .loader('file-loader')
+        .end()
+      .end();
+
+    // https://webpack.js.org/guides/asset-modules/
+    const imagesRule = config.module.rule('images');
+    imagesRule.uses.clear();
+    config.module.rule('images')
+      .oneOf('asset-inline')
+        .resourceQuery(/inline/)
+        .type('asset/inline')
+      .end()
+      .oneOf('asset')
+        .type('asset')
+      .end();
+  },
+  /* eslint-enable */
   css: {
     loaderOptions: {
       sass: {

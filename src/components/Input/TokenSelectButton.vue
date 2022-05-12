@@ -22,10 +22,11 @@ import TranslationMixin from '../mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
   components: {
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenLogo: components.TokenLogo,
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
   },
 })

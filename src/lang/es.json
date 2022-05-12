@@ -43,10 +43,11 @@
             "ClaimRewards": "{rewards} Recompensa reclamada correctamente",
             "ReferralReserveXor": "XOR viculado con éxito",
             "ReferralUnreserveXor": "XOR desvinculado con éxito",
-            "ReferralSetInvitedUser": "La referencia se estableció correctamente"
+            "ReferralSetInvitedUser": "La referencia se estableció correctamente",
+            "SwapAndSend": "Se cambió {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}"
         },
         "error": {
-            "Transfer": "Fallo en {acción} {importe} {símbolo} {dirección} {dirección}",
+            "Transfer": "Fallo en {action} {amount} {symbol} {direction} {address}",
             "Swap": "Fallo al intercambiar {amount} {symbol} por {amount2} {symbol2}",
             "AddLiquidity": "Fallo al suministrar {amount} {symbol} y {amount2} {symbol2}",
             "RemoveLiquidity": "Fallo al eliminar {amount} {symbol} y {amount2} {symbol2}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Fallo al reclamar Recompensas {rewards}",
             "ReferralReserveXor": "Error al vincular XOR",
             "ReferralUnreserveXor": "Error al desvincular XOR",
-            "ReferralSetInvitedUser": "No se pudo establecer la referencia"
+            "ReferralSetInvitedUser": "No se pudo establecer la referencia",
+            "SwapAndSend": "Error al cambiar {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}"
         },
         "ReferralReserveXor": "Vincular XOR",
         "ReferralUnreserveXor": "Desvincular XOR",
-        "ReferralSetInvitedUser": "Establecer referencia"
+        "ReferralSetInvitedUser": "Establecer referencia",
+        "SwapAndSend": "Intercambiar y enviar"
     },
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión Polkadot.js. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
@@ -141,12 +144,14 @@
         "details": "Detalles"
     },
     "asset": {
-        "remove": "Eliminar el Activo"
+        "remove": "Eliminar el Activo",
+        "select": "Escoja un activo",
+        "recieve": "Recibir {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "¡El Activo se ha añadido con éxito!",
+        "success": "¡El Activo {symbol} se ha añadido con éxito!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtrar por ID de Activo, Nombre o Símbolo bursátil (ticker)"
@@ -586,7 +591,6 @@
             "done": "Completo",
             "waitingForConfirmation": "Esperando confirmación..."
         },
-        "wait30Block": "Espere 30 confirmaciones de bloque",
         "viewInEtherscan": "Ver en Etherscan",
         "networkTitle": "Transacción de {network}",
         "transactionHash": "Hash de la transacción",
@@ -758,7 +762,7 @@
         },
         "events": {
             "XorErc20": "XOR ERC-20",
-            "SoraFarmHarvest": "@:(soraText).cosecha de la granja",
+            "SoraFarmHarvest": "@:(soraText).farm de la granja",
             "NtfAirdrop": "Lanzamiento de NFT",
             "LiquidityProvision": "Comisiones obtenidas por la provisión de Liquidez",
             "BuyOnBondingCurve": "haber comprado en la TBC",
@@ -772,7 +776,8 @@
         "claimableAmountDoneVesting": "Recompensas reclamables",
         "groups": {
             "strategic": "Recompensas estratégicas",
-            "external": "Recompensas para la cuenta de Ethereum conectada"
+            "external": "Recompensas para la cuenta de Ethereum conectada",
+            "crowdloan": "Recompensas de préstamo colectivo"
         },
         "Rewards": "Recompensas",
         "ReferralProgram": "@:referralProgram.title"
@@ -820,7 +825,7 @@
             },
             "transactionError": {
                 "title": "La transacción ha fallado",
-                "text": "Desafortunadamente, parece que la transacción @: moonpayText ha fallado. Inténtalo de nuevo. Para obtener asistencia de @:moonpayText, vaya a <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/support.moonpay.com <\/a>"
+                "text": "Desafortunadamente, parece que la transacción @:moonpayText ha fallado. Inténtalo de nuevo. Para obtener asistencia de @:moonpayText, vaya a <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/support.moonpay.com <\/a>"
             },
             "amountError": {
                 "title": "Saldo insuficiente",
@@ -881,8 +886,8 @@
         "connectAccount": "Para invitar a usuarios, debe conectar su cuenta SORA.",
         "bondedXOR": "XOR Vinculado",
         "referralsNumber": "{number} referencias",
-        "startInviting": "Para comenzar a invitar, vincule cualquier cantidad de XOR.",
-        "preview": "Invite a nuevos usuarios y obtenga el 10% de sus tarifas de transacción.<br \/>Para comenzar, vincule cualquier cantidad de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Más información<\/a>",
+        "startInviting": "Vincular XOR para remitir a otros",
+        "preview": "Invite a nuevos usuarios y obtenga el 10% de sus tarifas de transacción.<br\/>Para comenzar, vincule cualquier cantidad de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Más información<\/a>",
         "deposit": "Depositar",
         "balance": "balance",
         "networkFee": "@:networkFeeText",
@@ -915,8 +920,36 @@
             "hasReferrerTitle": "Ya has configurado tu referente",
             "hasReferrerDescription": "Desafortunadamente, solo puedes configurar uno",
             "ok": "OK"
-        }
+        },
+        "referrer": {
+            "title": "Agrega tu referente",
+            "titleReferrer": "Su referente",
+            "placeholder": "Introduce el enlace o el código de invitación",
+            "label": "Enlace o código de invitación",
+            "approve": "Aprobar",
+            "approved": "Aprobado",
+            "description": "Puede ser referido a Polkaswap,<br\/>escriba el enlace o el código del referente",
+            "referredBy": "Has sido referido por {referrer}",
+            "info": "Cuando pague una tarifa por la transacción,<br\/>el 10% se destinará a su referente",
+            "referredLablel": "Dirección de referencia"
+        },
+        "insufficientBondedAmount": "Para invitar a más referencias, vincule al menos {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detalles de la transacción",
-    "createTokenTextNFT": "Crear NFT"
+    "createTokenTextNFT": "Crear NFT",
+    "code": {
+        "download": "Descargar código QR",
+        "upload": "Escanear QR",
+        "recieve": "Recibir",
+        "invalid": "Código QR no válido"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Añadir {symbol} a @:metamask",
+        "title": "Transacción puente exitosa"
+    },
+    "mobilePopup": {
+        "sideMenu": "Obtén SORA Wallet",
+        "header": "Descargue SORA Wallet con características de <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Intercambie tokens de diferentes redes: SORA, Ethereum, Polkadot, Kusama. Proporcione un fondo de liquidez y gane un % de las tarifas de cambio."
+    }
 }

@@ -1,16 +1,16 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import { State, Action, Getter } from 'vuex-class';
 
 import TranslationMixin from './TranslationMixin';
 import { AppHandledError } from '@/utils/error';
 import { delay } from '@/utils';
+import { state, getter, mutation } from '@/store/decorators';
 import type { Node } from '@/types/nodes';
 
 @Component
 export default class NodeErrorMixin extends Mixins(TranslationMixin) {
-  @State((state) => state.settings.node) node!: Node;
-  @Getter nodeIsConnected!: boolean;
-  @Action setSelectNodeDialogVisibility!: (flag: boolean) => void;
+  @state.settings.node node!: Partial<Node>;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
+  @mutation.settings.setSelectNodeDialogVisibility setSelectNodeDialogVisibility!: (flag: boolean) => void;
 
   protected async handleNodeError(error, preferNotification = false): Promise<void> {
     const errorKey = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection';
@@ -23,7 +23,7 @@ export default class NodeErrorMixin extends Mixins(TranslationMixin) {
 
     if (!this.node.address) {
       this.setSelectNodeDialogVisibility(true);
-      await this.$nextTick(); // wail vdom update
+      await this.$nextTick(); // wait vdom update
       await delay(500); // wait for render select node modal
     }
 

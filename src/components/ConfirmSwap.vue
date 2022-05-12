@@ -4,7 +4,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
         <div v-if="tokenFrom" class="token">
-          <token-logo :token="tokenFrom" />
+          <token-logo class="token-logo" :token="tokenFrom" />
           {{ tokenFrom.symbol }}
         </div>
       </div>
@@ -12,7 +12,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedToValue }}</span>
         <div v-if="tokenTo" class="token">
-          <token-logo :token="tokenTo" />
+          <token-logo class="token-logo" :token="tokenTo" />
           {{ tokenTo.symbol }}
         </div>
       </div>
@@ -38,8 +38,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter, State } from 'vuex-class';
-import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
@@ -48,26 +47,25 @@ import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-
-const namespace = 'swap';
+import { state, getter } from '@/store/decorators';
 
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogMixin) {
-  @State((state) => state[namespace].fromValue) fromValue!: string;
-  @State((state) => state[namespace].toValue) toValue!: string;
-  @State((state) => state[namespace].isExchangeB) isExchangeB!: boolean;
+  @state.settings.slippageTolerance private slippageTolerance!: string;
+  @state.swap.fromValue private fromValue!: string;
+  @state.swap.toValue private toValue!: string;
+  @state.swap.isExchangeB isExchangeB!: boolean;
 
-  @Getter slippageTolerance!: string;
-  @Getter('tokenFrom', { namespace }) tokenFrom!: AccountAsset;
-  @Getter('tokenTo', { namespace }) tokenTo!: AccountAsset;
-  @Getter('minMaxReceived', { namespace }) minMaxReceived!: CodecString;
-  @Getter('swapLiquiditySource', { namespace }) liquiditySource!: LiquiditySourceTypes;
+  @getter.swap.minMaxReceived private minMaxReceived!: CodecString;
+  @getter.swap.swapLiquiditySource private liquiditySource!: LiquiditySourceTypes;
+  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
+  @getter.swap.tokenTo tokenTo!: AccountAsset;
 
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
 

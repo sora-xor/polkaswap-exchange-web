@@ -4,7 +4,7 @@
     <s-radio-group v-model="selectedNetworkId">
       <s-radio v-for="network in subNetworks" :key="network.id" :label="network.id" class="network">
         <span class="network-name">{{ t(`bridge.${network.name}`) }}</span>
-        <token-logo :tokenSymbol="network.symbol" />
+        <token-logo :token-symbol="network.symbol" />
       </s-radio>
     </s-radio-group>
   </dialog-base>
@@ -12,18 +12,17 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
 import { SubNetwork } from '@/utils/ethers-util';
 
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin) {
