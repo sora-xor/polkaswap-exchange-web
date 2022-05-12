@@ -15,7 +15,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -24,6 +23,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
 import { isXorAccountAsset } from '@/utils';
+import { action, getter } from '@/store/decorators';
 
 @Component({
   components: {
@@ -33,26 +33,15 @@ import { isXorAccountAsset } from '@/utils';
 export default class Wallet extends Mixins(TranslationMixin) {
   @Prop({ type: Boolean, default: false }) readonly parentLoading!: boolean;
 
-  @Getter('isAvailable', { namespace: 'addLiquidity' }) isAddLiquidityAvailable!: boolean;
+  @getter.addLiquidity.isAvailable private isAddLiquidityAvailable!: boolean;
 
-  @Action('setTokenFromAddress', { namespace: 'swap' }) setSwapFromAsset!: (address?: string) => Promise<void>;
-  @Action('setTokenToAddress', { namespace: 'swap' }) setSwapToAsset!: (address?: string) => Promise<void>;
-  @Action('setAssetAddress', { namespace: 'bridge' }) setBridgeAsset!: (address?: string) => Promise<void>;
-  @Action('setFirstTokenAddress', { namespace: 'addLiquidity' }) setAddliquidityAssetA!: (
-    address?: string
-  ) => Promise<void>;
-
-  @Action('setSecondTokenAddress', { namespace: 'addLiquidity' }) setAddliquidityAssetB!: (
-    address?: string
-  ) => Promise<void>;
-
-  @Action('setFirstTokenAddress', { namespace: 'createPair' }) setCreatePairAssetA!: (
-    address?: string
-  ) => Promise<void>;
-
-  @Action('setSecondTokenAddress', { namespace: 'createPair' }) setCreatePairAssetB!: (
-    address?: string
-  ) => Promise<void>;
+  @action.swap.setTokenFromAddress private setSwapFromAsset!: (address?: string) => Promise<void>;
+  @action.swap.setTokenToAddress private setSwapToAsset!: (address?: string) => Promise<void>;
+  @action.bridge.setAssetAddress private setBridgeAsset!: (address?: string) => Promise<void>;
+  @action.addLiquidity.setFirstTokenAddress private setAddliquidityAssetA!: (address: string) => Promise<void>;
+  @action.addLiquidity.setSecondTokenAddress private setAddliquidityAssetB!: (address: string) => Promise<void>;
+  @action.createPair.setFirstTokenAddress private setCreatePairAssetA!: (address?: string) => Promise<void>;
+  @action.createPair.setSecondTokenAddress private setCreatePairAssetB!: (address?: string) => Promise<void>;
 
   showAboutNetworkDialog = false;
 

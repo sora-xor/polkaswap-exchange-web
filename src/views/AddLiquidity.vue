@@ -11,12 +11,13 @@
         class="s-input--token-value"
         size="medium"
         :value="firstTokenValue"
-        :decimals="(firstToken || {}).decimals"
+        :decimals="firstTokenDecimals"
         has-locale-string
         :delimiters="delimiters"
-        :max="getMax((firstToken || {}).address)"
+        :max="getMax(firstTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setFirstTokenValue)"
+        @focus="setFocusedField('firstTokenValue')"
         @blur="resetFocusedField"
       >
         <div slot="top" class="input-line">
@@ -42,7 +43,7 @@
             alternative
             size="mini"
             border-radius="mini"
-            @click="handleMaxValue(firstToken, setFirstTokenValue)"
+            @click="handleAddLiquidityMaxValue(firstToken, setFirstTokenValue)"
           >
             {{ t('buttons.max') }}
           </s-button>
@@ -64,12 +65,13 @@
         class="s-input--token-value"
         size="medium"
         :value="secondTokenValue"
-        :decimals="(secondToken || {}).decimals"
+        :decimals="secondTokenDecimals"
         has-locale-string
         :delimiters="delimiters"
-        :max="getMax((secondToken || {}).address)"
+        :max="getMax(secondTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setSecondTokenValue)"
+        @focus="setFocusedField('secondTokenValue')"
         @blur="resetFocusedField"
       >
         <div slot="top" class="input-line">
@@ -95,7 +97,7 @@
             alternative
             size="mini"
             border-radius="mini"
-            @click="handleMaxValue(secondToken, setSecondTokenValue)"
+            @click="handleAddLiquidityMaxValue(secondToken, setSecondTokenValue)"
           >
             {{ t('buttons.max') }}
           </s-button>
@@ -122,6 +124,7 @@
         type="primary"
         class="action-button s-typography-button--large"
         :disabled="!areTokensSelected || isEmptyBalance || isInsufficientBalance || !isAvailable"
+        :loading="isSelectAssetLoading"
         @click="handleAddLiquidity"
       >
         <template v-if="!areTokensSelected">
@@ -151,7 +154,7 @@
       :visible.sync="showSelectSecondTokenDialog"
       :connected="isLoggedIn"
       :asset="firstToken"
-      @select="setSecondTokenAddress($event.address)"
+      @select="selectSecondTokenAddress($event.address)"
     />
 
     <confirm-token-pair-dialog
@@ -162,7 +165,6 @@
       :second-token="secondToken"
       :first-token-value="firstTokenValue"
       :second-token-value="secondTokenValue"
-      :minted="formattedMinted"
       :price="price"
       :price-reversed="priceReversed"
       :slippage-tolerance="slippageTolerance"
@@ -179,19 +181,23 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TokenPairMixinInstance from '@/components/mixins/TokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { getter, action, mutation, state } from '@/store/decorators';
+import { TokenPairNamespace } from '@/components/mixins/BaseTokenPairMixin';
+import type { LiquidityParams } from '@/store/pool/types';
+import type { FocusedField } from '@/store/addLiquidity/types';
 
-const namespace = 'addLiquidity';
+const namespace = TokenPairNamespace.AddLiquidity;
 
 const TokenPairMixin = TokenPairMixinInstance(namespace);
 
@@ -199,32 +205,35 @@ const TokenPairMixin = TokenPairMixinInstance(namespace);
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
-    TokenLogo: lazyComponent(Components.TokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress),
     AddLiquidityTransactionDetails: lazyComponent(Components.AddLiquidityTransactionDetails),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
+    TokenAddress: components.TokenAddress,
   },
 })
 export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string;
-  @Getter('liquidityInfo', { namespace }) liquidityInfo!: AccountLiquidity;
-
-  @Action('setDataFromLiquidity', { namespace }) setDataFromLiquidity!: (params: any) => Promise<void>;
-  @Action('addLiquidity', { namespace }) addLiquidity!: AsyncVoidFn;
-  @Action('resetFocusedField', { namespace }) resetFocusedField!: AsyncVoidFn;
-
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+
+  @state.addLiquidity.focusedField private focusedField!: FocusedField;
+
+  @getter.addLiquidity.shareOfPool shareOfPool!: string;
+  @getter.addLiquidity.liquidityInfo liquidityInfo!: Nullable<AccountLiquidity>;
+
+  @action.addLiquidity.addLiquidity private addLiquidity!: AsyncVoidFn;
+  @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>;
+
+  @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
+  @mutation.addLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
 
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
       if (this.firstAddress && this.secondAddress) {
-        await this.setDataFromLiquidity({
+        await this.setData({
           firstAddress: this.firstAddress,
           secondAddress: this.secondAddress,
         });
@@ -265,8 +274,14 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
     return this.isXorSufficientForNextTx({
       type: Operation.AddLiquidity,
       amount: this.getFPNumber(this.firstTokenValue),
-      xorBalance: this.getFPNumberFromCodec(this.getTokenBalance(this.firstToken)),
     });
+  }
+
+  handleAddLiquidityMaxValue(token: Nullable<AccountAsset>, setValue: (v: string) => Promise<void>): void {
+    if (this.focusedField) {
+      this.resetFocusedField();
+    }
+    this.handleMaxValue(token, setValue);
   }
 
   async handleAddLiquidity(): Promise<void> {

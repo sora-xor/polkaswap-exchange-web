@@ -6,7 +6,7 @@
     class="node-info s-flex"
     @submit.native.prevent="submitForm"
   >
-    <generic-page-header has-button-back :title="title" @back="handleClickBack($event)">
+    <generic-page-header has-button-back :title="title" @back.stop="handleBack">
       <template v-if="existing && removable">
         <s-button type="action" icon="basic-trash-24" @click="removeNode(nodeModel)" />
       </template>
@@ -60,6 +60,8 @@ import { NodeModel } from './consts';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
+import type { Node } from '@/types/nodes';
+
 const checkAddress = (
   translate: TranslationMixin['t']
 ): ((rule: unknown, value: Nullable<string>, callback: (error?: Error) => void) => void) => {
@@ -107,7 +109,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     address: [{ validator: checkAddress(this.t), trigger: 'blur' }],
   };
 
-  nodeModel: any = { ...NodeModel };
+  nodeModel: Partial<Node> = { ...NodeModel };
 
   created(): void {
     this.nodeModel = Object.keys(NodeModel).reduce(
@@ -143,20 +145,13 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     return this.nodeModel.name !== this.node.name || this.nodeModel.address !== this.node.address;
   }
 
-  handleClickBack(event?: Event): void {
-    if (event) {
-      event.stopImmediatePropagation();
-    }
-    this.handleBack();
-  }
-
   async submitForm(): Promise<void> {
     try {
       await (this.$refs.nodeForm as any).validate();
 
       const preparedModel = {
         ...this.nodeModel,
-        address: stripEndingSlash(this.nodeModel.address),
+        address: stripEndingSlash((this.nodeModel as Node).address),
       };
 
       this.handleNode(preparedModel, !this.existing || this.nodeDataChanged);

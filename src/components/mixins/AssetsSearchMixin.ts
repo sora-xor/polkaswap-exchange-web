@@ -1,15 +1,13 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Ref, Vue } from 'vue-property-decorator';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class AssetsSearchMixin extends Vue {
-  public focusSearchInput(): void {
-    const input = this.$refs.search as any;
+  @Ref('search') readonly search!: any;
 
-    if (input && typeof input.focus === 'function') {
-      input.focus();
-    }
+  public focusSearchInput(): void {
+    this.search?.focus();
   }
 
   public filterAssetsByQuery(assets: Array<Asset | AccountAsset | RegisteredAccountAsset>, isRegisteredAssets = false) {

@@ -1,7 +1,8 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
+import type { Subscription } from '@polkadot/x-rxjs';
 
 export class TokenBalanceSubscriptions {
-  private subscriptions: Map<string, any>;
+  private subscriptions: Map<string, Subscription>;
 
   constructor() {
     this.subscriptions = new Map();
@@ -14,7 +15,7 @@ export class TokenBalanceSubscriptions {
 
   remove(key: string, { updateBalance }): void {
     if (this.subscriptions.has(key)) {
-      const subscription = this.subscriptions.get(key);
+      const subscription = this.subscriptions.get(key) as Subscription;
       subscription.unsubscribe();
       this.subscriptions.delete(key);
       updateBalance(null);
