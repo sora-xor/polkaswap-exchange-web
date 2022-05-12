@@ -49,7 +49,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Getter, Action, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { AccountMarketMakerInfo } from '@sora-substrate/util/build/rewards/types';
@@ -58,9 +57,10 @@ import Countdown from './Countdown.vue';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { Links, ZeroStringValue } from '@/consts';
+import { action, getter, mutation, state } from '@/store/decorators';
 
 const REQUIRED_TX_COUNT = 500;
-const BLOCKS_IN_DAY = 14400;
+const BLOCKS_IN_DAY = 14_400;
 const BLOCKS_IN_MONTH = BLOCKS_IN_DAY * 30;
 
 @Component({
@@ -70,17 +70,17 @@ const BLOCKS_IN_MONTH = BLOCKS_IN_DAY * 30;
   },
 })
 export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterMixin, TranslationMixin) {
-  @Action('subscribeOnAccountMarketMakerInfo', { namespace: 'rewards' })
-  subscribeOnAccountMarketMakerInfo!: AsyncVoidFn;
+  @action.rewards.subscribeOnAccountMarketMakerInfo
+  private subscribeOnAccountMarketMakerInfo!: AsyncVoidFn;
 
-  @Action('unsubscribeAccountMarketMakerInfo', { namespace: 'rewards' })
-  unsubscribeAccountMarketMakerInfo!: AsyncVoidFn;
+  @mutation.rewards.unsubscribeAccountMarketMakerInfo
+  private unsubscribeAccountMarketMakerInfo!: VoidFunction;
 
-  @Getter isLoggedIn!: boolean;
-  @Getter nodeIsConnected!: boolean;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
-  @State((state) => state.rewards.accountMarketMakerInfo) accountMarketMakerInfo!: Nullable<AccountMarketMakerInfo>;
-  @State((state) => state.settings.blockNumber) blockNumber!: number;
+  @state.settings.blockNumber private blockNumber!: number;
+  @state.rewards.accountMarketMakerInfo accountMarketMakerInfo!: Nullable<AccountMarketMakerInfo>;
 
   @Watch('isLoggedIn')
   @Watch('nodeIsConnected')
@@ -88,7 +88,7 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
     if (value) {
       await this.subscribeOnAccountMarketMakerInfo();
     } else {
-      await this.unsubscribeAccountMarketMakerInfo();
+      this.unsubscribeAccountMarketMakerInfo();
     }
   }
 

@@ -18,7 +18,7 @@
       </div>
     </div>
     <p class="transaction-message">
-      {{ t('removeLiquidity.outputMessage', { slippageTolerance: formatStringValue(`${slippageTolerance}`) }) }}
+      {{ t('removeLiquidity.outputMessage', { slippageTolerance: formatStringValue(slippageTolerance) }) }}
     </p>
     <s-divider />
     <remove-liquidity-transaction-details />
@@ -37,7 +37,6 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
@@ -46,14 +45,13 @@ import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-
-const namespace = 'removeLiquidity';
+import { state, getter } from '@/store/decorators';
 
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo),
     RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class ConfirmRemoveLiquidity extends Mixins(
@@ -62,18 +60,14 @@ export default class ConfirmRemoveLiquidity extends Mixins(
   DialogMixin,
   mixins.LoadingMixin
 ) {
-  @State((state) => state[namespace].liquidityAmount) liquidityAmount!: string;
-  @State((state) => state[namespace].firstTokenAmount) firstTokenAmount!: string;
-  @State((state) => state[namespace].secondTokenAmount) secondTokenAmount!: string;
+  @state.removeLiquidity.liquidityAmount private liquidityAmount!: string;
+  @state.removeLiquidity.firstTokenAmount private firstTokenAmount!: string;
+  @state.removeLiquidity.secondTokenAmount private secondTokenAmount!: string;
 
-  @Getter('firstToken', { namespace }) firstToken!: Asset;
-  @Getter('secondToken', { namespace }) secondToken!: Asset;
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string;
+  @getter.removeLiquidity.firstToken firstToken!: Asset;
+  @getter.removeLiquidity.secondToken secondToken!: Asset;
 
-  @Getter('price', { namespace: 'prices' }) price!: string;
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string;
-
-  @Getter slippageTolerance!: string;
+  @state.settings.slippageTolerance slippageTolerance!: string;
 
   get formattedFromValue(): string {
     return this.formatStringValue(this.firstTokenAmount);

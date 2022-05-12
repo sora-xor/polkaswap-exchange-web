@@ -8,10 +8,17 @@ import { SubqueryExplorerService, historyElementsFilter, SUBQUERY_TYPES } from '
 import ethersUtil from '@/utils/ethers-util';
 import { bridgeApi } from './api';
 import { STATES } from './types';
-import { isOutgoingTransaction, getSoraHashByEthereumHash, getEvmTxRecieptByHash } from './utils';
+import {
+  isOutgoingTransaction,
+  getSoraHashByEthereumHash,
+  getEvmTxRecieptByHash,
+  getSoraBlockHash,
+  getSoraBlockTimestamp,
+} from './utils';
 import { ZeroStringValue } from '@/consts';
 
-import type { BridgeHistory, NetworkFeesObject, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';
+import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
+import type { RegisteredAccountAssetObject } from '@/store/assets/types';
 
 type DataMap<T> = {
   [key: string]: T;
@@ -59,7 +66,9 @@ export class EthBridgeHistory {
     this.etherscanInstance = new ethers.providers.EtherscanProvider(network, this.etherscanApiKey);
   }
 
-  private async getEthStartBlock(timestamp: number) {
+  private async getEthStartBlock(timestampMs: number): Promise<number> {
+    const timestamp = Math.round(timestampMs / 1000); // in seconds
+
     if (!this.ethStartBlock[timestamp]) {
       this.ethStartBlock[timestamp] = +(await this.etherscanInstance.fetch('block', {
         action: 'getblocknobytime',
@@ -118,6 +127,20 @@ export class EthBridgeHistory {
     }, {});
   }
 
+  private async getFromTimestamp(historyElements: HistoryElement[]) {
+    const historyElement = last(historyElements) as HistoryElement;
+
+    // if the last item is Incoming trasfer, timestamp will be sora network start time
+    if (historyElement.module === SUBQUERY_TYPES.ModuleNames.BridgeMultisig) {
+      const soraStartBlock = await getSoraBlockHash(1);
+      const soraStartTimestamp = await getSoraBlockTimestamp(soraStartBlock);
+
+      return soraStartTimestamp;
+    }
+
+    return historyElement.timestamp * 1000;
+  }
+
   public async findEthTxBySoraHash(
     address: string,
     hash: string,
@@ -151,9 +174,9 @@ export class EthBridgeHistory {
     return await ethersUtil.getEvmTransaction(ethereumHash);
   }
 
-  public async fetchHistoryElements(address: string, timestamp = 0): Promise<HistoryElement[]> {
+  public async fetchHistoryElements(address: string, timestamp = 0, ids?: string[]): Promise<HistoryElement[]> {
     const operations = [Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming];
-    const filter = historyElementsFilter({ address, operations, timestamp });
+    const filter = historyElementsFilter({ address, operations, timestamp, ids });
     const history: HistoryElement[] = [];
 
     let hasNext = true;
@@ -176,10 +199,10 @@ export class EthBridgeHistory {
 
   public async updateAccountHistory(
     address: string,
-    assets: { [key: string]: RegisteredAccountAsset & RegisteredAsset },
+    assets: RegisteredAccountAssetObject,
     networkFees: NetworkFeesObject,
     contracts?: string[],
-    updateCallback?: AsyncVoidFn
+    updateCallback?: AsyncVoidFn | VoidFunction
   ): Promise<void> {
     const currentHistory = bridgeApi.historyList as BridgeHistory[];
     const historyElements = await this.fetchHistoryElements(address, this.historySyncTimestamp);
@@ -188,7 +211,7 @@ export class EthBridgeHistory {
 
     const { externalNetwork } = this;
 
-    const fromTimestamp = last(historyElements)?.timestamp as number;
+    const fromTimestamp = await this.getFromTimestamp(historyElements);
     const historySyncTimestampUpdated = first(historyElements)?.timestamp as number;
 
     for (const historyElement of historyElements) {
@@ -200,11 +223,15 @@ export class EthBridgeHistory {
       const historyElementData = historyElement.data as HistoryElementData;
       const requestHash = historyElementData.requestHash;
 
-      const historyItem = currentHistory.find((item: BridgeHistory) =>
-        isOutgoing ? item.hash === requestHash : item.ethereumHash === requestHash
-      );
+      const localHistoryItem = currentHistory.find((item: BridgeHistory) => {
+        return (
+          item.txId === historyElement.id ||
+          (isOutgoing ? item.hash === requestHash : item.ethereumHash === requestHash)
+        );
+      });
 
-      if (historyItem) continue;
+      // skip, if local bridge transaction has "Done" status
+      if (localHistoryItem?.status === BridgeTxStatus.Done) continue;
 
       const hash = isOutgoing ? requestHash : await getSoraHashByEthereumHash(this.externalNetwork, requestHash);
       const amount = historyElementData.amount;
@@ -222,7 +249,9 @@ export class EthBridgeHistory {
       const transactionStep = soraPartCompleted ? 2 : 1;
 
       const ethereumTx = isOutgoing
-        ? await this.findEthTxBySoraHash(historyElementData.sidechainAddress, hash, fromTimestamp, contracts)
+        ? soraPartCompleted
+          ? await this.findEthTxBySoraHash(historyElementData.sidechainAddress, hash, fromTimestamp, contracts)
+          : null
         : await this.findEthTxByEthereumHash(requestHash);
 
       const ethereumHash = ethereumTx?.hash ?? '';
@@ -231,7 +260,11 @@ export class EthBridgeHistory {
       const to = isOutgoing ? historyElementData.sidechainAddress : recieptData?.from;
       const ethereumNetworkFee = recieptData?.ethereumNetworkFee;
       const blockHeight = ethereumTx ? String(ethereumTx.blockNumber) : undefined;
-      const evmTimestamp = ethereumTx?.timestamp ? ethereumTx.timestamp * 1000 : Date.now();
+      const evmTimestamp = ethereumTx?.timestamp
+        ? ethereumTx.timestamp * 1000
+        : ethereumTx?.blockNumber
+        ? (await ethersUtil.getBlock(ethereumTx.blockNumber)).timestamp * 1000
+        : Date.now();
 
       const [startTime, endTime] = isOutgoing ? [soraTimestamp, evmTimestamp] : [evmTimestamp, soraTimestamp];
 
@@ -255,7 +288,7 @@ export class EthBridgeHistory {
           : BridgeTxStatus.Failed
         : BridgeTxStatus.Done;
 
-      bridgeApi.generateHistoryItem({
+      const historyItemData = {
         txId,
         type,
         blockId,
@@ -275,7 +308,14 @@ export class EthBridgeHistory {
         transactionState,
         externalNetwork,
         to,
-      });
+      };
+
+      // update or create local history item
+      if (localHistoryItem) {
+        bridgeApi.saveHistory({ ...localHistoryItem, ...historyItemData } as BridgeHistory);
+      } else {
+        bridgeApi.generateHistoryItem(historyItemData as BridgeHistory);
+      }
 
       await updateCallback?.();
     }

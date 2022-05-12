@@ -25,7 +25,7 @@ export const getSupportedLocale = (locale: Language): string => {
   if (hasLocale(locale)) return locale;
 
   if (locale.includes('-')) {
-    return getSupportedLocale(first(locale.split('-')) as any);
+    return getSupportedLocale(first(locale.split('-')) as Language);
   }
 
   return Language.EN;
@@ -34,18 +34,27 @@ export const getSupportedLocale = (locale: Language): string => {
 export function getLocale(): string {
   const locale = settingsStorage.get('language') || ((navigator.language || (navigator as any).userLanguage) as string);
 
-  return getSupportedLocale(locale as any);
+  return getSupportedLocale(locale as Language);
 }
 
 export async function setDayJsLocale(lang: Language): Promise<void> {
   const locale = getSupportedLocale(lang);
-  const code = first(locale.split('-')) as string;
+  let code = first(locale.split('-')) as string;
+  // There is no "no" lang, let's keep it for now, "en" will be used by default
+  switch (code) {
+    case 'zh':
+      code = 'zh-cn';
+      break;
+    case 'hy':
+      code = 'hy-am';
+      break;
+  }
 
   try {
     // importing dayjs locale file automatically runs `dayjs.locale(code)`
     // "webpackInclude" - optimization to exclude unused files from "chunk-vendors"
     await import(
-      /* webpackInclude: /(en|ru|cs|de|es|fr|hy|id|it|nl|no|pl|yo)\.js$/ */
+      /* webpackInclude: /(en|ru|cs|de|es|fr|hr|hu|hy-am|id|it|nl|no|pl|sk|sr|sv|vi|yo|zh-cn)\.js$/ */
       /* webpackChunkName: "dayjs-locale-[request]" */
       /* webpackMode: "lazy" */
       `dayjs/locale/${code}.js`
@@ -56,7 +65,7 @@ export async function setDayJsLocale(lang: Language): Promise<void> {
 }
 
 export async function setI18nLocale(lang: Language): Promise<void> {
-  const locale = getSupportedLocale(lang) as any;
+  const locale = getSupportedLocale(lang) as Language;
 
   if (!loadedLanguages.includes(locale)) {
     // transform locale string 'eu-ES' to filename 'eu_ES' like in localise

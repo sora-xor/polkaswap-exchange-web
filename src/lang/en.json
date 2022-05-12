@@ -43,7 +43,8 @@
             "ClaimRewards": "Reward claimed successfully {rewards}",
             "ReferralReserveXor": "Bonded XOR successfully",
             "ReferralUnreserveXor": "Unbonded XOR successfully",
-            "ReferralSetInvitedUser": "Referral is set successfully"
+            "ReferralSetInvitedUser": "Referral is set successfully",
+            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Failed to claim rewards {rewards}",
             "ReferralReserveXor": "Failed to bond XOR",
             "ReferralUnreserveXor": "Failed to unbond XOR",
-            "ReferralSetInvitedUser": "Failed to set referral"
+            "ReferralSetInvitedUser": "Failed to set referral",
+            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
-        "ReferralSetInvitedUser": "Set Referral"
+        "ReferralSetInvitedUser": "Set Referral",
+        "SwapAndSend": "Swap and Send"
     },
     "polkadotjs": {
         "noExtensions": "No Polkadot.js extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -73,7 +76,7 @@
         "noPermissions": "Accidentally rejected permission request?<\/br>Currently polkadot{.js} extension doesn’t have permission managment. As a workaround you can restart your browser and revisit this page to proceed with authorization.",
         "noAccounts": "No account found in your polkadot{.js} browser extension. Please add an account and try again.",
         "selectAccount": "Select account to work with",
-        "loadingTitle": "Waiting for you to allow access to polkadot{.js} extension..",
+        "loadingTitle": "Waiting for you to allow access to polkadot{.js} extension.",
         "action": {
             "install": "Install extension",
             "learnMore": "Learn more",
@@ -141,12 +144,14 @@
         "details": "Details"
     },
     "asset": {
-        "remove": "Remove asset"
+        "remove": "Remove asset",
+        "select": "Select an asset",
+        "recieve": "Receive {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Asset was added successfully!",
+        "success": "Asset {symbol} was added successfully!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filter by Asset ID, Name or Ticker Symbol"
@@ -586,7 +591,6 @@
             "done": "Complete",
             "waitingForConfirmation": "Waiting for confirmation..."
         },
-        "wait30Block": "Please wait 30 block confirmations",
         "viewInEtherscan": "View in Etherscan",
         "networkTitle": "{network} transaction",
         "transactionHash": "Transaction hash",
@@ -772,7 +776,8 @@
         "claimableAmountDoneVesting": "Claimable rewards",
         "groups": {
             "strategic": "Strategic Rewards",
-            "external": "Rewards for the connected ethereum account"
+            "external": "Rewards for the connected ethereum account",
+            "crowdloan": "Crowdloan rewards"
         },
         "Rewards": "Rewards",
         "ReferralProgram": "@:referralProgram.title"
@@ -881,8 +886,8 @@
         "connectAccount": "To invite users you need to connect your SORA account.",
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} referrals",
-        "startInviting": "To start inviting, bond any amount of XOR.",
-        "preview": "Invite new users and get 10% from their transaction fees.<br \/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
+        "startInviting": "Bond XOR to refer others",
+        "preview": "Invite new users and get 10% from their transaction fees.<br\/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Balance",
         "networkFee": "@:networkFeeText",
@@ -915,8 +920,36 @@
             "hasReferrerTitle": "You’ve already set your referrer",
             "hasReferrerDescription": "Unfortunately, you can only set one",
             "ok": "OK"
-        }
+        },
+        "referrer": {
+            "title": "Add your referrer",
+            "titleReferrer": "Your referrer",
+            "placeholder": "Enter invitation link or code",
+            "label": "Invitation link or code",
+            "approve": "Approve",
+            "approved": "Approved",
+            "description": "You can get referred to Polkaswap,<br\/>type in the link or code of the referrer",
+            "referredBy": "You’ve been referred by {referrer}",
+            "info": "When you’ll pay a fee for transaction,<br\/>10% will go to your referrer",
+            "referredLablel": "Referred address"
+        },
+        "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaction Details",
-    "createTokenTextNFT": "Create NFT"
+    "createTokenTextNFT": "Create NFT",
+    "code": {
+        "download": "Download QR Code",
+        "upload": "Scan QR",
+        "recieve": "Receive",
+        "invalid": "Invalid QR Code"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Add {symbol} to @:metamask",
+        "title": "Bridge transaction successful"
+    },
+    "mobilePopup": {
+        "sideMenu": "Get SORA Wallet",
+        "header": "Download SORA Wallet with <span class=\"popup-info__headline--highlight\">Polkaswap<\/span> features",
+        "info": "Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees."
+    }
 }
