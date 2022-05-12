@@ -932,7 +932,8 @@
             "referredBy": "Sei stato indirizzato da {referrer}",
             "info": "Quando pagherai una commissione per la transazione,<br\/>10% andrà al tuo referrer",
             "referredLablel": "Indirizzo di riferimento"
-        }
+        },
+        "insufficientBondedAmount": "Per invitare più referral, vincola almeno {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Dettagli di Transazione",
     "createTokenTextNFT": "Crea NFT",

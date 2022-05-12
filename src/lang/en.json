@@ -932,7 +932,8 @@
             "referredBy": "You’ve been referred by {referrer}",
             "info": "When you’ll pay a fee for transaction,<br\/>10% will go to your referrer",
             "referredLablel": "Referred address"
-        }
+        },
+        "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaction Details",
     "createTokenTextNFT": "Create NFT",

@@ -932,7 +932,8 @@
             "referredBy": "Vous avez été référé par {referrer}",
             "info": "Lorsque vous paierez des frais pour la transaction,<br\/>10% iront à votre parrain",
             "referredLablel": "Adresse référencée"
-        }
+        },
+        "insufficientBondedAmount": "Pour inviter plus de références, liez au moins {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Détails de la transaction",
     "createTokenTextNFT": "Créer NFT",

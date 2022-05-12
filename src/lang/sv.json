@@ -44,7 +44,7 @@
             "ReferralReserveXor": "XOR Bonded framgångsrikt",
             "ReferralUnreserveXor": "XOR Unbonded framgångsrikt",
             "ReferralSetInvitedUser": "Hänvisning tillämpades framgångsrikt",
-            "SwapAndSend": "Bytte {amount} {symbol} mot {amount2} {symbol2}"
+            "SwapAndSend": "Bytte {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Misslyckades att skicka {amount} {symbol} till {address}",
@@ -57,7 +57,7 @@
             "ReferralReserveXor": "Misslyckades med att bond XOR",
             "ReferralUnreserveXor": "Misslyckades med att unbond XOR",
             "ReferralSetInvitedUser": "Misslyckades med att tillämpa hänvisning",
-            "SwapAndSend": "Misslyckades med att byta {amount} {symbol} mot {amount2} {symbol2}"
+            "SwapAndSend": "Misslyckades med att byta {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -225,13 +225,13 @@
             },
             "image": {
                 "placeholderNoImage": "Ladda upp filen genom att antingen ange en länk eller välja från lokal lagring",
-                "placeholderBadSource": "Filen kunde inte bearbetas",
+                "placeholderBadSource": "Filen misslyckades att bli bearbetad",
                 "placeholderBadSourceAddition": "eller så har den inte laddats upp till IPFS än",
                 "placeholderFileLimit": "Filstorleken överskrider gränsen på {value}mb"
             },
             "supply": {
                 "placeholder": "Token tillgång",
-                "desc": "Antalet NFT:er du kommer att få.",
+                "desc": "Antal NFT:er du kommer att få.",
                 "quantity": "Kvantitet"
             },
             "description": {
@@ -241,7 +241,7 @@
         "enterTokenDescription": "Ange beskrivning",
         "divisible": {
             "placeholder": "Delbar",
-            "desc": "Förmåga av NFT att delas i bråkdelar. Likviditet tillhandahållning fungerar endast med delbara tillgångar"
+            "desc": "Förmåga av NFT att delas i bråkdelar. Likviditet tillhandahållande fungerar endast med delbara tillgångar"
         }
     },
     "transaction": {
@@ -273,7 +273,7 @@
             "subscan": "VIsa i Subscan"
         },
         "txId": "Transaktions-ID",
-        "referrer": "Inbjudare",
+        "referrer": "Den som hänvisade",
         "referral": "Hänvisning"
     },
     "appName": "Polkaswap",
@@ -893,32 +893,32 @@
         "networkFee": "@:networkFeeText",
         "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
-        "insufficientBondedBalance": "Otillräcklig bunden balans",
+        "insufficientBondedBalance": "Otillräcklig bonded saldo",
         "action": {
             "connectWallet": "@:connectWalletText",
             "empty": "Ange belopp för {tokenSymbol}",
-            "startInviting": "Bind {tokenSymbol} för att börja bjuda in",
+            "startInviting": "Bond {tokenSymbol} för att börja bjuda in",
             "bondMore": "Bond Mera",
-            "bond": "Bind",
+            "bond": "Bond",
             "unbond": "Unbond",
             "copyLink": "Kopiera länk"
         },
         "transactionDetails": "Transaktions Detaljer",
-        "receivedRewards": "Mottagna belöningar",
+        "receivedRewards": "Mottagna rewards",
         "invitationLink": "Inbjudningslänk",
-        "successCopy": "Hänvisningslänk kopieras till urklipp",
-        "bondTitle": "Bind XOR",
+        "successCopy": "Hänvisningslänk är kopierad till urklipp",
+        "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",
         "confirm": {
             "text": "Bekräfta",
-            "bond": "Bekräfta bindning",
+            "bond": "Bekräfta bond",
             "unbond": "Bekräfta unbond",
             "inviteTitle": "Du har blivit inbjuden till Polkaswap",
             "inviteDescription": "För varje transaktion kommer 10% av avgiften att gå till din hänvisare, utan någon extra kostnad för dig.",
             "signInvitation": "Godkänn",
             "freeOfCharge": "Denna åtgärd är kostnadsfri",
             "hasReferrerTitle": "Du har redan ställt in din inbjudare",
-            "hasReferrerDescription": "Tyvärr kan du bara ställa in en",
+            "hasReferrerDescription": "Tyvärr kan du bara tillämpa en",
             "ok": "OK"
         },
         "referrer": {
@@ -932,9 +932,10 @@
             "referredBy": "Du har blivit hänvisad av {referrer}",
             "info": "När du kommer att betala en avgift för transaktion så kommer<br\/>10 % att gå till den som hänvisade dig",
             "referredLablel": "Hänvisad adress"
-        }
+        },
+        "insufficientBondedAmount": "För att bjuda in fler hänvisningar, binda minst {inviteUserFee} XOR"
     },
-    "transactionDetailsText": "Detaljerad Transaktions Information",
+    "transactionDetailsText": "Transaktions Detaljer",
     "createTokenTextNFT": "Skapa NFT",
     "code": {
         "download": "Ladda ner QR-Kod",
@@ -949,6 +950,6 @@
     "mobilePopup": {
         "sideMenu": "Skaffa SORA Wallet",
         "header": "Ladda ner SORA Wallet med <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funktioner",
-        "info": "Byt ut tokens från olika nätverk - SORA, Ethereum, Polkadot, Kusama. Tillhandahåll likviditetspool och tjäna % från växlingsavgifter."
+        "info": "Byt ut tokens från olika nätverk - SORA, Ethereum, Polkadot, Kusama. Bidra med likviditet i en pool och tjäna % från växlingsavgifter."
     }
 }

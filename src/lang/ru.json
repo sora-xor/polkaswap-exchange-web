@@ -932,7 +932,8 @@
             "referredBy": "Вы привлечены {referrer}",
             "info": "Когда вы заплатите комиссию за транзакцию,<br\/>10% перейдет вашему рефереру",
             "referredLablel": "Адрес реферера"
-        }
+        },
+        "insufficientBondedAmount": "Чтобы приглашать больше пользователей, привяжите не менее {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Детали транзакции",
     "createTokenTextNFT": "Создать NFT",
