@@ -25,7 +25,7 @@ import { lazyComponent } from '@/router';
   },
 })
 export default class AboutNetworkDialog extends Mixins(TranslationMixin, DialogMixin) {
-  get aboutBlocks(): Array<object> {
+  get aboutBlocks() {
     return [
       {
         title: this.t('aboutNetworkDialog.network.title'),

@@ -36,10 +36,15 @@
           active-text-color="var(--s-color-base-content-tertiary)"
           active-hover-color="transparent"
         >
+          <sidebar-item-content
+            icon="symbols-24"
+            :title="t('mobilePopup.sideMenu')"
+            class="el-menu-item menu-item--small"
+            @click.native="openSoraDownloadDialog"
+          />
           <app-info-popper>
             <sidebar-item-content icon="info-16" :title="t('footerMenu.info')" class="el-menu-item menu-item--small" />
           </app-info-popper>
-
           <sidebar-item-content
             v-if="faucetUrl"
             :icon="FaucetLink.icon"
@@ -58,7 +63,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter, State } from 'vuex-class';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -74,6 +78,7 @@ import {
 } from '@/consts';
 
 import router, { lazyComponent } from '@/router';
+import { getter, state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -86,8 +91,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly isAboutPageOpened!: boolean;
   @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
 
-  @State((state) => state.settings.faucetUrl) faucetUrl!: string;
-  @Getter libraryTheme!: Theme;
+  @state.settings.faucetUrl faucetUrl!: string;
+  @getter.libraryTheme private libraryTheme!: Theme;
 
   readonly SidebarMenuGroups = SidebarMenuGroups;
   readonly FaucetLink = FaucetLink;
@@ -107,6 +112,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       return PageNames.Rewards;
     }
     return router.currentRoute.name as string;
+  }
+
+  openSoraDownloadDialog(): void {
+    this.$emit('open-download-dialog');
   }
 }
 </script>
