@@ -3,11 +3,11 @@
     <div class="info-line-container">
       <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
       <info-line
-        :label="t('createPair.firstPerSecond', { first: firstToken.symbol, second: secondToken.symbol })"
+        :label="t('createPair.firstPerSecond', { first: firstTokenSymbol, second: secondTokenSymbol })"
         :value="formattedPrice"
       />
       <info-line
-        :label="t('createPair.firstPerSecond', { first: secondToken.symbol, second: firstToken.symbol })"
+        :label="t('createPair.firstPerSecond', { first: secondTokenSymbol, second: firstTokenSymbol })"
         :value="formattedPriceReversed"
       />
       <info-line
@@ -25,14 +25,14 @@
       <info-line
         is-formatted
         value-can-be-hidden
-        :label="firstToken.symbol"
+        :label="firstTokenSymbol"
         :value="formattedFirstTokenValue"
         :fiat-value="fiatFirstAmount"
       />
       <info-line
         is-formatted
         value-can-be-hidden
-        :label="secondToken.symbol"
+        :label="secondTokenSymbol"
         :value="formattedSecondTokenValue"
         :fiat-value="fiatSecondAmount"
       />
@@ -43,17 +43,16 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString } from '@sora-substrate/util';
 
-import BaseTokenPairMixinInstance from '../mixins/BaseTokenPairMixin';
+import BaseTokenPairMixinInstance, { TokenPairNamespace } from '../mixins/BaseTokenPairMixin';
 import TranslationMixin from '../mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
-const namespace = 'createPair';
+const namespace = TokenPairNamespace.CreatePair;
 
 const BaseTokenPairMixin = BaseTokenPairMixinInstance(namespace);
 
@@ -64,12 +63,10 @@ const BaseTokenPairMixin = BaseTokenPairMixinInstance(namespace);
   },
 })
 export default class CreatePairTransactionDetails extends Mixins(TranslationMixin, BaseTokenPairMixin) {
-  @Getter('isNotFirstLiquidityProvider', { namespace }) isNotFirstLiquidityProvider!: boolean;
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string;
-
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
 
   get strategicBonusApy(): Nullable<string> {
+    if (!this.secondToken) return null;
     // It won't be in template when not defined
     const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy;
     if (!strategicBonusApy) {

@@ -43,7 +43,8 @@
             "ClaimRewards": "Innhenting av belønning var vellykket {rewards}",
             "ReferralReserveXor": "Bondet XOR vellykket",
             "ReferralUnreserveXor": "Ubundet XOR vellykket",
-            "ReferralSetInvitedUser": "Henvisning er satt"
+            "ReferralSetInvitedUser": "Henvisning er satt",
+            "SwapAndSend": "Byttet {amount} {symbol} med {amount2} {symbol2} og {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Kunne ikke sende {amount} {symbol} til {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Kunne ikke kreve belønninger {rewards}",
             "ReferralReserveXor": "Kunne ikke binde XOR",
             "ReferralUnreserveXor": "Kunne ikke frigjøre XOR",
-            "ReferralSetInvitedUser": "Kunne ikke angi henvisning"
+            "ReferralSetInvitedUser": "Kunne ikke angi henvisning",
+            "SwapAndSend": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2} og {action} {direction} {address}"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
-        "ReferralSetInvitedUser": "Angi henvisning"
+        "ReferralSetInvitedUser": "Angi henvisning",
+        "SwapAndSend": "Bytt og send"
     },
     "polkadotjs": {
         "noExtensions": "Finner ingen Polkadot.js utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -73,7 +76,7 @@
         "noPermissions": "Ved et uhell avvist tillatelsesforespørsel?<\/br> Polkadot{.js}-utvidelsen har for øyeblikket ikke nødvendig tillatelse. For å unngå dette kan du starte nettleseren på nytt og gå tilbake til denne siden for å fortsette med autorisasjon.",
         "noAccounts": "Finner ingen konto i nettleserutvidelsen polkadot{.js}. Legg til en konto, og prøv på nytt.",
         "selectAccount": "Velg kontoen du vil arbeide med",
-        "loadingTitle": "Venter på at du skal gi tilgang til polkadot{.js} utvidelsen..",
+        "loadingTitle": "Venter på at du skal gi tilgang til polkadot{.js} utvidelsen.",
         "action": {
             "install": "Installer utvidelse",
             "learnMore": "Lær mer",
@@ -141,12 +144,14 @@
         "details": "Detaljer"
     },
     "asset": {
-        "remove": "Fjern aktiva"
+        "remove": "Fjern aktiva",
+        "select": "Velg aktivum",
+        "recieve": "Motta {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Ressursen ble lagt til.",
+        "success": "Ressursen {symbol} ble lagt til.",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol"
@@ -573,7 +578,7 @@
         "status": {
             "pending": "{step} transaksjoner venter ...",
             "failed": "{step} transaksjoner mislyktes. @:(retryText).",
-            "confirm": "Bekreft 2\/2 transaksjoner ...",
+            "confirm": "Bekreft 2\/2 transaksjoner...",
             "complete": "Ferdig",
             "convertionComplete": "Konvertering er fullført"
         },
@@ -586,7 +591,6 @@
             "done": "Ferdig",
             "waitingForConfirmation": "Venter på bekreftelse..."
         },
-        "wait30Block": "Vent på 30 blokkbekreftelser",
         "viewInEtherscan": "Vis i Etherscan",
         "networkTitle": "{network} transaksjon",
         "transactionHash": "Transaksjon hash",
@@ -772,7 +776,8 @@
         "claimableAmountDoneVesting": "Tilgjengelige belønninger",
         "groups": {
             "strategic": "Strategiske belønninger",
-            "external": "Belønninger for tilkoblet ethereum konto"
+            "external": "Belønninger for tilkoblet ethereum konto",
+            "crowdloan": "Crowdloan belønninger"
         },
         "Rewards": "Belønninger",
         "ReferralProgram": "@:referralProgram.title"
@@ -881,7 +886,7 @@
         "connectAccount": "For å invitere brukere må du koble til SORA-kontoen din.",
         "bondedXOR": "XOR Bundet",
         "referralsNumber": "{number}-henvisninger",
-        "startInviting": "For å begynne å invitere, bind en hvilken som helst mengde XOR.",
+        "startInviting": "Bond XOR for å henvise andre",
         "preview": "Inviter nye brukere og få 10% fra deres transaksjonsgebyrer.<br \/>For å starte, obligasjon et hvilket som helst beløp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Lær mer<\/a>",
         "deposit": "Innskudd",
         "balance": "Balanse",
@@ -915,8 +920,36 @@
             "hasReferrerTitle": "Du har allerede angitt henvisningsadressen din",
             "hasReferrerDescription": "Dessverre kan du bare angi én",
             "ok": "OK"
-        }
+        },
+        "referrer": {
+            "title": "Legg til henvisningsadressen din",
+            "titleReferrer": "Din henvisning",
+            "placeholder": "Skriv inn invitasjonslenke eller kode",
+            "label": "Invitasjonslenke eller kode",
+            "approve": "Vedta",
+            "approved": "Godkjent",
+            "description": "Du kan bli henvist til Polkaswap,<br\/>skriv inn lenken eller koden til refereren",
+            "referredBy": "Du har blitt henvist av {referrer}",
+            "info": "Når du betaler et gebyr for transaksjonen,<br\/>går 10% til henvisningsadressen din",
+            "referredLablel": "Henvist adresse"
+        },
+        "insufficientBondedAmount": "Hvis du vil invitere flere henvisninger, binder du minst {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaksjonsdetaljer",
-    "createTokenTextNFT": "Lag NFT"
+    "createTokenTextNFT": "Lag NFT",
+    "code": {
+        "download": "Last ned QR-kode",
+        "upload": "Skann QR",
+        "recieve": "Motta",
+        "invalid": "Ugyldig QR-kode"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Legg til {symbol} til @:metamask",
+        "title": "Brotransaksjonen ble vellykket"
+    },
+    "mobilePopup": {
+        "sideMenu": "Få SORA Wallet",
+        "header": "Last ned SORA Wallet med <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funksjoner",
+        "info": "Bytt ut tokens fra forskjellige nettverk - SORA, Ethereum, Polkadot, Kusama. Gi likviditetspool og tjen % fra vekslingsgebyrer."
+    }
 }

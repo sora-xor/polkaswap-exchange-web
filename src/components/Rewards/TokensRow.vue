@@ -15,14 +15,14 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import type { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
-import { lazyComponent } from '@/router';
-import { Components, LogoSize } from '@/consts';
+import { LogoSize } from '@/consts';
 
 @Component({
   components: {
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class TokensRow extends Vue {

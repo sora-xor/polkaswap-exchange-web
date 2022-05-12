@@ -43,7 +43,8 @@
             "ClaimRewards": "Wynagrodzenie odebrano z powodzeniem {rewards}",
             "ReferralReserveXor": "Rezerwy w walucie XOR utworzono z powodzeniem",
             "ReferralUnreserveXor": "Rezerwy w walucie XOR uwolniono z powodzeniem",
-            "ReferralSetInvitedUser": "Kod polecający został utworzony z powodzeniem"
+            "ReferralSetInvitedUser": "Kod polecający został utworzony z powodzeniem",
+            "SwapAndSend": "Zamieniono {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -55,11 +56,13 @@
             "ClaimRewards": "Nie udało się odebrać wynagrodzenia {rewards}.",
             "ReferralReserveXor": "Nie udało się utworzyć rezerw w walucie XOR",
             "ReferralUnreserveXor": "Nie udało się uwolnić rezerw w walucie XOR",
-            "ReferralSetInvitedUser": "Nie udało się utworzyć kodu polecającego."
+            "ReferralSetInvitedUser": "Nie udało się utworzyć kodu polecającego.",
+            "SwapAndSend": "Nie udało się zamienić {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
-        "ReferralSetInvitedUser": "Utwórz kod polecający"
+        "ReferralSetInvitedUser": "Utwórz kod polecający",
+        "SwapAndSend": "Zamień i wyślij"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -73,7 +76,7 @@
         "noPermissions": "Przypadkowo odrzuciłeś(-łaś) prośbę o pozwolenie? <\/br> Rozszerzenie polkadot{.js} nie posiada obecnie zarządzania uprawnieniami. Aby obejść ten problem, możesz restartować przeglądarkę i ponownie odwiedzić tę stronę w celu kontynuowania autoryzacji.",
         "noAccounts": "W Twoim rozszerzeniu przeglądarki polkadot{.js} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
-        "loadingTitle": "Czekam, aż zezwolisz na dostęp do rozszerzenia polkadot{.js}...",
+        "loadingTitle": "Czekam, aż zezwolisz na dostęp do rozszerzenia polkadot{.js}.",
         "action": {
             "install": "Zainstaluj rozszerzenie",
             "learnMore": "Dowiedz się więcej",
@@ -141,12 +144,14 @@
         "details": "Szczegóły"
     },
     "asset": {
-        "remove": "Usuń walutę"
+        "remove": "Usuń walutę",
+        "select": "Wybierz walutę",
+        "recieve": "Odbierz {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Walutę dodano z powodzeniem!",
+        "success": "Walutę {symbol} dodano z powodzeniem!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtruj według identyfikatora waluty, nazwy lub symbolu giełdowego"
@@ -222,7 +227,7 @@
                 "placeholderNoImage": "Prześlij plik, wprowadzając link lub wybierając go z lokalnego magazynu danych.",
                 "placeholderBadSource": "Nie udało się przetworzyć pliku",
                 "placeholderBadSourceAddition": "lub nie został on jeszcze załadowany do systemu IPFS",
-                "placeholderFileLimit": "Rozmiar pliku przekracza limit {value} mb"
+                "placeholderFileLimit": "Rozmiar pliku przekracza limit {value} MB."
             },
             "supply": {
                 "placeholder": "Podaż tokenów",
@@ -236,7 +241,7 @@
         "enterTokenDescription": "Wprowadź opis",
         "divisible": {
             "placeholder": "Podzielny",
-            "desc": "Zdolność NFT do podziału na części ułamkowe. Zapewnienie płynności działa tylko w przypadku aktywów podzielnych"
+            "desc": "Zdolność tokenu NFT do podziału na części ułamkowe. Zapewnienie płynności działa tylko w przypadku aktywów podzielnych."
         }
     },
     "transaction": {
@@ -264,12 +269,12 @@
             "confirmed": "Transakcja potwierdzona"
         },
         "viewIn": {
-            "sorascan": "Pokaż w SORAScanie",
+            "sorascan": "Pokaż w SORAScan",
             "subscan": "Pokaż w Subscanie"
         },
         "txId": "Identyfikator transakcji",
         "referrer": "Osoba polecająca",
-        "referral": "Polecenie"
+        "referral": "Kod polecający"
     },
     "appName": "Polkaswap",
     "soraText": "SORA",
@@ -362,7 +367,7 @@
     },
     "node": {
         "errors": {
-            "connection": "Wystąpił błąd podczas łączenia się z węzłem\n{address}\n",
+            "connection": "Wystąpił błąd podczas łączenia się z węzłem\n {address}\n",
             "network": "Węzeł\n {address}\n pochodzi z innej sieci\n",
             "existing": "Ten węzeł został już dodany: '{title}'\n"
         },
@@ -400,7 +405,7 @@
     },
     "transfers": {
         "from": "Z",
-        "to": "Do"
+        "to": "Na"
     },
     "pageNotFound": {
         "title": "Nie znaleziono strony.",
@@ -586,7 +591,6 @@
             "done": "Ukończono",
             "waitingForConfirmation": "Oczekiwanie na potwierdzenie..."
         },
-        "wait30Block": "Proszę poczekać, aż 30 bloków zostanie potwierdzonych.",
         "viewInEtherscan": "Pokaż w Etherscanie",
         "networkTitle": "transakcji sieci {network}",
         "transactionHash": "Skrót transakcji",
@@ -643,7 +647,7 @@
     },
     "createPair": {
         "title": "Utwórz parę",
-        "deposit": "Depozyt",
+        "deposit": "– depozyt",
         "balance": "Saldo",
         "pricePool": "Ceny i opłaty",
         "shareOfPool": "Udział w puli",
@@ -772,7 +776,8 @@
         "claimableAmountDoneVesting": "Przysługujące wynagrodzenie dostępne do wypłaty",
         "groups": {
             "strategic": "Wynagrodzenie strategiczne",
-            "external": "Wynagrodzenie dla podłączonego konta sieci Ethereum"
+            "external": "Wynagrodzenie dla podłączonego konta sieci Ethereum",
+            "crowdloan": "Nagrody Crowdloan"
         },
         "Rewards": "Wynagrodzenie",
         "ReferralProgram": "@:referralProgram.title"
@@ -881,7 +886,7 @@
         "connectAccount": "Aby zaprosić użytkowników, musisz podłączyć swoje konto sieci SORA.",
         "bondedXOR": "Rezerwy w XOR",
         "referralsNumber": "{number} zaproszonych",
-        "startInviting": "Aby zacząć zapraszać, utwórz rezerwy w dowolnej kwocie waluty XOR.",
+        "startInviting": "Bond XOR, aby polecić innym",
         "preview": "Zaproś nowych użytkowników, by otrzymać 10% z ich opłat transakcyjnych.<br \/>Aby rozpocząć, utwórz rezerwy w dowolnej kwocie waluty XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej.<\/a>",
         "deposit": "Deponuj",
         "balance": "Saldo",
@@ -912,11 +917,39 @@
             "inviteDescription": "Zawsze, kiedy będziesz uiszczał opłatę transakcyjną, 10% z niej trafi do osoby polecającej. Nie poniesiesz z tego tytułu żadnych kosztów.",
             "signInvitation": "Przyjmij",
             "freeOfCharge": "Ta transakcja nie jest obciążona żadnymi kosztami.",
-            "hasReferrerTitle": "Wskazałeś już swoją osobę polecającą",
-            "hasReferrerDescription": "Niestety możesz wskazać tylko jedną osobę polecającą",
+            "hasReferrerTitle": "Wskazałeś już swoją osobę polecającą.",
+            "hasReferrerDescription": "Niestety możesz wskazać tylko jedną osobę polecającą.",
             "ok": "OK"
-        }
+        },
+        "referrer": {
+            "title": "Dodaj swoją osobę polecającą",
+            "titleReferrer": "Twój polecający",
+            "placeholder": "Wpisz link lub kod zaproszenia",
+            "label": "Link do zaproszenia lub kod",
+            "approve": "Przyjmij",
+            "approved": "Zatwierdzony",
+            "description": "Możesz otrzymać skierowanie do Polkaswap,<br\/>wpisać link lub kod osoby polecającej",
+            "referredBy": "Zostałeś polecony przez {referrer}",
+            "info": "Kiedy zapłacisz opłatę za transakcję,<br\/>10% trafi do Twojego polecającego",
+            "referredLablel": "Polecony adres"
+        },
+        "insufficientBondedAmount": "Aby zaprosić więcej poleconych, zwiąż co najmniej {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Szczegóły transakcji",
-    "createTokenTextNFT": "Utwórz token NFT"
+    "createTokenTextNFT": "Utwórz token NFT",
+    "code": {
+        "download": "Pobierz kod QR",
+        "upload": "Skanowanie kodu QR",
+        "recieve": "Odbierać",
+        "invalid": "Nieprawidłowy kod QR"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Dodaj {symbol} do @:metamask",
+        "title": "Transakcja pomostowa powiodła się"
+    },
+    "mobilePopup": {
+        "sideMenu": "Pobierz SORA Wallet",
+        "header": "Pobierz portfel SORA z <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Zamień tokeny z różnych sieci - SORA, Ethereum, Polkadot, Kusama. Zapewnij pulę płynności i zarabiaj % na opłatach za wymianę."
+    }
 }
