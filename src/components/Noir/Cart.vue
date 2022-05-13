@@ -12,14 +12,15 @@
     <div class="cart__content">
       <div class="cart__corner corner">
         <div class="corner__inner">
-          <div class="corner__circle">
+          <!-- <div class="corner__circle">
             <img src="img/corner-circle-stroke.png" loading="lazy" alt="" class="corner__circle-stroke first" />
             <img src="img/corner-circle-stroke.png" loading="lazy" alt="" class="corner__circle-stroke second" />
-          </div>
+          </div> -->
         </div>
 
         <!-- <img src="img/bottle.png" loading="lazy" alt="" class="corner__bottle-img" /> -->
-        <div id="bottle" class="corner__bottle-img bottle-animation" width="203" height="504" />
+        <video class="bottle-animation" loop="" muted="" autoplay="" playsinline="" src="video/bottle.webm"></video>
+        <!-- <div id="bottle" class="corner__bottle-img bottle-animation" width="203" height="504" /> -->
       </div>
 
       <div class="cart__row">
@@ -142,7 +143,7 @@ import { hasInsufficientBalance, asZeroValue, formatAssetBalance, debouncedInput
 import { lazyComponent } from '@/router';
 import { Components, NOIR_TOKEN_ADDRESS } from '@/consts';
 
-import bottle from './bottle.js';
+// import bottle from './bottle.js';
 
 @Component({
   components: {
@@ -320,9 +321,9 @@ export default class Cart extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
     });
   }
 
-  mounted(): void {
-    bottle();
-  }
+  // mounted(): void {
+  //   bottle();
+  // }
 
   formatBalance(token: AccountAsset): string {
     return formatAssetBalance(token);
@@ -485,12 +486,12 @@ export default class Cart extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
 }
 
 .bottle-animation {
-  width: 203px;
-  height: 504px;
+  height: 480px;
   background: transparent;
-
-  canvas {
-    background: transparent;
-  }
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }
 </style>
