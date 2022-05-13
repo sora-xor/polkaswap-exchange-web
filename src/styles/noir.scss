@@ -2185,10 +2185,9 @@ a:hover {
 .wrap-cart {
   display: flex;
   flex: 1;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  padding: 190px 0 35px 0;
+  justify-content: center;
+  align-items: center;
+  padding: 70px 0 35px 0;
   position: relative;
 }
 

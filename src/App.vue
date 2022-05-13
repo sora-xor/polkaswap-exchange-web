@@ -205,10 +205,10 @@ $sora-logo-width: 115px;
 
   &-footer {
     position: absolute;
-    bottom: 0;
+    bottom: 40px;
     left: 0;
     right: 0;
-    padding: 0 $basic-spacing-medium $basic-spacing-medium;
+    padding: 0 $basic-spacing-medium;
 
     .container {
       display: flex;
