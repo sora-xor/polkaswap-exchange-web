@@ -2188,14 +2188,8 @@ a:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  padding: 210px 0 35px 0;
+  padding: 190px 0 35px 0;
   position: relative;
-}
-
-@media screen and (max-width: 640px) {
-  .wrap-cart {
-    padding: 144px 0 70px 0;
-  }
 }
 
 .cart--8 .corner {
