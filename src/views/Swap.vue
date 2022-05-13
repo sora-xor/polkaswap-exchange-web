@@ -548,10 +548,7 @@ export default class Swap extends Mixins(
   }
 
   private cleanEnabledAssetsSubscription(): void {
-    if (!this.enabledAssetsSubscription) {
-      return;
-    }
-    this.enabledAssetsSubscription.unsubscribe();
+    this.enabledAssetsSubscription?.unsubscribe();
     this.enabledAssetsSubscription = null;
   }
 
@@ -561,10 +558,7 @@ export default class Swap extends Mixins(
   }
 
   private cleanSwapReservesSubscription(): void {
-    if (!this.liquidityReservesSubscription) {
-      return;
-    }
-    this.liquidityReservesSubscription.unsubscribe();
+    this.liquidityReservesSubscription?.unsubscribe();
     this.liquidityReservesSubscription = null;
   }
 
