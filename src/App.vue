@@ -26,22 +26,24 @@
     </div>
 
     <footer class="app-footer">
-      <div class="social-links">
-        <a class="social-link" target="_blank" href="http://twitter.com/drinknoir" rel="noopener noreferrer">
-          <img src="img/twitter.svg" alt="" />
-        </a>
-        <a class="social-link" target="_blank" href="https://t.me/noirdigitalgroup" rel="noopener noreferrer">
-          <img src="img/telegram.svg" alt="" />
-        </a>
-        <a class="social-link" target="_blank" href="https://www.instagram.com/drinknoir/" rel="noopener noreferrer">
-          <img src="img/instagram.svg" alt="" />
-        </a>
-      </div>
-      <div class="sora-logo">
-        <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-        <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
-          <sora-logo theme="dark" />
-        </a>
+      <div class="container">
+        <div class="social-links">
+          <a class="social-link" target="_blank" href="http://twitter.com/drinknoir" rel="noopener noreferrer">
+            <img src="img/twitter.svg" alt="" />
+          </a>
+          <a class="social-link" target="_blank" href="https://t.me/noirdigitalgroup" rel="noopener noreferrer">
+            <img src="img/telegram.svg" alt="" />
+          </a>
+          <a class="social-link" target="_blank" href="https://www.instagram.com/drinknoir/" rel="noopener noreferrer">
+            <img src="img/instagram.svg" alt="" />
+          </a>
+        </div>
+        <div class="sora-logo">
+          <span class="sora-logo__title">{{ t('poweredBy') }}</span>
+          <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
+            <sora-logo theme="dark" />
+          </a>
+        </div>
       </div>
     </footer>
 
@@ -184,8 +186,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 </script>
 
 <style lang="scss">
-$sora-logo-height: 36px;
-$sora-logo-width: 173.7px;
+$sora-logo-height: 24px;
+$sora-logo-width: 115px;
 
 .app {
   .el-loading-mask {
@@ -202,12 +204,18 @@ $sora-logo-width: 173.7px;
   }
 
   &-footer {
-    min-width: 800px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     padding: 0 $basic-spacing-medium $basic-spacing-medium;
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
   }
 }
 
@@ -225,12 +233,13 @@ $sora-logo-width: 173.7px;
     text-transform: uppercase;
     font-weight: 200;
     color: var(--s-color-base-content-tertiary);
-    font-size: 15px;
-    line-height: 16px;
-    margin-right: $basic-spacing;
+    font-size: 14px;
+    line-height: 17px;
+    margin-right: 5px;
     white-space: nowrap;
   }
-  &__image {
+
+  &__image svg {
     width: $sora-logo-width;
     height: $sora-logo-height;
   }

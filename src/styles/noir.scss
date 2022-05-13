@@ -594,10 +594,6 @@ body {
   font-family: 'Sora', sans-serif;
 }
 
-body {
-  background-color: #1938db;
-}
-
 .page {
   display: flex;
   flex-flow: column;
@@ -1196,8 +1192,9 @@ a:hover {
 }
 
 .header {
-  left: 0;
   position: absolute;
+  left: 0;
+  right: 0;
   top: 80px;
   width: 100%;
   z-index: 5;
@@ -1741,7 +1738,7 @@ a:hover {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  padding: 58px 38px 35px;
+  padding: 77px 38px 31px;
   position: relative;
   z-index: 3;
   -webkit-box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.05);
@@ -1797,7 +1794,7 @@ a:hover {
 }
 
 .cart__spacer {
-  height: 210px;
+  height: 200px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1810,7 +1807,7 @@ a:hover {
 }
 
 .cart__spacer-2 {
-  height: 150px;
+  height: 120px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1892,12 +1889,12 @@ a:hover {
           justify-content: space-between;
 }
 
-.cart__row-btns .btn {
-  margin-top: 16px;
+.cart__row-btns .btn:not(:first-child) {
+  margin-top: 13px;
 }
 
 @media screen and (max-width: 640px) {
-  .cart__row-btns .btn {
+  .cart__row-btns .btn:not(:first-child) {
     margin-top: 6px;
   }
 }
@@ -2095,14 +2092,15 @@ a:hover {
 }
 
 .cart .corner {
-  background-image: url("../../public/img/noise-07-small.png"), linear-gradient(212.36deg, #ff8cf9 10.67%, #79538b 96.51%);
-  -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05), inset 0px 0px 35px rgba(0, 0, 0, 0.1);
-          box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05), inset 0px 0px 35px rgba(0, 0, 0, 0.1);
+  // background-image: url("../../public/img/noise-07-small.png"), linear-gradient(212.36deg, #ff8cf9 10.67%, #79538b 96.51%);
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(4px);
+  // box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05), inset 0px 0px 35px rgba(0, 0, 0, 0.1);
   border-bottom-left-radius: 65px;
   border-top-right-radius: 35px;
   height: 354px;
-  padding: 30px 26px 33px;
-  width: 274px;
+  padding: 30px 24px 33px;
+  width: 256px;
 }
 
 @media screen and (max-width: 640px) {
@@ -2119,11 +2117,12 @@ a:hover {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-image: url("../../public/img/noise-07-small.png"), linear-gradient(206.83deg, #434d89 16.74%, #30365e 105.81%);
+  // background-image: url("../../public/img/noise-07-small.png"), linear-gradient(206.83deg, #434d89 16.74%, #30365e 105.81%);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
   border-bottom-left-radius: 45px;
   border-top-right-radius: 20px;
-  -webkit-box-shadow: inset 0px 0px 35px rgba(0, 0, 0, 0.1);
-          box-shadow: inset 0px 0px 35px rgba(0, 0, 0, 0.1);
+  // box-shadow: inset 0px 0px 35px rgba(0, 0, 0, 0.1);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2184,13 +2183,12 @@ a:hover {
 }
 
 .wrap-cart {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
+  flex: 1;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  padding: 260px 0 75px 0;
+  padding: 210px 0 35px 0;
   position: relative;
 }
 

@@ -16,16 +16,17 @@
             <img src="img/corner-circle-stroke.png" loading="lazy" alt="" class="corner__circle-stroke first" />
             <img src="img/corner-circle-stroke.png" loading="lazy" alt="" class="corner__circle-stroke second" />
           </div> -->
+          <video class="bottle-animation" loop="" muted="" autoplay="" playsinline="" src="video/bottle.webm"></video>
         </div>
 
         <!-- <img src="img/bottle.png" loading="lazy" alt="" class="corner__bottle-img" /> -->
-        <video class="bottle-animation" loop="" muted="" autoplay="" playsinline="" src="video/bottle.webm"></video>
+
         <!-- <div id="bottle" class="corner__bottle-img bottle-animation" width="203" height="504" /> -->
       </div>
 
-      <div class="cart__row">
+      <!-- <div class="cart__row">
         <div class="cart__currency">$NOIR</div>
-      </div>
+      </div> -->
 
       <div class="cart__row">
         <div class="cart__title">NEW MOON EDITION 1</div>
@@ -37,7 +38,7 @@
         <div class="pricing-stats">
           <div
             class="qwest pricing-stats__qwest pointer"
-            data-text="Dynamic Pricing Stats Dynamic Pricing Stats Dynamic Pricing Stats"
+            data-text="The price of $NOIR changes when tokens are bought and sold"
           >
             ?
           </div>
@@ -45,7 +46,7 @@
         </div>
       </div>
 
-      <div v-else class="cart__row m-b-36">
+      <div v-else class="cart__row m-b-40">
         <count-input v-model="selectedCount" :min="1" :max="total" />
       </div>
 
@@ -90,7 +91,7 @@
 
         <div class="cart__line m-b-20"></div>
 
-        <table v-if="tokenFrom" class="text-title-1 w-100 m-b-20">
+        <table v-if="tokenFrom" class="text-title-1 w-100 m-b-38">
           <tr>
             <td>Network fee:</td>
             <td class="t-a-r">{{ formattedSwapNetworkFee }} XOR</td>
@@ -486,12 +487,10 @@ export default class Cart extends Mixins(mixins.FormattedAmountMixin, mixins.Tra
 }
 
 .bottle-animation {
-  height: 480px;
+  height: 450px;
   background: transparent;
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  bottom: -35px;
+  left: -114px;
 }
 </style>
