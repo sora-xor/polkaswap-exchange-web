@@ -932,7 +932,8 @@
             "referredBy": "Doporučil vám {referrer}",
             "info": "Když zaplatíte poplatek za transakci,<br\/>10% dostane váš referrer",
             "referredLablel": "Doporučená adresa"
-        }
+        },
+        "insufficientBondedAmount": "Chcete-li pozvat více doporučení, spojte alespoň {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detaily transakce",
     "createTokenTextNFT": "Vytvořte NFT",

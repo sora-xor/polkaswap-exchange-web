@@ -18,6 +18,7 @@
     <s-float-input
       class="s-input--token-value"
       size="medium"
+      data-test-name="swapFrom"
       :value="fromValue"
       :decimals="tokenFromDecimals"
       has-locale-string
@@ -61,6 +62,7 @@
         </s-button>
         <token-select-button
           class="el-button--select-token"
+          data-test-name="selectToken"
           icon="chevron-down-rounded-16"
           :token="tokenFrom"
           @click="openSelectTokenDialog(true)"
@@ -79,6 +81,7 @@
     </s-float-input>
     <s-button
       class="el-button--switch-tokens"
+      data-test-name="switchToken"
       type="action"
       icon="arrows-swap-90-24"
       :disabled="!areTokensSelected"
@@ -87,6 +90,7 @@
     <s-float-input
       class="s-input--token-value"
       size="medium"
+      data-test-name="swapTo"
       :value="toValue"
       :decimals="tokenToDecimals"
       has-locale-string
@@ -119,6 +123,7 @@
       <div slot="right" class="s-flex el-buttons">
         <token-select-button
           class="el-button--select-token"
+          data-test-name="selectToken"
           icon="chevron-down-rounded-16"
           :token="tokenTo"
           @click="openSelectTokenDialog(false)"
@@ -152,6 +157,7 @@
     <s-button
       v-else
       class="action-button s-typography-button--large"
+      data-test-name="confirmSwap"
       type="primary"
       :disabled="isConfirmSwapDisabled"
       :loading="isSelectAssetLoading"

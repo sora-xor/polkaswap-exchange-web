@@ -932,7 +932,8 @@
             "referredBy": "Odporúčal vás {referrer}",
             "info": "Keď zaplatíte poplatok za transakciu, <br\/> 10 % dostane váš sprostredkovateľ",
             "referredLablel": "Odporúčaná adresa"
-        }
+        },
+        "insufficientBondedAmount": "Ak chcete pozvať ďalšie odporúčania, prepojte aspoň {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detaily transakcie",
     "createTokenTextNFT": "Vytvorte NFT",

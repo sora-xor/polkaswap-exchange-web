@@ -932,7 +932,8 @@
             "referredBy": "U bent doorverwezen door {referrer}",
             "info": "Wanneer u transactiekosten betaalt,<br\/>gaat 10% naar uw verwijzer",
             "referredLablel": "Doorverwezen adres"
-        }
+        },
+        "insufficientBondedAmount": "Om meer verwijzingen uit te nodigen, bindt u ten minste {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transactie Details",
     "createTokenTextNFT": "NFT maken",
