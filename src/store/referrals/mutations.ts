@@ -17,9 +17,7 @@ const mutations = defineMutations<ReferralsState>()({
     state.referrerSubscription = subscription;
   },
   resetReferrerSubscription(state): void {
-    if (state.referrerSubscription) {
-      state.referrerSubscription.unsubscribe();
-    }
+    state.referrerSubscription?.unsubscribe();
     state.referrerSubscription = null;
   },
   approveReferrer(state, value: boolean): void {
