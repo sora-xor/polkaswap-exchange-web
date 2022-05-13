@@ -1,9 +1,9 @@
 <template>
   <dialog-base :visible.sync="visibility" custom-class="cart--8" show-salute>
     <div class="cart__row m-b-26">
-      <div class="wrap-confetti active">
+      <!-- <div class="wrap-confetti active">
         <canvas ref="confetti" id="confetti" class="confetti"></canvas>
-      </div>
+      </div> -->
       <div class="congratulations-image">
         <img src="img/noir-nft.png" loading="lazy" alt="" />
       </div>
@@ -24,8 +24,6 @@
     <div class="cart__row">
       <a target="_blank" href="https://t.me/noirdigitalgroup" class="el-button neumorphic s-secondary btn w-100">Join the Noir Telegram Group</a>
     </div>
-
-    <!-- <video class="salute" loop="" muted="" autoplay="" playsinline="" src="video/confetti.webm"></video> -->
   </dialog-base>
 </template>
 
@@ -37,7 +35,7 @@ import { mutation, state } from '@/store/decorators';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
-import confetti from './confetti.js';
+// import confetti from './confetti.js';
 
 @Component({
   components: {
@@ -58,27 +56,27 @@ export default class CongratulationsDialog extends Mixins(DialogMixin) {
     this.setVisibility(flag);
   }
 
-  confetti: any = null;
+  // confetti: any = null;
 
-  mounted(): void {
-    this.$watch('visibility', (flag) => {
-      this.updateConfetti(flag);
-    });
-  }
+  // mounted(): void {
+  //   this.$watch('visibility', (flag) => {
+  //     this.updateConfetti(flag);
+  //   });
+  // }
 
-  async updateConfetti(flag: boolean): Promise<void> {
-    if (!this.confetti) {
-      this.confetti = confetti();
-    }
+  // async updateConfetti(flag: boolean): Promise<void> {
+  //   if (!this.confetti) {
+  //     this.confetti = confetti();
+  //   }
 
-    await this.$nextTick();
+  //   await this.$nextTick();
 
-    if (flag) {
-      this.confetti.run();
-    } else {
-      this.confetti.stop();
-    }
-  }
+  //   if (flag) {
+  //     this.confetti.run();
+  //   } else {
+  //     this.confetti.stop();
+  //   }
+  // }
 }
 </script>
 

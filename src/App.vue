@@ -2,6 +2,18 @@
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="page">
     <!-- <img src="/img/greed.png" alt="" class="greed-img" /> -->
 
+    <video
+      v-if="showConfetti"
+      ref="confetti"
+      class="confetti-animation"
+      autoplay=""
+      preload="auto"
+      muted=""
+      playsinline=""
+      src="video/confetti.webm"
+      @ended="hideConfetti"
+    />
+
     <app-header :loading="loading" />
 
     <div class="wrap-floats">
@@ -42,8 +54,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { History, connection, HistoryItem } from '@sora-substrate/util';
+import { Component, Mixins, Watch, Ref } from 'vue-property-decorator';
+import { History, connection, HistoryItem, TransactionStatus } from '@sora-substrate/util';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
@@ -53,7 +65,7 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import { Components, Language } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { lazyComponent } from '@/router';
-import { action, getter, mutation, state } from '@/store/decorators';
+import { action, getter, mutation } from '@/store/decorators';
 import { preloadFontFace } from '@/utils';
 import type { ConnectToNodeOptions } from '@/types/nodes';
 
@@ -88,9 +100,17 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
   @action.noir.subscribeOnRedemptionDataUpdates private subscribeOnRedemptionDataUpdates!: AsyncVoidFn;
 
+  @Ref('confetti') confettiEl!: HTMLVideoElement;
+
+  showConfetti = false;
+
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History, oldValue: History): void {
     this.handleChangeTransaction(value, oldValue);
+
+    if (value && value.status === TransactionStatus.InBlock && (!oldValue || oldValue.id !== value.id)) {
+      this.showConfetti = true;
+    }
   }
 
   @Watch('nodeIsConnected')
@@ -103,6 +123,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     } else {
       this.resetNetworkSubscriptions();
     }
+  }
+
+  hideConfetti(): void {
+    this.showConfetti = false;
   }
 
   async created() {
@@ -139,6 +163,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async beforeDestroy(): Promise<void> {
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
+    this.resetRedemptionDataSubscription();
     await connection.close();
   }
 
@@ -209,6 +234,14 @@ $sora-logo-width: 173.7px;
     width: $sora-logo-width;
     height: $sora-logo-height;
   }
+}
+
+.confetti-animation {
+  position: fixed;
+  width: 100%;
+  z-index: 2010;
+  pointer-events: none;
+  user-select: none;
 }
 
 .el-notification.sora {
