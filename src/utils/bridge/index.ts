@@ -172,7 +172,7 @@ class BridgeTransactionStateHandler {
           const transaction = await bridgeHistory.findEthTxBySoraHash(
             to as string,
             hash as string,
-            (startTime as number) / 1000
+            startTime as number
           );
 
           if (transaction) {
