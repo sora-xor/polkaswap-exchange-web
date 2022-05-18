@@ -537,7 +537,8 @@
         "selectNetwork": "Seleccionar red",
         "networkInfo": "Puente de la red @:soraText con:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Copiar dirección de red"
     },
     "selectRegisteredAsset": {
         "title": "Seleccione un Token",
@@ -825,7 +826,7 @@
             },
             "transactionError": {
                 "title": "La transacción ha fallado",
-                "text": "Desafortunadamente, parece que la transacción @:moonpayText ha fallado. Inténtalo de nuevo. Para obtener asistencia de @:moonpayText, vaya a <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/support.moonpay.com <\/a>"
+                "text": "Desafortunadamente, parece que la transacción @:moonpayText ha fallado. Inténtalo de nuevo. Para obtener asistencia de @:moonpayText, ir a <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/support.moonpay.com <\/a>"
             },
             "amountError": {
                 "title": "Saldo insuficiente",
@@ -933,7 +934,7 @@
             "info": "Cuando pague una tarifa por la transacción,<br\/>el 10% se destinará a su referente",
             "referredLablel": "Dirección de referencia"
         },
-        "insufficientBondedAmount": "Para invitar a más referencias, vincule al menos {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Para invitar a más referidos, vincular al menos {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detalles de la transacción",
     "createTokenTextNFT": "Crear NFT",
@@ -949,7 +950,7 @@
     },
     "mobilePopup": {
         "sideMenu": "Obtén SORA Wallet",
-        "header": "Descargue SORA Wallet con características de <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
-        "info": "Intercambie tokens de diferentes redes: SORA, Ethereum, Polkadot, Kusama. Proporcione un fondo de liquidez y gane un % de las tarifas de cambio."
+        "header": "Descargue la billetera de SORA  con características de <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Intercambie tokens de diferentes redes: SORA, Ethereum, Polkadot, Kusama. Proporcione liquidez a la pool y gane un % de las tarifas de cambio."
     }
 }

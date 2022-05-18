@@ -537,7 +537,8 @@
         "selectNetwork": "Hálózat kiválasztása",
         "networkInfo": "@:soraText hálózati híd a következőkkel:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Hálózati cím másolása"
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",

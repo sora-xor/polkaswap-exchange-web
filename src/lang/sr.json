@@ -537,7 +537,8 @@
         "selectNetwork": "Изаберите мрежу",
         "networkInfo": "Бриџ @:soraText мрежа са:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Копирајте мрежну адресу"
     },
     "selectRegisteredAsset": {
         "title": "Изаберите токен",

@@ -241,7 +241,7 @@
         "enterTokenDescription": "Ange beskrivning",
         "divisible": {
             "placeholder": "Delbar",
-            "desc": "Förmåga av NFT att delas i bråkdelar. Likviditet tillhandahållande fungerar endast med delbara tillgångar"
+            "desc": "NFT:s förmåga att delas i bråkdelar. Likviditet tillhandahållande fungerar endast med delbara tillgångar"
         }
     },
     "transaction": {
@@ -383,7 +383,7 @@
         "title": "@:soraText val av Nätverksnod",
         "addNode": "Lägg till anpassad nod",
         "customNode": "Anpassad nod",
-        "howToSetupOwnNode": "Så här konfigurerar du din egen @:soraText -nod",
+        "howToSetupOwnNode": "Hur du installerar din egen @:soraText nod",
         "select": "Välj",
         "connected": "Ansluten",
         "selectNodeForEnvironment": "Välj en nod för {environment} miljö:",
@@ -537,7 +537,8 @@
         "selectNetwork": "Välj nätverk",
         "networkInfo": "Brygga @:soraText Nätverk med:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Kopiera nätverksadress"
     },
     "selectRegisteredAsset": {
         "title": "Välj en token",

@@ -537,7 +537,8 @@
         "selectNetwork": "Выбрать сеть",
         "networkInfo": "Соединить @:soraText Сеть с:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Скопировать адрес сети"
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
