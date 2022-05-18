@@ -381,9 +381,9 @@
     },
     "selectNodeDialog": {
         "title": "@:soraText Sélection du nœud du réseau",
-        "addNode": "Ajouter un nœud personnalisé",
+        "addNode": "Ajouter nœud personnalisé",
         "customNode": "Nœud personnalisé",
-        "howToSetupOwnNode": "Comment configurer votre propre nœud @:soraText",
+        "howToSetupOwnNode": "Comment configurer propre nœud @:soraText",
         "select": "Sélectionnez",
         "connected": "Connecté",
         "selectNodeForEnvironment": "Sélectionnez un nœud pour l'environnement {environnement}:",
@@ -537,7 +537,8 @@
         "selectNetwork": "Sélectionner un réseau",
         "networkInfo": "Pont @:soraText Réseau avec:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Copier l'adresse réseau"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",

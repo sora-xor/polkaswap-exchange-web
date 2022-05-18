@@ -537,7 +537,8 @@
         "selectNetwork": "Vybrať sieť",
         "networkInfo": "Prepojiť @:soraText sieť s:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Skopírujte sieťovú adresu"
     },
     "selectRegisteredAsset": {
         "title": "Vybrať token",

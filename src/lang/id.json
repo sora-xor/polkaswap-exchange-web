@@ -537,7 +537,8 @@
         "selectNetwork": "Pilih jaringan",
         "networkInfo": "Bridge Jaringan @:soraText dengan:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Salin alamat jaringan"
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",

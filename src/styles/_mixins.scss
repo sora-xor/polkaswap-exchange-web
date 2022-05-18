@@ -488,3 +488,11 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     color: var(--s-color-base-content-secondary);
   }
 }
+
+@mixin copy-address () {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

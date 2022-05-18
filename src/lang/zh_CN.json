@@ -537,7 +537,8 @@
         "selectNetwork": "选择网络",
         "networkInfo": "与 @:soraText 网络桥接：",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "复制网络地址"
     },
     "selectRegisteredAsset": {
         "title": "选择一个代币",

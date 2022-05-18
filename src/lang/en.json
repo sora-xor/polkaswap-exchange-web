@@ -537,7 +537,8 @@
         "selectNetwork": "Select network",
         "networkInfo": "Bridge @:soraText Network with:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Copy network address"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",

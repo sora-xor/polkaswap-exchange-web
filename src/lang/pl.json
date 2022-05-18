@@ -383,7 +383,7 @@
         "title": "Wybór węzła sieci @:soraText",
         "addNode": "Dodaj niestandardowy węzeł",
         "customNode": "Węzeł niestandardowy",
-        "howToSetupOwnNode": "Jak skonfigurować własny węzeł sieci @:soraText",
+        "howToSetupOwnNode": "Jak ustawić własny węzeł sieci @:soraText",
         "select": "Wybierz",
         "connected": "Połączono",
         "selectNodeForEnvironment": "Wybierz węzeł dla środowiska {environment}:",
@@ -537,7 +537,8 @@
         "selectNetwork": "Wybierz sieć",
         "networkInfo": "Połącz za pomocą mostu sieć @:soraText z:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Skopiuj adres sieciowy"
     },
     "selectRegisteredAsset": {
         "title": "Wybierz token",
