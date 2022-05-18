@@ -537,7 +537,8 @@
         "selectNetwork": "Odaberite mrežu",
         "networkInfo": "Bridge @:soraText mrežna naknada s:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Kopiraj mrežnu adresu"
     },
     "selectRegisteredAsset": {
         "title": "Odaberite token",
