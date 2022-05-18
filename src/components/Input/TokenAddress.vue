@@ -61,11 +61,7 @@ export default class TokenAddress extends Mixins(TranslationMixin) {
   }
 
   &__value {
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-    }
+    @include copy-address;
   }
 }
 </style>
