@@ -28,6 +28,7 @@ export default {
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
+  releaseNotesText: 'Release notes',
   memorandum: 'Polkaswap Memorandum and Terms of Services',
   memorandumLink:
     '<a href="@:helpDialog.termsOfServiceLink" target="_blank" rel="nofollow noopener" class="link" title="@:memorandum">@:memorandum</a>',

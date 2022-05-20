@@ -1,6 +1,10 @@
 {
   "name": "polkaswap-exchange-web",
   "version": "1.9.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
+  },
   "license": "Apache-2.0",
   "private": true,
   "author": "jihoon@tutanota.de <jihoon@tutanota.de>",

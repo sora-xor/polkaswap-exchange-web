@@ -25,7 +25,7 @@ import TranslationMixin from './mixins/TranslationMixin';
 import DialogMixin from './mixins/DialogMixin';
 import DialogBase from './DialogBase.vue';
 
-import { app } from '@/consts';
+import { app, Links } from '@/consts';
 
 @Component({
   components: {
@@ -39,11 +39,11 @@ export default class HelpDialog extends Mixins(TranslationMixin, DialogMixin) {
   readonly links = [
     {
       title: this.t('helpDialog.termsOfService'),
-      url: this.t('helpDialog.termsOfServiceLink'),
+      url: Links.terms,
     },
     {
       title: this.t('helpDialog.privacyPolicy'),
-      url: this.t('helpDialog.privacyPolicyLink'),
+      url: Links.privacy,
     },
   ];
 }

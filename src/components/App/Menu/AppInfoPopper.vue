@@ -17,20 +17,14 @@
       <s-divider />
       <div>
         <a
-          class="app-info-link app-info-link--wiki"
+          v-for="(link, index) in textLinks"
+          :key="index"
+          class="app-info-link app-info-link--text"
           target="_blank"
           rel="nofollow noopener"
-          :href="t('helpDialog.privacyPolicyLink')"
+          :href="link.href"
         >
-          <span>{{ t('helpDialog.privacyPolicy') }}</span>
-        </a>
-        <a
-          class="app-info-link app-info-link--wiki"
-          target="_blank"
-          rel="nofollow noopener"
-          :href="t('helpDialog.termsOfServiceLink')"
-        >
-          <span>{{ t('helpDialog.termsOfService') }}</span>
+          <span>{{ link.title }}</span>
         </a>
       </div>
       <div class="app-info__versions">
@@ -50,7 +44,7 @@ import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import { app, SocialNetworkLinks } from '@/consts';
+import { app, SocialNetworkLinks, Links } from '@/consts';
 
 @Component
 export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.LoadingMixin) {
@@ -65,6 +59,23 @@ export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.Loadi
 
       this.specVersion = Number(specVersion);
     });
+  }
+
+  get textLinks(): Array<object> {
+    return [
+      {
+        title: this.t('helpDialog.privacyPolicy'),
+        href: Links.privacy,
+      },
+      {
+        title: this.t('releaseNotesText'),
+        href: Links.releaseNotes,
+      },
+      {
+        title: this.t('helpDialog.termsOfService'),
+        href: Links.terms,
+      },
+    ];
   }
 }
 </script>
@@ -132,7 +143,7 @@ $social-link-min-height: 34px;
       min-height: $social-link-min-height;
     }
 
-    &--wiki {
+    &--text {
       & + & {
         margin-top: $basic-spacing-small;
       }
