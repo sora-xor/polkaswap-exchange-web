@@ -213,9 +213,13 @@ import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Subscription } from '@polkadot/x-rxjs';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
-import type { QuotePaths, QuotePayload, PrimaryMarketsEnabledAssets } from '@sora-substrate/util/build/swap/types';
-import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import type {
+  QuotePaths,
+  QuotePayload,
+  PrimaryMarketsEnabledAssets,
+  LPRewardsInfo,
+} from '@sora-substrate/liquidity-proxy/build/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';

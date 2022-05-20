@@ -1,9 +1,13 @@
 import { defineMutations } from 'direct-vuex';
 import type { CodecString } from '@sora-substrate/util';
-import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { QuotePaths, PrimaryMarketsEnabledAssets, QuotePayload } from '@sora-substrate/util/build/swap/types';
-import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type {
+  QuotePaths,
+  PrimaryMarketsEnabledAssets,
+  QuotePayload,
+  LPRewardsInfo,
+} from '@sora-substrate/liquidity-proxy/build/types';
 
 import { initialState } from './state';
 import type { SwapState } from './types';

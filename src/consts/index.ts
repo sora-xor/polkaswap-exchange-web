@@ -1,6 +1,6 @@
 import invert from 'lodash/fp/invert';
 import { KnownAssets, KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
-import { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 import pkg from '../../package.json';
 import { KnownBridgeAsset } from '../utils/ethers-util';
