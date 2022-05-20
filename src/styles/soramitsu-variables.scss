@@ -1,14 +1,14 @@
 $s-color-brand-day: #A19A9D; // 0d0248
 // Primary theme colors
-$s-color-theme-accent: #FF6622; // NEU bright pink fluro
-$s-color-theme-accent-hover: #FF9955; // NEU pale quartz pink
+$s-color-theme-accent: #E81932; // NEU bright pink fluro
+$s-color-theme-accent-hover: #FF95A2;// NEU pale quartz pink
 $s-color-theme-accent-pressed: #DD4400;
-$s-color-theme-accent-focused: #EE5511;
+$s-color-theme-accent-focused: #E81932;
 
-$s-color-theme-accent--dark: #DDFF77; // NEU bright pink fluro
-$s-color-theme-accent-hover--dark: #BBDD55; // NEU pale quartz pink
-$s-color-theme-accent-pressed--dark: #229198;
-$s-color-theme-accent-focused--dark: #DDFF77;
+$s-color-theme-accent--dark: #E81932;// NEU bright pink fluro
+$s-color-theme-accent-hover--dark: #FF95A2; // NEU pale quartz pink
+$s-color-theme-accent-pressed--dark: #DD4400;
+$s-color-theme-accent-focused--dark: #E81932;
 // Secondary theme colors
 $s-color-theme-secondary: #DDFF77;
 $s-color-theme-secondary-hover: #BBDD55;
@@ -36,17 +36,17 @@ $s-color-base-disabled: #F1ECEC;
 $s-color-base-on-disabled: #998888;
 $s-color-base-on-accent: #FFFFFF;
 
-$s-color-base-background--dark: #222727;
+$s-color-base-background--dark: #2a2a2a;
 $s-color-base-border-secondary--dark: #2D3636;
 $s-color-base-on-accent--dark: #2F3C3C;
-$s-color-base-background-hover--dark: #ddff771f;
+$s-color-base-background-hover--dark: #ff77771f;
 // Utility colors
 $s-color-utility-body: #F6F2F2;
 $s-color-utility-surface: #F8F4F4;
 $s-color-utility-overlay: rgba(26, 47, 47, 0.1);
 
-$s-color-utility-body--dark: #0D0D0B;
-$s-color-utility-surface--dark: #131311;
+$s-color-utility-body--dark: #222222;
+$s-color-utility-surface--dark: #1c1c1c;
 $s-color-utility-overlay--dark: #131311;
 // Status colors
 $s-color-status-success: #34AD87;
@@ -60,11 +60,11 @@ $s-color-fiat-value: #C1D2E3 !default;
 $s-color-rewards: #c0e2ff !default;
 
 //Shadow colors
-$s-shadow-color-primary: #FF6622;
-$s-shadow-color-secondary: #FF9955;
+$s-shadow-color-primary: #E81932;
+$s-shadow-color-secondary: #FF95A2;
 
-$s-shadow-color-primary--dark: #DDFF77;
-$s-shadow-color-secondary--dark: #BBDD55;
+$s-shadow-color-primary--dark: #E81932;
+$s-shadow-color-secondary--dark: #FF95A2;
 
 // Sizes
 $s-size-mini: 24px;
@@ -79,13 +79,13 @@ $s-shadow-dropdown: 0px 4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-tap-bar: 0px -4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-side-menu: -4px 4px 8px rgba(19, 19, 19, 0.15);
 
-$s-shadow-dialog: -5px -5px 30px rgba(255, 102, 34, 0.02), 10px 10px 60px rgba(255, 102, 34, 0.1), inset 1px 1px 10px #FFFFFF;
-$s-shadow-element: 1px 1px 5px #FFFFFF, inset -5px -5px 5px rgba(255, 102, 34, 0.05), inset 1px 1px 10px rgba(255, 102, 34, 0.05);
-$s-shadow-element-pressed: -5px -5px 5px rgba(255, 102, 34, 0.05), 1px 1px 25px rgba(255, 102, 34, 0.1), inset 1px 1px 10px #FFFFFF;
+$s-shadow-dialog: -5px -5px 30px rgba(232, 25, 50, 0.02), 10px 10px 60px rgba(232, 25, 50, 0.1), inset 1px 1px 10px #FFFFFF;
+$s-shadow-element: 1px 1px 5px #FFFFFF, inset -5px -5px 5px rgba(232, 25, 50, 0.05), inset 1px 1px 10px rgba(232, 25, 50, 0.05);
+$s-shadow-element-pressed: -5px -5px 5px rgba(232, 25, 50, 0.05), 1px 1px 25px rgba(232, 25, 50, 0.1), inset 1px 1px 10px #FFFFFF;
 
-$s-shadow-dialog--dark: -10px -10px 30px rgba(221, 255, 34, 0.1), 20px 20px 60px rgba(221, 255, 34, 0.15);
-$s-shadow-element--dark: 1px 1px 2px rgba(255, 255, 255, 0.1), inset -5px -5px 5px rgba(221, 255, 34, 0.05), inset 1px 1px 10px rgba(221, 255, 34, 0.05);
-$s-shadow-element-pressed--dark: -5px -5px 5px rgba(221, 255, 34, 0.05), 2px 2px 25px rgba(221, 255, 34, 0.33), inset 1px 1px 2px #52523D;
+$s-shadow-dialog--dark: -10px -10px 30px rgba(232, 25, 50, 0.1), 20px 20px 60px rgba(232, 25, 50, 0.15);
+$s-shadow-element--dark: 1px 1px 2px rgba(255, 255, 255, 0.1), inset -5px -5px 5px rgba(232, 25, 50, 0.05), inset 1px 1px 10px rgba(232, 25, 50, 0.05);
+$s-shadow-element-pressed--dark: -5px -5px 5px rgba(232, 25, 50, 0.05), 2px 2px 25px rgba(232, 25, 50, 0.33), inset 1px 1px 2px #52523D;
 
 // Border Radius
 $s-border-radius-base: 16px;
