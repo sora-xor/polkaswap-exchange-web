@@ -168,12 +168,12 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 </style>
 
 <style lang="scss" scoped>
-$app-controls-filter: drop-shadow(-5px -5px 5px rgba(255, 102, 34, 0.05))
-  drop-shadow(1px 1px 25px rgba(255, 102, 34, 0.1));
+$app-controls-filter: drop-shadow(-5px -5px 5px rgba(232, 25, 50, 0.05))
+  drop-shadow(1px 1px 25px rgba(232, 25, 50, 0.1));
 $app-controls-shadow: inset 1px 1px 10px #ffffff;
 
-$app-controls-filter--dark: drop-shadow(-5px -5px 5px rgba(221, 255, 34, 0.05))
-  drop-shadow(2px 2px 25px rgba(221, 255, 34, 0.33));
+$app-controls-filter--dark: drop-shadow(-5px -5px 5px rgba(232, 25, 50, 0.05))
+  drop-shadow(2px 2px 10px rgba(232, 25, 49, 0.33));
 $app-controls-shadow--dark: inset 1px 1px 2px #52523d;
 .header {
   display: flex;
