@@ -264,7 +264,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   get isInsufficientBondedAmount(): boolean {
-    return this.bondedXorCodecBalance ? this.networkFees.ReferralSetInvitedUser > this.bondedXorCodecBalance : false;
+    return this.bondedXorCodecBalance ? +this.networkFees.ReferralSetInvitedUser > +this.bondedXorCodecBalance : false;
   }
 
   get formattedBondedXorBalance(): string {
