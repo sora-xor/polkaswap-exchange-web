@@ -17,7 +17,7 @@
       <s-divider />
       <div>
         <a
-          v-for="(link, index) in textLinks"
+          v-for="(link, index) in sortedTextLinks"
           :key="index"
           class="app-info-link app-info-link--text"
           target="_blank"
@@ -50,6 +50,20 @@ import { app, SocialNetworkLinks, Links } from '@/consts';
 export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   readonly SocialNetworkLinks = SocialNetworkLinks;
   readonly app = app;
+  readonly textLinks: Array<{ title: string; href: string }> = [
+    {
+      title: this.t('helpDialog.privacyPolicy'),
+      href: Links.privacy,
+    },
+    {
+      title: this.t('releaseNotesText'),
+      href: Links.releaseNotes,
+    },
+    {
+      title: this.t('helpDialog.termsOfService'),
+      href: Links.terms,
+    },
+  ];
 
   specVersion: Nullable<number> = null;
 
@@ -61,21 +75,19 @@ export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.Loadi
     });
   }
 
-  get textLinks(): Array<object> {
-    return [
-      {
-        title: this.t('helpDialog.privacyPolicy'),
-        href: Links.privacy,
-      },
-      {
-        title: this.t('releaseNotesText'),
-        href: Links.releaseNotes,
-      },
-      {
-        title: this.t('helpDialog.termsOfService'),
-        href: Links.terms,
-      },
-    ];
+  get sortedTextLinks(): Array<{ title: string; href: string }> {
+    return this.textLinks.sort((a, b) => {
+      const nameA = a.title.toUpperCase();
+      const nameB = b.title.toUpperCase();
+
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
   }
 }
 </script>
