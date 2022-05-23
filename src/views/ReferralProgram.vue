@@ -170,7 +170,8 @@ import last from 'lodash/fp/last';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins, api, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString, FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import router, { lazyView } from '@/router';
@@ -256,7 +257,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   get bondedXorCodecBalance(): CodecString {
-    return this.xor?.balance?.bonded ?? '';
+    return this.xor?.balance?.bonded ?? '0';
   }
 
   get inviteUserFee(): string {
@@ -264,7 +265,12 @@ export default class ReferralProgram extends Mixins(
   }
 
   get isInsufficientBondedAmount(): boolean {
-    return this.bondedXorCodecBalance ? +this.networkFees.ReferralSetInvitedUser > +this.bondedXorCodecBalance : false;
+    return this.bondedXorCodecBalance
+      ? FPNumber.gt(
+          this.getFPNumber(this.networkFees.ReferralSetInvitedUser),
+          this.getFPNumberFromCodec(this.bondedXorCodecBalance)
+        )
+      : false;
   }
 
   get formattedBondedXorBalance(): string {
