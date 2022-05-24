@@ -77,6 +77,7 @@ export const Links = {
   marketMaker: 'https://medium.com/polkaswap/pswap-rewards-part-3-polkaswap-market-making-rebates-1856f62ccfaa',
   terms: 'https://wiki.sora.org/polkaswap/terms',
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
+  releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
 };
 
 export const ObjectInit = () => null;

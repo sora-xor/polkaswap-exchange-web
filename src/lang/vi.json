@@ -518,7 +518,7 @@
     },
     "bridge": {
         "title": "Cầu nối HASHI",
-        "info": "Chuyển token giữa mạng @:soraText và @:(ethereumText).",
+        "info": "Chuyển token giữa mạng @:soraText và @:ethereumText.",
         "balance": "Số dư",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -952,5 +952,6 @@
         "sideMenu": "Tải xuống Ví SORA",
         "header": "Tải xuống Ví SORA với các tính năng của <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Hoán đổi token từ các mạng khác nhau - SORA, Ethereum, Polkadot, Kusama. Cung cấp pool thanh khoản và kiếm % từ phí giao dịch."
-    }
+    },
+    "releaseNotesText": "Ghi chú phát hành"
 }

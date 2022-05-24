@@ -952,5 +952,6 @@
         "sideMenu": "Obtenez SORA Wallet",
         "header": "Téléchargez le portefeuille SORA avec les fonctionnalités <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Échangez des jetons de différents réseaux - SORA, Ethereum, Polkadot, Kusama. Fournissez un pool de liquidités et gagnez% des frais de change."
-    }
+    },
+    "releaseNotesText": "Notes de version"
 }
