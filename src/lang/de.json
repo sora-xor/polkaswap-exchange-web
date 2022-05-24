@@ -952,5 +952,6 @@
         "sideMenu": "Hole dir die SORA Wallet",
         "header": "Lade die SORA Wallet mit <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> -Funktionen herunter",
         "info": "Tausche Token aus verschiedenen Netzwerken aus - SORA, Ethereum, Polkadot, Kusama. Stelle einen Liquiditätspool bereit und verdiene % an Börsengebühren."
-    }
+    },
+    "releaseNotesText": "Versionshinweise"
 }

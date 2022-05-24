@@ -952,5 +952,6 @@
         "sideMenu": "Skaffa SORA Wallet",
         "header": "Ladda ner SORA Wallet med <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funktioner",
         "info": "Byt ut tokens från olika nätverk - SORA, Ethereum, Polkadot, Kusama. Bidra med likviditet i en pool och tjäna % från växlingsavgifter."
-    }
+    },
+    "releaseNotesText": "Utgåvan"
 }

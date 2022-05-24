@@ -952,5 +952,6 @@
         "sideMenu": "Получить SORA Wallet",
         "header": "Загрузите кошелек SORA с функциями <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Обмен токенами из разных сетей — SORA, Ethereum, Polkadot, Kusama. Обеспечьте пул ликвидности и зарабатывайте % от биржевых комиссий."
-    }
+    },
+    "releaseNotesText": "О версии приложения"
 }
