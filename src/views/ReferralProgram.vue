@@ -267,7 +267,7 @@ export default class ReferralProgram extends Mixins(
   get isInsufficientBondedAmount(): boolean {
     return this.bondedXorCodecBalance
       ? FPNumber.gt(
-          this.getFPNumber(this.networkFees.ReferralSetInvitedUser),
+          this.getFPNumberFromCodec(this.networkFees.ReferralSetInvitedUser),
           this.getFPNumberFromCodec(this.bondedXorCodecBalance)
         )
       : false;
