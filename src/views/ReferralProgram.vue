@@ -257,7 +257,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   get bondedXorCodecBalance(): CodecString {
-    return this.xor?.balance?.bonded ?? '0';
+    return this.xor?.balance?.bonded ?? '';
   }
 
   get inviteUserFee(): string {
