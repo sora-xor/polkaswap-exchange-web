@@ -1,4 +1,6 @@
+import first from 'lodash/fp/first';
 import { BridgeTxStatus, Operation } from '@sora-substrate/util';
+import { SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
 import store from '@/store';
@@ -170,7 +172,7 @@ class BridgeTransactionStateHandler {
           const transaction = await bridgeHistory.findEthTxBySoraHash(
             to as string,
             hash as string,
-            (startTime as number) / 1000
+            startTime as number
           );
 
           if (transaction) {
@@ -206,7 +208,7 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
             await this.beforeSubmit(id);
             this.updateTransactionParams(id, { transactionState: STATES.SORA_PENDING });
 
-            const { blockId, to, amount, assetAddress } = getTransaction(id);
+            const { txId, blockId, to, amount, assetAddress } = getTransaction(id);
 
             if (!amount) throw new Error('[Bridge]: TX "amount" cannot be empty');
             if (!assetAddress) throw new Error('[Bridge]: TX "assetAddress" cannot be empty');
@@ -217,9 +219,25 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
             if (!asset || !asset.externalAddress)
               throw new Error(`[Bridge]: TX asset is not registered: ${assetAddress}`);
 
-            // signed sora transaction has to be in block chain
-            if (!blockId) {
+            // transaction not signed
+            if (!txId) {
               await bridgeApi.transferToEth(asset, to, amount, id);
+            }
+            // signed sora transaction has to be parsed by subquery
+            if (txId && !blockId) {
+              // format account address to sora format
+              const address = bridgeApi.formatAddress(bridgeApi.account.pair.address);
+              const bridgeHistory = await this.getBridgeHistoryInstance();
+              const historyItem = first(await bridgeHistory.fetchHistoryElements(address, 0, [txId]));
+
+              if (historyItem) {
+                this.updateTransactionParams(id, {
+                  blockId: historyItem.blockHash,
+                  hash: (historyItem.data as SUBQUERY_TYPES.HistoryElementEthBridgeOutgoing).requestHash,
+                });
+              } else {
+                throw new Error(`[Bridge]: Can not restore TX from Subquery: ${txId}`);
+              }
             }
           },
         });

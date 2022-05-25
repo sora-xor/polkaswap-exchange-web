@@ -1,6 +1,6 @@
 import { defineGetters } from 'direct-vuex';
 import { connection } from '@soramitsu/soraneo-wallet-web';
-import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 import { settingsGetterContext } from '@/store/settings';
 import { LiquiditySourceForMarketAlgorithm } from '@/consts';

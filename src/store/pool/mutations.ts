@@ -9,18 +9,14 @@ const mutations = defineMutations<PoolState>()({
     state.accountLiquidityList = subscription;
   },
   resetAccountLiquidityList(state): void {
-    if (state.accountLiquidityList) {
-      state.accountLiquidityList.unsubscribe();
-    }
+    state.accountLiquidityList?.unsubscribe();
     state.accountLiquidityList = null;
   },
   setAccountLiquidityUpdates(state, subscription: Subscription): void {
     state.accountLiquidityUpdates = subscription;
   },
   resetAccountLiquidityUpdates(state): void {
-    if (state.accountLiquidityUpdates) {
-      state.accountLiquidityUpdates.unsubscribe();
-    }
+    state.accountLiquidityUpdates?.unsubscribe();
     state.accountLiquidityUpdates = null;
   },
   setAccountLiquidity(state, liquidity: Array<AccountLiquidity>): void {

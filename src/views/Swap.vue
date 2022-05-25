@@ -18,6 +18,7 @@
     <s-float-input
       class="s-input--token-value"
       size="medium"
+      data-test-name="swapFrom"
       :value="fromValue"
       :decimals="tokenFromDecimals"
       has-locale-string
@@ -61,6 +62,7 @@
         </s-button>
         <token-select-button
           class="el-button--select-token"
+          data-test-name="selectToken"
           icon="chevron-down-rounded-16"
           :token="tokenFrom"
           @click="openSelectTokenDialog(true)"
@@ -79,6 +81,7 @@
     </s-float-input>
     <s-button
       class="el-button--switch-tokens"
+      data-test-name="switchToken"
       type="action"
       icon="arrows-swap-90-24"
       :disabled="!areTokensSelected"
@@ -87,6 +90,7 @@
     <s-float-input
       class="s-input--token-value"
       size="medium"
+      data-test-name="swapTo"
       :value="toValue"
       :decimals="tokenToDecimals"
       has-locale-string
@@ -119,6 +123,7 @@
       <div slot="right" class="s-flex el-buttons">
         <token-select-button
           class="el-button--select-token"
+          data-test-name="selectToken"
           icon="chevron-down-rounded-16"
           :token="tokenTo"
           @click="openSelectTokenDialog(false)"
@@ -152,6 +157,7 @@
     <s-button
       v-else
       class="action-button s-typography-button--large"
+      data-test-name="confirmSwap"
       type="primary"
       :disabled="isConfirmSwapDisabled"
       :loading="isSelectAssetLoading"
@@ -207,9 +213,13 @@ import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Subscription } from '@polkadot/x-rxjs';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
-import type { QuotePaths, QuotePayload, PrimaryMarketsEnabledAssets } from '@sora-substrate/util/build/swap/types';
-import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import type {
+  QuotePaths,
+  QuotePayload,
+  PrimaryMarketsEnabledAssets,
+  LPRewardsInfo,
+} from '@sora-substrate/liquidity-proxy/build/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
@@ -232,16 +242,15 @@ import { action, getter, mutation, state } from '@/store/decorators';
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SettingsDialog: lazyComponent(Components.SettingsDialog),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    TokenLogo: lazyComponent(Components.TokenLogo),
     SelectToken: lazyComponent(Components.SelectToken),
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
+    TokenAddress: components.TokenAddress,
   },
 })
 export default class Swap extends Mixins(
@@ -543,10 +552,7 @@ export default class Swap extends Mixins(
   }
 
   private cleanEnabledAssetsSubscription(): void {
-    if (!this.enabledAssetsSubscription) {
-      return;
-    }
-    this.enabledAssetsSubscription.unsubscribe();
+    this.enabledAssetsSubscription?.unsubscribe();
     this.enabledAssetsSubscription = null;
   }
 
@@ -556,10 +562,7 @@ export default class Swap extends Mixins(
   }
 
   private cleanSwapReservesSubscription(): void {
-    if (!this.liquidityReservesSubscription) {
-      return;
-    }
-    this.liquidityReservesSubscription.unsubscribe();
+    this.liquidityReservesSubscription?.unsubscribe();
     this.liquidityReservesSubscription = null;
   }
 

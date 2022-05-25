@@ -3,7 +3,7 @@
     <template v-if="isSoraAccountConnected">
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
-        <token-logo :token="xor" :size="LogoSize.BIG" />
+        <token-logo :token="xor" :size="LogoSize.BIGGER" />
         <formatted-amount
           class="rewards-value"
           value-can-be-hidden
@@ -13,38 +13,38 @@
           :asset-symbol="xorSymbol"
         />
         <formatted-amount
-          v-if="isPriceAvailable"
+          v-if="formattedRewardsFiatValue"
           is-fiat-value
+          fiat-default-rounding
           value-can-be-hidden
           :font-size-rate="FontSizeRate.MEDIUM"
-          :value="formattedRewards"
+          :value="formattedRewardsFiatValue"
           is-formatted
         />
       </div>
-      <s-card
-        v-if="hasAccountWithBondedXor"
-        class="referral-link-container"
-        shadow="always"
-        size="small"
-        border-radius="medium"
-      >
-        <div class="referral-link-details">
-          <div class="referral-link-label">{{ t('referralProgram.invitationLink') }}</div>
-          <div class="referral-link" v-html="referralLink.label" />
+      <template v-if="hasAccountWithBondedXor">
+        <div v-if="isInsufficientBondedAmount" class="referral-insufficient-bonded-amount">
+          {{ t('referralProgram.insufficientBondedAmount', { inviteUserFee }) }}
         </div>
-        <s-button class="s-typography-button--mini" size="small" type="primary" @click.stop="handleCopyAddress()">
-          {{ t('referralProgram.action.copyLink') }}
-          <s-icon name="copy-16" size="16" />
-        </s-button>
-      </s-card>
+        <s-card v-else class="referral-link-container" shadow="always" size="small" border-radius="medium">
+          <div class="referral-link-details">
+            <div class="referral-link-label">{{ t('referralProgram.invitationLink') }}</div>
+            <div class="referral-link" v-html="referralLink.label" />
+          </div>
+          <s-button class="s-typography-button--mini" size="small" type="primary" @click.stop="handleCopyAddress()">
+            {{ t('referralProgram.action.copyLink') }}
+            <s-icon name="copy-16" size="16" />
+          </s-button>
+        </s-card>
+      </template>
       <s-collapse :borders="true">
         <s-collapse-item :class="bondedContainerClasses" :disabled="!hasAccountWithBondedXor" name="bondedXOR">
           <template v-if="hasAccountWithBondedXor" #title>
-            <token-logo class="token-logo" :token="xor" />
+            <token-logo :token="xor" />
             <h3 class="bonded-collapse-title">{{ t('referralProgram.bondedXOR') }}</h3>
           </template>
           <div v-if="!hasAccountWithBondedXor" class="unbonded-info">
-            <token-logo class="token-logo" :token="xor" />
+            <token-logo :token="xor" />
             <p
               class="referral-program-hint referral-program-hint--connected"
               v-html="t('referralProgram.startInviting')"
@@ -86,7 +86,6 @@
                 :key="invitedUser"
                 :value="getInvitedUserReward(invitedUser)"
                 :asset-symbol="xorSymbol"
-                :fiat-value="getFiatAmountByCodecString(getInvitedUserReward(invitedUser))"
                 is-formatted
               >
                 <template #info-line-prefix>
@@ -111,7 +110,7 @@
         </s-collapse-item>
         <s-collapse-item class="referrer-link-container" name="referrer">
           <template #title>
-            <WalletAvatar v-if="referrer" class="referrer-icon" :size="36" :address="referrer" />
+            <WalletAvatar v-if="referrer" class="referrer-icon" :size="32" :address="referrer" />
             <h3 class="referrer-collapse-title">
               {{ t(`referralProgram.referrer.${referrer ? 'titleReferrer' : 'title'}`) }}
             </h3>
@@ -171,11 +170,12 @@ import last from 'lodash/fp/last';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins, api, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString, FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
-import router, { lazyComponent, lazyView } from '@/router';
-import { PageNames, Components, LogoSize, ZeroStringValue } from '@/consts';
+import router, { lazyView } from '@/router';
+import { PageNames, LogoSize, ZeroStringValue } from '@/consts';
 import { detectBaseUrl } from '@/api';
 import { copyToClipboard, formatAddress } from '@/utils';
 
@@ -186,9 +186,9 @@ import { action, getter, mutation, state } from '@/store/decorators';
   components: {
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
-    TokenLogo: lazyComponent(Components.TokenLogo),
     ReferralBonding: lazyView(PageNames.ReferralBonding),
     WalletAvatar: components.WalletAvatar,
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class ReferralProgram extends Mixins(
@@ -196,6 +196,7 @@ export default class ReferralProgram extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.ReferralRewardsMixin,
   mixins.PaginationSearchMixin,
+  mixins.NetworkFeeWarningMixin,
   WalletConnectMixin
 ) {
   readonly LogoSize = LogoSize;
@@ -215,6 +216,8 @@ export default class ReferralProgram extends Mixins(
   @mutation.referrals.setStorageReferrer private setStorageReferrer!: (value: string) => void;
   @action.referrals.subscribeOnInvitedUsers private subscribeOnInvitedUsers!: AsyncVoidFn;
   @action.referrals.getReferrer private getReferrer!: AsyncVoidFn;
+  @action.referrals.subscribeOnReferrer private subscribeOnReferrer!: AsyncVoidFn;
+  @mutation.referrals.resetReferrerSubscription private resetReferrerSubscription!: VoidFunction;
 
   @Watch('isSoraAccountConnected')
   private async updateSubscriptions(value: boolean): Promise<void> {
@@ -223,9 +226,11 @@ export default class ReferralProgram extends Mixins(
         await this.subscribeOnInvitedUsers();
         await this.getAccountReferralRewards();
         await this.getReferrer();
+        await this.subscribeOnReferrer();
       }
     } else {
       this.unsubscribeFromInvitedUsers();
+      this.resetReferrerSubscription();
     }
   }
 
@@ -241,12 +246,31 @@ export default class ReferralProgram extends Mixins(
     return this.referralRewards?.rewards.toLocaleString() || ZeroStringValue;
   }
 
+  get formattedRewardsFiatValue(): Nullable<string> {
+    if (!this.referralRewards?.rewards) return null;
+
+    return this.getFiatAmountByFPNumber(this.referralRewards.rewards);
+  }
+
   get invitedUserRewards(): Record<string, { rewards: FPNumber }> {
     return this.referralRewards?.invitedUserRewards;
   }
 
   get bondedXorCodecBalance(): CodecString {
     return this.xor?.balance?.bonded ?? '';
+  }
+
+  get inviteUserFee(): string {
+    return this.formatCodecNumber(this.networkFees.ReferralSetInvitedUser);
+  }
+
+  get isInsufficientBondedAmount(): boolean {
+    return this.bondedXorCodecBalance
+      ? FPNumber.gt(
+          this.getFPNumberFromCodec(this.networkFees.ReferralSetInvitedUser),
+          this.getFPNumberFromCodec(this.bondedXorCodecBalance)
+        )
+      : false;
   }
 
   get formattedBondedXorBalance(): string {
@@ -363,6 +387,7 @@ export default class ReferralProgram extends Mixins(
         await this.subscribeOnInvitedUsers();
         await this.getAccountReferralRewards();
         await this.getReferrer();
+        await this.subscribeOnReferrer();
       }
     });
   }
@@ -420,7 +445,6 @@ export default class ReferralProgram extends Mixins(
 </script>
 
 <style lang="scss">
-$referral-collapse-icon-size: 36px;
 .referral-program {
   @include collapse-items(false, true);
   margin-top: $inner-spacing-mini;
@@ -488,9 +512,8 @@ $referral-collapse-icon-size: 36px;
       }
     }
   }
-  @include element-size('token-logo--medium', $referral-collapse-icon-size);
-  @include element-size('invited-users-icon', $referral-collapse-icon-size);
-  @include element-size('referrer-icon', $referral-collapse-icon-size);
+
+  @include element-size('referrer-icon', var(--s-size-small));
   &-hint--connected .link {
     color: var(--s-color-theme-accent);
   }
@@ -517,6 +540,8 @@ $referral-collapse-icon-size: 36px;
   &-icon {
     background: var(--s-color-base-content-tertiary) url('~@/assets/img/invited-users.svg') 50% 50% no-repeat;
     border-radius: 50%;
+    width: var(--s-size-small);
+    height: var(--s-size-small);
   }
 }
 .bonded-container {
@@ -594,6 +619,13 @@ $referral-collapse-icon-size: 36px;
     }
   }
 }
+
+.unbonded-info {
+  .asset-logo {
+    margin-top: $basic-spacing;
+    margin-bottom: $basic-spacing;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -620,8 +652,7 @@ $referral-collapse-icon-size: 36px;
 }
 .rewards {
   &-container {
-    margin-bottom: $inner-spacing-medium;
-    @include element-size('token-logo', 48px);
+    margin-bottom: $inner-spacing-small;
     .rewards-value {
       margin-top: $inner-spacing-small;
     }
@@ -662,7 +693,7 @@ $referral-collapse-icon-size: 36px;
 }
 
 .unbonded-info {
-  .token-logo {
+  .asset-logo {
     margin-bottom: $inner-spacing-medium;
     margin-top: $inner-spacing-medium;
     height: var(--s-heading1-font-size);
@@ -706,6 +737,13 @@ $referral-collapse-icon-size: 36px;
       text-align: left;
     }
   }
+}
+
+.referral-insufficient-bonded-amount {
+  text-align: center;
+  font-size: var(--s-font-size-extra-small);
+  line-height: var(--s-line-height-medium);
+  letter-spacing: var(--s-letter-spacing-small);
 }
 
 .referrer {

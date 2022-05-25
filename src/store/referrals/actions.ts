@@ -14,6 +14,22 @@ const actions = defineActions({
       commit.resetReferrer();
     }
   },
+  async subscribeOnReferrer(context): Promise<void> {
+    const { commit, rootGetters } = referralsActionContext(context);
+    commit.resetReferrerSubscription();
+
+    if (!rootGetters.wallet.account.isLoggedIn) return;
+
+    const subscription = api.referralSystem
+      .subscribeOnReferrer(rootGetters.wallet.account.account.address)
+      .subscribe((referrer) => {
+        if (referrer) {
+          commit.setReferrer(referrer);
+        }
+      });
+
+    commit.setReferrerSubscription(subscription);
+  },
   async subscribeOnInvitedUsers(context): Promise<void> {
     const { commit, rootGetters } = referralsActionContext(context);
 

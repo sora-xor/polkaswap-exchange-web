@@ -16,7 +16,7 @@
       is-formatted
     >
       <template #info-line-prefix>
-        <token-logo :token="firstToken" size="small" />
+        <token-logo class="token-logo" :token="firstToken" size="small" />
       </template>
     </info-line>
     <info-line
@@ -26,7 +26,7 @@
       is-formatted
     >
       <template #info-line-prefix>
-        <token-logo :token="secondToken" size="small" />
+        <token-logo class="token-logo" :token="secondToken" size="small" />
       </template>
     </info-line>
     <info-line
@@ -58,7 +58,7 @@ import { AccountAsset } from '@sora-substrate/util/build/assets/types';
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenLogo: components.TokenLogo,
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     InfoLine: components.InfoLine,
   },
