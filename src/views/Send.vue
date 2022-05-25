@@ -240,9 +240,13 @@ import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Subscription } from '@polkadot/x-rxjs';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
-import type { QuotePaths, QuotePayload, PrimaryMarketsEnabledAssets } from '@sora-substrate/util/build/swap/types';
-import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import type {
+  QuotePaths,
+  QuotePayload,
+  PrimaryMarketsEnabledAssets,
+  LPRewardsInfo,
+} from '@sora-substrate/liquidity-proxy/build/types';
 import { getter, state, mutation, action } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -264,13 +268,13 @@ import { Components, PageNames, MarketAlgorithms } from '@/consts';
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SettingsDialog: lazyComponent(Components.SettingsDialog),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenLogo: components.TokenLogo,
     SelectToken: lazyComponent(Components.SelectToken),
     ConfirmSwap: lazyComponent(Components.ConfirmSwap),
     ConfirmSend: lazyComponent(Components.ConfirmSend),
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress),
+    TokenAddress: components.TokenAddress,
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     FormattedAmount: components.FormattedAmount,

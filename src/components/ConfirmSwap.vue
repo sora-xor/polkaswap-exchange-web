@@ -56,7 +56,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import type { CodecString, Operation } from '@sora-substrate/util';
+import { CodecString, Operation } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
