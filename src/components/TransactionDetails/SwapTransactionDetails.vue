@@ -49,7 +49,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR, KnownAssets } from '@sora-substrate/util/build/assets/consts';
-import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -88,7 +88,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   @getter.swap.priceReversed private priceReversed!: string;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
-  @getter.swap.tokenFrom tokenTo!: AccountAsset;
+  @getter.swap.tokenTo tokenTo!: AccountAsset;
   @getter.swap.minMaxReceived minMaxReceived!: CodecString;
   @getter.swap.priceImpact priceImpact!: string;
 
@@ -108,7 +108,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
     const toToken: string = this.tokenTo?.symbol ?? '';
     const xorToken: string = XOR.symbol;
 
-    return [...new Set([fromToken, xorToken, toToken])];
+    return [...new Set([fromToken, xorToken, toToken])]; // To remove doubled XOR if the route is simple
   }
 
   get priceValues(): Array<PriceValue> {

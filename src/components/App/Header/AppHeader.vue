@@ -23,8 +23,8 @@
       :class="{ 'app-controls--settings-panel--dark': themeIsDark }"
     >
       <!-- <market-maker-countdown /> -->
-      <s-button type="action" class="setting" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
-        <token-logo class="setting__logo" v-bind="nodeLogo" />
+      <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
+        <token-logo class="node-control__logo token-logo" v-bind="nodeLogo" />
       </s-button>
       <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
       <app-header-menu />
@@ -69,7 +69,7 @@ import { getter, mutation } from '@/store/decorators';
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {
@@ -217,8 +217,8 @@ $app-controls-shadow--dark: inset 1px 1px 2px #52523d;
     border-bottom-left-radius: 0;
   }
 
-  .setting {
-    @include element-size('token-logo', 28px);
+  .node-control {
+    @include element-size('token-logo', 32px);
     &__logo {
       display: block;
       margin: auto;

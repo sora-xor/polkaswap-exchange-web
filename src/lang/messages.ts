@@ -28,6 +28,7 @@ export default {
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
+  releaseNotesText: 'Release notes',
   memorandum: 'Polkaswap Memorandum and Terms of Services',
   memorandumLink:
     '<a href="@:helpDialog.termsOfServiceLink" target="_blank" rel="nofollow noopener" class="link" title="@:memorandum">@:memorandum</a>',
@@ -341,6 +342,7 @@ export default {
     title: 'HASHI Bridge',
     info: 'Convert tokens between the @:soraText and @:ethereumText networks.',
     balance: 'Balance',
+    copy: 'Copy network address',
     connectWallet: '@:connectWalletText',
     connected: '@:connectedText',
     changeAccount: '@:changeAccountText',
@@ -414,7 +416,6 @@ export default {
       done: 'Complete',
       waitingForConfirmation: 'Waiting for confirmation...',
     },
-    wait30Block: 'Please wait 30 block confirmations',
     blocksLeft: '{count} blocks left...',
     viewInEtherscan: 'View in Etherscan',
     networkTitle: '{network} transaction',
@@ -693,6 +694,7 @@ export default {
     bondedXOR: 'XOR Bonded',
     referralsNumber: '{number} referrals',
     startInviting: 'To start inviting, bond any amount of XOR.',
+    insufficientBondedAmount: 'To invite more referrals, bond at least {inviteUserFee} XOR',
     preview:
       'Invite new users and get 10% from their transaction fees.<br />To start, bond any amount of XOR. <a href="#" target="_blank" rel="nofollow noopener" class="link" title="Learn more">Learn more</a>',
     deposit: 'Deposit',
@@ -729,5 +731,10 @@ export default {
       hasReferrerDescription: 'Unfortunately, you can only set one',
       ok: 'OK',
     },
+  },
+  mobilePopup: {
+    sideMenu: 'Get SORA Wallet',
+    header: 'Download SORA Wallet with <span class="popup-info__headline--highlight">Polkaswap</span> features',
+    info: 'Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees.',
   },
 };

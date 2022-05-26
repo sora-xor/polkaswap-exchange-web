@@ -14,29 +14,23 @@ const getters = defineGetters<AssetsState>()({
       api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist)
     );
   },
-  nonWhitelistAssets(...args): Array<Asset> {
+  nonWhitelistDivisibleAssets(...args): { [key: string]: Asset } {
     const { rootState, rootGetters } = assetsGetterContext(args);
-    return rootState.wallet.account.assets.filter(
-      (asset: Asset) => !api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist)
-    );
+    return rootState.wallet.account.assets.reduce((buffer, asset: Asset) => {
+      if (!api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist) && asset.decimals) {
+        buffer[asset.address] = asset;
+      }
+      return buffer;
+    }, {});
   },
-  nonWhitelistDivisibleAssets(...args): Array<Asset> {
+  nonWhitelistDivisibleAccountAssets(...args): { [key: string]: AccountAsset } {
     const { rootState, rootGetters } = assetsGetterContext(args);
-    return rootState.wallet.account.assets.filter(
-      (asset: Asset) => !api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist) && asset.decimals
-    );
-  },
-  nonWhitelistAccountAssets(...args): Array<AccountAsset> {
-    const { rootState, rootGetters } = assetsGetterContext(args);
-    return rootState.wallet.account.accountAssets.filter(
-      (asset: AccountAsset) => !api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist)
-    );
-  },
-  nonWhitelistDivisibleAccountAssets(...args): Array<AccountAsset> {
-    const { rootState, rootGetters } = assetsGetterContext(args);
-    return rootState.wallet.account.accountAssets.filter(
-      (asset: AccountAsset) => !api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist) && asset.decimals
-    );
+    return rootState.wallet.account.accountAssets.reduce((buffer, asset: AccountAsset) => {
+      if (!api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist) && asset.decimals) {
+        buffer[asset.address] = asset;
+      }
+      return buffer;
+    }, {});
   },
   assetsDataTable(...args): RegisteredAccountAssetObject {
     const { state, rootState, rootGetters } = assetsGetterContext(args);

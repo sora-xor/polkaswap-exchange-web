@@ -30,12 +30,6 @@ export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
   }
 };
 
-export const isRejectedForeverFromPart = (tx: BridgeHistory): boolean => {
-  const requestError = tx.type === Operation.EthBridgeOutgoing ? !tx.hash : false;
-
-  return !isUnsignedFromPart(tx) && requestError;
-};
-
 export const getTransaction = (id: string): BridgeHistory => {
   const tx = bridgeApi.getHistory(id) as BridgeHistory;
 

@@ -12,7 +12,7 @@ import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 
 const NODE_CONNECTION_TIMEOUT = 60_000;
 
-async function getNetworkChainGenesisHash(context: ActionContext<any, any>): Promise<void> {
+async function updateNetworkChainGenesisHash(context: ActionContext<any, any>): Promise<void> {
   const { commit, state } = settingsActionContext(context);
   try {
     const genesisHash = await Promise.any(
@@ -20,19 +20,8 @@ async function getNetworkChainGenesisHash(context: ActionContext<any, any>): Pro
     );
     commit.setNetworkChainGenesisHash(genesisHash);
   } catch (error) {
-    commit.setNetworkChainGenesisHash('');
-    throw error;
+    console.error(error);
   }
-}
-
-async function setBlockNumber(context: ActionContext<any, any>): Promise<void> {
-  const { commit } = settingsActionContext(context);
-  commit.resetBlockNumberSubscription();
-
-  const blockNumberSubscription = api.system.getBlockNumberObservable().subscribe((blockNumber) => {
-    commit.setBlockNumber(Number(blockNumber));
-  });
-  commit.setBlockNumberUpdates(blockNumberSubscription);
 }
 
 const actions = defineActions({
@@ -113,13 +102,13 @@ const actions = defineActions({
       if (connectingNodeChanged()) return;
 
       console.info('Connected to node', connection.endpoint);
-      await setBlockNumber(context);
+
       const nodeChainGenesisHash = connection.api?.genesisHash.toHex();
       // if connected node is custom node, we should check genesis hash
       if (!isTrustedEndpoint) {
         // if genesis hash is not set in state, fetch it
         if (!state.chainGenesisHash) {
-          await getNetworkChainGenesisHash(context);
+          await updateNetworkChainGenesisHash(context);
         }
         if (nodeChainGenesisHash !== state.chainGenesisHash) {
           throw new AppHandledError(
@@ -179,6 +168,15 @@ const actions = defineActions({
     updateDocumentTitle();
     updateFpNumberLocale(locale);
     commit.setLanguage(locale);
+  },
+  async setBlockNumber(context): Promise<void> {
+    const { commit } = settingsActionContext(context);
+    commit.resetBlockNumberSubscription();
+
+    const blockNumberSubscription = api.system.getBlockNumberObservable().subscribe((blockNumber) => {
+      commit.setBlockNumber(blockNumber);
+    });
+    commit.setBlockNumberUpdates(blockNumberSubscription);
   },
 });
 

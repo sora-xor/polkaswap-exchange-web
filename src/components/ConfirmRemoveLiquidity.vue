@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -50,8 +50,8 @@ import { state, getter } from '@/store/decorators';
 @Component({
   components: {
     DialogBase,
-    TokenLogo: lazyComponent(Components.TokenLogo),
     RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class ConfirmRemoveLiquidity extends Mixins(

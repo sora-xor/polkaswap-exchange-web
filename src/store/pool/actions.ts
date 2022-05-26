@@ -11,9 +11,11 @@ const actions = defineActions({
 
     if (!rootGetters.wallet.account.isLoggedIn) return;
 
-    await waitForAccountPair(() => {
+    await waitForAccountPair(async () => {
       const userPoolsSubscription = api.poolXyk.getUserPoolsSubscription();
       commit.setAccountLiquidityList(userPoolsSubscription);
+      // waiting until all liquidities loaded
+      await api.poolXyk.accountLiquidityLoaded.toPromise();
     });
   },
   async subscribeOnAccountLiquidityUpdates(context): Promise<void> {

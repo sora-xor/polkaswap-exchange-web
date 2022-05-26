@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "L'actif a été ajouté avec succès!",
+        "success": "L'actif {symbol} a été ajouté avec succès!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtrer par ID d'actif, nom ou symbole"
@@ -287,7 +287,7 @@
     "connectWalletTextTooltip": "Connectez-vous au réseau @:soraText avec polkadot{.js}",
     "selectNodeText": "Sélectionnez le nœud",
     "bridgeText": "Pont",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Avertissement<\/span>: ce site Web est maintenu par la communauté @:(soraText). Avant de continuer à utiliser ce site Web, veuillez consulter le @:polkaswapFaqLink et la documentation, qui comprend une explication détaillée du fonctionnement de Polkaswap, ainsi que le @:memorandumLink et le @:(privacyLink). Ces documents sont cruciaux pour une expérience utilisateur sécurisée et positive. En utilisant Polkaswap, vous reconnaissez avoir lu et compris ces documents. Vous reconnaissez également ce qui suit : 1) votre seule responsabilité de vous conformer à toutes les lois qui peuvent s'appliquer à votre utilisation particulière de Polkaswap dans votre juridiction légale ; 2) votre compréhension que la version actuelle de Polkaswap est une version alpha: elle n'a pas été entièrement testée et certaines fonctions peuvent ne pas fonctionner comme prévu; et 3) votre compréhension et votre acceptation volontaire des risques liés à l'utilisation de Polkaswap, y compris, mais sans s'y limiter, le risque de perdre des jetons. Encore une fois, veuillez ne pas continuer sans lire les @:polkaswapFaqLink, @:memorandumLink et @:privacyLink!",
+    "disclaimer": "<span class=\"app-disclaimer__title\">Avertissement<\/span>: ce site Web est maintenu par la communauté @:(soraText). Avant de continuer à utiliser ce site Web, veuillez consulter le @:polkaswapFaqLink et la documentation, qui comprend une explication détaillée du fonctionnement de Polkaswap, ainsi que le @:memorandumLink et le @:(privacyLink). Ces documents sont cruciaux pour une expérience utilisateur sécurisée et positive. En utilisant Polkaswap, vous reconnaissez avoir lu et compris ces documents. Vous reconnaissez également ce qui suit: 1) votre seule responsabilité de vous conformer à toutes les lois qui peuvent s'appliquer à votre utilisation particulière de Polkaswap dans votre juridiction légale; 2) votre compréhension que la version actuelle de Polkaswap est une version alpha: elle n'a pas été entièrement testée et certaines fonctions peuvent ne pas fonctionner comme prévu; et 3) votre compréhension et votre acceptation volontaire des risques liés à l'utilisation de Polkaswap, y compris, mais sans s'y limiter, le risque de perdre des jetons. Encore une fois, veuillez ne pas continuer sans lire les @:polkaswapFaqLink, @:memorandumLink et @:privacyLink!",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
     "poweredBy": "Alimenté par",
     "confirmTransactionText": "Confirmez la transaction dans {direction}",
@@ -362,7 +362,7 @@
             "description": "Polkaswap est construit sur le réseau @:soraText et le jeton @:soraText (XOR) est utilisé pour le gaz\/les frais et la fourniture de liquidités sur Polkaswap. @:soraText Network permet des frais réduits, des transactions plus rapides et une finalisation de consensus plus simple et se concentre sur l'interopérabilité entre d'autres écosystèmes de blockchain comme @:(ethereumText)."
         },
         "polkadot": {
-            "title": "Qu'est-ce que polkadot{.js} ?",
+            "title": "Qu'est-ce que polkadot{.js}?",
             "description": "L'extension Polkadot{.js} est une extension de navigateur disponible pour Firefox et Chrome dédiée à la gestion des comptes pour les chaînes basées sur le Substrat, notamment @:soraText, Polkadot et Kusama. Vous pouvez ajouter, importer et exporter des comptes et signer des transactions ou des éléments extrinsèques que vous avez initiés à partir de sites Web que vous avez autorisés."
         }
     },
@@ -382,9 +382,9 @@
     },
     "selectNodeDialog": {
         "title": "@:soraText Sélection du nœud du réseau",
-        "addNode": "Ajouter un nœud personnalisé",
+        "addNode": "Ajouter nœud personnalisé",
         "customNode": "Nœud personnalisé",
-        "howToSetupOwnNode": "Comment configurer votre propre nœud @:soraText",
+        "howToSetupOwnNode": "Comment configurer propre nœud @:soraText",
         "select": "Sélectionnez",
         "connected": "Connecté",
         "selectNodeForEnvironment": "Sélectionnez un nœud pour l'environnement {environnement}:",
@@ -538,7 +538,8 @@
         "selectNetwork": "Sélectionner un réseau",
         "networkInfo": "Pont @:soraText Réseau avec:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Copier l'adresse réseau"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -592,7 +593,6 @@
             "done": "Compléter",
             "waitingForConfirmation": "En attente de confirmation..."
         },
-        "wait30Block": "Veuillez attendre 30 confirmations de block",
         "viewInEtherscan": "Afficher dans Etherscan",
         "networkTitle": "transaction {network}",
         "transactionHash": "Hash de transaction",
@@ -740,7 +740,7 @@
             "failed": "{order} des {total} transactions ont échoué. @:retryText"
         },
         "signing": {
-            "extension": "L'extension de navigateur polkadot {.js}",
+            "extension": "L'extension de navigateur polkadot{.js}",
             "accounts": "vos comptes @:soraText et @:ethereumText respectivement"
         },
         "hint": {
@@ -888,7 +888,7 @@
         "connectAccount": "Pour inviter des utilisateurs, vous devez connecter votre compte SORA.",
         "bondedXOR": "XOR Vérouillé",
         "referralsNumber": "{number} références",
-        "startInviting": "Pour commencer à inviter, liez n'importe quelle quantité de XOR.",
+        "startInviting": "Bond XOR pour référer les autres",
         "preview": "Invitez de nouveaux utilisateurs et obtenez 10% de leurs frais de transaction. <br \/> Pour commencer, collez n'importe quel montant de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> En savoir plus <\/a>",
         "deposit": "Déposer",
         "balance": "Solde",
@@ -934,7 +934,8 @@
             "referredBy": "Vous avez été référé par {referrer}",
             "info": "Lorsque vous paierez des frais pour la transaction,<br\/>10% iront à votre parrain",
             "referredLablel": "Adresse référencée"
-        }
+        },
+        "insufficientBondedAmount": "Pour inviter plus de références, liez au moins {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Détails de la transaction",
     "createTokenTextNFT": "Créer NFT",
@@ -947,5 +948,11 @@
     "bridgeTransferNotification": {
         "addToken": "Ajouter {symbol} à @:metamask",
         "title": "Transaction relais réussie"
-    }
+    },
+    "mobilePopup": {
+        "sideMenu": "Obtenez SORA Wallet",
+        "header": "Téléchargez le portefeuille SORA avec les fonctionnalités <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Échangez des jetons de différents réseaux - SORA, Ethereum, Polkadot, Kusama. Fournissez un pool de liquidités et gagnez% des frais de change."
+    },
+    "releaseNotesText": "Notes de version"
 }

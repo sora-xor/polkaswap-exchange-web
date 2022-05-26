@@ -121,7 +121,15 @@
               :disabled="isFirstConfirmationButtonDisabled"
               @click="handleTransaction()"
             >
-              <template v-if="!(isSoraToEvm || isExternalAccountConnected)">{{
+              <span
+                v-if="isTransactionFromPending"
+                v-html="
+                  t('bridgeTransaction.pending', {
+                    network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`),
+                  })
+                "
+              />
+              <template v-else-if="!(isSoraToEvm || isExternalAccountConnected)">{{
                 t('bridgeTransaction.connectWallet')
               }}</template>
               <template v-else-if="!(isSoraToEvm || isValidNetworkType)">{{
@@ -140,14 +148,6 @@
               <template v-else-if="txWaitingForApprove">{{
                 t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
               }}</template>
-              <span
-                v-else-if="isTransactionFromPending"
-                v-html="
-                  t('bridgeTransaction.pending', {
-                    network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`),
-                  })
-                "
-              />
               <template v-else>{{
                 t('bridgeTransaction.confirm', {
                   direction: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'metamask'}`),
@@ -307,13 +307,7 @@ import {
   hasInsufficientXorForFee,
   hasInsufficientEvmNativeTokenForFee,
 } from '@/utils';
-import {
-  bridgeApi,
-  STATES,
-  isOutgoingTransaction,
-  isUnsignedFromPart,
-  isRejectedForeverFromPart,
-} from '@/utils/bridge';
+import { bridgeApi, STATES, isOutgoingTransaction, isUnsignedFromPart } from '@/utils/bridge';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 const FORMATTED_HASH_LENGTH = 24;
@@ -341,6 +335,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   @getter.bridge.historyItem private historyItem!: Nullable<BridgeHistory>;
   @getter.bridge.isTxEvmAccount isTxEvmAccount!: boolean;
 
+  @mutation.bridge.setHistory setHistory!: VoidFunction;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
   @action.bridge.handleBridgeTx private handleBridgeTx!: (id: string) => Promise<void>;
 
@@ -447,10 +442,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.currentState === (this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED);
   }
 
-  get isTransactionFromRejected(): boolean {
-    return this.isTransactionFromFailed && !!this.historyItem && isRejectedForeverFromPart(this.historyItem);
-  }
-
   get isTransactionToFailed(): boolean {
     return this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED);
   }
@@ -513,6 +504,9 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   get statusFrom(): string {
     if (this.isTransactionFromPending) {
+      if (!this.isSoraToEvm && !this.transactionFromHash) {
+        return this.t('bridgeTransaction.statuses.waitingForConfirmation');
+      }
       return this.t('bridgeTransaction.statuses.pending') + '...';
     }
     if (this.isTransactionFromFailed) {
@@ -526,15 +520,11 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get statusTo(): string {
-    if (!this.isTransactionFromCompleted) {
-      return this.t('bridgeTransaction.statuses.waiting') + '...';
-    }
     if (this.isTransactionToPending) {
-      const message = this.t('bridgeTransaction.statuses.pending') + '...';
-      if (this.isSoraToEvm) {
-        return message;
+      if (this.isSoraToEvm && !this.transactionToHash) {
+        return this.t('bridgeTransaction.statuses.waitingForConfirmation');
       }
-      return `${message} (${this.t('bridgeTransaction.wait30Block')})`;
+      return this.t('bridgeTransaction.statuses.pending') + '...';
     }
     if (this.isTransactionToFailed) {
       return this.t('bridgeTransaction.statuses.failed');
@@ -542,7 +532,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     if (this.isTransactionToCompleted) {
       return this.t('bridgeTransaction.statuses.done');
     }
-    return this.t('bridgeTransaction.statuses.waitingForConfirmation');
+    return this.t('bridgeTransaction.statuses.waiting') + '...';
   }
 
   get transactionEvmAddress(): string {
@@ -601,8 +591,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
-      this.isTransactionFromPending ||
-      this.isTransactionFromRejected
+      this.isTransactionFromPending
     );
   }
 
@@ -688,6 +677,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
       if (tx.id && !this.txInProcess && isUnsignedFromPart(tx)) {
         bridgeApi.removeHistory(tx.id);
+        this.setHistory(); // hack to update another views because of unknown hooks exucution order
       }
     }
 

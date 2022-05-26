@@ -46,7 +46,7 @@ import { state, getter } from '@/store/decorators';
   components: {
     DialogBase,
     InfoLine: components.InfoLine,
-    TokenLogo: lazyComponent(Components.TokenLogo),
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class ConfirmSend extends Mixins(mixins.TransactionMixin, DialogMixin) {

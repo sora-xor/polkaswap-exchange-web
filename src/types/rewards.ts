@@ -19,14 +19,21 @@ export interface RewardsAmountTableItem {
   type?: string;
   title?: string;
   subtitle?: string;
-  total?: RewardsAmountHeaderItem;
+  total?: string | RewardsAmountHeaderItem;
   limit?: Array<RewardsAmountHeaderItem>;
   rewards?: Array<RewardsAmountTableItem>;
 }
 
 export type SelectedRewards = {
-  internal: Nullable<RewardInfo>;
-  vested: Nullable<RewardsInfo>;
-  crowdloan: Array<RewardInfo>;
-  external: Array<RewardInfo>;
+  selectedInternal?: Nullable<RewardInfo>;
+  selectedVested?: Nullable<RewardsInfo>;
+  selectedCrowdloan?: Array<RewardInfo>;
+  selectedExternal?: Array<RewardInfo>;
+};
+
+export type AccountRewards = {
+  internalRewards?: Nullable<RewardInfo>;
+  vestedRewards?: Nullable<RewardsInfo>;
+  crowdloanRewards?: Array<RewardInfo>;
+  externalRewards?: Array<RewardInfo>;
 };

@@ -4,14 +4,17 @@ export function initialState(): RewardsState {
   return {
     fee: '',
     feeFetching: false,
+    // rewards
     externalRewards: [],
     internalRewards: null,
     vestedRewards: null,
     crowdloanRewards: [],
-    selectedVestedRewards: null,
-    selectedInternalRewards: null,
-    selectedExternalRewards: [],
-    selectedCrowdloanRewards: [],
+    // selected rewards
+    selectedInternal: null,
+    selectedExternal: [],
+    selectedVested: null,
+    selectedCrowdloan: [],
+    // flags
     rewardsFetching: false,
     rewardsClaiming: false,
     rewardsRecieved: false,
@@ -20,6 +23,9 @@ export function initialState(): RewardsState {
     signature: '',
     accountMarketMakerInfo: null,
     accountMarketMakerUpdates: null,
+    liquidityProvisionRewardsSubscription: null,
+    vestedRewardsSubscription: null,
+    crowdloanRewardsSubscription: null,
   };
 }
 

@@ -1,6 +1,6 @@
 import invert from 'lodash/fp/invert';
 import { KnownAssets, KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
-import { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 import pkg from '../../package.json';
 import { KnownBridgeAsset } from '../utils/ethers-util';
@@ -27,28 +27,42 @@ export enum Language {
   DE = 'de',
   ES = 'es',
   FR = 'fr',
+  HR = 'hr',
+  HU = 'hu',
   HY = 'hy',
   ID = 'id',
   IT = 'it',
   NL = 'nl',
   NO = 'no',
   PL = 'pl',
+  SK = 'sk',
+  SR = 'sr',
+  SV = 'sv',
+  VI = 'vi',
   YO = 'yo',
+  ZH_CN = 'zh-CN',
 }
 
 export const Languages = [
   { key: Language.EN, value: 'English', name: 'English (UK)' },
   { key: Language.HY, value: 'Armenian', name: 'հայերեն' },
+  { key: Language.ZH_CN, value: 'Chinese Simplified', name: '简体中文' },
+  { key: Language.HR, value: 'Croatian', name: 'Hrvatski' },
   { key: Language.CS, value: 'Czech', name: 'Čeština' },
   { key: Language.NL, value: 'Dutch', name: 'Nederlands' },
   { key: Language.FR, value: 'French', name: 'Français' },
   { key: Language.DE, value: 'German', name: 'Deutsch' },
+  { key: Language.HU, value: 'Hungarian', name: 'Magyar' },
   { key: Language.ID, value: 'Indonesian', name: 'bahasa Indonesia' },
   { key: Language.IT, value: 'Italian', name: 'Italiano' },
   { key: Language.NO, value: 'Norwegian', name: 'Norsk' },
   { key: Language.PL, value: 'Polish', name: 'Polski' },
   { key: Language.RU, value: 'Russian', name: 'Русский' },
+  { key: Language.SR, value: 'Serbian', name: 'Српски' },
+  { key: Language.SK, value: 'Slovak', name: 'Slovenský' },
   { key: Language.ES, value: 'Spanish', name: 'Español' },
+  { key: Language.SV, value: 'Swedish', name: 'Svenska' },
+  { key: Language.VI, value: 'Vietnamese', name: 'Tiếng Việt' },
   { key: Language.YO, value: 'Yoruba', name: 'Yoruba' },
 ];
 
@@ -63,6 +77,7 @@ export const Links = {
   marketMaker: 'https://medium.com/polkaswap/pswap-rewards-part-3-polkaswap-market-making-rebates-1856f62ccfaa',
   terms: 'https://wiki.sora.org/polkaswap/terms',
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
+  releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
 };
 
 export const ObjectInit = () => null;
@@ -127,8 +142,6 @@ export enum Components {
   MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
   AppMenu = 'App/Menu/AppMenu',
   AppInfoPopper = 'App/Menu/AppInfoPopper',
-  SelectToken = 'SelectToken',
-  TokenLogo = 'TokenLogo',
   PairTokenLogo = 'PairTokenLogo',
   ConfirmSwap = 'ConfirmSwap',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
@@ -147,7 +160,6 @@ export enum Components {
   AboutNetworkDialog = 'AboutNetworkDialog',
   SidebarItemContent = 'SidebarItemContent',
   SelectNetwork = 'SelectNetwork',
-  SelectRegisteredAsset = 'SelectRegisteredAsset',
   ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
   NetworkFeeWarningDialog = 'NetworkFeeWarningDialog',
   BridgeTransaction = 'BridgeTransaction',
@@ -156,11 +168,14 @@ export enum Components {
   TokensRow = 'Rewards/TokensRow',
   RewardsAmountHeader = 'Rewards/AmountHeader',
   RewardsAmountTable = 'Rewards/AmountTable',
+  RewardItemTooltip = 'Rewards/RewardItemTooltip',
   ReferralsConfirmBonding = 'Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'Referrals/ConfirmInviteUser',
   TokenSelectButton = 'Input/TokenSelectButton',
-  TokenAddress = 'Input/TokenAddress',
   SelectLanguageDialog = 'SelectLanguageDialog',
+  SelectAssetList = 'SelectAsset/List',
+  SelectToken = 'SelectAsset/SelectToken',
+  SelectRegisteredAsset = 'SelectAsset/SelectRegisteredAsset',
   ValueStatusWrapper = 'ValueStatusWrapper',
   SimpleNotification = 'SimpleNotification',
   Moonpay = 'Moonpay/Moonpay',
@@ -176,6 +191,7 @@ export enum Components {
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
   ConfirmSend = 'ConfirmSend',
   BridgeTransferNotification = 'Bridge/TransferNotification',
+  MobilePopup = 'MobilePopup/MobilePopup',
 }
 
 export enum RewardsTabsItems {
@@ -277,6 +293,11 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
   },
 ];
 
+export const StoreLinks = {
+  AppStore: 'https://apps.apple.com/us/app/sora-dae/id1457566711',
+  GooglePlay: 'https://play.google.com/store/apps/details?id=jp.co.soramitsu.sora',
+};
+
 export const FaucetLink: SidebarMenuItemLink = {
   icon: 'software-terminal-24',
   title: 'faucet',
@@ -312,6 +333,7 @@ export enum LogoSize {
   SMALL = 'small',
   MEDIUM = 'medium',
   BIG = 'big',
+  BIGGER = 'bigger',
   LARGE = 'large',
 }
 

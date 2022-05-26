@@ -1,7 +1,7 @@
 <template>
   <div v-loading="parentLoading" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
-    <div v-loading="parentLoading" class="pool-wrapper">
+    <div v-loading="parentLoading" class="pool-wrapper" data-test-name="Pools">
       <p v-if="!isLoggedIn" class="pool-info-container pool-info-container--empty">
         {{ t('pool.connectToWallet') }}
       </p>
@@ -51,6 +51,7 @@
             <s-button
               type="secondary"
               class="s-typography-button--medium"
+              data-test-name="addLiquidity"
               @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
             >
               {{ t('pool.addLiquidity') }}
@@ -58,6 +59,7 @@
             <s-button
               type="secondary"
               class="s-typography-button--medium"
+              data-test-name="removeLiquidity"
               @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
             >
               {{ t('pool.removeLiquidity') }}
@@ -69,12 +71,18 @@
     <template v-if="isLoggedIn">
       <s-button
         class="el-button--add-liquidity s-typography-button--large"
+        data-test-name="addLiquidity"
         type="primary"
         @click="handleAddLiquidity()"
       >
         {{ t('pool.addLiquidity') }}
       </s-button>
-      <s-button class="el-button--create-pair s-typography-button--large" type="secondary" @click="handleCreatePair">
+      <s-button
+        class="el-button--create-pair s-typography-button--large"
+        data-test-name="createPair"
+        type="secondary"
+        @click="handleCreatePair"
+      >
         {{ t('pool.createPair') }}
       </s-button>
     </template>
@@ -249,7 +257,7 @@ $pair-icon-height: 36px;
         margin-top: $inner-spacing-medium;
       }
     }
-    & > .token-logo {
+    & > .asset-logo {
       margin-right: $inner-spacing-mini;
     }
     &--buttons {

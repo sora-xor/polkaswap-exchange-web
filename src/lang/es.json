@@ -47,7 +47,7 @@
             "SwapAndSend": "Se cambió {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}"
         },
         "error": {
-            "Transfer": "Fallo en {acción} {importe} {símbolo} {dirección} {dirección}",
+            "Transfer": "Fallo en {action} {amount} {symbol} {direction} {address}",
             "Swap": "Fallo al intercambiar {amount} {symbol} por {amount2} {symbol2}",
             "AddLiquidity": "Fallo al suministrar {amount} {symbol} y {amount2} {symbol2}",
             "RemoveLiquidity": "Fallo al eliminar {amount} {symbol} y {amount2} {symbol2}",
@@ -151,7 +151,7 @@
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "¡El Activo se ha añadido con éxito!",
+        "success": "¡El Activo {symbol} se ha añadido con éxito!",
         "AddAssetSearch": {
             "title": "@:searchText",
             "placeholder": "Filtrar por ID de Activo, Nombre o Símbolo bursátil (ticker)"
@@ -538,7 +538,8 @@
         "selectNetwork": "Seleccionar red",
         "networkInfo": "Puente de la red @:soraText con:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Copiar dirección de red"
     },
     "selectRegisteredAsset": {
         "title": "Seleccione un Token",
@@ -592,7 +593,6 @@
             "done": "Completo",
             "waitingForConfirmation": "Esperando confirmación..."
         },
-        "wait30Block": "Espere 30 confirmaciones de bloque",
         "viewInEtherscan": "Ver en Etherscan",
         "networkTitle": "Transacción de {network}",
         "transactionHash": "Hash de la transacción",
@@ -764,7 +764,7 @@
         },
         "events": {
             "XorErc20": "XOR ERC-20",
-            "SoraFarmHarvest": "@:(soraText).cosecha de la granja",
+            "SoraFarmHarvest": "@:(soraText).farm de la granja",
             "NtfAirdrop": "Lanzamiento de NFT",
             "LiquidityProvision": "Comisiones obtenidas por la provisión de Liquidez",
             "BuyOnBondingCurve": "haber comprado en la TBC",
@@ -827,7 +827,7 @@
             },
             "transactionError": {
                 "title": "La transacción ha fallado",
-                "text": "Desafortunadamente, parece que la transacción @: moonpayText ha fallado. Inténtalo de nuevo. Para obtener asistencia de @:moonpayText, vaya a <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/support.moonpay.com <\/a>"
+                "text": "Desafortunadamente, parece que la transacción @:moonpayText ha fallado. Inténtalo de nuevo. Para obtener asistencia de @:moonpayText, ir a <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/support.moonpay.com <\/a>"
             },
             "amountError": {
                 "title": "Saldo insuficiente",
@@ -888,7 +888,7 @@
         "connectAccount": "Para invitar a usuarios, debe conectar su cuenta SORA.",
         "bondedXOR": "XOR Vinculado",
         "referralsNumber": "{number} referencias",
-        "startInviting": "Para comenzar a invitar, vincule cualquier cantidad de XOR.",
+        "startInviting": "Vincular XOR para remitir a otros",
         "preview": "Invite a nuevos usuarios y obtenga el 10% de sus tarifas de transacción.<br\/>Para comenzar, vincule cualquier cantidad de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Más información<\/a>",
         "deposit": "Depositar",
         "balance": "balance",
@@ -934,7 +934,8 @@
             "referredBy": "Has sido referido por {referrer}",
             "info": "Cuando pague una tarifa por la transacción,<br\/>el 10% se destinará a su referente",
             "referredLablel": "Dirección de referencia"
-        }
+        },
+        "insufficientBondedAmount": "Para invitar a más referidos, vincular al menos {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detalles de la transacción",
     "createTokenTextNFT": "Crear NFT",
@@ -947,5 +948,11 @@
     "bridgeTransferNotification": {
         "addToken": "Añadir {symbol} a @:metamask",
         "title": "Transacción puente exitosa"
-    }
+    },
+    "mobilePopup": {
+        "sideMenu": "Obtén SORA Wallet",
+        "header": "Descargue la billetera de SORA  con características de <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Intercambie tokens de diferentes redes: SORA, Ethereum, Polkadot, Kusama. Proporcione liquidez a la pool y gane un % de las tarifas de cambio."
+    },
+    "releaseNotesText": "Notas de lanzamiento"
 }

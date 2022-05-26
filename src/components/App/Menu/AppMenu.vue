@@ -36,10 +36,15 @@
           active-text-color="var(--s-color-base-content-tertiary)"
           active-hover-color="transparent"
         >
+          <sidebar-item-content
+            icon="symbols-24"
+            :title="t('mobilePopup.sideMenu')"
+            class="el-menu-item menu-item--small"
+            @click.native="openSoraDownloadDialog"
+          />
           <app-info-popper>
             <sidebar-item-content icon="info-16" :title="t('footerMenu.info')" class="el-menu-item menu-item--small" />
           </app-info-popper>
-
           <sidebar-item-content
             v-if="faucetUrl"
             :icon="FaucetLink.icon"
@@ -107,6 +112,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       return PageNames.Rewards;
     }
     return router.currentRoute.name as string;
+  }
+
+  openSoraDownloadDialog(): void {
+    this.$emit('open-download-dialog');
   }
 }
 </script>
