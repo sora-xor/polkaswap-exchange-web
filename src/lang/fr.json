@@ -381,9 +381,9 @@
     },
     "selectNodeDialog": {
         "title": "@:soraText Sélection du nœud du réseau",
-        "addNode": "Ajouter un nœud personnalisé",
+        "addNode": "Ajouter nœud personnalisé",
         "customNode": "Nœud personnalisé",
-        "howToSetupOwnNode": "Comment configurer votre propre nœud @:soraText",
+        "howToSetupOwnNode": "Comment configurer propre nœud @:soraText",
         "select": "Sélectionnez",
         "connected": "Connecté",
         "selectNodeForEnvironment": "Sélectionnez un nœud pour l'environnement {environnement}:",
@@ -537,7 +537,8 @@
         "selectNetwork": "Sélectionner un réseau",
         "networkInfo": "Pont @:soraText Réseau avec:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Copier l'adresse réseau"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -932,7 +933,8 @@
             "referredBy": "Vous avez été référé par {referrer}",
             "info": "Lorsque vous paierez des frais pour la transaction,<br\/>10% iront à votre parrain",
             "referredLablel": "Adresse référencée"
-        }
+        },
+        "insufficientBondedAmount": "Pour inviter plus de références, liez au moins {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Détails de la transaction",
     "createTokenTextNFT": "Créer NFT",
@@ -950,5 +952,6 @@
         "sideMenu": "Obtenez SORA Wallet",
         "header": "Téléchargez le portefeuille SORA avec les fonctionnalités <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Échangez des jetons de différents réseaux - SORA, Ethereum, Polkadot, Kusama. Fournissez un pool de liquidités et gagnez% des frais de change."
-    }
+    },
+    "releaseNotesText": "Notes de version"
 }

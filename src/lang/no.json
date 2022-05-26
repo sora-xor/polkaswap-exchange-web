@@ -537,7 +537,8 @@
         "selectNetwork": "Velg nettverk",
         "networkInfo": "Bridge @:soraText Network med:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Kopier nettverksadressen"
     },
     "selectRegisteredAsset": {
         "title": "Velg token",
@@ -932,7 +933,8 @@
             "referredBy": "Du har blitt henvist av {referrer}",
             "info": "Når du betaler et gebyr for transaksjonen,<br\/>går 10% til henvisningsadressen din",
             "referredLablel": "Henvist adresse"
-        }
+        },
+        "insufficientBondedAmount": "Hvis du vil invitere flere henvisninger, binder du minst {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaksjonsdetaljer",
     "createTokenTextNFT": "Lag NFT",
@@ -950,5 +952,6 @@
         "sideMenu": "Få SORA Wallet",
         "header": "Last ned SORA Wallet med <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funksjoner",
         "info": "Bytt ut tokens fra forskjellige nettverk - SORA, Ethereum, Polkadot, Kusama. Gi likviditetspool og tjen % fra vekslingsgebyrer."
-    }
+    },
+    "releaseNotesText": "Utgivelsesnotater"
 }

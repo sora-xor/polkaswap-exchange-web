@@ -537,7 +537,8 @@
         "selectNetwork": "Selecteer netwerk",
         "networkInfo": "Bridge @:soraText Netwerk met:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Netwerkadres kopiëren"
     },
     "selectRegisteredAsset": {
         "title": "Kies een token",
@@ -932,7 +933,8 @@
             "referredBy": "U bent doorverwezen door {referrer}",
             "info": "Wanneer u transactiekosten betaalt,<br\/>gaat 10% naar uw verwijzer",
             "referredLablel": "Doorverwezen adres"
-        }
+        },
+        "insufficientBondedAmount": "Om meer verwijzingen uit te nodigen, bindt u ten minste {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transactie Details",
     "createTokenTextNFT": "NFT maken",
@@ -950,5 +952,6 @@
         "sideMenu": "Download de SORA Wallet",
         "header": "Download SORA Wallet met <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> -functies",
         "info": "Ruil tokens van verschillende netwerken - SORA, Ethereum, Polkadot, Kusama. Bied een liquiditeitspool en verdien % aan wisselkosten."
-    }
+    },
+    "releaseNotesText": "Release-opmerkingen"
 }

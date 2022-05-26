@@ -537,7 +537,8 @@
         "selectNetwork": "Odaberite mrežu",
         "networkInfo": "Bridge @:soraText mrežna naknada s:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Kopiraj mrežnu adresu"
     },
     "selectRegisteredAsset": {
         "title": "Odaberite token",
@@ -932,7 +933,8 @@
             "referredBy": "Preporučio vas je {referrer}",
             "info": "Kada platite naknadu za transakciju, <br\/> 10% će ići vašem refereru",
             "referredLablel": "Preporučena adresa"
-        }
+        },
+        "insufficientBondedAmount": "Da biste pozvali više preporuka, povežite najmanje {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detalji transakcije",
     "createTokenTextNFT": "Napravite NFT",
@@ -950,5 +952,6 @@
         "sideMenu": "Preuzmite SORA Wallet",
         "header": "Preuzmite SORA Novčanik sa značajkama <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Zamijenite tokene s različitih mreža - SORA, Ethereum, Polkadot, Kusama. Osigurajte fond likvidnosti i zaradite % od naknada za razmjenu."
-    }
+    },
+    "releaseNotesText": "Bilješke o izdanju"
 }

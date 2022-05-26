@@ -537,7 +537,8 @@
         "selectNetwork": "Vyberte síť",
         "networkInfo": "Přemostit @:soraText síť s:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Zkopírujte síťovou adresu"
     },
     "selectRegisteredAsset": {
         "title": "Vyberte token",
@@ -932,7 +933,8 @@
             "referredBy": "Doporučil vám {referrer}",
             "info": "Když zaplatíte poplatek za transakci,<br\/>10% dostane váš referrer",
             "referredLablel": "Doporučená adresa"
-        }
+        },
+        "insufficientBondedAmount": "Chcete-li pozvat více doporučení, spojte alespoň {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detaily transakce",
     "createTokenTextNFT": "Vytvořte NFT",
@@ -950,5 +952,6 @@
         "sideMenu": "Získejte SORA Wallet",
         "header": "Stáhněte si peněženku SORA s <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Swap tokeny z různých sítí - SORA, Ethereum, Polkadot, Kusama. Poskytněte fond likvidity a získejte % z poplatků za směnu."
-    }
+    },
+    "releaseNotesText": "Poznámky k vydání"
 }

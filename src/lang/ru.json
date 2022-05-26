@@ -537,7 +537,8 @@
         "selectNetwork": "Выбрать сеть",
         "networkInfo": "Соединить @:soraText Сеть с:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Скопировать адрес сети"
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
@@ -932,7 +933,8 @@
             "referredBy": "Вы привлечены {referrer}",
             "info": "Когда вы заплатите комиссию за транзакцию,<br\/>10% перейдет вашему рефереру",
             "referredLablel": "Адрес реферера"
-        }
+        },
+        "insufficientBondedAmount": "Чтобы приглашать больше пользователей, привяжите не менее {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Детали транзакции",
     "createTokenTextNFT": "Создать NFT",
@@ -950,5 +952,6 @@
         "sideMenu": "Получить SORA Wallet",
         "header": "Загрузите кошелек SORA с функциями <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Обмен токенами из разных сетей — SORA, Ethereum, Polkadot, Kusama. Обеспечьте пул ликвидности и зарабатывайте % от биржевых комиссий."
-    }
+    },
+    "releaseNotesText": "О версии приложения"
 }

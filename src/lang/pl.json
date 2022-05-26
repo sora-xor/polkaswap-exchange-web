@@ -383,7 +383,7 @@
         "title": "Wybór węzła sieci @:soraText",
         "addNode": "Dodaj niestandardowy węzeł",
         "customNode": "Węzeł niestandardowy",
-        "howToSetupOwnNode": "Jak skonfigurować własny węzeł sieci @:soraText",
+        "howToSetupOwnNode": "Jak ustawić własny węzeł sieci @:soraText",
         "select": "Wybierz",
         "connected": "Połączono",
         "selectNodeForEnvironment": "Wybierz węzeł dla środowiska {environment}:",
@@ -537,7 +537,8 @@
         "selectNetwork": "Wybierz sieć",
         "networkInfo": "Połącz za pomocą mostu sieć @:soraText z:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Skopiuj adres sieciowy"
     },
     "selectRegisteredAsset": {
         "title": "Wybierz token",
@@ -932,7 +933,8 @@
             "referredBy": "Zostałeś polecony przez {referrer}",
             "info": "Kiedy zapłacisz opłatę za transakcję,<br\/>10% trafi do Twojego polecającego",
             "referredLablel": "Polecony adres"
-        }
+        },
+        "insufficientBondedAmount": "Aby zaprosić więcej poleconych, zwiąż co najmniej {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Szczegóły transakcji",
     "createTokenTextNFT": "Utwórz token NFT",
@@ -950,5 +952,6 @@
         "sideMenu": "Pobierz SORA Wallet",
         "header": "Pobierz portfel SORA z <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Zamień tokeny z różnych sieci - SORA, Ethereum, Polkadot, Kusama. Zapewnij pulę płynności i zarabiaj % na opłatach za wymianę."
-    }
+    },
+    "releaseNotesText": "Informacje o wydaniu"
 }

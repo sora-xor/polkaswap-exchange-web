@@ -537,7 +537,8 @@
         "selectNetwork": "选择网络",
         "networkInfo": "与 @:soraText 网络桥接：",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "复制网络地址"
     },
     "selectRegisteredAsset": {
         "title": "选择一个代币",
@@ -932,7 +933,8 @@
             "referredBy": "您是由{推荐人}推荐的。",
             "info": "当您支付交易费用时， <br\/> 10% 将归您的推荐人",
             "referredLablel": "推荐地址"
-        }
+        },
+        "insufficientBondedAmount": "要邀请更多推荐，请至少绑定 {inviteUserFee} XOR"
     },
     "transactionDetailsText": "交易详情",
     "createTokenTextNFT": "创建 NFT",
@@ -950,5 +952,6 @@
         "sideMenu": "获取 SORA 钱包",
         "header": "下载具有<span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>功能的 SORA 钱包",
         "info": "交换来自不同网络的代币 - SORA、以太坊、Polkadot、Kusama。提供流动资金池并从交易所费用中赚取 %。"
-    }
+    },
+    "releaseNotesText": "发行说明"
 }

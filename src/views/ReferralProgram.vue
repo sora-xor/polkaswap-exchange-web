@@ -22,22 +22,21 @@
           is-formatted
         />
       </div>
-      <s-card
-        v-if="hasAccountWithBondedXor"
-        class="referral-link-container"
-        shadow="always"
-        size="small"
-        border-radius="medium"
-      >
-        <div class="referral-link-details">
-          <div class="referral-link-label">{{ t('referralProgram.invitationLink') }}</div>
-          <div class="referral-link" v-html="referralLink.label" />
+      <template v-if="hasAccountWithBondedXor">
+        <div v-if="isInsufficientBondedAmount" class="referral-insufficient-bonded-amount">
+          {{ t('referralProgram.insufficientBondedAmount', { inviteUserFee }) }}
         </div>
-        <s-button class="s-typography-button--mini" size="small" type="primary" @click.stop="handleCopyAddress()">
-          {{ t('referralProgram.action.copyLink') }}
-          <s-icon name="copy-16" size="16" />
-        </s-button>
-      </s-card>
+        <s-card v-else class="referral-link-container" shadow="always" size="small" border-radius="medium">
+          <div class="referral-link-details">
+            <div class="referral-link-label">{{ t('referralProgram.invitationLink') }}</div>
+            <div class="referral-link" v-html="referralLink.label" />
+          </div>
+          <s-button class="s-typography-button--mini" size="small" type="primary" @click.stop="handleCopyAddress()">
+            {{ t('referralProgram.action.copyLink') }}
+            <s-icon name="copy-16" size="16" />
+          </s-button>
+        </s-card>
+      </template>
       <s-collapse :borders="true">
         <s-collapse-item :class="bondedContainerClasses" :disabled="!hasAccountWithBondedXor" name="bondedXOR">
           <template v-if="hasAccountWithBondedXor" #title>
@@ -171,7 +170,8 @@ import last from 'lodash/fp/last';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins, api, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString, FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import router, { lazyView } from '@/router';
@@ -196,6 +196,7 @@ export default class ReferralProgram extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.ReferralRewardsMixin,
   mixins.PaginationSearchMixin,
+  mixins.NetworkFeeWarningMixin,
   WalletConnectMixin
 ) {
   readonly LogoSize = LogoSize;
@@ -215,6 +216,8 @@ export default class ReferralProgram extends Mixins(
   @mutation.referrals.setStorageReferrer private setStorageReferrer!: (value: string) => void;
   @action.referrals.subscribeOnInvitedUsers private subscribeOnInvitedUsers!: AsyncVoidFn;
   @action.referrals.getReferrer private getReferrer!: AsyncVoidFn;
+  @action.referrals.subscribeOnReferrer private subscribeOnReferrer!: AsyncVoidFn;
+  @mutation.referrals.resetReferrerSubscription private resetReferrerSubscription!: VoidFunction;
 
   @Watch('isSoraAccountConnected')
   private async updateSubscriptions(value: boolean): Promise<void> {
@@ -223,9 +226,11 @@ export default class ReferralProgram extends Mixins(
         await this.subscribeOnInvitedUsers();
         await this.getAccountReferralRewards();
         await this.getReferrer();
+        await this.subscribeOnReferrer();
       }
     } else {
       this.unsubscribeFromInvitedUsers();
+      this.resetReferrerSubscription();
     }
   }
 
@@ -253,6 +258,19 @@ export default class ReferralProgram extends Mixins(
 
   get bondedXorCodecBalance(): CodecString {
     return this.xor?.balance?.bonded ?? '';
+  }
+
+  get inviteUserFee(): string {
+    return this.formatCodecNumber(this.networkFees.ReferralSetInvitedUser);
+  }
+
+  get isInsufficientBondedAmount(): boolean {
+    return this.bondedXorCodecBalance
+      ? FPNumber.gt(
+          this.getFPNumberFromCodec(this.networkFees.ReferralSetInvitedUser),
+          this.getFPNumberFromCodec(this.bondedXorCodecBalance)
+        )
+      : false;
   }
 
   get formattedBondedXorBalance(): string {
@@ -369,6 +387,7 @@ export default class ReferralProgram extends Mixins(
         await this.subscribeOnInvitedUsers();
         await this.getAccountReferralRewards();
         await this.getReferrer();
+        await this.subscribeOnReferrer();
       }
     });
   }
@@ -633,7 +652,7 @@ export default class ReferralProgram extends Mixins(
 }
 .rewards {
   &-container {
-    margin-bottom: $inner-spacing-medium;
+    margin-bottom: $inner-spacing-small;
     .rewards-value {
       margin-top: $inner-spacing-small;
     }
@@ -718,6 +737,13 @@ export default class ReferralProgram extends Mixins(
       text-align: left;
     }
   }
+}
+
+.referral-insufficient-bonded-amount {
+  text-align: center;
+  font-size: var(--s-font-size-extra-small);
+  line-height: var(--s-line-height-medium);
+  letter-spacing: var(--s-letter-spacing-small);
 }
 
 .referrer {

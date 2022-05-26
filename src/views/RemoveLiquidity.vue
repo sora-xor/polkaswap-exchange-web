@@ -153,7 +153,7 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { delay, hasInsufficientXorForFee } from '@/utils';
+import { hasInsufficientXorForFee } from '@/utils';
 import { getter, state, mutation, action } from '@/store/decorators';
 import type { LiquidityParams } from '@/store/pool/types';
 import type { PricesPayload } from '@/store/prices/types';

@@ -537,7 +537,8 @@
         "selectNetwork": "Select network",
         "networkInfo": "Bridge @:soraText Network with:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Copy network address"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -932,7 +933,8 @@
             "referredBy": "You’ve been referred by {referrer}",
             "info": "When you’ll pay a fee for transaction,<br\/>10% will go to your referrer",
             "referredLablel": "Referred address"
-        }
+        },
+        "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaction Details",
     "createTokenTextNFT": "Create NFT",
@@ -950,5 +952,6 @@
         "sideMenu": "Get SORA Wallet",
         "header": "Download SORA Wallet with <span class=\"popup-info__headline--highlight\">Polkaswap<\/span> features",
         "info": "Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees."
-    }
+    },
+    "releaseNotesText": "Release notes"
 }

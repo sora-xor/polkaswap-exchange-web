@@ -537,7 +537,8 @@
         "selectNetwork": "Pilih jaringan",
         "networkInfo": "Bridge Jaringan @:soraText dengan:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Salin alamat jaringan"
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",
@@ -932,7 +933,8 @@
             "referredBy": "Anda telah dirujuk oleh {referrer}",
             "info": "Ketika Anda akan membayar biaya untuk transaksi,<br\/>10% akan masuk ke perujuk Anda",
             "referredLablel": "Alamat yang dirujuk"
-        }
+        },
+        "insufficientBondedAmount": "Untuk mengundang lebih banyak rujukan, beri ikatan setidaknya {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detil transaksi",
     "createTokenTextNFT": "Buat NFT",
@@ -950,5 +952,6 @@
         "sideMenu": "Dapatkan Dompet SORA",
         "header": "Unduh SORA Wallet dengan fitur <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Tukar token dari jaringan yang berbeda - SORA, Ethereum, Polkadot, Kusama. Sediakan kumpulan likuiditas dan dapatkan % dari biaya pertukaran."
-    }
+    },
+    "releaseNotesText": "Catatan rilis"
 }

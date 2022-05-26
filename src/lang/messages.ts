@@ -28,6 +28,7 @@ export default {
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
+  releaseNotesText: 'Release notes',
   memorandum: 'Polkaswap Memorandum and Terms of Services',
   memorandumLink:
     '<a href="@:helpDialog.termsOfServiceLink" target="_blank" rel="nofollow noopener" class="link" title="@:memorandum">@:memorandum</a>',
@@ -341,6 +342,7 @@ export default {
     title: 'HASHI Bridge',
     info: 'Convert tokens between the @:soraText and @:ethereumText networks.',
     balance: 'Balance',
+    copy: 'Copy network address',
     connectWallet: '@:connectWalletText',
     connected: '@:connectedText',
     changeAccount: '@:changeAccountText',
@@ -692,6 +694,7 @@ export default {
     bondedXOR: 'XOR Bonded',
     referralsNumber: '{number} referrals',
     startInviting: 'To start inviting, bond any amount of XOR.',
+    insufficientBondedAmount: 'To invite more referrals, bond at least {inviteUserFee} XOR',
     preview:
       'Invite new users and get 10% from their transaction fees.<br />To start, bond any amount of XOR. <a href="#" target="_blank" rel="nofollow noopener" class="link" title="Learn more">Learn more</a>',
     deposit: 'Deposit',
