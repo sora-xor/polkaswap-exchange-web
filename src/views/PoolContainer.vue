@@ -20,6 +20,10 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
   @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncVoidFn;
   @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribe!: AsyncVoidFn;
 
+  @action.demeterFarming.getPools private getPools!: AsyncVoidFn;
+  @action.demeterFarming.getTokens private getTokens!: AsyncVoidFn;
+  @action.demeterFarming.subscribeOnAccountPools private subscribeOnAccountPools!: AsyncVoidFn;
+
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
@@ -39,6 +43,8 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
 
   async mounted(): Promise<void> {
     await this.updateLiquiditySubscription();
+    await this.getPools();
+    await this.getTokens();
   }
 
   async beforeDestroy(): Promise<void> {
@@ -60,6 +66,9 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
         // because subscriptions are created during liquidity list update
         await this.subscribeOnAccountLiquidityUpdates();
         await this.subscribeOnAccountLiquidityList();
+
+        // demeter
+        await this.subscribeOnAccountPools();
       });
     });
   }

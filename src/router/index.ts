@@ -77,7 +77,7 @@ const routes: Array<RouteConfig> = [
       {
         path: '',
         name: PageNames.Pool,
-        component: lazyView(PageNames.Pool),
+        component: lazyView(PageNames.DemeterPool),
       },
       {
         path: 'create-pair',

@@ -129,6 +129,8 @@ export enum PageNames {
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
+  // Demeter
+  DemeterPool = 'Demeter/Pool',
 }
 
 export enum Components {

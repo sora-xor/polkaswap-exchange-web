@@ -26,6 +26,8 @@
                 getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress))
               }}
             </h3>
+
+            <slot name="title-append" v-bind="liquidityItem" />
           </template>
           <info-line
             is-formatted
@@ -65,6 +67,8 @@
               {{ t('pool.removeLiquidity') }}
             </s-button>
           </div>
+
+          <slot name="append" v-bind="liquidityItem" />
         </s-collapse-item>
       </s-collapse>
     </div>
