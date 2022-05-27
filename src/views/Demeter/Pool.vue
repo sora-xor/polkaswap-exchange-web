@@ -8,7 +8,7 @@
       />
     </template>
     <template #append="liquidityInfo">
-      {{ liquidityInfo.address }}
+      <pool-card v-for="pool in farmingPoolsForLiquidity(liquidityInfo)" :key="pool.poolAsset" class="demeter-pool" />
     </template>
   </pool-base>
 </template>
@@ -26,6 +26,7 @@ import type { DemeterPool, DemeterAccountPool } from '@/store/demeterFarming/typ
 @Component({
   components: {
     PoolBase: lazyView(PageNames.Pool),
+    PoolCard: lazyComponent(Components.PoolCard),
     PoolStatusBadge: lazyComponent(Components.PoolStatusBadge),
   },
 })
@@ -34,7 +35,7 @@ export default class DemeterPools extends Mixins() {
   @getter.demeterFarming.accountFarmingPools accountFarmingPools!: Array<DemeterAccountPool>;
 
   farmingPoolsForLiquidity(liquidity: AccountLiquidity): Array<DemeterPool> {
-    return this.farmingPools.filter((pool) => pool.poolAssetId === liquidity.secondAddress);
+    return this.farmingPools.filter((pool) => pool.poolAsset === liquidity.secondAddress);
   }
 
   accountFarmingPoolsForLiquidity(liquidity: AccountLiquidity): Array<DemeterAccountPool> {
@@ -48,5 +49,8 @@ export default class DemeterPools extends Mixins() {
 <style lang="scss" scoped>
 .farming-pool-badge {
   margin-right: $inner-spacing-medium;
+}
+.demeter-pool {
+  margin-top: $inner-spacing-medium;
 }
 </style>

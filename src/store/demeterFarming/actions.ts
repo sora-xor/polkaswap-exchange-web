@@ -13,14 +13,21 @@ const actions = defineActions({
       const data = await api.api.query.demeterFarmingPlatform.pools.entries();
 
       const pools = data.reduce<any>((buffer, [key, value]) => {
-        const [poolAssetId, rewardAssetId] = key.toHuman() as any;
+        const [poolAsset, rewardAsset] = key.toHuman() as any;
         const poolsData = value.toJSON() as Array<any>;
 
         poolsData.forEach((poolData) => {
           buffer.push({
-            ...poolData,
-            poolAssetId,
-            rewardAssetId,
+            poolAsset,
+            rewardAsset,
+            multiplier: poolData.multiplier,
+            isCore: poolData.is_core,
+            isFarm: poolData.is_farm,
+            isRemoved: poolData.is_removed,
+            depositFee: FPNumber.fromCodecValue(poolData.deposit_fee).toNumber(),
+            totalTokensInPool: FPNumber.fromCodecValue(poolData.total_tokens_in_pool),
+            rewards: FPNumber.fromCodecValue(poolData.rewards),
+            rewardsToBeDistributed: FPNumber.fromCodecValue(poolData.rewards_to_be_distributed),
           });
         });
 

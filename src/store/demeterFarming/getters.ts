@@ -7,12 +7,12 @@ const getters = defineGetters<DemeterFarmingState>()({
   farmingPools(...args): Array<DemeterPool> {
     const { state } = demeterFarmingGetterContext(args);
 
-    return state.pools.filter((pool) => !!pool.is_farm);
+    return state.pools.filter((pool) => !!pool.isFarm);
   },
   stakingPools(...args): Array<DemeterPool> {
     const { state } = demeterFarmingGetterContext(args);
 
-    return state.pools.filter((pool) => !pool.is_farm);
+    return state.pools.filter((pool) => !pool.isFarm);
   },
   accountFarmingPools(...args): Array<DemeterAccountPool> {
     const { state } = demeterFarmingGetterContext(args);

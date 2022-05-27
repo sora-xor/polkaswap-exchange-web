@@ -1,8 +1,17 @@
-import type { FPNumber, CodecString } from '@sora-substrate/math';
+import type { FPNumber } from '@sora-substrate/math';
 import type { Subscription } from '@polkadot/x-rxjs';
 
 export type DemeterPool = {
-  [key: string]: any;
+  poolAsset: string;
+  rewardAsset: string;
+  multiplier: number;
+  isCore: boolean;
+  isFarm: boolean;
+  isRemoved: boolean;
+  depositFee: number;
+  totalTokensInPool: FPNumber;
+  rewards: FPNumber;
+  rewardsToBeDistributed: FPNumber;
 };
 
 export type DemeterAccountPool = {

@@ -191,8 +191,11 @@ export enum Components {
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
   BridgeTransferNotification = 'Bridge/TransferNotification',
   MobilePopup = 'MobilePopup/MobilePopup',
+  // Pool
+  PoolInfo = 'Pool/PoolInfo',
   // Demeter
   PoolStatusBadge = 'Demeter/PoolStatusBadge',
+  PoolCard = 'Demeter/PoolCard',
 }
 
 export enum RewardsTabsItems {

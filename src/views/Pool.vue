@@ -29,44 +29,54 @@
 
             <slot name="title-append" v-bind="liquidityItem" />
           </template>
-          <info-line
-            is-formatted
-            value-can-be-hidden
-            :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) })"
-            :value="getFirstBalance(liquidityItem)"
-            :fiat-value="getFiatAmountByCodecString(liquidityItem.firstBalance, getAsset(liquidityItem.firstAddress))"
-          />
-          <info-line
-            is-formatted
-            value-can-be-hidden
-            :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) })"
-            :value="getSecondBalance(liquidityItem)"
-            :fiat-value="getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))"
-          />
-          <info-line value-can-be-hidden :label="t('pool.poolShare')" :value="getPoolShare(liquidityItem.poolShare)" />
-          <info-line
-            v-if="hasStrategicBonusApy(liquidityItem.secondAddress)"
-            :label="t('pool.strategicBonusApy')"
-            :value="getStrategicBonusApy(liquidityItem.secondAddress)"
-          />
-          <div class="pool-info--buttons">
-            <s-button
-              type="secondary"
-              class="s-typography-button--medium"
-              data-test-name="addLiquidity"
-              @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
-            >
-              {{ t('pool.addLiquidity') }}
-            </s-button>
-            <s-button
-              type="secondary"
-              class="s-typography-button--medium"
-              data-test-name="removeLiquidity"
-              @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
-            >
-              {{ t('pool.removeLiquidity') }}
-            </s-button>
-          </div>
+
+          <pool-info>
+            <info-line
+              is-formatted
+              value-can-be-hidden
+              :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) })"
+              :value="getFirstBalance(liquidityItem)"
+              :fiat-value="getFiatAmountByCodecString(liquidityItem.firstBalance, getAsset(liquidityItem.firstAddress))"
+            />
+            <info-line
+              is-formatted
+              value-can-be-hidden
+              :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) })"
+              :value="getSecondBalance(liquidityItem)"
+              :fiat-value="
+                getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))
+              "
+            />
+            <info-line
+              value-can-be-hidden
+              :label="t('pool.poolShare')"
+              :value="getPoolShare(liquidityItem.poolShare)"
+            />
+            <info-line
+              v-if="hasStrategicBonusApy(liquidityItem.secondAddress)"
+              :label="t('pool.strategicBonusApy')"
+              :value="getStrategicBonusApy(liquidityItem.secondAddress)"
+            />
+
+            <template #buttons>
+              <s-button
+                type="secondary"
+                class="s-typography-button--medium"
+                data-test-name="addLiquidity"
+                @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
+              >
+                {{ t('pool.addLiquidity') }}
+              </s-button>
+              <s-button
+                type="secondary"
+                class="s-typography-button--medium"
+                data-test-name="removeLiquidity"
+                @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
+              >
+                {{ t('pool.removeLiquidity') }}
+              </s-button>
+            </template>
+          </pool-info>
 
           <slot name="append" v-bind="liquidityItem" />
         </s-collapse-item>
@@ -112,6 +122,7 @@ import { getter, state } from '@/store/decorators';
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    PoolInfo: lazyComponent(Components.PoolInfo),
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
   },
