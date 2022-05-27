@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Asset {symbol} is succesvol toegevoegd!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filter op Asset-ID, naam of Tickersymbool"
-        },
-        "AddAssetCustom": {
-            "title": "Aangepast asset",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Asset symbool"
-        },
         "empty": "Geen tokens gevonden",
         "alreadyAttached": "Token was al gekoppeld",
         "understand": "Ik begrijp het",
@@ -169,7 +160,15 @@
         "approved": "Goedgekeurd door de gemeenschap",
         "unknown": "Onbekende bron",
         "scam": "OPLICHTERIJ",
-        "next": "Volgende"
+        "next": "Volgende",
+        "AddAssetToken": {
+            "title": "Tokens",
+            "switchBtn": "Alleen geverifieerde activa"
+        },
+        "AddAssetNFT": {
+            "title": "NFT's"
+        },
+        "searchInputText": "Zoeken op activa-ID, naam of tickersymbool"
     },
     "createToken": {
         "title": "@:createTokenText",

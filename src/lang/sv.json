@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Tillgång {symbol} har lagts till framgångsrikt!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filtrera efter Tillgångs-ID, Namn, eller Ticker-symbol"
-        },
-        "AddAssetCustom": {
-            "title": "Anpassad tillgång",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Symbol för tillgång"
-        },
         "empty": "Inga tokens hittades",
         "alreadyAttached": "Token var redan bifogad",
         "understand": "Jag förstår",
@@ -169,7 +160,15 @@
         "approved": "Tillgång godkänd av communityn",
         "unknown": "Okänt ursprung",
         "scam": "BLUFF",
-        "next": "Nästa"
+        "next": "Nästa",
+        "AddAssetToken": {
+            "title": "Tokens",
+            "switchBtn": "Endast verifierade tillgångar"
+        },
+        "AddAssetNFT": {
+            "title": "NFTs"
+        },
+        "searchInputText": "Sök efter tillgångs-ID, namn eller tickersymbol"
     },
     "createToken": {
         "title": "@:createTokenText",

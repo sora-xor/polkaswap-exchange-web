@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Walutę {symbol} dodano z powodzeniem!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filtruj według identyfikatora waluty, nazwy lub symbolu giełdowego"
-        },
-        "AddAssetCustom": {
-            "title": "Niestandardowa waluta",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Symbol waluty"
-        },
         "empty": "Nie znaleziono tokenów.",
         "alreadyAttached": "Ten token został już dodany.",
         "understand": "Rozumiem",
@@ -169,7 +160,15 @@
         "approved": "Waluta zatwierdzona przez społeczność",
         "unknown": "Nieznane źródło",
         "scam": "SCAM",
-        "next": "Dalej"
+        "next": "Dalej",
+        "AddAssetToken": {
+            "title": "Tokeny",
+            "switchBtn": "Tylko zweryfikowane zasoby"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Wyszukaj według identyfikatora zasobu, nazwy lub symbolu giełdowego"
     },
     "createToken": {
         "title": "@:createTokenText",

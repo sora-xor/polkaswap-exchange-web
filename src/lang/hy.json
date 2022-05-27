@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Ակտիվը {symbol} հաջողությամբ ավելացվեց:",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի"
-        },
-        "AddAssetCustom": {
-            "title": "Անհատական ակտիվ ",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Ակտիվի սիմվոլ"
-        },
         "empty": "Ոչ մի տոկեն չի գտնվել",
         "alreadyAttached": "Տոկենն արդեն կցված էր",
         "understand": "Ես հասկանում եմ",
@@ -169,7 +160,15 @@
         "approved": "Ակտիվը հաստատված է համայնքի կողմից",
         "unknown": "Անհայտ աղբյուր",
         "scam": "Խաբեություն",
-        "next": "Հաջորդը"
+        "next": "Հաջորդը",
+        "AddAssetToken": {
+            "title": "Տոկեններ",
+            "switchBtn": "Միայն ստուգված ակտիվներ"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Որոնում ըստ ակտիվի ID-ի, անվանման կամ նշիչի նշանի"
     },
     "createToken": {
         "title": "@:createTokenText",

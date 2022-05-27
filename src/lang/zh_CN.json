@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "资产{symbol}添加成功！",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "按资产 ID、名称或代币符号进行筛选"
-        },
-        "AddAssetCustom": {
-            "title": "自定义资产",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "资产符号"
-        },
         "empty": "未找到代币",
         "alreadyAttached": "代币已附加",
         "understand": "我明白",
@@ -169,7 +160,15 @@
         "approved": "社区批准的资产",
         "unknown": "未知来源",
         "scam": "骗局",
-        "next": "下一个"
+        "next": "下一个",
+        "AddAssetToken": {
+            "title": "代币",
+            "switchBtn": "仅经过验证的资产"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "按资产 ID、名称或股票代码搜索"
     },
     "createToken": {
         "title": "@:createTokenText",

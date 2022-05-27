@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Aset {symbol} berhasil ditambahkan!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filter menurut ID Aset, Nama, atau Simbol Ticker"
-        },
-        "AddAssetCustom": {
-            "title": "Aset kustom",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Simbol aset"
-        },
         "empty": "Tidak ada token yang ditemukan",
         "alreadyAttached": "Token sudah terlampir",
         "understand": "Saya mengerti",
@@ -169,7 +160,15 @@
         "approved": "Aset disetujui oleh komunitas",
         "unknown": "Sumber tidak diketahui",
         "scam": "SCAM",
-        "next": "Berikutnya"
+        "next": "Berikutnya",
+        "AddAssetToken": {
+            "title": "Token",
+            "switchBtn": "Hanya aset yang diverifikasi"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker"
     },
     "createToken": {
         "title": "@:createTokenText",
