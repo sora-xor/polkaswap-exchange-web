@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Asset {symbol} was added successfully!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filter by Asset ID, Name or Ticker Symbol"
-        },
-        "AddAssetCustom": {
-            "title": "Custom asset",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Asset symbol"
-        },
         "empty": "No tokens found",
         "alreadyAttached": "Token was already attached",
         "understand": "I understand",
@@ -169,7 +160,15 @@
         "approved": "Asset approved by community",
         "unknown": "Unknown source",
         "scam": "SCAM",
-        "next": "Next"
+        "next": "Next",
+        "AddAssetToken": {
+            "title": "Tokens",
+            "switchBtn": "Verified assets only"
+        },
+        "AddAssetNFT": {
+            "title": "NFTs"
+        },
+        "searchInputText": "Search by Asset ID, Name or Ticker Symbol"
     },
     "createToken": {
         "title": "@:createTokenText",

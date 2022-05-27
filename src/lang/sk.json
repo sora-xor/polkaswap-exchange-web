@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Aktívum {symbol} bolo úspešne pridané!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filtrovať podľa ID, názvu alebo symbolu aktíva"
-        },
-        "AddAssetCustom": {
-            "title": "Vlastné aktívum",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Symbol aktíva"
-        },
         "empty": "Nenašli sa žiadne tokeny",
         "alreadyAttached": "Token už bol pridaný",
         "understand": "Rozumiem",
@@ -169,7 +160,15 @@
         "approved": "Komunitou schválené aktívum",
         "unknown": "Neznámy zdroj",
         "scam": "PODVOD",
-        "next": "Nasledujúci"
+        "next": "Nasledujúci",
+        "AddAssetToken": {
+            "title": "Tokeny",
+            "switchBtn": "Iba overené aktíva"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Vyhľadávajte podľa Asset ID, Name alebo Ticker Symbol"
     },
     "createToken": {
         "title": "@:createTokenText",

@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "A fi dukia {symbol} kun ni aṣeyọri!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Àlẹmọ nipasẹ Idanimo dukia, Orukọ tabi Aami Ticker"
-        },
-        "AddAssetCustom": {
-            "title": "Dukia Atowunwa",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Ami dukia"
-        },
         "empty": "No tokini found",
         "alreadyAttached": "Tokini yii ti ni asopọ tẹlẹ",
         "understand": "O ye mi",
@@ -169,7 +160,15 @@
         "approved": "Dukia ti a fọwọsi nipasẹ agbegbe",
         "unknown": "Orisun aimọ",
         "scam": "Itanjẹ",
-        "next": "Itele"
+        "next": "Itele",
+        "AddAssetToken": {
+            "title": "Awon Tokini",
+            "switchBtn": "Awọn ohun-ini ti a rii daju nikan"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Wa nipasẹ ID Dukia, Orukọ tabi Aami Tika"
     },
     "createToken": {
         "title": "@:createTokenText",

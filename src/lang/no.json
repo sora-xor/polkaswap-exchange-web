@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Ressursen {symbol} ble lagt til.",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol"
-        },
-        "AddAssetCustom": {
-            "title": "Egendefinert aktiva",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Aktiva-symbol"
-        },
         "empty": "Finner ingen token",
         "alreadyAttached": "Token er allerede vedlagt",
         "understand": "Jeg skjønner",
@@ -169,7 +160,15 @@
         "approved": "Aktiva godkjent av fellesskapet",
         "unknown": "Ukjent kilde",
         "scam": "SVINDEL",
-        "next": "Neste"
+        "next": "Neste",
+        "AddAssetToken": {
+            "title": "Tokens",
+            "switchBtn": "Kun bekreftede eiendeler"
+        },
+        "AddAssetNFT": {
+            "title": "NFT-er"
+        },
+        "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol"
     },
     "createToken": {
         "title": "@:createTokenText",

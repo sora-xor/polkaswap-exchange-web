@@ -140,7 +140,7 @@
             "total": "Ukupno",
             "bonded": "- Vezano"
         },
-        "totalAssetsValue": "Ukupna vrijednost vaše средство:",
+        "totalAssetsValue": "Ukupna vrijednost vaše sredstvo:",
         "details": "Pojedinosti"
     },
     "asset": {
@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Sredstvo {symbol} je uspješno dodano!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filtrirajte prema ID-u sredstva, nazivu ili simbolu oznake"
-        },
-        "AddAssetCustom": {
-            "title": "Prilagođeno sredstvo",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Simbol sredstva"
-        },
         "empty": "Tokeni nisu pronađeni",
         "alreadyAttached": "Token je već bio priložen",
         "understand": "Razumijem",
@@ -169,7 +160,15 @@
         "approved": "Sredstvo odobreno od zajednice",
         "unknown": "Nepoznati izvor",
         "scam": "PREVARA",
-        "next": "Sljedeći"
+        "next": "Sljedeći",
+        "AddAssetToken": {
+            "title": "Tokeni",
+            "switchBtn": "Samo provjerena sredstva"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Pretraživanje po ID-u sredstva, nazivu ili simbolu oznake"
     },
     "createToken": {
         "title": "@:createTokenText",
