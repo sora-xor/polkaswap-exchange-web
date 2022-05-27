@@ -1,21 +1,25 @@
 import { defineModule } from 'direct-vuex';
 
-import { localActionContext } from '@/store';
+import { localActionContext, localGetterContext } from '@/store';
 import { Module } from '@/store/consts';
 
 import mutations from './mutations';
 import state from './state';
 import actions from './actions';
+import getters from './getters';
 
 const demeterFarming = defineModule({
   namespaced: true,
   state,
   mutations,
   actions,
+  getters,
 });
 
+const demeterFarmingGetterContext = (args: [any, any, any, any]) =>
+  localGetterContext(args, Module.DemeterFarming, demeterFarming);
 const demeterFarmingActionContext = (context: any) =>
   localActionContext(context, Module.DemeterFarming, demeterFarming);
 
-export { demeterFarmingActionContext };
+export { demeterFarmingGetterContext, demeterFarmingActionContext };
 export default demeterFarming;

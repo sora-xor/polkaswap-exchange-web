@@ -233,9 +233,6 @@ $pair-icon-height: 36px;
     width: 100%;
     border-top: none;
     border-bottom: none;
-    h3 {
-      letter-spacing: var(--s-letter-spacing-small);
-    }
   }
   &-info {
     &-container {
@@ -254,7 +251,10 @@ $pair-icon-height: 36px;
       }
 
       &__title {
+        flex: 1;
         font-weight: 700;
+        letter-spacing: var(--s-letter-spacing-small);
+        text-align: left;
       }
 
       & + .el-button {

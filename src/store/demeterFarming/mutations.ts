@@ -1,7 +1,7 @@
 import { defineMutations } from 'direct-vuex';
 import type { Subscription } from '@polkadot/x-rxjs';
 
-import type { DemeterFarmingState, DemeterPool, DemeterRewardToken } from './types';
+import type { DemeterFarmingState, DemeterPool, DemeterRewardToken, DemeterAccountPool } from './types';
 
 const mutations = defineMutations<DemeterFarmingState>()({
   setPools(state, pools: Array<DemeterPool>): void {
@@ -10,7 +10,7 @@ const mutations = defineMutations<DemeterFarmingState>()({
   setTokens(state, tokens: Array<DemeterRewardToken>): void {
     state.tokens = [...tokens];
   },
-  setAccountPools(state, pools): void {
+  setAccountPools(state, pools: Array<DemeterAccountPool>): void {
     state.accountPools = [...pools];
   },
   setAccountPoolsUpdates(state, updates: Subscription): void {

@@ -71,7 +71,17 @@ const actions = defineActions({
     await waitForAccountPair(() => {
       const account = rootGetters.wallet.account.account.address;
       const subscription = api.apiRx.query.demeterFarmingPlatform.userInfos(account).subscribe((data) => {
-        const pools = (data as any).map((item) => item.toJSON());
+        const pools = (data as any).map((item) => {
+          const data = item.toJSON();
+
+          return {
+            isFarm: data.is_farm,
+            poolAsset: data.pool_asset,
+            pooledTokens: FPNumber.fromCodecValue(data.pooled_tokens),
+            rewardAsset: data.reward_asset,
+            rewards: FPNumber.fromCodecValue(data.rewards),
+          };
+        });
         commit.setAccountPools(pools);
       });
 
