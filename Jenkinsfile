@@ -11,5 +11,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     buildDockerImage: 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu-extended',
     dockerRegistryCred: 'bot-polkaswap-rw',
     buildEnvironment: buildEnvironment,
+    sonarProjectName: 'polkaswap-exchange-web',
+    sonarProjectKey: 'jp.co.soramitsu:polkaswap-exchange-web',
     pushToIPFS: true)
 pipeline.runPipeline()
