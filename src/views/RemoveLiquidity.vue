@@ -409,10 +409,6 @@ export default class RemoveLiquidity extends Mixins(
   line-height: var(--s-line-height-big);
   font-weight: 600;
 }
-
-.percent {
-  font-size: var(--s-heading1-font-size);
-}
 </style>
 
 <style lang="scss">

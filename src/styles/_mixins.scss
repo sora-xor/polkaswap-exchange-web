@@ -510,6 +510,12 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     width: 3ch;
   }
 
+  .s-input__content {
+    .percent {
+      font-size: var(--s-heading1-font-size);
+    }
+  }
+
   .s-input__input {
     flex: 0;
   }
