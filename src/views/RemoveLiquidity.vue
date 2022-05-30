@@ -417,36 +417,6 @@ export default class RemoveLiquidity extends Mixins(
 
 <style lang="scss">
 .s-input.s-input--remove-part.s-input--token-value {
-  display: inline-block;
-
-  &.one-char .el-input__inner {
-    width: 1ch;
-  }
-  &.two-char .el-input__inner {
-    width: 2ch;
-  }
-  &.three-char .el-input__inner {
-    width: 3ch;
-  }
-
-  .s-input__input {
-    flex: 0;
-  }
-
-  .el-input__inner {
-    font-size: var(--s-heading1-font-size) !important;
-    line-height: var(--s-line-height-mini) !important;
-    letter-spacing: var(--s-letter-spacing-mini) !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: none !important;
-    height: auto !important;
-    min-width: 1ch;
-    max-width: 3ch;
-  }
-
-  .el-slider__runway {
-    background-color: var(--s-color-base-content-tertiary);
-  }
+  @include input-slider;
 }
 </style>

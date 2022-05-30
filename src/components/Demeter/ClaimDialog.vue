@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" title="Claim"> 123 </dialog-base>
+  <dialog-base :visible.sync="isVisible" :title="t('demeterFarming.actions.claim')"> </dialog-base>
 </template>
 
 <script lang="ts">

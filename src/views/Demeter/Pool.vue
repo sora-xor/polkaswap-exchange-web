@@ -15,15 +15,21 @@
           :liquidity="liquidity"
           :pool="pool"
           :account-pool="accountFarmingPool(pool)"
-          @add="addPoolStake"
-          @remove="removePoolStake"
+          @add="changePoolStake($event, true)"
+          @remove="changePoolStake($event, false)"
           @claim="claimPoolRewards"
           class="demeter-pool"
         />
       </template>
     </pool-base>
 
-    <stake-dialog :visible.sync="showStakeDialog" />
+    <stake-dialog
+      :visible.sync="showStakeDialog"
+      :liquidity="selectedAccountLiquidity"
+      :pool="selectedFarmingPool"
+      :account-pool="selectedAccountFarmingPool"
+      :is-adding="isAddingStake"
+    />
     <claim-dialog :visible.sync="showClaimDialog" />
   </div>
 </template>
@@ -48,11 +54,32 @@ import type { DemeterPool, DemeterAccountPool } from '@/store/demeterFarming/typ
   },
 })
 export default class DemeterPools extends Mixins() {
+  @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
+
   @getter.demeterFarming.farmingPools farmingPools!: Array<DemeterPool>;
   @getter.demeterFarming.accountFarmingPools accountFarmingPools!: Array<DemeterAccountPool>;
 
   showStakeDialog = false;
   showClaimDialog = false;
+
+  poolAsset = null;
+  rewardAsset = null;
+
+  isAddingStake = true;
+
+  get selectedAccountFarmingPool(): Nullable<DemeterAccountPool> {
+    const { poolAsset, rewardAsset } = this;
+
+    return this.accountFarmingPool({ poolAsset, rewardAsset }) ?? null;
+  }
+
+  get selectedFarmingPool(): Nullable<DemeterPool> {
+    return this.farmingPools.find((pool) => pool.poolAsset === this.poolAsset) ?? null;
+  }
+
+  get selectedAccountLiquidity(): Nullable<AccountLiquidity> {
+    return this.accountLiquidity.find((liquidity) => liquidity.secondAddress === this.poolAsset) ?? null;
+  }
 
   farmingPoolsForLiquidity(liquidity: AccountLiquidity): Array<DemeterPool> {
     return this.farmingPools.filter((pool) => pool.poolAsset === liquidity.secondAddress);
@@ -73,16 +100,20 @@ export default class DemeterPools extends Mixins() {
     return !!liquidity && !activeCollapseItems.includes(liquidity.address);
   }
 
-  addPoolStake() {
+  changePoolStake(params: { poolAsset: string; rewardAsset: string }, isAddingStake = true) {
     this.showStakeDialog = true;
+    this.isAddingStake = isAddingStake;
+    this.setDialogParams(params);
   }
 
-  removePoolStake() {
-    this.showStakeDialog = true;
-  }
-
-  claimPoolRewards() {
+  claimPoolRewards(params: { poolAsset: string; rewardAsset: string }) {
     this.showClaimDialog = true;
+    this.setDialogParams(params);
+  }
+
+  private setDialogParams({ poolAsset, rewardAsset }: { poolAsset: string; rewardAsset: string }) {
+    this.poolAsset = poolAsset;
+    this.rewardAsset = rewardAsset;
   }
 }
 </script>

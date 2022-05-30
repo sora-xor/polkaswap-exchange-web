@@ -747,6 +747,7 @@ export default {
       rewardToken: 'Reward token',
       rewardEarned: '{symbol} earned',
       poolShareStaked: 'Your pool share staked',
+      poolShareStakedWillBe: 'Your pool share staked will be',
       fee: 'Fee',
     },
     actions: {

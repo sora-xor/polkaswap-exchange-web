@@ -6,23 +6,27 @@
       </template>
 
       <info-line label="APR" value="100%" />
-      <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="totalLiquidityLocked" />
+      <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvlFormatted" />
       <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
 
-      <template v-if="active">
+      <template v-if="hasStake">
         <info-line
           value-can-be-hidden
           :label="t('demeterFarming.info.rewardEarned', { symbol: rewardAssetSymbol })"
           :value="rewardEarned"
           :fiat-value="rewardEarnedFiat"
         />
-        <info-line value-can-be-hidden :label="t('demeterFarming.info.poolShareStaked')" :value="poolShareStaked" />
+        <info-line
+          value-can-be-hidden
+          :label="t('demeterFarming.info.poolShareStaked')"
+          :value="poolShareStakedFormatted"
+        />
       </template>
       <template v-else>
         <info-line :label="t('demeterFarming.info.fee')" :value="feePercent" />
       </template>
 
-      <template #buttons v-if="active">
+      <template #buttons v-if="hasStake">
         <s-button type="secondary" class="s-typography-button--medium" @click="claim">{{
           t('demeterFarming.actions.claim')
         }}</s-button>
@@ -32,7 +36,13 @@
       </template>
 
       <template #append>
-        <s-button type="primary" class="s-typography-button--large" @click="add">{{ primaryButtonText }}</s-button>
+        <s-button
+          type="primary"
+          class="s-typography-button--large action-button"
+          :disabled="!addStakeAvailability"
+          @click="add"
+        >{{ primaryButtonText }}
+        </s-button>
 
         <div class="demeter-pool-card-copyright">{{ t('demeterFarming.poweredBy') }}</div>
       </template>
@@ -42,20 +52,14 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { Component, Prop, Mixins } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
+import PoolInfoMixin from './PoolInfoMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { getter } from '@/store/decorators';
-
-import type { CodecString } from '@sora-substrate/util';
-import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
-import type { DemeterPool, DemeterAccountPool } from '@/store/demeterFarming/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -63,44 +67,13 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
     InfoLine: components.InfoLine,
   },
 })
-export default class DemeterPoolCard extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
-  @Prop({ default: () => null, type: Object }) readonly liquidity!: AccountLiquidity;
-  @Prop({ default: () => null, type: Object }) readonly pool!: DemeterPool;
-  @Prop({ default: () => null, type: Object }) readonly accountPool!: DemeterAccountPool;
-
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
-  @getter.assets.xor private xor!: Nullable<RegisteredAccountAssetWithDecimals>;
-
-  get active(): boolean {
-    return !!this.accountPool;
-  }
-
+export default class DemeterPoolCard extends Mixins(PoolInfoMixin, TranslationMixin) {
   get title(): string {
-    return this.t(`demeterFarming.staking.${this.active ? 'active' : 'inactive'}`);
+    return this.t(`demeterFarming.staking.${this.hasStake ? 'active' : 'inactive'}`);
   }
 
   get primaryButtonText(): string {
-    return this.t(`demeterFarming.actions.${this.active ? 'add' : 'start'}`);
-  }
-
-  get poolAsset(): Nullable<RegisteredAccountAssetWithDecimals> {
-    return this.getAsset(this.pool.poolAsset);
-  }
-
-  get rewardAsset(): Nullable<RegisteredAccountAssetWithDecimals> {
-    return this.getAsset(this.pool.rewardAsset);
-  }
-
-  get poolAssetPrice(): FPNumber {
-    return FPNumber.fromCodecValue(this.getAssetFiatPrice(this.poolAsset as Asset) ?? 0);
-  }
-
-  get baseAssetPrice(): FPNumber {
-    return FPNumber.fromCodecValue(this.getAssetFiatPrice(this.xor as Asset) ?? 0);
-  }
-
-  get rewardAssetSymbol(): string {
-    return this.rewardAsset?.symbol ?? '';
+    return this.t(`demeterFarming.actions.${this.hasStake ? 'add' : 'start'}`);
   }
 
   get rewardEarned(): string {
@@ -108,43 +81,30 @@ export default class DemeterPoolCard extends Mixins(TranslationMixin, mixins.For
   }
 
   get rewardEarnedFiat(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.accountPool.rewards, this.rewardAsset as Asset);
+    return this.getFiatAmountByFPNumber(this.accountPool.rewards, this.rewardAsset);
   }
 
-  get feePercent(): string {
-    return `${this.pool.depositFee * 100}%`;
+  get addStakeAvailability(): boolean {
+    return FPNumber.isLessThan(this.poolShareStaked, FPNumber.HUNDRED);
   }
 
-  get liqudityLP(): FPNumber {
-    return FPNumber.fromCodecValue(this.liquidity.balance);
-  }
-
-  get poolShareStaked(): string {
-    return this.accountPool.pooledTokens.div(this.liqudityLP).mul(new FPNumber(100)).toLocaleString() + '%';
-  }
-
-  get totalLiquidityLocked(): string {
-    const calcTotalPrice = (balance: CodecString, price: FPNumber) => {
-      return FPNumber.fromCodecValue(balance).div(this.liqudityLP).mul(this.pool.totalTokensInPool).mul(price);
+  get emitParams(): object {
+    return {
+      poolAsset: this.pool.poolAsset,
+      rewardAsset: this.pool.rewardAsset,
     };
-
-    const baseAssetLockedPrice = calcTotalPrice(this.liquidity.firstBalance, this.baseAssetPrice);
-    const poolAssetLockedPrice = calcTotalPrice(this.liquidity.secondBalance, this.poolAssetPrice);
-    const totalLockedPrice = baseAssetLockedPrice.add(poolAssetLockedPrice).dp(2).toLocaleString();
-
-    return `$${totalLockedPrice}`;
   }
 
   add(): void {
-    this.$emit('add');
+    this.$emit('add', this.emitParams);
   }
 
   remove(): void {
-    this.$emit('remove');
+    this.$emit('remove', this.emitParams);
   }
 
   claim(): void {
-    this.$emit('claim');
+    this.$emit('claim', this.emitParams);
   }
 }
 </script>
@@ -154,7 +114,7 @@ export default class DemeterPoolCard extends Mixins(TranslationMixin, mixins.For
   background: var(--s-color-base-on-accent);
   border: 1px solid var(--s-color-theme-accent);
 
-  @include full-width-button('s-primary', 0);
+  @include full-width-button('action-button', 0);
 }
 </style>
 
