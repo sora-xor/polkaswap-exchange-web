@@ -8,7 +8,7 @@
       <p v-else-if="!accountLiquidity.length || parentLoading" class="pool-info-container pool-info-container--empty">
         {{ t('pool.liquidityNotFound') }}
       </p>
-      <s-collapse v-else class="pool-list" :borders="true">
+      <s-collapse v-else class="pool-list" :borders="true" @change="updateActiveCollapseItems">
         <s-collapse-item
           v-for="liquidityItem of accountLiquidity"
           :key="liquidityItem.address"
@@ -27,7 +27,7 @@
               }}
             </h3>
 
-            <slot name="title-append" v-bind="liquidityItem" />
+            <slot name="title-append" v-bind="{ liquidity: liquidityItem, activeCollapseItems }" />
           </template>
 
           <pool-info>
@@ -135,6 +135,12 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
   @state.pool.accountLiquidity accountLiquidity!: Array<AccountLiquidity>;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+
+  activeCollapseItems: string[] = [];
+
+  updateActiveCollapseItems(items: string[]) {
+    this.activeCollapseItems = items;
+  }
 
   getAsset(address: string): Asset {
     return this.assets.find((a) => a.address === address) as Asset;

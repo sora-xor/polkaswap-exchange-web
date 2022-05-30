@@ -6,7 +6,7 @@
       <slot />
     </div>
 
-    <div class="pool-info-buttons">
+    <div class="pool-info-buttons" v-if="$slots.buttons">
       <slot name="buttons" />
     </div>
 

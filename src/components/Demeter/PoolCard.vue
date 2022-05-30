@@ -2,22 +2,23 @@
   <s-card class="demeter-pool-card">
     <pool-info>
       <template #prepend>
-        <div class="demeter-pool-card-title">Stake to earn additional rewards</div>
+        <div class="demeter-pool-card-title">{{ title }}</div>
       </template>
 
       <info-line label="APR" value="100%" />
       <info-line label="Total Liquidity Locked" value="100%" />
       <info-line label="Reward Token" value="DEO" />
-      <info-line label="DEO Earned" value="64.23" />
-      <info-line label="Your pool share staked" value="50%" />
+      <info-line v-if="active" label="DEO Earned" value="64.23" />
+      <info-line v-if="active" label="Your pool share staked" value="50%" />
+      <info-line v-if="!active" label="Fee" value="1%" />
 
-      <template #buttons>
+      <template #buttons v-if="active">
         <s-button type="secondary" class="s-typography-button--medium"> Claim Rewards </s-button>
         <s-button type="secondary" class="s-typography-button--medium"> Remove Stake </s-button>
       </template>
 
       <template #append>
-        <s-button type="primary" class="s-typography-button--medium"> Stake more </s-button>
+        <s-button type="primary" class="s-typography-button--medium">{{ primaryButtonText }}</s-button>
 
         <div class="demeter-pool-card-copyright">Powered by Demeter farming</div>
       </template>
@@ -26,11 +27,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
+
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+
+import type { DemeterPool, DemeterAccountPool } from '@/store/demeterFarming/types';
 
 @Component({
   components: {
@@ -38,7 +43,22 @@ import { Components } from '@/consts';
     InfoLine: components.InfoLine,
   },
 })
-export default class DemeterPoolCard extends Vue {}
+export default class DemeterPoolCard extends Mixins(TranslationMixin) {
+  @Prop({ default: () => null, type: Object }) readonly pool!: DemeterPool;
+  @Prop({ default: () => null, type: Object }) readonly accountPool!: DemeterAccountPool;
+
+  get active(): boolean {
+    return !!this.accountPool;
+  }
+
+  get title(): string {
+    return this.active ? 'Staking active' : 'Stake to earn additional rewards';
+  }
+
+  get primaryButtonText(): string {
+    return this.active ? 'Stake more' : 'Start staking';
+  }
+}
 </script>
 
 <style lang="scss">

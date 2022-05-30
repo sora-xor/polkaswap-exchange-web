@@ -1,14 +1,20 @@
 <template>
   <pool-base v-bind="$attrs" v-on="$listeners">
-    <template #title-append="liquidityInfo">
+    <template #title-append="{ liquidity, activeCollapseItems }">
       <pool-status-badge
-        v-if="farmingPoolsForLiquidity(liquidityInfo).length"
-        :active="!!accountFarmingPoolsForLiquidity(liquidityInfo).length"
+        v-if="isClosedCollapseItem(liquidity, activeCollapseItems) && farmingPoolsForLiquidity(liquidity).length"
+        :active="!!accountFarmingPoolsForLiquidity(liquidity).length"
         class="farming-pool-badge"
       />
     </template>
-    <template #append="liquidityInfo">
-      <pool-card v-for="pool in farmingPoolsForLiquidity(liquidityInfo)" :key="pool.poolAsset" class="demeter-pool" />
+    <template #append="liquidity">
+      <pool-card
+        v-for="pool in farmingPoolsForLiquidity(liquidity)"
+        :key="pool.poolAsset"
+        :pool="pool"
+        :account-pool="accountFarmingPool(pool)"
+        class="demeter-pool"
+      />
     </template>
   </pool-base>
 </template>
@@ -39,9 +45,18 @@ export default class DemeterPools extends Mixins() {
   }
 
   accountFarmingPoolsForLiquidity(liquidity: AccountLiquidity): Array<DemeterAccountPool> {
-    return this.accountFarmingPools.filter(
-      (accountFarmingPool) => accountFarmingPool.poolAsset === liquidity.secondAddress
+    return this.accountFarmingPools.filter((accountPool) => accountPool.poolAsset === liquidity.secondAddress);
+  }
+
+  accountFarmingPool(farmingPool: DemeterPool): Nullable<DemeterAccountPool> {
+    return this.accountFarmingPools.find(
+      (accountPool) =>
+        accountPool.poolAsset === farmingPool.poolAsset && accountPool.rewardAsset === farmingPool.rewardAsset
     );
+  }
+
+  isClosedCollapseItem(liquidity: AccountLiquidity, activeCollapseItems: string[]): boolean {
+    return !!liquidity && !activeCollapseItems.includes(liquidity.address);
   }
 }
 </script>
