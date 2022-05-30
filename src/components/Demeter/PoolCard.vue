@@ -23,16 +23,16 @@
       </template>
 
       <template #buttons v-if="active">
-        <s-button type="secondary" class="s-typography-button--medium">{{
+        <s-button type="secondary" class="s-typography-button--medium" @click="claim">{{
           t('demeterFarming.actions.claim')
         }}</s-button>
-        <s-button type="secondary" class="s-typography-button--medium">{{
+        <s-button type="secondary" class="s-typography-button--medium" @click="remove">{{
           t('demeterFarming.actions.remove')
         }}</s-button>
       </template>
 
       <template #append>
-        <s-button type="primary" class="s-typography-button--large">{{ primaryButtonText }}</s-button>
+        <s-button type="primary" class="s-typography-button--large" @click="add">{{ primaryButtonText }}</s-button>
 
         <div class="demeter-pool-card-copyright">{{ t('demeterFarming.poweredBy') }}</div>
       </template>
@@ -133,6 +133,18 @@ export default class DemeterPoolCard extends Mixins(TranslationMixin, mixins.For
     const totalLockedPrice = baseAssetLockedPrice.add(poolAssetLockedPrice).dp(2).toLocaleString();
 
     return `$${totalLockedPrice}`;
+  }
+
+  add(): void {
+    this.$emit('add');
+  }
+
+  remove(): void {
+    this.$emit('remove');
+  }
+
+  claim(): void {
+    this.$emit('claim');
   }
 }
 </script>

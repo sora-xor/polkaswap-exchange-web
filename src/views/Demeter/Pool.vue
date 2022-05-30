@@ -1,23 +1,31 @@
 <template>
-  <pool-base v-bind="$attrs" v-on="$listeners">
-    <template #title-append="{ liquidity, activeCollapseItems }">
-      <pool-status-badge
-        v-if="isClosedCollapseItem(liquidity, activeCollapseItems) && farmingPoolsForLiquidity(liquidity).length"
-        :active="!!accountFarmingPoolsForLiquidity(liquidity).length"
-        class="farming-pool-badge"
-      />
-    </template>
-    <template #append="liquidity">
-      <pool-card
-        v-for="pool in farmingPoolsForLiquidity(liquidity)"
-        :key="pool.poolAsset"
-        :liquidity="liquidity"
-        :pool="pool"
-        :account-pool="accountFarmingPool(pool)"
-        class="demeter-pool"
-      />
-    </template>
-  </pool-base>
+  <div>
+    <pool-base v-bind="$attrs" v-on="$listeners">
+      <template #title-append="{ liquidity, activeCollapseItems }">
+        <pool-status-badge
+          v-if="isClosedCollapseItem(liquidity, activeCollapseItems) && farmingPoolsForLiquidity(liquidity).length"
+          :active="!!accountFarmingPoolsForLiquidity(liquidity).length"
+          class="farming-pool-badge"
+        />
+      </template>
+      <template #append="liquidity">
+        <pool-card
+          v-for="pool in farmingPoolsForLiquidity(liquidity)"
+          :key="pool.poolAsset"
+          :liquidity="liquidity"
+          :pool="pool"
+          :account-pool="accountFarmingPool(pool)"
+          @add="addPoolStake"
+          @remove="removePoolStake"
+          @claim="claimPoolRewards"
+          class="demeter-pool"
+        />
+      </template>
+    </pool-base>
+
+    <stake-dialog :visible.sync="showStakeDialog" />
+    <claim-dialog :visible.sync="showClaimDialog" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -35,11 +43,16 @@ import type { DemeterPool, DemeterAccountPool } from '@/store/demeterFarming/typ
     PoolBase: lazyView(PageNames.Pool),
     PoolCard: lazyComponent(Components.PoolCard),
     PoolStatusBadge: lazyComponent(Components.PoolStatusBadge),
+    StakeDialog: lazyComponent(Components.DemeterStakeDialog),
+    ClaimDialog: lazyComponent(Components.DemeterClaimDialog),
   },
 })
 export default class DemeterPools extends Mixins() {
   @getter.demeterFarming.farmingPools farmingPools!: Array<DemeterPool>;
   @getter.demeterFarming.accountFarmingPools accountFarmingPools!: Array<DemeterAccountPool>;
+
+  showStakeDialog = false;
+  showClaimDialog = false;
 
   farmingPoolsForLiquidity(liquidity: AccountLiquidity): Array<DemeterPool> {
     return this.farmingPools.filter((pool) => pool.poolAsset === liquidity.secondAddress);
@@ -58,6 +71,18 @@ export default class DemeterPools extends Mixins() {
 
   isClosedCollapseItem(liquidity: AccountLiquidity, activeCollapseItems: string[]): boolean {
     return !!liquidity && !activeCollapseItems.includes(liquidity.address);
+  }
+
+  addPoolStake() {
+    this.showStakeDialog = true;
+  }
+
+  removePoolStake() {
+    this.showStakeDialog = true;
+  }
+
+  claimPoolRewards() {
+    this.showClaimDialog = true;
   }
 }
 </script>

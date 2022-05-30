@@ -196,6 +196,8 @@ export enum Components {
   // Demeter
   PoolStatusBadge = 'Demeter/PoolStatusBadge',
   PoolCard = 'Demeter/PoolCard',
+  DemeterStakeDialog = 'Demeter/StakeDialog',
+  DemeterClaimDialog = 'Demeter/ClaimDialog',
 }
 
 export enum RewardsTabsItems {
