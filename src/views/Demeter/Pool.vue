@@ -11,6 +11,7 @@
       <pool-card
         v-for="pool in farmingPoolsForLiquidity(liquidity)"
         :key="pool.poolAsset"
+        :liquidity="liquidity"
         :pool="pool"
         :account-pool="accountFarmingPool(pool)"
         class="demeter-pool"

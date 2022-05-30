@@ -737,4 +737,24 @@ export default {
     header: 'Download SORA Wallet with <span class="popup-info__headline--highlight">Polkaswap</span> features',
     info: 'Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees.',
   },
+  demeterFarming: {
+    staking: {
+      active: 'Staking active',
+      inactive: 'Stake to earn additional rewards',
+    },
+    info: {
+      totalLiquidityLocked: 'Total liquidity locked',
+      rewardToken: 'Reward token',
+      rewardEarned: '{symbol} earned',
+      poolShareStaked: 'Your pool share staked',
+      fee: 'Fee',
+    },
+    actions: {
+      claim: 'Claim rewards',
+      add: 'Stake more',
+      remove: 'Remove stake',
+      start: 'Start staking',
+    },
+    poweredBy: 'Powered by Demeter Farming',
+  },
 };

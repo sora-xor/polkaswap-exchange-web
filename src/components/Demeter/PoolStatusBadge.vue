@@ -16,7 +16,7 @@ export default class PoolStatusBadge extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly active!: boolean;
 
   get title(): string {
-    return this.active ? 'Staking Active' : 'Start Staking';
+    return this.t(this.active ? 'demeterFarming.staking.active' : 'demeterFarming.actions.start');
   }
 
   get icon(): string {
