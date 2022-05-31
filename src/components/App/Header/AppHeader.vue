@@ -49,7 +49,6 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
-import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
 
 import { lazyComponent, goTo } from '@/router';
 import { PageNames, Components, LogoSize } from '@/consts';
@@ -58,7 +57,6 @@ import { getter, mutation } from '@/store/decorators';
 @Component({
   components: {
     WalletAvatar: components.WalletAvatar as any,
-    PolkaswapLogo,
     AccountButton: lazyComponent(Components.AccountButton),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     AppHeaderMenu: lazyComponent(Components.AppHeaderMenu),

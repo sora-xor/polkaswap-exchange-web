@@ -68,7 +68,7 @@ export const Languages = [
 
 export const Links = {
   about: {
-    sora: 'https://sora.org/',
+    sora: 'https://adar.com/',
     polkadot: 'https://medium.com/polkadot-network/polkadot-js-extension-release-update-3b0d2d87edb8',
   },
   nodes: {
@@ -237,10 +237,10 @@ const AccountMenu: Array<SidebarMenuItem> = [
     icon: 'finance-wallet-24',
     title: PageNames.Wallet,
   },
-  {
-    icon: 'basic-circle-star-24',
-    title: PageNames.Rewards,
-  },
+  // {
+  //   icon: 'basic-circle-star-24',
+  //   title: PageNames.Rewards,
+  // },
   {
     icon: 'basic-user-24',
     title: PageNames.KYC,
@@ -248,14 +248,14 @@ const AccountMenu: Array<SidebarMenuItem> = [
 ];
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
-  {
-    icon: 'various-bone-24',
-    title: PageNames.Tokens,
-  },
-  {
-    icon: 'file-file-text-24',
-    title: PageNames.About,
-  },
+  // {
+  //   icon: 'various-bone-24',
+  //   title: PageNames.Tokens,
+  // },
+  // {
+  //   icon: 'file-file-text-24',
+  //   title: PageNames.About,
+  // },
 ];
 
 export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [

@@ -277,7 +277,8 @@ ul ul {
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
     .el-loading-spinner {
-      background-image: url('~@/assets/img/pswap-loader.svg');
+      background-image: url('~@/assets/img/adar-loader.svg');
+      background-repeat: no-repeat;
       height: var(--s-size-medium);
       width: var(--s-size-medium);
       margin-left: calc(50% - (var(--s-size-medium) / 2));
