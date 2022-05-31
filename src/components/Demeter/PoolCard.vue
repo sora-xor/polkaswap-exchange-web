@@ -61,6 +61,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
+import type { Asset } from '@sora-substrate/util/build/assets/types';
+
 @Component({
   components: {
     PoolInfo: lazyComponent(Components.PoolInfo),
@@ -81,7 +83,7 @@ export default class DemeterPoolCard extends Mixins(PoolInfoMixin, TranslationMi
   }
 
   get rewardEarnedFiat(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.accountPool.rewards, this.rewardAsset);
+    return this.getFiatAmountByFPNumber(this.accountPool.rewards, this.rewardAsset as Asset);
   }
 
   get addStakeAvailability(): boolean {

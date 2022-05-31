@@ -62,15 +62,15 @@ export default class DemeterPools extends Mixins() {
   showStakeDialog = false;
   showClaimDialog = false;
 
-  poolAsset = null;
-  rewardAsset = null;
+  poolAsset: Nullable<string> = null;
+  rewardAsset: Nullable<string> = null;
 
   isAddingStake = true;
 
   get selectedAccountFarmingPool(): Nullable<DemeterAccountPool> {
     const { poolAsset, rewardAsset } = this;
 
-    return this.accountFarmingPool({ poolAsset, rewardAsset }) ?? null;
+    return poolAsset && rewardAsset ? this.accountFarmingPool({ poolAsset, rewardAsset } as DemeterPool) ?? null : null;
   }
 
   get selectedFarmingPool(): Nullable<DemeterPool> {
