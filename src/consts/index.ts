@@ -237,10 +237,10 @@ const AccountMenu: Array<SidebarMenuItem> = [
     icon: 'finance-wallet-24',
     title: PageNames.Wallet,
   },
-  // {
-  //   icon: 'basic-circle-star-24',
-  //   title: PageNames.Rewards,
-  // },
+  {
+    icon: 'basic-circle-star-24',
+    title: PageNames.Rewards,
+  },
   {
     icon: 'basic-user-24',
     title: PageNames.KYC,
@@ -248,10 +248,10 @@ const AccountMenu: Array<SidebarMenuItem> = [
 ];
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
-  // {
-  //   icon: 'various-bone-24',
-  //   title: PageNames.Tokens,
-  // },
+  {
+    icon: 'various-bone-24',
+    title: PageNames.Tokens,
+  },
   // {
   //   icon: 'file-file-text-24',
   //   title: PageNames.About,
