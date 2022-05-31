@@ -18,7 +18,7 @@ export default class PoolInfoMixin extends Mixins(mixins.FormattedAmountMixin) {
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<Asset>;
 
   get hasStake(): boolean {
-    return !!this.accountPool;
+    return this.accountPool ? !this.accountPool.pooledTokens.isZero() : false;
   }
 
   get baseAsset(): Nullable<Asset> {

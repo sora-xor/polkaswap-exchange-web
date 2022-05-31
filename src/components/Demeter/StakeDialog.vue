@@ -40,7 +40,7 @@
       />
       <info-line v-if="isAdding" :label="t('demeterFarming.info.fee')" :value="feePercent" />
 
-      <s-button type="primary" class="s-typography-button--large action-button">Confirm</s-button>
+      <s-button type="primary" class="s-typography-button--large action-button" @click="handleConfirm">Confirm</s-button>
     </div>
   </dialog-base>
 </template>
@@ -56,6 +56,8 @@ import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+
+import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component({
   components: {
@@ -93,6 +95,19 @@ export default class StakeDialog extends Mixins(PoolInfoMixin, TranslationMixin,
 
   handleValue(value: string): void {
     this.value = parseFloat(value) || 0;
+  }
+
+  handleConfirm(): void {
+    const params: DemeterLiquidityParams = {
+      pool: this.pool,
+      accountPool: this.accountPool,
+      liquidity: this.liquidity,
+      value: this.value,
+    };
+
+    const event = this.isAdding ? 'add' : 'remove';
+
+    this.$emit(event, params);
   }
 }
 </script>

@@ -29,6 +29,8 @@
       :pool="selectedFarmingPool"
       :account-pool="selectedAccountFarmingPool"
       :is-adding="isAddingStake"
+      @add="deposit"
+      @remove="withdraw"
     />
     <claim-dialog :visible.sync="showClaimDialog" />
   </div>
@@ -39,10 +41,10 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import router, { lazyView, lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
-import { state, getter } from '@/store/decorators';
+import { action, state, getter } from '@/store/decorators';
 
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-import type { DemeterPool, DemeterAccountPool } from '@/store/demeterFarming/types';
+import type { DemeterPool, DemeterAccountPool, DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component({
   components: {
@@ -58,6 +60,9 @@ export default class DemeterPools extends Mixins() {
 
   @getter.demeterFarming.farmingPools farmingPools!: Array<DemeterPool>;
   @getter.demeterFarming.accountFarmingPools accountFarmingPools!: Array<DemeterAccountPool>;
+
+  @action.demeterFarming.deposit deposit!: (params: DemeterLiquidityParams) => Promise<void>;
+  @action.demeterFarming.withdraw withdraw!: (params: DemeterLiquidityParams) => Promise<void>;
 
   showStakeDialog = false;
   showClaimDialog = false;
@@ -86,7 +91,9 @@ export default class DemeterPools extends Mixins() {
   }
 
   accountFarmingPoolsForLiquidity(liquidity: AccountLiquidity): Array<DemeterAccountPool> {
-    return this.accountFarmingPools.filter((accountPool) => accountPool.poolAsset === liquidity.secondAddress);
+    return this.accountFarmingPools.filter(
+      (accountPool) => accountPool.poolAsset === liquidity.secondAddress && !accountPool.pooledTokens.isZero()
+    );
   }
 
   accountFarmingPool(farmingPool: DemeterPool): Nullable<DemeterAccountPool> {
