@@ -1,7 +1,9 @@
 import { defineGetters } from 'direct-vuex';
 
 import { demeterFarmingGetterContext } from './index';
-import type { DemeterFarmingState, DemeterPool, DemeterAccountPool } from './types';
+
+import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
+import type { DemeterFarmingState } from './types';
 
 const getters = defineGetters<DemeterFarmingState>()({
   farmingPools(...args): Array<DemeterPool> {

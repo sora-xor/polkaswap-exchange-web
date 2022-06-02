@@ -5,7 +5,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { getter } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { DemeterAccountPool, DemeterPool } from '@/store/demeterFarming/types';
+import type { DemeterAccountPool, DemeterPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 

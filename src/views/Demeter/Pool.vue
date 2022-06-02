@@ -29,8 +29,8 @@
       :pool="selectedFarmingPool"
       :account-pool="selectedAccountFarmingPool"
       :is-adding="isAddingStake"
-      @add="deposit"
-      @remove="withdraw"
+      @add="handleStakeAction($event, depositLiquidity)"
+      @remove="handleStakeAction($event, withdrawLiquidity)"
     />
     <claim-dialog :visible.sync="showClaimDialog" />
   </div>
@@ -38,13 +38,15 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import router, { lazyView, lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
 import { action, state, getter } from '@/store/decorators';
 
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-import type { DemeterPool, DemeterAccountPool, DemeterLiquidityParams } from '@/store/demeterFarming/types';
+import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
+import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component({
   components: {
@@ -55,14 +57,14 @@ import type { DemeterPool, DemeterAccountPool, DemeterLiquidityParams } from '@/
     ClaimDialog: lazyComponent(Components.DemeterClaimDialog),
   },
 })
-export default class DemeterPools extends Mixins() {
+export default class DemeterPools extends Mixins(mixins.TransactionMixin) {
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
   @getter.demeterFarming.farmingPools farmingPools!: Array<DemeterPool>;
   @getter.demeterFarming.accountFarmingPools accountFarmingPools!: Array<DemeterAccountPool>;
 
-  @action.demeterFarming.deposit deposit!: (params: DemeterLiquidityParams) => Promise<void>;
-  @action.demeterFarming.withdraw withdraw!: (params: DemeterLiquidityParams) => Promise<void>;
+  @action.demeterFarming.depositLiquidity depositLiquidity!: (params: DemeterLiquidityParams) => Promise<void>;
+  @action.demeterFarming.withdrawLiquidity withdrawLiquidity!: (params: DemeterLiquidityParams) => Promise<void>;
 
   showStakeDialog = false;
   showClaimDialog = false;
@@ -108,19 +110,29 @@ export default class DemeterPools extends Mixins() {
   }
 
   changePoolStake(params: { poolAsset: string; rewardAsset: string }, isAddingStake = true) {
-    this.showStakeDialog = true;
     this.isAddingStake = isAddingStake;
     this.setDialogParams(params);
+    this.showStakeDialog = true;
   }
 
   claimPoolRewards(params: { poolAsset: string; rewardAsset: string }) {
-    this.showClaimDialog = true;
     this.setDialogParams(params);
+    this.showClaimDialog = true;
   }
 
   private setDialogParams({ poolAsset, rewardAsset }: { poolAsset: string; rewardAsset: string }) {
     this.poolAsset = poolAsset;
     this.rewardAsset = rewardAsset;
+  }
+
+  async handleStakeAction(
+    params: DemeterLiquidityParams,
+    action: (params: DemeterLiquidityParams) => Promise<void>
+  ): Promise<void> {
+    await this.withNotifications(async () => {
+      await action(params);
+      this.showStakeDialog = false;
+    });
   }
 }
 </script>

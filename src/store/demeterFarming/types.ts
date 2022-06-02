@@ -1,37 +1,10 @@
-import type { FPNumber } from '@sora-substrate/math';
 import type { Subscription } from '@polkadot/x-rxjs';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-
-export type DemeterPool = {
-  poolAsset: string;
-  rewardAsset: string;
-  multiplier: number;
-  isCore: boolean;
-  isFarm: boolean;
-  isRemoved: boolean;
-  depositFee: number;
-  totalTokensInPool: FPNumber;
-  rewards: FPNumber;
-  rewardsToBeDistributed: FPNumber;
-};
-
-export type DemeterAccountPool = {
-  isFarm: boolean;
-  poolAsset: string;
-  pooledTokens: FPNumber;
-  rewardAsset: string;
-  rewards: FPNumber;
-};
-
-export type DemeterRewardToken = {
-  assetId: string;
-  tokenPerBlock: FPNumber;
-  farmsTotalMultiplier: number;
-  stakingTotalMultiplier: number;
-  farmsAllocation: FPNumber;
-  stakingAllocation: FPNumber;
-  teamAllocation: FPNumber;
-};
+import type {
+  DemeterPool,
+  DemeterAccountPool,
+  DemeterRewardToken,
+} from '@sora-substrate/util/build/demeterFarming/types';
 
 export type DemeterLiquidityParams = {
   pool: DemeterPool;
@@ -42,7 +15,9 @@ export type DemeterLiquidityParams = {
 
 export type DemeterFarmingState = {
   pools: Array<DemeterPool>;
+  poolsUpdates: Nullable<Subscription>;
   tokens: Array<DemeterRewardToken>;
-  accountPools: Array<any>;
+  tokensUpdates: Nullable<Subscription>;
+  accountPools: Array<DemeterAccountPool>;
   accountPoolsUpdates: Nullable<Subscription>;
 };
