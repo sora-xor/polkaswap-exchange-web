@@ -32,7 +32,12 @@ export default class PoolInfo extends Vue {}
     justify-content: center;
 
     > * {
-      width: 50%;
+      width: 100%;
+
+      &:not(:first-child),
+      &:not(:last-child) {
+        width: 50%;
+      }
     }
 
     .el-button + .el-button {

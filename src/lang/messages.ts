@@ -741,6 +741,7 @@ export default {
     staking: {
       active: 'Staking active',
       inactive: 'Stake to earn additional rewards',
+      stopped: 'Staking stopped',
     },
     info: {
       totalLiquidityLocked: 'Total liquidity locked',

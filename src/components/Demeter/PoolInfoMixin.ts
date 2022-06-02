@@ -56,7 +56,9 @@ export default class PoolInfoMixin extends Mixins(mixins.FormattedAmountMixin) {
   get poolShareStaked(): FPNumber {
     if (!this.accountPool) return FPNumber.ZERO;
 
-    return this.accountPool.pooledTokens.div(this.liqudityLP).mul(FPNumber.HUNDRED);
+    const pooledTokens = FPNumber.min(this.accountPool.pooledTokens, this.liqudityLP);
+
+    return pooledTokens.div(this.liqudityLP).mul(FPNumber.HUNDRED);
   }
 
   get poolShareStakedFormatted(): string {

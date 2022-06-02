@@ -3,15 +3,16 @@
     <pool-base v-bind="$attrs" v-on="$listeners">
       <template #title-append="{ liquidity, activeCollapseItems }">
         <pool-status-badge
-          v-if="isClosedCollapseItem(liquidity, activeCollapseItems) && farmingPoolsForLiquidity(liquidity).length"
-          :active="!!accountFarmingPoolsForLiquidity(liquidity).length"
+          v-if="poolStatusBadgeVisible(liquidity, activeCollapseItems)"
+          :active="hasActiveFarmingPools(liquidity)"
+          :has-stake="!!accountFarmingPoolsForLiquidity(liquidity).length"
           class="farming-pool-badge"
         />
       </template>
       <template #append="liquidity">
         <pool-card
-          v-for="pool in farmingPoolsForLiquidity(liquidity)"
-          :key="pool.poolAsset"
+          v-for="pool in farmingPools[liquidity.secondAddress]"
+          :key="`${pool.poolAsset}-${pool.rewardAsset}`"
           :liquidity="liquidity"
           :pool="pool"
           :account-pool="accountFarmingPool(pool)"
@@ -32,7 +33,7 @@
       @add="handleStakeAction($event, depositLiquidity)"
       @remove="handleStakeAction($event, withdrawLiquidity)"
     />
-    <claim-dialog :visible.sync="showClaimDialog" />
+    <claim-dialog :visible.sync="showClaimDialog" :account-pool="selectedAccountFarmingPool" />
   </div>
 </template>
 
@@ -60,7 +61,7 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 export default class DemeterPools extends Mixins(mixins.TransactionMixin) {
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
-  @getter.demeterFarming.farmingPools farmingPools!: Array<DemeterPool>;
+  @getter.demeterFarming.farmingPools farmingPools!: DataMap<DemeterPool[]>;
   @getter.demeterFarming.accountFarmingPools accountFarmingPools!: Array<DemeterAccountPool>;
 
   @action.demeterFarming.depositLiquidity depositLiquidity!: (params: DemeterLiquidityParams) => Promise<void>;
@@ -81,20 +82,32 @@ export default class DemeterPools extends Mixins(mixins.TransactionMixin) {
   }
 
   get selectedFarmingPool(): Nullable<DemeterPool> {
-    return this.farmingPools.find((pool) => pool.poolAsset === this.poolAsset) ?? null;
+    if (!this.poolAsset || !this.farmingPools[this.poolAsset]) return null;
+
+    return this.farmingPools[this.poolAsset].find((pool) => pool.rewardAsset === this.rewardAsset);
   }
 
   get selectedAccountLiquidity(): Nullable<AccountLiquidity> {
     return this.accountLiquidity.find((liquidity) => liquidity.secondAddress === this.poolAsset) ?? null;
   }
 
-  farmingPoolsForLiquidity(liquidity: AccountLiquidity): Array<DemeterPool> {
-    return this.farmingPools.filter((pool) => pool.poolAsset === liquidity.secondAddress);
+  poolStatusBadgeVisible(liquidity: AccountLiquidity, activeCollapseItems: string[]): boolean {
+    const isClosedCollapseItem = !activeCollapseItems.includes(liquidity.address);
+    const hasActiveFarmingPools = this.hasActiveFarmingPools(liquidity);
+    const hasAccountFarmingPools = !!this.accountFarmingPoolsForLiquidity(liquidity).length;
+
+    return isClosedCollapseItem && (hasActiveFarmingPools || hasAccountFarmingPools);
+  }
+
+  hasActiveFarmingPools(liquidity: AccountLiquidity): boolean {
+    return this.farmingPools[liquidity.secondAddress]?.some((pool) => !pool.isRemoved);
   }
 
   accountFarmingPoolsForLiquidity(liquidity: AccountLiquidity): Array<DemeterAccountPool> {
     return this.accountFarmingPools.filter(
-      (accountPool) => accountPool.poolAsset === liquidity.secondAddress && !accountPool.pooledTokens.isZero()
+      (accountPool) =>
+        accountPool.poolAsset === liquidity.secondAddress &&
+        (!accountPool.pooledTokens.isZero() || !accountPool.rewards.isZero)
     );
   }
 
@@ -103,10 +116,6 @@ export default class DemeterPools extends Mixins(mixins.TransactionMixin) {
       (accountPool) =>
         accountPool.poolAsset === farmingPool.poolAsset && accountPool.rewardAsset === farmingPool.rewardAsset
     );
-  }
-
-  isClosedCollapseItem(liquidity: AccountLiquidity, activeCollapseItems: string[]): boolean {
-    return !!liquidity && !activeCollapseItems.includes(liquidity.address);
   }
 
   changePoolStake(params: { poolAsset: string; rewardAsset: string }, isAddingStake = true) {

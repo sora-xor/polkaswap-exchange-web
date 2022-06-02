@@ -2,44 +2,53 @@
   <s-card class="demeter-pool-card">
     <pool-info>
       <template #prepend>
-        <div class="demeter-pool-card-title">{{ title }}</div>
+        <div class="demeter-pool-card-status">
+          <s-icon
+            v-if="hasStake"
+            name="basic-placeholder-24"
+            size="12"
+            :class="['demeter-pool-card-status-icon', { active: activeStatus }]"
+          />
+          <span class="demeter-pool-card-status-title">{{ title }}</span>
+        </div>
       </template>
 
       <info-line label="APR" value="100%" />
       <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvlFormatted" />
       <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
 
-      <template v-if="hasStake">
-        <info-line
-          value-can-be-hidden
-          :label="t('demeterFarming.info.rewardEarned', { symbol: rewardAssetSymbol })"
-          :value="rewardEarned"
-          :fiat-value="rewardEarnedFiat"
-        />
-        <info-line
-          value-can-be-hidden
-          :label="t('demeterFarming.info.poolShareStaked')"
-          :value="poolShareStakedFormatted"
-        />
-      </template>
+      <info-line
+        v-if="hasStake || hasRewards"
+        value-can-be-hidden
+        :label="t('demeterFarming.info.rewardEarned', { symbol: rewardAssetSymbol })"
+        :value="rewardsFormatted"
+        :fiat-value="rewardsFiat"
+      />
+      <info-line
+        v-if="hasStake"
+        value-can-be-hidden
+        :label="t('demeterFarming.info.poolShareStaked')"
+        :value="poolShareStakedFormatted"
+      />
       <template v-else>
         <info-line :label="t('demeterFarming.info.fee')" :value="feePercent" />
       </template>
 
-      <template #buttons v-if="hasStake">
-        <s-button type="secondary" class="s-typography-button--medium" @click="claim">{{
+      <template #buttons v-if="hasStake || hasRewards">
+        <s-button type="secondary" class="s-typography-button--medium" @click="claim" :disabled="!hasRewards">{{
           t('demeterFarming.actions.claim')
         }}</s-button>
-        <s-button type="secondary" class="s-typography-button--medium" @click="remove">{{
+        <s-button type="secondary" class="s-typography-button--medium" @click="remove" :disabled="!hasStake">{{
           t('demeterFarming.actions.remove')
         }}</s-button>
       </template>
 
       <template #append>
         <s-button
+          v-if="activeStatus"
           type="primary"
           class="s-typography-button--large action-button"
-          :disabled="!addStakeAvailability"
+          :disabled="depositDisabled"
           @click="add"
         >{{ primaryButtonText }}
         </s-button>
@@ -70,24 +79,38 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class DemeterPoolCard extends Mixins(PoolInfoMixin, TranslationMixin) {
+  get activeStatus(): boolean {
+    return !this.pool.isRemoved;
+  }
+
   get title(): string {
-    return this.t(`demeterFarming.staking.${this.hasStake ? 'active' : 'inactive'}`);
+    const key = this.activeStatus ? (this.hasStake ? 'active' : 'inactive') : 'stopped';
+
+    return this.t(`demeterFarming.staking.${key}`);
   }
 
   get primaryButtonText(): string {
     return this.t(`demeterFarming.actions.${this.hasStake ? 'add' : 'start'}`);
   }
 
-  get rewardEarned(): string {
-    return this.accountPool.rewards.toLocaleString();
+  get rewards(): FPNumber {
+    return this.accountPool?.rewards ?? FPNumber.ZERO;
   }
 
-  get rewardEarnedFiat(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.accountPool.rewards, this.rewardAsset as Asset);
+  get rewardsFormatted(): string {
+    return this.rewards.toLocaleString();
   }
 
-  get addStakeAvailability(): boolean {
-    return FPNumber.isLessThan(this.poolShareStaked, FPNumber.HUNDRED);
+  get rewardsFiat(): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.rewards, this.rewardAsset as Asset);
+  }
+
+  get depositDisabled(): boolean {
+    return FPNumber.isGreaterThanOrEqualTo(this.poolShareStaked, FPNumber.HUNDRED);
+  }
+
+  get hasRewards(): boolean {
+    return !this.rewards.isZero();
   }
 
   get emitParams(): object {
@@ -122,12 +145,24 @@ export default class DemeterPoolCard extends Mixins(PoolInfoMixin, TranslationMi
 
 <style lang="scss" scoped>
 .demeter-pool-card {
-  &-title {
-    font-size: var(--s-font-size-medium);
-    font-weight: 600;
-    line-height: var(--s-line-height-reset);
-    text-transform: uppercase;
+  &-status {
+    &-icon {
+      margin-right: $inner-spacing-small;
+      color: var(--s-color-status-error);
+
+      &.active {
+        color: var(--s-color-status-success);
+      }
+    }
+
+    &-title {
+      font-size: var(--s-font-size-medium);
+      font-weight: 600;
+      line-height: var(--s-line-height-reset);
+      text-transform: uppercase;
+    }
   }
+
   &-copyright {
     font-size: var(--s-font-size-mini);
     font-weight: 400;

@@ -1,6 +1,6 @@
 <template>
-  <div :class="['pool-status-badge', { active }]">
-    <s-icon :name="icon" size="12" :class="['pool-status-badge-icon', { active }]" />
+  <div :class="['pool-status-badge', { active: hasStake }]">
+    <s-icon :name="icon" size="12" :class="['pool-status-badge-icon', { active, stake: hasStake }]" />
 
     <div class="pool-status-badge-title">{{ title }}</div>
   </div>
@@ -14,13 +14,16 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 @Component
 export default class PoolStatusBadge extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly active!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly hasStake!: boolean;
 
   get title(): string {
-    return this.t(this.active ? 'demeterFarming.staking.active' : 'demeterFarming.actions.start');
+    if (!this.active) return this.t('demeterFarming.staking.stopped');
+
+    return this.t(this.hasStake ? 'demeterFarming.staking.active' : 'demeterFarming.actions.start');
   }
 
   get icon(): string {
-    return this.active ? 'basic-placeholder-24' : 'printer-16';
+    return this.hasStake ? 'basic-placeholder-24' : 'printer-16';
   }
 }
 </script>
@@ -49,8 +52,12 @@ export default class PoolStatusBadge extends Mixins(TranslationMixin) {
   &-icon {
     color: var(--s-color-base-on-accent);
 
-    &.active {
-      color: var(--s-color-status-success);
+    &.stake {
+      color: var(--s-color-status-error);
+
+      &.active {
+        color: var(--s-color-status-success);
+      }
     }
   }
 
