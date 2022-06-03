@@ -48,7 +48,19 @@
         is-formatted
       />
 
-      <s-button type="primary" class="s-typography-button--large action-button" @click="handleConfirm">Confirm</s-button>
+      <s-button
+        type="primary"
+        class="s-typography-button--large action-button"
+        :disabled="isInsufficientXorForFee"
+        @click="handleConfirm"
+      >
+        <template v-if="isInsufficientXorForFee">
+          {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
+        </template>
+        <template v-else>
+          {{ t('confirmText') }}
+        </template>
+      </s-button>
     </div>
   </dialog-base>
 </template>
@@ -57,7 +69,6 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import PoolInfoMixin from './mixins/PoolInfoMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -65,9 +76,7 @@ import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { state } from '@/store/decorators';
 
-import type { NetworkFeesObject } from '@sora-substrate/util';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component({
@@ -80,13 +89,7 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 export default class StakeDialog extends Mixins(PoolInfoMixin, TranslationMixin, DialogMixin) {
   @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
 
-  @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
-
   value = 0;
-
-  get xorSymbol(): string {
-    return XOR.symbol;
-  }
 
   get networkFee(): string {
     const operation = this.isAdding
@@ -94,10 +97,6 @@ export default class StakeDialog extends Mixins(PoolInfoMixin, TranslationMixin,
       : Operation.DemeterFarmingWithdrawLiquidity;
 
     return this.networkFees[operation];
-  }
-
-  get formattedNetworkFee(): string {
-    return this.formatCodecNumber(this.networkFee);
   }
 
   get title(): string {

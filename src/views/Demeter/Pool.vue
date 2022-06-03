@@ -33,7 +33,11 @@
       @add="handleStakeAction($event, depositLiquidity)"
       @remove="handleStakeAction($event, withdrawLiquidity)"
     />
-    <claim-dialog :visible.sync="showClaimDialog" :account-pool="selectedAccountFarmingPool" />
+    <claim-dialog
+      :visible.sync="showClaimDialog"
+      :pool="selectedFarmingPool"
+      :account-pool="selectedAccountFarmingPool"
+    />
   </div>
 </template>
 

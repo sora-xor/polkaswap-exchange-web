@@ -32,7 +32,19 @@
         />
       </div>
 
-      <s-button type="primary" class="s-typography-button--large action-button">Sign and claim</s-button>
+      <s-button
+        type="primary"
+        class="s-typography-button--large action-button"
+        :disabled="isInsufficientXorForFee"
+        @click="confirm"
+      >
+        <template v-if="isInsufficientXorForFee">
+          {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
+        </template>
+        <template v-else>
+          {{ t('signAndClaimText') }}
+        </template>
+      </s-button>
     </div>
   </dialog-base>
 </template>
@@ -40,17 +52,11 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Operation } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
-
-import { state } from '@/store/decorators';
 
 import AccountPoolMixin from './mixins/AccountPoolMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
-
-import type { NetworkFeesObject } from '@sora-substrate/util';
 
 @Component({
   components: {
@@ -63,18 +69,8 @@ import type { NetworkFeesObject } from '@sora-substrate/util';
 export default class ClaimDialog extends Mixins(AccountPoolMixin, TranslationMixin, DialogMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
-  @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
-
-  get xorSymbol(): string {
-    return XOR.symbol;
-  }
-
-  get networkFee(): string {
-    return this.networkFees[Operation.DemeterFarmingGetRewards];
-  }
-
-  get formattedNetworkFee(): string {
-    return this.formatCodecNumber(this.networkFee);
+  confirm(): void {
+    this.$emit('confirm');
   }
 }
 </script>
@@ -88,7 +84,7 @@ export default class ClaimDialog extends Mixins(AccountPoolMixin, TranslationMix
   }
 
   &-logo {
-    margin-bottom: $inner-spacing-medium;
+    margin-bottom: $inner-spacing-mini;
   }
 
   &-title {
@@ -99,11 +95,13 @@ export default class ClaimDialog extends Mixins(AccountPoolMixin, TranslationMix
 
   &-value {
     font-size: var(--s-font-size-large);
+    font-weight: 700;
     line-height: var(--s-line-height-reset);
     letter-spacing: var(--s-letter-spacing-small);
 
     &--fiat {
       font-size: var(--s-font-size-big);
+      font-weight: 600;
       line-height: var(--s-line-height-small);
     }
   }

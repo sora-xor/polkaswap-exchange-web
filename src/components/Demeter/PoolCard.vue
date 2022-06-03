@@ -50,7 +50,8 @@
           class="s-typography-button--large action-button"
           :disabled="depositDisabled"
           @click="add"
-        >{{ primaryButtonText }}
+        >
+          {{ primaryButtonText }}
         </s-button>
 
         <div class="demeter-pool-card-copyright">{{ t('demeterFarming.poweredBy') }}</div>

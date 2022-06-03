@@ -20,6 +20,7 @@
     "addressText": "Address",
     "amountText": "Amount",
     "confirmText": "Confirm",
+    "signAndClaimText": "Sign and claim",
     "errorText": "Error",
     "insufficientBalanceText": "Insufficient {tokenSymbol} balance",
     "unknownErrorText": "ERROR Something went wrong...",

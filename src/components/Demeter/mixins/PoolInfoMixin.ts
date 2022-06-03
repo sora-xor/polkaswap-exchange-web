@@ -4,14 +4,12 @@ import { FPNumber } from '@sora-substrate/util';
 import AccountPoolMixin from './AccountPoolMixin';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { DemeterPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class PoolInfoMixin extends Mixins(AccountPoolMixin) {
   @Prop({ default: () => null, type: Object }) readonly liquidity!: AccountLiquidity;
-  @Prop({ default: () => null, type: Object }) readonly pool!: DemeterPool;
 
   get hasStake(): boolean {
     return this.accountPool ? !this.accountPool.pooledTokens.isZero() : false;

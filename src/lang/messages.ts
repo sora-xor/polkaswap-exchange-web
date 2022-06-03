@@ -42,6 +42,7 @@ export default {
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
+  signAndClaimText: 'Sign and claim',
   retryText: 'Retry',
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: "Network fee is used to ensure @:soraText system's growth and stable performance.",
