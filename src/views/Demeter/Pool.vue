@@ -151,9 +151,9 @@ export default class DemeterPools extends Mixins(mixins.TransactionMixin) {
     });
   }
 
-  async handleClaimRewards(): Promise<void> {
+  async handleClaimRewards(pool: DemeterAccountPool): Promise<void> {
     await this.withNotifications(async () => {
-      await this.claimRewards(this.selectedAccountFarmingPool);
+      await this.claimRewards(pool);
       this.showClaimDialog = false;
     });
   }

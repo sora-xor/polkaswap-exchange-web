@@ -70,7 +70,7 @@ export default class ClaimDialog extends Mixins(AccountPoolMixin, TranslationMix
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
   confirm(): void {
-    this.$emit('confirm');
+    this.$emit('confirm', this.accountPool);
   }
 }
 </script>
