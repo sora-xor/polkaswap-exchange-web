@@ -100,6 +100,19 @@ const routes: Array<RouteConfig> = [
     ],
   },
   {
+    path: '/staking',
+    name: PageNames.StakingContainer,
+    component: lazyView(PageNames.StakingContainer),
+    redirect: { name: PageNames.DemeterStaking },
+    children: [
+      {
+        path: 'demeter',
+        name: PageNames.DemeterStaking,
+        component: lazyView(PageNames.DemeterStaking),
+      },
+    ],
+  },
+  {
     path: '/rewards',
     name: PageNames.Rewards,
     component: lazyView(PageNames.RewardsTabs),

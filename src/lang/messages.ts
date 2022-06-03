@@ -88,6 +88,7 @@ export default {
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair',
     [PageNames.Tokens]: 'Tokens',
+    [PageNames.StakingContainer]: 'Staking',
   },
   headerMenu: {
     showBalances: 'Show Balances',

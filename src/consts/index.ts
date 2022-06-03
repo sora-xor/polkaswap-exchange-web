@@ -129,8 +129,10 @@ export enum PageNames {
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
+  StakingContainer = 'StakingContainer',
   // Demeter
   DemeterPool = 'Demeter/Pool',
+  DemeterStaking = 'Demeter/Staking',
 }
 
 export enum Components {
@@ -225,13 +227,13 @@ const MainMenu: Array<SidebarMenuItem> = [
     title: PageNames.Pool,
   },
   {
+    icon: 'various-pocket-24',
+    title: PageNames.StakingContainer,
+  },
+  {
     icon: 'grid-block-distribute-vertically-24',
     title: PageNames.Bridge,
   },
-  // {
-  //   icon: 'various-pocket-24',
-  //   title: PageNames.Auctions,
-  // },
 ];
 
 const AccountMenu: Array<SidebarMenuItem> = [
@@ -311,6 +313,7 @@ export const RewardsChildPages = [
   PageNames.ReferralBonding,
   PageNames.ReferralUnbonding,
 ];
+export const StakingChildPages = [PageNames.DemeterStaking];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',

@@ -326,7 +326,8 @@
         "Stats": "Stats",
         "Support": "Support",
         "CreatePair": "Create Pair",
-        "Tokens": "Tokens"
+        "Tokens": "Tokens",
+        "StakingContainer": "Staking"
     },
     "social": {
         "twitter": "Twitter",
