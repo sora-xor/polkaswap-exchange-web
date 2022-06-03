@@ -37,6 +37,7 @@
       :visible.sync="showClaimDialog"
       :pool="selectedFarmingPool"
       :account-pool="selectedAccountFarmingPool"
+      @confirm="handleClaimRewards"
     />
   </div>
 </template>
@@ -71,6 +72,7 @@ export default class DemeterPools extends Mixins(mixins.TransactionMixin) {
 
   @action.demeterFarming.depositLiquidity depositLiquidity!: (params: DemeterLiquidityParams) => Promise<void>;
   @action.demeterFarming.withdrawLiquidity withdrawLiquidity!: (params: DemeterLiquidityParams) => Promise<void>;
+  @action.demeterFarming.claimRewards private claimRewards!: (pool: DemeterAccountPool) => Promise<void>;
 
   showStakeDialog = false;
   showClaimDialog = false;
@@ -146,6 +148,13 @@ export default class DemeterPools extends Mixins(mixins.TransactionMixin) {
     await this.withNotifications(async () => {
       await action(params);
       this.showStakeDialog = false;
+    });
+  }
+
+  async handleClaimRewards(): Promise<void> {
+    await this.withNotifications(async () => {
+      await this.claimRewards(this.selectedAccountFarmingPool);
+      this.showClaimDialog = false;
     });
   }
 }

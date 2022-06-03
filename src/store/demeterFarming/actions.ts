@@ -5,6 +5,7 @@ import { FPNumber } from '@sora-substrate/math';
 import { waitForAccountPair } from '@/utils';
 import { demeterFarmingActionContext } from '@/store/demeterFarming';
 
+import type { DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 const actions = defineActions({
@@ -86,6 +87,18 @@ const actions = defineActions({
     const amount = withdrawLP.toString();
 
     await api.demeterFarming.withdrawLiquidity(poolAsset, rewardAsset, amount);
+  },
+
+  async claimRewards(context, pool: DemeterAccountPool): Promise<void> {
+    const { rootGetters } = demeterFarmingActionContext(context);
+
+    const { poolAsset: poolAssetAddress, rewardAsset: rewardAssetAddress, isFarm, rewards } = pool;
+
+    const poolAsset = rootGetters.assets.assetsDataTable[poolAssetAddress];
+    const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
+    const amount = rewards.toString();
+
+    await api.demeterFarming.getRewards(poolAsset, rewardAsset, isFarm, amount);
   },
 });
 
