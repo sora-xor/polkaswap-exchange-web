@@ -20,16 +20,29 @@
           :key="item.pool.rewardAsset"
           :pool="item.pool"
           :account-pool="item.accountPool"
+          @add="changePoolStake($event, true)"
+          @remove="changePoolStake($event, false)"
+          @claim="claimPoolRewards"
           class="staking-info-card"
         />
       </s-collapse-item>
     </s-collapse>
+
+    <stake-dialog
+      :visible.sync="showStakeDialog"
+      :pool="selectedPool"
+      :account-pool="selectedAccountPool"
+      :is-adding="isAddingStake"
+    />
+    <claim-dialog :visible.sync="showClaimDialog" :pool="selectedPool" :account-pool="selectedAccountPool" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
+
+import PageMixin from '@/components/Demeter/mixins/PageMixin';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
@@ -47,18 +60,21 @@ import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/type
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PoolCard: lazyComponent(Components.PoolCard),
     PoolStatusBadge: lazyComponent(Components.PoolStatusBadge),
+    StakeDialog: lazyComponent(Components.DemeterStakeDialog),
+    ClaimDialog: lazyComponent(Components.DemeterClaimDialog),
     TokenLogo: components.TokenLogo,
   },
 })
-export default class DemeterStaking extends Mixins(SubscriptionsMixin, TranslationMixin) {
+export default class DemeterStaking extends Mixins(PageMixin, SubscriptionsMixin, TranslationMixin) {
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<Asset>;
-  @getter.demeterFarming.stakingPools stakingPools!: DataMap<DemeterPool[]>;
-  @getter.demeterFarming.accountStakingPools accountStakingPools!: Array<DemeterAccountPool>;
 
   @action.demeterFarming.subscribeOnPools private subscribeOnPools!: AsyncVoidFn;
   @action.demeterFarming.subscribeOnTokens private subscribeOnTokens!: AsyncVoidFn;
   @action.demeterFarming.subscribeOnAccountPools private subscribeOnAccountPools!: AsyncVoidFn;
   @action.demeterFarming.unsubscribeUpdates private unsubscribeDemeter!: AsyncVoidFn;
+
+  // override PageMixin
+  isFarming = false;
 
   created(): void {
     this.setStartSubscriptions([this.subscribeOnPools, this.subscribeOnTokens, this.subscribeOnAccountPools]);
@@ -66,11 +82,11 @@ export default class DemeterStaking extends Mixins(SubscriptionsMixin, Translati
   }
 
   get tokensData(): object {
-    return Object.entries(this.stakingPools).map(([address, pools]) => {
+    return Object.entries(this.pools).map(([address, pools]) => {
       const asset = this.getAsset(address);
       const symbol = asset?.symbol ?? this.t('pool.unknownAsset');
       const items = pools.map((pool) => {
-        const accountPool = this.accountStakingPools.find(
+        const accountPool = this.accountPools.find(
           (accountPool) => accountPool.poolAsset === address && accountPool.rewardAsset === pool.rewardAsset
         );
 

@@ -18,7 +18,7 @@ export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
 
   @getter.assets.xor xor!: Nullable<AccountAsset>;
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<Asset>;
+  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   // Override it component for another use case
   get networkFee(): string {

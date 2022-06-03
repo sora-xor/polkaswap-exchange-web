@@ -53,7 +53,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import AccountPoolMixin from './mixins/AccountPoolMixin';
+import AccountPoolMixin from '../mixins/AccountPoolMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';

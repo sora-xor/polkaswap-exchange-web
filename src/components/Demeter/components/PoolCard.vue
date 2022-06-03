@@ -70,7 +70,7 @@ import { FPNumber } from '@sora-substrate/util';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
-import PoolInfoMixin from './mixins/PoolInfoMixin';
+import PoolMixin from '../mixins/PoolMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter } from '@/store/decorators';
@@ -84,7 +84,7 @@ import { Components, PageNames } from '@/consts';
     InfoLine: components.InfoLine,
   },
 })
-export default class DemeterPoolCard extends Mixins(PoolInfoMixin, TranslationMixin) {
+export default class DemeterPoolCard extends Mixins(PoolMixin, TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly border!: boolean;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;

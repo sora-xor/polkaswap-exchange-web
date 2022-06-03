@@ -70,10 +70,12 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 
-import PoolInfoMixin from './mixins/PoolInfoMixin';
+import PoolMixin from '../mixins/PoolMixin';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
+
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
@@ -86,7 +88,7 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
     InfoLine: components.InfoLine,
   },
 })
-export default class StakeDialog extends Mixins(PoolInfoMixin, TranslationMixin, DialogMixin) {
+export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, DialogMixin) {
   @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
 
   value = 0;
