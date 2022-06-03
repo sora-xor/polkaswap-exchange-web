@@ -15,6 +15,9 @@
     "searchText": "Search",
     "cancelText": "Cancel",
     "saveText": "Save",
+    "copiedText": "Copied!",
+    "copyWithValue": "Copy {value}",
+    "copiedWithValue": "{value} is copied!",
     "logoutText": "Log out",
     "sendText": "Send",
     "addressText": "Address",
@@ -111,7 +114,7 @@
         "addressError": "You cannot send tokens to the same account that you are currently connected to."
     },
     "account": {
-        "successCopy": "Wallet address is copied to the clipboard",
+        "walletAddress": "Wallet address",
         "copy": "Copy address",
         "switch": "Switch account"
     },
@@ -129,6 +132,7 @@
         "receive": "@:account.copy",
         "liquidity": "Add liquidity",
         "bridge": "Bridge",
+        "assetId": "Asset ID",
         "copy": "Copy Asset ID",
         "successCopy": "{symbol} Asset ID is copied to the clipboard",
         "copied": "Copied!",
@@ -521,6 +525,8 @@
         "info": "Convert tokens between the @:soraText and @:ethereumText networks.",
         "balance": "Balance",
         "connectWallet": "@:connectWalletText",
+        "soraAddress": "@:soraText address",
+        "ethereumAddress": "@:ethereumText address",
         "connected": "@:connectedText",
         "changeAccount": "@:changeAccountText",
         "changeNetwork": "@:changeNetworkText",
@@ -537,8 +543,7 @@
         "selectNetwork": "Select network",
         "networkInfo": "Bridge @:soraText Network with:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC",
-        "copy": "Copy network address"
+        "energy": "@:evm.EWC"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -602,7 +607,6 @@
             "transactionFee": "Transaction Fee",
             "total": "Total"
         },
-        "successCopy": "Transaction hash is copied to the clipboard",
         "ethereum": "@:ethereumText",
         "sora": "@:soraText",
         "pending": "<span class=\"network-title\">{network}<\/span> transaction pending...",
@@ -634,7 +638,6 @@
         "searchPlaceholder": "Filter by Asset ID, Name or Ticker Symbol",
         "emptyListMessage": "No results",
         "copy": "Copy Asset ID",
-        "successCopy": "{symbol} Asset ID is copied to the clipboard",
         "assets": {
             "title": "Assets"
         },
@@ -907,7 +910,6 @@
         "transactionDetails": "Transaction Details",
         "receivedRewards": "Received rewards",
         "invitationLink": "Invitation link",
-        "successCopy": "Referral link is copied to the clipboard",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",
         "confirm": {

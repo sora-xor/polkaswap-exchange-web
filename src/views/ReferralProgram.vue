@@ -31,7 +31,13 @@
             <div class="referral-link-label">{{ t('referralProgram.invitationLink') }}</div>
             <div class="referral-link" v-html="referralLink.label" />
           </div>
-          <s-button class="s-typography-button--mini" size="small" type="primary" @click.stop="handleCopyAddress()">
+          <s-button
+            class="s-typography-button--mini"
+            size="small"
+            type="primary"
+            :tooltip="copyTooltip(t('referralProgram.invitationLink'))"
+            @click="handleCopyAddress(referralLink.href, $event)"
+          >
             {{ t('referralProgram.action.copyLink') }}
             <s-icon name="copy-16" size="16" />
           </s-button>
@@ -89,8 +95,8 @@
                 is-formatted
               >
                 <template #info-line-prefix>
-                  <s-tooltip :content="t('account.copy')">
-                    <span class="info-line-address" @click.stop="handleCopyAddress(invitedUser)">
+                  <s-tooltip :content="copyTooltip(t('transaction.referral'))">
+                    <span class="info-line-address" @click="handleCopyAddress(invitedUser, $event)">
                       {{ formatReferralAddress(invitedUser) }}
                     </span>
                   </s-tooltip>
@@ -177,7 +183,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import router, { lazyView } from '@/router';
 import { PageNames, LogoSize, ZeroStringValue } from '@/consts';
 import { detectBaseUrl } from '@/api';
-import { copyToClipboard, formatAddress } from '@/utils';
+import { formatAddress } from '@/utils';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -197,6 +203,7 @@ export default class ReferralProgram extends Mixins(
   mixins.ReferralRewardsMixin,
   mixins.PaginationSearchMixin,
   mixins.NetworkFeeWarningMixin,
+  mixins.CopyAddressMixin,
   WalletConnectMixin
 ) {
   readonly LogoSize = LogoSize;
@@ -416,26 +423,6 @@ export default class ReferralProgram extends Mixins(
 
   handleBonding(isBond = false): void {
     router.push({ name: isBond ? PageNames.ReferralBonding : PageNames.ReferralUnbonding });
-  }
-
-  async handleCopyAddress(accountId?: string): Promise<void> {
-    const message = accountId
-      ? this.t('transaction.successCopy', { value: this.t('transaction.referral') })
-      : this.t('referralProgram.successCopy');
-    try {
-      await copyToClipboard(accountId ?? this.referralLink.href);
-      this.$notify({
-        message,
-        type: 'success',
-        title: '',
-      });
-    } catch (error) {
-      this.$notify({
-        message: `${this.t('warningText')} ${error}`,
-        type: 'warning',
-        title: '',
-      });
-    }
   }
 
   handleSetReferrer(): void {

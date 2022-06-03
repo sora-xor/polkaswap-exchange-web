@@ -342,7 +342,6 @@ export default {
     title: 'HASHI Bridge',
     info: 'Convert tokens between the @:soraText and @:ethereumText networks.',
     balance: 'Balance',
-    copy: 'Copy network address',
     connectWallet: '@:connectWalletText',
     connected: '@:connectedText',
     changeAccount: '@:changeAccountText',
