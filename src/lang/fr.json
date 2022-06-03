@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "L'actif {symbol} a été ajouté avec succès!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filtrer par ID d'actif, nom ou symbole"
-        },
-        "AddAssetCustom": {
-            "title": "Actif personnalisé",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Symbole d'actif"
-        },
         "empty": "Aucun jeton trouvé",
         "alreadyAttached": "Le jeton était déjà attaché",
         "understand": "Je comprends",
@@ -169,7 +160,15 @@
         "approved": "Actif approuvé par la communauté",
         "unknown": "Source inconnue",
         "scam": "ARNAQUE",
-        "next": "Suivant"
+        "next": "Suivant",
+        "AddAssetToken": {
+            "title": "Jetons",
+            "switchBtn": "Actifs vérifiés uniquement"
+        },
+        "AddAssetNFT": {
+            "title": "NFTs"
+        },
+        "searchInputText": "Rechercher par ID d'actif, nom ou symbole boursier"
     },
     "createToken": {
         "title": "@:createTokenText",

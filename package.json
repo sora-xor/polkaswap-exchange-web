@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
-    "@soramitsu/soraneo-wallet-web": "1.9.4",
+    "@soramitsu/soraneo-wallet-web": "1.9.3",
     "@walletconnect/web3-provider": "^1.6.6",
     "core-js": "^3.6.4",
     "direct-vuex": "^0.12.1",
@@ -78,6 +78,7 @@
     "ts-jest": "^27.0.5",
     "typescript": "~4.4.4",
     "vue-cli-plugin-electron-builder": "^3.0.0-alpha.3",
+    "vue-cli-plugin-test-attrs": "^0.1.5",
     "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.6.14"
   },
