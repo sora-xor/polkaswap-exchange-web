@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "¡El Activo {symbol} se ha añadido con éxito!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filtrar por ID de Activo, Nombre o Símbolo bursátil (ticker)"
-        },
-        "AddAssetCustom": {
-            "title": "Activo personalizado",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Símbolo del Activo"
-        },
         "empty": "No se han encontrado Tokens",
         "alreadyAttached": "El Token ya estaba adjunto",
         "understand": "Comprendo",
@@ -169,7 +160,15 @@
         "approved": "Activo aprobado por la comunidad",
         "unknown": "Fuente desconocida",
         "scam": "ESTAFA",
-        "next": "Siguiente"
+        "next": "Siguiente",
+        "AddAssetToken": {
+            "title": "Tokens",
+            "switchBtn": "Solo activos verificados"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Buscar por ID de activo, nombre o símbolo de cotización"
     },
     "createToken": {
         "title": "@:createTokenText",

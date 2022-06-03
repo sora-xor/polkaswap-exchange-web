@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Средство {symbol} је успешно додатo!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Филтрирајте према ИД-у средства, имену или симболу ознаке"
-        },
-        "AddAssetCustom": {
-            "title": "Прилагођено средство",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Симбол средства"
-        },
         "empty": "Нису пронађени токени",
         "alreadyAttached": "Токен је већ био прикачен",
         "understand": "Разумем",
@@ -169,7 +160,15 @@
         "approved": "Средство је одобрила заједница",
         "unknown": "Непознати извор",
         "scam": "ПРЕВАРА",
-        "next": "Следећи"
+        "next": "Следећи",
+        "AddAssetToken": {
+            "title": "Токени",
+            "switchBtn": "Само верификована средства"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Претрага по ИД-у средства, имену или симболу ознаке"
     },
     "createToken": {
         "title": "@:createTokenText",

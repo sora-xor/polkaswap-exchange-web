@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Az eszköz {symbol} sikeresen hozzáadva!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Szűrés eszközazonosító, név vagy szimbólum alapján"
-        },
-        "AddAssetCustom": {
-            "title": "Egyéni eszköz",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Eszköz szimbólum"
-        },
         "empty": "Nem található token",
         "alreadyAttached": "Tokent már csatolták",
         "understand": "Megértettem",
@@ -169,7 +160,15 @@
         "approved": "A közösség által jóváhagyott eszköz",
         "unknown": "Ismeretlen forrás",
         "scam": "ÁTVERÉS",
-        "next": "Következő"
+        "next": "Következő",
+        "AddAssetToken": {
+            "title": "Tokenek",
+            "switchBtn": "Csak ellenőrzött eszközök"
+        },
+        "AddAssetNFT": {
+            "title": "NFT-k"
+        },
+        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján"
     },
     "createToken": {
         "title": "@:createTokenText",

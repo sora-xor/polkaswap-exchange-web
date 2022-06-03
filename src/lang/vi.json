@@ -152,15 +152,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Tài sản {symbol} đã được thêm vào thành công!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Lọc theo Id Tài sản, Tên hoặc Mã token"
-        },
-        "AddAssetCustom": {
-            "title": "Tài sản tùy chỉnh",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Mã tài sản"
-        },
         "empty": "Không tìm thấy token",
         "alreadyAttached": "Token đã được thêm vào",
         "understand": "Tôi hiểu",
@@ -169,7 +160,15 @@
         "approved": "Tài sản được cộng đồng phê duyệt",
         "unknown": "Nguồn không xác định",
         "scam": "LỪA ĐẢO",
-        "next": "Kế tiếp"
+        "next": "Kế tiếp",
+        "AddAssetToken": {
+            "title": "Token",
+            "switchBtn": "Chỉ nội dung đã xác minh"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Tìm kiếm theo ID nội dung, tên hoặc ký hiệu mã"
     },
     "createToken": {
         "title": "@:createTokenText",
