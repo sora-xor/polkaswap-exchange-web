@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "Ti daakọ adirẹsi apamọwọ si agekuru naa",
         "copy": "Da Adirẹsi ko",
-        "switch": "Yi Ifowosi pada"
+        "switch": "Yi Ifowosi pada",
+        "walletAddress": "Adirẹsi apamọwọ"
     },
     "history": {
         "clearHistory": "Nu itan kuro",
@@ -141,7 +142,8 @@
             "bonded": "- Ti so pọ"
         },
         "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:",
-        "details": "Awọn alaye"
+        "details": "Awọn alaye",
+        "assetId": "Idanimo dukia"
     },
     "asset": {
         "remove": "Yọ dukia kuro",
@@ -537,7 +539,9 @@
         "networkInfo": "Safara @:soraText Nẹtiwọọki pẹlu:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Daakọ adirẹsi nẹtiwọki"
+        "copy": "Daakọ adirẹsi nẹtiwọki",
+        "soraAddress": "@:soraText adirẹsi",
+        "ethereumAddress": "@:ethereumText adirẹsi"
     },
     "selectRegisteredAsset": {
         "title": "Yan Tokini kan",
@@ -952,5 +956,8 @@
         "header": "Ṣe igbasilẹ apamọwọ SORA pẹlu <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> awọn ẹya ara ẹrọ",
         "info": "Siwopu àmi lati yatọ si nẹtiwọki - SORA, Ethereum, Polkadot, Kusama. Pese adagun oloomi ati jo'gun% lati awọn idiyele paṣipaarọ."
     },
-    "releaseNotesText": "Awọn akọsilẹ idasilẹ"
+    "releaseNotesText": "Awọn akọsilẹ idasilẹ",
+    "copiedText": "Ti daakọ!",
+    "copyWithValue": "Daakọ {value}",
+    "copiedWithValue": "{value} ti daakọ!"
 }

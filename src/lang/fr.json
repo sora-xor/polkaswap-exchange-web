@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "L'adresse du portefeuille est copiée dans le presse-papiers",
         "copy": "Copier l'adresse",
-        "switch": "Changer de compte"
+        "switch": "Changer de compte",
+        "walletAddress": "Adresse du portefeuille"
     },
     "history": {
         "clearHistory": "Effacer l'historique",
@@ -141,7 +142,8 @@
             "bonded": "- Lié"
         },
         "totalAssetsValue": "Valeur total de vos actifs:",
-        "details": "Détails"
+        "details": "Détails",
+        "assetId": "ID de l'Actif"
     },
     "asset": {
         "remove": "Retirer l'actif",
@@ -537,7 +539,9 @@
         "networkInfo": "Pont @:soraText Réseau avec:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Copier l'adresse réseau"
+        "copy": "Copier l'adresse réseau",
+        "soraAddress": "@:soraText adresse",
+        "ethereumAddress": "@:ethereumText adresse"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -952,5 +956,8 @@
         "header": "Téléchargez le portefeuille SORA avec les fonctionnalités <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Échangez des jetons de différents réseaux - SORA, Ethereum, Polkadot, Kusama. Fournissez un pool de liquidités et gagnez% des frais de change."
     },
-    "releaseNotesText": "Notes de version"
+    "releaseNotesText": "Notes de version",
+    "copiedText": "Copié!",
+    "copyWithValue": "Copier {value}",
+    "copiedWithValue": "{value} est copié!"
 }

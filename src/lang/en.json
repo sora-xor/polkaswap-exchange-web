@@ -15,9 +15,6 @@
     "searchText": "Search",
     "cancelText": "Cancel",
     "saveText": "Save",
-    "copiedText": "Copied!",
-    "copyWithValue": "Copy {value}",
-    "copiedWithValue": "{value} is copied!",
     "logoutText": "Log out",
     "sendText": "Send",
     "addressText": "Address",
@@ -114,9 +111,10 @@
         "addressError": "You cannot send tokens to the same account that you are currently connected to."
     },
     "account": {
-        "walletAddress": "Wallet address",
+        "successCopy": "Wallet address is copied to the clipboard",
         "copy": "Copy address",
-        "switch": "Switch account"
+        "switch": "Switch account",
+        "walletAddress": "Wallet address"
     },
     "history": {
         "clearHistory": "Clear history",
@@ -132,7 +130,6 @@
         "receive": "@:account.copy",
         "liquidity": "Add liquidity",
         "bridge": "Bridge",
-        "assetId": "Asset ID",
         "copy": "Copy Asset ID",
         "successCopy": "{symbol} Asset ID is copied to the clipboard",
         "copied": "Copied!",
@@ -145,7 +142,8 @@
             "bonded": "- Bonded"
         },
         "totalAssetsValue": "Your total assets value:",
-        "details": "Details"
+        "details": "Details",
+        "assetId": "Asset ID"
     },
     "asset": {
         "remove": "Remove asset",
@@ -524,8 +522,6 @@
         "info": "Convert tokens between the @:soraText and @:ethereumText networks.",
         "balance": "Balance",
         "connectWallet": "@:connectWalletText",
-        "soraAddress": "@:soraText address",
-        "ethereumAddress": "@:ethereumText address",
         "connected": "@:connectedText",
         "changeAccount": "@:changeAccountText",
         "changeNetwork": "@:changeNetworkText",
@@ -542,7 +538,10 @@
         "selectNetwork": "Select network",
         "networkInfo": "Bridge @:soraText Network with:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Copy network address",
+        "soraAddress": "@:soraText address",
+        "ethereumAddress": "@:ethereumText address"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -606,6 +605,7 @@
             "transactionFee": "Transaction Fee",
             "total": "Total"
         },
+        "successCopy": "Transaction hash is copied to the clipboard",
         "ethereum": "@:ethereumText",
         "sora": "@:soraText",
         "pending": "<span class=\"network-title\">{network}<\/span> transaction pending...",
@@ -637,6 +637,7 @@
         "searchPlaceholder": "Filter by Asset ID, Name or Ticker Symbol",
         "emptyListMessage": "No results",
         "copy": "Copy Asset ID",
+        "successCopy": "{symbol} Asset ID is copied to the clipboard",
         "assets": {
             "title": "Assets"
         },
@@ -909,6 +910,7 @@
         "transactionDetails": "Transaction Details",
         "receivedRewards": "Received rewards",
         "invitationLink": "Invitation link",
+        "successCopy": "Referral link is copied to the clipboard",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",
         "confirm": {
@@ -954,5 +956,8 @@
         "header": "Download SORA Wallet with <span class=\"popup-info__headline--highlight\">Polkaswap<\/span> features",
         "info": "Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees."
     },
-    "releaseNotesText": "Release notes"
+    "releaseNotesText": "Release notes",
+    "copiedText": "Copied!",
+    "copyWithValue": "Copy {value}",
+    "copiedWithValue": "{value} is copied!"
 }

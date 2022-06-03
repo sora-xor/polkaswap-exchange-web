@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "Địa chỉ ví được sao chép vào bảng tạm",
         "copy": "Sao chép địa chỉ",
-        "switch": "Chuyển đổi tài khoản"
+        "switch": "Chuyển đổi tài khoản",
+        "walletAddress": "Địa chỉ ví"
     },
     "history": {
         "clearHistory": "Xóa lịch sử",
@@ -141,7 +142,8 @@
             "bonded": "- Bonded"
         },
         "totalAssetsValue": "Tổng giá trị tài sản của bạn:",
-        "details": "Chi tiết"
+        "details": "Chi tiết",
+        "assetId": "ID tài sản"
     },
     "asset": {
         "remove": "Loại bỏ tài sản",
@@ -168,7 +170,7 @@
         "AddAssetNFT": {
             "title": "NFT"
         },
-        "searchInputText": "Tìm kiếm theo ID nội dung, tên hoặc ký hiệu mã"
+        "searchInputText": "Tìm kiếm theo ID, tên hoặc ký hiệu mã"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -537,7 +539,9 @@
         "networkInfo": "Cầu nối Mạng @:soraText với:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Sao chép địa chỉ mạng"
+        "copy": "Sao chép địa chỉ mạng",
+        "soraAddress": "@:soraText địa chỉ",
+        "ethereumAddress": "@:ethereumText địa chỉ"
     },
     "selectRegisteredAsset": {
         "title": "Chọn token",
@@ -952,5 +956,8 @@
         "header": "Tải xuống Ví SORA với các tính năng của <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Hoán đổi token từ các mạng khác nhau - SORA, Ethereum, Polkadot, Kusama. Cung cấp pool thanh khoản và kiếm % từ phí giao dịch."
     },
-    "releaseNotesText": "Ghi chú phát hành"
+    "releaseNotesText": "Ghi chú phát hành",
+    "copiedText": "Đã sao chép!",
+    "copyWithValue": "Sao chép {value}",
+    "copiedWithValue": "{value} được sao chép!"
 }

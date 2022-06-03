@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "Adresa novčanika kopira se u međuspremnik",
         "copy": "Kopirajte adresu",
-        "switch": "Promjenite račun"
+        "switch": "Promjenite račun",
+        "walletAddress": "Adresa novčanika"
     },
     "history": {
         "clearHistory": "Očistite povijest",
@@ -141,7 +142,8 @@
             "bonded": "- Vezano"
         },
         "totalAssetsValue": "Ukupna vrijednost vaše sredstvo:",
-        "details": "Pojedinosti"
+        "details": "Pojedinosti",
+        "assetId": "ID sredstva"
     },
     "asset": {
         "remove": "Uklonite sredstvo",
@@ -537,7 +539,9 @@
         "networkInfo": "Bridge @:soraText mrežna naknada s:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Kopiraj mrežnu adresu"
+        "copy": "Kopiraj mrežnu adresu",
+        "soraAddress": "@:soraText adresa",
+        "ethereumAddress": "@:ethereumText adresa"
     },
     "selectRegisteredAsset": {
         "title": "Odaberite token",
@@ -952,5 +956,8 @@
         "header": "Preuzmite SORA Novčanik sa značajkama <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Zamijenite tokene s različitih mreža - SORA, Ethereum, Polkadot, Kusama. Osigurajte fond likvidnosti i zaradite % od naknada za razmjenu."
     },
-    "releaseNotesText": "Bilješke o izdanju"
+    "releaseNotesText": "Bilješke o izdanju",
+    "copiedText": "Kopiran!",
+    "copyWithValue": "Kopiraj {value}",
+    "copiedWithValue": "{value} je kopirana!"
 }

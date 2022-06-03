@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "Адреса новчаника се копира у међуспремник",
         "copy": "Копирајте адресу",
-        "switch": "Промените рачун"
+        "switch": "Промените рачун",
+        "walletAddress": "Адреса новчаника"
     },
     "history": {
         "clearHistory": "Очистите историју",
@@ -141,7 +142,8 @@
             "bonded": "- Везанo"
         },
         "totalAssetsValue": "Укупна вредност средства:",
-        "details": "Детаљи"
+        "details": "Детаљи",
+        "assetId": "ИД средства"
     },
     "asset": {
         "remove": "Уклоните средство",
@@ -537,7 +539,9 @@
         "networkInfo": "Бриџ @:soraText мрежа са:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Копирајте мрежну адресу"
+        "copy": "Копирајте мрежну адресу",
+        "soraAddress": "@:soraText adresa",
+        "ethereumAddress": "@:ethereumText adresa"
     },
     "selectRegisteredAsset": {
         "title": "Изаберите токен",
@@ -952,5 +956,8 @@
         "header": "Преузмите СОРА новчаник са <span class=\"popup-info__headline--highlight\"> Полкасвап <\/span>",
         "info": "Замените токене са различитих мрежа - СОРА, Етхереум, Полкадот, Кусама. Обезбедите фонд ликвидности и зарадите % од провизија."
     },
-    "releaseNotesText": "Напомене о издању"
+    "releaseNotesText": "Напомене о издању",
+    "copiedText": "Копирано!",
+    "copyWithValue": "Копирај {value}",
+    "copiedWithValue": "{value} је копирана!"
 }

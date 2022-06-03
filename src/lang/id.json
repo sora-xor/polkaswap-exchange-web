@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "Alamat dompet disalin ke clipboard",
         "copy": "Salin alamat",
-        "switch": "Ganti akun"
+        "switch": "Ganti akun",
+        "walletAddress": "Alamat dompet"
     },
     "history": {
         "clearHistory": "Bersihkan riwayat",
@@ -141,7 +142,8 @@
             "bonded": "- Berikat"
         },
         "totalAssetsValue": "Nilai total aset Anda:",
-        "details": "Rincian"
+        "details": "Rincian",
+        "assetId": "ID Aset"
     },
     "asset": {
         "remove": "Hapus aset",
@@ -537,7 +539,9 @@
         "networkInfo": "Bridge Jaringan @:soraText dengan:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Salin alamat jaringan"
+        "copy": "Salin alamat jaringan",
+        "soraAddress": "@:soraText alamat",
+        "ethereumAddress": "@:ethereumText alamat"
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",
@@ -952,5 +956,8 @@
         "header": "Unduh SORA Wallet dengan fitur <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Tukar token dari jaringan yang berbeda - SORA, Ethereum, Polkadot, Kusama. Sediakan kumpulan likuiditas dan dapatkan % dari biaya pertukaran."
     },
-    "releaseNotesText": "Catatan rilis"
+    "releaseNotesText": "Catatan rilis",
+    "copiedText": "Disalin!",
+    "copyWithValue": "Salin {value}",
+    "copiedWithValue": "{value} disalin!"
 }

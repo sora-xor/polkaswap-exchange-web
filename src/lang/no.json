@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "Lommebokadressen kopieres til utklippstavlen",
         "copy": "Kopier adresse",
-        "switch": "Bytt konto"
+        "switch": "Bytt konto",
+        "walletAddress": "Lommebokadresse"
     },
     "history": {
         "clearHistory": "Slett historikk",
@@ -141,7 +142,8 @@
             "bonded": "- Bundet"
         },
         "totalAssetsValue": "Totalverdi aktiva:",
-        "details": "Detaljer"
+        "details": "Detaljer",
+        "assetId": "Aktivum ID"
     },
     "asset": {
         "remove": "Fjern aktiva",
@@ -537,7 +539,9 @@
         "networkInfo": "Bridge @:soraText Network med:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Kopier nettverksadressen"
+        "copy": "Kopier nettverksadressen",
+        "soraAddress": "@:soraText adresse",
+        "ethereumAddress": "@:ethereumText adresse"
     },
     "selectRegisteredAsset": {
         "title": "Velg token",
@@ -952,5 +956,8 @@
         "header": "Last ned SORA Wallet med <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funksjoner",
         "info": "Bytt ut tokens fra forskjellige nettverk - SORA, Ethereum, Polkadot, Kusama. Gi likviditetspool og tjen % fra vekslingsgebyrer."
     },
-    "releaseNotesText": "Utgivelsesnotater"
+    "releaseNotesText": "Utgivelsesnotater",
+    "copiedText": "Kopiert!",
+    "copyWithValue": "Kopier {value}",
+    "copiedWithValue": "{value} er kopiert!"
 }

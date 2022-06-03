@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "Адрес кошелька скопирован в буфер обмена",
         "copy": "Копировать адрес",
-        "switch": "Сменить аккаунт"
+        "switch": "Сменить аккаунт",
+        "walletAddress": "Адрес кошелька"
     },
     "history": {
         "clearHistory": "Очистить историю",
@@ -141,7 +142,8 @@
             "bonded": "- В обеспечении"
         },
         "totalAssetsValue": "Общая стоимость ваших активов:",
-        "details": "Детали"
+        "details": "Детали",
+        "assetId": "ID актива"
     },
     "asset": {
         "remove": "Удалить актив",
@@ -537,7 +539,9 @@
         "networkInfo": "Соединить @:soraText Сеть с:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Скопировать адрес сети"
+        "copy": "Скопировать адрес сети",
+        "soraAddress": "@:soraText адрес",
+        "ethereumAddress": "@:ethereumText адрес"
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
@@ -952,5 +956,8 @@
         "header": "Загрузите кошелек SORA с функциями <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Обмен токенами из разных сетей — SORA, Ethereum, Polkadot, Kusama. Обеспечьте пул ликвидности и зарабатывайте % от биржевых комиссий."
     },
-    "releaseNotesText": "О версии приложения"
+    "releaseNotesText": "О версии приложения",
+    "copiedText": "Скопировано!",
+    "copyWithValue": "Копировать {value}",
+    "copiedWithValue": "{value} скопировано!"
 }

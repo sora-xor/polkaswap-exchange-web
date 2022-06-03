@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "A tárca címe a vágólapra másolva",
         "copy": "Cím másolása",
-        "switch": "Fiókváltás"
+        "switch": "Fiókváltás",
+        "walletAddress": "Pénztárca címe"
     },
     "history": {
         "clearHistory": "Előzmények törlése",
@@ -141,7 +142,8 @@
             "bonded": "- lekötve"
         },
         "totalAssetsValue": "Az összes eszköz értéke:",
-        "details": "Részletek"
+        "details": "Részletek",
+        "assetId": "Eszköz azonosítója"
     },
     "asset": {
         "remove": "Eszköz eltávolítása",
@@ -537,7 +539,9 @@
         "networkInfo": "@:soraText hálózati híd a következőkkel:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Hálózati cím másolása"
+        "copy": "Hálózati cím másolása",
+        "soraAddress": "@:soraText cím",
+        "ethereumAddress": "@:ethereumText cím"
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",
@@ -952,5 +956,8 @@
         "header": "A SORA Wallet letöltése <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funkcióival",
         "info": "Cserélje ki a tokeneket különböző hálózatokból - SORA, Ethereum, Polkadot, Kusama. Biztosítson likviditási készletet, és keressen %-ot a cseredíjakból."
     },
-    "releaseNotesText": "Kiadási megjegyzések"
+    "releaseNotesText": "Kiadási megjegyzések",
+    "copiedText": "Másolva!",
+    "copyWithValue": "{value} másolása",
+    "copiedWithValue": "{value} átmásolva!"
 }
