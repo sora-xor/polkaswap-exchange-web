@@ -54,6 +54,9 @@ const actions = defineActions({
     commit.resetPoolsUpdates();
     commit.resetTokensUpdates();
     commit.resetAccountPoolsUpdates();
+    commit.setPools([]);
+    commit.setTokens([]);
+    commit.setAccountPools([]);
   },
 
   async depositLiquidity(context, params: DemeterLiquidityParams): Promise<void> {

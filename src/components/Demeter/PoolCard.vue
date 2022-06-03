@@ -44,15 +44,20 @@
       </template>
 
       <template #append>
-        <s-button
-          v-if="activeStatus"
-          type="primary"
-          class="s-typography-button--large action-button"
-          :disabled="depositDisabled"
-          @click="add"
-        >
-          {{ primaryButtonText }}
-        </s-button>
+        <template v-if="activeStatus">
+          <s-button
+            v-if="isLoggedIn"
+            type="primary"
+            class="s-typography-button--large action-button"
+            :disabled="depositDisabled"
+            @click="add"
+          >
+            {{ primaryButtonText }}
+          </s-button>
+          <s-button v-else type="primary" class="s-typography-button--large action-button" @click="handleConnectWallet">
+            {{ t('connectWalletText') }}
+          </s-button>
+        </template>
 
         <div class="demeter-pool-card-copyright">{{ t('demeterFarming.poweredBy') }}</div>
       </template>
@@ -68,8 +73,10 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import PoolInfoMixin from './mixins/PoolInfoMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
+import { getter } from '@/store/decorators';
+
+import router, { lazyComponent } from '@/router';
+import { Components, PageNames } from '@/consts';
 
 @Component({
   components: {
@@ -79,6 +86,8 @@ import { Components } from '@/consts';
 })
 export default class DemeterPoolCard extends Mixins(PoolInfoMixin, TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly border!: boolean;
+
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   get activeStatus(): boolean {
     return !this.pool.isRemoved;
@@ -115,6 +124,10 @@ export default class DemeterPoolCard extends Mixins(PoolInfoMixin, TranslationMi
 
   claim(): void {
     this.$emit('claim', this.emitParams);
+  }
+
+  handleConnectWallet(): void {
+    router.push({ name: PageNames.Wallet });
   }
 }
 </script>
