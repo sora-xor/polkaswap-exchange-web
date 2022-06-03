@@ -5,6 +5,7 @@ import type { Node } from '@/types/nodes';
 
 export type FeatureFlags = {
   moonpay?: boolean;
+  charts?: boolean;
 };
 
 export type SettingsState = {

@@ -1,208 +1,211 @@
 <template>
-  <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
-    <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
-      <status-action-badge>
-        <template #label>{{ t('marketText') }}:</template>
-        <template #value>{{ swapMarketAlgorithm }}</template>
-        <template #action>
+  <div class="swap-container">
+    <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
+      <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
+        <status-action-badge>
+          <template #label>{{ t('marketText') }}:</template>
+          <template #value>{{ swapMarketAlgorithm }}</template>
+          <template #action>
+            <s-button
+              class="el-button--settings"
+              type="action"
+              icon="basic-settings-24"
+              :disabled="!marketAlgorithmsAvailable"
+              @click="openSettingsDialog"
+            />
+          </template>
+        </status-action-badge>
+      </generic-page-header>
+      <s-float-input
+        class="s-input--token-value"
+        size="medium"
+        data-test-name="swapFrom"
+        :value="fromValue"
+        :decimals="tokenFromDecimals"
+        has-locale-string
+        :delimiters="delimiters"
+        :max="tokenFromMax"
+        @input="handleInputFieldFrom"
+        @focus="handleFocusField(false)"
+      >
+        <div slot="top" class="input-line">
+          <div class="input-title">
+            <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
+            <span
+              v-if="areTokensSelected && !isZeroToAmount && isExchangeB"
+              class="input-title--uppercase input-title--primary"
+            >
+              ({{ t('swap.estimated') }})
+            </span>
+          </div>
+          <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-value">
+            <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
+            <formatted-amount-with-fiat-value
+              value-can-be-hidden
+              with-left-shift
+              value-class="input-value--primary"
+              :value="formatBalance(tokenFrom)"
+              :fiat-value="getFiatBalance(tokenFrom)"
+            />
+          </div>
+        </div>
+        <div slot="right" class="s-flex el-buttons">
           <s-button
-            class="el-button--settings"
-            type="action"
-            icon="basic-settings-24"
-            :disabled="!marketAlgorithmsAvailable"
-            @click="openSettingsDialog"
+            v-if="tokenFrom && isMaxSwapAvailable"
+            class="el-button--max s-typography-button--small"
+            type="primary"
+            alternative
+            size="mini"
+            border-radius="mini"
+            @click="handleMaxValue"
+          >
+            {{ t('buttons.max') }}
+          </s-button>
+          <token-select-button
+            class="el-button--select-token"
+            data-test-name="selectToken"
+            icon="chevron-down-rounded-16"
+            :token="tokenFrom"
+            @click="openSelectTokenDialog(true)"
           />
+        </div>
+        <div slot="bottom" class="input-line input-line--footer">
+          <formatted-amount v-if="tokenFrom && tokenFromPrice" is-fiat-value :value="fromFiatAmount" />
+          <token-address
+            v-if="tokenFrom"
+            :name="tokenFrom.name"
+            :symbol="tokenFrom.symbol"
+            :address="tokenFrom.address"
+            class="input-value"
+          />
+        </div>
+      </s-float-input>
+      <s-button
+        class="el-button--switch-tokens"
+        data-test-name="switchToken"
+        type="action"
+        icon="arrows-swap-90-24"
+        :disabled="!areTokensSelected"
+        @click="handleSwitchTokens"
+      />
+      <s-float-input
+        class="s-input--token-value"
+        size="medium"
+        data-test-name="swapTo"
+        :value="toValue"
+        :decimals="tokenToDecimals"
+        has-locale-string
+        :delimiters="delimiters"
+        :max="tokenToMax"
+        @input="handleInputFieldTo"
+        @focus="handleFocusField(true)"
+      >
+        <div slot="top" class="input-line">
+          <div class="input-title">
+            <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
+            <span
+              v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB"
+              class="input-title--uppercase input-title--primary"
+            >
+              ({{ t('swap.estimated') }})
+            </span>
+          </div>
+          <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-value">
+            <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
+            <formatted-amount-with-fiat-value
+              value-can-be-hidden
+              with-left-shift
+              value-class="input-value--primary"
+              :value="formatBalance(tokenTo)"
+              :fiat-value="getFiatBalance(tokenTo)"
+            />
+          </div>
+        </div>
+        <div slot="right" class="s-flex el-buttons">
+          <token-select-button
+            class="el-button--select-token"
+            data-test-name="selectToken"
+            icon="chevron-down-rounded-16"
+            :token="tokenTo"
+            @click="openSelectTokenDialog(false)"
+          />
+        </div>
+        <div slot="bottom" class="input-line input-line--footer">
+          <div v-if="tokenTo && tokenToPrice" class="price-difference">
+            <formatted-amount is-fiat-value :value="toFiatAmount" />
+            <value-status-wrapper :value="fiatDifference" class="price-difference__value">
+              (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
+            </value-status-wrapper>
+          </div>
+          <token-address
+            v-if="tokenTo"
+            :name="tokenTo.name"
+            :symbol="tokenTo.symbol"
+            :address="tokenTo.address"
+            class="input-value"
+          />
+        </div>
+      </s-float-input>
+      <slippage-tolerance class="slippage-tolerance-settings" />
+      <s-button
+        v-if="!isLoggedIn"
+        type="primary"
+        class="action-button s-typography-button--large"
+        @click="handleConnectWallet"
+      >
+        {{ t('swap.connectWallet') }}
+      </s-button>
+      <s-button
+        v-else
+        class="action-button s-typography-button--large"
+        data-test-name="confirmSwap"
+        type="primary"
+        :disabled="isConfirmSwapDisabled"
+        :loading="isSelectAssetLoading"
+        @click="handleConfirmSwap"
+      >
+        <template v-if="!areTokensSelected">
+          {{ t('buttons.chooseTokens') }}
         </template>
-      </status-action-badge>
-    </generic-page-header>
-    <s-float-input
-      class="s-input--token-value"
-      size="medium"
-      data-test-name="swapFrom"
-      :value="fromValue"
-      :decimals="tokenFromDecimals"
-      has-locale-string
-      :delimiters="delimiters"
-      :max="tokenFromMax"
-      @input="handleInputFieldFrom"
-      @focus="handleFocusField(false)"
-    >
-      <div slot="top" class="input-line">
-        <div class="input-title">
-          <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
-          <span
-            v-if="areTokensSelected && !isZeroToAmount && isExchangeB"
-            class="input-title--uppercase input-title--primary"
-          >
-            ({{ t('swap.estimated') }})
-          </span>
-        </div>
-        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-value">
-          <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
-          <formatted-amount-with-fiat-value
-            value-can-be-hidden
-            with-left-shift
-            value-class="input-value--primary"
-            :value="formatBalance(tokenFrom)"
-            :fiat-value="getFiatBalance(tokenFrom)"
-          />
-        </div>
-      </div>
-      <div slot="right" class="s-flex el-buttons">
-        <s-button
-          v-if="tokenFrom && isMaxSwapAvailable"
-          class="el-button--max s-typography-button--small"
-          type="primary"
-          alternative
-          size="mini"
-          border-radius="mini"
-          @click="handleMaxValue"
-        >
-          {{ t('buttons.max') }}
-        </s-button>
-        <token-select-button
-          class="el-button--select-token"
-          data-test-name="selectToken"
-          icon="chevron-down-rounded-16"
-          :token="tokenFrom"
-          @click="openSelectTokenDialog(true)"
-        />
-      </div>
-      <div slot="bottom" class="input-line input-line--footer">
-        <formatted-amount v-if="tokenFrom && tokenFromPrice" is-fiat-value :value="fromFiatAmount" />
-        <token-address
-          v-if="tokenFrom"
-          :name="tokenFrom.name"
-          :symbol="tokenFrom.symbol"
-          :address="tokenFrom.address"
-          class="input-value"
-        />
-      </div>
-    </s-float-input>
-    <s-button
-      class="el-button--switch-tokens"
-      data-test-name="switchToken"
-      type="action"
-      icon="arrows-swap-90-24"
-      :disabled="!areTokensSelected"
-      @click="handleSwitchTokens"
-    />
-    <s-float-input
-      class="s-input--token-value"
-      size="medium"
-      data-test-name="swapTo"
-      :value="toValue"
-      :decimals="tokenToDecimals"
-      has-locale-string
-      :delimiters="delimiters"
-      :max="tokenToMax"
-      @input="handleInputFieldTo"
-      @focus="handleFocusField(true)"
-    >
-      <div slot="top" class="input-line">
-        <div class="input-title">
-          <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
-          <span
-            v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB"
-            class="input-title--uppercase input-title--primary"
-          >
-            ({{ t('swap.estimated') }})
-          </span>
-        </div>
-        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-value">
-          <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
-          <formatted-amount-with-fiat-value
-            value-can-be-hidden
-            with-left-shift
-            value-class="input-value--primary"
-            :value="formatBalance(tokenTo)"
-            :fiat-value="getFiatBalance(tokenTo)"
-          />
-        </div>
-      </div>
-      <div slot="right" class="s-flex el-buttons">
-        <token-select-button
-          class="el-button--select-token"
-          data-test-name="selectToken"
-          icon="chevron-down-rounded-16"
-          :token="tokenTo"
-          @click="openSelectTokenDialog(false)"
-        />
-      </div>
-      <div slot="bottom" class="input-line input-line--footer">
-        <div v-if="tokenTo && tokenToPrice" class="price-difference">
-          <formatted-amount is-fiat-value :value="toFiatAmount" />
-          <value-status-wrapper :value="fiatDifference" class="price-difference__value">
-            (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
-          </value-status-wrapper>
-        </div>
-        <token-address
-          v-if="tokenTo"
-          :name="tokenTo.name"
-          :symbol="tokenTo.symbol"
-          :address="tokenTo.address"
-          class="input-value"
-        />
-      </div>
-    </s-float-input>
-    <slippage-tolerance class="slippage-tolerance-settings" />
-    <s-button
-      v-if="!isLoggedIn"
-      type="primary"
-      class="action-button s-typography-button--large"
-      @click="handleConnectWallet"
-    >
-      {{ t('swap.connectWallet') }}
-    </s-button>
-    <s-button
-      v-else
-      class="action-button s-typography-button--large"
-      data-test-name="confirmSwap"
-      type="primary"
-      :disabled="isConfirmSwapDisabled"
-      :loading="isSelectAssetLoading"
-      @click="handleConfirmSwap"
-    >
-      <template v-if="!areTokensSelected">
-        {{ t('buttons.chooseTokens') }}
-      </template>
-      <template v-else-if="!isAvailable">
-        {{ t('swap.pairIsNotCreated') }}
-      </template>
-      <template v-else-if="areZeroAmounts">
-        {{ t('buttons.enterAmount') }}
-      </template>
-      <template v-else-if="isInsufficientLiquidity">
-        {{ t('swap.insufficientLiquidity') }}
-      </template>
-      <template v-else-if="isInsufficientBalance">
-        {{ t('exchange.insufficientBalance', { tokenSymbol: tokenFromSymbol }) }}
-      </template>
-      <template v-else-if="isInsufficientXorForFee">
-        {{ t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
-      </template>
-      <template v-else>
-        {{ t('exchange.Swap') }}
-      </template>
-    </s-button>
-    <swap-transaction-details
-      v-if="areTokensSelected && !hasZeroAmount"
-      class="info-line-container"
-      :info-only="false"
-    />
-    <select-token
-      :visible.sync="showSelectTokenDialog"
-      :connected="isLoggedIn"
-      :asset="isTokenFromSelected ? tokenTo : tokenFrom"
-      @select="selectToken"
-    />
-    <confirm-swap
-      :visible.sync="showConfirmSwapDialog"
-      :isInsufficientBalance="isInsufficientBalance"
-      @confirm="confirmSwap"
-    />
-    <settings-dialog :visible.sync="showSettings" />
-  </s-form>
+        <template v-else-if="!isAvailable">
+          {{ t('swap.pairIsNotCreated') }}
+        </template>
+        <template v-else-if="areZeroAmounts">
+          {{ t('buttons.enterAmount') }}
+        </template>
+        <template v-else-if="isInsufficientLiquidity">
+          {{ t('swap.insufficientLiquidity') }}
+        </template>
+        <template v-else-if="isInsufficientBalance">
+          {{ t('exchange.insufficientBalance', { tokenSymbol: tokenFromSymbol }) }}
+        </template>
+        <template v-else-if="isInsufficientXorForFee">
+          {{ t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
+        </template>
+        <template v-else>
+          {{ t('exchange.Swap') }}
+        </template>
+      </s-button>
+      <swap-transaction-details
+        v-if="areTokensSelected && !hasZeroAmount"
+        class="info-line-container"
+        :info-only="false"
+      />
+      <select-token
+        :visible.sync="showSelectTokenDialog"
+        :connected="isLoggedIn"
+        :asset="isTokenFromSelected ? tokenTo : tokenFrom"
+        @select="selectToken"
+      />
+      <confirm-swap
+        :visible.sync="showConfirmSwapDialog"
+        :isInsufficientBalance="isInsufficientBalance"
+        @confirm="confirmSwap"
+      />
+      <settings-dialog :visible.sync="showSettings" />
+    </s-form>
+    <template v-if="chartsEnabled">charts are enabled</template>
+  </div>
 </template>
 
 <script lang="ts">
@@ -269,6 +272,7 @@ export default class Swap extends Mixins(
   @getter.assets.xor private xor!: AccountAsset;
   @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
+  @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
