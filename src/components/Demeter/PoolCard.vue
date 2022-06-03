@@ -1,5 +1,5 @@
 <template>
-  <s-card class="demeter-pool-card">
+  <s-card :class="['demeter-pool-card', { border }]">
     <pool-info>
       <template #prepend>
         <div class="demeter-pool-card-status">
@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
 import PoolInfoMixin from './mixins/PoolInfoMixin';
@@ -78,6 +78,8 @@ import { Components } from '@/consts';
   },
 })
 export default class DemeterPoolCard extends Mixins(PoolInfoMixin, TranslationMixin) {
+  @Prop({ default: false, type: Boolean }) readonly border!: boolean;
+
   get activeStatus(): boolean {
     return !this.pool.isRemoved;
   }
@@ -120,9 +122,12 @@ export default class DemeterPoolCard extends Mixins(PoolInfoMixin, TranslationMi
 <style lang="scss">
 .demeter-pool-card.s-card.neumorphic {
   background: var(--s-color-base-on-accent);
-  border: 1px solid var(--s-color-theme-accent);
 
   @include full-width-button('action-button', 0);
+
+  &.border {
+    border: 1px solid var(--s-color-theme-accent);
+  }
 }
 </style>
 

@@ -761,4 +761,7 @@ export default {
     },
     poweredBy: 'Powered by Demeter Farming',
   },
+  staking: {
+    title: 'Staking',
+  },
 };

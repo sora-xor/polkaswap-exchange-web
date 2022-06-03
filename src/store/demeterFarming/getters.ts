@@ -5,21 +5,27 @@ import { demeterFarmingGetterContext } from './index';
 import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { DemeterFarmingState } from './types';
 
+const createPoolsMap = (pools: DemeterPool[], isFarm = true): DataMap<DemeterPool[]> => {
+  return pools.reduce((buffer, pool) => {
+    if (pool.isFarm !== isFarm) return buffer;
+
+    if (!buffer[pool.poolAsset]) buffer[pool.poolAsset] = [];
+    buffer[pool.poolAsset].push(pool);
+
+    return buffer;
+  }, {});
+};
+
 const getters = defineGetters<DemeterFarmingState>()({
   farmingPools(...args): DataMap<DemeterPool[]> {
     const { state } = demeterFarmingGetterContext(args);
 
-    return state.pools.reduce((buffer, pool) => {
-      if (!buffer[pool.poolAsset]) buffer[pool.poolAsset] = [];
-      buffer[pool.poolAsset].push(pool);
-
-      return buffer;
-    }, {});
+    return createPoolsMap(state.pools, true);
   },
-  stakingPools(...args): Array<DemeterPool> {
+  stakingPools(...args): DataMap<DemeterPool[]> {
     const { state } = demeterFarmingGetterContext(args);
 
-    return state.pools.filter((pool) => !pool.isFarm);
+    return createPoolsMap(state.pools, false);
   },
   accountFarmingPools(...args): Array<DemeterAccountPool> {
     const { state } = demeterFarmingGetterContext(args);

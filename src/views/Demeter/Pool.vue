@@ -19,6 +19,7 @@
           @add="changePoolStake($event, true)"
           @remove="changePoolStake($event, false)"
           @claim="claimPoolRewards"
+          border
           class="demeter-pool"
         />
       </template>

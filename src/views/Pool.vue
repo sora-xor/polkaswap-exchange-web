@@ -281,17 +281,6 @@ $pair-icon-height: 36px;
     & > .asset-logo {
       margin-right: $inner-spacing-mini;
     }
-    &--buttons {
-      display: flex;
-      justify-content: center;
-      margin-top: $inner-spacing-medium;
-      > * {
-        width: 50%;
-      }
-      .el-button + .el-button {
-        margin-left: $inner-spacing-small;
-      }
-    }
   }
 }
 </style>
