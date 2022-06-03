@@ -64,13 +64,11 @@ import { FPNumber } from '@sora-substrate/util';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
-import PoolInfoMixin from './PoolInfoMixin';
+import PoolInfoMixin from './mixins/PoolInfoMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-
-import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -93,24 +91,8 @@ export default class DemeterPoolCard extends Mixins(PoolInfoMixin, TranslationMi
     return this.t(`demeterFarming.actions.${this.hasStake ? 'add' : 'start'}`);
   }
 
-  get rewards(): FPNumber {
-    return this.accountPool?.rewards ?? FPNumber.ZERO;
-  }
-
-  get rewardsFormatted(): string {
-    return this.rewards.toLocaleString();
-  }
-
-  get rewardsFiat(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.rewards, this.rewardAsset as Asset);
-  }
-
   get depositDisabled(): boolean {
     return FPNumber.isGreaterThanOrEqualTo(this.poolShareStaked, FPNumber.HUNDRED);
-  }
-
-  get hasRewards(): boolean {
-    return !this.rewards.isZero();
   }
 
   get emitParams(): object {

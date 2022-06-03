@@ -59,7 +59,7 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 
-import PoolInfoMixin from './PoolInfoMixin';
+import PoolInfoMixin from './mixins/PoolInfoMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';

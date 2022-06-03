@@ -23,17 +23,18 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
   @action.demeterFarming.subscribeOnPools private subscribeOnPools!: AsyncVoidFn;
   @action.demeterFarming.subscribeOnTokens private subscribeOnTokens!: AsyncVoidFn;
   @action.demeterFarming.subscribeOnAccountPools private subscribeOnAccountPools!: AsyncVoidFn;
+  @action.demeterFarming.unsubscribeUpdates private unsubscribeDemeter!: AsyncVoidFn;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @Watch('isLoggedIn')
   @Watch('nodeIsConnected')
-  private async updateSubscriptions(value: boolean) {
+  private async updatePoolSubscriptions(value: boolean) {
     if (value) {
-      await this.updateLiquiditySubscription();
+      await this.updateSubscriptions();
     } else {
-      await this.unsubscribe();
+      await this.resetSubscriptions();
     }
   }
 
@@ -42,19 +43,19 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
   }
 
   async mounted(): Promise<void> {
-    await this.updateLiquiditySubscription();
+    await this.updateSubscriptions();
   }
 
   async beforeDestroy(): Promise<void> {
-    await this.unsubscribe();
+    await this.resetSubscriptions();
   }
 
   /**
    * Update liquidity subscriptions & necessary data
    * If this page is loaded first time by url, "watch" & "mounted" call this method
    */
-  private async updateLiquiditySubscription(): Promise<void> {
-    // return if updateLiquiditySubscription is already called by "watch" or "mounted"
+  private async updateSubscriptions(): Promise<void> {
+    // return if updateSubscription is already called by "watch" or "mounted"
     if (this.loading) return;
 
     await this.withLoading(async () => {
@@ -71,6 +72,11 @@ export default class PoolContainer extends Mixins(mixins.LoadingMixin) {
         await this.subscribeOnAccountPools();
       });
     });
+  }
+
+  private async resetSubscriptions(): Promise<void> {
+    await this.unsubscribe();
+    await this.unsubscribeDemeter();
   }
 }
 </script>

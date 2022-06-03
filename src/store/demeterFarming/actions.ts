@@ -48,6 +48,13 @@ const actions = defineActions({
     });
   },
 
+  unsubscribeUpdates(context): void {
+    const { commit } = demeterFarmingActionContext(context);
+    commit.resetPoolsUpdates();
+    commit.resetTokensUpdates();
+    commit.resetAccountPoolsUpdates();
+  },
+
   async depositLiquidity(context, params: DemeterLiquidityParams): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
 

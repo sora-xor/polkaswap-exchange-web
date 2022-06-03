@@ -9,7 +9,7 @@
           symbol-as-decimal
           :value="rewardsFormatted"
           :font-size-rate="FontSizeRate.SMALL"
-          :asset-symbol="rewardAsset.symbol"
+          :asset-symbol="rewardAssetSymbol"
           class="claim-dialog-value"
         />
         <formatted-amount
@@ -38,20 +38,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { Component, Mixins } from 'vue-property-decorator';
+import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 
-import { state, getter } from '@/store/decorators';
+import { state } from '@/store/decorators';
 
+import AccountPoolMixin from './mixins/AccountPoolMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
 import type { NetworkFeesObject } from '@sora-substrate/util';
-import type { DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -61,33 +60,13 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class ClaimDialog extends Mixins(mixins.FormattedAmountMixin, TranslationMixin, DialogMixin) {
+export default class ClaimDialog extends Mixins(AccountPoolMixin, TranslationMixin, DialogMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
-
-  @Prop({ default: () => null, type: Object }) readonly accountPool!: DemeterAccountPool;
 
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<Asset>;
-
   get xorSymbol(): string {
     return XOR.symbol;
-  }
-
-  get rewardAsset(): Nullable<Asset> {
-    return this.getAsset(this.accountPool?.rewardAsset);
-  }
-
-  get rewards(): FPNumber {
-    return this.accountPool?.rewards ?? FPNumber.ZERO;
-  }
-
-  get rewardsFormatted(): string {
-    return this.rewards.toLocaleString();
-  }
-
-  get rewardsFiat(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.rewards, this.rewardAsset as Asset);
   }
 
   get networkFee(): string {

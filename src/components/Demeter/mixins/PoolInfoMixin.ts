@@ -1,21 +1,17 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
 
-import { getter } from '@/store/decorators';
+import AccountPoolMixin from './AccountPoolMixin';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { DemeterAccountPool, DemeterPool } from '@sora-substrate/util/build/demeterFarming/types';
+import type { DemeterPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component
-export default class PoolInfoMixin extends Mixins(mixins.FormattedAmountMixin) {
+export default class PoolInfoMixin extends Mixins(AccountPoolMixin) {
   @Prop({ default: () => null, type: Object }) readonly liquidity!: AccountLiquidity;
   @Prop({ default: () => null, type: Object }) readonly pool!: DemeterPool;
-  @Prop({ default: () => null, type: Object }) readonly accountPool!: DemeterAccountPool;
-
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<Asset>;
 
   get hasStake(): boolean {
     return this.accountPool ? !this.accountPool.pooledTokens.isZero() : false;
@@ -27,14 +23,6 @@ export default class PoolInfoMixin extends Mixins(mixins.FormattedAmountMixin) {
 
   get poolAsset(): Nullable<Asset> {
     return this.getAsset(this.liquidity?.secondAddress);
-  }
-
-  get rewardAsset(): Nullable<Asset> {
-    return this.getAsset(this.pool?.rewardAsset);
-  }
-
-  get rewardAssetSymbol(): string {
-    return this.rewardAsset?.symbol ?? '';
   }
 
   get poolAssetPrice(): FPNumber {

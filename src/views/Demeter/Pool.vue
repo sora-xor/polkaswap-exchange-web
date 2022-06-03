@@ -1,6 +1,6 @@
 <template>
   <div>
-    <pool-base v-bind="$attrs" v-on="$listeners">
+    <pool-base v-bind="{ parentLoading, ...$attrs }" v-on="$listeners">
       <template #title-append="{ liquidity, activeCollapseItems }">
         <pool-status-badge
           v-if="poolStatusBadgeVisible(liquidity, activeCollapseItems)"
@@ -41,7 +41,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
-import router, { lazyView, lazyComponent } from '@/router';
+import { lazyView, lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
 import { action, state, getter } from '@/store/decorators';
 
@@ -50,6 +50,7 @@ import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component({
+  inheritAttrs: false,
   components: {
     PoolBase: lazyView(PageNames.Pool),
     PoolCard: lazyComponent(Components.PoolCard),
