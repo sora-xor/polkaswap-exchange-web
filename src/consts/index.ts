@@ -68,7 +68,7 @@ export const Languages = [
 
 export const Links = {
   about: {
-    sora: 'https://sora.org/',
+    sora: 'https://adar.com/',
     polkadot: 'https://medium.com/polkadot-network/polkadot-js-extension-release-update-3b0d2d87edb8',
   },
   nodes: {
@@ -252,10 +252,10 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
     icon: 'various-bone-24',
     title: PageNames.Tokens,
   },
-  {
-    icon: 'file-file-text-24',
-    title: PageNames.About,
-  },
+  // {
+  //   icon: 'file-file-text-24',
+  //   title: PageNames.About,
+  // },
 ];
 
 export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
