@@ -39,8 +39,15 @@
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
       :is-adding="isAddingStake"
+      @add="handleStakeAction($event, deposit)"
+      @remove="handleStakeAction($event, withdraw)"
     />
-    <claim-dialog :visible.sync="showClaimDialog" :pool="selectedPool" :account-pool="selectedAccountPool" />
+    <claim-dialog
+      :visible.sync="showClaimDialog"
+      :pool="selectedPool"
+      :account-pool="selectedAccountPool"
+      @confirm="handleClaimRewards"
+    />
   </div>
 </template>
 
@@ -53,13 +60,12 @@ import PageMixin from '@/components/Demeter/mixins/PageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 
-import router, { lazyComponent } from '@/router';
-import { Components, PageNames } from '@/consts';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 
-import { action, state, getter } from '@/store/decorators';
+import { action, getter } from '@/store/decorators';
 
-import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -97,16 +103,10 @@ export default class DemeterStaking extends Mixins(PageMixin, SubscriptionsMixin
     return Object.entries(this.pools).map(([address, pools]) => {
       const asset = this.getAsset(address);
       const symbol = asset?.symbol ?? this.t('pool.unknownAsset');
-      const items = pools.map((pool) => {
-        const accountPool = this.accountPools.find(
-          (accountPool) => accountPool.poolAsset === address && accountPool.rewardAsset === pool.rewardAsset
-        );
-
-        return {
-          pool,
-          accountPool,
-        };
-      });
+      const items = pools.map((pool) => ({
+        pool,
+        accountPool: this.getAccountPool(pool),
+      }));
 
       return {
         asset,

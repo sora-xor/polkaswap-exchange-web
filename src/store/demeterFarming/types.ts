@@ -9,8 +9,8 @@ import type {
 export type DemeterLiquidityParams = {
   pool: DemeterPool;
   accountPool: DemeterAccountPool;
-  liquidity: AccountLiquidity;
   value: number;
+  liquidity?: AccountLiquidity;
 };
 
 export type DemeterFarmingState = {

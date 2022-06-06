@@ -31,8 +31,8 @@
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
       :is-adding="isAddingStake"
-      @add="handleStakeAction($event, depositLiquidity)"
-      @remove="handleStakeAction($event, withdrawLiquidity)"
+      @add="handleStakeAction($event, deposit)"
+      @remove="handleStakeAction($event, withdraw)"
     />
     <claim-dialog
       :visible.sync="showClaimDialog"
@@ -51,11 +51,9 @@ import PageMixin from '@/components/Demeter/mixins/PageMixin';
 
 import { lazyView, lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
-import { action, state } from '@/store/decorators';
+import { state } from '@/store/decorators';
 
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-import type { DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
-import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component({
   inheritAttrs: false,
@@ -70,29 +68,8 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMixin) {
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
-  @action.demeterFarming.depositLiquidity depositLiquidity!: (params: DemeterLiquidityParams) => Promise<void>;
-  @action.demeterFarming.withdrawLiquidity withdrawLiquidity!: (params: DemeterLiquidityParams) => Promise<void>;
-  @action.demeterFarming.claimRewards private claimRewards!: (pool: DemeterAccountPool) => Promise<void>;
-
   get selectedAccountLiquidity(): Nullable<AccountLiquidity> {
     return this.accountLiquidity.find((liquidity) => liquidity.secondAddress === this.poolAsset) ?? null;
-  }
-
-  async handleStakeAction(
-    params: DemeterLiquidityParams,
-    action: (params: DemeterLiquidityParams) => Promise<void>
-  ): Promise<void> {
-    await this.withNotifications(async () => {
-      await action(params);
-      this.showStakeDialog = false;
-    });
-  }
-
-  async handleClaimRewards(pool: DemeterAccountPool): Promise<void> {
-    await this.withNotifications(async () => {
-      await this.claimRewards(pool);
-      this.showClaimDialog = false;
-    });
   }
 }
 </script>

@@ -7,6 +7,7 @@ import { demeterFarmingActionContext } from '@/store/demeterFarming';
 
 import type { DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 const actions = defineActions({
   async subscribeOnPools(context): Promise<void> {
@@ -59,7 +60,7 @@ const actions = defineActions({
     commit.setAccountPools([]);
   },
 
-  async depositLiquidity(context, params: DemeterLiquidityParams): Promise<void> {
+  async deposit(context, params: DemeterLiquidityParams): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
 
     const { poolAsset: poolAssetAddress, rewardAsset: rewardAssetAddress } = params.pool;
@@ -67,16 +68,23 @@ const actions = defineActions({
     const poolAsset = rootGetters.assets.assetsDataTable[poolAssetAddress];
     const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
 
-    const percent = new FPNumber(params.value).div(FPNumber.HUNDRED);
-    const pooledLP = params.accountPool?.pooledTokens ?? FPNumber.ZERO;
-    const liquidityLP = FPNumber.fromCodecValue(params.liquidity.balance);
-    const depositLP = liquidityLP.sub(pooledLP).mul(percent);
-    const amount = depositLP.toString();
+    const balanceAmount = params.liquidity
+      ? FPNumber.fromCodecValue(params.liquidity.balance)
+      : FPNumber.fromCodecValue(poolAsset.balance.transferable);
 
-    await api.demeterFarming.depositLiquidity(poolAsset, rewardAsset, amount);
+    const percent = new FPNumber(params.value).div(FPNumber.HUNDRED);
+    const pooledAmount = params.accountPool?.pooledTokens ?? FPNumber.ZERO;
+    const desiredAmount = balanceAmount.sub(pooledAmount).mul(percent);
+    const args: [Asset, Asset, string] = [poolAsset, rewardAsset, desiredAmount.toString()];
+
+    if (params.liquidity) {
+      await api.demeterFarming.depositLiquidity(...args);
+    } else {
+      await api.demeterFarming.stake(...args);
+    }
   },
 
-  async withdrawLiquidity(context, params: DemeterLiquidityParams): Promise<void> {
+  async withdraw(context, params: DemeterLiquidityParams): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
 
     const { poolAsset: poolAssetAddress, rewardAsset: rewardAssetAddress } = params.pool;
@@ -85,11 +93,15 @@ const actions = defineActions({
     const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
 
     const percent = new FPNumber(params.value).div(FPNumber.HUNDRED);
-    const pooledLP = params.accountPool?.pooledTokens ?? FPNumber.ZERO;
-    const withdrawLP = pooledLP.mul(percent);
-    const amount = withdrawLP.toString();
+    const pooledAmount = params.accountPool?.pooledTokens ?? FPNumber.ZERO;
+    const desiredAmount = pooledAmount.mul(percent);
+    const args: [Asset, Asset, string] = [poolAsset, rewardAsset, desiredAmount.toString()];
 
-    await api.demeterFarming.withdrawLiquidity(poolAsset, rewardAsset, amount);
+    if (params.liquidity) {
+      await api.demeterFarming.withdrawLiquidity(...args);
+    } else {
+      await api.demeterFarming.unstake(...args);
+    }
   },
 
   async claimRewards(context, pool: DemeterAccountPool): Promise<void> {

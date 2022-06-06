@@ -1,15 +1,21 @@
 import { Component, Mixins } from 'vue-property-decorator';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 
-import { getter } from '@/store/decorators';
+import { action, getter } from '@/store/decorators';
 
 import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 
+import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 @Component
-export default class PageMixin extends Mixins() {
+export default class PageMixin extends Mixins(mixins.TransactionMixin) {
   @getter.demeterFarming.farmingPools farmingPools!: DataMap<DemeterPool[]>;
-  @getter.demeterFarming.accountFarmingPools accountFarmingPools!: Array<DemeterAccountPool>;
   @getter.demeterFarming.stakingPools stakingPools!: DataMap<DemeterPool[]>;
-  @getter.demeterFarming.accountStakingPools accountStakingPools!: Array<DemeterAccountPool>;
+  @getter.demeterFarming.accountFarmingPools accountFarmingPools!: DataMap<DemeterAccountPool[]>;
+  @getter.demeterFarming.accountStakingPools accountStakingPools!: DataMap<DemeterAccountPool[]>;
+
+  @action.demeterFarming.deposit deposit!: (params: DemeterLiquidityParams) => Promise<void>;
+  @action.demeterFarming.withdraw withdraw!: (params: DemeterLiquidityParams) => Promise<void>;
+  @action.demeterFarming.claimRewards private claimRewards!: (pool: DemeterAccountPool) => Promise<void>;
 
   // override it for Staking page
   isFarmingPage = true;
@@ -26,7 +32,7 @@ export default class PageMixin extends Mixins() {
     return this.isFarmingPage ? this.farmingPools : this.stakingPools;
   }
 
-  get accountPools(): Array<DemeterAccountPool> {
+  get accountPools(): DataMap<DemeterAccountPool[]> {
     return this.isFarmingPage ? this.accountFarmingPools : this.accountStakingPools;
   }
 
@@ -43,9 +49,7 @@ export default class PageMixin extends Mixins() {
   }
 
   getAccountPool(pool: DemeterPool): Nullable<DemeterAccountPool> {
-    return this.accountPools.find(
-      (accountPool) => accountPool.poolAsset === pool.poolAsset && accountPool.rewardAsset === pool.rewardAsset
-    );
+    return this.accountPools[pool.poolAsset]?.find((accountPool) => accountPool.rewardAsset === pool.rewardAsset);
   }
 
   hasActivePools(address: string): boolean {
@@ -53,9 +57,8 @@ export default class PageMixin extends Mixins() {
   }
 
   hasAccountPoolsForPoolAsset(address: string): boolean {
-    return this.accountPools.some(
-      (accountPool) =>
-        accountPool.poolAsset === address && (!accountPool.pooledTokens.isZero() || !accountPool.rewards.isZero)
+    return this.accountPools[address]?.some(
+      (accountPool) => !accountPool.pooledTokens.isZero() || !accountPool.rewards.isZero
     );
   }
 
@@ -81,5 +84,22 @@ export default class PageMixin extends Mixins() {
   private setDialogParams({ poolAsset, rewardAsset }: { poolAsset: string; rewardAsset: string }) {
     this.poolAsset = poolAsset;
     this.rewardAsset = rewardAsset;
+  }
+
+  async handleStakeAction(
+    params: DemeterLiquidityParams,
+    action: (params: DemeterLiquidityParams) => Promise<void>
+  ): Promise<void> {
+    await this.withNotifications(async () => {
+      await action(params);
+      this.showStakeDialog = false;
+    });
+  }
+
+  async handleClaimRewards(pool: DemeterAccountPool): Promise<void> {
+    await this.withNotifications(async () => {
+      await this.claimRewards(pool);
+      this.showClaimDialog = false;
+    });
   }
 }
