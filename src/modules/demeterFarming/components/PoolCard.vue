@@ -77,6 +77,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
 import PoolMixin from '../mixins/PoolMixin';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter } from '@/store/decorators';

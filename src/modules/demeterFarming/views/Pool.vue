@@ -47,10 +47,14 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
-import PageMixin from '@/components/Demeter/mixins/PageMixin';
+import PageMixin from '../mixins/PageMixin';
+
+import { demeterLazyComponent } from '../router';
+import { DemeterComponents } from '../consts';
 
 import { lazyView, lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
+
 import { state } from '@/store/decorators';
 
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
@@ -59,10 +63,10 @@ import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types'
   inheritAttrs: false,
   components: {
     PoolBase: lazyView(PageNames.Pool),
-    PoolCard: lazyComponent(Components.PoolCard),
-    PoolStatusBadge: lazyComponent(Components.PoolStatusBadge),
-    StakeDialog: lazyComponent(Components.DemeterStakeDialog),
-    ClaimDialog: lazyComponent(Components.DemeterClaimDialog),
+    PoolCard: demeterLazyComponent(DemeterComponents.PoolCard),
+    PoolStatusBadge: demeterLazyComponent(DemeterComponents.PoolStatusBadge),
+    StakeDialog: demeterLazyComponent(DemeterComponents.StakeDialog),
+    ClaimDialog: demeterLazyComponent(DemeterComponents.ClaimDialog),
   },
 })
 export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMixin) {

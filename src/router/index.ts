@@ -4,6 +4,9 @@ import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { api } from '@sora-substrate/util';
 
 import { PageNames, BridgeChildPages } from '@/consts';
+import { DemeterPageNames } from '@/modules/demeterFarming/consts';
+import { demeterLazyView } from '@/modules/demeterFarming/router';
+
 import store from '@/store';
 
 Vue.use(VueRouter);
@@ -72,16 +75,17 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/pool',
+    name: PageNames.PoolContainer,
     component: lazyView(PageNames.PoolContainer),
     children: [
       {
         path: '',
-        component: lazyView(PageNames.DemeterDataContainer),
+        component: demeterLazyView(DemeterPageNames.DataContainer),
         children: [
           {
             path: '',
-            name: PageNames.Pool,
-            component: lazyView(PageNames.DemeterPool),
+            name: DemeterPageNames.Pool,
+            component: demeterLazyView(DemeterPageNames.Pool),
           },
           {
             path: 'create-pair',
@@ -109,16 +113,16 @@ const routes: Array<RouteConfig> = [
     path: '/staking',
     name: PageNames.StakingContainer,
     component: lazyView(PageNames.StakingContainer),
-    redirect: { name: PageNames.DemeterStaking },
+    redirect: { name: DemeterPageNames.Staking },
     children: [
       {
         path: 'demeter',
-        component: lazyView(PageNames.DemeterDataContainer),
+        component: demeterLazyView(DemeterPageNames.DataContainer),
         children: [
           {
             path: '',
-            name: PageNames.DemeterStaking,
-            component: lazyView(PageNames.DemeterStaking),
+            name: DemeterPageNames.Staking,
+            component: demeterLazyView(DemeterPageNames.Staking),
           },
         ],
       },

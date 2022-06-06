@@ -112,7 +112,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     if (RewardsChildPages.includes(router.currentRoute.name as PageNames)) {
       return PageNames.Rewards;
     }
-    if (StakingChildPages.includes(router.currentRoute.name as PageNames)) {
+    if (StakingChildPages.includes(router.currentRoute.name as any)) {
       return PageNames.StakingContainer;
     }
     return router.currentRoute.name as string;

@@ -55,7 +55,9 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
-import PageMixin from '@/components/Demeter/mixins/PageMixin';
+import PageMixin from '../mixins/PageMixin';
+import { demeterLazyComponent } from '../router';
+import { DemeterComponents } from '../consts';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -69,10 +71,10 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    PoolCard: lazyComponent(Components.PoolCard),
-    PoolStatusBadge: lazyComponent(Components.PoolStatusBadge),
-    StakeDialog: lazyComponent(Components.DemeterStakeDialog),
-    ClaimDialog: lazyComponent(Components.DemeterClaimDialog),
+    PoolCard: demeterLazyComponent(DemeterComponents.PoolCard),
+    PoolStatusBadge: demeterLazyComponent(DemeterComponents.PoolStatusBadge),
+    StakeDialog: demeterLazyComponent(DemeterComponents.StakeDialog),
+    ClaimDialog: demeterLazyComponent(DemeterComponents.ClaimDialog),
     TokenLogo: components.TokenLogo,
   },
 })

@@ -2,6 +2,8 @@ import invert from 'lodash/fp/invert';
 import { KnownAssets, KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
+import { DemeterPageNames } from '@/modules/demeterFarming/consts';
+
 import pkg from '../../package.json';
 import { KnownBridgeAsset } from '../utils/ethers-util';
 
@@ -130,10 +132,6 @@ export enum PageNames {
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
   StakingContainer = 'StakingContainer',
-  // Demeter
-  DemeterPool = 'Demeter/Pool',
-  DemeterStaking = 'Demeter/Staking',
-  DemeterDataContainer = 'Demeter/DataContainer',
 }
 
 export enum Components {
@@ -196,11 +194,6 @@ export enum Components {
   MobilePopup = 'MobilePopup/MobilePopup',
   // Pool
   PoolInfo = 'Pool/PoolInfo',
-  // Demeter
-  PoolStatusBadge = 'Demeter/components/PoolStatusBadge',
-  PoolCard = 'Demeter/components/PoolCard',
-  DemeterStakeDialog = 'Demeter/components/StakeDialog',
-  DemeterClaimDialog = 'Demeter/components/ClaimDialog',
 }
 
 export enum RewardsTabsItems {
@@ -314,7 +307,8 @@ export const RewardsChildPages = [
   PageNames.ReferralBonding,
   PageNames.ReferralUnbonding,
 ];
-export const StakingChildPages = [PageNames.DemeterStaking];
+
+export const StakingChildPages = [DemeterPageNames.Staking];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',
