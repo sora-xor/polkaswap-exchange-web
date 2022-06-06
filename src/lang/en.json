@@ -962,16 +962,17 @@
             "stopped": "Staking stopped"
         },
         "info": {
-            "totalLiquidityLocked": "Total liquidity locked",
-            "rewardToken": "Reward token",
-            "rewardEarned": "{symbol} earned",
+            "earned": "{symbol} earned",
+            "fee": "Fee",
+            "owned": "{symbol} you own",
             "poolShareStaked": "Your pool share staked",
             "poolShareStakedWillBe": "Your pool share staked will be",
-            "fee": "Fee"
+            "rewardToken": "Reward token",
+            "totalLiquidityLocked": "Total liquidity locked"
         },
         "actions": {
-            "claim": "Claim rewards",
             "add": "Stake more",
+            "claim": "Claim rewards",
             "remove": "Remove stake",
             "start": "Start staking"
         },

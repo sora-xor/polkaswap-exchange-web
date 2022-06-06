@@ -3,9 +3,9 @@
     <pool-base v-bind="{ parentLoading, ...$attrs }" v-on="$listeners">
       <template #title-append="{ liquidity, activeCollapseItems }">
         <pool-status-badge
-          v-if="poolStatusBadgeVisible(liquidity, activeCollapseItems)"
-          :active="hasActiveFarmingPools(liquidity)"
-          :has-stake="!!accountFarmingPoolsForLiquidity(liquidity).length"
+          v-if="getStatusBadgeVisibility(liquidity.secondAddress, activeCollapseItems)"
+          :active="hasActivePools(liquidity.secondAddress)"
+          :has-stake="hasAccountPoolsForPoolAsset(liquidity.secondAddress)"
           class="farming-pool-badge"
         />
       </template>
@@ -76,26 +76,6 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
 
   get selectedAccountLiquidity(): Nullable<AccountLiquidity> {
     return this.accountLiquidity.find((liquidity) => liquidity.secondAddress === this.poolAsset) ?? null;
-  }
-
-  poolStatusBadgeVisible(liquidity: AccountLiquidity, activeCollapseItems: string[]): boolean {
-    const isClosedCollapseItem = !activeCollapseItems.includes(liquidity.address);
-    const hasActiveFarmingPools = this.hasActiveFarmingPools(liquidity);
-    const hasAccountFarmingPools = !!this.accountFarmingPoolsForLiquidity(liquidity).length;
-
-    return isClosedCollapseItem && (hasActiveFarmingPools || hasAccountFarmingPools);
-  }
-
-  hasActiveFarmingPools(liquidity: AccountLiquidity): boolean {
-    return this.pools[liquidity.secondAddress]?.some((pool) => !pool.isRemoved);
-  }
-
-  accountFarmingPoolsForLiquidity(liquidity: AccountLiquidity): Array<DemeterAccountPool> {
-    return this.accountPools.filter(
-      (accountPool) =>
-        accountPool.poolAsset === liquidity.secondAddress &&
-        (!accountPool.pooledTokens.isZero() || !accountPool.rewards.isZero)
-    );
   }
 
   async handleStakeAction(

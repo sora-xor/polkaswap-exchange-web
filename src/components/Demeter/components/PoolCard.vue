@@ -13,6 +13,12 @@
         </div>
       </template>
 
+      <info-line
+        v-if="isLoggedIn && showBalance"
+        value-can-be-hidden
+        :label="t('demeterFarming.info.owned', { symbol: poolAssetSymbol })"
+        :value="poolAssetBalanceFormatted"
+      />
       <info-line label="APR" value="100%" />
       <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvlFormatted" />
       <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
@@ -20,7 +26,7 @@
       <info-line
         v-if="hasStake || hasRewards"
         value-can-be-hidden
-        :label="t('demeterFarming.info.rewardEarned', { symbol: rewardAssetSymbol })"
+        :label="t('demeterFarming.info.earned', { symbol: rewardAssetSymbol })"
         :value="rewardsFormatted"
         :fiat-value="rewardsFiat"
       />
@@ -86,6 +92,7 @@ import { Components, PageNames } from '@/consts';
 })
 export default class DemeterPoolCard extends Mixins(PoolMixin, TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly border!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly showBalance!: boolean;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 

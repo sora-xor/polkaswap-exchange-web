@@ -23,6 +23,10 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
     return this.getAsset(this.pool?.poolAsset);
   }
 
+  get poolAssetSymbol(): string {
+    return this.poolAsset?.symbol ?? '';
+  }
+
   get poolAssetPrice(): FPNumber {
     return this.poolAsset ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.poolAsset) ?? 0) : FPNumber.ZERO;
   }
@@ -37,6 +41,10 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
 
   get poolAssetBalance(): FPNumber {
     return FPNumber.fromCodecValue(this.poolAsset?.balance?.total ?? 0, this.poolAsset?.decimals);
+  }
+
+  get poolAssetBalanceFormatted(): string {
+    return this.poolAssetBalance.toLocaleString();
   }
 
   get feePercent(): string {

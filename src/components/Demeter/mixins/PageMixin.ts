@@ -11,8 +11,8 @@ export default class PageMixin extends Mixins() {
   @getter.demeterFarming.stakingPools stakingPools!: DataMap<DemeterPool[]>;
   @getter.demeterFarming.accountStakingPools accountStakingPools!: Array<DemeterAccountPool>;
 
-  // override it for staking
-  isFarming = true;
+  // override it for Staking page
+  isFarmingPage = true;
 
   showStakeDialog = false;
   showClaimDialog = false;
@@ -23,11 +23,11 @@ export default class PageMixin extends Mixins() {
   isAddingStake = true;
 
   get pools(): DataMap<DemeterPool[]> {
-    return this.isFarming ? this.farmingPools : this.stakingPools;
+    return this.isFarmingPage ? this.farmingPools : this.stakingPools;
   }
 
   get accountPools(): Array<DemeterAccountPool> {
-    return this.isFarming ? this.accountFarmingPools : this.accountStakingPools;
+    return this.isFarmingPage ? this.accountFarmingPools : this.accountStakingPools;
   }
 
   get selectedPool(): Nullable<DemeterPool> {
@@ -46,6 +46,25 @@ export default class PageMixin extends Mixins() {
     return this.accountPools.find(
       (accountPool) => accountPool.poolAsset === pool.poolAsset && accountPool.rewardAsset === pool.rewardAsset
     );
+  }
+
+  hasActivePools(address: string): boolean {
+    return this.pools[address]?.some((pool) => !pool.isRemoved);
+  }
+
+  hasAccountPoolsForPoolAsset(address: string): boolean {
+    return this.accountPools.some(
+      (accountPool) =>
+        accountPool.poolAsset === address && (!accountPool.pooledTokens.isZero() || !accountPool.rewards.isZero)
+    );
+  }
+
+  getStatusBadgeVisibility(address: string, activeCollapseItems: string[]): boolean {
+    const isClosedCollapseItem = !activeCollapseItems.includes(address);
+    const hasActivePools = this.hasActivePools(address);
+    const hasAccountPools = this.hasAccountPoolsForPoolAsset(address);
+
+    return isClosedCollapseItem && (hasActivePools || hasAccountPools);
   }
 
   changePoolStake(params: { poolAsset: string; rewardAsset: string }, isAddingStake = true) {

@@ -2,7 +2,7 @@
   <div class="demeter-staking">
     <generic-page-header :title="t('staking.title')" :tooltip="t('pool.description')" />
 
-    <s-collapse class="demeter-staking-list">
+    <s-collapse class="demeter-staking-list" @change="updateActiveCollapseItems">
       <s-collapse-item v-for="token of tokensData" :key="token.address" :name="token.address" class="staking-info">
         <template #title>
           <div class="staking-info-title">
@@ -11,7 +11,12 @@
               <h3>{{ token.symbol }}</h3>
             </div>
 
-            <pool-status-badge :active="token.active" :has-stake="token.hasStake" class="staking-info-title__badge" />
+            <pool-status-badge
+              v-if="getStatusBadgeVisibility(token.address, activeCollapseItems)"
+              :active="hasActivePools(token.address)"
+              :has-stake="hasAccountPoolsForPoolAsset(token.address)"
+              class="staking-info-title__badge"
+            />
           </div>
         </template>
 
@@ -23,6 +28,7 @@
           @add="changePoolStake($event, true)"
           @remove="changePoolStake($event, false)"
           @claim="claimPoolRewards"
+          show-balance
           class="staking-info-card"
         />
       </s-collapse-item>
@@ -74,7 +80,13 @@ export default class DemeterStaking extends Mixins(PageMixin, SubscriptionsMixin
   @action.demeterFarming.unsubscribeUpdates private unsubscribeDemeter!: AsyncVoidFn;
 
   // override PageMixin
-  isFarming = false;
+  isFarmingPage = false;
+
+  activeCollapseItems: string[] = [];
+
+  updateActiveCollapseItems(items: string[]) {
+    this.activeCollapseItems = items;
+  }
 
   created(): void {
     this.setStartSubscriptions([this.subscribeOnPools, this.subscribeOnTokens, this.subscribeOnAccountPools]);
@@ -95,17 +107,11 @@ export default class DemeterStaking extends Mixins(PageMixin, SubscriptionsMixin
           accountPool,
         };
       });
-      const active = items.some((item) => !item.pool.isRemoved);
-      const hasStake = items.some(
-        (item) => !!item.accountPool && (!item.accountPool.pooledTokens.isZero() || !item.accountPool.rewards.isZero())
-      );
 
       return {
         asset,
         symbol,
         address,
-        active,
-        hasStake,
         items,
       };
     });
