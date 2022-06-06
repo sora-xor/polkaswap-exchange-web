@@ -110,21 +110,25 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
       (this.pool.isFarm ? this.tokenInfo?.farmsAllocation : this.tokenInfo?.stakingAllocation) ?? FPNumber.ZERO;
     const tokenPerBlock = this.tokenInfo?.tokenPerBlock ?? FPNumber.ZERO;
     const blocksPerYear = new FPNumber(5_256_000);
-    const multiplierPercent = new FPNumber(this.pool.multiplier);
+    const poolMultiplier = new FPNumber(this.pool.multiplier);
+    const tokenMultiplier = new FPNumber(
+      (this.pool.isFarm ? this.tokenInfo?.farmsTotalMultiplier : this.tokenInfo?.stakingTotalMultiplier) ?? 0
+    );
+    const multiplier = poolMultiplier.div(tokenMultiplier);
     const rewardTokenPrice = this.rewardAssetPrice;
-    // only staking
+    // calc only for staking now
     const liquidityInPool = this.pool.totalTokensInPool.mul(this.poolAssetPrice);
 
     return allocation
       .mul(tokenPerBlock)
       .mul(blocksPerYear)
-      .mul(multiplierPercent)
+      .mul(multiplier)
       .mul(rewardTokenPrice)
       .div(liquidityInPool)
       .mul(FPNumber.HUNDRED);
   }
 
   get aprFormatted(): string {
-    return this.apr.dp(2).toLocaleString() + '%';
+    return this.apr.toFixed(2) + '%';
   }
 }
