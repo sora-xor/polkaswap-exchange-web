@@ -76,26 +76,32 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: '',
-        name: PageNames.Pool,
-        component: lazyView(PageNames.DemeterPool),
-      },
-      {
-        path: 'create-pair',
-        name: PageNames.CreatePair,
-        component: lazyView(PageNames.CreatePair),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'add/:firstAddress?/:secondAddress?',
-        name: PageNames.AddLiquidity,
-        component: lazyView(PageNames.AddLiquidity),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'remove/:firstAddress/:secondAddress',
-        name: PageNames.RemoveLiquidity,
-        component: lazyView(PageNames.RemoveLiquidity),
-        meta: { requiresAuth: true },
+        component: lazyView(PageNames.DemeterDataContainer),
+        children: [
+          {
+            path: '',
+            name: PageNames.Pool,
+            component: lazyView(PageNames.DemeterPool),
+          },
+          {
+            path: 'create-pair',
+            name: PageNames.CreatePair,
+            component: lazyView(PageNames.CreatePair),
+            meta: { requiresAuth: true },
+          },
+          {
+            path: 'add/:firstAddress?/:secondAddress?',
+            name: PageNames.AddLiquidity,
+            component: lazyView(PageNames.AddLiquidity),
+            meta: { requiresAuth: true },
+          },
+          {
+            path: 'remove/:firstAddress/:secondAddress',
+            name: PageNames.RemoveLiquidity,
+            component: lazyView(PageNames.RemoveLiquidity),
+            meta: { requiresAuth: true },
+          },
+        ],
       },
     ],
   },
@@ -107,8 +113,14 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: 'demeter',
-        name: PageNames.DemeterStaking,
-        component: lazyView(PageNames.DemeterStaking),
+        component: lazyView(PageNames.DemeterDataContainer),
+        children: [
+          {
+            path: '',
+            name: PageNames.DemeterStaking,
+            component: lazyView(PageNames.DemeterStaking),
+          },
+        ],
       },
     ],
   },

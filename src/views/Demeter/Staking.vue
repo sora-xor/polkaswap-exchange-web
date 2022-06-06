@@ -1,5 +1,5 @@
 <template>
-  <div class="demeter-staking">
+  <div class="container" v-loading="parentLoading">
     <generic-page-header :title="t('staking.title')" :tooltip="t('pool.description')" />
 
     <s-collapse class="demeter-staking-list" @change="updateActiveCollapseItems">
@@ -58,12 +58,11 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import PageMixin from '@/components/Demeter/mixins/PageMixin';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
-import { action, getter } from '@/store/decorators';
+import { getter } from '@/store/decorators';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
@@ -77,13 +76,8 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class DemeterStaking extends Mixins(PageMixin, SubscriptionsMixin, TranslationMixin) {
+export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) {
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<Asset>;
-
-  @action.demeterFarming.subscribeOnPools private subscribeOnPools!: AsyncVoidFn;
-  @action.demeterFarming.subscribeOnTokens private subscribeOnTokens!: AsyncVoidFn;
-  @action.demeterFarming.subscribeOnAccountPools private subscribeOnAccountPools!: AsyncVoidFn;
-  @action.demeterFarming.unsubscribeUpdates private unsubscribeDemeter!: AsyncVoidFn;
 
   // override PageMixin
   isFarmingPage = false;
@@ -92,11 +86,6 @@ export default class DemeterStaking extends Mixins(PageMixin, SubscriptionsMixin
 
   updateActiveCollapseItems(items: string[]) {
     this.activeCollapseItems = items;
-  }
-
-  created(): void {
-    this.setStartSubscriptions([this.subscribeOnPools, this.subscribeOnTokens, this.subscribeOnAccountPools]);
-    this.setResetSubscriptions([this.unsubscribeDemeter]);
   }
 
   get tokensData(): object {
@@ -131,6 +120,10 @@ export default class DemeterStaking extends Mixins(PageMixin, SubscriptionsMixin
 </style>
 
 <style lang="scss" scoped>
+.demeter-staking {
+  height: 100%;
+}
+
 .staking-info {
   &-title {
     display: flex;

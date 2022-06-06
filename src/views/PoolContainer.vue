@@ -1,7 +1,7 @@
 <template>
   <router-view
     v-bind="{
-      parentLoading: poolLoading,
+      parentLoading: subscriptionsDataLoading,
       ...$attrs,
     }"
     v-on="$listeners"
@@ -17,28 +17,13 @@ import { action } from '@/store/decorators';
 
 @Component
 export default class PoolContainer extends Mixins(SubscriptionsMixin) {
-  @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncVoidFn;
-  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncVoidFn;
+  @action.pool.subscribeOnAccountLiquidityList private subscribeOnList!: AsyncVoidFn;
+  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnUpdates!: AsyncVoidFn;
   @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribe!: AsyncVoidFn;
 
-  @action.demeterFarming.subscribeOnPools private subscribeOnPools!: AsyncVoidFn;
-  @action.demeterFarming.subscribeOnTokens private subscribeOnTokens!: AsyncVoidFn;
-  @action.demeterFarming.subscribeOnAccountPools private subscribeOnAccountPools!: AsyncVoidFn;
-  @action.demeterFarming.unsubscribeUpdates private unsubscribeDemeter!: AsyncVoidFn;
-
-  get poolLoading(): boolean {
-    return this.parentLoading || this.loading;
-  }
-
   created(): void {
-    this.setStartSubscriptions([
-      this.subscribeOnAccountLiquidityUpdates,
-      this.subscribeOnAccountLiquidityList,
-      this.subscribeOnPools,
-      this.subscribeOnTokens,
-      this.subscribeOnAccountPools,
-    ]);
-    this.setResetSubscriptions([this.unsubscribe, this.unsubscribeDemeter]);
+    this.setStartSubscriptions([this.subscribeOnList, this.subscribeOnUpdates]);
+    this.setResetSubscriptions([this.unsubscribe]);
   }
 }
 </script>

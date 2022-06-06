@@ -1,7 +1,5 @@
 <template>
-  <div class="container">
-    <router-view v-bind="$attrs" v-on="$listeners" />
-  </div>
+  <router-view v-bind="$attrs" v-on="$listeners" />
 </template>
 
 <script lang="ts">

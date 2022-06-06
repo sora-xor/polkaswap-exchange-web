@@ -21,6 +21,10 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
     }
   }
 
+  get subscriptionsDataLoading(): boolean {
+    return this.parentLoading || this.loading;
+  }
+
   async mounted(): Promise<void> {
     await this.updateSubscriptions();
   }

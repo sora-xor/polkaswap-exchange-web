@@ -133,6 +133,7 @@ export enum PageNames {
   // Demeter
   DemeterPool = 'Demeter/Pool',
   DemeterStaking = 'Demeter/Staking',
+  DemeterDataContainer = 'Demeter/DataContainer',
 }
 
 export enum Components {
