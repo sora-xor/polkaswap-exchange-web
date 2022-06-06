@@ -19,7 +19,7 @@
         :label="t('demeterFarming.info.owned', { symbol: poolAssetSymbol })"
         :value="poolAssetBalanceFormatted"
       />
-      <info-line label="APR" value="100%" />
+      <info-line label="APR" :value="aprFormatted" />
       <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvlFormatted" />
       <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
 

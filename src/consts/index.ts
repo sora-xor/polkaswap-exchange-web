@@ -221,7 +221,7 @@ const MainMenu: Array<SidebarMenuItem> = [
     title: PageNames.Pool,
   },
   {
-    icon: 'various-pocket-24',
+    icon: 'various-bone-24',
     title: PageNames.StakingContainer,
   },
   {

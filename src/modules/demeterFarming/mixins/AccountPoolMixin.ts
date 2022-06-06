@@ -53,6 +53,10 @@ export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin
     return this.rewards.toLocaleString();
   }
 
+  get rewardAssetPrice(): FPNumber {
+    return this.rewardAsset ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.rewardAsset) ?? 0) : FPNumber.ZERO;
+  }
+
   get rewardsFiat(): Nullable<string> {
     return this.getFiatAmountByFPNumber(this.rewards, this.rewardAsset as Asset);
   }
