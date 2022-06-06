@@ -5,7 +5,7 @@ export enum DemeterPageNames {
 }
 
 export enum DemeterComponents {
-  PoolStatusBadge = 'PoolStatusBadge',
+  StatusBadge = 'StatusBadge',
   PoolCard = 'PoolCard',
   StakeDialog = 'StakeDialog',
   ClaimDialog = 'ClaimDialog',

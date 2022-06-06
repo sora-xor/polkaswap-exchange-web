@@ -11,7 +11,7 @@
               <h3>{{ token.symbol }}</h3>
             </div>
 
-            <pool-status-badge
+            <status-badge
               v-if="getStatusBadgeVisibility(token.address, activeCollapseItems)"
               :active="hasActivePools(token.address)"
               :has-stake="hasAccountPoolsForPoolAsset(token.address)"
@@ -72,7 +72,7 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PoolCard: demeterLazyComponent(DemeterComponents.PoolCard),
-    PoolStatusBadge: demeterLazyComponent(DemeterComponents.PoolStatusBadge),
+    StatusBadge: demeterLazyComponent(DemeterComponents.StatusBadge),
     StakeDialog: demeterLazyComponent(DemeterComponents.StakeDialog),
     ClaimDialog: demeterLazyComponent(DemeterComponents.ClaimDialog),
     TokenLogo: components.TokenLogo,

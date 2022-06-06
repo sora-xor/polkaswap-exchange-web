@@ -91,7 +91,7 @@ import { Components, PageNames } from '@/consts';
     InfoLine: components.InfoLine,
   },
 })
-export default class DemeterPoolCard extends Mixins(PoolMixin, TranslationMixin) {
+export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly border!: boolean;
   @Prop({ default: false, type: Boolean }) readonly showBalance!: boolean;
 

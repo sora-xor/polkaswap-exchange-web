@@ -1,4 +1,5 @@
 import { defineGetters } from 'direct-vuex';
+import { FPNumber } from '@sora-substrate/math';
 
 import { demeterFarmingGetterContext } from './index';
 
@@ -38,6 +39,19 @@ const getters = defineGetters<DemeterFarmingState>()({
     const { state } = demeterFarmingGetterContext(args);
 
     return createPoolsMap(state.accountPools, false);
+  },
+  getLockedAmount(...args): (poolAsset: string, isFarm: boolean) => FPNumber {
+    const { getters } = demeterFarmingGetterContext(args);
+
+    return (poolAsset: string, isFarm = true) => {
+      const pools = isFarm ? getters.accountFarmingPools : getters.accountStakingPools;
+
+      if (!pools[poolAsset]) return FPNumber.ZERO;
+
+      return pools[poolAsset].reduce((value, accountPool) => {
+        return value.add(accountPool.pooledTokens);
+      }, FPNumber.ZERO);
+    };
   },
 });
 

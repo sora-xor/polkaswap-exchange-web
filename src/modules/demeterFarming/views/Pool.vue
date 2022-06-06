@@ -2,7 +2,7 @@
   <div>
     <pool-base v-bind="{ parentLoading, ...$attrs }" v-on="$listeners">
       <template #title-append="{ liquidity, activeCollapseItems }">
-        <pool-status-badge
+        <status-badge
           v-if="getStatusBadgeVisibility(liquidity.secondAddress, activeCollapseItems)"
           :active="hasActivePools(liquidity.secondAddress)"
           :has-stake="hasAccountPoolsForPoolAsset(liquidity.secondAddress)"
@@ -64,7 +64,7 @@ import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types'
   components: {
     PoolBase: lazyView(PageNames.Pool),
     PoolCard: demeterLazyComponent(DemeterComponents.PoolCard),
-    PoolStatusBadge: demeterLazyComponent(DemeterComponents.PoolStatusBadge),
+    StatusBadge: demeterLazyComponent(DemeterComponents.StatusBadge),
     StakeDialog: demeterLazyComponent(DemeterComponents.StakeDialog),
     ClaimDialog: demeterLazyComponent(DemeterComponents.ClaimDialog),
   },

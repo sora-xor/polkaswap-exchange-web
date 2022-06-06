@@ -13,6 +13,7 @@
         :class="['s-input--token-value', 's-input--remove-part', removePartCharClass]"
         :value="String(removePartInput)"
         :decimals="0"
+        :disabled="liquidityLocked"
         :max="100"
         @input="handleRemovePartChange"
         @focus="setFocusedField('removePart')"
@@ -24,6 +25,7 @@
           slot="bottom"
           class="slider-container"
           :value="removePartInput"
+          :disabled="liquidityLocked"
           :showTooltip="false"
           @change="handleRemovePartChange"
         />
@@ -35,6 +37,7 @@
         class="s-input--token-value"
         :value="firstTokenAmount"
         :decimals="(firstToken || {}).decimals"
+        :disabled="liquidityLocked"
         has-locale-string
         :delimiters="delimiters"
         :max="getTokenMaxAmount(firstTokenBalance)"
@@ -70,6 +73,7 @@
         class="s-input--token-value"
         :value="secondTokenAmount"
         :decimals="(secondToken || {}).decimals"
+        :disabled="liquidityLocked"
         has-locale-string
         :delimiters="delimiters"
         :max="getTokenMaxAmount(secondTokenBalance)"
@@ -102,7 +106,7 @@
         type="primary"
         class="action-button s-typography-button--large"
         border-radius="small"
-        :disabled="isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee"
+        :disabled="liquidityLocked || isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee"
         @click="handleRemoveLiquidity"
       >
         <template v-if="isEmptyAmount">
@@ -197,6 +201,7 @@ export default class RemoveLiquidity extends Mixins(
   @getter.removeLiquidity.firstTokenBalance firstTokenBalance!: CodecString;
   @getter.removeLiquidity.secondTokenBalance secondTokenBalance!: CodecString;
   @getter.removeLiquidity.shareOfPool shareOfPool!: string;
+  @getter.removeLiquidity.liquidityBalanceFreePart liquidityBalanceFreePart!: FPNumber;
 
   @mutation.removeLiquidity.setFocusedField setFocusedField!: (field: FocusedField) => void;
   @mutation.removeLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
@@ -275,7 +280,11 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isEmptyAmount(): boolean {
-    return !this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount;
+    return !this.removePart || !Number(this.liquidityAmount) || !this.firstTokenAmount || !this.secondTokenAmount;
+  }
+
+  get liquidityLocked(): boolean {
+    return this.liquidityBalanceFreePart.isZero();
   }
 
   get isInsufficientBalance(): boolean {

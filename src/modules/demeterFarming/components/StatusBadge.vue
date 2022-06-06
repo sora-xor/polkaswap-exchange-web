@@ -1,8 +1,8 @@
 <template>
-  <div :class="['pool-status-badge', { active: hasStake }]">
-    <s-icon :name="icon" size="12" :class="['pool-status-badge-icon', { active, stake: hasStake }]" />
+  <div :class="['status-badge', { active: hasStake }]">
+    <s-icon :name="icon" size="12" :class="['status-badge-icon', { active, stake: hasStake }]" />
 
-    <div class="pool-status-badge-title">{{ title }}</div>
+    <div class="status-badge-title">{{ title }}</div>
   </div>
 </template>
 
@@ -12,7 +12,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component
-export default class PoolStatusBadge extends Mixins(TranslationMixin) {
+export default class StatusBadge extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly active!: boolean;
   @Prop({ default: false, type: Boolean }) readonly hasStake!: boolean;
 
@@ -29,7 +29,7 @@ export default class PoolStatusBadge extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
-.pool-status-badge {
+.status-badge {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
