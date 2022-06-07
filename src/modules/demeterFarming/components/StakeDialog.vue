@@ -78,6 +78,7 @@ import DialogBase from '@/components/DialogBase.vue';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { isXorAccountAsset } from '@/utils';
 
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
@@ -117,16 +118,31 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
     return `${charClassName}-char`;
   }
 
-  get poolShareAfter(): FPNumber {
-    const val = new FPNumber(this.value).div(FPNumber.HUNDRED);
+  get part(): FPNumber {
+    return new FPNumber(this.value).div(FPNumber.HUNDRED);
+  }
 
+  get poolShareAfter(): FPNumber {
     return this.isAdding
-      ? this.poolShareStaked.add(FPNumber.HUNDRED.sub(this.poolShareStaked).mul(val))
-      : this.poolShareStaked.mul(FPNumber.ONE.sub(val));
+      ? this.poolShareStaked.add(FPNumber.HUNDRED.sub(this.poolShareStaked).mul(this.part))
+      : this.poolShareStaked.mul(FPNumber.ONE.sub(this.part));
   }
 
   get poolShareAfterFormatted(): string {
     return this.poolShareAfter.toLocaleString() + '%';
+  }
+
+  get valueFunds(): FPNumber {
+    if (!this.poolAsset) return FPNumber.ZERO;
+
+    if (this.isAdding) {
+      const fee = FPNumber.fromCodecValue(this.networkFee);
+      const amount = isXorAccountAsset(this.poolAsset) ? this.availableFunds.sub(fee) : this.availableFunds;
+
+      return amount.mul(this.part);
+    } else {
+      return this.lockedFunds.mul(this.part);
+    }
   }
 
   handleValue(value: string): void {
@@ -137,8 +153,7 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
     const params: DemeterLiquidityParams = {
       pool: this.pool,
       accountPool: this.accountPool,
-      liquidity: this.liquidity,
-      value: this.value,
+      value: this.valueFunds,
     };
 
     const event = this.isAdding ? 'add' : 'remove';

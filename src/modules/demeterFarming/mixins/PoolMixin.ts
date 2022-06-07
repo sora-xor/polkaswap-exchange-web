@@ -5,7 +5,6 @@ import AccountPoolMixin from './AccountPoolMixin';
 
 import { getter } from '@/store/decorators';
 
-import type { CodecString } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { DemeterRewardToken } from '@sora-substrate/util/build/demeterFarming/types';
@@ -60,14 +59,24 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
     return `${(this.pool?.depositFee ?? 0) * 100}%`;
   }
 
+  get funds(): FPNumber {
+    return this.liquidity ? this.liqudityLP : this.poolAssetBalance;
+  }
+
+  get lockedFunds(): FPNumber {
+    const locked = this.accountPool?.pooledTokens ?? FPNumber.ZERO;
+
+    return FPNumber.min(locked, this.funds);
+  }
+
+  get availableFunds(): FPNumber {
+    return this.funds.sub(this.lockedFunds);
+  }
+
   get poolShareStaked(): FPNumber {
-    if (!this.accountPool) return FPNumber.ZERO;
+    if (this.funds.isZero()) return FPNumber.ZERO;
 
-    const pooled = this.accountPool.pooledTokens;
-    const total = this.liquidity ? this.liqudityLP : this.poolAssetBalance;
-    const min = FPNumber.min(pooled, total);
-
-    return min.div(total).mul(FPNumber.HUNDRED);
+    return this.lockedFunds.div(this.funds).mul(FPNumber.HUNDRED);
   }
 
   get poolShareStakedFormatted(): string {

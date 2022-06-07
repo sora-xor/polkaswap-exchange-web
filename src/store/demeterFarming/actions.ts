@@ -67,15 +67,9 @@ const actions = defineActions({
 
     const poolAsset = rootGetters.assets.assetsDataTable[poolAssetAddress];
     const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
+    const desiredAmount = params.value.toString();
 
-    const balanceAmount = params.liquidity
-      ? FPNumber.fromCodecValue(params.liquidity.balance)
-      : FPNumber.fromCodecValue(poolAsset.balance.transferable);
-
-    const percent = new FPNumber(params.value).div(FPNumber.HUNDRED);
-    const pooledAmount = params.accountPool?.pooledTokens ?? FPNumber.ZERO;
-    const desiredAmount = balanceAmount.sub(pooledAmount).mul(percent);
-    const args: [Asset, Asset, string] = [poolAsset, rewardAsset, desiredAmount.toString()];
+    const args: [Asset, Asset, string] = [poolAsset, rewardAsset, desiredAmount];
 
     if (params.liquidity) {
       await api.demeterFarming.depositLiquidity(...args);
@@ -91,10 +85,8 @@ const actions = defineActions({
 
     const poolAsset = rootGetters.assets.assetsDataTable[poolAssetAddress];
     const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
+    const desiredAmount = params.value.toString();
 
-    const percent = new FPNumber(params.value).div(FPNumber.HUNDRED);
-    const pooledAmount = params.accountPool?.pooledTokens ?? FPNumber.ZERO;
-    const desiredAmount = pooledAmount.mul(percent);
     const args: [Asset, Asset, string] = [poolAsset, rewardAsset, desiredAmount.toString()];
 
     if (params.liquidity) {
