@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "La dirección de la cartera se ha copiado en el portapapeles",
         "copy": "Copiar dirección",
-        "switch": "Cambiar de cuenta"
+        "switch": "Cambiar de cuenta",
+        "walletAddress": "Dirección de la cartera"
     },
     "history": {
         "clearHistory": "Borrar el historial",
@@ -141,7 +142,8 @@
             "bonded": "- Vinculado"
         },
         "totalAssetsValue": "El valor total de sus activos:",
-        "details": "Detalles"
+        "details": "Detalles",
+        "assetId": "ID del Activo"
     },
     "asset": {
         "remove": "Eliminar el Activo",
@@ -168,7 +170,7 @@
         "AddAssetNFT": {
             "title": "NFT"
         },
-        "searchInputText": "Buscar por ID de activo, nombre o símbolo de cotización"
+        "searchInputText": "Buscar por ID de activo, nombre o símbolo de etiqueta"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -537,7 +539,9 @@
         "networkInfo": "Puente de la red @:soraText con:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Copiar dirección de red"
+        "copy": "Copiar dirección de red",
+        "soraAddress": "Dirección de @:soraText",
+        "ethereumAddress": "dirección de @:ethereumText"
     },
     "selectRegisteredAsset": {
         "title": "Seleccione un Token",
@@ -952,5 +956,8 @@
         "header": "Descargue la billetera de SORA  con características de <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Intercambie tokens de diferentes redes: SORA, Ethereum, Polkadot, Kusama. Proporcione liquidez a la pool y gane un % de las tarifas de cambio."
     },
-    "releaseNotesText": "Notas de lanzamiento"
+    "releaseNotesText": "Notas de lanzamiento",
+    "copiedText": "¡Copiado!",
+    "copyWithValue": "Copiar {value}",
+    "copiedWithValue": "{value} se copia!"
 }

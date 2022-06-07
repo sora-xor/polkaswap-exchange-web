@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "Adresa peňaženky bola skopírovaná do schránky",
         "copy": "Kopírovať adresu",
-        "switch": "Prepnúť účet"
+        "switch": "Prepnúť účet",
+        "walletAddress": "Adresa peňaženky"
     },
     "history": {
         "clearHistory": "Vymazať históriu",
@@ -141,7 +142,8 @@
             "bonded": "- Spojený"
         },
         "totalAssetsValue": "Celková hodnota vašich aktív:",
-        "details": "Podrobnosti"
+        "details": "Podrobnosti",
+        "assetId": "ID aktíva"
     },
     "asset": {
         "remove": "Odobrať aktívum",
@@ -537,7 +539,9 @@
         "networkInfo": "Prepojiť @:soraText sieť s:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Skopírujte sieťovú adresu"
+        "copy": "Skopírujte sieťovú adresu",
+        "soraAddress": "@:soraText adresa",
+        "ethereumAddress": "@:ethereumText adresa"
     },
     "selectRegisteredAsset": {
         "title": "Vybrať token",
@@ -952,5 +956,8 @@
         "header": "Stiahnite si peňaženku SORA s <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Vymieňajte si tokeny z rôznych sietí – SORA, Ethereum, Polkadot, Kusama. Poskytnite fond likvidity a získajte % z poplatkov za výmenu."
     },
-    "releaseNotesText": "Poznámky k vydaniu"
+    "releaseNotesText": "Poznámky k vydaniu",
+    "copiedText": "Skopírované!",
+    "copyWithValue": "Kopírovať {value}",
+    "copiedWithValue": "{value} sa skopíruje!"
 }

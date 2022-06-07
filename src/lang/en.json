@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "Wallet address is copied to the clipboard",
         "copy": "Copy address",
-        "switch": "Switch account"
+        "switch": "Switch account",
+        "walletAddress": "Wallet address"
     },
     "history": {
         "clearHistory": "Clear history",
@@ -141,7 +142,8 @@
             "bonded": "- Bonded"
         },
         "totalAssetsValue": "Your total assets value:",
-        "details": "Details"
+        "details": "Details",
+        "assetId": "Asset ID"
     },
     "asset": {
         "remove": "Remove asset",
@@ -537,7 +539,9 @@
         "networkInfo": "Bridge @:soraText Network with:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Copy network address"
+        "copy": "Copy network address",
+        "soraAddress": "@:soraText address",
+        "ethereumAddress": "@:ethereumText address"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -952,5 +956,8 @@
         "header": "Download SORA Wallet with <span class=\"popup-info__headline--highlight\">Polkaswap<\/span> features",
         "info": "Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees."
     },
-    "releaseNotesText": "Release notes"
+    "releaseNotesText": "Release notes",
+    "copiedText": "Copied!",
+    "copyWithValue": "Copy {value}",
+    "copiedWithValue": "{value} is copied!"
 }

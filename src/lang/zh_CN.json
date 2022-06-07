@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "钱包地址被复制到剪贴板上",
         "copy": "复制地址",
-        "switch": "切换账户"
+        "switch": "切换账户",
+        "walletAddress": "钱包地址"
     },
     "history": {
         "clearHistory": "删除历史",
@@ -141,7 +142,8 @@
             "bonded": "- 保税"
         },
         "totalAssetsValue": "您的总资产价值：",
-        "details": "细节"
+        "details": "细节",
+        "assetId": "资产 ID"
     },
     "asset": {
         "remove": "删除资产",
@@ -537,7 +539,9 @@
         "networkInfo": "与 @:soraText 网络桥接：",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "复制网络地址"
+        "copy": "复制网络地址",
+        "soraAddress": "@:soraText 地址",
+        "ethereumAddress": "@:ethereumText 地址"
     },
     "selectRegisteredAsset": {
         "title": "选择一个代币",
@@ -952,5 +956,8 @@
         "header": "下载具有<span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>功能的 SORA 钱包",
         "info": "交换来自不同网络的代币 - SORA、以太坊、Polkadot、Kusama。提供流动资金池并从交易所费用中赚取 %。"
     },
-    "releaseNotesText": "发行说明"
+    "releaseNotesText": "发行说明",
+    "copiedText": "复制！",
+    "copyWithValue": "复制{value}",
+    "copiedWithValue": "{value}被复制！"
 }
