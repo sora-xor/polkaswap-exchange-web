@@ -64,9 +64,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
   }
 
   get lockedFunds(): FPNumber {
-    const locked = this.accountPool?.pooledTokens ?? FPNumber.ZERO;
-
-    return this.pool.isFarm ? FPNumber.min(locked, this.funds) : locked;
+    return this.accountPool?.pooledTokens ?? FPNumber.ZERO;
   }
 
   get availableFunds(): FPNumber {
@@ -75,8 +73,8 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
 
   get poolShareStaked(): FPNumber {
     if (this.funds.isZero()) return FPNumber.ZERO;
-
-    return this.lockedFunds.div(this.funds).mul(FPNumber.HUNDRED);
+    // use .min because pooled LP could be greater that liquiduty LP
+    return FPNumber.min(this.lockedFunds, this.funds).div(this.funds).mul(FPNumber.HUNDRED);
   }
 
   get poolShareStakedFormatted(): string {

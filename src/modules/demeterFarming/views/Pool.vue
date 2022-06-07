@@ -11,11 +11,11 @@
       </template>
       <template #append="liquidity">
         <pool-card
-          v-for="pool in farmingPools[liquidity.secondAddress]"
-          :key="`${pool.poolAsset}-${pool.rewardAsset}`"
+          v-for="item in getAvailablePools(pools[liquidity.secondAddress])"
+          :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}`"
           :liquidity="liquidity"
-          :pool="pool"
-          :account-pool="getAccountPool(pool)"
+          :pool="item.pool"
+          :account-pool="item.accountPool"
           @add="changePoolStake($event, true)"
           @remove="changePoolStake($event, false)"
           @claim="claimPoolRewards"

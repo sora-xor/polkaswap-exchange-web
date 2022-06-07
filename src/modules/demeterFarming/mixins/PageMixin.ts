@@ -43,9 +43,26 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
   }
 
   get selectedAccountPool(): Nullable<DemeterAccountPool> {
-    const { poolAsset, rewardAsset } = this;
+    return this.selectedPool ? this.getAccountPool(this.selectedPool) : null;
+  }
 
-    return poolAsset && rewardAsset ? this.getAccountPool({ poolAsset, rewardAsset } as DemeterPool) ?? null : null;
+  getAvailablePools(pools: DemeterPool[]): Array<{ pool: DemeterPool; accountPool: Nullable<DemeterAccountPool> }> {
+    if (!Array.isArray(pools)) return [];
+
+    return pools.reduce<{ pool: DemeterPool; accountPool: Nullable<DemeterAccountPool> }[]>((buffer, pool) => {
+      const poolIsActive = !pool.isRemoved;
+      const accountPool = this.getAccountPool(pool);
+      const accountPoolIsActive = !!accountPool && this.isActiveAccountPool(accountPool);
+
+      if (poolIsActive || accountPoolIsActive) {
+        buffer.push({
+          pool,
+          accountPool,
+        });
+      }
+
+      return buffer;
+    }, []);
   }
 
   getAccountPool(pool: DemeterPool): Nullable<DemeterAccountPool> {
@@ -57,9 +74,11 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
   }
 
   hasAccountPoolsForPoolAsset(address: string): boolean {
-    return this.accountPools[address]?.some(
-      (accountPool) => !accountPool.pooledTokens.isZero() || !accountPool.rewards.isZero
-    );
+    return this.accountPools[address]?.some((accountPool) => this.isActiveAccountPool(accountPool));
+  }
+
+  isActiveAccountPool(accountPool: DemeterAccountPool): boolean {
+    return !accountPool.pooledTokens.isZero() || !accountPool.rewards.isZero();
   }
 
   getStatusBadgeVisibility(address: string, activeCollapseItems: string[]): boolean {
