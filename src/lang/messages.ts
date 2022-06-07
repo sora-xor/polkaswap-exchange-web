@@ -749,9 +749,11 @@ export default {
       earned: '{symbol} earned',
       fee: 'Fee',
       owned: '{symbol} you own',
-      poolShareStaked: 'Your pool share staked',
-      poolShareStakedWillBe: 'Your pool share staked will be',
+      poolShare: 'Your pool share staked',
+      poolShareWillBe: 'Your pool share staked will be',
       rewardToken: 'Reward token',
+      stake: '{symbol} staked',
+      stakeWillBe: 'Your {symbol} stake will be',
       totalLiquidityLocked: 'Total liquidity locked',
     },
     actions: {

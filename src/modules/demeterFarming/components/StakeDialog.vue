@@ -7,12 +7,7 @@
       </s-row>
 
       <div v-if="isAdding" class="stake-dialog-info">
-        <info-line
-          v-if="hasStake"
-          value-can-be-hidden
-          :label="t('demeterFarming.info.poolShareStaked')"
-          :value="poolShareStakedFormatted"
-        />
+        <info-line v-if="hasStake" value-can-be-hidden :label="poolShareText" :value="poolShareFormatted" />
         <info-line label="APR" :value="aprFormatted" />
         <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvlFormatted" />
         <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
@@ -33,12 +28,8 @@
         </s-float-input>
       </s-form>
 
-      <info-line
-        v-if="hasStake"
-        :label="t('demeterFarming.info.poolShareStakedWillBe')"
-        :value="poolShareAfterFormatted"
-      />
-      <info-line v-if="isAdding" :label="t('demeterFarming.info.fee')" :value="feePercent" />
+      <info-line v-if="!isFarm || hasStake" :label="poolShareAfterText" :value="poolShareAfterFormatted" />
+      <info-line v-if="isAdding" :label="t('demeterFarming.info.fee')" :value="depositFeeFormatted" />
       <info-line
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
@@ -123,13 +114,27 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
   }
 
   get poolShareAfter(): FPNumber {
-    return this.isAdding
-      ? this.poolShareStaked.add(FPNumber.HUNDRED.sub(this.poolShareStaked).mul(this.part))
-      : this.poolShareStaked.mul(FPNumber.ONE.sub(this.part));
+    if (this.isAdding) {
+      const depositFee = new FPNumber(this.depositFee);
+      const feeFromValue = this.valueFunds.mul(depositFee);
+      const fundsAfter = this.lockedFunds.add(this.valueFunds.sub(feeFromValue));
+
+      return this.isFarm ? fundsAfter.div(this.funds.sub(feeFromValue)).mul(FPNumber.HUNDRED) : fundsAfter;
+    } else {
+      const fundsAfter = this.lockedFunds.sub(this.valueFunds);
+
+      return this.isFarm ? fundsAfter.div(this.funds).mul(FPNumber.HUNDRED) : fundsAfter;
+    }
   }
 
   get poolShareAfterFormatted(): string {
-    return this.poolShareAfter.toLocaleString() + '%';
+    return this.poolShareAfter.toLocaleString() + (this.isFarm ? '%' : '');
+  }
+
+  get poolShareAfterText(): string {
+    return this.isFarm
+      ? this.t('demeterFarming.info.poolShareWillBe')
+      : this.t('demeterFarming.info.stakeWillBe', { symbol: this.poolAssetSymbol });
   }
 
   get valueFunds(): FPNumber {

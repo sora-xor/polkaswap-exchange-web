@@ -2,6 +2,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 
 import AccountPoolMixin from './AccountPoolMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter } from '@/store/decorators';
 
@@ -10,10 +11,14 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { DemeterRewardToken } from '@sora-substrate/util/build/demeterFarming/types';
 
 @Component
-export default class PoolMixin extends Mixins(AccountPoolMixin) {
+export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin) {
   @Prop({ default: () => null, type: Object }) readonly liquidity!: AccountLiquidity;
 
   @getter.demeterFarming.tokenInfos private tokenInfos!: DataMap<DemeterRewardToken>;
+
+  get isFarm(): boolean {
+    return !!this.pool?.isFarm;
+  }
 
   get hasStake(): boolean {
     return this.accountPool ? !this.accountPool.pooledTokens.isZero() : false;
@@ -44,7 +49,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
   }
 
   get poolAssetBalance(): FPNumber {
-    return FPNumber.fromCodecValue(this.poolAsset?.balance?.total ?? 0, this.poolAsset?.decimals);
+    return FPNumber.fromCodecValue(this.poolAsset?.balance?.transferable ?? 0, this.poolAsset?.decimals);
   }
 
   get poolAssetBalanceFormatted(): string {
@@ -55,12 +60,16 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
     return this.tokenInfos[this.pool?.rewardAsset];
   }
 
-  get feePercent(): string {
-    return `${(this.pool?.depositFee ?? 0) * 100}%`;
+  get depositFee(): number {
+    return this.pool?.depositFee ?? 0;
+  }
+
+  get depositFeeFormatted(): string {
+    return `${this.depositFee * 100}%`;
   }
 
   get funds(): FPNumber {
-    return this.liquidity ? this.liqudityLP : this.poolAssetBalance;
+    return this.isFarm ? this.liqudityLP : this.poolAssetBalance;
   }
 
   get lockedFunds(): FPNumber {
@@ -68,17 +77,25 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
   }
 
   get availableFunds(): FPNumber {
-    return this.funds.sub(this.lockedFunds);
+    return this.isFarm ? this.funds.sub(this.lockedFunds) : this.funds;
   }
 
-  get poolShareStaked(): FPNumber {
+  get poolShare(): FPNumber {
+    if (!this.isFarm) return this.lockedFunds;
+
     if (this.funds.isZero()) return FPNumber.ZERO;
     // use .min because pooled LP could be greater that liquiduty LP
     return FPNumber.min(this.lockedFunds, this.funds).div(this.funds).mul(FPNumber.HUNDRED);
   }
 
-  get poolShareStakedFormatted(): string {
-    return this.poolShareStaked.toLocaleString() + '%';
+  get poolShareFormatted(): string {
+    return this.poolShare.toLocaleString() + (this.isFarm ? '%' : '');
+  }
+
+  get poolShareText(): string {
+    return this.isFarm
+      ? this.t('demeterFarming.info.poolShare')
+      : this.t('demeterFarming.info.stake', { symbol: this.poolAssetSymbol });
   }
 
   get tvl(): string {
@@ -86,13 +103,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
 
     const format = (value: FPNumber) => value.dp(2).toLocaleString();
 
-    // staking tvl
-    if (!this.liquidity) {
-      const assetLockedPrice = this.pool.totalTokensInPool.mul(this.poolAssetPrice);
-
-      return format(assetLockedPrice);
-      // farming tvl
-    } else {
+    if (this.isFarm) {
       // calc liquidty locked price through account liquidity
       const liquidityLockedPrice = FPNumber.fromCodecValue(this.liquidity.firstBalance)
         .div(this.liqudityLP)
@@ -101,6 +112,10 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
         .mul(new FPNumber(2));
 
       return format(liquidityLockedPrice);
+    } else {
+      const assetLockedPrice = this.pool.totalTokensInPool.mul(this.poolAssetPrice);
+
+      return format(assetLockedPrice);
     }
   }
 
@@ -110,11 +125,11 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
 
   // allocation * token_per_block * 5256000 * multiplierPercent * reward_token_price / liquidityInPool * 100
   get apr(): FPNumber {
-    if (!this.pool || (this.pool.isFarm && !this.liquidity)) return FPNumber.ZERO;
+    if (!this.pool || (this.isFarm && !this.liquidity)) return FPNumber.ZERO;
 
     let liquidityInPool: FPNumber;
 
-    if (this.pool.isFarm) {
+    if (this.isFarm) {
       const accountPoolShare = new FPNumber(this.liquidity.poolShare).div(FPNumber.HUNDRED);
       const lpTokens = this.liqudityLP.div(accountPoolShare);
       const liquidityLockedPercent = this.pool.totalTokensInPool.div(lpTokens);
@@ -133,13 +148,15 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
       liquidityInPool = liquidityTokens.mul(this.poolAssetPrice);
     }
 
+    if (liquidityInPool.isZero()) return FPNumber.ZERO;
+
     const allocation =
-      (this.pool.isFarm ? this.tokenInfo?.farmsAllocation : this.tokenInfo?.stakingAllocation) ?? FPNumber.ZERO;
+      (this.isFarm ? this.tokenInfo?.farmsAllocation : this.tokenInfo?.stakingAllocation) ?? FPNumber.ZERO;
     const tokenPerBlock = this.tokenInfo?.tokenPerBlock ?? FPNumber.ZERO;
     const blocksPerYear = new FPNumber(5_256_000);
     const poolMultiplier = new FPNumber(this.pool.multiplier);
     const tokenMultiplier = new FPNumber(
-      (this.pool.isFarm ? this.tokenInfo?.farmsTotalMultiplier : this.tokenInfo?.stakingTotalMultiplier) ?? 0
+      (this.isFarm ? this.tokenInfo?.farmsTotalMultiplier : this.tokenInfo?.stakingTotalMultiplier) ?? 0
     );
     const multiplier = poolMultiplier.div(tokenMultiplier);
     const rewardTokenPrice = this.rewardAssetPrice;

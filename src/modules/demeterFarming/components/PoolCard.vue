@@ -30,14 +30,9 @@
         :value="rewardsFormatted"
         :fiat-value="rewardsFiat"
       />
-      <info-line
-        v-if="hasStake"
-        value-can-be-hidden
-        :label="t('demeterFarming.info.poolShareStaked')"
-        :value="poolShareStakedFormatted"
-      />
+      <info-line v-if="hasStake" value-can-be-hidden :label="poolShareText" :value="poolShareFormatted" />
       <template v-else>
-        <info-line :label="t('demeterFarming.info.fee')" :value="feePercent" />
+        <info-line :label="t('demeterFarming.info.fee')" :value="depositFeeFormatted" />
       </template>
 
       <template #buttons v-if="hasStake || hasRewards">
@@ -112,7 +107,7 @@ export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
   }
 
   get depositDisabled(): boolean {
-    return FPNumber.isGreaterThanOrEqualTo(this.poolShareStaked, FPNumber.HUNDRED);
+    return this.availableFunds.isZero();
   }
 
   get emitParams(): object {
