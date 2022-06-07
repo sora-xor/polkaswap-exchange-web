@@ -84,17 +84,16 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
       const assetLockedPrice = this.pool.totalTokensInPool.mul(this.poolAssetPrice);
 
       return format(assetLockedPrice);
-    } else {
       // farming tvl
-      const calcTotalPrice = (balance: CodecString, price: FPNumber) => {
-        return FPNumber.fromCodecValue(balance).div(this.liqudityLP).mul(this.pool.totalTokensInPool).mul(price);
-      };
+    } else {
+      // calc liquidty locked price through account liquidity
+      const liquidityLockedPrice = FPNumber.fromCodecValue(this.liquidity.firstBalance)
+        .div(this.liqudityLP)
+        .mul(this.pool.totalTokensInPool)
+        .mul(this.baseAssetPrice)
+        .mul(new FPNumber(2));
 
-      const baseAssetLockedPrice = calcTotalPrice(this.liquidity.firstBalance, this.baseAssetPrice);
-      const poolAssetLockedPrice = calcTotalPrice(this.liquidity.secondBalance, this.poolAssetPrice);
-      const totalLockedPrice = baseAssetLockedPrice.add(poolAssetLockedPrice);
-
-      return format(totalLockedPrice);
+      return format(liquidityLockedPrice);
     }
   }
 
@@ -104,7 +103,28 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
 
   // allocation * token_per_block * 5256000 * multiplierPercent * reward_token_price / liquidityInPool * 100
   get apr(): FPNumber {
-    if (!this.pool) return FPNumber.ZERO;
+    if (!this.pool || (this.pool.isFarm && !this.liquidity)) return FPNumber.ZERO;
+
+    let liquidityInPool: FPNumber;
+
+    if (this.pool.isFarm) {
+      const accountPoolShare = new FPNumber(this.liquidity.poolShare).div(FPNumber.HUNDRED);
+      const lpTokens = this.liqudityLP.div(accountPoolShare);
+      const liquidityLockedPercent = this.pool.totalTokensInPool.div(lpTokens);
+      // calc pool price through account liquidity
+      const wholeLiquidityPrice = FPNumber.fromCodecValue(this.liquidity.firstBalance, this.baseAsset?.decimals)
+        .mul(this.baseAssetPrice)
+        .mul(new FPNumber(2))
+        .div(accountPoolShare);
+
+      liquidityInPool = liquidityLockedPercent.mul(wholeLiquidityPrice);
+    } else {
+      // if stake is empty, show arp if user will stake all his tokens
+      const liquidityTokens = this.pool.totalTokensInPool.isZero()
+        ? this.poolAssetBalance
+        : this.pool.totalTokensInPool;
+      liquidityInPool = liquidityTokens.mul(this.poolAssetPrice);
+    }
 
     const allocation =
       (this.pool.isFarm ? this.tokenInfo?.farmsAllocation : this.tokenInfo?.stakingAllocation) ?? FPNumber.ZERO;
@@ -116,8 +136,6 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
     );
     const multiplier = poolMultiplier.div(tokenMultiplier);
     const rewardTokenPrice = this.rewardAssetPrice;
-    // calc only for staking now
-    const liquidityInPool = this.pool.totalTokensInPool.mul(this.poolAssetPrice);
 
     return allocation
       .mul(tokenPerBlock)
@@ -129,6 +147,6 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
   }
 
   get aprFormatted(): string {
-    return this.apr.toFixed(2) + '%';
+    return this.apr.dp(2).toLocaleString() + '%';
   }
 }
