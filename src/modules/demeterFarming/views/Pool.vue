@@ -52,8 +52,8 @@ import PageMixin from '../mixins/PageMixin';
 import { demeterLazyComponent } from '../router';
 import { DemeterComponents } from '../consts';
 
-import { lazyView, lazyComponent } from '@/router';
-import { PageNames, Components } from '@/consts';
+import { lazyView } from '@/router';
+import { PageNames } from '@/consts';
 
 import { state } from '@/store/decorators';
 

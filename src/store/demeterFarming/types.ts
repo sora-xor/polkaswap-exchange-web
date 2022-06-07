@@ -1,6 +1,5 @@
 import type { Subscription } from '@polkadot/x-rxjs';
 import type { FPNumber } from '@sora-substrate/math';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type {
   DemeterPool,
   DemeterAccountPool,
@@ -11,7 +10,6 @@ export type DemeterLiquidityParams = {
   pool: DemeterPool;
   accountPool: DemeterAccountPool;
   value: FPNumber;
-  liquidity?: AccountLiquidity;
 };
 
 export type DemeterFarmingState = {

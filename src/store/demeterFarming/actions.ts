@@ -63,7 +63,7 @@ const actions = defineActions({
   async deposit(context, params: DemeterLiquidityParams): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
 
-    const { poolAsset: poolAssetAddress, rewardAsset: rewardAssetAddress } = params.pool;
+    const { poolAsset: poolAssetAddress, rewardAsset: rewardAssetAddress, isFarm } = params.pool;
 
     const poolAsset = rootGetters.assets.assetsDataTable[poolAssetAddress];
     const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
@@ -71,7 +71,7 @@ const actions = defineActions({
 
     const args: [Asset, Asset, string] = [poolAsset, rewardAsset, desiredAmount];
 
-    if (params.liquidity) {
+    if (isFarm) {
       await api.demeterFarming.depositLiquidity(...args);
     } else {
       await api.demeterFarming.stake(...args);
@@ -81,7 +81,7 @@ const actions = defineActions({
   async withdraw(context, params: DemeterLiquidityParams): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
 
-    const { poolAsset: poolAssetAddress, rewardAsset: rewardAssetAddress } = params.pool;
+    const { poolAsset: poolAssetAddress, rewardAsset: rewardAssetAddress, isFarm } = params.pool;
 
     const poolAsset = rootGetters.assets.assetsDataTable[poolAssetAddress];
     const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
@@ -89,7 +89,7 @@ const actions = defineActions({
 
     const args: [Asset, Asset, string] = [poolAsset, rewardAsset, desiredAmount.toString()];
 
-    if (params.liquidity) {
+    if (isFarm) {
       await api.demeterFarming.withdrawLiquidity(...args);
     } else {
       await api.demeterFarming.unstake(...args);

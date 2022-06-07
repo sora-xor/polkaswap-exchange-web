@@ -66,7 +66,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin) {
   get lockedFunds(): FPNumber {
     const locked = this.accountPool?.pooledTokens ?? FPNumber.ZERO;
 
-    return FPNumber.min(locked, this.funds);
+    return this.pool.isFarm ? FPNumber.min(locked, this.funds) : locked;
   }
 
   get availableFunds(): FPNumber {
