@@ -36,6 +36,10 @@ const getters = defineGetters<SettingsState>()({
     const { state, getters } = settingsGetterContext(args);
     return !!getters.moonpayApiKey && !!state.featureFlags.moonpay;
   },
+  chartsEnabled(...args): boolean {
+    const { state } = settingsGetterContext(args);
+    return !!state.featureFlags.charts;
+  },
 });
 
 export default getters;
