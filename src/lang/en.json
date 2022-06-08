@@ -22,8 +22,10 @@
     "confirmText": "Confirm",
     "signAndClaimText": "Sign and claim",
     "errorText": "Error",
+    "balanceText": "Balance",
     "insufficientBalanceText": "Insufficient {tokenSymbol} balance",
     "unknownErrorText": "ERROR Something went wrong...",
+    "unknownAssetText": "Unknown asset",
     "transactionSubmittedText": "Transaction was submitted",
     "operations": {
         "Swap": "Swap",
@@ -515,7 +517,7 @@
         "pooledToken": "{tokenSymbol} Pooled",
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Your pool share",
-        "unknownAsset": "Unknown asset",
+        "unknownAsset": "@:unknownAssetText",
         "description": "When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
         "strategicBonusApy": "Strategic Bonus APY"
     },

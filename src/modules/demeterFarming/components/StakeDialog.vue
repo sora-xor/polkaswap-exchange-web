@@ -29,7 +29,7 @@
           :max="100"
           @input="handleValue"
         >
-          <div slot="top" class="amount">{{ t('removeLiquidity.amount') }}</div>
+          <div slot="top" class="amount">{{ t('amountText') }}</div>
           <div slot="right"><span class="percent">%</span></div>
           <s-slider
             slot="bottom"
@@ -53,10 +53,10 @@
         >
           <div slot="top" class="input-line">
             <div class="input-title">
-              <span class="input-title--uppercase input-title--primary">{{ t('removeLiquidity.amount') }}</span>
+              <span class="input-title--uppercase input-title--primary">{{ t('amountText') }}</span>
             </div>
             <div class="input-value">
-              <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
+              <span class="input-value--uppercase">{{ t('balanceText') }}</span>
               <formatted-amount-with-fiat-value
                 value-can-be-hidden
                 with-left-shift
@@ -111,11 +111,14 @@
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
-        :disabled="isInsufficientXorForFee"
+        :disabled="isInsufficientXorForFee || valueFundsEmpty"
         @click="handleConfirm"
       >
         <template v-if="isInsufficientXorForFee">
           {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
+        </template>
+        <template v-else-if="valueFundsEmpty">
+          {{ t('buttons.enterAmount') }}
         </template>
         <template v-else>
           {{ t('confirmText') }}
@@ -242,6 +245,10 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
 
   get valueFiatAmount(): Nullable<string> {
     return this.getFiatAmountByFPNumber(this.valueFunds, this.poolAsset as AccountAsset);
+  }
+
+  get valueFundsEmpty(): boolean {
+    return this.valueFunds.isZero();
   }
 
   get stakingBalance(): FPNumber {

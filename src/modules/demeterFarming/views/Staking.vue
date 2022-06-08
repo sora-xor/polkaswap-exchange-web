@@ -93,7 +93,7 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
   get tokensData(): object {
     return Object.entries(this.pools).map(([address, pools]) => {
       const asset = this.getAsset(address);
-      const symbol = asset?.symbol ?? this.t('pool.unknownAsset');
+      const symbol = asset?.symbol ?? this.t('unknownAssetText');
       const items = this.getAvailablePools(pools);
 
       return {
