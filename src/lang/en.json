@@ -35,6 +35,11 @@
         "CreatePair": "Create Pair",
         "RegisterAsset": "Register Asset",
         "ClaimRewards": "Claim Rewards",
+        "DemeterFarmingDepositLiquidity": "Stake Liquidity",
+        "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
+        "DemeterFarmingStakeToken": "Stake Token",
+        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingGetRewards": "Claim Rewards",
         "andText": "and",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
@@ -47,7 +52,12 @@
             "ReferralReserveXor": "Bonded XOR successfully",
             "ReferralUnreserveXor": "Unbonded XOR successfully",
             "ReferralSetInvitedUser": "Referral is set successfully",
-            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
+            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Supplied {symbol} and {symbol2} {amount} LP tokens",
+            "DemeterFarmingWithdrawLiquidity": "Removed {symbol} and {symbol2} {amount} LP tokens",
+            "DemeterFarmingStakeToken": "Added {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Removed {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} claimed successfully"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -60,7 +70,12 @@
             "ReferralReserveXor": "Failed to bond XOR",
             "ReferralUnreserveXor": "Failed to unbond XOR",
             "ReferralSetInvitedUser": "Failed to set referral",
-            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
+            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Failed to supply {amount} {symbol} and {symbol2} LP tokens",
+            "DemeterFarmingWithdrawLiquidity": "Failed to remove {amount} {symbol} and {symbol2} LP tokens",
+            "DemeterFarmingStakeToken": "Failed to add {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Failed to remove {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Failed to claim {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
