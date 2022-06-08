@@ -521,6 +521,7 @@ export default {
       'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     confirmTitle: 'You will receive',
     shareOfPool: 'Share of pool after transaction',
+    locked: '{percent} of your pool is in staking',
   },
   tokens: {
     title: 'Listed Tokens',

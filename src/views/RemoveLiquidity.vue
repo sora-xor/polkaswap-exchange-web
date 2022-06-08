@@ -21,14 +21,18 @@
       >
         <div slot="top" class="amount">{{ t('removeLiquidity.amount') }}</div>
         <div slot="right"><span class="percent">%</span></div>
-        <s-slider
-          slot="bottom"
-          class="slider-container"
-          :value="removePartInput"
-          :disabled="liquidityLocked"
-          :showTooltip="false"
-          @change="handleRemovePartChange"
-        />
+        <div slot="bottom">
+          <s-slider
+            class="slider-container"
+            :value="removePartInput"
+            :disabled="liquidityLocked"
+            :showTooltip="false"
+            @change="handleRemovePartChange"
+          />
+          <div v-if="hasLockedPart" class="input-line input-line--footer locked-part">
+            {{ t('removeLiquidity.locked', { percent: liquidityBalanceLockedPercent }) }}
+          </div>
+        </div>
       </s-float-input>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <s-float-input
@@ -287,6 +291,14 @@ export default class RemoveLiquidity extends Mixins(
     return this.liquidityBalanceFreePart.isZero();
   }
 
+  get hasLockedPart(): boolean {
+    return FPNumber.isLessThan(this.liquidityBalanceFreePart, FPNumber.ONE);
+  }
+
+  get liquidityBalanceLockedPercent() {
+    return FPNumber.ONE.sub(this.liquidityBalanceFreePart).mul(FPNumber.HUNDRED).toLocaleString() + '%';
+  }
+
   get isInsufficientBalance(): boolean {
     const balance = this.getFPNumberFromCodec(this.liquidityBalance);
     const firstTokenBalance = this.getFPNumberFromCodec(this.firstTokenBalance);
@@ -417,6 +429,11 @@ export default class RemoveLiquidity extends Mixins(
 .amount {
   line-height: var(--s-line-height-big);
   font-weight: 600;
+}
+
+.locked-part {
+  color: var(--s-color-base-content-secondary);
+  text-transform: uppercase;
 }
 </style>
 
