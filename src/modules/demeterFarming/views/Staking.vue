@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-loading="parentLoading">
-    <generic-page-header :title="t('staking.title')" :tooltip="t('pool.description')" />
+    <generic-page-header :title="t('staking.title')" />
 
     <s-collapse class="demeter-staking-list" @change="updateActiveCollapseItems">
       <s-collapse-item v-for="token of tokensData" :key="token.address" :name="token.address" class="staking-info">

@@ -202,9 +202,10 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
 
       return this.isFarm ? fundsAfter.div(this.funds.sub(feeFromValue)).mul(FPNumber.HUNDRED) : fundsAfter;
     } else {
+      const funds = FPNumber.max(this.lockedFunds, this.funds);
       const fundsAfter = this.lockedFunds.sub(this.valueFunds);
 
-      return this.isFarm ? fundsAfter.div(this.funds).mul(FPNumber.HUNDRED) : fundsAfter;
+      return this.isFarm ? fundsAfter.div(funds).mul(FPNumber.HUNDRED) : fundsAfter;
     }
   }
 
