@@ -7,13 +7,6 @@
       </s-row>
 
       <div v-if="isAdding" class="stake-dialog-info">
-        <info-line
-          v-if="hasStake"
-          value-can-be-hidden
-          :label="poolShareText"
-          :value="poolShareFormatted"
-          :fiat-value="poolShareFiat"
-        />
         <info-line label="APR" :value="aprFormatted" />
         <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvlFormatted" />
         <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
@@ -29,7 +22,7 @@
           :max="100"
           @input="handleValue"
         >
-          <div slot="top" class="amount">{{ t('amountText') }}</div>
+          <div slot="top" class="amount">{{ inputFieldTitle }}</div>
           <div slot="right"><span class="percent">%</span></div>
           <s-slider
             slot="bottom"
@@ -53,7 +46,7 @@
         >
           <div slot="top" class="input-line">
             <div class="input-title">
-              <span class="input-title--uppercase input-title--primary">{{ t('amountText') }}</span>
+              <span class="input-title--uppercase input-title--primary">{{ inputFieldTitle }}</span>
             </div>
             <div class="input-value">
               <span class="input-value--uppercase">{{ t('balanceText') }}</span>
@@ -68,12 +61,13 @@
           </div>
           <div slot="right" class="s-flex el-buttons">
             <s-button
+              v-if="isMaxButtonAvailable"
               class="el-button--max s-typography-button--small"
               type="primary"
               alternative
               size="mini"
               border-radius="mini"
-              @click="handleMaxValue"
+              @click.stop="handleMaxValue"
             >
               {{ t('buttons.max') }}
             </s-button>
@@ -93,12 +87,24 @@
       </s-form>
 
       <info-line
+        v-if="hasStake"
+        value-can-be-hidden
+        :label="poolShareText"
+        :value="poolShareFormatted"
+        :fiat-value="poolShareFiat"
+      />
+      <info-line
         value-can-be-hidden
         :label="poolShareAfterText"
         :value="poolShareAfterFormatted"
         :fiat-value="poolShareAfterFiat"
       />
-      <info-line v-if="isAdding" :label="t('demeterFarming.info.fee')" :value="depositFeeFormatted" />
+      <info-line
+        v-if="isAdding"
+        :label="t('demeterFarming.info.fee')"
+        :label-tooltip="t('demeterFarming.info.feeTooltip')"
+        :value="depositFeeFormatted"
+      />
       <info-line
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
@@ -183,6 +189,12 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
     return this.t(`demeterFarming.actions.${actionKey}`);
   }
 
+  get inputFieldTitle(): string {
+    const key = this.isAdding ? 'amountAdd' : 'amountRemove';
+
+    return this.t(`demeterFarming.${key}`);
+  }
+
   get valuePartCharClass(): string {
     const charClassName =
       {
@@ -261,6 +273,16 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
 
   get stakingBalanceFiat(): string {
     return this.stakingBalance.mul(this.poolAssetPrice).toLocaleString();
+  }
+
+  get isMaxButtonAvailable(): boolean {
+    if (!this.poolAsset) return false;
+
+    const fee = FPNumber.fromCodecValue(this.networkFee);
+    const amount =
+      this.isAdding && isXorAccountAsset(this.poolAsset) ? this.stakingBalance.sub(fee) : this.stakingBalance;
+
+    return !FPNumber.eq(this.valueFunds, amount);
   }
 
   handleValue(value: string): void {

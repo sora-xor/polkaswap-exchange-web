@@ -749,6 +749,7 @@ export default {
     info: {
       earned: '{symbol} earned',
       fee: 'Fee',
+      feeTooltip: 'Deposit fee is applied to your amount to stake',
       owned: '{symbol} you own',
       poolShare: 'Your pool share staked',
       poolShareWillBe: 'Your pool share staked will be',
@@ -763,6 +764,8 @@ export default {
       remove: 'Remove stake',
       start: 'Start staking',
     },
+    amountAdd: 'Amount to stake',
+    amountRemove: 'Amount to remove',
     poweredBy: 'Powered by Demeter Farming',
   },
   staking: {

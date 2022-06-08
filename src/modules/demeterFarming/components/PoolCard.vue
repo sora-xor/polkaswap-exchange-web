@@ -39,7 +39,11 @@
         :fiat-value="poolShareFiat"
       />
       <template v-else>
-        <info-line :label="t('demeterFarming.info.fee')" :value="depositFeeFormatted" />
+        <info-line
+          :label="t('demeterFarming.info.fee')"
+          :label-tooltip="t('demeterFarming.info.feeTooltip')"
+          :value="depositFeeFormatted"
+        />
       </template>
 
       <template #buttons v-if="hasStake || hasRewards">
