@@ -18,6 +18,7 @@
         value-can-be-hidden
         :label="t('demeterFarming.info.owned', { symbol: poolAssetSymbol })"
         :value="poolAssetBalanceFormatted"
+        :fiat-value="poolAssetBalanceFiat"
       />
       <info-line label="APR" :value="aprFormatted" />
       <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvlFormatted" />
@@ -30,7 +31,13 @@
         :value="rewardsFormatted"
         :fiat-value="rewardsFiat"
       />
-      <info-line v-if="hasStake" value-can-be-hidden :label="poolShareText" :value="poolShareFormatted" />
+      <info-line
+        v-if="hasStake"
+        value-can-be-hidden
+        :label="poolShareText"
+        :value="poolShareFormatted"
+        :fiat-value="poolShareFiat"
+      />
       <template v-else>
         <info-line :label="t('demeterFarming.info.fee')" :value="depositFeeFormatted" />
       </template>
@@ -67,7 +74,6 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 

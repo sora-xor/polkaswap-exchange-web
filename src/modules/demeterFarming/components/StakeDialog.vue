@@ -7,7 +7,13 @@
       </s-row>
 
       <div v-if="isAdding" class="stake-dialog-info">
-        <info-line v-if="hasStake" value-can-be-hidden :label="poolShareText" :value="poolShareFormatted" />
+        <info-line
+          v-if="hasStake"
+          value-can-be-hidden
+          :label="poolShareText"
+          :value="poolShareFormatted"
+          :fiat-value="poolShareFiat"
+        />
         <info-line label="APR" :value="aprFormatted" />
         <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvlFormatted" />
         <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
@@ -86,7 +92,13 @@
         </s-float-input>
       </s-form>
 
-      <info-line v-if="!isFarm || hasStake" :label="poolShareAfterText" :value="poolShareAfterFormatted" />
+      <info-line
+        v-if="!isFarm || hasStake"
+        value-can-be-hidden
+        :label="poolShareAfterText"
+        :value="poolShareAfterFormatted"
+        :fiat-value="poolShareAfterFiat"
+      />
       <info-line v-if="isAdding" :label="t('demeterFarming.info.fee')" :value="depositFeeFormatted" />
       <info-line
         :label="t('networkFeeText')"
@@ -129,6 +141,7 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { isXorAccountAsset, getMaxValue } from '@/utils';
 
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component({
@@ -194,6 +207,12 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
 
       return this.isFarm ? fundsAfter.div(this.funds).mul(FPNumber.HUNDRED) : fundsAfter;
     }
+  }
+
+  get poolShareAfterFiat(): Nullable<string> {
+    if (this.isFarm) return null;
+
+    return this.getFiatAmountByFPNumber(this.poolShareAfter, this.poolAsset as AccountAsset);
   }
 
   get poolShareAfterFormatted(): string {

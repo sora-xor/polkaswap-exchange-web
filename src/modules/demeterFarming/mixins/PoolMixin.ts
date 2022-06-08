@@ -56,6 +56,10 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
     return this.poolAssetBalance.toLocaleString();
   }
 
+  get poolAssetBalanceFiat(): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.poolAssetBalance, this.poolAsset as AccountAsset);
+  }
+
   get tokenInfo(): Nullable<DemeterRewardToken> {
     return this.tokenInfos[this.pool?.rewardAsset];
   }
@@ -90,6 +94,12 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
 
   get poolShareFormatted(): string {
     return this.poolShare.toLocaleString() + (this.isFarm ? '%' : '');
+  }
+
+  get poolShareFiat(): Nullable<string> {
+    if (this.isFarm) return null;
+
+    return this.getFiatAmountByFPNumber(this.poolShare, this.poolAsset as AccountAsset);
   }
 
   get poolShareText(): string {
