@@ -93,7 +93,6 @@
       </s-form>
 
       <info-line
-        v-if="!isFarm || hasStake"
         value-can-be-hidden
         :label="poolShareAfterText"
         :value="poolShareAfterFormatted"
@@ -138,7 +137,7 @@ import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
 import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
+import { Components, ZeroStringValue } from '@/consts';
 import { isXorAccountAsset, getMaxValue } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -162,10 +161,10 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
 
   @Watch('visible')
   private resetValue() {
-    this.value = '0';
+    this.value = ZeroStringValue;
   }
 
-  value = '0';
+  value = ZeroStringValue;
 
   get networkFee(): string {
     const operation = this.isAdding
@@ -240,8 +239,8 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
     }
   }
 
-  get valueFiatAmount(): string {
-    return this.poolAsset ? this.getFiatAmountByFPNumber(this.valueFunds, this.poolAsset) || '0' : '0';
+  get valueFiatAmount(): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.valueFunds, this.poolAsset as AccountAsset);
   }
 
   get stakingBalance(): FPNumber {

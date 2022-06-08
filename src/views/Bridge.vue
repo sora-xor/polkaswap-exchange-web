@@ -464,7 +464,7 @@ export default class Bridge extends Mixins(
   }
 
   formatBalance(isSora = true): string {
-    if (!this.isRegisteredAsset) {
+    if (!this.isRegisteredAsset || !this.asset) {
       return '-';
     }
     const balance = getAssetBalance(this.asset, { internal: isSora });

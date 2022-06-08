@@ -6,9 +6,12 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter } from '@/store/decorators';
 
+import { getAssetBalance } from '@/utils';
+
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { DemeterRewardToken } from '@sora-substrate/util/build/demeterFarming/types';
+import { ZeroStringValue } from '@/consts';
 
 @Component
 export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin) {
@@ -45,11 +48,13 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   }
 
   get liqudityLP(): FPNumber {
-    return FPNumber.fromCodecValue(this.liquidity?.balance ?? '0');
+    return FPNumber.fromCodecValue(getAssetBalance(this.liquidity, { parseAsLiquidity: true }) ?? 0);
   }
 
   get poolAssetBalance(): FPNumber {
-    return FPNumber.fromCodecValue(this.poolAsset?.balance?.transferable ?? 0, this.poolAsset?.decimals);
+    if (!this.poolAsset) return FPNumber.ZERO;
+
+    return FPNumber.fromCodecValue(getAssetBalance(this.poolAsset) ?? 0, this.poolAsset?.decimals);
   }
 
   get poolAssetBalanceFormatted(): string {
@@ -109,7 +114,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   }
 
   get tvl(): string {
-    if (!this.pool) return '0';
+    if (!this.pool) return ZeroStringValue;
 
     const format = (value: FPNumber) => value.dp(2).toLocaleString();
 
