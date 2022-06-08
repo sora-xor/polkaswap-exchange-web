@@ -114,7 +114,8 @@
     "account": {
         "successCopy": "Wallet address is copied to the clipboard",
         "copy": "Copy address",
-        "switch": "Switch account"
+        "switch": "Switch account",
+        "walletAddress": "Wallet address"
     },
     "history": {
         "clearHistory": "Clear history",
@@ -142,7 +143,8 @@
             "bonded": "- Bonded"
         },
         "totalAssetsValue": "Your total assets value:",
-        "details": "Details"
+        "details": "Details",
+        "assetId": "Asset ID"
     },
     "asset": {
         "remove": "Remove asset",
@@ -539,7 +541,9 @@
         "networkInfo": "Bridge @:soraText Network with:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Copy network address"
+        "copy": "Copy network address",
+        "soraAddress": "@:soraText address",
+        "ethereumAddress": "@:ethereumText address"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -982,5 +986,8 @@
     },
     "staking": {
         "title": "Staking"
-    }
+    },
+    "copiedText": "Copied!",
+    "copyWithValue": "Copy {value}",
+    "copiedWithValue": "{value} is copied!"
 }

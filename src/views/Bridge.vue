@@ -88,11 +88,8 @@
             </div>
             <div v-if="isNetworkAConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <s-tooltip :content="t('bridge.copy')" border-radius="mini" placement="bottom-end">
-                <span
-                  class="bridge-network-address"
-                  @click.stop="handleCopyAddress(accountAddressFrom, getBridgeItemTitle(isSoraToEvm))"
-                >
+              <s-tooltip :content="getCopyTooltip(isSoraToEvm)" border-radius="mini" placement="bottom-end">
+                <span class="bridge-network-address" @click="handleCopyAddress(accountAddressFrom, $event)">
                   {{ formatAddress(accountAddressFrom, 8) }}
                 </span>
               </s-tooltip>
@@ -160,11 +157,8 @@
             </div>
             <div v-if="isNetworkBConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <s-tooltip :content="t('bridge.copy')" border-radius="mini" placement="bottom-end">
-                <span
-                  class="bridge-network-address"
-                  @click.stop="handleCopyAddress(accountAddressTo, getBridgeItemTitle(!isSoraToEvm))"
-                >
+              <s-tooltip :content="getCopyTooltip(!isSoraToEvm)" border-radius="mini" placement="bottom-end">
+                <span class="bridge-network-address" @click="handleCopyAddress(accountAddressTo, $event)">
                   {{ formatAddress(accountAddressTo, 8) }}
                 </span>
               </s-tooltip>
@@ -277,7 +271,6 @@ import {
   getAssetBalance,
   asZeroValue,
   isEthereumAddress,
-  copyToClipboard,
 } from '@/utils';
 import type { SubNetwork } from '@/utils/ethers-util';
 import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
@@ -300,6 +293,7 @@ import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecima
 export default class Bridge extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.NetworkFeeWarningMixin,
+  mixins.CopyAddressMixin,
   BridgeMixin,
   NetworkFormatterMixin,
   NetworkFeeDialogMixin,
@@ -488,6 +482,10 @@ export default class Bridge extends Mixins(
     return this.t(this.formatNetwork(isSoraNetwork));
   }
 
+  getCopyTooltip(isSoraNetwork = false): string {
+    return this.copyTooltip(this.t(`bridge.${isSoraNetwork ? 'soraAddress' : 'ethereumAddress'}`));
+  }
+
   async handleSwitchItems(): Promise<void> {
     this.setSoraToEvm(!this.isSoraToEvm);
     await this.getEvmNetworkFee();
@@ -559,23 +557,6 @@ export default class Bridge extends Mixins(
       this.setHistoryId(id);
       router.push({ name: PageNames.BridgeTransaction });
     });
-  }
-
-  async handleCopyAddress(accountId: string, bridgeItemTitle: string): Promise<void> {
-    try {
-      await copyToClipboard(accountId);
-      this.$notify({
-        message: this.t('transaction.successCopy', { value: bridgeItemTitle }),
-        type: 'success',
-        title: '',
-      });
-    } catch (error) {
-      this.$notify({
-        message: `${this.t('warningText')} ${error}`,
-        type: 'warning',
-        title: '',
-      });
-    }
   }
 }
 </script>

@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "Դրամապանակի հասցեն պատճենվում է սեղմատախտակին",
         "copy": "Պատճենել հասցեն",
-        "switch": "Փոխել հաշիվը"
+        "switch": "Փոխել հաշիվը",
+        "walletAddress": "Դրամապանակի հասցեն"
     },
     "history": {
         "clearHistory": "Մաքրել պատմությունը",
@@ -141,7 +142,8 @@
             "bonded": "- Խճճված"
         },
         "totalAssetsValue": "Ձեր ակտիվների ընդհանուր արժեքը.",
-        "details": "Մանրամասներ"
+        "details": "Մանրամասներ",
+        "assetId": "Ակտիվի ID"
     },
     "asset": {
         "remove": "Հեռացնել ակտիվը",
@@ -537,7 +539,9 @@
         "networkInfo": "Միացեք @:soraText Ցանցով.",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Պատճենել ցանցի հասցեն"
+        "copy": "Պատճենել ցանցի հասցեն",
+        "soraAddress": "@:soraText հասցե",
+        "ethereumAddress": "@:ethereumText հասցե"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",
@@ -952,5 +956,8 @@
         "header": "Ներբեռնեք SORA դրամապանակը <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> հատկանիշներով",
         "info": "Փոխանակեք նշաններ տարբեր ցանցերից՝ SORA, Ethereum, Polkadot, Kusama: Ապահովեք իրացվելիության ֆոնդ և վաստակեք տոկոս փոխանակման վճարներից:"
     },
-    "releaseNotesText": "Թողարկման նշումներ"
+    "releaseNotesText": "Թողարկման նշումներ",
+    "copiedText": "Պատճենվել է!",
+    "copyWithValue": "Պատճենել {value}",
+    "copiedWithValue": "{value} արտագրվում է!"
 }

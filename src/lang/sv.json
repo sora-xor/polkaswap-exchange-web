@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "Plånboksadressen kopieras till klippbordet",
         "copy": "Kopiera adress",
-        "switch": "Byt konto"
+        "switch": "Byt konto",
+        "walletAddress": "Plånboksadress"
     },
     "history": {
         "clearHistory": "Rensa historik",
@@ -141,7 +142,8 @@
             "bonded": "- Bonded"
         },
         "totalAssetsValue": "Dina tillgångars sammanlagda värde: ",
-        "details": "Detaljer"
+        "details": "Detaljer",
+        "assetId": "Tillgångs-ID"
     },
     "asset": {
         "remove": "Ta bort tillgång",
@@ -168,7 +170,7 @@
         "AddAssetNFT": {
             "title": "NFTs"
         },
-        "searchInputText": "Sök efter tillgångs-ID, namn eller tickersymbol"
+        "searchInputText": "Sök efter Tillgångs-ID, Namn eller Ticker-symbol"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -537,7 +539,9 @@
         "networkInfo": "Brygga @:soraText Nätverk med:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Kopiera nätverksadress"
+        "copy": "Kopiera nätverksadress",
+        "soraAddress": "@:soraText adress",
+        "ethereumAddress": "@:ethereumText adress"
     },
     "selectRegisteredAsset": {
         "title": "Välj en token",
@@ -933,7 +937,7 @@
             "info": "När du kommer att betala en avgift för transaktion så kommer<br\/>10 % att gå till den som hänvisade dig",
             "referredLablel": "Hänvisad adress"
         },
-        "insufficientBondedAmount": "För att bjuda in fler hänvisningar, binda minst {inviteUserFee} XOR"
+        "insufficientBondedAmount": "För att bjuda in fler hänvisningar, bond minst {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaktions Detaljer",
     "createTokenTextNFT": "Skapa NFT",
@@ -952,5 +956,8 @@
         "header": "Ladda ner SORA Wallet med <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funktioner",
         "info": "Byt ut tokens från olika nätverk - SORA, Ethereum, Polkadot, Kusama. Bidra med likviditet i en pool och tjäna % från växlingsavgifter."
     },
-    "releaseNotesText": "Utgåvan"
+    "releaseNotesText": "Utgivningsanmärkningar",
+    "copiedText": "Kopierade!",
+    "copyWithValue": "Kopiera {value}",
+    "copiedWithValue": "{value} kopieras!"
 }

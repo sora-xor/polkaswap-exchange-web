@@ -113,7 +113,8 @@
     "account": {
         "successCopy": "Wallet-adres werd gekopieerd naar het klembord",
         "copy": "Adres kopiëren",
-        "switch": "Van account wisselen"
+        "switch": "Van account wisselen",
+        "walletAddress": "Portemonnee adres"
     },
     "history": {
         "clearHistory": "Geschiedenis wissen",
@@ -141,7 +142,8 @@
             "bonded": "- Gebonden"
         },
         "totalAssetsValue": "Totale waarde van bezittingen:",
-        "details": "Details"
+        "details": "Details",
+        "assetId": "Asset-ID"
     },
     "asset": {
         "remove": "Asset verwijderen",
@@ -537,7 +539,9 @@
         "networkInfo": "Bridge @:soraText Netwerk met:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Netwerkadres kopiëren"
+        "copy": "Netwerkadres kopiëren",
+        "soraAddress": "@:soraText adres",
+        "ethereumAddress": "@:ethereumText adres"
     },
     "selectRegisteredAsset": {
         "title": "Kies een token",
@@ -952,5 +956,8 @@
         "header": "Download SORA Wallet met <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> -functies",
         "info": "Ruil tokens van verschillende netwerken - SORA, Ethereum, Polkadot, Kusama. Bied een liquiditeitspool en verdien % aan wisselkosten."
     },
-    "releaseNotesText": "Release-opmerkingen"
+    "releaseNotesText": "Release-opmerkingen",
+    "copiedText": "Gekopieerd!",
+    "copyWithValue": "Kopieer {value}",
+    "copiedWithValue": "{value} is gekopieerd!"
 }
