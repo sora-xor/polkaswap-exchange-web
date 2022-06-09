@@ -29,17 +29,19 @@ export default class StatusBadge extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
+$status-badge-width: 93px;
+
 .status-badge {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  width: 93px;
+  width: $status-badge-width;
   height: var(--s-size-small);
 
   padding: $inner-spacing-mini / 2 $inner-spacing-mini;
-  border-radius: var(--s-border-radius-mini);
+  border-radius: calc(var(--s-border-radius-small) / 2);
 
-  box-shadow: 1px 1px 5px #391057, -1px -1px 5px #9b6fa5;
+  box-shadow: var(--s-shadow-element-pressed);
 
   background: var(--s-color-theme-accent);
   color: var(--s-color-base-on-accent);
@@ -70,7 +72,7 @@ export default class StatusBadge extends Mixins(TranslationMixin) {
   }
 
   &-icon + &-title {
-    margin-left: 6px;
+    margin-left: $inner-spacing-mini * 0.75;
   }
 }
 </style>
