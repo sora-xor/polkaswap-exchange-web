@@ -216,7 +216,7 @@ export default class ReferralProgram extends Mixins(
   @state.referrals.referrer referrer!: string;
   @state.referrals.isReferrerApproved isReferrerApproved!: boolean;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
-  @getter.wallet.account.account private account!: WALLET_TYPES.Account;
+  @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
 
   @mutation.referrals.reset private reset!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;

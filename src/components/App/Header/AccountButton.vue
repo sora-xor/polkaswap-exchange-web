@@ -30,7 +30,7 @@ import { getter } from '@/store/decorators';
   },
 })
 export default class AccountButton extends Mixins(TranslationMixin) {
-  @getter.wallet.account.account account!: WALLET_TYPES.Account;
+  @getter.wallet.account.account account!: WALLET_TYPES.PolkadotJsAccount;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   get accountTooltip(): string {
