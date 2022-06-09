@@ -2,6 +2,10 @@
   <div class="container" v-loading="parentLoading">
     <generic-page-header :title="t('staking.title')" />
 
+    <s-card v-if="!tokensData.length" shadow="always" size="big" primary class="staking-empty-card">
+      {{ t('demeterFarming.staking.stopped') }}
+    </s-card>
+
     <s-collapse class="demeter-staking-list" @change="updateActiveCollapseItems">
       <s-collapse-item v-for="token of tokensData" :key="token.address" :name="token.address" class="staking-info">
         <template #title>
@@ -115,6 +119,16 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
       margin-right: $inner-spacing-medium;
     }
   }
+}
+.s-card.neumorphic.staking-empty-card {
+  color: var(--s-color-base-content-secondary);
+  padding: $basic-spacing-medium $inner-spacing-big;
+  font-size: var(--s-font-size-small);
+  line-height: var(--s-line-height-medium);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--s-letter-spacing-small);
+  text-align: center;
 }
 </style>
 
