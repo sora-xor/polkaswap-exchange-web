@@ -20,12 +20,9 @@
     "addressText": "Address",
     "amountText": "Amount",
     "confirmText": "Confirm",
-    "signAndClaimText": "Sign and claim",
     "errorText": "Error",
-    "balanceText": "Balance",
     "insufficientBalanceText": "Insufficient {tokenSymbol} balance",
     "unknownErrorText": "ERROR Something went wrong...",
-    "unknownAssetText": "Unknown asset",
     "transactionSubmittedText": "Transaction was submitted",
     "operations": {
         "Swap": "Swap",
@@ -35,11 +32,6 @@
         "CreatePair": "Create Pair",
         "RegisterAsset": "Register Asset",
         "ClaimRewards": "Claim Rewards",
-        "DemeterFarmingDepositLiquidity": "Stake Liquidity",
-        "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
-        "DemeterFarmingStakeToken": "Stake Token",
-        "DemeterFarmingUnstakeToken": "Unstake Token",
-        "DemeterFarmingGetRewards": "Claim Rewards",
         "andText": "and",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
@@ -80,7 +72,12 @@
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
         "ReferralSetInvitedUser": "Set Referral",
-        "SwapAndSend": "Swap and Send"
+        "SwapAndSend": "Swap and Send",
+        "DemeterFarmingDepositLiquidity": "Stake Liquidity",
+        "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
+        "DemeterFarmingStakeToken": "Stake Token",
+        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingGetRewards": "Claim Rewards"
     },
     "polkadotjs": {
         "noExtensions": "No Polkadot.js extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -977,6 +974,12 @@
         "info": "Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees."
     },
     "releaseNotesText": "Release notes",
+    "copiedText": "Copied!",
+    "copyWithValue": "Copy {value}",
+    "copiedWithValue": "{value} is copied!",
+    "signAndClaimText": "Sign and claim",
+    "balanceText": "Balance",
+    "unknownAssetText": "Unknown asset",
     "demeterFarming": {
         "staking": {
             "active": "Staking active",
@@ -1007,8 +1010,5 @@
     },
     "staking": {
         "title": "Staking"
-    },
-    "copiedText": "Copied!",
-    "copyWithValue": "Copy {value}",
-    "copiedWithValue": "{value} is copied!"
+    }
 }

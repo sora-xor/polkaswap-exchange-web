@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Terikat XOR dengan sukses",
             "ReferralUnreserveXor": "XOR tidak terikat berhasil",
             "ReferralSetInvitedUser": "Referensi berhasil disetel",
-            "SwapAndSend": "Tukar {amount} {symbol} untuk {amount2} {symbol2} dan {action} {direction} {address}"
+            "SwapAndSend": "Tukar {amount} {symbol} untuk {amount2} {symbol2} dan {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Disediakan {symbol} dan {symbol2} {amount} token LP",
+            "DemeterFarmingWithdrawLiquidity": "Menghapus {symbol} dan {symbol2} {amount} token LP",
+            "DemeterFarmingStakeToken": "Menambahkan {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "{amount} {symbol} dihapus",
+            "DemeterFarmingGetRewards": "{amount} {symbol} berhasil diklaim"
         },
         "error": {
             "Transfer": "Gagal mengirim {amount} {symbol} ke {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Gagal mengikat XOR",
             "ReferralUnreserveXor": "Gagal melepaskan ikatan XOR",
             "ReferralSetInvitedUser": "Gagal menyetel rujukan",
-            "SwapAndSend": "Gagal menukar {amount} {symbol} dengan {amount2} {symbol2} dan{action} {direction} {address}"
+            "SwapAndSend": "Gagal menukar {amount} {symbol} dengan {amount2} {symbol2} dan{action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Gagal menyediakan {amount} {symbol} dan {symbol2} token LP",
+            "DemeterFarmingWithdrawLiquidity": "Gagal menghapus {amount} {symbol} dan {symbol2} token LP",
+            "DemeterFarmingStakeToken": "Gagal menambahkan {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Gagal menghapus {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Gagal mengklaim {symbol}"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
         "ReferralSetInvitedUser": "Tetapkan Rujukan",
-        "SwapAndSend": "Tukar dan Kirim"
+        "SwapAndSend": "Tukar dan Kirim",
+        "DemeterFarmingDepositLiquidity": "Likuiditas Saham",
+        "DemeterFarmingWithdrawLiquidity": "Likuiditas Lepas Taruhan",
+        "DemeterFarmingStakeToken": "Token Taruhan",
+        "DemeterFarmingUnstakeToken": "Token Lepas Taruhan",
+        "DemeterFarmingGetRewards": "Klaim Hadiah"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi Polkadot.js yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
@@ -327,7 +342,8 @@
         "Stats": "Statistik",
         "Support": "Dukungan",
         "CreatePair": "Buat Pair",
-        "Tokens": "Token"
+        "Tokens": "Token",
+        "StakingContainer": "Staking"
     },
     "social": {
         "twitter": "Twitter",
@@ -693,7 +709,8 @@
         "description": "Menghapus token pool mengubah posisi Anda kembali menjadi token asal berdasarkan nilai tukar saat ini, sebanding dengan jumlah bagian pool Anda. keuntungan didapat sudah termasuk dalam jumlah yang Anda terima.",
         "outputMessage": "Output merupakan estimasi. Jika harga berubah lebih dari {slippageTolerance}% transaksi Anda akan dikembalikan.",
         "confirmTitle": "Anda akan menerima",
-        "shareOfPool": "Pembagian pool setelah transaksi"
+        "shareOfPool": "Pembagian pool setelah transaksi",
+        "locked": "{percent} dari kolam Anda sedang dipertaruhkan"
     },
     "dexSettings": {
         "title": "Pengaturan transaksi",
@@ -959,5 +976,39 @@
     "releaseNotesText": "Catatan rilis",
     "copiedText": "Disalin!",
     "copyWithValue": "Salin {value}",
-    "copiedWithValue": "{value} disalin!"
+    "copiedWithValue": "{value} disalin!",
+    "signAndClaimText": "Tanda tangani dan klaim",
+    "balanceText": "Saldo",
+    "unknownAssetText": "Aset tidak diketahui",
+    "demeterFarming": {
+        "staking": {
+            "active": "aktif mengintai",
+            "inactive": "Taruhan untuk mendapatkan hadiah tambahan",
+            "stopped": "Taruhan berhenti"
+        },
+        "info": {
+            "earned": "{symbol} diperoleh",
+            "fee": "Biaya",
+            "feeTooltip": "Biaya deposit diterapkan ke jumlah Anda untuk dipertaruhkan",
+            "owned": "{symbol} yang Anda miliki",
+            "poolShare": "Bagian kolam Anda dipertaruhkan",
+            "poolShareWillBe": "Bagian kolam renang Anda yang dipertaruhkan adalah",
+            "rewardToken": "Token hadiah",
+            "stake": "{symbol} Anda dipertaruhkan",
+            "stakeWillBe": "Taruhan {symbol} Anda adalah",
+            "totalLiquidityLocked": "Total likuiditas terkunci"
+        },
+        "actions": {
+            "add": "Stake lebih banyak",
+            "claim": "Klaim hadiah",
+            "remove": "Hapus taruhan",
+            "start": "Mulai staking"
+        },
+        "amountAdd": "Jumlah yang distake",
+        "amountRemove": "Jumlah yang akan dihapus",
+        "poweredBy": "Didukung oleh Demeter Farming"
+    },
+    "staking": {
+        "title": "Staking"
+    }
 }

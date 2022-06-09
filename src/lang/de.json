@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Bonden von XOR erfolgreich",
             "ReferralUnreserveXor": "Unbonden von XOR erfolgreich",
             "ReferralSetInvitedUser": "Referral wurde erfolgreich eingerichtet",
-            "SwapAndSend": "{amount} {symbol} gegen {amount2} {symbol2} und {action} {direction} {address} getauscht"
+            "SwapAndSend": "{amount} {symbol} gegen {amount2} {symbol2} und {action} {direction} {address} getauscht",
+            "DemeterFarmingDepositLiquidity": "{symbol} und {symbol2} {amount} LP-Token bereitgestellt",
+            "DemeterFarmingWithdrawLiquidity": "{symbol} und {symbol2} {amount} LP-Token entfernt",
+            "DemeterFarmingStakeToken": "{amount} {symbol} hinzugefügt",
+            "DemeterFarmingUnstakeToken": "{amount} {symbol} entfernt",
+            "DemeterFarmingGetRewards": "{amount} {symbol} erfolgreich beansprucht"
         },
         "error": {
             "Transfer": "Senden von {amount} {symbol} an {address} fehlgeschlagen",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Bonden von XOR fehlgeschlagen",
             "ReferralUnreserveXor": "Unbonden von XOR fehlgeschlagen",
             "ReferralSetInvitedUser": "Festlegen des Referrals fehlgeschlagen",
-            "SwapAndSend": "{amount} {symbol} konnte nicht gegen {amount2} {symbol2} und {action} {direction} {address} getauscht werden"
+            "SwapAndSend": "{amount} {symbol} konnte nicht gegen {amount2} {symbol2} und {action} {direction} {address} getauscht werden",
+            "DemeterFarmingDepositLiquidity": "{amount} {symbol} und {symbol2} LP-Token konnten nicht geliefert werden",
+            "DemeterFarmingWithdrawLiquidity": "{amount} {symbol} und {symbol2} LP-Token konnten nicht entfernt werden",
+            "DemeterFarmingStakeToken": "Fehler beim Hinzufügen von {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Fehler beim Entfernen von {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Anspruch auf {symbol} fehlgeschlagen"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
         "ReferralSetInvitedUser": "Referral festlegen",
-        "SwapAndSend": "Tauschen und senden"
+        "SwapAndSend": "Tauschen und senden",
+        "DemeterFarmingDepositLiquidity": "Liquidität des Einsatzes",
+        "DemeterFarmingWithdrawLiquidity": "Liquidität aufheben",
+        "DemeterFarmingStakeToken": "Stake-Token",
+        "DemeterFarmingUnstakeToken": "Unstake-Token",
+        "DemeterFarmingGetRewards": "Belohnungen beanspruchen"
     },
     "polkadotjs": {
         "noExtensions": "Es wurde keine Polkadot.js-Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -327,7 +342,8 @@
         "Stats": "Statistiken",
         "Support": "Support",
         "CreatePair": "Erstelle ein Paar",
-        "Tokens": "Token"
+        "Tokens": "Token",
+        "StakingContainer": "Abstecken"
     },
     "social": {
         "twitter": "Twitter",
@@ -693,7 +709,8 @@
         "description": "Das Entfernen von Pooltoken wandelt deine Position in die ursprünglichen Token zum aktuellen Kurs zurück, proportional zu deinem Anteil des Pools. Die aufgelaufenen Gebühren sind im zurück erhaltenen Betrag enthalten.",
         "outputMessage": "Die Ausgabe ist geschätzt. Wenn sich der Preis um mehr als {slippageTolerance}% ändert, wird die Transaktion rückgängig gemacht.",
         "confirmTitle": "Du erhältst",
-        "shareOfPool": "Anteil am Pool nach der Transaktion"
+        "shareOfPool": "Anteil am Pool nach der Transaktion",
+        "locked": "{percent} Ihres Pools befinden sich im Staking"
     },
     "dexSettings": {
         "title": "Transaktionseinstellungen",
@@ -959,5 +976,39 @@
     "releaseNotesText": "Versionshinweise",
     "copiedText": "Kopiert!",
     "copyWithValue": "Kopieren {value}",
-    "copiedWithValue": "{value} wird kopiert!"
+    "copiedWithValue": "{value} wird kopiert!",
+    "signAndClaimText": "Signieren und beanspruchen",
+    "balanceText": "Saldo",
+    "unknownAssetText": "Unbekannter Asset",
+    "demeterFarming": {
+        "staking": {
+            "active": "Absteckung aktiv",
+            "inactive": "Einsatz zur Erlangung zusätzlicher Prämien",
+            "stopped": "Absteckung gestoppt"
+        },
+        "info": {
+            "earned": "{symbol} verdient",
+            "fee": "Gebühr",
+            "feeTooltip": "Die Einzahlungsgebühr wird auf Ihren Einsatzbetrag angewendet",
+            "owned": "{symbol} Sie besitzen",
+            "poolShare": "Ihr Poolanteil wird abgesteckt",
+            "poolShareWillBe": "Ihr Pool-Anteil wird abgesteckt",
+            "rewardToken": "Belohnungstoken",
+            "stake": "Ihr {symbol} gesetzt",
+            "stakeWillBe": "Ihr {symbol} Einsatz wird sein",
+            "totalLiquidityLocked": "Gesamtliquidität gesperrt"
+        },
+        "actions": {
+            "add": "Mehr setzen",
+            "claim": "Belohnung entgegennehmen",
+            "remove": "Pfahl entfernen",
+            "start": "Abstecken beginnen"
+        },
+        "amountAdd": "Einsatzbetrag",
+        "amountRemove": "Zu entfernender Betrag",
+        "poweredBy": "Angetrieben von Demeter Farming"
+    },
+    "staking": {
+        "title": "Abstecken"
+    }
 }

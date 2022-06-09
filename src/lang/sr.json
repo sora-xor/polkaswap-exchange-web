@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Успешно повезивање КСОРа",
             "ReferralUnreserveXor": "Одвајање XOR је успешно",
             "ReferralSetInvitedUser": "Препорука је успешно постављена",
-            "SwapAndSend": "Замењено {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address}"
+            "SwapAndSend": "Замењено {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Испоручени {symbol} и {symbol2} {amount} ЛП токени",
+            "DemeterFarmingWithdrawLiquidity": "Уклоњени су токени {symbol} и {symbol2} {amount} ЛП",
+            "DemeterFarmingStakeToken": "Додато {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Уклоњено {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} је успешно положено"
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Повезивање XOR није успело",
             "ReferralUnreserveXor": "Одвајање XOR није успело",
             "ReferralSetInvitedUser": "Постављање препоруке није успело",
-            "SwapAndSend": "Замена {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address} није успела"
+            "SwapAndSend": "Замена {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address} није успела",
+            "DemeterFarmingDepositLiquidity": "Достављање {amount} {symbol} и {symbol2} ЛП токена није успело",
+            "DemeterFarmingWithdrawLiquidity": "Уклањање {amount} {symbol} и {symbol2} ЛП токена није успело",
+            "DemeterFarmingStakeToken": "Додавање {amount} {symbol} није успело",
+            "DemeterFarmingUnstakeToken": "Уклањање {amount} {symbol} није успело",
+            "DemeterFarmingGetRewards": "Захтевање за {symbol} није успело"
         },
         "ReferralReserveXor": "Бонд XOR",
         "ReferralUnreserveXor": "Анбонд XOR",
         "ReferralSetInvitedUser": "Поставите препоруку",
-        "SwapAndSend": "Замените и пошаљте"
+        "SwapAndSend": "Замените и пошаљте",
+        "DemeterFarmingDepositLiquidity": "Ликвидност улога",
+        "DemeterFarmingWithdrawLiquidity": "Унстаке Ликуидити",
+        "DemeterFarmingStakeToken": "Токен улог",
+        "DemeterFarmingUnstakeToken": "Унстаке Токен",
+        "DemeterFarmingGetRewards": "Захтевајте награде"
     },
     "polkadotjs": {
         "noExtensions": "Није пронађена ниједна екстензија Polkadot.{js}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -327,7 +342,8 @@
         "Stats": "Статистикa",
         "Support": "Подршка",
         "CreatePair": "Направите пар",
-        "Tokens": "Токени"
+        "Tokens": "Токени",
+        "StakingContainer": "Стeкинг"
     },
     "social": {
         "twitter": "Twitter",
@@ -693,7 +709,8 @@
         "description": "Уклањање токена пула претвара вашу позицију назад у основне токене по тренутној стопи, пропорционално вашем уделу у пулу. Прикупљене накнаде су укључене у износе које примате.",
         "outputMessage": "Излаз је процењен. Ако се цена промени више од {slippageTolerance}%, ваша трансакција ће бити враћена.",
         "confirmTitle": "Добићете",
-        "shareOfPool": "Удео у пулу након трансакције"
+        "shareOfPool": "Удео у пулу након трансакције",
+        "locked": "{percent} вашег фонда је у улози"
     },
     "dexSettings": {
         "title": "Подешавања трансакције",
@@ -959,5 +976,39 @@
     "releaseNotesText": "Напомене о издању",
     "copiedText": "Копирано!",
     "copyWithValue": "Копирај {value}",
-    "copiedWithValue": "{value} је копирана!"
+    "copiedWithValue": "{value} је копирана!",
+    "signAndClaimText": "Потпишите и затражите",
+    "balanceText": "Салдо",
+    "unknownAssetText": "Непознато средство",
+    "demeterFarming": {
+        "staking": {
+            "active": "Улагање активно",
+            "inactive": "Уложите да бисте зарадили додатне награде",
+            "stopped": "Улагање је престало"
+        },
+        "info": {
+            "earned": "{symbol} зарадио",
+            "fee": "Naknada",
+            "feeTooltip": "Накнада за депозит се примењује на ваш износ за улог",
+            "owned": "{symbol} који поседујете",
+            "poolShare": "Ваш удео у базену је уложен",
+            "poolShareWillBe": "Vaš udeo u bazenu će biti",
+            "rewardToken": "Токен за награду",
+            "stake": "Ваш {symbol} је уложио",
+            "stakeWillBe": "Ваш {symbol} улог ће бити",
+            "totalLiquidityLocked": "Укупна ликвидност закључана"
+        },
+        "actions": {
+            "add": "Везатe више",
+            "claim": "Захтевајте награде",
+            "remove": "Уклоните улог",
+            "start": "Почните са стекингoм"
+        },
+        "amountAdd": "Износ за стекинг",
+        "amountRemove": "Износ за уклањање",
+        "poweredBy": "Powered by Demeter Farming"
+    },
+    "staking": {
+        "title": "Стeкинг"
+    }
 }

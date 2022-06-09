@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Úspešne spojené XOR",
             "ReferralUnreserveXor": "Úspešne odpojené XOR",
             "ReferralSetInvitedUser": "Odporúčanie bolo úspešne nastavené",
-            "SwapAndSend": "{amount} {symbol} vymenené za {amount2} {symbol2} a {action} {direction} {address}"
+            "SwapAndSend": "{amount} {symbol} vymenené za {amount2} {symbol2} a {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Dodané {symbol} a {symbol2} {amount} LP tokeny",
+            "DemeterFarmingWithdrawLiquidity": "Odstránené {symbol} a {symbol2} {amount} LP tokeny",
+            "DemeterFarmingStakeToken": "Pridané {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Odstránené {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Úspešne nárokované {amount} {symbol}"
         },
         "error": {
             "Transfer": "Nepodarilo sa odoslať {amount} {symbol} na {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Spojenie XOR zlyhalo",
             "ReferralUnreserveXor": "Nepodarilo sa odpojiť XOR",
             "ReferralSetInvitedUser": "Nepodarilo sa nastaviť odporúčanie",
-            "SwapAndSend": "Nepodarilo sa vymeniť {amount} {symbol} za {amount2} {symbol2} a {action} {direction} {address}"
+            "SwapAndSend": "Nepodarilo sa vymeniť {amount} {symbol} za {amount2} {symbol2} a {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Nepodarilo sa dodať {amount} {symbol} a {symbol2} LP tokenov",
+            "DemeterFarmingWithdrawLiquidity": "Nepodarilo sa odstrániť tokeny LP {amount} {symbol} a {symbol2}",
+            "DemeterFarmingStakeToken": "Nepodarilo sa pridať {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Nepodarilo sa odstrániť {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Nepodarilo sa nárokovať {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
         "ReferralSetInvitedUser": "Nastaviť odporúčanie",
-        "SwapAndSend": "Vymeniť a odoslať"
+        "SwapAndSend": "Vymeniť a odoslať",
+        "DemeterFarmingDepositLiquidity": "Likvidita vkladu",
+        "DemeterFarmingWithdrawLiquidity": "Zrušte likviditu",
+        "DemeterFarmingStakeToken": "Token podielu",
+        "DemeterFarmingUnstakeToken": "Zrušiť vklad",
+        "DemeterFarmingGetRewards": "Nárokovať odmeny"
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie Polkadot{.js} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
@@ -327,7 +342,8 @@
         "Stats": "Štatistiky",
         "Support": "Podpora",
         "CreatePair": "Vytvoriť pár",
-        "Tokens": "Tokeny"
+        "Tokens": "Tokeny",
+        "StakingContainer": "Stakovanie"
     },
     "social": {
         "twitter": "Twitter",
@@ -693,7 +709,8 @@
         "description": "Odobratie tokenov fondu prevedie vašu pozíciu späť na základné tokeny pri aktuálnom kurze, úmerne vášmu podielu vo fonde. Naakumulované poplatky budú zahrnuté do čiastok, ktoré obdržíte.",
         "outputMessage": "Výsledná čiastka je len odhadom. Ak sa cena zmení o viac ako {slippageTolerance}%, transakcia bude zrušená.",
         "confirmTitle": "Obdržíte",
-        "shareOfPool": "Podiel vo fonde po transakcii"
+        "shareOfPool": "Podiel vo fonde po transakcii",
+        "locked": "V stávke je {percent} vášho fondu"
     },
     "dexSettings": {
         "title": "Nastavenia transakcie",
@@ -959,5 +976,39 @@
     "releaseNotesText": "Poznámky k vydaniu",
     "copiedText": "Skopírované!",
     "copyWithValue": "Kopírovať {value}",
-    "copiedWithValue": "{value} sa skopíruje!"
+    "copiedWithValue": "{value} sa skopíruje!",
+    "signAndClaimText": "Podpísať a uplatniť nárok",
+    "balanceText": "Zostatok",
+    "unknownAssetText": "Neznáme aktívum",
+    "demeterFarming": {
+        "staking": {
+            "active": "Staking aktívne",
+            "inactive": "Vsaďte a získajte ďalšie odmeny",
+            "stopped": "Vytyčovanie sa zastavilo"
+        },
+        "info": {
+            "earned": "{symbol} zarobené",
+            "fee": "Poplatok",
+            "feeTooltip": "Poplatok za vklad sa účtuje na sumu, ktorú chcete vsadiť",
+            "owned": "{symbol} , ktorý vlastníte",
+            "poolShare": "Váš podiel v bazéne je vsadený",
+            "poolShareWillBe": "Váš podiel v bazéne bude vsadený",
+            "rewardToken": "Token odmeny",
+            "stake": "Váš {symbol} vsadený",
+            "stakeWillBe": "Váš {symbol} vklad bude",
+            "totalLiquidityLocked": "Celková likvidita zablokovaná"
+        },
+        "actions": {
+            "add": "Navýšiť stake",
+            "claim": "Nárok na odmenu",
+            "remove": "Odstráňte kolík",
+            "start": "Začnite stakovať"
+        },
+        "amountAdd": "Čiastka na delegovanie",
+        "amountRemove": "Suma na odstránenie",
+        "poweredBy": "Beží na Demeter Farming"
+    },
+    "staking": {
+        "title": "Stakovanie"
+    }
 }

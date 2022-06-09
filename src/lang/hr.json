@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Uspješno povezivanje XORa",
             "ReferralUnreserveXor": "Uspješno odvajanje XORa",
             "ReferralSetInvitedUser": "Preporuka je uspješno postavljena",
-            "SwapAndSend": "Zamijenjeno {amount} {symbol} za {amount2} {symbol2} i {action} {direction} {address}"
+            "SwapAndSend": "Zamijenjeno {amount} {symbol} za {amount2} {symbol2} i {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Isporučeni LP tokeni {symbol} i {symbol2} {amount}",
+            "DemeterFarmingWithdrawLiquidity": "Uklonjeni su tokeni {symbol} i {symbol2} {amount} LP",
+            "DemeterFarmingStakeToken": "Dodan {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Uklonjeno {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} uspješno potraživan"
         },
         "error": {
             "Transfer": "Nije uspjelo {amount} {symbol} u {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Povezivanje XORa nije uspjelo",
             "ReferralUnreserveXor": "Odvajanje XORa nije uspjelo",
             "ReferralSetInvitedUser": "Postavljanje preporuke nije uspjelo",
-            "SwapAndSend": "Nije uspjela zamjena {amount} {symbol} za {amount2} {symbol2} i {action} {direction} {address}"
+            "SwapAndSend": "Nije uspjela zamjena {amount} {symbol} za {amount2} {symbol2} i {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Dostava {amount} {symbol} i {symbol2} LP tokena nije uspjela",
+            "DemeterFarmingWithdrawLiquidity": "Uklanjanje tokena {amount} {symbol} i {symbol2} LP nije uspjelo",
+            "DemeterFarmingStakeToken": "Dodavanje {amount} {symbol} nije uspjelo",
+            "DemeterFarmingUnstakeToken": "Uklanjanje {amount} {symbol} nije uspjelo",
+            "DemeterFarmingGetRewards": "Nije uspjelo potraživanje {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
         "ReferralSetInvitedUser": "Postavite preporuku",
-        "SwapAndSend": "Zamijenite i pošaljite"
+        "SwapAndSend": "Zamijenite i pošaljite",
+        "DemeterFarmingDepositLiquidity": "Likvidnost uloga",
+        "DemeterFarmingWithdrawLiquidity": "Unstake Likvidnost",
+        "DemeterFarmingStakeToken": "Token udjela",
+        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingGetRewards": "Zatražite nagrade"
     },
     "polkadotjs": {
         "noExtensions": "Nije pronađeno proširenje Polkadot.js. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -327,7 +342,8 @@
         "Stats": "Statistika",
         "Support": "Suport",
         "CreatePair": "Stvorite par",
-        "Tokens": "Tokeni"
+        "Tokens": "Tokeni",
+        "StakingContainer": "Ulaganje"
     },
     "social": {
         "twitter": "Twitter",
@@ -693,7 +709,8 @@
         "description": "Uklanjanje tokena pula pretvara vašu poziciju natrag u temeljne tokene po trenutnoj stopi, proporcionalno vašem udjelu u pulu. Obračunate naknade uključene su u iznose koje primite.",
         "outputMessage": "Procjenjuje se izlazna količina. Ako se cijena promijeni više od {slippageTolerance}%, vaša će se transakcija vratiti.",
         "confirmTitle": "Dobit ćete",
-        "shareOfPool": "Udio u pulu nakon transakcije"
+        "shareOfPool": "Udio u pulu nakon transakcije",
+        "locked": "{percent} vašeg bazena je u ulozi"
     },
     "dexSettings": {
         "title": "Postavke transakcije",
@@ -959,5 +976,39 @@
     "releaseNotesText": "Bilješke o izdanju",
     "copiedText": "Kopiran!",
     "copyWithValue": "Kopiraj {value}",
-    "copiedWithValue": "{value} je kopirana!"
+    "copiedWithValue": "{value} je kopirana!",
+    "signAndClaimText": "Potpišite i zatražite",
+    "balanceText": "Stanje",
+    "unknownAssetText": "Nepoznato sredstvo",
+    "demeterFarming": {
+        "staking": {
+            "active": "Ulaganje aktivno",
+            "inactive": "Uložite da biste zaradili dodatne nagrade",
+            "stopped": "Ulaganje je prestalo"
+        },
+        "info": {
+            "earned": "{symbol} zaradio",
+            "fee": "Naknada",
+            "feeTooltip": "Naknada za depozit se primjenjuje na vaš iznos za ulog",
+            "owned": "{symbol} koji posjedujete",
+            "poolShare": "Vaš udio u bazenu je uložen",
+            "poolShareWillBe": "Vaš udio u bazenu bit će uložen",
+            "rewardToken": "Nagradni token",
+            "stake": "Vaš {symbol} je uložio",
+            "stakeWillBe": "Vaš ulog {symbol} bit će",
+            "totalLiquidityLocked": "Ukupna likvidnost zaključana"
+        },
+        "actions": {
+            "add": "Uložite više",
+            "claim": "Zatražite nagrade",
+            "remove": "Uklonite kolac",
+            "start": "Započnite ulaganje"
+        },
+        "amountAdd": "Iznos za ulog",
+        "amountRemove": "Iznos za uklanjanje",
+        "poweredBy": "Pokreće Demeter Farming"
+    },
+    "staking": {
+        "title": "Ulaganje"
+    }
 }

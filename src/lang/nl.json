@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Bonded XOR met succes",
             "ReferralUnreserveXor": "Unbonded XOR met succes",
             "ReferralSetInvitedUser": "Verwijzing is succesvol ingesteld",
-            "SwapAndSend": "{amount} {symbol} geruild voor {amount2} {symbol2} en {action} {direction} {address}"
+            "SwapAndSend": "{amount} {symbol} geruild voor {amount2} {symbol2} en {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Meegeleverde {symbol} en {symbol2} {amount} LP tokens",
+            "DemeterFarmingWithdrawLiquidity": "{symbol} en {symbol2} {amount} LP tokens verwijderd",
+            "DemeterFarmingStakeToken": "{amount} {symbol} toegevoegd",
+            "DemeterFarmingUnstakeToken": "{amount} {symbol} verwijderd",
+            "DemeterFarmingGetRewards": "{amount} {symbol} succesvol geclaimd"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Kan XOR niet binden",
             "ReferralUnreserveXor": "Kan de obligatie niet ongedaan maken XOR",
             "ReferralSetInvitedUser": "Kan verwijzing niet instellen",
-            "SwapAndSend": "Kan {amount} {symbol} niet omwisselen voor {amount2} {symbol2} en {action} {direction} {address}"
+            "SwapAndSend": "Kan {amount} {symbol} niet omwisselen voor {amount2} {symbol2} en {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Kan {amount} {symbol} en {symbol2} LP-tokens niet leveren",
+            "DemeterFarmingWithdrawLiquidity": "Kan {amount} {symbol} en {symbol2} LP-tokens niet verwijderen",
+            "DemeterFarmingStakeToken": "Kan {amount} {symbol} niet toevoegen",
+            "DemeterFarmingUnstakeToken": "Kan {amount} {symbol} niet verwijderen",
+            "DemeterFarmingGetRewards": "Kan {symbol} niet claimen"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
         "ReferralSetInvitedUser": "Verwijzing instellen",
-        "SwapAndSend": "Ruilen en verzenden"
+        "SwapAndSend": "Ruilen en verzenden",
+        "DemeterFarmingDepositLiquidity": "Liquiditeit van het aandeel",
+        "DemeterFarmingWithdrawLiquidity": "Liquiditeit ongedaan maken",
+        "DemeterFarmingStakeToken": "Inzet token",
+        "DemeterFarmingUnstakeToken": "Token ongedaan maken",
+        "DemeterFarmingGetRewards": "Beloningen claimen"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen Polkadot.js-extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
@@ -327,7 +342,8 @@
         "Stats": "Stats",
         "Support": "Support",
         "CreatePair": "Maak Paar",
-        "Tokens": "Tokens"
+        "Tokens": "Tokens",
+        "StakingContainer": "Staking"
     },
     "social": {
         "twitter": "Twitter",
@@ -693,7 +709,8 @@
         "description": "Het verwijderen van pool-tokens zet uw positie terug in onderliggende tokens tegen de huidige koers, evenredig met uw aandeel in de pool. Opgebouwde vergoedingen zijn inbegrepen in de bedragen die u ontvangt.",
         "outputMessage": "De output wordt geschat. Als de prijs meer dan {slippageTolerance}% verandert, zal uw transactie worden teruggedraaid.",
         "confirmTitle": "U ontvangt",
-        "shareOfPool": "Aandeel van pool na transactie"
+        "shareOfPool": "Aandeel van pool na transactie",
+        "locked": "{percent} van uw pool is in staking"
     },
     "dexSettings": {
         "title": "Transactie-instellingen",
@@ -959,5 +976,39 @@
     "releaseNotesText": "Release-opmerkingen",
     "copiedText": "Gekopieerd!",
     "copyWithValue": "Kopieer {value}",
-    "copiedWithValue": "{value} is gekopieerd!"
+    "copiedWithValue": "{value} is gekopieerd!",
+    "signAndClaimText": "Onderteken en claim",
+    "balanceText": "Saldo",
+    "unknownAssetText": "Onbekend asset",
+    "demeterFarming": {
+        "staking": {
+            "active": "Actief inzetten",
+            "inactive": "Inzet om extra beloningen te verdienen",
+            "stopped": "Uitzetten gestopt"
+        },
+        "info": {
+            "earned": "{symbol} verdiend",
+            "fee": "Vergoeding",
+            "feeTooltip": "Stortingskosten worden toegepast op uw inzetbedrag",
+            "owned": "{symbol} jij bezit",
+            "poolShare": "Uw poolaandeel ingezet",
+            "poolShareWillBe": "Uw ingezette poolaandeel is",
+            "rewardToken": "Beloningstoken",
+            "stake": "Uw {symbol} ingezet",
+            "stakeWillBe": "Uw {symbol} inzet zal zijn",
+            "totalLiquidityLocked": "Totale liquiditeit vergrendeld"
+        },
+        "actions": {
+            "add": "Stake meer",
+            "claim": "Claim beloningen",
+            "remove": "Inzet verwijderen",
+            "start": "Begin met uitzetten"
+        },
+        "amountAdd": "Bedrag om in te zetten",
+        "amountRemove": "Te verwijderen bedrag",
+        "poweredBy": "Mogelijk gemaakt door Demeter Farming"
+    },
+    "staking": {
+        "title": "Staking"
+    }
 }
