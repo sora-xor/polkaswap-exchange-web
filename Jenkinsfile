@@ -1,7 +1,7 @@
 @Library('jenkins-library') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
-    buildEnvironment = ['NODE_ENV': 'test']
+    buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
 } else {
     buildEnvironment = [:]
 }
