@@ -1,7 +1,8 @@
-import { Account } from '@soramitsu/soraneo-wallet-web/lib/types/common';
+import { PolkadotJsAccount } from '@soramitsu/soraneo-wallet-web/lib/types/common';
+import { Extensions } from '@soramitsu/soraneo-wallet-web/lib/consts';
 
-export const MOCK_ACCOUNT: Account = {
+export const MOCK_ACCOUNT: PolkadotJsAccount = {
   address: 'cnRXua6zs8TaE87BQFL6uWVbT2g6GXsUjwk6PTvL6UHcHDCvo',
   name: 'Sora Name',
-  isExternal: true,
+  source: Extensions.PolkadotJS,
 };
