@@ -4,7 +4,6 @@ module.exports = {
   publicPath: './',
   configureWebpack: (config) => {
     config.plugins.push(new NodePolyfillPlugin());
-    console.log(config.optimization);
     // bundle all dependencies from node_modules to vendors
     config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
     config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
