@@ -990,7 +990,7 @@
             "earned": "{symbol} ganado",
             "fee": "Tarifa",
             "feeTooltip": "La tarifa de depósito se aplica a la cantidad a apostar",
-            "owned": "{symbol} tu propiedad",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "Su parte de la piscina apostada",
             "poolShareWillBe": "Su participación en el grupo apostada será",
             "rewardToken": "ficha de recompensa",

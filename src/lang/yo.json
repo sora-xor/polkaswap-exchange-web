@@ -990,7 +990,7 @@
             "earned": "{symbol} ti o gba",
             "fee": "Ọya",
             "feeTooltip": "Owo ohun idogo ti wa ni lilo si iye rẹ si igi",
-            "owned": "{symbol} ti o ni",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "Rẹ pool pin staked",
             "poolShareWillBe": "Pinpin adagun-odo rẹ ti o ni nkan yoo jẹ",
             "rewardToken": "Aami ere",

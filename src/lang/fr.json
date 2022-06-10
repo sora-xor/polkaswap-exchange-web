@@ -990,7 +990,7 @@
             "earned": "{symbol} gagné",
             "fee": "Frais",
             "feeTooltip": "Les frais de dépôt sont appliqués à votre montant à miser",
-            "owned": "{symbol} que vous possédez",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "Votre part de pool jalonnée",
             "poolShareWillBe": "Votre part de pool jalonnée sera",
             "rewardToken": "Jeton de récompense",

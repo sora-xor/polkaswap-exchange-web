@@ -990,7 +990,7 @@
             "earned": "{symbol}获得",
             "fee": "费用",
             "feeTooltip": "存款费用适用于您的质押金额",
-            "owned": "{symbol}你拥有",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "您的权益池份额",
             "poolShareWillBe": "您的权益池份额将是",
             "rewardToken": "奖励代币",

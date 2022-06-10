@@ -990,7 +990,7 @@
             "earned": "{symbol} zarobione",
             "fee": "Opłata",
             "feeTooltip": "Opłata za wpłatę jest naliczana od kwoty stawki",
-            "owned": "{symbol} jesteś właścicielem",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "Twój udział w puli postawiony",
             "poolShareWillBe": "Twój udział w puli będzie",
             "rewardToken": "Token nagrody",

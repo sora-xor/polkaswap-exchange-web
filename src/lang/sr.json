@@ -990,7 +990,7 @@
             "earned": "{symbol} зарадио",
             "fee": "Naknada",
             "feeTooltip": "Накнада за депозит се примењује на ваш износ за улог",
-            "owned": "{symbol} који поседујете",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "Ваш удео у базену је уложен",
             "poolShareWillBe": "Vaš udeo u bazenu će biti",
             "rewardToken": "Токен за награду",

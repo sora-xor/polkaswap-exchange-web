@@ -990,7 +990,7 @@
             "earned": "{symbol} opptjent",
             "fee": "Avgift",
             "feeTooltip": "Innskuddsgebyr påføres beløpet du vil satse på",
-            "owned": "{symbol} du eier",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "Din puljeandel satset",
             "poolShareWillBe": "Din pool andel innsats vil være",
             "rewardToken": "Belønningstoken",

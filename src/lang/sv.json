@@ -990,7 +990,7 @@
             "earned": "{symbol} tjänat",
             "fee": "Avgift",
             "feeTooltip": "Insättningsavgift tillämpas på ditt belopp som du satsar på",
-            "owned": "{symbol} du äger",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "Din poolandel insats",
             "poolShareWillBe": "Din poolandel insats kommer att vara",
             "rewardToken": "Belöningstoken",

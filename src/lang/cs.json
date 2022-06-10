@@ -990,7 +990,7 @@
             "earned": "{symbol} získal",
             "fee": "Poplatek",
             "feeTooltip": "Poplatek za vklad se vztahuje na vaši částku k vkladu",
-            "owned": "{symbol} vlastníte",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "Váš podíl v bazénu je vsazen",
             "poolShareWillBe": "Váš podíl v bazénu bude vsazen",
             "rewardToken": "Žeton odměny",

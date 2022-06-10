@@ -990,7 +990,7 @@
             "earned": "{symbol} đã kiếm được",
             "fee": "Phí",
             "feeTooltip": "Phí đặt cọc được áp dụng cho số tiền của bạn để đặt cược",
-            "owned": "{symbol} bạn sở hữu",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "Tiền cược chia sẻ nhóm của bạn",
             "poolShareWillBe": "Cổ phần chia sẻ nhóm của bạn sẽ là",
             "rewardToken": "Mã thông báo phần thưởng",

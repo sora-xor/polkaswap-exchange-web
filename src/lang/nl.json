@@ -990,7 +990,7 @@
             "earned": "{symbol} verdiend",
             "fee": "Vergoeding",
             "feeTooltip": "Stortingskosten worden toegepast op uw inzetbedrag",
-            "owned": "{symbol} jij bezit",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "Uw poolaandeel ingezet",
             "poolShareWillBe": "Uw ingezette poolaandeel is",
             "rewardToken": "Beloningstoken",

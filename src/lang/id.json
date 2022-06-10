@@ -990,7 +990,7 @@
             "earned": "{symbol} diperoleh",
             "fee": "Biaya",
             "feeTooltip": "Biaya deposit diterapkan ke jumlah Anda untuk dipertaruhkan",
-            "owned": "{symbol} yang Anda miliki",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "Bagian kolam Anda dipertaruhkan",
             "poolShareWillBe": "Bagian kolam renang Anda yang dipertaruhkan adalah",
             "rewardToken": "Token hadiah",

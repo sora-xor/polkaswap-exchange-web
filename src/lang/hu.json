@@ -990,7 +990,7 @@
             "earned": "{symbol} szerzett",
             "fee": "Díj",
             "feeTooltip": "A letéti díjat a tét összegére számítjuk fel",
-            "owned": "{symbol} az Ön tulajdonában",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "Az Ön tétje a medencében",
             "poolShareWillBe": "Az Ön által megtételt medencerészesedés lesz",
             "rewardToken": "Jutalom token",

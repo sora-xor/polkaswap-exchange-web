@@ -990,7 +990,7 @@
             "earned": "{symbol} guadagnato",
             "fee": "Fee",
             "feeTooltip": "La commissione di deposito viene applicata all'importo da puntare",
-            "owned": "{symbol} che possiedi",
+            "owned": "{symbol} @:balanceText",
             "poolShare": "La tua quota di pool è stata puntata",
             "poolShareWillBe": "La tua quota di pool puntata sarà",
             "rewardToken": "Gettone premio",

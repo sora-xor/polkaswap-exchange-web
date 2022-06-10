@@ -990,7 +990,7 @@
             "earned": "{symbol} заработано",
             "fee": "Комиссия",
             "feeTooltip": "Комиссия за депозит применяется к вашей сумме стейка",
-            "owned": "Ваш баланс {symbol}",
+            "owned": "@:balanceText {symbol}",
             "poolShare": "Ваша доля пула застейкана",
             "poolShareWillBe": "Ваша доля пула будет",
             "rewardToken": "Токен вознаграждения",
