@@ -1,35 +1,66 @@
 <template>
-  <div :class="['status-badge', { active: hasStake }]">
-    <s-icon :name="icon" size="12" :class="['status-badge-icon', { active, stake: hasStake }]" />
+  <div :class="['status-badge', { active: hasStake }]" @click="handleBadgeClick">
+    <div class="status-badge-logo">
+      <token-logo :token="rewardAsset" size="mini" />
+      <div v-if="hasStake" :class="['status-badge-logo-icon', { active: activeStatus }]" />
+    </div>
 
-    <div class="status-badge-title">{{ title }}</div>
+    <div class="status-badge-title">
+      <div>{{ title }}</div>
+      <div class="status-badge-title--mini">{{ aprFormatted }} APR</div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import PoolMixin from '../mixins/PoolMixin';
 
-@Component
-export default class StatusBadge extends Mixins(TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly active!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly hasStake!: boolean;
-
+@Component({
+  components: {
+    TokenLogo: components.TokenLogo,
+  },
+})
+export default class StatusBadge extends Mixins(PoolMixin) {
   get title(): string {
-    if (!this.active) return this.t('demeterFarming.staking.stopped');
+    if (!this.activeStatus) return this.t('demeterFarming.staking.stopped');
 
     return this.t(this.hasStake ? 'demeterFarming.staking.active' : 'demeterFarming.actions.start');
   }
 
-  get icon(): string {
-    return this.hasStake ? 'basic-placeholder-24' : 'printer-16';
+  handleBadgeClick(event: Event): void {
+    if (this.depositDisabled) return;
+
+    event.stopPropagation();
+
+    this.add();
   }
 }
 </script>
 
+<style lang="scss">
+$token-logo-width: 20px;
+
+.status-badge-logo {
+  width: $token-logo-width;
+  height: $token-logo-width;
+
+  .logo {
+    width: inherit;
+    height: inherit;
+
+    .asset-logo--mini {
+      width: inherit;
+      height: inherit;
+    }
+  }
+}
+</style>
+
 <style lang="scss" scoped>
-$status-badge-width: 93px;
+$status-badge-width: 140px;
 
 .status-badge {
   display: flex;
@@ -51,27 +82,40 @@ $status-badge-width: 93px;
     color: var(--s-color-base-content-primary);
   }
 
-  &-icon {
-    color: var(--s-color-base-on-accent);
+  &-logo {
+    position: relative;
 
-    &.stake {
-      color: var(--s-color-status-error);
+    &-icon {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid var(--s-color-base-on-accent);
+
+      background-color: var(--s-color-status-error);
 
       &.active {
-        color: var(--s-color-status-success);
+        background-color: var(--s-color-status-success);
       }
     }
   }
 
   &-title {
-    font-size: var(--s-font-size-extra-mini);
+    font-size: calc(var(--s-font-size-extra-mini) - 1px);
     font-weight: 700;
     line-height: var(--s-line-height-reset);
     text-align: left;
     text-transform: uppercase;
+    white-space: nowrap;
+
+    &--mini {
+      font-weight: 600;
+    }
   }
 
-  &-icon + &-title {
+  &-logo + &-title {
     margin-left: $inner-spacing-mini * 0.75;
   }
 }

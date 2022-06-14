@@ -9,18 +9,19 @@
     <s-collapse class="demeter-staking-list" @change="updateActiveCollapseItems">
       <s-collapse-item v-for="token of tokensData" :key="token.address" :name="token.address" class="staking-info">
         <template #title>
-          <div class="staking-info-title">
-            <div class="staking-info-title__token">
-              <token-logo :token="token" size="medium" />
-              <h3>{{ token.symbol }}</h3>
+          <token-logo :token="token" size="medium" class="token-logo" />
+          <div>
+            <h3 class="staking-info-title">{{ token.symbol }}</h3>
+            <div class="s-flex">
+              <status-badge
+                v-for="item of token.items"
+                :key="item.pool.rewardAsset"
+                :pool="item.pool"
+                :account-pool="item.accountPool"
+                @add="changePoolStake($event, true)"
+                class="staking-info-badge"
+              />
             </div>
-
-            <status-badge
-              v-if="getStatusBadgeVisibility(token.address, activeCollapseItems)"
-              :active="hasActivePools(token.address)"
-              :has-stake="hasAccountPoolsForPoolAsset(token.address)"
-              class="staking-info-title__badge"
-            />
           </div>
         </template>
 
@@ -115,8 +116,11 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
 .demeter-staking-list {
   @include collapse-items;
   .el-collapse-item__header {
-    .logo {
+    align-items: flex-start;
+
+    .token-logo {
       margin-right: $inner-spacing-medium;
+      margin-top: $inner-spacing-mini / 2;
     }
   }
 }
@@ -133,25 +137,24 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
 </style>
 
 <style lang="scss" scoped>
+$title-height: 42px;
+
 .demeter-staking {
   height: 100%;
 }
 
 .staking-info {
   &-title {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    padding-right: $inner-spacing-medium;
+    font-weight: 700;
+    letter-spacing: var(--s-letter-spacing-small);
+    text-align: left;
+    height: $title-height;
+    line-height: $title-height;
+  }
 
-    &__token {
-      display: flex;
-      flex: 1;
-      align-items: center;
-
-      font-weight: 700;
-      letter-spacing: var(--s-letter-spacing-small);
-      text-align: left;
+  &-badge {
+    & + & {
+      margin-left: $inner-spacing-mini;
     }
   }
 

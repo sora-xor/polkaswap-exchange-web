@@ -82,11 +82,7 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
   }
 
   getStatusBadgeVisibility(address: string, activeCollapseItems: string[]): boolean {
-    const isClosedCollapseItem = !activeCollapseItems.includes(address);
-    const hasActivePools = this.hasActivePools(address);
-    const hasAccountPools = this.hasAccountPoolsForPoolAsset(address);
-
-    return isClosedCollapseItem && (hasActivePools || hasAccountPools);
+    return !activeCollapseItems.includes(address);
   }
 
   changePoolStake(params: { poolAsset: string; rewardAsset: string }, isAddingStake = true) {

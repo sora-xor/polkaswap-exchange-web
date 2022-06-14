@@ -23,6 +23,10 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
     return !!this.pool?.isFarm;
   }
 
+  get activeStatus(): boolean {
+    return !this.pool?.isRemoved;
+  }
+
   get hasStake(): boolean {
     return this.accountPool ? !this.accountPool.pooledTokens.isZero() : false;
   }
@@ -87,6 +91,10 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
 
   get availableFunds(): FPNumber {
     return this.isFarm ? this.funds.sub(this.lockedFunds) : this.funds;
+  }
+
+  get depositDisabled(): boolean {
+    return this.availableFunds.isZero();
   }
 
   get poolShare(): FPNumber {
@@ -187,5 +195,24 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
 
   get aprFormatted(): string {
     return this.apr.dp(2).toLocaleString() + '%';
+  }
+
+  get emitParams(): object {
+    return {
+      poolAsset: this.pool.poolAsset,
+      rewardAsset: this.pool.rewardAsset,
+    };
+  }
+
+  add(): void {
+    this.$emit('add', this.emitParams);
+  }
+
+  remove(): void {
+    this.$emit('remove', this.emitParams);
+  }
+
+  claim(): void {
+    this.$emit('claim', this.emitParams);
   }
 }

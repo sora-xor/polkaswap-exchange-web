@@ -102,10 +102,6 @@ export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
-  get activeStatus(): boolean {
-    return !this.pool.isRemoved;
-  }
-
   get title(): string {
     const key = this.activeStatus ? (this.hasStake ? 'active' : 'inactive') : 'stopped';
 
@@ -114,29 +110,6 @@ export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
 
   get primaryButtonText(): string {
     return this.t(`demeterFarming.actions.${this.hasStake ? 'add' : 'start'}`);
-  }
-
-  get depositDisabled(): boolean {
-    return this.availableFunds.isZero();
-  }
-
-  get emitParams(): object {
-    return {
-      poolAsset: this.pool.poolAsset,
-      rewardAsset: this.pool.rewardAsset,
-    };
-  }
-
-  add(): void {
-    this.$emit('add', this.emitParams);
-  }
-
-  remove(): void {
-    this.$emit('remove', this.emitParams);
-  }
-
-  claim(): void {
-    this.$emit('claim', this.emitParams);
   }
 
   handleConnectWallet(): void {

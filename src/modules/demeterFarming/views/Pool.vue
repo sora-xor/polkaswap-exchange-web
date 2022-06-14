@@ -2,12 +2,17 @@
   <div>
     <pool-base v-bind="{ parentLoading, ...$attrs }" v-on="$listeners">
       <template #title-append="{ liquidity, activeCollapseItems }">
-        <status-badge
-          v-if="getStatusBadgeVisibility(liquidity.secondAddress, activeCollapseItems)"
-          :active="hasActivePools(liquidity.secondAddress)"
-          :has-stake="hasAccountPoolsForPoolAsset(liquidity.secondAddress)"
-          class="farming-pool-badge"
-        />
+        <div v-if="getStatusBadgeVisibility(liquidity.address, activeCollapseItems)" class="s-flex">
+          <status-badge
+            v-for="item in getAvailablePools(pools[liquidity.secondAddress])"
+            :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}`"
+            :liquidity="liquidity"
+            :pool="item.pool"
+            :account-pool="item.accountPool"
+            @add="changePoolStake($event, true)"
+            class="farming-pool-badge"
+          />
+        </div>
       </template>
       <template #append="liquidity">
         <pool-card
@@ -80,7 +85,9 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
 
 <style lang="scss" scoped>
 .farming-pool-badge {
-  margin-right: $inner-spacing-medium;
+  & + & {
+    margin-left: $inner-spacing-mini;
+  }
 }
 .demeter-pool {
   margin-top: $inner-spacing-medium;

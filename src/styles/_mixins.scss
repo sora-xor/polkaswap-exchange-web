@@ -437,7 +437,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
 
     .el-collapse-item__header {
-      height: #{$collapse-icon-height + $inner-spacing-medium * 2};
+      height: auto;
+      min-height: #{$collapse-icon-height + $inner-spacing-medium * 2};
       line-height: $collapse-icon-height;
       padding: $inner-spacing-medium;
     }

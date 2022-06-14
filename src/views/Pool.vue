@@ -21,13 +21,14 @@
               :second-token="getAsset(liquidityItem.secondAddress)"
               size="small"
             />
-            <h3 class="pool-info-container__title">
-              {{
-                getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress))
-              }}
-            </h3>
-
-            <slot name="title-append" v-bind="{ liquidity: liquidityItem, activeCollapseItems }" />
+            <div class="pool-info-container-block">
+              <h3 class="pool-info-container__title">
+                {{
+                  getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress))
+                }}
+              </h3>
+              <slot name="title-append" v-bind="{ liquidity: liquidityItem, activeCollapseItems }" />
+            </div>
           </template>
 
           <pool-info>
@@ -214,15 +215,18 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
 .pool-list {
   @include collapse-items;
   .el-collapse-item__header {
+    align-items: flex-start;
+
     .pair-logo {
       margin-right: $inner-spacing-medium;
+      margin-top: $inner-spacing-mini / 2;
     }
   }
 }
 </style>
 
 <style lang="scss" scoped>
-$pair-icon-height: 36px;
+$title-height: 42px;
 
 .el-form--pool {
   display: flex;
@@ -267,11 +271,17 @@ $pair-icon-height: 36px;
         text-align: center;
       }
 
+      &-block {
+        flex: 1;
+      }
+
       &__title {
         flex: 1;
         font-weight: 700;
         letter-spacing: var(--s-letter-spacing-small);
         text-align: left;
+        min-height: $title-height;
+        line-height: $title-height;
       }
 
       & + .el-button {
