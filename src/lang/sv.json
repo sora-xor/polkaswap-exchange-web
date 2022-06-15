@@ -44,7 +44,12 @@
             "ReferralReserveXor": "XOR Bonded framgångsrikt",
             "ReferralUnreserveXor": "XOR Unbonded framgångsrikt",
             "ReferralSetInvitedUser": "Hänvisning tillämpades framgångsrikt",
-            "SwapAndSend": "Bytte {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}"
+            "SwapAndSend": "Bytte {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Medföljer {symbol} och {symbol2} {amount} LP-polletter",
+            "DemeterFarmingWithdrawLiquidity": "Tog bort {symbol} och {symbol2} {amount} LP-tokens",
+            "DemeterFarmingStakeToken": "Lade till {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Tog bort {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} har gjort anspråk"
         },
         "error": {
             "Transfer": "Misslyckades att skicka {amount} {symbol} till {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Misslyckades med att bond XOR",
             "ReferralUnreserveXor": "Misslyckades med att unbond XOR",
             "ReferralSetInvitedUser": "Misslyckades med att tillämpa hänvisning",
-            "SwapAndSend": "Misslyckades med att byta {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}"
+            "SwapAndSend": "Misslyckades med att byta {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Det gick inte att ange {amount} {symbol} och {symbol2} LP-tokens",
+            "DemeterFarmingWithdrawLiquidity": "Det gick inte att ta bort {amount} {symbol} och {symbol2} LP-tokens",
+            "DemeterFarmingStakeToken": "Det gick inte att lägga till {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Det gick inte att ta bort {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Det gick inte att göra anspråk på {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
         "ReferralSetInvitedUser": "Tillämpa Inbjudning",
-        "SwapAndSend": "Byt och Skicka"
+        "SwapAndSend": "Byt och Skicka",
+        "DemeterFarmingDepositLiquidity": "Insats likviditet",
+        "DemeterFarmingWithdrawLiquidity": "Unstake likviditet",
+        "DemeterFarmingStakeToken": "Stake Token",
+        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingGetRewards": "Gör Anspråk på Belöningar"
     },
     "polkadotjs": {
         "noExtensions": "Inget Polkadot.js tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -327,7 +342,8 @@
         "Stats": "Statistik",
         "Support": "Assistans",
         "CreatePair": "Skapa Par",
-        "Tokens": "Tokens"
+        "Tokens": "Tokens",
+        "StakingContainer": "Utsättning"
     },
     "social": {
         "twitter": "Twitter",
@@ -693,7 +709,8 @@
         "description": "Genom att tar bort pool-tokens så omvandlas din position till underliggande tokens med den aktuella växlingskursen, proportionell till din andel av poolen. Upplupna avgifter ingår i de belopp du erhåller.",
         "outputMessage": "Utdata är beräknad ungefärligt. Om priset ändras mer än {slippageTolerance} så återgår din transaktion.",
         "confirmTitle": "Du kommer att mottaga",
-        "shareOfPool": "Andel av poolen efter transaktionen"
+        "shareOfPool": "Andel av poolen efter transaktionen",
+        "locked": "{percent} av din pool är i insats"
     },
     "dexSettings": {
         "title": "Transaktionsinställningar",
@@ -959,5 +976,73 @@
     "releaseNotesText": "Utgivningsanmärkningar",
     "copiedText": "Kopierade!",
     "copyWithValue": "Kopiera {value}",
-    "copiedWithValue": "{value} kopieras!"
+    "copiedWithValue": "{value} kopieras!",
+    "signAndClaimText": "Signera och gör anspråk",
+    "balanceText": "Saldo",
+    "unknownAssetText": "Okänd tillgång",
+    "demeterFarming": {
+        "staking": {
+            "active": "Insats aktiv",
+            "inactive": "Satsa för att tjäna ytterligare belöningar",
+            "stopped": "Staking upphörde"
+        },
+        "info": {
+            "earned": "{symbol} tjänat",
+            "fee": "Avgift",
+            "feeTooltip": "Insättningsavgift tillämpas på ditt belopp som du satsar på",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Din poolandel insats",
+            "poolShareWillBe": "Din poolandel insats kommer att vara",
+            "rewardToken": "Belöningstoken",
+            "stake": "Din {symbol} insats",
+            "stakeWillBe": "Din insats på {symbol} blir",
+            "totalLiquidityLocked": "Total likviditet låst"
+        },
+        "actions": {
+            "add": "Satsa mer",
+            "claim": "Gör anspråk på belöningar",
+            "remove": "Ta bort insatsen",
+            "start": "Börja staka"
+        },
+        "amountAdd": "Belopp till insats",
+        "amountRemove": "Belopp att ta bort",
+        "poweredBy": "Drivs av Demeter Farming"
+    },
+    "staking": {
+        "title": "Utsättning"
+    },
+    "historyErrorMessages": {
+        "generalError": "Något gick fel",
+        "balances": {
+            "LiquidityRestrictions": "Kontolikviditetsbegränsningar förhindrar uttag"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Källbalansen är inte tillräckligt stor",
+            "TargetBalanceIsNotLargeEnough": "Destinationssaldot är inte tillräckligt stort",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Förutsatt att beloppen är för olika",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Beloppen ligger utanför de föreskrivna gränserna.",
+            "UnableToDepositXorLessThanMinimum": "XOR lägre än minimivärdet (0,007)"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Poolpar finns redan",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Kontot har redan en hänvisare",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Belöningsprogrammet har redan avslutats",
+            "CantCalculateReward": "Det gick inte att utföra belöningsberäkningen",
+            "NoRewardsForAsset": "Det finns inga belöningar för denna tillgång"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Vald likviditetskälla är inte tillåten"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Otillräckliga medel",
+            "InsufficientLPTokens": "Otillräckliga likviditetsbevis",
+            "PoolDoesNotHaveRewards": "Pool har inga belöningar"
+        }
+    }
 }

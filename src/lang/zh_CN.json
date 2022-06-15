@@ -44,7 +44,12 @@
             "ReferralReserveXor": "绑定XOR成功",
             "ReferralUnreserveXor": "解绑XOR成功",
             "ReferralSetInvitedUser": "推荐设置成功",
-            "SwapAndSend": "将{amount} {symbol}交换为{amount2} {symbol2}和{action} {direction} {address}"
+            "SwapAndSend": "将{amount} {symbol}交换为{amount2} {symbol2}和{action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "提供{symbol}和{symbol2} {amount} LP 代币",
+            "DemeterFarmingWithdrawLiquidity": "移除{symbol}和{symbol2} {amount} LP 代币",
+            "DemeterFarmingStakeToken": "添加了{amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "删除了{amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol}成功申领"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "绑定XOR失败",
             "ReferralUnreserveXor": "XOR解绑失败",
             "ReferralSetInvitedUser": "设置推荐失败",
-            "SwapAndSend": "无法将{amount} {symbol}交换为{amount2} {symbol2}和{action} {direction} {address}"
+            "SwapAndSend": "无法将{amount} {symbol}交换为{amount2} {symbol2}和{action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "未能提供{amount} {symbol}和{symbol2} LP 代币",
+            "DemeterFarmingWithdrawLiquidity": "未能删除{amount} {symbol}和{symbol2} LP 令牌",
+            "DemeterFarmingStakeToken": "添加{amount} {symbol}失败",
+            "DemeterFarmingUnstakeToken": "未能删除{amount} {symbol}",
+            "DemeterFarmingGetRewards": "未能认领{symbol}"
         },
         "ReferralReserveXor": "债券XOR",
         "ReferralUnreserveXor": "解绑XOR",
         "ReferralSetInvitedUser": "设置推荐",
-        "SwapAndSend": "交换和发送"
+        "SwapAndSend": "交换和发送",
+        "DemeterFarmingDepositLiquidity": "股权流动性",
+        "DemeterFarmingWithdrawLiquidity": "无抵押流动性",
+        "DemeterFarmingStakeToken": "股权代币",
+        "DemeterFarmingUnstakeToken": "取消质押代币",
+        "DemeterFarmingGetRewards": "申领奖励"
     },
     "polkadotjs": {
         "noExtensions": "没有找到 Polkadot.js 扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -327,7 +342,8 @@
         "Stats": "统计数据",
         "Support": "支持",
         "CreatePair": "创建一对",
-        "Tokens": "代币"
+        "Tokens": "代币",
+        "StakingContainer": "质押"
     },
     "social": {
         "twitter": "Twitter",
@@ -693,7 +709,8 @@
         "description": "删除池中的代币会将您的头寸以当前的汇率转换为基础代币，与您在池中的份额成正比。累积的费用将包括在您所收到的金额中。",
         "outputMessage": "产出是估计的。如果价格变化超过{slippageTolerance}%，您的交易将被取消。",
         "confirmTitle": "您将收到",
-        "shareOfPool": "交易后的资金池份额"
+        "shareOfPool": "交易后的资金池份额",
+        "locked": "{percent}您的资金池在质押"
     },
     "dexSettings": {
         "title": "交易设置",
@@ -959,5 +976,73 @@
     "releaseNotesText": "发行说明",
     "copiedText": "复制！",
     "copyWithValue": "复制{value}",
-    "copiedWithValue": "{value}被复制！"
+    "copiedWithValue": "{value}被复制！",
+    "signAndClaimText": "签名并申领",
+    "balanceText": "余额",
+    "unknownAssetText": "未知资产",
+    "demeterFarming": {
+        "staking": {
+            "active": "质押活跃",
+            "inactive": "投注以获得额外奖励",
+            "stopped": "质押停止"
+        },
+        "info": {
+            "earned": "{symbol}获得",
+            "fee": "费用",
+            "feeTooltip": "存款费用适用于您的质押金额",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "您的权益池份额",
+            "poolShareWillBe": "您的权益池份额将是",
+            "rewardToken": "奖励代币",
+            "stake": "您的{symbol}质押",
+            "stakeWillBe": "您的{symbol}股份将是",
+            "totalLiquidityLocked": "总流动性锁定"
+        },
+        "actions": {
+            "add": "质押更多",
+            "claim": "领取奖励",
+            "remove": "移除股权",
+            "start": "开始放样"
+        },
+        "amountAdd": "质押金额",
+        "amountRemove": "移除金额",
+        "poweredBy": "由 Demeter Farming 提供动力"
+    },
+    "staking": {
+        "title": "质押"
+    },
+    "historyErrorMessages": {
+        "generalError": "出问题了",
+        "balances": {
+            "LiquidityRestrictions": "账户流动性限制阻止提款"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "源余额不够大",
+            "TargetBalanceIsNotLargeEnough": "目的地余额不够大",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "提供的金额过于多样化",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "金额超出要求的范围",
+            "UnableToDepositXorLessThanMinimum": "XOR 低于最小值 (0.007)"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "池对已存在",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "帐户已有推荐人",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "奖励计划已经结束",
+            "CantCalculateReward": "奖励计算失败",
+            "NoRewardsForAsset": "该资产没有奖励"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "不允许选择的流动性来源"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "不充足的资金",
+            "InsufficientLPTokens": "流动性提供代币不足",
+            "PoolDoesNotHaveRewards": "矿池没有奖励"
+        }
+    }
 }

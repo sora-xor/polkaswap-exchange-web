@@ -44,7 +44,12 @@
             "ReferralReserveXor": "XOR-ը հաջողությամբ կապակցվեց",
             "ReferralUnreserveXor": "XOR-ը հաջողությամբ ունբոնդ",
             "ReferralSetInvitedUser": "Հղումը դրվում է հաջողությամբ",
-            "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}"
+            "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Տրամադրված {symbol} և {symbol2} {amount} LP ժետոններ",
+            "DemeterFarmingWithdrawLiquidity": "Հեռացվել են {symbol} և {symbol2} {amount} LP նշանները",
+            "DemeterFarmingStakeToken": "Ավելացվեց {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Հեռացվել է {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} ը հաջողությամբ ներկայացվեց"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Չհաջողվեց կապել XOR-ը",
             "ReferralUnreserveXor": "Ունբոնդ Ձախողվել է XOR-ը",
             "ReferralSetInvitedUser": "Չհաջողվեց սահմանել ուղղորդում",
-            "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}"
+            "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} և {symbol2} LP նշաններ",
+            "DemeterFarmingWithdrawLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {symbol2} LP նշանները",
+            "DemeterFarmingStakeToken": "Չհաջողվեց ավելացնել {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Չհաջողվեց հեռացնել {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Չհաջողվեց պահանջել {symbol}"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
         "ReferralSetInvitedUser": "Սահմանել ուղղորդում",
-        "SwapAndSend": "Փոխանակեք և ուղարկեք"
+        "SwapAndSend": "Փոխանակեք և ուղարկեք",
+        "DemeterFarmingDepositLiquidity": "Բաժնի իրացվելիություն",
+        "DemeterFarmingWithdrawLiquidity": "Չվճարված իրացվելիություն",
+        "DemeterFarmingStakeToken": "Ցցի նշան",
+        "DemeterFarmingUnstakeToken": "Անցկացնել նշան",
+        "DemeterFarmingGetRewards": "Հաստատել Պարգևները"
     },
     "polkadotjs": {
         "noExtensions": "Polkadot.js- ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
@@ -327,7 +342,8 @@
         "Stats": "Վիճակագրություն",
         "Support": "Աջակցություն",
         "CreatePair": "Ստեղծել զույգ",
-        "Tokens": "Տոկեններ"
+        "Tokens": "Տոկեններ",
+        "StakingContainer": "Ցուցադրում"
     },
     "social": {
         "twitter": "Twitter",
@@ -693,7 +709,8 @@
         "description": "Պահուստի տոկենների վերացումը ձեր դիրքը վերափոխում է հիմքում ընկած տոկենների ներկայիս արագությամբ ՝ համամասնորեն պահուստի ձեր մասնաբաժնի: Հաշվարկված վճարները ներառված են ձեր ստացած գումարների մեջ:",
         "outputMessage": "Արդյունքը գնահատվում է: Եթե գինը փոխվի ավելի քան {slippageTolerance} %, ձեր գործարքը կվերականգնվի:",
         "confirmTitle": "Դուք կստանաք",
-        "shareOfPool": "Գործարքից հետո լողավազանի մասնաբաժինը"
+        "shareOfPool": "Գործարքից հետո լողավազանի մասնաբաժինը",
+        "locked": "Ձեր լողավազանի {percent} -ը խաղադրույքի մեջ է"
     },
     "dexSettings": {
         "title": "Գործարքի պարամետրերը",
@@ -959,5 +976,73 @@
     "releaseNotesText": "Թողարկման նշումներ",
     "copiedText": "Պատճենվել է!",
     "copyWithValue": "Պատճենել {value}",
-    "copiedWithValue": "{value} արտագրվում է!"
+    "copiedWithValue": "{value} արտագրվում է!",
+    "signAndClaimText": "Ստորագրեք և հաստատեք",
+    "balanceText": "Բալանս",
+    "unknownAssetText": "Անհայտ ակտիվ",
+    "demeterFarming": {
+        "staking": {
+            "active": "Ակտիվ խաղադրույք",
+            "inactive": "Խաղադրույք՝ լրացուցիչ պարգևներ ստանալու համար",
+            "stopped": "Խաղադրույքը դադարեց"
+        },
+        "info": {
+            "earned": "{symbol} վաստակած",
+            "fee": "Վճար",
+            "feeTooltip": "Ավանդի վճարը կիրառվում է բաժնետոմսի ձեր գումարի նկատմամբ",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Ձեր լողավազանի բաժնեմասը դրված է",
+            "poolShareWillBe": "Ձեր ավազանի բաժնեմասը կկազմի",
+            "rewardToken": "Պարգևատրման նշան",
+            "stake": "Ձեր {symbol} խաղադրույքը",
+            "stakeWillBe": "Ձեր {symbol} խաղադրույքը կլինի",
+            "totalLiquidityLocked": "Ընդհանուր հեղուկը կողպված է"
+        },
+        "actions": {
+            "add": "Ցից ավելին",
+            "claim": "ստանալ պարգևներ",
+            "remove": "Հեռացնել ցցը",
+            "start": "Սկսեք staking"
+        },
+        "amountAdd": "Խաղադրույքի չափը",
+        "amountRemove": "Հեռացնելու գումարը",
+        "poweredBy": "Powered by Demeter Farming"
+    },
+    "staking": {
+        "title": "Ցուցադրում"
+    },
+    "historyErrorMessages": {
+        "generalError": "Ինչ որ բան այնպես չգնաց",
+        "balances": {
+            "LiquidityRestrictions": "Հաշվի իրացվելիության սահմանափակումները կանխում են դուրսբերումը"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Աղբյուրի հաշվեկշիռը բավականաչափ մեծ չէ",
+            "TargetBalanceIsNotLargeEnough": "Նպատակակետի հաշվեկշիռը բավականաչափ մեծ չէ",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Տրամադրված գումարները չափազանց բազմազան են",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Գումարները դուրս են պահանջվող սահմաններից",
+            "UnableToDepositXorLessThanMinimum": "XOR նվազագույն արժեքից ցածր (0,007)"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Լողավազանների զույգն արդեն գոյություն ունի",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Հաշիվն արդեն ունի ուղղորդող",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Պարգևատրման ծրագիրն արդեն ավարտված է",
+            "CantCalculateReward": "Չհաջողվեց կատարել պարգևների հաշվարկը",
+            "NoRewardsForAsset": "Այս ակտիվի համար պարգևներ չկան"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Անբավարար միջոցներ",
+            "InsufficientLPTokens": "Անբավարար իրացվելիության տրամադրման նշաններ",
+            "PoolDoesNotHaveRewards": "Լողավազանը պարգևներ չունի"
+        }
+    }
 }
