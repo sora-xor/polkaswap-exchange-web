@@ -94,7 +94,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   }
 
   get depositDisabled(): boolean {
-    return this.availableFunds.isZero();
+    return !this.activeStatus || this.availableFunds.isZero();
   }
 
   get poolShare(): FPNumber {
