@@ -117,11 +117,14 @@
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
-        :disabled="isInsufficientXorForFee || valueFundsEmpty"
+        :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
         @click="handleConfirm"
       >
         <template v-if="isInsufficientXorForFee">
           {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
+        </template>
+        <template v-else-if="isInsufficientBalance">
+          {{ t('insufficientBalanceText', { tokenSymbol: poolAssetSymbol }) }}
         </template>
         <template v-else-if="valueFundsEmpty">
           {{ t('buttons.enterAmount') }}
@@ -170,10 +173,10 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
 
   @Watch('visible')
   private resetValue() {
-    this.value = ZeroStringValue;
+    this.value = '';
   }
 
-  value = ZeroStringValue;
+  value = '';
 
   get networkFee(): string {
     const operation = this.isAdding
@@ -218,7 +221,7 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
       return this.isFarm ? fundsAfter.div(this.funds.sub(feeFromValue)).mul(FPNumber.HUNDRED) : fundsAfter;
     } else {
       const funds = FPNumber.max(this.lockedFunds, this.funds);
-      const fundsAfter = this.lockedFunds.sub(this.valueFunds);
+      const fundsAfter = FPNumber.max(this.lockedFunds.sub(this.valueFunds), FPNumber.ZERO);
 
       return this.isFarm ? fundsAfter.div(funds).mul(FPNumber.HUNDRED) : fundsAfter;
     }
@@ -285,16 +288,26 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
     return !FPNumber.eq(this.valueFunds, amount);
   }
 
+  get maxStake(): string {
+    if (!this.poolAsset) return ZeroStringValue;
+
+    return this.isAdding ? getMaxValue(this.poolAsset, this.networkFee) : this.lockedFunds.toString();
+  }
+
+  get isInsufficientBalance(): boolean {
+    if (this.isFarm) return false;
+
+    const availableBalance = new FPNumber(this.maxStake, this.poolAsset?.decimals);
+
+    return FPNumber.lt(availableBalance, this.valueFunds);
+  }
+
   handleValue(value: string): void {
     this.value = String(value);
   }
 
   handleMaxValue(): void {
-    if (!this.poolAsset) return;
-
-    const max = this.isAdding ? getMaxValue(this.poolAsset, this.networkFee) : this.lockedFunds.toString();
-
-    this.handleValue(max);
+    this.handleValue(this.maxStake);
   }
 
   handleConfirm(): void {
