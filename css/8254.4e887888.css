@@ -1,0 +1,1 @@
+.sort-button{cursor:pointer;display:flex;margin:auto}.sort-icon{display:inline-flex}.sort-icon--active{color:var(--s-color-theme-accent)!important}.sort-icon--descending{transform:rotate(180deg)}
