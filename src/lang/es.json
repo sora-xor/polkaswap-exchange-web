@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "El saldo de destino no es lo suficientemente grande",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Las cantidades proporcionadas son demasiado diversas",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Los montos están fuera de los límites requeridos",
-            "UnableToDepositXorLessThanMinimum": "XOR inferior al valor mínimo (0,007)"
+            "UnableToDepositXorLessThanMinimum": "XOR inferior al valor mínimo (0,007)",
+            "ZeroValueInAmountParameter": "El parámetro de cantidad tiene valor cero"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "El par de grupos ya existe",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Fondos insuficientes",
             "InsufficientLPTokens": "Tokens de provisión de liquidez insuficientes",
             "PoolDoesNotHaveRewards": "La piscina no tiene recompensas."
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Ocurrió un error al calcular el precio"
         }
     }
 }

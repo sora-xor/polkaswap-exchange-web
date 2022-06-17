@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Stanje odredišta nije dovoljno veliko",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Pod uvjetom da su iznosi previše raznoliki",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Iznosi su izvan potrebnih granica",
-            "UnableToDepositXorLessThanMinimum": "XOR manji od minimalne vrijednosti (0,007)"
+            "UnableToDepositXorLessThanMinimum": "XOR manji od minimalne vrijednosti (0,007)",
+            "ZeroValueInAmountParameter": "Parametar iznosa ima nultu vrijednost"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Par bazena već postoji",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Nedostatna sredstva",
             "InsufficientLPTokens": "Nedovoljni tokeni za osiguranje likvidnosti",
             "PoolDoesNotHaveRewards": "Pool nema nagrade"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Došlo je do greške prilikom izračuna cijene"
         }
     }
 }

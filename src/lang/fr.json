@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Le solde de la destination n'est pas assez important",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Les montants fournis sont trop variés",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Les montants sont en dehors des limites requises",
-            "UnableToDepositXorLessThanMinimum": "XOR inférieur à la valeur minimale (0,007)"
+            "UnableToDepositXorLessThanMinimum": "XOR inférieur à la valeur minimale (0,007)",
+            "ZeroValueInAmountParameter": "Le paramètre de montant a une valeur nulle"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "La paire de pool existe déjà",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Fonds insuffisants",
             "InsufficientLPTokens": "Jetons de provision de liquidité insuffisants",
             "PoolDoesNotHaveRewards": "La piscine n'a pas de récompenses"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Une erreur s'est produite lors du calcul du prix"
         }
     }
 }

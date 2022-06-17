@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "目的地余额不够大",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "提供的金额过于多样化",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "金额超出要求的范围",
-            "UnableToDepositXorLessThanMinimum": "XOR 低于最小值 (0.007)"
+            "UnableToDepositXorLessThanMinimum": "XOR 低于最小值 (0.007)",
+            "ZeroValueInAmountParameter": "金额参数为零值"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "池对已存在",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "不充足的资金",
             "InsufficientLPTokens": "流动性提供代币不足",
             "PoolDoesNotHaveRewards": "矿池没有奖励"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "计算价格时出错"
         }
     }
 }

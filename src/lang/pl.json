@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Saldo docelowe nie jest wystarczająco duże",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Podane kwoty są zbyt zróżnicowane",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Kwoty wykraczają poza wymagane granice",
-            "UnableToDepositXorLessThanMinimum": "XOR mniejsze niż wartość minimalna (0,007)"
+            "UnableToDepositXorLessThanMinimum": "XOR mniejsze niż wartość minimalna (0,007)",
+            "ZeroValueInAmountParameter": "Parametr kwoty ma wartość zerową"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Para puli już istnieje",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Niewystarczające środki",
             "InsufficientLPTokens": "Niewystarczające tokeny zapewniające płynność",
             "PoolDoesNotHaveRewards": "Pula nie ma nagród"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Wystąpił błąd podczas obliczania ceny"
         }
     }
 }

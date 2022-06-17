@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Նպատակակետի հաշվեկշիռը բավականաչափ մեծ չէ",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Տրամադրված գումարները չափազանց բազմազան են",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Գումարները դուրս են պահանջվող սահմաններից",
-            "UnableToDepositXorLessThanMinimum": "XOR նվազագույն արժեքից ցածր (0,007)"
+            "UnableToDepositXorLessThanMinimum": "XOR նվազագույն արժեքից ցածր (0,007)",
+            "ZeroValueInAmountParameter": "Գումարի պարամետրը զրո արժեք ունի"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Լողավազանների զույգն արդեն գոյություն ունի",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Անբավարար միջոցներ",
             "InsufficientLPTokens": "Անբավարար իրացվելիության տրամադրման նշաններ",
             "PoolDoesNotHaveRewards": "Լողավազանը պարգևներ չունի"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Գինը հաշվարկելիս սխալ է տեղի ունեցել"
         }
     }
 }

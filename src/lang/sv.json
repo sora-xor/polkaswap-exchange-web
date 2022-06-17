@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Destinationssaldot är inte tillräckligt stort",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Förutsatt att beloppen är för olika",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Beloppen ligger utanför de föreskrivna gränserna.",
-            "UnableToDepositXorLessThanMinimum": "XOR lägre än minimivärdet (0,007)"
+            "UnableToDepositXorLessThanMinimum": "XOR lägre än minimivärdet (0,007)",
+            "ZeroValueInAmountParameter": "Beloppsparameter har nollvärde"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Poolpar finns redan",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Otillräckliga medel",
             "InsufficientLPTokens": "Otillräckliga likviditetsbevis",
             "PoolDoesNotHaveRewards": "Pool har inga belöningar"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Ett fel uppstod när priset beräknades"
         }
     }
 }

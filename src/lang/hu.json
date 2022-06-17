@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Az úti cél egyenlege nem elég nagy",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "A megadott összegek túlságosan változatosak",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Az összegek túllépik a szükséges határokat",
-            "UnableToDepositXorLessThanMinimum": "XOR kisebb, mint a minimális érték (0,007)"
+            "UnableToDepositXorLessThanMinimum": "XOR kisebb, mint a minimális érték (0,007)",
+            "ZeroValueInAmountParameter": "Az Amount paraméter értéke nulla"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "A medencepár már létezik",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Fedezethiány",
             "InsufficientLPTokens": "Nincs elegendő likviditási biztosíték token",
             "PoolDoesNotHaveRewards": "A medence nem jár jutalmakkal"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Hiba történt az ár kiszámításakor"
         }
     }
 }

@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Cílová bilance není dostatečně velká",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Poskytované částky jsou příliš různorodé",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Částky jsou mimo požadované hranice",
-            "UnableToDepositXorLessThanMinimum": "XOR nižší než minimální hodnota (0,007)"
+            "UnableToDepositXorLessThanMinimum": "XOR nižší než minimální hodnota (0,007)",
+            "ZeroValueInAmountParameter": "Parametr množství má nulovou hodnotu"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Pool pár již existuje",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Nedostatečné finanční prostředky",
             "InsufficientLPTokens": "Nedostatek tokenů pro poskytování likvidity",
             "PoolDoesNotHaveRewards": "Pool nemá odměny"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Při výpočtu ceny došlo k chybě"
         }
     }
 }

@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Destinasjonsbalansen er ikke stor nok",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Forutsatt at beløpene er for forskjellige",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Beløp er utenfor påkrevde grenser",
-            "UnableToDepositXorLessThanMinimum": "XOR lavere enn minimumsverdien (0,007)"
+            "UnableToDepositXorLessThanMinimum": "XOR lavere enn minimumsverdien (0,007)",
+            "ZeroValueInAmountParameter": "Mengdeparameteren har nullverdi"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Pool-par eksisterer allerede",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Utilstrekkelige midler",
             "InsufficientLPTokens": "Utilstrekkelige likviditetsavsetningssymboler",
             "PoolDoesNotHaveRewards": "Bassenget har ikke belønninger"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Det oppsto en feil under beregning av prisen"
         }
     }
 }

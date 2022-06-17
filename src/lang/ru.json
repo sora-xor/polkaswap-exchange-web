@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Баланс назначения недостаточно велик",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Предоставленные суммы слишком разняться",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Суммы выходят за установленные пределы",
-            "UnableToDepositXorLessThanMinimum": "XOR ниже минимального значения (0,007)"
+            "UnableToDepositXorLessThanMinimum": "XOR ниже минимального значения (0,007)",
+            "ZeroValueInAmountParameter": "Параметр суммы имеет нулевое значение"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Пара пулов уже существует",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Недостаточно средств",
             "InsufficientLPTokens": "Недостаточное количество токенов обеспечения ликвидности",
             "PoolDoesNotHaveRewards": "Пул не имеет наград"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Произошла ошибка при расчете цены"
         }
     }
 }

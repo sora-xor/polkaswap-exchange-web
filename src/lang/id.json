@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Saldo tujuan tidak cukup besar",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Jumlah yang disediakan terlalu beragam",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Jumlahnya di luar batas yang dipersyaratkan",
-            "UnableToDepositXorLessThanMinimum": "XOR lebih rendah dari nilai minimum (0,007)"
+            "UnableToDepositXorLessThanMinimum": "XOR lebih rendah dari nilai minimum (0,007)",
+            "ZeroValueInAmountParameter": "Parameter jumlah memiliki nilai nol"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Pasangan kolam sudah ada",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Dana tidak mencukupi",
             "InsufficientLPTokens": "Token penyediaan likuiditas tidak mencukupi",
             "PoolDoesNotHaveRewards": "Pool tidak memiliki hadiah"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Terjadi kesalahan saat menghitung harga"
         }
     }
 }

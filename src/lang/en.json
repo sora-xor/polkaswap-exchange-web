@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Destination balance is not large enough",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Provided amounts are too diverse",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Amounts are out of required bounds",
-            "UnableToDepositXorLessThanMinimum": "XOR lower than the minimum value (0.007)"
+            "UnableToDepositXorLessThanMinimum": "XOR lower than the minimum value (0.007)",
+            "ZeroValueInAmountParameter": "Amount parameter has zero value"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Pool pair already exists",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Insufficient funds",
             "InsufficientLPTokens": "Insufficient liquidity provision tokens",
             "PoolDoesNotHaveRewards": "Pool does not have rewards"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "An error occurred while calculating the price"
         }
     }
 }

@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Iwontunwonsi nlo ko tobi to",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Awọn iye ti a pese ni o yatọ pupọ",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Awọn iye ko si ni awọn ala ti a beere",
-            "UnableToDepositXorLessThanMinimum": "XOR kere ju iye to kere ju (0.007)"
+            "UnableToDepositXorLessThanMinimum": "XOR kere ju iye to kere ju (0.007)",
+            "ZeroValueInAmountParameter": "Paramita iye ni iye odo"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Pool bata ti wa tẹlẹ",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Awọn owo ti ko to",
             "InsufficientLPTokens": "Insufficient oloomi ipese àmi",
             "PoolDoesNotHaveRewards": "Pool ko ni ni ere"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Aṣiṣe waye lakoko ti o ṣe iṣiro idiyele naa"
         }
     }
 }

@@ -1021,7 +1021,8 @@
             "TargetBalanceIsNotLargeEnough": "Zielguthaben ist nicht groß genug",
             "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Vorausgesetzte Beträge sind zu unterschiedlich",
             "CalculatedValueIsNotMeetsRequiredBoundaries": "Die Beträge liegen außerhalb der erforderlichen Grenzen",
-            "UnableToDepositXorLessThanMinimum": "XOR niedriger als der Mindestwert (0,007)"
+            "UnableToDepositXorLessThanMinimum": "XOR niedriger als der Mindestwert (0,007)",
+            "ZeroValueInAmountParameter": "Betragsparameter hat Nullwert"
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Poolpaar existiert bereits",
@@ -1043,6 +1044,9 @@
             "InsufficientFunds": "Unzureichende Mittel",
             "InsufficientLPTokens": "Unzureichende Liquiditätsbereitstellungstoken",
             "PoolDoesNotHaveRewards": "Pool hat keine Belohnungen"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Bei der Berechnung des Preises ist ein Fehler aufgetreten"
         }
     }
 }
