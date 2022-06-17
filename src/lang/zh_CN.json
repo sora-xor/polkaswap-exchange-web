@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "质押"
+    },
+    "historyErrorMessages": {
+        "generalError": "出问题了",
+        "balances": {
+            "LiquidityRestrictions": "账户流动性限制阻止提款"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "源余额不够大",
+            "TargetBalanceIsNotLargeEnough": "目的地余额不够大",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "提供的金额过于多样化",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "金额超出要求的范围",
+            "UnableToDepositXorLessThanMinimum": "XOR 低于最小值 (0.007)",
+            "ZeroValueInAmountParameter": "金额参数为零值"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "池对已存在",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "帐户已有推荐人",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "奖励计划已经结束",
+            "CantCalculateReward": "奖励计算失败",
+            "NoRewardsForAsset": "该资产没有奖励"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "不允许选择的流动性来源"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "不充足的资金",
+            "InsufficientLPTokens": "流动性提供代币不足",
+            "PoolDoesNotHaveRewards": "矿池没有奖励"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "计算价格时出错"
+        }
     }
 }

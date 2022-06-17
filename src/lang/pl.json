@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Coś poszło nie tak",
+        "balances": {
+            "LiquidityRestrictions": "Ograniczenia płynności konta uniemożliwiają wypłatę"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Saldo źródeł nie jest wystarczająco duże",
+            "TargetBalanceIsNotLargeEnough": "Saldo docelowe nie jest wystarczająco duże",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Podane kwoty są zbyt zróżnicowane",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Kwoty wykraczają poza wymagane granice",
+            "UnableToDepositXorLessThanMinimum": "XOR mniejsze niż wartość minimalna (0,007)",
+            "ZeroValueInAmountParameter": "Parametr kwoty ma wartość zerową"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Para puli już istnieje",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Konto ma już osobę polecającą",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Program nagród już się zakończył",
+            "CantCalculateReward": "Nie udało się wykonać obliczenia nagrody",
+            "NoRewardsForAsset": "Nie ma nagród za ten zasób"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Wybrane źródło płynności jest niedozwolone"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Niewystarczające środki",
+            "InsufficientLPTokens": "Niewystarczające tokeny zapewniające płynność",
+            "PoolDoesNotHaveRewards": "Pula nie ma nagród"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Wystąpił błąd podczas obliczania ceny"
+        }
     }
 }

@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Staken"
+    },
+    "historyErrorMessages": {
+        "generalError": "Etwas ist schief gelaufen",
+        "balances": {
+            "LiquidityRestrictions": "Einschränkungen der Kontoliquidität verhindern eine Auszahlung"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Quellguthaben ist nicht groß genug",
+            "TargetBalanceIsNotLargeEnough": "Zielguthaben ist nicht groß genug",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Vorausgesetzte Beträge sind zu unterschiedlich",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Die Beträge liegen außerhalb der erforderlichen Grenzen",
+            "UnableToDepositXorLessThanMinimum": "XOR niedriger als der Mindestwert (0,007)",
+            "ZeroValueInAmountParameter": "Betragsparameter hat Nullwert"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Poolpaar existiert bereits",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Das Konto hat bereits einen Referrer",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Das Prämienprogramm ist bereits beendet",
+            "CantCalculateReward": "Prämienberechnung konnte nicht durchgeführt werden",
+            "NoRewardsForAsset": "Für diesen Vermögenswert gibt es keine Belohnungen"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Ausgewählte Liquiditätsquelle ist nicht zulässig"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Unzureichende Mittel",
+            "InsufficientLPTokens": "Unzureichende Liquiditätsbereitstellungstoken",
+            "PoolDoesNotHaveRewards": "Pool hat keine Belohnungen"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Bei der Berechnung des Preises ist ein Fehler aufgetreten"
+        }
     }
 }

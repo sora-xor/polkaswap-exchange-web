@@ -31,7 +31,7 @@
         "RemoveLiquidity": "Rút thanh khoản",
         "CreatePair": "Tạo một cặp token",
         "RegisterAsset": "Đăng ký Tài sản",
-        "ClaimRewards": "Yêu cầu phần thưởng",
+        "ClaimRewards": "Nhận phần thưởng",
         "andText": "và",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
@@ -46,7 +46,7 @@
             "ReferralSetInvitedUser": "Thiết lập giới thiệu thành công",
             "SwapAndSend": "Đã hoán đổi {amount} {symbol} cho {amount2} {symbol2} và {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Đã cung cấp mã thông báo LP {symbol} và {symbol2} {amount}",
-            "DemeterFarmingWithdrawLiquidity": "Đã xóa các mã thông báo LP {symbol} và {symbol2} {amount}",
+            "DemeterFarmingWithdrawLiquidity": "Loại bỏ thanh khoản token {symbol} và {symbol2} {amount}",
             "DemeterFarmingStakeToken": "Đã thêm {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Đã xóa {amount} {symbol}",
             "DemeterFarmingGetRewards": "Đã xác nhận quyền sở hữu {amount} {symbol} thành công"
@@ -63,21 +63,21 @@
             "ReferralUnreserveXor": "Thất bại khi unbond XOR",
             "ReferralSetInvitedUser": "Thất bại trong việc đặt giới thiệu",
             "SwapAndSend": "Thất bại trong việc hoán đổi {amount} {symbol} cho {amount2} {symbol2} và {action} {direction} {address}",
-            "DemeterFarmingDepositLiquidity": "Không cung cấp được mã thông báo LP {amount} {symbol} và {symbol2}",
-            "DemeterFarmingWithdrawLiquidity": "Không xóa được mã thông báo money {amount} {symbol} và {symbol2} LP",
+            "DemeterFarmingDepositLiquidity": "Thất bại trong việc cung cấp thanh khoản token {amount} {symbol} và {symbol2}",
+            "DemeterFarmingWithdrawLiquidity": "Thất bại trong việc loại bỏ thanh khoản token {amount} {symbol} và {symbol2}",
             "DemeterFarmingStakeToken": "Thất bại khi thêm {amount} {symbol}",
-            "DemeterFarmingUnstakeToken": "Không xóa được {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Thất bại trong việc loại bỏ {amount} {symbol}",
             "DemeterFarmingGetRewards": "Không xác nhận được {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
         "ReferralSetInvitedUser": "Thiết lập giới thiệu",
         "SwapAndSend": "Hoán đổi và Gửi",
-        "DemeterFarmingDepositLiquidity": "Thanh khoản cổ phần",
-        "DemeterFarmingWithdrawLiquidity": "Thanh khoản không tham gia",
-        "DemeterFarmingStakeToken": "Mã cổ phần",
+        "DemeterFarmingDepositLiquidity": "Thanh khoản stake",
+        "DemeterFarmingWithdrawLiquidity": "Không tham gia thanh khoản",
+        "DemeterFarmingStakeToken": "Stake Token",
         "DemeterFarmingUnstakeToken": "Unstake Token",
-        "DemeterFarmingGetRewards": "Yêu cầu phần thưởng"
+        "DemeterFarmingGetRewards": "Nhận phần thưởng"
     },
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) Polkadot{.js}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -529,7 +529,7 @@
         "pooledToken": "{tokenSymbol} Pool đã đóng góp",
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Những pool bạn tham gia",
-        "unknownAsset": "Tài sản không xác định",
+        "unknownAsset": "@:unknownAssetText",
         "description": "Khi bạn đóng góp thanh khoản, bạn cho phép pool sử dụng những token này. Bạn sẽ được hưởng % phí giao dịch theo tỉ lệ đóng góp trong pool. Và bạn có thể yêu cầu khoản lợi tức này bất kỳ khi nào.",
         "strategicBonusApy": "Tiền thưởng chiến lược APY"
     },
@@ -743,7 +743,7 @@
         "ok": "OK"
     },
     "rewards": {
-        "title": "Yêu cầu phần thưởng",
+        "title": "Nhận phần thưởng",
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
@@ -982,26 +982,26 @@
     "unknownAssetText": "Tài sản không xác định",
     "demeterFarming": {
         "staking": {
-            "active": "Đang hoạt động",
-            "inactive": "Đặt cọc để kiếm thêm phần thưởng",
-            "stopped": "Kẹt thẻ đã dừng lại"
+            "active": "Đang staking",
+            "inactive": "Stake để kiếm thêm phần thưởng",
+            "stopped": "Staking đã dừng lại"
         },
         "info": {
             "earned": "{symbol} đã kiếm được",
             "fee": "Phí",
             "feeTooltip": "Phí đặt cọc được áp dụng cho số tiền của bạn để đặt cược",
             "owned": "{symbol} @:balanceText",
-            "poolShare": "Tiền cược chia sẻ nhóm của bạn",
+            "poolShare": "Tiền cược trong pool của bạn",
             "poolShareWillBe": "Cổ phần chia sẻ nhóm của bạn sẽ là",
-            "rewardToken": "Mã thông báo phần thưởng",
+            "rewardToken": "Phần thưởng token",
             "stake": "Cổ phần {symbol} của bạn",
             "stakeWillBe": "Tiền đặt cược {symbol} của bạn sẽ là",
             "totalLiquidityLocked": "Tổng thanh khoản bị khóa"
         },
         "actions": {
             "add": "Stake thêm",
-            "claim": "Yêu cầu phần thưởng",
-            "remove": "Xóa tiền cược",
+            "claim": "Nhận phần thưởng",
+            "remove": "Ngừng stake",
             "start": "Bắt đầu staking"
         },
         "amountAdd": "Số lượng stake",
@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Đã xảy ra sự cố",
+        "balances": {
+            "LiquidityRestrictions": "Hạn chế thanh khoản tài khoản ngăn cản việc rút tiền"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Số dư nguồn không đủ lớn",
+            "TargetBalanceIsNotLargeEnough": "Số dư điểm đến không đủ lớn",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Số tiền được cung cấp quá đa dạng",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Số tiền nằm ngoài giới hạn yêu cầu",
+            "UnableToDepositXorLessThanMinimum": "XOR thấp hơn giá trị nhỏ nhất (0,007)",
+            "ZeroValueInAmountParameter": "Tham số số tiền có giá trị bằng không"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Cặp tiền thanh khoản đã tồn tại",
+            "SlippageLimitExceeded": "Khả năng chịu trượt giá chưa thích hợp"
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Tài khoản đã có liên kết giới thiệu",
+            "ReferrerInsufficientBalance": "Người giới thiệu không có đủ số dư dự phòng"
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Chương trình phần thưởng đã kết thúc",
+            "CantCalculateReward": "Không thể thực hiện tính toán phần thưởng",
+            "NoRewardsForAsset": "Không có phần thưởng nào cho tài sản này"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Nguồn thanh khoản đã chọn không được phép"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Không đủ tiền",
+            "InsufficientLPTokens": "Mã thông báo cung cấp thanh khoản không đủ",
+            "PoolDoesNotHaveRewards": "Pool không có phần thưởng"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Đã xảy ra lỗi khi tính giá"
+        }
     }
 }

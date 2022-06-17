@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Ada yang salah",
+        "balances": {
+            "LiquidityRestrictions": "Pembatasan likuiditas akun mencegah penarikan"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Saldo sumber tidak cukup besar",
+            "TargetBalanceIsNotLargeEnough": "Saldo tujuan tidak cukup besar",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Jumlah yang disediakan terlalu beragam",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Jumlahnya di luar batas yang dipersyaratkan",
+            "UnableToDepositXorLessThanMinimum": "XOR lebih rendah dari nilai minimum (0,007)",
+            "ZeroValueInAmountParameter": "Parameter jumlah memiliki nilai nol"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Pasangan kolam sudah ada",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Akun sudah memiliki referer",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Program hadiah telah selesai",
+            "CantCalculateReward": "Gagal melakukan perhitungan hadiah",
+            "NoRewardsForAsset": "Tidak ada imbalan untuk aset ini"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Sumber likuiditas yang dipilih tidak diperbolehkan"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Dana tidak mencukupi",
+            "InsufficientLPTokens": "Token penyediaan likuiditas tidak mencukupi",
+            "PoolDoesNotHaveRewards": "Pool tidak memiliki hadiah"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Terjadi kesalahan saat menghitung harga"
+        }
     }
 }

@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Utsättning"
+    },
+    "historyErrorMessages": {
+        "generalError": "Något gick fel",
+        "balances": {
+            "LiquidityRestrictions": "Kontolikviditetsbegränsningar förhindrar uttag"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Källbalansen är inte tillräckligt stor",
+            "TargetBalanceIsNotLargeEnough": "Destinationssaldot är inte tillräckligt stort",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Förutsatt att beloppen är för olika",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Beloppen ligger utanför de föreskrivna gränserna.",
+            "UnableToDepositXorLessThanMinimum": "XOR lägre än minimivärdet (0,007)",
+            "ZeroValueInAmountParameter": "Beloppsparameter har nollvärde"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Poolpar finns redan",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Kontot har redan en hänvisare",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Belöningsprogrammet har redan avslutats",
+            "CantCalculateReward": "Det gick inte att utföra belöningsberäkningen",
+            "NoRewardsForAsset": "Det finns inga belöningar för denna tillgång"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Vald likviditetskälla är inte tillåten"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Otillräckliga medel",
+            "InsufficientLPTokens": "Otillräckliga likviditetsbevis",
+            "PoolDoesNotHaveRewards": "Pool har inga belöningar"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Ett fel uppstod när priset beräknades"
+        }
     }
 }

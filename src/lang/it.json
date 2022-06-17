@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Qualcosa è andato storto",
+        "balances": {
+            "LiquidityRestrictions": "Le restrizioni sulla liquidità del conto impediscono il prelievo"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Il bilanciamento della sorgente non è abbastanza grande",
+            "TargetBalanceIsNotLargeEnough": "Il saldo della destinazione non è abbastanza grande",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Gli importi forniti sono troppo diversi",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Gli importi sono fuori dai limiti richiesti",
+            "UnableToDepositXorLessThanMinimum": "XOR inferiore al valore minimo (0,007)",
+            "ZeroValueInAmountParameter": "Il parametro Amount ha valore zero"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "La coppia di pool esiste già",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "L'account ha già un referrer",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Il programma a premi è già terminato",
+            "CantCalculateReward": "Impossibile eseguire il calcolo della ricompensa",
+            "NoRewardsForAsset": "Non ci sono premi per questa risorsa"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "La fonte di liquidità selezionata non è consentita"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Fondi insufficienti",
+            "InsufficientLPTokens": "Token di fornitura di liquidità insufficienti",
+            "PoolDoesNotHaveRewards": "La piscina non ha ricompense"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Si è verificato un errore durante il calcolo del prezzo"
+        }
     }
 }

@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Quelque chose s'est mal passé",
+        "balances": {
+            "LiquidityRestrictions": "Les restrictions de liquidité du compte empêchent le retrait"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Le solde de la source n'est pas assez grand",
+            "TargetBalanceIsNotLargeEnough": "Le solde de la destination n'est pas assez important",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Les montants fournis sont trop variés",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Les montants sont en dehors des limites requises",
+            "UnableToDepositXorLessThanMinimum": "XOR inférieur à la valeur minimale (0,007)",
+            "ZeroValueInAmountParameter": "Le paramètre de montant a une valeur nulle"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "La paire de pool existe déjà",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Le compte a déjà un référent",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Le programme de récompenses est déjà terminé",
+            "CantCalculateReward": "Échec du calcul de la récompense",
+            "NoRewardsForAsset": "Il n'y a pas de récompenses pour cet actif"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "La source de liquidité sélectionnée n'est pas autorisée"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Fonds insuffisants",
+            "InsufficientLPTokens": "Jetons de provision de liquidité insuffisants",
+            "PoolDoesNotHaveRewards": "La piscine n'a pas de récompenses"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Une erreur s'est produite lors du calcul du prix"
+        }
     }
 }

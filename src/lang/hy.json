@@ -1000,7 +1000,7 @@
         },
         "actions": {
             "add": "Ցից ավելին",
-            "claim": "Պահանջեք պարգևներ",
+            "claim": "ստանալ պարգևներ",
             "remove": "Հեռացնել ցցը",
             "start": "Սկսեք staking"
         },
@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Ցուցադրում"
+    },
+    "historyErrorMessages": {
+        "generalError": "Ինչ որ բան այնպես չգնաց",
+        "balances": {
+            "LiquidityRestrictions": "Հաշվի իրացվելիության սահմանափակումները կանխում են դուրսբերումը"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Աղբյուրի հաշվեկշիռը բավականաչափ մեծ չէ",
+            "TargetBalanceIsNotLargeEnough": "Նպատակակետի հաշվեկշիռը բավականաչափ մեծ չէ",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Տրամադրված գումարները չափազանց բազմազան են",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Գումարները դուրս են պահանջվող սահմաններից",
+            "UnableToDepositXorLessThanMinimum": "XOR նվազագույն արժեքից ցածր (0,007)",
+            "ZeroValueInAmountParameter": "Գումարի պարամետրը զրո արժեք ունի"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Լողավազանների զույգն արդեն գոյություն ունի",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Հաշիվն արդեն ունի ուղղորդող",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Պարգևատրման ծրագիրն արդեն ավարտված է",
+            "CantCalculateReward": "Չհաջողվեց կատարել պարգևների հաշվարկը",
+            "NoRewardsForAsset": "Այս ակտիվի համար պարգևներ չկան"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Անբավարար միջոցներ",
+            "InsufficientLPTokens": "Անբավարար իրացվելիության տրամադրման նշաններ",
+            "PoolDoesNotHaveRewards": "Լողավազանը պարգևներ չունի"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Գինը հաշվարկելիս սխալ է տեղի ունեցել"
+        }
     }
 }

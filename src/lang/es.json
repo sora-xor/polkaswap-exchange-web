@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Algo salió mal",
+        "balances": {
+            "LiquidityRestrictions": "Las restricciones de liquidez de la cuenta impiden el retiro"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "El saldo de la fuente no es lo suficientemente grande",
+            "TargetBalanceIsNotLargeEnough": "El saldo de destino no es lo suficientemente grande",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Las cantidades proporcionadas son demasiado diversas",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Los montos están fuera de los límites requeridos",
+            "UnableToDepositXorLessThanMinimum": "XOR inferior al valor mínimo (0,007)",
+            "ZeroValueInAmountParameter": "El parámetro de cantidad tiene valor cero"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "El par de grupos ya existe",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "La cuenta ya tiene un referente",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "El programa de recompensas ya ha finalizado",
+            "CantCalculateReward": "No se pudo realizar el cálculo de la recompensa",
+            "NoRewardsForAsset": "No hay recompensas para este activo."
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "La fuente de liquidez seleccionada no está permitida"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Fondos insuficientes",
+            "InsufficientLPTokens": "Tokens de provisión de liquidez insuficientes",
+            "PoolDoesNotHaveRewards": "La piscina no tiene recompensas."
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Ocurrió un error al calcular el precio"
+        }
     }
 }

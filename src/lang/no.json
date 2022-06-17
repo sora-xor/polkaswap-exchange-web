@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Noe gikk galt",
+        "balances": {
+            "LiquidityRestrictions": "Kontolikviditetsbegrensninger forhindrer uttak"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Kildebalansen er ikke stor nok",
+            "TargetBalanceIsNotLargeEnough": "Destinasjonsbalansen er ikke stor nok",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Forutsatt at beløpene er for forskjellige",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Beløp er utenfor påkrevde grenser",
+            "UnableToDepositXorLessThanMinimum": "XOR lavere enn minimumsverdien (0,007)",
+            "ZeroValueInAmountParameter": "Mengdeparameteren har nullverdi"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Pool-par eksisterer allerede",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Kontoen har allerede en henvisning",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Belønningsprogrammet er allerede ferdig",
+            "CantCalculateReward": "Kunne ikke utføre belønningsberegning",
+            "NoRewardsForAsset": "Det er ingen belønninger for denne ressursen"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Valgt likviditetskilde er ikke tillatt"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Utilstrekkelige midler",
+            "InsufficientLPTokens": "Utilstrekkelige likviditetsavsetningssymboler",
+            "PoolDoesNotHaveRewards": "Bassenget har ikke belønninger"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Det oppsto en feil under beregning av prisen"
+        }
     }
 }

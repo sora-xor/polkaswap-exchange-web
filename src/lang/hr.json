@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Ulaganje"
+    },
+    "historyErrorMessages": {
+        "generalError": "Nešto je pošlo po zlu",
+        "balances": {
+            "LiquidityRestrictions": "Ograničenja likvidnosti računa sprječavaju povlačenje"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Bilans izvora nije dovoljno velik",
+            "TargetBalanceIsNotLargeEnough": "Stanje odredišta nije dovoljno veliko",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Pod uvjetom da su iznosi previše raznoliki",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Iznosi su izvan potrebnih granica",
+            "UnableToDepositXorLessThanMinimum": "XOR manji od minimalne vrijednosti (0,007)",
+            "ZeroValueInAmountParameter": "Parametar iznosa ima nultu vrijednost"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Par bazena već postoji",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Račun već ima preporuku",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Program nagrađivanja je već završen",
+            "CantCalculateReward": "Izračun nagrade nije uspio",
+            "NoRewardsForAsset": "Za ovu imovinu nema nagrada"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Odabrani izvor likvidnosti nije dopušten"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Nedostatna sredstva",
+            "InsufficientLPTokens": "Nedovoljni tokeni za osiguranje likvidnosti",
+            "PoolDoesNotHaveRewards": "Pool nema nagrade"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Došlo je do greške prilikom izračuna cijene"
+        }
     }
 }

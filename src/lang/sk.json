@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Stakovanie"
+    },
+    "historyErrorMessages": {
+        "generalError": "Niečo sa pokazilo",
+        "balances": {
+            "LiquidityRestrictions": "Obmedzenia likvidity účtu bránia výberu"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Zostatok zdroja nie je dostatočne veľký",
+            "TargetBalanceIsNotLargeEnough": "Zostatok v cieli nie je dostatočne veľký",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Poskytnuté sumy sú príliš rôznorodé",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Čiastky sú mimo požadovaných hraníc",
+            "UnableToDepositXorLessThanMinimum": "XOR nižšia ako minimálna hodnota (0,007)",
+            "ZeroValueInAmountParameter": "Parameter Množstvo má nulovú hodnotu"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Bazénový pár už existuje",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Účet už má sprostredkovateľa",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Program odmien sa už skončil",
+            "CantCalculateReward": "Nepodarilo sa vykonať výpočet odmeny",
+            "NoRewardsForAsset": "Za toto aktívum nie sú žiadne odmeny"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Zvolený zdroj likvidity nie je povolený"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Nedostatok prostriedkov",
+            "InsufficientLPTokens": "Nedostatočné tokeny na poskytovanie likvidity",
+            "PoolDoesNotHaveRewards": "Bazén nemá odmeny"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Pri výpočte ceny sa vyskytla chyba"
+        }
     }
 }

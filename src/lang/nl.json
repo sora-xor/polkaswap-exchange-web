@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Er is iets fout gegaan",
+        "balances": {
+            "LiquidityRestrictions": "Rekeningliquiditeitsbeperkingen voorkomen opname"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Bronsaldo is niet groot genoeg",
+            "TargetBalanceIsNotLargeEnough": "Bestemmingssaldo is niet groot genoeg",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Mits de bedragen te divers zijn",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Bedragen zijn buiten de vereiste grenzen",
+            "UnableToDepositXorLessThanMinimum": "XOR lager dan de minimumwaarde (0,007)",
+            "ZeroValueInAmountParameter": "De parameter Bedrag heeft een waarde van nul"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Poolpaar bestaat al",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Account heeft al een verwijzer",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Beloningsprogramma is al afgelopen",
+            "CantCalculateReward": "Kan beloningsberekening niet uitvoeren",
+            "NoRewardsForAsset": "Er zijn geen beloningen voor dit item"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Geselecteerde liquiditeitsbron is niet toegestaan"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Onvoldoende middelen",
+            "InsufficientLPTokens": "Onvoldoende liquiditeitsvoorziening tokens",
+            "PoolDoesNotHaveRewards": "Pool heeft geen beloningen"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Er is een fout opgetreden bij het berekenen van de prijs"
+        }
     }
 }

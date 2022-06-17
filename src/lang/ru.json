@@ -996,7 +996,7 @@
             "rewardToken": "Токен вознаграждения",
             "stake": "Ваш стейк {symbol}",
             "stakeWillBe": "Ваш стейк {symbol} будет",
-            "totalLiquidityLocked": "Общая ликвидность заблокирована"
+            "totalLiquidityLocked": "Ликвидность заблокирована"
         },
         "actions": {
             "add": "Застейкать ещё",
@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Стекинг"
+    },
+    "historyErrorMessages": {
+        "generalError": "Что-то пошло не так",
+        "balances": {
+            "LiquidityRestrictions": "Ограничения ликвидности счета препятствуют снятию средств"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Исходный баланс недостаточно велик",
+            "TargetBalanceIsNotLargeEnough": "Баланс назначения недостаточно велик",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Предоставленные суммы слишком разняться",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Суммы выходят за установленные пределы",
+            "UnableToDepositXorLessThanMinimum": "XOR ниже минимального значения (0,007)",
+            "ZeroValueInAmountParameter": "Параметр суммы имеет нулевое значение"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Пара пулов уже существует",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "У учетной записи уже есть реферер",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Бонусная программа уже завершена",
+            "CantCalculateReward": "Не удалось выполнить расчет вознаграждения",
+            "NoRewardsForAsset": "Нет вознаграждений за этот актив"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Выбранный источник ликвидности не разрешен"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Недостаточно средств",
+            "InsufficientLPTokens": "Недостаточное количество токенов обеспечения ликвидности",
+            "PoolDoesNotHaveRewards": "Пул не имеет наград"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Произошла ошибка при расчете цены"
+        }
     }
 }

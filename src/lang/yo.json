@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Nnkan o lo daadaa",
+        "balances": {
+            "LiquidityRestrictions": "Awọn ihamọ oloomi iroyin ṣe idiwọ yiyọ kuro"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Iwontunwonsi orisun ko tobi to",
+            "TargetBalanceIsNotLargeEnough": "Iwontunwonsi nlo ko tobi to",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Awọn iye ti a pese ni o yatọ pupọ",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Awọn iye ko si ni awọn ala ti a beere",
+            "UnableToDepositXorLessThanMinimum": "XOR kere ju iye to kere ju (0.007)",
+            "ZeroValueInAmountParameter": "Paramita iye ni iye odo"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Pool bata ti wa tẹlẹ",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Akọọlẹ ti ni olutọka tẹlẹ",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Eto ere ti pari tẹlẹ",
+            "CantCalculateReward": "Kuna lati ṣe iṣiro ere",
+            "NoRewardsForAsset": "Ko si awọn ere fun dukia yii"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Ti a ti yan orisun oloomi ko gba laaye"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Awọn owo ti ko to",
+            "InsufficientLPTokens": "Insufficient oloomi ipese àmi",
+            "PoolDoesNotHaveRewards": "Pool ko ni ni ere"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Aṣiṣe waye lakoko ti o ṣe iṣiro idiyele naa"
+        }
     }
 }

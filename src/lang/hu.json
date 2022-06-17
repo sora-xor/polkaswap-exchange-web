@@ -1010,5 +1010,43 @@
     },
     "staking": {
         "title": "Letét"
+    },
+    "historyErrorMessages": {
+        "generalError": "Valami elromlott",
+        "balances": {
+            "LiquidityRestrictions": "A számla likviditási korlátozása megakadályozza a pénzfelvételt"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "A forrásegyenleg nem elég nagy",
+            "TargetBalanceIsNotLargeEnough": "Az úti cél egyenlege nem elég nagy",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "A megadott összegek túlságosan változatosak",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Az összegek túllépik a szükséges határokat",
+            "UnableToDepositXorLessThanMinimum": "XOR kisebb, mint a minimális érték (0,007)",
+            "ZeroValueInAmountParameter": "Az Amount paraméter értéke nulla"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "A medencepár már létezik",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "A fióknak már van hivatkozója",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "A jutalomprogram már véget ért",
+            "CantCalculateReward": "Nem sikerült a jutalom kiszámítása",
+            "NoRewardsForAsset": "Ehhez az eszközhöz nem jár jutalom"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "A kiválasztott likviditási forrás nem engedélyezett"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Fedezethiány",
+            "InsufficientLPTokens": "Nincs elegendő likviditási biztosíték token",
+            "PoolDoesNotHaveRewards": "A medence nem jár jutalmakkal"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Hiba történt az ár kiszámításakor"
+        }
     }
 }
