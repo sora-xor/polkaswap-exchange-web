@@ -41,7 +41,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
