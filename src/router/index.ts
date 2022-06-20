@@ -4,6 +4,9 @@ import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { api } from '@sora-substrate/util';
 
 import { PageNames, BridgeChildPages } from '@/consts';
+import { DemeterPageNames } from '@/modules/demeterFarming/consts';
+import { demeterLazyView } from '@/modules/demeterFarming/router';
+
 import store from '@/store';
 
 Vue.use(VueRouter);
@@ -72,30 +75,56 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/pool',
+    name: PageNames.PoolContainer,
     component: lazyView(PageNames.PoolContainer),
     children: [
       {
         path: '',
-        name: PageNames.Pool,
-        component: lazyView(PageNames.Pool),
+        component: demeterLazyView(DemeterPageNames.DataContainer),
+        children: [
+          {
+            path: '',
+            name: DemeterPageNames.Pool,
+            component: demeterLazyView(DemeterPageNames.Pool),
+          },
+          {
+            path: 'create-pair',
+            name: PageNames.CreatePair,
+            component: lazyView(PageNames.CreatePair),
+            meta: { requiresAuth: true },
+          },
+          {
+            path: 'add/:firstAddress?/:secondAddress?',
+            name: PageNames.AddLiquidity,
+            component: lazyView(PageNames.AddLiquidity),
+            meta: { requiresAuth: true },
+          },
+          {
+            path: 'remove/:firstAddress/:secondAddress',
+            name: PageNames.RemoveLiquidity,
+            component: lazyView(PageNames.RemoveLiquidity),
+            meta: { requiresAuth: true },
+          },
+        ],
       },
+    ],
+  },
+  {
+    path: '/staking',
+    name: PageNames.StakingContainer,
+    component: lazyView(PageNames.StakingContainer),
+    redirect: { name: DemeterPageNames.Staking },
+    children: [
       {
-        path: 'create-pair',
-        name: PageNames.CreatePair,
-        component: lazyView(PageNames.CreatePair),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'add/:firstAddress?/:secondAddress?',
-        name: PageNames.AddLiquidity,
-        component: lazyView(PageNames.AddLiquidity),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'remove/:firstAddress/:secondAddress',
-        name: PageNames.RemoveLiquidity,
-        component: lazyView(PageNames.RemoveLiquidity),
-        meta: { requiresAuth: true },
+        path: 'demeter',
+        component: demeterLazyView(DemeterPageNames.DataContainer),
+        children: [
+          {
+            path: '',
+            name: DemeterPageNames.Staking,
+            component: demeterLazyView(DemeterPageNames.Staking),
+          },
+        ],
       },
     ],
   },

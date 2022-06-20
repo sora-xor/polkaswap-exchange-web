@@ -61,4 +61,5 @@ export default class PairTokenLogo extends Mixins(TranslationMixin) {
 
 @include element-size('pair-logo--mini', 24px);
 @include element-size('pair-logo--small', 36px);
+@include element-size('pair-logo--medium', 44px);
 </style>
