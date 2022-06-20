@@ -13,6 +13,7 @@
         :class="['s-input--token-value', 's-input--remove-part', removePartCharClass]"
         :value="String(removePartInput)"
         :decimals="0"
+        :disabled="liquidityLocked"
         :max="100"
         @input="handleRemovePartChange"
         @focus="setFocusedField('removePart')"
@@ -20,13 +21,18 @@
       >
         <div slot="top" class="amount">{{ t('removeLiquidity.amount') }}</div>
         <div slot="right"><span class="percent">%</span></div>
-        <s-slider
-          slot="bottom"
-          class="slider-container"
-          :value="removePartInput"
-          :showTooltip="false"
-          @change="handleRemovePartChange"
-        />
+        <div slot="bottom">
+          <s-slider
+            class="slider-container"
+            :value="removePartInput"
+            :disabled="liquidityLocked"
+            :showTooltip="false"
+            @change="handleRemovePartChange"
+          />
+          <div v-if="hasLockedPart" class="input-line input-line--footer locked-part">
+            {{ t('removeLiquidity.locked', { percent: liquidityBalanceLockedPercent }) }}
+          </div>
+        </div>
       </s-float-input>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <s-float-input
@@ -35,6 +41,7 @@
         class="s-input--token-value"
         :value="firstTokenAmount"
         :decimals="(firstToken || {}).decimals"
+        :disabled="liquidityLocked"
         has-locale-string
         :delimiters="delimiters"
         :max="getTokenMaxAmount(firstTokenBalance)"
@@ -70,6 +77,7 @@
         class="s-input--token-value"
         :value="secondTokenAmount"
         :decimals="(secondToken || {}).decimals"
+        :disabled="liquidityLocked"
         has-locale-string
         :delimiters="delimiters"
         :max="getTokenMaxAmount(secondTokenBalance)"
@@ -102,7 +110,7 @@
         type="primary"
         class="action-button s-typography-button--large"
         border-radius="small"
-        :disabled="isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee"
+        :disabled="liquidityLocked || isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee"
         @click="handleRemoveLiquidity"
       >
         <template v-if="isEmptyAmount">
@@ -197,6 +205,7 @@ export default class RemoveLiquidity extends Mixins(
   @getter.removeLiquidity.firstTokenBalance firstTokenBalance!: CodecString;
   @getter.removeLiquidity.secondTokenBalance secondTokenBalance!: CodecString;
   @getter.removeLiquidity.shareOfPool shareOfPool!: string;
+  @getter.removeLiquidity.liquidityBalanceFreePart liquidityBalanceFreePart!: FPNumber;
 
   @mutation.removeLiquidity.setFocusedField setFocusedField!: (field: FocusedField) => void;
   @mutation.removeLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
@@ -275,7 +284,19 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isEmptyAmount(): boolean {
-    return !this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount;
+    return !this.removePart || !Number(this.liquidityAmount) || !this.firstTokenAmount || !this.secondTokenAmount;
+  }
+
+  get liquidityLocked(): boolean {
+    return this.liquidityBalanceFreePart.isZero();
+  }
+
+  get hasLockedPart(): boolean {
+    return FPNumber.isLessThan(this.liquidityBalanceFreePart, FPNumber.ONE);
+  }
+
+  get liquidityBalanceLockedPercent() {
+    return FPNumber.ONE.sub(this.liquidityBalanceFreePart).mul(FPNumber.HUNDRED).toLocaleString() + '%';
   }
 
   get isInsufficientBalance(): boolean {
@@ -410,43 +431,14 @@ export default class RemoveLiquidity extends Mixins(
   font-weight: 600;
 }
 
-.percent {
-  font-size: var(--s-heading1-font-size);
+.locked-part {
+  color: var(--s-color-base-content-secondary);
+  text-transform: uppercase;
 }
 </style>
 
 <style lang="scss">
 .s-input.s-input--remove-part.s-input--token-value {
-  display: inline-block;
-
-  &.one-char .el-input__inner {
-    width: 1ch;
-  }
-  &.two-char .el-input__inner {
-    width: 2ch;
-  }
-  &.three-char .el-input__inner {
-    width: 3ch;
-  }
-
-  .s-input__input {
-    flex: 0;
-  }
-
-  .el-input__inner {
-    font-size: var(--s-heading1-font-size) !important;
-    line-height: var(--s-line-height-mini) !important;
-    letter-spacing: var(--s-letter-spacing-mini) !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: none !important;
-    height: auto !important;
-    min-width: 1ch;
-    max-width: 3ch;
-  }
-
-  .el-slider__runway {
-    background-color: var(--s-color-base-content-tertiary);
-  }
+  @include input-slider;
 }
 </style>
