@@ -1,15 +1,14 @@
 import { Operation, BridgeTxStatus } from '@sora-substrate/util';
 import { ethers } from 'ethers';
 import type { Subscription } from 'rxjs';
+import type { BridgeHistory, BridgeApprovedRequest, BridgeNetworks } from '@sora-substrate/util';
 
 import { bridgeApi } from './api';
 
 import { delay } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { BridgeHistory, BridgeApprovedRequest, BridgeNetworks } from '@sora-substrate/util';
-
-const SORA_REQUESTS_TIMEOUT = 6 * 1000; // Block production time
+const SORA_REQUESTS_TIMEOUT = 6_000; // Block production time
 
 export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
@@ -31,12 +30,6 @@ export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
   }
 };
 
-export const isRejectedForeverFromPart = (tx: BridgeHistory): boolean => {
-  const requestError = tx.type === Operation.EthBridgeOutgoing ? !tx.hash : false;
-
-  return !isUnsignedFromPart(tx) && requestError;
-};
-
 export const getTransaction = (id: string): BridgeHistory => {
   const tx = bridgeApi.getHistory(id) as BridgeHistory;
 
@@ -50,7 +43,7 @@ export const updateHistoryParams = async (id: string, params = {}) => {
   bridgeApi.saveHistory({ ...tx, ...params });
 };
 
-export const isOutgoingTransaction = (tx: BridgeHistory): boolean => {
+export const isOutgoingTransaction = (tx: Nullable<BridgeHistory>): boolean => {
   return tx?.type === Operation.EthBridgeOutgoing;
 };
 

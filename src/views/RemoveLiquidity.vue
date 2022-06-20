@@ -13,6 +13,7 @@
         :class="['s-input--token-value', 's-input--remove-part', removePartCharClass]"
         :value="String(removePartInput)"
         :decimals="0"
+        :disabled="liquidityLocked"
         :max="100"
         @input="handleRemovePartChange"
         @focus="setFocusedField('removePart')"
@@ -20,13 +21,18 @@
       >
         <div slot="top" class="amount">{{ t('removeLiquidity.amount') }}</div>
         <div slot="right"><span class="percent">%</span></div>
-        <s-slider
-          slot="bottom"
-          class="slider-container"
-          :value="removePartInput"
-          :showTooltip="false"
-          @change="handleRemovePartChange"
-        />
+        <div slot="bottom">
+          <s-slider
+            class="slider-container"
+            :value="removePartInput"
+            :disabled="liquidityLocked"
+            :showTooltip="false"
+            @change="handleRemovePartChange"
+          />
+          <div v-if="hasLockedPart" class="input-line input-line--footer locked-part">
+            {{ t('removeLiquidity.locked', { percent: liquidityBalanceLockedPercent }) }}
+          </div>
+        </div>
       </s-float-input>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <s-float-input
@@ -35,6 +41,7 @@
         class="s-input--token-value"
         :value="firstTokenAmount"
         :decimals="(firstToken || {}).decimals"
+        :disabled="liquidityLocked"
         has-locale-string
         :delimiters="delimiters"
         :max="getTokenMaxAmount(firstTokenBalance)"
@@ -70,6 +77,7 @@
         class="s-input--token-value"
         :value="secondTokenAmount"
         :decimals="(secondToken || {}).decimals"
+        :disabled="liquidityLocked"
         has-locale-string
         :delimiters="delimiters"
         :max="getTokenMaxAmount(secondTokenBalance)"
@@ -102,7 +110,7 @@
         type="primary"
         class="action-button s-typography-button--large"
         border-radius="small"
-        :disabled="isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee"
+        :disabled="liquidityLocked || isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee"
         @click="handleRemoveLiquidity"
       >
         <template v-if="isEmptyAmount">
@@ -123,7 +131,7 @@
         class="info-line-container"
         v-if="price || priceReversed || networkFee || shareOfPool"
         :info-only="false"
-      ></remove-liquidity-transaction-details>
+      />
     </s-form>
 
     <confirm-remove-liquidity
@@ -142,7 +150,6 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Action, Getter, State } from 'vuex-class';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
@@ -154,21 +161,22 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { hasInsufficientXorForFee, getAssetBalance } from '@/utils';
-
-const namespace = 'removeLiquidity';
+import { hasInsufficientXorForFee } from '@/utils';
+import { getter, state, mutation, action } from '@/store/decorators';
+import type { LiquidityParams } from '@/store/pool/types';
+import type { PricesPayload } from '@/store/prices/types';
+import type { FocusedField } from '@/store/removeLiquidity/types';
 
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    TokenLogo: lazyComponent(Components.TokenLogo),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    TokenAddress: lazyComponent(Components.TokenAddress),
     InfoLine: components.InfoLine,
+    TokenAddress: components.TokenAddress,
   },
 })
 export default class RemoveLiquidity extends Mixins(
@@ -181,40 +189,36 @@ export default class RemoveLiquidity extends Mixins(
   readonly XOR_SYMBOL = XOR.symbol;
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  @State((state) => state[namespace].liquidityAmount) liquidityAmount!: string;
-  @State((state) => state[namespace].firstTokenAmount) firstTokenAmount!: string;
-  @State((state) => state[namespace].secondTokenAmount) secondTokenAmount!: string;
-  @State((state) => state[namespace].removePart) removePart!: number;
-  @State((state) => state[namespace].focusedField) focusedField!: string;
+  @state.removeLiquidity.liquidityAmount private liquidityAmount!: string;
+  @state.removeLiquidity.focusedField private focusedField!: string;
+  @state.removeLiquidity.firstTokenAmount firstTokenAmount!: string;
+  @state.removeLiquidity.secondTokenAmount secondTokenAmount!: string;
+  @state.removeLiquidity.removePart removePart!: number;
+  @state.prices.price price!: string;
+  @state.prices.priceReversed priceReversed!: string;
 
-  @Getter('liquidity', { namespace }) liquidity!: AccountLiquidity;
-  @Getter('firstToken', { namespace }) firstToken!: Asset;
-  @Getter('secondToken', { namespace }) secondToken!: Asset;
-  @Getter('liquidityBalance', { namespace }) liquidityBalance!: CodecString;
-  @Getter('firstTokenBalance', { namespace }) firstTokenBalance!: CodecString;
-  @Getter('secondTokenBalance', { namespace }) secondTokenBalance!: CodecString;
-  @Getter('shareOfPool', { namespace }) shareOfPool!: string;
-  @Getter('tokenXOR', { namespace: 'assets' }) tokenXOR!: AccountAsset;
-  @Getter('price', { namespace: 'prices' }) price!: string;
-  @Getter('priceReversed', { namespace: 'prices' }) priceReversed!: string;
+  @getter.assets.xor private xor!: Nullable<AccountAsset>;
+  @getter.removeLiquidity.liquidityBalance private liquidityBalance!: CodecString;
+  @getter.removeLiquidity.liquidity liquidity!: AccountLiquidity;
+  @getter.removeLiquidity.firstToken firstToken!: Asset;
+  @getter.removeLiquidity.secondToken secondToken!: Asset;
+  @getter.removeLiquidity.firstTokenBalance firstTokenBalance!: CodecString;
+  @getter.removeLiquidity.secondTokenBalance secondTokenBalance!: CodecString;
+  @getter.removeLiquidity.shareOfPool shareOfPool!: string;
+  @getter.removeLiquidity.liquidityBalanceFreePart liquidityBalanceFreePart!: FPNumber;
 
-  @Action('setLiquidity', { namespace }) setLiquidity!: ({
-    firstAddress,
-    secondAddress,
-  }: {
-    firstAddress: string;
-    secondAddress: string;
-  }) => Promise<void>;
+  @mutation.removeLiquidity.setFocusedField setFocusedField!: (field: FocusedField) => void;
+  @mutation.removeLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
 
-  @Action('setRemovePart', { namespace }) setRemovePart!: (removePart: number) => Promise<void>;
-  @Action('setFirstTokenAmount', { namespace }) setFirstTokenAmount!: (amount: string) => Promise<void>;
-  @Action('setSecondTokenAmount', { namespace }) setSecondTokenAmount!: (amount: string) => Promise<void>;
-  @Action('setFocusedField', { namespace }) setFocusedField!: (field: string) => Promise<void>;
-  @Action('resetFocusedField', { namespace }) resetFocusedField!: AsyncVoidFn;
-  @Action('removeLiquidity', { namespace }) removeLiquidity!: AsyncVoidFn;
-  @Action('resetData', { namespace }) resetData!: AsyncVoidFn;
-  @Action('getPrices', { namespace: 'prices' }) getPrices!: (options: any) => Promise<void>;
-  @Action('resetPrices', { namespace: 'prices' }) resetPrices!: AsyncVoidFn;
+  @action.removeLiquidity.setRemovePart private setRemovePart!: (removePart: number) => Promise<void>;
+  @action.removeLiquidity.setLiquidity private setLiquidity!: (args: LiquidityParams) => Promise<void>;
+  @action.removeLiquidity.removeLiquidity private removeLiquidity!: AsyncVoidFn;
+  @action.removeLiquidity.resetData private resetData!: AsyncVoidFn;
+  @action.removeLiquidity.setFirstTokenAmount setFirstTokenAmount!: (amount: string) => Promise<void>;
+  @action.removeLiquidity.setSecondTokenAmount setSecondTokenAmount!: (amount: string) => Promise<void>;
+
+  @mutation.prices.resetPrices private resetPrices!: VoidFunction;
+  @action.prices.getPrices private getPrices!: (options?: PricesPayload) => Promise<void>;
 
   @Watch('removePart')
   private removePartChange(newValue: number): void {
@@ -241,6 +245,7 @@ export default class RemoveLiquidity extends Mixins(
       }
       default: {
         this.handleRemovePartChange(String(this.removePart));
+        break;
       }
     }
   }
@@ -264,7 +269,7 @@ export default class RemoveLiquidity extends Mixins(
     });
   }
 
-  async beforeDestroy(): Promise<void> {
+  beforeDestroy(): void {
     this.removeListenerFromSliderDragButton();
     this.resetData();
     this.resetPrices();
@@ -279,7 +284,19 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isEmptyAmount(): boolean {
-    return !this.removePart || !this.liquidityAmount || !this.firstTokenAmount || !this.secondTokenAmount;
+    return !this.removePart || !Number(this.liquidityAmount) || !this.firstTokenAmount || !this.secondTokenAmount;
+  }
+
+  get liquidityLocked(): boolean {
+    return this.liquidityBalanceFreePart.isZero();
+  }
+
+  get hasLockedPart(): boolean {
+    return FPNumber.isLessThan(this.liquidityBalanceFreePart, FPNumber.ONE);
+  }
+
+  get liquidityBalanceLockedPercent() {
+    return FPNumber.ONE.sub(this.liquidityBalanceFreePart).mul(FPNumber.HUNDRED).toLocaleString() + '%';
   }
 
   get isInsufficientBalance(): boolean {
@@ -297,7 +314,7 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.networkFee);
+    return !!this.xor && hasInsufficientXorForFee(this.xor, this.networkFee);
   }
 
   get removePartCharClass(): string {
@@ -319,10 +336,8 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isXorSufficientForNextOperation(): boolean {
-    const firstTokenAmount = this.getFPNumber(this.firstTokenAmount);
     return this.isXorSufficientForNextTx({
       type: Operation.RemoveLiquidity,
-      xorBalance: this.getFPNumberFromCodec(getAssetBalance(this.tokenXOR)).add(firstTokenAmount),
     });
   }
 
@@ -416,43 +431,14 @@ export default class RemoveLiquidity extends Mixins(
   font-weight: 600;
 }
 
-.percent {
-  font-size: var(--s-heading1-font-size);
+.locked-part {
+  color: var(--s-color-base-content-secondary);
+  text-transform: uppercase;
 }
 </style>
 
 <style lang="scss">
 .s-input.s-input--remove-part.s-input--token-value {
-  display: inline-block;
-
-  &.one-char .el-input__inner {
-    width: 1ch;
-  }
-  &.two-char .el-input__inner {
-    width: 2ch;
-  }
-  &.three-char .el-input__inner {
-    width: 3ch;
-  }
-
-  .s-input__input {
-    flex: 0;
-  }
-
-  .el-input__inner {
-    font-size: var(--s-heading1-font-size) !important;
-    line-height: var(--s-line-height-mini) !important;
-    letter-spacing: var(--s-letter-spacing-mini) !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: none !important;
-    height: auto !important;
-    min-width: 1ch;
-    max-width: 3ch;
-  }
-
-  .el-slider__runway {
-    background-color: var(--s-color-base-content-tertiary);
-  }
+  @include input-slider;
 }
 </style>

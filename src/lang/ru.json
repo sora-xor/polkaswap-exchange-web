@@ -22,7 +22,7 @@
     "confirmText": "Подтвердить",
     "errorText": "Ошибка",
     "insufficientBalanceText": "Недостаточный баланс {tokenSymbol}",
-    "unknownErrorText": "ОШИБКА Что-то пошло не так ...",
+    "unknownErrorText": "ОШИБКА Что-то пошло не так...",
     "transactionSubmittedText": "Транзакция отправлена",
     "operations": {
         "Swap": "Обмен",
@@ -43,7 +43,13 @@
             "ClaimRewards": "Награды получены успешно {rewards}",
             "ReferralReserveXor": "XOR успешно зарезервированы",
             "ReferralUnreserveXor": "XOR успешно выведены из резерва",
-            "ReferralSetInvitedUser": "Реферал успешно установлен"
+            "ReferralSetInvitedUser": "Реферал успешно установлен",
+            "SwapAndSend": "Совершен обмен {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Предоставлено {symbol} и {symbol2} {amount} LP токенов ",
+            "DemeterFarmingWithdrawLiquidity": "Удалены {symbol} и {symbol2} {amount} LP токены",
+            "DemeterFarmingStakeToken": "Добавлено {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Удалено {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} затребован успешно"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -55,11 +61,23 @@
             "ClaimRewards": "Не удалось получить вознаграждения {rewards}",
             "ReferralReserveXor": "Не удалось зарезервировать XOR",
             "ReferralUnreserveXor": "Не удалось вывести XOR из резерва",
-            "ReferralSetInvitedUser": "Не удалось установить реферала"
+            "ReferralSetInvitedUser": "Не удалось установить реферала",
+            "SwapAndSend": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Не удалось предоставить {amount} {symbol} и {symbol2} LP токены",
+            "DemeterFarmingWithdrawLiquidity": "Не удалось удалить  {amount} {symbol} и {symbol2} LP токены",
+            "DemeterFarmingStakeToken": "Не удалось добавить {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Не удалось удалить {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Не удалось получить {symbol}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
-        "ReferralSetInvitedUser": "Установить реферала"
+        "ReferralSetInvitedUser": "Установить реферала",
+        "SwapAndSend": "Обменять и отправить",
+        "DemeterFarmingDepositLiquidity": "Стейкинг ликвидности",
+        "DemeterFarmingWithdrawLiquidity": "Отменить стейк ликвидности",
+        "DemeterFarmingStakeToken": "Стейкинг токена",
+        "DemeterFarmingUnstakeToken": "Отменить стейк токена",
+        "DemeterFarmingGetRewards": "Получить награды"
     },
     "polkadotjs": {
         "noExtensions": "Расширение Polkadot.js не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
@@ -73,7 +91,7 @@
         "noPermissions": "Случайно отклонили запрос на разрешение?<\/br>В настоящее время расширение polkadot{.js} не имеет управления разрешениями. В качестве обходного пути вы можете перезапустить браузер и повторно посетить эту страницу, чтобы продолжить авторизацию.",
         "noAccounts": "Аккаунт в расширении polkadot{.js} Вашего браузера не найдена. Пожалуйста, добавьте аккаунт и повторите попытку.",
         "selectAccount": "Выберите аккаунт для работы с",
-        "loadingTitle": "Ожидание Вашего разрешения доступа к расширению {.js}",
+        "loadingTitle": "Ожидание Вашего разрешения доступа к расширению polkadot{.js}.",
         "action": {
             "install": "Установить расширение",
             "learnMore": "Узнать больше",
@@ -94,7 +112,7 @@
         "amount": "@:amountText",
         "balance": "Баланс",
         "max": "МАКС",
-        "fee": "Комиссия за транзакцию",
+        "fee": "@:networkFeeText",
         "enterAddress": "Введите адрес",
         "badAddress": "Неверный адрес",
         "enterAmount": "Введите сумму",
@@ -110,7 +128,8 @@
     "account": {
         "successCopy": "Адрес кошелька скопирован в буфер обмена",
         "copy": "Копировать адрес",
-        "switch": "Сменить аккаунт"
+        "switch": "Сменить аккаунт",
+        "walletAddress": "Адрес кошелька"
     },
     "history": {
         "clearHistory": "Очистить историю",
@@ -138,24 +157,18 @@
             "bonded": "- В обеспечении"
         },
         "totalAssetsValue": "Общая стоимость ваших активов:",
-        "details": "Детали"
+        "details": "Детали",
+        "assetId": "ID актива"
     },
     "asset": {
-        "remove": "Удалить актив"
+        "remove": "Удалить актив",
+        "select": "Выберите актив",
+        "recieve": "Получить {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Актив был добавлен успешно!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Фильтр по ID актива, имени или символу тикера"
-        },
-        "AddAssetCustom": {
-            "title": "Кастомный",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Символ актива"
-        },
+        "success": "Актив {symbol} был добавлен успешно!",
         "empty": "Токен не найден",
         "alreadyAttached": "Этот токен был уже добавлен",
         "understand": "Я понимаю",
@@ -164,7 +177,15 @@
         "approved": "Актив одобрен сообществом",
         "unknown": "Неизвестный источник",
         "scam": "МОШЕННИЧЕСТВО",
-        "next": "Далее"
+        "next": "Далее",
+        "AddAssetToken": {
+            "title": "Токены",
+            "switchBtn": "Только проверенные активы"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Поиск по идентификатору актива, имени или символу тикера"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -321,7 +342,8 @@
         "Stats": "Статистика",
         "Support": "Поддержка",
         "CreatePair": "Создать пару",
-        "Tokens": "Токены"
+        "Tokens": "Токены",
+        "StakingContainer": "Стекинг"
     },
     "social": {
         "twitter": "Twitter",
@@ -357,7 +379,7 @@
         },
         "polkadot": {
             "title": "Что такое polkadot{.js}?",
-            "description": "Расширение Polkadot {.js} - это расширение браузера для Firefox и Chrome, предназначенное для управления аккаунтами сетей на основе Substrate, включая @:soraText, Polkadot и Kusama. Вы можете добавлять, импортировать и экспортировать аккаунты и подписывать транзакции или внешние данные, которые вы инициировали с авторизованных вами веб-сайтов."
+            "description": "Расширение Polkadot{.js} - это расширение браузера для Firefox и Chrome, предназначенное для управления аккаунтами сетей на основе Substrate, включая @:soraText, Polkadot и Kusama. Вы можете добавлять, импортировать и экспортировать аккаунты и подписывать транзакции или внешние данные, которые вы инициировали с авторизованных вами веб-сайтов."
         }
     },
     "node": {
@@ -399,8 +421,8 @@
         "enterAmount": "Введите сумму"
     },
     "transfers": {
-        "from": "От",
-        "to": "Кому"
+        "from": "Из",
+        "to": "На"
     },
     "pageNotFound": {
         "title": "Страница не найдена",
@@ -449,7 +471,7 @@
         "pswap": {
             "title": "Токены PSWAP",
             "first": "PSWAP был создан в результате голосования сообщества. Это utility и governance токен, используемый для вознаграждения поставщиков ликвидности в Polkaswap. В отличие от большинства других токенов вознаграждения, PSWAP сжигается при транзакциях, что снижает его эмиссию.",
-            "second": "Комиссия в {percent} % по каждой сделке на Polkaswap DEX идет на выкуп и сжигание токенов PSWAP. Изначально 90% сожженных токенов PSWAP пересоздаются и распределяются поставщикам ликвидности, но постепенно этот процент снизится до 35% в течение 4 лет."
+            "second": "Комиссия в {percent}% по каждой сделке на Polkaswap DEX идет на выкуп и сжигание токенов PSWAP. Изначально 90% сожженных токенов PSWAP пересоздаются и распределяются поставщикам ликвидности, но постепенно этот процент снизится до 35% в течение 4 лет."
         },
         "links": {
             "first": {
@@ -532,7 +554,10 @@
         "selectNetwork": "Выбрать сеть",
         "networkInfo": "Соединить @:soraText Сеть с:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Скопировать адрес сети",
+        "soraAddress": "@:soraText адрес",
+        "ethereumAddress": "@:ethereumText адрес"
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
@@ -586,7 +611,6 @@
             "done": "Выполнено",
             "waitingForConfirmation": "Ожидание подтверждения..."
         },
-        "wait30Block": "Пожалуйста, дождитесь 30 подтверждений блока",
         "viewInEtherscan": "Посмотреть в Etherscan",
         "networkTitle": "{network} транзакция",
         "transactionHash": "Хеш транзакции",
@@ -685,7 +709,8 @@
         "description": "Вывод токенов пула конвертирует вашу позицию обратно в базовые токены по текущему курсу, пропорциональному вашей доле в пуле. Начисленные комиссионные включаются в получаемые вами суммы.",
         "outputMessage": "Вывод является оценочным. Если цена изменится более чем на {slippageTolerance}%, ваша транзакция будет отменена.",
         "confirmTitle": "Вы получите",
-        "shareOfPool": "Доля пула после транзакции"
+        "shareOfPool": "Доля пула после транзакции",
+        "locked": "{percent} вашего пула находится в стейкинге"
     },
     "dexSettings": {
         "title": "Настройки транзакции",
@@ -734,7 +759,7 @@
             "failed": "{order} из {total} транзакции не удались. @:retryText"
         },
         "signing": {
-            "extension": "расширении для браузера polkadot {.js}",
+            "extension": "расширении для браузера polkadot{.js}",
             "accounts": "Ваших учетных записях @:soraText и @:ethereumText соответственно"
         },
         "hint": {
@@ -772,7 +797,8 @@
         "claimableAmountDoneVesting": "Требуемая сумма (наделение завершено)",
         "groups": {
             "strategic": "Стратегические вознаграждения",
-            "external": "Вознаграждения за подключенный аккаунт Ethereum"
+            "external": "Вознаграждения за подключенный аккаунт Ethereum",
+            "crowdloan": "Crowdloan вознаграждения"
         },
         "Rewards": "Награды",
         "ReferralProgram": "@:referralProgram.title"
@@ -881,7 +907,7 @@
         "connectAccount": "Для приглашения пользователей необходимо подключить учетную запись SORA.",
         "bondedXOR": "XOR зарезервировано",
         "referralsNumber": "{number} рефералов",
-        "startInviting": "Чтобы начать приглашать, внесите любое количество XOR.",
+        "startInviting": "Bond XOR для приглашения других",
         "preview": "Приглашайте новых пользователей и получайте 10% от их транзакционных сборов.<br \/>Чтобы начать, зарезервируйте любую сумму XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Узнать больше<\/a>",
         "deposit": "Пополнить",
         "balance": "Баланс",
@@ -915,8 +941,112 @@
             "hasReferrerTitle": "Вы уже установили реферера",
             "hasReferrerDescription": "К сожалению, вы можете установить только одного реферера",
             "ok": "OK"
-        }
+        },
+        "referrer": {
+            "title": "Добавьте реферера",
+            "titleReferrer": "Ваш реферер",
+            "placeholder": "Введите ссылку или код приглашения",
+            "label": "Пригласительная ссылка или код",
+            "approve": "Подписать",
+            "approved": "Подтвержденный",
+            "description": "Чтобы быть привлеченным на Polkaswap,<br\/>введите ссылку или код реферера",
+            "referredBy": "Вы привлечены {referrer}",
+            "info": "Когда вы заплатите комиссию за транзакцию,<br\/>10% перейдет вашему рефереру",
+            "referredLablel": "Адрес реферера"
+        },
+        "insufficientBondedAmount": "Чтобы приглашать больше пользователей, привяжите не менее {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Детали транзакции",
-    "createTokenTextNFT": "Создать NFT"
+    "createTokenTextNFT": "Создать NFT",
+    "code": {
+        "download": "Скачать QR-код",
+        "upload": "Сканировать QR-код",
+        "recieve": "Получить",
+        "invalid": "Неверный QR-код"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Добавить {symbol} в @:metamask",
+        "title": "Транзакция моста прошла успешно"
+    },
+    "mobilePopup": {
+        "sideMenu": "Получить SORA Wallet",
+        "header": "Загрузите кошелек SORA с функциями <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Обмен токенами из разных сетей — SORA, Ethereum, Polkadot, Kusama. Обеспечьте пул ликвидности и зарабатывайте % от биржевых комиссий."
+    },
+    "releaseNotesText": "О версии приложения",
+    "copiedText": "Скопировано!",
+    "copyWithValue": "Копировать {value}",
+    "copiedWithValue": "{value} скопировано!",
+    "signAndClaimText": "Войти и получить",
+    "balanceText": "Баланс",
+    "unknownAssetText": "Неизвестный актив",
+    "demeterFarming": {
+        "staking": {
+            "active": "Стейкинг активен",
+            "inactive": "Начните стейкинг, чтобы заработать дополнительные награды",
+            "stopped": "Стейкинг остановлен"
+        },
+        "info": {
+            "earned": "{symbol} заработано",
+            "fee": "Комиссия",
+            "feeTooltip": "Комиссия за депозит применяется к вашей сумме стейка",
+            "owned": "@:balanceText {symbol}",
+            "poolShare": "Ваша доля пула застейкана",
+            "poolShareWillBe": "Ваша доля пула будет",
+            "rewardToken": "Токен вознаграждения",
+            "stake": "Ваш стейк {symbol}",
+            "stakeWillBe": "Ваш стейк {symbol} будет",
+            "totalLiquidityLocked": "Ликвидность заблокирована"
+        },
+        "actions": {
+            "add": "Застейкать ещё",
+            "claim": "Получить награды",
+            "remove": "Удалить стейк",
+            "start": "Начать стейкинг"
+        },
+        "amountAdd": "Сумма стейкинга",
+        "amountRemove": "Сумма для удаления",
+        "poweredBy": "Работает на Demeter Farming"
+    },
+    "staking": {
+        "title": "Стекинг"
+    },
+    "historyErrorMessages": {
+        "generalError": "Что-то пошло не так",
+        "balances": {
+            "LiquidityRestrictions": "Ограничения ликвидности счета препятствуют снятию средств"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Исходный баланс недостаточно велик",
+            "TargetBalanceIsNotLargeEnough": "Баланс назначения недостаточно велик",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Предоставленные суммы слишком разняться",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Суммы выходят за установленные пределы",
+            "UnableToDepositXorLessThanMinimum": "XOR ниже минимального значения (0,007)",
+            "ZeroValueInAmountParameter": "Параметр суммы имеет нулевое значение"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Пара пулов уже существует",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "У учетной записи уже есть реферер",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Бонусная программа уже завершена",
+            "CantCalculateReward": "Не удалось выполнить расчет вознаграждения",
+            "NoRewardsForAsset": "Нет вознаграждений за этот актив"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Выбранный источник ликвидности не разрешен"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Недостаточно средств",
+            "InsufficientLPTokens": "Недостаточное количество токенов обеспечения ликвидности",
+            "PoolDoesNotHaveRewards": "Пул не имеет наград"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Произошла ошибка при расчете цены"
+        }
+    }
 }

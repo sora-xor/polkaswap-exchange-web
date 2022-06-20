@@ -21,6 +21,7 @@
             v-for="{ value, icon, text } in dropdownHeaderMenuItems"
             :key="value"
             class="header-menu__item"
+            :data-test-name="value"
             :icon="icon"
             :value="value"
           >
@@ -46,11 +47,11 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { getter, mutation, state } from '@/store/decorators';
 
 enum HeaderMenuType {
   HideBalances = 'hide-balances',
@@ -71,13 +72,13 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
 
-  @Getter libraryTheme!: Theme;
-  @Getter shouldBalanceBeHidden!: boolean;
+  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
+  @getter.libraryTheme private libraryTheme!: Theme;
 
-  @Action toggleHideBalance!: AsyncVoidFn;
-  @Action setSelectLanguageDialogVisibility!: (flag: boolean) => Promise<void>;
+  @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: AsyncVoidFn;
+  @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
 
-  isLargeDesktop = window.innerWidth >= BREAKPOINT;
+  isLargeDesktop: boolean = window.innerWidth >= BREAKPOINT;
 
   private updateLargeDesktopFlag(e: MediaQueryListEvent): void {
     this.isLargeDesktop = e.matches;
@@ -166,7 +167,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         switchTheme();
         break;
       case HeaderMenuType.Language:
-        this.setSelectLanguageDialogVisibility(true);
+        this.setLanguageDialogVisibility(true);
         break;
     }
   }

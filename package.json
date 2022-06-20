@@ -1,6 +1,10 @@
 {
   "name": "polkaswap-exchange-web",
-  "version": "1.8.0",
+  "version": "1.9.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
+  },
   "license": "Apache-2.0",
   "private": true,
   "author": "jihoon@tutanota.de <jihoon@tutanota.de>",
@@ -20,11 +24,12 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
-    "@soramitsu/soraneo-wallet-web": "^1.8.2",
     "@vue/composition-api": "^1.4.9",
-    "@walletconnect/web3-provider": "^1.6.6",
     "core-js": "^3.6.4",
     "echarts": "^5.3.1",
+    "@soramitsu/soraneo-wallet-web": "^1.9.10",
+    "@walletconnect/web3-provider": "^1.6.6",
+    "direct-vuex": "^0.12.1",
     "ethers": "^5.5.4",
     "lodash": "^4.17.21",
     "vue": "^2.6.14",
@@ -33,8 +38,7 @@
     "vue-i18n": "^8.11.2",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.5.3",
-    "vuex": "^3.1.3",
-    "vuex-class": "^0.3.2"
+    "vuex": "^3.1.3"
   },
   "devDependencies": {
     "@babel/runtime": "^7.12.5",
@@ -77,6 +81,8 @@
     "ts-jest": "^27.0.5",
     "typescript": "~4.4.4",
     "vue-cli-plugin-electron-builder": "^3.0.0-alpha.3",
+    "vue-cli-plugin-test-attrs": "^0.1.5",
+    "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.6.14"
   },
   "gitHooks": {

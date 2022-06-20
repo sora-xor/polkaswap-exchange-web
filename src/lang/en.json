@@ -43,7 +43,13 @@
             "ClaimRewards": "Reward claimed successfully {rewards}",
             "ReferralReserveXor": "Bonded XOR successfully",
             "ReferralUnreserveXor": "Unbonded XOR successfully",
-            "ReferralSetInvitedUser": "Referral is set successfully"
+            "ReferralSetInvitedUser": "Referral is set successfully",
+            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Supplied {symbol} and {symbol2} {amount} LP tokens",
+            "DemeterFarmingWithdrawLiquidity": "Removed {symbol} and {symbol2} {amount} LP tokens",
+            "DemeterFarmingStakeToken": "Added {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Removed {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} claimed successfully"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -55,11 +61,23 @@
             "ClaimRewards": "Failed to claim rewards {rewards}",
             "ReferralReserveXor": "Failed to bond XOR",
             "ReferralUnreserveXor": "Failed to unbond XOR",
-            "ReferralSetInvitedUser": "Failed to set referral"
+            "ReferralSetInvitedUser": "Failed to set referral",
+            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Failed to supply {amount} {symbol} and {symbol2} LP tokens",
+            "DemeterFarmingWithdrawLiquidity": "Failed to remove {amount} {symbol} and {symbol2} LP tokens",
+            "DemeterFarmingStakeToken": "Failed to add {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Failed to remove {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Failed to claim {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
-        "ReferralSetInvitedUser": "Set Referral"
+        "ReferralSetInvitedUser": "Set Referral",
+        "SwapAndSend": "Swap and Send",
+        "DemeterFarmingDepositLiquidity": "Stake Liquidity",
+        "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
+        "DemeterFarmingStakeToken": "Stake Token",
+        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingGetRewards": "Claim Rewards"
     },
     "polkadotjs": {
         "noExtensions": "No Polkadot.js extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -73,7 +91,7 @@
         "noPermissions": "Accidentally rejected permission request?<\/br>Currently polkadot{.js} extension doesn’t have permission managment. As a workaround you can restart your browser and revisit this page to proceed with authorization.",
         "noAccounts": "No account found in your polkadot{.js} browser extension. Please add an account and try again.",
         "selectAccount": "Select account to work with",
-        "loadingTitle": "Waiting for you to allow access to polkadot{.js} extension..",
+        "loadingTitle": "Waiting for you to allow access to polkadot{.js} extension.",
         "action": {
             "install": "Install extension",
             "learnMore": "Learn more",
@@ -110,7 +128,8 @@
     "account": {
         "successCopy": "Wallet address is copied to the clipboard",
         "copy": "Copy address",
-        "switch": "Switch account"
+        "switch": "Switch account",
+        "walletAddress": "Wallet address"
     },
     "history": {
         "clearHistory": "Clear history",
@@ -138,24 +157,18 @@
             "bonded": "- Bonded"
         },
         "totalAssetsValue": "Your total assets value:",
-        "details": "Details"
+        "details": "Details",
+        "assetId": "Asset ID"
     },
     "asset": {
-        "remove": "Remove asset"
+        "remove": "Remove asset",
+        "select": "Select an asset",
+        "recieve": "Receive {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
-        "success": "Asset was added successfully!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filter by Asset ID, Name or Ticker Symbol"
-        },
-        "AddAssetCustom": {
-            "title": "Custom asset",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Asset symbol"
-        },
+        "success": "Asset {symbol} was added successfully!",
         "empty": "No tokens found",
         "alreadyAttached": "Token was already attached",
         "understand": "I understand",
@@ -164,7 +177,15 @@
         "approved": "Asset approved by community",
         "unknown": "Unknown source",
         "scam": "SCAM",
-        "next": "Next"
+        "next": "Next",
+        "AddAssetToken": {
+            "title": "Tokens",
+            "switchBtn": "Verified assets only"
+        },
+        "AddAssetNFT": {
+            "title": "NFTs"
+        },
+        "searchInputText": "Search by Asset ID, Name or Ticker Symbol"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -321,7 +342,8 @@
         "Stats": "Stats",
         "Support": "Support",
         "CreatePair": "Create Pair",
-        "Tokens": "Tokens"
+        "Tokens": "Tokens",
+        "StakingContainer": "Staking"
     },
     "social": {
         "twitter": "Twitter",
@@ -507,7 +529,7 @@
         "pooledToken": "{tokenSymbol} Pooled",
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Your pool share",
-        "unknownAsset": "Unknown asset",
+        "unknownAsset": "@:unknownAssetText",
         "description": "When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
         "strategicBonusApy": "Strategic Bonus APY"
     },
@@ -532,7 +554,10 @@
         "selectNetwork": "Select network",
         "networkInfo": "Bridge @:soraText Network with:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Copy network address",
+        "soraAddress": "@:soraText address",
+        "ethereumAddress": "@:ethereumText address"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -586,7 +611,6 @@
             "done": "Complete",
             "waitingForConfirmation": "Waiting for confirmation..."
         },
-        "wait30Block": "Please wait 30 block confirmations",
         "viewInEtherscan": "View in Etherscan",
         "networkTitle": "{network} transaction",
         "transactionHash": "Transaction hash",
@@ -685,7 +709,8 @@
         "description": "Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.",
         "outputMessage": "Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.",
         "confirmTitle": "You will receive",
-        "shareOfPool": "Share of pool after transaction"
+        "shareOfPool": "Share of pool after transaction",
+        "locked": "{percent} of your pool is in staking"
     },
     "dexSettings": {
         "title": "Transaction settings",
@@ -772,7 +797,8 @@
         "claimableAmountDoneVesting": "Claimable rewards",
         "groups": {
             "strategic": "Strategic Rewards",
-            "external": "Rewards for the connected ethereum account"
+            "external": "Rewards for the connected ethereum account",
+            "crowdloan": "Crowdloan rewards"
         },
         "Rewards": "Rewards",
         "ReferralProgram": "@:referralProgram.title"
@@ -881,8 +907,8 @@
         "connectAccount": "To invite users you need to connect your SORA account.",
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} referrals",
-        "startInviting": "To start inviting, bond any amount of XOR.",
-        "preview": "Invite new users and get 10% from their transaction fees.<br \/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
+        "startInviting": "Bond XOR to refer others",
+        "preview": "Invite new users and get 10% from their transaction fees.<br\/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Balance",
         "networkFee": "@:networkFeeText",
@@ -915,8 +941,112 @@
             "hasReferrerTitle": "You’ve already set your referrer",
             "hasReferrerDescription": "Unfortunately, you can only set one",
             "ok": "OK"
-        }
+        },
+        "referrer": {
+            "title": "Add your referrer",
+            "titleReferrer": "Your referrer",
+            "placeholder": "Enter invitation link or code",
+            "label": "Invitation link or code",
+            "approve": "Approve",
+            "approved": "Approved",
+            "description": "You can get referred to Polkaswap,<br\/>type in the link or code of the referrer",
+            "referredBy": "You’ve been referred by {referrer}",
+            "info": "When you’ll pay a fee for transaction,<br\/>10% will go to your referrer",
+            "referredLablel": "Referred address"
+        },
+        "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaction Details",
-    "createTokenTextNFT": "Create NFT"
+    "createTokenTextNFT": "Create NFT",
+    "code": {
+        "download": "Download QR Code",
+        "upload": "Scan QR",
+        "recieve": "Receive",
+        "invalid": "Invalid QR Code"
+    },
+    "bridgeTransferNotification": {
+        "addToken": "Add {symbol} to @:metamask",
+        "title": "Bridge transaction successful"
+    },
+    "mobilePopup": {
+        "sideMenu": "Get SORA Wallet",
+        "header": "Download SORA Wallet with <span class=\"popup-info__headline--highlight\">Polkaswap<\/span> features",
+        "info": "Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees."
+    },
+    "releaseNotesText": "Release notes",
+    "copiedText": "Copied!",
+    "copyWithValue": "Copy {value}",
+    "copiedWithValue": "{value} is copied!",
+    "signAndClaimText": "Sign and claim",
+    "balanceText": "Balance",
+    "unknownAssetText": "Unknown asset",
+    "demeterFarming": {
+        "staking": {
+            "active": "Staking active",
+            "inactive": "Stake to earn additional rewards",
+            "stopped": "Staking stopped"
+        },
+        "info": {
+            "earned": "{symbol} earned",
+            "fee": "Fee",
+            "feeTooltip": "Deposit fee is applied to your amount to stake",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Your pool share staked",
+            "poolShareWillBe": "Your pool share staked will be",
+            "rewardToken": "Reward token",
+            "stake": "Your {symbol} staked",
+            "stakeWillBe": "Your {symbol} stake will be",
+            "totalLiquidityLocked": "Total liquidity locked"
+        },
+        "actions": {
+            "add": "Stake more",
+            "claim": "Claim rewards",
+            "remove": "Remove stake",
+            "start": "Start staking"
+        },
+        "amountAdd": "Amount to stake",
+        "amountRemove": "Amount to remove",
+        "poweredBy": "Powered by Demeter Farming"
+    },
+    "staking": {
+        "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Something went wrong",
+        "balances": {
+            "LiquidityRestrictions": "Account liquidity restrictions prevent withdrawal"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Source balance is not large enough",
+            "TargetBalanceIsNotLargeEnough": "Destination balance is not large enough",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Provided amounts are too diverse",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Amounts are out of required bounds",
+            "UnableToDepositXorLessThanMinimum": "XOR lower than the minimum value (0.007)",
+            "ZeroValueInAmountParameter": "Amount parameter has zero value"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Pool pair already exists",
+            "SlippageLimitExceeded": "Slippage tolerance has not met proper limits"
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Account already has a referrer",
+            "ReferrerInsufficientBalance": "Referrer does not have enough of reserved balance"
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Rewards program has already finished",
+            "CantCalculateReward": "Failed to perform reward calculation",
+            "NoRewardsForAsset": "There are no rewards for this asset"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Selected liquidity source is not allowed"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Insufficient funds",
+            "InsufficientLPTokens": "Insufficient liquidity provision tokens",
+            "PoolDoesNotHaveRewards": "Pool does not have rewards"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "An error occurred while calculating the price"
+        }
+    }
 }

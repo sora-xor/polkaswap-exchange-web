@@ -56,7 +56,8 @@
                 type="action"
                 alternative
                 icon="basic-copy-24"
-                @click="handleCopyTransactionHash(transactionFromHash)"
+                :tooltip="copyTransactionHashTooltip"
+                @click="handleCopyAddress(transactionFromHash, $event)"
               />
               <s-dropdown
                 v-if="(isSoraToEvm && soraExpolrerLinks.length) || !isSoraToEvm"
@@ -121,7 +122,15 @@
               :disabled="isFirstConfirmationButtonDisabled"
               @click="handleTransaction()"
             >
-              <template v-if="!(isSoraToEvm || isExternalAccountConnected)">{{
+              <span
+                v-if="isTransactionFromPending"
+                v-html="
+                  t('bridgeTransaction.pending', {
+                    network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`),
+                  })
+                "
+              />
+              <template v-else-if="!(isSoraToEvm || isExternalAccountConnected)">{{
                 t('bridgeTransaction.connectWallet')
               }}</template>
               <template v-else-if="!(isSoraToEvm || isValidNetworkType)">{{
@@ -140,14 +149,6 @@
               <template v-else-if="txWaitingForApprove">{{
                 t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
               }}</template>
-              <span
-                v-else-if="isTransactionFromPending"
-                v-html="
-                  t('bridgeTransaction.pending', {
-                    network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`),
-                  })
-                "
-              />
               <template v-else>{{
                 t('bridgeTransaction.confirm', {
                   direction: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'metamask'}`),
@@ -183,7 +184,8 @@
                 type="action"
                 alternative
                 icon="basic-copy-24"
-                @click="handleCopyTransactionHash(transactionToHash)"
+                :tooltip="copyTransactionHashTooltip"
+                @click="handleCopyAddress(transactionToHash, $event)"
               />
               <s-dropdown
                 v-if="(!isSoraToEvm && soraExpolrerLinks.length) || isSoraToEvm"
@@ -291,32 +293,21 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Getter, Action, State } from 'vuex-class';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString, BridgeHistory, RegisteredAccountAsset, BridgeNetworks } from '@sora-substrate/util';
+import type { CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import {
-  copyToClipboard,
-  hasInsufficientBalance,
-  hasInsufficientXorForFee,
-  hasInsufficientEvmNativeTokenForFee,
-} from '@/utils';
-import {
-  bridgeApi,
-  STATES,
-  isOutgoingTransaction,
-  isUnsignedFromPart,
-  isRejectedForeverFromPart,
-} from '@/utils/bridge';
+import { action, state, getter, mutation } from '@/store/decorators';
+import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
+import { bridgeApi, STATES, isOutgoingTransaction, isUnsignedFromPart } from '@/utils/bridge';
+import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 const FORMATTED_HASH_LENGTH = 24;
-const namespace = 'bridge';
 
 @Component({
   components: {
@@ -326,26 +317,29 @@ const namespace = 'bridge';
     InfoLine: components.InfoLine,
   },
 })
-export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixin, BridgeMixin, NetworkFormatterMixin) {
-  @State((state) => state[namespace].waitingForApprove) waitingForApprove!: any;
-  @State((state) => state[namespace].inProgressIds) inProgressIds!: any;
-
-  @Getter('prev', { namespace: 'router' }) prevRoute!: PageNames;
-  @Getter('getAssetDataByAddress', { namespace: 'assets' }) getAssetDataByAddress!: (
-    address: string
-  ) => RegisteredAccountAsset;
-
-  @Getter('historyItem', { namespace }) historyItem!: BridgeHistory;
-  @Getter('isTxEvmAccount', { namespace }) isTxEvmAccount!: boolean;
-
-  @Action('handleBridgeTx', { namespace }) handleBridgeTx!: (id: string) => Promise<void>;
-  @Action('setHistoryItem', { namespace }) setHistoryItem!: (id?: string) => Promise<void>;
-
+export default class BridgeTransaction extends Mixins(
+  mixins.FormattedAmountMixin,
+  mixins.CopyAddressMixin,
+  BridgeMixin,
+  NetworkFormatterMixin
+) {
   readonly KnownSymbols = KnownSymbols;
   readonly collapseItems = {
     from: 'step-from',
     to: 'step-to',
   };
+
+  @state.bridge.waitingForApprove private waitingForApprove!: Record<string, boolean>;
+  @state.bridge.inProgressIds private inProgressIds!: Record<string, boolean>;
+  @state.router.prev private prevRoute!: Nullable<PageNames>;
+
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
+  @getter.bridge.historyItem private historyItem!: Nullable<BridgeHistory>;
+  @getter.bridge.isTxEvmAccount isTxEvmAccount!: boolean;
+
+  @mutation.bridge.setHistory setHistory!: VoidFunction;
+  @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
+  @action.bridge.handleBridgeTx private handleBridgeTx!: (id: string) => Promise<void>;
 
   get txInProcess(): boolean {
     if (!this.historyItem?.id) return false;
@@ -363,10 +357,10 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.historyItem?.amount ?? '';
   }
 
-  get asset(): Nullable<RegisteredAccountAsset> {
+  get asset(): Nullable<RegisteredAccountAssetWithDecimals> {
     if (!this.historyItem?.assetAddress) return null;
 
-    return this.getAssetDataByAddress(this.historyItem.assetAddress);
+    return this.getAsset(this.historyItem.assetAddress);
   }
 
   get isSoraToEvm(): boolean {
@@ -450,10 +444,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.currentState === (this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED);
   }
 
-  get isTransactionFromRejected(): boolean {
-    return this.isTransactionFromFailed && isRejectedForeverFromPart(this.historyItem);
-  }
-
   get isTransactionToFailed(): boolean {
     return this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED);
   }
@@ -468,6 +458,10 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   get transactionStep(): number {
     return this.historyItem?.transactionStep ?? 1;
+  }
+
+  get copyTransactionHashTooltip(): string {
+    return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
   }
 
   get activeCollapseItems(): Array<string> {
@@ -516,6 +510,9 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   get statusFrom(): string {
     if (this.isTransactionFromPending) {
+      if (!this.isSoraToEvm && !this.transactionFromHash) {
+        return this.t('bridgeTransaction.statuses.waitingForConfirmation');
+      }
       return this.t('bridgeTransaction.statuses.pending') + '...';
     }
     if (this.isTransactionFromFailed) {
@@ -529,15 +526,11 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get statusTo(): string {
-    if (!this.isTransactionFromCompleted) {
-      return this.t('bridgeTransaction.statuses.waiting') + '...';
-    }
     if (this.isTransactionToPending) {
-      const message = this.t('bridgeTransaction.statuses.pending') + '...';
-      if (this.isSoraToEvm) {
-        return message;
+      if (this.isSoraToEvm && !this.transactionToHash) {
+        return this.t('bridgeTransaction.statuses.waitingForConfirmation');
       }
-      return `${message} (${this.t('bridgeTransaction.wait30Block')})`;
+      return this.t('bridgeTransaction.statuses.pending') + '...';
     }
     if (this.isTransactionToFailed) {
       return this.t('bridgeTransaction.statuses.failed');
@@ -545,7 +538,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     if (this.isTransactionToCompleted) {
       return this.t('bridgeTransaction.statuses.done');
     }
-    return this.t('bridgeTransaction.statuses.waitingForConfirmation');
+    return this.t('bridgeTransaction.statuses.waiting') + '...';
   }
 
   get transactionEvmAddress(): string {
@@ -567,7 +560,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get formattedSoraNetworkFee(): string {
-    return this.getStringFromCodec(this.txSoraNetworkFee, this.tokenXOR?.decimals);
+    return this.getStringFromCodec(this.txSoraNetworkFee, this.xor.decimals);
   }
 
   get soraNetworkFeeFiatValue(): Nullable<string> {
@@ -590,7 +583,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.tokenXOR, this.txSoraNetworkFee);
+    return hasInsufficientXorForFee(this.xor, this.txSoraNetworkFee);
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
@@ -604,8 +597,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
-      this.isTransactionFromPending ||
-      this.isTransactionFromRejected
+      this.isTransactionFromPending
     );
   }
 
@@ -633,6 +625,9 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get soraExpolrerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    if (!this.soraNetwork) {
+      return [];
+    }
     const baseLinks = getExplorerLinks(this.soraNetwork);
     const txId = this.soraTxId || this.soraTxBlockId;
     if (!txId) {
@@ -683,14 +678,17 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   beforeDestroy(): void {
-    const tx = { ...this.historyItem };
+    if (this.historyItem) {
+      const tx = { ...this.historyItem };
 
-    if (tx.id && !this.txInProcess && isUnsignedFromPart(tx)) {
-      bridgeApi.removeHistory(tx.id);
+      if (tx.id && !this.txInProcess && isUnsignedFromPart(tx)) {
+        bridgeApi.removeHistory(tx.id);
+        this.setHistory(); // hack to update another views because of unknown hooks exucution order
+      }
     }
 
     // reset active history item
-    this.setHistoryItem();
+    this.setHistoryId();
   }
 
   private getTxIconStatusClasses(isSecondTransaction?: boolean): string {
@@ -753,23 +751,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return Math.max(blocksLeft, 0);
   }
 
-  async handleCopyTransactionHash(hash: string): Promise<void> {
-    try {
-      await copyToClipboard(hash);
-      this.$notify({
-        message: this.t('bridgeTransaction.successCopy'),
-        type: 'success',
-        title: '',
-      });
-    } catch (error) {
-      this.$notify({
-        message: `${this.t('warningText')} ${error}`,
-        type: 'warning',
-        title: '',
-      });
-    }
-  }
-
   get failedClassStep1(): string {
     return this.getFailedClass(this.isTransactionFromFailed);
   }
@@ -790,14 +771,14 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
 
   async handleTransaction(withAutoStart = true): Promise<void> {
     await this.checkConnectionToExternalAccount(async () => {
-      if (withAutoStart && this.historyItem.id) {
+      if (withAutoStart && this.historyItem?.id) {
         await this.handleBridgeTx(this.historyItem.id);
       }
     });
   }
 
   handleBack(): void {
-    router.push({ name: this.prevRoute });
+    router.push({ name: this.prevRoute as string | undefined });
   }
 }
 </script>

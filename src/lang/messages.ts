@@ -19,6 +19,7 @@ export default {
   transactionText: 'transaction | transactions',
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
+  unknownAssetText: 'Unknown asset',
   connectWalletText: 'Connect account',
   changeAccountText: 'Change account',
   connectedText: 'Connected',
@@ -28,6 +29,7 @@ export default {
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
+  releaseNotesText: 'Release notes',
   memorandum: 'Polkaswap Memorandum and Terms of Services',
   memorandumLink:
     '<a href="@:helpDialog.termsOfServiceLink" target="_blank" rel="nofollow noopener" class="link" title="@:memorandum">@:memorandum</a>',
@@ -41,6 +43,7 @@ export default {
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
+  signAndClaimText: 'Sign and claim',
   retryText: 'Retry',
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: "Network fee is used to ensure @:soraText system's growth and stable performance.",
@@ -48,6 +51,7 @@ export default {
     'Please note that the Ethereum network fees displayed on Polkaswap are only rough estimations, you can see the correct fee amount in your connected Ethereum wallet prior to confirming the transaction.',
   marketText: 'Market',
   marketAlgorithmText: 'Market algorithm',
+  balanceText: 'Balance',
   insufficientBalanceText: 'Insufficient {tokenSymbol} balance',
   firstPerSecond: '{first} per {second}',
   pairIsNotCreated: "Token pair isn't created",
@@ -86,6 +90,7 @@ export default {
     [PageNames.Support]: 'Support',
     [PageNames.CreatePair]: 'Create Pair',
     [PageNames.Tokens]: 'Tokens',
+    [PageNames.StakingContainer]: 'Staking',
   },
   headerMenu: {
     showBalances: 'Show Balances',
@@ -188,6 +193,11 @@ export default {
     [Operation.ReferralReserveXor]: 'Bond XOR',
     [Operation.ReferralUnreserveXor]: 'Unbond XOR',
     [Operation.ReferralSetInvitedUser]: 'Set Referral',
+    [Operation.DemeterFarmingDepositLiquidity]: 'Add Liquidity Stake',
+    [Operation.DemeterFarmingWithdrawLiquidity]: 'Remove Liquidity Stake',
+    [Operation.DemeterFarmingStakeToken]: 'Add Stake',
+    [Operation.DemeterFarmingUnstakeToken]: 'Remove Stake',
+    [Operation.DemeterFarmingGetRewards]: 'Claim Rewards',
     andText: 'and',
     [TransactionStatus.Finalized]: {
       [Operation.Transfer]: '{action} {amount} {symbol} {direction} {address}',
@@ -200,6 +210,11 @@ export default {
       [Operation.ReferralReserveXor]: 'Bonded XOR successfully',
       [Operation.ReferralUnreserveXor]: 'Unbonded XOR successfully',
       [Operation.ReferralSetInvitedUser]: 'Set Referral',
+      [Operation.DemeterFarmingDepositLiquidity]: 'Supplied {symbol} and {symbol2} {amount} LP tokens',
+      [Operation.DemeterFarmingWithdrawLiquidity]: 'Removed {symbol} and {symbol2} {amount} LP tokens',
+      [Operation.DemeterFarmingStakeToken]: 'Added {amount} {symbol}',
+      [Operation.DemeterFarmingUnstakeToken]: 'Removed {amount} {symbol}',
+      [Operation.DemeterFarmingGetRewards]: '{amount} {symbol} claimed successfully',
     },
     [TransactionStatus.Error]: {
       [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
@@ -212,6 +227,11 @@ export default {
       [Operation.ReferralReserveXor]: 'Failed to bond XOR',
       [Operation.ReferralUnreserveXor]: 'Failed to unbonded XOR',
       [Operation.ReferralSetInvitedUser]: 'Failed to set referral',
+      [Operation.DemeterFarmingDepositLiquidity]: 'Failed to supply {amount} {symbol} and {symbol2} LP tokens',
+      [Operation.DemeterFarmingWithdrawLiquidity]: 'Failed to remove {amount} {symbol} and {symbol2} LP tokens',
+      [Operation.DemeterFarmingStakeToken]: 'Failed to add {amount} {symbol}',
+      [Operation.DemeterFarmingUnstakeToken]: 'Failed to remove {amount} {symbol}',
+      [Operation.DemeterFarmingGetRewards]: 'Failed to claim {symbol}',
     },
   },
   pageNotFound: {
@@ -332,7 +352,7 @@ export default {
     pooledToken: '{tokenSymbol} Pooled',
     pairTokens: '{pair} Pool Tokens',
     poolShare: 'Your pool share',
-    unknownAsset: 'Unknown asset',
+    unknownAsset: '@:unknownAssetText',
     description:
       'When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.',
     strategicBonusApy: 'Strategic Bonus APY',
@@ -414,7 +434,6 @@ export default {
       done: 'Complete',
       waitingForConfirmation: 'Waiting for confirmation...',
     },
-    wait30Block: 'Please wait 30 block confirmations',
     blocksLeft: '{count} blocks left...',
     viewInEtherscan: 'View in Etherscan',
     networkTitle: '{network} transaction',
@@ -517,6 +536,7 @@ export default {
       'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     confirmTitle: 'You will receive',
     shareOfPool: 'Share of pool after transaction',
+    locked: '{percent} of your pool is in staking',
   },
   tokens: {
     title: 'Listed Tokens',
@@ -613,6 +633,7 @@ export default {
     groups: {
       strategic: 'Strategic Rewards',
       external: 'Rewards for the connected ethereum account',
+      crowdloan: 'Crowdloan rewards',
     },
   },
   moonpay: {
@@ -692,6 +713,7 @@ export default {
     bondedXOR: 'XOR Bonded',
     referralsNumber: '{number} referrals',
     startInviting: 'To start inviting, bond any amount of XOR.',
+    insufficientBondedAmount: 'To invite more referrals, bond at least {inviteUserFee} XOR',
     preview:
       'Invite new users and get 10% from their transaction fees.<br />To start, bond any amount of XOR. <a href="#" target="_blank" rel="nofollow noopener" class="link" title="Learn more">Learn more</a>',
     deposit: 'Deposit',
@@ -728,5 +750,41 @@ export default {
       hasReferrerDescription: 'Unfortunately, you can only set one',
       ok: 'OK',
     },
+  },
+  mobilePopup: {
+    sideMenu: 'Get SORA Wallet',
+    header: 'Download SORA Wallet with <span class="popup-info__headline--highlight">Polkaswap</span> features',
+    info: 'Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees.',
+  },
+  demeterFarming: {
+    staking: {
+      active: 'Staking active',
+      inactive: 'Stake to earn additional rewards',
+      stopped: 'Staking stopped',
+    },
+    info: {
+      earned: '{symbol} earned',
+      fee: 'Fee',
+      feeTooltip: 'Deposit fee is applied to your amount to stake',
+      owned: '{symbol} @:balanceText',
+      poolShare: 'Your pool share staked',
+      poolShareWillBe: 'Your pool share staked will be',
+      rewardToken: 'Reward token',
+      stake: '{symbol} staked',
+      stakeWillBe: 'Your {symbol} stake will be',
+      totalLiquidityLocked: 'Total liquidity locked',
+    },
+    actions: {
+      add: 'Stake more',
+      claim: 'Claim rewards',
+      remove: 'Remove stake',
+      start: 'Start staking',
+    },
+    amountAdd: 'Amount to stake',
+    amountRemove: 'Amount to remove',
+    poweredBy: 'Powered by Demeter Farming',
+  },
+  staking: {
+    title: 'Staking',
   },
 };
