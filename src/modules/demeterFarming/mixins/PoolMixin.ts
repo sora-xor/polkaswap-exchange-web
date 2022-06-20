@@ -43,6 +43,14 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
     return this.poolAsset?.symbol ?? '';
   }
 
+  get poolAssetDecimals(): number {
+    return this.poolAsset?.decimals ?? FPNumber.DEFAULT_PRECISION;
+  }
+
+  get poolAssetAddress(): string {
+    return this.poolAsset?.address ?? '';
+  }
+
   get poolAssetPrice(): FPNumber {
     return this.poolAsset ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.poolAsset) ?? 0) : FPNumber.ZERO;
   }
@@ -58,7 +66,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   get poolAssetBalance(): FPNumber {
     if (!this.poolAsset) return FPNumber.ZERO;
 
-    return FPNumber.fromCodecValue(getAssetBalance(this.poolAsset) ?? 0, this.poolAsset?.decimals);
+    return FPNumber.fromCodecValue(getAssetBalance(this.poolAsset) ?? 0, this.poolAssetDecimals);
   }
 
   get poolAssetBalanceFormatted(): string {

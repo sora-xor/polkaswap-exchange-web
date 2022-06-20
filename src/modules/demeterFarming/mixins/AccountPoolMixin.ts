@@ -8,7 +8,7 @@ import { hasInsufficientXorForFee } from '@/utils';
 
 import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { NetworkFeesObject } from '@sora-substrate/util';
+import type { NetworkFeesObject, CodecString } from '@sora-substrate/util';
 
 @Component
 export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin) {
@@ -21,7 +21,7 @@ export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   // Override it component for another use case
-  get networkFee(): string {
+  get networkFee(): CodecString {
     return this.networkFees[Operation.DemeterFarmingGetRewards];
   }
 

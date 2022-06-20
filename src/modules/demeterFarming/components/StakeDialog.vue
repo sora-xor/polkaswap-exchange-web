@@ -38,10 +38,10 @@
           class="s-input--token-value"
           size="medium"
           :value="value"
-          :decimals="(poolAsset || {}).decimals"
+          :decimals="poolAssetDecimals"
           has-locale-string
           :delimiters="delimiters"
-          :max="getMax((poolAsset || {}).address)"
+          :max="getMax(poolAssetAddress)"
           @input="handleValue"
         >
           <div slot="top" class="input-line">
@@ -152,6 +152,7 @@ import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
 import { isXorAccountAsset, getMaxValue } from '@/utils';
 
+import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
@@ -178,7 +179,7 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
 
   value = '';
 
-  get networkFee(): string {
+  get networkFee(): CodecString {
     const operation = this.isAdding
       ? Operation.DemeterFarmingDepositLiquidity
       : Operation.DemeterFarmingWithdrawLiquidity;
