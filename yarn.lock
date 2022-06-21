@@ -2512,7 +2512,7 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^1.9.11":
+"@soramitsu/soraneo-wallet-web@1.9.11":
   version "1.9.11"
   resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.9.11.tgz#4d37e8d22a5e9dd6962a44074336f7144c4488fc"
   integrity sha512-CjcECCf2nY/4s9YMfT98ZtSED/5ZhhNaBpGP8VVNY+zjXK73gVh487t7hq1Q7QQYg4V8yHaBX0mzBsy6Qap9vA==
