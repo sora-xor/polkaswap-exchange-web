@@ -44,7 +44,12 @@
             "ReferralReserveXor": "XOR успешно зарезервированы",
             "ReferralUnreserveXor": "XOR успешно выведены из резерва",
             "ReferralSetInvitedUser": "Реферал успешно установлен",
-            "SwapAndSend": "Совершен обмен {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}"
+            "SwapAndSend": "Совершен обмен {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Предоставлено {symbol} и {symbol2} {amount} LP токенов ",
+            "DemeterFarmingWithdrawLiquidity": "Удалены {symbol} и {symbol2} {amount} LP токены",
+            "DemeterFarmingStakeToken": "Добавлено {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Удалено {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} затребован успешно"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Не удалось зарезервировать XOR",
             "ReferralUnreserveXor": "Не удалось вывести XOR из резерва",
             "ReferralSetInvitedUser": "Не удалось установить реферала",
-            "SwapAndSend": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}"
+            "SwapAndSend": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Не удалось предоставить {amount} {symbol} и {symbol2} LP токены",
+            "DemeterFarmingWithdrawLiquidity": "Не удалось удалить  {amount} {symbol} и {symbol2} LP токены",
+            "DemeterFarmingStakeToken": "Не удалось добавить {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Не удалось удалить {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Не удалось получить {symbol}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
         "ReferralSetInvitedUser": "Установить реферала",
-        "SwapAndSend": "Обменять и отправить"
+        "SwapAndSend": "Обменять и отправить",
+        "DemeterFarmingDepositLiquidity": "Стейкинг ликвидности",
+        "DemeterFarmingWithdrawLiquidity": "Отменить стейк ликвидности",
+        "DemeterFarmingStakeToken": "Стейкинг токена",
+        "DemeterFarmingUnstakeToken": "Отменить стейк токена",
+        "DemeterFarmingGetRewards": "Получить награды"
     },
     "polkadotjs": {
         "noExtensions": "Расширение Polkadot.js не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
@@ -327,7 +342,8 @@
         "Stats": "Статистика",
         "Support": "Поддержка",
         "CreatePair": "Создать пару",
-        "Tokens": "Токены"
+        "Tokens": "Токены",
+        "StakingContainer": "Стекинг"
     },
     "social": {
         "twitter": "Twitter",
@@ -693,7 +709,8 @@
         "description": "Вывод токенов пула конвертирует вашу позицию обратно в базовые токены по текущему курсу, пропорциональному вашей доле в пуле. Начисленные комиссионные включаются в получаемые вами суммы.",
         "outputMessage": "Вывод является оценочным. Если цена изменится более чем на {slippageTolerance}%, ваша транзакция будет отменена.",
         "confirmTitle": "Вы получите",
-        "shareOfPool": "Доля пула после транзакции"
+        "shareOfPool": "Доля пула после транзакции",
+        "locked": "{percent} вашего пула находится в стейкинге"
     },
     "dexSettings": {
         "title": "Настройки транзакции",
@@ -959,5 +976,77 @@
     "releaseNotesText": "О версии приложения",
     "copiedText": "Скопировано!",
     "copyWithValue": "Копировать {value}",
-    "copiedWithValue": "{value} скопировано!"
+    "copiedWithValue": "{value} скопировано!",
+    "signAndClaimText": "Войти и получить",
+    "balanceText": "Баланс",
+    "unknownAssetText": "Неизвестный актив",
+    "demeterFarming": {
+        "staking": {
+            "active": "Стейкинг активен",
+            "inactive": "Начните стейкинг, чтобы заработать дополнительные награды",
+            "stopped": "Стейкинг остановлен"
+        },
+        "info": {
+            "earned": "{symbol} заработано",
+            "fee": "Комиссия",
+            "feeTooltip": "Комиссия за депозит применяется к вашей сумме стейка",
+            "owned": "@:balanceText {symbol}",
+            "poolShare": "Ваша доля пула застейкана",
+            "poolShareWillBe": "Ваша доля пула будет",
+            "rewardToken": "Токен вознаграждения",
+            "stake": "Ваш стейк {symbol}",
+            "stakeWillBe": "Ваш стейк {symbol} будет",
+            "totalLiquidityLocked": "Ликвидность заблокирована"
+        },
+        "actions": {
+            "add": "Застейкать ещё",
+            "claim": "Получить награды",
+            "remove": "Удалить стейк",
+            "start": "Начать стейкинг"
+        },
+        "amountAdd": "Сумма стейкинга",
+        "amountRemove": "Сумма для удаления",
+        "poweredBy": "Работает на Demeter Farming"
+    },
+    "staking": {
+        "title": "Стекинг"
+    },
+    "historyErrorMessages": {
+        "generalError": "Что-то пошло не так",
+        "balances": {
+            "LiquidityRestrictions": "Ограничения ликвидности счета препятствуют снятию средств"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Исходный баланс недостаточно велик",
+            "TargetBalanceIsNotLargeEnough": "Баланс назначения недостаточно велик",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Предоставленные суммы слишком разняться",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Суммы выходят за установленные пределы",
+            "UnableToDepositXorLessThanMinimum": "XOR ниже минимального значения (0,007)",
+            "ZeroValueInAmountParameter": "Параметр суммы имеет нулевое значение"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Пара пулов уже существует",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "У учетной записи уже есть реферер",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Бонусная программа уже завершена",
+            "CantCalculateReward": "Не удалось выполнить расчет вознаграждения",
+            "NoRewardsForAsset": "Нет вознаграждений за этот актив"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Выбранный источник ликвидности не разрешен"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Недостаточно средств",
+            "InsufficientLPTokens": "Недостаточное количество токенов обеспечения ликвидности",
+            "PoolDoesNotHaveRewards": "Пул не имеет наград"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Произошла ошибка при расчете цены"
+        }
+    }
 }
