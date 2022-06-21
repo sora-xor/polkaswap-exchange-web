@@ -189,6 +189,7 @@ export enum Components {
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
   BridgeTransferNotification = 'Bridge/TransferNotification',
   MobilePopup = 'MobilePopup/MobilePopup',
+  Charts = 'Charts',
 }
 
 export enum RewardsTabsItems {

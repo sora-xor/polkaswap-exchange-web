@@ -204,7 +204,7 @@
       />
       <settings-dialog :visible.sync="showSettings" />
     </s-form>
-    <template v-if="chartsEnabled">charts are enabled</template>
+    <charts v-if="chartsEnabled" />
   </div>
 </template>
 
@@ -251,6 +251,7 @@ import { action, getter, mutation, state } from '@/store/decorators';
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
+    Charts: lazyComponent(Components.Charts),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     TokenAddress: components.TokenAddress,
