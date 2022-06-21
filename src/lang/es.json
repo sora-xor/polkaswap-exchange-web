@@ -44,7 +44,12 @@
             "ReferralReserveXor": "XOR viculado con éxito",
             "ReferralUnreserveXor": "XOR desvinculado con éxito",
             "ReferralSetInvitedUser": "La referencia se estableció correctamente",
-            "SwapAndSend": "Se cambió {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}"
+            "SwapAndSend": "Se cambió {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Suministrado {symbol} y {symbol2} {amount} tokens LP",
+            "DemeterFarmingWithdrawLiquidity": "Se eliminaron {symbol} y {symbol2} {amount} tokens LP",
+            "DemeterFarmingStakeToken": "Se agregó {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Eliminado {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} reclamado con éxito"
         },
         "error": {
             "Transfer": "Fallo en {action} {amount} {symbol} {direction} {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Error al vincular XOR",
             "ReferralUnreserveXor": "Error al desvincular XOR",
             "ReferralSetInvitedUser": "No se pudo establecer la referencia",
-            "SwapAndSend": "Error al cambiar {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}"
+            "SwapAndSend": "Error al cambiar {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Error al proporcionar {amount} {symbol} y {symbol2} tokens LP",
+            "DemeterFarmingWithdrawLiquidity": "Error al eliminar {amount} {symbol} y {symbol2} tokens LP",
+            "DemeterFarmingStakeToken": "Error al agregar {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Error al quitar {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Error al reclamar {symbol}"
         },
         "ReferralReserveXor": "Vincular XOR",
         "ReferralUnreserveXor": "Desvincular XOR",
         "ReferralSetInvitedUser": "Establecer referencia",
-        "SwapAndSend": "Intercambiar y enviar"
+        "SwapAndSend": "Intercambiar y enviar",
+        "DemeterFarmingDepositLiquidity": "Liquidez de la participación",
+        "DemeterFarmingWithdrawLiquidity": "Quitar liquidez",
+        "DemeterFarmingStakeToken": "Ficha de apuesta",
+        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingGetRewards": "Reclamar Recompensas"
     },
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión Polkadot.js. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
@@ -113,7 +128,8 @@
     "account": {
         "successCopy": "La dirección de la cartera se ha copiado en el portapapeles",
         "copy": "Copiar dirección",
-        "switch": "Cambiar de cuenta"
+        "switch": "Cambiar de cuenta",
+        "walletAddress": "Dirección de la cartera"
     },
     "history": {
         "clearHistory": "Borrar el historial",
@@ -141,7 +157,8 @@
             "bonded": "- Vinculado"
         },
         "totalAssetsValue": "El valor total de sus activos:",
-        "details": "Detalles"
+        "details": "Detalles",
+        "assetId": "ID del Activo"
     },
     "asset": {
         "remove": "Eliminar el Activo",
@@ -152,15 +169,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "¡El Activo {symbol} se ha añadido con éxito!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filtrar por ID de Activo, Nombre o Símbolo bursátil (ticker)"
-        },
-        "AddAssetCustom": {
-            "title": "Activo personalizado",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Símbolo del Activo"
-        },
         "empty": "No se han encontrado Tokens",
         "alreadyAttached": "El Token ya estaba adjunto",
         "understand": "Comprendo",
@@ -169,7 +177,15 @@
         "approved": "Activo aprobado por la comunidad",
         "unknown": "Fuente desconocida",
         "scam": "ESTAFA",
-        "next": "Siguiente"
+        "next": "Siguiente",
+        "AddAssetToken": {
+            "title": "Tokens",
+            "switchBtn": "Solo activos verificados"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Buscar por ID de activo, nombre o símbolo de etiqueta"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -326,7 +342,8 @@
         "Stats": "Estadísticas",
         "Support": "Soporte",
         "CreatePair": "Crear par",
-        "Tokens": "Tokens"
+        "Tokens": "Tokens",
+        "StakingContainer": "Staking"
     },
     "social": {
         "twitter": "Twitter",
@@ -537,7 +554,10 @@
         "selectNetwork": "Seleccionar red",
         "networkInfo": "Puente de la red @:soraText con:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Copiar dirección de red",
+        "soraAddress": "Dirección de @:soraText",
+        "ethereumAddress": "dirección de @:ethereumText"
     },
     "selectRegisteredAsset": {
         "title": "Seleccione un Token",
@@ -689,7 +709,8 @@
         "description": "La retirada de Tokens del Fondo común convierte su posición de nuevo en Tokens subyacentes a la tasa actual, proporcional a su participación en el fondo común. Las comisiones acumuladas están incluídas en las cantidades que recibe.",
         "outputMessage": "La cantidad es estimada. Si el precio cambia más de {slippageTolerance}% su transacción se revertirá.",
         "confirmTitle": "Usted recibirá",
-        "shareOfPool": "Parte del fondo común después de la transacción"
+        "shareOfPool": "Parte del fondo común después de la transacción",
+        "locked": "{percent} de su grupo está en participación"
     },
     "dexSettings": {
         "title": "Configuración de transacciones",
@@ -825,7 +846,7 @@
             },
             "transactionError": {
                 "title": "La transacción ha fallado",
-                "text": "Desafortunadamente, parece que la transacción @:moonpayText ha fallado. Inténtalo de nuevo. Para obtener asistencia de @:moonpayText, vaya a <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/support.moonpay.com <\/a>"
+                "text": "Desafortunadamente, parece que la transacción @:moonpayText ha fallado. Inténtalo de nuevo. Para obtener asistencia de @:moonpayText, ir a <a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/support.moonpay.com <\/a>"
             },
             "amountError": {
                 "title": "Saldo insuficiente",
@@ -933,7 +954,7 @@
             "info": "Cuando pague una tarifa por la transacción,<br\/>el 10% se destinará a su referente",
             "referredLablel": "Dirección de referencia"
         },
-        "insufficientBondedAmount": "Para invitar a más referencias, vincule al menos {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Para invitar a más referidos, vincular al menos {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detalles de la transacción",
     "createTokenTextNFT": "Crear NFT",
@@ -949,7 +970,83 @@
     },
     "mobilePopup": {
         "sideMenu": "Obtén SORA Wallet",
-        "header": "Descargue SORA Wallet con características de <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
-        "info": "Intercambie tokens de diferentes redes: SORA, Ethereum, Polkadot, Kusama. Proporcione un fondo de liquidez y gane un % de las tarifas de cambio."
+        "header": "Descargue la billetera de SORA  con características de <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
+        "info": "Intercambie tokens de diferentes redes: SORA, Ethereum, Polkadot, Kusama. Proporcione liquidez a la pool y gane un % de las tarifas de cambio."
+    },
+    "releaseNotesText": "Notas de lanzamiento",
+    "copiedText": "¡Copiado!",
+    "copyWithValue": "Copiar {value}",
+    "copiedWithValue": "{value} se copia!",
+    "signAndClaimText": "Firmar y reclamar",
+    "balanceText": "balance",
+    "unknownAssetText": "Activo desconocido",
+    "demeterFarming": {
+        "staking": {
+            "active": "Replanteo activo",
+            "inactive": "Apuesta para ganar recompensas adicionales",
+            "stopped": "Replanteo detenido"
+        },
+        "info": {
+            "earned": "{symbol} ganado",
+            "fee": "Tarifa",
+            "feeTooltip": "La tarifa de depósito se aplica a la cantidad a apostar",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Su parte de la piscina apostada",
+            "poolShareWillBe": "Su participación en el grupo apostada será",
+            "rewardToken": "ficha de recompensa",
+            "stake": "Tu {symbol} apostado",
+            "stakeWillBe": "Su apuesta de {symbol} será",
+            "totalLiquidityLocked": "Liquidez total bloqueada"
+        },
+        "actions": {
+            "add": "Vincular más",
+            "claim": "Reclamar premios",
+            "remove": "Quitar participación",
+            "start": "Empezar Participación"
+        },
+        "amountAdd": "Cantidad a vincular",
+        "amountRemove": "Cantidad a eliminar",
+        "poweredBy": "Desarrollado por Demeter Farming"
+    },
+    "staking": {
+        "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Algo salió mal",
+        "balances": {
+            "LiquidityRestrictions": "Las restricciones de liquidez de la cuenta impiden el retiro"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "El saldo de la fuente no es lo suficientemente grande",
+            "TargetBalanceIsNotLargeEnough": "El saldo de destino no es lo suficientemente grande",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Las cantidades proporcionadas son demasiado diversas",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Los montos están fuera de los límites requeridos",
+            "UnableToDepositXorLessThanMinimum": "XOR inferior al valor mínimo (0,007)",
+            "ZeroValueInAmountParameter": "El parámetro de cantidad tiene valor cero"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "El par de grupos ya existe",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "La cuenta ya tiene un referente",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "El programa de recompensas ya ha finalizado",
+            "CantCalculateReward": "No se pudo realizar el cálculo de la recompensa",
+            "NoRewardsForAsset": "No hay recompensas para este activo."
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "La fuente de liquidez seleccionada no está permitida"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Fondos insuficientes",
+            "InsufficientLPTokens": "Tokens de provisión de liquidez insuficientes",
+            "PoolDoesNotHaveRewards": "La piscina no tiene recompensas."
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Ocurrió un error al calcular el precio"
+        }
     }
 }

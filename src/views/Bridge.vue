@@ -36,6 +36,7 @@
           :max="getMax(assetAddress)"
           :disabled="!areNetworksConnected || !isAssetSelected"
           class="s-input--token-value"
+          data-test-name="bridgeFrom"
           has-locale-string
           size="medium"
           @input="setAmount"
@@ -87,12 +88,17 @@
             </div>
             <div v-if="isNetworkAConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <span>{{ formatAddress(!isSoraToEvm ? evmAddress : getWalletAddress(), 8) }}</span>
+              <s-tooltip :content="getCopyTooltip(isSoraToEvm)" border-radius="mini" placement="bottom-end">
+                <span class="bridge-network-address" @click="handleCopyAddress(accountAddressFrom, $event)">
+                  {{ formatAddress(accountAddressFrom, 8) }}
+                </span>
+              </s-tooltip>
               <span>{{ t('bridge.connected') }}</span>
             </div>
             <s-button
               v-else
               class="el-button--connect s-typography-button--large"
+              data-test-name="connectPolkadot"
               type="primary"
               @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()"
             >
@@ -101,7 +107,13 @@
           </template>
         </s-float-input>
 
-        <s-button class="s-button--switch" type="action" icon="arrows-swap-90-24" @click="handleSwitchItems" />
+        <s-button
+          class="s-button--switch"
+          data-test-name="switchToken"
+          type="action"
+          icon="arrows-swap-90-24"
+          @click="handleSwitchItems"
+        />
 
         <s-float-input
           :value="amount"
@@ -109,6 +121,7 @@
           :delimiters="delimiters"
           :max="getMax(assetAddress)"
           class="s-input--token-value"
+          data-test-name="bridgeTo"
           has-locale-string
           size="medium"
           disabled
@@ -144,12 +157,17 @@
             </div>
             <div v-if="isNetworkBConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <span>{{ formatAddress(isSoraToEvm ? evmAddress : getWalletAddress(), 8) }}</span>
+              <s-tooltip :content="getCopyTooltip(!isSoraToEvm)" border-radius="mini" placement="bottom-end">
+                <span class="bridge-network-address" @click="handleCopyAddress(accountAddressTo, $event)">
+                  {{ formatAddress(accountAddressTo, 8) }}
+                </span>
+              </s-tooltip>
               <span>{{ t('bridge.connected') }}</span>
             </div>
             <s-button
               v-else
               class="el-button--connect s-typography-button--large"
+              data-test-name="connectMetamask"
               type="primary"
               @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()"
             >
@@ -160,6 +178,7 @@
 
         <s-button
           class="el-button--next s-typography-button--large"
+          data-test-name="nextButton"
           type="primary"
           :disabled="isConfirmTxDisabled"
           :loading="isSelectAssetLoading"
@@ -274,6 +293,7 @@ import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecima
 export default class Bridge extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.NetworkFeeWarningMixin,
+  mixins.CopyAddressMixin,
   BridgeMixin,
   NetworkFormatterMixin,
   NetworkFeeDialogMixin,
@@ -429,8 +449,16 @@ export default class Bridge extends Mixins(
     return isSora ? this.asset.decimals : this.asset.externalDecimals;
   }
 
+  get accountAddressFrom(): string {
+    return !this.isSoraToEvm ? this.evmAddress : this.getWalletAddress();
+  }
+
+  get accountAddressTo(): string {
+    return this.isSoraToEvm ? this.evmAddress : this.getWalletAddress();
+  }
+
   formatBalance(isSora = true): string {
-    if (!this.isRegisteredAsset) {
+    if (!this.isRegisteredAsset || !this.asset) {
       return '-';
     }
     const balance = getAssetBalance(this.asset, { internal: isSora });
@@ -452,6 +480,10 @@ export default class Bridge extends Mixins(
 
   getBridgeItemTitle(isSoraNetwork = false): string {
     return this.t(this.formatNetwork(isSoraNetwork));
+  }
+
+  getCopyTooltip(isSoraNetwork = false): string {
+    return this.copyTooltip(this.t(`bridge.${isSoraNetwork ? 'soraAddress' : 'ethereumAddress'}`));
   }
 
   async handleSwitchItems(): Promise<void> {
@@ -599,6 +631,9 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     & + .bridge-info {
       margin-top: $basic-spacing * 2;
     }
+  }
+  .bridge-network-address {
+    @include copy-address;
   }
   &-footer {
     display: flex;

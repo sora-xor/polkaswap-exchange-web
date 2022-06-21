@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Sikeresen lekötött XOR",
             "ReferralUnreserveXor": "Sikeresen feloldott XOR",
             "ReferralSetInvitedUser": "Az ajánló sikeresen be van állítva",
-            "SwapAndSend": "{amount} {symbol} kicserélve {amount2} {symbol2} -re és {action} {direction} {address}"
+            "SwapAndSend": "{amount} {symbol} kicserélve {amount2} {symbol2} -re és {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Mellékelt {symbol} és {symbol2} {amount} LP token",
+            "DemeterFarmingWithdrawLiquidity": "{symbol} és {symbol2} {amount} LP token eltávolítva",
+            "DemeterFarmingStakeToken": "Hozzáadva {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "{amount} {symbol} eltávolítva",
+            "DemeterFarmingGetRewards": "{amount} {symbol} sikeres követelés"
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Nem sikerült a XOR lekötése",
             "ReferralUnreserveXor": "Nem sikerült feloldani az XOR-t",
             "ReferralSetInvitedUser": "Nem sikerült beállítani az ajánlást",
-            "SwapAndSend": "Nem sikerült átváltani a {amount} {symbol} -t {amount2} {symbol2}-re"
+            "SwapAndSend": "Nem sikerült átváltani a {amount} {symbol} -t {amount2} {symbol2}-re",
+            "DemeterFarmingDepositLiquidity": "Nem sikerült megadni az {amount} {symbol} és {symbol2} LP tokeneket",
+            "DemeterFarmingWithdrawLiquidity": "Nem sikerült eltávolítani az {amount} {symbol} és {symbol2} LP tokeneket",
+            "DemeterFarmingStakeToken": "Nem sikerült hozzáadni {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Nem sikerült eltávolítani {amount} {symbol}",
+            "DemeterFarmingGetRewards": "A(z {symbol} igénylése sikertelen"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
         "ReferralSetInvitedUser": "Ajánló megadása",
-        "SwapAndSend": "Váltás és küldés"
+        "SwapAndSend": "Váltás és küldés",
+        "DemeterFarmingDepositLiquidity": "Tét Likviditás",
+        "DemeterFarmingWithdrawLiquidity": "Likviditás visszavonása",
+        "DemeterFarmingStakeToken": "Tét token",
+        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingGetRewards": "Jutalmak igénylése"
     },
     "polkadotjs": {
         "noExtensions": "Nem találtunk Polkadot.js kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -113,7 +128,8 @@
     "account": {
         "successCopy": "A tárca címe a vágólapra másolva",
         "copy": "Cím másolása",
-        "switch": "Fiókváltás"
+        "switch": "Fiókváltás",
+        "walletAddress": "Pénztárca címe"
     },
     "history": {
         "clearHistory": "Előzmények törlése",
@@ -141,7 +157,8 @@
             "bonded": "- lekötve"
         },
         "totalAssetsValue": "Az összes eszköz értéke:",
-        "details": "Részletek"
+        "details": "Részletek",
+        "assetId": "Eszköz azonosítója"
     },
     "asset": {
         "remove": "Eszköz eltávolítása",
@@ -152,15 +169,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Az eszköz {symbol} sikeresen hozzáadva!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Szűrés eszközazonosító, név vagy szimbólum alapján"
-        },
-        "AddAssetCustom": {
-            "title": "Egyéni eszköz",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Eszköz szimbólum"
-        },
         "empty": "Nem található token",
         "alreadyAttached": "Tokent már csatolták",
         "understand": "Megértettem",
@@ -169,7 +177,15 @@
         "approved": "A közösség által jóváhagyott eszköz",
         "unknown": "Ismeretlen forrás",
         "scam": "ÁTVERÉS",
-        "next": "Következő"
+        "next": "Következő",
+        "AddAssetToken": {
+            "title": "Tokenek",
+            "switchBtn": "Csak ellenőrzött eszközök"
+        },
+        "AddAssetNFT": {
+            "title": "NFT-k"
+        },
+        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -326,7 +342,8 @@
         "Stats": "Statisztikák",
         "Support": "Támogatás",
         "CreatePair": "Pár létrehozása",
-        "Tokens": "Tokenek"
+        "Tokens": "Tokenek",
+        "StakingContainer": "Letét"
     },
     "social": {
         "twitter": "Twitter",
@@ -537,7 +554,10 @@
         "selectNetwork": "Hálózat kiválasztása",
         "networkInfo": "@:soraText hálózati híd a következőkkel:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Hálózati cím másolása",
+        "soraAddress": "@:soraText cím",
+        "ethereumAddress": "@:ethereumText cím"
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",
@@ -689,7 +709,8 @@
         "description": "A pool tokenek eltávolítása a pozícióját az aktuális árfolyamon, a készlet részesedésével arányosan alakítja vissza mögöttes tokenekké. A felhalmozott díjakat a kapott összegek tartalmazzák.",
         "outputMessage": "Becsült eredmény. Ha az ár a {slippageTolerance}%-nál nagyobb mértékben változik, a tranzakció visszafordul.",
         "confirmTitle": "Kapni fogsz",
-        "shareOfPool": "A pool részesedése a tranzakció után"
+        "shareOfPool": "A pool részesedése a tranzakció után",
+        "locked": "A készlet {percent} -a tétben van"
     },
     "dexSettings": {
         "title": "Tranzakciós beállítások",
@@ -951,5 +972,81 @@
         "sideMenu": "Szerezze be a SORA Wallet",
         "header": "A SORA Wallet letöltése <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funkcióival",
         "info": "Cserélje ki a tokeneket különböző hálózatokból - SORA, Ethereum, Polkadot, Kusama. Biztosítson likviditási készletet, és keressen %-ot a cseredíjakból."
+    },
+    "releaseNotesText": "Kiadási megjegyzések",
+    "copiedText": "Másolva!",
+    "copyWithValue": "{value} másolása",
+    "copiedWithValue": "{value} átmásolva!",
+    "signAndClaimText": "Aláírás és igénylés",
+    "balanceText": "Egyenleg",
+    "unknownAssetText": "Ismeretlen eszköz",
+    "demeterFarming": {
+        "staking": {
+            "active": "Staking aktív",
+            "inactive": "Tét további jutalmakért",
+            "stopped": "Staking megállt"
+        },
+        "info": {
+            "earned": "{symbol} szerzett",
+            "fee": "Díj",
+            "feeTooltip": "A letéti díjat a tét összegére számítjuk fel",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Az Ön tétje a medencében",
+            "poolShareWillBe": "Az Ön által megtételt medencerészesedés lesz",
+            "rewardToken": "Jutalom token",
+            "stake": "Az Ön {symbol} tétje",
+            "stakeWillBe": "Az Ön {symbol} tétje lesz",
+            "totalLiquidityLocked": "Teljes likviditás zárolva"
+        },
+        "actions": {
+            "add": "Több stake",
+            "claim": "Kérjen jutalmakat",
+            "remove": "Karó eltávolítása",
+            "start": "Staking indítása"
+        },
+        "amountAdd": "A stake összege",
+        "amountRemove": "Eltávolítandó mennyiség",
+        "poweredBy": "Powered by Demeter Farming"
+    },
+    "staking": {
+        "title": "Letét"
+    },
+    "historyErrorMessages": {
+        "generalError": "Valami elromlott",
+        "balances": {
+            "LiquidityRestrictions": "A számla likviditási korlátozása megakadályozza a pénzfelvételt"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "A forrásegyenleg nem elég nagy",
+            "TargetBalanceIsNotLargeEnough": "Az úti cél egyenlege nem elég nagy",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "A megadott összegek túlságosan változatosak",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Az összegek túllépik a szükséges határokat",
+            "UnableToDepositXorLessThanMinimum": "XOR kisebb, mint a minimális érték (0,007)",
+            "ZeroValueInAmountParameter": "Az Amount paraméter értéke nulla"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "A medencepár már létezik",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "A fióknak már van hivatkozója",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "A jutalomprogram már véget ért",
+            "CantCalculateReward": "Nem sikerült a jutalom kiszámítása",
+            "NoRewardsForAsset": "Ehhez az eszközhöz nem jár jutalom"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "A kiválasztott likviditási forrás nem engedélyezett"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Fedezethiány",
+            "InsufficientLPTokens": "Nincs elegendő likviditási biztosíték token",
+            "PoolDoesNotHaveRewards": "A medence nem jár jutalmakkal"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Hiba történt az ár kiszámításakor"
+        }
     }
 }

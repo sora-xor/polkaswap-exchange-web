@@ -71,9 +71,7 @@ const mutations = defineMutations<SettingsState>()({
     state.blockNumberUpdates = subscription;
   },
   resetBlockNumberSubscription(state): void {
-    if (state.blockNumberUpdates) {
-      state.blockNumberUpdates.unsubscribe();
-    }
+    state.blockNumberUpdates?.unsubscribe();
     state.blockNumberUpdates = null;
   },
 });
