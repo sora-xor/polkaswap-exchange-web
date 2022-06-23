@@ -20,10 +20,6 @@ import { ZeroStringValue } from '@/consts';
 import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
 import type { RegisteredAccountAssetObject } from '@/store/assets/types';
 
-type DataMap<T> = {
-  [key: string]: T;
-};
-
 type TimestampMap<T> = {
   [key: number]: T;
 };

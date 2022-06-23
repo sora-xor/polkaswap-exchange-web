@@ -21,6 +21,7 @@
             v-for="{ value, icon, text } in dropdownHeaderMenuItems"
             :key="value"
             class="header-menu__item"
+            :data-test-name="value"
             :icon="icon"
             :value="value"
           >

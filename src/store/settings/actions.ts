@@ -12,7 +12,7 @@ import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 
 const NODE_CONNECTION_TIMEOUT = 60_000;
 
-async function getNetworkChainGenesisHash(context: ActionContext<any, any>): Promise<void> {
+async function updateNetworkChainGenesisHash(context: ActionContext<any, any>): Promise<void> {
   const { commit, state } = settingsActionContext(context);
   try {
     const genesisHash = await Promise.any(
@@ -20,28 +20,17 @@ async function getNetworkChainGenesisHash(context: ActionContext<any, any>): Pro
     );
     commit.setNetworkChainGenesisHash(genesisHash);
   } catch (error) {
-    commit.setNetworkChainGenesisHash('');
-    throw error;
+    console.error(error);
   }
-}
-
-async function setBlockNumber(context: ActionContext<any, any>): Promise<void> {
-  const { commit } = settingsActionContext(context);
-  commit.resetBlockNumberSubscription();
-
-  const blockNumberSubscription = api.system.getBlockNumberObservable().subscribe((blockNumber) => {
-    commit.setBlockNumber(Number(blockNumber));
-  });
-  commit.setBlockNumberUpdates(blockNumberSubscription);
 }
 
 const actions = defineActions({
   async connectToNode(context, options: ConnectToNodeOptions = {}): Promise<void> {
-    const { dispatch, commit, state, rootState } = settingsActionContext(context);
+    const { dispatch, commit, state, rootState, getters } = settingsActionContext(context);
     if (!state.nodeConnectionAllowance) return;
 
-    const { node, onError, ...restOptions } = options;
-    const defaultNode = state.defaultNodes[0];
+    const { node, onError, currentNodeIndex = 0, ...restOptions } = options;
+    const defaultNode = getters.nodeList[currentNodeIndex];
     const requestedNode = (node || (state.node.address ? state.node : defaultNode)) as Nullable<Node>;
 
     try {
@@ -57,12 +46,15 @@ const actions = defineActions({
         }
       }
     } catch (error) {
+      // if connection failed to node in state, reset node in state
       if (requestedNode && requestedNode.address === state.node.address) {
         commit.resetNode();
       }
 
-      if (state.node.address || (defaultNode && requestedNode?.address !== defaultNode.address)) {
-        await dispatch.connectToNode({ onError, ...restOptions });
+      // loop through the node list
+      if (state.node.address || currentNodeIndex !== state.defaultNodes.length - 1) {
+        const nextIndex = requestedNode?.address === defaultNode.address ? currentNodeIndex + 1 : 0;
+        await dispatch.connectToNode({ onError, currentNodeIndex: nextIndex, ...restOptions });
       }
 
       if (onError && typeof onError === 'function') {
@@ -113,13 +105,13 @@ const actions = defineActions({
       if (connectingNodeChanged()) return;
 
       console.info('Connected to node', connection.endpoint);
-      await setBlockNumber(context);
+
       const nodeChainGenesisHash = connection.api?.genesisHash.toHex();
       // if connected node is custom node, we should check genesis hash
       if (!isTrustedEndpoint) {
         // if genesis hash is not set in state, fetch it
         if (!state.chainGenesisHash) {
-          await getNetworkChainGenesisHash(context);
+          await updateNetworkChainGenesisHash(context);
         }
         if (nodeChainGenesisHash !== state.chainGenesisHash) {
           throw new AppHandledError(
@@ -179,6 +171,15 @@ const actions = defineActions({
     updateDocumentTitle();
     updateFpNumberLocale(locale);
     commit.setLanguage(locale);
+  },
+  async setBlockNumber(context): Promise<void> {
+    const { commit } = settingsActionContext(context);
+    commit.resetBlockNumberSubscription();
+
+    const blockNumberSubscription = api.system.getBlockNumberObservable().subscribe((blockNumber) => {
+      commit.setBlockNumber(blockNumber);
+    });
+    commit.setBlockNumberUpdates(blockNumberSubscription);
   },
 });
 

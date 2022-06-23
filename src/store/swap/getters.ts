@@ -1,7 +1,7 @@
 import isEmpty from 'lodash/fp/isEmpty';
 import { defineGetters } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { CodecString } from '@sora-substrate/util';
 
 import { swapGetterContext } from '@/store/swap';
