@@ -47,7 +47,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR, KnownAssets } from '@sora-substrate/util/build/assets/consts';
-import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';

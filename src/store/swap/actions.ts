@@ -2,7 +2,7 @@ import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { QuotePayload } from '@sora-substrate/util/build/swap/types';
+import type { QuotePayload } from '@sora-substrate/liquidity-proxy/build/types';
 
 import { swapActionContext } from '@/store/swap';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';

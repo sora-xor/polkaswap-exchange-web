@@ -31,7 +31,7 @@
         "RemoveLiquidity": "Rút thanh khoản",
         "CreatePair": "Tạo một cặp token",
         "RegisterAsset": "Đăng ký Tài sản",
-        "ClaimRewards": "Yêu cầu phần thưởng",
+        "ClaimRewards": "Nhận phần thưởng",
         "andText": "và",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
@@ -43,8 +43,13 @@
             "ClaimRewards": "Đã yêu cầu thành công phần thưởng {rewards}",
             "ReferralReserveXor": "Bonded XOR thành công",
             "ReferralUnreserveXor": "Unbonded XOR thành công",
-            "ReferralSetInvitedUser": "Giới thiệu được thiết lập thành công",
-            "SwapAndSend": "Đã hoán đổi {amount} {symbol} cho {amount2} {symbol2} và {action} {direction} {address}"
+            "ReferralSetInvitedUser": "Thiết lập giới thiệu thành công",
+            "SwapAndSend": "Đã hoán đổi {amount} {symbol} cho {amount2} {symbol2} và {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Đã cung cấp mã thông báo LP {symbol} và {symbol2} {amount}",
+            "DemeterFarmingWithdrawLiquidity": "Loại bỏ thanh khoản token {symbol} và {symbol2} {amount}",
+            "DemeterFarmingStakeToken": "Đã thêm {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Đã xóa {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Đã xác nhận quyền sở hữu {amount} {symbol} thành công"
         },
         "error": {
             "Transfer": "Không gửi được {action} {amount} {symbol} {direction} {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Thất bại khi bond XOR",
             "ReferralUnreserveXor": "Thất bại khi unbond XOR",
             "ReferralSetInvitedUser": "Thất bại trong việc đặt giới thiệu",
-            "SwapAndSend": "Thất bại trong việc hoán đổi {amount} {symbol} cho {amount2} {symbol2} và {action} {direction} {address}"
+            "SwapAndSend": "Thất bại trong việc hoán đổi {amount} {symbol} cho {amount2} {symbol2} và {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Thất bại trong việc cung cấp thanh khoản token {amount} {symbol} và {symbol2}",
+            "DemeterFarmingWithdrawLiquidity": "Thất bại trong việc loại bỏ thanh khoản token {amount} {symbol} và {symbol2}",
+            "DemeterFarmingStakeToken": "Thất bại khi thêm {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Thất bại trong việc loại bỏ {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Không xác nhận được {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
         "ReferralSetInvitedUser": "Thiết lập giới thiệu",
-        "SwapAndSend": "Hoán đổi và Gửi"
+        "SwapAndSend": "Hoán đổi và Gửi",
+        "DemeterFarmingDepositLiquidity": "Thanh khoản stake",
+        "DemeterFarmingWithdrawLiquidity": "Không tham gia thanh khoản",
+        "DemeterFarmingStakeToken": "Stake Token",
+        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingGetRewards": "Nhận phần thưởng"
     },
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) Polkadot{.js}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -78,7 +93,7 @@
         "selectAccount": "Chọn tài khoản để dùng",
         "loadingTitle": "Chờ bạn cấp phép truy cập vào tiện ích (extension) polkadot{.js}.",
         "action": {
-            "install": "Cài đặt tiện ích mở rộng (extension)",
+            "install": "Cài đặt tiện ích mở rộng",
             "learnMore": "Tìm hiểu thêm",
             "connect": "Kết nối tài khoản",
             "refresh": "Làm mới"
@@ -113,7 +128,8 @@
     "account": {
         "successCopy": "Địa chỉ ví được sao chép vào bảng tạm",
         "copy": "Sao chép địa chỉ",
-        "switch": "Chuyển đổi tài khoản"
+        "switch": "Chuyển đổi tài khoản",
+        "walletAddress": "Địa chỉ ví"
     },
     "history": {
         "clearHistory": "Xóa lịch sử",
@@ -141,7 +157,8 @@
             "bonded": "- Bonded"
         },
         "totalAssetsValue": "Tổng giá trị tài sản của bạn:",
-        "details": "Chi tiết"
+        "details": "Chi tiết",
+        "assetId": "ID tài sản"
     },
     "asset": {
         "remove": "Loại bỏ tài sản",
@@ -152,15 +169,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Tài sản {symbol} đã được thêm vào thành công!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Lọc theo Id Tài sản, Tên hoặc Mã token"
-        },
-        "AddAssetCustom": {
-            "title": "Tài sản tùy chỉnh",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Mã tài sản"
-        },
         "empty": "Không tìm thấy token",
         "alreadyAttached": "Token đã được thêm vào",
         "understand": "Tôi hiểu",
@@ -169,7 +177,15 @@
         "approved": "Tài sản được cộng đồng phê duyệt",
         "unknown": "Nguồn không xác định",
         "scam": "LỪA ĐẢO",
-        "next": "Kế tiếp"
+        "next": "Kế tiếp",
+        "AddAssetToken": {
+            "title": "Token",
+            "switchBtn": "Chỉ nội dung đã xác minh"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Tìm kiếm theo ID, tên hoặc ký hiệu mã"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -293,7 +309,7 @@
     "confirmTransactionText": "Xác nhận giao dịch {direction}",
     "retryText": "Thử lại",
     "networkFeeText": "Phí Mạng",
-    "networkFeeTooltipText": "Phí mạng được sử dụng để đảm bảo sự tăng trưởng và hiệu suất ổn định của hệ thống @:(soraText).",
+    "networkFeeTooltipText": "Phí mạng được sử dụng để đảm bảo hệ thống @:soraText phát triển và hoạt động ổn định.",
     "ethNetworkFeeTooltipText": "Xin lưu ý rằng phí mạng Ethereum được hiển thị trên Polkaswap chỉ là ước tính sơ bộ, bạn có thể thấy chi phí chính xác trong ví Ethereum của mình trước khi xác nhận giao dịch.",
     "marketText": "Thị trường",
     "marketAlgorithmText": "Thuật toán thị trường",
@@ -326,7 +342,8 @@
         "Stats": "Thống kê",
         "Support": "Hỗ trợ",
         "CreatePair": "Tạo một cặp token",
-        "Tokens": "Những token"
+        "Tokens": "Token",
+        "StakingContainer": "Staking"
     },
     "social": {
         "twitter": "Twitter",
@@ -387,7 +404,7 @@
         "select": "Lựa chọn",
         "connected": "Đã kết nối",
         "selectNodeForEnvironment": "Chọn một node cho môi trường {environment}:",
-        "nodeTitle": "{chain} được lưu trữ bởi {name}",
+        "nodeTitle": "{chain} được quản lý bởi {name}",
         "messages": {
             "emptyName": "Vui lòng nhập tên của node",
             "emptyAddress": "Vui lòng nhập địa chỉ của node",
@@ -441,25 +458,25 @@
         },
         "liquidity": {
             "title": "Thanh khoản không giới hạn",
-            "first": "Polkaswap kết hợp nhiều nguồn thanh khoản theo thuật toán tổng hợp thanh khoản chung, hoạt động hoàn toàn on-chain, phi tập trung và không thiên vị.",
+            "first": "Polkaswap kết hợp nhiều nguồn thanh khoản theo thuật toán tổng hợp thanh khoản chung, hoạt động hoàn toàn on-chain, phi tập trung và đáng tin cậy.",
             "second": "Khi các nhà giao dịch tiến hành hoán đổi, thuật toán tổng hợp thanh khoản sẽ tìm ra các ưu đãi tốt nhất trong những nguồn thanh khoản. Nguồn ở đây có thể là các DEX khác, sổ cái, hoặc các nguồn dựa trên API khác.",
             "third": "Bởi vì Polkaswap là một dự án nguồn mở, bất cứ ai cũng có thể mở rộng các nguồn thanh khoản thông qua Polkaswap codebase."
         },
         "swap": {
             "title": "Hoán đổi Bất kỳ Token nào",
-            "first": "Vượt lên khỏi giới hạn của các DEX hiện tại bằng cách thêm tokens từ hệ sinh thái Polkadot cũng như các blockchain khác.",
+            "first": "Vượt lên khỏi giới hạn của các DEX hiện tại bằng cách thêm các token từ hệ sinh thái Polkadot cũng như các blockchain khác.",
             "second": "Tạo, niêm yết và giao dịch token của riêng bạn trên Mạng SORA.",
             "third": "Cơ sở hạ tầng cốt lõi của chúng tôi sử dụng Parity Substrate, có khả năng mở rộng hơn Ethereum và không sử dụng cơ chế đồng thuận đắt đỏ."
         },
         "pswap": {
             "title": "Token PSWAP",
             "first": "PSWAP được tạo ra bởi quản trị cộng đồng bằng cách bỏ phiếu về việc phát hành. Nó là một token tiện ích và quản trị, được sử dụng để thưởng cho các nhà cung cấp thanh khoản trên Polkaswap. Không giống như hầu hết các token thưởng khác, PSWAP bị đốt cháy cùng với giao dịch và giảm nguồn cung theo thời gian.",
-            "second": "{percent}% phí giao dịch hoán đổi trên Polkaswap DEX được sử dụng để mua lại PSWAP tokens, sau đó sẽ được đốt. Thời gian đầu, 90% số lượng được đốt này sẽ được mint trở lại để phân bổ cho những người cung cấp thanh khoản, nhưng theo thời gian tỷ lệ này sẽ giảm xuống còn 35% sau 4 năm."
+            "second": "{percent}% phí giao dịch hoán đổi trên Polkaswap DEX được sử dụng để mua lại PSWAP token, sau đó sẽ được đốt. Thời gian đầu, 90% số lượng được đốt này sẽ được mint trở lại để phân bổ cho những người cung cấp thanh khoản, nhưng theo thời gian tỷ lệ này sẽ giảm xuống còn 35% sau 4 năm."
         },
         "links": {
             "first": {
                 "title": "Trở thành SORA validator",
-                "desc": "Đảm bảo tương lai của Mạng SORA và các ứng dụng phi tập trung như Polkaswap và được tương thưởng khi trở thành một SORA validator."
+                "desc": "Đảm bảo tương lai của Mạng SORA và các ứng dụng phi tập trung như Polkaswap đồng thời kiếm tiền thưởng khi trở thành một SORA validator."
             },
             "second": {
                 "title": "Kết nối Chain với SORA",
@@ -512,13 +529,13 @@
         "pooledToken": "{tokenSymbol} Pool đã đóng góp",
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Những pool bạn tham gia",
-        "unknownAsset": "Tài sản không xác định",
+        "unknownAsset": "@:unknownAssetText",
         "description": "Khi bạn đóng góp thanh khoản, bạn cho phép pool sử dụng những token này. Bạn sẽ được hưởng % phí giao dịch theo tỉ lệ đóng góp trong pool. Và bạn có thể yêu cầu khoản lợi tức này bất kỳ khi nào.",
         "strategicBonusApy": "Tiền thưởng chiến lược APY"
     },
     "bridge": {
         "title": "Cầu nối HASHI",
-        "info": "Chuyển đổi token giữa mạng @:soraText và @:(ethereumText).",
+        "info": "Chuyển token giữa mạng @:soraText và @:ethereumText.",
         "balance": "Số dư",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -537,7 +554,10 @@
         "selectNetwork": "Chọn mạng",
         "networkInfo": "Cầu nối Mạng @:soraText với:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Sao chép địa chỉ mạng",
+        "soraAddress": "địa chỉ @:soraText",
+        "ethereumAddress": "địa chỉ @:ethereumText"
     },
     "selectRegisteredAsset": {
         "title": "Chọn token",
@@ -647,7 +667,7 @@
     },
     "createPair": {
         "title": "Tạo một cặp token",
-        "deposit": "Gửi tiền",
+        "deposit": "Gửi vào",
         "balance": "Số dư",
         "pricePool": "Giá cả và phí",
         "shareOfPool": "Cổ phần trong pool",
@@ -664,7 +684,7 @@
         "networkFee": "@:networkFeeText",
         "alreadyCreated": "Cặp token này đã được tạo rồi",
         "firstLiquidityProvider": "Bạn là nhà cung cấp thanh khoản đầu tiên",
-        "firstLiquidityProviderInfo": "Tỉ lệ tokens của bạn thêm vào sẽ định lại giá của pool. <br\/> Nếu bạn hài lòng với tỉ lệ này, nhấn Cung cấp để xem trước."
+        "firstLiquidityProviderInfo": "Tỉ lệ token của bạn thêm vào sẽ định lại giá của pool. <br\/> Nếu bạn hài lòng với tỉ lệ này, nhấn Cung cấp để xem trước."
     },
     "confirmSupply": {
         "title": "Bạn sẽ góp vào pool:",
@@ -689,7 +709,8 @@
         "description": "Thực hiện lấy tokens ra khỏi pool sẽ chuyển vị thế của bạn về lại dưới mức định giá hiện tại, tùy theo tỉ lệ đóng góp của bạn. Phí lũy kế cũng được tính vào phần mà bạn nhận được.",
         "outputMessage": "Kết quả là ước lượng. Nếu giá biến động hơn {slippageTolerance}% thì giao dịch của bạn sẽ hoàn tác.",
         "confirmTitle": "Bạn sẽ nhận được",
-        "shareOfPool": "Cổ phần của Pool sau giao dịch"
+        "shareOfPool": "Cổ phần của Pool sau giao dịch",
+        "locked": "{percent} nhóm của bạn đang được đặt cược"
     },
     "dexSettings": {
         "title": "Cài đặt giao dịch",
@@ -722,7 +743,7 @@
         "ok": "OK"
     },
     "rewards": {
-        "title": "Yêu cầu phần thưởng",
+        "title": "Nhận phần thưởng",
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
@@ -796,8 +817,8 @@
         "title": "Ngôn ngữ"
     },
     "tokens": {
-        "title": "Những token đã niêm yết",
-        "symbol": "Biểu tượng",
+        "title": "Token đã niêm yết",
+        "symbol": "Mã",
         "name": "Tên",
         "assetId": "ID tài sản"
     },
@@ -837,7 +858,7 @@
             }
         },
         "buttons": {
-            "buy": "Mua Tokens",
+            "buy": "Mua Token",
             "history": "Lịch sử giao dịch",
             "transfer": "Bắt đầu dùng cầu nối",
             "view": "Hiện thị những giao dịch Cầu nối"
@@ -882,13 +903,13 @@
     },
     "blockNumberText": "Số block",
     "referralProgram": {
-        "title": "Chương trình giới thiệu",
+        "title": "Giới thiệu",
         "connectAccount": "Để mời người dùng, bạn cần kết nối tài khoản SORA của mình.",
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} giới thiệu",
         "startInviting": "Bond XOR để giới thiệu những người khác",
         "preview": "Mời người dùng mới và nhận 10% từ phí giao dịch của họ. <br \/> Để bắt đầu, hãy bond số lượng XOR bất kỳ. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Tìm hiểu thêm <\/a>",
-        "deposit": "Tiền gửi",
+        "deposit": "Gửi vào",
         "balance": "Số dư",
         "networkFee": "@:networkFeeText",
         "networkFeeTooltip": "@:networkFeeTooltipText",
@@ -917,12 +938,12 @@
             "inviteDescription": "Đối với mỗi giao dịch, 10% phí sẽ được chuyển cho người giới thiệu của bạn, mà bạn không phải trả thêm bất kỳ khoản phí nào.",
             "signInvitation": "Chấp thuận",
             "freeOfCharge": "Hành động này là miễn phí",
-            "hasReferrerTitle": "Bạn đã đặt người giới thiệu của mình",
+            "hasReferrerTitle": "Bạn đã thêm người giới thiệu của bạn",
             "hasReferrerDescription": "Thật không may, bạn chỉ có thể đặt một",
             "ok": "OK"
         },
         "referrer": {
-            "title": "Thêm người giới thiệu của bạn",
+            "title": "Thêm người đã giới thiệu bạn",
             "titleReferrer": "Người giới thiệu của bạn",
             "placeholder": "Nhập mã hoặc liên kết giới thiệu",
             "label": "Liên kết hoặc mã giới thiệu",
@@ -933,7 +954,7 @@
             "info": "Khi bạn trả phí giao dịch, <br\/> 10% sẽ được chuyển đến người giới thiệu của bạn",
             "referredLablel": "Địa chỉ giới thiệu"
         },
-        "insufficientBondedAmount": "Để mời thêm giới thiệu, hãy liên kết ít nhất {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Để mời thêm giới thiệu, hãy bond ít nhất {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Chi tiết giao dịch",
     "createTokenTextNFT": "Tạo NFT",
@@ -950,6 +971,82 @@
     "mobilePopup": {
         "sideMenu": "Tải xuống Ví SORA",
         "header": "Tải xuống Ví SORA với các tính năng của <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
-        "info": "Hoán đổi token từ các mạng khác nhau - SORA, Ethereum, Polkadot, Kusama. Cung cấp nhóm thanh khoản và kiếm % từ phí trao đổi."
+        "info": "Hoán đổi token từ các mạng khác nhau - SORA, Ethereum, Polkadot, Kusama. Cung cấp pool thanh khoản và kiếm % từ phí giao dịch."
+    },
+    "releaseNotesText": "Ghi chú phát hành",
+    "copiedText": "Đã sao chép!",
+    "copyWithValue": "Sao chép {value}",
+    "copiedWithValue": "{value} được sao chép!",
+    "signAndClaimText": "Ký và nhận phần thưởng",
+    "balanceText": "Số dư",
+    "unknownAssetText": "Tài sản không xác định",
+    "demeterFarming": {
+        "staking": {
+            "active": "Đang staking",
+            "inactive": "Stake để kiếm thêm phần thưởng",
+            "stopped": "Staking đã dừng lại"
+        },
+        "info": {
+            "earned": "{symbol} đã kiếm được",
+            "fee": "Phí",
+            "feeTooltip": "Phí đặt cọc được áp dụng cho số tiền của bạn để đặt cược",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Tiền cược trong pool của bạn",
+            "poolShareWillBe": "Cổ phần chia sẻ nhóm của bạn sẽ là",
+            "rewardToken": "Phần thưởng token",
+            "stake": "Cổ phần {symbol} của bạn",
+            "stakeWillBe": "Tiền đặt cược {symbol} của bạn sẽ là",
+            "totalLiquidityLocked": "Tổng thanh khoản bị khóa"
+        },
+        "actions": {
+            "add": "Stake thêm",
+            "claim": "Nhận phần thưởng",
+            "remove": "Ngừng stake",
+            "start": "Bắt đầu staking"
+        },
+        "amountAdd": "Số lượng stake",
+        "amountRemove": "Số tiền cần loại bỏ",
+        "poweredBy": "Được cung cấp bởi Demeter Farming"
+    },
+    "staking": {
+        "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Đã xảy ra sự cố",
+        "balances": {
+            "LiquidityRestrictions": "Hạn chế thanh khoản tài khoản ngăn cản việc rút tiền"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Số dư nguồn không đủ lớn",
+            "TargetBalanceIsNotLargeEnough": "Số dư điểm đến không đủ lớn",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Số tiền được cung cấp quá đa dạng",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Số tiền nằm ngoài giới hạn yêu cầu",
+            "UnableToDepositXorLessThanMinimum": "XOR thấp hơn giá trị nhỏ nhất (0,007)",
+            "ZeroValueInAmountParameter": "Tham số số tiền có giá trị bằng không"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Cặp tiền thanh khoản đã tồn tại",
+            "SlippageLimitExceeded": "Khả năng chịu trượt giá chưa thích hợp"
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Tài khoản đã có liên kết giới thiệu",
+            "ReferrerInsufficientBalance": "Người giới thiệu không có đủ số dư dự phòng"
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Chương trình phần thưởng đã kết thúc",
+            "CantCalculateReward": "Không thể thực hiện tính toán phần thưởng",
+            "NoRewardsForAsset": "Không có phần thưởng nào cho tài sản này"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Nguồn thanh khoản đã chọn không được phép"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Không đủ tiền",
+            "InsufficientLPTokens": "Mã thông báo cung cấp thanh khoản không đủ",
+            "PoolDoesNotHaveRewards": "Pool không có phần thưởng"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Đã xảy ra lỗi khi tính giá"
+        }
     }
 }

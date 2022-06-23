@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Vazba XOR byla úspěšná",
             "ReferralUnreserveXor": "Zrušení vazby XOR bylo úspěšné",
             "ReferralSetInvitedUser": "Doporučení bylo úspěšně nastaveno",
-            "SwapAndSend": "Vyměněno {amount} {symbol} za {amount2} {symbol2} a {action} {direction} {address}"
+            "SwapAndSend": "Vyměněno {amount} {symbol} za {amount2} {symbol2} a {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Dodáno {symbol} a {symbol2} {amount} LP tokenů",
+            "DemeterFarmingWithdrawLiquidity": "Odebrány {symbol} a {symbol2} {amount} LP tokeny",
+            "DemeterFarmingStakeToken": "Přidáno {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Odebráno {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Úspěšně nárokováno {amount} {symbol}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol}  {direction} {address} se nezdařilo.",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Vazba XOR se nezdařila",
             "ReferralUnreserveXor": "Nepodařilo se zrušit vazbu XOR",
             "ReferralSetInvitedUser": "Nepodařilo se nastavit doporučení",
-            "SwapAndSend": "Nepodařilo se vyměnit {amount} {symbol} za {amount2} {symbol2} a {action} {direction} {address}"
+            "SwapAndSend": "Nepodařilo se vyměnit {amount} {symbol} za {amount2} {symbol2} a {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Nepodařilo se dodat {amount} {symbol} a {symbol2} LP tokenů",
+            "DemeterFarmingWithdrawLiquidity": "Nepodařilo se odstranit tokeny LP {amount} {symbol} a {symbol2}",
+            "DemeterFarmingStakeToken": "Nepodařilo se přidat {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Nepodařilo se odebrat {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Nepodařilo se nárokovat {symbol}"
         },
         "ReferralReserveXor": "Vázat XOR",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
         "ReferralSetInvitedUser": "Nastavit odkaz",
-        "SwapAndSend": "Vyměnit a odeslat"
+        "SwapAndSend": "Vyměnit a odeslat",
+        "DemeterFarmingDepositLiquidity": "Likvidita vkladu",
+        "DemeterFarmingWithdrawLiquidity": "Zrušte likviditu",
+        "DemeterFarmingStakeToken": "Token sázky",
+        "DemeterFarmingUnstakeToken": "Zrušit sázku",
+        "DemeterFarmingGetRewards": "Nárokovat odměny"
     },
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření Polkadot.js. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
@@ -113,7 +128,8 @@
     "account": {
         "successCopy": "Adresa peněženky je zkopírována do schránky",
         "copy": "Zkopírovat adresu",
-        "switch": "Přepnout na jiný účet"
+        "switch": "Přepnout na jiný účet",
+        "walletAddress": "Adresa peněženky"
     },
     "history": {
         "clearHistory": "Vymazat historii",
@@ -141,7 +157,8 @@
             "bonded": "- Lepené"
         },
         "totalAssetsValue": "Celková hodnota vašich aktiv:",
-        "details": "Podrobnosti"
+        "details": "Podrobnosti",
+        "assetId": "ID aktiva"
     },
     "asset": {
         "remove": "Odebrat aktivum",
@@ -152,15 +169,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Aktivum {symbol} bylo úspěšně přidáno!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filtrování podle ID aktiva, jeho názvu nebo tickeru"
-        },
-        "AddAssetCustom": {
-            "title": "Vlastní aktivum",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Symbol aktiva"
-        },
         "empty": "Žádné tokeny nenalezeny",
         "alreadyAttached": "Token byl již přidán",
         "understand": "Rozumím",
@@ -169,7 +177,15 @@
         "approved": "Aktivum schváleno komunitou",
         "unknown": "Neznámý zdroj",
         "scam": "SCAM",
-        "next": "Další"
+        "next": "Další",
+        "AddAssetToken": {
+            "title": "Tokeny",
+            "switchBtn": "Pouze ověřená aktiva"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Vyhledávání podle Asset ID, Name nebo Ticker Symbol"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -326,7 +342,8 @@
         "Stats": "Statistiky",
         "Support": "Podpora",
         "CreatePair": "Vytvořit pár",
-        "Tokens": "Tokeny"
+        "Tokens": "Tokeny",
+        "StakingContainer": "Stakování"
     },
     "social": {
         "twitter": "Twitter",
@@ -537,7 +554,10 @@
         "selectNetwork": "Vyberte síť",
         "networkInfo": "Přemostit @:soraText síť s:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Zkopírujte síťovou adresu",
+        "soraAddress": "@:soraText adresa",
+        "ethereumAddress": "@:ethereumText adresa"
     },
     "selectRegisteredAsset": {
         "title": "Vyberte token",
@@ -689,7 +709,8 @@
         "description": "Výběrem tokenů z poolu se vaše pozice převede zpět na podkladové tokeny v aktuálním kurzu, který je úměrný vašemu podílu v poolu.  Nasbírané poplatky jsou zahrnuty v částkách, které obdržíte.",
         "outputMessage": "Výstup je odhadován. Pokud se cena změní o více než {slippageTolerance}%, transakce se vrátí zpět.",
         "confirmTitle": "Obdržíte",
-        "shareOfPool": "Podíl z poolu po transakci"
+        "shareOfPool": "Podíl z poolu po transakci",
+        "locked": "{percent} vašeho fondu je ve sázce"
     },
     "dexSettings": {
         "title": "Nastavení transakcí",
@@ -951,5 +972,81 @@
         "sideMenu": "Získejte SORA Wallet",
         "header": "Stáhněte si peněženku SORA s <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Swap tokeny z různých sítí - SORA, Ethereum, Polkadot, Kusama. Poskytněte fond likvidity a získejte % z poplatků za směnu."
+    },
+    "releaseNotesText": "Poznámky k vydání",
+    "copiedText": "Zkopírováno!",
+    "copyWithValue": "Kopírovat {value}",
+    "copiedWithValue": "{value} je zkopírováno!",
+    "signAndClaimText": "Podepsat a uplatnit nárok",
+    "balanceText": "Zůstatek",
+    "unknownAssetText": "Neznámé aktivum",
+    "demeterFarming": {
+        "staking": {
+            "active": "Staking aktivní",
+            "inactive": "Vsaďte a získejte další odměny",
+            "stopped": "Vytyčování zastaveno"
+        },
+        "info": {
+            "earned": "{symbol} získal",
+            "fee": "Poplatek",
+            "feeTooltip": "Poplatek za vklad se vztahuje na vaši částku k vkladu",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Váš podíl v bazénu je vsazen",
+            "poolShareWillBe": "Váš podíl v bazénu bude vsazen",
+            "rewardToken": "Žeton odměny",
+            "stake": "Váš {symbol} vsazen",
+            "stakeWillBe": "Váš podíl {symbol} bude",
+            "totalLiquidityLocked": "Celková likvidita uzamčena"
+        },
+        "actions": {
+            "add": "Přidat stake",
+            "claim": "Nárokujte si odměny",
+            "remove": "Odstraňte sázku",
+            "start": "Začněte stakovat"
+        },
+        "amountAdd": "Částka pro stake",
+        "amountRemove": "Částka k odebrání",
+        "poweredBy": "Běží na Demeter Farming"
+    },
+    "staking": {
+        "title": "Stakování"
+    },
+    "historyErrorMessages": {
+        "generalError": "Něco se pokazilo",
+        "balances": {
+            "LiquidityRestrictions": "Omezení likvidity účtu brání výběru"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Zdrojová bilance není dostatečně velká",
+            "TargetBalanceIsNotLargeEnough": "Cílová bilance není dostatečně velká",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Poskytované částky jsou příliš různorodé",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Částky jsou mimo požadované hranice",
+            "UnableToDepositXorLessThanMinimum": "XOR nižší než minimální hodnota (0,007)",
+            "ZeroValueInAmountParameter": "Parametr množství má nulovou hodnotu"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Pool pár již existuje",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Účet již má referrera",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Program odměn již skončil",
+            "CantCalculateReward": "Výpočet odměny se nezdařil",
+            "NoRewardsForAsset": "Za toto aktivum nejsou žádné odměny"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Vybraný zdroj likvidity není povolen"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Nedostatečné finanční prostředky",
+            "InsufficientLPTokens": "Nedostatek tokenů pro poskytování likvidity",
+            "PoolDoesNotHaveRewards": "Pool nemá odměny"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Při výpočtu ceny došlo k chybě"
+        }
     }
 }

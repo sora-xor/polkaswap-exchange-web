@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Terikat XOR dengan sukses",
             "ReferralUnreserveXor": "XOR tidak terikat berhasil",
             "ReferralSetInvitedUser": "Referensi berhasil disetel",
-            "SwapAndSend": "Tukar {amount} {symbol} untuk {amount2} {symbol2} dan {action} {direction} {address}"
+            "SwapAndSend": "Tukar {amount} {symbol} untuk {amount2} {symbol2} dan {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Disediakan {symbol} dan {symbol2} {amount} token LP",
+            "DemeterFarmingWithdrawLiquidity": "Menghapus {symbol} dan {symbol2} {amount} token LP",
+            "DemeterFarmingStakeToken": "Menambahkan {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "{amount} {symbol} dihapus",
+            "DemeterFarmingGetRewards": "{amount} {symbol} berhasil diklaim"
         },
         "error": {
             "Transfer": "Gagal mengirim {amount} {symbol} ke {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Gagal mengikat XOR",
             "ReferralUnreserveXor": "Gagal melepaskan ikatan XOR",
             "ReferralSetInvitedUser": "Gagal menyetel rujukan",
-            "SwapAndSend": "Gagal menukar {amount} {symbol} dengan {amount2} {symbol2} dan{action} {direction} {address}"
+            "SwapAndSend": "Gagal menukar {amount} {symbol} dengan {amount2} {symbol2} dan{action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Gagal menyediakan {amount} {symbol} dan {symbol2} token LP",
+            "DemeterFarmingWithdrawLiquidity": "Gagal menghapus {amount} {symbol} dan {symbol2} token LP",
+            "DemeterFarmingStakeToken": "Gagal menambahkan {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Gagal menghapus {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Gagal mengklaim {symbol}"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
         "ReferralSetInvitedUser": "Tetapkan Rujukan",
-        "SwapAndSend": "Tukar dan Kirim"
+        "SwapAndSend": "Tukar dan Kirim",
+        "DemeterFarmingDepositLiquidity": "Likuiditas Saham",
+        "DemeterFarmingWithdrawLiquidity": "Likuiditas Lepas Taruhan",
+        "DemeterFarmingStakeToken": "Token Taruhan",
+        "DemeterFarmingUnstakeToken": "Token Lepas Taruhan",
+        "DemeterFarmingGetRewards": "Klaim Hadiah"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi Polkadot.js yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
@@ -113,7 +128,8 @@
     "account": {
         "successCopy": "Alamat dompet disalin ke clipboard",
         "copy": "Salin alamat",
-        "switch": "Ganti akun"
+        "switch": "Ganti akun",
+        "walletAddress": "Alamat dompet"
     },
     "history": {
         "clearHistory": "Bersihkan riwayat",
@@ -141,7 +157,8 @@
             "bonded": "- Berikat"
         },
         "totalAssetsValue": "Nilai total aset Anda:",
-        "details": "Rincian"
+        "details": "Rincian",
+        "assetId": "ID Aset"
     },
     "asset": {
         "remove": "Hapus aset",
@@ -152,15 +169,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Aset {symbol} berhasil ditambahkan!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filter menurut ID Aset, Nama, atau Simbol Ticker"
-        },
-        "AddAssetCustom": {
-            "title": "Aset kustom",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Simbol aset"
-        },
         "empty": "Tidak ada token yang ditemukan",
         "alreadyAttached": "Token sudah terlampir",
         "understand": "Saya mengerti",
@@ -169,7 +177,15 @@
         "approved": "Aset disetujui oleh komunitas",
         "unknown": "Sumber tidak diketahui",
         "scam": "SCAM",
-        "next": "Berikutnya"
+        "next": "Berikutnya",
+        "AddAssetToken": {
+            "title": "Token",
+            "switchBtn": "Hanya aset yang diverifikasi"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -326,7 +342,8 @@
         "Stats": "Statistik",
         "Support": "Dukungan",
         "CreatePair": "Buat Pair",
-        "Tokens": "Token"
+        "Tokens": "Token",
+        "StakingContainer": "Staking"
     },
     "social": {
         "twitter": "Twitter",
@@ -537,7 +554,10 @@
         "selectNetwork": "Pilih jaringan",
         "networkInfo": "Bridge Jaringan @:soraText dengan:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Salin alamat jaringan",
+        "soraAddress": "@:soraText alamat",
+        "ethereumAddress": "@:ethereumText alamat"
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",
@@ -689,7 +709,8 @@
         "description": "Menghapus token pool mengubah posisi Anda kembali menjadi token asal berdasarkan nilai tukar saat ini, sebanding dengan jumlah bagian pool Anda. keuntungan didapat sudah termasuk dalam jumlah yang Anda terima.",
         "outputMessage": "Output merupakan estimasi. Jika harga berubah lebih dari {slippageTolerance}% transaksi Anda akan dikembalikan.",
         "confirmTitle": "Anda akan menerima",
-        "shareOfPool": "Pembagian pool setelah transaksi"
+        "shareOfPool": "Pembagian pool setelah transaksi",
+        "locked": "{percent} dari kolam Anda sedang dipertaruhkan"
     },
     "dexSettings": {
         "title": "Pengaturan transaksi",
@@ -951,5 +972,81 @@
         "sideMenu": "Dapatkan Dompet SORA",
         "header": "Unduh SORA Wallet dengan fitur <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Tukar token dari jaringan yang berbeda - SORA, Ethereum, Polkadot, Kusama. Sediakan kumpulan likuiditas dan dapatkan % dari biaya pertukaran."
+    },
+    "releaseNotesText": "Catatan rilis",
+    "copiedText": "Disalin!",
+    "copyWithValue": "Salin {value}",
+    "copiedWithValue": "{value} disalin!",
+    "signAndClaimText": "Tanda tangani dan klaim",
+    "balanceText": "Saldo",
+    "unknownAssetText": "Aset tidak diketahui",
+    "demeterFarming": {
+        "staking": {
+            "active": "aktif mengintai",
+            "inactive": "Taruhan untuk mendapatkan hadiah tambahan",
+            "stopped": "Taruhan berhenti"
+        },
+        "info": {
+            "earned": "{symbol} diperoleh",
+            "fee": "Biaya",
+            "feeTooltip": "Biaya deposit diterapkan ke jumlah Anda untuk dipertaruhkan",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Bagian kolam Anda dipertaruhkan",
+            "poolShareWillBe": "Bagian kolam renang Anda yang dipertaruhkan adalah",
+            "rewardToken": "Token hadiah",
+            "stake": "{symbol} Anda dipertaruhkan",
+            "stakeWillBe": "Taruhan {symbol} Anda adalah",
+            "totalLiquidityLocked": "Total likuiditas terkunci"
+        },
+        "actions": {
+            "add": "Stake lebih banyak",
+            "claim": "Klaim hadiah",
+            "remove": "Hapus taruhan",
+            "start": "Mulai staking"
+        },
+        "amountAdd": "Jumlah yang distake",
+        "amountRemove": "Jumlah yang akan dihapus",
+        "poweredBy": "Didukung oleh Demeter Farming"
+    },
+    "staking": {
+        "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Ada yang salah",
+        "balances": {
+            "LiquidityRestrictions": "Pembatasan likuiditas akun mencegah penarikan"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Saldo sumber tidak cukup besar",
+            "TargetBalanceIsNotLargeEnough": "Saldo tujuan tidak cukup besar",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Jumlah yang disediakan terlalu beragam",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Jumlahnya di luar batas yang dipersyaratkan",
+            "UnableToDepositXorLessThanMinimum": "XOR lebih rendah dari nilai minimum (0,007)",
+            "ZeroValueInAmountParameter": "Parameter jumlah memiliki nilai nol"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Pasangan kolam sudah ada",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Akun sudah memiliki referer",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Program hadiah telah selesai",
+            "CantCalculateReward": "Gagal melakukan perhitungan hadiah",
+            "NoRewardsForAsset": "Tidak ada imbalan untuk aset ini"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Sumber likuiditas yang dipilih tidak diperbolehkan"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Dana tidak mencukupi",
+            "InsufficientLPTokens": "Token penyediaan likuiditas tidak mencukupi",
+            "PoolDoesNotHaveRewards": "Pool tidak memiliki hadiah"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Terjadi kesalahan saat menghitung harga"
+        }
     }
 }

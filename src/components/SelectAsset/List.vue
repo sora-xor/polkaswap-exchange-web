@@ -1,5 +1,5 @@
 <template>
-  <asset-list :assets="assets" v-bind="$attrs" v-on="$listeners" class="asset-select-list">
+  <asset-list :assets="assets" v-bind="$attrs" v-on="$listeners" class="asset-select-list" data-test-name="selectToken">
     <template #list-empty>
       <div class="asset-select-list__empty">
         <span class="empty-results-icon" />

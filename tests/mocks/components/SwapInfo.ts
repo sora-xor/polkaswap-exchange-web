@@ -1,8 +1,8 @@
 import { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import { RewardReason } from '@sora-substrate/util/build/rewards/consts';
+import { RewardReason } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { LPRewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
 
 import { MOCK_ACCOUNT_ASSETS } from '../tokens';
 
