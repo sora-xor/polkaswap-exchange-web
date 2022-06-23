@@ -23,4 +23,5 @@ export interface ConnectToNodeOptions {
   onError?: (error) => void;
   onReconnect?: (node: Node) => void;
   onDisconnect?: (node: Node) => void;
+  currentNodeIndex?: number;
 }

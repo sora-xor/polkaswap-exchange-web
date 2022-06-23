@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Rezerwy w walucie XOR utworzono z powodzeniem",
             "ReferralUnreserveXor": "Rezerwy w walucie XOR uwolniono z powodzeniem",
             "ReferralSetInvitedUser": "Kod polecający został utworzony z powodzeniem",
-            "SwapAndSend": "Zamieniono {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}"
+            "SwapAndSend": "Zamieniono {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Dostarczone {symbol} i {symbol2} {amount} tokeny LP",
+            "DemeterFarmingWithdrawLiquidity": "Usunięto {symbol} i {symbol2} {amount} tokeny LP",
+            "DemeterFarmingStakeToken": "Dodano {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Usunięto {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} odebrano pomyślnie"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Nie udało się utworzyć rezerw w walucie XOR",
             "ReferralUnreserveXor": "Nie udało się uwolnić rezerw w walucie XOR",
             "ReferralSetInvitedUser": "Nie udało się utworzyć kodu polecającego.",
-            "SwapAndSend": "Nie udało się zamienić {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}"
+            "SwapAndSend": "Nie udało się zamienić {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Nie udało się dostarczyć {amount} {symbol} i {symbol2} LP tokenów",
+            "DemeterFarmingWithdrawLiquidity": "Nie udało się usunąć {amount} {symbol} i {symbol2} LP tokenów",
+            "DemeterFarmingStakeToken": "Nie udało się dodać {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Nie udało się usunąć {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Nie udało się odebrać {symbol}"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
         "ReferralSetInvitedUser": "Utwórz kod polecający",
-        "SwapAndSend": "Zamień i wyślij"
+        "SwapAndSend": "Zamień i wyślij",
+        "DemeterFarmingDepositLiquidity": "Stawka Płynność",
+        "DemeterFarmingWithdrawLiquidity": "Niewystaw płynności",
+        "DemeterFarmingStakeToken": "Żeton stawki",
+        "DemeterFarmingUnstakeToken": "Żeton rozbicia",
+        "DemeterFarmingGetRewards": "Odbierz wynagrodzenie"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -113,7 +128,8 @@
     "account": {
         "successCopy": "Adres portfela został skopiowany do schowka.",
         "copy": "Kopiuj adres",
-        "switch": "Przełącz konto"
+        "switch": "Przełącz konto",
+        "walletAddress": "Adres portfela"
     },
     "history": {
         "clearHistory": "Wyczyść historię",
@@ -141,7 +157,8 @@
             "bonded": "- Objęte rezerwami"
         },
         "totalAssetsValue": "Twoja łączna wartość walut:",
-        "details": "Szczegóły"
+        "details": "Szczegóły",
+        "assetId": "Identyfikator waluty"
     },
     "asset": {
         "remove": "Usuń walutę",
@@ -152,15 +169,6 @@
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Walutę {symbol} dodano z powodzeniem!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filtruj według identyfikatora waluty, nazwy lub symbolu giełdowego"
-        },
-        "AddAssetCustom": {
-            "title": "Niestandardowa waluta",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Symbol waluty"
-        },
         "empty": "Nie znaleziono tokenów.",
         "alreadyAttached": "Ten token został już dodany.",
         "understand": "Rozumiem",
@@ -169,7 +177,15 @@
         "approved": "Waluta zatwierdzona przez społeczność",
         "unknown": "Nieznane źródło",
         "scam": "SCAM",
-        "next": "Dalej"
+        "next": "Dalej",
+        "AddAssetToken": {
+            "title": "Tokeny",
+            "switchBtn": "Tylko zweryfikowane zasoby"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Wyszukaj według identyfikatora zasobu, nazwy lub symbolu giełdowego"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -326,7 +342,8 @@
         "Stats": "Statystyki",
         "Support": "Pomoc",
         "CreatePair": "Utwórz parę",
-        "Tokens": "Tokeny"
+        "Tokens": "Tokeny",
+        "StakingContainer": "Staking"
     },
     "social": {
         "twitter": "Twitter",
@@ -383,7 +400,7 @@
         "title": "Wybór węzła sieci @:soraText",
         "addNode": "Dodaj niestandardowy węzeł",
         "customNode": "Węzeł niestandardowy",
-        "howToSetupOwnNode": "Jak skonfigurować własny węzeł sieci @:soraText",
+        "howToSetupOwnNode": "Jak ustawić własny węzeł sieci @:soraText",
         "select": "Wybierz",
         "connected": "Połączono",
         "selectNodeForEnvironment": "Wybierz węzeł dla środowiska {environment}:",
@@ -537,7 +554,10 @@
         "selectNetwork": "Wybierz sieć",
         "networkInfo": "Połącz za pomocą mostu sieć @:soraText z:",
         "ethereum": "@:ethereumText",
-        "energy": "@:evm.EWC"
+        "energy": "@:evm.EWC",
+        "copy": "Skopiuj adres sieciowy",
+        "soraAddress": "@:soraText adres",
+        "ethereumAddress": "@:ethereumText adres"
     },
     "selectRegisteredAsset": {
         "title": "Wybierz token",
@@ -689,7 +709,8 @@
         "description": "Usunięcie tokenów puli przelicza Twoją pozycję z powrotem na tokeny bazowe po aktualnym kursie, proporcjonalnym do Twojego udziału w puli. Naliczone opłaty są wliczone w kwotę, którą otrzymasz.",
         "outputMessage": "Wynik jest szacunkowy. Jeśli cena zmieni się o więcej niż {slippageTolerance}%, Twoja transakcja zostanie anulowana.",
         "confirmTitle": "Otrzymasz",
-        "shareOfPool": "Udział w puli po transakcji"
+        "shareOfPool": "Udział w puli po transakcji",
+        "locked": "{percent} Twojej puli jest obstawiane"
     },
     "dexSettings": {
         "title": "Ustawienia transakcji",
@@ -951,5 +972,81 @@
         "sideMenu": "Pobierz SORA Wallet",
         "header": "Pobierz portfel SORA z <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
         "info": "Zamień tokeny z różnych sieci - SORA, Ethereum, Polkadot, Kusama. Zapewnij pulę płynności i zarabiaj % na opłatach za wymianę."
+    },
+    "releaseNotesText": "Informacje o wydaniu",
+    "copiedText": "Skopiowane!",
+    "copyWithValue": "Kopiuj {value}",
+    "copiedWithValue": "{value} została skopiowana!",
+    "signAndClaimText": "Podpisz i odbierz",
+    "balanceText": "Saldo",
+    "unknownAssetText": "Nieznana waluta",
+    "demeterFarming": {
+        "staking": {
+            "active": "Stakowanie aktywne",
+            "inactive": "Stawka, aby zdobyć dodatkowe nagrody",
+            "stopped": "Stakowanie zatrzymane"
+        },
+        "info": {
+            "earned": "{symbol} zarobione",
+            "fee": "Opłata",
+            "feeTooltip": "Opłata za wpłatę jest naliczana od kwoty stawki",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Twój udział w puli postawiony",
+            "poolShareWillBe": "Twój udział w puli będzie",
+            "rewardToken": "Token nagrody",
+            "stake": "Twój {symbol} postawiony",
+            "stakeWillBe": "Twoja stawka {symbol} będzie",
+            "totalLiquidityLocked": "Całkowita płynność zablokowana"
+        },
+        "actions": {
+            "add": "Zwiększ stake",
+            "claim": "Odbierz nagrody",
+            "remove": "Usuń stawkę",
+            "start": "Rozpocznij staking"
+        },
+        "amountAdd": "Kwota przeznaczona na staking",
+        "amountRemove": "Kwota do usunięcia",
+        "poweredBy": "Powered by Demeter Farming"
+    },
+    "staking": {
+        "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Coś poszło nie tak",
+        "balances": {
+            "LiquidityRestrictions": "Ograniczenia płynności konta uniemożliwiają wypłatę"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Saldo źródeł nie jest wystarczająco duże",
+            "TargetBalanceIsNotLargeEnough": "Saldo docelowe nie jest wystarczająco duże",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Podane kwoty są zbyt zróżnicowane",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Kwoty wykraczają poza wymagane granice",
+            "UnableToDepositXorLessThanMinimum": "XOR mniejsze niż wartość minimalna (0,007)",
+            "ZeroValueInAmountParameter": "Parametr kwoty ma wartość zerową"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Para puli już istnieje",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Konto ma już osobę polecającą",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Program nagród już się zakończył",
+            "CantCalculateReward": "Nie udało się wykonać obliczenia nagrody",
+            "NoRewardsForAsset": "Nie ma nagród za ten zasób"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Wybrane źródło płynności jest niedozwolone"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Niewystarczające środki",
+            "InsufficientLPTokens": "Niewystarczające tokeny zapewniające płynność",
+            "PoolDoesNotHaveRewards": "Pula nie ma nagród"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Wystąpił błąd podczas obliczania ceny"
+        }
     }
 }

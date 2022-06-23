@@ -3,7 +3,7 @@ import type { VUEX_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import type store from '@/store';
 
-type BaseModuleDecorator<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> = {
+type BaseModuleDecorator<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> = {
   prices: VUEX_TYPES.BaseDecorator<T1>;
   router: VUEX_TYPES.BaseDecorator<T2>;
   web3: VUEX_TYPES.BaseDecorator<T3>;
@@ -18,6 +18,7 @@ type BaseModuleDecorator<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13,
   createPair: VUEX_TYPES.BaseDecorator<T12>;
   removeLiquidity: VUEX_TYPES.BaseDecorator<T13>;
   rewards: VUEX_TYPES.BaseDecorator<T14>;
+  demeterFarming: VUEX_TYPES.BaseDecorator<T15>;
 };
 
 export type StateDecorators = BaseModuleDecorator<
@@ -34,7 +35,8 @@ export type StateDecorators = BaseModuleDecorator<
   typeof store.state.addLiquidity,
   typeof store.state.createPair,
   typeof store.state.removeLiquidity,
-  typeof store.state.rewards
+  typeof store.state.rewards,
+  typeof store.state.demeterFarming
 > &
   VUEX_TYPES.WalletStateDecorators;
 
@@ -52,7 +54,8 @@ export type GettersDecorators = BaseModuleDecorator<
   typeof store.getters.addLiquidity,
   typeof store.getters.createPair,
   typeof store.getters.removeLiquidity,
-  typeof store.getters.rewards
+  typeof store.getters.rewards,
+  typeof store.getters.demeterFarming
 > &
   VUEX_TYPES.WalletGettersDecorators & { libraryDesignSystem: VueDecorator; libraryTheme: VueDecorator };
 
@@ -70,7 +73,8 @@ export type CommitDecorators = BaseModuleDecorator<
   typeof store.commit.addLiquidity,
   typeof store.commit.createPair,
   typeof store.commit.removeLiquidity,
-  typeof store.commit.rewards
+  typeof store.commit.rewards,
+  typeof store.commit.demeterFarming
 > &
   VUEX_TYPES.WalletCommitDecorators;
 
@@ -88,6 +92,7 @@ export type DispatchDecorators = BaseModuleDecorator<
   typeof store.dispatch.addLiquidity,
   typeof store.dispatch.createPair,
   typeof store.dispatch.removeLiquidity,
-  typeof store.dispatch.rewards
+  typeof store.dispatch.rewards,
+  typeof store.dispatch.demeterFarming
 > &
   VUEX_TYPES.WalletDispatchDecorators;

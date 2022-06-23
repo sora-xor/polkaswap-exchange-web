@@ -15,8 +15,7 @@ export class TokenBalanceSubscriptions {
 
   remove(key: string, { updateBalance }): void {
     if (this.subscriptions.has(key)) {
-      const subscription = this.subscriptions.get(key) as Subscription;
-      subscription.unsubscribe();
+      this.subscriptions.get(key)?.unsubscribe();
       this.subscriptions.delete(key);
       updateBalance(null);
     }

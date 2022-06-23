@@ -1,6 +1,6 @@
 import { defineGetters } from 'direct-vuex';
 import { connection } from '@soramitsu/soraneo-wallet-web';
-import type { LiquiditySourceTypes } from '@sora-substrate/util/build/swap/consts';
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 import { settingsGetterContext } from '@/store/settings';
 import { LiquiditySourceForMarketAlgorithm } from '@/consts';
@@ -35,6 +35,10 @@ const getters = defineGetters<SettingsState>()({
   moonpayEnabled(...args): boolean {
     const { state, getters } = settingsGetterContext(args);
     return !!getters.moonpayApiKey && !!state.featureFlags.moonpay;
+  },
+  chartsEnabled(...args): boolean {
+    const { state } = settingsGetterContext(args);
+    return !!state.featureFlags.charts;
   },
 });
 
