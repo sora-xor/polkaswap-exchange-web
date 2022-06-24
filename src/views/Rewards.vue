@@ -8,7 +8,7 @@
             {{ claimingStatusMessage }}
           </div>
           <div v-if="isSoraAccountConnected" class="rewards-amount">
-            <rewards-amount-header :items="rewardsByAssetsList" />
+            <rewards-amount-header :items="rewardsAmountHeaderItems" />
             <template v-if="!claimingInProgressOrFinished">
               <rewards-amount-table
                 class="rewards-table"
@@ -127,8 +127,8 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @state.rewards.rewardsClaiming private rewardsClaiming!: boolean;
   @state.rewards.transactionError private transactionError!: boolean;
   @state.rewards.transactionStep private transactionStep!: number;
+  @state.rewards.recievedRewards recievedRewards!: RewardsAmountHeaderItem[];
   @state.rewards.fee fee!: CodecString;
-  @state.rewards.rewardsRecieved rewardsRecieved!: boolean;
 
   @state.rewards.vestedRewards private vestedRewards!: RewardsInfo;
   @state.rewards.crowdloanRewards private crowdloanRewards!: Array<RewardInfo>;
@@ -208,6 +208,22 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
     if (typeof this.unwatchEthereum === 'function') {
       this.unwatchEthereum();
     }
+  }
+
+  get rewardsRecieved(): boolean {
+    return this.recievedRewards.length !== 0;
+  }
+
+  get rewardsAmountHeaderItems(): RewardsAmountHeaderItem[] {
+    return this.rewardsRecieved ? this.recievedRewards : this.rewardsByAssetsList;
+  }
+
+  get rewardTokenSymbols(): Array<KnownSymbols> {
+    return this.rewardsAmountHeaderItems.map((item) => item.asset.symbol as KnownSymbols);
+  }
+
+  get gradientSymbol(): string {
+    return this.rewardTokenSymbols.length === 1 ? this.rewardTokenSymbols[0] : '';
   }
 
   get externalRewardsGroupItem(): RewardInfoGroup {
@@ -321,14 +337,6 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
     const translationKey = this.transactionError ? 'rewards.transactions.failed' : 'rewards.transactions.confimation';
 
     return this.t(translationKey, { order, total: this.transactionStepsCount });
-  }
-
-  get rewardTokenSymbols(): Array<KnownSymbols> {
-    return this.rewardsByAssetsList.map((item) => item.asset.symbol as KnownSymbols);
-  }
-
-  get gradientSymbol(): string {
-    return this.rewardTokenSymbols.length === 1 ? this.rewardTokenSymbols[0] : '';
   }
 
   get hintText(): string {
