@@ -17,7 +17,7 @@ export function initialState(): RewardsState {
     // flags
     rewardsFetching: false,
     rewardsClaiming: false,
-    rewardsRecieved: false,
+    recievedRewards: [],
     transactionError: false,
     transactionStep: 1,
     signature: '',
