@@ -47,7 +47,6 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   async prepareEvmNetwork(networkId = BridgeNetworks.ETH_NETWORK_ID): Promise<void> {
     this.setEvmNetwork(networkId); // WalletConnectMixin
     await this.setEvmNetworkType(); // WalletConnectMixin
-    await this.syncExternalAccountWithAppState(); // WalletConnectMixin
   }
 
   initMoonpayApi(): void {
