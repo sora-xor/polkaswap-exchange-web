@@ -80,6 +80,7 @@ export const Links = {
   terms: 'https://wiki.sora.org/polkaswap/terms',
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
+  demeterFarmingPlatform: 'https://farming.deotoken.io/',
 };
 
 export const ObjectInit = () => null;
