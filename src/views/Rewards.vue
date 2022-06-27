@@ -106,7 +106,9 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { hasInsufficientXorForFee } from '@/utils';
 import { action, getter, mutation, state } from '@/store/decorators';
+
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 
 import type { RewardsAmountHeaderItem, RewardInfoGroup, SelectedRewards } from '@/types/rewards';
 import type { ClaimRewardsParams } from '@/store/rewards/types';
@@ -121,7 +123,12 @@ import type { ClaimRewardsParams } from '@/store/rewards/types';
     InfoLine: components.InfoLine,
   },
 })
-export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletConnectMixin, mixins.TransactionMixin) {
+export default class Rewards extends Mixins(
+  SubscriptionsMixin,
+  mixins.FormattedAmountMixin,
+  WalletConnectMixin,
+  mixins.TransactionMixin
+) {
   @state.rewards.feeFetching private feeFetching!: boolean;
   @state.rewards.rewardsFetching private rewardsFetching!: boolean;
   @state.rewards.rewardsClaiming private rewardsClaiming!: boolean;
@@ -147,8 +154,8 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @getter.rewards.internalRewardsAvailable internalRewardsAvailable!: boolean;
   @getter.rewards.vestedRewardsAvailable vestedRewardsAvailable!: boolean;
   @getter.rewards.rewardsByAssetsList rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
+  @getter.rewards.externalRewardsSelected externalRewardsSelected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
-  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @mutation.rewards.reset private reset!: VoidFunction;
 
@@ -158,19 +165,6 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @action.rewards.subscribeOnRewards private subscribeOnRewards!: AsyncVoidFn;
   @action.rewards.unsubscribeFromRewards private unsubscribeFromRewards!: AsyncVoidFn;
 
-  @Watch('isSoraAccountConnected')
-  @Watch('nodeIsConnected')
-  private async updateSubscriptions(value: boolean) {
-    if (value) {
-      // to prevent second call after created hook
-      if (!this.loading) {
-        await this.subscribeOnRewards();
-      }
-    } else {
-      await this.unsubscribeFromRewards();
-    }
-  }
-
   private unwatchEthereum!: VoidFunction;
 
   destroyed(): void {
@@ -178,33 +172,35 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   async created(): Promise<void> {
-    await this.withApi(async () => {
-      await this.setEvmNetworkType();
-      await this.syncExternalAccountWithAppState();
-      await this.checkExternalRewards();
-      await this.subscribeOnRewards();
+    this.setStartSubscriptions([this.subscribeOnRewards]);
+    this.setResetSubscriptions([this.unsubscribeFromRewards]);
 
-      this.unwatchEthereum = await ethersUtil.watchEthereum({
-        onAccountChange: (addressList: string[]) => {
-          if (addressList.length) {
-            this.changeExternalAccountProcess({ address: addressList[0] });
-          } else {
-            this.disconnectExternalAccountProcess();
-          }
-        },
-        onNetworkChange: (networkId: string) => {
-          this.setEvmNetworkType(networkId);
-        },
-        onDisconnect: () => {
+    this.setEvmNetworkType();
+
+    this.unwatchEthereum = await ethersUtil.watchEthereum({
+      onAccountChange: (addressList: string[]) => {
+        if (addressList.length) {
+          this.changeExternalAccountProcess({ address: addressList[0] });
+        } else {
           this.disconnectExternalAccountProcess();
-        },
-      });
+        }
+      },
+      onNetworkChange: (networkId: string) => {
+        this.setEvmNetworkType(networkId);
+      },
+      onDisconnect: () => {
+        this.disconnectExternalAccountProcess();
+      },
+    });
+  }
+
+  mounted(): void {
+    this.withApi(async () => {
+      await this.checkExternalRewards();
     });
   }
 
   beforeDestroy(): void {
-    this.unsubscribeFromRewards();
-
     if (typeof this.unwatchEthereum === 'function') {
       this.unwatchEthereum();
     }
@@ -428,7 +424,7 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
 
     if (!internalAddress) return;
 
-    if (externalAddress) {
+    if (externalAddress && this.externalRewardsSelected) {
       const isConnected = await ethersUtil.checkAccountIsConnected(externalAddress);
 
       if (!isConnected) return;
