@@ -31,8 +31,6 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
 
   async created(): Promise<void> {
     await this.withLoading(async () => {
-      await this.syncExternalAccountWithAppState();
-
       await this.withParentLoading(async () => {
         this.setEvmNetwork(bridgeApi.externalNetwork);
         await this.onEvmNetworkTypeChange();

@@ -36,16 +36,18 @@ export default class HelpDialog extends Mixins(TranslationMixin, DialogMixin) {
   readonly appVersion = app.version;
   readonly appEmail = app.email;
 
-  readonly links: Array<{ title: string; href: string }> = [
-    {
-      title: this.t('helpDialog.termsOfService'),
-      href: Links.terms,
-    },
-    {
-      title: this.t('helpDialog.privacyPolicy'),
-      href: Links.privacy,
-    },
-  ];
+  get links(): Array<{ title: string; href: string }> {
+    return [
+      {
+        title: this.t('helpDialog.termsOfService'),
+        href: Links.terms,
+      },
+      {
+        title: this.t('helpDialog.privacyPolicy'),
+        href: Links.privacy,
+      },
+    ];
+  }
 }
 </script>
 

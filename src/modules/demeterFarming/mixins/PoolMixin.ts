@@ -28,7 +28,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   }
 
   get hasStake(): boolean {
-    return this.accountPool ? !this.accountPool.pooledTokens.isZero() : false;
+    return this.accountPool ? !this.lockedFunds.isZero() : false;
   }
 
   get baseAsset(): Nullable<AccountAsset> {
@@ -98,7 +98,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   }
 
   get availableFunds(): FPNumber {
-    return this.isFarm ? this.funds.sub(this.lockedFunds) : this.funds;
+    return this.isFarm ? FPNumber.max(this.lockedFunds, this.funds).sub(this.lockedFunds) : this.funds;
   }
 
   get depositDisabled(): boolean {
