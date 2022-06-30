@@ -720,4 +720,14 @@ export default class Swap extends Mixins(
     }
   }
 }
+@include large-desktop {
+  .swap-container {
+    display: flex;
+  }
+  .container--charts {
+    margin-left: $basic-spacing-medium;
+    min-width: $bridge-width;
+    max-width: 100%;
+  }
+}
 </style>
