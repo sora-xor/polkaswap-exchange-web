@@ -1,13 +1,13 @@
 <template>
   <div class="container container--charts" v-loading="parentLoading">
     <div class="tokens-info-container">
-      <div class="token">
+      <div v-if="tokenFrom" class="token">
         <token-logo class="token-logo" :token="tokenFrom" />
         <span class="token-title">{{ tokenFrom.symbol }}</span>
       </div>
       <div class="price">
         <formatted-amount
-          :value="fromFiatAmount"
+          :value="fromFiatPriceFormatted"
           :font-weight-rate="FontWeightRate.MEDIUM"
           :font-size-rate="FontWeightRate.MEDIUM"
           :asset-symbol="'USD'"
@@ -15,19 +15,25 @@
         />
       </div>
       <div class="price-change">
-        <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChange }}
+        <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
       </div>
     </div>
-    <v-chart class="chart" :option="chartData" />
+    <v-chart class="chart" :option="chartData" v-loading="loading" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { FPNumber } from '@sora-substrate/util';
 import VChart from 'vue-echarts';
-import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import {
+  components,
+  mixins,
+  SubqueryExplorerService,
+  WALLET_CONSTS,
+  SUBQUERY_TYPES,
+} from '@soramitsu/soraneo-wallet-web';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { CodecString } from '@sora-substrate/util';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -61,34 +67,39 @@ export default class Charts extends Mixins(
 
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
-  isLoading = true;
-
-  prices: Array<[string, any]> = [];
+  prices: Array<[number, number]> = [];
   chartSeriesData: number[] = [];
   chartXAxisData: string[] = [];
 
-  yAxeLimits = {
-    min: 0,
-    max: 10,
-  };
+  get fromFiatPrice(): FPNumber {
+    return this.tokenFrom ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenFrom) ?? 0) : FPNumber.ZERO;
+  }
 
-  get fromFiatAmount(): string {
-    // TODO: Crop the value to two decimals
-    if (!this.tokenFrom) return '0';
-    return this.getFiatAmountByString('1', this.tokenFrom) || '0';
+  get fromFiatPriceFormatted(): string {
+    return this.fromFiatPrice.toLocaleString();
+  }
+
+  /**
+   * Price change between current price and the last shapshot
+   */
+  get priceChange(): FPNumber {
+    const last = new FPNumber(this.prices[0]?.[1] ?? 0);
+    const current = this.fromFiatPrice;
+    const change = last.isZero() ? FPNumber.ZERO : current.sub(last).div(last).mul(FPNumber.HUNDRED);
+
+    return change;
+  }
+
+  get priceChangeFormatted(): string {
+    return this.priceChange.dp(2).toLocaleString();
   }
 
   get priceChangeIncreased(): boolean {
-    return false;
+    return FPNumber.gt(this.priceChange, FPNumber.ZERO);
   }
 
   get priceChangeArrow(): string {
     return `arrows-arrow-bold-${this.priceChangeIncreased ? 'top' : 'bottom'}-24`;
-  }
-
-  get priceChange(): string {
-    // TODO: Chenge to appropriate priceChange
-    return '1.68%';
   }
 
   get chartData(): any {
@@ -104,8 +115,6 @@ export default class Charts extends Mixins(
       },
       yAxis: {
         type: 'value',
-        min: this.yAxeLimits.min,
-        max: this.yAxeLimits.max,
         axisLine: {
           lineStyle: {
             color: '#A19A9D',
@@ -139,47 +148,45 @@ export default class Charts extends Mixins(
 
   getHistoricalPrices(): void {
     this.withApi(async () => {
-      try {
-        const data = await SubqueryExplorerService.getHistoricalPriceForAsset(this.tokenFrom.address, 100);
-        if (data) {
-          this.isLoading = true;
-          this.prices = Object.entries(data).reverse();
-          // Sort prices to identify min and max yAxe values
-          const sortedPrices = [...this.prices];
-          sortedPrices.sort((a, b) => {
-            return +a[1] - +b[1];
-          });
+      await this.withLoading(async () => {
+        this.clearData();
 
-          this.yAxeLimits.min = Math.round(+this.getFPNumberFromCodec(sortedPrices[0][1]));
-          this.yAxeLimits.max = Math.round(+this.getFPNumberFromCodec(sortedPrices[sortedPrices.length - 1][1])) + 1;
+        try {
+          const response = await SubqueryExplorerService.getHistoricalPriceForAsset(
+            this.tokenFrom.address,
+            SUBQUERY_TYPES.AssetSnapshotTypes.DAY
+          );
 
-          if (this.chartXAxisData.length) {
-            this.chartXAxisData = [];
-            this.chartSeriesData = [];
-          }
+          if (!response || !response.nodes) return;
 
-          for (let i = 0; i < this.prices.length; i++) {
-            const date = new Date(+this.prices[i][0]);
+          // format to tuple [timestamp, price]
+          // ordered ty timestamp DESC
+          this.prices = response.nodes.map((item) => [+item.timestamp * 1000, +item.priceUSD.open] as [number, number]);
+
+          for (let i = this.prices.length - 1; i >= 0; i--) {
+            const date = new Date(this.prices[i][0]);
             // TODO: Change the title due to filter (h/d/m)
             // ${date.getUTCDate()}/${this.formatDateItem(date.getUTCMonth() + 1)}
             this.chartXAxisData.push(
               `${this.formatDateItem(date.getUTCHours())}:${this.formatDateItem(date.getUTCMinutes())}`
             );
-            this.chartSeriesData.push(this.formatPrice(this.prices[i][1]));
+            this.chartSeriesData.push(this.prices[i][1]);
           }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
-      }
+      });
     });
-  }
-
-  formatPrice(price: any): number {
-    return +this.getFPNumberFromCodec((price as CodecString).toString());
   }
 
   formatDateItem(dateItem: number): string {
     return (dateItem.toString().length < 2 ? '0' : '') + dateItem;
+  }
+
+  clearData(): void {
+    this.chartXAxisData = [];
+    this.chartSeriesData = [];
+    this.prices = [];
   }
 }
 </script>
