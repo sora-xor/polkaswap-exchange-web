@@ -1,16 +1,36 @@
 <template>
   <div class="container container--charts" v-loading="parentLoading">
     <div class="tokens-info-container">
-      <div v-if="tokenFrom" class="token">
-        <token-logo class="token-logo" :token="tokenFrom" />
-        <span class="token-title">{{ tokenFrom.symbol }}</span>
+      <div class="header">
+        <div class="selected-tokens">
+          <div class="token-logos">
+            <token-logo v-if="tokenFrom" class="token-logo" :token="tokenFrom" />
+            <token-logo v-if="tokenTo" class="token-logo" :token="tokenTo" />
+          </div>
+          <div class="token-title">
+            <span>{{ tokenFrom.symbol }}</span>
+            <span v-if="tokenTo">/{{ tokenTo.symbol }}</span>
+          </div>
+        </div>
+
+        <div class="timeframes">
+          <s-tabs type="rounded" :value="selectedTimeframe" @click="selectTimeframe">
+            <s-tab
+              v-for="timeframe in timeframes"
+              :key="timeframe.name"
+              :name="timeframe.name"
+              :label="timeframe.content"
+            />
+          </s-tabs>
+        </div>
       </div>
+
       <div class="price">
         <formatted-amount
-          :value="fromFiatPriceFormatted"
+          :value="fiatPriceFormatted"
           :font-weight-rate="FontWeightRate.MEDIUM"
           :font-size-rate="FontWeightRate.MEDIUM"
-          :asset-symbol="'USD'"
+          :asset-symbol="symbol"
           symbol-as-decimal
         />
       </div>
@@ -59,24 +79,56 @@ export default class Charts extends Mixins(
   mixins.FormattedAmountMixin
 ) {
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
+  @getter.swap.tokenTo tokenTo!: AccountAsset;
 
   @Watch('tokenFrom')
+  @Watch('tokenTo')
   private handleTokenFromChange(): void {
     this.getHistoricalPrices();
   }
 
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
+  selectedTimeframe = SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT; // 5 min
+
+  readonly timeframes = [
+    {
+      name: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+      content: '5m',
+    },
+    {
+      name: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+      content: '1h',
+    },
+    {
+      name: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+      content: '1d',
+    },
+  ];
+
   prices: Array<[number, number]> = [];
+
   chartSeriesData: number[] = [];
   chartXAxisData: string[] = [];
+
+  get symbol(): string {
+    return this.tokenTo?.symbol ?? this.tokenFrom.symbol ?? '';
+  }
 
   get fromFiatPrice(): FPNumber {
     return this.tokenFrom ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenFrom) ?? 0) : FPNumber.ZERO;
   }
 
-  get fromFiatPriceFormatted(): string {
-    return this.fromFiatPrice.toLocaleString();
+  get toFiatPrice(): FPNumber {
+    return this.tokenTo ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenTo) ?? 0) : FPNumber.ZERO;
+  }
+
+  get fiatPrice(): FPNumber {
+    return this.toFiatPrice.isZero() ? this.fromFiatPrice : this.fromFiatPrice.div(this.toFiatPrice);
+  }
+
+  get fiatPriceFormatted(): string {
+    return this.fiatPrice.toLocaleString();
   }
 
   /**
@@ -84,7 +136,7 @@ export default class Charts extends Mixins(
    */
   get priceChange(): FPNumber {
     const last = new FPNumber(this.prices[0]?.[1] ?? 0);
-    const current = this.fromFiatPrice;
+    const current = this.fiatPrice;
     const change = last.isZero() ? FPNumber.ZERO : current.sub(last).div(last).mul(FPNumber.HUNDRED);
 
     return change;
@@ -146,31 +198,53 @@ export default class Charts extends Mixins(
     this.getHistoricalPrices();
   }
 
+  // ordered ty timestamp DESC
+  async fetchData(address: string, timeframe: SUBQUERY_TYPES.AssetSnapshotTypes) {
+    try {
+      const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, timeframe);
+
+      if (!response || !response.nodes) return [];
+
+      return response.nodes;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
   getHistoricalPrices(): void {
     this.withApi(async () => {
       await this.withLoading(async () => {
         this.clearData();
 
         try {
-          const response = await SubqueryExplorerService.getHistoricalPriceForAsset(
-            this.tokenFrom.address,
-            SUBQUERY_TYPES.AssetSnapshotTypes.DAY
+          const addresses = [this.tokenFrom?.address, this.tokenTo?.address].filter(Boolean);
+          const collections = await Promise.all(
+            addresses.map((address) => this.fetchData(address, this.selectedTimeframe))
           );
 
-          if (!response || !response.nodes) return;
+          const groups = collections.map((collection) =>
+            collection.map((item) => ({
+              timestamp: +item.timestamp * 1000,
+              price: +item.priceUSD.open,
+            }))
+          );
 
-          // format to tuple [timestamp, price]
-          // ordered ty timestamp DESC
-          this.prices = response.nodes.map((item) => [+item.timestamp * 1000, +item.priceUSD.open] as [number, number]);
+          const size = Math.max(groups[0].length, groups[1]?.length ?? 0);
 
-          for (let i = this.prices.length - 1; i >= 0; i--) {
-            const date = new Date(this.prices[i][0]);
+          for (let i = size - 1; i >= 0; i--) {
+            const a = groups[0]?.[i];
+            const b = groups[1]?.[i];
+
+            const date = new Date((a?.timestamp ?? b?.timestamp) * 1000);
+            const price = b?.price && a?.price ? a.price / b.price : a?.price ?? 0;
+
             // TODO: Change the title due to filter (h/d/m)
             // ${date.getUTCDate()}/${this.formatDateItem(date.getUTCMonth() + 1)}
             this.chartXAxisData.push(
               `${this.formatDateItem(date.getUTCHours())}:${this.formatDateItem(date.getUTCMinutes())}`
             );
-            this.chartSeriesData.push(this.prices[i][1]);
+            this.chartSeriesData.push(price);
           }
         } catch (error) {
           console.error(error);
@@ -187,6 +261,11 @@ export default class Charts extends Mixins(
     this.chartXAxisData = [];
     this.chartSeriesData = [];
     this.prices = [];
+  }
+
+  selectTimeframe({ name }): void {
+    this.selectedTimeframe = name;
+    this.getHistoricalPrices();
   }
 }
 </script>
@@ -206,6 +285,12 @@ export default class Charts extends Mixins(
         color: var(--s-color-base-content-secondary);
       }
     }
+  }
+}
+
+.timeframes {
+  .el-tabs__header {
+    margin-bottom: 0;
   }
 }
 </style>
@@ -257,6 +342,22 @@ export default class Charts extends Mixins(
     line-height: var(--s-line-height-medium);
     font-weight: 600;
     letter-spacing: var(--s-letter-spacing-small);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selected-tokens {
+  display: flex;
+  align-items: center;
+
+  .token-logos {
+    display: flex;
+    align-items: center;
   }
 }
 </style>
