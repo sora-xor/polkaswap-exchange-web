@@ -1,5 +1,5 @@
 import { defineMutations } from 'direct-vuex';
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 
 import storage, { settingsStorage } from '@/utils/storage';
 import type { Node } from '@/types/nodes';

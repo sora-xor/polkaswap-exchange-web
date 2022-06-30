@@ -23,7 +23,7 @@ const getters = defineGetters<RemoveLiquidityState>()({
     const poolAsset = getters.liquidity.secondAddress;
     const balance = FPNumber.fromCodecValue(getters.liquidity.balance);
     const lockedAmount = rootGetters.demeterFarming.getLockedAmount(poolAsset, true);
-    const maxLocked = FPNumber.min(balance, lockedAmount);
+    const maxLocked = FPNumber.min(balance, lockedAmount) as FPNumber;
 
     return balance.sub(maxLocked).div(balance);
   },

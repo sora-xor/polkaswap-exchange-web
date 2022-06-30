@@ -1,4 +1,4 @@
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 import type { FPNumber } from '@sora-substrate/math';
 import type {
   DemeterPool,
