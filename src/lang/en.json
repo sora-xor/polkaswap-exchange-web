@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Bonded XOR successfully",
             "ReferralUnreserveXor": "Unbonded XOR successfully",
             "ReferralSetInvitedUser": "Referral is set successfully",
-            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
+            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Supplied {symbol} and {symbol2} {amount} LP tokens",
+            "DemeterFarmingWithdrawLiquidity": "Removed {symbol} and {symbol2} {amount} LP tokens",
+            "DemeterFarmingStakeToken": "Added {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Removed {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} claimed successfully"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -57,12 +62,22 @@
             "ReferralReserveXor": "Failed to bond XOR",
             "ReferralUnreserveXor": "Failed to unbond XOR",
             "ReferralSetInvitedUser": "Failed to set referral",
-            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
+            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Failed to supply {amount} {symbol} and {symbol2} LP tokens",
+            "DemeterFarmingWithdrawLiquidity": "Failed to remove {amount} {symbol} and {symbol2} LP tokens",
+            "DemeterFarmingStakeToken": "Failed to add {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Failed to remove {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Failed to claim {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
         "ReferralSetInvitedUser": "Set Referral",
-        "SwapAndSend": "Swap and Send"
+        "SwapAndSend": "Swap and Send",
+        "DemeterFarmingDepositLiquidity": "Stake Liquidity",
+        "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
+        "DemeterFarmingStakeToken": "Stake Token",
+        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingGetRewards": "Claim Rewards"
     },
     "polkadotjs": {
         "noExtensions": "No Polkadot.js extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -327,7 +342,8 @@
         "Stats": "Stats",
         "Support": "Support",
         "CreatePair": "Create Pair",
-        "Tokens": "Tokens"
+        "Tokens": "Tokens",
+        "StakingContainer": "Staking"
     },
     "social": {
         "twitter": "Twitter",
@@ -513,7 +529,7 @@
         "pooledToken": "{tokenSymbol} Pooled",
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Your pool share",
-        "unknownAsset": "Unknown asset",
+        "unknownAsset": "@:unknownAssetText",
         "description": "When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
         "strategicBonusApy": "Strategic Bonus APY"
     },
@@ -693,7 +709,8 @@
         "description": "Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.",
         "outputMessage": "Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.",
         "confirmTitle": "You will receive",
-        "shareOfPool": "Share of pool after transaction"
+        "shareOfPool": "Share of pool after transaction",
+        "locked": "{percent} of your pool is in staking"
     },
     "dexSettings": {
         "title": "Transaction settings",
@@ -959,5 +976,77 @@
     "releaseNotesText": "Release notes",
     "copiedText": "Copied!",
     "copyWithValue": "Copy {value}",
-    "copiedWithValue": "{value} is copied!"
+    "copiedWithValue": "{value} is copied!",
+    "signAndClaimText": "Sign and claim",
+    "balanceText": "Balance",
+    "unknownAssetText": "Unknown asset",
+    "demeterFarming": {
+        "staking": {
+            "active": "Staking active",
+            "inactive": "Stake to earn additional rewards",
+            "stopped": "Staking stopped"
+        },
+        "info": {
+            "earned": "{symbol} earned",
+            "fee": "Fee",
+            "feeTooltip": "Deposit fee is applied to your amount to stake",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Your pool share staked",
+            "poolShareWillBe": "Your pool share staked will be",
+            "rewardToken": "Reward token",
+            "stake": "Your {symbol} staked",
+            "stakeWillBe": "Your {symbol} stake will be",
+            "totalLiquidityLocked": "Total liquidity locked"
+        },
+        "actions": {
+            "add": "Stake more",
+            "claim": "Claim rewards",
+            "remove": "Remove stake",
+            "start": "Start staking"
+        },
+        "amountAdd": "Amount to stake",
+        "amountRemove": "Amount to remove",
+        "poweredBy": "Powered by Demeter Farming"
+    },
+    "staking": {
+        "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Something went wrong",
+        "balances": {
+            "LiquidityRestrictions": "Account liquidity restrictions prevent withdrawal"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Source balance is not large enough",
+            "TargetBalanceIsNotLargeEnough": "Destination balance is not large enough",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Provided amounts are too diverse",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Amounts are out of required bounds",
+            "UnableToDepositXorLessThanMinimum": "XOR lower than the minimum value (0.007)",
+            "ZeroValueInAmountParameter": "Amount parameter has zero value"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Pool pair already exists",
+            "SlippageLimitExceeded": "Slippage tolerance has not met proper limits"
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Account already has a referrer",
+            "ReferrerInsufficientBalance": "Referrer does not have enough of reserved balance"
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Rewards program has already finished",
+            "CantCalculateReward": "Failed to perform reward calculation",
+            "NoRewardsForAsset": "There are no rewards for this asset"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Selected liquidity source is not allowed"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Insufficient funds",
+            "InsufficientLPTokens": "Insufficient liquidity provision tokens",
+            "PoolDoesNotHaveRewards": "Pool does not have rewards"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "An error occurred while calculating the price"
+        }
+    }
 }

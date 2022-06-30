@@ -2,6 +2,8 @@ import invert from 'lodash/fp/invert';
 import { KnownAssets, KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
+import { DemeterPageNames } from '@/modules/demeterFarming/consts';
+
 import pkg from '../../package.json';
 import { KnownBridgeAsset } from '../utils/ethers-util';
 
@@ -78,6 +80,7 @@ export const Links = {
   terms: 'https://wiki.sora.org/polkaswap/terms',
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
+  demeterFarmingPlatform: 'https://farming.deotoken.io/',
 };
 
 export const ObjectInit = () => null;
@@ -129,6 +132,7 @@ export enum PageNames {
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
+  StakingContainer = 'StakingContainer',
 }
 
 export enum Components {
@@ -190,6 +194,8 @@ export enum Components {
   BridgeTransferNotification = 'Bridge/TransferNotification',
   MobilePopup = 'MobilePopup/MobilePopup',
   Charts = 'Charts',
+  // Pool
+  PoolInfo = 'Pool/PoolInfo',
 }
 
 export enum RewardsTabsItems {
@@ -217,13 +223,13 @@ const MainMenu: Array<SidebarMenuItem> = [
     title: PageNames.Pool,
   },
   {
+    icon: 'basic-layers-24',
+    title: PageNames.StakingContainer,
+  },
+  {
     icon: 'grid-block-distribute-vertically-24',
     title: PageNames.Bridge,
   },
-  // {
-  //   icon: 'various-pocket-24',
-  //   title: PageNames.Auctions,
-  // },
 ];
 
 const AccountMenu: Array<SidebarMenuItem> = [
@@ -303,6 +309,8 @@ export const RewardsChildPages = [
   PageNames.ReferralBonding,
   PageNames.ReferralUnbonding,
 ];
+
+export const StakingChildPages = [DemeterPageNames.Staking];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',

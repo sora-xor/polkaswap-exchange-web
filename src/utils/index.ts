@@ -10,7 +10,7 @@ import i18n from '@/lang';
 import { app } from '@/consts';
 
 import storage from './storage';
-import type { RegisterAssetWithExternalBalance } from '@/store/assets/types';
+import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
@@ -141,22 +141,27 @@ export const asZeroValue = (value: any): boolean => {
 };
 
 export const getAssetBalance = (
-  asset: any,
+  asset:
+    | AccountAsset
+    | AccountLiquidity
+    | RegisteredAccountAsset
+    | RegisteredAccountAssetWithDecimals
+    | RegisterAssetWithExternalBalance,
   { internal = true, parseAsLiquidity = false, isBondedBalance = false } = {}
 ) => {
   if (!internal) {
-    return asset?.externalBalance;
+    return (asset as RegisteredAccountAsset)?.externalBalance;
   }
 
   if (parseAsLiquidity) {
-    return asset?.balance;
+    return (asset as AccountLiquidity)?.balance;
   }
 
   if (isBondedBalance) {
-    return asset?.balance?.bonded;
+    return (asset as AccountAsset)?.balance?.bonded;
   }
 
-  return asset?.balance?.transferable;
+  return (asset as AccountAsset)?.balance?.transferable;
 };
 
 export const getAssetDecimals = (asset: any, { internal = true } = {}): number | undefined => {

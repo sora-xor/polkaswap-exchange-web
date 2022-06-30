@@ -15,9 +15,27 @@ const getters = defineGetters<RemoveLiquidityState>()({
       (liquidity) => liquidity.firstAddress === firstTokenAddress && liquidity.secondAddress === secondTokenAddress
     );
   },
+  liquidityBalanceFreePart(...args): FPNumber {
+    const { getters, rootGetters } = removeLiquidityGetterContext(args);
+
+    if (!rootGetters.demeterFarming || !getters.liquidity) return FPNumber.ONE;
+
+    const poolAsset = getters.liquidity.secondAddress;
+    const balance = FPNumber.fromCodecValue(getters.liquidity.balance);
+    const lockedAmount = rootGetters.demeterFarming.getLockedAmount(poolAsset, true);
+    const maxLocked = FPNumber.min(balance, lockedAmount);
+
+    return balance.sub(maxLocked).div(balance);
+  },
   liquidityBalance(...args): CodecString {
     const { getters } = removeLiquidityGetterContext(args);
-    return getters.liquidity?.balance ?? ZeroStringValue;
+
+    if (!getters.liquidity?.balance) return ZeroStringValue;
+
+    const balance = FPNumber.fromCodecValue(getters.liquidity.balance);
+    const freePart = getters.liquidityBalanceFreePart;
+
+    return balance.mul(freePart).toCodecString();
   },
   liquidityDecimals(...args): number {
     const { getters } = removeLiquidityGetterContext(args);
@@ -41,11 +59,23 @@ const getters = defineGetters<RemoveLiquidityState>()({
   },
   firstTokenBalance(...args): CodecString {
     const { getters } = removeLiquidityGetterContext(args);
-    return getters.liquidity?.firstBalance ?? ZeroStringValue;
+
+    if (!getters.liquidity?.firstBalance) return ZeroStringValue;
+
+    const balance = FPNumber.fromCodecValue(getters.liquidity.firstBalance, getters.firstToken?.decimals);
+    const freePart = getters.liquidityBalanceFreePart;
+
+    return balance.mul(freePart).toCodecString();
   },
   secondTokenBalance(...args): CodecString {
     const { getters } = removeLiquidityGetterContext(args);
-    return getters.liquidity?.secondBalance ?? ZeroStringValue;
+
+    if (!getters.liquidity?.secondBalance) return ZeroStringValue;
+
+    const balance = FPNumber.fromCodecValue(getters.liquidity.secondBalance, getters.secondToken?.decimals);
+    const freePart = getters.liquidityBalanceFreePart;
+
+    return balance.mul(freePart).toCodecString();
   },
   shareOfPool(...args): string {
     const { state, getters } = removeLiquidityGetterContext(args);
