@@ -34,11 +34,11 @@
           symbol-as-decimal
         />
       </div>
-      <div class="price-change">
+      <div :class="priceChangeClasses">
         <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
       </div>
     </div>
-    <v-chart class="chart" :option="chartData" v-loading="loading" />
+    <v-chart class="chart" :option="chartData" v-loading="loading" autoresize />
   </div>
 </template>
 
@@ -58,6 +58,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { use } from 'echarts/core';
+import { graphic } from 'echarts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart, CandlestickChart } from 'echarts/charts';
 import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
@@ -154,14 +155,33 @@ export default class Charts extends Mixins(
     return `arrows-arrow-bold-${this.priceChangeIncreased ? 'top' : 'bottom'}-24`;
   }
 
+  get priceChangeClasses(): Array<string> {
+    const baseClass = 'price-change';
+    const cssClasses: Array<string> = [baseClass];
+    if (this.priceChangeIncreased) {
+      cssClasses.push(`${baseClass}--increased`);
+    }
+    return cssClasses;
+  }
+
   get chartData(): any {
     return {
       xAxis: {
         type: 'category',
+        boundaryGap: false,
         data: this.chartXAxisData,
         axisLine: {
           lineStyle: {
             color: '#A19A9D',
+          },
+        },
+        axisPointer: {
+          lineStyle: {
+            color: '#34AD87',
+          },
+          label: {
+            backgroundColor: '#34AD87',
+            color: '#fff',
           },
         },
       },
@@ -170,6 +190,14 @@ export default class Charts extends Mixins(
         axisLine: {
           lineStyle: {
             color: '#A19A9D',
+          },
+        },
+        axisPointer: {
+          lineStyle: {
+            color: '#34AD87',
+          },
+          label: {
+            backgroundColor: '#34AD87',
           },
         },
       },
@@ -189,6 +217,19 @@ export default class Charts extends Mixins(
         {
           type: 'line',
           data: this.chartSeriesData,
+          areaStyle: {
+            opacity: 0.8,
+            color: new graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgba(248, 8, 123, 0.25)',
+              },
+              {
+                offset: 1,
+                color: 'rgba(255, 49, 148, 0.03)',
+              },
+            ]),
+          },
         },
       ],
     };
@@ -320,6 +361,9 @@ export default class Charts extends Mixins(
         line-height: var(--s-line-height-medium);
         color: var(--s-color-theme-accent);
         letter-spacing: inherit;
+        &--increased {
+          color: var(--s-color-status-success);
+        }
         &-arrow {
           color: inherit;
         }
