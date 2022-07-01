@@ -7,19 +7,19 @@
             <token-logo v-if="tokenFrom" class="token-logo" :token="tokenFrom" />
             <token-logo v-if="tokenTo" class="token-logo" :token="tokenTo" />
           </div>
-          <div class="token-title">
+          <div v-if="tokenFrom" class="token-title">
             <span>{{ tokenFrom.symbol }}</span>
             <span v-if="tokenTo">/{{ tokenTo.symbol }}</span>
           </div>
         </div>
 
         <div class="timeframes">
-          <s-tabs type="rounded" :value="selectedTimeframe" @click="selectTimeframe">
+          <s-tabs type="rounded" :value="selectedTimeframe.name" @click="selectTimeframe">
             <s-tab
               v-for="timeframe in timeframes"
               :key="timeframe.name"
               :name="timeframe.name"
-              :label="timeframe.content"
+              :label="timeframe.label"
             />
           </s-tabs>
         </div>
@@ -38,11 +38,12 @@
         <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
       </div>
     </div>
-    <v-chart class="chart" :option="chartData" v-loading="loading" autoresize />
+    <v-chart class="chart" :option="chartSpec" v-loading="loading" autoresize />
   </div>
 </template>
 
 <script lang="ts">
+import dayjs from 'dayjs';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import VChart from 'vue-echarts';
@@ -61,10 +62,56 @@ import { use } from 'echarts/core';
 import { graphic } from 'echarts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart, CandlestickChart } from 'echarts/charts';
-import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
-import { getter } from '@/store/decorators';
+import { TitleComponent, TooltipComponent, LegendComponent, DataZoomComponent } from 'echarts/components';
 
-use([CanvasRenderer, LineChart, CandlestickChart, TitleComponent, TooltipComponent, LegendComponent]);
+import { getter } from '@/store/decorators';
+import { debouncedInputHandler } from '@/utils';
+
+use([
+  CanvasRenderer,
+  LineChart,
+  CandlestickChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  DataZoomComponent,
+]);
+
+enum TIMEFRAME_TYPES {
+  FIVE_MINUTES = 'FIVE_MINUTES',
+  HOUR = 'HOUR',
+  FOUR_HOURS = 'FOUR_HOURS',
+  DAY = 'DAY',
+  MONTH = 'MONTH',
+}
+
+const TIMEFRAMES = [
+  {
+    name: TIMEFRAME_TYPES.FIVE_MINUTES,
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    label: '5m',
+  },
+  {
+    name: TIMEFRAME_TYPES.HOUR,
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    label: '1h',
+  },
+  {
+    name: TIMEFRAME_TYPES.FOUR_HOURS,
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    label: '4h',
+  },
+  {
+    name: TIMEFRAME_TYPES.DAY,
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    label: '1d',
+  },
+  {
+    name: TIMEFRAME_TYPES.MONTH,
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    label: '1m',
+  },
+];
 
 @Component({
   components: {
@@ -84,36 +131,23 @@ export default class Charts extends Mixins(
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
-  private handleTokenFromChange(): void {
-    this.getHistoricalPrices();
+  private handleTokenChange(value): void {
+    this.updatePrices();
   }
 
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
-  selectedTimeframe = SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT; // 5 min
+  selectedTimeframe = TIMEFRAMES[0]; // 5 min
 
-  readonly timeframes = [
-    {
-      name: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
-      content: '5m',
-    },
-    {
-      name: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
-      content: '1h',
-    },
-    {
-      name: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
-      content: '1d',
-    },
-  ];
+  readonly timeframes = TIMEFRAMES;
 
-  prices: Array<[number, number]> = [];
+  // ordered by timestamp DESC
+  prices: Array<{ timestamp: number; price: number }> = [];
 
-  chartSeriesData: number[] = [];
-  chartXAxisData: string[] = [];
+  updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250);
 
   get symbol(): string {
-    return this.tokenTo?.symbol ?? this.tokenFrom.symbol ?? '';
+    return this.tokenTo?.symbol ?? 'USD';
   }
 
   get fromFiatPrice(): FPNumber {
@@ -136,7 +170,7 @@ export default class Charts extends Mixins(
    * Price change between current price and the last shapshot
    */
   get priceChange(): FPNumber {
-    const last = new FPNumber(this.prices[0]?.[1] ?? 0);
+    const last = new FPNumber(this.prices[0]?.price ?? 0);
     const current = this.fiatPrice;
     const change = last.isZero() ? FPNumber.ZERO : current.sub(last).div(last).mul(FPNumber.HUNDRED);
 
@@ -164,15 +198,35 @@ export default class Charts extends Mixins(
     return cssClasses;
   }
 
-  get chartData(): any {
+  get timeFormat(): string {
+    switch (this.selectedTimeframe.name) {
+      case TIMEFRAME_TYPES.MONTH:
+        return 'MMM YY';
+      case TIMEFRAME_TYPES.DAY:
+        return 'DD MMM';
+      default:
+        return 'HH:mm';
+    }
+  }
+
+  // ordered by timestamp ASC
+  get chartData(): Array<{ timestamp: number; price: number }> {
+    return [...this.prices].reverse();
+  }
+
+  get chartSpec(): any {
     return {
       xAxis: {
         type: 'category',
-        boundaryGap: false,
-        data: this.chartXAxisData,
+        data: this.chartData.map((item) => item.timestamp),
         axisLine: {
           lineStyle: {
             color: '#A19A9D',
+          },
+        },
+        axisLabel: {
+          formatter: (value: string) => {
+            return dayjs(+value).format(this.timeFormat);
           },
         },
         axisPointer: {
@@ -182,6 +236,9 @@ export default class Charts extends Mixins(
           label: {
             backgroundColor: '#34AD87',
             color: '#fff',
+            formatter: ({ value }) => {
+              return this.formatDate(+value); // locale format
+            },
           },
         },
       },
@@ -208,15 +265,19 @@ export default class Charts extends Mixins(
         axisPointer: {
           type: 'cross',
         },
+        label: {
+          formatter: (timestamp: string) => {
+            return dayjs(+timestamp).format(this.timeFormat);
+          },
+        },
         valueFormatter: (value) => {
-          const strValue = value.toString();
-          return `$${strValue.substring(0, strValue.indexOf('.') + 3)}`;
+          return `${value.toFixed(4)} ${this.symbol}`;
         },
       },
       series: [
         {
           type: 'line',
-          data: this.chartSeriesData,
+          data: this.chartData.map((item) => item.price),
           areaStyle: {
             opacity: 0.8,
             color: new graphic.LinearGradient(0, 0, 0, 1, [
@@ -236,7 +297,7 @@ export default class Charts extends Mixins(
   }
 
   created() {
-    this.getHistoricalPrices();
+    this.updatePrices();
   }
 
   // ordered ty timestamp DESC
@@ -261,7 +322,7 @@ export default class Charts extends Mixins(
         try {
           const addresses = [this.tokenFrom?.address, this.tokenTo?.address].filter(Boolean);
           const collections = await Promise.all(
-            addresses.map((address) => this.fetchData(address, this.selectedTimeframe))
+            addresses.map((address) => this.fetchData(address, this.selectedTimeframe.type))
           );
 
           const groups = collections.map((collection) =>
@@ -273,19 +334,17 @@ export default class Charts extends Mixins(
 
           const size = Math.max(groups[0].length, groups[1]?.length ?? 0);
 
-          for (let i = size - 1; i >= 0; i--) {
+          for (let i = 0; i < size; i++) {
             const a = groups[0]?.[i];
             const b = groups[1]?.[i];
 
-            const date = new Date((a?.timestamp ?? b?.timestamp) * 1000);
-            const price = b?.price && a?.price ? a.price / b.price : a?.price ?? 0;
+            const timestamp = (a?.timestamp ?? b?.timestamp) as number;
+            const price = (b?.price && a?.price ? a.price / b.price : a?.price ?? 0) as number;
 
-            // TODO: Change the title due to filter (h/d/m)
-            // ${date.getUTCDate()}/${this.formatDateItem(date.getUTCMonth() + 1)}
-            this.chartXAxisData.push(
-              `${this.formatDateItem(date.getUTCHours())}:${this.formatDateItem(date.getUTCMinutes())}`
-            );
-            this.chartSeriesData.push(price);
+            this.prices.push({
+              timestamp,
+              price,
+            });
           }
         } catch (error) {
           console.error(error);
@@ -299,14 +358,16 @@ export default class Charts extends Mixins(
   }
 
   clearData(): void {
-    this.chartXAxisData = [];
-    this.chartSeriesData = [];
     this.prices = [];
   }
 
   selectTimeframe({ name }): void {
-    this.selectedTimeframe = name;
-    this.getHistoricalPrices();
+    const timeframe = this.timeframes.find((item) => item.name === name);
+
+    if (!timeframe) return;
+
+    this.selectedTimeframe = timeframe;
+    this.updatePrices();
   }
 }
 </script>
@@ -332,6 +393,10 @@ export default class Charts extends Mixins(
 .timeframes {
   .el-tabs__header {
     margin-bottom: 0;
+  }
+
+  .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
+    padding: 0 10px;
   }
 }
 </style>
