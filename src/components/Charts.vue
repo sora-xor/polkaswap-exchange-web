@@ -34,11 +34,11 @@
           symbol-as-decimal
         />
       </div>
-      <div class="price-change">
+      <div :class="priceChangeClasses">
         <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
       </div>
     </div>
-    <v-chart class="chart" :option="chartSpec" v-loading="loading" />
+    <v-chart class="chart" :option="chartSpec" v-loading="loading" autoresize />
   </div>
 </template>
 
@@ -59,6 +59,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { use } from 'echarts/core';
+import { graphic } from 'echarts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { LineChart, CandlestickChart } from 'echarts/charts';
 import { TitleComponent, TooltipComponent, LegendComponent, DataZoomComponent } from 'echarts/components';
@@ -188,6 +189,15 @@ export default class Charts extends Mixins(
     return `arrows-arrow-bold-${this.priceChangeIncreased ? 'top' : 'bottom'}-24`;
   }
 
+  get priceChangeClasses(): Array<string> {
+    const baseClass = 'price-change';
+    const cssClasses: Array<string> = [baseClass];
+    if (this.priceChangeIncreased) {
+      cssClasses.push(`${baseClass}--increased`);
+    }
+    return cssClasses;
+  }
+
   get timeFormat(): string {
     switch (this.selectedTimeframe.name) {
       case TIMEFRAME_TYPES.MONTH:
@@ -201,7 +211,7 @@ export default class Charts extends Mixins(
 
   // ordered by timestamp ASC
   get chartData(): Array<{ timestamp: number; price: number }> {
-    return [...this.prices].sort((a, b) => a.timestamp - b.timestamp);
+    return [...this.prices].reverse();
   }
 
   get chartSpec(): any {
@@ -215,8 +225,20 @@ export default class Charts extends Mixins(
           },
         },
         axisLabel: {
-          formatter: (timestamp: string) => {
-            return dayjs(+timestamp).format(this.timeFormat);
+          formatter: (value: string) => {
+            return dayjs(+value).format(this.timeFormat);
+          },
+        },
+        axisPointer: {
+          lineStyle: {
+            color: '#34AD87',
+          },
+          label: {
+            backgroundColor: '#34AD87',
+            color: '#fff',
+            formatter: ({ value }) => {
+              return this.formatDate(+value); // locale format
+            },
           },
         },
       },
@@ -227,6 +249,14 @@ export default class Charts extends Mixins(
             color: '#A19A9D',
           },
         },
+        axisPointer: {
+          lineStyle: {
+            color: '#34AD87',
+          },
+          label: {
+            backgroundColor: '#34AD87',
+          },
+        },
       },
       color: ['#F8087B'],
       tooltip: {
@@ -234,6 +264,11 @@ export default class Charts extends Mixins(
         trigger: 'axis',
         axisPointer: {
           type: 'cross',
+        },
+        label: {
+          formatter: (timestamp: string) => {
+            return dayjs(+timestamp).format(this.timeFormat);
+          },
         },
         valueFormatter: (value) => {
           return `${value.toFixed(4)} ${this.symbol}`;
@@ -243,6 +278,19 @@ export default class Charts extends Mixins(
         {
           type: 'line',
           data: this.chartData.map((item) => item.price),
+          areaStyle: {
+            opacity: 0.8,
+            color: new graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgba(248, 8, 123, 0.25)',
+              },
+              {
+                offset: 1,
+                color: 'rgba(255, 49, 148, 0.03)',
+              },
+            ]),
+          },
         },
       ],
     };
@@ -378,6 +426,9 @@ export default class Charts extends Mixins(
         line-height: var(--s-line-height-medium);
         color: var(--s-color-theme-accent);
         letter-spacing: inherit;
+        &--increased {
+          color: var(--s-color-status-success);
+        }
         &-arrow {
           color: inherit;
         }

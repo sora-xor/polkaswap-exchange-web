@@ -1,7 +1,7 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
     <app-header :loading="loading" @toggle-menu="toggleMenu" />
-    <div class="app-main">
+    <div :class="appClasses">
       <app-menu
         :visible="menuVisibility"
         :on-select="goTo"
@@ -189,6 +189,19 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
+  }
+
+  get isSwapPage(): boolean {
+    return this.$route.name === PageNames.Swap;
+  }
+
+  get appClasses(): Array<string> {
+    const baseClass = 'app-main';
+    const cssClasses: Array<string> = [baseClass];
+    if (this.isSwapPage) {
+      cssClasses.push(`${baseClass}--swap`);
+    }
+    return cssClasses;
   }
 
   get blockNumberFormatted(): string {
@@ -448,6 +461,30 @@ ul ul {
 i.icon-divider {
   @include icon-styles;
 }
+
+@include desktop {
+  .app-main.app-main--swap {
+    .app-menu {
+      position: relative;
+    }
+    .app-content {
+      width: 100%;
+      .app-disclaimer {
+        margin-left: $basic-spacing-small * 3;
+      }
+    }
+  }
+  .swap-container {
+    .el-form {
+      flex-shrink: 0;
+    }
+    .el-form,
+    .container--charts {
+      margin-right: $basic-spacing-small;
+      margin-left: $basic-spacing-small;
+    }
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -544,7 +581,7 @@ $sora-logo-width: 173.7px;
   }
 }
 
-@include tablet {
+@include desktop {
   .app-footer {
     flex-direction: row;
     .app-disclaimer {

@@ -213,7 +213,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
@@ -682,11 +682,35 @@ export default class Swap extends Mixins(
 }
 </script>
 
+<style lang="scss">
+@include desktop {
+  .app-main--swap {
+    .app-content {
+      width: 100%;
+    }
+    .app-main .app-menu {
+      position: relative;
+    }
+    .swap-container {
+      .el-form {
+        flex-shrink: 0;
+      }
+      .el-form,
+      .container--charts {
+        margin-right: $basic-spacing-small;
+        margin-left: $basic-spacing-small;
+      }
+    }
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 .el-form--actions {
   @include buttons;
   @include full-width-button('action-button');
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
+  flex-shrink: 0;
 }
 
 .el-button.neumorphic.s-action:disabled {
@@ -720,14 +744,18 @@ export default class Swap extends Mixins(
     }
   }
 }
-@include large-desktop {
-  .swap-container {
-    display: flex;
-  }
-  .container--charts {
-    margin-left: $basic-spacing-medium;
-    min-width: $bridge-width;
-    max-width: 100%;
+@include desktop {
+  .app-main--swap {
+    .swap-container {
+      display: flex;
+      justify-content: center;
+      padding-top: $inner-spacing-medium;
+    }
+    .container--charts {
+      min-width: $bridge-width;
+      max-width: 100%;
+      flex-grow: 1;
+    }
   }
 }
 </style>
