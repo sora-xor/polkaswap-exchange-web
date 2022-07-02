@@ -38,7 +38,14 @@
         <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
       </div>
     </div>
-    <v-chart class="chart" :option="chartSpec" v-loading="loading" autoresize />
+    <v-chart
+      class="chart"
+      :option="chartSpec"
+      v-loading="loading"
+      autoresize
+      @zr:mousewheel="handleZoom"
+      @datazoom="changeZoomLevel"
+    />
   </div>
 </template>
 
@@ -79,39 +86,67 @@ use([
 
 enum TIMEFRAME_TYPES {
   FIVE_MINUTES = 'FIVE_MINUTES',
+  FIFTEEN_MINUTES = 'FIFTEEN_MINUTES',
+  THIRTY_MINUTES = 'THIRTY_MINUTES',
   HOUR = 'HOUR',
   FOUR_HOURS = 'FOUR_HOURS',
   DAY = 'DAY',
-  MONTH = 'MONTH',
 }
+
+const LINE_CHART_FILTERS = [];
+const CANDLE_CHART_FILTERS = [];
 
 const TIMEFRAMES = [
   {
     name: TIMEFRAME_TYPES.FIVE_MINUTES,
     type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
     label: '5m',
+    group: 1,
+  },
+  {
+    name: TIMEFRAME_TYPES.FIFTEEN_MINUTES,
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    label: '15m',
+    group: 3,
+  },
+  {
+    name: TIMEFRAME_TYPES.THIRTY_MINUTES,
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    label: '30m',
+    group: 6,
   },
   {
     name: TIMEFRAME_TYPES.HOUR,
     type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
     label: '1h',
+    group: 1,
   },
   {
     name: TIMEFRAME_TYPES.FOUR_HOURS,
     type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
     label: '4h',
+    group: 4,
   },
   {
     name: TIMEFRAME_TYPES.DAY,
     type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
     label: '1d',
-  },
-  {
-    name: TIMEFRAME_TYPES.MONTH,
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
-    label: '1m',
+    group: 1,
   },
 ];
+
+const groupToCount = (items, count = 1) => {
+  const buffer: any = [];
+
+  for (let i = 0; i < items.length; i++) {
+    const current = items[i];
+    if (i % count === 0) {
+      buffer.push(current);
+    }
+  }
+
+  return buffer;
+};
 
 @Component({
   components: {
@@ -132,6 +167,7 @@ export default class Charts extends Mixins(
   @Watch('tokenFrom')
   @Watch('tokenTo')
   private handleTokenChange(value): void {
+    this.clearData();
     this.updatePrices();
   }
 
@@ -143,6 +179,8 @@ export default class Charts extends Mixins(
 
   // ordered by timestamp DESC
   prices: Array<{ timestamp: number; price: number }> = [];
+  pageInfos: any = [];
+  zoomStart = 0; // percentage of zoom start position
 
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250);
 
@@ -200,8 +238,6 @@ export default class Charts extends Mixins(
 
   get timeFormat(): string {
     switch (this.selectedTimeframe.name) {
-      case TIMEFRAME_TYPES.MONTH:
-        return 'MMM YY';
       case TIMEFRAME_TYPES.DAY:
         return 'DD MMM';
       default:
@@ -211,7 +247,7 @@ export default class Charts extends Mixins(
 
   // ordered by timestamp ASC
   get chartData(): Array<{ timestamp: number; price: number }> {
-    return [...this.prices].reverse();
+    return groupToCount([...this.prices].reverse(), this.selectedTimeframe.group);
   }
 
   get chartSpec(): any {
@@ -258,6 +294,13 @@ export default class Charts extends Mixins(
           },
         },
       },
+      dataZoom: [
+        {
+          type: 'inside',
+          start: 0,
+          end: 100,
+        },
+      ],
       color: ['#F8087B'],
       tooltip: {
         show: true,
@@ -301,38 +344,48 @@ export default class Charts extends Mixins(
   }
 
   // ordered ty timestamp DESC
-  async fetchData(address: string, timeframe: SUBQUERY_TYPES.AssetSnapshotTypes) {
-    try {
-      const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, timeframe);
+  async fetchData(
+    address: string,
+    timeframe: SUBQUERY_TYPES.AssetSnapshotTypes,
+    pageInfo?: { hasNextPage: boolean; endCursor: '' }
+  ) {
+    if (pageInfo && !pageInfo.hasNextPage) return;
 
-      if (!response || !response.nodes) return [];
+    const after = pageInfo?.endCursor ?? '';
 
-      return response.nodes;
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
+    const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, timeframe, 100 as any, after);
+
+    if (!response) throw new Error('Chart data fetch error');
+
+    return response;
   }
 
   getHistoricalPrices(): void {
     this.withApi(async () => {
       await this.withLoading(async () => {
-        this.clearData();
-
         try {
           const addresses = [this.tokenFrom?.address, this.tokenTo?.address].filter(Boolean);
           const collections = await Promise.all(
-            addresses.map((address) => this.fetchData(address, this.selectedTimeframe.type))
+            addresses.map((address, index) =>
+              this.fetchData(address, this.selectedTimeframe.type, this.pageInfos[index])
+            )
           );
 
-          const groups = collections.map((collection) =>
-            collection.map((item) => ({
+          if (!collections.every((collection) => !!collection)) return;
+
+          this.pageInfos = collections.map((item: any) => ({
+            hasNextPage: item.hasNextPage,
+            endCursor: item.endCursor,
+          }));
+
+          const groups = (collections as any).map((collection) =>
+            collection.nodes.map((item) => ({
               timestamp: +item.timestamp * 1000,
               price: +item.priceUSD.open,
             }))
           );
 
-          const size = Math.max(groups[0].length, groups[1]?.length ?? 0);
+          const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
 
           for (let i = 0; i < size; i++) {
             const a = groups[0]?.[i];
@@ -353,12 +406,10 @@ export default class Charts extends Mixins(
     });
   }
 
-  formatDateItem(dateItem: number): string {
-    return (dateItem.toString().length < 2 ? '0' : '') + dateItem;
-  }
-
   clearData(): void {
     this.prices = [];
+    this.pageInfos = [];
+    this.zoomStart = 0;
   }
 
   selectTimeframe({ name }): void {
@@ -367,7 +418,19 @@ export default class Charts extends Mixins(
     if (!timeframe) return;
 
     this.selectedTimeframe = timeframe;
+    this.clearData();
     this.updatePrices();
+  }
+
+  handleZoom(event) {
+    event.stop();
+    if (event.wheelDelta === -1 && this.zoomStart === 0) {
+      this.updatePrices();
+    }
+  }
+
+  changeZoomLevel(event) {
+    this.zoomStart = event.batch[0]?.start ?? 0;
   }
 }
 </script>
