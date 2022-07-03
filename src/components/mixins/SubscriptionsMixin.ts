@@ -25,12 +25,12 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
     return this.parentLoading || this.loading;
   }
 
-  async mounted(): Promise<void> {
-    await this.updateSubscriptions();
+  mounted(): void {
+    this.updateSubscriptions();
   }
 
-  async beforeDestroy(): Promise<void> {
-    await this.resetSubscriptions();
+  beforeDestroy(): void {
+    this.resetSubscriptions();
   }
 
   public setStartSubscriptions(list: AsyncVoidFn[]) {

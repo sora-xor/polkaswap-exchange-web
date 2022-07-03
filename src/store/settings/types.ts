@@ -1,4 +1,4 @@
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 
 import type { MarketAlgorithms } from '@/consts';
 import type { Node } from '@/types/nodes';

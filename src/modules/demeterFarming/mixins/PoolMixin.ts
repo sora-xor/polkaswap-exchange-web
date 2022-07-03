@@ -28,7 +28,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   }
 
   get hasStake(): boolean {
-    return this.accountPool ? !this.accountPool.pooledTokens.isZero() : false;
+    return this.accountPool ? !this.lockedFunds.isZero() : false;
   }
 
   get baseAsset(): Nullable<AccountAsset> {
@@ -98,7 +98,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   }
 
   get availableFunds(): FPNumber {
-    return this.isFarm ? this.funds.sub(this.lockedFunds) : this.funds;
+    return this.isFarm ? (FPNumber.max(this.lockedFunds, this.funds) as FPNumber).sub(this.lockedFunds) : this.funds;
   }
 
   get depositDisabled(): boolean {
@@ -110,7 +110,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
 
     if (this.funds.isZero()) return FPNumber.ZERO;
     // use .min because pooled LP could be greater that liquiduty LP
-    return FPNumber.min(this.lockedFunds, this.funds).div(this.funds).mul(FPNumber.HUNDRED);
+    return (FPNumber.min(this.lockedFunds, this.funds) as FPNumber).div(this.funds).mul(FPNumber.HUNDRED);
   }
 
   get poolShareFormatted(): string {

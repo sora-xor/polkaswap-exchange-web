@@ -1,4 +1,4 @@
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 
 export type ReferralsState = {
   referrer: string;
