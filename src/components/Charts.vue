@@ -251,8 +251,8 @@ export default class Charts extends Mixins(
   }
 
   get timeFormat(): string {
-    switch (this.selectedFilter.name) {
-      case TIMEFRAME_TYPES.DAY:
+    switch (this.selectedFilter.type) {
+      case SUBQUERY_TYPES.AssetSnapshotTypes.DAY:
         return 'DD MMM';
       default:
         return 'HH:mm';
@@ -276,6 +276,7 @@ export default class Charts extends Mixins(
         },
         axisLabel: {
           formatter: (value: string) => {
+            console.log(value);
             return dayjs(+value).format(this.timeFormat);
           },
         },
@@ -321,11 +322,6 @@ export default class Charts extends Mixins(
         trigger: 'axis',
         axisPointer: {
           type: 'cross',
-        },
-        label: {
-          formatter: (timestamp: string) => {
-            return dayjs(+timestamp).format(this.timeFormat);
-          },
         },
         valueFormatter: (value) => {
           return `${value.toFixed(4)} ${this.symbol}`;
