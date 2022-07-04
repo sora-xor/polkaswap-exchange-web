@@ -58,24 +58,10 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import { use } from 'echarts/core';
 import { graphic } from 'echarts';
-import { CanvasRenderer } from 'echarts/renderers';
-import { LineChart, CandlestickChart } from 'echarts/charts';
-import { TitleComponent, TooltipComponent, LegendComponent, DataZoomComponent } from 'echarts/components';
 
 import { getter } from '@/store/decorators';
 import { debouncedInputHandler } from '@/utils';
-
-use([
-  CanvasRenderer,
-  LineChart,
-  CandlestickChart,
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-  DataZoomComponent,
-]);
 
 enum TIMEFRAME_TYPES {
   FIVE_MINUTES = 'FIVE_MINUTES',
