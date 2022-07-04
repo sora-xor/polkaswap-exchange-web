@@ -14,13 +14,8 @@
         </div>
 
         <div class="timeframes">
-          <s-tabs type="rounded" :value="selectedTimeframe.name" @click="selectTimeframe">
-            <s-tab
-              v-for="timeframe in timeframes"
-              :key="timeframe.name"
-              :name="timeframe.name"
-              :label="timeframe.label"
-            />
+          <s-tabs type="rounded" :value="selectedFilter.name" @click="selectFilter">
+            <s-tab v-for="filter in filters" :key="filter.name" :name="filter.name" :label="filter.label" />
           </s-tabs>
         </div>
       </div>
@@ -73,6 +68,7 @@ import { TitleComponent, TooltipComponent, LegendComponent, DataZoomComponent } 
 
 import { getter } from '@/store/decorators';
 import { debouncedInputHandler } from '@/utils';
+import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 use([
   CanvasRenderer,
@@ -91,62 +87,52 @@ enum TIMEFRAME_TYPES {
   HOUR = 'HOUR',
   FOUR_HOURS = 'FOUR_HOURS',
   DAY = 'DAY',
+  WEEK = 'WEEK',
+  MONTH = 'MONTH',
+  YEAR = 'YEAR',
+  ALL = 'ALL',
 }
 
-const LINE_CHART_FILTERS = [];
-const CANDLE_CHART_FILTERS = [];
+type ChartFilter = {
+  name: TIMEFRAME_TYPES;
+  label: string;
+  type: SUBQUERY_TYPES.AssetSnapshotTypes;
+  count: number;
+};
 
-const TIMEFRAMES = [
-  {
-    name: TIMEFRAME_TYPES.FIVE_MINUTES,
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
-    label: '5m',
-    group: 1,
-  },
-  {
-    name: TIMEFRAME_TYPES.FIFTEEN_MINUTES,
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
-    label: '15m',
-    group: 3,
-  },
-  {
-    name: TIMEFRAME_TYPES.THIRTY_MINUTES,
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
-    label: '30m',
-    group: 6,
-  },
-  {
-    name: TIMEFRAME_TYPES.HOUR,
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
-    label: '1h',
-    group: 1,
-  },
-  {
-    name: TIMEFRAME_TYPES.FOUR_HOURS,
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
-    label: '4h',
-    group: 4,
-  },
+const LINE_CHART_FILTERS: ChartFilter[] = [
   {
     name: TIMEFRAME_TYPES.DAY,
+    label: '1D',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    count: 288, // 5 mins in day
+  },
+  {
+    name: TIMEFRAME_TYPES.WEEK,
+    label: '1W',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    count: 24 * 7, // hours in week
+  },
+  {
+    name: TIMEFRAME_TYPES.MONTH,
+    label: '1M',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    count: 24 * 30, // hours in month
+  },
+  {
+    name: TIMEFRAME_TYPES.YEAR,
+    label: '1Y',
     type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
-    label: '1d',
-    group: 1,
+    count: 365, // days in year
+  },
+  {
+    name: TIMEFRAME_TYPES.ALL,
+    label: 'ALL',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    count: Infinity,
   },
 ];
-
-const groupToCount = (items, count = 1) => {
-  const buffer: any = [];
-
-  for (let i = 0; i < items.length; i++) {
-    const current = items[i];
-    if (i % count === 0) {
-      buffer.push(current);
-    }
-  }
-
-  return buffer;
-};
+const CANDLE_CHART_FILTERS = [];
 
 @Component({
   components: {
@@ -166,16 +152,12 @@ export default class Charts extends Mixins(
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
-  private handleTokenChange(value): void {
+  private handleTokenChange(): void {
     this.clearData();
     this.updatePrices();
   }
 
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
-
-  selectedTimeframe = TIMEFRAMES[0]; // 5 min
-
-  readonly timeframes = TIMEFRAMES;
 
   // ordered by timestamp DESC
   prices: Array<{ timestamp: number; price: number }> = [];
@@ -183,6 +165,12 @@ export default class Charts extends Mixins(
   zoomStart = 0; // percentage of zoom start position
 
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250);
+
+  selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
+
+  get filters() {
+    return LINE_CHART_FILTERS;
+  }
 
   get symbol(): string {
     return this.tokenTo?.symbol ?? 'USD';
@@ -237,7 +225,7 @@ export default class Charts extends Mixins(
   }
 
   get timeFormat(): string {
-    switch (this.selectedTimeframe.name) {
+    switch (this.selectedFilter.name) {
       case TIMEFRAME_TYPES.DAY:
         return 'DD MMM';
       default:
@@ -247,7 +235,7 @@ export default class Charts extends Mixins(
 
   // ordered by timestamp ASC
   get chartData(): Array<{ timestamp: number; price: number }> {
-    return groupToCount([...this.prices].reverse(), this.selectedTimeframe.group);
+    return [...this.prices].reverse();
   }
 
   get chartSpec(): any {
@@ -344,20 +332,29 @@ export default class Charts extends Mixins(
   }
 
   // ordered ty timestamp DESC
-  async fetchData(
-    address: string,
-    timeframe: SUBQUERY_TYPES.AssetSnapshotTypes,
-    pageInfo?: { hasNextPage: boolean; endCursor: '' }
-  ) {
+  async fetchData(address: string, filter: ChartFilter, pageInfo?: { hasNextPage: boolean; endCursor: string }) {
     if (pageInfo && !pageInfo.hasNextPage) return;
 
-    const after = pageInfo?.endCursor ?? '';
+    const { type, count } = filter; // how many items should be fetched by request
+    const nodes: AssetSnapshot[] = [];
 
-    const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, timeframe, 100 as any, after);
+    let hasNextPage = pageInfo?.hasNextPage ?? true;
+    let endCursor = pageInfo?.endCursor ?? '';
+    let fetchCount = count;
 
-    if (!response) throw new Error('Chart data fetch error');
+    do {
+      const first = Math.min(fetchCount, 100);
+      const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, type, first as any, endCursor);
 
-    return response;
+      if (!response) throw new Error('Chart data fetch error');
+
+      hasNextPage = response.hasNextPage;
+      endCursor = response.endCursor;
+      nodes.push(...response.nodes);
+      fetchCount -= response.nodes.length;
+    } while (hasNextPage && fetchCount > 0);
+
+    return { nodes, hasNextPage, endCursor };
   }
 
   getHistoricalPrices(): void {
@@ -366,9 +363,7 @@ export default class Charts extends Mixins(
         try {
           const addresses = [this.tokenFrom?.address, this.tokenTo?.address].filter(Boolean);
           const collections = await Promise.all(
-            addresses.map((address, index) =>
-              this.fetchData(address, this.selectedTimeframe.type, this.pageInfos[index])
-            )
+            addresses.map((address, index) => this.fetchData(address, this.selectedFilter, this.pageInfos[index]))
           );
 
           if (!collections.every((collection) => !!collection)) return;
@@ -412,12 +407,12 @@ export default class Charts extends Mixins(
     this.zoomStart = 0;
   }
 
-  selectTimeframe({ name }): void {
-    const timeframe = this.timeframes.find((item) => item.name === name);
+  selectFilter({ name }): void {
+    const filter = this.filters.find((item) => item.name === name);
 
-    if (!timeframe) return;
+    if (!filter) return;
 
-    this.selectedTimeframe = timeframe;
+    this.selectedFilter = filter;
     this.clearData();
     this.updatePrices();
   }
