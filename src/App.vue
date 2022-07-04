@@ -86,6 +86,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;
+  @getter.settings.chartsEnabled chartsEnabled!: boolean;
 
   @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
   @mutation.wallet.settings.setSubqueryEndpoint private setSubqueryEndpoint!: (endpoint: string) => void;
@@ -198,8 +199,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   get appClasses(): Array<string> {
     const baseClass = 'app-main';
     const cssClasses: Array<string> = [baseClass];
-    if (this.isSwapPage) {
-      cssClasses.push(`${baseClass}--swap`);
+    if (this.chartsEnabled && this.isSwapPage) {
+      cssClasses.push(`${baseClass}--has-charts`);
     }
     return cssClasses;
   }
@@ -462,8 +463,8 @@ i.icon-divider {
   @include icon-styles;
 }
 
-@include desktop {
-  .app-main.app-main--swap {
+@include large-desktop {
+  .app-main.app-main--has-charts {
     .app-menu {
       position: relative;
     }
@@ -472,16 +473,6 @@ i.icon-divider {
       .app-disclaimer {
         margin-left: $basic-spacing-small * 3;
       }
-    }
-  }
-  .swap-container {
-    .el-form {
-      flex-shrink: 0;
-    }
-    .el-form,
-    .container--charts {
-      margin-right: $basic-spacing-small;
-      margin-left: $basic-spacing-small;
     }
   }
 }
@@ -581,7 +572,7 @@ $sora-logo-width: 173.7px;
   }
 }
 
-@include desktop {
+@include tablet {
   .app-footer {
     flex-direction: row;
     .app-disclaimer {

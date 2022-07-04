@@ -34,11 +34,15 @@
           symbol-as-decimal
         />
       </div>
-      <div :class="priceChangeClasses">
+      <div v-if="!isFetchingError" :class="priceChangeClasses">
         <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
       </div>
     </div>
-    <v-chart class="chart" :option="chartSpec" v-loading="loading" autoresize />
+    <v-chart v-if="!isFetchingError" class="chart" :option="chartSpec" v-loading="loading" autoresize />
+    <div v-else class="fetching-error">
+      <!-- TODO: Add error screen + preview -->
+      <span>Error fetching the data</span>
+    </div>
   </div>
 </template>
 
@@ -121,6 +125,7 @@ export default class Charts extends Mixins(
     this.updatePrices();
   }
 
+  isFetchingError = false;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   selectedTimeframe = TIMEFRAMES[0]; // 5 min
@@ -131,6 +136,23 @@ export default class Charts extends Mixins(
   prices: Array<{ timestamp: number; price: number }> = [];
 
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250);
+  customStyles = {
+    axisLineColor: '#A19A9D', // var(--s-color-base-content-secondary)
+    pointer: {
+      lineColor: '#34AD87', // var(--s-color-status-success)
+      label: {
+        bgColor: '#34AD87', // var(--s-color-status-success)
+        color: '#FFF', // var(--s-color-base-on-accent)
+      },
+    },
+    graphsColors: ['#F8087B', '#34AD87'], // var(--s-color-theme-accent), var(--s-color-status-success)
+    tooltip: {
+      bgColor: '#F7F3F4', // var(--s-color-utility-body)
+      borderColor: '#EDE4E7', // var(--s-color-base-border-secondary)
+      extraCssText: `box-shadow:
+        -10px -10px 30px rgba(255, 255, 255, 0.9), 20px 20px 60px rgba(0, 0, 0, 0.1), inset 1px 1px 10px #FFFFFF`,
+    },
+  };
 
   get symbol(): string {
     return this.tokenTo?.symbol ?? 'USD';
@@ -207,7 +229,7 @@ export default class Charts extends Mixins(
         data: this.chartData.map((item) => item.timestamp),
         axisLine: {
           lineStyle: {
-            color: '#A19A9D',
+            color: this.customStyles.axisLineColor,
           },
         },
         axisLabel: {
@@ -217,11 +239,11 @@ export default class Charts extends Mixins(
         },
         axisPointer: {
           lineStyle: {
-            color: '#34AD87',
+            color: this.customStyles.pointer.lineColor,
           },
           label: {
-            backgroundColor: '#34AD87',
-            color: '#fff',
+            backgroundColor: this.customStyles.pointer.label.bgColor,
+            color: this.customStyles.pointer.label.color,
             formatter: ({ value }) => {
               return this.formatDate(+value); // locale format
             },
@@ -232,25 +254,28 @@ export default class Charts extends Mixins(
         type: 'value',
         axisLine: {
           lineStyle: {
-            color: '#A19A9D',
+            color: this.customStyles.axisLineColor,
           },
         },
         axisPointer: {
           lineStyle: {
-            color: '#34AD87',
+            color: this.customStyles.pointer.lineColor,
           },
           label: {
-            backgroundColor: '#34AD87',
+            backgroundColor: this.customStyles.pointer.label.bgColor,
           },
         },
       },
-      color: ['#F8087B'],
+      color: this.customStyles.graphsColors,
       tooltip: {
         show: true,
         trigger: 'axis',
         axisPointer: {
           type: 'cross',
         },
+        backgroundColor: this.customStyles.tooltip.bgColor,
+        borderColor: this.customStyles.tooltip.borderColor,
+        extraCssText: this.customStyles.tooltip.extraCssText,
         label: {
           formatter: (timestamp: string) => {
             return dayjs(+timestamp).format(this.timeFormat);
@@ -269,11 +294,12 @@ export default class Charts extends Mixins(
             color: new graphic.LinearGradient(0, 0, 0, 1, [
               {
                 offset: 0,
-                color: 'rgba(248, 8, 123, 0.25)',
+                // var(--s-color-theme-accent)
+                color: 'rgba(248, 8, 123, 0.18)',
               },
               {
                 offset: 1,
-                color: 'rgba(255, 49, 148, 0.03)',
+                color: 'rgba(248, 8, 123, 0.02)',
               },
             ]),
           },
@@ -318,7 +344,7 @@ export default class Charts extends Mixins(
             }))
           );
 
-          const size = Math.max(groups[0].length, groups[1]?.length ?? 0);
+          const size = Math.max(groups[0]?.length, groups[1]?.length ?? 0);
 
           for (let i = 0; i < size; i++) {
             const a = groups[0]?.[i];
@@ -333,6 +359,7 @@ export default class Charts extends Mixins(
             });
           }
         } catch (error) {
+          this.isFetchingError = true;
           console.error(error);
         }
       });
