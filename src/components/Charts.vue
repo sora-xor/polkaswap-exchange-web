@@ -46,9 +46,10 @@
 
 <script lang="ts">
 import dayjs from 'dayjs';
+import { graphic } from 'echarts';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
-import VChart from 'vue-echarts';
+
 import {
   components,
   mixins,
@@ -60,25 +61,9 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import { use } from 'echarts/core';
-import { graphic } from 'echarts';
-import { CanvasRenderer } from 'echarts/renderers';
-import { LineChart, CandlestickChart } from 'echarts/charts';
-import { TitleComponent, TooltipComponent, LegendComponent, DataZoomComponent } from 'echarts/components';
-
 import { getter } from '@/store/decorators';
 import { debouncedInputHandler } from '@/utils';
 import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
-
-use([
-  CanvasRenderer,
-  LineChart,
-  CandlestickChart,
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-  DataZoomComponent,
-]);
 
 enum TIMEFRAME_TYPES {
   FIVE_MINUTES = 'FIVE_MINUTES',
@@ -161,7 +146,6 @@ const CANDLE_CHART_FILTERS = [
 
 @Component({
   components: {
-    VChart,
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
   },
