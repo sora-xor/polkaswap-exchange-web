@@ -266,6 +266,11 @@ export default class Charts extends Mixins(
 
   get chartSpec(): any {
     return {
+      grid: {
+        left: 40,
+        right: 40,
+        bottom: 20,
+      },
       xAxis: {
         type: 'category',
         data: this.chartData.map((item) => item.timestamp),
@@ -276,7 +281,6 @@ export default class Charts extends Mixins(
         },
         axisLabel: {
           formatter: (value: string) => {
-            console.log(value);
             return dayjs(+value).format(this.timeFormat);
           },
         },
