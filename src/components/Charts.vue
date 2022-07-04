@@ -57,13 +57,14 @@ import {
   WALLET_CONSTS,
   SUBQUERY_TYPES,
 } from '@soramitsu/soraneo-wallet-web';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter } from '@/store/decorators';
 import { debouncedInputHandler } from '@/utils';
 import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 enum TIMEFRAME_TYPES {
   FIVE_MINUTES = 'FIVE_MINUTES',
@@ -178,8 +179,12 @@ export default class Charts extends Mixins(
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
 
+  get isLineChart(): boolean {
+    return this.chartType === CHART_TYPES.LINE;
+  }
+
   get filters() {
-    return this.chartType === CHART_TYPES.LINE ? LINE_CHART_FILTERS : CANDLE_CHART_FILTERS;
+    return this.isLineChart ? LINE_CHART_FILTERS : CANDLE_CHART_FILTERS;
   }
 
   get symbol(): string {
@@ -249,6 +254,10 @@ export default class Charts extends Mixins(
   }
 
   get chartSpec(): any {
+    return this.isLineChart ? this.lineChartSpec : this.candleChartSpec;
+  }
+
+  get lineChartSpec(): any {
     return {
       grid: {
         left: 40,
@@ -337,7 +346,12 @@ export default class Charts extends Mixins(
     };
   }
 
-  created() {
+  // TODO: add spec
+  get candleChartSpec(): any {
+    return {};
+  }
+
+  created(): void {
     this.updatePrices();
   }
 
@@ -427,15 +441,15 @@ export default class Charts extends Mixins(
     this.updatePrices();
   }
 
-  handleZoom(event) {
-    event.stop();
-    if (event.wheelDelta === -1 && this.zoomStart === 0) {
+  handleZoom(event: any): void {
+    event?.stop?.();
+    if (event?.wheelDelta === -1 && this.zoomStart === 0) {
       this.updatePrices();
     }
   }
 
-  changeZoomLevel(event) {
-    this.zoomStart = event.batch[0]?.start ?? 0;
+  changeZoomLevel(event: any): void {
+    this.zoomStart = event?.batch?.[0]?.start ?? 0;
   }
 }
 </script>
