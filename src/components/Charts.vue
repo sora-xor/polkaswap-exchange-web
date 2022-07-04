@@ -93,6 +93,11 @@ enum TIMEFRAME_TYPES {
   ALL = 'ALL',
 }
 
+enum CHART_TYPES {
+  LINE = 'line',
+  CANDLE = 'candle',
+}
+
 type ChartFilter = {
   name: TIMEFRAME_TYPES;
   label: string;
@@ -132,7 +137,27 @@ const LINE_CHART_FILTERS: ChartFilter[] = [
     count: Infinity,
   },
 ];
-const CANDLE_CHART_FILTERS = [];
+
+const CANDLE_CHART_FILTERS = [
+  {
+    name: TIMEFRAME_TYPES.FIVE_MINUTES,
+    label: '5m',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    count: 48, // 5 mins in 4 hours
+  },
+  {
+    name: TIMEFRAME_TYPES.HOUR,
+    label: '1h',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    count: 24, // hours in day
+  },
+  {
+    name: TIMEFRAME_TYPES.DAY,
+    label: '1D',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    count: 14, // days in 2 weeks
+  },
+];
 
 @Component({
   components: {
@@ -166,10 +191,11 @@ export default class Charts extends Mixins(
 
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250);
 
+  chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
 
   get filters() {
-    return LINE_CHART_FILTERS;
+    return this.chartType === CHART_TYPES.LINE ? LINE_CHART_FILTERS : CANDLE_CHART_FILTERS;
   }
 
   get symbol(): string {
@@ -335,7 +361,7 @@ export default class Charts extends Mixins(
   async fetchData(address: string, filter: ChartFilter, pageInfo?: { hasNextPage: boolean; endCursor: string }) {
     if (pageInfo && !pageInfo.hasNextPage) return;
 
-    const { type, count } = filter; // how many items should be fetched by request
+    const { type, count } = filter;
     const nodes: AssetSnapshot[] = [];
 
     let hasNextPage = pageInfo?.hasNextPage ?? true;
@@ -343,7 +369,7 @@ export default class Charts extends Mixins(
     let fetchCount = count;
 
     do {
-      const first = Math.min(fetchCount, 100);
+      const first = Math.min(fetchCount, 100); // how many items should be fetched by request
       const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, type, first as any, endCursor);
 
       if (!response) throw new Error('Chart data fetch error');
