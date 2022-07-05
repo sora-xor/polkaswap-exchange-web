@@ -61,9 +61,10 @@ import {
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter } from '@/store/decorators';
-import { debouncedInputHandler } from '@/utils';
+import { debouncedInputHandler, getCssVariableValue } from '@/utils';
 import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 enum TIMEFRAME_TYPES {
@@ -157,6 +158,7 @@ export default class Charts extends Mixins(
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin
 ) {
+  @getter.libraryTheme libraryTheme!: Theme;
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
   @getter.swap.tokenTo tokenTo!: AccountAsset;
 
@@ -258,92 +260,102 @@ export default class Charts extends Mixins(
   }
 
   get lineChartSpec(): any {
-    return {
-      grid: {
-        left: 40,
-        right: 40,
-        bottom: 20,
-      },
-      xAxis: {
-        type: 'category',
-        data: this.chartData.map((item) => item.timestamp),
-        axisLine: {
-          lineStyle: {
-            color: '#A19A9D',
-          },
+    return (
+      this.libraryTheme && {
+        grid: {
+          left: 40,
+          right: 40,
+          bottom: 20,
         },
-        axisLabel: {
-          formatter: (value: string) => {
-            return dayjs(+value).format(this.timeFormat);
+        xAxis: {
+          type: 'category',
+          data: this.chartData.map((item) => item.timestamp),
+          axisTick: {
+            show: false,
           },
-        },
-        axisPointer: {
-          lineStyle: {
-            color: '#34AD87',
+          axisLine: {
+            show: false,
           },
-          label: {
-            backgroundColor: '#34AD87',
-            color: '#fff',
-            formatter: ({ value }) => {
-              return this.formatDate(+value); // locale format
+          axisLabel: {
+            formatter: (value: string) => {
+              return dayjs(+value).format(this.timeFormat);
+            },
+            color: getCssVariableValue('--s-color-base-content-secondary'),
+          },
+          axisPointer: {
+            lineStyle: {
+              color: getCssVariableValue('--s-color-status-success'),
+            },
+            label: {
+              backgroundColor: getCssVariableValue('--s-color-status-success'),
+              color: '#fff',
+              formatter: ({ value }) => {
+                return this.formatDate(+value); // locale format
+              },
             },
           },
         },
-      },
-      yAxis: {
-        type: 'value',
-        axisLine: {
-          lineStyle: {
-            color: '#A19A9D',
+        yAxis: {
+          type: 'value',
+          axisLine: {
+            lineStyle: {
+              color: getCssVariableValue('--s-color-base-content-secondary'),
+            },
+          },
+          axisPointer: {
+            lineStyle: {
+              color: getCssVariableValue('--s-color-status-success'),
+            },
+            label: {
+              backgroundColor: getCssVariableValue('--s-color-status-success'),
+            },
+          },
+          splitLine: {
+            lineStyle: {
+              color: getCssVariableValue('--s-color-base-content-tertiary'),
+            },
           },
         },
-        axisPointer: {
-          lineStyle: {
-            color: '#34AD87',
+        dataZoom: [
+          {
+            type: 'inside',
+            start: 0,
+            end: 100,
           },
-          label: {
-            backgroundColor: '#34AD87',
+        ],
+        color: [getCssVariableValue('--s-color-theme-accent')],
+        tooltip: {
+          show: true,
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
           },
-        },
-      },
-      dataZoom: [
-        {
-          type: 'inside',
-          start: 0,
-          end: 100,
-        },
-      ],
-      color: ['#F8087B'],
-      tooltip: {
-        show: true,
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-        },
-        valueFormatter: (value) => {
-          return `${value.toFixed(4)} ${this.symbol}`;
-        },
-      },
-      series: [
-        {
-          type: 'line',
-          data: this.chartData.map((item) => item.price),
-          areaStyle: {
-            opacity: 0.8,
-            color: new graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: 'rgba(248, 8, 123, 0.25)',
-              },
-              {
-                offset: 1,
-                color: 'rgba(255, 49, 148, 0.03)',
-              },
-            ]),
+          valueFormatter: (value) => {
+            return `${value.toFixed(4)} ${this.symbol}`;
           },
         },
-      ],
-    };
+        series: [
+          {
+            type: 'line',
+            showSymbol: false,
+            data: this.chartData.map((item) => item.price),
+            areaStyle: {
+              opacity: 0.8,
+              color: new graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'rgba(248, 8, 123, 0.25)',
+                },
+                {
+                  offset: 1,
+                  color: 'rgba(255, 49, 148, 0.03)',
+                },
+              ]),
+            },
+          },
+        ],
+      }
+    );
   }
 
   // TODO: add spec
