@@ -14,13 +14,8 @@
         </div>
 
         <div class="timeframes">
-          <s-tabs type="rounded" :value="selectedTimeframe.name" @click="selectTimeframe">
-            <s-tab
-              v-for="timeframe in timeframes"
-              :key="timeframe.name"
-              :name="timeframe.name"
-              :label="timeframe.label"
-            />
+          <s-tabs type="rounded" :value="selectedFilter.name" @click="selectFilter">
+            <s-tab v-for="filter in filters" :key="filter.name" :name="filter.name" :label="filter.label" />
           </s-tabs>
         </div>
       </div>
@@ -38,7 +33,15 @@
         <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
       </div>
     </div>
-    <v-chart v-if="!isFetchingError" class="chart" :option="chartSpec" v-loading="loading" autoresize />
+    <v-chart
+      v-if="!isFetchingError"
+      class="chart"
+      :option="chartSpec"
+      v-loading="loading"
+      autoresize
+      @zr:mousewheel="handleZoom"
+      @datazoom="changeZoomLevel"
+    />
     <div v-else class="fetching-error">
       <!-- TODO: Add error screen + preview -->
       <span>Error fetching the data</span>
@@ -48,9 +51,10 @@
 
 <script lang="ts">
 import dayjs from 'dayjs';
+import { graphic } from 'echarts';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
-import VChart from 'vue-echarts';
+
 import {
   components,
   mixins,
@@ -58,54 +62,96 @@ import {
   WALLET_CONSTS,
   SUBQUERY_TYPES,
 } from '@soramitsu/soraneo-wallet-web';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import { graphic } from 'echarts';
-
 import { getter } from '@/store/decorators';
 import { debouncedInputHandler } from '@/utils';
+import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 enum TIMEFRAME_TYPES {
   FIVE_MINUTES = 'FIVE_MINUTES',
+  FIFTEEN_MINUTES = 'FIFTEEN_MINUTES',
+  THIRTY_MINUTES = 'THIRTY_MINUTES',
   HOUR = 'HOUR',
   FOUR_HOURS = 'FOUR_HOURS',
   DAY = 'DAY',
+  WEEK = 'WEEK',
   MONTH = 'MONTH',
+  YEAR = 'YEAR',
+  ALL = 'ALL',
 }
 
-const TIMEFRAMES = [
-  {
-    name: TIMEFRAME_TYPES.FIVE_MINUTES,
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
-    label: '5m',
-  },
-  {
-    name: TIMEFRAME_TYPES.HOUR,
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
-    label: '1h',
-  },
-  {
-    name: TIMEFRAME_TYPES.FOUR_HOURS,
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
-    label: '4h',
-  },
+enum CHART_TYPES {
+  LINE = 'line',
+  CANDLE = 'candle',
+}
+
+type ChartFilter = {
+  name: TIMEFRAME_TYPES;
+  label: string;
+  type: SUBQUERY_TYPES.AssetSnapshotTypes;
+  count: number;
+};
+
+const LINE_CHART_FILTERS: ChartFilter[] = [
   {
     name: TIMEFRAME_TYPES.DAY,
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
-    label: '1d',
+    label: '1D',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    count: 288, // 5 mins in day
+  },
+  {
+    name: TIMEFRAME_TYPES.WEEK,
+    label: '1W',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    count: 24 * 7, // hours in week
   },
   {
     name: TIMEFRAME_TYPES.MONTH,
+    label: '1M',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    count: 24 * 30, // hours in month
+  },
+  {
+    name: TIMEFRAME_TYPES.YEAR,
+    label: '1Y',
     type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
-    label: '1m',
+    count: 365, // days in year
+  },
+  {
+    name: TIMEFRAME_TYPES.ALL,
+    label: 'ALL',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    count: Infinity,
+  },
+];
+
+const CANDLE_CHART_FILTERS = [
+  {
+    name: TIMEFRAME_TYPES.FIVE_MINUTES,
+    label: '5m',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    count: 48, // 5 mins in 4 hours
+  },
+  {
+    name: TIMEFRAME_TYPES.HOUR,
+    label: '1h',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    count: 24, // hours in day
+  },
+  {
+    name: TIMEFRAME_TYPES.DAY,
+    label: '1D',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    count: 14, // days in 2 weeks
   },
 ];
 
 @Component({
   components: {
-    VChart,
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
   },
@@ -121,19 +167,18 @@ export default class Charts extends Mixins(
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
-  private handleTokenChange(value): void {
+  private handleTokenChange(): void {
+    this.clearData();
     this.updatePrices();
   }
 
   isFetchingError = false;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
-  selectedTimeframe = TIMEFRAMES[0]; // 5 min
-
-  readonly timeframes = TIMEFRAMES;
-
   // ordered by timestamp DESC
   prices: Array<{ timestamp: number; price: number }> = [];
+  pageInfos: any = [];
+  zoomStart = 0; // percentage of zoom start position
 
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250);
   customStyles = {
@@ -153,6 +198,17 @@ export default class Charts extends Mixins(
         -10px -10px 30px rgba(255, 255, 255, 0.9), 20px 20px 60px rgba(0, 0, 0, 0.1), inset 1px 1px 10px #FFFFFF`,
     },
   };
+
+  chartType: CHART_TYPES = CHART_TYPES.LINE;
+  selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
+
+  get isLineChart(): boolean {
+    return this.chartType === CHART_TYPES.LINE;
+  }
+
+  get filters() {
+    return this.isLineChart ? LINE_CHART_FILTERS : CANDLE_CHART_FILTERS;
+  }
 
   get symbol(): string {
     return this.tokenTo?.symbol ?? 'USD';
@@ -207,10 +263,8 @@ export default class Charts extends Mixins(
   }
 
   get timeFormat(): string {
-    switch (this.selectedTimeframe.name) {
-      case TIMEFRAME_TYPES.MONTH:
-        return 'MMM YY';
-      case TIMEFRAME_TYPES.DAY:
+    switch (this.selectedFilter.type) {
+      case SUBQUERY_TYPES.AssetSnapshotTypes.DAY:
         return 'DD MMM';
       default:
         return 'HH:mm';
@@ -223,7 +277,16 @@ export default class Charts extends Mixins(
   }
 
   get chartSpec(): any {
+    return this.isLineChart ? this.lineChartSpec : this.candleChartSpec;
+  }
+
+  get lineChartSpec(): any {
     return {
+      grid: {
+        left: 40,
+        right: 40,
+        bottom: 20,
+      },
       xAxis: {
         type: 'category',
         data: this.chartData.map((item) => item.timestamp),
@@ -267,6 +330,13 @@ export default class Charts extends Mixins(
         },
       },
       color: this.customStyles.graphsColors,
+      dataZoom: [
+        {
+          type: 'inside',
+          start: 0,
+          end: 100,
+        },
+      ],
       tooltip: {
         show: true,
         trigger: 'axis',
@@ -308,43 +378,65 @@ export default class Charts extends Mixins(
     };
   }
 
-  created() {
+  // TODO: add spec
+  get candleChartSpec(): any {
+    return {};
+  }
+
+  created(): void {
     this.updatePrices();
   }
 
   // ordered ty timestamp DESC
-  async fetchData(address: string, timeframe: SUBQUERY_TYPES.AssetSnapshotTypes) {
-    try {
-      const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, timeframe);
+  async fetchData(address: string, filter: ChartFilter, pageInfo?: { hasNextPage: boolean; endCursor: string }) {
+    if (pageInfo && !pageInfo.hasNextPage) return;
 
-      if (!response || !response.nodes) return [];
+    const { type, count } = filter;
+    const nodes: AssetSnapshot[] = [];
 
-      return response.nodes;
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
+    let hasNextPage = pageInfo?.hasNextPage ?? true;
+    let endCursor = pageInfo?.endCursor ?? '';
+    let fetchCount = count;
+
+    do {
+      const first = Math.min(fetchCount, 100); // how many items should be fetched by request
+      const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, type, first as any, endCursor);
+
+      if (!response) throw new Error('Chart data fetch error');
+
+      hasNextPage = response.hasNextPage;
+      endCursor = response.endCursor;
+      nodes.push(...response.nodes);
+      fetchCount -= response.nodes.length;
+    } while (hasNextPage && fetchCount > 0);
+
+    return { nodes, hasNextPage, endCursor };
   }
 
   getHistoricalPrices(): void {
     this.withApi(async () => {
       await this.withLoading(async () => {
-        this.clearData();
-
         try {
           const addresses = [this.tokenFrom?.address, this.tokenTo?.address].filter(Boolean);
           const collections = await Promise.all(
-            addresses.map((address) => this.fetchData(address, this.selectedTimeframe.type))
+            addresses.map((address, index) => this.fetchData(address, this.selectedFilter, this.pageInfos[index]))
           );
 
-          const groups = collections.map((collection) =>
-            collection.map((item) => ({
+          if (!collections.every((collection) => !!collection)) return;
+
+          this.pageInfos = collections.map((item: any) => ({
+            hasNextPage: item.hasNextPage,
+            endCursor: item.endCursor,
+          }));
+
+          const groups = (collections as any).map((collection) =>
+            collection.nodes.map((item) => ({
               timestamp: +item.timestamp * 1000,
               price: +item.priceUSD.open,
             }))
           );
 
-          const size = Math.max(groups[0]?.length, groups[1]?.length ?? 0);
+          const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
 
           for (let i = 0; i < size; i++) {
             const a = groups[0]?.[i];
@@ -366,21 +458,31 @@ export default class Charts extends Mixins(
     });
   }
 
-  formatDateItem(dateItem: number): string {
-    return (dateItem.toString().length < 2 ? '0' : '') + dateItem;
-  }
-
   clearData(): void {
     this.prices = [];
+    this.pageInfos = [];
+    this.zoomStart = 0;
   }
 
-  selectTimeframe({ name }): void {
-    const timeframe = this.timeframes.find((item) => item.name === name);
+  selectFilter({ name }): void {
+    const filter = this.filters.find((item) => item.name === name);
 
-    if (!timeframe) return;
+    if (!filter) return;
 
-    this.selectedTimeframe = timeframe;
+    this.selectedFilter = filter;
+    this.clearData();
     this.updatePrices();
+  }
+
+  handleZoom(event: any): void {
+    event?.stop?.();
+    if (event?.wheelDelta === -1 && this.zoomStart === 0) {
+      this.updatePrices();
+    }
+  }
+
+  changeZoomLevel(event: any): void {
+    this.zoomStart = event?.batch?.[0]?.start ?? 0;
   }
 }
 </script>
