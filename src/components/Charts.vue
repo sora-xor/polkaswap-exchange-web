@@ -66,9 +66,10 @@ import {
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter } from '@/store/decorators';
-import { debouncedInputHandler } from '@/utils';
+import { debouncedInputHandler, getCssVariableValue } from '@/utils';
 import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 enum TIMEFRAME_TYPES {
@@ -162,6 +163,7 @@ export default class Charts extends Mixins(
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin
 ) {
+  @getter.libraryTheme libraryTheme!: Theme;
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
   @getter.swap.tokenTo tokenTo!: AccountAsset;
 
@@ -281,101 +283,112 @@ export default class Charts extends Mixins(
   }
 
   get lineChartSpec(): any {
-    return {
-      grid: {
-        left: 40,
-        right: 40,
-        bottom: 20,
-      },
-      xAxis: {
-        type: 'category',
-        data: this.chartData.map((item) => item.timestamp),
-        axisLine: {
-          lineStyle: {
-            color: this.customStyles.axisLineColor,
-          },
+    return (
+      this.libraryTheme && {
+        grid: {
+          left: 36,
+          right: 0,
+          bottom: 20,
+          top: 20,
         },
-        axisLabel: {
-          formatter: (value: string) => {
-            return dayjs(+value).format(this.timeFormat);
+        xAxis: {
+          type: 'category',
+          data: this.chartData.map((item) => item.timestamp),
+          axisTick: {
+            show: false,
           },
-        },
-        axisPointer: {
-          lineStyle: {
-            color: this.customStyles.pointer.lineColor,
+          axisLine: {
+            show: false,
           },
-          label: {
-            backgroundColor: this.customStyles.pointer.label.bgColor,
-            color: this.customStyles.pointer.label.color,
-            formatter: ({ value }) => {
-              return this.formatDate(+value); // locale format
+          axisLabel: {
+            formatter: (value: string) => {
+              return dayjs(+value).format(this.timeFormat);
+            },
+            color: getCssVariableValue('--s-color-base-content-secondary'),
+          },
+          axisPointer: {
+            lineStyle: {
+              color: getCssVariableValue('--s-color-status-success'),
+            },
+            label: {
+              backgroundColor: getCssVariableValue('--s-color-status-success'),
+              color: getCssVariableValue('--s-color-base-on-accent'),
+              formatter: ({ value }) => {
+                return this.formatDate(+value); // locale format
+              },
             },
           },
         },
-      },
-      yAxis: {
-        type: 'value',
-        axisLine: {
-          lineStyle: {
-            color: this.customStyles.axisLineColor,
+        yAxis: {
+          type: 'value',
+          axisLine: {
+            lineStyle: {
+              color: getCssVariableValue('--s-color-base-content-secondary'),
+            },
+          },
+          axisPointer: {
+            lineStyle: {
+              color: getCssVariableValue('--s-color-status-success'),
+            },
+            label: {
+              backgroundColor: getCssVariableValue('--s-color-status-success'),
+            },
+          },
+          splitLine: {
+            lineStyle: {
+              color: getCssVariableValue('--s-color-base-content-tertiary'),
+            },
           },
         },
-        axisPointer: {
-          lineStyle: {
-            color: this.customStyles.pointer.lineColor,
+        dataZoom: [
+          {
+            type: 'inside',
+            start: 0,
+            end: 100,
           },
+        ],
+        color: [getCssVariableValue('--s-color-theme-accent'), getCssVariableValue('--s-color-status-success')],
+        tooltip: {
+          show: true,
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+          },
+          backgroundColor: getCssVariableValue('--s-color-utility-body'),
+          borderColor: getCssVariableValue('--s-color-base-border-secondary'),
+          extraCssText: `box-shadow:
+            -10px -10px 30px rgba(255, 255, 255, 0.9), 20px 20px 60px rgba(0, 0, 0, 0.1), inset 1px 1px 10px #FFFFFF`,
           label: {
-            backgroundColor: this.customStyles.pointer.label.bgColor,
+            formatter: (timestamp: string) => {
+              return dayjs(+timestamp).format(this.timeFormat);
+            },
+          },
+          valueFormatter: (value) => {
+            return `${value.toFixed(4)} ${this.symbol}`;
           },
         },
-      },
-      color: this.customStyles.graphsColors,
-      dataZoom: [
-        {
-          type: 'inside',
-          start: 0,
-          end: 100,
-        },
-      ],
-      tooltip: {
-        show: true,
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-        },
-        backgroundColor: this.customStyles.tooltip.bgColor,
-        borderColor: this.customStyles.tooltip.borderColor,
-        extraCssText: this.customStyles.tooltip.extraCssText,
-        label: {
-          formatter: (timestamp: string) => {
-            return dayjs(+timestamp).format(this.timeFormat);
+        series: [
+          {
+            type: 'line',
+            showSymbol: false,
+            data: this.chartData.map((item) => item.price),
+            areaStyle: {
+              opacity: 0.8,
+              color: new graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'rgba(248, 8, 123, 0.25)',
+                },
+                {
+                  offset: 1,
+                  color: 'rgba(255, 49, 148, 0.03)',
+                },
+              ]),
+            },
           },
-        },
-        valueFormatter: (value) => {
-          return `${value.toFixed(4)} ${this.symbol}`;
-        },
-      },
-      series: [
-        {
-          type: 'line',
-          data: this.chartData.map((item) => item.price),
-          areaStyle: {
-            opacity: 0.8,
-            color: new graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                // var(--s-color-theme-accent)
-                color: 'rgba(248, 8, 123, 0.18)',
-              },
-              {
-                offset: 1,
-                color: 'rgba(248, 8, 123, 0.02)',
-              },
-            ]),
-          },
-        },
-      ],
-    };
+        ],
+      }
+    );
   }
 
   // TODO: add spec
