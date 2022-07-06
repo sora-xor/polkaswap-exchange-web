@@ -3,10 +3,7 @@
     <div class="tokens-info-container">
       <div class="header">
         <div class="selected-tokens">
-          <div class="token-logos">
-            <token-logo v-if="tokenFrom" class="token-logo" :token="tokenFrom" />
-            <token-logo v-if="tokenTo" class="token-logo" :token="tokenTo" />
-          </div>
+          <tokens-row :assets="tokens" size="medium" border />
           <div v-if="tokenFrom" class="token-title">
             <span>{{ tokenFrom.symbol }}</span>
             <span v-if="tokenTo">/{{ tokenTo.symbol }}</span>
@@ -82,12 +79,14 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import LineIcon from '@/assets/img/charts/line.svg?inline';
 import CandleIcon from '@/assets/img/charts/candle.svg?inline';
 
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 import { getter } from '@/store/decorators';
 import { debouncedInputHandler, getCssVariableValue } from '@/utils';
 import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 
 type ChartDataItem = {
   timestamp: number;
@@ -206,6 +205,7 @@ const CANDLE_CHART_FILTERS = [
     FormattedAmount: components.FormattedAmount,
     LineIcon,
     CandleIcon,
+    TokensRow: lazyComponent(Components.TokensRow),
   },
 })
 export default class Charts extends Mixins(
@@ -261,6 +261,10 @@ export default class Charts extends Mixins(
 
   get symbol(): string {
     return this.tokenTo?.symbol ?? 'USD';
+  }
+
+  get tokens(): Asset[] {
+    return [this.tokenFrom, this.tokenTo].filter((token) => !!token);
   }
 
   get fromFiatPrice(): FPNumber {
@@ -799,7 +803,7 @@ export default class Charts extends Mixins(
     flex-shrink: 0;
   }
   &-title {
-    margin-left: $inner-spacing-small;
+    margin-left: $inner-spacing-mini;
     font-size: var(--s-font-size-medium);
     line-height: var(--s-line-height-medium);
     font-weight: 600;
@@ -809,18 +813,22 @@ export default class Charts extends Mixins(
 
 .header {
   display: flex;
+  flex-flow: row wrap;
   align-items: center;
   justify-content: space-between;
+
+  & > * {
+    margin-bottom: $inner-spacing-small;
+
+    &:not(:last-child) {
+      margin-right: $inner-spacing-medium;
+    }
+  }
 }
 
 .selected-tokens {
   display: flex;
   align-items: center;
-
-  .token-logos {
-    display: flex;
-    align-items: center;
-  }
 }
 
 .chart-controls {
