@@ -44,11 +44,12 @@
           symbol-as-decimal
         />
       </div>
-      <div :class="priceChangeClasses">
+      <div v-if="!isFetchingError" :class="priceChangeClasses">
         <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
       </div>
     </div>
     <v-chart
+      v-if="!isFetchingError"
       class="chart"
       :option="chartSpec"
       v-loading="loading"
@@ -56,6 +57,10 @@
       @zr:mousewheel="handleZoom"
       @datazoom="changeZoomLevel"
     />
+    <div v-else class="fetching-error">
+      <!-- TODO: Add error screen + preview -->
+      <span>Error fetching the data</span>
+    </div>
   </div>
 </template>
 
@@ -220,6 +225,7 @@ export default class Charts extends Mixins(
     this.updatePrices();
   }
 
+  isFetchingError = false;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   // ordered by timestamp DESC
@@ -345,9 +351,10 @@ export default class Charts extends Mixins(
   get lineChartSpec(): any {
     const spec = {
       grid: {
-        left: 50,
-        right: 50,
+        left: 40,
+        right: 0,
         bottom: 20,
+        top: 20,
       },
       xAxis: {
         type: 'category',
@@ -390,6 +397,10 @@ export default class Charts extends Mixins(
           },
           label: {
             backgroundColor: getCssVariableValue('--s-color-status-success'),
+            color: getCssVariableValue('--s-color-base-on-accent'),
+            formatter: ({ value }) => {
+              return this.formatDate(+value); // locale format
+            },
           },
         },
         splitLine: {
@@ -405,12 +416,23 @@ export default class Charts extends Mixins(
           end: 100,
         },
       ],
-      color: [getCssVariableValue('--s-color-theme-accent')],
+      color: [getCssVariableValue('--s-color-theme-accent'), getCssVariableValue('--s-color-status-success')],
       tooltip: {
         show: true,
         trigger: 'axis',
         axisPointer: {
           type: 'cross',
+        },
+        backgroundColor: getCssVariableValue('--s-color-utility-body'),
+        borderColor: getCssVariableValue('--s-color-base-border-secondary'),
+        extraCssText: `box-shadow: ${getCssVariableValue('--s-shadow-dialog')}`,
+        label: {
+          formatter: (timestamp: string) => {
+            return dayjs(+timestamp).format(this.timeFormat);
+          },
+        },
+        textStyle: {
+          color: getCssVariableValue('--s-color-base-content-primary'),
         },
         valueFormatter: (value) => {
           return Number.isFinite(value) ? `${value.toFixed(4)} ${this.symbol}` : value;
@@ -544,6 +566,7 @@ export default class Charts extends Mixins(
             this.limits.max = Math.max(this.limits.max, ...price);
           }
         } catch (error) {
+          this.isFetchingError = true;
           console.error(error);
         }
       });
