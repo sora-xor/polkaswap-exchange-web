@@ -470,6 +470,7 @@ i.icon-divider {
     }
     .app-content {
       width: 100%;
+      padding-left: $basic-spacing * 2;
       .app-disclaimer {
         margin-left: $basic-spacing-small * 3;
       }
