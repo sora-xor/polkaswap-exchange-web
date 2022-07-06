@@ -3,10 +3,7 @@
     <div class="tokens-info-container">
       <div class="header">
         <div class="selected-tokens">
-          <div class="token-logos">
-            <token-logo v-if="tokenFrom" class="token-logo" :token="tokenFrom" />
-            <token-logo v-if="tokenTo" class="token-logo" :token="tokenTo" />
-          </div>
+          <tokens-row :assets="tokens" size="medium" border />
           <div v-if="tokenFrom" class="token-title">
             <span>{{ tokenFrom.symbol }}</span>
             <span v-if="tokenTo">/{{ tokenTo.symbol }}</span>
@@ -82,12 +79,14 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import LineIcon from '@/assets/img/charts/line.svg?inline';
 import CandleIcon from '@/assets/img/charts/candle.svg?inline';
 
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 import { getter } from '@/store/decorators';
 import { debouncedInputHandler, getCssVariableValue } from '@/utils';
 import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 
 type ChartDataItem = {
   timestamp: number;
@@ -109,7 +108,7 @@ enum TIMEFRAME_TYPES {
 
 enum CHART_TYPES {
   LINE = 'line',
-  CANDLE = 'candle',
+  CANDLE = 'candlestick',
 }
 
 type ChartFilter = {
@@ -206,6 +205,7 @@ const CANDLE_CHART_FILTERS = [
     FormattedAmount: components.FormattedAmount,
     LineIcon,
     CandleIcon,
+    TokensRow: lazyComponent(Components.TokensRow),
   },
 })
 export default class Charts extends Mixins(
@@ -232,6 +232,7 @@ export default class Charts extends Mixins(
   prices: ChartDataItem[] = [];
   pageInfos: any = [];
   zoomStart = 0; // percentage of zoom start position
+  precision = 2;
   limits = {
     min: Infinity,
     max: 0,
@@ -262,6 +263,10 @@ export default class Charts extends Mixins(
     return this.tokenTo?.symbol ?? 'USD';
   }
 
+  get tokens(): Asset[] {
+    return [this.tokenFrom, this.tokenTo].filter((token) => !!token);
+  }
+
   get fromFiatPrice(): FPNumber {
     return this.tokenFrom ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenFrom) ?? 0) : FPNumber.ZERO;
   }
@@ -282,15 +287,13 @@ export default class Charts extends Mixins(
    * Price change between current price and the last shapshot
    */
   get priceChange(): FPNumber {
-    const last = new FPNumber(this.prices[0]?.price?.[0] ?? 0);
-    const current = this.fiatPrice;
-    const change = last.isZero() ? FPNumber.ZERO : current.sub(last).div(last).mul(FPNumber.HUNDRED);
+    const lastFiatPrice = new FPNumber(this.prices[0]?.price?.[0] ?? 0);
 
-    return change;
+    return this.calcPriceChange(this.fiatPrice, lastFiatPrice);
   }
 
   get priceChangeFormatted(): string {
-    return this.priceChange.dp(2).toLocaleString();
+    return this.formatPriceChange(this.priceChange);
   }
 
   get priceChangeIncreased(): boolean {
@@ -345,13 +348,10 @@ export default class Charts extends Mixins(
   }
 
   get chartSpec(): any {
-    return this.isLineChart ? this.lineChartSpec : this.candleChartSpec;
-  }
-
-  get lineChartSpec(): any {
-    const spec = {
+    const theme = !!this.libraryTheme;
+    const common = {
       grid: {
-        left: 40,
+        left: 50,
         right: 0,
         bottom: 20,
         top: 20,
@@ -370,6 +370,10 @@ export default class Charts extends Mixins(
             return dayjs(+value).format(this.timeFormat);
           },
           color: getCssVariableValue('--s-color-base-content-secondary'),
+          fontFamily: 'Sora',
+          fontSize: 10,
+          fontWeight: 300,
+          lineHeigth: 1.5,
         },
         axisPointer: {
           lineStyle: {
@@ -378,6 +382,10 @@ export default class Charts extends Mixins(
           label: {
             backgroundColor: getCssVariableValue('--s-color-status-success'),
             color: '#fff',
+            fontSize: 11,
+            fontWeight: 400,
+            lineHeigth: 1.5,
+            margin: 0,
             formatter: ({ value }) => {
               return this.formatDate(+value); // locale format
             },
@@ -386,6 +394,18 @@ export default class Charts extends Mixins(
       },
       yAxis: {
         type: 'value',
+        scale: true,
+        axisLabel: {
+          fontFamily: 'Sora',
+          fontSize: 10,
+          fontWeight: 300,
+          lineHeigth: 1.5,
+          margin: 0,
+          padding: 3,
+          formatter: (value) => {
+            return value.toFixed(this.precision);
+          },
+        },
         axisLine: {
           lineStyle: {
             color: getCssVariableValue('--s-color-base-content-secondary'),
@@ -397,10 +417,13 @@ export default class Charts extends Mixins(
           },
           label: {
             backgroundColor: getCssVariableValue('--s-color-status-success'),
+            fontFamily: 'Sora',
+            fontSize: 10,
+            fontWeight: 400,
+            lineHeigth: 1.5,
+            padding: [4, 4],
+            precision: this.precision,
             color: getCssVariableValue('--s-color-base-on-accent'),
-            formatter: ({ value }) => {
-              return this.formatDate(+value); // locale format
-            },
           },
         },
         splitLine: {
@@ -425,68 +448,102 @@ export default class Charts extends Mixins(
         },
         backgroundColor: getCssVariableValue('--s-color-utility-body'),
         borderColor: getCssVariableValue('--s-color-base-border-secondary'),
-        extraCssText: `box-shadow: ${getCssVariableValue('--s-shadow-dialog')}`,
-        label: {
-          formatter: (timestamp: string) => {
-            return dayjs(+timestamp).format(this.timeFormat);
-          },
-        },
+        extraCssText: `box-shadow: ${getCssVariableValue('--s-shadow-dialog')}; border-radius: ${getCssVariableValue(
+          '--s-border-radius-mini'
+        )}`,
         textStyle: {
           color: getCssVariableValue('--s-color-base-content-primary'),
+          fontSize: 11,
+          fontFamily: 'Sora',
+          fontWeight: 400,
         },
-        valueFormatter: (value) => {
-          return Number.isFinite(value) ? `${value.toFixed(4)} ${this.symbol}` : value;
+        formatter: (params) => {
+          const { data, seriesType } = params[0];
+          const formatPrice = (value: number) => `${new FPNumber(value).toLocaleString()} ${this.symbol}`;
+          const formatChange = (value: FPNumber) => `${this.formatPriceChange(value)}%`;
+          const signific = (value: FPNumber) => (positive: string, negative: string, zero: string) =>
+            FPNumber.gt(value, FPNumber.ZERO) ? positive : FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
+
+          if (seriesType === CHART_TYPES.LINE) return formatPrice(data);
+
+          if (seriesType === CHART_TYPES.CANDLE) {
+            const [index, open, close, high, low] = data;
+            const change = this.calcPriceChange(new FPNumber(close), new FPNumber(open));
+            const changeSign = signific(change)('+', '', '');
+            const changeColor = signific(change)(
+              getCssVariableValue('--s-color-status-success'),
+              getCssVariableValue('--s-color-status-error'),
+              getCssVariableValue('--s-color-base-content-primary')
+            );
+
+            const rows = [
+              ['Open', formatPrice(open)],
+              ['Close', formatPrice(close)],
+              ['High', formatPrice(high)],
+              ['Low', formatPrice(low)],
+            ];
+
+            return `
+              <table>
+                ${rows
+                  .map(
+                    (row) => `
+                  <tr>
+                    <td align="right" style="color:${getCssVariableValue('--s-color-base-content-secondary')}">${
+                      row[0]
+                    }</td>
+                    <td>${row[1]}</td>
+                  </tr>
+                `
+                  )
+                  .join('')}
+                <tr>
+                  <td align="right" style="color:${getCssVariableValue('--s-color-base-content-secondary')}">Change</td>
+                  <td style="color:${changeColor}">${changeSign}${formatChange(change)}</td>
+                </tr>
+              </table>
+            `;
+          }
         },
       },
-      series: [
-        {
-          type: 'line',
-          showSymbol: false,
-          data: this.chartData.map((item) => item.price[0]),
-          areaStyle: {
-            opacity: 0.8,
-            color: new graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: 'rgba(248, 8, 123, 0.25)',
-              },
-              {
-                offset: 1,
-                color: 'rgba(255, 49, 148, 0.03)',
-              },
-            ]),
-          },
-        },
-      ],
     };
 
-    // update colors on theme change
-    return !!this.libraryTheme && spec;
-  }
-
-  // TODO: add spec
-  get candleChartSpec(): any {
-    const spec = {
-      xAxis: {
-        data: this.chartData.map((item) => item.timestamp),
-      },
-      series: [
-        {
-          type: 'candlestick',
-          data: this.chartData.map((item) => item.price),
-          itemStyle: {
-            color: getCssVariableValue('--s-color-status-success'),
-            borderColor: getCssVariableValue('--s-color-status-success'),
-            color0: getCssVariableValue('--s-color-theme-accent-hover'),
-            borderColor0: getCssVariableValue('--s-color-theme-accent-hover'),
-            borderWidth: 2,
+    const series = this.isLineChart
+      ? [
+          {
+            type: 'line',
+            showSymbol: false,
+            data: this.chartData.map((item) => item.price[0]),
+            areaStyle: {
+              opacity: 0.8,
+              color: new graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'rgba(248, 8, 123, 0.25)',
+                },
+                {
+                  offset: 1,
+                  color: 'rgba(255, 49, 148, 0.03)',
+                },
+              ]),
+            },
           },
-        },
-      ],
-    };
+        ]
+      : [
+          {
+            type: 'candlestick',
+            data: this.chartData.map((item) => item.price),
+            itemStyle: {
+              color: getCssVariableValue('--s-color-status-success'),
+              borderColor: getCssVariableValue('--s-color-status-success'),
+              color0: getCssVariableValue('--s-color-theme-accent-hover'),
+              borderColor0: getCssVariableValue('--s-color-theme-accent-hover'),
+              borderWidth: 2,
+            },
+          },
+        ];
 
-    // update colors on theme change
-    return !!this.libraryTheme && spec;
+    return theme && { ...common, series };
   }
 
   created(): void {
@@ -562,9 +619,13 @@ export default class Charts extends Mixins(
               price,
             });
 
-            this.limits.min = Math.min(this.limits.min, ...price);
-            this.limits.max = Math.max(this.limits.max, ...price);
+            this.limits = {
+              min: Math.min(this.limits.min, ...price),
+              max: Math.max(this.limits.max, ...price),
+            };
           }
+
+          this.precision = Math.max(this.getPrecision(this.limits.min), this.getPrecision(this.limits.max));
         } catch (error) {
           this.isFetchingError = true;
           console.error(error);
@@ -597,6 +658,7 @@ export default class Charts extends Mixins(
       min: Infinity,
       max: 0,
     };
+    this.precision = 2;
   }
 
   changeFilter(filter: ChartFilter): void {
@@ -627,6 +689,27 @@ export default class Charts extends Mixins(
 
   changeZoomLevel(event: any): void {
     this.zoomStart = event?.batch?.[0]?.start ?? 0;
+  }
+
+  private getPrecision(value: number): number {
+    let precision = 2;
+
+    if (value === 0 || !Number.isFinite(value)) return precision;
+
+    while (Math.floor(value) <= 0) {
+      value = value * 10;
+      precision++;
+    }
+
+    return precision;
+  }
+
+  private calcPriceChange(current: FPNumber, prev: FPNumber): FPNumber {
+    return prev.isZero() ? FPNumber.HUNDRED : current.sub(prev).div(prev).mul(FPNumber.HUNDRED);
+  }
+
+  private formatPriceChange(value: FPNumber): string {
+    return value.dp(2).toLocaleString();
   }
 }
 </script>
@@ -677,7 +760,7 @@ export default class Charts extends Mixins(
 
 <style lang="scss" scoped>
 .chart {
-  height: 400px;
+  height: 300px;
 }
 .tokens {
   display: flex;
@@ -720,7 +803,7 @@ export default class Charts extends Mixins(
     flex-shrink: 0;
   }
   &-title {
-    margin-left: $inner-spacing-small;
+    margin-left: $inner-spacing-mini;
     font-size: var(--s-font-size-medium);
     line-height: var(--s-line-height-medium);
     font-weight: 600;
@@ -730,18 +813,22 @@ export default class Charts extends Mixins(
 
 .header {
   display: flex;
+  flex-flow: row wrap;
   align-items: center;
   justify-content: space-between;
+
+  & > * {
+    margin-bottom: $inner-spacing-small;
+
+    &:not(:last-child) {
+      margin-right: $inner-spacing-medium;
+    }
+  }
 }
 
 .selected-tokens {
   display: flex;
   align-items: center;
-
-  .token-logos {
-    display: flex;
-    align-items: center;
-  }
 }
 
 .chart-controls {
