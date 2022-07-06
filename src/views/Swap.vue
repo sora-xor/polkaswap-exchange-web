@@ -683,15 +683,12 @@ export default class Swap extends Mixins(
 </script>
 
 <style lang="scss">
-@include desktop {
-  .app-main--swap {
-    .app-content {
-      width: 100%;
-    }
-    .app-main .app-menu {
-      position: relative;
-    }
+@include large-desktop {
+  .app-main--has-charts {
     .swap-container {
+      display: flex;
+      justify-content: center;
+      padding-top: $inner-spacing-medium;
       .el-form {
         flex-shrink: 0;
       }
@@ -700,6 +697,14 @@ export default class Swap extends Mixins(
         margin-right: $basic-spacing-small;
         margin-left: $basic-spacing-small;
       }
+    }
+    .el-form--actions {
+      flex-shrink: 0;
+    }
+    .container--charts {
+      min-width: $bridge-width;
+      max-width: 100%;
+      flex-grow: 1;
     }
   }
 }
@@ -710,7 +715,6 @@ export default class Swap extends Mixins(
   @include buttons;
   @include full-width-button('action-button');
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
-  flex-shrink: 0;
 }
 
 .el-button.neumorphic.s-action:disabled {
@@ -741,20 +745,6 @@ export default class Swap extends Mixins(
 
     & > span {
       padding-right: 2px;
-    }
-  }
-}
-@include desktop {
-  .app-main--swap {
-    .swap-container {
-      display: flex;
-      justify-content: center;
-      padding-top: $inner-spacing-medium;
-    }
-    .container--charts {
-      min-width: $bridge-width;
-      max-width: 100%;
-      flex-grow: 1;
     }
   }
 }

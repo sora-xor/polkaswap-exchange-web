@@ -44,11 +44,12 @@
           symbol-as-decimal
         />
       </div>
-      <div :class="priceChangeClasses">
+      <div v-if="!isFetchingError" :class="priceChangeClasses">
         <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
       </div>
     </div>
     <v-chart
+      v-if="!isFetchingError"
       class="chart"
       :option="chartSpec"
       v-loading="loading"
@@ -56,6 +57,10 @@
       @zr:mousewheel="handleZoom"
       @datazoom="changeZoomLevel"
     />
+    <div v-else class="fetching-error">
+      <!-- TODO: Add error screen + preview -->
+      <span>Error fetching the data</span>
+    </div>
   </div>
 </template>
 
@@ -104,7 +109,7 @@ enum TIMEFRAME_TYPES {
 
 enum CHART_TYPES {
   LINE = 'line',
-  CANDLE = 'candle',
+  CANDLE = 'candlestick',
 }
 
 type ChartFilter = {
@@ -220,6 +225,7 @@ export default class Charts extends Mixins(
     this.updatePrices();
   }
 
+  isFetchingError = false;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   // ordered by timestamp DESC
@@ -277,15 +283,13 @@ export default class Charts extends Mixins(
    * Price change between current price and the last shapshot
    */
   get priceChange(): FPNumber {
-    const last = new FPNumber(this.prices[0]?.price?.[0] ?? 0);
-    const current = this.fiatPrice;
-    const change = last.isZero() ? FPNumber.ZERO : current.sub(last).div(last).mul(FPNumber.HUNDRED);
+    const lastFiatPrice = new FPNumber(this.prices[0]?.price?.[0] ?? 0);
 
-    return change;
+    return this.calcPriceChange(this.fiatPrice, lastFiatPrice);
   }
 
   get priceChangeFormatted(): string {
-    return this.priceChange.dp(2).toLocaleString();
+    return this.formatPriceChange(this.priceChange);
   }
 
   get priceChangeIncreased(): boolean {
@@ -415,6 +419,7 @@ export default class Charts extends Mixins(
             lineHeigth: 1.5,
             padding: [4, 4],
             precision: this.precision,
+            color: getCssVariableValue('--s-color-base-on-accent'),
           },
         },
         splitLine: {
@@ -430,15 +435,71 @@ export default class Charts extends Mixins(
           end: 100,
         },
       ],
-      color: [getCssVariableValue('--s-color-theme-accent')],
+      color: [getCssVariableValue('--s-color-theme-accent'), getCssVariableValue('--s-color-status-success')],
       tooltip: {
         show: true,
         trigger: 'axis',
         axisPointer: {
           type: 'cross',
         },
-        valueFormatter: (value) => {
-          return Number.isFinite(value) ? `${value.toFixed(this.precision)} ${this.symbol}` : value;
+        backgroundColor: getCssVariableValue('--s-color-utility-body'),
+        borderColor: getCssVariableValue('--s-color-base-border-secondary'),
+        extraCssText: `box-shadow: ${getCssVariableValue('--s-shadow-dialog')}; border-radius: ${getCssVariableValue(
+          '--s-border-radius-mini'
+        )}`,
+        textStyle: {
+          color: getCssVariableValue('--s-color-base-content-primary'),
+          fontSize: 11,
+          fontFamily: 'Sora',
+          fontWeight: 400,
+        },
+        formatter: (params) => {
+          const { data, seriesType } = params[0];
+          const formatPrice = (value: number) => `${new FPNumber(value).toLocaleString()} ${this.symbol}`;
+          const formatChange = (value: FPNumber) => `${this.formatPriceChange(value)}%`;
+          const signific = (value: FPNumber) => (positive: string, negative: string, zero: string) =>
+            FPNumber.gt(value, FPNumber.ZERO) ? positive : FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
+
+          if (seriesType === CHART_TYPES.LINE) return formatPrice(data);
+
+          if (seriesType === CHART_TYPES.CANDLE) {
+            const [index, open, close, high, low] = data;
+            const change = this.calcPriceChange(new FPNumber(close), new FPNumber(open));
+            const changeSign = signific(change)('+', '', '');
+            const changeColor = signific(change)(
+              getCssVariableValue('--s-color-status-success'),
+              getCssVariableValue('--s-color-status-error'),
+              getCssVariableValue('--s-color-base-content-primary')
+            );
+
+            const rows = [
+              ['Open', formatPrice(open)],
+              ['Close', formatPrice(close)],
+              ['High', formatPrice(high)],
+              ['Low', formatPrice(low)],
+            ];
+
+            return `
+              <table>
+                ${rows
+                  .map(
+                    (row) => `
+                  <tr>
+                    <td align="right" style="color:${getCssVariableValue('--s-color-base-content-secondary')}">${
+                      row[0]
+                    }</td>
+                    <td>${row[1]}</td>
+                  </tr>
+                `
+                  )
+                  .join('')}
+                <tr>
+                  <td align="right" style="color:${getCssVariableValue('--s-color-base-content-secondary')}">Change</td>
+                  <td style="color:${changeColor}">${changeSign}${formatChange(change)}</td>
+                </tr>
+              </table>
+            `;
+          }
         },
       },
     };
@@ -562,6 +623,7 @@ export default class Charts extends Mixins(
 
           this.precision = Math.max(this.getPrecision(this.limits.min), this.getPrecision(this.limits.max));
         } catch (error) {
+          this.isFetchingError = true;
           console.error(error);
         }
       });
@@ -636,6 +698,14 @@ export default class Charts extends Mixins(
     }
 
     return precision;
+  }
+
+  private calcPriceChange(current: FPNumber, prev: FPNumber): FPNumber {
+    return prev.isZero() ? FPNumber.HUNDRED : current.sub(prev).div(prev).mul(FPNumber.HUNDRED);
+  }
+
+  private formatPriceChange(value: FPNumber): string {
+    return value.dp(2).toLocaleString();
   }
 }
 </script>
