@@ -75,6 +75,7 @@ import {
   SUBQUERY_TYPES,
 } from '@soramitsu/soraneo-wallet-web';
 
+import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import LineIcon from '@/assets/img/charts/line.svg?inline';
 import CandleIcon from '@/assets/img/charts/candle.svg?inline';
@@ -82,10 +83,9 @@ import CandleIcon from '@/assets/img/charts/candle.svg?inline';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { getter } from '@/store/decorators';
-import { debouncedInputHandler, getCssVariableValue } from '@/utils';
+import { debouncedInputHandler } from '@/utils';
 import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 
 type ChartDataItem = {
@@ -209,12 +209,12 @@ const CANDLE_CHART_FILTERS = [
   },
 })
 export default class Charts extends Mixins(
-  mixins.LoadingMixin,
   TranslationMixin,
+  ThemePaletteMixin,
+  mixins.LoadingMixin,
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin
 ) {
-  @getter.libraryTheme libraryTheme!: Theme;
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
   @getter.swap.tokenTo tokenTo!: AccountAsset;
 
@@ -348,7 +348,6 @@ export default class Charts extends Mixins(
   }
 
   get chartSpec(): any {
-    const theme = !!this.libraryTheme;
     const common = {
       grid: {
         left: 50,
@@ -369,7 +368,7 @@ export default class Charts extends Mixins(
           formatter: (value: string) => {
             return dayjs(+value).format(this.timeFormat);
           },
-          color: getCssVariableValue('--s-color-base-content-secondary'),
+          color: this.theme.color.base.content.secondary,
           fontFamily: 'Sora',
           fontSize: 10,
           fontWeight: 300,
@@ -377,11 +376,11 @@ export default class Charts extends Mixins(
         },
         axisPointer: {
           lineStyle: {
-            color: getCssVariableValue('--s-color-status-success'),
+            color: this.theme.color.status.success,
           },
           label: {
-            backgroundColor: getCssVariableValue('--s-color-status-success'),
-            color: '#fff',
+            backgroundColor: this.theme.color.status.success,
+            color: this.theme.color.base.onAccent,
             fontSize: 11,
             fontWeight: 400,
             lineHeigth: 1.5,
@@ -408,27 +407,27 @@ export default class Charts extends Mixins(
         },
         axisLine: {
           lineStyle: {
-            color: getCssVariableValue('--s-color-base-content-secondary'),
+            color: this.theme.color.base.content.secondary,
           },
         },
         axisPointer: {
           lineStyle: {
-            color: getCssVariableValue('--s-color-status-success'),
+            color: this.theme.color.status.success,
           },
           label: {
-            backgroundColor: getCssVariableValue('--s-color-status-success'),
+            backgroundColor: this.theme.color.status.success,
             fontFamily: 'Sora',
             fontSize: 10,
             fontWeight: 400,
             lineHeigth: 1.5,
             padding: [4, 4],
             precision: this.precision,
-            color: getCssVariableValue('--s-color-base-on-accent'),
+            color: this.theme.color.base.onAccent,
           },
         },
         splitLine: {
           lineStyle: {
-            color: getCssVariableValue('--s-color-base-content-tertiary'),
+            color: this.theme.color.base.content.tertiary,
           },
         },
       },
@@ -439,20 +438,18 @@ export default class Charts extends Mixins(
           end: 100,
         },
       ],
-      color: [getCssVariableValue('--s-color-theme-accent'), getCssVariableValue('--s-color-status-success')],
+      color: [this.theme.color.theme.accent, this.theme.color.status.success],
       tooltip: {
         show: true,
         trigger: 'axis',
         axisPointer: {
           type: 'cross',
         },
-        backgroundColor: getCssVariableValue('--s-color-utility-body'),
-        borderColor: getCssVariableValue('--s-color-base-border-secondary'),
-        extraCssText: `box-shadow: ${getCssVariableValue('--s-shadow-dialog')}; border-radius: ${getCssVariableValue(
-          '--s-border-radius-mini'
-        )}`,
+        backgroundColor: this.theme.color.utility.body,
+        borderColor: this.theme.color.base.border.secondary,
+        extraCssText: `box-shadow: ${this.theme.shadow.dialog}; border-radius: ${this.theme.border.radius.mini}`,
         textStyle: {
-          color: getCssVariableValue('--s-color-base-content-primary'),
+          color: this.theme.color.base.content.secondary,
           fontSize: 11,
           fontFamily: 'Sora',
           fontWeight: 400,
@@ -471,9 +468,9 @@ export default class Charts extends Mixins(
             const change = this.calcPriceChange(new FPNumber(close), new FPNumber(open));
             const changeSign = signific(change)('+', '', '');
             const changeColor = signific(change)(
-              getCssVariableValue('--s-color-status-success'),
-              getCssVariableValue('--s-color-status-error'),
-              getCssVariableValue('--s-color-base-content-primary')
+              this.theme.color.status.success,
+              this.theme.color.status.error,
+              this.theme.color.base.content.primary
             );
 
             const rows = [
@@ -489,16 +486,14 @@ export default class Charts extends Mixins(
                   .map(
                     (row) => `
                   <tr>
-                    <td align="right" style="color:${getCssVariableValue('--s-color-base-content-secondary')}">${
-                      row[0]
-                    }</td>
+                    <td align="right" style="color:${this.theme.color.base.content.secondary}">${row[0]}</td>
                     <td>${row[1]}</td>
                   </tr>
                 `
                   )
                   .join('')}
                 <tr>
-                  <td align="right" style="color:${getCssVariableValue('--s-color-base-content-secondary')}">Change</td>
+                  <td align="right" style="color:${this.theme.color.base.content.secondary}">Change</td>
                   <td style="color:${changeColor}">${changeSign}${formatChange(change)}</td>
                 </tr>
               </table>
@@ -534,16 +529,16 @@ export default class Charts extends Mixins(
             type: 'candlestick',
             data: this.chartData.map((item) => item.price),
             itemStyle: {
-              color: getCssVariableValue('--s-color-status-success'),
-              borderColor: getCssVariableValue('--s-color-status-success'),
-              color0: getCssVariableValue('--s-color-theme-accent-hover'),
-              borderColor0: getCssVariableValue('--s-color-theme-accent-hover'),
+              color: this.theme.color.status.success,
+              borderColor: this.theme.color.status.success,
+              color0: this.theme.color.theme.accentHover,
+              borderColor0: this.theme.color.theme.accentHover,
               borderWidth: 2,
             },
           },
         ];
 
-    return theme && { ...common, series };
+    return { ...common, series };
   }
 
   created(): void {
