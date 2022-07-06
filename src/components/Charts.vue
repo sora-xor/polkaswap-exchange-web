@@ -13,10 +13,25 @@
           </div>
         </div>
 
-        <div class="timeframes">
-          <s-tabs type="rounded" :value="selectedFilter.name" @click="selectFilter">
-            <s-tab v-for="filter in filters" :key="filter.name" :name="filter.name" :label="filter.label" />
-          </s-tabs>
+        <div class="s-flex chart-controls">
+          <div class="chart-filters">
+            <s-tabs type="rounded" :value="selectedFilter.name" @click="selectFilter">
+              <s-tab v-for="filter in filters" :key="filter.name" :name="filter.name" :label="filter.label" />
+            </s-tabs>
+          </div>
+
+          <div class="s-flex chart-types">
+            <s-button
+              v-for="{ type, icon, active } in chartTypeButtons"
+              :key="type"
+              type="action"
+              size="small"
+              :class="['chart-type', { 's-pressed': active }]"
+              @click="selectChartType(type)"
+            >
+              <component :is="icon" :class="{ active }" />
+            </s-button>
+          </div>
         </div>
       </div>
 
@@ -64,6 +79,8 @@ import {
 } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import LineIcon from '@/assets/img/charts/line.svg?inline';
+import CandleIcon from '@/assets/img/charts/candle.svg?inline';
 
 import { getter } from '@/store/decorators';
 import { debouncedInputHandler, getCssVariableValue } from '@/utils';
@@ -71,6 +88,11 @@ import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subque
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+
+type ChartDataItem = {
+  timestamp: number;
+  price: number[];
+};
 
 enum TIMEFRAME_TYPES {
   FIVE_MINUTES = 'FIVE_MINUTES',
@@ -95,6 +117,12 @@ type ChartFilter = {
   label: string;
   type: SUBQUERY_TYPES.AssetSnapshotTypes;
   count: number;
+  group?: number;
+};
+
+const CHART_TYPE_ICONS = {
+  [CHART_TYPES.LINE]: LineIcon,
+  [CHART_TYPES.CANDLE]: CandleIcon,
 };
 
 const LINE_CHART_FILTERS: ChartFilter[] = [
@@ -138,16 +166,37 @@ const CANDLE_CHART_FILTERS = [
     count: 48, // 5 mins in 4 hours
   },
   {
+    name: TIMEFRAME_TYPES.FIFTEEN_MINUTES,
+    label: '15m',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    count: 48 * 3, // 5 mins in 12 hours,
+    group: 3, // 5 min in 15 min
+  },
+  {
+    name: TIMEFRAME_TYPES.THIRTY_MINUTES,
+    label: '30m',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    count: 48 * 3 * 2, // 5 mins in 24 hours,
+    group: 6, // 5 min in 30 min
+  },
+  {
     name: TIMEFRAME_TYPES.HOUR,
     label: '1h',
     type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
     count: 24, // hours in day
   },
   {
+    name: TIMEFRAME_TYPES.FOUR_HOURS,
+    label: '4h',
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    count: 24 * 4, // hours in 4 days,
+    group: 4, // 1 hour in 4 hours
+  },
+  {
     name: TIMEFRAME_TYPES.DAY,
     label: '1D',
     type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
-    count: 14, // days in 2 weeks
+    count: 90, // days in 3 months
   },
 ];
 
@@ -155,6 +204,8 @@ const CANDLE_CHART_FILTERS = [
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
+    LineIcon,
+    CandleIcon,
   },
 })
 export default class Charts extends Mixins(
@@ -178,28 +229,15 @@ export default class Charts extends Mixins(
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   // ordered by timestamp DESC
-  prices: Array<{ timestamp: number; price: number }> = [];
+  prices: ChartDataItem[] = [];
   pageInfos: any = [];
   zoomStart = 0; // percentage of zoom start position
+  limits = {
+    min: Infinity,
+    max: 0,
+  };
 
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250);
-  customStyles = {
-    axisLineColor: '#A19A9D', // var(--s-color-base-content-secondary)
-    pointer: {
-      lineColor: '#34AD87', // var(--s-color-status-success)
-      label: {
-        bgColor: '#34AD87', // var(--s-color-status-success)
-        color: '#FFF', // var(--s-color-base-on-accent)
-      },
-    },
-    graphsColors: ['#F8087B', '#34AD87'], // var(--s-color-theme-accent), var(--s-color-status-success)
-    tooltip: {
-      bgColor: '#F7F3F4', // var(--s-color-utility-body)
-      borderColor: '#EDE4E7', // var(--s-color-base-border-secondary)
-      extraCssText: `box-shadow:
-        -10px -10px 30px rgba(255, 255, 255, 0.9), 20px 20px 60px rgba(0, 0, 0, 0.1), inset 1px 1px 10px #FFFFFF`,
-    },
-  };
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
@@ -208,7 +246,15 @@ export default class Charts extends Mixins(
     return this.chartType === CHART_TYPES.LINE;
   }
 
-  get filters() {
+  get chartTypeButtons(): { type: CHART_TYPES; icon: any; active: boolean }[] {
+    return Object.values(CHART_TYPES).map((type) => ({
+      type,
+      icon: CHART_TYPE_ICONS[type],
+      active: this.chartType === type,
+    }));
+  }
+
+  get filters(): ChartFilter[] {
     return this.isLineChart ? LINE_CHART_FILTERS : CANDLE_CHART_FILTERS;
   }
 
@@ -236,7 +282,7 @@ export default class Charts extends Mixins(
    * Price change between current price and the last shapshot
    */
   get priceChange(): FPNumber {
-    const last = new FPNumber(this.prices[0]?.price ?? 0);
+    const last = new FPNumber(this.prices[0]?.price?.[0] ?? 0);
     const current = this.fiatPrice;
     const change = last.isZero() ? FPNumber.ZERO : current.sub(last).div(last).mul(FPNumber.HUNDRED);
 
@@ -274,8 +320,28 @@ export default class Charts extends Mixins(
   }
 
   // ordered by timestamp ASC
-  get chartData(): Array<{ timestamp: number; price: number }> {
-    return [...this.prices].reverse();
+  get chartData(): ChartDataItem[] {
+    const prices = [...this.prices].reverse();
+    const group = this.selectedFilter.group;
+    const type = this.chartType;
+
+    if (!group) return prices;
+
+    const groups: ChartDataItem[] = [];
+
+    for (let i = 0; i < prices.length; i++) {
+      if (i % group === 0) {
+        groups.push(prices[i]);
+      } else if (type === CHART_TYPES.CANDLE) {
+        const last = groups[groups.length - 1];
+
+        last.price[1] = prices[i].price[1]; // close
+        last.price[2] = Math.min(last.price[2], prices[i].price[2]); // low
+        last.price[3] = Math.max(last.price[3], prices[i].price[3]); // high
+      }
+    }
+
+    return groups;
   }
 
   get chartSpec(): any {
@@ -283,120 +349,144 @@ export default class Charts extends Mixins(
   }
 
   get lineChartSpec(): any {
-    return (
-      this.libraryTheme && {
-        grid: {
-          left: 40,
-          right: 0,
-          bottom: 20,
-          top: 20,
+    const spec = {
+      grid: {
+        left: 40,
+        right: 0,
+        bottom: 20,
+        top: 20,
+      },
+      xAxis: {
+        type: 'category',
+        data: this.chartData.map((item) => item.timestamp),
+        axisTick: {
+          show: false,
         },
-        xAxis: {
-          type: 'category',
-          data: this.chartData.map((item) => item.timestamp),
-          axisTick: {
-            show: false,
+        axisLine: {
+          show: false,
+        },
+        axisLabel: {
+          formatter: (value: string) => {
+            return dayjs(+value).format(this.timeFormat);
           },
-          axisLine: {
-            show: false,
+          color: getCssVariableValue('--s-color-base-content-secondary'),
+        },
+        axisPointer: {
+          lineStyle: {
+            color: getCssVariableValue('--s-color-status-success'),
           },
-          axisLabel: {
-            formatter: (value: string) => {
-              return dayjs(+value).format(this.timeFormat);
+          label: {
+            backgroundColor: getCssVariableValue('--s-color-status-success'),
+            color: '#fff',
+            formatter: ({ value }) => {
+              return this.formatDate(+value); // locale format
             },
+          },
+        },
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: {
+          lineStyle: {
             color: getCssVariableValue('--s-color-base-content-secondary'),
           },
-          axisPointer: {
-            lineStyle: {
-              color: getCssVariableValue('--s-color-status-success'),
-            },
-            label: {
-              backgroundColor: getCssVariableValue('--s-color-status-success'),
-              color: getCssVariableValue('--s-color-base-on-accent'),
-              formatter: ({ value }) => {
-                return this.formatDate(+value); // locale format
-              },
-            },
-          },
         },
-        yAxis: {
-          type: 'value',
-          axisLine: {
-            lineStyle: {
-              color: getCssVariableValue('--s-color-base-content-secondary'),
-            },
+        axisPointer: {
+          lineStyle: {
+            color: getCssVariableValue('--s-color-status-success'),
           },
-          axisPointer: {
-            lineStyle: {
-              color: getCssVariableValue('--s-color-status-success'),
-            },
-            label: {
-              backgroundColor: getCssVariableValue('--s-color-status-success'),
-              color: getCssVariableValue('--s-color-base-on-accent'),
-            },
-          },
-          splitLine: {
-            lineStyle: {
-              color: getCssVariableValue('--s-color-base-content-tertiary'),
-            },
-          },
-        },
-        dataZoom: [
-          {
-            type: 'inside',
-            start: 0,
-            end: 100,
-          },
-        ],
-        color: [getCssVariableValue('--s-color-theme-accent'), getCssVariableValue('--s-color-status-success')],
-        tooltip: {
-          show: true,
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-          },
-          backgroundColor: getCssVariableValue('--s-color-utility-body'),
-          borderColor: getCssVariableValue('--s-color-base-border-secondary'),
-          extraCssText: `box-shadow: ${getCssVariableValue('--s-shadow-dialog')}`,
           label: {
-            formatter: (timestamp: string) => {
-              return dayjs(+timestamp).format(this.timeFormat);
+            backgroundColor: getCssVariableValue('--s-color-status-success'),
+            color: getCssVariableValue('--s-color-base-on-accent'),
+            formatter: ({ value }) => {
+              return this.formatDate(+value); // locale format
             },
-          },
-          textStyle: {
-            color: getCssVariableValue('--s-color-base-content-primary'),
-          },
-          valueFormatter: (value) => {
-            return `${value.toFixed(4)} ${this.symbol}`;
           },
         },
-        series: [
-          {
-            type: 'line',
-            showSymbol: false,
-            data: this.chartData.map((item) => item.price),
-            areaStyle: {
-              opacity: 0.8,
-              color: new graphic.LinearGradient(0, 0, 0, 1, [
-                {
-                  offset: 0,
-                  color: 'rgba(248, 8, 123, 0.25)',
-                },
-                {
-                  offset: 1,
-                  color: 'rgba(255, 49, 148, 0.03)',
-                },
-              ]),
-            },
+        splitLine: {
+          lineStyle: {
+            color: getCssVariableValue('--s-color-base-content-tertiary'),
           },
-        ],
-      }
-    );
+        },
+      },
+      dataZoom: [
+        {
+          type: 'inside',
+          start: 0,
+          end: 100,
+        },
+      ],
+      color: [getCssVariableValue('--s-color-theme-accent'), getCssVariableValue('--s-color-status-success')],
+      tooltip: {
+        show: true,
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+        },
+        backgroundColor: getCssVariableValue('--s-color-utility-body'),
+        borderColor: getCssVariableValue('--s-color-base-border-secondary'),
+        extraCssText: `box-shadow: ${getCssVariableValue('--s-shadow-dialog')}`,
+        label: {
+          formatter: (timestamp: string) => {
+            return dayjs(+timestamp).format(this.timeFormat);
+          },
+        },
+        textStyle: {
+          color: getCssVariableValue('--s-color-base-content-primary'),
+        },
+        valueFormatter: (value) => {
+          return Number.isFinite(value) ? `${value.toFixed(4)} ${this.symbol}` : value;
+        },
+      },
+      series: [
+        {
+          type: 'line',
+          showSymbol: false,
+          data: this.chartData.map((item) => item.price[0]),
+          areaStyle: {
+            opacity: 0.8,
+            color: new graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgba(248, 8, 123, 0.25)',
+              },
+              {
+                offset: 1,
+                color: 'rgba(255, 49, 148, 0.03)',
+              },
+            ]),
+          },
+        },
+      ],
+    };
+
+    // update colors on theme change
+    return !!this.libraryTheme && spec;
   }
 
   // TODO: add spec
   get candleChartSpec(): any {
-    return {};
+    const spec = {
+      xAxis: {
+        data: this.chartData.map((item) => item.timestamp),
+      },
+      series: [
+        {
+          type: 'candlestick',
+          data: this.chartData.map((item) => item.price),
+          itemStyle: {
+            color: getCssVariableValue('--s-color-status-success'),
+            borderColor: getCssVariableValue('--s-color-status-success'),
+            color0: getCssVariableValue('--s-color-theme-accent-hover'),
+            borderColor0: getCssVariableValue('--s-color-theme-accent-hover'),
+            borderWidth: 2,
+          },
+        },
+      ],
+    };
+
+    // update colors on theme change
+    return !!this.libraryTheme && spec;
   }
 
   created(): void {
@@ -430,6 +520,8 @@ export default class Charts extends Mixins(
   }
 
   getHistoricalPrices(): void {
+    if (this.loading) return;
+
     this.withApi(async () => {
       await this.withLoading(async () => {
         try {
@@ -446,10 +538,14 @@ export default class Charts extends Mixins(
           }));
 
           const groups = (collections as any).map((collection) =>
-            collection.nodes.map((item) => ({
-              timestamp: +item.timestamp * 1000,
-              price: +item.priceUSD.open,
-            }))
+            collection.nodes.map((item) => {
+              const price = this.preparePriceData(item, this.chartType);
+
+              return {
+                timestamp: +item.timestamp * 1000,
+                price,
+              };
+            })
           );
 
           const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
@@ -459,12 +555,15 @@ export default class Charts extends Mixins(
             const b = groups[1]?.[i];
 
             const timestamp = (a?.timestamp ?? b?.timestamp) as number;
-            const price = (b?.price && a?.price ? a.price / b.price : a?.price ?? 0) as number;
+            const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0]) as number[];
 
             this.prices.push({
               timestamp,
               price,
             });
+
+            this.limits.min = Math.min(this.limits.min, ...price);
+            this.limits.max = Math.max(this.limits.max, ...price);
           }
         } catch (error) {
           this.isFetchingError = true;
@@ -474,10 +573,36 @@ export default class Charts extends Mixins(
     });
   }
 
-  clearData(): void {
+  private preparePriceData(item: AssetSnapshot, chartType: CHART_TYPES): number[] {
+    const priceData = [+item.priceUSD.open];
+
+    if (chartType === CHART_TYPES.CANDLE) {
+      priceData.push(+item.priceUSD.close, +item.priceUSD.low, +item.priceUSD.high);
+    }
+
+    return priceData;
+  }
+
+  private dividePrices(priceA: number[], priceB: number[]) {
+    const div = (a: number, b: number) => (b !== 0 ? a / b : 0);
+
+    return priceA.map((price, index) => div(price, priceB[index]));
+  }
+
+  private clearData(): void {
     this.prices = [];
     this.pageInfos = [];
     this.zoomStart = 0;
+    this.limits = {
+      min: Infinity,
+      max: 0,
+    };
+  }
+
+  changeFilter(filter: ChartFilter): void {
+    this.selectedFilter = filter;
+    this.clearData();
+    this.updatePrices();
   }
 
   selectFilter({ name }): void {
@@ -485,9 +610,12 @@ export default class Charts extends Mixins(
 
     if (!filter) return;
 
-    this.selectedFilter = filter;
-    this.clearData();
-    this.updatePrices();
+    this.changeFilter(filter);
+  }
+
+  selectChartType(type: CHART_TYPES): void {
+    this.chartType = type;
+    this.changeFilter(this.filters[0]);
   }
 
   handleZoom(event: any): void {
@@ -521,13 +649,28 @@ export default class Charts extends Mixins(
   }
 }
 
-.timeframes {
+.chart-filters {
   .el-tabs__header {
     margin-bottom: 0;
   }
 
   .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
     padding: 0 10px;
+    text-transform: initial;
+  }
+}
+
+.chart-type {
+  svg {
+    & > path {
+      fill: var(--s-color-base-content-tertiary);
+    }
+
+    &.active {
+      & > path {
+        fill: var(--s-color-theme-accent);
+      }
+    }
   }
 }
 </style>
@@ -598,6 +741,12 @@ export default class Charts extends Mixins(
   .token-logos {
     display: flex;
     align-items: center;
+  }
+}
+
+.chart-controls {
+  & > *:not(:last-child) {
+    margin-right: $inner-spacing-medium;
   }
 }
 </style>
