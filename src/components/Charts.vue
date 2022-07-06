@@ -226,6 +226,7 @@ export default class Charts extends Mixins(
   prices: ChartDataItem[] = [];
   pageInfos: any = [];
   zoomStart = 0; // percentage of zoom start position
+  precision = 2;
   limits = {
     min: Infinity,
     max: 0,
@@ -339,15 +340,13 @@ export default class Charts extends Mixins(
   }
 
   get chartSpec(): any {
-    return this.isLineChart ? this.lineChartSpec : this.candleChartSpec;
-  }
-
-  get lineChartSpec(): any {
-    const spec = {
+    const theme = !!this.libraryTheme;
+    const common = {
       grid: {
         left: 50,
-        right: 50,
+        right: 0,
         bottom: 20,
+        top: 20,
       },
       xAxis: {
         type: 'category',
@@ -363,6 +362,10 @@ export default class Charts extends Mixins(
             return dayjs(+value).format(this.timeFormat);
           },
           color: getCssVariableValue('--s-color-base-content-secondary'),
+          fontFamily: 'Sora',
+          fontSize: 10,
+          fontWeight: 300,
+          lineHeigth: 1.5,
         },
         axisPointer: {
           lineStyle: {
@@ -371,6 +374,10 @@ export default class Charts extends Mixins(
           label: {
             backgroundColor: getCssVariableValue('--s-color-status-success'),
             color: '#fff',
+            fontSize: 11,
+            fontWeight: 400,
+            lineHeigth: 1.5,
+            margin: 0,
             formatter: ({ value }) => {
               return this.formatDate(+value); // locale format
             },
@@ -379,6 +386,18 @@ export default class Charts extends Mixins(
       },
       yAxis: {
         type: 'value',
+        scale: true,
+        axisLabel: {
+          fontFamily: 'Sora',
+          fontSize: 10,
+          fontWeight: 300,
+          lineHeigth: 1.5,
+          margin: 0,
+          padding: 3,
+          formatter: (value) => {
+            return value.toFixed(this.precision);
+          },
+        },
         axisLine: {
           lineStyle: {
             color: getCssVariableValue('--s-color-base-content-secondary'),
@@ -390,6 +409,12 @@ export default class Charts extends Mixins(
           },
           label: {
             backgroundColor: getCssVariableValue('--s-color-status-success'),
+            fontFamily: 'Sora',
+            fontSize: 10,
+            fontWeight: 400,
+            lineHeigth: 1.5,
+            padding: [4, 4],
+            precision: this.precision,
           },
         },
         splitLine: {
@@ -413,58 +438,47 @@ export default class Charts extends Mixins(
           type: 'cross',
         },
         valueFormatter: (value) => {
-          return Number.isFinite(value) ? `${value.toFixed(4)} ${this.symbol}` : value;
+          return Number.isFinite(value) ? `${value.toFixed(this.precision)} ${this.symbol}` : value;
         },
       },
-      series: [
-        {
-          type: 'line',
-          showSymbol: false,
-          data: this.chartData.map((item) => item.price[0]),
-          areaStyle: {
-            opacity: 0.8,
-            color: new graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: 'rgba(248, 8, 123, 0.25)',
-              },
-              {
-                offset: 1,
-                color: 'rgba(255, 49, 148, 0.03)',
-              },
-            ]),
-          },
-        },
-      ],
     };
 
-    // update colors on theme change
-    return !!this.libraryTheme && spec;
-  }
-
-  // TODO: add spec
-  get candleChartSpec(): any {
-    const spec = {
-      xAxis: {
-        data: this.chartData.map((item) => item.timestamp),
-      },
-      series: [
-        {
-          type: 'candlestick',
-          data: this.chartData.map((item) => item.price),
-          itemStyle: {
-            color: getCssVariableValue('--s-color-status-success'),
-            borderColor: getCssVariableValue('--s-color-status-success'),
-            color0: getCssVariableValue('--s-color-theme-accent-hover'),
-            borderColor0: getCssVariableValue('--s-color-theme-accent-hover'),
-            borderWidth: 2,
+    const series = this.isLineChart
+      ? [
+          {
+            type: 'line',
+            showSymbol: false,
+            data: this.chartData.map((item) => item.price[0]),
+            areaStyle: {
+              opacity: 0.8,
+              color: new graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'rgba(248, 8, 123, 0.25)',
+                },
+                {
+                  offset: 1,
+                  color: 'rgba(255, 49, 148, 0.03)',
+                },
+              ]),
+            },
           },
-        },
-      ],
-    };
+        ]
+      : [
+          {
+            type: 'candlestick',
+            data: this.chartData.map((item) => item.price),
+            itemStyle: {
+              color: getCssVariableValue('--s-color-status-success'),
+              borderColor: getCssVariableValue('--s-color-status-success'),
+              color0: getCssVariableValue('--s-color-theme-accent-hover'),
+              borderColor0: getCssVariableValue('--s-color-theme-accent-hover'),
+              borderWidth: 2,
+            },
+          },
+        ];
 
-    // update colors on theme change
-    return !!this.libraryTheme && spec;
+    return theme && { ...common, series };
   }
 
   created(): void {
@@ -540,9 +554,13 @@ export default class Charts extends Mixins(
               price,
             });
 
-            this.limits.min = Math.min(this.limits.min, ...price);
-            this.limits.max = Math.max(this.limits.max, ...price);
+            this.limits = {
+              min: Math.min(this.limits.min, ...price),
+              max: Math.max(this.limits.max, ...price),
+            };
           }
+
+          this.precision = Math.max(this.getPrecision(this.limits.min), this.getPrecision(this.limits.max));
         } catch (error) {
           console.error(error);
         }
@@ -574,6 +592,7 @@ export default class Charts extends Mixins(
       min: Infinity,
       max: 0,
     };
+    this.precision = 2;
   }
 
   changeFilter(filter: ChartFilter): void {
@@ -604,6 +623,19 @@ export default class Charts extends Mixins(
 
   changeZoomLevel(event: any): void {
     this.zoomStart = event?.batch?.[0]?.start ?? 0;
+  }
+
+  private getPrecision(value: number): number {
+    let precision = 2;
+
+    if (value === 0 || !Number.isFinite(value)) return precision;
+
+    while (Math.floor(value) <= 0) {
+      value = value * 10;
+      precision++;
+    }
+
+    return precision;
   }
 }
 </script>
