@@ -286,7 +286,7 @@ export default class Charts extends Mixins(
     return (
       this.libraryTheme && {
         grid: {
-          left: 36,
+          left: 40,
           right: 0,
           bottom: 20,
           top: 20,
@@ -332,6 +332,7 @@ export default class Charts extends Mixins(
             },
             label: {
               backgroundColor: getCssVariableValue('--s-color-status-success'),
+              color: getCssVariableValue('--s-color-base-on-accent'),
             },
           },
           splitLine: {
@@ -356,12 +357,14 @@ export default class Charts extends Mixins(
           },
           backgroundColor: getCssVariableValue('--s-color-utility-body'),
           borderColor: getCssVariableValue('--s-color-base-border-secondary'),
-          extraCssText: `box-shadow:
-            -10px -10px 30px rgba(255, 255, 255, 0.9), 20px 20px 60px rgba(0, 0, 0, 0.1), inset 1px 1px 10px #FFFFFF`,
+          extraCssText: `box-shadow: ${getCssVariableValue('--s-shadow-dialog')}`,
           label: {
             formatter: (timestamp: string) => {
               return dayjs(+timestamp).format(this.timeFormat);
             },
+          },
+          textStyle: {
+            color: getCssVariableValue('--s-color-base-content-primary'),
           },
           valueFormatter: (value) => {
             return `${value.toFixed(4)} ${this.symbol}`;
