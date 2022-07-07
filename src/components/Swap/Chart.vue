@@ -570,7 +570,7 @@ export default class SwapChart extends Mixins(
   }
 
   // ordered ty timestamp DESC
-  async fetchData(address: string, filter: ChartFilter, pageInfo?: { hasNextPage: boolean; endCursor: string }) {
+  async fetchData(address: string, filter: ChartFilter, pageInfo?: PageInfo) {
     if (pageInfo && !pageInfo.hasNextPage) return;
 
     const { type, count } = filter;
@@ -608,12 +608,12 @@ export default class SwapChart extends Mixins(
 
           if (!collections.every((collection) => !!collection)) return;
 
-          this.pageInfos = collections.map((item) => ({
+          this.pageInfos = collections.map((item: any) => ({
             hasNextPage: item.hasNextPage,
             endCursor: item.endCursor,
           }));
 
-          const groups = collections.map((collection) =>
+          const groups = collections.map((collection: any) =>
             collection.nodes.map((item) => {
               const price = this.preparePriceData(item, this.chartType);
 
@@ -624,7 +624,7 @@ export default class SwapChart extends Mixins(
             })
           );
 
-          const prices = [];
+          const prices: ChartDataItem[] = [];
           const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
           let { min, max } = this.limits;
 
