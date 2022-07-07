@@ -519,9 +519,9 @@ $sora-logo-width: 173.7px;
     margin: auto;
 
     .app-disclaimer {
-      margin-left: $basic-spacing-medium;
+      margin-left: auto;
       margin-bottom: $inner-spacing-big;
-      margin-right: $basic-spacing-medium;
+      margin-right: auto;
       max-width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
       text-align: justify;
     }

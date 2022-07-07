@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-loading="parentLoading">
+  <div class="container container--tokens" v-loading="parentLoading">
     <generic-page-header :title="t('tokens.title')" class="page-header-title--tokens" />
     <search-input
       v-model="query"
@@ -9,6 +9,7 @@
       class="tokens-table-search"
     />
     <s-table :data="tableItems" :highlight-current-row="false" size="small" class="tokens-table">
+      <!-- Index -->
       <s-table-column label="#" width="48">
         <template #header>
           <span @click="handleResetSort" :class="['tokens-item-head-index', { active: isDefaultSort }]">#</span>
@@ -17,16 +18,7 @@
           <span class="tokens-item-index">{{ $index + startIndex + 1 }}</span>
         </template>
       </s-table-column>
-      <s-table-column width="112" header-align="center" align="center" prop="symbol">
-        <template #header>
-          <sort-button name="symbol" class="tokens-table--center" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="tokens-table__primary">{{ t('tokens.symbol') }}</span>
-          </sort-button>
-        </template>
-        <template v-slot="{ row }">
-          <div class="tokens-item-symbol">{{ row.symbol }}</div>
-        </template>
-      </s-table-column>
+      <!-- Icon -->
       <s-table-column width="52" header-align="center" align="center">
         <template #header>
           <s-icon name="various-bone-24" size="14px" class="tokens-table--center" />
@@ -35,7 +27,8 @@
           <token-logo class="tokens-item-logo" :token-symbol="row.symbol" />
         </template>
       </s-table-column>
-      <s-table-column>
+      <!-- Name -->
+      <s-table-column width="180">
         <template #header>
           <div class="tokens-item-info-header">
             <span class="tokens-table__primary">{{ t('tokens.name') }}</span>
@@ -58,7 +51,30 @@
           </div>
         </template>
       </s-table-column>
+      <!-- Symbol -->
+      <s-table-column width="112" header-align="center" align="center" prop="symbol">
+        <template #header>
+          <sort-button name="symbol" class="tokens-table--center" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="tokens-table__primary">{{ t('tokens.symbol') }}</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <div class="tokens-item-symbol">{{ row.symbol }}</div>
+        </template>
+      </s-table-column>
+      <!-- Price -->
+      <s-table-column width="140" header-align="right" align="right">
+        <template #header>
+          <sort-button name="price" class="tokens-table--right" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="tokens-table__primary">Price</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <formatted-amount is-fiat-value fiat-default-rounding :value="row.priceFormatted" class="tokens-item-price" />
+        </template>
+      </s-table-column>
     </s-table>
+
     <s-pagination
       class="tokens-table-pagination"
       :layout="'prev, total, next'"
@@ -72,6 +88,7 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/util';
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
@@ -92,11 +109,13 @@ import SortButton from '@/components/SortButton.vue';
     TokenAddress: components.TokenAddress,
     SearchInput: components.SearchInput,
     TokenLogo: components.TokenLogo,
+    FormattedAmount: components.FormattedAmount,
   },
 })
 export default class Tokens extends Mixins(
   mixins.LoadingMixin,
   mixins.PaginationSearchMixin,
+  mixins.FormattedAmountMixin,
   TranslationMixin,
   AssetsSearchMixin
 ) {
@@ -109,8 +128,22 @@ export default class Tokens extends Mixins(
     return !this.order || !this.property;
   }
 
+  get preparedItems() {
+    return this.items.map((item) => {
+      const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(item) ?? 0);
+      const price = fpPrice.toNumber(); // for sorting
+      const priceFormatted = fpPrice.toLocaleString(); // for display
+
+      return {
+        ...item,
+        price,
+        priceFormatted,
+      };
+    });
+  }
+
   get filteredItems(): Array<Asset> {
-    return this.filterAssetsByQuery(this.items)(this.searchQuery) as Array<Asset>;
+    return this.filterAssetsByQuery(this.preparedItems)(this.searchQuery) as Array<Asset>;
   }
 
   get sortedItems(): Array<Asset> {
@@ -174,8 +207,6 @@ export default class Tokens extends Mixins(
 
         .cell {
           padding: $inner-spacing-mini / 2 $inner-spacing-mini;
-          display: flex;
-          align-items: center;
         }
       }
     }
@@ -209,10 +240,24 @@ export default class Tokens extends Mixins(
     margin: auto;
   }
 }
+
+.tokens-item-address {
+  &__value {
+    &.token-address {
+      font-size: var(--s-font-size-extra-mini);
+      font-weight: 400;
+      color: var(--s-color-base-content-primary);
+    }
+  }
+}
 </style>
 
 <style lang="scss" scoped>
 $icon-size: 36px;
+
+.container--tokens {
+  max-width: 854px;
+}
 
 .tokens-table {
   display: flex;
@@ -234,7 +279,11 @@ $icon-size: 36px;
   }
 
   &--center {
-    margin: auto;
+    justify-content: center;
+  }
+
+  &--right {
+    justify-content: flex-end;
   }
 }
 
@@ -277,15 +326,15 @@ $icon-size: 36px;
   }
   &-name {
     font-size: var(--s-font-size-small);
+    font-weight: 600;
   }
   &-address {
     display: flex;
     font-size: var(--s-font-size-extra-mini);
+  }
 
-    &__value {
-      font-weight: 600;
-      font-size: var(--s-font-size-extra-mini);
-    }
+  &-price {
+    font-size: var(--s-font-size-medium);
   }
 
   &-head {
