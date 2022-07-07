@@ -688,6 +688,7 @@ export default class Swap extends Mixins(
     .swap-container {
       display: flex;
       justify-content: center;
+      align-items: flex-start;
       padding-top: $inner-spacing-medium;
       .el-form {
         flex-shrink: 0;
