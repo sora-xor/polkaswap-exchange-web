@@ -145,7 +145,9 @@ export enum Components {
   AppMenu = 'App/Menu/AppMenu',
   AppInfoPopper = 'App/Menu/AppInfoPopper',
   PairTokenLogo = 'PairTokenLogo',
-  ConfirmSwap = 'ConfirmSwap',
+  SwapConfirm = 'Swap/Confirm',
+  SwapChart = 'Swap/Chart',
+  StatusActionBadge = 'Swap/StatusActionBadge',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
   SettingsDialog = 'SettingsDialog',
@@ -156,7 +158,6 @@ export enum Components {
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
-  StatusActionBadge = 'StatusActionBadge',
   ExternalLink = 'ExternalLink',
   // HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',
@@ -193,7 +194,6 @@ export enum Components {
   CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
   BridgeTransferNotification = 'Bridge/TransferNotification',
   MobilePopup = 'MobilePopup/MobilePopup',
-  Charts = 'Charts',
   // Pool
   PoolInfo = 'Pool/PoolInfo',
 }

@@ -197,14 +197,14 @@
         :asset="isTokenFromSelected ? tokenTo : tokenFrom"
         @select="selectToken"
       />
-      <confirm-swap
+      <swap-confirm
         :visible.sync="showConfirmSwapDialog"
         :isInsufficientBalance="isInsufficientBalance"
         @confirm="confirmSwap"
       />
       <settings-dialog :visible.sync="showSettings" />
     </s-form>
-    <charts v-if="chartsEnabled" />
+    <swap-chart v-if="chartsEnabled" />
   </div>
 </template>
 
@@ -246,12 +246,12 @@ import { action, getter, mutation, state } from '@/store/decorators';
     SettingsDialog: lazyComponent(Components.SettingsDialog),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     SelectToken: lazyComponent(Components.SelectToken),
-    ConfirmSwap: lazyComponent(Components.ConfirmSwap),
+    SwapConfirm: lazyComponent(Components.SwapConfirm),
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
-    Charts: lazyComponent(Components.Charts),
+    SwapChart: lazyComponent(Components.SwapChart),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     TokenAddress: components.TokenAddress,
@@ -688,6 +688,7 @@ export default class Swap extends Mixins(
     .swap-container {
       display: flex;
       justify-content: center;
+      align-items: flex-start;
       padding-top: $inner-spacing-medium;
       .el-form {
         flex-shrink: 0;
