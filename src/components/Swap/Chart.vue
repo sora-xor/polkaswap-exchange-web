@@ -93,6 +93,11 @@ type ChartDataItem = {
   price: number[];
 };
 
+type PageInfo = {
+  hasNextPage: boolean;
+  endCursor: string;
+};
+
 enum TIMEFRAME_TYPES {
   FIVE_MINUTES = 'FIVE_MINUTES',
   FIFTEEN_MINUTES = 'FIFTEEN_MINUTES',
@@ -208,7 +213,7 @@ const CANDLE_CHART_FILTERS = [
     TokensRow: lazyComponent(Components.TokensRow),
   },
 })
-export default class Charts extends Mixins(
+export default class SwapChart extends Mixins(
   TranslationMixin,
   ThemePaletteMixin,
   mixins.LoadingMixin,
@@ -230,7 +235,7 @@ export default class Charts extends Mixins(
 
   // ordered by timestamp DESC
   prices: ChartDataItem[] = [];
-  pageInfos: any = [];
+  pageInfos: PageInfo[] = [];
   zoomStart = 0; // percentage of zoom start position
   precision = 2;
   limits = {
@@ -584,12 +589,12 @@ export default class Charts extends Mixins(
 
           if (!collections.every((collection) => !!collection)) return;
 
-          this.pageInfos = collections.map((item: any) => ({
+          this.pageInfos = collections.map((item) => ({
             hasNextPage: item.hasNextPage,
             endCursor: item.endCursor,
           }));
 
-          const groups = (collections as any).map((collection) =>
+          const groups = collections.map((collection) =>
             collection.nodes.map((item) => {
               const price = this.preparePriceData(item, this.chartType);
 
