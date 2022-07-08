@@ -1,5 +1,5 @@
 <template>
-  <div class="container container--tokens" v-loading="parentLoading">
+  <div class="container container--tokens" v-loading="parentLoading || loading">
     <generic-page-header :title="t('tokens.title')" class="page-header-title--tokens">
       <search-input
         v-model="query"
@@ -72,7 +72,13 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount is-fiat-value fiat-default-rounding :value="row.priceFormatted" class="tokens-item-price" />
+          <formatted-amount
+            is-fiat-value
+            fiat-default-rounding
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :value="row.priceFormatted"
+            class="tokens-item-price"
+          />
         </template>
       </s-table-column>
       <!-- 1D Price Change -->
@@ -142,7 +148,7 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins, components, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
@@ -217,6 +223,8 @@ export default class Tokens extends Mixins(
   TranslationMixin,
   AssetsSearchMixin
 ) {
+  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
+
   @getter.assets.whitelistAssets private items!: Array<Asset>;
 
   order = '';
@@ -336,7 +344,9 @@ export default class Tokens extends Mixins(
 
   private async updateAssetsData(): Promise<void> {
     await this.withLoading(async () => {
-      this.tokensData = await this.fetchTokensData();
+      await this.withParentLoading(async () => {
+        this.tokensData = await this.fetchTokensData();
+      });
     });
   }
 
@@ -429,7 +439,6 @@ export default class Tokens extends Mixins(
 </style>
 
 <style lang="scss" scoped>
-$icon-size: 36px;
 $container-max-width: 1072px;
 
 .container--tokens {
@@ -477,8 +486,7 @@ $container-max-width: 1072px;
   }
   &-logo {
     display: inline-block;
-    height: $icon-size;
-    width: $icon-size;
+    vertical-align: middle;
   }
   &-info {
     line-height: var(--s-line-height-medium);
