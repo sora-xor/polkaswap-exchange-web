@@ -1,16 +1,18 @@
 <template>
   <div class="container container--tokens" v-loading="parentLoading">
-    <generic-page-header :title="t('tokens.title')" class="page-header-title--tokens" />
-    <search-input
-      v-model="query"
-      :placeholder="t('selectToken.searchPlaceholder')"
-      autofocus
-      @clear="handleResetSearch"
-      class="tokens-table-search"
-    />
+    <generic-page-header :title="t('tokens.title')" class="page-header-title--tokens">
+      <search-input
+        v-model="query"
+        :placeholder="t('selectToken.searchPlaceholder')"
+        autofocus
+        @clear="handleResetSearch"
+        class="tokens-table-search"
+      />
+    </generic-page-header>
+
     <s-table :data="tableItems" :highlight-current-row="false" size="small" class="tokens-table">
       <!-- Index -->
-      <s-table-column label="#" width="48">
+      <s-table-column width="48" label="#">
         <template #header>
           <span @click="handleResetSort" :class="['tokens-item-head-index', { active: isDefaultSort }]">#</span>
         </template>
@@ -52,7 +54,7 @@
         </template>
       </s-table-column>
       <!-- Symbol -->
-      <s-table-column width="112" header-align="center" align="center" prop="symbol">
+      <s-table-column width="104" header-align="center" align="center" prop="symbol">
         <template #header>
           <sort-button name="symbol" class="tokens-table--center" :sort="{ order, property }" @change-sort="changeSort">
             <span class="tokens-table__primary">{{ t('tokens.symbol') }}</span>
@@ -65,12 +67,62 @@
       <!-- Price -->
       <s-table-column width="140" header-align="right" align="right">
         <template #header>
-          <sort-button name="price" class="tokens-table--right" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
             <span class="tokens-table__primary">Price</span>
           </sort-button>
         </template>
         <template v-slot="{ row }">
           <formatted-amount is-fiat-value fiat-default-rounding :value="row.priceFormatted" class="tokens-item-price" />
+        </template>
+      </s-table-column>
+      <!-- 1D Price Change -->
+      <s-table-column width="140" header-align="right" align="right">
+        <template #header>
+          <sort-button name="priceChangeDay" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="tokens-table__primary">1D Change</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <price-change :value="row.priceChangeDayFP" />
+        </template>
+      </s-table-column>
+      <!-- 7D Price Change -->
+      <s-table-column width="140" header-align="right" align="right">
+        <template #header>
+          <sort-button name="priceChangeWeek" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="tokens-table__primary">7D Change</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <price-change :value="row.priceChangeWeekFP" />
+        </template>
+      </s-table-column>
+      <!-- 1D Volume -->
+      <s-table-column width="110" header-align="right" align="right">
+        <template #header>
+          <sort-button name="volumeWeek" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="tokens-table__primary">1D Volume</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <div class="tokens-item-amount">
+            <span class="tokens-item-amount__currency">~$</span>
+            <span>{{ row.volumeWeekFormatted }}</span>
+          </div>
+        </template>
+      </s-table-column>
+      <!-- TVL -->
+      <s-table-column width="110" header-align="right" align="right">
+        <template #header>
+          <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="tokens-table__primary">TVL</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <div class="tokens-item-amount">
+            <span class="tokens-item-amount__currency">~$</span>
+            <span>{{ row.tvlFormatted }}</span>
+          </div>
         </template>
       </s-table-column>
     </s-table>
@@ -90,21 +142,67 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
+import { calcPriceChange } from '@/utils';
 import { getter } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
 import SortButton from '@/components/SortButton.vue';
 
+type TokenData = {
+  reserves: FPNumber;
+  startPriceDay: FPNumber;
+  startPriceWeek: FPNumber;
+  volume: FPNumber;
+};
+
+const AssetsQuery = `
+query AssetsQuery ($ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
+  assets (filter: { id: { in: $ids } }) {
+    nodes {
+      id
+      reserves: poolXYK {
+        targetAssetReserves
+      }
+      daySnapshots: data (
+        filter: { and: [
+          { timestamp: { greaterThanOrEqualTo: $dayTimestamp } },
+          { type: { equalTo: HOUR } }
+        ] },
+        orderBy: [TIMESTAMP_ASC]
+      ) {
+        nodes {
+          timestamp
+          priceUSD
+          volume
+        }
+      }
+      weekSnapshot: data(
+        filter: { timestamp: { greaterThanOrEqualTo: $weekTimestamp } },
+        orderBy: [TIMESTAMP_ASC],
+        first: 1
+      ) {
+        nodes {
+          timestamp
+          priceUSD
+          volume
+        }
+      }
+    }
+  }
+}
+`;
+
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    PriceChange: lazyComponent(Components.PriceChange),
     SortButton,
     TokenAddress: components.TokenAddress,
     SearchInput: components.SearchInput,
@@ -124,6 +222,8 @@ export default class Tokens extends Mixins(
   order = '';
   property = '';
 
+  tokensData: Record<string, TokenData> = {};
+
   get isDefaultSort(): boolean {
     return !this.order || !this.property;
   }
@@ -131,13 +231,28 @@ export default class Tokens extends Mixins(
   get preparedItems() {
     return this.items.map((item) => {
       const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(item) ?? 0);
-      const price = fpPrice.toNumber(); // for sorting
-      const priceFormatted = fpPrice.toLocaleString(); // for display
+      const fpPriceDay = this.tokensData[item.address]?.startPriceDay ?? FPNumber.ZERO;
+      const fpPriceWeek = this.tokensData[item.address]?.startPriceWeek ?? FPNumber.ZERO;
+      const fpVolumeWeek = this.tokensData[item.address]?.volume ?? FPNumber.ZERO;
+
+      const fpPriceChangeDay = calcPriceChange(fpPrice, fpPriceDay);
+      const fpPriceChangeWeek = calcPriceChange(fpPrice, fpPriceWeek);
+
+      const reserves = this.tokensData[item.address]?.reserves ?? FPNumber.ZERO;
+      const tvl = reserves.mul(fpPrice);
 
       return {
         ...item,
-        price,
-        priceFormatted,
+        price: fpPrice.toNumber(),
+        priceFormatted: fpPrice.toLocaleString(),
+        priceChangeDay: fpPriceChangeDay.toNumber(),
+        priceChangeDayFP: fpPriceChangeDay,
+        priceChangeWeek: fpPriceChangeWeek.toNumber(),
+        priceChangeWeekFP: fpPriceChangeWeek,
+        volumeWeek: fpVolumeWeek.toNumber(),
+        volumeWeekFormatted: this.formatAmount(fpVolumeWeek),
+        tvl: tvl.toNumber(),
+        tvlFormatted: this.formatAmount(tvl),
       };
     });
   }
@@ -165,6 +280,10 @@ export default class Tokens extends Mixins(
     return this.getPageItems(this.sortedItems);
   }
 
+  async mounted(): Promise<void> {
+    await this.updateAssetsData();
+  }
+
   changeSort({ order = '', property = '' } = {}): void {
     this.order = order;
     this.property = property;
@@ -178,12 +297,69 @@ export default class Tokens extends Mixins(
     this.resetPage();
     this.resetSearch();
   }
+
+  private async fetchTokensData(): Promise<Record<string, TokenData>> {
+    try {
+      const now = Math.floor(Date.now() / (5 * 60 * 1000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
+      const dayTimestamp = now - 60 * 60 * 24; // latest day snapshot (unix)
+      const weekTimestamp = now - 60 * 60 * 24 * 7; // latest week snapshot (unix)
+      const ids = this.items.map((item) => item.address);
+
+      const { assets } = await SubqueryExplorerService.request(AssetsQuery, { ids, dayTimestamp, weekTimestamp });
+
+      if (!Array.isArray(assets?.nodes)) return {};
+
+      const data = assets.nodes.reduce((buffer, item) => {
+        const volume = item.daySnapshots.nodes.reduce((buffer, snapshot) => {
+          const hourVolume = new FPNumber(snapshot.volume.amountUSD);
+
+          return buffer.add(hourVolume);
+        }, FPNumber.ZERO);
+
+        return {
+          ...buffer,
+          [item.id]: {
+            reserves: new FPNumber(item.reserves?.targetAssetReserves ?? 0),
+            startPriceDay: new FPNumber(item.daySnapshots.nodes?.[0]?.priceUSD?.open ?? 0),
+            startPriceWeek: new FPNumber(item.weekSnapshot.nodes?.[0]?.priceUSD?.open ?? 0),
+            volume,
+          },
+        };
+      }, {});
+
+      return data;
+    } catch (error) {
+      console.error(error);
+      return {};
+    }
+  }
+
+  private async updateAssetsData(): Promise<void> {
+    await this.withLoading(async () => {
+      this.tokensData = await this.fetchTokensData();
+    });
+  }
+
+  private formatAmount(value: FPNumber) {
+    const val = value.toNumber();
+    const format = (value: string) => new FPNumber(value).toLocaleString();
+
+    if (Math.trunc(val / 1_000_000) > 0) {
+      const amount = format((val / 1_000_000).toFixed(2));
+      return `${amount}M`;
+    } else if (Math.trunc(val / 1_000) > 0) {
+      const amount = format((val / 1_000).toFixed(2));
+      return `${amount}K`;
+    } else {
+      return format(val.toFixed(2));
+    }
+  }
 }
 </script>
 
 <style lang="scss">
 .page-header-title--tokens {
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .tokens-table.el-table {
@@ -193,6 +369,11 @@ export default class Tokens extends Mixins(
     text-transform: uppercase;
     font-size: var(--s-font-size-small);
     letter-spacing: var(--s-letter-spacing-mini);
+
+    [class^='s-icon-'],
+    [class*=' s-icon-'] {
+      @include icon-styles;
+    }
   }
 
   tr,
@@ -206,15 +387,10 @@ export default class Tokens extends Mixins(
         background: transparent;
 
         .cell {
-          padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+          padding: $inner-spacing-mini / 2;
         }
       }
     }
-  }
-
-  [class^='s-icon-'],
-  [class*=' s-icon-'] {
-    @include icon-styles;
   }
 
   .el-table__body-wrapper {
@@ -242,7 +418,7 @@ export default class Tokens extends Mixins(
 }
 
 .tokens-item-address {
-  &__value {
+  .tokens-item-address__value {
     &.token-address {
       font-size: var(--s-font-size-extra-mini);
       font-weight: 400;
@@ -254,9 +430,10 @@ export default class Tokens extends Mixins(
 
 <style lang="scss" scoped>
 $icon-size: 36px;
+$container-max-width: 1072px;
 
 .container--tokens {
-  max-width: 854px;
+  max-width: $container-max-width;
 }
 
 .tokens-table {
@@ -278,12 +455,8 @@ $icon-size: 36px;
     margin: auto;
   }
 
-  &--center {
-    justify-content: center;
-  }
-
-  &--right {
-    justify-content: flex-end;
+  &-search {
+    max-width: 382px;
   }
 }
 
@@ -303,11 +476,9 @@ $icon-size: 36px;
     text-align: center;
   }
   &-logo {
-    &.token-logo {
-      display: block;
-      height: $icon-size;
-      width: $icon-size;
-    }
+    display: inline-block;
+    height: $icon-size;
+    width: $icon-size;
   }
   &-info {
     line-height: var(--s-line-height-medium);
@@ -335,6 +506,20 @@ $icon-size: 36px;
 
   &-price {
     font-size: var(--s-font-size-medium);
+    white-space: nowrap;
+  }
+
+  &-amount {
+    color: var(--s-color-base-content-primary);
+    font-size: var(--s-font-size-medium);
+    font-weight: 600;
+    letter-spacing: var(--s-letter-spacing-mini);
+    white-space: nowrap;
+
+    &__currency {
+      color: var(--s-color-base-content-secondary);
+      margin-right: $inner-spacing-mini / 4;
+    }
   }
 
   &-head {
