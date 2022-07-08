@@ -31,33 +31,35 @@
           </div>
         </div>
       </div>
-
-      <div class="price">
-        <formatted-amount
-          :value="fiatPriceFormatted"
-          :font-weight-rate="FontWeightRate.MEDIUM"
-          :font-size-rate="FontWeightRate.MEDIUM"
-          :asset-symbol="symbol"
-          symbol-as-decimal
+    </div>
+    <s-skeleton :animated="true" :loading="true" :throttle="0">
+      <template #template>
+        <!-- TODO: Add error screen + preview -->
+        <s-skeleton-item element="p">Error fetching the data test</s-skeleton-item>
+      </template>
+      <template>
+        <div class="price">
+          <formatted-amount
+            :value="fiatPriceFormatted"
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :font-size-rate="FontWeightRate.MEDIUM"
+            :asset-symbol="symbol"
+            symbol-as-decimal
+          />
+        </div>
+        <div v-if="!isFetchingError" :class="priceChangeClasses">
+          <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
+        </div>
+        <v-chart
+          class="chart"
+          :option="chartSpec"
+          v-loading="loading"
+          autoresize
+          @zr:mousewheel="handleZoom"
+          @datazoom="changeZoomLevel"
         />
-      </div>
-      <div v-if="!isFetchingError" :class="priceChangeClasses">
-        <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
-      </div>
-    </div>
-    <v-chart
-      v-if="!isFetchingError"
-      class="chart"
-      :option="chartSpec"
-      v-loading="loading"
-      autoresize
-      @zr:mousewheel="handleZoom"
-      @datazoom="changeZoomLevel"
-    />
-    <div v-else class="fetching-error">
-      <!-- TODO: Add error screen + preview -->
-      <span>Error fetching the data</span>
-    </div>
+      </template>
+    </s-skeleton>
   </div>
 </template>
 
@@ -647,6 +649,7 @@ export default class SwapChart extends Mixins(
           this.precision = Math.max(this.getPrecision(min), this.getPrecision(max));
           this.limits = { min, max };
           this.prices = prices;
+          // throw new Error();
         } catch (error) {
           this.isFetchingError = true;
           console.error(error);
