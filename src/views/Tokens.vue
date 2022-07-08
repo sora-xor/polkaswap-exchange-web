@@ -65,7 +65,7 @@
         </template>
       </s-table-column>
       <!-- Price -->
-      <s-table-column width="140" header-align="right" align="right">
+      <s-table-column width="140" header-align="left" align="left">
         <template #header>
           <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
             <span class="tokens-table__primary">Price</span>
@@ -82,10 +82,10 @@
         </template>
       </s-table-column>
       <!-- 1D Price Change -->
-      <s-table-column width="140" header-align="right" align="right">
+      <s-table-column width="100" header-align="right" align="right">
         <template #header>
           <sort-button name="priceChangeDay" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="tokens-table__primary">1D Change</span>
+            <span class="tokens-table__primary">1D %</span>
           </sort-button>
         </template>
         <template v-slot="{ row }">
@@ -93,10 +93,10 @@
         </template>
       </s-table-column>
       <!-- 7D Price Change -->
-      <s-table-column width="140" header-align="right" align="right">
+      <s-table-column width="100" header-align="left" align="left">
         <template #header>
           <sort-button name="priceChangeWeek" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="tokens-table__primary">7D Change</span>
+            <span class="tokens-table__primary">7D %</span>
           </sort-button>
         </template>
         <template v-slot="{ row }">
@@ -107,14 +107,16 @@
       <s-table-column width="110" header-align="right" align="right">
         <template #header>
           <sort-button name="volumeWeek" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="tokens-table__primary">1D Volume</span>
+            <span class="tokens-table__primary">1D Vol.</span>
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <div class="tokens-item-amount">
-            <span class="tokens-item-amount__currency">~$</span>
-            <span>{{ row.volumeWeekFormatted }}</span>
-          </div>
+          <formatted-amount
+            is-fiat-value
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :value="row.volumeWeekFormatted.amount"
+            class="tokens-item-price tokens-item-amount"
+          >{{ row.volumeWeekFormatted.suffix }}</formatted-amount>
         </template>
       </s-table-column>
       <!-- TVL -->
@@ -125,10 +127,12 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <div class="tokens-item-amount">
-            <span class="tokens-item-amount__currency">~$</span>
-            <span>{{ row.tvlFormatted }}</span>
-          </div>
+          <formatted-amount
+            is-fiat-value
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :value="row.tvlFormatted.amount"
+            class="tokens-item-price tokens-item-amount"
+          >{{ row.tvlFormatted.suffix }}</formatted-amount>
         </template>
       </s-table-column>
     </s-table>
@@ -169,8 +173,12 @@ type TokenData = {
 };
 
 const AssetsQuery = `
-query AssetsQuery ($ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-  assets (filter: { id: { in: $ids } }) {
+query AssetsQuery ($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
+  assets (after: $after, filter: { id: { in: $ids } }) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
     nodes {
       id
       reserves: poolXYK {
@@ -307,38 +315,49 @@ export default class Tokens extends Mixins(
   }
 
   private async fetchTokensData(): Promise<Record<string, TokenData>> {
+    const now = Math.floor(Date.now() / (5 * 60 * 1000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
+    const dayTimestamp = now - 60 * 60 * 24; // latest day snapshot (unix)
+    const weekTimestamp = now - 60 * 60 * 24 * 7; // latest week snapshot (unix)
+    const ids = this.items.map((item) => item.address);
+
+    const tokensData = {};
+    let hasNextPage = true;
+    let after = '';
+
     try {
-      const now = Math.floor(Date.now() / (5 * 60 * 1000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
-      const dayTimestamp = now - 60 * 60 * 24; // latest day snapshot (unix)
-      const weekTimestamp = now - 60 * 60 * 24 * 7; // latest week snapshot (unix)
-      const ids = this.items.map((item) => item.address);
+      do {
+        const { assets } = await SubqueryExplorerService.request(AssetsQuery, {
+          after,
+          ids,
+          dayTimestamp,
+          weekTimestamp,
+        });
 
-      const { assets } = await SubqueryExplorerService.request(AssetsQuery, { ids, dayTimestamp, weekTimestamp });
+        if (!assets) return tokensData;
 
-      if (!Array.isArray(assets?.nodes)) return {};
+        hasNextPage = assets.pageInfo.hasNextPage;
+        after = assets.pageInfo.endCursor;
 
-      const data = assets.nodes.reduce((buffer, item) => {
-        const volume = item.daySnapshots.nodes.reduce((buffer, snapshot) => {
-          const hourVolume = new FPNumber(snapshot.volume.amountUSD);
+        assets.nodes.forEach((item) => {
+          const volume = item.daySnapshots.nodes.reduce((buffer, snapshot) => {
+            const hourVolume = new FPNumber(snapshot.volume.amountUSD);
 
-          return buffer.add(hourVolume);
-        }, FPNumber.ZERO);
+            return buffer.add(hourVolume);
+          }, FPNumber.ZERO);
 
-        return {
-          ...buffer,
-          [item.id]: {
+          tokensData[item.id] = {
             reserves: new FPNumber(item.reserves?.targetAssetReserves ?? 0),
             startPriceDay: new FPNumber(item.daySnapshots.nodes?.[0]?.priceUSD?.open ?? 0),
             startPriceWeek: new FPNumber(item.weekSnapshot.nodes?.[0]?.priceUSD?.open ?? 0),
             volume,
-          },
-        };
-      }, {});
+          };
+        });
+      } while (hasNextPage);
 
-      return data;
+      return tokensData;
     } catch (error) {
       console.error(error);
-      return {};
+      return tokensData;
     }
   }
 
@@ -350,18 +369,19 @@ export default class Tokens extends Mixins(
     });
   }
 
-  private formatAmount(value: FPNumber) {
+  private formatAmount(value: FPNumber): { amount: string; suffix: string } {
     const val = value.toNumber();
     const format = (value: string) => new FPNumber(value).toLocaleString();
 
     if (Math.trunc(val / 1_000_000) > 0) {
       const amount = format((val / 1_000_000).toFixed(2));
-      return `${amount}M`;
+      return { amount, suffix: 'M' };
     } else if (Math.trunc(val / 1_000) > 0) {
       const amount = format((val / 1_000).toFixed(2));
-      return `${amount}K`;
+      return { amount, suffix: 'K' };
     } else {
-      return format(val.toFixed(2));
+      const amount = format(val.toFixed(2));
+      return { amount, suffix: '' };
     }
   }
 }
@@ -397,7 +417,7 @@ export default class Tokens extends Mixins(
         background: transparent;
 
         .cell {
-          padding: $inner-spacing-mini / 2;
+          padding: $inner-spacing-mini / 2 10px;
         }
       }
     }
@@ -415,6 +435,10 @@ export default class Tokens extends Mixins(
     &__name {
       display: block;
     }
+  }
+
+  .tokens-item-amount.formatted-amount--fiat-value {
+    color: var(--s-color-base-content-primary);
   }
 }
 
@@ -439,7 +463,7 @@ export default class Tokens extends Mixins(
 </style>
 
 <style lang="scss" scoped>
-$container-max-width: 1072px;
+$container-max-width: 992px;
 
 .container--tokens {
   max-width: $container-max-width;
@@ -515,19 +539,6 @@ $container-max-width: 1072px;
   &-price {
     font-size: var(--s-font-size-medium);
     white-space: nowrap;
-  }
-
-  &-amount {
-    color: var(--s-color-base-content-primary);
-    font-size: var(--s-font-size-medium);
-    font-weight: 600;
-    letter-spacing: var(--s-letter-spacing-mini);
-    white-space: nowrap;
-
-    &__currency {
-      color: var(--s-color-base-content-secondary);
-      margin-right: $inner-spacing-mini / 4;
-    }
   }
 
   &-head {

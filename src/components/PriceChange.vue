@@ -1,17 +1,24 @@
 <template>
   <div :class="classes">
     <s-icon class="price-change-arrow" :name="icon" size="14px" />
-    <span>{{ formatted }}%</span>
+    <formatted-amount :value="formatted" :font-weight-rate="FontWeightRate.MEDIUM">%</formatted-amount>
   </div>
 </template>
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-@Component
+@Component({
+  components: {
+    FormattedAmount: components.FormattedAmount,
+  },
+})
 export default class PriceChange extends Vue {
   @Prop({ default: FPNumber.ZERO, type: Object }) readonly value!: FPNumber;
+
+  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   get increased(): boolean {
     return FPNumber.gte(this.value, FPNumber.ZERO);
@@ -38,6 +45,8 @@ export default class PriceChange extends Vue {
 
 <style lang="scss" scoped>
 .price-change {
+  display: inline-flex;
+  align-items: center;
   color: var(--s-color-theme-accent);
   font-size: var(--s-font-size-medium);
   font-weight: 600;
