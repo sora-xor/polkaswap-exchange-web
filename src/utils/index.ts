@@ -261,3 +261,12 @@ export const getTextWidth = (text: string, fontFamily = 'Sora', size = 10): numb
 
   return width;
 };
+
+export const b64EncodeUnicode = (str) => {
+  // remove trailing '==' from base64 encoding
+  return window.btoa(encodeURIComponent(str)).slice(0, -2);
+};
+
+export const unicodeDecodeB64 = (str) => {
+  return decodeURIComponent(window.atob(str));
+};

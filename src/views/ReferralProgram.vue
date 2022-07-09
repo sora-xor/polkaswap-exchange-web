@@ -183,7 +183,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import router, { lazyView } from '@/router';
 import { PageNames, LogoSize, ZeroStringValue } from '@/consts';
 import { detectBaseUrl } from '@/api';
-import { formatAddress } from '@/utils';
+import { b64EncodeUnicode, unicodeDecodeB64, formatAddress } from '@/utils';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -316,8 +316,9 @@ export default class ReferralProgram extends Mixins(
   }
 
   get referralLink() {
+    const encodedAddress = b64EncodeUnicode(this.account.address);
     return {
-      href: `${this.linkHrefBase}${this.account.address}`,
+      href: `${this.linkHrefBase}${encodedAddress}`,
       label: this.getLinkLabel(this.account.address),
     };
   }
@@ -404,7 +405,8 @@ export default class ReferralProgram extends Mixins(
   }
 
   getLinkLabel(address: string): string {
-    return `<span class="referral-link-address">Polkaswap.io/</span>${this.routerMode}referral/${address}`;
+    const encodedAddress = b64EncodeUnicode(address);
+    return `<span class="referral-link-address">Polkaswap.io/</span>${this.routerMode}referral/${encodedAddress}`;
   }
 
   getInvitedUserReward(invitedUser: string): string {

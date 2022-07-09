@@ -8,6 +8,7 @@ import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 import { demeterLazyView } from '@/modules/demeterFarming/router';
 
 import store from '@/store';
+import { unicodeDecodeB64 } from '@/utils';
 
 Vue.use(VueRouter);
 
@@ -201,8 +202,11 @@ router.beforeEach((to, from, next) => {
   const prev = from.name as Nullable<PageNames>;
   const isLoggedIn = store.getters.wallet.account.isLoggedIn;
   if (to.matched.some((record) => record.meta.isInvitationRoute)) {
-    if (api.validateAddress(to.params.referrerAddress)) {
-      store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
+    const { referrerAddress } = to.params;
+    if (api.validateAddress(referrerAddress)) {
+      store.commit.referrals.setStorageReferrer(referrerAddress);
+    } else if (api.validateAddress(unicodeDecodeB64(referrerAddress))) {
+      store.commit.referrals.setStorageReferrer(unicodeDecodeB64(referrerAddress));
     }
     if (isLoggedIn) {
       next({ name: PageNames.Referral });
