@@ -50,6 +50,16 @@
                 :address="row.address"
               />
             </div>
+            <div v-if="row.externalAddress" class="tokens-item-address">
+              <span>{{ t('ethereumText') }}:</span>&nbsp;
+              <token-address
+                class="tokens-item-address__value"
+                :show-name="false"
+                :name="row.name"
+                :symbol="row.symbol"
+                :address="row.externalAddress"
+              />
+            </div>
           </div>
         </template>
       </s-table-column>
@@ -155,11 +165,12 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, components, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { calcPriceChange } from '@/utils';
-import { getter } from '@/store/decorators';
+import { getter, action } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
@@ -171,6 +182,25 @@ type TokenData = {
   startPriceWeek: FPNumber;
   volume: FPNumber;
 };
+
+type AmountWithSuffix = {
+  amount: string;
+  suffix: string;
+};
+
+type TableItem = {
+  externalAddress: string;
+  price: number;
+  priceFormatted: string;
+  priceChangeDay: number;
+  priceChangeDayFP: FPNumber;
+  priceChangeWeek: number;
+  priceChangeWeekFP: FPNumber;
+  volumeWeek: number;
+  volumeWeekFormatted: AmountWithSuffix;
+  tvl: number;
+  tvlFormatted: AmountWithSuffix;
+} & Asset;
 
 const AssetsQuery = `
 query AssetsQuery ($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
@@ -234,6 +264,9 @@ export default class Tokens extends Mixins(
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   @getter.assets.whitelistAssets private items!: Array<Asset>;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
+
+  @action.assets.getRegisteredAssets private getRegisteredAssets!: AsyncVoidFn;
 
   order = '';
   property = '';
@@ -244,8 +277,10 @@ export default class Tokens extends Mixins(
     return !this.order || !this.property;
   }
 
-  get preparedItems() {
+  get preparedItems(): TableItem[] {
     return this.items.map((item) => {
+      const externalAddress = this.getAsset(item.address)?.externalAddress ?? '';
+
       const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(item) ?? 0);
       const fpPriceDay = this.tokensData[item.address]?.startPriceDay ?? FPNumber.ZERO;
       const fpPriceWeek = this.tokensData[item.address]?.startPriceWeek ?? FPNumber.ZERO;
@@ -259,6 +294,7 @@ export default class Tokens extends Mixins(
 
       return {
         ...item,
+        externalAddress,
         price: fpPrice.toNumber(),
         priceFormatted: fpPrice.toLocaleString(),
         priceChangeDay: fpPriceChangeDay.toNumber(),
@@ -273,11 +309,11 @@ export default class Tokens extends Mixins(
     });
   }
 
-  get filteredItems(): Array<Asset> {
-    return this.filterAssetsByQuery(this.preparedItems)(this.searchQuery) as Array<Asset>;
+  get filteredItems(): TableItem[] {
+    return this.filterAssetsByQuery(this.preparedItems)(this.searchQuery) as TableItem[];
   }
 
-  get sortedItems(): Array<Asset> {
+  get sortedItems(): TableItem[] {
     if (!this.order || !this.property) return this.filteredItems;
 
     const isAscending = this.order === SortDirection.ASC;
@@ -292,12 +328,12 @@ export default class Tokens extends Mixins(
     });
   }
 
-  get tableItems(): Array<Asset> {
+  get tableItems(): TableItem[] {
     return this.getPageItems(this.sortedItems);
   }
 
   async mounted(): Promise<void> {
-    await this.updateAssetsData();
+    await Promise.all([this.getRegisteredAssets(), this.updateAssetsData()]);
   }
 
   changeSort({ order = '', property = '' } = {}): void {
@@ -369,7 +405,7 @@ export default class Tokens extends Mixins(
     });
   }
 
-  private formatAmount(value: FPNumber): { amount: string; suffix: string } {
+  private formatAmount(value: FPNumber): AmountWithSuffix {
     const val = value.toNumber();
     const format = (value: string) => new FPNumber(value).toLocaleString();
 
