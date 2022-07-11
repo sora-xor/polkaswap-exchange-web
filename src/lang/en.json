@@ -883,7 +883,8 @@
         "settings": "Settings",
         "switchTheme": "Switch to {theme} Mode",
         "switchLanguage": "Choose Language",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "onNotification": "Enable Browser Notifications"
     },
     "sentText": "Sent",
     "learnMoreText": "Learn more",
@@ -1048,5 +1049,10 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "An error occurred while calculating the price"
         }
+    },
+    "browserNotificationDialog": {
+      "title": "Enable browser notifications",
+      "info": "We will send you only relevant updates about your wallet, for example: asset balance changes",
+      "button": "Enable notifications"
     }
 }

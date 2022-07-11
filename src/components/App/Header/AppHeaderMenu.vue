@@ -57,6 +57,7 @@ enum HeaderMenuType {
   HideBalances = 'hide-balances',
   Theme = 'theme',
   Language = 'language',
+  Notification = 'notification',
 }
 
 type MenuItem = {
@@ -86,6 +87,11 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   get mediaQueryList(): MediaQueryList {
     return window.matchMedia(`(min-width: ${BREAKPOINT}px)`);
+  }
+
+  get notificationShown(): boolean {
+    // TODO via vuex-store
+    return true;
   }
 
   private getThemeIcon(isDropdown = false): string {
@@ -118,7 +124,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   private getHeaderMenuItems(isDropdown = false): Array<MenuItem> {
-    return [
+    const menuItems = [
       {
         value: HeaderMenuType.HideBalances,
         icon: this.getHideBalancesIcon(isDropdown),
@@ -135,6 +141,16 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         text: this.t('headerMenu.switchLanguage'),
       },
     ];
+
+    if (this.notificationShown) {
+      menuItems.push({
+        value: HeaderMenuType.Notification,
+        icon: 'basic-globe-24',
+        text: this.t('headerMenu.onNotification'),
+      });
+    }
+
+    return menuItems;
   }
 
   get headerMenuItems(): Array<MenuItem> {
@@ -168,6 +184,9 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         break;
       case HeaderMenuType.Language:
         this.setLanguageDialogVisibility(true);
+        break;
+      case HeaderMenuType.Notification:
+        this.enableBrowserNotification();
         break;
     }
   }

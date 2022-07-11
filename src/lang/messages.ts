@@ -99,6 +99,7 @@ export default {
     switchTheme: 'Switch to {theme} Mode',
     switchLanguage: 'Choose Language',
     selectNode: '@:selectNodeText',
+    onNotification: 'Enable browser notifications',
   },
   social: {
     wiki: '@:soraText Wiki',
@@ -786,5 +787,10 @@ export default {
   },
   staking: {
     title: 'Staking',
+  },
+  browserNotificationDialog: {
+    title: 'Enable browser notifications',
+    info: 'We will send you only relevant updates about your wallet, for example: asset balance changes',
+    button: 'Enable notifications',
   },
 };

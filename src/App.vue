@@ -38,6 +38,7 @@
     <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
     <bridge-transfer-notification />
     <mobile-popup :visible.sync="showMobilePopup" />
+    <browser-notification-dialog :visible.sync="showConfirmBrowserNotification" />
   </s-design-system-provider>
 </template>
 
@@ -70,6 +71,7 @@ import type { FeatureFlags } from '@/store/settings/types';
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
+    BrowserNotificationDialog: lazyComponent(Components.BrowserNotificationDialog),
     MobilePopup,
   },
 })
@@ -77,6 +79,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   menuVisibility = false;
   showConfirmInviteUser = false;
   showMobilePopup = false;
+  showConfirmBrowserNotification = true;
 
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.referrals.storageReferrer storageReferrer!: string;
