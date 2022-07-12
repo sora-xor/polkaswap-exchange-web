@@ -3,7 +3,7 @@
     <div class="tokens-info-container">
       <div class="header">
         <div class="selected-tokens">
-          <tokens-row :assets="tokens" size="medium" border />
+          <tokens-row border :assets="tokens" size="medium" />
           <div v-if="tokenFrom" class="token-title">
             <span>{{ tokenFrom.symbol }}</span>
             <span v-if="tokenTo">/{{ tokenTo.symbol }}</span>
@@ -35,7 +35,7 @@
     <s-skeleton :animated="true" :loading="true" :throttle="0">
       <template #template>
         <!-- TODO: Add error screen + preview -->
-        <s-skeleton-item element="p">Error fetching the data test</s-skeleton-item>
+        <s-skeleton-item element="rect" style="height: 200px" />
       </template>
       <template>
         <div class="price">
@@ -69,6 +69,7 @@ import last from 'lodash/fp/last';
 import { graphic } from 'echarts';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
+import { SSkeleton, SSkeletonItem } from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton';
 
 import {
   components,
@@ -216,6 +217,8 @@ const LABEL_PADDING = 4;
     LineIcon,
     CandleIcon,
     TokensRow: lazyComponent(Components.TokensRow),
+    SSkeleton,
+    SSkeletonItem,
   },
 })
 export default class SwapChart extends Mixins(
