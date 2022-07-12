@@ -517,7 +517,8 @@
         "swapOutputMessage": "Output is estimated. You will receive at least {transactionValue} or the transaction will revert.",
         "rewardsForSwap": "PSWAP Strategic Rewards",
         "swapInputMessage": "Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.",
-        "route": "Route"
+        "route": "Route",
+        "errorFetching": "Error fetching the data"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

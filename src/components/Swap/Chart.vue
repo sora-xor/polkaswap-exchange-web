@@ -32,13 +32,32 @@
         </div>
       </div>
     </div>
-    <s-skeleton :animated="true" :loading="true" :throttle="0">
+    <s-skeleton :loading="parentLoading || loading || isFetchingError" :throttle="0">
       <template #template>
-        <!-- TODO: Add error screen + preview -->
-        <s-skeleton-item element="rect" style="height: 200px" />
+        <div v-loading="loading" class="charts-skeleton">
+          <s-skeleton-item element="rect" class="charts-skeleton-price" />
+          <div class="charts-skeleton-price-impact">
+            <s-skeleton-item element="circle" />
+            <s-skeleton-item element="rect" />
+          </div>
+          <div v-for="i in 9" :key="i" class="charts-skeleton-line">
+            <s-skeleton-item element="rect" class="charts-skeleton-label" />
+            <s-skeleton-item element="rect" class="charts-skeleton-border" />
+          </div>
+          <div class="charts-skeleton-line charts-skeleton-line--lables">
+            <s-skeleton-item v-for="i in 11" :key="i" element="rect" class="charts-skeleton-label" />
+          </div>
+          <div v-if="isFetchingError && !loading" class="charts-skeleton-error">
+            <s-icon name="clear-X-16" :size="'32px'" />
+            <p class="charts-skeleton-error-message">{{ t('swap.errorFetching') }}</p>
+            <s-button class="el-button--select-token" type="secondary" size="small" @click="retryUpdatePrices">
+              {{ t('retryText') }}
+            </s-button>
+          </div>
+        </div>
       </template>
       <template>
-        <div class="price">
+        <div class="charts-price">
           <formatted-amount
             :value="fiatPriceFormatted"
             :font-weight-rate="FontWeightRate.MEDIUM"
@@ -47,17 +66,10 @@
             symbol-as-decimal
           />
         </div>
-        <div v-if="!isFetchingError" :class="priceChangeClasses">
-          <s-icon class="price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
+        <div :class="priceChangeClasses">
+          <s-icon class="charts-price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
         </div>
-        <v-chart
-          class="chart"
-          :option="chartSpec"
-          v-loading="loading"
-          autoresize
-          @zr:mousewheel="handleZoom"
-          @datazoom="changeZoomLevel"
-        />
+        <v-chart class="chart" :option="chartSpec" autoresize @zr:mousewheel="handleZoom" @datazoom="changeZoomLevel" />
       </template>
     </s-skeleton>
   </div>
@@ -318,7 +330,7 @@ export default class SwapChart extends Mixins(
   }
 
   get priceChangeClasses(): Array<string> {
-    const baseClass = 'price-change';
+    const baseClass = 'charts-price-change';
     const cssClasses: Array<string> = [baseClass];
     if (this.priceChangeIncreased) {
       cssClasses.push(`${baseClass}--increased`);
@@ -652,7 +664,7 @@ export default class SwapChart extends Mixins(
           this.precision = Math.max(this.getPrecision(min), this.getPrecision(max));
           this.limits = { min, max };
           this.prices = prices;
-          // throw new Error();
+          this.isFetchingError = false;
         } catch (error) {
           this.isFetchingError = true;
           console.error(error);
@@ -719,6 +731,10 @@ export default class SwapChart extends Mixins(
     this.zoomStart = event?.batch?.[0]?.start ?? 0;
   }
 
+  retryUpdatePrices(event: any): void {
+    this.updatePrices();
+  }
+
   private getPrecision(value: number): number {
     let precision = 2;
 
@@ -743,8 +759,27 @@ export default class SwapChart extends Mixins(
 </script>
 
 <style lang="scss">
-.tokens-info-container {
-  .price {
+.charts {
+  &-price {
+    display: flex;
+    margin-bottom: $inner-spacing-mini / 2;
+    font-weight: 800;
+    font-size: var(--s-heading3-font-size);
+    line-height: var(--s-line-height-extra-small);
+    letter-spacing: var(--s-letter-spacing-small);
+    &-change {
+      font-weight: 600;
+      font-size: var(--s-font-size-medium);
+      line-height: var(--s-line-height-medium);
+      color: var(--s-color-theme-accent);
+      letter-spacing: inherit;
+      &--increased {
+        color: var(--s-color-theme-secondary-hover);
+      }
+      &-arrow {
+        color: inherit;
+      }
+    }
     .formatted-amount {
       &__integer {
         font-weight: inherit;
@@ -784,6 +819,90 @@ export default class SwapChart extends Mixins(
     }
   }
 }
+
+.charts-skeleton {
+  $margin-right: #{$inner-spacing-mini / 2};
+  $label-width: 34px;
+  $skeleton-spacing: 18px;
+  position: relative;
+  .el-loading-mask {
+    background-color: transparent;
+  }
+  .el-skeleton__item {
+    background-color: var(--s-color-base-background);
+  }
+  &-price {
+    width: 157px;
+    &.el-skeleton__item.el-skeleton__rect {
+      height: $skeleton-spacing;
+      margin-bottom: $inner-spacing-medium;
+    }
+    &-impact {
+      display: flex;
+      max-width: 150px;
+      > :first-child,
+      > :last-child {
+        height: 9px;
+      }
+      > :first-child {
+        width: 9px;
+        margin-right: $margin-right;
+      }
+      > :last-child {
+        width: 42px;
+      }
+    }
+  }
+  &-line {
+    display: flex;
+    align-items: center;
+    flex-grow: 0;
+    margin-top: 29px;
+    &:first-child {
+      margin-top: 21px;
+    }
+    &--lables {
+      justify-content: space-between;
+      margin-top: $inner-spacing-medium;
+      padding-left: calc(#{$margin-right} + #{$label-width});
+    }
+  }
+  &-label.el-skeleton__item.el-skeleton__rect {
+    height: 8px;
+    width: $label-width;
+    margin-bottom: 0;
+    margin-right: $margin-right;
+  }
+  &-border.el-skeleton__rect {
+    width: calc(100% - 38px);
+    height: 1px;
+  }
+  &-error {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    &-message {
+      margin-top: $skeleton-spacing;
+      margin-bottom: $skeleton-spacing;
+      font-weight: 400;
+      font-size: var(--s-font-size-medium);
+      line-height: var(--s-line-height-medium);
+      letter-spacing: var(--s-letter-spacing-small);
+    }
+    .el-button.s-secondary {
+      padding-right: $inner-spacing-big;
+      padding-left: $inner-spacing-big;
+    }
+  }
+  .s-icon-clear-X-16:before {
+    color: var(--s-color-status-error);
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -798,27 +917,6 @@ export default class SwapChart extends Mixins(
   &-info-container {
     display: flex;
     flex-direction: column;
-    .price {
-      display: flex;
-      margin-bottom: $inner-spacing-mini / 2;
-      font-weight: 800;
-      font-size: var(--s-heading3-font-size);
-      line-height: var(--s-line-height-extra-small);
-      letter-spacing: var(--s-letter-spacing-small);
-      &-change {
-        font-weight: 600;
-        font-size: var(--s-font-size-medium);
-        line-height: var(--s-line-height-medium);
-        color: var(--s-color-theme-accent);
-        letter-spacing: inherit;
-        &--increased {
-          color: var(--s-color-status-success);
-        }
-        &-arrow {
-          color: inherit;
-        }
-      }
-    }
   }
 }
 .token {
