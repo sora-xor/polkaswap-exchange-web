@@ -109,11 +109,6 @@ type ChartDataItem = {
   price: number[];
 };
 
-type PageInfo = {
-  hasNextPage: boolean;
-  endCursor: string;
-};
-
 enum TIMEFRAME_TYPES {
   FIVE_MINUTES = 'FIVE_MINUTES',
   FIFTEEN_MINUTES = 'FIFTEEN_MINUTES',
@@ -255,7 +250,7 @@ export default class SwapChart extends Mixins(
 
   // ordered by timestamp DESC
   prices: ChartDataItem[] = [];
-  pageInfos: PageInfo[] = [];
+  pageInfos: SUBQUERY_TYPES.PageInfo[] = [];
   zoomStart = 0; // percentage of zoom start position
   precision = 2;
   limits = {
@@ -587,7 +582,7 @@ export default class SwapChart extends Mixins(
   }
 
   // ordered ty timestamp DESC
-  async fetchData(address: string, filter: ChartFilter, pageInfo?: PageInfo) {
+  async fetchData(address: string, filter: ChartFilter, pageInfo?: SUBQUERY_TYPES.PageInfo) {
     if (pageInfo && !pageInfo.hasNextPage) return;
 
     const { type, count } = filter;
@@ -599,7 +594,7 @@ export default class SwapChart extends Mixins(
 
     do {
       const first = Math.min(fetchCount, 100); // how many items should be fetched by request
-      const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, type, first as any, endCursor);
+      const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, type, first, endCursor);
 
       if (!response) throw new Error('Chart data fetch error');
 

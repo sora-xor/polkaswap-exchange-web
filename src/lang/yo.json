@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "A ko rii itẹsiwaju Polkadot.js. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju polkadot{.js} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
-        "noAccount": "Polkadot.js aṣiṣe ifowosi. Jọwọ ṣayẹwo akọọlẹ rẹ ninu itẹsiwaju Polkadot.js"
+        "noAccount": "Polkadot.js aṣiṣe ifowosi. Jọwọ ṣayẹwo akọọlẹ rẹ ninu itẹsiwaju Polkadot.js",
+        "noExtension": "A ko ri {extension} . Jọwọ fi sii ki o tun gbee si oju-iwe yii",
+        "noSigner": "Ti kọ iraye si. Lọ si awọn eto {extension} ki o si ṣi “Ṣakoso Wiwọle Oju opo wẹẹbu” lati gba laaye."
     },
     "connection": {
         "title": "Ifowosi SORA Nẹtiwọọki",
@@ -97,6 +99,10 @@
             "learnMore": "Kọ ẹkọ si",
             "connect": "So ifowisi pọ",
             "refresh": "Tunwo"
+        },
+        "selectWallet": "Yan apamọwọ kan lati ṣiṣẹ pẹlu",
+        "wallet": {
+            "install": "Fi sori ẹrọ"
         }
     },
     "wallet": {

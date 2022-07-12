@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Nem találtunk Polkadot.js kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Úgy tűnik, hogy a Polkadot.js bővítményben nincsenek fiókok. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
-        "noAccount": "Polkadot.js fiókhiba. Kérjük, ellenőrizd fiókodat a Polkadot.js bővítményben."
+        "noAccount": "Polkadot.js fiókhiba. Kérjük, ellenőrizd fiókodat a Polkadot.js bővítményben.",
+        "noExtension": "Nem található {extension} bővítmény. Kérjük, telepítse, és töltse be újra ezt az oldalt",
+        "noSigner": "Hozzáférés megtagadva. Nyissa meg a {extension} bővítmény beállításait, és nyissa meg a „Webhely-hozzáférés kezelése” lehetőséget az engedélyezéshez."
     },
     "connection": {
         "title": "SORA hálózati fiók",
@@ -97,6 +99,10 @@
             "learnMore": "Tudj meg többet",
             "connect": "Fiók csatlakoztatása",
             "refresh": "Frissítés"
+        },
+        "selectWallet": "Válasszon egy pénztárcát, amellyel dolgozni szeretne",
+        "wallet": {
+            "install": "Telepítés"
         }
     },
     "wallet": {

@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Inget Polkadot.js tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Det verkar inte finnas några konton i ditt Polkadot.js-tillägg. Vänligen lägg till ett konto och försök igen.",
-        "noAccount": "Polkadot.js konto fel. Vänligen kontrollera ditt konto i Polkadot.js-tillägget."
+        "noAccount": "Polkadot.js konto fel. Vänligen kontrollera ditt konto i Polkadot.js-tillägget.",
+        "noExtension": "Inget {extension} -tillägg hittades. Installera det och ladda om den här sidan",
+        "noSigner": "Tillträde beviljas ej. Gå till tilläggsinställningarna för {extension} och öppna \"Hantera webbplatsåtkomst\" för att tillåta."
     },
     "connection": {
         "title": "SORA-Nätverkskonto",
@@ -97,6 +99,10 @@
             "learnMore": "Lär dig mer",
             "connect": "Anslut konto",
             "refresh": "Uppdatera"
+        },
+        "selectWallet": "Välj en plånbok att arbeta med",
+        "wallet": {
+            "install": "Installera"
         }
     },
     "wallet": {

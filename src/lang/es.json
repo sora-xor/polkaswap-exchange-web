@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión Polkadot.js. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Parece que no hay cuentas en su extensión Polkadot.js. Por favor añada una cuenta e inténtelo de nuevo.",
-        "noAccount": "Error en la cuenta de Polkadot.js. Por favor compruebe su cuenta en la extensión Polkadot.js"
+        "noAccount": "Error en la cuenta de Polkadot.js. Por favor compruebe su cuenta en la extensión Polkadot.js",
+        "noExtension": "No se encontró ninguna {extension} . Instálelo y vuelva a cargar esta página.",
+        "noSigner": "Acceso denegado. Vaya a la configuración de la {extension} y abra \"Administrar acceso al sitio web\" para permitir."
     },
     "connection": {
         "title": "Cuenta de la Red SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Aprende más",
             "connect": "Conectar cuenta",
             "refresh": "Actualizar"
+        },
+        "selectWallet": "Seleccione una billetera con la que trabajar",
+        "wallet": {
+            "install": "Instalar"
         }
     },
     "wallet": {

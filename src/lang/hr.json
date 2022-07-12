@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Nije pronađeno proširenje Polkadot.js. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Čini se da u vašem proširenju Polkadot.js nema računa. Dodajte račun i pokušajte ponovo.",
-        "noAccount": "Polkadot.js pogreška računa. Provjerite svoj račun u proširenju Polkadot.js"
+        "noAccount": "Polkadot.js pogreška računa. Provjerite svoj račun u proširenju Polkadot.js",
+        "noExtension": "Nije pronađeno {extension} . Instalirajte ga i ponovno učitajte ovu stranicu",
+        "noSigner": "Pristup odbijen. Idite na postavke {extension} i otvorite \"Upravljanje pristupom web-mjestu\" da dopustite."
     },
     "connection": {
         "title": "Račun mreže SORE",
@@ -97,6 +99,10 @@
             "learnMore": "Saznajte više",
             "connect": "Povežite račun",
             "refresh": "Osvježite"
+        },
+        "selectWallet": "Odaberite novčanik s kojim ćete raditi",
+        "wallet": {
+            "install": "Instalirati"
         }
     },
     "wallet": {

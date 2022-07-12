@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Er is geen Polkadot.js-extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Er lijken geen accounts te zijn in uw Polkadot.js-extensie. Voeg een account toe en probeer het opnieuw.",
-        "noAccount": "Polkadot.js-accountfout. Controleer uw account in de Polkadot.js-extensie"
+        "noAccount": "Polkadot.js-accountfout. Controleer uw account in de Polkadot.js-extensie",
+        "noExtension": "Er is geen {extension} -extensie gevonden. Installeer het en laad deze pagina opnieuw",
+        "noSigner": "Toegang geweigerd. Ga naar {extension} extensie-instellingen en open \"Websitetoegang beheren\" om toe te staan."
     },
     "connection": {
         "title": "SORA Netwerk account",
@@ -97,6 +99,10 @@
             "learnMore": "Kom meer te weten",
             "connect": "Account aansluiten",
             "refresh": "Vernieuwen"
+        },
+        "selectWallet": "Selecteer een portemonnee om mee te werken",
+        "wallet": {
+            "install": "Installeren"
         }
     },
     "wallet": {
