@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) Polkadot{.js}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Dường như không có tài khoản nào trong tiện ích (extension) Polkadot{.js}. Vui lòng thêm tài khoản và thử lại.",
-        "noAccount": "Tài khoản Polkadot{.js} gặp trục trặc. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) Polkadot{.js}."
+        "noAccount": "Tài khoản Polkadot{.js} gặp trục trặc. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) Polkadot{.js}.",
+        "noExtension": "Không tìm thấy {extension} . Vui lòng cài đặt nó và tải lại trang này",
+        "noSigner": "Quyền truy cập bị từ chối. Đi tới cài đặt tiện ích {extension} và mở \"Quản lý quyền truy cập trang web\" để cho phép."
     },
     "connection": {
         "title": "Tài khoản Mạng SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Tìm hiểu thêm",
             "connect": "Kết nối tài khoản",
             "refresh": "Làm mới"
+        },
+        "selectWallet": "Chọn một ví để làm việc với",
+        "wallet": {
+            "install": "Cài đặt"
         }
     },
     "wallet": {

@@ -25,17 +25,17 @@
     "unknownErrorText": "错误 出了点问题...",
     "transactionSubmittedText": "交易已提交",
     "operations": {
-        "Swap": "交换",
-        "Transfer": "转移",
+        "Swap": "兑换",
+        "Transfer": "转账",
         "AddLiquidity": "增加流动性",
-        "RemoveLiquidity": "删除流动性",
-        "CreatePair": "创建一对",
+        "RemoveLiquidity": "移除流动性",
+        "CreatePair": "创建流动性对",
         "RegisterAsset": "注册资产",
         "ClaimRewards": "申领奖励",
         "andText": "和",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "Swap": "已交换{amount} {symbol}为{amount2} {symbol2}",
+            "Swap": "已把{amount} {symbol}兑换为{amount2} {symbol2}",
             "AddLiquidity": "已提供{amount} {symbol}和{amount2} {symbol2}",
             "RemoveLiquidity": "已删除{amount} {symbol}和{amount2} {symbol2}",
             "CreatePair": "提供{amount} {symbol}和{amount2} {symbol2}",
@@ -44,11 +44,11 @@
             "ReferralReserveXor": "绑定XOR成功",
             "ReferralUnreserveXor": "解绑XOR成功",
             "ReferralSetInvitedUser": "推荐设置成功",
-            "SwapAndSend": "将{amount} {symbol}交换为{amount2} {symbol2}和{action} {direction} {address}",
-            "DemeterFarmingDepositLiquidity": "提供{symbol}和{symbol2} {amount} LP 代币",
-            "DemeterFarmingWithdrawLiquidity": "移除{symbol}和{symbol2} {amount} LP 代币",
-            "DemeterFarmingStakeToken": "添加了{amount} {symbol}",
-            "DemeterFarmingUnstakeToken": "删除了{amount} {symbol}",
+            "SwapAndSend": "已将{amount} {symbol}兑换为{amount2} {symbol2}和{action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "已提供{symbol}和{symbol2} {amount} 流动性提供代币",
+            "DemeterFarmingWithdrawLiquidity": "已移除{symbol}和{symbol2} {amount} 流动性提供代币",
+            "DemeterFarmingStakeToken": "已添加{amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "已移除{amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol}成功申领"
         },
         "error": {
@@ -62,27 +62,29 @@
             "ReferralReserveXor": "绑定XOR失败",
             "ReferralUnreserveXor": "XOR解绑失败",
             "ReferralSetInvitedUser": "设置推荐失败",
-            "SwapAndSend": "无法将{amount} {symbol}交换为{amount2} {symbol2}和{action} {direction} {address}",
-            "DemeterFarmingDepositLiquidity": "未能提供{amount} {symbol}和{symbol2} LP 代币",
-            "DemeterFarmingWithdrawLiquidity": "未能删除{amount} {symbol}和{symbol2} LP 令牌",
+            "SwapAndSend": "无法将{amount} {symbol}兑换为{amount2} {symbol2}和{action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "提供{amount} {symbol}和{symbol2} LP 代币失败",
+            "DemeterFarmingWithdrawLiquidity": "移除{amount} {symbol}和{symbol2} LP 令牌失败",
             "DemeterFarmingStakeToken": "添加{amount} {symbol}失败",
-            "DemeterFarmingUnstakeToken": "未能删除{amount} {symbol}",
-            "DemeterFarmingGetRewards": "未能认领{symbol}"
+            "DemeterFarmingUnstakeToken": "移除失败{amount} {symbol}",
+            "DemeterFarmingGetRewards": "申领失败{symbol}"
         },
-        "ReferralReserveXor": "债券XOR",
+        "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
         "ReferralSetInvitedUser": "设置推荐",
-        "SwapAndSend": "交换和发送",
-        "DemeterFarmingDepositLiquidity": "股权流动性",
-        "DemeterFarmingWithdrawLiquidity": "无抵押流动性",
-        "DemeterFarmingStakeToken": "股权代币",
-        "DemeterFarmingUnstakeToken": "取消质押代币",
+        "SwapAndSend": "兑换和发送",
+        "DemeterFarmingDepositLiquidity": "质押流动性",
+        "DemeterFarmingWithdrawLiquidity": "未质押流动性",
+        "DemeterFarmingStakeToken": "质押代币",
+        "DemeterFarmingUnstakeToken": "未质押代币",
         "DemeterFarmingGetRewards": "申领奖励"
     },
     "polkadotjs": {
-        "noExtensions": "没有找到 Polkadot.js 扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noExtensions": "没有找到 Polkadot.js 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "您的Polkadot.js扩展中似乎没有账户。请添加一个账户并再次尝试。",
-        "noAccount": "Polkadot.js账户错误。请检查您在Polkadot.js扩展中的账户"
+        "noAccount": "Polkadot.js账户错误。请检查您在Polkadot.js扩展中的账户",
+        "noExtension": "未找到{extension}扩展名。请安装它并重新加载此页面",
+        "noSigner": "拒绝访问。转到{extension}扩展设置并打开“管理网站访问”以允许。"
     },
     "connection": {
         "title": "SORA网络账户",
@@ -97,6 +99,10 @@
             "learnMore": "了解更多",
             "connect": "连接账户",
             "refresh": "刷新"
+        },
+        "selectWallet": "选择要使用的钱包",
+        "wallet": {
+            "install": "安装"
         }
     },
     "wallet": {
@@ -115,7 +121,7 @@
         "fee": "@:networkFeeText",
         "enterAddress": "输入地址",
         "badAddress": "地址不正确",
-        "enterAmount": "输入金额",
+        "enterAmount": "输入数额",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "确认交易",
         "confirm": "@:confirmText",
@@ -126,13 +132,13 @@
         "addressError": "您不能向您当前已连接的同一个账户发送代币。"
     },
     "account": {
-        "successCopy": "钱包地址被复制到剪贴板上",
+        "successCopy": "钱包地址已被复制到剪贴板上",
         "copy": "复制地址",
         "switch": "切换账户",
         "walletAddress": "钱包地址"
     },
     "history": {
-        "clearHistory": "删除历史",
+        "clearHistory": "清除历史记录",
         "filterPlaceholder": "按地址、符号、类型或区块ID进行筛选",
         "empty": "您的交易将显示在此处",
         "emptySearch": "未找到交易"
@@ -144,7 +150,7 @@
         "send": "@:sendText",
         "receive": "@:account.copy",
         "liquidity": "增加流动性",
-        "bridge": "桥",
+        "bridge": "转接桥",
         "copy": "复制资产 ID",
         "successCopy": "{symbol}资产 ID 被复制到剪贴板",
         "copied": "已复制！",
@@ -154,15 +160,15 @@
             "locked": "- 已锁定",
             "reserved": "- 保留",
             "total": "总共",
-            "bonded": "- 保税"
+            "bonded": "- 绑定的"
         },
         "totalAssetsValue": "您的总资产价值：",
         "details": "细节",
         "assetId": "资产 ID"
     },
     "asset": {
-        "remove": "删除资产",
-        "select": "选择资产",
+        "remove": "移除资产",
+        "select": "选择一个资产",
         "recieve": "接收{symbol}"
     },
     "addAsset": {
@@ -173,7 +179,7 @@
         "alreadyAttached": "代币已附加",
         "understand": "我明白",
         "warningTitle": "交易风险自担!",
-        "warningMessage": "任何人都可以创建代币，包括创建声称代表项目的现有代币的假版本。\n如果您购买了这种代币，您可能无法将其卖回。",
+        "warningMessage": "任何人都可以创建代币，包括创建声称代表项目的现有代币的假版本。\n如果您购买了这种代币，您可能无法将其卖出。",
         "approved": "社区批准的资产",
         "unknown": "未知来源",
         "scam": "骗局",
@@ -183,7 +189,7 @@
             "switchBtn": "仅经过验证的资产"
         },
         "AddAssetNFT": {
-            "title": "NFT"
+            "title": "NFTs"
         },
         "searchInputText": "按资产 ID、名称或股票代码搜索"
     },
@@ -203,7 +209,7 @@
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "无法获得交易费用",
-        "error": "未能创建{symbol}代币",
+        "error": "创建{symbol}代币失败",
         "tokenSymbol": {
             "placeholder": "代币符号",
             "desc": "这是代币的标识符。您可以使用 1 到 7 个字符进行选择。"
@@ -226,7 +232,7 @@
         "actionNFT": "@:createTokenTextNFT",
         "provideContent": "提供内容",
         "selectLocalFile": "选择本地文件",
-        "CreateSimpleToken": "令牌",
+        "CreateSimpleToken": "代币",
         "CreateNftToken": "NFT",
         "nft": {
             "source": {
@@ -242,7 +248,7 @@
             "image": {
                 "placeholderNoImage": "通过输入链接或从本地存储中选择来上传文件",
                 "placeholderBadSource": "文件处理失败",
-                "placeholderBadSourceAddition": "或者它还没有上传到 IPFS",
+                "placeholderBadSourceAddition": "或者它还没有被上传到 IPFS",
                 "placeholderFileLimit": "文件大小超过{value} mb 的限制"
             },
             "supply": {
@@ -265,7 +271,7 @@
         "blockId": "区块 ID",
         "status": "状况",
         "statuses": {
-            "pending": "待定。。。",
+            "pending": "等待确认...",
             "failed": "交易失败",
             "complete": "完成"
         },
@@ -281,8 +287,8 @@
         "copy": "复制{value}",
         "history": {
             "created": "已经创建了{amount}{symbol}的交易。",
-            "submitted": "提交的交易费用为{fee} {symbol}",
-            "confirmed": "已确认交易"
+            "submitted": "已提交的交易费用为{fee} {symbol}",
+            "confirmed": "交易已确认"
         },
         "viewIn": {
             "sorascan": "在 SORAScan 中查看",
@@ -302,7 +308,7 @@
     "connectedText": "已连接",
     "connectWalletTextTooltip": "用polkadot{.js}连接到@:soraText网络",
     "selectNodeText": "选择网络节点",
-    "bridgeText": "桥",
+    "bridgeText": "转接桥",
     "disclaimer": "<span class=\"app-disclaimer__title\">免责声明<\/span>：本网站由@:soraText 社区维护。在继续使用本网站之前，请查看@:polkaswapFaqLink 和文档，其中包括有关 Polkaswap 工作原理的详细说明，以及 @:memorandumLink 和 @:(privacyLink)。这些文档对于安全和积极的用户体验至关重要。通过使用 Polkaswap，您承认您已阅读并理解这些文件。您还承认以下内容：1) 您全权负责遵守在您的法律管辖范围内可能适用于您对 Polkaswap 的特定使用的所有法律； 2）您对Polkaswap当前版本为alpha版本的理解：尚未经过全面测试，部分功能可能无法按设计执行； 3) 您理解并自愿接受使用 Polkaswap 所涉及的风险，包括但不限于丢失代币的风险。再一次提醒，在没有阅读@:polkaswapFaqLink、@:memorandumLink 和@:privacyLink之前，请不要继续！",
     "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\"> @:FAQ <\/a>",
     "poweredBy": "启动于",
@@ -316,8 +322,8 @@
     "firstPerSecond": "{first}每{second}",
     "pairIsNotCreated": "未创建代币对",
     "pageTitle": {
-        "Swap": "交换",
-        "Pool": "池",
+        "Swap": "兑换",
+        "Pool": "流动池",
         "Bridge": "@:bridgeText",
         "About": "关于",
         "Stats": "统计数据",
@@ -333,7 +339,7 @@
     },
     "mainMenu": {
         "Swap": "交换",
-        "Pool": "池",
+        "Pool": "流动池",
         "Bridge": "@:bridgeText",
         "Farming": "农耕",
         "Wallet": "账户",
@@ -341,13 +347,13 @@
         "About": "关于",
         "Stats": "统计数据",
         "Support": "支持",
-        "CreatePair": "创建一对",
+        "CreatePair": "创建流动性对",
         "Tokens": "代币",
         "StakingContainer": "质押"
     },
     "social": {
-        "twitter": "Twitter",
-        "telegram": "Telegram",
+        "twitter": "推特",
+        "telegram": "电报群",
         "medium": "Medium",
         "reddit": "Reddit",
         "github": "GitHub",
@@ -379,7 +385,7 @@
         },
         "polkadot": {
             "title": "什么是 polkadot{.js}？",
-            "description": "Polkadot{.js}扩展是一个可用于 Firefox 和 Chrome 的浏览器扩展，专门用于管理基于 Substrate 的链的账户，包括 @:(soraText)、Polkadot 和 Kusama。您可以添加、导入和导出账户并签署您从授权的网站发起的交易或外部信息。"
+            "description": "Polkadot{.js}扩展是一个可用于 Firefox 浏览器和 Chrome 的浏览器扩展，专门用于管理基于 Substrate 的链的账户，包括 @:soraText、Polkadot 和 Kusama。您可以添加、导入和导出账户并签署您从授权的网站发起的交易或外部信息。"
         }
     },
     "node": {
@@ -449,17 +455,17 @@
     },
     "about": {
         "title": "迈向可互操作未来的 DEX。",
-        "description": "资产的跨链交换，新资产的简单创建和上市，以及最简单的互换。Polkadot的可互操作性未来就在这里，我们走在最前沿！",
+        "description": "资产的跨链交换，新资产的简单创建和上市，以及最简单的兑换。Polkadot的可互操作性未来就在这里，并且我们走在最前沿！",
         "trading": {
             "title": "更快的交易",
-            "first": "Polkaswap 是一种非托管的跨链 AMM DEX 协议，用于互换基于 Polkadot 和 Kusama 中继链、Polkadot 和 Kusama 平行链以及通过桥接直接连接的区块链的代币。",
+            "first": "Polkaswap 是一种非托管的跨链 AMM DEX 协议，用于互换基于 Polkadot 和 Kusama 中继链、Polkadot 和 Kusama 平行链以及通过转接桥直接连接区块链的代币。",
             "second": "Polkaswap 消除了对受信任的中介机构的依赖，并提供了更快速的交易机会",
             "third": "Polkaswap是一个社区项目，开发者们在开源代码上进行合作，使用的是"
         },
         "liquidity": {
             "title": "无限流动性",
             "first": "Polkaswap在一个共同的流动性聚集算法下结合了多个流动性来源，以一种完全无需信任和去中心化的方式在链上运行。",
-            "second": "当交易者调用互换功能时，流动性聚合算法将使用所有流动性来源的最佳报价来填补订单。流动性来源可以是其他DEX、订单簿、或其他API驱动的来源。",
+            "second": "当交易者调用兑换功能时，流动性聚合算法将使用所有流动性来源的最佳报价来填补订单。流动性来源可以是其他DEXs、订单簿、或其他API驱动的来源。",
             "third": "由于Polkaswap是一个开源项目，任何人都可以通过对Polkaswap代码库的贡献增加更多的流动性来源。"
         },
         "swap": {
@@ -471,7 +477,7 @@
         "pswap": {
             "title": "PSWAP 代币",
             "first": "PSWAP 是由社区治理通过对其发布进行投票而创建的。它是一种实用和治理代币，用于奖励 Polkaswap 上的流动性提供者。与大多数其他奖励代币不同的是，PSWAP 会随着交易而被销毁，并且供应量会随着时间的推移而减少。",
-            "second": "Polkaswap DEX 上每次掉期的{percent}% 费用用于回购 PSWAP 代币，然后将其销毁。起初，90% 的PSWAP 代币销毁被重新分配给流动性提供者，但随着时间的推移，这个百分比将在 4 年后降至 35%。"
+            "second": "Polkaswap DEX 上每次兑换的{percent}% 费用用于回购 PSWAP 代币，然后将其销毁。起初，90% 的PSWAP 代币销毁被重新分配给流动性提供者，但随着时间的推移，这个百分比将在 4 年后降至 35%。"
         },
         "links": {
             "first": {
@@ -479,19 +485,19 @@
                 "desc": "保护 SORA 网络和 Polkaswap 等去中心化应用程序的未来，并通过成为 SORA 验证者一路获得奖励。"
             },
             "second": {
-                "title": "将链连接到 SORA",
+                "title": "连接一条链到 SORA",
                 "desc": "使用 HASHI 桥接协议将更多链连接到 SORA 和 Polkaswap，从而发展去中心化的世界经济。"
             }
         },
         "network": "Polkaswap建立在SORA网络上，专注于互操作性，将加密货币生态系统的其他部分连接到Polkadot。"
     },
     "exchange": {
-        "Swap": "交换",
-        "Pool": "池",
+        "Swap": "兑换",
+        "Pool": "流动池",
         "balance": "余额",
         "insufficientBalance": "@:insufficientBalanceText",
         "price": "价钱",
-        "transactionSubmitted": "交易已提交",
+        "transactionSubmitted": "已提交的交易",
         "transactionMessage": "{firstToken}和{secondToken}",
         "confirm": "确认",
         "ok": "好的"
@@ -500,7 +506,7 @@
         "connectWallet": "@:connectWalletText",
         "estimated": "估计的",
         "slippageTolerance": "滑点公差",
-        "minReceived": "最低可收数量",
+        "minReceived": "最低可接收数量",
         "maxSold": "最大可卖数量",
         "minReceivedTooltip": "如果在确认之前有一个较大而不利的价格变动，您的交易将被取消。",
         "priceImpact": "价格影响",
@@ -513,7 +519,7 @@
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "{tokenSymbol}数量不足",
         "insufficientLiquidity": "流动性不足",
-        "confirmSwap": "确认交换",
+        "confirmSwap": "确认兑换",
         "swapOutputMessage": "输出是估计的。您将至少收到{transactionValue}，否则交易将被取消。",
         "rewardsForSwap": "PSWAP 战略奖励",
         "swapInputMessage": "输入是估计的。您将卖出最大{transactionValue}或交易将被取消。",
@@ -524,13 +530,13 @@
         "connectToWallet": "连接账户以查看您的流动性。",
         "liquidityNotFound": "未找到流动性。",
         "addLiquidity": "增加流动性",
-        "removeLiquidity": "删除流动性",
+        "removeLiquidity": "移除流动性",
         "createPair": "创建一对",
-        "pooledToken": "{tokenSymbol}池",
-        "pairTokens": "{pair}池代币",
-        "poolShare": "您的池份额",
-        "unknownAsset": "未知资产",
-        "description": "当您增加流动性时，您将获得代表您头寸的池代币。这些代币会自动赚取与您在池中所占份额成比例的费用，并且可以随时赎回。",
+        "pooledToken": "{tokenSymbol}流动池",
+        "pairTokens": "{pair}流动池代币",
+        "poolShare": "您的流动池份额",
+        "unknownAsset": "@:unknownAssetText",
+        "description": "当您增加流动性时，您将获得代表您头寸的流动池代币。这些代币会自动赚取与您在流动池中所占份额成比例的费用，并且可以随时赎回。",
         "strategicBonusApy": "战略奖金APY"
     },
     "bridge": {
@@ -569,13 +575,13 @@
             "emptyListMessage": "没有结果"
         },
         "customAsset": {
-            "title": "定制",
+            "title": "自定义",
             "customInfo": "重要提醒！自定义代币必须在@:(soraText) 中注册。",
             "registerToken": "注册代币",
             "addressPlaceholder": "资产 ID",
             "symbolPlaceholder": "代币符号",
             "empty": "未找到代币",
-            "alreadyAttached": "代币已附加"
+            "alreadyAttached": "代币已添加"
         }
     },
     "confirmBridgeTransactionDialog": {
@@ -596,16 +602,16 @@
             "step2": "第二个"
         },
         "status": {
-            "pending": "{step}交易待处理...",
+            "pending": "{step}交易等待确认...",
             "failed": "{step}交易失败。@:(retryText)。",
-            "confirm": "确认 2 笔交易中的第二笔...",
+            "confirm": "两笔交易中的第二笔交易正在等待确认中...",
             "complete": "完成",
             "convertionComplete": "转换完成"
         },
         "statuses": {
             "waiting": "等待",
             "ready": "准备",
-            "pending": "待定",
+            "pending": "等待确认",
             "frozen": "已被冻结",
             "failed": "交易失败",
             "done": "完成",
@@ -621,29 +627,29 @@
             "transactionFee": "交易费用",
             "total": "总共"
         },
-        "successCopy": "交易哈希值被复制到剪贴板上",
+        "successCopy": "交易哈希已被复制到剪贴板上",
         "ethereum": "@:ethereumText",
         "sora": "@:soraText",
-        "pending": "<span class=\"network-title\"> {network} <\/span>交易待处理...",
+        "pending": "<span class=\"network-title\"> {network} <\/span>交易等待确认...",
         "retry": "@:retryText",
         "metamask": "@:metamask",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "创建新的交易",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "changeAccount": "@:metamask 中的@:changeAccountText",
+        "changeAccount": "@:changeAccountText 中的 @:metamask",
         "expectedAddress": "在@:metamask中预期的地址",
-        "title": "桥接交易",
+        "title": "转接桥交易",
         "expectedMetaMaskAddress": "MetaMask 中的预期地址：",
         "allowToken": "允许 @:appName 使用您的{tokenSymbol}",
-        "approveToken": "请注意，只需要批准一次令牌。如果您的扩展程序有多个令牌批准请求，请确保仅确认最后一个并拒绝其余请求。",
-        "blocksLeft": "{count}个街区..."
+        "approveToken": "请注意，只需要批准一次代币。如果您的扩展程序中有多个代币批准请求，请确保仅确认最后一个并拒绝其余请求。",
+        "blocksLeft": "{count}个区块等待确认..."
     },
     "bridgeHistory": {
         "title": "历史",
         "showHistory": "显示历史",
-        "clearHistory": "删除历史",
-        "empty": "你的交易将出现在这里。",
+        "clearHistory": "清除历史记录",
+        "empty": "您的交易将出现在这里。",
         "filterPlaceholder": "按资产 ID 或代币符号进行筛选",
         "restoreHistory": "恢复历史记录",
         "statusAction": "需要采取的行动"
@@ -658,25 +664,25 @@
             "title": "资产"
         },
         "custom": {
-            "title": "定制",
+            "title": "自定义",
             "search": "输入资产 ID",
             "text": "自定义代币",
-            "alreadyAttached": "此代币已附加",
+            "alreadyAttached": "此代币已被添加过了",
             "notFound": "未找到代币"
         }
     },
     "createPair": {
-        "title": "创建一对",
+        "title": "创建一个流动性对",
         "deposit": "存款",
         "balance": "余额",
         "pricePool": "价格和费用",
-        "shareOfPool": "池份额",
+        "shareOfPool": "流动池份额",
         "firstPerSecond": "@:firstPerSecond",
-        "firstSecondPoolTokens": "{first} - {second}池",
+        "firstSecondPoolTokens": "{first} - {second}流动池",
         "connect": "连接钱包",
         "supply": "供应",
-        "yourPosition": "您的位置",
-        "yourPositionEstimated": "你的位置（估计",
+        "yourPosition": "您的头寸",
+        "yourPositionEstimated": "您的头寸（估计）",
         "youWillReceive": "您将收到",
         "remove": "删除",
         "add": "添加",
@@ -684,12 +690,12 @@
         "networkFee": "网络费用",
         "alreadyCreated": "代币对已经创建",
         "firstLiquidityProvider": "您是第一个流动性提供者",
-        "firstLiquidityProviderInfo": "您添加的代币比例将决定该矿池的价格。 <br\/>一旦您对费率感到满意，请点击供应进行查看。"
+        "firstLiquidityProviderInfo": "您添加的代币比例将决定该流动池的价格。 <br\/>一旦您对费率感到满意，请点击供应进行查看。"
     },
     "confirmSupply": {
-        "title": "您的池份额将是",
+        "title": "您的流动池份额将是",
         "outputDescription": "产出是估计的。如果价格变化超过{slippageTolerance}%，您的交易将被取消。",
-        "poolTokensBurned": "{first} - {second}池代币被销毁",
+        "poolTokensBurned": "{first} - {second}流动池代币被销毁",
         "price": "价格"
     },
     "addLiquidity": {
@@ -698,19 +704,19 @@
         "firstPerSecond": "@:firstPerSecond"
     },
     "removeLiquidity": {
-        "title": "删除流动性",
+        "title": "移除流动性",
         "liquidity": "流动性",
         "balance": "余额",
         "amount": "数量",
         "input": "输入",
         "output": "输出",
         "price": "价格",
-        "remove": "删除",
-        "description": "删除池中的代币会将您的头寸以当前的汇率转换为基础代币，与您在池中的份额成正比。累积的费用将包括在您所收到的金额中。",
-        "outputMessage": "产出是估计的。如果价格变化超过{slippageTolerance}%，您的交易将被取消。",
+        "remove": "移除",
+        "description": "移除流动池中的代币会将您的头寸以当前的汇率转换为基础代币，与您在流动池中的份额成正比。累积的费用将包括在您所收到的金额中。",
+        "outputMessage": "产出是估计的。如果价格变化超过 {slippageTolerance}% ，您的交易将被取消。",
         "confirmTitle": "您将收到",
-        "shareOfPool": "交易后的资金池份额",
-        "locked": "{percent}您的资金池在质押"
+        "shareOfPool": "交易后的流动池份额",
+        "locked": "{percent}您的流动池正在质押中"
     },
     "dexSettings": {
         "title": "交易设置",
@@ -722,10 +728,10 @@
         "slippageToleranceHint": "如果价格的不利变化超过此百分比，您的交易将被取消。",
         "slippageToleranceValidation": {
             "warning": "您的交易可能会失败",
-            "frontrun": "您的交易可能已被抢先",
+            "frontrun": "您的交易可能会抢跑",
             "error": "输入有效的滑点百分比"
         },
-        "custom": "定制",
+        "custom": "自定义",
         "transactionDeadline": "交易期限",
         "transactionDeadlineHint": "如果交易的等待时间超过这个时间，交易将被取消。",
         "nodeAddress": "节点地址",
@@ -733,9 +739,9 @@
         "port": "端口",
         "min": "最小",
         "marketAlgorithms": {
-            "SMART": "<span class=\"algorithm\"> SMART <\/span>流动性路由通过仅结合所有可用市场的最佳价格选项来确保任何交易的最佳价格。当可用时，只要资产价格比其他来源更实惠，代币绑定曲线（ <span class=\"algorithm\"> TBC <\/span> <span class=\"algorithm\"> XYK <\/span>池将被利用。",
-            "TBC": "<span class=\"algorithm\"> TBC <\/span> — 仅从代币绑定曲线（一级市场）购买。 <span class=\"algorithm\"> XYK <\/span>池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
-            "XYK": "<span class=\"algorithm\"> XYK <\/span> — 仅从 XYK 池（二级市场）购买。传统的 XYK 池交换。"
+            "SMART": "<span class=\"algorithm\"> SMART <\/span>流动性路由通过仅结合所有可用市场的最佳价格选项来确保任何交易的最佳价格。当可用时，只要资产价格比其他来源更实惠，代币绑定曲线（ <span class=\"algorithm\"> TBC <\/span> <span class=\"algorithm\"> XYK <\/span>流动池将被利用。",
+            "TBC": "<span class=\"algorithm\"> TBC <\/span> — 仅从代币绑定曲线（一级市场）购买。 <span class=\"algorithm\"> XYK <\/span>流动池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
+            "XYK": "<span class=\"algorithm\"> XYK <\/span> — 仅从 XYK 池（二级市场）购买。传统的 XYK 流动池兑换。"
         }
     },
     "resultDialog": {
@@ -750,13 +756,13 @@
         "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "和",
         "claiming": {
-            "pending": "申领。。。",
+            "pending": "声称...",
             "success": "申领成功"
         },
         "transactions": {
             "confimation": "确认{total}笔交易的{order}",
             "success": "您将很快收到您的奖励",
-            "failed": "{total}的{order}交易失败。@:retryText"
+            "failed": "{order} 的 {total} 交易失败. @:retryText"
         },
         "signing": {
             "extension": "polkadot{.js}浏览器扩展",
@@ -772,8 +778,8 @@
             "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "连接@:ethereumText 账号",
             "signAndClaim": "签名并申领",
-            "pendingInternal": "@:soraText 交易待处理...",
-            "pendingExternal": "@:ethereumText 交易待处理...",
+            "pendingInternal": "@:soraText 交易等待确认...",
+            "pendingExternal": "@:ethereumText 交易等待确认...",
             "retry": "@:retryText",
             "checkRewards": "查看",
             "insufficientBalance": "@:insufficientBalanceText"
@@ -791,7 +797,7 @@
             "MarketMakerVolume": "做市商",
             "LiquidityProvisionFarming": "农业"
         },
-        "vested": "归属",
+        "vested": "已归属",
         "forText": "给",
         "totalVested": "总奖励",
         "claimableAmountDoneVesting": "可申领金额(完成归属)",
@@ -817,7 +823,7 @@
         "title": "语言"
     },
     "tokens": {
-        "title": "已上市的代币",
+        "title": "已列出的代币",
         "symbol": "符号",
         "name": "名字",
         "assetId": "资产 ID"
@@ -834,49 +840,49 @@
         "notifications": {
             "success": {
                 "title": "代币购买",
-                "text": "代币购买完成。一旦在连接的以太坊账户中收到代币，HASHI 桥接交易将自动开始。关闭此窗口并继续使用 Polkaswap 是安全的。准备好后会有关于桥接交易的通知。"
+                "text": "代币购买完成。一旦在连接的以太坊账户中收到代币，HASHI 桥接交易将自动开始。关闭此窗口并继续使用 Polkaswap 是安全的。准备好后会有关于转接桥交易的通知。"
             },
             "supportError": {
-                "title": "不支持令牌",
-                "text": "不幸的是，Polkaswap 中的 HASHI 桥还不支持通过 @:moonpayText 购买的代币。通常只有支持的代币才能通过 Polkaswap 中的 MoonPay 购买，因此一定是哪里出了问题。请不要犹豫，在<a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Polkaswap 电报群<\/a> 。"
+                "title": "不支持的代币",
+                "text": "很遗憾，Polkaswap 中的 HASHI 桥还不支持通过 @:moonpayText 购买的代币。通常只有支持的代币才能通过 Polkaswap 中的 MoonPay 购买，因此一定是哪里出了问题。请不要犹豫，在<a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Polkaswap 电报群<\/a>里联系我们让社区知晓您的此次案例 。"
             },
             "feeError": {
-                "title": "没有足够的 ETH 用于桥接交易",
-                "text": "不幸的是，由于没有足够的 ETH 来支付以太坊网络的交易费用，HASHI 桥接交易失败了。请添加更多 ETH，然后重试。"
+                "title": "没有足够的 ETH 用于转接桥交易",
+                "text": "很遗憾，由于没有足够的 ETH 来支付以太坊网络的交易费用，HASHI 桥交易失败了。请添加更多 ETH，然后重试。"
             },
             "transactionError": {
                 "title": "交易失败",
-                "text": "不幸的是，@:moonpayText 交易似乎失败了。请再试一次。对于@:moonpayText 支持，请转到<a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/ support.moonpay.com <\/a>"
+                "text": "很遗憾，@:moonpayText 交易似乎失败了。请再试一次。对于@:moonpayText 支持，请转到<a class=\"link\" href=\"https:\/\/support.moonpay.com\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:moonpayText\"> https:\/\/ support.moonpay.com <\/a>"
             },
             "amountError": {
                 "title": "余额不足",
-                "text": "不幸的是，由于没有足够的代币进行交易，HASHI 桥交易失败了。请检查您的以太坊账户余额并重试。"
+                "text": "很遗憾，由于没有足够的代币进行交易，HASHI 桥交易失败了。请检查您的以太坊账户余额并重试。"
             },
             "accountAddressError": {
                 "title": "错误的以太坊账户",
-                "text": "不幸的是，由于@:moonpayText 订单中代币的接收地址与您当前的以太坊账户地址不匹配，HASHI 桥接交易失败。请在扩展中切换以太坊帐户并重试。"
+                "text": "很遗憾，由于@:moonpayText 订单中代币的接收地址与您当前的以太坊账户地址不匹配，HASHI 桥接交易失败。请在扩展中切换以太坊账户并重试。"
             }
         },
         "buttons": {
             "buy": "购买代币",
             "history": "购买记录",
-            "transfer": "启动桥",
-            "view": "查看桥接交易"
+            "transfer": "启动转接桥",
+            "view": "查看转接桥的交易"
         },
         "history": {
             "title": "购买记录",
             "empty": "没有数据"
         },
         "confirmations": {
-            "txReady": "桥接交易就绪"
+            "txReady": "转接桥交易就绪"
         },
         "tooltips": {
-            "transfer": "代币购买成功！\n点击开始桥接交易"
+            "transfer": "代币购买成功了！\n点击开始转接桥交易"
         }
     },
     "recievedText": "收到",
-    "light": "光",
-    "dark": "黑暗",
+    "light": "明亮主题",
+    "dark": "暗调主题",
     "headerMenu": {
         "showBalances": "显示余额",
         "hideBalances": "隐藏余额",
@@ -889,24 +895,24 @@
     "learnMoreText": "了解更多",
     "marketMakerCountdown": {
         "title": "做市商倒计时",
-        "blocks": "块",
+        "blocks": "区块",
         "daysLeft": "剩余天数",
         "txs": "交易",
         "volume": "做市商交易量",
         "description": "每月 2000 万个 PSWAP 将分发给至少 500 笔交易\/月价值超过 1 个 XOR 的做市商。"
     },
     "confirmNextTxFailure": {
-        "header": "注意力",
+        "header": "注意",
         "info": "在此交易后，您的 XOR 余额将低于{fee}XOR。 您将无法支付另一笔交易的网络费用。",
-        "payoff": "您必须使用桥接器从其他网络获取 XOR，从另一个 SORA 帐户发送 XOR，或者将您帐户中已有的任何其他令牌交换为 XOR。",
+        "payoff": "您必须使用转接桥从其他网络获取 XOR，从另一个 SORA 账户发送 XOR，或者将您账户中已有的任何其他代币兑换为 XOR。",
         "button": "是的，我了解风险"
     },
-    "blockNumberText": "块号",
+    "blockNumberText": "区块数",
     "referralProgram": {
         "title": "推荐计划",
-        "connectAccount": "要邀请用户，您需要连接您的 SORA 帐户。",
-        "bondedXOR": "XOR键合",
-        "referralsNumber": "{number}推荐",
+        "connectAccount": "想要邀请用户，您需要连接您的 SORA 账户。",
+        "bondedXOR": "XOR绑定",
+        "referralsNumber": "{number}推荐者",
         "startInviting": "绑定 XOR 以推荐他人",
         "preview": "邀请新用户并从他们的交易费用中获得 10%。 <br\/>首先，绑定任意数量的XOR。 <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">了解更多<\/a>",
         "deposit": "存款",
@@ -914,47 +920,47 @@
         "networkFee": "@:networkFeeText",
         "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
-        "insufficientBondedBalance": "保税余额不足",
+        "insufficientBondedBalance": "绑定余额不足",
         "action": {
             "connectWallet": "@:connectWalletText",
             "empty": "输入{tokenSymbol}的金额",
-            "startInviting": "债券{tokenSymbol}开始邀请",
-            "bondMore": "债券更多",
-            "bond": "债券",
-            "unbond": "脱键",
+            "startInviting": "绑定{tokenSymbol}以便开始您的邀请",
+            "bondMore": "绑定更多",
+            "bond": "绑定",
+            "unbond": "解绑",
             "copyLink": "复制链接"
         },
         "transactionDetails": "交易详情",
         "receivedRewards": "已领取奖励",
         "invitationLink": "邀请链接",
         "successCopy": "推荐链接被复制到剪贴板",
-        "bondTitle": "债券XOR",
+        "bondTitle": "绑定XOR",
         "unbondTitle": "解绑XOR",
         "confirm": {
             "text": "确认",
-            "bond": "确认债券",
+            "bond": "确认绑定",
             "unbond": "确认解绑",
             "inviteTitle": "您已被邀请加入 Polkaswap",
             "inviteDescription": "对于每笔交易，您的推荐人将收取 10% 的费用，您无需支付任何额外费用。",
             "signInvitation": "批准",
             "freeOfCharge": "此活动是免费的",
-            "hasReferrerTitle": "你已经设置了你的推荐人",
-            "hasReferrerDescription": "不幸的是，您只能设置一个",
+            "hasReferrerTitle": "您已经设置好了您的推荐人",
+            "hasReferrerDescription": "亲爱的真不巧，您只能设置一个",
             "ok": "好的"
         },
         "referrer": {
             "title": "添加您的推荐人",
             "titleReferrer": "您的推荐人",
-            "placeholder": "输入邀请链接或代码",
+            "placeholder": "输入邀请链接或邀请码",
             "label": "邀请链接或代码",
             "approve": "批准",
             "approved": "已批准",
-            "description": "可以被推荐到Polkaswap， <br\/>输入推荐人的链接或者代码",
-            "referredBy": "您是由{推荐人}推荐的。",
+            "description": "您可以被推荐到Polkaswap， <br\/>输入推荐人的链接或者邀请码",
+            "referredBy": "您已被 {referrer}推荐",
             "info": "当您支付交易费用时， <br\/> 10% 将归您的推荐人",
             "referredLablel": "推荐地址"
         },
-        "insufficientBondedAmount": "要邀请更多推荐，请至少绑定 {inviteUserFee} XOR"
+        "insufficientBondedAmount": "要邀请更多推荐者，请至少绑定 {inviteUserFee} XOR"
     },
     "transactionDetailsText": "交易详情",
     "createTokenTextNFT": "创建 NFT",
@@ -966,47 +972,47 @@
     },
     "bridgeTransferNotification": {
         "addToken": "将{symbol}添加到 @:metamask",
-        "title": "桥接交易成功"
+        "title": "转接桥交易成功"
     },
     "mobilePopup": {
         "sideMenu": "获取 SORA 钱包",
         "header": "下载具有<span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>功能的 SORA 钱包",
-        "info": "交换来自不同网络的代币 - SORA、以太坊、Polkadot、Kusama。提供流动资金池并从交易所费用中赚取 %。"
+        "info": "兑换来自不同网络的代币 - SORA、以太坊、Polkadot、Kusama。提供流动流动池并从交易费用中赚取 %。"
     },
     "releaseNotesText": "发行说明",
-    "copiedText": "复制！",
+    "copiedText": "已复制！",
     "copyWithValue": "复制{value}",
-    "copiedWithValue": "{value}被复制！",
+    "copiedWithValue": "{value}已被复制！",
     "signAndClaimText": "签名并申领",
     "balanceText": "余额",
     "unknownAssetText": "未知资产",
     "demeterFarming": {
         "staking": {
-            "active": "质押活跃",
-            "inactive": "投注以获得额外奖励",
+            "active": "生效中的质押",
+            "inactive": "质押以获得额外奖励",
             "stopped": "质押停止"
         },
         "info": {
-            "earned": "{symbol}获得",
+            "earned": "{symbol} 已赚取",
             "fee": "费用",
-            "feeTooltip": "存款费用适用于您的质押金额",
+            "feeTooltip": "用于您质押金额的存款费",
             "owned": "{symbol} @:balanceText",
-            "poolShare": "您的权益池份额",
-            "poolShareWillBe": "您的权益池份额将是",
+            "poolShare": "您的流动池质押份额",
+            "poolShareWillBe": "您的流动池质押份额将是",
             "rewardToken": "奖励代币",
             "stake": "您的{symbol}质押",
-            "stakeWillBe": "您的{symbol}股份将是",
+            "stakeWillBe": "您的{symbol}质押将是",
             "totalLiquidityLocked": "总流动性锁定"
         },
         "actions": {
             "add": "质押更多",
-            "claim": "领取奖励",
-            "remove": "移除股权",
-            "start": "开始放样"
+            "claim": "申领奖励",
+            "remove": "移除质押",
+            "start": "开始质押"
         },
         "amountAdd": "质押金额",
         "amountRemove": "移除金额",
-        "poweredBy": "由 Demeter Farming 提供动力"
+        "poweredBy": "由 Demeter Farming 提供"
     },
     "staking": {
         "title": "质押"
@@ -1018,19 +1024,19 @@
         },
         "poolXyk": {
             "SourceBalanceIsNotLargeEnough": "源余额不够大",
-            "TargetBalanceIsNotLargeEnough": "目的地余额不够大",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "提供的金额过于多样化",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "金额超出要求的范围",
+            "TargetBalanceIsNotLargeEnough": "目标余额不够大",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "提供的数额过于多样化",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "数额超出要求的范围",
             "UnableToDepositXorLessThanMinimum": "XOR 低于最小值 (0.007)",
-            "ZeroValueInAmountParameter": "金额参数为零值"
+            "ZeroValueInAmountParameter": "金额参数价值为零"
         },
         "xstPool": {
-            "PoolAlreadyInitializedForPair": "池对已存在",
-            "SlippageLimitExceeded": ""
+            "PoolAlreadyInitializedForPair": "流动池对已存在",
+            "SlippageLimitExceeded": "滑点公差未达到恰当的限度"
         },
         "referrals": {
-            "AlreadyHasReferrer": "帐户已有推荐人",
-            "ReferrerInsufficientBalance": ""
+            "AlreadyHasReferrer": "账户已有一位推荐人",
+            "ReferrerInsufficientBalance": "推荐人的预留余额不足"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "奖励计划已经结束",
@@ -1038,12 +1044,12 @@
             "NoRewardsForAsset": "该资产没有奖励"
         },
         "liquidityProxy": {
-            "ForbiddenFilter": "不允许选择的流动性来源"
+            "ForbiddenFilter": "您选择的流动性来源不被允许"
         },
         "demeterFarmingPlatform": {
-            "InsufficientFunds": "不充足的资金",
+            "InsufficientFunds": "资金不足",
             "InsufficientLPTokens": "流动性提供代币不足",
-            "PoolDoesNotHaveRewards": "矿池没有奖励"
+            "PoolDoesNotHaveRewards": "流动池没有奖励"
         },
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "计算价格时出错"
