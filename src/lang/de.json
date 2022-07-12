@@ -1026,16 +1026,16 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Poolpaar existiert bereits",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Slippagetoleranz hat die richtige Grenze nicht erreicht"
         },
         "referrals": {
             "AlreadyHasReferrer": "Das Konto hat bereits einen Referrer",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Referrer hat nicht genug Guthaben"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Das Prämienprogramm ist bereits beendet",
             "CantCalculateReward": "Prämienberechnung konnte nicht durchgeführt werden",
-            "NoRewardsForAsset": "Für diesen Vermögenswert gibt es keine Belohnungen"
+            "NoRewardsForAsset": "Für dieses Asset gibt es keine Belohnungen"
         },
         "liquidityProxy": {
             "ForbiddenFilter": "Ausgewählte Liquiditätsquelle ist nicht zulässig"
