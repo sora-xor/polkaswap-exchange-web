@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Wygląda na to, że w Twoim rozszerzeniu polkadot.js nie ma kont. Dodaj konto i spróbuj ponownie.",
-        "noAccount": "Błąd konta polkadot.js. Sprawdź swoje konto w rozszerzeniu polkadot.js."
+        "noAccount": "Błąd konta polkadot.js. Sprawdź swoje konto w rozszerzeniu polkadot.js.",
+        "noExtension": "Nie znaleziono {extension} . Zainstaluj go i ponownie załaduj tę stronę",
+        "noSigner": "Brak dostępu. Przejdź do ustawień {extension} i otwórz „Zarządzaj dostępem do witryny”, aby zezwolić."
     },
     "connection": {
         "title": "Konto sieci SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Dowiedz się więcej",
             "connect": "Połącz z kontem",
             "refresh": "Odśwież"
+        },
+        "selectWallet": "Wybierz portfel do pracy",
+        "wallet": {
+            "install": "zainstalować"
         }
     },
     "wallet": {

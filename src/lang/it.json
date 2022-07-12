@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Nessuna estensione Polkadot.js trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Sembra che non ci siano account nella tua estensione Polkadot.js. Aggiungi un account e riprova.",
-        "noAccount": "Errore dell'account Polkadot.js. Controlla il tuo account nell'estensione Polkadot.js"
+        "noAccount": "Errore dell'account Polkadot.js. Controlla il tuo account nell'estensione Polkadot.js",
+        "noExtension": "Non è stata trovata alcuna {extension} . Si prega di installarlo e ricaricare questa pagina",
+        "noSigner": "Accesso negato. Vai alle impostazioni {extension} e apri \"Gestisci accesso al sito web\" per consentire."
     },
     "connection": {
         "title": "SORA Network account",
@@ -97,6 +99,10 @@
             "learnMore": "Per saperne di più",
             "connect": "Connetti account",
             "refresh": "Aggiorna"
+        },
+        "selectWallet": "Seleziona un portafoglio con cui lavorare",
+        "wallet": {
+            "install": "Installare"
         }
     },
     "wallet": {

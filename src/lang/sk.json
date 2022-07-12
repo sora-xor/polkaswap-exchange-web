@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Rozšírenie Polkadot{.js} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Zdá sa, že vo vašom rozšírení Polkadot{.js} nie sú žiadne účty. Pridajte účet a skúste to znova.",
-        "noAccount": "Chyba účtu Polkadot{.js}. Skontrolujte váš účet v rozšírení Polkadot{.js}"
+        "noAccount": "Chyba účtu Polkadot{.js}. Skontrolujte váš účet v rozšírení Polkadot{.js}",
+        "noExtension": "Nenašlo sa žiadne {extension} . Nainštalujte si ho a znova načítajte túto stránku",
+        "noSigner": "Prístup zamietnutý. Prejdite do nastavení {extension} a otvorte položku Spravovať prístup k webovým stránkam."
     },
     "connection": {
         "title": "Sieťový účet SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Dozvedieť sa viac",
             "connect": "Pripojiť účet",
             "refresh": "Obnoviť"
+        },
+        "selectWallet": "Vyberte peňaženku, s ktorou chcete pracovať",
+        "wallet": {
+            "install": "Inštalácia"
         }
     },
     "wallet": {

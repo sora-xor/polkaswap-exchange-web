@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Finner ingen Polkadot.js utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Det ser ikke ut til å være noen kontoer i Polkadot.js utvidelsen. Legg til en konto, og prøv på nytt.",
-        "noAccount": "Polkadot.js kontofeil. Sjekk kontoen din i Polkadot.js utvidelsen"
+        "noAccount": "Polkadot.js kontofeil. Sjekk kontoen din i Polkadot.js utvidelsen",
+        "noExtension": "Ingen {extension} -utvidelse ble funnet. Installer den og last inn denne siden på nytt",
+        "noSigner": "Ingen tilgang. Gå til utvidelsesinnstillingene for {extension} og åpne «Administrer nettstedtilgang» for å tillate."
     },
     "connection": {
         "title": "SORA Nettverkskonto",
@@ -97,6 +99,10 @@
             "learnMore": "Lær mer",
             "connect": "Koble til konto",
             "refresh": "Forfriske"
+        },
+        "selectWallet": "Velg en lommebok du vil jobbe med",
+        "wallet": {
+            "install": "Installere"
         }
     },
     "wallet": {

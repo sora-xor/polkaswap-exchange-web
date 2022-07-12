@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi Polkadot.js yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Sepertinya tidak ada akun di ekstensi Polkadot.js Anda. Tambahkan akun dan coba lagi.",
-        "noAccount": "Polkadot.js akun error. Silakan periksa akun Anda di ekstensi Polkadot.js"
+        "noAccount": "Polkadot.js akun error. Silakan periksa akun Anda di ekstensi Polkadot.js",
+        "noExtension": "Tidak ada {extension} yang ditemukan. Silakan instal dan muat ulang halaman ini",
+        "noSigner": "Akses ditolak. Buka setelan ekstensi {extension} dan buka \"Kelola Akses Situs Web\" untuk mengizinkan."
     },
     "connection": {
         "title": "Akun Jaringan SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Pelajari lebih lanjut",
             "connect": "Hubungkan akun",
             "refresh": "Menyegarkan"
+        },
+        "selectWallet": "Pilih dompet untuk digunakan",
+        "wallet": {
+            "install": "Install"
         }
     },
     "wallet": {

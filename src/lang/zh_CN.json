@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "没有找到 Polkadot.js 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "您的Polkadot.js扩展中似乎没有账户。请添加一个账户并再次尝试。",
-        "noAccount": "Polkadot.js账户错误。请检查您在Polkadot.js扩展中的账户"
+        "noAccount": "Polkadot.js账户错误。请检查您在Polkadot.js扩展中的账户",
+        "noExtension": "未找到{extension}扩展名。请安装它并重新加载此页面",
+        "noSigner": "拒绝访问。转到{extension}扩展设置并打开“管理网站访问”以允许。"
     },
     "connection": {
         "title": "SORA网络账户",
@@ -97,6 +99,10 @@
             "learnMore": "了解更多",
             "connect": "连接账户",
             "refresh": "刷新"
+        },
+        "selectWallet": "选择要使用的钱包",
+        "wallet": {
+            "install": "安装"
         }
     },
     "wallet": {
