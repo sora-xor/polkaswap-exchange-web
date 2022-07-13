@@ -76,7 +76,6 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/pool',
-    name: PageNames.PoolContainer,
     component: lazyView(PageNames.PoolContainer),
     children: [
       {
