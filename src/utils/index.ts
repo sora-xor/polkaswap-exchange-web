@@ -267,6 +267,11 @@ export const b64EncodeUnicode = (str) => {
   return window.btoa(encodeURIComponent(str)).slice(0, -2);
 };
 
-export const unicodeDecodeB64 = (str) => {
-  return decodeURIComponent(window.atob(str));
+export const unicodeDecodeB64 = (str): string => {
+  try {
+    const result = decodeURIComponent(window.atob(str));
+    return result;
+  } catch (error) {
+    return '';
+  }
 };

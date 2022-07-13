@@ -354,16 +354,41 @@ export default class ReferralProgram extends Mixins(
   }
 
   get isValidReferrerLink(): boolean {
+    // possible variations:
+    // http://polkaswap.io/#/referral/cnVkoGs3rEMqLqY27c2nfVXJRGdzNJk2ns78DcqtppaSRe8qm
+    // http://polkaswap.io/#/referral/Y25Wa29HczNyRU1xTHFZMjdjMm5mVlhKUkdkek5KazJuczc4RGNxdHBwYVNSZThxbQ
+    // cnVkoGs3rEMqLqY27c2nfVXJRGdzNJk2ns78DcqtppaSRe8qm
+    // Y25Wa29HczNyRU1xTHFZMjdjMm5mVlhKUkdkek5KazJuczc4RGNxdHBwYVNSZThxbQ
     if (this.isReferrerLinkEmpty) {
       return false;
     }
-    if (!api.validateAddress(this.referrerAddress) || this.referrerAddress === this.account?.address) {
-      return false;
+
+    let reference: string | undefined = this.referrerLinkOrCode;
+
+    // exclude domain if exists
+    if (this.referrerLinkOrCode.includes('referral')) {
+      reference = last(this.referrerLinkOrCode.split('/')) ?? '';
     }
-    if (this.referrerLinkOrCode === this.referrerAddress) {
+
+    // if non-encoded
+    if (api.validateAddress(reference)) {
+      // check if referencing to themselves
+      if (reference === this.account?.address) {
+        return false;
+      }
       return true;
     }
-    return this.referrerLinkOrCode === this.referrerLink.href;
+
+    // if encoded
+    if (api.validateAddress(unicodeDecodeB64(reference))) {
+      // check if referencing to themselves
+      if (unicodeDecodeB64(reference) === this.account?.address) {
+        return false;
+      }
+      return true;
+    }
+
+    return false;
   }
 
   get filteredInvitedUsers(): Array<string> {
