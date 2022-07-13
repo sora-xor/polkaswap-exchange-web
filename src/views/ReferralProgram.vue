@@ -453,7 +453,13 @@ export default class ReferralProgram extends Mixins(
   }
 
   handleSetReferrer(): void {
-    this.setStorageReferrer(this.referrerAddress);
+    if (api.validateAddress(this.referrerAddress)) {
+      this.setStorageReferrer(this.referrerAddress);
+    }
+
+    if (api.validateAddress(unicodeDecodeB64(this.referrerAddress))) {
+      this.setStorageReferrer(unicodeDecodeB64(this.referrerAddress));
+    }
   }
 }
 </script>
