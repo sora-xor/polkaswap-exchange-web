@@ -523,7 +523,8 @@
         "swapOutputMessage": "Wynik jest szacunkowy. Otrzymasz co najmniej {transactionValue} lub transakcja zostanie anulowana.",
         "rewardsForSwap": "Wynagrodzenie strategiczne w walucie PSWAP",
         "swapInputMessage": "Wprowadzone dane są szacunkowe. Sprzedasz maksymalnie {transactionValue} lub transakcja zostanie anulowana.",
-        "route": "Kierunek"
+        "route": "Kierunek",
+        "errorFetching": "Błąd podczas pobierania danych"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

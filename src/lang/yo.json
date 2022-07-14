@@ -523,7 +523,8 @@
         "swapOutputMessage": "Ti ṣe iṣiro iṣẹjade. Iwọ yoo gba o kere ju {transactionValue} tabi idunadura naa yoo pada.",
         "rewardsForSwap": "Awọn ere ilana PSWAP",
         "swapInputMessage": "Iṣagbewọle ti ni iṣiro. Iwọ yoo ta o pọju {transactionValue} tabi idunadura naa yoo pada.",
-        "route": "Ipa ọna"
+        "route": "Ipa ọna",
+        "errorFetching": "Aṣiṣe gbigba data naa"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

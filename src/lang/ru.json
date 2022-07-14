@@ -523,7 +523,8 @@
         "swapOutputMessage": "Вывод оценён. Вы получите как минимум {transactionValue} или транзакция будет отменена.",
         "rewardsForSwap": "Стратегические вознаграждения PSWAP",
         "swapInputMessage": "Ввод оценивается. Вы продадите максимум {transactionValue} иначе транзакция будет отменена.",
-        "route": "Маршрут"
+        "route": "Маршрут",
+        "errorFetching": "Ошибка при получении данных"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

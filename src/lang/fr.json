@@ -523,7 +523,8 @@
         "swapOutputMessage": "Le montant à recevoir est estimé. Vous recevrez au moins {transactionValue} ou la transaction sera annulée.",
         "rewardsForSwap": "Récompenses stratégiques PSWAP",
         "swapInputMessage": "Le montant est estimé. Vous vendrez au maximum {transactionValue} ou la transaction sera annulée.",
-        "route": "Route"
+        "route": "Route",
+        "errorFetching": "Erreur lors de la récupération des données"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

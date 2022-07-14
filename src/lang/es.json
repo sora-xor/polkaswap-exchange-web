@@ -523,7 +523,8 @@
         "swapOutputMessage": "La cantidad de salida es estimada. Recibirá al menos {transactionValue} o la transacción se revertirá.",
         "rewardsForSwap": "Recompensas estratégicas de PSWAP",
         "swapInputMessage": "La entrada es estimada. Venderá el máximo de {transactionValue} o la transacción se revertirá",
-        "route": "Ruta"
+        "route": "Ruta",
+        "errorFetching": "Error al obtener los datos"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

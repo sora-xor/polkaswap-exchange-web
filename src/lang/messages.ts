@@ -341,6 +341,7 @@ export default {
     rewardsForSwap: 'PSWAP Strategic Rewards',
     swapInputMessage: 'Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.',
     route: 'Route',
+    errorFetching: 'Error fetching the data',
   },
   pool: {
     connectWallet: '@:connectWalletText',

@@ -523,7 +523,8 @@
         "swapOutputMessage": "Излаз је процењен. Добићете најмање {transactionValue} или ће трансакција бити враћена.",
         "rewardsForSwap": "PSWAP стратешке награде",
         "swapInputMessage": "Улаз је процењен. Продаћете максимално {transactionValue} или ће се трансакција поништити.",
-        "route": "Рута"
+        "route": "Рута",
+        "errorFetching": "Greška pri prenošenju podataka"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

@@ -523,7 +523,8 @@
         "swapOutputMessage": "Keluaran diperkirakan. Anda akan menerima setidaknya {transactionValue} atau transaksi akan dibatalkan.",
         "rewardsForSwap": "PSWAP Strategic Rewards",
         "swapInputMessage": "Masukan diperkirakan. Anda akan menjual maksimum {transactionValue} atau transaksi akan kembali.",
-        "route": "Rute"
+        "route": "Rute",
+        "errorFetching": "Kesalahan pengambilan data"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
