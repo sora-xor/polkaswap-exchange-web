@@ -523,7 +523,8 @@
         "swapOutputMessage": "Becsült eredmény. Legalább {transactionValue} kapsz, vagy a tranzakció visszafordul.",
         "rewardsForSwap": "PSWAP Stratégiai Jutalmak",
         "swapInputMessage": "Becsült eredmény. Maximum {transactionValue} adsz el, vagy a tranzakció visszafordul.",
-        "route": "Útvonal"
+        "route": "Útvonal",
+        "errorFetching": "Hiba történt az adatok lekérésekor"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

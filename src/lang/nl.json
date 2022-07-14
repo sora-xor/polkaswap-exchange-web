@@ -523,7 +523,8 @@
         "swapOutputMessage": "De output wordt geschat. U ontvangt minimaal {transactionValue} of de transactie wordt teruggedraaid.",
         "rewardsForSwap": "PSWAP Strategische Beloningen",
         "swapInputMessage": "Invoer wordt geschat. U verkoopt maximaal {transactionValue} of de transactie wordt teruggedraaid.",
-        "route": "Route"
+        "route": "Route",
+        "errorFetching": "Fout bij het ophalen van de gegevens"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

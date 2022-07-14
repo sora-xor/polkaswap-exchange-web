@@ -13,7 +13,13 @@
         <div class="s-flex chart-controls">
           <div class="chart-filters">
             <s-tabs type="rounded" :value="selectedFilter.name" @click="selectFilter">
-              <s-tab v-for="filter in filters" :key="filter.name" :name="filter.name" :label="filter.label" />
+              <s-tab
+                v-for="filter in filters"
+                :key="filter.name"
+                :name="filter.name"
+                :label="filter.label"
+                :disabled="parentLoading || loading"
+              />
             </s-tabs>
           </div>
 
@@ -24,6 +30,7 @@
               type="action"
               size="small"
               :class="['chart-type', { 's-pressed': active }]"
+              :disabled="parentLoading || loading"
               @click="selectChartType(type)"
             >
               <component :is="icon" :class="{ active }" />
@@ -796,8 +803,14 @@ export default class SwapChart extends Mixins(
   }
 
   .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
-    padding: 0 10px;
+    padding: 0 $inner-spacing-mini;
     text-transform: initial;
+    &:not(.is-active).is-disabled {
+      color: var(--s-color-base-content-primary);
+    }
+    &.is-disabled {
+      cursor: not-allowed;
+    }
   }
 }
 
@@ -824,7 +837,7 @@ export default class SwapChart extends Mixins(
     background-color: transparent;
   }
   .el-skeleton__item {
-    background-color: var(--s-color-base-background);
+    background: var(--s-color-base-border-secondary);
   }
   &-price {
     width: 157px;
@@ -846,16 +859,16 @@ export default class SwapChart extends Mixins(
       > :last-child {
         width: 42px;
       }
+      + .charts-skeleton-line {
+        margin-top: 23px;
+      }
     }
   }
   &-line {
     display: flex;
     align-items: center;
     flex-grow: 0;
-    margin-top: 29px;
-    &:first-child {
-      margin-top: 21px;
-    }
+    margin-top: 27px;
     &--lables {
       justify-content: space-between;
       margin-top: $inner-spacing-medium;
@@ -896,6 +909,18 @@ export default class SwapChart extends Mixins(
   }
   .s-icon-clear-X-16:before {
     color: var(--s-color-status-error);
+  }
+}
+
+@include large-desktop {
+  .container--charts {
+    position: relative;
+    z-index: 1;
+  }
+  .chart-filters {
+    .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
+      padding: 0 $basic-spacing-small;
+    }
   }
 }
 </style>

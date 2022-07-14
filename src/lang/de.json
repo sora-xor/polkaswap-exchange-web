@@ -523,7 +523,8 @@
         "swapOutputMessage": "Die Ausgabe ist geschätzt. Du erhältst mindestens {transactionValue}, ansonsten wird die Transaktion rückgängig gemacht.",
         "rewardsForSwap": "PSWAP strategische Belohnungen",
         "swapInputMessage": "Die Eingabe wird geschätzt. Du wirst maximal {transactionValue} verkaufen oder die Transaktion wird rückgängig gemacht.",
-        "route": "Route"
+        "route": "Route",
+        "errorFetching": "Fehler beim Abrufen der Daten"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

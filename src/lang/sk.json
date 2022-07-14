@@ -523,7 +523,8 @@
         "swapOutputMessage": "Výsledná čiastka je len odhadom. Obdržíte minimálne {transactionValue}, inak sa transakcia vráti späť.",
         "rewardsForSwap": "Strategické odmeny PSWAP",
         "swapInputMessage": "Vstupná čiastka je len odhadom. Predáte maximálne {transactionValue}, inak sa transakcia vráti späť.",
-        "route": "Cesta"
+        "route": "Cesta",
+        "errorFetching": "Chyba pri načítaní údajov"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

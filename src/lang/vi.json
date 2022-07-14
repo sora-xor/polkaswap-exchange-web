@@ -523,7 +523,8 @@
         "swapOutputMessage": "Ước lượng đầu ra. Bạn sẽ nhận ít nhất {transactionValue} hoặc giao dịch sẽ hoàn tác.",
         "rewardsForSwap": "Phần thưởng chiến lược PSWAP",
         "swapInputMessage": "Dự tính đầu vào. Bạn sẽ bán tối đa {transactionValue} hoặc giao dịch sẽ hoàn tác.",
-        "route": "Route"
+        "route": "Route",
+        "errorFetching": "Lỗi khi tìm nạp dữ liệu"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

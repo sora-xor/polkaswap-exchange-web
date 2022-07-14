@@ -523,7 +523,8 @@
         "swapOutputMessage": "输出是估计的。您将至少收到{transactionValue}，否则交易将被取消。",
         "rewardsForSwap": "PSWAP 战略奖励",
         "swapInputMessage": "输入是估计的。您将卖出最大{transactionValue}或交易将被取消。",
-        "route": "路线"
+        "route": "路线",
+        "errorFetching": "获取数据时出错"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

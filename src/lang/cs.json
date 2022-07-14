@@ -523,7 +523,8 @@
         "swapOutputMessage": "Výstup je odhadován. Obdržíte alespoň {transactionValue}, jinak se transakce vrátí zpět.",
         "rewardsForSwap": "Strategické odměny PSWAP",
         "swapInputMessage": "Vstup je odhadován. Prodáte maximálně {transactionValue}, jinak se transakce vrátí zpět.",
-        "route": "Trasa"
+        "route": "Trasa",
+        "errorFetching": "Chyba při načítání dat"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",

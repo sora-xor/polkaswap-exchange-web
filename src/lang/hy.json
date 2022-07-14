@@ -523,7 +523,8 @@
         "swapOutputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
         "rewardsForSwap": "PSWAP ստրատեգիական պարգևատրումներ",
         "swapInputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
-        "route": "Երթուղի"
+        "route": "Երթուղի",
+        "errorFetching": "Տվյալները հավաքելու սխալը"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
