@@ -50,7 +50,7 @@ export const isOutgoingTransaction = (tx: Nullable<BridgeHistory>): boolean => {
 export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeApprovedRequest> => {
   if (!tx.hash) throw new Error(`[Bridge]: Tx hash cannot be empty`);
   if (!Number.isFinite(tx.externalNetwork))
-    throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} recieved`);
+    throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} received`);
 
   let subscription!: Subscription;
 
@@ -78,7 +78,7 @@ export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeA
 export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash: string; blockId: string }> => {
   if (!tx.ethereumHash) throw new Error('[Bridge]: ethereumHash cannot be empty!');
   if (!Number.isFinite(tx.externalNetwork))
-    throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} recieved`);
+    throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} received`);
 
   let subscription!: Subscription;
 

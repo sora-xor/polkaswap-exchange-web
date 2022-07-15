@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Ta bort tillgång",
         "select": "Välj en tillgång",
-        "recieve": "Ta emot {symbol}"
+        "receive": "Ta emot {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -881,7 +881,6 @@
             "transfer": "Tokens framgångsrikt köpta!\nKlicka för att starta bryggtransaktionen"
         }
     },
-    "recievedText": "Mottagen",
     "light": "Ljus",
     "dark": "Mörk",
     "headerMenu": {
@@ -968,11 +967,11 @@
     "code": {
         "download": "Ladda ner QR-Kod",
         "upload": "Skanna QR",
-        "recieve": "Ta emot",
         "invalid": "Ogiltig QR-Kod",
         "import": "Importera en bild",
         "scan": "Skanna med kamera",
-        "allowanceError": "Kontrollera din kameratillgänglighet och webbläsarbehörigheter för att använda den"
+        "allowanceError": "Kontrollera din kameratillgänglighet och webbläsarbehörigheter för att använda den",
+        "receive": "Ta emot"
     },
     "bridgeTransferNotification": {
         "addToken": "Lägg till {symbol} i @:metamask",
@@ -1058,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Ett fel uppstod när priset beräknades"
         }
-    }
+    },
+    "receivedText": "Mottagen"
 }
