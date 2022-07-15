@@ -58,7 +58,7 @@ const getters = defineGetters<DemeterFarmingState>()({
       if (!pools[poolAsset]) return FPNumber.ZERO;
 
       return pools[poolAsset].reduce((value, accountPool) => {
-        return value.add(accountPool.pooledTokens);
+        return FPNumber.max(value, accountPool.pooledTokens) as FPNumber;
       }, FPNumber.ZERO);
     };
   },
