@@ -788,4 +788,13 @@ export default {
   staking: {
     title: 'Staking',
   },
+  code: {
+    download: 'Download QR Code',
+    upload: 'Scan QR',
+    recieve: 'Recieve',
+    invalid: 'Invalid QR Code',
+    import: 'Import an image',
+    scan: 'Scan with camera',
+    allowanceError: 'Check your camera availability and browser permissions to use it',
+  },
 };

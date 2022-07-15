@@ -969,7 +969,10 @@
         "download": "Ներբեռնեք QR կոդը",
         "upload": "Սկան QR",
         "recieve": "Ստանալ",
-        "invalid": "Անվավեր QR կոդը"
+        "invalid": "Անվավեր QR կոդը",
+        "import": "Ներմուծեք պատկեր",
+        "scan": "Սկան տեսախցիկով",
+        "allowanceError": "Ստուգեք ձեր տեսախցիկի առկայությունը և դիտարկիչի թույլտվությունները՝ այն օգտագործելու համար"
     },
     "bridgeTransferNotification": {
         "addToken": "Ավելացնել {symbol} է @:metamask",

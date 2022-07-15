@@ -969,7 +969,10 @@
         "download": "Ladda ner QR-Kod",
         "upload": "Skanna QR",
         "recieve": "Ta emot",
-        "invalid": "Ogiltig QR-Kod"
+        "invalid": "Ogiltig QR-Kod",
+        "import": "Importera en bild",
+        "scan": "Skanna med kamera",
+        "allowanceError": "Kontrollera din kameratillgänglighet och webbläsarbehörigheter för att använda den"
     },
     "bridgeTransferNotification": {
         "addToken": "Lägg till {symbol} i @:metamask",

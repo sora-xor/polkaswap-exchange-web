@@ -969,7 +969,10 @@
         "download": "Unduh Kode QR",
         "upload": "Pindai QR",
         "recieve": "Menerima",
-        "invalid": "Kode QR tidak valid"
+        "invalid": "Kode QR tidak valid",
+        "import": "Impor gambar",
+        "scan": "Pindai dengan kamera",
+        "allowanceError": "Periksa ketersediaan kamera dan izin browser Anda untuk menggunakannya"
     },
     "bridgeTransferNotification": {
         "addToken": "Tambahkan {symbol} ke @:metamask",

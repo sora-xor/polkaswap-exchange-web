@@ -969,7 +969,10 @@
         "download": "Stáhnout QR kód",
         "upload": "Skenovat QR",
         "recieve": "Příjem",
-        "invalid": "Neplatný QR kód"
+        "invalid": "Neplatný QR kód",
+        "import": "Importujte obrázek",
+        "scan": "Skenujte fotoaparátem",
+        "allowanceError": "Zkontrolujte dostupnost fotoaparátu a oprávnění prohlížeče k jeho použití"
     },
     "bridgeTransferNotification": {
         "addToken": "Přidejte {symbol} do @:metamask",

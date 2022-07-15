@@ -969,7 +969,10 @@
         "download": "Pobierz kod QR",
         "upload": "Skanowanie kodu QR",
         "recieve": "Odbierać",
-        "invalid": "Nieprawidłowy kod QR"
+        "invalid": "Nieprawidłowy kod QR",
+        "import": "Importuj obraz",
+        "scan": "Skanuj aparatem",
+        "allowanceError": "Sprawdź dostępność aparatu i uprawnienia przeglądarki, aby z niego korzystać"
     },
     "bridgeTransferNotification": {
         "addToken": "Dodaj {symbol} do @:metamask",

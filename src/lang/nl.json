@@ -969,7 +969,10 @@
         "download": "Downloaden QR-code",
         "upload": "QR code scannen",
         "recieve": "Ontvangen",
-        "invalid": "Ongeldige QR-code"
+        "invalid": "Ongeldige QR-code",
+        "import": "Een afbeelding importeren",
+        "scan": "Scannen met camera",
+        "allowanceError": "Controleer de beschikbaarheid van je camera en browserrechten om deze te gebruiken"
     },
     "bridgeTransferNotification": {
         "addToken": "Voeg {symbol} toe aan @:metamask",
