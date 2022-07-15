@@ -49,25 +49,23 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import DialogMixin from '@/components/mixins/DialogMixin';
-import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     InfoLine: components.InfoLine,
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
   },
 })
 export default class ConfirmTokenPairDialog extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.LoadingMixin,
-  TranslationMixin,
-  DialogMixin
+  mixins.DialogMixin,
+  TranslationMixin
 ) {
   @Prop({ type: String, default: '100' }) readonly shareOfPool!: string;
   @Prop({ type: Object }) readonly firstToken!: Nullable<AccountAsset>;

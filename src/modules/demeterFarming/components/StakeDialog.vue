@@ -139,14 +139,12 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 
 import PoolMixin from '../mixins/PoolMixin';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import DialogMixin from '@/components/mixins/DialogMixin';
-import DialogBase from '@/components/DialogBase.vue';
 
 import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
@@ -158,16 +156,16 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component({
   components: {
-    DialogBase,
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     TokenAddress: components.TokenAddress,
   },
 })
-export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, DialogMixin) {
+export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, mixins.DialogMixin) {
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
