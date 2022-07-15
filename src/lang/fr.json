@@ -969,7 +969,10 @@
         "download": "Télécharger QR Code",
         "upload": "Scanner le QR code",
         "recieve": "Recevoir",
-        "invalid": "Code QR invalide"
+        "invalid": "Code QR invalide",
+        "import": "Importer une image",
+        "scan": "Numériser avec l'appareil photo",
+        "allowanceError": "Vérifiez la disponibilité de votre caméra et les autorisations de votre navigateur pour l'utiliser"
     },
     "bridgeTransferNotification": {
         "addToken": "Ajouter {symbol} à @:metamask",

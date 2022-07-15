@@ -969,7 +969,10 @@
         "download": "Last ned QR-kode",
         "upload": "Skann QR",
         "recieve": "Motta",
-        "invalid": "Ugyldig QR-kode"
+        "invalid": "Ugyldig QR-kode",
+        "import": "Importer et bilde",
+        "scan": "Skann med kamera",
+        "allowanceError": "Sjekk kameraets tilgjengelighet og nettlesertillatelser for å bruke det"
     },
     "bridgeTransferNotification": {
         "addToken": "Legg til {symbol} til @:metamask",

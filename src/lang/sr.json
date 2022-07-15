@@ -969,7 +969,10 @@
         "download": "Преузмите КР код",
         "upload": "Skeniraj QR",
         "recieve": "Примите",
-        "invalid": "Неважећи КР код"
+        "invalid": "Неважећи КР код",
+        "import": "Увезите слику",
+        "scan": "Скенирајте камером",
+        "allowanceError": "Проверите доступност камере и дозволе прегледача да бисте је користили"
     },
     "bridgeTransferNotification": {
         "addToken": "Додајте {symbol} у @:metamask",

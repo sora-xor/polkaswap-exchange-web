@@ -969,7 +969,10 @@
         "download": "QR-kód letöltése",
         "upload": "QR-kód beolvasása",
         "recieve": "Fogadás",
-        "invalid": "Érvénytelen QR-kód"
+        "invalid": "Érvénytelen QR-kód",
+        "import": "Kép importálása",
+        "scan": "Szkennelés kamerával",
+        "allowanceError": "Ellenőrizze a kamerája elérhetőségét és a böngésző engedélyeit a használatához"
     },
     "bridgeTransferNotification": {
         "addToken": "Adja hozzá a {symbol} -ot a @:metamask -hoz",

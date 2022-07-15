@@ -969,7 +969,10 @@
         "download": "Preuzmite QR kod",
         "upload": "Skeniraj QR",
         "recieve": "Primite",
-        "invalid": "Nevažeći QR kod"
+        "invalid": "Nevažeći QR kod",
+        "import": "Uvezi sliku",
+        "scan": "Skeniraj kamerom",
+        "allowanceError": "Provjerite dostupnost svoje kamere i dopuštenja preglednika za njezino korištenje"
     },
     "bridgeTransferNotification": {
         "addToken": "Dodajte {symbol} u @:metamask",

@@ -969,7 +969,10 @@
         "download": "Ṣe igbasilẹ koodu QR",
         "upload": "Ṣayẹwo QR",
         "recieve": "Gba",
-        "invalid": "Koodu QR ti ko tọ"
+        "invalid": "Koodu QR ti ko tọ",
+        "import": "Gbe aworan wọle",
+        "scan": "Ṣayẹwo pẹlu kamẹra",
+        "allowanceError": "Ṣayẹwo wiwa kamẹra rẹ ati awọn igbanilaaye aṣawakiri lati lo"
     },
     "bridgeTransferNotification": {
         "addToken": "Ṣafikun {symbol} si @:metamask",
