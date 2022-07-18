@@ -16,13 +16,16 @@ const DISABLED_ASSETS_FOR_BRIDGE = [
 ];
 
 const actions = defineActions({
-  async updateRegisteredAssets(context): Promise<void> {
+  async updateRegisteredAssets(context, reset?: boolean): Promise<void> {
     const { state, commit, rootDispatch } = assetsActionContext(context);
+
+    if (state.registeredAssetsFetching) return;
+
+    if (reset) commit.resetRegisteredAssets();
+
+    commit.setRegisteredAssetsFetching(true);
+
     try {
-      if (state.registeredAssetsFetching) return;
-
-      commit.setRegisteredAssetsFetching(true);
-
       const registeredAssets = await bridgeApi.getRegisteredAssets();
       const enabledRegisteredAssets = registeredAssets.filter(
         (item) => !DISABLED_ASSETS_FOR_BRIDGE.includes(item.address)
@@ -55,11 +58,6 @@ const actions = defineActions({
       console.error(error);
       commit.resetRegisteredAssets();
     }
-  },
-  async getRegisteredAssets(context): Promise<void> {
-    const { dispatch, commit } = assetsActionContext(context);
-    commit.resetRegisteredAssets();
-    await dispatch.updateRegisteredAssets();
   },
 });
 
