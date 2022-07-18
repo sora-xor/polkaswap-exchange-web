@@ -153,7 +153,7 @@ const actions = defineActions({
     try {
       const { externalRewardsSelected, claimableRewards, rewardsByAssetsList } = getters;
 
-      const rewardsListToRecieve = [...rewardsByAssetsList];
+      const rewardsListToReceive = [...rewardsByAssetsList];
 
       if (externalRewardsSelected && !externalAddress) return;
 
@@ -181,7 +181,7 @@ const actions = defineActions({
         // update ui to success state if user not changed external account
         if (rootState.web3.evmAddress === externalAddress) {
           commit.setTxStep(1);
-          commit.setRewardsReceived(rewardsListToRecieve);
+          commit.setRewardsReceived(rewardsListToReceive);
           commit.setRewardsClaiming(false);
         }
       }

@@ -791,7 +791,7 @@ export default {
   code: {
     download: 'Download QR Code',
     upload: 'Scan QR',
-    recieve: 'Recieve',
+    receive: 'Receive',
     invalid: 'Invalid QR Code',
     import: 'Import an image',
     scan: 'Scan with camera',

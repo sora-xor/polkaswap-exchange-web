@@ -35,7 +35,7 @@ const mutations = defineMutations<RewardsState>()({
     state.transactionError = value;
   },
   setRewardsReceived(state, rewards: RewardsAmountHeaderItem[]): void {
-    state.recievedRewards = rewards;
+    state.receivedRewards = rewards;
   },
   setSignature(state, value: string): void {
     state.signature = value;

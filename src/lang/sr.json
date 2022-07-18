@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Уклоните средство",
         "select": "Izaberite sredstvo",
-        "recieve": "Примите {symbol}"
+        "receive": "Примите {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -881,7 +881,6 @@
             "transfer": "Токени су успешно купљени!\nКликните да бисте започели мост трансакцију"
         }
     },
-    "recievedText": "Примљено",
     "light": "Светло",
     "dark": "Мрачно",
     "headerMenu": {
@@ -968,11 +967,11 @@
     "code": {
         "download": "Преузмите КР код",
         "upload": "Skeniraj QR",
-        "recieve": "Примите",
         "invalid": "Неважећи КР код",
         "import": "Увезите слику",
         "scan": "Скенирајте камером",
-        "allowanceError": "Проверите доступност камере и дозволе прегледача да бисте је користили"
+        "allowanceError": "Проверите доступност камере и дозволе прегледача да бисте је користили",
+        "receive": "Примите"
     },
     "bridgeTransferNotification": {
         "addToken": "Додајте {symbol} у @:metamask",
@@ -1058,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Дошло је до грешке при израчунавању цене"
         }
-    }
+    },
+    "receivedText": "Примљено"
 }

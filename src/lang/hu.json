@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Eszköz eltávolítása",
         "select": "Eszköz kiválasztása",
-        "recieve": "{symbol} fogadása"
+        "receive": "{symbol} fogadása"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -881,7 +881,6 @@
             "transfer": "Tokenek sikeresen megvásárolva!\nKattintson ide a hídtranzakció elindításához"
         }
     },
-    "recievedText": "Bejövő",
     "light": "Világos",
     "dark": "Sötét",
     "headerMenu": {
@@ -968,11 +967,11 @@
     "code": {
         "download": "QR-kód letöltése",
         "upload": "QR-kód beolvasása",
-        "recieve": "Fogadás",
         "invalid": "Érvénytelen QR-kód",
         "import": "Kép importálása",
         "scan": "Szkennelés kamerával",
-        "allowanceError": "Ellenőrizze a kamerája elérhetőségét és a böngésző engedélyeit a használatához"
+        "allowanceError": "Ellenőrizze a kamerája elérhetőségét és a böngésző engedélyeit a használatához",
+        "receive": "Fogadás"
     },
     "bridgeTransferNotification": {
         "addToken": "Adja hozzá a {symbol} -ot a @:metamask -hoz",
@@ -1058,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Hiba történt az ár kiszámításakor"
         }
-    }
+    },
+    "receivedText": "Bejövő"
 }

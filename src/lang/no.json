@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Fjern aktiva",
         "select": "Velg aktivum",
-        "recieve": "Motta {symbol}"
+        "receive": "Motta {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -881,7 +881,6 @@
             "transfer": "Tokens er kjøpt!\n Klikk for å starte brotransaksjonen"
         }
     },
-    "recievedText": "Tok imot",
     "light": "Lys",
     "dark": "Mørk",
     "headerMenu": {
@@ -968,11 +967,11 @@
     "code": {
         "download": "Last ned QR-kode",
         "upload": "Skann QR",
-        "recieve": "Motta",
         "invalid": "Ugyldig QR-kode",
         "import": "Importer et bilde",
         "scan": "Skann med kamera",
-        "allowanceError": "Sjekk kameraets tilgjengelighet og nettlesertillatelser for å bruke det"
+        "allowanceError": "Sjekk kameraets tilgjengelighet og nettlesertillatelser for å bruke det",
+        "receive": "Motta"
     },
     "bridgeTransferNotification": {
         "addToken": "Legg til {symbol} til @:metamask",
@@ -1058,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Det oppsto en feil under beregning av prisen"
         }
-    }
+    },
+    "receivedText": "Tok imot"
 }

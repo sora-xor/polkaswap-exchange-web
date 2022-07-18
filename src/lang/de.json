@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Asset entfernen",
         "select": "Wähle ein Asset",
-        "recieve": "Erhalte {symbol}"
+        "receive": "Erhalte {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -881,7 +881,6 @@
             "transfer": "Token erfolgreich gekauft!\nKlicke hier, um die Bridge-Transaktion zu starten"
         }
     },
-    "recievedText": "Erhalten",
     "light": "Hell",
     "dark": "Dunkel",
     "headerMenu": {
@@ -968,11 +967,11 @@
     "code": {
         "download": "QR-Code herunterladen",
         "upload": "QR scannen",
-        "recieve": "Erhalten",
         "invalid": "Ungültiger QR-Code",
         "import": "Importieren Sie ein Bild",
         "scan": "Scannen Sie mit der Kamera",
-        "allowanceError": "Überprüfen Sie die Verfügbarkeit Ihrer Kamera und die Browserberechtigungen, um sie zu verwenden"
+        "allowanceError": "Überprüfen Sie die Verfügbarkeit Ihrer Kamera und die Browserberechtigungen, um sie zu verwenden",
+        "receive": "Erhalten"
     },
     "bridgeTransferNotification": {
         "addToken": "Füge {symbol} zu @:metamask hinzu",
@@ -1058,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Bei der Berechnung des Preises ist ein Fehler aufgetreten"
         }
-    }
+    },
+    "receivedText": "Erhalten"
 }

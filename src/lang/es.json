@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Eliminar el Activo",
         "select": "Escoja un activo",
-        "recieve": "Recibir {symbol}"
+        "receive": "Recibir {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -881,7 +881,6 @@
             "transfer": "¡Tokens comprados con éxito!\nHaga clic para iniciar la transacción del puente"
         }
     },
-    "recievedText": "Recibido",
     "light": "Luz",
     "dark": "Oscuro",
     "headerMenu": {
@@ -968,11 +967,11 @@
     "code": {
         "download": "Descargar código QR",
         "upload": "Escanear QR",
-        "recieve": "Recibir",
         "invalid": "Código QR no válido",
         "import": "Importar una imagen",
         "scan": "Escanear con cámara",
-        "allowanceError": "Verifique la disponibilidad de su cámara y los permisos del navegador para usarla"
+        "allowanceError": "Verifique la disponibilidad de su cámara y los permisos del navegador para usarla",
+        "receive": "Recibir"
     },
     "bridgeTransferNotification": {
         "addToken": "Añadir {symbol} a @:metamask",
@@ -1058,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Ocurrió un error al calcular el precio"
         }
-    }
+    },
+    "receivedText": "Recibido"
 }

@@ -21,7 +21,7 @@ export type RewardsState = {
   rewardsFetching: boolean;
   rewardsClaiming: boolean;
   transactionError: boolean;
-  recievedRewards: RewardsAmountHeaderItem[];
+  receivedRewards: RewardsAmountHeaderItem[];
   transactionStep: number;
   signature: string;
   accountMarketMakerInfo: Nullable<AccountMarketMakerInfo>;
