@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Odebrat aktivum",
         "select": "Vyberte aktivum",
-        "recieve": "Přijmout {symbol}"
+        "receive": "Přijmout {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -881,7 +881,6 @@
             "transfer": "Tokeny byly úspěšně zakoupeny!\nKliknutím spustíte bridge transakci"
         }
     },
-    "recievedText": "Přijato",
     "light": "Světlý",
     "dark": "Tmavý",
     "headerMenu": {
@@ -968,11 +967,11 @@
     "code": {
         "download": "Stáhnout QR kód",
         "upload": "Skenovat QR",
-        "recieve": "Příjem",
         "invalid": "Neplatný QR kód",
         "import": "Importujte obrázek",
         "scan": "Skenujte fotoaparátem",
-        "allowanceError": "Zkontrolujte dostupnost fotoaparátu a oprávnění prohlížeče k jeho použití"
+        "allowanceError": "Zkontrolujte dostupnost fotoaparátu a oprávnění prohlížeče k jeho použití",
+        "receive": "Příjem"
     },
     "bridgeTransferNotification": {
         "addToken": "Přidejte {symbol} do @:metamask",
@@ -1058,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Při výpočtu ceny došlo k chybě"
         }
-    }
+    },
+    "receivedText": "Přijato"
 }

@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Remove asset",
         "select": "Select an asset",
-        "recieve": "Receive {symbol}"
+        "receive": "Receive {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -881,7 +881,6 @@
             "transfer": "Tokens successfully purchased!\nClick to start the bridge transaction"
         }
     },
-    "recievedText": "Recieved",
     "light": "Light",
     "dark": "Dark",
     "headerMenu": {
@@ -968,11 +967,11 @@
     "code": {
         "download": "Download QR Code",
         "upload": "Scan QR",
-        "recieve": "Receive",
         "invalid": "Invalid QR Code",
         "import": "Import an image",
         "scan": "Scan with camera",
-        "allowanceError": "Check your camera availability and browser permissions to use it"
+        "allowanceError": "Check your camera availability and browser permissions to use it",
+        "receive": "Receive"
     },
     "bridgeTransferNotification": {
         "addToken": "Add {symbol} to @:metamask",
@@ -1058,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "An error occurred while calculating the price"
         }
-    }
+    },
+    "receivedText": "Received"
 }

@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Uklonite sredstvo",
         "select": "Odabir imovine",
-        "recieve": "Primite {symbol}"
+        "receive": "Primite {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -881,7 +881,6 @@
             "transfer": "Tokeni su uspješno kupljeni!\nKliknite za pokretanje most transakcije"
         }
     },
-    "recievedText": "Primljeno",
     "light": "Svjetlo",
     "dark": "Tamno",
     "headerMenu": {
@@ -968,11 +967,11 @@
     "code": {
         "download": "Preuzmite QR kod",
         "upload": "Skeniraj QR",
-        "recieve": "Primite",
         "invalid": "Nevažeći QR kod",
         "import": "Uvezi sliku",
         "scan": "Skeniraj kamerom",
-        "allowanceError": "Provjerite dostupnost svoje kamere i dopuštenja preglednika za njezino korištenje"
+        "allowanceError": "Provjerite dostupnost svoje kamere i dopuštenja preglednika za njezino korištenje",
+        "receive": "Primite"
     },
     "bridgeTransferNotification": {
         "addToken": "Dodajte {symbol} u @:metamask",
@@ -1058,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Došlo je do greške prilikom izračuna cijene"
         }
-    }
+    },
+    "receivedText": "Primljeno"
 }

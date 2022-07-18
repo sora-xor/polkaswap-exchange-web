@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Հեռացնել ակտիվը",
         "select": "Ընտրեք ակտիվ",
-        "recieve": "Ստանալ {symbol}"
+        "receive": "Ստանալ {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -881,7 +881,6 @@
             "transfer": "Նշանները հաջողությամբ գնվեցին\n Կտտացրեք կամուրջի գործարքը սկսելու համար"
         }
     },
-    "recievedText": "Ստացվել է",
     "light": "Լույս",
     "dark": "Մութ",
     "headerMenu": {
@@ -968,11 +967,11 @@
     "code": {
         "download": "Ներբեռնեք QR կոդը",
         "upload": "Սկան QR",
-        "recieve": "Ստանալ",
         "invalid": "Անվավեր QR կոդը",
         "import": "Ներմուծեք պատկեր",
         "scan": "Սկան տեսախցիկով",
-        "allowanceError": "Ստուգեք ձեր տեսախցիկի առկայությունը և դիտարկիչի թույլտվությունները՝ այն օգտագործելու համար"
+        "allowanceError": "Ստուգեք ձեր տեսախցիկի առկայությունը և դիտարկիչի թույլտվությունները՝ այն օգտագործելու համար",
+        "receive": "Ստանալ"
     },
     "bridgeTransferNotification": {
         "addToken": "Ավելացնել {symbol} է @:metamask",
@@ -1058,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Գինը հաշվարկելիս սխալ է տեղի ունեցել"
         }
-    }
+    },
+    "receivedText": "Ստացվել է"
 }

@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Yọ dukia kuro",
         "select": "Yan dukia",
-        "recieve": "Gba {symbol}"
+        "receive": "Gba {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -881,7 +881,6 @@
             "transfer": "Awọn ami ti o ra ni aṣeyọri!\n Tẹ lati bẹrẹ iṣowo afara"
         }
     },
-    "recievedText": "Ti gba",
     "light": "Imọlẹ",
     "dark": "Dudu",
     "headerMenu": {
@@ -968,11 +967,11 @@
     "code": {
         "download": "Ṣe igbasilẹ koodu QR",
         "upload": "Ṣayẹwo QR",
-        "recieve": "Gba",
         "invalid": "Koodu QR ti ko tọ",
         "import": "Gbe aworan wọle",
         "scan": "Ṣayẹwo pẹlu kamẹra",
-        "allowanceError": "Ṣayẹwo wiwa kamẹra rẹ ati awọn igbanilaaye aṣawakiri lati lo"
+        "allowanceError": "Ṣayẹwo wiwa kamẹra rẹ ati awọn igbanilaaye aṣawakiri lati lo",
+        "receive": "Gba"
     },
     "bridgeTransferNotification": {
         "addToken": "Ṣafikun {symbol} si @:metamask",
@@ -1058,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Aṣiṣe waye lakoko ti o ṣe iṣiro idiyele naa"
         }
-    }
+    },
+    "receivedText": "Ti gba"
 }
