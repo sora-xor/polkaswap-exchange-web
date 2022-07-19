@@ -33,7 +33,7 @@
         alternative
         size="mini"
         border-radius="mini"
-        @click="handleMax"
+        @click.stop="handleMax"
       >
         {{ t('buttons.max') }}
       </s-button>
@@ -85,6 +85,7 @@ export default class TokenInput extends Mixins(
   TranslationMixin
 ) {
   @Prop({ default: () => null, type: Object }) readonly token!: Nullable<AccountAsset>;
+  @Prop({ default: () => null, type: Object }) readonly balance!: Nullable<CodecString>;
   @Prop({ default: '', type: String }) readonly title!: string;
   @Prop({ default: false, type: Boolean }) readonly isMaxAvailable: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSelectAvailable: boolean;
@@ -110,16 +111,22 @@ export default class TokenInput extends Mixins(
     return this.isSelectAvailable ? 'chevron-down-rounded-16' : undefined;
   }
 
-  get formattedBalance(): string {
-    if (!this.token) return ZeroStringValue;
+  get fpBalance(): FPNumber {
+    if (!this.token || !this.balance) return FPNumber.ZERO;
 
-    return formatAssetBalance(this.token);
+    return FPNumber.fromCodecValue(this.balance, this.decimals);
+  }
+
+  get formattedBalance(): string {
+    return this.fpBalance.toLocaleString();
   }
 
   get formattedFiatBalance(): string {
-    if (!this.token) return ZeroStringValue;
+    if (!this.token || !this.balance) return ZeroStringValue;
 
-    return this.getFiatBalance(this.token);
+    const fpTokenPrice = FPNumber.fromCodecValue(this.tokenPrice ?? 0, this.decimals);
+
+    return this.fpBalance.mul(fpTokenPrice).toLocaleString();
   }
 
   get tokenPrice(): Nullable<CodecString> {
