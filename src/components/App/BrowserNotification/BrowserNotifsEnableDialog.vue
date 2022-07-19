@@ -62,13 +62,13 @@ export default class BrowserNotifsEnableDialog extends Mixins(
 
   &__info {
     text-align: center;
-    margin: 16px 32px;
+    margin: $basic-spacing $basic-spacing * 2;
     font-size: 15px;
     font-weight: 300;
   }
 
   &__btn {
-    margin-bottom: 16px;
+    margin-bottom: $basic-spacing;
   }
 }
 </style>
