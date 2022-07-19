@@ -75,8 +75,11 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
+  @getter.settings.notificationActivated private notificationActivated!: boolean;
 
   @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: AsyncVoidFn;
+  @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopupEnabled!: (flag: boolean) => void;
+  @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
 
   isLargeDesktop: boolean = window.innerWidth >= BREAKPOINT;
@@ -89,9 +92,8 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     return window.matchMedia(`(min-width: ${BREAKPOINT}px)`);
   }
 
-  get notificationShown(): boolean {
-    // TODO via vuex-store
-    return true;
+  get isNotificationOptionShown(): boolean {
+    return !this.notificationActivated;
   }
 
   private getThemeIcon(isDropdown = false): string {
@@ -142,7 +144,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       },
     ];
 
-    if (this.notificationShown) {
+    if (this.isNotificationOptionShown) {
       menuItems.push({
         value: HeaderMenuType.Notification,
         icon: 'basic-globe-24',
@@ -169,6 +171,14 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     this.mediaQueryList.removeEventListener('change', this.updateLargeDesktopFlag);
   }
 
+  openNotificationDialog(): void {
+    if (Notification.permission === 'denied') {
+      this.setBrowserNotifsPopupBlocked(true);
+    } else if (Notification.permission === 'default') {
+      this.setBrowserNotifsPopupEnabled(true);
+    }
+  }
+
   handleClickHeaderMenu(): void {
     const dropdown = (this.$refs.headerMenu as any).dropdown;
     dropdown.visible ? dropdown.hide() : dropdown.show();
@@ -186,7 +196,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         this.setLanguageDialogVisibility(true);
         break;
       case HeaderMenuType.Notification:
-        this.enableBrowserNotification();
+        this.openNotificationDialog();
         break;
     }
   }
