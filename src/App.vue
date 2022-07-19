@@ -64,6 +64,7 @@ import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions } from '@/types/nodes';
 import type { SubNetwork } from '@/utils/ethers-util';
 import type { FeatureFlags } from '@/store/settings/types';
+import { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -86,6 +87,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showNotifsDarkPage = false;
 
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+  @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer storageReferrer!: string;
   @state.settings.browserNotifPopupVisibility browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility browserNotifPopupBlocked!: boolean;
@@ -120,6 +122,16 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.settings.setBlockNumber private setBlockNumber!: AsyncVoidFn;
   @action.web3.setSmartContracts private setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @action.referrals.getReferrer private getReferrer!: AsyncVoidFn;
+  @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
+    asset: WhitelistArrayItem;
+    message: string;
+  }) => AsyncVoidFn;
+
+  @Watch('assetsToNotifyQueue')
+  private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
+    if (!whitelistAssetArray.length) return;
+    this.notifyOnDeposit({ asset: whitelistAssetArray[0], message: this.t('assetDeposit') });
+  }
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History, oldValue: History): void {

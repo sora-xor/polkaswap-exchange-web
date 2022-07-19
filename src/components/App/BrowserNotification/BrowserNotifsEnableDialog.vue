@@ -19,19 +19,21 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
-import DialogBase from '../../DialogBase.vue';
-import DialogMixin from '../../mixins/DialogMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mutation } from '@/store/decorators';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
   },
 })
-export default class BrowserNotifsEnableDialog extends Mixins(DialogMixin, TranslationMixin, mixins.LoadingMixin) {
+export default class BrowserNotifsEnableDialog extends Mixins(
+  TranslationMixin,
+  mixins.LoadingMixin,
+  mixins.DialogMixin
+) {
   @mutation.settings.setBrowserNotifsAgreement setBrowserNotifsAgreement!: (value: NotificationPermission) => void;
   async handleConfirm(): Promise<void> {
     this.closeDialog();

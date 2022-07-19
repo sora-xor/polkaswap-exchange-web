@@ -19,18 +19,20 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import DialogBase from './DialogBase.vue';
-import DialogMixin from './mixins/DialogMixin';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
   },
 })
-export default class ConfirmBridgeTransactionDialog extends Mixins(DialogMixin, TranslationMixin, mixins.LoadingMixin) {
+export default class ConfirmBridgeTransactionDialog extends Mixins(
+  TranslationMixin,
+  mixins.LoadingMixin,
+  mixins.DialogMixin
+) {
   handleConfirm(): void {
     this.closeDialog();
   }

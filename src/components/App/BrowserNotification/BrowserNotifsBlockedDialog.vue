@@ -17,20 +17,21 @@
 </template>
 
 <script lang="ts">
-import { detect } from 'detect-browser';
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 
-import DialogBase from '../../DialogBase.vue';
-import DialogMixin from '../../mixins/DialogMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
   },
 })
-export default class BrowserNotifsBlockedDialog extends Mixins(DialogMixin, TranslationMixin, mixins.LoadingMixin) {
+export default class BrowserNotifsBlockedDialog extends Mixins(
+  TranslationMixin,
+  mixins.DialogMixin,
+  mixins.LoadingMixin
+) {
   async goToSettings(): Promise<void> {
     window.open(
       'https://support.humblebundle.com/hc/ru/articles/360008513933-Enabling-and-Disabling-Browser-Notifications-in-Various-Browsers'
