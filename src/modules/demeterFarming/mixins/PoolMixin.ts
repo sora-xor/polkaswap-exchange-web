@@ -223,4 +223,8 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   claim(): void {
     this.$emit('claim', this.emitParams);
   }
+
+  calculator(): void {
+    this.$emit('calculator', this.emitParams);
+  }
 }

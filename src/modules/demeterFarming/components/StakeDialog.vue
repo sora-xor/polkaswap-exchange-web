@@ -1,9 +1,12 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="title">
     <div class="stake-dialog">
-      <s-row v-if="baseAsset && poolAsset" flex align="middle">
-        <pair-token-logo :first-token="baseAsset" :second-token="poolAsset" />
-        <span class="stake-dialog-title">{{ baseAsset.symbol }}-{{ poolAsset.symbol }}</span>
+      <s-row v-if="poolAsset" flex align="middle">
+        <pair-token-logo v-if="baseAsset" :first-token="baseAsset" :second-token="poolAsset" class="title-logo" />
+        <token-logo v-else :token="poolAsset" class="title-logo" />
+        <span class="stake-dialog-title">
+          <template v-if="baseAsset">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
+        </span>
       </s-row>
 
       <div v-if="isAdding" class="stake-dialog-info">
@@ -165,6 +168,7 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     TokenAddress: components.TokenAddress,
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, DialogMixin) {
@@ -340,6 +344,10 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
   &-title {
     font-size: var(--s-heading2-font-size);
     font-weight: 800;
+  }
+
+  .title-logo {
+    margin-right: $inner-spacing-mini;
   }
 }
 </style>
