@@ -24,6 +24,7 @@
   "insufficientBalanceText": "Insufficient {tokenSymbol} balance",
   "unknownErrorText": "ERROR Something went wrong...",
   "transactionSubmittedText": "Transaction was submitted",
+  "assetDeposit": "Asset balance has been deposited",
   "operations": {
     "Swap": "Swap",
     "Transfer": "Transfer",
