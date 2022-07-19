@@ -36,57 +36,16 @@
           />
         </s-float-input>
 
-        <s-float-input
+        <token-input
           v-else
-          class="s-input--token-value"
-          size="medium"
+          :balance="stakingBalanceCodec"
+          :is-max-available="isMaxButtonAvailable"
+          :title="inputFieldTitle"
+          :token="poolAsset"
           :value="value"
-          :decimals="poolAssetDecimals"
-          has-locale-string
-          :delimiters="delimiters"
-          :max="getMax(poolAssetAddress)"
           @input="handleValue"
-        >
-          <div slot="top" class="input-line">
-            <div class="input-title">
-              <span class="input-title--uppercase input-title--primary">{{ inputFieldTitle }}</span>
-            </div>
-            <div class="input-value">
-              <span class="input-value--uppercase">{{ t('balanceText') }}</span>
-              <formatted-amount-with-fiat-value
-                value-can-be-hidden
-                with-left-shift
-                value-class="input-value--primary"
-                :value="stakingBalanceFormatted"
-                :fiat-value="stakingBalanceFiat"
-              />
-            </div>
-          </div>
-          <div slot="right" class="s-flex el-buttons">
-            <s-button
-              v-if="isMaxButtonAvailable"
-              class="el-button--max s-typography-button--small"
-              type="primary"
-              alternative
-              size="mini"
-              border-radius="mini"
-              @click.stop="handleMaxValue"
-            >
-              {{ t('buttons.max') }}
-            </s-button>
-            <token-select-button class="el-button--select-token" :token="poolAsset" />
-          </div>
-          <div slot="bottom" class="input-line input-line--footer">
-            <formatted-amount v-if="poolAsset" is-fiat-value :value="valueFiatAmount" />
-            <token-address
-              v-if="poolAsset"
-              :name="poolAsset.name"
-              :symbol="poolAsset.symbol"
-              :address="poolAsset.address"
-              class="input-value"
-            />
-          </div>
-        </s-float-input>
+          @max="handleMaxValue"
+        />
       </s-form>
 
       <info-line
@@ -163,6 +122,7 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
   components: {
     DialogBase,
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    TokenInput: lazyComponent(Components.TokenInput),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     InfoLine: components.InfoLine,
     FormattedAmount: components.FormattedAmount,
@@ -275,12 +235,8 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
     return this.isAdding ? this.availableFunds : this.lockedFunds;
   }
 
-  get stakingBalanceFormatted(): string {
-    return this.stakingBalance.toLocaleString();
-  }
-
-  get stakingBalanceFiat(): string {
-    return this.stakingBalance.mul(this.poolAssetPrice).toLocaleString();
+  get stakingBalanceCodec(): CodecString {
+    return this.stakingBalance.toCodecString();
   }
 
   get isMaxButtonAvailable(): boolean {
@@ -330,10 +286,6 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
 </script>
 
 <style lang="scss" scoped>
-.el-form--actions {
-  @include buttons;
-}
-
 .stake-dialog {
   @include full-width-button('action-button');
 
