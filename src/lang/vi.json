@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) Polkadot{.js}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Dường như không có tài khoản nào trong tiện ích (extension) Polkadot{.js}. Vui lòng thêm tài khoản và thử lại.",
-        "noAccount": "Tài khoản Polkadot{.js} gặp trục trặc. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) Polkadot{.js}."
+        "noAccount": "Tài khoản Polkadot{.js} gặp trục trặc. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) Polkadot{.js}.",
+        "noExtension": "Không tìm thấy {extension} . Vui lòng cài đặt nó và tải lại trang này",
+        "noSigner": "Quyền truy cập bị từ chối. Đi tới cài đặt tiện ích {extension} và mở \"Quản lý quyền truy cập trang web\" để cho phép."
     },
     "connection": {
         "title": "Tài khoản Mạng SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Tìm hiểu thêm",
             "connect": "Kết nối tài khoản",
             "refresh": "Làm mới"
+        },
+        "selectWallet": "Chọn một ví để làm việc với",
+        "wallet": {
+            "install": "Cài đặt"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Loại bỏ tài sản",
         "select": "Chọn tài sản",
-        "recieve": "Nhận {symbol}"
+        "receive": "Nhận {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Ước lượng đầu ra. Bạn sẽ nhận ít nhất {transactionValue} hoặc giao dịch sẽ hoàn tác.",
         "rewardsForSwap": "Phần thưởng chiến lược PSWAP",
         "swapInputMessage": "Dự tính đầu vào. Bạn sẽ bán tối đa {transactionValue} hoặc giao dịch sẽ hoàn tác.",
-        "route": "Route"
+        "route": "Route",
+        "errorFetching": "Lỗi khi tìm nạp dữ liệu"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -874,7 +881,6 @@
             "transfer": "Đã mua thành công token!\nNhấp để bắt đầu giao dịch cầu nối"
         }
     },
-    "recievedText": "Nhận được",
     "light": "Sáng",
     "dark": "Tối",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Tải xuống mã QR",
         "upload": "Quét mã QR",
-        "recieve": "Nhận",
-        "invalid": "Mã QR không hợp lệ"
+        "invalid": "Mã QR không hợp lệ",
+        "import": "Nhập hình ảnh",
+        "scan": "Quét bằng máy ảnh",
+        "allowanceError": "Kiểm tra tính khả dụng của máy ảnh và quyền của trình duyệt để sử dụng nó",
+        "receive": "Nhận"
     },
     "bridgeTransferNotification": {
         "addToken": "Thêm {symbol} vào @:metamask",
@@ -1048,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Đã xảy ra lỗi khi tính giá"
         }
-    }
+    },
+    "receivedText": "Nhận được"
 }

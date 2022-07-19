@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Finner ingen Polkadot.js utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Det ser ikke ut til å være noen kontoer i Polkadot.js utvidelsen. Legg til en konto, og prøv på nytt.",
-        "noAccount": "Polkadot.js kontofeil. Sjekk kontoen din i Polkadot.js utvidelsen"
+        "noAccount": "Polkadot.js kontofeil. Sjekk kontoen din i Polkadot.js utvidelsen",
+        "noExtension": "Ingen {extension} -utvidelse ble funnet. Installer den og last inn denne siden på nytt",
+        "noSigner": "Ingen tilgang. Gå til utvidelsesinnstillingene for {extension} og åpne «Administrer nettstedtilgang» for å tillate."
     },
     "connection": {
         "title": "SORA Nettverkskonto",
@@ -97,6 +99,10 @@
             "learnMore": "Lær mer",
             "connect": "Koble til konto",
             "refresh": "Forfriske"
+        },
+        "selectWallet": "Velg en lommebok du vil jobbe med",
+        "wallet": {
+            "install": "Installere"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Fjern aktiva",
         "select": "Velg aktivum",
-        "recieve": "Motta {symbol}"
+        "receive": "Motta {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Beløp er estimert. Du vil motta minst {transactionValue} ellers vil transaksjonen gå tilbake.",
         "rewardsForSwap": "Strategiske PSWAP belønninger",
         "swapInputMessage": "Inndata er estimert. Du vil selge maksimalt {transactionValue} ellers vil transaksjonen gå tilbake.",
-        "route": "Rute"
+        "route": "Rute",
+        "errorFetching": "Feil under henting av data"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -874,7 +881,6 @@
             "transfer": "Tokens er kjøpt!\n Klikk for å starte brotransaksjonen"
         }
     },
-    "recievedText": "Tok imot",
     "light": "Lys",
     "dark": "Mørk",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Last ned QR-kode",
         "upload": "Skann QR",
-        "recieve": "Motta",
-        "invalid": "Ugyldig QR-kode"
+        "invalid": "Ugyldig QR-kode",
+        "import": "Importer et bilde",
+        "scan": "Skann med kamera",
+        "allowanceError": "Sjekk kameraets tilgjengelighet og nettlesertillatelser for å bruke det",
+        "receive": "Motta"
     },
     "bridgeTransferNotification": {
         "addToken": "Legg til {symbol} til @:metamask",
@@ -1048,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Det oppsto en feil under beregning av prisen"
         }
-    }
+    },
+    "receivedText": "Tok imot"
 }

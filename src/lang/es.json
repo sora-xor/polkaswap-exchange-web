@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión Polkadot.js. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Parece que no hay cuentas en su extensión Polkadot.js. Por favor añada una cuenta e inténtelo de nuevo.",
-        "noAccount": "Error en la cuenta de Polkadot.js. Por favor compruebe su cuenta en la extensión Polkadot.js"
+        "noAccount": "Error en la cuenta de Polkadot.js. Por favor compruebe su cuenta en la extensión Polkadot.js",
+        "noExtension": "No se encontró ninguna {extension} . Instálelo y vuelva a cargar esta página.",
+        "noSigner": "Acceso denegado. Vaya a la configuración de la {extension} y abra \"Administrar acceso al sitio web\" para permitir."
     },
     "connection": {
         "title": "Cuenta de la Red SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Aprende más",
             "connect": "Conectar cuenta",
             "refresh": "Actualizar"
+        },
+        "selectWallet": "Seleccione una billetera con la que trabajar",
+        "wallet": {
+            "install": "Instalar"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Eliminar el Activo",
         "select": "Escoja un activo",
-        "recieve": "Recibir {symbol}"
+        "receive": "Recibir {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "La cantidad de salida es estimada. Recibirá al menos {transactionValue} o la transacción se revertirá.",
         "rewardsForSwap": "Recompensas estratégicas de PSWAP",
         "swapInputMessage": "La entrada es estimada. Venderá el máximo de {transactionValue} o la transacción se revertirá",
-        "route": "Ruta"
+        "route": "Ruta",
+        "errorFetching": "Error al obtener los datos"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -874,7 +881,6 @@
             "transfer": "¡Tokens comprados con éxito!\nHaga clic para iniciar la transacción del puente"
         }
     },
-    "recievedText": "Recibido",
     "light": "Luz",
     "dark": "Oscuro",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Descargar código QR",
         "upload": "Escanear QR",
-        "recieve": "Recibir",
-        "invalid": "Código QR no válido"
+        "invalid": "Código QR no válido",
+        "import": "Importar una imagen",
+        "scan": "Escanear con cámara",
+        "allowanceError": "Verifique la disponibilidad de su cámara y los permisos del navegador para usarla",
+        "receive": "Recibir"
     },
     "bridgeTransferNotification": {
         "addToken": "Añadir {symbol} a @:metamask",
@@ -1048,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Ocurrió un error al calcular el precio"
         }
-    }
+    },
+    "receivedText": "Recibido"
 }

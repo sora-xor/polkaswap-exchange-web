@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Polkadot.js- ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Ձեր Polkadot.js ընդլայնման մեջ կարծես որևէ հաշիվ չկա: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
-        "noAccount": "Polkadot.js հաշվի սխալ: Խնդրում ենք ստուգել ձեր հաշիվը Polkadot.js ընդլայնման մեջ"
+        "noAccount": "Polkadot.js հաշվի սխալ: Խնդրում ենք ստուգել ձեր հաշիվը Polkadot.js ընդլայնման մեջ",
+        "noExtension": "{extension} ընդլայնում չի գտնվել: Խնդրում ենք տեղադրել այն և վերաբեռնել այս էջը",
+        "noSigner": "Մուտքն արգելված է. Գնացեք {extension} ընդլայնման կարգավորումներ և բացեք «Կառավարել վեբ կայքի մուտքը»՝ թույլ տալու համար:"
     },
     "connection": {
         "title": "SORA ցանցի հաշիվ",
@@ -97,6 +99,10 @@
             "learnMore": "Իմանալ ավելին",
             "connect": "Միանալ հաշվին",
             "refresh": "Թարմացնել"
+        },
+        "selectWallet": "Ընտրեք դրամապանակ՝ աշխատելու համար",
+        "wallet": {
+            "install": "Տեղադրեք"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Հեռացնել ակտիվը",
         "select": "Ընտրեք ակտիվ",
-        "recieve": "Ստանալ {symbol}"
+        "receive": "Ստանալ {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
         "rewardsForSwap": "PSWAP ստրատեգիական պարգևատրումներ",
         "swapInputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
-        "route": "Երթուղի"
+        "route": "Երթուղի",
+        "errorFetching": "Տվյալները հավաքելու սխալը"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -874,7 +881,6 @@
             "transfer": "Նշանները հաջողությամբ գնվեցին\n Կտտացրեք կամուրջի գործարքը սկսելու համար"
         }
     },
-    "recievedText": "Ստացվել է",
     "light": "Լույս",
     "dark": "Մութ",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Ներբեռնեք QR կոդը",
         "upload": "Սկան QR",
-        "recieve": "Ստանալ",
-        "invalid": "Անվավեր QR կոդը"
+        "invalid": "Անվավեր QR կոդը",
+        "import": "Ներմուծեք պատկեր",
+        "scan": "Սկան տեսախցիկով",
+        "allowanceError": "Ստուգեք ձեր տեսախցիկի առկայությունը և դիտարկիչի թույլտվությունները՝ այն օգտագործելու համար",
+        "receive": "Ստանալ"
     },
     "bridgeTransferNotification": {
         "addToken": "Ավելացնել {symbol} է @:metamask",
@@ -1048,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Գինը հաշվարկելիս սխալ է տեղի ունեցել"
         }
-    }
+    },
+    "receivedText": "Ստացվել է"
 }

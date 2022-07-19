@@ -68,7 +68,7 @@ const actions = defineActions({
 
       const tx = await ethersInstance.getTransaction(hash);
 
-      console.info('Moonpay: ethereum transaction data recieved:', tx);
+      console.info('Moonpay: ethereum transaction data received:', tx);
 
       if (tx.data === '0x') {
         // Parse ETH transfer

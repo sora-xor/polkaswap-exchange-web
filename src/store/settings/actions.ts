@@ -119,7 +119,7 @@ const actions = defineActions({
               key: 'node.errors.network',
               payload: { address: endpoint },
             },
-            `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`
+            `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" received, should be "${state.chainGenesisHash}"`
           );
         }
       } else {

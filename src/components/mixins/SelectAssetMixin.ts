@@ -1,16 +1,16 @@
 import isNil from 'lodash/fp/isNil';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
-import DialogMixin from '@/components/mixins/DialogMixin';
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
 
 import { asZeroValue, getAssetBalance } from '@/utils';
 
 @Component
-export default class SelectAsset extends Mixins(DialogMixin, AssetsSearchMixin) {
+export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearchMixin) {
   @Watch('visible')
   async handleVisibleChangeToFocusSearch(value: boolean): Promise<void> {
     await this.$nextTick();
