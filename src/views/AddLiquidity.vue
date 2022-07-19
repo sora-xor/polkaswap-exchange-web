@@ -7,119 +7,36 @@
       @back="handleBack"
     />
     <s-form class="el-form--actions" :show-message="false">
-      <s-float-input
-        class="s-input--token-value"
-        size="medium"
+      <token-input
+        :is-max-available="isFirstMaxButtonAvailable"
+        :title="t('createPair.deposit')"
+        :token="firstToken"
         :value="firstTokenValue"
-        :decimals="firstTokenDecimals"
-        has-locale-string
-        :delimiters="delimiters"
-        :max="getMax(firstTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setFirstTokenValue)"
         @focus="setFocusedField('firstTokenValue')"
         @blur="resetFocusedField"
-      >
-        <div slot="top" class="input-line">
-          <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">{{ t('createPair.deposit') }}</span>
-          </div>
-          <div v-if="isLoggedIn && firstToken" class="input-value">
-            <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>
-            <formatted-amount-with-fiat-value
-              value-can-be-hidden
-              with-left-shift
-              value-class="input-value--primary"
-              :value="getFormattedTokenBalance(firstToken)"
-              :fiat-value="getFiatBalance(firstToken)"
-            />
-          </div>
-        </div>
-        <div slot="right" class="s-flex el-buttons">
-          <s-button
-            v-if="isFirstMaxButtonAvailable"
-            class="el-button--max s-typography-button--small"
-            type="primary"
-            alternative
-            size="mini"
-            border-radius="mini"
-            @click="handleAddLiquidityMaxValue(firstToken, setFirstTokenValue)"
-          >
-            {{ t('buttons.max') }}
-          </s-button>
-          <token-select-button class="el-button--select-token" :token="firstToken" />
-        </div>
-        <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="firstToken && firstTokenPrice" is-fiat-value :value="fiatFirstAmount" />
-          <token-address
-            v-if="firstToken"
-            :name="firstToken.name"
-            :symbol="firstToken.symbol"
-            :address="firstToken.address"
-            class="input-value"
-          />
-        </div>
-      </s-float-input>
+        @max="handleAddLiquidityMaxValue($event, setFirstTokenValue)"
+      />
+
       <s-icon class="icon-divider" name="plus-16" />
-      <s-float-input
-        class="s-input--token-value"
-        size="medium"
+
+      <token-input
+        is-select-available
+        :is-max-available="isSecondMaxButtonAvailable"
+        :title="t('createPair.deposit')"
+        :token="secondToken"
         :value="secondTokenValue"
-        :decimals="secondTokenDecimals"
-        has-locale-string
-        :delimiters="delimiters"
-        :max="getMax(secondTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setSecondTokenValue)"
         @focus="setFocusedField('secondTokenValue')"
         @blur="resetFocusedField"
-      >
-        <div slot="top" class="input-line">
-          <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">{{ t('createPair.deposit') }}</span>
-          </div>
-          <div v-if="isLoggedIn && secondToken" class="input-value">
-            <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>
-            <formatted-amount-with-fiat-value
-              value-can-be-hidden
-              with-left-shift
-              value-class="input-value--primary"
-              :value="getFormattedTokenBalance(secondToken)"
-              :fiat-value="getFiatBalance(secondToken)"
-            />
-          </div>
-        </div>
-        <div slot="right" class="s-flex el-buttons">
-          <s-button
-            v-if="isSecondMaxButtonAvailable"
-            class="el-button--max s-typography-button--small"
-            type="primary"
-            alternative
-            size="mini"
-            border-radius="mini"
-            @click="handleAddLiquidityMaxValue(secondToken, setSecondTokenValue)"
-          >
-            {{ t('buttons.max') }}
-          </s-button>
-          <token-select-button
-            class="el-button--select-token"
-            icon="chevron-down-rounded-16"
-            :token="secondToken"
-            @click="openSelectSecondTokenDialog"
-          />
-        </div>
-        <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="secondToken && secondTokenPrice" is-fiat-value :value="fiatSecondAmount" />
-          <token-address
-            v-if="secondToken"
-            :name="secondToken.name"
-            :symbol="secondToken.symbol"
-            :address="secondToken.address"
-            class="input-value"
-          />
-        </div>
-      </s-float-input>
+        @max="handleAddLiquidityMaxValue($event, setSecondTokenValue)"
+        @select="openSelectSecondTokenDialog"
+      />
+
       <slippage-tolerance class="slippage-tolerance-settings" />
+
       <s-button
         type="primary"
         class="action-button s-typography-button--large"
@@ -143,6 +60,7 @@
           {{ t('createPair.supply') }}
         </template>
       </s-button>
+
       <add-liquidity-transaction-details
         v-if="areTokensSelected && isAvailable && (!emptyAssets || (liquidityInfo || {}).balance)"
         :info-only="false"
@@ -208,12 +126,9 @@ const TokenPairMixin = TokenPairMixinInstance(namespace);
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenInput: lazyComponent(Components.TokenInput),
     AddLiquidityTransactionDetails: lazyComponent(Components.AddLiquidityTransactionDetails),
-    FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
-    TokenAddress: components.TokenAddress,
   },
 })
 export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {
@@ -302,17 +217,8 @@ export default class AddLiquidity extends Mixins(mixins.NetworkFeeWarningMixin, 
 }
 </script>
 
-<style lang="scss">
-.el-form--actions {
-  .s-input--token-value .el-input .el-input__inner {
-    @include text-ellipsis;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .el-form--actions {
-  @include buttons;
   @include full-width-button('action-button');
 }
 
