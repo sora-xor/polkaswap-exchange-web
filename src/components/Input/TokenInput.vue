@@ -15,6 +15,7 @@
     <div slot="top" class="input-line">
       <div class="input-title">
         <span class="input-title--uppercase input-title--primary">{{ title }}</span>
+        <slot name="title-append" />
       </div>
       <div class="input-value">
         <slot name="balance">
@@ -51,7 +52,11 @@
       />
     </div>
     <div slot="bottom" class="input-line input-line--footer">
-      <formatted-amount v-if="tokenPrice" is-fiat-value :value="fiatAmount" />
+      <div class="s-flex">
+        <formatted-amount v-if="tokenPrice" is-fiat-value :value="fiatAmount" />
+        <slot name="fiat-amount-append" />
+      </div>
+
       <token-address
         v-if="token"
         :name="token.name"
