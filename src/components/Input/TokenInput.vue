@@ -3,26 +3,32 @@
     class="s-input--token-value"
     size="medium"
     has-locale-string
-    :decimals="decimals"
-    :delimiters="delimiters"
-    :max="max"
-    :value="amount"
-    v-bind="$attrs"
+    v-bind="{
+      decimals,
+      delimiters,
+      max,
+      value,
+      ...$attrs,
+    }"
     v-on="$listeners"
   >
     <div slot="top" class="input-line">
       <div class="input-title">
         <span class="input-title--uppercase input-title--primary">{{ title }}</span>
       </div>
-      <div v-if="token" class="input-value">
-        <span class="input-value--uppercase">{{ t('balanceText') }}</span>
-        <formatted-amount-with-fiat-value
-          value-can-be-hidden
-          with-left-shift
-          value-class="input-value--primary"
-          :value="formattedBalance"
-          :fiat-value="formattedFiatBalance"
-        />
+      <div class="input-value">
+        <slot name="balance">
+          <template v-if="token">
+            <span class="input-value--uppercase">{{ t('balanceText') }}</span>
+            <formatted-amount-with-fiat-value
+              value-can-be-hidden
+              with-left-shift
+              value-class="input-value--primary"
+              :value="formattedBalance"
+              :fiat-value="formattedFiatBalance"
+            />
+          </template>
+        </slot>
       </div>
     </div>
     <div slot="right" class="s-flex el-buttons">

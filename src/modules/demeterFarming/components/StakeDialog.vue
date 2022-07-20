@@ -120,12 +120,8 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
   components: {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     TokenInput: lazyComponent(Components.TokenInput),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
-    FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    TokenAddress: components.TokenAddress,
     TokenLogo: components.TokenLogo,
   },
 })
