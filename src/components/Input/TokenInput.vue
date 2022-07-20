@@ -41,7 +41,7 @@
         class="el-button--select-token"
         :icon="selectTokenIcon"
         :token="token"
-        @click="handleSelectToken"
+        @click.stop="handleSelectToken"
       />
     </div>
     <div slot="bottom" class="input-line input-line--footer">
@@ -64,7 +64,6 @@ import { FPNumber } from '@sora-substrate/util';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import { formatAssetBalance } from '@/utils';
 import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
 
@@ -85,10 +84,10 @@ export default class TokenInput extends Mixins(
   TranslationMixin
 ) {
   @Prop({ default: () => null, type: Object }) readonly token!: Nullable<AccountAsset>;
-  @Prop({ default: () => null, type: Object }) readonly balance!: Nullable<CodecString>;
+  @Prop({ default: () => null, type: String }) readonly balance!: Nullable<CodecString>;
   @Prop({ default: '', type: String }) readonly title!: string;
-  @Prop({ default: false, type: Boolean }) readonly isMaxAvailable: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isSelectAvailable: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
 
   @ModelSync('value', 'input', { type: String })
   readonly amount!: string;
