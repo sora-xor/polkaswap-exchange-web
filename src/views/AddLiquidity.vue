@@ -8,6 +8,7 @@
     />
     <s-form class="el-form--actions" :show-message="false">
       <token-input
+        :balance="getTokenBalance(firstToken)"
         :is-max-available="isFirstMaxButtonAvailable"
         :title="t('createPair.deposit')"
         :token="firstToken"
@@ -22,6 +23,7 @@
       <s-icon class="icon-divider" name="plus-16" />
 
       <token-input
+        :balance="getTokenBalance(secondToken)"
         is-select-available
         :is-max-available="isSecondMaxButtonAvailable"
         :title="t('createPair.deposit')"

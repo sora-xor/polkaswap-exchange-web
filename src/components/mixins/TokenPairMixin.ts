@@ -1,6 +1,6 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { CodecString, FPNumber } from '@sora-substrate/util';
+import { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import ConfirmDialogMixin from './ConfirmDialogMixin';
@@ -10,14 +10,7 @@ import TokenSelectMixin from './TokenSelectMixin';
 import router from '@/router';
 import { PageNames } from '@/consts';
 import { state, getter, mutation, action } from '@/store/decorators';
-import {
-  getMaxValue,
-  isMaxButtonAvailable,
-  isXorAccountAsset,
-  hasInsufficientBalance,
-  formatAssetBalance,
-  getAssetBalance,
-} from '@/utils';
+import { getMaxValue, isMaxButtonAvailable, isXorAccountAsset, hasInsufficientBalance, getAssetBalance } from '@/utils';
 import type { PricesPayload } from '@/store/prices/types';
 
 const TokenPairMixinInstance = (namespace: TokenPairNamespace) => {
@@ -104,34 +97,6 @@ const TokenPairMixinInstance = (namespace: TokenPairNamespace) => {
       return false;
     }
 
-    get firstTokenAddress(): string {
-      return this.firstToken?.address ?? '';
-    }
-
-    get secondTokenAddress(): string {
-      return this.secondToken?.address ?? '';
-    }
-
-    get firstTokenDecimals(): number {
-      return this.firstToken?.decimals ?? FPNumber.DEFAULT_PRECISION;
-    }
-
-    get secondTokenDecimals(): number {
-      return this.secondToken?.decimals ?? FPNumber.DEFAULT_PRECISION;
-    }
-
-    get firstTokenPrice(): Nullable<CodecString> {
-      if (!this.firstToken) return null;
-
-      return this.getAssetFiatPrice(this.firstToken);
-    }
-
-    get secondTokenPrice(): Nullable<CodecString> {
-      if (!this.secondToken) return null;
-
-      return this.getAssetFiatPrice(this.secondToken);
-    }
-
     handleMaxValue(token: Nullable<AccountAsset>, setValue: (v: string) => Promise<void>): void {
       if (!token) return;
       setValue(getMaxValue(token, this.networkFee));
@@ -154,10 +119,6 @@ const TokenPairMixinInstance = (namespace: TokenPairNamespace) => {
 
     getTokenBalance(token: any): CodecString {
       return getAssetBalance(token);
-    }
-
-    getFormattedTokenBalance(token: any): string {
-      return formatAssetBalance(token);
     }
 
     openSelectSecondTokenDialog(): void {
