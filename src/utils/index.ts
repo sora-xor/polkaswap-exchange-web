@@ -7,7 +7,7 @@ import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types'
 
 import router from '@/router';
 import i18n from '@/lang';
-import { app } from '@/consts';
+import { app, ZeroStringValue } from '@/consts';
 
 import storage from './storage';
 import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
@@ -141,14 +141,17 @@ export const asZeroValue = (value: any): boolean => {
 };
 
 export const getAssetBalance = (
-  asset:
+  asset: Nullable<
     | AccountAsset
     | AccountLiquidity
     | RegisteredAccountAsset
     | RegisteredAccountAssetWithDecimals
-    | RegisterAssetWithExternalBalance,
+    | RegisterAssetWithExternalBalance
+  >,
   { internal = true, parseAsLiquidity = false, isBondedBalance = false } = {}
 ) => {
+  if (!asset) return ZeroStringValue;
+
   if (!internal) {
     return (asset as RegisteredAccountAsset)?.externalBalance;
   }
