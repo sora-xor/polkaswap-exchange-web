@@ -25,7 +25,7 @@
           :max="100"
           @input="handleValue"
         >
-          <div slot="top" class="amount">{{ inputFieldTitle }}</div>
+          <div slot="top" class="amount">{{ inputTitle }}</div>
           <div slot="right"><span class="percent">%</span></div>
           <s-slider
             slot="bottom"
@@ -40,7 +40,7 @@
           v-else
           :balance="stakingBalanceCodec"
           :is-max-available="isMaxButtonAvailable"
-          :title="inputFieldTitle"
+          :title="inputTitle"
           :token="poolAsset"
           :value="value"
           @input="handleValue"
@@ -102,19 +102,16 @@
 <script lang="ts">
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 
-import PoolMixin from '../mixins/PoolMixin';
+import StakeDialogMixin from '../mixins/StakeDialogMixin';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import DialogMixin from '@/components/mixins/DialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
 import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
-import { isXorAccountAsset, getMaxValue } from '@/utils';
+import { getMaxValue, isXorAccountAsset } from '@/utils';
 
-import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
@@ -127,11 +124,7 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, DialogMixin) {
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-
-  @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
-
+export default class StakeDialog extends Mixins(StakeDialogMixin) {
   @Watch('visible')
   private resetValue() {
     this.value = '';
@@ -139,24 +132,10 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
 
   value = '';
 
-  get networkFee(): CodecString {
-    const operation = this.isAdding
-      ? Operation.DemeterFarmingDepositLiquidity
-      : Operation.DemeterFarmingWithdrawLiquidity;
-
-    return this.networkFees[operation];
-  }
-
   get title(): string {
     const actionKey = this.isAdding ? (this.hasStake ? 'add' : 'start') : 'remove';
 
     return this.t(`demeterFarming.actions.${actionKey}`);
-  }
-
-  get inputFieldTitle(): string {
-    const key = this.isAdding ? 'amountAdd' : 'amountRemove';
-
-    return this.t(`demeterFarming.${key}`);
   }
 
   get valuePartCharClass(): string {
@@ -217,10 +196,6 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
     } else {
       return this.lockedFunds.mul(this.part);
     }
-  }
-
-  get valueFiatAmount(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.valueFunds, this.poolAsset as AccountAsset);
   }
 
   get valueFundsEmpty(): boolean {
@@ -285,7 +260,7 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
 .stake-dialog {
   @include full-width-button('action-button');
 
-  & > *:not(:last-child) {
+  & > *:not(:first-child) {
     margin-top: $inner-spacing-medium;
   }
 
