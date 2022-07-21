@@ -784,6 +784,9 @@ export default {
     amountAdd: 'Amount to stake',
     amountRemove: 'Amount to remove',
     poweredBy: 'Powered by Demeter Farming',
+    calculator: 'Calculator',
+    results: 'Results',
+    rewards: '{symbol} rewards',
   },
   staking: {
     title: 'Staking',

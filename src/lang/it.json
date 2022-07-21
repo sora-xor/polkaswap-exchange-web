@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "Importo da mettere in staking",
         "amountRemove": "Importo da rimuovere",
-        "poweredBy": "Alimentato da Demeter Farming"
+        "poweredBy": "Alimentato da Demeter Farming",
+        "calculator": "Calcolatrice",
+        "results": "Risultati",
+        "rewards": "{symbol} ricompense"
     },
     "staking": {
         "title": "Staking"

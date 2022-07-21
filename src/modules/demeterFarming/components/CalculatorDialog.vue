@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" title="APR Calculator">
+  <dialog-base :visible.sync="isVisible" :title="`APR ${t('demeterFarming.calculator')}`">
     <div class="calculator-dialog">
       <s-row v-if="poolAsset" flex align="middle">
         <pair-token-logo v-if="baseAsset" :first-token="baseAsset" :second-token="poolAsset" class="title-logo" />
@@ -43,7 +43,7 @@
       </div>
 
       <div class="results">
-        <div class="results-title">APR Results</div>
+        <div class="results-title">APR {{ t('demeterFarming.results') }}</div>
 
         <info-line label="ROI" :value="calculatedRoiPercentFormatted" />
         <info-line :label="rewardsText" :value="calculatedRewardsFormatted" :fiat-value="calculatedRewardsFiat" />

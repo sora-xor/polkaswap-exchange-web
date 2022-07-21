@@ -75,15 +75,15 @@
         "SwapAndSend": "Intercambiar y enviar",
         "DemeterFarmingDepositLiquidity": "Liquidez de la participación",
         "DemeterFarmingWithdrawLiquidity": "Quitar liquidez",
-        "DemeterFarmingStakeToken": "Ficha de apuesta",
+        "DemeterFarmingStakeToken": "Token de apuesta",
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Reclamar Recompensas"
     },
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión Polkadot.js. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Parece que no hay cuentas en su extensión Polkadot.js. Por favor añada una cuenta e inténtelo de nuevo.",
-        "noAccount": "Error en la cuenta de Polkadot.js. Por favor compruebe su cuenta en la extensión Polkadot.js",
-        "noExtension": "No se encontró ninguna {extension} . Instálelo y vuelva a cargar esta página.",
+        "noAccount": "Error en la cuenta {extension}. Por favor compruebe su cuenta en la extensión {extension}",
+        "noExtension": "No se encontró ninguna {extension}. Por favor Instálela y vuelva a cargar esta página.",
         "noSigner": "Acceso denegado. Vaya a la configuración de la {extension} y abra \"Administrar acceso al sitio web\" para permitir."
     },
     "connection": {
@@ -524,7 +524,7 @@
         "rewardsForSwap": "Recompensas estratégicas de PSWAP",
         "swapInputMessage": "La entrada es estimada. Venderá el máximo de {transactionValue} o la transacción se revertirá",
         "route": "Ruta",
-        "errorFetching": "Error al obtener los datos"
+        "errorFetching": "Error en la obtención de los datos"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -536,7 +536,7 @@
         "pooledToken": "{tokenSymbol} Agrupado",
         "pairTokens": "{pair} Tokens del Fondo común",
         "poolShare": "Su Participación en el Fondo común",
-        "unknownAsset": "Activo desconocido",
+        "unknownAsset": "@:unknownAssetText",
         "description": "Cuando añades Liquidez, recibes Tokens del Fondo común que representan tu posición. Estos Tokens ganan automáticamente comisiones proporcionales a su participación en el fondo común y pueden ser redimidos en cualquier momento.",
         "strategicBonusApy": "Bonificación estratégica APY"
     },
@@ -564,7 +564,7 @@
         "energy": "@:evm.EWC",
         "copy": "Copiar dirección de red",
         "soraAddress": "Dirección de @:soraText",
-        "ethereumAddress": "dirección de @:ethereumText"
+        "ethereumAddress": "dirección @:ethereumText"
     },
     "selectRegisteredAsset": {
         "title": "Seleccione un Token",
@@ -717,7 +717,7 @@
         "outputMessage": "La cantidad es estimada. Si el precio cambia más de {slippageTolerance}% su transacción se revertirá.",
         "confirmTitle": "Usted recibirá",
         "shareOfPool": "Parte del fondo común después de la transacción",
-        "locked": "{percent} de su grupo está en participación"
+        "locked": "{percent} de su piscina está en participación"
     },
     "dexSettings": {
         "title": "Configuración de transacciones",
@@ -991,9 +991,9 @@
     "unknownAssetText": "Activo desconocido",
     "demeterFarming": {
         "staking": {
-            "active": "Replanteo activo",
+            "active": "Staking activo",
             "inactive": "Apuesta para ganar recompensas adicionales",
-            "stopped": "Replanteo detenido"
+            "stopped": "Staking detenido"
         },
         "info": {
             "earned": "{symbol} ganado",
@@ -1001,21 +1001,24 @@
             "feeTooltip": "La tarifa de depósito se aplica a la cantidad a apostar",
             "owned": "{symbol} @:balanceText",
             "poolShare": "Su parte de la piscina apostada",
-            "poolShareWillBe": "Su participación en el grupo apostada será",
-            "rewardToken": "ficha de recompensa",
+            "poolShareWillBe": "Su participación en la piscina apostada será",
+            "rewardToken": "token de recompensa",
             "stake": "Tu {symbol} apostado",
             "stakeWillBe": "Su apuesta de {symbol} será",
             "totalLiquidityLocked": "Liquidez total bloqueada"
         },
         "actions": {
             "add": "Vincular más",
-            "claim": "Reclamar premios",
+            "claim": "Reclamar recompensas",
             "remove": "Quitar participación",
             "start": "Empezar Participación"
         },
         "amountAdd": "Cantidad a vincular",
-        "amountRemove": "Cantidad a eliminar",
-        "poweredBy": "Desarrollado por Demeter Farming"
+        "amountRemove": "Cantidad a retirar",
+        "poweredBy": "Desarrollado por Demeter Farming",
+        "calculator": "Calculadora",
+        "results": "Resultados",
+        "rewards": "{symbol} recompensas"
     },
     "staking": {
         "title": "Staking"
@@ -1034,12 +1037,12 @@
             "ZeroValueInAmountParameter": "El parámetro de cantidad tiene valor cero"
         },
         "xstPool": {
-            "PoolAlreadyInitializedForPair": "El par de grupos ya existe",
-            "SlippageLimitExceeded": ""
+            "PoolAlreadyInitializedForPair": "El par de la piscina ya existe",
+            "SlippageLimitExceeded": "La tolerancia al deslizamiento no ha alcanzado los límites adecuados"
         },
         "referrals": {
             "AlreadyHasReferrer": "La cuenta ya tiene un referente",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "El remitente no tiene suficiente saldo reservado"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "El programa de recompensas ya ha finalizado",

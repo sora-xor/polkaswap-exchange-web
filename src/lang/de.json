@@ -82,9 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Es wurde keine Polkadot.js-Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Es scheint keine Konten in deiner Polkadot.js-Erweiterung zu geben. Bitte, füge ein Konto hinzu und versuche es erneut.",
-        "noAccount": "Polkadot.js Kontofehler. Bitte, überprüfe dein Konto in der Polkadot.js-Erweiterung",
-        "noExtension": "Es wurde keine {extension} gefunden. Bitte installieren Sie es und laden Sie diese Seite neu",
-        "noSigner": "Zugriff abgelehnt. Gehen Sie zu den Erweiterungseinstellungen von {extension} und öffnen Sie \"Website-Zugriff verwalten\", um dies zuzulassen."
+        "noAccount": "{extension} Kontofehler. Bitte überprüfe dein Konto in der {extension} Erweiterung",
+        "noExtension": "Es wurde keine {extension} gefunden. Bitte installiere es und lade diese Seite neu",
+        "noSigner": "Zugriff abgelehnt. Gehe zu den Erweiterungseinstellungen von {extension} und öffne \"Website-Zugriff verwalten\", um dies zuzulassen."
     },
     "connection": {
         "title": "SORA-Netzwerk-Konto",
@@ -100,7 +100,7 @@
             "connect": "Konto verbinden",
             "refresh": "Aktualisieren"
         },
-        "selectWallet": "Wählen Sie eine Brieftasche aus, mit der Sie arbeiten möchten",
+        "selectWallet": "Wähle eine Wallet zum Arbeiten aus",
         "wallet": {
             "install": "Installieren"
         }
@@ -968,9 +968,9 @@
         "download": "QR-Code herunterladen",
         "upload": "QR scannen",
         "invalid": "Ungültiger QR-Code",
-        "import": "Importieren Sie ein Bild",
-        "scan": "Scannen Sie mit der Kamera",
-        "allowanceError": "Überprüfen Sie die Verfügbarkeit Ihrer Kamera und die Browserberechtigungen, um sie zu verwenden",
+        "import": "Bild importieren",
+        "scan": "Mit der Kamera scannen",
+        "allowanceError": "Überprüfe die Verfügbarkeit deiner Kamera und die Browserberechtigungen, um sie zu verwenden",
         "receive": "Erhalten"
     },
     "bridgeTransferNotification": {
@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "Zu stakender Betrag",
         "amountRemove": "Zu entfernender Betrag",
-        "poweredBy": "Powered by Demeter Farming"
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Taschenrechner",
+        "results": "Ergebnisse",
+        "rewards": "{symbol} Belohnungen"
     },
     "staking": {
         "title": "Staken"
