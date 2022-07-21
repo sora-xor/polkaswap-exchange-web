@@ -1006,7 +1006,10 @@
         },
         "amountAdd": "Belopp till insats",
         "amountRemove": "Belopp att ta bort",
-        "poweredBy": "Drivs av Demeter Farming"
+        "poweredBy": "Drivs av Demeter Farming",
+        "calculator": "Kalkylator",
+        "results": "Resultat",
+        "rewards": "{symbol} belöningar"
     },
     "staking": {
         "title": "Utsättning"

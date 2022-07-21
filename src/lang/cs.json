@@ -1006,7 +1006,10 @@
         },
         "amountAdd": "Částka pro stake",
         "amountRemove": "Částka k odebrání",
-        "poweredBy": "Běží na Demeter Farming"
+        "poweredBy": "Běží na Demeter Farming",
+        "calculator": "Kalkulačka",
+        "results": "Výsledek",
+        "rewards": "{symbol} odměny"
     },
     "staking": {
         "title": "Stakování"

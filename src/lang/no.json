@@ -1006,7 +1006,10 @@
         },
         "amountAdd": "Beløp som skal satses",
         "amountRemove": "Beløp som skal fjernes",
-        "poweredBy": "Drevet av Demeter Farming"
+        "poweredBy": "Drevet av Demeter Farming",
+        "calculator": "Kalkulator",
+        "results": "Resultater",
+        "rewards": "{symbol} belønninger"
     },
     "staking": {
         "title": "Staking"

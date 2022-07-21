@@ -1006,7 +1006,10 @@
         },
         "amountAdd": "Čiastka na delegovanie",
         "amountRemove": "Suma na odstránenie",
-        "poweredBy": "Beží na Demeter Farming"
+        "poweredBy": "Beží na Demeter Farming",
+        "calculator": "Kalkulačka",
+        "results": "Výsledky",
+        "rewards": "{symbol} odmeny"
     },
     "staking": {
         "title": "Stakovanie"

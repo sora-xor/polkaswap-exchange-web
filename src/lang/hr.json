@@ -1006,7 +1006,10 @@
         },
         "amountAdd": "Iznos za ulog",
         "amountRemove": "Iznos za uklanjanje",
-        "poweredBy": "Pokreće Demeter Farming"
+        "poweredBy": "Pokreće Demeter Farming",
+        "calculator": "Kalkulator",
+        "results": "Rezultati",
+        "rewards": "{symbol} nagrada"
     },
     "staking": {
         "title": "Ulaganje"

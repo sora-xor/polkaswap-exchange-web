@@ -1006,7 +1006,10 @@
         },
         "amountAdd": "Bedrag om in te zetten",
         "amountRemove": "Te verwijderen bedrag",
-        "poweredBy": "Mogelijk gemaakt door Demeter Farming"
+        "poweredBy": "Mogelijk gemaakt door Demeter Farming",
+        "calculator": "Rekenmachine",
+        "results": "Resultaten",
+        "rewards": "{symbol} beloningen"
     },
     "staking": {
         "title": "Staking"
