@@ -64,25 +64,20 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import StakeDialogMixin from '../mixins/StakeDialogMixin';
 
-import DialogBase from '@/components/DialogBase.vue';
-
 import { lazyComponent } from '@/router';
 import { Components, Links } from '@/consts';
 import { isMaxButtonAvailable, getMaxValue } from '@/utils';
-import { getter } from '@/store/decorators';
 
 @Component({
   components: {
-    DialogBase,
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     TokenInput: lazyComponent(Components.TokenInput),
+    DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
     TokenLogo: components.TokenLogo,
   },
 })
 export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
-  @getter.assets.xor private xor!: AccountAsset;
-
   @Watch('visible')
   private resetValue() {
     this.baseAssetValue = '';
@@ -109,13 +104,13 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
   get isBaseAssetMaxButtonAvailable(): boolean {
     if (!this.baseAsset) return false;
 
-    return isMaxButtonAvailable(true, this.baseAsset, this.baseAssetValue, this.networkFee, this.xor);
+    return isMaxButtonAvailable(true, this.baseAsset, this.baseAssetValue, this.networkFee, this.xor as AccountAsset);
   }
 
   get isPoolAssetMaxButtonAvailable(): boolean {
     if (!this.poolAsset) return false;
 
-    return isMaxButtonAvailable(true, this.poolAsset, this.poolAssetValue, this.networkFee, this.xor);
+    return isMaxButtonAvailable(true, this.poolAsset, this.poolAssetValue, this.networkFee, this.xor as AccountAsset);
   }
 
   get userTokensDeposit(): FPNumber {
@@ -150,7 +145,7 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
     return this.calculatedRewards.toLocaleString();
   }
 
-  get calculatedRewardsFiat(): string {
+  get calculatedRewardsFiat(): Nullable<string> {
     return this.getFiatAmountByFPNumber(this.calculatedRewards, this.rewardAsset as AccountAsset);
   }
 
@@ -166,8 +161,8 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
       .mul(new FPNumber(multiplier))
       .mul(new FPNumber(this.depositFee))
       .mul(this.poolAssetPrice);
-    const costOfNetworkFeeUSD = FPNumber.fromCodecValue(this.networkFee, this.xor.decimals).mul(
-      FPNumber.fromCodecValue(this.getAssetFiatPrice(this.xor) ?? 0)
+    const costOfNetworkFeeUSD = FPNumber.fromCodecValue(this.networkFee).mul(
+      FPNumber.fromCodecValue(this.getAssetFiatPrice(this.xor as AccountAsset) ?? 0)
     );
     const costOfInvestmentUSD = costOfDepositFeeUSD.add(costOfNetworkFeeUSD);
     const valueOfInvestmentUSD = this.calculatedRewards.mul(this.rewardAssetPrice);
@@ -210,10 +205,12 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
   }
 
   handleBaseAssetMax(): void {
+    if (!this.baseAsset) return;
     this.handleBaseAssetValue(getMaxValue(this.baseAsset, this.networkFee));
   }
 
   handlePoolAssetMax(): void {
+    if (!this.poolAsset) return;
     this.handlePoolAssetValue(getMaxValue(this.poolAsset, this.networkFee));
   }
 }
