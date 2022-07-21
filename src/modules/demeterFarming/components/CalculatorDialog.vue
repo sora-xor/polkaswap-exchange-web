@@ -45,8 +45,8 @@
       <div class="results">
         <div class="results-title">APR Results</div>
 
-        <info-line label="ROI" />
-        <info-line :label="rewardsText" />
+        <info-line label="ROI" :value="calculatedRoiPercentFormatted" />
+        <info-line :label="rewardsText" :value="calculatedRewardsFormatted" :fiat-value="calculatedRewardsFiat" />
       </div>
     </div>
   </dialog-base>
@@ -110,6 +110,64 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
     if (!this.poolAsset) return false;
 
     return isMaxButtonAvailable(true, this.poolAsset, this.poolAssetValue, this.networkFee, this.xor);
+  }
+
+  get userTokensDeposit(): FPNumber {
+    return this.isFarm
+      ? this.liqudityLP
+          .mul(new FPNumber(this.poolAssetValue || 0))
+          .div(FPNumber.fromCodecValue(this.liquidity?.secondBalance ?? 0))
+      : new FPNumber(this.poolAssetValue || 0);
+  }
+
+  get userTokensDepositWithFee(): FPNumber {
+    const depositFee = new FPNumber(this.depositFee);
+
+    return this.userTokensDeposit.mul(FPNumber.ONE.sub(depositFee));
+  }
+
+  get calculatedRewards(): FPNumber {
+    if (!this.pool) return FPNumber.ZERO;
+
+    const totalDeposit = this.pool.totalTokensInPool.add(this.userTokensDepositWithFee);
+    const period = new FPNumber(this.interval);
+    const blocksPerDay = new FPNumber(14_400);
+    const blocksProduced = period.mul(blocksPerDay);
+
+    return this.emission.mul(blocksProduced).mul(this.userTokensDepositWithFee).div(totalDeposit);
+  }
+
+  get calculatedRewardsFormatted(): string {
+    return this.calculatedRewards.toLocaleString();
+  }
+
+  get calculatedRewardsFiat(): string {
+    return this.getFiatAmountByFPNumber(this.calculatedRewards, this.rewardAsset as AccountAsset);
+  }
+
+  get calculatedRoiPercent(): FPNumber {
+    const depositInPoolsAsset = new FPNumber(this.poolAssetValue || 0);
+
+    if (depositInPoolsAsset.isZero()) return FPNumber.ZERO;
+
+    // for liquidity pool we multiply deposit in pool asset by 2
+    const multiplier = this.isFarm ? 2 : 1;
+
+    const costOfDepositFeeUSD = depositInPoolsAsset
+      .mul(new FPNumber(multiplier))
+      .mul(new FPNumber(this.depositFee))
+      .mul(this.poolAssetPrice);
+    const costOfNetworkFeeUSD = FPNumber.fromCodecValue(this.networkFee, this.xor.decimals).mul(
+      FPNumber.fromCodecValue(this.getAssetFiatPrice(this.xor) ?? 0)
+    );
+    const costOfInvestmentUSD = costOfDepositFeeUSD.add(costOfNetworkFeeUSD);
+    const valueOfInvestmentUSD = this.calculatedRewards.mul(this.rewardAssetPrice);
+
+    return valueOfInvestmentUSD.sub(costOfInvestmentUSD).div(costOfInvestmentUSD).mul(FPNumber.HUNDRED);
+  }
+
+  get calculatedRoiPercentFormatted(): string {
+    return this.calculatedRoiPercent.dp(2).toLocaleString() + '%';
   }
 
   selectPeriod({ name }): void {
