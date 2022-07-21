@@ -1,15 +1,13 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Operation } from '@sora-substrate/util';
 
 import PoolMixin from './PoolMixin';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import DialogMixin from '@/components/mixins/DialogMixin';
-
 import type { CodecString } from '@sora-substrate/util';
 
 @Component
-export default class StakeDialogMixin extends Mixins(PoolMixin, TranslationMixin, DialogMixin) {
+export default class StakeDialogMixin extends Mixins(PoolMixin, mixins.DialogMixin) {
   @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
 
   get networkFee(): CodecString {

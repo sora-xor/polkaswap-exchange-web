@@ -110,6 +110,7 @@ import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
 import { getMaxValue, isXorAccountAsset } from '@/utils';
 
+import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
