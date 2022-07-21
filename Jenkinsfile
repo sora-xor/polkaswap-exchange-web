@@ -1,4 +1,4 @@
-@Library('jenkins-library@feature/DOPS-1839/automate-stage-deploy') _
+@Library('jenkins-library') _
 
 def pipeline = new org.js.AppPipeline(steps: this,
     dockerImageName: 'adar/web',
