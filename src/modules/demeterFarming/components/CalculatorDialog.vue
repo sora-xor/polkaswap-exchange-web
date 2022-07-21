@@ -48,6 +48,10 @@
         <info-line label="ROI" :value="calculatedRoiPercentFormatted" />
         <info-line :label="rewardsText" :value="calculatedRewardsFormatted" :fiat-value="calculatedRewardsFiat" />
       </div>
+
+      <a :href="link" target="_blank" rel="nofollow noopener" class="demeter-copyright">
+        {{ t('demeterFarming.poweredBy') }}
+      </a>
     </div>
   </dialog-base>
 </template>
@@ -63,7 +67,7 @@ import StakeDialogMixin from '../mixins/StakeDialogMixin';
 import DialogBase from '@/components/DialogBase.vue';
 
 import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
+import { Components, Links } from '@/consts';
 import { isMaxButtonAvailable, getMaxValue } from '@/utils';
 import { getter } from '@/store/decorators';
 
@@ -91,6 +95,8 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
   readonly intervals = [1, 7, 30, 90];
 
   interval = 1;
+
+  readonly link = Links.demeterFarmingPlatform;
 
   get selectedPeriod(): string {
     return String(this.interval);
@@ -130,6 +136,9 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
     if (!this.pool) return FPNumber.ZERO;
 
     const totalDeposit = this.pool.totalTokensInPool.add(this.userTokensDepositWithFee);
+
+    if (totalDeposit.isZero()) return FPNumber.ZERO;
+
     const period = new FPNumber(this.interval);
     const blocksPerDay = new FPNumber(14_400);
     const blocksProduced = period.mul(blocksPerDay);
@@ -259,5 +268,15 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
     letter-spacing: var(--s-letter-spacing-mini);
     margin-bottom: $inner-spacing-big;
   }
+}
+
+.demeter-copyright {
+  color: var(--s-color-base-content-tertiary);
+  display: block;
+  font-size: var(--s-font-size-mini);
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
 }
 </style>
