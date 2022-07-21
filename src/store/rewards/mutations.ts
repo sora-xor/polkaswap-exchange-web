@@ -1,12 +1,12 @@
 import omit from 'lodash/fp/omit';
 import { defineMutations } from 'direct-vuex';
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountMarketMakerInfo } from '@sora-substrate/util/build/rewards/types';
 
 import { initialState } from './state';
 import type { RewardsState } from './types';
-import type { SelectedRewards, AccountRewards } from '@/types/rewards';
+import type { SelectedRewards, AccountRewards, RewardsAmountHeaderItem } from '@/types/rewards';
 
 const mutations = defineMutations<RewardsState>()({
   reset(state): void {
@@ -34,8 +34,8 @@ const mutations = defineMutations<RewardsState>()({
   setTxError(state, value: boolean): void {
     state.transactionError = value;
   },
-  setRewardsReceived(state, value: boolean): void {
-    state.rewardsRecieved = value;
+  setRewardsReceived(state, rewards: RewardsAmountHeaderItem[]): void {
+    state.receivedRewards = rewards;
   },
   setSignature(state, value: string): void {
     state.signature = value;

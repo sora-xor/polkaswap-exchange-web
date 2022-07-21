@@ -197,14 +197,14 @@
         :asset="isTokenFromSelected ? tokenTo : tokenFrom"
         @select="selectToken"
       />
-      <confirm-swap
+      <swap-confirm
         :visible.sync="showConfirmSwapDialog"
         :isInsufficientBalance="isInsufficientBalance"
         @confirm="confirmSwap"
       />
       <settings-dialog :visible.sync="showSettings" />
     </s-form>
-    <template v-if="chartsEnabled">charts are enabled</template>
+    <swap-chart v-if="chartsEnabled" />
   </div>
 </template>
 
@@ -213,7 +213,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
@@ -246,11 +246,12 @@ import { action, getter, mutation, state } from '@/store/decorators';
     SettingsDialog: lazyComponent(Components.SettingsDialog),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     SelectToken: lazyComponent(Components.SelectToken),
-    ConfirmSwap: lazyComponent(Components.ConfirmSwap),
+    SwapConfirm: lazyComponent(Components.SwapConfirm),
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
+    SwapChart: lazyComponent(Components.SwapChart),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     TokenAddress: components.TokenAddress,
@@ -680,6 +681,35 @@ export default class Swap extends Mixins(
   }
 }
 </script>
+
+<style lang="scss">
+@include large-desktop {
+  .app-main--has-charts {
+    .swap-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: $inner-spacing-medium;
+      .el-form {
+        flex-shrink: 0;
+      }
+      .el-form,
+      .container--charts {
+        margin-right: $basic-spacing-small;
+        margin-left: $basic-spacing-small;
+      }
+    }
+    .el-form--actions {
+      flex-shrink: 0;
+    }
+    .container--charts {
+      min-width: $bridge-width;
+      max-width: 100%;
+      flex-grow: 1;
+    }
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .el-form--actions {

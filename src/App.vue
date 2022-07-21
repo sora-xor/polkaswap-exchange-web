@@ -1,7 +1,7 @@
 <template>
   <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
     <app-header :loading="loading" @toggle-menu="toggleMenu" />
-    <div class="app-main">
+    <div :class="appClasses">
       <app-menu
         :visible="menuVisibility"
         :on-select="goTo"
@@ -86,6 +86,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;
+  @getter.settings.chartsEnabled chartsEnabled!: boolean;
 
   @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
   @mutation.wallet.settings.setSubqueryEndpoint private setSubqueryEndpoint!: (endpoint: string) => void;
@@ -189,6 +190,19 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
+  }
+
+  get isSwapPage(): boolean {
+    return this.$route.name === PageNames.Swap;
+  }
+
+  get appClasses(): Array<string> {
+    const baseClass = 'app-main';
+    const cssClasses: Array<string> = [baseClass];
+    if (this.chartsEnabled && this.isSwapPage) {
+      cssClasses.push(`${baseClass}--has-charts`);
+    }
+    return cssClasses;
   }
 
   get blockNumberFormatted(): string {
@@ -447,6 +461,25 @@ ul ul {
 }
 i.icon-divider {
   @include icon-styles;
+}
+
+@include large-desktop {
+  .app-main.app-main--has-charts {
+    .app-menu {
+      position: relative;
+    }
+    .app-content {
+      width: 100%;
+      padding-left: $basic-spacing * 2;
+      .app-disclaimer {
+        margin-left: $basic-spacing-small * 3;
+      }
+    }
+  }
+
+  .block-number-link {
+    z-index: 0;
+  }
 }
 </style>
 

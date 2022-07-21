@@ -36,19 +36,21 @@ import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Operation, CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 
-import DialogMixin from '@/components/mixins/DialogMixin';
-import DialogBase from '@/components/DialogBase.vue';
 import { PageNames } from '@/consts';
 import { state } from '@/store/decorators';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
     TokenLogo: components.TokenLogo,
   },
 })
-export default class ConfirmBonding extends Mixins(mixins.TransactionMixin, mixins.FormattedAmountMixin, DialogMixin) {
+export default class ConfirmBonding extends Mixins(
+  mixins.TransactionMixin,
+  mixins.FormattedAmountMixin,
+  mixins.DialogMixin
+) {
   readonly xor = XOR;
 
   @state.referrals.amount private amount!: string;

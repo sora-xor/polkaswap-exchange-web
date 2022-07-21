@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "A ko rii itẹsiwaju Polkadot.js. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju polkadot{.js} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
-        "noAccount": "Polkadot.js aṣiṣe ifowosi. Jọwọ ṣayẹwo akọọlẹ rẹ ninu itẹsiwaju Polkadot.js"
+        "noAccount": "Polkadot.js aṣiṣe ifowosi. Jọwọ ṣayẹwo akọọlẹ rẹ ninu itẹsiwaju Polkadot.js",
+        "noExtension": "A ko ri {extension} . Jọwọ fi sii ki o tun gbee si oju-iwe yii",
+        "noSigner": "Ti kọ iraye si. Lọ si awọn eto {extension} ki o si ṣi “Ṣakoso Wiwọle Oju opo wẹẹbu” lati gba laaye."
     },
     "connection": {
         "title": "Ifowosi SORA Nẹtiwọọki",
@@ -97,6 +99,10 @@
             "learnMore": "Kọ ẹkọ si",
             "connect": "So ifowisi pọ",
             "refresh": "Tunwo"
+        },
+        "selectWallet": "Yan apamọwọ kan lati ṣiṣẹ pẹlu",
+        "wallet": {
+            "install": "Fi sori ẹrọ"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Yọ dukia kuro",
         "select": "Yan dukia",
-        "recieve": "Gba {symbol}"
+        "receive": "Gba {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Ti ṣe iṣiro iṣẹjade. Iwọ yoo gba o kere ju {transactionValue} tabi idunadura naa yoo pada.",
         "rewardsForSwap": "Awọn ere ilana PSWAP",
         "swapInputMessage": "Iṣagbewọle ti ni iṣiro. Iwọ yoo ta o pọju {transactionValue} tabi idunadura naa yoo pada.",
-        "route": "Ipa ọna"
+        "route": "Ipa ọna",
+        "errorFetching": "Aṣiṣe gbigba data naa"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -874,7 +881,6 @@
             "transfer": "Awọn ami ti o ra ni aṣeyọri!\n Tẹ lati bẹrẹ iṣowo afara"
         }
     },
-    "recievedText": "Ti gba",
     "light": "Imọlẹ",
     "dark": "Dudu",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Ṣe igbasilẹ koodu QR",
         "upload": "Ṣayẹwo QR",
-        "recieve": "Gba",
-        "invalid": "Koodu QR ti ko tọ"
+        "invalid": "Koodu QR ti ko tọ",
+        "import": "Gbe aworan wọle",
+        "scan": "Ṣayẹwo pẹlu kamẹra",
+        "allowanceError": "Ṣayẹwo wiwa kamẹra rẹ ati awọn igbanilaaye aṣawakiri lati lo",
+        "receive": "Gba"
     },
     "bridgeTransferNotification": {
         "addToken": "Ṣafikun {symbol} si @:metamask",
@@ -1048,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Aṣiṣe waye lakoko ti o ṣe iṣiro idiyele naa"
         }
-    }
+    },
+    "receivedText": "Ti gba"
 }

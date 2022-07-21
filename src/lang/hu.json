@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Nem találtunk Polkadot.js kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Úgy tűnik, hogy a Polkadot.js bővítményben nincsenek fiókok. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
-        "noAccount": "Polkadot.js fiókhiba. Kérjük, ellenőrizd fiókodat a Polkadot.js bővítményben."
+        "noAccount": "Polkadot.js fiókhiba. Kérjük, ellenőrizd fiókodat a Polkadot.js bővítményben.",
+        "noExtension": "Nem található {extension} bővítmény. Kérjük, telepítse, és töltse be újra ezt az oldalt",
+        "noSigner": "Hozzáférés megtagadva. Nyissa meg a {extension} bővítmény beállításait, és nyissa meg a „Webhely-hozzáférés kezelése” lehetőséget az engedélyezéshez."
     },
     "connection": {
         "title": "SORA hálózati fiók",
@@ -97,6 +99,10 @@
             "learnMore": "Tudj meg többet",
             "connect": "Fiók csatlakoztatása",
             "refresh": "Frissítés"
+        },
+        "selectWallet": "Válasszon egy pénztárcát, amellyel dolgozni szeretne",
+        "wallet": {
+            "install": "Telepítés"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Eszköz eltávolítása",
         "select": "Eszköz kiválasztása",
-        "recieve": "{symbol} fogadása"
+        "receive": "{symbol} fogadása"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Becsült eredmény. Legalább {transactionValue} kapsz, vagy a tranzakció visszafordul.",
         "rewardsForSwap": "PSWAP Stratégiai Jutalmak",
         "swapInputMessage": "Becsült eredmény. Maximum {transactionValue} adsz el, vagy a tranzakció visszafordul.",
-        "route": "Útvonal"
+        "route": "Útvonal",
+        "errorFetching": "Hiba történt az adatok lekérésekor"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -874,7 +881,6 @@
             "transfer": "Tokenek sikeresen megvásárolva!\nKattintson ide a hídtranzakció elindításához"
         }
     },
-    "recievedText": "Bejövő",
     "light": "Világos",
     "dark": "Sötét",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "QR-kód letöltése",
         "upload": "QR-kód beolvasása",
-        "recieve": "Fogadás",
-        "invalid": "Érvénytelen QR-kód"
+        "invalid": "Érvénytelen QR-kód",
+        "import": "Kép importálása",
+        "scan": "Szkennelés kamerával",
+        "allowanceError": "Ellenőrizze a kamerája elérhetőségét és a böngésző engedélyeit a használatához",
+        "receive": "Fogadás"
     },
     "bridgeTransferNotification": {
         "addToken": "Adja hozzá a {symbol} -ot a @:metamask -hoz",
@@ -1048,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Hiba történt az ár kiszámításakor"
         }
-    }
+    },
+    "receivedText": "Bejövő"
 }

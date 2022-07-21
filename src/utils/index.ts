@@ -248,3 +248,16 @@ export const waitForAccountPair = async (func: VoidFunction): Promise<any> => {
     return func();
   }
 };
+
+export const getTextWidth = (text: string, fontFamily = 'Sora', size = 10): number => {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+
+  if (!context) return 0;
+
+  context.font = `${size}px ${fontFamily}`;
+
+  const width = Math.ceil(context.measureText(text).width);
+
+  return width;
+};

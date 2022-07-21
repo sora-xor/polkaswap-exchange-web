@@ -6,20 +6,19 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import DialogMixin from '@/components/mixins/DialogMixin';
-import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     MarketAlgorithm: lazyComponent(Components.MarketAlgorithm),
   },
 })
-export default class SettingsDialog extends Mixins(TranslationMixin, DialogMixin) {}
+export default class SettingsDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {}
 </script>
 
 <style lang="scss">

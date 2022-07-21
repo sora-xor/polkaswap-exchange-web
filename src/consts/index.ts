@@ -80,6 +80,7 @@ export const Links = {
   terms: 'https://wiki.sora.org/polkaswap/terms',
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
+  demeterFarmingPlatform: 'https://farming.deotoken.io/',
 };
 
 export const ObjectInit = () => null;
@@ -144,7 +145,9 @@ export enum Components {
   AppMenu = 'App/Menu/AppMenu',
   AppInfoPopper = 'App/Menu/AppInfoPopper',
   PairTokenLogo = 'PairTokenLogo',
-  ConfirmSwap = 'ConfirmSwap',
+  SwapConfirm = 'Swap/Confirm',
+  SwapChart = 'Swap/Chart',
+  StatusActionBadge = 'Swap/StatusActionBadge',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
   SettingsDialog = 'SettingsDialog',
@@ -155,7 +158,6 @@ export enum Components {
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
-  StatusActionBadge = 'StatusActionBadge',
   ExternalLink = 'ExternalLink',
   // HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',

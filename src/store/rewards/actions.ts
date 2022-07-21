@@ -2,7 +2,7 @@ import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 
 import { rewardsActionContext } from '@/store/rewards';
 import { waitForAccountPair } from '@/utils';
@@ -151,7 +151,9 @@ const actions = defineActions({
     if (!internalAddress) return;
 
     try {
-      const { externalRewardsSelected, claimableRewards } = getters;
+      const { externalRewardsSelected, claimableRewards, rewardsByAssetsList } = getters;
+
+      const rewardsListToReceive = [...rewardsByAssetsList];
 
       if (externalRewardsSelected && !externalAddress) return;
 
@@ -179,7 +181,7 @@ const actions = defineActions({
         // update ui to success state if user not changed external account
         if (rootState.web3.evmAddress === externalAddress) {
           commit.setTxStep(1);
-          commit.setRewardsReceived(true);
+          commit.setRewardsReceived(rewardsListToReceive);
           commit.setRewardsClaiming(false);
         }
       }

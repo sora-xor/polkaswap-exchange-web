@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Inget Polkadot.js tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Det verkar inte finnas några konton i ditt Polkadot.js-tillägg. Vänligen lägg till ett konto och försök igen.",
-        "noAccount": "Polkadot.js konto fel. Vänligen kontrollera ditt konto i Polkadot.js-tillägget."
+        "noAccount": "Polkadot.js konto fel. Vänligen kontrollera ditt konto i Polkadot.js-tillägget.",
+        "noExtension": "Inget {extension} -tillägg hittades. Installera det och ladda om den här sidan",
+        "noSigner": "Tillträde beviljas ej. Gå till tilläggsinställningarna för {extension} och öppna \"Hantera webbplatsåtkomst\" för att tillåta."
     },
     "connection": {
         "title": "SORA-Nätverkskonto",
@@ -97,6 +99,10 @@
             "learnMore": "Lär dig mer",
             "connect": "Anslut konto",
             "refresh": "Uppdatera"
+        },
+        "selectWallet": "Välj en plånbok att arbeta med",
+        "wallet": {
+            "install": "Installera"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Ta bort tillgång",
         "select": "Välj en tillgång",
-        "recieve": "Ta emot {symbol}"
+        "receive": "Ta emot {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Utdata är beräknad ungefärligt. Du kommer att få {transactionValue} eller så återgår transaktionen.",
         "rewardsForSwap": "PSWAP strategiska belöningar",
         "swapInputMessage": "Indata är beräknad ungefärligt. Du kommer att sälja maximalt {transactionValue} eller så återgår transaktionen.",
-        "route": "Rutt"
+        "route": "Rutt",
+        "errorFetching": "Fel vid hämtning av data"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -874,7 +881,6 @@
             "transfer": "Tokens framgångsrikt köpta!\nKlicka för att starta bryggtransaktionen"
         }
     },
-    "recievedText": "Mottagen",
     "light": "Ljus",
     "dark": "Mörk",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Ladda ner QR-Kod",
         "upload": "Skanna QR",
-        "recieve": "Ta emot",
-        "invalid": "Ogiltig QR-Kod"
+        "invalid": "Ogiltig QR-Kod",
+        "import": "Importera en bild",
+        "scan": "Skanna med kamera",
+        "allowanceError": "Kontrollera din kameratillgänglighet och webbläsarbehörigheter för att använda den",
+        "receive": "Ta emot"
     },
     "bridgeTransferNotification": {
         "addToken": "Lägg till {symbol} i @:metamask",
@@ -1048,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Ett fel uppstod när priset beräknades"
         }
-    }
+    },
+    "receivedText": "Mottagen"
 }

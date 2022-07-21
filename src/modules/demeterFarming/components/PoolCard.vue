@@ -71,7 +71,9 @@
           </s-button>
         </template>
 
-        <div class="demeter-pool-card-copyright">{{ t('demeterFarming.poweredBy') }}</div>
+        <a :href="link" target="_blank" rel="nofollow noopener" class="demeter-pool-card-copyright">
+          {{ t('demeterFarming.poweredBy') }}
+        </a>
       </template>
     </pool-info>
   </s-card>
@@ -88,7 +90,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter } from '@/store/decorators';
 
 import router, { lazyComponent } from '@/router';
-import { Components, PageNames } from '@/consts';
+import { Components, PageNames, Links } from '@/consts';
 
 @Component({
   components: {
@@ -101,6 +103,8 @@ export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly showBalance!: boolean;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+
+  readonly link = Links.demeterFarmingPlatform;
 
   get title(): string {
     const key = this.activeStatus ? (this.hasStake ? 'active' : 'inactive') : 'stopped';
@@ -156,6 +160,8 @@ export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
     line-height: var(--s-line-height-reset);
     text-transform: uppercase;
     opacity: 0.75;
+    color: var(--s-color-base-content-primary);
+    text-decoration: none;
   }
 }
 </style>

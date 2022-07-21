@@ -341,6 +341,7 @@ export default {
     rewardsForSwap: 'PSWAP Strategic Rewards',
     swapInputMessage: 'Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.',
     route: 'Route',
+    errorFetching: 'Error fetching the data',
   },
   pool: {
     connectWallet: '@:connectWalletText',
@@ -786,5 +787,14 @@ export default {
   },
   staking: {
     title: 'Staking',
+  },
+  code: {
+    download: 'Download QR Code',
+    upload: 'Scan QR',
+    receive: 'Receive',
+    invalid: 'Invalid QR Code',
+    import: 'Import an image',
+    scan: 'Scan with camera',
+    allowanceError: 'Check your camera availability and browser permissions to use it',
   },
 };

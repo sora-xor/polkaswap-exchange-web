@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Nije pronađeno proširenje Polkadot.js. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Čini se da u vašem proširenju Polkadot.js nema računa. Dodajte račun i pokušajte ponovo.",
-        "noAccount": "Polkadot.js pogreška računa. Provjerite svoj račun u proširenju Polkadot.js"
+        "noAccount": "Polkadot.js pogreška računa. Provjerite svoj račun u proširenju Polkadot.js",
+        "noExtension": "Nije pronađeno {extension} . Instalirajte ga i ponovno učitajte ovu stranicu",
+        "noSigner": "Pristup odbijen. Idite na postavke {extension} i otvorite \"Upravljanje pristupom web-mjestu\" da dopustite."
     },
     "connection": {
         "title": "Račun mreže SORE",
@@ -97,6 +99,10 @@
             "learnMore": "Saznajte više",
             "connect": "Povežite račun",
             "refresh": "Osvježite"
+        },
+        "selectWallet": "Odaberite novčanik s kojim ćete raditi",
+        "wallet": {
+            "install": "Instalirati"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Uklonite sredstvo",
         "select": "Odabir imovine",
-        "recieve": "Primite {symbol}"
+        "receive": "Primite {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Procjenjuje se izlaz. Primit ćete najmanje {transactionValue} ili će se transakcija vratiti.",
         "rewardsForSwap": "PSWAP strateške nagrade",
         "swapInputMessage": "Procjenjuje se ulaz. Prodat ćete najviše {transactionValue} ili će se transakcija vratiti.",
-        "route": "Ruta"
+        "route": "Ruta",
+        "errorFetching": "Pogreška pri dohvaćanju podataka"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -874,7 +881,6 @@
             "transfer": "Tokeni su uspješno kupljeni!\nKliknite za pokretanje most transakcije"
         }
     },
-    "recievedText": "Primljeno",
     "light": "Svjetlo",
     "dark": "Tamno",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Preuzmite QR kod",
         "upload": "Skeniraj QR",
-        "recieve": "Primite",
-        "invalid": "Nevažeći QR kod"
+        "invalid": "Nevažeći QR kod",
+        "import": "Uvezi sliku",
+        "scan": "Skeniraj kamerom",
+        "allowanceError": "Provjerite dostupnost svoje kamere i dopuštenja preglednika za njezino korištenje",
+        "receive": "Primite"
     },
     "bridgeTransferNotification": {
         "addToken": "Dodajte {symbol} u @:metamask",
@@ -1048,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Došlo je do greške prilikom izračuna cijene"
         }
-    }
+    },
+    "receivedText": "Primljeno"
 }
