@@ -266,7 +266,7 @@ export default class Tokens extends Mixins(
   @getter.assets.whitelistAssets private items!: Array<Asset>;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
 
-  @action.assets.getRegisteredAssets private getRegisteredAssets!: AsyncVoidFn;
+  @action.assets.updateRegisteredAssets private updateRegisteredAssets!: AsyncVoidFn;
 
   order = '';
   property = '';
@@ -333,7 +333,7 @@ export default class Tokens extends Mixins(
   }
 
   async mounted(): Promise<void> {
-    await Promise.all([this.getRegisteredAssets(), this.updateAssetsData()]);
+    await Promise.all([this.updateRegisteredAssets(), this.updateAssetsData()]);
   }
 
   changeSort({ order = '', property = '' } = {}): void {
