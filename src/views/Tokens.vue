@@ -12,33 +12,23 @@
 
     <s-table :data="tableItems" :highlight-current-row="false" size="small" class="tokens-table">
       <!-- Index -->
-      <s-table-column width="48" label="#">
+      <s-table-column width="280" label="#" class-name="sticky">
         <template #header>
-          <span @click="handleResetSort" :class="['tokens-item-head-index', { active: isDefaultSort }]">#</span>
-        </template>
-        <template v-slot="{ $index }">
-          <span class="tokens-item-index">{{ $index + startIndex + 1 }}</span>
-        </template>
-      </s-table-column>
-      <!-- Icon -->
-      <s-table-column width="52" header-align="center" align="center">
-        <template #header>
-          <s-icon name="various-bone-24" size="14px" class="tokens-table--center" />
-        </template>
-        <template v-slot="{ row }">
-          <token-logo class="tokens-item-logo" :token-symbol="row.symbol" />
-        </template>
-      </s-table-column>
-      <!-- Name -->
-      <s-table-column width="180">
-        <template #header>
-          <div class="tokens-item-info-header">
+          <div class="tokens-item-index">
+            <span @click="handleResetSort" :class="['tokens-item-index--head', { active: isDefaultSort }]">#</span>
+          </div>
+          <div class="tokens-item-logo">
+            <s-icon name="various-bone-24" size="14px" class="tokens-item-logo--head" />
+          </div>
+          <div class="tokens-item-info tokens-item-info--head">
             <span class="tokens-table__primary">{{ t('tokens.name') }}</span>
             <span class="tokens-table__secondary">({{ t('tokens.assetId') }})</span>
           </div>
         </template>
-        <template v-slot="{ row }">
-          <div class="tokens-item-info">
+        <template v-slot="{ $index, row }">
+          <span class="tokens-item-index tokens-item-index--body">{{ $index + startIndex + 1 }}</span>
+          <token-logo class="tokens-item-logo tokens-item-logo--body" :token-symbol="row.symbol" />
+          <div class="tokens-item-info tokens-item-info--body">
             <div class="tokens-item-name">{{ row.name }}</div>
             <div class="tokens-item-address">
               <span>{{ t('soraText') }}:</span>&nbsp;
@@ -444,13 +434,19 @@ export default class Tokens extends Mixins(
 
   tr,
   th {
+    background: transparent;
     &,
     &:hover {
-      background: transparent;
+      // background: transparent;
 
       & > td,
       & > th {
-        background: transparent;
+        &:not(.sticky) {
+          background: transparent;
+        }
+        &.sticky {
+          background: var(--s-color-utility-surface);
+        }
 
         .cell {
           padding: $inner-spacing-mini / 2 10px;
@@ -475,6 +471,13 @@ export default class Tokens extends Mixins(
 
   .tokens-item-amount.formatted-amount--fiat-value {
     color: var(--s-color-base-content-primary);
+  }
+
+  .sticky {
+    position: sticky;
+    left: 0;
+    z-index: 100;
+    // box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
   }
 }
 
@@ -531,9 +534,51 @@ $container-max-width: 992px;
 
 .tokens-item {
   &-index {
-    color: var(--s-color-base-content-tertiary);
-    font-size: var(--s-font-size-small);
-    font-weight: 800;
+    width: 40px;
+    display: inline-block;
+    vertical-align: middle;
+
+    &--body {
+      color: var(--s-color-base-content-tertiary);
+      font-size: var(--s-font-size-small);
+      font-weight: 800;
+    }
+
+    &--head {
+      cursor: pointer;
+
+      &.active {
+        color: var(--s-color-theme-accent);
+      }
+    }
+  }
+  &-logo {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    width: 32px;
+    margin: 0 $inner-spacing-mini;
+  }
+  &-info {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: var(--s-line-height-medium);
+    letter-spacing: var(--s-letter-spacing-mini);
+    margin: 0 $inner-spacing-mini;
+
+    &--head {
+      flex-flow: column wrap;
+      line-height: var(--s-line-height-small);
+
+      & > span {
+        margin-right: $inner-spacing-mini / 2;
+        white-space: nowrap;
+      }
+    }
+
+    &--body {
+      font-weight: 300;
+    }
   }
   &-symbol {
     flex: 1;
@@ -543,25 +588,6 @@ $container-max-width: 992px;
     font-weight: 800;
     line-height: var(--s-line-height-big);
     text-align: center;
-  }
-  &-logo {
-    display: inline-block;
-    vertical-align: middle;
-  }
-  &-info {
-    line-height: var(--s-line-height-medium);
-    letter-spacing: var(--s-letter-spacing-mini);
-    font-weight: 300;
-
-    &-header {
-      flex-flow: column wrap;
-      line-height: var(--s-line-height-small);
-
-      & > span {
-        margin-right: $inner-spacing-mini / 2;
-        white-space: nowrap;
-      }
-    }
   }
   &-name {
     font-size: var(--s-font-size-small);
@@ -575,16 +601,6 @@ $container-max-width: 992px;
   &-price {
     font-size: var(--s-font-size-medium);
     white-space: nowrap;
-  }
-
-  &-head {
-    &-index {
-      cursor: pointer;
-
-      &.active {
-        color: var(--s-color-theme-accent);
-      }
-    }
   }
 }
 </style>
