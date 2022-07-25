@@ -78,7 +78,7 @@
         {{ hintText }}
       </div>
       <s-button
-        v-if="!(rewardsRecieved || loading)"
+        v-if="!(rewardsReceived || loading)"
         class="rewards-block rewards-action-button s-typography-button--large"
         data-test-name="LoginAndGet"
         type="primary"
@@ -134,7 +134,7 @@ export default class Rewards extends Mixins(
   @state.rewards.rewardsClaiming private rewardsClaiming!: boolean;
   @state.rewards.transactionError private transactionError!: boolean;
   @state.rewards.transactionStep private transactionStep!: number;
-  @state.rewards.recievedRewards recievedRewards!: RewardsAmountHeaderItem[];
+  @state.rewards.receivedRewards receivedRewards!: RewardsAmountHeaderItem[];
   @state.rewards.fee fee!: CodecString;
 
   @state.rewards.vestedRewards private vestedRewards!: RewardsInfo;
@@ -206,12 +206,12 @@ export default class Rewards extends Mixins(
     }
   }
 
-  get rewardsRecieved(): boolean {
-    return this.recievedRewards.length !== 0;
+  get rewardsReceived(): boolean {
+    return this.receivedRewards.length !== 0;
   }
 
   get rewardsAmountHeaderItems(): RewardsAmountHeaderItem[] {
-    return this.rewardsRecieved ? this.recievedRewards : this.rewardsByAssetsList;
+    return this.rewardsReceived ? this.receivedRewards : this.rewardsByAssetsList;
   }
 
   get rewardTokens(): Array<Asset> {
@@ -321,15 +321,15 @@ export default class Rewards extends Mixins(
   }
 
   get claimingInProgressOrFinished(): boolean {
-    return this.rewardsClaiming || this.transactionError || this.rewardsRecieved;
+    return this.rewardsClaiming || this.transactionError || this.rewardsReceived;
   }
 
   get claimingStatusMessage(): string {
-    return this.rewardsRecieved ? this.t('rewards.claiming.success') : this.t('rewards.claiming.pending');
+    return this.rewardsReceived ? this.t('rewards.claiming.success') : this.t('rewards.claiming.pending');
   }
 
   get transactionStatusMessage(): string {
-    if (this.rewardsRecieved) {
+    if (this.rewardsReceived) {
       return this.t('rewards.transactions.success');
     }
 

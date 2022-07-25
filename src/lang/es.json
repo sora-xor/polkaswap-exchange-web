@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Eliminar el Activo",
         "select": "Escoja un activo",
-        "recieve": "Recibir {symbol}"
+        "receive": "Recibir {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -523,7 +523,8 @@
         "swapOutputMessage": "La cantidad de salida es estimada. Recibirá al menos {transactionValue} o la transacción se revertirá.",
         "rewardsForSwap": "Recompensas estratégicas de PSWAP",
         "swapInputMessage": "La entrada es estimada. Venderá el máximo de {transactionValue} o la transacción se revertirá",
-        "route": "Ruta"
+        "route": "Ruta",
+        "errorFetching": "Error al obtener los datos"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -880,7 +881,6 @@
             "transfer": "¡Tokens comprados con éxito!\nHaga clic para iniciar la transacción del puente"
         }
     },
-    "recievedText": "Recibido",
     "light": "Luz",
     "dark": "Oscuro",
     "headerMenu": {
@@ -967,8 +967,11 @@
     "code": {
         "download": "Descargar código QR",
         "upload": "Escanear QR",
-        "recieve": "Recibir",
-        "invalid": "Código QR no válido"
+        "invalid": "Código QR no válido",
+        "import": "Importar una imagen",
+        "scan": "Escanear con cámara",
+        "allowanceError": "Verifique la disponibilidad de su cámara y los permisos del navegador para usarla",
+        "receive": "Recibir"
     },
     "bridgeTransferNotification": {
         "addToken": "Añadir {symbol} a @:metamask",
@@ -1054,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Ocurrió un error al calcular el precio"
         }
-    }
+    },
+    "receivedText": "Recibido"
 }

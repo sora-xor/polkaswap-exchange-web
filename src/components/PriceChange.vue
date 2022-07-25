@@ -46,7 +46,7 @@ export default class PriceChange extends Vue {
 <style lang="scss" scoped>
 .price-change {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   color: var(--s-color-theme-accent);
   font-size: var(--s-font-size-medium);
   font-weight: 600;
@@ -54,7 +54,7 @@ export default class PriceChange extends Vue {
   line-height: var(--s-line-height-medium);
 
   &--increased {
-    color: var(--s-color-status-success);
+    color: var(--s-color-theme-secondary-hover);
   }
 
   &-arrow {

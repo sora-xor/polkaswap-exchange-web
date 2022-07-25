@@ -26,8 +26,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import DialogBase from '../DialogBase.vue';
-import DialogMixin from '../mixins/DialogMixin';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '../mixins/TranslationMixin';
 import { StoreLinks } from '../../consts';
 
@@ -35,11 +34,11 @@ import QrCode from '../../assets/img/mobile/qr-code.svg?inline';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     QrCode,
   },
 })
-export default class MobilePopup extends Mixins(DialogMixin, TranslationMixin) {
+export default class MobilePopup extends Mixins(mixins.DialogMixin, TranslationMixin) {
   @Prop({ type: String }) readonly fee!: string;
 
   StoreLinks = StoreLinks;

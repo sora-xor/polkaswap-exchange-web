@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Hapus aset",
         "select": "Pilih aset",
-        "recieve": "Terima {symbol}"
+        "receive": "Terima {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -523,7 +523,8 @@
         "swapOutputMessage": "Keluaran diperkirakan. Anda akan menerima setidaknya {transactionValue} atau transaksi akan dibatalkan.",
         "rewardsForSwap": "PSWAP Strategic Rewards",
         "swapInputMessage": "Masukan diperkirakan. Anda akan menjual maksimum {transactionValue} atau transaksi akan kembali.",
-        "route": "Rute"
+        "route": "Rute",
+        "errorFetching": "Kesalahan pengambilan data"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -880,7 +881,6 @@
             "transfer": "Token berhasil dibeli!\n Klik untuk memulai transaksi jembatan"
         }
     },
-    "recievedText": "Diterima",
     "light": "Lampu",
     "dark": "Gelap",
     "headerMenu": {
@@ -967,8 +967,11 @@
     "code": {
         "download": "Unduh Kode QR",
         "upload": "Pindai QR",
-        "recieve": "Menerima",
-        "invalid": "Kode QR tidak valid"
+        "invalid": "Kode QR tidak valid",
+        "import": "Impor gambar",
+        "scan": "Pindai dengan kamera",
+        "allowanceError": "Periksa ketersediaan kamera dan izin browser Anda untuk menggunakannya",
+        "receive": "Menerima"
     },
     "bridgeTransferNotification": {
         "addToken": "Tambahkan {symbol} ke @:metamask",
@@ -1054,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Terjadi kesalahan saat menghitung harga"
         }
-    }
+    },
+    "receivedText": "Diterima"
 }

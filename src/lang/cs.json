@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Odebrat aktivum",
         "select": "Vyberte aktivum",
-        "recieve": "Přijmout {symbol}"
+        "receive": "Přijmout {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -523,7 +523,8 @@
         "swapOutputMessage": "Výstup je odhadován. Obdržíte alespoň {transactionValue}, jinak se transakce vrátí zpět.",
         "rewardsForSwap": "Strategické odměny PSWAP",
         "swapInputMessage": "Vstup je odhadován. Prodáte maximálně {transactionValue}, jinak se transakce vrátí zpět.",
-        "route": "Trasa"
+        "route": "Trasa",
+        "errorFetching": "Chyba při načítání dat"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -880,7 +881,6 @@
             "transfer": "Tokeny byly úspěšně zakoupeny!\nKliknutím spustíte bridge transakci"
         }
     },
-    "recievedText": "Přijato",
     "light": "Světlý",
     "dark": "Tmavý",
     "headerMenu": {
@@ -967,8 +967,11 @@
     "code": {
         "download": "Stáhnout QR kód",
         "upload": "Skenovat QR",
-        "recieve": "Příjem",
-        "invalid": "Neplatný QR kód"
+        "invalid": "Neplatný QR kód",
+        "import": "Importujte obrázek",
+        "scan": "Skenujte fotoaparátem",
+        "allowanceError": "Zkontrolujte dostupnost fotoaparátu a oprávnění prohlížeče k jeho použití",
+        "receive": "Příjem"
     },
     "bridgeTransferNotification": {
         "addToken": "Přidejte {symbol} do @:metamask",
@@ -1054,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Při výpočtu ceny došlo k chybě"
         }
-    }
+    },
+    "receivedText": "Přijato"
 }

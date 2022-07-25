@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Уклоните средство",
         "select": "Izaberite sredstvo",
-        "recieve": "Примите {symbol}"
+        "receive": "Примите {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -523,7 +523,8 @@
         "swapOutputMessage": "Излаз је процењен. Добићете најмање {transactionValue} или ће трансакција бити враћена.",
         "rewardsForSwap": "PSWAP стратешке награде",
         "swapInputMessage": "Улаз је процењен. Продаћете максимално {transactionValue} или ће се трансакција поништити.",
-        "route": "Рута"
+        "route": "Рута",
+        "errorFetching": "Greška pri prenošenju podataka"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -880,7 +881,6 @@
             "transfer": "Токени су успешно купљени!\nКликните да бисте започели мост трансакцију"
         }
     },
-    "recievedText": "Примљено",
     "light": "Светло",
     "dark": "Мрачно",
     "headerMenu": {
@@ -967,8 +967,11 @@
     "code": {
         "download": "Преузмите КР код",
         "upload": "Skeniraj QR",
-        "recieve": "Примите",
-        "invalid": "Неважећи КР код"
+        "invalid": "Неважећи КР код",
+        "import": "Увезите слику",
+        "scan": "Скенирајте камером",
+        "allowanceError": "Проверите доступност камере и дозволе прегледача да бисте је користили",
+        "receive": "Примите"
     },
     "bridgeTransferNotification": {
         "addToken": "Додајте {symbol} у @:metamask",
@@ -1054,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Дошло је до грешке при израчунавању цене"
         }
-    }
+    },
+    "receivedText": "Примљено"
 }

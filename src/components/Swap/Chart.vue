@@ -3,7 +3,7 @@
     <div class="tokens-info-container">
       <div class="header">
         <div class="selected-tokens">
-          <tokens-row :assets="tokens" size="medium" border />
+          <tokens-row border :assets="tokens" size="medium" />
           <div v-if="tokenFrom" class="token-title">
             <span>{{ tokenFrom.symbol }}</span>
             <span v-if="tokenTo">/{{ tokenTo.symbol }}</span>
@@ -13,7 +13,13 @@
         <div class="s-flex chart-controls">
           <div class="chart-filters">
             <s-tabs type="rounded" :value="selectedFilter.name" @click="selectFilter">
-              <s-tab v-for="filter in filters" :key="filter.name" :name="filter.name" :label="filter.label" />
+              <s-tab
+                v-for="filter in filters"
+                :key="filter.name"
+                :name="filter.name"
+                :label="filter.label"
+                :disabled="parentLoading || loading"
+              />
             </s-tabs>
           </div>
 
@@ -24,6 +30,7 @@
               type="action"
               size="small"
               :class="['chart-type', { 's-pressed': active }]"
+              :disabled="parentLoading || loading"
               @click="selectChartType(type)"
             >
               <component :is="icon" :class="{ active }" />
@@ -31,31 +38,46 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="price">
-        <formatted-amount
-          :value="fiatPriceFormatted"
-          :font-weight-rate="FontWeightRate.MEDIUM"
-          :font-size-rate="FontWeightRate.MEDIUM"
-          :asset-symbol="symbol"
-          symbol-as-decimal
-        />
-      </div>
-      <price-change v-if="!isFetchingError" :value="priceChange" />
-    </div>
-    <v-chart
-      v-if="!isFetchingError"
-      class="chart"
-      :option="chartSpec"
-      v-loading="loading"
-      autoresize
-      @zr:mousewheel="handleZoom"
-      @datazoom="changeZoomLevel"
-    />
-    <div v-else class="fetching-error">
-      <!-- TODO: Add error screen + preview -->
-      <span>Error fetching the data</span>
-    </div>
+    <s-skeleton :loading="parentLoading || loading || isFetchingError" :throttle="0">
+      <template #template>
+        <div v-loading="loading" class="charts-skeleton">
+          <s-skeleton-item element="rect" class="charts-skeleton-price" />
+          <div class="charts-skeleton-price-impact">
+            <s-skeleton-item element="circle" />
+            <s-skeleton-item element="rect" />
+          </div>
+          <div v-for="i in 9" :key="i" class="charts-skeleton-line">
+            <s-skeleton-item element="rect" class="charts-skeleton-label" />
+            <s-skeleton-item element="rect" class="charts-skeleton-border" />
+          </div>
+          <div class="charts-skeleton-line charts-skeleton-line--lables">
+            <s-skeleton-item v-for="i in 11" :key="i" element="rect" class="charts-skeleton-label" />
+          </div>
+          <div v-if="isFetchingError && !loading" class="charts-skeleton-error">
+            <s-icon name="clear-X-16" :size="'32px'" />
+            <p class="charts-skeleton-error-message">{{ t('swap.errorFetching') }}</p>
+            <s-button class="el-button--select-token" type="secondary" size="small" @click="retryUpdatePrices">
+              {{ t('retryText') }}
+            </s-button>
+          </div>
+        </div>
+      </template>
+      <template>
+        <div class="charts-price">
+          <formatted-amount
+            :value="fiatPriceFormatted"
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :font-size-rate="FontWeightRate.MEDIUM"
+            :asset-symbol="symbol"
+            symbol-as-decimal
+          />
+        </div>
+        <price-change v-if="!isFetchingError" :value="priceChange" />
+        <v-chart class="chart" :option="chartSpec" autoresize @zr:mousewheel="handleZoom" @datazoom="changeZoomLevel" />
+      </template>
+    </s-skeleton>
   </div>
 </template>
 
@@ -65,6 +87,7 @@ import last from 'lodash/fp/last';
 import { graphic } from 'echarts';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
+import { SSkeleton, SSkeletonItem } from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton';
 
 import {
   components,
@@ -208,6 +231,8 @@ const LABEL_PADDING = 4;
     CandleIcon,
     TokensRow: lazyComponent(Components.TokensRow),
     PriceChange: lazyComponent(Components.PriceChange),
+    SSkeleton,
+    SSkeletonItem,
   },
 })
 export default class SwapChart extends Mixins(
@@ -544,8 +569,6 @@ export default class SwapChart extends Mixins(
 
   // ordered ty timestamp DESC
   async fetchData(address: string, filter: ChartFilter, pageInfo?: SUBQUERY_TYPES.PageInfo) {
-    if (pageInfo && !pageInfo.hasNextPage) return;
-
     const { type, count } = filter;
     const nodes: AssetSnapshot[] = [];
 
@@ -569,7 +592,7 @@ export default class SwapChart extends Mixins(
   }
 
   getHistoricalPrices(): void {
-    if (this.loading) return;
+    if (this.loading || this.pageInfos.some((pageInfo) => !pageInfo.hasNextPage)) return;
 
     this.withApi(async () => {
       await this.withLoading(async () => {
@@ -619,7 +642,8 @@ export default class SwapChart extends Mixins(
 
           this.precision = Math.max(this.getPrecision(min), this.getPrecision(max));
           this.limits = { min, max };
-          this.prices = prices;
+          this.prices = [...this.prices, ...prices];
+          this.isFetchingError = false;
         } catch (error) {
           this.isFetchingError = true;
           console.error(error);
@@ -686,6 +710,10 @@ export default class SwapChart extends Mixins(
     this.zoomStart = event?.batch?.[0]?.start ?? 0;
   }
 
+  retryUpdatePrices(event: any): void {
+    this.updatePrices();
+  }
+
   private getPrecision(value: number): number {
     let precision = 2;
 
@@ -706,8 +734,27 @@ export default class SwapChart extends Mixins(
 </script>
 
 <style lang="scss">
-.tokens-info-container {
-  .price {
+.charts {
+  &-price {
+    display: flex;
+    margin-bottom: $inner-spacing-mini / 2;
+    font-weight: 800;
+    font-size: var(--s-heading3-font-size);
+    line-height: var(--s-line-height-extra-small);
+    letter-spacing: var(--s-letter-spacing-small);
+    &-change {
+      font-weight: 600;
+      font-size: var(--s-font-size-medium);
+      line-height: var(--s-line-height-medium);
+      color: var(--s-color-theme-accent);
+      letter-spacing: inherit;
+      &--increased {
+        color: var(--s-color-theme-secondary-hover);
+      }
+      &-arrow {
+        color: inherit;
+      }
+    }
     .formatted-amount {
       &__integer {
         font-weight: inherit;
@@ -729,8 +776,14 @@ export default class SwapChart extends Mixins(
   }
 
   .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
-    padding: 0 10px;
+    padding: 0 $inner-spacing-mini;
     text-transform: initial;
+    &:not(.is-active).is-disabled {
+      color: var(--s-color-base-content-primary);
+    }
+    &.is-disabled {
+      cursor: not-allowed;
+    }
   }
 }
 
@@ -744,6 +797,102 @@ export default class SwapChart extends Mixins(
       & > path {
         fill: var(--s-color-theme-accent);
       }
+    }
+  }
+}
+
+.charts-skeleton {
+  $margin-right: #{$inner-spacing-mini / 2};
+  $label-width: 34px;
+  $skeleton-spacing: 18px;
+  position: relative;
+  .el-loading-mask {
+    background-color: transparent;
+  }
+  .el-skeleton__item {
+    background: var(--s-color-base-border-secondary);
+  }
+  &-price {
+    width: 157px;
+    &.el-skeleton__item.el-skeleton__rect {
+      height: $skeleton-spacing;
+      margin-bottom: $inner-spacing-medium;
+    }
+    &-impact {
+      display: flex;
+      max-width: 150px;
+      > :first-child,
+      > :last-child {
+        height: 9px;
+      }
+      > :first-child {
+        width: 9px;
+        margin-right: $margin-right;
+      }
+      > :last-child {
+        width: 42px;
+      }
+      + .charts-skeleton-line {
+        margin-top: 23px;
+      }
+    }
+  }
+  &-line {
+    display: flex;
+    align-items: center;
+    flex-grow: 0;
+    margin-top: 27px;
+    &--lables {
+      justify-content: space-between;
+      margin-top: $inner-spacing-medium;
+      padding-left: calc(#{$margin-right} + #{$label-width});
+    }
+  }
+  &-label.el-skeleton__item.el-skeleton__rect {
+    height: 8px;
+    width: $label-width;
+    margin-bottom: 0;
+    margin-right: $margin-right;
+  }
+  &-border.el-skeleton__rect {
+    width: calc(100% - 38px);
+    height: 1px;
+  }
+  &-error {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    &-message {
+      margin-top: $skeleton-spacing;
+      margin-bottom: $skeleton-spacing;
+      font-weight: 400;
+      font-size: var(--s-font-size-medium);
+      line-height: var(--s-line-height-medium);
+      letter-spacing: var(--s-letter-spacing-small);
+    }
+    .el-button.s-secondary {
+      padding-right: $inner-spacing-big;
+      padding-left: $inner-spacing-big;
+    }
+  }
+  .s-icon-clear-X-16:before {
+    color: var(--s-color-status-error);
+  }
+}
+
+@include large-desktop {
+  .container--charts {
+    position: relative;
+    z-index: 1;
+  }
+  .chart-filters {
+    .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
+      padding: 0 $basic-spacing-small;
     }
   }
 }
@@ -761,27 +910,6 @@ export default class SwapChart extends Mixins(
   &-info-container {
     display: flex;
     flex-direction: column;
-    .price {
-      display: flex;
-      margin-bottom: $inner-spacing-mini / 2;
-      font-weight: 800;
-      font-size: var(--s-heading3-font-size);
-      line-height: var(--s-line-height-extra-small);
-      letter-spacing: var(--s-letter-spacing-small);
-      &-change {
-        font-weight: 600;
-        font-size: var(--s-font-size-medium);
-        line-height: var(--s-line-height-medium);
-        color: var(--s-color-theme-accent);
-        letter-spacing: inherit;
-        &--increased {
-          color: var(--s-color-status-success);
-        }
-        &-arrow {
-          color: inherit;
-        }
-      }
-    }
   }
 }
 .token {

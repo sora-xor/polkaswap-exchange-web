@@ -476,6 +476,10 @@ i.icon-divider {
       }
     }
   }
+
+  .block-number-link {
+    z-index: 0;
+  }
 }
 </style>
 

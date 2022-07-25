@@ -169,7 +169,7 @@
     "asset": {
         "remove": "Yọ dukia kuro",
         "select": "Yan dukia",
-        "recieve": "Gba {symbol}"
+        "receive": "Gba {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -523,7 +523,8 @@
         "swapOutputMessage": "Ti ṣe iṣiro iṣẹjade. Iwọ yoo gba o kere ju {transactionValue} tabi idunadura naa yoo pada.",
         "rewardsForSwap": "Awọn ere ilana PSWAP",
         "swapInputMessage": "Iṣagbewọle ti ni iṣiro. Iwọ yoo ta o pọju {transactionValue} tabi idunadura naa yoo pada.",
-        "route": "Ipa ọna"
+        "route": "Ipa ọna",
+        "errorFetching": "Aṣiṣe gbigba data naa"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -880,7 +881,6 @@
             "transfer": "Awọn ami ti o ra ni aṣeyọri!\n Tẹ lati bẹrẹ iṣowo afara"
         }
     },
-    "recievedText": "Ti gba",
     "light": "Imọlẹ",
     "dark": "Dudu",
     "headerMenu": {
@@ -967,8 +967,11 @@
     "code": {
         "download": "Ṣe igbasilẹ koodu QR",
         "upload": "Ṣayẹwo QR",
-        "recieve": "Gba",
-        "invalid": "Koodu QR ti ko tọ"
+        "invalid": "Koodu QR ti ko tọ",
+        "import": "Gbe aworan wọle",
+        "scan": "Ṣayẹwo pẹlu kamẹra",
+        "allowanceError": "Ṣayẹwo wiwa kamẹra rẹ ati awọn igbanilaaye aṣawakiri lati lo",
+        "receive": "Gba"
     },
     "bridgeTransferNotification": {
         "addToken": "Ṣafikun {symbol} si @:metamask",
@@ -1054,5 +1057,6 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Aṣiṣe waye lakoko ti o ṣe iṣiro idiyele naa"
         }
-    }
+    },
+    "receivedText": "Ti gba"
 }
