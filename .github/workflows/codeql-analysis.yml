@@ -1,7 +1,7 @@
 name: "CodeQL"
 on:
   push:
-    branches: [ "develop", fleek, fleek-pre, master ]
+    branches: [ "develop", "fleek", "fleek-pre", "master" ]
   pull_request:
     branches: [ "develop" ]
   schedule:
