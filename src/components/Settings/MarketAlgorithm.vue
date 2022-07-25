@@ -36,8 +36,16 @@ export default class MarketAlgorithm extends Mixins(TranslationMixin) {
     return this.marketAlgorithms.map((name) => ({
       name,
       label: name,
-      content: this.t(`dexSettings.marketAlgorithms.${name}`),
+      content: this.t(`dexSettings.marketAlgorithms.${name}`, {
+        smartAlgorithm: this.generateAlgorithmItem(MarketAlgorithms.SMART),
+        tbcAlgorithm: this.generateAlgorithmItem(MarketAlgorithms.TBC),
+        xycAlgorithm: this.generateAlgorithmItem(MarketAlgorithms.XYK),
+      }),
     }));
+  }
+
+  generateAlgorithmItem(type: string): string {
+    return `<span class="algorithm">${type}</span>`;
   }
 
   selectTab({ name }): void {

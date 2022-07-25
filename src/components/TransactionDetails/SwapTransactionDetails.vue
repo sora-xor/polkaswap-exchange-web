@@ -32,7 +32,7 @@
       <info-line
         v-if="isLoggedIn"
         :label="t('swap.networkFee')"
-        :label-tooltip="t('swap.networkFeeTooltip')"
+        :label-tooltip="t('networkFeeTooltipText', { sora: TranslationConsts.Sora })"
         :value="formattedNetworkFee"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"

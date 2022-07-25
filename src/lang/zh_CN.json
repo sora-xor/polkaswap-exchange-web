@@ -80,20 +80,17 @@
         "DemeterFarmingGetRewards": "申领奖励"
     },
     "polkadotjs": {
-        "noExtensions": "没有找到 Polkadot.js 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "您的Polkadot.js扩展中似乎没有账户。请添加一个账户并再次尝试。",
+        "noExtensions": "没有找到 {polkadotJs} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "您的{polkadotJs}扩展中似乎没有账户。请添加一个账户并再次尝试。",
         "noAccount": "{extension} 帐户错误. 请在{extension} 中检查您的帐户",
         "noExtension": "未找到{extension}扩展名。请安装它并重新加载此页面",
         "noSigner": "拒绝访问。转到{extension}扩展设置并打开“管理网站访问”以允许。"
     },
     "connection": {
-        "title": "SORA网络账户",
-        "text": "使用polkadot{.js}浏览器扩展连接您的SORA网络账户或创建新账户。这个扩展允许您在SORA网络中安全地签署交易和管理资产。",
-        "install": "未找到 polkadot.js 扩展。安装它并<a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">重新加载<\/a>页面。 <br\/> <span class=\"wallet-connection-link\"> https:\/\/polkadot.js.org\/extension\/ <\/span>",
-        "noPermissions": "意外拒绝了权限请求？ <\/br>目前 polkadot {.js}扩展没有权限管理。作为一种解决方法，您可以重新启动浏览器并重新访问此页面以继续进行授权。",
-        "noAccounts": "在您的polkadot{.js}浏览器扩展中没有找到账户。请添加一个账户并重试。",
+        "title": "{sora}网络账户",
+        "text": "使用{polkadotJs}浏览器扩展连接您的{sora}网络账户或创建新账户。这个扩展允许您在{sora}网络中安全地签署交易和管理资产。",
+        "noAccounts": "在您的{polkadotJs}浏览器扩展中没有找到账户。请添加一个账户并重试。",
         "selectAccount": "选择要使用的账户",
-        "loadingTitle": "等待您允许访问 polkadot{.js}扩展.",
         "action": {
             "install": "安装扩展",
             "learnMore": "了解更多",
@@ -106,7 +103,7 @@
         }
     },
     "wallet": {
-        "title": "SORA网络账户",
+        "title": "{sora}网络账户",
         "WalletAssets": "资产",
         "WalletActivity": "活动",
         "addAsset": "@:addAssetText",
@@ -127,8 +124,8 @@
         "confirm": "@:confirmText",
         "errorAddress": "无效地址。请检查并重试。",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "在SORA网络账户之间发送代币",
-        "addressWarning": "代币将被发送至以下SORA地址。请确保收件人能够访问SORA链以使用代币。",
+        "tooltip": "在{sora}网络账户之间发送代币",
+        "addressWarning": "代币将被发送至以下{sora}地址。请确保收件人能够访问{sora}链以使用代币。",
         "addressError": "您不能向您当前已连接的同一个账户发送代币。"
     },
     "account": {
@@ -195,7 +192,6 @@
     },
     "createToken": {
         "title": "@:createTokenText",
-        "desc": "在 SORA 上创建和部署自定义资产",
         "action": "@:createTokenText",
         "enterSymbol": "输入代币符号",
         "enterName": "输入代币名称",
@@ -205,7 +201,6 @@
             "title": "交易已提交",
             "desc": "创建{symbol}代币"
         },
-        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "无法获得交易费用",
@@ -306,16 +301,16 @@
     "connectWalletText": "连接账户",
     "changeAccountText": "更改账户",
     "connectedText": "已连接",
-    "connectWalletTextTooltip": "用polkadot{.js}连接到@:soraText网络",
+    "connectWalletTextTooltip": "用{polkadotJs}连接到{sora}网络",
     "selectNodeText": "选择网络节点",
     "bridgeText": "转接桥",
-    "disclaimer": "<span class=\"app-disclaimer__title\">免责声明<\/span>：本网站由@:soraText 社区维护。在继续使用本网站之前，请查看@:polkaswapFaqLink 和文档，其中包括有关 Polkaswap 工作原理的详细说明，以及 @:memorandumLink 和 @:(privacyLink)。这些文档对于安全和积极的用户体验至关重要。通过使用 Polkaswap，您承认您已阅读并理解这些文件。您还承认以下内容：1) 您全权负责遵守在您的法律管辖范围内可能适用于您对 Polkaswap 的特定使用的所有法律； 2）您对Polkaswap当前版本为alpha版本的理解：尚未经过全面测试，部分功能可能无法按设计执行； 3) 您理解并自愿接受使用 Polkaswap 所涉及的风险，包括但不限于丢失代币的风险。再一次提醒，在没有阅读@:polkaswapFaqLink、@:memorandumLink 和@:privacyLink之前，请不要继续！",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\"> @:FAQ <\/a>",
+    "disclaimerTitle": "免责声明:",
+    "disclaimer": "{disclaimerPrefix} 本网站由{sora} 社区维护。在继续使用本网站之前，请查看{polkaswapFaqLink} 和文档，其中包括有关 {appName} 工作原理的详细说明，以及 {memorandumLink} 和 {privacyLink}。这些文档对于安全和积极的用户体验至关重要。通过使用 {appName}，您承认您已阅读并理解这些文件。您还承认以下内容：1) 您全权负责遵守在您的法律管辖范围内可能适用于您对 {appName} 的特定使用的所有法律； 2）您对{appName}当前版本为alpha版本的理解：尚未经过全面测试，部分功能可能无法按设计执行； 3) 您理解并自愿接受使用 {appName} 所涉及的风险，包括但不限于丢失代币的风险。再一次提醒，在没有阅读{polkaswapFaqLink}、{memorandumLink} 和{privacyLink}之前，请不要继续！",
     "poweredBy": "启动于",
     "confirmTransactionText": "确认在{direction}的交易",
     "retryText": "重试",
     "networkFeeText": "网络费用",
-    "networkFeeTooltipText": "网络费是用来保证@:soraText系统的增长和稳定的性能。",
+    "networkFeeTooltipText": "网络费是用来保证{sora}系统的增长和稳定的性能。",
     "ethNetworkFeeTooltipText": "请注意，Polkaswap上显示的以太坊网络费用只是粗略估计，在确认交易之前，您可以在连接的以太坊钱包中看到正确的费用数额。",
     "marketText": "市场",
     "marketAlgorithmText": "市场算法",
@@ -371,8 +366,6 @@
         "title": "帮助",
         "termsOfService": "服务条款",
         "privacyPolicy": "隐私政策",
-        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
-        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
         "appVersion": "@:appName 版本",
         "contactUs": "联系我们"
     },
@@ -380,12 +373,12 @@
         "title": "关于",
         "learnMore": "@:learnMoreText",
         "network": {
-            "title": "什么是@:soraText？",
-            "description": "Polkaswap建立在@:soraText网络之上，@:soraText代币（XOR）被用于Polkaswap上的费用和流动性供应。@:soraText网络允许减少的费用和加快交易，并简化共识的最终确定，专注于提供跨其他区块链生态系统的互操作性，如@:(ethereumText)。"
+            "title": "什么是{sora}？",
+            "description": "{polkaswap}建立在{sora}网络之上，{sora}代币（XOR）被用于{polkaswap}上的费用和流动性供应。{sora}网络允许减少的费用和加快交易，并简化共识的最终确定，专注于提供跨其他区块链生态系统的互操作性，如{ethereum}。"
         },
         "polkadot": {
-            "title": "什么是 polkadot{.js}？",
-            "description": "Polkadot{.js}扩展是一个可用于 Firefox 浏览器和 Chrome 的浏览器扩展，专门用于管理基于 Substrate 的链的账户，包括 @:soraText、Polkadot 和 Kusama。您可以添加、导入和导出账户并签署您从授权的网站发起的交易或外部信息。"
+            "title": "什么是 {polkadotJs}？",
+            "description": "{polkadotJs}扩展是一个可用于 Firefox 浏览器和 Chrome 的浏览器扩展，专门用于管理基于 Substrate 的链的账户，包括 {sora}, {polkadot} 和 {kusama}。您可以添加、导入和导出账户并签署您从授权的网站发起的交易或外部信息。"
         }
     },
     "node": {
@@ -515,7 +508,6 @@
         "liquidityProviderFeeTooltip": "每笔交易的一部分（{liquidityProviderFee}%）作为协议激励流向流动性提供者。",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "{tokenSymbol}数量不足",
         "insufficientLiquidity": "流动性不足",
@@ -541,8 +533,8 @@
         "strategicBonusApy": "战略奖金APY"
     },
     "bridge": {
-        "title": "HASHI桥",
-        "info": "在@:soraText和@:ethereumText网络之间转换代币。",
+        "title": "{hashi}桥",
+        "info": "在{sora}和{ethereum}网络之间转换代币。",
         "balance": "余额",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -550,8 +542,8 @@
         "changeNetwork": "@:changeNetworkText",
         "next": "下一个",
         "connectWallets": "连接钱包以查看各自的交易历史。",
-        "soraNetworkFee": "@:soraText 网络费用",
-        "ethereumNetworkFee": "@:ethereumText 网络费用",
+        "soraNetworkFee": "{sora} 网络费用",
+        "ethereumNetworkFee": "{ethereum} 网络费用",
         "tooltipValue": "@:comingSoonText",
         "total": "总共",
         "viewHistory": "查看交易记录",
@@ -559,12 +551,11 @@
         "transactionMessage": "{assetA}为{assetB}",
         "notRegisteredAsset": "资产{assetSymbol}未注册",
         "selectNetwork": "选择网络",
-        "networkInfo": "与 @:soraText 网络桥接：",
-        "ethereum": "@:ethereumText",
+        "networkInfo": "与 {sora} 网络桥接：",
         "energy": "@:evm.EWC",
         "copy": "复制网络地址",
-        "soraAddress": "@:soraText 地址",
-        "ethereumAddress": "@:ethereumText 地址"
+        "soraAddress": "{sora} 地址",
+        "ethereumAddress": "{ethereum} 地址"
     },
     "selectRegisteredAsset": {
         "title": "选择一个代币",
@@ -618,7 +609,7 @@
             "done": "完成",
             "waitingForConfirmation": "等待确认..."
         },
-        "viewInEtherscan": "在Etherscan中查看",
+        "viewInEtherscan": "在{etherscan}中查看",
         "networkTitle": "{network}交易",
         "transactionHash": "交易哈希值",
         "networkInfo": {
@@ -631,7 +622,7 @@
         "successCopy": "交易哈希已被复制到剪贴板上",
         "ethereum": "@:ethereumText",
         "sora": "@:soraText",
-        "pending": "<span class=\"network-title\"> {network} <\/span>交易等待确认...",
+        "pending": "{network} 交易等待确认...",
         "retry": "@:retryText",
         "metamask": "@:metamask",
         "confirm": "@:confirmTransactionText",
@@ -642,7 +633,7 @@
         "expectedAddress": "在@:metamask中预期的地址",
         "title": "转接桥交易",
         "expectedMetaMaskAddress": "MetaMask 中的预期地址：",
-        "allowToken": "允许 @:appName 使用您的{tokenSymbol}",
+        "allowToken": "允许 {appName} 使用您的{tokenSymbol}",
         "approveToken": "请注意，只需要批准一次代币。如果您的扩展程序中有多个代币批准请求，请确保仅确认最后一个并拒绝其余请求。",
         "blocksLeft": "{count}个区块等待确认..."
     },
@@ -740,9 +731,9 @@
         "port": "端口",
         "min": "最小",
         "marketAlgorithms": {
-            "SMART": "<span class=\"algorithm\"> SMART <\/span>流动性路由通过仅结合所有可用市场的最佳价格选项来确保任何交易的最佳价格。当可用时，只要资产价格比其他来源更实惠，代币绑定曲线（ <span class=\"algorithm\"> TBC <\/span> <span class=\"algorithm\"> XYK <\/span>流动池将被利用。",
-            "TBC": "<span class=\"algorithm\"> TBC <\/span> — 仅从代币绑定曲线（一级市场）购买。 <span class=\"algorithm\"> XYK <\/span>流动池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
-            "XYK": "<span class=\"algorithm\"> XYK <\/span> — 仅从 XYK 池（二级市场）购买。传统的 XYK 流动池兑换。"
+            "SMART": "{smartAlgorithm}流动性路由通过仅结合所有可用市场的最佳价格选项来确保任何交易的最佳价格。当可用时，只要资产价格比其他来源更实惠，代币绑定曲线（ {tbcAlgorithm} {xycAlgorithm}流动池将被利用。",
+            "TBC": "{tbcAlgorithm} — 仅从代币绑定曲线（一级市场）购买。 {xycAlgorithm}流动池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
+            "XYK": "{xycAlgorithm} — 仅从 XYK 池（二级市场）购买。传统的 XYK 流动池兑换。"
         }
     },
     "resultDialog": {
@@ -754,7 +745,6 @@
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "和",
         "claiming": {
             "pending": "声称...",
@@ -830,8 +820,6 @@
         "assetId": "资产 ID"
     },
     "memorandum": "Polkaswap 备忘录和服务条款",
-    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\"> @:memorandum <\/a>",
-    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
     "FAQ": "Polkaswap 常见问题",
     "connectedAccount": "已连接的账户",
     "selectNodeConnected": "已连接到： {chain}",
@@ -904,7 +892,7 @@
     "confirmNextTxFailure": {
         "header": "注意",
         "info": "在此交易后，您的 XOR 余额将低于{fee}XOR。 您将无法支付另一笔交易的网络费用。",
-        "payoff": "您必须使用转接桥从其他网络获取 XOR，从另一个 SORA 账户发送 XOR，或者将您账户中已有的任何其他代币兑换为 XOR。",
+        "payoff": "您必须使用转接桥从其他网络获取 XOR，从另一个 {sora} 账户发送 XOR，或者将您账户中已有的任何其他代币兑换为 XOR。",
         "button": "是的，我了解风险"
     },
     "blockNumberText": "区块数",
@@ -914,11 +902,9 @@
         "bondedXOR": "XOR绑定",
         "referralsNumber": "{number}推荐者",
         "startInviting": "绑定 XOR 以推荐他人",
-        "preview": "邀请新用户并从他们的交易费用中获得 10%。 <br\/>首先，绑定任意数量的XOR。 <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">了解更多<\/a>",
         "deposit": "存款",
         "balance": "余额",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "绑定余额不足",
         "action": {
@@ -978,9 +964,9 @@
         "title": "转接桥交易成功"
     },
     "mobilePopup": {
-        "sideMenu": "获取 SORA 钱包",
-        "header": "下载具有<span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>功能的 SORA 钱包",
-        "info": "兑换来自不同网络的代币 - SORA、以太坊、Polkadot、Kusama。提供流动流动池并从交易费用中赚取 %。"
+        "sideMenu": "获取 {sora} 钱包",
+        "header": "下载具有{polkaswapHighlight}功能的 {sora} 钱包",
+        "info": "兑换来自不同网络的代币 - {sora}, {ethereum}, {polkadot}, {kusama}。提供流动流动池并从交易费用中赚取 %。"
     },
     "releaseNotesText": "发行说明",
     "copiedText": "已复制！",

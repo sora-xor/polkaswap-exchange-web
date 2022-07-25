@@ -12,7 +12,7 @@
       />
       <info-line
         :label="t('createPair.networkFee')"
-        :label-tooltip="t('networkFeeTooltipText')"
+        :label-tooltip="t('networkFeeTooltipText', { sora: TranslationConsts.Sora })"
         :value="formattedFee"
         :asset-symbol="XOR_SYMBOL"
         :fiat-value="getFiatAmountByCodecString(networkFee)"

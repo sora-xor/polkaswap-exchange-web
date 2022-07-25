@@ -9,7 +9,11 @@
         size="big"
         primary
       >
-        <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')">
+        <generic-page-header
+          class="header--bridge"
+          :title="t('bridge.title', { hashi: TranslationConsts.Hashi })"
+          :tooltip="t('bridge.info', { sora: TranslationConsts.Sora, ethereum: TranslationConsts.Ethereum })"
+        >
           <s-button
             v-if="areNetworksConnected"
             class="el-button--history"
@@ -486,7 +490,11 @@ export default class Bridge extends Mixins(
   }
 
   getCopyTooltip(isSoraNetwork = false): string {
-    return this.copyTooltip(this.t(`bridge.${isSoraNetwork ? 'soraAddress' : 'ethereumAddress'}`));
+    return this.copyTooltip(
+      isSoraNetwork
+        ? this.t('bridge.soraAddress', { sora: this.TranslationConsts.Sora })
+        : this.t('bridge.ethereumAddress', { ethereum: this.TranslationConsts.Ethereum })
+    );
   }
 
   async handleSwitchItems(): Promise<void> {

@@ -80,20 +80,17 @@
         "DemeterFarmingGetRewards": "Gjør krav på belønninger"
     },
     "polkadotjs": {
-        "noExtensions": "Finner ingen Polkadot.js utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Det ser ikke ut til å være noen kontoer i Polkadot.js utvidelsen. Legg til en konto, og prøv på nytt.",
+        "noExtensions": "Finner ingen {polkadotJs} utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Det ser ikke ut til å være noen kontoer i {polkadotJs} utvidelsen. Legg til en konto, og prøv på nytt.",
         "noAccount": "Polkadot.js kontofeil. Sjekk kontoen din i Polkadot.js utvidelsen",
         "noExtension": "Ingen {extension} -utvidelse ble funnet. Installer den og last inn denne siden på nytt",
         "noSigner": "Ingen tilgang. Gå til utvidelsesinnstillingene for {extension} og åpne «Administrer nettstedtilgang» for å tillate."
     },
     "connection": {
-        "title": "SORA Nettverkskonto",
-        "text": "Koble til SORA Network-kontoene dine eller opprett nye med polkadot{.js} nettleserutvidelse. Denne utvidelsen lar deg sikkert signere transaksjoner og administrere aktiva i SORA Network.",
-        "install": "Finner ingen polkadot.js utvidelse. Installer den og <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">start<\/a> siden på nytt.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Ved et uhell avvist tillatelsesforespørsel?<\/br> Polkadot{.js}-utvidelsen har for øyeblikket ikke nødvendig tillatelse. For å unngå dette kan du starte nettleseren på nytt og gå tilbake til denne siden for å fortsette med autorisasjon.",
-        "noAccounts": "Finner ingen konto i nettleserutvidelsen polkadot{.js}. Legg til en konto, og prøv på nytt.",
+        "title": "{sora} Nettverkskonto",
+        "text": "Koble til {sora} Network-kontoene dine eller opprett nye med {polkadotJs} nettleserutvidelse. Denne utvidelsen lar deg sikkert signere transaksjoner og administrere aktiva i {sora} Network.",
+        "noAccounts": "Finner ingen konto i nettleserutvidelsen {polkadotJs}. Legg til en konto, og prøv på nytt.",
         "selectAccount": "Velg kontoen du vil arbeide med",
-        "loadingTitle": "Venter på at du skal gi tilgang til polkadot{.js} utvidelsen.",
         "action": {
             "install": "Installer utvidelse",
             "learnMore": "Lær mer",
@@ -106,7 +103,7 @@
         }
     },
     "wallet": {
-        "title": "SORA Nettverkskonto",
+        "title": "{sora} Nettverkskonto",
         "WalletAssets": "Aktiva",
         "WalletActivity": "Aktivitet",
         "addAsset": "@:addAssetText",
@@ -127,8 +124,8 @@
         "confirm": "@:confirmText",
         "errorAddress": "Ugyldig adresse. Kontroller den, og prøv på nytt.",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "Send tokens mellom kontoer på SORA -nettverket",
-        "addressWarning": "Tokens vil bli sendt til SORA -adressen nedenfor. Sørg for at mottaker har tilgang til SORA -kjeden for å bruke tokenene:",
+        "tooltip": "Send tokens mellom kontoer på {sora} -nettverket",
+        "addressWarning": "Tokens vil bli sendt til {sora} -adressen nedenfor. Sørg for at mottaker har tilgang til {sora} -kjeden for å bruke tokenene:",
         "addressError": "Du kan ikke sende tokens til samme konto du er tilkoblet med."
     },
     "account": {
@@ -195,7 +192,6 @@
     },
     "createToken": {
         "title": "@:createTokenText",
-        "desc": "Opprett og distribuer egendefinert token på SORA",
         "action": "@:createTokenText",
         "enterSymbol": "Angi tokensymbol",
         "enterName": "Angi tokennavn",
@@ -205,7 +201,6 @@
             "title": "Transaksjon sendt",
             "desc": "Opprett {symbol} token"
         },
-        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Mislyktes i å hente transaksjonsgebyr",
@@ -306,16 +301,16 @@
     "connectWalletText": "Koble til konto",
     "changeAccountText": "Bytt konto",
     "connectedText": "Tilkoblet",
-    "connectWalletTextTooltip": "Koble til @:soraText Network med polkadot{.js}",
+    "connectWalletTextTooltip": "Koble til {sora} Network med {polkadotJs}",
     "selectNodeText": "Velg node",
     "bridgeText": "Bro",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Ansvarsfraskrivelse<\/span>: Dette nettstedet vedlikeholdes av @:soraText -fellesskapet. Før du fortsetter å bruke dette nettstedet, må du lese @:polkaswapFaqLink og dokumentasjonen, som inkluderer en detaljert forklaring på hvordan Polkaswap fungerer, samt @:memorandumLink og @:(privacyLink). Disse dokumentene er avgjørende for en sikker og positiv brukeropplevelse. Ved å bruke Polkaswap erkjenner du at du har lest og forstått disse dokumentene. Du erkjenner også følgende: 1) ditt eget ansvar for å overholde alle lover som kan gjelde for din spesielle bruk av Polkaswap i din juridiske jurisdiksjon; 2) din forståelse av at den nåværende versjonen av Polkaswap er en alfaversjon: den er ikke fullstendig testet, og noen funksjoner fungerer kanskje ikke som designet; og 3) din forståelse og frivillig aksept av risikoen ved bruk av Polkaswap, inkludert, men ikke begrenset til, risikoen for å miste tokens. Igjen, ikke fortsett uten å lese @:polkaswapFaqLink, @:memorandumLink og @:privacyLink!",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
+    "disclaimerTitle": "Ansvarsfraskrivelse:",
+    "disclaimer": "{disclaimerPrefix} Dette nettstedet vedlikeholdes av {sora} -fellesskapet. Før du fortsetter å bruke dette nettstedet, må du lese {polkaswapFaqLink} og dokumentasjonen, som inkluderer en detaljert forklaring på hvordan {appName} fungerer, samt {memorandumLink} og {privacyLink}. Disse dokumentene er avgjørende for en sikker og positiv brukeropplevelse. Ved å bruke {appName} erkjenner du at du har lest og forstått disse dokumentene. Du erkjenner også følgende: 1) ditt eget ansvar for å overholde alle lover som kan gjelde for din spesielle bruk av {appName} i din juridiske jurisdiksjon; 2) din forståelse av at den nåværende versjonen av {appName} er en alfaversjon: den er ikke fullstendig testet, og noen funksjoner fungerer kanskje ikke som designet; og 3) din forståelse og frivillig aksept av risikoen ved bruk av {appName}, inkludert, men ikke begrenset til, risikoen for å miste tokens. Igjen, ikke fortsett uten å lese {polkaswapFaqLink}, {memorandumLink} og {privacyLink}!",
     "poweredBy": "Drevet av",
     "confirmTransactionText": "Bekreft transaksjonen i {direction}",
     "retryText": "Prøv igjen",
     "networkFeeText": "Nettverksgebyr",
-    "networkFeeTooltipText": "Nettverksavgift brukes til å sikre @:soraText -systemets vekst og stabile ytelse.",
+    "networkFeeTooltipText": "Nettverksavgift brukes til å sikre {sora} -systemets vekst og stabile ytelse.",
     "ethNetworkFeeTooltipText": "Vær oppmerksom på at Ethereum-nettverksgebyrene som vises på Polkaswap bare er grove estimater, du kan se riktig gebyrbeløp i den tilkoblede Ethereum-lommeboken før du bekrefter transaksjonen.",
     "marketText": "Marked",
     "marketAlgorithmText": "Markedsalgoritme",
@@ -371,8 +366,6 @@
         "title": "Hjelp",
         "termsOfService": "Vilkår for bruk",
         "privacyPolicy": "Personvernerklæring",
-        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
-        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
         "appVersion": "@:appName versjon",
         "contactUs": "Kontakt oss"
     },
@@ -380,12 +373,12 @@
         "title": "Om",
         "learnMore": "Lær mer",
         "network": {
-            "title": "Hva er @:soraText?",
-            "description": "Polkaswap er bygget på toppen av @:soraText Network, og @:soraText token (XOR) brukes til gass \/ avgifter og likviditetsbestemmelse på Polkaswap. @:soraText Network gir mulighet for reduserte avgifter, raskere transaksjoner og enklere konsensus-sluttføring og er fokusert på å levere interoperabilitet på tvers av andre blokkjedeøkosystemer som @:(ethereumText)."
+            "title": "Hva er {sora}?",
+            "description": "{polkaswap} er bygget på toppen av {sora} Network, og {sora} token (XOR) brukes til gass \/ avgifter og likviditetsbestemmelse på {polkaswap}. {sora} Network gir mulighet for reduserte avgifter, raskere transaksjoner og enklere konsensus-sluttføring og er fokusert på å levere interoperabilitet på tvers av andre blokkjedeøkosystemer som {ethereum}."
         },
         "polkadot": {
-            "title": "Hva er polkadot{.js}?",
-            "description": "Polkadot{.js} utvidelse er en nettleserutvidelse tilgjengelig for Firefox og Chrome dedikert til å administrere kontoer for Substrate-baserte kjeder, inkludert @:soraText, Polkadot og Kusama. Du kan legge til, importere og eksportere kontoer og signere transaksjoner eller ekstrinsikk som du har startet fra webområder du har godkjent."
+            "title": "Hva er {polkadotJs}?",
+            "description": "{polkadotJs} utvidelse er en nettleserutvidelse tilgjengelig for Firefox og Chrome dedikert til å administrere kontoer for Substrate-baserte kjeder, inkludert {sora}, {polkadot} og {kusama}. Du kan legge til, importere og eksportere kontoer og signere transaksjoner eller ekstrinsikk som du har startet fra webområder du har godkjent."
         }
     },
     "node": {
@@ -515,7 +508,6 @@
         "liquidityProviderFeeTooltip": "En del av hver handel ({liquidityProviderFee}%) går til likviditetsleverandører som et protokollinsentiv.",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Utilstrekkelig {tokenSymbol} saldo",
         "insufficientLiquidity": "Utilstrekkelig likviditet",
@@ -541,8 +533,8 @@
         "strategicBonusApy": "Strategisk bonus APY"
     },
     "bridge": {
-        "title": "HASHI broen",
-        "info": "Konverter tokens mellom @:soraText og @:ethereumText -nettverkene.",
+        "title": "{hashi} broen",
+        "info": "Konverter tokens mellom {sora} og {ethereum} -nettverkene.",
         "balance": "Balanse",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -550,8 +542,8 @@
         "changeNetwork": "@:changeNetworkText",
         "next": "Neste",
         "connectWallets": "Koble til lommebøker for å se respektive transaksjonshistorikk.",
-        "soraNetworkFee": "@:soraText Nettverksgebyr",
-        "ethereumNetworkFee": "@:ethereumText Nettverksgebyr",
+        "soraNetworkFee": "{sora} Nettverksgebyr",
+        "ethereumNetworkFee": "{ethereum} Nettverksgebyr",
         "tooltipValue": "@:comingSoonText",
         "total": "Total",
         "viewHistory": "Se transaksjonshistorikk",
@@ -559,12 +551,11 @@
         "transactionMessage": "{assetA} for {assetB}",
         "notRegisteredAsset": "Aktivum {assetSymbol} er ikke registrert",
         "selectNetwork": "Velg nettverk",
-        "networkInfo": "Bridge @:soraText Network med:",
-        "ethereum": "@:ethereumText",
+        "networkInfo": "Bridge {sora} Network med:",
         "energy": "@:evm.EWC",
         "copy": "Kopier nettverksadressen",
-        "soraAddress": "@:soraText adresse",
-        "ethereumAddress": "@:ethereumText adresse"
+        "soraAddress": "{sora} adresse",
+        "ethereumAddress": "{ethereum} adresse"
     },
     "selectRegisteredAsset": {
         "title": "Velg token",
@@ -618,7 +609,7 @@
             "done": "Ferdig",
             "waitingForConfirmation": "Venter på bekreftelse..."
         },
-        "viewInEtherscan": "Vis i Etherscan",
+        "viewInEtherscan": "Vis i {etherscan}",
         "networkTitle": "{network} transaksjon",
         "transactionHash": "Transaksjon hash",
         "networkInfo": {
@@ -631,7 +622,7 @@
         "successCopy": "Transaksjons hash er kopiert til utklippstavlen",
         "ethereum": "@:ethereumText",
         "sora": "@:soraText",
-        "pending": "<span class=\"network-title\">{network}<\/span> transaksjon pågår...",
+        "pending": "{network} transaksjon pågår...",
         "retry": "@:retryText",
         "metamask": "@:metamask",
         "confirm": "@:confirmTransactionText",
@@ -642,7 +633,7 @@
         "expectedAddress": "Forventet adresse i @:metamask",
         "title": "Bro Transaksjon",
         "expectedMetaMaskAddress": "Forventet adresse i MetaMask:",
-        "allowToken": "Tillat @:appName å bruke {tokenSymbol}",
+        "allowToken": "Tillat {appName} å bruke {tokenSymbol}",
         "approveToken": "Vær oppmerksom på at det bare er nødvendig å godkjenne tokenet én gang. Hvis utvidelsen din har flere forespørsler om godkjenning av token, må du bare bekrefte den siste mens du avviser resten.",
         "blocksLeft": "{count} blokker igjen..."
     },
@@ -740,9 +731,9 @@
         "port": "PORT",
         "min": "MIN",
         "marketAlgorithms": {
-            "SMART": "<span class=\"algorithm\">SMART<\/span> likviditetsruting sikrer den beste prisen for enhver transaksjon ved å kombinere bare de beste prisalternativene fra alle tilgjengelige markeder. Når Token Bonding Curve (<span class=\"algorithm\">TBC<\/span>) vil bli brukt til likviditet så lenge aktivaprisen er rimeligere enn fra andre kilder, hvorpå <span class=\"algorithm\">XYK<\/span> utvalget benyttes.",
-            "TBC": "<span class=\"algorithm\">TBC<\/span> - kjøper bare fra Token Bonding Curve (Primary Market). Det er en mulighet for at prisen kan bli ugunstig sammenlignet med <span class=\"algorithm\">XYK<\/span> pool (Sekundærmarkedet), men verdien mottatt fra de opptjente belønningene kan vise seg å være mye gunstigere over tid.",
-            "XYK": "<span class=\"algorithm\">XYK<\/span>- kjøper bare fra XYK Pool (sekundærmarkedet). Tradisjonelt XYK-bassengbytte."
+            "SMART": "{smartAlgorithm} likviditetsruting sikrer den beste prisen for enhver transaksjon ved å kombinere bare de beste prisalternativene fra alle tilgjengelige markeder. Når Token Bonding Curve ({tbcAlgorithm}) vil bli brukt til likviditet så lenge aktivaprisen er rimeligere enn fra andre kilder, hvorpå {xycAlgorithm} utvalget benyttes.",
+            "TBC": "{tbcAlgorithm} - kjøper bare fra Token Bonding Curve (Primary Market). Det er en mulighet for at prisen kan bli ugunstig sammenlignet med {xycAlgorithm} pool (Sekundærmarkedet), men verdien mottatt fra de opptjente belønningene kan vise seg å være mye gunstigere over tid.",
+            "XYK": "{xycAlgorithm}- kjøper bare fra XYK Pool (sekundærmarkedet). Tradisjonelt XYK-bassengbytte."
         }
     },
     "resultDialog": {
@@ -754,7 +745,6 @@
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "og",
         "claiming": {
             "pending": "Henter...",
@@ -830,8 +820,6 @@
         "assetId": "Aktivum ID"
     },
     "memorandum": "Polkaswap Memorandum og vilkår for bruk",
-    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\">@:memorandum<\/a>",
-    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
     "FAQ": "Polkaswap FAQ",
     "connectedAccount": "Tilkoblet konto",
     "selectNodeConnected": "Koblet til: {chain}",
@@ -904,7 +892,7 @@
     "confirmNextTxFailure": {
         "header": "Merk følgende",
         "info": "XOR-saldoen din vil være mindre enn {fee} XOR etter denne transaksjonen. Du vil ikke kunne betale for nettverksavgiften for en annen transaksjon.",
-        "payoff": "Du må bruke broen for å få XOR fra andre nettverk, få tilsendt XOR fra en annen SORA-konto, eller bytte et hvilket som helst annet token som allerede er på kontoen din til XOR.",
+        "payoff": "Du må bruke broen for å få XOR fra andre nettverk, få tilsendt XOR fra en annen {sora}-konto, eller bytte et hvilket som helst annet token som allerede er på kontoen din til XOR.",
         "button": "Ja, jeg forstår risikoen"
     },
     "blockNumberText": "Blokknummer",
@@ -914,11 +902,9 @@
         "bondedXOR": "XOR Bundet",
         "referralsNumber": "{number}-henvisninger",
         "startInviting": "Bond XOR for å henvise andre",
-        "preview": "Inviter nye brukere og få 10% fra deres transaksjonsgebyrer.<br \/>For å starte, obligasjon et hvilket som helst beløp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Lær mer<\/a>",
         "deposit": "Innskudd",
         "balance": "Balanse",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Utilstrekkelig bundet balanse",
         "action": {
@@ -978,9 +964,9 @@
         "title": "Brotransaksjonen ble vellykket"
     },
     "mobilePopup": {
-        "sideMenu": "Få SORA Wallet",
-        "header": "Last ned SORA Wallet med <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funksjoner",
-        "info": "Bytt ut tokens fra forskjellige nettverk - SORA, Ethereum, Polkadot, Kusama. Gi likviditetspool og tjen % fra vekslingsgebyrer."
+        "sideMenu": "Få {sora} Wallet",
+        "header": "Last ned {sora} Wallet med {polkaswapHighlight} funksjoner",
+        "info": "Bytt ut tokens fra forskjellige nettverk - {sora}, {ethereum}, {polkadot}, {kusama}. Gi likviditetspool og tjen % fra vekslingsgebyrer."
     },
     "releaseNotesText": "Utgivelsesnotater",
     "copiedText": "Kopiert!",

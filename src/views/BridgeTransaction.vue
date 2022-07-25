@@ -84,7 +84,9 @@
                     </a>
                   </template>
                   <s-dropdown-item v-else class="s-dropdown-menu__item">
-                    <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
+                    <span>
+                      {{ t('bridgeTransaction.viewInEtherscan', { etherscan: TranslationConsts.Etherscan }) }}
+                    </span>
                   </s-dropdown-item>
                 </template>
               </s-dropdown>
@@ -124,11 +126,7 @@
             >
               <span
                 v-if="isTransactionFromPending"
-                v-html="
-                  t('bridgeTransaction.pending', {
-                    network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`),
-                  })
-                "
+                v-html="t('bridgeTransaction.pending', { network: transactionPendingNetwork })"
               />
               <template v-else-if="!(isSoraToEvm || isExternalAccountConnected)">{{
                 t('bridgeTransaction.connectWallet')
@@ -147,7 +145,7 @@
               }}</template>
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
               <template v-else-if="txWaitingForApprove">{{
-                t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
+                t('bridgeTransaction.allowToken', { appName: app.name, tokenSymbol: assetSymbol })
               }}</template>
               <template v-else>{{
                 t('bridgeTransaction.confirm', {
@@ -212,7 +210,9 @@
                     </a>
                   </template>
                   <s-dropdown-item v-else class="s-dropdown-menu__item">
-                    <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
+                    <span>
+                      {{ t('bridgeTransaction.viewInEtherscan', { etherscan: TranslationConsts.Etherscan }) }}
+                    </span>
                   </s-dropdown-item>
                 </template>
               </s-dropdown>
@@ -301,7 +301,7 @@ import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
-import { Components, PageNames } from '@/consts';
+import { Components, PageNames, app } from '@/consts';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { bridgeApi, STATES, isOutgoingTransaction, isUnsignedFromPart } from '@/utils/bridge';
@@ -324,6 +324,7 @@ export default class BridgeTransaction extends Mixins(
   NetworkFormatterMixin
 ) {
   readonly KnownSymbols = KnownSymbols;
+  readonly app = app;
   readonly collapseItems = {
     from: 'step-from',
     to: 'step-to',
@@ -757,6 +758,12 @@ export default class BridgeTransaction extends Mixins(
 
   get failedClassStep2(): string {
     return this.getFailedClass(this.isTransactionToFailed);
+  }
+
+  get transactionPendingNetwork(): string {
+    return `<span class="network-title">${this.t(
+      `bridgeTransaction.${this.isSoraToEvm ? 'sora' : 'ethereum'}`
+    )}</span>`;
   }
 
   private getFailedClass(transactionFailed?: boolean): string {

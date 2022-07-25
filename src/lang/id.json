@@ -80,20 +80,17 @@
         "DemeterFarmingGetRewards": "Klaim Hadiah"
     },
     "polkadotjs": {
-        "noExtensions": "Tidak ada ekstensi Polkadot.js yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Sepertinya tidak ada akun di ekstensi Polkadot.js Anda. Tambahkan akun dan coba lagi.",
+        "noExtensions": "Tidak ada ekstensi {polkadotJs} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Sepertinya tidak ada akun di ekstensi {polkadotJs} Anda. Tambahkan akun dan coba lagi.",
         "noAccount": "Polkadot.js akun error. Silakan periksa akun Anda di ekstensi Polkadot.js",
         "noExtension": "Tidak ada {extension} yang ditemukan. Silakan instal dan muat ulang halaman ini",
         "noSigner": "Akses ditolak. Buka setelan ekstensi {extension} dan buka \"Kelola Akses Situs Web\" untuk mengizinkan."
     },
     "connection": {
-        "title": "Akun Jaringan SORA",
-        "text": "Hubungkan akun SORA Network Anda atau buat akun baru dengan ekstensi browser {.js} Ekstensi ini memungkinkan Anda untuk menandatangani transaksi dan mengelola aset dengan aman di Jaringan SORA.",
-        "install": "Tak ada ekstensi polkadot.js yang ditemukan. Instal dan muat ulang halaman.<br\/> <span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Permintaan izin ditolak secara tidak sengaja? <\/br> Saat ini ekstensi polkadot{.js} tidak memiliki manajemen izin. Sebagai solusinya, Anda dapat memulai ulang browser dan mengunjungi kembali halaman ini untuk melanjutkan dengan memberikan izin.",
-        "noAccounts": "Tidak ada akun yang ditemukan di ekstensi browser polkadot{.js} Anda. Silakan tambahkan akun, lalu coba kembali.",
+        "title": "Akun Jaringan {sora}",
+        "text": "Hubungkan akun {sora} Network Anda atau buat akun baru dengan ekstensi browser {polkadotJs} ini memungkinkan Anda untuk menandatangani transaksi dan mengelola aset dengan aman di Jaringan {sora}.",
+        "noAccounts": "Tidak ada akun yang ditemukan di ekstensi browser {polkadotJs} Anda. Silakan tambahkan akun, lalu coba kembali.",
         "selectAccount": "Pilih akun untuk dikerjakan",
-        "loadingTitle": "Menunggu Anda untuk mengizinkan akses ke ekstensi polkadot{.js}.",
         "action": {
             "install": "Instal ekstensi",
             "learnMore": "Pelajari lebih lanjut",
@@ -106,7 +103,7 @@
         }
     },
     "wallet": {
-        "title": "Akun Jaringan SORA",
+        "title": "Akun Jaringan {sora}",
         "WalletAssets": "Aset",
         "WalletActivity": "Aktivitas",
         "addAsset": "@:addAssetText",
@@ -127,8 +124,8 @@
         "confirm": "@:confirmText",
         "errorAddress": "Alamat tidak valid. Silakan periksa dan coba lagi.",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "Kirim token antar akun jaringan SORA",
-        "addressWarning": "Token akan dikirim ke alamat SORA di bawah ini. Pastikan penerima dapat mengakses rantai SORA untuk menggunakan token:",
+        "tooltip": "Kirim token antar akun jaringan {sora}",
+        "addressWarning": "Token akan dikirim ke alamat {sora} di bawah ini. Pastikan penerima dapat mengakses rantai {sora} untuk menggunakan token:",
         "addressError": "Anda tidak dapat mengirim token ke akun yang sama dengan yang saat ini terhubung dengan Anda."
     },
     "account": {
@@ -195,7 +192,6 @@
     },
     "createToken": {
         "title": "@:createTokenText",
-        "desc": "Buat dan terapkan kostum aset di SORA",
         "action": "@:createTokenText",
         "enterSymbol": "Masukkan simbol token",
         "enterName": "Masukkan nama token",
@@ -306,16 +302,16 @@
     "connectWalletText": "Hubungkan akun",
     "changeAccountText": "Ganti akun",
     "connectedText": "Terhubung",
-    "connectWalletTextTooltip": "Hubungkan ke Jaringan @:soraText menggunakan polkadot{.js}",
+    "connectWalletTextTooltip": "Hubungkan ke Jaringan {sora} menggunakan {polkadotJs}",
     "selectNodeText": "Pilih node",
     "bridgeText": "Bridge",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Penafian<\/span>: Situs web ini dikelola oleh komunitas @:(soraText). Sebelum melanjutkan menggunakan situs web ini, harap tinjau @:polkaswapFaqLink dan dokumentasinya, yang berisi penjelasan rinci tentang cara kerja Polkaswap, serta @:memorandumLink, dan @:(privacyLink). Dokumen-dokumen ini sangat penting untuk pengalaman pengguna yang aman dan positif. Dengan menggunakan Polkaswap, Anda menyatakan bahwa Anda telah membaca dan memahami dokumen-dokumen ini. Anda juga mengakui hal-hal berikut: 1) satu-satunya tanggung jawab Anda untuk mematuhi semua undang-undang yang mungkin berlaku untuk penggunaan khusus Anda atas Polkaswap di yurisdiksi hukum Anda; 2) pemahaman Anda bahwa versi Polkaswap saat ini adalah versi alfa: belum sepenuhnya diuji, dan beberapa fungsi mungkin tidak berfungsi seperti yang dirancang; dan 3) pemahaman dan penerimaan sukarela Anda atas risiko yang terkait dengan penggunaan Polkaswap, termasuk, namun tidak terbatas pada, risiko kehilangan token. Sekali lagi, mohon jangan melanjutkan tanpa membaca FAQ @:polkaswapFaqLink, @:memorandumLink, dan @:privacyLink!",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
+    "disclaimerTitle": "Penafian:",
+    "disclaimer": "{disclaimerPrefix} Situs web ini dikelola oleh komunitas {sora}. Sebelum melanjutkan menggunakan situs web ini, harap tinjau {polkaswapFaqLink} dan dokumentasinya, yang berisi penjelasan rinci tentang cara kerja {appName}, serta {memorandumLink}, dan {privacyLink}. Dokumen-dokumen ini sangat penting untuk pengalaman pengguna yang aman dan positif. Dengan menggunakan {appName}, Anda menyatakan bahwa Anda telah membaca dan memahami dokumen-dokumen ini. Anda juga mengakui hal-hal berikut: 1) satu-satunya tanggung jawab Anda untuk mematuhi semua undang-undang yang mungkin berlaku untuk penggunaan khusus Anda atas {appName} di yurisdiksi hukum Anda; 2) pemahaman Anda bahwa versi {appName} saat ini adalah versi alfa: belum sepenuhnya diuji, dan beberapa fungsi mungkin tidak berfungsi seperti yang dirancang; dan 3) pemahaman dan penerimaan sukarela Anda atas risiko yang terkait dengan penggunaan {appName}, termasuk, namun tidak terbatas pada, risiko kehilangan token. Sekali lagi, mohon jangan melanjutkan tanpa membaca FAQ {polkaswapFaqLink}, {memorandumLink}, dan {privacyLink}!",
     "poweredBy": "Didukung oleh",
     "confirmTransactionText": "Konfirmasi transaksi untuk {direction}",
     "retryText": "Coba lagi",
     "networkFeeText": "Biaya Jaringan",
-    "networkFeeTooltipText": "Biaya jaringan digunakan untuk memastikan pertumbuhan sistem @:soraText dan kinerja yang stabil.",
+    "networkFeeTooltipText": "Biaya jaringan digunakan untuk memastikan pertumbuhan sistem {sora} dan kinerja yang stabil.",
     "ethNetworkFeeTooltipText": "Mohon diingat bahwa biaya jaringan Ethereum yang ditampilkan di Polkaswap hanya perkiraan sementara, Anda dapat melihat jumlah biaya yang benar di dompet Ethereum Anda yang terhubung sebelum mengonfirmasi transaksi.",
     "marketText": "Pasar",
     "marketAlgorithmText": "Algoritma pasar",
@@ -371,8 +367,6 @@
         "title": "Bantuan",
         "termsOfService": "Ketentuan Layanan",
         "privacyPolicy": "Kebijakan Privasi",
-        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
-        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
         "appVersion": "@:appName Versi",
         "contactUs": "Hubungi Kami"
     },
@@ -380,12 +374,12 @@
         "title": "Tentang",
         "learnMore": "Pelajari lebih lanjut",
         "network": {
-            "title": "Apa it @:soraText?",
-            "description": "Polkaswap dibangun di atas Jaringan @:soraText, dan token @:soraText (XOR) digunakan untuk penyediaan gas \/biaya dan likuiditas pada Polkaswap. @:soraText Network memungkinkan pengurangan biaya, transaksi yang lebih cepat, dan finalisasi konsensus yang lebih sederhana dan berfokus pada memberikan interoperabilitas di seluruh ekosistem blockchain lainnya seperti @:(ethereumText)."
+            "title": "Apa it {sora}?",
+            "description": "{polkaswap} dibangun di atas Jaringan {sora}, dan token {sora} (XOR) digunakan untuk penyediaan gas \/biaya dan likuiditas pada {polkaswap}. {sora} Network memungkinkan pengurangan biaya, transaksi yang lebih cepat, dan finalisasi konsensus yang lebih sederhana dan berfokus pada memberikan interoperabilitas di seluruh ekosistem blockchain lainnya seperti {ethereum}."
         },
         "polkadot": {
-            "title": "Apa itu polkadot{.js}?",
-            "description": "Ekstensi Polkadot{.js} adalah ekstensi browser yang tersedia untuk Firefox dan Chrome yang didedikasikan untuk mengelola akun untuk chain berbasis Substrate, termasuk @:soraText, Polkadot dan Kusama. Anda dapat menambahkan, mengimpor, dan mengekspor akun dan menandatangani transaksi atau ekstrinsik yang telah Anda mulai dari situs web yang telah Anda izinkan."
+            "title": "Apa itu {polkadotJs}?",
+            "description": "Ekstensi {polkadotJs} adalah ekstensi browser yang tersedia untuk Firefox dan Chrome yang didedikasikan untuk mengelola akun untuk chain berbasis Substrate, termasuk {sora}, {polkadot} dan {kusama}. Anda dapat menambahkan, mengimpor, dan mengekspor akun dan menandatangani transaksi atau ekstrinsik yang telah Anda mulai dari situs web yang telah Anda izinkan."
         }
     },
     "node": {
@@ -515,7 +509,6 @@
         "liquidityProviderFeeTooltip": "Sebagian dari setiap perdagangan ({liquidityProviderFee}%) diberikan kepada penyedia likuiditas sebagai insentif protokol.",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Jumlah {tokenSymbol} tidak mencukupi",
         "insufficientLiquidity": "Likuiditas tidak mencukupi",
@@ -541,8 +534,8 @@
         "strategicBonusApy": "Bonus Strategis APY"
     },
     "bridge": {
-        "title": "HASHI Bridge",
-        "info": "Tukar token antara jaringan @:soraText dan @:(ethereumText).",
+        "title": "{hashi} Bridge",
+        "info": "Tukar token antara jaringan {sora} dan {ethereum}.",
         "balance": "Saldo",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -550,8 +543,8 @@
         "changeNetwork": "@:changeNetworkText",
         "next": "Berikutnya",
         "connectWallets": "Hubungkan dompet untuk melihat riwayat masing-masing transaksi.",
-        "soraNetworkFee": "Biaya Jaringan @:soraText",
-        "ethereumNetworkFee": "Biaya Jaringan @:ethereumText",
+        "soraNetworkFee": "Biaya Jaringan {sora}",
+        "ethereumNetworkFee": "Biaya Jaringan {ethereum}",
         "tooltipValue": "@:comingSoonText",
         "total": "Total",
         "viewHistory": "Lihat riwayat transaksi",
@@ -559,12 +552,11 @@
         "transactionMessage": "{assetA} untuk {assetB}",
         "notRegisteredAsset": "Aset {assetSymbol} tidak terdaftar",
         "selectNetwork": "Pilih jaringan",
-        "networkInfo": "Bridge Jaringan @:soraText dengan:",
-        "ethereum": "@:ethereumText",
+        "networkInfo": "Bridge Jaringan {sora} dengan:",
         "energy": "@:evm.EWC",
         "copy": "Salin alamat jaringan",
-        "soraAddress": "@:soraText alamat",
-        "ethereumAddress": "@:ethereumText alamat"
+        "soraAddress": "{sora} alamat",
+        "ethereumAddress": "{ethereum} alamat"
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",
@@ -618,7 +610,7 @@
             "done": "Berhasil",
             "waitingForConfirmation": "Menunggu konfirmasi..."
         },
-        "viewInEtherscan": "Lihat di Etherscan",
+        "viewInEtherscan": "Lihat di {etherscan}",
         "networkTitle": "Transaksi {network}",
         "transactionHash": "Hash transaksi",
         "networkInfo": {
@@ -631,7 +623,7 @@
         "successCopy": "Hash transaksi telah disalin ke clipboard",
         "ethereum": "@:ethereumText",
         "sora": "@:soraText",
-        "pending": "<span class=\"network-title\"> {network} <\/span> transaksi tertunda...",
+        "pending": "{network} transaksi tertunda...",
         "retry": "@:retryText",
         "metamask": "@:metamask",
         "confirm": "@:confirmTransactionText",
@@ -642,7 +634,7 @@
         "expectedAddress": "Alamat yang diharapkan di @:metamask",
         "title": "Jembatan Transaksi",
         "expectedMetaMaskAddress": "Alamat yang diharapkan di metamask",
-        "allowToken": "Izinkan @:appName untuk menggunakan {tokenSymbol}",
+        "allowToken": "Izinkan {appName} untuk menggunakan {tokenSymbol}",
         "approveToken": "Harap dicatat bahwa itu hanya diperlukan untuk menyetujui token sekali. Jika ekstensi Anda memiliki beberapa permintaan persetujuan token, pastikan untuk hanya mengonfirmasi yang terakhir sambil menolak sisanya.",
         "blocksLeft": "{count} blok kiri..."
     },
@@ -740,9 +732,9 @@
         "port": "PORT",
         "min": "MIN",
         "marketAlgorithms": {
-            "SMART": "<span class=\"algorithm\"> SMART <\/span> memastikan harga terbaik untuk setiap transaksi dengan hanya menggabungkan opsi harga terbaik dari semua pasar yang tersedia. Jika tersedia, Token Bonding Curve ( <span class=\"algorithm\"> TBC <\/span> ) akan digunakan untuk likuiditas selama harga aset lebih terjangkau daripada dari sumber lain, di mana <span class=\"algorithm\"> XYK <\/span> pool digunakan.",
-            "TBC": "<span class=\"algorithm\"> TBC <\/span> — hanya membeli dari Token Bonding Curve (Pasar Utama). Ada kemungkinan bahwa harga dapat menjadi tidak menguntungkan dibandingkan dengan dari Pool <span class=\"algorithm\">XYK<\/span> (Pasar Sekunder), akan tetapi nilai yang diterima dari vested rewards mungkin berubah menjadi jauh lebih menguntungkan dari waktu ke waktu.",
-            "XYK": "<span class=\"algorithm\"> XYK <\/span> — membeli hanya dari Pool XYK (Pasar Sekunder). Swap pool XYK tradisional."
+            "SMART": "{smartAlgorithm} memastikan harga terbaik untuk setiap transaksi dengan hanya menggabungkan opsi harga terbaik dari semua pasar yang tersedia. Jika tersedia, Token Bonding Curve ({tbcAlgorithm}) akan digunakan untuk likuiditas selama harga aset lebih terjangkau daripada dari sumber lain, di mana {xycAlgorithm} pool digunakan.",
+            "TBC": "{tbcAlgorithm} — hanya membeli dari Token Bonding Curve (Pasar Utama). Ada kemungkinan bahwa harga dapat menjadi tidak menguntungkan dibandingkan dengan dari Pool {xycAlgorithm} (Pasar Sekunder), akan tetapi nilai yang diterima dari vested rewards mungkin berubah menjadi jauh lebih menguntungkan dari waktu ke waktu.",
+            "XYK": "{xycAlgorithm} — membeli hanya dari Pool XYK (Pasar Sekunder). Swap pool XYK tradisional."
         }
     },
     "resultDialog": {
@@ -754,7 +746,6 @@
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "dan",
         "claiming": {
             "pending": "Sedang Mengklaim...",
@@ -830,8 +821,6 @@
         "assetId": "ID Aset"
     },
     "memorandum": "Memorandum Polkaswap dan Ketentuan Layanan",
-    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\"> @:memorandum <\/a>",
-    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
     "FAQ": "Tanya Jawab Polkaswap",
     "connectedAccount": "Akun terhubung",
     "selectNodeConnected": "Terhubung ke: {chain}",
@@ -904,7 +893,7 @@
     "confirmNextTxFailure": {
         "header": "Perhatian",
         "info": "Saldo XOR Anda akan kurang dari {fee} XOR setelah transaksi ini. Anda tidak akan dapat membayar biaya jaringan untuk transaksi lain.",
-        "payoff": "Anda harus menggunakan Bridge untuk mendapatkan XOR dari jaringan lain, mengirim XOR dari akun SORA lain, atau menukar token lain yang sudah ada di akun Anda ke XOR.",
+        "payoff": "Anda harus menggunakan Bridge untuk mendapatkan XOR dari jaringan lain, mengirim XOR dari akun {sora} lain, atau menukar token lain yang sudah ada di akun Anda ke XOR.",
         "button": "Ya, saya mengerti risikonya"
     },
     "blockNumberText": "Nomor blok",
@@ -914,11 +903,9 @@
         "bondedXOR": "Ikatan XOR",
         "referralsNumber": "{number} rujukan",
         "startInviting": "Obligasi XOR untuk merujuk orang lain",
-        "preview": "Undang pengguna baru dan dapatkan 10% dari biaya transaksi mereka.<br \/>Untuk mulai, beri obligasi dalam jumlah XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Saldo terikat tidak mencukupi",
         "action": {
@@ -978,9 +965,9 @@
         "title": "Transaksi jembatan berhasil"
     },
     "mobilePopup": {
-        "sideMenu": "Dapatkan Dompet SORA",
-        "header": "Unduh SORA Wallet dengan fitur <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
-        "info": "Tukar token dari jaringan yang berbeda - SORA, Ethereum, Polkadot, Kusama. Sediakan kumpulan likuiditas dan dapatkan % dari biaya pertukaran."
+        "sideMenu": "Dapatkan Dompet {sora}",
+        "header": "Unduh {sora} Wallet dengan fitur {polkaswapHighlight}",
+        "info": "Tukar token dari jaringan yang berbeda - {sora}, {ethereum}, {polkadot}, {kusama}. Sediakan kumpulan likuiditas dan dapatkan % dari biaya pertukaran."
     },
     "releaseNotesText": "Catatan rilis",
     "copiedText": "Disalin!",

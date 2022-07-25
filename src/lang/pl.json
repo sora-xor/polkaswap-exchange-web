@@ -80,20 +80,17 @@
         "DemeterFarmingGetRewards": "Odbierz wynagrodzenie"
     },
     "polkadotjs": {
-        "noExtensions": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Wygląda na to, że w Twoim rozszerzeniu polkadot.js nie ma kont. Dodaj konto i spróbuj ponownie.",
+        "noExtensions": "Nie znaleziono rozszerzenia {polkadotJs}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Wygląda na to, że w Twoim rozszerzeniu {polkadotJs} nie ma kont. Dodaj konto i spróbuj ponownie.",
         "noAccount": "Błąd konta polkadot.js. Sprawdź swoje konto w rozszerzeniu polkadot.js.",
         "noExtension": "Nie znaleziono {extension} . Zainstaluj go i ponownie załaduj tę stronę",
         "noSigner": "Brak dostępu. Przejdź do ustawień {extension} i otwórz „Zarządzaj dostępem do witryny”, aby zezwolić."
     },
     "connection": {
-        "title": "Konto sieci SORA",
-        "text": "Podłącz swoje konta sieci SORA lub utwórz nowe za pomocą rozszerzenia przeglądarki polkadot{.js}. To rozszerzenie umożliwia bezpieczne podpisywanie transakcji i zarządzanie zasobami w sieci SORA.",
-        "install": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">odśwież<\/a> stronę<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>.",
-        "noPermissions": "Przypadkowo odrzuciłeś(-łaś) prośbę o pozwolenie? <\/br> Rozszerzenie polkadot{.js} nie posiada obecnie zarządzania uprawnieniami. Aby obejść ten problem, możesz restartować przeglądarkę i ponownie odwiedzić tę stronę w celu kontynuowania autoryzacji.",
-        "noAccounts": "W Twoim rozszerzeniu przeglądarki polkadot{.js} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
+        "title": "Konto sieci {sora}",
+        "text": "Podłącz swoje konta sieci {sora} lub utwórz nowe za pomocą rozszerzenia przeglądarki {polkadotJs}. To rozszerzenie umożliwia bezpieczne podpisywanie transakcji i zarządzanie zasobami w sieci {sora}.",
+        "noAccounts": "W Twoim rozszerzeniu przeglądarki {polkadotJs} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
-        "loadingTitle": "Czekam, aż zezwolisz na dostęp do rozszerzenia polkadot{.js}.",
         "action": {
             "install": "Zainstaluj rozszerzenie",
             "learnMore": "Dowiedz się więcej",
@@ -106,7 +103,7 @@
         }
     },
     "wallet": {
-        "title": "Konto sieci SORA",
+        "title": "Konto sieci {sora}",
         "WalletAssets": "Waluty",
         "WalletActivity": "Aktywność",
         "addAsset": "@:addAssetText",
@@ -127,8 +124,8 @@
         "confirm": "@:confirmText",
         "errorAddress": "Nieprawidłowy adres. Sprawdź go i spróbuj ponownie.",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "Wysyłaj tokeny między kontami sieci SORA",
-        "addressWarning": "Tokeny zostaną wysłane na poniższy adres sieci SORA. Upewnij się, czy odbiorca może uzyskać dostęp do sieci SORA, aby korzystać z tokenów:",
+        "tooltip": "Wysyłaj tokeny między kontami sieci {sora}",
+        "addressWarning": "Tokeny zostaną wysłane na poniższy adres sieci {sora}. Upewnij się, czy odbiorca może uzyskać dostęp do sieci {sora}, aby korzystać z tokenów:",
         "addressError": "Nie możesz wysyłać tokenów na konto, które jest teraz właśnie podłączone."
     },
     "account": {
@@ -195,7 +192,6 @@
     },
     "createToken": {
         "title": "@:createTokenText",
-        "desc": "Twórz i wdrażaj niestandardowe waluty w sieci SORA",
         "action": "@:createTokenText",
         "enterSymbol": "Podaj symbol tokena",
         "enterName": "Podaj nazwę tokena",
@@ -205,7 +201,6 @@
             "title": "Transakcja została złożona.",
             "desc": "Utwórz token {symbol}"
         },
-        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Nie udało się pobrać opłaty za transakcję.",
@@ -306,16 +301,16 @@
     "connectWalletText": "Połącz z kontem",
     "changeAccountText": "Zmień konto",
     "connectedText": "Połączono",
-    "connectWalletTextTooltip": "Połącz się z siecią @:soraText za pomocą polkadot{.js}",
+    "connectWalletTextTooltip": "Połącz się z siecią {sora} za pomocą {polkadotJs}",
     "selectNodeText": "Wybierz węzeł sieci",
     "bridgeText": "Most",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Zastrzeżenie<\/span>: Niniejsza strona internetowa jest prowadzona przez społeczność sieci @:(soraText). Zanim zaczniesz korzystać z tej witryny, zapoznaj się z @:polkaswapFaqLink i dokumentacją, która zawiera szczegółowe wyjaśnienia dotyczące działania giełdy Polkaswap. Przeczytaj także @:memorandumLink oraz tekst @:(privacyLink). Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z Polkaswap, potwierdzasz, że przeczytałeś(-łaś) i rozumiesz przedstawione dokumenty. Potwierdzasz również, co następuje: 1) ponosisz wyłączną odpowiedzialność związaną z przestrzeganiem wszystkich przepisów, które mogą mieć zastosowanie do korzystania z Polkaswap w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja Polkaswap jest wersją alfa: nie została w pełni przetestowana, a niektóre jej funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z Polkaswap, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj @:polkaswapFaqLink, @:memorandumLink, a także tekst @:privacyLink!",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
+    "disclaimerTitle": "Zastrzeżenie:",
+    "disclaimer": "{disclaimerPrefix} Niniejsza strona internetowa jest prowadzona przez społeczność sieci {sora}. Zanim zaczniesz korzystać z tej witryny, zapoznaj się z {polkaswapFaqLink} i dokumentacją, która zawiera szczegółowe wyjaśnienia dotyczące działania giełdy {appName}. Przeczytaj także {memorandumLink} oraz tekst {privacyLink}. Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z {appName}, potwierdzasz, że przeczytałeś(-łaś) i rozumiesz przedstawione dokumenty. Potwierdzasz również, co następuje: 1) ponosisz wyłączną odpowiedzialność związaną z przestrzeganiem wszystkich przepisów, które mogą mieć zastosowanie do korzystania z {appName} w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja {appName} jest wersją alfa: nie została w pełni przetestowana, a niektóre jej funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z {appName}, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj {polkaswapFaqLink}, {memorandumLink}, a także tekst {privacyLink}!",
     "poweredBy": "Technologia:",
     "confirmTransactionText": "Potwierdź transakcję w {direction}",
     "retryText": "Spróbuj ponownie",
     "networkFeeText": "Opłata sieciowa",
-    "networkFeeTooltipText": "Opłata sieciowa służy zapewnieniu rozwoju i stabilności systemu @:(soraText).",
+    "networkFeeTooltipText": "Opłata sieciowa służy zapewnieniu rozwoju i stabilności systemu {sora}.",
     "ethNetworkFeeTooltipText": "Należy mieć na uwadze, że opłaty w sieci Ethereum widoczne na Polkaswap to jedynie przybliżone oszacowanie. Przed potwierdzeniem transakcji można zobaczyć prawidłową kwotę opłaty w podłączonym portfelu sieci Ethereum.",
     "marketText": "Rynek",
     "marketAlgorithmText": "Algorytm rynkowy",
@@ -371,8 +366,6 @@
         "title": "Pomoc",
         "termsOfService": "Warunki korzystania z usług",
         "privacyPolicy": "Polityka prywatności",
-        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
-        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
         "appVersion": "Wersja @:appName",
         "contactUs": "Skontaktuj się z nami"
     },
@@ -380,12 +373,12 @@
         "title": "O giełdzie",
         "learnMore": "@:learnMoreText",
         "network": {
-            "title": "Czym jest @:soraText?",
-            "description": "Polkaswap jest zbudowana na sieci @:soraText, a token @:soraText (XOR) służy do dostarczania gazu\/opłat oraz płynności. Sieć @:soraText pozwala na obniżenie opłat, szybsze transakcje i prostsze osiąganie konsensusu oraz koncentruje się na zapewnieniu interoperacyjności z innymi ekosystemami technologii blockchain, takimi jak @:(ethereumText)."
+            "title": "Czym jest {sora}?",
+            "description": "{polkaswap} jest zbudowana na sieci {sora}, a token {sora} (XOR) służy do dostarczania gazu\/opłat oraz płynności. Sieć {sora} pozwala na obniżenie opłat, szybsze transakcje i prostsze osiąganie konsensusu oraz koncentruje się na zapewnieniu interoperacyjności z innymi ekosystemami technologii blockchain, takimi jak {ethereum}."
         },
         "polkadot": {
-            "title": "Czym jest polkadot{.js}?",
-            "description": "Polkadot{.js} to rozszerzenie przeglądarki dostępne dla Firefoksa i Chrome, przeznaczone do zarządzania kontami w sieciach opartych na platformie Substrate, w tym @:soraText, Polkadot i Kusama. Konta można dodawać, importować i eksportować oraz podpisywać transakcje lub dane zewnętrzne inicjowane z autoryzowanych przez Ciebie witryn."
+            "title": "Czym jest {polkadotJs}?",
+            "description": "{polkadotJs} to rozszerzenie przeglądarki dostępne dla Firefoksa i Chrome, przeznaczone do zarządzania kontami w sieciach opartych na platformie Substrate, w tym {sora}, {polkadot} i {kusama}. Konta można dodawać, importować i eksportować oraz podpisywać transakcje lub dane zewnętrzne inicjowane z autoryzowanych przez Ciebie witryn."
         }
     },
     "node": {
@@ -515,7 +508,6 @@
         "liquidityProviderFeeTooltip": "Część każdej transakcji ({liquidityProviderFee}%) trafia do dostarczycieli płynności jako wynagrodzenie wynikające z protokołu.",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Niewystarczająca kwota w walucie {tokenSymbol}",
         "insufficientLiquidity": "Niewystarczająca płynność",
@@ -541,8 +533,8 @@
         "strategicBonusApy": "Procentowa roczna stopa dochodu bonusu strategicznego"
     },
     "bridge": {
-        "title": "Most HASHI",
-        "info": "Konwertuj tokeny między sieciami @:soraText i @:(ethereumText).",
+        "title": "Most {hashi}",
+        "info": "Konwertuj tokeny między sieciami {sora} i {ethereum}.",
         "balance": "Saldo",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -550,8 +542,8 @@
         "changeNetwork": "@:changeNetworkText",
         "next": "Dalej",
         "connectWallets": "Połącz z portfelami, aby zobaczyć historię poszczególnych transakcji.",
-        "soraNetworkFee": "Opłata sieciowa sieci @:soraText",
-        "ethereumNetworkFee": "Opłata sieciowa sieci @:ethereumText",
+        "soraNetworkFee": "Opłata sieciowa sieci {sora}",
+        "ethereumNetworkFee": "Opłata sieciowa sieci {ethereum}",
         "tooltipValue": "@:comingSoonText",
         "total": "Łącznie",
         "viewHistory": "Pokaż historię transakcji",
@@ -559,12 +551,11 @@
         "transactionMessage": "{assetA} do {assetB}",
         "notRegisteredAsset": "Waluta {assetSymbol} nie jest zarejestrowana.",
         "selectNetwork": "Wybierz sieć",
-        "networkInfo": "Połącz za pomocą mostu sieć @:soraText z:",
-        "ethereum": "@:ethereumText",
+        "networkInfo": "Połącz za pomocą mostu sieć {sora} z:",
         "energy": "@:evm.EWC",
         "copy": "Skopiuj adres sieciowy",
-        "soraAddress": "@:soraText adres",
-        "ethereumAddress": "@:ethereumText adres"
+        "soraAddress": "{sora} adres",
+        "ethereumAddress": "{ethereum} adres"
     },
     "selectRegisteredAsset": {
         "title": "Wybierz token",
@@ -618,7 +609,7 @@
             "done": "Ukończono",
             "waitingForConfirmation": "Oczekiwanie na potwierdzenie..."
         },
-        "viewInEtherscan": "Pokaż w Etherscanie",
+        "viewInEtherscan": "Pokaż w {etherscan}",
         "networkTitle": "transakcji sieci {network}",
         "transactionHash": "Skrót transakcji",
         "networkInfo": {
@@ -631,7 +622,7 @@
         "successCopy": "Skrót transakcji został skopiowany do schowka.",
         "ethereum": "@:ethereumText",
         "sora": "@:soraText",
-        "pending": "Transakcja <span class=\"network-title\">{network}<\/span> w toku...",
+        "pending": "Transakcja {network} w toku...",
         "retry": "@:retryText",
         "metamask": "@:metamask",
         "confirm": "@:confirmTransactionText",
@@ -642,7 +633,7 @@
         "expectedAddress": "Spodziewany adres w portfelu @:metamask",
         "title": "Transakcja mostowa",
         "expectedMetaMaskAddress": "Spodziewany adres w portfelu MetaMask:",
-        "allowToken": "Zezwól @:appName na użycie Twojego {tokenSymbol}",
+        "allowToken": "Zezwól {appName} na użycie Twojego {tokenSymbol}",
         "approveToken": "Pamiętaj, że wystarczy raz zatwierdzić token. Jeśli Twoje rozszerzenie otrzymuje wiele żądań o zatwierdzenie tokena, pamiętaj, by potwierdzić tylko ostatnią, a pozostałe odrzucić.",
         "blocksLeft": "pozostało {count} bloków..."
     },
@@ -740,9 +731,9 @@
         "port": "PORT",
         "min": "MIN.",
         "marketAlgorithms": {
-            "SMART": "Routing płynności <span class=\"algorithm\">SMART<\/span> zapewnia najlepszą cenę dla każdej transakcji, łącząc tylko najlepsze opcje cenowe ze wszystkich dostępnych rynków. Jeśli jest on dostępny, Token Bonding Curve [krzywa wiązania tokenów] (<span class=\"algorithm\">TBC<\/span>) zostanie wówczas wykorzystana do zapewnienia płynności, o ile cena waluty będzie bardziej przystępna niż z innych źródeł, na podstawie których pula <span class=\"algorithm\">XYK<\/span> jest użytkowana.",
-            "TBC": "<span class=\"algorithm\">TBC<\/span> – zakup jedynie z Token Bonding Curve [krzywa wiązania tokenów] (rynek pierwotny). Istnieje prawdopodobieństwo, że cena może ulec zmianie na niekorzyść w porównaniu do puli <span class=\"algorithm\">XYK<\/span> (rynek wtórny), ale wartość otrzymana z nabytego wynagrodzenia może z czasem okazać się o wiele korzystniejsza.",
-            "XYK": "<span class=\"algorithm\">XYK<\/span> – zakup jedynie z puli XYK (rynek wtórny). Tradycyjna wymiana według modelu XYK."
+            "SMART": "Routing płynności {smartAlgorithm} zapewnia najlepszą cenę dla każdej transakcji, łącząc tylko najlepsze opcje cenowe ze wszystkich dostępnych rynków. Jeśli jest on dostępny, Token Bonding Curve [krzywa wiązania tokenów] ({tbcAlgorithm}) zostanie wówczas wykorzystana do zapewnienia płynności, o ile cena waluty będzie bardziej przystępna niż z innych źródeł, na podstawie których pula {xycAlgorithm} jest użytkowana.",
+            "TBC": "{tbcAlgorithm} – zakup jedynie z Token Bonding Curve [krzywa wiązania tokenów] (rynek pierwotny). Istnieje prawdopodobieństwo, że cena może ulec zmianie na niekorzyść w porównaniu do puli {xycAlgorithm} (rynek wtórny), ale wartość otrzymana z nabytego wynagrodzenia może z czasem okazać się o wiele korzystniejsza.",
+            "XYK": "{xycAlgorithm} – zakup jedynie z puli XYK (rynek wtórny). Tradycyjna wymiana według modelu XYK."
         }
     },
     "resultDialog": {
@@ -754,7 +745,6 @@
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "i",
         "claiming": {
             "pending": "Odbieranie...",
@@ -830,8 +820,6 @@
         "assetId": "Identyfikator waluty"
     },
     "memorandum": "Memo giełdy Polkaswap i Warunki korzystania z usług",
-    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\">@:memorandum<\/a>",
-    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
     "FAQ": "Polkaswap FAQ",
     "connectedAccount": "Podłączone konto",
     "selectNodeConnected": "Połączono z: {chain}",
@@ -904,7 +892,7 @@
     "confirmNextTxFailure": {
         "header": "Uwaga",
         "info": "Po tej transakcji Twoje saldo w walucie XOR będzie mniejsze niż {fee} XOR. Nie będziesz w stanie uiścić opłaty sieciowej za kolejną transakcję.",
-        "payoff": "Będziesz musiał użyć mostu, aby uzyskać XOR z innych sieci, wysłać XOR z innego konta sieci SORA lub zamienić dowolny token, znajdujący się już na Twoim koncie, na XOR.",
+        "payoff": "Będziesz musiał użyć mostu, aby uzyskać XOR z innych sieci, wysłać XOR z innego konta sieci {sora} lub zamienić dowolny token, znajdujący się już na Twoim koncie, na XOR.",
         "button": "Tak, rozumiem ryzyko."
     },
     "blockNumberText": "Numer bloku",
@@ -914,11 +902,9 @@
         "bondedXOR": "Rezerwy w XOR",
         "referralsNumber": "{number} zaproszonych",
         "startInviting": "Bond XOR, aby polecić innym",
-        "preview": "Zaproś nowych użytkowników, by otrzymać 10% z ich opłat transakcyjnych.<br \/>Aby rozpocząć, utwórz rezerwy w dowolnej kwocie waluty XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej.<\/a>",
         "deposit": "Deponuj",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Niewystarczające rezerwy",
         "action": {
@@ -978,9 +964,9 @@
         "title": "Transakcja pomostowa powiodła się"
     },
     "mobilePopup": {
-        "sideMenu": "Pobierz SORA Wallet",
-        "header": "Pobierz portfel SORA z <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
-        "info": "Zamień tokeny z różnych sieci - SORA, Ethereum, Polkadot, Kusama. Zapewnij pulę płynności i zarabiaj % na opłatach za wymianę."
+        "sideMenu": "Pobierz {sora} Wallet",
+        "header": "Pobierz portfel {sora} z {polkaswapHighlight}",
+        "info": "Zamień tokeny z różnych sieci - {sora}, {ethereum}, {polkadot}, {kusama}. Zapewnij pulę płynności i zarabiaj % na opłatach za wymianę."
     },
     "releaseNotesText": "Informacje o wydaniu",
     "copiedText": "Skopiowane!",

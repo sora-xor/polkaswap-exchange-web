@@ -25,30 +25,25 @@ export default {
   connectedText: 'Connected',
   connectedAccount: 'Connected account',
   selectNodeConnected: 'Connected to: {chain}',
-  connectWalletTextTooltip: 'Connect to @:soraText Network with polkadot{.js}',
+  connectWalletTextTooltip: 'Connect to {sora} Network with {polkadotJs}',
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
   releaseNotesText: 'Release notes',
   memorandum: 'Polkaswap Memorandum and Terms of Services',
-  memorandumLink:
-    '<a href="@:helpDialog.termsOfServiceLink" target="_blank" rel="nofollow noopener" class="link" title="@:memorandum">@:memorandum</a>',
-  privacyLink:
-    '<a href="@:helpDialog.privacyPolicyLink" target="_blank" rel="nofollow noopener" class="link" title="@:helpDialog.privacyPolicy">@:helpDialog.privacyPolicy</a>',
   FAQ: 'Polkaswap FAQ',
-  polkaswapFaqLink:
-    '<a class="link" href="https://wiki.sora.org/polkaswap/polkaswap-faq" target="_blank" rel="nofollow noopener" title="@:FAQ">@:FAQ</a>',
+  disclaimerTitle: 'Disclaimer:',
   disclaimer:
-    '<span class="app-disclaimer__title">Disclaimer</span>: This website is maintained by the @:soraText community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how Polkaswap works, as well as the @:memorandumLink, and @:(privacyLink). These documents are crucial to a secure and positive user experience. By using Polkaswap, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of Polkaswap in your legal jurisdiction; 2) your understanding that the current version of Polkaswap is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using Polkaswap, including, but not limited to, the risk of losing tokens. Please do not continue without reading the @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!',
+    '{disclaimerPrefix} This website is maintained by the {sora} community. Before continuing to use this website, please review the {polkaswapFaqLink} and documentation, which includes a detailed explanation on how {appName} works, as well as the {memorandumLink}, and {privacyLink}. These documents are crucial to a secure and positive user experience. By using {appName}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {appName} in your legal jurisdiction; 2) your understanding that the current version of {appName} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {appName}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
   signAndClaimText: 'Sign and claim',
   retryText: 'Retry',
   networkFeeText: 'Network Fee',
-  networkFeeTooltipText: "Network fee is used to ensure @:soraText system's growth and stable performance.",
+  networkFeeTooltipText: "Network fee is used to ensure {sora} system's growth and stable performance.",
   ethNetworkFeeTooltipText:
-    'Please note that the Ethereum network fees displayed on Polkaswap are only rough estimations, you can see the correct fee amount in your connected Ethereum wallet prior to confirming the transaction.',
+    'Please note that the Ethereum network fees displayed on Polkaswap are only rough estimations, you can see the correct fee amount in your connected Ethereum wallet prior to co nfirming the transaction.',
   marketText: 'Market',
   marketAlgorithmText: 'Market algorithm',
   balanceText: 'Balance',
@@ -118,8 +113,6 @@ export default {
     title: 'Help',
     termsOfService: 'Terms of Service',
     privacyPolicy: 'Privacy Policy',
-    termsOfServiceLink: 'https://wiki.sora.org/polkaswap/terms',
-    privacyPolicyLink: 'https://wiki.sora.org/polkaswap/privacy',
     appVersion: '@:appName version',
     contactUs: 'Contact us',
   },
@@ -127,14 +120,14 @@ export default {
     title: 'About',
     learnMore: '@:learnMoreText',
     network: {
-      title: 'What is @:soraText?',
+      title: 'What is {sora}?',
       description:
-        'Polkaswap is built on top of the @:soraText Network, and the @:soraText token (XOR) is used for gas/fees and liquidity provision on Polkaswap. @:soraText Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like @:(ethereumText).',
+        '{polkaswap} is built on top of the {sora} Network, and the {sora} token (XOR) is used for gas/fees and liquidity provision on {polkaswap}. {sora} Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like {ethereum}.',
     },
     polkadot: {
-      title: 'What is polkadot{.js}?',
+      title: 'What is {polkadotJs}?',
       description:
-        'Polkadot{.js} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including @:soraText, Polkadot and Kusama. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.',
+        '{polkadotJs} extension is a browser extension available for Firefox and Chrome dedicated to managing accounts for Substrate-based chains, including {sora}, {polkadot} and {kusama}. You can add, import, and export accounts and sign transactions or extrinsics that you have initiated from websites you have authorized.',
     },
   },
   node: {
@@ -331,7 +324,6 @@ export default {
       'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
     networkFee: '@:networkFeeText',
     pairIsNotCreated: '@:pairIsNotCreated',
-    networkFeeTooltip: '@:networkFeeTooltipText',
     firstPerSecond: '@:firstPerSecond',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     insufficientLiquidity: 'Insufficient liquidity',
@@ -359,8 +351,8 @@ export default {
     strategicBonusApy: 'Strategic Bonus APY',
   },
   bridge: {
-    title: 'HASHI Bridge',
-    info: 'Convert tokens between the @:soraText and @:ethereumText networks.',
+    title: '{hashi} Bridge',
+    info: 'Convert tokens between the {sora} and {ethereum} networks.',
     balance: 'Balance',
     connectWallet: '@:connectWalletText',
     connected: '@:connectedText',
@@ -368,8 +360,8 @@ export default {
     changeNetwork: '@:changeNetworkText',
     next: 'Next',
     connectWallets: 'Connect wallets to view respective transaction history.',
-    soraNetworkFee: '@:soraText Network Fee',
-    ethereumNetworkFee: '@:ethereumText Network Fee',
+    soraNetworkFee: '{sora} Network Fee',
+    ethereumNetworkFee: '{ethereum} Network Fee',
     tooltipValue: '@:comingSoonText',
     total: 'Total',
     viewHistory: 'View transactions history',
@@ -377,9 +369,11 @@ export default {
     transactionMessage: '{assetA} for {assetB}',
     notRegisteredAsset: 'Asset {assetSymbol} is not registered',
     selectNetwork: 'Select network',
-    networkInfo: 'Bridge @:soraText Network with:',
-    ethereum: '@:ethereumText',
+    networkInfo: 'Bridge {sora} Network with:',
     energy: '@:evm.EWC',
+    copy: 'Copy network address',
+    soraAddress: '{sora} address',
+    ethereumAddress: '{ethereum} address',
   },
   selectRegisteredAsset: {
     title: 'Select a token',
@@ -436,7 +430,7 @@ export default {
       waitingForConfirmation: 'Waiting for confirmation...',
     },
     blocksLeft: '{count} blocks left...',
-    viewInEtherscan: 'View in Etherscan',
+    viewInEtherscan: 'View in {etherscan}',
     networkTitle: '{network} transaction',
     transactionHash: 'Transaction hash',
     networkInfo: {
@@ -449,7 +443,7 @@ export default {
     successCopy: 'Transaction hash is copied to the clipboard',
     ethereum: '@:ethereumText',
     sora: '@:soraText',
-    pending: '<span class="network-title">{network}</span> transaction pending...',
+    pending: '{network} transaction pending...',
     retry: '@:retryText',
     metamask: '@:metamask',
     confirm: '@:confirmTransactionText',
@@ -458,7 +452,7 @@ export default {
     connectWallet: '@:connectWalletText',
     changeAccount: '@:changeAccountText in @:metamask',
     expectedAddress: 'Expected address in @:metamask',
-    allowToken: 'Allow @:appName to use your {tokenSymbol}',
+    allowToken: 'Allow {appName} to use your {tokenSymbol}',
     approveToken:
       'Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.',
   },
@@ -550,9 +544,9 @@ export default {
     marketAlgorithm: '@.upper:marketAlgorithmText',
     marketAlgorithms: {
       SMART:
-        '<span class="algorithm">SMART</span> liquidity routing ensures the best price for any transaction by combining only the best price options from all available markets. When available, Token Bonding Curve (<span class="algorithm">TBC</span>) will be used for liquidity as long as the asset price is more affordable than from other sources, upon which the <span class="algorithm">XYK</span> pool is utilized.',
-      TBC: '<span class="algorithm">TBC</span> — buying only from the Token Bonding Curve (Primary Market). There is a possibility that the price can become unfavorable compared to the <span class="algorithm">XYK</span> pool (Secondary Market), but the value received from the vested rewards might turn out to be much more favorable over time.',
-      XYK: '<span class="algorithm">XYK</span> — buying only from the XYK Pool (Secondary Market). Traditional XYK pool swap.',
+        '{smartAlgorithm} liquidity routing ensures the best price for any transaction by combining only the best price options from all available markets. When available, Token Bonding Curve ({tbcAlgorithm}) will be used for liquidity as long as the asset price is more affordable than from other sources, upon which the {xycAlgorithm} pool is utilized.',
+      TBC: '{tbcAlgorithm} — buying only from the Token Bonding Curve (Primary Market). There is a possibility that the price can become unfavorable compared to the {xycAlgorithm} pool (Secondary Market), but the value received from the vested rewards might turn out to be much more favorable over time.',
+      XYK: '{xycAlgorithm} — buying only from the XYK Pool (Secondary Market). Traditional XYK pool swap.',
     },
     marketAlgorithmTooltip: {
       main: ' - option to choose between Primary Market (TBC), Secondary Market (XYK) or a combined smart algorithm for guaranteed best price for any given transaction.',
@@ -583,7 +577,6 @@ export default {
     changeAccount: '@:changeAccountText',
     connected: '@:connectedText',
     networkFee: '@:networkFeeText',
-    networkFeeTooltip: '@:networkFeeTooltipText',
     andText: 'and',
     forText: 'for',
     totalVested: 'Total rewards',
@@ -694,7 +687,7 @@ export default {
     header: 'Attention',
     info: 'Your XOR balance will be less than {fee} XOR after this transaction. You won’t be able to pay for the network fee for another transaction.',
     payoff:
-      'You would have to use the Bridge to get XOR from other networks, get sent XOR from another SORA account, or swap any other token already in your account into XOR.',
+      'You would have to use the Bridge to get XOR from other networks, get sent XOR from another {sora} account, or swap any other token already in your account into XOR.',
     button: 'Yes, I understand the risk',
   },
   provider: {
@@ -715,12 +708,9 @@ export default {
     referralsNumber: '{number} referrals',
     startInviting: 'To start inviting, bond any amount of XOR.',
     insufficientBondedAmount: 'To invite more referrals, bond at least {inviteUserFee} XOR',
-    preview:
-      'Invite new users and get 10% from their transaction fees.<br />To start, bond any amount of XOR. <a href="#" target="_blank" rel="nofollow noopener" class="link" title="Learn more">Learn more</a>',
     deposit: 'Deposit',
     balance: 'Balance',
     networkFee: '@:networkFeeText',
-    networkFeeTooltip: '@:networkFeeTooltipText',
     insufficientBalance: '@:insufficientBalanceText',
     insufficientBondedBalance: 'Insufficient bonded balance',
     action: {
@@ -753,9 +743,9 @@ export default {
     },
   },
   mobilePopup: {
-    sideMenu: 'Get SORA Wallet',
-    header: 'Download SORA Wallet with <span class="popup-info__headline--highlight">Polkaswap</span> features',
-    info: 'Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees.',
+    sideMenu: 'Get {sora} Wallet',
+    header: 'Download {sora} Wallet with {polkaswapHighlight} features',
+    info: 'Swap tokens from different networks - {sora}, {ethereum}, {polkadot}, {kusama}. Provide liquidity pool and earn % from exchange fees.',
   },
   demeterFarming: {
     staking: {

@@ -14,7 +14,7 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from './mixins/TranslationMixin';
 
-import { Components, Links } from '@/consts';
+import { Components, Links, app } from '@/consts';
 import { lazyComponent } from '@/router';
 
 @Component({
@@ -27,13 +27,22 @@ export default class AboutNetworkDialog extends Mixins(TranslationMixin, mixins.
   get aboutBlocks() {
     return [
       {
-        title: this.t('aboutNetworkDialog.network.title'),
-        description: this.t('aboutNetworkDialog.network.description'),
+        title: this.t('aboutNetworkDialog.network.title', { sora: this.TranslationConsts.Sora }),
+        description: this.t('aboutNetworkDialog.network.description', {
+          sora: this.TranslationConsts.Sora,
+          polkaswap: app.name,
+          ethereum: this.TranslationConsts.Ethereum,
+        }),
         link: Links.about.sora,
       },
       {
-        title: this.t('aboutNetworkDialog.polkadot.title'),
-        description: this.t('aboutNetworkDialog.polkadot.description'),
+        title: this.t('aboutNetworkDialog.polkadot.title', { polkadotJs: this.TranslationConsts.PolkadotJs }),
+        description: this.t('aboutNetworkDialog.polkadot.description', {
+          polkadotJs: this.TranslationConsts.PolkadotJs,
+          sora: this.TranslationConsts.Sora,
+          polkadot: this.TranslationConsts.Polkadot,
+          kusama: this.TranslationConsts.Kusama,
+        }),
         link: Links.about.polkadot,
       },
     ];

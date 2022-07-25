@@ -80,20 +80,17 @@
         "DemeterFarmingGetRewards": "Nárokovat odměny"
     },
     "polkadotjs": {
-        "noExtensions": "Nebylo nalezeno žádné rozšíření Polkadot.js. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Zdá se, že ve vašem rozšíření Polkadot.js nejsou žádné účty. Přidejte účet a zkuste to znovu prosím.",
+        "noExtensions": "Nebylo nalezeno žádné rozšíření {polkadotJs}. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Zdá se, že ve vašem rozšíření {polkadotJs} nejsou žádné účty. Přidejte účet a zkuste to znovu prosím.",
         "noAccount": "Chyba účtu polkadot.js. Zkontrolujte prosím svůj účet v rozšíření Polkadot.js.",
         "noExtension": "Nebylo nalezeno žádné {extension} . Nainstalujte jej a znovu načtěte tuto stránku",
         "noSigner": "Přístup odepřen. Přejděte do nastavení {extension} a povolte otevřením možnosti Správa přístupu k webu."
     },
     "connection": {
-        "title": "Účet sítě SORA",
-        "text": "Připojte své účty sítě SORA nebo vytvořte nové pomocí rozšíření prohlížeče polkadot{.js}. Toto rozšíření umožňuje bezpečně podepisovat transakce a spravovat aktiva v síti SORA.",
-        "install": "Rozšíření polkadot.js nebylo nalezeno. Nainstalujte jej a znovu <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">načtěte<\/a> stránku.<br\/> <span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Omylem zamítnutá žádost o povolení?<\/br> V současné době nemá rozšíření polkadot{.js} správu oprávnění. Jako alternativní řešení můžete restartovat prohlížeč a znovu navštívit tuto stránku, abyste mohli pokračovat v autorizaci.",
-        "noAccounts": "V rozšíření prohlížeče polkadot{.js} nebyl nalezen žádný účet. Přidejte prosím účet a zkuste to znovu.",
+        "title": "Účet sítě {sora}",
+        "text": "Připojte své účty sítě {sora} nebo vytvořte nové pomocí rozšíření prohlížeče {polkadotJs}. Toto rozšíření umožňuje bezpečně podepisovat transakce a spravovat aktiva v síti {sora}.",
+        "noAccounts": "V rozšíření prohlížeče {polkadotJs} nebyl nalezen žádný účet. Přidejte prosím účet a zkuste to znovu.",
         "selectAccount": "Vyberte účet, se kterým chcete pracovat",
-        "loadingTitle": "Čekáme, až povolíte přístup k rozšíření polkadot{.js}.",
         "action": {
             "install": "Nainstalovat rozšíření",
             "learnMore": "Zjistit více",
@@ -106,7 +103,7 @@
         }
     },
     "wallet": {
-        "title": "Účet sítě SORA",
+        "title": "Účet sítě {sora}",
         "WalletAssets": "Aktiva",
         "WalletActivity": "Aktivita",
         "addAsset": "@:addAssetText",
@@ -127,8 +124,8 @@
         "confirm": "@:confirmText",
         "errorAddress": "Neplatná adresa. Zkontrolujte ji a zkuste to znovu.",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "Poslat tokeny mezi síťovými účty SORA",
-        "addressWarning": "Tokeny budou zaslány na níže uvedenou SORA adresu. Ujistěte se, že příjemce má přístup k SORA chainu, aby mohl tokeny používat:",
+        "tooltip": "Poslat tokeny mezi síťovými účty {sora}",
+        "addressWarning": "Tokeny budou zaslány na níže uvedenou {sora} adresu. Ujistěte se, že příjemce má přístup k {sora} chainu, aby mohl tokeny používat:",
         "addressError": "Tokeny nelze odesílat na stejný účet, ke kterému jste právě připojeni."
     },
     "account": {
@@ -195,7 +192,6 @@
     },
     "createToken": {
         "title": "@:createTokenText",
-        "desc": "Vytvořte a zaveďte vlastní aktivum na síti SORA",
         "action": "@:createTokenText",
         "enterSymbol": "Zadejte symbol tokenu",
         "enterName": "Zadejte název tokenu",
@@ -205,7 +201,6 @@
             "title": "Transakce byla odeslána",
             "desc": "Vytvořit token {symbol}"
         },
-        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Získání poplatku za transakci se nezdařilo.",
@@ -306,16 +301,16 @@
     "connectWalletText": "Připojit účet",
     "changeAccountText": "Změnit účet",
     "connectedText": "Připojeno",
-    "connectWalletTextTooltip": "Připojte se k síti @:soraText pomocí polkadot{.js}",
+    "connectWalletTextTooltip": "Připojte se k síti {sora} pomocí {polkadotJs}",
     "selectNodeText": "Vyberte síťový node",
     "bridgeText": "Bridge",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Disclaimer \/ Zřeknutí se odpovědnosti<\/span>: Tento web spravuje komunita @:(soraText). Před dalším používáním tohoto webu, si prosím prostudujte @:polkaswapFaqLink a dokumentaci, která obsahuje podrobné vysvětlení toho, jak Polkaswap funguje, a také @:memorandumLink a @:(privacyLink). Tyto dokumenty jsou zásadní pro bezpečnou a pozitivní uživatelskou zkušenost. Používáním Polkaswap potvrzujete, že jste si tyto dokumenty přečetli a porozuměli jim. Rovněž berete na vědomí následující: 1) svou výhradní odpovědnost za soulad se všemi zákony, které se mohou vztahovat na vaše konkrétní použití Polkaswap ve vaší právní jurisdikci; 2) chápete, že aktuální verze Polkaswap je alfa verzí: nebyla plně otestována a některé funkce nemusí fungovat tak, jak byly navrženy; a 3) vaše porozumění a dobrovolné přijetí rizik spojených s používáním Polkaswap, mimo jiné včetně rizika ztráty tokenů. Ještě jednou vás žádáme, abyste nepokračovali bez přečtení @:polkaswapFaqLink, @:memorandumLink, a @:privacyLink!",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
+    "disclaimerTitle": "Disclaimer \/ Zřeknutí se odpovědnosti:",
+    "disclaimer": "{disclaimerPrefix} Tento web spravuje komunita {sora}. Před dalším používáním tohoto webu, si prosím prostudujte {polkaswapFaqLink} a dokumentaci, která obsahuje podrobné vysvětlení toho, jak {appName} funguje, a také {memorandumLink} a {privacyLink}. Tyto dokumenty jsou zásadní pro bezpečnou a pozitivní uživatelskou zkušenost. Používáním {appName} potvrzujete, že jste si tyto dokumenty přečetli a porozuměli jim. Rovněž berete na vědomí následující: 1) svou výhradní odpovědnost za soulad se všemi zákony, které se mohou vztahovat na vaše konkrétní použití {appName} ve vaší právní jurisdikci; 2) chápete, že aktuální verze {appName} je alfa verzí: nebyla plně otestována a některé funkce nemusí fungovat tak, jak byly navrženy; a 3) vaše porozumění a dobrovolné přijetí rizik spojených s používáním {appName}, mimo jiné včetně rizika ztráty tokenů. Ještě jednou vás žádáme, abyste nepokračovali bez přečtení {polkaswapFaqLink}, {memorandumLink}, a {privacyLink}!",
     "poweredBy": "Běží na",
     "confirmTransactionText": "Potvrďte transakci ve {direction}",
     "retryText": "Zkuste znovu",
     "networkFeeText": "Síťový poplatek",
-    "networkFeeTooltipText": "Síťový poplatek slouží k zajištění růstu a stabilního výkonu systému @:(soraText).",
+    "networkFeeTooltipText": "Síťový poplatek slouží k zajištění růstu a stabilního výkonu systému {sora}.",
     "ethNetworkFeeTooltipText": "Nezapomeňte prosím, že poplatky sítě Ethereum zobrazené na Polkaswap jsou pouze hrubé odhady, správnou výši poplatku si můžete prohlédnout ve vaší připojené Ethereum peněžence před potvrzením transakce.",
     "marketText": "Trh",
     "marketAlgorithmText": "Algoritmus trhu",
@@ -371,8 +366,6 @@
         "title": "Nápověda",
         "termsOfService": "Smluvní podmínky",
         "privacyPolicy": "Zásady ochrany osobních údajů",
-        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
-        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
         "appVersion": "@:appName verze",
         "contactUs": "Kontaktujte nás"
     },
@@ -380,12 +373,12 @@
         "title": "O projektu",
         "learnMore": "@:learnMoreText",
         "network": {
-            "title": "Co je to @:soraText?",
-            "description": "Polkaswap je postaven na síti @:soraText a token @:soraText (XOR) se používá pro placení gasu\/poplatků a pro poskytování likvidity na Polkaswap. Síť @:soraText umožňuje snížení poplatků, rychlejší transakce a jednodušší finalizaci konsensu a zaměřuje se na zajištění interoperability napříč ostatními blockchain ekosystémy, jako je @:(ethereumText)."
+            "title": "Co je to {sora}?",
+            "description": "{polkaswap} je postaven na síti {sora} a token {sora} (XOR) se používá pro placení gasu\/poplatků a pro poskytování likvidity na {polkaswap}. Síť {sora} umožňuje snížení poplatků, rychlejší transakce a jednodušší finalizaci konsensu a zaměřuje se na zajištění interoperability napříč ostatními blockchain ekosystémy, jako je {ethereum}."
         },
         "polkadot": {
-            "title": "Co je to polkadot{.js}?",
-            "description": "Rozšíření Polkadot{.js} je rozšíření prohlížeče dostupné pro Firefox a Chrome určené pro správu účtů blockchainů založených na Substrate, včetně @:soraText, Polkadot a Kusama. Můžete přidávat, importovat a exportovat účty a podepisovat transakce nebo extrinsics, které jste iniciovali z autorizovaných webových stránek."
+            "title": "Co je to {polkadotJs}?",
+            "description": "Rozšíření {polkadotJs} je rozšíření prohlížeče dostupné pro Firefox a Chrome určené pro správu účtů blockchainů založených na Substrate, včetně {sora}, {polkadot} a {kusama}. Můžete přidávat, importovat a exportovat účty a podepisovat transakce nebo extrinsics, které jste iniciovali z autorizovaných webových stránek."
         }
     },
     "node": {
@@ -515,7 +508,6 @@
         "liquidityProviderFeeTooltip": "Část z každého obchodu ({liquidityProviderFee}%) jde poskytovatelům likvidity jako pobídka v rámci protokolu.",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Nedostatečné množství {tokenSymbol}",
         "insufficientLiquidity": "Nedostatečná likvidita",
@@ -541,8 +533,8 @@
         "strategicBonusApy": "APY strategického bonusu"
     },
     "bridge": {
-        "title": "HASHI Bridge",
-        "info": "Převeďte tokeny mezi sítěmi @:soraText a @:(ethereumText).",
+        "title": "{hashi} Bridge",
+        "info": "Převeďte tokeny mezi sítěmi {sora} a {ethereum}.",
         "balance": "Zůstatek",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -550,8 +542,8 @@
         "changeNetwork": "@:changeNetworkText",
         "next": "Další",
         "connectWallets": "Připojte peněženky pro zobrazení historie příslušných transakcí.",
-        "soraNetworkFee": "@:soraText síťový poplatek",
-        "ethereumNetworkFee": "@:ethereumText síťový poplatek",
+        "soraNetworkFee": "{sora} síťový poplatek",
+        "ethereumNetworkFee": "{ethereum} síťový poplatek",
         "tooltipValue": "@:comingSoonText",
         "total": "Celkem",
         "viewHistory": "Zobrazit historii transakcí",
@@ -559,12 +551,11 @@
         "transactionMessage": "{assetA} za {assetB}",
         "notRegisteredAsset": "Aktivum {assetSymbol} není zaregistrováno",
         "selectNetwork": "Vyberte síť",
-        "networkInfo": "Přemostit @:soraText síť s:",
-        "ethereum": "@:ethereumText",
+        "networkInfo": "Přemostit {sora} síť s:",
         "energy": "@:evm.EWC",
         "copy": "Zkopírujte síťovou adresu",
-        "soraAddress": "@:soraText adresa",
-        "ethereumAddress": "@:ethereumText adresa"
+        "soraAddress": "{sora} adresa",
+        "ethereumAddress": "{ethereum} adresa"
     },
     "selectRegisteredAsset": {
         "title": "Vyberte token",
@@ -618,7 +609,7 @@
             "done": "Hotovo",
             "waitingForConfirmation": "Čeká se na potvrzení..."
         },
-        "viewInEtherscan": "Zobrazit v Etherscanu",
+        "viewInEtherscan": "Zobrazit v {etherscan}",
         "networkTitle": "{network} transakce",
         "transactionHash": "Hash transakce",
         "networkInfo": {
@@ -631,7 +622,7 @@
         "successCopy": "Hash transakce je zkopírován do schránky",
         "ethereum": "@:ethereumText",
         "sora": "@:soraText",
-        "pending": "<span class=\"network-title\">{network}<\/span> transakce čeká na vyřízení...",
+        "pending": "{network} transakce čeká na vyřízení...",
         "retry": "@:retryText",
         "metamask": "@:metamask",
         "confirm": "@:confirmTransactionText",
@@ -642,7 +633,7 @@
         "expectedAddress": "Očekávaná adresa v @:metamask",
         "title": "Bridge transakce",
         "expectedMetaMaskAddress": "Očekávaná adresa v MetaMask:",
-        "allowToken": "Povolit @:appName používat vaše {tokenSymbol}",
+        "allowToken": "Povolit {appName} používat vaše {tokenSymbol}",
         "approveToken": "Upozorňujeme, že token je nutné schválit pouze jednou. Pokud má vaše rozšíření více žádostí o schválení tokenu, nezapomeňte potvrdit pouze poslední a zbytek odmítnout.",
         "blocksLeft": "Zbývá {count} bloků..."
     },
@@ -740,9 +731,9 @@
         "port": "PORT",
         "min": "MIN",
         "marketAlgorithms": {
-            "SMART": "<span class=\"algorithm\">SMART<\/span> přesměrování likvidity zajišťuje nejlepší cenu pro každou transakci tím, že kombinuje pouze nejlepší cenové možnosti ze všech dostupných trhů. Pokud je k dispozici, použije se pro likviditu Token Bonding Curve (<span class=\"algorithm\">TBC<\/span>) dokud je cena aktiva příznivější než z jiných zdrojů. V opačném případě se využívá <span class=\"algorithm\">XYK<\/span> pool.",
-            "TBC": "<span class=\"algorithm\">TBC<\/span> - nákup pouze z Token Bonding Curve (primární trh). Je tu možnost, že se cena může stát nevýhodnou ve srovnání s <span class=\"algorithm\">XYK<\/span> poolem (sekundární trh), ale hodnota získaná z uzamčených odměn se může časem ukázat jako mnohem výhodnější.",
-            "XYK": "<span class=\"algorithm\">XYK<\/span> - nákup pouze z XYK poolu (sekundární trh). Tradiční XYK pool swap."
+            "SMART": "{smartAlgorithm} přesměrování likvidity zajišťuje nejlepší cenu pro každou transakci tím, že kombinuje pouze nejlepší cenové možnosti ze všech dostupných trhů. Pokud je k dispozici, použije se pro likviditu Token Bonding Curve ({tbcAlgorithm}) dokud je cena aktiva příznivější než z jiných zdrojů. V opačném případě se využívá {xycAlgorithm} pool.",
+            "TBC": "{tbcAlgorithm} - nákup pouze z Token Bonding Curve (primární trh). Je tu možnost, že se cena může stát nevýhodnou ve srovnání s {xycAlgorithm} poolem (sekundární trh), ale hodnota získaná z uzamčených odměn se může časem ukázat jako mnohem výhodnější.",
+            "XYK": "{xycAlgorithm} - nákup pouze z XYK poolu (sekundární trh). Tradiční XYK pool swap."
         }
     },
     "resultDialog": {
@@ -754,7 +745,6 @@
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "a",
         "claiming": {
             "pending": "Nárokování...",
@@ -830,8 +820,6 @@
         "assetId": "ID aktiva"
     },
     "memorandum": "Polkaswap Memorandum a Smluvní podmínky",
-    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\">@:memorandum<\/a>",
-    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
     "FAQ": "Polkaswap FAQ",
     "connectedAccount": "Připojený účet",
     "selectNodeConnected": "Připojeno k: {chain}",
@@ -904,7 +892,7 @@
     "confirmNextTxFailure": {
         "header": "Pozor",
         "info": "Váš zůstatek XOR bude po této transakci nižší než {fee} XOR. Nebudete moci platit za síťový poplatek za další transakci.",
-        "payoff": "Budete muset použít Bridge k získání XOR z jiných sítí, zaslat si XOR z jiného účtu SORA, nebo provést swap jakéhokoli jiného tokenu, který již máte na účtu, za XOR.",
+        "payoff": "Budete muset použít Bridge k získání XOR z jiných sítí, zaslat si XOR z jiného účtu {sora}, nebo provést swap jakéhokoli jiného tokenu, který již máte na účtu, za XOR.",
         "button": "Ano, chápu riziko"
     },
     "blockNumberText": "Číslo bloku",
@@ -914,11 +902,9 @@
         "bondedXOR": "Vázané XOR",
         "referralsNumber": "{number} doporučení",
         "startInviting": "Bond XOR doporučit ostatním",
-        "preview": "Pozvěte nové uživatele a získejte 10 % z jejich transakčních poplatků.<br \/>Pro začátek se zavažte libovolnou částkou XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Zjistěte více<\/a>",
         "deposit": "Vklad",
         "balance": "Zůstatek",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Vázaná částka je nedostatečná",
         "action": {
@@ -978,9 +964,9 @@
         "title": "Transakce mostu úspěšná"
     },
     "mobilePopup": {
-        "sideMenu": "Získejte SORA Wallet",
-        "header": "Stáhněte si peněženku SORA s <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>",
-        "info": "Swap tokeny z různých sítí - SORA, Ethereum, Polkadot, Kusama. Poskytněte fond likvidity a získejte % z poplatků za směnu."
+        "sideMenu": "Získejte {sora} Wallet",
+        "header": "Stáhněte si peněženku {sora} s {polkaswapHighlight}",
+        "info": "Swap tokeny z různých sítí - {sora}, {ethereum}, {polkadot}, {kusama}. Poskytněte fond likvidity a získejte % z poplatků za směnu."
     },
     "releaseNotesText": "Poznámky k vydání",
     "copiedText": "Zkopírováno!",

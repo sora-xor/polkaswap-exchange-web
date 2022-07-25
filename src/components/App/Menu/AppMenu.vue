@@ -38,7 +38,7 @@
         >
           <sidebar-item-content
             icon="symbols-24"
-            :title="t('mobilePopup.sideMenu')"
+            :title="t('mobilePopup.sideMenu', { sora: TranslationConsts.Sora })"
             class="el-menu-item menu-item--small"
             @click.native="openSoraDownloadDialog"
           />

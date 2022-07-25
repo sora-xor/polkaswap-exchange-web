@@ -22,7 +22,19 @@
           </div>
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
-            <p class="app-disclaimer" v-html="t('disclaimer')" />
+            <p
+              class="app-disclaimer"
+              v-html="
+                t('disclaimer', {
+                  disclaimerPrefix,
+                  sora: TranslationConsts.Sora,
+                  appName: app.name,
+                  polkaswapFaqLink,
+                  memorandumLink,
+                  privacyLink,
+                })
+              "
+            />
           </div>
           <footer class="app-footer">
             <div class="sora-logo">
@@ -52,7 +64,7 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
 import MobilePopup from '@/components/MobilePopup/MobilePopup.vue';
 
-import { PageNames, Components, Language } from '@/consts';
+import { PageNames, Components, Language, app } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -77,6 +89,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   menuVisibility = false;
   showConfirmInviteUser = false;
   showMobilePopup = false;
+  readonly app = app;
+  readonly faqLink = 'https://wiki.sora.org/polkaswap/polkaswap-faq';
+  readonly termsOfServiceLink = 'https://wiki.sora.org/polkaswap/terms';
+  readonly privacyPolicyLink = 'https://wiki.sora.org/polkaswap/privacy';
 
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.referrals.storageReferrer storageReferrer!: string;
@@ -140,6 +156,26 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     if (this.isSoraAccountConnected && !!storageReferrerValue) {
       await this.confirmInvititation();
     }
+  }
+
+  get disclaimerPrefix(): string {
+    return `<span class="app-disclaimer__title">${this.t('disclaimerTitle')}</span>`;
+  }
+
+  get memorandumLink(): string {
+    return this.generateDisclaimerLink(this.termsOfServiceLink, this.t('memorandum'));
+  }
+
+  get privacyLink(): string {
+    return this.generateDisclaimerLink(this.privacyPolicyLink, this.t('helpDialog.privacyPolicy'));
+  }
+
+  get polkaswapFaqLink(): string {
+    return this.generateDisclaimerLink(this.faqLink, this.t('FAQ'));
+  }
+
+  generateDisclaimerLink(href: string, content: string): string {
+    return `<a href="${href}" target="_blank" rel="nofollow noopener" class="link" title="${content}">${content}</a>`;
   }
 
   async confirmInvititation(): Promise<void> {
