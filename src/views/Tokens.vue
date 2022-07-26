@@ -331,7 +331,11 @@ export default class Tokens extends Mixins(
 
     this.initScrollbar();
 
-    await Promise.all([this.updateRegisteredAssets(), this.updateAssetsData()]);
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        await Promise.all([this.updateRegisteredAssets(), this.updateAssetsData()]);
+      });
+    });
   }
 
   private initScrollbar(): void {
@@ -352,7 +356,12 @@ export default class Tokens extends Mixins(
     this.$watch(
       () => (scrollbar.$children[0] as any).moveX,
       () => {
-        elTableHeaderWrapper.scrollLeft = scrollbarWrap.scrollLeft;
+        const scrollLeft = scrollbarWrap.scrollLeft;
+        // to scroll table content
+        elTableBodyWrapper.scrollLeft = scrollLeft;
+        elTableHeaderWrapper.scrollLeft = scrollLeft;
+        // to render box shadow on fixed table
+        elTable.scrollPosition = scrollLeft === 0 ? 'left' : 'right';
       }
     );
   }
@@ -419,11 +428,7 @@ export default class Tokens extends Mixins(
   }
 
   private async updateAssetsData(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        this.tokensData = await this.fetchTokensData();
-      });
-    });
+    this.tokensData = await this.fetchTokensData();
   }
 
   private formatAmount(value: FPNumber): AmountWithSuffix {
@@ -445,6 +450,8 @@ export default class Tokens extends Mixins(
 </script>
 
 <style lang="scss">
+$fixed-column-width: 280px;
+
 .page-header-title--tokens {
   justify-content: space-between;
   align-items: center;
@@ -472,29 +479,56 @@ export default class Tokens extends Mixins(
       & > th {
         background: var(--s-color-utility-surface);
         .cell {
-          padding: $inner-spacing-mini / 2 10px;
+          padding: $inner-spacing-mini / 2 $inner-spacing-mini;
         }
       }
     }
   }
 
   .el-table__fixed {
+    height: 100% !important;
+
     &:before,
     &:after {
       content: unset;
+    }
+
+    .el-table__fixed-body-wrapper {
+      height: 100% !important;
     }
   }
 
   .el-table__body-wrapper {
     height: auto !important;
+
+    &.is-scrolling-left ~ .el-table__fixed {
+      box-shadow: inherit;
+    }
+
+    .el-scrollbar__bar.is-horizontal {
+      right: 0;
+      left: unset;
+      width: calc(100% - #{$fixed-column-width});
+    }
   }
 
   .el-table__empty-text {
     color: var(--s-color-base-content-tertiary); // TODO [1.4]: remove after fix in ui-lib
   }
 
-  .tokens-item-amount.formatted-amount--fiat-value {
-    color: var(--s-color-base-content-primary);
+  .tokens-item {
+    &-amount.formatted-amount--fiat-value {
+      color: var(--s-color-base-content-primary);
+    }
+    &-address {
+      .tokens-item-address__value {
+        &.token-address {
+          font-size: var(--s-font-size-extra-mini);
+          font-weight: 400;
+          color: var(--s-color-base-content-primary);
+        }
+      }
+    }
   }
 }
 
@@ -506,23 +540,18 @@ export default class Tokens extends Mixins(
     margin: auto;
   }
 }
-
-.tokens-item-address {
-  .tokens-item-address__value {
-    &.token-address {
-      font-size: var(--s-font-size-extra-mini);
-      font-weight: 400;
-      color: var(--s-color-base-content-primary);
-    }
-  }
-}
 </style>
 
 <style lang="scss" scoped>
-$container-max-width: 952px;
+$search-input-width: 382px;
+$container-max-width: 50vw;
+$container-min-width: $breakpoint_mobile;
+$cell-index-width: 40px;
+$cell-logo-width: 32px;
 
 .container--tokens {
   max-width: $container-max-width;
+  min-width: $container-min-width;
 }
 
 .tokens-table {
@@ -545,14 +574,14 @@ $container-max-width: 952px;
   }
 
   &-search {
-    max-width: 382px;
+    max-width: $search-input-width;
     margin-left: $inner-spacing-medium;
   }
 }
 
 .tokens-item {
   &-index {
-    width: 40px;
+    width: $cell-index-width;
     display: inline-block;
     vertical-align: middle;
 
@@ -574,7 +603,7 @@ $container-max-width: 952px;
     display: inline-block;
     vertical-align: middle;
     text-align: center;
-    width: 32px;
+    width: $cell-logo-width;
     margin: 0 $inner-spacing-mini;
   }
   &-info {

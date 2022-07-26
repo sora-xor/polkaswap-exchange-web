@@ -38,7 +38,9 @@ export default class PriceChange extends Vue {
   }
 
   get formatted(): string {
-    return this.value.dp(2).toLocaleString();
+    const value = this.increased ? this.value : this.value.mul(new FPNumber(-1));
+
+    return value.dp(2).toLocaleString();
   }
 }
 </script>
