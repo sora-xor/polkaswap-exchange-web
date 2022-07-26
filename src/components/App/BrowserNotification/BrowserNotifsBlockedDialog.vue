@@ -8,9 +8,9 @@
         type="primary"
         class="s-typography-button--large browser-notification-dialog__btn"
         :loading="loading"
-        @click="goToInstructions"
+        @click="agree"
       >
-        {{ t('browserNotificationDialog.goToSettings') }}
+        {{ t('browserNotificationDialog.agree') }}
       </s-button>
     </div>
   </dialog-base>
@@ -32,10 +32,7 @@ export default class BrowserNotifsBlockedDialog extends Mixins(
   mixins.DialogMixin,
   mixins.LoadingMixin
 ) {
-  async goToInstructions(): Promise<void> {
-    window.open(
-      'https://support.humblebundle.com/hc/ru/articles/360008513933-Enabling-and-Disabling-Browser-Notifications-in-Various-Browsers'
-    );
+  agree(): void {
     this.closeDialog();
   }
 }

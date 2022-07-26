@@ -802,9 +802,9 @@ export default {
     title: 'Enable browser notifications',
     info: 'We will send you only relevant updates about your wallet, for example: asset balance changes',
     enable: 'Enable notifications',
-    goToSettings: 'Go to instructions',
+    agree: 'Yes, I understand',
     notificationBlocked:
-      'Change your default notifications settings. For more, feel free to go through the instructions below:',
+      "To receive the notifications about Polkaswap, please, allow the notifications in your browser's native settings",
     pointer: 'Press “Allow” to turn notifications on',
   },
 };
