@@ -30,7 +30,6 @@ export default class NotificationEnablingPage extends Mixins(TranslationMixin) {
   width: 100%;
   height: 100%;
   background-color: #000000;
-
   opacity: 0.8;
   z-index: 300;
 

@@ -789,6 +789,15 @@ export default {
   staking: {
     title: 'Staking',
   },
+  code: {
+    download: 'Download QR Code',
+    upload: 'Scan QR',
+    receive: 'Receive',
+    invalid: 'Invalid QR Code',
+    import: 'Import an image',
+    scan: 'Scan with camera',
+    allowanceError: 'Check your camera availability and browser permissions to use it',
+  },
   browserNotificationDialog: {
     title: 'Enable browser notifications',
     info: 'We will send you only relevant updates about your wallet, for example: asset balance changes',
@@ -797,14 +806,5 @@ export default {
     notificationBlocked:
       'Change your default notifications settings. For more, feel free to go through the instructions below:',
     pointer: 'Press “Allow” to turn notifications on',
-    code: {
-      download: 'Download QR Code',
-      upload: 'Scan QR',
-      receive: 'Receive',
-      invalid: 'Invalid QR Code',
-      import: 'Import an image',
-      scan: 'Scan with camera',
-      allowanceError: 'Check your camera availability and browser permissions to use it',
-    },
   },
 };
