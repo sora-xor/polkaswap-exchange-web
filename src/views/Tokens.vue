@@ -1,6 +1,6 @@
 <template>
   <div class="container container--tokens" v-loading="parentLoading || loading">
-    <generic-page-header :title="t('tokens.title')" class="page-header-title--tokens">
+    <generic-page-header :title="t('pageTitle.Tokens')" class="page-header-title--tokens">
       <search-input
         v-model="query"
         :placeholder="t('selectToken.searchPlaceholder')"
@@ -10,9 +10,9 @@
       />
     </generic-page-header>
 
-    <s-table :data="tableItems" :highlight-current-row="false" size="small" class="tokens-table">
+    <s-table ref="table" :data="tableItems" :highlight-current-row="false" size="small" class="tokens-table">
       <!-- Index -->
-      <s-table-column width="280" label="#" class-name="sticky">
+      <s-table-column width="280" label="#" fixed-position="left">
         <template #header>
           <div class="tokens-item-index">
             <span @click="handleResetSort" :class="['tokens-item-index--head', { active: isDefaultSort }]">#</span>
@@ -65,7 +65,7 @@
         </template>
       </s-table-column>
       <!-- Price -->
-      <s-table-column width="140" header-align="left" align="left">
+      <s-table-column width="104" header-align="left" align="left">
         <template #header>
           <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
             <span class="tokens-table__primary">Price</span>
@@ -82,7 +82,7 @@
         </template>
       </s-table-column>
       <!-- 1D Price Change -->
-      <s-table-column width="100" header-align="right" align="right">
+      <s-table-column width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="priceChangeDay" :sort="{ order, property }" @change-sort="changeSort">
             <span class="tokens-table__primary">1D %</span>
@@ -93,7 +93,7 @@
         </template>
       </s-table-column>
       <!-- 7D Price Change -->
-      <s-table-column width="100" header-align="left" align="left">
+      <s-table-column width="104" header-align="left" align="left">
         <template #header>
           <sort-button name="priceChangeWeek" :sort="{ order, property }" @change-sort="changeSort">
             <span class="tokens-table__primary">7D %</span>
@@ -104,7 +104,7 @@
         </template>
       </s-table-column>
       <!-- 1D Volume -->
-      <s-table-column width="110" header-align="right" align="right">
+      <s-table-column width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="volumeWeek" :sort="{ order, property }" @change-sort="changeSort">
             <span class="tokens-table__primary">1D Vol.</span>
@@ -120,7 +120,7 @@
         </template>
       </s-table-column>
       <!-- TVL -->
-      <s-table-column width="110" header-align="right" align="right">
+      <s-table-column width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
             <span class="tokens-table__primary">TVL</span>
@@ -150,10 +150,12 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import { FPNumber } from '@sora-substrate/util';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Ref } from 'vue-property-decorator';
 import { mixins, components, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
+import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
@@ -253,6 +255,8 @@ export default class Tokens extends Mixins(
 ) {
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
+  @Ref('table') readonly tableComponent!: any;
+
   @getter.assets.whitelistAssets private items!: Array<Asset>;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
 
@@ -323,7 +327,34 @@ export default class Tokens extends Mixins(
   }
 
   async mounted(): Promise<void> {
+    await this.$nextTick();
+
+    this.initScrollbar();
+
     await Promise.all([this.updateRegisteredAssets(), this.updateAssetsData()]);
+  }
+
+  private initScrollbar(): void {
+    const Scrollbar = Vue.extend(SScrollbar);
+    const scrollbar = new Scrollbar();
+    scrollbar.$mount();
+
+    const elTable = this.tableComponent.$refs.table;
+    const elTableBodyWrapper = elTable.$refs.bodyWrapper;
+    const elTableHeaderWrapper = elTable.$refs.headerWrapper;
+    const elTableNativeTable = elTableBodyWrapper.getElementsByTagName('table')[0];
+    const scrollbarWrap = scrollbar.$el.getElementsByClassName('el-scrollbar__wrap')[0];
+    const scrollbarView = scrollbar.$el.getElementsByClassName('el-scrollbar__view')[0];
+
+    elTableBodyWrapper.appendChild(scrollbar.$el);
+    scrollbarView.appendChild(elTableNativeTable);
+
+    this.$watch(
+      () => (scrollbar.$children[0] as any).moveX,
+      () => {
+        elTableHeaderWrapper.scrollLeft = scrollbarWrap.scrollLeft;
+      }
+    );
   }
 
   changeSort({ order = '', property = '' } = {}): void {
@@ -416,6 +447,7 @@ export default class Tokens extends Mixins(
 <style lang="scss">
 .page-header-title--tokens {
   justify-content: space-between;
+  align-items: center;
 }
 
 .tokens-table.el-table {
@@ -434,24 +466,22 @@ export default class Tokens extends Mixins(
 
   tr,
   th {
-    background: transparent;
     &,
     &:hover {
-      // background: transparent;
-
       & > td,
       & > th {
-        &:not(.sticky) {
-          background: transparent;
-        }
-        &.sticky {
-          background: var(--s-color-utility-surface);
-        }
-
+        background: var(--s-color-utility-surface);
         .cell {
           padding: $inner-spacing-mini / 2 10px;
         }
       }
+    }
+  }
+
+  .el-table__fixed {
+    &:before,
+    &:after {
+      content: unset;
     }
   }
 
@@ -463,21 +493,8 @@ export default class Tokens extends Mixins(
     color: var(--s-color-base-content-tertiary); // TODO [1.4]: remove after fix in ui-lib
   }
 
-  .token-address {
-    &__name {
-      display: block;
-    }
-  }
-
   .tokens-item-amount.formatted-amount--fiat-value {
     color: var(--s-color-base-content-primary);
-  }
-
-  .sticky {
-    position: sticky;
-    left: 0;
-    z-index: 100;
-    // box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
   }
 }
 
@@ -502,7 +519,7 @@ export default class Tokens extends Mixins(
 </style>
 
 <style lang="scss" scoped>
-$container-max-width: 992px;
+$container-max-width: 952px;
 
 .container--tokens {
   max-width: $container-max-width;
@@ -529,6 +546,7 @@ $container-max-width: 992px;
 
   &-search {
     max-width: 382px;
+    margin-left: $inner-spacing-medium;
   }
 }
 
@@ -587,6 +605,7 @@ $container-max-width: 992px;
     font-size: var(--s-font-size-big);
     font-weight: 800;
     line-height: var(--s-line-height-big);
+    letter-spacing: var(--s-letter-spacing-small);
     text-align: center;
   }
   &-name {
