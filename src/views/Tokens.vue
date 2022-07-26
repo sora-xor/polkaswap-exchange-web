@@ -116,7 +116,9 @@
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.volumeWeekFormatted.amount"
             class="tokens-item-price tokens-item-amount"
-          >{{ row.volumeWeekFormatted.suffix }}</formatted-amount>
+          >
+            {{ row.volumeWeekFormatted.suffix }}
+          </formatted-amount>
         </template>
       </s-table-column>
       <!-- TVL -->
@@ -132,7 +134,9 @@
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.tvlFormatted.amount"
             class="tokens-item-price tokens-item-amount"
-          >{{ row.tvlFormatted.suffix }}</formatted-amount>
+          >
+            {{ row.tvlFormatted.suffix }}
+          </formatted-amount>
         </template>
       </s-table-column>
     </s-table>
