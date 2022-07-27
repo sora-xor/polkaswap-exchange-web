@@ -264,3 +264,9 @@ export const getTextWidth = (text: string, fontFamily = 'Sora', size = 10): numb
 
   return width;
 };
+
+export const calcPriceChange = (current: FPNumber, prev: FPNumber): FPNumber => {
+  if (prev.isZero()) return FPNumber.gt(current, FPNumber.ZERO) ? FPNumber.HUNDRED : FPNumber.ZERO;
+
+  return current.sub(prev).div(prev).mul(FPNumber.HUNDRED);
+};

@@ -197,6 +197,7 @@ export enum Components {
   MobilePopup = 'MobilePopup/MobilePopup',
   // Pool
   PoolInfo = 'Pool/PoolInfo',
+  PriceChange = 'PriceChange',
 }
 
 export enum RewardsTabsItems {
