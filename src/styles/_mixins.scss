@@ -462,16 +462,18 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     margin-left: $marginOffset;
     margin-right: $marginOffset;
 
-    .el-scrollbar__wrap {
+    & > .el-scrollbar__wrap {
       overflow-x: hidden;
       margin-bottom: 0px !important; // to disable element-ui negative margin
     }
-    .el-scrollbar__wrap, .el-scrollbar__view {
-      display: flex;
-      flex: 1;
-      flex-flow: column nowrap;
+    & > .el-scrollbar__wrap {
+      &, & > .el-scrollbar__view {
+        display: flex;
+        flex: 1;
+        flex-flow: column nowrap;
+      }
     }
-    .el-scrollbar__bar {
+    & > .el-scrollbar__bar {
       &.is-vertical {
         right: $verticalRight;
       }

@@ -39,6 +39,7 @@
         </div>
       </div>
     </div>
+
     <s-skeleton :loading="parentLoading || loading || isFetchingError" :throttle="0">
       <template #template>
         <div v-loading="loading" class="charts-skeleton">
@@ -73,9 +74,7 @@
             symbol-as-decimal
           />
         </div>
-        <div :class="priceChangeClasses">
-          <s-icon class="charts-price-change-arrow" :name="priceChangeArrow" size="14px" />{{ priceChangeFormatted }}%
-        </div>
+        <price-change v-if="!isFetchingError" :value="priceChange" />
         <v-chart class="chart" :option="chartSpec" autoresize @zr:mousewheel="handleZoom" @datazoom="changeZoomLevel" />
       </template>
     </s-skeleton>
@@ -106,7 +105,7 @@ import CandleIcon from '@/assets/img/charts/candle.svg?inline';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { getter } from '@/store/decorators';
-import { debouncedInputHandler, getTextWidth } from '@/utils';
+import { debouncedInputHandler, getTextWidth, calcPriceChange } from '@/utils';
 import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
@@ -231,6 +230,7 @@ const LABEL_PADDING = 4;
     LineIcon,
     CandleIcon,
     TokensRow: lazyComponent(Components.TokensRow),
+    PriceChange: lazyComponent(Components.PriceChange),
     SSkeleton,
     SSkeletonItem,
   },
@@ -316,28 +316,7 @@ export default class SwapChart extends Mixins(
   get priceChange(): FPNumber {
     const lastFiatPrice = new FPNumber(last(this.chartData)?.price?.[0] ?? 0);
 
-    return this.calcPriceChange(this.fiatPrice, lastFiatPrice);
-  }
-
-  get priceChangeFormatted(): string {
-    return this.formatPriceChange(this.priceChange);
-  }
-
-  get priceChangeIncreased(): boolean {
-    return FPNumber.gt(this.priceChange, FPNumber.ZERO);
-  }
-
-  get priceChangeArrow(): string {
-    return `arrows-arrow-bold-${this.priceChangeIncreased ? 'top' : 'bottom'}-24`;
-  }
-
-  get priceChangeClasses(): Array<string> {
-    const baseClass = 'charts-price-change';
-    const cssClasses: Array<string> = [baseClass];
-    if (this.priceChangeIncreased) {
-      cssClasses.push(`${baseClass}--increased`);
-    }
-    return cssClasses;
+    return calcPriceChange(this.fiatPrice, lastFiatPrice);
   }
 
   get timeFormat(): string {
@@ -512,7 +491,7 @@ export default class SwapChart extends Mixins(
 
           if (seriesType === CHART_TYPES.CANDLE) {
             const [index, open, close, low, high] = data;
-            const change = this.calcPriceChange(new FPNumber(close), new FPNumber(open));
+            const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
             const changeColor = signific(change)(
               this.theme.color.status.success,
               this.theme.color.status.error,
@@ -746,10 +725,6 @@ export default class SwapChart extends Mixins(
     }
 
     return precision;
-  }
-
-  private calcPriceChange(current: FPNumber, prev: FPNumber): FPNumber {
-    return prev.isZero() ? FPNumber.HUNDRED : current.sub(prev).div(prev).mul(FPNumber.HUNDRED);
   }
 
   private formatPriceChange(value: FPNumber): string {
