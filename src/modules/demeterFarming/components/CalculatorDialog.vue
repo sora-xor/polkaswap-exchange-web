@@ -142,7 +142,7 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
   }
 
   get calculatedRewardsFormatted(): string {
-    return this.calculatedRewards.toLocaleString();
+    return '~' + this.calculatedRewards.toLocaleString();
   }
 
   get calculatedRewardsFiat(): Nullable<string> {
