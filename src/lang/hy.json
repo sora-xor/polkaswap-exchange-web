@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "Խաղադրույքի չափը",
         "amountRemove": "Հեռացնելու գումարը",
-        "poweredBy": "Powered by Demeter Farming"
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Հաշվիչ",
+        "results": "Արդյունքներ",
+        "rewards": "{symbol} պարգևներ"
     },
     "staking": {
         "title": "Ցուցադրում"

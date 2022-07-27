@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "Сумма стейкинга",
         "amountRemove": "Сумма для удаления",
-        "poweredBy": "Работает на Demeter Farming"
+        "poweredBy": "Работает на Demeter Farming",
+        "calculator": "Калькулятор",
+        "results": "Результаты",
+        "rewards": "{symbol} награды"
     },
     "staking": {
         "title": "Стекинг"

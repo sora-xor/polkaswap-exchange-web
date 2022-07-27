@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "Iye owo",
         "amountRemove": "Iye lati yọ kuro",
-        "poweredBy": "Agbara nipasẹ Demeter Farming"
+        "poweredBy": "Agbara nipasẹ Demeter Farming",
+        "calculator": "Ẹrọ iṣiro",
+        "results": "Esi",
+        "rewards": "{symbol} ere"
     },
     "staking": {
         "title": "Staking"

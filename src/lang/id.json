@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "Jumlah yang distake",
         "amountRemove": "Jumlah yang akan dihapus",
-        "poweredBy": "Didukung oleh Demeter Farming"
+        "poweredBy": "Didukung oleh Demeter Farming",
+        "calculator": "Kalkulator",
+        "results": "Hasil",
+        "rewards": "{symbol} hadiah"
     },
     "staking": {
         "title": "Staking"

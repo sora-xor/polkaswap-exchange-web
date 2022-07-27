@@ -7,115 +7,34 @@
       @back="handleBack"
     />
     <s-form class="el-form--actions" :show-message="false">
-      <s-float-input
-        class="s-input--token-value"
-        size="medium"
+      <token-input
+        :balance="getTokenBalance(firstToken)"
+        :is-max-available="isFirstMaxButtonAvailable"
+        :title="t('createPair.deposit')"
+        :token="firstToken"
         :value="firstTokenValue"
-        :decimals="firstTokenDecimals"
-        has-locale-string
-        :delimiters="delimiters"
-        :max="getMax(firstTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setFirstTokenValue)"
-      >
-        <div slot="top" class="input-line">
-          <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">{{ t('createPair.deposit') }}</span>
-          </div>
-          <div v-if="isLoggedIn && firstToken" class="input-value">
-            <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>
-            <formatted-amount-with-fiat-value
-              value-can-be-hidden
-              with-left-shift
-              value-class="input-value--primary"
-              :value="getFormattedTokenBalance(firstToken)"
-              :fiat-value="getFiatBalance(firstToken)"
-            />
-          </div>
-        </div>
-        <div slot="right" class="s-flex el-buttons">
-          <s-button
-            v-if="isAvailable && isFirstMaxButtonAvailable"
-            class="el-button--max s-typography-button--small"
-            type="primary"
-            alternative
-            size="mini"
-            border-radius="mini"
-            @click="handleMaxValue(firstToken, setFirstTokenValue)"
-          >
-            {{ t('buttons.max') }}
-          </s-button>
-          <token-select-button class="el-button--select-token" :token="firstToken" />
-        </div>
-        <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="firstToken && firstTokenPrice" is-fiat-value :value="fiatFirstAmount" />
-          <token-address
-            v-if="firstToken"
-            :name="firstToken.name"
-            :symbol="firstToken.symbol"
-            :address="firstToken.address"
-            class="input-value"
-          />
-        </div>
-      </s-float-input>
+        @max="handleAddLiquidityMaxValue($event, setFirstTokenValue)"
+      />
+
       <s-icon class="icon-divider" name="plus-16" />
-      <s-float-input
-        class="s-input--token-value"
-        size="medium"
+
+      <token-input
+        :balance="getTokenBalance(secondToken)"
+        is-select-available
+        :is-max-available="isSecondMaxButtonAvailable"
+        :title="t('createPair.deposit')"
+        :token="secondToken"
         :value="secondTokenValue"
-        :decimals="secondTokenDecimals"
-        has-locale-string
-        :delimiters="delimiters"
-        :max="getMax(secondTokenAddress)"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setSecondTokenValue)"
-      >
-        <div slot="top" class="input-line">
-          <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">{{ t('createPair.deposit') }}</span>
-          </div>
-          <div v-if="isLoggedIn && secondToken" class="input-value">
-            <span class="input-value--uppercase">{{ t('createPair.balance') }}</span>
-            <formatted-amount-with-fiat-value
-              value-can-be-hidden
-              with-left-shift
-              value-class="input-value--primary"
-              :value="getFormattedTokenBalance(secondToken)"
-              :fiat-value="getFiatBalance(secondToken)"
-            />
-          </div>
-        </div>
-        <div slot="right" class="s-flex el-buttons">
-          <s-button
-            v-if="isAvailable && isSecondMaxButtonAvailable"
-            class="el-button--max s-typography-button--small"
-            type="primary"
-            alternative
-            size="mini"
-            border-radius="mini"
-            @click="handleMaxValue(secondToken, setSecondTokenValue)"
-          >
-            {{ t('buttons.max') }}
-          </s-button>
-          <token-select-button
-            class="el-button--select-token"
-            icon="chevron-down-rounded-16"
-            :token="secondToken"
-            @click="openSelectSecondTokenDialog"
-          />
-        </div>
-        <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="secondToken && secondTokenPrice" is-fiat-value :value="fiatSecondAmount" />
-          <token-address
-            v-if="secondToken"
-            :name="secondToken.name"
-            :symbol="secondToken.symbol"
-            :address="secondToken.address"
-            class="input-value"
-          />
-        </div>
-      </s-float-input>
+        @max="handleAddLiquidityMaxValue($event, setSecondTokenValue)"
+        @select="openSelectSecondTokenDialog"
+      />
+
       <slippage-tolerance class="slippage-tolerance-settings" />
+
       <s-button
         type="primary"
         class="action-button s-typography-button--large"
@@ -207,25 +126,12 @@ const TokenPairMixin = TokenPairMixinInstance(namespace);
     ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     CreatePairTransactionDetails: lazyComponent(Components.CreatePairTransactionDetails),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
+    TokenInput: lazyComponent(Components.TokenInput),
     InfoLine: components.InfoLine,
-    TokenAddress: components.TokenAddress,
   },
 })
 export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, TokenPairMixin, NetworkFeeDialogMixin) {
   @action.createPair.createPair private createPair!: AsyncVoidFn;
-
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-
-  get formattedFirstTokenValue(): string {
-    return this.formatStringValue(this.firstTokenValue.toString());
-  }
-
-  get formattedSecondTokenValue(): string {
-    return this.formatStringValue(this.secondTokenValue.toString());
-  }
 
   get isXorSufficientForNextOperation(): boolean {
     return this.isXorSufficientForNextTx({
@@ -265,7 +171,6 @@ export default class CreatePair extends Mixins(mixins.NetworkFeeWarningMixin, To
 }
 
 .el-form--actions {
-  @include buttons;
   @include full-width-button('action-button');
 }
 

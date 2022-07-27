@@ -1,0 +1,279 @@
+<template>
+  <dialog-base :visible.sync="isVisible" :title="`${TranslationConsts.APR} ${t('demeterFarming.calculator')}`">
+    <div class="calculator-dialog">
+      <s-row v-if="poolAsset" flex align="middle">
+        <pair-token-logo v-if="baseAsset" :first-token="baseAsset" :second-token="poolAsset" class="title-logo" />
+        <token-logo v-else :token="poolAsset" class="title-logo" />
+        <span class="calculator-dialog-title">
+          <template v-if="baseAsset">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
+        </span>
+      </s-row>
+
+      <s-form class="el-form--actions" :show-message="false">
+        <token-input
+          v-if="baseAsset"
+          :balance="baseAssetBalance.toCodecString()"
+          :is-max-available="isBaseAssetMaxButtonAvailable"
+          :title="t('demeterFarming.amountAdd')"
+          :token="baseAsset"
+          :value="baseAssetValue"
+          @input="handleBaseAssetValue"
+          @max="handleBaseAssetMax"
+        />
+
+        <s-icon v-if="baseAsset && poolAsset" class="icon-divider" name="plus-16" />
+
+        <token-input
+          v-if="poolAsset"
+          :balance="poolAssetBalance.toCodecString()"
+          :is-max-available="isPoolAssetMaxButtonAvailable"
+          :title="t('demeterFarming.amountAdd')"
+          :token="poolAsset"
+          :value="poolAssetValue"
+          @input="handlePoolAssetValue"
+          @max="handlePoolAssetMax"
+        />
+      </s-form>
+
+      <div class="duration">
+        <info-line label="Duration" class="duration-title" />
+        <s-tabs type="rounded" :value="selectedPeriod" @click="selectPeriod" class="duration-tabs">
+          <s-tab v-for="period in intervals" :key="period" :name="String(period)" :label="`${period}D`" />
+        </s-tabs>
+      </div>
+
+      <div class="results">
+        <div class="results-title">{{ TranslationConsts.APR }} {{ t('demeterFarming.results') }}</div>
+
+        <info-line :label="TranslationConsts.ROI" :value="calculatedRoiPercentFormatted" />
+        <info-line :label="rewardsText" :value="calculatedRewardsFormatted" :fiat-value="calculatedRewardsFiat" />
+      </div>
+
+      <a :href="link" target="_blank" rel="nofollow noopener" class="demeter-copyright">
+        {{ t('demeterFarming.poweredBy') }}
+      </a>
+    </div>
+  </dialog-base>
+</template>
+
+<script lang="ts">
+import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { components } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber } from '@sora-substrate/util';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+
+import StakeDialogMixin from '../mixins/StakeDialogMixin';
+
+import { lazyComponent } from '@/router';
+import { Components, Links } from '@/consts';
+import { isMaxButtonAvailable, getMaxValue } from '@/utils';
+
+@Component({
+  components: {
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    TokenInput: lazyComponent(Components.TokenInput),
+    DialogBase: components.DialogBase,
+    InfoLine: components.InfoLine,
+    TokenLogo: components.TokenLogo,
+  },
+})
+export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
+  @Watch('visible')
+  private resetValue() {
+    this.baseAssetValue = '';
+    this.poolAssetValue = '';
+  }
+
+  baseAssetValue = '';
+  poolAssetValue = '';
+
+  readonly intervals = [1, 7, 30, 90];
+
+  interval = 1;
+
+  readonly link = Links.demeterFarmingPlatform;
+
+  get selectedPeriod(): string {
+    return String(this.interval);
+  }
+
+  get rewardsText(): string {
+    return `${this.rewardAssetSymbol} rewards`;
+  }
+
+  get isBaseAssetMaxButtonAvailable(): boolean {
+    if (!this.baseAsset) return false;
+
+    return isMaxButtonAvailable(true, this.baseAsset, this.baseAssetValue, this.networkFee, this.xor as AccountAsset);
+  }
+
+  get isPoolAssetMaxButtonAvailable(): boolean {
+    if (!this.poolAsset) return false;
+
+    return isMaxButtonAvailable(true, this.poolAsset, this.poolAssetValue, this.networkFee, this.xor as AccountAsset);
+  }
+
+  get userTokensDeposit(): FPNumber {
+    return this.isFarm
+      ? this.liqudityLP
+          .mul(new FPNumber(this.poolAssetValue || 0))
+          .div(FPNumber.fromCodecValue(this.liquidity?.secondBalance ?? 0))
+      : new FPNumber(this.poolAssetValue || 0);
+  }
+
+  get userTokensDepositWithFee(): FPNumber {
+    const depositFee = new FPNumber(this.depositFee);
+
+    return this.userTokensDeposit.mul(FPNumber.ONE.sub(depositFee));
+  }
+
+  get calculatedRewards(): FPNumber {
+    if (!this.pool) return FPNumber.ZERO;
+
+    const totalDeposit = this.pool.totalTokensInPool.add(this.userTokensDepositWithFee);
+
+    if (totalDeposit.isZero()) return FPNumber.ZERO;
+
+    const period = new FPNumber(this.interval);
+    const blocksPerDay = new FPNumber(14_400);
+    const blocksProduced = period.mul(blocksPerDay);
+
+    return this.emission.mul(blocksProduced).mul(this.userTokensDepositWithFee).div(totalDeposit);
+  }
+
+  get calculatedRewardsFormatted(): string {
+    return '~' + this.calculatedRewards.toLocaleString();
+  }
+
+  get calculatedRewardsFiat(): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.calculatedRewards, this.rewardAsset as AccountAsset);
+  }
+
+  get calculatedRoiPercent(): FPNumber {
+    const depositInPoolsAsset = new FPNumber(this.poolAssetValue || 0);
+
+    if (depositInPoolsAsset.isZero()) return FPNumber.ZERO;
+
+    // for liquidity pool we multiply deposit in pool asset by 2
+    const multiplier = this.isFarm ? 2 : 1;
+
+    const costOfDepositFeeUSD = depositInPoolsAsset
+      .mul(new FPNumber(multiplier))
+      .mul(new FPNumber(this.depositFee))
+      .mul(this.poolAssetPrice);
+    const costOfNetworkFeeUSD = FPNumber.fromCodecValue(this.networkFee).mul(
+      FPNumber.fromCodecValue(this.getAssetFiatPrice(this.xor as AccountAsset) ?? 0)
+    );
+    const costOfInvestmentUSD = costOfDepositFeeUSD.add(costOfNetworkFeeUSD);
+    const valueOfInvestmentUSD = this.calculatedRewards.mul(this.rewardAssetPrice);
+
+    return valueOfInvestmentUSD.sub(costOfInvestmentUSD).div(costOfInvestmentUSD).mul(FPNumber.HUNDRED);
+  }
+
+  get calculatedRoiPercentFormatted(): string {
+    return this.calculatedRoiPercent.dp(2).toLocaleString() + '%';
+  }
+
+  selectPeriod({ name }): void {
+    this.interval = Number(name);
+  }
+
+  handleBaseAssetValue(value: string): void {
+    this.baseAssetValue = value;
+
+    if (!value) {
+      this.poolAssetValue = '';
+    } else if (this.liquidity) {
+      this.poolAssetValue = new FPNumber(this.baseAssetValue)
+        .mul(FPNumber.fromCodecValue(this.liquidity?.secondBalance ?? 0))
+        .div(FPNumber.fromCodecValue(this.liquidity?.firstBalance ?? 0))
+        .toString();
+    }
+  }
+
+  handlePoolAssetValue(value: string): void {
+    this.poolAssetValue = value;
+
+    if (!value) {
+      this.baseAssetValue = '';
+    } else if (this.liquidity) {
+      this.baseAssetValue = new FPNumber(this.poolAssetValue)
+        .mul(FPNumber.fromCodecValue(this.liquidity?.firstBalance ?? 0))
+        .div(FPNumber.fromCodecValue(this.liquidity?.secondBalance ?? 0))
+        .toString();
+    }
+  }
+
+  handleBaseAssetMax(): void {
+    if (!this.baseAsset) return;
+    this.handleBaseAssetValue(getMaxValue(this.baseAsset, this.networkFee));
+  }
+
+  handlePoolAssetMax(): void {
+    if (!this.poolAsset) return;
+    this.handlePoolAssetValue(getMaxValue(this.poolAsset, this.networkFee));
+  }
+}
+</script>
+
+<style lang="scss">
+.duration-title.info-line {
+  border-bottom: none;
+}
+.duration-tabs.s-tabs {
+  .el-tabs__header,
+  .el-tabs__nav {
+    width: 100%;
+  }
+
+  .el-tabs__item {
+    flex: 1;
+    text-align: center;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+.calculator-dialog {
+  & > *:not(:first-child) {
+    margin-top: $inner-spacing-medium;
+  }
+
+  &-title {
+    font-size: var(--s-heading2-font-size);
+    font-weight: 800;
+  }
+
+  .title-logo {
+    margin-right: $inner-spacing-mini;
+  }
+
+  @include vertical-divider('icon-divider', $inner-spacing-medium);
+}
+
+.duration {
+  &-title + &-tabs {
+    margin-top: $inner-spacing-small;
+  }
+}
+
+.results {
+  &-title {
+    font-size: var(--s-heading3-font-size);
+    font-weight: 500;
+    line-height: var(--s-line-height-small);
+    letter-spacing: var(--s-letter-spacing-mini);
+    margin-bottom: $inner-spacing-big;
+  }
+}
+
+.demeter-copyright {
+  color: var(--s-color-base-content-tertiary);
+  display: block;
+  font-size: var(--s-font-size-mini);
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+</style>
