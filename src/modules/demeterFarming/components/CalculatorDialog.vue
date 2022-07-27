@@ -63,6 +63,7 @@ import { FPNumber } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import StakeDialogMixin from '../mixins/StakeDialogMixin';
+import DialogBase from '@/components/DialogBase.vue';
 
 import { lazyComponent } from '@/router';
 import { Components, Links } from '@/consts';
@@ -70,9 +71,9 @@ import { isMaxButtonAvailable, getMaxValue } from '@/utils';
 
 @Component({
   components: {
+    DialogBase,
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     TokenInput: lazyComponent(Components.TokenInput),
-    DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
     TokenLogo: components.TokenLogo,
   },
