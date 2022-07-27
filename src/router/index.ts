@@ -87,12 +87,6 @@ const routes: Array<RouteConfig> = [
             component: demeterLazyView(DemeterPageNames.Pool),
           },
           {
-            path: 'create-pair',
-            name: PageNames.CreatePair,
-            component: lazyView(PageNames.CreatePair),
-            meta: { requiresAuth: true },
-          },
-          {
             path: 'add/:firstAddress?/:secondAddress?',
             name: PageNames.AddLiquidity,
             component: lazyView(PageNames.AddLiquidity),
