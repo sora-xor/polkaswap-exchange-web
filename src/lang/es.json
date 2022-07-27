@@ -448,41 +448,41 @@
     },
     "about": {
         "title": "El DEX para el futuro interoperable.",
-        "description": "Intercambio de Activos a través de Cadena cruzada, creación y listado sencillo de nuevos Activos y los intercambios más fáciles de la historia. ¡El futuro interoperable de Polkadot está aquí y nosotros estamos a la vanguardia!",
+        "description": "Intercambio de Activos a través de Cadena cruzada, creación y listado sencillo de nuevos Activos y los intercambios más fáciles de la historia. ¡El futuro interoperable de {polkadot} está aquí y nosotros estamos a la vanguardia!",
         "trading": {
             "title": "Comercio más rápido",
-            "first": "Polkaswap es un protocolo AMM DEX no custodiado para el intercambio de tokens basado en las cadenas principales de Polkadot y Kusama, parachains de Polkadot y Kusama, y blockchains conectadas directamente a través de puentes.",
-            "second": "Polkaswap elimina los intermediarios de confianza y ofrece la oportunidad de negociar más rápidamente",
-            "third": "Polkaswap es un proyecto comunitario y los desarrolladores colaboran en el código de fuente abierta utilizando el"
+            "first": "{appName} es un protocolo AMM DEX no custodiado para el intercambio de tokens basado en las cadenas principales de {polkadot} y {kusama}, parachains de {polkadot} y {kusama}, y blockchains conectadas directamente a través de puentes.",
+            "second": "{appName} elimina los intermediarios de confianza y ofrece la oportunidad de negociar más rápidamente",
+            "third": "{appName} es un proyecto comunitario y los desarrolladores colaboran en el código de fuente abierta utilizando el"
         },
         "liquidity": {
             "title": "Liquidez ilimitada",
-            "first": "Polkaswap combina múltiples fuentes de liquidez bajo un algoritmo común de agregación de liquidez, operando completamente en cadena, de manera descentralizada y sin intermediarios.",
+            "first": "{appName} combina múltiples fuentes de liquidez bajo un algoritmo común de agregación de liquidez, operando completamente en cadena, de manera descentralizada y sin intermediarios.",
             "second": "Cuando los traders llaman la función de intercambio, el algoritmo de agregación de liquidez completará las órdenes utilizando las mejores ofertas en todas las fuentes de liquidez. Las fuentes de liquidez pueden ser otros DEX, libros de ordenes u otras fuentes añadidas por API.",
-            "third": "Dado que Polkaswap es un proyecto de código abierto, cualquiera puede añadir más fuentes de liquidez haciendo contribuciones al código base de Polkaswap."
+            "third": "Dado que {appName} es un proyecto de código abierto, cualquiera puede añadir más fuentes de liquidez haciendo contribuciones al código base de {appName}."
         },
         "swap": {
             "title": "Intercambia cualquier token",
-            "first": "Vaya más allá de los límites de los DEX actuales agregando tokens del ecosistema Polkadot, así como de otras cadenas de bloques.",
-            "second": "Cree, enumere y opere con sus propios tokens en la red SORA.",
-            "third": "Nuestra infraestructura principal utiliza Parity Substrate, que es más escalable que Ethereum, y no utiliza la costosa minería para el consenso."
+            "first": "Vaya más allá de los límites de los DEX actuales agregando tokens del ecosistema {polkadot}, así como de otras cadenas de bloques.",
+            "second": "Cree, enumere y opere con sus propios tokens en la red {sora}.",
+            "third": "Nuestra infraestructura principal utiliza Parity Substrate, que es más escalable que {ethereum}, y no utiliza la costosa minería para el consenso."
         },
         "pswap": {
             "title": "Tokens PSWAP",
-            "first": "PSWAP fue creado por el gobierno de la comunidad mediante la votación de su lanzamiento. Es un token de utilidad y gobernanza utilizado para recompensar a los proveedores de liquidez en Polkaswap. A diferencia de la mayoría de otros tokens de recompensa, PSWAP se quema con las transacciones y disminuye su oferta con el tiempo.",
-            "second": "El {percent}% de la comisión por cada intercambio en el DEX de Polkaswap se utiliza para recomprar tokens PSWAP, que luego se queman. Al principio, el 90% de los tokens PSWAP quemados se reacuñan para asignarlos a los proveedores de liquidez, pero con el tiempo este porcentaje se reducirá al 35% después de 4 años."
+            "first": "PSWAP fue creado por el gobierno de la comunidad mediante la votación de su lanzamiento. Es un token de utilidad y gobernanza utilizado para recompensar a los proveedores de liquidez en {appName}. A diferencia de la mayoría de otros tokens de recompensa, PSWAP se quema con las transacciones y disminuye su oferta con el tiempo.",
+            "second": "El {percent}% de la comisión por cada intercambio en el DEX de {appName} se utiliza para recomprar tokens PSWAP, que luego se queman. Al principio, el 90% de los tokens PSWAP quemados se reacuñan para asignarlos a los proveedores de liquidez, pero con el tiempo este porcentaje se reducirá al 35% después de 4 años."
         },
         "links": {
             "first": {
-                "title": "Conviértase en Validador SORA",
-                "desc": "Asegura el futuro de la Red SORA y de las aplicaciones descentralizadas como Polkaswap, y gana recompensas en el camino convirtiéndote en un validador de SORA."
+                "title": "Conviértase en Validador {sora}",
+                "desc": "Asegura el futuro de la Red {sora} y de las aplicaciones descentralizadas como {appName}, y gana recompensas en el camino convirtiéndote en un validador de {sora}."
             },
             "second": {
-                "title": "Conectar una cadena a SORA",
-                "desc": "Haga crecer la economía mundial descentralizada conectando más cadenas a SORA y Polkaswap utilizando el protocolo del puente HASHI."
+                "title": "Conectar una cadena a {sora}",
+                "desc": "Haga crecer la economía mundial descentralizada conectando más cadenas a {sora} y {appName} utilizando el protocolo del puente {hashi}."
             }
         },
-        "network": "Polkaswap está construido sobre la Red SORA, centrándose en la interoperabilidad para conectar el resto del ecosistema criptográfico a Polkadot."
+        "network": "{appName} está construido sobre la Red {sora}, centrándose en la interoperabilidad para conectar el resto del ecosistema criptográfico a {polkadot}."
     },
     "exchange": {
         "Swap": "Intercambio",

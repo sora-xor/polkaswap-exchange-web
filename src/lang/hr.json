@@ -448,41 +448,41 @@
     },
     "about": {
         "title": "DEX za interoperabilnu budućnost.",
-        "description": "Međulančana razmjena sredstava, jednostavno stvaranje i popisivanje novih sredstava i najlakše zamjene ikad. Interoperabilna budućnost Polkadota je ovdje, a mi smo na čelu!",
+        "description": "Međulančana razmjena sredstava, jednostavno stvaranje i popisivanje novih sredstava i najlakše zamjene ikad. Interoperabilna budućnost {polkadot} je ovdje, a mi smo na čelu!",
         "trading": {
             "title": "Brže trgovanje",
-            "first": "Polkaswap je protokol AMM DEX koji se ne sastoji od skrbnika za zamjenu tokena na temelju relejnih lanaca Polkadot i Kusama, parachainova Polkadot i Kusama i blokova koji su izravno povezani mostovima.",
-            "second": "Polkaswap uklanja pouzdane posrednike i pruža mogućnost bržeg trgovanja",
-            "third": "Polkaswap je projekt zajednice i razvojni programeri surađuju na otvorenom kodu koristeći"
+            "first": "{appName} je protokol AMM DEX koji se ne sastoji od skrbnika za zamjenu tokena na temelju relejnih lanaca {polkadot} i {kusama}, parachainova {polkadot} i {kusama} i blokova koji su izravno povezani mostovima.",
+            "second": "{appName} uklanja pouzdane posrednike i pruža mogućnost bržeg trgovanja",
+            "third": "{appName} je projekt zajednice i razvojni programeri surađuju na otvorenom kodu koristeći"
         },
         "liquidity": {
             "title": "Bezgranična likvidnost",
-            "first": "Polkaswap kombinira više izvora likvidnosti pod zajedničkim algoritmom za prikupljanje likvidnosti, koji djeluju potpuno na lancu, na način od povjerenja i decentraliziran.",
+            "first": "{appName} kombinira više izvora likvidnosti pod zajedničkim algoritmom za prikupljanje likvidnosti, koji djeluju potpuno na lancu, na način od povjerenja i decentraliziran.",
             "second": "Kada trgovci pozovu funkciju zamjene, algoritam za prikupljanje likvidnosti ispunit će račune koristeći najbolje ponude iz svih izvora likvidnosti. Izvori likvidnosti mogu biti drugi DEX-ovi, knjige narudžbi ili drugi izvori vođeni API-jem.",
-            "third": "Budući da je Polkaswap projekt otvorenog koda, svatko može dodati više izvora likvidnosti doprinoseći polkaswapskoj bazi kodova."
+            "third": "Budući da je {appName} projekt otvorenog koda, svatko može dodati više izvora likvidnosti doprinoseći {appName} bazi kodova."
         },
         "swap": {
             "title": "Zamijenite bilo koji token",
-            "first": "Prijeđite preko granica trenutnih DEX-a dodavanjem tokena iz Polkadot ekosustava, kao i drugih blockchaina.",
-            "second": "Stvorite, navedite i trgujte vlastitim tokenima na mreži SORA.",
-            "third": "Naša temeljna infrastruktura koristi Parity Substrate, koji je skalabilniji od Ethereuma i ne koristi skupo rudarstvo za postizanje konsenzusa."
+            "first": "Prijeđite preko granica trenutnih DEX-a dodavanjem tokena iz {polkadot} ekosustava, kao i drugih blockchaina.",
+            "second": "Stvorite, navedite i trgujte vlastitim tokenima na mreži {sora}.",
+            "third": "Naša temeljna infrastruktura koristi Parity Substrate, koji je skalabilniji od {ethereum} i ne koristi skupo rudarstvo za postizanje konsenzusa."
         },
         "pswap": {
             "title": "PSWAP tokeni",
-            "first": "PSWAP je stvoren upravljanjem zajednicom glasovanjem o njegovu oslobađanju. To je korisni i upravljački token koji se koristi za nagrađivanje pružatelja likvidnosti na Polkaswap. Za razliku od većine drugih nagradnih tokena, PSWAP se spaljuje transakcijama i smanjuje opskrbu tijekom vremena.",
-            "second": "Naknada od {percent}% za svaku zamjenu na Polkaswap DEX-u koristi se za otkup PSWAP tokena, koji se zatim spaljuju. Isprva se 90% spaljenih PSWAP tokena remintira kako bi se dodijelilo pružateljima likvidnosti, ali s vremenom će se taj postotak smanjiti na 35% nakon 4 godine."
+            "first": "PSWAP je stvoren upravljanjem zajednicom glasovanjem o njegovu oslobađanju. To je korisni i upravljački token koji se koristi za nagrađivanje pružatelja likvidnosti na {appName}. Za razliku od većine drugih nagradnih tokena, PSWAP se spaljuje transakcijama i smanjuje opskrbu tijekom vremena.",
+            "second": "Naknada od {percent}% za svaku zamjenu na {appName} DEX-u koristi se za otkup PSWAP tokena, koji se zatim spaljuju. Isprva se 90% spaljenih PSWAP tokena remintira kako bi se dodijelilo pružateljima likvidnosti, ali s vremenom će se taj postotak smanjiti na 35% nakon 4 godine."
         },
         "links": {
             "first": {
-                "title": "Postanite SORA Validator",
-                "desc": "Osigurajte budućnost SORA mreže i decentraliziranih aplikacija kao što je Polkaswap i usput zaradite nagrade tako što ćete postati SORA validator."
+                "title": "Postanite {sora} Validator",
+                "desc": "Osigurajte budućnost {sora} mreže i decentraliziranih aplikacija kao što je {appName} i usput zaradite nagrade tako što ćete postati {sora} validator."
             },
             "second": {
                 "title": "Spojite lanac na SORИ",
-                "desc": "Povećajte decentraliziranu svjetsku ekonomiju povezivanjem više lanaca sa SORA-om i Polkaswap pomoću HASHI most protokola."
+                "desc": "Povećajte decentraliziranu svjetsku ekonomiju povezivanjem više lanaca sa {sora}-om i {appName} pomoću {hashi} most protokola."
             }
         },
-        "network": "Polkaswap je izgrađen na SORA mreži, s naglaskom na interoperabilnost za povezivanje ostatka kripto ekosustava s Polkadotom."
+        "network": "{appName} je izgrađen na {sora} mreži, s naglaskom na interoperabilnost za povezivanje ostatka kripto ekosustava s {polkadot}."
     },
     "exchange": {
         "Swap": "Zamijenite",

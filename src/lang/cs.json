@@ -448,41 +448,41 @@
     },
     "about": {
         "title": "DEX pro interoperabilní budoucnost.",
-        "description": "Cross-chain obchodování aktiv, jednoduchá tvorba a zalistování nových aktiv a ty nejjednodušší swapy vůbec. Interoperabilní budoucnost Polkadotu je tady a my jsme v jejím čele!",
+        "description": "Cross-chain obchodování aktiv, jednoduchá tvorba a zalistování nových aktiv a ty nejjednodušší swapy vůbec. Interoperabilní budoucnost {polkadot} je tady a my jsme v jejím čele!",
         "trading": {
             "title": "Rychlejší obchodování",
-            "first": "Polkaswap je non-custodial, cross-chain AMM DEX protokol pro swap tokenů založený na Polkadot a Kusama relay chainech, Polkadot a Kusama parachainech a blockchainech přímo připojených přes bridge.",
-            "second": "Polkaswap odstraňuje zprostředkovatele a poskytuje možnost rychlejšího obchodování",
-            "third": "Polkaswap je komunitní projekt a vývojáři spolupracují na otevřeném kódu s využitím"
+            "first": "{appName} je non-custodial, cross-chain AMM DEX protokol pro swap tokenů založený na {polkadot} a {kusama} relay chainech, {polkadot} a {kusama} parachainech a blockchainech přímo připojených přes bridge.",
+            "second": "{appName} odstraňuje zprostředkovatele a poskytuje možnost rychlejšího obchodování",
+            "third": "{appName} je komunitní projekt a vývojáři spolupracují na otevřeném kódu s využitím"
         },
         "liquidity": {
             "title": "Neomezená likvidita",
-            "first": "Polkaswap kombinuje více zdrojů likvidity pod společným algoritmem agregace likvidity, který funguje zcela on-chain, trustless a decentralizovaně.",
+            "first": "{appName} kombinuje více zdrojů likvidity pod společným algoritmem agregace likvidity, který funguje zcela on-chain, trustless a decentralizovaně.",
             "second": "Když tradeři zavolají swap funkci, algoritmus agregace likvidity vyplní příkazy pomocí nejlepších nabídek ze všech zdrojů likvidity. Zdroji likvidity mohou být jiné DEXy, order booky nebo jiné zdroje řízené API.",
-            "third": "Protože je Polkaswap projekt s otevřeným zdrojovým kódem, kdokoli může přidat další zdroje likvidity tím, že přispěje do kódové základny Polkaswap."
+            "third": "Protože je {appName} projekt s otevřeným zdrojovým kódem, kdokoli může přidat další zdroje likvidity tím, že přispěje do kódové základny {appName}."
         },
         "swap": {
             "title": "Swapujte jakýkoliv token",
-            "first": "Překročte hranice současných DEXů přidáním tokenů z ekosystému Polkadot i jiných blockchainů.",
-            "second": "Vytvářejte, zalistujte a obchodujte své vlastní tokeny v síti SORA.",
-            "third": "Naše základní infrastruktura využívá Parity Substrate, který je škálovatelnější než Ethereum a ke konsensu nepoužívá nákladnou těžbu."
+            "first": "Překročte hranice současných DEXů přidáním tokenů z ekosystému {polkadot} i jiných blockchainů.",
+            "second": "Vytvářejte, zalistujte a obchodujte své vlastní tokeny v síti {sora}.",
+            "third": "Naše základní infrastruktura využívá Parity Substrate, který je škálovatelnější než {ethereum} a ke konsensu nepoužívá nákladnou těžbu."
         },
         "pswap": {
             "title": "PSWAP tokeny",
-            "first": "PSWAP byl vytvořen skrze komunitní governance prostřednictvím hlasování o jeho vydání. Jedná se o utility a governance token, který slouží k odměňování poskytovatelů likvidity na Polkaswap. Na rozdíl od většiny ostatních odměnových tokenů je PSWAP pálen při transakcích a jeho nabídka v průběhu času klesá.",
-            "second": "{percent}% poplatek za každý swap na Polkaswap DEX se použije na zpětný odkup PSWAP tokenů, které se následně spálí. Zpočátku se 90 % spálených PSWAP tokenů znovu vytiskne a přiděluje poskytovatelům likvidity, ale postupem času se toto procento snižuje až na 35 % po 4 letech."
+            "first": "PSWAP byl vytvořen skrze komunitní governance prostřednictvím hlasování o jeho vydání. Jedná se o utility a governance token, který slouží k odměňování poskytovatelů likvidity na {appName}. Na rozdíl od většiny ostatních odměnových tokenů je PSWAP pálen při transakcích a jeho nabídka v průběhu času klesá.",
+            "second": "{percent}% poplatek za každý swap na {appName} DEX se použije na zpětný odkup PSWAP tokenů, které se následně spálí. Zpočátku se 90 % spálených PSWAP tokenů znovu vytiskne a přiděluje poskytovatelům likvidity, ale postupem času se toto procento snižuje až na 35 % po 4 letech."
         },
         "links": {
             "first": {
-                "title": "Staňte se SORA validátorem",
-                "desc": "Pomozte zabezpečit budoucnost sítě SORA a decentralizovaných aplikací, jako je Polkaswap, a získejte odměny za to, že se stanete SORA validátorem."
+                "title": "Staňte se {sora} validátorem",
+                "desc": "Pomozte zabezpečit budoucnost sítě {sora} a decentralizovaných aplikací, jako je {appName}, a získejte odměny za to, že se stanete {sora} validátorem."
             },
             "second": {
-                "title": "Připojte chain k síti SORA",
-                "desc": "Rozšiřte decentralizovanou světovou ekonomiku připojením dalších chainů k síti SORA a Polkaswap pomocí protokolu HASHI bridge."
+                "title": "Připojte chain k síti {sora}",
+                "desc": "Rozšiřte decentralizovanou světovou ekonomiku připojením dalších chainů k síti {sora} a {appName} pomocí protokolu {hashi} bridge."
             }
         },
-        "network": "Polkaswap je postaven na síti SORA a zaměřuje se na interoperabilitu pro připojení zbytku krypto ekosystému k Polkadotu."
+        "network": "{appName} je postaven na síti {sora} a zaměřuje se na interoperabilitu pro připojení zbytku krypto ekosystému k {polkadot}."
     },
     "exchange": {
         "Swap": "Swap",

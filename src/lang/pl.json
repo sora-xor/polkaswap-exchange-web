@@ -448,41 +448,41 @@
     },
     "about": {
         "title": "DEX dla Interoperacyjnej Przyszłości",
-        "description": "Międzyłańcuchowa wymiana walut, proste tworzenie i wprowadzanie nowych walut oraz łatwa ich wymiana, jakiej jeszcze nie było. Interoperacyjna przyszłość sieci Polkadot już się rozpoczęła, a my znajdujemy się w czołówce!",
+        "description": "Międzyłańcuchowa wymiana walut, proste tworzenie i wprowadzanie nowych walut oraz łatwa ich wymiana, jakiej jeszcze nie było. Interoperacyjna przyszłość sieci {polkadot} już się rozpoczęła, a my znajdujemy się w czołówce!",
         "trading": {
             "title": "Szybki handel",
-            "first": "Polkaswap to bezpowierniczy, międzyłańcuchowy protokół AMM DEX do wymiany tokenów, oparty na łańcuchach przekaźnikowych sieci Polkadot i Kusama, ich parachainach oraz blockchainach połączonych z nim bezpośrednio za pomocą mostów.",
-            "second": "Polkaswap usuwa pośredników i zapewnia możliwość szybszego handlu.",
-            "third": "Polkaswap jest projektem społecznościowym, a programiści pracują nad otwartym kodem źródłowym, używając"
+            "first": "{appName} to bezpowierniczy, międzyłańcuchowy protokół AMM DEX do wymiany tokenów, oparty na łańcuchach przekaźnikowych sieci {polkadot} i {kusama}, ich parachainach oraz blockchainach połączonych z nim bezpośrednio za pomocą mostów.",
+            "second": "{appName} usuwa pośredników i zapewnia możliwość szybszego handlu.",
+            "third": "{appName} jest projektem społecznościowym, a programiści pracują nad otwartym kodem źródłowym, używając"
         },
         "liquidity": {
             "title": "Nieograniczona płynność",
-            "first": "Polkaswap łączy wiele źródeł płynności w ramach wspólnego algorytmu agregacji płynności, działając całkowicie on-chain, w sposób bezpowierniczy i zdecentralizowany.",
+            "first": "{appName} łączy wiele źródeł płynności w ramach wspólnego algorytmu agregacji płynności, działając całkowicie on-chain, w sposób bezpowierniczy i zdecentralizowany.",
             "second": "Podczas gdy traderzy korzystają z funkcji wymiany, algorytm agregacji płynności wypełnia zlecenia, wykorzystując najlepsze oferty ze wszystkich dostępnych źródeł płynności. Źródłami płynności mogą być inne DEX-y [zdecentralizowane giełdy], księgi zamówień lub inne źródła oparte na API [interfejs programistyczny aplikacji].",
-            "third": "Ponieważ Polkaswap jest projektem typu open-source, każdy może dodać więcej źródeł płynności, wnosząc wkład do bazy kodu giełdy."
+            "third": "Ponieważ {appName} jest projektem typu open-source, każdy może dodać więcej źródeł płynności, wnosząc wkład do bazy kodu giełdy."
         },
         "swap": {
             "title": "Zamień dowolny token",
-            "first": "Wyjdź poza ograniczenia obecnych DEX-ów, dodając tokeny ekosystemu Polkadot, a także innych blockchainów.",
-            "second": "Twórz, wprowadzaj i handluj własnymi tokenami w sieci SORA.",
-            "third": "Nasza podstawowa infrastruktura wykorzystuje Parity Substrate, który jest bardziej skalowalny niż Ethereum i nie wykorzystuje kosztownego górnictwa dla osiągnięcia konsensusu."
+            "first": "Wyjdź poza ograniczenia obecnych DEX-ów, dodając tokeny ekosystemu {polkadot}, a także innych blockchainów.",
+            "second": "Twórz, wprowadzaj i handluj własnymi tokenami w sieci {sora}.",
+            "third": "Nasza podstawowa infrastruktura wykorzystuje Parity Substrate, który jest bardziej skalowalny niż {ethereum} i nie wykorzystuje kosztownego górnictwa dla osiągnięcia konsensusu."
         },
         "pswap": {
             "title": "Tokeny PSWAP",
-            "first": "PSWAP powstał w wyniku głosowania społeczności nad jego wydaniem. Jest to token użytkowy i zarządzający, służący do wynagradzania dostarczycieli płynności na giełdzie Polkaswap. W przeciwieństwie do większości innych tokenów wynagrodzeniowych, PSWAP jest spalany w transakcjach, co zmniejsza jego podaż.",
-            "second": "Opłata w wysokości {percent}% od każdej wymiany na giełdzie Polkaswap DEX jest przeznaczana na odkupienie tokenów PSWAP, które są następnie spalane. Początkowo 90% spalonych tokenów PSWAP będzie wybijane ponownie w celu alokacji dla dostarczycieli płynności, ale z czasem ten odsetek będzie się zmniejszał do 35% w ciągu 4 lat."
+            "first": "PSWAP powstał w wyniku głosowania społeczności nad jego wydaniem. Jest to token użytkowy i zarządzający, służący do wynagradzania dostarczycieli płynności na giełdzie {appName}. W przeciwieństwie do większości innych tokenów wynagrodzeniowych, PSWAP jest spalany w transakcjach, co zmniejsza jego podaż.",
+            "second": "Opłata w wysokości {percent}% od każdej wymiany na giełdzie {appName} DEX jest przeznaczana na odkupienie tokenów PSWAP, które są następnie spalane. Początkowo 90% spalonych tokenów PSWAP będzie wybijane ponownie w celu alokacji dla dostarczycieli płynności, ale z czasem ten odsetek będzie się zmniejszał do 35% w ciągu 4 lat."
         },
         "links": {
             "first": {
                 "title": "Zostań walidatorem SORY",
-                "desc": "Zabezpiecz przyszłość sieci SORA i zdecentralizowanych aplikacji, takich jak Polkaswap, stając się walidatorem SORY, który uzyskuje wynagrodzenie."
+                "desc": "Zabezpiecz przyszłość sieci {sora} i zdecentralizowanych aplikacji, takich jak {appName}, stając się walidatorem SORY, który uzyskuje wynagrodzenie."
             },
             "second": {
                 "title": "Połącz łańcuch z SORĄ",
-                "desc": "Rozwijaj zdecentralizowaną gospodarkę światową, łącząc kolejne łańcuchy z SORĄ i Polkaswap za pomocą protokołu mostu HASHI."
+                "desc": "Rozwijaj zdecentralizowaną gospodarkę światową, łącząc kolejne łańcuchy z SORĄ i {appName} za pomocą protokołu mostu {hashi}."
             }
         },
-        "network": "Polkaswap jest zbudowana na sieci SORA, zorientowanej na interoperacyjność, aby połączyć resztę ekosystemu kryptowalut z siecią Polkadot."
+        "network": "{appName} jest zbudowana na sieci {sora}, zorientowanej na interoperacyjność, aby połączyć resztę ekosystemu kryptowalut z siecią {polkadot}."
     },
     "exchange": {
         "Swap": "Zamień",

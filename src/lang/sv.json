@@ -448,41 +448,41 @@
     },
     "about": {
         "title": "DEX:en för den Interoperabla Framtiden",
-        "description": "Cross-chain byte av tillgångar, enkelt skapande samt listning av nya tillgångar och de enklaste bytena någonsin. Polkadots interoperabla framtid är här och vi ligger i dess framkant!",
+        "description": "Cross-chain byte av tillgångar, enkelt skapande samt listning av nya tillgångar och de enklaste bytena någonsin. {polkadot} interoperabla framtid är här och vi ligger i dess framkant!",
         "trading": {
             "title": "Snabbare Handel",
-            "first": "Polkaswap är en icke-frihetsberövande, cross-chain AMM DEX for att byta tokens baserat på Polkadot och Kusama relay chains, Polkadot och Kusama parachains, och blockkedjor direkt anslutna via bryggor.",
-            "second": "Polkaswap tar bort betrodda mellanhänder och ger möjlighet till snabbare handel.",
-            "third": "Polkaswap är ett community-projekt och devs samarbetar på den öppna källkoden med hjälpa av"
+            "first": "{appName} är en icke-frihetsberövande, cross-chain AMM DEX for att byta tokens baserat på {polkadot} och {kusama} relay chains, {polkadot} och {kusama} parachains, och blockkedjor direkt anslutna via bryggor.",
+            "second": "{appName} tar bort betrodda mellanhänder och ger möjlighet till snabbare handel.",
+            "third": "{appName} är ett community-projekt och devs samarbetar på den öppna källkoden med hjälpa av"
         },
         "liquidity": {
             "title": "Gränslös Likviditet",
-            "first": "Polkaswap kombinerar flera likviditetskällor genom att använda en gemensam likviditetsaggregations-algoritm som fungerar helt on-chain på ett tillitsfritt och decentraliserat sätt.",
+            "first": "{appName} kombinerar flera likviditetskällor genom att använda en gemensam likviditetsaggregations-algoritm som fungerar helt on-chain på ett tillitsfritt och decentraliserat sätt.",
             "second": "När handlare anropar swap-funktionen så fyller algoritmen för likviditetsaggregation ordrar med de bästa erbjudandena från alla likviditetskällor. Likviditetskällor kan vara andra DEX:ar, orderböcker, eller andra API-drivna källor.",
-            "third": "Eftersom Polkaswap är ett open-source projekt så kan vem som helst lägga till fler likviditetskällor genom att bidra till Polkaswap-kodbasen."
+            "third": "Eftersom {appName} är ett open-source projekt så kan vem som helst lägga till fler likviditetskällor genom att bidra till {appName}-kodbasen."
         },
         "swap": {
             "title": "Byt Valfri Token",
-            "first": "Gå bortom gränserna för nuvarande DEX:ar genom att lägga till tokens från Polkadot-ekosystemet samt andra blockkedjor.",
-            "second": "Skapa, lista och handla med dina egna tokens på SORA-nätverket.",
-            "third": "Vår kärninfrastruktur använder Parity Substrate, som är mer skalbar än Ethereum och använder ej dyr mining för konsensus."
+            "first": "Gå bortom gränserna för nuvarande DEX:ar genom att lägga till tokens från {polkadot}-ekosystemet samt andra blockkedjor.",
+            "second": "Skapa, lista och handla med dina egna tokens på {sora}-nätverket.",
+            "third": "Vår kärninfrastruktur använder Parity Substrate, som är mer skalbar än {ethereum} och använder ej dyr mining för konsensus."
         },
         "pswap": {
             "title": "PSWAP Tokens",
-            "first": "PSWAP skapades genom community-styre genom att rösta om dess lansering. Det är en utility- och governance-token som används för att belöna likviditets-tillhandahållare på Polkaswap. Till skillnad från de flesta andra belönings-tokens så bränns PSWAP när transaktioner sker vilket minskar tillgången med tiden.",
-            "second": "{percent}% avgiften för varje byte på Polkaswap DEX används för att köpa tillbaka PSWAP-tokens som sedan bränns. Till en början så ompräglas 90% av brända PSWAP-tokens för att tilldelas till likviditets-tillhandahållare, men med tiden så kommer denna procentsats att minska till 35% efter 4 år."
+            "first": "PSWAP skapades genom community-styre genom att rösta om dess lansering. Det är en utility- och governance-token som används för att belöna likviditets-tillhandahållare på {appName}. Till skillnad från de flesta andra belönings-tokens så bränns PSWAP när transaktioner sker vilket minskar tillgången med tiden.",
+            "second": "{percent}% avgiften för varje byte på {appName} DEX används för att köpa tillbaka PSWAP-tokens som sedan bränns. Till en början så ompräglas 90% av brända PSWAP-tokens för att tilldelas till likviditets-tillhandahållare, men med tiden så kommer denna procentsats att minska till 35% efter 4 år."
         },
         "links": {
             "first": {
-                "title": "Bli en SORA-validerare",
-                "desc": "Säkra framtiden för SORA-nätverket och decentraliserade appar som Polkaswap, och få belöningar på vägen genom att bli en SORA-validerare."
+                "title": "Bli en {sora}-validerare",
+                "desc": "Säkra framtiden för {sora}-nätverket och decentraliserade appar som {appName}, och få belöningar på vägen genom att bli en {sora}-validerare."
             },
             "second": {
-                "title": "Anslut en Kedja till SORA",
-                "desc": "Få den decentraliserade världsekonomin att växa genom att koppla fler kedjor till SORA och Polkaswap med hjälp av HASHI:s bryggprotokoll."
+                "title": "Anslut en Kedja till {sora}",
+                "desc": "Få den decentraliserade världsekonomin att växa genom att koppla fler kedjor till {sora} och {appName} med hjälp av {hashi} bryggprotokoll."
             }
         },
-        "network": "Polkaswap är byggt på SORA-nätverket och fokuserar på interoperabilitet för att ansluta resten av kryptoekosystemet till Polkadot."
+        "network": "{appName} är byggt på {sora}-nätverket och fokuserar på interoperabilitet för att ansluta resten av kryptoekosystemet till {polkadot}."
     },
     "exchange": {
         "Swap": "Byt",

@@ -448,41 +448,41 @@
     },
     "about": {
         "title": "A DEX az átjárható jövőért.",
-        "description": "Blokkláncok közötti eszközcsere, új eszközök egyszerű létrehozása és listázása, valamint a valaha volt legegyszerűbb token váltás. Polkadot átjárható jövője itt van, és mi az élvonalban vagyunk!",
+        "description": "Blokkláncok közötti eszközcsere, új eszközök egyszerű létrehozása és listázása, valamint a valaha volt legegyszerűbb token váltás. {polkadot} átjárható jövője itt van, és mi az élvonalban vagyunk!",
         "trading": {
             "title": "Gyorsabb kereskedés",
-            "first": "A Polkaswap egy nem letétkezelő, blokkláncok közti AMM DEX protokoll a Polkadot és Kusama relayláncokon, Polkadot és Kusama paraláncokon, valamint a hidakon keresztül közvetlenül összekapcsolt blokkláncokon alapuló tokenek cseréjére.",
-            "second": "A Polkaswap helyettesíti a megbízott közvetítőket és lehetőséget biztosít a gyorsabb kereskedésre",
-            "third": "A Polkaswap egy közösségi projekt, és a fejlesztők együttműködnek a nyílt forráskódú kódon, a"
+            "first": "A {appName} egy nem letétkezelő, blokkláncok közti AMM DEX protokoll a {polkadot} és {kusama} relayláncokon, {polkadot} és {kusama} paraláncokon, valamint a hidakon keresztül közvetlenül összekapcsolt blokkláncokon alapuló tokenek cseréjére.",
+            "second": "A {appName} helyettesíti a megbízott közvetítőket és lehetőséget biztosít a gyorsabb kereskedésre",
+            "third": "A {appName} egy közösségi projekt, és a fejlesztők együttműködnek a nyílt forráskódú kódon, a"
         },
         "liquidity": {
             "title": "Határtalan likviditás",
-            "first": "A Polkaswap több likviditási forrást egyesít egy közös likviditás-összevonási algoritmus alatt, amely teljesen a blokkláncon működik, megbízható és decentralizált módon.",
+            "first": "A {appName} több likviditási forrást egyesít egy közös likviditás-összevonási algoritmus alatt, amely teljesen a blokkláncon működik, megbízható és decentralizált módon.",
             "second": "Amikor a kereskedők váltás funkciót használják, a likviditás-összevonó algoritmus az összes likviditási forrás legjobb ajánlatának felhasználásával tölti ki a megbízásokat. A likviditási források lehetnek más DEX-ek, ajánlati könyvek vagy más API-alapú források.",
-            "third": "Mivel a Polkaswap egy nyílt forráskódú projekt, bárki további likviditási forrásokat adhat hozzá a Polkaswap kódbázisához való hozzájárulással."
+            "third": "Mivel a {appName} egy nyílt forráskódú projekt, bárki további likviditási forrásokat adhat hozzá a {appName} kódbázisához való hozzájárulással."
         },
         "swap": {
             "title": "Bármilyen token váltása",
-            "first": "Lépj túl a jelenlegi DEX-ek határain a Polkadot ökoszisztéma és más blokkláncok tokeneinek hozzáadásával.",
-            "second": "Létrehozhatod, listázhatod és kereskedhetsz saját tokenjeiddel a SORA hálózaton.",
-            "third": "Alapinfrastruktúránk a Parity Substrate -t használja, amely skálázhatóbb, mint az Ethereum, és nem használ drága bányászatot a konszenzus érdekében."
+            "first": "Lépj túl a jelenlegi DEX-ek határain a {polkadot} ökoszisztéma és más blokkláncok tokeneinek hozzáadásával.",
+            "second": "Létrehozhatod, listázhatod és kereskedhetsz saját tokenjeiddel a {sora} hálózaton.",
+            "third": "Alapinfrastruktúránk a Parity Substrate -t használja, amely skálázhatóbb, mint az {ethereum}, és nem használ drága bányászatot a konszenzus érdekében."
         },
         "pswap": {
             "title": "PSWAP Tokenek",
-            "first": "A PSWAP-ot a közösségi kormányzás hozta létre a kiadásáról szóló szavazással. Ez egy segéd- és kormányzó token, amelyet a likviditási szolgáltatók jutalmazására használnak a Polkaswap. A legtöbb más jutalom tokentől eltérően a PSWAP tranzakciókkal elégetésre kerül, és idővel csökken a kínálat.",
-            "second": "A Polkaswap DEX-en történő minden egyes váltás után fizetett {percent}%-os díjat a PSWAP tokenek visszavásárlására fordítják, amelyeket aztán elégetnek. Kezdetben az elégetett PSWAP tokenek 90%-át újragenerálják, hogy likviditásszolgáltatóknak osszák ki, de idővel ez az arány 4 év múlva 35%-ra csökken."
+            "first": "A PSWAP-ot a közösségi kormányzás hozta létre a kiadásáról szóló szavazással. Ez egy segéd- és kormányzó token, amelyet a likviditási szolgáltatók jutalmazására használnak a {appName}. A legtöbb más jutalom tokentől eltérően a PSWAP tranzakciókkal elégetésre kerül, és idővel csökken a kínálat.",
+            "second": "A {appName} DEX-en történő minden egyes váltás után fizetett {percent}%-os díjat a PSWAP tokenek visszavásárlására fordítják, amelyeket aztán elégetnek. Kezdetben az elégetett PSWAP tokenek 90%-át újragenerálják, hogy likviditásszolgáltatóknak osszák ki, de idővel ez az arány 4 év múlva 35%-ra csökken."
         },
         "links": {
             "first": {
-                "title": "Legyél SORA Validátor",
-                "desc": "Biztosítsd a SORA-hálózatot és az olyan decentralizált alkalmazások jövőjét, mint a Polkaswap, és szerezz jutalmakat azzal, ha SORA validátorrá válsz."
+                "title": "Legyél {sora} Validátor",
+                "desc": "Biztosítsd a {sora}-hálózatot és az olyan decentralizált alkalmazások jövőjét, mint a {appName}, és szerezz jutalmakat azzal, ha {sora} validátorrá válsz."
             },
             "second": {
-                "title": "Lánc csatlakoztatása a SORA-hoz",
-                "desc": "Gyarapítsd a decentralizált világgazdaságot azáltal, hogy több blokkláncot csatlakoztatsz a SORA és a Polkaswap rendszerhez a HASHI hídprotokoll segítségével."
+                "title": "Lánc csatlakoztatása a {sora}-hoz",
+                "desc": "Gyarapítsd a decentralizált világgazdaságot azáltal, hogy több blokkláncot csatlakoztatsz a {sora} és a {appName} rendszerhez a {hashi} hídprotokoll segítségével."
             }
         },
-        "network": "A Polkaswap a SORA hálózatra épül, amely a kölcsönös átjárhatóságra összpontosít, hogy összekapcsolja a kripto ökoszisztéma többi részét a Polkadottal."
+        "network": "A {appName} a {sora} hálózatra épül, amely a kölcsönös átjárhatóságra összpontosít, hogy összekapcsolja a kripto ökoszisztéma többi részét a {polkadot}."
     },
     "exchange": {
         "Swap": "Váltás",

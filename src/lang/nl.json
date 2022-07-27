@@ -449,41 +449,41 @@
     },
     "about": {
         "title": "De DEX voor de interoperabele toekomst.",
-        "description": "Cross-chain uitwisseling van assets, eenvoudige creatie en notering van nieuwe assets en de gemakkelijkste swaps beschikbaar. De interoperabele toekomst van Polkadot is hier en wij lopen voorop!",
+        "description": "Cross-chain uitwisseling van assets, eenvoudige creatie en notering van nieuwe assets en de gemakkelijkste swaps beschikbaar. De interoperabele toekomst van {polkadot} is hier en wij lopen voorop!",
         "trading": {
             "title": "Sneller traden",
-            "first": "Polkaswap is een non-custodial, cross-chain AMM DEX-protocol voor het swappen van tokens op basis van Polkadot- en Kusama relay chains, Polkadot- en Kusama parachains en blockchains die rechtstreeks zijn verbonden via Bridges.",
-            "second": "Polkaswap verwijdert vertrouwde tussenpersonen en biedt de mogelijkheid tot sneller traden",
-            "third": "Polkaswap is een community project en ontwikkelaars werken samen aan de open source code met behulp van de"
+            "first": "{appName} is een non-custodial, cross-chain AMM DEX-protocol voor het swappen van tokens op basis van {polkadot}- en {kusama} relay chains, {polkadot}- en {kusama} parachains en blockchains die rechtstreeks zijn verbonden via Bridges.",
+            "second": "{appName} verwijdert vertrouwde tussenpersonen en biedt de mogelijkheid tot sneller traden",
+            "third": "{appName} is een community project en ontwikkelaars werken samen aan de open source code met behulp van de"
         },
         "liquidity": {
             "title": "Grenzeloze liquiditeit",
-            "first": "Polkaswap combineert meerdere liquiditeitsbronnen onder een gemeenschappelijk algoritme voor liquiditeitsaggregatie, dat volledig on-chain, op een betrouwbare en gedecentraliseerde manier werkt.",
+            "first": "{appName} combineert meerdere liquiditeitsbronnen onder een gemeenschappelijk algoritme voor liquiditeitsaggregatie, dat volledig on-chain, op een betrouwbare en gedecentraliseerde manier werkt.",
             "second": "Wanneer traders de swap-functie oproepen, zal het liquiditeitsaggregatie-algoritme orders vullen met behulp van de beste aanbiedingen uit alle liquiditeitsbronnen. Liquiditeitsbronnen kunnen andere DEX'en, orderboeken, of andere API-gestuurde bronnen zijn.",
-            "third": "Omdat Polkaswap een open-source project is, kan iedereen meer liquiditeitsbronnen toevoegen door bijdragen te leveren aan de Polkaswap codebase."
+            "third": "Omdat {appName} een open-source project is, kan iedereen meer liquiditeitsbronnen toevoegen door bijdragen te leveren aan de {appName} codebase."
         },
         "swap": {
             "title": "Swap elk token",
-            "first": "Overschrijd de grenzen van huidige DEX'en door tokens uit het Polkadot-ecosysteem en andere blockchains toe te voegen.",
-            "second": "Creëer, noteer en verhandel uw eigen tokens op het SORA netwerk.",
-            "third": "Onze kerninfrastructuur maakt gebruik van Parity Substrate, dat schaalbaarder is dan Ethereum, en maakt geen gebruik van dure mining voor consensus."
+            "first": "Overschrijd de grenzen van huidige DEX'en door tokens uit het {polkadot}-ecosysteem en andere blockchains toe te voegen.",
+            "second": "Creëer, noteer en verhandel uw eigen tokens op het {sora} netwerk.",
+            "third": "Onze kerninfrastructuur maakt gebruik van Parity Substrate, dat schaalbaarder is dan {ethereum}, en maakt geen gebruik van dure mining voor consensus."
         },
         "pswap": {
             "title": "PSWAP-tokens",
-            "first": "PSWAP is gemaakt door community governance door te stemmen over de release. Het is een utility- en governance-token dat wordt gebruikt om liquiditeitsverschaffers op Polkaswap te belonen. In tegenstelling tot de meeste andere beloningstokens, wordt PSWAP verbrand met transacties en neemt het aanbod in de loop van de tijd af.",
-            "second": "De {percent}% vergoeding voor elke swap op de Polkaswap DEX wordt gebruikt om PSWAP-tokens terug te kopen, die vervolgens worden verbrand. In eerste instantie wordt 90% van de verbrande PSWAP-tokens opnieuw gemunt om toe te wijzen aan liquiditeitsverschaffers, maar na verloop van tijd zal dit percentage na 4 jaar dalen tot 35%."
+            "first": "PSWAP is gemaakt door community governance door te stemmen over de release. Het is een utility- en governance-token dat wordt gebruikt om liquiditeitsverschaffers op {appName} te belonen. In tegenstelling tot de meeste andere beloningstokens, wordt PSWAP verbrand met transacties en neemt het aanbod in de loop van de tijd af.",
+            "second": "De {percent}% vergoeding voor elke swap op de {appName} DEX wordt gebruikt om PSWAP-tokens terug te kopen, die vervolgens worden verbrand. In eerste instantie wordt 90% van de verbrande PSWAP-tokens opnieuw gemunt om toe te wijzen aan liquiditeitsverschaffers, maar na verloop van tijd zal dit percentage na 4 jaar dalen tot 35%."
         },
         "links": {
             "first": {
-                "title": "Word een SORA-validator",
-                "desc": "Beveilig de toekomst van het SORA-netwerk en gedecentraliseerde apps zoals Polkaswap, en verdien terwijl beloningen door een SORA-validator te worden."
+                "title": "Word een {sora}-validator",
+                "desc": "Beveilig de toekomst van het {sora}-netwerk en gedecentraliseerde apps zoals {appName}, en verdien terwijl beloningen door een {sora}-validator te worden."
             },
             "second": {
-                "title": "Verbind een chain met SORA",
-                "desc": "Laat de gedecentraliseerde wereldeconomie groeien door meer chains te verbinden met SORA en Polkaswap met behulp van het HASHI bridge protocol."
+                "title": "Verbind een chain met {sora}",
+                "desc": "Laat de gedecentraliseerde wereldeconomie groeien door meer chains te verbinden met {sora} en {appName} met behulp van het {hashi} bridge protocol."
             }
         },
-        "network": "Polkaswap is gebouwd op het SORA-netwerk, gericht op interoperabiliteit om de rest van het crypto-ecosysteem te verbinden met Polkadot."
+        "network": "{appName} is gebouwd op het {sora}-netwerk, gericht op interoperabiliteit om de rest van het crypto-ecosysteem te verbinden met {polkadot}."
     },
     "exchange": {
         "Swap": "Swap",

@@ -449,41 +449,41 @@
     },
     "about": {
         "title": "DEX untuk Masa Depan Interoperabilitas.",
-        "description": "Pertukaran aset lintas rantai, pembuatan sederhana dan pencatatan aset baru, dan swap termudah yang pernah ada. Masa depan Polkadot yang dapat dioperasikan ada di sini dan kami berada di garis depan!",
+        "description": "Pertukaran aset lintas rantai, pembuatan sederhana dan pencatatan aset baru, dan swap termudah yang pernah ada. Masa depan {polkadot} yang dapat dioperasikan ada di sini dan kami berada di garis depan!",
         "trading": {
             "title": "Perdagangan Lebih Cepat",
-            "first": "Polkaswap merupakan non-custodial, DEX AMM cross-chain untuk swap token berbasis relai chain jaringan Polkadot dan Kusama, parachain Polkadot dan Kusama, dan blockchain yang terhubung langsung melalui bridge",
-            "second": "Polkaswap meniadakan perantara tepercaya dan memberikan kesempatan untuk perdagangan yang lebih cepat",
-            "third": "Polkaswap merupakan proyek kolaborasi antara komunitas dan developer pada kode open source menggunakan"
+            "first": "{appName} merupakan non-custodial, DEX AMM cross-chain untuk swap token berbasis relai chain jaringan {polkadot} dan {kusama}, parachain {polkadot} dan {kusama}, dan blockchain yang terhubung langsung melalui bridge",
+            "second": "{appName} meniadakan perantara tepercaya dan memberikan kesempatan untuk perdagangan yang lebih cepat",
+            "third": "{appName} merupakan proyek kolaborasi antara komunitas dan developer pada kode open source menggunakan"
         },
         "liquidity": {
             "title": "Likuiditas Tanpa Batas",
-            "first": "Polkaswap menggabungkan beberapa sumber likuiditas di bawah algoritma agregasi likuiditas umum, beroperasi sepenuhnya on-chain, trustless dan terdesentralisasi.",
+            "first": "{appName} menggabungkan beberapa sumber likuiditas di bawah algoritma agregasi likuiditas umum, beroperasi sepenuhnya on-chain, trustless dan terdesentralisasi.",
             "second": "Ketika trader memanggil fungsi swap, algoritma agregasi likuiditas akan mengisi pesanan menggunakan penawaran terbaik di semua sumber likuiditas. Sumber likuiditas dapat menjadi DEX lain, daftar pesanan, atau sumber berbasis API lainnya.",
-            "third": "Karena Polkaswap adalah proyek open-source, siapa pun dapat menambahkan lebih banyak sumber likuiditas dengan memberikan kontribusi pada basis kode Polkaswap."
+            "third": "Karena {appName} adalah proyek open-source, siapa pun dapat menambahkan lebih banyak sumber likuiditas dengan memberikan kontribusi pada basis kode {appName}."
         },
         "swap": {
             "title": "Swap Token Apapun",
-            "first": "Melampaui batas DEX saat ini dengan menambahkan token dari ekosistem Polkadot serta blockchain lainnya.",
-            "second": "Buat, daftar, dan perdagangkan token Anda sendiri di jaringan SORA.",
-            "third": "Infrastruktur inti kami menggunakan Parity Substrate, yang lebih dapat diskalakan daripada Ethereum, dan tidak menggunakan penambangan mahal untuk konsensus."
+            "first": "Melampaui batas DEX saat ini dengan menambahkan token dari ekosistem {polkadot} serta blockchain lainnya.",
+            "second": "Buat, daftar, dan perdagangkan token Anda sendiri di jaringan {sora}.",
+            "third": "Infrastruktur inti kami menggunakan Parity Substrate, yang lebih dapat diskalakan daripada {ethereum}, dan tidak menggunakan penambangan mahal untuk konsensus."
         },
         "pswap": {
             "title": "Token PSWAP",
-            "first": "PSWAP diciptakan oleh komunitas governance dengan cara vote pada saat rilis. Merupakan token utilitas dan governance yang digunakan untuk memberi hadiah kepada penyedia likuiditas di Polkaswap. Tidak seperti kebanyakan token hadiah lainnya, PSWAP akan diburn setiap kali terjadi transaksi dan penyusutan suplai dari waktu ke waktu.",
-            "second": "Biaya {percent}% untuk setiap swap pada Polkaswap DEX digunakan untuk membeli kembali token PSWAP, yang kemudian dibakar. Pada awalnya, 90% token PSWAP yang terbakar diolah untuk mengalokasikan ke penyedia likuiditas, tetapi seiring waktu persentase ini akan menurun menjadi 35% setelah 4 tahun."
+            "first": "PSWAP diciptakan oleh komunitas governance dengan cara vote pada saat rilis. Merupakan token utilitas dan governance yang digunakan untuk memberi hadiah kepada penyedia likuiditas di {appName}. Tidak seperti kebanyakan token hadiah lainnya, PSWAP akan diburn setiap kali terjadi transaksi dan penyusutan suplai dari waktu ke waktu.",
+            "second": "Biaya {percent}% untuk setiap swap pada {appName} DEX digunakan untuk membeli kembali token PSWAP, yang kemudian dibakar. Pada awalnya, 90% token PSWAP yang terbakar diolah untuk mengalokasikan ke penyedia likuiditas, tetapi seiring waktu persentase ini akan menurun menjadi 35% setelah 4 tahun."
         },
         "links": {
             "first": {
-                "title": "Menjadi Validator SORA",
-                "desc": "Amankan masa depan jaringan SORA dan aplikasi terdesentralisasi seperti Polkaswap, dan dapatkan hadiah disepanjang perjalanan dengan menjadi validator SORA."
+                "title": "Menjadi Validator {sora}",
+                "desc": "Amankan masa depan jaringan {sora} dan aplikasi terdesentralisasi seperti {appName}, dan dapatkan hadiah disepanjang perjalanan dengan menjadi validator {sora}."
             },
             "second": {
-                "title": "Hubungkan Chain ke SORA",
-                "desc": "Tumbuhkan ekonomi dunia yang terdesentralisasi dengan menghubungkan lebih banyak Chain ke SORA dan Polkaswap menggunakan protokol jembatan HASHI."
+                "title": "Hubungkan Chain ke {sora}",
+                "desc": "Tumbuhkan ekonomi dunia yang terdesentralisasi dengan menghubungkan lebih banyak Chain ke {sora} dan {appName} menggunakan protokol jembatan {hashi}."
             }
         },
-        "network": "Polkaswap dibangun diatas Jaringan SORA, berfokus pada interoperabilitas untuk menghubungkan ekosistem kripto lainnya untuk Polkadot."
+        "network": "{appName} dibangun diatas Jaringan {sora}, berfokus pada interoperabilitas untuk menghubungkan ekosistem kripto lainnya untuk {polkadot}."
     },
     "exchange": {
         "Swap": "Swap",

@@ -1,3 +1,24 @@
+import * as enJson from '../../../src/lang/en.json';
+import * as ruJson from '../../../src/lang/ru.json';
+import * as csJson from '../../../src/lang/cs.json';
+import * as deJson from '../../../src/lang/de.json';
+import * as esJson from '../../../src/lang/es.json';
+import * as frJson from '../../../src/lang/fr.json';
+import * as hrJson from '../../../src/lang/hr.json';
+import * as huJson from '../../../src/lang/hu.json';
+import * as hyJson from '../../../src/lang/hy.json';
+import * as idJson from '../../../src/lang/id.json';
+import * as itJson from '../../../src/lang/it.json';
+import * as nlJson from '../../../src/lang/nl.json';
+import * as noJson from '../../../src/lang/no.json';
+import * as plJson from '../../../src/lang/pl.json';
+import * as skJson from '../../../src/lang/sk.json';
+import * as srJson from '../../../src/lang/sr.json';
+import * as svJson from '../../../src/lang/sv.json';
+import * as viJson from '../../../src/lang/vi.json';
+import * as yoJson from '../../../src/lang/yo.json';
+import * as zhCnJson from '../../../src/lang/zh_CN.json';
+
 const TranslationConsts = {
   appName: 'Polkaswap',
   ethereum: 'Ethereum',
@@ -10,45 +31,15 @@ const TranslationConsts = {
   etherscan: 'Etherscan',
 };
 
-const enJson = {
-  about: {
-    swap: {
-      first:
-        'Go beyond the limits of current         DEXs by adding tokens from the Polkadot ecosystem as well as other blockchains.',
-      second: 'Create, list              and trade your.. own tokens on the SORA... test network....',
-      third:
-        'Our core infrastructure   uses Parity @:substrate.test. which is more scalable than Ethereum, and     does not use expensive mining for @consensus.     ',
-    },
-  },
-};
-
-const esJson = {
-  about: {
-    swap: {
-      first:
-        'Vaya más allá de los límites de los DEX actuales agregando tokens del ecosistema Polkadot, así como de otras cadenas de bloques.',
-      second: 'Cree, enumere y opere con sus propios tokens en la red СОРА.',
-      third:
-        'Nuestra infraestructura principal utiliza Parity Substrate, que es más escalable que Ethereum, y no utiliza la costosa minería para el consenso.',
-    },
-  },
-};
-
-const frJson = {
-  about: {
-    swap: {
-      first:
-        'Allez au-delà des limites des DEX actuels en ajoutant des jetons de l’écosystème Polkadot ainsi que d’autres blockchains.',
-      second: 'Créez, listez et échangez vos propres jetons sur le réseau SORA.',
-      third:
-        'Notre infrastructure de base utilise Parity Substrate, qui est plus évolutif qu’Ethereum, et n’utilise pas d’exploitation minière coûteuse pour le consensus.',
-    },
-  },
-};
-
 const brokenTranslation: any = {};
 
-const generateErrorLog = (message: string, translation: string, lang: string, translationKeys: Array<string>) => {
+const generateErrorLog = (
+  message: string,
+  translation: string,
+  newValue: string,
+  lang: string,
+  translationKeys: Array<string>
+) => {
   if (!brokenTranslation[lang]) {
     brokenTranslation[lang] = {};
   }
@@ -58,31 +49,8 @@ const generateErrorLog = (message: string, translation: string, lang: string, tr
         ? (brokenTranslation[lang][translationKeys.join('::')].error += `; ${message}`)
         : message,
     value: translation,
+    newValue: newValue,
   };
-};
-
-const updateTranslation = (translation: string, translationKeys: Array<string>, initTranslationJson: any) => {
-  switch (translationKeys.length + '') {
-    case '1':
-      initTranslationJson[translationKeys[0]] = translation;
-      break;
-    case '2':
-      initTranslationJson[translationKeys[0]][translationKeys[1]] = translation;
-      break;
-    case '3':
-      initTranslationJson[translationKeys[0]][translationKeys[1]][translationKeys[2]] = translation;
-      break;
-    case '4':
-      initTranslationJson[translationKeys[0]][translationKeys[1]][translationKeys[2]][translationKeys[3]] = translation;
-      break;
-    case '5':
-      initTranslationJson[translationKeys[0]][translationKeys[1]][translationKeys[2]][translationKeys[3]][
-        translationKeys[4]
-      ] = translation;
-      break;
-    default:
-      break;
-  }
 };
 
 describe('Translation tests', () => {
@@ -93,14 +61,12 @@ describe('Translation tests', () => {
       constKey: string,
       translation: string,
       lang: string,
-      translationKeys: Array<string>,
-      initTranslationJson: any
+      translationKeys: Array<string>
     ) => {
       const constValue = TranslationConsts[constKey];
       const indexOfKey = translation.indexOf(constValue);
       if (indexOfKey !== -1) {
         brokenConstsNumber++;
-        generateErrorLog(`${constValue} instead of @:${constKey}`, translation, lang, translationKeys);
 
         const endIndexOfKey = indexOfKey + constValue.length;
         let newValue = '';
@@ -109,13 +75,20 @@ describe('Translation tests', () => {
             endIndexOfKey + 1
           )}`;
         } else {
-          newValue = `${translation.substring(0, indexOfKey)}@${constKey}${translation.substring(endIndexOfKey)}`;
+          newValue = `${translation.substring(0, indexOfKey)}@:${constKey}|{${constKey}}${translation.substring(
+            endIndexOfKey
+          )}`;
         }
-        updateTranslation(newValue, translationKeys, initTranslationJson);
-        // TODO: return value
-      } else {
-        translationKeys.pop();
+        generateErrorLog(
+          `${constValue} instead of @:${constKey}|{${constKey}}`,
+          translation,
+          newValue,
+          lang,
+          translationKeys
+        );
       }
+
+      translationKeys.pop();
     };
 
     const checkTranslationItem = (
@@ -125,27 +98,41 @@ describe('Translation tests', () => {
       constKey: string,
       translationKeys: Array<string> = []
     ) => {
-      for (const translationKey in translationJson) {
+      for (const translationKey of Object.keys(translationJson)) {
         const translation = translationJson[translationKey];
         translationKeys.push(translationKey);
         // The translation file can have different levels of nested strustures, we should work with translation value only (go deeper if needed)
         if (typeof translation === 'string') {
-          checkConstTranslation(constKey, translationJson[translationKey], lang, translationKeys, initTranslationJson);
+          checkConstTranslation(constKey, translationJson[translationKey], lang, translationKeys);
         } else {
           checkTranslationItem(lang, initTranslationJson, translation, constKey, translationKeys);
+          translationKeys.pop();
         }
       }
     };
 
-    for (const constKey in TranslationConsts) {
-      checkTranslationItem('en', enJson, enJson, constKey);
-    }
-    for (const constKey in TranslationConsts) {
-      checkTranslationItem('es', esJson, esJson, constKey);
-    }
-    for (const constKey in TranslationConsts) {
-      checkTranslationItem('fr', frJson, frJson, constKey);
-    }
+    // for (const constKey in TranslationConsts) {
+    //   checkTranslationItem('en', enJson, enJson, constKey);
+    //   checkTranslationItem('ru', ruJson, ruJson, constKey);
+    //   checkTranslationItem('cs', csJson, csJson, constKey);
+    //   checkTranslationItem('de', deJson, deJson, constKey);
+    //   checkTranslationItem('es', esJson, esJson, constKey);
+    //   checkTranslationItem('fr', frJson, frJson, constKey);
+    //   checkTranslationItem('hr', hrJson, hrJson, constKey);
+    //   checkTranslationItem('hu', huJson, huJson, constKey);
+    //   checkTranslationItem('hy', hyJson, hyJson, constKey);
+    //   checkTranslationItem('id', idJson, idJson, constKey);
+    //   checkTranslationItem('it', itJson, itJson, constKey);
+    //   checkTranslationItem('nl', nlJson, nlJson, constKey);
+    //   checkTranslationItem('no', noJson, noJson, constKey);
+    //   checkTranslationItem('pl', plJson, plJson, constKey);
+    //   checkTranslationItem('sk', skJson, skJson, constKey);
+    //   checkTranslationItem('sr', srJson, srJson, constKey);
+    //   checkTranslationItem('sv', svJson, svJson, constKey);
+    //   checkTranslationItem('vi', viJson, viJson, constKey);
+    //   checkTranslationItem('yo', yoJson, yoJson, constKey);
+    //   checkTranslationItem('zh-CN', zhCnJson, zhCnJson, constKey);
+    // }
 
     expect(false).toEqual(!!brokenConstsNumber);
   });
@@ -153,17 +140,11 @@ describe('Translation tests', () => {
 
 test('Translation Multiple Whitespaces check and fix', () => {
   let brokenWhitespacesNumber = 0;
-  const checkMultipleWhitespaces = (
-    translation: string,
-    lang: string,
-    translationKeys: Array<string>,
-    initTranslationJson: any
-  ) => {
+  const checkMultipleWhitespaces = (translation: string, lang: string, translationKeys: Array<string>) => {
     const regExp = /[ ]{2,}/g;
     const matches = [...translation.matchAll(regExp)];
     if (matches.length) {
       brokenWhitespacesNumber++;
-      generateErrorLog('Multiple Whitespaces', translation, lang, translationKeys);
 
       let newValue = '';
       let startIndex = 0;
@@ -175,7 +156,7 @@ test('Translation Multiple Whitespaces check and fix', () => {
         }
       });
       newValue += `${translation.substring(startIndex)}`;
-      updateTranslation(newValue, translationKeys, initTranslationJson);
+      generateErrorLog('Multiple Whitespaces', translation, newValue, lang, translationKeys);
     }
 
     translationKeys.pop();
@@ -192,33 +173,45 @@ test('Translation Multiple Whitespaces check and fix', () => {
       translationKeys.push(translationKey);
       // The translation file can have different levels of nested strustures, we should work with translation value only (go deeper if needed)
       if (typeof translation === 'string') {
-        checkMultipleWhitespaces(translationJson[translationKey], lang, translationKeys, initTranslationJson);
+        checkMultipleWhitespaces(translationJson[translationKey], lang, translationKeys);
       } else {
         checkTranslationItem(lang, initTranslationJson, translation, translationKeys);
+        translationKeys.pop();
       }
     }
   };
 
   checkTranslationItem('en', enJson, enJson);
+  checkTranslationItem('ru', ruJson, ruJson);
+  checkTranslationItem('cs', csJson, csJson);
+  checkTranslationItem('de', deJson, deJson);
   checkTranslationItem('es', esJson, esJson);
   checkTranslationItem('fr', frJson, frJson);
+  checkTranslationItem('hr', hrJson, hrJson);
+  checkTranslationItem('hu', huJson, huJson);
+  checkTranslationItem('hy', hyJson, hyJson);
+  checkTranslationItem('id', idJson, idJson);
+  checkTranslationItem('it', itJson, itJson);
+  checkTranslationItem('nl', nlJson, nlJson);
+  checkTranslationItem('no', noJson, noJson);
+  checkTranslationItem('pl', plJson, plJson);
+  checkTranslationItem('sk', skJson, skJson);
+  checkTranslationItem('sr', srJson, srJson);
+  checkTranslationItem('sv', svJson, svJson);
+  checkTranslationItem('vi', viJson, viJson);
+  checkTranslationItem('yo', yoJson, yoJson);
+  checkTranslationItem('zh-CN', zhCnJson, zhCnJson);
 
   expect(false).toEqual(!!brokenWhitespacesNumber);
 });
 
 test('Translation Multiple Dots check and fix', () => {
   let brokenDotsNumber = 0;
-  const checkMultipleDots = (
-    translation: string,
-    lang: string,
-    translationKeys: Array<string>,
-    initTranslationJson: any
-  ) => {
+  const checkMultipleDots = (translation: string, lang: string, translationKeys: Array<string>) => {
     const regExp = /[.]{4,}|(?<![.])[.]{2}(?![.])/g;
     const matches = [...translation.matchAll(regExp)];
     if (matches.length) {
       brokenDotsNumber++;
-      generateErrorLog('Multiple Dots', translation, lang, translationKeys);
 
       let newValue = '';
       let startIndex = 0;
@@ -227,7 +220,7 @@ test('Translation Multiple Dots check and fix', () => {
         startIndex = (item.index ? item.index : 0) + item[0].length;
       });
       newValue += `${translation.substring(startIndex)}`;
-      updateTranslation(newValue, translationKeys, initTranslationJson);
+      generateErrorLog('Multiple Dots', translation, newValue, lang, translationKeys);
     }
     translationKeys.pop();
   };
@@ -243,16 +236,34 @@ test('Translation Multiple Dots check and fix', () => {
       translationKeys.push(translationKey);
       // The translation file can have different levels of nested strustures, we should work with translation value only (go deeper if needed)
       if (typeof translation === 'string') {
-        checkMultipleDots(translationJson[translationKey], lang, translationKeys, initTranslationJson);
+        checkMultipleDots(translationJson[translationKey], lang, translationKeys);
       } else {
         checkTranslationItem(lang, initTranslationJson, translation, translationKeys);
+        translationKeys.pop();
       }
     }
   };
 
   checkTranslationItem('en', enJson, enJson);
+  checkTranslationItem('ru', ruJson, ruJson);
+  checkTranslationItem('cs', csJson, csJson);
+  checkTranslationItem('de', deJson, deJson);
   checkTranslationItem('es', esJson, esJson);
   checkTranslationItem('fr', frJson, frJson);
+  checkTranslationItem('hr', hrJson, hrJson);
+  checkTranslationItem('hu', huJson, huJson);
+  checkTranslationItem('hy', hyJson, hyJson);
+  checkTranslationItem('id', idJson, idJson);
+  checkTranslationItem('it', itJson, itJson);
+  checkTranslationItem('nl', nlJson, nlJson);
+  checkTranslationItem('no', noJson, noJson);
+  checkTranslationItem('pl', plJson, plJson);
+  checkTranslationItem('sk', skJson, skJson);
+  checkTranslationItem('sr', srJson, srJson);
+  checkTranslationItem('sv', svJson, svJson);
+  checkTranslationItem('vi', viJson, viJson);
+  checkTranslationItem('yo', yoJson, yoJson);
+  checkTranslationItem('zh-CN', zhCnJson, zhCnJson);
 
   expect(false).toEqual(!!brokenDotsNumber);
 });
@@ -260,17 +271,11 @@ test('Translation Multiple Dots check and fix', () => {
 test('Translation Missed Braces check and fix', () => {
   // No braces wrap before the end of the sentence. ex. Lorem ipsum @text. instead of Lorem ipsum @:(text).
   let brokenBracesNumber = 0;
-  const checkMissedBraces = (
-    translation: string,
-    lang: string,
-    translationKeys: Array<string>,
-    initTranslationJson: any
-  ) => {
-    const regExp = /@:?[a-zA-Z0-9.]{1,}(?= |$)/g;
+  const checkMissedBraces = (translation: string, lang: string, translationKeys: Array<string>) => {
+    const regExp = /(?<=@:)[a-zA-Z0-9.]{1,}[.](?= |$)/g;
     const matches = [...translation.matchAll(regExp)];
     if (matches.length) {
       brokenBracesNumber++;
-      generateErrorLog('Missed Braces', translation, lang, translationKeys);
 
       let newValue = '';
       let startIndex = 0;
@@ -283,7 +288,7 @@ test('Translation Missed Braces check and fix', () => {
         startIndex = (item.index ? item.index : 0) + item[0].length;
       });
       newValue += `${translation.substring(startIndex)}`;
-      updateTranslation(newValue, translationKeys, initTranslationJson);
+      generateErrorLog('Missed Braces', translation, newValue, lang, translationKeys);
     }
     translationKeys.pop();
   };
@@ -299,23 +304,37 @@ test('Translation Missed Braces check and fix', () => {
       translationKeys.push(translationKey);
       // The translation file can have different levels of nested strustures, we should work with translation value only (go deeper if needed)
       if (typeof translation === 'string') {
-        checkMissedBraces(translationJson[translationKey], lang, translationKeys, initTranslationJson);
+        checkMissedBraces(translationJson[translationKey], lang, translationKeys);
       } else {
         checkTranslationItem(lang, initTranslationJson, translation, translationKeys);
+        translationKeys.pop();
       }
     }
   };
 
   checkTranslationItem('en', enJson, enJson);
+  checkTranslationItem('ru', ruJson, ruJson);
+  checkTranslationItem('cs', csJson, csJson);
+  checkTranslationItem('de', deJson, deJson);
   checkTranslationItem('es', esJson, esJson);
   checkTranslationItem('fr', frJson, frJson);
-  console.log(brokenTranslation);
-  console.log('enJson');
-  console.log(enJson);
-  console.log('esJson');
-  console.log(esJson);
-  console.log('frJson');
-  console.log(frJson);
+  checkTranslationItem('hr', hrJson, hrJson);
+  checkTranslationItem('hu', huJson, huJson);
+  checkTranslationItem('hy', hyJson, hyJson);
+  checkTranslationItem('id', idJson, idJson);
+  checkTranslationItem('it', itJson, itJson);
+  checkTranslationItem('nl', nlJson, nlJson);
+  checkTranslationItem('no', noJson, noJson);
+  checkTranslationItem('pl', plJson, plJson);
+  checkTranslationItem('sk', skJson, skJson);
+  checkTranslationItem('sr', srJson, srJson);
+  checkTranslationItem('sv', svJson, svJson);
+  checkTranslationItem('vi', viJson, viJson);
+  checkTranslationItem('yo', yoJson, yoJson);
+  checkTranslationItem('zh-CN', zhCnJson, zhCnJson);
+
+  // Prints all current errors
+  console.info(brokenTranslation);
 
   expect(false).toEqual(!!brokenBracesNumber);
 });
