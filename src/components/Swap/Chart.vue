@@ -590,8 +590,6 @@ export default class SwapChart extends Mixins(
 
   // ordered ty timestamp DESC
   async fetchData(address: string, filter: ChartFilter, pageInfo?: SUBQUERY_TYPES.PageInfo) {
-    if (pageInfo && !pageInfo.hasNextPage) return;
-
     const { type, count } = filter;
     const nodes: AssetSnapshot[] = [];
 
@@ -615,7 +613,7 @@ export default class SwapChart extends Mixins(
   }
 
   getHistoricalPrices(): void {
-    if (this.loading) return;
+    if (this.loading || this.pageInfos.some((pageInfo) => !pageInfo.hasNextPage)) return;
 
     this.withApi(async () => {
       await this.withLoading(async () => {
@@ -665,7 +663,7 @@ export default class SwapChart extends Mixins(
 
           this.precision = Math.max(this.getPrecision(min), this.getPrecision(max));
           this.limits = { min, max };
-          this.prices = prices;
+          this.prices = [...this.prices, ...prices];
           this.isFetchingError = false;
         } catch (error) {
           this.isFetchingError = true;
