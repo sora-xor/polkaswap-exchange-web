@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "A stake összege",
         "amountRemove": "Eltávolítandó mennyiség",
-        "poweredBy": "Powered by Demeter Farming"
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Számológép",
+        "results": "Eredmények",
+        "rewards": "{symbol} jutalom"
     },
     "staking": {
         "title": "Letét"

@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "Kwota przeznaczona na staking",
         "amountRemove": "Kwota do usunięcia",
-        "poweredBy": "Powered by Demeter Farming"
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Kalkulator",
+        "results": "Wyniki",
+        "rewards": "{symbol} nagrody"
     },
     "staking": {
         "title": "Staking"

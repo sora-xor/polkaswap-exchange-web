@@ -178,6 +178,7 @@ export enum Components {
   ReferralsConfirmBonding = 'Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'Referrals/ConfirmInviteUser',
   TokenSelectButton = 'Input/TokenSelectButton',
+  TokenInput = 'Input/TokenInput',
   SelectLanguageDialog = 'SelectLanguageDialog',
   SelectAssetList = 'SelectAsset/List',
   SelectToken = 'SelectAsset/SelectToken',
@@ -199,6 +200,7 @@ export enum Components {
   MobilePopup = 'MobilePopup/MobilePopup',
   // Pool
   PoolInfo = 'Pool/PoolInfo',
+  PriceChange = 'PriceChange',
 }
 
 export enum RewardsTabsItems {
@@ -377,3 +379,9 @@ export const EthereumGasLimits = [
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
+
+// TODO: merge with TranslationConsts from wallet
+export enum TranslationConsts {
+  APR = 'APR', // Annual percentage rate
+  ROI = 'ROI', // Return of investment
+}

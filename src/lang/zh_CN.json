@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "质押金额",
         "amountRemove": "移除金额",
-        "poweredBy": "由 Demeter Farming 提供"
+        "poweredBy": "由 Demeter Farming 提供",
+        "calculator": "计算器",
+        "results": "结果",
+        "rewards": "{symbol}奖励"
     },
     "staking": {
         "title": "质押"
