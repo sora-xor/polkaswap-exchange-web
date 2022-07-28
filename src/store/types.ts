@@ -3,7 +3,7 @@ import type { VUEX_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import type store from '@/store';
 
-type BaseModuleDecorator<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> = {
+type BaseModuleDecorator<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> = {
   prices: VUEX_TYPES.BaseDecorator<T1>;
   router: VUEX_TYPES.BaseDecorator<T2>;
   web3: VUEX_TYPES.BaseDecorator<T3>;
@@ -15,10 +15,9 @@ type BaseModuleDecorator<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13,
   moonpay: VUEX_TYPES.BaseDecorator<T9>;
   bridge: VUEX_TYPES.BaseDecorator<T10>;
   addLiquidity: VUEX_TYPES.BaseDecorator<T11>;
-  createPair: VUEX_TYPES.BaseDecorator<T12>;
-  removeLiquidity: VUEX_TYPES.BaseDecorator<T13>;
-  rewards: VUEX_TYPES.BaseDecorator<T14>;
-  demeterFarming: VUEX_TYPES.BaseDecorator<T15>;
+  removeLiquidity: VUEX_TYPES.BaseDecorator<T12>;
+  rewards: VUEX_TYPES.BaseDecorator<T13>;
+  demeterFarming: VUEX_TYPES.BaseDecorator<T14>;
 };
 
 export type StateDecorators = BaseModuleDecorator<
@@ -33,7 +32,6 @@ export type StateDecorators = BaseModuleDecorator<
   typeof store.state.moonpay,
   typeof store.state.bridge,
   typeof store.state.addLiquidity,
-  typeof store.state.createPair,
   typeof store.state.removeLiquidity,
   typeof store.state.rewards,
   typeof store.state.demeterFarming
@@ -52,7 +50,6 @@ export type GettersDecorators = BaseModuleDecorator<
   typeof store.getters.moonpay,
   typeof store.getters.bridge,
   typeof store.getters.addLiquidity,
-  typeof store.getters.createPair,
   typeof store.getters.removeLiquidity,
   typeof store.getters.rewards,
   typeof store.getters.demeterFarming
@@ -71,7 +68,6 @@ export type CommitDecorators = BaseModuleDecorator<
   typeof store.commit.moonpay,
   typeof store.commit.bridge,
   typeof store.commit.addLiquidity,
-  typeof store.commit.createPair,
   typeof store.commit.removeLiquidity,
   typeof store.commit.rewards,
   typeof store.commit.demeterFarming
@@ -90,7 +86,6 @@ export type DispatchDecorators = BaseModuleDecorator<
   typeof store.dispatch.moonpay,
   typeof store.dispatch.bridge,
   typeof store.dispatch.addLiquidity,
-  typeof store.dispatch.createPair,
   typeof store.dispatch.removeLiquidity,
   typeof store.dispatch.rewards,
   typeof store.dispatch.demeterFarming
