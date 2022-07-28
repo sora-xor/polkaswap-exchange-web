@@ -99,7 +99,6 @@ export default {
     switchTheme: 'Switch to {theme} Mode',
     switchLanguage: 'Choose Language',
     selectNode: '@:selectNodeText',
-    onNotification: 'Enable browser notifications',
   },
   social: {
     wiki: '@:soraText Wiki',

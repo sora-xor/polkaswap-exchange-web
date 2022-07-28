@@ -27,6 +27,10 @@
           >
             {{ text }}
           </s-dropdown-item>
+          <div @click="openNotificationDialog" class="notif-option header-menu__item el-dropdown-menu__item">
+            <div class="notif-option__bell"></div>
+            <span class="notif-option__text">{{ t('browserNotificationDialog.title') }}</span>
+          </div>
         </template>
       </s-dropdown>
     </s-button>
@@ -195,9 +199,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       case HeaderMenuType.Language:
         this.setLanguageDialogVisibility(true);
         break;
-      case HeaderMenuType.Notification:
-        this.openNotificationDialog();
-        break;
     }
   }
 }
@@ -245,6 +246,24 @@ $icon-size: 28px;
         }
       }
     }
+  }
+}
+
+.notif-option {
+  &__bell {
+    width: 28px;
+    height: 28px;
+    margin-right: 5px;
+    // background-color: lime !important;
+    background: url('~@/assets/img/browser-notification/bell.svg') no-repeat;
+  }
+
+  &__bell:hover {
+    color: lime !important;
+  }
+
+  &:hover &__bell {
+    color: lime !important;
   }
 }
 </style>
