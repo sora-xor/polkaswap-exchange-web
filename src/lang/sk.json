@@ -1061,5 +1061,13 @@
             "PriceCalculationFailed": "Pri výpočte ceny sa vyskytla chyba"
         }
     },
-    "receivedText": "Prijaté"
+    "receivedText": "Prijaté",
+    "browserNotificationDialog": {
+        "title": "Povoliť upozornenia prehliadača",
+        "info": "Budeme vám posielať iba relevantné aktualizácie o vašej peňaženke, napríklad: zmeny stavu aktív",
+        "button": "Povoliť upozornenia",
+        "agree": "Áno rozumiem",
+        "notificationBlocked": "Ak chcete dostávať upozornenia o Polkaswape, povoľte upozornenia v natívnych nastaveniach vášho prehliadača",
+        "pointer": "Stlačením „Povoliť“ zapnite upozornenia"
+    }
 }

@@ -1061,5 +1061,13 @@
             "PriceCalculationFailed": "Bei der Berechnung des Preises ist ein Fehler aufgetreten"
         }
     },
-    "receivedText": "Erhalten"
+    "receivedText": "Erhalten",
+    "browserNotificationDialog": {
+        "title": "Aktivieren Sie Browserbenachrichtigungen",
+        "info": "Wir senden Ihnen nur relevante Updates zu Ihrem Wallet, zum Beispiel: Änderungen des Vermögensstands",
+        "button": "Benachrichtigungen aktivieren",
+        "agree": "Ja ich verstehe",
+        "notificationBlocked": "Um die Benachrichtigungen über Polkaswap zu erhalten, erlauben Sie bitte die Benachrichtigungen in den nativen Einstellungen Ihres Browsers",
+        "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten"
+    }
 }

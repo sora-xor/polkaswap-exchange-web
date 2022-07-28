@@ -1061,5 +1061,13 @@
             "PriceCalculationFailed": "Wystąpił błąd podczas obliczania ceny"
         }
     },
-    "receivedText": "Otrzymano"
+    "receivedText": "Otrzymano",
+    "browserNotificationDialog": {
+        "title": "Włącz powiadomienia przeglądarki",
+        "info": "Prześlemy Ci tylko istotne aktualizacje dotyczące Twojego portfela, na przykład: zmiany salda aktywów",
+        "button": "Włącz powiadomienia",
+        "agree": "Tak, rozumiem",
+        "notificationBlocked": "Aby otrzymywać powiadomienia o Polkaswap, zezwól na powiadomienia w natywnych ustawieniach swojej przeglądarki",
+        "pointer": "Naciśnij „Zezwól”, aby włączyć powiadomienia"
+    }
 }

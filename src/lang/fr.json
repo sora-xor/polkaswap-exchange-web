@@ -1061,5 +1061,13 @@
             "PriceCalculationFailed": "Une erreur s'est produite lors du calcul du prix"
         }
     },
-    "receivedText": "Reçu"
+    "receivedText": "Reçu",
+    "browserNotificationDialog": {
+        "title": "Activer les notifications du navigateur",
+        "info": "Nous vous enverrons uniquement les mises à jour pertinentes concernant votre portefeuille, par exemple : les modifications du solde des actifs",
+        "button": "Activer les notifications",
+        "agree": "Oui je comprends",
+        "notificationBlocked": "Pour recevoir les notifications concernant Polkaswap, veuillez autoriser les notifications dans les paramètres natifs de votre navigateur",
+        "pointer": "Appuyez sur \"Autoriser\" pour activer les notifications"
+    }
 }

@@ -148,7 +148,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       menuItems.push({
         value: HeaderMenuType.Notification,
         icon: 'basic-globe-24',
-        text: this.t('headerMenu.onNotification'),
+        text: this.t('browserNotificationDialog.title'),
       });
     }
 
