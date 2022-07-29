@@ -115,7 +115,6 @@ export enum PageNames {
   Support = 'Support',
   Wallet = 'Wallet',
   PoolContainer = 'PoolContainer',
-  CreatePair = 'CreatePair',
   AddLiquidity = 'AddLiquidity',
   RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
@@ -195,7 +194,6 @@ export enum Components {
   AddLiquidityTransactionDetails = 'TransactionDetails/AddLiquidityTransactionDetails',
   RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
-  CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
   BridgeTransferNotification = 'Bridge/TransferNotification',
   MobilePopup = 'MobilePopup/MobilePopup',
   // Pool
@@ -307,7 +305,7 @@ export const FaucetLink: SidebarMenuItemLink = {
 export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
-export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
+export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
 export const RewardsChildPages = [
   PageNames.Rewards,
   PageNames.Referral,

@@ -83,24 +83,15 @@
         </s-collapse-item>
       </s-collapse>
     </div>
-    <template v-if="isLoggedIn">
-      <s-button
-        class="el-button--add-liquidity s-typography-button--large"
-        data-test-name="addLiquidity"
-        type="primary"
-        @click="handleAddLiquidity()"
-      >
-        {{ t('pool.addLiquidity') }}
-      </s-button>
-      <s-button
-        class="el-button--create-pair s-typography-button--large"
-        data-test-name="createPair"
-        type="secondary"
-        @click="handleCreatePair"
-      >
-        {{ t('pool.createPair') }}
-      </s-button>
-    </template>
+    <s-button
+      v-if="isLoggedIn"
+      class="el-button--add-liquidity s-typography-button--large"
+      data-test-name="addLiquidity"
+      type="primary"
+      @click="handleAddLiquidity()"
+    >
+      {{ t('pool.addLiquidity') }}
+    </s-button>
     <s-button v-else type="primary" class="s-typography-button--large" @click="handleConnectWallet">
       {{ t('pool.connectWallet') }}
     </s-button>
@@ -160,10 +151,6 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
     const firstAddress = first || '';
     const secondAddress = second || '';
     router.push({ name: PageNames.AddLiquidity, params: { firstAddress, secondAddress } });
-  }
-
-  handleCreatePair(): void {
-    router.push({ name: PageNames.CreatePair });
   }
 
   handleRemoveLiquidity(firstAddress: string, secondAddress: string): void {
