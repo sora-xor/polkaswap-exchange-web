@@ -158,21 +158,21 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
     // for liquidity pool we multiply deposit in pool asset by 2
     const multiplier = this.isFarm ? 2 : 1;
 
-    const costOfDepositFeeUSD = depositInPoolsAsset
-      .mul(new FPNumber(multiplier))
-      .mul(new FPNumber(this.depositFee))
-      .mul(this.poolAssetPrice);
+    const valueOfDepositUSD = depositInPoolsAsset.mul(new FPNumber(multiplier)).mul(this.poolAssetPrice);
+
+    const costOfDepositFeeUSD = valueOfDepositUSD.mul(new FPNumber(this.depositFee));
+
     const costOfNetworkFeeUSD = FPNumber.fromCodecValue(this.networkFee).mul(
       FPNumber.fromCodecValue(this.getAssetFiatPrice(this.xor as AccountAsset) ?? 0)
     );
     const costOfInvestmentUSD = costOfDepositFeeUSD.add(costOfNetworkFeeUSD);
     const valueOfInvestmentUSD = this.calculatedRewards.mul(this.rewardAssetPrice);
 
-    return valueOfInvestmentUSD.sub(costOfInvestmentUSD).div(costOfInvestmentUSD).mul(FPNumber.HUNDRED);
+    return valueOfInvestmentUSD.sub(costOfInvestmentUSD).div(valueOfDepositUSD).mul(FPNumber.HUNDRED);
   }
 
   get calculatedRoiPercentFormatted(): string {
-    return this.calculatedRoiPercent.dp(2).toLocaleString() + '%';
+    return new FPNumber(this.calculatedRoiPercent.toFixed(2)).toLocaleString() + '%';
   }
 
   selectPeriod({ name }): void {
