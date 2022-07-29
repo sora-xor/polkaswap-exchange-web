@@ -27,8 +27,8 @@
           >
             {{ text }}
           </s-dropdown-item>
-          <div @click="openNotificationDialog" class="notif-option header-menu__item el-dropdown-menu__item">
-            <div class="notif-option__bell"></div>
+          <div @click="openNotificationDialog" class="notif-option el-dropdown-menu__item header-menu__item">
+            <bell-icon class="notif-option__bell notif-option__bell--dropdown"></bell-icon>
             <span class="notif-option__text">{{ t('browserNotificationDialog.title') }}</span>
           </div>
         </template>
@@ -45,6 +45,13 @@
       >
         <s-icon :name="icon" :size="iconSize" />
       </s-button>
+      <s-button
+        type="action"
+        @click="openNotificationDialog"
+        class="notif-option s-pressed el-dropdown-menu__item header-menu__item"
+      >
+        <bell-icon class="notif-option__bell notif-option__bell--large"></bell-icon>
+      </s-button>
     </template>
   </div>
 </template>
@@ -54,6 +61,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 
+import BellIcon from '@/assets/img/browser-notification/bell.svg?inline';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, mutation, state } from '@/store/decorators';
 
@@ -72,7 +80,11 @@ type MenuItem = {
 
 const BREAKPOINT = 1440;
 
-@Component
+@Component({
+  components: {
+    BellIcon,
+  },
+})
 export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
@@ -130,7 +142,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   private getHeaderMenuItems(isDropdown = false): Array<MenuItem> {
-    const menuItems = [
+    return [
       {
         value: HeaderMenuType.HideBalances,
         icon: this.getHideBalancesIcon(isDropdown),
@@ -147,16 +159,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         text: this.t('headerMenu.switchLanguage'),
       },
     ];
-
-    if (this.isNotificationOptionShown) {
-      menuItems.push({
-        value: HeaderMenuType.Notification,
-        icon: 'basic-globe-24',
-        text: this.t('browserNotificationDialog.title'),
-      });
-    }
-
-    return menuItems;
   }
 
   get headerMenuItems(): Array<MenuItem> {
@@ -207,6 +209,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 <style lang="scss">
 $icon-size: 28px;
 
+.app-header-menu {
+  display: flex;
+}
+
 .header-menu {
   $dropdown-background: var(--s-color-utility-body);
   $dropdown-margin: 24px;
@@ -250,20 +256,25 @@ $icon-size: 28px;
 }
 
 .notif-option {
+  display: flex;
+  justify-content: center;
+
   &__bell {
-    width: 28px;
-    height: 28px;
+    width: $icon-size;
+    height: $icon-size;
     margin-right: 5px;
-    // background-color: lime !important;
-    background: url('~@/assets/img/browser-notification/bell.svg') no-repeat;
+    margin: auto;
+    margin-top: calc(#{$icon-size} / 2);
   }
 
-  &__bell:hover {
-    color: lime !important;
+  &__bell--dropdown {
+    margin-top: $inner-spacing-mini;
+    margin-right: 5px;
+    color: var(--s-color-base-content-tertiary);
   }
 
-  &:hover &__bell {
-    color: lime !important;
+  &:hover &__bell--dropdown {
+    color: var(--s-color-base-content-secondary);
   }
 }
 </style>
