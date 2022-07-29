@@ -1069,5 +1069,6 @@
         "agree": "Da, razumijem",
         "notificationBlocked": "Da biste primali obavijesti o Polkaswapu, omogućite obavijesti u izvornim postavkama preglednika",
         "pointer": "Pritisnite \"Dopusti\" za uključivanje obavijesti"
-    }
+    },
+    "assetDeposit": "Stanje imovine je deponirano"
 }

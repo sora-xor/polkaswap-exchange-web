@@ -1069,5 +1069,6 @@
         "agree": "Tôi hiểu",
         "notificationBlocked": "Để nhận thông báo về Polkaswap, vui lòng cho phép thông báo trong cài đặt gốc của trình duyệt của bạn",
         "pointer": "Nhấn “Cho phép” để bật thông báo"
-    }
+    },
+    "assetDeposit": "Số dư tài sản đã được gửi"
 }

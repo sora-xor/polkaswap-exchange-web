@@ -1069,5 +1069,6 @@
         "agree": "Tak, rozumiem",
         "notificationBlocked": "Aby otrzymywać powiadomienia o Polkaswap, zezwól na powiadomienia w natywnych ustawieniach swojej przeglądarki",
         "pointer": "Naciśnij „Zezwól”, aby włączyć powiadomienia"
-    }
+    },
+    "assetDeposit": "Saldo aktywów zostało zdeponowane"
 }

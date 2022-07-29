@@ -1069,5 +1069,6 @@
         "agree": "Ya saya mengerti",
         "notificationBlocked": "Untuk menerima pemberitahuan tentang Polkaswap, izinkan pemberitahuan di pengaturan asli browser Anda",
         "pointer": "Tekan \"Izinkan\" untuk mengaktifkan notifikasi"
-    }
+    },
+    "assetDeposit": "Saldo aset telah disetorkan"
 }

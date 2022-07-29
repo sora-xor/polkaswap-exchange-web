@@ -1,7 +1,6 @@
 <template>
   <div class="notification-enabling-pointer">
     <div class="notification-enabling-pointer__instructions">
-      <img src="@/assets/img/browser-notification/arrow.png?inline" class="notification-enabling-pointer__arrow" />
       <div class="notification-enabling-pointer__text">{{ t('browserNotificationDialog.pointer') }}</div>
     </div>
   </div>
@@ -39,14 +38,19 @@ export default class NotificationEnablingPage extends Mixins(TranslationMixin) {
   }
 
   &__text {
+    position: relative;
     color: #ffffff;
     font-size: 19px;
   }
 
-  &__arrow {
+  &__text::before {
+    content: '';
+    background: url('~@/assets/img/browser-notification/arrow.png') no-repeat;
+    width: 100%;
+    height: 300px;
     position: absolute;
     top: -275px;
-    left: -80%;
+    left: -275px;
   }
 }
 </style>

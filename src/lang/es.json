@@ -1069,5 +1069,6 @@
         "agree": "Si entiendo",
         "notificationBlocked": "Para recibir notificaciones sobre Polkaswap, permita las notificaciones en la configuración nativa de su navegador",
         "pointer": "Presione \"Permitir\" para activar las notificaciones"
-    }
+    },
+    "assetDeposit": "Se ha depositado el saldo de activos"
 }

@@ -1069,5 +1069,6 @@
         "agree": "Ja ich verstehe",
         "notificationBlocked": "Um die Benachrichtigungen über Polkaswap zu erhalten, erlauben Sie bitte die Benachrichtigungen in den nativen Einstellungen Ihres Browsers",
         "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten"
-    }
+    },
+    "assetDeposit": "Guthaben wurde hinterlegt"
 }

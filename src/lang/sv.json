@@ -1069,5 +1069,6 @@
         "agree": "Ja jag förstår",
         "notificationBlocked": "För att få aviseringar om Polkaswap, vänligen tillåt aviseringarna i din webbläsares ursprungliga inställningar",
         "pointer": "Tryck på \"Tillåt\" för att aktivera aviseringar"
-    }
+    },
+    "assetDeposit": "Tillgångssaldo har satts in"
 }

@@ -1069,5 +1069,6 @@
         "agree": "Ano, rozumím",
         "notificationBlocked": "Chcete-li dostávat upozornění na Polkaswap, povolte upozornění v nativním nastavení vašeho prohlížeče",
         "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení"
-    }
+    },
+    "assetDeposit": "Zůstatek aktiv byl uložen"
 }
