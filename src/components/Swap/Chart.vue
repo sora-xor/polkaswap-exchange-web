@@ -58,7 +58,7 @@
           <div v-if="isFetchingError && !loading" class="charts-skeleton-error">
             <s-icon name="clear-X-16" :size="'32px'" />
             <p class="charts-skeleton-error-message">{{ t('swap.errorFetching') }}</p>
-            <s-button class="el-button--select-token" type="secondary" size="small" @click="retryUpdatePrices">
+            <s-button class="el-button--select-token" type="secondary" size="small" @click="updatePrices">
               {{ t('retryText') }}
             </s-button>
           </div>
@@ -248,8 +248,7 @@ export default class SwapChart extends Mixins(
   @Watch('tokenFrom')
   @Watch('tokenTo')
   private handleTokenChange(): void {
-    this.clearData();
-    this.updatePrices();
+    this.forceUpdatePrices();
   }
 
   isFetchingError = false;
@@ -259,13 +258,15 @@ export default class SwapChart extends Mixins(
   prices: ChartDataItem[] = [];
   pageInfos: SUBQUERY_TYPES.PageInfo[] = [];
   zoomStart = 0; // percentage of zoom start position
+  zoomEnd = 100; // percentage of zoom end position
   precision = 2;
   limits = {
     min: Infinity,
     max: 0,
   };
 
-  updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250);
+  updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
+  forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
@@ -392,7 +393,10 @@ export default class SwapChart extends Mixins(
         },
         axisLabel: {
           formatter: (value: string) => {
-            return dayjs(+value).format(this.timeFormat);
+            const date = dayjs(+value);
+            const format = date.hour() === 0 && date.minute() === 0 ? 'DD MMM' : this.timeFormat;
+
+            return date.format(format);
           },
           color: this.theme.color.base.content.secondary,
           ...this.axisLabelCSS,
@@ -682,6 +686,10 @@ export default class SwapChart extends Mixins(
 
   changeFilter(filter: ChartFilter): void {
     this.selectedFilter = filter;
+    this.forceUpdatePrices();
+  }
+
+  private resetAndUpdatePrices(): void {
     this.clearData();
     this.updatePrices();
   }
@@ -707,11 +715,9 @@ export default class SwapChart extends Mixins(
   }
 
   changeZoomLevel(event: any): void {
-    this.zoomStart = event?.batch?.[0]?.start ?? 0;
-  }
-
-  retryUpdatePrices(event: any): void {
-    this.updatePrices();
+    const data = event?.batch?.[0];
+    this.zoomStart = data?.start ?? 0;
+    this.zoomEnd = data?.end ?? 0;
   }
 
   private getPrecision(value: number): number {
@@ -728,7 +734,7 @@ export default class SwapChart extends Mixins(
   }
 
   private formatPriceChange(value: FPNumber): string {
-    return value.dp(2).toLocaleString();
+    return new FPNumber(value.toFixed(2)).toLocaleString();
   }
 }
 </script>
