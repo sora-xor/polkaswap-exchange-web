@@ -320,6 +320,13 @@ export default class SwapChart extends Mixins(
     return calcPriceChange(this.fiatPrice, lastFiatPrice);
   }
 
+  get maxVisibleChartItems(): number {
+    const zoomPercent = this.zoomEnd - this.zoomStart;
+    const itemsCount = this.chartData.length;
+
+    return Math.ceil((itemsCount * zoomPercent) / 100);
+  }
+
   get timeFormat(): string {
     switch (this.selectedFilter.type) {
       case SUBQUERY_TYPES.AssetSnapshotTypes.DAY:
@@ -398,6 +405,10 @@ export default class SwapChart extends Mixins(
 
             return date.format(format);
           },
+          // interval: (index: number, value: string) => {
+          //   const date = dayjs(+value);
+          //   return date.hour() === 0 && date.minute() === 0;
+          // },
           color: this.theme.color.base.content.secondary,
           ...this.axisLabelCSS,
         },
@@ -460,6 +471,7 @@ export default class SwapChart extends Mixins(
           type: 'inside',
           start: 0,
           end: 100,
+          minValueSpan: 10, // minimum 11 elements like on skeleton
         },
       ],
       color: [this.theme.color.theme.accent, this.theme.color.status.success],
