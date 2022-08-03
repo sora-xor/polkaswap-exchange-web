@@ -9,33 +9,29 @@
             <span v-if="tokenTo">/{{ tokenTo.symbol }}</span>
           </div>
         </div>
-
-        <div class="s-flex chart-controls">
-          <div class="chart-filters">
-            <s-tabs type="rounded" :value="selectedFilter.name" @click="selectFilter">
-              <s-tab
-                v-for="filter in filters"
-                :key="filter.name"
-                :name="filter.name"
-                :label="filter.label"
-                :disabled="parentLoading || loading"
-              />
-            </s-tabs>
-          </div>
-
-          <div class="s-flex chart-types">
-            <s-button
-              v-for="{ type, icon, active } in chartTypeButtons"
-              :key="type"
-              type="action"
-              size="small"
-              :class="['chart-type', { 's-pressed': active }]"
+        <div class="chart-filters">
+          <s-tabs type="rounded" :value="selectedFilter.name" @click="selectFilter">
+            <s-tab
+              v-for="filter in filters"
+              :key="filter.name"
+              :name="filter.name"
+              :label="filter.label"
               :disabled="parentLoading || loading"
-              @click="selectChartType(type)"
-            >
-              <component :is="icon" :class="{ active }" />
-            </s-button>
-          </div>
+            />
+          </s-tabs>
+        </div>
+        <div class="s-flex chart-types">
+          <s-button
+            v-for="{ type, icon, active } in chartTypeButtons"
+            :key="type"
+            type="action"
+            size="small"
+            :class="['chart-type', { 's-pressed': active }]"
+            :disabled="parentLoading || loading"
+            @click="selectChartType(type)"
+          >
+            <component :is="icon" :class="{ active }" />
+          </s-button>
         </div>
       </div>
     </div>
@@ -322,9 +318,9 @@ export default class SwapChart extends Mixins(
   get timeFormat(): string {
     switch (this.selectedFilter.type) {
       case SUBQUERY_TYPES.AssetSnapshotTypes.DAY:
-        return 'DD MMM';
+        return 'll';
       default:
-        return 'HH:mm';
+        return 'LT';
     }
   }
 
@@ -383,7 +379,13 @@ export default class SwapChart extends Mixins(
       },
       xAxis: {
         type: 'category',
-        data: this.chartData.map((item) => item.timestamp),
+        data: this.chartData.map((item, index, arr) => {
+          return {
+            value: item.timestamp,
+            isNewDay:
+              index !== 0 ? new Date(arr[index - 1].timestamp).getDate() !== new Date(item.timestamp).getDate() : false,
+          };
+        }),
         axisTick: {
           show: false,
         },
@@ -391,7 +393,11 @@ export default class SwapChart extends Mixins(
           show: false,
         },
         axisLabel: {
-          formatter: (value: string) => {
+          formatter: (value: string, isNewDay: boolean) => {
+            // TODO: Check this place, add date instead of new first new date time
+            if (this.selectedFilter.type === SUBQUERY_TYPES.AssetSnapshotTypes.HOUR && isNewDay) {
+              return dayjs(+value).format('MMM DD');
+            }
             return dayjs(+value).format(this.timeFormat);
           },
           color: this.theme.color.base.content.secondary,
@@ -734,6 +740,7 @@ export default class SwapChart extends Mixins(
 </script>
 
 <style lang="scss">
+$skeleton-label-width: 34px;
 .charts {
   &-price {
     display: flex;
@@ -771,6 +778,8 @@ export default class SwapChart extends Mixins(
 }
 
 .chart-filters {
+  width: 100%;
+  order: 1;
   .el-tabs__header {
     margin-bottom: 0;
   }
@@ -803,7 +812,7 @@ export default class SwapChart extends Mixins(
 
 .charts-skeleton {
   $margin-right: #{$inner-spacing-mini / 2};
-  $label-width: 34px;
+  $skeleton-label-width-mobile: calc((100% - #{$margin-right} * 10) / 11);
   $skeleton-spacing: 18px;
   position: relative;
   .el-loading-mask {
@@ -833,7 +842,7 @@ export default class SwapChart extends Mixins(
         width: 42px;
       }
       + .charts-skeleton-line {
-        margin-top: 23px;
+        margin-top: 19px;
       }
     }
   }
@@ -841,21 +850,21 @@ export default class SwapChart extends Mixins(
     display: flex;
     align-items: center;
     flex-grow: 0;
-    margin-top: 27px;
+    margin-top: 22px;
     &--lables {
       justify-content: space-between;
       margin-top: $inner-spacing-medium;
-      padding-left: calc(#{$margin-right} + #{$label-width});
+      padding-left: calc(#{$margin-right} + #{$skeleton-label-width});
     }
   }
   &-label.el-skeleton__item.el-skeleton__rect {
     height: 8px;
-    width: $label-width;
+    width: $skeleton-label-width-mobile;
     margin-bottom: 0;
     margin-right: $margin-right;
   }
   &-border.el-skeleton__rect {
-    width: calc(100% - 38px);
+    width: calc(100% - $skeleton-label-width-mobile - $margin-right);
     height: 1px;
   }
   &-error {
@@ -885,7 +894,7 @@ export default class SwapChart extends Mixins(
   }
 }
 
-@include large-desktop {
+@include desktop {
   .container--charts {
     position: relative;
     z-index: 1;
@@ -896,11 +905,34 @@ export default class SwapChart extends Mixins(
     }
   }
 }
+
+@include large-desktop {
+  .charts-skeleton {
+    &-price {
+      &-impact {
+        + .charts-skeleton-line {
+          margin-top: 20px;
+        }
+      }
+    }
+    &-line {
+      margin-top: 26px;
+    }
+    &-label.el-skeleton__item.el-skeleton__rect {
+      max-width: $skeleton-label-width;
+    }
+  }
+  .chart-filters {
+    margin-left: auto;
+    width: auto;
+    order: initial;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
 .chart {
-  height: 323px;
+  height: 283px;
 }
 .tokens {
   display: flex;
@@ -950,9 +982,9 @@ export default class SwapChart extends Mixins(
   align-items: center;
 }
 
-.chart-controls {
-  & > *:not(:last-child) {
-    margin-right: $inner-spacing-medium;
+@include large-desktop {
+  .chart {
+    height: 323px;
   }
 }
 </style>

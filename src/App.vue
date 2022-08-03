@@ -22,7 +22,9 @@
           </div>
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
-            <p class="app-disclaimer" v-html="t('disclaimer')" />
+            <div class="app-disclaimer-container">
+              <p class="app-disclaimer" v-html="t('disclaimer')" />
+            </div>
           </div>
           <footer class="app-footer">
             <div class="sora-logo">
@@ -463,7 +465,7 @@ i.icon-divider {
   @include icon-styles;
 }
 
-@include large-desktop {
+@include desktop {
   .app-main.app-main--has-charts {
     .app-menu {
       position: relative;
@@ -472,13 +474,33 @@ i.icon-divider {
       width: 100%;
       padding-left: $basic-spacing * 2;
       .app-disclaimer {
-        margin-left: $basic-spacing-small * 3;
+        $margin-left: 10px;
+        max-width: calc(#{$bridge-width} + #{$margin-left});
+        padding-right: $inner-spacing-big;
+        padding-left: calc(#{$inner-spacing-big} + #{$margin-left});
+        &-container {
+          margin-left: auto;
+          margin-right: auto;
+          max-width: calc(#{$bridge-width} * 2 + #{$basic-spacing-small});
+        }
       }
     }
-  }
 
-  .block-number-link {
-    z-index: 0;
+    .block-number-link {
+      z-index: 0;
+    }
+  }
+}
+
+@include large-desktop {
+  .app-main.app-main--has-charts {
+    .app-content {
+      .app-disclaimer {
+        &-container {
+          max-width: calc(#{$bridge-width} * 3 + #{$basic-spacing-small} * 4);
+        }
+      }
+    }
   }
 }
 </style>
@@ -504,7 +526,7 @@ $sora-logo-width: 173.7px;
     &__about {
       overflow: hidden;
 
-      .app-content .app-disclaimer {
+      .app-content .app-disclaimer-container {
         min-width: 800px;
         width: 100%;
         max-width: 900px;
@@ -522,7 +544,7 @@ $sora-logo-width: 173.7px;
     flex: 1;
     margin: auto;
 
-    .app-disclaimer {
+    .app-disclaimer-container {
       margin-left: auto;
       margin-bottom: $inner-spacing-big;
       margin-right: auto;
@@ -580,7 +602,7 @@ $sora-logo-width: 173.7px;
 @include tablet {
   .app-footer {
     flex-direction: row;
-    .app-disclaimer {
+    .app-disclaimer-container {
       padding-right: $inner-spacing-large;
     }
   }

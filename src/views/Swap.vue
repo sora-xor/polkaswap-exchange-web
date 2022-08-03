@@ -683,7 +683,12 @@ export default class Swap extends Mixins(
 </script>
 
 <style lang="scss">
-@include large-desktop {
+.app-main--has-charts {
+  .container--charts {
+    min-width: calc(#{$bridge-width} * 0.75);
+  }
+}
+@include desktop {
   .app-main--has-charts {
     .swap-container {
       display: flex;
@@ -702,9 +707,14 @@ export default class Swap extends Mixins(
     .el-form--actions {
       flex-shrink: 0;
     }
+  }
+}
+
+@include large-desktop {
+  .app-main--has-charts {
     .container--charts {
       min-width: $bridge-width;
-      max-width: 100%;
+      max-width: calc(#{$bridge-width} * 2);
       flex-grow: 1;
     }
   }
