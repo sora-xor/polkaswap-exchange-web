@@ -1067,7 +1067,7 @@
         "info": "Wir senden Ihnen nur relevante Updates zu Ihrem Wallet, zum Beispiel: Änderungen des Vermögensstands",
         "button": "Benachrichtigungen aktivieren",
         "agree": "Ja ich verstehe",
-        "notificationBlocked": "Um die Benachrichtigungen über Polkaswap zu erhalten, erlauben Sie bitte die Benachrichtigungen in den nativen Einstellungen Ihres Browsers",
+        "notificationBlocked": "Um die Benachrichtigungen über {appName} zu erhalten, erlauben Sie bitte die Benachrichtigungen in den nativen Einstellungen Ihres Browsers",
         "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten"
     },
     "assetDeposit": "Guthaben wurde hinterlegt"

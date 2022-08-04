@@ -1067,7 +1067,7 @@
         "info": "Nous vous enverrons uniquement les mises à jour pertinentes concernant votre portefeuille, par exemple : les modifications du solde des actifs",
         "button": "Activer les notifications",
         "agree": "Oui je comprends",
-        "notificationBlocked": "Pour recevoir les notifications concernant Polkaswap, veuillez autoriser les notifications dans les paramètres natifs de votre navigateur",
+        "notificationBlocked": "Pour recevoir les notifications concernant {appName} , veuillez autoriser les notifications dans les paramètres natifs de votre navigateur",
         "pointer": "Appuyez sur \"Autoriser\" pour activer les notifications"
     },
     "assetDeposit": "Le solde de l'actif a été déposé"

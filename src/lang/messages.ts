@@ -804,7 +804,7 @@ export default {
     enable: 'Enable notifications',
     agree: 'Yes, I understand',
     notificationBlocked:
-      "To receive the notifications about Polkaswap, please, allow the notifications in your browser's native settings",
+      "To receive the notifications about {appName}, please, allow the notifications in your browser's native settings",
     pointer: 'Press “Allow” to turn notifications on',
   },
   assetDeposit: 'Asset balance has been deposited',

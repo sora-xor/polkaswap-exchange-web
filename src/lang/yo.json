@@ -1067,7 +1067,7 @@
         "info": "A yoo fi awọn imudojuiwọn ti o yẹ nikan ranṣẹ si ọ nipa apamọwọ rẹ, fun apẹẹrẹ: awọn iyipada iwọntunwọnsi dukia",
         "button": "Mu awọn iwifunni ṣiṣẹ",
         "agree": "Bẹẹni, Mo loye",
-        "notificationBlocked": "Lati gba awọn iwifunni nipa Polkaswap, jọwọ gba awọn iwifunni ni awọn eto abinibi ti aṣawakiri rẹ",
+        "notificationBlocked": "Lati gba awọn ifitonileti nipa {appName}, jọwọ gba awọn iwifunni ni awọn eto abinibi ti aṣawakiri rẹ",
         "pointer": "Tẹ \"Gba laaye\" lati tan awọn iwifunni"
     },
     "assetDeposit": "Iwontunwonsi dukia ti wa ni idogo"

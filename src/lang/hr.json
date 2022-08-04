@@ -1067,7 +1067,7 @@
         "info": "Poslat ćemo vam samo relevantna ažuriranja o vašem novčaniku, na primjer: promjene stanja imovine",
         "button": "Omogući obavijesti",
         "agree": "Da, razumijem",
-        "notificationBlocked": "Da biste primali obavijesti o Polkaswapu, omogućite obavijesti u izvornim postavkama preglednika",
+        "notificationBlocked": "Da biste primali obavijesti o {appName}, omogućite obavijesti u izvornim postavkama preglednika",
         "pointer": "Pritisnite \"Dopusti\" za uključivanje obavijesti"
     },
     "assetDeposit": "Stanje imovine je deponirano"

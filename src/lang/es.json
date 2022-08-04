@@ -1066,9 +1066,9 @@
         "title": "Habilitar notificaciones del navegador",
         "info": "Le enviaremos solo actualizaciones relevantes sobre su billetera, por ejemplo: cambios en el saldo de activos",
         "button": "Permitir notificaciones",
-        "agree": "Si entiendo",
-        "notificationBlocked": "Para recibir notificaciones sobre Polkaswap, permita las notificaciones en la configuración nativa de su navegador",
+        "agree": "Si, entiendo",
+        "notificationBlocked": "Para recibir notificaciones sobre {appName}, permita las notificaciones en la configuración nativa de su navegador",
         "pointer": "Presione \"Permitir\" para activar las notificaciones"
     },
-    "assetDeposit": "Se ha depositado el saldo de activos"
+    "assetDeposit": "El saldo de los activos ha sido depositado"
 }

@@ -1067,7 +1067,7 @@
         "info": "Csak releváns frissítéseket küldünk Önnek a pénztárcájáról, például: eszközegyenleg-változások",
         "button": "Értesítések engedélyezése",
         "agree": "Igen, értem",
-        "notificationBlocked": "A Polkaswap-ról szóló értesítések fogadásához engedélyezze az értesítéseket a böngésző natív beállításaiban",
+        "notificationBlocked": "Ahhoz, hogy értesítést kapjon az {appName} alkalmazásról, kérjük, engedélyezze az értesítéseket a böngésző natív beállításaiban.",
         "pointer": "Nyomja meg az „Engedélyezés” gombot az értesítések bekapcsolásához"
     },
     "assetDeposit": "Az eszközök egyenlege letétbe helyezve"

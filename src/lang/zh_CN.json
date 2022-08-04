@@ -1067,7 +1067,7 @@
         "info": "我们只会向您发送有关您钱包的相关更新，例如：资产余额变化",
         "button": "启用通知",
         "agree": "是的我明白",
-        "notificationBlocked": "要接收有关 Polkaswap 的通知，请在浏览器的本机设置中允许通知",
+        "notificationBlocked": "要接收有关{appName}的通知，请在浏览器的本机设置中允许通知",
         "pointer": "按“允许”打开通知"
     },
     "assetDeposit": "资产余额已存入"

@@ -1067,7 +1067,7 @@
         "info": "Budeme vám posielať iba relevantné aktualizácie o vašej peňaženke, napríklad: zmeny stavu aktív",
         "button": "Povoliť upozornenia",
         "agree": "Áno rozumiem",
-        "notificationBlocked": "Ak chcete dostávať upozornenia o Polkaswape, povoľte upozornenia v natívnych nastaveniach vášho prehliadača",
+        "notificationBlocked": "Ak chcete dostávať upozornenia o {appName}, povoľte upozornenia v natívnych nastaveniach prehliadača",
         "pointer": "Stlačením „Povoliť“ zapnite upozornenia"
     },
     "assetDeposit": "Zostatok aktív bol uložený"
