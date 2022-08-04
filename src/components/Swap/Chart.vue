@@ -249,8 +249,10 @@ export default class SwapChart extends Mixins(
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
-  private handleTokenChange(): void {
-    this.forceUpdatePrices();
+  private handleTokenChange(current: Nullable<AccountAsset>, prev: Nullable<AccountAsset>): void {
+    if (current && (!prev || prev.address !== current.address)) {
+      this.forceUpdatePrices();
+    }
   }
 
   isFetchingError = false;
@@ -314,20 +316,26 @@ export default class SwapChart extends Mixins(
     return this.fiatPrice.toLocaleString();
   }
 
-  /**
-   * Price change between current price and the last shapshot
-   */
-  get priceChange(): FPNumber {
-    const lastFiatPrice = new FPNumber(last(this.chartData)?.price?.[0] ?? 0);
+  get visibleChartItemsRange(): [number, number] {
+    const itemsCount = this.chartData.length;
+    const startIndex = Math.floor((itemsCount * this.zoomStart) / 100);
+    const endIndex = Math.ceil((itemsCount * this.zoomEnd) / 100) - 1;
 
-    return calcPriceChange(this.fiatPrice, lastFiatPrice);
+    return [startIndex, endIndex];
   }
 
-  get maxVisibleChartItems(): number {
-    const zoomPercent = this.zoomEnd - this.zoomStart;
-    const itemsCount = this.chartData.length;
+  /**
+   * Price change in visible range
+   */
+  get priceChange(): FPNumber {
+    const [startIndex, endIndex] = this.visibleChartItemsRange;
+    const priceOpenIndex = 0; // always 'open' price
+    const priceCloseIndex = this.isLineChart ? 0 : 1; // 'close' price for candlestick chart
 
-    return Math.ceil((itemsCount * zoomPercent) / 100);
+    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.price?.[priceOpenIndex] ?? 0);
+    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.price?.[priceCloseIndex] ?? 0);
+
+    return calcPriceChange(rangeClosePrice, rangeStartPrice);
   }
 
   get timeFormat(): string {
@@ -406,7 +414,7 @@ export default class SwapChart extends Mixins(
             const date = dayjs(+value);
             const format = date.hour() === 0 && date.minute() === 0 ? 'DD MMM' : this.timeFormat;
 
-            return date.format(format);
+            return this.formatDate(+value, format); // locale format
           },
           color: this.theme.color.base.content.secondary,
           ...this.axisLabelCSS,
@@ -701,9 +709,7 @@ export default class SwapChart extends Mixins(
       }
 
       this.prices.unshift(newItem);
-
       this.limits = response.limits;
-      this.pageInfos = response.pageInfos;
       this.precision = response.precision;
     } catch (error) {
       console.error(error);
@@ -723,13 +729,12 @@ export default class SwapChart extends Mixins(
 
   private preparePriceData(item: AssetSnapshot, chartType: CHART_TYPES): number[] {
     const { open, close, low, high } = item.priceUSD;
-    const priceData = [+open];
 
     if (chartType === CHART_TYPES.CANDLE) {
-      priceData.push(+close, +low, +high);
+      return [+open, +close, +low, +high];
     }
 
-    return priceData;
+    return [+close];
   }
 
   private dividePrices(priceA: number[], priceB: number[]) {
@@ -776,7 +781,7 @@ export default class SwapChart extends Mixins(
 
   handleZoom(event: any): void {
     event?.stop?.();
-    if (event?.wheelDelta === -1 && this.zoomStart === 0) {
+    if (event?.wheelDelta === -1 && this.zoomStart === 0 && this.zoomEnd === 100) {
       this.updatePrices();
     }
   }
