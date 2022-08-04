@@ -180,13 +180,13 @@ export class EthBridgeHistory {
 
     do {
       const variables = { after, filter, first: 100 };
-      const {
-        edges,
-        pageInfo: { hasNextPage, endCursor },
-      } = await SubqueryExplorerService.getAccountTransactions(variables);
-      const elements = edges.map((edge) => edge.node) as HistoryElement[];
-      hasNext = hasNextPage;
-      after = endCursor;
+      const response = await SubqueryExplorerService.getAccountTransactions(variables);
+
+      if (!response) return history;
+
+      const elements = response.edges.map((edge) => edge.node) as HistoryElement[];
+      hasNext = !!response.pageInfo?.hasNextPage;
+      after = response.pageInfo?.endCursor ?? '';
       history.push(...elements);
     } while (hasNext);
 
