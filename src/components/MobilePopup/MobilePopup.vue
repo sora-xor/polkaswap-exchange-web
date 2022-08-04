@@ -52,7 +52,7 @@ export default class MobilePopup extends Mixins(mixins.DialogMixin, TranslationM
 
 <style lang="scss">
 .popup .el-dialog {
-  max-width: 660px;
+  max-width: 660px !important;
   margin-top: 22vh !important;
 }
 

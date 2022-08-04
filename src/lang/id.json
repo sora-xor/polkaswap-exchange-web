@@ -1061,5 +1061,14 @@
             "PriceCalculationFailed": "Terjadi kesalahan saat menghitung harga"
         }
     },
-    "receivedText": "Diterima"
+    "receivedText": "Diterima",
+    "browserNotificationDialog": {
+        "title": "Aktifkan pemberitahuan browser",
+        "info": "Kami hanya akan mengirimkan pembaruan yang relevan tentang dompet Anda, misalnya: perubahan saldo aset",
+        "button": "Aktifkan notifikasi",
+        "agree": "Ya saya mengerti",
+        "notificationBlocked": "Untuk menerima notifikasi tentang {appName}, izinkan notifikasi di setelan asli browser Anda",
+        "pointer": "Tekan \"Izinkan\" untuk mengaktifkan notifikasi"
+    },
+    "assetDeposit": "Saldo aset telah disetorkan"
 }

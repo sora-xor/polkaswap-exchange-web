@@ -798,4 +798,14 @@ export default {
     scan: 'Scan with camera',
     allowanceError: 'Check your camera availability and browser permissions to use it',
   },
+  browserNotificationDialog: {
+    title: 'Enable browser notifications',
+    info: 'We will send you only relevant updates about your wallet, for example: asset balance changes',
+    enable: 'Enable notifications',
+    agree: 'Yes, I understand',
+    notificationBlocked:
+      "To receive the notifications about {appName}, please, allow the notifications in your browser's native settings",
+    pointer: 'Press “Allow” to turn notifications on',
+  },
+  assetDeposit: 'Asset balance has been deposited',
 };
