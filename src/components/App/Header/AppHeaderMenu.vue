@@ -268,14 +268,14 @@ $icon-size: 28px;
   &__bell {
     width: $icon-size;
     height: $icon-size;
-    margin-right: 5px;
+    margin-right: $basic-spacing-mini;
     margin: auto;
     margin-top: calc(#{$icon-size} / 2);
   }
 
   &__bell--dropdown {
     margin-top: $inner-spacing-mini;
-    margin-right: 5px;
+    margin-right: $basic-spacing-mini;
     color: var(--s-color-base-content-tertiary);
   }
 

@@ -2,7 +2,7 @@
   <dialog-base class="browser-notification" :title="t('browserNotificationDialog.title')" :visible.sync="isVisible">
     <div class="browser-notification-dialog">
       <p class="browser-notification-dialog__info">
-        {{ t('browserNotificationDialog.notificationBlocked') }}
+        {{ t('browserNotificationDialog.notificationBlocked', { appName: app.name }) }}
       </p>
       <s-button
         type="primary"
@@ -18,7 +18,9 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { app } from '../../../consts';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -32,6 +34,8 @@ export default class BrowserNotifsBlockedDialog extends Mixins(
   mixins.DialogMixin,
   mixins.LoadingMixin
 ) {
+  app = app;
+
   agree(): void {
     this.closeDialog();
   }

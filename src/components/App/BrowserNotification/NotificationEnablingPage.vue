@@ -28,7 +28,7 @@ export default class NotificationEnablingPage extends Mixins(TranslationMixin) {
   z-index: 90;
   width: 100%;
   height: 100%;
-  background-color: #000000;
+  background-color: #000;
   opacity: 0.8;
   z-index: 300;
 
@@ -39,7 +39,7 @@ export default class NotificationEnablingPage extends Mixins(TranslationMixin) {
 
   &__text {
     position: relative;
-    color: #ffffff;
+    color: #fff;
     font-size: 19px;
   }
 
