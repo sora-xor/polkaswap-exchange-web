@@ -223,6 +223,8 @@ const CANDLE_CHART_FILTERS = [
 
 const LABEL_PADDING = 4;
 
+const POLLING_INTERVAL = 30 * 1000;
+
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
@@ -267,6 +269,7 @@ export default class SwapChart extends Mixins(
 
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
   forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
+  priceUpdateSubscription: Nullable<NodeJS.Timer | number> = null;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
@@ -405,10 +408,6 @@ export default class SwapChart extends Mixins(
 
             return date.format(format);
           },
-          // interval: (index: number, value: string) => {
-          //   const date = dayjs(+value);
-          //   return date.hour() === 0 && date.minute() === 0;
-          // },
           color: this.theme.color.base.content.secondary,
           ...this.axisLabelCSS,
         },
@@ -580,11 +579,11 @@ export default class SwapChart extends Mixins(
   }
 
   created(): void {
-    this.updatePrices();
+    this.forceUpdatePrices();
   }
 
   // ordered ty timestamp DESC
-  async fetchData(address: string, filter: ChartFilter, pageInfo?: SUBQUERY_TYPES.PageInfo) {
+  private async fetchData(address: string, filter: ChartFilter, pageInfo?: SUBQUERY_TYPES.PageInfo) {
     const { type, count } = filter;
     const nodes: AssetSnapshot[] = [];
 
@@ -607,58 +606,76 @@ export default class SwapChart extends Mixins(
     return { nodes, hasNextPage, endCursor };
   }
 
-  getHistoricalPrices(): void {
+  private async getChartData(filter: ChartFilter, paginationInfos?: SUBQUERY_TYPES.PageInfo[]) {
+    const addresses = [this.tokenFrom?.address, this.tokenTo?.address].filter(Boolean);
+    const collections = await Promise.all(
+      addresses.map((address, index) => this.fetchData(address, filter, paginationInfos?.[index]))
+    );
+
+    if (!collections.every((collection) => !!collection)) return null;
+
+    const pageInfos = collections.map((item: any) => ({
+      hasNextPage: item.hasNextPage,
+      endCursor: item.endCursor,
+    }));
+
+    const groups = collections.map((collection: any) =>
+      collection.nodes.map((item) => {
+        const price = this.preparePriceData(item, this.chartType);
+
+        return {
+          timestamp: +item.timestamp * 1000,
+          price,
+        };
+      })
+    );
+
+    const prices: ChartDataItem[] = [];
+    const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
+    let { min, max } = this.limits;
+
+    for (let i = 0; i < size; i++) {
+      const a = groups[0]?.[i];
+      const b = groups[1]?.[i];
+
+      const timestamp = (a?.timestamp ?? b?.timestamp) as number;
+      const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0]) as number[];
+
+      prices.push({
+        timestamp,
+        price,
+      });
+
+      min = Math.min(min, ...price);
+      max = Math.max(max, ...price);
+    }
+
+    const precision = Math.max(this.getPrecision(min), this.getPrecision(max));
+    const limits = { min, max };
+
+    return {
+      limits,
+      pageInfos,
+      precision,
+      prices,
+    };
+  }
+
+  private getHistoricalPrices(): void {
     if (this.loading || this.pageInfos.some((pageInfo) => !pageInfo.hasNextPage)) return;
 
     this.withApi(async () => {
       await this.withLoading(async () => {
         try {
-          const addresses = [this.tokenFrom?.address, this.tokenTo?.address].filter(Boolean);
-          const collections = await Promise.all(
-            addresses.map((address, index) => this.fetchData(address, this.selectedFilter, this.pageInfos[index]))
-          );
+          const response = await this.getChartData(this.selectedFilter, this.pageInfos);
 
-          if (!collections.every((collection) => !!collection)) return;
+          if (!response) return;
 
-          this.pageInfos = collections.map((item: any) => ({
-            hasNextPage: item.hasNextPage,
-            endCursor: item.endCursor,
-          }));
+          this.limits = response.limits;
+          this.pageInfos = response.pageInfos;
+          this.precision = response.precision;
+          this.prices = [...this.prices, ...response.prices];
 
-          const groups = collections.map((collection: any) =>
-            collection.nodes.map((item) => {
-              const price = this.preparePriceData(item, this.chartType);
-
-              return {
-                timestamp: +item.timestamp * 1000,
-                price,
-              };
-            })
-          );
-
-          const prices: ChartDataItem[] = [];
-          const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
-          let { min, max } = this.limits;
-
-          for (let i = 0; i < size; i++) {
-            const a = groups[0]?.[i];
-            const b = groups[1]?.[i];
-
-            const timestamp = (a?.timestamp ?? b?.timestamp) as number;
-            const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0]) as number[];
-
-            prices.push({
-              timestamp,
-              price,
-            });
-
-            min = Math.min(min, ...price);
-            max = Math.max(max, ...price);
-          }
-
-          this.precision = Math.max(this.getPrecision(min), this.getPrecision(max));
-          this.limits = { min, max };
-          this.prices = [...this.prices, ...prices];
           this.isFetchingError = false;
         } catch (error) {
           this.isFetchingError = true;
@@ -666,6 +683,42 @@ export default class SwapChart extends Mixins(
         }
       });
     });
+  }
+
+  private async getCurrentPrices(): Promise<void> {
+    try {
+      const filter = { ...this.selectedFilter, count: 1 };
+      const response = await this.getChartData(filter);
+
+      if (!response) return;
+
+      const newItem = response.prices[0];
+
+      if (!newItem) return;
+
+      if (this.prices[0].timestamp === newItem.timestamp) {
+        this.prices.shift();
+      }
+
+      this.prices.unshift(newItem);
+
+      this.limits = response.limits;
+      this.pageInfos = response.pageInfos;
+      this.precision = response.precision;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  private unsubscribeFromPriceUpdates(): void {
+    if (this.priceUpdateSubscription) {
+      clearTimeout(this.priceUpdateSubscription as number);
+      this.priceUpdateSubscription = null;
+    }
+  }
+
+  private subscribeToPriceUpdates(): void {
+    this.priceUpdateSubscription = setInterval(this.getCurrentPrices, POLLING_INTERVAL);
   }
 
   private preparePriceData(item: AssetSnapshot, chartType: CHART_TYPES): number[] {
@@ -701,9 +754,11 @@ export default class SwapChart extends Mixins(
     this.forceUpdatePrices();
   }
 
-  private resetAndUpdatePrices(): void {
+  private async resetAndUpdatePrices(): Promise<void> {
     this.clearData();
-    this.updatePrices();
+    this.unsubscribeFromPriceUpdates();
+    await this.updatePrices();
+    this.subscribeToPriceUpdates();
   }
 
   selectFilter({ name }): void {
