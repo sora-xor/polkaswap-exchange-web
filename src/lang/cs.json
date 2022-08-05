@@ -1061,5 +1061,14 @@
             "PriceCalculationFailed": "Při výpočtu ceny došlo k chybě"
         }
     },
-    "receivedText": "Přijato"
+    "receivedText": "Přijato",
+    "browserNotificationDialog": {
+        "title": "Povolit oznámení prohlížeče",
+        "info": "Budeme vám zasílat pouze relevantní aktualizace o vaší peněžence, například: změny zůstatku aktiv",
+        "button": "Povolit upozornění",
+        "agree": "Ano, rozumím",
+        "notificationBlocked": "Chcete-li dostávat oznámení o {appName}, povolte oznámení v nativním nastavení prohlížeče",
+        "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení"
+    },
+    "assetDeposit": "Zůstatek aktiv byl uložen"
 }

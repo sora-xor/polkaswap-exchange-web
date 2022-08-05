@@ -1061,5 +1061,14 @@
             "PriceCalculationFailed": "Đã xảy ra lỗi khi tính giá"
         }
     },
-    "receivedText": "Nhận được"
+    "receivedText": "Nhận được",
+    "browserNotificationDialog": {
+        "title": "Bật thông báo trình duyệt",
+        "info": "Chúng tôi sẽ chỉ gửi cho bạn các cập nhật có liên quan về ví của bạn, ví dụ: thay đổi số dư tài sản",
+        "button": "Bật thông báo",
+        "agree": "Vâng, tôi hiểu",
+        "notificationBlocked": "Để nhận thông báo về {appName}, vui lòng cho phép thông báo trong cài đặt gốc của trình duyệt của bạn",
+        "pointer": "Nhấn “Cho phép” để bật thông báo"
+    },
+    "assetDeposit": "Số dư tài sản đã được gửi"
 }
