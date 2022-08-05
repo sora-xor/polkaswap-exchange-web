@@ -261,6 +261,8 @@ export default class SwapChart extends Mixins(
     max: 0,
   };
 
+  newDaysArray: Array<number> = [];
+
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250);
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
@@ -380,11 +382,10 @@ export default class SwapChart extends Mixins(
       xAxis: {
         type: 'category',
         data: this.chartData.map((item, index, arr) => {
-          return {
-            value: item.timestamp,
-            isNewDay:
-              index !== 0 ? new Date(arr[index - 1].timestamp).getDate() !== new Date(item.timestamp).getDate() : false,
-          };
+          if (index === 0 || new Date(arr[index - 1].timestamp).getDate() !== new Date(item.timestamp).getDate()) {
+            this.newDaysArray.push(index);
+          }
+          return item.timestamp;
         }),
         axisTick: {
           show: false,
@@ -393,13 +394,33 @@ export default class SwapChart extends Mixins(
           show: false,
         },
         axisLabel: {
-          formatter: (value: string, isNewDay: boolean) => {
-            // TODO: Check this place, add date instead of new first new date time
-            if (this.selectedFilter.type === SUBQUERY_TYPES.AssetSnapshotTypes.HOUR && isNewDay) {
+          formatter: (value: string, index: number) => {
+            const prevIndexes: Array<number> = [];
+            if (
+              this.selectedFilter.type === SUBQUERY_TYPES.AssetSnapshotTypes.HOUR &&
+              typeof common.xAxis.axisLabel.interval === 'number' &&
+              index > common.xAxis.axisLabel.interval
+            ) {
+              for (let i = index; i >= index - common.xAxis.axisLabel.interval; i--) {
+                prevIndexes.push(i);
+              }
+            }
+            if (
+              this.selectedFilter.name === TIMEFRAME_TYPES.MONTH ||
+              (this.selectedFilter.name === TIMEFRAME_TYPES.WEEK &&
+                this.newDaysArray.length &&
+                prevIndexes.some((item) => this.newDaysArray.includes(item)))
+            ) {
               return dayjs(+value).format('MMM DD');
             }
             return dayjs(+value).format(this.timeFormat);
           },
+          interval:
+            this.selectedFilter.name === TIMEFRAME_TYPES.WEEK
+              ? 10
+              : this.selectedFilter.name === TIMEFRAME_TYPES.MONTH
+              ? 40
+              : 'auto',
           color: this.theme.color.base.content.secondary,
           ...this.axisLabelCSS,
         },
@@ -603,6 +624,7 @@ export default class SwapChart extends Mixins(
     this.withApi(async () => {
       await this.withLoading(async () => {
         try {
+          this.newDaysArray = [];
           const addresses = [this.tokenFrom?.address, this.tokenTo?.address].filter(Boolean);
           const collections = await Promise.all(
             addresses.map((address, index) => this.fetchData(address, this.selectedFilter, this.pageInfos[index]))
