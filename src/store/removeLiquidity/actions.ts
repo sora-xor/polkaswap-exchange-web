@@ -65,18 +65,14 @@ const actions = defineActions({
 
     if (!state.focusedField || state.focusedField === 'removePart') {
       commit.setFocusedField('removePart');
-      const part = new FPNumber(Math.round(removePart));
+      const partAmount = new FPNumber(Math.round(removePart));
 
       if (removePart) {
-        const hundred = FPNumber.HUNDRED;
-        commit.setRemovePart(part.toNumber());
-        commit.setLiquidityAmount(part.div(hundred).mul(FPNumber.fromCodecValue(getters.liquidityBalance)).toString());
-        commit.setFirstTokenAmount(
-          part.div(hundred).mul(FPNumber.fromCodecValue(getters.firstTokenBalance)).toString()
-        );
-        commit.setSecondTokenAmount(
-          part.div(hundred).mul(FPNumber.fromCodecValue(getters.secondTokenBalance)).toString()
-        );
+        const part = partAmount.div(FPNumber.HUNDRED);
+        commit.setRemovePart(partAmount.toNumber());
+        commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
+        commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance).toString());
+        commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance).toString());
       } else {
         commit.setRemovePart();
         commit.setLiquidityAmount();
@@ -94,11 +90,11 @@ const actions = defineActions({
       commit.setFocusedField('firstTokenAmount');
       if (firstTokenAmount) {
         if (!Number.isNaN(firstTokenAmount)) {
-          const part = new FPNumber(firstTokenAmount).div(FPNumber.fromCodecValue(getters.firstTokenBalance));
+          const part = new FPNumber(firstTokenAmount).div(getters.firstTokenBalance);
           commit.setRemovePart(Math.round(part.mul(FPNumber.HUNDRED).toNumber()));
-          commit.setLiquidityAmount(part.mul(FPNumber.fromCodecValue(getters.liquidityBalance)).toString());
+          commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
           commit.setFirstTokenAmount(firstTokenAmount);
-          commit.setSecondTokenAmount(part.mul(FPNumber.fromCodecValue(getters.secondTokenBalance)).toString());
+          commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance).toString());
         }
       } else {
         commit.setFirstTokenAmount();
@@ -114,10 +110,10 @@ const actions = defineActions({
       commit.setFocusedField('secondTokenAmount');
       if (secondTokenAmount) {
         if (!Number.isNaN(secondTokenAmount)) {
-          const part = new FPNumber(secondTokenAmount).div(FPNumber.fromCodecValue(getters.secondTokenBalance));
+          const part = new FPNumber(secondTokenAmount).div(getters.secondTokenBalance);
           commit.setRemovePart(Math.round(part.mul(FPNumber.HUNDRED).toNumber()));
-          commit.setLiquidityAmount(part.mul(FPNumber.fromCodecValue(getters.liquidityBalance)).toString());
-          commit.setFirstTokenAmount(part.mul(FPNumber.fromCodecValue(getters.firstTokenBalance)).toString());
+          commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
+          commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance).toString());
           commit.setSecondTokenAmount(secondTokenAmount);
         }
       } else {
