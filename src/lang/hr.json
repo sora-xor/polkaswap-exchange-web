@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "Iznos za ulog",
         "amountRemove": "Iznos za uklanjanje",
-        "poweredBy": "Pokreće Demeter Farming"
+        "poweredBy": "Pokreće Demeter Farming",
+        "calculator": "Kalkulator",
+        "results": "Rezultati",
+        "rewards": "{symbol} nagrada"
     },
     "staking": {
         "title": "Ulaganje"
@@ -1058,5 +1061,14 @@
             "PriceCalculationFailed": "Došlo je do greške prilikom izračuna cijene"
         }
     },
-    "receivedText": "Primljeno"
+    "receivedText": "Primljeno",
+    "browserNotificationDialog": {
+        "title": "Omogući obavijesti preglednika",
+        "info": "Poslat ćemo vam samo relevantna ažuriranja o vašem novčaniku, na primjer: promjene stanja imovine",
+        "button": "Omogući obavijesti",
+        "agree": "Da, razumijem",
+        "notificationBlocked": "Da biste primali obavijesti o {appName}, omogućite obavijesti u izvornim postavkama preglednika",
+        "pointer": "Pritisnite \"Dopusti\" za uključivanje obavijesti"
+    },
+    "assetDeposit": "Stanje imovine je deponirano"
 }

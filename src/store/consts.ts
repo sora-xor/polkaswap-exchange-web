@@ -15,7 +15,6 @@ export enum Module {
   Moonpay = 'moonpay',
   Bridge = 'bridge',
   AddLiquidity = 'addLiquidity',
-  CreatePair = 'createPair',
   RemoveLiquidity = 'removeLiquidity',
   Rewards = 'rewards',
   DemeterFarming = 'demeterFarming',

@@ -27,6 +27,14 @@
           >
             {{ text }}
           </s-dropdown-item>
+          <div
+            v-if="!notificationActivated"
+            @click="openNotificationDialog"
+            class="notif-option el-dropdown-menu__item header-menu__item"
+          >
+            <bell-icon class="notif-option__bell notif-option__bell--dropdown"></bell-icon>
+            <span class="notif-option__text">{{ t('browserNotificationDialog.title') }}</span>
+          </div>
         </template>
       </s-dropdown>
     </s-button>
@@ -41,6 +49,15 @@
       >
         <s-icon :name="icon" :size="iconSize" />
       </s-button>
+      <s-button
+        v-if="!notificationActivated"
+        type="action"
+        :tooltip="t('browserNotificationDialog.button')"
+        @click="openNotificationDialog"
+        class="notif-option s-pressed el-dropdown-menu__item header-menu__item"
+      >
+        <bell-icon class="notif-option__bell notif-option__bell--large"></bell-icon>
+      </s-button>
     </template>
   </div>
 </template>
@@ -50,6 +67,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 
+import BellIcon from '@/assets/img/browser-notification/bell.svg?inline';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, mutation, state } from '@/store/decorators';
 
@@ -57,6 +75,7 @@ enum HeaderMenuType {
   HideBalances = 'hide-balances',
   Theme = 'theme',
   Language = 'language',
+  Notification = 'notification',
 }
 
 type MenuItem = {
@@ -67,15 +86,22 @@ type MenuItem = {
 
 const BREAKPOINT = 1440;
 
-@Component
+@Component({
+  components: {
+    BellIcon,
+  },
+})
 export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
 
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
+  @getter.settings.notificationActivated notificationActivated!: boolean;
 
   @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: AsyncVoidFn;
+  @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopupEnabled!: (flag: boolean) => void;
+  @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
 
   isLargeDesktop: boolean = window.innerWidth >= BREAKPOINT;
@@ -86,6 +112,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   get mediaQueryList(): MediaQueryList {
     return window.matchMedia(`(min-width: ${BREAKPOINT}px)`);
+  }
+
+  get isNotificationOptionShown(): boolean {
+    return !this.notificationActivated;
   }
 
   private getThemeIcon(isDropdown = false): string {
@@ -153,6 +183,14 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     this.mediaQueryList.removeEventListener('change', this.updateLargeDesktopFlag);
   }
 
+  openNotificationDialog(): void {
+    if (Notification.permission === 'denied') {
+      this.setBrowserNotifsPopupBlocked(true);
+    } else if (Notification.permission === 'default') {
+      this.setBrowserNotifsPopupEnabled(true);
+    }
+  }
+
   handleClickHeaderMenu(): void {
     const dropdown = (this.$refs.headerMenu as any).dropdown;
     dropdown.visible ? dropdown.hide() : dropdown.show();
@@ -176,6 +214,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 $icon-size: 28px;
+
+.app-header-menu {
+  display: flex;
+}
 
 .header-menu {
   $dropdown-background: var(--s-color-utility-body);
@@ -216,6 +258,29 @@ $icon-size: 28px;
         }
       }
     }
+  }
+}
+
+.notif-option {
+  display: flex;
+  justify-content: center;
+
+  &__bell {
+    width: $icon-size;
+    height: $icon-size;
+    margin-right: $basic-spacing-mini;
+    margin: auto;
+    margin-top: calc(#{$icon-size} / 2);
+  }
+
+  &__bell--dropdown {
+    margin-top: $inner-spacing-mini;
+    margin-right: $basic-spacing-mini;
+    color: var(--s-color-base-content-tertiary);
+  }
+
+  &:hover &__bell--dropdown {
+    color: var(--s-color-base-content-secondary);
   }
 }
 </style>

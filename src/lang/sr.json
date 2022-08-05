@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "Износ за стекинг",
         "amountRemove": "Износ за уклањање",
-        "poweredBy": "Powered by Demeter Farming"
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Калкулатор",
+        "results": "Резултати",
+        "rewards": "{symbol} награде"
     },
     "staking": {
         "title": "Стeкинг"
@@ -1058,5 +1061,14 @@
             "PriceCalculationFailed": "Дошло је до грешке при израчунавању цене"
         }
     },
-    "receivedText": "Примљено"
+    "receivedText": "Примљено",
+    "browserNotificationDialog": {
+        "title": "Омогућите обавештења прегледача",
+        "info": "Слаћемо вам само релевантна ажурирања о вашем новчанику, на пример: промене стања средстава",
+        "button": "Омогућили обавештења",
+        "agree": "Да, разумем",
+        "notificationBlocked": "Да бисте примали обавештења о {appName}, дозволите обавештења у основним подешавањима прегледача",
+        "pointer": "Притисните „Дозволи“ да бисте укључили обавештења"
+    },
+    "assetDeposit": "Стање средстава је депоновано"
 }

@@ -2063,7 +2063,7 @@
     ed2curve "^0.3.0"
     tweetnacl "^1.0.3"
 
-"@polkadot/util@9.6.2", "@polkadot/util@^9.2.1", "@polkadot/util@^9.4.1", "@polkadot/util@^9.5.1", "@polkadot/util@^9.6.1":
+"@polkadot/util@9.6.2", "@polkadot/util@^9.4.1", "@polkadot/util@^9.5.1", "@polkadot/util@^9.6.1":
   version "9.6.2"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-9.6.2.tgz#ad011b04f941bf7ce62babfd8ea32180ed985caf"
   integrity sha512-ebK46kEsXfzqUgaPVbVOZepHtVJR2qd9FHTLBPcoXR601y6IuqCHkp0hMkrD3Cdi5AWAd0a7h84c1/Oj5q3SnA==
@@ -2073,6 +2073,20 @@
     "@polkadot/x-global" "9.6.2"
     "@polkadot/x-textdecoder" "9.6.2"
     "@polkadot/x-textencoder" "9.6.2"
+    "@types/bn.js" "^5.1.0"
+    bn.js "^5.2.1"
+    ip-regex "^4.3.0"
+
+"@polkadot/util@^9.2.1":
+  version "9.7.2"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-9.7.2.tgz#0f97fa92b273e6ce4b53fe869a957ac99342007d"
+  integrity sha512-ivTmA+KkPCq5i3O0Gk+dTds/hwdwlYCh89aKfeaG9ni3XHUbbuBgTqHneo648HqxwAwSAyiDiwE9EdXrzAdO4Q==
+  dependencies:
+    "@babel/runtime" "^7.18.6"
+    "@polkadot/x-bigint" "9.7.2"
+    "@polkadot/x-global" "9.7.2"
+    "@polkadot/x-textdecoder" "9.7.2"
+    "@polkadot/x-textencoder" "9.7.2"
     "@types/bn.js" "^5.1.0"
     bn.js "^5.2.1"
     ip-regex "^4.3.0"
@@ -2147,6 +2161,14 @@
     "@babel/runtime" "^7.18.3"
     "@polkadot/x-global" "9.6.2"
 
+"@polkadot/x-bigint@9.7.2":
+  version "9.7.2"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-bigint/-/x-bigint-9.7.2.tgz#ec79977335dce173a81e45247bdfd46f3b301702"
+  integrity sha512-qi8/DTGypFSt5vvNOsYcEaqH72lymfyidGlsHlZ6e7nNASnEhk/NaOcINiTr1ds+fpu4dtKXWAIPZufujf2JeQ==
+  dependencies:
+    "@babel/runtime" "^7.18.6"
+    "@polkadot/x-global" "9.7.2"
+
 "@polkadot/x-fetch@^9.5.1":
   version "9.6.2"
   resolved "https://registry.yarnpkg.com/@polkadot/x-fetch/-/x-fetch-9.6.2.tgz#709019626a5618805516bbdd3701e26781b3e849"
@@ -2164,6 +2186,13 @@
   dependencies:
     "@babel/runtime" "^7.18.3"
 
+"@polkadot/x-global@9.7.2":
+  version "9.7.2"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-global/-/x-global-9.7.2.tgz#9847fd1da13989f321ca621e85477ba70fd8d55a"
+  integrity sha512-3NN5JhjosaelaFWBJSlv9mb/gDAlt7RuZ8NKlOjB+LQHd9g6ZbnYi5wwjW+i/x/3E4IVbBx66uvWgNaw7IBrkg==
+  dependencies:
+    "@babel/runtime" "^7.18.6"
+
 "@polkadot/x-randomvalues@9.6.2":
   version "9.6.2"
   resolved "https://registry.yarnpkg.com/@polkadot/x-randomvalues/-/x-randomvalues-9.6.2.tgz#8555710235f649c14ea28c25919bed6c0e4202bb"
@@ -2180,6 +2209,14 @@
     "@babel/runtime" "^7.18.3"
     "@polkadot/x-global" "9.6.2"
 
+"@polkadot/x-textdecoder@9.7.2":
+  version "9.7.2"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-textdecoder/-/x-textdecoder-9.7.2.tgz#c94ea6c8f510fdf579659248ede9421854e32b42"
+  integrity sha512-hhrMNZwJBmusdpqjDRpOHZoMB4hpyJt9Gu9Bi9is7/D/vq/hpxq8z7s6NxrbRyXJf1SIk6NMK0jf5XjRLdKdbw==
+  dependencies:
+    "@babel/runtime" "^7.18.6"
+    "@polkadot/x-global" "9.7.2"
+
 "@polkadot/x-textencoder@9.6.2":
   version "9.6.2"
   resolved "https://registry.yarnpkg.com/@polkadot/x-textencoder/-/x-textencoder-9.6.2.tgz#e0d3c37094bc19dd55ee3f0659a5a6b69ef43b91"
@@ -2187,6 +2224,14 @@
   dependencies:
     "@babel/runtime" "^7.18.3"
     "@polkadot/x-global" "9.6.2"
+
+"@polkadot/x-textencoder@9.7.2":
+  version "9.7.2"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-textencoder/-/x-textencoder-9.7.2.tgz#2ae29fa5ca2c0353e7a1913eef710b2d45bdf0b2"
+  integrity sha512-GHbSdbMPixDAOnJ9cvL/x9sPNeHegPoDSqCAzY5H6/zHc/fNn0vUu0To9VpPgPhp/Jb9dbc0h8YqEyvOcOlphw==
+  dependencies:
+    "@babel/runtime" "^7.18.6"
+    "@polkadot/x-global" "9.7.2"
 
 "@polkadot/x-ws@^9.5.1":
   version "9.6.2"
@@ -2314,60 +2359,60 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api@1.10.0-beta.6":
-  version "1.10.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.10.0-beta.6.tgz#857b4c21e16332b91153708171e9378d53e62e62"
-  integrity sha512-ex3M5/7X/UvfNvIRe+gRaz9Wk+p9tzXpAapUF1zImkYVoIOCm1bPKDjqyFJp0lt7rf72wY6GjNdRZL6FXop7dQ==
+"@sora-substrate/api@1.10.0-beta.7":
+  version "1.10.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.10.0-beta.7.tgz#632606fa1831974db16dd5b59d8921a00bbd7cb5"
+  integrity sha512-VjO+uCytX1CgIiVIcgaQFR1Uy1s1+OXDogG4H5l91oWbLtZcQjalS8sVux3hgS91rvVUeFHIY/n+L6EPkz6X8w==
   dependencies:
     "@open-web3/orml-api-derive" "0.9.4-26"
     "@polkadot/api" "8.9.1"
-    "@sora-substrate/types" "1.10.0-beta.6"
+    "@sora-substrate/types" "1.10.0-beta.7"
 
-"@sora-substrate/liquidity-proxy@1.10.0-beta.6":
-  version "1.10.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/liquidity-proxy/-/liquidity-proxy-1.10.0-beta.6.tgz#6d7bbac778c6e9f82901248c5a115393b335ed90"
-  integrity sha512-rH7TPIjLwzIUHWTCWXAcWn6/s5/zeyt+FLiGx1kW64aLhyCNiyENnhMaaJRFZUQTHbLwyuL+Bixa4a3+90o+iQ==
+"@sora-substrate/liquidity-proxy@1.10.0-beta.7":
+  version "1.10.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/liquidity-proxy/-/liquidity-proxy-1.10.0-beta.7.tgz#3021220d64fd6442a8baf7ac24aeadf56b41e229"
+  integrity sha512-T/IvOoOQLt7YRRUkIqnOfgZRVZB54wh5Pv5LDfjshiG4WOgJ1o7ZNQnzFRJk63VPNW1Z2D5K1q4rPefT5Rzcvw==
   dependencies:
-    "@sora-substrate/math" "1.10.0-beta.6"
+    "@sora-substrate/math" "1.10.0-beta.7"
 
-"@sora-substrate/math@1.10.0-beta.6":
-  version "1.10.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.10.0-beta.6.tgz#2ea013f2448e0141a5386ecc719646427e7256e7"
-  integrity sha512-q7kBBE5HY3cJJ+qOdK3gFo5Ex3cZSbVr0rXAe4lu3VlXU9w57rKE3DvmaJ6uKRK+uWeWCI/laxEGMv2yINVQyA==
+"@sora-substrate/math@1.10.0-beta.7":
+  version "1.10.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.10.0-beta.7.tgz#7d1259940ff4074d3acfacf11b9548a347a5b440"
+  integrity sha512-HgtygZ9FDhaZ+HacTSDLGkK/rA+tRUjlGEsMSOYHVO1GYNz/i8krrkVmApoMMvGcLtp7/fNZtvEVx8qN5xxppA==
   dependencies:
     "@polkadot/types" "8.9.1"
     bignumber.js "^9.0.1"
     lodash "^4.17.15"
 
-"@sora-substrate/type-definitions@1.10.0-beta.6":
-  version "1.10.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.10.0-beta.6.tgz#2cfb2fff491bae92239cdf0c7f72a1eacc16ea55"
-  integrity sha512-CG+Gi7DFuji7IivuuI23KNZTnpu+ll4H9QpMem08PTWqgvOwK6x6rs5bjbpkkVvKoF68T/77UhGOIkzWkkoOqQ==
+"@sora-substrate/type-definitions@1.10.0-beta.7":
+  version "1.10.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.10.0-beta.7.tgz#c516e81415a2bb13763d5eb6b096bb1b3e0726c5"
+  integrity sha512-+vxQhlJf6G6v12RVQmbt9Vg81RwAYlGfKbBAZas3gXTOQD0h1n3IkH2yNYCQ8rwE5huS286/6m2kYH7dvylpZA==
   dependencies:
     "@open-web3/orml-type-definitions" "0.9.4-26"
 
-"@sora-substrate/types@1.10.0-beta.6":
-  version "1.10.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.10.0-beta.6.tgz#6cf4b3c30b1c5f5ecb9cfd4f3501ee52788d46a2"
-  integrity sha512-DwN956ZJLaMC8o6IuuP4ef4dzrzHJ+TLfAu4LAscqe81YVkOvOwVSDP+mjBmGwMtU3agbw5EDMSlG73ce5SMgg==
+"@sora-substrate/types@1.10.0-beta.7":
+  version "1.10.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.10.0-beta.7.tgz#b08ea2a913c97003657c0ba818c7c4f707a14e17"
+  integrity sha512-G9w9yhDaGtWAHQH22IhSoUS0Im7JLhDK1FY6QbJgTYSGyiIXs5NVUGIrY9il1Ij02ixvhPGbzNqBFP7FS2uZGg==
   dependencies:
     "@open-web3/api-mobx" "0.9.4-26"
     "@open-web3/orml-types" "0.9.4-26"
     "@polkadot/api" "8.9.1"
     "@polkadot/typegen" "8.9.1"
     "@polkadot/types" "8.9.1"
-    "@sora-substrate/type-definitions" "1.10.0-beta.6"
+    "@sora-substrate/type-definitions" "1.10.0-beta.7"
 
-"@sora-substrate/util@1.10.0-beta.6":
-  version "1.10.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.10.0-beta.6.tgz#c6cc893555e7a5fe6109755d3a3f76a5912a7164"
-  integrity sha512-YV4p5s+cEVYZ+Ky3/A66e5kpRLrOolhbUouthiOvy735J9QA3OvimQ/1+dNzOaF7jlHDapERDFE7F5JpBeBEkw==
+"@sora-substrate/util@1.10.0-beta.7":
+  version "1.10.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.10.0-beta.7.tgz#0756949f58e2cd2c19dfb6f8a0abcdf266a10a59"
+  integrity sha512-pyYtd6j5iP8ph4vKhzdWFxO7BXD0xUhbh4PkhLdHea6NpJaJP3IDmrmJfNNQBTr+bbIJqs2SJFz5n3W0LvPEjA==
   dependencies:
     "@polkadot/ui-keyring" "2.5.1"
-    "@sora-substrate/api" "1.10.0-beta.6"
-    "@sora-substrate/liquidity-proxy" "1.10.0-beta.6"
-    "@sora-substrate/math" "1.10.0-beta.6"
-    "@sora-substrate/types" "1.10.0-beta.6"
+    "@sora-substrate/api" "1.10.0-beta.7"
+    "@sora-substrate/liquidity-proxy" "1.10.0-beta.7"
+    "@sora-substrate/math" "1.10.0-beta.7"
+    "@sora-substrate/types" "1.10.0-beta.7"
     axios "^0.21.1"
     bignumber.js "^9.0.1"
     crypto-js "^4.0.0"
@@ -2391,18 +2436,19 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^1.10.8":
-  version "1.10.8"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.10.8.tgz#c080be1948c5af4c5685c2b356b955373dd9c457"
-  integrity sha512-6jiANrazlU4Lw9engLi2q0dCphlVuhpKuVUjuoRLWEStefdAvcR+L7XaDBKUjXD6LOyzqSOsPDyu1/s0g3FpPA==
+"@soramitsu/soraneo-wallet-web@^1.10.12":
+  version "1.10.12"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.10.12.tgz#9116ce6eb67be1b097bbf6c595b1a09fcc51b059"
+  integrity sha512-B5mQFQfhY5JuPCgkhFenB8oy3wLcQ1GZVubgykLv+hoYle9t5iUUL2Bcl4/yRX5NBeDmfCdQhoIOtN22O4JiZQ==
   dependencies:
     "@polkadot/vue-identicon" "2.6.1"
-    "@sora-substrate/util" "1.10.0-beta.6"
+    "@sora-substrate/util" "1.10.0-beta.7"
     "@soramitsu/soramitsu-js-ui" "^1.0.34"
     "@subwallet/wallet-connect" "^0.2.3"
     "@urql/core" "^2.5.0"
     "@zxing/browser" "^0.1.1"
     "@zxing/library" "^0.19.1"
+    base-64 "^1.0.0"
     core-js "^3.6.4"
     dayjs "^1.10.5"
     direct-vuex "^0.12.1"
@@ -4429,6 +4475,11 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
+base-64@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/base-64/-/base-64-1.0.0.tgz#09d0f2084e32a3fd08c2475b973788eee6ae8f4a"
+  integrity sha512-kwDPIFCGx0NZHog36dj+tHiwP4QMzsZ3AgMViUBKI0+V5n4U0ufTCUMhnQ04diaRI8EX/QcPfql7zlhZ7j4zgg==
+
 base-x@^3.0.2:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/base-x/-/base-x-3.0.8.tgz#1e1106c2537f0162e8b52474a557ebb09000018d"
@@ -6094,10 +6145,15 @@ destroy@~1.0.4:
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
   integrity sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
 
-detect-browser@5.2.0, detect-browser@^5.2.0:
+detect-browser@5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/detect-browser/-/detect-browser-5.2.0.tgz#c9cd5afa96a6a19fda0bbe9e9be48a6b6e1e9c97"
   integrity sha512-tr7XntDAu50BVENgQfajMLzacmSe34D+qZc4zjnniz0ZVuw/TZcLcyxHQjYpJTM36sGEkZZlYLnIM1hH7alTMA==
+
+detect-browser@^5.2.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/detect-browser/-/detect-browser-5.3.0.tgz#9705ef2bddf46072d0f7265a1fe300e36fe7ceca"
+  integrity sha512-53rsFbGdwMwlF7qvCt0ypLM5V5/Mbl0szB7GPN8y9NCcbknYOeVVXdrXEq+90IwAfrrzt6Hd+u2E2ntakICU8w==
 
 detect-newline@^3.0.0:
   version "3.1.0"

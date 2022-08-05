@@ -38,6 +38,9 @@
     <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
     <bridge-transfer-notification />
     <mobile-popup :visible.sync="showMobilePopup" />
+    <browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
+    <browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
+    <notification-enabling-page v-if="showNotifsDarkPage" />
   </s-design-system-provider>
 </template>
 
@@ -61,6 +64,7 @@ import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions } from '@/types/nodes';
 import type { SubNetwork } from '@/utils/ethers-util';
 import type { FeatureFlags } from '@/store/settings/types';
+import { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -70,6 +74,9 @@ import type { FeatureFlags } from '@/store/settings/types';
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
+    BrowserNotifsEnableDialog: lazyComponent(Components.BrowserNotifsEnableDialog),
+    BrowserNotifsBlockedDialog: lazyComponent(Components.BrowserNotifsBlockedDialog),
+    NotificationEnablingPage: lazyComponent(Components.NotificationEnablingPage),
     MobilePopup,
   },
 })
@@ -77,9 +84,13 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   menuVisibility = false;
   showConfirmInviteUser = false;
   showMobilePopup = false;
+  showNotifsDarkPage = false;
 
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+  @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer storageReferrer!: string;
+  @state.settings.browserNotifPopupVisibility browserNotifPopup!: boolean;
+  @state.settings.browserNotifPopupBlockedVisibility browserNotifPopupBlocked!: boolean;
   @state.settings.blockNumber blockNumber!: number;
 
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
@@ -94,6 +105,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setNetworkChainGenesisHash private setNetworkChainGenesisHash!: (hash?: string) => void;
   @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
+  @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
+  @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
   @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
@@ -109,6 +122,16 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.settings.setBlockNumber private setBlockNumber!: AsyncVoidFn;
   @action.web3.setSmartContracts private setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @action.referrals.getReferrer private getReferrer!: AsyncVoidFn;
+  @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
+    asset: WhitelistArrayItem;
+    message: string;
+  }) => AsyncVoidFn;
+
+  @Watch('assetsToNotifyQueue')
+  private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
+    if (!whitelistAssetArray.length) return;
+    this.notifyOnDeposit({ asset: whitelistAssetArray[0], message: this.t('assetDeposit') });
+  }
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History, oldValue: History): void {
@@ -213,6 +236,22 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     return getExplorerLinks(this.soraNetwork)[0].value;
   }
 
+  get showBrowserNotifPopup(): boolean {
+    return this.browserNotifPopup;
+  }
+
+  set showBrowserNotifPopup(value) {
+    this.setBrowserNotifsPopup(value);
+  }
+
+  get showBrowserNotifBlockedPopup(): boolean {
+    return this.browserNotifPopupBlocked;
+  }
+
+  set showBrowserNotifBlockedPopup(value) {
+    this.setBrowserNotifsPopupBlocked(value);
+  }
+
   goTo(name: PageNames): void {
     goTo(name);
     this.closeMenu();
@@ -228,6 +267,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   closeMenu(): void {
     this.menuVisibility = false;
+  }
+
+  setDarkPage(value: boolean) {
+    this.showNotifsDarkPage = value;
   }
 
   handleAppMenuClick(e: Event): void {
@@ -523,9 +566,9 @@ $sora-logo-width: 173.7px;
     margin: auto;
 
     .app-disclaimer {
-      margin-left: $basic-spacing-medium;
+      margin-left: auto;
       margin-bottom: $inner-spacing-big;
-      margin-right: $basic-spacing-medium;
+      margin-right: auto;
       max-width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
       text-align: justify;
     }
