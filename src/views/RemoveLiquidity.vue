@@ -198,14 +198,14 @@ export default class RemoveLiquidity extends Mixins(
   @state.prices.priceReversed priceReversed!: string;
 
   @getter.assets.xor private xor!: Nullable<AccountAsset>;
-  @getter.removeLiquidity.liquidityBalance private liquidityBalance!: CodecString;
+  @getter.removeLiquidity.liquidityBalanceFull private liquidityBalanceFull!: FPNumber;
+  @getter.removeLiquidity.liquidityBalance private liquidityBalance!: FPNumber;
   @getter.removeLiquidity.liquidity liquidity!: AccountLiquidity;
   @getter.removeLiquidity.firstToken firstToken!: Asset;
   @getter.removeLiquidity.secondToken secondToken!: Asset;
-  @getter.removeLiquidity.firstTokenBalance firstTokenBalance!: CodecString;
-  @getter.removeLiquidity.secondTokenBalance secondTokenBalance!: CodecString;
+  @getter.removeLiquidity.firstTokenBalance firstTokenBalance!: FPNumber;
+  @getter.removeLiquidity.secondTokenBalance secondTokenBalance!: FPNumber;
   @getter.removeLiquidity.shareOfPool shareOfPool!: string;
-  @getter.removeLiquidity.liquidityBalanceFreePart liquidityBalanceFreePart!: FPNumber;
 
   @mutation.removeLiquidity.setFocusedField setFocusedField!: (field: FocusedField) => void;
   @mutation.removeLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
@@ -288,26 +288,30 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get liquidityLocked(): boolean {
-    return this.liquidityBalanceFreePart.isZero();
+    return this.liquidityBalance.isZero();
   }
 
   get hasLockedPart(): boolean {
-    return FPNumber.isLessThan(this.liquidityBalanceFreePart, FPNumber.ONE);
+    return FPNumber.isLessThan(this.liquidityBalance, this.liquidityBalanceFull);
   }
 
   get liquidityBalanceLockedPercent() {
-    return FPNumber.ONE.sub(this.liquidityBalanceFreePart).mul(FPNumber.HUNDRED).toLocaleString() + '%';
+    return (
+      this.liquidityBalanceFull
+        .sub(this.liquidityBalance)
+        .div(this.liquidityBalanceFull)
+        .mul(FPNumber.HUNDRED)
+        .toLocaleString() + '%'
+    );
   }
 
   get isInsufficientBalance(): boolean {
-    const balance = this.getFPNumberFromCodec(this.liquidityBalance);
-    const firstTokenBalance = this.getFPNumberFromCodec(this.firstTokenBalance);
-    const secondTokenBalance = this.getFPNumberFromCodec(this.secondTokenBalance);
+    const { liquidityBalance, firstTokenBalance, secondTokenBalance } = this;
     const amount = this.getFPNumber(this.liquidityAmount);
     const firstTokenAmount = this.getFPNumber(this.firstTokenAmount);
     const secondTokenAmount = this.getFPNumber(this.secondTokenAmount);
     return (
-      FPNumber.gt(amount, balance) ||
+      FPNumber.gt(amount, liquidityBalance) ||
       FPNumber.gt(firstTokenAmount, firstTokenBalance) ||
       FPNumber.gt(secondTokenAmount, secondTokenBalance)
     );
@@ -354,16 +358,12 @@ export default class RemoveLiquidity extends Mixins(
     }
   }
 
-  getTokenMaxAmount(tokenBalance: CodecString, decimals?: number): string | undefined {
-    if (!tokenBalance) {
-      return undefined;
-    }
-    return this.getStringFromCodec(tokenBalance, decimals);
+  getTokenMaxAmount(tokenBalance: FPNumber): string {
+    return tokenBalance.toString();
   }
 
   private updatePrices(): void {
-    const firstTokenBalance = this.getFPNumberFromCodec(this.firstTokenBalance);
-    const secondTokenBalance = this.getFPNumberFromCodec(this.secondTokenBalance);
+    const { firstTokenBalance, secondTokenBalance } = this;
     this.getPrices({
       assetAAddress: this.firstTokenAddress ?? this.firstToken.address,
       assetBAddress: this.secondTokenAddress ?? this.secondToken.address,
