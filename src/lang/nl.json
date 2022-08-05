@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "Bedrag om in te zetten",
         "amountRemove": "Te verwijderen bedrag",
-        "poweredBy": "Mogelijk gemaakt door Demeter Farming"
+        "poweredBy": "Mogelijk gemaakt door Demeter Farming",
+        "calculator": "Rekenmachine",
+        "results": "Resultaten",
+        "rewards": "{symbol} beloningen"
     },
     "staking": {
         "title": "Staking"
@@ -1058,5 +1061,14 @@
             "PriceCalculationFailed": "Er is een fout opgetreden bij het berekenen van de prijs"
         }
     },
-    "receivedText": "Ontvangen"
+    "receivedText": "Ontvangen",
+    "browserNotificationDialog": {
+        "title": "Browsermeldingen inschakelen",
+        "info": "We sturen u alleen relevante updates over uw portemonnee, bijvoorbeeld: wijzigingen in activasaldo",
+        "button": "Notificaties aanzetten",
+        "agree": "Ja ik begrijp het",
+        "notificationBlocked": "Als u de meldingen over {appName} wilt ontvangen, moet u de meldingen toestaan in de systeemeigen instellingen van uw browser",
+        "pointer": "Druk op \"Toestaan\" om meldingen in te schakelen"
+    },
+    "assetDeposit": "Activa-saldo is gestort"
 }

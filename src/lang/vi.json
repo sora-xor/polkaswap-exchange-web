@@ -82,7 +82,7 @@
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) Polkadot{.js}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Dường như không có tài khoản nào trong tiện ích (extension) Polkadot{.js}. Vui lòng thêm tài khoản và thử lại.",
-        "noAccount": "Tài khoản Polkadot{.js} gặp trục trặc. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) Polkadot{.js}.",
+        "noAccount": "Tài khoản Polkadot{.js} gặp lỗi. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) Polkadot{.js}.",
         "noExtension": "Không tìm thấy {extension} . Vui lòng cài đặt nó và tải lại trang này",
         "noSigner": "Quyền truy cập bị từ chối. Đi tới cài đặt tiện ích {extension} và mở \"Quản lý quyền truy cập trang web\" để cho phép."
     },
@@ -100,7 +100,7 @@
             "connect": "Kết nối tài khoản",
             "refresh": "Làm mới"
         },
-        "selectWallet": "Chọn một ví để làm việc với",
+        "selectWallet": "Chọn một ví để kết nối",
         "wallet": {
             "install": "Cài đặt"
         }
@@ -970,7 +970,7 @@
         "invalid": "Mã QR không hợp lệ",
         "import": "Nhập hình ảnh",
         "scan": "Quét bằng máy ảnh",
-        "allowanceError": "Kiểm tra tính khả dụng của máy ảnh và quyền của trình duyệt để sử dụng nó",
+        "allowanceError": "Kiểm tra máy ảnh và quyền sử dụng máy ảnh của trình duyệ",
         "receive": "Nhận"
     },
     "bridgeTransferNotification": {
@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "Số lượng stake",
         "amountRemove": "Số tiền cần loại bỏ",
-        "poweredBy": "Được cung cấp bởi Demeter Farming"
+        "poweredBy": "Được cung cấp bởi Demeter Farming",
+        "calculator": "Máy tính",
+        "results": "Kết quả",
+        "rewards": "phần thưởng {symbol}"
     },
     "staking": {
         "title": "Staking"
@@ -1058,5 +1061,14 @@
             "PriceCalculationFailed": "Đã xảy ra lỗi khi tính giá"
         }
     },
-    "receivedText": "Nhận được"
+    "receivedText": "Nhận được",
+    "browserNotificationDialog": {
+        "title": "Bật thông báo trình duyệt",
+        "info": "Chúng tôi sẽ chỉ gửi cho bạn các cập nhật có liên quan về ví của bạn, ví dụ: thay đổi số dư tài sản",
+        "button": "Bật thông báo",
+        "agree": "Vâng, tôi hiểu",
+        "notificationBlocked": "Để nhận thông báo về {appName}, vui lòng cho phép thông báo trong cài đặt gốc của trình duyệt của bạn",
+        "pointer": "Nhấn “Cho phép” để bật thông báo"
+    },
+    "assetDeposit": "Số dư tài sản đã được gửi"
 }

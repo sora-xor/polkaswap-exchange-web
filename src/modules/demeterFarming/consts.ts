@@ -9,4 +9,5 @@ export enum DemeterComponents {
   PoolCard = 'PoolCard',
   StakeDialog = 'StakeDialog',
   ClaimDialog = 'ClaimDialog',
+  CalculatorDialog = 'CalculatorDialog',
 }

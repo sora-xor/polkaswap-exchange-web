@@ -115,7 +115,6 @@ export enum PageNames {
   Support = 'Support',
   Wallet = 'Wallet',
   PoolContainer = 'PoolContainer',
-  CreatePair = 'CreatePair',
   AddLiquidity = 'AddLiquidity',
   RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
@@ -144,6 +143,9 @@ export enum Components {
   MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
   AppMenu = 'App/Menu/AppMenu',
   AppInfoPopper = 'App/Menu/AppInfoPopper',
+  BrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
+  BrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
+  NotificationEnablingPage = 'App/BrowserNotification/NotificationEnablingPage',
   PairTokenLogo = 'PairTokenLogo',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',
@@ -175,6 +177,7 @@ export enum Components {
   ReferralsConfirmBonding = 'Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'Referrals/ConfirmInviteUser',
   TokenSelectButton = 'Input/TokenSelectButton',
+  TokenInput = 'Input/TokenInput',
   SelectLanguageDialog = 'SelectLanguageDialog',
   SelectAssetList = 'SelectAsset/List',
   SelectToken = 'SelectAsset/SelectToken',
@@ -191,7 +194,6 @@ export enum Components {
   AddLiquidityTransactionDetails = 'TransactionDetails/AddLiquidityTransactionDetails',
   RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
-  CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
   BridgeTransferNotification = 'Bridge/TransferNotification',
   MobilePopup = 'MobilePopup/MobilePopup',
   // Pool
@@ -303,7 +305,7 @@ export const FaucetLink: SidebarMenuItemLink = {
 export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
-export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
+export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
 export const RewardsChildPages = [
   PageNames.Rewards,
   PageNames.Referral,
@@ -375,3 +377,9 @@ export const EthereumGasLimits = [
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
+
+// TODO: merge with TranslationConsts from wallet
+export enum TranslationConsts {
+  APR = 'APR', // Annual percentage rate
+  ROI = 'ROI', // Return of investment
+}

@@ -16,70 +16,25 @@
           </template>
         </status-action-badge>
       </generic-page-header>
-      <s-float-input
-        class="s-input--token-value"
-        size="medium"
+
+      <token-input
         data-test-name="swapFrom"
+        is-select-available
+        :balance="getTokenBalance(tokenFrom)"
+        :is-max-available="isMaxSwapAvailable"
+        :title="t('transfers.from')"
+        :token="tokenFrom"
         :value="fromValue"
-        :decimals="tokenFromDecimals"
-        has-locale-string
-        :delimiters="delimiters"
-        :max="tokenFromMax"
         @input="handleInputFieldFrom"
         @focus="handleFocusField(false)"
+        @max="handleMaxValue"
+        @select="openSelectTokenDialog(true)"
       >
-        <div slot="top" class="input-line">
-          <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
-            <span
-              v-if="areTokensSelected && !isZeroToAmount && isExchangeB"
-              class="input-title--uppercase input-title--primary"
-            >
-              ({{ t('swap.estimated') }})
-            </span>
-          </div>
-          <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-value">
-            <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
-            <formatted-amount-with-fiat-value
-              value-can-be-hidden
-              with-left-shift
-              value-class="input-value--primary"
-              :value="formatBalance(tokenFrom)"
-              :fiat-value="getFiatBalance(tokenFrom)"
-            />
-          </div>
-        </div>
-        <div slot="right" class="s-flex el-buttons">
-          <s-button
-            v-if="tokenFrom && isMaxSwapAvailable"
-            class="el-button--max s-typography-button--small"
-            type="primary"
-            alternative
-            size="mini"
-            border-radius="mini"
-            @click="handleMaxValue"
-          >
-            {{ t('buttons.max') }}
-          </s-button>
-          <token-select-button
-            class="el-button--select-token"
-            data-test-name="selectToken"
-            icon="chevron-down-rounded-16"
-            :token="tokenFrom"
-            @click="openSelectTokenDialog(true)"
-          />
-        </div>
-        <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="tokenFrom && tokenFromPrice" is-fiat-value :value="fromFiatAmount" />
-          <token-address
-            v-if="tokenFrom"
-            :name="tokenFrom.name"
-            :symbol="tokenFrom.symbol"
-            :address="tokenFrom.address"
-            class="input-value"
-          />
-        </div>
-      </s-float-input>
+        <template #title-append v-if="areTokensSelected && !isZeroToAmount && isExchangeB">
+          <span class="input-title--uppercase input-title--primary"> ({{ t('swap.estimated') }}) </span>
+        </template>
+      </token-input>
+
       <s-button
         class="el-button--switch-tokens"
         data-test-name="switchToken"
@@ -88,65 +43,30 @@
         :disabled="!areTokensSelected"
         @click="handleSwitchTokens"
       />
-      <s-float-input
-        class="s-input--token-value"
-        size="medium"
+
+      <token-input
         data-test-name="swapTo"
+        is-select-available
+        :balance="getTokenBalance(tokenTo)"
+        :title="t('transfers.to')"
+        :token="tokenTo"
         :value="toValue"
-        :decimals="tokenToDecimals"
-        has-locale-string
-        :delimiters="delimiters"
-        :max="tokenToMax"
         @input="handleInputFieldTo"
         @focus="handleFocusField(true)"
+        @select="openSelectTokenDialog(false)"
       >
-        <div slot="top" class="input-line">
-          <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
-            <span
-              v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB"
-              class="input-title--uppercase input-title--primary"
-            >
-              ({{ t('swap.estimated') }})
-            </span>
-          </div>
-          <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-value">
-            <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
-            <formatted-amount-with-fiat-value
-              value-can-be-hidden
-              with-left-shift
-              value-class="input-value--primary"
-              :value="formatBalance(tokenTo)"
-              :fiat-value="getFiatBalance(tokenTo)"
-            />
-          </div>
-        </div>
-        <div slot="right" class="s-flex el-buttons">
-          <token-select-button
-            class="el-button--select-token"
-            data-test-name="selectToken"
-            icon="chevron-down-rounded-16"
-            :token="tokenTo"
-            @click="openSelectTokenDialog(false)"
-          />
-        </div>
-        <div slot="bottom" class="input-line input-line--footer">
-          <div v-if="tokenTo && tokenToPrice" class="price-difference">
-            <formatted-amount is-fiat-value :value="toFiatAmount" />
-            <value-status-wrapper :value="fiatDifference" class="price-difference__value">
-              (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
-            </value-status-wrapper>
-          </div>
-          <token-address
-            v-if="tokenTo"
-            :name="tokenTo.name"
-            :symbol="tokenTo.symbol"
-            :address="tokenTo.address"
-            class="input-value"
-          />
-        </div>
-      </s-float-input>
+        <template #title-append v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB">
+          <span class="input-title--uppercase input-title--primary"> ({{ t('swap.estimated') }}) </span>
+        </template>
+        <template #fiat-amount-append v-if="tokenTo">
+          <value-status-wrapper :value="fiatDifference" class="price-difference__value">
+            (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
+          </value-status-wrapper>
+        </template>
+      </token-input>
+
       <slippage-tolerance class="slippage-tolerance-settings" />
+
       <s-button
         v-if="!isLoggedIn"
         type="primary"
@@ -233,7 +153,7 @@ import {
   hasInsufficientBalance,
   hasInsufficientXorForFee,
   asZeroValue,
-  formatAssetBalance,
+  getAssetBalance,
   debouncedInputHandler,
 } from '@/utils';
 import router, { lazyComponent } from '@/router';
@@ -248,13 +168,11 @@ import { action, getter, mutation, state } from '@/store/decorators';
     SelectToken: lazyComponent(Components.SelectToken),
     SwapConfirm: lazyComponent(Components.SwapConfirm),
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenInput: lazyComponent(Components.TokenInput),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     SwapChart: lazyComponent(Components.SwapChart),
     FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    TokenAddress: components.TokenAddress,
   },
 })
 export default class Swap extends Mixins(
@@ -333,22 +251,6 @@ export default class Swap extends Mixins(
 
   get tokenFromSymbol(): string {
     return this.tokenFrom?.symbol ?? '';
-  }
-
-  get tokenFromMax(): string {
-    return this.getMax(this.tokenFrom?.address);
-  }
-
-  get tokenToMax(): string {
-    return this.getMax(this.tokenTo?.address);
-  }
-
-  get tokenFromDecimals(): number {
-    return this.tokenFrom?.decimals ?? FPNumber.DEFAULT_PRECISION;
-  }
-
-  get tokenToDecimals(): number {
-    return this.tokenTo?.decimals ?? FPNumber.DEFAULT_PRECISION;
   }
 
   get areTokensSelected(): boolean {
@@ -451,14 +353,6 @@ export default class Swap extends Mixins(
     return FPNumber.lte(fpAmount, this.Zero);
   }
 
-  get tokenFromPrice(): Nullable<CodecString> {
-    return this.tokenFrom ? this.getAssetFiatPrice(this.tokenFrom) : null;
-  }
-
-  get tokenToPrice(): Nullable<CodecString> {
-    return this.tokenTo ? this.getAssetFiatPrice(this.tokenTo) : null;
-  }
-
   get networkFee(): CodecString {
     return this.networkFees[Operation.Swap];
   }
@@ -487,8 +381,8 @@ export default class Swap extends Mixins(
     });
   }
 
-  formatBalance(token: AccountAsset): string {
-    return formatAssetBalance(token);
+  getTokenBalance(token: AccountAsset): CodecString {
+    return getAssetBalance(token);
   }
 
   resetFieldFrom(): void {
@@ -742,14 +636,8 @@ export default class Swap extends Mixins(
   justify-content: space-between;
   align-items: center;
 }
+
 .price-difference {
-  display: flex;
-  align-items: center;
-
-  & > * {
-    flex-shrink: 0;
-  }
-
   &__value {
     font-weight: 600;
     font-size: var(--s-font-size-small);

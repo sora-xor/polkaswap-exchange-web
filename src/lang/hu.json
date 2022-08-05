@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "A stake összege",
         "amountRemove": "Eltávolítandó mennyiség",
-        "poweredBy": "Powered by Demeter Farming"
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Számológép",
+        "results": "Eredmények",
+        "rewards": "{symbol} jutalom"
     },
     "staking": {
         "title": "Letét"
@@ -1058,5 +1061,14 @@
             "PriceCalculationFailed": "Hiba történt az ár kiszámításakor"
         }
     },
-    "receivedText": "Bejövő"
+    "receivedText": "Bejövő",
+    "browserNotificationDialog": {
+        "title": "Engedélyezze a böngésző értesítéseit",
+        "info": "Csak releváns frissítéseket küldünk Önnek a pénztárcájáról, például: eszközegyenleg-változások",
+        "button": "Értesítések engedélyezése",
+        "agree": "Igen, értem",
+        "notificationBlocked": "Ahhoz, hogy értesítést kapjon az {appName} alkalmazásról, kérjük, engedélyezze az értesítéseket a böngésző natív beállításaiban.",
+        "pointer": "Nyomja meg az „Engedélyezés” gombot az értesítések bekapcsolásához"
+    },
+    "assetDeposit": "Az eszközök egyenlege letétbe helyezve"
 }

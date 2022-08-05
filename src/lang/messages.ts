@@ -73,7 +73,6 @@ export default {
     [PageNames.Wallet]: 'Wallet',
     [PageNames.Rewards]: 'Rewards',
     [PageNames.Tokens]: 'Tokens',
-    [PageNames.CreatePair]: 'Create Pair',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.PageNotFound]: 'Page Not Found',
@@ -88,7 +87,6 @@ export default {
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
-    [PageNames.CreatePair]: 'Create Pair',
     [PageNames.Tokens]: 'Tokens',
     [PageNames.StakingContainer]: 'Staking',
   },
@@ -784,6 +782,9 @@ export default {
     amountAdd: 'Amount to stake',
     amountRemove: 'Amount to remove',
     poweredBy: 'Powered by Demeter Farming',
+    calculator: 'Calculator',
+    results: 'Results',
+    rewards: '{symbol} rewards',
   },
   staking: {
     title: 'Staking',
@@ -797,4 +798,14 @@ export default {
     scan: 'Scan with camera',
     allowanceError: 'Check your camera availability and browser permissions to use it',
   },
+  browserNotificationDialog: {
+    title: 'Enable browser notifications',
+    info: 'We will send you only relevant updates about your wallet, for example: asset balance changes',
+    enable: 'Enable notifications',
+    agree: 'Yes, I understand',
+    notificationBlocked:
+      "To receive the notifications about {appName}, please, allow the notifications in your browser's native settings",
+    pointer: 'Press “Allow” to turn notifications on',
+  },
+  assetDeposit: 'Asset balance has been deposited',
 };

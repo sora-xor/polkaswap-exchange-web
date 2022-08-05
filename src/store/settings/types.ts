@@ -23,6 +23,9 @@ export type SettingsState = {
   faucetUrl: string;
   selectNodeDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
+  browserNotifPopupVisibility: boolean;
+  browserNotifPopupBlockedVisibility: boolean;
+  browserNotifsPermission: NotificationPermission;
   blockNumber: number;
   blockNumberUpdates: Nullable<Subscription>;
 };

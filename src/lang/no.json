@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "Beløp som skal satses",
         "amountRemove": "Beløp som skal fjernes",
-        "poweredBy": "Drevet av Demeter Farming"
+        "poweredBy": "Drevet av Demeter Farming",
+        "calculator": "Kalkulator",
+        "results": "Resultater",
+        "rewards": "{symbol} belønninger"
     },
     "staking": {
         "title": "Staking"
@@ -1058,5 +1061,14 @@
             "PriceCalculationFailed": "Det oppsto en feil under beregning av prisen"
         }
     },
-    "receivedText": "Tok imot"
+    "receivedText": "Tok imot",
+    "browserNotificationDialog": {
+        "title": "Aktiver nettleservarsler",
+        "info": "Vi sender deg bare relevante oppdateringer om lommeboken din, for eksempel: endringer i aktivabalansen",
+        "button": "Aktiver varsler",
+        "agree": "Ja jeg forstår",
+        "notificationBlocked": "For å motta varslene om {appName} må du tillate varslene i nettleserens opprinnelige innstillinger",
+        "pointer": "Trykk på \"Tillat\" for å slå på varsler"
+    },
+    "assetDeposit": "Eiendelsbalanse er satt inn"
 }

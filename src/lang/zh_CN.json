@@ -1015,7 +1015,10 @@
         },
         "amountAdd": "质押金额",
         "amountRemove": "移除金额",
-        "poweredBy": "由 Demeter Farming 提供"
+        "poweredBy": "由 Demeter Farming 提供",
+        "calculator": "计算器",
+        "results": "结果",
+        "rewards": "{symbol}奖励"
     },
     "staking": {
         "title": "质押"
@@ -1058,5 +1061,14 @@
             "PriceCalculationFailed": "计算价格时出错"
         }
     },
-    "receivedText": "已收到"
+    "receivedText": "已收到",
+    "browserNotificationDialog": {
+        "title": "启用浏览器通知",
+        "info": "我们只会向您发送有关您钱包的相关更新，例如：资产余额变化",
+        "button": "启用通知",
+        "agree": "是的我明白",
+        "notificationBlocked": "要接收有关{appName}的通知，请在浏览器的本机设置中允许通知",
+        "pointer": "按“允许”打开通知"
+    },
+    "assetDeposit": "资产余额已存入"
 }
