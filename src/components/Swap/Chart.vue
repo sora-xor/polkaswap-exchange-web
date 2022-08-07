@@ -886,7 +886,7 @@ $skeleton-label-width: 34px;
     margin-right: $margin-right;
   }
   &-border.el-skeleton__rect {
-    width: calc(100% - $skeleton-label-width-mobile - $margin-right);
+    width: calc(100% - #{$skeleton-label-width-mobile} - #{$margin-right});
     height: 1px;
   }
   &-error {
