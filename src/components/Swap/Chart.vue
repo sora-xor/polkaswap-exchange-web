@@ -142,6 +142,12 @@ const CHART_TYPE_ICONS = {
   [CHART_TYPES.CANDLE]: CandleIcon,
 };
 
+const SECONDS_IN_TYPE = {
+  [SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT]: 5 * 60 * 1000,
+  [SUBQUERY_TYPES.AssetSnapshotTypes.HOUR]: 60 * 60 * 1000,
+  [SUBQUERY_TYPES.AssetSnapshotTypes.DAY]: 24 * 60 * 60 * 1000,
+};
+
 const LINE_CHART_FILTERS: ChartFilter[] = [
   {
     name: TIMEFRAME_TYPES.DAY,
@@ -388,15 +394,6 @@ export default class SwapChart extends Mixins(
     return groups;
   }
 
-  get newDaysArray(): number[] {
-    return this.chartData.reduce<number[]>((buffer, item, index, arr) => {
-      if (index === 0 || new Date(arr[index - 1].timestamp).getDate() !== new Date(item.timestamp).getDate()) {
-        buffer.push(index);
-      }
-      return buffer;
-    }, []);
-  }
-
   get chartSpec(): any {
     const common = {
       grid: {
@@ -406,8 +403,7 @@ export default class SwapChart extends Mixins(
         top: 20,
       },
       xAxis: {
-        type: 'category',
-        data: this.chartData.map((item) => item.timestamp),
+        type: 'time',
         axisTick: {
           show: false,
         },
@@ -415,33 +411,30 @@ export default class SwapChart extends Mixins(
           show: false,
         },
         axisLabel: {
-          formatter: (value: string, index: number) => {
-            const prevIndexes: Array<number> = [];
-            if (
-              this.selectedFilter.type === SUBQUERY_TYPES.AssetSnapshotTypes.HOUR &&
-              typeof common.xAxis.axisLabel.interval === 'number' &&
-              index > common.xAxis.axisLabel.interval
-            ) {
-              for (let i = index; i >= index - common.xAxis.axisLabel.interval; i--) {
-                prevIndexes.push(i);
-              }
+          formatter: (value) => {
+            const date = dayjs(+value);
+            const isNewDay = date.hour() === 0 && date.minute() === 0;
+            const isNewMonth = date.date() === 1 && isNewDay;
+            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'HH:ss';
+            const formatted = this.formatDate(+value, timeFormat);
+
+            if (isNewMonth) {
+              return `{monthStyle|${formatted.charAt(0).toUpperCase() + formatted.slice(1)}}`;
             }
-            if (
-              this.selectedFilter.name === TIMEFRAME_TYPES.MONTH ||
-              (this.selectedFilter.name === TIMEFRAME_TYPES.WEEK &&
-                this.newDaysArray.length &&
-                prevIndexes.some((item) => this.newDaysArray.includes(item)))
-            ) {
-              return dayjs(+value).format('MMM DD');
+            if (isNewDay) {
+              return `{dateStyle|${formatted}}`;
             }
-            return dayjs(+value).format(this.timeFormat);
+
+            return formatted;
           },
-          interval:
-            this.selectedFilter.name === TIMEFRAME_TYPES.WEEK
-              ? 10
-              : this.selectedFilter.name === TIMEFRAME_TYPES.MONTH
-              ? 40
-              : 'auto',
+          rich: {
+            monthStyle: {
+              fornWeight: 'bold',
+            },
+            dateStyle: {
+              fornWeight: 'bold',
+            },
+          },
           color: this.theme.color.base.content.secondary,
           ...this.axisLabelCSS,
         },
@@ -457,7 +450,7 @@ export default class SwapChart extends Mixins(
             lineHeigth: 1.5,
             margin: 0,
             formatter: ({ value }) => {
-              return this.formatDate(+value); // locale format
+              return this.formatDate(+value, 'LLL'); // locale format
             },
           },
         },
@@ -504,7 +497,7 @@ export default class SwapChart extends Mixins(
           type: 'inside',
           start: 0,
           end: 100,
-          minValueSpan: 10, // minimum 11 elements like on skeleton
+          minValueSpan: SECONDS_IN_TYPE[this.selectedFilter.type] * 11, // minimum 11 elements like on skeleton
         },
       ],
       color: [this.theme.color.theme.accent, this.theme.color.status.success],
@@ -536,10 +529,10 @@ export default class SwapChart extends Mixins(
             return `${sign}${priceChange}%`;
           };
 
-          if (seriesType === CHART_TYPES.LINE) return formatPrice(data);
+          if (seriesType === CHART_TYPES.LINE) return formatPrice(data[1]);
 
           if (seriesType === CHART_TYPES.CANDLE) {
-            const [index, open, close, low, high] = data;
+            const [timestamp, open, close, low, high] = data;
             const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
             const changeColor = signific(change)(
               this.theme.color.status.success,
@@ -579,7 +572,7 @@ export default class SwapChart extends Mixins(
           {
             type: 'line',
             showSymbol: false,
-            data: this.chartData.map((item) => item.price[0]),
+            data: this.chartData.map((item) => [+item.timestamp, item.price[0]]),
             areaStyle: {
               opacity: 0.8,
               color: new graphic.LinearGradient(0, 0, 0, 1, [
@@ -598,7 +591,7 @@ export default class SwapChart extends Mixins(
       : [
           {
             type: 'candlestick',
-            data: this.chartData.map((item) => item.price),
+            data: this.chartData.map((item) => [+item.timestamp, ...item.price]),
             itemStyle: {
               color: this.theme.color.status.success,
               borderColor: this.theme.color.status.success,
