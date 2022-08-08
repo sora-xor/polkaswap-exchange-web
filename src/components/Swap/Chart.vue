@@ -79,7 +79,6 @@
 
 <script lang="ts">
 import dayjs from 'dayjs';
-import last from 'lodash/fp/last';
 import { graphic } from 'echarts';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
@@ -612,6 +611,10 @@ export default class SwapChart extends Mixins(
 
   created(): void {
     this.forceUpdatePrices();
+  }
+
+  beforeDestroy(): void {
+    this.unsubscribeFromPriceUpdates();
   }
 
   // ordered ty timestamp DESC
