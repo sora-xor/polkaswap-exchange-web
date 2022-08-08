@@ -172,8 +172,8 @@ const LINE_CHART_FILTERS: ChartFilter[] = [
   {
     name: TIMEFRAME_TYPES.MONTH,
     label: '1M',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
-    count: 24 * 30, // hours in month
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    count: 30, // days in month
   },
   {
     name: TIMEFRAME_TYPES.YEAR,
