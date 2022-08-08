@@ -224,6 +224,7 @@ const CANDLE_CHART_FILTERS = [
 ];
 
 const LABEL_PADDING = 4;
+const AXIS_OFFSET = 8;
 
 const POLLING_INTERVAL = 30 * 1000;
 
@@ -360,6 +361,7 @@ export default class SwapChart extends Mixins(
 
   get gridLeftOffset(): number {
     return (
+      AXIS_OFFSET +
       2 * LABEL_PADDING +
       getTextWidth(
         String(this.limits.max.toFixed(this.precision)),
@@ -399,10 +401,11 @@ export default class SwapChart extends Mixins(
       grid: {
         left: this.gridLeftOffset,
         right: 0,
-        bottom: 20,
+        bottom: 20 + AXIS_OFFSET,
         top: 20,
       },
       xAxis: {
+        offset: AXIS_OFFSET,
         type: 'time',
         axisTick: {
           show: false,
@@ -454,9 +457,11 @@ export default class SwapChart extends Mixins(
             },
           },
         },
+        boundaryGap: this.isLineChart ? false : [0.005, 0.005],
       },
       yAxis: {
         type: 'value',
+        offset: AXIS_OFFSET,
         scale: true,
         axisLabel: {
           ...this.axisLabelCSS,
