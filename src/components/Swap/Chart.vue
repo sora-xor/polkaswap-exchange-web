@@ -417,7 +417,7 @@ export default class SwapChart extends Mixins(
             const date = dayjs(+value);
             const isNewDay = date.hour() === 0 && date.minute() === 0;
             const isNewMonth = date.date() === 1 && isNewDay;
-            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'HH:ss';
+            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'LT';
             const formatted = this.formatDate(+value, timeFormat);
 
             if (isNewMonth) {
