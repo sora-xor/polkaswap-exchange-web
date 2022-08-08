@@ -872,7 +872,7 @@
         },
         "history": {
             "title": "Kjøpshistorikk",
-            "empty": "Ingen data"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transaksjon klar for bro"
@@ -1070,5 +1070,6 @@
         "notificationBlocked": "For å motta varslene om {appName} må du tillate varslene i nettleserens opprinnelige innstillinger",
         "pointer": "Trykk på \"Tillat\" for å slå på varsler"
     },
-    "assetDeposit": "Eiendelsbalanse er satt inn"
+    "assetDeposit": "Eiendelsbalanse er satt inn",
+    "noDataText": "Ingen data"
 }

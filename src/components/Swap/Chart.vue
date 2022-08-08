@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <s-skeleton :loading="parentLoading || loading || isFetchingError" :throttle="0">
+    <s-skeleton :loading="parentLoading || loading || chartDataIssue" :throttle="0">
       <template #template>
         <div v-loading="loading" class="charts-skeleton">
           <s-skeleton-item element="rect" class="charts-skeleton-price" />
@@ -51,10 +51,19 @@
           <div class="charts-skeleton-line charts-skeleton-line--lables">
             <s-skeleton-item v-for="i in 11" :key="i" element="rect" class="charts-skeleton-label" />
           </div>
-          <div v-if="isFetchingError && !loading" class="charts-skeleton-error">
-            <s-icon name="clear-X-16" :size="'32px'" />
-            <p class="charts-skeleton-error-message">{{ t('swap.errorFetching') }}</p>
-            <s-button class="el-button--select-token" type="secondary" size="small" @click="retryUpdatePrices">
+          <div v-if="chartDataIssue" class="charts-skeleton-error">
+            <s-icon v-if="isFetchingError" name="clear-X-16" :size="'32px'" />
+            <p class="charts-skeleton-error-message">
+              <template v-if="isFetchingError">{{ t('swap.errorFetching') }}</template>
+              <template v-else>{{ t('noDataText') }}</template>
+            </p>
+            <s-button
+              v-if="isFetchingError"
+              class="el-button--select-token"
+              type="secondary"
+              size="small"
+              @click="updatePrices"
+            >
               {{ t('retryText') }}
             </s-button>
           </div>
@@ -79,7 +88,6 @@
 
 <script lang="ts">
 import dayjs from 'dayjs';
-import last from 'lodash/fp/last';
 import { graphic } from 'echarts';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
@@ -142,6 +150,12 @@ const CHART_TYPE_ICONS = {
   [CHART_TYPES.CANDLE]: CandleIcon,
 };
 
+const SECONDS_IN_TYPE = {
+  [SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT]: 5 * 60 * 1000,
+  [SUBQUERY_TYPES.AssetSnapshotTypes.HOUR]: 60 * 60 * 1000,
+  [SUBQUERY_TYPES.AssetSnapshotTypes.DAY]: 24 * 60 * 60 * 1000,
+};
+
 const LINE_CHART_FILTERS: ChartFilter[] = [
   {
     name: TIMEFRAME_TYPES.DAY,
@@ -158,8 +172,8 @@ const LINE_CHART_FILTERS: ChartFilter[] = [
   {
     name: TIMEFRAME_TYPES.MONTH,
     label: '1M',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
-    count: 24 * 30, // hours in month
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    count: 30, // days in month
   },
   {
     name: TIMEFRAME_TYPES.YEAR,
@@ -218,6 +232,9 @@ const CANDLE_CHART_FILTERS = [
 ];
 
 const LABEL_PADDING = 4;
+const AXIS_OFFSET = 8;
+
+const POLLING_INTERVAL = 30 * 1000;
 
 @Component({
   components: {
@@ -240,12 +257,14 @@ export default class SwapChart extends Mixins(
 ) {
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
   @getter.swap.tokenTo tokenTo!: AccountAsset;
+  @getter.swap.isAvailable isAvailable!: boolean;
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
-  private handleTokenChange(): void {
-    this.clearData();
-    this.updatePrices();
+  private handleTokenChange(current: Nullable<AccountAsset>, prev: Nullable<AccountAsset>): void {
+    if (current && (!prev || prev.address !== current.address)) {
+      this.forceUpdatePrices();
+    }
   }
 
   isFetchingError = false;
@@ -255,15 +274,16 @@ export default class SwapChart extends Mixins(
   prices: ChartDataItem[] = [];
   pageInfos: SUBQUERY_TYPES.PageInfo[] = [];
   zoomStart = 0; // percentage of zoom start position
+  zoomEnd = 100; // percentage of zoom end position
   precision = 2;
   limits = {
     min: Infinity,
     max: 0,
   };
 
-  newDaysArray: Array<number> = [];
-
-  updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250);
+  updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
+  forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
+  priceUpdateSubscription: Nullable<NodeJS.Timer | number> = null;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
@@ -292,6 +312,10 @@ export default class SwapChart extends Mixins(
     return [this.tokenFrom, this.tokenTo].filter((token) => !!token);
   }
 
+  get tokensAddresses(): string[] {
+    return this.tokens.map((token) => token.address);
+  }
+
   get fromFiatPrice(): FPNumber {
     return this.tokenFrom ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenFrom) ?? 0) : FPNumber.ZERO;
   }
@@ -308,13 +332,26 @@ export default class SwapChart extends Mixins(
     return this.fiatPrice.toLocaleString();
   }
 
+  get visibleChartItemsRange(): [number, number] {
+    const itemsCount = this.chartData.length;
+    const startIndex = Math.floor((itemsCount * this.zoomStart) / 100);
+    const endIndex = Math.ceil((itemsCount * this.zoomEnd) / 100) - 1;
+
+    return [startIndex, endIndex];
+  }
+
   /**
-   * Price change between current price and the last shapshot
+   * Price change in visible range
    */
   get priceChange(): FPNumber {
-    const lastFiatPrice = new FPNumber(last(this.chartData)?.price?.[0] ?? 0);
+    const [startIndex, endIndex] = this.visibleChartItemsRange;
+    const priceOpenIndex = 0; // always 'open' price
+    const priceCloseIndex = this.isLineChart ? 0 : 1; // 'close' price for candlestick chart
 
-    return calcPriceChange(this.fiatPrice, lastFiatPrice);
+    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.price?.[priceOpenIndex] ?? 0);
+    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.price?.[priceCloseIndex] ?? 0);
+
+    return calcPriceChange(rangeClosePrice, rangeStartPrice);
   }
 
   get timeFormat(): string {
@@ -337,6 +374,7 @@ export default class SwapChart extends Mixins(
 
   get gridLeftOffset(): number {
     return (
+      AXIS_OFFSET +
       2 * LABEL_PADDING +
       getTextWidth(
         String(this.limits.max.toFixed(this.precision)),
@@ -371,22 +409,25 @@ export default class SwapChart extends Mixins(
     return groups;
   }
 
+  get chartDataEmpty(): boolean {
+    return this.chartData.length === 0;
+  }
+
+  get chartDataIssue(): boolean {
+    return !this.loading && (this.isFetchingError || this.chartDataEmpty);
+  }
+
   get chartSpec(): any {
     const common = {
       grid: {
         left: this.gridLeftOffset,
         right: 0,
-        bottom: 20,
+        bottom: 20 + AXIS_OFFSET,
         top: 20,
       },
       xAxis: {
-        type: 'category',
-        data: this.chartData.map((item, index, arr) => {
-          if (index === 0 || new Date(arr[index - 1].timestamp).getDate() !== new Date(item.timestamp).getDate()) {
-            this.newDaysArray.push(index);
-          }
-          return item.timestamp;
-        }),
+        offset: AXIS_OFFSET,
+        type: 'time',
         axisTick: {
           show: false,
         },
@@ -394,33 +435,30 @@ export default class SwapChart extends Mixins(
           show: false,
         },
         axisLabel: {
-          formatter: (value: string, index: number) => {
-            const prevIndexes: Array<number> = [];
-            if (
-              this.selectedFilter.type === SUBQUERY_TYPES.AssetSnapshotTypes.HOUR &&
-              typeof common.xAxis.axisLabel.interval === 'number' &&
-              index > common.xAxis.axisLabel.interval
-            ) {
-              for (let i = index; i >= index - common.xAxis.axisLabel.interval; i--) {
-                prevIndexes.push(i);
-              }
+          formatter: (value) => {
+            const date = dayjs(+value);
+            const isNewDay = date.hour() === 0 && date.minute() === 0;
+            const isNewMonth = date.date() === 1 && isNewDay;
+            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'LT';
+            const formatted = this.formatDate(+value, timeFormat);
+
+            if (isNewMonth) {
+              return `{monthStyle|${formatted.charAt(0).toUpperCase() + formatted.slice(1)}}`;
             }
-            if (
-              this.selectedFilter.name === TIMEFRAME_TYPES.MONTH ||
-              (this.selectedFilter.name === TIMEFRAME_TYPES.WEEK &&
-                this.newDaysArray.length &&
-                prevIndexes.some((item) => this.newDaysArray.includes(item)))
-            ) {
-              return dayjs(+value).format('MMM DD');
+            if (isNewDay) {
+              return `{dateStyle|${formatted}}`;
             }
-            return dayjs(+value).format(this.timeFormat);
+
+            return formatted;
           },
-          interval:
-            this.selectedFilter.name === TIMEFRAME_TYPES.WEEK
-              ? 10
-              : this.selectedFilter.name === TIMEFRAME_TYPES.MONTH
-              ? 40
-              : 'auto',
+          rich: {
+            monthStyle: {
+              fornWeight: 'bold',
+            },
+            dateStyle: {
+              fornWeight: 'bold',
+            },
+          },
           color: this.theme.color.base.content.secondary,
           ...this.axisLabelCSS,
         },
@@ -436,13 +474,15 @@ export default class SwapChart extends Mixins(
             lineHeigth: 1.5,
             margin: 0,
             formatter: ({ value }) => {
-              return this.formatDate(+value); // locale format
+              return this.formatDate(+value, 'LLL'); // locale format
             },
           },
         },
+        boundaryGap: this.isLineChart ? false : [0.005, 0.005],
       },
       yAxis: {
         type: 'value',
+        offset: AXIS_OFFSET,
         scale: true,
         axisLabel: {
           ...this.axisLabelCSS,
@@ -483,6 +523,7 @@ export default class SwapChart extends Mixins(
           type: 'inside',
           start: 0,
           end: 100,
+          minValueSpan: SECONDS_IN_TYPE[this.selectedFilter.type] * 11, // minimum 11 elements like on skeleton
         },
       ],
       color: [this.theme.color.theme.accent, this.theme.color.status.success],
@@ -514,10 +555,10 @@ export default class SwapChart extends Mixins(
             return `${sign}${priceChange}%`;
           };
 
-          if (seriesType === CHART_TYPES.LINE) return formatPrice(data);
+          if (seriesType === CHART_TYPES.LINE) return formatPrice(data[1]);
 
           if (seriesType === CHART_TYPES.CANDLE) {
-            const [index, open, close, low, high] = data;
+            const [timestamp, open, close, low, high] = data;
             const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
             const changeColor = signific(change)(
               this.theme.color.status.success,
@@ -557,7 +598,7 @@ export default class SwapChart extends Mixins(
           {
             type: 'line',
             showSymbol: false,
-            data: this.chartData.map((item) => item.price[0]),
+            data: this.chartData.map((item) => [+item.timestamp, item.price[0]]),
             areaStyle: {
               opacity: 0.8,
               color: new graphic.LinearGradient(0, 0, 0, 1, [
@@ -576,7 +617,7 @@ export default class SwapChart extends Mixins(
       : [
           {
             type: 'candlestick',
-            data: this.chartData.map((item) => item.price),
+            data: this.chartData.map((item) => [+item.timestamp, ...item.price]),
             itemStyle: {
               color: this.theme.color.status.success,
               borderColor: this.theme.color.status.success,
@@ -591,11 +632,15 @@ export default class SwapChart extends Mixins(
   }
 
   created(): void {
-    this.updatePrices();
+    this.forceUpdatePrices();
+  }
+
+  beforeDestroy(): void {
+    this.unsubscribeFromPriceUpdates();
   }
 
   // ordered ty timestamp DESC
-  async fetchData(address: string, filter: ChartFilter, pageInfo?: SUBQUERY_TYPES.PageInfo) {
+  private async fetchData(address: string, filter: ChartFilter, pageInfo?: SUBQUERY_TYPES.PageInfo) {
     const { type, count } = filter;
     const nodes: AssetSnapshot[] = [];
 
@@ -618,59 +663,82 @@ export default class SwapChart extends Mixins(
     return { nodes, hasNextPage, endCursor };
   }
 
-  getHistoricalPrices(): void {
-    if (this.loading || this.pageInfos.some((pageInfo) => !pageInfo.hasNextPage)) return;
+  private async getChartData(addresses: string[], filter: ChartFilter, paginationInfos?: SUBQUERY_TYPES.PageInfo[]) {
+    const collections = await Promise.all(
+      addresses.map((address, index) => this.fetchData(address, filter, paginationInfos?.[index]))
+    );
+
+    if (!collections.every((collection) => !!collection.nodes.length)) return null;
+
+    const pageInfos = collections.map((item: any) => ({
+      hasNextPage: item.hasNextPage,
+      endCursor: item.endCursor,
+    }));
+
+    const groups = collections.map((collection: any) =>
+      collection.nodes.map((item) => {
+        const price = this.preparePriceData(item, this.chartType);
+
+        return {
+          timestamp: +item.timestamp * 1000,
+          price,
+        };
+      })
+    );
+
+    const prices: ChartDataItem[] = [];
+    const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
+    let { min, max } = this.limits;
+
+    for (let i = 0; i < size; i++) {
+      const a = groups[0]?.[i];
+      const b = groups[1]?.[i];
+
+      const timestamp = (a?.timestamp ?? b?.timestamp) as number;
+      const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0]) as number[];
+
+      prices.push({
+        timestamp,
+        price,
+      });
+
+      min = Math.min(min, ...price);
+      max = Math.max(max, ...price);
+    }
+
+    const precision = Math.max(this.getPrecision(min), this.getPrecision(max));
+    const limits = { min, max };
+
+    return {
+      limits,
+      pageInfos,
+      precision,
+      prices,
+    };
+  }
+
+  private getHistoricalPrices(resetChartData = false): void {
+    if (resetChartData) {
+      this.clearData();
+    } else if (this.pageInfos.some((pageInfo) => !pageInfo.hasNextPage)) {
+      return;
+    }
+
+    // prevent fetching if tokens pair not created
+    if (this.tokensAddresses.length === 2 && !this.isAvailable) return;
 
     this.withApi(async () => {
       await this.withLoading(async () => {
         try {
-          this.newDaysArray = [];
-          const addresses = [this.tokenFrom?.address, this.tokenTo?.address].filter(Boolean);
-          const collections = await Promise.all(
-            addresses.map((address, index) => this.fetchData(address, this.selectedFilter, this.pageInfos[index]))
-          );
+          const response = await this.getChartData(this.tokensAddresses, this.selectedFilter, this.pageInfos);
 
-          if (!collections.every((collection) => !!collection)) return;
+          if (!response) return;
 
-          this.pageInfos = collections.map((item: any) => ({
-            hasNextPage: item.hasNextPage,
-            endCursor: item.endCursor,
-          }));
+          this.limits = response.limits;
+          this.pageInfos = response.pageInfos;
+          this.precision = response.precision;
+          this.prices = [...this.prices, ...response.prices];
 
-          const groups = collections.map((collection: any) =>
-            collection.nodes.map((item) => {
-              const price = this.preparePriceData(item, this.chartType);
-
-              return {
-                timestamp: +item.timestamp * 1000,
-                price,
-              };
-            })
-          );
-
-          const prices: ChartDataItem[] = [];
-          const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
-          let { min, max } = this.limits;
-
-          for (let i = 0; i < size; i++) {
-            const a = groups[0]?.[i];
-            const b = groups[1]?.[i];
-
-            const timestamp = (a?.timestamp ?? b?.timestamp) as number;
-            const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0]) as number[];
-
-            prices.push({
-              timestamp,
-              price,
-            });
-
-            min = Math.min(min, ...price);
-            max = Math.max(max, ...price);
-          }
-
-          this.precision = Math.max(this.getPrecision(min), this.getPrecision(max));
-          this.limits = { min, max };
-          this.prices = [...this.prices, ...prices];
           this.isFetchingError = false;
         } catch (error) {
           this.isFetchingError = true;
@@ -680,15 +748,49 @@ export default class SwapChart extends Mixins(
     });
   }
 
+  private async getCurrentPrices(): Promise<void> {
+    try {
+      const filter = { ...this.selectedFilter, count: 1 };
+      const response = await this.getChartData(this.tokensAddresses, filter);
+
+      if (!response) return;
+
+      const newItem = response.prices[0];
+
+      if (!newItem) return;
+
+      if (this.prices[0].timestamp === newItem.timestamp) {
+        this.prices.shift();
+      }
+
+      this.prices.unshift(newItem);
+      this.limits = response.limits;
+      this.precision = response.precision;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  private unsubscribeFromPriceUpdates(): void {
+    if (this.priceUpdateSubscription) {
+      clearTimeout(this.priceUpdateSubscription as number);
+      this.priceUpdateSubscription = null;
+    }
+  }
+
+  private subscribeToPriceUpdates(): void {
+    this.unsubscribeFromPriceUpdates();
+    this.priceUpdateSubscription = setInterval(this.getCurrentPrices, POLLING_INTERVAL);
+  }
+
   private preparePriceData(item: AssetSnapshot, chartType: CHART_TYPES): number[] {
     const { open, close, low, high } = item.priceUSD;
-    const priceData = [+open];
 
     if (chartType === CHART_TYPES.CANDLE) {
-      priceData.push(+close, +low, +high);
+      return [+open, +close, +low, +high];
     }
 
-    return priceData;
+    return [+close];
   }
 
   private dividePrices(priceA: number[], priceB: number[]) {
@@ -710,8 +812,12 @@ export default class SwapChart extends Mixins(
 
   changeFilter(filter: ChartFilter): void {
     this.selectedFilter = filter;
-    this.clearData();
-    this.updatePrices();
+    this.forceUpdatePrices();
+  }
+
+  private async resetAndUpdatePrices(): Promise<void> {
+    await this.updatePrices(true);
+    this.subscribeToPriceUpdates();
   }
 
   selectFilter({ name }): void {
@@ -729,17 +835,15 @@ export default class SwapChart extends Mixins(
 
   handleZoom(event: any): void {
     event?.stop?.();
-    if (event?.wheelDelta === -1 && this.zoomStart === 0) {
+    if (event?.wheelDelta === -1 && this.zoomStart === 0 && this.zoomEnd === 100) {
       this.updatePrices();
     }
   }
 
   changeZoomLevel(event: any): void {
-    this.zoomStart = event?.batch?.[0]?.start ?? 0;
-  }
-
-  retryUpdatePrices(event: any): void {
-    this.updatePrices();
+    const data = event?.batch?.[0];
+    this.zoomStart = data?.start ?? 0;
+    this.zoomEnd = data?.end ?? 0;
   }
 
   private getPrecision(value: number): number {
@@ -756,7 +860,7 @@ export default class SwapChart extends Mixins(
   }
 
   private formatPriceChange(value: FPNumber): string {
-    return value.dp(2).toLocaleString();
+    return new FPNumber(value.toFixed(2)).toLocaleString();
   }
 }
 </script>

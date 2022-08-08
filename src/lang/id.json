@@ -872,7 +872,7 @@
         },
         "history": {
             "title": "Riwayat pembelian",
-            "empty": "Tidak ada data"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transaksi Siap Untuk Jembatan"
@@ -1070,5 +1070,6 @@
         "notificationBlocked": "Untuk menerima notifikasi tentang {appName}, izinkan notifikasi di setelan asli browser Anda",
         "pointer": "Tekan \"Izinkan\" untuk mengaktifkan notifikasi"
     },
-    "assetDeposit": "Saldo aset telah disetorkan"
+    "assetDeposit": "Saldo aset telah disetorkan",
+    "noDataText": "Tidak ada data"
 }

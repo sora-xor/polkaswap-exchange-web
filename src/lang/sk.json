@@ -872,7 +872,7 @@
         },
         "history": {
             "title": "História nákupov",
-            "empty": "Žiadne dáta"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transakcia pripravená pre most"
@@ -1070,5 +1070,6 @@
         "notificationBlocked": "Ak chcete dostávať upozornenia o {appName}, povoľte upozornenia v natívnych nastaveniach prehliadača",
         "pointer": "Stlačením „Povoliť“ zapnite upozornenia"
     },
-    "assetDeposit": "Zostatok aktív bol uložený"
+    "assetDeposit": "Zostatok aktív bol uložený",
+    "noDataText": "Žiadne dáta"
 }

@@ -872,7 +872,7 @@
         },
         "history": {
             "title": "Köphistorik",
-            "empty": "Ingen data"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transaktion Redo För Brygga"
@@ -1070,5 +1070,6 @@
         "notificationBlocked": "För att få aviseringar om {appName}, vänligen tillåt aviseringarna i webbläsarens ursprungliga inställningar",
         "pointer": "Tryck på \"Tillåt\" för att aktivera aviseringar"
     },
-    "assetDeposit": "Tillgångssaldo har satts in"
+    "assetDeposit": "Tillgångssaldo har satts in",
+    "noDataText": "Ingen data"
 }

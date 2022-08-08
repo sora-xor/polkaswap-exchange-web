@@ -1070,5 +1070,6 @@
         "notificationBlocked": "Da biste primali obavijesti o {appName}, omogućite obavijesti u izvornim postavkama preglednika",
         "pointer": "Pritisnite \"Dopusti\" za uključivanje obavijesti"
     },
-    "assetDeposit": "Stanje imovine je deponirano"
+    "assetDeposit": "Stanje imovine je deponirano",
+    "noDataText": "Nema podataka"
 }

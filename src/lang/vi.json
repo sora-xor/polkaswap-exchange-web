@@ -872,7 +872,7 @@
         },
         "history": {
             "title": "Lịch sử giao dịch",
-            "empty": "Không có dữ liệu"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Sẵn sàng cho giao dịch qua Cầu nối"
@@ -1070,5 +1070,6 @@
         "notificationBlocked": "Để nhận thông báo về {appName}, vui lòng cho phép thông báo trong cài đặt gốc của trình duyệt của bạn",
         "pointer": "Nhấn “Cho phép” để bật thông báo"
     },
-    "assetDeposit": "Số dư tài sản đã được gửi"
+    "assetDeposit": "Số dư tài sản đã được gửi",
+    "noDataText": "Không có dữ liệu"
 }
