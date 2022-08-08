@@ -61,6 +61,7 @@ export default {
   learnMoreText: 'Learn more',
   blockNumberText: 'Block number',
   transactionDetailsText: 'Transaction Details',
+  noDataText: 'No data',
   [Theme.LIGHT]: 'Light',
   [Theme.DARK]: 'Dark',
   pageTitle: {

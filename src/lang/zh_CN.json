@@ -872,7 +872,7 @@
         },
         "history": {
             "title": "购买记录",
-            "empty": "没有数据"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "转接桥交易就绪"
@@ -1070,5 +1070,6 @@
         "notificationBlocked": "要接收有关{appName}的通知，请在浏览器的本机设置中允许通知",
         "pointer": "按“允许”打开通知"
     },
-    "assetDeposit": "资产余额已存入"
+    "assetDeposit": "资产余额已存入",
+    "noDataText": "没有数据"
 }

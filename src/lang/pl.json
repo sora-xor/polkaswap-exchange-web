@@ -872,7 +872,7 @@
         },
         "history": {
             "title": "Historia zakupów",
-            "empty": "Brak danych"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transakcja gotowa do transferu przez most."
@@ -1070,5 +1070,6 @@
         "notificationBlocked": "Aby otrzymywać powiadomienia o {appName}, należy włączyć powiadomienia w ustawieniach natywnych przeglądarki.",
         "pointer": "Naciśnij „Zezwól”, aby włączyć powiadomienia"
     },
-    "assetDeposit": "Saldo aktywów zostało zdeponowane"
+    "assetDeposit": "Saldo aktywów zostało zdeponowane",
+    "noDataText": "Brak danych"
 }

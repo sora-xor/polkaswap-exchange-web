@@ -872,7 +872,7 @@
         },
         "history": {
             "title": "Aankoopgeschiedenis",
-            "empty": "Geen informatie"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transactie klaar voor bridge"
@@ -1070,5 +1070,6 @@
         "notificationBlocked": "Als u de meldingen over {appName} wilt ontvangen, moet u de meldingen toestaan in de systeemeigen instellingen van uw browser",
         "pointer": "Druk op \"Toestaan\" om meldingen in te schakelen"
     },
-    "assetDeposit": "Activa-saldo is gestort"
+    "assetDeposit": "Activa-saldo is gestort",
+    "noDataText": "Geen informatie"
 }

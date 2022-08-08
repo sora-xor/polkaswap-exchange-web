@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <s-skeleton :loading="parentLoading || loading || isFetchingError" :throttle="0">
+    <s-skeleton :loading="parentLoading || loading || chartDataIssue" :throttle="0">
       <template #template>
         <div v-loading="loading" class="charts-skeleton">
           <s-skeleton-item element="rect" class="charts-skeleton-price" />
@@ -51,10 +51,19 @@
           <div class="charts-skeleton-line charts-skeleton-line--lables">
             <s-skeleton-item v-for="i in 11" :key="i" element="rect" class="charts-skeleton-label" />
           </div>
-          <div v-if="isFetchingError && !loading" class="charts-skeleton-error">
-            <s-icon name="clear-X-16" :size="'32px'" />
-            <p class="charts-skeleton-error-message">{{ t('swap.errorFetching') }}</p>
-            <s-button class="el-button--select-token" type="secondary" size="small" @click="updatePrices">
+          <div v-if="chartDataIssue" class="charts-skeleton-error">
+            <s-icon v-if="isFetchingError" name="clear-X-16" :size="'32px'" />
+            <p class="charts-skeleton-error-message">
+              <template v-if="isFetchingError">{{ t('swap.errorFetching') }}</template>
+              <template v-else>{{ t('noDataText') }}</template>
+            </p>
+            <s-button
+              v-if="isFetchingError"
+              class="el-button--select-token"
+              type="secondary"
+              size="small"
+              @click="updatePrices"
+            >
               {{ t('retryText') }}
             </s-button>
           </div>
@@ -248,6 +257,7 @@ export default class SwapChart extends Mixins(
 ) {
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
   @getter.swap.tokenTo tokenTo!: AccountAsset;
+  @getter.swap.isAvailable isAvailable!: boolean;
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
@@ -300,6 +310,10 @@ export default class SwapChart extends Mixins(
 
   get tokens(): Asset[] {
     return [this.tokenFrom, this.tokenTo].filter((token) => !!token);
+  }
+
+  get tokensAddresses(): string[] {
+    return this.tokens.map((token) => token.address);
   }
 
   get fromFiatPrice(): FPNumber {
@@ -393,6 +407,14 @@ export default class SwapChart extends Mixins(
     }
 
     return groups;
+  }
+
+  get chartDataEmpty(): boolean {
+    return this.chartData.length === 0;
+  }
+
+  get chartDataIssue(): boolean {
+    return !this.loading && (this.isFetchingError || this.chartDataEmpty);
   }
 
   get chartSpec(): any {
@@ -641,13 +663,12 @@ export default class SwapChart extends Mixins(
     return { nodes, hasNextPage, endCursor };
   }
 
-  private async getChartData(filter: ChartFilter, paginationInfos?: SUBQUERY_TYPES.PageInfo[]) {
-    const addresses = [this.tokenFrom?.address, this.tokenTo?.address].filter(Boolean);
+  private async getChartData(addresses: string[], filter: ChartFilter, paginationInfos?: SUBQUERY_TYPES.PageInfo[]) {
     const collections = await Promise.all(
       addresses.map((address, index) => this.fetchData(address, filter, paginationInfos?.[index]))
     );
 
-    if (!collections.every((collection) => !!collection)) return null;
+    if (!collections.every((collection) => !!collection.nodes.length)) return null;
 
     const pageInfos = collections.map((item: any) => ({
       hasNextPage: item.hasNextPage,
@@ -696,13 +717,20 @@ export default class SwapChart extends Mixins(
     };
   }
 
-  private getHistoricalPrices(): void {
-    if (this.loading || this.pageInfos.some((pageInfo) => !pageInfo.hasNextPage)) return;
+  private getHistoricalPrices(resetChartData = false): void {
+    if (resetChartData) {
+      this.clearData();
+    } else if (this.pageInfos.some((pageInfo) => !pageInfo.hasNextPage)) {
+      return;
+    }
+
+    // prevent fetching if tokens pair not created
+    if (this.tokensAddresses.length === 2 && !this.isAvailable) return;
 
     this.withApi(async () => {
       await this.withLoading(async () => {
         try {
-          const response = await this.getChartData(this.selectedFilter, this.pageInfos);
+          const response = await this.getChartData(this.tokensAddresses, this.selectedFilter, this.pageInfos);
 
           if (!response) return;
 
@@ -723,7 +751,7 @@ export default class SwapChart extends Mixins(
   private async getCurrentPrices(): Promise<void> {
     try {
       const filter = { ...this.selectedFilter, count: 1 };
-      const response = await this.getChartData(filter);
+      const response = await this.getChartData(this.tokensAddresses, filter);
 
       if (!response) return;
 
@@ -751,6 +779,7 @@ export default class SwapChart extends Mixins(
   }
 
   private subscribeToPriceUpdates(): void {
+    this.unsubscribeFromPriceUpdates();
     this.priceUpdateSubscription = setInterval(this.getCurrentPrices, POLLING_INTERVAL);
   }
 
@@ -787,9 +816,7 @@ export default class SwapChart extends Mixins(
   }
 
   private async resetAndUpdatePrices(): Promise<void> {
-    this.clearData();
-    this.unsubscribeFromPriceUpdates();
-    await this.updatePrices();
+    await this.updatePrices(true);
     this.subscribeToPriceUpdates();
   }
 

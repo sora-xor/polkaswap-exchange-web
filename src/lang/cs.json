@@ -872,7 +872,7 @@
         },
         "history": {
             "title": "Historie nákupů",
-            "empty": "Žádné údaje"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transakce připravena pro Bridge"
@@ -1070,5 +1070,6 @@
         "notificationBlocked": "Chcete-li dostávat oznámení o {appName}, povolte oznámení v nativním nastavení prohlížeče",
         "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení"
     },
-    "assetDeposit": "Zůstatek aktiv byl uložen"
+    "assetDeposit": "Zůstatek aktiv byl uložen",
+    "noDataText": "Žádné údaje"
 }

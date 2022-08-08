@@ -872,7 +872,7 @@
         },
         "history": {
             "title": "Historial de compras",
-            "empty": "Sin datos"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transacción lista para el puente"
@@ -1070,5 +1070,6 @@
         "notificationBlocked": "Para recibir notificaciones sobre {appName}, permita las notificaciones en la configuración nativa de su navegador",
         "pointer": "Presione \"Permitir\" para activar las notificaciones"
     },
-    "assetDeposit": "El saldo de los activos ha sido depositado"
+    "assetDeposit": "El saldo de los activos ha sido depositado",
+    "noDataText": "Sin datos"
 }

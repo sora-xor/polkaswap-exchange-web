@@ -872,7 +872,7 @@
         },
         "history": {
             "title": "Purchase history",
-            "empty": "No data"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transaction Ready For Bridge"
@@ -1070,5 +1070,6 @@
         "notificationBlocked": "To receive the notifications about {appName}, please, allow the notifications in your browser's native settings",
         "pointer": "Press “Allow” to turn notifications on"
     },
-    "assetDeposit": "Asset balance has been deposited"
+    "assetDeposit": "Asset balance has been deposited",
+    "noDataText": "No data"
 }

@@ -872,7 +872,7 @@
         },
         "history": {
             "title": "Vásárlási előzmények",
-            "empty": "Nincs adat"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Tranzakció készen áll a hídon való átvitelre"
@@ -1070,5 +1070,6 @@
         "notificationBlocked": "Ahhoz, hogy értesítést kapjon az {appName} alkalmazásról, kérjük, engedélyezze az értesítéseket a böngésző natív beállításaiban.",
         "pointer": "Nyomja meg az „Engedélyezés” gombot az értesítések bekapcsolásához"
     },
-    "assetDeposit": "Az eszközök egyenlege letétbe helyezve"
+    "assetDeposit": "Az eszközök egyenlege letétbe helyezve",
+    "noDataText": "Nincs adat"
 }
