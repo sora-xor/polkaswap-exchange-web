@@ -971,7 +971,9 @@
         "import": "Kép importálása",
         "scan": "Szkennelés kamerával",
         "allowanceError": "Ellenőrizze a kamerája elérhetőségét és a böngésző engedélyeit a használatához",
-        "receive": "Fogadás"
+        "receive": "Fogadás",
+        "camera": "Kamera",
+        "allowanceRequest": "Nyomja meg az „Engedélyezés” gombot a kamera eléréséhez"
     },
     "bridgeTransferNotification": {
         "addToken": "Adja hozzá a {symbol} -ot a @:metamask -hoz",

@@ -971,7 +971,9 @@
         "import": "Gbe aworan wọle",
         "scan": "Ṣayẹwo pẹlu kamẹra",
         "allowanceError": "Ṣayẹwo wiwa kamẹra rẹ ati awọn igbanilaaye aṣawakiri lati lo",
-        "receive": "Gba"
+        "receive": "Gba",
+        "camera": "Kamẹra",
+        "allowanceRequest": "Tẹ \"Gba laaye\" wiwọle si kamẹra"
     },
     "bridgeTransferNotification": {
         "addToken": "Ṣafikun {symbol} si @:metamask",

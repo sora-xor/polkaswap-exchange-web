@@ -971,7 +971,9 @@
         "import": "Importer et bilde",
         "scan": "Skann med kamera",
         "allowanceError": "Sjekk kameraets tilgjengelighet og nettlesertillatelser for å bruke det",
-        "receive": "Motta"
+        "receive": "Motta",
+        "camera": "Kamera",
+        "allowanceRequest": "Trykk på \"Tillat\" tilgang til kameraet"
     },
     "bridgeTransferNotification": {
         "addToken": "Legg til {symbol} til @:metamask",

@@ -971,7 +971,9 @@
         "import": "Import an image",
         "scan": "Scan with camera",
         "allowanceError": "Check your camera availability and browser permissions to use it",
-        "receive": "Receive"
+        "receive": "Receive",
+        "camera": "Camera",
+        "allowanceRequest": "Press “Allow” access to camera"
     },
     "bridgeTransferNotification": {
         "addToken": "Add {symbol} to @:metamask",

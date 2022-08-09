@@ -971,7 +971,9 @@
         "import": "Importujte obrázek",
         "scan": "Skenujte fotoaparátem",
         "allowanceError": "Zkontrolujte dostupnost fotoaparátu a oprávnění prohlížeče k jeho použití",
-        "receive": "Příjem"
+        "receive": "Příjem",
+        "camera": "Fotoaparát",
+        "allowanceRequest": "Stiskněte „Povolit“ přístup ke kameře"
     },
     "bridgeTransferNotification": {
         "addToken": "Přidejte {symbol} do @:metamask",

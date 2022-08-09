@@ -971,7 +971,9 @@
         "import": "Een afbeelding importeren",
         "scan": "Scannen met camera",
         "allowanceError": "Controleer de beschikbaarheid van je camera en browserrechten om deze te gebruiken",
-        "receive": "Ontvangen"
+        "receive": "Ontvangen",
+        "camera": "Camera",
+        "allowanceRequest": "Druk op \"Toestaan\" toegang tot camera"
     },
     "bridgeTransferNotification": {
         "addToken": "Voeg {symbol} toe aan @:metamask",

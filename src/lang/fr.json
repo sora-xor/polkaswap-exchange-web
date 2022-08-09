@@ -971,7 +971,9 @@
         "import": "Importer une image",
         "scan": "Numériser avec l'appareil photo",
         "allowanceError": "Vérifiez la disponibilité de votre caméra et les autorisations de votre navigateur pour l'utiliser",
-        "receive": "Recevoir"
+        "receive": "Recevoir",
+        "camera": "Caméra",
+        "allowanceRequest": "Appuyez sur \"Autoriser\" l'accès à la caméra"
     },
     "bridgeTransferNotification": {
         "addToken": "Ajouter {symbol} à @:metamask",
