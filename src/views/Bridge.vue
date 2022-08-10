@@ -444,7 +444,7 @@ export default class Bridge extends Mixins(
   }
 
   getDecimals(isSora = true): number | undefined {
-    return isSora ? this.asset?.decimals : this?.asset.externalDecimals;
+    return isSora ? this.asset?.decimals : this.asset?.externalDecimals;
   }
 
   get accountAddressFrom(): string {
