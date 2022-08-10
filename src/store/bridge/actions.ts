@@ -74,12 +74,10 @@ const actions = defineActions({
     commit.setAssetAddress(address);
     dispatch.updateBalanceSubscription();
   },
-  async resetBridgeForm(context, withAddress = false): Promise<void> {
+  // Reset balance subscription & amount, but save selected asset
+  async resetBridgeForm(context): Promise<void> {
     const { commit, dispatch } = bridgeActionContext(context);
     dispatch.resetBalanceSubscription();
-    if (!withAddress) {
-      commit.setAssetAddress();
-    }
     commit.setAmount();
     commit.setSoraToEvm(true);
   },

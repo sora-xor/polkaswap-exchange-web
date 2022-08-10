@@ -317,7 +317,7 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setAmount setAmount!: (value: string) => void;
 
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
-  @action.bridge.resetBridgeForm private resetBridgeForm!: (withAddress?: boolean) => Promise<void>;
+  @action.bridge.resetBridgeForm private resetBridgeForm!: () => Promise<void>;
   @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncVoidFn;
   @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncVoidFn;
   @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
@@ -474,7 +474,7 @@ export default class Bridge extends Mixins(
 
   created(): void {
     // we should reset data only on created, because it's used on another bridge views
-    this.resetBridgeForm(!!router.currentRoute.params?.address);
+    this.resetBridgeForm();
   }
 
   destroyed(): void {
