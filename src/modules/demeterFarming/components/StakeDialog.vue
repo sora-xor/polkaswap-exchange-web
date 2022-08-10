@@ -26,7 +26,19 @@
           @input="handleValue"
         >
           <div slot="top" class="amount">{{ inputTitle }}</div>
-          <div slot="right"><span class="percent">%</span></div>
+          <div slot="right" class="el-buttons el-buttons--between">
+            <span class="percent">%</span>
+            <s-button
+              class="el-button--max s-typography-button--small"
+              type="primary"
+              alternative
+              size="mini"
+              border-radius="mini"
+              @click.stop="handleValue(100)"
+            >
+              {{ t('buttons.max') }}
+            </s-button>
+          </div>
           <s-slider
             slot="bottom"
             class="slider-container"
@@ -271,6 +283,10 @@ export default class StakeDialog extends Mixins(StakeDialogMixin) {
   .title-logo {
     margin-right: $inner-spacing-mini;
   }
+}
+
+.el-form--actions {
+  @include buttons;
 }
 </style>
 

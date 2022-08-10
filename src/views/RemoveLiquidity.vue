@@ -20,7 +20,19 @@
         @blur="resetFocusedField"
       >
         <div slot="top" class="amount">{{ t('removeLiquidity.amount') }}</div>
-        <div slot="right"><span class="percent">%</span></div>
+        <div slot="right" class="el-buttons el-buttons--between">
+          <span class="percent">%</span>
+          <s-button
+            class="el-button--max s-typography-button--small"
+            type="primary"
+            alternative
+            size="mini"
+            border-radius="mini"
+            @click.stop="handleRemovePartChange(100)"
+          >
+            {{ t('buttons.max') }}
+          </s-button>
+        </div>
         <div slot="bottom">
           <s-slider
             class="slider-container"
