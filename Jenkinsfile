@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@fix/DOPS-1835/polkaswap-cd') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
@@ -14,7 +14,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     sonarProjectName: 'polkaswap-exchange-web',
     sonarProjectKey: 'jp.co.soramitsu:polkaswap-exchange-web',
     copyStaticToBranch: true,
-    copyToBranches: ['fleek', 'fleek-pre'],
+    copyToBranches: ['fleek-test'],
     copyFile: 'env.json',
     stageDeploy: true,
     downstreamJob: '../deploy/exchange-stage1')
