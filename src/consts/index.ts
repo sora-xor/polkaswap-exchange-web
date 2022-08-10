@@ -145,7 +145,6 @@ export enum Components {
   AppInfoPopper = 'App/Menu/AppInfoPopper',
   BrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
   BrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
-  NotificationEnablingPage = 'App/BrowserNotification/NotificationEnablingPage',
   PairTokenLogo = 'PairTokenLogo',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',

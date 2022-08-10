@@ -42,14 +42,16 @@
     <mobile-popup :visible.sync="showMobilePopup" />
     <browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
     <browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
-    <notification-enabling-page v-if="showNotifsDarkPage" />
+    <notification-enabling-page v-if="showNotifsDarkPage">
+      {{ t('browserNotificationDialog.pointer') }}
+    </notification-enabling-page>
   </s-design-system-provider>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber, History, connection, HistoryItem } from '@sora-substrate/util';
-import { mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
@@ -78,7 +80,7 @@ import { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
     BrowserNotifsEnableDialog: lazyComponent(Components.BrowserNotifsEnableDialog),
     BrowserNotifsBlockedDialog: lazyComponent(Components.BrowserNotifsBlockedDialog),
-    NotificationEnablingPage: lazyComponent(Components.NotificationEnablingPage),
+    NotificationEnablingPage: components.NotificationEnablingPage,
     MobilePopup,
   },
 })
@@ -353,6 +355,11 @@ ul ul {
     &-scrollbar {
       flex: 1;
     }
+  }
+
+  // TODO: change position in wallet
+  .notification-enabling-pointer {
+    position: fixed;
   }
 }
 

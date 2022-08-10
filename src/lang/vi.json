@@ -971,7 +971,9 @@
         "import": "Nhập hình ảnh",
         "scan": "Quét bằng máy ảnh",
         "allowanceError": "Kiểm tra máy ảnh và quyền sử dụng máy ảnh của trình duyệ",
-        "receive": "Nhận"
+        "receive": "Nhận",
+        "camera": "Máy ảnh",
+        "allowanceRequest": "Nhấn “Cho phép” truy cập vào máy ảnh"
     },
     "bridgeTransferNotification": {
         "addToken": "Thêm {symbol} vào @:metamask",

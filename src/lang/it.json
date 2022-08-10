@@ -971,7 +971,9 @@
         "import": "Importa un'immagine",
         "scan": "Scansione con fotocamera",
         "allowanceError": "Verifica la disponibilità della videocamera e le autorizzazioni del browser per utilizzarla",
-        "receive": "Ricevere"
+        "receive": "Ricevere",
+        "camera": "Telecamera",
+        "allowanceRequest": "Premi \"Consenti\" l'accesso alla fotocamera"
     },
     "bridgeTransferNotification": {
         "addToken": "Aggiungi {symbol} a @:metamask",

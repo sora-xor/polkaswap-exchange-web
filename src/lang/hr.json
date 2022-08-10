@@ -971,7 +971,9 @@
         "import": "Uvezi sliku",
         "scan": "Skeniraj kamerom",
         "allowanceError": "Provjerite dostupnost svoje kamere i dopuštenja preglednika za njezino korištenje",
-        "receive": "Primite"
+        "receive": "Primite",
+        "camera": "Kamera",
+        "allowanceRequest": "Pritisnite \"Dopusti\" pristup kameri"
     },
     "bridgeTransferNotification": {
         "addToken": "Dodajte {symbol} u @:metamask",

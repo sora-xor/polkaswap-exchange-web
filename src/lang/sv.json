@@ -971,7 +971,9 @@
         "import": "Importera en bild",
         "scan": "Skanna med kamera",
         "allowanceError": "Kontrollera din kameratillgänglighet och webbläsarbehörigheter för att använda den",
-        "receive": "Ta emot"
+        "receive": "Ta emot",
+        "camera": "Kamera",
+        "allowanceRequest": "Tryck på \"Tillåt\" åtkomst till kameran"
     },
     "bridgeTransferNotification": {
         "addToken": "Lägg till {symbol} i @:metamask",

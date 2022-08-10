@@ -971,7 +971,9 @@
         "import": "Ներմուծեք պատկեր",
         "scan": "Սկան տեսախցիկով",
         "allowanceError": "Ստուգեք ձեր տեսախցիկի առկայությունը և դիտարկիչի թույլտվությունները՝ այն օգտագործելու համար",
-        "receive": "Ստանալ"
+        "receive": "Ստանալ",
+        "camera": "Տեսախցիկ",
+        "allowanceRequest": "Սեղմեք «Թույլատրել» մուտքը տեսախցիկ"
     },
     "bridgeTransferNotification": {
         "addToken": "Ավելացնել {symbol} է @:metamask",

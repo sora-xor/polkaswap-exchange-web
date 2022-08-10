@@ -971,7 +971,9 @@
         "import": "Impor gambar",
         "scan": "Pindai dengan kamera",
         "allowanceError": "Periksa ketersediaan kamera dan izin browser Anda untuk menggunakannya",
-        "receive": "Menerima"
+        "receive": "Menerima",
+        "camera": "Kamera",
+        "allowanceRequest": "Tekan \"Izinkan\" akses ke kamera"
     },
     "bridgeTransferNotification": {
         "addToken": "Tambahkan {symbol} ke @:metamask",

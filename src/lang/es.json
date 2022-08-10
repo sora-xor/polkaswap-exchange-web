@@ -971,7 +971,9 @@
         "import": "Importar una imagen",
         "scan": "Escanear con cámara",
         "allowanceError": "Verifique la disponibilidad de su cámara y los permisos del navegador para usarla",
-        "receive": "Recibir"
+        "receive": "Recibir",
+        "camera": "Cámara",
+        "allowanceRequest": "Presiona “Permitir” acceso a la cámara"
     },
     "bridgeTransferNotification": {
         "addToken": "Añadir {symbol} a @:metamask",

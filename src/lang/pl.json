@@ -971,7 +971,9 @@
         "import": "Importuj obraz",
         "scan": "Skanuj aparatem",
         "allowanceError": "Sprawdź dostępność aparatu i uprawnienia przeglądarki, aby z niego korzystać",
-        "receive": "Odbierać"
+        "receive": "Odbierać",
+        "camera": "Aparat",
+        "allowanceRequest": "Naciśnij „Zezwól” na dostęp do kamery"
     },
     "bridgeTransferNotification": {
         "addToken": "Dodaj {symbol} do @:metamask",

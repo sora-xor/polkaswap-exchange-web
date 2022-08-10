@@ -971,7 +971,9 @@
         "import": "Bild importieren",
         "scan": "Mit der Kamera scannen",
         "allowanceError": "Überprüfe die Verfügbarkeit deiner Kamera und die Browserberechtigungen, um sie zu verwenden",
-        "receive": "Erhalten"
+        "receive": "Erhalten",
+        "camera": "Kamera",
+        "allowanceRequest": "Drücken Sie „Zugriff auf die Kamera zulassen“."
     },
     "bridgeTransferNotification": {
         "addToken": "Füge {symbol} zu @:metamask hinzu",
