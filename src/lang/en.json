@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "No Polkadot.js extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "There seems to be no accounts in your Polkadot.js extension. Please add an account and try again.",
-        "noAccount": "Polkadot.js account error. Please check your account in the Polkadot.js extension"
+        "noAccount": "{extension} account error. Please check your account in the {extension} extension",
+        "noExtension": "No {extension} extension was found. Please install it and reload this page",
+        "noSigner": "Access denied. Go to {extension} extension settings and open \"Manage Website Access\" to allow."
     },
     "connection": {
         "title": "SORA Network account",
@@ -97,6 +99,10 @@
             "learnMore": "Learn more",
             "connect": "Connect account",
             "refresh": "Refresh"
+        },
+        "selectWallet": "Select a wallet to work with",
+        "wallet": {
+            "install": "Install"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Remove asset",
         "select": "Select an asset",
-        "recieve": "Receive {symbol}"
+        "receive": "Receive {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Output is estimated. You will receive at least {transactionValue} or the transaction will revert.",
         "rewardsForSwap": "PSWAP Strategic Rewards",
         "swapInputMessage": "Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.",
-        "route": "Route"
+        "route": "Route",
+        "errorFetching": "Error fetching the data"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +872,7 @@
         },
         "history": {
             "title": "Purchase history",
-            "empty": "No data"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transaction Ready For Bridge"
@@ -874,7 +881,6 @@
             "transfer": "Tokens successfully purchased!\nClick to start the bridge transaction"
         }
     },
-    "recievedText": "Recieved",
     "light": "Light",
     "dark": "Dark",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Download QR Code",
         "upload": "Scan QR",
-        "recieve": "Receive",
-        "invalid": "Invalid QR Code"
+        "invalid": "Invalid QR Code",
+        "import": "Import an image",
+        "scan": "Scan with camera",
+        "allowanceError": "Check your camera availability and browser permissions to use it",
+        "receive": "Receive"
     },
     "bridgeTransferNotification": {
         "addToken": "Add {symbol} to @:metamask",
@@ -1006,7 +1015,10 @@
         },
         "amountAdd": "Amount to stake",
         "amountRemove": "Amount to remove",
-        "poweredBy": "Powered by Demeter Farming"
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Calculator",
+        "results": "Results",
+        "rewards": "{symbol} rewards"
     },
     "staking": {
         "title": "Staking"
@@ -1048,5 +1060,16 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "An error occurred while calculating the price"
         }
-    }
+    },
+    "receivedText": "Received",
+    "browserNotificationDialog": {
+        "title": "Enable browser notifications",
+        "info": "We will send you only relevant updates about your wallet, for example: asset balance changes",
+        "button": "Enable notifications",
+        "agree": "Yes, I understand",
+        "notificationBlocked": "To receive the notifications about {appName}, please, allow the notifications in your browser's native settings",
+        "pointer": "Press “Allow” to turn notifications on"
+    },
+    "assetDeposit": "Asset balance has been deposited",
+    "noDataText": "No data"
 }

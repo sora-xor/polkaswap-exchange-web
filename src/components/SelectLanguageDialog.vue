@@ -26,16 +26,16 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
 import { Language, Languages } from '@/consts';
 import { state, action, mutation } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import DialogBase from './DialogBase.vue';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
   },
 })
 export default class SelectLanguageDialog extends Mixins(TranslationMixin) {

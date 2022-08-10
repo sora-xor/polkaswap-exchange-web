@@ -3,7 +3,7 @@
     <div class="rewards-content" v-loading="!parentLoading && loading">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">
         <div :class="['rewards-box', libraryTheme]">
-          <tokens-row :symbols="rewardTokenSymbols" />
+          <tokens-row :assets="rewardTokens" />
           <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
             {{ claimingStatusMessage }}
           </div>
@@ -78,7 +78,7 @@
         {{ hintText }}
       </div>
       <s-button
-        v-if="!(rewardsRecieved || loading)"
+        v-if="!(rewardsReceived || loading)"
         class="rewards-block rewards-action-button s-typography-button--large"
         data-test-name="LoginAndGet"
         type="primary"
@@ -97,7 +97,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
@@ -134,7 +134,7 @@ export default class Rewards extends Mixins(
   @state.rewards.rewardsClaiming private rewardsClaiming!: boolean;
   @state.rewards.transactionError private transactionError!: boolean;
   @state.rewards.transactionStep private transactionStep!: number;
-  @state.rewards.recievedRewards recievedRewards!: RewardsAmountHeaderItem[];
+  @state.rewards.receivedRewards receivedRewards!: RewardsAmountHeaderItem[];
   @state.rewards.fee fee!: CodecString;
 
   @state.rewards.vestedRewards private vestedRewards!: RewardsInfo;
@@ -206,16 +206,20 @@ export default class Rewards extends Mixins(
     }
   }
 
-  get rewardsRecieved(): boolean {
-    return this.recievedRewards.length !== 0;
+  get rewardsReceived(): boolean {
+    return this.receivedRewards.length !== 0;
   }
 
   get rewardsAmountHeaderItems(): RewardsAmountHeaderItem[] {
-    return this.rewardsRecieved ? this.recievedRewards : this.rewardsByAssetsList;
+    return this.rewardsReceived ? this.receivedRewards : this.rewardsByAssetsList;
+  }
+
+  get rewardTokens(): Array<Asset> {
+    return this.rewardsAmountHeaderItems.map((item) => item.asset);
   }
 
   get rewardTokenSymbols(): Array<KnownSymbols> {
-    return this.rewardsAmountHeaderItems.map((item) => item.asset.symbol as KnownSymbols);
+    return this.rewardTokens.map((item) => item.symbol as KnownSymbols);
   }
 
   get gradientSymbol(): string {
@@ -317,15 +321,15 @@ export default class Rewards extends Mixins(
   }
 
   get claimingInProgressOrFinished(): boolean {
-    return this.rewardsClaiming || this.transactionError || this.rewardsRecieved;
+    return this.rewardsClaiming || this.transactionError || this.rewardsReceived;
   }
 
   get claimingStatusMessage(): string {
-    return this.rewardsRecieved ? this.t('rewards.claiming.success') : this.t('rewards.claiming.pending');
+    return this.rewardsReceived ? this.t('rewards.claiming.success') : this.t('rewards.claiming.pending');
   }
 
   get transactionStatusMessage(): string {
-    if (this.rewardsRecieved) {
+    if (this.rewardsReceived) {
       return this.t('rewards.transactions.success');
     }
 

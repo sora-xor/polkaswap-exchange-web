@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Er is geen Polkadot.js-extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Er lijken geen accounts te zijn in uw Polkadot.js-extensie. Voeg een account toe en probeer het opnieuw.",
-        "noAccount": "Polkadot.js-accountfout. Controleer uw account in de Polkadot.js-extensie"
+        "noAccount": "Polkadot.js-accountfout. Controleer uw account in de Polkadot.js-extensie",
+        "noExtension": "Er is geen {extension} -extensie gevonden. Installeer het en laad deze pagina opnieuw",
+        "noSigner": "Toegang geweigerd. Ga naar {extension} extensie-instellingen en open \"Websitetoegang beheren\" om toe te staan."
     },
     "connection": {
         "title": "SORA Netwerk account",
@@ -97,6 +99,10 @@
             "learnMore": "Kom meer te weten",
             "connect": "Account aansluiten",
             "refresh": "Vernieuwen"
+        },
+        "selectWallet": "Selecteer een portemonnee om mee te werken",
+        "wallet": {
+            "install": "Installeren"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Asset verwijderen",
         "select": "Selecteer een bezit",
-        "recieve": "Ontvang {symbol}"
+        "receive": "Ontvang {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "De output wordt geschat. U ontvangt minimaal {transactionValue} of de transactie wordt teruggedraaid.",
         "rewardsForSwap": "PSWAP Strategische Beloningen",
         "swapInputMessage": "Invoer wordt geschat. U verkoopt maximaal {transactionValue} of de transactie wordt teruggedraaid.",
-        "route": "Route"
+        "route": "Route",
+        "errorFetching": "Fout bij het ophalen van de gegevens"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +872,7 @@
         },
         "history": {
             "title": "Aankoopgeschiedenis",
-            "empty": "Geen informatie"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transactie klaar voor bridge"
@@ -874,7 +881,6 @@
             "transfer": "Tokens succesvol gekocht!\n Klik om de bridge transactie te starten"
         }
     },
-    "recievedText": "Ontvangen",
     "light": "Licht",
     "dark": "Donker",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Downloaden QR-code",
         "upload": "QR code scannen",
-        "recieve": "Ontvangen",
-        "invalid": "Ongeldige QR-code"
+        "invalid": "Ongeldige QR-code",
+        "import": "Een afbeelding importeren",
+        "scan": "Scannen met camera",
+        "allowanceError": "Controleer de beschikbaarheid van je camera en browserrechten om deze te gebruiken",
+        "receive": "Ontvangen"
     },
     "bridgeTransferNotification": {
         "addToken": "Voeg {symbol} toe aan @:metamask",
@@ -1006,7 +1015,10 @@
         },
         "amountAdd": "Bedrag om in te zetten",
         "amountRemove": "Te verwijderen bedrag",
-        "poweredBy": "Mogelijk gemaakt door Demeter Farming"
+        "poweredBy": "Mogelijk gemaakt door Demeter Farming",
+        "calculator": "Rekenmachine",
+        "results": "Resultaten",
+        "rewards": "{symbol} beloningen"
     },
     "staking": {
         "title": "Staking"
@@ -1048,5 +1060,16 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Er is een fout opgetreden bij het berekenen van de prijs"
         }
-    }
+    },
+    "receivedText": "Ontvangen",
+    "browserNotificationDialog": {
+        "title": "Browsermeldingen inschakelen",
+        "info": "We sturen u alleen relevante updates over uw portemonnee, bijvoorbeeld: wijzigingen in activasaldo",
+        "button": "Notificaties aanzetten",
+        "agree": "Ja ik begrijp het",
+        "notificationBlocked": "Als u de meldingen over {appName} wilt ontvangen, moet u de meldingen toestaan in de systeemeigen instellingen van uw browser",
+        "pointer": "Druk op \"Toestaan\" om meldingen in te schakelen"
+    },
+    "assetDeposit": "Activa-saldo is gestort",
+    "noDataText": "Geen informatie"
 }

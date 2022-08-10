@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) Polkadot{.js}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Dường như không có tài khoản nào trong tiện ích (extension) Polkadot{.js}. Vui lòng thêm tài khoản và thử lại.",
-        "noAccount": "Tài khoản Polkadot{.js} gặp trục trặc. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) Polkadot{.js}."
+        "noAccount": "Tài khoản Polkadot{.js} gặp lỗi. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) Polkadot{.js}.",
+        "noExtension": "Không tìm thấy {extension} . Vui lòng cài đặt nó và tải lại trang này",
+        "noSigner": "Quyền truy cập bị từ chối. Đi tới cài đặt tiện ích {extension} và mở \"Quản lý quyền truy cập trang web\" để cho phép."
     },
     "connection": {
         "title": "Tài khoản Mạng SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Tìm hiểu thêm",
             "connect": "Kết nối tài khoản",
             "refresh": "Làm mới"
+        },
+        "selectWallet": "Chọn một ví để kết nối",
+        "wallet": {
+            "install": "Cài đặt"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Loại bỏ tài sản",
         "select": "Chọn tài sản",
-        "recieve": "Nhận {symbol}"
+        "receive": "Nhận {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Ước lượng đầu ra. Bạn sẽ nhận ít nhất {transactionValue} hoặc giao dịch sẽ hoàn tác.",
         "rewardsForSwap": "Phần thưởng chiến lược PSWAP",
         "swapInputMessage": "Dự tính đầu vào. Bạn sẽ bán tối đa {transactionValue} hoặc giao dịch sẽ hoàn tác.",
-        "route": "Route"
+        "route": "Route",
+        "errorFetching": "Lỗi khi tìm nạp dữ liệu"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +872,7 @@
         },
         "history": {
             "title": "Lịch sử giao dịch",
-            "empty": "Không có dữ liệu"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Sẵn sàng cho giao dịch qua Cầu nối"
@@ -874,7 +881,6 @@
             "transfer": "Đã mua thành công token!\nNhấp để bắt đầu giao dịch cầu nối"
         }
     },
-    "recievedText": "Nhận được",
     "light": "Sáng",
     "dark": "Tối",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Tải xuống mã QR",
         "upload": "Quét mã QR",
-        "recieve": "Nhận",
-        "invalid": "Mã QR không hợp lệ"
+        "invalid": "Mã QR không hợp lệ",
+        "import": "Nhập hình ảnh",
+        "scan": "Quét bằng máy ảnh",
+        "allowanceError": "Kiểm tra máy ảnh và quyền sử dụng máy ảnh của trình duyệ",
+        "receive": "Nhận"
     },
     "bridgeTransferNotification": {
         "addToken": "Thêm {symbol} vào @:metamask",
@@ -1006,7 +1015,10 @@
         },
         "amountAdd": "Số lượng stake",
         "amountRemove": "Số tiền cần loại bỏ",
-        "poweredBy": "Được cung cấp bởi Demeter Farming"
+        "poweredBy": "Được cung cấp bởi Demeter Farming",
+        "calculator": "Máy tính",
+        "results": "Kết quả",
+        "rewards": "phần thưởng {symbol}"
     },
     "staking": {
         "title": "Staking"
@@ -1048,5 +1060,16 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Đã xảy ra lỗi khi tính giá"
         }
-    }
+    },
+    "receivedText": "Nhận được",
+    "browserNotificationDialog": {
+        "title": "Bật thông báo trình duyệt",
+        "info": "Chúng tôi sẽ chỉ gửi cho bạn các cập nhật có liên quan về ví của bạn, ví dụ: thay đổi số dư tài sản",
+        "button": "Bật thông báo",
+        "agree": "Vâng, tôi hiểu",
+        "notificationBlocked": "Để nhận thông báo về {appName}, vui lòng cho phép thông báo trong cài đặt gốc của trình duyệt của bạn",
+        "pointer": "Nhấn “Cho phép” để bật thông báo"
+    },
+    "assetDeposit": "Số dư tài sản đã được gửi",
+    "noDataText": "Không có dữ liệu"
 }

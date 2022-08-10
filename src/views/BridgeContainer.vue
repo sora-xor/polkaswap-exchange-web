@@ -20,11 +20,9 @@ import { action } from '@/store/decorators';
 
 @Component
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
-  @action.web3.getEvmBalance private getEvmBalance!: AsyncVoidFn;
   @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
   @action.bridge.updateEvmBlockNumber private updateEvmBlockNumber!: (block?: number) => Promise<void>;
-  @action.assets.getRegisteredAssets private getRegisteredAssets!: AsyncVoidFn;
-  @action.assets.updateRegisteredAssets private updateRegisteredAssets!: AsyncVoidFn;
+  @action.assets.updateRegisteredAssets private updateRegisteredAssets!: (reset?: boolean) => Promise<void>;
 
   private unwatchEthereum!: VoidFunction;
   private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
@@ -63,18 +61,12 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     this.unsubscribeEvmBlockHeaders();
   }
 
-  private updateExternalBalances(): void {
-    this.getEvmBalance();
-    this.updateRegisteredAssets();
+  private updateExternalBalances(resetAssets?: boolean): void {
+    this.updateRegisteredAssets(resetAssets);
   }
 
   private async onEvmNetworkTypeChange(networkHex?: string) {
-    await Promise.all([
-      this.setEvmNetworkType(networkHex),
-      this.getRegisteredAssets(),
-      this.getEvmNetworkFee(),
-      this.getEvmBalance(),
-    ]);
+    await Promise.all([this.setEvmNetworkType(networkHex), this.updateExternalBalances(true), this.getEvmNetworkFee()]);
   }
 
   private async subscribeToEvmBlockHeaders(): Promise<void> {

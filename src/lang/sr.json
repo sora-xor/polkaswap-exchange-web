@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Није пронађена ниједна екстензија Polkadot.{js}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Чини се да у вашој екстензији Polkadot{.js} нема рачуна. Додајте рачун и покушајте поново.",
-        "noAccount": "Грешка рачуна Polkadot.{js}. Проверите свој рачун у екстензији Polkadot.js"
+        "noAccount": "Грешка рачуна Polkadot.{js}. Проверите свој рачун у екстензији Polkadot.js",
+        "noExtension": "Није пронађен ниједан {extension} . Инсталирајте га и поново учитајте ову страницу",
+        "noSigner": "Приступ одбијен. Идите на подешавања {extension} и отворите „Управљање приступом веб локацији“ да бисте дозволили."
     },
     "connection": {
         "title": "Рачун мреже SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Сазнајте више",
             "connect": "Повежите рачун",
             "refresh": "Освјежите"
+        },
+        "selectWallet": "Изаберите новчаник са којим ћете радити",
+        "wallet": {
+            "install": "Инсталирај"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Уклоните средство",
         "select": "Izaberite sredstvo",
-        "recieve": "Примите {symbol}"
+        "receive": "Примите {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Излаз је процењен. Добићете најмање {transactionValue} или ће трансакција бити враћена.",
         "rewardsForSwap": "PSWAP стратешке награде",
         "swapInputMessage": "Улаз је процењен. Продаћете максимално {transactionValue} или ће се трансакција поништити.",
-        "route": "Рута"
+        "route": "Рута",
+        "errorFetching": "Greška pri prenošenju podataka"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +872,7 @@
         },
         "history": {
             "title": "Историја куповине",
-            "empty": "Нема података"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Трансакција спремна за мост"
@@ -874,7 +881,6 @@
             "transfer": "Токени су успешно купљени!\nКликните да бисте започели мост трансакцију"
         }
     },
-    "recievedText": "Примљено",
     "light": "Светло",
     "dark": "Мрачно",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Преузмите КР код",
         "upload": "Skeniraj QR",
-        "recieve": "Примите",
-        "invalid": "Неважећи КР код"
+        "invalid": "Неважећи КР код",
+        "import": "Увезите слику",
+        "scan": "Скенирајте камером",
+        "allowanceError": "Проверите доступност камере и дозволе прегледача да бисте је користили",
+        "receive": "Примите"
     },
     "bridgeTransferNotification": {
         "addToken": "Додајте {symbol} у @:metamask",
@@ -1006,7 +1015,10 @@
         },
         "amountAdd": "Износ за стекинг",
         "amountRemove": "Износ за уклањање",
-        "poweredBy": "Powered by Demeter Farming"
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Калкулатор",
+        "results": "Резултати",
+        "rewards": "{symbol} награде"
     },
     "staking": {
         "title": "Стeкинг"
@@ -1048,5 +1060,16 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Дошло је до грешке при израчунавању цене"
         }
-    }
+    },
+    "receivedText": "Примљено",
+    "browserNotificationDialog": {
+        "title": "Омогућите обавештења прегледача",
+        "info": "Слаћемо вам само релевантна ажурирања о вашем новчанику, на пример: промене стања средстава",
+        "button": "Омогућили обавештења",
+        "agree": "Да, разумем",
+        "notificationBlocked": "Да бисте примали обавештења о {appName}, дозволите обавештења у основним подешавањима прегледача",
+        "pointer": "Притисните „Дозволи“ да бисте укључили обавештења"
+    },
+    "assetDeposit": "Стање средстава је депоновано",
+    "noDataText": "Нема података"
 }

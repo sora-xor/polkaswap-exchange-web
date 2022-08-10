@@ -11,6 +11,7 @@ function initialState(): SettingsState {
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: (storage.get('marketAlgorithm') || DefaultMarketAlgorithm) as MarketAlgorithms,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
+    browserNotifsPermission: Notification.permission,
     node: node ? JSON.parse(node) : {},
     language: getLocale(),
     defaultNodes: [],
@@ -21,6 +22,8 @@ function initialState(): SettingsState {
     faucetUrl: '',
     selectNodeDialogVisibility: false,
     selectLanguageDialogVisibility: false,
+    browserNotifPopupVisibility: false,
+    browserNotifPopupBlockedVisibility: false,
     blockNumber: 0,
     blockNumberUpdates: null,
   };

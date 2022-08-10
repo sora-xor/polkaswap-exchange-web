@@ -75,7 +75,6 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/pool',
-    name: PageNames.PoolContainer,
     component: lazyView(PageNames.PoolContainer),
     children: [
       {
@@ -86,12 +85,6 @@ const routes: Array<RouteConfig> = [
             path: '',
             name: DemeterPageNames.Pool,
             component: demeterLazyView(DemeterPageNames.Pool),
-          },
-          {
-            path: 'create-pair',
-            name: PageNames.CreatePair,
-            component: lazyView(PageNames.CreatePair),
-            meta: { requiresAuth: true },
           },
           {
             path: 'add/:firstAddress?/:secondAddress?',

@@ -181,7 +181,7 @@
           data-test-name="nextButton"
           type="primary"
           :disabled="isConfirmTxDisabled"
-          :loading="isSelectAssetLoading"
+          :loading="isConfirmTxLoading"
           @click="handleConfirmTransaction"
         >
           <template v-if="!isAssetSelected">
@@ -306,6 +306,7 @@ export default class Bridge extends Mixins(
   @state.web3.subNetworks subNetworks!: Array<SubNetwork>;
   @state.bridge.amount amount!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
+  @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
 
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAssetWithDecimals>;
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
@@ -420,16 +421,18 @@ export default class Bridge extends Mixins(
   get isConfirmTxDisabled(): boolean {
     return (
       !this.isAssetSelected ||
+      !this.isRegisteredAsset ||
       !this.areNetworksConnected ||
       !this.isValidNetworkType ||
-      !this.isAssetSelected ||
       this.isZeroAmount ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
-      this.isInsufficientBalance ||
-      !this.isRegisteredAsset ||
-      this.evmNetworkFeeFetching
+      this.isInsufficientBalance
     );
+  }
+
+  get isConfirmTxLoading(): boolean {
+    return this.isSelectAssetLoading || this.evmNetworkFeeFetching || this.registeredAssetsFetching;
   }
 
   get isXorSufficientForNextOperation(): boolean {

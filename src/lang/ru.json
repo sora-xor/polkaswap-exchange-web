@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Расширение Polkadot.js не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Похоже, что в вашем расширении Polkadot.js нет аккаунтов. Пожалуйста, добавьте аккаунт и повторите попытку.",
-        "noAccount": "Ошибка аккаунта Polkadot.js. Пожалуйста, проверьте свою учетную запись в расширении Polkadot.js"
+        "noAccount": "Ошибка аккаунта Polkadot.js. Пожалуйста, проверьте свою учетную запись в расширении Polkadot.js",
+        "noExtension": "Расширение {extension} не найдено. Пожалуйста, установите его и перезагрузите эту страницу",
+        "noSigner": "В доступе отказано. Перейдите в настройки {extension} и откройте «Управление доступом к веб-сайту», чтобы разрешить."
     },
     "connection": {
         "title": "Аккаунт сети SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Узнать больше",
             "connect": "Подключить аккаунт",
             "refresh": "Обновить"
+        },
+        "selectWallet": "Выберите кошелек для работы",
+        "wallet": {
+            "install": "Установить"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Удалить актив",
         "select": "Выберите актив",
-        "recieve": "Получить {symbol}"
+        "receive": "Получить {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Вывод оценён. Вы получите как минимум {transactionValue} или транзакция будет отменена.",
         "rewardsForSwap": "Стратегические вознаграждения PSWAP",
         "swapInputMessage": "Ввод оценивается. Вы продадите максимум {transactionValue} иначе транзакция будет отменена.",
-        "route": "Маршрут"
+        "route": "Маршрут",
+        "errorFetching": "Ошибка при получении данных"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +872,7 @@
         },
         "history": {
             "title": "История покупок",
-            "empty": "Нет данных"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Транзакция готова для моста"
@@ -874,7 +881,6 @@
             "transfer": "Токены успешно куплены!\n Нажмите, чтобы начать транзакцию моста"
         }
     },
-    "recievedText": "Получено",
     "light": "Светлый",
     "dark": "Темный",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Скачать QR-код",
         "upload": "Сканировать QR-код",
-        "recieve": "Получить",
-        "invalid": "Неверный QR-код"
+        "invalid": "Неверный QR-код",
+        "import": "Импорт изображения",
+        "scan": "Сканировать камерой",
+        "allowanceError": "Проверьте доступность вашей камеры и разрешения браузера на ее использование.",
+        "receive": "Получить"
     },
     "bridgeTransferNotification": {
         "addToken": "Добавить {symbol} в @:metamask",
@@ -1006,7 +1015,10 @@
         },
         "amountAdd": "Сумма стейкинга",
         "amountRemove": "Сумма для удаления",
-        "poweredBy": "Работает на Demeter Farming"
+        "poweredBy": "Работает на Demeter Farming",
+        "calculator": "Калькулятор",
+        "results": "Результаты",
+        "rewards": "{symbol} награды"
     },
     "staking": {
         "title": "Стекинг"
@@ -1048,5 +1060,16 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Произошла ошибка при расчете цены"
         }
-    }
+    },
+    "receivedText": "Получено",
+    "browserNotificationDialog": {
+        "title": "Включить уведомления браузера",
+        "info": "Мы будем присылать вам только актуальные обновления о вашем кошельке, например: изменения баланса активов",
+        "button": "Включить уведомления",
+        "agree": "Да, я понимаю",
+        "notificationBlocked": "Чтобы получать уведомления о {appName}, разрешите уведомления в собственных настройках вашего браузера.",
+        "pointer": "Нажмите «Разрешить», чтобы включить уведомления"
+    },
+    "assetDeposit": "Актив был пополнен",
+    "noDataText": "Нет данных"
 }

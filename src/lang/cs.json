@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření Polkadot.js. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Zdá se, že ve vašem rozšíření Polkadot.js nejsou žádné účty. Přidejte účet a zkuste to znovu prosím.",
-        "noAccount": "Chyba účtu polkadot.js. Zkontrolujte prosím svůj účet v rozšíření Polkadot.js."
+        "noAccount": "Chyba účtu polkadot.js. Zkontrolujte prosím svůj účet v rozšíření Polkadot.js.",
+        "noExtension": "Nebylo nalezeno žádné {extension} . Nainstalujte jej a znovu načtěte tuto stránku",
+        "noSigner": "Přístup odepřen. Přejděte do nastavení {extension} a povolte otevřením možnosti Správa přístupu k webu."
     },
     "connection": {
         "title": "Účet sítě SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Zjistit více",
             "connect": "Připojit účet",
             "refresh": "Obnovit"
+        },
+        "selectWallet": "Vyberte peněženku, se kterou chcete pracovat",
+        "wallet": {
+            "install": "Nainstalujte"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Odebrat aktivum",
         "select": "Vyberte aktivum",
-        "recieve": "Přijmout {symbol}"
+        "receive": "Přijmout {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Výstup je odhadován. Obdržíte alespoň {transactionValue}, jinak se transakce vrátí zpět.",
         "rewardsForSwap": "Strategické odměny PSWAP",
         "swapInputMessage": "Vstup je odhadován. Prodáte maximálně {transactionValue}, jinak se transakce vrátí zpět.",
-        "route": "Trasa"
+        "route": "Trasa",
+        "errorFetching": "Chyba při načítání dat"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +872,7 @@
         },
         "history": {
             "title": "Historie nákupů",
-            "empty": "Žádné údaje"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transakce připravena pro Bridge"
@@ -874,7 +881,6 @@
             "transfer": "Tokeny byly úspěšně zakoupeny!\nKliknutím spustíte bridge transakci"
         }
     },
-    "recievedText": "Přijato",
     "light": "Světlý",
     "dark": "Tmavý",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Stáhnout QR kód",
         "upload": "Skenovat QR",
-        "recieve": "Příjem",
-        "invalid": "Neplatný QR kód"
+        "invalid": "Neplatný QR kód",
+        "import": "Importujte obrázek",
+        "scan": "Skenujte fotoaparátem",
+        "allowanceError": "Zkontrolujte dostupnost fotoaparátu a oprávnění prohlížeče k jeho použití",
+        "receive": "Příjem"
     },
     "bridgeTransferNotification": {
         "addToken": "Přidejte {symbol} do @:metamask",
@@ -1006,7 +1015,10 @@
         },
         "amountAdd": "Částka pro stake",
         "amountRemove": "Částka k odebrání",
-        "poweredBy": "Běží na Demeter Farming"
+        "poweredBy": "Běží na Demeter Farming",
+        "calculator": "Kalkulačka",
+        "results": "Výsledek",
+        "rewards": "{symbol} odměny"
     },
     "staking": {
         "title": "Stakování"
@@ -1048,5 +1060,16 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Při výpočtu ceny došlo k chybě"
         }
-    }
+    },
+    "receivedText": "Přijato",
+    "browserNotificationDialog": {
+        "title": "Povolit oznámení prohlížeče",
+        "info": "Budeme vám zasílat pouze relevantní aktualizace o vaší peněžence, například: změny zůstatku aktiv",
+        "button": "Povolit upozornění",
+        "agree": "Ano, rozumím",
+        "notificationBlocked": "Chcete-li dostávat oznámení o {appName}, povolte oznámení v nativním nastavení prohlížeče",
+        "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení"
+    },
+    "assetDeposit": "Zůstatek aktiv byl uložen",
+    "noDataText": "Žádné údaje"
 }

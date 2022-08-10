@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Nessuna estensione Polkadot.js trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Sembra che non ci siano account nella tua estensione Polkadot.js. Aggiungi un account e riprova.",
-        "noAccount": "Errore dell'account Polkadot.js. Controlla il tuo account nell'estensione Polkadot.js"
+        "noAccount": "Errore dell'account Polkadot.js. Controlla il tuo account nell'estensione Polkadot.js",
+        "noExtension": "Non è stata trovata alcuna {extension} . Si prega di installarlo e ricaricare questa pagina",
+        "noSigner": "Accesso negato. Vai alle impostazioni {extension} e apri \"Gestisci accesso al sito web\" per consentire."
     },
     "connection": {
         "title": "SORA Network account",
@@ -97,6 +99,10 @@
             "learnMore": "Per saperne di più",
             "connect": "Connetti account",
             "refresh": "Aggiorna"
+        },
+        "selectWallet": "Seleziona un portafoglio con cui lavorare",
+        "wallet": {
+            "install": "Installare"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Rimuovi l'asset",
         "select": "Seleziona una risorsa",
-        "recieve": "Ricevi {symbol}"
+        "receive": "Ricevi {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "L'output è stimato. Riceverai almeno {transactionValue} o la transazione tornerà indietro.",
         "rewardsForSwap": "PSWAP Strategic Rewards",
         "swapInputMessage": "L'input è stimato. Venderai al massimo {transactionValue} o la transazione verrà annullata.",
-        "route": "Rotta"
+        "route": "Rotta",
+        "errorFetching": "Errore durante il recupero dei dati"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +872,7 @@
         },
         "history": {
             "title": "Cronologia degli acquisti",
-            "empty": "Nessun dato"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transazione pronta per il bridge"
@@ -874,7 +881,6 @@
             "transfer": "Token acquistati con successo!\nClicca per avviare la transazione sul bridge"
         }
     },
-    "recievedText": "Ricevuto",
     "light": "Light",
     "dark": "Dark",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Scarica QR Code",
         "upload": "Scansiona QR",
-        "recieve": "Ricevere",
-        "invalid": "Codice QR non valido"
+        "invalid": "Codice QR non valido",
+        "import": "Importa un'immagine",
+        "scan": "Scansione con fotocamera",
+        "allowanceError": "Verifica la disponibilità della videocamera e le autorizzazioni del browser per utilizzarla",
+        "receive": "Ricevere"
     },
     "bridgeTransferNotification": {
         "addToken": "Aggiungi {symbol} a @:metamask",
@@ -1006,7 +1015,10 @@
         },
         "amountAdd": "Importo da mettere in staking",
         "amountRemove": "Importo da rimuovere",
-        "poweredBy": "Alimentato da Demeter Farming"
+        "poweredBy": "Alimentato da Demeter Farming",
+        "calculator": "Calcolatrice",
+        "results": "Risultati",
+        "rewards": "{symbol} ricompense"
     },
     "staking": {
         "title": "Staking"
@@ -1048,5 +1060,16 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Si è verificato un errore durante il calcolo del prezzo"
         }
-    }
+    },
+    "receivedText": "Ricevuto",
+    "browserNotificationDialog": {
+        "title": "Abilita le notifiche del browser",
+        "info": "Ti invieremo solo gli aggiornamenti rilevanti sul tuo portafoglio, ad esempio: modifiche al saldo patrimoniale",
+        "button": "Attivare le notifiche",
+        "agree": "Si, capisco",
+        "notificationBlocked": "Per ricevere le notifiche su {appName}, consenti le notifiche nelle impostazioni native del tuo browser",
+        "pointer": "Premi \"Consenti\" per attivare le notifiche"
+    },
+    "assetDeposit": "Il saldo patrimoniale è stato depositato",
+    "noDataText": "Nessun dato"
 }

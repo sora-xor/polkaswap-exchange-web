@@ -37,14 +37,13 @@ import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/type
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
-import DialogBase from '@/components/DialogBase.vue';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     SelectAssetList: lazyComponent(Components.SelectAssetList),
     SearchInput: components.SearchInput,
   },

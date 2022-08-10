@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Wygląda na to, że w Twoim rozszerzeniu polkadot.js nie ma kont. Dodaj konto i spróbuj ponownie.",
-        "noAccount": "Błąd konta polkadot.js. Sprawdź swoje konto w rozszerzeniu polkadot.js."
+        "noAccount": "Błąd konta polkadot.js. Sprawdź swoje konto w rozszerzeniu polkadot.js.",
+        "noExtension": "Nie znaleziono {extension} . Zainstaluj go i ponownie załaduj tę stronę",
+        "noSigner": "Brak dostępu. Przejdź do ustawień {extension} i otwórz „Zarządzaj dostępem do witryny”, aby zezwolić."
     },
     "connection": {
         "title": "Konto sieci SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Dowiedz się więcej",
             "connect": "Połącz z kontem",
             "refresh": "Odśwież"
+        },
+        "selectWallet": "Wybierz portfel do pracy",
+        "wallet": {
+            "install": "zainstalować"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Usuń walutę",
         "select": "Wybierz walutę",
-        "recieve": "Odbierz {symbol}"
+        "receive": "Odbierz {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Wynik jest szacunkowy. Otrzymasz co najmniej {transactionValue} lub transakcja zostanie anulowana.",
         "rewardsForSwap": "Wynagrodzenie strategiczne w walucie PSWAP",
         "swapInputMessage": "Wprowadzone dane są szacunkowe. Sprzedasz maksymalnie {transactionValue} lub transakcja zostanie anulowana.",
-        "route": "Kierunek"
+        "route": "Kierunek",
+        "errorFetching": "Błąd podczas pobierania danych"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +872,7 @@
         },
         "history": {
             "title": "Historia zakupów",
-            "empty": "Brak danych"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transakcja gotowa do transferu przez most."
@@ -874,7 +881,6 @@
             "transfer": "Tokeny zakupiono z powodzeniem!\nKliknij, aby rozpocząć transakcję mostową"
         }
     },
-    "recievedText": "Otrzymano",
     "light": "Jasny",
     "dark": "Ciemny",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Pobierz kod QR",
         "upload": "Skanowanie kodu QR",
-        "recieve": "Odbierać",
-        "invalid": "Nieprawidłowy kod QR"
+        "invalid": "Nieprawidłowy kod QR",
+        "import": "Importuj obraz",
+        "scan": "Skanuj aparatem",
+        "allowanceError": "Sprawdź dostępność aparatu i uprawnienia przeglądarki, aby z niego korzystać",
+        "receive": "Odbierać"
     },
     "bridgeTransferNotification": {
         "addToken": "Dodaj {symbol} do @:metamask",
@@ -1006,7 +1015,10 @@
         },
         "amountAdd": "Kwota przeznaczona na staking",
         "amountRemove": "Kwota do usunięcia",
-        "poweredBy": "Powered by Demeter Farming"
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Kalkulator",
+        "results": "Wyniki",
+        "rewards": "{symbol} nagrody"
     },
     "staking": {
         "title": "Staking"
@@ -1048,5 +1060,16 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Wystąpił błąd podczas obliczania ceny"
         }
-    }
+    },
+    "receivedText": "Otrzymano",
+    "browserNotificationDialog": {
+        "title": "Włącz powiadomienia przeglądarki",
+        "info": "Prześlemy Ci tylko istotne aktualizacje dotyczące Twojego portfela, na przykład: zmiany salda aktywów",
+        "button": "Włącz powiadomienia",
+        "agree": "Tak, rozumiem",
+        "notificationBlocked": "Aby otrzymywać powiadomienia o {appName}, należy włączyć powiadomienia w ustawieniach natywnych przeglądarki.",
+        "pointer": "Naciśnij „Zezwól”, aby włączyć powiadomienia"
+    },
+    "assetDeposit": "Saldo aktywów zostało zdeponowane",
+    "noDataText": "Brak danych"
 }

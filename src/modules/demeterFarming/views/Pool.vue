@@ -24,6 +24,7 @@
           @add="changePoolStake($event, true)"
           @remove="changePoolStake($event, false)"
           @claim="claimPoolRewards"
+          @calculator="showPoolCalculator"
           border
           class="demeter-pool"
         />
@@ -44,6 +45,13 @@
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
       @confirm="handleClaimRewards"
+    />
+
+    <calculator-dialog
+      :visible.sync="showCalculatorDialog"
+      :pool="selectedPool"
+      :account-pool="selectedAccountPool"
+      :liquidity="selectedAccountLiquidity"
     />
   </div>
 </template>
@@ -72,6 +80,7 @@ import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types'
     StatusBadge: demeterLazyComponent(DemeterComponents.StatusBadge),
     StakeDialog: demeterLazyComponent(DemeterComponents.StakeDialog),
     ClaimDialog: demeterLazyComponent(DemeterComponents.ClaimDialog),
+    CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
   },
 })
 export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMixin) {

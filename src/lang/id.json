@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi Polkadot.js yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Sepertinya tidak ada akun di ekstensi Polkadot.js Anda. Tambahkan akun dan coba lagi.",
-        "noAccount": "Polkadot.js akun error. Silakan periksa akun Anda di ekstensi Polkadot.js"
+        "noAccount": "Polkadot.js akun error. Silakan periksa akun Anda di ekstensi Polkadot.js",
+        "noExtension": "Tidak ada {extension} yang ditemukan. Silakan instal dan muat ulang halaman ini",
+        "noSigner": "Akses ditolak. Buka setelan ekstensi {extension} dan buka \"Kelola Akses Situs Web\" untuk mengizinkan."
     },
     "connection": {
         "title": "Akun Jaringan SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Pelajari lebih lanjut",
             "connect": "Hubungkan akun",
             "refresh": "Menyegarkan"
+        },
+        "selectWallet": "Pilih dompet untuk digunakan",
+        "wallet": {
+            "install": "Install"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Hapus aset",
         "select": "Pilih aset",
-        "recieve": "Terima {symbol}"
+        "receive": "Terima {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Keluaran diperkirakan. Anda akan menerima setidaknya {transactionValue} atau transaksi akan dibatalkan.",
         "rewardsForSwap": "PSWAP Strategic Rewards",
         "swapInputMessage": "Masukan diperkirakan. Anda akan menjual maksimum {transactionValue} atau transaksi akan kembali.",
-        "route": "Rute"
+        "route": "Rute",
+        "errorFetching": "Kesalahan pengambilan data"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +872,7 @@
         },
         "history": {
             "title": "Riwayat pembelian",
-            "empty": "Tidak ada data"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transaksi Siap Untuk Jembatan"
@@ -874,7 +881,6 @@
             "transfer": "Token berhasil dibeli!\n Klik untuk memulai transaksi jembatan"
         }
     },
-    "recievedText": "Diterima",
     "light": "Lampu",
     "dark": "Gelap",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Unduh Kode QR",
         "upload": "Pindai QR",
-        "recieve": "Menerima",
-        "invalid": "Kode QR tidak valid"
+        "invalid": "Kode QR tidak valid",
+        "import": "Impor gambar",
+        "scan": "Pindai dengan kamera",
+        "allowanceError": "Periksa ketersediaan kamera dan izin browser Anda untuk menggunakannya",
+        "receive": "Menerima"
     },
     "bridgeTransferNotification": {
         "addToken": "Tambahkan {symbol} ke @:metamask",
@@ -1006,7 +1015,10 @@
         },
         "amountAdd": "Jumlah yang distake",
         "amountRemove": "Jumlah yang akan dihapus",
-        "poweredBy": "Didukung oleh Demeter Farming"
+        "poweredBy": "Didukung oleh Demeter Farming",
+        "calculator": "Kalkulator",
+        "results": "Hasil",
+        "rewards": "{symbol} hadiah"
     },
     "staking": {
         "title": "Staking"
@@ -1048,5 +1060,16 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Terjadi kesalahan saat menghitung harga"
         }
-    }
+    },
+    "receivedText": "Diterima",
+    "browserNotificationDialog": {
+        "title": "Aktifkan pemberitahuan browser",
+        "info": "Kami hanya akan mengirimkan pembaruan yang relevan tentang dompet Anda, misalnya: perubahan saldo aset",
+        "button": "Aktifkan notifikasi",
+        "agree": "Ya saya mengerti",
+        "notificationBlocked": "Untuk menerima notifikasi tentang {appName}, izinkan notifikasi di setelan asli browser Anda",
+        "pointer": "Tekan \"Izinkan\" untuk mengaktifkan notifikasi"
+    },
+    "assetDeposit": "Saldo aset telah disetorkan",
+    "noDataText": "Tidak ada data"
 }

@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Rozšírenie Polkadot{.js} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Zdá sa, že vo vašom rozšírení Polkadot{.js} nie sú žiadne účty. Pridajte účet a skúste to znova.",
-        "noAccount": "Chyba účtu Polkadot{.js}. Skontrolujte váš účet v rozšírení Polkadot{.js}"
+        "noAccount": "Chyba účtu Polkadot{.js}. Skontrolujte váš účet v rozšírení Polkadot{.js}",
+        "noExtension": "Nenašlo sa žiadne {extension} . Nainštalujte si ho a znova načítajte túto stránku",
+        "noSigner": "Prístup zamietnutý. Prejdite do nastavení {extension} a otvorte položku Spravovať prístup k webovým stránkam."
     },
     "connection": {
         "title": "Sieťový účet SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Dozvedieť sa viac",
             "connect": "Pripojiť účet",
             "refresh": "Obnoviť"
+        },
+        "selectWallet": "Vyberte peňaženku, s ktorou chcete pracovať",
+        "wallet": {
+            "install": "Inštalácia"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Odobrať aktívum",
         "select": "Vyberte aktívum",
-        "recieve": "Prijať {symbol}"
+        "receive": "Prijať {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Výsledná čiastka je len odhadom. Obdržíte minimálne {transactionValue}, inak sa transakcia vráti späť.",
         "rewardsForSwap": "Strategické odmeny PSWAP",
         "swapInputMessage": "Vstupná čiastka je len odhadom. Predáte maximálne {transactionValue}, inak sa transakcia vráti späť.",
-        "route": "Cesta"
+        "route": "Cesta",
+        "errorFetching": "Chyba pri načítaní údajov"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +872,7 @@
         },
         "history": {
             "title": "História nákupov",
-            "empty": "Žiadne dáta"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transakcia pripravená pre most"
@@ -874,7 +881,6 @@
             "transfer": "Tokeny boli úspešne zakúpené!\nKliknutím spustíte most transakciu"
         }
     },
-    "recievedText": "Prijatý",
     "light": "Svetlo",
     "dark": "Tmavý",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "Stiahnite si QR kód",
         "upload": "Naskenujte QR",
-        "recieve": "Dostať",
-        "invalid": "Neplatný QR kód"
+        "invalid": "Neplatný QR kód",
+        "import": "Importujte obrázok",
+        "scan": "Skenovanie pomocou fotoaparátu",
+        "allowanceError": "Skontrolujte dostupnosť fotoaparátu a povolenia prehliadača, aby ste ho mohli používať",
+        "receive": "Dostať"
     },
     "bridgeTransferNotification": {
         "addToken": "Pridajte {symbol} do @:metamask",
@@ -1006,7 +1015,10 @@
         },
         "amountAdd": "Čiastka na delegovanie",
         "amountRemove": "Suma na odstránenie",
-        "poweredBy": "Beží na Demeter Farming"
+        "poweredBy": "Beží na Demeter Farming",
+        "calculator": "Kalkulačka",
+        "results": "Výsledky",
+        "rewards": "{symbol} odmeny"
     },
     "staking": {
         "title": "Stakovanie"
@@ -1048,5 +1060,16 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Pri výpočte ceny sa vyskytla chyba"
         }
-    }
+    },
+    "receivedText": "Prijaté",
+    "browserNotificationDialog": {
+        "title": "Povoliť upozornenia prehliadača",
+        "info": "Budeme vám posielať iba relevantné aktualizácie o vašej peňaženke, napríklad: zmeny stavu aktív",
+        "button": "Povoliť upozornenia",
+        "agree": "Áno rozumiem",
+        "notificationBlocked": "Ak chcete dostávať upozornenia o {appName}, povoľte upozornenia v natívnych nastaveniach prehliadača",
+        "pointer": "Stlačením „Povoliť“ zapnite upozornenia"
+    },
+    "assetDeposit": "Zostatok aktív bol uložený",
+    "noDataText": "Žiadne dáta"
 }

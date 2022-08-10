@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Es wurde keine Polkadot.js-Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Es scheint keine Konten in deiner Polkadot.js-Erweiterung zu geben. Bitte, füge ein Konto hinzu und versuche es erneut.",
-        "noAccount": "Polkadot.js Kontofehler. Bitte, überprüfe dein Konto in der Polkadot.js-Erweiterung"
+        "noAccount": "{extension} Kontofehler. Bitte überprüfe dein Konto in der {extension} Erweiterung",
+        "noExtension": "Es wurde keine {extension} gefunden. Bitte installiere es und lade diese Seite neu",
+        "noSigner": "Zugriff abgelehnt. Gehe zu den Erweiterungseinstellungen von {extension} und öffne \"Website-Zugriff verwalten\", um dies zuzulassen."
     },
     "connection": {
         "title": "SORA-Netzwerk-Konto",
@@ -97,6 +99,10 @@
             "learnMore": "Mehr erfahren",
             "connect": "Konto verbinden",
             "refresh": "Aktualisieren"
+        },
+        "selectWallet": "Wähle eine Wallet zum Arbeiten aus",
+        "wallet": {
+            "install": "Installieren"
         }
     },
     "wallet": {
@@ -163,7 +169,7 @@
     "asset": {
         "remove": "Asset entfernen",
         "select": "Wähle ein Asset",
-        "recieve": "Erhalte {symbol}"
+        "receive": "Erhalte {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +523,8 @@
         "swapOutputMessage": "Die Ausgabe ist geschätzt. Du erhältst mindestens {transactionValue}, ansonsten wird die Transaktion rückgängig gemacht.",
         "rewardsForSwap": "PSWAP strategische Belohnungen",
         "swapInputMessage": "Die Eingabe wird geschätzt. Du wirst maximal {transactionValue} verkaufen oder die Transaktion wird rückgängig gemacht.",
-        "route": "Route"
+        "route": "Route",
+        "errorFetching": "Fehler beim Abrufen der Daten"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +872,7 @@
         },
         "history": {
             "title": "Kaufhistorie",
-            "empty": "Keine Daten"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transaktion bereit für Bridge"
@@ -874,7 +881,6 @@
             "transfer": "Token erfolgreich gekauft!\nKlicke hier, um die Bridge-Transaktion zu starten"
         }
     },
-    "recievedText": "Erhalten",
     "light": "Hell",
     "dark": "Dunkel",
     "headerMenu": {
@@ -961,8 +967,11 @@
     "code": {
         "download": "QR-Code herunterladen",
         "upload": "QR scannen",
-        "recieve": "Erhalten",
-        "invalid": "Ungültiger QR-Code"
+        "invalid": "Ungültiger QR-Code",
+        "import": "Bild importieren",
+        "scan": "Mit der Kamera scannen",
+        "allowanceError": "Überprüfe die Verfügbarkeit deiner Kamera und die Browserberechtigungen, um sie zu verwenden",
+        "receive": "Erhalten"
     },
     "bridgeTransferNotification": {
         "addToken": "Füge {symbol} zu @:metamask hinzu",
@@ -1006,7 +1015,10 @@
         },
         "amountAdd": "Zu stakender Betrag",
         "amountRemove": "Zu entfernender Betrag",
-        "poweredBy": "Powered by Demeter Farming"
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Taschenrechner",
+        "results": "Ergebnisse",
+        "rewards": "{symbol} Belohnungen"
     },
     "staking": {
         "title": "Staken"
@@ -1026,16 +1038,16 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Poolpaar existiert bereits",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Slippagetoleranz hat die richtige Grenze nicht erreicht"
         },
         "referrals": {
             "AlreadyHasReferrer": "Das Konto hat bereits einen Referrer",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Referrer hat nicht genug Guthaben"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Das Prämienprogramm ist bereits beendet",
             "CantCalculateReward": "Prämienberechnung konnte nicht durchgeführt werden",
-            "NoRewardsForAsset": "Für diesen Vermögenswert gibt es keine Belohnungen"
+            "NoRewardsForAsset": "Für dieses Asset gibt es keine Belohnungen"
         },
         "liquidityProxy": {
             "ForbiddenFilter": "Ausgewählte Liquiditätsquelle ist nicht zulässig"
@@ -1048,5 +1060,16 @@
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Bei der Berechnung des Preises ist ein Fehler aufgetreten"
         }
-    }
+    },
+    "receivedText": "Erhalten",
+    "browserNotificationDialog": {
+        "title": "Aktivieren Sie Browserbenachrichtigungen",
+        "info": "Wir senden Ihnen nur relevante Updates zu Ihrem Wallet, zum Beispiel: Änderungen des Vermögensstands",
+        "button": "Benachrichtigungen aktivieren",
+        "agree": "Ja ich verstehe",
+        "notificationBlocked": "Um die Benachrichtigungen über {appName} zu erhalten, erlauben Sie bitte die Benachrichtigungen in den nativen Einstellungen Ihres Browsers",
+        "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten"
+    },
+    "assetDeposit": "Guthaben wurde hinterlegt",
+    "noDataText": "Keine Daten"
 }

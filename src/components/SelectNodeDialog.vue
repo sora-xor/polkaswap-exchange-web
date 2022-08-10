@@ -29,7 +29,7 @@
 <script lang="ts">
 import pick from 'lodash/fp/pick';
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -39,14 +39,13 @@ import { AppHandledError } from '@/utils/error';
 import { getter, state, action } from '@/store/decorators';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
-import DialogBase from './DialogBase.vue';
 
 const NodeListView = 'NodeListView';
 const NodeInfoView = 'NodeInfoView';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     ExternalLink: lazyComponent(Components.ExternalLink),
     SelectNode: lazyComponent(Components.SelectNode),
     NodeInfo: lazyComponent(Components.NodeInfo),

@@ -1,9 +1,12 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="title">
     <div class="stake-dialog">
-      <s-row v-if="baseAsset && poolAsset" flex align="middle">
-        <pair-token-logo :first-token="baseAsset" :second-token="poolAsset" />
-        <span class="stake-dialog-title">{{ baseAsset.symbol }}-{{ poolAsset.symbol }}</span>
+      <s-row v-if="poolAsset" flex align="middle">
+        <pair-token-logo v-if="baseAsset" :first-token="baseAsset" :second-token="poolAsset" class="title-logo" />
+        <token-logo v-else :token="poolAsset" class="title-logo" />
+        <span class="stake-dialog-title">
+          <template v-if="baseAsset">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
+        </span>
       </s-row>
 
       <div v-if="isAdding" class="stake-dialog-info">
@@ -22,7 +25,7 @@
           :max="100"
           @input="handleValue"
         >
-          <div slot="top" class="amount">{{ inputFieldTitle }}</div>
+          <div slot="top" class="amount">{{ inputTitle }}</div>
           <div slot="right"><span class="percent">%</span></div>
           <s-slider
             slot="bottom"
@@ -33,57 +36,16 @@
           />
         </s-float-input>
 
-        <s-float-input
+        <token-input
           v-else
-          class="s-input--token-value"
-          size="medium"
+          :balance="stakingBalanceCodec"
+          :is-max-available="isMaxButtonAvailable"
+          :title="inputTitle"
+          :token="poolAsset"
           :value="value"
-          :decimals="poolAssetDecimals"
-          has-locale-string
-          :delimiters="delimiters"
-          :max="getMax(poolAssetAddress)"
           @input="handleValue"
-        >
-          <div slot="top" class="input-line">
-            <div class="input-title">
-              <span class="input-title--uppercase input-title--primary">{{ inputFieldTitle }}</span>
-            </div>
-            <div class="input-value">
-              <span class="input-value--uppercase">{{ t('balanceText') }}</span>
-              <formatted-amount-with-fiat-value
-                value-can-be-hidden
-                with-left-shift
-                value-class="input-value--primary"
-                :value="stakingBalanceFormatted"
-                :fiat-value="stakingBalanceFiat"
-              />
-            </div>
-          </div>
-          <div slot="right" class="s-flex el-buttons">
-            <s-button
-              v-if="isMaxButtonAvailable"
-              class="el-button--max s-typography-button--small"
-              type="primary"
-              alternative
-              size="mini"
-              border-radius="mini"
-              @click.stop="handleMaxValue"
-            >
-              {{ t('buttons.max') }}
-            </s-button>
-            <token-select-button class="el-button--select-token" :token="poolAsset" />
-          </div>
-          <div slot="bottom" class="input-line input-line--footer">
-            <formatted-amount v-if="poolAsset" is-fiat-value :value="valueFiatAmount" />
-            <token-address
-              v-if="poolAsset"
-              :name="poolAsset.name"
-              :symbol="poolAsset.symbol"
-              :address="poolAsset.address"
-              class="input-value"
-            />
-          </div>
-        </s-float-input>
+          @max="handleMaxValue"
+        />
       </s-form>
 
       <info-line
@@ -138,19 +100,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 
-import PoolMixin from '../mixins/PoolMixin';
-
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import DialogMixin from '@/components/mixins/DialogMixin';
-import DialogBase from '@/components/DialogBase.vue';
+import StakeDialogMixin from '../mixins/StakeDialogMixin';
 
 import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
-import { isXorAccountAsset, getMaxValue } from '@/utils';
+import { getMaxValue, isXorAccountAsset } from '@/utils';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -158,20 +116,14 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component({
   components: {
-    DialogBase,
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenInput: lazyComponent(Components.TokenInput),
+    DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
-    FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    TokenAddress: components.TokenAddress,
+    TokenLogo: components.TokenLogo,
   },
 })
-export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, DialogMixin) {
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-
-  @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
-
+export default class StakeDialog extends Mixins(StakeDialogMixin) {
   @Watch('visible')
   private resetValue() {
     this.value = '';
@@ -179,24 +131,10 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
 
   value = '';
 
-  get networkFee(): CodecString {
-    const operation = this.isAdding
-      ? Operation.DemeterFarmingDepositLiquidity
-      : Operation.DemeterFarmingWithdrawLiquidity;
-
-    return this.networkFees[operation];
-  }
-
   get title(): string {
     const actionKey = this.isAdding ? (this.hasStake ? 'add' : 'start') : 'remove';
 
     return this.t(`demeterFarming.actions.${actionKey}`);
-  }
-
-  get inputFieldTitle(): string {
-    const key = this.isAdding ? 'amountAdd' : 'amountRemove';
-
-    return this.t(`demeterFarming.${key}`);
   }
 
   get valuePartCharClass(): string {
@@ -259,10 +197,6 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
     }
   }
 
-  get valueFiatAmount(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.valueFunds, this.poolAsset as AccountAsset);
-  }
-
   get valueFundsEmpty(): boolean {
     return this.valueFunds.isZero();
   }
@@ -271,12 +205,8 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
     return this.isAdding ? this.availableFunds : this.lockedFunds;
   }
 
-  get stakingBalanceFormatted(): string {
-    return this.stakingBalance.toLocaleString();
-  }
-
-  get stakingBalanceFiat(): string {
-    return this.stakingBalance.mul(this.poolAssetPrice).toLocaleString();
+  get stakingBalanceCodec(): CodecString {
+    return this.stakingBalance.toCodecString();
   }
 
   get isMaxButtonAvailable(): boolean {
@@ -326,20 +256,20 @@ export default class StakeDialog extends Mixins(PoolMixin, TranslationMixin, Dia
 </script>
 
 <style lang="scss" scoped>
-.el-form--actions {
-  @include buttons;
-}
-
 .stake-dialog {
   @include full-width-button('action-button');
 
-  & > *:not(:last-child) {
+  & > *:not(:first-child) {
     margin-top: $inner-spacing-medium;
   }
 
   &-title {
     font-size: var(--s-heading2-font-size);
     font-weight: 800;
+  }
+
+  .title-logo {
+    margin-right: $inner-spacing-mini;
   }
 }
 </style>
