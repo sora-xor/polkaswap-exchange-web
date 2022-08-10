@@ -15,6 +15,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     sonarProjectKey: 'jp.co.soramitsu:polkaswap-exchange-web',
     copyStaticToBranch: true,
     copyToBranches: ['fleek', 'fleek-pre'],
+    copyFile: 'env.json',
     stageDeploy: true,
     downstreamJob: '../deploy/exchange-stage1')
 pipeline.runPipeline()
