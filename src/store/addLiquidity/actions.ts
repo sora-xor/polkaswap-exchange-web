@@ -175,17 +175,15 @@ const actions = defineActions({
     await dispatch.setFirstTokenAddress(first);
     await dispatch.setSecondTokenAddress(second);
   },
-  async resetData(context, withAssets = false): Promise<void> {
+  async resetData(context): Promise<void> {
     const { commit } = addLiquidityActionContext(context);
 
     balanceSubscriptions.remove('second', {
       updateBalance: (balance: Nullable<AccountBalance>) => commit.setSecondTokenBalance(balance),
     });
 
-    if (!withAssets) {
-      commit.setFirstTokenAddress();
-      commit.setSecondTokenAddress();
-    }
+    commit.setFirstTokenAddress();
+    commit.setSecondTokenAddress();
     commit.setFirstTokenValue();
     commit.setSecondTokenValue();
   },
