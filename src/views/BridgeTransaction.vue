@@ -913,7 +913,7 @@ $network-title-max-width: 250px;
     .s-button--hash-copy,
     .s-dropdown--hash-menu {
       position: absolute;
-      z-index: 1;
+      z-index: $app-content-layer;
       top: 0;
       bottom: 0;
       margin-top: auto;

@@ -1027,7 +1027,7 @@ $skeleton-label-width: 34px;
 @include desktop {
   .container--charts {
     position: relative;
-    z-index: 1;
+    z-index: $app-content-layer;
   }
   .chart-filters {
     .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {

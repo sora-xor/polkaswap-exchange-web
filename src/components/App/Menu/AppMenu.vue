@@ -205,7 +205,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 4;
+    z-index: $app-sidebar-layer;
 
     @include mobile {
       position: fixed;
