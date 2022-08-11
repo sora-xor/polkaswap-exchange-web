@@ -1,3 +1,4 @@
+import omit from 'lodash/fp/omit';
 import { defineMutations } from 'direct-vuex';
 import type { CodecString } from '@sora-substrate/util';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
@@ -14,7 +15,7 @@ import type { SwapState } from './types';
 
 const mutations = defineMutations<SwapState>()({
   reset(state): void {
-    const s = initialState();
+    const s = omit(['tokenFromAddress', 'tokenToAddress'], initialState());
 
     Object.keys(s).forEach((key) => {
       state[key] = s[key];

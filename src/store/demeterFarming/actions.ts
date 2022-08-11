@@ -1,6 +1,5 @@
 import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber } from '@sora-substrate/math';
 
 import { waitForAccountPair } from '@/utils';
 import { demeterFarmingActionContext } from '@/store/demeterFarming';
