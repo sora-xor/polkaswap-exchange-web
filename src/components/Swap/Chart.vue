@@ -88,6 +88,7 @@
 
 <script lang="ts">
 import dayjs from 'dayjs';
+import isEqual from 'lodash/fp/isEqual';
 import { graphic } from 'echarts';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
@@ -720,19 +721,22 @@ export default class SwapChart extends Mixins(
   private getHistoricalPrices(resetChartData = false): void {
     if (resetChartData) {
       this.clearData();
-    } else if (this.pageInfos.some((pageInfo) => !pageInfo.hasNextPage)) {
+    } else if (this.loading || this.pageInfos.some((pageInfo) => !pageInfo.hasNextPage)) {
       return;
     }
 
     // prevent fetching if tokens pair not created
     if (this.tokensAddresses.length === 2 && !this.isAvailable) return;
 
+    const addresses = [...this.tokensAddresses];
+
     this.withApi(async () => {
       await this.withLoading(async () => {
         try {
-          const response = await this.getChartData(this.tokensAddresses, this.selectedFilter, this.pageInfos);
+          const response = await this.getChartData(addresses, this.selectedFilter, this.pageInfos);
 
-          if (!response) return;
+          // if no response, or tokens were changed, return
+          if (!response || !isEqual(addresses)(this.tokensAddresses)) return;
 
           this.limits = response.limits;
           this.pageInfos = response.pageInfos;
@@ -1023,7 +1027,7 @@ $skeleton-label-width: 34px;
 @include desktop {
   .container--charts {
     position: relative;
-    z-index: 1;
+    z-index: $app-content-layer;
   }
   .chart-filters {
     .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {

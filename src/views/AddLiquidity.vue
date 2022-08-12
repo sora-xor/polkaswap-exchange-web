@@ -166,7 +166,7 @@ export default class AddLiquidity extends Mixins(
   @action.addLiquidity.setSecondTokenValue setSecondTokenValue!: (address: string) => Promise<void>;
   @action.addLiquidity.addLiquidity private addLiquidity!: AsyncVoidFn;
   @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>;
-  @action.addLiquidity.resetData resetData!: (withAssets?: boolean) => Promise<void>;
+  @action.addLiquidity.resetData resetData!: AsyncVoidFn;
 
   @mutation.prices.resetPrices resetPrices!: VoidFunction;
   @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
@@ -201,7 +201,7 @@ export default class AddLiquidity extends Mixins(
 
   destroyed(): void {
     this.resetPrices();
-    this.resetData(!!(this.firstAddress && this.secondAddress));
+    this.resetData();
   }
 
   get firstAddress(): string {
