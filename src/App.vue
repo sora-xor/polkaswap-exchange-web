@@ -356,11 +356,6 @@ ul ul {
       flex: 1;
     }
   }
-
-  // TODO: change position in wallet
-  .notification-enabling-pointer {
-    position: fixed;
-  }
 }
 
 .block-number {
