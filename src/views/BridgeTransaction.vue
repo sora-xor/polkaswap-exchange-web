@@ -560,7 +560,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get formattedSoraNetworkFee(): string {
-    return this.getStringFromCodec(this.txSoraNetworkFee, this.xor.decimals);
+    return this.getStringFromCodec(this.txSoraNetworkFee, this.xor?.decimals);
   }
 
   get soraNetworkFeeFiatValue(): Nullable<string> {
