@@ -56,19 +56,17 @@ export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeA
   let subscription!: Subscription;
 
   await new Promise<void>((resolve, reject) => {
-    subscription = bridgeApi
-      .subscribeOnRequestStatus(tx.externalNetwork as number, tx.hash as string)
-      .subscribe((status) => {
-        switch (status) {
-          case BridgeTxStatus.Failed:
-          case BridgeTxStatus.Frozen:
-            reject(new Error('[Bridge]: Transaction was failed or canceled'));
-            break;
-          case BridgeTxStatus.Ready:
-            resolve();
-            break;
-        }
-      });
+    subscription = bridgeApi.subscribeOnRequestStatus(tx.hash as string).subscribe((status) => {
+      switch (status) {
+        case BridgeTxStatus.Failed:
+        case BridgeTxStatus.Frozen:
+          reject(new Error('[Bridge]: Transaction was failed or canceled'));
+          break;
+        case BridgeTxStatus.Ready:
+          resolve();
+          break;
+      }
+    });
   });
 
   subscription.unsubscribe();
@@ -84,33 +82,25 @@ export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash:
   let subscription!: Subscription;
 
   await new Promise<void>((resolve, reject) => {
-    subscription = bridgeApi
-      .subscribeOnRequest(tx.externalNetwork as number, tx.ethereumHash as string)
-      .subscribe((request) => {
-        if (request) {
-          switch (request.status) {
-            case BridgeTxStatus.Failed:
-            case BridgeTxStatus.Frozen:
-              reject(new Error('[Bridge]: Transaction was failed or canceled'));
-              break;
-            case BridgeTxStatus.Done:
-              resolve();
-              break;
-          }
+    subscription = bridgeApi.subscribeOnRequest(tx.ethereumHash as string).subscribe((request) => {
+      if (request) {
+        switch (request.status) {
+          case BridgeTxStatus.Failed:
+          case BridgeTxStatus.Frozen:
+            reject(new Error('[Bridge]: Transaction was failed or canceled'));
+            break;
+          case BridgeTxStatus.Done:
+            resolve();
+            break;
         }
-      });
+      }
+    });
   });
 
   subscription.unsubscribe();
 
-  const soraHash = await bridgeApi.getSoraHashByEthereumHash(
-    tx.externalNetwork as BridgeNetworks,
-    tx.ethereumHash as string
-  );
-  const soraBlockHash = await bridgeApi.getSoraBlockHashByRequestHash(
-    tx.externalNetwork as number,
-    tx.ethereumHash as string
-  );
+  const soraHash = await bridgeApi.getSoraHashByEthereumHash(tx.ethereumHash as string);
+  const soraBlockHash = await bridgeApi.getSoraBlockHashByRequestHash(tx.ethereumHash as string);
 
   return { hash: soraHash, blockId: soraBlockHash };
 };

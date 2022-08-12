@@ -223,9 +223,7 @@ export class EthBridgeHistory {
       // skip, if local bridge transaction has "Done" status
       if (localHistoryItem?.status === BridgeTxStatus.Done) continue;
 
-      const hash = isOutgoing
-        ? requestHash
-        : await bridgeApi.getSoraHashByEthereumHash(this.externalNetwork, requestHash);
+      const hash = isOutgoing ? requestHash : await bridgeApi.getSoraHashByEthereumHash(requestHash);
       const amount = historyElementData.amount;
       const assetAddress = historyElementData.assetId;
       const from = address;
@@ -235,7 +233,7 @@ export class EthBridgeHistory {
       const soraNetworkFee = isOutgoing ? networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
       const soraTimestamp = historyElement.timestamp * 1000;
       const soraPartCompleted =
-        !isOutgoing || (!!hash && (await bridgeApi.getRequestStatus(externalNetwork, hash))) === BridgeTxStatus.Ready;
+        !isOutgoing || (!!hash && (await bridgeApi.getRequestStatus(hash))) === BridgeTxStatus.Ready;
       const transactionStep = soraPartCompleted ? 2 : 1;
 
       const ethereumTx = isOutgoing
