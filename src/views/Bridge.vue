@@ -184,7 +184,10 @@
           :loading="isConfirmTxLoading"
           @click="handleConfirmTransaction"
         >
-          <template v-if="!isAssetSelected">
+          <template v-if="!isValidNetworkType">
+            {{ t('bridge.changeNetwork') }}
+          </template>
+          <template v-else-if="!isAssetSelected">
             {{ t('buttons.chooseAToken') }}
           </template>
           <template v-else-if="!isRegisteredAsset">
@@ -192,9 +195,6 @@
           </template>
           <template v-else-if="!areNetworksConnected">
             {{ t('bridge.next') }}
-          </template>
-          <template v-else-if="!isValidNetworkType">
-            {{ t('bridge.changeNetwork') }}
           </template>
           <template v-else-if="isZeroAmount">
             {{ t('buttons.enterAmount') }}
