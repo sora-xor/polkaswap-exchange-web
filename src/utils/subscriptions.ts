@@ -1,5 +1,5 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 
 export class TokenBalanceSubscriptions {
   private subscriptions: Map<string, Subscription>;

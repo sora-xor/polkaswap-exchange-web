@@ -212,7 +212,7 @@
       :asset="excludedAsset"
       @select="selectToken"
     />
-    <confirm-swap
+    <swap-confirm
       :visible.sync="showConfirmSwapDialog"
       :isInsufficientBalance="isInsufficientBalance"
       :value-to="valueToDisplayed"
@@ -221,6 +221,11 @@
       :is-swap-and-send="isSwapAndSend"
       @confirm="confirmSwap"
     />
+    <!-- <swap-confirm
+      :visible.sync="showConfirmSwapDialog"
+      :isInsufficientBalance="isInsufficientBalance"
+      @confirm="confirmSwap"
+    /> -->
     <confirm-send
       :visible.sync="showConfirmSendDialog"
       :isInsufficientBalance="isInsufficientBalance"
@@ -237,7 +242,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, components, mixins, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
@@ -270,7 +275,7 @@ import { Components, PageNames, MarketAlgorithms } from '@/consts';
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     TokenLogo: components.TokenLogo,
     SelectToken: lazyComponent(Components.SelectToken),
-    ConfirmSwap: lazyComponent(Components.ConfirmSwap),
+    SwapConfirm: lazyComponent(Components.SwapConfirm),
     ConfirmSend: lazyComponent(Components.ConfirmSend),
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
@@ -287,7 +292,7 @@ export default class Send extends Mixins(mixins.FormattedAmountMixin, Translatio
   address = '';
   showConfirmSendDialog = false;
 
-  @getter.wallet.account.account account!: WALLET_TYPES.Account;
+  @getter.wallet.account.account account!: WALLET_TYPES.PolkadotJsAccount;
   @getter.swap.minMaxReceived private minMaxReceived!: CodecString;
 
   @Watch('isSend')

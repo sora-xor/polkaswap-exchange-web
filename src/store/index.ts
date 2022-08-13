@@ -15,9 +15,9 @@ import pool from './pool';
 import moonpay from './moonpay';
 import bridge from './bridge';
 import addLiquidity from './addLiquidity';
-import createPair from './createPair';
 import removeLiquidity from './removeLiquidity';
 import rewards from './rewards';
+import demeterFarming from './demeterFarming';
 
 Vue.use(Vuex);
 
@@ -34,9 +34,9 @@ const modules = {
   moonpay,
   bridge,
   addLiquidity,
-  createPair,
   removeLiquidity,
   rewards,
+  demeterFarming,
 };
 
 const { store, rootGetterContext, rootActionContext } = createDirectStore({

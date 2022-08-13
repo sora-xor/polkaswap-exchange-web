@@ -44,7 +44,12 @@
             "ReferralReserveXor": "XOR-ը հաջողությամբ կապակցվեց",
             "ReferralUnreserveXor": "XOR-ը հաջողությամբ ունբոնդ",
             "ReferralSetInvitedUser": "Հղումը դրվում է հաջողությամբ",
-            "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}"
+            "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Տրամադրված {symbol} և {symbol2} {amount} LP ժետոններ",
+            "DemeterFarmingWithdrawLiquidity": "Հեռացվել են {symbol} և {symbol2} {amount} LP նշանները",
+            "DemeterFarmingStakeToken": "Ավելացվեց {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Հեռացվել է {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} ը հաջողությամբ ներկայացվեց"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -57,17 +62,29 @@
             "ReferralReserveXor": "Չհաջողվեց կապել XOR-ը",
             "ReferralUnreserveXor": "Ունբոնդ Ձախողվել է XOR-ը",
             "ReferralSetInvitedUser": "Չհաջողվեց սահմանել ուղղորդում",
-            "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}"
+            "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} և {symbol2} LP նշաններ",
+            "DemeterFarmingWithdrawLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {symbol2} LP նշանները",
+            "DemeterFarmingStakeToken": "Չհաջողվեց ավելացնել {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Չհաջողվեց հեռացնել {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Չհաջողվեց պահանջել {symbol}"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
         "ReferralSetInvitedUser": "Սահմանել ուղղորդում",
-        "SwapAndSend": "Փոխանակեք և ուղարկեք"
+        "SwapAndSend": "Փոխանակեք և ուղարկեք",
+        "DemeterFarmingDepositLiquidity": "Բաժնի իրացվելիություն",
+        "DemeterFarmingWithdrawLiquidity": "Չվճարված իրացվելիություն",
+        "DemeterFarmingStakeToken": "Ցցի նշան",
+        "DemeterFarmingUnstakeToken": "Անցկացնել նշան",
+        "DemeterFarmingGetRewards": "Հաստատել Պարգևները"
     },
     "polkadotjs": {
         "noExtensions": "Polkadot.js- ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Ձեր Polkadot.js ընդլայնման մեջ կարծես որևէ հաշիվ չկա: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
-        "noAccount": "Polkadot.js հաշվի սխալ: Խնդրում ենք ստուգել ձեր հաշիվը Polkadot.js ընդլայնման մեջ"
+        "noAccount": "Polkadot.js հաշվի սխալ: Խնդրում ենք ստուգել ձեր հաշիվը Polkadot.js ընդլայնման մեջ",
+        "noExtension": "{extension} ընդլայնում չի գտնվել: Խնդրում ենք տեղադրել այն և վերաբեռնել այս էջը",
+        "noSigner": "Մուտքն արգելված է. Գնացեք {extension} ընդլայնման կարգավորումներ և բացեք «Կառավարել վեբ կայքի մուտքը»՝ թույլ տալու համար:"
     },
     "connection": {
         "title": "SORA ցանցի հաշիվ",
@@ -82,6 +99,10 @@
             "learnMore": "Իմանալ ավելին",
             "connect": "Միանալ հաշվին",
             "refresh": "Թարմացնել"
+        },
+        "selectWallet": "Ընտրեք դրամապանակ՝ աշխատելու համար",
+        "wallet": {
+            "install": "Տեղադրեք"
         }
     },
     "wallet": {
@@ -113,7 +134,8 @@
     "account": {
         "successCopy": "Դրամապանակի հասցեն պատճենվում է սեղմատախտակին",
         "copy": "Պատճենել հասցեն",
-        "switch": "Փոխել հաշիվը"
+        "switch": "Փոխել հաշիվը",
+        "walletAddress": "Դրամապանակի հասցեն"
     },
     "history": {
         "clearHistory": "Մաքրել պատմությունը",
@@ -141,26 +163,18 @@
             "bonded": "- Խճճված"
         },
         "totalAssetsValue": "Ձեր ակտիվների ընդհանուր արժեքը.",
-        "details": "Մանրամասներ"
+        "details": "Մանրամասներ",
+        "assetId": "Ակտիվի ID"
     },
     "asset": {
         "remove": "Հեռացնել ակտիվը",
         "select": "Ընտրեք ակտիվ",
-        "recieve": "Ստանալ {symbol}"
+        "receive": "Ստանալ {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Ակտիվը {symbol} հաջողությամբ ավելացվեց:",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի"
-        },
-        "AddAssetCustom": {
-            "title": "Անհատական ակտիվ ",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Ակտիվի սիմվոլ"
-        },
         "empty": "Ոչ մի տոկեն չի գտնվել",
         "alreadyAttached": "Տոկենն արդեն կցված էր",
         "understand": "Ես հասկանում եմ",
@@ -169,7 +183,15 @@
         "approved": "Ակտիվը հաստատված է համայնքի կողմից",
         "unknown": "Անհայտ աղբյուր",
         "scam": "Խաբեություն",
-        "next": "Հաջորդը"
+        "next": "Հաջորդը",
+        "AddAssetToken": {
+            "title": "Տոկեններ",
+            "switchBtn": "Միայն ստուգված ակտիվներ"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Որոնում ըստ ակտիվի ID-ի, անվանման կամ նշիչի նշանի"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -327,6 +349,7 @@
         "Support": "Աջակցություն",
         "CreatePair": "Ստեղծել զույգ",
         "Tokens": "Տոկեններ",
+        "StakingContainer": "Ցուցադրում",
         "KYC": "KYC"
     },
     "social": {
@@ -501,7 +524,8 @@
         "swapOutputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
         "rewardsForSwap": "PSWAP ստրատեգիական պարգևատրումներ",
         "swapInputMessage": "Արդյունքը գնահատվում է: Դուք կստանաք առնվազն {transactionValue} կամ գործարքը կվերականգնվի:",
-        "route": "Երթուղի"
+        "route": "Երթուղի",
+        "errorFetching": "Տվյալները հավաքելու սխալը"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -539,7 +563,9 @@
         "networkInfo": "Միացեք @:soraText Ցանցով.",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Պատճենել ցանցի հասցեն"
+        "copy": "Պատճենել ցանցի հասցեն",
+        "soraAddress": "@:soraText հասցե",
+        "ethereumAddress": "@:ethereumText հասցե"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",
@@ -691,7 +717,8 @@
         "description": "Պահուստի տոկենների վերացումը ձեր դիրքը վերափոխում է հիմքում ընկած տոկենների ներկայիս արագությամբ ՝ համամասնորեն պահուստի ձեր մասնաբաժնի: Հաշվարկված վճարները ներառված են ձեր ստացած գումարների մեջ:",
         "outputMessage": "Արդյունքը գնահատվում է: Եթե գինը փոխվի ավելի քան {slippageTolerance} %, ձեր գործարքը կվերականգնվի:",
         "confirmTitle": "Դուք կստանաք",
-        "shareOfPool": "Գործարքից հետո լողավազանի մասնաբաժինը"
+        "shareOfPool": "Գործարքից հետո լողավազանի մասնաբաժինը",
+        "locked": "Ձեր լողավազանի {percent} -ը խաղադրույքի մեջ է"
     },
     "dexSettings": {
         "title": "Գործարքի պարամետրերը",
@@ -846,7 +873,7 @@
         },
         "history": {
             "title": "Գնումներ պատմություն",
-            "empty": "Տվյալներ չկան"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Գործարքը պատրաստ է կամրջի համար"
@@ -855,7 +882,6 @@
             "transfer": "Նշանները հաջողությամբ գնվեցին\n Կտտացրեք կամուրջի գործարքը սկսելու համար"
         }
     },
-    "recievedText": "Ստացվել է",
     "light": "Լույս",
     "dark": "Մութ",
     "headerMenu": {
@@ -942,8 +968,13 @@
     "code": {
         "download": "Ներբեռնեք QR կոդը",
         "upload": "Սկան QR",
-        "recieve": "Ստանալ",
-        "invalid": "Անվավեր QR կոդը"
+        "invalid": "Անվավեր QR կոդը",
+        "import": "Ներմուծեք պատկեր",
+        "scan": "Սկան տեսախցիկով",
+        "allowanceError": "Ստուգեք ձեր տեսախցիկի առկայությունը և դիտարկիչի թույլտվությունները՝ այն օգտագործելու համար",
+        "receive": "Ստանալ",
+        "camera": "Տեսախցիկ",
+        "allowanceRequest": "Սեղմեք «Թույլատրել» մուտքը տեսախցիկ"
     },
     "bridgeTransferNotification": {
         "addToken": "Ավելացնել {symbol} է @:metamask",
@@ -954,5 +985,94 @@
         "header": "Ներբեռնեք SORA դրամապանակը <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> հատկանիշներով",
         "info": "Փոխանակեք նշաններ տարբեր ցանցերից՝ SORA, Ethereum, Polkadot, Kusama: Ապահովեք իրացվելիության ֆոնդ և վաստակեք տոկոս փոխանակման վճարներից:"
     },
-    "releaseNotesText": "Թողարկման նշումներ"
+    "releaseNotesText": "Թողարկման նշումներ",
+    "copiedText": "Պատճենվել է!",
+    "copyWithValue": "Պատճենել {value}",
+    "copiedWithValue": "{value} արտագրվում է!",
+    "signAndClaimText": "Ստորագրեք և հաստատեք",
+    "balanceText": "Բալանս",
+    "unknownAssetText": "Անհայտ ակտիվ",
+    "demeterFarming": {
+        "staking": {
+            "active": "Ակտիվ խաղադրույք",
+            "inactive": "Խաղադրույք՝ լրացուցիչ պարգևներ ստանալու համար",
+            "stopped": "Խաղադրույքը դադարեց"
+        },
+        "info": {
+            "earned": "{symbol} վաստակած",
+            "fee": "Վճար",
+            "feeTooltip": "Ավանդի վճարը կիրառվում է բաժնետոմսի ձեր գումարի նկատմամբ",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Ձեր լողավազանի բաժնեմասը դրված է",
+            "poolShareWillBe": "Ձեր ավազանի բաժնեմասը կկազմի",
+            "rewardToken": "Պարգևատրման նշան",
+            "stake": "Ձեր {symbol} խաղադրույքը",
+            "stakeWillBe": "Ձեր {symbol} խաղադրույքը կլինի",
+            "totalLiquidityLocked": "Ընդհանուր հեղուկը կողպված է"
+        },
+        "actions": {
+            "add": "Ցից ավելին",
+            "claim": "ստանալ պարգևներ",
+            "remove": "Հեռացնել ցցը",
+            "start": "Սկսեք staking"
+        },
+        "amountAdd": "Խաղադրույքի չափը",
+        "amountRemove": "Հեռացնելու գումարը",
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Հաշվիչ",
+        "results": "Արդյունքներ",
+        "rewards": "{symbol} պարգևներ"
+    },
+    "staking": {
+        "title": "Ցուցադրում"
+    },
+    "historyErrorMessages": {
+        "generalError": "Ինչ որ բան այնպես չգնաց",
+        "balances": {
+            "LiquidityRestrictions": "Հաշվի իրացվելիության սահմանափակումները կանխում են դուրսբերումը"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Աղբյուրի հաշվեկշիռը բավականաչափ մեծ չէ",
+            "TargetBalanceIsNotLargeEnough": "Նպատակակետի հաշվեկշիռը բավականաչափ մեծ չէ",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Տրամադրված գումարները չափազանց բազմազան են",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Գումարները դուրս են պահանջվող սահմաններից",
+            "UnableToDepositXorLessThanMinimum": "XOR նվազագույն արժեքից ցածր (0,007)",
+            "ZeroValueInAmountParameter": "Գումարի պարամետրը զրո արժեք ունի"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Լողավազանների զույգն արդեն գոյություն ունի",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Հաշիվն արդեն ունի ուղղորդող",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Պարգևատրման ծրագիրն արդեն ավարտված է",
+            "CantCalculateReward": "Չհաջողվեց կատարել պարգևների հաշվարկը",
+            "NoRewardsForAsset": "Այս ակտիվի համար պարգևներ չկան"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Անբավարար միջոցներ",
+            "InsufficientLPTokens": "Անբավարար իրացվելիության տրամադրման նշաններ",
+            "PoolDoesNotHaveRewards": "Լողավազանը պարգևներ չունի"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Գինը հաշվարկելիս սխալ է տեղի ունեցել"
+        }
+    },
+    "receivedText": "Ստացվել է",
+    "browserNotificationDialog": {
+        "title": "Միացնել բրաուզերի ծանուցումները",
+        "info": "Մենք ձեզ կուղարկենք միայն համապատասխան թարմացումներ ձեր դրամապանակի վերաբերյալ, օրինակ՝ ակտիվների մնացորդի փոփոխությունները",
+        "button": "Միացնել ծանուցումները",
+        "agree": "Այո ես հասկանում եմ",
+        "notificationBlocked": "{appName}-ի մասին ծանուցումներ ստանալու համար խնդրում ենք թույլատրել ծանուցումները ձեր բրաուզերի բնիկ կարգավորումներում",
+        "pointer": "Սեղմեք «Թույլատրել»՝ ծանուցումները միացնելու համար"
+    },
+    "assetDeposit": "Ակտիվների մնացորդը մուտքագրվել է",
+    "noDataText": "Տվյալներ չկան"
 }

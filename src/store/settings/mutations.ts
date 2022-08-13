@@ -1,5 +1,5 @@
 import { defineMutations } from 'direct-vuex';
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 
 import storage, { settingsStorage } from '@/utils/storage';
 import type { Node } from '@/types/nodes';
@@ -56,6 +56,15 @@ const mutations = defineMutations<SettingsState>()({
   },
   setSelectLanguageDialogVisibility(state, value: boolean): void {
     state.selectLanguageDialogVisibility = value;
+  },
+  setBrowserNotifsPopupEnabled(state, value: boolean): void {
+    state.browserNotifPopupVisibility = value;
+  },
+  setBrowserNotifsPopupBlocked(state, value: boolean): void {
+    state.browserNotifPopupBlockedVisibility = value;
+  },
+  setBrowserNotifsAgreement(state, value: NotificationPermission): void {
+    state.browserNotifsPermission = value;
   },
   setLanguage(state, value: Language): void {
     state.language = value;

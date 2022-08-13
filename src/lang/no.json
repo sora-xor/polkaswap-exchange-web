@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Bondet XOR vellykket",
             "ReferralUnreserveXor": "Ubundet XOR vellykket",
             "ReferralSetInvitedUser": "Henvisning er satt",
-            "SwapAndSend": "Byttet {amount} {symbol} med {amount2} {symbol2} og {action} {direction} {address}"
+            "SwapAndSend": "Byttet {amount} {symbol} med {amount2} {symbol2} og {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Levert {symbol} og {symbol2} {amount} LP-tokens",
+            "DemeterFarmingWithdrawLiquidity": "Fjernet {symbol} og {symbol2} {amount} LP-tokens",
+            "DemeterFarmingStakeToken": "Lagt til {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Fjernet {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} er gjort krav på"
         },
         "error": {
             "Transfer": "Kunne ikke sende {amount} {symbol} til {address}",
@@ -57,17 +62,29 @@
             "ReferralReserveXor": "Kunne ikke binde XOR",
             "ReferralUnreserveXor": "Kunne ikke frigjøre XOR",
             "ReferralSetInvitedUser": "Kunne ikke angi henvisning",
-            "SwapAndSend": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2} og {action} {direction} {address}"
+            "SwapAndSend": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2} og {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Kunne ikke oppgi {amount} {symbol} og {symbol2} LP-tokens",
+            "DemeterFarmingWithdrawLiquidity": "Kunne ikke fjerne {amount} {symbol} og {symbol2} LP-tokens",
+            "DemeterFarmingStakeToken": "Kunne ikke legge til {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Kunne ikke fjerne {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Kunne ikke gjøre krav på {symbol}"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
         "ReferralSetInvitedUser": "Angi henvisning",
-        "SwapAndSend": "Bytt og send"
+        "SwapAndSend": "Bytt og send",
+        "DemeterFarmingDepositLiquidity": "Innsats likviditet",
+        "DemeterFarmingWithdrawLiquidity": "Unstake likviditet",
+        "DemeterFarmingStakeToken": "Stake Token",
+        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingGetRewards": "Gjør krav på belønninger"
     },
     "polkadotjs": {
         "noExtensions": "Finner ingen Polkadot.js utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Det ser ikke ut til å være noen kontoer i Polkadot.js utvidelsen. Legg til en konto, og prøv på nytt.",
-        "noAccount": "Polkadot.js kontofeil. Sjekk kontoen din i Polkadot.js utvidelsen"
+        "noAccount": "Polkadot.js kontofeil. Sjekk kontoen din i Polkadot.js utvidelsen",
+        "noExtension": "Ingen {extension} -utvidelse ble funnet. Installer den og last inn denne siden på nytt",
+        "noSigner": "Ingen tilgang. Gå til utvidelsesinnstillingene for {extension} og åpne «Administrer nettstedtilgang» for å tillate."
     },
     "connection": {
         "title": "SORA Nettverkskonto",
@@ -82,6 +99,10 @@
             "learnMore": "Lær mer",
             "connect": "Koble til konto",
             "refresh": "Forfriske"
+        },
+        "selectWallet": "Velg en lommebok du vil jobbe med",
+        "wallet": {
+            "install": "Installere"
         }
     },
     "wallet": {
@@ -113,7 +134,8 @@
     "account": {
         "successCopy": "Lommebokadressen kopieres til utklippstavlen",
         "copy": "Kopier adresse",
-        "switch": "Bytt konto"
+        "switch": "Bytt konto",
+        "walletAddress": "Lommebokadresse"
     },
     "history": {
         "clearHistory": "Slett historikk",
@@ -141,26 +163,18 @@
             "bonded": "- Bundet"
         },
         "totalAssetsValue": "Totalverdi aktiva:",
-        "details": "Detaljer"
+        "details": "Detaljer",
+        "assetId": "Aktivum ID"
     },
     "asset": {
         "remove": "Fjern aktiva",
         "select": "Velg aktivum",
-        "recieve": "Motta {symbol}"
+        "receive": "Motta {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Ressursen {symbol} ble lagt til.",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol"
-        },
-        "AddAssetCustom": {
-            "title": "Egendefinert aktiva",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Aktiva-symbol"
-        },
         "empty": "Finner ingen token",
         "alreadyAttached": "Token er allerede vedlagt",
         "understand": "Jeg skjønner",
@@ -169,7 +183,15 @@
         "approved": "Aktiva godkjent av fellesskapet",
         "unknown": "Ukjent kilde",
         "scam": "SVINDEL",
-        "next": "Neste"
+        "next": "Neste",
+        "AddAssetToken": {
+            "title": "Tokens",
+            "switchBtn": "Kun bekreftede eiendeler"
+        },
+        "AddAssetNFT": {
+            "title": "NFT-er"
+        },
+        "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -327,6 +349,7 @@
         "Support": "Brukerstøtte",
         "CreatePair": "Opprett par",
         "Tokens": "Tokens",
+        "StakingContainer": "Staking",
         "KYC": "KYC"
     },
     "social": {
@@ -501,7 +524,8 @@
         "swapOutputMessage": "Beløp er estimert. Du vil motta minst {transactionValue} ellers vil transaksjonen gå tilbake.",
         "rewardsForSwap": "Strategiske PSWAP belønninger",
         "swapInputMessage": "Inndata er estimert. Du vil selge maksimalt {transactionValue} ellers vil transaksjonen gå tilbake.",
-        "route": "Rute"
+        "route": "Rute",
+        "errorFetching": "Feil under henting av data"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -539,7 +563,9 @@
         "networkInfo": "Bridge @:soraText Network med:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Kopier nettverksadressen"
+        "copy": "Kopier nettverksadressen",
+        "soraAddress": "@:soraText adresse",
+        "ethereumAddress": "@:ethereumText adresse"
     },
     "selectRegisteredAsset": {
         "title": "Velg token",
@@ -691,7 +717,8 @@
         "description": "Fjerne pool -tokens konverterer posisjonen din tilbake til underliggende tokens med den nåværende hastigheten, proporsjonal med din andel av bassenget. Påløpte gebyrer er inkludert i beløpene du mottar.",
         "outputMessage": "Beløp er estimert. Hvis prisen endres mer enn {slippageTolerance}%, vil transaksjonen gå tilbake.",
         "confirmTitle": "Du vil motta",
-        "shareOfPool": "Andel av pool etter transaksjon"
+        "shareOfPool": "Andel av pool etter transaksjon",
+        "locked": "{percent} av puljen din er i innsats"
     },
     "dexSettings": {
         "title": "Transaksjonsinnstillinger",
@@ -846,7 +873,7 @@
         },
         "history": {
             "title": "Kjøpshistorikk",
-            "empty": "Ingen data"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transaksjon klar for bro"
@@ -855,7 +882,6 @@
             "transfer": "Tokens er kjøpt!\n Klikk for å starte brotransaksjonen"
         }
     },
-    "recievedText": "Tok imot",
     "light": "Lys",
     "dark": "Mørk",
     "headerMenu": {
@@ -942,8 +968,13 @@
     "code": {
         "download": "Last ned QR-kode",
         "upload": "Skann QR",
-        "recieve": "Motta",
-        "invalid": "Ugyldig QR-kode"
+        "invalid": "Ugyldig QR-kode",
+        "import": "Importer et bilde",
+        "scan": "Skann med kamera",
+        "allowanceError": "Sjekk kameraets tilgjengelighet og nettlesertillatelser for å bruke det",
+        "receive": "Motta",
+        "camera": "Kamera",
+        "allowanceRequest": "Trykk på \"Tillat\" tilgang til kameraet"
     },
     "bridgeTransferNotification": {
         "addToken": "Legg til {symbol} til @:metamask",
@@ -954,5 +985,94 @@
         "header": "Last ned SORA Wallet med <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> funksjoner",
         "info": "Bytt ut tokens fra forskjellige nettverk - SORA, Ethereum, Polkadot, Kusama. Gi likviditetspool og tjen % fra vekslingsgebyrer."
     },
-    "releaseNotesText": "Utgivelsesnotater"
+    "releaseNotesText": "Utgivelsesnotater",
+    "copiedText": "Kopiert!",
+    "copyWithValue": "Kopier {value}",
+    "copiedWithValue": "{value} er kopiert!",
+    "signAndClaimText": "Signer og hev belønning",
+    "balanceText": "Balanse",
+    "unknownAssetText": "Ukjent aktivum",
+    "demeterFarming": {
+        "staking": {
+            "active": "Satser aktiv",
+            "inactive": "Innsats for å tjene flere belønninger",
+            "stopped": "Staking stoppet"
+        },
+        "info": {
+            "earned": "{symbol} opptjent",
+            "fee": "Avgift",
+            "feeTooltip": "Innskuddsgebyr påføres beløpet du vil satse på",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Din puljeandel satset",
+            "poolShareWillBe": "Din pool andel innsats vil være",
+            "rewardToken": "Belønningstoken",
+            "stake": "Din {symbol} satset",
+            "stakeWillBe": "Din {symbol} innsats vil være",
+            "totalLiquidityLocked": "Total likviditet låst"
+        },
+        "actions": {
+            "add": "Stake mer",
+            "claim": "Gjør krav på belønninger",
+            "remove": "Fjern innsatsen",
+            "start": "Start staking"
+        },
+        "amountAdd": "Beløp som skal satses",
+        "amountRemove": "Beløp som skal fjernes",
+        "poweredBy": "Drevet av Demeter Farming",
+        "calculator": "Kalkulator",
+        "results": "Resultater",
+        "rewards": "{symbol} belønninger"
+    },
+    "staking": {
+        "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Noe gikk galt",
+        "balances": {
+            "LiquidityRestrictions": "Kontolikviditetsbegrensninger forhindrer uttak"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Kildebalansen er ikke stor nok",
+            "TargetBalanceIsNotLargeEnough": "Destinasjonsbalansen er ikke stor nok",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Forutsatt at beløpene er for forskjellige",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Beløp er utenfor påkrevde grenser",
+            "UnableToDepositXorLessThanMinimum": "XOR lavere enn minimumsverdien (0,007)",
+            "ZeroValueInAmountParameter": "Mengdeparameteren har nullverdi"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Pool-par eksisterer allerede",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Kontoen har allerede en henvisning",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Belønningsprogrammet er allerede ferdig",
+            "CantCalculateReward": "Kunne ikke utføre belønningsberegning",
+            "NoRewardsForAsset": "Det er ingen belønninger for denne ressursen"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Valgt likviditetskilde er ikke tillatt"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Utilstrekkelige midler",
+            "InsufficientLPTokens": "Utilstrekkelige likviditetsavsetningssymboler",
+            "PoolDoesNotHaveRewards": "Bassenget har ikke belønninger"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Det oppsto en feil under beregning av prisen"
+        }
+    },
+    "receivedText": "Tok imot",
+    "browserNotificationDialog": {
+        "title": "Aktiver nettleservarsler",
+        "info": "Vi sender deg bare relevante oppdateringer om lommeboken din, for eksempel: endringer i aktivabalansen",
+        "button": "Aktiver varsler",
+        "agree": "Ja jeg forstår",
+        "notificationBlocked": "For å motta varslene om {appName} må du tillate varslene i nettleserens opprinnelige innstillinger",
+        "pointer": "Trykk på \"Tillat\" for å slå på varsler"
+    },
+    "assetDeposit": "Eiendelsbalanse er satt inn",
+    "noDataText": "Ingen data"
 }

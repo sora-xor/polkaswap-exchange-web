@@ -3,12 +3,12 @@
     <div class="rewards-content" v-loading="!parentLoading && loading">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">
         <div :class="['rewards-box', libraryTheme]">
-          <tokens-row :symbols="rewardTokenSymbols" />
+          <tokens-row :assets="rewardTokens" />
           <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
             {{ claimingStatusMessage }}
           </div>
           <div v-if="isSoraAccountConnected" class="rewards-amount">
-            <rewards-amount-header :items="rewardsByAssetsList" />
+            <rewards-amount-header :items="rewardsAmountHeaderItems" />
             <template v-if="!claimingInProgressOrFinished">
               <rewards-amount-table
                 class="rewards-table"
@@ -78,7 +78,7 @@
         {{ hintText }}
       </div>
       <s-button
-        v-if="!(rewardsRecieved || loading)"
+        v-if="!(rewardsReceived || loading)"
         class="rewards-block rewards-action-button s-typography-button--large"
         data-test-name="LoginAndGet"
         type="primary"
@@ -93,11 +93,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
@@ -106,7 +106,9 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { hasInsufficientXorForFee } from '@/utils';
 import { action, getter, mutation, state } from '@/store/decorators';
+
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 
 import type { RewardsAmountHeaderItem, RewardInfoGroup, SelectedRewards } from '@/types/rewards';
 import type { ClaimRewardsParams } from '@/store/rewards/types';
@@ -121,14 +123,19 @@ import type { ClaimRewardsParams } from '@/store/rewards/types';
     InfoLine: components.InfoLine,
   },
 })
-export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletConnectMixin, mixins.TransactionMixin) {
+export default class Rewards extends Mixins(
+  SubscriptionsMixin,
+  mixins.FormattedAmountMixin,
+  WalletConnectMixin,
+  mixins.TransactionMixin
+) {
   @state.rewards.feeFetching private feeFetching!: boolean;
   @state.rewards.rewardsFetching private rewardsFetching!: boolean;
   @state.rewards.rewardsClaiming private rewardsClaiming!: boolean;
   @state.rewards.transactionError private transactionError!: boolean;
   @state.rewards.transactionStep private transactionStep!: number;
+  @state.rewards.receivedRewards receivedRewards!: RewardsAmountHeaderItem[];
   @state.rewards.fee fee!: CodecString;
-  @state.rewards.rewardsRecieved rewardsRecieved!: boolean;
 
   @state.rewards.vestedRewards private vestedRewards!: RewardsInfo;
   @state.rewards.crowdloanRewards private crowdloanRewards!: Array<RewardInfo>;
@@ -147,8 +154,8 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @getter.rewards.internalRewardsAvailable internalRewardsAvailable!: boolean;
   @getter.rewards.vestedRewardsAvailable vestedRewardsAvailable!: boolean;
   @getter.rewards.rewardsByAssetsList rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
+  @getter.rewards.externalRewardsSelected externalRewardsSelected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
-  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @mutation.rewards.reset private reset!: VoidFunction;
 
@@ -158,19 +165,6 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   @action.rewards.subscribeOnRewards private subscribeOnRewards!: AsyncVoidFn;
   @action.rewards.unsubscribeFromRewards private unsubscribeFromRewards!: AsyncVoidFn;
 
-  @Watch('isSoraAccountConnected')
-  @Watch('nodeIsConnected')
-  private async updateSubscriptions(value: boolean) {
-    if (value) {
-      // to prevent second call after created hook
-      if (!this.loading) {
-        await this.subscribeOnRewards();
-      }
-    } else {
-      await this.unsubscribeFromRewards();
-    }
-  }
-
   private unwatchEthereum!: VoidFunction;
 
   destroyed(): void {
@@ -178,36 +172,58 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   async created(): Promise<void> {
-    await this.withApi(async () => {
-      await this.setEvmNetworkType();
-      await this.syncExternalAccountWithAppState();
-      await this.checkExternalRewards();
-      await this.subscribeOnRewards();
+    this.setStartSubscriptions([this.subscribeOnRewards]);
+    this.setResetSubscriptions([this.unsubscribeFromRewards]);
 
-      this.unwatchEthereum = await ethersUtil.watchEthereum({
-        onAccountChange: (addressList: string[]) => {
-          if (addressList.length) {
-            this.changeExternalAccountProcess({ address: addressList[0] });
-          } else {
-            this.disconnectExternalAccountProcess();
-          }
-        },
-        onNetworkChange: (networkId: string) => {
-          this.setEvmNetworkType(networkId);
-        },
-        onDisconnect: () => {
+    this.setEvmNetworkType();
+
+    this.unwatchEthereum = await ethersUtil.watchEthereum({
+      onAccountChange: (addressList: string[]) => {
+        if (addressList.length) {
+          this.changeExternalAccountProcess({ address: addressList[0] });
+        } else {
           this.disconnectExternalAccountProcess();
-        },
-      });
+        }
+      },
+      onNetworkChange: (networkId: string) => {
+        this.setEvmNetworkType(networkId);
+      },
+      onDisconnect: () => {
+        this.disconnectExternalAccountProcess();
+      },
+    });
+  }
+
+  mounted(): void {
+    this.withApi(async () => {
+      await this.checkExternalRewards();
     });
   }
 
   beforeDestroy(): void {
-    this.unsubscribeFromRewards();
-
     if (typeof this.unwatchEthereum === 'function') {
       this.unwatchEthereum();
     }
+  }
+
+  get rewardsReceived(): boolean {
+    return this.receivedRewards.length !== 0;
+  }
+
+  get rewardsAmountHeaderItems(): RewardsAmountHeaderItem[] {
+    return this.rewardsReceived ? this.receivedRewards : this.rewardsByAssetsList;
+  }
+
+  get rewardTokens(): Array<Asset> {
+    return this.rewardsAmountHeaderItems.map((item) => item.asset);
+  }
+
+  get rewardTokenSymbols(): Array<KnownSymbols> {
+    return this.rewardTokens.map((item) => item.symbol as KnownSymbols);
+  }
+
+  get gradientSymbol(): string {
+    return this.rewardTokenSymbols.length === 1 ? this.rewardTokenSymbols[0] : '';
   }
 
   get externalRewardsGroupItem(): RewardInfoGroup {
@@ -305,15 +321,15 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
   }
 
   get claimingInProgressOrFinished(): boolean {
-    return this.rewardsClaiming || this.transactionError || this.rewardsRecieved;
+    return this.rewardsClaiming || this.transactionError || this.rewardsReceived;
   }
 
   get claimingStatusMessage(): string {
-    return this.rewardsRecieved ? this.t('rewards.claiming.success') : this.t('rewards.claiming.pending');
+    return this.rewardsReceived ? this.t('rewards.claiming.success') : this.t('rewards.claiming.pending');
   }
 
   get transactionStatusMessage(): string {
-    if (this.rewardsRecieved) {
+    if (this.rewardsReceived) {
       return this.t('rewards.transactions.success');
     }
 
@@ -321,14 +337,6 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
     const translationKey = this.transactionError ? 'rewards.transactions.failed' : 'rewards.transactions.confimation';
 
     return this.t(translationKey, { order, total: this.transactionStepsCount });
-  }
-
-  get rewardTokenSymbols(): Array<KnownSymbols> {
-    return this.rewardsByAssetsList.map((item) => item.asset.symbol as KnownSymbols);
-  }
-
-  get gradientSymbol(): string {
-    return this.rewardTokenSymbols.length === 1 ? this.rewardTokenSymbols[0] : '';
   }
 
   get hintText(): string {
@@ -420,7 +428,7 @@ export default class Rewards extends Mixins(mixins.FormattedAmountMixin, WalletC
 
     if (!internalAddress) return;
 
-    if (externalAddress) {
+    if (externalAddress && this.externalRewardsSelected) {
       const isConnected = await ethersUtil.checkAccountIsConnected(externalAddress);
 
       if (!isConnected) return;

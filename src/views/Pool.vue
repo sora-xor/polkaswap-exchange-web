@@ -8,7 +8,7 @@
       <p v-else-if="!accountLiquidity.length || parentLoading" class="pool-info-container pool-info-container--empty">
         {{ t('pool.liquidityNotFound') }}
       </p>
-      <s-collapse v-else class="pool-list" :borders="true">
+      <s-collapse v-else class="pool-list" :borders="true" @change="updateActiveCollapseItems">
         <s-collapse-item
           v-for="liquidityItem of accountLiquidity"
           :key="liquidityItem.address"
@@ -21,71 +21,77 @@
               :second-token="getAsset(liquidityItem.secondAddress)"
               size="small"
             />
-            <h3 class="pool-info-container__title">
-              {{
-                getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress))
-              }}
-            </h3>
+            <div class="pool-info-container-block">
+              <h3 class="pool-info-container__title">
+                {{
+                  getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress))
+                }}
+              </h3>
+              <slot name="title-append" v-bind="{ liquidity: liquidityItem, activeCollapseItems }" />
+            </div>
           </template>
-          <info-line
-            is-formatted
-            value-can-be-hidden
-            :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) })"
-            :value="getFirstBalance(liquidityItem)"
-            :fiat-value="getFiatAmountByCodecString(liquidityItem.firstBalance, getAsset(liquidityItem.firstAddress))"
-          />
-          <info-line
-            is-formatted
-            value-can-be-hidden
-            :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) })"
-            :value="getSecondBalance(liquidityItem)"
-            :fiat-value="getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))"
-          />
-          <info-line value-can-be-hidden :label="t('pool.poolShare')" :value="getPoolShare(liquidityItem.poolShare)" />
-          <info-line
-            v-if="hasStrategicBonusApy(liquidityItem.secondAddress)"
-            :label="t('pool.strategicBonusApy')"
-            :value="getStrategicBonusApy(liquidityItem.secondAddress)"
-          />
-          <div class="pool-info--buttons">
-            <s-button
-              type="secondary"
-              class="s-typography-button--medium"
-              data-test-name="addLiquidity"
-              @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
-            >
-              {{ t('pool.addLiquidity') }}
-            </s-button>
-            <s-button
-              type="secondary"
-              class="s-typography-button--medium"
-              data-test-name="removeLiquidity"
-              @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
-            >
-              {{ t('pool.removeLiquidity') }}
-            </s-button>
-          </div>
+
+          <pool-info>
+            <info-line
+              is-formatted
+              value-can-be-hidden
+              :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) })"
+              :value="getFirstBalance(liquidityItem)"
+              :fiat-value="getFiatAmountByCodecString(liquidityItem.firstBalance, getAsset(liquidityItem.firstAddress))"
+            />
+            <info-line
+              is-formatted
+              value-can-be-hidden
+              :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) })"
+              :value="getSecondBalance(liquidityItem)"
+              :fiat-value="
+                getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))
+              "
+            />
+            <info-line
+              value-can-be-hidden
+              :label="t('pool.poolShare')"
+              :value="getPoolShare(liquidityItem.poolShare)"
+            />
+            <info-line
+              v-if="hasStrategicBonusApy(liquidityItem.secondAddress)"
+              :label="t('pool.strategicBonusApy')"
+              :value="getStrategicBonusApy(liquidityItem.secondAddress)"
+            />
+
+            <template #buttons>
+              <s-button
+                type="secondary"
+                class="s-typography-button--medium"
+                data-test-name="addLiquidity"
+                @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
+              >
+                {{ t('pool.addLiquidity') }}
+              </s-button>
+              <s-button
+                type="secondary"
+                class="s-typography-button--medium"
+                data-test-name="removeLiquidity"
+                @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
+              >
+                {{ t('pool.removeLiquidity') }}
+              </s-button>
+            </template>
+          </pool-info>
+
+          <slot name="append" v-bind="liquidityItem" />
         </s-collapse-item>
       </s-collapse>
     </div>
-    <template v-if="isLoggedIn">
-      <s-button
-        class="el-button--add-liquidity s-typography-button--large"
-        data-test-name="addLiquidity"
-        type="primary"
-        @click="handleAddLiquidity()"
-      >
-        {{ t('pool.addLiquidity') }}
-      </s-button>
-      <s-button
-        class="el-button--create-pair s-typography-button--large"
-        data-test-name="createPair"
-        type="secondary"
-        @click="handleCreatePair"
-      >
-        {{ t('pool.createPair') }}
-      </s-button>
-    </template>
+    <s-button
+      v-if="isLoggedIn"
+      class="el-button--add-liquidity s-typography-button--large"
+      data-test-name="addLiquidity"
+      type="primary"
+      @click="handleAddLiquidity()"
+    >
+      {{ t('pool.addLiquidity') }}
+    </s-button>
     <s-button v-else type="primary" class="s-typography-button--large" @click="handleConnectWallet">
       {{ t('pool.connectWallet') }}
     </s-button>
@@ -108,6 +114,7 @@ import { getter, state } from '@/store/decorators';
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    PoolInfo: lazyComponent(Components.PoolInfo),
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
   },
@@ -120,6 +127,12 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
   @state.pool.accountLiquidity accountLiquidity!: Array<AccountLiquidity>;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+
+  activeCollapseItems: string[] = [];
+
+  updateActiveCollapseItems(items: string[]) {
+    this.activeCollapseItems = items;
+  }
 
   getAsset(address: string): Asset {
     return this.assets.find((a) => a.address === address) as Asset;
@@ -138,10 +151,6 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
     const firstAddress = first || '';
     const secondAddress = second || '';
     router.push({ name: PageNames.AddLiquidity, params: { firstAddress, secondAddress } });
-  }
-
-  handleCreatePair(): void {
-    router.push({ name: PageNames.CreatePair });
   }
 
   handleRemoveLiquidity(firstAddress: string, secondAddress: string): void {
@@ -193,15 +202,18 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
 .pool-list {
   @include collapse-items;
   .el-collapse-item__header {
+    align-items: flex-start;
+
     .pair-logo {
       margin-right: $inner-spacing-medium;
+      margin-top: $inner-spacing-mini / 2;
     }
   }
 }
 </style>
 
 <style lang="scss" scoped>
-$pair-icon-height: 36px;
+$title-height: 42px;
 
 .el-form--pool {
   display: flex;
@@ -229,9 +241,6 @@ $pair-icon-height: 36px;
     width: 100%;
     border-top: none;
     border-bottom: none;
-    h3 {
-      letter-spacing: var(--s-letter-spacing-small);
-    }
   }
   &-info {
     &-container {
@@ -249,8 +258,17 @@ $pair-icon-height: 36px;
         text-align: center;
       }
 
+      &-block {
+        flex: 1;
+      }
+
       &__title {
+        flex: 1;
         font-weight: 700;
+        letter-spacing: var(--s-letter-spacing-small);
+        text-align: left;
+        min-height: $title-height;
+        line-height: $title-height;
       }
 
       & + .el-button {
@@ -259,17 +277,6 @@ $pair-icon-height: 36px;
     }
     & > .asset-logo {
       margin-right: $inner-spacing-mini;
-    }
-    &--buttons {
-      display: flex;
-      justify-content: center;
-      margin-top: $inner-spacing-medium;
-      > * {
-        width: 50%;
-      }
-      .el-button + .el-button {
-        margin-left: $inner-spacing-small;
-      }
     }
   }
 }

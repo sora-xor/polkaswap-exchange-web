@@ -121,19 +121,33 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   .el-buttons {
     display: flex;
     align-items: center;
-  }
+
+    &--between {
+      flex: 1;
+      justify-content: space-between;
+    }
 
   .el-button {
     &--max {
       margin-right: $inner-spacing-mini / 2;
       margin-left: $inner-spacing-mini / 2;
       background-color: var(--s-color-theme-accent) !important;
-      &.el-button.neumorphic {
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .el-button {
+    &--max {
+      &.neumorphic {
         box-shadow: $button-custom-shadow;
       }
     }
+  }
+
     &--select-token {
-      margin-left: $inner-spacing-mini / 2;
       &.token-select-button--token {
         &, &:hover, &:active, &:focus, &.focusing, &.s-pressed {
           background-color: var(--s-color-utility-surface);
@@ -450,7 +464,8 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
     }
 
     .el-collapse-item__header {
-      height: #{$collapse-icon-height + $inner-spacing-medium * 2};
+      height: auto;
+      min-height: #{$collapse-icon-height + $inner-spacing-medium * 2};
       line-height: $collapse-icon-height;
       padding: $inner-spacing-medium;
     }
@@ -474,16 +489,18 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
     margin-left: $marginOffset;
     margin-right: $marginOffset;
 
-    .el-scrollbar__wrap {
+    & > .el-scrollbar__wrap {
       overflow-x: hidden;
       margin-bottom: 0px !important; // to disable element-ui negative margin
     }
-    .el-scrollbar__wrap, .el-scrollbar__view {
-      display: flex;
-      flex: 1;
-      flex-flow: column nowrap;
+    & > .el-scrollbar__wrap {
+      &, & > .el-scrollbar__view {
+        display: flex;
+        flex: 1;
+        flex-flow: column nowrap;
+      }
     }
-    .el-scrollbar__bar {
+    & > .el-scrollbar__bar {
       &.is-vertical {
         right: $verticalRight;
       }
@@ -507,5 +524,45 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+@mixin input-slider () {
+  display: inline-block;
+
+  &.one-char .el-input__inner {
+    width: 1ch;
+  }
+  &.two-char .el-input__inner {
+    width: 2ch;
+  }
+  &.three-char .el-input__inner {
+    width: 3ch;
+  }
+
+  .s-input__content {
+    .percent {
+      font-size: var(--s-heading1-font-size);
+    }
+  }
+
+  .s-input__input {
+    flex: 0;
+  }
+
+  .el-input__inner {
+    font-size: var(--s-heading1-font-size) !important;
+    line-height: var(--s-line-height-mini) !important;
+    letter-spacing: var(--s-letter-spacing-mini) !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
+    height: auto !important;
+    min-width: 1ch;
+    max-width: 3ch;
+  }
+
+  .el-slider__runway {
+    background-color: var(--s-color-base-content-tertiary);
   }
 }

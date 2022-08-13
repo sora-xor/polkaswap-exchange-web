@@ -61,7 +61,6 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
-import DialogBase from '@/components/DialogBase.vue';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
@@ -73,7 +72,7 @@ enum Tabs {
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     SelectAssetList: lazyComponent(Components.SelectAssetList),
     TokenAddress: components.TokenAddress,
     SearchInput: components.SearchInput,

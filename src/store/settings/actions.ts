@@ -26,11 +26,11 @@ async function updateNetworkChainGenesisHash(context: ActionContext<any, any>): 
 
 const actions = defineActions({
   async connectToNode(context, options: ConnectToNodeOptions = {}): Promise<void> {
-    const { dispatch, commit, state, rootState } = settingsActionContext(context);
+    const { dispatch, commit, state, rootState, getters } = settingsActionContext(context);
     if (!state.nodeConnectionAllowance) return;
 
-    const { node, onError, ...restOptions } = options;
-    const defaultNode = state.defaultNodes[0];
+    const { node, onError, currentNodeIndex = 0, ...restOptions } = options;
+    const defaultNode = getters.nodeList[currentNodeIndex];
     const requestedNode = (node || (state.node.address ? state.node : defaultNode)) as Nullable<Node>;
 
     try {
@@ -46,12 +46,15 @@ const actions = defineActions({
         }
       }
     } catch (error) {
+      // if connection failed to node in state, reset node in state
       if (requestedNode && requestedNode.address === state.node.address) {
         commit.resetNode();
       }
 
-      if (state.node.address || (defaultNode && requestedNode?.address !== defaultNode.address)) {
-        await dispatch.connectToNode({ onError, ...restOptions });
+      // loop through the node list
+      if (state.node.address || currentNodeIndex !== state.defaultNodes.length - 1) {
+        const nextIndex = requestedNode?.address === defaultNode.address ? currentNodeIndex + 1 : 0;
+        await dispatch.connectToNode({ onError, currentNodeIndex: nextIndex, ...restOptions });
       }
 
       if (onError && typeof onError === 'function') {
@@ -116,7 +119,7 @@ const actions = defineActions({
               key: 'node.errors.network',
               payload: { address: endpoint },
             },
-            `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" recieved, should be "${state.chainGenesisHash}"`
+            `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" received, should be "${state.chainGenesisHash}"`
           );
         }
       } else {

@@ -50,29 +50,30 @@ import { app, SocialNetworkLinks, Links } from '@/consts';
 export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   readonly SocialNetworkLinks = SocialNetworkLinks;
   readonly app = app;
-  readonly textLinks: Array<{ title: string; href: string }> = [
-    {
-      title: this.t('helpDialog.privacyPolicy'),
-      href: Links.privacy,
-    },
-    {
-      title: this.t('releaseNotesText'),
-      href: Links.releaseNotes,
-    },
-    {
-      title: this.t('helpDialog.termsOfService'),
-      href: Links.terms,
-    },
-  ];
 
   specVersion: Nullable<number> = null;
 
   created(): void {
     this.withApi(() => {
-      const { specVersion } = api.api.consts.system.version;
-
-      this.specVersion = Number(specVersion);
+      this.specVersion = api.system.specVersion;
     });
+  }
+
+  get textLinks(): Array<{ title: string; href: string }> {
+    return [
+      {
+        title: this.t('helpDialog.privacyPolicy'),
+        href: Links.privacy,
+      },
+      {
+        title: this.t('releaseNotesText'),
+        href: Links.releaseNotes,
+      },
+      {
+        title: this.t('helpDialog.termsOfService'),
+        href: Links.terms,
+      },
+    ];
   }
 
   get sortedTextLinks(): Array<{ title: string; href: string }> {

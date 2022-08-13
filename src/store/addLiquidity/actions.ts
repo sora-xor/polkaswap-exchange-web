@@ -138,16 +138,29 @@ const actions = defineActions({
   async addLiquidity(context): Promise<void> {
     const { getters, state, rootState } = addLiquidityActionContext(context);
     const { firstToken, secondToken } = getters;
+    const { isAvailable, firstTokenValue, secondTokenValue } = state;
+
     if (!(firstToken && secondToken)) {
       return;
     }
-    await api.poolXyk.add(
-      firstToken,
-      secondToken,
-      state.firstTokenValue,
-      state.secondTokenValue,
-      rootState.settings.slippageTolerance
-    );
+
+    if (isAvailable) {
+      await api.poolXyk.add(
+        firstToken,
+        secondToken,
+        firstTokenValue,
+        secondTokenValue,
+        rootState.settings.slippageTolerance
+      );
+    } else {
+      await api.poolXyk.create(
+        firstToken,
+        secondToken,
+        firstTokenValue,
+        secondTokenValue,
+        rootState.settings.slippageTolerance
+      );
+    }
   },
   async setDataFromLiquidity(context, { firstAddress, secondAddress }: LiquidityParams): Promise<void> {
     const { dispatch } = addLiquidityActionContext(context);
@@ -162,17 +175,15 @@ const actions = defineActions({
     await dispatch.setFirstTokenAddress(first);
     await dispatch.setSecondTokenAddress(second);
   },
-  async resetData(context, withAssets = false): Promise<void> {
+  async resetData(context): Promise<void> {
     const { commit } = addLiquidityActionContext(context);
 
     balanceSubscriptions.remove('second', {
       updateBalance: (balance: Nullable<AccountBalance>) => commit.setSecondTokenBalance(balance),
     });
 
-    if (!withAssets) {
-      commit.setFirstTokenAddress();
-      commit.setSecondTokenAddress();
-    }
+    commit.setFirstTokenAddress();
+    commit.setSecondTokenAddress();
     commit.setFirstTokenValue();
     commit.setSecondTokenValue();
   },

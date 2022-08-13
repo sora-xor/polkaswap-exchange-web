@@ -60,20 +60,18 @@ import { CodecString, Operation } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
-import DialogMixin from '@/components/mixins/DialogMixin';
-import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { state, getter } from '@/store/decorators';
 
 @Component({
   components: {
-    DialogBase,
-    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
+    DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
+    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
   },
 })
-export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, DialogMixin) {
+export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
   @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;

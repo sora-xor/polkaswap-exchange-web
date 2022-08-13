@@ -1,5 +1,5 @@
 import { defineGetters } from 'direct-vuex';
-import { CodecString, FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import { removeLiquidityGetterContext } from '@/store/removeLiquidity';
@@ -15,13 +15,35 @@ const getters = defineGetters<RemoveLiquidityState>()({
       (liquidity) => liquidity.firstAddress === firstTokenAddress && liquidity.secondAddress === secondTokenAddress
     );
   },
-  liquidityBalance(...args): CodecString {
+  // Liquidity full balance (without locked balance)
+  liquidityBalanceFull(...args): FPNumber {
     const { getters } = removeLiquidityGetterContext(args);
-    return getters.liquidity?.balance ?? ZeroStringValue;
+
+    if (!getters.liquidity?.balance) return FPNumber.ZERO;
+
+    return FPNumber.fromCodecValue(getters.liquidity.balance);
   },
-  liquidityDecimals(...args): number {
+  // Liquidity locked balance
+  liquidityBalanceLocked(...args): FPNumber {
+    const { getters, rootGetters } = removeLiquidityGetterContext(args);
+
+    if (!rootGetters.demeterFarming || !getters.liquidity) return FPNumber.ZERO;
+
+    const poolAsset = getters.liquidity.secondAddress;
+    const lockedBalance = rootGetters.demeterFarming.getLockedAmount(poolAsset, true);
+    const balance = getters.liquidityBalanceFull;
+    const maxLocked = FPNumber.min(balance, lockedBalance) as FPNumber;
+
+    return maxLocked;
+  },
+  // Liqudity free balance (full - locked)
+  liquidityBalance(...args): FPNumber {
     const { getters } = removeLiquidityGetterContext(args);
-    return getters.liquidity?.decimals ?? 0;
+
+    const balance = getters.liquidityBalanceFull;
+    const lockedBalance = getters.liquidityBalanceLocked;
+
+    return balance.sub(lockedBalance);
   },
   firstToken(...args): Nullable<RegisteredAccountAssetWithDecimals> {
     const { getters, rootGetters } = removeLiquidityGetterContext(args);
@@ -39,18 +61,30 @@ const getters = defineGetters<RemoveLiquidityState>()({
     }
     return rootGetters.assets.assetDataByAddress(secondAddress);
   },
-  firstTokenBalance(...args): CodecString {
+  // First token free balance
+  firstTokenBalance(...args): FPNumber {
     const { getters } = removeLiquidityGetterContext(args);
-    return getters.liquidity?.firstBalance ?? ZeroStringValue;
+
+    if (!getters.liquidity?.firstBalance) return FPNumber.ZERO;
+
+    const tokenBalance = FPNumber.fromCodecValue(getters.liquidity.firstBalance, getters.firstToken?.decimals);
+
+    return tokenBalance.mul(getters.liquidityBalance).div(getters.liquidityBalanceFull);
   },
-  secondTokenBalance(...args): CodecString {
+  // Second token free balance
+  secondTokenBalance(...args): FPNumber {
     const { getters } = removeLiquidityGetterContext(args);
-    return getters.liquidity?.secondBalance ?? ZeroStringValue;
+
+    if (!getters.liquidity?.secondBalance) return FPNumber.ZERO;
+
+    const tokenBalance = FPNumber.fromCodecValue(getters.liquidity.secondBalance, getters.secondToken?.decimals);
+
+    return tokenBalance.mul(getters.liquidityBalance).div(getters.liquidityBalanceFull);
   },
   shareOfPool(...args): string {
     const { state, getters } = removeLiquidityGetterContext(args);
 
-    const balance = FPNumber.fromCodecValue(getters.liquidityBalance);
+    const balance = getters.liquidityBalanceFull;
     const removed = new FPNumber(state.liquidityAmount ?? 0);
     const totalSupply = FPNumber.fromCodecValue(state.totalSupply);
     const totalSupplyAfter = totalSupply.sub(removed);

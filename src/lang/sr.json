@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Успешно повезивање КСОРа",
             "ReferralUnreserveXor": "Одвајање XOR је успешно",
             "ReferralSetInvitedUser": "Препорука је успешно постављена",
-            "SwapAndSend": "Замењено {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address}"
+            "SwapAndSend": "Замењено {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Испоручени {symbol} и {symbol2} {amount} ЛП токени",
+            "DemeterFarmingWithdrawLiquidity": "Уклоњени су токени {symbol} и {symbol2} {amount} ЛП",
+            "DemeterFarmingStakeToken": "Додато {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Уклоњено {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} је успешно положено"
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
@@ -57,17 +62,29 @@
             "ReferralReserveXor": "Повезивање XOR није успело",
             "ReferralUnreserveXor": "Одвајање XOR није успело",
             "ReferralSetInvitedUser": "Постављање препоруке није успело",
-            "SwapAndSend": "Замена {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address} није успела"
+            "SwapAndSend": "Замена {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address} није успела",
+            "DemeterFarmingDepositLiquidity": "Достављање {amount} {symbol} и {symbol2} ЛП токена није успело",
+            "DemeterFarmingWithdrawLiquidity": "Уклањање {amount} {symbol} и {symbol2} ЛП токена није успело",
+            "DemeterFarmingStakeToken": "Додавање {amount} {symbol} није успело",
+            "DemeterFarmingUnstakeToken": "Уклањање {amount} {symbol} није успело",
+            "DemeterFarmingGetRewards": "Захтевање за {symbol} није успело"
         },
         "ReferralReserveXor": "Бонд XOR",
         "ReferralUnreserveXor": "Анбонд XOR",
         "ReferralSetInvitedUser": "Поставите препоруку",
-        "SwapAndSend": "Замените и пошаљте"
+        "SwapAndSend": "Замените и пошаљте",
+        "DemeterFarmingDepositLiquidity": "Ликвидност улога",
+        "DemeterFarmingWithdrawLiquidity": "Унстаке Ликуидити",
+        "DemeterFarmingStakeToken": "Токен улог",
+        "DemeterFarmingUnstakeToken": "Унстаке Токен",
+        "DemeterFarmingGetRewards": "Захтевајте награде"
     },
     "polkadotjs": {
         "noExtensions": "Није пронађена ниједна екстензија Polkadot.{js}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Чини се да у вашој екстензији Polkadot{.js} нема рачуна. Додајте рачун и покушајте поново.",
-        "noAccount": "Грешка рачуна Polkadot.{js}. Проверите свој рачун у екстензији Polkadot.js"
+        "noAccount": "Грешка рачуна Polkadot.{js}. Проверите свој рачун у екстензији Polkadot.js",
+        "noExtension": "Није пронађен ниједан {extension} . Инсталирајте га и поново учитајте ову страницу",
+        "noSigner": "Приступ одбијен. Идите на подешавања {extension} и отворите „Управљање приступом веб локацији“ да бисте дозволили."
     },
     "connection": {
         "title": "Рачун мреже SORA",
@@ -82,6 +99,10 @@
             "learnMore": "Сазнајте више",
             "connect": "Повежите рачун",
             "refresh": "Освјежите"
+        },
+        "selectWallet": "Изаберите новчаник са којим ћете радити",
+        "wallet": {
+            "install": "Инсталирај"
         }
     },
     "wallet": {
@@ -113,7 +134,8 @@
     "account": {
         "successCopy": "Адреса новчаника се копира у међуспремник",
         "copy": "Копирајте адресу",
-        "switch": "Промените рачун"
+        "switch": "Промените рачун",
+        "walletAddress": "Адреса новчаника"
     },
     "history": {
         "clearHistory": "Очистите историју",
@@ -141,26 +163,18 @@
             "bonded": "- Везанo"
         },
         "totalAssetsValue": "Укупна вредност средства:",
-        "details": "Детаљи"
+        "details": "Детаљи",
+        "assetId": "ИД средства"
     },
     "asset": {
         "remove": "Уклоните средство",
         "select": "Izaberite sredstvo",
-        "recieve": "Примите {symbol}"
+        "receive": "Примите {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Средство {symbol} је успешно додатo!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Филтрирајте према ИД-у средства, имену или симболу ознаке"
-        },
-        "AddAssetCustom": {
-            "title": "Прилагођено средство",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Симбол средства"
-        },
         "empty": "Нису пронађени токени",
         "alreadyAttached": "Токен је већ био прикачен",
         "understand": "Разумем",
@@ -169,7 +183,15 @@
         "approved": "Средство је одобрила заједница",
         "unknown": "Непознати извор",
         "scam": "ПРЕВАРА",
-        "next": "Следећи"
+        "next": "Следећи",
+        "AddAssetToken": {
+            "title": "Токени",
+            "switchBtn": "Само верификована средства"
+        },
+        "AddAssetNFT": {
+            "title": "NFT"
+        },
+        "searchInputText": "Претрага по ИД-у средства, имену или симболу ознаке"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -326,7 +348,8 @@
         "Stats": "Статистикa",
         "Support": "Подршка",
         "CreatePair": "Направите пар",
-        "Tokens": "Токени"
+        "Tokens": "Токени",
+        "StakingContainer": "Стeкинг"
     },
     "social": {
         "twitter": "Twitter",
@@ -500,7 +523,8 @@
         "swapOutputMessage": "Излаз је процењен. Добићете најмање {transactionValue} или ће трансакција бити враћена.",
         "rewardsForSwap": "PSWAP стратешке награде",
         "swapInputMessage": "Улаз је процењен. Продаћете максимално {transactionValue} или ће се трансакција поништити.",
-        "route": "Рута"
+        "route": "Рута",
+        "errorFetching": "Greška pri prenošenju podataka"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -538,7 +562,9 @@
         "networkInfo": "Бриџ @:soraText мрежа са:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Копирајте мрежну адресу"
+        "copy": "Копирајте мрежну адресу",
+        "soraAddress": "@:soraText adresa",
+        "ethereumAddress": "@:ethereumText adresa"
     },
     "selectRegisteredAsset": {
         "title": "Изаберите токен",
@@ -690,7 +716,8 @@
         "description": "Уклањање токена пула претвара вашу позицију назад у основне токене по тренутној стопи, пропорционално вашем уделу у пулу. Прикупљене накнаде су укључене у износе које примате.",
         "outputMessage": "Излаз је процењен. Ако се цена промени више од {slippageTolerance}%, ваша трансакција ће бити враћена.",
         "confirmTitle": "Добићете",
-        "shareOfPool": "Удео у пулу након трансакције"
+        "shareOfPool": "Удео у пулу након трансакције",
+        "locked": "{percent} вашег фонда је у улози"
     },
     "dexSettings": {
         "title": "Подешавања трансакције",
@@ -845,7 +872,7 @@
         },
         "history": {
             "title": "Историја куповине",
-            "empty": "Нема података"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Трансакција спремна за мост"
@@ -854,7 +881,6 @@
             "transfer": "Токени су успешно купљени!\nКликните да бисте започели мост трансакцију"
         }
     },
-    "recievedText": "Примљено",
     "light": "Светло",
     "dark": "Мрачно",
     "headerMenu": {
@@ -941,8 +967,13 @@
     "code": {
         "download": "Преузмите КР код",
         "upload": "Skeniraj QR",
-        "recieve": "Примите",
-        "invalid": "Неважећи КР код"
+        "invalid": "Неважећи КР код",
+        "import": "Увезите слику",
+        "scan": "Скенирајте камером",
+        "allowanceError": "Проверите доступност камере и дозволе прегледача да бисте је користили",
+        "receive": "Примите",
+        "camera": "Kamera",
+        "allowanceRequest": "Притисните „Дозволи“ приступ камери"
     },
     "bridgeTransferNotification": {
         "addToken": "Додајте {symbol} у @:metamask",
@@ -953,5 +984,94 @@
         "header": "Преузмите СОРА новчаник са <span class=\"popup-info__headline--highlight\"> Полкасвап <\/span>",
         "info": "Замените токене са различитих мрежа - СОРА, Етхереум, Полкадот, Кусама. Обезбедите фонд ликвидности и зарадите % од провизија."
     },
-    "releaseNotesText": "Напомене о издању"
+    "releaseNotesText": "Напомене о издању",
+    "copiedText": "Копирано!",
+    "copyWithValue": "Копирај {value}",
+    "copiedWithValue": "{value} је копирана!",
+    "signAndClaimText": "Потпишите и затражите",
+    "balanceText": "Салдо",
+    "unknownAssetText": "Непознато средство",
+    "demeterFarming": {
+        "staking": {
+            "active": "Улагање активно",
+            "inactive": "Уложите да бисте зарадили додатне награде",
+            "stopped": "Улагање је престало"
+        },
+        "info": {
+            "earned": "{symbol} зарадио",
+            "fee": "Naknada",
+            "feeTooltip": "Накнада за депозит се примењује на ваш износ за улог",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Ваш удео у базену је уложен",
+            "poolShareWillBe": "Vaš udeo u bazenu će biti",
+            "rewardToken": "Токен за награду",
+            "stake": "Ваш {symbol} је уложио",
+            "stakeWillBe": "Ваш {symbol} улог ће бити",
+            "totalLiquidityLocked": "Укупна ликвидност закључана"
+        },
+        "actions": {
+            "add": "Везатe више",
+            "claim": "Захтевајте награде",
+            "remove": "Уклоните улог",
+            "start": "Почните са стекингoм"
+        },
+        "amountAdd": "Износ за стекинг",
+        "amountRemove": "Износ за уклањање",
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Калкулатор",
+        "results": "Резултати",
+        "rewards": "{symbol} награде"
+    },
+    "staking": {
+        "title": "Стeкинг"
+    },
+    "historyErrorMessages": {
+        "generalError": "Нешто је кренуло наопако",
+        "balances": {
+            "LiquidityRestrictions": "Ограничења ликвидности рачуна спречавају повлачење"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Изворни баланс није довољно велик",
+            "TargetBalanceIsNotLargeEnough": "Стање одредишта није довољно велико",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Предвиђене количине су превише различите",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Износи су ван потребних граница",
+            "UnableToDepositXorLessThanMinimum": "КСОР мањи од минималне вредности (0,007)",
+            "ZeroValueInAmountParameter": "Параметар износа има нулту вредност"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Пар базена већ постоји",
+            "SlippageLimitExceeded": ""
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Налог већ има упућивача",
+            "ReferrerInsufficientBalance": ""
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Програм награђивања је већ завршен",
+            "CantCalculateReward": "Обрачун награде није успео",
+            "NoRewardsForAsset": "Не постоје награде за ово средство"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Изабрани извор ликвидности није дозвољен"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Недовољно средстава",
+            "InsufficientLPTokens": "Недовољни токени за обезбеђивање ликвидности",
+            "PoolDoesNotHaveRewards": "Пул нема награде"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "Дошло је до грешке при израчунавању цене"
+        }
+    },
+    "receivedText": "Примљено",
+    "browserNotificationDialog": {
+        "title": "Омогућите обавештења прегледача",
+        "info": "Слаћемо вам само релевантна ажурирања о вашем новчанику, на пример: промене стања средстава",
+        "button": "Омогућили обавештења",
+        "agree": "Да, разумем",
+        "notificationBlocked": "Да бисте примали обавештења о {appName}, дозволите обавештења у основним подешавањима прегледача",
+        "pointer": "Притисните „Дозволи“ да бисте укључили обавештења"
+    },
+    "assetDeposit": "Стање средстава је депоновано",
+    "noDataText": "Нема података"
 }

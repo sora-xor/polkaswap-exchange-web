@@ -9,14 +9,15 @@ export enum Module {
   Assets = 'assets',
   Settings = 'settings',
   Swap = 'swap',
+  Charts = 'charts',
   Referrals = 'referrals',
   Pool = 'pool',
   Moonpay = 'moonpay',
   Bridge = 'bridge',
   AddLiquidity = 'addLiquidity',
-  CreatePair = 'createPair',
   RemoveLiquidity = 'removeLiquidity',
   Rewards = 'rewards',
+  DemeterFarming = 'demeterFarming',
 }
 
 export const Modules = [...Object.values(Module), ...WalletModules];

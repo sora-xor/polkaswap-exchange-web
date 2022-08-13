@@ -72,6 +72,7 @@ import {
   PoolChildPages,
   BridgeChildPages,
   RewardsChildPages,
+  StakingChildPages,
   SidebarMenuGroups,
   FaucetLink,
   Components,
@@ -110,6 +111,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
     if (RewardsChildPages.includes(router.currentRoute.name as PageNames)) {
       return PageNames.Rewards;
+    }
+    if (StakingChildPages.includes(router.currentRoute.name as any)) {
+      return PageNames.StakingContainer;
     }
     return router.currentRoute.name as string;
   }
@@ -201,7 +205,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 3;
+    z-index: $app-sidebar-layer;
 
     @include mobile {
       position: fixed;

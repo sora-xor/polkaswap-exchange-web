@@ -7,10 +7,10 @@ import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types'
 
 import router from '@/router';
 import i18n from '@/lang';
-import { app } from '@/consts';
+import { app, ZeroStringValue } from '@/consts';
 
 import storage from './storage';
-import type { RegisterAssetWithExternalBalance } from '@/store/assets/types';
+import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
@@ -141,22 +141,30 @@ export const asZeroValue = (value: any): boolean => {
 };
 
 export const getAssetBalance = (
-  asset: any,
+  asset: Nullable<
+    | AccountAsset
+    | AccountLiquidity
+    | RegisteredAccountAsset
+    | RegisteredAccountAssetWithDecimals
+    | RegisterAssetWithExternalBalance
+  >,
   { internal = true, parseAsLiquidity = false, isBondedBalance = false } = {}
 ) => {
+  if (!asset) return ZeroStringValue;
+
   if (!internal) {
-    return asset?.externalBalance;
+    return (asset as RegisteredAccountAsset)?.externalBalance;
   }
 
   if (parseAsLiquidity) {
-    return asset?.balance;
+    return (asset as AccountLiquidity)?.balance;
   }
 
   if (isBondedBalance) {
-    return asset?.balance?.bonded;
+    return (asset as AccountAsset)?.balance?.bonded;
   }
 
-  return asset?.balance?.transferable;
+  return (asset as AccountAsset)?.balance?.transferable;
 };
 
 export const getAssetDecimals = (asset: any, { internal = true } = {}): number | undefined => {
@@ -242,4 +250,23 @@ export const waitForAccountPair = async (func: VoidFunction): Promise<any> => {
   } else {
     return func();
   }
+};
+
+export const getTextWidth = (text: string, fontFamily = 'Sora', size = 10): number => {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+
+  if (!context) return 0;
+
+  context.font = `${size}px ${fontFamily}`;
+
+  const width = Math.ceil(context.measureText(text).width);
+
+  return width;
+};
+
+export const calcPriceChange = (current: FPNumber, prev: FPNumber): FPNumber => {
+  if (prev.isZero()) return FPNumber.gt(current, FPNumber.ZERO) ? FPNumber.HUNDRED : FPNumber.ZERO;
+
+  return current.sub(prev).div(prev).mul(FPNumber.HUNDRED);
 };

@@ -129,16 +129,4 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     this.resetEvmAddress();
     this.resetWeb3Store();
   }
-
-  async syncExternalAccountWithAppState(): Promise<void> {
-    try {
-      const connected = await ethersUtil.checkAccountIsConnected(this.evmAddress);
-
-      if (!connected && this.evmAddress) {
-        this.disconnectExternalAccount();
-      }
-    } catch (error) {
-      this.disconnectExternalAccount();
-    }
-  }
 }

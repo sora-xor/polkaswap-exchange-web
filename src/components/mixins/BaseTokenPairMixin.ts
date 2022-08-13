@@ -6,77 +6,52 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import { state, getter } from '@/store/decorators';
 
-export enum TokenPairNamespace {
-  AddLiquidity = 'addLiquidity',
-  CreatePair = 'createPair',
-}
+@Component
+export default class BaseTokenPairMixin extends Mixins(mixins.TranslationMixin, mixins.FormattedAmountMixin) {
+  readonly XOR_SYMBOL = XOR.symbol;
 
-const BaseTokenPairMixinInstance = (namespace: TokenPairNamespace) => {
-  const namespacedState = state[namespace];
-  const namespacedGetter = getter[namespace];
-  @Component
-  class BaseTokenPairMixin extends Mixins(mixins.TranslationMixin, mixins.FormattedAmountMixin) {
-    readonly XOR_SYMBOL = XOR.symbol;
+  @state.prices.price price!: string;
+  @state.prices.priceReversed priceReversed!: string;
+  @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
+  @state.addLiquidity.firstTokenValue firstTokenValue!: string;
+  @state.addLiquidity.secondTokenValue secondTokenValue!: string;
+  @state.addLiquidity.isAvailable isAvailable!: boolean;
 
-    @state.prices.price price!: string;
-    @state.prices.priceReversed priceReversed!: string;
-    @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
-    @namespacedState.firstTokenValue firstTokenValue!: string;
-    @namespacedState.secondTokenValue secondTokenValue!: string;
-    @namespacedState.isAvailable isAvailable!: boolean;
+  @getter.addLiquidity.firstToken firstToken!: Nullable<AccountAsset>;
+  @getter.addLiquidity.secondToken secondToken!: Nullable<AccountAsset>;
 
-    @namespacedGetter.firstToken firstToken!: Nullable<AccountAsset>;
-    @namespacedGetter.secondToken secondToken!: Nullable<AccountAsset>;
-
-    get firstTokenSymbol(): string {
-      return this.firstToken?.symbol ?? '';
-    }
-
-    get secondTokenSymbol(): string {
-      return this.secondToken?.symbol ?? '';
-    }
-
-    get networkFee(): CodecString {
-      return this.networkFees[Operation[namespace.charAt(0).toUpperCase() + namespace.slice(1)]];
-    }
-
-    get formattedFee(): string {
-      return this.formatCodecNumber(this.networkFee);
-    }
-
-    get formattedPrice(): string {
-      return this.formatStringValue(this.price);
-    }
-
-    get formattedPriceReversed(): string {
-      return this.formatStringValue(this.priceReversed);
-    }
-
-    get fiatFirstAmount(): Nullable<string> {
-      if (!this.firstToken) return null;
-      return this.getFiatAmount(this.firstTokenValue, this.firstToken);
-    }
-
-    get fiatSecondAmount(): Nullable<string> {
-      if (!this.secondToken) return null;
-      return this.getFiatAmount(this.secondTokenValue, this.secondToken);
-    }
-
-    get emptyAssets(): boolean {
-      if (!(this.firstTokenValue || this.secondTokenValue)) {
-        return true;
-      }
-      const first = new FPNumber(this.firstTokenValue);
-      const second = new FPNumber(this.secondTokenValue);
-      return first.isNaN() || first.isZero() || second.isNaN() || second.isZero();
-    }
-
-    get areTokensSelected(): boolean {
-      return !!(this.firstToken && this.secondToken);
-    }
+  get firstTokenSymbol(): string {
+    return this.firstToken?.symbol ?? '';
   }
 
-  return BaseTokenPairMixin;
-};
+  get secondTokenSymbol(): string {
+    return this.secondToken?.symbol ?? '';
+  }
 
-export default BaseTokenPairMixinInstance;
+  get networkFee(): CodecString {
+    const operation = this.isAvailable ? Operation.AddLiquidity : Operation.CreatePair;
+
+    return this.networkFees[operation];
+  }
+
+  get formattedFee(): string {
+    return this.formatCodecNumber(this.networkFee);
+  }
+
+  get formattedPrice(): string {
+    return this.formatStringValue(this.price);
+  }
+
+  get formattedPriceReversed(): string {
+    return this.formatStringValue(this.priceReversed);
+  }
+
+  get emptyAssets(): boolean {
+    if (!(this.firstTokenValue || this.secondTokenValue)) {
+      return true;
+    }
+    const first = new FPNumber(this.firstTokenValue);
+    const second = new FPNumber(this.secondTokenValue);
+    return first.isNaN() || first.isZero() || second.isNaN() || second.isZero();
+  }
+}

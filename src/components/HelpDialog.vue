@@ -20,32 +20,33 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from './mixins/TranslationMixin';
-import DialogMixin from './mixins/DialogMixin';
-import DialogBase from './DialogBase.vue';
 
 import { app, Links } from '@/consts';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
   },
 })
-export default class HelpDialog extends Mixins(TranslationMixin, DialogMixin) {
+export default class HelpDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {
   readonly appVersion = app.version;
   readonly appEmail = app.email;
 
-  readonly links: Array<{ title: string; href: string }> = [
-    {
-      title: this.t('helpDialog.termsOfService'),
-      href: Links.terms,
-    },
-    {
-      title: this.t('helpDialog.privacyPolicy'),
-      href: Links.privacy,
-    },
-  ];
+  get links(): Array<{ title: string; href: string }> {
+    return [
+      {
+        title: this.t('helpDialog.termsOfService'),
+        href: Links.terms,
+      },
+      {
+        title: this.t('helpDialog.privacyPolicy'),
+        href: Links.privacy,
+      },
+    ];
+  }
 }
 </script>
 

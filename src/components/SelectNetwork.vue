@@ -12,20 +12,18 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import DialogMixin from '@/components/mixins/DialogMixin';
-import DialogBase from '@/components/DialogBase.vue';
 import { SubNetwork } from '@/utils/ethers-util';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
   },
 })
-export default class SelectNetwork extends Mixins(TranslationMixin, DialogMixin) {
+export default class SelectNetwork extends Mixins(TranslationMixin, mixins.DialogMixin) {
   @Prop({ default: () => [], type: Array }) subNetworks!: Array<SubNetwork>;
   @ModelSync('value', 'input', { type: Number })
   readonly selectedNetworkId!: number;
