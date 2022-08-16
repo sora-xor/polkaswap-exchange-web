@@ -47,6 +47,7 @@
           </div>
           <span v-if="emptyHistory">{{ t('moonpay.history.empty') }}</span>
         </div>
+        <!-- TODO: Add the same fubctionality as for Bridge page -->
         <s-pagination
           v-if="!emptyHistory"
           class="moonpay-history-pagination"
@@ -155,6 +156,10 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
 
   get emptyHistory(): boolean {
     return this.transactions.length === 0;
+  }
+
+  get total(): number {
+    return this.transactions.length;
   }
 
   get historyItems(): Array<MoonpayTransaction> {

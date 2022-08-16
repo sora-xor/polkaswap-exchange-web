@@ -48,13 +48,45 @@
         </div>
         <s-pagination
           v-if="hasHistory"
-          :layout="'total, prev, next'"
+          layout="slot"
           :current-page.sync="currentPage"
           :page-size="pageAmount"
-          :total="filteredHistory.length"
-          @prev-click="handlePrevClick"
-          @next-click="handleNextClick"
-        />
+          :total-text="totalText"
+        >
+          <span class="el-pagination__total">{{ totalText }}</span>
+          <s-button
+            type="link"
+            :tooltip="t('history.firstText')"
+            :disabled="isFirstPage"
+            @click="handlePaginationClick(PaginationButton.First)"
+          >
+            <s-icon name="chevrons-left-16" size="14" />
+          </s-button>
+          <s-button
+            type="link"
+            :tooltip="t('history.prevText')"
+            :disabled="isFirstPage"
+            @click="handlePaginationClick(PaginationButton.Prev)"
+          >
+            <s-icon name="chevron-left-16" size="14" />
+          </s-button>
+          <s-button
+            type="link"
+            :tooltip="t('history.nextText')"
+            :disabled="isLastPage"
+            @click="handlePaginationClick(PaginationButton.Next)"
+          >
+            <s-icon name="chevron-right-16" size="14" />
+          </s-button>
+          <s-button
+            type="link"
+            :tooltip="t('history.lastText')"
+            :disabled="isLastPage"
+            @click="handlePaginationClick(PaginationButton.Last)"
+          >
+            <s-icon name="chevrons-right-16" size="14" />
+          </s-button>
+        </s-pagination>
       </s-form>
     </s-card>
   </div>
@@ -107,8 +139,12 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.getFilteredHistory(historyCopy);
   }
 
+  get total(): number {
+    return this.filteredHistory.length;
+  }
+
   get hasHistory(): boolean {
-    return this.filteredHistory && this.filteredHistory.length > 0;
+    return this.filteredHistory && this.total > 0;
   }
 
   get filteredHistoryItems(): Array<BridgeHistory> {
