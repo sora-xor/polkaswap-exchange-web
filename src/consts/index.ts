@@ -382,3 +382,10 @@ export enum TranslationConsts {
   APR = 'APR', // Annual percentage rate
   ROI = 'ROI', // Return of investment
 }
+
+export enum PaginationButton {
+  First = 'first',
+  Prev = 'prev',
+  Next = 'next',
+  Last = 'last',
+}

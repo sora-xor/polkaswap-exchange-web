@@ -11,7 +11,6 @@
           @clear="handleResetSearch"
           class="history--search"
         />
-
         <div class="history-items">
           <template v-if="hasHistory">
             <div
@@ -46,47 +45,15 @@
           </template>
           <p v-else class="history-empty p4">{{ t('bridgeHistory.empty') }}</p>
         </div>
-        <s-pagination
+        <history-pagination
           v-if="hasHistory"
-          layout="slot"
-          :current-page.sync="currentPage"
-          :page-size="pageAmount"
+          :current-page="currentPage"
+          :page-amount="pageAmount"
           :total-text="totalText"
-        >
-          <span class="el-pagination__total">{{ totalText }}</span>
-          <s-button
-            type="link"
-            :tooltip="t('history.firstText')"
-            :disabled="isFirstPage"
-            @click="handlePaginationClick(PaginationButton.First)"
-          >
-            <s-icon name="chevrons-left-16" size="14" />
-          </s-button>
-          <s-button
-            type="link"
-            :tooltip="t('history.prevText')"
-            :disabled="isFirstPage"
-            @click="handlePaginationClick(PaginationButton.Prev)"
-          >
-            <s-icon name="chevron-left-16" size="14" />
-          </s-button>
-          <s-button
-            type="link"
-            :tooltip="t('history.nextText')"
-            :disabled="isLastPage"
-            @click="handlePaginationClick(PaginationButton.Next)"
-          >
-            <s-icon name="chevron-right-16" size="14" />
-          </s-button>
-          <s-button
-            type="link"
-            :tooltip="t('history.lastText')"
-            :disabled="isLastPage"
-            @click="handlePaginationClick(PaginationButton.Last)"
-          >
-            <s-icon name="chevrons-right-16" size="14" />
-          </s-button>
-        </s-pagination>
+          :is-first-page="isFirstPage"
+          :is-last-page="isLastPage"
+          @handle-pagination-click="handlePaginationClick"
+        />
       </s-form>
     </s-card>
   </div>
@@ -104,7 +71,7 @@ import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
-import { Components, PageNames } from '@/consts';
+import { Components, PageNames, PaginationButton } from '@/consts';
 import { action, state } from '@/store/decorators';
 import { isUnsignedToPart } from '@/utils/bridge';
 
@@ -113,6 +80,7 @@ import { isUnsignedToPart } from '@/utils/bridge';
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SearchInput: components.SearchInput,
     FormattedAmount: components.FormattedAmount,
+    HistoryPagination: components.HistoryPagination,
   },
 })
 export default class BridgeTransactionsHistory extends Mixins(
@@ -128,15 +96,12 @@ export default class BridgeTransactionsHistory extends Mixins(
   @action.bridge.updateHistory private updateHistory!: AsyncVoidFn;
 
   pageAmount = 8; // override PaginationSearchMixin
+  readonly PaginationButton = PaginationButton;
 
   get filteredHistory(): Array<BridgeHistory> {
     if (!this.history?.length) return [];
 
-    const historyCopy = [...this.history].sort((a: BridgeHistory, b: BridgeHistory) =>
-      a.startTime && b.startTime ? b.startTime - a.startTime : 0
-    );
-
-    return this.getFilteredHistory(historyCopy);
+    return this.getFilteredHistory(this.sortTransactions([...this.history], this.isLtrDirection));
   }
 
   get total(): number {
@@ -144,11 +109,19 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   get hasHistory(): boolean {
-    return this.filteredHistory && this.total > 0;
+    return this.filteredHistoryItems && this.total > 0;
   }
 
   get filteredHistoryItems(): Array<BridgeHistory> {
-    return this.getPageItems(this.filteredHistory);
+    const end = this.isLtrDirection
+      ? Math.min(this.currentPage * this.pageAmount, this.filteredHistory.length)
+      : Math.max((this.lastPage - this.currentPage + 1) * this.pageAmount - this.directionShift, 0);
+
+    const start = this.isLtrDirection
+      ? Math.max(end - this.pageAmount, 0)
+      : Math.max((this.lastPage - this.currentPage) * this.pageAmount - this.directionShift, 0);
+
+    return this.sortTransactions(this.getPageItems(this.filteredHistory, start, end), true);
   }
 
   async created(): Promise<void> {
@@ -228,6 +201,32 @@ export default class BridgeTransactionsHistory extends Mixins(
     }
   }
 
+  async handlePaginationClick(button: PaginationButton): Promise<void> {
+    let current = 1;
+
+    switch (button) {
+      case PaginationButton.Prev:
+        current = this.currentPage - 1;
+        break;
+      case PaginationButton.Next:
+        current = this.currentPage + 1;
+        if (current === this.lastPage) {
+          this.isLtrDirection = false;
+        }
+        break;
+      case PaginationButton.First:
+        this.isLtrDirection = true;
+        break;
+      case PaginationButton.Last:
+        current = this.lastPage;
+        this.isLtrDirection = false;
+    }
+
+    const isNext = current > this.currentPage;
+    await this.updateHistory();
+    this.currentPage = current;
+  }
+
   handleBack(): void {
     router.push({ name: PageNames.Bridge });
   }
@@ -252,22 +251,6 @@ export default class BridgeTransactionsHistory extends Mixins(
     align-items: baseline;
     font-weight: 600;
     letter-spacing: var(--s-letter-spacing-small);
-  }
-  &-content {
-    .el-pagination {
-      .btn {
-        &-prev,
-        &-next {
-          padding-right: 0;
-          padding-left: 0;
-          min-width: $inner-spacing-big;
-        }
-        &-prev {
-          margin-left: auto;
-          margin-right: $inner-spacing-mini;
-        }
-      }
-    }
   }
   &--search {
     .el-input__inner {
@@ -402,12 +385,6 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
       margin-left: $inner-spacing-mini / 2;
     }
   }
-}
-.el-pagination {
-  display: flex;
-  margin-top: $inner-spacing-medium;
-  padding-left: 0;
-  padding-right: 0;
 }
 .s-button--restore {
   margin-top: $inner-spacing-medium;

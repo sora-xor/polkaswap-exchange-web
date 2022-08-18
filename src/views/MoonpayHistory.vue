@@ -47,16 +47,15 @@
           </div>
           <span v-if="emptyHistory">{{ t('moonpay.history.empty') }}</span>
         </div>
-        <!-- TODO: Add the same fubctionality as for Bridge page -->
-        <s-pagination
+        <history-pagination
           v-if="!emptyHistory"
           class="moonpay-history-pagination"
-          :layout="'prev, total, next'"
-          :current-page.sync="currentPage"
-          :page-size="pageAmount"
-          :total="transactions.length"
-          @prev-click="handlePrevClick"
-          @next-click="handleNextClick"
+          :current-page="currentPage"
+          :page-amount="pageAmount"
+          :total-text="totalText"
+          :is-first-page="isFirstPage"
+          :is-last-page="isLastPage"
+          @handle-pagination-click="handlePaginationClick"
         />
       </template>
       <template v-else>
@@ -86,7 +85,7 @@ import MoonpayLogo from '@/components/logo/Moonpay.vue';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getCssVariableValue, toQueryString } from '@/utils';
-import { Components } from '@/consts';
+import { Components, PaginationButton } from '@/consts';
 import { lazyComponent } from '@/router';
 import { MoonpayTransactionStatus } from '@/utils/moonpay';
 import { action, getter, state } from '@/store/decorators';
@@ -103,6 +102,7 @@ const DetailsView = 'details';
     FormattedAmount: components.FormattedAmount,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     MoonpayWidget: lazyComponent(Components.MoonpayWidget),
+    HistoryPagination: components.HistoryPagination,
   },
 })
 export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin, MoonpayBridgeInitMixin) {
@@ -122,6 +122,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   pageAmount = 5; // override PaginationSearchMixin
   currentView = HistoryView;
   selectedItem: any = {};
+  readonly PaginationButton = PaginationButton;
 
   created(): void {
     this.withApi(async () => {
@@ -155,7 +156,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   }
 
   get emptyHistory(): boolean {
-    return this.transactions.length === 0;
+    return !this.transactions.length;
   }
 
   get total(): number {
@@ -245,6 +246,30 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     this.currentView = view;
   }
 
+  async handlePaginationClick(button: PaginationButton): Promise<void> {
+    let current = 1;
+
+    switch (button) {
+      case PaginationButton.Prev:
+        current = this.currentPage - 1;
+        break;
+      case PaginationButton.Next:
+        current = this.currentPage + 1;
+        if (current === this.lastPage) {
+          this.isLtrDirection = false;
+        }
+        break;
+      case PaginationButton.First:
+        this.isLtrDirection = true;
+        break;
+      case PaginationButton.Last:
+        current = this.lastPage;
+        this.isLtrDirection = false;
+    }
+
+    this.currentPage = current;
+  }
+
   handleBack(): void {
     this.loading = false;
     this.changeView(HistoryView);
@@ -282,12 +307,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   }
 }
 .moonpay-history-pagination {
-  display: flex;
   width: 100%;
-
-  .el-pagination__total {
-    margin: auto;
-  }
 }
 </style>
 
