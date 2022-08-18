@@ -7,6 +7,7 @@ import { bridgeApi } from './api';
 
 import { delay } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
+import { api } from '@soramitsu/soraneo-wallet-web';
 
 const SORA_REQUESTS_TIMEOUT = 6_000; // Block production time
 
@@ -55,19 +56,17 @@ export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeA
   let subscription!: Subscription;
 
   await new Promise<void>((resolve, reject) => {
-    subscription = bridgeApi
-      .subscribeOnRequestStatus(tx.externalNetwork as number, tx.hash as string)
-      .subscribe((status) => {
-        switch (status) {
-          case BridgeTxStatus.Failed:
-          case BridgeTxStatus.Frozen:
-            reject(new Error('[Bridge]: Transaction was failed or canceled'));
-            break;
-          case BridgeTxStatus.Ready:
-            resolve();
-            break;
-        }
-      });
+    subscription = bridgeApi.subscribeOnRequestStatus(tx.hash as string).subscribe((status) => {
+      switch (status) {
+        case BridgeTxStatus.Failed:
+        case BridgeTxStatus.Frozen:
+          reject(new Error('[Bridge]: Transaction was failed or canceled'));
+          break;
+        case BridgeTxStatus.Ready:
+          resolve();
+          break;
+      }
+    });
   });
 
   subscription.unsubscribe();
@@ -83,27 +82,25 @@ export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash:
   let subscription!: Subscription;
 
   await new Promise<void>((resolve, reject) => {
-    subscription = bridgeApi
-      .subscribeOnRequest(tx.externalNetwork as number, tx.ethereumHash as string)
-      .subscribe((request) => {
-        if (request) {
-          switch (request.status) {
-            case BridgeTxStatus.Failed:
-            case BridgeTxStatus.Frozen:
-              reject(new Error('[Bridge]: Transaction was failed or canceled'));
-              break;
-            case BridgeTxStatus.Done:
-              resolve();
-              break;
-          }
+    subscription = bridgeApi.subscribeOnRequest(tx.ethereumHash as string).subscribe((request) => {
+      if (request) {
+        switch (request.status) {
+          case BridgeTxStatus.Failed:
+          case BridgeTxStatus.Frozen:
+            reject(new Error('[Bridge]: Transaction was failed or canceled'));
+            break;
+          case BridgeTxStatus.Done:
+            resolve();
+            break;
         }
-      });
+      }
+    });
   });
 
   subscription.unsubscribe();
-  // TODO: move to js-lib
-  const soraHash = await getSoraHashByEthereumHash(tx.externalNetwork as BridgeNetworks, tx.ethereumHash as string);
-  const soraBlockHash = await getSoraBlockHashByRequestHash(tx.externalNetwork as number, tx.ethereumHash as string);
+
+  const soraHash = await bridgeApi.getSoraHashByEthereumHash(tx.ethereumHash as string);
+  const soraBlockHash = await bridgeApi.getSoraBlockHashByRequestHash(tx.ethereumHash as string);
 
   return { hash: soraHash, blockId: soraBlockHash };
 };
@@ -112,13 +109,13 @@ export const waitForSoraTransactionHash = async (id: string): Promise<string> =>
   const tx = getTransaction(id);
 
   if (tx.hash) return tx.hash;
+  const blockId = tx.blockId as string; // blockId cannot be empty
+  const extrinsics = await api.system.getExtrinsicsFromBlock(blockId);
 
-  const signedBlock = await bridgeApi.api.rpc.chain.getBlock(tx.blockId);
+  if (extrinsics.length) {
+    const blockEvents = await api.system.getBlockEvents(blockId);
 
-  if (signedBlock.block?.extrinsics) {
-    const blockEvents = await bridgeApi.api.query.system.events.at(tx.blockId as string);
-
-    const extrinsicIndex = signedBlock.block.extrinsics.findIndex((item) => {
+    const extrinsicIndex = extrinsics.findIndex((item) => {
       const {
         signer,
         method: { method, section },
@@ -201,23 +198,6 @@ export const waitForEvmTransaction = async (id: string) => {
   );
 };
 
-export const getSoraHashByEthereumHash = async (networkId: BridgeNetworks, ethereumHash: string): Promise<string> => {
-  return (await bridgeApi.api.query.ethBridge.loadToIncomingRequestHash(networkId, ethereumHash)).toString();
-};
-
-export const getSoraBlockHashByRequestHash = async (
-  externalNetworkId: number,
-  requestHash: string
-): Promise<string> => {
-  const soraBlockNumber = +(
-    await bridgeApi.api.query.ethBridge.requestSubmissionHeight(externalNetworkId, requestHash)
-  ).toString();
-
-  const soraBlockHash = (await bridgeApi.api.rpc.chain.getBlockHash(soraBlockNumber)).toString();
-
-  return soraBlockHash;
-};
-
 export const getEvmTxRecieptByHash = async (
   ethereumHash: string
 ): Promise<{ ethereumNetworkFee: string; blockHeight: number; from: string } | null> => {
@@ -235,16 +215,4 @@ export const getEvmTxRecieptByHash = async (
   } catch (error) {
     return null;
   }
-};
-
-export const getSoraBlockTimestamp = async (blockHash: string): Promise<number> => {
-  const timestamp = (await bridgeApi.api.query.timestamp.now.at(blockHash)).toNumber();
-
-  return timestamp;
-};
-
-export const getSoraBlockHash = async (blockNumber: number): Promise<string> => {
-  const hash = (await bridgeApi.api.rpc.chain.getBlockHash(blockNumber)).toString();
-
-  return hash;
 };
