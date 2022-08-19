@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { BridgeTxStatus } from '@sora-substrate/util';
 import type { BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
 
@@ -71,7 +71,7 @@ import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
-import { Components, PageNames, PaginationButton } from '@/consts';
+import { Components, PageNames } from '@/consts';
 import { action, state } from '@/store/decorators';
 import { isUnsignedToPart } from '@/utils/bridge';
 
@@ -200,28 +200,27 @@ export default class BridgeTransactionsHistory extends Mixins(
     }
   }
 
-  async handlePaginationClick(button: PaginationButton): Promise<void> {
+  async handlePaginationClick(button: WALLET_CONSTS.PaginationButton): Promise<void> {
     let current = 1;
 
     switch (button) {
-      case PaginationButton.Prev:
+      case WALLET_CONSTS.PaginationButton.Prev:
         current = this.currentPage - 1;
         break;
-      case PaginationButton.Next:
+      case WALLET_CONSTS.PaginationButton.Next:
         current = this.currentPage + 1;
         if (current === this.lastPage) {
           this.isLtrDirection = false;
         }
         break;
-      case PaginationButton.First:
+      case WALLET_CONSTS.PaginationButton.First:
         this.isLtrDirection = true;
         break;
-      case PaginationButton.Last:
+      case WALLET_CONSTS.PaginationButton.Last:
         current = this.lastPage;
         this.isLtrDirection = false;
     }
 
-    const isNext = current > this.currentPage;
     await this.updateHistory();
     this.currentPage = current;
   }
