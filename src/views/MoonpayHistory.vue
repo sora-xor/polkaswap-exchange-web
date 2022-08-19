@@ -122,7 +122,6 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   pageAmount = 5; // override PaginationSearchMixin
   currentView = HistoryView;
   selectedItem: any = {};
-  readonly PaginationButton = PaginationButton;
 
   created(): void {
     this.withApi(async () => {

@@ -96,7 +96,6 @@ export default class BridgeTransactionsHistory extends Mixins(
   @action.bridge.updateHistory private updateHistory!: AsyncVoidFn;
 
   pageAmount = 8; // override PaginationSearchMixin
-  readonly PaginationButton = PaginationButton;
 
   get filteredHistory(): Array<BridgeHistory> {
     if (!this.history?.length) return [];
