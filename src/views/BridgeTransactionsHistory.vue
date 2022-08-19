@@ -11,7 +11,6 @@
           @clear="handleResetSearch"
           class="history--search"
         />
-
         <div class="history-items">
           <template v-if="hasHistory">
             <div
@@ -46,14 +45,14 @@
           </template>
           <p v-else class="history-empty p4">{{ t('bridgeHistory.empty') }}</p>
         </div>
-        <s-pagination
+        <history-pagination
           v-if="hasHistory"
-          :layout="'total, prev, next'"
-          :current-page.sync="currentPage"
-          :page-size="pageAmount"
-          :total="filteredHistory.length"
-          @prev-click="handlePrevClick"
-          @next-click="handleNextClick"
+          :current-page="currentPage"
+          :page-amount="pageAmount"
+          :loading="loading"
+          :total="total"
+          :last-page="lastPage"
+          @pagination-click="handlePaginationClick"
         />
       </s-form>
     </s-card>
@@ -72,7 +71,7 @@ import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
-import { Components, PageNames } from '@/consts';
+import { Components, PageNames, PaginationButton } from '@/consts';
 import { action, state } from '@/store/decorators';
 import { isUnsignedToPart } from '@/utils/bridge';
 
@@ -81,6 +80,7 @@ import { isUnsignedToPart } from '@/utils/bridge';
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SearchInput: components.SearchInput,
     FormattedAmount: components.FormattedAmount,
+    HistoryPagination: components.HistoryPagination,
   },
 })
 export default class BridgeTransactionsHistory extends Mixins(
@@ -100,19 +100,27 @@ export default class BridgeTransactionsHistory extends Mixins(
   get filteredHistory(): Array<BridgeHistory> {
     if (!this.history?.length) return [];
 
-    const historyCopy = [...this.history].sort((a: BridgeHistory, b: BridgeHistory) =>
-      a.startTime && b.startTime ? b.startTime - a.startTime : 0
-    );
+    return this.getFilteredHistory(this.sortTransactions([...this.history], this.isLtrDirection));
+  }
 
-    return this.getFilteredHistory(historyCopy);
+  get total(): number {
+    return this.filteredHistory.length;
   }
 
   get hasHistory(): boolean {
-    return this.filteredHistory && this.filteredHistory.length > 0;
+    return this.filteredHistoryItems && this.total > 0;
   }
 
   get filteredHistoryItems(): Array<BridgeHistory> {
-    return this.getPageItems(this.filteredHistory);
+    const end = this.isLtrDirection
+      ? Math.min(this.currentPage * this.pageAmount, this.filteredHistory.length)
+      : Math.max((this.lastPage - this.currentPage + 1) * this.pageAmount - this.directionShift, 0);
+
+    const start = this.isLtrDirection
+      ? Math.max(end - this.pageAmount, 0)
+      : Math.max((this.lastPage - this.currentPage) * this.pageAmount - this.directionShift, 0);
+
+    return this.sortTransactions(this.getPageItems(this.filteredHistory, start, end), true);
   }
 
   async created(): Promise<void> {
@@ -192,6 +200,32 @@ export default class BridgeTransactionsHistory extends Mixins(
     }
   }
 
+  async handlePaginationClick(button: PaginationButton): Promise<void> {
+    let current = 1;
+
+    switch (button) {
+      case PaginationButton.Prev:
+        current = this.currentPage - 1;
+        break;
+      case PaginationButton.Next:
+        current = this.currentPage + 1;
+        if (current === this.lastPage) {
+          this.isLtrDirection = false;
+        }
+        break;
+      case PaginationButton.First:
+        this.isLtrDirection = true;
+        break;
+      case PaginationButton.Last:
+        current = this.lastPage;
+        this.isLtrDirection = false;
+    }
+
+    const isNext = current > this.currentPage;
+    await this.updateHistory();
+    this.currentPage = current;
+  }
+
   handleBack(): void {
     router.push({ name: PageNames.Bridge });
   }
@@ -216,22 +250,6 @@ export default class BridgeTransactionsHistory extends Mixins(
     align-items: baseline;
     font-weight: 600;
     letter-spacing: var(--s-letter-spacing-small);
-  }
-  &-content {
-    .el-pagination {
-      .btn {
-        &-prev,
-        &-next {
-          padding-right: 0;
-          padding-left: 0;
-          min-width: $inner-spacing-big;
-        }
-        &-prev {
-          margin-left: auto;
-          margin-right: $inner-spacing-mini;
-        }
-      }
-    }
   }
   &--search {
     .el-input__inner {
@@ -366,12 +384,6 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
       margin-left: $inner-spacing-mini / 2;
     }
   }
-}
-.el-pagination {
-  display: flex;
-  margin-top: $inner-spacing-medium;
-  padding-left: 0;
-  padding-right: 0;
 }
 .s-button--restore {
   margin-top: $inner-spacing-medium;

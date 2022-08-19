@@ -141,7 +141,11 @@
         "clearHistory": "Očistite povijest",
         "filterPlaceholder": "Filtrirajte prema adresi, simbolu, vrsti ili ID-u bloka",
         "empty": "Ovdje će se pojaviti vaše transakcije",
-        "emptySearch": "Nisu pronađene transakcije"
+        "emptySearch": "Nisu pronađene transakcije",
+        "firstText": "Prvi",
+        "lastText": "Posljednji",
+        "prevText": "Prethodno",
+        "nextText": "Sljedeći"
     },
     "assets": {
         "empty": "Nema sredstava",
@@ -1073,5 +1077,6 @@
         "pointer": "Pritisnite \"Dopusti\" za uključivanje obavijesti"
     },
     "assetDeposit": "Stanje imovine je deponirano",
-    "noDataText": "Nema podataka"
+    "noDataText": "Nema podataka",
+    "ofText": "{first} od {second}"
 }

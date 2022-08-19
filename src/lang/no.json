@@ -141,7 +141,11 @@
         "clearHistory": "Slett historikk",
         "filterPlaceholder": "Filtrer etter adresse, symbol, type eller blokk-ID",
         "empty": "Transaksjonene dine vises her",
-        "emptySearch": "Ingen transaksjoner funnet"
+        "emptySearch": "Ingen transaksjoner funnet",
+        "firstText": "Først",
+        "lastText": "Siste",
+        "prevText": "Tidligere",
+        "nextText": "Neste"
     },
     "assets": {
         "empty": "Det finnes ingen aktiva",
@@ -1073,5 +1077,6 @@
         "pointer": "Trykk på \"Tillat\" for å slå på varsler"
     },
     "assetDeposit": "Eiendelsbalanse er satt inn",
-    "noDataText": "Ingen data"
+    "noDataText": "Ingen data",
+    "ofText": "{first} av {second}"
 }

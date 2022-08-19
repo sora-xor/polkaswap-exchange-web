@@ -141,7 +141,11 @@
         "clearHistory": "清除历史记录",
         "filterPlaceholder": "按地址、符号、类型或区块ID进行筛选",
         "empty": "您的交易将显示在此处",
-        "emptySearch": "未找到交易"
+        "emptySearch": "未找到交易",
+        "firstText": "第一的",
+        "lastText": "最后的",
+        "prevText": "以前的",
+        "nextText": "下一个"
     },
     "assets": {
         "empty": "没有资产",
@@ -1073,5 +1077,6 @@
         "pointer": "按“允许”打开通知"
     },
     "assetDeposit": "资产余额已存入",
-    "noDataText": "没有数据"
+    "noDataText": "没有数据",
+    "ofText": "{first}的{second}"
 }
