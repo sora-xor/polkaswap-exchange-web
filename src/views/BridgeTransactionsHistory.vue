@@ -49,9 +49,9 @@
           v-if="hasHistory"
           :current-page="currentPage"
           :page-amount="pageAmount"
-          :total-text="totalText"
-          :is-first-page="isFirstPage"
-          :is-last-page="isLastPage"
+          :loading="loading"
+          :total="total"
+          :last-page="lastPage"
           @pagination-click="handlePaginationClick"
         />
       </s-form>
