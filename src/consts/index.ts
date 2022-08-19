@@ -383,6 +383,7 @@ export enum TranslationConsts {
   ROI = 'ROI', // Return of investment
 }
 
+// TODO: Remove this part on the next iteration of development
 export enum PaginationButton {
   First = 'first',
   Prev = 'prev',
