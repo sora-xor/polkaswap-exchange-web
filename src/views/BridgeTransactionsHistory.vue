@@ -11,7 +11,7 @@
           @clear="handleResetSearch"
           class="history--search"
         />
-        <div class="history-items">
+        <div v-loading="loading" class="history-items">
           <template v-if="hasHistory">
             <div
               class="history-item"
@@ -44,16 +44,16 @@
             </div>
           </template>
           <p v-else class="history-empty p4">{{ t('bridgeHistory.empty') }}</p>
+          <history-pagination
+            v-if="hasHistory"
+            :current-page="currentPage"
+            :page-amount="pageAmount"
+            :loading="loading"
+            :total="total"
+            :last-page="lastPage"
+            @pagination-click="handlePaginationClick"
+          />
         </div>
-        <history-pagination
-          v-if="hasHistory"
-          :current-page="currentPage"
-          :page-amount="pageAmount"
-          :loading="loading"
-          :total="total"
-          :last-page="lastPage"
-          @pagination-click="handlePaginationClick"
-        />
       </s-form>
     </s-card>
   </div>
@@ -72,7 +72,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { action, state } from '@/store/decorators';
+import { state, action, getter } from '@/store/decorators';
 import { isUnsignedToPart } from '@/utils/bridge';
 
 @Component({
@@ -95,7 +95,10 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   @action.bridge.updateHistory private updateHistory!: AsyncVoidFn;
 
+  @getter.bridge.historyPage historyPage!: number;
+
   pageAmount = 8; // override PaginationSearchMixin
+  loading = true;
 
   get filteredHistory(): Array<BridgeHistory> {
     if (!this.history?.length) return [];
@@ -127,6 +130,13 @@ export default class BridgeTransactionsHistory extends Mixins(
     await this.withParentLoading(async () => {
       this.setHistory();
       await this.updateHistory();
+      if (this.historyPage !== 1) {
+        this.currentPage = this.historyPage;
+        if (this.currentPage !== 1 && this.currentPage === this.lastPage) {
+          this.isLtrDirection = false;
+        }
+      }
+      this.loading = false;
     });
   }
 
@@ -223,9 +233,11 @@ export default class BridgeTransactionsHistory extends Mixins(
 
     await this.updateHistory();
     this.currentPage = current;
+    this.setHistoryPage(this.currentPage);
   }
 
   handleBack(): void {
+    this.setHistoryPage(1);
     router.push({ name: PageNames.Bridge });
   }
 
@@ -255,6 +267,9 @@ export default class BridgeTransactionsHistory extends Mixins(
       padding-right: var(--s-size-medium);
     }
   }
+  &-items .history-pagination.el-pagination {
+    margin-top: auto;
+  }
 }
 </style>
 
@@ -280,7 +295,9 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     @include bridge-content;
   }
   &-items {
-    min-height: #{$history-item-height * $page-amount};
+    display: flex;
+    flex-direction: column;
+    min-height: calc(#{$history-item-height * $page-amount} + 50px);
   }
   &-empty {
     text-align: center;
