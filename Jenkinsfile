@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@feature/DOPS-1819/ipfs-hash-notify') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
@@ -14,7 +14,11 @@ def pipeline = new org.js.AppPipeline(steps: this,
     sonarProjectName: 'polkaswap-exchange-web',
     sonarProjectKey: 'jp.co.soramitsu:polkaswap-exchange-web',
     copyStaticToBranch: true,
-    copyToBranches: ['fleek', 'fleek-pre'],
+    copyToBranches: ['fleek-test'],
+    ipfsHashNotification: true,
+    fleekDefaultSiteName: 'long-firefly-8047'
+    ipfsHashChatID: '-603145932',
     stageDeploy: true,
-    downstreamJob: '../deploy/exchange-stage1')
+    downstreamJob: '../deploy/exchange-stage1'
+)
 pipeline.runPipeline()
