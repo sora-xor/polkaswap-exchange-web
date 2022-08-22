@@ -85,7 +85,7 @@ import MoonpayLogo from '@/components/logo/Moonpay.vue';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getCssVariableValue, toQueryString } from '@/utils';
-import { Components, PaginationButton } from '@/consts';
+import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { MoonpayTransactionStatus } from '@/utils/moonpay';
 import { action, getter, state } from '@/store/decorators';
@@ -245,23 +245,23 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     this.currentView = view;
   }
 
-  async handlePaginationClick(button: PaginationButton): Promise<void> {
+  async handlePaginationClick(button: WALLET_CONSTS.PaginationButton): Promise<void> {
     let current = 1;
 
     switch (button) {
-      case PaginationButton.Prev:
+      case WALLET_CONSTS.PaginationButton.Prev:
         current = this.currentPage - 1;
         break;
-      case PaginationButton.Next:
+      case WALLET_CONSTS.PaginationButton.Next:
         current = this.currentPage + 1;
         if (current === this.lastPage) {
           this.isLtrDirection = false;
         }
         break;
-      case PaginationButton.First:
+      case WALLET_CONSTS.PaginationButton.First:
         this.isLtrDirection = true;
         break;
-      case PaginationButton.Last:
+      case WALLET_CONSTS.PaginationButton.Last:
         current = this.lastPage;
         this.isLtrDirection = false;
     }

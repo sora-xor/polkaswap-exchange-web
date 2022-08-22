@@ -328,15 +328,6 @@ export const AboutTopics = [
   { title: Topics.PriceFeeds, icon: 'software-terminal-24' },
 ];
 
-export enum LogoSize {
-  MINI = 'mini',
-  SMALL = 'small',
-  MEDIUM = 'medium',
-  BIG = 'big',
-  BIGGER = 'bigger',
-  LARGE = 'large',
-}
-
 export enum EvmSymbol {
   ETH = 'ETH',
   VT = 'VT',
@@ -381,12 +372,4 @@ export const EthAddress = '0x0000000000000000000000000000000000000000';
 export enum TranslationConsts {
   APR = 'APR', // Annual percentage rate
   ROI = 'ROI', // Return of investment
-}
-
-// TODO: Remove this part on the next iteration of development
-export enum PaginationButton {
-  First = 'first',
-  Prev = 'prev',
-  Next = 'next',
-  Last = 'last',
 }
