@@ -1,3 +1,4 @@
+import { writeFile } from 'fs';
 import { KeyPair } from 'ucan-storage/keypair';
 import { build } from 'ucan-storage/ucan-storage';
 
@@ -80,10 +81,16 @@ async function main() {
 
   const ucan = await getUCAN(kp, serviceDid, rootUCAN);
 
-  process.stdout.write(`{
+  const credentials = `{
     marketplaceDid: ${kp.did()},
     ucan: ${ucan}
-  }\n`);
+  }\n`;
+
+  writeFile('ucan', credentials, (err) => {
+    if (err) throw new Error(err);
+
+    process.stdout.write('The ucan file has been saved!');
+  });
 }
 
 main().catch((error) => console.error(error));
