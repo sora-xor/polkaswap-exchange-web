@@ -34,6 +34,8 @@ async function getRootToken(token) {
     },
   });
 
+  console.log('ucanReq', ucanReq);
+
   if (!ucanReq.ok) {
     throw new Error('Failed to get root UCAN token');
   }
