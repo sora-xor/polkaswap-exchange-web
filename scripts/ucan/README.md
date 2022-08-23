@@ -1,6 +1,6 @@
 ## UCAN token generation script
 
-The script is intended to emit UCAN tokens each 10 days. The output file (token) should be hosted at public route without any risk for the end-users. It will establish secure communication channel between NFT.Storage and Marketplace, and Marketplace and its end-users.
+The script is intended to emit UCAN token which will be valid for 10 days. The output file (token) should be hosted at public route without any risk for the end-users. It will establish secure communication channel between NFT.Storage and Marketplace, and Marketplace and its end-users.
 
 ### Setup
 
