@@ -3,7 +3,7 @@
     <template v-if="isSoraAccountConnected">
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
-        <token-logo :token="xor" :size="LogoSize.BIGGER" />
+        <token-logo :token="xor" :size="WALLET_CONSTS.LogoSize.BIGGER" />
         <formatted-amount
           class="rewards-value"
           value-can-be-hidden
@@ -174,14 +174,14 @@
 <script lang="ts">
 import last from 'lodash/fp/last';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components, mixins, api, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, api, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { FPNumber } from '@sora-substrate/util';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import router, { lazyView } from '@/router';
-import { PageNames, LogoSize, ZeroStringValue } from '@/consts';
+import { PageNames, ZeroStringValue } from '@/consts';
 import { detectBaseUrl } from '@/api';
 import { formatAddress } from '@/utils';
 
@@ -206,7 +206,7 @@ export default class ReferralProgram extends Mixins(
   mixins.CopyAddressMixin,
   WalletConnectMixin
 ) {
-  readonly LogoSize = LogoSize;
+  readonly WALLET_CONSTS = WALLET_CONSTS;
 
   referrerLinkOrCode = '';
   referrerHasApproved = false;

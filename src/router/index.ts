@@ -193,6 +193,9 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const prev = from.name as Nullable<PageNames>;
   const isLoggedIn = store.getters.wallet.account.isLoggedIn;
+  if (prev !== PageNames.BridgeTransaction && to.name === PageNames.BridgeTransactionsHistory) {
+    store.commit.bridge.setHistoryPage(1);
+  }
   if (to.matched.some((record) => record.meta.isInvitationRoute)) {
     if (api.validateAddress(to.params.referrerAddress)) {
       store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
@@ -213,6 +216,7 @@ router.beforeEach((to, from, next) => {
       store.commit.router.setRoute({ prev, current: PageNames.Bridge });
       return;
     }
+
     if (!isLoggedIn) {
       next({ name: PageNames.Wallet });
       store.commit.router.setRoute({ prev, current: PageNames.Wallet });

@@ -141,7 +141,11 @@
         "clearHistory": "Borrar el historial",
         "filterPlaceholder": "Filtrar por dirección, símbolo, tipo o ID de bloque",
         "empty": "Sus transacciones aparecerán aquí.",
-        "emptySearch": "No se han encontrado transacciones"
+        "emptySearch": "No se han encontrado transacciones",
+        "firstText": "Primero",
+        "lastText": "Ultimo",
+        "prevText": "Anterior",
+        "nextText": "Siguiente"
     },
     "assets": {
         "empty": "No hay Activos",
@@ -1073,5 +1077,6 @@
         "pointer": "Presione \"Permitir\" para activar las notificaciones"
     },
     "assetDeposit": "El saldo de los activos ha sido depositado",
-    "noDataText": "Sin datos"
+    "noDataText": "Sin datos",
+    "ofText": "{first} de {second}"
 }
