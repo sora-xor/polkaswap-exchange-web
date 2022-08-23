@@ -6,6 +6,8 @@ import { build } from 'ucan-storage/ucan-storage';
 const SERVICE_ENDPOINT = 'https://api.nft.storage'; // default
 const API_TOKEN = process.env.API_KEY;
 
+console.log('process.env.API_KEY', process.env.API_KEY);
+
 /**
  * Obtaining the service DID
  *
