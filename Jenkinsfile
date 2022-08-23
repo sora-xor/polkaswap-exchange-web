@@ -16,7 +16,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     copyStaticToBranch: true,
     copyToBranches: ['fleek-test'],
     ipfsHashNotification: true,
-    fleekDefaultSiteName: 'long-firefly-8047'
+    fleekDefaultSiteName: 'long-firefly-8047',
     ipfsHashChatID: '-603145932',
     stageDeploy: true,
     downstreamJob: '../deploy/exchange-stage1'
