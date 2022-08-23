@@ -70,28 +70,30 @@ async function getUCAN(kp, serviceDid, rootUCAN) {
   }
 }
 
-async function main() {
-  const pair = await KeyPair.create();
-  const privateKey = pair.export();
+(async function main() {
+  try {
+    const pair = await KeyPair.create();
+    const privateKey = pair.export();
 
-  const kp = await KeyPair.fromExportedKey(privateKey);
+    const kp = await KeyPair.fromExportedKey(privateKey);
 
-  const serviceDid = await getServiceDid();
+    const serviceDid = await getServiceDid();
 
-  const rootUCAN = await getRootToken(API_TOKEN);
+    const rootUCAN = await getRootToken(API_TOKEN);
 
-  const ucan = await getUCAN(kp, serviceDid, rootUCAN);
+    const ucan = await getUCAN(kp, serviceDid, rootUCAN);
 
-  const credentials = `{
-    "marketplaceDid": "${kp.did()}",
-    "ucan": "${ucan}"
-  }\n`;
+    const credentials = `{
+      "marketplaceDid": "${kp.did()}",
+      "ucan": "${ucan}"
+    }\n`;
 
-  writeFile('ucan.json', credentials, (err) => {
-    if (err) throw new Error(err);
+    writeFile('ucan.json', credentials, (err) => {
+      if (err) throw new Error(err);
 
-    process.stdout.write('The ucan file has been saved!\n');
-  });
-}
-
-main().catch((error) => console.error(error));
+      process.stdout.write('The ucan file has been saved!\n');
+    });
+  } catch (error) {
+    console.error(error);
+  }
+})();
