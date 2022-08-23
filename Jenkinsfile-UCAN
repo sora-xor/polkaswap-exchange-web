@@ -41,7 +41,6 @@ pipeline {
       steps {
         script {
           sh """
-            ping -c 5 nft.storage
             cd scripts/ucan
             node generateNftServiceKeypair.js
             mv _ucan.json_ /
