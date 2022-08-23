@@ -11,6 +11,7 @@ function initialState(): BridgeState {
     evmNetworkFeeFetching: false,
     evmBlockNumber: 0,
     history: [],
+    historyPage: 1,
     historyId: '',
     historyLoading: false,
     waitingForApprove: {},

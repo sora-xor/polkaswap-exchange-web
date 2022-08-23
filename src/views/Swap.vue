@@ -211,8 +211,8 @@ export default class Swap extends Mixins(
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
   @action.swap.reset private reset!: AsyncVoidFn;
   @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
-  @action.swap.resetSubscriptions private resetSubscriptions!: AsyncVoidFn;
-  @action.swap.updateSubscriptions private updateSubscriptions!: AsyncVoidFn;
+  @action.swap.resetSubscriptions private resetBalanceSubscriptions!: AsyncVoidFn;
+  @action.swap.updateSubscriptions private updateBalanceSubscriptions!: AsyncVoidFn;
 
   @Watch('liquiditySource')
   private handleLiquiditySourceChange(): void {
@@ -229,13 +229,9 @@ export default class Swap extends Mixins(
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean) {
     if (nodeConnected) {
-      this.updateSubscriptions();
-      this.subscribeOnEnabledAssets();
-      this.subscribeOnSwapReserves();
+      this.enableSwapSubscriptions();
     } else {
-      this.resetSubscriptions();
-      this.cleanEnabledAssetsSubscription();
-      this.cleanSwapReservesSubscription();
+      this.resetSwapSubscriptions();
     }
   }
 
@@ -375,9 +371,7 @@ export default class Swap extends Mixins(
         await this.setTokenToAddress();
       }
 
-      if (!this.enabledAssetsSubscription) {
-        this.subscribeOnEnabledAssets();
-      }
+      this.enableSwapSubscriptions();
     });
   }
 
@@ -565,9 +559,20 @@ export default class Swap extends Mixins(
     this.showSettings = true;
   }
 
-  beforeDestroy(): void {
+  private enableSwapSubscriptions(): void {
+    this.updateBalanceSubscriptions();
+    this.subscribeOnEnabledAssets();
+    this.subscribeOnSwapReserves();
+  }
+
+  private resetSwapSubscriptions(): void {
+    this.resetBalanceSubscriptions();
     this.cleanEnabledAssetsSubscription();
     this.cleanSwapReservesSubscription();
+  }
+
+  beforeDestroy(): void {
+    this.resetSwapSubscriptions();
   }
 
   destroyed(): void {

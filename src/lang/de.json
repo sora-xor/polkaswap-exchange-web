@@ -141,7 +141,11 @@
         "clearHistory": "Verlauf löschen",
         "filterPlaceholder": "Filter nach Adresse, Symbol, Type oder Block-ID",
         "empty": "Deine Transaktionen werden hier angezeigt",
-        "emptySearch": "Keine Transaktionen gefunden"
+        "emptySearch": "Keine Transaktionen gefunden",
+        "firstText": "Zuerst",
+        "lastText": "Letzte",
+        "prevText": "Vorherige",
+        "nextText": "Weiter"
     },
     "assets": {
         "empty": "Keine Assets vorhanden",
@@ -1073,5 +1077,6 @@
         "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten"
     },
     "assetDeposit": "Guthaben wurde hinterlegt",
-    "noDataText": "Keine Daten"
+    "noDataText": "Keine Daten",
+    "ofText": "{first} von {second}"
 }

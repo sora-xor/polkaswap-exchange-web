@@ -1,5 +1,5 @@
 import { defineGetters } from 'direct-vuex';
-import { CodecString, FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import { removeLiquidityGetterContext } from '@/store/removeLiquidity';

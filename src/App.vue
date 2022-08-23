@@ -356,11 +356,6 @@ ul ul {
       flex: 1;
     }
   }
-
-  // TODO: change position in wallet
-  .notification-enabling-pointer {
-    position: fixed;
-  }
 }
 
 .block-number {
@@ -537,7 +532,7 @@ i.icon-divider {
     }
 
     .block-number-link {
-      z-index: 0;
+      z-index: $app-body-layer;
     }
   }
 }
