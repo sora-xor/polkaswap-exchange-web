@@ -1,4 +1,5 @@
 import { writeFile } from 'fs';
+import fetch from 'node-fetch';
 import { KeyPair } from 'ucan-storage/keypair';
 import { build } from 'ucan-storage/ucan-storage';
 
@@ -82,14 +83,14 @@ async function main() {
   const ucan = await getUCAN(kp, serviceDid, rootUCAN);
 
   const credentials = `{
-    marketplaceDid: ${kp.did()},
-    ucan: ${ucan}
+    "marketplaceDid": "${kp.did()}",
+    "ucan": "${ucan}"
   }\n`;
 
-  writeFile('ucan', credentials, (err) => {
+  writeFile('ucan.json', credentials, (err) => {
     if (err) throw new Error(err);
 
-    process.stdout.write('The ucan file has been saved!');
+    process.stdout.write('The ucan file has been saved!\n');
   });
 }
 
