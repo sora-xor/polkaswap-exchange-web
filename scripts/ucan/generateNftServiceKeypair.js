@@ -4,9 +4,12 @@ import { KeyPair } from 'ucan-storage/keypair';
 import { build } from 'ucan-storage/ucan-storage';
 
 const SERVICE_ENDPOINT = 'https://api.nft.storage'; // default
-const API_TOKEN = process.env.API_KEY;
+// const API_TOKEN = process.env.API_KEY;
 
-console.log('process.env.API_KEY', process.env.API_KEY);
+// console.log('process.env.API_KEY', process.env.API_KEY);
+
+const API_TOKEN =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDgwNzdkQzgxMDRCNUNCZjNhNDRlYjE2OWVFREZlREUwNmRFODM2ZTciLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2MTI2MjM4NTE4NiwibmFtZSI6InVjYW4ifQ.BGgAMQ94UcG8zLbcSmEAx3HH2r_QYhfCH4JBYonG7N8';
 
 /**
  * Obtaining the service DID
