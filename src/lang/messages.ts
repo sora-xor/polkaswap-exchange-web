@@ -809,4 +809,5 @@ export default {
     pointer: 'Press “Allow” to turn notifications on',
   },
   assetDeposit: 'Asset balance has been deposited',
+  ofText: '{first} of {second}',
 };

@@ -328,15 +328,6 @@ export const AboutTopics = [
   { title: Topics.PriceFeeds, icon: 'software-terminal-24' },
 ];
 
-export enum LogoSize {
-  MINI = 'mini',
-  SMALL = 'small',
-  MEDIUM = 'medium',
-  BIG = 'big',
-  BIGGER = 'bigger',
-  LARGE = 'large',
-}
-
 export enum EvmSymbol {
   ETH = 'ETH',
   VT = 'VT',

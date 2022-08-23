@@ -15,10 +15,8 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-
-import { LogoSize } from '@/consts';
 
 @Component({
   components: {
@@ -27,7 +25,7 @@ import { LogoSize } from '@/consts';
 })
 export default class TokensRow extends Vue {
   @Prop({ default: () => [], type: Array }) assets!: Array<Asset>;
-  @Prop({ default: LogoSize.LARGE, type: String }) readonly size!: LogoSize;
+  @Prop({ default: WALLET_CONSTS.LogoSize.LARGE, type: String }) readonly size!: WALLET_CONSTS.LogoSize;
   @Prop({ default: false, type: Boolean }) readonly border!: boolean;
 }
 </script>
