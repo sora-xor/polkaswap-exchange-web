@@ -41,6 +41,7 @@ pipeline {
       steps {
         script {
           sh """
+            echo ${API_KEY} | cut -c -1000
             cd scripts/ucan
             node generateNftServiceKeypair.js
             mv _ucan.json_ /
