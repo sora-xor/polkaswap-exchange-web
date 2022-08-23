@@ -11,6 +11,7 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '40'))
     timestamps()
   }
+
   agent {
     docker {
       label "${agentLabel}"
@@ -20,11 +21,19 @@ pipeline {
       alwaysPull true
     }
   }
+
+  environment {
+    API_KEY = credentials('nft-storage-api-key')
+  }
+
   stages {
     stage('Install dependencies') {
       steps {
         script {
-          sh """ npm install """
+          sh """
+            cd scripts/ucan
+            npm install 
+          """
         }
       }
     }
