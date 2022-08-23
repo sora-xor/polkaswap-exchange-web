@@ -1,8 +1,9 @@
 @Library('jenkins-library') _
 
-def agentImage = 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu-extended'
-def agentLabel = 'aws_nbc_build'
-def gitHubUser = 'sorabot'
+def agentImage   = 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu-extended'
+def agentLabel   = 'aws_nbc_build'
+def gitHubUser   = 'sorabot'
+def gitAddrRegex = ''
 
 pipeline {
   options {
@@ -40,9 +41,10 @@ pipeline {
     }
     stage("Copy token to deploy branch'") {
       steps {
-        def gitAddrRegex = GIT_URL.replaceFirst("^http[s]?://","")
         withCredentials([string(credentialsId: 'sorabot-github-token', variable: 'GH_TOKEN')]) {
-          sh """git checkout -b ucan-temp
+          sh """
+          ${gitAddrRegex} = GIT_URL.replaceFirst("^http[s]?://","")
+          git checkout -b ucan-temp
           find -maxdepth 1 ! -name _ucan.json_ ! -name .git ! -name . -exec rm -r {} \\;
           git config user.email "admin@soramitsu.co.jp"
           git config user.name "${gitHubUser}"
