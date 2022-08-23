@@ -6,6 +6,8 @@ import { build } from 'ucan-storage/ucan-storage';
 const SERVICE_ENDPOINT = 'https://api.nft.storage'; // default
 const API_TOKEN = process.env.API_KEY;
 
+console.log('process.env.API_KEY', process.env.API_KEY);
+
 /**
  * Obtaining the service DID
  *
@@ -33,6 +35,8 @@ async function getRootToken(token) {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  console.log('ucanReq', ucanReq);
 
   if (!ucanReq.ok) {
     throw new Error('Failed to get root UCAN token');
