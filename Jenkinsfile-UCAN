@@ -41,6 +41,7 @@ pipeline {
       steps {
         script {
           sh """
+            apt update && apt install iputils-ping
             ping -c 5 nft.storage
             cd scripts/ucan
             node generateNftServiceKeypair.js
