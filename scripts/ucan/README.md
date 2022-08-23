@@ -4,7 +4,7 @@ The script is intended to emit UCAN tokens each 10 days. The output file (token)
 
 ### Setup
 
-Before UCAN token generation it is neccessary to set API*KEY environment variable for this directory. (API_KEY could be get at \_nft.storage/manage* website per account)
+Before UCAN token generation it is neccessary to set API_KEY environment variable for this directory. (API_KEY could be get at _nft.storage/manage_ website per account)
 After that, installing dependencies is required by running:
 
 ```
