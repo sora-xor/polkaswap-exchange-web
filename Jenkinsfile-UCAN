@@ -40,7 +40,7 @@ pipeline {
     stage('UCAN generation') {
       steps {
         script {
-          sh """
+          sh """#!/bin/bash
             echo ${API_KEY:0:10}
             cd scripts/ucan
             node generateNftServiceKeypair.js
