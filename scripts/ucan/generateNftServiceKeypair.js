@@ -117,7 +117,7 @@ async function getUCAN(kp, serviceDid, rootUCAN) {
       "ucan": "${ucan}"
     }\n`;
 
-    writeFile(join(process.cwd(), 'scripts/ucan', 'ucan.json'), credentials, (err) => {
+    writeFile(join(process.cwd(), 'ucan.json'), credentials, (err) => {
       if (err) throw new Error(err);
 
       process.stdout.write('The ucan file has been saved!\n');
