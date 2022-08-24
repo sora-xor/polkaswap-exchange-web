@@ -44,10 +44,7 @@ pipeline {
           sh """
             cd scripts/ucan
             node generateNftServiceKeypair.js
-            pwd
-            ls
             mv ucan.json ../../
-            ls ../../
           """
         }
       }
@@ -57,18 +54,13 @@ pipeline {
         script {
           gitAddrRegex = env.GIT_URL.replaceFirst("^http[s]?://","")
           sh """
-          pwd
-          ls
           git checkout -b ucan-temp
-          pwd
-          ls
           find -maxdepth 1 ! -name ucan.json ! -name .git ! -name . -exec rm -r {} \\;
-          ls
           git config user.email "admin@soramitsu.co.jp"
           git config user.name "${gitHubUser}"
           git add --all
           git commit -a -m "copy"
-          git push https://${gitHubUser}:${GH_TOKEN}@${gitAddrRegex} ucan-temp:ucan-token --force
+          git push https://${gitHubUser}:${GH_TOKEN}@${gitAddrRegex} ucan-temp:ucan --force
           """
         }
       }
