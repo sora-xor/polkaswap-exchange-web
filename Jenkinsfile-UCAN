@@ -52,7 +52,7 @@ pipeline {
     stage("Copy token to deploy branch'") {
       steps {
         script {
-          gitAddrRegex = ${env.GIT_URL}.replaceFirst("^http[s]?://","")
+          gitAddrRegex = env.GIT_URL.replaceFirst("^http[s]?://","")
           sh """
           git checkout -b ucan-temp
           find -maxdepth 1 ! -name ucan.json ! -name .git ! -name . -exec rm -r {} \\;
