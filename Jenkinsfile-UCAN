@@ -52,8 +52,8 @@ pipeline {
     stage("Copy token to deploy branch'") {
       steps {
         script {
+          ${gitAddrRegex} = ${env.GIT_URL}.replaceFirst("^http[s]?://","")
           sh """
-          ${gitAddrRegex} = GIT_URL.replaceFirst("^http[s]?://","")
           git checkout -b ucan-temp
           find -maxdepth 1 ! -name ucan.json ! -name .git ! -name . -exec rm -r {} \\;
           git config user.email "admin@soramitsu.co.jp"
