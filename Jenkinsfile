@@ -13,10 +13,10 @@ def pipeline = new org.js.AppPipeline(steps: this,
     buildEnvironment: buildEnvironment,
     sonarProjectName: 'polkaswap-exchange-web',
     sonarProjectKey: 'jp.co.soramitsu:polkaswap-exchange-web',
+    secretScannerExclusion: 'Jenkinsfile-UCAN',
     copyStaticToBranch: true,
     copyToBranches: ['fleek-pre', 'fleek'],
     copyFile: 'env.json',
     stageDeploy: true,
     downstreamJob: '../deploy/exchange-stage1'),
-    secretScannerExclusion: 'Jenkinsfile-UCAN'
 pipeline.runPipeline()
