@@ -24,7 +24,7 @@ pipeline {
 
   environment {
     API_KEY = credentials('nft-storage-api-key')
-    GH_TOKEN = credentials('sorabot-github-token')
+    GH = credentials('sorabot-github-token')
   }
 
   stages {
@@ -60,7 +60,7 @@ pipeline {
           git config user.name "${gitHubUser}"
           git add --all
           git commit -a -m "copy"
-          git push https://${gitHubUser}:${GH_TOKEN}@${gitAddrRegex} ucan-temp:ucan --force
+          git push https://${gitHubUser}:${GH}@${gitAddrRegex} ucan-temp:ucan-token --force
           """
         }
       }
