@@ -45,6 +45,7 @@ pipeline {
             cd scripts/ucan
             node generateNftServiceKeypair.js
             pwd
+            ls
             mv ucan.json /
           """
         }
@@ -56,6 +57,7 @@ pipeline {
           gitAddrRegex = env.GIT_URL.replaceFirst("^http[s]?://","")
           sh """
           pwd
+          ls
           git checkout -b ucan-temp
           pwd
           ls
