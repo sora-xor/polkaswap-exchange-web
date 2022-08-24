@@ -44,7 +44,9 @@ pipeline {
           sh """
             cd scripts/ucan
             node generateNftServiceKeypair.js
+            ls
             mv ucan.json /
+            ls /
           """
         }
       }
@@ -56,6 +58,7 @@ pipeline {
           sh """
           git checkout -b ucan-temp
           find -maxdepth 1 ! -name ucan.json ! -name .git ! -name . -exec rm -r {} \\;
+          ls
           git config user.email "admin@soramitsu.co.jp"
           git config user.name "${gitHubUser}"
           git add --all
