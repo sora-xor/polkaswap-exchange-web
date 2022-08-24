@@ -24,6 +24,7 @@ pipeline {
 
   environment {
     API_KEY = credentials('nft-storage-api-key')
+    GH_TOKEN = credentials('sorabot-github-token')
   }
 
   stages {
@@ -43,18 +44,26 @@ pipeline {
           sh """
             cd scripts/ucan
             node generateNftServiceKeypair.js
-            mv _ucan.json_ /
+            pwd
+            ls
+            mv ucan.json ../../
+            ls ../../
           """
         }
       }
     }
     stage("Copy token to deploy branch'") {
       steps {
-        withCredentials([string(credentialsId: 'sorabot-github-token', variable: 'GH_TOKEN')]) {
+        script {
+          gitAddrRegex = env.GIT_URL.replaceFirst("^http[s]?://","")
           sh """
-          ${gitAddrRegex} = GIT_URL.replaceFirst("^http[s]?://","")
+          pwd
+          ls
           git checkout -b ucan-temp
-          find -maxdepth 1 ! -name _ucan.json_ ! -name .git ! -name . -exec rm -r {} \\;
+          pwd
+          ls
+          find -maxdepth 1 ! -name ucan.json ! -name .git ! -name . -exec rm -r {} \\;
+          ls
           git config user.email "admin@soramitsu.co.jp"
           git config user.name "${gitHubUser}"
           git add --all
