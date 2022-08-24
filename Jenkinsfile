@@ -18,5 +18,6 @@ def pipeline = new org.js.AppPipeline(steps: this,
     copyToBranches: ['fleek-pre', 'fleek'],
     copyFile: 'env.json',
     stageDeploy: true,
-    downstreamJob: '../deploy/exchange-stage1'),
+    downstreamJob: '../deploy/exchange-stage1'
+)
 pipeline.runPipeline()
