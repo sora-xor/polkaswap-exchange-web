@@ -1,4 +1,5 @@
 import { writeFile } from 'fs';
+import { join } from 'path';
 import fetch from 'node-fetch';
 import { KeyPair } from 'ucan-storage/keypair';
 import { build } from 'ucan-storage/ucan-storage';
@@ -22,9 +23,32 @@ async function getServiceDid() {
 }
 
 /**
+ * Registering marketplace DID
+ *
+ * @param {string} did
+ * @param {string} token
+ */
+async function registerMarketplaceDid(did, token) {
+  const registerRes = await fetch(new URL('/user/did', SERVICE_ENDPOINT), {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      did,
+    }),
+  });
+
+  if (!registerRes.ok) {
+    throw new Error('Failed to register marketplace DID');
+  }
+}
+
+/**
  * Obtaining a root UCAN token.
  * It will be valid for a duration of two weeks
  *
+ * @param {string} token
  */
 async function getRootToken(token) {
   const ucanReq = await fetch(new URL('/ucan/token', SERVICE_ENDPOINT), {
@@ -46,6 +70,9 @@ async function getRootToken(token) {
 /**
  * Obtaining UCAN token with specified expiration date (10 days)
  *
+ * @param {KeyPair} kp
+ * @param {string} serviceDid
+ * @param {string} rootUCAN
  */
 async function getUCAN(kp, serviceDid, rootUCAN) {
   // convert timestamp to seconds
@@ -79,6 +106,8 @@ async function getUCAN(kp, serviceDid, rootUCAN) {
 
     const serviceDid = await getServiceDid();
 
+    await registerMarketplaceDid(kp.did(), API_TOKEN);
+
     const rootUCAN = await getRootToken(API_TOKEN);
 
     const ucan = await getUCAN(kp, serviceDid, rootUCAN);
@@ -88,7 +117,7 @@ async function getUCAN(kp, serviceDid, rootUCAN) {
       "ucan": "${ucan}"
     }\n`;
 
-    writeFile('ucan.json', credentials, (err) => {
+    writeFile(join(process.cwd(), 'ucan.json'), credentials, (err) => {
       if (err) throw new Error(err);
 
       process.stdout.write('The ucan file has been saved!\n');
