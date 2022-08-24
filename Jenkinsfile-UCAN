@@ -41,9 +41,9 @@ pipeline {
       steps {
         script {
           sh """
-            ls
+            cd scripts/ucan
             node generateNftServiceKeypair.js
-            mv _ucan.json_ /
+            mv ucan.json /
           """
         }
       }
