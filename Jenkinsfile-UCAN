@@ -6,6 +6,11 @@ def gitHubUser   = 'sorabot'
 def gitAddrRegex = ''
 
 pipeline {
+
+  triggers {
+    cron('H H */9 * *')
+  }
+
   options {
     disableConcurrentBuilds()
     buildDiscarder(logRotator(numToKeepStr: '40'))
