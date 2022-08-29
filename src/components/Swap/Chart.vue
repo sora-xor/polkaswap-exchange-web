@@ -619,6 +619,7 @@ export default class SwapChart extends Mixins(
           {
             type: 'candlestick',
             data: this.chartData.map((item) => [+item.timestamp, ...item.price]),
+            barMaxWidth: 10,
             itemStyle: {
               color: this.theme.color.status.success,
               borderColor: this.theme.color.status.success,
