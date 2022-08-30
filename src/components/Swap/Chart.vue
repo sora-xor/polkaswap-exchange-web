@@ -346,11 +346,9 @@ export default class SwapChart extends Mixins(
    */
   get priceChange(): FPNumber {
     const [startIndex, endIndex] = this.visibleChartItemsRange;
-    const priceOpenIndex = 0; // always 'open' price
-    const priceCloseIndex = this.isLineChart ? 0 : 1; // 'close' price for candlestick chart
-
-    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.price?.[priceOpenIndex] ?? 0);
-    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.price?.[priceCloseIndex] ?? 0);
+    const priceIndex = this.isLineChart ? 0 : 1; // "close" price for candlestick
+    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.price?.[priceIndex] ?? 0);
+    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.price?.[priceIndex] ?? 0);
 
     return calcPriceChange(rangeClosePrice, rangeStartPrice);
   }
