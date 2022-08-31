@@ -273,7 +273,7 @@ export default class SwapChart extends Mixins(
 
   // ordered by timestamp DESC
   prices: ChartDataItem[] = [];
-  pageInfos: SUBQUERY_TYPES.PageInfo[] = [];
+  pageInfos: Partial<SUBQUERY_TYPES.PageInfo>[] = [];
   zoomStart = 0; // percentage of zoom start position
   zoomEnd = 100; // percentage of zoom end position
   precision = 2;
@@ -640,7 +640,7 @@ export default class SwapChart extends Mixins(
   }
 
   // ordered ty timestamp DESC
-  private async fetchData(address: string, filter: ChartFilter, pageInfo?: SUBQUERY_TYPES.PageInfo) {
+  private async fetchData(address: string, filter: ChartFilter, pageInfo?: Partial<SUBQUERY_TYPES.PageInfo>) {
     const { type, count } = filter;
     const nodes: AssetSnapshot[] = [];
 
@@ -663,7 +663,11 @@ export default class SwapChart extends Mixins(
     return { nodes, hasNextPage, endCursor };
   }
 
-  private async getChartData(addresses: string[], filter: ChartFilter, paginationInfos?: SUBQUERY_TYPES.PageInfo[]) {
+  private async getChartData(
+    addresses: string[],
+    filter: ChartFilter,
+    paginationInfos?: Partial<SUBQUERY_TYPES.PageInfo>[]
+  ) {
     const collections = await Promise.all(
       addresses.map((address, index) => this.fetchData(address, filter, paginationInfos?.[index]))
     );

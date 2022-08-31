@@ -1384,10 +1384,19 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.0.tgz#87de7af9c231826fdd68ac7258f77c429e0e5fcf"
   integrity sha512-wdppn25U8z/2yiaT6YGquE6X8sSv7hNMWSXYSSU1jGv/yd6XqjXgTDJ8KP4NgjTXfJ3GbRjeeb8RTV7a/VpM+w==
 
-"@ipld/car@^3.0.1", "@ipld/car@^3.1.20", "@ipld/car@^3.1.4":
+"@ipld/car@^3.0.1":
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/@ipld/car/-/car-3.2.3.tgz#5a3fa8576dde476a9d06229e383ded0bb16c859e"
   integrity sha512-pXE5mFJlXzJVaBwqAJKGlKqMmxq8H2SLEWBJgkeBDPBIN8ZbscPc3I9itkSQSlS/s6Fgx35Ri3LDTDtodQjCCQ==
+  dependencies:
+    "@ipld/dag-cbor" "^7.0.0"
+    multiformats "^9.5.4"
+    varint "^6.0.0"
+
+"@ipld/car@^3.2.3":
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/@ipld/car/-/car-3.2.4.tgz#115951ba2255ec51d865773a074e422c169fb01c"
+  integrity sha512-rezKd+jk8AsTGOoJKqzfjLJ3WVft7NZNH95f0pfPbicROvzTyvHCNy567HzSUd6gRXZ9im29z5ZEv9Hw49jSYw==
   dependencies:
     "@ipld/dag-cbor" "^7.0.0"
     multiformats "^9.5.4"
@@ -2359,69 +2368,69 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api@1.10.0-beta.9":
-  version "1.10.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.10.0-beta.9.tgz#61bbf7ff7000a2f875947cd6af6d00c2980444d3"
-  integrity sha512-G8FXsjg1JVPMPcaB8s4gR3/jQx7t34ru8WtMGoS+ZMFRnHHM3KVCNkIvcpDhTk25rVbhQGawWH/lT8p/Q1gOnw==
+"@sora-substrate/api@1.10.0-beta.11":
+  version "1.10.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.10.0-beta.11.tgz#b8e45be3a0d8326689b167c6e5afaab3114cafab"
+  integrity sha512-QkTda6eAWhvfSbKPaeu2PU1qw4YD2kktId+lVckOXJfhu7oYVZ3GAkOdlCOpmLFFaqOEAGA/6f6am51nobshbg==
   dependencies:
     "@open-web3/orml-api-derive" "0.9.4-26"
     "@polkadot/api" "8.9.1"
-    "@sora-substrate/types" "1.10.0-beta.9"
+    "@sora-substrate/types" "1.10.0-beta.11"
 
-"@sora-substrate/liquidity-proxy@1.10.0-beta.9":
-  version "1.10.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/liquidity-proxy/-/liquidity-proxy-1.10.0-beta.9.tgz#21a2681060faf64f70cf2ed7475948da577954cd"
-  integrity sha512-dFCpkSx6lGm8PwquLJbGYWlkjYuYUpaF+NiCYaWjB+IGTZjkXxAr42hTRvLX5vB2626dDk0tbLWSpaBtfbI6fQ==
+"@sora-substrate/liquidity-proxy@1.10.0-beta.11":
+  version "1.10.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/liquidity-proxy/-/liquidity-proxy-1.10.0-beta.11.tgz#018b6efead63cea77f0db7cceb145272146e74fe"
+  integrity sha512-HmDZN+lrZDpTJ6WtWQr6+AqSOB/JiyBGKpQmiz7bFinHj901ogYQdgWgV4wnRGth84YLODf4MpBy3OP70vrHyw==
   dependencies:
-    "@sora-substrate/math" "1.10.0-beta.9"
+    "@sora-substrate/math" "1.10.0-beta.11"
 
-"@sora-substrate/math@1.10.0-beta.9":
-  version "1.10.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.10.0-beta.9.tgz#1f0e082248f391ddaf5ce873e992788fdcbed20b"
-  integrity sha512-w0oT8WrBIyWRUHpHGZ2f6f9Sqb8p1TptoNDPSq9RqFG0hfhEDCVavF1Yz9op2oaqZeJNywA+zpE7L4x6ZLtu4w==
+"@sora-substrate/math@1.10.0-beta.11":
+  version "1.10.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.10.0-beta.11.tgz#5a5c227db16694783a71ca7bf11209fc9495c663"
+  integrity sha512-ZVdGYDj/FheUPFyJWR1sJ4696bpEDHufcERlJZRVNAYXwy+fnTGyEHBxrMLe21wZiN4pd8LTFsTxhOWK6Jueow==
   dependencies:
     "@polkadot/types" "8.9.1"
     bignumber.js "^9.0.1"
     lodash "^4.17.15"
 
-"@sora-substrate/type-definitions@1.10.0-beta.9":
-  version "1.10.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.10.0-beta.9.tgz#abdf9841585fd10f7c19c8223be452d51ae3d12b"
-  integrity sha512-68iqmbMl6K6/1CP7mrridBpWsPzoOArU5tH7ZhKxXwxQu2kp65tUpUVIX7dhqcFwwsm/qWns53ZOfSWLzRhYEw==
+"@sora-substrate/type-definitions@1.10.0-beta.11":
+  version "1.10.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.10.0-beta.11.tgz#4370755e68ad5b2232b66eccfa5dad752751b032"
+  integrity sha512-d2aU+TbPxmRSWXvW9aDMe6VYYK4fbLHCkXsbg2c1en0t/lLigyf/y6upm/JrnC8uxXr+IZ5/AcK3vKt66Fdrhw==
   dependencies:
     "@open-web3/orml-type-definitions" "0.9.4-26"
 
-"@sora-substrate/types@1.10.0-beta.9":
-  version "1.10.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.10.0-beta.9.tgz#af2429cc4f4f20b780d294fccb39944cffd4bf0e"
-  integrity sha512-AJ9q54KjsbdyRdpEzNpuDYSXXbjshzXgTQ3/NC5jkBF10laN9VNjp8ptOwXaduTuMqETTs/d3nzP+iAgMR+Pcg==
+"@sora-substrate/types@1.10.0-beta.11":
+  version "1.10.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.10.0-beta.11.tgz#0a929bac991c2710dec571d9d6cd2d0f7c63ca11"
+  integrity sha512-u18DNC1nQeda/X33Vf4sWdxRuDKYOKL+rMzT/gNY3fybysxKbV/nlyDLB1gEIS2zBo70qy0bKHGn/+vDvua87g==
   dependencies:
     "@open-web3/api-mobx" "0.9.4-26"
     "@open-web3/orml-types" "0.9.4-26"
     "@polkadot/api" "8.9.1"
     "@polkadot/typegen" "8.9.1"
     "@polkadot/types" "8.9.1"
-    "@sora-substrate/type-definitions" "1.10.0-beta.9"
+    "@sora-substrate/type-definitions" "1.10.0-beta.11"
 
-"@sora-substrate/util@1.10.0-beta.9":
-  version "1.10.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.10.0-beta.9.tgz#2ba04d0cfa6320fa0d1a96c47b728632e6b337d4"
-  integrity sha512-hqkgCjwvBIEBbKm47r0y6F/Oxpfs6kW1efE+zbrOTA6dkDMGHU6XZiSN9SFU9xc4fMphKSNGHyCfuAnXBjsStQ==
+"@sora-substrate/util@1.10.0-beta.11":
+  version "1.10.0-beta.11"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.10.0-beta.11.tgz#a4d7255734f41068e1a981fd1a6f3ef2bdf57265"
+  integrity sha512-EuJR9eugMVU4ft+EiXGgT1RboMfKV57xMOcCwF0XJ1Sojn8pWAfB0/9AcoSufW6ust7H2EWQ/Pos/vj7Gd7/dw==
   dependencies:
     "@polkadot/ui-keyring" "2.5.1"
-    "@sora-substrate/api" "1.10.0-beta.9"
-    "@sora-substrate/liquidity-proxy" "1.10.0-beta.9"
-    "@sora-substrate/math" "1.10.0-beta.9"
-    "@sora-substrate/types" "1.10.0-beta.9"
+    "@sora-substrate/api" "1.10.0-beta.11"
+    "@sora-substrate/liquidity-proxy" "1.10.0-beta.11"
+    "@sora-substrate/math" "1.10.0-beta.11"
+    "@sora-substrate/types" "1.10.0-beta.11"
     axios "^0.21.1"
     bignumber.js "^9.0.1"
     crypto-js "^4.0.0"
     lodash "^4.17.15"
 
-"@soramitsu/soramitsu-js-ui@^1.0.35":
-  version "1.0.35"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.35.tgz#a4977f1e3fbd60ba40e63eaadece512deff49f9c"
-  integrity sha512-YVqUyT1mObKxcRLraUQN19cBNdFmOekoLY7k9Do4YEdKa+LjDIXtA05aRTPI2tk/7bfk5tN96beRJqPXfvxfWg==
+"@soramitsu/soramitsu-js-ui@^1.0.37":
+  version "1.0.37"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soramitsu-js-ui/-/soramitsu-js-ui-1.0.37.tgz#bcf19a59616ce2becb403184aab47e80570faef0"
+  integrity sha512-4+oKyCw6ySZMGbp+g4wg2qaSy/SQQZ4cJ30yLuvbE9lDBbiBGXNZ9URkLmcSi03hLk4ddRdI7IZX2Cz4pjNG+w==
   dependencies:
     core-js "^3.6.4"
     element-resize-detector "^1.2.1"
@@ -2436,14 +2445,14 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^1.10.18":
-  version "1.10.18"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.10.18.tgz#2d65a1162cc7996521c6f7626d2e1a8aee81d916"
-  integrity sha512-+w9W/PogdspFEovHp64aSN9eKt/qtXIx7lX8wc9i1ClrPyxpSYf0FXm/DyFfHuKftA57v7GkiEtdAsYLfhrQ/Q==
+"@soramitsu/soraneo-wallet-web@^1.10.20":
+  version "1.10.20"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.10.20.tgz#4af2ad4c9b6c4812a76d422daf1cb611e931ba88"
+  integrity sha512-UVp7Y0xe6IWsKTEtwfn1PJRERIBp7TzfJFzc72TB5hGpWqliAZPqxMqsMKbaExBve2cqkxI6hWSkBQ0kcF1yUQ==
   dependencies:
     "@polkadot/vue-identicon" "2.6.1"
-    "@sora-substrate/util" "1.10.0-beta.9"
-    "@soramitsu/soramitsu-js-ui" "^1.0.35"
+    "@sora-substrate/util" "1.10.0-beta.11"
+    "@soramitsu/soramitsu-js-ui" "^1.0.37"
     "@subwallet/wallet-connect" "^0.2.3"
     "@urql/core" "^2.5.0"
     "@zxing/browser" "^0.1.1"
@@ -2456,7 +2465,7 @@
     graphql "^16.5.0"
     lodash "^4.17.21"
     maska "^1.4.0"
-    nft.storage "^5.2.0"
+    nft.storage "^7.0.0"
     subscriptions-transport-ws "^0.11.0"
     vue "^2.6.14"
     vue-class-component "^7.2.6"
@@ -3622,10 +3631,10 @@
     "@web-std/stream" "1.0.0"
     web-encoding "1.1.5"
 
-"@web-std/fetch@^3.0.0":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@web-std/fetch/-/fetch-3.0.2.tgz#96b19b5dc2c1b739881239d8a0f516a368d0b14b"
-  integrity sha512-kZO3KuZ1xvdxqTUFAAuNU+eK9ugZtmkP4yYZUzhx8+1vvwvv1t6WnG6khSMyzk9PpZaq+aepx45nC0YskiT6ZQ==
+"@web-std/fetch@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@web-std/fetch/-/fetch-3.0.3.tgz#507e1371825298aae61172b0da439570437d3982"
+  integrity sha512-PtaKr6qvw2AmKChugzhQWuTa12dpbogHRBxwcleAZ35UhWucnfD4N+g3f7qYK2OeioSWTK3yMf6n/kOOfqxHaQ==
   dependencies:
     "@web-std/blob" "^3.0.3"
     "@web-std/form-data" "^3.0.2"
@@ -8727,12 +8736,12 @@ ipaddr.js@^2.0.1:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-2.0.1.tgz#eca256a7a877e917aeb368b0a7497ddf42ef81c0"
   integrity sha512-1qTgH9NG+IIJ4yfKs2e6Pp1bZg8wbDbKHT21HrLIeYBTRLgMYKnMTPAuI3Lcs61nfx5h1xlXnbJtH1kX5/d/ng==
 
-ipfs-car@^0.6.0:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/ipfs-car/-/ipfs-car-0.6.1.tgz#4fab227e41e88110c7e6f827ebeb89385789c7b6"
-  integrity sha512-wB2e009VkWz3OXEFYiT1Vpvn3IJlyGcWJky8NgcgpeY/b5dgNFR8bHlbWhJJQJtys8D16n9TFuGgrROspe1gpw==
+ipfs-car@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/ipfs-car/-/ipfs-car-0.6.2.tgz#ec645cebe29056344abb3545e4e2e99788a4405c"
+  integrity sha512-tliuakkKKtCa4TTnFT3zJKjq/aD8EGKX8Y0ybCyrAW0fo/n2koZpxiLjBvtTs47Rqyji6ggXo+atPbJJ60hJmg==
   dependencies:
-    "@ipld/car" "^3.1.4"
+    "@ipld/car" "^3.2.3"
     "@web-std/blob" "^3.0.1"
     bl "^5.0.0"
     blockstore-core "^1.0.2"
@@ -8749,7 +8758,7 @@ ipfs-car@^0.6.0:
     it-pipe "^1.1.0"
     meow "^9.0.0"
     move-file "^2.1.0"
-    multiformats "^9.3.0"
+    multiformats "^9.6.3"
     stream-to-it "^0.2.3"
     streaming-iterables "^6.0.0"
     uint8arrays "^3.0.0"
@@ -10986,10 +10995,15 @@ multicast-dns@^6.0.1:
     dns-packet "^1.3.1"
     thunky "^1.0.2"
 
-multiformats@^9.0.4, multiformats@^9.3.0, multiformats@^9.4.10, multiformats@^9.4.13, multiformats@^9.4.2, multiformats@^9.4.5, multiformats@^9.4.7, multiformats@^9.5.4:
+multiformats@^9.0.4, multiformats@^9.4.13, multiformats@^9.4.2, multiformats@^9.4.5, multiformats@^9.4.7, multiformats@^9.5.4:
   version "9.6.2"
   resolved "https://registry.yarnpkg.com/multiformats/-/multiformats-9.6.2.tgz#3dd8f696171a367fa826b7c432851da850eb115e"
   integrity sha512-1dKng7RkBelbEZQQD2zvdzYKgUmtggpWl+GXQBYhnEGGkV6VIYfWgV3VSeyhcUFFEelI5q4D0etCJZ7fbuiamQ==
+
+multiformats@^9.6.3, multiformats@^9.6.4:
+  version "9.7.1"
+  resolved "https://registry.yarnpkg.com/multiformats/-/multiformats-9.7.1.tgz#ab348e5fd6f8e7fb3fd56033211bda48854e2173"
+  integrity sha512-TaVmGEBt0fhxiNJMGphBfB+oGvUxFs8KgGvgl8d3C+GWtrFcvXdJ2196eg+dYhmSFClmgFfSfJEklo+SZzdNuw==
 
 murmurhash3js-revisited@^3.0.0:
   version "3.0.0"
@@ -11065,22 +11079,24 @@ next-tick@~1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
-nft.storage@^5.2.0:
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/nft.storage/-/nft.storage-5.2.2.tgz#abfdfed197d161e409e8dcc503e05b9ebe2c69ec"
-  integrity sha512-HwJVbkUcknNjJxDlOld4lU1GxBuxe2kaNTmzzixaee+Sp+B4bmo03vElamDTuloeTid91GNKz/MWuNByXlxMDQ==
+nft.storage@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/nft.storage/-/nft.storage-7.0.0.tgz#9855106a16649673db12684232bb0292694230fe"
+  integrity sha512-6ris9loxF9TNTPY/JghLzdLlvFV3UzWkUcVTfmrRn49jzDUfyT5wMhDmYRBQuknNFN1jf7jlSGNHixs5SpOoOA==
   dependencies:
-    "@ipld/car" "^3.1.20"
+    "@ipld/car" "^3.2.3"
     "@ipld/dag-cbor" "^6.0.13"
     "@web-std/blob" "^3.0.1"
-    "@web-std/fetch" "^3.0.0"
+    "@web-std/fetch" "^3.0.3"
     "@web-std/file" "^3.0.0"
     "@web-std/form-data" "^3.0.0"
     carbites "^1.0.6"
-    ipfs-car "^0.6.0"
-    multiformats "^9.4.10"
+    ipfs-car "^0.6.2"
+    it-pipe "^1.1.0"
+    multiformats "^9.6.4"
     p-retry "^4.6.1"
     streaming-iterables "^6.0.0"
+    throttled-queue "^2.1.2"
 
 nice-try@^1.0.4:
   version "1.0.5"
@@ -14063,6 +14079,11 @@ throttle-debounce@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-1.1.0.tgz#51853da37be68a155cb6e827b3514a3c422e89cd"
   integrity sha512-XH8UiPCQcWNuk2LYePibW/4qL97+ZQ1AN3FNXwZRBNPPowo/NRU5fAlDCSNBJIYCKbioZfuYtMhG4quqoJhVzg==
+
+throttled-queue@^2.1.2:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/throttled-queue/-/throttled-queue-2.1.4.tgz#4e2008c73ab3f72ba1bb09496c3cc9c5b745dbee"
+  integrity sha512-YGdk8sdmr4ge3g+doFj/7RLF5kLM+Mi7DEciu9PHxnMJZMeVuZeTj31g4VE7ekUffx/IdbvrtOCiz62afg0mkg==
 
 through@^2.3.6:
   version "2.3.8"
