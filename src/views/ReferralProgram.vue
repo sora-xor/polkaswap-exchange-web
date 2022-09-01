@@ -95,7 +95,7 @@
                 is-formatted
               >
                 <template #info-line-prefix>
-                  <s-tooltip :content="copyTooltip(t('transaction.referral'))">
+                  <s-tooltip :content="copyTooltip(t('transaction.referral'))" tabindex="-1">
                     <span class="info-line-address" @click="handleCopyAddress(invitedUser, $event)">
                       {{ formatReferralAddress(invitedUser) }}
                     </span>
