@@ -235,7 +235,7 @@ const CANDLE_CHART_FILTERS = [
 const LABEL_PADDING = 4;
 const AXIS_OFFSET = 8;
 
-const POLLING_INTERVAL = 30 * 1000;
+const SYNC_INTERVAL = 6 * 1000;
 
 @Component({
   components: {
@@ -284,7 +284,9 @@ export default class SwapChart extends Mixins(
 
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
   forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
-  priceUpdateSubscription: Nullable<NodeJS.Timer | number> = null;
+
+  priceUpdateWatcher: Nullable<VoidFunction> = null;
+  priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
@@ -346,9 +348,8 @@ export default class SwapChart extends Mixins(
    */
   get priceChange(): FPNumber {
     const [startIndex, endIndex] = this.visibleChartItemsRange;
-    const priceIndex = this.isLineChart ? 0 : 1; // "close" price for candlestick
-    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.price?.[priceIndex] ?? 0);
-    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.price?.[priceIndex] ?? 0);
+    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.price?.[1] ?? 0); // "close" price
+    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.price?.[1] ?? 0); // "close" price
 
     return calcPriceChange(rangeClosePrice, rangeStartPrice);
   }
@@ -387,7 +388,6 @@ export default class SwapChart extends Mixins(
   get chartData(): ChartDataItem[] {
     const prices = [...this.prices].reverse();
     const group = this.selectedFilter.group;
-    const type = this.chartType;
 
     if (!group) return prices;
 
@@ -396,7 +396,7 @@ export default class SwapChart extends Mixins(
     for (let i = 0; i < prices.length; i++) {
       if (i % group === 0) {
         groups.push(prices[i]);
-      } else if (type === CHART_TYPES.CANDLE) {
+      } else {
         const last = groups[groups.length - 1];
 
         last.price[1] = prices[i].price[1]; // close
@@ -597,7 +597,7 @@ export default class SwapChart extends Mixins(
           {
             type: 'line',
             showSymbol: false,
-            data: this.chartData.map((item) => [+item.timestamp, item.price[0]]),
+            data: this.chartData.map((item) => [+item.timestamp, item.price[1]]), // close price
             areaStyle: {
               opacity: 0.8,
               color: new graphic.LinearGradient(0, 0, 0, 1, [
@@ -681,7 +681,7 @@ export default class SwapChart extends Mixins(
 
     const groups = collections.map((collection: any) =>
       collection.nodes.map((item) => {
-        const price = this.preparePriceData(item, this.chartType);
+        const price = this.preparePriceData(item);
 
         return {
           timestamp: +item.timestamp * 1000,
@@ -710,7 +710,7 @@ export default class SwapChart extends Mixins(
       max = Math.max(max, ...price);
     }
 
-    const precision = Math.max(this.getPrecision(min), this.getPrecision(max));
+    const precision = this.getUpdatedPrecision(min, max);
     const limits = { min, max };
 
     return {
@@ -719,6 +719,10 @@ export default class SwapChart extends Mixins(
       precision,
       prices,
     };
+  }
+
+  private getUpdatedPrecision(min: number, max: number): number {
+    return Math.max(this.getPrecision(min), this.getPrecision(max));
   }
 
   private getHistoricalPrices(resetChartData = false): void {
@@ -755,55 +759,106 @@ export default class SwapChart extends Mixins(
     });
   }
 
-  private async getCurrentPrices(): Promise<void> {
-    try {
-      const filter = { ...this.selectedFilter, count: 1 };
-      const response = await this.getChartData(this.tokensAddresses, filter);
-
-      if (!response) return;
-
-      const newItem = response.prices[0];
-
-      if (!newItem) return;
-
-      if (this.prices[0].timestamp === newItem.timestamp) {
-        this.prices.shift();
-      }
-
-      this.prices.unshift(newItem);
-      this.limits = response.limits;
-      this.precision = response.precision;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   private unsubscribeFromPriceUpdates(): void {
-    if (this.priceUpdateSubscription) {
-      clearTimeout(this.priceUpdateSubscription as number);
-      this.priceUpdateSubscription = null;
+    if (this.priceUpdateWatcher) {
+      this.priceUpdateWatcher();
     }
+    if (this.priceUpdateTimestampSync) {
+      clearInterval(this.priceUpdateTimestampSync as number);
+    }
+    this.priceUpdateWatcher = null;
+    this.priceUpdateTimestampSync = null;
   }
 
   private subscribeToPriceUpdates(): void {
     this.unsubscribeFromPriceUpdates();
-    this.priceUpdateSubscription = setInterval(this.getCurrentPrices, POLLING_INTERVAL);
+
+    const addresses = [...this.tokensAddresses];
+
+    this.priceUpdateWatcher = this.$watch(
+      () => this.fiatPriceAndApyObject,
+      (updated) => this.handlePriceUpdates(addresses, updated)
+    );
+
+    this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(addresses), SYNC_INTERVAL);
   }
 
-  private preparePriceData(item: AssetSnapshot, chartType: CHART_TYPES): number[] {
-    const { open, close, low, high } = item.priceUSD;
+  private getCurrentSnapshotTimestamp(): number {
+    const now = Math.floor(Date.now() / 1000);
+    const seconds = SECONDS_IN_TYPE[this.selectedFilter.type] / 1000;
+    const index = Math.floor(now / seconds);
+    const timestamp = seconds * index * 1000;
 
-    if (chartType === CHART_TYPES.CANDLE) {
-      return [+open, +close, +low, +high];
+    return timestamp;
+  }
+
+  /**
+   * Creates new price item snapshot
+   */
+  private handlePriceTimestampSync(addresses: string[]): void {
+    if (!isEqual(addresses)(this.tokensAddresses)) return;
+
+    const timestamp = this.getCurrentSnapshotTimestamp();
+    const lastItem = this.prices[0];
+
+    if (!lastItem || timestamp === lastItem.timestamp) return;
+
+    const close = lastItem.price[1];
+    const priceData = [close, close, close, close];
+
+    this.prices.unshift({
+      timestamp,
+      price: priceData,
+    });
+  }
+
+  private handlePriceUpdates(addresses: string[], fiatPriceAndApyObject: SUBQUERY_TYPES.FiatPriceAndApyObject): void {
+    if (!isEqual(addresses)(this.tokensAddresses)) return;
+
+    const timestamp = this.getCurrentSnapshotTimestamp();
+    const lastItem = this.prices[0];
+
+    if (!lastItem) return;
+
+    const [priceA, priceB] = this.tokensAddresses.map((address) =>
+      FPNumber.fromCodecValue(fiatPriceAndApyObject[address]?.price ?? 0).toNumber()
+    );
+    const price = Number.isFinite(priceB) ? this.dividePrice(priceA, priceB) : priceA;
+    const min = Math.min(this.limits.min, price);
+    const max = Math.max(this.limits.max, price);
+
+    const [open, close, low, high] = lastItem.price;
+    const priceData = [
+      lastItem.timestamp === timestamp ? open : price,
+      price,
+      Math.min(low, price),
+      Math.max(high, price),
+    ];
+
+    if (lastItem.timestamp === timestamp) {
+      this.prices.shift();
     }
 
-    return [+close];
+    this.precision = this.getUpdatedPrecision(min, max);
+    this.limits = { min, max };
+    this.prices.unshift({
+      timestamp,
+      price: priceData,
+    });
+  }
+
+  private preparePriceData(item: AssetSnapshot): number[] {
+    const { open, close, low, high } = item.priceUSD;
+
+    return [+open, +close, +low, +high];
+  }
+
+  private dividePrice(priceA: number, priceB: number) {
+    return priceB !== 0 ? priceA / priceB : 0;
   }
 
   private dividePrices(priceA: number[], priceB: number[]) {
-    const div = (a: number, b: number) => (b !== 0 ? a / b : 0);
-
-    return priceA.map((price, index) => div(price, priceB[index]));
+    return priceA.map((price, index) => this.dividePrice(price, priceB[index]));
   }
 
   private clearData(): void {
