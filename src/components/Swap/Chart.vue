@@ -348,9 +348,8 @@ export default class SwapChart extends Mixins(
    */
   get priceChange(): FPNumber {
     const [startIndex, endIndex] = this.visibleChartItemsRange;
-    const priceIndex = this.isLineChart ? 0 : 1; // "close" price for candlestick
-    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.price?.[priceIndex] ?? 0);
-    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.price?.[priceIndex] ?? 0);
+    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.price?.[1] ?? 0); // "close" price
+    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.price?.[1] ?? 0); // "close" price
 
     return calcPriceChange(rangeClosePrice, rangeStartPrice);
   }
@@ -389,7 +388,6 @@ export default class SwapChart extends Mixins(
   get chartData(): ChartDataItem[] {
     const prices = [...this.prices].reverse();
     const group = this.selectedFilter.group;
-    const type = this.chartType;
 
     if (!group) return prices;
 
@@ -398,7 +396,7 @@ export default class SwapChart extends Mixins(
     for (let i = 0; i < prices.length; i++) {
       if (i % group === 0) {
         groups.push(prices[i]);
-      } else if (type === CHART_TYPES.CANDLE) {
+      } else {
         const last = groups[groups.length - 1];
 
         last.price[1] = prices[i].price[1]; // close
@@ -599,7 +597,7 @@ export default class SwapChart extends Mixins(
           {
             type: 'line',
             showSymbol: false,
-            data: this.chartData.map((item) => [+item.timestamp, item.price[0]]),
+            data: this.chartData.map((item) => [+item.timestamp, item.price[1]]), // close price
             areaStyle: {
               opacity: 0.8,
               color: new graphic.LinearGradient(0, 0, 0, 1, [
@@ -683,7 +681,7 @@ export default class SwapChart extends Mixins(
 
     const groups = collections.map((collection: any) =>
       collection.nodes.map((item) => {
-        const price = this.preparePriceData(item, this.chartType);
+        const price = this.preparePriceData(item);
 
         return {
           timestamp: +item.timestamp * 1000,
@@ -803,27 +801,24 @@ export default class SwapChart extends Mixins(
     const timestamp = this.getCurrentSnapshotTimestamp();
     const lastItem = this.prices[0];
 
-    if (timestamp === lastItem.timestamp) return;
+    if (!lastItem || timestamp === lastItem.timestamp) return;
 
-    const newPrice = (() => {
-      if (this.isLineChart) {
-        return lastItem.price;
-      }
-      const [open, close, low, high] = lastItem.price;
-      return [close, close, close, close];
-    })();
+    const close = lastItem.price[1];
+    const priceData = [close, close, close, close];
 
     this.prices.unshift({
       timestamp,
-      price: newPrice,
+      price: priceData,
     });
   }
 
-  private handlePriceUpdates(addresses: string[], fiatPriceAndApyObject): void {
+  private handlePriceUpdates(addresses: string[], fiatPriceAndApyObject: SUBQUERY_TYPES.FiatPriceAndApyObject): void {
     if (!isEqual(addresses)(this.tokensAddresses)) return;
 
     const timestamp = this.getCurrentSnapshotTimestamp();
     const lastItem = this.prices[0];
+
+    if (!lastItem) return;
 
     const [priceA, priceB] = this.tokensAddresses.map((address) =>
       FPNumber.fromCodecValue(fiatPriceAndApyObject[address]?.price ?? 0).toNumber()
@@ -832,14 +827,13 @@ export default class SwapChart extends Mixins(
     const min = Math.min(this.limits.min, price);
     const max = Math.max(this.limits.max, price);
 
-    const newPrice = (() => {
-      if (this.isLineChart) {
-        return [price];
-      }
-      const [open, close, low, high] = lastItem.price;
-
-      return [lastItem.timestamp === timestamp ? open : price, price, Math.min(low, price), Math.max(high, price)];
-    })();
+    const [open, close, low, high] = lastItem.price;
+    const priceData = [
+      lastItem.timestamp === timestamp ? open : price,
+      price,
+      Math.min(low, price),
+      Math.max(high, price),
+    ];
 
     if (lastItem.timestamp === timestamp) {
       this.prices.shift();
@@ -849,18 +843,14 @@ export default class SwapChart extends Mixins(
     this.limits = { min, max };
     this.prices.unshift({
       timestamp,
-      price: newPrice,
+      price: priceData,
     });
   }
 
-  private preparePriceData(item: AssetSnapshot, chartType: CHART_TYPES): number[] {
+  private preparePriceData(item: AssetSnapshot): number[] {
     const { open, close, low, high } = item.priceUSD;
 
-    if (chartType === CHART_TYPES.CANDLE) {
-      return [+open, +close, +low, +high];
-    }
-
-    return [+close];
+    return [+open, +close, +low, +high];
   }
 
   private dividePrice(priceA: number, priceB: number) {
