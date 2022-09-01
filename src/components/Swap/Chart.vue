@@ -875,6 +875,7 @@ export default class SwapChart extends Mixins(
     this.prices = [];
     this.pageInfos = [];
     this.zoomStart = 0;
+    this.zoomEnd = 100;
     this.limits = {
       min: Infinity,
       max: 0,
