@@ -284,7 +284,7 @@ export default class SwapChart extends Mixins(
 
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
   forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
-  priceUpdateSubscription: Nullable<NodeJS.Timer | number> = null;
+  priceUpdateSubscription: Nullable<VoidFunction> = null;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
@@ -780,14 +780,59 @@ export default class SwapChart extends Mixins(
 
   private unsubscribeFromPriceUpdates(): void {
     if (this.priceUpdateSubscription) {
-      clearTimeout(this.priceUpdateSubscription as number);
-      this.priceUpdateSubscription = null;
+      this.priceUpdateSubscription();
     }
+    this.priceUpdateSubscription = null;
   }
 
   private subscribeToPriceUpdates(): void {
     this.unsubscribeFromPriceUpdates();
-    this.priceUpdateSubscription = setInterval(this.getCurrentPrices, POLLING_INTERVAL);
+
+    const addresses = [...this.tokensAddresses];
+
+    this.priceUpdateSubscription = this.$watch(
+      () => this.fiatPriceAndApyObject,
+      (updated) => {
+        if (!isEqual(addresses)(this.tokensAddresses)) return;
+
+        this.handlePriceUpdates(updated);
+      }
+    );
+  }
+
+  private handlePriceUpdates(fiatPriceAndApyObject) {
+    const [priceA, priceB] = this.tokensAddresses.map((address) =>
+      FPNumber.fromCodecValue(fiatPriceAndApyObject[address]?.price ?? 0).toNumber()
+    );
+    const price = Number.isFinite(priceB) ? this.dividePrice(priceA, priceB) : priceA;
+    const now = Math.floor(Date.now() / 1000);
+    const seconds = SECONDS_IN_TYPE[this.selectedFilter.type] / 1000;
+    const index = Math.floor(now / seconds);
+    const timestamp = seconds * index * 1000;
+
+    const lastItem = this.prices[0];
+    const min = Math.min(this.limits.min, price);
+    const max = Math.max(this.limits.max, price);
+
+    const newPrice = (() => {
+      if (this.isLineChart) {
+        return [price];
+      }
+      const [open, close, low, high] = lastItem.price;
+
+      return [lastItem.timestamp === timestamp ? open : price, price, Math.min(low, price), Math.max(high, price)];
+    })();
+
+    if (lastItem.timestamp === timestamp) {
+      this.prices.shift();
+    }
+
+    this.precision = Math.max(this.getPrecision(min), this.getPrecision(max));
+    this.limits = { min, max };
+    this.prices.unshift({
+      timestamp,
+      price: newPrice,
+    });
   }
 
   private preparePriceData(item: AssetSnapshot, chartType: CHART_TYPES): number[] {
@@ -800,10 +845,12 @@ export default class SwapChart extends Mixins(
     return [+close];
   }
 
-  private dividePrices(priceA: number[], priceB: number[]) {
-    const div = (a: number, b: number) => (b !== 0 ? a / b : 0);
+  private dividePrice(priceA: number, priceB: number) {
+    return priceB !== 0 ? priceA / priceB : 0;
+  }
 
-    return priceA.map((price, index) => div(price, priceB[index]));
+  private dividePrices(priceA: number[], priceB: number[]) {
+    return priceA.map((price, index) => this.dividePrice(price, priceB[index]));
   }
 
   private clearData(): void {
