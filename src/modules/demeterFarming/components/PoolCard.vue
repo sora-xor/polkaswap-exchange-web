@@ -23,9 +23,9 @@
       <info-line :value="aprFormatted">
         <template #info-line-prefix>
           <div class="apr">
-            <span class="apr-label">APR</span>
+            <span class="apr-label">{{ TranslationConsts.APR }}</span>
             <div class="calculator-btn" @click="calculator">
-              <span>Calculator</span>
+              <span>{{ t('demeterFarming.calculator') }}</span>
               <calculator-icon class="calculator-btn-icon" />
             </div>
           </div>
