@@ -273,7 +273,7 @@ export default class SwapChart extends Mixins(
 
   // ordered by timestamp DESC
   prices: ChartDataItem[] = [];
-  pageInfos: SUBQUERY_TYPES.PageInfo[] = [];
+  pageInfos: Partial<SUBQUERY_TYPES.PageInfo>[] = [];
   zoomStart = 0; // percentage of zoom start position
   zoomEnd = 100; // percentage of zoom end position
   precision = 2;
@@ -346,11 +346,9 @@ export default class SwapChart extends Mixins(
    */
   get priceChange(): FPNumber {
     const [startIndex, endIndex] = this.visibleChartItemsRange;
-    const priceOpenIndex = 0; // always 'open' price
-    const priceCloseIndex = this.isLineChart ? 0 : 1; // 'close' price for candlestick chart
-
-    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.price?.[priceOpenIndex] ?? 0);
-    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.price?.[priceCloseIndex] ?? 0);
+    const priceIndex = this.isLineChart ? 0 : 1; // "close" price for candlestick
+    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.price?.[priceIndex] ?? 0);
+    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.price?.[priceIndex] ?? 0);
 
     return calcPriceChange(rangeClosePrice, rangeStartPrice);
   }
@@ -642,7 +640,7 @@ export default class SwapChart extends Mixins(
   }
 
   // ordered ty timestamp DESC
-  private async fetchData(address: string, filter: ChartFilter, pageInfo?: SUBQUERY_TYPES.PageInfo) {
+  private async fetchData(address: string, filter: ChartFilter, pageInfo?: Partial<SUBQUERY_TYPES.PageInfo>) {
     const { type, count } = filter;
     const nodes: AssetSnapshot[] = [];
 
@@ -665,7 +663,11 @@ export default class SwapChart extends Mixins(
     return { nodes, hasNextPage, endCursor };
   }
 
-  private async getChartData(addresses: string[], filter: ChartFilter, paginationInfos?: SUBQUERY_TYPES.PageInfo[]) {
+  private async getChartData(
+    addresses: string[],
+    filter: ChartFilter,
+    paginationInfos?: Partial<SUBQUERY_TYPES.PageInfo>[]
+  ) {
     const collections = await Promise.all(
       addresses.map((address, index) => this.fetchData(address, filter, paginationInfos?.[index]))
     );
@@ -808,6 +810,7 @@ export default class SwapChart extends Mixins(
     this.prices = [];
     this.pageInfos = [];
     this.zoomStart = 0;
+    this.zoomEnd = 100;
     this.limits = {
       min: Infinity,
       max: 0,

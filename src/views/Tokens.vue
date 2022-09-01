@@ -155,6 +155,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { gql } from '@urql/core';
 import { FPNumber } from '@sora-substrate/util';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 import { mixins, components, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
@@ -198,45 +199,42 @@ type TableItem = {
   tvlFormatted: AmountWithSuffix;
 } & Asset;
 
-const AssetsQuery = `
-query AssetsQuery ($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-  assets (after: $after, filter: { id: { in: $ids } }) {
-    pageInfo {
-      hasNextPage
-      endCursor
-    }
-    nodes {
-      id
-      reserves: poolXYK {
-        targetAssetReserves
+const AssetsQuery = gql`
+  query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
+    assets(after: $after, filter: { id: { in: $ids } }) {
+      pageInfo {
+        hasNextPage
+        endCursor
       }
-      daySnapshots: data (
-        filter: { and: [
-          { timestamp: { greaterThanOrEqualTo: $dayTimestamp } },
-          { type: { equalTo: HOUR } }
-        ] },
-        orderBy: [TIMESTAMP_ASC]
-      ) {
-        nodes {
-          timestamp
-          priceUSD
-          volume
+      nodes {
+        id
+        reserves: poolXYK {
+          targetAssetReserves
         }
-      }
-      weekSnapshot: data(
-        filter: { timestamp: { greaterThanOrEqualTo: $weekTimestamp } },
-        orderBy: [TIMESTAMP_ASC],
-        first: 1
-      ) {
-        nodes {
-          timestamp
-          priceUSD
-          volume
+        daySnapshots: data(
+          filter: { and: [{ timestamp: { greaterThanOrEqualTo: $dayTimestamp } }, { type: { equalTo: HOUR } }] }
+          orderBy: [TIMESTAMP_ASC]
+        ) {
+          nodes {
+            timestamp
+            priceUSD
+            volume
+          }
+        }
+        weekSnapshot: data(
+          filter: { timestamp: { greaterThanOrEqualTo: $weekTimestamp } }
+          orderBy: [TIMESTAMP_ASC]
+          first: 1
+        ) {
+          nodes {
+            timestamp
+            priceUSD
+            volume
+          }
         }
       }
     }
   }
-}
 `;
 
 @Component({
@@ -396,19 +394,19 @@ export default class Tokens extends Mixins(
 
     try {
       do {
-        const { assets } = await SubqueryExplorerService.request(AssetsQuery, {
+        const response = await SubqueryExplorerService.request(AssetsQuery, {
           after,
           ids,
           dayTimestamp,
           weekTimestamp,
         });
 
-        if (!assets) return tokensData;
+        if (!response || !response.assets) return tokensData;
 
-        hasNextPage = assets.pageInfo.hasNextPage;
-        after = assets.pageInfo.endCursor;
+        hasNextPage = response.assets.pageInfo.hasNextPage;
+        after = response.assets.pageInfo.endCursor;
 
-        assets.nodes.forEach((item) => {
+        response.assets.nodes.forEach((item) => {
           const volume = item.daySnapshots.nodes.reduce((buffer, snapshot) => {
             const hourVolume = new FPNumber(snapshot.volume.amountUSD);
 
