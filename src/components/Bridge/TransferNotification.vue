@@ -27,7 +27,7 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 import ethersUtil from '@/utils/ethers-util';
-import { isOutgoingTransaction } from '@/utils/bridge';
+import { isOutgoingTransaction } from '@/utils/bridge/eth/utils';
 import { getter, state, mutation } from '@/store/decorators';
 
 import type { BridgeHistory, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';

@@ -4,24 +4,30 @@ import { SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
 import store from '@/store';
+import { getEvmTransactionRecieptByHash } from '@/utils/bridge/utils';
 
-import { bridgeApi } from './api';
-import { STATES } from './types';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/types';
 import {
   getTransaction,
-  updateHistoryParams,
-  waitForIncomingRequest,
   waitForApprovedRequest,
+  waitForIncomingRequest,
   waitForSoraTransactionHash,
   waitForEvmTransaction,
-  getEvmTxRecieptByHash,
-} from './utils';
+  updateHistoryParams,
+} from '@/utils/bridge/eth/utils';
 
 import type { BridgeHistory } from '@sora-substrate/util';
-import type { HandleTransactionPayload } from './types';
-import type { EthBridgeHistory } from './history';
+import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import type { SignTxResult } from '@/store/bridge/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+
+type HandleTransactionPayload = {
+  status?: BridgeTxStatus;
+  nextState: ETH_BRIDGE_STATES;
+  rejectState: ETH_BRIDGE_STATES;
+  handler?: (id: string) => Promise<void>;
+};
 
 type SignedEvmTxResult = SignTxResult;
 
@@ -138,19 +144,19 @@ class BridgeTransactionStateHandler {
     await waitForEvmTransaction(id);
 
     const tx = getTransaction(id);
-    const { ethereumNetworkFee, blockHeight } = (await getEvmTxRecieptByHash(tx.ethereumHash as string)) || {};
+    const { evmNetworkFee, blockHeight } = (await getEvmTransactionRecieptByHash(tx.ethereumHash as string)) || {};
 
-    if (!ethereumNetworkFee || !blockHeight) {
+    if (!evmNetworkFee || !blockHeight) {
       this.updateTransactionParams(id, { ethereumHash: undefined, ethereumNetworkFee: undefined });
       throw new Error(`[Bridge]: Ethereum transaction not found, hash: ${tx.ethereumHash}. 'ethereumHash' is reset`);
     }
 
     // In BridgeHistory 'blockHeight' will store evm block number
-    this.updateTransactionParams(id, { ethereumNetworkFee, blockHeight });
+    this.updateTransactionParams(id, { ethereumNetworkFee: evmNetworkFee, blockHeight });
   }
 
   async onEvmSubmitted(id: string): Promise<void> {
-    this.updateTransactionParams(id, { transactionState: STATES.EVM_PENDING });
+    this.updateTransactionParams(id, { transactionState: ETH_BRIDGE_STATES.EVM_PENDING });
 
     const tx = getTransaction(id);
 
@@ -191,22 +197,22 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
     if (!transaction.id) throw new Error('[Bridge]: TX ID cannot be empty');
 
     switch (transaction.transactionState) {
-      case STATES.INITIAL: {
+      case ETH_BRIDGE_STATES.INITIAL: {
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Pending,
-          nextState: STATES.SORA_SUBMITTED,
-          rejectState: STATES.SORA_REJECTED,
+          nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
+          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
         });
       }
 
-      case STATES.SORA_SUBMITTED: {
+      case ETH_BRIDGE_STATES.SORA_SUBMITTED: {
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Pending,
-          nextState: STATES.SORA_PENDING,
-          rejectState: STATES.SORA_REJECTED,
+          nextState: ETH_BRIDGE_STATES.SORA_PENDING,
+          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
           handler: async (id: string) => {
             await this.beforeSubmit(id);
-            this.updateTransactionParams(id, { transactionState: STATES.SORA_PENDING });
+            this.updateTransactionParams(id, { transactionState: ETH_BRIDGE_STATES.SORA_PENDING });
 
             const { txId, blockId, to, amount, assetAddress } = getTransaction(id);
 
@@ -221,12 +227,12 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
 
             // transaction not signed
             if (!txId) {
-              await bridgeApi.transferToEth(asset, to, amount, id);
+              await ethBridgeApi.transferToEth(asset, to, amount, id);
             }
             // signed sora transaction has to be parsed by subquery
             if (txId && !blockId) {
               // format account address to sora format
-              const address = bridgeApi.formatAddress(bridgeApi.account.pair.address);
+              const address = ethBridgeApi.formatAddress(ethBridgeApi.account.pair.address);
               const bridgeHistory = await this.getBridgeHistoryInstance();
               const historyItem = first(await bridgeHistory.fetchHistoryElements(address, 0, [txId]));
 
@@ -243,10 +249,10 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
         });
       }
 
-      case STATES.SORA_PENDING: {
+      case ETH_BRIDGE_STATES.SORA_PENDING: {
         return await this.handleState(transaction.id, {
-          nextState: STATES.SORA_COMMITED,
-          rejectState: STATES.SORA_REJECTED,
+          nextState: ETH_BRIDGE_STATES.SORA_COMMITED,
+          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
           handler: async (id: string) => {
             const hash = await waitForSoraTransactionHash(id);
 
@@ -261,52 +267,52 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
         });
       }
 
-      case STATES.SORA_COMMITED: {
+      case ETH_BRIDGE_STATES.SORA_COMMITED: {
         return await this.handleState(transaction.id, {
-          nextState: STATES.EVM_SUBMITTED,
-          rejectState: STATES.SORA_REJECTED,
+          nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
+          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
           handler: async (id: string) => this.updateTransactionStep(id),
         });
       }
 
-      case STATES.SORA_REJECTED:
+      case ETH_BRIDGE_STATES.SORA_REJECTED:
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Pending,
-          nextState: STATES.SORA_SUBMITTED,
-          rejectState: STATES.SORA_REJECTED,
+          nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
+          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
         });
 
-      case STATES.EVM_SUBMITTED: {
+      case ETH_BRIDGE_STATES.EVM_SUBMITTED: {
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Pending,
-          nextState: STATES.EVM_PENDING,
-          rejectState: STATES.EVM_REJECTED,
+          nextState: ETH_BRIDGE_STATES.EVM_PENDING,
+          rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
           handler: async (id: string) => await this.onEvmSubmitted(id),
         });
       }
 
-      case STATES.EVM_PENDING: {
+      case ETH_BRIDGE_STATES.EVM_PENDING: {
         return await this.handleState(transaction.id, {
-          nextState: STATES.EVM_COMMITED,
-          rejectState: STATES.EVM_REJECTED,
+          nextState: ETH_BRIDGE_STATES.EVM_COMMITED,
+          rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
           handler: async (id: string) => await this.onEvmPending(id),
         });
       }
 
-      case STATES.EVM_COMMITED: {
+      case ETH_BRIDGE_STATES.EVM_COMMITED: {
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Done,
-          nextState: STATES.EVM_COMMITED,
-          rejectState: STATES.EVM_REJECTED,
+          nextState: ETH_BRIDGE_STATES.EVM_COMMITED,
+          rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
           handler: async (id: string) => this.onComplete(id),
         });
       }
 
-      case STATES.EVM_REJECTED: {
+      case ETH_BRIDGE_STATES.EVM_REJECTED: {
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Pending,
-          nextState: STATES.EVM_SUBMITTED,
-          rejectState: STATES.EVM_REJECTED,
+          nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
+          rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
         });
       }
     }
@@ -318,59 +324,59 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
     if (!transaction.id) throw new Error('[Bridge]: TX ID cannot be empty');
 
     switch (transaction.transactionState) {
-      case STATES.INITIAL: {
+      case ETH_BRIDGE_STATES.INITIAL: {
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Pending,
-          nextState: STATES.EVM_SUBMITTED,
-          rejectState: STATES.EVM_REJECTED,
+          nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
+          rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
         });
       }
 
-      case STATES.EVM_SUBMITTED: {
+      case ETH_BRIDGE_STATES.EVM_SUBMITTED: {
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Pending,
-          nextState: STATES.EVM_PENDING,
-          rejectState: STATES.EVM_REJECTED,
+          nextState: ETH_BRIDGE_STATES.EVM_PENDING,
+          rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
           handler: async (id: string) => await this.onEvmSubmitted(id),
         });
       }
 
-      case STATES.EVM_PENDING: {
+      case ETH_BRIDGE_STATES.EVM_PENDING: {
         return await this.handleState(transaction.id, {
-          nextState: STATES.EVM_COMMITED,
-          rejectState: STATES.EVM_REJECTED,
+          nextState: ETH_BRIDGE_STATES.EVM_COMMITED,
+          rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
           handler: async (id: string) => await this.onEvmPending(id),
         });
       }
 
-      case STATES.EVM_COMMITED: {
+      case ETH_BRIDGE_STATES.EVM_COMMITED: {
         return await this.handleState(transaction.id, {
-          nextState: STATES.SORA_SUBMITTED,
-          rejectState: STATES.EVM_REJECTED,
+          nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
+          rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
           handler: async (id: string) => this.updateTransactionStep(id),
         });
       }
 
-      case STATES.EVM_REJECTED: {
+      case ETH_BRIDGE_STATES.EVM_REJECTED: {
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Pending,
-          nextState: STATES.EVM_SUBMITTED,
-          rejectState: STATES.EVM_REJECTED,
+          nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
+          rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
         });
       }
 
-      case STATES.SORA_SUBMITTED: {
+      case ETH_BRIDGE_STATES.SORA_SUBMITTED: {
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Pending,
-          nextState: STATES.SORA_PENDING,
-          rejectState: STATES.SORA_REJECTED,
+          nextState: ETH_BRIDGE_STATES.SORA_PENDING,
+          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
         });
       }
 
-      case STATES.SORA_PENDING: {
+      case ETH_BRIDGE_STATES.SORA_PENDING: {
         return await this.handleState(transaction.id, {
-          nextState: STATES.SORA_COMMITED,
-          rejectState: STATES.SORA_REJECTED,
+          nextState: ETH_BRIDGE_STATES.SORA_COMMITED,
+          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
           handler: async (id: string) => {
             const tx = getTransaction(id);
             const { hash, blockId } = await waitForIncomingRequest(tx);
@@ -379,20 +385,20 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
         });
       }
 
-      case STATES.SORA_COMMITED: {
+      case ETH_BRIDGE_STATES.SORA_COMMITED: {
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Done,
-          nextState: STATES.SORA_COMMITED,
-          rejectState: STATES.SORA_REJECTED,
+          nextState: ETH_BRIDGE_STATES.SORA_COMMITED,
+          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
           handler: async (id: string) => this.onComplete(id),
         });
       }
 
-      case STATES.SORA_REJECTED: {
+      case ETH_BRIDGE_STATES.SORA_REJECTED: {
         return await this.handleState(transaction.id, {
           status: BridgeTxStatus.Pending,
-          nextState: STATES.SORA_SUBMITTED,
-          rejectState: STATES.SORA_REJECTED,
+          nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
+          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
         });
       }
     }
@@ -459,10 +465,7 @@ const appBridge = new Bridge({
   showNotification: (tx: BridgeHistory) => store.commit.bridge.setNotificationData(tx),
   getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
   getActiveHistoryItem: () => store.getters.bridge.historyItem,
-  getBridgeHistoryInstance: () => store.dispatch.bridge.getBridgeHistoryInstance(),
+  getBridgeHistoryInstance: () => store.dispatch.bridge.getEthBridgeHistoryInstance(),
 });
 
-export { bridgeApi, appBridge };
-export * from './types';
-export * from './utils';
-export * from './history';
+export default appBridge;

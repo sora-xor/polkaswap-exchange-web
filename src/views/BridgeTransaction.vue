@@ -304,7 +304,9 @@ import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
-import { bridgeApi, STATES, isOutgoingTransaction, isUnsignedFromPart } from '@/utils/bridge';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/types';
+import { isOutgoingTransaction, isUnsignedFromPart } from '@/utils/bridge/eth/utils';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 const FORMATTED_HASH_LENGTH = 24;
@@ -425,27 +427,27 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get currentState(): string {
-    return this.historyItem?.transactionState ?? STATES.INITIAL;
+    return this.historyItem?.transactionState ?? ETH_BRIDGE_STATES.INITIAL;
   }
 
   get isTransferStarted(): boolean {
-    return this.currentState !== STATES.INITIAL;
+    return this.currentState !== ETH_BRIDGE_STATES.INITIAL;
   }
 
   get isTransactionFromPending(): boolean {
-    return this.currentState === (this.isSoraToEvm ? STATES.SORA_PENDING : STATES.EVM_PENDING);
+    return this.currentState === (this.isSoraToEvm ? ETH_BRIDGE_STATES.SORA_PENDING : ETH_BRIDGE_STATES.EVM_PENDING);
   }
 
   get isTransactionToPending(): boolean {
-    return this.currentState === (!this.isSoraToEvm ? STATES.SORA_PENDING : STATES.EVM_PENDING);
+    return this.currentState === (!this.isSoraToEvm ? ETH_BRIDGE_STATES.SORA_PENDING : ETH_BRIDGE_STATES.EVM_PENDING);
   }
 
   get isTransactionFromFailed(): boolean {
-    return this.currentState === (this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED);
+    return this.currentState === (this.isSoraToEvm ? ETH_BRIDGE_STATES.SORA_REJECTED : ETH_BRIDGE_STATES.EVM_REJECTED);
   }
 
   get isTransactionToFailed(): boolean {
-    return this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED);
+    return this.currentState === (!this.isSoraToEvm ? ETH_BRIDGE_STATES.SORA_REJECTED : ETH_BRIDGE_STATES.EVM_REJECTED);
   }
 
   get isTransactionFromCompleted(): boolean {
@@ -453,7 +455,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isTransactionToCompleted(): boolean {
-    return this.currentState === (!this.isSoraToEvm ? STATES.SORA_COMMITED : STATES.EVM_COMMITED);
+    return this.currentState === (!this.isSoraToEvm ? ETH_BRIDGE_STATES.SORA_COMMITED : ETH_BRIDGE_STATES.EVM_COMMITED);
   }
 
   get transactionStep(): number {
@@ -682,7 +684,7 @@ export default class BridgeTransaction extends Mixins(
       const tx = { ...this.historyItem };
 
       if (tx.id && !this.txInProcess && isUnsignedFromPart(tx)) {
-        bridgeApi.removeHistory(tx.id);
+        ethBridgeApi.removeHistory(tx.id);
         this.setHistory(); // hack to update another views because of unknown hooks exucution order
       }
     }

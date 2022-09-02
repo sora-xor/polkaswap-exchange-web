@@ -5,7 +5,7 @@ import type { BridgeHistory, CodecString } from '@sora-substrate/util';
 
 import router from '@/router';
 import { PageNames, ZeroStringValue } from '@/consts';
-import { bridgeApi } from '@/utils/bridge';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { state, mutation, action } from '@/store/decorators';
 
 @Component
@@ -35,7 +35,7 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
       this.handleBack();
     }
     await this.withLoading(async () => {
-      const tx = bridgeApi.getHistory(id as string) as BridgeHistory;
+      const tx = ethBridgeApi.getHistory(id as string) as BridgeHistory;
 
       if (!tx?.id) {
         this.handleBack();

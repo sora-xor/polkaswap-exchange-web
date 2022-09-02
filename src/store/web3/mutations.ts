@@ -3,7 +3,7 @@ import { defineMutations } from 'direct-vuex';
 import { BridgeNetworks, CodecString } from '@sora-substrate/util';
 
 import ethersUtil from '@/utils/ethers-util';
-import { bridgeApi } from '@/utils/bridge';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { initialState } from './state';
 import type { SubNetwork } from '@/utils/ethers-util';
 import type { Web3State } from './types';
@@ -37,7 +37,7 @@ const mutations = defineMutations<Web3State>()({
   },
   setEvmNetwork(state, network: BridgeNetworks): void {
     state.evmNetwork = network;
-    bridgeApi.externalNetwork = network;
+    ethBridgeApi.externalNetwork = network;
   },
   setEvmBalance(state, balance: CodecString): void {
     state.evmBalance = balance;

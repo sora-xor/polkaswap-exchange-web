@@ -4,7 +4,7 @@ import type { BridgeHistory, CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import { ZeroStringValue } from '@/consts';
-import { bridgeApi } from '@/utils/bridge';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import type { BridgeState } from './types';
 
 const mutations = defineMutations<BridgeState>()({
@@ -32,7 +32,7 @@ const mutations = defineMutations<BridgeState>()({
     state.evmNetworkFeeFetching = false;
   },
   setHistory(state): void {
-    state.history = [...bridgeApi.historyList] as Array<BridgeHistory>;
+    state.history = [...ethBridgeApi.historyList] as Array<BridgeHistory>;
   },
   setHistoryPage(state, historyPage?: number): void {
     state.historyPage = historyPage || 1;

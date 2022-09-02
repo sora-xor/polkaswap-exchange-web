@@ -73,7 +73,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { state, action, getter } from '@/store/decorators';
-import { isUnsignedToPart } from '@/utils/bridge';
+import { isUnsignedToPart } from '@/utils/bridge/eth/utils';
 
 @Component({
   components: {

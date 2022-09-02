@@ -1,6 +1,4 @@
-import type { BridgeTxStatus } from '@sora-substrate/util';
-
-export enum STATES {
+export enum ETH_BRIDGE_STATES {
   INITIAL = 'INITIAL',
   SORA_SUBMITTED = 'SORA_SUBMITTED',
   SORA_PENDING = 'SORA_PENDING',
@@ -11,10 +9,3 @@ export enum STATES {
   EVM_REJECTED = 'EVM_REJECTED',
   EVM_COMMITED = 'EVM_COMMITED',
 }
-
-export type HandleTransactionPayload = {
-  status?: BridgeTxStatus;
-  nextState: STATES;
-  rejectState: STATES;
-  handler?: (id: string) => Promise<void>;
-};

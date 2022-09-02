@@ -1,7 +1,7 @@
 import { defineActions } from 'direct-vuex';
 
 import { assetsActionContext } from '@/store/assets';
-import { bridgeApi } from '@/utils/bridge';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { ZeroStringValue } from '@/consts';
 import type { RegisterAssetWithExternalBalance } from './types';
 
@@ -26,7 +26,7 @@ const actions = defineActions({
     commit.setRegisteredAssetsFetching(true);
 
     try {
-      const registeredAssets = await bridgeApi.getRegisteredAssets();
+      const registeredAssets = await ethBridgeApi.getRegisteredAssets();
       const enabledRegisteredAssets = registeredAssets.filter(
         (item) => !DISABLED_ASSETS_FOR_BRIDGE.includes(item.address)
       );

@@ -6,9 +6,12 @@ import { BridgeNetworks, BridgeTxStatus, Operation } from '@sora-substrate/util'
 import { SubqueryExplorerService, historyElementsFilter, SUBQUERY_TYPES, api } from '@soramitsu/soraneo-wallet-web';
 
 import ethersUtil from '@/utils/ethers-util';
-import { bridgeApi } from './api';
-import { STATES } from './types';
-import { isOutgoingTransaction, getEvmTxRecieptByHash } from './utils';
+import { getEvmTransactionRecieptByHash } from '@/utils/bridge/utils';
+
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/types';
+import { isOutgoingTransaction } from '@/utils/bridge/eth/utils';
+
 import { ZeroStringValue } from '@/consts';
 
 import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
@@ -42,11 +45,11 @@ export class EthBridgeHistory {
   }
 
   public get historySyncTimestamp(): number {
-    return +(bridgeApi.accountStorage?.get('bridgeHistorySyncTimestamp') || 0);
+    return +(ethBridgeApi.accountStorage?.get('bridgeHistorySyncTimestamp') || 0);
   }
 
   public set historySyncTimestamp(timestamp: number) {
-    bridgeApi.accountStorage?.set('bridgeHistorySyncTimestamp', timestamp);
+    ethBridgeApi.accountStorage?.set('bridgeHistorySyncTimestamp', timestamp);
   }
 
   public async init(): Promise<void> {
@@ -194,7 +197,7 @@ export class EthBridgeHistory {
     contracts?: string[],
     updateCallback?: AsyncVoidFn | VoidFunction
   ): Promise<void> {
-    const currentHistory = bridgeApi.historyList as BridgeHistory[];
+    const currentHistory = ethBridgeApi.historyList as BridgeHistory[];
     const historyElements = await this.fetchHistoryElements(address, this.historySyncTimestamp);
 
     if (!historyElements.length) return;
@@ -223,7 +226,8 @@ export class EthBridgeHistory {
       // skip, if local bridge transaction has "Done" status
       if (localHistoryItem?.status === BridgeTxStatus.Done) continue;
 
-      const hash = isOutgoing ? requestHash : await bridgeApi.getSoraHashByEthereumHash(requestHash);
+      // [WARNING]: api.query.ethBridge storage usage
+      const hash = isOutgoing ? requestHash : await ethBridgeApi.getSoraHashByEthereumHash(requestHash);
       const amount = historyElementData.amount;
       const assetAddress = historyElementData.assetId;
       const from = address;
@@ -232,8 +236,9 @@ export class EthBridgeHistory {
       const txId = historyElement.id;
       const soraNetworkFee = isOutgoing ? networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
       const soraTimestamp = historyElement.timestamp * 1000;
+      // [WARNING]: api.query.ethBridge storage usage
       const soraPartCompleted =
-        !isOutgoing || (!!hash && (await bridgeApi.getRequestStatus(hash))) === BridgeTxStatus.Ready;
+        !isOutgoing || (!!hash && (await ethBridgeApi.getRequestStatus(hash))) === BridgeTxStatus.Ready;
       const transactionStep = soraPartCompleted ? 2 : 1;
 
       const ethereumTx = isOutgoing
@@ -243,10 +248,10 @@ export class EthBridgeHistory {
         : await this.findEthTxByEthereumHash(requestHash);
 
       const ethereumHash = ethereumTx?.hash ?? '';
-      const recieptData = ethereumHash ? await getEvmTxRecieptByHash(ethereumHash) : null;
+      const recieptData = ethereumHash ? await getEvmTransactionRecieptByHash(ethereumHash) : null;
 
       const to = isOutgoing ? historyElementData.sidechainAddress : recieptData?.from;
-      const ethereumNetworkFee = recieptData?.ethereumNetworkFee;
+      const ethereumNetworkFee = recieptData?.evmNetworkFee;
       const blockHeight = ethereumTx ? String(ethereumTx.blockNumber) : undefined;
       const evmTimestamp = ethereumTx?.timestamp
         ? ethereumTx.timestamp * 1000
@@ -258,13 +263,13 @@ export class EthBridgeHistory {
 
       const transactionState = isOutgoing
         ? ethereumHash
-          ? STATES.EVM_COMMITED
+          ? ETH_BRIDGE_STATES.EVM_COMMITED
           : soraPartCompleted
-          ? STATES.EVM_REJECTED
+          ? ETH_BRIDGE_STATES.EVM_REJECTED
           : hash
-          ? STATES.SORA_PENDING
-          : STATES.SORA_REJECTED
-        : STATES.SORA_COMMITED;
+          ? ETH_BRIDGE_STATES.SORA_PENDING
+          : ETH_BRIDGE_STATES.SORA_REJECTED
+        : ETH_BRIDGE_STATES.SORA_COMMITED;
 
       const status = isOutgoing
         ? ethereumHash
@@ -300,9 +305,9 @@ export class EthBridgeHistory {
 
       // update or create local history item
       if (localHistoryItem) {
-        bridgeApi.saveHistory({ ...localHistoryItem, ...historyItemData } as BridgeHistory);
+        ethBridgeApi.saveHistory({ ...localHistoryItem, ...historyItemData } as BridgeHistory);
       } else {
-        bridgeApi.generateHistoryItem(historyItemData as BridgeHistory);
+        ethBridgeApi.generateHistoryItem(historyItemData as BridgeHistory);
       }
 
       await updateCallback?.();

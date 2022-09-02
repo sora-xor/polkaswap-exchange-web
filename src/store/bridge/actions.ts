@@ -5,10 +5,14 @@ import { BridgeCurrencyType, BridgeHistory, BridgeNetworks, FPNumber, Operation 
 import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
+import appBridge from '@/utils/bridge';
 import { bridgeActionContext } from '@/store/bridge';
 import { MaxUint256 } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
-import { appBridge, bridgeApi, EthBridgeHistory, STATES, waitForApprovedRequest } from '@/utils/bridge';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/types';
+import { waitForApprovedRequest } from '@/utils/bridge/eth/utils';
+import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import { isEthereumAddress } from '@/utils';
 import type { SignTxResult } from './types';
@@ -39,7 +43,7 @@ function bridgeDataToHistoryItem(
     transactionStep: step as 1 | 2,
     hash: '',
     ethereumHash: '',
-    transactionState: STATES.INITIAL,
+    transactionState: ETH_BRIDGE_STATES.INITIAL,
     soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
     ethereumNetworkFee: (params as any).ethereumNetworkFee ?? state.evmNetworkFee,
     externalNetwork: rootState.web3.evmNetwork,
@@ -86,14 +90,14 @@ const actions = defineActions({
     const blockNumber = value ?? (await (await ethersUtil.getEthersInstance()).getBlockNumber());
     commit.setEvmBlockNumber(blockNumber);
   },
-  async getBridgeHistoryInstance(context): Promise<EthBridgeHistory> {
+  async getEthBridgeHistoryInstance(context): Promise<EthBridgeHistory> {
     const { rootState } = bridgeActionContext(context);
     const etherscanApiKey = rootState.wallet.settings.apiKeys?.etherscan;
-    const bridgeHistory = new EthBridgeHistory(etherscanApiKey);
+    const ethBridgeHistory = new EthBridgeHistory(etherscanApiKey);
 
-    await bridgeHistory.init();
+    await ethBridgeHistory.init();
 
-    return bridgeHistory;
+    return ethBridgeHistory;
   },
   // TODO: Need to restore transactions for all networks
   async updateHistory(context): Promise<void> {
@@ -102,7 +106,7 @@ const actions = defineActions({
 
     commit.setHistoryLoading(true);
 
-    const bridgeHistory = await dispatch.getBridgeHistoryInstance();
+    const bridgeHistory = await dispatch.getEthBridgeHistoryInstance();
     const address = rootState.wallet.account.address;
     const assets = rootGetters.assets.assetsDataTable;
     const networkFees = rootState.wallet.settings.networkFees;
@@ -135,7 +139,7 @@ const actions = defineActions({
   async generateHistoryItem(context, playground): Promise<BridgeHistory> {
     const { commit } = bridgeActionContext(context);
     const historyData = bridgeDataToHistoryItem(context, playground);
-    const historyItem = bridgeApi.generateHistoryItem(historyData);
+    const historyItem = ethBridgeApi.generateHistoryItem(historyData);
 
     if (!historyItem) {
       throw new Error('[Bridge]: "generateHistoryItem" failed');
@@ -147,7 +151,7 @@ const actions = defineActions({
   },
   async signEvmTransactionSoraToEvm(context, id: string): Promise<SignTxResult> {
     const { getters, rootState, rootGetters } = bridgeActionContext(context);
-    const tx = bridgeApi.getHistory(id) as Nullable<BridgeHistory>;
+    const tx = ethBridgeApi.getHistory(id) as Nullable<BridgeHistory>;
 
     if (!tx?.hash) throw new Error('TX ID cannot be empty!');
     if (!tx.amount) throw new Error('TX amount cannot be empty!');
@@ -225,7 +229,7 @@ const actions = defineActions({
   },
   async signEvmTransactionEvmToSora(context, id: string): Promise<SignTxResult> {
     const { commit, rootState, rootGetters, rootDispatch } = bridgeActionContext(context);
-    const tx = bridgeApi.getHistory(id);
+    const tx = ethBridgeApi.getHistory(id);
 
     if (!tx?.id) throw new Error('TX cannot be empty!');
     if (!tx.amount) throw new Error('TX amount cannot be empty!');

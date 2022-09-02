@@ -15,7 +15,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import ethersUtil from '@/utils/ethers-util';
-import { bridgeApi } from '@/utils/bridge';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { action } from '@/store/decorators';
 
 @Component
@@ -30,7 +30,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   async created(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.setEvmNetwork(bridgeApi.externalNetwork);
+        this.setEvmNetwork(ethBridgeApi.externalNetwork);
         await this.onEvmNetworkTypeChange();
 
         this.unwatchEthereum = await ethersUtil.watchEthereum({
