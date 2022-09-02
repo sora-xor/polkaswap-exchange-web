@@ -728,7 +728,7 @@ export default class SwapChart extends Mixins(
   private getHistoricalPrices(resetChartData = false): void {
     if (resetChartData) {
       this.clearData();
-    } else if (this.loading || this.pageInfos.some((pageInfo) => !pageInfo.hasNextPage)) {
+    } else if (this.loading || this.isAllHistoricalPricesFetched(this.pageInfos)) {
       return;
     }
 
@@ -818,8 +818,6 @@ export default class SwapChart extends Mixins(
     const timestamp = this.getCurrentSnapshotTimestamp();
     const lastItem = this.prices[0];
 
-    if (!lastItem) return;
-
     const [priceA, priceB] = this.tokensAddresses.map((address) =>
       FPNumber.fromCodecValue(fiatPriceAndApyObject[address]?.price ?? 0).toNumber()
     );
@@ -827,15 +825,15 @@ export default class SwapChart extends Mixins(
     const min = Math.min(this.limits.min, price);
     const max = Math.max(this.limits.max, price);
 
-    const [open, close, low, high] = lastItem.price;
-    const priceData = [
-      lastItem.timestamp === timestamp ? open : price,
-      price,
-      Math.min(low, price),
-      Math.max(high, price),
-    ];
+    const open = lastItem?.price?.[0] ?? price;
+    const low = lastItem?.price?.[2] ?? price;
+    const high = lastItem?.price?.[3] ?? price;
 
-    if (lastItem.timestamp === timestamp) {
+    const isCurrentTimeframe = lastItem?.timestamp === timestamp;
+
+    const priceData = [isCurrentTimeframe ? open : price, price, Math.min(low, price), Math.max(high, price)];
+
+    if (isCurrentTimeframe) {
       this.prices.shift();
     }
 
@@ -920,6 +918,10 @@ export default class SwapChart extends Mixins(
     }
 
     return precision;
+  }
+
+  private isAllHistoricalPricesFetched(pageInfos: Partial<SUBQUERY_TYPES.PageInfo>[]): boolean {
+    return pageInfos.some((pageInfo) => !pageInfo.hasNextPage);
   }
 
   private formatPriceChange(value: FPNumber): string {
