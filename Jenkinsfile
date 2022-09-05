@@ -19,7 +19,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     copyFile: 'env.json',
     ipfsHashNotification: true,
     fleekDefaultSiteName: 'long-firefly-8047',
-    ipfsHashChatID: '-603145932',
+    ipfsHashChatID: '-1001375555544',
     stageDeploy: true,
     downstreamJob: '../deploy/exchange-stage1'
 )
