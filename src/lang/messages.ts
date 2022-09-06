@@ -197,6 +197,8 @@ export default {
     [Operation.DemeterFarmingStakeToken]: 'Add Stake',
     [Operation.DemeterFarmingUnstakeToken]: 'Remove Stake',
     [Operation.DemeterFarmingGetRewards]: 'Claim Rewards',
+    [Operation.EthBridgeIncoming]: 'Hashi Bridge',
+    [Operation.EthBridgeOutgoing]: 'Hashi Bridge',
     andText: 'and',
     [TransactionStatus.Finalized]: {
       [Operation.Transfer]: '{action} {amount} {symbol} {direction} {address}',
@@ -214,6 +216,8 @@ export default {
       [Operation.DemeterFarmingStakeToken]: 'Added {amount} {symbol}',
       [Operation.DemeterFarmingUnstakeToken]: 'Removed {amount} {symbol}',
       [Operation.DemeterFarmingGetRewards]: '{amount} {symbol} claimed successfully',
+      [Operation.EthBridgeIncoming]: 'Transfered {amount} {symbol} from Ethereum to SORA',
+      [Operation.EthBridgeOutgoing]: 'Transfered {amount} {symbol} from SORA to Ethereum',
     },
     [TransactionStatus.Error]: {
       [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
@@ -231,6 +235,8 @@ export default {
       [Operation.DemeterFarmingStakeToken]: 'Failed to add {amount} {symbol}',
       [Operation.DemeterFarmingUnstakeToken]: 'Failed to remove {amount} {symbol}',
       [Operation.DemeterFarmingGetRewards]: 'Failed to claim {symbol}',
+      [Operation.EthBridgeIncoming]: 'Failed to transfer {amount} {symbol} from Ethereum to SORA',
+      [Operation.EthBridgeOutgoing]: 'Failed to transfer {amount} {symbol} from SORA to Ethereum',
     },
   },
   pageNotFound: {
