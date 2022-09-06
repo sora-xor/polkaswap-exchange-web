@@ -26,7 +26,7 @@ async function updateNetworkChainGenesisHash(context: ActionContext<any, any>): 
 
 const actions = defineActions({
   async connectToNode(context, options: ConnectToNodeOptions = {}): Promise<void> {
-    const { dispatch, commit, state, rootState, getters } = settingsActionContext(context);
+    const { dispatch, commit, state, rootDispatch, rootState, getters } = settingsActionContext(context);
     if (!state.nodeConnectionAllowance) return;
 
     const { node, onError, currentNodeIndex = 0, ...restOptions } = options;
@@ -39,7 +39,10 @@ const actions = defineActions({
       // wallet init & update flow
       if (!rootState.wallet.settings.isWalletLoaded) {
         try {
-          await initWallet({ permissions: WalletPermissions });
+          await initWallet({
+            permissions: WalletPermissions,
+            updateEthBridgeHistory: rootDispatch.bridge.updateEthBridgeHistory,
+          });
         } catch (error) {
           console.error(error);
           throw error;
