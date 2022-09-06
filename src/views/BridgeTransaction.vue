@@ -305,9 +305,10 @@ import { Components, PageNames } from '@/consts';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/types';
 import { isOutgoingTransaction, isUnsignedFromPart } from '@/utils/bridge/eth/utils';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+
+const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 const FORMATTED_HASH_LENGTH = 24;
 

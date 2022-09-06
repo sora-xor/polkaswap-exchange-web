@@ -3,19 +3,26 @@ import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { ethers } from 'ethers';
 import { BridgeNetworks, BridgeTxStatus, Operation } from '@sora-substrate/util';
-import { SubqueryExplorerService, historyElementsFilter, SUBQUERY_TYPES, api } from '@soramitsu/soraneo-wallet-web';
+import {
+  api,
+  historyElementsFilter,
+  SubqueryExplorerService,
+  SUBQUERY_TYPES,
+  WALLET_CONSTS,
+} from '@soramitsu/soraneo-wallet-web';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getEvmTransactionRecieptByHash } from '@/utils/bridge/utils';
 
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/types';
 import { isOutgoingTransaction } from '@/utils/bridge/eth/utils';
 
 import { ZeroStringValue } from '@/consts';
 
 import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
 import type { RegisteredAccountAssetObject } from '@/store/assets/types';
+
+const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 type TimestampMap<T> = {
   [key: number]: T;

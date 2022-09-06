@@ -1,6 +1,8 @@
 import compact from 'lodash/fp/compact';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
+
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { BridgeCurrencyType, BridgeHistory, BridgeNetworks, FPNumber, Operation } from '@sora-substrate/util';
 import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
@@ -10,12 +12,13 @@ import { bridgeActionContext } from '@/store/bridge';
 import { MaxUint256 } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/types';
 import { waitForApprovedRequest } from '@/utils/bridge/eth/utils';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import { isEthereumAddress } from '@/utils';
 import type { SignTxResult } from './types';
+
+const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 

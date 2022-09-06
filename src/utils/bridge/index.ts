@@ -1,13 +1,12 @@
 import first from 'lodash/fp/first';
 import { BridgeTxStatus, Operation } from '@sora-substrate/util';
-import { SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
 import store from '@/store';
 import { getEvmTransactionRecieptByHash } from '@/utils/bridge/utils';
 
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { ETH_BRIDGE_STATES } from '@/utils/bridge/eth/types';
 import {
   getTransaction,
   waitForApprovedRequest,
@@ -22,10 +21,12 @@ import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import type { SignTxResult } from '@/store/bridge/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
+const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
+
 type HandleTransactionPayload = {
   status?: BridgeTxStatus;
-  nextState: ETH_BRIDGE_STATES;
-  rejectState: ETH_BRIDGE_STATES;
+  nextState: WALLET_CONSTS.ETH_BRIDGE_STATES;
+  rejectState: WALLET_CONSTS.ETH_BRIDGE_STATES;
   handler?: (id: string) => Promise<void>;
 };
 
