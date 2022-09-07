@@ -28,7 +28,7 @@ export const isXorAccountAsset = (asset: Asset | AccountAsset | RegisteredAccoun
   return asset ? asset.address === XOR.address : false;
 };
 
-export const isEthereumAddress = (address: string): boolean => {
+export const isNativeEvmTokenAddress = (address: string): boolean => {
   const numberString = address.replace(/^0x/, '');
   const number = parseInt(numberString, 16);
 
@@ -71,7 +71,7 @@ const getMaxBalance = (
   if (
     !asZeroValue(fee) &&
     ((!isExternalBalance && isXorAccountAsset(asset)) ||
-      (isExternalBalance && isEthereumAddress((asset as RegisteredAccountAsset).externalAddress))) &&
+      (isExternalBalance && isNativeEvmTokenAddress((asset as RegisteredAccountAsset).externalAddress))) &&
     !isBondedBalance
   ) {
     const fpFee = FPNumber.fromCodecValue(fee);

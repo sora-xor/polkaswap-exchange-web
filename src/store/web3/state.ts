@@ -1,12 +1,11 @@
 import { BridgeNetworks } from '@sora-substrate/util';
 
 import { ZeroStringValue } from '@/consts';
-import ethersUtil from '@/utils/ethers-util';
 import type { Web3State } from './types';
 
 export function initialState(): Web3State {
   return {
-    evmAddress: ethersUtil.getEvmUserAddress(),
+    evmAddress: '',
     evmBalance: ZeroStringValue,
     networkType: '',
     subNetworks: [],

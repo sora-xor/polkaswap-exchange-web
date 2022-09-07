@@ -270,8 +270,8 @@ import {
   getMaxValue,
   getAssetBalance,
   asZeroValue,
-  isEthereumAddress,
 } from '@/utils';
+import ethersUtil from '@/utils/ethers-util';
 import type { SubNetwork } from '@/utils/ethers-util';
 import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
@@ -377,7 +377,7 @@ export default class Bridge extends Mixins(
       const fpFee = this.getFPNumberFromCodec(this.soraNetworkFee, decimals);
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee);
     }
-    if (isEthereumAddress(this.asset.externalAddress) && !this.isSoraToEvm) {
+    if (ethersUtil.isNativeEvmTokenAddress(this.asset.externalAddress) && !this.isSoraToEvm) {
       const fpFee = this.getFPNumberFromCodec(this.evmNetworkFee);
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee);
     }

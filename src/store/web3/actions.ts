@@ -1,11 +1,10 @@
 import { defineActions } from 'direct-vuex';
-import { BridgeNetworks, FPNumber, CodecString } from '@sora-substrate/util';
+import { BridgeNetworks } from '@sora-substrate/util';
 import { ethers } from 'ethers';
 import type { ActionContext } from 'vuex';
 
 import { web3ActionContext } from '@/store/web3';
 import ethersUtil, {
-  ABI,
   Contract,
   ContractNetwork,
   EvmNetworkTypeName,
@@ -13,8 +12,7 @@ import ethersUtil, {
   OtherContractType,
   SubNetwork,
 } from '@/utils/ethers-util';
-import { ZeroStringValue } from '@/consts';
-import { isEthereumAddress } from '@/utils';
+
 import type { Provider } from '@/utils/ethers-util';
 
 async function setEthSmartContracts(context: ActionContext<any, any>, network: SubNetwork): Promise<void> {
@@ -58,16 +56,18 @@ const actions = defineActions({
     const address = await ethersUtil.onConnect({ provider });
     commit.setEvmAddress(address);
   },
-  async setEvmNetworkType(context, network?: string): Promise<void> {
+
+  async setEvmNetworkType(context, networkHex?: string): Promise<void> {
     const { commit } = web3ActionContext(context);
     let networkType = '';
-    if (!network) {
+    if (!networkHex) {
       networkType = await ethersUtil.getEvmNetworkType();
     } else {
-      networkType = EvmNetworkTypeName[network];
+      networkType = EvmNetworkTypeName[networkHex];
     }
     commit.setNetworkType(networkType);
   },
+
   async setSmartContracts(context, subNetworks: Array<SubNetwork>): Promise<void> {
     for (const network of subNetworks) {
       switch (network.id) {
@@ -81,51 +81,8 @@ const actions = defineActions({
       }
     }
   },
-  async getEvmBalance(context): Promise<CodecString> {
-    const { commit, state } = web3ActionContext(context);
-    let value = ZeroStringValue;
-    try {
-      const address = state.evmAddress;
 
-      if (address) {
-        const ethersInstance = await ethersUtil.getEthersInstance();
-        const wei = await ethersInstance.getBalance(address);
-        const balance = ethers.utils.formatEther(wei.toString());
-        value = new FPNumber(balance).toCodecString();
-      }
-    } catch (error) {
-      console.error(error);
-    }
-
-    commit.setEvmBalance(value);
-    return value;
-  },
-  async getBalanceByEvmAddress(context, assetAddress: string): Promise<{ value: CodecString; decimals: number }> {
-    const { dispatch, state } = web3ActionContext(context);
-    let value = ZeroStringValue;
-    let decimals = 18;
-    const account = state.evmAddress;
-    if (!account) {
-      return { value, decimals };
-    }
-    try {
-      const ethersInstance = await ethersUtil.getEthersInstance();
-      const isNativeEvmToken = isEthereumAddress(assetAddress);
-      if (isNativeEvmToken) {
-        value = await dispatch.getEvmBalance();
-      } else {
-        const tokenInstance = new ethers.Contract(assetAddress, ABI.balance, ethersInstance.getSigner());
-        const methodArgs = [account];
-        const balance = await tokenInstance.balanceOf(...methodArgs);
-        decimals = await tokenInstance.decimals();
-        value = FPNumber.fromCodecValue(balance._hex, +decimals).toCodecString();
-      }
-    } catch (error) {
-      // We've decided not to show errors
-    }
-
-    return { value, decimals };
-  },
+  // TODO [EVM]
   async getEvmTokenAddressByAssetId(context, soraAssetId: string): Promise<string> {
     const { getters } = web3ActionContext(context);
     try {
@@ -146,21 +103,6 @@ const actions = defineActions({
     } catch (error) {
       console.error(error);
       return '';
-    }
-  },
-  async getAllowanceByEvmAddress(context, address: string): Promise<string> {
-    const { getters, state } = web3ActionContext(context);
-    try {
-      const contractAddress = getters.contractAddress(KnownBridgeAsset.Other);
-      const ethersInstance = await ethersUtil.getEthersInstance();
-      const tokenInstance = new ethers.Contract(address, ABI.allowance, ethersInstance.getSigner());
-      const account = state.evmAddress;
-      const methodArgs = [account, contractAddress];
-      const allowance = await tokenInstance.allowance(...methodArgs);
-      return FPNumber.fromCodecValue(allowance._hex).toString();
-    } catch (error) {
-      console.error(error);
-      throw error;
     }
   },
 });

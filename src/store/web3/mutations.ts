@@ -2,7 +2,6 @@ import Vue from 'vue';
 import { defineMutations } from 'direct-vuex';
 import { BridgeNetworks, CodecString } from '@sora-substrate/util';
 
-import ethersUtil from '@/utils/ethers-util';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { initialState } from './state';
 import type { SubNetwork } from '@/utils/ethers-util';
@@ -22,15 +21,12 @@ const mutations = defineMutations<Web3State>()({
   },
   setEvmAddress(state, address: string): void {
     state.evmAddress = address;
-    ethersUtil.storeEvmUserAddress(address);
   },
   resetEvmAddress(state): void {
     state.evmAddress = '';
-    ethersUtil.removeEvmUserAddress();
   },
   setNetworkType(state, networkType: string): void {
     state.networkType = networkType;
-    ethersUtil.storeEvmNetworkType(networkType);
   },
   setSubNetworks(state, subNetworks: Array<SubNetwork>): void {
     state.subNetworks = subNetworks;

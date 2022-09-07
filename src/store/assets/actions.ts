@@ -1,5 +1,6 @@
 import { defineActions } from 'direct-vuex';
 
+import ethersUtil from '@/utils/ethers-util';
 import { assetsActionContext } from '@/store/assets';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { ZeroStringValue } from '@/consts';
@@ -17,7 +18,7 @@ const DISABLED_ASSETS_FOR_BRIDGE = [
 
 const actions = defineActions({
   async updateRegisteredAssets(context, reset?: boolean): Promise<void> {
-    const { state, commit, rootDispatch } = assetsActionContext(context);
+    const { state, commit, rootCommit, rootDispatch, rootState } = assetsActionContext(context);
 
     if (state.registeredAssetsFetching) return;
 
@@ -26,6 +27,7 @@ const actions = defineActions({
     commit.setRegisteredAssetsFetching(true);
 
     try {
+      const accountAddress = rootState.web3.evmAddress;
       const registeredAssets = await ethBridgeApi.getRegisteredAssets();
       const enabledRegisteredAssets = registeredAssets.filter(
         (item) => !DISABLED_ASSETS_FOR_BRIDGE.includes(item.address)
@@ -39,11 +41,17 @@ const actions = defineActions({
               accountAsset.externalAddress = await rootDispatch.web3.getEvmTokenAddressByAssetId(item.address);
             }
             if (accountAsset.externalAddress) {
-              const { value, decimals } = await rootDispatch.web3.getBalanceByEvmAddress(accountAsset.externalAddress);
-              accountAsset.externalBalance = value;
+              const { value, decimals } = await ethersUtil.getAccountAssetBalance(
+                accountAddress,
+                accountAsset.externalAddress
+              );
 
-              if (!accountAsset.externalDecimals) {
-                accountAsset.externalDecimals = decimals;
+              accountAsset.externalBalance = value;
+              accountAsset.externalDecimals = decimals;
+
+              // update evmBalance
+              if (ethersUtil.isNativeEvmTokenAddress(accountAsset.externalAddress)) {
+                rootCommit.web3.setEvmBalance(value);
               }
             }
           } catch (error) {

@@ -15,7 +15,6 @@ import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { waitForApprovedRequest } from '@/utils/bridge/eth/utils';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
-import { isEthereumAddress } from '@/utils';
 import type { SignTxResult } from './types';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
@@ -256,11 +255,11 @@ const actions = defineActions({
 
       const ethersInstance = await ethersUtil.getEthersInstance();
       const contractAddress = rootGetters.web3.contractAddress(KnownBridgeAsset.Other) as string;
-      const isNativeEvmToken = isEthereumAddress(asset.externalAddress);
+      const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
 
       // don't check allowance for native EVM token
       if (!isNativeEvmToken) {
-        const allowance = await rootDispatch.web3.getAllowanceByEvmAddress(asset.externalAddress);
+        const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
         if (FPNumber.lte(new FPNumber(allowance), new FPNumber(tx.amount))) {
           commit.addTxIdInApprove(tx.id);
           const tokenInstance = new ethers.Contract(
