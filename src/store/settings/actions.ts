@@ -1,16 +1,54 @@
+import compact from 'lodash/fp/compact';
 import { defineActions } from 'direct-vuex';
 import { initWallet, connection, api } from '@soramitsu/soraneo-wallet-web';
 import type { ActionContext } from 'vuex';
 
+import { rootActionContext } from '@/store';
 import { settingsActionContext } from '@/store/settings';
 import { Language, WalletPermissions } from '@/consts';
 import { getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { updateDocumentTitle, updateFpNumberLocale } from '@/utils';
 import { AppHandledError } from '@/utils/error';
 import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
+import { KnownBridgeAsset } from '@/utils/ethers-util';
+import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 
 const NODE_CONNECTION_TIMEOUT = 60_000;
+
+/**
+ * Restore ETH bridge account transactions, using Subquery & Etherscan
+ * @param context store context
+ */
+const updateEthBridgeHistory =
+  (context: ActionContext<any, any>) =>
+  async (setHistoryCallback?: VoidFunction): Promise<void> => {
+    try {
+      const { rootState, rootGetters } = rootActionContext(context);
+
+      const {
+        wallet: {
+          account: { address },
+          settings: {
+            apiKeys: { etherscan: etherscanApiKey },
+            networkFees,
+          },
+        },
+      } = rootState;
+
+      const assets = rootGetters.assets.assetsDataTable;
+      const contracts = compact(
+        Object.values(KnownBridgeAsset).map<Nullable<string>>((key) => rootGetters.web3.contractAddress(key))
+      );
+
+      const ethBridgeHistory = new EthBridgeHistory(etherscanApiKey);
+
+      await ethBridgeHistory.init();
+      await ethBridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, setHistoryCallback);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 async function updateNetworkChainGenesisHash(context: ActionContext<any, any>): Promise<void> {
   const { commit, state } = settingsActionContext(context);
@@ -41,7 +79,7 @@ const actions = defineActions({
         try {
           await initWallet({
             permissions: WalletPermissions,
-            updateEthBridgeHistory: rootDispatch.bridge.updateEthBridgeHistory,
+            updateEthBridgeHistory: updateEthBridgeHistory(context),
           });
         } catch (error) {
           console.error(error);

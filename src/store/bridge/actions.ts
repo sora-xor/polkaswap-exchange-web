@@ -94,23 +94,7 @@ const actions = defineActions({
     commit.setEvmBlockNumber(blockNumber);
   },
 
-  // For wallet
-  async updateEthBridgeHistory(context, setHistoryCallback?: VoidFunction): Promise<void> {
-    const { commit, dispatch, rootState, rootGetters } = bridgeActionContext(context);
-
-    const bridgeHistory = await dispatch.getEthBridgeHistoryInstance();
-    const address = rootState.wallet.account.address;
-    const assets = rootGetters.assets.assetsDataTable;
-    const networkFees = rootState.wallet.settings.networkFees;
-    const contractsArray = Object.values(KnownBridgeAsset).map<Nullable<string>>((key) =>
-      rootGetters.web3.contractAddress(key)
-    );
-    const contracts = compact(contractsArray);
-    const updateCallback = setHistoryCallback || (() => commit.setHistory());
-
-    await bridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, updateCallback);
-  },
-
+  // Deprecated
   async getEthBridgeHistoryInstance(context): Promise<EthBridgeHistory> {
     const { rootState } = bridgeActionContext(context);
     const etherscanApiKey = rootState.wallet.settings.apiKeys?.etherscan;
@@ -121,6 +105,7 @@ const actions = defineActions({
     return ethBridgeHistory;
   },
 
+  // TODO: EVM Bridge History update
   async updateHistory(context, setHistoryCallback?: VoidFunction): Promise<void> {
     const { commit, state, dispatch, rootState, rootGetters } = bridgeActionContext(context);
     if (state.historyLoading) return;
