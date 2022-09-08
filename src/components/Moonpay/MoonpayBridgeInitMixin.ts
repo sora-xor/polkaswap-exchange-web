@@ -13,7 +13,7 @@ import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 
 import type { MoonpayTransaction } from '@/utils/moonpay';
-import type { RegisterAssetWithExternalBalance } from '@/store/assets/types';
+import type { RegisteredAccountAssetObject } from '@/store/assets/types';
 import type { BridgeTxData } from '@/store/moonpay/types';
 
 const createError = (text: string, notification: MoonpayNotifications) => {
@@ -30,6 +30,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   @getter.settings.moonpayApiKey moonpayApiKey!: string;
+  @getter.assets.assetsDataTable assetsDataTable!: RegisteredAccountAssetObject;
 
   @mutation.moonpay.setConfirmationVisibility setConfirmationVisibility!: (flag: boolean) => void;
   @mutation.moonpay.setNotificationVisibility setNotificationVisibility!: (flag: boolean) => void;
@@ -40,9 +41,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
     hash: string
   ) => Promise<Nullable<MoonpayEVMTransferAssetData>>;
 
-  @action.moonpay.findRegisteredAssetByExternalAddress private findRegisteredAssetByExternalAddress!: (
-    address: string
-  ) => Promise<Nullable<RegisterAssetWithExternalBalance>>;
+  @action.assets.updateRegisteredAssets private updateRegisteredAssets!: (reset?: boolean) => Promise<void>;
 
   async prepareEvmNetwork(networkId = BridgeNetworks.ETH_NETWORK_ID): Promise<void> {
     this.setEvmNetwork(networkId); // WalletConnectMixin
@@ -122,7 +121,11 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       }
 
       // while registered assets updating, evmBalance updating too
-      const registeredAsset = await this.findRegisteredAssetByExternalAddress(ethTransferData.address);
+      await this.updateRegisteredAssets();
+
+      const registeredAsset = Object.values(this.assetsDataTable).find((asset) =>
+        ethersUtil.addressesAreEqual(asset.externalAddress, ethTransferData.address)
+      );
 
       if (!registeredAsset) {
         throw createError(

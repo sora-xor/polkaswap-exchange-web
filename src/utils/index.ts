@@ -1,6 +1,6 @@
 import debounce from 'lodash/debounce';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { RegisteredAccountAsset, FPNumber, CodecString } from '@sora-substrate/util';
+import { FPNumber, CodecString } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
@@ -10,7 +10,7 @@ import i18n from '@/lang';
 import { app, ZeroStringValue } from '@/consts';
 
 import storage from './storage';
-import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
@@ -24,7 +24,9 @@ export const formatAddress = (address: string, length = address.length / 2): str
   return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`;
 };
 
-export const isXorAccountAsset = (asset: Asset | AccountAsset | RegisteredAccountAsset | AccountLiquidity): boolean => {
+export const isXorAccountAsset = (
+  asset: Asset | AccountAsset | AccountLiquidity | RegisteredAccountAssetWithDecimals
+): boolean => {
   return asset ? asset.address === XOR.address : false;
 };
 
@@ -37,10 +39,10 @@ export const isNativeEvmTokenAddress = (address: string): boolean => {
 
 export const isMaxButtonAvailable = (
   areAssetsSelected: boolean,
-  asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity,
+  asset: AccountAsset | AccountLiquidity | RegisteredAccountAssetWithDecimals,
   amount: string | number,
   fee: CodecString,
-  xorAsset: AccountAsset | RegisteredAccountAsset,
+  xorAsset: AccountAsset | RegisteredAccountAssetWithDecimals,
   parseAsLiquidity = false,
   isXorOutputSwap = false
 ): boolean => {
@@ -55,7 +57,7 @@ export const isMaxButtonAvailable = (
 };
 
 const getMaxBalance = (
-  asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity | RegisterAssetWithExternalBalance, // TODO: [Release 1.7] fix RegisteredAccountAsset
+  asset: AccountAsset | AccountLiquidity | RegisteredAccountAssetWithDecimals, // TODO: [Release 1.7] fix RegisteredAccountAsset
   fee: CodecString,
   isExternalBalance = false,
   parseAsLiquidity = false,
@@ -71,7 +73,7 @@ const getMaxBalance = (
   if (
     !asZeroValue(fee) &&
     ((!isExternalBalance && isXorAccountAsset(asset)) ||
-      (isExternalBalance && isNativeEvmTokenAddress((asset as RegisteredAccountAsset).externalAddress))) &&
+      (isExternalBalance && isNativeEvmTokenAddress((asset as RegisteredAccountAssetWithDecimals).externalAddress))) &&
     !isBondedBalance
   ) {
     const fpFee = FPNumber.fromCodecValue(fee);
@@ -82,7 +84,7 @@ const getMaxBalance = (
 };
 
 export const getMaxValue = (
-  asset: AccountAsset | RegisteredAccountAsset | RegisterAssetWithExternalBalance,
+  asset: AccountAsset | RegisteredAccountAssetWithDecimals,
   fee: CodecString,
   isExternalBalance = false,
   isBondedBalance = false
@@ -91,7 +93,7 @@ export const getMaxValue = (
 };
 
 export const hasInsufficientBalance = (
-  asset: AccountAsset | RegisteredAccountAsset,
+  asset: AccountAsset | RegisteredAccountAssetWithDecimals,
   amount: string | number,
   fee: CodecString,
   isExternalBalance = false,
@@ -104,7 +106,7 @@ export const hasInsufficientBalance = (
 };
 
 export const hasInsufficientXorForFee = (
-  xorAsset: Nullable<AccountAsset | RegisteredAccountAsset>,
+  xorAsset: Nullable<AccountAsset | RegisteredAccountAssetWithDecimals>,
   fee: CodecString,
   isXorOutputSwap = false
 ): boolean => {
@@ -141,19 +143,13 @@ export const asZeroValue = (value: any): boolean => {
 };
 
 export const getAssetBalance = (
-  asset: Nullable<
-    | AccountAsset
-    | AccountLiquidity
-    | RegisteredAccountAsset
-    | RegisteredAccountAssetWithDecimals
-    | RegisterAssetWithExternalBalance
-  >,
+  asset: Nullable<AccountAsset | AccountLiquidity | RegisteredAccountAssetWithDecimals>,
   { internal = true, parseAsLiquidity = false, isBondedBalance = false } = {}
 ) => {
   if (!asset) return ZeroStringValue;
 
   if (!internal) {
-    return (asset as RegisteredAccountAsset)?.externalBalance;
+    return (asset as RegisteredAccountAssetWithDecimals)?.externalBalance;
   }
 
   if (parseAsLiquidity) {
@@ -192,12 +188,6 @@ export const formatAssetBalance = (
   const decimals = getAssetDecimals(asset, { internal });
 
   return FPNumber.fromCodecValue(balance, decimals).toLocaleString();
-};
-
-export const findAssetInCollection = (asset, collection) => {
-  if (!Array.isArray(collection) || !asset?.address) return undefined;
-
-  return collection.find((item) => item.address === asset.address);
 };
 
 export const debouncedInputHandler = (fn: any, timeout = 500, options = { leading: true }) =>

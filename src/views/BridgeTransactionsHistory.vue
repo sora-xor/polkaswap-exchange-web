@@ -63,7 +63,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { BridgeTxStatus } from '@sora-substrate/util';
-import type { BridgeHistory, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { BridgeHistory } from '@sora-substrate/util';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -74,6 +74,8 @@ import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { state, action, getter } from '@/store/decorators';
 import { isUnsignedToPart } from '@/utils/bridge/eth/utils';
+
+import type { EvmAccountAsset } from '@/store/assets/types';
 
 @Component({
   components: {
@@ -91,7 +93,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   mixins.PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
-  @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;
+  @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
 
   @action.bridge.updateHistory private updateHistory!: AsyncVoidFn;
 
@@ -146,9 +148,7 @@ export default class BridgeTransactionsHistory extends Mixins(
       return history.filter(
         (item) =>
           `${item.assetAddress}`.toLowerCase().includes(query) ||
-          `${this.registeredAssets.find((asset) => asset.address === item.assetAddress)?.externalAddress}`
-            .toLowerCase()
-            .includes(query) ||
+          `${this.registeredAssets[item.assetAddress as string]?.address}`.toLowerCase().includes(query) ||
           `${item.symbol}`.toLowerCase().includes(query)
       );
     }
@@ -159,7 +159,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   formatAmount(historyItem: any): string {
     if (!historyItem.amount) return '';
 
-    const decimals = this.registeredAssets?.find((asset) => asset.address === historyItem.address)?.decimals;
+    const decimals = this.registeredAssets?.[historyItem.address]?.decimals;
 
     return this.formatStringValue(historyItem.amount, decimals);
   }

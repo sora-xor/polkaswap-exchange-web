@@ -32,6 +32,7 @@ import { getter, state, mutation } from '@/store/decorators';
 
 import type { BridgeHistory, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';
 import type { Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 @Component({
   components: {
@@ -44,7 +45,7 @@ export default class TransferNotification extends Mixins(TranslationMixin) {
   @state.bridge.notificationData private tx!: Nullable<BridgeHistory>;
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
 
   @mutation.bridge.setNotificationData private setNotificationData!: (tx?: BridgeHistory) => void;
 
@@ -58,7 +59,7 @@ export default class TransferNotification extends Mixins(TranslationMixin) {
     }
   }
 
-  get asset(): Nullable<RegisteredAccountAsset> {
+  get asset(): Nullable<RegisteredAccountAssetWithDecimals> {
     if (!this.tx?.assetAddress) return null;
 
     return this.getAsset(this.tx.assetAddress);
@@ -79,8 +80,7 @@ export default class TransferNotification extends Mixins(TranslationMixin) {
   async addToken(): Promise<void> {
     if (!this.asset) return;
 
-    const { externalAddress, externalDecimals, symbol, address } = this.asset as RegisteredAccountAsset &
-      RegisteredAsset;
+    const { externalAddress, externalDecimals, symbol, address } = this.asset;
     const image = this.whitelist[address]?.icon;
     await ethersUtil.addToken(externalAddress, symbol, +externalDecimals, image);
   }

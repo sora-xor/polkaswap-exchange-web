@@ -2,7 +2,7 @@ import type { AssetsState } from './types';
 
 function initialState(): AssetsState {
   return {
-    registeredAssets: [],
+    registeredAssets: {},
     registeredAssetsFetching: false,
   };
 }

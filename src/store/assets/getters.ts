@@ -4,7 +4,6 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 
 import { assetsGetterContext } from '@/store/assets';
-import { findAssetInCollection } from '@/utils';
 import type { AssetsState, RegisteredAccountAssetObject, RegisteredAccountAssetWithDecimals } from './types';
 
 const getters = defineGetters<AssetsState>()({
@@ -39,8 +38,11 @@ const getters = defineGetters<AssetsState>()({
     const { registeredAssets } = state;
 
     return assets.reduce<RegisteredAccountAssetObject>((result, asset: Asset) => {
-      const { externalAddress, externalBalance, externalDecimals } =
-        findAssetInCollection(asset, registeredAssets) || {};
+      const {
+        address: externalAddress,
+        balance: externalBalance,
+        decimals: externalDecimals,
+      } = registeredAssets[asset.address] || {};
       const { balance } = accountAssetsAddressTable[asset.address] || {};
 
       const item = {

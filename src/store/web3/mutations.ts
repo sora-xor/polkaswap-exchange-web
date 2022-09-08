@@ -10,7 +10,7 @@ import type { Web3State } from './types';
 const mutations = defineMutations<Web3State>()({
   reset(state): void {
     // we shouldn't reset networks, which were set from env & contracts
-    const networkSettingsKeys = ['contractAddress', 'subNetworks', 'smartContracts'];
+    const networkSettingsKeys = ['contractAddress', 'evmNetwork', 'networkType', 'subNetworks', 'smartContracts'];
     const s = initialState();
 
     Object.keys(s)

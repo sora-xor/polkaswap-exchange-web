@@ -31,15 +31,16 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
+import { state } from '@/store/decorators';
+
+import type { EvmAccountAsset, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 @Component({
   components: {
@@ -51,25 +52,22 @@ import { state, getter } from '@/store/decorators';
 export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
-  @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;
-  @state.wallet.account.assets private assets!: Array<Asset>;
+  @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
-  @getter.wallet.account.accountAssetsAddressTable private accountAssetsAddressTable!: WALLET_TYPES.AccountAssetsTable;
 
-  get assetsList(): Array<RegisteredAccountAsset> {
-    const { registeredAssets: assets, accountAssetsAddressTable, asset: excludeAsset } = this;
+  get assetsList(): Array<RegisteredAccountAssetWithDecimals> {
+    const assetsAddresses = Object.keys(this.registeredAssets);
+    const excludeAddress = this.asset?.address;
 
-    return this.getAssetsWithBalances({ assets, accountAssetsAddressTable, excludeAsset }).sort(
-      this.sortByBalance(!this.isSoraToEvm)
-    ) as Array<RegisteredAccountAsset>;
+    return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance(!this.isSoraToEvm));
   }
 
-  get filteredAssets(): Array<RegisteredAccountAsset> {
+  get filteredAssets(): Array<RegisteredAccountAssetWithDecimals> {
     return this.filterAssetsByQuery(
       this.assetsList,
       !this.isSoraToEvm
-    )(this.searchQuery) as Array<RegisteredAccountAsset>;
+    )(this.searchQuery) as Array<RegisteredAccountAssetWithDecimals>;
   }
 
   get hasFilteredAssets(): boolean {

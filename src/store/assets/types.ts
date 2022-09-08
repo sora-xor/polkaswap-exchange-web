@@ -1,22 +1,19 @@
 import type { RegisteredAccountAsset, CodecString } from '@sora-substrate/util';
 
-export type RegisterAssetWithExternalBalance = {
+export type EvmAccountAsset = {
   address: string;
-  externalAddress: string;
   decimals: number;
-  symbol: string;
-  name: string;
-  externalDecimals: number;
-  externalBalance: CodecString;
+  balance: CodecString;
 };
 
-export type AssetsState = {
-  registeredAssets: Array<RegisterAssetWithExternalBalance>;
-  registeredAssetsFetching: boolean;
-};
-
+// TODO: move externalDecimals to RegisteredAccountAsset;
 export type RegisteredAccountAssetWithDecimals = RegisteredAccountAsset & { externalDecimals: number };
 
 export type RegisteredAccountAssetObject = {
   [key: string]: RegisteredAccountAssetWithDecimals;
+};
+
+export type AssetsState = {
+  registeredAssets: Record<string, EvmAccountAsset>;
+  registeredAssetsFetching: boolean;
 };

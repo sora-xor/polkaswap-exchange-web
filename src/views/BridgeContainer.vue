@@ -11,18 +11,18 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { ethers } from 'ethers';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import ethersUtil from '@/utils/ethers-util';
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { action } from '@/store/decorators';
 
 @Component
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
   @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
   @action.bridge.updateEvmBlockNumber private updateEvmBlockNumber!: (block?: number) => Promise<void>;
-  @action.assets.updateRegisteredAssets private updateRegisteredAssets!: (reset?: boolean) => Promise<void>;
+  @action.assets.updateRegisteredAssets private updateExternalBalances!: (reset?: boolean) => Promise<void>;
 
   private unwatchEthereum!: VoidFunction;
   private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
@@ -30,7 +30,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   async created(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.setEvmNetwork(ethBridgeApi.externalNetwork);
+        this.setEvmNetwork(evmBridgeApi.externalNetwork);
         await this.onEvmNetworkTypeChange();
 
         this.unwatchEthereum = await ethersUtil.watchEthereum({
@@ -59,10 +59,6 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
       this.unwatchEthereum();
     }
     this.unsubscribeEvmBlockHeaders();
-  }
-
-  private updateExternalBalances(resetAssets?: boolean): void {
-    this.updateRegisteredAssets(resetAssets);
   }
 
   private async onEvmNetworkTypeChange(networkHex?: string) {

@@ -121,14 +121,13 @@ export enum EvmNetworkType {
   Goerli = 'goerli',
   Private = 'private',
   EWC = 'EWC',
-  Mordor = 'mordor', // Ethereum Classic
+  Mordor = 'classicMordor', // Ethereum Classic Mordor
 }
 
 export interface SubNetwork {
   name: EvmNetwork;
   id: BridgeNetworks;
   symbol: string;
-  currency: string;
   defaultType: EvmNetworkType;
   CONTRACTS: {
     XOR: { MASTER: string };
@@ -218,7 +217,7 @@ export const EvmNetworkTypeName = {
   '0x2a': EvmNetworkType.Kovan,
   '0x4': EvmNetworkType.Rinkeby,
   '0x5': EvmNetworkType.Goerli,
-  '0x3f': EvmNetworkType.Mordor, // Ethereum Classic
+  '0x3f': EvmNetworkType.Mordor, // Ethereum Classic Mordor
   '0x12047': EvmNetworkType.Private,
 };
 
@@ -265,6 +264,7 @@ async function getAccountBalance(accountAddress: string): Promise<CodecString> {
   }
 }
 
+// TODO [EVM]: check FirstTestToken
 async function getAccountAssetBalance(
   accountAddress: string,
   assetAddress: string
@@ -275,6 +275,7 @@ async function getAccountAssetBalance(
   if (accountAddress && assetAddress) {
     try {
       const ethersInstance = await getEthersInstance();
+      console.log(ethersInstance);
       const isNativeEvmToken = isNativeEvmTokenAddress(assetAddress);
       if (isNativeEvmToken) {
         value = await getAccountBalance(accountAddress);
@@ -286,6 +287,7 @@ async function getAccountAssetBalance(
         value = FPNumber.fromCodecValue(balance._hex, +decimals).toCodecString();
       }
     } catch (error) {
+      console.error(assetAddress);
       console.error(error);
     }
   }
@@ -380,7 +382,8 @@ async function getEvmNetworkType(): Promise<string> {
   const ethersInstance = await getEthersInstance();
   const network = await ethersInstance.getNetwork();
   const networkType = ethers.utils.hexValue(network.chainId);
-  return EvmNetworkTypeName[networkType];
+
+  return EvmNetworkTypeName[networkType] ?? network.name;
 }
 
 /**

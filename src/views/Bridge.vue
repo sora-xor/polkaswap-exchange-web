@@ -273,7 +273,7 @@ import {
 } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 import type { SubNetwork } from '@/utils/ethers-util';
-import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 @Component({
   components: {
@@ -529,7 +529,7 @@ export default class Bridge extends Mixins(
     this.setEvmNetwork(network);
   }
 
-  async selectAsset(selectedAsset?: RegisterAssetWithExternalBalance): Promise<void> {
+  async selectAsset(selectedAsset?: RegisteredAccountAssetWithDecimals): Promise<void> {
     if (!selectedAsset) return;
 
     await this.withSelectAssetLoading(async () => {

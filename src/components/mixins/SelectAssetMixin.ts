@@ -1,16 +1,18 @@
 import isNil from 'lodash/fp/isNil';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
 
-import { asZeroValue, getAssetBalance } from '@/utils';
+import { getter } from '@/store/decorators';
+
+import type { RegisteredAccountAssetObject, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 @Component
 export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearchMixin) {
+  @getter.assets.assetsDataTable assetsDataTable!: RegisteredAccountAssetObject;
+
   @Watch('visible')
   async handleVisibleChangeToFocusSearch(value: boolean): Promise<void> {
     await this.$nextTick();
@@ -34,7 +36,10 @@ export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearch
   public sortByBalance(external = false) {
     const isEmpty = (a): boolean => (external ? !+a.externalBalance : isNil(a.balance) || !+a.balance.transferable);
 
-    return (a: AccountAsset | RegisteredAccountAsset, b: AccountAsset | RegisteredAccountAsset): number => {
+    return (
+      a: AccountAsset | RegisteredAccountAssetWithDecimals,
+      b: AccountAsset | RegisteredAccountAssetWithDecimals
+    ): number => {
       const emptyABalance = isEmpty(a);
       const emptyBBalance = isEmpty(b);
 
@@ -44,40 +49,16 @@ export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearch
     };
   }
 
-  public getAssetsWithBalances({
-    assets,
-    accountAssetsAddressTable,
-    notNullBalanceOnly = false,
-    accountAssetsOnly = false,
-    excludeAsset,
-  }: {
-    assets: Array<Asset | RegisteredAccountAsset>;
-    accountAssetsAddressTable: WALLET_TYPES.AccountAssetsTable;
-    notNullBalanceOnly?: boolean;
-    accountAssetsOnly?: boolean;
-    excludeAsset?: Asset | AccountAsset;
-  }): Array<AccountAsset | RegisteredAccountAsset> {
-    return assets.reduce((result: Array<AccountAsset>, item) => {
-      if (!item || (excludeAsset && item.address === excludeAsset.address)) return result;
-
-      const accountAsset = accountAssetsAddressTable[item.address];
-
-      if (accountAssetsOnly && !accountAsset) return result;
-
-      const balance = accountAsset?.balance;
-
-      if (notNullBalanceOnly && asZeroValue(getAssetBalance(accountAsset))) return result;
-
-      const prepared = {
-        ...item,
-        balance,
-      };
-
-      return [...result, prepared];
+  public getAssetsWithBalances(addresses: string[], excludeAddress = ''): Array<RegisteredAccountAssetWithDecimals> {
+    return addresses.reduce<RegisteredAccountAssetWithDecimals[]>((buffer, address) => {
+      if (address !== excludeAddress) {
+        buffer.push(this.assetsDataTable[address]);
+      }
+      return buffer;
     }, []);
   }
 
-  public selectAsset(asset: RegisteredAccountAsset | AccountAsset | Asset): void {
+  public selectAsset(asset: RegisteredAccountAssetWithDecimals | AccountAsset | Asset): void {
     this.handleClearSearch();
     this.$emit('select', asset);
     this.closeDialog();

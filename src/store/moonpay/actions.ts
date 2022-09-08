@@ -6,7 +6,6 @@ import { moonpayActionContext } from '@/store/moonpay';
 import ethersUtil from '@/utils/ethers-util';
 import { EthAddress } from '@/consts';
 import type { MoonpayEVMTransferAssetData } from '@/utils/moonpay';
-import type { RegisterAssetWithExternalBalance } from '../assets/types';
 
 const POLLING_INTERVAL = 15_000;
 
@@ -103,21 +102,6 @@ const actions = defineActions({
       console.error(error);
       return null;
     }
-  },
-  async findRegisteredAssetByExternalAddress(
-    context,
-    externalAddress: string
-  ): Promise<Nullable<RegisterAssetWithExternalBalance>> {
-    const { rootState, rootDispatch } = moonpayActionContext(context);
-    if (!externalAddress) return undefined;
-
-    await rootDispatch.assets.updateRegisteredAssets();
-
-    const registeredAssets = rootState.assets.registeredAssets;
-    const searchAddress = externalAddress.toLowerCase();
-    const asset = registeredAssets.find((asset) => asset.externalAddress.toLowerCase() === searchAddress);
-
-    return asset;
   },
 });
 

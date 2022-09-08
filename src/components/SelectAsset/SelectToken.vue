@@ -86,8 +86,6 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset;
-  @Prop({ default: false, type: Boolean }) readonly accountAssetsOnly!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly notNullBalanceOnly!: boolean;
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
 
@@ -98,7 +96,6 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
   @getter.wallet.account.whitelist public whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
-  @getter.wallet.account.accountAssetsAddressTable private accountAssetsAddressTable!: WALLET_TYPES.AccountAssetsTable;
 
   @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
 
@@ -110,21 +107,10 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get whitelistAssetsList(): Array<AccountAsset> {
-    const {
-      asset: excludeAsset,
-      whitelistAssets: assets,
-      accountAssetsAddressTable,
-      notNullBalanceOnly,
-      accountAssetsOnly,
-    } = this;
+    const assetsAddresses = this.whitelistAssets.map((asset) => asset.address);
+    const excludeAddress = this.asset?.address;
 
-    return this.getAssetsWithBalances({
-      assets,
-      accountAssetsAddressTable,
-      notNullBalanceOnly,
-      accountAssetsOnly,
-      excludeAsset,
-    }).sort(this.sortByBalance());
+    return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance());
   }
 
   get filteredWhitelistTokens(): Array<AccountAsset> {
