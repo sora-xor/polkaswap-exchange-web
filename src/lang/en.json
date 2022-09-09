@@ -534,6 +534,8 @@
         "strategicBonusApy": "Strategic Bonus APY"
     },
     "bridge": {
+        "disabledTitle": "Hashi Bridge is under maintaince due to the Ethereum merge",
+        "disabledText": "It will be available when the works will be finished. The timeline depends on Ethereum’s development team.",
         "title": "HASHI Bridge",
         "info": "Convert tokens between the @:soraText and @:ethereumText networks.",
         "balance": "Balance",
