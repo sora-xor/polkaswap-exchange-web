@@ -19,7 +19,7 @@
             tooltip-placement="bottom-end"
             @click="handleViewTransactionsHistory"
           />
-          <!-- <s-button
+          <s-button
             v-if="areNetworksConnected"
             class="el-button--networks"
             type="action"
@@ -27,7 +27,7 @@
             :tooltip="t('bridge.selectNetwork')"
             tooltip-placement="bottom-end"
             @click="handleChangeNetwork"
-          /> -->
+          />
         </generic-page-header>
         <s-float-input
           :value="amount"
@@ -177,7 +177,7 @@
         </s-float-input>
 
         <s-button
-          v-if="!isValidNetworkType"
+          v-if="!isValidNetwork"
           class="el-button--next s-typography-button--large"
           type="primary"
           @click="changeProviderNetwork"
@@ -229,10 +229,10 @@
         />
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-      <!-- <select-network :visible.sync="showSelectNetworkDialog" :value="evmNetwork" :sub-networks="subNetworks" @input="selectNetwork" /> -->
+      <select-network :visible.sync="showSelectNetworkDialog" @input="selectNetwork" />
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
-        :is-valid-network-type="isValidNetworkType"
+        :is-valid-network-type="isValidNetwork"
         :is-sora-to-evm="isSoraToEvm"
         :is-insufficient-balance="isInsufficientBalance"
         :asset="asset"
@@ -279,7 +279,7 @@ import {
   asZeroValue,
 } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
-import type { SubNetwork } from '@/utils/ethers-util';
+import type { EvmNetworkData } from '@/consts/evm';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 @Component({
@@ -310,7 +310,6 @@ export default class Bridge extends Mixins(
   readonly KnownSymbols = KnownSymbols;
 
   @state.bridge.evmNetworkFeeFetching private evmNetworkFeeFetching!: boolean;
-  @state.web3.subNetworks subNetworks!: Array<SubNetwork>;
   @state.bridge.amount amount!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
@@ -318,6 +317,7 @@ export default class Bridge extends Mixins(
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAssetWithDecimals>;
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
+  @getter.web3.selectedEvmNetwork selectedEvmNetwork!: Nullable<EvmNetworkData>;
 
   @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
@@ -428,7 +428,7 @@ export default class Bridge extends Mixins(
       !this.isAssetSelected ||
       !this.isRegisteredAsset ||
       !this.areNetworksConnected ||
-      !this.isValidNetworkType ||
+      !this.isValidNetwork ||
       this.isZeroAmount ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
@@ -505,7 +505,7 @@ export default class Bridge extends Mixins(
   }
 
   async handleConfirmTransaction(): Promise<void> {
-    if (!this.isValidNetworkType) {
+    if (!this.isValidNetwork) {
       this.changeProviderNetwork();
       return;
     }
@@ -538,14 +538,12 @@ export default class Bridge extends Mixins(
 
   async selectNetwork(network: number): Promise<void> {
     this.showSelectNetworkDialog = false;
-    this.setEvmNetwork(network);
+    this.setSelectedEvmNetwork(network);
   }
 
   async changeProviderNetwork(): Promise<void> {
-    const network = this.subNetworks.find((network) => network.id === this.evmNetwork);
-
-    if (network) {
-      await ethersUtil.addChain(network);
+    if (this.selectedEvmNetwork) {
+      await ethersUtil.addChain(this.selectedEvmNetwork);
     }
   }
 

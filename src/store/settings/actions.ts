@@ -34,12 +34,13 @@ const updateEthBridgeHistory =
             networkFees,
           },
         },
+        web3: {
+          ethBridge: { contractAddress },
+        },
       } = rootState;
 
       const assets = rootGetters.assets.assetsDataTable;
-      const contracts = compact(
-        Object.values(KnownBridgeAsset).map<Nullable<string>>((key) => rootGetters.web3.contractAddress(key))
-      );
+      const contracts = compact(Object.values(KnownBridgeAsset).map<Nullable<string>>((key) => contractAddress[key]));
 
       const ethBridgeHistory = new EthBridgeHistory(etherscanApiKey);
 

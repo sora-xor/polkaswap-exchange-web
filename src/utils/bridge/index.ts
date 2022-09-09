@@ -3,7 +3,6 @@ import { BridgeTxStatus, Operation } from '@sora-substrate/util';
 import { SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
-import store from '@/store';
 import { getEvmTransactionRecieptByHash } from '@/utils/bridge/utils';
 
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
@@ -32,6 +31,7 @@ type HandleTransactionPayload = {
 
 type SignedEvmTxResult = SignTxResult;
 
+type AddAsset = (address: string) => Promise<void>;
 type SignEvm = (id: string) => Promise<SignedEvmTxResult>;
 type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAssetWithDecimals>;
 type GetActiveHistoryItem = () => Nullable<BridgeHistory>;
@@ -39,6 +39,7 @@ type GetBridgeHistoryInstance = () => Promise<EthBridgeHistory>;
 type ShowNotification = (tx: BridgeHistory) => void;
 
 interface BridgeCommonOptions {
+  addAsset: AddAsset;
   updateHistory: VoidFunction;
   showNotification: ShowNotification;
   getAssetByAddress: GetAssetByAddress;
@@ -59,6 +60,7 @@ interface BridgeReducerOptions extends BridgeCommonOptions {
 
 class BridgeTransactionStateHandler {
   protected readonly signEvm!: SignEvm;
+  protected readonly addAsset!: AddAsset;
   protected readonly updateHistory!: VoidFunction;
   protected readonly showNotification!: ShowNotification;
   protected readonly getAssetByAddress!: GetAssetByAddress;
@@ -67,6 +69,7 @@ class BridgeTransactionStateHandler {
 
   constructor({
     signEvm,
+    addAsset,
     updateHistory,
     showNotification,
     getAssetByAddress,
@@ -74,6 +77,7 @@ class BridgeTransactionStateHandler {
     getBridgeHistoryInstance,
   }: BridgeReducerOptions) {
     this.signEvm = signEvm;
+    this.addAsset = addAsset;
     this.updateHistory = updateHistory;
     this.showNotification = showNotification;
     this.getAssetByAddress = getAssetByAddress;
@@ -120,10 +124,10 @@ class BridgeTransactionStateHandler {
     const tx = getTransaction(id);
     const { type, assetAddress } = tx;
     if (type === Operation.EthBridgeIncoming && assetAddress) {
-      const asset = store.getters.wallet.account.accountAssetsAddressTable[assetAddress];
+      const asset = this.getAssetByAddress(assetAddress);
       if (!asset) {
         // Add asset to account assets
-        store.dispatch.wallet.account.addAsset(assetAddress);
+        this.addAsset(assetAddress);
       }
     }
     this.showNotification(tx);
@@ -457,16 +461,17 @@ class Bridge {
   }
 }
 
-const appBridge = new Bridge({
-  sign: {
-    [Operation.EthBridgeIncoming]: (id: string) => store.dispatch.bridge.signEvmTransactionEvmToSora(id),
-    [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEvmTransactionSoraToEvm(id),
-  },
-  updateHistory: () => store.commit.bridge.setHistory(),
-  showNotification: (tx: BridgeHistory) => store.commit.bridge.setNotificationData(tx),
-  getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
-  getActiveHistoryItem: () => store.getters.bridge.historyItem,
-  getBridgeHistoryInstance: () => store.dispatch.bridge.getEthBridgeHistoryInstance(),
-});
+// const appBridge = new Bridge({
+//   sign: {
+//     [Operation.EthBridgeIncoming]: (id: string) => store.dispatch.bridge.signEvmTransactionEvmToSora(id),
+//     [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEvmTransactionSoraToEvm(id),
+//   },
+//   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
+//   updateHistory: () => store.commit.bridge.setHistory(),
+//   showNotification: (tx: BridgeHistory) => store.commit.bridge.setNotificationData(tx),
+//   getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
+//   getActiveHistoryItem: () => store.getters.bridge.historyItem,
+//   getBridgeHistoryInstance: () => store.dispatch.bridge.getEthBridgeHistoryInstance(),
+// });
 
-export default appBridge;
+// export default appBridge;

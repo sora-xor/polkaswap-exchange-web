@@ -66,8 +66,9 @@ import { action, getter, mutation, state } from '@/store/decorators';
 import { preloadFontFace } from '@/utils';
 import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions } from '@/types/nodes';
-import type { SubNetwork } from '@/utils/ethers-util';
+import type { EvmNetworkId } from '@/consts/evm';
 import type { FeatureFlags } from '@/store/settings/types';
+import type { EthBridgeSettings } from '@/store/web3/types';
 import { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 @Component({
@@ -114,7 +115,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
   @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
-  @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
+  @mutation.web3.setEvmNetworksIds private setEvmNetworksIds!: (data: EvmNetworkId[]) => void;
+  @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => void;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
 
   @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
@@ -124,7 +126,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
   @action.settings.setBlockNumber private setBlockNumber!: AsyncVoidFn;
-  @action.web3.setSmartContracts private setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @action.referrals.getReferrer private getReferrer!: AsyncVoidFn;
   @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
     asset: WhitelistArrayItem;
@@ -200,8 +201,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
-      this.setSubNetworks(data.SUB_NETWORKS);
-      await this.setSmartContracts(data.SUB_NETWORKS);
+      this.setEvmNetworksIds(data.EVM_NETWORKS_IDS);
+      this.setEthBridgeSettings(data.ETH_BRIDGE);
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);

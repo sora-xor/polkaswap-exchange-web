@@ -1,5 +1,4 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import type { BridgeNetworks } from '@sora-substrate/util';
 
 import router from '@/router';
 import { getWalletAddress, formatAddress } from '@/utils';
@@ -8,6 +7,8 @@ import ethersUtil, { Provider } from '@/utils/ethers-util';
 import { action, getter, mutation, state } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+
+import type { EvmNetworkId } from '@/consts/evm';
 
 const checkExtensionKey = 'provider.messages.checkExtension';
 const installExtensionKey = 'provider.messages.installExtension';
@@ -52,11 +53,11 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
 
   @mutation.web3.resetEvmAddress private resetEvmAddress!: VoidFunction;
   @mutation.web3.reset private resetWeb3Store!: VoidFunction;
-  @mutation.web3.setEvmNetwork setEvmNetwork!: (networkId: BridgeNetworks) => void;
+  @mutation.web3.setSelectedEvmNetwork setSelectedEvmNetwork!: (networkId: EvmNetworkId) => void;
   @mutation.web3.setEvmAddress switchExternalAccount!: (address: string) => void;
 
   @action.web3.connectExternalAccount private connectExternalAccount!: (provider: Provider) => Promise<void>;
-  @action.web3.setEvmNetworkType setEvmNetworkType!: (network?: string) => Promise<void>;
+  @action.web3.setConnectedEvmNetwork setConnectedEvmNetwork!: (networkHex: string) => void;
 
   getWalletAddress = getWalletAddress;
   formatAddress = formatAddress;

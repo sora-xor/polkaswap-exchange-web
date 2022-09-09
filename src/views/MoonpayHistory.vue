@@ -110,7 +110,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
 
   @state.moonpay.transactions transactions!: Array<MoonpayTransaction>;
 
-  @getter.web3.isValidNetworkType private isValidNetworkType!: boolean;
+  @getter.web3.isValidNetwork private isValidNetwork!: boolean;
   @getter.moonpay.currenciesById private currenciesById!: MoonpayCurrenciesById;
   @getter.libraryTheme libraryTheme!: Theme;
 
@@ -138,8 +138,8 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
             this.disconnectExternalAccount();
           }
         },
-        onNetworkChange: (networkId: string) => {
-          this.setEvmNetworkType(networkId);
+        onNetworkChange: (networkHex: string) => {
+          this.setConnectedEvmNetwork(networkHex);
         },
         onDisconnect: () => {
           this.disconnectExternalAccount();
@@ -224,7 +224,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   get actionButtonDisabled(): boolean {
     if (this.bridgeTxToSora) return false;
 
-    return !this.externalAccountIsMoonpayRecipient || !this.isValidNetworkType;
+    return !this.externalAccountIsMoonpayRecipient || !this.isValidNetwork;
   }
 
   get actionButtonText(): string {
@@ -232,7 +232,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
 
     if (this.bridgeTxToSora) return this.t('moonpay.buttons.view');
     if (!this.externalAccountIsMoonpayRecipient) return this.t('bridgeTransaction.changeAccount');
-    if (!this.isValidNetworkType) return this.t('bridgeTransaction.changeNetwork');
+    if (!this.isValidNetwork) return this.t('bridgeTransaction.changeNetwork');
 
     return this.t('moonpay.buttons.transfer');
   }

@@ -43,9 +43,9 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
 
   @action.assets.updateRegisteredAssets private updateRegisteredAssets!: (reset?: boolean) => Promise<void>;
 
+  // TODO [EVM]
   async prepareEvmNetwork(networkId = BridgeNetworks.ETH_NETWORK_ID): Promise<void> {
-    this.setEvmNetwork(networkId); // WalletConnectMixin
-    await this.setEvmNetworkType(); // WalletConnectMixin
+    this.setSelectedEvmNetwork(networkId); // WalletConnectMixin
   }
 
   initMoonpayApi(): void {
@@ -134,7 +134,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         );
       }
 
-      const evmNetworkFee: CodecString = await ethersUtil.fetchEvmNetworkFee(registeredAsset.address, false);
+      const evmNetworkFee: CodecString = await ethersUtil.getEvmNetworkFee(registeredAsset.address, false);
       const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(this.evmBalance, evmNetworkFee);
 
       if (!hasEthForFee) {

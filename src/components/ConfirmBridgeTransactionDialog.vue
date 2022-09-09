@@ -37,7 +37,7 @@
         :disabled="isConfirmButtonDisabled"
         @click="handleConfirm"
       >
-        <template v-if="!isValidNetworkType">
+        <template v-if="!isValidNetwork">
           {{ t('confirmBridgeTransactionDialog.changeNetwork') }}
         </template>
         <template v-else-if="isInsufficientBalance">
@@ -81,7 +81,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   @Prop({ default: EvmSymbol.ETH, type: String }) readonly evmTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
-  @Prop({ default: true, type: Boolean }) readonly isValidNetworkType!: boolean;
+  @Prop({ default: true, type: Boolean }) readonly isValidNetwork!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: '', type: String }) readonly confirmButtonText!: string;
@@ -91,7 +91,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   }
 
   get isConfirmButtonDisabled(): boolean {
-    return !this.isValidNetworkType || this.isInsufficientBalance;
+    return !this.isValidNetwork || this.isInsufficientBalance;
   }
 
   get assetsClasses(): Array<string> {

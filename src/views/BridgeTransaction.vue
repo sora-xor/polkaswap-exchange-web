@@ -133,7 +133,7 @@
               <template v-else-if="!(isSoraToEvm || isExternalAccountConnected)">{{
                 t('bridgeTransaction.connectWallet')
               }}</template>
-              <template v-else-if="!(isSoraToEvm || isValidNetworkType)">{{
+              <template v-else-if="!(isSoraToEvm || isValidNetwork)">{{
                 t('bridgeTransaction.changeNetwork')
               }}</template>
               <template v-else-if="isInsufficientBalance">{{
@@ -250,9 +250,7 @@
                 t('bridgeTransaction.connectWallet')
               }}</template>
               <template v-else-if="isSoraToEvm && !isTxEvmAccount">{{ t('bridgeTransaction.changeAccount') }}</template>
-              <template v-else-if="isSoraToEvm && !isValidNetworkType">{{
-                t('bridgeTransaction.changeNetwork')
-              }}</template>
+              <template v-else-if="isSoraToEvm && !isValidNetwork">{{ t('bridgeTransaction.changeNetwork') }}</template>
               <template v-else-if="comfirmationBlocksLeft">
                 {{ t('bridgeTransaction.blocksLeft', { count: comfirmationBlocksLeft }) }}
               </template>
@@ -595,7 +593,7 @@ export default class BridgeTransaction extends Mixins(
 
   get isFirstConfirmationButtonDisabled(): boolean {
     return (
-      !(this.isSoraToEvm || this.isValidNetworkType) ||
+      !(this.isSoraToEvm || this.isValidNetwork) ||
       !this.isTransferStarted ||
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee ||
@@ -606,7 +604,7 @@ export default class BridgeTransaction extends Mixins(
 
   get isSecondConfirmationButtonDisabled(): boolean {
     return (
-      (this.isSoraToEvm && !(this.isValidNetworkType && this.isTxEvmAccount)) ||
+      (this.isSoraToEvm && !(this.isValidNetwork && this.isTxEvmAccount)) ||
       (this.isSoraToEvm ? this.isInsufficientEvmNativeTokenForFee : this.isInsufficientXorForFee) ||
       this.isTransactionToPending
     );

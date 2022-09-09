@@ -1,16 +1,17 @@
-import Vue from 'vue';
 import { defineMutations } from 'direct-vuex';
-import { BridgeNetworks, CodecString } from '@sora-substrate/util';
+import { CodecString } from '@sora-substrate/util';
 
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { initialState } from './state';
-import type { SubNetwork } from '@/utils/ethers-util';
+
+import type { EvmNetworkId } from '@/consts/evm';
+import type { EthBridgeContracts } from '@/utils/bridge/eth/types';
 import type { Web3State } from './types';
 
 const mutations = defineMutations<Web3State>()({
   reset(state): void {
     // we shouldn't reset networks, which were set from env & contracts
-    const networkSettingsKeys = ['contractAddress', 'evmNetwork', 'networkType', 'subNetworks', 'smartContracts'];
+    const networkSettingsKeys = ['evmNetwork', 'evmNetworksIds', 'evmNetworkSelected', 'ethBridge'];
     const s = initialState();
 
     Object.keys(s)
@@ -25,38 +26,32 @@ const mutations = defineMutations<Web3State>()({
   resetEvmAddress(state): void {
     state.evmAddress = '';
   },
-  setNetworkType(state, networkType: string): void {
-    state.networkType = networkType;
+  setEvmNetworksIds(state, networksIds: EvmNetworkId[]): void {
+    state.evmNetworksIds = networksIds;
   },
-  setSubNetworks(state, subNetworks: Array<SubNetwork>): void {
-    state.subNetworks = subNetworks;
+  // by provider
+  setEvmNetwork(state, networkId: EvmNetworkId): void {
+    state.evmNetwork = networkId;
   },
-  setEvmNetwork(state, network: BridgeNetworks): void {
-    state.evmNetwork = network;
-    ethBridgeApi.externalNetwork = network;
+  // by user
+  setSelectedEvmNetwork(state, networkId: EvmNetworkId): void {
+    state.evmNetwork = networkId;
+    evmBridgeApi.externalNetwork = networkId;
   },
   setEvmBalance(state, balance: CodecString): void {
     state.evmBalance = balance;
   },
-  setEthSmartContracts(state, { contracts, address }): void {
-    Vue.set(state.smartContracts, BridgeNetworks.ETH_NETWORK_ID, {
-      XOR: contracts.XOR,
-      VAL: contracts.VAL,
-      OTHER: contracts.OTHER,
-    });
-    Vue.set(state.contractAddress, BridgeNetworks.ETH_NETWORK_ID, {
+  // for eth bridge history
+  setEthBridgeSettings(
+    state,
+    { evmNetwork, address }: { evmNetwork: EvmNetworkId; address: EthBridgeContracts }
+  ): void {
+    state.ethBridge.evmNetwork = evmNetwork;
+    state.ethBridge.contractAddress = {
       XOR: address.XOR,
       VAL: address.VAL,
       OTHER: address.OTHER,
-    });
-  },
-  setEnergySmartContracts(state, { contracts, address }): void {
-    Vue.set(state.smartContracts, BridgeNetworks.ENERGY_NETWORK_ID, {
-      OTHER: contracts.OTHER,
-    });
-    Vue.set(state.contractAddress, BridgeNetworks.ENERGY_NETWORK_ID, {
-      OTHER: address.OTHER,
-    });
+    };
   },
 });
 

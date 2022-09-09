@@ -15,7 +15,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @state.bridge.evmNetworkFee evmNetworkFee!: CodecString;
   @state.bridge.evmBlockNumber evmBlockNumber!: number;
 
-  @getter.web3.isValidNetworkType isValidNetworkType!: boolean;
+  @getter.web3.isValidNetwork isValidNetwork!: boolean;
   @getter.bridge.soraNetworkFee soraNetworkFee!: CodecString;
   @getter.assets.xor xor!: RegisteredAccountAssetWithDecimals;
 

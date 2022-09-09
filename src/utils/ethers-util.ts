@@ -5,10 +5,12 @@ import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { XOR, VAL, PSWAP, ETH } from '@sora-substrate/util/build/assets/consts';
 
-import type { BridgeNetworks, CodecString } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
 
 import axiosInstance from '@/api';
 import { ZeroStringValue } from '@/consts';
+
+import type { EvmNetworkData } from '@/consts/evm';
 
 type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
 type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
@@ -108,11 +110,7 @@ type ethersProvider = ethers.providers.Web3Provider;
 let provider: any = null;
 let ethersInstance: ethersProvider | null = null;
 
-export enum EvmNetwork {
-  Ethereum = 'ethereum',
-  Energy = 'energy',
-}
-
+// TODO [EVM] remove and update translations to network ids
 export enum EvmNetworkType {
   Mainnet = 'main',
   Ropsten = 'ropsten',
@@ -124,24 +122,7 @@ export enum EvmNetworkType {
   Mordor = 'classicMordor', // Ethereum Classic Mordor
 }
 
-export interface SubNetwork {
-  id: BridgeNetworks;
-  defaultType: EvmNetworkType;
-  name: EvmNetwork;
-  nativeCurrency: {
-    name: string;
-    symbol: string;
-    decimals: number;
-  };
-  rpcUrls: string[];
-  blockExplorerUrls: string[];
-  CONTRACTS: {
-    XOR: { MASTER: string };
-    VAL: { MASTER: string };
-    OTHER: { MASTER: string };
-  };
-}
-
+// TODO: replace for KnownEthBridgeAsset
 export enum KnownBridgeAsset {
   VAL = 'VAL',
   XOR = 'XOR',
@@ -216,16 +197,6 @@ const EthereumGasLimits = [
     [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
   },
 ];
-
-export const EvmNetworkTypeName = {
-  '0x1': EvmNetworkType.Mainnet,
-  '0x3': EvmNetworkType.Ropsten,
-  '0x2a': EvmNetworkType.Kovan,
-  '0x4': EvmNetworkType.Rinkeby,
-  '0x5': EvmNetworkType.Goerli,
-  '0x3f': EvmNetworkType.Mordor, // Ethereum Classic Mordor
-  '0x12047': EvmNetworkType.Private,
-};
 
 async function onConnect(options: ConnectOptions): Promise<string> {
   if (options.provider === Provider.Metamask) {
@@ -383,18 +354,22 @@ async function addToken(address: string, symbol: string, decimals: number, image
   }
 }
 
-async function addChain(network: SubNetwork): Promise<void> {
+/**
+ * Add chain to Metamask
+ * @param network
+ * @param chainName translated chain name
+ */
+async function addChain(network: EvmNetworkData, chainName?: string): Promise<void> {
   const ethereum = (window as any).ethereum;
-  const chainId = ethers.utils.hexValue(network.id);
 
   try {
     ethereum.request({
       method: 'wallet_addEthereumChain',
       params: [
         {
-          chainId,
+          chainId: ethers.utils.hexValue(network.id),
+          chainName: chainName || network.name,
           rpcUrls: network.rpcUrls,
-          chainName: network.name,
           nativeCurrency: network.nativeCurrency,
           blockExplorerUrls: network.blockExplorerUrls,
         },
@@ -405,18 +380,17 @@ async function addChain(network: SubNetwork): Promise<void> {
   }
 }
 
-async function getEvmNetworkType(): Promise<string> {
+async function getEvmNetworkId(): Promise<number> {
   const ethersInstance = await getEthersInstance();
   const network = await ethersInstance.getNetwork();
-  const networkType = ethers.utils.hexValue(network.chainId);
 
-  return EvmNetworkTypeName[networkType] ?? network.name;
+  return network.chainId;
 }
 
 /**
  * Fetch EVM Network fee for passed asset address
  */
-async function fetchEvmNetworkFee(address: string, isSoraToEvm: boolean): Promise<CodecString> {
+async function getEvmNetworkFee(address: string, isSoraToEvm: boolean): Promise<CodecString> {
   try {
     const ethersInstance = await getEthersInstance();
     const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
@@ -470,11 +444,15 @@ async function accountAddressToHex(address: string): Promise<string> {
   return ethers.utils.hexlify(Array.from(decodeAddress(address).values()));
 }
 
-function isNativeEvmTokenAddress(address: string): boolean {
-  const numberString = address.replace(/^0x/, '');
+function hexToNumber(hex: string): number {
+  const numberString = hex.replace(/^0x/, '');
   const number = parseInt(numberString, 16);
 
-  return number === 0;
+  return number;
+}
+
+function isNativeEvmTokenAddress(address: string): boolean {
+  return hexToNumber(address) === 0;
 }
 
 export default {
@@ -484,14 +462,15 @@ export default {
   getAccountAssetBalance,
   getAllowance,
   checkAccountIsConnected,
-  getEvmNetworkType,
   getEthersInstance,
   watchEthereum,
   readSmartContract,
   accountAddressToHex,
   addressesAreEqual,
-  fetchEvmNetworkFee,
   calcEvmFee,
+  hexToNumber,
+  getEvmNetworkFee,
+  getEvmNetworkId,
   getEvmTransaction,
   getEvmTransactionReceipt,
   getBlock,

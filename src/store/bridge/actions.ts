@@ -7,7 +7,6 @@ import { BridgeCurrencyType, BridgeHistory, BridgeNetworks, FPNumber, Operation 
 import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
-import appBridge from '@/utils/bridge';
 import { bridgeActionContext } from '@/store/bridge';
 import { MaxUint256 } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
@@ -23,11 +22,12 @@ const balanceSubscriptions = new TokenBalanceSubscriptions();
 
 function checkEvmNetwork(context: ActionContext<any, any>): void {
   const { rootGetters } = bridgeActionContext(context);
-  if (!rootGetters.web3.isValidNetworkType) {
+  if (!rootGetters.web3.isValidNetwork) {
     throw new Error('Change evm network in Metamask');
   }
 }
 
+// TODO [EVM]
 function bridgeDataToHistoryItem(
   context: ActionContext<any, any>,
   { date = Date.now(), step = 1, payload = {}, ...params } = {}
@@ -48,7 +48,7 @@ function bridgeDataToHistoryItem(
     transactionState: ETH_BRIDGE_STATES.INITIAL,
     soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
     ethereumNetworkFee: (params as any).ethereumNetworkFee ?? state.evmNetworkFee,
-    externalNetwork: rootState.web3.evmNetwork,
+    externalNetwork: BridgeNetworks.ETH_NETWORK_ID,
     to: (params as any).to ?? rootState.web3.evmAddress,
     payload,
   };
@@ -115,8 +115,8 @@ const actions = defineActions({
     const address = rootState.wallet.account.address;
     const assets = rootGetters.assets.assetsDataTable;
     const networkFees = rootState.wallet.settings.networkFees;
-    const contractsArray = Object.values(KnownBridgeAsset).map<Nullable<string>>((key) =>
-      rootGetters.web3.contractAddress(key)
+    const contractsArray = Object.values(KnownBridgeAsset).map<Nullable<string>>(
+      (key) => rootState.web3.ethBridge.contractAddress[key]
     );
     const contracts = compact(contractsArray);
     const updateCallback = setHistoryCallback || (() => commit.setHistory());
@@ -135,7 +135,7 @@ const actions = defineActions({
     }
     commit.getEvmNetworkFeeRequest();
     try {
-      const fee = await ethersUtil.fetchEvmNetworkFee(getters.asset.address, state.isSoraToEvm);
+      const fee = await ethersUtil.getEvmNetworkFee(getters.asset.address, state.isSoraToEvm);
       commit.getEvmNetworkFeeSuccess(fee);
     } catch (error) {
       commit.getEvmNetworkFeeFailure();
@@ -154,188 +154,159 @@ const actions = defineActions({
 
     return historyItem;
   },
-  async signEvmTransactionSoraToEvm(context, id: string): Promise<SignTxResult> {
-    const { getters, rootState, rootGetters } = bridgeActionContext(context);
-    const tx = ethBridgeApi.getHistory(id) as Nullable<BridgeHistory>;
-
-    if (!tx?.hash) throw new Error('TX ID cannot be empty!');
-    if (!tx.amount) throw new Error('TX amount cannot be empty!');
-    if (!tx.assetAddress) throw new Error('TX assetAddress cannot be empty!');
-
-    const asset = rootGetters.assets.assetDataByAddress(tx.assetAddress);
-
-    if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
-
-    checkEvmNetwork(context);
-
-    const request = await waitForApprovedRequest(tx); // If it causes an error, then -> catch -> SORA_REJECTED
-
-    if (!getters.isTxEvmAccount) {
-      throw new Error(`Change account in MetaMask to ${request.to}`);
-    }
-
-    const ethersInstance = await ethersUtil.getEthersInstance();
-
-    const symbol = asset.symbol as KnownBridgeAsset;
-    const evmAccount = rootState.web3.evmAddress;
-    const isValOrXor = [KnownBridgeAsset.XOR, KnownBridgeAsset.VAL].includes(symbol);
-    const isEthereumChain = isValOrXor && rootState.web3.evmNetwork === BridgeNetworks.ETH_NETWORK_ID;
-    const bridgeAsset: KnownBridgeAsset = isEthereumChain ? symbol : KnownBridgeAsset.Other;
-    const contractMap = {
-      [KnownBridgeAsset.XOR]: rootGetters.web3.contractAbi(KnownBridgeAsset.XOR),
-      [KnownBridgeAsset.VAL]: rootGetters.web3.contractAbi(KnownBridgeAsset.VAL),
-      [KnownBridgeAsset.Other]: rootGetters.web3.contractAbi(KnownBridgeAsset.Other),
-    };
-    const contract = contractMap[bridgeAsset];
-    const jsonInterface = contract[OtherContractType.Bridge]?.abi ?? contract.abi;
-    const contractAddress = rootGetters.web3.contractAddress(bridgeAsset) as string;
-    const contractInstance = new ethers.Contract(contractAddress, jsonInterface, ethersInstance.getSigner());
-    const method = isEthereumChain
-      ? 'mintTokensByPeers'
-      : request.currencyType === BridgeCurrencyType.TokenAddress
-      ? 'receiveByEthereumAssetAddress'
-      : 'receiveBySidechainAssetId';
-    const methodArgs: Array<any> = [
-      isEthereumChain || request.currencyType === BridgeCurrencyType.TokenAddress
-        ? asset.externalAddress // address tokenAddress OR
-        : asset.address, // bytes32 assetId
-      new FPNumber(tx.amount, asset.externalDecimals).toCodecString(), // uint256 amount
-      evmAccount, // address beneficiary
-    ];
-    methodArgs.push(
-      ...(isEthereumChain
-        ? [
-            tx.hash, // bytes32 txHash
-            request.v, // uint8[] memory v
-            request.r, // bytes32[] memory r
-            request.s, // bytes32[] memory s
-            request.from, // address from
-          ]
-        : [
-            request.from, // address from
-            tx.hash, // bytes32 txHash
-            request.v, // uint8[] memory v
-            request.r, // bytes32[] memory r
-            request.s, // bytes32[] memory s
-          ])
-    );
-    checkEvmNetwork(context);
-
-    const transaction: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs);
-
-    const fee = transaction.gasPrice
-      ? ethersUtil.calcEvmFee(transaction.gasPrice.toNumber(), transaction.gasLimit.toNumber())
-      : undefined;
-
-    return {
-      hash: transaction.hash,
-      fee,
-    };
+  async signEvmTransactionSoraToEvm(context, id: string): Promise<void> {
+    // const { getters, rootState, rootGetters } = bridgeActionContext(context);
+    // const tx = ethBridgeApi.getHistory(id) as Nullable<BridgeHistory>;
+    // if (!tx?.hash) throw new Error('TX ID cannot be empty!');
+    // if (!tx.amount) throw new Error('TX amount cannot be empty!');
+    // if (!tx.assetAddress) throw new Error('TX assetAddress cannot be empty!');
+    // const asset = rootGetters.assets.assetDataByAddress(tx.assetAddress);
+    // if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
+    // checkEvmNetwork(context);
+    // const request = await waitForApprovedRequest(tx); // If it causes an error, then -> catch -> SORA_REJECTED
+    // if (!getters.isTxEvmAccount) {
+    //   throw new Error(`Change account in MetaMask to ${request.to}`);
+    // }
+    // const ethersInstance = await ethersUtil.getEthersInstance();
+    // const symbol = asset.symbol as KnownBridgeAsset;
+    // const evmAccount = rootState.web3.evmAddress;
+    // const isValOrXor = [KnownBridgeAsset.XOR, KnownBridgeAsset.VAL].includes(symbol);
+    // const isEthereumChain = isValOrXor && rootState.web3.evmNetwork === BridgeNetworks.ETH_NETWORK_ID;
+    // const bridgeAsset: KnownBridgeAsset = isEthereumChain ? symbol : KnownBridgeAsset.Other;
+    // const contractMap = {
+    //   [KnownBridgeAsset.XOR]: rootGetters.web3.contractAbi(KnownBridgeAsset.XOR),
+    //   [KnownBridgeAsset.VAL]: rootGetters.web3.contractAbi(KnownBridgeAsset.VAL),
+    //   [KnownBridgeAsset.Other]: rootGetters.web3.contractAbi(KnownBridgeAsset.Other),
+    // };
+    // const contract = contractMap[bridgeAsset];
+    // const jsonInterface = contract[OtherContractType.Bridge]?.abi ?? contract.abi;
+    // const contractAddress = rootGetters.web3.contractAddress(bridgeAsset) as string;
+    // const contractInstance = new ethers.Contract(contractAddress, jsonInterface, ethersInstance.getSigner());
+    // const method = isEthereumChain
+    //   ? 'mintTokensByPeers'
+    //   : request.currencyType === BridgeCurrencyType.TokenAddress
+    //   ? 'receiveByEthereumAssetAddress'
+    //   : 'receiveBySidechainAssetId';
+    // const methodArgs: Array<any> = [
+    //   isEthereumChain || request.currencyType === BridgeCurrencyType.TokenAddress
+    //     ? asset.externalAddress // address tokenAddress OR
+    //     : asset.address, // bytes32 assetId
+    //   new FPNumber(tx.amount, asset.externalDecimals).toCodecString(), // uint256 amount
+    //   evmAccount, // address beneficiary
+    // ];
+    // methodArgs.push(
+    //   ...(isEthereumChain
+    //     ? [
+    //         tx.hash, // bytes32 txHash
+    //         request.v, // uint8[] memory v
+    //         request.r, // bytes32[] memory r
+    //         request.s, // bytes32[] memory s
+    //         request.from, // address from
+    //       ]
+    //     : [
+    //         request.from, // address from
+    //         tx.hash, // bytes32 txHash
+    //         request.v, // uint8[] memory v
+    //         request.r, // bytes32[] memory r
+    //         request.s, // bytes32[] memory s
+    //       ])
+    // );
+    // checkEvmNetwork(context);
+    // const transaction: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs);
+    // const fee = transaction.gasPrice
+    //   ? ethersUtil.calcEvmFee(transaction.gasPrice.toNumber(), transaction.gasLimit.toNumber())
+    //   : undefined;
+    // return {
+    //   hash: transaction.hash,
+    //   fee,
+    // };
   },
-  async signEvmTransactionEvmToSora(context, id: string): Promise<SignTxResult> {
-    const { commit, rootState, rootGetters, rootDispatch } = bridgeActionContext(context);
-    const tx = ethBridgeApi.getHistory(id);
-
-    if (!tx?.id) throw new Error('TX cannot be empty!');
-    if (!tx.amount) throw new Error('TX amount cannot be empty!');
-    if (!tx.assetAddress) throw new Error('TX assetAddress cannot be empty!');
-
-    const asset = rootGetters.assets.assetDataByAddress(tx.assetAddress);
-
-    if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
-
-    checkEvmNetwork(context);
-
-    try {
-      const contract = rootGetters.web3.contractAbi(KnownBridgeAsset.Other);
-      const evmAccount = rootState.web3.evmAddress;
-      const isExternalAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
-
-      if (!isExternalAccountConnected) throw new Error('Connect account in Metamask');
-
-      const ethersInstance = await ethersUtil.getEthersInstance();
-      const contractAddress = rootGetters.web3.contractAddress(KnownBridgeAsset.Other) as string;
-      const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
-
-      // don't check allowance for native EVM token
-      if (!isNativeEvmToken) {
-        const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
-        if (FPNumber.lte(new FPNumber(allowance), new FPNumber(tx.amount))) {
-          commit.addTxIdInApprove(tx.id);
-          const tokenInstance = new ethers.Contract(
-            asset.externalAddress,
-            contract[OtherContractType.ERC20].abi,
-            ethersInstance.getSigner()
-          );
-          const methodArgs = [
-            contractAddress, // address spender
-            MaxUint256, // uint256 amount
-          ];
-          checkEvmNetwork(context);
-          const transaction = await tokenInstance.approve(...methodArgs);
-          await transaction.wait(2);
-          commit.removeTxIdFromApprove(tx.id);
-        }
-      }
-
-      const soraAccountAddress = rootState.wallet.account.address;
-      const accountId = await ethersUtil.accountAddressToHex(soraAccountAddress);
-      const contractInstance = new ethers.Contract(
-        contractAddress,
-        contract[OtherContractType.Bridge].abi,
-        ethersInstance.getSigner()
-      );
-
-      const decimals = isNativeEvmToken
-        ? undefined
-        : await (async () => {
-            const tokenInstance = new ethers.Contract(asset.externalAddress, ABI.balance, ethersInstance.getSigner());
-            const decimals = await tokenInstance.decimals();
-
-            return +decimals;
-          })();
-
-      const amount = new FPNumber(tx.amount, decimals).toCodecString();
-
-      const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain';
-      const methodArgs = isNativeEvmToken
-        ? [
-            accountId, // bytes32 to
-          ]
-        : [
-            accountId, // bytes32 to
-            amount, // uint256 amount
-            asset.externalAddress, // address tokenAddress
-          ];
-
-      const overrides = isNativeEvmToken ? { value: amount } : {};
-
-      checkEvmNetwork(context);
-
-      const transaction: ethers.providers.TransactionResponse = await contractInstance[method](
-        ...methodArgs,
-        overrides
-      );
-
-      const fee = transaction.gasPrice
-        ? ethersUtil.calcEvmFee(transaction.gasPrice.toNumber(), transaction.gasLimit.toNumber())
-        : undefined;
-
-      return {
-        hash: transaction.hash,
-        fee,
-      };
-    } catch (error) {
-      commit.removeTxIdFromApprove(tx.id);
-      console.error(error);
-      throw error;
-    }
+  async signEvmTransactionEvmToSora(context, id: string): Promise<void> {
+    // const { commit, rootState, rootGetters, rootDispatch } = bridgeActionContext(context);
+    // const tx = ethBridgeApi.getHistory(id);
+    // if (!tx?.id) throw new Error('TX cannot be empty!');
+    // if (!tx.amount) throw new Error('TX amount cannot be empty!');
+    // if (!tx.assetAddress) throw new Error('TX assetAddress cannot be empty!');
+    // const asset = rootGetters.assets.assetDataByAddress(tx.assetAddress);
+    // if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
+    // checkEvmNetwork(context);
+    // try {
+    //   const contract = rootGetters.web3.contractAbi(KnownBridgeAsset.Other);
+    //   const evmAccount = rootState.web3.evmAddress;
+    //   const isExternalAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
+    //   if (!isExternalAccountConnected) throw new Error('Connect account in Metamask');
+    //   const ethersInstance = await ethersUtil.getEthersInstance();
+    //   const contractAddress = rootGetters.web3.contractAddress(KnownBridgeAsset.Other) as string;
+    //   const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
+    //   // don't check allowance for native EVM token
+    //   if (!isNativeEvmToken) {
+    //     const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
+    //     if (FPNumber.lte(new FPNumber(allowance), new FPNumber(tx.amount))) {
+    //       commit.addTxIdInApprove(tx.id);
+    //       const tokenInstance = new ethers.Contract(
+    //         asset.externalAddress,
+    //         contract[OtherContractType.ERC20].abi,
+    //         ethersInstance.getSigner()
+    //       );
+    //       const methodArgs = [
+    //         contractAddress, // address spender
+    //         MaxUint256, // uint256 amount
+    //       ];
+    //       checkEvmNetwork(context);
+    //       const transaction = await tokenInstance.approve(...methodArgs);
+    //       await transaction.wait(2);
+    //       commit.removeTxIdFromApprove(tx.id);
+    //     }
+    //   }
+    //   const soraAccountAddress = rootState.wallet.account.address;
+    //   const accountId = await ethersUtil.accountAddressToHex(soraAccountAddress);
+    //   const contractInstance = new ethers.Contract(
+    //     contractAddress,
+    //     contract[OtherContractType.Bridge].abi,
+    //     ethersInstance.getSigner()
+    //   );
+    //   const decimals = isNativeEvmToken
+    //     ? undefined
+    //     : await (async () => {
+    //         const tokenInstance = new ethers.Contract(asset.externalAddress, ABI.balance, ethersInstance.getSigner());
+    //         const decimals = await tokenInstance.decimals();
+    //         return +decimals;
+    //       })();
+    //   const amount = new FPNumber(tx.amount, decimals).toCodecString();
+    //   const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain';
+    //   const methodArgs = isNativeEvmToken
+    //     ? [
+    //         accountId, // bytes32 to
+    //       ]
+    //     : [
+    //         accountId, // bytes32 to
+    //         amount, // uint256 amount
+    //         asset.externalAddress, // address tokenAddress
+    //       ];
+    //   const overrides = isNativeEvmToken ? { value: amount } : {};
+    //   checkEvmNetwork(context);
+    //   const transaction: ethers.providers.TransactionResponse = await contractInstance[method](
+    //     ...methodArgs,
+    //     overrides
+    //   );
+    //   const fee = transaction.gasPrice
+    //     ? ethersUtil.calcEvmFee(transaction.gasPrice.toNumber(), transaction.gasLimit.toNumber())
+    //     : undefined;
+    //   return {
+    //     hash: transaction.hash,
+    //     fee,
+    //   };
+    // } catch (error) {
+    //   commit.removeTxIdFromApprove(tx.id);
+    //   console.error(error);
+    //   throw error;
+    // }
   },
   async handleBridgeTx(context, id: string): Promise<void> {
     const { commit } = bridgeActionContext(context);
     commit.addTxIdInProgress(id);
 
-    await appBridge.handleTransaction(id);
+    // await appBridge.handleTransaction(id);
 
     commit.removeTxIdFromProgress(id);
   },

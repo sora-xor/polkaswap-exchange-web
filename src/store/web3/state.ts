@@ -1,32 +1,19 @@
-import { BridgeNetworks } from '@sora-substrate/util';
-
 import { ZeroStringValue } from '@/consts';
+import { EvmNetworkId } from '@/consts/evm';
 import type { Web3State } from './types';
 
 export function initialState(): Web3State {
   return {
     evmAddress: '',
     evmBalance: ZeroStringValue,
-    networkType: '',
-    subNetworks: [],
-    evmNetwork: BridgeNetworks.ETH_NETWORK_ID,
-    contractAddress: {
-      [BridgeNetworks.ETH_NETWORK_ID]: {
+    evmNetwork: EvmNetworkId.EthereumClassicMordor, // evm network in provider
+    evmNetworksIds: [],
+    evmNetworkSelected: EvmNetworkId.EthereumClassicMordor, // evm network selected by user
+    ethBridge: {
+      evmNetwork: EvmNetworkId.EthereumRinkeby,
+      contractAddress: {
         XOR: '',
         VAL: '',
-        OTHER: '',
-      },
-      [BridgeNetworks.ENERGY_NETWORK_ID]: {
-        OTHER: '',
-      },
-    },
-    smartContracts: {
-      [BridgeNetworks.ETH_NETWORK_ID]: {
-        XOR: '',
-        VAL: '',
-        OTHER: '',
-      },
-      [BridgeNetworks.ENERGY_NETWORK_ID]: {
         OTHER: '',
       },
     },

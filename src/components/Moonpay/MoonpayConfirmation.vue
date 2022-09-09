@@ -45,7 +45,7 @@ export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) 
   @state.moonpay.confirmationVisibility private confirmationVisibility!: boolean;
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
-  @getter.web3.isValidNetworkType private isValidNetworkType!: boolean;
+  @getter.web3.isValidNetwork private isValidNetwork!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
 
   get visibility(): boolean {
@@ -66,7 +66,7 @@ export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) 
       evmNetwork: this.bridgeTransactionData.externalNetwork,
       evmNetworkFee: this.bridgeTransactionData.ethereumNetworkFee,
       soraNetworkFee: this.bridgeTransactionData.soraNetworkFee,
-      isValidNetworkType: this.isValidNetworkType,
+      isValidNetwork: this.isValidNetwork,
     };
   }
 }

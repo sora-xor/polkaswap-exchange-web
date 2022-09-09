@@ -2,24 +2,22 @@ import { Vue, Component } from 'vue-property-decorator';
 import { BridgeNetworks } from '@sora-substrate/util';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import { EvmNetworkType } from '@/utils/ethers-util';
 import { state, getter } from '@/store/decorators';
+
+import type { EvmNetworkData } from '@/consts/evm';
 
 @Component
 export default class NetworkFormatterMixin extends Vue {
-  @state.web3.networkType networkType!: EvmNetworkType;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
-  @getter.web3.defaultNetworkType defaultNetworkType!: Nullable<EvmNetworkType>;
+  @getter.web3.connectedEvmNetwork connectedEvmNetwork!: Nullable<EvmNetworkData>;
 
-  formatNetwork(isSora: boolean, isDefaultNetworkType = false): string {
+  formatNetwork(isSora: boolean): string {
     if (isSora && this.soraNetwork) {
       return `sora.${this.soraNetwork}`;
     }
 
-    const network = isDefaultNetworkType ? this.defaultNetworkType : this.networkType;
-
-    return network ? `evm.${network}` : '';
+    return this.connectedEvmNetwork ? `evm.${this.connectedEvmNetwork.id}` : '';
   }
 
   getEvmIcon(externalNetwork?: BridgeNetworks): string {
@@ -29,12 +27,10 @@ export default class NetworkFormatterMixin extends Vue {
     return 'eth';
   }
 
-  getEtherscanLink(hash: string, isDefaultNetworkType = false): string {
-    const network = isDefaultNetworkType ? this.defaultNetworkType : this.networkType;
-    // TODO: Generate the link for Energy Web Chain
-    if (!(network && hash) || network === EvmNetworkType.Private) {
-      return '';
-    }
-    return `https://${network !== EvmNetworkType.Mainnet ? network + '.' : ''}etherscan.io/tx/${hash}`;
+  // TODO [EVM] check network explorers links
+  getEtherscanLink(hash: string): string {
+    const explorerUrl = this.connectedEvmNetwork?.blockExplorerUrls?.[0];
+
+    return explorerUrl && hash ? `https://${explorerUrl}/tx/${hash}` : '';
   }
 }

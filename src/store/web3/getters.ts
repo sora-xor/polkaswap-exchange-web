@@ -1,33 +1,31 @@
 import { defineGetters } from 'direct-vuex';
 
 import { web3GetterContext } from '@/store/web3';
+import { EVM_NETWORKS } from '@/consts/evm';
+
+import type { EvmNetworkData } from '@/consts/evm';
 import type { Web3State } from './types';
-import type { EvmNetworkType, KnownBridgeAsset } from '@/utils/ethers-util';
 
 const getters = defineGetters<Web3State>()({
-  contractAbi(...args): (asset: KnownBridgeAsset) => Nullable<any> {
-    return (asset: KnownBridgeAsset) => {
-      const { state } = web3GetterContext(args);
-      return state.smartContracts[state.evmNetwork][asset];
-    };
-  },
-  contractAddress(...args): (asset: KnownBridgeAsset) => Nullable<string> {
-    return (asset: KnownBridgeAsset) => {
-      const { state } = web3GetterContext(args);
-      return state.contractAddress[state.evmNetwork][asset];
-    };
-  },
   isExternalAccountConnected(...args): boolean {
     const { state } = web3GetterContext(args);
     return !!state.evmAddress && state.evmAddress !== 'undefined';
   },
-  defaultNetworkType(...args): Nullable<EvmNetworkType> {
+  availableEvmNetworks(...args): EvmNetworkData[] {
     const { state } = web3GetterContext(args);
-    return state.subNetworks?.find((network: any) => network.id === state.evmNetwork)?.defaultType;
+    return state.evmNetworksIds.map((evmNetworkId) => EVM_NETWORKS[evmNetworkId]);
   },
-  isValidNetworkType(...args): boolean {
-    const { state, getters } = web3GetterContext(args);
-    return state.networkType === getters.defaultNetworkType;
+  connectedEvmNetwork(...args): Nullable<EvmNetworkData> {
+    const { state } = web3GetterContext(args);
+    return EVM_NETWORKS[state.evmNetwork];
+  },
+  selectedEvmNetwork(...args): Nullable<EvmNetworkData> {
+    const { state } = web3GetterContext(args);
+    return EVM_NETWORKS[state.evmNetworkSelected];
+  },
+  isValidNetwork(...args): boolean {
+    const { state } = web3GetterContext(args);
+    return state.evmNetwork === state.evmNetworkSelected;
   },
 });
 

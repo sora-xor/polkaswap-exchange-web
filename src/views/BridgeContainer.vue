@@ -11,7 +11,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { ethers } from 'ethers';
-import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import ethersUtil from '@/utils/ethers-util';
@@ -30,7 +30,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   async created(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.setEvmNetwork(evmBridgeApi.externalNetwork);
+        this.setSelectedEvmNetwork(evmBridgeApi.externalNetwork);
         await this.onEvmNetworkTypeChange();
 
         this.unwatchEthereum = await ethersUtil.watchEthereum({
@@ -62,7 +62,11 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   }
 
   private async onEvmNetworkTypeChange(networkHex?: string) {
-    await Promise.all([this.setEvmNetworkType(networkHex), this.updateExternalBalances(true), this.getEvmNetworkFee()]);
+    await Promise.all([
+      this.setConnectedEvmNetwork(networkHex),
+      this.updateExternalBalances(true),
+      this.getEvmNetworkFee(),
+    ]);
   }
 
   private async subscribeToEvmBlockHeaders(): Promise<void> {
