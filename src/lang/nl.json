@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Netwerkadres kopiëren",
         "soraAddress": "@:soraText adres",
-        "ethereumAddress": "@:ethereumText adres"
+        "ethereumAddress": "@:ethereumText adres",
+        "disabledTitle": "Hashi Bridge is in onderhoud vanwege de Ethereum-fusie",
+        "disabledText": "Het zal beschikbaar zijn wanneer de werken klaar zijn. De tijdlijn is afhankelijk van het ontwikkelteam van Ethereum."
     },
     "selectRegisteredAsset": {
         "title": "Kies een token",

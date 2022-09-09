@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Hálózati cím másolása",
         "soraAddress": "@:soraText cím",
-        "ethereumAddress": "@:ethereumText cím"
+        "ethereumAddress": "@:ethereumText cím",
+        "disabledTitle": "A Hashi híd az Ethereum egyesülése miatt karbantartás alatt áll",
+        "disabledText": "A munkálatok befejeztével elérhető lesz. Az idővonal az Ethereum fejlesztőcsapatától függ."
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",

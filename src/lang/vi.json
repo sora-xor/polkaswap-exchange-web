@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Sao chép địa chỉ mạng",
         "soraAddress": "địa chỉ @:soraText",
-        "ethereumAddress": "địa chỉ @:ethereumText"
+        "ethereumAddress": "địa chỉ @:ethereumText",
+        "disabledTitle": "Cầu Hashi đang được bảo trì do hợp nhất Ethereum",
+        "disabledText": "Nó sẽ có sẵn khi tác phẩm hoàn thành. Dòng thời gian phụ thuộc vào nhóm phát triển của Ethereum."
     },
     "selectRegisteredAsset": {
         "title": "Chọn token",

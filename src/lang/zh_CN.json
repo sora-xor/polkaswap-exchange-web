@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "复制网络地址",
         "soraAddress": "@:soraText 地址",
-        "ethereumAddress": "@:ethereumText 地址"
+        "ethereumAddress": "@:ethereumText 地址",
+        "disabledTitle": "由于以太坊合并，哈希桥正在维护中",
+        "disabledText": "工程完成后即可使用。时间表取决于以太坊的开发团队。"
     },
     "selectRegisteredAsset": {
         "title": "选择一个代币",

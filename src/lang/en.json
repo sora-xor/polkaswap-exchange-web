@@ -534,8 +534,6 @@
         "strategicBonusApy": "Strategic Bonus APY"
     },
     "bridge": {
-        "disabledTitle": "Hashi Bridge is under maintaince due to the Ethereum merge",
-        "disabledText": "It will be available when the works will be finished. The timeline depends on Ethereum’s development team.",
         "title": "HASHI Bridge",
         "info": "Convert tokens between the @:soraText and @:ethereumText networks.",
         "balance": "Balance",
@@ -559,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Copy network address",
         "soraAddress": "@:soraText address",
-        "ethereumAddress": "@:ethereumText address"
+        "ethereumAddress": "@:ethereumText address",
+        "disabledTitle": "Hashi Bridge is under maintaince due to the Ethereum merge",
+        "disabledText": "It will be available when the works will be finished. The timeline depends on Ethereum’s development team."
     },
     "selectRegisteredAsset": {
         "title": "Select a token",

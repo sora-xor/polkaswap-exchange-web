@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Копирајте мрежну адресу",
         "soraAddress": "@:soraText adresa",
-        "ethereumAddress": "@:ethereumText adresa"
+        "ethereumAddress": "@:ethereumText adresa",
+        "disabledTitle": "Hashi мост је у одржавању због спајања Етхереума",
+        "disabledText": "Биће доступан када радови буду готови. Временски оквир зависи од развојног тима Етхереума."
     },
     "selectRegisteredAsset": {
         "title": "Изаберите токен",

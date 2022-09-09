@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Скопировать адрес сети",
         "soraAddress": "@:soraText адрес",
-        "ethereumAddress": "@:ethereumText адрес"
+        "ethereumAddress": "@:ethereumText адрес",
+        "disabledTitle": "Мост Hashi находится на техническом обслуживании из-за слияния Ethereum",
+        "disabledText": "Он будет доступен, когда работы будут завершены. Сроки зависят от команды разработчиков Ethereum."
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",

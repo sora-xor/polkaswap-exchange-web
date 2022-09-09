@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Daakọ adirẹsi nẹtiwọki",
         "soraAddress": "@:soraText adirẹsi",
-        "ethereumAddress": "@:ethereumText adirẹsi"
+        "ethereumAddress": "@:ethereumText adirẹsi",
+        "disabledTitle": "Hashi Bridge wa labẹ itọju nitori iṣọpọ Ethereum",
+        "disabledText": "Yoo wa nigbati awọn iṣẹ yoo pari. Ago naa da lori ẹgbẹ idagbasoke Ethereum."
     },
     "selectRegisteredAsset": {
         "title": "Yan Tokini kan",
