@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Salin alamat jaringan",
         "soraAddress": "@:soraText alamat",
-        "ethereumAddress": "@:ethereumText alamat"
+        "ethereumAddress": "@:ethereumText alamat",
+        "disabledTitle": "Jembatan Hashi sedang dalam pemeliharaan karena penggabungan Ethereum",
+        "disabledText": "Ini akan tersedia ketika pekerjaan akan selesai. Garis waktu tergantung pada tim pengembangan Ethereum."
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",

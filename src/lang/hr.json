@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Kopiraj mrežnu adresu",
         "soraAddress": "@:soraText adresa",
-        "ethereumAddress": "@:ethereumText adresa"
+        "ethereumAddress": "@:ethereumText adresa",
+        "disabledTitle": "Hashi Bridge je na održavanju zbog spajanja Ethereuma",
+        "disabledText": "Bit će dostupan kada radovi budu gotovi. Vremenska linija ovisi o razvojnom timu Ethereuma."
     },
     "selectRegisteredAsset": {
         "title": "Odaberite token",

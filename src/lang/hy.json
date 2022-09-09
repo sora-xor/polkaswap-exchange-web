@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Պատճենել ցանցի հասցեն",
         "soraAddress": "@:soraText հասցե",
-        "ethereumAddress": "@:ethereumText հասցե"
+        "ethereumAddress": "@:ethereumText հասցե",
+        "disabledTitle": "Hashi Bridge-ը պահպանվում է Ethereum-ի միաձուլման պատճառով",
+        "disabledText": "Այն հասանելի կլինի, երբ աշխատանքները կավարտվեն։ Ժամանակացույցը կախված է Ethereum-ի զարգացման թիմից:"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",
