@@ -125,10 +125,16 @@ export enum EvmNetworkType {
 }
 
 export interface SubNetwork {
-  name: EvmNetwork;
   id: BridgeNetworks;
-  symbol: string;
   defaultType: EvmNetworkType;
+  name: EvmNetwork;
+  nativeCurrency: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+  rpcUrls: string[];
+  blockExplorerUrls: string[];
   CONTRACTS: {
     XOR: { MASTER: string };
     VAL: { MASTER: string };
@@ -275,7 +281,6 @@ async function getAccountAssetBalance(
   if (accountAddress && assetAddress) {
     try {
       const ethersInstance = await getEthersInstance();
-      console.log(ethersInstance);
       const isNativeEvmToken = isNativeEvmTokenAddress(assetAddress);
       if (isNativeEvmToken) {
         value = await getAccountBalance(accountAddress);
@@ -357,7 +362,7 @@ async function watchEthereum(cb: {
   };
 }
 
-async function addToken(address: string, symbol: string, decimals: number, image?: string) {
+async function addToken(address: string, symbol: string, decimals: number, image?: string): Promise<void> {
   const ethereum = (window as any).ethereum;
 
   try {
@@ -372,6 +377,28 @@ async function addToken(address: string, symbol: string, decimals: number, image
           image, // A string url of the token logo
         },
       },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function addChain(network: SubNetwork): Promise<void> {
+  const ethereum = (window as any).ethereum;
+  const chainId = ethers.utils.hexValue(network.id);
+
+  try {
+    ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId,
+          rpcUrls: network.rpcUrls,
+          chainName: network.name,
+          nativeCurrency: network.nativeCurrency,
+          blockExplorerUrls: network.blockExplorerUrls,
+        },
+      ],
     });
   } catch (error) {
     console.error(error);
@@ -469,5 +496,6 @@ export default {
   getEvmTransactionReceipt,
   getBlock,
   addToken,
+  addChain,
   isNativeEvmTokenAddress,
 };

@@ -177,6 +177,16 @@
         </s-float-input>
 
         <s-button
+          v-if="!isValidNetworkType"
+          class="el-button--next s-typography-button--large"
+          type="primary"
+          @click="changeProviderNetwork"
+        >
+          {{ t('bridge.changeNetwork') }}
+        </s-button>
+
+        <s-button
+          v-else
           class="el-button--next s-typography-button--large"
           data-test-name="nextButton"
           type="primary"
@@ -184,10 +194,7 @@
           :loading="isConfirmTxLoading"
           @click="handleConfirmTransaction"
         >
-          <template v-if="!isValidNetworkType">
-            {{ t('bridge.changeNetwork') }}
-          </template>
-          <template v-else-if="!isAssetSelected">
+          <template v-if="!isAssetSelected">
             {{ t('buttons.chooseAToken') }}
           </template>
           <template v-else-if="!isRegisteredAsset">
@@ -498,6 +505,11 @@ export default class Bridge extends Mixins(
   }
 
   async handleConfirmTransaction(): Promise<void> {
+    if (!this.isValidNetworkType) {
+      this.changeProviderNetwork();
+      return;
+    }
+
     if (!this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
       await this.waitOnNextTxFailureConfirmation();
@@ -527,6 +539,14 @@ export default class Bridge extends Mixins(
   async selectNetwork(network: number): Promise<void> {
     this.showSelectNetworkDialog = false;
     this.setEvmNetwork(network);
+  }
+
+  async changeProviderNetwork(): Promise<void> {
+    const network = this.subNetworks.find((network) => network.id === this.evmNetwork);
+
+    if (network) {
+      await ethersUtil.addChain(network);
+    }
   }
 
   async selectAsset(selectedAsset?: RegisteredAccountAssetWithDecimals): Promise<void> {
