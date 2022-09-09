@@ -620,7 +620,7 @@ export default class BridgeTransaction extends Mixins(
 
   handleOpenEtherscan(): void {
     const hash = this.isSoraToEvm ? this.transactionToHash : this.transactionFromHash;
-    const url = this.getEtherscanLink(hash, true);
+    const url = this.getEtherscanLink(hash);
     const win = window.open(url, '_blank');
     win && win.focus();
   }
@@ -736,11 +736,11 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get formattedNetworkStep1(): string {
-    return this.t(this.formatNetwork(this.isSoraToEvm, true));
+    return this.t(this.formatNetwork(this.isSoraToEvm));
   }
 
   get formattedNetworkStep2(): string {
-    return this.t(this.formatNetwork(!this.isSoraToEvm, true));
+    return this.t(this.formatNetwork(!this.isSoraToEvm));
   }
 
   get comfirmationBlocksLeft(): number {

@@ -8,6 +8,7 @@ import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
 import { MoonpayNotifications } from '@/components/Moonpay/consts';
 import { state, action, mutation, getter } from '@/store/decorators';
+import { EvmNetworkId } from '@/consts/evm';
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
@@ -27,6 +28,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @state.moonpay.api moonpayApi!: MoonpayApi;
   @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<BridgeHistory>;
   @state.web3.evmBalance evmBalance!: CodecString;
+  @state.web3.ethBridgeEvmNetwork ethBridgeEvmNetwork!: EvmNetworkId;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   @getter.settings.moonpayApiKey moonpayApiKey!: string;
@@ -44,8 +46,8 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @action.assets.updateRegisteredAssets private updateRegisteredAssets!: (reset?: boolean) => Promise<void>;
 
   // TODO [EVM]
-  async prepareEvmNetwork(networkId = BridgeNetworks.ETH_NETWORK_ID): Promise<void> {
-    this.setSelectedEvmNetwork(networkId); // WalletConnectMixin
+  async prepareEvmNetwork(): Promise<void> {
+    this.setSelectedEvmNetwork(this.ethBridgeEvmNetwork); // WalletConnectMixin
   }
 
   initMoonpayApi(): void {

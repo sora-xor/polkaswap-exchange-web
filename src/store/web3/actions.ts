@@ -3,6 +3,7 @@ import { defineActions } from 'direct-vuex';
 import { web3ActionContext } from '@/store/web3';
 import ethersUtil from '@/utils/ethers-util';
 
+import type { EvmNetworkId } from '@/consts/evm';
 import type { Provider } from '@/utils/ethers-util';
 
 const actions = defineActions({
@@ -16,6 +17,18 @@ const actions = defineActions({
     const { commit } = web3ActionContext(context);
     const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
     commit.setEvmNetwork(evmNetwork);
+  },
+
+  async setSelectedEvmNetwork(context, evmNetwork: EvmNetworkId): Promise<void> {
+    const { commit, getters } = web3ActionContext(context);
+    commit.setSelectedEvmNetwork(evmNetwork);
+
+    const { selectedEvmNetwork: selected, connectedEvmNetwork: connected } = getters;
+
+    // if connected network is not equal to selected, request for provider to change network
+    if (selected && connected && selected.id !== connected.id) {
+      await ethersUtil.switchOrAddChain(selected);
+    }
   },
 });
 

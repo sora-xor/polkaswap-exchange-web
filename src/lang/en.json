@@ -452,13 +452,14 @@
         "Stage": "@:soraText Testnet"
     },
     "evm": {
-        "main": "Ethereum Mainnet",
-        "ropsten": "Ethereum Ropsten",
-        "rinkeby": "Ethereum Rinkeby",
-        "kovan": "Ethereum Kovan",
-        "goerli": "Ethereum Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
+        "1": "@:ethereumText Mainnet",
+        "3": "@:ethereumText Ropsten Testnet",
+        "4": "@:ethereumText Rinkeby Testnet",
+        "5": "@:ethereumText Goerli Testnet",
+        "42": "@:ethereumText Kovan Testnet",
+        "63": "@:ethereumText Classic Mordor Testnet",
+        "1001": "Klaytn Baobab Testnet",
+        "8217": "Klaytn Cypress Mainnet"
     },
     "providers": {
         "metamask": "@:metamask"

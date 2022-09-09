@@ -10,7 +10,7 @@ import { getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { updateDocumentTitle, updateFpNumberLocale } from '@/utils';
 import { AppHandledError } from '@/utils/error';
 import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
-import { KnownBridgeAsset } from '@/utils/ethers-util';
+import { KnownEthBridgeAsset } from '@/utils/ethers-util';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 
@@ -34,13 +34,13 @@ const updateEthBridgeHistory =
             networkFees,
           },
         },
-        web3: {
-          ethBridge: { contractAddress },
-        },
+        web3: { ethBridgeContractAddress },
       } = rootState;
 
       const assets = rootGetters.assets.assetsDataTable;
-      const contracts = compact(Object.values(KnownBridgeAsset).map<Nullable<string>>((key) => contractAddress[key]));
+      const contracts = compact(
+        Object.values(KnownEthBridgeAsset).map<Nullable<string>>((key) => ethBridgeContractAddress[key])
+      );
 
       const ethBridgeHistory = new EthBridgeHistory(etherscanApiKey);
 

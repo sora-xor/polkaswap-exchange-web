@@ -110,35 +110,14 @@ type ethersProvider = ethers.providers.Web3Provider;
 let provider: any = null;
 let ethersInstance: ethersProvider | null = null;
 
-// TODO [EVM] remove and update translations to network ids
-export enum EvmNetworkType {
-  Mainnet = 'main',
-  Ropsten = 'ropsten',
-  Kovan = 'kovan',
-  Rinkeby = 'rinkeby',
-  Goerli = 'goerli',
-  Private = 'private',
-  EWC = 'EWC',
-  Mordor = 'classicMordor', // Ethereum Classic Mordor
-}
-
-// TODO: replace for KnownEthBridgeAsset
-export enum KnownBridgeAsset {
+// TODO [EVM] Move to utils/bridge/eth
+export enum KnownEthBridgeAsset {
   VAL = 'VAL',
   XOR = 'XOR',
   Other = 'OTHER',
 }
 
-export enum ContractNetwork {
-  Ethereum = 'ethereum',
-  Other = 'other',
-}
-
-export enum Contract {
-  Internal = 'internal',
-  Other = 'other',
-}
-
+// TODO [EVM] Move to utils/bridge/eth
 export enum OtherContractType {
   Bridge = 'BRIDGE',
   ERC20 = 'ERC20',
@@ -152,15 +131,6 @@ export enum Provider {
 interface ConnectOptions {
   provider: Provider;
   url?: string;
-}
-
-interface JsonContract {
-  abi: AbiItem;
-  evm: {
-    bytecode: {
-      object: string;
-    };
-  };
 }
 
 // TODO [EVM]
@@ -186,7 +156,7 @@ const EthereumGasLimits = [
     [VAL.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     [PSWAP.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     [ETH.address]: gasLimit.sendEthToSidechain,
-    [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownEthBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
   },
   // SORA -> ETH
   {
@@ -194,7 +164,7 @@ const EthereumGasLimits = [
     [VAL.address]: gasLimit.mintTokensByPeers,
     [PSWAP.address]: gasLimit.receiveBySidechainAssetId,
     [ETH.address]: gasLimit.receiveByEthereumAssetAddress,
-    [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
+    [KnownEthBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
   },
 ];
 
@@ -356,27 +326,43 @@ async function addToken(address: string, symbol: string, decimals: number, image
 
 /**
  * Add chain to Metamask
- * @param network
+ * @param network network data
  * @param chainName translated chain name
  */
-async function addChain(network: EvmNetworkData, chainName?: string): Promise<void> {
+async function switchOrAddChain(network: EvmNetworkData, chainName?: string): Promise<void> {
   const ethereum = (window as any).ethereum;
+  const chainId = ethers.utils.hexValue(network.id);
 
   try {
-    ethereum.request({
-      method: 'wallet_addEthereumChain',
+    await ethereum.request({
+      method: 'wallet_switchEthereumChain',
       params: [
         {
-          chainId: ethers.utils.hexValue(network.id),
-          chainName: chainName || network.name,
-          rpcUrls: network.rpcUrls,
-          nativeCurrency: network.nativeCurrency,
-          blockExplorerUrls: network.blockExplorerUrls,
+          chainId,
         },
       ],
     });
-  } catch (error) {
-    console.error(error);
+  } catch (switchError: any) {
+    console.error(switchError);
+
+    if (switchError.code === 4902) {
+      try {
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId,
+              chainName: chainName || network.name,
+              rpcUrls: network.rpcUrls,
+              nativeCurrency: network.nativeCurrency,
+              blockExplorerUrls: network.blockExplorerUrls,
+            },
+          ],
+        });
+      } catch (addError) {
+        console.error(addError);
+      }
+    }
   }
 }
 
@@ -395,7 +381,7 @@ async function getEvmNetworkFee(address: string, isSoraToEvm: boolean): Promise<
     const ethersInstance = await getEthersInstance();
     const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
     const gasLimits = EthereumGasLimits[+isSoraToEvm];
-    const key = address in gasLimits ? address : KnownBridgeAsset.Other;
+    const key = address in gasLimits ? address : KnownEthBridgeAsset.Other;
     const gasLimit = gasLimits[key];
     const fee = calcEvmFee(gasPrice, gasLimit);
 
@@ -431,15 +417,6 @@ async function getBlock(number: number): Promise<ethers.providers.Block> {
   return block;
 }
 
-async function readSmartContract(network: ContractNetwork, name: string): Promise<JsonContract | undefined> {
-  try {
-    const { data } = await axiosInstance.get(`/abi/${network}/${name}`);
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 async function accountAddressToHex(address: string): Promise<string> {
   return ethers.utils.hexlify(Array.from(decodeAddress(address).values()));
 }
@@ -464,7 +441,6 @@ export default {
   checkAccountIsConnected,
   getEthersInstance,
   watchEthereum,
-  readSmartContract,
   accountAddressToHex,
   addressesAreEqual,
   calcEvmFee,
@@ -475,6 +451,6 @@ export default {
   getEvmTransactionReceipt,
   getBlock,
   addToken,
-  addChain,
+  switchOrAddChain,
   isNativeEvmTokenAddress,
 };

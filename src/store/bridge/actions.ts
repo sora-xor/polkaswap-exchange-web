@@ -13,7 +13,7 @@ import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { waitForApprovedRequest } from '@/utils/bridge/eth/utils';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
-import ethersUtil, { ABI, KnownBridgeAsset, OtherContractType } from '@/utils/ethers-util';
+import ethersUtil, { ABI, KnownEthBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import type { SignTxResult } from './types';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
@@ -115,8 +115,8 @@ const actions = defineActions({
     const address = rootState.wallet.account.address;
     const assets = rootGetters.assets.assetsDataTable;
     const networkFees = rootState.wallet.settings.networkFees;
-    const contractsArray = Object.values(KnownBridgeAsset).map<Nullable<string>>(
-      (key) => rootState.web3.ethBridge.contractAddress[key]
+    const contractsArray = Object.values(KnownEthBridgeAsset).map<Nullable<string>>(
+      (key) => rootState.web3.ethBridgeContractAddress[key]
     );
     const contracts = compact(contractsArray);
     const updateCallback = setHistoryCallback || (() => commit.setHistory());
@@ -168,15 +168,15 @@ const actions = defineActions({
     //   throw new Error(`Change account in MetaMask to ${request.to}`);
     // }
     // const ethersInstance = await ethersUtil.getEthersInstance();
-    // const symbol = asset.symbol as KnownBridgeAsset;
+    // const symbol = asset.symbol as KnownEthBridgeAsset;
     // const evmAccount = rootState.web3.evmAddress;
-    // const isValOrXor = [KnownBridgeAsset.XOR, KnownBridgeAsset.VAL].includes(symbol);
+    // const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
     // const isEthereumChain = isValOrXor && rootState.web3.evmNetwork === BridgeNetworks.ETH_NETWORK_ID;
-    // const bridgeAsset: KnownBridgeAsset = isEthereumChain ? symbol : KnownBridgeAsset.Other;
+    // const bridgeAsset: KnownEthBridgeAsset = isEthereumChain ? symbol : KnownEthBridgeAsset.Other;
     // const contractMap = {
-    //   [KnownBridgeAsset.XOR]: rootGetters.web3.contractAbi(KnownBridgeAsset.XOR),
-    //   [KnownBridgeAsset.VAL]: rootGetters.web3.contractAbi(KnownBridgeAsset.VAL),
-    //   [KnownBridgeAsset.Other]: rootGetters.web3.contractAbi(KnownBridgeAsset.Other),
+    //   [KnownEthBridgeAsset.XOR]: rootGetters.web3.contractAbi(KnownEthBridgeAsset.XOR),
+    //   [KnownEthBridgeAsset.VAL]: rootGetters.web3.contractAbi(KnownEthBridgeAsset.VAL),
+    //   [KnownEthBridgeAsset.Other]: rootGetters.web3.contractAbi(KnownEthBridgeAsset.Other),
     // };
     // const contract = contractMap[bridgeAsset];
     // const jsonInterface = contract[OtherContractType.Bridge]?.abi ?? contract.abi;
@@ -231,12 +231,12 @@ const actions = defineActions({
     // if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
     // checkEvmNetwork(context);
     // try {
-    //   const contract = rootGetters.web3.contractAbi(KnownBridgeAsset.Other);
+    //   const contract = rootGetters.web3.contractAbi(KnownEthBridgeAsset.Other);
     //   const evmAccount = rootState.web3.evmAddress;
     //   const isExternalAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
     //   if (!isExternalAccountConnected) throw new Error('Connect account in Metamask');
     //   const ethersInstance = await ethersUtil.getEthersInstance();
-    //   const contractAddress = rootGetters.web3.contractAddress(KnownBridgeAsset.Other) as string;
+    //   const contractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other) as string;
     //   const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
     //   // don't check allowance for native EVM token
     //   if (!isNativeEvmToken) {

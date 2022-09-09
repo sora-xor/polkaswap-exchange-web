@@ -9,13 +9,12 @@ export function initialState(): Web3State {
     evmNetwork: EvmNetworkId.EthereumClassicMordor, // evm network in provider
     evmNetworksIds: [],
     evmNetworkSelected: EvmNetworkId.EthereumClassicMordor, // evm network selected by user
-    ethBridge: {
-      evmNetwork: EvmNetworkId.EthereumRinkeby,
-      contractAddress: {
-        XOR: '',
-        VAL: '',
-        OTHER: '',
-      },
+
+    ethBridgeEvmNetwork: EvmNetworkId.EthereumRinkeby,
+    ethBridgeContractAddress: {
+      XOR: '',
+      VAL: '',
+      OTHER: '',
     },
   };
 }

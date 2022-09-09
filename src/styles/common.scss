@@ -23,6 +23,16 @@ $s-icon-energy: "\0048";
     content: $s-icon-eth;
   }
 }
+.s-icon-energy {
+  &.s-icon--network {
+    &, &:hover {
+      color: #a566ff !important;
+    }
+  }
+  &:before {
+    content: $s-icon-energy;
+  }
+}
 [design-system-theme="light"] {
   .s-icon--network.s-icon {
     &-sora {
@@ -35,16 +45,6 @@ $s-icon-energy: "\0048";
         color: #627EEA !important;
       }
     }
-  }
-}
-.s-icon-energy {
-  &.s-icon--network {
-    &, &:hover {
-      color: #a566ff !important;
-    }
-  }
-  &:before {
-    content: $s-icon-energy;
   }
 }
 

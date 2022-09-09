@@ -14,5 +14,7 @@ export type Web3State = {
   evmNetwork: EvmNetworkId;
   evmNetworksIds: EvmNetworkId[];
   evmNetworkSelected: EvmNetworkId;
-  ethBridge: EthBridgeSettings;
+
+  ethBridgeEvmNetwork: EvmNetworkId;
+  ethBridgeContractAddress: EthBridgeContracts;
 };

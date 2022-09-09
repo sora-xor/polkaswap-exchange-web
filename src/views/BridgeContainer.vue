@@ -31,7 +31,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
         this.setSelectedEvmNetwork(evmBridgeApi.externalNetwork);
-        await this.onEvmNetworkTypeChange();
+        await this.onEvmNetworkChange();
 
         this.unwatchEthereum = await ethersUtil.watchEthereum({
           onAccountChange: (addressList: string[]) => {
@@ -43,7 +43,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
             }
           },
           onNetworkChange: (networkHex: string) => {
-            this.onEvmNetworkTypeChange(networkHex);
+            this.onEvmNetworkChange(networkHex);
           },
           onDisconnect: () => {
             this.disconnectExternalAccount();
@@ -61,7 +61,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     this.unsubscribeEvmBlockHeaders();
   }
 
-  private async onEvmNetworkTypeChange(networkHex?: string) {
+  private async onEvmNetworkChange(networkHex?: string) {
     await Promise.all([
       this.setConnectedEvmNetwork(networkHex),
       this.updateExternalBalances(true),

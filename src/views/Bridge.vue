@@ -543,7 +543,7 @@ export default class Bridge extends Mixins(
 
   async changeProviderNetwork(): Promise<void> {
     if (this.selectedEvmNetwork) {
-      await ethersUtil.addChain(this.selectedEvmNetwork);
+      await ethersUtil.switchOrAddChain(this.selectedEvmNetwork);
     }
   }
 

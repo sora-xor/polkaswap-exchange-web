@@ -23,7 +23,7 @@ export interface EvmNetworkData {
 }
 
 // EVM networks data
-// This data could be added to Metamask automatically using "addChain" function
+// This data could be added to Metamask automatically using "switchOrAddChain" function
 export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
   [EvmNetworkId.EthereumMainnet]: {
     id: EvmNetworkId.EthereumMainnet,
@@ -38,7 +38,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
   },
   [EvmNetworkId.EthereumRopsten]: {
     id: EvmNetworkId.EthereumRopsten,
-    name: 'Ropsten Testnet',
+    name: 'Ethereum Ropsten Testnet',
     nativeCurrency: {
       name: 'RopstenETH',
       symbol: 'ETH',
@@ -49,7 +49,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
   },
   [EvmNetworkId.EthereumRinkeby]: {
     id: EvmNetworkId.EthereumRinkeby,
-    name: 'Rinkeby Testnet',
+    name: 'Ethereum Rinkeby Testnet',
     nativeCurrency: {
       name: 'RinkebyETH',
       symbol: 'ETH',
@@ -60,7 +60,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
   },
   [EvmNetworkId.EthereumGoerli]: {
     id: EvmNetworkId.EthereumGoerli,
-    name: 'Goerli Testnet',
+    name: 'Ethereum Goerli Testnet',
     nativeCurrency: {
       name: 'GoerliETH',
       symbol: 'ETH',
@@ -71,7 +71,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
   },
   [EvmNetworkId.EthereumKovan]: {
     id: EvmNetworkId.EthereumKovan,
-    name: 'Kovan Testnet',
+    name: 'Ethereum Kovan Testnet',
     nativeCurrency: {
       name: 'KovanETH',
       symbol: 'ETH',
@@ -93,7 +93,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
   },
   [EvmNetworkId.KlaytnBaobab]: {
     id: EvmNetworkId.KlaytnBaobab,
-    name: 'Klaytn Baobab',
+    name: 'Klaytn Baobab Testnet',
     nativeCurrency: {
       name: 'KLAY',
       symbol: 'KLAY',
@@ -104,7 +104,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
   },
   [EvmNetworkId.KlaytnCypress]: {
     id: EvmNetworkId.KlaytnCypress,
-    name: 'Klaytn Cypress',
+    name: 'Klaytn Cypress Mainnet',
     nativeCurrency: {
       name: 'KLAY',
       symbol: 'KLAY',

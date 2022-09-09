@@ -4,7 +4,7 @@ import { Operation, TransactionStatus } from '@sora-substrate/util';
 import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 
 import { PageNames, RewardsTabsItems } from '../consts';
-import { EvmNetworkType } from '../utils/ethers-util';
+import { EvmNetworkId } from '@/consts/evm';
 import { MoonpayNotifications } from '@/components/Moonpay/consts';
 
 export default {
@@ -251,13 +251,14 @@ export default {
     [WALLET_CONSTS.SoraNetwork.Prod]: '@:soraText Mainnet',
   },
   evm: {
-    [EvmNetworkType.Mainnet]: 'Ethereum Mainnet',
-    [EvmNetworkType.Ropsten]: 'Ethereum Ropsten',
-    [EvmNetworkType.Rinkeby]: 'Ethereum Rinkeby',
-    [EvmNetworkType.Kovan]: 'Ethereum Kovan',
-    [EvmNetworkType.Goerli]: 'Ethereum Goerli',
-    [EvmNetworkType.Private]: 'Volta Testnet',
-    [EvmNetworkType.EWC]: 'Energy Web Chain',
+    [EvmNetworkId.EthereumMainnet]: '@:ethereumText Mainnet',
+    [EvmNetworkId.EthereumRopsten]: '@:ethereumText Ropsten Testnet',
+    [EvmNetworkId.EthereumRinkeby]: '@:ethereumText Rinkeby Testnet',
+    [EvmNetworkId.EthereumGoerli]: '@:ethereumText Goerli Testnet',
+    [EvmNetworkId.EthereumKovan]: '@:ethereumText Kovan Testnet',
+    [EvmNetworkId.EthereumClassicMordor]: '@:ethereumText Classic Mordor Testnet',
+    [EvmNetworkId.KlaytnBaobab]: 'Klaytn Baobab Testnet',
+    [EvmNetworkId.KlaytnCypress]: 'Klaytn Cypress Mainnet',
   },
   providers: {
     metamask: '@:metamask',

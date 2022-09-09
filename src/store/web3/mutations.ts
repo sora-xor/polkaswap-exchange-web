@@ -35,7 +35,7 @@ const mutations = defineMutations<Web3State>()({
   },
   // by user
   setSelectedEvmNetwork(state, networkId: EvmNetworkId): void {
-    state.evmNetwork = networkId;
+    state.evmNetworkSelected = networkId;
     evmBridgeApi.externalNetwork = networkId;
   },
   setEvmBalance(state, balance: CodecString): void {
@@ -46,8 +46,8 @@ const mutations = defineMutations<Web3State>()({
     state,
     { evmNetwork, address }: { evmNetwork: EvmNetworkId; address: EthBridgeContracts }
   ): void {
-    state.ethBridge.evmNetwork = evmNetwork;
-    state.ethBridge.contractAddress = {
+    state.ethBridgeEvmNetwork = evmNetwork;
+    state.ethBridgeContractAddress = {
       XOR: address.XOR,
       VAL: address.VAL,
       OTHER: address.OTHER,

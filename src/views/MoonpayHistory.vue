@@ -290,7 +290,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     if (!this.selectedItem.id) return;
 
     if (this.bridgeTxToSora?.id) {
-      await this.prepareEvmNetwork(this.bridgeTxToSora.externalNetwork); // MoonpayBridgeInitMixin
+      await this.prepareEvmNetwork(); // MoonpayBridgeInitMixin
       await this.showHistory(this.bridgeTxToSora.id); // MoonpayBridgeInitMixin
     } else {
       await this.prepareMoonpayTxForBridgeTransfer(this.selectedItem);
