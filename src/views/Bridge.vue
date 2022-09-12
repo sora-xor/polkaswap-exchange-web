@@ -192,7 +192,7 @@
           type="primary"
           :disabled="isConfirmTxDisabled"
           :loading="isConfirmTxLoading"
-          @click="handleConfirmTransaction"
+          @click="handleConfirmButtonClick"
         >
           <template v-if="!isAssetSelected">
             {{ t('buttons.chooseAToken') }}
@@ -505,7 +505,7 @@ export default class Bridge extends Mixins(
     }
   }
 
-  async handleConfirmTransaction(): Promise<void> {
+  async handleConfirmButtonClick(): Promise<void> {
     if (!this.isValidNetwork) {
       this.changeProviderNetwork();
       return;
@@ -558,13 +558,11 @@ export default class Bridge extends Mixins(
     await this.checkConnectionToExternalAccount(async () => {
       // create new history item
       const tx = await this.generateHistoryItem();
-      const { assetAddress, type, id } = tx;
-      if (type === Operation.EthBridgeOutgoing && assetAddress) {
-        const asset = this.accountAssetsAddressTable[assetAddress];
-        if (!asset) {
-          // Add asset to account assets for balances subscriptions
-          await this.addAssetToAccountAssets(assetAddress);
-        }
+      const { assetAddress, id } = tx;
+      const asset = this.accountAssetsAddressTable[assetAddress];
+      // Add asset to account assets for balances subscriptions
+      if (!asset) {
+        await this.addAssetToAccountAssets(assetAddress);
       }
       this.setHistoryId(id);
       router.push({ name: PageNames.BridgeTransaction });
