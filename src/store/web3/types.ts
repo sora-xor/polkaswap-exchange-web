@@ -11,9 +11,9 @@ export type EthBridgeSettings = {
 export type Web3State = {
   evmAddress: string;
   evmBalance: CodecString;
-  evmNetwork: EvmNetworkId;
+  evmNetwork: Nullable<EvmNetworkId>;
   evmNetworksIds: EvmNetworkId[];
-  evmNetworkSelected: EvmNetworkId;
+  evmNetworkSelected: Nullable<EvmNetworkId>;
 
   ethBridgeEvmNetwork: EvmNetworkId;
   ethBridgeContractAddress: EthBridgeContracts;

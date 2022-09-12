@@ -7,10 +7,10 @@ import { XOR, VAL, PSWAP, ETH } from '@sora-substrate/util/build/assets/consts';
 
 import type { CodecString } from '@sora-substrate/util';
 
-import axiosInstance from '@/api';
+import storage from './storage';
 import { ZeroStringValue } from '@/consts';
 
-import type { EvmNetworkData } from '@/consts/evm';
+import type { EvmNetworkData, EvmNetworkId } from '@/consts/evm';
 
 type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
 type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
@@ -432,6 +432,28 @@ function isNativeEvmTokenAddress(address: string): boolean {
   return hexToNumber(address) === 0;
 }
 
+function getEvmUserAddress(): string {
+  return storage.get('evmAddress') || '';
+}
+
+function storeEvmUserAddress(address: string): void {
+  storage.set('evmAddress', address);
+}
+
+function removeEvmUserAddress(): void {
+  storage.remove('evmAddress');
+}
+
+function getSelectedEvmNetwork(): Nullable<EvmNetworkId> {
+  const evmNetwork = Number(storage.get('evmNetwork'));
+
+  return Number.isFinite(evmNetwork) ? evmNetwork : null;
+}
+
+function storeSelectedEvmNetwork(evmNetwork: EvmNetworkId) {
+  storage.set('evmNetwork', evmNetwork);
+}
+
 export default {
   onConnect,
   getAccount,
@@ -453,4 +475,11 @@ export default {
   addToken,
   switchOrAddChain,
   isNativeEvmTokenAddress,
+  // evm address storage
+  getEvmUserAddress,
+  storeEvmUserAddress,
+  removeEvmUserAddress,
+  // evm network storage
+  getSelectedEvmNetwork,
+  storeSelectedEvmNetwork,
 };

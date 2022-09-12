@@ -30,6 +30,18 @@ const actions = defineActions({
       await ethersUtil.switchOrAddChain(selected);
     }
   },
+
+  async restoreSelectedEvmNetwork(context): Promise<void> {
+    const { commit, getters } = web3ActionContext(context);
+
+    if (getters.selectedEvmNetwork) return;
+
+    const selectedEvmNetworkId = ethersUtil.getSelectedEvmNetwork() || getters.availableEvmNetworks[0]?.id;
+
+    if (selectedEvmNetworkId) {
+      commit.setSelectedEvmNetwork(selectedEvmNetworkId);
+    }
+  },
 });
 
 export default actions;

@@ -17,11 +17,11 @@ const getters = defineGetters<Web3State>()({
   },
   connectedEvmNetwork(...args): Nullable<EvmNetworkData> {
     const { state } = web3GetterContext(args);
-    return EVM_NETWORKS[state.evmNetwork];
+    return state.evmNetwork ? EVM_NETWORKS[state.evmNetwork] : null;
   },
   selectedEvmNetwork(...args): Nullable<EvmNetworkData> {
     const { state } = web3GetterContext(args);
-    return EVM_NETWORKS[state.evmNetworkSelected];
+    return state.evmNetworkSelected ? EVM_NETWORKS[state.evmNetworkSelected] : null;
   },
   isValidNetwork(...args): boolean {
     const { state } = web3GetterContext(args);

@@ -15,7 +15,6 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import ethersUtil from '@/utils/ethers-util';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { action } from '@/store/decorators';
 
 @Component
@@ -30,8 +29,8 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   async created(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.setSelectedEvmNetwork(evmBridgeApi.externalNetwork);
-        await this.onEvmNetworkChange();
+        await this.restoreSelectedEvmNetwork();
+        await this.onConnectedEvmNetworkChange();
 
         this.unwatchEthereum = await ethersUtil.watchEthereum({
           onAccountChange: (addressList: string[]) => {
@@ -43,7 +42,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
             }
           },
           onNetworkChange: (networkHex: string) => {
-            this.onEvmNetworkChange(networkHex);
+            this.onConnectedEvmNetworkChange(networkHex);
           },
           onDisconnect: () => {
             this.disconnectExternalAccount();
@@ -61,7 +60,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     this.unsubscribeEvmBlockHeaders();
   }
 
-  private async onEvmNetworkChange(networkHex?: string) {
+  private async onConnectedEvmNetworkChange(networkHex?: string) {
     await Promise.all([
       this.setConnectedEvmNetwork(networkHex),
       this.updateExternalBalances(true),

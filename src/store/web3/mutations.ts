@@ -1,6 +1,7 @@
 import { defineMutations } from 'direct-vuex';
 import { CodecString } from '@sora-substrate/util';
 
+import ethersUtil from '@/utils/ethers-util';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { initialState } from './state';
 
@@ -22,9 +23,11 @@ const mutations = defineMutations<Web3State>()({
   },
   setEvmAddress(state, address: string): void {
     state.evmAddress = address;
+    ethersUtil.storeEvmUserAddress(address);
   },
   resetEvmAddress(state): void {
     state.evmAddress = '';
+    ethersUtil.removeEvmUserAddress();
   },
   setEvmNetworksIds(state, networksIds: EvmNetworkId[]): void {
     state.evmNetworksIds = networksIds;
@@ -36,6 +39,7 @@ const mutations = defineMutations<Web3State>()({
   // by user
   setSelectedEvmNetwork(state, networkId: EvmNetworkId): void {
     state.evmNetworkSelected = networkId;
+    ethersUtil.storeSelectedEvmNetwork(networkId);
     evmBridgeApi.externalNetwork = networkId;
   },
   setEvmBalance(state, balance: CodecString): void {
