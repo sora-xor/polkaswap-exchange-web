@@ -223,6 +223,7 @@
           v-if="areNetworksConnected && !isZeroAmount && isRegisteredAsset"
           class="info-line-container"
           :info-only="false"
+          :is-sora-to-evm="isSoraToEvm"
           :evm-token-symbol="evmTokenSymbol"
           :evm-network-fee="evmNetworkFee"
           :sora-network-fee="soraNetworkFee"
@@ -392,11 +393,11 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.xor, this.soraNetworkFee);
+    return this.isSoraToEvm && hasInsufficientXorForFee(this.xor, this.soraNetworkFee);
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee);
+    return !this.isSoraToEvm && hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee);
   }
 
   get isInsufficientBalance(): boolean {

@@ -15,10 +15,6 @@ const getters = defineGetters<Web3State>()({
     const { state } = web3GetterContext(args);
     return state.evmNetworksIds.map((evmNetworkId) => EVM_NETWORKS[evmNetworkId]);
   },
-  connectedEvmNetwork(...args): Nullable<EvmNetworkData> {
-    const { state } = web3GetterContext(args);
-    return state.evmNetwork ? EVM_NETWORKS[state.evmNetwork] : null;
-  },
   selectedEvmNetwork(...args): Nullable<EvmNetworkData> {
     const { state } = web3GetterContext(args);
     return state.evmNetworkSelected ? EVM_NETWORKS[state.evmNetworkSelected] : null;

@@ -20,13 +20,14 @@ const actions = defineActions({
   },
 
   async setSelectedEvmNetwork(context, evmNetwork: EvmNetworkId): Promise<void> {
-    const { commit, getters } = web3ActionContext(context);
+    const { commit, getters, state } = web3ActionContext(context);
     commit.setSelectedEvmNetwork(evmNetwork);
 
-    const { selectedEvmNetwork: selected, connectedEvmNetwork: connected } = getters;
+    const { selectedEvmNetwork: selected } = getters;
+    const { evmNetwork: connectedId } = state;
 
     // if connected network is not equal to selected, request for provider to change network
-    if (selected && connected && selected.id !== connected.id) {
+    if (selected && selected.id !== connectedId) {
       await ethersUtil.switchOrAddChain(selected);
     }
   },

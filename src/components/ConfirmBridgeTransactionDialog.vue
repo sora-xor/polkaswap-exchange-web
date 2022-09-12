@@ -54,13 +54,15 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { CodecString, BridgeNetworks } from '@sora-substrate/util';
+import { CodecString } from '@sora-substrate/util';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { EvmSymbol, ZeroStringValue, Components } from '@/consts';
+import { ZeroStringValue, Components } from '@/consts';
 import { lazyComponent } from '@/router';
+
+import type { EvmNetworkId } from '@/consts/evm';
 
 @Component({
   components: {
@@ -75,10 +77,10 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   TranslationMixin,
   NetworkFormatterMixin
 ) {
+  @Prop({ required: true, type: Number }) readonly evmNetwork!: EvmNetworkId;
   @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;
   @Prop({ default: () => undefined, type: Object }) readonly asset!: Nullable<Asset>;
-  @Prop({ default: BridgeNetworks.ETH_NETWORK_ID, type: Number }) readonly evmNetwork!: BridgeNetworks;
-  @Prop({ default: EvmSymbol.ETH, type: String }) readonly evmTokenSymbol!: string;
+  @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
   @Prop({ default: true, type: Boolean }) readonly isValidNetwork!: boolean;

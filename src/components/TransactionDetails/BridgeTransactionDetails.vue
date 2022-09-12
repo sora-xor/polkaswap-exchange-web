@@ -1,6 +1,7 @@
 <template>
   <transaction-details :info-only="infoOnly">
     <info-line
+      v-if="isSoraToEvm"
       :label="t('bridge.soraNetworkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
       :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
@@ -9,6 +10,7 @@
       is-formatted
     />
     <info-line
+      v-else
       :label="t('bridge.ethereumNetworkFee')"
       :label-tooltip="t('ethNetworkFeeTooltipText')"
       :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
@@ -26,7 +28,7 @@ import type { CodecString } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
-import { Components, EvmSymbol, ZeroStringValue } from '@/consts';
+import { Components, ZeroStringValue } from '@/consts';
 
 @Component({
   components: {
@@ -35,11 +37,11 @@ import { Components, EvmSymbol, ZeroStringValue } from '@/consts';
   },
 })
 export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  readonly EvmSymbol = EvmSymbol;
   readonly XOR_SYMBOL = XOR.symbol;
 
+  @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
-  @Prop({ default: EvmSymbol.ETH, type: String }) readonly evmTokenSymbol!: string;
+  @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
 
