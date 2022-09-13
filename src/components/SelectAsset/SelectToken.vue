@@ -12,7 +12,7 @@
 
       <s-tab :label="t('selectToken.assets.title')" name="assets"></s-tab>
 
-      <s-tab :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
+      <s-tab :disabled="disabledCustom" :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
         <template v-if="customAsset">
           <span v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</span>
 
@@ -64,6 +64,7 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
+import { XOR, XSTUSD } from '@sora-substrate/util/build/assets/consts';
 
 enum Tabs {
   Assets = 'assets',
@@ -88,6 +89,8 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset;
   @Prop({ default: false, type: Boolean }) readonly accountAssetsOnly!: boolean;
   @Prop({ default: false, type: Boolean }) readonly notNullBalanceOnly!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly disabledCustom!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isMainTokenProviders!: boolean;
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
 
@@ -110,16 +113,12 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get whitelistAssetsList(): Array<AccountAsset> {
-    const {
-      asset: excludeAsset,
-      whitelistAssets: assets,
-      accountAssetsAddressTable,
-      notNullBalanceOnly,
-      accountAssetsOnly,
-    } = this;
+    const whiteList = this.isMainTokenProviders ? this.getMainSources(this.whitelistAssets) : this.whitelistAssets;
+
+    const { asset: excludeAsset, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this;
 
     return this.getAssetsWithBalances({
-      assets,
+      assets: whiteList,
       accountAssetsAddressTable,
       notNullBalanceOnly,
       accountAssetsOnly,
@@ -157,6 +156,12 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   get sortedNonWhitelistAccountAssets(): Array<AccountAsset> {
     return Object.values(this.nonWhitelistAccountAssets).sort(this.sortByBalance());
+  }
+
+  getMainSources(whitelist): Array<Asset> {
+    const mainSourceAddresses = [XOR.address, XSTUSD.address];
+
+    return whitelist.filter((asset) => mainSourceAddresses.includes(asset.address));
   }
 
   async handleAddAsset(): Promise<void> {

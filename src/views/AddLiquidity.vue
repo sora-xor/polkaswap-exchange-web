@@ -9,6 +9,7 @@
     <s-form class="el-form--actions" :show-message="false">
       <token-input
         :balance="getTokenBalance(firstToken)"
+        is-select-available
         :is-max-available="isFirstMaxButtonAvailable"
         :title="t('createPair.deposit')"
         :token="firstToken"
@@ -18,6 +19,7 @@
         @focus="setFocusedField('firstTokenValue')"
         @blur="resetFocusedField"
         @max="handleAddLiquidityMaxValue($event, setFirstTokenValue)"
+        @select="openSelectFirstTokenDialog"
       />
 
       <s-icon class="icon-divider" name="plus-16" />
@@ -77,6 +79,14 @@
         />
       </template>
     </s-form>
+
+    <select-token
+      :visible.sync="showSelectFirstTokenDialog"
+      :connected="isLoggedIn"
+      @select="selectFirstTokenAddress($event.address)"
+      is-main-token-providers
+      disabled-custom
+    />
 
     <select-token
       :visible.sync="showSelectSecondTokenDialog"
@@ -172,6 +182,7 @@ export default class AddLiquidity extends Mixins(
   @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
   @mutation.addLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
 
+  showSelectFirstTokenDialog = false;
   showSelectSecondTokenDialog = false;
   insufficientBalanceTokenSymbol = '';
 
@@ -317,8 +328,18 @@ export default class AddLiquidity extends Mixins(
     return getAssetBalance(token);
   }
 
+  openSelectFirstTokenDialog(): void {
+    this.showSelectFirstTokenDialog = true;
+  }
+
   openSelectSecondTokenDialog(): void {
     this.showSelectSecondTokenDialog = true;
+  }
+
+  async selectFirstTokenAddress(address: string): Promise<void> {
+    await this.withSelectAssetLoading(async () => {
+      this.setFirstTokenAddress(address);
+    });
   }
 
   async selectSecondTokenAddress(address: string): Promise<void> {
