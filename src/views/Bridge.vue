@@ -29,206 +29,197 @@
             @click="handleChangeNetwork"
           /> -->
         </generic-page-header>
-        <template v-if="BRIDGE_ENABLED">
-          <s-float-input
-            :value="amount"
-            :decimals="getDecimals(isSoraToEvm)"
-            :delimiters="delimiters"
-            :max="getMax(assetAddress)"
-            :disabled="!areNetworksConnected || !isAssetSelected"
-            class="s-input--token-value"
-            data-test-name="bridgeFrom"
-            has-locale-string
-            size="medium"
-            @input="setAmount"
-          >
-            <div slot="top" class="input-line">
-              <div class="input-title">
-                <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
-                <span class="input-title--network">{{ getBridgeItemTitle(isSoraToEvm) }}</span>
-                <i :class="`s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
-              </div>
-              <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
-                <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
-                <formatted-amount-with-fiat-value
-                  value-can-be-hidden
-                  with-left-shift
-                  value-class="input-value--primary"
-                  :value="formatBalance(isSoraToEvm)"
-                  :fiat-value="firstFieldFiatBalance"
-                />
-              </div>
+        <s-float-input
+          :value="amount"
+          :decimals="getDecimals(isSoraToEvm)"
+          :delimiters="delimiters"
+          :max="getMax(assetAddress)"
+          :disabled="!areNetworksConnected || !isAssetSelected"
+          class="s-input--token-value"
+          data-test-name="bridgeFrom"
+          has-locale-string
+          size="medium"
+          @input="setAmount"
+        >
+          <div slot="top" class="input-line">
+            <div class="input-title">
+              <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
+              <span class="input-title--network">{{ getBridgeItemTitle(isSoraToEvm) }}</span>
+              <i :class="`s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
             </div>
-            <div slot="right" v-if="isNetworkAConnected" class="s-flex el-buttons">
-              <s-button
-                v-if="isMaxAvailable"
-                class="el-button--max s-typography-button--small"
-                type="primary"
-                alternative
-                size="mini"
-                border-radius="mini"
-                @click="handleMaxValue"
-              >
-                {{ t('buttons.max') }}
-              </s-button>
-              <token-select-button
-                class="el-button--select-token"
-                icon="chevron-down-rounded-16"
-                :token="asset"
-                @click="openSelectAssetDialog"
+            <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
+              <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
+              <formatted-amount-with-fiat-value
+                value-can-be-hidden
+                with-left-shift
+                value-class="input-value--primary"
+                :value="formatBalance(isSoraToEvm)"
+                :fiat-value="firstFieldFiatBalance"
               />
             </div>
-            <template #bottom>
-              <div class="input-line input-line--footer">
-                <formatted-amount
-                  v-if="asset && isSoraToEvm"
-                  is-fiat-value
-                  :value="getFiatAmountByString(amount, asset)"
-                />
-                <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-value" />
-              </div>
-              <div v-if="isNetworkAConnected" class="bridge-item-footer">
-                <s-divider type="tertiary" />
-                <s-tooltip :content="getCopyTooltip(isSoraToEvm)" border-radius="mini" placement="bottom-end">
-                  <span class="bridge-network-address" @click="handleCopyAddress(accountAddressFrom, $event)">
-                    {{ formatAddress(accountAddressFrom, 8) }}
-                  </span>
-                </s-tooltip>
-                <span>{{ t('bridge.connected') }}</span>
-              </div>
-              <s-button
-                v-else
-                class="el-button--connect s-typography-button--large"
-                data-test-name="connectPolkadot"
-                type="primary"
-                @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()"
-              >
-                {{ t('bridge.connectWallet') }}
-              </s-button>
-            </template>
-          </s-float-input>
-
-          <s-button
-            class="s-button--switch"
-            data-test-name="switchToken"
-            type="action"
-            icon="arrows-swap-90-24"
-            @click="handleSwitchItems"
-          />
-
-          <s-float-input
-            :value="amount"
-            :decimals="getDecimals(!isSoraToEvm)"
-            :delimiters="delimiters"
-            :max="getMax(assetAddress)"
-            class="s-input--token-value"
-            data-test-name="bridgeTo"
-            has-locale-string
-            size="medium"
-            disabled
-          >
-            <div slot="top" class="input-line">
-              <div class="input-title" @click="handleChangeNetwork">
-                <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
-                <span class="input-title--network">{{ getBridgeItemTitle(!isSoraToEvm) }}</span>
-                <i :class="`s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
-              </div>
-              <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
-                <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
-                <formatted-amount-with-fiat-value
-                  value-can-be-hidden
-                  with-left-shift
-                  value-class="input-value--primary"
-                  :value="formatBalance(!isSoraToEvm)"
-                  :fiat-value="secondFieldFiatBalance"
-                />
-              </div>
-            </div>
-            <div slot="right" v-if="isNetworkAConnected && isAssetSelected" class="s-flex el-buttons">
-              <token-select-button class="el-button--select-token" :token="asset" />
-            </div>
-            <template #bottom>
-              <div class="input-line input-line--footer">
-                <formatted-amount
-                  v-if="asset && !isSoraToEvm"
-                  :value="getFiatAmountByString(amount, asset)"
-                  is-fiat-value
-                />
-                <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" class="input-value" />
-              </div>
-              <div v-if="isNetworkBConnected" class="bridge-item-footer">
-                <s-divider type="tertiary" />
-                <s-tooltip :content="getCopyTooltip(!isSoraToEvm)" border-radius="mini" placement="bottom-end">
-                  <span class="bridge-network-address" @click="handleCopyAddress(accountAddressTo, $event)">
-                    {{ formatAddress(accountAddressTo, 8) }}
-                  </span>
-                </s-tooltip>
-                <span>{{ t('bridge.connected') }}</span>
-              </div>
-              <s-button
-                v-else
-                class="el-button--connect s-typography-button--large"
-                data-test-name="connectMetamask"
-                type="primary"
-                @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()"
-              >
-                {{ t('bridge.connectWallet') }}
-              </s-button>
-            </template>
-          </s-float-input>
-
-          <s-button
-            class="el-button--next s-typography-button--large"
-            data-test-name="nextButton"
-            type="primary"
-            :disabled="isConfirmTxDisabled"
-            :loading="isConfirmTxLoading"
-            @click="handleConfirmTransaction"
-          >
-            <template v-if="!isAssetSelected">
-              {{ t('buttons.chooseAToken') }}
-            </template>
-            <template v-else-if="!isRegisteredAsset">
-              {{ t('bridge.notRegisteredAsset', { assetSymbol }) }}
-            </template>
-            <template v-else-if="!areNetworksConnected">
-              {{ t('bridge.next') }}
-            </template>
-            <template v-else-if="!isValidNetworkType">
-              {{ t('bridge.changeNetwork') }}
-            </template>
-            <template v-else-if="isZeroAmount">
-              {{ t('buttons.enterAmount') }}
-            </template>
-            <template v-else-if="isInsufficientBalance">
-              {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: assetSymbol }) }}
-            </template>
-            <template v-else-if="isInsufficientXorForFee">
-              {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
-            </template>
-            <template v-else-if="isInsufficientEvmNativeTokenForFee">
-              {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: evmTokenSymbol }) }}
-            </template>
-            <template v-else>
-              {{ t('bridge.next') }}
-            </template>
-          </s-button>
-          <bridge-transaction-details
-            v-if="areNetworksConnected && !isZeroAmount && isRegisteredAsset"
-            class="info-line-container"
-            :info-only="false"
-            :evm-token-symbol="evmTokenSymbol"
-            :evm-network-fee="evmNetworkFee"
-            :sora-network-fee="soraNetworkFee"
-          />
-        </template>
-        <div v-else class="bridge--disabled">
-          <div class="pair--disabled">
-            <pair-token-logo :first-token="XOR" :second-token="ETH" size="big" />
           </div>
-          <h3>{{ t('bridge.disabledTitle') }}</h3>
-          <div class="text--disabled">{{ t('bridge.disabledText') }}</div>
-        </div>
+          <div slot="right" v-if="isNetworkAConnected" class="s-flex el-buttons">
+            <s-button
+              v-if="isMaxAvailable"
+              class="el-button--max s-typography-button--small"
+              type="primary"
+              alternative
+              size="mini"
+              border-radius="mini"
+              @click="handleMaxValue"
+            >
+              {{ t('buttons.max') }}
+            </s-button>
+            <token-select-button
+              class="el-button--select-token"
+              icon="chevron-down-rounded-16"
+              :token="asset"
+              @click="openSelectAssetDialog"
+            />
+          </div>
+          <template #bottom>
+            <div class="input-line input-line--footer">
+              <formatted-amount
+                v-if="asset && isSoraToEvm"
+                is-fiat-value
+                :value="getFiatAmountByString(amount, asset)"
+              />
+              <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-value" />
+            </div>
+            <div v-if="isNetworkAConnected" class="bridge-item-footer">
+              <s-divider type="tertiary" />
+              <s-tooltip :content="getCopyTooltip(isSoraToEvm)" border-radius="mini" placement="bottom-end">
+                <span class="bridge-network-address" @click="handleCopyAddress(accountAddressFrom, $event)">
+                  {{ formatAddress(accountAddressFrom, 8) }}
+                </span>
+              </s-tooltip>
+              <span>{{ t('bridge.connected') }}</span>
+            </div>
+            <s-button
+              v-else
+              class="el-button--connect s-typography-button--large"
+              data-test-name="connectPolkadot"
+              type="primary"
+              @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()"
+            >
+              {{ t('bridge.connectWallet') }}
+            </s-button>
+          </template>
+        </s-float-input>
+
+        <s-button
+          class="s-button--switch"
+          data-test-name="switchToken"
+          type="action"
+          icon="arrows-swap-90-24"
+          @click="handleSwitchItems"
+        />
+
+        <s-float-input
+          :value="amount"
+          :decimals="getDecimals(!isSoraToEvm)"
+          :delimiters="delimiters"
+          :max="getMax(assetAddress)"
+          class="s-input--token-value"
+          data-test-name="bridgeTo"
+          has-locale-string
+          size="medium"
+          disabled
+        >
+          <div slot="top" class="input-line">
+            <div class="input-title" @click="handleChangeNetwork">
+              <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
+              <span class="input-title--network">{{ getBridgeItemTitle(!isSoraToEvm) }}</span>
+              <i :class="`s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
+            </div>
+            <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
+              <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
+              <formatted-amount-with-fiat-value
+                value-can-be-hidden
+                with-left-shift
+                value-class="input-value--primary"
+                :value="formatBalance(!isSoraToEvm)"
+                :fiat-value="secondFieldFiatBalance"
+              />
+            </div>
+          </div>
+          <div slot="right" v-if="isNetworkAConnected && isAssetSelected" class="s-flex el-buttons">
+            <token-select-button class="el-button--select-token" :token="asset" />
+          </div>
+          <template #bottom>
+            <div class="input-line input-line--footer">
+              <formatted-amount
+                v-if="asset && !isSoraToEvm"
+                :value="getFiatAmountByString(amount, asset)"
+                is-fiat-value
+              />
+              <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" class="input-value" />
+            </div>
+            <div v-if="isNetworkBConnected" class="bridge-item-footer">
+              <s-divider type="tertiary" />
+              <s-tooltip :content="getCopyTooltip(!isSoraToEvm)" border-radius="mini" placement="bottom-end">
+                <span class="bridge-network-address" @click="handleCopyAddress(accountAddressTo, $event)">
+                  {{ formatAddress(accountAddressTo, 8) }}
+                </span>
+              </s-tooltip>
+              <span>{{ t('bridge.connected') }}</span>
+            </div>
+            <s-button
+              v-else
+              class="el-button--connect s-typography-button--large"
+              data-test-name="connectMetamask"
+              type="primary"
+              @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()"
+            >
+              {{ t('bridge.connectWallet') }}
+            </s-button>
+          </template>
+        </s-float-input>
+
+        <s-button
+          class="el-button--next s-typography-button--large"
+          data-test-name="nextButton"
+          type="primary"
+          :disabled="isConfirmTxDisabled"
+          :loading="isConfirmTxLoading"
+          @click="handleConfirmTransaction"
+        >
+          <template v-if="!isAssetSelected">
+            {{ t('buttons.chooseAToken') }}
+          </template>
+          <template v-else-if="!isRegisteredAsset">
+            {{ t('bridge.notRegisteredAsset', { assetSymbol }) }}
+          </template>
+          <template v-else-if="!areNetworksConnected">
+            {{ t('bridge.next') }}
+          </template>
+          <template v-else-if="!isValidNetworkType">
+            {{ t('bridge.changeNetwork') }}
+          </template>
+          <template v-else-if="isZeroAmount">
+            {{ t('buttons.enterAmount') }}
+          </template>
+          <template v-else-if="isInsufficientBalance">
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: assetSymbol }) }}
+          </template>
+          <template v-else-if="isInsufficientXorForFee">
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
+          </template>
+          <template v-else-if="isInsufficientEvmNativeTokenForFee">
+            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: evmTokenSymbol }) }}
+          </template>
+          <template v-else>
+            {{ t('bridge.next') }}
+          </template>
+        </s-button>
+        <bridge-transaction-details
+          v-if="areNetworksConnected && !isZeroAmount && isRegisteredAsset"
+          class="info-line-container"
+          :info-only="false"
+          :evm-token-symbol="evmTokenSymbol"
+          :evm-network-fee="evmNetworkFee"
+          :sora-network-fee="soraNetworkFee"
+        />
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
       <!-- <select-network :visible.sync="showSelectNetworkDialog" :value="evmNetwork" :sub-networks="subNetworks" @input="selectNetwork" /> -->
@@ -293,7 +284,6 @@ import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecima
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo), // TODO [ETH-MERGE]: Remove it
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
@@ -309,10 +299,6 @@ export default class Bridge extends Mixins(
   NetworkFeeDialogMixin,
   TokenSelectMixin
 ) {
-  readonly BRIDGE_ENABLED = false; // TODO [ETH-MERGE]: Remove all these lines, HTML template & CSS block
-  readonly XOR = XOR;
-  readonly ETH = ETH;
-
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   readonly KnownSymbols = KnownSymbols;
 
@@ -610,38 +596,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
 </style>
 
 <style lang="scss" scoped>
-// TODO [ETH-MERGE]: Remove this block below
-.bridge--disabled {
-  background-color: var(--s-color-base-border-primary);
-  height: 332px;
-  width: 411px;
-  border-radius: 30px;
-  box-shadow: var(--s-shadow-element-pressed);
-  > .pair--disabled {
-    display: flex;
-    justify-content: center;
-    margin-top: 32px;
-    > .pair-logo {
-      margin-right: 0;
-    }
-  }
-  > h3 {
-    @include page-header-title;
-    color: var(--s-color-base-content-primary);
-    text-transform: none;
-    padding: 32px 16px 0 16px;
-    margin: 0 16px;
-    text-align: center;
-  }
-  > .text--disabled {
-    color: var(--s-color-base-content-primary);
-    padding: 14px 16px;
-    margin: 0 16px;
-    text-align: center;
-    font-weight: 300;
-    font-size: 14px;
-  }
-}
 .bridge {
   flex-direction: column;
   align-items: center;

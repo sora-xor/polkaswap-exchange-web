@@ -557,9 +557,7 @@
         "energy": "@:evm.EWC",
         "copy": "Skopírujte sieťovú adresu",
         "soraAddress": "@:soraText adresa",
-        "ethereumAddress": "@:ethereumText adresa",
-        "disabledTitle": "Hashi Bridge je pod údržbou kvôli zlúčeniu Etherea",
-        "disabledText": "Bude k dispozícii po dokončení prác. Časová os závisí od vývojového tímu Etherea."
+        "ethereumAddress": "@:ethereumText adresa"
     },
     "selectRegisteredAsset": {
         "title": "Vybrať token",

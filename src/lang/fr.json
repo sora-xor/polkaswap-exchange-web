@@ -557,9 +557,7 @@
         "energy": "@:evm.EWC",
         "copy": "Copier l'adresse réseau",
         "soraAddress": "@:soraText adresse",
-        "ethereumAddress": "@:ethereumText adresse",
-        "disabledTitle": "Hashi Bridge est en maintenance en raison de la fusion d'Ethereum",
-        "disabledText": "Il sera disponible lorsque les travaux seront terminés. Le calendrier dépend de l'équipe de développement d'Ethereum."
+        "ethereumAddress": "@:ethereumText adresse"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
