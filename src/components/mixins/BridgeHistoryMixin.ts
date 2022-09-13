@@ -1,16 +1,17 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import type { BridgeHistory, CodecString } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import router from '@/router';
 import { PageNames, ZeroStringValue } from '@/consts';
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { state, mutation, action } from '@/store/decorators';
 
 @Component
 export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
-  @state.bridge.history history!: Array<BridgeHistory>;
+  @state.bridge.history history!: Array<EvmHistory>;
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
   @state.router.prev prevRoute!: Nullable<PageNames>;
 
@@ -20,14 +21,14 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   @mutation.bridge.setHistory setHistory!: VoidFunction;
 
   @action.bridge.setAssetAddress setAssetAddress!: (address?: string) => Promise<void>;
-  @action.bridge.generateHistoryItem generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
+  @action.bridge.generateHistoryItem generateHistoryItem!: (history?: any) => Promise<EvmHistory>;
 
   getSoraNetworkFee(type: Operation): CodecString {
     return this.isOutgoingType(type) ? this.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
   }
 
   isOutgoingType(type: Nullable<string>): boolean {
-    return type !== Operation.EthBridgeIncoming;
+    return type === Operation.EvmOutgoing;
   }
 
   async showHistory(id?: string): Promise<void> {
@@ -35,7 +36,7 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
       this.handleBack();
     }
     await this.withLoading(async () => {
-      const tx = ethBridgeApi.getHistory(id as string) as BridgeHistory;
+      const tx = evmBridgeApi.getHistory(id as string) as EvmHistory;
 
       if (!tx?.id) {
         this.handleBack();

@@ -1,10 +1,11 @@
 import omit from 'lodash/fp/omit';
 import { defineMutations } from 'direct-vuex';
-import type { BridgeHistory, CodecString } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import { ZeroStringValue } from '@/consts';
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import type { BridgeState } from './types';
 
 const mutations = defineMutations<BridgeState>()({
@@ -32,7 +33,7 @@ const mutations = defineMutations<BridgeState>()({
     state.evmNetworkFeeFetching = false;
   },
   setHistory(state): void {
-    state.history = [...ethBridgeApi.historyList] as Array<BridgeHistory>;
+    state.history = [...evmBridgeApi.historyList] as Array<EvmHistory>;
   },
   setHistoryPage(state, historyPage?: number): void {
     state.historyPage = historyPage || 1;
@@ -58,7 +59,7 @@ const mutations = defineMutations<BridgeState>()({
   setHistoryLoading(state, value: boolean): void {
     state.historyLoading = value;
   },
-  setNotificationData(state, tx: Nullable<BridgeHistory> = null) {
+  setNotificationData(state, tx: Nullable<EvmHistory> = null) {
     state.notificationData = tx;
   },
 });

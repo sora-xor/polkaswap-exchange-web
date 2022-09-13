@@ -318,7 +318,6 @@ export default class Bridge extends Mixins(
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAssetWithDecimals>;
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
-  @getter.web3.selectedEvmNetwork selectedEvmNetwork!: Nullable<EvmNetworkData>;
 
   @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
@@ -557,13 +556,13 @@ export default class Bridge extends Mixins(
 
     await this.checkConnectionToExternalAccount(async () => {
       // create new history item
-      const tx = await this.generateHistoryItem();
-      const { assetAddress, id } = tx;
-      const asset = this.accountAssetsAddressTable[assetAddress];
+      const { assetAddress, id } = await this.generateHistoryItem();
+
       // Add asset to account assets for balances subscriptions
-      if (!asset) {
+      if (assetAddress && !this.accountAssetsAddressTable[assetAddress]) {
         await this.addAssetToAccountAssets(assetAddress);
       }
+
       this.setHistoryId(id);
       router.push({ name: PageNames.BridgeTransaction });
     });

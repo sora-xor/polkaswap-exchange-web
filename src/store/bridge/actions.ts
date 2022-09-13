@@ -16,6 +16,12 @@ import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import ethersUtil, { ABI, KnownEthBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import type { SignTxResult } from './types';
 
+// EVM
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
+import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/consts';
+
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
@@ -27,28 +33,25 @@ function checkEvmNetwork(context: ActionContext<any, any>): void {
   }
 }
 
-// TODO [EVM]
 function bridgeDataToHistoryItem(
   context: ActionContext<any, any>,
-  { date = Date.now(), step = 1, payload = {}, ...params } = {}
-): BridgeHistory {
+  { date = Date.now(), payload = {}, ...params } = {}
+): EvmHistory {
   const { getters, state, rootState } = bridgeActionContext(context);
 
   return {
-    type: (params as any).type ?? (state.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming),
+    type: (params as any).type ?? (state.isSoraToEvm ? Operation.EvmOutgoing : Operation.EvmIncoming),
     amount: (params as any).amount ?? state.amount,
     symbol: (params as any).symbol ?? getters.asset?.symbol,
     assetAddress: (params as any).assetAddress ?? getters.asset?.address,
     startTime: date,
     endTime: date,
     status: '',
-    transactionStep: step as 1 | 2,
     hash: '',
-    ethereumHash: '',
-    transactionState: ETH_BRIDGE_STATES.INITIAL,
+    transactionState: EvmTxStatus.Pending,
     soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
-    ethereumNetworkFee: (params as any).ethereumNetworkFee ?? state.evmNetworkFee,
-    externalNetwork: BridgeNetworks.ETH_NETWORK_ID,
+    // evmNetworkFee: (params as any).ethereumNetworkFee ?? state.evmNetworkFee,
+    externalNetwork: rootState.web3.evmNetworkSelected as unknown as EvmNetwork,
     to: (params as any).to ?? rootState.web3.evmAddress,
     payload,
   };
@@ -144,7 +147,7 @@ const actions = defineActions({
   async generateHistoryItem(context, playground): Promise<BridgeHistory> {
     const { commit } = bridgeActionContext(context);
     const historyData = bridgeDataToHistoryItem(context, playground);
-    const historyItem = ethBridgeApi.generateHistoryItem(historyData);
+    const historyItem = evmBridgeApi.generateHistoryItem(historyData);
 
     if (!historyItem) {
       throw new Error('[Bridge]: "generateHistoryItem" failed');
@@ -303,12 +306,10 @@ const actions = defineActions({
     // }
   },
   async handleBridgeTx(context, id: string): Promise<void> {
-    const { commit } = bridgeActionContext(context);
-    commit.addTxIdInProgress(id);
-
+    // const { commit } = bridgeActionContext(context);
+    // commit.addTxIdInProgress(id);
     // await appBridge.handleTransaction(id);
-
-    commit.removeTxIdFromProgress(id);
+    // commit.removeTxIdFromProgress(id);
   },
 });
 

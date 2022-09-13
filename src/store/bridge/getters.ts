@@ -1,5 +1,7 @@
 import { defineGetters } from 'direct-vuex';
-import { Operation, CodecString, BridgeHistory } from '@sora-substrate/util';
+import { Operation } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import { bridgeGetterContext } from '@/store/bridge';
 import { ZeroStringValue } from '@/consts';
@@ -23,6 +25,7 @@ const getters = defineGetters<BridgeState>()({
     const { getters } = bridgeGetterContext(args);
     return !!getters.asset?.externalAddress;
   },
+  // TODO [EVM]
   soraNetworkFee(...args): CodecString {
     const { state, rootState } = bridgeGetterContext(args);
     // In direction EVM -> SORA sora network fee is 0, because related extrinsic calls by system automaically
@@ -32,7 +35,7 @@ const getters = defineGetters<BridgeState>()({
     const { state } = bridgeGetterContext(args);
     return state.historyPage;
   },
-  historyItem(...args): Nullable<BridgeHistory> {
+  historyItem(...args): Nullable<EvmHistory> {
     const { state } = bridgeGetterContext(args);
     if (!state.historyId) return null;
 

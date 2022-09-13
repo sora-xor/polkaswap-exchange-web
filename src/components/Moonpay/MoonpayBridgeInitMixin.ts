@@ -2,6 +2,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { BridgeNetworks, Operation } from '@sora-substrate/util';
 import type { BridgeHistory, CodecString } from '@sora-substrate/util';
 import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
@@ -66,7 +67,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
     }
   }
 
-  async getBridgeMoonpayTransaction(): Promise<BridgeHistory> {
+  async getBridgeMoonpayTransaction(): Promise<EvmHistory> {
     if (!this.bridgeTransactionData) {
       throw new Error('bridgeTransactionData is empty');
     }
@@ -84,7 +85,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
     return tx;
   }
 
-  getBridgeHistoryItemByMoonpayId(moonpayId: string): Nullable<BridgeHistory> {
+  getBridgeHistoryItemByMoonpayId(moonpayId: string): Nullable<EvmHistory> {
     return this.history.find((item) => item.payload?.moonpayId === moonpayId);
   }
 

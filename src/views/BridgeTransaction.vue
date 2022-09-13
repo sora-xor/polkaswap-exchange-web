@@ -293,7 +293,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util';
+import type { CodecString, BridgeHistory } from '@sora-substrate/util';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -304,7 +304,9 @@ import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { isOutgoingTransaction, isUnsignedFromPart } from '@/utils/bridge/eth/utils';
+
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+import type { EvmNetworkId } from '@/consts/evm';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
@@ -377,7 +379,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get evmIcon(): string {
-    return this.getEvmIcon(this.historyItem?.externalNetwork as BridgeNetworks);
+    return this.getEvmIcon(this.historyItem?.externalNetwork as unknown as EvmNetworkId);
   }
 
   get txSoraNetworkFee(): CodecString {
