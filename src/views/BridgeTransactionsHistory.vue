@@ -64,6 +64,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { BridgeTxStatus } from '@sora-substrate/util';
 import type { BridgeHistory } from '@sora-substrate/util';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -102,7 +103,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   pageAmount = 8; // override PaginationSearchMixin
   loading = true;
 
-  get filteredHistory(): Array<BridgeHistory> {
+  get filteredHistory(): Array<EvmHistory> {
     if (!this.history?.length) return [];
 
     return this.getFilteredHistory(this.sortTransactions([...this.history], this.isLtrDirection));
@@ -116,7 +117,7 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.filteredHistoryItems && this.total > 0;
   }
 
-  get filteredHistoryItems(): Array<BridgeHistory> {
+  get filteredHistoryItems(): Array<EvmHistory> {
     const end = this.isLtrDirection
       ? Math.min(this.currentPage * this.pageAmount, this.filteredHistory.length)
       : Math.max((this.lastPage - this.currentPage + 1) * this.pageAmount - this.directionShift, 0);
@@ -142,7 +143,7 @@ export default class BridgeTransactionsHistory extends Mixins(
     });
   }
 
-  getFilteredHistory(history: Array<BridgeHistory>): Array<BridgeHistory> {
+  getFilteredHistory(history: Array<EvmHistory>): Array<EvmHistory> {
     if (this.query) {
       const query = this.query.toLowerCase().trim();
       return history.filter(

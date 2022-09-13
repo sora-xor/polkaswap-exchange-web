@@ -28,8 +28,13 @@ const getters = defineGetters<BridgeState>()({
   // TODO [EVM]
   soraNetworkFee(...args): CodecString {
     const { state, rootState } = bridgeGetterContext(args);
-    // In direction EVM -> SORA sora network fee is 0, because related extrinsic calls by system automaically
+    // In direction EVM -> SORA sora network fee is 0
     return state.isSoraToEvm ? rootState.wallet.settings.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
+  },
+  evmNetworkFee(...args): CodecString {
+    const { state } = bridgeGetterContext(args);
+    // In direction SORA -> EVM evm network fee is 0
+    return !state.isSoraToEvm ? state.evmNetworkFee : ZeroStringValue;
   },
   historyPage(...args): number {
     const { state } = bridgeGetterContext(args);

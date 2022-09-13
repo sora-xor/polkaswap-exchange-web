@@ -11,12 +11,12 @@ import type { EvmNetworkData, EvmNetworkId } from '@/consts/evm';
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
   @state.web3.evmBalance evmBalance!: CodecString;
   @state.web3.evmNetwork evmNetwork!: EvmNetworkId;
-  @state.bridge.evmNetworkFee evmNetworkFee!: CodecString;
   @state.bridge.evmBlockNumber evmBlockNumber!: number;
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
   @getter.web3.selectedEvmNetwork selectedEvmNetwork!: Nullable<EvmNetworkData>;
   @getter.bridge.soraNetworkFee soraNetworkFee!: CodecString;
+  @getter.bridge.evmNetworkFee evmNetworkFee!: CodecString;
   @getter.assets.xor xor!: RegisteredAccountAssetWithDecimals;
 
   get evmTokenSymbol(): string {

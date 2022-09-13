@@ -78,7 +78,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import type { BridgeHistory } from '@sora-substrate/util';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
@@ -203,7 +203,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     return `${this.selectedItem.returnUrl}?${query}`;
   }
 
-  get bridgeTxToSora(): Nullable<BridgeHistory> {
+  get bridgeTxToSora(): Nullable<EvmHistory> {
     if (!this.selectedItem.id) return undefined;
 
     return this.getBridgeHistoryItemByMoonpayId(this.selectedItem.id);

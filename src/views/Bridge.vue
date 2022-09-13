@@ -259,8 +259,8 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type { BridgeHistory } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -280,7 +280,7 @@ import {
   asZeroValue,
 } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
-import type { EvmNetworkData } from '@/consts/evm';
+
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 @Component({
@@ -328,7 +328,7 @@ export default class Bridge extends Mixins(
   @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncVoidFn;
   @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncVoidFn;
   @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
-  @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
+  @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<EvmHistory>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
 
   @Watch('nodeIsConnected')
