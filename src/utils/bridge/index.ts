@@ -221,8 +221,7 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
 
             // transaction not signed
             if (!txId) {
-              // TODO [ETH-MERGE]: Remove this
-              // await bridgeApi.transferToEth(asset, to, amount, id);
+              await bridgeApi.transferToEth(asset, to, amount, id);
             }
             // signed sora transaction has to be parsed by subquery
             if (txId && !blockId) {

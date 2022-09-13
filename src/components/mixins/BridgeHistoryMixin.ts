@@ -30,8 +30,6 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   }
 
   async showHistory(id?: string): Promise<void> {
-    // TODO [ETH-MERGE]: disabled because of ETH Merge
-    /*
     if (!id) {
       this.handleBack();
     }
@@ -50,7 +48,6 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
         this.navigateToBridgeTransaction();
       }
     });
-    */
   }
 
   navigateToBridgeTransaction(): void {
