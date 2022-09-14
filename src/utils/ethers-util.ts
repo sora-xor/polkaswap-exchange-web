@@ -120,6 +120,7 @@ export enum EvmNetworkType {
   Goerli = 'goerli',
   Private = 'private',
   EWC = 'EWC',
+  Sepolia = 'sepolia',
 }
 
 export interface SubNetwork {
@@ -182,6 +183,7 @@ export const EvmNetworkTypeName = {
   '0x4': EvmNetworkType.Rinkeby,
   '0x5': EvmNetworkType.Goerli,
   '0x12047': EvmNetworkType.Private,
+  '0xaa36a7': EvmNetworkType.Sepolia,
 };
 
 async function onConnect(options: ConnectOptions): Promise<string> {
