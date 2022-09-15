@@ -1,6 +1,8 @@
 import { Operation } from '@sora-substrate/util';
 import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
+
 export const isOutgoingTransaction = (tx: Nullable<EvmHistory>): boolean => {
   return tx?.type === Operation.EvmOutgoing;
 };
@@ -14,4 +16,17 @@ export const isUnsignedTx = (tx: EvmHistory): boolean => {
   } else {
     return true;
   }
+};
+
+export const getTransaction = (id: string): EvmHistory => {
+  const tx = evmBridgeApi.getHistory(id) as EvmHistory;
+
+  if (!tx) throw new Error(`[Bridge]: Transaction is not exists: ${id}`);
+
+  return tx;
+};
+
+export const updateTransaction = (id: string, params = {}): void => {
+  const tx = getTransaction(id);
+  evmBridgeApi.saveHistory({ ...tx, ...params });
 };

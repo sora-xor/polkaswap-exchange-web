@@ -1,0 +1,175 @@
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+
+import type {
+  SignEvm,
+  AddAsset,
+  GetAssetByAddress,
+  GetTransaction,
+  GetActiveTransaction,
+  UpdateTransaction,
+  ShowNotification,
+  TransactionBoundaryStates,
+  Constructable,
+  BridgeCommonOptions,
+  BridgeReducerOptions,
+} from '@/utils/bridge/common/types';
+
+type TransactionHandlerPayload<Transaction extends EvmHistory> = {
+  nextState: Transaction['transactionState'];
+  rejectState: Transaction['transactionState'];
+  status?: any;
+  handler?: (id: string) => Promise<void>;
+};
+
+export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
+  protected readonly signEvm!: SignEvm;
+  // asset
+  protected readonly addAsset!: AddAsset;
+  protected readonly getAssetByAddress!: GetAssetByAddress;
+  // transaction
+  protected readonly getTransaction!: GetTransaction<Transaction>;
+  protected readonly updateTransaction!: UpdateTransaction<Transaction>;
+  // ui integration
+  protected readonly updateHistory!: VoidFunction;
+  protected readonly showNotification!: ShowNotification<Transaction>;
+  protected readonly getActiveTransaction!: GetActiveTransaction<Transaction>;
+  // boundary states
+  protected readonly boundaryStates!: TransactionBoundaryStates<Transaction>;
+
+  constructor({
+    signEvm,
+    // asset
+    addAsset,
+    getAssetByAddress,
+    // transaction
+    getTransaction,
+    updateTransaction,
+    // ui updates
+    updateHistory,
+    showNotification,
+    getActiveTransaction,
+    // boundary states
+    boundaryStates,
+  }: BridgeReducerOptions<Transaction>) {
+    this.signEvm = signEvm;
+    this.addAsset = addAsset;
+    this.getAssetByAddress = getAssetByAddress;
+    this.getTransaction = getTransaction;
+    this.getActiveTransaction = getActiveTransaction;
+    this.updateTransaction = updateTransaction;
+    this.updateHistory = updateHistory;
+    this.showNotification = showNotification;
+    this.boundaryStates = boundaryStates;
+  }
+
+  async changeState(transaction: Transaction): Promise<void> {
+    throw new Error(`[${this.constructor.name}]: "changeState" method implementation is required!`);
+  }
+
+  async process(transaction: Transaction) {
+    try {
+      await this.changeState(transaction);
+
+      const tx = this.getTransaction(transaction.id as string);
+
+      if (!Object.values(this.boundaryStates).includes(tx.transactionState)) {
+        await this.process(tx);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  updateTransactionParams(id: string, params = {}): void {
+    this.updateTransaction(id, params);
+    this.updateHistory();
+  }
+
+  async handleState(
+    id: string,
+    { nextState, rejectState, handler, status }: TransactionHandlerPayload<Transaction>
+  ): Promise<void> {
+    try {
+      const transaction = this.getTransaction(id);
+
+      if (transaction.transactionState === this.boundaryStates.done) return;
+
+      // optional update
+      if (status && transaction.status !== status) {
+        this.updateTransactionParams(id, { status });
+      }
+
+      if (typeof handler === 'function') {
+        await handler(id);
+      }
+
+      this.updateTransactionParams(id, { transactionState: nextState });
+    } catch (error) {
+      console.error(error);
+
+      const transaction = this.getTransaction(id);
+      const endTime = transaction.transactionState === this.boundaryStates.failed ? transaction.endTime : Date.now();
+
+      this.updateTransactionParams(id, {
+        transactionState: rejectState,
+        endTime,
+      });
+    }
+  }
+
+  onComplete(id: string): void {
+    this.updateTransactionParams(id, { endTime: Date.now() });
+    const tx = this.getTransaction(id);
+
+    if (tx.assetAddress && !this.getAssetByAddress(tx.assetAddress)) {
+      // Add asset to account assets
+      this.addAsset(tx.assetAddress);
+    }
+
+    this.showNotification(tx);
+  }
+
+  beforeSubmit(id: string): void {
+    const activeTransaction = this.getActiveTransaction();
+
+    if (!activeTransaction || activeTransaction.id !== id) {
+      throw new Error(`[Bridge]: Transaction ${id} stopped, user should sign transaction in ui`);
+    }
+  }
+}
+
+interface BridgeConstructorOptions<
+  Transaction extends EvmHistory,
+  BridgeReducer extends BridgeTransactionStateHandler<Transaction>
+> extends BridgeCommonOptions<Transaction> {
+  reducers: Record<Transaction['type'], Constructable<BridgeReducer>>;
+  signEvm: Partial<Record<Transaction['type'], SignEvm>>;
+}
+
+export class Bridge<Transaction extends EvmHistory, BridgeReducer extends BridgeTransactionStateHandler<Transaction>> {
+  protected reducers!: Partial<Record<Transaction['type'], BridgeReducer>>;
+  protected readonly getTransaction!: GetTransaction<Transaction>;
+
+  constructor({ reducers, signEvm, getTransaction, ...rest }: BridgeConstructorOptions<Transaction, BridgeReducer>) {
+    this.getTransaction = getTransaction;
+    this.reducers = Object.entries<Constructable<BridgeReducer>>(reducers).reduce((acc, [operation, Reducer]) => {
+      acc[operation] = new Reducer({ ...rest, getTransaction, signEvm: signEvm[operation] });
+      return acc;
+    }, {});
+  }
+
+  /**
+   * Get necessary reducer and handle transaction
+   * @param id transaction id
+   */
+  async handleTransaction(id: string) {
+    const transaction = this.getTransaction(id);
+    const reducer = this.reducers[transaction.type];
+
+    if (!reducer) {
+      throw new Error(`[Bridge] No reducer for operation: '${transaction.type}'`);
+    } else {
+      await reducer.process(transaction);
+    }
+  }
+}

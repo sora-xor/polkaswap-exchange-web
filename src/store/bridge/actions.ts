@@ -17,6 +17,7 @@ import ethersUtil, { ABI, KnownEthBridgeAsset, OtherContractType } from '@/utils
 import type { SignTxResult } from './types';
 
 // EVM
+import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
 import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
@@ -289,10 +290,10 @@ const actions = defineActions({
     // }
   },
   async handleBridgeTx(context, id: string): Promise<void> {
-    // const { commit } = bridgeActionContext(context);
-    // commit.addTxIdInProgress(id);
-    // await appBridge.handleTransaction(id);
-    // commit.removeTxIdFromProgress(id);
+    const { commit } = bridgeActionContext(context);
+    commit.addTxIdInProgress(id);
+    await evmBridge.handleTransaction(id);
+    commit.removeTxIdFromProgress(id);
   },
 });
 

@@ -59,12 +59,10 @@ interface BridgeCommonOptions {
   updateHistory: VoidFunction;
 }
 
-interface BridgeConstructorOptions<BridgeReducer> extends BridgeCommonOptions {
+interface BridgeConstructorOptions<BridgeReducer, TransactionStatuses> extends BridgeCommonOptions {
   reducers: Partial<Record<BridgeOperations, Constructable<BridgeReducer>>>;
-  sign: {
-    [Operation.EthBridgeOutgoing]: SignEvm;
-    [Operation.EthBridgeIncoming]: SignEvm;
-  };
+  signEvm: Partial<Record<BridgeOperations, SignEvm>>;
+  stopOn: TransactionStatuses[];
 }
 
 interface BridgeReducerOptions extends BridgeCommonOptions {
@@ -144,8 +142,7 @@ class BridgeTransactionStateHandler {
     const tx = this.getTransaction(id);
     const { type, assetAddress } = tx;
     if (type === Operation.EthBridgeIncoming && assetAddress) {
-      const asset = this.getAssetByAddress(assetAddress);
-      if (!asset) {
+      if (!this.getAssetByAddress(assetAddress)) {
         // Add asset to account assets
         this.addAsset(assetAddress);
       }
@@ -430,14 +427,22 @@ class EthBridgeIncomingStateReducer extends BridgeTransactionStateHandler {
   }
 }
 
-class Bridge<BridgeReducer extends BridgeTransactionStateHandler> {
+class Bridge<BridgeReducer extends BridgeTransactionStateHandler, TransactionStatuses> {
   protected reducers!: Partial<Record<BridgeOperations, BridgeReducer>>;
   protected readonly getTransaction!: GetTransaction;
+  protected readonly stopOn!: TransactionStatuses[];
 
-  constructor({ reducers, sign, getTransaction, ...rest }: BridgeConstructorOptions<BridgeReducer>) {
+  constructor({
+    reducers,
+    signEvm,
+    stopOn,
+    getTransaction,
+    ...rest
+  }: BridgeConstructorOptions<BridgeReducer, TransactionStatuses>) {
     this.getTransaction = getTransaction;
+    this.stopOn = stopOn;
     this.reducers = Object.entries(reducers).reduce((acc, [operation, Reducer]) => {
-      acc[operation] = new Reducer({ ...rest, getTransaction, signEvm: sign[operation] });
+      acc[operation] = new Reducer({ ...rest, getTransaction, signEvm: signEvm[operation] });
       return acc;
     }, {});
   }
@@ -462,22 +467,22 @@ class Bridge<BridgeReducer extends BridgeTransactionStateHandler> {
 
     const tx = this.getTransaction(transaction.id as string);
 
-    // TODO [EVM] pass stop states
-    if (![BridgeTxStatus.Done, BridgeTxStatus.Failed].includes(tx.status as BridgeTxStatus)) {
+    if (!this.stopOn.includes(tx.status as unknown as TransactionStatuses)) {
       await this.process(tx, reducer);
     }
   }
 }
 
-// const appBridge = new Bridge<EthBridgeIncomingStateReducer | EthBridgeOutgoingStateReducer>({
+// const appBridge = new Bridge<EthBridgeIncomingStateReducer | EthBridgeOutgoingStateReducer, BridgeTxStatus>({
 //   reducers: {
 //     [Operation.EthBridgeIncoming]: EthBridgeIncomingStateReducer,
 //     [Operation.EthBridgeOutgoing]: EthBridgeOutgoingStateReducer,
 //   },
-//   sign: {
+//   signEvm: {
 //     [Operation.EthBridgeIncoming]: (id: string) => store.dispatch.bridge.signEvmTransactionEvmToSora(id),
 //     [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEvmTransactionSoraToEvm(id),
 //   },
+//   stopOn: [BridgeTxStatus.Done, BridgeTxStatus.Failed],
 //   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
 //   updateHistory: () => store.commit.bridge.setHistory(),
 //   showNotification: (tx: BridgeHistory) => store.commit.bridge.setNotificationData(tx),
