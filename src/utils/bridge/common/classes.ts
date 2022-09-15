@@ -72,6 +72,8 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
 
       const tx = this.getTransaction(transaction.id as string);
 
+      console.log('process', tx.transactionState);
+
       if (!Object.values(this.boundaryStates).includes(tx.transactionState)) {
         await this.process(tx);
       }
@@ -91,6 +93,8 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
   ): Promise<void> {
     try {
       const transaction = this.getTransaction(id);
+
+      console.log(transaction.transactionState, nextState);
 
       if (transaction.transactionState === this.boundaryStates.done) return;
 
@@ -118,8 +122,14 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
   }
 
   onComplete(id: string): void {
-    this.updateTransactionParams(id, { endTime: Date.now() });
+    this.updateTransactionParams(id, {
+      transactionState: this.boundaryStates.done,
+      endTime: Date.now(),
+    });
+
     const tx = this.getTransaction(id);
+
+    console.log(tx);
 
     if (tx.assetAddress && !this.getAssetByAddress(tx.assetAddress)) {
       // Add asset to account assets
