@@ -52,7 +52,7 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} a réclamé avec succès"
         },
         "error": {
-            "Transfer": "Échec de l'envoi de {amount} {symbol} à {address}",
+            "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
             "Swap": "Échec de l'échange de {amount} {symbol} contre {amount2} {symbol2}",
             "AddLiquidity": "Échec du dépôt de {amount} {symbol} et de {amount2} {symbol2}",
             "RemoveLiquidity": "Échec du retrait de {amount} {symbol} et de {amount2} {symbol2}",
@@ -82,7 +82,7 @@
     "polkadotjs": {
         "noExtensions": "Aucune extension Polkadot.js n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Il semble n’y avoir aucun compte dans votre extension Polkadot.js. Ajoutez un compte et réessayez.",
-        "noAccount": "Erreur de compte Polkadot.js. Veuillez vérifier votre compte dans l'extension Polkadot.js",
+        "noAccount": "Erreur de compte {extension} . Veuillez vérifier votre compte dans l' {extension}",
         "noExtension": "Aucune {extension} n'a été trouvée. Veuillez l'installer et recharger cette page",
         "noSigner": "Accès refusé. Accédez aux paramètres de l' {extension} et ouvrez \"Gérer l'accès au site Web\" pour autoriser."
     },
@@ -413,7 +413,7 @@
         "howToSetupOwnNode": "Comment configurer propre nœud @:soraText",
         "select": "Sélectionnez",
         "connected": "Connecté",
-        "selectNodeForEnvironment": "Sélectionnez un nœud pour l'environnement {environnement}:",
+        "selectNodeForEnvironment": "Sélectionnez un nœud pour {environment} :",
         "nodeTitle": "{chain} hébergé par {name}",
         "messages": {
             "emptyName": "Veuillez saisir le nom du nœud",
@@ -1044,11 +1044,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "La paire de pool existe déjà",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "La tolérance de glissement n'a pas atteint les limites appropriées"
         },
         "referrals": {
             "AlreadyHasReferrer": "Le compte a déjà un référent",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Le parrain n'a pas assez de solde réservé"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Le programme de récompenses est déjà terminé",
@@ -1078,5 +1078,14 @@
     },
     "assetDeposit": "Le solde de l'actif a été déposé",
     "noDataText": "Pas de données",
-    "ofText": "{first} de {second}"
+    "ofText": "{first} de {second}",
+    "filter": {
+        "all": "Tous",
+        "token": "Jetons",
+        "nft": "NFT",
+        "verifiedOnly": "Afficher uniquement les actifs vérifiés",
+        "zeroBalance": "Cachez 0 solde actif",
+        "showAssets": "Afficher les actifs",
+        "show": "Montrer"
+    }
 }

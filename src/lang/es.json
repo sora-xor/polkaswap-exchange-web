@@ -1078,5 +1078,14 @@
     },
     "assetDeposit": "El saldo de los activos ha sido depositado",
     "noDataText": "Sin datos",
-    "ofText": "{first} de {second}"
+    "ofText": "{first} de {second}",
+    "filter": {
+        "all": "Todo",
+        "token": "Fichas",
+        "nft": "NFT",
+        "verifiedOnly": "Mostrar solo activos verificados",
+        "zeroBalance": "Ocultar 0 activos de saldo",
+        "showAssets": "Mostrar activos",
+        "show": "Mostrar"
+    }
 }

@@ -1044,11 +1044,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Pasangan kolam sudah ada",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Toleransi selip belum memenuhi batas yang tepat"
         },
         "referrals": {
             "AlreadyHasReferrer": "Akun sudah memiliki referer",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Perujuk tidak memiliki cukup saldo cadangan"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Program hadiah telah selesai",
@@ -1078,5 +1078,14 @@
     },
     "assetDeposit": "Saldo aset telah disetorkan",
     "noDataText": "Tidak ada data",
-    "ofText": "{first} dari {second}"
+    "ofText": "{first} dari {second}",
+    "filter": {
+        "all": "Semua",
+        "token": "Token",
+        "nft": "NFT",
+        "verifiedOnly": "Tampilkan aset terverifikasi saja",
+        "zeroBalance": "Sembunyikan 0 aset saldo",
+        "showAssets": "Tampilkan aset",
+        "show": "Tunjukkan"
+    }
 }

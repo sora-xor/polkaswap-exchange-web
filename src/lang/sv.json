@@ -1044,11 +1044,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Poolpar finns redan",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Halktoleransen har inte uppnått lämpliga gränser"
         },
         "referrals": {
             "AlreadyHasReferrer": "Kontot har redan en hänvisare",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Remittenten har inte tillräckligt med reserverat saldo"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Belöningsprogrammet har redan avslutats",
@@ -1078,5 +1078,14 @@
     },
     "assetDeposit": "Tillgångssaldo har satts in",
     "noDataText": "Ingen data",
-    "ofText": "{first} av {second}"
+    "ofText": "{first} av {second}",
+    "filter": {
+        "all": "Alla",
+        "token": "Tokens",
+        "nft": "NFTs",
+        "verifiedOnly": "Visa endast verifierade tillgångar",
+        "zeroBalance": "Dölj 0 balans tillgångar",
+        "showAssets": "Visa tillgångar",
+        "show": "Show"
+    }
 }
