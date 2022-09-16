@@ -46,6 +46,7 @@ const getters = defineGetters<BridgeState>()({
 
     return state.history.find((item) => item.id === state.historyId) ?? null;
   },
+  // TODO [EVM] check usage after EVM-SORA flow
   isTxEvmAccount(...args): boolean {
     const { getters, rootState } = bridgeGetterContext(args);
 

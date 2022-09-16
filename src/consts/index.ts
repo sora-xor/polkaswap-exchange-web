@@ -332,5 +332,6 @@ export const EthAddress = '0x0000000000000000000000000000000000000000';
 // TODO: merge with TranslationConsts from wallet
 export enum TranslationConsts {
   APR = 'APR', // Annual percentage rate
-  ROI = 'ROI', // Return of investment
+  ROI = 'ROI', // Return of investment,
+  EVM = 'EVM',
 }

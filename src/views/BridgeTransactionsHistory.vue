@@ -38,7 +38,6 @@
                 <div class="history-item-date">{{ formatHistoryDate(item) }}</div>
               </div>
               <div :class="historyStatusClasses(item)">
-                <div class="history-item-status-text">{{ historyStatusText(item) }}</div>
                 <s-icon class="history-item-status-icon" :name="historyStatusIconName(item)" size="16" />
               </div>
             </div>
@@ -62,8 +61,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { BridgeTxStatus } from '@sora-substrate/util';
-import type { BridgeHistory } from '@sora-substrate/util';
+import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
 import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -74,7 +72,6 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { state, action, getter } from '@/store/decorators';
-import { isUnsignedToPart } from '@/utils/bridge/eth/utils';
 
 import type { EvmAccountAsset } from '@/store/assets/types';
 
@@ -170,19 +167,13 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.formatDate(response?.startTime ?? Date.now());
   }
 
-  isWaitingForAction(tx: BridgeHistory): boolean {
-    return tx.status === BridgeTxStatus.Failed && isUnsignedToPart(tx);
-  }
-
-  historyStatusClasses(item: BridgeHistory): string {
+  historyStatusClasses(item: EvmHistory): string {
     const iconClass = 'history-item-status';
     const classes = [iconClass];
 
-    if (this.isWaitingForAction(item)) {
-      classes.push(`${iconClass}--warning`);
-    } else if (item.status === BridgeTxStatus.Failed) {
+    if (item.transactionState === EvmTxStatus.Failed) {
       classes.push(`${iconClass}--error`);
-    } else if (item.status === BridgeTxStatus.Done) {
+    } else if (item.transactionState === EvmTxStatus.Done) {
       classes.push(`${iconClass}--success`);
     } else {
       classes.push(`${iconClass}--pending`);
@@ -191,23 +182,13 @@ export default class BridgeTransactionsHistory extends Mixins(
     return classes.join(' ');
   }
 
-  historyStatusIconName(item: BridgeHistory): string {
-    if (this.isWaitingForAction(item)) {
-      return 'notifications-alert-triangle-24';
-    } else if (item.status === BridgeTxStatus.Failed) {
+  historyStatusIconName(item: EvmHistory): string {
+    if (item.transactionState === EvmTxStatus.Failed) {
       return 'basic-clear-X-24';
-    } else if (item.status === BridgeTxStatus.Done) {
+    } else if (item.transactionState === EvmTxStatus.Done) {
       return 'basic-check-marks-24';
     } else {
       return 'time-time-24';
-    }
-  }
-
-  historyStatusText(item: BridgeHistory): string {
-    if (this.isWaitingForAction(item)) {
-      return this.t('bridgeHistory.statusAction');
-    } else {
-      return '';
     }
   }
 

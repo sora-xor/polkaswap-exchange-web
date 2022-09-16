@@ -467,6 +467,7 @@ export default {
     allowToken: 'Allow @:appName to use your {tokenSymbol}',
     approveToken:
       'Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.',
+    accountAddress: '{network} @:accountAddressText',
   },
   bridgeHistory: {
     title: 'History',
@@ -817,4 +818,5 @@ export default {
   },
   assetDeposit: 'Asset balance has been deposited',
   ofText: '{first} of {second}',
+  accountAddressText: 'Account address',
 };

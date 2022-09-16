@@ -68,6 +68,8 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
     if (!txId) {
       await evmBridgeApi.burn(asset, to, amount, id);
     }
+    // update history to change tx status in ui
+    this.updateHistory();
   }
 
   private async checkTxBlockId(id: string): Promise<void> {
@@ -117,8 +119,9 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
     try {
       const transactionState = await new Promise<EvmTxStatus>((resolve, reject) => {
         subscription = evmBridgeApi.subscribeOnTxDetails(hash).subscribe((data) => {
-          if (!data)
+          if (!data) {
             reject(new Error(`[${this.constructor.name}]: Unable to get transacton data by "hash": "${hash}"`));
+          }
 
           const status = data.status;
 
@@ -133,8 +136,6 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
       });
 
       await this.updateTransactionParams(id, { transactionState });
-    } catch (error) {
-      console.error(error);
     } finally {
       subscription.unsubscribe();
     }
