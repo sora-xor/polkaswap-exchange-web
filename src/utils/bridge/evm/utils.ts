@@ -5,7 +5,7 @@ import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 import { delay } from '@/utils';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 
-const SORA_REQUESTS_TIMEOUT = 6_000; // Block production time
+export const SORA_REQUESTS_TIMEOUT = 6_000; // Block production time
 
 export const isOutgoingTransaction = (tx: Nullable<EvmHistory>): boolean => {
   return tx?.type === Operation.EvmOutgoing;
@@ -39,7 +39,14 @@ export const waitForSoraTransactionHash = async (id: string): Promise<string> =>
   const tx = getTransaction(id);
 
   if (tx.hash) return tx.hash;
-  const blockId = tx.blockId as string; // blockId cannot be empty
+
+  const blockId = tx.blockId;
+
+  if (!blockId)
+    throw new Error(
+      '[waitForSoraTransactionHash]: Unable to retrieve transaction hash, transaction "blockId" is empty'
+    );
+
   const extrinsics = await api.system.getExtrinsicsFromBlock(blockId);
 
   if (extrinsics.length) {

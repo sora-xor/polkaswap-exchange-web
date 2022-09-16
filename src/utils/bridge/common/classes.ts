@@ -1,5 +1,7 @@
 import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
+import { delay } from '@/utils';
+
 import type {
   SignEvm,
   AddAsset,
@@ -72,8 +74,6 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
 
       const tx = this.getTransaction(transaction.id as string);
 
-      console.log('process', tx.transactionState);
-
       if (!Object.values(this.boundaryStates).includes(tx.transactionState)) {
         await this.process(tx);
       }
@@ -82,9 +82,11 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     }
   }
 
-  updateTransactionParams(id: string, params = {}): void {
+  async updateTransactionParams(id: string, params = {}): Promise<void> {
     this.updateTransaction(id, params);
     this.updateHistory();
+    // TODO: remove after fix submitExtrinsic in js-lib
+    await delay();
   }
 
   async handleState(
@@ -94,42 +96,38 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     try {
       const transaction = this.getTransaction(id);
 
-      console.log(transaction.transactionState, nextState);
-
       if (transaction.transactionState === this.boundaryStates.done) return;
 
       // optional update
       if (status && transaction.status !== status) {
-        this.updateTransactionParams(id, { status });
+        await this.updateTransactionParams(id, { status });
       }
 
       if (typeof handler === 'function') {
         await handler(id);
       }
 
-      this.updateTransactionParams(id, { transactionState: nextState });
+      await this.updateTransactionParams(id, { transactionState: nextState });
     } catch (error) {
       console.error(error);
 
       const transaction = this.getTransaction(id);
       const endTime = transaction.transactionState === this.boundaryStates.failed ? transaction.endTime : Date.now();
 
-      this.updateTransactionParams(id, {
+      await this.updateTransactionParams(id, {
         transactionState: rejectState,
         endTime,
       });
     }
   }
 
-  onComplete(id: string): void {
-    this.updateTransactionParams(id, {
+  async onComplete(id: string): Promise<void> {
+    await this.updateTransactionParams(id, {
       transactionState: this.boundaryStates.done,
       endTime: Date.now(),
     });
 
     const tx = this.getTransaction(id);
-
-    console.log(tx);
 
     if (tx.assetAddress && !this.getAssetByAddress(tx.assetAddress)) {
       // Add asset to account assets

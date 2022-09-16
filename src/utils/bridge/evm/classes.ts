@@ -1,9 +1,11 @@
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+import type { Subscription } from 'rxjs';
 
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { BridgeTransactionStateHandler } from '@/utils/bridge/common/classes';
 
+import { delay } from '@/utils';
 import { waitForSoraTransactionHash } from '@/utils/bridge/evm/utils';
 
 export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmHistory> {
@@ -17,42 +19,12 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
           rejectState: EvmTxStatus.Failed,
           handler: async (id: string) => {
             this.beforeSubmit(id);
-            this.updateTransactionParams(id, { transactionState: EvmTxStatus.Pending });
-
-            const { txId, blockId, to, amount, assetAddress } = this.getTransaction(id);
-
-            if (!amount) throw new Error(`[${this.constructor.name}]: Transaction "amount" cannot be empty`);
-            if (!assetAddress)
-              throw new Error(`[${this.constructor.name}]: Transaction "assetAddress" cannot be empty`);
-            if (!to) throw new Error(`[${this.constructor.name}]: Transaction recipient "to" cannot be empty`);
-
-            const asset = this.getAssetByAddress(assetAddress);
-
-            if (!asset || !asset.externalAddress)
-              throw new Error(`[${this.constructor.name}]: Transaction asset is not registered: ${assetAddress}`);
-
-            // if transaction is not signed, submit extrinsic
-            if (!txId) {
-              await evmBridgeApi.burn(asset, to, amount, id);
-            }
-
-            // signed sora transaction has to be parsed by subquery
-            if (!this.getTransaction(id).blockId) {
-              // TODO [EVM] Add restoration from subquery if blockId is not exists
-              console.info(`[${this.constructor.name}]: Implement blockId restoration`);
-            }
-
-            if (!this.getTransaction(id).hash) {
-              const hash = await waitForSoraTransactionHash(id);
-
-              this.updateTransactionParams(id, { hash });
-            }
-
-            // TODO [EVM] implement subscription
-            console.info(`[${this.constructor.name}]: Implement subscription`);
-
-            // TODO [EVM] check transaction state change issue
-            this.onComplete(id);
+            await this.updateTransactionParams(id, { transactionState: EvmTxStatus.Pending });
+            await this.checkTxId(id);
+            await this.checkTxBlockId(id);
+            await this.checkTxSoraHash(id);
+            await this.subscribeOnTxBySoraHash(id);
+            await this.onComplete(id);
           },
         });
       }
@@ -70,6 +42,101 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
           rejectState: EvmTxStatus.Failed,
         });
       }
+    }
+  }
+
+  private async checkTxId(id: string): Promise<void> {
+    const { txId, to, amount, assetAddress } = this.getTransaction(id);
+
+    if (!amount) {
+      throw new Error(`[${this.constructor.name}]: Transaction "amount" cannot be empty`);
+    }
+    if (!assetAddress) {
+      throw new Error(`[${this.constructor.name}]: Transaction "assetAddress" cannot be empty`);
+    }
+    if (!to) {
+      throw new Error(`[${this.constructor.name}]: Transaction recipient "to" cannot be empty`);
+    }
+
+    const asset = this.getAssetByAddress(assetAddress);
+
+    if (!asset || !asset.externalAddress) {
+      throw new Error(`[${this.constructor.name}]: Transaction asset is not registered: ${assetAddress}`);
+    }
+
+    // if transaction is not signed, submit extrinsic
+    if (!txId) {
+      await evmBridgeApi.burn(asset, to, amount, id);
+    }
+  }
+
+  private async checkTxBlockId(id: string): Promise<void> {
+    const { txId } = this.getTransaction(id);
+
+    if (!txId) {
+      throw new Error(`[${this.constructor.name}]: Transaction "id" is empty, first sign the transaction`);
+    }
+
+    try {
+      await Promise.race([this.waitForSoraBlockId(id), new Promise((resolve, reject) => setTimeout(reject, 30000))]);
+    } catch (error) {
+      console.info(`[${this.constructor.name}]: Implement "blockId" restoration`);
+    }
+  }
+
+  private async waitForSoraBlockId(id: string): Promise<void> {
+    const { blockId } = this.getTransaction(id);
+
+    if (blockId) return Promise.resolve();
+
+    await delay(1000);
+    await this.waitForSoraBlockId(id);
+  }
+
+  private async checkTxSoraHash(id: string): Promise<void> {
+    const tx = this.getTransaction(id);
+
+    if (!tx.hash) {
+      const hash = await waitForSoraTransactionHash(id);
+
+      await this.updateTransactionParams(id, { hash });
+    }
+  }
+
+  private async subscribeOnTxBySoraHash(id: string): Promise<void> {
+    const { hash } = this.getTransaction(id);
+
+    if (!hash) {
+      throw new Error(
+        `[${this.constructor.name}]: Transaction "hash" is empty, unable to subscribe on transacton data`
+      );
+    }
+
+    let subscription!: Subscription;
+
+    try {
+      const transactionState = await new Promise<EvmTxStatus>((resolve, reject) => {
+        subscription = evmBridgeApi.subscribeOnTxDetails(hash).subscribe((data) => {
+          if (!data)
+            reject(new Error(`[${this.constructor.name}]: Unable to get transacton data by "hash": "${hash}"`));
+
+          const status = data.status;
+
+          switch (status) {
+            case EvmTxStatus.Done:
+            case EvmTxStatus.Failed: {
+              resolve(status);
+              break;
+            }
+          }
+        });
+      });
+
+      await this.updateTransactionParams(id, { transactionState });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      subscription.unsubscribe();
     }
   }
 }
