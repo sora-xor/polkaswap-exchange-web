@@ -3,13 +3,15 @@ import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import { state, getter } from '@/store/decorators';
 
+import { EvmLinkType, EVM_NETWORKS } from '@/consts/evm';
 import type { EvmNetworkData, EvmNetworkId } from '@/consts/evm';
 
 @Component
 export default class NetworkFormatterMixin extends Vue {
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-
   @getter.web3.selectedEvmNetwork selectedEvmNetwork!: Nullable<EvmNetworkData>;
+
+  readonly EvmLinkType = EvmLinkType;
 
   formatNetwork(isSora: boolean): string {
     if (isSora && this.soraNetwork) {
@@ -25,9 +27,25 @@ export default class NetworkFormatterMixin extends Vue {
   }
 
   // TODO [EVM] check network explorers links
-  getEtherscanLink(hash: string): string {
-    const explorerUrl = this.selectedEvmNetwork?.blockExplorerUrls?.[0];
+  getEvmExplorerLink(hash: string, type: EvmLinkType, networkId: EvmNetworkId): string {
+    if (!hash) return '';
 
-    return explorerUrl && hash ? `https://${explorerUrl}/tx/${hash}` : '';
+    const network = EVM_NETWORKS[networkId];
+
+    if (!network) {
+      console.error(`Network id "${networkId}" is not defined in "EVM_NETWORKS"`);
+      return '';
+    }
+
+    const explorerUrl = network.blockExplorerUrls[0];
+
+    if (!explorerUrl) {
+      console.error(`"blockExplorerUrls" is not provided for EVM network id "${networkId}"`);
+      return '';
+    }
+
+    const path = type === EvmLinkType.Transaction ? 'tx' : 'address';
+
+    return `${explorerUrl}/${path}/${hash}`;
   }
 }

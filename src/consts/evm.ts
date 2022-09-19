@@ -22,6 +22,11 @@ export interface EvmNetworkData {
   blockExplorerUrls: string[];
 }
 
+export enum EvmLinkType {
+  Account = 'Account',
+  Transaction = 'Transaction',
+}
+
 // EVM networks data
 // This data could be added to Metamask automatically using "switchOrAddChain" function
 export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {

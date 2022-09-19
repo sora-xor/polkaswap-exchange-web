@@ -49,6 +49,21 @@
           :tooltip="txEvmAddressCopyTooltip"
           @click="handleCopyAddress(txEvmAddress, $event)"
         />
+
+        <s-dropdown
+          class="s-dropdown--hash-menu"
+          borderRadius="mini"
+          type="ellipsis"
+          icon="basic-more-vertical-24"
+          placement="bottom-end"
+          @select="handleOpenEvmExplorer(txEvmAddress, EvmLinkType.Account, externalNetworkId)"
+        >
+          <template slot="menu">
+            <s-dropdown-item class="s-dropdown-menu__item">
+              <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
+            </s-dropdown-item>
+          </template>
+        </s-dropdown>
       </div>
 
       <info-line :class="failedClass" :label="t('bridgeTransaction.networkInfo.status')" :value="transactionStatus" />
@@ -74,41 +89,61 @@
         </template>
       </info-line>
 
-      <div v-if="txHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
-        <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="txHashFormatted" readonly />
+      <div v-if="txSoraHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
+        <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="txSoraHashFormatted" readonly />
         <s-button
           class="s-button--hash-copy"
           type="action"
           alternative
           icon="basic-copy-24"
-          :tooltip="txHashCopyTooltip"
-          @click="handleCopyAddress(txHash, $event)"
+          :tooltip="txSoraHashCopyTooltip"
+          @click="handleCopyAddress(txSoraHash, $event)"
         />
         <s-dropdown
-          v-if="(isSoraToEvm && soraExpolrerLinks.length) || !isSoraToEvm"
+          v-if="soraExplorerLinks.length"
           class="s-dropdown--hash-menu"
           borderRadius="mini"
           type="ellipsis"
           icon="basic-more-vertical-24"
           placement="bottom-end"
-          @select="isSoraToEvm ? undefined : handleOpenEtherscan()"
         >
           <template slot="menu">
-            <template v-if="isSoraToEvm">
-              <a
-                v-for="link in soraExpolrerLinks"
-                :key="link.type"
-                class="transaction-link"
-                :href="link.value"
-                target="_blank"
-                rel="nofollow noopener"
-              >
-                <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
-                  {{ t(`transaction.viewIn.${link.type}`) }}
-                </s-dropdown-item>
-              </a>
-            </template>
-            <s-dropdown-item v-else class="s-dropdown-menu__item">
+            <a
+              v-for="link in soraExplorerLinks"
+              :key="link.type"
+              class="transaction-link"
+              :href="link.value"
+              target="_blank"
+              rel="nofollow noopener"
+            >
+              <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
+                {{ t(`transaction.viewIn.${link.type}`) }}
+              </s-dropdown-item>
+            </a>
+          </template>
+        </s-dropdown>
+      </div>
+
+      <div v-if="txEvmHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
+        <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="txEvmHashFormatted" readonly />
+        <s-button
+          class="s-button--hash-copy"
+          type="action"
+          alternative
+          icon="basic-copy-24"
+          :tooltip="txEvmHashCopyTooltip"
+          @click="handleCopyAddress(txEvmHash, $event)"
+        />
+        <s-dropdown
+          class="s-dropdown--hash-menu"
+          borderRadius="mini"
+          type="ellipsis"
+          icon="basic-more-vertical-24"
+          placement="bottom-end"
+          @select="handleOpenEvmExplorer(txEvmHash, EvmLinkType.Transaction, externalNetworkId)"
+        >
+          <template slot="menu">
+            <s-dropdown-item class="s-dropdown-menu__item">
               <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
             </s-dropdown-item>
           </template>
@@ -183,7 +218,7 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/evm/utils';
 
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
-import type { EvmNetworkId } from '@/consts/evm';
+import type { EvmNetworkId, EvmLinkType } from '@/consts/evm';
 
 const FORMATTED_HASH_LENGTH = 24;
 
@@ -252,8 +287,12 @@ export default class BridgeTransaction extends Mixins(
     return this.asset?.symbol ?? '';
   }
 
+  get externalNetworkId(): Nullable<EvmNetworkId> {
+    return this.historyItem?.externalNetwork as unknown as EvmNetworkId;
+  }
+
   get evmIcon(): string {
-    return this.getEvmIcon(this.historyItem?.externalNetwork as unknown as EvmNetworkId);
+    return this.externalNetworkId ? this.getEvmIcon(this.externalNetworkId) : '';
   }
 
   get txSoraNetworkFee(): CodecString {
@@ -276,15 +315,29 @@ export default class BridgeTransaction extends Mixins(
     return this.formatCodecNumber(this.txEvmNetworkFee);
   }
 
-  get txHash(): string {
-    return (this.isSoraToEvm ? this.historyItem?.hash : this.historyItem?.evmHash) ?? '';
+  get txSoraHash(): string {
+    return this.historyItem?.hash ?? '';
   }
 
-  get txHashFormatted(): string {
-    return this.formatAddress(this.txHash, FORMATTED_HASH_LENGTH);
+  get txSoraHashFormatted(): string {
+    return this.formatAddress(this.txSoraHash, FORMATTED_HASH_LENGTH);
   }
 
-  get txHashCopyTooltip(): string {
+  // TODO [EVM] translation
+  get txSoraHashCopyTooltip(): string {
+    return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
+  }
+
+  get txEvmHash(): string {
+    return this.historyItem?.evmHash ?? '';
+  }
+
+  get txEvmHashFormatted(): string {
+    return this.formatAddress(this.txEvmHash, FORMATTED_HASH_LENGTH);
+  }
+
+  // TODO [EVM] translation
+  get txEvmHashCopyTooltip(): string {
     return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
   }
 
@@ -395,14 +448,13 @@ export default class BridgeTransaction extends Mixins(
     return `s-icon--network s-icon-${this.isSoraToEvm ? this.evmIcon : 'sora'}`;
   }
 
-  handleOpenEtherscan(): void {
-    const hash = this.txHash;
-    const url = this.getEtherscanLink(hash);
+  handleOpenEvmExplorer(hash: string, type: EvmLinkType, networkId: EvmNetworkId): void {
+    const url = this.getEvmExplorerLink(hash, type, networkId);
     const win = window.open(url, '_blank');
     win && win.focus();
   }
 
-  get soraExpolrerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+  get soraExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
     if (!this.soraNetwork) {
       return [];
     }
