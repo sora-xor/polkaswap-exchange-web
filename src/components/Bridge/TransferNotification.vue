@@ -27,10 +27,10 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 import ethersUtil from '@/utils/ethers-util';
-import { isOutgoingTransaction } from '@/utils/bridge/eth/utils';
+import { isOutgoingTransaction } from '@/utils/bridge/evm/utils';
 import { getter, state, mutation } from '@/store/decorators';
 
-import type { BridgeHistory, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 import type { Whitelist } from '@sora-substrate/util/build/assets/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
@@ -42,12 +42,12 @@ import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
   },
 })
 export default class TransferNotification extends Mixins(TranslationMixin) {
-  @state.bridge.notificationData private tx!: Nullable<BridgeHistory>;
+  @state.bridge.notificationData private tx!: Nullable<EvmHistory>;
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
 
-  @mutation.bridge.setNotificationData private setNotificationData!: (tx?: BridgeHistory) => void;
+  @mutation.bridge.setNotificationData private setNotificationData!: (tx?: EvmHistory) => void;
 
   get visibility(): boolean {
     return !!this.tx;
