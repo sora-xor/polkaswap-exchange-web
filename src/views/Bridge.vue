@@ -10,24 +10,31 @@
         primary
       >
         <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')">
-          <s-button
-            v-if="areNetworksConnected"
-            class="el-button--history"
-            type="action"
-            icon="time-time-history-24"
-            :tooltip="t('bridgeHistory.showHistory')"
-            tooltip-placement="bottom-end"
-            @click="handleViewTransactionsHistory"
-          />
-          <s-button
-            v-if="areNetworksConnected"
-            class="el-button--networks"
-            type="action"
-            icon="connection-broadcasting-24"
-            :tooltip="t('bridge.selectNetwork')"
-            tooltip-placement="bottom-end"
-            @click="handleChangeNetwork"
-          />
+          <div class="bridge-header-buttons">
+            <s-button
+              v-if="areNetworksConnected"
+              class="el-button--history"
+              type="action"
+              icon="time-time-history-24"
+              :tooltip="t('bridgeHistory.showHistory')"
+              tooltip-placement="bottom-end"
+              @click="handleViewTransactionsHistory"
+            />
+
+            <status-action-badge v-if="selectedEvmNetwork">
+              <template #value>{{ selectedEvmNetwork.shortName }}</template>
+              <template #action>
+                <s-button
+                  class="el-button--settings"
+                  type="action"
+                  icon="basic-settings-24"
+                  :tooltip="t('bridge.selectNetwork')"
+                  tooltip-placement="bottom-end"
+                  @click="handleChangeNetwork"
+                />
+              </template>
+            </status-action-badge>
+          </div>
         </generic-page-header>
         <s-float-input
           :value="amount"
@@ -292,6 +299,7 @@ import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
@@ -610,9 +618,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     @include token-styles;
     @include vertical-divider('s-button--switch', $inner-spacing-medium);
     @include vertical-divider('s-divider-tertiary');
-    .el-button--history {
-      margin-left: auto;
-    }
     @include buttons;
     @include full-width-button('el-button--connect', $inner-spacing-mini);
     @include full-width-button('el-button--next');
@@ -627,6 +632,16 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       }
     }
   }
+
+  &-header-buttons {
+    display: flex;
+    margin-left: auto;
+
+    & > *:not(:first-child) {
+      margin-left: $inner-spacing-mini;
+    }
+  }
+
   .bridge-item {
     &-footer {
       display: flex;

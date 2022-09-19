@@ -9,7 +9,7 @@ import type { EvmNetworkData, EvmNetworkId } from '@/consts/evm';
 @Component
 export default class NetworkFormatterMixin extends Vue {
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @getter.web3.selectedEvmNetwork selectedEvmNetwork!: Nullable<EvmNetworkData>;
+  @getter.web3.connectedEvmNetwork connectedEvmNetwork!: Nullable<EvmNetworkData>;
 
   readonly EvmLinkType = EvmLinkType;
 
@@ -18,7 +18,7 @@ export default class NetworkFormatterMixin extends Vue {
       return `sora.${this.soraNetwork}`;
     }
 
-    return this.selectedEvmNetwork ? `evm.${this.selectedEvmNetwork.id}` : '';
+    return this.connectedEvmNetwork ? `evm.${this.connectedEvmNetwork.id}` : '';
   }
 
   // TODO [EVM] add network icons

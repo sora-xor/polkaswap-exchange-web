@@ -20,6 +20,7 @@ export interface EvmNetworkData {
   };
   rpcUrls: string[];
   blockExplorerUrls: string[];
+  shortName: string;
 }
 
 export enum EvmLinkType {
@@ -40,6 +41,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     },
     rpcUrls: ['https://mainnet.infura.io/v3/'],
     blockExplorerUrls: ['https://etherscan.io'],
+    shortName: 'Ethereum',
   },
   [EvmNetworkId.EthereumRopsten]: {
     id: EvmNetworkId.EthereumRopsten,
@@ -51,6 +53,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     },
     rpcUrls: ['https://ropsten.infura.io/v3/'],
     blockExplorerUrls: ['https://ropsten.etherscan.io'],
+    shortName: 'Ropsten',
   },
   [EvmNetworkId.EthereumRinkeby]: {
     id: EvmNetworkId.EthereumRinkeby,
@@ -62,6 +65,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     },
     rpcUrls: ['https://rinkeby.infura.io/v3/'],
     blockExplorerUrls: ['https://rinkeby.etherscan.io'],
+    shortName: 'Rinkeby',
   },
   [EvmNetworkId.EthereumGoerli]: {
     id: EvmNetworkId.EthereumGoerli,
@@ -73,6 +77,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     },
     rpcUrls: ['https://goerli.infura.io/v3/'],
     blockExplorerUrls: ['https://goerli.etherscan.io'],
+    shortName: 'Goerli',
   },
   [EvmNetworkId.EthereumKovan]: {
     id: EvmNetworkId.EthereumKovan,
@@ -84,6 +89,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     },
     rpcUrls: ['https://kovan.infura.io/v3/'],
     blockExplorerUrls: ['https://kovan.etherscan.io'],
+    shortName: 'Kovan',
   },
   [EvmNetworkId.EthereumClassicMordor]: {
     id: EvmNetworkId.EthereumClassicMordor,
@@ -95,6 +101,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     },
     rpcUrls: ['https://www.ethercluster.com/mordor'],
     blockExplorerUrls: ['https://blockscout.com/etc/mordor'],
+    shortName: 'Mordor',
   },
   [EvmNetworkId.KlaytnBaobab]: {
     id: EvmNetworkId.KlaytnBaobab,
@@ -106,6 +113,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     },
     rpcUrls: ['https://api.baobab.klaytn.net:8651/'],
     blockExplorerUrls: ['https://baobab.scope.klaytn.com/'],
+    shortName: 'Baobab',
   },
   [EvmNetworkId.KlaytnCypress]: {
     id: EvmNetworkId.KlaytnCypress,
@@ -117,5 +125,6 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     },
     rpcUrls: ['https://public-node-api.klaytnapi.com/v1/cypress'],
     blockExplorerUrls: ['https://scope.klaytn.com'],
+    shortName: 'Klaytn',
   },
 };
