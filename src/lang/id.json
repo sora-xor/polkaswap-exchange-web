@@ -141,7 +141,11 @@
         "clearHistory": "Bersihkan riwayat",
         "filterPlaceholder": "Filter menurut Alamat, Simbol, Tipe atau ID Blok",
         "empty": "Transaksi Anda akan muncul di sini",
-        "emptySearch": "Tidak ada transaksi yang ditemukan"
+        "emptySearch": "Tidak ada transaksi yang ditemukan",
+        "firstText": "Pertama",
+        "lastText": "Terakhir",
+        "prevText": "Sebelumnya",
+        "nextText": "Berikutnya"
     },
     "assets": {
         "empty": "Tidak ada aset",
@@ -1074,5 +1078,6 @@
         "pointer": "Tekan \"Izinkan\" untuk mengaktifkan notifikasi"
     },
     "assetDeposit": "Saldo aset telah disetorkan",
-    "noDataText": "Tidak ada data"
+    "noDataText": "Tidak ada data",
+    "ofText": "{first} dari {second}"
 }

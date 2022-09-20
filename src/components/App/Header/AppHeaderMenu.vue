@@ -28,7 +28,7 @@
             {{ text }}
           </s-dropdown-item>
           <div
-            v-if="!notificationActivated"
+            v-if="!notificationActivated && isBrowserNotificationApiAvailable"
             @click="openNotificationDialog"
             class="notif-option el-dropdown-menu__item header-menu__item"
           >
@@ -96,6 +96,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly HeaderMenuType = HeaderMenuType;
 
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
+  @state.settings.isBrowserNotificationApiAvailable isBrowserNotificationApiAvailable!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
   @getter.settings.notificationActivated notificationActivated!: boolean;
 
@@ -184,10 +185,12 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   openNotificationDialog(): void {
-    if (Notification.permission === 'denied') {
-      this.setBrowserNotifsPopupBlocked(true);
-    } else if (Notification.permission === 'default') {
-      this.setBrowserNotifsPopupEnabled(true);
+    if (this.isBrowserNotificationApiAvailable) {
+      if (Notification.permission === 'denied') {
+        this.setBrowserNotifsPopupBlocked(true);
+      } else if (Notification.permission === 'default') {
+        this.setBrowserNotifsPopupEnabled(true);
+      }
     }
   }
 

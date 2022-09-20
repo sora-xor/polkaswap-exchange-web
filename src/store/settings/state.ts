@@ -6,12 +6,14 @@ import type { SettingsState } from './types';
 function initialState(): SettingsState {
   const node = settingsStorage.get('node');
   const customNodes = settingsStorage.get('customNodes');
+  const isBrowserNotificationApiAvailable = 'Notification' in window;
   return {
     featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: (storage.get('marketAlgorithm') || DefaultMarketAlgorithm) as MarketAlgorithms,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
-    browserNotifsPermission: Notification.permission,
+    isBrowserNotificationApiAvailable,
+    browserNotifsPermission: isBrowserNotificationApiAvailable ? Notification.permission : 'default',
     node: node ? JSON.parse(node) : {},
     language: getLocale(),
     defaultNodes: [],

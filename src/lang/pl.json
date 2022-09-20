@@ -141,7 +141,11 @@
         "clearHistory": "Wyczyść historię",
         "filterPlaceholder": "Filtruj według adresu, symbolu, typu lub identyfikatora bloku",
         "empty": "Tutaj pojawią się Twoje transakcje.",
-        "emptySearch": "Nie znaleziono transakcji."
+        "emptySearch": "Nie znaleziono transakcji.",
+        "firstText": "Pierwszy",
+        "lastText": "Ostatni",
+        "prevText": "Poprzedni",
+        "nextText": "Dalej"
     },
     "assets": {
         "empty": "Brak walut",
@@ -1074,5 +1078,6 @@
         "pointer": "Naciśnij „Zezwól”, aby włączyć powiadomienia"
     },
     "assetDeposit": "Saldo aktywów zostało zdeponowane",
-    "noDataText": "Brak danych"
+    "noDataText": "Brak danych",
+    "ofText": "{first} z {second}"
 }

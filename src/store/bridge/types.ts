@@ -10,6 +10,7 @@ export type BridgeState = {
   evmNetworkFeeFetching: boolean;
   evmBlockNumber: number;
   history: Array<BridgeHistory>;
+  historyPage: number;
   historyId: string;
   historyLoading: boolean;
   waitingForApprove: Record<string, boolean>;

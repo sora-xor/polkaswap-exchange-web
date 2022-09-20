@@ -141,7 +141,11 @@
         "clearHistory": "Cancellare la cronologia",
         "filterPlaceholder": "Filtra per indirizzo, simbolo, tipo o ID blocco",
         "empty": "Le tue transazioni appariranno qui",
-        "emptySearch": "Nessuna transazione trovata"
+        "emptySearch": "Nessuna transazione trovata",
+        "firstText": "Primo",
+        "lastText": "Scorso",
+        "prevText": "Precedente",
+        "nextText": "Il prossimo"
     },
     "assets": {
         "empty": "Non ci sono assets",
@@ -1074,5 +1078,6 @@
         "pointer": "Premi \"Consenti\" per attivare le notifiche"
     },
     "assetDeposit": "Il saldo patrimoniale è stato depositato",
-    "noDataText": "Nessun dato"
+    "noDataText": "Nessun dato",
+    "ofText": "{first} di {second}"
 }

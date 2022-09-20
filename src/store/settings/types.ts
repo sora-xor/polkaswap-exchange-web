@@ -25,6 +25,7 @@ export type SettingsState = {
   selectLanguageDialogVisibility: boolean;
   browserNotifPopupVisibility: boolean;
   browserNotifPopupBlockedVisibility: boolean;
+  isBrowserNotificationApiAvailable: boolean;
   browserNotifsPermission: NotificationPermission;
   blockNumber: number;
   blockNumberUpdates: Nullable<Subscription>;

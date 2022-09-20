@@ -141,7 +141,11 @@
         "clearHistory": "Nu itan kuro",
         "filterPlaceholder": "Àlẹmọ nipasẹ Adirẹsi, Ami, Iru tabi idanimọ Block",
         "empty": "Awọn iṣowo rẹ yoo han nibi.",
-        "emptySearch": "Ko si awọn iṣowo ti a rii"
+        "emptySearch": "Ko si awọn iṣowo ti a rii",
+        "firstText": "Akoko",
+        "lastText": "Ikẹhin",
+        "prevText": "Ti tẹlẹ",
+        "nextText": "Itele"
     },
     "assets": {
         "empty": "Ko si dukia kankan",
@@ -1074,5 +1078,6 @@
         "pointer": "Tẹ \"Gba laaye\" lati tan awọn iwifunni"
     },
     "assetDeposit": "Iwontunwonsi dukia ti wa ni idogo",
-    "noDataText": "Ko si data"
+    "noDataText": "Ko si data",
+    "ofText": "{first} ti {second}"
 }

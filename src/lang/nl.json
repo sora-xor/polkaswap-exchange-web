@@ -141,7 +141,11 @@
         "clearHistory": "Geschiedenis wissen",
         "filterPlaceholder": "Filteren op adres, symbool, type of blok-ID",
         "empty": "Uw transacties verschijnen hier appear",
-        "emptySearch": "Geen transacties gevonden"
+        "emptySearch": "Geen transacties gevonden",
+        "firstText": "Eerst",
+        "lastText": "Laatst",
+        "prevText": "Vorig",
+        "nextText": "Volgende"
     },
     "assets": {
         "empty": "Er zijn geen assets",
@@ -1074,5 +1078,6 @@
         "pointer": "Druk op \"Toestaan\" om meldingen in te schakelen"
     },
     "assetDeposit": "Activa-saldo is gestort",
-    "noDataText": "Geen informatie"
+    "noDataText": "Geen informatie",
+    "ofText": "{first} van {second}"
 }

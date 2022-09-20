@@ -141,7 +141,11 @@
         "clearHistory": "Vymazat historii",
         "filterPlaceholder": "Filtrování podle adresy, symbolu, typu nebo ID bloku",
         "empty": "Zde se zobrazí vaše transakce",
-        "emptySearch": "Nebyly nalezeny žádné transakce"
+        "emptySearch": "Nebyly nalezeny žádné transakce",
+        "firstText": "První",
+        "lastText": "Poslední",
+        "prevText": "Předchozí",
+        "nextText": "Další"
     },
     "assets": {
         "empty": "Nejsou k dispozici žádná aktiva",
@@ -1074,5 +1078,6 @@
         "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení"
     },
     "assetDeposit": "Zůstatek aktiv byl uložen",
-    "noDataText": "Žádné údaje"
+    "noDataText": "Žádné údaje",
+    "ofText": "{first} z {second}"
 }
