@@ -1044,11 +1044,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Par bazena već postoji",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Tolerancija klizanja nije dosegla odgovarajuće granice"
         },
         "referrals": {
             "AlreadyHasReferrer": "Račun već ima preporuku",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Preporučatelj nema dovoljno rezerviranog stanja"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Program nagrađivanja je već završen",
@@ -1078,5 +1078,14 @@
     },
     "assetDeposit": "Stanje imovine je deponirano",
     "noDataText": "Nema podataka",
-    "ofText": "{first} od {second}"
+    "ofText": "{first} od {second}",
+    "filter": {
+        "all": "Sve",
+        "token": "Tokeni",
+        "nft": "NFT-ovi",
+        "verifiedOnly": "Prikaži samo provjerenu imovinu",
+        "zeroBalance": "Sakrij 0 salda imovine",
+        "showAssets": "Prikaži imovinu",
+        "show": "Pokazati"
+    }
 }

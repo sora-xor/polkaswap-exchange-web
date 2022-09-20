@@ -1078,5 +1078,14 @@
     },
     "assetDeposit": "资产余额已存入",
     "noDataText": "没有数据",
-    "ofText": "{first}的{second}"
+    "ofText": "{first}的{second}",
+    "filter": {
+        "all": "全部",
+        "token": "代币",
+        "nft": "NFT",
+        "verifiedOnly": "只显示经过验证的资产",
+        "zeroBalance": "隐藏0余额资产",
+        "showAssets": "显示资产",
+        "show": "显示"
+    }
 }
