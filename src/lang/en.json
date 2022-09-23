@@ -355,7 +355,8 @@
         "Tokens": "Tokens",
         "StakingContainer": "Staking",
         "Send": "Send",
-        "KYC": "KYC"
+        "KYC": "KYC",
+        "RouteAssets": "Route Assets"
     },
     "social": {
         "twitter": "Twitter",
@@ -1002,6 +1003,27 @@
             },
             "save": "Save",
             "reset": "Reset"
+        },
+        "routeAssets": {
+            "uploadCSV": {
+                "title": "Advanced Digital Asset Routing",
+                "description": "ADAR is an Advanced Digital Asset Routing solution for businesses to seamlessy transmit digital assets to payeers around the world, in multiple currencies, at a fraction of today’s prevailing transaction costs, without excessive paperwork and settlement times.",
+                "nextButton": "Process routing template",
+                "downloadButton": "Download routing template",
+                "uploadDialog" : {
+                    "title": "Upload",
+                    "body": "Upload .CSV file to initiate assets routing ",
+                    "browseButton": "Browse files"
+                }
+            },
+            "routingTemplate": {
+                "summary": {
+                    "asset": "Input Asset",
+                    "usdCount": "Total usd to be routed",
+                    "estimatedTokes": "Total estimated {token} required (+5%)",
+                    "available": "Total {token} available"
+                }
+            }
         }
     },    
     "code": {

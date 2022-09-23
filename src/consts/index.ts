@@ -134,6 +134,9 @@ export enum PageNames {
   Send = 'Send',
   KYC = 'KYC',
   StakingContainer = 'StakingContainer',
+  RouteAssets = 'RouteAssets',
+  UploadCSV = 'UploadCSV',
+  RoutingTemplate = 'RoutingTemplate',
 }
 
 export enum Components {
@@ -202,6 +205,8 @@ export enum Components {
   // Pool
   PoolInfo = 'Pool/PoolInfo',
   PriceChange = 'PriceChange',
+  UploadCSVDialog = 'RouteAssets/UploadCSVDialog',
+  TemplateSummary = 'RouteAssets/RoutingTemplate/TemplateSummary',
 }
 
 export enum RewardsTabsItems {
@@ -221,25 +226,29 @@ interface SidebarMenuItemLink extends SidebarMenuItem {
 
 const MainMenu: Array<SidebarMenuItem> = [
   {
+    icon: 'arrows-arrow-bold-right-24',
+    title: PageNames.RouteAssets,
+  },
+  {
     icon: 'arrows-swap-90-24',
     title: PageNames.Swap,
   },
-  {
-    icon: 'finance-send-24',
-    title: PageNames.Send,
-  },
-  {
-    icon: 'basic-drop-24',
-    title: PageNames.Pool,
-  },
-  {
-    icon: 'basic-layers-24',
-    title: PageNames.StakingContainer,
-  },
-  {
-    icon: 'grid-block-distribute-vertically-24',
-    title: PageNames.Bridge,
-  },
+  // {
+  //   icon: 'finance-send-24',
+  //   title: PageNames.Send,
+  // },
+  // {
+  //   icon: 'basic-drop-24',
+  //   title: PageNames.Pool,
+  // },
+  // {
+  //   icon: 'basic-layers-24',
+  //   title: PageNames.StakingContainer,
+  // },
+  // {
+  //   icon: 'grid-block-distribute-vertically-24',
+  //   title: PageNames.Bridge,
+  // },
 ];
 
 const AccountMenu: Array<SidebarMenuItem> = [
@@ -247,25 +256,25 @@ const AccountMenu: Array<SidebarMenuItem> = [
     icon: 'finance-wallet-24',
     title: PageNames.Wallet,
   },
-  {
-    icon: 'basic-circle-star-24',
-    title: PageNames.Rewards,
-  },
-  {
-    icon: 'basic-user-24',
-    title: PageNames.KYC,
-  },
+  // {
+  //   icon: 'basic-circle-star-24',
+  //   title: PageNames.Rewards,
+  // },
+  // {
+  //   icon: 'basic-user-24',
+  //   title: PageNames.KYC,
+  // },
 ];
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
-  {
-    icon: 'various-bone-24',
-    title: PageNames.Tokens,
-  },
   // {
-  //   icon: 'file-file-text-24',
-  //   title: PageNames.About,
+  //   icon: 'various-bone-24',
+  //   title: PageNames.Tokens,
   // },
+  {
+    icon: 'file-file-text-24',
+    title: PageNames.About,
+  },
 ];
 
 export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [

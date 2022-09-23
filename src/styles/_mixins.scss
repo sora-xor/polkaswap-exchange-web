@@ -566,3 +566,53 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
     background-color: var(--s-color-base-content-tertiary);
   }
 }
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: start;  
+}
+
+@mixin routes-table {
+  background: transparent;
+
+    th.el-table__cell .cell span {
+      text-transform: uppercase;
+      font-weight: 800;
+      font-size: var(--s-font-size-small);
+      color: var(--s-color-brand-day);
+      white-space: nowrap;
+    }
+
+    th.el-table__cell .cell {
+      white-space: nowrap;
+    }
+
+    tr,
+    th {
+      &,
+      &:hover {
+        background: transparent;
+
+        & > td,
+        & > th {
+          // background: transparent;
+
+          .cell {
+            padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+            word-break: break-word;
+          }
+        }
+      }
+    }
+
+    .el-table__body-wrapper {
+      height: auto !important;
+    }
+}
