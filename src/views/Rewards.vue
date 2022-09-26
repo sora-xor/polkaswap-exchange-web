@@ -89,6 +89,7 @@
         {{ actionButtonText }}
       </s-button>
     </div>
+    <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
   </div>
 </template>
 
@@ -120,12 +121,14 @@ import type { ClaimRewardsParams } from '@/store/rewards/types';
     TokensRow: lazyComponent(Components.TokensRow),
     RewardsAmountHeader: lazyComponent(Components.RewardsAmountHeader),
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable),
+    ConfirmDialog: components.ConfirmDialog,
     InfoLine: components.InfoLine,
   },
 })
 export default class Rewards extends Mixins(
   SubscriptionsMixin,
   mixins.FormattedAmountMixin,
+  mixins.ConfirmTransactionMixin,
   WalletConnectMixin,
   mixins.TransactionMixin
 ) {
@@ -155,6 +158,7 @@ export default class Rewards extends Mixins(
   @getter.rewards.vestedRewardsAvailable vestedRewardsAvailable!: boolean;
   @getter.rewards.rewardsByAssetsList rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
   @getter.rewards.externalRewardsSelected externalRewardsSelected!: boolean;
+  @getter.settings.isDesktop private isDesktop!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
 
   @mutation.rewards.reset private reset!: VoidFunction;
@@ -432,6 +436,14 @@ export default class Rewards extends Mixins(
       const isConnected = await ethersUtil.checkAccountIsConnected(externalAddress);
 
       if (!isConnected) return;
+    }
+
+    if (this.isDesktop) {
+      this.openConfirmationDialog();
+      await this.waitOnNextTxConfirmation();
+      if (!this.isTxDialogConfirmed) {
+        return;
+      }
     }
 
     await this.withNotifications(async () => await this.claimRewards({ internalAddress, externalAddress }));

@@ -14,14 +14,8 @@
           :default-active="getCurrentPath()"
           @select="onSelect"
         >
-          <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
-            <s-menu-item
-              v-for="item in group"
-              :key="item.title"
-              :index="item.title"
-              :disabled="item.disabled"
-              class="menu-item"
-            >
+          <s-menu-item-group v-for="(item, index) in sidebarMenuItems" :key="index">
+            <s-menu-item :key="item.title" :index="item.title" :disabled="item.disabled" class="menu-item">
               <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
             </s-menu-item>
           </s-menu-item-group>
@@ -76,6 +70,7 @@ import {
   SidebarMenuGroups,
   FaucetLink,
   Components,
+  SidebarMenuItem,
 } from '@/consts';
 
 import router, { lazyComponent } from '@/router';
@@ -94,12 +89,17 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   @state.settings.faucetUrl faucetUrl!: string;
   @getter.libraryTheme private libraryTheme!: Theme;
+  @getter.settings.isDesktop private isDesktop!: boolean;
 
-  readonly SidebarMenuGroups = SidebarMenuGroups;
   readonly FaucetLink = FaucetLink;
 
   get mainMenuActiveColor(): string {
     return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
+  }
+
+  get sidebarMenuItems(): Array<SidebarMenuItem> {
+    if (!this.isDesktop) return SidebarMenuGroups;
+    return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.Bridge);
   }
 
   getCurrentPath(): string {

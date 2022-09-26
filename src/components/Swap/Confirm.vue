@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
@@ -55,7 +55,6 @@ import { state, getter } from '@/store/decorators';
   },
 })
 export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
-  @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;
   @state.swap.isExchangeB isExchangeB!: boolean;
@@ -88,23 +87,7 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
       );
       this.$emit('confirm');
     } else {
-      try {
-        await this.withNotifications(
-          async () =>
-            await api.swap.execute(
-              this.tokenFrom,
-              this.tokenTo,
-              this.fromValue,
-              this.toValue,
-              this.slippageTolerance,
-              this.isExchangeB,
-              this.liquiditySource
-            )
-        );
-        this.$emit('confirm', true);
-      } catch (error) {
-        this.$emit('confirm');
-      }
+      this.$emit('confirm', true);
     }
     this.isVisible = false;
   }

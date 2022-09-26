@@ -99,6 +99,8 @@
       @confirm="handleConfirmAddLiquidity"
     />
 
+    <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
+
     <network-fee-warning-dialog
       :visible.sync="showWarningFeeDialog"
       :fee="removeLiquidityFormattedFee"
@@ -116,7 +118,6 @@ import type { CodecString } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import BaseTokenPairMixin from '@/components/mixins/BaseTokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
@@ -138,15 +139,16 @@ import type { PricesPayload } from '@/store/prices/types';
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenInput: lazyComponent(Components.TokenInput),
     AddLiquidityTransactionDetails: lazyComponent(Components.AddLiquidityTransactionDetails),
+    ConfirmDialog: components.ConfirmDialog,
     InfoLine: components.InfoLine,
   },
 })
 export default class AddLiquidity extends Mixins(
   mixins.TransactionMixin,
   mixins.NetworkFeeWarningMixin,
+  mixins.ConfirmTransactionMixin,
   BaseTokenPairMixin,
   NetworkFeeDialogMixin,
-  ConfirmDialogMixin,
   TokenSelectMixin
 ) {
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
@@ -158,6 +160,7 @@ export default class AddLiquidity extends Mixins(
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.addLiquidity.shareOfPool shareOfPool!: string;
   @getter.addLiquidity.liquidityInfo liquidityInfo!: Nullable<AccountLiquidity>;
+  @getter.settings.isDesktop private isDesktop!: boolean;
 
   @action.prices.getPrices getPrices!: (options?: PricesPayload) => Promise<void>;
   @action.addLiquidity.setFirstTokenAddress setFirstTokenAddress!: (address: string) => Promise<void>;
@@ -173,6 +176,7 @@ export default class AddLiquidity extends Mixins(
   @mutation.addLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
 
   showSelectSecondTokenDialog = false;
+  showConfirmDialog = false;
   insufficientBalanceTokenSymbol = '';
 
   @Watch('isLoggedIn')
@@ -290,7 +294,7 @@ export default class AddLiquidity extends Mixins(
       }
       this.isWarningFeeDialogConfirmed = false;
     }
-    this.openConfirmDialog();
+    this.showConfirmDialog = true;
   }
 
   handleMaxValue(token: Nullable<AccountAsset>, setValue: (v: string) => Promise<void>): void {
@@ -328,10 +332,23 @@ export default class AddLiquidity extends Mixins(
   }
 
   async handleConfirmAddLiquidity(): Promise<void> {
-    await this.handleConfirmDialog(async () => {
+    if (this.isDesktop) {
+      this.openConfirmationDialog();
+      await this.waitOnNextTxConfirmation();
+      if (!this.isTxDialogConfirmed) {
+        return;
+      }
+    }
+
+    try {
       await this.withNotifications(this.addLiquidity);
       this.handleBack();
-    });
+    } catch (error: any) {
+      console.error(error);
+      this.$alert(this.t(error.message), { title: this.t('errorText') });
+    }
+
+    this.showConfirmDialog = false;
   }
 
   handleBack(): void {

@@ -112,6 +112,8 @@
       @confirm="handleConfirmRemoveLiquidity"
     />
 
+    <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
+
     <network-fee-warning-dialog
       :visible.sync="showWarningFeeDialog"
       :fee="formattedFee"
@@ -128,7 +130,6 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
@@ -147,6 +148,7 @@ import type { FocusedField } from '@/store/removeLiquidity/types';
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
     TokenInput: lazyComponent(Components.TokenInput),
+    ConfirmDialog: components.ConfirmDialog,
     InfoLine: components.InfoLine,
   },
 })
@@ -154,7 +156,7 @@ export default class RemoveLiquidity extends Mixins(
   mixins.NetworkFeeWarningMixin,
   mixins.FormattedAmountMixin,
   mixins.TransactionMixin,
-  ConfirmDialogMixin,
+  mixins.ConfirmTransactionMixin,
   NetworkFeeDialogMixin
 ) {
   readonly XOR_SYMBOL = XOR.symbol;
@@ -168,6 +170,7 @@ export default class RemoveLiquidity extends Mixins(
   @state.prices.priceReversed priceReversed!: string;
 
   @getter.assets.xor private xor!: Nullable<AccountAsset>;
+  @getter.settings.isDesktop private isDesktop!: boolean;
   @getter.removeLiquidity.liquidityBalanceFull private liquidityBalanceFull!: FPNumber;
   @getter.removeLiquidity.liquidityBalance private liquidityBalance!: FPNumber;
   @getter.removeLiquidity.liquidity liquidity!: AccountLiquidity;
@@ -220,6 +223,7 @@ export default class RemoveLiquidity extends Mixins(
     }
   }
 
+  showConfirmDialog = false;
   removePartInput = 0;
   sliderInput: any;
   sliderDragButton: any;
@@ -347,10 +351,23 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   async handleConfirmRemoveLiquidity(): Promise<void> {
-    await this.handleConfirmDialog(async () => {
+    if (this.isDesktop) {
+      this.openConfirmationDialog();
+      await this.waitOnNextTxConfirmation();
+      if (!this.isTxDialogConfirmed) {
+        return;
+      }
+    }
+
+    try {
       await this.withNotifications(this.removeLiquidity);
       this.handleBack();
-    });
+    } catch (error: any) {
+      console.error(error);
+      this.$alert(this.t(error.message), { title: this.t('errorText') });
+    }
+
+    this.showConfirmDialog = false;
   }
 
   handleBack(): void {
@@ -368,7 +385,7 @@ export default class RemoveLiquidity extends Mixins(
       }
       this.isWarningFeeDialogConfirmed = false;
     }
-    this.openConfirmDialog();
+    this.showConfirmDialog = true;
   }
 
   private addListenerToSliderDragButton(): void {

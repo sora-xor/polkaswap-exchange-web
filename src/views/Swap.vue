@@ -122,6 +122,7 @@
         :isInsufficientBalance="isInsufficientBalance"
         @confirm="confirmSwap"
       />
+      <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
       <settings-dialog :visible.sync="showSettings" />
     </s-form>
     <swap-chart v-if="chartsEnabled" />
@@ -173,15 +174,19 @@ import { action, getter, mutation, state } from '@/store/decorators';
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     SwapChart: lazyComponent(Components.SwapChart),
     FormattedAmount: components.FormattedAmount,
+    ConfirmDialog: components.ConfirmDialog,
   },
 })
 export default class Swap extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.LoadingMixin,
+  mixins.ConfirmTransactionMixin,
+  mixins.TransactionMixin,
   TranslationMixin,
   TokenSelectMixin
 ) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.swap.paths private paths!: QuotePaths;
   @state.swap.payload private payload!: QuotePayload;
   @state.swap.isExchangeB isExchangeB!: boolean;
@@ -189,15 +194,16 @@ export default class Swap extends Mixins(
   @state.swap.toValue toValue!: string;
 
   @getter.assets.xor private xor!: AccountAsset;
-  @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
+  @getter.swap.swapLiquiditySource private liquiditySource!: LiquiditySourceTypes;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
-  @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
+  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
+  @getter.swap.tokenTo tokenTo!: AccountAsset;
   @getter.swap.isAvailable isAvailable!: boolean;
   @getter.swap.marketAlgorithmsAvailable marketAlgorithmsAvailable!: boolean;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
+  @getter.settings.isDesktop isDesktop!: boolean;
 
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
@@ -549,6 +555,29 @@ export default class Swap extends Mixins(
 
   async confirmSwap(isSwapConfirmed: boolean): Promise<void> {
     if (isSwapConfirmed) {
+      if (this.isDesktop) {
+        this.openConfirmationDialog();
+        await this.waitOnNextTxConfirmation();
+        if (!this.isTxDialogConfirmed) {
+          return;
+        }
+      }
+
+      try {
+        await this.withNotifications(
+          async () =>
+            await api.swap.execute(
+              this.tokenFrom,
+              this.tokenTo,
+              this.fromValue,
+              this.toValue,
+              this.slippageTolerance,
+              this.isExchangeB,
+              this.liquiditySource
+            )
+        );
+      } catch {}
+
       this.resetFieldFrom();
       this.resetFieldTo();
       this.setExchangeB(false);
