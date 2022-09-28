@@ -21,9 +21,10 @@ const actions = defineActions({
       const networkAssets = await evmBridgeApi.getNetworkAssets();
 
       const networkAssetsWithBalance = await Promise.all(
-        Object.entries(networkAssets).map(async ([soraAddress, externalAddress]) => {
+        Object.entries(networkAssets).map(async ([soraAddress, assetData]) => {
           const accountAsset = {
-            address: externalAddress as string,
+            // TODO [EVM] change contract to evmAddress after js-lib update
+            address: (assetData as any).contract as string,
             balance: ZeroStringValue,
             decimals: 18,
           };

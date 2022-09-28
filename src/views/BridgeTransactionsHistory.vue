@@ -1,7 +1,21 @@
 <template>
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
-      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack" />
+      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
+        <status-action-badge v-if="selectedEvmNetwork">
+          <template #value>{{ selectedEvmNetwork.shortName }}</template>
+          <template #action>
+            <s-button
+              class="el-button--settings"
+              type="action"
+              icon="basic-settings-24"
+              :tooltip="t('bridge.selectNetwork')"
+              tooltip-placement="bottom-end"
+              @click="handleChangeNetwork"
+            />
+          </template>
+        </status-action-badge>
+      </generic-page-header>
       <s-form class="history-form" :show-message="false">
         <search-input
           v-if="history.length"
@@ -78,6 +92,7 @@ import type { EvmAccountAsset } from '@/store/assets/types';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     SearchInput: components.SearchInput,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,

@@ -3,7 +3,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import type { CodecString } from '@sora-substrate/util';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import { getter, state } from '@/store/decorators';
+import { mutation, getter, state } from '@/store/decorators';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 import type { EvmNetworkData, EvmNetworkId } from '@/consts/evm';
 
@@ -18,6 +18,8 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @getter.bridge.soraNetworkFee soraNetworkFee!: CodecString;
   @getter.bridge.evmNetworkFee evmNetworkFee!: CodecString;
   @getter.assets.xor xor!: RegisteredAccountAssetWithDecimals;
+
+  @mutation.web3.setSelectNetworkDialogVisibility setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
   get evmTokenSymbol(): string {
     return this.selectedEvmNetwork?.nativeCurrency?.symbol ?? '';

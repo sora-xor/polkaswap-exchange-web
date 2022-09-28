@@ -237,7 +237,11 @@
         />
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-      <select-network :visible.sync="showSelectNetworkDialog" />
+      <select-network
+        :visible.sync="showSelectNetworkDialog"
+        :selected-evm-network="selectedEvmNetwork"
+        @change="setSelectedEvmNetwork"
+      />
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
         :is-valid-network-type="isValidNetwork"
@@ -548,6 +552,10 @@ export default class Bridge extends Mixins(
     if (this.selectedEvmNetwork) {
       await ethersUtil.switchOrAddChain(this.selectedEvmNetwork);
     }
+  }
+
+  changeSelectedEvmNetwork(value) {
+    console.log('changeSelectedEvmNetwork', value);
   }
 
   async selectAsset(selectedAsset?: RegisteredAccountAssetWithDecimals): Promise<void> {

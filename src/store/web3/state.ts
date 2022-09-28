@@ -13,6 +13,8 @@ export function initialState(): Web3State {
     evmNetworksIds: [],
     evmNetworkSelected: null, // evm network selected by user
 
+    selectNetworkDialogVisibility: false,
+
     ethBridgeEvmNetwork: EvmNetworkId.EthereumRinkeby,
     ethBridgeContractAddress: {
       XOR: '',

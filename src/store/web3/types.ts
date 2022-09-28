@@ -15,6 +15,8 @@ export type Web3State = {
   evmNetworksIds: EvmNetworkId[];
   evmNetworkSelected: Nullable<EvmNetworkId>;
 
+  selectNetworkDialogVisibility: boolean;
+
   ethBridgeEvmNetwork: EvmNetworkId;
   ethBridgeContractAddress: EthBridgeContracts;
 };

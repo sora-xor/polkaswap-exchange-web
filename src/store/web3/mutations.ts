@@ -45,6 +45,11 @@ const mutations = defineMutations<Web3State>()({
   setEvmBalance(state, balance: CodecString): void {
     state.evmBalance = balance;
   },
+
+  setSelectNetworkDialogVisibility(state, flag: boolean): void {
+    state.selectNetworkDialogVisibility = flag;
+  },
+
   // for eth bridge history
   setEthBridgeSettings(
     state,
