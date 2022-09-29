@@ -111,7 +111,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { CodecString } from '@sora-substrate/util';
@@ -342,6 +342,7 @@ export default class AddLiquidity extends Mixins(
 
     try {
       await this.withNotifications(this.addLiquidity);
+      api.lockPair();
       this.handleBack();
     } catch (error: any) {
       console.error(error);

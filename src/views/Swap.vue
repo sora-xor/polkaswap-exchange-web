@@ -578,6 +578,8 @@ export default class Swap extends Mixins(
         );
       } catch {}
 
+      api.lockPair();
+
       this.resetFieldFrom();
       this.resetFieldTo();
       this.setExchangeB(false);

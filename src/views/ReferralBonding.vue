@@ -197,6 +197,8 @@ export default class ReferralBonding extends Mixins(
             : api.referralSystem.unreserveXor(this.amount))
       );
 
+      api.lockPair();
+
       this.resetAmount();
       this.handleBack();
     } catch {}

@@ -57,6 +57,7 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, m
   async handleConfirmInviteUser(): Promise<void> {
     if (!this.hasReferrer) {
       this.approveReferrer(true);
+      // TODO: Confirmation window for desktop
       try {
         await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferrer));
         this.$emit('confirm', true);
