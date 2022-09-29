@@ -1087,5 +1087,59 @@
         "zeroBalance": "Ocultar 0 activos de saldo",
         "showAssets": "Mostrar activos",
         "show": "Mostrar"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "¡Bienvenido a Polkaswap!",
+            "headline": "Configuremos tu cuenta",
+            "text": "Cree su cuenta de SORA Network o inicie sesión en las antiguas utilizando una frase mnemotécnica o la importación .json. Esto le permite firmar transacciones de forma segura y administrar activos en SORA Network.",
+            "createAccount": "Crea una cuenta",
+            "importAccount": "Cuenta de importación"
+        },
+        "heading": {
+            "seedPhraseTitle": "Frase semilla",
+            "confirmSeedTitle": "Confirmar frase inicial",
+            "accountDetailsTitle": "Detalles de la cuenta",
+            "importTitle": "Importar cuenta"
+        },
+        "button": {
+            "next": "Próximo paso",
+            "skip": "Saltar",
+            "createAccount": "Crear una cuenta",
+            "importAccount": "Importar cuenta"
+        },
+        "accountName": {
+            "placeholder": "Nombre de la billetera",
+            "desc": "Este es el nombre público de su cartera que será visible para todos"
+        },
+        "password": {
+            "placeholder": "Clave",
+            "desc": "Asegúrese de utilizar una contraseña segura para una protección adecuada"
+        },
+        "confirmPassword": {
+            "placeholder": "Confirmar contraseña"
+        },
+        "accountMnemonic": {
+            "placeholder": "Frase mnemotécnica"
+        },
+        "seedAdviceText": "Esta es una semilla secreta de su cuenta. Asegúrese de almacenarla en un soporte no digital, por ejemplo - papel",
+        "confirmSeedText": "Confirme la frase inicial haciendo clic en las palabras en el orden correcto",
+        "errorMnemonicText": "Orden incorrecto de la frase inicial",
+        "exportOptionText": "Exportar archivo de cuenta .json",
+        "exportJsonText": "Siempre podrá acceder a su cuenta importando ese archivo .json. ¡No lo compartas con nadie!",
+        "addAccount": "Agregar una cuenta",
+        "dialog": {
+            "confirmTitle": "Confirmar con contraseña",
+            "confirmButton": "Firmar transacción",
+            "savePasswordText": "Recordar mi contraseña para los próximos 15 minutos",
+            "extendPasswordText": "Extender el período sin contraseña por 15 minutos"
+        },
+        "errorMessages": {
+            "password": "La contraseña no coincide",
+            "passwords": "Las contraseñas no coinciden",
+            "mnemonic": "Nemónico bip39 especificado no válido",
+            "mnemonicLength": "El nemotécnico debe contener {number} palabras",
+            "jsonFields": "El archivo JSON no tiene campos obligatorios"
+        }
     }
 }

@@ -1087,5 +1087,59 @@
         "zeroBalance": "Nascondi 0 saldo attivo",
         "showAssets": "Mostra risorse",
         "show": "Mostra"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Benvenuto in Polkaswap!",
+            "headline": "configuriamo il tuo account",
+            "text": "Crea il tuo account di rete SORA o accedi a quelli vecchi usando la frase mnemonica o l'importazione .json. Ciò ti consente di firmare transazioni in modo sicuro e gestire le risorse nella rete SORA.",
+            "createAccount": "Creare un account",
+            "importAccount": "Importa account"
+        },
+        "heading": {
+            "seedPhraseTitle": "Frase seme",
+            "confirmSeedTitle": "Conferma la frase seme",
+            "accountDetailsTitle": "Dettagli account",
+            "importTitle": "Importa conto"
+        },
+        "button": {
+            "next": "Passo successivo",
+            "skip": "Salto",
+            "createAccount": "Creare un profilo",
+            "importAccount": "Importa conto"
+        },
+        "accountName": {
+            "placeholder": "Nome del portafoglio",
+            "desc": "Questo è il nome pubblico del tuo portafoglio che sarà visibile a tutti"
+        },
+        "password": {
+            "placeholder": "Password",
+            "desc": "Assicuratevi di utilizzare una password forte per una protezione adeguata."
+        },
+        "confirmPassword": {
+            "placeholder": "Conferma password"
+        },
+        "accountMnemonic": {
+            "placeholder": "Frase mnemonica"
+        },
+        "seedAdviceText": "Questo è un seme segreto del tuo account. Assicurati di archiviarlo su un supporto non digitale, ad esempio cartaceo",
+        "confirmSeedText": "Conferma la frase iniziale facendo clic sulle parole nell'ordine corretto",
+        "errorMnemonicText": "Ordine delle frasi seme errato",
+        "exportOptionText": "Esporta il file dell'account .json",
+        "exportJsonText": "Potrai sempre accedere al tuo account importando il file .json. Non condividerlo con nessuno!",
+        "addAccount": "Aggiungi un account",
+        "dialog": {
+            "confirmTitle": "Conferma con password",
+            "confirmButton": "Firma transazione",
+            "savePasswordText": "Ricorda la mia password per i prossimi 15 minuti",
+            "extendPasswordText": "Estendi il periodo senza password di 15 minuti"
+        },
+        "errorMessages": {
+            "password": "La password non corrisponde",
+            "passwords": "le password non coincidono",
+            "mnemonic": "Specificato mnemonico bip39 non valido",
+            "mnemonicLength": "Il mnemonico deve contenere {numero} di parole",
+            "jsonFields": "Il file JSON non ha campi obbligatori"
+        }
     }
 }

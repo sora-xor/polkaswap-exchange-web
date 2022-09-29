@@ -1087,5 +1087,59 @@
         "zeroBalance": "Skrýt 0 bilančních aktiv",
         "showAssets": "Zobrazit aktiva",
         "show": "Ukázat"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Vítejte v Polkaswapu!",
+            "headline": "Pojďme nastavit váš účet",
+            "text": "Vytvořte si svůj účet SORA Network nebo se přihlaste do starého účtu pomocí mnemotechnické fráze nebo importu .json. To vám umožní bezpečně podepisovat transakce a spravovat aktiva v SORA Network.",
+            "createAccount": "Vytvořit účet",
+            "importAccount": "Importovat účet"
+        },
+        "heading": {
+            "seedPhraseTitle": "Semená fráze",
+            "confirmSeedTitle": "Potvrďte počáteční frázi",
+            "accountDetailsTitle": "Detaily účtu",
+            "importTitle": "Importní účet"
+        },
+        "button": {
+            "next": "Další krok",
+            "skip": "Přeskočit",
+            "createAccount": "Vytvořit účet",
+            "importAccount": "Importní účet"
+        },
+        "accountName": {
+            "placeholder": "Název peněženky",
+            "desc": "Toto je veřejný název vaší peněženky, který bude viditelný všem"
+        },
+        "password": {
+            "placeholder": "Heslo",
+            "desc": "Ujistěte se, že používáte silné heslo pro správnou ochranu"
+        },
+        "confirmPassword": {
+            "placeholder": "Potvrďte heslo"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemotechnická fráze"
+        },
+        "seedAdviceText": "Jedná se o tajný klíč vašeho účtu. Ujistěte se, že je uložen na jiném než digitálním nosiči, například na papíře.",
+        "confirmSeedText": "Potvrďte zadanou frázi kliknutím na slova ve správném pořadí.",
+        "errorMnemonicText": "Nesprávné pořadí počátečních frází",
+        "exportOptionText": "Export souboru účtu .json",
+        "exportJsonText": "Vždy budete mít přístup ke svému účtu importováním tohoto souboru .json. S nikým to nesdílejte!",
+        "addAccount": "Přidat účet",
+        "dialog": {
+            "confirmTitle": "Potvrďte heslem",
+            "confirmButton": "Podepsat transakci",
+            "savePasswordText": "Zapamatovat si moje heslo na dalších 15 minut",
+            "extendPasswordText": "Prodlužte dobu bez hesla o 15 minut"
+        },
+        "errorMessages": {
+            "password": "Heslo se neshoduje",
+            "passwords": "Hesla se neshodují",
+            "mnemonic": "Byla zadána neplatná mnemotechnická pomůcka bip39",
+            "mnemonicLength": "Mnemotechnika by měla obsahovat {číslo} slov",
+            "jsonFields": "Soubor JSON neobsahuje povinná pole"
+        }
     }
 }

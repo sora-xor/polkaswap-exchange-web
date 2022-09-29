@@ -1087,5 +1087,59 @@
         "zeroBalance": "Tọju awọn ohun-ini iwọntunwọnsi 0",
         "showAssets": "Ṣe afihan awọn ohun-ini",
         "show": "Ṣe afihan"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Kaabo si Polkaswap!",
+            "headline": "Jẹ ki a ṣeto akọọlẹ rẹ",
+            "text": "Ṣẹda akọọlẹ Nẹtiwọọki SORA rẹ tabi wọle si awọn atijọ ni lilo gbolohun mnemonic tabi gbewọle .json. Eyi n gba ọ laaye lati fowo si awọn iṣowo ni aabo ati ṣakoso awọn ohun-ini ni Nẹtiwọọki SORA.",
+            "createAccount": "Ṣẹda akọọlẹ kan",
+            "importAccount": "Wọle Account"
+        },
+        "heading": {
+            "seedPhraseTitle": "Awọn gbolohun ọrọ irugbin",
+            "confirmSeedTitle": "Jẹrisi gbolohun ọrọ irugbin",
+            "accountDetailsTitle": "",
+            "importTitle": "akowọle agbewọle"
+        },
+        "button": {
+            "next": "Igbesẹ t’okan",
+            "skip": "Rekọja",
+            "createAccount": "Se akanti fun ra re",
+            "importAccount": "akowọle agbewọle"
+        },
+        "accountName": {
+            "placeholder": "Orukọ apamọwọ",
+            "desc": "Eyi ni orukọ gbogbo eniyan ti apamọwọ rẹ eyiti yoo han si gbogbo eniyan"
+        },
+        "password": {
+            "placeholder": "Ọrọigbaniwọle",
+            "desc": "Rii daju pe o nlo ọrọ igbaniwọle to lagbara fun aabo to dara"
+        },
+        "confirmPassword": {
+            "placeholder": "So ni pato orukoabawole re"
+        },
+        "accountMnemonic": {
+            "placeholder": "Gbolohun mnemonic"
+        },
+        "seedAdviceText": "Eyi jẹ irugbin ikoko ti akọọlẹ rẹ. Rii daju pe o fipamọ sori ẹrọ ti kii ṣe oni-nọmba, fun apẹẹrẹ - iwe",
+        "confirmSeedText": "Jẹrisi gbolohun ọrọ irugbin nipa titẹ awọn ọrọ ni ọna ti o tọ",
+        "errorMnemonicText": "Eto gbolohun irugbin ti ko tọ",
+        "exportOptionText": "Faili akọọlẹ .json okeere",
+        "exportJsonText": "Iwọ yoo ni anfani lati wọle si akọọlẹ rẹ nigbagbogbo nipa gbigbe faili .json yẹn wọle. Maṣe pin pẹlu ẹnikẹni!",
+        "addAccount": "Fi akọọlẹ kan kun",
+        "dialog": {
+            "confirmTitle": "Jẹrisi pẹlu ọrọigbaniwọle",
+            "confirmButton": "Wole Idunadura",
+            "savePasswordText": "Ranti ọrọ igbaniwọle mi fun awọn iṣẹju 15 to nbọ",
+            "extendPasswordText": "Fa akoko laisi ọrọigbaniwọle nipasẹ iṣẹju 15"
+        },
+        "errorMessages": {
+            "password": "Ọrọigbaniwọle ko baramu",
+            "passwords": "Awọn ọrọ igbaniwọle ko baramu",
+            "mnemonic": "Bip39 mnemonic ti ko tọ ni pato",
+            "mnemonicLength": "Mnemonic yẹ ki o ni awọn ọrọ {number} ninu",
+            "jsonFields": "Faili JSON ko ni awọn aaye ti a beere"
+        }
     }
 }

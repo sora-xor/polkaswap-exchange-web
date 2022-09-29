@@ -1087,5 +1087,59 @@
         "zeroBalance": "Dölj 0 balans tillgångar",
         "showAssets": "Visa tillgångar",
         "show": "Show"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Välkommen till Polkaswap!",
+            "headline": "Låt oss konfigurera ditt konto",
+            "text": "Skapa ditt SORA Network-konto eller logga in på de gamla med mnemoniska fraser eller .json-import. Detta gör att du säkert kan signera transaktioner och hantera tillgångar i SORA Network.",
+            "createAccount": "Skapa ett konto",
+            "importAccount": "Importera konto"
+        },
+        "heading": {
+            "seedPhraseTitle": "Fröfras",
+            "confirmSeedTitle": "Bekräfta fröfras",
+            "accountDetailsTitle": "Kontouppgifter",
+            "importTitle": "Importera konto"
+        },
+        "button": {
+            "next": "Nästa steg",
+            "skip": "Hoppa",
+            "createAccount": "Skapa konto",
+            "importAccount": "Importera konto"
+        },
+        "accountName": {
+            "placeholder": "Plånbokens namn",
+            "desc": "Detta är det offentliga namnet på din plånbok som kommer att vara synligt för alla"
+        },
+        "password": {
+            "placeholder": "Lösenord",
+            "desc": "Se till att du använder ett starkt lösenord för korrekt skydd"
+        },
+        "confirmPassword": {
+            "placeholder": "Bekräfta lösenord"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemonisk fras"
+        },
+        "seedAdviceText": "Detta är ett hemligt frö för ditt konto. Se till att du lagrar det på en icke-digital bärare, till exempel papper.",
+        "confirmSeedText": "Bekräfta fröfrasen genom att klicka på orden i rätt ordning",
+        "errorMnemonicText": "Felaktig ordning på frönfraser",
+        "exportOptionText": "Exportera .json-kontofil",
+        "exportJsonText": "Du kommer alltid att kunna komma åt ditt konto genom att importera den .json-filen. Dela den inte med någon!",
+        "addAccount": "Lägg till ett konto",
+        "dialog": {
+            "confirmTitle": "Bekräfta med lösenord",
+            "confirmButton": "Signera transaktion",
+            "savePasswordText": "Kom ihåg mitt lösenord under de kommande 15 minuterna",
+            "extendPasswordText": "Förläng perioden utan lösenord med 15 minuter"
+        },
+        "errorMessages": {
+            "password": "Lösenordet matchade inte",
+            "passwords": "lösenorden matchade inte",
+            "mnemonic": "En ogiltig bip39-minnesanteckning har angetts.",
+            "mnemonicLength": "Mnemonic bör innehålla {number} ord",
+            "jsonFields": "JSON-filen har inga obligatoriska fält"
+        }
     }
 }

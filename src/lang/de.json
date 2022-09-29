@@ -1087,5 +1087,59 @@
         "zeroBalance": "0 Guthaben ausblenden",
         "showAssets": "Vermögen anzeigen",
         "show": "Zeigen"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Willkommen bei Polkaswap!",
+            "headline": "Lassen Sie uns Ihr Konto einrichten",
+            "text": "Erstellen Sie Ihr SORA-Netzwerkkonto oder melden Sie sich bei den alten an, indem Sie eine mnemonische Phrase oder einen .json-Import verwenden. Auf diese Weise können Sie Transaktionen sicher signieren und Assets im SORA-Netzwerk verwalten.",
+            "createAccount": "Ein Konto erstellen",
+            "importAccount": "Konto importieren"
+        },
+        "heading": {
+            "seedPhraseTitle": "Seed-Phrase",
+            "confirmSeedTitle": "Seed-Phrase bestätigen",
+            "accountDetailsTitle": "Konto Details",
+            "importTitle": "Konto importieren"
+        },
+        "button": {
+            "next": "Nächster Schritt",
+            "skip": "Überspringen",
+            "createAccount": "Konto anlegen",
+            "importAccount": "Konto importieren"
+        },
+        "accountName": {
+            "placeholder": "Wallet-Name",
+            "desc": "Dies ist der öffentliche Name Ihrer Brieftasche, der für alle sichtbar ist"
+        },
+        "password": {
+            "placeholder": "Passwort",
+            "desc": "Stellen Sie sicher, dass Sie für einen angemessenen Schutz ein sicheres Passwort verwenden"
+        },
+        "confirmPassword": {
+            "placeholder": "Passwort bestätigen"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemonische Phrase"
+        },
+        "seedAdviceText": "Dies ist ein geheimer Code für Ihr Konto. Achten Sie darauf, ihn auf einem nicht-digitalen Träger zu speichern, zum Beispiel auf Papier.",
+        "confirmSeedText": "Bestätigen Sie die Startphrase, indem Sie die Wörter in der richtigen Reihenfolge anklicken",
+        "errorMnemonicText": "Falsche Seed-Phrase-Reihenfolge",
+        "exportOptionText": ".json-Kontodatei exportieren",
+        "exportJsonText": "Sie können immer auf Ihr Konto zugreifen, indem Sie diese .json-Datei importieren. Teilen Sie es mit niemandem!",
+        "addAccount": "Füge ein Konto hinzu",
+        "dialog": {
+            "confirmTitle": "Mit Passwort bestätigen",
+            "confirmButton": "Transaktion unterzeichnen",
+            "savePasswordText": "Mein Passwort für die nächsten 15 Minuten merken",
+            "extendPasswordText": "Zeitraum ohne Passwort um 15 Minuten verlängern"
+        },
+        "errorMessages": {
+            "password": "Das Kennwort stimmt nicht überein",
+            "passwords": "Passwörter stimmten nicht überein",
+            "mnemonic": "Ungültige bip39-Mnemonik angegeben",
+            "mnemonicLength": "Mnemonik sollte {number} Wörter enthalten",
+            "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder"
+        }
     }
 }
