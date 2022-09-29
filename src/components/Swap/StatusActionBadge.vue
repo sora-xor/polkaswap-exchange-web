@@ -35,7 +35,6 @@ $base-class: '.status-action-badge';
   text-transform: uppercase;
   overflow: unset;
   box-shadow: var(--s-shadow-element);
-  overflow: hidden;
   max-width: $max-width;
 
   #{$base-class}__label {

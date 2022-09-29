@@ -237,11 +237,6 @@
         />
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-      <select-network
-        :visible.sync="showSelectNetworkDialog"
-        :selected-evm-network="selectedEvmNetwork"
-        @change="setSelectedEvmNetwork"
-      />
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
         :is-valid-network-type="isValidNetwork"
@@ -353,7 +348,6 @@ export default class Bridge extends Mixins(
   }
 
   showSelectTokenDialog = false;
-  showSelectNetworkDialog = false;
   showConfirmTransactionDialog = false;
 
   get assetAddress(): string {
@@ -541,7 +535,7 @@ export default class Bridge extends Mixins(
   }
 
   handleChangeNetwork(): void {
-    this.showSelectNetworkDialog = true;
+    this.setSelectNetworkDialogVisibility(true);
   }
 
   openSelectAssetDialog(): void {

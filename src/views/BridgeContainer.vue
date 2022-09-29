@@ -1,11 +1,15 @@
 <template>
-  <router-view
-    v-bind="{
-      parentLoading: loading,
-      ...$attrs,
-    }"
-    v-on="$listeners"
-  />
+  <div>
+    <router-view
+      v-bind="{
+        parentLoading: loading,
+        ...$attrs,
+      }"
+      v-on="$listeners"
+    />
+
+    <select-network :selected-evm-network="selectedEvmNetwork" @change="setSelectedEvmNetwork" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -17,7 +21,14 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import ethersUtil from '@/utils/ethers-util';
 import { action } from '@/store/decorators';
 
-@Component
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
+
+@Component({
+  components: {
+    SelectNetwork: lazyComponent(Components.SelectNetwork),
+  },
+})
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
   @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
   @action.bridge.updateEvmBlockNumber private updateEvmBlockNumber!: (block?: number) => Promise<void>;

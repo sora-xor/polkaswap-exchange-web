@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('bridge.selectNetwork')" class="networks">
+  <dialog-base :visible.sync="visibility" :title="t('bridge.selectNetwork')" class="networks">
     <p class="networks-info">{{ t('bridge.networkInfo') }}</p>
     <s-radio-group v-model="selectedEvmNetworkId">
       <s-radio v-for="network in availableEvmNetworks" :key="network.id" :label="network.id" class="network">
@@ -12,11 +12,11 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import { getter } from '@/store/decorators';
+import { getter, mutation, state } from '@/store/decorators';
 
 import { EvmNetworkId } from '@/consts/evm';
 import type { EvmNetworkData } from '@/consts/evm';
@@ -27,9 +27,22 @@ import type { EvmNetworkData } from '@/consts/evm';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class SelectNetwork extends Mixins(TranslationMixin, mixins.DialogMixin) {
+export default class SelectNetwork extends Mixins(TranslationMixin) {
   @Prop({ default: () => null, type: Object }) readonly selectedEvmNetwork!: EvmNetworkData;
+
+  @state.web3.selectNetworkDialogVisibility selectNetworkDialogVisibility!: boolean;
+
   @getter.web3.availableEvmNetworks availableEvmNetworks!: EvmNetworkData;
+
+  @mutation.web3.setSelectNetworkDialogVisibility setSelectNetworkDialogVisibility!: (flag: boolean) => void;
+
+  get visibility(): boolean {
+    return this.selectNetworkDialogVisibility;
+  }
+
+  set visibility(flag: boolean) {
+    this.setSelectNetworkDialogVisibility(flag);
+  }
 
   get selectedEvmNetworkId(): Nullable<EvmNetworkId> {
     return this.selectedEvmNetwork?.id ?? null;

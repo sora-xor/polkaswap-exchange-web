@@ -2,7 +2,7 @@
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
-        <status-action-badge v-if="selectedEvmNetwork">
+        <status-action-badge v-if="selectedEvmNetwork" class="status-action-badge--history">
           <template #value>{{ selectedEvmNetwork.shortName }}</template>
           <template #action>
             <s-button
@@ -11,7 +11,7 @@
               icon="basic-settings-24"
               :tooltip="t('bridge.selectNetwork')"
               tooltip-placement="bottom-end"
-              @click="handleChangeNetwork"
+              @click="setSelectNetworkDialogVisibility(true)"
             />
           </template>
         </status-action-badge>
@@ -251,6 +251,10 @@ export default class BridgeTransactionsHistory extends Mixins(
     @include bridge-container;
     .el-card .el-card__body .history-form {
       padding: 0 $inner-spacing-mini;
+    }
+
+    .s-card.status-action-badge--history {
+      position: absolute;
     }
   }
   &-item-title {

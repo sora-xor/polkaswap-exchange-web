@@ -8,7 +8,7 @@ import { action, getter, mutation, state } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import type { EvmNetworkId } from '@/consts/evm';
+import type { EvmNetworkId, EvmNetworkData } from '@/consts/evm';
 
 const checkExtensionKey = 'provider.messages.checkExtension';
 const installExtensionKey = 'provider.messages.installExtension';
@@ -50,6 +50,8 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
 
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.web3.isExternalAccountConnected isExternalAccountConnected!: boolean;
+
+  @getter.web3.selectedEvmNetwork selectedEvmNetwork!: Nullable<EvmNetworkData>;
 
   @mutation.web3.resetEvmAddress private resetEvmAddress!: VoidFunction;
   @mutation.web3.reset private resetWeb3Store!: VoidFunction;
