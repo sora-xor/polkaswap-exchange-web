@@ -113,7 +113,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get whitelistAssetsList(): Array<AccountAsset> {
-    const whiteList = this.isMainTokenProviders ? this.getMainSources(this.whitelistAssets) : this.whitelistAssets;
+    const whiteList = this.isMainTokenProviders ? this.getMainSources() : this.whitelistAssets;
 
     const { asset: excludeAsset, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this;
 
@@ -158,10 +158,10 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     return Object.values(this.nonWhitelistAccountAssets).sort(this.sortByBalance());
   }
 
-  getMainSources(whitelist): Array<Asset> {
+  private getMainSources(): Array<Asset> {
     const mainSourceAddresses = [XOR.address, XSTUSD.address];
 
-    return whitelist.filter((asset) => mainSourceAddresses.includes(asset.address));
+    return this.whitelistAssets.filter((asset) => mainSourceAddresses.includes(asset.address));
   }
 
   async handleAddAsset(): Promise<void> {
