@@ -1044,11 +1044,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Пара пулов уже существует",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Допустимое отклонение от проскальзывания не достигло надлежащих пределов"
         },
         "referrals": {
             "AlreadyHasReferrer": "У учетной записи уже есть реферер",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "У реферера недостаточно зарезервированного баланса"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Бонусная программа уже завершена",
@@ -1078,5 +1078,14 @@
     },
     "assetDeposit": "Актив был пополнен",
     "noDataText": "Нет данных",
-    "ofText": "{first} из {second}"
+    "ofText": "{first} из {second}",
+    "filter": {
+        "all": "Все",
+        "token": "Токены",
+        "nft": "NFT",
+        "verifiedOnly": "Показывать проверенные активы",
+        "zeroBalance": "Скрыть 0 баланс активов",
+        "showAssets": "Показать активы",
+        "show": "Показать"
+    }
 }
