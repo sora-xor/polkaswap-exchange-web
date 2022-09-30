@@ -112,8 +112,6 @@ export default class BridgeTransactionsHistory extends Mixins(
 ) {
   @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
 
-  @action.bridge.subscribeOnHistory private subscribeOnHistory!: VoidFunction;
-
   @state.bridge.historyPage historyPage!: number;
 
   // update evm network without metamask request
@@ -122,10 +120,12 @@ export default class BridgeTransactionsHistory extends Mixins(
   pageAmount = 8; // override PaginationSearchMixin
   loading = true;
 
-  get filteredHistory(): Array<EvmHistory> {
-    if (!this.history?.length) return [];
+  get historyList(): Array<EvmHistory> {
+    return Object.values(this.history);
+  }
 
-    return this.getFilteredHistory(this.sortTransactions([...this.history], this.isLtrDirection));
+  get filteredHistory(): Array<EvmHistory> {
+    return this.getFilteredHistory(this.sortTransactions(this.historyList, this.isLtrDirection));
   }
 
   get total(): number {
@@ -150,7 +150,6 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   async created(): Promise<void> {
     await this.withParentLoading(async () => {
-      this.setHistory();
       this.subscribeOnHistory();
 
       if (this.historyPage !== 1) {

@@ -11,7 +11,7 @@ import { state, mutation, action, getter } from '@/store/decorators';
 
 @Component
 export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
-  @getter.bridge.history history!: Array<EvmHistory>;
+  @getter.bridge.history history!: Record<string, EvmHistory>;
 
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
   @state.router.prev prevRoute!: Nullable<PageNames>;
@@ -37,19 +37,15 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
       this.handleBack();
     }
     await this.withLoading(async () => {
-      const tx = evmBridgeApi.getHistory(id as string) as EvmHistory;
+      const tx = this.history[id as string];
 
-      if (!tx?.id) {
-        this.handleBack();
-      } else {
-        // to display actual fees in BridgeTransaction
-        this.setSoraToEvm(this.isOutgoingType(tx.type));
-        await this.setAssetAddress(tx.assetAddress);
+      // to display actual fees in BridgeTransaction
+      this.setSoraToEvm(this.isOutgoingType(tx.type));
+      await this.setAssetAddress(tx.assetAddress);
 
-        this.setHistoryId(tx.id);
+      this.setHistoryId(tx.id);
 
-        this.navigateToBridgeTransaction();
-      }
+      this.navigateToBridgeTransaction();
     });
   }
 

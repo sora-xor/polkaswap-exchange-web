@@ -4,7 +4,7 @@ import { Operation } from '@sora-substrate/util';
 
 import { Bridge } from '@/utils/bridge/common/classes';
 import { EvmBridgeOutgoingReducer, EvmBridgeIncomingReducer } from '@/utils/bridge/evm/classes';
-import { getTransaction, updateTransaction } from '@/utils/bridge/evm/utils';
+import { updateTransaction } from '@/utils/bridge/evm/utils';
 import store from '@/store';
 
 const evmBridge = new Bridge<EvmHistory, EvmBridgeOutgoingReducer | EvmBridgeIncomingReducer>({
@@ -25,12 +25,13 @@ const evmBridge = new Bridge<EvmHistory, EvmBridgeOutgoingReducer | EvmBridgeInc
   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
   getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
   // transaction
-  getTransaction,
+  getTransaction: (id: string) => store.getters.bridge.history[id],
   updateTransaction,
   // ui integration
   showNotification: (tx: EvmHistory) => store.commit.bridge.setNotificationData(tx),
   updateHistory: () => store.commit.bridge.setInternalHistory(),
   getActiveTransaction: () => store.getters.bridge.historyItem,
+  setActiveTransaction: (id: string) => store.commit.bridge.setHistoryId(id),
 });
 
 export default evmBridge;

@@ -36,21 +36,24 @@ const getters = defineGetters<BridgeState>()({
     // In direction SORA -> EVM evm network fee is 0
     return !state.isSoraToEvm ? state.evmNetworkFee : ZeroStringValue;
   },
-  history(...args): EvmHistory[] {
+  history(...args): Record<string, EvmHistory> {
     const { state, rootState } = bridgeGetterContext(args);
 
     const externalNetwork = rootState.web3.evmNetworkSelected;
     // filter history from all sources by selected evm network
-    return [...state.historyInternal, ...state.historyExternal].filter(
-      (item) => item.externalNetwork === externalNetwork
-    );
+
+    return [...state.historyInternal, ...state.historyExternal].reduce((buffer, item) => {
+      if (item.externalNetwork !== externalNetwork || !item.id) return buffer;
+
+      return { ...buffer, [item.id]: item };
+    }, {});
   },
   historyItem(...args): Nullable<EvmHistory> {
     const { state, getters } = bridgeGetterContext(args);
 
     if (!state.historyId) return null;
 
-    return getters.history.find((item) => item.id === state.historyId) ?? null;
+    return getters.history[state.historyId] ?? null;
   },
   // TODO [EVM] check usage after EVM-SORA flow
   isTxEvmAccount(...args): boolean {

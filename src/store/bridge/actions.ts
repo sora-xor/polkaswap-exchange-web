@@ -95,11 +95,19 @@ const actions = defineActions({
     commit.setEvmBlockNumber(blockNumber);
   },
 
-  async subscribeOnHistory(context): Promise<void> {
-    const { commit, rootGetters } = bridgeActionContext(context);
+  unsubscribeFromHistory(context): void {
+    const { commit } = bridgeActionContext(context);
 
     commit.resetHistoryDataSubscription();
     commit.resetHistoryHashesSubscription();
+  },
+
+  async subscribeOnHistory(context): Promise<void> {
+    const { commit, dispatch, rootGetters } = bridgeActionContext(context);
+
+    commit.setInternalHistory();
+
+    dispatch.unsubscribeFromHistory();
 
     const hashesSubscription = evmBridgeApi.subscribeOnUserTxHashes().subscribe((hashes) => {
       commit.resetHistoryDataSubscription();
@@ -108,7 +116,7 @@ const actions = defineActions({
         const externalHistory = data.map((tx) => {
           const asset = rootGetters.assets.assetDataByAddress(tx.soraAssetAddress);
 
-          // txId, blockId, startTime, endTime
+          // TODO [EVM] add: txId, blockId, startTime, endTime
           return {
             id: tx.soraHash || tx.evmHash,
             type: tx.direction === EvmDirection.Outgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,

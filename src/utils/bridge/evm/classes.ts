@@ -23,8 +23,8 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
             await this.checkTxId(id);
             await this.checkTxBlockId(id);
             await this.checkTxSoraHash(id);
-            await this.subscribeOnTxBySoraHash(id);
-            await this.onComplete(id);
+
+            await this.onComplete(await this.subscribeOnTxBySoraHash(id));
           },
         });
       }
@@ -105,7 +105,7 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
     }
   }
 
-  private async subscribeOnTxBySoraHash(id: string): Promise<void> {
+  private async subscribeOnTxBySoraHash(id: string): Promise<string> {
     const { hash } = this.getTransaction(id);
 
     if (!hash) {
@@ -117,10 +117,18 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
     let subscription!: Subscription;
 
     try {
-      const transactionState = await new Promise<EvmTxStatus>((resolve, reject) => {
+      await new Promise<EvmTxStatus>((resolve, reject) => {
         subscription = evmBridgeApi.subscribeOnTxDetails(hash).subscribe((data) => {
           if (!data) {
             reject(new Error(`[${this.constructor.name}]: Unable to get transacton data by "hash": "${hash}"`));
+          }
+
+          if (id === this.getActiveTransaction()?.id) {
+            this.setActiveTransaction(hash);
+          }
+
+          if (id in evmBridgeApi.history) {
+            evmBridgeApi.removeHistory(id);
           }
 
           const status = data.status;
@@ -134,11 +142,11 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
           }
         });
       });
-
-      await this.updateTransactionParams(id, { transactionState });
     } finally {
       subscription.unsubscribe();
     }
+
+    return hash;
   }
 }
 

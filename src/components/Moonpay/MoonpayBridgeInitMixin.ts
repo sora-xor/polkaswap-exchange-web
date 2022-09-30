@@ -86,7 +86,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   }
 
   getBridgeHistoryItemByMoonpayId(moonpayId: string): Nullable<EvmHistory> {
-    return this.history.find((item) => item.payload?.moonpayId === moonpayId);
+    return Object.values(this.history).find((item) => item.payload?.moonpayId === moonpayId);
   }
 
   async startBridgeForMoonpayTransaction(): Promise<void> {

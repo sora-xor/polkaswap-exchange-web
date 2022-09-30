@@ -77,6 +77,7 @@ const mutations = defineMutations<BridgeState>()({
   removeTxIdFromApprove(state, id: string): void {
     state.waitingForApprove = omit([id], state.waitingForApprove);
   },
+
   setEvmBlockNumber(state, blockNumber: number): void {
     state.evmBlockNumber = blockNumber;
   },

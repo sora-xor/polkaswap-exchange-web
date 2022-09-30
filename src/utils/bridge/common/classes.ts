@@ -8,6 +8,7 @@ import type {
   GetAssetByAddress,
   GetTransaction,
   GetActiveTransaction,
+  SetActiveTransaction,
   UpdateTransaction,
   ShowNotification,
   TransactionBoundaryStates,
@@ -15,6 +16,7 @@ import type {
   BridgeCommonOptions,
   BridgeReducerOptions,
 } from '@/utils/bridge/common/types';
+import { evmBridgeApi } from '../evm/api';
 
 type TransactionHandlerPayload<Transaction extends EvmHistory> = {
   nextState: Transaction['transactionState'];
@@ -35,6 +37,7 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
   protected readonly updateHistory!: VoidFunction;
   protected readonly showNotification!: ShowNotification<Transaction>;
   protected readonly getActiveTransaction!: GetActiveTransaction<Transaction>;
+  protected readonly setActiveTransaction!: SetActiveTransaction<Transaction>;
   // boundary states
   protected readonly boundaryStates!: TransactionBoundaryStates<Transaction>;
 
@@ -50,6 +53,7 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     updateHistory,
     showNotification,
     getActiveTransaction,
+    setActiveTransaction,
     // boundary states
     boundaryStates,
   }: BridgeReducerOptions<Transaction>) {
@@ -58,6 +62,7 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     this.getAssetByAddress = getAssetByAddress;
     this.getTransaction = getTransaction;
     this.getActiveTransaction = getActiveTransaction;
+    this.setActiveTransaction = setActiveTransaction;
     this.updateTransaction = updateTransaction;
     this.updateHistory = updateHistory;
     this.showNotification = showNotification;
@@ -83,7 +88,10 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
   }
 
   async updateTransactionParams(id: string, params = {}): Promise<void> {
-    this.updateTransaction(id, params);
+    if (id in evmBridgeApi.history) {
+      this.updateTransaction(id, params);
+    }
+
     this.updateHistory();
     // TODO: remove after fix submitExtrinsic in js-lib
     await delay();
