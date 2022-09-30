@@ -1044,11 +1044,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Pool bata ti wa tẹlẹ",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Ifarada yiyọ kuro ko ti pade awọn opin to dara"
         },
         "referrals": {
             "AlreadyHasReferrer": "Akọọlẹ ti ni olutọka tẹlẹ",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Referrer ko ni to ti wa ni ipamọ iwontunwonsi"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Eto ere ti pari tẹlẹ",
@@ -1078,5 +1078,14 @@
     },
     "assetDeposit": "Iwontunwonsi dukia ti wa ni idogo",
     "noDataText": "Ko si data",
-    "ofText": "{first} ti {second}"
+    "ofText": "{first} ti {second}",
+    "filter": {
+        "all": "Gbogbo",
+        "token": "Awọn ami-ami",
+        "nft": "NFT",
+        "verifiedOnly": "Ṣafihan awọn ohun-ini ti a rii daju nikan",
+        "zeroBalance": "Tọju awọn ohun-ini iwọntunwọnsi 0",
+        "showAssets": "Ṣe afihan awọn ohun-ini",
+        "show": "Ṣe afihan"
+    }
 }

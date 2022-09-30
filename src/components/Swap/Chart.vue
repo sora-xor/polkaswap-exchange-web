@@ -701,6 +701,9 @@ export default class SwapChart extends Mixins(
       const timestamp = (a?.timestamp ?? b?.timestamp) as number;
       const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0]) as number[];
 
+      // if "open" & "close" prices are zero, we are going to time, where pool is not created
+      if (price[0] === 0 && price[1] === 0) break;
+
       prices.push({
         timestamp,
         price,

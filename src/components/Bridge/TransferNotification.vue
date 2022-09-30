@@ -27,6 +27,7 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 import ethersUtil from '@/utils/ethers-util';
+import { isEthereumAddress } from '@/utils';
 import { isOutgoingTransaction } from '@/utils/bridge';
 import { getter, state, mutation } from '@/store/decorators';
 
@@ -69,7 +70,7 @@ export default class TransferNotification extends Mixins(TranslationMixin) {
   }
 
   get addTokenBtnVisibility(): boolean {
-    return !!this.asset && isOutgoingTransaction(this.tx);
+    return !!this.asset && !isEthereumAddress(this.asset.externalAddress) && isOutgoingTransaction(this.tx);
   }
 
   close(): void {
