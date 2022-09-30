@@ -19,7 +19,7 @@
         @focus="setFocusedField('firstTokenValue')"
         @blur="resetFocusedField"
         @max="handleAddLiquidityMaxValue($event, setFirstTokenValue)"
-        @select="openSelectFirstTokenDialog"
+        @select="openSelectTokenDialog(true)"
       />
 
       <s-icon class="icon-divider" name="plus-16" />
@@ -36,7 +36,7 @@
         @focus="setFocusedField('secondTokenValue')"
         @blur="resetFocusedField"
         @max="handleAddLiquidityMaxValue($event, setSecondTokenValue)"
-        @select="openSelectSecondTokenDialog"
+        @select="openSelectTokenDialog(false)"
       />
 
       <slippage-tolerance class="slippage-tolerance-settings" />
@@ -81,18 +81,12 @@
     </s-form>
 
     <select-token
-      :visible.sync="showSelectFirstTokenDialog"
+      :visible.sync="showSelectTokenDialog"
       :connected="isLoggedIn"
-      @select="selectFirstTokenAddress($event.address)"
-      is-main-token-providers
-      disabled-custom
-    />
-
-    <select-token
-      :visible.sync="showSelectSecondTokenDialog"
-      :connected="isLoggedIn"
-      :asset="firstToken"
-      @select="selectSecondTokenAddress($event.address)"
+      :asset="isFirstTokenSelected ? secondToken : firstToken"
+      :is-main-token-providers="isFirstTokenSelected"
+      :disabled-custom="isFirstTokenSelected"
+      @select="selectToken"
     />
 
     <confirm-token-pair-dialog
@@ -182,8 +176,8 @@ export default class AddLiquidity extends Mixins(
   @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
   @mutation.addLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
 
-  showSelectFirstTokenDialog = false;
-  showSelectSecondTokenDialog = false;
+  showSelectTokenDialog = false;
+  isFirstTokenSelected = false;
   insufficientBalanceTokenSymbol = '';
 
   @Watch('isLoggedIn')
@@ -328,24 +322,22 @@ export default class AddLiquidity extends Mixins(
     return getAssetBalance(token);
   }
 
-  openSelectFirstTokenDialog(): void {
-    this.showSelectFirstTokenDialog = true;
+  openSelectTokenDialog(isFirstToken: boolean): void {
+    this.isFirstTokenSelected = isFirstToken;
+    this.showSelectTokenDialog = true;
   }
 
-  openSelectSecondTokenDialog(): void {
-    this.showSelectSecondTokenDialog = true;
-  }
-
-  async selectFirstTokenAddress(address: string): Promise<void> {
-    await this.withSelectAssetLoading(async () => {
-      this.setFirstTokenAddress(address);
-    });
-  }
-
-  async selectSecondTokenAddress(address: string): Promise<void> {
-    await this.withSelectAssetLoading(async () => {
-      this.setSecondTokenAddress(address);
-    });
+  async selectToken(token: AccountAsset): Promise<void> {
+    const address = token?.address;
+    if (address) {
+      await this.withSelectAssetLoading(async () => {
+        if (this.isFirstTokenSelected) {
+          await this.setFirstTokenAddress(address);
+        } else {
+          await this.setSecondTokenAddress(address);
+        }
+      });
+    }
   }
 
   async handleConfirmAddLiquidity(): Promise<void> {
