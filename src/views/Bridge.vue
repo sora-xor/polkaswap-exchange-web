@@ -237,6 +237,7 @@
         />
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
+      <select-network :selected-evm-network="selectedEvmNetwork" @change="setSelectedEvmNetwork" />
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
         :is-valid-network-type="isValidNetwork"
@@ -548,10 +549,6 @@ export default class Bridge extends Mixins(
     }
   }
 
-  changeSelectedEvmNetwork(value) {
-    console.log('changeSelectedEvmNetwork', value);
-  }
-
   async selectAsset(selectedAsset?: RegisteredAccountAssetWithDecimals): Promise<void> {
     if (!selectedAsset) return;
 
@@ -637,6 +634,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
 
   &-header-buttons {
     display: flex;
+    align-items: center;
     margin-left: auto;
 
     & > *:not(:first-child) {

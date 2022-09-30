@@ -245,7 +245,7 @@ export default class BridgeTransaction extends Mixins(
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
   @getter.bridge.historyItem private historyItem!: Nullable<EvmHistory>;
 
-  @mutation.bridge.setHistory setHistory!: VoidFunction;
+  @mutation.bridge.setInternalHistory setHistory!: VoidFunction;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
   @action.bridge.handleBridgeTx private handleBridgeTx!: (id: string) => Promise<void>;
 

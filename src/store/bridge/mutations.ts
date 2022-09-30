@@ -1,5 +1,6 @@
 import omit from 'lodash/fp/omit';
 import { defineMutations } from 'direct-vuex';
+import type { Subscription } from 'rxjs';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
@@ -21,6 +22,7 @@ const mutations = defineMutations<BridgeState>()({
   setAmount(state, value?: string): void {
     state.amount = value || '';
   },
+
   getEvmNetworkFeeRequest(state): void {
     state.evmNetworkFeeFetching = true;
   },
@@ -32,15 +34,37 @@ const mutations = defineMutations<BridgeState>()({
     state.evmNetworkFee = ZeroStringValue;
     state.evmNetworkFeeFetching = false;
   },
-  setHistory(state): void {
-    state.history = [...evmBridgeApi.historyList] as Array<EvmHistory>;
+
+  setInternalHistory(state): void {
+    state.historyInternal = [...evmBridgeApi.historyList] as Array<EvmHistory>;
   },
+  setExternalHistory(state, history: EvmHistory[]): void {
+    state.historyExternal = [...history];
+  },
+
   setHistoryPage(state, historyPage?: number): void {
     state.historyPage = historyPage || 1;
   },
   setHistoryId(state, id?: string): void {
     state.historyId = id || '';
   },
+
+  setHistoryHashesSubscription(state, subscription: Subscription): void {
+    state.historyHashesSubscription = subscription;
+  },
+  resetHistoryHashesSubscription(state): void {
+    state.historyHashesSubscription?.unsubscribe();
+    state.historyHashesSubscription = null;
+  },
+
+  setHistoryDataSubscription(state, subscription: Subscription): void {
+    state.historyDataSubscription = subscription;
+  },
+  resetHistoryDataSubscription(state): void {
+    state.historyDataSubscription?.unsubscribe();
+    state.historyDataSubscription = null;
+  },
+
   addTxIdInProgress(state, id: string): void {
     state.inProgressIds = { ...state.inProgressIds, [id]: true };
   },

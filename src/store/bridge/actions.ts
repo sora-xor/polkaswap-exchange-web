@@ -19,8 +19,8 @@ import type { SignTxResult } from './types';
 // EVM
 import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
+import type { EvmHistory, EvmTransaction } from '@sora-substrate/util/build/evm/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/consts';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
@@ -95,23 +95,44 @@ const actions = defineActions({
     commit.setEvmBlockNumber(blockNumber);
   },
 
-  // TODO: EVM Bridge History update
-  async updateHistory(context, setHistoryCallback?: VoidFunction): Promise<void> {
-    // const { commit, state, dispatch, rootState, rootGetters } = bridgeActionContext(context);
-    // if (state.historyLoading) return;
-    // commit.setHistoryLoading(true);
-    // const bridgeHistory = await dispatch.getEthBridgeHistoryInstance();
-    // const address = rootState.wallet.account.address;
-    // const assets = rootGetters.assets.assetsDataTable;
-    // const networkFees = rootState.wallet.settings.networkFees;
-    // const contractsArray = Object.values(KnownEthBridgeAsset).map<Nullable<string>>(
-    //   (key) => rootState.web3.ethBridgeContractAddress[key]
-    // );
-    // const contracts = compact(contractsArray);
-    // const updateCallback = setHistoryCallback || (() => commit.setHistory());
-    // await bridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, updateCallback);
-    // commit.setHistoryLoading(false);
+  async subscribeOnHistory(context): Promise<void> {
+    const { commit, rootGetters } = bridgeActionContext(context);
+
+    commit.resetHistoryDataSubscription();
+    commit.resetHistoryHashesSubscription();
+
+    const hashesSubscription = evmBridgeApi.subscribeOnUserTxHashes().subscribe((hashes) => {
+      commit.resetHistoryDataSubscription();
+
+      const dataSubscription = evmBridgeApi.subscribeOnTxsDetails(hashes).subscribe((data: EvmTransaction[]) => {
+        const externalHistory = data.map((tx) => {
+          const asset = rootGetters.assets.assetDataByAddress(tx.soraAssetAddress);
+
+          // txId, blockId, startTime, endTime
+          return {
+            id: tx.soraHash || tx.evmHash,
+            type: tx.direction === EvmDirection.Outgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,
+            hash: tx.soraHash,
+            transactionState: tx.status,
+            externalNetwork: evmBridgeApi.externalNetwork,
+            evmHash: tx.evmHash,
+            amount: FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString(),
+            assetAddress: asset?.address,
+            symbol: asset?.symbol,
+            from: tx.soraAccount,
+            to: tx.evmAccount,
+          };
+        });
+
+        commit.setExternalHistory(externalHistory as EvmHistory[]);
+      });
+
+      commit.setHistoryDataSubscription(dataSubscription);
+    });
+
+    commit.setHistoryHashesSubscription(hashesSubscription);
   },
+
   /**
    * Fetch EVM Network fee for selected bridge asset
    */
@@ -137,7 +158,7 @@ const actions = defineActions({
       throw new Error('[Bridge]: "generateHistoryItem" failed');
     }
 
-    commit.setHistory();
+    commit.setInternalHistory();
 
     return historyItem;
   },

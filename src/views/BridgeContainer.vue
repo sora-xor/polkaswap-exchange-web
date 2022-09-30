@@ -1,15 +1,11 @@
 <template>
-  <div>
-    <router-view
-      v-bind="{
-        parentLoading: loading,
-        ...$attrs,
-      }"
-      v-on="$listeners"
-    />
-
-    <select-network :selected-evm-network="selectedEvmNetwork" @change="setSelectedEvmNetwork" />
-  </div>
+  <router-view
+    v-bind="{
+      parentLoading: loading,
+      ...$attrs,
+    }"
+    v-on="$listeners"
+  />
 </template>
 
 <script lang="ts">

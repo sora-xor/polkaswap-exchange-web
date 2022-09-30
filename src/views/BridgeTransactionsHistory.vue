@@ -69,6 +69,8 @@
         </div>
       </s-form>
     </s-card>
+
+    <select-network :selected-evm-network="selectedEvmNetwork" @change="selectEvmNetwork" />
   </div>
 </template>
 
@@ -85,14 +87,16 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { state, action, getter } from '@/store/decorators';
+import { state, action, getter, mutation } from '@/store/decorators';
 
+import type { EvmNetworkId } from '@/consts/evm';
 import type { EvmAccountAsset } from '@/store/assets/types';
 
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
+    SelectNetwork: lazyComponent(Components.SelectNetwork),
     SearchInput: components.SearchInput,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
@@ -108,9 +112,12 @@ export default class BridgeTransactionsHistory extends Mixins(
 ) {
   @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
 
-  @action.bridge.updateHistory private updateHistory!: AsyncVoidFn;
+  @action.bridge.subscribeOnHistory private subscribeOnHistory!: VoidFunction;
 
-  @getter.bridge.historyPage historyPage!: number;
+  @state.bridge.historyPage historyPage!: number;
+
+  // update evm network without metamask request
+  @mutation.web3.setSelectedEvmNetwork selectEvmNetwork!: (evmNetworkId: EvmNetworkId) => void;
 
   pageAmount = 8; // override PaginationSearchMixin
   loading = true;
@@ -144,7 +151,8 @@ export default class BridgeTransactionsHistory extends Mixins(
   async created(): Promise<void> {
     await this.withParentLoading(async () => {
       this.setHistory();
-      await this.updateHistory();
+      this.subscribeOnHistory();
+
       if (this.historyPage !== 1) {
         this.currentPage = this.historyPage;
         if (this.currentPage !== 1 && this.currentPage === this.lastPage) {
@@ -228,7 +236,6 @@ export default class BridgeTransactionsHistory extends Mixins(
         this.isLtrDirection = false;
     }
 
-    await this.updateHistory();
     this.currentPage = current;
     this.setHistoryPage(this.currentPage);
   }
@@ -253,8 +260,11 @@ export default class BridgeTransactionsHistory extends Mixins(
       padding: 0 $inner-spacing-mini;
     }
 
-    .s-card.status-action-badge--history {
+    .s-card.status-action-badge.status-action-badge--history {
       position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translate(0, -50%);
     }
   }
   &-item-title {
