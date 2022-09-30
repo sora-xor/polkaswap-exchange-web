@@ -1,5 +1,5 @@
 <template>
-  <div :class="headerClasses">
+  <div :class="headerClasses" ref="genericPageHeader" :tabindex="hasFocusReset ? 0 : -1">
     <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack($event)" />
     <h3 class="page-header-title">
       <slot name="title">
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -31,6 +31,22 @@ export default class GenericPageHeader extends Mixins(TranslationMixin) {
   @Prop({ default: '', type: String }) readonly title!: string;
   @Prop({ default: '', type: String }) readonly tooltip?: string;
   @Prop({ default: 'right-start', type: String }) readonly tooltipPlacement?: string;
+  @Prop({ default: '', type: String }) readonly resetFocus!: string;
+
+  @Watch('resetFocus')
+  private async resetBaseFocus(value: string) {
+    if (value) {
+      this.hasFocusReset = true;
+
+      const editButtonRef = this.$refs.genericPageHeader as any;
+      editButtonRef.focus();
+      editButtonRef.blur();
+
+      this.hasFocusReset = false;
+    }
+  }
+
+  hasFocusReset = false;
 
   get headerClasses(): string {
     const baseClass = 'page-header';
@@ -86,6 +102,9 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
       &--settings {
         margin-left: auto;
       }
+    }
+    .el-tooltip {
+      @include focus-outline($borderRadius: 50%);
     }
   }
   &-tooltip {

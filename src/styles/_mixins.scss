@@ -551,3 +551,19 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     background-color: var(--s-color-base-content-tertiary);
   }
 }
+
+@mixin focus-outline($focusWithin: false, $borderRadius: '') {
+  $outline: 1px solid var(--s-color-outline);
+  @if $focusWithin == true {
+    &:focus-within {
+      outline: $outline;
+    }
+  } @else {
+    &:focus:not(:active) {
+      outline: $outline;
+      @if $borderRadius != '' {
+        border-radius: $borderRadius;
+      }
+    }
+  }
+}
