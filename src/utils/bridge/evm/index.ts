@@ -32,7 +32,7 @@ const evmBridge = new Bridge<EvmHistory, EvmBridgeOutgoingReducer | EvmBridgeInc
   showNotification: (tx: EvmHistory) => store.commit.bridge.setNotificationData(tx),
   updateHistory: () => store.commit.bridge.setInternalHistory(),
   getActiveTransaction: () => store.getters.bridge.historyItem,
-  setActiveTransaction: (id: string) => store.commit.bridge.setHistoryId(id),
+  checkTransactionByHash: (id: string) => store.dispatch.bridge.checkInternalHistoryBySoraHash(id),
 });
 
 export default evmBridge;

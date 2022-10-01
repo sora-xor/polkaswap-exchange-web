@@ -102,6 +102,22 @@ const actions = defineActions({
     commit.resetHistoryHashesSubscription();
   },
 
+  checkInternalHistoryBySoraHash(context, hash: string): void {
+    const { commit, state } = bridgeActionContext(context);
+
+    const item = evmBridgeApi.historyList.find((item) => item.hash === hash);
+
+    if (!item) return;
+
+    if (state.historyId === item.id) {
+      commit.setHistoryId(hash);
+    }
+
+    evmBridgeApi.removeHistory(item.id);
+
+    commit.setInternalHistory();
+  },
+
   async subscribeOnHistory(context): Promise<void> {
     const { commit, dispatch, rootGetters, rootState } = bridgeActionContext(context);
 
@@ -115,12 +131,8 @@ const actions = defineActions({
       const dataSubscription = evmBridgeApi
         .subscribeOnTxsDetails(externalNetwork, hashes)
         .subscribe((data: EvmTransaction[]) => {
-          const internalHistory = evmBridgeApi.historyList;
           const externalHistory = data.map((tx) => {
-            // clean up internal history item what exists in network
-            const internalHistoryItem = internalHistory.find((item) => item.hash === tx.soraHash);
-
-            if (internalHistoryItem) evmBridgeApi.removeHistory(internalHistoryItem.id);
+            dispatch.checkInternalHistoryBySoraHash(tx.soraHash);
 
             const asset = rootGetters.assets.assetDataByAddress(tx.soraAssetAddress);
 
@@ -141,7 +153,6 @@ const actions = defineActions({
           });
 
           commit.setExternalHistory(externalHistory as EvmHistory[]);
-          commit.setInternalHistory();
         });
 
       commit.setHistoryDataSubscription(dataSubscription);
@@ -166,6 +177,7 @@ const actions = defineActions({
       commit.getEvmNetworkFeeFailure();
     }
   },
+
   async generateHistoryItem(context, playground): Promise<EvmHistory> {
     const { commit } = bridgeActionContext(context);
     const historyData = bridgeDataToHistoryItem(context, playground);

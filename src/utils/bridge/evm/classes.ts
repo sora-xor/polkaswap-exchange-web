@@ -123,18 +123,7 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
             reject(new Error(`[${this.constructor.name}]: Unable to get transacton data by "hash": "${hash}"`));
           }
 
-          // show in transaction view data from network
-          if (id === this.getActiveTransaction()?.id) {
-            console.log('change view');
-            this.setActiveTransaction(hash);
-          }
-
-          // remove local history item
-          if (id in evmBridgeApi.history) {
-            console.log('remove item');
-            evmBridgeApi.removeHistory(id);
-            this.updateHistory();
-          }
+          this.checkTransactionByHash(hash);
 
           const status = data.status;
 
