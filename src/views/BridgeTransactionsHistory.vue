@@ -70,7 +70,7 @@
       </s-form>
     </s-card>
 
-    <select-network :selected-evm-network="selectedEvmNetwork" @change="selectEvmNetwork" />
+    <select-network :selected-evm-network="selectedEvmNetwork" @change="changeEvmNetwork" />
   </div>
 </template>
 
@@ -150,7 +150,7 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   async created(): Promise<void> {
     await this.withParentLoading(async () => {
-      this.subscribeOnHistory();
+      this.setHistory();
 
       if (this.historyPage !== 1) {
         this.currentPage = this.historyPage;
@@ -160,6 +160,11 @@ export default class BridgeTransactionsHistory extends Mixins(
       }
       this.loading = false;
     });
+  }
+
+  changeEvmNetwork(evmNetwork: EvmNetworkId): void {
+    this.selectEvmNetwork(evmNetwork);
+    this.subscribeOnHistory();
   }
 
   getFilteredHistory(history: Array<EvmHistory>): Array<EvmHistory> {

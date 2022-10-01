@@ -103,37 +103,46 @@ const actions = defineActions({
   },
 
   async subscribeOnHistory(context): Promise<void> {
-    const { commit, dispatch, rootGetters } = bridgeActionContext(context);
-
-    commit.setInternalHistory();
+    const { commit, dispatch, rootGetters, rootState } = bridgeActionContext(context);
 
     dispatch.unsubscribeFromHistory();
 
-    const hashesSubscription = evmBridgeApi.subscribeOnUserTxHashes().subscribe((hashes) => {
+    const externalNetwork = rootState.web3.evmNetworkSelected;
+
+    const hashesSubscription = evmBridgeApi.subscribeOnUserTxHashes(externalNetwork).subscribe((hashes) => {
       commit.resetHistoryDataSubscription();
 
-      const dataSubscription = evmBridgeApi.subscribeOnTxsDetails(hashes).subscribe((data: EvmTransaction[]) => {
-        const externalHistory = data.map((tx) => {
-          const asset = rootGetters.assets.assetDataByAddress(tx.soraAssetAddress);
+      const dataSubscription = evmBridgeApi
+        .subscribeOnTxsDetails(externalNetwork, hashes)
+        .subscribe((data: EvmTransaction[]) => {
+          const internalHistory = evmBridgeApi.historyList;
+          const externalHistory = data.map((tx) => {
+            // clean up internal history item what exists in network
+            const internalHistoryItem = internalHistory.find((item) => item.hash === tx.soraHash);
 
-          // TODO [EVM] add: txId, blockId, startTime, endTime
-          return {
-            id: tx.soraHash || tx.evmHash,
-            type: tx.direction === EvmDirection.Outgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,
-            hash: tx.soraHash,
-            transactionState: tx.status,
-            externalNetwork: evmBridgeApi.externalNetwork,
-            evmHash: tx.evmHash,
-            amount: FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString(),
-            assetAddress: asset?.address,
-            symbol: asset?.symbol,
-            from: tx.soraAccount,
-            to: tx.evmAccount,
-          };
+            if (internalHistoryItem) evmBridgeApi.removeHistory(internalHistoryItem.id);
+
+            const asset = rootGetters.assets.assetDataByAddress(tx.soraAssetAddress);
+
+            // TODO [EVM] add: txId, blockId, startTime, endTime
+            return {
+              id: tx.soraHash || tx.evmHash,
+              type: tx.direction === EvmDirection.Outgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,
+              hash: tx.soraHash,
+              transactionState: tx.status,
+              externalNetwork: evmBridgeApi.externalNetwork,
+              evmHash: tx.evmHash,
+              amount: FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString(),
+              assetAddress: asset?.address,
+              symbol: asset?.symbol,
+              from: tx.soraAccount,
+              to: tx.evmAccount,
+            };
+          });
+
+          commit.setExternalHistory(externalHistory as EvmHistory[]);
+          commit.setInternalHistory();
         });
-
-        commit.setExternalHistory(externalHistory as EvmHistory[]);
-      });
 
       commit.setHistoryDataSubscription(dataSubscription);
     });

@@ -22,17 +22,11 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
             await this.updateTransactionParams(id, { transactionState: EvmTxStatus.Pending });
             await this.checkTxId(id);
             await this.checkTxBlockId(id);
-            await this.checkTxSoraHash(id);
 
-            await this.onComplete(await this.subscribeOnTxBySoraHash(id));
+            const hash = await this.checkTxSoraHash(id);
+            await this.subscribeOnTxBySoraHash(hash);
+            await this.onComplete(hash);
           },
-        });
-      }
-
-      case EvmTxStatus.Done: {
-        return await this.handleState(transaction.id, {
-          nextState: EvmTxStatus.Done,
-          rejectState: EvmTxStatus.Failed,
         });
       }
 
@@ -95,18 +89,20 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
     await this.waitForSoraBlockId(id);
   }
 
-  private async checkTxSoraHash(id: string): Promise<void> {
+  private async checkTxSoraHash(id: string): Promise<string> {
     const tx = this.getTransaction(id);
 
-    if (!tx.hash) {
-      const hash = await waitForSoraTransactionHash(id);
+    if (tx.hash) return tx.hash;
 
-      await this.updateTransactionParams(id, { hash });
-    }
+    const hash = await waitForSoraTransactionHash(id);
+
+    await this.updateTransactionParams(id, { hash });
+
+    return hash;
   }
 
-  private async subscribeOnTxBySoraHash(id: string): Promise<string> {
-    const { hash } = this.getTransaction(id);
+  private async subscribeOnTxBySoraHash(id: string): Promise<void> {
+    const { hash, externalNetwork } = this.getTransaction(id);
 
     if (!hash) {
       throw new Error(
@@ -114,21 +110,30 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
       );
     }
 
+    if (!externalNetwork) {
+      throw new Error(`[${this.constructor.name}]: Transaction "externalNetwork": "${externalNetwork}" is not correct`);
+    }
+
     let subscription!: Subscription;
 
     try {
       await new Promise<EvmTxStatus>((resolve, reject) => {
-        subscription = evmBridgeApi.subscribeOnTxDetails(hash).subscribe((data) => {
+        subscription = evmBridgeApi.subscribeOnTxDetails(externalNetwork, hash).subscribe((data) => {
           if (!data) {
             reject(new Error(`[${this.constructor.name}]: Unable to get transacton data by "hash": "${hash}"`));
           }
 
+          // show in transaction view data from network
           if (id === this.getActiveTransaction()?.id) {
+            console.log('change view');
             this.setActiveTransaction(hash);
           }
 
+          // remove local history item
           if (id in evmBridgeApi.history) {
+            console.log('remove item');
             evmBridgeApi.removeHistory(id);
+            this.updateHistory();
           }
 
           const status = data.status;
@@ -145,8 +150,6 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
     } finally {
       subscription.unsubscribe();
     }
-
-    return hash;
   }
 }
 

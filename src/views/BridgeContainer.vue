@@ -28,6 +28,8 @@ import { Components } from '@/consts';
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
   @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
   @action.bridge.updateEvmBlockNumber private updateEvmBlockNumber!: (block?: number) => Promise<void>;
+  @action.bridge.subscribeOnHistory subscribeOnHistory!: VoidFunction;
+  @action.bridge.unsubscribeFromHistory unsubscribeFromHistory!: VoidFunction;
   @action.assets.updateRegisteredAssets private updateExternalBalances!: (reset?: boolean) => Promise<void>;
 
   private unwatchEthereum!: VoidFunction;
@@ -56,6 +58,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
           },
         });
         this.subscribeToEvmBlockHeaders();
+        this.subscribeOnHistory();
       });
     });
   }
@@ -65,6 +68,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
       this.unwatchEthereum();
     }
     this.unsubscribeEvmBlockHeaders();
+    this.unsubscribeFromHistory();
   }
 
   private async onConnectedEvmNetworkChange(networkHex?: string) {

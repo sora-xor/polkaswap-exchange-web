@@ -79,7 +79,7 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
 
       const tx = this.getTransaction(transaction.id as string);
 
-      if (!Object.values(this.boundaryStates).includes(tx.transactionState)) {
+      if (tx && !Object.values(this.boundaryStates).includes(tx.transactionState)) {
         await this.process(tx);
       }
     } catch (error) {
@@ -102,9 +102,8 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     { nextState, rejectState, handler, status }: TransactionHandlerPayload<Transaction>
   ): Promise<void> {
     try {
+      console.log('handleState');
       const transaction = this.getTransaction(id);
-
-      if (transaction.transactionState === this.boundaryStates.done) return;
 
       // optional update
       if (status && transaction.status !== status) {

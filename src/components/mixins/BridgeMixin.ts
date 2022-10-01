@@ -21,6 +21,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @mutation.web3.setSelectNetworkDialogVisibility setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
   @action.bridge.subscribeOnHistory subscribeOnHistory!: VoidFunction;
+  @action.bridge.unsubscribeFromHistory unsubscribeFromHistory!: VoidFunction;
 
   get evmTokenSymbol(): string {
     return this.selectedEvmNetwork?.nativeCurrency?.symbol ?? '';

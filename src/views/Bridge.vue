@@ -237,7 +237,7 @@
         />
       </s-card>
       <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-      <select-network :selected-evm-network="selectedEvmNetwork" @change="setSelectedEvmNetwork" />
+      <select-network :selected-evm-network="selectedEvmNetwork" @change="changeEvmNetwork" />
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
         :is-valid-network-type="isValidNetwork"
@@ -288,6 +288,7 @@ import {
 } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 
+import type { EvmNetworkId } from '@/consts/evm';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 @Component({
@@ -573,6 +574,11 @@ export default class Bridge extends Mixins(
       this.setHistoryId(id);
       router.push({ name: PageNames.BridgeTransaction });
     });
+  }
+
+  changeEvmNetwork(evmNetwork: EvmNetworkId): void {
+    this.setSelectedEvmNetwork(evmNetwork);
+    this.subscribeOnHistory();
   }
 }
 </script>
