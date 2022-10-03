@@ -1,5 +1,5 @@
 <template>
-  <div class="countdown">
+  <div v-button class="countdown">
     <el-progress
       type="circle"
       :width="width"
@@ -56,6 +56,8 @@ $countdown-box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.1), inset -5px -5px 5px
   box-shadow: $countdown-box-shadow;
   padding: $coundown-container-padding;
   position: relative;
+
+  @include focus-outline;
 
   &-content {
     position: absolute;

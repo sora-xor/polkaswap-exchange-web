@@ -16,10 +16,12 @@
         >
           <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
             <s-menu-item
+              v-button
               v-for="item in group"
               :key="item.title"
               :index="item.title"
               :disabled="item.disabled"
+              tabindex="0"
               class="menu-item"
             >
               <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
@@ -45,7 +47,13 @@
             @click.native="openSoraDownloadDialog"
           />
           <app-info-popper>
-            <sidebar-item-content icon="info-16" :title="t('footerMenu.info')" class="el-menu-item menu-item--small" />
+            <sidebar-item-content
+              v-button
+              icon="info-16"
+              :title="t('footerMenu.info')"
+              class="el-menu-item menu-item--small"
+              tabindex="0"
+            />
           </app-info-popper>
           <sidebar-item-content
             v-if="faucetUrl"
@@ -191,7 +199,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
     &:focus {
-      background-color: unset;
+      background-color: unset !important;
     }
   }
 }

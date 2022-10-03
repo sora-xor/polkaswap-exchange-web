@@ -761,6 +761,9 @@ export default class ReferralProgram extends Mixins(
         }
       }
     }
+    &-code {
+      outline-offset: -1px;
+    }
   }
   &-description {
     margin-top: $inner-spacing-medium;

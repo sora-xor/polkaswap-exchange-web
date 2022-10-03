@@ -70,6 +70,7 @@ $tooltip-placements: 'left', 'right';
     &-icon {
       margin-left: $inner-spacing-mini / 2;
       color: var(--s-color-base-content-tertiary);
+      @include focus-outline($borderRadius: 50%);
     }
   }
 }

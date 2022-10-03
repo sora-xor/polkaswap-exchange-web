@@ -110,6 +110,9 @@ $popper-mix-width: 170px;
   .el-divider {
     margin: 0;
   }
+  &-link:not(:active) {
+    @include focus-outline;
+  }
 }
 </style>
 

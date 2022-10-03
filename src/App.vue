@@ -490,6 +490,9 @@ ul ul {
   &__title {
     color: var(--s-color-theme-accent);
   }
+  a:not(:active) {
+    @include focus-outline;
+  }
 }
 
 .link {
