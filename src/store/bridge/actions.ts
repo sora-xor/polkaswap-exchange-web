@@ -102,19 +102,23 @@ const actions = defineActions({
     commit.resetHistoryHashesSubscription();
   },
 
-  checkInternalHistoryBySoraHash(context, hash: string): void {
+  removeInternalHistoryByHash(context, hash: string): void {
     const { commit, state } = bridgeActionContext(context);
 
     const item = evmBridgeApi.historyList.find((item) => item.hash === hash);
 
     if (!item) return;
-
+    // update in progress id if needed
+    if (state.inProgressIds[item.id]) {
+      commit.addTxIdInProgress(hash);
+      commit.removeTxIdFromProgress(item.id);
+    }
+    // update active view if needed
     if (state.historyId === item.id) {
       commit.setHistoryId(hash);
     }
-
+    // remove tx from history
     evmBridgeApi.removeHistory(item.id);
-
     commit.setInternalHistory();
   },
 
@@ -131,17 +135,18 @@ const actions = defineActions({
       const dataSubscription = evmBridgeApi
         .subscribeOnTxsDetails(externalNetwork, hashes)
         .subscribe((data: EvmTransaction[]) => {
-          const externalHistory = data.map((tx) => {
-            dispatch.checkInternalHistoryBySoraHash(tx.soraHash);
-
+          const externalHistory = data.reduce((buffer, tx) => {
+            const id = tx.soraHash || tx.evmHash;
             const asset = rootGetters.assets.assetDataByAddress(tx.soraAssetAddress);
+            const transactionState = tx.status;
 
             // TODO [EVM] add: txId, blockId, startTime, endTime
-            return {
-              id: tx.soraHash || tx.evmHash,
+            const historyItem = {
+              id,
+              txId: id, // TODO [EVM] remove mock
               type: tx.direction === EvmDirection.Outgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,
               hash: tx.soraHash,
-              transactionState: tx.status,
+              transactionState,
               externalNetwork: evmBridgeApi.externalNetwork,
               evmHash: tx.evmHash,
               amount: FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString(),
@@ -150,9 +155,15 @@ const actions = defineActions({
               from: tx.soraAccount,
               to: tx.evmAccount,
             };
-          });
 
-          commit.setExternalHistory(externalHistory as EvmHistory[]);
+            return { ...buffer, [id]: historyItem };
+          }, {});
+
+          commit.setExternalHistory(externalHistory);
+
+          for (const id in externalHistory) {
+            dispatch.removeInternalHistoryByHash(externalHistory[id].soraHash);
+          }
         });
 
       commit.setHistoryDataSubscription(dataSubscription);

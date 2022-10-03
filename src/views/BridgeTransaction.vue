@@ -492,6 +492,7 @@ export default class BridgeTransaction extends Mixins(
     }
 
     await this.withParentLoading(async () => {
+      console.log('this.txInProcess', this.txInProcess);
       const withAutoStart = !this.txInProcess && this.isTxPending;
 
       await this.handleTransaction(withAutoStart);

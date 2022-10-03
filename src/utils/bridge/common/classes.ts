@@ -102,7 +102,6 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     { nextState, rejectState, handler, status }: TransactionHandlerPayload<Transaction>
   ): Promise<void> {
     try {
-      console.log('handleState');
       const transaction = this.getTransaction(id);
 
       // optional update

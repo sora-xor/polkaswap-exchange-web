@@ -13,7 +13,7 @@ export type BridgeState = {
   evmBlockNumber: number;
   // history sources (unsynced localstorage & network)
   historyInternal: Array<EvmHistory>;
-  historyExternal: Array<EvmHistory>;
+  historyExternal: Record<string, EvmHistory>;
   historyPage: number;
   historyId: string;
   historyLoading: boolean;

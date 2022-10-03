@@ -38,8 +38,8 @@ const mutations = defineMutations<BridgeState>()({
   setInternalHistory(state): void {
     state.historyInternal = [...evmBridgeApi.historyList] as Array<EvmHistory>;
   },
-  setExternalHistory(state, history: EvmHistory[]): void {
-    state.historyExternal = [...history];
+  setExternalHistory(state, history: Record<string, EvmHistory>): void {
+    state.historyExternal = { ...history };
   },
 
   setHistoryPage(state, historyPage?: number): void {
