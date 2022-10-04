@@ -7,6 +7,13 @@ import type {
   LPRewardsInfo,
 } from '@sora-substrate/liquidity-proxy/build/types';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { DexId } from '@sora-substrate/util/build/poolXyk/consts';
+
+export type DexQuoteData = {
+  pairLiquiditySources: Array<LiquiditySourceTypes>;
+  paths: QuotePaths;
+  payload: Nullable<QuotePayload>;
+};
 
 export type SwapState = {
   tokenFromAddress: Nullable<string>;
@@ -16,11 +23,13 @@ export type SwapState = {
   fromValue: string;
   toValue: string;
   amountWithoutImpact: CodecString;
-  isExchangeB: boolean;
   liquidityProviderFee: CodecString;
-  pairLiquiditySources: Array<LiquiditySourceTypes>;
-  paths: QuotePaths;
+  isExchangeB: boolean;
   enabledAssets: PrimaryMarketsEnabledAssets;
   rewards: Array<LPRewardsInfo>;
-  payload: Nullable<QuotePayload>;
+  selectedDexId: DexId;
+  dexQuoteData: Record<DexId, DexQuoteData>;
+  // pairLiquiditySources: Array<LiquiditySourceTypes>;
+  // paths: QuotePaths;
+  // payload: Nullable<QuotePayload>;
 };

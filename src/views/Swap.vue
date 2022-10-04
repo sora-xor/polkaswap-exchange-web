@@ -133,16 +133,17 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
+import { DexId } from '@sora-substrate/util/build/poolXyk/consts';
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { Subscription } from 'rxjs';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type {
-  QuotePaths,
   QuotePayload,
   PrimaryMarketsEnabledAssets,
   LPRewardsInfo,
 } from '@sora-substrate/liquidity-proxy/build/types';
+import type { DexQuoteData } from '@/store/swap/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
@@ -159,6 +160,8 @@ import {
 import router, { lazyComponent } from '@/router';
 import { Components, MarketAlgorithms, PageNames } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
+
+const DEXES = [DexId.XOR, DexId.XSTUSD];
 
 @Component({
   components: {
@@ -182,8 +185,7 @@ export default class Swap extends Mixins(
   TokenSelectMixin
 ) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @state.swap.paths private paths!: QuotePaths;
-  @state.swap.payload private payload!: QuotePayload;
+  @state.swap.dexQuoteData private dexQuoteData!: Record<DexId, DexQuoteData>;
   @state.swap.isExchangeB isExchangeB!: boolean;
   @state.swap.fromValue fromValue!: string;
   @state.swap.toValue toValue!: string;
@@ -206,11 +208,16 @@ export default class Swap extends Mixins(
   @mutation.swap.setLiquidityProviderFee private setLiquidityProviderFee!: (value: CodecString) => void;
   @mutation.swap.setPrimaryMarketsEnabledAssets private setEnabledAssets!: (args: PrimaryMarketsEnabledAssets) => void;
   @mutation.swap.setRewards private setRewards!: (rewards: Array<LPRewardsInfo>) => void;
+  @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
   @action.swap.reset private reset!: AsyncVoidFn;
-  @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
+  @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (data: {
+    dexId: DexId;
+    payload: QuotePayload;
+  }) => Promise<void>;
+
   @action.swap.resetSubscriptions private resetBalanceSubscriptions!: AsyncVoidFn;
   @action.swap.updateSubscriptions private updateBalanceSubscriptions!: AsyncVoidFn;
 
@@ -241,7 +248,7 @@ export default class Swap extends Mixins(
   showSettings = false;
   showSelectTokenDialog = false;
   showConfirmSwapDialog = false;
-  liquidityReservesSubscription: Nullable<Subscription> = null;
+  liquidityReservesSubscription: Array<Subscription> = [];
   enabledAssetsSubscription: Nullable<Subscription> = null;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
@@ -424,20 +431,40 @@ export default class Swap extends Mixins(
 
     try {
       // TODO: [ARCH] Asset -> Asset | AccountAsset
-      const { amount, fee, rewards, amountWithoutImpact } = api.swap.getResult(
-        this.tokenFrom as Asset,
-        this.tokenTo as Asset,
-        value,
-        this.isExchangeB,
-        [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
-        this.paths,
-        this.payload
-      );
+      const results = DEXES.map((dexId) => {
+        return api.swap.getResult(
+          this.tokenFrom as Asset,
+          this.tokenTo as Asset,
+          value,
+          this.isExchangeB,
+          [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
+          this.dexQuoteData[dexId].paths,
+          this.dexQuoteData[dexId].payload as QuotePayload,
+          dexId as DexId
+        );
+      });
+
+      const bestDexIndex = results.reduce((bestIdx, result, index, res) => {
+        const currAmount = FPNumber.fromCodecValue(result.amount);
+        const bestAmount = FPNumber.fromCodecValue(res[bestIdx].amount);
+
+        if (
+          (FPNumber.isLessThan(currAmount, bestAmount) && this.isExchangeB) ||
+          (FPNumber.isLessThan(bestAmount, currAmount) && !this.isExchangeB)
+        ) {
+          return index;
+        }
+
+        return bestIdx;
+      }, 0);
+
+      const { amount, amountWithoutImpact, fee, rewards } = results[bestDexIndex];
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
+      this.selectDexId(DEXES[bestDexIndex]);
     } catch (error: any) {
       console.error(error);
       resetOppositeValue();
@@ -455,24 +482,34 @@ export default class Swap extends Mixins(
   }
 
   private cleanSwapReservesSubscription(): void {
-    this.liquidityReservesSubscription?.unsubscribe();
-    this.liquidityReservesSubscription = null;
+    this.liquidityReservesSubscription.forEach((subscription) => {
+      subscription?.unsubscribe();
+    });
+    this.liquidityReservesSubscription = [];
   }
 
   private subscribeOnSwapReserves(): void {
     this.cleanSwapReservesSubscription();
+
     if (!this.areTokensSelected) return;
-    this.liquidityReservesSubscription = api.swap
-      .subscribeOnReserves(
-        (this.tokenFrom as AccountAsset).address,
-        (this.tokenTo as AccountAsset).address,
-        this.liquiditySource as LiquiditySourceTypes // TODO: Add Nullable<LiquiditySourceTypes> to the lib
-      )
-      .subscribe(this.onChangeSwapReserves);
+
+    this.liquidityReservesSubscription = DEXES.map((dexId) => {
+      return api.swap
+        .subscribeOnReserves(
+          (this.tokenFrom as AccountAsset).address,
+          (this.tokenTo as AccountAsset).address,
+          // TODO: Add Nullable<LiquiditySourceTypes> to the lib
+          dexId === DexId.XOR ? (this.liquiditySource as LiquiditySourceTypes) : LiquiditySourceTypes.XYKPool,
+          dexId as DexId
+        )
+        .subscribe((payload) => {
+          this.onChangeSwapReserves(dexId as DexId, payload);
+        });
+    });
   }
 
-  private async onChangeSwapReserves(payload: QuotePayload): Promise<void> {
-    await this.setSubscriptionPayload(payload);
+  private async onChangeSwapReserves(dexId: DexId, payload: QuotePayload): Promise<void> {
+    await this.setSubscriptionPayload({ dexId, payload });
 
     this.runRecountSwapValues();
   }
