@@ -77,6 +77,15 @@ $status-badge-width: 140px;
   background: var(--s-color-theme-accent);
   color: var(--s-color-base-on-accent);
 
+  &:nth-child(2n) {
+    // 2 items per row
+    margin-left: $inner-spacing-mini;
+  }
+  &:nth-child(n + 3) {
+    // Starting from 2nd row
+    margin-top: $inner-spacing-mini;
+  }
+
   &.active {
     background: var(--s-color-base-on-accent);
     color: var(--s-color-base-content-primary);
