@@ -4,7 +4,7 @@ import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 export type AddAsset = (address: string) => Promise<void>;
 export type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAssetWithDecimals>;
 export type GetActiveTransaction<T> = () => Nullable<T>;
-export type CheckTransactionByHash = (hash: string) => void;
+export type RemoveTransactionByHash = (hash: string) => void;
 export type GetBridgeHistoryInstance<T> = () => Promise<T>;
 export type GetTransaction<T> = (id: string) => T;
 export type UpdateTransaction<T> = (id: string, params: Partial<T>) => void;
@@ -30,7 +30,7 @@ export interface BridgeCommonOptions<T extends EvmHistory> {
   showNotification: ShowNotification<T>;
   updateHistory: VoidFunction;
   getActiveTransaction: GetActiveTransaction<T>;
-  checkTransactionByHash: CheckTransactionByHash;
+  removeTransactionByHash: RemoveTransactionByHash;
   // boundary states ("failed", "done")
   boundaryStates: TransactionBoundaryStates<T>;
 }

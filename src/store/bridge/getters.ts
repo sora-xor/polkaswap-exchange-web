@@ -40,7 +40,9 @@ const getters = defineGetters<BridgeState>()({
     const { state, rootState } = bridgeGetterContext(args);
 
     const externalNetwork = rootState.web3.evmNetworkSelected;
-    const internalHistory = state.historyInternal.filter((item) => !item.hash || !(item.hash in state.historyExternal));
+    const internalHistory = Object.values(state.historyInternal).filter(
+      (item) => !item.hash || !(item.hash in state.historyExternal)
+    );
     const externalHistory = Object.values(state.historyExternal);
     // filter history from all sources by selected evm network
 

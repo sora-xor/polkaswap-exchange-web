@@ -8,7 +8,7 @@ import type {
   GetAssetByAddress,
   GetTransaction,
   GetActiveTransaction,
-  CheckTransactionByHash,
+  RemoveTransactionByHash,
   UpdateTransaction,
   ShowNotification,
   TransactionBoundaryStates,
@@ -37,7 +37,7 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
   protected readonly updateHistory!: VoidFunction;
   protected readonly showNotification!: ShowNotification<Transaction>;
   protected readonly getActiveTransaction!: GetActiveTransaction<Transaction>;
-  protected readonly checkTransactionByHash!: CheckTransactionByHash;
+  protected readonly removeTransactionByHash!: RemoveTransactionByHash;
   // boundary states
   protected readonly boundaryStates!: TransactionBoundaryStates<Transaction>;
 
@@ -53,7 +53,7 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     updateHistory,
     showNotification,
     getActiveTransaction,
-    checkTransactionByHash,
+    removeTransactionByHash,
     // boundary states
     boundaryStates,
   }: BridgeReducerOptions<Transaction>) {
@@ -62,7 +62,7 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     this.getAssetByAddress = getAssetByAddress;
     this.getTransaction = getTransaction;
     this.getActiveTransaction = getActiveTransaction;
-    this.checkTransactionByHash = checkTransactionByHash;
+    this.removeTransactionByHash = removeTransactionByHash;
     this.updateTransaction = updateTransaction;
     this.updateHistory = updateHistory;
     this.showNotification = showNotification;
@@ -135,12 +135,14 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
 
     const tx = this.getTransaction(id);
 
-    if (tx.assetAddress && !this.getAssetByAddress(tx.assetAddress)) {
-      // Add asset to account assets
-      this.addAsset(tx.assetAddress);
-    }
+    if (tx) {
+      if (tx.assetAddress && !this.getAssetByAddress(tx.assetAddress)) {
+        // Add asset to account assets
+        this.addAsset(tx.assetAddress);
+      }
 
-    this.showNotification(tx);
+      this.showNotification(tx);
+    }
   }
 
   beforeSubmit(id: string): void {

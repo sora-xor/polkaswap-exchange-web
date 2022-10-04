@@ -11,7 +11,7 @@ function initialState(): BridgeState {
     evmNetworkFeeFetching: false,
     evmBlockNumber: 0,
     // history sources
-    historyInternal: [], // localstorage history
+    historyInternal: {}, // localstorage history
     historyExternal: {}, // network history
     historyPage: 1,
     historyId: '',

@@ -12,7 +12,7 @@ export type BridgeState = {
   evmNetworkFeeFetching: boolean;
   evmBlockNumber: number;
   // history sources (unsynced localstorage & network)
-  historyInternal: Array<EvmHistory>;
+  historyInternal: Record<string, EvmHistory>;
   historyExternal: Record<string, EvmHistory>;
   historyPage: number;
   historyId: string;
