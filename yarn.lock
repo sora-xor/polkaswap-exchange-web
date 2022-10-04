@@ -2432,44 +2432,44 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api@1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.10.0.tgz#2516aeede03d61415d8226e61c060b08170773c5"
-  integrity sha512-29QQ0k/H6RUNAGqM73wfmRoNjLJaXkXG8Zvt5HxwaEPu3mwG5b0R5cgnkNDEWuFGGGQObdVEflslCri9H13o7Q==
+"@sora-substrate/api@1.10.0-1":
+  version "1.10.0-1"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.10.0-1.tgz#53f6a97bcb9b90ee9ddafc19408a96585236a92b"
+  integrity sha512-/padXHkkurp3pAASaJS/o7xmhMxhG+STyPExGJ1fD+Ps8HklbRX0YxGo4xS20CdbIm/ceJW6ePV5uHmo04CRJw==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/orml-api-derive" "^0.8.2-9"
     "@polkadot/api" "^4.10.1"
     "@polkadot/rpc-core" "^4.10.1"
-    "@sora-substrate/types" "1.10.0"
+    "@sora-substrate/types" "1.10.0-1"
 
-"@sora-substrate/liquidity-proxy@1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/liquidity-proxy/-/liquidity-proxy-1.10.0.tgz#fba7ce1cd3e412007ab3d4e8c8606040590a4053"
-  integrity sha512-lYL7JSsKMWxo6c296fkPqY4IAYmhc54XCcoFLHDKU8vGZPM6p++bUBgXpz0X2LRGPds3hLa/6v2zlHxTmdFTWA==
+"@sora-substrate/liquidity-proxy@1.10.0-1":
+  version "1.10.0-1"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/liquidity-proxy/-/liquidity-proxy-1.10.0-1.tgz#b730e1c3e224c1c42cc3fd89ae12d5f390443c8b"
+  integrity sha512-tz0A/lhKHrirhB9iQoVFQfhuCoxxpN9rSJq6jU/bjxUYXARYYqY/LYcAATvkeFcGkLgMYouBiAG0cl+iPtu0wA==
   dependencies:
-    "@sora-substrate/math" "1.10.0"
+    "@sora-substrate/math" "1.10.0-1"
 
-"@sora-substrate/math@1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.10.0.tgz#89e5b61c8f4c3e3062c61d18629ddc65cebea4e0"
-  integrity sha512-JeSYVQp10m03RXZTh1QrddzeQ+DAm1Say0mXqmeyFRbMy5F0NwmT4Yd+Jjmq0gngA5NqoXL02V9vEviP4TqFtg==
+"@sora-substrate/math@1.10.0-1":
+  version "1.10.0-1"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.10.0-1.tgz#2e31e6173b2a805b5bb2abb3a1fdd61af20676d9"
+  integrity sha512-BGWxmEJtTgY9SchuR6uCBooUkY8UjeWYJYw/YPiDEt9fNwYMLFsQgpX+3U2DphxWA0Tr6z1jfkX9kAKnAme3VA==
   dependencies:
     "@polkadot/types" "^4.10.1"
     bignumber.js "^9.0.1"
     lodash "^4.17.15"
 
-"@sora-substrate/type-definitions@1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.10.0.tgz#9a86402f66e20d0031b2a615a4e0e35df879aa81"
-  integrity sha512-uXUVQhosZbp2b23+D/vZwpLb03/W+8F5n08z/boL6OwoTDTPzj6YkDHJqh+Y7Hg4whX2M4+oaZlqB55o1F1sZg==
+"@sora-substrate/type-definitions@1.10.0-1":
+  version "1.10.0-1"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.10.0-1.tgz#047e9e5888ab39d09f50a37babb69bd0f88f128d"
+  integrity sha512-ycwMThc7Le9Wg5nlu1XTslXxAKHz/lv1spPYk1UshekC4hiAnLAwOTE95K3YULVTxCpb12ys+Qwo0G4boGK+GQ==
   dependencies:
     "@open-web3/orml-type-definitions" "^0.9.4-35"
 
-"@sora-substrate/types@1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.10.0.tgz#aa4b559bd7039a5a11de0073a1a58f5d021bec0f"
-  integrity sha512-r/4z3rNnFSjbNcadN52NaziNc1cvWPXSfLuYf5adKPucB9l0mjpWKQS0azlo9b4Lp+ATa7vmEe8f4O7Fp0t+Ow==
+"@sora-substrate/types@1.10.0-1":
+  version "1.10.0-1"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.10.0-1.tgz#04fa34f0535b4e58f626fa77de35490f96b8fcbd"
+  integrity sha512-IGcLcZLeY1q5JWKz6DSiGq/18t2ontOFf22HWPn6Jo0XoS0FBGMqREgFpDW30xDBV5m8VJ58E7ggnAMEEKIUyw==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/api-mobx" "^0.8.2-9"
@@ -2477,18 +2477,18 @@
     "@polkadot/api" "^4.10.1"
     "@polkadot/typegen" "^4.10.1"
     "@polkadot/types" "^4.10.1"
-    "@sora-substrate/type-definitions" "1.10.0"
+    "@sora-substrate/type-definitions" "1.10.0-1"
 
-"@sora-substrate/util@1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.10.0.tgz#6b44b0e8f49635e8923ec9c3aa7f33e2f5ad488a"
-  integrity sha512-H+ZSyfy5xl24qtEiFrDZq7GMCwv5AU/ErMyJ7ZFm6/5KOh+HCyjPpgENXxslBi05vP5Vm0cTVXyh7fjP0BGA4A==
+"@sora-substrate/util@1.10.0-1":
+  version "1.10.0-1"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.10.0-1.tgz#007ebc76b1e9f3a30c18b232a1d1031e637de68d"
+  integrity sha512-Rov2d5Flfj6lfuwDot+8HatEBVLo3FPV9a5VWrCnrELrbg2tU4CLr1aSr0M7QPkw3lpfGFmk9cz6nUHegw4gXQ==
   dependencies:
     "@polkadot/ui-keyring" "^0.77.1"
-    "@sora-substrate/api" "1.10.0"
-    "@sora-substrate/liquidity-proxy" "1.10.0"
-    "@sora-substrate/math" "1.10.0"
-    "@sora-substrate/types" "1.10.0"
+    "@sora-substrate/api" "1.10.0-1"
+    "@sora-substrate/liquidity-proxy" "1.10.0-1"
+    "@sora-substrate/math" "1.10.0-1"
+    "@sora-substrate/types" "1.10.0-1"
     axios "^0.21.1"
     bignumber.js "^9.0.1"
     crypto-js "^4.0.0"
@@ -2512,14 +2512,14 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@^1.9.12":
-  version "1.9.12"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.9.12.tgz#5b4e6f0d48a34c212aada6cc77ab9022390fac92"
-  integrity sha512-xO5G3eW9xfco1uxrzVUZgOt9mEt1BrAxzF70Naw+4MTATitqYlRW1nzLicnx5jT1W260eChMyQMo0XhERaBbLw==
+"@soramitsu/soraneo-wallet-web@1.9.13":
+  version "1.9.13"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.9.13.tgz#80a91ad6a4cf7cb10a4fb940ac3714ae7c7483eb"
+  integrity sha512-1VJwAt9NoCg/NaYrjl8FnHo3hwTYwcT1EqyttEIr0/GOkpx6kTjX98UEBQpulIkZVjpJHN/D4Ek/w8fKa/6Hpw==
   dependencies:
     "@polkadot/extension-dapp" "^0.42.2"
     "@polkadot/vue-identicon" "^0.72.1"
-    "@sora-substrate/util" "1.10.0"
+    "@sora-substrate/util" "1.10.0-1"
     "@soramitsu/soramitsu-js-ui" "^1.0.33"
     "@zxing/browser" "^0.0.10"
     "@zxing/library" "^0.18.6"
