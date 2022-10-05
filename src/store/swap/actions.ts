@@ -80,12 +80,6 @@ const actions = defineActions({
     );
 
     commit.setSubscriptionPayload({ dexId, liquiditySources, paths, payload });
-
-    // Check market algorithm updates
-    // reset market algorithm to default, if related liquiditySource is not available
-    if (!state.dexQuoteData[state.selectedDexId].pairLiquiditySources.includes(rootGetters.settings.liquiditySource)) {
-      rootCommit.settings.setMarketAlgorithm();
-    }
   },
   async updateSubscriptions(context): Promise<void> {
     updateTokenSubscription(context, Direction.From);

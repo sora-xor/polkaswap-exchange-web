@@ -448,6 +448,8 @@ export default class Swap extends Mixins(
         const currAmount = FPNumber.fromCodecValue(result.amount);
         const bestAmount = FPNumber.fromCodecValue(res[bestIdx].amount);
 
+        if (currAmount.isZero()) return bestIdx;
+
         if (
           (FPNumber.isLessThan(currAmount, bestAmount) && this.isExchangeB) ||
           (FPNumber.isLessThan(bestAmount, currAmount) && !this.isExchangeB)
@@ -494,13 +496,16 @@ export default class Swap extends Mixins(
     if (!this.areTokensSelected) return;
 
     this.liquidityReservesSubscription = DEXES.map((dexId) => {
+      const liquditySource =
+        dexId === DexId.XOR ? (this.liquiditySource as LiquiditySourceTypes) : LiquiditySourceTypes.XYKPool;
+
       return api.swap
         .subscribeOnReserves(
           (this.tokenFrom as AccountAsset).address,
           (this.tokenTo as AccountAsset).address,
           // TODO: Add Nullable<LiquiditySourceTypes> to the lib
-          dexId === DexId.XOR ? (this.liquiditySource as LiquiditySourceTypes) : LiquiditySourceTypes.XYKPool,
-          dexId as DexId
+          liquditySource,
+          dexId
         )
         .subscribe((payload) => {
           this.onChangeSwapReserves(dexId as DexId, payload);

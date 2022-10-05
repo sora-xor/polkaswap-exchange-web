@@ -29,7 +29,4 @@ export type SwapState = {
   rewards: Array<LPRewardsInfo>;
   selectedDexId: DexId;
   dexQuoteData: Record<DexId, DexQuoteData>;
-  // pairLiquiditySources: Array<LiquiditySourceTypes>;
-  // paths: QuotePaths;
-  // payload: Nullable<QuotePayload>;
 };
