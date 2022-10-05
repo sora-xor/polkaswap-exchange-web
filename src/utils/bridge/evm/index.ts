@@ -32,7 +32,9 @@ const evmBridge = new Bridge<EvmHistory, EvmBridgeOutgoingReducer | EvmBridgeInc
   showNotification: (tx: EvmHistory) => store.commit.bridge.setNotificationData(tx),
   updateHistory: () => store.commit.bridge.setInternalHistory(),
   getActiveTransaction: () => store.getters.bridge.historyItem,
-  removeTransactionByHash: (id: string) => store.dispatch.bridge.removeInternalHistoryByHash(id),
+  removeTransactionByHash: (tx: Partial<EvmHistory>) => store.dispatch.bridge.removeInternalHistoryByHash(tx),
+  addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
+  removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
 });
 
 export default evmBridge;

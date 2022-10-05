@@ -8,6 +8,8 @@ import type {
   GetAssetByAddress,
   GetTransaction,
   GetActiveTransaction,
+  AddTransactionToProgress,
+  RemoveTransactionFromProgress,
   RemoveTransactionByHash,
   UpdateTransaction,
   ShowNotification,
@@ -37,7 +39,9 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
   protected readonly updateHistory!: VoidFunction;
   protected readonly showNotification!: ShowNotification<Transaction>;
   protected readonly getActiveTransaction!: GetActiveTransaction<Transaction>;
-  protected readonly removeTransactionByHash!: RemoveTransactionByHash;
+  protected readonly removeTransactionByHash!: RemoveTransactionByHash<Transaction>;
+  protected readonly addTransactionToProgress!: AddTransactionToProgress;
+  protected readonly removeTransactionFromProgress!: RemoveTransactionFromProgress;
   // boundary states
   protected readonly boundaryStates!: TransactionBoundaryStates<Transaction>;
 
@@ -54,6 +58,8 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     showNotification,
     getActiveTransaction,
     removeTransactionByHash,
+    addTransactionToProgress,
+    removeTransactionFromProgress,
     // boundary states
     boundaryStates,
   }: BridgeReducerOptions<Transaction>) {
@@ -66,6 +72,8 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     this.updateTransaction = updateTransaction;
     this.updateHistory = updateHistory;
     this.showNotification = showNotification;
+    this.addTransactionToProgress = addTransactionToProgress;
+    this.removeTransactionFromProgress = removeTransactionFromProgress;
     this.boundaryStates = boundaryStates;
   }
 

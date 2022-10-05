@@ -18,14 +18,20 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
           nextState: EvmTxStatus.Done,
           rejectState: EvmTxStatus.Failed,
           handler: async (id: string) => {
-            this.beforeSubmit(id);
-            await this.updateTransactionParams(id, { transactionState: EvmTxStatus.Pending });
-            await this.checkTxId(id);
-            await this.checkTxBlockId(id);
+            let currentId = id;
+            try {
+              this.beforeSubmit(currentId);
+              this.addTransactionToProgress(currentId);
+              await this.updateTransactionParams(currentId, { transactionState: EvmTxStatus.Pending });
+              await this.checkTxId(currentId);
+              await this.checkTxBlockId(currentId);
 
-            const hash = await this.checkTxSoraHash(id);
-            await this.subscribeOnTxBySoraHash(hash);
-            await this.onComplete(hash);
+              currentId = await this.checkTxSoraHash(currentId);
+              await this.subscribeOnTxBySoraHash(currentId);
+              await this.onComplete(currentId);
+            } finally {
+              this.removeTransactionFromProgress(currentId);
+            }
           },
         });
       }
@@ -74,7 +80,7 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
     }
 
     try {
-      await Promise.race([this.waitForSoraBlockId(id), new Promise((resolve, reject) => setTimeout(reject, 30000))]);
+      await Promise.race([this.waitForSoraBlockId(id), new Promise((resolve, reject) => setTimeout(reject, 18000))]);
     } catch (error) {
       console.info(`[${this.constructor.name}]: Implement "blockId" restoration`);
     }
@@ -123,7 +129,7 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
             reject(new Error(`[${this.constructor.name}]: Unable to get transacton data by "hash": "${hash}"`));
           }
 
-          this.removeTransactionByHash(hash);
+          this.removeTransactionByHash({ hash });
 
           const status = data.status;
 

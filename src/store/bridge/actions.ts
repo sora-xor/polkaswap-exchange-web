@@ -22,6 +22,7 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
 import type { EvmHistory, EvmTransaction } from '@sora-substrate/util/build/evm/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/consts';
+import { utimes } from 'fs';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -102,19 +103,23 @@ const actions = defineActions({
     commit.resetHistoryHashesSubscription();
   },
 
-  removeInternalHistoryByHash(context, hash: string): void {
+  removeInternalHistoryByHash(context, externalHistoryItem: Partial<EvmHistory>): void {
     const { commit, state } = bridgeActionContext(context);
 
-    const item = evmBridgeApi.historyList.find((item) => item.hash === hash);
+    const { hash, txId, evmHash } = externalHistoryItem;
+
+    const item = evmBridgeApi.historyList.find(
+      (item) => item.hash === hash || item.txId === txId || item.evmHash === evmHash
+    );
 
     if (!item) return;
     // update in progress id if needed
-    if (state.inProgressIds[item.id]) {
+    if (hash && state.inProgressIds[item.id]) {
       commit.addTxIdInProgress(hash);
       commit.removeTxIdFromProgress(item.id);
     }
     // update active view if needed
-    if (state.historyId === item.id) {
+    if (hash && state.historyId === item.id) {
       commit.setHistoryId(hash);
     }
     // remove tx from history
@@ -162,7 +167,7 @@ const actions = defineActions({
           commit.setExternalHistory(externalHistory);
 
           for (const id in externalHistory) {
-            dispatch.removeInternalHistoryByHash(externalHistory[id].soraHash);
+            dispatch.removeInternalHistoryByHash(externalHistory[id].hash);
           }
         });
 
@@ -351,10 +356,7 @@ const actions = defineActions({
     // }
   },
   async handleBridgeTx(context, id: string): Promise<void> {
-    const { commit } = bridgeActionContext(context);
-    commit.addTxIdInProgress(id);
     await evmBridge.handleTransaction(id);
-    commit.removeTxIdFromProgress(id);
   },
 });
 
