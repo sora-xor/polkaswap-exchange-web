@@ -1,3 +1,4 @@
+import { DexId } from '@sora-substrate/util/build/poolXyk/consts';
 import type { SwapState } from './types';
 
 export function initialState(): SwapState {
@@ -9,13 +10,23 @@ export function initialState(): SwapState {
     fromValue: '',
     toValue: '',
     amountWithoutImpact: '',
-    isExchangeB: false,
     liquidityProviderFee: '',
-    pairLiquiditySources: [],
-    paths: {},
+    isExchangeB: false,
     enabledAssets: {},
     rewards: [],
-    payload: null,
+    selectedDexId: DexId.XOR,
+    dexQuoteData: {
+      [DexId.XOR]: {
+        pairLiquiditySources: [],
+        paths: {},
+        payload: null,
+      },
+      [DexId.XSTUSD]: {
+        pairLiquiditySources: [],
+        paths: {},
+        payload: null,
+      },
+    },
   };
 }
 
