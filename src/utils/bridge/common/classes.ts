@@ -82,16 +82,12 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
   }
 
   async process(transaction: Transaction) {
-    try {
-      await this.changeState(transaction);
+    await this.changeState(transaction);
 
-      const tx = this.getTransaction(transaction.id as string);
+    const tx = this.getTransaction(transaction.id as string);
 
-      if (tx && !Object.values(this.boundaryStates).includes(tx.transactionState)) {
-        await this.process(tx);
-      }
-    } catch (error) {
-      console.error(error);
+    if (tx && !Object.values(this.boundaryStates).includes(tx.transactionState)) {
+      await this.process(tx);
     }
   }
 

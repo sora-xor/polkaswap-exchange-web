@@ -8,6 +8,31 @@ import { BridgeTransactionStateHandler } from '@/utils/bridge/common/classes';
 import { delay } from '@/utils';
 import { waitForSoraTransactionHash } from '@/utils/bridge/evm/utils';
 
+export class EvmBridgeIncomingReducer extends BridgeTransactionStateHandler<EvmHistory> {
+  async changeState(transaction: EvmHistory): Promise<void> {
+    if (!transaction.id) throw new Error(`[${this.constructor.name}]: Transaction ID cannot be empty`);
+
+    switch (transaction.transactionState) {
+      case EvmTxStatus.Pending: {
+        return await this.handleState(transaction.id, {
+          nextState: EvmTxStatus.Done,
+          rejectState: EvmTxStatus.Failed,
+          handler: async (id: string) => {
+            throw new Error(`[${this.constructor.name}]: Not implemented yet :(`);
+          },
+        });
+      }
+
+      case EvmTxStatus.Failed: {
+        return await this.handleState(transaction.id, {
+          nextState: EvmTxStatus.Pending,
+          rejectState: EvmTxStatus.Failed,
+        });
+      }
+    }
+  }
+}
+
 export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmHistory> {
   async changeState(transaction: EvmHistory): Promise<void> {
     if (!transaction.id) throw new Error(`[${this.constructor.name}]: Transaction ID cannot be empty`);
@@ -147,5 +172,3 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
     }
   }
 }
-
-export class EvmBridgeIncomingReducer extends BridgeTransactionStateHandler<EvmHistory> {}
