@@ -115,7 +115,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   @state.bridge.historyPage historyPage!: number;
 
   // update evm network without metamask request
-  @mutation.web3.setSelectedEvmNetwork selectEvmNetwork!: (evmNetworkId: EvmNetworkId) => void;
+  @mutation.web3.setSelectedEvmNetwork setSelectedEvmNetwork!: (evmNetworkId: EvmNetworkId) => void;
 
   pageAmount = 8; // override PaginationSearchMixin
   loading = true;
@@ -163,7 +163,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   changeEvmNetwork(evmNetwork: EvmNetworkId): void {
-    this.selectEvmNetwork(evmNetwork);
+    this.setSelectedEvmNetwork(evmNetwork);
     this.subscribeOnHistory();
   }
 

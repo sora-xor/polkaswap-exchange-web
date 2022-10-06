@@ -544,12 +544,6 @@ export default class Bridge extends Mixins(
     this.showSelectTokenDialog = true;
   }
 
-  async changeProviderNetwork(): Promise<void> {
-    if (this.selectedEvmNetwork) {
-      await ethersUtil.switchOrAddChain(this.selectedEvmNetwork);
-    }
-  }
-
   async selectAsset(selectedAsset?: RegisteredAccountAssetWithDecimals): Promise<void> {
     if (!selectedAsset) return;
 
@@ -577,7 +571,7 @@ export default class Bridge extends Mixins(
   }
 
   changeEvmNetwork(evmNetwork: EvmNetworkId): void {
-    this.setSelectedEvmNetwork(evmNetwork);
+    this.selectEvmNetwork(evmNetwork);
     this.subscribeOnHistory();
   }
 }

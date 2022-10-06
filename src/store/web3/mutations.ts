@@ -62,6 +62,10 @@ const mutations = defineMutations<Web3State>()({
       OTHER: address.OTHER,
     };
   },
+
+  setMoonpayEvmNetwork(state, evmNetwork: EvmNetworkId): void {
+    state.moonpayEvmNetwork = evmNetwork;
+  },
 });
 
 export default mutations;

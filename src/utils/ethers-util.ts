@@ -262,7 +262,7 @@ async function checkAccountIsConnected(address: string): Promise<boolean> {
 }
 
 function addressesAreEqual(a: string, b: string): boolean {
-  return a.toLowerCase() === b.toLowerCase();
+  return !!a && !!b && a.toLowerCase() === b.toLowerCase();
 }
 
 async function getEthersInstance(): Promise<ethersProvider> {

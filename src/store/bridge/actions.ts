@@ -22,7 +22,6 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
 import type { EvmHistory, EvmTransaction } from '@sora-substrate/util/build/evm/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/consts';
-import { utimes } from 'fs';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -31,6 +30,41 @@ function checkEvmNetwork(context: ActionContext<any, any>): void {
   if (!rootGetters.web3.isValidNetwork) {
     throw new Error('Change evm network in Metamask');
   }
+}
+
+function evmTransactionToEvmHistoryItem(context: ActionContext<any, any>, tx: EvmTransaction): EvmHistory {
+  const id = tx.soraHash || tx.evmHash;
+  const asset = context.rootGetters.assets.assetDataByAddress(tx.soraAssetAddress);
+  const transactionState = tx.status;
+
+  // TODO [EVM] add: txId, blockId, startTime, endTime
+  return {
+    id,
+    txId: id, // TODO [EVM] remove mock
+    type: tx.direction === EvmDirection.Outgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,
+    hash: tx.soraHash,
+    transactionState,
+    externalNetwork: evmBridgeApi.externalNetwork,
+    evmHash: tx.evmHash,
+    amount: FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString(),
+    assetAddress: asset?.address,
+    symbol: asset?.symbol,
+    from: tx.soraAccount,
+    to: tx.evmAccount,
+  };
+}
+
+function evmTransactionsToEvmHistory(
+  context: ActionContext<any, any>,
+  txs: EvmTransaction[]
+): Record<string, EvmHistory> {
+  return txs.reduce((buffer, tx) => {
+    const historyItem = evmTransactionToEvmHistoryItem(context, tx);
+
+    if (!historyItem.id) return buffer;
+
+    return { ...buffer, [historyItem.id]: historyItem };
+  }, {});
 }
 
 function bridgeDataToHistoryItem(
@@ -96,15 +130,8 @@ const actions = defineActions({
     commit.setEvmBlockNumber(blockNumber);
   },
 
-  unsubscribeFromHistory(context): void {
-    const { commit } = bridgeActionContext(context);
-
-    commit.resetHistoryDataSubscription();
-    commit.resetHistoryHashesSubscription();
-  },
-
   removeInternalHistoryByHash(context, externalHistoryItem: Partial<EvmHistory>): void {
-    const { commit, state } = bridgeActionContext(context);
+    const { commit, state, rootState } = bridgeActionContext(context);
 
     const { hash, txId, evmHash } = externalHistoryItem;
 
@@ -122,13 +149,32 @@ const actions = defineActions({
     if (hash && state.historyId === item.id) {
       commit.setHistoryId(hash);
     }
+    // update moonpay records if needed
+    if (item.payload?.moonpayId) {
+      rootState.moonpay.api.accountRecords = {
+        ...rootState.moonpay.api.accountRecords,
+        [item.payload.moonpayId]: item.evmHash,
+      };
+    }
     // remove tx from history
     evmBridgeApi.removeHistory(item.id);
     commit.setInternalHistory();
   },
 
-  async subscribeOnHistory(context): Promise<void> {
-    const { commit, dispatch, rootGetters, rootState } = bridgeActionContext(context);
+  async getHistory(context): Promise<void> {
+    const { commit, rootState } = bridgeActionContext(context);
+
+    const externalNetwork = rootState.web3.evmNetworkSelected;
+
+    const hashes = await evmBridgeApi.getUserTxHashes(externalNetwork);
+    const transactions = await evmBridgeApi.getTxsDetails(externalNetwork, hashes);
+    const externalHistory = evmTransactionsToEvmHistory(context, transactions);
+
+    commit.setExternalHistory(externalHistory);
+  },
+
+  subscribeOnHistory(context): void {
+    const { commit, dispatch, rootState } = bridgeActionContext(context);
 
     dispatch.unsubscribeFromHistory();
 
@@ -139,35 +185,13 @@ const actions = defineActions({
 
       const dataSubscription = evmBridgeApi
         .subscribeOnTxsDetails(externalNetwork, hashes)
-        .subscribe((data: EvmTransaction[]) => {
-          const externalHistory = data.reduce((buffer, tx) => {
-            const id = tx.soraHash || tx.evmHash;
-            const asset = rootGetters.assets.assetDataByAddress(tx.soraAssetAddress);
-            const transactionState = tx.status;
-
-            // TODO [EVM] add: txId, blockId, startTime, endTime
-            const historyItem = {
-              id,
-              txId: id, // TODO [EVM] remove mock
-              type: tx.direction === EvmDirection.Outgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,
-              hash: tx.soraHash,
-              transactionState,
-              externalNetwork: evmBridgeApi.externalNetwork,
-              evmHash: tx.evmHash,
-              amount: FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString(),
-              assetAddress: asset?.address,
-              symbol: asset?.symbol,
-              from: tx.soraAccount,
-              to: tx.evmAccount,
-            };
-
-            return { ...buffer, [id]: historyItem };
-          }, {});
+        .subscribe((transactions: EvmTransaction[]) => {
+          const externalHistory = evmTransactionsToEvmHistory(context, transactions);
 
           commit.setExternalHistory(externalHistory);
 
           for (const id in externalHistory) {
-            dispatch.removeInternalHistoryByHash(externalHistory[id].hash);
+            dispatch.removeInternalHistoryByHash(externalHistory[id]);
           }
         });
 
@@ -175,6 +199,13 @@ const actions = defineActions({
     });
 
     commit.setHistoryHashesSubscription(hashesSubscription);
+  },
+
+  unsubscribeFromHistory(context): void {
+    const { commit } = bridgeActionContext(context);
+
+    commit.resetHistoryDataSubscription();
+    commit.resetHistoryHashesSubscription();
   },
 
   /**

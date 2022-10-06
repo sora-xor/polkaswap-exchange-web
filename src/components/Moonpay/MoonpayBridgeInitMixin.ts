@@ -1,8 +1,9 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import { BridgeNetworks, Operation } from '@sora-substrate/util';
-import type { BridgeHistory, CodecString } from '@sora-substrate/util';
+import { Operation } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
 import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/consts';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
@@ -27,9 +28,9 @@ const createError = (text: string, notification: MoonpayNotifications) => {
 @Component
 export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, WalletConnectMixin) {
   @state.moonpay.api moonpayApi!: MoonpayApi;
-  @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<BridgeHistory>;
+  @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<EvmHistory>;
   @state.web3.evmBalance evmBalance!: CodecString;
-  @state.web3.ethBridgeEvmNetwork ethBridgeEvmNetwork!: EvmNetworkId;
+  @state.web3.moonpayEvmNetwork moonpayEvmNetwork!: EvmNetworkId;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   @getter.settings.moonpayApiKey moonpayApiKey!: string;
@@ -46,9 +47,8 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
 
   @action.assets.updateRegisteredAssets private updateRegisteredAssets!: (reset?: boolean) => Promise<void>;
 
-  // TODO [EVM]
   async prepareEvmNetwork(): Promise<void> {
-    this.setSelectedEvmNetwork(this.ethBridgeEvmNetwork); // WalletConnectMixin
+    this.selectEvmNetwork(this.moonpayEvmNetwork); // WalletConnectMixin
   }
 
   initMoonpayApi(): void {
@@ -86,7 +86,11 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   }
 
   getBridgeHistoryItemByMoonpayId(moonpayId: string): Nullable<EvmHistory> {
-    return Object.values(this.history).find((item) => item.payload?.moonpayId === moonpayId);
+    const evmHash = this.moonpayApi.accountRecords?.[moonpayId];
+
+    if (!evmHash) return null;
+
+    return Object.values(this.history).find((item) => item.evmHash === evmHash);
   }
 
   async startBridgeForMoonpayTransaction(): Promise<void> {
@@ -99,9 +103,9 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
    * @param transaction moonpay transaction data
    * @returns string - bridge history item id
    */
-  async prepareBridgeHistoryItemData(transaction: MoonpayTransaction): Promise<BridgeHistory> {
+  async prepareBridgeHistoryItemData(transaction: MoonpayTransaction): Promise<EvmHistory> {
     return await this.withLoading(async () => {
-      // this is not really good, but we should change evm network to ethereum before fetching transaction data
+      // this is not really good, but we should change evm network before fetching transaction data
       await this.prepareEvmNetwork();
       // get necessary ethereum transaction data
       const ethTransferData = await this.getTransactionTranserData(transaction.cryptoTransactionId);
@@ -138,6 +142,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       }
 
       const evmNetworkFee: CodecString = await ethersUtil.getEvmNetworkFee(registeredAsset.address, false);
+
       const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(this.evmBalance, evmNetworkFee);
 
       if (!hasEthForFee) {
@@ -152,18 +157,18 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       }
 
       return {
-        type: Operation.EthBridgeIncoming,
+        type: Operation.EvmIncoming,
         amount: String(amount),
         symbol: registeredAsset.symbol,
         assetAddress: registeredAsset.address,
         soraNetworkFee: this.getSoraNetworkFee(Operation.EthBridgeIncoming),
-        ethereumNetworkFee: evmNetworkFee,
-        externalNetwork: BridgeNetworks.ETH_NETWORK_ID,
+        evmNetworkFee: evmNetworkFee,
+        externalNetwork: this.moonpayEvmNetwork as unknown as EvmNetwork,
         to: ethTransferData.to,
         payload: {
           moonpayId: transaction.id,
         },
-      } as BridgeHistory;
+      } as EvmHistory;
     });
   }
 

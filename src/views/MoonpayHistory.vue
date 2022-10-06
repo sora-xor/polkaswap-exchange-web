@@ -127,8 +127,10 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     this.withApi(async () => {
       this.initMoonpayApi(); // MoonpayBridgeInitMixin
 
+      await this.restoreSelectedEvmNetwork();
+      await this.connectEvmNetwork();
+
       await Promise.all([this.getTransactions(), this.getCurrencies()]);
-      this.setHistory();
 
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
@@ -139,7 +141,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
           }
         },
         onNetworkChange: (networkHex: string) => {
-          this.setConnectedEvmNetwork(networkHex);
+          this.connectEvmNetwork(networkHex);
         },
         onDisconnect: () => {
           this.disconnectExternalAccount();
@@ -222,9 +224,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   }
 
   get actionButtonDisabled(): boolean {
-    if (this.bridgeTxToSora) return false;
-
-    return !this.externalAccountIsMoonpayRecipient || !this.isValidNetwork;
+    return !this.externalAccountIsMoonpayRecipient;
   }
 
   get actionButtonText(): string {
@@ -277,7 +277,6 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   async navigateToDetails(item): Promise<void> {
     try {
       await this.checkConnectionToExternalAccount(async () => {
-        await this.prepareEvmNetwork(); // MoonpayBridgeInitMixin
         this.selectedItem = item;
         this.changeView(DetailsView);
       });
@@ -289,7 +288,9 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   async handleTransaction(): Promise<void> {
     if (!this.selectedItem.id) return;
 
-    if (this.bridgeTxToSora?.id) {
+    if (!this.isValidNetwork) {
+      this.changeProviderNetwork();
+    } else if (this.bridgeTxToSora?.id) {
       await this.prepareEvmNetwork(); // MoonpayBridgeInitMixin
       await this.showHistory(this.bridgeTxToSora.id); // MoonpayBridgeInitMixin
     } else {

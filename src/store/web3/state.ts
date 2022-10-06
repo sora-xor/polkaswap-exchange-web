@@ -15,12 +15,15 @@ export function initialState(): Web3State {
 
     selectNetworkDialogVisibility: false,
 
+    // eth bridge history
     ethBridgeEvmNetwork: EvmNetworkId.EthereumRinkeby,
     ethBridgeContractAddress: {
       XOR: '',
       VAL: '',
       OTHER: '',
     },
+    // moonpay
+    moonpayEvmNetwork: null,
   };
 }
 

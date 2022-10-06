@@ -1,4 +1,4 @@
-import type { BridgeHistory } from '@sora-substrate/util';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import type { MoonpayApi, MoonpayCurrency, MoonpayTransaction } from '@/utils/moonpay';
 import type { MoonpayNotifications } from '@/components/Moonpay/consts';
@@ -12,12 +12,12 @@ export type MoonpayState = {
   pollingTimestamp: number;
   transactions: Array<MoonpayTransaction>;
   transactionsFetching: boolean;
-  bridgeTransactionData: Nullable<BridgeHistory>;
+  bridgeTransactionData: Nullable<EvmHistory>;
   startBridgeButtonVisibility: boolean;
   currencies: Array<MoonpayCurrency>;
 };
 
 export type BridgeTxData = Partial<{
-  data: Nullable<BridgeHistory>;
+  data: Nullable<EvmHistory>;
   startBridgeButtonVisibility: boolean;
 }>;

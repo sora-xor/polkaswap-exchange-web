@@ -5,6 +5,16 @@ import { assetsActionContext } from '@/store/assets';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { ZeroStringValue } from '@/consts';
 
+// TODO [EVM] remove then evm bridge will support Goerli for Moonpay
+const GOERLI_ASSETS = {
+  '0x0200060000000000000000000000000000000000000000000000000000000000': {
+    contract: '0x9550949c46E27761B57f5391a25a7725444a938b',
+  },
+  '0x0200070000000000000000000000000000000000000000000000000000000000': {
+    contract: '0x0000000000000000000000000000000000000000',
+  },
+};
+
 const actions = defineActions({
   async updateRegisteredAssets(context, reset?: boolean): Promise<void> {
     const { state, commit, rootCommit, rootState } = assetsActionContext(context);
@@ -18,7 +28,7 @@ const actions = defineActions({
     try {
       const accountAddress = rootState.web3.evmAddress;
 
-      const networkAssets = await evmBridgeApi.getNetworkAssets();
+      const networkAssets = rootState.web3.evmNetwork === 5 ? GOERLI_ASSETS : await evmBridgeApi.getNetworkAssets();
 
       const networkAssetsWithBalance = await Promise.all(
         Object.entries(networkAssets).map(async ([soraAddress, assetData]) => {

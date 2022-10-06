@@ -13,13 +13,13 @@ const actions = defineActions({
     commit.setEvmAddress(address);
   },
 
-  async setConnectedEvmNetwork(context, networkHex?: string): Promise<void> {
+  async connectEvmNetwork(context, networkHex?: string): Promise<void> {
     const { commit } = web3ActionContext(context);
     const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
     commit.setEvmNetwork(evmNetwork);
   },
 
-  async setSelectedEvmNetwork(context, evmNetwork: EvmNetworkId): Promise<void> {
+  async selectEvmNetwork(context, evmNetwork: EvmNetworkId): Promise<void> {
     const { commit, getters, state } = web3ActionContext(context);
     commit.setSelectedEvmNetwork(evmNetwork);
 

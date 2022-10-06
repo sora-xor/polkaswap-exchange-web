@@ -72,11 +72,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   }
 
   private async onConnectedEvmNetworkChange(networkHex?: string) {
-    await Promise.all([
-      this.setConnectedEvmNetwork(networkHex),
-      this.updateExternalBalances(true),
-      this.getEvmNetworkFee(),
-    ]);
+    await Promise.all([this.connectEvmNetwork(networkHex), this.updateExternalBalances(true), this.getEvmNetworkFee()]);
   }
 
   private async subscribeToEvmBlockHeaders(): Promise<void> {
