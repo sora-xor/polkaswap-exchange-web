@@ -2,6 +2,7 @@ import isEmpty from 'lodash/fp/isEmpty';
 import { defineGetters } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { DexId } from '@sora-substrate/util/build/poolXyk/consts';
 import type { CodecString } from '@sora-substrate/util';
 
 import { swapGetterContext } from '@/store/swap';
@@ -35,8 +36,16 @@ const getters = defineGetters<SwapState>()({
   },
   marketAlgorithms(...args): Array<MarketAlgorithms> {
     const { state } = swapGetterContext(args);
+    const allSources = [
+      ...new Set(
+        Object.values(state.dexQuoteData)
+          .map((data) => data.pairLiquiditySources)
+          .flat()
+      ),
+    ];
     // implementation of backend hack, to show only primary market sources
-    const primarySources = state.pairLiquiditySources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
+    const primarySources = allSources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
+
     const items = Object.keys(LiquiditySourceForMarketAlgorithm) as Array<MarketAlgorithms>;
 
     return items.filter((marketAlgorithm) => {
@@ -57,7 +66,8 @@ const getters = defineGetters<SwapState>()({
   },
   isAvailable(...args): boolean {
     const { state } = swapGetterContext(args);
-    return !isEmpty(state.paths) && Object.values(state.paths).every((paths) => !isEmpty(paths));
+    const paths = state.dexQuoteData[state.selectedDexId].paths;
+    return !isEmpty(paths) && Object.values(paths).every((paths) => !isEmpty(paths));
   },
   swapMarketAlgorithm(...args): MarketAlgorithms {
     const { getters } = swapGetterContext(args);
