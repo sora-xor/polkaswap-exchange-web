@@ -87,7 +87,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { state, action, getter, mutation } from '@/store/decorators';
+import { state, mutation } from '@/store/decorators';
 
 import type { EvmNetworkId } from '@/consts/evm';
 import type { EvmAccountAsset } from '@/store/assets/types';
@@ -113,9 +113,6 @@ export default class BridgeTransactionsHistory extends Mixins(
   @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
 
   @state.bridge.historyPage historyPage!: number;
-
-  // update evm network without metamask request
-  @mutation.web3.setSelectedEvmNetwork setSelectedEvmNetwork!: (evmNetworkId: EvmNetworkId) => void;
 
   pageAmount = 8; // override PaginationSearchMixin
   loading = true;
