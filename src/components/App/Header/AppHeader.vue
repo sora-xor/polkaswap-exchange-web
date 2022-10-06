@@ -203,6 +203,9 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
     }
   }
 
+  // TODO: Check for moonpay=false, seems like an issue
+  // margin-left: auto;
+
   @include desktop {
     margin-left: auto;
   }
