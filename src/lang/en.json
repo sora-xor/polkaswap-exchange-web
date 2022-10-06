@@ -726,6 +726,8 @@
     "dexSettings": {
         "title": "Transaction settings",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
+        "charts": "@.upper:Charts",
+        "сhartsEnabled": "Charts Enabled",
         "marketAlgorithmTooltip": {
             "main": " - option to choose between Primary Market (TBC), Secondary Market (XYK) or a combined smart algorithm for guaranteed best price for any given transaction."
         },

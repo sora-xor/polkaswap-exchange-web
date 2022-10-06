@@ -1,6 +1,7 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="t('dexSettings.title')" custom-class="settings">
     <market-algorithm />
+    <charts-switch />
   </dialog-base>
 </template>
 
@@ -16,6 +17,7 @@ import { Components } from '@/consts';
   components: {
     DialogBase: components.DialogBase,
     MarketAlgorithm: lazyComponent(Components.MarketAlgorithm),
+    ChartsSwitch: lazyComponent(Components.ChartsSwitch),
   },
 })
 export default class SettingsDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {}
