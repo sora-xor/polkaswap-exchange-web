@@ -48,6 +48,7 @@
         class="el-button--select-token"
         :icon="selectTokenIcon"
         :token="token"
+        :tabindex="tokenTabIndex"
         @click.stop="handleSelectToken"
       />
     </div>
@@ -119,6 +120,10 @@ export default class TokenInput extends Mixins(
 
   get selectTokenIcon(): Nullable<string> {
     return this.isSelectAvailable ? 'chevron-down-rounded-16' : undefined;
+  }
+
+  get tokenTabIndex(): number {
+    return this.isSelectAvailable ? 0 : -1;
   }
 
   get fpBalance(): FPNumber {

@@ -542,6 +542,15 @@ $fixed-column-width: 280px;
     margin: auto;
   }
 }
+
+.tokens-table-search {
+  .s-button--clear:focus {
+    outline: none !important;
+    i {
+      @include focus-outline($inner: true, $borderRadius: 50%);
+    }
+  }
+}
 </style>
 
 <style lang="scss" scoped>

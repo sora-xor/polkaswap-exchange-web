@@ -88,7 +88,12 @@
             </div>
             <div v-if="isNetworkAConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <s-tooltip :content="getCopyTooltip(isSoraToEvm)" border-radius="mini" placement="bottom-end">
+              <s-tooltip
+                :content="getCopyTooltip(isSoraToEvm)"
+                border-radius="mini"
+                placement="bottom-end"
+                tabindex="-1"
+              >
                 <span class="bridge-network-address" @click="handleCopyAddress(accountAddressFrom, $event)">
                   {{ formatAddress(accountAddressFrom, 8) }}
                 </span>
@@ -157,7 +162,12 @@
             </div>
             <div v-if="isNetworkBConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <s-tooltip :content="getCopyTooltip(!isSoraToEvm)" border-radius="mini" placement="bottom-end">
+              <s-tooltip
+                :content="getCopyTooltip(!isSoraToEvm)"
+                border-radius="mini"
+                placement="bottom-end"
+                tabindex="-1"
+              >
                 <span class="bridge-network-address" @click="handleCopyAddress(accountAddressTo, $event)">
                   {{ formatAddress(accountAddressTo, 8) }}
                 </span>

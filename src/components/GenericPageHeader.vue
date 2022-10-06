@@ -87,6 +87,9 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
         margin-left: auto;
       }
     }
+    .el-tooltip {
+      @include focus-outline($borderRadius: 50%);
+    }
   }
   &-tooltip {
     margin-top: auto;

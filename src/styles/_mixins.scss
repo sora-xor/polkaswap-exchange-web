@@ -382,6 +382,9 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         min-height: calc(#{$select-asset-item-height} * 6);
       }
     }
+    .asset {
+      @include focus-outline($withOffset: true);
+    }
   }
 }
 
@@ -549,5 +552,31 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
   .el-slider__runway {
     background-color: var(--s-color-base-content-tertiary);
+  }
+}
+
+@mixin focus-outline($inner: false, $focusWithin: false, $borderRadius: '', $withOffset: false) {
+  $outline: 1px solid var(--s-color-outline);
+  @if $inner == true {
+    outline: $outline;
+    @if $borderRadius != '' {
+      border-radius: $borderRadius;
+    }
+  } @else {
+    @if $focusWithin == true {
+      &:focus-within {
+        outline: $outline;
+      }
+    } @else {
+      @if $withOffset == true {
+        outline-offset: -1px;
+      }
+      &:focus:not(:active) {
+        outline: $outline;
+        @if $borderRadius != '' {
+          border-radius: $borderRadius;
+        }
+      }
+    }
   }
 }

@@ -14,7 +14,7 @@
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar">
           <div v-if="blockNumber && !isAboutPage" class="block-number">
-            <s-tooltip :content="t('blockNumberText')" placement="bottom">
+            <s-tooltip :content="t('blockNumberText')" placement="bottom" tabindex="-1">
               <a class="block-number-link" :href="soraExplorerLink" target="_blank" rel="nofollow noopener">
                 <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
               </a>
@@ -489,6 +489,9 @@ ul ul {
 .app-disclaimer {
   &__title {
     color: var(--s-color-theme-accent);
+  }
+  a:not(:active) {
+    @include focus-outline;
   }
 }
 

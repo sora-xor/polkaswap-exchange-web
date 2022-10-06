@@ -14,9 +14,11 @@
         <div v-loading="loading" class="history-items">
           <template v-if="hasHistory">
             <div
+              v-button
               class="history-item"
               v-for="item in filteredHistoryItems"
               :key="`history-${item.id}`"
+              tabindex="0"
               @click="showHistory(item.id)"
             >
               <div class="history-item-info">
@@ -314,7 +316,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   padding: $inner-spacing-mini $inner-spacing-medium;
   border-radius: var(--s-border-radius-small);
 
-  &:not(:first-child) {
+  &:not(:first-child):not(:focus) {
     position: relative;
     &:before {
       position: absolute;
@@ -333,6 +335,9 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   &:hover {
     background-color: var(--s-color-base-background-hover);
     cursor: pointer;
+  }
+  &:focus + .history-item:before {
+    background-color: transparent;
   }
   &-info {
     font-size: var(--s-font-size-mini);

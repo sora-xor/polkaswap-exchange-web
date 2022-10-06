@@ -195,7 +195,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     }
   }
 
-  @include exchange-tabs();
+  @include exchange-tabs;
 }
 </style>
 
@@ -205,6 +205,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   margin-left: $inner-spacing-big;
   margin-bottom: $inner-spacing-medium;
   width: calc(100% - 2 * #{$inner-spacing-big});
+  @include focus-outline($withOffset: true);
 }
 
 .token-list_text {
