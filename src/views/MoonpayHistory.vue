@@ -65,7 +65,7 @@
           :type="actionButtonType"
           :disabled="actionButtonDisabled"
           :loading="loading"
-          class="moonpay-details-button s-typography-button--large"
+          class="moonpay-details-button s-typography-button--big"
           @click="handleTransaction"
         >
           {{ actionButtonText }}

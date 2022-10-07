@@ -185,7 +185,7 @@
 
         <s-button
           v-if="!isValidNetwork"
-          class="el-button--next s-typography-button--large"
+          class="el-button--next s-typography-button--big"
           type="primary"
           @click="changeProviderNetwork"
         >

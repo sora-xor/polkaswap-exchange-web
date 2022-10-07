@@ -210,6 +210,7 @@ import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
+import evmBridge from '@/utils/bridge/evm';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { action, state, getter, mutation } from '@/store/decorators';
@@ -247,7 +248,6 @@ export default class BridgeTransaction extends Mixins(
 
   @mutation.bridge.setInternalHistory setHistory!: VoidFunction;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
-  @action.bridge.handleBridgeTx private handleBridgeTx!: (id: string) => Promise<void>;
 
   get txInProcess(): boolean {
     if (!this.historyItem?.id) return false;
@@ -533,7 +533,7 @@ export default class BridgeTransaction extends Mixins(
   async handleTransaction(withAutoStart = true): Promise<void> {
     await this.checkConnectionToExternalAccount(async () => {
       if (withAutoStart && this.historyItem?.id) {
-        await this.handleBridgeTx(this.historyItem.id);
+        await evmBridge.handleTransaction(this.historyItem.id);
       }
     });
   }

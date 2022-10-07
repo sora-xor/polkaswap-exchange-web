@@ -4,7 +4,7 @@ import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 export type AddAsset = (address: string) => Promise<void>;
 export type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAssetWithDecimals>;
 export type GetActiveTransaction<T> = () => Nullable<T>;
-export type RemoveTransactionByHash<T> = (tx: Partial<T>) => void;
+export type RemoveTransactionByHash<T> = (options: { tx: Partial<T>; force: boolean }) => void;
 export type AddTransactionToProgress = (id: string) => void;
 export type RemoveTransactionFromProgress = (id: string) => void;
 export type GetBridgeHistoryInstance<T> = () => Promise<T>;
