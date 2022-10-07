@@ -88,7 +88,7 @@
     },
     "connection": {
         "title": "SORA-Nätverkskonto",
-        "text": "Anslut dina SORA nätverkskonton eller skapa nya med polkadot{.js} webbläsartillägg. Detta tillägg möjligör för dig att signera transaktioner på ett säkert sätt och hantera tillgångar i SORA-Nätverk.",
+        "text": "Anslut dina SORA nätverkskonton eller skapa nya med polkadot{.js} webbläsartillägg. Detta tillägg ger dig möjlighet att signera transaktioner på ett säkert sätt och hantera tillgångar i SORA-Nätverk.",
         "install": "Inget polkadot.js tillägg hittades. Installera det och <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">ladda om<\/a> sidan. <br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
         "noPermissions": "Behörighetsbegäran avvisades av misstag?<\/br> För närvarande har polkadot{.js} tillägget inte behörighetshantering. En lösning är att  starta om webbläsaren och besöka den här sidan igen för att fortsätta med auktorisering.",
         "noAccounts": "Inget konto hittades i ditt polkadot{.js} webbläsartillägg. Vänligen lägg till ett konto och försök igen.",
@@ -183,7 +183,7 @@
         "alreadyAttached": "Token var redan bifogad",
         "understand": "Jag förstår",
         "warningTitle": "Handla på egen risk!",
-        "warningMessage": "Vem som helst kan skapa en token, inklusive skapa falska versioner av befintliga tokens som påstår sig representera olika projekt.\n Om du köper denna token så kanske du inte kan sälja tillbaka den.",
+        "warningMessage": "Vem som helst kan skapa en token, inklusive skapa falska versioner av befintliga tokens som påstår sig representera olika projekt.\nOm du köper denna token finns det en risk för du efterföljande inte kan sälja den.",
         "approved": "Tillgång godkänd av communityn",
         "unknown": "Okänt ursprung",
         "scam": "BLUFF",
@@ -335,7 +335,7 @@
         "Wallet": "Plånbok",
         "CreatePair": "Skapa Par",
         "AddLiquidity": "Lägg Till Likviditet",
-        "AddLiquidityId": "Lägg Till Likviditet",
+        "AddLiquidityId": "Lägg till Likviditet",
         "RemoveLiquidity": "Ta Bort Likviditet",
         "PageNotFound": "Sidan Hittades Inte",
         "Tokens": "Tokens",
@@ -389,7 +389,7 @@
         },
         "polkadot": {
             "title": "Vad är polkadot{.js}?",
-            "description": "Tillägget Polkadot{.js} är ett webbläsartillägg som är tillgängligt för Firefox och Chrome avsett att hantera konton för Substrate-baserade kedjor, inklusive @:(soraText), Polkadot och Kusama. Du kan lägga till, importera och exportera konton samt signera transaktioner eller externa som du har initierat från webbplatser som du har auktoriserat."
+            "description": "Tillägget Polkadot{.js} är ett webbläsartillägg som är tillgängligt för Firefox och Chrome avsett att hantera konton för Substrate-baserade kedjor, inklusive @:(soraText), Polkadot och Kusama. Du kan lägga till, importera och exportera konton samt signera transaktioner eller extrinsics som du har initierat från webbplatser som du har auktoriserat."
         }
     },
     "node": {
@@ -464,7 +464,7 @@
             "title": "Snabbare Handel",
             "first": "Polkaswap är en icke-frihetsberövande, cross-chain AMM DEX for att byta tokens baserat på Polkadot och Kusama relay chains, Polkadot och Kusama parachains, och blockkedjor direkt anslutna via bryggor.",
             "second": "Polkaswap tar bort betrodda mellanhänder och ger möjlighet till snabbare handel.",
-            "third": "Polkaswap är ett community-projekt och devs samarbetar på den öppna källkoden med hjälpa av"
+            "third": "Polkaswap är ett community-projekt och devs samarbetar på den öppna källkoden med hjälp av"
         },
         "liquidity": {
             "title": "Gränslös Likviditet",
@@ -476,11 +476,11 @@
             "title": "Byt Valfri Token",
             "first": "Gå bortom gränserna för nuvarande DEX:ar genom att lägga till tokens från Polkadot-ekosystemet samt andra blockkedjor.",
             "second": "Skapa, lista och handla med dina egna tokens på SORA-nätverket.",
-            "third": "Vår kärninfrastruktur använder Parity Substrate, som är mer skalbar än Ethereum och använder ej dyr mining för konsensus."
+            "third": "Vår kärninfrastruktur använder Parity Substrate, som är mer skalbar än Ethereum och som ej använder dyr mining för konsensus."
         },
         "pswap": {
             "title": "PSWAP Tokens",
-            "first": "PSWAP skapades genom community-styre genom att rösta om dess lansering. Det är en utility- och governance-token som används för att belöna likviditets-tillhandahållare på Polkaswap. Till skillnad från de flesta andra belönings-tokens så bränns PSWAP när transaktioner sker vilket minskar tillgången med tiden.",
+            "first": "PSWAP skapades genom community-styre som röstade om dess lansering. Det är en utility- och governance-token som används för att belöna likviditets-tillhandahållare på Polkaswap. Till skillnad från de flesta andra belönings-tokens så bränns PSWAP när transaktioner sker vilket minskar tillgången med tiden.",
             "second": "{percent}% avgiften för varje byte på Polkaswap DEX används för att köpa tillbaka PSWAP-tokens som sedan bränns. Till en början så ompräglas 90% av brända PSWAP-tokens för att tilldelas till likviditets-tillhandahållare, men med tiden så kommer denna procentsats att minska till 35% efter 4 år."
         },
         "links": {
@@ -576,7 +576,7 @@
             "title": "Tokens",
             "placeholder": "Filtrera efter Tillgångs-ID, Namn, eller Ticker-symbol",
             "networkLabelSora": "@:soraText nätverks-token",
-            "networkLabelEthereum": "@:ethereumText nätverk spegla tokens",
+            "networkLabelEthereum": "@:ethereumText nätverk speglade tokens",
             "emptyListMessage": "Inga resultat"
         },
         "customAsset": {
@@ -607,7 +607,7 @@
             "step2": "2:a"
         },
         "status": {
-            "pending": "{step} transaktioner väntandes...",
+            "pending": "{step} transaktioner pågående...",
             "failed": "{step} transaktioner misslyckades. @:(retryText).",
             "confirm": "Bekräfta 2:a av 2 transaktioner...",
             "complete": "Slutförd",
@@ -744,10 +744,12 @@
         "port": "PORT",
         "min": "MIN",
         "marketAlgorithms": {
-            "SMART": "<span class=\"algorithm\"> SMART <\/span> likviditetsdirigering säkerställer det bästa priset för vilken transaktion som helst genom att kombinera endast de bästa prisalternativen från alla tillgängliga marknader. När det är tillgängligt så kommer Token Bonding Curve (<span class=\"algorithm\"> TBC <\/span>) att användas för likviditet om tillgångens pris är mer överkomligt än från andra källor, varpå <span class=\"algorithm\"> XYK <\/span>-poolen används.",
+            "SMART": "<span class=\"algorithm\"> SMART <\/span> likviditetsdirigering säkerställer det bästa priset för transaktioner genom att kombinera endast de bästa prisalternativen från alla tillgängliga marknader. När det är tillgängligt så kommer Token Bonding Curve (<span class=\"algorithm\"> TBC <\/span>) att användas för likviditet om tillgångens pris är mer överkomligt än från andra källor, varpå <span class=\"algorithm\"> XYK <\/span>-poolen används.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> - köpa endast från Token Bonding Curve (Primärmarknad). Det finns en möjlighet att priset kan bli ofördelaktigt jämfört med <span class=\"algorithm\">XYK<\/span>-pool (Sekundärmarknad), men det värde som erhålls från de bestående belöningar kan visa sig vara mycket mer fördelaktiga med tiden.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — köpa endast från XYK-Poolen (Sekundär Marknad). Traditionell XYK pool byte."
-        }
+        },
+        "charts": "TILLBAKA",
+        "сhartsEnabled": "Diagram aktiverade"
     },
     "resultDialog": {
         "title": "Transaktion inskickad",
@@ -991,7 +993,7 @@
     "releaseNotesText": "Utgivningsanmärkningar",
     "copiedText": "Kopierade!",
     "copyWithValue": "Kopiera {value}",
-    "copiedWithValue": "{value} kopieras!",
+    "copiedWithValue": "{value} kopierad!",
     "signAndClaimText": "Signera och gör anspråk",
     "balanceText": "Saldo",
     "unknownAssetText": "Okänd tillgång",
@@ -1004,7 +1006,7 @@
         "info": {
             "earned": "{symbol} tjänat",
             "fee": "Avgift",
-            "feeTooltip": "Insättningsavgift tillämpas på ditt belopp som du satsar på",
+            "feeTooltip": "Insättningsavgift läggs till beloppet som du stakar",
             "owned": "{symbol} @:balanceText",
             "poolShare": "Din poolandel insats",
             "poolShareWillBe": "Din poolandel insats kommer att vara",
@@ -1048,7 +1050,7 @@
         },
         "referrals": {
             "AlreadyHasReferrer": "Kontot har redan en hänvisare",
-            "ReferrerInsufficientBalance": "Remittenten har inte tillräckligt med reserverat saldo"
+            "ReferrerInsufficientBalance": "Hänvisaren har inte tillräckligt med reserverat saldo"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Belöningsprogrammet har redan avslutats",
@@ -1072,8 +1074,8 @@
         "title": "Aktivera webbläsaraviseringar",
         "info": "Vi skickar endast relevanta uppdateringar om din plånbok, till exempel: förändringar av tillgångssaldo",
         "button": "Aktivera aviseringar",
-        "agree": "Ja jag förstår",
-        "notificationBlocked": "För att få aviseringar om {appName}, vänligen tillåt aviseringarna i webbläsarens ursprungliga inställningar",
+        "agree": "Ja, jag förstår",
+        "notificationBlocked": "För att få aviseringar om {appName}, vänligen tillåt aviseringarna i webbläsarens inställningar",
         "pointer": "Tryck på \"Tillåt\" för att aktivera aviseringar"
     },
     "assetDeposit": "Tillgångssaldo har satts in",
@@ -1086,6 +1088,60 @@
         "verifiedOnly": "Visa endast verifierade tillgångar",
         "zeroBalance": "Dölj 0 balans tillgångar",
         "showAssets": "Visa tillgångar",
-        "show": "Show"
+        "show": "Visa"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Välkommen till Polkaswap!",
+            "headline": "Låt oss konfigurera ditt konto",
+            "text": "Skapa ditt SORA Network-konto eller logga in på de gamla med mnemoniska fraser eller .json-import. Detta gör att du säkert kan signera transaktioner och hantera tillgångar i SORA Network.",
+            "createAccount": "Skapa ett konto",
+            "importAccount": "Importera konto"
+        },
+        "heading": {
+            "seedPhraseTitle": "Fröfras",
+            "confirmSeedTitle": "Bekräfta fröfras",
+            "accountDetailsTitle": "Kontouppgifter",
+            "importTitle": "Importera konto"
+        },
+        "button": {
+            "next": "Nästa steg",
+            "skip": "Hoppa",
+            "createAccount": "Skapa konto",
+            "importAccount": "Importera konto"
+        },
+        "accountName": {
+            "placeholder": "Plånbokens namn",
+            "desc": "Detta är det offentliga namnet på din plånbok som kommer att vara synligt för alla"
+        },
+        "password": {
+            "placeholder": "Lösenord",
+            "desc": "Se till att du använder ett starkt lösenord för korrekt skydd"
+        },
+        "confirmPassword": {
+            "placeholder": "Bekräfta lösenord"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemonisk fras"
+        },
+        "seedAdviceText": "Detta är ett hemligt frö för ditt konto. Se till att du lagrar det på en icke-digital bärare, till exempel papper.",
+        "confirmSeedText": "Bekräfta fröfrasen genom att klicka på orden i rätt ordning",
+        "errorMnemonicText": "Felaktig ordning på fröfraser",
+        "exportOptionText": "Exportera .json-kontofil",
+        "exportJsonText": "Du kommer alltid att kunna komma åt ditt konto genom att importera den .json-filen. Dela den inte med någon!",
+        "addAccount": "Lägg till ett konto",
+        "dialog": {
+            "confirmTitle": "Bekräfta med lösenord",
+            "confirmButton": "Signera transaktion",
+            "savePasswordText": "Kom ihåg mitt lösenord under de kommande 15 minuterna",
+            "extendPasswordText": "Förläng perioden utan lösenord med 15 minuter"
+        },
+        "errorMessages": {
+            "password": "Lösenordet matchade inte",
+            "passwords": "lösenorden matchade inte",
+            "mnemonic": "En ogiltig bip39-minnesanteckning har angetts.",
+            "mnemonicLength": "Mnemonic bör innehålla {number} ord",
+            "jsonFields": "JSON-filen har inte obligatoriska fält"
+        }
     }
 }

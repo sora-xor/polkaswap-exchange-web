@@ -747,7 +747,9 @@
             "SMART": "<span class=\"algorithm\">SMART<\/span> usmjeravanje likvidnosti osigurava najbolju cijenu za bilo koju transakciju kombiniranjem samo najboljih opcija cijena sa svih dostupnih tržišta. Kada je dostupna, Krivulja povezivanja tokena (<span class=\"algorithm\">TBC<\/span>) koristit će se za likvidnost sve dok je cijena sredstva pristupačnija nego iz drugih izvora, na kojima se koristi <span class=\"algorithm\">XYK<\/span> pul.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> — kupnja samo od Krivulje povezivanja tokena (Primarno tržište). Postoji mogućnost da cijena postane nepovoljna u usporedbi s <span class=\"algorithm\">XYK<\/span> bazen (Sekundarno tržište), ali vrijednost primljena od dodijeljenih nagrada mogla bi se s vremenom pokazati mnogo povoljnijom.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — kupnja samo iz XYK pula (sekundarno tržište). Tradicionalna zamjena XYK pula."
-        }
+        },
+        "charts": "GRAFIKONI",
+        "сhartsEnabled": "Grafikoni omogućeni"
     },
     "resultDialog": {
         "title": "Transakcija je poslana",
@@ -1087,5 +1089,59 @@
         "zeroBalance": "Sakrij 0 salda imovine",
         "showAssets": "Prikaži imovinu",
         "show": "Pokazati"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Dobro došli u Polkaswap!",
+            "headline": "Postavimo vaš račun",
+            "text": "Napravite svoj račun SORA mreže ili se prijavite na stari koristeći mnemoničku frazu ili .json import. To vam omogućuje sigurno potpisivanje transakcija i upravljanje imovinom u SORA mreži.",
+            "createAccount": "Stvorite račun",
+            "importAccount": "Uvezi račun"
+        },
+        "heading": {
+            "seedPhraseTitle": "Izraz sjemena",
+            "confirmSeedTitle": "Potvrdite početni izraz",
+            "accountDetailsTitle": "Detalji Računa",
+            "importTitle": "Uvezi račun"
+        },
+        "button": {
+            "next": "Sljedeći korak",
+            "skip": "Preskočiti",
+            "createAccount": "Napravi račun",
+            "importAccount": "Uvezi račun"
+        },
+        "accountName": {
+            "placeholder": "Naziv novčanika",
+            "desc": "Ovo je javni naziv vašeg novčanika koji će biti vidljiv svima"
+        },
+        "password": {
+            "placeholder": "Zaporka",
+            "desc": "Uvjerite se da koristite jaku lozinku za pravilnu zaštitu"
+        },
+        "confirmPassword": {
+            "placeholder": "Potvrdi lozinku"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemotehnička fraza"
+        },
+        "seedAdviceText": "Ovo je tajno sjeme vašeg računa. Pazite da ga pohranite na nedigitalni nosač, na primjer - papir",
+        "confirmSeedText": "Potvrdite početni izraz klikom na riječi u ispravnom redoslijedu",
+        "errorMnemonicText": "Neispravan redoslijed početnih fraza",
+        "exportOptionText": "Izvoz .json datoteke računa",
+        "exportJsonText": "Uvijek ćete moći pristupiti svom računu uvozom te .json datoteke. Ne dijelite to ni s kim!",
+        "addAccount": "Dodajte račun",
+        "dialog": {
+            "confirmTitle": "Potvrda lozinkom",
+            "confirmButton": "Potpišite transakciju",
+            "savePasswordText": "Zapamti moju lozinku sljedećih 15 minuta",
+            "extendPasswordText": "Produžite razdoblje bez lozinke za 15 minuta"
+        },
+        "errorMessages": {
+            "password": "Lozinka se ne podudara",
+            "passwords": "Lozinke se ne podudaraju",
+            "mnemonic": "Naveden je nevažeći mnemonik bip39",
+            "mnemonicLength": "Mnemotehnika treba sadržavati {number} riječi",
+            "jsonFields": "JSON datoteka nema obavezna polja"
+        }
     }
 }

@@ -747,7 +747,9 @@
             "SMART": "Routing płynności <span class=\"algorithm\">SMART<\/span> zapewnia najlepszą cenę dla każdej transakcji, łącząc tylko najlepsze opcje cenowe ze wszystkich dostępnych rynków. Jeśli jest on dostępny, Token Bonding Curve [krzywa wiązania tokenów] (<span class=\"algorithm\">TBC<\/span>) zostanie wówczas wykorzystana do zapewnienia płynności, o ile cena waluty będzie bardziej przystępna niż z innych źródeł, na podstawie których pula <span class=\"algorithm\">XYK<\/span> jest użytkowana.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> – zakup jedynie z Token Bonding Curve [krzywa wiązania tokenów] (rynek pierwotny). Istnieje prawdopodobieństwo, że cena może ulec zmianie na niekorzyść w porównaniu do puli <span class=\"algorithm\">XYK<\/span> (rynek wtórny), ale wartość otrzymana z nabytego wynagrodzenia może z czasem okazać się o wiele korzystniejsza.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> – zakup jedynie z puli XYK (rynek wtórny). Tradycyjna wymiana według modelu XYK."
-        }
+        },
+        "charts": "WYKRESY",
+        "сhartsEnabled": "Wykresy włączone"
     },
     "resultDialog": {
         "title": "Transakcja została złożona.",
@@ -1087,5 +1089,59 @@
         "zeroBalance": "Ukryj 0 saldo aktywów",
         "showAssets": "Pokaż aktywa",
         "show": "Pokaż"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Witamy w Polkaswapie!",
+            "headline": "Załóżmy Twoje konto",
+            "text": "Utwórz swoje konto w sieci SORA lub zaloguj się do starych, używając fraz mnemonicznych lub importu .json. Pozwala to bezpiecznie podpisywać transakcje i zarządzać zasobami w sieci SORA.",
+            "createAccount": "Utwórz konto",
+            "importAccount": "Importuj konto"
+        },
+        "heading": {
+            "seedPhraseTitle": "Nasiona frazy",
+            "confirmSeedTitle": "Potwierdź źródłową frazę",
+            "accountDetailsTitle": "Szczegóły Konta",
+            "importTitle": "Importuj konto"
+        },
+        "button": {
+            "next": "Następny krok",
+            "skip": "Pomijać",
+            "createAccount": "Utwórz konto",
+            "importAccount": "Importuj konto"
+        },
+        "accountName": {
+            "placeholder": "Nazwa portfela",
+            "desc": "To jest publiczna nazwa Twojego portfela, która będzie widoczna dla wszystkich"
+        },
+        "password": {
+            "placeholder": "Hasło",
+            "desc": "Upewnij się, że używasz silnego hasła dla właściwej ochrony."
+        },
+        "confirmPassword": {
+            "placeholder": "Potwierdź hasło"
+        },
+        "accountMnemonic": {
+            "placeholder": "Fraza mnemoniczna"
+        },
+        "seedAdviceText": "To jest tajne ziarno Twojego konta. Upewnij się, że przechowujesz go na nośniku innym niż cyfrowy, na przykład - papierowym",
+        "confirmSeedText": "Potwierdź wyrażenie wyjściowe klikając na słowa w odpowiedniej kolejności",
+        "errorMnemonicText": "Nieprawidłowa kolejność wyrażeń ziarnistych",
+        "exportOptionText": "Eksportuj plik konta .json",
+        "exportJsonText": "Zawsze będziesz mieć dostęp do swojego konta, importując ten plik .json. Nie udostępniaj go nikomu!",
+        "addAccount": "Dodaj konto",
+        "dialog": {
+            "confirmTitle": "Potwierdź hasłem",
+            "confirmButton": "Podpisz transakcję",
+            "savePasswordText": "Zapamiętaj moje hasło przez kolejne 15 minut",
+            "extendPasswordText": "Wydłuż okres bez hasła o 15 minut"
+        },
+        "errorMessages": {
+            "password": "Hasło Nie pasuje",
+            "passwords": "Hasła nie pasują",
+            "mnemonic": "Podano nieprawidłowy mnemonik bip39",
+            "mnemonicLength": "Mnemonik powinien zawierać {liczbę} słów",
+            "jsonFields": "Plik JSON nie zawiera wymaganych pól"
+        }
     }
 }

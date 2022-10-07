@@ -747,7 +747,9 @@
             "SMART": "<span class=\"algorithm\"> SMART <\/span> memastikan harga terbaik untuk setiap transaksi dengan hanya menggabungkan opsi harga terbaik dari semua pasar yang tersedia. Jika tersedia, Token Bonding Curve ( <span class=\"algorithm\"> TBC <\/span> ) akan digunakan untuk likuiditas selama harga aset lebih terjangkau daripada dari sumber lain, di mana <span class=\"algorithm\"> XYK <\/span> pool digunakan.",
             "TBC": "<span class=\"algorithm\"> TBC <\/span> — hanya membeli dari Token Bonding Curve (Pasar Utama). Ada kemungkinan bahwa harga dapat menjadi tidak menguntungkan dibandingkan dengan dari Pool <span class=\"algorithm\">XYK<\/span> (Pasar Sekunder), akan tetapi nilai yang diterima dari vested rewards mungkin berubah menjadi jauh lebih menguntungkan dari waktu ke waktu.",
             "XYK": "<span class=\"algorithm\"> XYK <\/span> — membeli hanya dari Pool XYK (Pasar Sekunder). Swap pool XYK tradisional."
-        }
+        },
+        "charts": "BAGAN",
+        "сhartsEnabled": "Bagan Diaktifkan"
     },
     "resultDialog": {
         "title": "Transaksi dikirim",
@@ -1087,5 +1089,59 @@
         "zeroBalance": "Sembunyikan 0 aset saldo",
         "showAssets": "Tampilkan aset",
         "show": "Tunjukkan"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Selamat datang di Polkaswap!",
+            "headline": "Ayo siapkan akunmu",
+            "text": "Buat akun Jaringan SORA Anda atau masuk ke akun lama menggunakan frasa mnemonik atau impor .json. Ini memungkinkan Anda untuk menandatangani transaksi dan mengelola aset dengan aman di Jaringan SORA.",
+            "createAccount": "Buat sebuah akun",
+            "importAccount": "Impor Akun"
+        },
+        "heading": {
+            "seedPhraseTitle": "Frase benih",
+            "confirmSeedTitle": "Konfirmasikan frasa benih",
+            "accountDetailsTitle": "Detail akun",
+            "importTitle": "Impor akun"
+        },
+        "button": {
+            "next": "Langkah berikutnya",
+            "skip": "Loncat",
+            "createAccount": "Buat Akun",
+            "importAccount": "Impor akun"
+        },
+        "accountName": {
+            "placeholder": "Nama dompet",
+            "desc": "Ini adalah nama publik dompet Anda yang akan terlihat oleh semua orang"
+        },
+        "password": {
+            "placeholder": "Kata sandi",
+            "desc": "Pastikan Anda menggunakan kata sandi yang kuat untuk perlindungan yang tepat"
+        },
+        "confirmPassword": {
+            "placeholder": "Konfirmasi sandi"
+        },
+        "accountMnemonic": {
+            "placeholder": "Frasa mnemonik"
+        },
+        "seedAdviceText": "Ini adalah benih rahasia akun Anda. Pastikan untuk menyimpannya di pembawa non-digital, misalnya - kertas",
+        "confirmSeedText": "Konfirmasikan frasa benih dengan mengklik kata-kata dalam urutan yang benar",
+        "errorMnemonicText": "Urutan frase seed salah",
+        "exportOptionText": "Ekspor file akun .json",
+        "exportJsonText": "Anda akan selalu dapat mengakses akun Anda dengan mengimpor file .json itu. Jangan berbagi dengan siapa pun!",
+        "addAccount": "Tambahkan akun",
+        "dialog": {
+            "confirmTitle": "Konfirmasi dengan kata sandi",
+            "confirmButton": "Tanda Transaksi",
+            "savePasswordText": "Ingat kata sandi saya untuk 15 menit ke depan",
+            "extendPasswordText": "Perpanjang periode tanpa kata sandi selama 15 menit"
+        },
+        "errorMessages": {
+            "password": "Kata sandi tidak cocok",
+            "passwords": "Kata sandi tidak cocok",
+            "mnemonic": "Mnemonic bip39 yang ditentukan tidak valid",
+            "mnemonicLength": "Mnemonic harus berisi {number} kata",
+            "jsonFields": "File JSON tidak memiliki bidang yang wajib diisi"
+        }
     }
 }

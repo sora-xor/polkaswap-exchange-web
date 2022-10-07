@@ -747,7 +747,9 @@
             "SMART": "<span class=\"algorithm\">SMART<\/span> presmerovanie likvidity zaisťuje najlepšiu cenu pre akúkoľvek transakciu, a to kombináciou najlepších cenových možnosti zo všetkých dostupných trhov. Ak je k dispozícii a pokiaľ je cena aktív cenovo dostupnejšia ako z iných zdrojov, pre likviditu sa použije krivka závislosti ceny tokenu na jeho ponuke (<span class=\"algorithm\">TBC<\/span>). V opačnom prípade sa použije <span class=\"algorithm\">XYK<\/span> fond.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> - nákup iba z krivky závislosti ceny tokenu na jeho ponuke (Token Bonding Curve) (primárny trh). Existuje možnosť nepriaznivého vývoja ceny v porovnaní s fondom <span class=\"algorithm\">XYK<\/span> (sekundárny trh), ale hodnota získaná z priznaných odmien sa časom môže ukázať ako oveľa priaznivejšia.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> – nákup iba z fondu XYK (sekundárny trh). Tradičný výmenný fond XYK."
-        }
+        },
+        "charts": "GRAFY",
+        "сhartsEnabled": "Grafy sú povolené"
     },
     "resultDialog": {
         "title": "Transakcia bola odoslaná",
@@ -1087,5 +1089,59 @@
         "zeroBalance": "Skryť 0 bilančných aktív",
         "showAssets": "Zobraziť aktíva",
         "show": "Šou"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Vitajte v Polkaswape!",
+            "headline": "Poďme nastaviť váš účet",
+            "text": "Vytvorte si účet SORA Network alebo sa prihláste do starého účtu pomocou mnemotechnickej frázy alebo importu .json. To vám umožňuje bezpečne podpisovať transakcie a spravovať aktíva v SORA Network.",
+            "createAccount": "Vytvoriť účet",
+            "importAccount": "Importovať účet"
+        },
+        "heading": {
+            "seedPhraseTitle": "Semená fráza",
+            "confirmSeedTitle": "Potvrďte počiatočnú frázu",
+            "accountDetailsTitle": "Podrobnosti o účte",
+            "importTitle": "Importovať účet"
+        },
+        "button": {
+            "next": "Ďalší krok",
+            "skip": "Preskočiť",
+            "createAccount": "Vytvoriť účet",
+            "importAccount": "Importovať účet"
+        },
+        "accountName": {
+            "placeholder": "Názov peňaženky",
+            "desc": "Toto je verejný názov vašej peňaženky, ktorý bude viditeľný pre všetkých"
+        },
+        "password": {
+            "placeholder": "heslo",
+            "desc": "Pre správnu ochranu sa uistite, že používate silné heslo"
+        },
+        "confirmPassword": {
+            "placeholder": "Potvrďte heslo"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemotechnická fráza"
+        },
+        "seedAdviceText": "Toto je tajný základ vášho účtu. Uistite sa, že ste ho uložili na iný ako digitálny nosič, napríklad na papier",
+        "confirmSeedText": "Heslo potvrďte výberom slov v správnom poradí",
+        "errorMnemonicText": "Nesprávne poradie počiatočných fráz",
+        "exportOptionText": "Exportujte súbor účtu .json",
+        "exportJsonText": "Vždy budete mať prístup k svojmu účtu importovaním tohto súboru .json. Nezdieľajte to s nikým!",
+        "addAccount": "Pridajte účet",
+        "dialog": {
+            "confirmTitle": "Potvrďte heslom",
+            "confirmButton": "Podpísať transakciu",
+            "savePasswordText": "Zapamätať si moje heslo na ďalších 15 minút",
+            "extendPasswordText": "Predĺžte obdobie bez hesla o 15 minút"
+        },
+        "errorMessages": {
+            "password": "Heslo sa nezhoduje",
+            "passwords": "Heslá sa nezhodovali",
+            "mnemonic": "Zadaný nesprávny mnemotechnický znak bip39",
+            "mnemonicLength": "Mnemotechnika by mala obsahovať {číslo} slov",
+            "jsonFields": "Súbor JSON neobsahuje povinné polia"
+        }
     }
 }

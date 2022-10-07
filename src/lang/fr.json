@@ -747,7 +747,9 @@
             "SMART": "<span class=\"algorithm\"> SMART <\/span> garantit le meilleur prix pour toute transaction en combinant uniquement les meilleures options de prix de tous les marchés disponibles. Lorsqu'elle est disponible, la courbe de liaison des jetons ( <span class=\"algorithm\"> TBC <\/span> ) sera utilisée pour la liquidité tant que le prix de l'actif est plus abordable que celui d'autres sources, sur lesquelles le pool <span class=\"algorithm\"> XYK <\/span> est utilisé.",
             "TBC": "<span class=\"algorithm\"> TBC <\/span> — achat uniquement à partir de la Token Bonding Curve (marché primaire). Il est possible que le prix devienne défavorable par rapport au <span class=\"algorithm\"> XYK <\/span> (marché secondaire), mais la valeur reçue des récompenses acquises pourrait s'avérer beaucoup plus favorable au fil du temps.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — achat uniquement sur le pool XYK (marché secondaire). Échange de pool XYK traditionnel."
-        }
+        },
+        "charts": "GRAPHIQUES",
+        "сhartsEnabled": "Graphiques activés"
     },
     "resultDialog": {
         "title": "Transaction soumise",
@@ -1087,5 +1089,59 @@
         "zeroBalance": "Cachez 0 solde actif",
         "showAssets": "Afficher les actifs",
         "show": "Montrer"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Bienvenue sur Polkaswap !",
+            "headline": "Configurons votre compte",
+            "text": "Créez votre compte SORA Network ou connectez-vous aux anciens en utilisant une phrase mnémonique ou une importation .json. Cela vous permet de signer en toute sécurité des transactions et de gérer des actifs dans SORA Network.",
+            "createAccount": "Créer un compte",
+            "importAccount": "Compte d'importation"
+        },
+        "heading": {
+            "seedPhraseTitle": "Phrase de départ",
+            "confirmSeedTitle": "Confirmer la phrase de départ",
+            "accountDetailsTitle": "Détails du compte",
+            "importTitle": "Importer un compte"
+        },
+        "button": {
+            "next": "Étape suivante",
+            "skip": "Skip",
+            "createAccount": "Créer un compte",
+            "importAccount": "Importer un compte"
+        },
+        "accountName": {
+            "placeholder": "Nom du portefeuille",
+            "desc": "C'est le nom public de votre wallet qui sera visible par tout le monde"
+        },
+        "password": {
+            "placeholder": "Mot de passe",
+            "desc": "Assurez-vous que vous utilisez un mot de passe fort pour une protection adéquate."
+        },
+        "confirmPassword": {
+            "placeholder": "Confirmez le mot de passe"
+        },
+        "accountMnemonic": {
+            "placeholder": "Phrase mnémonique"
+        },
+        "seedAdviceText": "Il s'agit d'une graine secrète de votre compte. Veillez à la stocker sur un support non numérique, par exemple du papier.",
+        "confirmSeedText": "Confirmez la phrase de départ en cliquant sur les mots dans le bon ordre",
+        "errorMnemonicText": "Ordre incorrect des phrases de départ",
+        "exportOptionText": "Exporter le fichier de compte .json",
+        "exportJsonText": "Vous pourrez toujours accéder à votre compte en important ce fichier .json. Ne le partagez pas avec qui que ce soit !",
+        "addAccount": "Ajouter un compte",
+        "dialog": {
+            "confirmTitle": "Confirmer avec mot de passe",
+            "confirmButton": "Signer la transaction",
+            "savePasswordText": "Mémoriser mon mot de passe pour les 15 prochaines minutes",
+            "extendPasswordText": "Prolonger la période sans mot de passe de 15 minutes"
+        },
+        "errorMessages": {
+            "password": "Le mot de passe ne correspond pas",
+            "passwords": "Les mots de passe ne correspondent pas",
+            "mnemonic": "Mnémonique bip39 non valide spécifié",
+            "mnemonicLength": "Le mnémonique doit contenir {number} mots",
+            "jsonFields": "Le fichier JSON n'a pas de champs obligatoires"
+        }
     }
 }

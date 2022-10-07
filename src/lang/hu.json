@@ -747,7 +747,9 @@
             "SMART": "<span class=\"algorithm\">SMART<\/span> likviditás kezelés biztosítja a legjobb árat bármely tranzakciónál, kombinálva a legjobb árakat az elérhető összes piacról. Amikor elérhető, Token Bonding Curve ( <span class=\"algorithm\">TBC <\/span>) likviditását használja amíg az eszköz ára kedvezőbb más forrásokénál, amelyek az <span class=\"algorithm\">XYK<\/span> pool-t használják.",
             "TBC": "<span class=\"algorithm\">TBC<\/span>— vásárlás csak a Token Bonding Curve -ből (Elsődleges Piac). Lehetséges, hogy az ár annyira nem kedvező a <span class=\"algorithm\">XYK<\/span> pool-hoz (Másodlagos Piac) képest, de az ezáltal megszerezhető jutalmak idővel kedvezőbbé tehetik.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — vásárlás csak az XYK Pool-ból (Másodlagos Piac). Tradícionális XYK pool váltás."
-        }
+        },
+        "charts": "grafikonok",
+        "сhartsEnabled": "Diagramok engedélyezve"
     },
     "resultDialog": {
         "title": "Tranzakció elküldve",
@@ -1087,5 +1089,59 @@
         "zeroBalance": "0 egyenlegeszköz elrejtése",
         "showAssets": "Eszközök megjelenítése",
         "show": "Mutat"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Üdvözöljük a Polkaswapban!",
+            "headline": "Állítsuk be fiókját",
+            "text": "Hozza létre SORA Network-fiókját, vagy jelentkezzen be a régi fiókokba mnemonikus kifejezéssel vagy .json importálással. Ez lehetővé teszi a tranzakciók biztonságos aláírását és az eszközök kezelését a SORA Networkben.",
+            "createAccount": "Hozzon létre egy fiókot",
+            "importAccount": "Fiók importálása"
+        },
+        "heading": {
+            "seedPhraseTitle": "Mag kifejezés",
+            "confirmSeedTitle": "Erősítse meg a mag kifejezést",
+            "accountDetailsTitle": "Számlaadatok",
+            "importTitle": "Fiók importálása"
+        },
+        "button": {
+            "next": "Következő lépés",
+            "skip": "Skip",
+            "createAccount": "Fiók létrehozása",
+            "importAccount": "Fiók importálása"
+        },
+        "accountName": {
+            "placeholder": "Pénztárca neve",
+            "desc": "Ez a pénztárca nyilvános neve, amely mindenki számára látható lesz"
+        },
+        "password": {
+            "placeholder": "Jelszó",
+            "desc": "Győződjön meg róla, hogy erős jelszót használ a megfelelő védelem érdekében"
+        },
+        "confirmPassword": {
+            "placeholder": "Jelszó megerősítése"
+        },
+        "accountMnemonic": {
+            "placeholder": "Emlékeztető kifejezés"
+        },
+        "seedAdviceText": "Ez a fiókod titkos magja. Ügyeljen arra, hogy nem digitális hordozón, például papíron tárolja",
+        "confirmSeedText": "A megfelelő sorrendben lévő szavakra kattintva erősítse meg a magmondatot.",
+        "errorMnemonicText": "Helytelen magkifejezés-sorrend",
+        "exportOptionText": ".json-fiókfájl exportálása",
+        "exportJsonText": "A .json fájl importálásával mindig hozzáférhet fiókjához. Ne oszd meg senkivel!",
+        "addAccount": "Fiók hozzáadása",
+        "dialog": {
+            "confirmTitle": "Erősítse meg jelszóval",
+            "confirmButton": "Tranzakció aláírása",
+            "savePasswordText": "Emlékezzen a jelszavamra a következő 15 percben",
+            "extendPasswordText": "A jelszó nélküli időszak meghosszabbítása 15 perccel"
+        },
+        "errorMessages": {
+            "password": "A jelszó nem egyezik",
+            "passwords": "a jelszó nem egyezik",
+            "mnemonic": "Érvénytelen bip39 emlékeztető van megadva",
+            "mnemonicLength": "A mnemonikának {number} szót kell tartalmaznia",
+            "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
+        }
     }
 }
