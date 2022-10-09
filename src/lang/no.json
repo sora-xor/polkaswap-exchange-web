@@ -748,7 +748,7 @@
             "TBC": "<span class=\"algorithm\">TBC<\/span> - kjøper bare fra Token Bonding Curve (Primary Market). Det er en mulighet for at prisen kan bli ugunstig sammenlignet med <span class=\"algorithm\">XYK<\/span> pool (Sekundærmarkedet), men verdien mottatt fra de opptjente belønningene kan vise seg å være mye gunstigere over tid.",
             "XYK": "<span class=\"algorithm\">XYK<\/span>- kjøper bare fra XYK Pool (sekundærmarkedet). Tradisjonelt XYK-bassengbytte."
         },
-        "charts": "SKJEMATER",
+        "charts": "Diagrammer",
         "сhartsEnabled": "Diagrammer aktivert"
     },
     "resultDialog": {

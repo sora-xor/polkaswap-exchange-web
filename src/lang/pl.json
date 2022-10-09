@@ -748,7 +748,7 @@
             "TBC": "<span class=\"algorithm\">TBC<\/span> – zakup jedynie z Token Bonding Curve [krzywa wiązania tokenów] (rynek pierwotny). Istnieje prawdopodobieństwo, że cena może ulec zmianie na niekorzyść w porównaniu do puli <span class=\"algorithm\">XYK<\/span> (rynek wtórny), ale wartość otrzymana z nabytego wynagrodzenia może z czasem okazać się o wiele korzystniejsza.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> – zakup jedynie z puli XYK (rynek wtórny). Tradycyjna wymiana według modelu XYK."
         },
-        "charts": "WYKRESY",
+        "charts": "Wykresy",
         "сhartsEnabled": "Wykresy włączone"
     },
     "resultDialog": {

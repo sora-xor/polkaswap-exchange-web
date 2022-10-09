@@ -41,6 +41,10 @@ export default class ChartsSwitch extends Mixins(TranslationMixin) {
   display: flex;
   align-items: center;
 
+  &-container .settings-header {
+    text-transform: uppercase;
+  }
+
   & > span {
     margin-left: #{$basic-spacing-small};
     font-size: var(--s-font-size-medium);

@@ -748,7 +748,7 @@
             "TBC": "<span class=\"algorithm\"> TBC <\/span> — hanya membeli dari Token Bonding Curve (Pasar Utama). Ada kemungkinan bahwa harga dapat menjadi tidak menguntungkan dibandingkan dengan dari Pool <span class=\"algorithm\">XYK<\/span> (Pasar Sekunder), akan tetapi nilai yang diterima dari vested rewards mungkin berubah menjadi jauh lebih menguntungkan dari waktu ke waktu.",
             "XYK": "<span class=\"algorithm\"> XYK <\/span> — membeli hanya dari Pool XYK (Pasar Sekunder). Swap pool XYK tradisional."
         },
-        "charts": "BAGAN",
+        "charts": "Bagan",
         "сhartsEnabled": "Bagan Diaktifkan"
     },
     "resultDialog": {

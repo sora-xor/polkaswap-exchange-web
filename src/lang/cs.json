@@ -748,7 +748,7 @@
             "TBC": "<span class=\"algorithm\">TBC<\/span> - nákup pouze z Token Bonding Curve (primární trh). Je tu možnost, že se cena může stát nevýhodnou ve srovnání s <span class=\"algorithm\">XYK<\/span> poolem (sekundární trh), ale hodnota získaná z uzamčených odměn se může časem ukázat jako mnohem výhodnější.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> - nákup pouze z XYK poolu (sekundární trh). Tradiční XYK pool swap."
         },
-        "charts": "GRAFY",
+        "charts": "Grafy",
         "сhartsEnabled": "Grafy povoleny"
     },
     "resultDialog": {

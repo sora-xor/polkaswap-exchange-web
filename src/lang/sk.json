@@ -748,7 +748,7 @@
             "TBC": "<span class=\"algorithm\">TBC<\/span> - nákup iba z krivky závislosti ceny tokenu na jeho ponuke (Token Bonding Curve) (primárny trh). Existuje možnosť nepriaznivého vývoja ceny v porovnaní s fondom <span class=\"algorithm\">XYK<\/span> (sekundárny trh), ale hodnota získaná z priznaných odmien sa časom môže ukázať ako oveľa priaznivejšia.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> – nákup iba z fondu XYK (sekundárny trh). Tradičný výmenný fond XYK."
         },
-        "charts": "GRAFY",
+        "charts": "Grafy",
         "сhartsEnabled": "Grafy sú povolené"
     },
     "resultDialog": {

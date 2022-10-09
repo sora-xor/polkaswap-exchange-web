@@ -748,7 +748,7 @@
             "TBC": "<span class=\"algorithm\">TBC<\/span> — comprar sólo en la Curva de Vinculación de Tokens (Mercado primario). Existe la posibilidad de que el precio se vuelva desfavorable en comparación con el Fondo común <span class=\"algorithm\">XYK<\/span> (Mercado secundario), pero el valor recibido de las Recompensas adquiridas podría resultar mucho más favorable con el tiempo.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — comprar sólo en el Fondo común XYK (Mercado secundario). Intercambio del Fondo común tradicional XYK."
         },
-        "charts": "GRÁFICOS",
+        "charts": "Gráficos",
         "сhartsEnabled": "Gráficos habilitados"
     },
     "resultDialog": {

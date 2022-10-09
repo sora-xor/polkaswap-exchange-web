@@ -748,7 +748,7 @@
             "TBC": "<span class=\"algorithm\">TBC<\/span> — chỉ mua từ Token Bonding Curve (Thị trường sơ cấp). Vị thế có thể bất lợi so với giá từ Pool XYK (Thị trường thứ cấp), nhưng về lâu dài thì giá trị nhận được từ phần thưởng được tặng có thể có giá trị hơn.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> - chỉ mua từ Pool XYK (thị trường thứ cấp). Hoán đổi gốc từ Pool XYK."
         },
-        "charts": "PHÍ",
+        "charts": "Biểu đồ",
         "сhartsEnabled": "Biểu đồ được bật"
     },
     "resultDialog": {

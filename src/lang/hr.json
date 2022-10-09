@@ -748,7 +748,7 @@
             "TBC": "<span class=\"algorithm\">TBC<\/span> — kupnja samo od Krivulje povezivanja tokena (Primarno tržište). Postoji mogućnost da cijena postane nepovoljna u usporedbi s <span class=\"algorithm\">XYK<\/span> bazen (Sekundarno tržište), ali vrijednost primljena od dodijeljenih nagrada mogla bi se s vremenom pokazati mnogo povoljnijom.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — kupnja samo iz XYK pula (sekundarno tržište). Tradicionalna zamjena XYK pula."
         },
-        "charts": "GRAFIKONI",
+        "charts": "Karte",
         "сhartsEnabled": "Grafikoni omogućeni"
     },
     "resultDialog": {

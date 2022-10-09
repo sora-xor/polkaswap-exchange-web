@@ -748,7 +748,7 @@
             "TBC": "<span class=\"algorithm\">TBC<\/span>— vásárlás csak a Token Bonding Curve -ből (Elsődleges Piac). Lehetséges, hogy az ár annyira nem kedvező a <span class=\"algorithm\">XYK<\/span> pool-hoz (Másodlagos Piac) képest, de az ezáltal megszerezhető jutalmak idővel kedvezőbbé tehetik.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — vásárlás csak az XYK Pool-ból (Másodlagos Piac). Tradícionális XYK pool váltás."
         },
-        "charts": "grafikonok",
+        "charts": "Diagramok",
         "сhartsEnabled": "Diagramok engedélyezve"
     },
     "resultDialog": {

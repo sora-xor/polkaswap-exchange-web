@@ -748,7 +748,7 @@
             "TBC": "<span class=\"algorithm\"> TBC <\/span> — comprare solo dalla Token Bonding Curve (Mercato Primario). C'è la possibilità che il prezzo possa diventare sfavorevole rispetto al <span class=\"algorithm\"> XYK <\/span> (Mercato sScondario), tuttavia il valore ricevuto dalle vested rewards potrebbe rivelarsi molto più favorevole nel tempo.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> - comprare solo dalla pool XYK (Mercato Secondario). Scambio tradizionale su pool XYK."
         },
-        "charts": "GRAFICI",
+        "charts": "Grafici",
         "сhartsEnabled": "Grafici abilitati"
     },
     "resultDialog": {

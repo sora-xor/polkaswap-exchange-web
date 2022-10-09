@@ -748,7 +748,7 @@
             "TBC": "<span class=\"algorithm\"> TBC <\/span> — achat uniquement à partir de la Token Bonding Curve (marché primaire). Il est possible que le prix devienne défavorable par rapport au <span class=\"algorithm\"> XYK <\/span> (marché secondaire), mais la valeur reçue des récompenses acquises pourrait s'avérer beaucoup plus favorable au fil du temps.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — achat uniquement sur le pool XYK (marché secondaire). Échange de pool XYK traditionnel."
         },
-        "charts": "GRAPHIQUES",
+        "charts": "Graphiques",
         "сhartsEnabled": "Graphiques activés"
     },
     "resultDialog": {
