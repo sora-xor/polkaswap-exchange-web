@@ -284,7 +284,8 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isEmptyAmount(): boolean {
-    return !this.removePart || !Number(this.liquidityAmount) || !this.firstTokenAmount || !this.secondTokenAmount;
+    // We don't check removePart for less than 1%
+    return !Number(this.liquidityAmount) || !this.firstTokenAmount || !this.secondTokenAmount;
   }
 
   get liquidityLocked(): boolean {
