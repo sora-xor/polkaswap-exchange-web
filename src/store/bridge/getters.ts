@@ -25,11 +25,11 @@ const getters = defineGetters<BridgeState>()({
     const { getters } = bridgeGetterContext(args);
     return !!getters.asset?.externalAddress;
   },
-  // TODO [EVM]
+  // TODO [EVM] update js-lib
   soraNetworkFee(...args): CodecString {
     const { state, rootState } = bridgeGetterContext(args);
     // In direction EVM -> SORA sora network fee is 0
-    return state.isSoraToEvm ? rootState.wallet.settings.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
+    return state.isSoraToEvm ? rootState.wallet.settings.networkFees[Operation.EvmOutgoing] : ZeroStringValue;
   },
   evmNetworkFee(...args): CodecString {
     const { state } = bridgeGetterContext(args);

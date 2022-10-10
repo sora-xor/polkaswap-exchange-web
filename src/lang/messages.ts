@@ -257,8 +257,8 @@ export default {
     [EvmNetworkId.EthereumGoerli]: '@:ethereumText Goerli Testnet',
     [EvmNetworkId.EthereumKovan]: '@:ethereumText Kovan Testnet',
     [EvmNetworkId.EthereumClassicMordor]: '@:ethereumText Classic Mordor Testnet',
-    [EvmNetworkId.KlaytnBaobab]: 'Klaytn Baobab Testnet',
-    [EvmNetworkId.KlaytnCypress]: 'Klaytn Cypress Mainnet',
+    [EvmNetworkId.KlaytnTestnetBaobab]: 'Klaytn Baobab Testnet',
+    [EvmNetworkId.KlaytnMainnetCypress]: 'Klaytn Mainnet Cypress',
   },
   providers: {
     metamask: '@:metamask',

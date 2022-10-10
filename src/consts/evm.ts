@@ -1,13 +1,26 @@
 // TODO: move to js-lib
 export enum EvmNetworkId {
+  // ETH
   EthereumMainnet = 1,
   EthereumRopsten = 3,
   EthereumRinkeby = 4,
   EthereumGoerli = 5,
   EthereumKovan = 42,
+  // Binance Smart Chain
+  BinanceSmartChainMainnet = 56,
+  BinanceSmartChainTestnet = 97,
+  // Ethereum Classic
+  EthereumClassicMainnet = 61,
   EthereumClassicMordor = 63,
-  KlaytnBaobab = 1001,
-  KlaytnCypress = 8217, // mainnet
+  // Polygon
+  PolygonMainnet = 137,
+  PolygonTestnetMumbai = 8001,
+  // Klaytn
+  KlaytnMainnetCypress = 8217,
+  KlaytnTestnetBaobab = 1001,
+  // Avalanche
+  AvalancheMainnet = 43114,
+  AvalancheTestnet = 43113,
 }
 
 export interface EvmNetworkData {
@@ -91,6 +104,42 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     blockExplorerUrls: ['https://kovan.etherscan.io'],
     shortName: 'Kovan',
   },
+  [EvmNetworkId.BinanceSmartChainMainnet]: {
+    id: EvmNetworkId.BinanceSmartChainMainnet,
+    name: 'Binance Smart Chain',
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'BNB',
+      decimals: 18,
+    },
+    rpcUrls: ['https://bsc-dataseed.binance.org/'],
+    blockExplorerUrls: ['https://bscscan.com'],
+    shortName: 'BSC',
+  },
+  [EvmNetworkId.BinanceSmartChainTestnet]: {
+    id: EvmNetworkId.BinanceSmartChainTestnet,
+    name: 'Binance Smart Chain Testnet',
+    nativeCurrency: {
+      name: 'tBNB',
+      symbol: 'tBNB',
+      decimals: 18,
+    },
+    rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545'],
+    blockExplorerUrls: ['https://testnet.bscscan.com/'],
+    shortName: 'BSC Testnet',
+  },
+  [EvmNetworkId.EthereumClassicMainnet]: {
+    id: EvmNetworkId.EthereumClassicMainnet,
+    name: 'Ethereum Classic Mainnet',
+    nativeCurrency: {
+      name: 'ETC',
+      symbol: 'ETC',
+      decimals: 18,
+    },
+    rpcUrls: ['https://ethereumclassic.network'],
+    blockExplorerUrls: ['https://blockscout.com/etc/mainnet'],
+    shortName: 'ETC',
+  },
   [EvmNetworkId.EthereumClassicMordor]: {
     id: EvmNetworkId.EthereumClassicMordor,
     name: 'Ethereum Classic Mordor Testnet',
@@ -103,9 +152,33 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     blockExplorerUrls: ['https://blockscout.com/etc/mordor'],
     shortName: 'Mordor',
   },
-  [EvmNetworkId.KlaytnBaobab]: {
-    id: EvmNetworkId.KlaytnBaobab,
-    name: 'Klaytn Baobab Testnet',
+  [EvmNetworkId.PolygonMainnet]: {
+    id: EvmNetworkId.PolygonMainnet,
+    name: 'Polygon Mainnet',
+    nativeCurrency: {
+      name: 'Polygon',
+      symbol: 'MATIC',
+      decimals: 18,
+    },
+    rpcUrls: ['https://polygon-rpc.com'],
+    blockExplorerUrls: ['https://explorer.matic.network/'],
+    shortName: 'Matic',
+  },
+  [EvmNetworkId.PolygonTestnetMumbai]: {
+    id: EvmNetworkId.PolygonTestnetMumbai,
+    name: 'Polygon Testnet Mumbai',
+    nativeCurrency: {
+      name: 'Polygon',
+      symbol: 'MATIC',
+      decimals: 18,
+    },
+    rpcUrls: ['https://rpc-mumbai.maticvigil.com'],
+    blockExplorerUrls: ['https://mumbai.polygonscan.com'],
+    shortName: 'Mumbai',
+  },
+  [EvmNetworkId.KlaytnTestnetBaobab]: {
+    id: EvmNetworkId.KlaytnTestnetBaobab,
+    name: 'Klaytn Testnet Baobab',
     nativeCurrency: {
       name: 'KLAY',
       symbol: 'KLAY',
@@ -115,9 +188,9 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     blockExplorerUrls: ['https://baobab.scope.klaytn.com/'],
     shortName: 'Baobab',
   },
-  [EvmNetworkId.KlaytnCypress]: {
-    id: EvmNetworkId.KlaytnCypress,
-    name: 'Klaytn Cypress Mainnet',
+  [EvmNetworkId.KlaytnMainnetCypress]: {
+    id: EvmNetworkId.KlaytnMainnetCypress,
+    name: 'Klaytn Mainnet Cypress',
     nativeCurrency: {
       name: 'KLAY',
       symbol: 'KLAY',
@@ -126,5 +199,29 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     rpcUrls: ['https://public-node-api.klaytnapi.com/v1/cypress'],
     blockExplorerUrls: ['https://scope.klaytn.com'],
     shortName: 'Klaytn',
+  },
+  [EvmNetworkId.AvalancheMainnet]: {
+    id: EvmNetworkId.AvalancheMainnet,
+    name: 'Avalanche Mainnet C-Chain',
+    nativeCurrency: {
+      name: 'Avalanche',
+      symbol: 'AVAX',
+      decimals: 18,
+    },
+    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://snowtrace.io/'],
+    shortName: 'Avalanche',
+  },
+  [EvmNetworkId.AvalancheTestnet]: {
+    id: EvmNetworkId.AvalancheTestnet,
+    name: 'Avalanche FUJI C-Chain',
+    nativeCurrency: {
+      name: 'Avalanche',
+      symbol: 'AVAX',
+      decimals: 18,
+    },
+    rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://testnet.snowtrace.io/'],
+    shortName: 'FUJI',
   },
 };
