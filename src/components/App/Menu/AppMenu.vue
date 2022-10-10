@@ -37,6 +37,15 @@
           active-hover-color="transparent"
         >
           <sidebar-item-content
+            icon="star-16"
+            title="Vote on Survey!"
+            href="https://soramitsu.typeform.com/Polkaswap"
+            tag="a"
+            target="_blank"
+            rel="nofollow noopener"
+            class="el-menu-item menu-item--small marketing"
+          />
+          <sidebar-item-content
             icon="symbols-24"
             :title="t('mobilePopup.sideMenu')"
             class="el-menu-item menu-item--small"
@@ -155,6 +164,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
 
+    &.marketing .icon-container > i {
+      color: var(--s-color-theme-accent);
+    }
+
     &.is-disabled {
       opacity: 1;
       color: var(--s-color-base-content-secondary) !important;
@@ -168,6 +181,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       &:focus {
         i {
           color: var(--s-color-base-content-secondary) !important;
+        }
+        &.marketing i {
+          color: var(--s-color-theme-accent-focused) !important;
         }
       }
     }
@@ -325,6 +341,13 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
       @include tablet {
         padding: 0 $inner-spacing-small;
+      }
+    }
+
+    &.marketing {
+      color: var(--s-color-theme-accent);
+      &:hover {
+        color: var(--s-color-theme-accent-focused);
       }
     }
   }
