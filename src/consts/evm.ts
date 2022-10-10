@@ -11,16 +11,16 @@ export enum EvmNetworkId {
   BinanceSmartChainTestnet = 97,
   // Ethereum Classic
   EthereumClassicMainnet = 61,
-  EthereumClassicMordor = 63,
+  EthereumClassicTestnetMordor = 63,
   // Polygon
   PolygonMainnet = 137,
   PolygonTestnetMumbai = 8001,
   // Klaytn
-  KlaytnMainnetCypress = 8217,
+  KlaytnMainnet = 8217,
   KlaytnTestnetBaobab = 1001,
   // Avalanche
   AvalancheMainnet = 43114,
-  AvalancheTestnet = 43113,
+  AvalancheTestnetFuji = 43113,
 }
 
 export interface EvmNetworkData {
@@ -140,8 +140,8 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     blockExplorerUrls: ['https://blockscout.com/etc/mainnet'],
     shortName: 'ETC',
   },
-  [EvmNetworkId.EthereumClassicMordor]: {
-    id: EvmNetworkId.EthereumClassicMordor,
+  [EvmNetworkId.EthereumClassicTestnetMordor]: {
+    id: EvmNetworkId.EthereumClassicTestnetMordor,
     name: 'Ethereum Classic Mordor Testnet',
     nativeCurrency: {
       name: 'METC',
@@ -188,8 +188,8 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     blockExplorerUrls: ['https://baobab.scope.klaytn.com/'],
     shortName: 'Baobab',
   },
-  [EvmNetworkId.KlaytnMainnetCypress]: {
-    id: EvmNetworkId.KlaytnMainnetCypress,
+  [EvmNetworkId.KlaytnMainnet]: {
+    id: EvmNetworkId.KlaytnMainnet,
     name: 'Klaytn Mainnet Cypress',
     nativeCurrency: {
       name: 'KLAY',
@@ -212,8 +212,8 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     blockExplorerUrls: ['https://snowtrace.io/'],
     shortName: 'Avalanche',
   },
-  [EvmNetworkId.AvalancheTestnet]: {
-    id: EvmNetworkId.AvalancheTestnet,
+  [EvmNetworkId.AvalancheTestnetFuji]: {
+    id: EvmNetworkId.AvalancheTestnetFuji,
     name: 'Avalanche FUJI C-Chain',
     nativeCurrency: {
       name: 'Avalanche',

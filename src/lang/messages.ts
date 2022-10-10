@@ -256,9 +256,9 @@ export default {
     [EvmNetworkId.EthereumRinkeby]: '@:ethereumText Rinkeby Testnet',
     [EvmNetworkId.EthereumGoerli]: '@:ethereumText Goerli Testnet',
     [EvmNetworkId.EthereumKovan]: '@:ethereumText Kovan Testnet',
-    [EvmNetworkId.EthereumClassicMordor]: '@:ethereumText Classic Mordor Testnet',
+    [EvmNetworkId.EthereumClassicTestnetMordor]: '@:ethereumText Classic Mordor Testnet',
     [EvmNetworkId.KlaytnTestnetBaobab]: 'Klaytn Baobab Testnet',
-    [EvmNetworkId.KlaytnMainnetCypress]: 'Klaytn Mainnet Cypress',
+    [EvmNetworkId.KlaytnMainnet]: 'Klaytn Mainnet Cypress',
   },
   providers: {
     metamask: '@:metamask',
