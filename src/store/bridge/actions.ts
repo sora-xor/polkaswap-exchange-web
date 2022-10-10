@@ -1,4 +1,3 @@
-import compact from 'lodash/fp/compact';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
@@ -12,7 +11,6 @@ import { MaxUint256 } from '@/consts';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { waitForApprovedRequest } from '@/utils/bridge/eth/utils';
-import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import ethersUtil, { ABI, KnownEthBridgeAsset, OtherContractType } from '@/utils/ethers-util';
 import type { SignTxResult } from './types';
 

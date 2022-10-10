@@ -1,10 +1,15 @@
+import compact from 'lodash/fp/compact';
 import { Operation, BridgeTxStatus } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import type { ActionContext } from 'vuex';
 import type { Subscription } from 'rxjs';
 import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
 
+import { rootActionContext } from '@/store';
 import { delay } from '@/utils';
+import ethersUtil, { KnownEthBridgeAsset } from '@/utils/ethers-util';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import { waitForEvmTransactionStatus } from '@/utils/bridge/utils';
 
 const SORA_REQUESTS_TIMEOUT = 6_000; // Block production time
@@ -162,3 +167,56 @@ export const waitForEvmTransaction = async (id: string) => {
     }
   );
 };
+
+/**
+ * Restore ETH bridge account transactions, using Subquery & Etherscan
+ * @param context store context
+ */
+export const updateEthBridgeHistory =
+  (context: ActionContext<any, any>) =>
+  async (setHistoryCallback?: VoidFunction): Promise<void> => {
+    try {
+      const { rootState, rootGetters } = rootActionContext(context);
+
+      const {
+        wallet: {
+          account: { address },
+          settings: {
+            apiKeys: { etherscan: etherscanApiKey },
+            networkFees,
+          },
+        },
+        web3: { ethBridgeEvmNetwork, ethBridgeContractAddress },
+      } = rootState;
+
+      const evmNetworkData = rootGetters.web3.availableEvmNetworks.find(
+        (network) => network.id === ethBridgeEvmNetwork
+      );
+
+      if (!evmNetworkData) {
+        throw new Error(
+          `[HASHI Bridge History]: Network "${ethBridgeEvmNetwork}" is not available in app. Please check app config`
+        );
+      }
+
+      await ethersUtil.switchOrAddChain(evmNetworkData);
+
+      if ((await ethersUtil.getEvmNetworkId()) !== ethBridgeEvmNetwork) {
+        throw new Error(
+          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmNetwork}" is connected, "${ethBridgeEvmNetwork}" expected`
+        );
+      }
+
+      const assets = rootGetters.assets.assetsDataTable;
+      const contracts = compact(
+        Object.values(KnownEthBridgeAsset).map<Nullable<string>>((key) => ethBridgeContractAddress[key])
+      );
+
+      const ethBridgeHistory = new EthBridgeHistory(etherscanApiKey);
+
+      await ethBridgeHistory.init();
+      await ethBridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, setHistoryCallback);
+    } catch (error) {
+      console.error(error);
+    }
+  };
