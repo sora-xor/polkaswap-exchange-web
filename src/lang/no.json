@@ -747,7 +747,9 @@
             "SMART": "<span class=\"algorithm\">SMART<\/span> likviditetsruting sikrer den beste prisen for enhver transaksjon ved å kombinere bare de beste prisalternativene fra alle tilgjengelige markeder. Når Token Bonding Curve (<span class=\"algorithm\">TBC<\/span>) vil bli brukt til likviditet så lenge aktivaprisen er rimeligere enn fra andre kilder, hvorpå <span class=\"algorithm\">XYK<\/span> utvalget benyttes.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> - kjøper bare fra Token Bonding Curve (Primary Market). Det er en mulighet for at prisen kan bli ugunstig sammenlignet med <span class=\"algorithm\">XYK<\/span> pool (Sekundærmarkedet), men verdien mottatt fra de opptjente belønningene kan vise seg å være mye gunstigere over tid.",
             "XYK": "<span class=\"algorithm\">XYK<\/span>- kjøper bare fra XYK Pool (sekundærmarkedet). Tradisjonelt XYK-bassengbytte."
-        }
+        },
+        "charts": "Diagrammer",
+        "сhartsDescription": "Se diagrammer for tokenpriser"
     },
     "resultDialog": {
         "title": "Transaksjonen er sendt inn",
@@ -1087,5 +1089,59 @@
         "zeroBalance": "Skjul 0 saldoaktiva",
         "showAssets": "Vis eiendeler",
         "show": "Vise"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Velkommen til Polkaswap!",
+            "headline": "La oss sette opp kontoen din",
+            "text": "Opprett din SORA Network-konto eller logg på de gamle ved å bruke mnemonisk frase eller .json-import. Dette lar deg signere transaksjoner og administrere aktiva i SORA Network på en sikker måte.",
+            "createAccount": "Opprett en konto",
+            "importAccount": "Importer konto"
+        },
+        "heading": {
+            "seedPhraseTitle": "Frøsetning",
+            "confirmSeedTitle": "Bekreft frøsetningen",
+            "accountDetailsTitle": "kontodetaljer",
+            "importTitle": "Importer konto"
+        },
+        "button": {
+            "next": "Neste steg",
+            "skip": "Hopp over",
+            "createAccount": "Opprett konto",
+            "importAccount": "Importer konto"
+        },
+        "accountName": {
+            "placeholder": "Lommeboknavn",
+            "desc": "Dette er det offentlige navnet på lommeboken din som vil være synlig for alle"
+        },
+        "password": {
+            "placeholder": "Passord",
+            "desc": "Sørg for at du bruker et sterkt passord for riktig beskyttelse"
+        },
+        "confirmPassword": {
+            "placeholder": "Bekreft passord"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemonisk setning"
+        },
+        "seedAdviceText": "Dette er et hemmelig frø til kontoen din. Sørg for å lagre den på en ikke-digital bærer, for eksempel - papir",
+        "confirmSeedText": "Bekreft frøsetningen ved å klikke på ordene i riktig rekkefølge",
+        "errorMnemonicText": "Feil rekkefølge på frøfrasen",
+        "exportOptionText": "Eksporter .json-kontofil",
+        "exportJsonText": "Du vil alltid kunne få tilgang til kontoen din ved å importere den .json-filen. Ikke del det med noen!",
+        "addAccount": "Legg til en konto",
+        "dialog": {
+            "confirmTitle": "Bekreft med passord",
+            "confirmButton": "Signer transaksjon",
+            "savePasswordText": "Husk passordet mitt i de neste 15 minuttene",
+            "extendPasswordText": "Forleng perioden uten passord med 15 minutter"
+        },
+        "errorMessages": {
+            "password": "Passordet stemte ikke",
+            "passwords": "Passordene stemte ikke",
+            "mnemonic": "Ugyldig bip39 mnemonic spesifisert",
+            "mnemonicLength": "Mnemonic skal inneholde {number} ord",
+            "jsonFields": "JSON-filen har ikke obligatoriske felt"
+        }
     }
 }

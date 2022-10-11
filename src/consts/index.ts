@@ -156,6 +156,7 @@ export enum Components {
   SettingsTabs = 'Settings/Tabs',
   SlippageTolerance = 'Settings/SlippageTolerance',
   MarketAlgorithm = 'Settings/MarketAlgorithm',
+  ChartsSwitch = 'Settings/ChartsSwitch',
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',

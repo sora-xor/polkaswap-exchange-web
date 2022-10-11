@@ -75,8 +75,8 @@
         "SwapAndSend": "Intercambiar y enviar",
         "DemeterFarmingDepositLiquidity": "Liquidez de la participación",
         "DemeterFarmingWithdrawLiquidity": "Quitar liquidez",
-        "DemeterFarmingStakeToken": "Token de apuesta",
-        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingStakeToken": "Token de participación",
+        "DemeterFarmingUnstakeToken": "Remover Token",
         "DemeterFarmingGetRewards": "Reclamar Recompensas"
     },
     "polkadotjs": {
@@ -747,7 +747,9 @@
             "SMART": "El enrutamiento de liquidez <span class=\"algorithm\">SMART<\/span> asegura el mejor precio para cualquier transacción combinando sólo las mejores opciones de precio de todos los mercados disponibles. Cuando esté disponible, se utilizará la Curva de Vinculación de Tokens (<span class=\"algorithm\">TBC<\/span>) para la Liquidez siempre que el precio del Activo sea más asequible que el de otras fuentes, sobre las que se utiliza el Fondo común <span class=\"algorithm\">XYK<\/span>.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> — comprar sólo en la Curva de Vinculación de Tokens (Mercado primario). Existe la posibilidad de que el precio se vuelva desfavorable en comparación con el Fondo común <span class=\"algorithm\">XYK<\/span> (Mercado secundario), pero el valor recibido de las Recompensas adquiridas podría resultar mucho más favorable con el tiempo.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — comprar sólo en el Fondo común XYK (Mercado secundario). Intercambio del Fondo común tradicional XYK."
-        }
+        },
+        "charts": "Gráficos",
+        "сhartsDescription": "Ver gráficos de precios de tokens"
     },
     "resultDialog": {
         "title": "Transacción enviada",
@@ -1004,13 +1006,13 @@
         "info": {
             "earned": "{symbol} ganado",
             "fee": "Tarifa",
-            "feeTooltip": "La tarifa de depósito se aplica a la cantidad a apostar",
+            "feeTooltip": "La tarifa de depósito se aplica a la cantidad a participar",
             "owned": "{symbol} @:balanceText",
-            "poolShare": "Su parte de la piscina apostada",
-            "poolShareWillBe": "Su participación en la piscina apostada será",
+            "poolShare": "Su parte de la piscina puesta",
+            "poolShareWillBe": "Su participación en la piscina puesta será",
             "rewardToken": "token de recompensa",
-            "stake": "Tu {symbol} apostado",
-            "stakeWillBe": "Su apuesta de {symbol} será",
+            "stake": "Tu {symbol} puesto",
+            "stakeWillBe": "Su participación de {symbol} será",
             "totalLiquidityLocked": "Liquidez total bloqueada"
         },
         "actions": {
@@ -1081,11 +1083,65 @@
     "ofText": "{first} de {second}",
     "filter": {
         "all": "Todo",
-        "token": "Fichas",
-        "nft": "NFT",
+        "token": "Tokens",
+        "nft": "NFTs",
         "verifiedOnly": "Mostrar solo activos verificados",
-        "zeroBalance": "Ocultar 0 activos de saldo",
+        "zeroBalance": "Ocultar activos de saldo 0",
         "showAssets": "Mostrar activos",
         "show": "Mostrar"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "¡Bienvenido a Polkaswap!",
+            "headline": "Configuremos tu cuenta",
+            "text": "Cree su cuenta de SORA Network o inicie sesión en las antiguas utilizando una frase mnemotécnica o la importación .json. Esto le permite firmar transacciones de forma segura y administrar activos en SORA Network.",
+            "createAccount": "Crea una cuenta",
+            "importAccount": "Cuenta de importación"
+        },
+        "heading": {
+            "seedPhraseTitle": "Frase semilla",
+            "confirmSeedTitle": "Confirmar frase inicial",
+            "accountDetailsTitle": "Detalles de la cuenta",
+            "importTitle": "Importar cuenta"
+        },
+        "button": {
+            "next": "Próximo paso",
+            "skip": "Saltar",
+            "createAccount": "Crear una cuenta",
+            "importAccount": "Importar cuenta"
+        },
+        "accountName": {
+            "placeholder": "Nombre de la billetera",
+            "desc": "Este es el nombre público de su cartera que será visible para todos"
+        },
+        "password": {
+            "placeholder": "Contraseña",
+            "desc": "Asegúrese de utilizar una contraseña segura para una protección adecuada"
+        },
+        "confirmPassword": {
+            "placeholder": "Confirmar contraseña"
+        },
+        "accountMnemonic": {
+            "placeholder": "Frase mnemónica"
+        },
+        "seedAdviceText": "Esta es una semilla secreta de su cuenta. Asegúrese de almacenarla en un soporte no digital, por ejemplo - papel",
+        "confirmSeedText": "Confirme la frase semilla haciendo clic en las palabras en el orden correcto",
+        "errorMnemonicText": "Orden incorrecto de la frase semilla",
+        "exportOptionText": "Exportar archivo de cuenta .json",
+        "exportJsonText": "Siempre podrá acceder a su cuenta importando ese archivo .json. ¡No lo comparta con nadie!",
+        "addAccount": "Agregar una cuenta",
+        "dialog": {
+            "confirmTitle": "Confirmar con contraseña",
+            "confirmButton": "Firmar transacción",
+            "savePasswordText": "Recordar mi contraseña para los próximos 15 minutos",
+            "extendPasswordText": "Extender el período sin contraseña por 15 minutos"
+        },
+        "errorMessages": {
+            "password": "La contraseña no ha coincidido",
+            "passwords": "Las contraseñas no coinciden",
+            "mnemonic": "Mnemónico bip39 especificado no válido",
+            "mnemonicLength": "El mnemónico debe contener {number} palabras",
+            "jsonFields": "El archivo JSON no tiene campos requeridos"
+        }
     }
 }
