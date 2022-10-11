@@ -12,6 +12,7 @@ export type SettingsState = {
   featureFlags: FeatureFlags;
   slippageTolerance: string;
   marketAlgorithm: MarketAlgorithms;
+  сhartsEnabled: boolean;
   transactionDeadline: number;
   node: Partial<Node>;
   language: string;
