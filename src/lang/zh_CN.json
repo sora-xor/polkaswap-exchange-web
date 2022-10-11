@@ -747,7 +747,9 @@
             "SMART": "<span class=\"algorithm\"> SMART <\/span>流动性路由通过仅结合所有可用市场的最佳价格选项来确保任何交易的最佳价格。当可用时，只要资产价格比其他来源更实惠，代币绑定曲线（ <span class=\"algorithm\"> TBC <\/span> <span class=\"algorithm\"> XYK <\/span>流动池将被利用。",
             "TBC": "<span class=\"algorithm\"> TBC <\/span> — 仅从代币绑定曲线（一级市场）购买。 <span class=\"algorithm\"> XYK <\/span>流动池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
             "XYK": "<span class=\"algorithm\"> XYK <\/span> — 仅从 XYK 池（二级市场）购买。传统的 XYK 流动池兑换。"
-        }
+        },
+        "charts": "图表",
+        "сhartsDescription": "查看代币价格图表"
     },
     "resultDialog": {
         "title": "交易已提交",
@@ -1087,5 +1089,59 @@
         "zeroBalance": "隐藏0余额资产",
         "showAssets": "显示资产",
         "show": "显示"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "欢迎来到 Polkaswap！",
+            "headline": "让我们设置您的帐户",
+            "text": "创建您的 SORA 网络帐户或使用助记词或 .json 导入登录旧帐户。这使您可以安全地签署交易并管理 SORA 网络中的资产。",
+            "createAccount": "创建一个帐户",
+            "importAccount": "进口账户"
+        },
+        "heading": {
+            "seedPhraseTitle": "种子短语",
+            "confirmSeedTitle": "确认助记词",
+            "accountDetailsTitle": "帐户详情",
+            "importTitle": "导入账户"
+        },
+        "button": {
+            "next": "下一步",
+            "skip": "跳过",
+            "createAccount": "创建账户",
+            "importAccount": "导入账户"
+        },
+        "accountName": {
+            "placeholder": "钱包名称",
+            "desc": "这是你的钱包的公开名称，每个人都可以看到。"
+        },
+        "password": {
+            "placeholder": "密码",
+            "desc": "确保你使用一个强大的密码来进行适当的保护"
+        },
+        "confirmPassword": {
+            "placeholder": "确认密码"
+        },
+        "accountMnemonic": {
+            "placeholder": "助记词"
+        },
+        "seedAdviceText": "这是您帐户的秘密种子。确保将其存储在非数字载体上，例如 - 纸张",
+        "confirmSeedText": "通过按正确顺序单击单词来确认助记词",
+        "errorMnemonicText": "种子短语顺序不正确",
+        "exportOptionText": "导出 .json 账户文件",
+        "exportJsonText": "您将始终能够通过导入该 .json 文件来访问您的帐户。不要与任何人分享！",
+        "addAccount": "添加帐户",
+        "dialog": {
+            "confirmTitle": "用密码确认",
+            "confirmButton": "签署交易",
+            "savePasswordText": "在接下来的 15 分钟内记住我的密码",
+            "extendPasswordText": "延长无密码时间15分钟"
+        },
+        "errorMessages": {
+            "password": "密码不匹配",
+            "passwords": "密码不匹配",
+            "mnemonic": "指定无效的bip39助记符",
+            "mnemonicLength": "助记符应包含{number}单词",
+            "jsonFields": "JSON 文件没有必填字段"
+        }
     }
 }

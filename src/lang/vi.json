@@ -166,7 +166,7 @@
             "total": "Tổng",
             "bonded": "- Bonded"
         },
-        "totalAssetsValue": "Tổng giá trị tài sản của bạn:",
+        "totalAssetsValue": "Tổng giá trị tài sản:",
         "details": "Chi tiết",
         "assetId": "ID tài sản"
     },
@@ -747,7 +747,9 @@
             "SMART": "<span class=\"algorithm\">SMART<\/span> định tuyến thanh khoản đảm bảo giá tốt nhất cho giao dịch bất kỳ bằng cách kết hợp mức giá tốt nhất hiện có trên thị trường. Khi thuận lợi, Token Bonding Curve <span class=\"algorithm\">TBC<\/span> sẽ dùng để tạo thanh khoản miễn là giá của tài sản hợp lý hơn các nguồn khác, vì thế pool <span class=\"algorithm\">XYK<\/span> được khai thác.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> — chỉ mua từ Token Bonding Curve (Thị trường sơ cấp). Vị thế có thể bất lợi so với giá từ Pool XYK (Thị trường thứ cấp), nhưng về lâu dài thì giá trị nhận được từ phần thưởng được tặng có thể có giá trị hơn.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> - chỉ mua từ Pool XYK (thị trường thứ cấp). Hoán đổi gốc từ Pool XYK."
-        }
+        },
+        "charts": "Biểu đồ",
+        "сhartsDescription": "Xem biểu đồ về giá mã thông báo"
     },
     "resultDialog": {
         "title": "Giao dịch đã được gửi",
@@ -1081,11 +1083,65 @@
     "ofText": "{first} của {second}",
     "filter": {
         "all": "Tất cả",
-        "token": "Thẻ",
+        "token": "Token",
         "nft": "NFT",
         "verifiedOnly": "Chỉ hiển thị nội dung đã xác minh",
-        "zeroBalance": "Ẩn 0 tài sản số dư",
+        "zeroBalance": "Ẩn tài sản có số dư là 0",
         "showAssets": "Hiển thị tài sản",
-        "show": "Tỏ ra"
+        "show": "HIện"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Chào mừng bạn đến với Polkaswap!",
+            "headline": "Hãy thiết lập tài khoản của bạn",
+            "text": "Tạo tài khoản Mạng SORA của bạn hoặc đăng nhập vào tài khoản cũ bằng cách sử dụng cụm từ ghi nhớ hoặc nhập .json. Điều này cho phép bạn ký các giao dịch và quản lý tài sản một cách an toàn trong Mạng SORA.",
+            "createAccount": "Tạo tài khoản",
+            "importAccount": "Nhập tài khoản"
+        },
+        "heading": {
+            "seedPhraseTitle": "Cụm từ hạt giống",
+            "confirmSeedTitle": "Xác nhận cụm từ hạt giống",
+            "accountDetailsTitle": "Chi tiết tài khoản",
+            "importTitle": "Nhập tài khoản"
+        },
+        "button": {
+            "next": "Bước tiếp theo",
+            "skip": "Bỏ qua",
+            "createAccount": "Tạo tài khoản",
+            "importAccount": "Nhập tài khoản"
+        },
+        "accountName": {
+            "placeholder": "Tên ví",
+            "desc": "Đây là tên công khai của ví của bạn sẽ được hiển thị cho mọi người"
+        },
+        "password": {
+            "placeholder": "Mật khẩu",
+            "desc": "Đảm bảo bạn đang sử dụng mật khẩu mạnh để được bảo vệ thích hợp"
+        },
+        "confirmPassword": {
+            "placeholder": "Xác nhận mật khẩu"
+        },
+        "accountMnemonic": {
+            "placeholder": "Cụm từ ghi nhớ"
+        },
+        "seedAdviceText": "Đây là hạt giống bí mật của tài khoản của bạn. Đảm bảo lưu trữ nó trên một nhà cung cấp dịch vụ không phải kỹ thuật số, ví dụ ghi ra giấy",
+        "confirmSeedText": "Xác nhận cụm từ hạt giống bằng cách nhấp vào các từ theo đúng thứ tự",
+        "errorMnemonicText": "Thứ tự cụm từ hạt giống không chính xác",
+        "exportOptionText": "Xuất tệp tài khoản .json",
+        "exportJsonText": "Bạn sẽ luôn có thể truy cập tài khoản của mình bằng cách nhập tệp .json đó. Đừng chia sẻ nó với bất kỳ ai!",
+        "addAccount": "Thêm tài khoản",
+        "dialog": {
+            "confirmTitle": "Xác nhận bằng mật khẩu",
+            "confirmButton": "Ký giao dịch",
+            "savePasswordText": "Nhớ mật khẩu của tôi trong 15 phút tới",
+            "extendPasswordText": "Kéo dài thời gian không cần mật khẩu thêm 15 phút"
+        },
+        "errorMessages": {
+            "password": "Mật khẩu không khớp",
+            "passwords": "Mật khẩu không đúng",
+            "mnemonic": "Đã chỉ định ghi nhớ bip39 không hợp lệ",
+            "mnemonicLength": "Cụm từ ghi nhớ phải chứa {number} từ",
+            "jsonFields": "Tệp JSON không có các trường bắt buộc"
+        }
     }
 }
