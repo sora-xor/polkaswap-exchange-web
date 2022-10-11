@@ -115,7 +115,7 @@ export default class TokenInput extends Mixins(
   }
 
   get max(): string {
-    return this.getMax(this.address);
+    return this.MaxInputNumber;
   }
 
   get selectTokenIcon(): Nullable<string> {

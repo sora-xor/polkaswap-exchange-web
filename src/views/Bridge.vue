@@ -33,7 +33,7 @@
           :value="amount"
           :decimals="getDecimals(isSoraToEvm)"
           :delimiters="delimiters"
-          :max="getMax(assetAddress)"
+          :max="MaxInputNumber"
           :disabled="!areNetworksConnected || !isAssetSelected"
           class="s-input--token-value"
           data-test-name="bridgeFrom"
@@ -124,7 +124,7 @@
           :value="amount"
           :decimals="getDecimals(!isSoraToEvm)"
           :delimiters="delimiters"
-          :max="getMax(assetAddress)"
+          :max="MaxInputNumber"
           class="s-input--token-value"
           data-test-name="bridgeTo"
           has-locale-string
