@@ -9,12 +9,11 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
-import DialogBase from '@/components/DialogBase.vue';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
-
 import MoonpayBridgeInitMixin from './MoonpayBridgeInitMixin';
 
 import { getCssVariableValue } from '@/utils';
@@ -27,7 +26,7 @@ import type { MoonpayTransaction } from '@/utils/moonpay';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     MoonpayLogo,
     MoonpayWidget: lazyComponent(Components.MoonpayWidget),
   },

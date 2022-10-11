@@ -7,10 +7,10 @@
           {{ t('mobilePopup.info') }}
         </p>
         <div>
-          <a :href="StoreLinks.AppStore" target="_blank" rel="nofollow noopener">
+          <a :href="StoreLinks.AppStore" target="_blank" rel="nofollow noopener" tabindex="-1">
             <s-button class="logo logo__app-store">App Store</s-button>
           </a>
-          <a :href="StoreLinks.GooglePlay" target="_blank" rel="nofollow noopener">
+          <a :href="StoreLinks.GooglePlay" target="_blank" rel="nofollow noopener" tabindex="-1">
             <s-button class="logo logo__google-play">Google Play</s-button>
           </a>
         </div>
@@ -26,8 +26,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import DialogBase from '../DialogBase.vue';
-import DialogMixin from '../mixins/DialogMixin';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '../mixins/TranslationMixin';
 import { StoreLinks } from '../../consts';
 
@@ -35,11 +34,11 @@ import QrCode from '../../assets/img/mobile/qr-code.svg?inline';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     QrCode,
   },
 })
-export default class MobilePopup extends Mixins(DialogMixin, TranslationMixin) {
+export default class MobilePopup extends Mixins(mixins.DialogMixin, TranslationMixin) {
   @Prop({ type: String }) readonly fee!: string;
 
   StoreLinks = StoreLinks;
@@ -53,7 +52,7 @@ export default class MobilePopup extends Mixins(DialogMixin, TranslationMixin) {
 
 <style lang="scss">
 .popup .el-dialog {
-  max-width: 660px;
+  max-width: 660px !important;
   margin-top: 22vh !important;
 }
 

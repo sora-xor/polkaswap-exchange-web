@@ -1,4 +1,4 @@
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 import type { CodecString } from '@sora-substrate/util';
 import type { RewardInfo, RewardsInfo, AccountMarketMakerInfo } from '@sora-substrate/util/build/rewards/types';
 import type { RewardsAmountHeaderItem } from '@/types/rewards';
@@ -21,7 +21,7 @@ export type RewardsState = {
   rewardsFetching: boolean;
   rewardsClaiming: boolean;
   transactionError: boolean;
-  recievedRewards: RewardsAmountHeaderItem[];
+  receivedRewards: RewardsAmountHeaderItem[];
   transactionStep: number;
   signature: string;
   accountMarketMakerInfo: Nullable<AccountMarketMakerInfo>;

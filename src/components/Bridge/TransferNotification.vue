@@ -22,7 +22,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
-import DialogBase from '@/components/DialogBase.vue';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -37,8 +36,8 @@ import type { Whitelist } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
-    DialogBase,
     SimpleNotification: lazyComponent(Components.SimpleNotification),
+    DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
   },
 })

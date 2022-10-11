@@ -37,7 +37,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
@@ -45,7 +45,7 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
 
 import { lazyComponent, goTo } from '@/router';
-import { PageNames, Components, LogoSize } from '@/consts';
+import { PageNames, Components } from '@/consts';
 import { getter, mutation } from '@/store/decorators';
 
 @Component({
@@ -87,7 +87,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   get nodeLogo() {
     return {
-      size: LogoSize.MEDIUM,
+      size: WALLET_CONSTS.LogoSize.MEDIUM,
       tokenSymbol: XOR.symbol,
     };
   }
@@ -202,6 +202,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
       margin-left: 0;
     }
   }
+
   // TODO: Check for moonpay=false, seems like an issue
   // margin-left: auto;
 

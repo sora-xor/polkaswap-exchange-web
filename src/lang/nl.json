@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Er is geen Polkadot.js-extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Er lijken geen accounts te zijn in uw Polkadot.js-extensie. Voeg een account toe en probeer het opnieuw.",
-        "noAccount": "Polkadot.js-accountfout. Controleer uw account in de Polkadot.js-extensie"
+        "noAccount": "Polkadot.js-accountfout. Controleer uw account in de Polkadot.js-extensie",
+        "noExtension": "Er is geen {extension} -extensie gevonden. Installeer het en laad deze pagina opnieuw",
+        "noSigner": "Toegang geweigerd. Ga naar {extension} extensie-instellingen en open \"Websitetoegang beheren\" om toe te staan."
     },
     "connection": {
         "title": "SORA Netwerk account",
@@ -97,6 +99,10 @@
             "learnMore": "Kom meer te weten",
             "connect": "Account aansluiten",
             "refresh": "Vernieuwen"
+        },
+        "selectWallet": "Selecteer een portemonnee om mee te werken",
+        "wallet": {
+            "install": "Installeren"
         }
     },
     "wallet": {
@@ -135,7 +141,11 @@
         "clearHistory": "Geschiedenis wissen",
         "filterPlaceholder": "Filteren op adres, symbool, type of blok-ID",
         "empty": "Uw transacties verschijnen hier appear",
-        "emptySearch": "Geen transacties gevonden"
+        "emptySearch": "Geen transacties gevonden",
+        "firstText": "Eerst",
+        "lastText": "Laatst",
+        "prevText": "Vorig",
+        "nextText": "Volgende"
     },
     "assets": {
         "empty": "Er zijn geen assets",
@@ -163,7 +173,7 @@
     "asset": {
         "remove": "Asset verwijderen",
         "select": "Selecteer een bezit",
-        "recieve": "Ontvang {symbol}"
+        "receive": "Ontvang {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +527,8 @@
         "swapOutputMessage": "De output wordt geschat. U ontvangt minimaal {transactionValue} of de transactie wordt teruggedraaid.",
         "rewardsForSwap": "PSWAP Strategische Beloningen",
         "swapInputMessage": "Invoer wordt geschat. U verkoopt maximaal {transactionValue} of de transactie wordt teruggedraaid.",
-        "route": "Route"
+        "route": "Route",
+        "errorFetching": "Fout bij het ophalen van de gegevens"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -736,7 +747,9 @@
             "SMART": "<span class=\"algoritme\">SMART<\/span> liquiditeitsroutering zorgt voor de beste prijs voor elke transactie door alleen de beste prijsopties uit alle beschikbare markten te combineren. Indien beschikbaar, zal Token Bonding Curve (<span class=\"algoritme\">TBC<\/span>) worden gebruikt voor liquiditeit zolang de assetprijs betaalbaarder is dan uit andere bronnen, waarop de <span class=\"algoritme\">XYK<\/span> pool wordt gebruikt.",
             "TBC": "<span class=\"algoritme\">TBC<\/span> — alleen kopen van de Token Bonding Curve (Primary Market). Er is een mogelijkheid dat de prijs ongunstig kan worden in vergelijking met de <span class=\"algorithm\">XYK<\/span> pool (Secondary Market), maar de waarde die wordt ontvangen van de gevestigde beloningen kan in de loop van de tijd veel gunstiger blijken te zijn.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> - alleen kopen van de XYK-pool (secundaire markt). Traditionele XYK-poolswap."
-        }
+        },
+        "charts": "Grafieken",
+        "сhartsDescription": "Bekijk grafieken voor tokenprijzen"
     },
     "resultDialog": {
         "title": "Transactie ingediend",
@@ -865,7 +878,7 @@
         },
         "history": {
             "title": "Aankoopgeschiedenis",
-            "empty": "Geen informatie"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transactie klaar voor bridge"
@@ -874,7 +887,6 @@
             "transfer": "Tokens succesvol gekocht!\n Klik om de bridge transactie te starten"
         }
     },
-    "recievedText": "Ontvangen",
     "light": "Licht",
     "dark": "Donker",
     "headerMenu": {
@@ -961,8 +973,13 @@
     "code": {
         "download": "Downloaden QR-code",
         "upload": "QR code scannen",
-        "recieve": "Ontvangen",
-        "invalid": "Ongeldige QR-code"
+        "invalid": "Ongeldige QR-code",
+        "import": "Een afbeelding importeren",
+        "scan": "Scannen met camera",
+        "allowanceError": "Controleer de beschikbaarheid van je camera en browserrechten om deze te gebruiken",
+        "receive": "Ontvangen",
+        "camera": "Camera",
+        "allowanceRequest": "Druk op \"Toestaan\" toegang tot camera"
     },
     "bridgeTransferNotification": {
         "addToken": "Voeg {symbol} toe aan @:metamask",
@@ -1006,7 +1023,10 @@
         },
         "amountAdd": "Bedrag om in te zetten",
         "amountRemove": "Te verwijderen bedrag",
-        "poweredBy": "Mogelijk gemaakt door Demeter Farming"
+        "poweredBy": "Mogelijk gemaakt door Demeter Farming",
+        "calculator": "Rekenmachine",
+        "results": "Resultaten",
+        "rewards": "{symbol} beloningen"
     },
     "staking": {
         "title": "Staking"
@@ -1026,11 +1046,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Poolpaar bestaat al",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Sliptolerantie heeft niet aan de juiste limieten voldaan"
         },
         "referrals": {
             "AlreadyHasReferrer": "Account heeft al een verwijzer",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Verwijzer heeft niet genoeg gereserveerd saldo"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Beloningsprogramma is al afgelopen",
@@ -1047,6 +1067,81 @@
         },
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Er is een fout opgetreden bij het berekenen van de prijs"
+        }
+    },
+    "receivedText": "Ontvangen",
+    "browserNotificationDialog": {
+        "title": "Browsermeldingen inschakelen",
+        "info": "We sturen u alleen relevante updates over uw portemonnee, bijvoorbeeld: wijzigingen in activasaldo",
+        "button": "Notificaties aanzetten",
+        "agree": "Ja ik begrijp het",
+        "notificationBlocked": "Als u de meldingen over {appName} wilt ontvangen, moet u de meldingen toestaan in de systeemeigen instellingen van uw browser",
+        "pointer": "Druk op \"Toestaan\" om meldingen in te schakelen"
+    },
+    "assetDeposit": "Activa-saldo is gestort",
+    "noDataText": "Geen informatie",
+    "ofText": "{first} van {second}",
+    "filter": {
+        "all": "Alle",
+        "token": "Tokens",
+        "nft": "NFT's",
+        "verifiedOnly": "Toon alleen geverifieerde activa",
+        "zeroBalance": "Verberg 0 tegoeden",
+        "showAssets": "Items weergeven",
+        "show": "Show"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Welkom bij Polkaswap!",
+            "headline": "Laten we uw account instellen",
+            "text": "Maak uw SORA Network-account of log in op de oude met behulp van mnemonic-zin of .json-import. Hiermee kunt u transacties veilig ondertekenen en activa beheren in SORA Network.",
+            "createAccount": "Account aanmaken",
+            "importAccount": "Account importeren"
+        },
+        "heading": {
+            "seedPhraseTitle": "Zaadzin",
+            "confirmSeedTitle": "Zaadzin bevestigen",
+            "accountDetailsTitle": "Accountgegevens",
+            "importTitle": "Importrekening"
+        },
+        "button": {
+            "next": "Volgende stap",
+            "skip": "Skip",
+            "createAccount": "Maak account",
+            "importAccount": "Importrekening"
+        },
+        "accountName": {
+            "placeholder": "Naam portemonnee",
+            "desc": "Dit is de openbare naam van uw portemonnee die voor iedereen zichtbaar zal zijn"
+        },
+        "password": {
+            "placeholder": "Wachtwoord",
+            "desc": "Zorg ervoor dat u een sterk wachtwoord gebruikt voor een goede beveiliging"
+        },
+        "confirmPassword": {
+            "placeholder": "Bevestig wachtwoord"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemotechnische zin"
+        },
+        "seedAdviceText": "Dit is een geheime seed van je account. Bewaar het op een niet-digitale drager, bijvoorbeeld papier",
+        "confirmSeedText": "Bevestig de seed-zin door op de woorden in de juiste volgorde te klikken",
+        "errorMnemonicText": "Onjuiste volgorde van zaadzinnen",
+        "exportOptionText": ".json accountbestand exporteren",
+        "exportJsonText": "Je hebt altijd toegang tot je account door dat .json bestand te importeren. Deel het met niemand!",
+        "addAccount": "Een account toevoegen",
+        "dialog": {
+            "confirmTitle": "Bevestig met wachtwoord",
+            "confirmButton": "Transactie ondertekenen",
+            "savePasswordText": "Onthoud mijn wachtwoord voor de komende 15 minuten",
+            "extendPasswordText": "Verleng de periode zonder wachtwoord met 15 minuten"
+        },
+        "errorMessages": {
+            "password": "Wachtwoord komt niet overeen",
+            "passwords": "Wachtwoorden kwamen niet overeen",
+            "mnemonic": "Ongeldig bip39 geheugensteuntje opgegeven",
+            "mnemonicLength": "Mnemonic moet {number} woorden bevatten",
+            "jsonFields": "JSON-bestand heeft geen verplichte velden"
         }
     }
 }

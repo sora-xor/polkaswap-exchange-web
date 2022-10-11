@@ -210,6 +210,13 @@ export default class About extends Mixins(TranslationMixin) {
     margin-top: calc(var(--s-basic-spacing) * 2);
     margin-bottom: calc(var(--s-basic-spacing) * -0.75);
   }
+
+  a {
+    outline: none;
+    &:focus:not(:active) {
+      @include focus-outline($inner: true);
+    }
+  }
 }
 </style>
 
@@ -270,7 +277,7 @@ export default class About extends Mixins(TranslationMixin) {
       min-width: 800px;
       max-width: 1405px;
       width: 100%;
-      z-index: -1;
+      z-index: $app-background-layer;
     }
 
     &-title {
@@ -334,7 +341,7 @@ export default class About extends Mixins(TranslationMixin) {
     &-shadow-1 {
       position: absolute;
       top: -110%;
-      z-index: -1;
+      z-index: $app-background-layer;
       width: 100%;
     }
   }
@@ -380,7 +387,7 @@ export default class About extends Mixins(TranslationMixin) {
     &-shadow-1 {
       position: absolute;
       top: -110%;
-      z-index: -1;
+      z-index: $app-background-layer;
       width: 100%;
     }
   }
@@ -426,7 +433,7 @@ export default class About extends Mixins(TranslationMixin) {
     &-shadow-1 {
       position: absolute;
       top: -150%;
-      z-index: -1;
+      z-index: $app-background-layer;
       width: 100%;
     }
   }
@@ -465,7 +472,7 @@ export default class About extends Mixins(TranslationMixin) {
     &-shadow-1 {
       position: absolute;
       top: -70%;
-      z-index: -1;
+      z-index: $app-background-layer;
       width: 100%;
     }
   }
@@ -484,7 +491,7 @@ export default class About extends Mixins(TranslationMixin) {
     &-shadow-1 {
       position: absolute;
       top: -100%;
-      z-index: -1;
+      z-index: $app-background-layer;
       width: 120%;
 
       @media screen and (max-width: 1200px) {
@@ -557,7 +564,7 @@ export default class About extends Mixins(TranslationMixin) {
     &-shadow-1 {
       position: absolute;
       top: 0;
-      z-index: -1;
+      z-index: $app-background-layer;
       width: 100%;
     }
   }
@@ -588,7 +595,7 @@ export default class About extends Mixins(TranslationMixin) {
   font-weight: 200;
   font-size: 18px;
   line-height: 1.4;
-  z-index: 1;
+  z-index: $app-content-layer;
 
   letter-spacing: var(--s-letter-spacing-small);
 
