@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\"> XYK <\/span> — membeli hanya dari Pool XYK (Pasar Sekunder). Swap pool XYK tradisional."
         },
         "charts": "Bagan",
-        "сhartsEnabled": "Bagan Diaktifkan"
+        "сhartsDescription": "Lihat grafik untuk harga token"
     },
     "resultDialog": {
         "title": "Transaksi dikirim",

@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span> - nákup pouze z XYK poolu (sekundární trh). Tradiční XYK pool swap."
         },
         "charts": "Grafy",
-        "сhartsEnabled": "Grafy povoleny"
+        "сhartsDescription": "Prohlédněte si grafy cen tokenů"
     },
     "resultDialog": {
         "title": "Transakce byla odeslána",

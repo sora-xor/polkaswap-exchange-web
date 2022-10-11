@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span> - comprare solo dalla pool XYK (Mercato Secondario). Scambio tradizionale su pool XYK."
         },
         "charts": "Grafici",
-        "сhartsEnabled": "Grafici abilitati"
+        "сhartsDescription": "Visualizza i grafici per i prezzi dei token"
     },
     "resultDialog": {
         "title": "Transazione inviata",

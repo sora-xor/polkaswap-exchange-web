@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span> - chỉ mua từ Pool XYK (thị trường thứ cấp). Hoán đổi gốc từ Pool XYK."
         },
         "charts": "Biểu đồ",
-        "сhartsEnabled": "Biểu đồ được bật"
+        "сhartsDescription": "Xem biểu đồ về giá mã thông báo"
     },
     "resultDialog": {
         "title": "Giao dịch đã được gửi",

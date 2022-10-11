@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span> — buying only from the XYK Pool (Secondary Market). Traditional XYK pool swap."
         },
         "charts": "Charts",
-        "сhartsEnabled": "Charts Enabled"
+        "сhartsDescription": "View charts for token prices"
     },
     "resultDialog": {
         "title": "Transaction submitted",

@@ -1,10 +1,8 @@
 <template>
-  <div class="charts-switch-container">
-    <settings-header :title="t('dexSettings.charts')" />
-    <div class="charts-switch">
-      <s-switch v-model="enableCharts" />
-      <span>{{ t('dexSettings.сhartsEnabled') }}</span>
-    </div>
+  <div class="charts-switch">
+    <s-switch v-model="enableCharts" />
+    <span>{{ t('dexSettings.charts') }}</span>
+    <p class="charts-switch-description">{{ t('dexSettings.сhartsDescription') }}</p>
   </div>
 </template>
 
@@ -40,17 +38,24 @@ export default class ChartsSwitch extends Mixins(TranslationMixin) {
 .charts-switch {
   display: flex;
   align-items: center;
-
-  &-container .settings-header {
-    text-transform: uppercase;
-  }
+  flex-wrap: wrap;
+  padding-right: $inner-spacing-small;
+  padding-left: $inner-spacing-small;
 
   & > span {
-    margin-left: #{$basic-spacing-small};
+    margin-left: $inner-spacing-small;
     font-size: var(--s-font-size-medium);
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: var(--s-letter-spacing-small);
     line-height: var(--s-line-height-medium);
+  }
+
+  &-description {
+    margin-top: $inner-spacing-mini;
+    width: 100%;
+    font-weight: 300;
+    font-size: var(--s-font-size-extra-small);
+    line-height: var(--s-line-height-base);
   }
 }
 </style>

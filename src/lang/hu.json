@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span> — vásárlás csak az XYK Pool-ból (Másodlagos Piac). Tradícionális XYK pool váltás."
         },
         "charts": "Diagramok",
-        "сhartsEnabled": "Diagramok engedélyezve"
+        "сhartsDescription": "Tekintse meg a token árak diagramjait"
     },
     "resultDialog": {
         "title": "Tranzakció elküldve",

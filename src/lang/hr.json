@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span> — kupnja samo iz XYK pula (sekundarno tržište). Tradicionalna zamjena XYK pula."
         },
         "charts": "Karte",
-        "сhartsEnabled": "Grafikoni omogućeni"
+        "сhartsDescription": "Pogledajte grafikone za cijene tokena"
     },
     "resultDialog": {
         "title": "Transakcija je poslana",

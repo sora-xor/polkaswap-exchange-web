@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\"> XYK <\/span> — 仅从 XYK 池（二级市场）购买。传统的 XYK 流动池兑换。"
         },
         "charts": "图表",
-        "сhartsEnabled": "图表已启用"
+        "сhartsDescription": "查看代币价格图表"
     },
     "resultDialog": {
         "title": "交易已提交",

@@ -1,6 +1,7 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="t('dexSettings.title')" custom-class="settings">
     <market-algorithm />
+    <s-divider />
     <charts-switch />
   </dialog-base>
 </template>
@@ -27,6 +28,10 @@ export default class SettingsDialog extends Mixins(TranslationMixin, mixins.Dial
 .settings {
   &.el-dialog__wrapper .el-dialog .el-dialog__body {
     padding-bottom: $inner-spacing-big;
+  }
+  .el-divider {
+    margin: $inner-spacing-mini $inner-spacing-small $inner-spacing-medium;
+    width: calc(100% - #{$inner-spacing-small} * 2);
   }
 }
 </style>

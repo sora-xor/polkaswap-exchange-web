@@ -41,8 +41,8 @@
             "CreatePair": "Tillhandahöll {amount} {symbol} och {amount2} {symbol2}",
             "RegisterAsset": "Registrerade {symbol} tillgång",
             "ClaimRewards": "Belöning hävdad framgångsrikt {rewards}",
-            "ReferralReserveXor": "XOR Bonded framgångsrikt",
-            "ReferralUnreserveXor": "XOR Unbonded framgångsrikt",
+            "ReferralReserveXor": "XOR bonded framgångsrikt",
+            "ReferralUnreserveXor": "XOR unbonded framgångsrikt",
             "ReferralSetInvitedUser": "Hänvisning tillämpades framgångsrikt",
             "SwapAndSend": "Bytte {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Medföljer {symbol} och {symbol2} {amount} LP-polletter",
@@ -71,7 +71,7 @@
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
-        "ReferralSetInvitedUser": "Tillämpa Inbjudning",
+        "ReferralSetInvitedUser": "Tillämpa Hänvisning",
         "SwapAndSend": "Byt och Skicka",
         "DemeterFarmingDepositLiquidity": "Insats likviditet",
         "DemeterFarmingWithdrawLiquidity": "Unstake likviditet",
@@ -299,7 +299,7 @@
             "subscan": "VIsa i Subscan"
         },
         "txId": "Transaktions-ID",
-        "referrer": "Den som hänvisade",
+        "referrer": "Referrer",
         "referral": "Hänvisning"
     },
     "appName": "Polkaswap",
@@ -748,8 +748,8 @@
             "TBC": "<span class=\"algorithm\">TBC<\/span> - köpa endast från Token Bonding Curve (Primärmarknad). Det finns en möjlighet att priset kan bli ofördelaktigt jämfört med <span class=\"algorithm\">XYK<\/span>-pool (Sekundärmarknad), men det värde som erhålls från de bestående belöningar kan visa sig vara mycket mer fördelaktiga med tiden.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — köpa endast från XYK-Poolen (Sekundär Marknad). Traditionell XYK pool byte."
         },
-        "charts": "Diagram",
-        "сhartsEnabled": "Diagram aktiverade"
+        "charts": "Grafer",
+        "сhartsDescription": "Visa diagram för tokenpriser"
     },
     "resultDialog": {
         "title": "Transaktion inskickad",
@@ -915,12 +915,12 @@
     },
     "blockNumberText": "Blockera nummer",
     "referralProgram": {
-        "title": "Värvningsprogram",
+        "title": "Hänvisningsprogram",
         "connectAccount": "För att bjuda in användare måste du ansluta ditt SORA-konto.",
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} inbjudningar",
         "startInviting": "Bond XOR för att hänvisa andra",
-        "preview": "Bjud in nya användare och få 10 % av deras transaktionsavgifter. <br \/> För att börja, bind valfritt belopp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Lär dig mer <\/a>",
+        "preview": "Bjud in nya användare och få 10 % av deras transaktionsavgifter. <br \/> För att börja, bond valfritt belopp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Lär dig mer <\/a>",
         "deposit": "Insättning",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
@@ -947,7 +947,7 @@
             "bond": "Bekräfta bond",
             "unbond": "Bekräfta unbond",
             "inviteTitle": "Du har blivit inbjuden till Polkaswap",
-            "inviteDescription": "För varje transaktion kommer 10% av avgiften att gå till din hänvisare, utan någon extra kostnad för dig.",
+            "inviteDescription": "För varje transaktion kommer 10% av avgiften att gå till din referrer, utan någon extra kostnad för dig.",
             "signInvitation": "Godkänn",
             "freeOfCharge": "Denna åtgärd är kostnadsfri",
             "hasReferrerTitle": "Du har redan ställt in din inbjudare",
@@ -955,8 +955,8 @@
             "ok": "OK"
         },
         "referrer": {
-            "title": "Lägg till den person som hänvisade dig",
-            "titleReferrer": "Den person som hänvisade dig",
+            "title": "Lägg till din referrer",
+            "titleReferrer": "Din referrer",
             "placeholder": "Ange inbjudningslänk eller kod",
             "label": "Inbjudningslänk eller kod",
             "approve": "Godkänn",
@@ -1049,8 +1049,8 @@
             "SlippageLimitExceeded": "Halktoleransen har inte uppnått lämpliga gränser"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Kontot har redan en hänvisare",
-            "ReferrerInsufficientBalance": "Hänvisaren har inte tillräckligt med reserverat saldo"
+            "AlreadyHasReferrer": "Kontot har redan en referrer",
+            "ReferrerInsufficientBalance": "Referrer har inte tillräckligt av reserverat saldo"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Belöningsprogrammet har redan avslutats",
@@ -1086,7 +1086,7 @@
         "token": "Tokens",
         "nft": "NFTs",
         "verifiedOnly": "Visa endast verifierade tillgångar",
-        "zeroBalance": "Dölj 0 balans tillgångar",
+        "zeroBalance": "Dölj 0 saldo tillgångar",
         "showAssets": "Visa tillgångar",
         "show": "Visa"
     },
@@ -1094,20 +1094,20 @@
         "welcome": {
             "header": "Välkommen till Polkaswap!",
             "headline": "Låt oss konfigurera ditt konto",
-            "text": "Skapa ditt SORA Network-konto eller logga in på de gamla med mnemoniska fraser eller .json-import. Detta gör att du säkert kan signera transaktioner och hantera tillgångar i SORA Network.",
+            "text": "Skapa ditt SORA Network-konto eller logga in på de gamla med mnemonic phrase eller .json-import. Detta gör att du säkert kan signera transaktioner och hantera tillgångar i SORA Nätverk.",
             "createAccount": "Skapa ett konto",
             "importAccount": "Importera konto"
         },
         "heading": {
-            "seedPhraseTitle": "Fröfras",
-            "confirmSeedTitle": "Bekräfta fröfras",
+            "seedPhraseTitle": "Seed phrase",
+            "confirmSeedTitle": "Bekräfta seed phrase",
             "accountDetailsTitle": "Kontouppgifter",
             "importTitle": "Importera konto"
         },
         "button": {
             "next": "Nästa steg",
-            "skip": "Hoppa",
-            "createAccount": "Skapa konto",
+            "skip": "Hoppa över",
+            "createAccount": "Skapa Konto",
             "importAccount": "Importera konto"
         },
         "accountName": {
@@ -1122,26 +1122,26 @@
             "placeholder": "Bekräfta lösenord"
         },
         "accountMnemonic": {
-            "placeholder": "Mnemonisk fras"
+            "placeholder": "Mnemonic phrase"
         },
-        "seedAdviceText": "Detta är ett hemligt frö för ditt konto. Se till att du lagrar det på en icke-digital bärare, till exempel papper.",
-        "confirmSeedText": "Bekräfta fröfrasen genom att klicka på orden i rätt ordning",
-        "errorMnemonicText": "Felaktig ordning på fröfraser",
+        "seedAdviceText": "Detta är en hemlig seed för ditt konto. Se till att du lagrar den på en icke-digital bärare, till exempel papper.",
+        "confirmSeedText": "Bekräfta seed phrase genom att klicka på orden i den korrekta ordningen",
+        "errorMnemonicText": "Felaktig ordning på seed phrase",
         "exportOptionText": "Exportera .json-kontofil",
         "exportJsonText": "Du kommer alltid att kunna komma åt ditt konto genom att importera den .json-filen. Dela den inte med någon!",
         "addAccount": "Lägg till ett konto",
         "dialog": {
             "confirmTitle": "Bekräfta med lösenord",
-            "confirmButton": "Signera transaktion",
+            "confirmButton": "Signera Transaktion",
             "savePasswordText": "Kom ihåg mitt lösenord under de kommande 15 minuterna",
             "extendPasswordText": "Förläng perioden utan lösenord med 15 minuter"
         },
         "errorMessages": {
-            "password": "Lösenordet matchade inte",
-            "passwords": "lösenorden matchade inte",
+            "password": "Lösenord matchade inte",
+            "passwords": "Lösenorden matchade inte",
             "mnemonic": "En ogiltig bip39-minnesanteckning har angetts.",
             "mnemonicLength": "Mnemonic bör innehålla {number} ord",
-            "jsonFields": "JSON-filen har inte obligatoriska fält"
+            "jsonFields": "JSON-fil har inte obligatoriska fält"
         }
     }
 }

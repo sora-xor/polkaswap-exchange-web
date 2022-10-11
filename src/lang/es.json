@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span> — comprar sólo en el Fondo común XYK (Mercado secundario). Intercambio del Fondo común tradicional XYK."
         },
         "charts": "Gráficos",
-        "сhartsEnabled": "Gráficos habilitados"
+        "сhartsDescription": "Ver gráficos de precios de tokens"
     },
     "resultDialog": {
         "title": "Transacción enviada",

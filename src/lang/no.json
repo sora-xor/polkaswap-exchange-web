@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span>- kjøper bare fra XYK Pool (sekundærmarkedet). Tradisjonelt XYK-bassengbytte."
         },
         "charts": "Diagrammer",
-        "сhartsEnabled": "Diagrammer aktivert"
+        "сhartsDescription": "Se diagrammer for tokenpriser"
     },
     "resultDialog": {
         "title": "Transaksjonen er sendt inn",

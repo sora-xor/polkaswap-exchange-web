@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\"> XYK <\/span> - rira nikan lati Omi ikudu XYK (Ọja Atẹle). Iyipada paṣipaarọ pool XYK ti atile. "
         },
         "charts": "Awọn aworan atọka",
-        "сhartsEnabled": "Ti ṣiṣẹ awọn aworan apẹrẹ"
+        "сhartsDescription": "Wo awọn shatti fun awọn idiyele ami"
     },
     "resultDialog": {
         "title": "Iṣowo ti a fi silẹ",

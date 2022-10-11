@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span> — achat uniquement sur le pool XYK (marché secondaire). Échange de pool XYK traditionnel."
         },
         "charts": "Graphiques",
-        "сhartsEnabled": "Graphiques activés"
+        "сhartsDescription": "Afficher les graphiques pour les prix des jetons"
     },
     "resultDialog": {
         "title": "Transaction soumise",

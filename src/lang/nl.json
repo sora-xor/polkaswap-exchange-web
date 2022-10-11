@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span> - alleen kopen van de XYK-pool (secundaire markt). Traditionele XYK-poolswap."
         },
         "charts": "Grafieken",
-        "сhartsEnabled": "Grafieken ingeschakeld"
+        "сhartsDescription": "Bekijk grafieken voor tokenprijzen"
     },
     "resultDialog": {
         "title": "Transactie ingediend",

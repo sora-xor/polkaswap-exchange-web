@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span> – nákup iba z fondu XYK (sekundárny trh). Tradičný výmenný fond XYK."
         },
         "charts": "Grafy",
-        "сhartsEnabled": "Grafy sú povolené"
+        "сhartsDescription": "Pozrite si grafy cien tokenov"
     },
     "resultDialog": {
         "title": "Transakcia bola odoslaná",

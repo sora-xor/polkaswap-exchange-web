@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span> – zakup jedynie z puli XYK (rynek wtórny). Tradycyjna wymiana według modelu XYK."
         },
         "charts": "Wykresy",
-        "сhartsEnabled": "Wykresy włączone"
+        "сhartsDescription": "Zobacz wykresy cen tokenów"
     },
     "resultDialog": {
         "title": "Transakcja została złożona.",

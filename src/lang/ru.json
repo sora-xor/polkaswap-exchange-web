@@ -749,7 +749,7 @@
             "XYK": "<span class=\"algorithm\">XYK<\/span> — покупка только из пула XYK (вторичный рынок). Традиционный пул обмена XYK."
         },
         "charts": "Графики",
-        "сhartsEnabled": "Графики включены"
+        "сhartsDescription": "Посмотреть графики цен на токены"
     },
     "resultDialog": {
         "title": "Транзакция отправлена",
