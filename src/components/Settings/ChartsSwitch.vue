@@ -52,6 +52,7 @@ export default class ChartsSwitch extends Mixins(TranslationMixin) {
 
   &-description {
     margin-top: $inner-spacing-mini;
+    margin-bottom: $inner-spacing-mini;
     width: 100%;
     font-weight: 300;
     font-size: var(--s-font-size-extra-small);
