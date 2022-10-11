@@ -1,4 +1,4 @@
-import { DefaultMarketAlgorithm, DefaultSlippageTolerance, MarketAlgorithms, DefaultChartsEnabled } from '@/consts';
+import { DefaultMarketAlgorithm, DefaultSlippageTolerance, MarketAlgorithms } from '@/consts';
 import { getLocale } from '@/lang';
 import storage, { settingsStorage } from '@/utils/storage';
 import type { SettingsState } from './types';
@@ -6,12 +6,13 @@ import type { SettingsState } from './types';
 function initialState(): SettingsState {
   const node = settingsStorage.get('node');
   const customNodes = settingsStorage.get('customNodes');
+  const сhartsEnabled = storage.get('сhartsEnabled');
   const isBrowserNotificationApiAvailable = 'Notification' in window;
   return {
     featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: (storage.get('marketAlgorithm') || DefaultMarketAlgorithm) as MarketAlgorithms,
-    сhartsEnabled: storage.get('сhartsEnabled') ? storage.get('сhartsEnabled') === 'true' : DefaultChartsEnabled,
+    сhartsEnabled: сhartsEnabled ? Boolean(JSON.parse(сhartsEnabled)) : true,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     isBrowserNotificationApiAvailable,
     browserNotifsPermission: isBrowserNotificationApiAvailable ? Notification.permission : 'default',

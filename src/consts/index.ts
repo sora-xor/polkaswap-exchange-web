@@ -99,8 +99,6 @@ export enum MarketAlgorithms {
 
 export const DefaultMarketAlgorithm = MarketAlgorithms.SMART;
 
-export const DefaultChartsEnabled = true;
-
 export const LiquiditySourceForMarketAlgorithm = {
   [MarketAlgorithms.SMART]: LiquiditySourceTypes.Default,
   [MarketAlgorithms.TBC]: LiquiditySourceTypes.MulticollateralBondingCurvePool,
