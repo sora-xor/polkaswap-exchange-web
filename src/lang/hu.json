@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Nem találtunk Polkadot.js kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Úgy tűnik, hogy a Polkadot.js bővítményben nincsenek fiókok. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
-        "noAccount": "Polkadot.js fiókhiba. Kérjük, ellenőrizd fiókodat a Polkadot.js bővítményben."
+        "noAccount": "Polkadot.js fiókhiba. Kérjük, ellenőrizd fiókodat a Polkadot.js bővítményben.",
+        "noExtension": "Nem található {extension} bővítmény. Kérjük, telepítse, és töltse be újra ezt az oldalt",
+        "noSigner": "Hozzáférés megtagadva. Nyissa meg a {extension} bővítmény beállításait, és nyissa meg a „Webhely-hozzáférés kezelése” lehetőséget az engedélyezéshez."
     },
     "connection": {
         "title": "SORA hálózati fiók",
@@ -97,6 +99,10 @@
             "learnMore": "Tudj meg többet",
             "connect": "Fiók csatlakoztatása",
             "refresh": "Frissítés"
+        },
+        "selectWallet": "Válasszon egy pénztárcát, amellyel dolgozni szeretne",
+        "wallet": {
+            "install": "Telepítés"
         }
     },
     "wallet": {
@@ -135,7 +141,11 @@
         "clearHistory": "Előzmények törlése",
         "filterPlaceholder": "Szűrés cím, szimbólum, típus vagy blokkazonosító szerint",
         "empty": "A tranzakciók itt jelennek meg.",
-        "emptySearch": "Nem található tranzakció"
+        "emptySearch": "Nem található tranzakció",
+        "firstText": "Első",
+        "lastText": "Utolsó",
+        "prevText": "Előző",
+        "nextText": "Következő"
     },
     "assets": {
         "empty": "Nincsenek eszközök",
@@ -163,7 +173,7 @@
     "asset": {
         "remove": "Eszköz eltávolítása",
         "select": "Eszköz kiválasztása",
-        "recieve": "{symbol} fogadása"
+        "receive": "{symbol} fogadása"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +527,8 @@
         "swapOutputMessage": "Becsült eredmény. Legalább {transactionValue} kapsz, vagy a tranzakció visszafordul.",
         "rewardsForSwap": "PSWAP Stratégiai Jutalmak",
         "swapInputMessage": "Becsült eredmény. Maximum {transactionValue} adsz el, vagy a tranzakció visszafordul.",
-        "route": "Útvonal"
+        "route": "Útvonal",
+        "errorFetching": "Hiba történt az adatok lekérésekor"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -736,7 +747,9 @@
             "SMART": "<span class=\"algorithm\">SMART<\/span> likviditás kezelés biztosítja a legjobb árat bármely tranzakciónál, kombinálva a legjobb árakat az elérhető összes piacról. Amikor elérhető, Token Bonding Curve ( <span class=\"algorithm\">TBC <\/span>) likviditását használja amíg az eszköz ára kedvezőbb más forrásokénál, amelyek az <span class=\"algorithm\">XYK<\/span> pool-t használják.",
             "TBC": "<span class=\"algorithm\">TBC<\/span>— vásárlás csak a Token Bonding Curve -ből (Elsődleges Piac). Lehetséges, hogy az ár annyira nem kedvező a <span class=\"algorithm\">XYK<\/span> pool-hoz (Másodlagos Piac) képest, de az ezáltal megszerezhető jutalmak idővel kedvezőbbé tehetik.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — vásárlás csak az XYK Pool-ból (Másodlagos Piac). Tradícionális XYK pool váltás."
-        }
+        },
+        "charts": "Diagramok",
+        "сhartsDescription": "Tekintse meg a token árak diagramjait"
     },
     "resultDialog": {
         "title": "Tranzakció elküldve",
@@ -865,7 +878,7 @@
         },
         "history": {
             "title": "Vásárlási előzmények",
-            "empty": "Nincs adat"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Tranzakció készen áll a hídon való átvitelre"
@@ -874,7 +887,6 @@
             "transfer": "Tokenek sikeresen megvásárolva!\nKattintson ide a hídtranzakció elindításához"
         }
     },
-    "recievedText": "Bejövő",
     "light": "Világos",
     "dark": "Sötét",
     "headerMenu": {
@@ -961,8 +973,13 @@
     "code": {
         "download": "QR-kód letöltése",
         "upload": "QR-kód beolvasása",
-        "recieve": "Fogadás",
-        "invalid": "Érvénytelen QR-kód"
+        "invalid": "Érvénytelen QR-kód",
+        "import": "Kép importálása",
+        "scan": "Szkennelés kamerával",
+        "allowanceError": "Ellenőrizze a kamerája elérhetőségét és a böngésző engedélyeit a használatához",
+        "receive": "Fogadás",
+        "camera": "Kamera",
+        "allowanceRequest": "Nyomja meg az „Engedélyezés” gombot a kamera eléréséhez"
     },
     "bridgeTransferNotification": {
         "addToken": "Adja hozzá a {symbol} -ot a @:metamask -hoz",
@@ -1006,7 +1023,10 @@
         },
         "amountAdd": "A stake összege",
         "amountRemove": "Eltávolítandó mennyiség",
-        "poweredBy": "Powered by Demeter Farming"
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Számológép",
+        "results": "Eredmények",
+        "rewards": "{symbol} jutalom"
     },
     "staking": {
         "title": "Letét"
@@ -1026,11 +1046,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "A medencepár már létezik",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "A csúszástűrés nem érte el a megfelelő határokat"
         },
         "referrals": {
             "AlreadyHasReferrer": "A fióknak már van hivatkozója",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "A hivatkozónak nincs elég lefoglalt egyenlege"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "A jutalomprogram már véget ért",
@@ -1047,6 +1067,81 @@
         },
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Hiba történt az ár kiszámításakor"
+        }
+    },
+    "receivedText": "Bejövő",
+    "browserNotificationDialog": {
+        "title": "Engedélyezze a böngésző értesítéseit",
+        "info": "Csak releváns frissítéseket küldünk Önnek a pénztárcájáról, például: eszközegyenleg-változások",
+        "button": "Értesítések engedélyezése",
+        "agree": "Igen, értem",
+        "notificationBlocked": "Ahhoz, hogy értesítést kapjon az {appName} alkalmazásról, kérjük, engedélyezze az értesítéseket a böngésző natív beállításaiban.",
+        "pointer": "Nyomja meg az „Engedélyezés” gombot az értesítések bekapcsolásához"
+    },
+    "assetDeposit": "Az eszközök egyenlege letétbe helyezve",
+    "noDataText": "Nincs adat",
+    "ofText": "{first} a {second}",
+    "filter": {
+        "all": "Összes",
+        "token": "Tokenek",
+        "nft": "NFT-k",
+        "verifiedOnly": "Csak ellenőrzött eszközök megjelenítése",
+        "zeroBalance": "0 egyenlegeszköz elrejtése",
+        "showAssets": "Eszközök megjelenítése",
+        "show": "Mutat"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Üdvözöljük a Polkaswapban!",
+            "headline": "Állítsuk be fiókját",
+            "text": "Hozza létre SORA Network-fiókját, vagy jelentkezzen be a régi fiókokba mnemonikus kifejezéssel vagy .json importálással. Ez lehetővé teszi a tranzakciók biztonságos aláírását és az eszközök kezelését a SORA Networkben.",
+            "createAccount": "Hozzon létre egy fiókot",
+            "importAccount": "Fiók importálása"
+        },
+        "heading": {
+            "seedPhraseTitle": "Mag kifejezés",
+            "confirmSeedTitle": "Erősítse meg a mag kifejezést",
+            "accountDetailsTitle": "Számlaadatok",
+            "importTitle": "Fiók importálása"
+        },
+        "button": {
+            "next": "Következő lépés",
+            "skip": "Skip",
+            "createAccount": "Fiók létrehozása",
+            "importAccount": "Fiók importálása"
+        },
+        "accountName": {
+            "placeholder": "Pénztárca neve",
+            "desc": "Ez a pénztárca nyilvános neve, amely mindenki számára látható lesz"
+        },
+        "password": {
+            "placeholder": "Jelszó",
+            "desc": "Győződjön meg róla, hogy erős jelszót használ a megfelelő védelem érdekében"
+        },
+        "confirmPassword": {
+            "placeholder": "Jelszó megerősítése"
+        },
+        "accountMnemonic": {
+            "placeholder": "Emlékeztető kifejezés"
+        },
+        "seedAdviceText": "Ez a fiókod titkos magja. Ügyeljen arra, hogy nem digitális hordozón, például papíron tárolja",
+        "confirmSeedText": "A megfelelő sorrendben lévő szavakra kattintva erősítse meg a magmondatot.",
+        "errorMnemonicText": "Helytelen magkifejezés-sorrend",
+        "exportOptionText": ".json-fiókfájl exportálása",
+        "exportJsonText": "A .json fájl importálásával mindig hozzáférhet fiókjához. Ne oszd meg senkivel!",
+        "addAccount": "Fiók hozzáadása",
+        "dialog": {
+            "confirmTitle": "Erősítse meg jelszóval",
+            "confirmButton": "Tranzakció aláírása",
+            "savePasswordText": "Emlékezzen a jelszavamra a következő 15 percben",
+            "extendPasswordText": "A jelszó nélküli időszak meghosszabbítása 15 perccel"
+        },
+        "errorMessages": {
+            "password": "A jelszó nem egyezik",
+            "passwords": "a jelszó nem egyezik",
+            "mnemonic": "Érvénytelen bip39 emlékeztető van megadva",
+            "mnemonicLength": "A mnemonikának {number} szót kell tartalmaznia",
+            "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
         }
     }
 }

@@ -2,12 +2,12 @@
   <div class="tokens-row">
     <div class="tokens-row-container">
       <token-logo
-        v-for="(symbol, index) in symbols"
-        :key="symbol"
-        :token-symbol="symbol"
+        v-for="(asset, index) in assets"
+        :key="index"
+        :token="asset"
         :size="size"
-        :style="{ zIndex: symbols.length - index }"
-        class="tokens-row__item"
+        :style="{ zIndex: index }"
+        :class="['tokens-row__item', { border }]"
       />
     </div>
   </div>
@@ -15,10 +15,8 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { components } from '@soramitsu/soraneo-wallet-web';
-import type { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-
-import { LogoSize } from '@/consts';
+import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -26,8 +24,9 @@ import { LogoSize } from '@/consts';
   },
 })
 export default class TokensRow extends Vue {
-  @Prop({ default: () => [], type: Array }) symbols!: Array<KnownSymbols>;
-  @Prop({ default: LogoSize.LARGE, type: String }) readonly size!: LogoSize;
+  @Prop({ default: () => [], type: Array }) assets!: Array<Asset>;
+  @Prop({ default: WALLET_CONSTS.LogoSize.LARGE, type: String }) readonly size!: WALLET_CONSTS.LogoSize;
+  @Prop({ default: false, type: Boolean }) readonly border!: boolean;
 }
 </script>
 
@@ -45,9 +44,17 @@ export default class TokensRow extends Vue {
 
   &__item {
     display: block;
+    border-width: 2px;
+    border-style: solid;
+    border-color: transparent;
+    border-radius: 50%;
+
+    &.border {
+      border-color: var(--s-color-utility-surface);
+    }
 
     & + & {
-      margin-left: -$basic-spacing * 2;
+      margin-left: -12.5%;
     }
   }
 }

@@ -1,31 +1,37 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="t('dexSettings.title')" custom-class="settings">
     <market-algorithm />
+    <s-divider />
+    <charts-switch />
   </dialog-base>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import DialogMixin from '@/components/mixins/DialogMixin';
-import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     MarketAlgorithm: lazyComponent(Components.MarketAlgorithm),
+    ChartsSwitch: lazyComponent(Components.ChartsSwitch),
   },
 })
-export default class SettingsDialog extends Mixins(TranslationMixin, DialogMixin) {}
+export default class SettingsDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {}
 </script>
 
 <style lang="scss">
 .settings {
   &.el-dialog__wrapper .el-dialog .el-dialog__body {
     padding-bottom: $inner-spacing-big;
+  }
+  .el-divider {
+    margin: $inner-spacing-mini $inner-spacing-small $inner-spacing-medium;
+    width: calc(100% - #{$inner-spacing-small} * 2);
   }
 }
 </style>

@@ -41,23 +41,21 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import DialogMixin from '@/components/mixins/DialogMixin';
-import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { state, getter } from '@/store/decorators';
 
 @Component({
   components: {
-    DialogBase,
-    RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
+    DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
+    RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
   },
 })
 export default class ConfirmRemoveLiquidity extends Mixins(
   mixins.NumberFormatterMixin,
   TranslationMixin,
-  DialogMixin,
+  mixins.DialogMixin,
   mixins.LoadingMixin
 ) {
   @state.removeLiquidity.liquidityAmount private liquidityAmount!: string;

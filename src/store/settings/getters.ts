@@ -38,7 +38,11 @@ const getters = defineGetters<SettingsState>()({
   },
   chartsEnabled(...args): boolean {
     const { state } = settingsGetterContext(args);
-    return !!state.featureFlags.charts;
+    return !!state.featureFlags.charts && state.сhartsEnabled;
+  },
+  notificationActivated(...args): boolean {
+    const { state } = settingsGetterContext(args);
+    return state.browserNotifsPermission === 'granted';
   },
 });
 

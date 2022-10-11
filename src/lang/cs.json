@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření Polkadot.js. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Zdá se, že ve vašem rozšíření Polkadot.js nejsou žádné účty. Přidejte účet a zkuste to znovu prosím.",
-        "noAccount": "Chyba účtu polkadot.js. Zkontrolujte prosím svůj účet v rozšíření Polkadot.js."
+        "noAccount": "Chyba účtu polkadot.js. Zkontrolujte prosím svůj účet v rozšíření Polkadot.js.",
+        "noExtension": "Nebylo nalezeno žádné {extension} . Nainstalujte jej a znovu načtěte tuto stránku",
+        "noSigner": "Přístup odepřen. Přejděte do nastavení {extension} a povolte otevřením možnosti Správa přístupu k webu."
     },
     "connection": {
         "title": "Účet sítě SORA",
@@ -97,6 +99,10 @@
             "learnMore": "Zjistit více",
             "connect": "Připojit účet",
             "refresh": "Obnovit"
+        },
+        "selectWallet": "Vyberte peněženku, se kterou chcete pracovat",
+        "wallet": {
+            "install": "Nainstalujte"
         }
     },
     "wallet": {
@@ -135,7 +141,11 @@
         "clearHistory": "Vymazat historii",
         "filterPlaceholder": "Filtrování podle adresy, symbolu, typu nebo ID bloku",
         "empty": "Zde se zobrazí vaše transakce",
-        "emptySearch": "Nebyly nalezeny žádné transakce"
+        "emptySearch": "Nebyly nalezeny žádné transakce",
+        "firstText": "První",
+        "lastText": "Poslední",
+        "prevText": "Předchozí",
+        "nextText": "Další"
     },
     "assets": {
         "empty": "Nejsou k dispozici žádná aktiva",
@@ -163,7 +173,7 @@
     "asset": {
         "remove": "Odebrat aktivum",
         "select": "Vyberte aktivum",
-        "recieve": "Přijmout {symbol}"
+        "receive": "Přijmout {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +527,8 @@
         "swapOutputMessage": "Výstup je odhadován. Obdržíte alespoň {transactionValue}, jinak se transakce vrátí zpět.",
         "rewardsForSwap": "Strategické odměny PSWAP",
         "swapInputMessage": "Vstup je odhadován. Prodáte maximálně {transactionValue}, jinak se transakce vrátí zpět.",
-        "route": "Trasa"
+        "route": "Trasa",
+        "errorFetching": "Chyba při načítání dat"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -736,7 +747,9 @@
             "SMART": "<span class=\"algorithm\">SMART<\/span> přesměrování likvidity zajišťuje nejlepší cenu pro každou transakci tím, že kombinuje pouze nejlepší cenové možnosti ze všech dostupných trhů. Pokud je k dispozici, použije se pro likviditu Token Bonding Curve (<span class=\"algorithm\">TBC<\/span>) dokud je cena aktiva příznivější než z jiných zdrojů. V opačném případě se využívá <span class=\"algorithm\">XYK<\/span> pool.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> - nákup pouze z Token Bonding Curve (primární trh). Je tu možnost, že se cena může stát nevýhodnou ve srovnání s <span class=\"algorithm\">XYK<\/span> poolem (sekundární trh), ale hodnota získaná z uzamčených odměn se může časem ukázat jako mnohem výhodnější.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> - nákup pouze z XYK poolu (sekundární trh). Tradiční XYK pool swap."
-        }
+        },
+        "charts": "Grafy",
+        "сhartsDescription": "Prohlédněte si grafy cen tokenů"
     },
     "resultDialog": {
         "title": "Transakce byla odeslána",
@@ -865,7 +878,7 @@
         },
         "history": {
             "title": "Historie nákupů",
-            "empty": "Žádné údaje"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transakce připravena pro Bridge"
@@ -874,7 +887,6 @@
             "transfer": "Tokeny byly úspěšně zakoupeny!\nKliknutím spustíte bridge transakci"
         }
     },
-    "recievedText": "Přijato",
     "light": "Světlý",
     "dark": "Tmavý",
     "headerMenu": {
@@ -961,8 +973,13 @@
     "code": {
         "download": "Stáhnout QR kód",
         "upload": "Skenovat QR",
-        "recieve": "Příjem",
-        "invalid": "Neplatný QR kód"
+        "invalid": "Neplatný QR kód",
+        "import": "Importujte obrázek",
+        "scan": "Skenujte fotoaparátem",
+        "allowanceError": "Zkontrolujte dostupnost fotoaparátu a oprávnění prohlížeče k jeho použití",
+        "receive": "Příjem",
+        "camera": "Fotoaparát",
+        "allowanceRequest": "Stiskněte „Povolit“ přístup ke kameře"
     },
     "bridgeTransferNotification": {
         "addToken": "Přidejte {symbol} do @:metamask",
@@ -1006,7 +1023,10 @@
         },
         "amountAdd": "Částka pro stake",
         "amountRemove": "Částka k odebrání",
-        "poweredBy": "Běží na Demeter Farming"
+        "poweredBy": "Běží na Demeter Farming",
+        "calculator": "Kalkulačka",
+        "results": "Výsledek",
+        "rewards": "{symbol} odměny"
     },
     "staking": {
         "title": "Stakování"
@@ -1026,11 +1046,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Pool pár již existuje",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Tolerance prokluzu nesplňuje správné limity"
         },
         "referrals": {
             "AlreadyHasReferrer": "Účet již má referrera",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Referrer nemá dostatek rezervovaného zůstatku"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Program odměn již skončil",
@@ -1047,6 +1067,81 @@
         },
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Při výpočtu ceny došlo k chybě"
+        }
+    },
+    "receivedText": "Přijato",
+    "browserNotificationDialog": {
+        "title": "Povolit oznámení prohlížeče",
+        "info": "Budeme vám zasílat pouze relevantní aktualizace o vaší peněžence, například: změny zůstatku aktiv",
+        "button": "Povolit upozornění",
+        "agree": "Ano, rozumím",
+        "notificationBlocked": "Chcete-li dostávat oznámení o {appName}, povolte oznámení v nativním nastavení prohlížeče",
+        "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení"
+    },
+    "assetDeposit": "Zůstatek aktiv byl uložen",
+    "noDataText": "Žádné údaje",
+    "ofText": "{first} z {second}",
+    "filter": {
+        "all": "Všechny",
+        "token": "Tokeny",
+        "nft": "NFT",
+        "verifiedOnly": "Zobrazit pouze ověřená díla",
+        "zeroBalance": "Skrýt 0 bilančních aktiv",
+        "showAssets": "Zobrazit aktiva",
+        "show": "Ukázat"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Vítejte v Polkaswapu!",
+            "headline": "Pojďme nastavit váš účet",
+            "text": "Vytvořte si svůj účet SORA Network nebo se přihlaste do starého účtu pomocí mnemotechnické fráze nebo importu .json. To vám umožní bezpečně podepisovat transakce a spravovat aktiva v SORA Network.",
+            "createAccount": "Vytvořit účet",
+            "importAccount": "Importovat účet"
+        },
+        "heading": {
+            "seedPhraseTitle": "Semená fráze",
+            "confirmSeedTitle": "Potvrďte počáteční frázi",
+            "accountDetailsTitle": "Detaily účtu",
+            "importTitle": "Importní účet"
+        },
+        "button": {
+            "next": "Další krok",
+            "skip": "Přeskočit",
+            "createAccount": "Vytvořit účet",
+            "importAccount": "Importní účet"
+        },
+        "accountName": {
+            "placeholder": "Název peněženky",
+            "desc": "Toto je veřejný název vaší peněženky, který bude viditelný všem"
+        },
+        "password": {
+            "placeholder": "Heslo",
+            "desc": "Ujistěte se, že používáte silné heslo pro správnou ochranu"
+        },
+        "confirmPassword": {
+            "placeholder": "Potvrďte heslo"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemotechnická fráze"
+        },
+        "seedAdviceText": "Jedná se o tajný klíč vašeho účtu. Ujistěte se, že je uložen na jiném než digitálním nosiči, například na papíře.",
+        "confirmSeedText": "Potvrďte zadanou frázi kliknutím na slova ve správném pořadí.",
+        "errorMnemonicText": "Nesprávné pořadí počátečních frází",
+        "exportOptionText": "Export souboru účtu .json",
+        "exportJsonText": "Vždy budete mít přístup ke svému účtu importováním tohoto souboru .json. S nikým to nesdílejte!",
+        "addAccount": "Přidat účet",
+        "dialog": {
+            "confirmTitle": "Potvrďte heslem",
+            "confirmButton": "Podepsat transakci",
+            "savePasswordText": "Zapamatovat si moje heslo na dalších 15 minut",
+            "extendPasswordText": "Prodlužte dobu bez hesla o 15 minut"
+        },
+        "errorMessages": {
+            "password": "Heslo se neshoduje",
+            "passwords": "Hesla se neshodují",
+            "mnemonic": "Byla zadána neplatná mnemotechnická pomůcka bip39",
+            "mnemonicLength": "Mnemotechnika by měla obsahovat {číslo} slov",
+            "jsonFields": "Soubor JSON neobsahuje povinná pole"
         }
     }
 }

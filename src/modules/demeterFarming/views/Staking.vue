@@ -33,6 +33,7 @@
           @add="changePoolStake($event, true)"
           @remove="changePoolStake($event, false)"
           @claim="claimPoolRewards"
+          @calculator="showPoolCalculator"
           show-balance
           class="staking-info-card"
         />
@@ -53,6 +54,7 @@
       :account-pool="selectedAccountPool"
       @confirm="handleClaimRewards"
     />
+    <calculator-dialog :visible.sync="showCalculatorDialog" :pool="selectedPool" :account-pool="selectedAccountPool" />
   </div>
 </template>
 
@@ -80,6 +82,7 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
     StatusBadge: demeterLazyComponent(DemeterComponents.StatusBadge),
     StakeDialog: demeterLazyComponent(DemeterComponents.StakeDialog),
     ClaimDialog: demeterLazyComponent(DemeterComponents.ClaimDialog),
+    CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
     TokenLogo: components.TokenLogo,
   },
 })

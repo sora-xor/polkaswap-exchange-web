@@ -1,5 +1,5 @@
 import { defineMutations } from 'direct-vuex';
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import type { PoolState } from './types';

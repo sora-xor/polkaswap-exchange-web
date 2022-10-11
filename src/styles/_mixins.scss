@@ -117,18 +117,30 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   .el-buttons {
     display: flex;
     align-items: center;
+
+    &--between {
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .el-button {
+      margin-right: $inner-spacing-mini / 2;
+      margin-left: $inner-spacing-mini / 2;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 
   .el-button {
     &--max {
-      margin-right: $inner-spacing-mini / 2;
-      margin-left: $inner-spacing-mini / 2;
-      &.el-button.neumorphic {
+      &.neumorphic {
         box-shadow: $button-custom-shadow;
       }
     }
+
     &--select-token {
-      margin-left: $inner-spacing-mini / 2;
       &.token-select-button--token {
         &, &:hover, &:active, &:focus, &.focusing, &.s-pressed {
           background-color: var(--s-color-utility-surface);
@@ -370,6 +382,9 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         min-height: calc(#{$select-asset-item-height} * 6);
       }
     }
+    .asset {
+      @include focus-outline($withOffset: true);
+    }
   }
 }
 
@@ -462,16 +477,18 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     margin-left: $marginOffset;
     margin-right: $marginOffset;
 
-    .el-scrollbar__wrap {
+    & > .el-scrollbar__wrap {
       overflow-x: hidden;
       margin-bottom: 0px !important; // to disable element-ui negative margin
     }
-    .el-scrollbar__wrap, .el-scrollbar__view {
-      display: flex;
-      flex: 1;
-      flex-flow: column nowrap;
+    & > .el-scrollbar__wrap {
+      &, & > .el-scrollbar__view {
+        display: flex;
+        flex: 1;
+        flex-flow: column nowrap;
+      }
     }
-    .el-scrollbar__bar {
+    & > .el-scrollbar__bar {
       &.is-vertical {
         right: $verticalRight;
       }
@@ -535,5 +552,31 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
   .el-slider__runway {
     background-color: var(--s-color-base-content-tertiary);
+  }
+}
+
+@mixin focus-outline($inner: false, $focusWithin: false, $borderRadius: '', $withOffset: false) {
+  $outline: 1px solid var(--s-color-outline);
+  @if $inner == true {
+    outline: $outline;
+    @if $borderRadius != '' {
+      border-radius: $borderRadius;
+    }
+  } @else {
+    @if $focusWithin == true {
+      &:focus-within {
+        outline: $outline;
+      }
+    } @else {
+      @if $withOffset == true {
+        outline-offset: -1px;
+      }
+      &:focus:not(:active) {
+        outline: $outline;
+        @if $borderRadius != '' {
+          border-radius: $borderRadius;
+        }
+      }
+    }
   }
 }

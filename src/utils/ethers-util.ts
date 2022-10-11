@@ -120,7 +120,6 @@ export enum EvmNetworkType {
   Goerli = 'goerli',
   Private = 'private',
   EWC = 'EWC',
-  Sepolia = 'sepolia',
 }
 
 export interface SubNetwork {
@@ -183,7 +182,6 @@ export const EvmNetworkTypeName = {
   '0x4': EvmNetworkType.Rinkeby,
   '0x5': EvmNetworkType.Goerli,
   '0x12047': EvmNetworkType.Private,
-  '0xaa36a7': EvmNetworkType.Sepolia,
 };
 
 async function onConnect(options: ConnectOptions): Promise<string> {
@@ -307,28 +305,15 @@ function storeEvmNetworkType(network: string): void {
   storage.set('evmNetworkType', EvmNetworkTypeName[network] || network);
 }
 
-function getEvmNetworkTypeFromStorage(): string {
-  // return storage.get('evmNetworkType') || '' TODO: [1.5] return it back after 1.4 release to mainnet
-  let evmNetworkType = storage.get('evmNetworkType') || '';
-  if (evmNetworkType === 'homestead') {
-    evmNetworkType = 'main';
-  }
-  return evmNetworkType;
-}
-
 function removeEvmNetworkType(): void {
   storage.remove('evmNetworkType');
 }
 
 async function getEvmNetworkType(): Promise<string> {
-  const networkType = getEvmNetworkTypeFromStorage();
-  if (!networkType || networkType === 'undefined') {
-    const ethersInstance = await getEthersInstance();
-    const network = await ethersInstance.getNetwork();
-    const networkType = ethers.utils.hexValue(network.chainId);
-    return EvmNetworkTypeName[networkType];
-  }
-  return networkType;
+  const ethersInstance = await getEthersInstance();
+  const network = await ethersInstance.getNetwork();
+  const networkType = ethers.utils.hexValue(network.chainId);
+  return EvmNetworkTypeName[networkType];
 }
 
 /**
@@ -396,7 +381,6 @@ export default {
   getEvmUserAddress,
   storeEvmNetworkType,
   getEvmNetworkType,
-  getEvmNetworkTypeFromStorage,
   removeEvmNetworkType,
   getEthersInstance,
   removeEvmUserAddress,

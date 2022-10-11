@@ -12,7 +12,7 @@
 
       <s-tab :label="t('selectToken.assets.title')" name="assets"></s-tab>
 
-      <s-tab :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
+      <s-tab :disabled="disabledCustom" :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
         <template v-if="customAsset">
           <span v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</span>
 
@@ -61,10 +61,10 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
-import DialogBase from '@/components/DialogBase.vue';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
+import { XOR, XSTUSD } from '@sora-substrate/util/build/assets/consts';
 
 enum Tabs {
   Assets = 'assets',
@@ -73,7 +73,7 @@ enum Tabs {
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     SelectAssetList: lazyComponent(Components.SelectAssetList),
     TokenAddress: components.TokenAddress,
     SearchInput: components.SearchInput,
@@ -89,6 +89,8 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset;
   @Prop({ default: false, type: Boolean }) readonly accountAssetsOnly!: boolean;
   @Prop({ default: false, type: Boolean }) readonly notNullBalanceOnly!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly disabledCustom!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isMainTokenProviders!: boolean;
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
 
@@ -111,16 +113,12 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get whitelistAssetsList(): Array<AccountAsset> {
-    const {
-      asset: excludeAsset,
-      whitelistAssets: assets,
-      accountAssetsAddressTable,
-      notNullBalanceOnly,
-      accountAssetsOnly,
-    } = this;
+    const whiteList = this.isMainTokenProviders ? this.getMainSources() : this.whitelistAssets;
+
+    const { asset: excludeAsset, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this;
 
     return this.getAssetsWithBalances({
-      assets,
+      assets: whiteList,
       accountAssetsAddressTable,
       notNullBalanceOnly,
       accountAssetsOnly,
@@ -160,6 +158,12 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     return Object.values(this.nonWhitelistAccountAssets).sort(this.sortByBalance());
   }
 
+  private getMainSources(): Array<Asset> {
+    const mainSourceAddresses = [XOR.address, XSTUSD.address];
+
+    return this.whitelistAssets.filter((asset) => mainSourceAddresses.includes(asset.address));
+  }
+
   async handleAddAsset(): Promise<void> {
     if (!this.customAsset) return;
 
@@ -191,7 +195,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     }
   }
 
-  @include exchange-tabs();
+  @include exchange-tabs;
 }
 </style>
 
@@ -201,6 +205,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   margin-left: $inner-spacing-big;
   margin-bottom: $inner-spacing-medium;
   width: calc(100% - 2 * #{$inner-spacing-big});
+  @include focus-outline($withOffset: true);
 }
 
 .token-list_text {

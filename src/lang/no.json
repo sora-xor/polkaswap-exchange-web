@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Finner ingen Polkadot.js utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Det ser ikke ut til å være noen kontoer i Polkadot.js utvidelsen. Legg til en konto, og prøv på nytt.",
-        "noAccount": "Polkadot.js kontofeil. Sjekk kontoen din i Polkadot.js utvidelsen"
+        "noAccount": "Polkadot.js kontofeil. Sjekk kontoen din i Polkadot.js utvidelsen",
+        "noExtension": "Ingen {extension} -utvidelse ble funnet. Installer den og last inn denne siden på nytt",
+        "noSigner": "Ingen tilgang. Gå til utvidelsesinnstillingene for {extension} og åpne «Administrer nettstedtilgang» for å tillate."
     },
     "connection": {
         "title": "SORA Nettverkskonto",
@@ -97,6 +99,10 @@
             "learnMore": "Lær mer",
             "connect": "Koble til konto",
             "refresh": "Forfriske"
+        },
+        "selectWallet": "Velg en lommebok du vil jobbe med",
+        "wallet": {
+            "install": "Installere"
         }
     },
     "wallet": {
@@ -135,7 +141,11 @@
         "clearHistory": "Slett historikk",
         "filterPlaceholder": "Filtrer etter adresse, symbol, type eller blokk-ID",
         "empty": "Transaksjonene dine vises her",
-        "emptySearch": "Ingen transaksjoner funnet"
+        "emptySearch": "Ingen transaksjoner funnet",
+        "firstText": "Først",
+        "lastText": "Siste",
+        "prevText": "Tidligere",
+        "nextText": "Neste"
     },
     "assets": {
         "empty": "Det finnes ingen aktiva",
@@ -163,7 +173,7 @@
     "asset": {
         "remove": "Fjern aktiva",
         "select": "Velg aktivum",
-        "recieve": "Motta {symbol}"
+        "receive": "Motta {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +527,8 @@
         "swapOutputMessage": "Beløp er estimert. Du vil motta minst {transactionValue} ellers vil transaksjonen gå tilbake.",
         "rewardsForSwap": "Strategiske PSWAP belønninger",
         "swapInputMessage": "Inndata er estimert. Du vil selge maksimalt {transactionValue} ellers vil transaksjonen gå tilbake.",
-        "route": "Rute"
+        "route": "Rute",
+        "errorFetching": "Feil under henting av data"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -736,7 +747,9 @@
             "SMART": "<span class=\"algorithm\">SMART<\/span> likviditetsruting sikrer den beste prisen for enhver transaksjon ved å kombinere bare de beste prisalternativene fra alle tilgjengelige markeder. Når Token Bonding Curve (<span class=\"algorithm\">TBC<\/span>) vil bli brukt til likviditet så lenge aktivaprisen er rimeligere enn fra andre kilder, hvorpå <span class=\"algorithm\">XYK<\/span> utvalget benyttes.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> - kjøper bare fra Token Bonding Curve (Primary Market). Det er en mulighet for at prisen kan bli ugunstig sammenlignet med <span class=\"algorithm\">XYK<\/span> pool (Sekundærmarkedet), men verdien mottatt fra de opptjente belønningene kan vise seg å være mye gunstigere over tid.",
             "XYK": "<span class=\"algorithm\">XYK<\/span>- kjøper bare fra XYK Pool (sekundærmarkedet). Tradisjonelt XYK-bassengbytte."
-        }
+        },
+        "charts": "Diagrammer",
+        "сhartsDescription": "Se diagrammer for tokenpriser"
     },
     "resultDialog": {
         "title": "Transaksjonen er sendt inn",
@@ -865,7 +878,7 @@
         },
         "history": {
             "title": "Kjøpshistorikk",
-            "empty": "Ingen data"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transaksjon klar for bro"
@@ -874,7 +887,6 @@
             "transfer": "Tokens er kjøpt!\n Klikk for å starte brotransaksjonen"
         }
     },
-    "recievedText": "Tok imot",
     "light": "Lys",
     "dark": "Mørk",
     "headerMenu": {
@@ -961,8 +973,13 @@
     "code": {
         "download": "Last ned QR-kode",
         "upload": "Skann QR",
-        "recieve": "Motta",
-        "invalid": "Ugyldig QR-kode"
+        "invalid": "Ugyldig QR-kode",
+        "import": "Importer et bilde",
+        "scan": "Skann med kamera",
+        "allowanceError": "Sjekk kameraets tilgjengelighet og nettlesertillatelser for å bruke det",
+        "receive": "Motta",
+        "camera": "Kamera",
+        "allowanceRequest": "Trykk på \"Tillat\" tilgang til kameraet"
     },
     "bridgeTransferNotification": {
         "addToken": "Legg til {symbol} til @:metamask",
@@ -1006,7 +1023,10 @@
         },
         "amountAdd": "Beløp som skal satses",
         "amountRemove": "Beløp som skal fjernes",
-        "poweredBy": "Drevet av Demeter Farming"
+        "poweredBy": "Drevet av Demeter Farming",
+        "calculator": "Kalkulator",
+        "results": "Resultater",
+        "rewards": "{symbol} belønninger"
     },
     "staking": {
         "title": "Staking"
@@ -1026,11 +1046,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Pool-par eksisterer allerede",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Sklitoleranse har ikke nådd riktige grenser"
         },
         "referrals": {
             "AlreadyHasReferrer": "Kontoen har allerede en henvisning",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Henviseren har ikke nok av reservert saldo"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Belønningsprogrammet er allerede ferdig",
@@ -1047,6 +1067,81 @@
         },
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Det oppsto en feil under beregning av prisen"
+        }
+    },
+    "receivedText": "Tok imot",
+    "browserNotificationDialog": {
+        "title": "Aktiver nettleservarsler",
+        "info": "Vi sender deg bare relevante oppdateringer om lommeboken din, for eksempel: endringer i aktivabalansen",
+        "button": "Aktiver varsler",
+        "agree": "Ja jeg forstår",
+        "notificationBlocked": "For å motta varslene om {appName} må du tillate varslene i nettleserens opprinnelige innstillinger",
+        "pointer": "Trykk på \"Tillat\" for å slå på varsler"
+    },
+    "assetDeposit": "Eiendelsbalanse er satt inn",
+    "noDataText": "Ingen data",
+    "ofText": "{first} av {second}",
+    "filter": {
+        "all": "Alle",
+        "token": "Tokens",
+        "nft": "NFT-er",
+        "verifiedOnly": "Vis kun bekreftede eiendeler",
+        "zeroBalance": "Skjul 0 saldoaktiva",
+        "showAssets": "Vis eiendeler",
+        "show": "Vise"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Velkommen til Polkaswap!",
+            "headline": "La oss sette opp kontoen din",
+            "text": "Opprett din SORA Network-konto eller logg på de gamle ved å bruke mnemonisk frase eller .json-import. Dette lar deg signere transaksjoner og administrere aktiva i SORA Network på en sikker måte.",
+            "createAccount": "Opprett en konto",
+            "importAccount": "Importer konto"
+        },
+        "heading": {
+            "seedPhraseTitle": "Frøsetning",
+            "confirmSeedTitle": "Bekreft frøsetningen",
+            "accountDetailsTitle": "kontodetaljer",
+            "importTitle": "Importer konto"
+        },
+        "button": {
+            "next": "Neste steg",
+            "skip": "Hopp over",
+            "createAccount": "Opprett konto",
+            "importAccount": "Importer konto"
+        },
+        "accountName": {
+            "placeholder": "Lommeboknavn",
+            "desc": "Dette er det offentlige navnet på lommeboken din som vil være synlig for alle"
+        },
+        "password": {
+            "placeholder": "Passord",
+            "desc": "Sørg for at du bruker et sterkt passord for riktig beskyttelse"
+        },
+        "confirmPassword": {
+            "placeholder": "Bekreft passord"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemonisk setning"
+        },
+        "seedAdviceText": "Dette er et hemmelig frø til kontoen din. Sørg for å lagre den på en ikke-digital bærer, for eksempel - papir",
+        "confirmSeedText": "Bekreft frøsetningen ved å klikke på ordene i riktig rekkefølge",
+        "errorMnemonicText": "Feil rekkefølge på frøfrasen",
+        "exportOptionText": "Eksporter .json-kontofil",
+        "exportJsonText": "Du vil alltid kunne få tilgang til kontoen din ved å importere den .json-filen. Ikke del det med noen!",
+        "addAccount": "Legg til en konto",
+        "dialog": {
+            "confirmTitle": "Bekreft med passord",
+            "confirmButton": "Signer transaksjon",
+            "savePasswordText": "Husk passordet mitt i de neste 15 minuttene",
+            "extendPasswordText": "Forleng perioden uten passord med 15 minutter"
+        },
+        "errorMessages": {
+            "password": "Passordet stemte ikke",
+            "passwords": "Passordene stemte ikke",
+            "mnemonic": "Ugyldig bip39 mnemonic spesifisert",
+            "mnemonicLength": "Mnemonic skal inneholde {number} ord",
+            "jsonFields": "JSON-filen har ikke obligatoriske felt"
         }
     }
 }

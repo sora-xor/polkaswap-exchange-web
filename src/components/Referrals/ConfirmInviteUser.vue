@@ -28,16 +28,14 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 
-import DialogMixin from '@/components/mixins/DialogMixin';
-import DialogBase from '@/components/DialogBase.vue';
 import { state, mutation } from '@/store/decorators';
 
 @Component({
-  components: { DialogBase },
+  components: { DialogBase: components.DialogBase },
 })
-export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, DialogMixin) {
+export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
   @state.referrals.referrer private referrer!: string;
   @state.referrals.storageReferrer private storageReferrer!: string;
 

@@ -82,7 +82,9 @@
     "polkadotjs": {
         "noExtensions": "Nessuna estensione Polkadot.js trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Sembra che non ci siano account nella tua estensione Polkadot.js. Aggiungi un account e riprova.",
-        "noAccount": "Errore dell'account Polkadot.js. Controlla il tuo account nell'estensione Polkadot.js"
+        "noAccount": "Errore dell'account Polkadot.js. Controlla il tuo account nell'estensione Polkadot.js",
+        "noExtension": "Non è stata trovata alcuna {extension} . Si prega di installarlo e ricaricare questa pagina",
+        "noSigner": "Accesso negato. Vai alle impostazioni {extension} e apri \"Gestisci accesso al sito web\" per consentire."
     },
     "connection": {
         "title": "SORA Network account",
@@ -97,6 +99,10 @@
             "learnMore": "Per saperne di più",
             "connect": "Connetti account",
             "refresh": "Aggiorna"
+        },
+        "selectWallet": "Seleziona un portafoglio con cui lavorare",
+        "wallet": {
+            "install": "Installare"
         }
     },
     "wallet": {
@@ -135,7 +141,11 @@
         "clearHistory": "Cancellare la cronologia",
         "filterPlaceholder": "Filtra per indirizzo, simbolo, tipo o ID blocco",
         "empty": "Le tue transazioni appariranno qui",
-        "emptySearch": "Nessuna transazione trovata"
+        "emptySearch": "Nessuna transazione trovata",
+        "firstText": "Primo",
+        "lastText": "Scorso",
+        "prevText": "Precedente",
+        "nextText": "Il prossimo"
     },
     "assets": {
         "empty": "Non ci sono assets",
@@ -163,7 +173,7 @@
     "asset": {
         "remove": "Rimuovi l'asset",
         "select": "Seleziona una risorsa",
-        "recieve": "Ricevi {symbol}"
+        "receive": "Ricevi {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
@@ -517,7 +527,8 @@
         "swapOutputMessage": "L'output è stimato. Riceverai almeno {transactionValue} o la transazione tornerà indietro.",
         "rewardsForSwap": "PSWAP Strategic Rewards",
         "swapInputMessage": "L'input è stimato. Venderai al massimo {transactionValue} o la transazione verrà annullata.",
-        "route": "Rotta"
+        "route": "Rotta",
+        "errorFetching": "Errore durante il recupero dei dati"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -736,7 +747,9 @@
             "SMART": "<span class=\"algorithm\"> SMART <\/span> garantisce il miglior prezzo per qualsiasi transazione combinando le migliori opzioni di prezzo da tutti i mercati disponibili. Quando disponibile, la Token Bonding Curve ( <span class=\"algorithm\"> TBC <\/span> ) verrà utilizzata per la liquidità a condizione che il prezzo del token sia più conveniente rispetto ad altre fonti, altrimenti la pool <span class=\"algorithm\"> XYK <\/span> viene utilizzata.",
             "TBC": "<span class=\"algorithm\"> TBC <\/span> — comprare solo dalla Token Bonding Curve (Mercato Primario). C'è la possibilità che il prezzo possa diventare sfavorevole rispetto al <span class=\"algorithm\"> XYK <\/span> (Mercato sScondario), tuttavia il valore ricevuto dalle vested rewards potrebbe rivelarsi molto più favorevole nel tempo.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> - comprare solo dalla pool XYK (Mercato Secondario). Scambio tradizionale su pool XYK."
-        }
+        },
+        "charts": "Grafici",
+        "сhartsDescription": "Visualizza i grafici per i prezzi dei token"
     },
     "resultDialog": {
         "title": "Transazione inviata",
@@ -865,7 +878,7 @@
         },
         "history": {
             "title": "Cronologia degli acquisti",
-            "empty": "Nessun dato"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transazione pronta per il bridge"
@@ -874,7 +887,6 @@
             "transfer": "Token acquistati con successo!\nClicca per avviare la transazione sul bridge"
         }
     },
-    "recievedText": "Ricevuto",
     "light": "Light",
     "dark": "Dark",
     "headerMenu": {
@@ -961,8 +973,13 @@
     "code": {
         "download": "Scarica QR Code",
         "upload": "Scansiona QR",
-        "recieve": "Ricevere",
-        "invalid": "Codice QR non valido"
+        "invalid": "Codice QR non valido",
+        "import": "Importa un'immagine",
+        "scan": "Scansione con fotocamera",
+        "allowanceError": "Verifica la disponibilità della videocamera e le autorizzazioni del browser per utilizzarla",
+        "receive": "Ricevere",
+        "camera": "Telecamera",
+        "allowanceRequest": "Premi \"Consenti\" l'accesso alla fotocamera"
     },
     "bridgeTransferNotification": {
         "addToken": "Aggiungi {symbol} a @:metamask",
@@ -1006,7 +1023,10 @@
         },
         "amountAdd": "Importo da mettere in staking",
         "amountRemove": "Importo da rimuovere",
-        "poweredBy": "Alimentato da Demeter Farming"
+        "poweredBy": "Alimentato da Demeter Farming",
+        "calculator": "Calcolatrice",
+        "results": "Risultati",
+        "rewards": "{symbol} ricompense"
     },
     "staking": {
         "title": "Staking"
@@ -1026,11 +1046,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "La coppia di pool esiste già",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "La tolleranza allo slittamento non ha soddisfatto i limiti appropriati"
         },
         "referrals": {
             "AlreadyHasReferrer": "L'account ha già un referrer",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Il referrer non ha abbastanza saldo riservato"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Il programma a premi è già terminato",
@@ -1047,6 +1067,81 @@
         },
         "multicollateralBondingCurvePool": {
             "PriceCalculationFailed": "Si è verificato un errore durante il calcolo del prezzo"
+        }
+    },
+    "receivedText": "Ricevuto",
+    "browserNotificationDialog": {
+        "title": "Abilita le notifiche del browser",
+        "info": "Ti invieremo solo gli aggiornamenti rilevanti sul tuo portafoglio, ad esempio: modifiche al saldo patrimoniale",
+        "button": "Attivare le notifiche",
+        "agree": "Si, capisco",
+        "notificationBlocked": "Per ricevere le notifiche su {appName}, consenti le notifiche nelle impostazioni native del tuo browser",
+        "pointer": "Premi \"Consenti\" per attivare le notifiche"
+    },
+    "assetDeposit": "Il saldo patrimoniale è stato depositato",
+    "noDataText": "Nessun dato",
+    "ofText": "{first} di {second}",
+    "filter": {
+        "all": "Tutto",
+        "token": "Token",
+        "nft": "NFT",
+        "verifiedOnly": "Mostra solo risorse verificate",
+        "zeroBalance": "Nascondi 0 saldo attivo",
+        "showAssets": "Mostra risorse",
+        "show": "Mostra"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Benvenuto in Polkaswap!",
+            "headline": "configuriamo il tuo account",
+            "text": "Crea il tuo account di rete SORA o accedi a quelli vecchi usando la frase mnemonica o l'importazione .json. Ciò ti consente di firmare transazioni in modo sicuro e gestire le risorse nella rete SORA.",
+            "createAccount": "Creare un account",
+            "importAccount": "Importa account"
+        },
+        "heading": {
+            "seedPhraseTitle": "Frase seme",
+            "confirmSeedTitle": "Conferma la frase seme",
+            "accountDetailsTitle": "Dettagli account",
+            "importTitle": "Importa conto"
+        },
+        "button": {
+            "next": "Passo successivo",
+            "skip": "Salto",
+            "createAccount": "Creare un profilo",
+            "importAccount": "Importa conto"
+        },
+        "accountName": {
+            "placeholder": "Nome del portafoglio",
+            "desc": "Questo è il nome pubblico del tuo portafoglio che sarà visibile a tutti"
+        },
+        "password": {
+            "placeholder": "Password",
+            "desc": "Assicuratevi di utilizzare una password forte per una protezione adeguata."
+        },
+        "confirmPassword": {
+            "placeholder": "Conferma password"
+        },
+        "accountMnemonic": {
+            "placeholder": "Frase mnemonica"
+        },
+        "seedAdviceText": "Questo è un seme segreto del tuo account. Assicurati di archiviarlo su un supporto non digitale, ad esempio cartaceo",
+        "confirmSeedText": "Conferma la frase iniziale facendo clic sulle parole nell'ordine corretto",
+        "errorMnemonicText": "Ordine delle frasi seme errato",
+        "exportOptionText": "Esporta il file dell'account .json",
+        "exportJsonText": "Potrai sempre accedere al tuo account importando il file .json. Non condividerlo con nessuno!",
+        "addAccount": "Aggiungi un account",
+        "dialog": {
+            "confirmTitle": "Conferma con password",
+            "confirmButton": "Firma transazione",
+            "savePasswordText": "Ricorda la mia password per i prossimi 15 minuti",
+            "extendPasswordText": "Estendi il periodo senza password di 15 minuti"
+        },
+        "errorMessages": {
+            "password": "La password non corrisponde",
+            "passwords": "le password non coincidono",
+            "mnemonic": "Specificato mnemonico bip39 non valido",
+            "mnemonicLength": "Il mnemonico deve contenere {numero} di parole",
+            "jsonFields": "Il file JSON non ha campi obbligatori"
         }
     }
 }

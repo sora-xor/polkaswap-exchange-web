@@ -77,6 +77,8 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
     padding: 0 $inner-spacing-big;
     transition: var(--s-transition-default);
 
+    @include focus-outline($withOffset: true);
+
     &:hover {
       background-color: var(--s-color-base-background-hover);
     }
