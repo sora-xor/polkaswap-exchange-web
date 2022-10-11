@@ -724,7 +724,7 @@
         "locked": "{percent} вашег pula је у улози"
     },
     "dexSettings": {
-        "title": "Подешавања трансакције",
+        "title": "Подешавања",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- могућност избора између примарног тржишта (TBC), секундарног тржишта (XYK) или комбинованог паметног алгоритма за гарантовано најбољу цену за било коју трансакцију."

@@ -724,7 +724,7 @@
         "locked": "{percent} of your pool is in staking"
     },
     "dexSettings": {
-        "title": "Transaction settings",
+        "title": "Settings",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": " - option to choose between Primary Market (TBC), Secondary Market (XYK) or a combined smart algorithm for guaranteed best price for any given transaction."
