@@ -12,6 +12,7 @@
         border-radius="mini"
         :content="tooltip"
         :placement="tooltipPlacement"
+        tabindex="-1"
       >
         <s-icon name="info-16" size="18px" />
       </s-tooltip>
@@ -86,9 +87,6 @@ $title-padding: calc(#{var(--s-size-medium)} + #{$inner-spacing-small});
       &--settings {
         margin-left: auto;
       }
-    }
-    .el-tooltip {
-      @include focus-outline($borderRadius: 50%);
     }
   }
   &-tooltip {
