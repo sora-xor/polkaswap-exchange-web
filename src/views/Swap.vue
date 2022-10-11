@@ -463,7 +463,7 @@ export default class Swap extends Mixins(
       const { amount, amountWithoutImpact, fee, rewards } = results[bestDexIndex];
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
-      this.setAmountWithoutImpact(amountWithoutImpact);
+      this.setAmountWithoutImpact(amountWithoutImpact as string);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
       this.selectDexId(DEXES[bestDexIndex]);
