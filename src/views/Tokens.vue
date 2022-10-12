@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="['container', 'container--tokens', { 'container--tokens-small': !hasTokensData }]"
-    v-loading="parentLoading || loading"
-  >
+  <div :class="containerClasses" v-loading="parentLoading || loading">
     <generic-page-header :title="t('pageTitle.Tokens')" class="page-header-title--tokens">
       <search-input
         v-model="query"
@@ -277,6 +274,18 @@ export default class Tokens extends Mixins(
 
   get hasTokensData(): boolean {
     return Object.keys(this.tokensData).length !== 0;
+  }
+
+  get containerClasses(): Array<string> {
+    const baseClass = 'container';
+    const tokensContainerClass = `${baseClass}--tokens`;
+    const cssClasses: Array<string> = [baseClass, tokensContainerClass];
+
+    if (!this.hasTokensData) {
+      cssClasses.push(`${tokensContainerClass}-hidden`);
+    }
+
+    return cssClasses;
   }
 
   get isDefaultSort(): boolean {
@@ -587,7 +596,7 @@ $cell-logo-width: 32px;
   min-width: $container-min-width;
   margin: $inner-spacing-big $inner-spacing-big 0;
 
-  &-small {
+  &-hidden {
     max-width: $container-min-width;
   }
 }
