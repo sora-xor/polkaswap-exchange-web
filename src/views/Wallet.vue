@@ -79,6 +79,7 @@ export default class Wallet extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .container--wallet {
+  padding: 0;
   > .el-card {
     &__header {
       padding-top: 0;
