@@ -724,7 +724,7 @@
         "locked": "{percent} Twojej puli jest obstawiane"
     },
     "dexSettings": {
-        "title": "Ustawienia transakcji",
+        "title": "Ustawienia",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": " – możliwość wyboru między rynkiem pierwotnym (TBC), rynkiem wtórnym (XYK) a połączonym inteligentnym algorytmem gwarantującym najlepszą cenę dla każdej danej transakcji."
