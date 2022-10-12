@@ -373,15 +373,14 @@ export default class SwapChart extends Mixins(
   }
 
   get gridLeftOffset(): number {
-    return (
-      AXIS_OFFSET +
-      2 * LABEL_PADDING +
-      getTextWidth(
-        String(this.limits.max.toFixed(this.precision)),
-        this.axisLabelCSS.fontFamily,
-        this.axisLabelCSS.fontSize
-      )
+    const maxLabel = this.limits.max * 10;
+    const axisLabelWidth = getTextWidth(
+      String(maxLabel.toFixed(this.precision)),
+      this.axisLabelCSS.fontFamily,
+      this.axisLabelCSS.fontSize
     );
+
+    return AXIS_OFFSET + 2 * LABEL_PADDING + axisLabelWidth;
   }
 
   // ordered by timestamp ASC
@@ -899,7 +898,7 @@ export default class SwapChart extends Mixins(
 
   handleZoom(event: any): void {
     event?.stop?.();
-    if (event?.wheelDelta === -1 && this.zoomStart === 0 && this.zoomEnd === 100) {
+    if (event?.wheelDelta < 0 && this.zoomStart === 0 && this.zoomEnd === 100) {
       this.updatePrices();
     }
   }
