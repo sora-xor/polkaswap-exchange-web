@@ -516,15 +516,19 @@ i.icon-divider {
   @include icon-styles;
 }
 
-// @include large-desktop(true) {
-//   .app-main {
-//     &.app-main--tokens {
-//       .app-menu {
-//         position: relative;
-//       }
-//     }
-//   }
-// }
+@include large-desktop(true) {
+  .app-main {
+    &.app-main--tokens {
+      .app-menu {
+        position: relative;
+
+        @include large-mobile(true) {
+          position: fixed;
+        }
+      }
+    }
+  }
+}
 
 @include tablet {
   .app-footer {
