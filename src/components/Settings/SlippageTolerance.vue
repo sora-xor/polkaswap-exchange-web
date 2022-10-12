@@ -267,7 +267,7 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
   &-default {
     flex: 1;
 
-    @include mobile {
+    @include large-mobile(true) {
       margin-bottom: $inner-spacing-mini;
     }
 
