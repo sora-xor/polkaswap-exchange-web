@@ -724,7 +724,7 @@
         "locked": "{percent} av puljen din er i innsats"
     },
     "dexSettings": {
-        "title": "Transaksjonsinnstillinger",
+        "title": "Innstillinger",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- mulighet til å velge mellom Primærmarkedet (TBC), Sekundærmarkedet (XYK) eller en kombinert smart algoritme for garantert beste pris for en gitt transaksjon."

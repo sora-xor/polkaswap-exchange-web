@@ -724,7 +724,7 @@
         "locked": "{percent} van uw pool is in staking"
     },
     "dexSettings": {
-        "title": "Transactie-instellingen",
+        "title": "Instellingen",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": " - optie om te kiezen tussen Primaire Markt (TBC), Secundaire Markt (XYK) of een gecombineerd slim algoritme voor gegarandeerd de beste prijs voor een bepaalde transactie."

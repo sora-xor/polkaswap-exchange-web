@@ -724,7 +724,7 @@
         "locked": "{percent} della tua piscina è in staking"
     },
     "dexSettings": {
-        "title": "Impostazioni della transazione",
+        "title": "Impostazioni",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- opzione per scegliere tra mercato primario (TBC), mercato secondario (XYK) o un algoritmo intelligente combinato per ottenere il miglior prezzo garantito per qualsiasi transazione."

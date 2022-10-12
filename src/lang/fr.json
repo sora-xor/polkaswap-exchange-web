@@ -724,7 +724,7 @@
         "locked": "{percent} de votre pool est en jalonnement"
     },
     "dexSettings": {
-        "title": "Paramètres de transaction",
+        "title": "Réglages",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- possibilité de choisir entre le marché primaire (TBC), le marché secondaire (XYK) ou un algorithme intelligent combiné pour garantir le meilleur prix pour une transaction donnée."

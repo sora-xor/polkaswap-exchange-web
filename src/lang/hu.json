@@ -724,7 +724,7 @@
         "locked": "A készlet {percent} -a tétben van"
     },
     "dexSettings": {
-        "title": "Tranzakciós beállítások",
+        "title": "Beállítások",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": " - választási lehetőség az Elsődleges Piac (TBC), a Másodlagos Piac (XYK) vagy a kombinált intelligens algoritmus között az adott tranzakció garantált legjobb ára érdekében."

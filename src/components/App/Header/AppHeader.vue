@@ -232,7 +232,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 }
 
 .app-logo--header {
-  @include mobile {
+  @include large-mobile(true) {
     display: none;
   }
 }

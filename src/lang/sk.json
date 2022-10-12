@@ -724,7 +724,7 @@
         "locked": "V stávke je {percent} vášho fondu"
     },
     "dexSettings": {
-        "title": "Nastavenia transakcie",
+        "title": "Nastavenie",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": " - možnosť výberu medzi primárnym trhom (TBC), sekundárnym trhom (XYK) alebo kombinovaným inteligentným algoritmom pre zaručenie najlepšej ceny pre každú transakciu."

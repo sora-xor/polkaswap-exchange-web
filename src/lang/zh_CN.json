@@ -724,7 +724,7 @@
         "locked": "{percent}您的流动池正在质押中"
     },
     "dexSettings": {
-        "title": "交易设置",
+        "title": "设置",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- 在一级市场 (TBC)、二级市场 (XYK) 或组合智能算法之间进行选择，以保证任何给定交易的最佳价格。"

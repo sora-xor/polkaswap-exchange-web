@@ -173,6 +173,7 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
 }
 .slippage-tolerance {
   &-custom_input.s-input {
+    @include focus-outline($focusWithin: true, $withOffset: true);
     min-height: var(--s-size-small);
     box-shadow: var(--s-shadow-element);
 
@@ -267,7 +268,7 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
   &-default {
     flex: 1;
 
-    @include mobile {
+    @include large-mobile(true) {
       margin-bottom: $inner-spacing-mini;
     }
 
