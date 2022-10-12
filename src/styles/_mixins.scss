@@ -568,15 +568,15 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         outline: $outline;
       }
     } @else {
-      @if $withOffset == true {
-        outline-offset: -1px;
-      }
       &:focus:not(:active) {
         outline: $outline;
         @if $borderRadius != '' {
           border-radius: $borderRadius;
         }
       }
+    }
+    @if $withOffset == true {
+      outline-offset: -1px;
     }
   }
 }

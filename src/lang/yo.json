@@ -724,7 +724,7 @@
         "locked": "{percent} ti adagun-omi rẹ wa ni idiyele"
     },
     "dexSettings": {
-        "title": "Awọn eto iṣowo",
+        "title": "Ètò",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- aṣayan lati yan laarin ọja Alakọbẹrẹ (TBC), Ile-iwe Atẹle (XYK) tabi algorithm ọlọgbọn apapọ fun idiyele ti o dara julọ fun iṣeduro eyikeyi ti a fun."

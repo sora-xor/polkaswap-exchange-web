@@ -724,7 +724,7 @@
         "locked": "{percent} dari kolam Anda sedang dipertaruhkan"
     },
     "dexSettings": {
-        "title": "Pengaturan transaksi",
+        "title": "Pengaturan",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- pilihan untuk memilih antara Pasar Primer (TBC), Pasar Sekunder (XYK) atau algoritma cerdas gabungan untuk menjamin harga terbaik untuk setiap transaksi yang diperoleh."

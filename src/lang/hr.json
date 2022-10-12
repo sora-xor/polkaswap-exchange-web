@@ -724,7 +724,7 @@
         "locked": "{percent} vašeg bazena je u ulozi"
     },
     "dexSettings": {
-        "title": "Postavke transakcije",
+        "title": "Postavke",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": " - mogućnost izbora između primarnog tržišta (TBC), sekundarnog tržišta (XYK) ili kombiniranog pametnog algoritma za zajamčenu najbolju cijenu za bilo koju transakciju."

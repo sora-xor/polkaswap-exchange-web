@@ -724,7 +724,7 @@
         "locked": "{percent} nhóm của bạn đang được đặt cược"
     },
     "dexSettings": {
-        "title": "Cài đặt giao dịch",
+        "title": "Cài đặt",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": " - tùy chọn lựa chọn giữa Thị trường sơ cấp (TBC), Thị trường thứ cấp (XYK) hoặc kết hợp thuật toán thông minh để đảm bảo mức giá tốt nhất cho bất kỳ giao dịch nào."

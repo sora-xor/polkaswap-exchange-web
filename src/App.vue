@@ -226,6 +226,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   get appClasses(): Array<string> {
     const baseClass = 'app-main';
     const cssClasses: Array<string> = [baseClass];
+    if (this.$route.name) {
+      cssClasses.push(`${baseClass}--${this.$route.name.toLowerCase()}`);
+    }
     if (this.chartsEnabled && this.isSwapPage) {
       cssClasses.push(`${baseClass}--has-charts`);
     }
@@ -513,39 +516,76 @@ i.icon-divider {
   @include icon-styles;
 }
 
-@include desktop {
-  .app-main.app-main--has-charts {
-    .app-menu {
-      position: relative;
-    }
-    .app-content {
-      width: 100%;
-      padding-left: $basic-spacing * 2;
-      .app-disclaimer {
-        $margin-left: 10px;
-        max-width: calc(#{$bridge-width} + #{$margin-left});
-        padding-right: $inner-spacing-big;
-        padding-left: calc(#{$inner-spacing-big} + #{$margin-left});
-        &-container {
-          margin-left: auto;
-          margin-right: auto;
-          max-width: calc(#{$bridge-width} * 2 + #{$basic-spacing-small});
+@include large-desktop(true) {
+  .app-main {
+    &.app-main--tokens {
+      .app-menu {
+        position: relative;
+
+        @include large-mobile(true) {
+          position: fixed;
         }
       }
     }
+    &.app-main--referral .app-content {
+      width: 100%;
+    }
+  }
+}
 
-    .block-number-link {
-      z-index: $app-body-layer;
+@include tablet {
+  .app-footer {
+    flex-direction: row;
+    .app-disclaimer-container {
+      padding-right: $inner-spacing-large;
+    }
+  }
+
+  .block-number {
+    display: block;
+  }
+}
+
+@include desktop {
+  .app-main {
+    &.app-main--swap.app-main--has-charts {
+      .app-menu {
+        position: relative;
+      }
+    }
+
+    &.app-main--has-charts {
+      .app-content {
+        width: 100%;
+        padding-left: $basic-spacing * 2;
+        .app-disclaimer {
+          $margin-left: 10px;
+          max-width: calc(#{$bridge-width} + #{$margin-left});
+          padding-right: $inner-spacing-big;
+          padding-left: calc(#{$inner-spacing-big} + #{$margin-left});
+          &-container {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: calc(#{$bridge-width} * 2 + #{$basic-spacing-small});
+          }
+        }
+      }
+
+      .block-number-link {
+        z-index: $app-body-layer;
+      }
     }
   }
 }
 
 @include large-desktop {
-  .app-main.app-main--has-charts {
-    .app-content {
-      .app-disclaimer {
-        &-container {
-          max-width: calc(#{$bridge-width} * 3 + #{$basic-spacing-small} * 4);
+  .app-main {
+    &.app-main--has-charts {
+      .app-content {
+        .app-disclaimer {
+          &-container {
+            max-width: calc(#{$bridge-width} * 3 + #{$basic-spacing-small} * 4);
+          }
         }
       }
     }
@@ -644,19 +684,6 @@ $sora-logo-width: 173.7px;
   &__image {
     width: $sora-logo-width;
     height: $sora-logo-height;
-  }
-}
-
-@include tablet {
-  .app-footer {
-    flex-direction: row;
-    .app-disclaimer-container {
-      padding-right: $inner-spacing-large;
-    }
-  }
-
-  .block-number {
-    display: block;
   }
 }
 </style>
