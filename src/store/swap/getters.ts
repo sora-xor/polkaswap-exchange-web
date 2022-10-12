@@ -56,7 +56,7 @@ const getters = defineGetters<SwapState>()({
   },
   marketAlgorithmsAvailable(...args): boolean {
     const { getters } = swapGetterContext(args);
-    return getters.marketAlgorithms.length > 1;
+    return !!getters.marketAlgorithms.length;
   },
   swapLiquiditySource(...args): Nullable<LiquiditySourceTypes> {
     const { getters, rootGetters } = swapGetterContext(args);
