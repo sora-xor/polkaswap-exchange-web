@@ -351,6 +351,15 @@ ul ul {
     }
   }
 
+  &-main.app-main {
+    &--rewards,
+    &--referral {
+      .app-content {
+        width: 100%;
+      }
+    }
+  }
+
   &-body-scrollbar {
     @include scrollbar;
   }
@@ -526,9 +535,6 @@ i.icon-divider {
           position: fixed;
         }
       }
-    }
-    &.app-main--referral .app-content {
-      width: 100%;
     }
   }
 }
