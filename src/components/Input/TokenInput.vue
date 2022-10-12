@@ -26,6 +26,7 @@
               with-left-shift
               value-class="input-value--primary"
               :value="formattedBalance"
+              :has-fiat-value="tokenPrice"
               :fiat-value="formattedFiatBalance"
             />
           </template>
