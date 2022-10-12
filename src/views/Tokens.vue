@@ -1,5 +1,8 @@
 <template>
-  <div class="container container--tokens" v-loading="parentLoading || loading">
+  <div
+    :class="['container', 'container--tokens', { 'container--tokens-small': !hasTokensData }]"
+    v-loading="parentLoading || loading"
+  >
     <generic-page-header :title="t('pageTitle.Tokens')" class="page-header-title--tokens">
       <search-input
         v-model="query"
@@ -64,81 +67,84 @@
           <div class="tokens-item-symbol">{{ row.symbol }}</div>
         </template>
       </s-table-column>
-      <!-- Price -->
-      <s-table-column width="104" header-align="left" align="left">
-        <template #header>
-          <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="tokens-table__primary">Price</span>
-          </sort-button>
-        </template>
-        <template v-slot="{ row }">
-          <formatted-amount
-            is-fiat-value
-            fiat-default-rounding
-            :font-weight-rate="FontWeightRate.MEDIUM"
-            :value="row.priceFormatted"
-            class="tokens-item-price"
-          />
-        </template>
-      </s-table-column>
-      <!-- 1D Price Change -->
-      <s-table-column width="104" header-align="right" align="right">
-        <template #header>
-          <sort-button name="priceChangeDay" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="tokens-table__primary">1D %</span>
-          </sort-button>
-        </template>
-        <template v-slot="{ row }">
-          <price-change :value="row.priceChangeDayFP" />
-        </template>
-      </s-table-column>
-      <!-- 7D Price Change -->
-      <s-table-column width="104" header-align="left" align="left">
-        <template #header>
-          <sort-button name="priceChangeWeek" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="tokens-table__primary">7D %</span>
-          </sort-button>
-        </template>
-        <template v-slot="{ row }">
-          <price-change :value="row.priceChangeWeekFP" />
-        </template>
-      </s-table-column>
-      <!-- 1D Volume -->
-      <s-table-column width="104" header-align="right" align="right">
-        <template #header>
-          <sort-button name="volumeWeek" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="tokens-table__primary">1D Vol.</span>
-          </sort-button>
-        </template>
-        <template v-slot="{ row }">
-          <formatted-amount
-            is-fiat-value
-            :font-weight-rate="FontWeightRate.MEDIUM"
-            :value="row.volumeWeekFormatted.amount"
-            class="tokens-item-price tokens-item-amount"
-          >
-            {{ row.volumeWeekFormatted.suffix }}
-          </formatted-amount>
-        </template>
-      </s-table-column>
-      <!-- TVL -->
-      <s-table-column width="104" header-align="right" align="right">
-        <template #header>
-          <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="tokens-table__primary">TVL</span>
-          </sort-button>
-        </template>
-        <template v-slot="{ row }">
-          <formatted-amount
-            is-fiat-value
-            :font-weight-rate="FontWeightRate.MEDIUM"
-            :value="row.tvlFormatted.amount"
-            class="tokens-item-price tokens-item-amount"
-          >
-            {{ row.tvlFormatted.suffix }}
-          </formatted-amount>
-        </template>
-      </s-table-column>
+
+      <template v-if="hasTokensData">
+        <!-- Price -->
+        <s-table-column width="104" header-align="left" align="left">
+          <template #header>
+            <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
+              <span class="tokens-table__primary">Price</span>
+            </sort-button>
+          </template>
+          <template v-slot="{ row }">
+            <formatted-amount
+              is-fiat-value
+              fiat-default-rounding
+              :font-weight-rate="FontWeightRate.MEDIUM"
+              :value="row.priceFormatted"
+              class="tokens-item-price"
+            />
+          </template>
+        </s-table-column>
+        <!-- 1D Price Change -->
+        <s-table-column width="104" header-align="right" align="right">
+          <template #header>
+            <sort-button name="priceChangeDay" :sort="{ order, property }" @change-sort="changeSort">
+              <span class="tokens-table__primary">1D %</span>
+            </sort-button>
+          </template>
+          <template v-slot="{ row }">
+            <price-change :value="row.priceChangeDayFP" />
+          </template>
+        </s-table-column>
+        <!-- 7D Price Change -->
+        <s-table-column width="104" header-align="left" align="left">
+          <template #header>
+            <sort-button name="priceChangeWeek" :sort="{ order, property }" @change-sort="changeSort">
+              <span class="tokens-table__primary">7D %</span>
+            </sort-button>
+          </template>
+          <template v-slot="{ row }">
+            <price-change :value="row.priceChangeWeekFP" />
+          </template>
+        </s-table-column>
+        <!-- 1D Volume -->
+        <s-table-column width="104" header-align="right" align="right">
+          <template #header>
+            <sort-button name="volumeWeek" :sort="{ order, property }" @change-sort="changeSort">
+              <span class="tokens-table__primary">1D Vol.</span>
+            </sort-button>
+          </template>
+          <template v-slot="{ row }">
+            <formatted-amount
+              is-fiat-value
+              :font-weight-rate="FontWeightRate.MEDIUM"
+              :value="row.volumeWeekFormatted.amount"
+              class="tokens-item-price tokens-item-amount"
+            >
+              {{ row.volumeWeekFormatted.suffix }}
+            </formatted-amount>
+          </template>
+        </s-table-column>
+        <!-- TVL -->
+        <s-table-column width="104" header-align="right" align="right">
+          <template #header>
+            <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
+              <span class="tokens-table__primary">TVL</span>
+            </sort-button>
+          </template>
+          <template v-slot="{ row }">
+            <formatted-amount
+              is-fiat-value
+              :font-weight-rate="FontWeightRate.MEDIUM"
+              :value="row.tvlFormatted.amount"
+              class="tokens-item-price tokens-item-amount"
+            >
+              {{ row.tvlFormatted.suffix }}
+            </formatted-amount>
+          </template>
+        </s-table-column>
+      </template>
     </s-table>
 
     <s-pagination
@@ -268,6 +274,10 @@ export default class Tokens extends Mixins(
   property = '';
 
   tokensData: Record<string, TokenData> = {};
+
+  get hasTokensData(): boolean {
+    return Object.keys(this.tokensData).length !== 0;
+  }
 
   get isDefaultSort(): boolean {
     return !this.order || !this.property;
@@ -514,6 +524,16 @@ $fixed-column-width: 280px;
     }
   }
 
+  &.el-table--scrollable-x {
+    .el-table__body-wrapper {
+      overflow-x: hidden;
+    }
+  }
+
+  .el-table__empty-block {
+    width: 100% !important;
+  }
+
   .el-table__empty-text {
     color: var(--s-color-base-content-tertiary); // TODO [1.4]: remove after fix in ui-lib
   }
@@ -555,14 +575,21 @@ $fixed-column-width: 280px;
 
 <style lang="scss" scoped>
 $search-input-width: 382px;
-$container-max-width: 50vw;
+$container-width: 75vw;
+$container-max-width: 952px;
 $container-min-width: $breakpoint_mobile;
 $cell-index-width: 40px;
 $cell-logo-width: 32px;
 
 .container--tokens {
+  width: $container-width;
   max-width: $container-max-width;
   min-width: $container-min-width;
+  margin: $inner-spacing-big $inner-spacing-big 0;
+
+  &-small {
+    max-width: $container-min-width;
+  }
 }
 
 .tokens-table {
