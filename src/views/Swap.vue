@@ -6,13 +6,7 @@
           <template #label>{{ t('marketText') }}:</template>
           <template #value>{{ swapMarketAlgorithm }}</template>
           <template #action>
-            <s-button
-              class="el-button--settings"
-              type="action"
-              icon="basic-settings-24"
-              :disabled="!marketAlgorithmsAvailable"
-              @click="openSettingsDialog"
-            />
+            <s-button class="el-button--settings" type="action" icon="basic-settings-24" @click="openSettingsDialog" />
           </template>
         </status-action-badge>
       </generic-page-header>
@@ -198,7 +192,6 @@ export default class Swap extends Mixins(
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.swap.isAvailable isAvailable!: boolean;
-  @getter.swap.marketAlgorithmsAvailable marketAlgorithmsAvailable!: boolean;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
 
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
