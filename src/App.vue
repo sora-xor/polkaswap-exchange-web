@@ -527,6 +527,9 @@ i.icon-divider {
         }
       }
     }
+    &.app-main--referral .app-content {
+      width: 100%;
+    }
   }
 }
 
