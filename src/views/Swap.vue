@@ -127,7 +127,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
-import { DexId } from '@sora-substrate/util/build/poolXyk/consts';
+import { DexId } from '@sora-substrate/util/build/dex/consts';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { Subscription } from 'rxjs';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
@@ -154,8 +154,6 @@ import {
 import router, { lazyComponent } from '@/router';
 import { Components, MarketAlgorithms, PageNames } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
-
-const DEXES = [DexId.XOR, DexId.XSTUSD];
 
 @Component({
   components: {
@@ -207,9 +205,9 @@ export default class Swap extends Mixins(
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
   @action.swap.reset private reset!: AsyncVoidFn;
   @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (data: {
-    dexId: DexId;
+    dexId: number;
     payload: QuotePayload;
-  }) => Promise<void>;
+  }) => void;
 
   @action.swap.resetSubscriptions private resetBalanceSubscriptions!: AsyncVoidFn;
   @action.swap.updateSubscriptions private updateBalanceSubscriptions!: AsyncVoidFn;
@@ -241,7 +239,7 @@ export default class Swap extends Mixins(
   showSettings = false;
   showSelectTokenDialog = false;
   showConfirmSwapDialog = false;
-  liquidityReservesSubscription: Array<Subscription> = [];
+  liquidityReservesSubscription: Nullable<Subscription> = null;
   enabledAssetsSubscription: Nullable<Subscription> = null;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
@@ -421,10 +419,11 @@ export default class Swap extends Mixins(
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue;
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo;
     const oppositeToken = (this.isExchangeB ? this.tokenFrom : this.tokenTo) as AccountAsset;
+    const dexes = api.dex.dexList;
 
     try {
       // TODO: [ARCH] Asset -> Asset | AccountAsset
-      const results = DEXES.map((dexId) => {
+      const results = dexes.map(({ dexId }) => {
         return api.swap.getResult(
           this.tokenFrom as Asset,
           this.tokenTo as Asset,
@@ -459,7 +458,7 @@ export default class Swap extends Mixins(
       this.setAmountWithoutImpact(amountWithoutImpact as string);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
-      this.selectDexId(DEXES[bestDexIndex]);
+      this.selectDexId(dexes[bestDexIndex].dexId);
     } catch (error: any) {
       console.error(error);
       resetOppositeValue();
@@ -477,10 +476,8 @@ export default class Swap extends Mixins(
   }
 
   private cleanSwapReservesSubscription(): void {
-    this.liquidityReservesSubscription.forEach((subscription) => {
-      subscription?.unsubscribe();
-    });
-    this.liquidityReservesSubscription = [];
+    this.liquidityReservesSubscription?.unsubscribe();
+    this.liquidityReservesSubscription = null;
   }
 
   private subscribeOnSwapReserves(): void {
@@ -488,28 +485,16 @@ export default class Swap extends Mixins(
 
     if (!this.areTokensSelected) return;
 
-    this.liquidityReservesSubscription = DEXES.map((dexId) => {
-      const liquditySource =
-        dexId === DexId.XOR ? (this.liquiditySource as LiquiditySourceTypes) : LiquiditySourceTypes.XYKPool;
-
-      return api.swap
-        .subscribeOnReserves(
-          (this.tokenFrom as AccountAsset).address,
-          (this.tokenTo as AccountAsset).address,
-          // TODO: Add Nullable<LiquiditySourceTypes> to the lib
-          liquditySource,
-          dexId
-        )
-        .subscribe((payload) => {
-          this.onChangeSwapReserves(dexId as DexId, payload);
-        });
-    });
-  }
-
-  private async onChangeSwapReserves(dexId: DexId, payload: QuotePayload): Promise<void> {
-    await this.setSubscriptionPayload({ dexId, payload });
-
-    this.runRecountSwapValues();
+    this.liquidityReservesSubscription = api.swap
+      .subscribeOnAllDexesReserves(
+        (this.tokenFrom as AccountAsset).address,
+        (this.tokenTo as AccountAsset).address,
+        this.liquiditySource as LiquiditySourceTypes
+      )
+      .subscribe((results) => {
+        results.forEach((result) => this.setSubscriptionPayload(result));
+        this.runRecountSwapValues();
+      });
   }
 
   handleFocusField(isExchangeB = false): void {
