@@ -9,7 +9,6 @@ import type {
   QuotePayload,
   LPRewardsInfo,
 } from '@sora-substrate/liquidity-proxy/build/types';
-import type { DexId } from '@sora-substrate/util/build/poolXyk/consts';
 
 import { initialState } from './state';
 import type { SwapState } from './types';
@@ -68,15 +67,18 @@ const mutations = defineMutations<SwapState>()({
       payload,
       paths,
       liquiditySources,
-    }: { payload: QuotePayload; dexId: DexId; paths: QuotePaths; liquiditySources: Array<LiquiditySourceTypes> }
+    }: { payload: QuotePayload; dexId: number; paths: QuotePaths; liquiditySources: Array<LiquiditySourceTypes> }
   ): void {
-    state.dexQuoteData[dexId] = {
-      payload,
-      paths,
-      pairLiquiditySources: liquiditySources,
+    state.dexQuoteData = {
+      ...state.dexQuoteData,
+      [dexId]: {
+        payload,
+        paths,
+        pairLiquiditySources: liquiditySources,
+      },
     };
   },
-  selectDexId(state, dexId: DexId) {
+  selectDexId(state, dexId: number) {
     state.selectedDexId = dexId;
   },
 });
