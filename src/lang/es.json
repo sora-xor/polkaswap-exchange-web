@@ -80,8 +80,8 @@
         "DemeterFarmingGetRewards": "Reclamar Recompensas"
     },
     "polkadotjs": {
-        "noExtensions": "No se encontró la extensión Polkadot.js. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Parece que no hay cuentas en su extensión Polkadot.js. Por favor añada una cuenta e inténtelo de nuevo.",
+        "noExtensions": "No se encontró la extensión Polkadot{.js}. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Parece que no hay cuentas en su extensión {extension}. Por favor añada una cuenta e inténtelo de nuevo.",
         "noAccount": "Error en la cuenta {extension}. Por favor compruebe su cuenta en la extensión {extension}",
         "noExtension": "No se encontró ninguna {extension}. Por favor Instálela y vuelva a cargar esta página.",
         "noSigner": "Acceso denegado. Vaya a la configuración de la {extension} y abra \"Administrar acceso al sitio web\" para permitir."
@@ -89,11 +89,8 @@
     "connection": {
         "title": "Cuenta de la Red SORA",
         "text": "Conecte sus cuentas de la Red SORA o cree otras nuevas con la extensión de navegador Polkadot{.js}. Esta extensión le permite firmar de forma segura las transacciones y gestionar Activos en la Red SORA.",
-        "install": "No se encontró la extensión polkadot.js. Instálala y <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">recarga<\/a> la página. <br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "¿Solicitud de permiso rechazada accidentalmente? <\/br> Actualmente, la extensión Polkadot{.js} no tiene gestión de permisos. Como solución alternativa, puede reiniciar su navegador y volver a visitar esta página para proceder con la autorización.",
-        "noAccounts": "No se ha encontrado ninguna cuenta en su extensión de navegador Polkadot{.js}. Por favor añade una cuenta e inténtalo de nuevo.",
+        "noAccounts": "No se ha encontrado ninguna cuenta en su extensión de navegador {extension}. Por favor añade una cuenta e inténtalo de nuevo.",
         "selectAccount": "Seleccione la cuenta con la que desea trabajar",
-        "loadingTitle": "Esperando que permita el acceso a la extensión Polkadot{.js}.",
         "action": {
             "install": "Instalar extensión",
             "learnMore": "Aprende más",

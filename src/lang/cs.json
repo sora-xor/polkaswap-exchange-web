@@ -80,8 +80,8 @@
         "DemeterFarmingGetRewards": "Nárokovat odměny"
     },
     "polkadotjs": {
-        "noExtensions": "Nebylo nalezeno žádné rozšíření Polkadot.js. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Zdá se, že ve vašem rozšíření Polkadot.js nejsou žádné účty. Přidejte účet a zkuste to znovu prosím.",
+        "noExtensions": "Nebylo nalezeno žádné rozšíření Polkadot{.js}. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Zdá se, že ve vašem rozšíření {extension} nejsou žádné účty. Přidejte účet a zkuste to znovu prosím.",
         "noAccount": "Chyba účtu polkadot.js. Zkontrolujte prosím svůj účet v rozšíření Polkadot.js.",
         "noExtension": "Nebylo nalezeno žádné {extension} . Nainstalujte jej a znovu načtěte tuto stránku",
         "noSigner": "Přístup odepřen. Přejděte do nastavení {extension} a povolte otevřením možnosti Správa přístupu k webu."
@@ -89,11 +89,8 @@
     "connection": {
         "title": "Účet sítě SORA",
         "text": "Připojte své účty sítě SORA nebo vytvořte nové pomocí rozšíření prohlížeče polkadot{.js}. Toto rozšíření umožňuje bezpečně podepisovat transakce a spravovat aktiva v síti SORA.",
-        "install": "Rozšíření polkadot.js nebylo nalezeno. Nainstalujte jej a znovu <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">načtěte<\/a> stránku.<br\/> <span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Omylem zamítnutá žádost o povolení?<\/br> V současné době nemá rozšíření polkadot{.js} správu oprávnění. Jako alternativní řešení můžete restartovat prohlížeč a znovu navštívit tuto stránku, abyste mohli pokračovat v autorizaci.",
-        "noAccounts": "V rozšíření prohlížeče polkadot{.js} nebyl nalezen žádný účet. Přidejte prosím účet a zkuste to znovu.",
+        "noAccounts": "V rozšíření prohlížeče {extension} nebyl nalezen žádný účet. Přidejte prosím účet a zkuste to znovu.",
         "selectAccount": "Vyberte účet, se kterým chcete pracovat",
-        "loadingTitle": "Čekáme, až povolíte přístup k rozšíření polkadot{.js}.",
         "action": {
             "install": "Nainstalovat rozšíření",
             "learnMore": "Zjistit více",

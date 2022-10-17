@@ -80,20 +80,17 @@
         "DemeterFarmingGetRewards": "Gör Anspråk på Belöningar"
     },
     "polkadotjs": {
-        "noExtensions": "Inget Polkadot.js tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Det verkar inte finnas några konton i ditt Polkadot.js-tillägg. Vänligen lägg till ett konto och försök igen.",
+        "noExtensions": "Inget Polkadot{.js} tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Det verkar inte finnas några konton i ditt {extension} tillägg. Vänligen lägg till ett konto och försök igen.",
         "noAccount": "Polkadot.js konto fel. Vänligen kontrollera ditt konto i Polkadot.js-tillägget.",
         "noExtension": "Inget {extension} -tillägg hittades. Installera det och ladda om den här sidan",
         "noSigner": "Tillträde beviljas ej. Gå till tilläggsinställningarna för {extension} och öppna \"Hantera webbplatsåtkomst\" för att tillåta."
     },
     "connection": {
         "title": "SORA-Nätverkskonto",
-        "text": "Anslut dina SORA nätverkskonton eller skapa nya med polkadot{.js} webbläsartillägg. Detta tillägg ger dig möjlighet att signera transaktioner på ett säkert sätt och hantera tillgångar i SORA-Nätverk.",
-        "install": "Inget polkadot.js tillägg hittades. Installera det och <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">ladda om<\/a> sidan. <br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Behörighetsbegäran avvisades av misstag?<\/br> För närvarande har polkadot{.js} tillägget inte behörighetshantering. En lösning är att  starta om webbläsaren och besöka den här sidan igen för att fortsätta med auktorisering.",
-        "noAccounts": "Inget konto hittades i ditt polkadot{.js} webbläsartillägg. Vänligen lägg till ett konto och försök igen.",
+        "text": "Anslut dina SORA nätverkskonton eller skapa nya med Polkadot{.js} webbläsartillägg. Detta tillägg ger dig möjlighet att signera transaktioner på ett säkert sätt och hantera tillgångar i SORA-Nätverk.",
+        "noAccounts": "Inget konto hittades i ditt {extension} webbläsartillägg. Vänligen lägg till ett konto och försök igen.",
         "selectAccount": "Välj konto att arbeta med",
-        "loadingTitle": "Väntar på att du ska tillåta åtkomst till tillägget polkadot{.js}.",
         "action": {
             "install": "Installera tillägg",
             "learnMore": "Lär dig mer",
