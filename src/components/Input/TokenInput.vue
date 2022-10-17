@@ -26,7 +26,7 @@
               with-left-shift
               value-class="input-value--primary"
               :value="formattedBalance"
-              :has-fiat-value="tokenPrice"
+              :has-fiat-value="!!tokenPrice"
               :fiat-value="formattedFiatBalance"
             />
           </template>
@@ -55,7 +55,7 @@
     </div>
     <div slot="bottom" class="input-line input-line--footer">
       <div class="s-flex">
-        <formatted-amount v-if="tokenPrice" is-fiat-value :value="fiatAmount" />
+        <formatted-amount v-if="!!tokenPrice" is-fiat-value :value="fiatAmount" />
         <slot name="fiat-amount-append" />
       </div>
 
