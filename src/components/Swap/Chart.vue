@@ -471,7 +471,6 @@ export default class SwapChart extends Mixins(
           },
         },
         boundaryGap: this.isLineChart ? false : [0.005, 0.005],
-        splitNumber: 6,
       },
       yAxis: {
         type: 'value',
