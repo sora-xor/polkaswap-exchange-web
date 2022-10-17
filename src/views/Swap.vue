@@ -136,6 +136,7 @@ import type {
   QuotePayload,
   PrimaryMarketsEnabledAssets,
   LPRewardsInfo,
+  SwapResult,
 } from '@sora-substrate/liquidity-proxy/build/types';
 import type { DexQuoteData } from '@/store/swap/types';
 
@@ -423,8 +424,8 @@ export default class Swap extends Mixins(
 
     try {
       // TODO: [ARCH] Asset -> Asset | AccountAsset
-      const results = dexes.map(({ dexId }) => {
-        return api.swap.getResult(
+      const results = dexes.reduce<{ [dexId: number]: SwapResult }>((buffer, { dexId }) => {
+        const swapResult = api.swap.getResult(
           this.tokenFrom as Asset,
           this.tokenTo as Asset,
           value,
@@ -434,31 +435,33 @@ export default class Swap extends Mixins(
           this.dexQuoteData[dexId].payload as QuotePayload,
           dexId as DexId
         );
-      });
 
-      const bestDexIndex = results.reduce((bestIdx, result, index, res) => {
-        const currAmount = FPNumber.fromCodecValue(result.amount);
-        const bestAmount = FPNumber.fromCodecValue(res[bestIdx].amount);
+        return { ...buffer, [dexId]: swapResult };
+      }, {});
 
-        if (currAmount.isZero()) return bestIdx;
+      let bestDexId: number = DexId.XOR;
+
+      for (const currentDexId in results) {
+        const currAmount = FPNumber.fromCodecValue(results[currentDexId].amount);
+        const bestAmount = FPNumber.fromCodecValue(results[bestDexId].amount);
+
+        if (currAmount.isZero()) continue;
 
         if (
           (FPNumber.isLessThan(currAmount, bestAmount) && this.isExchangeB) ||
           (FPNumber.isLessThan(bestAmount, currAmount) && !this.isExchangeB)
         ) {
-          return index;
+          bestDexId = +currentDexId;
         }
+      }
 
-        return bestIdx;
-      }, 0);
-
-      const { amount, amountWithoutImpact, fee, rewards } = results[bestDexIndex];
+      const { amount, amountWithoutImpact, fee, rewards } = results[bestDexId];
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact as string);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
-      this.selectDexId(dexes[bestDexIndex].dexId);
+      this.selectDexId(bestDexId);
     } catch (error: any) {
       console.error(error);
       resetOppositeValue();
