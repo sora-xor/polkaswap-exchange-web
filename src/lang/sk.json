@@ -81,19 +81,16 @@
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie Polkadot{.js} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Zdá sa, že vo vašom rozšírení Polkadot{.js} nie sú žiadne účty. Pridajte účet a skúste to znova.",
+        "noAccounts": "Zdá sa, že vo vašom rozšírení {extension} nie sú žiadne účty. Pridajte účet a skúste to znova.",
         "noAccount": "Chyba účtu Polkadot{.js}. Skontrolujte váš účet v rozšírení Polkadot{.js}",
         "noExtension": "Nenašlo sa žiadne {extension} . Nainštalujte si ho a znova načítajte túto stránku",
         "noSigner": "Prístup zamietnutý. Prejdite do nastavení {extension} a otvorte položku Spravovať prístup k webovým stránkam."
     },
     "connection": {
         "title": "Sieťový účet SORA",
-        "text": "Pripojte svoje účty SORA alebo si pomocou rozšírenia prehliadača polkadot{.js} vytvorte nové. Toto rozšírenie vám umožňuje bezpečne podpisovať transakcie a spravovať aktíva v sieti SORA.",
-        "install": "Rozšírenie polkadot{.js} nebolo nájdené. Nainštalujte ho a <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">znovu načítajte<\/a> stránku.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Omylom ste zamietli žiadosť o povolenie?<\/br>V súčasnosti nie je možné v rozšírení polkadot{.js} správovať povolenia. Ako alternatívne riešenie môžete reštartovať prehliadač, znovu navštíviť túto stránku a pokračovať v autorizácii.",
-        "noAccounts": "Vo vašom rozšírení prehliadača polkadot{.js} nebol nájdený žiadny účet. Pridajte účet a skúste to znova.",
+        "text": "Pripojte svoje účty SORA alebo si pomocou rozšírenia prehliadača Polkadot{.js} vytvorte nové. Toto rozšírenie vám umožňuje bezpečne podpisovať transakcie a spravovať aktíva v sieti SORA.",
+        "noAccounts": "Vo vašom rozšírení prehliadača {extension} nebol nájdený žiadny účet. Pridajte účet a skúste to znova.",
         "selectAccount": "Vyberte účet, s ktorým chcete pracovať",
-        "loadingTitle": "Čaká sa na povolenie prístupu k rozšíreniu polkadot{.js}.",
         "action": {
             "install": "Inštalovať rozšírenie",
             "learnMore": "Dozvedieť sa viac",

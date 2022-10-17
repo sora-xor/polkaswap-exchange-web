@@ -80,20 +80,17 @@
         "DemeterFarmingGetRewards": "Klaim Hadiah"
     },
     "polkadotjs": {
-        "noExtensions": "Tidak ada ekstensi Polkadot.js yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Sepertinya tidak ada akun di ekstensi Polkadot.js Anda. Tambahkan akun dan coba lagi.",
+        "noExtensions": "Tidak ada ekstensi Polkadot{.js} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Sepertinya tidak ada akun di ekstensi {extension} anda. Tambahkan akun dan coba lagi.",
         "noAccount": "Polkadot.js akun error. Silakan periksa akun Anda di ekstensi Polkadot.js",
         "noExtension": "Tidak ada {extension} yang ditemukan. Silakan instal dan muat ulang halaman ini",
         "noSigner": "Akses ditolak. Buka setelan ekstensi {extension} dan buka \"Kelola Akses Situs Web\" untuk mengizinkan."
     },
     "connection": {
         "title": "Akun Jaringan SORA",
-        "text": "Hubungkan akun SORA Network Anda atau buat akun baru dengan ekstensi browser {.js} Ekstensi ini memungkinkan Anda untuk menandatangani transaksi dan mengelola aset dengan aman di Jaringan SORA.",
-        "install": "Tak ada ekstensi polkadot.js yang ditemukan. Instal dan muat ulang halaman.<br\/> <span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Permintaan izin ditolak secara tidak sengaja? <\/br> Saat ini ekstensi polkadot{.js} tidak memiliki manajemen izin. Sebagai solusinya, Anda dapat memulai ulang browser dan mengunjungi kembali halaman ini untuk melanjutkan dengan memberikan izin.",
-        "noAccounts": "Tidak ada akun yang ditemukan di ekstensi browser polkadot{.js} Anda. Silakan tambahkan akun, lalu coba kembali.",
+        "text": "Hubungkan akun SORA Network Anda atau buat akun baru dengan ekstensi browser Polkadot{.js} Ekstensi ini memungkinkan Anda untuk menandatangani transaksi dan mengelola aset dengan aman di Jaringan SORA.",
+        "noAccounts": "Tidak ada akun yang ditemukan di ekstensi browser {extension} anda. Silakan tambahkan akun, lalu coba kembali.",
         "selectAccount": "Pilih akun untuk dikerjakan",
-        "loadingTitle": "Menunggu Anda untuk mengizinkan akses ke ekstensi polkadot{.js}.",
         "action": {
             "install": "Instal ekstensi",
             "learnMore": "Pelajari lebih lanjut",

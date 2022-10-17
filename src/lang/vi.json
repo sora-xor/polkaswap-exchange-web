@@ -81,19 +81,16 @@
     },
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) Polkadot{.js}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Dường như không có tài khoản nào trong tiện ích (extension) Polkadot{.js}. Vui lòng thêm tài khoản và thử lại.",
+        "noAccounts": "Dường như không có tài khoản nào trong tiện ích (extension) {extension}. Vui lòng thêm tài khoản và thử lại.",
         "noAccount": "Tài khoản Polkadot{.js} gặp lỗi. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) Polkadot{.js}.",
         "noExtension": "Không tìm thấy {extension} . Vui lòng cài đặt nó và tải lại trang này",
         "noSigner": "Quyền truy cập bị từ chối. Đi tới cài đặt tiện ích {extension} và mở \"Quản lý quyền truy cập trang web\" để cho phép."
     },
     "connection": {
         "title": "Tài khoản Mạng SORA",
-        "text": "Kết nối tài khoản mạng SORA của bạn hoặc tạo tài khoản mới với tiện ích (extension) polkadot{.js}. Tiện ích mở rộng (extension) này cho phép bạn ký giao dịch và quản lý tài sản một cách an toàn trên mạng SORA.",
-        "install": "Không tìm thấy tiện ích (extension) polkadot{.js}. Hãy cài đặt trước và <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">tải lại<\/a> trang này.<br\/> <span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Bạn lỡ từ chối yêu cầu cấp phép?<\/br> Hiện tại polkadot{.js} extension không được cấp quyền. Để giải quyết, bạn có thể khởi động lại trình duyệt và mở lại trang này rồi tiến hành ủy quyền.",
-        "noAccounts": "Không có tài khoản nào trong tiện ích (extension) polkadot{.js} của bạn. Vui lòng thêm tài khoản và thử lại.",
+        "text": "Kết nối tài khoản mạng SORA của bạn hoặc tạo tài khoản mới với tiện ích (extension) Polkadot{.js}. Tiện ích mở rộng (extension) này cho phép bạn ký giao dịch và quản lý tài sản một cách an toàn trên mạng SORA.",
+        "noAccounts": "Không có tài khoản nào trong tiện ích (extension) {extension} của bạn. Vui lòng thêm tài khoản và thử lại.",
         "selectAccount": "Chọn tài khoản để dùng",
-        "loadingTitle": "Chờ bạn cấp phép truy cập vào tiện ích (extension) polkadot{.js}.",
         "action": {
             "install": "Cài đặt tiện ích mở rộng",
             "learnMore": "Tìm hiểu thêm",

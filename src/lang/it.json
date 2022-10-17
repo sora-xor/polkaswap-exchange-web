@@ -80,20 +80,17 @@
         "DemeterFarmingGetRewards": "Richiedi ricompense"
     },
     "polkadotjs": {
-        "noExtensions": "Nessuna estensione Polkadot.js trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Sembra che non ci siano account nella tua estensione Polkadot.js. Aggiungi un account e riprova.",
+        "noExtensions": "Nessuna estensione Polkadot{.js} trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Sembra che non ci siano account nella tua estensione {extension}. Aggiungi un account e riprova.",
         "noAccount": "Errore dell'account Polkadot.js. Controlla il tuo account nell'estensione Polkadot.js",
         "noExtension": "Non è stata trovata alcuna {extension} . Si prega di installarlo e ricaricare questa pagina",
         "noSigner": "Accesso negato. Vai alle impostazioni {extension} e apri \"Gestisci accesso al sito web\" per consentire."
     },
     "connection": {
         "title": "SORA Network account",
-        "text": "Collega i tuoi account di rete SORA o creane di nuovi con l'estensione del browser polkadot{.js}. Questa estensione consente di firmare transazioni in modo sicuro e gestire gli assets in SORA Network.",
-        "install": "Nessuna estensione polkadot.js trovata. Installalo e <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\"> ricarica <\/a> la pagina. <br\/> <span class=\"wallet-connection-link\"> https:\/\/polkadot.js.org\/extension\/ <\/span>",
-        "noPermissions": "Richiesta di autorizzazione accidentalmente rifiutata? <\/br> Attualmente polkadot{.js} non ha la gestione dei permessi. Come soluzione alternativa puoi riavviare il browser e visitare nuovamente questa pagina per procedere con l'autorizzazione.",
-        "noAccounts": "Nessun account trovato nell'estensione del browser polkadot{.js} Aggiungi un account e riprova.",
+        "text": "Collega i tuoi account di rete SORA o creane di nuovi con l'estensione del browser Polkadot{.js}. Questa estensione consente di firmare transazioni in modo sicuro e gestire gli assets in SORA Network.",
+        "noAccounts": "Nessun account trovato nell'estensione del browser {extension} Aggiungi un account e riprova.",
         "selectAccount": "Seleziona l'account con cui lavorare",
-        "loadingTitle": "In attesa che tu garantisca l'accesso all'estensione polkadot{.js}.",
         "action": {
             "install": "Installa l'estensione",
             "learnMore": "Per saperne di più",

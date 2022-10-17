@@ -80,20 +80,17 @@
         "DemeterFarmingGetRewards": "Beloningen claimen"
     },
     "polkadotjs": {
-        "noExtensions": "Er is geen Polkadot.js-extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Er lijken geen accounts te zijn in uw Polkadot.js-extensie. Voeg een account toe en probeer het opnieuw.",
+        "noExtensions": "Er is geen Polkadot{.js} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Er lijken geen accounts te zijn in uw {extension} extensie. Voeg een account toe en probeer het opnieuw.",
         "noAccount": "Polkadot.js-accountfout. Controleer uw account in de Polkadot.js-extensie",
         "noExtension": "Er is geen {extension} -extensie gevonden. Installeer het en laad deze pagina opnieuw",
         "noSigner": "Toegang geweigerd. Ga naar {extension} extensie-instellingen en open \"Websitetoegang beheren\" om toe te staan."
     },
     "connection": {
         "title": "SORA Netwerk account",
-        "text": "Verbind uw SORA Netwerk accounts of maak nieuwe aan met polkadot{.js} browser extensie. Met deze extensie kunt u veilig transacties ondertekenen en assets beheren in SORA Network.",
-        "install": "Geen polkadot.js extensie gevonden. Installeer het en herlaad de pagina. <br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Per ongeluk geweigerde toestemmingsaanvraag?<\/br>Momenteel heeft polkadot{.js} extensie geen toestemmingsbeheer. Als een workaround kunt u uw browser herstarten en deze pagina opnieuw bezoeken om verder te gaan met de autorisatie.",
-        "noAccounts": "Geen account gevonden in uw polkadot{.js} browser extensie. Voeg een account toe en probeer het opnieuw.",
+        "text": "Verbind uw SORA Netwerk accounts of maak nieuwe aan met Polkadot{.js} browser extensie. Met deze extensie kunt u veilig transacties ondertekenen en assets beheren in SORA Network.",
+        "noAccounts": "Geen account gevonden in uw {extension} browser extensie. Voeg een account toe en probeer het opnieuw.",
         "selectAccount": "Selecteer account om mee te werken",
-        "loadingTitle": "Wachten op het toestaan van toegang tot de polkadot{.js} -extensie.",
         "action": {
             "install": "Extensie installeren",
             "learnMore": "Kom meer te weten",

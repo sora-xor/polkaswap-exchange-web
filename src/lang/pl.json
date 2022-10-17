@@ -80,20 +80,17 @@
         "DemeterFarmingGetRewards": "Odbierz wynagrodzenie"
     },
     "polkadotjs": {
-        "noExtensions": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Wygląda na to, że w Twoim rozszerzeniu polkadot.js nie ma kont. Dodaj konto i spróbuj ponownie.",
+        "noExtensions": "Nie znaleziono rozszerzenia Polkadot{.js}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Wygląda na to, że w Twoim rozszerzeniu {extension} nie ma kont. Dodaj konto i spróbuj ponownie.",
         "noAccount": "Błąd konta polkadot.js. Sprawdź swoje konto w rozszerzeniu polkadot.js.",
         "noExtension": "Nie znaleziono {extension} . Zainstaluj go i ponownie załaduj tę stronę",
         "noSigner": "Brak dostępu. Przejdź do ustawień {extension} i otwórz „Zarządzaj dostępem do witryny”, aby zezwolić."
     },
     "connection": {
         "title": "Konto sieci SORA",
-        "text": "Podłącz swoje konta sieci SORA lub utwórz nowe za pomocą rozszerzenia przeglądarki polkadot{.js}. To rozszerzenie umożliwia bezpieczne podpisywanie transakcji i zarządzanie zasobami w sieci SORA.",
-        "install": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">odśwież<\/a> stronę<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>.",
-        "noPermissions": "Przypadkowo odrzuciłeś(-łaś) prośbę o pozwolenie? <\/br> Rozszerzenie polkadot{.js} nie posiada obecnie zarządzania uprawnieniami. Aby obejść ten problem, możesz restartować przeglądarkę i ponownie odwiedzić tę stronę w celu kontynuowania autoryzacji.",
-        "noAccounts": "W Twoim rozszerzeniu przeglądarki polkadot{.js} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
+        "text": "Podłącz swoje konta sieci SORA lub utwórz nowe za pomocą rozszerzenia przeglądarki Polkadot{.js}. To rozszerzenie umożliwia bezpieczne podpisywanie transakcji i zarządzanie zasobami w sieci SORA.",
+        "noAccounts": "W Twoim rozszerzeniu przeglądarki {extension} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
-        "loadingTitle": "Czekam, aż zezwolisz na dostęp do rozszerzenia polkadot{.js}.",
         "action": {
             "install": "Zainstaluj rozszerzenie",
             "learnMore": "Dowiedz się więcej",

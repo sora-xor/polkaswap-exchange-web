@@ -80,20 +80,17 @@
         "DemeterFarmingGetRewards": "Gjør krav på belønninger"
     },
     "polkadotjs": {
-        "noExtensions": "Finner ingen Polkadot.js utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Det ser ikke ut til å være noen kontoer i Polkadot.js utvidelsen. Legg til en konto, og prøv på nytt.",
+        "noExtensions": "Finner ingen Polkadot{.js} utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Det ser ikke ut til å være noen kontoer i {extension} utvidelsen. Legg til en konto, og prøv på nytt.",
         "noAccount": "Polkadot.js kontofeil. Sjekk kontoen din i Polkadot.js utvidelsen",
         "noExtension": "Ingen {extension} -utvidelse ble funnet. Installer den og last inn denne siden på nytt",
         "noSigner": "Ingen tilgang. Gå til utvidelsesinnstillingene for {extension} og åpne «Administrer nettstedtilgang» for å tillate."
     },
     "connection": {
         "title": "SORA Nettverkskonto",
-        "text": "Koble til SORA Network-kontoene dine eller opprett nye med polkadot{.js} nettleserutvidelse. Denne utvidelsen lar deg sikkert signere transaksjoner og administrere aktiva i SORA Network.",
-        "install": "Finner ingen polkadot.js utvidelse. Installer den og <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">start<\/a> siden på nytt.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Ved et uhell avvist tillatelsesforespørsel?<\/br> Polkadot{.js}-utvidelsen har for øyeblikket ikke nødvendig tillatelse. For å unngå dette kan du starte nettleseren på nytt og gå tilbake til denne siden for å fortsette med autorisasjon.",
-        "noAccounts": "Finner ingen konto i nettleserutvidelsen polkadot{.js}. Legg til en konto, og prøv på nytt.",
+        "text": "Koble til SORA Network-kontoene dine eller opprett nye med Polkadot{.js} nettleserutvidelse. Denne utvidelsen lar deg sikkert signere transaksjoner og administrere aktiva i SORA Network.",
+        "noAccounts": "Finner ingen konto i nettleserutvidelsen {extension}. Legg til en konto, og prøv på nytt.",
         "selectAccount": "Velg kontoen du vil arbeide med",
-        "loadingTitle": "Venter på at du skal gi tilgang til polkadot{.js} utvidelsen.",
         "action": {
             "install": "Installer utvidelse",
             "learnMore": "Lær mer",
