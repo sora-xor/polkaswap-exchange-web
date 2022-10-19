@@ -3,7 +3,7 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { QuotePayload } from '@sora-substrate/liquidity-proxy/build/types';
-import { DexId } from '@sora-substrate/util/build/poolXyk/consts';
+import { DexId } from '@sora-substrate/util/build/dex/consts';
 
 import { swapActionContext } from '@/store/swap';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
@@ -58,8 +58,8 @@ const actions = defineActions({
     updateTokenSubscription(context, Direction.To);
   },
 
-  async setSubscriptionPayload(context, { dexId, payload }: { dexId: DexId; payload: QuotePayload }): Promise<void> {
-    const { state, getters, commit, rootGetters, rootCommit } = swapActionContext(context);
+  setSubscriptionPayload(context, { dexId, payload }: { dexId: number; payload: QuotePayload }): void {
+    const { state, getters, commit } = swapActionContext(context);
 
     const inputAssetId = getters.tokenFrom?.address;
     const outputAssetId = getters.tokenTo?.address;

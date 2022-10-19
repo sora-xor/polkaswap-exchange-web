@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Uklonjeni su tokeni {symbol} i {symbol2} {amount} LP",
             "DemeterFarmingStakeToken": "Dodan {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Uklonjeno {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} uspješno potraživan"
+            "DemeterFarmingGetRewards": "{amount} {symbol} uspješno potraživan",
+            "EthBridgeIncoming": "Preneseno {amount} {symbol} s @:ethereumText na @:soraText",
+            "EthBridgeOutgoing": "Preneseno {amount} {symbol} s @:soraText na @:ethereumText"
         },
         "error": {
             "Transfer": "Nije uspjelo {amount} {symbol} u {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Uklanjanje tokena {amount} {symbol} i {symbol2} LP nije uspjelo",
             "DemeterFarmingStakeToken": "Dodavanje {amount} {symbol} nije uspjelo",
             "DemeterFarmingUnstakeToken": "Uklanjanje {amount} {symbol} nije uspjelo",
-            "DemeterFarmingGetRewards": "Nije uspjelo potraživanje {symbol}"
+            "DemeterFarmingGetRewards": "Nije uspjelo potraživanje {symbol}",
+            "EthBridgeIncoming": "Prijenos {amount} {symbol} iz @:ethereumText u @:soraText nije uspio",
+            "EthBridgeOutgoing": "Prijenos {amount} {symbol} iz @:soraText u @:ethereumText nije uspio"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Unstake Likvidnost",
         "DemeterFarmingStakeToken": "Token udjela",
         "DemeterFarmingUnstakeToken": "Unstake Token",
-        "DemeterFarmingGetRewards": "Zatražite nagrade"
+        "DemeterFarmingGetRewards": "Zatražite nagrade",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Nije pronađeno proširenje Polkadot.js. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Čini se da u vašem proširenju Polkadot.js nema računa. Dodajte račun i pokušajte ponovo.",
+        "noExtensions": "Nije pronađeno proširenje Polkadot{.js}. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Čini se da u vašem proširenju {extension} nema računa. Dodajte račun i pokušajte ponovo.",
         "noAccount": "Polkadot.js pogreška računa. Provjerite svoj račun u proširenju Polkadot.js",
         "noExtension": "Nije pronađeno {extension} . Instalirajte ga i ponovno učitajte ovu stranicu",
         "noSigner": "Pristup odbijen. Idite na postavke {extension} i otvorite \"Upravljanje pristupom web-mjestu\" da dopustite."
     },
     "connection": {
         "title": "Račun mreže SORE",
-        "text": "Povežite svoje SORA mrežne račune ili stvorite nove pomoću proširenja preglednika polkadot{.js}. Ovo proširenje omogućuje vam sigurno potpisivanje transakcija i upravljanje sredstvom u SORA mreži.",
-        "install": "Nije pronađen polkadot.js proširenje. Instalirajte ga i <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">reload<\/a> stranicu.<br\/> <span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Slučajno odbijen zahtjev za dozvolu?<\/br> Trenutno polkadot{.js} proširenje nema upravljanje dozvolama. Kao zaobilazno rješenje možete ponovno pokrenuti preglednik i ponovno posjetiti ovu stranicu kako biste nastavili s autorizacijom.",
-        "noAccounts": "U proširenju preglednika polkadot{.js} nije pronađen račun. Dodajte račun i pokušajte ponovno.",
+        "text": "Povežite svoje SORA mrežne račune ili stvorite nove pomoću proširenja preglednika Polkadot{.js}. Ovo proširenje omogućuje vam sigurno potpisivanje transakcija i upravljanje sredstvom u SORA mreži.",
+        "noAccounts": "U proširenju preglednika {extension} nije pronađen račun. Dodajte račun i pokušajte ponovno.",
         "selectAccount": "Odaberite račun za rad",
-        "loadingTitle": "Čeka da dopustite pristup proširenju polkadot{.js}.",
         "action": {
             "install": "Instalirajte proširenje",
             "learnMore": "Saznajte više",
@@ -1143,5 +1146,6 @@
             "mnemonicLength": "Mnemotehnika treba sadržavati {number} riječi",
             "jsonFields": "JSON datoteka nema obavezna polja"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI most"
 }

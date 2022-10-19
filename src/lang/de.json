@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "{symbol} und {symbol2} {amount} LP-Token entfernt",
             "DemeterFarmingStakeToken": "{amount} {symbol} hinzugefügt",
             "DemeterFarmingUnstakeToken": "{amount} {symbol} entfernt",
-            "DemeterFarmingGetRewards": "{amount} {symbol} erfolgreich beansprucht"
+            "DemeterFarmingGetRewards": "{amount} {symbol} erfolgreich beansprucht",
+            "EthBridgeIncoming": "Übertragen {amount} {symbol} von @:ethereumText nach @:soraText",
+            "EthBridgeOutgoing": "Übertragen von {amount} {symbol} von @:soraText nach @:ethereumText"
         },
         "error": {
             "Transfer": "Senden von {amount} {symbol} an {address} fehlgeschlagen",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "{amount} {symbol} und {symbol2} LP-Token konnten nicht entfernt werden",
             "DemeterFarmingStakeToken": "Fehler beim Hinzufügen von {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Entfernen von {amount} {symbol} fehlgeschlagen",
-            "DemeterFarmingGetRewards": "Anspruch auf {symbol} fehlgeschlagen"
+            "DemeterFarmingGetRewards": "Anspruch auf {symbol} fehlgeschlagen",
+            "EthBridgeIncoming": "Fehler beim Übertragen von {amount} {symbol} von @:ethereumText nach @:soraText",
+            "EthBridgeOutgoing": "Fehler beim Übertragen von {amount} {symbol} von @:soraText nach @:ethereumText"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
@@ -77,11 +81,13 @@
         "DemeterFarmingWithdrawLiquidity": "Unstake Liquidität",
         "DemeterFarmingStakeToken": "Stake Token",
         "DemeterFarmingUnstakeToken": "Unstake Token",
-        "DemeterFarmingGetRewards": "Belohnungen beanspruchen"
+        "DemeterFarmingGetRewards": "Belohnungen beanspruchen",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Es wurde keine Polkadot.js-Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Es scheint keine Konten in deiner Polkadot.js-Erweiterung zu geben. Bitte, füge ein Konto hinzu und versuche es erneut.",
+        "noExtensions": "Es wurde keine Polkadot{.js} Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Es scheint keine Konten in deiner {extension} Erweiterung zu geben. Bitte, füge ein Konto hinzu und versuche es erneut.",
         "noAccount": "{extension} Kontofehler. Bitte überprüfe dein Konto in der {extension} Erweiterung",
         "noExtension": "Es wurde keine {extension} gefunden. Bitte installiere es und lade diese Seite neu",
         "noSigner": "Zugriff abgelehnt. Gehe zu den Erweiterungseinstellungen von {extension} und öffne \"Website-Zugriff verwalten\", um dies zuzulassen."
@@ -89,11 +95,8 @@
     "connection": {
         "title": "SORA-Netzwerk-Konto",
         "text": "Verbinde deine SORA-Netzwerk-Konten oder erstelle neue Konten mit der Polkadot{.js} -Browser-Erweiterung. Diese Erweiterung ermöglicht es dir, Transaktionen sicher zu unterzeichnen und Assets im SORA-Netzwerk zu verwalten.",
-        "install": "Es wurde keine Polkadot.js-Erweiterung gefunden. Bitte, installiere die Erweiterung und <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">lade<\/a> diese Seite erneut.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Berechtigungsanfrage versehentlich abgelehnt?<\/br>Derzeit verfügt die Polkadot{.js} -Erweiterung nicht über eine Berechtigungsverwaltung. Um dies zu umgehen, kannst du deinen Browser neu starten und diese Seite erneut aufrufen, um mit der Autorisierung fortzufahren.",
-        "noAccounts": "Es wurde kein Konto in deiner Polkadot{.js} -Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
+        "noAccounts": "Es wurde kein Konto in deiner {extension} Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
-        "loadingTitle": "Warte darauf, dass du den Zugriff auf die Polkadot{.js} -Erweiterung freigibst.",
         "action": {
             "install": "Erweiterung installieren",
             "learnMore": "Mehr erfahren",
@@ -1143,5 +1146,6 @@
             "mnemonicLength": "Mnemonik sollte {number} Wörter enthalten",
             "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI Brücke"
 }

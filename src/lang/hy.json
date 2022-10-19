@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Հեռացվել են {symbol} և {symbol2} {amount} LP նշանները",
             "DemeterFarmingStakeToken": "Ավելացվեց {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Հեռացվել է {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} ը հաջողությամբ ներկայացվեց"
+            "DemeterFarmingGetRewards": "{amount} {symbol} ը հաջողությամբ ներկայացվեց",
+            "EthBridgeIncoming": "Փոխանցվել է {amount} {symbol} @:ethereumText ից @:soraText",
+            "EthBridgeOutgoing": "Փոխանցվել է {amount} {symbol} @:soraText ից @:ethereumText"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {symbol2} LP նշանները",
             "DemeterFarmingStakeToken": "Չհաջողվեց ավելացնել {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Չհաջողվեց հեռացնել {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Չհաջողվեց պահանջել {symbol}"
+            "DemeterFarmingGetRewards": "Չհաջողվեց պահանջել {symbol}",
+            "EthBridgeIncoming": "Չհաջողվեց փոխանցել {amount} {symbol} -ը @:ethereumText ից @:soraText ին",
+            "EthBridgeOutgoing": "Չհաջողվեց փոխանցել {amount} {symbol} -ը @:soraText ից @:ethereumText ին"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Չվճարված իրացվելիություն",
         "DemeterFarmingStakeToken": "Ցցի նշան",
         "DemeterFarmingUnstakeToken": "Անցկացնել նշան",
-        "DemeterFarmingGetRewards": "Հաստատել Պարգևները"
+        "DemeterFarmingGetRewards": "Հաստատել Պարգևները",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Polkadot.js- ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Ձեր Polkadot.js ընդլայնման մեջ կարծես որևէ հաշիվ չկա: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
+        "noExtensions": "Polkadot{.js} ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Ձեր {extension} ընդլայնման մեջ կարծես որևէ հաշիվ չկա: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
         "noAccount": "Polkadot.js հաշվի սխալ: Խնդրում ենք ստուգել ձեր հաշիվը Polkadot.js ընդլայնման մեջ",
         "noExtension": "{extension} ընդլայնում չի գտնվել: Խնդրում ենք տեղադրել այն և վերաբեռնել այս էջը",
         "noSigner": "Մուտքն արգելված է. Գնացեք {extension} ընդլայնման կարգավորումներ և բացեք «Կառավարել վեբ կայքի մուտքը»՝ թույլ տալու համար:"
     },
     "connection": {
         "title": "SORA ցանցի հաշիվ",
-        "text": "Միացրեք ձեր SORA ցանցի հաշիվները կամ ստեղծեք նորերը polkadot{.js} բրաուզերի ընդլայնմամբ: Այս ընդլայնումը թույլ է տալիս Ձեզ ապահով կերպով կնքել գործարքներ և կառավարել ակտիվները SORA ցանցում:",
-        "install": "Polkadot.js ընդլայնում չի գտնվել: Ներբեռնեք այն և վերաբեռնեք էջը: <br\/> <span class=\"wallet-connection-link\"> https:\/\/polkadot.js.org\/extension\/ <\/span>",
-        "noPermissions": "Պատահաբար մերժված թույլտվության հայց? <\/br> Ներկայումս polkadot {.js} ընդլայնումը չունի թույլտվության կառավարում: Որպես լուծում ՝ Դուք կարող եք վերագործարկել ձեր բրաուզերը և նորից այցելել այս էջը ՝ թույլտվությունն անցնելու համար:",
-        "noAccounts": "{.js} բրաուզերի ընդլայնման մեջ հաշիվ չի գտնվել: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
+        "text": "Միացրեք ձեր SORA ցանցի հաշիվները կամ ստեղծեք նորերը Polkadot{.js} բրաուզերի ընդլայնմամբ: Այս ընդլայնումը թույլ է տալիս Ձեզ ապահով կերպով կնքել գործարքներ և կառավարել ակտիվները SORA ցանցում:",
+        "noAccounts": "{extension} բրաուզերի ընդլայնման մեջ հաշիվ չի գտնվել: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
         "selectAccount": "Ընտրել հաշիվ աշխատելու համար",
-        "loadingTitle": "Սպասում ենք ձեզ թույլտվությանը՝ մուտք գործելու polkadot{.js} ընդլայնում.",
         "action": {
             "install": "Տեղադրել ընդլայնումը",
             "learnMore": "Իմանալ ավելին",
@@ -1143,5 +1146,6 @@
             "mnemonicLength": "Mnemonic-ը պետք է պարունակի {number} բառ",
             "jsonFields": "JSON ֆայլը պարտադիր դաշտեր չունի"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI կամուրջ"
 }

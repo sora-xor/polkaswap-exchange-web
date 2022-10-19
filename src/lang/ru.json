@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Удалены {symbol} и {symbol2} {amount} LP токены",
             "DemeterFarmingStakeToken": "Добавлено {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Удалено {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} затребован успешно"
+            "DemeterFarmingGetRewards": "{amount} {symbol} затребован успешно",
+            "EthBridgeIncoming": "{amount} {symbol} переведено из @:ethereumText в @:soraText",
+            "EthBridgeOutgoing": "{amount} {symbol} переведено из @:soraText в @:ethereumText"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Не удалось удалить  {amount} {symbol} и {symbol2} LP токены",
             "DemeterFarmingStakeToken": "Не удалось добавить {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Не удалось удалить {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Не удалось получить {symbol}"
+            "DemeterFarmingGetRewards": "Не удалось получить {symbol}",
+            "EthBridgeIncoming": "Не удалось перевести {amount} {symbol} из @:ethereumText в @:soraText",
+            "EthBridgeOutgoing": "Не удалось перевести {amount} {symbol} из @:soraText в @:ethereumText"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Отменить стейк ликвидности",
         "DemeterFarmingStakeToken": "Стейкинг токена",
         "DemeterFarmingUnstakeToken": "Отменить стейк токена",
-        "DemeterFarmingGetRewards": "Получить награды"
+        "DemeterFarmingGetRewards": "Получить награды",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Расширение Polkadot.js не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Похоже, что в вашем расширении Polkadot.js нет аккаунтов. Пожалуйста, добавьте аккаунт и повторите попытку.",
+        "noExtensions": "Расширение Polkadot{.js} не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Похоже, что в вашем расширении {extension} нет аккаунтов. Пожалуйста, добавьте аккаунт и повторите попытку.",
         "noAccount": "Ошибка аккаунта Polkadot.js. Пожалуйста, проверьте свою учетную запись в расширении Polkadot.js",
         "noExtension": "Расширение {extension} не найдено. Пожалуйста, установите его и перезагрузите эту страницу",
         "noSigner": "В доступе отказано. Перейдите в настройки {extension} и откройте «Управление доступом к веб-сайту», чтобы разрешить."
     },
     "connection": {
         "title": "Аккаунт сети SORA",
-        "text": "Подключите свои аккаунты сети SORA или создайте новые с помощью расширения для браузера polkadot{.js}. Это расширение позволяет безопасно подписывать транзакции и управлять активами в сети SORA.",
-        "install": "Расширение polkadot.js не найдено. Установите его и перезагрузите страницу.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Случайно отклонили запрос на разрешение?<\/br>В настоящее время расширение polkadot{.js} не имеет управления разрешениями. В качестве обходного пути вы можете перезапустить браузер и повторно посетить эту страницу, чтобы продолжить авторизацию.",
-        "noAccounts": "Аккаунт в расширении polkadot{.js} Вашего браузера не найдена. Пожалуйста, добавьте аккаунт и повторите попытку.",
+        "text": "Подключите свои аккаунты сети SORA или создайте новые с помощью расширения для браузера Polkadot{.js}. Это расширение позволяет безопасно подписывать транзакции и управлять активами в сети SORA.",
+        "noAccounts": "Не найдено аккаунтов в вашем {extension} браузерном расширении. Пожалуйста, добавьте аккаунт и повторите попытку.",
         "selectAccount": "Выберите аккаунт для работы с",
-        "loadingTitle": "Ожидание Вашего разрешения доступа к расширению polkadot{.js}.",
         "action": {
             "install": "Установить расширение",
             "learnMore": "Узнать больше",
@@ -1143,5 +1146,6 @@
             "mnemonicLength": "Мнемоника должна содержать {number} слов",
             "jsonFields": "JSON-файл не содержит обязательных полей"
         }
-    }
+    },
+    "hashiBridgeText": "мост HASHI"
 }

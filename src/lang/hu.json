@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "{symbol} és {symbol2} {amount} LP token eltávolítva",
             "DemeterFarmingStakeToken": "Hozzáadva {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "{amount} {symbol} eltávolítva",
-            "DemeterFarmingGetRewards": "{amount} {symbol} sikeres követelés"
+            "DemeterFarmingGetRewards": "{amount} {symbol} sikeres követelés",
+            "EthBridgeIncoming": "{amount} {symbol} áthelyezve @:ethereumText @:soraText",
+            "EthBridgeOutgoing": "{amount} {symbol} áthelyezve @:soraText @:ethereumText"
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Nem sikerült eltávolítani az {amount} {symbol} és {symbol2} LP tokeneket",
             "DemeterFarmingStakeToken": "Nem sikerült hozzáadni {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Nem sikerült eltávolítani {amount} {symbol}",
-            "DemeterFarmingGetRewards": "A(z {symbol} igénylése sikertelen"
+            "DemeterFarmingGetRewards": "A(z {symbol} igénylése sikertelen",
+            "EthBridgeIncoming": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a @:ethereumText és a @:soraText címre",
+            "EthBridgeOutgoing": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a @:soraText és a @:ethereumText címre"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Likviditás visszavonása",
         "DemeterFarmingStakeToken": "Tét token",
         "DemeterFarmingUnstakeToken": "Unstake Token",
-        "DemeterFarmingGetRewards": "Jutalmak igénylése"
+        "DemeterFarmingGetRewards": "Jutalmak igénylése",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Nem találtunk Polkadot.js kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Úgy tűnik, hogy a Polkadot.js bővítményben nincsenek fiókok. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
+        "noExtensions": "Nem találtunk Polkadot{.js} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Úgy tűnik, hogy a {extension} bővítményben nincsenek fiókok. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "noAccount": "Polkadot.js fiókhiba. Kérjük, ellenőrizd fiókodat a Polkadot.js bővítményben.",
         "noExtension": "Nem található {extension} bővítmény. Kérjük, telepítse, és töltse be újra ezt az oldalt",
         "noSigner": "Hozzáférés megtagadva. Nyissa meg a {extension} bővítmény beállításait, és nyissa meg a „Webhely-hozzáférés kezelése” lehetőséget az engedélyezéshez."
     },
     "connection": {
         "title": "SORA hálózati fiók",
-        "text": "Csatlakoztasd SORA Network fiókjaidat vagy hozz létre újakat a polkadot{.js} böngészőbővítménnyel. Ez a bővítmény lehetővé teszi a tranzakciók biztonságos aláírását és az eszközök kezelését a SORA hálózaton.",
-        "install": "Nem található polkadot.js kiterjesztés. Telepítsd és <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\"> frissítsd <\/a> az oldalt. <br\/> <span class=\"wallet-connection-link\"> https:\/\/polkadot.js.org\/extension\/ <\/span>",
-        "noPermissions": "Véletlenül elutasítottad az engedélykérést? <\/br> Jelenleg a polkadot {.js} kiterjesztés nem rendelkezik engedélykezeléssel. Kerülő megoldásként újraindíthatod a böngészőt, és újra felkeresheted ezt az oldalt, hogy folytathasd az engedélyezést.",
-        "noAccounts": "Nincs fiók a polkadot{.js} böngészőbővítményben. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
+        "text": "Csatlakoztasd SORA Network fiókjaidat vagy hozz létre újakat a Polkadot{.js} böngészőbővítménnyel. Ez a bővítmény lehetővé teszi a tranzakciók biztonságos aláírását és az eszközök kezelését a SORA hálózaton.",
+        "noAccounts": "Nincs fiók a {extension} böngészőbővítményben. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
-        "loadingTitle": "Várjuk, hogy engedélyezd a hozzáférést a polkadot{.js} kiterjesztéshez.",
         "action": {
             "install": "Bővítmény telepítése",
             "learnMore": "Tudj meg többet",
@@ -1143,5 +1146,6 @@
             "mnemonicLength": "A mnemonikának {number} szót kell tartalmaznia",
             "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI híd"
 }
