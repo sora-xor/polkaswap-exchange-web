@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Usunięto {symbol} i {symbol2} {amount} tokeny LP",
             "DemeterFarmingStakeToken": "Dodano {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Usunięto {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} odebrano pomyślnie"
+            "DemeterFarmingGetRewards": "{amount} {symbol} odebrano pomyślnie",
+            "EthBridgeIncoming": "Przeniesiono {amount} {symbol} z @:ethereumText do @:soraText",
+            "EthBridgeOutgoing": "Przeniesiono {amount} {symbol} z @:soraText do @:ethereumText"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Nie udało się usunąć {amount} {symbol} i {symbol2} LP tokenów",
             "DemeterFarmingStakeToken": "Nie udało się dodać {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Nie udało się usunąć {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Nie udało się odebrać {symbol}"
+            "DemeterFarmingGetRewards": "Nie udało się odebrać {symbol}",
+            "EthBridgeIncoming": "Nie udało się przenieść {amount} {symbol} z @:ethereumText do @:soraText",
+            "EthBridgeOutgoing": "Nie udało się przenieść {amount} {symbol} z @:soraText do @:ethereumText"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Niewystaw płynności",
         "DemeterFarmingStakeToken": "Żeton stawki",
         "DemeterFarmingUnstakeToken": "Żeton rozbicia",
-        "DemeterFarmingGetRewards": "Odbierz wynagrodzenie"
+        "DemeterFarmingGetRewards": "Odbierz wynagrodzenie",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Wygląda na to, że w Twoim rozszerzeniu polkadot.js nie ma kont. Dodaj konto i spróbuj ponownie.",
+        "noExtensions": "Nie znaleziono rozszerzenia Polkadot{.js}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Wygląda na to, że w Twoim rozszerzeniu {extension} nie ma kont. Dodaj konto i spróbuj ponownie.",
         "noAccount": "Błąd konta polkadot.js. Sprawdź swoje konto w rozszerzeniu polkadot.js.",
         "noExtension": "Nie znaleziono {extension} . Zainstaluj go i ponownie załaduj tę stronę",
         "noSigner": "Brak dostępu. Przejdź do ustawień {extension} i otwórz „Zarządzaj dostępem do witryny”, aby zezwolić."
     },
     "connection": {
         "title": "Konto sieci SORA",
-        "text": "Podłącz swoje konta sieci SORA lub utwórz nowe za pomocą rozszerzenia przeglądarki polkadot{.js}. To rozszerzenie umożliwia bezpieczne podpisywanie transakcji i zarządzanie zasobami w sieci SORA.",
-        "install": "Nie znaleziono rozszerzenia polkadot.js. Zainstaluj je i <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">odśwież<\/a> stronę<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>.",
-        "noPermissions": "Przypadkowo odrzuciłeś(-łaś) prośbę o pozwolenie? <\/br> Rozszerzenie polkadot{.js} nie posiada obecnie zarządzania uprawnieniami. Aby obejść ten problem, możesz restartować przeglądarkę i ponownie odwiedzić tę stronę w celu kontynuowania autoryzacji.",
-        "noAccounts": "W Twoim rozszerzeniu przeglądarki polkadot{.js} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
+        "text": "Podłącz swoje konta sieci SORA lub utwórz nowe za pomocą rozszerzenia przeglądarki Polkadot{.js}. To rozszerzenie umożliwia bezpieczne podpisywanie transakcji i zarządzanie zasobami w sieci SORA.",
+        "noAccounts": "W Twoim rozszerzeniu przeglądarki {extension} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
-        "loadingTitle": "Czekam, aż zezwolisz na dostęp do rozszerzenia polkadot{.js}.",
         "action": {
             "install": "Zainstaluj rozszerzenie",
             "learnMore": "Dowiedz się więcej",
@@ -1143,5 +1146,6 @@
             "mnemonicLength": "Mnemonik powinien zawierać {liczbę} słów",
             "jsonFields": "Plik JSON nie zawiera wymaganych pól"
         }
-    }
+    },
+    "hashiBridgeText": "Most HASHI"
 }

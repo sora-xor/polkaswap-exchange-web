@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "已移除{symbol}和{symbol2} {amount} 流动性提供代币",
             "DemeterFarmingStakeToken": "已添加{amount} {symbol}",
             "DemeterFarmingUnstakeToken": "已移除{amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol}成功申领"
+            "DemeterFarmingGetRewards": "{amount} {symbol}成功申领",
+            "EthBridgeIncoming": "将{amount} {symbol}从 @:ethereumText 转移到 @:soraText",
+            "EthBridgeOutgoing": "将{amount} {symbol}从 @:soraText 转移到 @:ethereumText"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "移除{amount} {symbol}和{symbol2} LP 令牌失败",
             "DemeterFarmingStakeToken": "添加{amount} {symbol}失败",
             "DemeterFarmingUnstakeToken": "移除失败{amount} {symbol}",
-            "DemeterFarmingGetRewards": "申领失败{symbol}"
+            "DemeterFarmingGetRewards": "申领失败{symbol}",
+            "EthBridgeIncoming": "将{amount} {symbol}从 @:ethereumText 转移到 @:soraText 失败",
+            "EthBridgeOutgoing": "将{amount} {symbol}从 @:soraText 转移到 @:ethereumText 失败"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "未质押流动性",
         "DemeterFarmingStakeToken": "质押代币",
         "DemeterFarmingUnstakeToken": "未质押代币",
-        "DemeterFarmingGetRewards": "申领奖励"
+        "DemeterFarmingGetRewards": "申领奖励",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "没有找到 Polkadot.js 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "您的Polkadot.js扩展中似乎没有账户。请添加一个账户并再次尝试。",
+        "noExtensions": "没有找到 Polkadot{.js} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "您的{extension}扩展中似乎没有账户。请添加一个账户并再次尝试。",
         "noAccount": "{extension} 帐户错误. 请在{extension} 中检查您的帐户",
         "noExtension": "未找到{extension}扩展名。请安装它并重新加载此页面",
         "noSigner": "拒绝访问。转到{extension}扩展设置并打开“管理网站访问”以允许。"
     },
     "connection": {
         "title": "SORA网络账户",
-        "text": "使用polkadot{.js}浏览器扩展连接您的SORA网络账户或创建新账户。这个扩展允许您在SORA网络中安全地签署交易和管理资产。",
-        "install": "未找到 polkadot.js 扩展。安装它并<a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">重新加载<\/a>页面。 <br\/> <span class=\"wallet-connection-link\"> https:\/\/polkadot.js.org\/extension\/ <\/span>",
-        "noPermissions": "意外拒绝了权限请求？ <\/br>目前 polkadot {.js}扩展没有权限管理。作为一种解决方法，您可以重新启动浏览器并重新访问此页面以继续进行授权。",
-        "noAccounts": "在您的polkadot{.js}浏览器扩展中没有找到账户。请添加一个账户并重试。",
+        "text": "使用Polkadot{.js}浏览器扩展连接您的SORA网络账户或创建新账户。这个扩展允许您在SORA网络中安全地签署交易和管理资产。",
+        "noAccounts": "在您的{extension}浏览器扩展中没有找到账户。请添加一个账户并重试。",
         "selectAccount": "选择要使用的账户",
-        "loadingTitle": "等待您允许访问 polkadot{.js}扩展.",
         "action": {
             "install": "安装扩展",
             "learnMore": "了解更多",
@@ -1143,5 +1146,6 @@
             "mnemonicLength": "助记符应包含{number}单词",
             "jsonFields": "JSON 文件没有必填字段"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI桥"
 }

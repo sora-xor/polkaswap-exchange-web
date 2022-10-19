@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Suppression des jetons LP {symbol} et {symbol2} {amount}",
             "DemeterFarmingStakeToken": "{amount} {symbol} ajouté",
             "DemeterFarmingUnstakeToken": "Supprimé {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} a réclamé avec succès"
+            "DemeterFarmingGetRewards": "{amount} {symbol} a réclamé avec succès",
+            "EthBridgeIncoming": "Transféré {amount} {symbol} de @:ethereumText à @:soraText",
+            "EthBridgeOutgoing": "Transféré {amount} {symbol} de @:soraText à @:ethereumText"
         },
         "error": {
             "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Échec de la suppression de {amount} {symbol} et {symbol2} jetons LP",
             "DemeterFarmingStakeToken": "Impossible d'ajouter {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Échec de la suppression de {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Échec de la revendication de {symbol}"
+            "DemeterFarmingGetRewards": "Échec de la revendication de {symbol}",
+            "EthBridgeIncoming": "Échec du transfert de {amount} {symbol} de @:ethereumText vers @:soraText",
+            "EthBridgeOutgoing": "Échec du transfert de {amount} {symbol} de @:soraText à @:ethereumText"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Libérer la liquidité",
         "DemeterFarmingStakeToken": "Jeton de mise",
         "DemeterFarmingUnstakeToken": "Jeton de désengagement",
-        "DemeterFarmingGetRewards": "Réclamer mes Récompenses"
+        "DemeterFarmingGetRewards": "Réclamer mes Récompenses",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Aucune extension Polkadot.js n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Il semble n’y avoir aucun compte dans votre extension Polkadot.js. Ajoutez un compte et réessayez.",
+        "noExtensions": "Aucune extension Polkadot{.js} n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Il semble n’y avoir aucun compte dans votre extension {extension}. Ajoutez un compte et réessayez.",
         "noAccount": "Erreur de compte {extension} . Veuillez vérifier votre compte dans l' {extension}",
         "noExtension": "Aucune {extension} n'a été trouvée. Veuillez l'installer et recharger cette page",
         "noSigner": "Accès refusé. Accédez aux paramètres de l' {extension} et ouvrez \"Gérer l'accès au site Web\" pour autoriser."
     },
     "connection": {
         "title": "Compte réseau SORA",
-        "text": "Connectez vos comptes de réseau SORA ou créez-en de nouveaux avec l'extension de navigateur polkadot{.js} Cette extension vous permet de signer en toute sécurité des transactions et de gérer vos jetons dans le réseau SORA.",
-        "install": "Aucune extension Polkadot.js n'a été trouvée. Veuillez l'installer et <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">recharger<\/a> cette page.<br\/>\n<span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Demande d'autorisation rejetée accidentellement? <\/br> Actuellement, l'extension polkadot{.js} n'a pas de gestion des autorisations. Pour contourner ce problème, vous pouvez redémarrer votre navigateur et revisiter cette page pour procéder à l'autorisation.",
-        "noAccounts": "Aucun compte n'a été trouvé dans votre extension de navigateur polkadot{.js} Veuillez ajouter un compte et réessayer.",
+        "text": "Connectez vos comptes de réseau SORA ou créez-en de nouveaux avec l'extension de navigateur Polkadot{.js} Cette extension vous permet de signer en toute sécurité des transactions et de gérer vos jetons dans le réseau SORA.",
+        "noAccounts": "Aucun compte n'a été trouvé dans votre extension de navigateur {extension} Veuillez ajouter un compte et réessayer.",
         "selectAccount": "Sélectionnez le compte approprié",
-        "loadingTitle": "En attendant que vous autorisiez l'accès à l'extension Polkadot{.js}",
         "action": {
             "install": "Installer l'extension",
             "learnMore": "En savoir plus",
@@ -1143,5 +1146,6 @@
             "mnemonicLength": "Le mnémonique doit contenir {number} mots",
             "jsonFields": "Le fichier JSON n'a pas de champs obligatoires"
         }
-    }
+    },
+    "hashiBridgeText": "Pont HASHI"
 }

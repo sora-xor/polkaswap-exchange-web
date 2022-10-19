@@ -2,7 +2,6 @@ import isEmpty from 'lodash/fp/isEmpty';
 import { defineGetters } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { DexId } from '@sora-substrate/util/build/poolXyk/consts';
 import type { CodecString } from '@sora-substrate/util';
 
 import { swapGetterContext } from '@/store/swap';
@@ -66,7 +65,7 @@ const getters = defineGetters<SwapState>()({
   },
   isAvailable(...args): boolean {
     const { state } = swapGetterContext(args);
-    const paths = state.dexQuoteData[state.selectedDexId].paths;
+    const paths = state.dexQuoteData?.[state.selectedDexId]?.paths;
     return !isEmpty(paths) && Object.values(paths).every((paths) => !isEmpty(paths));
   },
   swapMarketAlgorithm(...args): MarketAlgorithms {

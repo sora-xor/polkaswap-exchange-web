@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Removed {symbol} and {symbol2} {amount} LP tokens",
             "DemeterFarmingStakeToken": "Added {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Removed {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} claimed successfully"
+            "DemeterFarmingGetRewards": "{amount} {symbol} claimed successfully",
+            "EthBridgeIncoming": "Transfered {amount} {symbol} from @:ethereumText to @:soraText",
+            "EthBridgeOutgoing": "Transfered {amount} {symbol} from @:soraText to @:ethereumText"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Failed to remove {amount} {symbol} and {symbol2} LP tokens",
             "DemeterFarmingStakeToken": "Failed to add {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Failed to remove {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Failed to claim {symbol}"
+            "DemeterFarmingGetRewards": "Failed to claim {symbol}",
+            "EthBridgeIncoming": "Failed to transfer {amount} {symbol} from @:ethereumText to @:soraText",
+            "EthBridgeOutgoing": "Failed to transfer {amount} {symbol} from @:soraText to @:ethereumText"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
         "DemeterFarmingStakeToken": "Stake Token",
         "DemeterFarmingUnstakeToken": "Unstake Token",
-        "DemeterFarmingGetRewards": "Claim Rewards"
+        "DemeterFarmingGetRewards": "Claim Rewards",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "No Polkadot.js extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "There seems to be no accounts in your Polkadot.js extension. Please add an account and try again.",
+        "noExtensions": "No Polkadot{.js} extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "There seems to be no accounts in your {extension} extension. Please add an account and try again.",
         "noAccount": "{extension} account error. Please check your account in the {extension} extension",
         "noExtension": "No {extension} extension was found. Please install it and reload this page",
         "noSigner": "Access denied. Go to {extension} extension settings and open \"Manage Website Access\" to allow."
     },
     "connection": {
         "title": "SORA Network account",
-        "text": "Connect your SORA Network accounts or create new ones with polkadot{.js} browser extension. This extension allows you to securely sign transactions and manage assets in SORA Network.",
-        "install": "No polkadot.js extension found. Install it and <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">reload<\/a> the page.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Accidentally rejected permission request?<\/br>Currently polkadot{.js} extension doesn’t have permission managment. As a workaround you can restart your browser and revisit this page to proceed with authorization.",
-        "noAccounts": "No account found in your polkadot{.js} browser extension. Please add an account and try again.",
+        "text": "Connect your SORA Network accounts or create new ones with Polkadot{.js} browser extension. This extension allows you to securely sign transactions and manage assets in SORA Network.",
+        "noAccounts": "No account found in your {extension} browser extension. Please add an account and try again.",
         "selectAccount": "Select account to work with",
-        "loadingTitle": "Waiting for you to allow access to polkadot{.js} extension.",
         "action": {
             "install": "Install extension",
             "learnMore": "Learn more",
@@ -1143,5 +1146,6 @@
             "mnemonicLength": "Mnemonic should contain {number} words",
             "jsonFields": "JSON file does not have required fields"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI bridge"
 }

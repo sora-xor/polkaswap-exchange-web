@@ -354,15 +354,6 @@ export default class SwapChart extends Mixins(
     return calcPriceChange(rangeClosePrice, rangeStartPrice);
   }
 
-  get timeFormat(): string {
-    switch (this.selectedFilter.type) {
-      case SUBQUERY_TYPES.AssetSnapshotTypes.DAY:
-        return 'll';
-      default:
-        return 'LT';
-    }
-  }
-
   get axisLabelCSS() {
     return {
       fontFamily: 'Sora',
@@ -437,7 +428,8 @@ export default class SwapChart extends Mixins(
             const date = dayjs(+value);
             const isNewDay = date.hour() === 0 && date.minute() === 0;
             const isNewMonth = date.date() === 1 && isNewDay;
-            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'LT';
+            // TODO: "LT" formatted labels (hours) sometimes overlaps (AM\PM issue)
+            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'HH:mm';
             const formatted = this.formatDate(+value, timeFormat);
 
             if (isNewMonth) {
@@ -451,10 +443,12 @@ export default class SwapChart extends Mixins(
           },
           rich: {
             monthStyle: {
-              fornWeight: 'bold',
+              fontSize: 10,
+              fontWeight: 'bold',
             },
             dateStyle: {
-              fornWeight: 'bold',
+              fontSize: 10,
+              fontWeight: 'bold',
             },
           },
           color: this.theme.color.base.content.secondary,

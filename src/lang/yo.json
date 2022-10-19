@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Yọ kuro {symbol} ati {symbol2} {amount} LP àmi",
             "DemeterFarmingStakeToken": "Fi kun {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Yiyọ kuro {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} beere ni aṣeyọri"
+            "DemeterFarmingGetRewards": "{amount} {symbol} beere ni aṣeyọri",
+            "EthBridgeIncoming": "Gbigbe {amount} {symbol} lati @:ethereumText si @:soraText",
+            "EthBridgeOutgoing": "Gbigbe {amount} {symbol} lati @:soraText si @:ethereumText"
         },
         "error": {
             "Transfer": "Kuna lati fi {amount} {symbol} ranṣẹ si {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Kuna lati yọkuro {amount} {symbol} ati {symbol2} LP",
             "DemeterFarmingStakeToken": "O kuna lati fi {amount} {symbol} kun",
             "DemeterFarmingUnstakeToken": "Kuna lati yọkuro {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Kuna lati beere {symbol}"
+            "DemeterFarmingGetRewards": "Kuna lati beere {symbol}",
+            "EthBridgeIncoming": "Kuna lati gbe {amount} {symbol} lati @:ethereumText si @:soraText",
+            "EthBridgeOutgoing": "Kuna lati gbe {amount} {symbol} lati @:soraText si @:ethereumText"
         },
         "ReferralReserveXor": "Iwe adehun XOR",
         "ReferralUnreserveXor": "Yọ XOR kuro",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
         "DemeterFarmingStakeToken": "Atokun igi",
         "DemeterFarmingUnstakeToken": "Unstake Tokini",
-        "DemeterFarmingGetRewards": "Beere Awọn ere"
+        "DemeterFarmingGetRewards": "Beere Awọn ere",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "A ko rii itẹsiwaju Polkadot.js. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju polkadot{.js} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
+        "noExtensions": "A ko rii itẹsiwaju Polkadot{.js}. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
         "noAccount": "Polkadot.js aṣiṣe ifowosi. Jọwọ ṣayẹwo akọọlẹ rẹ ninu itẹsiwaju Polkadot.js",
         "noExtension": "A ko ri {extension} . Jọwọ fi sii ki o tun gbee si oju-iwe yii",
         "noSigner": "Ti kọ iraye si. Lọ si awọn eto {extension} ki o si ṣi “Ṣakoso Wiwọle Oju opo wẹẹbu” lati gba laaye."
     },
     "connection": {
         "title": "Ifowosi SORA Nẹtiwọọki",
-        "text": "So awọn akọọlẹ Nẹtiwọọki SORA rẹ pọ tabi ṣẹda awọn tuntun pẹlu itẹsiwaju {.js} Ifaagun yii fun ọ laaye lati fowo si awọn iṣowo lailewu ati ṣakoso awọn ohun-ini ni Nẹtiwọọki SORA.",
-        "install": "A ko rii itẹsiwaju polkadot.js. Fi sii ki o tun gbe oju-iwe naa pada. <br\/> <span class=\"wallet-connection-link\"> https:\/\/polkadot.js.org\/extension\/ <\/span>",
-        "noPermissions": "Lairotẹlẹ kọ aiye igbanilaaye? <\/br> Lọwọlọwọ polkadot {.js} itẹsiwaju ko ni iṣakoso igbanilaaye. Bi iṣẹ-ṣiṣe o le tun aṣàwákiri rẹ bẹrẹ ki o tun ṣabẹwo si oju-iwe yii lati tẹsiwaju pẹlu asẹ.",
-        "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {.js}polkadot re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
+        "text": "So awọn akọọlẹ Nẹtiwọọki SORA rẹ pọ tabi ṣẹda awọn tuntun pẹlu itẹsiwaju Polkadot{.js} Ifaagun yii fun ọ laaye lati fowo si awọn iṣowo lailewu ati ṣakoso awọn ohun-ini ni Nẹtiwọọki SORA.",
+        "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
         "selectAccount": "Yan ifowosi lati ṣiṣẹ pẹlu rẹ",
-        "loadingTitle": "Nduro fun ọ lati gba aaye laaye si itẹsiwaju polkadot{.js}.",
         "action": {
             "install": "Fi sori ẹrọ itẹsiwaju",
             "learnMore": "Kọ ẹkọ si",
@@ -1143,5 +1146,6 @@
             "mnemonicLength": "Mnemonic yẹ ki o ni awọn ọrọ {number} ninu",
             "jsonFields": "Faili JSON ko ni awọn aaye ti a beere"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI Afara"
 }
