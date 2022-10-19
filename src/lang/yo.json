@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Yọ kuro {symbol} ati {symbol2} {amount} LP àmi",
             "DemeterFarmingStakeToken": "Fi kun {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Yiyọ kuro {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} beere ni aṣeyọri"
+            "DemeterFarmingGetRewards": "{amount} {symbol} beere ni aṣeyọri",
+            "EthBridgeIncoming": "Gbigbe {amount} {symbol} lati @:ethereumText si @:soraText",
+            "EthBridgeOutgoing": "Gbigbe {amount} {symbol} lati @:soraText si @:ethereumText"
         },
         "error": {
             "Transfer": "Kuna lati fi {amount} {symbol} ranṣẹ si {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Kuna lati yọkuro {amount} {symbol} ati {symbol2} LP",
             "DemeterFarmingStakeToken": "O kuna lati fi {amount} {symbol} kun",
             "DemeterFarmingUnstakeToken": "Kuna lati yọkuro {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Kuna lati beere {symbol}"
+            "DemeterFarmingGetRewards": "Kuna lati beere {symbol}",
+            "EthBridgeIncoming": "Kuna lati gbe {amount} {symbol} lati @:ethereumText si @:soraText",
+            "EthBridgeOutgoing": "Kuna lati gbe {amount} {symbol} lati @:soraText si @:ethereumText"
         },
         "ReferralReserveXor": "Iwe adehun XOR",
         "ReferralUnreserveXor": "Yọ XOR kuro",
@@ -77,7 +81,9 @@
         "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
         "DemeterFarmingStakeToken": "Atokun igi",
         "DemeterFarmingUnstakeToken": "Unstake Tokini",
-        "DemeterFarmingGetRewards": "Beere Awọn ere"
+        "DemeterFarmingGetRewards": "Beere Awọn ere",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
         "noExtensions": "A ko rii itẹsiwaju Polkadot{.js}. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
@@ -1140,5 +1146,6 @@
             "mnemonicLength": "Mnemonic yẹ ki o ni awọn ọrọ {number} ninu",
             "jsonFields": "Faili JSON ko ni awọn aaye ti a beere"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI Afara"
 }

@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Rimossi i token LP {symbol} e {symbol2} {amount}",
             "DemeterFarmingStakeToken": "Aggiunto {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "{amount} {symbol} rimosso",
-            "DemeterFarmingGetRewards": "{amount} {symbol} rivendicato con successo"
+            "DemeterFarmingGetRewards": "{amount} {symbol} rivendicato con successo",
+            "EthBridgeIncoming": "Trasferito {amount} {symbol} da @:ethereumText a @:soraText",
+            "EthBridgeOutgoing": "Trasferito {amount} {symbol} da @:soraText a @:ethereumText"
         },
         "error": {
             "Transfer": "Impossibile inviare {amount} {symbol} a {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Impossibile rimuovere i token LP {amount} {symbol} e {symbol2}",
             "DemeterFarmingStakeToken": "Impossibile aggiungere {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Impossibile rimuovere {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Impossibile rivendicare {symbol}"
+            "DemeterFarmingGetRewards": "Impossibile rivendicare {symbol}",
+            "EthBridgeIncoming": "Impossibile trasferire {amount} {symbol} da @:ethereumText a @:soraText",
+            "EthBridgeOutgoing": "Impossibile trasferire {amount} {symbol} da @:soraText a @:ethereumText"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
@@ -77,7 +81,9 @@
         "DemeterFarmingWithdrawLiquidity": "Liquidità svincolata",
         "DemeterFarmingStakeToken": "Gettone di puntata",
         "DemeterFarmingUnstakeToken": "Token distake",
-        "DemeterFarmingGetRewards": "Richiedi ricompense"
+        "DemeterFarmingGetRewards": "Richiedi ricompense",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione Polkadot{.js} trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1140,5 +1146,6 @@
             "mnemonicLength": "Il mnemonico deve contenere {numero} di parole",
             "jsonFields": "Il file JSON non ha campi obbligatori"
         }
-    }
+    },
+    "hashiBridgeText": "Ponte HASHI"
 }

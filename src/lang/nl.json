@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "{symbol} en {symbol2} {amount} LP tokens verwijderd",
             "DemeterFarmingStakeToken": "{amount} {symbol} toegevoegd",
             "DemeterFarmingUnstakeToken": "{amount} {symbol} verwijderd",
-            "DemeterFarmingGetRewards": "{amount} {symbol} succesvol geclaimd"
+            "DemeterFarmingGetRewards": "{amount} {symbol} succesvol geclaimd",
+            "EthBridgeIncoming": "{amount} {symbol} overgedragen van @:ethereumText naar @:soraText",
+            "EthBridgeOutgoing": "{amount} {symbol} overgedragen van @:soraText naar @:ethereumText"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Kan {amount} {symbol} en {symbol2} LP-tokens niet verwijderen",
             "DemeterFarmingStakeToken": "Kan {amount} {symbol} niet toevoegen",
             "DemeterFarmingUnstakeToken": "Kan {amount} {symbol} niet verwijderen",
-            "DemeterFarmingGetRewards": "Kan {symbol} niet claimen"
+            "DemeterFarmingGetRewards": "Kan {symbol} niet claimen",
+            "EthBridgeIncoming": "Kan {amount} {symbol} niet overboeken van @:ethereumText naar @:soraText",
+            "EthBridgeOutgoing": "Kan {amount} {symbol} niet overboeken van @:soraText naar @:ethereumText"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -77,7 +81,9 @@
         "DemeterFarmingWithdrawLiquidity": "Liquiditeit ongedaan maken",
         "DemeterFarmingStakeToken": "Inzet token",
         "DemeterFarmingUnstakeToken": "Token ongedaan maken",
-        "DemeterFarmingGetRewards": "Beloningen claimen"
+        "DemeterFarmingGetRewards": "Beloningen claimen",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen Polkadot{.js} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
@@ -1140,5 +1146,6 @@
             "mnemonicLength": "Mnemonic moet {number} woorden bevatten",
             "jsonFields": "JSON-bestand heeft geen verplichte velden"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI brug"
 }

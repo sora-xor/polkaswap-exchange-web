@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Usunięto {symbol} i {symbol2} {amount} tokeny LP",
             "DemeterFarmingStakeToken": "Dodano {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Usunięto {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} odebrano pomyślnie"
+            "DemeterFarmingGetRewards": "{amount} {symbol} odebrano pomyślnie",
+            "EthBridgeIncoming": "Przeniesiono {amount} {symbol} z @:ethereumText do @:soraText",
+            "EthBridgeOutgoing": "Przeniesiono {amount} {symbol} z @:soraText do @:ethereumText"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Nie udało się usunąć {amount} {symbol} i {symbol2} LP tokenów",
             "DemeterFarmingStakeToken": "Nie udało się dodać {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Nie udało się usunąć {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Nie udało się odebrać {symbol}"
+            "DemeterFarmingGetRewards": "Nie udało się odebrać {symbol}",
+            "EthBridgeIncoming": "Nie udało się przenieść {amount} {symbol} z @:ethereumText do @:soraText",
+            "EthBridgeOutgoing": "Nie udało się przenieść {amount} {symbol} z @:soraText do @:ethereumText"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
@@ -77,7 +81,9 @@
         "DemeterFarmingWithdrawLiquidity": "Niewystaw płynności",
         "DemeterFarmingStakeToken": "Żeton stawki",
         "DemeterFarmingUnstakeToken": "Żeton rozbicia",
-        "DemeterFarmingGetRewards": "Odbierz wynagrodzenie"
+        "DemeterFarmingGetRewards": "Odbierz wynagrodzenie",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia Polkadot{.js}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1140,5 +1146,6 @@
             "mnemonicLength": "Mnemonik powinien zawierać {liczbę} słów",
             "jsonFields": "Plik JSON nie zawiera wymaganych pól"
         }
-    }
+    },
+    "hashiBridgeText": "Most HASHI"
 }

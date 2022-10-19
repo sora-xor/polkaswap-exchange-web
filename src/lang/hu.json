@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "{symbol} és {symbol2} {amount} LP token eltávolítva",
             "DemeterFarmingStakeToken": "Hozzáadva {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "{amount} {symbol} eltávolítva",
-            "DemeterFarmingGetRewards": "{amount} {symbol} sikeres követelés"
+            "DemeterFarmingGetRewards": "{amount} {symbol} sikeres követelés",
+            "EthBridgeIncoming": "{amount} {symbol} áthelyezve @:ethereumText @:soraText",
+            "EthBridgeOutgoing": "{amount} {symbol} áthelyezve @:soraText @:ethereumText"
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Nem sikerült eltávolítani az {amount} {symbol} és {symbol2} LP tokeneket",
             "DemeterFarmingStakeToken": "Nem sikerült hozzáadni {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Nem sikerült eltávolítani {amount} {symbol}",
-            "DemeterFarmingGetRewards": "A(z {symbol} igénylése sikertelen"
+            "DemeterFarmingGetRewards": "A(z {symbol} igénylése sikertelen",
+            "EthBridgeIncoming": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a @:ethereumText és a @:soraText címre",
+            "EthBridgeOutgoing": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a @:soraText és a @:ethereumText címre"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
@@ -77,7 +81,9 @@
         "DemeterFarmingWithdrawLiquidity": "Likviditás visszavonása",
         "DemeterFarmingStakeToken": "Tét token",
         "DemeterFarmingUnstakeToken": "Unstake Token",
-        "DemeterFarmingGetRewards": "Jutalmak igénylése"
+        "DemeterFarmingGetRewards": "Jutalmak igénylése",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
         "noExtensions": "Nem találtunk Polkadot{.js} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1140,5 +1146,6 @@
             "mnemonicLength": "A mnemonikának {number} szót kell tartalmaznia",
             "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI híd"
 }
