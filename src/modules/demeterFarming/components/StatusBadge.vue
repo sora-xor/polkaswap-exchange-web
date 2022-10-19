@@ -7,7 +7,7 @@
 
     <div class="status-badge-title">
       <div>{{ title }}</div>
-      <div class="status-badge-title--mini">{{ aprFormatted }} APR</div>
+      <div v-if="pricesAvailable" class="status-badge-title--mini">{{ aprFormatted }} APR</div>
     </div>
   </div>
 </template>
