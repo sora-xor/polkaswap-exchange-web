@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Удалены {symbol} и {symbol2} {amount} LP токены",
             "DemeterFarmingStakeToken": "Добавлено {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Удалено {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} затребован успешно"
+            "DemeterFarmingGetRewards": "{amount} {symbol} затребован успешно",
+            "EthBridgeIncoming": "{amount} {symbol} переведено из @:ethereumText в @:soraText",
+            "EthBridgeOutgoing": "{amount} {symbol} переведено из @:soraText в @:ethereumText"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Не удалось удалить  {amount} {symbol} и {symbol2} LP токены",
             "DemeterFarmingStakeToken": "Не удалось добавить {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Не удалось удалить {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Не удалось получить {symbol}"
+            "DemeterFarmingGetRewards": "Не удалось получить {symbol}",
+            "EthBridgeIncoming": "Не удалось перевести {amount} {symbol} из @:ethereumText в @:soraText",
+            "EthBridgeOutgoing": "Не удалось перевести {amount} {symbol} из @:soraText в @:ethereumText"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
@@ -77,7 +81,9 @@
         "DemeterFarmingWithdrawLiquidity": "Отменить стейк ликвидности",
         "DemeterFarmingStakeToken": "Стейкинг токена",
         "DemeterFarmingUnstakeToken": "Отменить стейк токена",
-        "DemeterFarmingGetRewards": "Получить награды"
+        "DemeterFarmingGetRewards": "Получить награды",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
         "noExtensions": "Расширение Polkadot{.js} не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
@@ -1140,5 +1146,6 @@
             "mnemonicLength": "Мнемоника должна содержать {number} слов",
             "jsonFields": "JSON-файл не содержит обязательных полей"
         }
-    }
+    },
+    "hashiBridgeText": "мост HASHI"
 }

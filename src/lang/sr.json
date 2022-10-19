@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Уклоњени су токени {symbol} и {symbol2} {amount} ЛП",
             "DemeterFarmingStakeToken": "Додато {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Уклоњено {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} је успешно положено"
+            "DemeterFarmingGetRewards": "{amount} {symbol} је успешно положено",
+            "EthBridgeIncoming": "Пренето {amount} {symbol} са @:ethereumtext у @:soratext",
+            "EthBridgeOutgoing": "Пренето {amount} {symbol} са @:soratext у @:ethereumtext"
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Уклањање {amount} {symbol} и {symbol2} ЛП токена није успело",
             "DemeterFarmingStakeToken": "Додавање {amount} {symbol} није успело",
             "DemeterFarmingUnstakeToken": "Уклањање {amount} {symbol} није успело",
-            "DemeterFarmingGetRewards": "Захтевање за {symbol} није успело"
+            "DemeterFarmingGetRewards": "Захтевање за {symbol} није успело",
+            "EthBridgeIncoming": "Пренос {amount} {symbol} из @:ethereumtext у @:soratext није успео",
+            "EthBridgeOutgoing": "Пренос {amount} {symbol} са @:soratext на @:ethereumtext није успео"
         },
         "ReferralReserveXor": "Veži XOR",
         "ReferralUnreserveXor": "Razveži XOR",
@@ -77,7 +81,9 @@
         "DemeterFarmingWithdrawLiquidity": "Povuci ulaganje iz likvidnosti",
         "DemeterFarmingStakeToken": "Uložen Token",
         "DemeterFarmingUnstakeToken": "Povuci iz ulaganja Token",
-        "DemeterFarmingGetRewards": "Захтевајте награде"
+        "DemeterFarmingGetRewards": "Захтевајте награде",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
         "noExtensions": "Није пронађена ниједна екстензија Polkadot.{js}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1140,5 +1146,6 @@
             "mnemonicLength": "Мнемоника треба да садржи {number} речи",
             "jsonFields": "ЈСОН датотека нема обавезна поља"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI most"
 }

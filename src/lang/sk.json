@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Odstránené {symbol} a {symbol2} {amount} LP tokeny",
             "DemeterFarmingStakeToken": "Pridané {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Odstránené {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Úspešne nárokované {amount} {symbol}"
+            "DemeterFarmingGetRewards": "Úspešne nárokované {amount} {symbol}",
+            "EthBridgeIncoming": "Prevedené {amount} {symbol} z @:ethereumText do @:soraText",
+            "EthBridgeOutgoing": "Prevedené {amount} {symbol} z @:soraText do @:ethereumText"
         },
         "error": {
             "Transfer": "Nepodarilo sa odoslať {amount} {symbol} na {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Nepodarilo sa odstrániť tokeny LP {amount} {symbol} a {symbol2}",
             "DemeterFarmingStakeToken": "Nepodarilo sa pridať {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Nepodarilo sa odstrániť {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Nepodarilo sa nárokovať {symbol}"
+            "DemeterFarmingGetRewards": "Nepodarilo sa nárokovať {symbol}",
+            "EthBridgeIncoming": "Nepodarilo sa preniesť {amount} {symbol} z @:ethereumText do @:soraText",
+            "EthBridgeOutgoing": "Nepodarilo sa preniesť {amount} {symbol} z @:soraText do @:ethereumText"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -77,7 +81,9 @@
         "DemeterFarmingWithdrawLiquidity": "Zrušte likviditu",
         "DemeterFarmingStakeToken": "Token podielu",
         "DemeterFarmingUnstakeToken": "Zrušiť vklad",
-        "DemeterFarmingGetRewards": "Nárokovať odmeny"
+        "DemeterFarmingGetRewards": "Nárokovať odmeny",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie Polkadot{.js} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
@@ -1140,5 +1146,6 @@
             "mnemonicLength": "Mnemotechnika by mala obsahovať {číslo} slov",
             "jsonFields": "Súbor JSON neobsahuje povinné polia"
         }
-    }
+    },
+    "hashiBridgeText": "Most HASHI"
 }

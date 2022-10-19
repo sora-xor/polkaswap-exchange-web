@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "已移除{symbol}和{symbol2} {amount} 流动性提供代币",
             "DemeterFarmingStakeToken": "已添加{amount} {symbol}",
             "DemeterFarmingUnstakeToken": "已移除{amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol}成功申领"
+            "DemeterFarmingGetRewards": "{amount} {symbol}成功申领",
+            "EthBridgeIncoming": "将{amount} {symbol}从 @:ethereumText 转移到 @:soraText",
+            "EthBridgeOutgoing": "将{amount} {symbol}从 @:soraText 转移到 @:ethereumText"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "移除{amount} {symbol}和{symbol2} LP 令牌失败",
             "DemeterFarmingStakeToken": "添加{amount} {symbol}失败",
             "DemeterFarmingUnstakeToken": "移除失败{amount} {symbol}",
-            "DemeterFarmingGetRewards": "申领失败{symbol}"
+            "DemeterFarmingGetRewards": "申领失败{symbol}",
+            "EthBridgeIncoming": "将{amount} {symbol}从 @:ethereumText 转移到 @:soraText 失败",
+            "EthBridgeOutgoing": "将{amount} {symbol}从 @:soraText 转移到 @:ethereumText 失败"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -77,7 +81,9 @@
         "DemeterFarmingWithdrawLiquidity": "未质押流动性",
         "DemeterFarmingStakeToken": "质押代币",
         "DemeterFarmingUnstakeToken": "未质押代币",
-        "DemeterFarmingGetRewards": "申领奖励"
+        "DemeterFarmingGetRewards": "申领奖励",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
         "noExtensions": "没有找到 Polkadot{.js} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1140,5 +1146,6 @@
             "mnemonicLength": "助记符应包含{number}单词",
             "jsonFields": "JSON 文件没有必填字段"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI桥"
 }

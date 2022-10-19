@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Menghapus {symbol} dan {symbol2} {amount} token LP",
             "DemeterFarmingStakeToken": "Menambahkan {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "{amount} {symbol} dihapus",
-            "DemeterFarmingGetRewards": "{amount} {symbol} berhasil diklaim"
+            "DemeterFarmingGetRewards": "{amount} {symbol} berhasil diklaim",
+            "EthBridgeIncoming": "Mentransfer {amount} {symbol} dari @:ethereumText ke @:soraText",
+            "EthBridgeOutgoing": "Mentransfer {amount} {symbol} dari @:soraText ke @:ethereumText"
         },
         "error": {
             "Transfer": "Gagal mengirim {amount} {symbol} ke {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Gagal menghapus {amount} {symbol} dan {symbol2} token LP",
             "DemeterFarmingStakeToken": "Gagal menambahkan {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Gagal menghapus {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Gagal mengklaim {symbol}"
+            "DemeterFarmingGetRewards": "Gagal mengklaim {symbol}",
+            "EthBridgeIncoming": "Gagal mentransfer {amount} {symbol} dari @:ethereumText ke @:soraText",
+            "EthBridgeOutgoing": "Gagal mentransfer {amount} {symbol} dari @:soraText ke @:ethereumText"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
@@ -77,7 +81,9 @@
         "DemeterFarmingWithdrawLiquidity": "Likuiditas Lepas Taruhan",
         "DemeterFarmingStakeToken": "Token Taruhan",
         "DemeterFarmingUnstakeToken": "Token Lepas Taruhan",
-        "DemeterFarmingGetRewards": "Klaim Hadiah"
+        "DemeterFarmingGetRewards": "Klaim Hadiah",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi Polkadot{.js} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
@@ -1140,5 +1146,6 @@
             "mnemonicLength": "Mnemonic harus berisi {number} kata",
             "jsonFields": "File JSON tidak memiliki bidang yang wajib diisi"
         }
-    }
+    },
+    "hashiBridgeText": "Jembatan HASHI"
 }

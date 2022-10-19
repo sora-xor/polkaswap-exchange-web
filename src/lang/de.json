@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "{symbol} und {symbol2} {amount} LP-Token entfernt",
             "DemeterFarmingStakeToken": "{amount} {symbol} hinzugefügt",
             "DemeterFarmingUnstakeToken": "{amount} {symbol} entfernt",
-            "DemeterFarmingGetRewards": "{amount} {symbol} erfolgreich beansprucht"
+            "DemeterFarmingGetRewards": "{amount} {symbol} erfolgreich beansprucht",
+            "EthBridgeIncoming": "Übertragen {amount} {symbol} von @:ethereumText nach @:soraText",
+            "EthBridgeOutgoing": "Übertragen von {amount} {symbol} von @:soraText nach @:ethereumText"
         },
         "error": {
             "Transfer": "Senden von {amount} {symbol} an {address} fehlgeschlagen",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "{amount} {symbol} und {symbol2} LP-Token konnten nicht entfernt werden",
             "DemeterFarmingStakeToken": "Fehler beim Hinzufügen von {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Entfernen von {amount} {symbol} fehlgeschlagen",
-            "DemeterFarmingGetRewards": "Anspruch auf {symbol} fehlgeschlagen"
+            "DemeterFarmingGetRewards": "Anspruch auf {symbol} fehlgeschlagen",
+            "EthBridgeIncoming": "Fehler beim Übertragen von {amount} {symbol} von @:ethereumText nach @:soraText",
+            "EthBridgeOutgoing": "Fehler beim Übertragen von {amount} {symbol} von @:soraText nach @:ethereumText"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
@@ -77,7 +81,9 @@
         "DemeterFarmingWithdrawLiquidity": "Unstake Liquidität",
         "DemeterFarmingStakeToken": "Stake Token",
         "DemeterFarmingUnstakeToken": "Unstake Token",
-        "DemeterFarmingGetRewards": "Belohnungen beanspruchen"
+        "DemeterFarmingGetRewards": "Belohnungen beanspruchen",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
         "noExtensions": "Es wurde keine Polkadot{.js} Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1140,5 +1146,6 @@
             "mnemonicLength": "Mnemonik sollte {number} Wörter enthalten",
             "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder"
         }
-    }
+    },
+    "hashiBridgeText": "HASHI Brücke"
 }
