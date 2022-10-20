@@ -87,6 +87,8 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset;
+  @Prop({ default: false, type: Boolean }) readonly disabledCustom!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isMainTokenProviders!: boolean;
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
 
@@ -108,7 +110,8 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get whitelistAssetsList(): Array<AccountAsset> {
-    const assetsAddresses = this.whitelistAssets.map((asset) => asset.address);
+    const whiteList = this.isMainTokenProviders ? this.getMainSources() : this.whitelistAssets;
+    const assetsAddresses = whiteList.map((asset) => asset.address);
     const excludeAddress = this.asset?.address;
 
     return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance());
