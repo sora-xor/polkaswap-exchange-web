@@ -10,8 +10,12 @@
       </s-row>
 
       <div v-if="isAdding" class="stake-dialog-info">
-        <info-line :label="TranslationConsts.APR" :value="aprFormatted" />
-        <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvlFormatted" />
+        <info-line v-if="pricesAvailable" :label="TranslationConsts.APR" :value="aprFormatted" />
+        <info-line
+          v-if="pricesAvailable"
+          :label="t('demeterFarming.info.totalLiquidityLocked')"
+          :value="tvlFormatted"
+        />
         <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
       </div>
 
