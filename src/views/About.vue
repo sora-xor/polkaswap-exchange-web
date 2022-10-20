@@ -210,6 +210,13 @@ export default class About extends Mixins(TranslationMixin) {
     margin-top: calc(var(--s-basic-spacing) * 2);
     margin-bottom: calc(var(--s-basic-spacing) * -0.75);
   }
+
+  a {
+    outline: none;
+    &:focus:not(:active) {
+      @include focus-outline($inner: true);
+    }
+  }
 }
 </style>
 

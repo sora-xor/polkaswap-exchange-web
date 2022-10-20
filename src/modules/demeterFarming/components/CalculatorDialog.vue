@@ -152,7 +152,7 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
   get calculatedRoiPercent(): FPNumber {
     const depositInPoolsAsset = new FPNumber(this.poolAssetValue || 0);
 
-    if (depositInPoolsAsset.isZero()) return FPNumber.ZERO;
+    if (depositInPoolsAsset.isZero() || this.poolAssetPrice.isZero()) return FPNumber.ZERO;
 
     // for liquidity pool we multiply deposit in pool asset by 2
     const multiplier = this.isFarm ? 2 : 1;

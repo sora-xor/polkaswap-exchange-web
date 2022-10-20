@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Se eliminaron {symbol} y {symbol2} {amount} tokens LP",
             "DemeterFarmingStakeToken": "Se agregó {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Eliminado {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} reclamado con éxito"
+            "DemeterFarmingGetRewards": "{amount} {symbol} reclamado con éxito",
+            "EthBridgeIncoming": "Transferido {amount} {symbol} de @:ethereumText a @:soraText",
+            "EthBridgeOutgoing": "Transferido {amount} {symbol} de @:soraText a @:ethereumText"
         },
         "error": {
             "Transfer": "Fallo en {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Error al eliminar {amount} {symbol} y {symbol2} tokens LP",
             "DemeterFarmingStakeToken": "Error al agregar {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Error al quitar {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Error al reclamar {symbol}"
+            "DemeterFarmingGetRewards": "Error al reclamar {symbol}",
+            "EthBridgeIncoming": "Error al transferir {amount} {symbol} de @:ethereumText a @:soraText",
+            "EthBridgeOutgoing": "Error al transferir {amount} {symbol} de @:soraText a @:ethereumText"
         },
         "ReferralReserveXor": "Vincular XOR",
         "ReferralUnreserveXor": "Desvincular XOR",
@@ -75,13 +79,15 @@
         "SwapAndSend": "Intercambiar y enviar",
         "DemeterFarmingDepositLiquidity": "Liquidez de la participación",
         "DemeterFarmingWithdrawLiquidity": "Quitar liquidez",
-        "DemeterFarmingStakeToken": "Token de apuesta",
-        "DemeterFarmingUnstakeToken": "Unstake Token",
-        "DemeterFarmingGetRewards": "Reclamar Recompensas"
+        "DemeterFarmingStakeToken": "Token de participación",
+        "DemeterFarmingUnstakeToken": "Remover Token",
+        "DemeterFarmingGetRewards": "Reclamar Recompensas",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "No se encontró la extensión Polkadot.js. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Parece que no hay cuentas en su extensión Polkadot.js. Por favor añada una cuenta e inténtelo de nuevo.",
+        "noExtensions": "No se encontró la extensión Polkadot{.js}. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Parece que no hay cuentas en su extensión {extension}. Por favor añada una cuenta e inténtelo de nuevo.",
         "noAccount": "Error en la cuenta {extension}. Por favor compruebe su cuenta en la extensión {extension}",
         "noExtension": "No se encontró ninguna {extension}. Por favor Instálela y vuelva a cargar esta página.",
         "noSigner": "Acceso denegado. Vaya a la configuración de la {extension} y abra \"Administrar acceso al sitio web\" para permitir."
@@ -89,11 +95,8 @@
     "connection": {
         "title": "Cuenta de la Red SORA",
         "text": "Conecte sus cuentas de la Red SORA o cree otras nuevas con la extensión de navegador Polkadot{.js}. Esta extensión le permite firmar de forma segura las transacciones y gestionar Activos en la Red SORA.",
-        "install": "No se encontró la extensión polkadot.js. Instálala y <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">recarga<\/a> la página. <br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "¿Solicitud de permiso rechazada accidentalmente? <\/br> Actualmente, la extensión Polkadot{.js} no tiene gestión de permisos. Como solución alternativa, puede reiniciar su navegador y volver a visitar esta página para proceder con la autorización.",
-        "noAccounts": "No se ha encontrado ninguna cuenta en su extensión de navegador Polkadot{.js}. Por favor añade una cuenta e inténtalo de nuevo.",
+        "noAccounts": "No se ha encontrado ninguna cuenta en su extensión de navegador {extension}. Por favor añade una cuenta e inténtalo de nuevo.",
         "selectAccount": "Seleccione la cuenta con la que desea trabajar",
-        "loadingTitle": "Esperando que permita el acceso a la extensión Polkadot{.js}.",
         "action": {
             "install": "Instalar extensión",
             "learnMore": "Aprende más",
@@ -724,7 +727,7 @@
         "locked": "{percent} de su piscina está en participación"
     },
     "dexSettings": {
-        "title": "Configuración de transacciones",
+        "title": "Ajustes",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- opción para elegir entre mercado primario (TBC), mercado secundario (XYK) o un algoritmo inteligente combinado para garantizar el mejor precio para cualquier transacción dada."
@@ -747,7 +750,9 @@
             "SMART": "El enrutamiento de liquidez <span class=\"algorithm\">SMART<\/span> asegura el mejor precio para cualquier transacción combinando sólo las mejores opciones de precio de todos los mercados disponibles. Cuando esté disponible, se utilizará la Curva de Vinculación de Tokens (<span class=\"algorithm\">TBC<\/span>) para la Liquidez siempre que el precio del Activo sea más asequible que el de otras fuentes, sobre las que se utiliza el Fondo común <span class=\"algorithm\">XYK<\/span>.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> — comprar sólo en la Curva de Vinculación de Tokens (Mercado primario). Existe la posibilidad de que el precio se vuelva desfavorable en comparación con el Fondo común <span class=\"algorithm\">XYK<\/span> (Mercado secundario), pero el valor recibido de las Recompensas adquiridas podría resultar mucho más favorable con el tiempo.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — comprar sólo en el Fondo común XYK (Mercado secundario). Intercambio del Fondo común tradicional XYK."
-        }
+        },
+        "charts": "Gráficos",
+        "сhartsDescription": "Ver gráficos de precios de tokens"
     },
     "resultDialog": {
         "title": "Transacción enviada",
@@ -1004,13 +1009,13 @@
         "info": {
             "earned": "{symbol} ganado",
             "fee": "Tarifa",
-            "feeTooltip": "La tarifa de depósito se aplica a la cantidad a apostar",
+            "feeTooltip": "La tarifa de depósito se aplica a la cantidad a participar",
             "owned": "{symbol} @:balanceText",
-            "poolShare": "Su parte de la piscina apostada",
-            "poolShareWillBe": "Su participación en la piscina apostada será",
+            "poolShare": "Su parte de la piscina puesta",
+            "poolShareWillBe": "Su participación en la piscina puesta será",
             "rewardToken": "token de recompensa",
-            "stake": "Tu {symbol} apostado",
-            "stakeWillBe": "Su apuesta de {symbol} será",
+            "stake": "Tu {symbol} puesto",
+            "stakeWillBe": "Su participación de {symbol} será",
             "totalLiquidityLocked": "Liquidez total bloqueada"
         },
         "actions": {
@@ -1078,5 +1083,69 @@
     },
     "assetDeposit": "El saldo de los activos ha sido depositado",
     "noDataText": "Sin datos",
-    "ofText": "{first} de {second}"
+    "ofText": "{first} de {second}",
+    "filter": {
+        "all": "Todo",
+        "token": "Tokens",
+        "nft": "NFTs",
+        "verifiedOnly": "Mostrar solo activos verificados",
+        "zeroBalance": "Ocultar activos de saldo 0",
+        "showAssets": "Mostrar activos",
+        "show": "Mostrar"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "¡Bienvenido a Polkaswap!",
+            "headline": "Configuremos tu cuenta",
+            "text": "Cree su cuenta de SORA Network o inicie sesión en las antiguas utilizando una frase mnemotécnica o la importación .json. Esto le permite firmar transacciones de forma segura y administrar activos en SORA Network.",
+            "createAccount": "Crea una cuenta",
+            "importAccount": "Cuenta de importación"
+        },
+        "heading": {
+            "seedPhraseTitle": "Frase semilla",
+            "confirmSeedTitle": "Confirmar frase inicial",
+            "accountDetailsTitle": "Detalles de la cuenta",
+            "importTitle": "Importar cuenta"
+        },
+        "button": {
+            "next": "Próximo paso",
+            "skip": "Saltar",
+            "createAccount": "Crear una cuenta",
+            "importAccount": "Importar cuenta"
+        },
+        "accountName": {
+            "placeholder": "Nombre de la billetera",
+            "desc": "Este es el nombre público de su cartera que será visible para todos"
+        },
+        "password": {
+            "placeholder": "Contraseña",
+            "desc": "Asegúrese de utilizar una contraseña segura para una protección adecuada"
+        },
+        "confirmPassword": {
+            "placeholder": "Confirmar contraseña"
+        },
+        "accountMnemonic": {
+            "placeholder": "Frase mnemónica"
+        },
+        "seedAdviceText": "Esta es una semilla secreta de su cuenta. Asegúrese de almacenarla en un soporte no digital, por ejemplo - papel",
+        "confirmSeedText": "Confirme la frase semilla haciendo clic en las palabras en el orden correcto",
+        "errorMnemonicText": "Orden incorrecto de la frase semilla",
+        "exportOptionText": "Exportar archivo de cuenta .json",
+        "exportJsonText": "Siempre podrá acceder a su cuenta importando ese archivo .json. ¡No lo comparta con nadie!",
+        "addAccount": "Agregar una cuenta",
+        "dialog": {
+            "confirmTitle": "Confirmar con contraseña",
+            "confirmButton": "Firmar transacción",
+            "savePasswordText": "Recordar mi contraseña para los próximos 15 minutos",
+            "extendPasswordText": "Extender el período sin contraseña por 15 minutos"
+        },
+        "errorMessages": {
+            "password": "La contraseña no ha coincidido",
+            "passwords": "Las contraseñas no coinciden",
+            "mnemonic": "Mnemónico bip39 especificado no válido",
+            "mnemonicLength": "El mnemónico debe contener {number} palabras",
+            "jsonFields": "El archivo JSON no tiene campos requeridos"
+        }
+    },
+    "hashiBridgeText": "Puente HASHI"
 }

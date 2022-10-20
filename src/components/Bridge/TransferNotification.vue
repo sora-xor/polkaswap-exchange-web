@@ -70,7 +70,9 @@ export default class TransferNotification extends Mixins(TranslationMixin) {
   }
 
   get addTokenBtnVisibility(): boolean {
-    return !!this.asset && isOutgoingTransaction(this.tx);
+    return (
+      !!this.asset && !ethersUtil.isNativeEvmTokenAddress(this.asset.externalAddress) && isOutgoingTransaction(this.tx)
+    );
   }
 
   close(): void {

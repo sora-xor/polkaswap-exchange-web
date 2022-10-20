@@ -12,9 +12,11 @@
         <div class="moonpay-history-title">{{ t('moonpay.history.title') }}</div>
         <div :class="['moonpay-history-list', { empty: emptyHistory }]" v-loading="loading">
           <div
+            v-button
             v-for="item in formattedItems"
             :key="item.id"
             class="moonpay-history-item"
+            tabindex="0"
             @click="navigateToDetails(item)"
           >
             <div class="moonpay-history-item-data">

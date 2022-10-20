@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Fjernet {symbol} og {symbol2} {amount} LP-tokens",
             "DemeterFarmingStakeToken": "Lagt til {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Fjernet {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} er gjort krav på"
+            "DemeterFarmingGetRewards": "{amount} {symbol} er gjort krav på",
+            "EthBridgeIncoming": "Overførte {amount} {symbol} fra @:ethereumText til @:soraText",
+            "EthBridgeOutgoing": "Overførte {amount} {symbol} fra @:soraText til @:ethereumText"
         },
         "error": {
             "Transfer": "Kunne ikke sende {amount} {symbol} til {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Kunne ikke fjerne {amount} {symbol} og {symbol2} LP-tokens",
             "DemeterFarmingStakeToken": "Kunne ikke legge til {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Kunne ikke fjerne {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Kunne ikke gjøre krav på {symbol}"
+            "DemeterFarmingGetRewards": "Kunne ikke gjøre krav på {symbol}",
+            "EthBridgeIncoming": "Kunne ikke overføre {amount} {symbol} fra @:ethereumText til @:soraText",
+            "EthBridgeOutgoing": "Kunne ikke overføre {amount} {symbol} fra @:soraText til @:ethereumText"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Unstake likviditet",
         "DemeterFarmingStakeToken": "Stake Token",
         "DemeterFarmingUnstakeToken": "Unstake Token",
-        "DemeterFarmingGetRewards": "Gjør krav på belønninger"
+        "DemeterFarmingGetRewards": "Gjør krav på belønninger",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Finner ingen Polkadot.js utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Det ser ikke ut til å være noen kontoer i Polkadot.js utvidelsen. Legg til en konto, og prøv på nytt.",
+        "noExtensions": "Finner ingen Polkadot{.js} utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Det ser ikke ut til å være noen kontoer i {extension} utvidelsen. Legg til en konto, og prøv på nytt.",
         "noAccount": "Polkadot.js kontofeil. Sjekk kontoen din i Polkadot.js utvidelsen",
         "noExtension": "Ingen {extension} -utvidelse ble funnet. Installer den og last inn denne siden på nytt",
         "noSigner": "Ingen tilgang. Gå til utvidelsesinnstillingene for {extension} og åpne «Administrer nettstedtilgang» for å tillate."
     },
     "connection": {
         "title": "SORA Nettverkskonto",
-        "text": "Koble til SORA Network-kontoene dine eller opprett nye med polkadot{.js} nettleserutvidelse. Denne utvidelsen lar deg sikkert signere transaksjoner og administrere aktiva i SORA Network.",
-        "install": "Finner ingen polkadot.js utvidelse. Installer den og <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">start<\/a> siden på nytt.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Ved et uhell avvist tillatelsesforespørsel?<\/br> Polkadot{.js}-utvidelsen har for øyeblikket ikke nødvendig tillatelse. For å unngå dette kan du starte nettleseren på nytt og gå tilbake til denne siden for å fortsette med autorisasjon.",
-        "noAccounts": "Finner ingen konto i nettleserutvidelsen polkadot{.js}. Legg til en konto, og prøv på nytt.",
+        "text": "Koble til SORA Network-kontoene dine eller opprett nye med Polkadot{.js} nettleserutvidelse. Denne utvidelsen lar deg sikkert signere transaksjoner og administrere aktiva i SORA Network.",
+        "noAccounts": "Finner ingen konto i nettleserutvidelsen {extension}. Legg til en konto, og prøv på nytt.",
         "selectAccount": "Velg kontoen du vil arbeide med",
-        "loadingTitle": "Venter på at du skal gi tilgang til polkadot{.js} utvidelsen.",
         "action": {
             "install": "Installer utvidelse",
             "learnMore": "Lær mer",
@@ -724,7 +727,7 @@
         "locked": "{percent} av puljen din er i innsats"
     },
     "dexSettings": {
-        "title": "Transaksjonsinnstillinger",
+        "title": "Innstillinger",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- mulighet til å velge mellom Primærmarkedet (TBC), Sekundærmarkedet (XYK) eller en kombinert smart algoritme for garantert beste pris for en gitt transaksjon."
@@ -747,7 +750,9 @@
             "SMART": "<span class=\"algorithm\">SMART<\/span> likviditetsruting sikrer den beste prisen for enhver transaksjon ved å kombinere bare de beste prisalternativene fra alle tilgjengelige markeder. Når Token Bonding Curve (<span class=\"algorithm\">TBC<\/span>) vil bli brukt til likviditet så lenge aktivaprisen er rimeligere enn fra andre kilder, hvorpå <span class=\"algorithm\">XYK<\/span> utvalget benyttes.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> - kjøper bare fra Token Bonding Curve (Primary Market). Det er en mulighet for at prisen kan bli ugunstig sammenlignet med <span class=\"algorithm\">XYK<\/span> pool (Sekundærmarkedet), men verdien mottatt fra de opptjente belønningene kan vise seg å være mye gunstigere over tid.",
             "XYK": "<span class=\"algorithm\">XYK<\/span>- kjøper bare fra XYK Pool (sekundærmarkedet). Tradisjonelt XYK-bassengbytte."
-        }
+        },
+        "charts": "Diagrammer",
+        "сhartsDescription": "Se diagrammer for tokenpriser"
     },
     "resultDialog": {
         "title": "Transaksjonen er sendt inn",
@@ -1044,11 +1049,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Pool-par eksisterer allerede",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Sklitoleranse har ikke nådd riktige grenser"
         },
         "referrals": {
             "AlreadyHasReferrer": "Kontoen har allerede en henvisning",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Henviseren har ikke nok av reservert saldo"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Belønningsprogrammet er allerede ferdig",
@@ -1078,5 +1083,69 @@
     },
     "assetDeposit": "Eiendelsbalanse er satt inn",
     "noDataText": "Ingen data",
-    "ofText": "{first} av {second}"
+    "ofText": "{first} av {second}",
+    "filter": {
+        "all": "Alle",
+        "token": "Tokens",
+        "nft": "NFT-er",
+        "verifiedOnly": "Vis kun bekreftede eiendeler",
+        "zeroBalance": "Skjul 0 saldoaktiva",
+        "showAssets": "Vis eiendeler",
+        "show": "Vise"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Velkommen til Polkaswap!",
+            "headline": "La oss sette opp kontoen din",
+            "text": "Opprett din SORA Network-konto eller logg på de gamle ved å bruke mnemonisk frase eller .json-import. Dette lar deg signere transaksjoner og administrere aktiva i SORA Network på en sikker måte.",
+            "createAccount": "Opprett en konto",
+            "importAccount": "Importer konto"
+        },
+        "heading": {
+            "seedPhraseTitle": "Frøsetning",
+            "confirmSeedTitle": "Bekreft frøsetningen",
+            "accountDetailsTitle": "kontodetaljer",
+            "importTitle": "Importer konto"
+        },
+        "button": {
+            "next": "Neste steg",
+            "skip": "Hopp over",
+            "createAccount": "Opprett konto",
+            "importAccount": "Importer konto"
+        },
+        "accountName": {
+            "placeholder": "Lommeboknavn",
+            "desc": "Dette er det offentlige navnet på lommeboken din som vil være synlig for alle"
+        },
+        "password": {
+            "placeholder": "Passord",
+            "desc": "Sørg for at du bruker et sterkt passord for riktig beskyttelse"
+        },
+        "confirmPassword": {
+            "placeholder": "Bekreft passord"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemonisk setning"
+        },
+        "seedAdviceText": "Dette er et hemmelig frø til kontoen din. Sørg for å lagre den på en ikke-digital bærer, for eksempel - papir",
+        "confirmSeedText": "Bekreft frøsetningen ved å klikke på ordene i riktig rekkefølge",
+        "errorMnemonicText": "Feil rekkefølge på frøfrasen",
+        "exportOptionText": "Eksporter .json-kontofil",
+        "exportJsonText": "Du vil alltid kunne få tilgang til kontoen din ved å importere den .json-filen. Ikke del det med noen!",
+        "addAccount": "Legg til en konto",
+        "dialog": {
+            "confirmTitle": "Bekreft med passord",
+            "confirmButton": "Signer transaksjon",
+            "savePasswordText": "Husk passordet mitt i de neste 15 minuttene",
+            "extendPasswordText": "Forleng perioden uten passord med 15 minutter"
+        },
+        "errorMessages": {
+            "password": "Passordet stemte ikke",
+            "passwords": "Passordene stemte ikke",
+            "mnemonic": "Ugyldig bip39 mnemonic spesifisert",
+            "mnemonicLength": "Mnemonic skal inneholde {number} ord",
+            "jsonFields": "JSON-filen har ikke obligatoriske felt"
+        }
+    },
+    "hashiBridgeText": "HASHI bro"
 }

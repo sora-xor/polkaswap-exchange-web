@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Rimossi i token LP {symbol} e {symbol2} {amount}",
             "DemeterFarmingStakeToken": "Aggiunto {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "{amount} {symbol} rimosso",
-            "DemeterFarmingGetRewards": "{amount} {symbol} rivendicato con successo"
+            "DemeterFarmingGetRewards": "{amount} {symbol} rivendicato con successo",
+            "EthBridgeIncoming": "Trasferito {amount} {symbol} da @:ethereumText a @:soraText",
+            "EthBridgeOutgoing": "Trasferito {amount} {symbol} da @:soraText a @:ethereumText"
         },
         "error": {
             "Transfer": "Impossibile inviare {amount} {symbol} a {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Impossibile rimuovere i token LP {amount} {symbol} e {symbol2}",
             "DemeterFarmingStakeToken": "Impossibile aggiungere {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Impossibile rimuovere {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Impossibile rivendicare {symbol}"
+            "DemeterFarmingGetRewards": "Impossibile rivendicare {symbol}",
+            "EthBridgeIncoming": "Impossibile trasferire {amount} {symbol} da @:ethereumText a @:soraText",
+            "EthBridgeOutgoing": "Impossibile trasferire {amount} {symbol} da @:soraText a @:ethereumText"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Liquidità svincolata",
         "DemeterFarmingStakeToken": "Gettone di puntata",
         "DemeterFarmingUnstakeToken": "Token distake",
-        "DemeterFarmingGetRewards": "Richiedi ricompense"
+        "DemeterFarmingGetRewards": "Richiedi ricompense",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Nessuna estensione Polkadot.js trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Sembra che non ci siano account nella tua estensione Polkadot.js. Aggiungi un account e riprova.",
+        "noExtensions": "Nessuna estensione Polkadot{.js} trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Sembra che non ci siano account nella tua estensione {extension}. Aggiungi un account e riprova.",
         "noAccount": "Errore dell'account Polkadot.js. Controlla il tuo account nell'estensione Polkadot.js",
         "noExtension": "Non è stata trovata alcuna {extension} . Si prega di installarlo e ricaricare questa pagina",
         "noSigner": "Accesso negato. Vai alle impostazioni {extension} e apri \"Gestisci accesso al sito web\" per consentire."
     },
     "connection": {
         "title": "SORA Network account",
-        "text": "Collega i tuoi account di rete SORA o creane di nuovi con l'estensione del browser polkadot{.js}. Questa estensione consente di firmare transazioni in modo sicuro e gestire gli assets in SORA Network.",
-        "install": "Nessuna estensione polkadot.js trovata. Installalo e <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\"> ricarica <\/a> la pagina. <br\/> <span class=\"wallet-connection-link\"> https:\/\/polkadot.js.org\/extension\/ <\/span>",
-        "noPermissions": "Richiesta di autorizzazione accidentalmente rifiutata? <\/br> Attualmente polkadot{.js} non ha la gestione dei permessi. Come soluzione alternativa puoi riavviare il browser e visitare nuovamente questa pagina per procedere con l'autorizzazione.",
-        "noAccounts": "Nessun account trovato nell'estensione del browser polkadot{.js} Aggiungi un account e riprova.",
+        "text": "Collega i tuoi account di rete SORA o creane di nuovi con l'estensione del browser Polkadot{.js}. Questa estensione consente di firmare transazioni in modo sicuro e gestire gli assets in SORA Network.",
+        "noAccounts": "Nessun account trovato nell'estensione del browser {extension} Aggiungi un account e riprova.",
         "selectAccount": "Seleziona l'account con cui lavorare",
-        "loadingTitle": "In attesa che tu garantisca l'accesso all'estensione polkadot{.js}.",
         "action": {
             "install": "Installa l'estensione",
             "learnMore": "Per saperne di più",
@@ -724,7 +727,7 @@
         "locked": "{percent} della tua piscina è in staking"
     },
     "dexSettings": {
-        "title": "Impostazioni della transazione",
+        "title": "Impostazioni",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- opzione per scegliere tra mercato primario (TBC), mercato secondario (XYK) o un algoritmo intelligente combinato per ottenere il miglior prezzo garantito per qualsiasi transazione."
@@ -747,7 +750,9 @@
             "SMART": "<span class=\"algorithm\"> SMART <\/span> garantisce il miglior prezzo per qualsiasi transazione combinando le migliori opzioni di prezzo da tutti i mercati disponibili. Quando disponibile, la Token Bonding Curve ( <span class=\"algorithm\"> TBC <\/span> ) verrà utilizzata per la liquidità a condizione che il prezzo del token sia più conveniente rispetto ad altre fonti, altrimenti la pool <span class=\"algorithm\"> XYK <\/span> viene utilizzata.",
             "TBC": "<span class=\"algorithm\"> TBC <\/span> — comprare solo dalla Token Bonding Curve (Mercato Primario). C'è la possibilità che il prezzo possa diventare sfavorevole rispetto al <span class=\"algorithm\"> XYK <\/span> (Mercato sScondario), tuttavia il valore ricevuto dalle vested rewards potrebbe rivelarsi molto più favorevole nel tempo.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> - comprare solo dalla pool XYK (Mercato Secondario). Scambio tradizionale su pool XYK."
-        }
+        },
+        "charts": "Grafici",
+        "сhartsDescription": "Visualizza i grafici per i prezzi dei token"
     },
     "resultDialog": {
         "title": "Transazione inviata",
@@ -1044,11 +1049,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "La coppia di pool esiste già",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "La tolleranza allo slittamento non ha soddisfatto i limiti appropriati"
         },
         "referrals": {
             "AlreadyHasReferrer": "L'account ha già un referrer",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Il referrer non ha abbastanza saldo riservato"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Il programma a premi è già terminato",
@@ -1078,5 +1083,69 @@
     },
     "assetDeposit": "Il saldo patrimoniale è stato depositato",
     "noDataText": "Nessun dato",
-    "ofText": "{first} di {second}"
+    "ofText": "{first} di {second}",
+    "filter": {
+        "all": "Tutto",
+        "token": "Token",
+        "nft": "NFT",
+        "verifiedOnly": "Mostra solo risorse verificate",
+        "zeroBalance": "Nascondi 0 saldo attivo",
+        "showAssets": "Mostra risorse",
+        "show": "Mostra"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Benvenuto in Polkaswap!",
+            "headline": "configuriamo il tuo account",
+            "text": "Crea il tuo account di rete SORA o accedi a quelli vecchi usando la frase mnemonica o l'importazione .json. Ciò ti consente di firmare transazioni in modo sicuro e gestire le risorse nella rete SORA.",
+            "createAccount": "Creare un account",
+            "importAccount": "Importa account"
+        },
+        "heading": {
+            "seedPhraseTitle": "Frase seme",
+            "confirmSeedTitle": "Conferma la frase seme",
+            "accountDetailsTitle": "Dettagli account",
+            "importTitle": "Importa conto"
+        },
+        "button": {
+            "next": "Passo successivo",
+            "skip": "Salto",
+            "createAccount": "Creare un profilo",
+            "importAccount": "Importa conto"
+        },
+        "accountName": {
+            "placeholder": "Nome del portafoglio",
+            "desc": "Questo è il nome pubblico del tuo portafoglio che sarà visibile a tutti"
+        },
+        "password": {
+            "placeholder": "Password",
+            "desc": "Assicuratevi di utilizzare una password forte per una protezione adeguata."
+        },
+        "confirmPassword": {
+            "placeholder": "Conferma password"
+        },
+        "accountMnemonic": {
+            "placeholder": "Frase mnemonica"
+        },
+        "seedAdviceText": "Questo è un seme segreto del tuo account. Assicurati di archiviarlo su un supporto non digitale, ad esempio cartaceo",
+        "confirmSeedText": "Conferma la frase iniziale facendo clic sulle parole nell'ordine corretto",
+        "errorMnemonicText": "Ordine delle frasi seme errato",
+        "exportOptionText": "Esporta il file dell'account .json",
+        "exportJsonText": "Potrai sempre accedere al tuo account importando il file .json. Non condividerlo con nessuno!",
+        "addAccount": "Aggiungi un account",
+        "dialog": {
+            "confirmTitle": "Conferma con password",
+            "confirmButton": "Firma transazione",
+            "savePasswordText": "Ricorda la mia password per i prossimi 15 minuti",
+            "extendPasswordText": "Estendi il periodo senza password di 15 minuti"
+        },
+        "errorMessages": {
+            "password": "La password non corrisponde",
+            "passwords": "le password non coincidono",
+            "mnemonic": "Specificato mnemonico bip39 non valido",
+            "mnemonicLength": "Il mnemonico deve contenere {numero} di parole",
+            "jsonFields": "Il file JSON non ha campi obbligatori"
+        }
+    },
+    "hashiBridgeText": "Ponte HASHI"
 }

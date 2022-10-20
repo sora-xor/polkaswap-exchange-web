@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Հեռացվել են {symbol} և {symbol2} {amount} LP նշանները",
             "DemeterFarmingStakeToken": "Ավելացվեց {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Հեռացվել է {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} ը հաջողությամբ ներկայացվեց"
+            "DemeterFarmingGetRewards": "{amount} {symbol} ը հաջողությամբ ներկայացվեց",
+            "EthBridgeIncoming": "Փոխանցվել է {amount} {symbol} @:ethereumText ից @:soraText",
+            "EthBridgeOutgoing": "Փոխանցվել է {amount} {symbol} @:soraText ից @:ethereumText"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {symbol2} LP նշանները",
             "DemeterFarmingStakeToken": "Չհաջողվեց ավելացնել {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Չհաջողվեց հեռացնել {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Չհաջողվեց պահանջել {symbol}"
+            "DemeterFarmingGetRewards": "Չհաջողվեց պահանջել {symbol}",
+            "EthBridgeIncoming": "Չհաջողվեց փոխանցել {amount} {symbol} -ը @:ethereumText ից @:soraText ին",
+            "EthBridgeOutgoing": "Չհաջողվեց փոխանցել {amount} {symbol} -ը @:soraText ից @:ethereumText ին"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Չվճարված իրացվելիություն",
         "DemeterFarmingStakeToken": "Ցցի նշան",
         "DemeterFarmingUnstakeToken": "Անցկացնել նշան",
-        "DemeterFarmingGetRewards": "Հաստատել Պարգևները"
+        "DemeterFarmingGetRewards": "Հաստատել Պարգևները",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Polkadot.js- ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Ձեր Polkadot.js ընդլայնման մեջ կարծես որևէ հաշիվ չկա: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
+        "noExtensions": "Polkadot{.js} ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Ձեր {extension} ընդլայնման մեջ կարծես որևէ հաշիվ չկա: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
         "noAccount": "Polkadot.js հաշվի սխալ: Խնդրում ենք ստուգել ձեր հաշիվը Polkadot.js ընդլայնման մեջ",
         "noExtension": "{extension} ընդլայնում չի գտնվել: Խնդրում ենք տեղադրել այն և վերաբեռնել այս էջը",
         "noSigner": "Մուտքն արգելված է. Գնացեք {extension} ընդլայնման կարգավորումներ և բացեք «Կառավարել վեբ կայքի մուտքը»՝ թույլ տալու համար:"
     },
     "connection": {
         "title": "SORA ցանցի հաշիվ",
-        "text": "Միացրեք ձեր SORA ցանցի հաշիվները կամ ստեղծեք նորերը polkadot{.js} բրաուզերի ընդլայնմամբ: Այս ընդլայնումը թույլ է տալիս Ձեզ ապահով կերպով կնքել գործարքներ և կառավարել ակտիվները SORA ցանցում:",
-        "install": "Polkadot.js ընդլայնում չի գտնվել: Ներբեռնեք այն և վերաբեռնեք էջը: <br\/> <span class=\"wallet-connection-link\"> https:\/\/polkadot.js.org\/extension\/ <\/span>",
-        "noPermissions": "Պատահաբար մերժված թույլտվության հայց? <\/br> Ներկայումս polkadot {.js} ընդլայնումը չունի թույլտվության կառավարում: Որպես լուծում ՝ Դուք կարող եք վերագործարկել ձեր բրաուզերը և նորից այցելել այս էջը ՝ թույլտվությունն անցնելու համար:",
-        "noAccounts": "{.js} բրաուզերի ընդլայնման մեջ հաշիվ չի գտնվել: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
+        "text": "Միացրեք ձեր SORA ցանցի հաշիվները կամ ստեղծեք նորերը Polkadot{.js} բրաուզերի ընդլայնմամբ: Այս ընդլայնումը թույլ է տալիս Ձեզ ապահով կերպով կնքել գործարքներ և կառավարել ակտիվները SORA ցանցում:",
+        "noAccounts": "{extension} բրաուզերի ընդլայնման մեջ հաշիվ չի գտնվել: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
         "selectAccount": "Ընտրել հաշիվ աշխատելու համար",
-        "loadingTitle": "Սպասում ենք ձեզ թույլտվությանը՝ մուտք գործելու polkadot{.js} ընդլայնում.",
         "action": {
             "install": "Տեղադրել ընդլայնումը",
             "learnMore": "Իմանալ ավելին",
@@ -724,7 +727,7 @@
         "locked": "Ձեր լողավազանի {percent} -ը խաղադրույքի մեջ է"
     },
     "dexSettings": {
-        "title": "Գործարքի պարամետրերը",
+        "title": "Կարգավորումներ",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": " - առաջնային շուկայի (TBC), Երկրորդային շուկայի (XYK) կամ համակցված սմարթ ալգորիթմի միջև ընտրության հնարավորություն, ցանկացած տրված գործարքի երաշխավորված լավագույն գնի համար:"
@@ -747,7 +750,9 @@
             "SMART": "<span class=\"algorithm\"> SMART <\/span> իրացվելիության երթուղին ապահովում է ցանկացած գործարքի լավագույն գինը `համատեղելով մատչելի բոլոր շուկաներից միայն լավագույն գների տարբերակները: Հասանելիության դեպքում, Token Bonding Curve-ը ( <span class=\"algorithm\"> TBC <\/span> ) կօգտագործվի իրացվելիության համար, քանի դեռ ակտիվի գինն ավելի մատչելի է, քան այլ աղբյուրներինը, որոնց վրա <span class=\"algorithm\"> XYK <\/span>պահուստն օգտագործվում է:",
             "TBC": "<span class=\"algorithm\"> TBC <\/span> - գնում միայն Token Bonding Curve- ից (Առաջնային շուկա): Հնարավոր է, որ գինը կարող է անբարենպաստ դառնալ <span class=\"algorithm\"> XYK <\/span> պահուստի (Երկրորդային շուկա) համեմատ, բայց հատկացված պարգևներից ստացված արժեքը ժամանակի ընթացքում կարող է շատ ավելի բարենպաստ լինել: ,",
             "XYK": "<span class=\"algorithm\"> XYK <\/span> - գնում միայն XYK պահուստներից (երկրորդային շուկա): Ավանդական XYK պահուստների փոխանակում:"
-        }
+        },
+        "charts": "Գծապատկերներ",
+        "сhartsDescription": "Դիտեք գծապատկերները խորհրդանշական գների համար"
     },
     "resultDialog": {
         "title": "Գործարքը ներկայացված է",
@@ -1044,11 +1049,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Լողավազանների զույգն արդեն գոյություն ունի",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Սայթաքման հանդուրժողականությունը չի համապատասխանում համապատասխան սահմաններին"
         },
         "referrals": {
             "AlreadyHasReferrer": "Հաշիվն արդեն ունի ուղղորդող",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Ուղղորդողին չի բավականացնում վերապահված մնացորդը"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Պարգևատրման ծրագիրն արդեն ավարտված է",
@@ -1078,5 +1083,69 @@
     },
     "assetDeposit": "Ակտիվների մնացորդը մուտքագրվել է",
     "noDataText": "Տվյալներ չկան",
-    "ofText": "{first} -ի {second}"
+    "ofText": "{first} -ի {second}",
+    "filter": {
+        "all": "Բոլորը",
+        "token": "Նշաններ",
+        "nft": "NFT-ներ",
+        "verifiedOnly": "Ցուցադրել միայն հաստատված ակտիվները",
+        "zeroBalance": "Թաքցնել 0 մնացորդային ակտիվներ",
+        "showAssets": "Ցույց տալ ակտիվները",
+        "show": "Ցուցադրել"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Բարի գալուստ Polkaswap:",
+            "headline": "Եկեք կարգավորենք ձեր հաշիվը",
+            "text": "Ստեղծեք ձեր SORA ցանցի հաշիվը կամ մուտք գործեք հին հաշիվներ՝ օգտագործելով մեմոնիկ արտահայտությունը կամ .json ներմուծումը: Սա թույլ է տալիս ապահով կերպով ստորագրել գործարքները և կառավարել ակտիվները SORA ցանցում:",
+            "createAccount": "Ստեղծել հաշիվ",
+            "importAccount": "Ներմուծել հաշիվ"
+        },
+        "heading": {
+            "seedPhraseTitle": "Սերմի արտահայտություն",
+            "confirmSeedTitle": "Հաստատեք սերմերի արտահայտությունը",
+            "accountDetailsTitle": "հաշվի մանրամասներ",
+            "importTitle": "Ներմուծել հաշիվ"
+        },
+        "button": {
+            "next": "Հաջորդ քայլը",
+            "skip": "Սկիպ",
+            "createAccount": "Գրանցվել",
+            "importAccount": "Ներմուծել հաշիվ"
+        },
+        "accountName": {
+            "placeholder": "Դրամապանակի անվանումը",
+            "desc": "Սա ձեր դրամապանակի հանրային անունն է, որը տեսանելի կլինի բոլորին"
+        },
+        "password": {
+            "placeholder": "Գաղտնաբառ",
+            "desc": "Համոզվեք, որ դուք օգտագործում եք ուժեղ գաղտնաբառ՝ պատշաճ պաշտպանության համար"
+        },
+        "confirmPassword": {
+            "placeholder": "Հաստատել գաղտնաբառը"
+        },
+        "accountMnemonic": {
+            "placeholder": "Մնեմոնիկ արտահայտություն"
+        },
+        "seedAdviceText": "Սա ձեր հաշվի գաղտնի սերմն է: Համոզվեք, որ այն պահեք ոչ թվային կրիչի վրա, օրինակ՝ թղթի վրա",
+        "confirmSeedText": "Հաստատեք հիմնական արտահայտությունը՝ սեղմելով բառերը ճիշտ հերթականությամբ",
+        "errorMnemonicText": "Սերմերի արտահայտությունների սխալ կարգը",
+        "exportOptionText": "Արտահանել .json հաշվի ֆայլը",
+        "exportJsonText": "Դուք միշտ կկարողանաք մուտք գործել ձեր հաշիվ՝ ներմուծելով այդ .json ֆայլը: Մի կիսվեք այն որևէ մեկի հետ:",
+        "addAccount": "Ավելացնել հաշիվ",
+        "dialog": {
+            "confirmTitle": "Հաստատեք գաղտնաբառով",
+            "confirmButton": "Ստորագրեք գործարք",
+            "savePasswordText": "Հիշեք իմ գաղտնաբառը հաջորդ 15 րոպեի ընթացքում",
+            "extendPasswordText": "Առանց գաղտնաբառի ժամկետը երկարացնել 15 րոպեով"
+        },
+        "errorMessages": {
+            "password": "Գաղտնաբառը չի համընկնում",
+            "passwords": "Գաղտնաբառերը չեն համընկնում",
+            "mnemonic": "Նշված է անվավեր bip39 մնեմոնիկ",
+            "mnemonicLength": "Mnemonic-ը պետք է պարունակի {number} բառ",
+            "jsonFields": "JSON ֆայլը պարտադիր դաշտեր չունի"
+        }
+    },
+    "hashiBridgeText": "HASHI կամուրջ"
 }

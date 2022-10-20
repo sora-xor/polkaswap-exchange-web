@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Yọ kuro {symbol} ati {symbol2} {amount} LP àmi",
             "DemeterFarmingStakeToken": "Fi kun {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Yiyọ kuro {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} beere ni aṣeyọri"
+            "DemeterFarmingGetRewards": "{amount} {symbol} beere ni aṣeyọri",
+            "EthBridgeIncoming": "Gbigbe {amount} {symbol} lati @:ethereumText si @:soraText",
+            "EthBridgeOutgoing": "Gbigbe {amount} {symbol} lati @:soraText si @:ethereumText"
         },
         "error": {
             "Transfer": "Kuna lati fi {amount} {symbol} ranṣẹ si {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Kuna lati yọkuro {amount} {symbol} ati {symbol2} LP",
             "DemeterFarmingStakeToken": "O kuna lati fi {amount} {symbol} kun",
             "DemeterFarmingUnstakeToken": "Kuna lati yọkuro {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Kuna lati beere {symbol}"
+            "DemeterFarmingGetRewards": "Kuna lati beere {symbol}",
+            "EthBridgeIncoming": "Kuna lati gbe {amount} {symbol} lati @:ethereumText si @:soraText",
+            "EthBridgeOutgoing": "Kuna lati gbe {amount} {symbol} lati @:soraText si @:ethereumText"
         },
         "ReferralReserveXor": "Iwe adehun XOR",
         "ReferralUnreserveXor": "Yọ XOR kuro",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
         "DemeterFarmingStakeToken": "Atokun igi",
         "DemeterFarmingUnstakeToken": "Unstake Tokini",
-        "DemeterFarmingGetRewards": "Beere Awọn ere"
+        "DemeterFarmingGetRewards": "Beere Awọn ere",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "A ko rii itẹsiwaju Polkadot.js. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju polkadot{.js} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
+        "noExtensions": "A ko rii itẹsiwaju Polkadot{.js}. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
         "noAccount": "Polkadot.js aṣiṣe ifowosi. Jọwọ ṣayẹwo akọọlẹ rẹ ninu itẹsiwaju Polkadot.js",
         "noExtension": "A ko ri {extension} . Jọwọ fi sii ki o tun gbee si oju-iwe yii",
         "noSigner": "Ti kọ iraye si. Lọ si awọn eto {extension} ki o si ṣi “Ṣakoso Wiwọle Oju opo wẹẹbu” lati gba laaye."
     },
     "connection": {
         "title": "Ifowosi SORA Nẹtiwọọki",
-        "text": "So awọn akọọlẹ Nẹtiwọọki SORA rẹ pọ tabi ṣẹda awọn tuntun pẹlu itẹsiwaju {.js} Ifaagun yii fun ọ laaye lati fowo si awọn iṣowo lailewu ati ṣakoso awọn ohun-ini ni Nẹtiwọọki SORA.",
-        "install": "A ko rii itẹsiwaju polkadot.js. Fi sii ki o tun gbe oju-iwe naa pada. <br\/> <span class=\"wallet-connection-link\"> https:\/\/polkadot.js.org\/extension\/ <\/span>",
-        "noPermissions": "Lairotẹlẹ kọ aiye igbanilaaye? <\/br> Lọwọlọwọ polkadot {.js} itẹsiwaju ko ni iṣakoso igbanilaaye. Bi iṣẹ-ṣiṣe o le tun aṣàwákiri rẹ bẹrẹ ki o tun ṣabẹwo si oju-iwe yii lati tẹsiwaju pẹlu asẹ.",
-        "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {.js}polkadot re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
+        "text": "So awọn akọọlẹ Nẹtiwọọki SORA rẹ pọ tabi ṣẹda awọn tuntun pẹlu itẹsiwaju Polkadot{.js} Ifaagun yii fun ọ laaye lati fowo si awọn iṣowo lailewu ati ṣakoso awọn ohun-ini ni Nẹtiwọọki SORA.",
+        "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
         "selectAccount": "Yan ifowosi lati ṣiṣẹ pẹlu rẹ",
-        "loadingTitle": "Nduro fun ọ lati gba aaye laaye si itẹsiwaju polkadot{.js}.",
         "action": {
             "install": "Fi sori ẹrọ itẹsiwaju",
             "learnMore": "Kọ ẹkọ si",
@@ -724,7 +727,7 @@
         "locked": "{percent} ti adagun-omi rẹ wa ni idiyele"
     },
     "dexSettings": {
-        "title": "Awọn eto iṣowo",
+        "title": "Ètò",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- aṣayan lati yan laarin ọja Alakọbẹrẹ (TBC), Ile-iwe Atẹle (XYK) tabi algorithm ọlọgbọn apapọ fun idiyele ti o dara julọ fun iṣeduro eyikeyi ti a fun."
@@ -747,7 +750,9 @@
             "SMART": "<span class=\"algorithm\"> SMART <\/span> afisona liquidity ṣe idaniloju owo ti o dara julọ fun eyikeyi idunadura nipasẹ apapọ awọn aṣayan idiyele ti o dara julọ lati gbogbo awọn ọja to wa. Nigbati o ba wa, Tite'mora tokini tabi\nToken Bonding Curve ( <span class=\"algorithm\"> TBC <\/span> ) yoo ṣee lo fun oloomi bi igba ti iye dukia jẹ ifarada diẹ sii ju awọn orisun miiran lọ, lori eyiti <span class=\"algorithm\"> XYK <\/span> pool lo.",
             "TBC": "<span class=\"algorithm\"> TBC <\/span> - rira nikan lati Tokini Bonding Curve (Ọja Alakọbẹrẹ). O ṣee ṣe pe iye owo le di aibikita ni akawe si adagbe <span class=\"algorithm\"> <\/span> (Ile-iwe Atẹle), ṣugbọn iye ti o gba lati awọn ẹbun ti o ni ẹtọ le yipada lati jẹ ọpẹ pupọ diẹ sii ju akoko lọ .",
             "XYK": "<span class=\"algorithm\"> XYK <\/span> - rira nikan lati Omi ikudu XYK (Ọja Atẹle). Iyipada paṣipaarọ pool XYK ti atile. "
-        }
+        },
+        "charts": "Awọn aworan atọka",
+        "сhartsDescription": "Wo awọn shatti fun awọn idiyele ami"
     },
     "resultDialog": {
         "title": "Iṣowo ti a fi silẹ",
@@ -1044,11 +1049,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Pool bata ti wa tẹlẹ",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Ifarada yiyọ kuro ko ti pade awọn opin to dara"
         },
         "referrals": {
             "AlreadyHasReferrer": "Akọọlẹ ti ni olutọka tẹlẹ",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Referrer ko ni to ti wa ni ipamọ iwontunwonsi"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Eto ere ti pari tẹlẹ",
@@ -1078,5 +1083,69 @@
     },
     "assetDeposit": "Iwontunwonsi dukia ti wa ni idogo",
     "noDataText": "Ko si data",
-    "ofText": "{first} ti {second}"
+    "ofText": "{first} ti {second}",
+    "filter": {
+        "all": "Gbogbo",
+        "token": "Awọn ami-ami",
+        "nft": "NFT",
+        "verifiedOnly": "Ṣafihan awọn ohun-ini ti a rii daju nikan",
+        "zeroBalance": "Tọju awọn ohun-ini iwọntunwọnsi 0",
+        "showAssets": "Ṣe afihan awọn ohun-ini",
+        "show": "Ṣe afihan"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Kaabo si Polkaswap!",
+            "headline": "Jẹ ki a ṣeto akọọlẹ rẹ",
+            "text": "Ṣẹda akọọlẹ Nẹtiwọọki SORA rẹ tabi wọle si awọn atijọ ni lilo gbolohun mnemonic tabi gbewọle .json. Eyi n gba ọ laaye lati fowo si awọn iṣowo ni aabo ati ṣakoso awọn ohun-ini ni Nẹtiwọọki SORA.",
+            "createAccount": "Ṣẹda akọọlẹ kan",
+            "importAccount": "Wọle Account"
+        },
+        "heading": {
+            "seedPhraseTitle": "Awọn gbolohun ọrọ irugbin",
+            "confirmSeedTitle": "Jẹrisi gbolohun ọrọ irugbin",
+            "accountDetailsTitle": "",
+            "importTitle": "akowọle agbewọle"
+        },
+        "button": {
+            "next": "Igbesẹ t’okan",
+            "skip": "Rekọja",
+            "createAccount": "Se akanti fun ra re",
+            "importAccount": "akowọle agbewọle"
+        },
+        "accountName": {
+            "placeholder": "Orukọ apamọwọ",
+            "desc": "Eyi ni orukọ gbogbo eniyan ti apamọwọ rẹ eyiti yoo han si gbogbo eniyan"
+        },
+        "password": {
+            "placeholder": "Ọrọigbaniwọle",
+            "desc": "Rii daju pe o nlo ọrọ igbaniwọle to lagbara fun aabo to dara"
+        },
+        "confirmPassword": {
+            "placeholder": "So ni pato orukoabawole re"
+        },
+        "accountMnemonic": {
+            "placeholder": "Gbolohun mnemonic"
+        },
+        "seedAdviceText": "Eyi jẹ irugbin ikoko ti akọọlẹ rẹ. Rii daju pe o fipamọ sori ẹrọ ti kii ṣe oni-nọmba, fun apẹẹrẹ - iwe",
+        "confirmSeedText": "Jẹrisi gbolohun ọrọ irugbin nipa titẹ awọn ọrọ ni ọna ti o tọ",
+        "errorMnemonicText": "Eto gbolohun irugbin ti ko tọ",
+        "exportOptionText": "Faili akọọlẹ .json okeere",
+        "exportJsonText": "Iwọ yoo ni anfani lati wọle si akọọlẹ rẹ nigbagbogbo nipa gbigbe faili .json yẹn wọle. Maṣe pin pẹlu ẹnikẹni!",
+        "addAccount": "Fi akọọlẹ kan kun",
+        "dialog": {
+            "confirmTitle": "Jẹrisi pẹlu ọrọigbaniwọle",
+            "confirmButton": "Wole Idunadura",
+            "savePasswordText": "Ranti ọrọ igbaniwọle mi fun awọn iṣẹju 15 to nbọ",
+            "extendPasswordText": "Fa akoko laisi ọrọigbaniwọle nipasẹ iṣẹju 15"
+        },
+        "errorMessages": {
+            "password": "Ọrọigbaniwọle ko baramu",
+            "passwords": "Awọn ọrọ igbaniwọle ko baramu",
+            "mnemonic": "Bip39 mnemonic ti ko tọ ni pato",
+            "mnemonicLength": "Mnemonic yẹ ki o ni awọn ọrọ {number} ninu",
+            "jsonFields": "Faili JSON ko ni awọn aaye ti a beere"
+        }
+    },
+    "hashiBridgeText": "HASHI Afara"
 }

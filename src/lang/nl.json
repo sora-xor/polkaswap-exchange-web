@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "{symbol} en {symbol2} {amount} LP tokens verwijderd",
             "DemeterFarmingStakeToken": "{amount} {symbol} toegevoegd",
             "DemeterFarmingUnstakeToken": "{amount} {symbol} verwijderd",
-            "DemeterFarmingGetRewards": "{amount} {symbol} succesvol geclaimd"
+            "DemeterFarmingGetRewards": "{amount} {symbol} succesvol geclaimd",
+            "EthBridgeIncoming": "{amount} {symbol} overgedragen van @:ethereumText naar @:soraText",
+            "EthBridgeOutgoing": "{amount} {symbol} overgedragen van @:soraText naar @:ethereumText"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Kan {amount} {symbol} en {symbol2} LP-tokens niet verwijderen",
             "DemeterFarmingStakeToken": "Kan {amount} {symbol} niet toevoegen",
             "DemeterFarmingUnstakeToken": "Kan {amount} {symbol} niet verwijderen",
-            "DemeterFarmingGetRewards": "Kan {symbol} niet claimen"
+            "DemeterFarmingGetRewards": "Kan {symbol} niet claimen",
+            "EthBridgeIncoming": "Kan {amount} {symbol} niet overboeken van @:ethereumText naar @:soraText",
+            "EthBridgeOutgoing": "Kan {amount} {symbol} niet overboeken van @:soraText naar @:ethereumText"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Liquiditeit ongedaan maken",
         "DemeterFarmingStakeToken": "Inzet token",
         "DemeterFarmingUnstakeToken": "Token ongedaan maken",
-        "DemeterFarmingGetRewards": "Beloningen claimen"
+        "DemeterFarmingGetRewards": "Beloningen claimen",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Er is geen Polkadot.js-extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Er lijken geen accounts te zijn in uw Polkadot.js-extensie. Voeg een account toe en probeer het opnieuw.",
+        "noExtensions": "Er is geen Polkadot{.js} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Er lijken geen accounts te zijn in uw {extension} extensie. Voeg een account toe en probeer het opnieuw.",
         "noAccount": "Polkadot.js-accountfout. Controleer uw account in de Polkadot.js-extensie",
         "noExtension": "Er is geen {extension} -extensie gevonden. Installeer het en laad deze pagina opnieuw",
         "noSigner": "Toegang geweigerd. Ga naar {extension} extensie-instellingen en open \"Websitetoegang beheren\" om toe te staan."
     },
     "connection": {
         "title": "SORA Netwerk account",
-        "text": "Verbind uw SORA Netwerk accounts of maak nieuwe aan met polkadot{.js} browser extensie. Met deze extensie kunt u veilig transacties ondertekenen en assets beheren in SORA Network.",
-        "install": "Geen polkadot.js extensie gevonden. Installeer het en herlaad de pagina. <br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Per ongeluk geweigerde toestemmingsaanvraag?<\/br>Momenteel heeft polkadot{.js} extensie geen toestemmingsbeheer. Als een workaround kunt u uw browser herstarten en deze pagina opnieuw bezoeken om verder te gaan met de autorisatie.",
-        "noAccounts": "Geen account gevonden in uw polkadot{.js} browser extensie. Voeg een account toe en probeer het opnieuw.",
+        "text": "Verbind uw SORA Netwerk accounts of maak nieuwe aan met Polkadot{.js} browser extensie. Met deze extensie kunt u veilig transacties ondertekenen en assets beheren in SORA Network.",
+        "noAccounts": "Geen account gevonden in uw {extension} browser extensie. Voeg een account toe en probeer het opnieuw.",
         "selectAccount": "Selecteer account om mee te werken",
-        "loadingTitle": "Wachten op het toestaan van toegang tot de polkadot{.js} -extensie.",
         "action": {
             "install": "Extensie installeren",
             "learnMore": "Kom meer te weten",
@@ -724,7 +727,7 @@
         "locked": "{percent} van uw pool is in staking"
     },
     "dexSettings": {
-        "title": "Transactie-instellingen",
+        "title": "Instellingen",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": " - optie om te kiezen tussen Primaire Markt (TBC), Secundaire Markt (XYK) of een gecombineerd slim algoritme voor gegarandeerd de beste prijs voor een bepaalde transactie."
@@ -747,7 +750,9 @@
             "SMART": "<span class=\"algoritme\">SMART<\/span> liquiditeitsroutering zorgt voor de beste prijs voor elke transactie door alleen de beste prijsopties uit alle beschikbare markten te combineren. Indien beschikbaar, zal Token Bonding Curve (<span class=\"algoritme\">TBC<\/span>) worden gebruikt voor liquiditeit zolang de assetprijs betaalbaarder is dan uit andere bronnen, waarop de <span class=\"algoritme\">XYK<\/span> pool wordt gebruikt.",
             "TBC": "<span class=\"algoritme\">TBC<\/span> — alleen kopen van de Token Bonding Curve (Primary Market). Er is een mogelijkheid dat de prijs ongunstig kan worden in vergelijking met de <span class=\"algorithm\">XYK<\/span> pool (Secondary Market), maar de waarde die wordt ontvangen van de gevestigde beloningen kan in de loop van de tijd veel gunstiger blijken te zijn.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> - alleen kopen van de XYK-pool (secundaire markt). Traditionele XYK-poolswap."
-        }
+        },
+        "charts": "Grafieken",
+        "сhartsDescription": "Bekijk grafieken voor tokenprijzen"
     },
     "resultDialog": {
         "title": "Transactie ingediend",
@@ -1044,11 +1049,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Poolpaar bestaat al",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Sliptolerantie heeft niet aan de juiste limieten voldaan"
         },
         "referrals": {
             "AlreadyHasReferrer": "Account heeft al een verwijzer",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Verwijzer heeft niet genoeg gereserveerd saldo"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Beloningsprogramma is al afgelopen",
@@ -1078,5 +1083,69 @@
     },
     "assetDeposit": "Activa-saldo is gestort",
     "noDataText": "Geen informatie",
-    "ofText": "{first} van {second}"
+    "ofText": "{first} van {second}",
+    "filter": {
+        "all": "Alle",
+        "token": "Tokens",
+        "nft": "NFT's",
+        "verifiedOnly": "Toon alleen geverifieerde activa",
+        "zeroBalance": "Verberg 0 tegoeden",
+        "showAssets": "Items weergeven",
+        "show": "Show"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Welkom bij Polkaswap!",
+            "headline": "Laten we uw account instellen",
+            "text": "Maak uw SORA Network-account of log in op de oude met behulp van mnemonic-zin of .json-import. Hiermee kunt u transacties veilig ondertekenen en activa beheren in SORA Network.",
+            "createAccount": "Account aanmaken",
+            "importAccount": "Account importeren"
+        },
+        "heading": {
+            "seedPhraseTitle": "Zaadzin",
+            "confirmSeedTitle": "Zaadzin bevestigen",
+            "accountDetailsTitle": "Accountgegevens",
+            "importTitle": "Importrekening"
+        },
+        "button": {
+            "next": "Volgende stap",
+            "skip": "Skip",
+            "createAccount": "Maak account",
+            "importAccount": "Importrekening"
+        },
+        "accountName": {
+            "placeholder": "Naam portemonnee",
+            "desc": "Dit is de openbare naam van uw portemonnee die voor iedereen zichtbaar zal zijn"
+        },
+        "password": {
+            "placeholder": "Wachtwoord",
+            "desc": "Zorg ervoor dat u een sterk wachtwoord gebruikt voor een goede beveiliging"
+        },
+        "confirmPassword": {
+            "placeholder": "Bevestig wachtwoord"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemotechnische zin"
+        },
+        "seedAdviceText": "Dit is een geheime seed van je account. Bewaar het op een niet-digitale drager, bijvoorbeeld papier",
+        "confirmSeedText": "Bevestig de seed-zin door op de woorden in de juiste volgorde te klikken",
+        "errorMnemonicText": "Onjuiste volgorde van zaadzinnen",
+        "exportOptionText": ".json accountbestand exporteren",
+        "exportJsonText": "Je hebt altijd toegang tot je account door dat .json bestand te importeren. Deel het met niemand!",
+        "addAccount": "Een account toevoegen",
+        "dialog": {
+            "confirmTitle": "Bevestig met wachtwoord",
+            "confirmButton": "Transactie ondertekenen",
+            "savePasswordText": "Onthoud mijn wachtwoord voor de komende 15 minuten",
+            "extendPasswordText": "Verleng de periode zonder wachtwoord met 15 minuten"
+        },
+        "errorMessages": {
+            "password": "Wachtwoord komt niet overeen",
+            "passwords": "Wachtwoorden kwamen niet overeen",
+            "mnemonic": "Ongeldig bip39 geheugensteuntje opgegeven",
+            "mnemonicLength": "Mnemonic moet {number} woorden bevatten",
+            "jsonFields": "JSON-bestand heeft geen verplichte velden"
+        }
+    },
+    "hashiBridgeText": "HASHI brug"
 }

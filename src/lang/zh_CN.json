@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "已移除{symbol}和{symbol2} {amount} 流动性提供代币",
             "DemeterFarmingStakeToken": "已添加{amount} {symbol}",
             "DemeterFarmingUnstakeToken": "已移除{amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol}成功申领"
+            "DemeterFarmingGetRewards": "{amount} {symbol}成功申领",
+            "EthBridgeIncoming": "将{amount} {symbol}从 @:ethereumText 转移到 @:soraText",
+            "EthBridgeOutgoing": "将{amount} {symbol}从 @:soraText 转移到 @:ethereumText"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "移除{amount} {symbol}和{symbol2} LP 令牌失败",
             "DemeterFarmingStakeToken": "添加{amount} {symbol}失败",
             "DemeterFarmingUnstakeToken": "移除失败{amount} {symbol}",
-            "DemeterFarmingGetRewards": "申领失败{symbol}"
+            "DemeterFarmingGetRewards": "申领失败{symbol}",
+            "EthBridgeIncoming": "将{amount} {symbol}从 @:ethereumText 转移到 @:soraText 失败",
+            "EthBridgeOutgoing": "将{amount} {symbol}从 @:soraText 转移到 @:ethereumText 失败"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "未质押流动性",
         "DemeterFarmingStakeToken": "质押代币",
         "DemeterFarmingUnstakeToken": "未质押代币",
-        "DemeterFarmingGetRewards": "申领奖励"
+        "DemeterFarmingGetRewards": "申领奖励",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "没有找到 Polkadot.js 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "您的Polkadot.js扩展中似乎没有账户。请添加一个账户并再次尝试。",
+        "noExtensions": "没有找到 Polkadot{.js} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "您的{extension}扩展中似乎没有账户。请添加一个账户并再次尝试。",
         "noAccount": "{extension} 帐户错误. 请在{extension} 中检查您的帐户",
         "noExtension": "未找到{extension}扩展名。请安装它并重新加载此页面",
         "noSigner": "拒绝访问。转到{extension}扩展设置并打开“管理网站访问”以允许。"
     },
     "connection": {
         "title": "SORA网络账户",
-        "text": "使用polkadot{.js}浏览器扩展连接您的SORA网络账户或创建新账户。这个扩展允许您在SORA网络中安全地签署交易和管理资产。",
-        "install": "未找到 polkadot.js 扩展。安装它并<a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">重新加载<\/a>页面。 <br\/> <span class=\"wallet-connection-link\"> https:\/\/polkadot.js.org\/extension\/ <\/span>",
-        "noPermissions": "意外拒绝了权限请求？ <\/br>目前 polkadot {.js}扩展没有权限管理。作为一种解决方法，您可以重新启动浏览器并重新访问此页面以继续进行授权。",
-        "noAccounts": "在您的polkadot{.js}浏览器扩展中没有找到账户。请添加一个账户并重试。",
+        "text": "使用Polkadot{.js}浏览器扩展连接您的SORA网络账户或创建新账户。这个扩展允许您在SORA网络中安全地签署交易和管理资产。",
+        "noAccounts": "在您的{extension}浏览器扩展中没有找到账户。请添加一个账户并重试。",
         "selectAccount": "选择要使用的账户",
-        "loadingTitle": "等待您允许访问 polkadot{.js}扩展.",
         "action": {
             "install": "安装扩展",
             "learnMore": "了解更多",
@@ -724,7 +727,7 @@
         "locked": "{percent}您的流动池正在质押中"
     },
     "dexSettings": {
-        "title": "交易设置",
+        "title": "设置",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- 在一级市场 (TBC)、二级市场 (XYK) 或组合智能算法之间进行选择，以保证任何给定交易的最佳价格。"
@@ -747,7 +750,9 @@
             "SMART": "<span class=\"algorithm\"> SMART <\/span>流动性路由通过仅结合所有可用市场的最佳价格选项来确保任何交易的最佳价格。当可用时，只要资产价格比其他来源更实惠，代币绑定曲线（ <span class=\"algorithm\"> TBC <\/span> <span class=\"algorithm\"> XYK <\/span>流动池将被利用。",
             "TBC": "<span class=\"algorithm\"> TBC <\/span> — 仅从代币绑定曲线（一级市场）购买。 <span class=\"algorithm\"> XYK <\/span>流动池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
             "XYK": "<span class=\"algorithm\"> XYK <\/span> — 仅从 XYK 池（二级市场）购买。传统的 XYK 流动池兑换。"
-        }
+        },
+        "charts": "图表",
+        "сhartsDescription": "查看代币价格图表"
     },
     "resultDialog": {
         "title": "交易已提交",
@@ -1078,5 +1083,69 @@
     },
     "assetDeposit": "资产余额已存入",
     "noDataText": "没有数据",
-    "ofText": "{first}的{second}"
+    "ofText": "{first}的{second}",
+    "filter": {
+        "all": "全部",
+        "token": "代币",
+        "nft": "NFT",
+        "verifiedOnly": "只显示经过验证的资产",
+        "zeroBalance": "隐藏0余额资产",
+        "showAssets": "显示资产",
+        "show": "显示"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "欢迎来到 Polkaswap！",
+            "headline": "让我们设置您的帐户",
+            "text": "创建您的 SORA 网络帐户或使用助记词或 .json 导入登录旧帐户。这使您可以安全地签署交易并管理 SORA 网络中的资产。",
+            "createAccount": "创建一个帐户",
+            "importAccount": "进口账户"
+        },
+        "heading": {
+            "seedPhraseTitle": "种子短语",
+            "confirmSeedTitle": "确认助记词",
+            "accountDetailsTitle": "帐户详情",
+            "importTitle": "导入账户"
+        },
+        "button": {
+            "next": "下一步",
+            "skip": "跳过",
+            "createAccount": "创建账户",
+            "importAccount": "导入账户"
+        },
+        "accountName": {
+            "placeholder": "钱包名称",
+            "desc": "这是你的钱包的公开名称，每个人都可以看到。"
+        },
+        "password": {
+            "placeholder": "密码",
+            "desc": "确保你使用一个强大的密码来进行适当的保护"
+        },
+        "confirmPassword": {
+            "placeholder": "确认密码"
+        },
+        "accountMnemonic": {
+            "placeholder": "助记词"
+        },
+        "seedAdviceText": "这是您帐户的秘密种子。确保将其存储在非数字载体上，例如 - 纸张",
+        "confirmSeedText": "通过按正确顺序单击单词来确认助记词",
+        "errorMnemonicText": "种子短语顺序不正确",
+        "exportOptionText": "导出 .json 账户文件",
+        "exportJsonText": "您将始终能够通过导入该 .json 文件来访问您的帐户。不要与任何人分享！",
+        "addAccount": "添加帐户",
+        "dialog": {
+            "confirmTitle": "用密码确认",
+            "confirmButton": "签署交易",
+            "savePasswordText": "在接下来的 15 分钟内记住我的密码",
+            "extendPasswordText": "延长无密码时间15分钟"
+        },
+        "errorMessages": {
+            "password": "密码不匹配",
+            "passwords": "密码不匹配",
+            "mnemonic": "指定无效的bip39助记符",
+            "mnemonicLength": "助记符应包含{number}单词",
+            "jsonFields": "JSON 文件没有必填字段"
+        }
+    },
+    "hashiBridgeText": "HASHI桥"
 }

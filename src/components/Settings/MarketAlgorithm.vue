@@ -6,7 +6,7 @@
         <span>{{ t('dexSettings.marketAlgorithmTooltip.main') }}</span>
       </div>
     </settings-header>
-    <settings-tabs :value="marketAlgorithm" :tabs="marketAlgorithmTabs" @click="selectTab" />
+    <settings-tabs :value="currentMarketAlgorithm" :tabs="marketAlgorithmTabs" @click="selectTab" />
   </div>
 </template>
 
@@ -30,6 +30,7 @@ import type { TabItem } from '@/types/tabs';
 export default class MarketAlgorithm extends Mixins(TranslationMixin) {
   @state.settings.marketAlgorithm marketAlgorithm!: MarketAlgorithms;
   @getter.swap.marketAlgorithms private marketAlgorithms!: Array<MarketAlgorithms>;
+  @getter.swap.marketAlgorithmsAvailable marketAlgorithmsAvailable!: boolean;
   @mutation.settings.setMarketAlgorithm private setMarketAlgorithm!: (name: MarketAlgorithms) => void;
 
   get marketAlgorithmTabs(): Array<TabItem> {
@@ -38,6 +39,10 @@ export default class MarketAlgorithm extends Mixins(TranslationMixin) {
       label: name,
       content: this.t(`dexSettings.marketAlgorithms.${name}`),
     }));
+  }
+
+  get currentMarketAlgorithm(): MarketAlgorithms {
+    return this.marketAlgorithmsAvailable ? this.marketAlgorithm : MarketAlgorithms.SMART;
   }
 
   selectTab({ name }): void {

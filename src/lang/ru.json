@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Удалены {symbol} и {symbol2} {amount} LP токены",
             "DemeterFarmingStakeToken": "Добавлено {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Удалено {amount} {symbol}",
-            "DemeterFarmingGetRewards": "{amount} {symbol} затребован успешно"
+            "DemeterFarmingGetRewards": "{amount} {symbol} затребован успешно",
+            "EthBridgeIncoming": "{amount} {symbol} переведено из @:ethereumText в @:soraText",
+            "EthBridgeOutgoing": "{amount} {symbol} переведено из @:soraText в @:ethereumText"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Не удалось удалить  {amount} {symbol} и {symbol2} LP токены",
             "DemeterFarmingStakeToken": "Не удалось добавить {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Не удалось удалить {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Не удалось получить {symbol}"
+            "DemeterFarmingGetRewards": "Не удалось получить {symbol}",
+            "EthBridgeIncoming": "Не удалось перевести {amount} {symbol} из @:ethereumText в @:soraText",
+            "EthBridgeOutgoing": "Не удалось перевести {amount} {symbol} из @:soraText в @:ethereumText"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Отменить стейк ликвидности",
         "DemeterFarmingStakeToken": "Стейкинг токена",
         "DemeterFarmingUnstakeToken": "Отменить стейк токена",
-        "DemeterFarmingGetRewards": "Получить награды"
+        "DemeterFarmingGetRewards": "Получить награды",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Расширение Polkadot.js не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Похоже, что в вашем расширении Polkadot.js нет аккаунтов. Пожалуйста, добавьте аккаунт и повторите попытку.",
+        "noExtensions": "Расширение Polkadot{.js} не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Похоже, что в вашем расширении {extension} нет аккаунтов. Пожалуйста, добавьте аккаунт и повторите попытку.",
         "noAccount": "Ошибка аккаунта Polkadot.js. Пожалуйста, проверьте свою учетную запись в расширении Polkadot.js",
         "noExtension": "Расширение {extension} не найдено. Пожалуйста, установите его и перезагрузите эту страницу",
         "noSigner": "В доступе отказано. Перейдите в настройки {extension} и откройте «Управление доступом к веб-сайту», чтобы разрешить."
     },
     "connection": {
         "title": "Аккаунт сети SORA",
-        "text": "Подключите свои аккаунты сети SORA или создайте новые с помощью расширения для браузера polkadot{.js}. Это расширение позволяет безопасно подписывать транзакции и управлять активами в сети SORA.",
-        "install": "Расширение polkadot.js не найдено. Установите его и перезагрузите страницу.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Случайно отклонили запрос на разрешение?<\/br>В настоящее время расширение polkadot{.js} не имеет управления разрешениями. В качестве обходного пути вы можете перезапустить браузер и повторно посетить эту страницу, чтобы продолжить авторизацию.",
-        "noAccounts": "Аккаунт в расширении polkadot{.js} Вашего браузера не найдена. Пожалуйста, добавьте аккаунт и повторите попытку.",
+        "text": "Подключите свои аккаунты сети SORA или создайте новые с помощью расширения для браузера Polkadot{.js}. Это расширение позволяет безопасно подписывать транзакции и управлять активами в сети SORA.",
+        "noAccounts": "Не найдено аккаунтов в вашем {extension} браузерном расширении. Пожалуйста, добавьте аккаунт и повторите попытку.",
         "selectAccount": "Выберите аккаунт для работы с",
-        "loadingTitle": "Ожидание Вашего разрешения доступа к расширению polkadot{.js}.",
         "action": {
             "install": "Установить расширение",
             "learnMore": "Узнать больше",
@@ -724,7 +727,7 @@
         "locked": "{percent} вашего пула находится в стейкинге"
     },
     "dexSettings": {
-        "title": "Настройки транзакции",
+        "title": "Настройки",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- возможность выбора между первичным рынком (TBC), вторичным рынком (XYK) или комбинированным интеллектуальным алгоритмом для гарантированно лучшей цены для любой данной транзакции."
@@ -747,7 +750,9 @@
             "SMART": "<span class=\"algorithm\">SMART<\/span> маршрутизация ликвидности обеспечивает лучшую цену для любой транзакции, комбинируя только лучшие ценовые варианты со всех доступных рынков. Когда доступно, кривая связывания токенов (<span class=\"algorithm\">TBC<\/span>) будет использоваться для обеспечения ликвидности, если цена актива будет более доступной, чем из других источников, на котором используется пул <span class=\"algorithm\">XYK<\/span>.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> — покупка только из кривой связывания токенов (Token Bonding Curve) (Первичный Рынок). Есть вероятность того, что цена может стать невыгодной по сравнению с <span class=\"algorithm\">XYK<\/span> пулом (Вторичным Рынком), но ценность полученных вознаграждений со временем может оказаться гораздо более выгодной.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> — покупка только из пула XYK (вторичный рынок). Традиционный пул обмена XYK."
-        }
+        },
+        "charts": "Графики",
+        "сhartsDescription": "Посмотреть графики цен на токены"
     },
     "resultDialog": {
         "title": "Транзакция отправлена",
@@ -1044,11 +1049,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Пара пулов уже существует",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Допустимое отклонение от проскальзывания не достигло надлежащих пределов"
         },
         "referrals": {
             "AlreadyHasReferrer": "У учетной записи уже есть реферер",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "У реферера недостаточно зарезервированного баланса"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Бонусная программа уже завершена",
@@ -1078,5 +1083,69 @@
     },
     "assetDeposit": "Актив был пополнен",
     "noDataText": "Нет данных",
-    "ofText": "{first} из {second}"
+    "ofText": "{first} из {second}",
+    "filter": {
+        "all": "Все",
+        "token": "Токены",
+        "nft": "NFT",
+        "verifiedOnly": "Показывать проверенные активы",
+        "zeroBalance": "Скрыть 0 баланс активов",
+        "showAssets": "Показать активы",
+        "show": "Показать"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Добро пожаловать в Polkaswap!",
+            "headline": "Давайте настроим вашу учетную запись",
+            "text": "Создайте свою учетную запись SORA Network или войдите в старые, используя мнемоническую фразу или импорт .json. Это позволяет безопасно подписывать транзакции и управлять активами в сети SORA.",
+            "createAccount": "Завести аккаунт",
+            "importAccount": "Импорт аккаунта"
+        },
+        "heading": {
+            "seedPhraseTitle": "Исходная фраза",
+            "confirmSeedTitle": "Подтвердить исходную фразу",
+            "accountDetailsTitle": "Детали учетной записи",
+            "importTitle": "Импорт аккаунта"
+        },
+        "button": {
+            "next": "Следующий шаг",
+            "skip": "Пропускать",
+            "createAccount": "Создать учетную запись",
+            "importAccount": "Импорт аккаунта"
+        },
+        "accountName": {
+            "placeholder": "Название кошелька",
+            "desc": "Это общедоступное имя вашего кошелька, которое будет видно всем"
+        },
+        "password": {
+            "placeholder": "Пароль",
+            "desc": "Убедитесь, что вы используете надежный пароль для надлежащей защиты"
+        },
+        "confirmPassword": {
+            "placeholder": "Подтвердить Пароль"
+        },
+        "accountMnemonic": {
+            "placeholder": "Мнемоническая фраза"
+        },
+        "seedAdviceText": "Это секретная фраза вашего аккаунта. Обязательно храните ее на нецифровом носителе, например, на бумаге.",
+        "confirmSeedText": "Подтвердите начальную фразу, щелкнув слова в правильном порядке",
+        "errorMnemonicText": "Неправильный порядок исходной фразы",
+        "exportOptionText": "Экспорт файла учетной записи .json",
+        "exportJsonText": "Вы всегда сможете получить доступ к своей учетной записи, импортировав этот файл .json. Не передавайте его никому!",
+        "addAccount": "Добавить аккаунт",
+        "dialog": {
+            "confirmTitle": "Подтвердите паролем",
+            "confirmButton": "Подписать транзакцию",
+            "savePasswordText": "Запомнить мой пароль на следующие 15 минут",
+            "extendPasswordText": "Продлить период без пароля на 15 минут"
+        },
+        "errorMessages": {
+            "password": "Пароль не совпадает",
+            "passwords": "Пароли не совпадают",
+            "mnemonic": "Указана недопустимая мнемоника bip39",
+            "mnemonicLength": "Мнемоника должна содержать {number} слов",
+            "jsonFields": "JSON-файл не содержит обязательных полей"
+        }
+    },
+    "hashiBridgeText": "мост HASHI"
 }

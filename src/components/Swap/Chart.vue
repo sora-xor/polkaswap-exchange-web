@@ -354,15 +354,6 @@ export default class SwapChart extends Mixins(
     return calcPriceChange(rangeClosePrice, rangeStartPrice);
   }
 
-  get timeFormat(): string {
-    switch (this.selectedFilter.type) {
-      case SUBQUERY_TYPES.AssetSnapshotTypes.DAY:
-        return 'll';
-      default:
-        return 'LT';
-    }
-  }
-
   get axisLabelCSS() {
     return {
       fontFamily: 'Sora',
@@ -373,15 +364,14 @@ export default class SwapChart extends Mixins(
   }
 
   get gridLeftOffset(): number {
-    return (
-      AXIS_OFFSET +
-      2 * LABEL_PADDING +
-      getTextWidth(
-        String(this.limits.max.toFixed(this.precision)),
-        this.axisLabelCSS.fontFamily,
-        this.axisLabelCSS.fontSize
-      )
+    const maxLabel = this.limits.max * 10;
+    const axisLabelWidth = getTextWidth(
+      String(maxLabel.toFixed(this.precision)),
+      this.axisLabelCSS.fontFamily,
+      this.axisLabelCSS.fontSize
     );
+
+    return AXIS_OFFSET + 2 * LABEL_PADDING + axisLabelWidth;
   }
 
   // ordered by timestamp ASC
@@ -438,7 +428,8 @@ export default class SwapChart extends Mixins(
             const date = dayjs(+value);
             const isNewDay = date.hour() === 0 && date.minute() === 0;
             const isNewMonth = date.date() === 1 && isNewDay;
-            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'LT';
+            // TODO: "LT" formatted labels (hours) sometimes overlaps (AM\PM issue)
+            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'HH:mm';
             const formatted = this.formatDate(+value, timeFormat);
 
             if (isNewMonth) {
@@ -452,10 +443,12 @@ export default class SwapChart extends Mixins(
           },
           rich: {
             monthStyle: {
-              fornWeight: 'bold',
+              fontSize: 10,
+              fontWeight: 'bold',
             },
             dateStyle: {
-              fornWeight: 'bold',
+              fontSize: 10,
+              fontWeight: 'bold',
             },
           },
           color: this.theme.color.base.content.secondary,
@@ -701,6 +694,9 @@ export default class SwapChart extends Mixins(
       const timestamp = (a?.timestamp ?? b?.timestamp) as number;
       const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0]) as number[];
 
+      // if "open" & "close" prices are zero, we are going to time, where pool is not created
+      if (price[0] === 0 && price[1] === 0) break;
+
       prices.push({
         timestamp,
         price,
@@ -896,7 +892,7 @@ export default class SwapChart extends Mixins(
 
   handleZoom(event: any): void {
     event?.stop?.();
-    if (event?.wheelDelta === -1 && this.zoomStart === 0 && this.zoomEnd === 100) {
+    if (event?.wheelDelta < 0 && this.zoomStart === 0 && this.zoomEnd === 100) {
       this.updatePrices();
     }
   }

@@ -54,20 +54,32 @@ const mutations = defineMutations<SwapState>()({
   setLiquidityProviderFee(state, value: CodecString): void {
     state.liquidityProviderFee = value;
   },
-  setPairLiquiditySources(state, liquiditySources: Array<LiquiditySourceTypes>): void {
-    state.pairLiquiditySources = [...liquiditySources];
-  },
-  setPaths(state, paths: QuotePaths): void {
-    state.paths = { ...paths };
-  },
   setPrimaryMarketsEnabledAssets(state, assets: PrimaryMarketsEnabledAssets): void {
     state.enabledAssets = { ...assets };
   },
   setRewards(state, rewards: Array<LPRewardsInfo>): void {
     state.rewards = [...rewards];
   },
-  setSubscriptionPayload(state, payload: QuotePayload): void {
-    state.payload = payload;
+  setSubscriptionPayload(
+    state,
+    {
+      dexId,
+      payload,
+      paths,
+      liquiditySources,
+    }: { payload: QuotePayload; dexId: number; paths: QuotePaths; liquiditySources: Array<LiquiditySourceTypes> }
+  ): void {
+    state.dexQuoteData = {
+      ...state.dexQuoteData,
+      [dexId]: {
+        payload,
+        paths,
+        pairLiquiditySources: liquiditySources,
+      },
+    };
+  },
+  selectDexId(state, dexId: number) {
+    state.selectedDexId = dexId;
   },
 });
 

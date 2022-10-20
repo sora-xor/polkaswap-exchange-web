@@ -625,6 +625,12 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 .s-button--hash-copy,
 .s-dropdown--hash-menu {
   right: $inner-spacing-medium;
+  &,
+  .el-tooltip {
+    &:focus {
+      outline: auto;
+    }
+  }
 }
 .s-dropdown--hash-menu {
   display: block;

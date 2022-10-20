@@ -26,6 +26,7 @@
               with-left-shift
               value-class="input-value--primary"
               :value="formattedBalance"
+              :has-fiat-value="!!tokenPrice"
               :fiat-value="formattedFiatBalance"
             />
           </template>
@@ -48,12 +49,13 @@
         class="el-button--select-token"
         :icon="selectTokenIcon"
         :token="token"
+        :tabindex="tokenTabIndex"
         @click.stop="handleSelectToken"
       />
     </div>
     <div slot="bottom" class="input-line input-line--footer">
       <div class="s-flex">
-        <formatted-amount v-if="tokenPrice" is-fiat-value :value="fiatAmount" />
+        <formatted-amount v-if="!!tokenPrice" is-fiat-value :value="fiatAmount" />
         <slot name="fiat-amount-append" />
       </div>
 
@@ -114,11 +116,15 @@ export default class TokenInput extends Mixins(
   }
 
   get max(): string {
-    return this.getMax(this.address);
+    return this.MaxInputNumber;
   }
 
   get selectTokenIcon(): Nullable<string> {
     return this.isSelectAvailable ? 'chevron-down-rounded-16' : undefined;
+  }
+
+  get tokenTabIndex(): number {
+    return this.isSelectAvailable ? 0 : -1;
   }
 
   get fpBalance(): FPNumber {

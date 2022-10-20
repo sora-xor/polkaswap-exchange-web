@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "Odstránené {symbol} a {symbol2} {amount} LP tokeny",
             "DemeterFarmingStakeToken": "Pridané {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Odstránené {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Úspešne nárokované {amount} {symbol}"
+            "DemeterFarmingGetRewards": "Úspešne nárokované {amount} {symbol}",
+            "EthBridgeIncoming": "Prevedené {amount} {symbol} z @:ethereumText do @:soraText",
+            "EthBridgeOutgoing": "Prevedené {amount} {symbol} z @:soraText do @:ethereumText"
         },
         "error": {
             "Transfer": "Nepodarilo sa odoslať {amount} {symbol} na {address}",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "Nepodarilo sa odstrániť tokeny LP {amount} {symbol} a {symbol2}",
             "DemeterFarmingStakeToken": "Nepodarilo sa pridať {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Nepodarilo sa odstrániť {amount} {symbol}",
-            "DemeterFarmingGetRewards": "Nepodarilo sa nárokovať {symbol}"
+            "DemeterFarmingGetRewards": "Nepodarilo sa nárokovať {symbol}",
+            "EthBridgeIncoming": "Nepodarilo sa preniesť {amount} {symbol} z @:ethereumText do @:soraText",
+            "EthBridgeOutgoing": "Nepodarilo sa preniesť {amount} {symbol} z @:soraText do @:ethereumText"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -77,23 +81,22 @@
         "DemeterFarmingWithdrawLiquidity": "Zrušte likviditu",
         "DemeterFarmingStakeToken": "Token podielu",
         "DemeterFarmingUnstakeToken": "Zrušiť vklad",
-        "DemeterFarmingGetRewards": "Nárokovať odmeny"
+        "DemeterFarmingGetRewards": "Nárokovať odmeny",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie Polkadot{.js} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Zdá sa, že vo vašom rozšírení Polkadot{.js} nie sú žiadne účty. Pridajte účet a skúste to znova.",
+        "noAccounts": "Zdá sa, že vo vašom rozšírení {extension} nie sú žiadne účty. Pridajte účet a skúste to znova.",
         "noAccount": "Chyba účtu Polkadot{.js}. Skontrolujte váš účet v rozšírení Polkadot{.js}",
         "noExtension": "Nenašlo sa žiadne {extension} . Nainštalujte si ho a znova načítajte túto stránku",
         "noSigner": "Prístup zamietnutý. Prejdite do nastavení {extension} a otvorte položku Spravovať prístup k webovým stránkam."
     },
     "connection": {
         "title": "Sieťový účet SORA",
-        "text": "Pripojte svoje účty SORA alebo si pomocou rozšírenia prehliadača polkadot{.js} vytvorte nové. Toto rozšírenie vám umožňuje bezpečne podpisovať transakcie a spravovať aktíva v sieti SORA.",
-        "install": "Rozšírenie polkadot{.js} nebolo nájdené. Nainštalujte ho a <a href=\"#\" onclick=\"window.location.reload(true);\" class=\"wallet-connection-link\">znovu načítajte<\/a> stránku.<br\/><span class=\"wallet-connection-link\">https:\/\/polkadot.js.org\/extension\/<\/span>",
-        "noPermissions": "Omylom ste zamietli žiadosť o povolenie?<\/br>V súčasnosti nie je možné v rozšírení polkadot{.js} správovať povolenia. Ako alternatívne riešenie môžete reštartovať prehliadač, znovu navštíviť túto stránku a pokračovať v autorizácii.",
-        "noAccounts": "Vo vašom rozšírení prehliadača polkadot{.js} nebol nájdený žiadny účet. Pridajte účet a skúste to znova.",
+        "text": "Pripojte svoje účty SORA alebo si pomocou rozšírenia prehliadača Polkadot{.js} vytvorte nové. Toto rozšírenie vám umožňuje bezpečne podpisovať transakcie a spravovať aktíva v sieti SORA.",
+        "noAccounts": "Vo vašom rozšírení prehliadača {extension} nebol nájdený žiadny účet. Pridajte účet a skúste to znova.",
         "selectAccount": "Vyberte účet, s ktorým chcete pracovať",
-        "loadingTitle": "Čaká sa na povolenie prístupu k rozšíreniu polkadot{.js}.",
         "action": {
             "install": "Inštalovať rozšírenie",
             "learnMore": "Dozvedieť sa viac",
@@ -724,7 +727,7 @@
         "locked": "V stávke je {percent} vášho fondu"
     },
     "dexSettings": {
-        "title": "Nastavenia transakcie",
+        "title": "Nastavenie",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": " - možnosť výberu medzi primárnym trhom (TBC), sekundárnym trhom (XYK) alebo kombinovaným inteligentným algoritmom pre zaručenie najlepšej ceny pre každú transakciu."
@@ -747,7 +750,9 @@
             "SMART": "<span class=\"algorithm\">SMART<\/span> presmerovanie likvidity zaisťuje najlepšiu cenu pre akúkoľvek transakciu, a to kombináciou najlepších cenových možnosti zo všetkých dostupných trhov. Ak je k dispozícii a pokiaľ je cena aktív cenovo dostupnejšia ako z iných zdrojov, pre likviditu sa použije krivka závislosti ceny tokenu na jeho ponuke (<span class=\"algorithm\">TBC<\/span>). V opačnom prípade sa použije <span class=\"algorithm\">XYK<\/span> fond.",
             "TBC": "<span class=\"algorithm\">TBC<\/span> - nákup iba z krivky závislosti ceny tokenu na jeho ponuke (Token Bonding Curve) (primárny trh). Existuje možnosť nepriaznivého vývoja ceny v porovnaní s fondom <span class=\"algorithm\">XYK<\/span> (sekundárny trh), ale hodnota získaná z priznaných odmien sa časom môže ukázať ako oveľa priaznivejšia.",
             "XYK": "<span class=\"algorithm\">XYK<\/span> – nákup iba z fondu XYK (sekundárny trh). Tradičný výmenný fond XYK."
-        }
+        },
+        "charts": "Grafy",
+        "сhartsDescription": "Pozrite si grafy cien tokenov"
     },
     "resultDialog": {
         "title": "Transakcia bola odoslaná",
@@ -1044,11 +1049,11 @@
         },
         "xstPool": {
             "PoolAlreadyInitializedForPair": "Bazénový pár už existuje",
-            "SlippageLimitExceeded": ""
+            "SlippageLimitExceeded": "Tolerancia sklzu nespĺňa správne limity"
         },
         "referrals": {
             "AlreadyHasReferrer": "Účet už má sprostredkovateľa",
-            "ReferrerInsufficientBalance": ""
+            "ReferrerInsufficientBalance": "Sprostredkovateľ nemá dostatok rezervovaného zostatku"
         },
         "vestedRewards": {
             "RewardsSupplyShortage": "Program odmien sa už skončil",
@@ -1078,5 +1083,69 @@
     },
     "assetDeposit": "Zostatok aktív bol uložený",
     "noDataText": "Žiadne dáta",
-    "ofText": "{first} z {second}"
+    "ofText": "{first} z {second}",
+    "filter": {
+        "all": "Všetky",
+        "token": "Tokeny",
+        "nft": "NFT",
+        "verifiedOnly": "Zobraziť iba overené aktíva",
+        "zeroBalance": "Skryť 0 bilančných aktív",
+        "showAssets": "Zobraziť aktíva",
+        "show": "Šou"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Vitajte v Polkaswape!",
+            "headline": "Poďme nastaviť váš účet",
+            "text": "Vytvorte si účet SORA Network alebo sa prihláste do starého účtu pomocou mnemotechnickej frázy alebo importu .json. To vám umožňuje bezpečne podpisovať transakcie a spravovať aktíva v SORA Network.",
+            "createAccount": "Vytvoriť účet",
+            "importAccount": "Importovať účet"
+        },
+        "heading": {
+            "seedPhraseTitle": "Semená fráza",
+            "confirmSeedTitle": "Potvrďte počiatočnú frázu",
+            "accountDetailsTitle": "Podrobnosti o účte",
+            "importTitle": "Importovať účet"
+        },
+        "button": {
+            "next": "Ďalší krok",
+            "skip": "Preskočiť",
+            "createAccount": "Vytvoriť účet",
+            "importAccount": "Importovať účet"
+        },
+        "accountName": {
+            "placeholder": "Názov peňaženky",
+            "desc": "Toto je verejný názov vašej peňaženky, ktorý bude viditeľný pre všetkých"
+        },
+        "password": {
+            "placeholder": "heslo",
+            "desc": "Pre správnu ochranu sa uistite, že používate silné heslo"
+        },
+        "confirmPassword": {
+            "placeholder": "Potvrďte heslo"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemotechnická fráza"
+        },
+        "seedAdviceText": "Toto je tajný základ vášho účtu. Uistite sa, že ste ho uložili na iný ako digitálny nosič, napríklad na papier",
+        "confirmSeedText": "Heslo potvrďte výberom slov v správnom poradí",
+        "errorMnemonicText": "Nesprávne poradie počiatočných fráz",
+        "exportOptionText": "Exportujte súbor účtu .json",
+        "exportJsonText": "Vždy budete mať prístup k svojmu účtu importovaním tohto súboru .json. Nezdieľajte to s nikým!",
+        "addAccount": "Pridajte účet",
+        "dialog": {
+            "confirmTitle": "Potvrďte heslom",
+            "confirmButton": "Podpísať transakciu",
+            "savePasswordText": "Zapamätať si moje heslo na ďalších 15 minút",
+            "extendPasswordText": "Predĺžte obdobie bez hesla o 15 minút"
+        },
+        "errorMessages": {
+            "password": "Heslo sa nezhoduje",
+            "passwords": "Heslá sa nezhodovali",
+            "mnemonic": "Zadaný nesprávny mnemotechnický znak bip39",
+            "mnemonicLength": "Mnemotechnika by mala obsahovať {číslo} slov",
+            "jsonFields": "Súbor JSON neobsahuje povinné polia"
+        }
+    },
+    "hashiBridgeText": "Most HASHI"
 }
