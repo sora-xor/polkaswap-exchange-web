@@ -15,29 +15,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-// import DialogMixin from '@/components/mixins/DialogMixin';
-// import DialogBase from '@/components/DialogBase.vue';
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
-import { getter } from '@/store/decorators';
 @Component({
   components: {
     DialogBase: components.DialogBase,
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    FromList: lazyComponent('Templates/AddRecipient/FromList'),
-    AddNewRecipient: lazyComponent('Templates/AddRecipient/AddNewRecipient'),
-    BalanceCheck: lazyComponent('Templates/RouteAssets/BalanceCheck'),
-    SelectRecievers: lazyComponent('Templates/RouteAssets/SelectRecievers'),
   },
 })
 export default class RouteAssetsDialog extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
-  //   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  //   @Prop() readonly template!: Template;
-
-  file = null;
-
   get fileElement() {
     return (this as any).$refs.file;
   }
@@ -69,5 +54,6 @@ export default class RouteAssetsDialog extends Mixins(mixins.TransactionMixin, m
 .browse-button {
   width: 100%;
   margin-bottom: 16px;
+  margin-top: 24px;
 }
 </style>

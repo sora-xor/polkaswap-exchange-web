@@ -5,7 +5,7 @@
     <s-divider />
     <s-button
       type="primary"
-      class="s-typography-button--big route-assets-button"
+      class="s-typography-button--big route-assets-upload-csv__button"
       @click.stop="
         () => {
           uploadCSVDialog = true;
@@ -14,7 +14,7 @@
     >
       {{ t('adar.routeAssets.uploadCSV.nextButton') }}
     </s-button>
-    <s-button type="secondary" class="s-typography-button--big route-assets-button" @click.stop="() => {}">
+    <s-button type="secondary" class="s-typography-button--big route-assets-upload-csv__button" @click.stop="() => {}">
       {{ t('adar.routeAssets.uploadCSV.downloadButton') }}
     </s-button>
     <upload-csv-dialog :visible.sync="uploadCSVDialog" @onFileUploaded="onFileUploaded"></upload-csv-dialog>
@@ -22,11 +22,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { getter } from '@/store/decorators';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
@@ -34,9 +33,6 @@ import { getter } from '@/store/decorators';
   },
 })
 export default class UploadCSV extends Mixins(TranslationMixin) {
-  //   @getter.templates.isLoading templatesAreLoading!: boolean;
-  //   @Prop() templates!: Array<Template>;
-
   uploadCSVDialog = false;
 
   onFileUploaded(file: any) {
@@ -61,10 +57,10 @@ export default class UploadCSV extends Mixins(TranslationMixin) {
   }
 
   > *:not(:last-child) {
-    margin-bottom: 24px;
+    margin-bottom: $inner-spacing-big;
   }
 
-  > button {
+  &__button {
     width: 100%;
   }
 }

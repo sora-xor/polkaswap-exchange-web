@@ -1017,11 +1017,46 @@
                 }
             },
             "routingTemplate": {
+                "submitButton": "Route Assets",
+                "downloadOverviewButton": "download transaction overview",
+                "backButton": "Back to Upload",
                 "summary": {
+                    "title": "Routing Template Summary",
                     "asset": "Input Asset",
                     "usdCount": "Total usd to be routed",
+                    "usdRouted": "Total usd routed",
+                    "usdAuthorized": "Total usd authorized",
                     "estimatedTokes": "Total estimated {token} required (+5%)",
-                    "available": "Total {token} available"
+                    "available": "Total {token} available",
+                    "tokenRouted": "Total {token} routed",
+                    "add": "add",
+                    "detailsToggle": "Summary details",
+                    "table": {
+                        "asset": "output Asset",
+                        "usd": "usd equivalent",
+                        "usdRouted": "total USD routed",
+                        "total": "total estimated",
+                        "totalRouted": "Total {token} routed",
+                        "required": "estimated {token} required",
+                        "transactions": "total transaction success"
+                    }
+                },
+                "overview": {
+                    "title":"Transaction Overview",
+                    "name": "name",
+                    "wallet":"WALLET",
+                    "usd":"USD Equivalent",
+                    "asset":"Asset",
+                    "amount":"estimated Amount ",
+                    "status":"Status"
+                },
+                "authorizeDialog": {
+                    "title":"Authorize Routing Template",
+                    "asset":"Input Asset",
+                    "total":"Total",
+                    "termsAndConditions": "Terms and Conditions",
+                    "agreement": "By clicking Submit Routing i accept the ADAR",
+                    "submit": "route assets"
                 }
             }
         }

@@ -1,33 +1,62 @@
 <template>
   <div class="route-assets">
-    <router-view :csv="csvFile" @onUploadCSV="onUploadCSV"></router-view>
+    <component :is="component" @onUploadCSV="onUploadCSV" @toUploadPage="toUploadPage"></component>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Components, PageNames } from '@/consts';
+import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, action } from '@/store/decorators';
+import { getter, action, mutation } from '@/store/decorators';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Subscription } from 'rxjs';
+import { PrimaryMarketsEnabledAssets } from '@sora-substrate/liquidity-proxy';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    RoutingTemplate: lazyComponent(Components.RoutingTemplate),
+    UploadCsv: lazyComponent(Components.UploadCSV),
   },
 })
 export default class RouteAssets extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  //   @getter.templates.templates templates!: Array<Template>;
-  //   @getter.templates.isLoading templatesAreLoading!: boolean;
-  //   @action.templates.fetchTemplates private fetchTemplates!: AsyncVoidFn;
-  //   @action.templates.updateTemplate private updateTemplate!: (model: Template) => Promise<void>;
-  //   @action.templates.deleteTemplate private deleteTemplate!: (id: string) => AsyncVoidFn;
+  @action.routeAssets.updateRecipients private updateRecipients!: (file?: File) => void;
+  @getter.routeAssets.isDataExisting private isDataExisting!: boolean;
+  @mutation.swap.setPrimaryMarketsEnabledAssets private setEnabledAssets!: (args: PrimaryMarketsEnabledAssets) => void;
 
-  csvFile = null;
+  enabledAssetsSubscription: Nullable<Subscription> = null;
+
+  private subscribeOnEnabledAssets(): void {
+    this.cleanEnabledAssetsSubscription();
+    this.enabledAssetsSubscription = api.swap.subscribeOnPrimaryMarketsEnabledAssets().subscribe(this.setEnabledAssets);
+  }
+
+  private cleanEnabledAssetsSubscription(): void {
+    this.enabledAssetsSubscription?.unsubscribe();
+    this.enabledAssetsSubscription = null;
+  }
+
+  created() {
+    this.withApi(async () => {
+      this.subscribeOnEnabledAssets();
+    });
+  }
+
+  beforeDestroy(): void {
+    this.cleanEnabledAssetsSubscription();
+  }
+
+  toUploadPage() {
+    this.updateRecipients();
+  }
 
   onUploadCSV(file) {
-    this.csvFile = file;
-    this.$router.push({ path: '/route-assets/routing-template' });
+    this.updateRecipients(file);
+  }
+
+  get component() {
+    return this.isDataExisting ? 'RoutingTemplate' : 'UploadCsv';
   }
 }
 </script>

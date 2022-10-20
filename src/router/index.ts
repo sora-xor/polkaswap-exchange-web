@@ -190,19 +190,6 @@ const routes: Array<RouteConfig> = [
     path: '/route-assets',
     name: PageNames.RouteAssets,
     component: lazyView(PageNames.RouteAssets),
-    redirect: { path: '/route-assets/upload-csv' },
-    children: [
-      {
-        path: 'upload-csv',
-        name: PageNames.UploadCSV,
-        component: lazyView(PageNames.UploadCSV),
-      },
-      {
-        path: 'routing-template',
-        name: PageNames.RoutingTemplate,
-        component: lazyView(PageNames.RoutingTemplate),
-      },
-    ],
   },
   {
     path: '*',

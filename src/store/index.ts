@@ -18,6 +18,7 @@ import addLiquidity from './addLiquidity';
 import removeLiquidity from './removeLiquidity';
 import rewards from './rewards';
 import demeterFarming from './demeterFarming';
+import routeAssets from './routeAssets';
 
 Vue.use(Vuex);
 
@@ -37,6 +38,7 @@ const modules = {
   removeLiquidity,
   rewards,
   demeterFarming,
+  routeAssets,
 };
 
 const { store, rootGetterContext, rootActionContext } = createDirectStore({

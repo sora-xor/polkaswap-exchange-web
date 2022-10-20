@@ -207,6 +207,10 @@ export enum Components {
   PriceChange = 'PriceChange',
   UploadCSVDialog = 'RouteAssets/UploadCSVDialog',
   TemplateSummary = 'RouteAssets/RoutingTemplate/TemplateSummary',
+  TransactionOverview = 'RouteAssets/RoutingTemplate/TransactionOverview',
+  AuthorizeRoutingTemplateDialog = 'RouteAssets/AuthorizeRoutingTemplateDialog',
+  UploadCSV = 'RouteAssets/UploadCSV',
+  RoutingTemplate = 'RouteAssets/RoutingTemplate',
 }
 
 export enum RewardsTabsItems {
