@@ -132,6 +132,7 @@ export enum PageNames {
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
   StakingContainer = 'StakingContainer',
+  SoraCard = 'SoraCard',
 }
 
 export enum Components {
@@ -146,6 +147,13 @@ export enum Components {
   BrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
   BrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
   PairTokenLogo = 'PairTokenLogo',
+  SoraCard = 'SoraCard',
+  SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
+  SoraCardKYC = 'SoraCard/SoraCardKYC',
+  TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
+  RoadMap = 'SoraCard/steps/RoadMap',
+  SmsCode = 'SoraCard/steps/SmsCode',
+  Email = 'SoraCard/steps/Email',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',
   StatusActionBadge = 'Swap/StatusActionBadge',
@@ -249,6 +257,10 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
     icon: 'various-bone-24',
     title: PageNames.Tokens,
+  },
+  {
+    icon: 'various-bone-24',
+    title: PageNames.SoraCard,
   },
   {
     icon: 'file-file-text-24',
