@@ -13,6 +13,7 @@ const mutations = defineMutations<RouteAssetsState>()({
   clearData(state) {
     state.file = null;
     state.recipients = [];
+    state.processed = false;
   },
   setSubscriptions(state, subscriptions = []): void {
     state.subscriptions = subscriptions;

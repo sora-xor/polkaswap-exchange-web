@@ -94,6 +94,7 @@
           <span><s-icon class="status__icon" :class="`status__icon_successed`" :name="'basic-check-marks-24'" /></span>
         </div>
       </div>
+      <s-divider v-if="processed" />
     </div>
     <div class="routing-template-summary__summary-details">
       <div @click="toggleShowTable">
@@ -187,7 +188,7 @@ import { lazyComponent, goTo } from '@/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import { state } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
 import { FPNumber } from '@sora-substrate/util';
 import { copyToClipboard, formatAssetBalance } from '@/utils';
 @Component({
@@ -199,8 +200,8 @@ import { copyToClipboard, formatAssetBalance } from '@/utils';
 export default class TemplateSummary extends Mixins(TranslationMixin) {
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
   @state.wallet.account.fiatPriceAndApyObject private fiatPriceAndApyObject!: any;
+  @getter.routeAssets.isProcessed processed!: boolean;
 
-  @Prop() readonly processed!: boolean;
   @Prop({ default: () => XOR }) readonly asset!: Asset;
   @Prop() summaryData!: any;
 
@@ -347,8 +348,8 @@ export default class TemplateSummary extends Mixins(TranslationMixin) {
   }
 
   &__summary-details {
-    margin-top: 20px;
     display: inline-flex;
+    font-weight: 300;
     > div {
       @include flex-start;
       gap: 4px;

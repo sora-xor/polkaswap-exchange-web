@@ -6,13 +6,12 @@
         {{ t('adar.routeAssets.routingTemplate.backButton') }}
       </s-button>
       <template-summary
-        :processed="processed"
         :asset="asset"
         :summaryData="summaryData"
         @onRouteAssetsClick="onRouteAssets"
         @onTokenSelectClick="onTokenSelect"
       ></template-summary>
-      <transaction-overview :processed="processed" :recipients="recipients"></transaction-overview>
+      <transaction-overview></transaction-overview>
       <authorize-dialog
         :asset="asset"
         :total-assets="totalAssetRequiredString"

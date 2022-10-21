@@ -108,17 +108,6 @@ const actions = defineActions({
         const isExchangeB = false;
 
         const value = recipient.amount;
-        /* const { amount, fee, rewards, amountWithoutImpact } = api.swap.getResult( */
-        // const result = api.swap.getResult(
-        //   tokenFrom as Asset,
-        //   tokenTo as Asset,
-        //   value.toString(),
-        //   true,
-        //   // [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
-        //   liquiditySources,
-        //   paths,
-        //   payload
-        // );
         // return () => api.swap.executeSwapAndSend(to, tokenFrom, tokenTo, fromValue, toValue, slippageTolerance, isExchangeB);
         return api.apiRx.tx.assets.transfer(tokenFrom, to, new FPNumber(fromValue, tokenFrom.decimals).toCodecString());
       } else {
@@ -126,8 +115,6 @@ const actions = defineActions({
         return api.apiRx.tx.assets.transfer(tokenFrom, to, new FPNumber(fromValue, tokenFrom.decimals).toCodecString());
       }
     });
-    // this.processed = true;
-    // api.apiRx.tx.utility.batchAll(transactions);
     // commit.setProcessed(true);
     await api.submitExtrinsic(api.apiRx.tx.utility.batchAll(transactions) as any, api.account.pair, {
       symbol: inputAsset.symbol,

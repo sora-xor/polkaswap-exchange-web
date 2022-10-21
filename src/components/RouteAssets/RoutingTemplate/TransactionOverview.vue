@@ -2,7 +2,10 @@
   <div class="container routing-template-transactions">
     <div class="routing-template-transactions__header">
       <div>
-        <generic-page-header :title="t('adar.routeAssets.routingTemplate.overview.title')" class="page-header__title" />
+        <generic-page-header
+          :title="`${t('adar.routeAssets.routingTemplate.overview.title')} (${recipients.length})`"
+          class="page-header__title"
+        />
       </div>
     </div>
     <div>
@@ -136,6 +139,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import { copyToClipboard } from '@/utils';
+import { getter } from '@/store/decorators';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
@@ -143,8 +147,8 @@ import { copyToClipboard } from '@/utils';
   },
 })
 export default class TransactionOverview extends Mixins(TranslationMixin, mixins.PaginationSearchMixin) {
-  @Prop() readonly processed!: boolean;
-  @Prop() recipients!: Array<any>;
+  @getter.routeAssets.isProcessed processed!: boolean;
+  @getter.routeAssets.recipients recipients!: Array<any>;
 
   showTable = false;
   showFullWalletAddress = false;
@@ -191,11 +195,12 @@ export default class TransactionOverview extends Mixins(TranslationMixin, mixins
 
   getStatus(recipient) {
     if (!this.processed) return this.addressIsValid(recipient.wallet) ? 'Address valid' : 'Address invalid';
-    else return 'pending';
+    else return this.addressIsValid(recipient.wallet) ? 'pending' : 'Address invalid';
   }
 
   getStatusClass(recipient) {
     if (!this.processed) return this.addressIsValid(recipient.wallet) ? 'valid' : 'invalid';
+    if (this.processed && !this.addressIsValid(recipient.wallet)) return 'invalid';
   }
 
   get tableData() {
@@ -260,7 +265,6 @@ export default class TransactionOverview extends Mixins(TranslationMixin, mixins
       border: 2px solid var(--s-color-status-warning);
       color: var(--s-color-status-warning);
       white-space: nowrap;
-      &_valid,
       &_successed {
         border: 2px solid var(--s-color-status-success);
         color: var(--s-color-status-success);
