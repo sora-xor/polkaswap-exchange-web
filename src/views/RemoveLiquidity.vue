@@ -23,6 +23,7 @@
         <div slot="right" class="el-buttons el-buttons--between">
           <span class="percent">%</span>
           <s-button
+            v-if="isMaxButtonAvailable"
             class="el-button--max s-typography-button--small"
             type="primary"
             alternative
@@ -314,6 +315,10 @@ export default class RemoveLiquidity extends Mixins(
     return this.isXorSufficientForNextTx({
       type: Operation.RemoveLiquidity,
     });
+  }
+
+  get isMaxButtonAvailable(): boolean {
+    return this.removePart !== 100;
   }
 
   handleRemovePartChange(value: string): void {
