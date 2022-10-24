@@ -33,6 +33,7 @@
           <div slot="right" class="el-buttons el-buttons--between">
             <span class="percent">%</span>
             <s-button
+              v-if="isMaxButtonAvailable"
               class="el-button--max s-typography-button--small"
               type="primary"
               alternative
