@@ -311,7 +311,7 @@
     "connectWalletText": "Connetti account",
     "changeAccountText": "Cambia account",
     "connectedText": "Collegato",
-    "connectWalletTextTooltip": "Connettiti a {Sora} Network con {polkadotJs}",
+    "connectWalletTextTooltip": "Connettiti a {Sora} Network con {PolkadotJs}",
     "selectNodeText": "Seleziona nodo",
     "bridgeText": "Bridge",
     "disclaimerTitle": "Disclaimer:",
@@ -978,7 +978,7 @@
     "mobilePopup": {
         "header": "Scarica {Sora} Wallet con {polkaswapHighlight}",
         "sideMenu": "Ottieni {Sora} Wallet",
-        "info": "Scambia token da reti diverse: {Sora}, {Ethereum}, Polkadot, {Kusama}. Fornisci un pool di liquidità e guadagna % dalle commissioni di cambio."
+        "info": "Scambia token da reti diverse: {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Fornisci un pool di liquidità e guadagna % dalle commissioni di cambio."
     },
     "releaseNotesText": "Note di rilascio",
     "copiedText": "Copiato!",

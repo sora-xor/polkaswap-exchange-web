@@ -378,7 +378,7 @@ export default {
     energy: '@:evm.EWC',
     copy: 'Copy network address',
     soraAddress: '{Sora} address',
-    ethereumAddress: '{ethereum} address',
+    ethereumAddress: '{Ethereum} address',
   },
   selectRegisteredAsset: {
     title: 'Select a token',

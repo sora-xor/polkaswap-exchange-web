@@ -457,7 +457,7 @@
     },
     "about": {
         "title": "迈向可互操作未来的 DEX。",
-        "description": "资产的跨链交换，新资产的简单创建和上市，以及最简单的兑换。{polkadot}的可互操作性未来就在这里，并且我们走在最前沿！",
+        "description": "资产的跨链交换，新资产的简单创建和上市，以及最简单的兑换。{Polkadot}的可互操作性未来就在这里，并且我们走在最前沿！",
         "trading": {
             "title": "更快的交易",
             "first": "{Polkaswap} 是一种非托管的跨链 AMM DEX 协议，用于互换基于 {Polkadot} 和 {Kusama} 中继链、{Polkadot} 和 {Kusama} 平行链以及通过转接桥直接连接区块链的代币。",
@@ -491,7 +491,7 @@
                 "desc": "使用 {Hashi} 桥接协议将更多链连接到 {Sora} 和 {Polkaswap}，从而发展去中心化的世界经济。"
             }
         },
-        "network": "{appName}建立在SORA网络上，专注于互操作性，将加密货币生态系统的其他部分连接到{polkadot}。"
+        "network": "{appName}建立在SORA网络上，专注于互操作性，将加密货币生态系统的其他部分连接到{Polkadot}。"
     },
     "exchange": {
         "Swap": "兑换",
@@ -617,7 +617,7 @@
             "done": "完成",
             "waitingForConfirmation": "等待确认..."
         },
-        "viewInEtherscan": "在{etherscan}中查看",
+        "viewInEtherscan": "在{Etherscan}中查看",
         "networkTitle": "{network}交易",
         "transactionHash": "交易哈希值",
         "networkInfo": {
