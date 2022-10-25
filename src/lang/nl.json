@@ -50,8 +50,8 @@
             "DemeterFarmingStakeToken": "{amount} {symbol} toegevoegd",
             "DemeterFarmingUnstakeToken": "{amount} {symbol} verwijderd",
             "DemeterFarmingGetRewards": "{amount} {symbol} succesvol geclaimd",
-            "EthBridgeIncoming": "{amount} {symbol} overgedragen van @:ethereumText naar @:soraText",
-            "EthBridgeOutgoing": "{amount} {symbol} overgedragen van @:soraText naar @:ethereumText"
+            "EthBridgeIncoming": "{amount} {symbol} overgedragen van {Ethereum} naar {Sora}",
+            "EthBridgeOutgoing": "{amount} {symbol} overgedragen van {Sora} naar {Ethereum}"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -70,8 +70,8 @@
             "DemeterFarmingStakeToken": "Kan {amount} {symbol} niet toevoegen",
             "DemeterFarmingUnstakeToken": "Kan {amount} {symbol} niet verwijderen",
             "DemeterFarmingGetRewards": "Kan {symbol} niet claimen",
-            "EthBridgeIncoming": "Kan {amount} {symbol} niet overboeken van @:ethereumText naar @:soraText",
-            "EthBridgeOutgoing": "Kan {amount} {symbol} niet overboeken van @:soraText naar @:ethereumText"
+            "EthBridgeIncoming": "Kan {amount} {symbol} niet overboeken van {Ethereum} naar {Sora}",
+            "EthBridgeOutgoing": "Kan {amount} {symbol} niet overboeken van {Sora} naar {Ethereum}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -86,15 +86,15 @@
         "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Er is geen Polkadot{.js} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
+        "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Er lijken geen accounts te zijn in uw {extension} extensie. Voeg een account toe en probeer het opnieuw.",
-        "noAccount": "Polkadot.js-accountfout. Controleer uw account in de Polkadot.js-extensie",
+        "noAccount": "{PolkadotJs}-accountfout. Controleer uw account in de {PolkadotJs}-extensie",
         "noExtension": "Er is geen {extension} -extensie gevonden. Installeer het en laad deze pagina opnieuw",
         "noSigner": "Toegang geweigerd. Ga naar {extension} extensie-instellingen en open \"Websitetoegang beheren\" om toe te staan."
     },
     "connection": {
         "title": "SORA Netwerk account",
-        "text": "Verbind uw SORA Netwerk accounts of maak nieuwe aan met Polkadot{.js} browser extensie. Met deze extensie kunt u veilig transacties ondertekenen en assets beheren in SORA Network.",
+        "text": "Verbind uw {Sora} Netwerk accounts of maak nieuwe aan met {PolkadotJs} browser extensie. Met deze extensie kunt u veilig transacties ondertekenen en assets beheren in {Sora} Network.",
         "noAccounts": "Geen account gevonden in uw {extension} browser extensie. Voeg een account toe en probeer het opnieuw.",
         "selectAccount": "Selecteer account om mee te werken",
         "action": {
@@ -130,8 +130,8 @@
         "confirm": "@:confirmText",
         "errorAddress": "Ongeldig adres. Controleer het en probeer het opnieuw.",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "Verzend tokens tussen accounts op het  SORA-netwerk",
-        "addressWarning": "Tokens worden naar het onderstaande SORA-adres gestuurd. Zorg ervoor dat de ontvanger toegang heeft tot de SORA-chain om de tokens te gebruiken:",
+        "tooltip": "Verzend tokens tussen accounts op het  {Sora}-netwerk",
+        "addressWarning": "Tokens worden naar het onderstaande {Sora}-adres gestuurd. Zorg ervoor dat de ontvanger toegang heeft tot de {Sora}-chain om de tokens te gebruiken:",
         "addressError": "U kunt geen tokens verzenden naar hetzelfde account waarmee u momenteel bent verbonden."
     },
     "account": {
@@ -202,7 +202,7 @@
     },
     "createToken": {
         "title": "@:createTokenText",
-        "desc": "Creëer en implementeer aangepaste asset op SORA",
+        "desc": "Creëer en implementeer aangepaste asset op {Sora}",
         "action": "@:createTokenText",
         "enterSymbol": "Tokensymbool invoeren",
         "enterName": "Tokennaam invoeren",
@@ -305,25 +305,23 @@
         "referrer": "Verwijzer",
         "referral": "Verwijzing"
     },
-    "appName": "Polkaswap",
-    "soraText": "SORA",
-    "ethereumText": "Ethereum",
-    "changeNetworkText": "Netwerk wijzigen in Metamask",
+    "appName": "{Polkaswap}",
+    "changeNetworkText": "Netwerk wijzigen in {Metamask}",
     "transactionText": "transactie | transacties",
     "connectWalletText": "Account aansluiten",
     "changeAccountText": "Account wijzigen",
     "connectedText": "Verbonden",
-    "connectWalletTextTooltip": "Maak verbinding met @:soraText Network met polkadot{.js}",
+    "connectWalletTextTooltip": "Maak verbinding met {Sora} Network met {PolkadotJs}",
     "selectNodeText": "Selecteer node",
     "bridgeText": "Bridge",
-    "disclaimer": "<span class=\"app-disclaimer__title\"> Disclaimer <\/span>: Deze website wordt onderhouden door de @:(soraText)-gemeenschap. Voordat u doorgaat met het gebruiken van deze website, dient u de @:polkaswapFaqLink en documentatie te lezen, die een gedetailleerde uitleg bevat over hoe Polkaswap werkt, evenals de @:memorandumLink en @:(privacyLink). Deze documenten zijn cruciaal voor een veilige en positieve gebruikerservaring. Door Polkaswap te gebruiken, erkent u deze documenten te hebben gelezen en begrepen. U erkent ook het volgende: 1) uw enige verantwoordelijkheid voor de naleving van alle wetten die van toepassing kunnen zijn op uw specifieke gebruik van Polkaswap in uw rechtsgebied; 2) uw begrip dat de huidige versie van Polkaswap een alfaversie is: deze is niet volledig getest en sommige functies werken mogelijk niet zoals bedoeld; en 3) uw begrip en vrijwillige aanvaarding van de risico's die verbonden zijn aan het gebruik van Polkaswap, inclusief, maar niet beperkt tot, het risico van verlies van tokens. Ga alsjeblieft niet verder zonder de @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"Polkaswap FAQ\">Polkaswap FAQ<\/a>",
+    "disclaimer": "<span class=\"app-disclaimer__title\"> Disclaimer <\/span>: Deze website wordt onderhouden door de {Sora}-gemeenschap. Voordat u doorgaat met het gebruiken van deze website, dient u de @:polkaswapFaqLink en documentatie te lezen, die een gedetailleerde uitleg bevat over hoe {Polkaswap} werkt, evenals de @:memorandumLink en @:(privacyLink). Deze documenten zijn cruciaal voor een veilige en positieve gebruikerservaring. Door {Polkaswap} te gebruiken, erkent u deze documenten te hebben gelezen en begrepen. U erkent ook het volgende: 1) uw enige verantwoordelijkheid voor de naleving van alle wetten die van toepassing kunnen zijn op uw specifieke gebruik van {Polkaswap} in uw rechtsgebied; 2) uw begrip dat de huidige versie van {Polkaswap} een alfaversie is: deze is niet volledig getest en sommige functies werken mogelijk niet zoals bedoeld; en 3) uw begrip en vrijwillige aanvaarding van de risico's die verbonden zijn aan het gebruik van {Polkaswap}, inclusief, maar niet beperkt tot, het risico van verlies van tokens. Ga alsjeblieft niet verder zonder de @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!",
+    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap} FAQ\">{Polkaswap} FAQ<\/a>",
     "poweredBy": "Powered by",
     "confirmTransactionText": "Bevestig transactie in {richting}",
     "retryText": "Probeer opnieuw",
     "networkFeeText": "Netwerkvergoeding",
-    "networkFeeTooltipText": "Netwerkvergoeding wordt gebruikt om de groei en stabiele prestaties van het @:(soraText)-systeem te garanderen.",
-    "ethNetworkFeeTooltipText": "Houd er rekening mee dat de Ethereum-netwerkkosten die worden weergegeven op Polkaswap slechts ruwe schattingen zijn, u kunt het juiste bedrag in uw verbonden Ethereum-wallet zien voordat u de transactie bevestigt.",
+    "networkFeeTooltipText": "Netwerkvergoeding wordt gebruikt om de groei en stabiele prestaties van het {Sora}-systeem te garanderen.",
+    "ethNetworkFeeTooltipText": "Houd er rekening mee dat de {Ethereum}-netwerkkosten die worden weergegeven op {Polkaswap} slechts ruwe schattingen zijn, u kunt het juiste bedrag in uw verbonden {Ethereum}-wallet zien voordat u de transactie bevestigt.",
     "marketText": "Markt",
     "marketAlgorithmText": "Markt algoritme",
     "firstPerSecond": "{first} per {second}",
@@ -364,13 +362,13 @@
         "medium": "Medium",
         "reddit": "Reddit",
         "github": "GitHub",
-        "wiki": "@:soraText Wiki"
+        "wiki": "{Sora} Wiki"
     },
     "footerMenu": {
         "faucet": "Faucet",
         "github": "GitHub",
-        "sorawiki": "@:soraText Wiki",
-        "memorandum": "Polkaswap memorandum en servicevoorwaarden",
+        "sorawiki": "{Sora} Wiki",
+        "memorandum": "{Polkaswap} memorandum en servicevoorwaarden",
         "privacy": "Privacybeleid",
         "info": "Info & Community"
     },
@@ -387,12 +385,12 @@
         "title": "Over",
         "learnMore": "Kom meer te weten",
         "network": {
-            "title": "Wat is @:soraText?",
-            "description": "Polkaswap is gebouwd bovenop het @:soraText Netwerk, en het @:soraText token (XOR) wordt gebruikt voor gas\/vergoedingen en liquiditeitsverschaffing op Polkaswap. @:soraText Network maakt lagere vergoedingen, snellere transacties en eenvoudigere consensus finalisatie mogelijk en is gericht op het leveren van interoperabiliteit over andere blockchain ecosystemen zoals @:(ethereumText)."
+            "title": "Wat is {Sora}?",
+            "description": "{Polkaswap} is gebouwd bovenop het {Sora} Netwerk, en het {Sora} token (XOR) wordt gebruikt voor gas\/vergoedingen en liquiditeitsverschaffing op {Polkaswap}. {Sora} Network maakt lagere vergoedingen, snellere transacties en eenvoudigere consensus finalisatie mogelijk en is gericht op het leveren van interoperabiliteit over andere blockchain ecosystemen zoals {Ethereum}."
         },
         "polkadot": {
-            "title": "Wat is polkadot{.js}?",
-            "description": "Polkadot{.js} extensie is een browser extensie beschikbaar voor Firefox en Chrome die gewijd is aan het beheer van accounts voor Substrate-gebaseerde chains, waaronder @:soraText, Polkadot en Kusama. U kunt accounts toevoegen, importeren en exporteren en transacties of extrinsics ondertekenen die u hebt geïnitieerd vanaf websites die u hebt geautoriseerd."
+            "title": "Wat is {PolkadotJs}?",
+            "description": "{PolkadotJs} extensie is een browser extensie beschikbaar voor Firefox en Chrome die gewijd is aan het beheer van accounts voor Substrate-gebaseerde chains, waaronder {Sora}, {Polkadot} en {Kusama}. U kunt accounts toevoegen, importeren en exporteren en transacties of extrinsics ondertekenen die u hebt geïnitieerd vanaf websites die u hebt geautoriseerd."
         }
     },
     "node": {
@@ -410,10 +408,10 @@
         }
     },
     "selectNodeDialog": {
-        "title": "@:soraText Netwerk node selectie",
+        "title": "{Sora} Netwerk node selectie",
         "addNode": "Aangepaste node toevoegen",
         "customNode": "Aangepaste node",
-        "howToSetupOwnNode": "Hoe je eigen @:soraText node opzetten",
+        "howToSetupOwnNode": "Hoe je eigen {Sora} node opzetten",
         "select": "Selecteer",
         "connected": "Verbonden",
         "selectNodeForEnvironment": "Selecteer een knooppunt voor {environment} environment:",
@@ -441,62 +439,62 @@
         "title": "Pagina niet gevonden",
         "body": "404"
     },
-    "metamask": "MetaMask",
+    "metamask": "{Metamask}",
     "sora": {
-        "Dev": "@:soraText Devnet",
-        "Test": "@:soraText Testnet",
-        "Prod": "@:soraText Mainnet",
-        "Stage": "@:soraText Testnet"
+        "Dev": "{Sora} Devnet",
+        "Test": "{Sora} Testnet",
+        "Prod": "{Sora} Mainnet",
+        "Stage": "{Sora} Testnet"
     },
     "evm": {
-        "main": "Ethereum Mainnet",
-        "ropsten": "Ethereum Ropsten",
-        "rinkeby": "Ethereum Rinkeby",
-        "kovan": "Ethereum Kovan",
-        "goerli": "Ethereum Goerli",
+        "main": "{Ethereum} Mainnet",
+        "ropsten": "{Ethereum} Ropsten",
+        "rinkeby": "{Ethereum} Rinkeby",
+        "kovan": "{Ethereum} Kovan",
+        "goerli": "{Ethereum} Goerli",
         "private": "Volta Testnet",
         "EWC": "Energy Web Chain"
     },
     "providers": {
-        "metamask": "@:metamask"
+        "metamask": "{Metamask}"
     },
     "about": {
         "title": "De DEX voor de interoperabele toekomst.",
-        "description": "Cross-chain uitwisseling van assets, eenvoudige creatie en notering van nieuwe assets en de gemakkelijkste swaps beschikbaar. De interoperabele toekomst van Polkadot is hier en wij lopen voorop!",
+        "description": "Cross-chain uitwisseling van assets, eenvoudige creatie en notering van nieuwe assets en de gemakkelijkste swaps beschikbaar. De interoperabele toekomst van {Polkadot} is hier en wij lopen voorop!",
         "trading": {
             "title": "Sneller traden",
-            "first": "Polkaswap is een non-custodial, cross-chain AMM DEX-protocol voor het swappen van tokens op basis van Polkadot- en Kusama relay chains, Polkadot- en Kusama parachains en blockchains die rechtstreeks zijn verbonden via Bridges.",
-            "second": "Polkaswap verwijdert vertrouwde tussenpersonen en biedt de mogelijkheid tot sneller traden",
-            "third": "Polkaswap is een community project en ontwikkelaars werken samen aan de open source code met behulp van de"
+            "first": "{Polkaswap} is een non-custodial, cross-chain AMM DEX-protocol voor het swappen van tokens op basis van Polkadot- en {Kusama} relay chains, Polkadot- en {Kusama} parachains en blockchains die rechtstreeks zijn verbonden via Bridges.",
+            "second": "{Polkaswap} verwijdert vertrouwde tussenpersonen en biedt de mogelijkheid tot sneller traden",
+            "third": "{Polkaswap} is een community project en ontwikkelaars werken samen aan de open source code met behulp van de"
         },
         "liquidity": {
             "title": "Grenzeloze liquiditeit",
-            "first": "Polkaswap combineert meerdere liquiditeitsbronnen onder een gemeenschappelijk algoritme voor liquiditeitsaggregatie, dat volledig on-chain, op een betrouwbare en gedecentraliseerde manier werkt.",
+            "first": "{Polkaswap} combineert meerdere liquiditeitsbronnen onder een gemeenschappelijk algoritme voor liquiditeitsaggregatie, dat volledig on-chain, op een betrouwbare en gedecentraliseerde manier werkt.",
             "second": "Wanneer traders de swap-functie oproepen, zal het liquiditeitsaggregatie-algoritme orders vullen met behulp van de beste aanbiedingen uit alle liquiditeitsbronnen. Liquiditeitsbronnen kunnen andere DEX'en, orderboeken, of andere API-gestuurde bronnen zijn.",
-            "third": "Omdat Polkaswap een open-source project is, kan iedereen meer liquiditeitsbronnen toevoegen door bijdragen te leveren aan de Polkaswap codebase."
+            "third": "Omdat {Polkaswap} een open-source project is, kan iedereen meer liquiditeitsbronnen toevoegen door bijdragen te leveren aan de {Polkaswap} codebase."
         },
         "swap": {
             "title": "Swap elk token",
             "first": "Overschrijd de grenzen van huidige DEX'en door tokens uit het Polkadot-ecosysteem en andere blockchains toe te voegen.",
-            "second": "Creëer, noteer en verhandel uw eigen tokens op het SORA netwerk.",
-            "third": "Onze kerninfrastructuur maakt gebruik van Parity Substrate, dat schaalbaarder is dan Ethereum, en maakt geen gebruik van dure mining voor consensus."
+            "second": "Creëer, noteer en verhandel uw eigen tokens op het {Sora} netwerk.",
+            "third": "Onze kerninfrastructuur maakt gebruik van Parity Substrate, dat schaalbaarder is dan {Ethereum}, en maakt geen gebruik van dure mining voor consensus."
         },
         "pswap": {
             "title": "PSWAP-tokens",
-            "first": "PSWAP is gemaakt door community governance door te stemmen over de release. Het is een utility- en governance-token dat wordt gebruikt om liquiditeitsverschaffers op Polkaswap te belonen. In tegenstelling tot de meeste andere beloningstokens, wordt PSWAP verbrand met transacties en neemt het aanbod in de loop van de tijd af.",
-            "second": "De {percent}% vergoeding voor elke swap op de Polkaswap DEX wordt gebruikt om PSWAP-tokens terug te kopen, die vervolgens worden verbrand. In eerste instantie wordt 90% van de verbrande PSWAP-tokens opnieuw gemunt om toe te wijzen aan liquiditeitsverschaffers, maar na verloop van tijd zal dit percentage na 4 jaar dalen tot 35%."
+            "first": "PSWAP is gemaakt door community governance door te stemmen over de release. Het is een utility- en governance-token dat wordt gebruikt om liquiditeitsverschaffers op {Polkaswap} te belonen. In tegenstelling tot de meeste andere beloningstokens, wordt PSWAP verbrand met transacties en neemt het aanbod in de loop van de tijd af.",
+            "second": "De {percent}% vergoeding voor elke swap op de {Polkaswap} DEX wordt gebruikt om PSWAP-tokens terug te kopen, die vervolgens worden verbrand. In eerste instantie wordt 90% van de verbrande PSWAP-tokens opnieuw gemunt om toe te wijzen aan liquiditeitsverschaffers, maar na verloop van tijd zal dit percentage na 4 jaar dalen tot 35%."
         },
         "links": {
             "first": {
-                "title": "Word een SORA-validator",
-                "desc": "Beveilig de toekomst van het SORA-netwerk en gedecentraliseerde apps zoals Polkaswap, en verdien terwijl beloningen door een SORA-validator te worden."
+                "title": "Word een {Sora}-validator",
+                "desc": "Beveilig de toekomst van het {Sora}-netwerk en gedecentraliseerde apps zoals {Polkaswap}, en verdien terwijl beloningen door een {Sora}-validator te worden."
             },
             "second": {
-                "title": "Verbind een chain met SORA",
-                "desc": "Laat de gedecentraliseerde wereldeconomie groeien door meer chains te verbinden met SORA en Polkaswap met behulp van het HASHI bridge protocol."
+                "title": "Verbind een chain met {Sora}",
+                "desc": "Laat de gedecentraliseerde wereldeconomie groeien door meer chains te verbinden met {Sora} en {Polkaswap} met behulp van het {Hashi} bridge protocol."
             }
         },
-        "network": "Polkaswap is gebouwd op het SORA-netwerk, gericht op interoperabiliteit om de rest van het crypto-ecosysteem te verbinden met Polkadot."
+        "network": "{Polkaswap} is gebouwd op het {Sora}-netwerk, gericht op interoperabiliteit om de rest van het crypto-ecosysteem te verbinden met Polkadot."
     },
     "exchange": {
         "Swap": "Swap",
@@ -548,8 +546,8 @@
         "strategicBonusApy": "Strategische Bonus APY"
     },
     "bridge": {
-        "title": "HASHI Bridge",
-        "info": "Converteer tokens tussen de @:(soraText)-en @:(ethereumText)-netwerken.",
+        "title": "{Hashi} Bridge",
+        "info": "Converteer tokens tussen de {Sora}-en {Ethereum}-netwerken.",
         "balance": "Saldo",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -557,8 +555,8 @@
         "changeNetwork": "@:changeNetworkText",
         "next": "Volgende",
         "connectWallets": "Verbind wallets om hun respectievelijke transactiegeschiedenis te bekijken.",
-        "soraNetworkFee": "@:soraText Netwerk Vergoeding",
-        "ethereumNetworkFee": "@:ethereumText Netwerk Vergoeding",
+        "soraNetworkFee": "{Sora} Netwerk Vergoeding",
+        "ethereumNetworkFee": "{Ethereum} Netwerk Vergoeding",
         "tooltipValue": "@:comingSoonText",
         "total": "Totaal",
         "viewHistory": "Transactiegeschiedenis bekijken",
@@ -566,25 +564,25 @@
         "transactionMessage": "{assetA} voor {assetB}",
         "notRegisteredAsset": "Asset {assetSymbol} is niet geregistreerd",
         "selectNetwork": "Selecteer netwerk",
-        "networkInfo": "Bridge @:soraText Netwerk met:",
-        "ethereum": "@:ethereumText",
+        "networkInfo": "Bridge {Sora} Netwerk met:",
+        "ethereum": "{Ethereum}",
         "energy": "@:evm.EWC",
         "copy": "Netwerkadres kopiëren",
-        "soraAddress": "@:soraText adres",
-        "ethereumAddress": "@:ethereumText adres"
+        "soraAddress": "{Sora} adres",
+        "ethereumAddress": "{Ethereum} adres"
     },
     "selectRegisteredAsset": {
         "title": "Kies een token",
         "search": {
             "title": "Tokens",
             "placeholder": "Filter op Asset-ID, naam of Tickersymbool",
-            "networkLabelSora": "@:soraText netwerk tokens",
-            "networkLabelEthereum": "@:ethereumText netwerk spiegel tokens",
+            "networkLabelSora": "{Sora} netwerk tokens",
+            "networkLabelEthereum": "{Ethereum} netwerk spiegel tokens",
             "emptyListMessage": "Geen resultaten"
         },
         "customAsset": {
             "title": "Custom",
-            "customInfo": "Belangrijk! Custom tokens moeten worden geregistreerd in @:(soraText).",
+            "customInfo": "Belangrijk! Custom tokens moeten worden geregistreerd in {Sora}.",
             "registerToken": "Registreer token",
             "addressPlaceholder": "Asset-ID",
             "symbolPlaceholder": "Token symbool",
@@ -596,8 +594,6 @@
         "confirmTransaction": "Bevestig transactie",
         "insufficientBalance": "@:insufficientBalanceText",
         "changeNetwork": "@:changeNetworkText",
-        "metamask": "@:metamask",
-        "sora": "@:soraText",
         "confirm": "@:confirmTransactionText",
         "buttonConfirm": "@:confirmText"
     },
@@ -625,7 +621,7 @@
             "done": "Compleet",
             "waitingForConfirmation": "Wachten op bevestiging..."
         },
-        "viewInEtherscan": "Bekijk in Etherscan",
+        "viewInEtherscan": "Bekijk in {Etherscan}",
         "networkTitle": "{network} transactie",
         "transactionHash": "Transactie hash",
         "networkInfo": {
@@ -636,19 +632,19 @@
             "total": "Totaal"
         },
         "successCopy": "Transactiehash werd naar het klembord gekopieerd",
-        "ethereum": "@:ethereumText",
-        "sora": "@:soraText",
+        "ethereum": "{Ethereum}",
+        "sora": "{Sora}",
         "pending": "<span class=\"network-title\"> {network} <\/span> transactie in behandeling...",
         "retry": "@:retryText",
-        "metamask": "@:metamask",
+        "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Nieuwe transactie aanmaken",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "changeAccount": "@:changeAccountText in @:metamask",
-        "expectedAddress": "Verwacht adres in @:metamask",
+        "changeAccount": "@:changeAccountText in {Metamask}",
+        "expectedAddress": "Verwacht adres in {Metamask}",
         "title": "Bridge-transactie",
-        "expectedMetaMaskAddress": "Verwacht adres in Metamask:",
+        "expectedMetaMaskAddress": "Verwacht adres in {Metamask}:",
         "allowToken": "Sta @:appName toe om je {tokenSymbol}",
         "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om het token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst.",
         "blocksLeft": "{count} blokken over..."
@@ -775,21 +771,21 @@
             "failed": "{order} van {totaal} transacties mislukt. @:retryText"
         },
         "signing": {
-            "extension": "polkadot{.js} browser extensie",
-            "accounts": "uw respectievelijke @:(soraText)-en @:(ethereumText)-accounts"
+            "extension": "{PolkadotJs} browser extensie",
+            "accounts": "uw respectievelijke {Sora}-en {Ethereum}-accounts"
         },
         "hint": {
-            "connectExternalAccount": "Verbind een @:(ethereumText)-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
-            "connectAccounts": "Om je PSWAP- en VAL-beloningen te claimen, moet je zowel je @:(soraText)-als @:(ethereumText)-accounts verbinden.",
-            "connectAnotherAccount": "Verbind een ander @:(ethereumText)-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
-            "howToClaimRewards": "Om je {symbols} beloningen te claimen moet je {count} {transacties} in {destination} tekenen. Beloningen zullen worden gestort op uw @:soraText account."
+            "connectExternalAccount": "Verbind een {Ethereum}-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
+            "connectAccounts": "Om je PSWAP- en VAL-beloningen te claimen, moet je zowel je {Sora}-als {Ethereum}-accounts verbinden.",
+            "connectAnotherAccount": "Verbind een ander {Ethereum}-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
+            "howToClaimRewards": "Om je {symbols} beloningen te claimen moet je {count} {transacties} in {destination} tekenen. Beloningen zullen worden gestort op uw {Sora} account."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
-            "connectExternalWallet": "Verbind @:ethereumText account",
+            "connectExternalWallet": "Verbind {Ethereum} account",
             "signAndClaim": "Onderteken en claim",
-            "pendingInternal": "@:soraText transactie in behandeling...",
-            "pendingExternal": "@:ethereumText transactie in behandeling...",
+            "pendingInternal": "{Sora} transactie in behandeling...",
+            "pendingExternal": "{Ethereum} transactie in behandeling...",
             "retry": "@:retryText",
             "checkRewards": "Controleren",
             "insufficientBalance": "@:insufficientBalanceText"
@@ -799,11 +795,10 @@
         },
         "events": {
             "XorErc20": "XOR ERC-20",
-            "SoraFarmHarvest": "@:(soraText).farm oogst",
+            "SoraFarmHarvest": "{Sora}.farm oogst",
             "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Vergoedingen verkregen uit liquiditeitsvoorziening",
             "BuyOnBondingCurve": "kopen van de TBC",
-            "NftAirdrop": "NFT Airdrop",
             "MarketMakerVolume": "Market Making",
             "LiquidityProvisionFarming": "Farming"
         },
@@ -813,15 +808,15 @@
         "claimableAmountDoneVesting": "Opeisbare beloningen",
         "groups": {
             "strategic": "Strategische beloningen",
-            "external": "Beloningen voor het verbonden ethereum-account",
+            "external": "Beloningen voor het verbonden {Ethereum}-account",
             "crowdloan": "Crowdloan beloningen"
         },
         "Rewards": "Beloningen",
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "@:ethereumText provider",
-        "metamask": "@:metamask",
+        "default": "{Ethereum} provider",
+        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{naam} extensie is bezet, gelieve ze te controleren",
             "extensionLogin": "Gelieve in te loggen op uw {naam} extensie",
@@ -838,10 +833,10 @@
         "name": "Naam",
         "assetId": "Asset-ID"
     },
-    "memorandum": "Polkaswap memorandum en servicevoorwaarden",
+    "memorandum": "{Polkaswap} memorandum en servicevoorwaarden",
     "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\"> @:memorandum <\/a>",
     "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
-    "FAQ": "Polkaswap FAQ",
+    "FAQ": "{Polkaswap} FAQ",
     "connectedAccount": "Verbonden account",
     "selectNodeConnected": "Verbonden met: {chain}",
     "moonpayText": "MoonPay",
@@ -850,15 +845,15 @@
         "notifications": {
             "success": {
                 "title": "Tokens gekocht",
-                "text": "Tokenaankoop is voltooid. De HASHI-bridgetransactie start automatisch zodra de tokens zijn ontvangen op het gekoppelde Ethereum-account. Het is veilig om dit venster te sluiten en Polkaswap te blijven gebruiken. Er komt een melding over de bridge transactie wanneer deze gereed is."
+                "text": "Tokenaankoop is voltooid. De {Hashi}-bridgetransactie start automatisch zodra de tokens zijn ontvangen op het gekoppelde {Ethereum}-account. Het is veilig om dit venster te sluiten en {Polkaswap} te blijven gebruiken. Er komt een melding over de bridge transactie wanneer deze gereed is."
             },
             "supportError": {
                 "title": "Token niet ondersteund",
-                "text": "Helaas wordt het token gekocht via @:moonpayText nog niet ondersteund door de HASHI-bridge in Polkaswap. Normaal gesproken zouden alleen de ondersteunde tokens beschikbaar moeten zijn voor aankoop via MoonPay in Polkaswap, dus er moet ergens iets mis zijn gegaan. Aarzel niet om de community op de hoogte te stellen van deze zaak in de <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Polkaswap Telegram-groep <\/a> ."
+                "text": "Helaas wordt het token gekocht via @:moonpayText nog niet ondersteund door de {Hashi}-bridge in {Polkaswap}. Normaal gesproken zouden alleen de ondersteunde tokens beschikbaar moeten zijn voor aankoop via MoonPay in {Polkaswap}, dus er moet ergens iets mis zijn gegaan. Aarzel niet om de community op de hoogte te stellen van deze zaak in de <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> {Polkaswap} Telegram-groep <\/a> ."
             },
             "feeError": {
                 "title": "Niet genoeg ETH voor de bridge tx",
-                "text": "Helaas is de HASHI-bridge transactie mislukt omdat er niet genoeg ETH is om de transactiekosten van het Ethereum-netwerk te betalen. Voeg meer ETH toe en probeer het opnieuw."
+                "text": "Helaas is de {Hashi}-bridge transactie mislukt omdat er niet genoeg ETH is om de transactiekosten van het {Ethereum}-netwerk te betalen. Voeg meer ETH toe en probeer het opnieuw."
             },
             "transactionError": {
                 "title": "Transactie is mislukt",
@@ -866,11 +861,11 @@
             },
             "amountError": {
                 "title": "Onvoldoende balans",
-                "text": "Helaas is de HASHI-bridgetransactie mislukt omdat er niet genoeg tokens zijn voor de transactie. Controleer uw Ethereum-accountsaldo en probeer het opnieuw."
+                "text": "Helaas is de {Hashi}-bridgetransactie mislukt omdat er niet genoeg tokens zijn voor de transactie. Controleer uw {Ethereum}-accountsaldo en probeer het opnieuw."
             },
             "accountAddressError": {
-                "title": "Verkeerd Ethereum-account",
-                "text": "Helaas is de HASHI-bridgetransactie mislukt omdat het adres van de ontvanger van de tokens in de @:moonpayText bestelling niet overeenkomt met uw huidige Ethereum-accountadres. Verander het Ethereum-account in de extensie en probeer het opnieuw."
+                "title": "Verkeerd {Ethereum}-account",
+                "text": "Helaas is de {Hashi}-bridgetransactie mislukt omdat het adres van de ontvanger van de tokens in de @:moonpayText bestelling niet overeenkomt met uw huidige {Ethereum}-accountadres. Verander het {Ethereum}-account in de extensie en probeer het opnieuw."
             }
         },
         "buttons": {
@@ -913,13 +908,13 @@
     "confirmNextTxFailure": {
         "header": "Aandacht",
         "info": "Uw XOR saldo zal lager zijn dan {fee} XOR na deze transactie. U zult niet in staat zijn om de netwerkvergoeding voor een andere transactie te betalen.",
-        "payoff": "Je zou de Bridge moeten gebruiken om XOR van andere netwerken te krijgen, XOR van een ander SORA-account te ontvangen, of een ander token dat al in je account staat om te wisselen naar XOR.",
+        "payoff": "Je zou de Bridge moeten gebruiken om XOR van andere netwerken te krijgen, XOR van een ander {Sora}-account te ontvangen, of een ander token dat al in je account staat om te wisselen naar XOR.",
         "button": "Ja, ik begrijp het risico"
     },
     "blockNumberText": "Bloknummer",
     "referralProgram": {
         "title": "Referral Program",
-        "connectAccount": "Om gebruikers uit te nodigen, moet u uw SORA-account koppelen.",
+        "connectAccount": "Om gebruikers uit te nodigen, moet u uw {Sora}-account koppelen.",
         "bondedXOR": "XOR Gebonden",
         "referralsNumber": "{number} verwijzingen",
         "startInviting": "Bond XOR om anderen door te verwijzen",
@@ -949,7 +944,7 @@
             "text": "Bevestigen",
             "bond": "Bevestig obligatie",
             "unbond": "Ontbinding bevestigen",
-            "inviteTitle": "Je bent uitgenodigd voor Polkaswap",
+            "inviteTitle": "Je bent uitgenodigd voor {Polkaswap}",
             "inviteDescription": "Voor elke transactie gaat 10% van de vergoeding naar uw verwijzer, zonder extra kosten voor u.",
             "signInvitation": "Goedkeuren",
             "freeOfCharge": "Deze actie is gratis",
@@ -964,7 +959,7 @@
             "label": "Uitnodigingslink of code",
             "approve": "Goedkeuren",
             "approved": "Goedgekeurd",
-            "description": "U kunt doorverwezen worden naar Polkaswap,<br\/>typ de link of code van de verwijzer in",
+            "description": "U kunt doorverwezen worden naar {Polkaswap},<br\/>typ de link of code van de verwijzer in",
             "referredBy": "U bent doorverwezen door {referrer}",
             "info": "Wanneer u transactiekosten betaalt,<br\/>gaat 10% naar uw verwijzer",
             "referredLablel": "Doorverwezen adres"
@@ -985,13 +980,13 @@
         "allowanceRequest": "Druk op \"Toestaan\" toegang tot camera"
     },
     "bridgeTransferNotification": {
-        "addToken": "Voeg {symbol} toe aan @:metamask",
+        "addToken": "Voeg {symbol} toe aan {Metamask}",
         "title": "Overbrugtransactie succesvol"
     },
     "mobilePopup": {
-        "sideMenu": "Download de SORA Wallet",
-        "header": "Download SORA Wallet met <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> -functies",
-        "info": "Ruil tokens van verschillende netwerken - SORA, Ethereum, Polkadot, Kusama. Bied een liquiditeitspool en verdien % aan wisselkosten."
+        "sideMenu": "Download de {Sora} Wallet",
+        "header": "Download {Sora} Wallet met <span class=\"popup-info__headline--highlight\"> {Polkaswap} <\/span> -functies",
+        "info": "Ruil tokens van verschillende netwerken - {Sora}, {Ethereum}, Polkadot, {Kusama}. Bied een liquiditeitspool en verdien % aan wisselkosten."
     },
     "releaseNotesText": "Release-opmerkingen",
     "copiedText": "Gekopieerd!",
@@ -1095,9 +1090,9 @@
     },
     "desktop": {
         "welcome": {
-            "header": "Welkom bij Polkaswap!",
+            "header": "Welkom bij {Polkaswap}!",
             "headline": "Laten we uw account instellen",
-            "text": "Maak uw SORA Network-account of log in op de oude met behulp van mnemonic-zin of .json-import. Hiermee kunt u transacties veilig ondertekenen en activa beheren in SORA Network.",
+            "text": "Maak uw {Sora} Network-account of log in op de oude met behulp van mnemonic-zin of .json-import. Hiermee kunt u transacties veilig ondertekenen en activa beheren in {Sora} Network.",
             "createAccount": "Account aanmaken",
             "importAccount": "Account importeren"
         },
@@ -1147,5 +1142,5 @@
             "jsonFields": "JSON-bestand heeft geen verplichte velden"
         }
     },
-    "hashiBridgeText": "HASHI brug"
+    "hashiBridgeText": "{Hashi} brug"
 }

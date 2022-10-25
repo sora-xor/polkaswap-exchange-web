@@ -404,7 +404,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   getLinkLabel(address: string): string {
-    return `<span class="referral-link-address">Polkaswap.io/</span>${this.routerMode}referral/${address}`;
+    return `<span class="referral-link-address">.io/</span>${this.routerMode}referral/${address}`;
   }
 
   getInvitedUserReward(invitedUser: string): string {
