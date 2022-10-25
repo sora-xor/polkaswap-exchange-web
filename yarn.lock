@@ -2432,44 +2432,44 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api@1.10.0-3":
-  version "1.10.0-3"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.10.0-3.tgz#3a3a07ab42bccb42911364c3053bdc6ae13f0cd2"
-  integrity sha512-9STyY7Zu8kJ8WZ534eCd+Fit31qeK7QrAX3m01UH3y1ZVm/rU6COqiLg8qJsICo2FAmU0FX//PzSxZ5OtqfZKw==
+"@sora-substrate/api@1.10.0-4":
+  version "1.10.0-4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.10.0-4.tgz#9955c8be40e0b4cab43fe6aaebfa8021123f0cd4"
+  integrity sha512-pEy+6adAEeuEeIeD1mXkr6ivXYjMbV+xNovJq2hA6/f/JYn9TDNO+73O/NT9JIhe2cacq+034o7hJu6yQnPrag==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/orml-api-derive" "^0.8.2-9"
     "@polkadot/api" "^4.10.1"
     "@polkadot/rpc-core" "^4.10.1"
-    "@sora-substrate/types" "1.10.0-3"
+    "@sora-substrate/types" "1.10.0-4"
 
-"@sora-substrate/liquidity-proxy@1.10.0-3":
-  version "1.10.0-3"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/liquidity-proxy/-/liquidity-proxy-1.10.0-3.tgz#26d7fb7675324b7bfefea4d8cda47e9f937b9c25"
-  integrity sha512-O6ICPN4km8clPRS0nCRd5MMD1Vk8WIsAfvjzaaWgJT2RZTlTleFxKMyCN3MQo11Dbl9bGIXy22BVIZOaoUpwVw==
+"@sora-substrate/liquidity-proxy@1.10.0-4":
+  version "1.10.0-4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/liquidity-proxy/-/liquidity-proxy-1.10.0-4.tgz#a6ccff06cd5c8a87ca95d1d5f39e35387665d024"
+  integrity sha512-VSde92wy++Rf+gu+DmDfBDNigQX3g8pMUhPCUruySdWyHLas2FT1vFyni6rgUBKnL/Ff2o/rLz3jt2Wd7NX1VQ==
   dependencies:
-    "@sora-substrate/math" "1.10.0-3"
+    "@sora-substrate/math" "1.10.0-4"
 
-"@sora-substrate/math@1.10.0-3":
-  version "1.10.0-3"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.10.0-3.tgz#95db141b60c823a846fc4962710bd69121dce42b"
-  integrity sha512-SkgefeOpkT0DA9HtwrX3jg6+YDPDISIfnjjDf80FsjzJ9g0HLULKfwQhDFxvd77c5aBaWzQynfo9sNaPPWdd1Q==
+"@sora-substrate/math@1.10.0-4":
+  version "1.10.0-4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.10.0-4.tgz#2d848a3a762eab855faa879c0944ecb1c35e4145"
+  integrity sha512-WcAbBdLK2piczX17DTpK6Re64C5gjBI0+cD13W/LLzVwlDkwwYXw217Vx7rnM8K9R96Qqr8eCrJ5Qly7byPNEg==
   dependencies:
     "@polkadot/types" "^4.10.1"
     bignumber.js "^9.0.1"
     lodash "^4.17.15"
 
-"@sora-substrate/type-definitions@1.10.0-3":
-  version "1.10.0-3"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.10.0-3.tgz#84b29d7fa9fd6ed4dea855caa064cfa84543042b"
-  integrity sha512-098EeSt00lItMQHnmICeX/FaZe33tShKQ1fFKWSwTcX5s8C5patYZKeVN3sJx5VrFkffUvKaJ17qgGFHKDCDZQ==
+"@sora-substrate/type-definitions@1.10.0-4":
+  version "1.10.0-4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.10.0-4.tgz#307f578a5c1f1065ed7a33b21db2696cf5c3a73a"
+  integrity sha512-wOpT0uXGTT90rD33Q25hFmHA3cr2hQTVusklDwcX5L46c7SplfxFKZD8lQDmYrAbQQnaDj1LSprzPCXA38aI6Q==
   dependencies:
     "@open-web3/orml-type-definitions" "^0.9.4-35"
 
-"@sora-substrate/types@1.10.0-3":
-  version "1.10.0-3"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.10.0-3.tgz#e2277edbe3f40e6e7cec56056cadbe508f9a37e2"
-  integrity sha512-qtEjh7IXXlqXEHBAFQ7E2ZlDUsCuHo0GuwHcz0Q/l9mmBKpGf3bSaCrDXTOy9g0f5HB/JACKtN1WFD/uJIhJow==
+"@sora-substrate/types@1.10.0-4":
+  version "1.10.0-4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.10.0-4.tgz#2050f2575bc141a6d628c57b3279e7778fc2b7e5"
+  integrity sha512-mUm80DvFggHeqJnpkfdkvNwBxlt9KWf/Vxki3L92DujS0dAEDWmSTOhSU5jww3caA8Go6Dlr0A0nEy4xUdFE7g==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@open-web3/api-mobx" "^0.8.2-9"
@@ -2477,18 +2477,18 @@
     "@polkadot/api" "^4.10.1"
     "@polkadot/typegen" "^4.10.1"
     "@polkadot/types" "^4.10.1"
-    "@sora-substrate/type-definitions" "1.10.0-3"
+    "@sora-substrate/type-definitions" "1.10.0-4"
 
-"@sora-substrate/util@1.10.0-3":
-  version "1.10.0-3"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.10.0-3.tgz#1a36c1473bd4250327a87f0f6c94f94820d51058"
-  integrity sha512-Jcb+08TPSkI4WSY4PgpSt0Meya22pyC66A5Yi/wWyqZu0I46Lebgv3ZYpEIfrvoyElk69YqqDArhSU/8GIvPyA==
+"@sora-substrate/util@1.10.0-4":
+  version "1.10.0-4"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.10.0-4.tgz#82541cf5860b730562e2bfdfb8e0d46bcfae2565"
+  integrity sha512-LDmZHCVMxPNceJC8k3R9Wk5zSmBfDQPBi3C3kCvBWQ7dfcogpn8bdIg/V2axon2xS9+9XdGYYHR48+XDVozyEQ==
   dependencies:
     "@polkadot/ui-keyring" "^0.77.1"
-    "@sora-substrate/api" "1.10.0-3"
-    "@sora-substrate/liquidity-proxy" "1.10.0-3"
-    "@sora-substrate/math" "1.10.0-3"
-    "@sora-substrate/types" "1.10.0-3"
+    "@sora-substrate/api" "1.10.0-4"
+    "@sora-substrate/liquidity-proxy" "1.10.0-4"
+    "@sora-substrate/math" "1.10.0-4"
+    "@sora-substrate/types" "1.10.0-4"
     axios "^0.21.1"
     bignumber.js "^9.0.1"
     crypto-js "^4.0.0"
@@ -2512,14 +2512,14 @@
     vuex "^3.1.3"
     vuex-class "^0.3.2"
 
-"@soramitsu/soraneo-wallet-web@1.9.14":
-  version "1.9.14"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.9.14.tgz#ac8fdc87afeb05f49f28859bc915cc711a1420e4"
-  integrity sha512-3MUjWE7+6RaEKe+NGcFnXXmq1HyhV/s/8og8PsIHYmjPj55SptRgUG7mkJFl5+zeeW9sEJ3kjhnJpJ9p7QleZw==
+"@soramitsu/soraneo-wallet-web@1.9.15":
+  version "1.9.15"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.9.15.tgz#1fc4db33e5f57a59110607be885accfe5d0026a2"
+  integrity sha512-lqOKz7Z+NFHmMyNC+L00Zb/OHJpDMHgnfFe6/K+B0Uj4SMIwm2WF92zhEOKaWiN6aX/VkEWQVjGwdq3nE0M4OQ==
   dependencies:
     "@polkadot/extension-dapp" "^0.42.2"
     "@polkadot/vue-identicon" "^0.72.1"
-    "@sora-substrate/util" "1.10.0-3"
+    "@sora-substrate/util" "1.10.0-4"
     "@soramitsu/soramitsu-js-ui" "^1.0.33"
     "@zxing/browser" "^0.0.10"
     "@zxing/library" "^0.18.6"
