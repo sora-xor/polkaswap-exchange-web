@@ -70,7 +70,7 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
 import MobilePopup from '@/components/MobilePopup/MobilePopup.vue';
 
-import { PageNames, Components, Language, app } from '@/consts';
+import { PageNames, Components, Language, Links, app } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -97,9 +97,6 @@ import { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
   readonly app = app;
-  readonly faqLink = 'https://wiki.sora.org/polkaswap/polkaswap-faq';
-  readonly termsOfServiceLink = 'https://wiki.sora.org/polkaswap/terms';
-  readonly privacyPolicyLink = 'https://wiki.sora.org/polkaswap/privacy';
 
   menuVisibility = false;
   showConfirmInviteUser = false;
@@ -190,15 +187,15 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   get memorandumLink(): string {
-    return this.generateDisclaimerLink(this.termsOfServiceLink, this.t('memorandum'));
+    return this.generateDisclaimerLink(Links.terms, this.t('memorandum'));
   }
 
   get privacyLink(): string {
-    return this.generateDisclaimerLink(this.privacyPolicyLink, this.t('helpDialog.privacyPolicy'));
+    return this.generateDisclaimerLink(Links.privacy, this.t('helpDialog.privacyPolicy'));
   }
 
   get polkaswapFaqLink(): string {
-    return this.generateDisclaimerLink(this.faqLink, this.t('FAQ'));
+    return this.generateDisclaimerLink(Links.faq, this.t('FAQ'));
   }
 
   generateDisclaimerLink(href: string, content: string): string {

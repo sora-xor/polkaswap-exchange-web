@@ -24,7 +24,7 @@
       <div class="claim-dialog-info">
         <info-line
           :label="t('networkFeeText')"
-          :label-tooltip="t('networkFeeTooltipText', { sora: TranslationConsts.Sora })"
+          :label-tooltip="t('networkFeeTooltipText')"
           :value="formattedNetworkFee"
           :asset-symbol="xorSymbol"
           :fiat-value="getFiatAmountByCodecString(networkFee)"

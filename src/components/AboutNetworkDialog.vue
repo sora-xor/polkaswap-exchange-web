@@ -27,22 +27,13 @@ export default class AboutNetworkDialog extends Mixins(TranslationMixin, mixins.
   get aboutBlocks() {
     return [
       {
-        title: this.t('aboutNetworkDialog.network.title', { sora: this.TranslationConsts.Sora }),
-        description: this.t('aboutNetworkDialog.network.description', {
-          sora: this.TranslationConsts.Sora,
-          polkaswap: app.name,
-          ethereum: this.TranslationConsts.Ethereum,
-        }),
+        title: this.t('aboutNetworkDialog.network.title'),
+        description: this.t('aboutNetworkDialog.network.description'),
         link: Links.about.sora,
       },
       {
-        title: this.t('aboutNetworkDialog.polkadot.title', { polkadotJs: this.TranslationConsts.PolkadotJs }),
-        description: this.t('aboutNetworkDialog.polkadot.description', {
-          polkadotJs: this.TranslationConsts.PolkadotJs,
-          sora: this.TranslationConsts.Sora,
-          polkadot: this.TranslationConsts.Polkadot,
-          kusama: this.TranslationConsts.Kusama,
-        }),
+        title: this.t('aboutNetworkDialog.polkadot.title'),
+        description: this.t('aboutNetworkDialog.polkadot.description'),
         link: Links.about.polkadot,
       },
     ];

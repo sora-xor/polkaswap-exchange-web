@@ -37,10 +37,7 @@ export default class AccountButton extends Mixins(TranslationMixin) {
     if (this.isLoggedIn) {
       return this.t('connectedAccount');
     }
-    return this.t('connectWalletTextTooltip', {
-      sora: this.TranslationConsts.Sora,
-      polkadotJs: this.TranslationConsts.PolkadotJs,
-    });
+    return this.t('connectWalletTextTooltip');
   }
 
   get accountInfo(): string {

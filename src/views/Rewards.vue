@@ -314,7 +314,7 @@ export default class Rewards extends Mixins(
   get feeInfo(): object {
     return {
       label: this.t('rewards.networkFee'),
-      labelTooltip: this.t('networkFeeTooltipText', { sora: this.TranslationConsts.Sora }),
+      labelTooltip: this.t('networkFeeTooltipText'),
       value: this.formatCodecNumber(this.fee),
       assetSymbol: KnownSymbols.XOR,
     };

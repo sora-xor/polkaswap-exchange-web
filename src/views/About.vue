@@ -10,7 +10,7 @@
         style="max-width: 1040px; height: 585px"
       />
       <p class="gradient main" style="line-height: 1; margin-top: -60px; margin-bottom: 10px">{{ t('about.title') }}</p>
-      <p class="text">{{ t('about.description', { polkadot: TranslationConsts.Polkadot }) }}</p>
+      <p class="text">{{ t('about.description') }}</p>
       <s-image
         :src="images.about02x"
         lazy
@@ -21,19 +21,13 @@
       />
       <p class="gradient trading">{{ t('about.trading.title') }}</p>
       <p class="text" style="margin-top: 15px">
-        {{
-          t('about.trading.first', {
-            appName: app.name,
-            polkadot: TranslationConsts.Polkadot,
-            kusama: TranslationConsts.Kusama,
-          })
-        }}
+        {{ t('about.trading.first') }}
       </p>
       <s-image :src="images.about02_1" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
-      <p class="text">{{ t('about.trading.second', { appName: app.name }) }}</p>
+      <p class="text">{{ t('about.trading.second') }}</p>
       <s-image :src="images.about02_2" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
       <p class="text">
-        {{ t('about.trading.third', { appName: app.name }) }}
+        {{ t('about.trading.third') }}
         <a
           href="https://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_(original_%22BSD_License%22)"
           title="BSD 4-clause license"
@@ -53,11 +47,11 @@
         style="width: 75%; margin-top: 120px; height: 343px"
       />
       <p class="gradient liquidity">{{ t('about.liquidity.title') }}</p>
-      <p class="text" style="margin-top: 15px">{{ t('about.liquidity.first', { appName: app.name }) }}</p>
+      <p class="text" style="margin-top: 15px">{{ t('about.liquidity.first') }}</p>
       <s-image :src="images.about03_1" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
       <p class="text">{{ t('about.liquidity.second') }}</p>
       <s-image :src="images.about03_2" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
-      <p class="text">{{ t('about.liquidity.third', { appName: app.name }) }}</p>
+      <p class="text">{{ t('about.liquidity.third') }}</p>
 
       <s-image
         :src="images.about04x"
@@ -68,11 +62,11 @@
         style="width: 75%; margin-top: 120px; height: 366px"
       />
       <p class="gradient swap">{{ t('about.swap.title') }}</p>
-      <p class="text" style="margin-top: 15px">{{ t('about.swap.first', { polkadot: TranslationConsts.Polkadot }) }}</p>
+      <p class="text" style="margin-top: 15px">{{ t('about.swap.first') }}</p>
       <s-image :src="images.about04_1" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
-      <p class="text">{{ t('about.swap.second', { sora: TranslationConsts.Sora }) }}</p>
+      <p class="text">{{ t('about.swap.second') }}</p>
       <s-image :src="images.about04_2" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
-      <p class="text">{{ t('about.swap.third', { ethereum: TranslationConsts.Ethereum }) }}</p>
+      <p class="text">{{ t('about.swap.third') }}</p>
 
       <s-image
         :src="images.about05x"
@@ -83,10 +77,10 @@
         style="width: 75%; margin-top: 120px; height: 366px"
       />
       <p class="gradient pswap">{{ t('about.pswap.title') }}</p>
-      <p class="text">{{ t('about.pswap.first', { appName: app.name }) }}</p>
+      <p class="text">{{ t('about.pswap.first') }}</p>
       <s-image :src="images.about05_1" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
       <p class="text" style="margin-bottom: 120px">
-        {{ t('about.pswap.second', { percent: feePercent, appName: app.name }) }}
+        {{ t('about.pswap.second', { percent: feePercent }) }}
       </p>
 
       <div class="about-video" style="margin-bottom: 120px">
@@ -117,10 +111,10 @@
             style="height: 49px"
           />
           <span class="title">
-            {{ t('about.links.first.title', { sora: TranslationConsts.Sora }) }}
+            {{ t('about.links.first.title') }}
             <img :src="images.about07_3" class="link" />
           </span>
-          <p class="text">{{ t('about.links.first.desc', { sora: TranslationConsts.Sora, appName: app.name }) }}</p>
+          <p class="text">{{ t('about.links.first.desc') }}</p>
           <a class="link-mask" href="https://sora.org/validator" target="_blank" rel="nofollow noopener" />
         </div>
         <div class="about-links-part" style="text-align: left">
@@ -133,17 +127,11 @@
             style="height: 49px"
           />
           <span class="title">
-            {{ t('about.links.second.title', { sora: TranslationConsts.Sora }) }}
+            {{ t('about.links.second.title') }}
             <img :src="images.about07_3" class="link" />
           </span>
           <p class="text">
-            {{
-              t('about.links.second.desc', {
-                sora: TranslationConsts.Sora,
-                appName: app.name,
-                hashi: TranslationConsts.Hashi,
-              })
-            }}
+            {{ t('about.links.second.desc') }}
           </p>
           <a class="link-mask" href="https://sora.org" target="_blank" rel="nofollow noopener" />
         </div>
@@ -151,13 +139,7 @@
       <div class="about-network">
         <s-image :src="images.about08" lazy fit="fill" draggable="false" class="unselectable network-img" />
         <p class="text">
-          {{
-            t('about.network', {
-              appName: app.name,
-              sora: TranslationConsts.Sora,
-              polkadot: TranslationConsts.Polkadot,
-            })
-          }}
+          {{ t('about.network') }}
         </p>
       </div>
     </div>
@@ -185,7 +167,6 @@ import { getter } from '@/store/decorators';
   },
 })
 export default class About extends Mixins(TranslationMixin) {
-  readonly app = app;
   readonly IMAGES = [
     'about02-1.png',
     'about02-2.png',

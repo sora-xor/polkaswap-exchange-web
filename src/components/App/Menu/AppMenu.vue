@@ -51,7 +51,7 @@
           <sidebar-item-content
             v-button
             icon="symbols-24"
-            :title="t('mobilePopup.sideMenu', { sora: TranslationConsts.Sora })"
+            :title="t('mobilePopup.sideMenu')"
             class="el-menu-item menu-item--small"
             tabindex="0"
             @click.native="openSoraDownloadDialog"

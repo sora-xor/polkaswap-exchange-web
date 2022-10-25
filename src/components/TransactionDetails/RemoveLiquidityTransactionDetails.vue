@@ -18,7 +18,7 @@
     <info-line
       v-if="networkFee"
       :label="t('createPair.networkFee')"
-      :label-tooltip="t('networkFeeTooltipText', { sora: TranslationConsts.Sora })"
+      :label-tooltip="t('networkFeeTooltipText')"
       :value="formattedFee"
       :asset-symbol="XOR_SYMBOL"
       :fiat-value="formattedFeeFiatValue"

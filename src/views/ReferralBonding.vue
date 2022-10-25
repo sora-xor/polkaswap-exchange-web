@@ -37,7 +37,7 @@
       </s-button>
       <info-line
         :label="t('referralProgram.networkFee')"
-        :label-tooltip="t('networkFeeTooltipText', { sora: TranslationConsts.Sora })"
+        :label-tooltip="t('networkFeeTooltipText')"
         :value="formattedNetworkFee"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"

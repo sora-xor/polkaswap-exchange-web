@@ -2,19 +2,9 @@
   <dialog-base class="popup" :visible.sync="isVisible">
     <div class="popup-mobile">
       <div class="popup-info">
-        <h3
-          class="popup-info__headline"
-          v-html="t('mobilePopup.header', { sora: TranslationConsts.Sora, polkaswapHighlight })"
-        />
+        <h3 class="popup-info__headline" v-html="t('mobilePopup.header', { polkaswapHighlight })" />
         <p class="popup-info__text">
-          {{
-            t('mobilePopup.info', {
-              sora: TranslationConsts.Sora,
-              ethereum: TranslationConsts.Ethereum,
-              polkadot: TranslationConsts.Polkadot,
-              kusama: TranslationConsts.Kusama,
-            })
-          }}
+          {{ t('mobilePopup.info') }}
         </p>
         <div>
           <a :href="StoreLinks.AppStore" target="_blank" rel="nofollow noopener" tabindex="-1">

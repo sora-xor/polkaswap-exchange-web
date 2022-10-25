@@ -1,16 +1,16 @@
 <template>
   <transaction-details :info-only="infoOnly">
     <info-line
-      :label="t('bridge.soraNetworkFee', { sora: TranslationConsts.Sora })"
-      :label-tooltip="t('networkFeeTooltipText', { sora: TranslationConsts.Sora })"
+      :label="t('bridge.soraNetworkFee')"
+      :label-tooltip="t('networkFeeTooltipText')"
       :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
       :asset-symbol="XOR_SYMBOL"
       :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
       is-formatted
     />
     <info-line
-      :label="t('bridge.ethereumNetworkFee', { ethereum: TranslationConsts.Ethereum })"
-      :label-tooltip="t('ethNetworkFeeTooltipText', { sora: TranslationConsts.Sora })"
+      :label="t('bridge.ethereumNetworkFee')"
+      :label-tooltip="t('ethNetworkFeeTooltipText')"
       :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
       :asset-symbol="evmTokenSymbol"
       is-formatted

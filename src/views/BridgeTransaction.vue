@@ -91,7 +91,7 @@
                   </template>
                   <s-dropdown-item v-else class="s-dropdown-menu__item">
                     <span>
-                      {{ t('bridgeTransaction.viewInEtherscan', { etherscan: TranslationConsts.Etherscan }) }}
+                      {{ t('bridgeTransaction.viewInEtherscan') }}
                     </span>
                   </s-dropdown-item>
                 </template>
@@ -223,7 +223,7 @@
                   </template>
                   <s-dropdown-item v-else class="s-dropdown-menu__item">
                     <span>
-                      {{ t('bridgeTransaction.viewInEtherscan', { etherscan: TranslationConsts.Etherscan }) }}
+                      {{ t('bridgeTransaction.viewInEtherscan') }}
                     </span>
                   </s-dropdown-item>
                 </template>
