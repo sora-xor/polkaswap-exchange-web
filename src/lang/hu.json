@@ -109,7 +109,7 @@
         }
     },
     "wallet": {
-        "title": "{sora} hálózati fiók",
+        "title": "{Sora} hálózati fiók",
         "WalletAssets": "Eszközök",
         "WalletActivity": "Aktivitás",
         "addAsset": "@:addAssetText",

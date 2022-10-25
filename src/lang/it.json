@@ -109,7 +109,7 @@
         }
     },
     "wallet": {
-        "title": "{sora} Network account",
+        "title": "{Sora} Network account",
         "WalletAssets": "Assets",
         "WalletActivity": "Attività",
         "addAsset": "@:addAssetText",

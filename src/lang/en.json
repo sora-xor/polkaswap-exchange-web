@@ -109,7 +109,7 @@
         }
     },
     "wallet": {
-        "title": "{sora} Network account",
+        "title": "{Sora} Network account",
         "WalletAssets": "Assets",
         "WalletActivity": "Activity",
         "addAsset": "@:addAssetText",
@@ -975,7 +975,7 @@
         "title": "Bridge transaction successful"
     },
     "mobilePopup": {
-        "header": "Download {sora} Wallet with {polkaswapHighlight} features",
+        "header": "Download {Sora} Wallet with {polkaswapHighlight} features",
         "sideMenu": "Get {Sora} Wallet",
         "info": "Swap tokens from different networks - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Provide liquidity pool and earn % from exchange fees."
     },

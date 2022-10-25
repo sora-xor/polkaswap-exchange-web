@@ -109,7 +109,7 @@
         }
     },
     "wallet": {
-        "title": "{sora} ցանցի հաշիվ",
+        "title": "{Sora} ցանցի հաշիվ",
         "WalletAssets": "Ակտիվներ",
         "WalletActivity": "Գործունեություն",
         "addAsset": "@:addAssetText",

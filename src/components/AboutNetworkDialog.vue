@@ -14,7 +14,7 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from './mixins/TranslationMixin';
 
-import { Components, Links, app } from '@/consts';
+import { Components, Links } from '@/consts';
 import { lazyComponent } from '@/router';
 
 @Component({

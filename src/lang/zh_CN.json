@@ -109,7 +109,7 @@
         }
     },
     "wallet": {
-        "title": "{sora}网络账户",
+        "title": "{Sora}网络账户",
         "WalletAssets": "资产",
         "WalletActivity": "活动",
         "addAsset": "@:addAssetText",
@@ -130,8 +130,8 @@
         "confirm": "@:confirmText",
         "errorAddress": "无效地址。请检查并重试。",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "在{sora}网络账户之间发送代币",
-        "addressWarning": "代币将被发送至以下{sora}地址。请确保收件人能够访问{sora}链以使用代币。",
+        "tooltip": "在{Sora}网络账户之间发送代币",
+        "addressWarning": "代币将被发送至以下{Sora}地址。请确保收件人能够访问{Sora}链以使用代币。",
         "addressError": "您不能向您当前已连接的同一个账户发送代币。"
     },
     "account": {
