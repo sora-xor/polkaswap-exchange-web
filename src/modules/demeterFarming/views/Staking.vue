@@ -12,7 +12,7 @@
           <token-logo :token="token" size="medium" class="token-logo" />
           <div>
             <h3 class="staking-info-title">{{ token.symbol }}</h3>
-            <div class="s-flex">
+            <div class="s-flex staking-info-badges">
               <status-badge
                 v-for="item of token.items"
                 :key="item.pool.rewardAsset"
@@ -33,6 +33,7 @@
           @add="changePoolStake($event, true)"
           @remove="changePoolStake($event, false)"
           @claim="claimPoolRewards"
+          @calculator="showPoolCalculator"
           show-balance
           class="staking-info-card"
         />
@@ -53,6 +54,7 @@
       :account-pool="selectedAccountPool"
       @confirm="handleClaimRewards"
     />
+    <calculator-dialog :visible.sync="showCalculatorDialog" :pool="selectedPool" :account-pool="selectedAccountPool" />
   </div>
 </template>
 
@@ -80,6 +82,7 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
     StatusBadge: demeterLazyComponent(DemeterComponents.StatusBadge),
     StakeDialog: demeterLazyComponent(DemeterComponents.StakeDialog),
     ClaimDialog: demeterLazyComponent(DemeterComponents.ClaimDialog),
+    CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
     TokenLogo: components.TokenLogo,
   },
 })
@@ -143,6 +146,10 @@ $title-height: 42px;
   height: 100%;
 }
 
+.staking-info-badges {
+  flex-flow: wrap;
+}
+
 .staking-info {
   &-title {
     font-weight: 700;
@@ -150,12 +157,6 @@ $title-height: 42px;
     text-align: left;
     height: $title-height;
     line-height: $title-height;
-  }
-
-  &-badge {
-    & + & {
-      margin-left: $inner-spacing-mini;
-    }
   }
 
   &-card {

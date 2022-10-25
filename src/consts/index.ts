@@ -115,7 +115,6 @@ export enum PageNames {
   Support = 'Support',
   Wallet = 'Wallet',
   PoolContainer = 'PoolContainer',
-  CreatePair = 'CreatePair',
   AddLiquidity = 'AddLiquidity',
   RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
@@ -144,6 +143,8 @@ export enum Components {
   MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
   AppMenu = 'App/Menu/AppMenu',
   AppInfoPopper = 'App/Menu/AppInfoPopper',
+  BrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
+  BrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
   PairTokenLogo = 'PairTokenLogo',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',
@@ -155,6 +156,7 @@ export enum Components {
   SettingsTabs = 'Settings/Tabs',
   SlippageTolerance = 'Settings/SlippageTolerance',
   MarketAlgorithm = 'Settings/MarketAlgorithm',
+  ChartsSwitch = 'Settings/ChartsSwitch',
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
@@ -175,6 +177,7 @@ export enum Components {
   ReferralsConfirmBonding = 'Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'Referrals/ConfirmInviteUser',
   TokenSelectButton = 'Input/TokenSelectButton',
+  TokenInput = 'Input/TokenInput',
   SelectLanguageDialog = 'SelectLanguageDialog',
   SelectAssetList = 'SelectAsset/List',
   SelectToken = 'SelectAsset/SelectToken',
@@ -191,11 +194,11 @@ export enum Components {
   AddLiquidityTransactionDetails = 'TransactionDetails/AddLiquidityTransactionDetails',
   RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
   BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
-  CreatePairTransactionDetails = 'TransactionDetails/CreatePairTransactionDetails',
   BridgeTransferNotification = 'Bridge/TransferNotification',
   MobilePopup = 'MobilePopup/MobilePopup',
   // Pool
   PoolInfo = 'Pool/PoolInfo',
+  PriceChange = 'PriceChange',
 }
 
 export enum RewardsTabsItems {
@@ -302,7 +305,7 @@ export const FaucetLink: SidebarMenuItemLink = {
 export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
-export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
+export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
 export const RewardsChildPages = [
   PageNames.Rewards,
   PageNames.Referral,
@@ -325,15 +328,6 @@ export const AboutTopics = [
   { title: Topics.AddLiquidity, icon: 'basic-drop-24' },
   { title: Topics.PriceFeeds, icon: 'software-terminal-24' },
 ];
-
-export enum LogoSize {
-  MINI = 'mini',
-  SMALL = 'small',
-  MEDIUM = 'medium',
-  BIG = 'big',
-  BIGGER = 'bigger',
-  LARGE = 'large',
-}
 
 export enum EvmSymbol {
   ETH = 'ETH',

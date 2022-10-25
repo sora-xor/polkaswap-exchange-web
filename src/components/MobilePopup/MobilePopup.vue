@@ -17,10 +17,10 @@
           }}
         </p>
         <div>
-          <a :href="StoreLinks.AppStore" target="_blank" rel="nofollow noopener">
+          <a :href="StoreLinks.AppStore" target="_blank" rel="nofollow noopener" tabindex="-1">
             <s-button class="logo logo__app-store">App Store</s-button>
           </a>
-          <a :href="StoreLinks.GooglePlay" target="_blank" rel="nofollow noopener">
+          <a :href="StoreLinks.GooglePlay" target="_blank" rel="nofollow noopener" tabindex="-1">
             <s-button class="logo logo__google-play">Google Play</s-button>
           </a>
         </div>
@@ -66,7 +66,7 @@ export default class MobilePopup extends Mixins(mixins.DialogMixin, TranslationM
 
 <style lang="scss">
 .popup .el-dialog {
-  max-width: 660px;
+  max-width: 660px !important;
   margin-top: 22vh !important;
 }
 

@@ -20,6 +20,10 @@ export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin
   @getter.assets.xor xor!: Nullable<AccountAsset>;
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
+  get pricesAvailable(): boolean {
+    return Object.keys(this.fiatPriceAndApyObject).length > 0;
+  }
+
   // Override it component for another use case
   get networkFee(): CodecString {
     return this.networkFees[Operation.DemeterFarmingGetRewards];

@@ -14,13 +14,26 @@
         :value="String(removePartInput)"
         :decimals="0"
         :disabled="liquidityLocked"
-        :max="100"
+        :max="MAX_PART"
         @input="handleRemovePartChange"
         @focus="setFocusedField('removePart')"
         @blur="resetFocusedField"
       >
         <div slot="top" class="amount">{{ t('removeLiquidity.amount') }}</div>
-        <div slot="right"><span class="percent">%</span></div>
+        <div slot="right" class="el-buttons el-buttons--between">
+          <span class="percent">%</span>
+          <s-button
+            v-if="isMaxButtonAvailable"
+            class="el-button--max s-typography-button--small"
+            type="primary"
+            alternative
+            size="mini"
+            border-radius="mini"
+            @click.stop="handleRemovePartChange(MAX_PART)"
+          >
+            {{ t('buttons.max') }}
+          </s-button>
+        </div>
         <div slot="bottom">
           <s-slider
             class="slider-container"
@@ -35,77 +48,37 @@
         </div>
       </s-float-input>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
-      <s-float-input
-        ref="firstTokenAmount"
-        size="medium"
-        class="s-input--token-value"
-        :value="firstTokenAmount"
-        :decimals="(firstToken || {}).decimals"
+
+      <token-input
         :disabled="liquidityLocked"
-        has-locale-string
-        :delimiters="delimiters"
         :max="getTokenMaxAmount(firstTokenBalance)"
-        @input="handleTokenChange($event, setFirstTokenAmount)"
+        :title="t('removeLiquidity.output')"
+        :token="firstToken"
+        :value="firstTokenAmount"
+        @input="setFirstTokenAmount"
         @focus="setFocusedField('firstTokenAmount')"
         @blur="resetFocusedField"
       >
-        <div slot="top" class="input-line">
-          <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">{{ t('removeLiquidity.output') }}</span>
-          </div>
-          <div v-if="liquidity" class="input-title">-</div>
-        </div>
-        <div slot="right" class="s-flex el-buttons">
-          <token-select-button class="el-button--select-token" :token="firstToken" />
-        </div>
-        <div slot="bottom" class="input-line input-line--footer">
-          <token-address
-            v-if="firstToken"
-            :name="firstToken.name"
-            :symbol="firstToken.symbol"
-            :address="firstToken.address"
-            class="input-value"
-          />
-        </div>
-      </s-float-input>
+        <template #balance>-</template>
+      </token-input>
 
       <s-icon class="icon-divider" name="plus-16" />
 
-      <s-float-input
-        ref="secondTokenAmount"
-        size="medium"
-        class="s-input--token-value"
-        :value="secondTokenAmount"
-        :decimals="(secondToken || {}).decimals"
+      <token-input
         :disabled="liquidityLocked"
-        has-locale-string
-        :delimiters="delimiters"
         :max="getTokenMaxAmount(secondTokenBalance)"
-        @input="handleTokenChange($event, setSecondTokenAmount)"
+        :title="t('removeLiquidity.output')"
+        :token="secondToken"
+        :value="secondTokenAmount"
+        @input="setSecondTokenAmount"
         @focus="setFocusedField('secondTokenAmount')"
         @blur="resetFocusedField"
       >
-        <div slot="top" class="input-line">
-          <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">{{ t('removeLiquidity.output') }}</span>
-          </div>
-          <div v-if="liquidity" class="input-title">-</div>
-        </div>
-        <div slot="right" class="s-flex el-buttons">
-          <token-select-button class="el-button--select-token" :token="secondToken" />
-        </div>
-        <div slot="bottom" class="input-line input-line--footer">
-          <token-address
-            v-if="secondToken"
-            :name="secondToken.name"
-            :symbol="secondToken.symbol"
-            :address="secondToken.address"
-            class="input-value"
-          />
-        </div>
-      </s-float-input>
+        <template #balance>-</template>
+      </token-input>
 
       <slippage-tolerance class="slippage-tolerance-settings" />
+
       <s-button
         type="primary"
         class="action-button s-typography-button--large"
@@ -174,9 +147,8 @@ import type { FocusedField } from '@/store/removeLiquidity/types';
     ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenInput: lazyComponent(Components.TokenInput),
     InfoLine: components.InfoLine,
-    TokenAddress: components.TokenAddress,
   },
 })
 export default class RemoveLiquidity extends Mixins(
@@ -187,7 +159,7 @@ export default class RemoveLiquidity extends Mixins(
   NetworkFeeDialogMixin
 ) {
   readonly XOR_SYMBOL = XOR.symbol;
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+  readonly MAX_PART = 100;
 
   @state.removeLiquidity.liquidityAmount private liquidityAmount!: string;
   @state.removeLiquidity.focusedField private focusedField!: string;
@@ -284,7 +256,8 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isEmptyAmount(): boolean {
-    return !this.removePart || !Number(this.liquidityAmount) || !this.firstTokenAmount || !this.secondTokenAmount;
+    // We don't check removePart for less than 1%
+    return !Number(this.liquidityAmount) || !this.firstTokenAmount || !this.secondTokenAmount;
   }
 
   get liquidityLocked(): boolean {
@@ -345,9 +318,13 @@ export default class RemoveLiquidity extends Mixins(
     });
   }
 
+  get isMaxButtonAvailable(): boolean {
+    return this.removePart !== this.MAX_PART;
+  }
+
   handleRemovePartChange(value: string): void {
     const newValue = parseFloat(value) || 0;
-    this.removePartInput = Math.min(Math.max(newValue, 0), 100);
+    this.removePartInput = Math.min(Math.max(newValue, 0), this.MAX_PART);
     this.setRemovePart(this.removePartInput);
   }
 

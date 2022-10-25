@@ -3,6 +3,7 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { QuotePayload } from '@sora-substrate/liquidity-proxy/build/types';
+import { DexId } from '@sora-substrate/util/build/dex/consts';
 
 import { swapActionContext } from '@/store/swap';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
@@ -56,33 +57,29 @@ const actions = defineActions({
 
     updateTokenSubscription(context, Direction.To);
   },
-  async setSubscriptionPayload(context, payload: QuotePayload): Promise<void> {
-    const { state, getters, commit, rootGetters, rootCommit } = swapActionContext(context);
-    commit.setSubscriptionPayload(payload);
-    // Update paths
+
+  setSubscriptionPayload(context, { dexId, payload }: { dexId: number; payload: QuotePayload }): void {
+    const { state, getters, commit } = swapActionContext(context);
+
     const inputAssetId = getters.tokenFrom?.address;
     const outputAssetId = getters.tokenTo?.address;
-    if (!(inputAssetId && outputAssetId && state.payload)) {
+
+    if (!(inputAssetId && outputAssetId && payload)) {
       return;
     }
+
+    // tbc & xst is enabled only on dex 0
+    const enabledAssets = dexId === DexId.XOR ? state.enabledAssets : { tbc: [], xst: [] };
 
     const { paths, liquiditySources } = api.swap.getPathsAndPairLiquiditySources(
       inputAssetId,
       outputAssetId,
-      state.payload,
-      state.enabledAssets
+      payload,
+      enabledAssets,
+      dexId
     );
 
-    commit.setPaths(paths);
-    commit.setPairLiquiditySources(liquiditySources);
-    // Check market algorithm updates
-    // reset market algorithm to default, if related liquiditySource is not available
-    if (
-      state.pairLiquiditySources.length &&
-      !state.pairLiquiditySources.includes(rootGetters.settings.liquiditySource)
-    ) {
-      rootCommit.settings.setMarketAlgorithm();
-    }
+    commit.setSubscriptionPayload({ dexId, liquiditySources, paths, payload });
   },
   async updateSubscriptions(context): Promise<void> {
     updateTokenSubscription(context, Direction.From);

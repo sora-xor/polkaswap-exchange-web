@@ -44,6 +44,10 @@ const mutations = defineMutations<SettingsState>()({
     state.marketAlgorithm = value;
     storage.set('marketAlgorithm', value);
   },
+  setChartsEnabled(state, value: boolean): void {
+    state.сhartsEnabled = value;
+    storage.set('сhartsEnabled', value);
+  },
   setTransactionDeadline(state, value: number): void {
     state.transactionDeadline = value;
     storage.set('transactionDeadline', value);
@@ -56,6 +60,15 @@ const mutations = defineMutations<SettingsState>()({
   },
   setSelectLanguageDialogVisibility(state, value: boolean): void {
     state.selectLanguageDialogVisibility = value;
+  },
+  setBrowserNotifsPopupEnabled(state, value: boolean): void {
+    state.browserNotifPopupVisibility = value;
+  },
+  setBrowserNotifsPopupBlocked(state, value: boolean): void {
+    state.browserNotifPopupBlockedVisibility = value;
+  },
+  setBrowserNotifsAgreement(state, value: NotificationPermission): void {
+    state.browserNotifsPermission = value;
   },
   setLanguage(state, value: Language): void {
     state.language = value;

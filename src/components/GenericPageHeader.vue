@@ -12,6 +12,7 @@
         border-radius="mini"
         :content="tooltip"
         :placement="tooltipPlacement"
+        tabindex="-1"
       >
         <s-icon name="info-16" size="18px" />
       </s-tooltip>

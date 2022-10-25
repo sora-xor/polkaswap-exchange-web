@@ -50,7 +50,12 @@
               </div>
             </template>
             <div v-if="transactionFromHash" :class="firstTxHashContainerClasses">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="firstTxHash" readonly />
+              <s-input
+                :placeholder="t('bridgeTransaction.transactionHash')"
+                :value="firstTxHash"
+                readonly
+                tabindex="-1"
+              />
               <s-button
                 class="s-button--hash-copy"
                 type="action"
@@ -66,6 +71,7 @@
                 type="ellipsis"
                 icon="basic-more-vertical-24"
                 placement="bottom-end"
+                tabindex="0"
                 @select="isSoraToEvm ? undefined : handleOpenEtherscan()"
               >
                 <template slot="menu">
@@ -176,7 +182,12 @@
               <span class="transaction-error__value">{{ transactionEvmAddress }}</span>
             </div>
             <div v-if="isTransactionFromCompleted && transactionToHash" :class="secondTxHashContainerClasses">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="secondTxHash" readonly />
+              <s-input
+                :placeholder="t('bridgeTransaction.transactionHash')"
+                :value="secondTxHash"
+                readonly
+                tabindex="-1"
+              />
               <s-button
                 class="s-button--hash-copy"
                 type="action"
@@ -192,6 +203,7 @@
                 type="ellipsis"
                 icon="basic-more-vertical-24"
                 placement="bottom-end"
+                tabindex="0"
                 @select="!isSoraToEvm ? undefined : handleOpenEtherscan()"
               >
                 <template slot="menu">
@@ -561,7 +573,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get formattedSoraNetworkFee(): string {
-    return this.getStringFromCodec(this.txSoraNetworkFee, this.xor.decimals);
+    return this.getStringFromCodec(this.txSoraNetworkFee, this.xor?.decimals);
   }
 
   get soraNetworkFeeFiatValue(): Nullable<string> {
@@ -871,6 +883,12 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 .s-button--hash-copy,
 .s-dropdown--hash-menu {
   right: $inner-spacing-medium;
+  &,
+  .el-tooltip {
+    &:focus {
+      outline: auto;
+    }
+  }
 }
 .s-dropdown--hash-menu {
   display: block;
@@ -920,7 +938,7 @@ $network-title-max-width: 250px;
     .s-button--hash-copy,
     .s-dropdown--hash-menu {
       position: absolute;
-      z-index: 1;
+      z-index: $app-content-layer;
       top: 0;
       bottom: 0;
       margin-top: auto;

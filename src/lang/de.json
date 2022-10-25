@@ -49,7 +49,9 @@
             "DemeterFarmingWithdrawLiquidity": "{symbol} und {symbol2} {amount} LP-Token entfernt",
             "DemeterFarmingStakeToken": "{amount} {symbol} hinzugefügt",
             "DemeterFarmingUnstakeToken": "{amount} {symbol} entfernt",
-            "DemeterFarmingGetRewards": "{amount} {symbol} erfolgreich beansprucht"
+            "DemeterFarmingGetRewards": "{amount} {symbol} erfolgreich beansprucht",
+            "EthBridgeIncoming": "Übertragen {amount} {symbol} von {Ethereum} nach {Sora}",
+            "EthBridgeOutgoing": "Übertragen von {amount} {symbol} von {Sora} nach {Ethereum}"
         },
         "error": {
             "Transfer": "Senden von {amount} {symbol} an {address} fehlgeschlagen",
@@ -67,7 +69,9 @@
             "DemeterFarmingWithdrawLiquidity": "{amount} {symbol} und {symbol2} LP-Token konnten nicht entfernt werden",
             "DemeterFarmingStakeToken": "Fehler beim Hinzufügen von {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Entfernen von {amount} {symbol} fehlgeschlagen",
-            "DemeterFarmingGetRewards": "Anspruch auf {symbol} fehlgeschlagen"
+            "DemeterFarmingGetRewards": "Anspruch auf {symbol} fehlgeschlagen",
+            "EthBridgeIncoming": "Fehler beim Übertragen von {amount} {symbol} von {Ethereum} nach {Sora}",
+            "EthBridgeOutgoing": "Fehler beim Übertragen von {amount} {symbol} von {Sora} nach {Ethereum}"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
@@ -77,19 +81,21 @@
         "DemeterFarmingWithdrawLiquidity": "Unstake Liquidität",
         "DemeterFarmingStakeToken": "Stake Token",
         "DemeterFarmingUnstakeToken": "Unstake Token",
-        "DemeterFarmingGetRewards": "Belohnungen beanspruchen"
+        "DemeterFarmingGetRewards": "Belohnungen beanspruchen",
+        "EthBridgeIncoming": "@:hashiBridgeText",
+        "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Es wurde keine {polkadotJs}-Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
-        "noAccounts": "Es scheint keine Konten in deiner {polkadotJs}-Erweiterung zu geben. Bitte, füge ein Konto hinzu und versuche es erneut.",
-        "noAccount": "Polkadot.js Kontofehler. Bitte, überprüfe dein Konto in der Polkadot.js-Erweiterung",
-        "noExtension": "Es wurde keine {extension} gefunden. Bitte installieren Sie es und laden Sie diese Seite neu",
-        "noSigner": "Zugriff abgelehnt. Gehen Sie zu den Erweiterungseinstellungen von {extension} und öffnen Sie \"Website-Zugriff verwalten\", um dies zuzulassen."
+        "noExtensions": "Es wurde keine {PolkadotJs} Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noAccounts": "Es scheint keine Konten in deiner {extension} Erweiterung zu geben. Bitte, füge ein Konto hinzu und versuche es erneut.",
+        "noAccount": "{extension} Kontofehler. Bitte überprüfe dein Konto in der {extension} Erweiterung",
+        "noExtension": "Es wurde keine {extension} gefunden. Bitte installiere es und lade diese Seite neu",
+        "noSigner": "Zugriff abgelehnt. Gehe zu den Erweiterungseinstellungen von {extension} und öffne \"Website-Zugriff verwalten\", um dies zuzulassen."
     },
     "connection": {
-        "title": "{sora}-Netzwerk-Konto",
-        "text": "Verbinde deine {sora}-Netzwerk-Konten oder erstelle neue Konten mit der {polkadotJs} -Browser-Erweiterung. Diese Erweiterung ermöglicht es dir, Transaktionen sicher zu unterzeichnen und Assets im {sora}-Netzwerk zu verwalten.",
-        "noAccounts": "Es wurde kein Konto in deiner {polkadotJs} -Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
+        "title": "SORA-Netzwerk-Konto",
+        "text": "Verbinde deine {Sora}-Netzwerk-Konten oder erstelle neue Konten mit der {PolkadotJs} -Browser-Erweiterung. Diese Erweiterung ermöglicht es dir, Transaktionen sicher zu unterzeichnen und Assets im {Sora}-Netzwerk zu verwalten.",
+        "noAccounts": "Es wurde kein Konto in deiner {extension} Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
         "action": {
             "install": "Erweiterung installieren",
@@ -97,7 +103,7 @@
             "connect": "Konto verbinden",
             "refresh": "Aktualisieren"
         },
-        "selectWallet": "Wählen Sie eine Brieftasche aus, mit der Sie arbeiten möchten",
+        "selectWallet": "Wähle eine Wallet zum Arbeiten aus",
         "wallet": {
             "install": "Installieren"
         }
@@ -124,8 +130,8 @@
         "confirm": "@:confirmText",
         "errorAddress": "Ungültige Adresse. Bitte, überprüfe die Adresse und versuche es erneut.",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "Sende Token zwischen {sora}-Netzwerkkonten",
-        "addressWarning": "Token werden an die unten angegebene {sora}-Adresse gesendet. Stell bitte sicher, dass der Empfänger auf die {sora}-Chain zugreifen kann, um die Token zu verwenden:",
+        "tooltip": "Sende Token zwischen {Sora}-Netzwerkkonten",
+        "addressWarning": "Token werden an die unten angegebene {Sora}-Adresse gesendet. Stell bitte sicher, dass der Empfänger auf die {Sora}-Chain zugreifen kann, um die Token zu verwenden:",
         "addressError": "Du kannst keine Token an dasselbe Konto senden, mit dem du derzeit verbunden bist."
     },
     "account": {
@@ -138,7 +144,11 @@
         "clearHistory": "Verlauf löschen",
         "filterPlaceholder": "Filter nach Adresse, Symbol, Type oder Block-ID",
         "empty": "Deine Transaktionen werden hier angezeigt",
-        "emptySearch": "Keine Transaktionen gefunden"
+        "emptySearch": "Keine Transaktionen gefunden",
+        "firstText": "Zuerst",
+        "lastText": "Letzte",
+        "prevText": "Vorherige",
+        "nextText": "Weiter"
     },
     "assets": {
         "empty": "Keine Assets vorhanden",
@@ -192,6 +202,7 @@
     },
     "createToken": {
         "title": "@:createTokenText",
+        "desc": "Erstelle und nutze benutzerdefinierte Assets auf {Sora}",
         "action": "@:createTokenText",
         "enterSymbol": "Token-Symbol eingeben",
         "enterName": "Token-Name eingeben",
@@ -293,25 +304,23 @@
         "referrer": "Referrer",
         "referral": "Referral"
     },
-    "appName": "Polkaswap",
-    "soraText": "SORA",
-    "ethereumText": "Ethereum",
-    "changeNetworkText": "Netzwerk in MetaMask ändern",
+    "appName": "{Polkaswap}",
+    "changeNetworkText": "Netzwerk in {Metamask} ändern",
     "transactionText": "Transaktion | Transaktionen",
     "connectWalletText": "Konto verbinden",
     "changeAccountText": "Konto wechseln",
     "connectedText": "Verbunden",
-    "connectWalletTextTooltip": "Verbindung zum {sora} -Netzwerk mit {polkadotJs}",
+    "connectWalletTextTooltip": "Verbindung zum {Sora} -Netzwerk mit {PolkadotJs}",
     "selectNodeText": "Netzwerk Node auswählen",
     "bridgeText": "Bridge",
     "disclaimerTitle": "Haftungsausschluss:",
-    "disclaimer": "{disclaimerPrefix} Diese Website wird von der {sora} -Community verwaltet. Bevor du diese Website weiter nutzt, lies bitte den {polkaswapFaqLink} und die Dokumentation, die eine detaillierte Erklärung zur Funktionsweise von {appName} enthält, sowie den {memorandumLink} und {privacyLink}. Diese Dokumente sind entscheidend für eine sichere und positive Benutzererfahrung. Durch die Nutzung von {appName} bestätigst du, dass du diese Dokumente gelesen und verstanden hast. Du erkennst außerdem Folgendes an: 1) Deine alleinige Verantwortung für die Einhaltung aller Gesetze, die für deine spezielle Nutzung von {appName} in deiner Rechtsordnung gelten; 2) Dein Verständnis, dass die aktuelle Version von {appName} eine Alpha-Version ist: Sie wurde nicht vollständig getestet und einige Funktionen können möglicherweise nicht wie vorgesehen verlaufen; und 3) Dein Verständnis und deine freiwillige Akzeptanz der Risiken, die mit der Verwendung von {appName} verbunden sind, einschließlich, aber nicht beschränkt auf das Risiko des Verlustes von Token. Noch einmal: Bitte, fahre nicht fort, ohne {polkaswapFaqLink}, {memorandumLink} und {privacyLink} gelesen zu haben!",
+    "disclaimer": "{disclaimerPrefix} Diese Website wird von der {Sora} -Community verwaltet. Bevor du diese Website weiter nutzt, lies bitte den {polkaswapFaqLink} und die Dokumentation, die eine detaillierte Erklärung zur Funktionsweise von {appName} enthält, sowie den {memorandumLink} und {privacyLink}. Diese Dokumente sind entscheidend für eine sichere und positive Benutzererfahrung. Durch die Nutzung von {appName} bestätigst du, dass du diese Dokumente gelesen und verstanden hast. Du erkennst außerdem Folgendes an: 1) Deine alleinige Verantwortung für die Einhaltung aller Gesetze, die für deine spezielle Nutzung von {appName} in deiner Rechtsordnung gelten; 2) Dein Verständnis, dass die aktuelle Version von {appName} eine Alpha-Version ist: Sie wurde nicht vollständig getestet und einige Funktionen können möglicherweise nicht wie vorgesehen verlaufen; und 3) Dein Verständnis und deine freiwillige Akzeptanz der Risiken, die mit der Verwendung von {appName} verbunden sind, einschließlich, aber nicht beschränkt auf das Risiko des Verlustes von Token. Noch einmal: Bitte, fahre nicht fort, ohne {polkaswapFaqLink}, {memorandumLink} und {privacyLink} gelesen zu haben!",
     "poweredBy": "Bereitgestellt von",
     "confirmTransactionText": "Bestätige die Transaktion in {direction}",
     "retryText": "Wiederholen",
     "networkFeeText": "Netzwerkgebühr",
-    "networkFeeTooltipText": "Die Netzwerkgebühr wird verwendet, um das Wachstum und eine stabile Leistung des {sora} -Systems sicherzustellen.",
-    "ethNetworkFeeTooltipText": "Bitte, beachte, dass die auf Polkaswap angezeigten Ethereum-Netzwerkgebühren nur grobe Schätzungen sind. Du kannst den korrekten Gebührenbetrag in deinem verbundenen Ethereum-Wallet sehen, bevor du die Transaktion bestätigst.",
+    "networkFeeTooltipText": "Die Netzwerkgebühr wird verwendet, um das Wachstum und eine stabile Leistung des {Sora} -Systems sicherzustellen.",
+    "ethNetworkFeeTooltipText": "Bitte, beachte, dass die auf {Polkaswap} angezeigten {Ethereum}-Netzwerkgebühren nur grobe Schätzungen sind. Du kannst den korrekten Gebührenbetrag in deinem verbundenen {Ethereum}-Wallet sehen, bevor du die Transaktion bestätigst.",
     "marketText": "Markt",
     "marketAlgorithmText": "Marktalgorithmus",
     "firstPerSecond": "{first} pro {second}",
@@ -352,13 +361,13 @@
         "medium": "Medium",
         "reddit": "Reddit",
         "github": "GitHub",
-        "wiki": "@:soraText Wiki"
+        "wiki": "{Sora} Wiki"
     },
     "footerMenu": {
         "faucet": "Faucet",
         "github": "GitHub",
-        "sorawiki": "@:soraText Wiki",
-        "memorandum": "Polkaswap Memorandum und Nutzungsbedingungen",
+        "sorawiki": "{Sora} Wiki",
+        "memorandum": "{Polkaswap} Memorandum und Nutzungsbedingungen",
         "privacy": "Datenschutzbestimmungen",
         "info": "Info & Community"
     },
@@ -373,12 +382,12 @@
         "title": "Über",
         "learnMore": "@:learnMoreText",
         "network": {
-            "title": "Was ist {sora}?",
-            "description": "{polkaswap} ist auf dem {sora} -Netzwerk aufgebaut, und der {sora} -Token (XOR) wird für Gas\/Gebühren und Liquiditätsbereitstellung auf {polkaswap} verwendet. {sora} -Netzwerk ermöglicht geringere Gebühren, schnellere Transaktionen und einfachere Konsensabschlüsse und fokussiert sich somit die Bereitstellung der Interoperabilität zwischen anderen Blockchain-Ökosystemen wie {ethereum}."
+            "title": "Was ist {Sora}?",
+            "description": "{Polkaswap} ist auf dem {Sora} -Netzwerk aufgebaut, und der {Sora} -Token (XOR) wird für Gas\/Gebühren und Liquiditätsbereitstellung auf {Polkaswap} verwendet. {Sora} -Netzwerk ermöglicht geringere Gebühren, schnellere Transaktionen und einfachere Konsensabschlüsse und fokussiert sich somit die Bereitstellung der Interoperabilität zwischen anderen Blockchain-Ökosystemen wie {Ethereum}."
         },
         "polkadot": {
-            "title": "Was ist {polkadotJs}?",
-            "description": "Die {polkadotJs} -Erweiterung ist eine für Firefox und Chrome verfügbare Browsererweiterung zur Verwaltung von Konten für Substrate-basierte Chains, einschließlich {sora}, {polkadot} und {kusama}. Du kannst Konten hinzufügen, importieren und exportieren, und Transaktionen oder Extrinsics, die du von autorisierten Websites initiiert hast, signieren."
+            "title": "Was ist {PolkadotJs}?",
+            "description": "Die {PolkadotJs} -Erweiterung ist eine für Firefox und Chrome verfügbare Browsererweiterung zur Verwaltung von Konten für Substrate-basierte Chains, einschließlich {Sora}, {Polkadot} und {Kusama}. Du kannst Konten hinzufügen, importieren und exportieren, und Transaktionen oder Extrinsics, die du von autorisierten Websites initiiert hast, signieren."
         }
     },
     "node": {
@@ -396,10 +405,10 @@
         }
     },
     "selectNodeDialog": {
-        "title": "@:soraText Netzwerks-Node-Auswahl",
+        "title": "{Sora} Netzwerks-Node-Auswahl",
         "addNode": "Benutzerdefinierten Node hinzufügen",
         "customNode": "Benutzerdefinierter Node",
-        "howToSetupOwnNode": "So richtest du deinen eigenen @:soraText Node ein",
+        "howToSetupOwnNode": "So richtest du deinen eigenen {Sora} Node ein",
         "select": "Auswählen",
         "connected": "Verbunden",
         "selectNodeForEnvironment": "Wähle einen Node für das {environment} Umfeld:",
@@ -427,62 +436,62 @@
         "title": "Seite nicht gefunden",
         "body": "404"
     },
-    "metamask": "MetaMask",
+    "metamask": "{Metamask}",
     "sora": {
-        "Dev": "@:soraText Devnet",
-        "Test": "@:soraText Testnet",
-        "Prod": "@:soraText Mainnet",
-        "Stage": "@:soraText Testnet"
+        "Dev": "{Sora} Devnet",
+        "Test": "{Sora} Testnet",
+        "Prod": "{Sora} Mainnet",
+        "Stage": "{Sora} Testnet"
     },
     "evm": {
-        "main": "Ethereum Mainnet",
-        "ropsten": "Ethereum Ropsten",
-        "rinkeby": "Ethereum Rinkeby",
-        "kovan": "Ethereum Kovan",
-        "goerli": "Ethereum Goerli",
+        "main": "{Ethereum} Mainnet",
+        "ropsten": "{Ethereum} Ropsten",
+        "rinkeby": "{Ethereum} Rinkeby",
+        "kovan": "{Ethereum} Kovan",
+        "goerli": "{Ethereum} Goerli",
         "private": "Volta Testnet",
         "EWC": "Energy Web Chain"
     },
     "providers": {
-        "metamask": "@:metamask"
+        "metamask": "{Metamask}"
     },
     "about": {
         "title": "Der DEX für die Interoperable Zukunft.",
-        "description": "Cross-Chain-Austausch von Assets, einfache Erstellung und Listung neuer Assets und die einfachsten Swaps aller Zeiten. Die interoperable Zukunft von {polkadot} ist da und wir stehen an vorderster Front!",
+        "description": "Cross-Chain-Austausch von Assets, einfache Erstellung und Listung neuer Assets und die einfachsten Swaps aller Zeiten. Die interoperable Zukunft von {Polkadot} ist da und wir stehen an vorderster Front!",
         "trading": {
             "title": "Schnellerer Handel",
-            "first": "{appName} ist ein nicht-custodial, cross-chain AMM DEX-Protokoll zum Austauschen von Token basierend auf {polkadot}- und {kusama}-Relaychains, {polkadot}- und {kusama}-Parachains und Blockchains, die direkt über Bridges verbunden sind.",
-            "second": "{appName} entfernt die vertrauenswürdigen Vermittler und bietet die Möglichkeit für ein schnelleres Trading",
-            "third": "{appName} ist ein Community-Projekt und Entwickler arbeiten am Open-Source-Code unter Verwendung der BSD 4-Klausel-Lizenz zusammen"
+            "first": "{Polkaswap} ist ein nicht-custodial, cross-chain AMM DEX-Protokoll zum Austauschen von Token basierend auf {Polkadot} und {Kusama}-Relaychains, {Polkadot} und {Kusama}-Parachains und Blockchains, die direkt über Bridges verbunden sind.",
+            "second": "{Polkaswap} entfernt die vertrauenswürdigen Vermittler und bietet die Möglichkeit für ein schnelleres Trading",
+            "third": "{Polkaswap} ist ein Community-Projekt und Entwickler arbeiten am Open-Source-Code unter Verwendung der BSD 4-Klausel-Lizenz zusammen"
         },
         "liquidity": {
             "title": "Unbegrenzte Liquidität",
-            "first": "{appName} kombiniert mehrere Liquiditätsquellen unter einem gemeinsamen Liquiditätsaggregationsalgorithmus, der vollständig on-chain, trustless und dezentral arbeitet.",
+            "first": "{Polkaswap} kombiniert mehrere Liquiditätsquellen unter einem gemeinsamen Liquiditätsaggregationsalgorithmus, der vollständig on-chain, trustless und dezentral arbeitet.",
             "second": "Wenn Trader die Swap-Funktion aufrufen, wird der Liquiditätsaggregationsalgorithmus Aufträge mit den besten Angeboten aus allen Liquiditätsquellen ausführen. Liquiditätsquellen können andere DEXs, Orderbücher oder andere API-gesteuerte Quellen sein.",
-            "third": "Da {appName} ein Open-Source-Projekt ist, kann jeder weitere Liquiditätsquellen hinzufügen, indem Beiträge zur {appName}-Codebasis geleistet werden."
+            "third": "Da {Polkaswap} ein Open-Source-Projekt ist, kann jeder weitere Liquiditätsquellen hinzufügen, indem Beiträge zur {Polkaswap}-Codebasis geleistet werden."
         },
         "swap": {
             "title": "Beliebige Token tauschen",
-            "first": "Gehe über die Grenzen aktueller DEXs hinaus, indem du Token aus dem {polkadot}-Ökosystem sowie anderen Blockchains hinzufügst.",
-            "second": "Erstelle, liste und handle deine eigenen Token im {sora}-Netzwerk.",
-            "third": "Unsere Kerninfrastruktur verwendet Parity Substrate, das skalierbarer als {ethereum} ist und kein teures Mining für den Konsens verwendet."
+            "first": "Gehe über die Grenzen aktueller DEXs hinaus, indem du Token aus dem {Polkadot}-Ökosystem sowie anderen Blockchains hinzufügst.",
+            "second": "Erstelle, liste und handle deine eigenen Token im {Sora}-Netzwerk.",
+            "third": "Unsere Kerninfrastruktur verwendet Parity Substrate, das skalierbarer als {Ethereum} ist und kein teures Mining für den Konsens verwendet."
         },
         "pswap": {
             "title": "PSWAP Token",
-            "first": "PSWAP wurde von der Community Governance erstellt, indem über seine Veröffentlichung abgestimmt wurde. Es ist ein Utility- und Governance-Token, der verwendet wird, um Liquiditätsanbieter auf {appName} zu belohnen. Im Gegensatz zu den meisten anderen Belohnungstoken wird PSWAP mit Transaktionen verbrannt und das Angebot nimmt im Laufe der Zeit ab.",
-            "second": "Die {percent}% Gebühr für jeden Tausch auf der {polkadot} DEX wird genutzt, um PSWAP-Token zurückzukaufen, die dann verbrannt werden. Zu Beginn werden 90% der verbrannten PSWAP-Token neu gemintet, um sie an die Liquiditätsanbieter zu verteilen, aber mit der Zeit verringert sich der Prozentsatz auf letztlich 35% nach 4 Jahren."
+            "first": "PSWAP wurde von der Community Governance erstellt, indem über seine Veröffentlichung abgestimmt wurde. Es ist ein Utility- und Governance-Token, der verwendet wird, um Liquiditätsanbieter auf {Polkaswap} zu belohnen. Im Gegensatz zu den meisten anderen Belohnungstoken wird PSWAP mit Transaktionen verbrannt und das Angebot nimmt im Laufe der Zeit ab.",
+            "second": "Die {percent}% Gebühr für jeden Tausch auf der {Polkadot} DEX wird genutzt, um PSWAP-Token zurückzukaufen, die dann verbrannt werden. Zu Beginn werden 90% der verbrannten PSWAP-Token neu gemintet, um sie an die Liquiditätsanbieter zu verteilen, aber mit der Zeit verringert sich der Prozentsatz auf letztlich 35% nach 4 Jahren."
         },
         "links": {
             "first": {
-                "title": "Werde ein {sora} Validator",
-                "desc": "Sichere die Zukunft des {sora} Netzwerks und dezentralisierter Apps wie {appName} und verdiene dabei Belohnungen, indem du ein {sora}-Validator wirst."
+                "title": "Werde ein {Sora} Validator",
+                "desc": "Sichere die Zukunft des {Sora} Netzwerks und dezentralisierter Apps wie {Polkaswap} und verdiene dabei Belohnungen, indem du ein {Sora}-Validator wirst."
             },
             "second": {
-                "title": "Verbinde eine Chain mit {sora}",
-                "desc": "Erweitere die dezentralisierte Weltwirtschaft, indem du mithilfe des {hashi}-Bridge Protokolls weitere Chains mit {sora} und {appName} verbindest."
+                "title": "Verbinde eine Chain mit {Sora}",
+                "desc": "Erweitere die dezentralisierte Weltwirtschaft, indem du mithilfe des {Hashi}-Bridge Protokolls weitere Chains mit {Sora} und {Polkaswap} verbindest."
             }
         },
-        "network": "{appName} baut auf dem {sora}-Netzwerk auf und konzentriert sich auf Interoperabilität, um den Rest des Krypto-Ökosystems mit {polkadot} zu verbinden."
+        "network": "{Polkaswap} baut auf dem {Sora}-Netzwerk auf und konzentriert sich auf Interoperabilität, um den Rest des Krypto-Ökosystems mit {Polkadot} zu verbinden."
     },
     "exchange": {
         "Swap": "Swap",
@@ -533,8 +542,8 @@
         "strategicBonusApy": "Strategischer Bonus APY"
     },
     "bridge": {
-        "title": "{hashi}-Bridge",
-        "info": "Konvertiere Token zwischen dem {sora} und {ethereum} Netzwerk.",
+        "title": "{Hashi}-Bridge",
+        "info": "Konvertiere Token zwischen dem {Sora} und {Ethereum} Netzwerk.",
         "balance": "Saldo",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -542,8 +551,8 @@
         "changeNetwork": "@:changeNetworkText",
         "next": "Weiter",
         "connectWallets": "Verbinde Wallets, um den jeweiligen Transaktionsverlauf anzuzeigen.",
-        "soraNetworkFee": "{sora} Netzwerkgebühr",
-        "ethereumNetworkFee": "{ethereum} Netzwerkgebühr",
+        "soraNetworkFee": "{Sora} Netzwerkgebühr",
+        "ethereumNetworkFee": "{Ethereum} Netzwerkgebühr",
         "tooltipValue": "@:comingSoonText",
         "total": "Gesamt",
         "viewHistory": "Transaktionsverlauf anzeigen",
@@ -551,24 +560,25 @@
         "transactionMessage": "{assetA} zu {assetB}",
         "notRegisteredAsset": "Asset {assetSymbol} ist nicht registriert",
         "selectNetwork": "Netzwerk auswählen",
-        "networkInfo": "Bridge {sora} Netzwerk mit:",
+        "networkInfo": "Bridge {Sora} Netzwerk mit:",
+        "ethereum": "{Ethereum}",
         "energy": "@:evm.EWC",
         "copy": "Netzwerkadresse kopieren",
-        "soraAddress": "{sora} Adresse",
-        "ethereumAddress": "{ethereum} Adresse"
+        "soraAddress": "{Sora} Adresse",
+        "ethereumAddress": "{Ethereum} Adresse"
     },
     "selectRegisteredAsset": {
         "title": "Wähle ein Token",
         "search": {
             "title": "Token",
             "placeholder": "Filter nach Asset-ID, Name oder Tickersymbol",
-            "networkLabelSora": "@:soraText Netzwerktoken",
-            "networkLabelEthereum": "@:ethereumText Netzwerksmirror-Token",
+            "networkLabelSora": "{Sora} Netzwerktoken",
+            "networkLabelEthereum": "{Ethereum} Netzwerksmirror-Token",
             "emptyListMessage": "Keine Ergebnisse"
         },
         "customAsset": {
             "title": "Benutzerdefiniert",
-            "customInfo": "Wichtig! Benutzerdefinierte Token müssen in @:(soraText) registriert sein.",
+            "customInfo": "Wichtig! Benutzerdefinierte Token müssen in {Sora} registriert sein.",
             "registerToken": "Token registrieren",
             "addressPlaceholder": "Asset-ID",
             "symbolPlaceholder": "Token Symbol",
@@ -580,8 +590,6 @@
         "confirmTransaction": "Bestätige die Transaktion",
         "insufficientBalance": "@:insufficientBalanceText",
         "changeNetwork": "@:changeNetworkText",
-        "metamask": "@:metamask",
-        "sora": "@:soraText",
         "confirm": "@:confirmTransactionText",
         "buttonConfirm": "@:confirmText"
     },
@@ -609,7 +617,7 @@
             "done": "Erfolgreich",
             "waitingForConfirmation": "Warten auf Bestätigung..."
         },
-        "viewInEtherscan": "Auf {etherscan} anzeigen",
+        "viewInEtherscan": "Auf {Etherscan} anzeigen",
         "networkTitle": "{network} Transaktion",
         "transactionHash": "Transaktions-ID",
         "networkInfo": {
@@ -620,20 +628,20 @@
             "total": "Gesamt"
         },
         "successCopy": "Transaktionshash wurde in die Zwischenablage kopiert",
-        "ethereum": "@:ethereumText",
-        "sora": "@:soraText",
         "pending": "{network} Transaktion ausstehend...",
+        "ethereum": "{Ethereum}",
+        "sora": "{Sora}",
         "retry": "@:retryText",
-        "metamask": "@:metamask",
+        "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Erstelle eine neue Transaktion",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "changeAccount": "@:changeAccountText in @:metamask",
-        "expectedAddress": "Erwartete Adresse in @:metamask",
+        "changeAccount": "@:changeAccountText in {Metamask}",
+        "expectedAddress": "Erwartete Adresse in {Metamask}",
         "title": "Bridge-Transaktion",
-        "expectedMetaMaskAddress": "In MetaMask erwartete Adresse:",
-        "allowToken": "Erlaube {appName}, deine {tokenSymbol} zu verwenden",
+        "expectedMetaMaskAddress": "In {Metamask} erwartete Adresse:",
+        "allowToken": "Erlaube @:appName, deine {tokenSymbol} zu verwenden",
         "approveToken": "Bitte beachte, dass du den Token nur einmal genehmigen musst. Wenn deine Erweiterung mehrere Token-Genehmigungsanfragen hat, stell bitte sicher, dass du nur die Letzte bestätigst und die Übrigen ablehnst.",
         "blocksLeft": "{count} Blöcke übrig..."
     },
@@ -711,7 +719,7 @@
         "locked": "{percent} deines Pools befinden sich im Staking"
     },
     "dexSettings": {
-        "title": "Transaktionseinstellungen",
+        "title": "Einstellungen",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
             "main": "- die Möglichkeit, zwischen dem Primärmarkt (TBC), dem Sekundärmarkt (XYK) oder einem kombinierten intelligenten Algorithmus zu wählen, der den besten Preis für eine bestimmte Transaktion garantiert."
@@ -734,7 +742,9 @@
             "SMART": "{smartAlgorithm} -Liquiditätsrouting stellt den besten Preis für jede Transaktion sicher, indem es nur die besten Preisoptionen aus allen verfügbaren Märkten kombiniert. Wenn verfügbar, wird Token Bonding Curve ({tbcAlgorithm}) für die Liquidität verwendet, solange der Asset-Preis günstiger ist als aus anderen Quellen, auf die der {xycAlgorithm} -Pool zurückgreift.",
             "TBC": "{tbcAlgorithm} – nur von der Token Bonding Curve (Primärmarkt) kaufen. Es besteht die Möglichkeit, dass der Preis im Vergleich zum {xycAlgorithm} -Pool (Sekundärmarkt) ungünstig ist, jedoch kann der Wert, den man durch die vested Belohnung aus dem Kauf von der Token Bonding Curve erhält, sich im Laufe der Zeit als deutlich lukrativer erweisen.",
             "XYK": "{xycAlgorithm} – nur vom XYK-Pool (Sekundärmarkt) kaufen. Traditioneller XYK-Pool-Swap."
-        }
+        },
+        "charts": "Diagramme",
+        "сhartsDescription": "Zeigen Sie Diagramme für Token-Preise an"
     },
     "resultDialog": {
         "title": "Transaktion übermittelt",
@@ -756,21 +766,21 @@
             "failed": "{order} von {total} Transaktionen fehlgeschlagen. @:retryText"
         },
         "signing": {
-            "extension": "Polkadot{.js} Browser-Erweiterung",
-            "accounts": "deine @:soraText und beziehungsweise @:ethereumText Konten"
+            "extension": "{PolkadotJs} Browser-Erweiterung",
+            "accounts": "deine {Sora} und beziehungsweise {Ethereum} Konten"
         },
         "hint": {
-            "connectExternalAccount": "Verbinde ein @:ethereumText Konto, um nach verfügbaren PSWAP und VAL Belohnungen zu prüfen.",
-            "connectAccounts": "Um PSWAP und VAL Belohnungen zu beanspruchen, musst du sowohl dein @:soraText Konto als auch dein @:ethereumText Konto verbinden.",
-            "connectAnotherAccount": "Anderes @:ethereumText Konto verbinden um es auf PSWAP und VAL Belohnungen zu prüfen.",
-            "howToClaimRewards": "Um deine {symbols} Belohnungen zu beanspruchen, musst du {count} {transactions} zu {destination} signieren. Die Belohnungen werden auf dein @:soraText Konto eingezahlt."
+            "connectExternalAccount": "Verbinde ein {Ethereum} Konto, um nach verfügbaren PSWAP und VAL Belohnungen zu prüfen.",
+            "connectAccounts": "Um PSWAP und VAL Belohnungen zu beanspruchen, musst du sowohl dein {Sora} Konto als auch dein {Ethereum} Konto verbinden.",
+            "connectAnotherAccount": "Anderes {Ethereum} Konto verbinden um es auf PSWAP und VAL Belohnungen zu prüfen.",
+            "howToClaimRewards": "Um deine {symbols} Belohnungen zu beanspruchen, musst du {count} {transactions} zu {destination} signieren. Die Belohnungen werden auf dein {Sora} Konto eingezahlt."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
-            "connectExternalWallet": "@:ethereumText Konto verbinden",
+            "connectExternalWallet": "{Ethereum} Konto verbinden",
             "signAndClaim": "Signieren und beanspruchen",
-            "pendingInternal": "@:soraText Transaktion ausstehend...",
-            "pendingExternal": "@:ethereumText Transaktion ausstehend...",
+            "pendingInternal": "{Sora} Transaktion ausstehend...",
+            "pendingExternal": "{Ethereum} Transaktion ausstehend...",
             "retry": "@:retryText",
             "checkRewards": "Prüfen",
             "insufficientBalance": "@:insufficientBalanceText"
@@ -780,11 +790,10 @@
         },
         "events": {
             "XorErc20": "XOR ERC-20",
-            "SoraFarmHarvest": "@:(soraText).farm Farming Einnahme",
+            "SoraFarmHarvest": "{Sora}.farm Farming Einnahme",
             "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Belohnungen von den Gebühren aus der Liquiditätsbereitstellung",
             "BuyOnBondingCurve": "Von der TBC kaufen",
-            "NftAirdrop": "NFT Airdrop",
             "MarketMakerVolume": "Market Making",
             "LiquidityProvisionFarming": "Farming"
         },
@@ -794,15 +803,15 @@
         "claimableAmountDoneVesting": "Beanspruchbare Belohnungen",
         "groups": {
             "strategic": "Strategische Belohnungen",
-            "external": "Belohnungen für das verbundene Ethereum-Konto",
+            "external": "Belohnungen für das verbundene {Ethereum}-Konto",
             "crowdloan": "Crowdloan Belohnungen"
         },
         "Rewards": "Belohnungen",
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "@:ethereumText Anbieter",
-        "metamask": "@:metamask",
+        "default": "{Ethereum} Anbieter",
+        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name} Erweiterung wird ausgeführt, bitte überprüfen",
             "extensionLogin": "Bitte, bei der {name} Erweiterung anmelden",
@@ -819,8 +828,8 @@
         "name": "Name",
         "assetId": "Asset-ID"
     },
-    "memorandum": "Polkaswap Memorandum und Nutzungsbedingungen",
-    "FAQ": "Polkaswap FAQ",
+    "memorandum": "{Polkaswap} Memorandum und Nutzungsbedingungen",
+    "FAQ": "{Polkaswap} FAQ",
     "connectedAccount": "Verbundenes Konto",
     "selectNodeConnected": "Verbunden mit: {chain}",
     "moonpayText": "MoonPay",
@@ -829,15 +838,15 @@
         "notifications": {
             "success": {
                 "title": "Gekaufte Token",
-                "text": "Der Token-Kauf ist abgeschlossen. Die HASHI-Bridge-Transaktion startet automatisch, sobald die Token im verbundenen Ethereum-Konto eingegangen sind. Du kannst dieses Fenster schließen und Polkaswap weiter verwenden. Es wird eine Benachrichtigung über die Bridge-Transaktion angezeigt, sobald sie abgeschlossen ist."
+                "text": "Der Token-Kauf ist abgeschlossen. Die {Hashi}-Bridge-Transaktion startet automatisch, sobald die Token im verbundenen {Ethereum}-Konto eingegangen sind. Du kannst dieses Fenster schließen und {Polkaswap} weiter verwenden. Es wird eine Benachrichtigung über die Bridge-Transaktion angezeigt, sobald sie abgeschlossen ist."
             },
             "supportError": {
                 "title": "Token wird nicht unterstützt",
-                "text": "Leider wird der über @:moonpayText gekaufte Token noch nicht von der HASHI-Bridge in Polkaswap unterstützt. Normalerweise sollten nur die unterstützten Token über MoonPay in Polkaswap zum Kauf verfügbar sein, daher muss irgendwo etwas schief gelaufen sein. Bitte, zögere nicht, die Community über diesen Fall im <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">Polkaswap Telegram group<\/a> zu informieren."
+                "text": "Leider wird der über @:moonpayText gekaufte Token noch nicht von der {Hashi}-Bridge in {Polkaswap} unterstützt. Normalerweise sollten nur die unterstützten Token über MoonPay in {Polkaswap} zum Kauf verfügbar sein, daher muss irgendwo etwas schief gelaufen sein. Bitte, zögere nicht, die Community über diesen Fall im <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">{Polkaswap} Telegram group<\/a> zu informieren."
             },
             "feeError": {
                 "title": "Nicht genügend ETH für die Bridge-Transaktion",
-                "text": "Leider ist die HASHI-Bridge-Transaktion fehlgeschlagen, da nicht genügend ETH vorhanden waren, um die Transaktionsgebühren des Ethereum-Netzwerks zu bezahlen. Bitte, füge mehr ETH hinzu und versuche es erneut."
+                "text": "Leider ist die {Hashi}-Bridge-Transaktion fehlgeschlagen, da nicht genügend ETH vorhanden waren, um die Transaktionsgebühren des {Ethereum}-Netzwerks zu bezahlen. Bitte, füge mehr ETH hinzu und versuche es erneut."
             },
             "transactionError": {
                 "title": "Transaktion fehlgeschlagen",
@@ -845,11 +854,11 @@
             },
             "amountError": {
                 "title": "Unzureichender Saldo",
-                "text": "Leider ist die HASHI-Bridge-Transaktion fehlgeschlagen, da nicht genügend Token für die Transaktion vorhanden waren. Bitte, überprüfe deinen Ethereum-Kontostand und versuche es erneut."
+                "text": "Leider ist die {Hashi}-Bridge-Transaktion fehlgeschlagen, da nicht genügend Token für die Transaktion vorhanden waren. Bitte, überprüfe deinen {Ethereum}-Kontostand und versuche es erneut."
             },
             "accountAddressError": {
-                "title": "Falsches Ethereum-Konto",
-                "text": "Leider ist die HASHI-Bridge-Transaktion fehlgeschlagen, da die Empfängeradresse der Token in der @:moonpayText Order nicht mit deiner aktuellen Ethereum-Kontoadresse übereinstimmt. Bitte, wechsle das Ethereum-Konto in der Erweiterung und versuche es erneut."
+                "title": "Falsches {Ethereum}-Konto",
+                "text": "Leider ist die {Hashi}-Bridge-Transaktion fehlgeschlagen, da die Empfängeradresse der Token in der @:moonpayText Order nicht mit deiner aktuellen {Ethereum}-Kontoadresse übereinstimmt. Bitte, wechsle das {Ethereum}-Konto in der Erweiterung und versuche es erneut."
             }
         },
         "buttons": {
@@ -860,7 +869,7 @@
         },
         "history": {
             "title": "Kaufhistorie",
-            "empty": "Keine Daten"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transaktion bereit für Bridge"
@@ -892,13 +901,13 @@
     "confirmNextTxFailure": {
         "header": "Achtung",
         "info": "Dein XOR Saldo beträgt nach dieser Transaktion weniger als {fee} XOR. Du kannst die Netzwerkgebühr für eine andere Transaktion nicht mehr bezahlen.",
-        "payoff": "Du musst die Bridge verwenden, um XOR von anderen Netzwerken zu erhalten, XOR von einem anderen {sora}-Konto gesendet zu bekommen oder einen anderen Token, der sich bereits auf deinem Konto befindet, in XOR einzutauschen.",
+        "payoff": "Du musst die Bridge verwenden, um XOR von anderen Netzwerken zu erhalten, XOR von einem anderen {Sora}-Konto gesendet zu bekommen oder einen anderen Token, der sich bereits auf deinem Konto befindet, in XOR einzutauschen.",
         "button": "Ja, ich verstehe das Risiko"
     },
     "blockNumberText": "Blocknummer",
     "referralProgram": {
         "title": "Referral Programm",
-        "connectAccount": "Um Benutzer einzuladen, musst du dein SORA-Konto verbinden.",
+        "connectAccount": "Um Benutzer einzuladen, musst du dein {Sora}-Konto verbinden.",
         "bondedXOR": "XOR gebonded",
         "referralsNumber": "{number} Referrals",
         "startInviting": "Bonde XOR, um andere zu empfehlen",
@@ -926,7 +935,7 @@
             "text": "Bestätigen",
             "bond": "Bonden bestätigen",
             "unbond": "Unbonden bestätigen",
-            "inviteTitle": "Du wurdest zu Polkaswap eingeladen",
+            "inviteTitle": "Du wurdest zu {Polkaswap} eingeladen",
             "inviteDescription": "Für jede Transaktion, gehen 10% der Gebühr an deinen Referrer, ohne dass dir zusätzliche Kosten entstehen.",
             "signInvitation": "Genehmigen",
             "freeOfCharge": "Diese Aktion ist kostenfrei",
@@ -941,7 +950,7 @@
             "label": "Einladungslink oder - code",
             "approve": "Genehmigen",
             "approved": "Genehmigt",
-            "description": "Du kannst auf Polkaswap verwiesen werden,<br\/>den Link oder Code des Referrers eingeben",
+            "description": "Du kannst auf {Polkaswap} verwiesen werden,<br\/>den Link oder Code des Referrers eingeben",
             "referredBy": "Du wurdest von {referrer} empfohlen",
             "info": "Wenn du eine Transaktionsgebühr zahlst,<br\/>gehen 10% an deinen Referrer",
             "referredLablel": "Empfohlene Adresse"
@@ -954,19 +963,21 @@
         "download": "QR-Code herunterladen",
         "upload": "QR scannen",
         "invalid": "Ungültiger QR-Code",
-        "import": "Importieren Sie ein Bild",
-        "scan": "Scannen Sie mit der Kamera",
-        "allowanceError": "Überprüfen Sie die Verfügbarkeit Ihrer Kamera und die Browserberechtigungen, um sie zu verwenden",
-        "receive": "Erhalten"
+        "import": "Bild importieren",
+        "scan": "Mit der Kamera scannen",
+        "allowanceError": "Überprüfe die Verfügbarkeit deiner Kamera und die Browserberechtigungen, um sie zu verwenden",
+        "receive": "Erhalten",
+        "camera": "Kamera",
+        "allowanceRequest": "Drücken Sie „Zugriff auf die Kamera zulassen“."
     },
     "bridgeTransferNotification": {
-        "addToken": "Füge {symbol} zu @:metamask hinzu",
+        "addToken": "Füge {symbol} zu {Metamask} hinzu",
         "title": "Bridge-Transaktion erfolgreich"
     },
     "mobilePopup": {
-        "sideMenu": "Hole dir die {sora} Wallet",
-        "header": "Lade die {sora} Wallet mit {polkaswapHighlight} - Funktionen herunter",
-        "info": "Tausche Token aus verschiedenen Netzwerken aus - {sora}, {ethereum}, {polkadot}, {kusama}. Stelle einen Liquiditätspool bereit und verdiene % an Börsengebühren."
+        "header": "Lade die {Sora} Wallet mit {polkaswapHighlight} - Funktionen herunter",
+        "sideMenu": "Hole dir die {Sora} Wallet",
+        "info": "Tausche Token aus verschiedenen Netzwerken aus - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Stelle einen Liquiditätspool bereit und verdiene % an Börsengebühren."
     },
     "releaseNotesText": "Versionshinweise",
     "copiedText": "Kopiert!",
@@ -1001,7 +1012,10 @@
         },
         "amountAdd": "Zu stakender Betrag",
         "amountRemove": "Zu entfernender Betrag",
-        "poweredBy": "Powered by Demeter Farming"
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Taschenrechner",
+        "results": "Ergebnisse",
+        "rewards": "{symbol} Belohnungen"
     },
     "staking": {
         "title": "Staken"
@@ -1044,5 +1058,80 @@
             "PriceCalculationFailed": "Bei der Berechnung des Preises ist ein Fehler aufgetreten"
         }
     },
-    "receivedText": "Erhalten"
+    "receivedText": "Erhalten",
+    "browserNotificationDialog": {
+        "title": "Aktivieren Sie Browserbenachrichtigungen",
+        "info": "Wir senden Ihnen nur relevante Updates zu Ihrem Wallet, zum Beispiel: Änderungen des Vermögensstands",
+        "button": "Benachrichtigungen aktivieren",
+        "agree": "Ja ich verstehe",
+        "notificationBlocked": "Um die Benachrichtigungen über {appName} zu erhalten, erlauben Sie bitte die Benachrichtigungen in den nativen Einstellungen Ihres Browsers",
+        "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten"
+    },
+    "assetDeposit": "Guthaben wurde hinterlegt",
+    "noDataText": "Keine Daten",
+    "ofText": "{first} von {second}",
+    "filter": {
+        "all": "Alle",
+        "token": "Token",
+        "nft": "NFTs",
+        "verifiedOnly": "Nur verifizierte Assets anzeigen",
+        "zeroBalance": "0 Guthaben ausblenden",
+        "showAssets": "Vermögen anzeigen",
+        "show": "Zeigen"
+    },
+    "desktop": {
+        "welcome": {
+            "header": "Willkommen bei {Polkaswap}!",
+            "headline": "Lassen Sie uns Ihr Konto einrichten",
+            "text": "Erstellen Sie Ihr {Sora}-Netzwerkkonto oder melden Sie sich bei den alten an, indem Sie eine mnemonische Phrase oder einen .json-Import verwenden. Auf diese Weise können Sie Transaktionen sicher signieren und Assets im {Sora}-Netzwerk verwalten.",
+            "createAccount": "Ein Konto erstellen",
+            "importAccount": "Konto importieren"
+        },
+        "heading": {
+            "seedPhraseTitle": "Seed-Phrase",
+            "confirmSeedTitle": "Seed-Phrase bestätigen",
+            "accountDetailsTitle": "Konto Details",
+            "importTitle": "Konto importieren"
+        },
+        "button": {
+            "next": "Nächster Schritt",
+            "skip": "Überspringen",
+            "createAccount": "Konto anlegen",
+            "importAccount": "Konto importieren"
+        },
+        "accountName": {
+            "placeholder": "Wallet-Name",
+            "desc": "Dies ist der öffentliche Name Ihrer Brieftasche, der für alle sichtbar ist"
+        },
+        "password": {
+            "placeholder": "Passwort",
+            "desc": "Stellen Sie sicher, dass Sie für einen angemessenen Schutz ein sicheres Passwort verwenden"
+        },
+        "confirmPassword": {
+            "placeholder": "Passwort bestätigen"
+        },
+        "accountMnemonic": {
+            "placeholder": "Mnemonische Phrase"
+        },
+        "seedAdviceText": "Dies ist ein geheimer Code für Ihr Konto. Achten Sie darauf, ihn auf einem nicht-digitalen Träger zu speichern, zum Beispiel auf Papier.",
+        "confirmSeedText": "Bestätigen Sie die Startphrase, indem Sie die Wörter in der richtigen Reihenfolge anklicken",
+        "errorMnemonicText": "Falsche Seed-Phrase-Reihenfolge",
+        "exportOptionText": ".json-Kontodatei exportieren",
+        "exportJsonText": "Sie können immer auf Ihr Konto zugreifen, indem Sie diese .json-Datei importieren. Teilen Sie es mit niemandem!",
+        "addAccount": "Füge ein Konto hinzu",
+        "dialog": {
+            "confirmTitle": "Mit Passwort bestätigen",
+            "confirmButton": "Transaktion unterzeichnen",
+            "savePasswordText": "Mein Passwort für die nächsten 15 Minuten merken",
+            "extendPasswordText": "Zeitraum ohne Passwort um 15 Minuten verlängern"
+        },
+        "errorMessages": {
+            "password": "Das Kennwort stimmt nicht überein",
+            "passwords": "Passwörter stimmten nicht überein",
+            "mnemonic": "Ungültige bip39-Mnemonik angegeben",
+            "mnemonicLength": "Mnemonik sollte {number} Wörter enthalten",
+            "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder"
+        }
+    },
+    "hashiBridgeText": "{Hashi} Brücke"
 }

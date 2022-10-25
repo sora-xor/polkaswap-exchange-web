@@ -40,8 +40,6 @@ export default class Wallet extends Mixins(TranslationMixin) {
   @action.bridge.setAssetAddress private setBridgeAsset!: (address?: string) => Promise<void>;
   @action.addLiquidity.setFirstTokenAddress private setAddliquidityAssetA!: (address: string) => Promise<void>;
   @action.addLiquidity.setSecondTokenAddress private setAddliquidityAssetB!: (address: string) => Promise<void>;
-  @action.createPair.setFirstTokenAddress private setCreatePairAssetA!: (address?: string) => Promise<void>;
-  @action.createPair.setSecondTokenAddress private setCreatePairAssetB!: (address?: string) => Promise<void>;
 
   showAboutNetworkDialog = false;
 
@@ -65,13 +63,7 @@ export default class Wallet extends Mixins(TranslationMixin) {
     const params = { assetAAddress, assetBAddress };
     await this.setAddliquidityAssetA(assetAAddress);
     await this.setAddliquidityAssetB(assetBAddress);
-    if (this.isAddLiquidityAvailable) {
-      router.push({ name: PageNames.AddLiquidity, params });
-      return;
-    }
-    await this.setCreatePairAssetA(assetAAddress);
-    await this.setCreatePairAssetB(assetBAddress);
-    router.push({ name: PageNames.CreatePair, params });
+    router.push({ name: PageNames.AddLiquidity, params });
   }
 
   async handleBridge(asset: AccountAsset): Promise<void> {
@@ -87,6 +79,7 @@ export default class Wallet extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .container--wallet {
+  padding: 0;
   > .el-card {
     &__header {
       padding-top: 0;

@@ -22,6 +22,7 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
 
   showStakeDialog = false;
   showClaimDialog = false;
+  showCalculatorDialog = false;
 
   poolAsset: Nullable<string> = null;
   rewardAsset: Nullable<string> = null;
@@ -85,18 +86,23 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
     return !activeCollapseItems.includes(address);
   }
 
-  changePoolStake(params: { poolAsset: string; rewardAsset: string }, isAddingStake = true) {
+  changePoolStake(params: { poolAsset: string; rewardAsset: string }, isAddingStake = true): void {
     this.isAddingStake = isAddingStake;
     this.setDialogParams(params);
     this.showStakeDialog = true;
   }
 
-  claimPoolRewards(params: { poolAsset: string; rewardAsset: string }) {
+  claimPoolRewards(params: { poolAsset: string; rewardAsset: string }): void {
     this.setDialogParams(params);
     this.showClaimDialog = true;
   }
 
-  private setDialogParams({ poolAsset, rewardAsset }: { poolAsset: string; rewardAsset: string }) {
+  showPoolCalculator(params: { poolAsset: string; rewardAsset: string }): void {
+    this.setDialogParams(params);
+    this.showCalculatorDialog = true;
+  }
+
+  private setDialogParams({ poolAsset, rewardAsset }: { poolAsset: string; rewardAsset: string }): void {
     this.poolAsset = poolAsset;
     this.rewardAsset = rewardAsset;
   }

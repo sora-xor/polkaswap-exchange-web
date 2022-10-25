@@ -87,12 +87,6 @@ const routes: Array<RouteConfig> = [
             component: demeterLazyView(DemeterPageNames.Pool),
           },
           {
-            path: 'create-pair',
-            name: PageNames.CreatePair,
-            component: lazyView(PageNames.CreatePair),
-            meta: { requiresAuth: true },
-          },
-          {
             path: 'add/:firstAddress?/:secondAddress?',
             name: PageNames.AddLiquidity,
             component: lazyView(PageNames.AddLiquidity),
@@ -199,6 +193,9 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const prev = from.name as Nullable<PageNames>;
   const isLoggedIn = store.getters.wallet.account.isLoggedIn;
+  if (prev !== PageNames.BridgeTransaction && to.name === PageNames.BridgeTransactionsHistory) {
+    store.commit.bridge.setHistoryPage(1);
+  }
   if (to.matched.some((record) => record.meta.isInvitationRoute)) {
     if (api.validateAddress(to.params.referrerAddress)) {
       store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
@@ -219,6 +216,7 @@ router.beforeEach((to, from, next) => {
       store.commit.router.setRoute({ prev, current: PageNames.Bridge });
       return;
     }
+
     if (!isLoggedIn) {
       next({ name: PageNames.Wallet });
       store.commit.router.setRoute({ prev, current: PageNames.Wallet });

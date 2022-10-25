@@ -10,7 +10,7 @@
         :asset-symbol="asset.symbol"
       />
     </div>
-    <formatted-amount is-fiat-value value-can-be-hidden :value="totalFiatValue" />
+    <formatted-amount v-if="totalFiatValue" is-fiat-value value-can-be-hidden :value="totalFiatValue" />
   </div>
 </template>
 
@@ -18,6 +18,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { FPNumber } from '@sora-substrate/math';
 
 import { RewardsAmountHeaderItem } from '@/types/rewards';
 
@@ -31,8 +32,8 @@ export default class AmountHeader extends Mixins(mixins.FormattedAmountMixin, mi
 
   @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>;
 
-  get totalFiatValue(): string {
-    const value = this.items.reduce((result, item) => {
+  get totalFiatValue(): Nullable<string> {
+    const value = this.items.reduce<Nullable<FPNumber>>((result, item) => {
       if (!item.amount || !item.asset) return result;
 
       const fpAmount = this.getFPNumber(item.amount);
@@ -41,10 +42,17 @@ export default class AmountHeader extends Mixins(mixins.FormattedAmountMixin, mi
 
       const fpFiatAmount = this.getFPNumberFiatAmountByFPNumber(fpAmount, item.asset as Asset);
 
-      return fpFiatAmount ? result.add(fpFiatAmount) : result;
-    }, this.Zero);
+      if (fpFiatAmount) {
+        if (!result) {
+          result = this.Zero;
+        }
+        return result.add(fpFiatAmount);
+      } else {
+        return result;
+      }
+    }, null);
 
-    return value.toLocaleString();
+    return value?.toLocaleString();
   }
 }
 </script>

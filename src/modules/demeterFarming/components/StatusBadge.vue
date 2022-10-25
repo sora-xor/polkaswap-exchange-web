@@ -7,7 +7,7 @@
 
     <div class="status-badge-title">
       <div>{{ title }}</div>
-      <div class="status-badge-title--mini">{{ aprFormatted }} APR</div>
+      <div v-if="pricesAvailable" class="status-badge-title--mini">{{ aprFormatted }} APR</div>
     </div>
   </div>
 </template>
@@ -76,6 +76,15 @@ $status-badge-width: 140px;
 
   background: var(--s-color-theme-accent);
   color: var(--s-color-base-on-accent);
+
+  &:nth-child(2n) {
+    // 2 items per row
+    margin-left: $inner-spacing-mini;
+  }
+  &:nth-child(n + 3) {
+    // Starting from 2nd row
+    margin-top: $inner-spacing-mini;
+  }
 
   &.active {
     background: var(--s-color-base-on-accent);

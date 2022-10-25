@@ -1,18 +1,6 @@
 <template>
   <transaction-details :info-only="infoOnly" class="info-line-container">
-    <div
-      v-if="areTokensSelected && isAvailable && !isNotFirstLiquidityProvider && emptyAssets"
-      class="info-line-container"
-    >
-      <p class="info-line-container__title">{{ t('createPair.firstLiquidityProvider') }}</p>
-      <info-line>
-        <template #info-line-prefix>
-          <p class="info-line--first-liquidity" v-html="t('createPair.firstLiquidityProviderInfo')" />
-        </template>
-      </info-line>
-    </div>
-
-    <div v-if="areTokensSelected && isAvailable && !emptyAssets" class="info-line-container">
+    <div v-if="!emptyAssets" class="info-line-container">
       <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
       <info-line
         :label="t('addLiquidity.firstPerSecond', { first: firstTokenSymbol, second: secondTokenSymbol })"
@@ -60,16 +48,12 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
-import BaseTokenPairMixinInstance, { TokenPairNamespace } from '../mixins/BaseTokenPairMixin';
+import BaseTokenPairMixin from '../mixins/BaseTokenPairMixin';
 import TranslationMixin from '../mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { getter } from '@/store/decorators';
-
-const namespace = TokenPairNamespace.AddLiquidity;
-
-const BaseTokenPairMixin = BaseTokenPairMixinInstance(namespace);
 
 @Component({
   components: {
@@ -79,7 +63,6 @@ const BaseTokenPairMixin = BaseTokenPairMixinInstance(namespace);
 })
 export default class AddLiquidityTransactionDetails extends Mixins(TranslationMixin, BaseTokenPairMixin) {
   @getter.addLiquidity.liquidityInfo private liquidityInfo!: Nullable<AccountLiquidity>;
-  @getter.addLiquidity.isNotFirstLiquidityProvider isNotFirstLiquidityProvider!: boolean;
   @getter.addLiquidity.shareOfPool shareOfPool!: string;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
