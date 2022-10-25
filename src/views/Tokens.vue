@@ -31,7 +31,7 @@
           <div class="tokens-item-info tokens-item-info--body">
             <div class="tokens-item-name">{{ row.name }}</div>
             <div class="tokens-item-address">
-              <span>{{ t('soraText') }}:</span>&nbsp;
+              <span>{{ TranslationConsts.Sora }}:</span>&nbsp;
               <token-address
                 class="tokens-item-address__value"
                 :show-name="false"
@@ -41,7 +41,7 @@
               />
             </div>
             <div v-if="row.externalAddress" class="tokens-item-address">
-              <span>{{ t('ethereumText') }}:</span>&nbsp;
+              <span>{{ TranslationConsts.Ethereum }}:</span>&nbsp;
               <token-address
                 class="tokens-item-address__value"
                 :show-name="false"
