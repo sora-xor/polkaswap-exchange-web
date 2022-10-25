@@ -66,7 +66,7 @@
             "ReferralSetInvitedUser": "Не удалось установить реферала",
             "SwapAndSend": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Не удалось предоставить {amount} {symbol} и {symbol2} LP токены",
-            "DemeterFarmingWithdrawLiquidity": "Не удалось удалить  {amount} {symbol} и {symbol2} LP токены",
+            "DemeterFarmingWithdrawLiquidity": "Не удалось удалить {amount} {symbol} и {symbol2} LP токены",
             "DemeterFarmingStakeToken": "Не удалось добавить {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Не удалось удалить {amount} {symbol}",
             "DemeterFarmingGetRewards": "Не удалось получить {symbol}",

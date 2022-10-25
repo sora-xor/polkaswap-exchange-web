@@ -19,17 +19,9 @@ import * as viJson from '../../../src/lang/vi.json';
 import * as yoJson from '../../../src/lang/yo.json';
 import * as zhCnJson from '../../../src/lang/zh_CN.json';
 
-const TranslationConsts = {
-  appName: 'Polkaswap',
-  ethereum: 'Ethereum',
-  hashi: 'HASHI',
-  xyk: 'XYK',
-  metamask: 'MetaMask',
-  polkadot: 'Polkadot',
-  kusama: 'Kusama',
-  polkadotJs: 'Polkadot.js',
-  etherscan: 'Etherscan',
-};
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+
+const TranslationConsts = WALLET_CONSTS.TranslationConsts;
 
 const brokenTranslation: any = {};
 

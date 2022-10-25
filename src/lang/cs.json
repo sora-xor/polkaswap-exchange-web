@@ -54,7 +54,7 @@
             "EthBridgeOutgoing": "Převedeno {amount} {symbol} z {Sora} do {Ethereum}"
         },
         "error": {
-            "Transfer": "{action} {amount} {symbol}  {direction} {address} se nezdařilo.",
+            "Transfer": "{action} {amount} {symbol} {direction} {address} se nezdařilo.",
             "Swap": "Swap {amount} {symbol} za {amount2} {symbol2} se nezdařil.",
             "AddLiquidity": "Přidání {amount} {symbol} a {amount2} {symbol2} se nezdařilo.",
             "RemoveLiquidity": "Odebrání {amount} {symbol} a {amount2} {symbol2} se nezdařilo.",
@@ -712,7 +712,7 @@
         "output": "Výstup",
         "price": "Cena",
         "remove": "Odstranit",
-        "description": "Výběrem tokenů z poolu se vaše pozice převede zpět na podkladové tokeny v aktuálním kurzu, který je úměrný vašemu podílu v poolu.  Nasbírané poplatky jsou zahrnuty v částkách, které obdržíte.",
+        "description": "Výběrem tokenů z poolu se vaše pozice převede zpět na podkladové tokeny v aktuálním kurzu, který je úměrný vašemu podílu v poolu. Nasbírané poplatky jsou zahrnuty v částkách, které obdržíte.",
         "outputMessage": "Výstup je odhadován. Pokud se cena změní o více než {slippageTolerance}%, transakce se vrátí zpět.",
         "confirmTitle": "Obdržíte",
         "shareOfPool": "Podíl z poolu po transakci",

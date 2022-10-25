@@ -34,7 +34,7 @@
         "ClaimRewards": "Захтевајте награде",
         "andText": "и",
         "finalized": {
-            "Transfer": "Послато  {amount} {symbol} на {address}",
+            "Transfer": "Послато {amount} {symbol} на {address}",
             "Swap": "Замењено {amount} {symbol} за {amount2} {symbol2}",
             "AddLiquidity": "Испоручено {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Уклоњено {amount} {symbol} и {amount2} {symbol2}",
