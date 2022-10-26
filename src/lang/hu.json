@@ -109,7 +109,7 @@
         }
     },
     "wallet": {
-        "title": "SORA hálózati fiók",
+        "title": "{Sora} hálózati fiók",
         "WalletAssets": "Eszközök",
         "WalletActivity": "Aktivitás",
         "addAsset": "@:addAssetText",
@@ -305,7 +305,7 @@
         "referrer": "Ajánló",
         "referral": "Ajánlás"
     },
-    "appName": "{Polkaswap}",
+    "appName": "{AppName}",
     "changeNetworkText": "Hálózatváltás a {Metamask}",
     "transactionText": "tranzakció | tranzakciók",
     "connectWalletText": "Fiók csatlakoztatása",
@@ -314,14 +314,13 @@
     "connectWalletTextTooltip": "Csatlakozás a {Sora} hálózathoz a {PolkadotJs} segítségével",
     "selectNodeText": "Hálózati csomópont kiválasztása",
     "bridgeText": "Híd",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Jogi nyilatkozat<\/span>: Ezt a weboldalt a {Sora} közösség tartja fenn. Mielőtt folytatnád a weboldal használatát, kérjük, olvasd el a @:polkaswapFaqLink -et és a dokumentációt, amely részletes magyarázatot tartalmaz a {Polkaswap} működéséről, valamint a @:memorandumLink -et és a @:(privacyLink) -et. Ezek a dokumentumok elengedhetetlenek a biztonságos és pozitív felhasználói élményhez. A {Polkaswap} használatával elismered, hogy elolvastad és megértetted ezeket a dokumentumokat. Továbbá elismered a következőket: 1) a Te kizárólagos felelősséged a {Polkaswap} adott használatára vonatkozó összes törvény betartása, amelyek az országod joghatósága alatt érvényesek lehetnek; 2) megértetted, hogy a {Polkaswap} jelenlegi verziója egy alfa verzió: nem lett teljes körűen tesztelve, és egyes funkciók nem feltétlenül működnek a tervezett módon; és 3) megértetted és önkéntesen elfogadod a {Polkaswap} használatával járó kockázatokat, beleértve, de nem kizárólagosan, a tokenek elvesztésének kockázatát. Még egyszer, kérjük, ne folytasd a @:polkaswapFaqLink, @:memorandumLink és @:privacyLink elolvasása nélkül!",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
+    "disclaimer": "{disclaimerPrefix} Ezt a weboldalt a {Sora} közösség tartja fenn. Mielőtt folytatnád a weboldal használatát, kérjük, olvasd el a {polkaswapFaqLink} -et és a dokumentációt, amely részletes magyarázatot tartalmaz a {AppName} működéséről, valamint a {memorandumLink} -et és a {privacyLink} -et. Ezek a dokumentumok elengedhetetlenek a biztonságos és pozitív felhasználói élményhez. A {AppName} használatával elismered, hogy elolvastad és megértetted ezeket a dokumentumokat. Továbbá elismered a következőket: 1) a Te kizárólagos felelősséged a {AppName} adott használatára vonatkozó összes törvény betartása, amelyek az országod joghatósága alatt érvényesek lehetnek; 2) megértetted, hogy a {AppName} jelenlegi verziója egy alfa verzió: nem lett teljes körűen tesztelve, és egyes funkciók nem feltétlenül működnek a tervezett módon; és 3) megértetted és önkéntesen elfogadod a {AppName} használatával járó kockázatokat, beleértve, de nem kizárólagosan, a tokenek elvesztésének kockázatát. Még egyszer, kérjük, ne folytasd a {polkaswapFaqLink}, {memorandumLink} és {privacyLink} elolvasása nélkül!",
     "poweredBy": "Üzemelteti a ",
     "confirmTransactionText": "Tranzakció megerősítése {direction}",
     "retryText": "Próbáld újra",
     "networkFeeText": "Hálózati díj",
     "networkFeeTooltipText": "A hálózati díjat a {Sora} rendszer növekedésének és stabil teljesítményének biztosítására használják.",
-    "ethNetworkFeeTooltipText": "Felhívjuk figyelmedet, hogy a {Polkaswap}-on feltüntetett {Ethereum} hálózati díjak csak durva becslések, a tranzakció megerősítése előtt a csatlakoztatott {Ethereum} tárcádban láthatod a helyes díj összegét.",
+    "ethNetworkFeeTooltipText": "Felhívjuk figyelmedet, hogy a {AppName}-on feltüntetett {Ethereum} hálózati díjak csak durva becslések, a tranzakció megerősítése előtt a csatlakoztatott {Ethereum} tárcádban láthatod a helyes díj összegét.",
     "marketText": "Piac",
     "marketAlgorithmText": "Piaci algoritmus",
     "firstPerSecond": "{first} \/ {second}",
@@ -368,7 +367,7 @@
         "faucet": "Faucet",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "{Polkaswap} Memorandum és Általános Szerződési Feltételek",
+        "memorandum": "{AppName} Memorandum és Általános Szerződési Feltételek",
         "privacy": "Adatvédelmi irányelvek",
         "info": "Információ és közösség"
     },
@@ -376,9 +375,7 @@
         "title": "Segítség",
         "termsOfService": "Általános Szerződési Feltételek",
         "privacyPolicy": "Adatvédelmi irányelvek",
-        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
-        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
-        "appVersion": "@:appName verzió",
+        "appVersion": "{AppName} verzió",
         "contactUs": "Kapcsolat"
     },
     "aboutNetworkDialog": {
@@ -386,7 +383,7 @@
         "learnMore": "@:learnMoreText",
         "network": {
             "title": "Mi az a {Sora}?",
-            "description": "A {Polkaswap} a {Sora} hálózatra épül, és a {Sora} tokent (XOR) használják a Polkaswapon a gáz\/díjak és a likviditás biztosításához. A {Sora} Network lehetővé teszi a csökkentett díjakat, a gyorsabb tranzakciókat és az egyszerűbb konszenzus véglegesítést, és arra összpontosít, hogy más blokklánc ökoszisztémák, például az {Ethereum} közötti átjárhatóságot biztosítsa."
+            "description": "A {AppName} a {Sora} hálózatra épül, és a {Sora} tokent (XOR) használják a Polkaswapon a gáz\/díjak és a likviditás biztosításához. A {Sora} Network lehetővé teszi a csökkentett díjakat, a gyorsabb tranzakciókat és az egyszerűbb konszenzus véglegesítést, és arra összpontosít, hogy más blokklánc ökoszisztémák, például az {Ethereum} közötti átjárhatóságot biztosítsa."
         },
         "polkadot": {
             "title": "Mi az a {PolkadotJs}?",
@@ -463,15 +460,15 @@
         "description": "Blokkláncok közötti eszközcsere, új eszközök egyszerű létrehozása és listázása, valamint a valaha volt legegyszerűbb token váltás. {Polkadot} átjárható jövője itt van, és mi az élvonalban vagyunk!",
         "trading": {
             "title": "Gyorsabb kereskedés",
-            "first": "A {Polkaswap} egy nem letétkezelő, blokkláncok közti AMM DEX protokoll a {Polkadot} és {Kusama} relayláncokon, {Polkadot} és {Kusama} paraláncokon, valamint a hidakon keresztül közvetlenül összekapcsolt blokkláncokon alapuló tokenek cseréjére.",
-            "second": "A {Polkaswap} helyettesíti a megbízott közvetítőket és lehetőséget biztosít a gyorsabb kereskedésre",
-            "third": "A {Polkaswap} egy közösségi projekt, és a fejlesztők együttműködnek a nyílt forráskódú kódon, a"
+            "first": "A {AppName} egy nem letétkezelő, blokkláncok közti AMM DEX protokoll a {Polkadot} és {Kusama} relayláncokon, {Polkadot} és {Kusama} paraláncokon, valamint a hidakon keresztül közvetlenül összekapcsolt blokkláncokon alapuló tokenek cseréjére.",
+            "second": "A {AppName} helyettesíti a megbízott közvetítőket és lehetőséget biztosít a gyorsabb kereskedésre",
+            "third": "A {AppName} egy közösségi projekt, és a fejlesztők együttműködnek a nyílt forráskódú kódon, a"
         },
         "liquidity": {
             "title": "Határtalan likviditás",
-            "first": "A {Polkaswap} több likviditási forrást egyesít egy közös likviditás-összevonási algoritmus alatt, amely teljesen a blokkláncon működik, megbízható és decentralizált módon.",
+            "first": "A {AppName} több likviditási forrást egyesít egy közös likviditás-összevonási algoritmus alatt, amely teljesen a blokkláncon működik, megbízható és decentralizált módon.",
             "second": "Amikor a kereskedők váltás funkciót használják, a likviditás-összevonó algoritmus az összes likviditási forrás legjobb ajánlatának felhasználásával tölti ki a megbízásokat. A likviditási források lehetnek más DEX-ek, ajánlati könyvek vagy más API-alapú források.",
-            "third": "Mivel a {Polkaswap} egy nyílt forráskódú projekt, bárki további likviditási forrásokat adhat hozzá a {Polkaswap} kódbázisához való hozzájárulással."
+            "third": "Mivel a {AppName} egy nyílt forráskódú projekt, bárki további likviditási forrásokat adhat hozzá a {AppName} kódbázisához való hozzájárulással."
         },
         "swap": {
             "title": "Bármilyen token váltása",
@@ -481,20 +478,20 @@
         },
         "pswap": {
             "title": "PSWAP Tokenek",
-            "first": "A PSWAP-ot a közösségi kormányzás hozta létre a kiadásáról szóló szavazással. Ez egy segéd- és kormányzó token, amelyet a likviditási szolgáltatók jutalmazására használnak a {Polkaswap}. A legtöbb más jutalom tokentől eltérően a PSWAP tranzakciókkal elégetésre kerül, és idővel csökken a kínálat.",
-            "second": "A {Polkaswap} DEX-en történő minden egyes váltás után fizetett {percent}%-os díjat a PSWAP tokenek visszavásárlására fordítják, amelyeket aztán elégetnek. Kezdetben az elégetett PSWAP tokenek 90%-át újragenerálják, hogy likviditásszolgáltatóknak osszák ki, de idővel ez az arány 4 év múlva 35%-ra csökken."
+            "first": "A PSWAP-ot a közösségi kormányzás hozta létre a kiadásáról szóló szavazással. Ez egy segéd- és kormányzó token, amelyet a likviditási szolgáltatók jutalmazására használnak a {AppName}. A legtöbb más jutalom tokentől eltérően a PSWAP tranzakciókkal elégetésre kerül, és idővel csökken a kínálat.",
+            "second": "A {AppName} DEX-en történő minden egyes váltás után fizetett {percent}%-os díjat a PSWAP tokenek visszavásárlására fordítják, amelyeket aztán elégetnek. Kezdetben az elégetett PSWAP tokenek 90%-át újragenerálják, hogy likviditásszolgáltatóknak osszák ki, de idővel ez az arány 4 év múlva 35%-ra csökken."
         },
         "links": {
             "first": {
                 "title": "Legyél {Sora} Validátor",
-                "desc": "Biztosítsd a {Sora}-hálózatot és az olyan decentralizált alkalmazások jövőjét, mint a {Polkaswap}, és szerezz jutalmakat azzal, ha {Sora} validátorrá válsz."
+                "desc": "Biztosítsd a {Sora}-hálózatot és az olyan decentralizált alkalmazások jövőjét, mint a {AppName}, és szerezz jutalmakat azzal, ha {Sora} validátorrá válsz."
             },
             "second": {
                 "title": "Lánc csatlakoztatása a {Sora}-hoz",
-                "desc": "Gyarapítsd a decentralizált világgazdaságot azáltal, hogy több blokkláncot csatlakoztatsz a {Sora} és a {Polkaswap} rendszerhez a {Hashi} hídprotokoll segítségével."
+                "desc": "Gyarapítsd a decentralizált világgazdaságot azáltal, hogy több blokkláncot csatlakoztatsz a {Sora} és a {AppName} rendszerhez a {Hashi} hídprotokoll segítségével."
             }
         },
-        "network": "A {Polkaswap} a {Sora} hálózatra épül, amely a kölcsönös átjárhatóságra összpontosít, hogy összekapcsolja a kripto ökoszisztéma többi részét a {Polkadot}."
+        "network": "A {AppName} a {Sora} hálózatra épül, amely a kölcsönös átjárhatóságra összpontosít, hogy összekapcsolja a kripto ökoszisztéma többi részét a {Polkadot}."
     },
     "exchange": {
         "Swap": "Váltás",
@@ -520,7 +517,6 @@
         "liquidityProviderFeeTooltip": "Minden egyes kereskedés egy része ({liquidityProviderFee}%) a likviditás szolgáltatókhoz kerül, mint protokoll-ösztönző.",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Nem elegendő {tokenSymbol} összeg",
         "insufficientLiquidity": "Nincs elég likviditás",
@@ -634,7 +630,7 @@
         "successCopy": "A tranzakciós hash a vágólapra másolva",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
-        "pending": "<span class=\"network-title\">{network}<\/span> tranzakció folyamatban...",
+        "pending": "{network} tranzakció folyamatban...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -645,7 +641,7 @@
         "expectedAddress": "Várható {Metamask} cím",
         "title": "Híd tranzakció",
         "expectedMetaMaskAddress": "Várható cím a {Metamask}:",
-        "allowToken": "Engedélyezd, hogy a @:appName használhassa a {tokenSymbol}",
+        "allowToken": "Engedélyezd, hogy a {AppName} használhassa a {tokenSymbol}",
         "approveToken": "Felhívjuk figyelmedet, hogy a tokent csak egyszer kell jóváhagyni. Ha a kiterjesztésnek több token jóváhagyási kérelmed van, győződj meg róla, hogy csak az utolsót erősíted meg, míg a többit elutasítod.",
         "blocksLeft": "{count} blokk maradt..."
     },
@@ -743,9 +739,9 @@
         "port": "PORT",
         "min": "MIN",
         "marketAlgorithms": {
-            "SMART": "<span class=\"algorithm\">SMART<\/span> likviditás kezelés biztosítja a legjobb árat bármely tranzakciónál, kombinálva a legjobb árakat az elérhető összes piacról. Amikor elérhető, Token Bonding Curve ( <span class=\"algorithm\">TBC <\/span>) likviditását használja amíg az eszköz ára kedvezőbb más forrásokénál, amelyek az <span class=\"algorithm\">XYK<\/span> pool-t használják.",
-            "TBC": "<span class=\"algorithm\">TBC<\/span>— vásárlás csak a Token Bonding Curve -ből (Elsődleges Piac). Lehetséges, hogy az ár annyira nem kedvező a <span class=\"algorithm\">XYK<\/span> pool-hoz (Másodlagos Piac) képest, de az ezáltal megszerezhető jutalmak idővel kedvezőbbé tehetik.",
-            "XYK": "<span class=\"algorithm\">XYK<\/span> — vásárlás csak az XYK Pool-ból (Másodlagos Piac). Tradícionális XYK pool váltás."
+            "SMART": "{smartAlgorithm} likviditás kezelés biztosítja a legjobb árat bármely tranzakciónál, kombinálva a legjobb árakat az elérhető összes piacról. Amikor elérhető, Token Bonding Curve ({tbcAlgorithm}) likviditását használja amíg az eszköz ára kedvezőbb más forrásokénál, amelyek az {xycAlgorithm} pool-t használják.",
+            "TBC": "{tbcAlgorithm}— vásárlás csak a Token Bonding Curve -ből (Elsődleges Piac). Lehetséges, hogy az ár annyira nem kedvező a {xycAlgorithm} pool-hoz (Másodlagos Piac) képest, de az ezáltal megszerezhető jutalmak idővel kedvezőbbé tehetik.",
+            "XYK": "{xycAlgorithm} — vásárlás csak az XYK Pool-ból (Másodlagos Piac). Tradícionális XYK pool váltás."
         },
         "charts": "Diagramok",
         "сhartsDescription": "Tekintse meg a token árak diagramjait"
@@ -759,7 +755,6 @@
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "és",
         "claiming": {
             "pending": "Igénylés...",
@@ -833,10 +828,8 @@
         "name": "Név",
         "assetId": "Eszköz azonosítója"
     },
-    "memorandum": "{Polkaswap} Memorandum és Általános Szerződési Feltételek",
-    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\">@:memorandum<\/a>",
-    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
-    "FAQ": "{Polkaswap} GYIK",
+    "memorandum": "{AppName} Memorandum és Általános Szerződési Feltételek",
+    "FAQ": "{AppName} GYIK",
     "connectedAccount": "Csatlakoztatott fiók",
     "selectNodeConnected": "Csatlakoztatva: {chain}",
     "moonpayText": "MoonPay",
@@ -845,11 +838,11 @@
         "notifications": {
             "success": {
                 "title": "Vásárolt tokenek",
-                "text": "A tokenvásárlás befejeződött. A {Hashi} bridge tranzakció automatikusan elindul, amint a tokenek beérkeztek a csatlakoztatott {Ethereum} számlára. Nyugodtan bezárhatja ezt az ablakot, és folytathatja a {Polkaswap} használatát. A híd tranzakcióról értesítés fog érkezni, amikor készen áll."
+                "text": "A tokenvásárlás befejeződött. A {Hashi} bridge tranzakció automatikusan elindul, amint a tokenek beérkeztek a csatlakoztatott {Ethereum} számlára. Nyugodtan bezárhatja ezt az ablakot, és folytathatja a {AppName} használatát. A híd tranzakcióról értesítés fog érkezni, amikor készen áll."
             },
             "supportError": {
                 "title": "Nem támogatott token",
-                "text": "Sajnos a @:moonpayText keresztül vásárolt tokent még nem támogatja a {Polkaswap} {Hashi} hídja. Normális esetben csak a támogatott tokeneknek kellene elérhetőnek lenniük a MoonPay-en keresztül történő vásárláshoz a {Polkaswap}ban, ezért valami valahol elromolhatott. Kérjük, ne habozz, hogy tájékoztasd a közösséget erről az esetről a <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">{Polkaswap} Telegram csoportjában<\/a>."
+                "text": "Sajnos a @:moonpayText keresztül vásárolt tokent még nem támogatja a {AppName} {Hashi} hídja. Normális esetben csak a támogatott tokeneknek kellene elérhetőnek lenniük a MoonPay-en keresztül történő vásárláshoz a {AppName}ban, ezért valami valahol elromolhatott. Kérjük, ne habozz, hogy tájékoztasd a közösséget erről az esetről a <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">{AppName} Telegram csoportjában<\/a>."
             },
             "feeError": {
                 "title": "Nincs elég ETH a híd tranzakcióhoz",
@@ -922,7 +915,6 @@
         "deposit": "Befizetés",
         "balance": "Egyenleg",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Elégtelen lekötött egyenleg",
         "action": {
@@ -959,7 +951,7 @@
             "label": "Meghívó link vagy kód",
             "approve": "Jóváhagyás",
             "approved": "Jóváhagyva",
-            "description": "Meghívták a {Polkaswap}-ra, <br\/> írja be a ajánlói linkjét vagy kódját",
+            "description": "Meghívták a {AppName}-ra, <br\/> írja be a ajánlói linkjét vagy kódját",
             "referredBy": "Önt {referrer} ajánlotta.",
             "info": "Amikor tranzakciós díjat fizet, a <br\/> 10%-ot kap az ajánlója.",
             "referredLablel": "Ajánlói cím"
@@ -985,7 +977,7 @@
     },
     "mobilePopup": {
         "sideMenu": "Szerezze be a {Sora} Wallet",
-        "header": "A {Sora} Wallet letöltése <span class=\"popup-info__headline--highlight\"> {Polkaswap} <\/span> funkcióival",
+        "header": "A {Sora} Wallet letöltése {polkaswapHighlight} funkcióival",
         "info": "Cserélje ki a tokeneket különböző hálózatokból - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Biztosítson likviditási készletet, és keressen %-ot a cseredíjakból."
     },
     "releaseNotesText": "Kiadási megjegyzések",
@@ -1073,7 +1065,7 @@
         "info": "Csak releváns frissítéseket küldünk Önnek a pénztárcájáról, például: eszközegyenleg-változások",
         "button": "Értesítések engedélyezése",
         "agree": "Igen, értem",
-        "notificationBlocked": "Ahhoz, hogy értesítést kapjon az {appName} alkalmazásról, kérjük, engedélyezze az értesítéseket a böngésző natív beállításaiban.",
+        "notificationBlocked": "Ahhoz, hogy értesítést kapjon az {AppName} alkalmazásról, kérjük, engedélyezze az értesítéseket a böngésző natív beállításaiban.",
         "pointer": "Nyomja meg az „Engedélyezés” gombot az értesítések bekapcsolásához"
     },
     "assetDeposit": "Az eszközök egyenlege letétbe helyezve",
@@ -1090,7 +1082,7 @@
     },
     "desktop": {
         "welcome": {
-            "header": "Üdvözöljük a {Polkaswap}ban!",
+            "header": "Üdvözöljük a {AppName}ban!",
             "headline": "Állítsuk be fiókját",
             "text": "Hozza létre {Sora} Network-fiókját, vagy jelentkezzen be a régi fiókokba mnemonikus kifejezéssel vagy .json importálással. Ez lehetővé teszi a tranzakciók biztonságos aláírását és az eszközök kezelését a {Sora} Networkben.",
             "createAccount": "Hozzon létre egy fiókot",
@@ -1142,5 +1134,6 @@
             "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
         }
     },
-    "hashiBridgeText": "{Hashi} híd"
+    "hashiBridgeText": "{Hashi} híd",
+    "disclaimerTitle": "Jogi nyilatkozat:"
 }

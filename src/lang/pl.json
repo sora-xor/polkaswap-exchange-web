@@ -305,7 +305,7 @@
         "referrer": "Osoba polecająca",
         "referral": "Kod polecający"
     },
-    "appName": "{Polkaswap}",
+    "appName": "{AppName}",
     "changeNetworkText": "Zmień sieć w portfelu {Metamask}",
     "transactionText": "transakcja | transakcje",
     "connectWalletText": "Połącz z kontem",
@@ -314,14 +314,13 @@
     "connectWalletTextTooltip": "Połącz się z siecią {Sora} za pomocą {PolkadotJs}",
     "selectNodeText": "Wybierz węzeł sieci",
     "bridgeText": "Most",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Zastrzeżenie<\/span>: Niniejsza strona internetowa jest prowadzona przez społeczność sieci {Sora}. Zanim zaczniesz korzystać z tej witryny, zapoznaj się z @:polkaswapFaqLink i dokumentacją, która zawiera szczegółowe wyjaśnienia dotyczące działania giełdy {Polkaswap}. Przeczytaj także @:memorandumLink oraz tekst @:(privacyLink). Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z {Polkaswap}, potwierdzasz, że przeczytałeś(-łaś) i rozumiesz przedstawione dokumenty. Potwierdzasz również, co następuje: 1) ponosisz wyłączną odpowiedzialność związaną z przestrzeganiem wszystkich przepisów, które mogą mieć zastosowanie do korzystania z {Polkaswap} w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja {Polkaswap} jest wersją alfa: nie została w pełni przetestowana, a niektóre jej funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z {Polkaswap}, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj @:polkaswapFaqLink, @:memorandumLink, a także tekst @:privacyLink!",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
+    "disclaimer": "{disclaimerPrefix} Niniejsza strona internetowa jest prowadzona przez społeczność sieci {Sora}. Zanim zaczniesz korzystać z tej witryny, zapoznaj się z {polkaswapFaqLink} i dokumentacją, która zawiera szczegółowe wyjaśnienia dotyczące działania giełdy {AppName}. Przeczytaj także {memorandumLink} oraz tekst {privacyLink}. Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z {AppName}, potwierdzasz, że przeczytałeś(-łaś) i rozumiesz przedstawione dokumenty. Potwierdzasz również, co następuje: 1) ponosisz wyłączną odpowiedzialność związaną z przestrzeganiem wszystkich przepisów, które mogą mieć zastosowanie do korzystania z {AppName} w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja {AppName} jest wersją alfa: nie została w pełni przetestowana, a niektóre jej funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z {AppName}, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj {polkaswapFaqLink}, {memorandumLink}, a także tekst {privacyLink}!",
     "poweredBy": "Technologia:",
     "confirmTransactionText": "Potwierdź transakcję w {direction}",
     "retryText": "Spróbuj ponownie",
     "networkFeeText": "Opłata sieciowa",
     "networkFeeTooltipText": "Opłata sieciowa służy zapewnieniu rozwoju i stabilności systemu {Sora}.",
-    "ethNetworkFeeTooltipText": "Należy mieć na uwadze, że opłaty w sieci {Ethereum} widoczne na {Polkaswap} to jedynie przybliżone oszacowanie. Przed potwierdzeniem transakcji można zobaczyć prawidłową kwotę opłaty w podłączonym portfelu sieci {Ethereum}.",
+    "ethNetworkFeeTooltipText": "Należy mieć na uwadze, że opłaty w sieci {Ethereum} widoczne na {AppName} to jedynie przybliżone oszacowanie. Przed potwierdzeniem transakcji można zobaczyć prawidłową kwotę opłaty w podłączonym portfelu sieci {Ethereum}.",
     "marketText": "Rynek",
     "marketAlgorithmText": "Algorytm rynkowy",
     "firstPerSecond": "{first} za {second}",
@@ -368,7 +367,7 @@
         "faucet": "Kranik",
         "github": "GitHub",
         "sorawiki": "Wiki {Sora}",
-        "memorandum": "Memo giełdy {Polkaswap} i Warunki korzystania z usług",
+        "memorandum": "Memo giełdy {AppName} i Warunki korzystania z usług",
         "privacy": "Polityka prywatności",
         "info": "Informacje i społeczność"
     },
@@ -376,9 +375,7 @@
         "title": "Pomoc",
         "termsOfService": "Warunki korzystania z usług",
         "privacyPolicy": "Polityka prywatności",
-        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
-        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
-        "appVersion": "Wersja @:appName",
+        "appVersion": "Wersja {AppName}",
         "contactUs": "Skontaktuj się z nami"
     },
     "aboutNetworkDialog": {
@@ -386,7 +383,7 @@
         "learnMore": "@:learnMoreText",
         "network": {
             "title": "Czym jest {Sora}?",
-            "description": "{Polkaswap} jest zbudowana na sieci {Sora}, a token {Sora} (XOR) służy do dostarczania gazu\/opłat oraz płynności. Sieć {Sora} pozwala na obniżenie opłat, szybsze transakcje i prostsze osiąganie konsensusu oraz koncentruje się na zapewnieniu interoperacyjności z innymi ekosystemami technologii blockchain, takimi jak {Ethereum}."
+            "description": "{AppName} jest zbudowana na sieci {Sora}, a token {Sora} (XOR) służy do dostarczania gazu\/opłat oraz płynności. Sieć {Sora} pozwala na obniżenie opłat, szybsze transakcje i prostsze osiąganie konsensusu oraz koncentruje się na zapewnieniu interoperacyjności z innymi ekosystemami technologii blockchain, takimi jak {Ethereum}."
         },
         "polkadot": {
             "title": "Czym jest {PolkadotJs}?",
@@ -463,15 +460,15 @@
         "description": "Międzyłańcuchowa wymiana walut, proste tworzenie i wprowadzanie nowych walut oraz łatwa ich wymiana, jakiej jeszcze nie było. Interoperacyjna przyszłość sieci {Polkadot} już się rozpoczęła, a my znajdujemy się w czołówce!",
         "trading": {
             "title": "Szybki handel",
-            "first": "{Polkaswap} to bezpowierniczy, międzyłańcuchowy protokół AMM DEX do wymiany tokenów, oparty na łańcuchach przekaźnikowych sieci {Polkadot} i {Kusama}, ich parachainach oraz blockchainach połączonych z nim bezpośrednio za pomocą mostów.",
-            "second": "{Polkaswap} usuwa pośredników i zapewnia możliwość szybszego handlu.",
-            "third": "{Polkaswap} jest projektem społecznościowym, a programiści pracują nad otwartym kodem źródłowym, używając"
+            "first": "{AppName} to bezpowierniczy, międzyłańcuchowy protokół AMM DEX do wymiany tokenów, oparty na łańcuchach przekaźnikowych sieci {Polkadot} i {Kusama}, ich parachainach oraz blockchainach połączonych z nim bezpośrednio za pomocą mostów.",
+            "second": "{AppName} usuwa pośredników i zapewnia możliwość szybszego handlu.",
+            "third": "{AppName} jest projektem społecznościowym, a programiści pracują nad otwartym kodem źródłowym, używając"
         },
         "liquidity": {
             "title": "Nieograniczona płynność",
-            "first": "{Polkaswap} łączy wiele źródeł płynności w ramach wspólnego algorytmu agregacji płynności, działając całkowicie on-chain, w sposób bezpowierniczy i zdecentralizowany.",
+            "first": "{AppName} łączy wiele źródeł płynności w ramach wspólnego algorytmu agregacji płynności, działając całkowicie on-chain, w sposób bezpowierniczy i zdecentralizowany.",
             "second": "Podczas gdy traderzy korzystają z funkcji wymiany, algorytm agregacji płynności wypełnia zlecenia, wykorzystując najlepsze oferty ze wszystkich dostępnych źródeł płynności. Źródłami płynności mogą być inne DEX-y [zdecentralizowane giełdy], księgi zamówień lub inne źródła oparte na API [interfejs programistyczny aplikacji].",
-            "third": "Ponieważ {Polkaswap} jest projektem typu open-source, każdy może dodać więcej źródeł płynności, wnosząc wkład do bazy kodu giełdy."
+            "third": "Ponieważ {AppName} jest projektem typu open-source, każdy może dodać więcej źródeł płynności, wnosząc wkład do bazy kodu giełdy."
         },
         "swap": {
             "title": "Zamień dowolny token",
@@ -481,20 +478,20 @@
         },
         "pswap": {
             "title": "Tokeny PSWAP",
-            "first": "PSWAP powstał w wyniku głosowania społeczności nad jego wydaniem. Jest to token użytkowy i zarządzający, służący do wynagradzania dostarczycieli płynności na giełdzie {Polkaswap}. W przeciwieństwie do większości innych tokenów wynagrodzeniowych, PSWAP jest spalany w transakcjach, co zmniejsza jego podaż.",
-            "second": "Opłata w wysokości {percent}% od każdej wymiany na giełdzie {Polkaswap} DEX jest przeznaczana na odkupienie tokenów PSWAP, które są następnie spalane. Początkowo 90% spalonych tokenów PSWAP będzie wybijane ponownie w celu alokacji dla dostarczycieli płynności, ale z czasem ten odsetek będzie się zmniejszał do 35% w ciągu 4 lat."
+            "first": "PSWAP powstał w wyniku głosowania społeczności nad jego wydaniem. Jest to token użytkowy i zarządzający, służący do wynagradzania dostarczycieli płynności na giełdzie {AppName}. W przeciwieństwie do większości innych tokenów wynagrodzeniowych, PSWAP jest spalany w transakcjach, co zmniejsza jego podaż.",
+            "second": "Opłata w wysokości {percent}% od każdej wymiany na giełdzie {AppName} DEX jest przeznaczana na odkupienie tokenów PSWAP, które są następnie spalane. Początkowo 90% spalonych tokenów PSWAP będzie wybijane ponownie w celu alokacji dla dostarczycieli płynności, ale z czasem ten odsetek będzie się zmniejszał do 35% w ciągu 4 lat."
         },
         "links": {
             "first": {
                 "title": "Zostań walidatorem SORY",
-                "desc": "Zabezpiecz przyszłość sieci {Sora} i zdecentralizowanych aplikacji, takich jak {Polkaswap}, stając się walidatorem SORY, który uzyskuje wynagrodzenie."
+                "desc": "Zabezpiecz przyszłość sieci {Sora} i zdecentralizowanych aplikacji, takich jak {AppName}, stając się walidatorem SORY, który uzyskuje wynagrodzenie."
             },
             "second": {
                 "title": "Połącz łańcuch z SORĄ",
-                "desc": "Rozwijaj zdecentralizowaną gospodarkę światową, łącząc kolejne łańcuchy z SORĄ i {Polkaswap} za pomocą protokołu mostu {Hashi}."
+                "desc": "Rozwijaj zdecentralizowaną gospodarkę światową, łącząc kolejne łańcuchy z SORĄ i {AppName} za pomocą protokołu mostu {Hashi}."
             }
         },
-        "network": "{Polkaswap} jest zbudowana na sieci {Sora}, zorientowanej na interoperacyjność, aby połączyć resztę ekosystemu kryptowalut z siecią Polkadot."
+        "network": "{AppName} jest zbudowana na sieci {Sora}, zorientowanej na interoperacyjność, aby połączyć resztę ekosystemu kryptowalut z siecią Polkadot."
     },
     "exchange": {
         "Swap": "Zamień",
@@ -520,7 +517,6 @@
         "liquidityProviderFeeTooltip": "Część każdej transakcji ({liquidityProviderFee}%) trafia do dostarczycieli płynności jako wynagrodzenie wynikające z protokołu.",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Niewystarczająca kwota w walucie {tokenSymbol}",
         "insufficientLiquidity": "Niewystarczająca płynność",
@@ -634,7 +630,7 @@
         "successCopy": "Skrót transakcji został skopiowany do schowka.",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
-        "pending": "Transakcja <span class=\"network-title\">{network}<\/span> w toku...",
+        "pending": "Transakcja {network} w toku...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -645,7 +641,7 @@
         "expectedAddress": "Spodziewany adres w portfelu {Metamask}",
         "title": "Transakcja mostowa",
         "expectedMetaMaskAddress": "Spodziewany adres w portfelu {Metamask}:",
-        "allowToken": "Zezwól @:appName na użycie Twojego {tokenSymbol}",
+        "allowToken": "Zezwól {AppName} na użycie Twojego {tokenSymbol}",
         "approveToken": "Pamiętaj, że wystarczy raz zatwierdzić token. Jeśli Twoje rozszerzenie otrzymuje wiele żądań o zatwierdzenie tokena, pamiętaj, by potwierdzić tylko ostatnią, a pozostałe odrzucić.",
         "blocksLeft": "pozostało {count} bloków..."
     },
@@ -743,9 +739,9 @@
         "port": "PORT",
         "min": "MIN.",
         "marketAlgorithms": {
-            "SMART": "Routing płynności <span class=\"algorithm\">SMART<\/span> zapewnia najlepszą cenę dla każdej transakcji, łącząc tylko najlepsze opcje cenowe ze wszystkich dostępnych rynków. Jeśli jest on dostępny, Token Bonding Curve [krzywa wiązania tokenów] (<span class=\"algorithm\">TBC<\/span>) zostanie wówczas wykorzystana do zapewnienia płynności, o ile cena waluty będzie bardziej przystępna niż z innych źródeł, na podstawie których pula <span class=\"algorithm\">XYK<\/span> jest użytkowana.",
-            "TBC": "<span class=\"algorithm\">TBC<\/span> – zakup jedynie z Token Bonding Curve [krzywa wiązania tokenów] (rynek pierwotny). Istnieje prawdopodobieństwo, że cena może ulec zmianie na niekorzyść w porównaniu do puli <span class=\"algorithm\">XYK<\/span> (rynek wtórny), ale wartość otrzymana z nabytego wynagrodzenia może z czasem okazać się o wiele korzystniejsza.",
-            "XYK": "<span class=\"algorithm\">XYK<\/span> – zakup jedynie z puli XYK (rynek wtórny). Tradycyjna wymiana według modelu XYK."
+            "SMART": "Routing płynności {smartAlgorithm} zapewnia najlepszą cenę dla każdej transakcji, łącząc tylko najlepsze opcje cenowe ze wszystkich dostępnych rynków. Jeśli jest on dostępny, Token Bonding Curve [krzywa wiązania tokenów] ({tbcAlgorithm}) zostanie wówczas wykorzystana do zapewnienia płynności, o ile cena waluty będzie bardziej przystępna niż z innych źródeł, na podstawie których pula {xycAlgorithm} jest użytkowana.",
+            "TBC": "{tbcAlgorithm} – zakup jedynie z Token Bonding Curve [krzywa wiązania tokenów] (rynek pierwotny). Istnieje prawdopodobieństwo, że cena może ulec zmianie na niekorzyść w porównaniu do puli {xycAlgorithm} (rynek wtórny), ale wartość otrzymana z nabytego wynagrodzenia może z czasem okazać się o wiele korzystniejsza.",
+            "XYK": "{xycAlgorithm} – zakup jedynie z puli XYK (rynek wtórny). Tradycyjna wymiana według modelu XYK."
         },
         "charts": "Wykresy",
         "сhartsDescription": "Zobacz wykresy cen tokenów"
@@ -759,7 +755,6 @@
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "i",
         "claiming": {
             "pending": "Odbieranie...",
@@ -833,10 +828,8 @@
         "name": "Nazwa",
         "assetId": "Identyfikator waluty"
     },
-    "memorandum": "Memo giełdy {Polkaswap} i Warunki korzystania z usług",
-    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\">@:memorandum<\/a>",
-    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
-    "FAQ": "{Polkaswap} FAQ",
+    "memorandum": "Memo giełdy {AppName} i Warunki korzystania z usług",
+    "FAQ": "{AppName} FAQ",
     "connectedAccount": "Podłączone konto",
     "selectNodeConnected": "Połączono z: {chain}",
     "moonpayText": "MoonPay",
@@ -845,11 +838,11 @@
         "notifications": {
             "success": {
                 "title": "Tokeny zostały zakupione.",
-                "text": "Zakup tokena został ukończony. Gdy tylko tokeny pojawią się na podłączonym koncie sieci {Ethereum}, transakcja przez most {Hashi} rozpocznie się automatycznie. Bezpiecznie jest zamknąć to okno i kontynuować korzystanie z {Polkaswap}. Gdy transakcja mostowa zostanie przygotowana, pojawi się o niej powiadomienie."
+                "text": "Zakup tokena został ukończony. Gdy tylko tokeny pojawią się na podłączonym koncie sieci {Ethereum}, transakcja przez most {Hashi} rozpocznie się automatycznie. Bezpiecznie jest zamknąć to okno i kontynuować korzystanie z {AppName}. Gdy transakcja mostowa zostanie przygotowana, pojawi się o niej powiadomienie."
             },
             "supportError": {
                 "title": "Token nie jest obsługiwany.",
-                "text": "Niestety, token zakupiony przez @:moonpayText nie jest jeszcze obsługiwany przez most {Hashi} w {Polkaswap}. Zasadniczo tylko obsługiwane tokeny powinny być dostępne do zakupu za pośrednictwem MoonPay w {Polkaswap}, tak więc coś gdzieś musiało pójść nie tak. Nie wahaj się poinformować społeczność o tej sprawie w <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">grupie {Polkaswap} na Telegramie<\/a>."
+                "text": "Niestety, token zakupiony przez @:moonpayText nie jest jeszcze obsługiwany przez most {Hashi} w {AppName}. Zasadniczo tylko obsługiwane tokeny powinny być dostępne do zakupu za pośrednictwem MoonPay w {AppName}, tak więc coś gdzieś musiało pójść nie tak. Nie wahaj się poinformować społeczność o tej sprawie w <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\">grupie {AppName} na Telegramie<\/a>."
             },
             "feeError": {
                 "title": "Niewystarczająca ilość ETH, by przesłać środki przez most.",
@@ -922,7 +915,6 @@
         "deposit": "Deponuj",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Niewystarczające rezerwy",
         "action": {
@@ -944,7 +936,7 @@
             "text": "Potwierdź",
             "bond": "Potwierdź utworzenie rezerw",
             "unbond": "Potwierdź uwolnienie rezerw",
-            "inviteTitle": "Zostałeś zaproszony do {Polkaswap}",
+            "inviteTitle": "Zostałeś zaproszony do {AppName}",
             "inviteDescription": "Zawsze, kiedy będziesz uiszczał opłatę transakcyjną, 10% z niej trafi do osoby polecającej. Nie poniesiesz z tego tytułu żadnych kosztów.",
             "signInvitation": "Przyjmij",
             "freeOfCharge": "Ta transakcja nie jest obciążona żadnymi kosztami.",
@@ -959,7 +951,7 @@
             "label": "Link do zaproszenia lub kod",
             "approve": "Przyjmij",
             "approved": "Zatwierdzony",
-            "description": "Możesz otrzymać skierowanie do {Polkaswap},<br\/>wpisać link lub kod osoby polecającej",
+            "description": "Możesz otrzymać skierowanie do {AppName},<br\/>wpisać link lub kod osoby polecającej",
             "referredBy": "Zostałeś polecony przez {referrer}",
             "info": "Kiedy zapłacisz opłatę za transakcję,<br\/>10% trafi do Twojego polecającego",
             "referredLablel": "Polecony adres"
@@ -985,7 +977,7 @@
     },
     "mobilePopup": {
         "sideMenu": "Pobierz {Sora} Wallet",
-        "header": "Pobierz portfel {Sora} z <span class=\"popup-info__headline--highlight\"> {Polkaswap} <\/span>",
+        "header": "Pobierz portfel {Sora} z {polkaswapHighlight}",
         "info": "Zamień tokeny z różnych sieci - {Sora}, {Ethereum}, Polkadot, {Kusama}. Zapewnij pulę płynności i zarabiaj % na opłatach za wymianę."
     },
     "releaseNotesText": "Informacje o wydaniu",
@@ -1073,7 +1065,7 @@
         "info": "Prześlemy Ci tylko istotne aktualizacje dotyczące Twojego portfela, na przykład: zmiany salda aktywów",
         "button": "Włącz powiadomienia",
         "agree": "Tak, rozumiem",
-        "notificationBlocked": "Aby otrzymywać powiadomienia o {appName}, należy włączyć powiadomienia w ustawieniach natywnych przeglądarki.",
+        "notificationBlocked": "Aby otrzymywać powiadomienia o {AppName}, należy włączyć powiadomienia w ustawieniach natywnych przeglądarki.",
         "pointer": "Naciśnij „Zezwól”, aby włączyć powiadomienia"
     },
     "assetDeposit": "Saldo aktywów zostało zdeponowane",
@@ -1142,5 +1134,6 @@
             "jsonFields": "Plik JSON nie zawiera wymaganych pól"
         }
     },
-    "hashiBridgeText": "Most {Hashi}"
+    "hashiBridgeText": "Most {Hashi}",
+    "disclaimerTitle": "Zastrzeżenie:"
 }

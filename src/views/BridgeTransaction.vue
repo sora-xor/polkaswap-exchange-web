@@ -90,7 +90,9 @@
                     </a>
                   </template>
                   <s-dropdown-item v-else class="s-dropdown-menu__item">
-                    <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
+                    <span>
+                      {{ t('bridgeTransaction.viewInEtherscan') }}
+                    </span>
                   </s-dropdown-item>
                 </template>
               </s-dropdown>
@@ -130,11 +132,7 @@
             >
               <span
                 v-if="isTransactionFromPending"
-                v-html="
-                  t('bridgeTransaction.pending', {
-                    network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`),
-                  })
-                "
+                v-html="t('bridgeTransaction.pending', { network: transactionPendingNetwork })"
               />
               <template v-else-if="!(isSoraToEvm || isExternalAccountConnected)">{{
                 t('bridgeTransaction.connectWallet')
@@ -224,7 +222,9 @@
                     </a>
                   </template>
                   <s-dropdown-item v-else class="s-dropdown-menu__item">
-                    <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
+                    <span>
+                      {{ t('bridgeTransaction.viewInEtherscan') }}
+                    </span>
                   </s-dropdown-item>
                 </template>
               </s-dropdown>
@@ -769,6 +769,12 @@ export default class BridgeTransaction extends Mixins(
 
   get failedClassStep2(): string {
     return this.getFailedClass(this.isTransactionToFailed);
+  }
+
+  get transactionPendingNetwork(): string {
+    return `<span class="network-title">${this.t(
+      `bridgeTransaction.${this.isSoraToEvm ? 'sora' : 'ethereum'}`
+    )}</span>`;
   }
 
   private getFailedClass(transactionFailed?: boolean): string {

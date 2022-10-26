@@ -23,7 +23,17 @@
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <div class="app-disclaimer-container">
-              <p class="app-disclaimer" v-html="t('disclaimer')" />
+              <p
+                class="app-disclaimer"
+                v-html="
+                  t('disclaimer', {
+                    disclaimerPrefix,
+                    polkaswapFaqLink,
+                    memorandumLink,
+                    privacyLink,
+                  })
+                "
+              />
             </div>
           </div>
           <footer class="app-footer">
@@ -59,7 +69,7 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
 import MobilePopup from '@/components/MobilePopup/MobilePopup.vue';
 
-import { PageNames, Components, Language } from '@/consts';
+import { PageNames, Components, Language, Links } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -167,6 +177,26 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     if (this.isSoraAccountConnected && !!storageReferrerValue) {
       await this.confirmInvititation();
     }
+  }
+
+  get disclaimerPrefix(): string {
+    return `<span class="app-disclaimer__title">${this.t('disclaimerTitle')}</span>`;
+  }
+
+  get memorandumLink(): string {
+    return this.generateDisclaimerLink(Links.terms, this.t('memorandum'));
+  }
+
+  get privacyLink(): string {
+    return this.generateDisclaimerLink(Links.privacy, this.t('helpDialog.privacyPolicy'));
+  }
+
+  get polkaswapFaqLink(): string {
+    return this.generateDisclaimerLink(Links.faq, this.t('FAQ'));
+  }
+
+  generateDisclaimerLink(href: string, content: string): string {
+    return `<a href="${href}" target="_blank" rel="nofollow noopener" class="link" title="${content}">${content}</a>`;
   }
 
   async confirmInvititation(): Promise<void> {

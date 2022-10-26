@@ -305,7 +305,7 @@
         "referrer": "Sprostredkovateľ",
         "referral": "Doporučenie"
     },
-    "appName": "{Polkaswap}",
+    "appName": "{AppName}",
     "changeNetworkText": "Zmeňiť sieť v {Metamask}",
     "transactionText": "transakcia | transakcie",
     "connectWalletText": "Pripojiť účet",
@@ -314,14 +314,13 @@
     "connectWalletTextTooltip": "Pripojte sa k sieti {Sora} pomocou rozšírenia {PolkadotJs}",
     "selectNodeText": "Vybrať uzol",
     "bridgeText": "Most",
-    "disclaimer": "<span class=\"app-disclaimer__title\">Vylúčenie zodpovednosti<\/span>: Táto webová stránka je spravovaná komunitou {Sora}. Pred pokračovaním v používaní tejto webovej stránky si preštudujte @:polkaswapFaqLink a dokumentáciu, ktorá obsahuje podrobné vysvetlenie fungovania aplikácie {Polkaswap}, ako aj @:memorandumLink a @:(privacyLink). Tieto dokumenty sú nevyhnutné pre bezpečnú a pozitívnu používateľskú skúsenosť. Používaním aplikácie {Polkaswap} beriete na vedomie, že ste si tieto dokumenty prečítali a porozumeli im. Ďalej beriete na vedomie nasledovné: 1) vašu výlučnú zodpovednosť za dodržiavanie všetkých zákonov, ktoré sa môžu vzťahovať na vaše konkrétne používanie programu {Polkaswap} vo vašej právnej jurisdikcii; 2) chápete, že súčasná verzia programu {Polkaswap} je verzia alfa: nebola úplne testovaná a niektoré funkcie nemusia fungovať tak, ako boli navrhnuté; 3) vaše porozumenie a dobrovoľné prijatie rizík spojených s používaním programu {Polkaswap}, vrátane, ale nie výlučne, rizika straty tokenov. Ešte raz si, prosím, prečítajte @:polkaswapFaqLink, @:memorandumLink, a @:privacyLink!",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
+    "disclaimer": "{disclaimerPrefix} Táto webová stránka je spravovaná komunitou {Sora}. Pred pokračovaním v používaní tejto webovej stránky si preštudujte {polkaswapFaqLink} a dokumentáciu, ktorá obsahuje podrobné vysvetlenie fungovania aplikácie {AppName}, ako aj {memorandumLink} a {privacyLink}. Tieto dokumenty sú nevyhnutné pre bezpečnú a pozitívnu používateľskú skúsenosť. Používaním aplikácie {AppName} beriete na vedomie, že ste si tieto dokumenty prečítali a porozumeli im. Ďalej beriete na vedomie nasledovné: 1) vašu výlučnú zodpovednosť za dodržiavanie všetkých zákonov, ktoré sa môžu vzťahovať na vaše konkrétne používanie programu {AppName} vo vašej právnej jurisdikcii; 2) chápete, že súčasná verzia programu {AppName} je verzia alfa: nebola úplne testovaná a niektoré funkcie nemusia fungovať tak, ako boli navrhnuté; 3) vaše porozumenie a dobrovoľné prijatie rizík spojených s používaním programu {AppName}, vrátane, ale nie výlučne, rizika straty tokenov. Ešte raz si, prosím, prečítajte {polkaswapFaqLink}, {memorandumLink}, a {privacyLink}!",
     "poweredBy": "Používa technológiu",
     "confirmTransactionText": "Potvrdiť transakciu v {direction}",
     "retryText": "Opakovať",
     "networkFeeText": "Sieťový poplatok",
     "networkFeeTooltipText": "Sieťový poplatok slúži na zabezpečenie rastu a stabilného výkonu systému {Sora}.",
-    "ethNetworkFeeTooltipText": "Upozorňujeme, že poplatky za sieť {Ethereum} zobrazené v aplikácii {Polkaswap} sú len približné. Správnu výšku poplatku môžete vidieť vo svojej pripojenej {Ethereum} peňaženke pred potvrdením transakcie.",
+    "ethNetworkFeeTooltipText": "Upozorňujeme, že poplatky za sieť {Ethereum} zobrazené v aplikácii {AppName} sú len približné. Správnu výšku poplatku môžete vidieť vo svojej pripojenej {Ethereum} peňaženke pred potvrdením transakcie.",
     "marketText": "Trh",
     "marketAlgorithmText": "Trhový algoritmus",
     "firstPerSecond": "{first} za {second}",
@@ -368,7 +367,7 @@
         "faucet": "Faucet",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "{Polkaswap} Memorandum a Podmienky poskytovania služieb",
+        "memorandum": "{AppName} Memorandum a Podmienky poskytovania služieb",
         "privacy": "Zásady ochrany osobných údajov",
         "info": "Informácie a komunita"
     },
@@ -376,9 +375,7 @@
         "title": "Pomoc",
         "termsOfService": "Podmienky poskytovania služby",
         "privacyPolicy": "Zásady ochrany osobných údajov",
-        "termsOfServiceLink": "https:\/\/www.notion.so\/Polkaswap-Memorandum-and-Terms-of-Services-dc7f815a6d0a497a924832cc9bda17b8",
-        "privacyPolicyLink": "https:\/\/www.notion.so\/Polkaswap-Privacy-Policy-d0f26456f2974f0d94734b19f6e5fc70",
-        "appVersion": "Verzia @:appName",
+        "appVersion": "Verzia {AppName}",
         "contactUs": "Kontaktujte nás"
     },
     "aboutNetworkDialog": {
@@ -386,7 +383,7 @@
         "learnMore": "Dozvedieť sa viac",
         "network": {
             "title": "Čo je {Sora}?",
-            "description": "{Polkaswap} je postavený na sieti {Sora} a {Sora} (XOR) token sa používa na platenie plynu\/poplatkov a na poskytovanie likvidity na {Polkaswap}. Sieť {Sora} umožňuje nižšie poplatky, rýchlejšie transakcie a jednoduchšiu finalizáciu konsenzu a zameriava sa na zabezpečenie interoperability s inými ekosystémami blockchainu, ako je {Ethereum}."
+            "description": "{AppName} je postavený na sieti {Sora} a {Sora} (XOR) token sa používa na platenie plynu\/poplatkov a na poskytovanie likvidity na {AppName}. Sieť {Sora} umožňuje nižšie poplatky, rýchlejšie transakcie a jednoduchšiu finalizáciu konsenzu a zameriava sa na zabezpečenie interoperability s inými ekosystémami blockchainu, ako je {Ethereum}."
         },
         "polkadot": {
             "title": "Čo je {PolkadotJs}?",
@@ -463,15 +460,15 @@
         "description": "Cross-chain obchodovanie aktív, jednoduché vytváranie a zavádzanie nových aktív a tie najjednoduchšie swapy vôbec. Interoperabilná budúcnosť {Polkadot} je tu a my sme na jej čele!",
         "trading": {
             "title": "Rýchlejšie obchodovanie",
-            "first": "{Polkaswap} je neväzobný, cross-chain AMM DEX protokol umožňujúci výmenu tokenov. Založený je na {Polkadot} a {Kusama} protokoloch, ďalej {Polkadot} a {Kusama} parachainoch a blockchainoch priamo prepojených prostredníctvom premostení.",
-            "second": "{Polkaswap} eliminuje sprostredkovateľov a umožňuje rýchlejšie obchodovanie",
-            "third": "{Polkaswap} je komunitný projekt a vývojári spolupracujú na otvorenom zdrojovom kóde za použitia"
+            "first": "{AppName} je neväzobný, cross-chain AMM DEX protokol umožňujúci výmenu tokenov. Založený je na {Polkadot} a {Kusama} protokoloch, ďalej {Polkadot} a {Kusama} parachainoch a blockchainoch priamo prepojených prostredníctvom premostení.",
+            "second": "{AppName} eliminuje sprostredkovateľov a umožňuje rýchlejšie obchodovanie",
+            "third": "{AppName} je komunitný projekt a vývojári spolupracujú na otvorenom zdrojovom kóde za použitia"
         },
         "liquidity": {
             "title": "Neobmedzená likvidita",
-            "first": "{Polkaswap}, ktorý pod spoločným algoritmom agregácie likvidity kombinuje viacero zdrojov likvidity, funguje úplne on-chain, decentralizovane a bez akejkoľvek centrálnej autority.",
+            "first": "{AppName}, ktorý pod spoločným algoritmom agregácie likvidity kombinuje viacero zdrojov likvidity, funguje úplne on-chain, decentralizovane a bez akejkoľvek centrálnej autority.",
             "second": "Keď obchodníci zavolajú funkciu výmeny, algoritmus agregácie likvidity vyplní objednávky pomocou najlepších ponúk zo všetkých dostupných zdrojov likvidity. Zdrojmi likvidity môžu byť iné DEX, burzy alebo iné zdroje dostupné prostredníctvom API.",
-            "third": "Pretože {Polkaswap} je open-source projekt, ktokoľvek môže pridať ďalšie zdroje likvidity prispením do zdrojového kódu {Polkaswap}."
+            "third": "Pretože {AppName} je open-source projekt, ktokoľvek môže pridať ďalšie zdroje likvidity prispením do zdrojového kódu {AppName}."
         },
         "swap": {
             "title": "Vymeňte akýkoľvek token",
@@ -481,20 +478,20 @@
         },
         "pswap": {
             "title": "PSWAP tokeny",
-            "first": "PSWAP bol vytvorený ako výsledok hlasovania komunity. Je to nástroj správy protokolu používaný na odmeňovanie poskytovateľov likvidity v {Polkaswap}. Na rozdiel od väčšiny ostatných tokenov slúžiacich na odmeňovanie, je PSWAP spaľovaný pri transakciách a jeho zásoba sa tak časom znižuje.",
-            "second": "{percent}%-ný poplatok za každú transakciu pri použití {Polkaswap} DEX sa použije na spätný odkup a následné spálenie tokenov PSWAP. Zo začiatku sa 90% spálených tokenov PSWAP znova vytvorí a distribuuje medzi poskytovateľov likvidity. Postupne sa ale toto percento do 4 rokov zníži na 35%."
+            "first": "PSWAP bol vytvorený ako výsledok hlasovania komunity. Je to nástroj správy protokolu používaný na odmeňovanie poskytovateľov likvidity v {AppName}. Na rozdiel od väčšiny ostatných tokenov slúžiacich na odmeňovanie, je PSWAP spaľovaný pri transakciách a jeho zásoba sa tak časom znižuje.",
+            "second": "{percent}%-ný poplatok za každú transakciu pri použití {AppName} DEX sa použije na spätný odkup a následné spálenie tokenov PSWAP. Zo začiatku sa 90% spálených tokenov PSWAP znova vytvorí a distribuuje medzi poskytovateľov likvidity. Postupne sa ale toto percento do 4 rokov zníži na 35%."
         },
         "links": {
             "first": {
                 "title": "Staňte sa {Sora} validátorom",
-                "desc": "Pomôžte zabezpečiť budúcnosť siete {Sora} a decentralizovaných aplikácií, ako je {Polkaswap}, a získajte odmeny za to, že sa stanete {Sora} validátorom."
+                "desc": "Pomôžte zabezpečiť budúcnosť siete {Sora} a decentralizovaných aplikácií, ako je {AppName}, a získajte odmeny za to, že sa stanete {Sora} validátorom."
             },
             "second": {
                 "title": "Pripojte chain k sieti {Sora}",
-                "desc": "Rozšírte decentralizovanú svetovú ekonomiku pripojením ďalších chainov k {Sora} a {Polkaswap} pomocou preklenovacieho protokolu {Hashi}."
+                "desc": "Rozšírte decentralizovanú svetovú ekonomiku pripojením ďalších chainov k {Sora} a {AppName} pomocou preklenovacieho protokolu {Hashi}."
             }
         },
-        "network": "{Polkaswap} je postavený na sieti {Sora} zameranej na interoperabilitu pre prepojenie zvyšku krypto ekosystému s Polkadot."
+        "network": "{AppName} je postavený na sieti {Sora} zameranej na interoperabilitu pre prepojenie zvyšku krypto ekosystému s Polkadot."
     },
     "exchange": {
         "Swap": "Výmena",
@@ -520,7 +517,6 @@
         "liquidityProviderFeeTooltip": "Časť z každej transakcie ({liquidityProviderFee}%) je odoslaná poskytovateľom likvidity ako stimul v rámci protokolu.",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Nedostatočné množstvo {tokenSymbol}",
         "insufficientLiquidity": "Nedostatočná likvidita",
@@ -634,7 +630,7 @@
         "successCopy": "Hash transakcie bol skopírovaný do schránky",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
-        "pending": "<span class=\"network-title\">{network}<\/span> transakcia vo fáze spracovania…",
+        "pending": "{network} transakcia vo fáze spracovania…",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -645,7 +641,7 @@
         "expectedAddress": "Očakávaná adresa v {Metamask}",
         "title": "Preklenovacia transakcia",
         "expectedMetaMaskAddress": "Očakávaná adresa v {Metamask}:",
-        "allowToken": "Povoliť @:appName použitie vášho {tokenSymbol}",
+        "allowToken": "Povoliť {AppName} použitie vášho {tokenSymbol}",
         "approveToken": "Upozorňujeme, že token je potrebné schváliť iba raz. Ak má vaše rozšírenie viacero žiadostí o schválenie tokenu, uistite sa, že ste potvrdili iba tú poslednú, zatiaľ čo ostatné odmietnite.",
         "blocksLeft": "Zostáva {count} blokov..."
     },
@@ -743,9 +739,9 @@
         "port": "PORT",
         "min": "MIN",
         "marketAlgorithms": {
-            "SMART": "<span class=\"algorithm\">SMART<\/span> presmerovanie likvidity zaisťuje najlepšiu cenu pre akúkoľvek transakciu, a to kombináciou najlepších cenových možnosti zo všetkých dostupných trhov. Ak je k dispozícii a pokiaľ je cena aktív cenovo dostupnejšia ako z iných zdrojov, pre likviditu sa použije krivka závislosti ceny tokenu na jeho ponuke (<span class=\"algorithm\">TBC<\/span>). V opačnom prípade sa použije <span class=\"algorithm\">XYK<\/span> fond.",
-            "TBC": "<span class=\"algorithm\">TBC<\/span> - nákup iba z krivky závislosti ceny tokenu na jeho ponuke (Token Bonding Curve) (primárny trh). Existuje možnosť nepriaznivého vývoja ceny v porovnaní s fondom <span class=\"algorithm\">XYK<\/span> (sekundárny trh), ale hodnota získaná z priznaných odmien sa časom môže ukázať ako oveľa priaznivejšia.",
-            "XYK": "<span class=\"algorithm\">XYK<\/span> – nákup iba z fondu XYK (sekundárny trh). Tradičný výmenný fond XYK."
+            "SMART": "{smartAlgorithm} presmerovanie likvidity zaisťuje najlepšiu cenu pre akúkoľvek transakciu, a to kombináciou najlepších cenových možnosti zo všetkých dostupných trhov. Ak je k dispozícii a pokiaľ je cena aktív cenovo dostupnejšia ako z iných zdrojov, pre likviditu sa použije krivka závislosti ceny tokenu na jeho ponuke ({tbcAlgorithm}). V opačnom prípade sa použije {xycAlgorithm} fond.",
+            "TBC": "{tbcAlgorithm} - nákup iba z krivky závislosti ceny tokenu na jeho ponuke (Token Bonding Curve) (primárny trh). Existuje možnosť nepriaznivého vývoja ceny v porovnaní s fondom {xycAlgorithm} (sekundárny trh), ale hodnota získaná z priznaných odmien sa časom môže ukázať ako oveľa priaznivejšia.",
+            "XYK": "{xycAlgorithm} – nákup iba z fondu XYK (sekundárny trh). Tradičný výmenný fond XYK."
         },
         "charts": "Grafy",
         "сhartsDescription": "Pozrite si grafy cien tokenov"
@@ -759,7 +755,6 @@
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "a",
         "claiming": {
             "pending": "Prebieha nárokovanie…",
@@ -833,10 +828,8 @@
         "name": "Názov",
         "assetId": "ID aktíva"
     },
-    "memorandum": "{Polkaswap} Memorandum a Podmienky poskytovania služieb",
-    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\">@:memorandum<\/a>",
-    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
-    "FAQ": "{Polkaswap} FAQ",
+    "memorandum": "{AppName} Memorandum a Podmienky poskytovania služieb",
+    "FAQ": "{AppName} FAQ",
     "connectedAccount": "Pripojený účet",
     "selectNodeConnected": "Pripojené k: {chain}",
     "moonpayText": "MoonPay",
@@ -845,11 +838,11 @@
         "notifications": {
             "success": {
                 "title": "Tokeny zakúpené",
-                "text": "Nákup tokenu je dokončený. Transakcia {Hashi} mosta sa spustí automaticky, akonáhle budú tokeny prijaté na pripojený účet {Ethereum}. Toto okno môžete bezpečne zavrieť a pokračovať v používaní {Polkaswap}. Keď bude pripravená, zobrazí sa upozornenie o preklenovacej transakcii."
+                "text": "Nákup tokenu je dokončený. Transakcia {Hashi} mosta sa spustí automaticky, akonáhle budú tokeny prijaté na pripojený účet {Ethereum}. Toto okno môžete bezpečne zavrieť a pokračovať v používaní {AppName}. Keď bude pripravená, zobrazí sa upozornenie o preklenovacej transakcii."
             },
             "supportError": {
                 "title": "Token nie je podporovaný",
-                "text": "Bohužiaľ token zakúpený cez @:moonpayText ešte nie je podporovaný mostom {Hashi} v {Polkaswap}. Normálne by mali byť k dispozícii na nákup iba podporované tokeny cez MoonPay v {Polkaswap}, preto sa niekde muselo niečo pokaziť. Neváhajte a dajte komunite vedieť o tomto prípade v <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Skupina {Polkaswap} Telegram <\/a> ."
+                "text": "Bohužiaľ token zakúpený cez @:moonpayText ešte nie je podporovaný mostom {Hashi} v {AppName}. Normálne by mali byť k dispozícii na nákup iba podporované tokeny cez MoonPay v {AppName}, preto sa niekde muselo niečo pokaziť. Neváhajte a dajte komunite vedieť o tomto prípade v <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> Skupina {AppName} Telegram <\/a> ."
             },
             "feeError": {
                 "title": "Nie je dostatok ETH pre most tx",
@@ -922,7 +915,6 @@
         "deposit": "Záloha",
         "balance": "Zostatok",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Nedostatočný viazaný zostatok",
         "action": {
@@ -944,7 +936,7 @@
             "text": "Potvrďte",
             "bond": "Potvrďte väzbu",
             "unbond": "Potvrďte odpojenie",
-            "inviteTitle": "Boli ste pozvaní na {Polkaswap}",
+            "inviteTitle": "Boli ste pozvaní na {AppName}",
             "inviteDescription": "Za každú transakciu dostane 10 % z poplatku váš sprostredkovateľ bez akýchkoľvek dodatočných nákladov.",
             "signInvitation": "Schváliť",
             "freeOfCharge": "Táto akcia je bezplatná",
@@ -959,7 +951,7 @@
             "label": "Odkaz alebo kód pozvánky",
             "approve": "Schváliť",
             "approved": "Schválené",
-            "description": "Môžete dostať odporúčanie na {Polkaswap}, <br\/> zadajte spoj alebo kód referrera",
+            "description": "Môžete dostať odporúčanie na {AppName}, <br\/> zadajte spoj alebo kód referrera",
             "referredBy": "Odporúčal vás {referrer}",
             "info": "Keď zaplatíte poplatok za transakciu, <br\/> 10 % dostane váš sprostredkovateľ",
             "referredLablel": "Odporúčaná adresa"
@@ -985,7 +977,7 @@
     },
     "mobilePopup": {
         "sideMenu": "Získajte {Sora} Wallet",
-        "header": "Stiahnite si peňaženku {Sora} s <span class=\"popup-info__headline--highlight\"> {Polkaswap} <\/span>",
+        "header": "Stiahnite si peňaženku {Sora} s {polkaswapHighlight}",
         "info": "Vymieňajte si tokeny z rôznych sietí – {Sora}, {Ethereum}, Polkadot, {Kusama}. Poskytnite fond likvidity a získajte % z poplatkov za výmenu."
     },
     "releaseNotesText": "Poznámky k vydaniu",
@@ -1073,7 +1065,7 @@
         "info": "Budeme vám posielať iba relevantné aktualizácie o vašej peňaženke, napríklad: zmeny stavu aktív",
         "button": "Povoliť upozornenia",
         "agree": "Áno rozumiem",
-        "notificationBlocked": "Ak chcete dostávať upozornenia o {appName}, povoľte upozornenia v natívnych nastaveniach prehliadača",
+        "notificationBlocked": "Ak chcete dostávať upozornenia o {AppName}, povoľte upozornenia v natívnych nastaveniach prehliadača",
         "pointer": "Stlačením „Povoliť“ zapnite upozornenia"
     },
     "assetDeposit": "Zostatok aktív bol uložený",
@@ -1142,5 +1134,6 @@
             "jsonFields": "Súbor JSON neobsahuje povinné polia"
         }
     },
-    "hashiBridgeText": "Most {Hashi}"
+    "hashiBridgeText": "Most {Hashi}",
+    "disclaimerTitle": "Vylúčenie zodpovednosti:"
 }

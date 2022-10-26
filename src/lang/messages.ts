@@ -10,8 +10,8 @@ import { MoonpayNotifications } from '@/components/Moonpay/consts';
 export default {
   // Wallet project keys
   ...walletEn,
-  // {Polkaswap} project keys
-  appName: '{Polkaswap}',
+  // {AppName} project keys
+  appName: '{AppName}',
   hashiBridgeText: '{{Hashi}} bridge',
   moonpayText: 'MoonPay',
   changeNetworkText: 'Change network in {Metamask}',
@@ -29,16 +29,11 @@ export default {
   bridgeText: 'Bridge',
   comingSoonText: 'Coming Soon',
   releaseNotesText: 'Release notes',
-  memorandum: '{Polkaswap} Memorandum and Terms of Services',
-  memorandumLink:
-    '<a href="@:helpDialog.termsOfServiceLink" target="_blank" rel="nofollow noopener" class="link" title="@:memorandum">@:memorandum</a>',
-  privacyLink:
-    '<a href="@:helpDialog.privacyPolicyLink" target="_blank" rel="nofollow noopener" class="link" title="@:helpDialog.privacyPolicy">@:helpDialog.privacyPolicy</a>',
-  FAQ: '{Polkaswap} FAQ',
-  polkaswapFaqLink:
-    '<a class="link" href="https://wiki.sora.org/polkaswap/polkaswap-faq" target="_blank" rel="nofollow noopener" title="@:FAQ">@:FAQ</a>',
+  memorandum: '{AppName} Memorandum and Terms of Services',
+  FAQ: '{AppName} FAQ',
+  disclaimerTitle: 'Disclaimer:',
   disclaimer:
-    '<span class="app-disclaimer__title">Disclaimer</span>: This website is maintained by the {Sora} community. Before continuing to use this website, please review the @:polkaswapFaqLink and documentation, which includes a detailed explanation on how {Polkaswap} works, as well as the @:memorandumLink, and @:(privacyLink). These documents are crucial to a secure and positive user experience. By using {Polkaswap}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {Polkaswap} in your legal jurisdiction; 2) your understanding that the current version of {Polkaswap} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {Polkaswap}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the @:polkaswapFaqLink, @:memorandumLink, @:privacyLink!',
+    '{disclaimerPrefix} This website is maintained by the {Sora} community. Before continuing to use this website, please review the {polkaswapFaqLink} and documentation, which includes a detailed explanation on how {AppName} works, as well as the {memorandumLink}, and {privacyLink}. These documents are crucial to a secure and positive user experience. By using {AppName}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {AppName} in your legal jurisdiction; 2) your understanding that the current version of {AppName} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {AppName}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!',
   poweredBy: 'Powered by',
   confirmText: 'Confirm',
   confirmTransactionText: 'Confirm transaction in {direction}',
@@ -47,7 +42,7 @@ export default {
   networkFeeText: 'Network Fee',
   networkFeeTooltipText: "Network fee is used to ensure {Sora} system's growth and stable performance.",
   ethNetworkFeeTooltipText:
-    'Please note that the {Ethereum} network fees displayed on {Polkaswap} are only rough estimations, you can see the correct fee amount in your connected {Ethereum} wallet prior to confirming the transaction.',
+    'Please note that the {Ethereum} network fees displayed on {AppName} are only rough estimations, you can see the correct fee amount in your connected {Ethereum} wallet prior to confirming the transaction.',
   marketText: 'Market',
   marketAlgorithmText: 'Market algorithm',
   balanceText: 'Balance',
@@ -116,9 +111,7 @@ export default {
     title: 'Help',
     termsOfService: 'Terms of Service',
     privacyPolicy: 'Privacy Policy',
-    termsOfServiceLink: 'https://wiki.sora.org/polkaswap/terms',
-    privacyPolicyLink: 'https://wiki.sora.org/polkaswap/privacy',
-    appVersion: '@:appName version',
+    appVersion: '{AppName} version',
     contactUs: 'Contact us',
   },
   aboutNetworkDialog: {
@@ -127,7 +120,7 @@ export default {
     network: {
       title: 'What is {Sora}?',
       description:
-        '{Polkaswap} is built on top of the {Sora} Network, and the {Sora} token (XOR) is used for gas/fees and liquidity provision on {Polkaswap}. {Sora} Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like {Ethereum}.',
+        '{AppName} is built on top of the {Sora} Network, and the {Sora} token (XOR) is used for gas/fees and liquidity provision on {AppName}. {Sora} Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like {Ethereum}.',
     },
     polkadot: {
       title: 'What is {PolkadotJs}?',
@@ -268,18 +261,18 @@ export default {
     trading: {
       title: 'Faster Trading',
       first:
-        '{Polkaswap} is a non-custodial, cross-chain AMM DEX protocol for swapping tokens based on {Polkadot} and {{Kusama}} relay chains, {Polkadot} and {{Kusama}} parachains, and blockchains directly connected via bridges.',
-      second: '{Polkaswap} removes trusted intermediaries and provides the opportunity for faster trading',
-      third: '{Polkaswap} is a community project and devs collaborate on the open source code using the',
+        '{AppName} is a non-custodial, cross-chain AMM DEX protocol for swapping tokens based on {Polkadot} and {Kusama} relay chains, {Polkadot} and {{Kusama}} parachains, and blockchains directly connected via bridges.',
+      second: '{AppName} removes trusted intermediaries and provides the opportunity for faster trading',
+      third: '{AppName} is a community project and devs collaborate on the open source code using the',
     },
     liquidity: {
       title: 'Boundless Liquidity',
       first:
-        '{Polkaswap} combines multiple liquidity sources under a common liquidity aggregation algorithm, operating completely on-chain, in a trustless and decentralized way.',
+        '{AppName} combines multiple liquidity sources under a common liquidity aggregation algorithm, operating completely on-chain, in a trustless and decentralized way.',
       second:
         'When traders call the swap function, the liquidity aggregation algorithm will fill orders using the best offers across all liquidity sources. Liquidity sources can be other DEXs, order books, or other API-driven sources.',
       third:
-        'Because {Polkaswap} is an open-source project, anyone can add more liquidity sources by making contributions to the {Polkaswap} codebase.',
+        'Because {AppName} is an open-source project, anyone can add more liquidity sources by making contributions to the {AppName} codebase.',
     },
     swap: {
       title: 'Swap Any Token',
@@ -292,22 +285,22 @@ export default {
     pswap: {
       title: 'PSWAP Tokens',
       first:
-        'PSWAP was created by community governance by voting on its release. It is a utility and governance token used to reward liquidity providers on {Polkaswap}. Unlike most other reward tokens, PSWAP is burned with transactions and decreases in supply over time.',
+        'PSWAP was created by community governance by voting on its release. It is a utility and governance token used to reward liquidity providers on {AppName}. Unlike most other reward tokens, PSWAP is burned with transactions and decreases in supply over time.',
       second:
-        'The {percent}% fee for every swap on the {Polkaswap} DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years.',
+        'The {percent}% fee for every swap on the {AppName} DEX is used to buy back PSWAP tokens, which are then burned. At first, 90% of burned PSWAP tokens are reminted to allocate to liquidity providers, but with time this percentage will decrease to 35% after 4 years.',
     },
     links: {
       first: {
         title: 'Become a {Sora} Validator',
-        desc: 'Secure the future of the {Sora} network and decentralized apps like {Polkaswap}, and earn rewards along the way by becoming a {Sora} validator.',
+        desc: 'Secure the future of the {Sora} network and decentralized apps like {AppName}, and earn rewards along the way by becoming a {Sora} validator.',
       },
       second: {
         title: 'Connect a Chain to {Sora}',
-        desc: 'Grow the decentralized world economy by connecting more chains to {Sora} and {Polkaswap} using the {{Hashi}} bridge protocol.',
+        desc: 'Grow the decentralized world economy by connecting more chains to {Sora} and {AppName} using the {{Hashi}} bridge protocol.',
       },
     },
     network:
-      '{Polkaswap} is built on the {Sora} Network, focusing on interoperability to connect the rest of the crypto ecosystem to {Polkadot}.',
+      '{AppName} is built on the {Sora} Network, focusing on interoperability to connect the rest of the crypto ecosystem to {Polkadot}.',
   },
   exchange: {
     [PageNames.Swap]: 'Swap',
@@ -335,7 +328,6 @@ export default {
       'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
     networkFee: '@:networkFeeText',
     pairIsNotCreated: '@:pairIsNotCreated',
-    networkFeeTooltip: '@:networkFeeTooltipText',
     firstPerSecond: '@:firstPerSecond',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     insufficientLiquidity: 'Insufficient liquidity',
@@ -384,6 +376,9 @@ export default {
     networkInfo: 'Bridge {Sora} Network with:',
     ethereum: '{Ethereum}',
     energy: '@:evm.EWC',
+    copy: 'Copy network address',
+    soraAddress: '{Sora} address',
+    ethereumAddress: '{Ethereum} address',
   },
   selectRegisteredAsset: {
     title: 'Select a token',
@@ -449,9 +444,9 @@ export default {
       total: 'Total',
     },
     successCopy: 'Transaction hash is copied to the clipboard',
+    pending: '{network} transaction pending...',
     ethereum: '{Ethereum}',
     sora: '{Sora}',
-    pending: '<span class="network-title">{network}</span> transaction pending...',
     retry: '@:retryText',
     metamask: '{Metamask}',
     confirm: '@:confirmTransactionText',
@@ -460,7 +455,7 @@ export default {
     connectWallet: '@:connectWalletText',
     changeAccount: '@:changeAccountText in {Metamask}',
     expectedAddress: 'Expected address in {Metamask}',
-    allowToken: 'Allow @:appName to use your {tokenSymbol}',
+    allowToken: 'Allow {AppName} to use your {tokenSymbol}',
     approveToken:
       'Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.',
   },
@@ -552,9 +547,9 @@ export default {
     marketAlgorithm: '@.upper:marketAlgorithmText',
     marketAlgorithms: {
       SMART:
-        '<span class="algorithm">SMART</span> liquidity routing ensures the best price for any transaction by combining only the best price options from all available markets. When available, Token Bonding Curve (<span class="algorithm">TBC</span>) will be used for liquidity as long as the asset price is more affordable than from other sources, upon which the <span class="algorithm">XYK</span> pool is utilized.',
-      TBC: '<span class="algorithm">TBC</span> — buying only from the Token Bonding Curve (Primary Market). There is a possibility that the price can become unfavorable compared to the <span class="algorithm">XYK</span> pool (Secondary Market), but the value received from the vested rewards might turn out to be much more favorable over time.',
-      XYK: '<span class="algorithm">XYK</span> — buying only from the XYK Pool (Secondary Market). Traditional XYK pool swap.',
+        '{smartAlgorithm} liquidity routing ensures the best price for any transaction by combining only the best price options from all available markets. When available, Token Bonding Curve ({tbcAlgorithm}) will be used for liquidity as long as the asset price is more affordable than from other sources, upon which the {xycAlgorithm} pool is utilized.',
+      TBC: '{tbcAlgorithm} — buying only from the Token Bonding Curve (Primary Market). There is a possibility that the price can become unfavorable compared to the {xycAlgorithm} pool (Secondary Market), but the value received from the vested rewards might turn out to be much more favorable over time.',
+      XYK: '{xycAlgorithm} — buying only from the XYK Pool (Secondary Market). Traditional XYK pool swap.',
     },
     marketAlgorithmTooltip: {
       main: ' - option to choose between Primary Market (TBC), Secondary Market (XYK) or a combined smart algorithm for guaranteed best price for any given transaction.',
@@ -585,7 +580,6 @@ export default {
     changeAccount: '@:changeAccountText',
     connected: '@:connectedText',
     networkFee: '@:networkFeeText',
-    networkFeeTooltip: '@:networkFeeTooltipText',
     andText: 'and',
     forText: 'for',
     totalVested: 'Total rewards',
@@ -643,11 +637,11 @@ export default {
     notifications: {
       [MoonpayNotifications.Success]: {
         title: 'Tokens purchased',
-        text: 'Token purchase is finished. The {{Hashi}} bridge transaction will start automatically as soon as the tokens have been received in the connected {Ethereum} account. It is safe to close this window and continue using {Polkaswap}. There will be a notification about the bridge transaction when ready.',
+        text: 'Token purchase is finished. The {{Hashi}} bridge transaction will start automatically as soon as the tokens have been received in the connected {Ethereum} account. It is safe to close this window and continue using {AppName}. There will be a notification about the bridge transaction when ready.',
       },
       [MoonpayNotifications.SupportError]: {
         title: 'Token not supported',
-        text: 'Unfortunately the token purchased via @:moonpayText is not yet supported by the {{Hashi}} bridge in {Polkaswap}. Normally only the supported tokens should be available for purchase via @:moonpayText in {Polkaswap}, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class="link" href="https://t.me/polkaswap" target="_blank" rel="nofollow noopener" title="@:appName">{Polkaswap} Telegram group</a>',
+        text: 'Unfortunately the token purchased via @:moonpayText is not yet supported by the {{Hashi}} bridge in {AppName}. Normally only the supported tokens should be available for purchase via @:moonpayText in {AppName}, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class="link" href="https://t.me/polkaswap" target="_blank" rel="nofollow noopener" title="{AppName}">{AppName} Telegram group</a>',
       },
       [MoonpayNotifications.FeeError]: {
         title: 'Not enough ETH for the bridge tx',
@@ -717,12 +711,9 @@ export default {
     referralsNumber: '{number} referrals',
     startInviting: 'To start inviting, bond any amount of XOR.',
     insufficientBondedAmount: 'To invite more referrals, bond at least {inviteUserFee} XOR',
-    preview:
-      'Invite new users and get 10% from their transaction fees.<br />To start, bond any amount of XOR. <a href="#" target="_blank" rel="nofollow noopener" class="link" title="Learn more">Learn more</a>',
     deposit: 'Deposit',
     balance: 'Balance',
     networkFee: '@:networkFeeText',
-    networkFeeTooltip: '@:networkFeeTooltipText',
     insufficientBalance: '@:insufficientBalanceText',
     insufficientBondedBalance: 'Insufficient bonded balance',
     action: {
@@ -744,7 +735,7 @@ export default {
       text: '@:confirmText',
       bond: 'Confirm bond',
       unbond: 'Confirm unbond',
-      inviteTitle: 'You have been invited to {Polkaswap}',
+      inviteTitle: 'You have been invited to {AppName}',
       inviteDescription:
         'For every transaction, 10% of the fee will go to your referrer, without any extra cost to you.',
       signInvitation: 'Approve',
@@ -755,8 +746,8 @@ export default {
     },
   },
   mobilePopup: {
+    header: 'Download {Sora} Wallet with {polkaswapHighlight} features',
     sideMenu: 'Get {Sora} Wallet',
-    header: 'Download {Sora} Wallet with <span class="popup-info__headline--highlight">{Polkaswap}</span> features',
     info: 'Swap tokens from different networks - {Sora}, {Ethereum}, {Polkadot}, {{Kusama}}. Provide liquidity pool and earn % from exchange fees.',
   },
   demeterFarming: {
@@ -808,7 +799,7 @@ export default {
     enable: 'Enable notifications',
     agree: 'Yes, I understand',
     notificationBlocked:
-      "To receive the notifications about {appName}, please, allow the notifications in your browser's native settings",
+      "To receive the notifications about {AppName}, please, allow the notifications in your browser's native settings",
     pointer: 'Press “Allow” to turn notifications on',
   },
   assetDeposit: 'Asset balance has been deposited',
