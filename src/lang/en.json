@@ -212,6 +212,7 @@
             "title": "Transaction submitted",
             "desc": "Create {symbol} token"
         },
+        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Failed to get a fee for a transaction",
@@ -304,6 +305,7 @@
         "referrer": "Referrer",
         "referral": "Referral"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Change network in {Metamask}",
     "transactionText": "transaction | transactions",
     "connectWalletText": "Connect account",
@@ -312,7 +314,6 @@
     "connectWalletTextTooltip": "Connect to {Sora} Network with {PolkadotJs}",
     "selectNodeText": "Select Network Node",
     "bridgeText": "Bridge",
-    "disclaimerTitle": "Disclaimer:",
     "disclaimer": "{disclaimerPrefix} This website is maintained by the {Sora} community. Before continuing to use this website, please review the {polkaswapFaqLink} and documentation, which includes a detailed explanation on how {appName} works, as well as the {memorandumLink}, and {privacyLink}. These documents are crucial to a secure and positive user experience. By using {appName}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {appName} in your legal jurisdiction; 2) your understanding that the current version of {appName} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {appName}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "poweredBy": "Powered by",
     "confirmTransactionText": "Confirm transaction in {direction}",
@@ -627,9 +628,9 @@
             "total": "Total"
         },
         "successCopy": "Transaction hash is copied to the clipboard",
-        "pending": "{network} transaction pending...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} transaction pending...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -910,6 +911,7 @@
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} referrals",
         "startInviting": "Bond XOR to refer others",
+        "preview": "Invite new users and get 10% from their transaction fees.<br\/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Balance",
         "networkFee": "@:networkFeeText",
@@ -974,8 +976,8 @@
         "title": "Bridge transaction successful"
     },
     "mobilePopup": {
-        "header": "Download {Sora} Wallet with {polkaswapHighlight} features",
         "sideMenu": "Get {Sora} Wallet",
+        "header": "Download {Sora} Wallet with {polkaswapHighlight} features",
         "info": "Swap tokens from different networks - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Provide liquidity pool and earn % from exchange fees."
     },
     "releaseNotesText": "Release notes",
@@ -1132,5 +1134,6 @@
             "jsonFields": "JSON file does not have required fields"
         }
     },
-    "hashiBridgeText": "{Hashi} bridge"
+    "hashiBridgeText": "{Hashi} bridge",
+    "disclaimerTitle": "Disclaimer:"
 }

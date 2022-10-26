@@ -212,6 +212,7 @@
             "title": "Трансакција је послата",
             "desc": "Направите {symbol} токен"
         },
+        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Добиjање накнаде за трансакцију није успело",
@@ -304,6 +305,7 @@
         "referrer": "Предложилтељ",
         "referral": "Препорука"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Промените мрежу у Метамаску",
     "transactionText": "трансакција | трансакције",
     "connectWalletText": "Повежите рачун",
@@ -312,7 +314,6 @@
     "connectWalletTextTooltip": "Повежите се на {Sora} мрежу помоћу {PolkadotJs}",
     "selectNodeText": "Изаберите нод",
     "bridgeText": "Мост",
-    "disclaimerTitle": "Одрицање одговорности:",
     "disclaimer": "{disclaimerPrefix} Ову веб страницу одржава заједница {Sora}. Пре него што наставите да користите ову веб страницу, прегледајте {polkaswapFaqLink} и документацију, која укључује детаљно објашњење о томе како {appName} функционише, као и {memorandumLink} и {privacyLink}. Ови документи су кључни за безбедно и позитивно корисничко искуство. Коришћењем {appName}-а, потврђујете да сте прочитали и разумели ове документе. Такође прихватате следеће: 1) своју искључиву одговорност за поштовање свих закона који се могу применити на вашу конкретну употребу {appName}-а у вашој правној јурисдикцији; 2) ваше разумевање да је тренутна верзија {appName}-а алфа верзија: није у потпуности тестирана и неке функције можда неће радити како је дизајнирано; и 3) ваше разумевање и добровољно прихватање ризика повезаних са коришћењем {appName}-а, укључујући, али не ограничавајући се на, ризик од губитка токена. Немојте наставити без читања {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "poweredBy": "Подржава oд",
     "confirmTransactionText": "Потврдите трансакцију у {direction}",
@@ -627,9 +628,9 @@
             "total": "Укупно"
         },
         "successCopy": "Хеш трансакције се копира у међуспремник",
-        "pending": "{network} трансакција на чекању...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} трансакција на чекању...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -975,8 +976,8 @@
         "title": "Transakcija na mostu uspešna"
     },
     "mobilePopup": {
-        "header": "Преузмите {Sora} новчаник са {polkaswapHighlight}",
         "sideMenu": "Преузмите {Sora} novčanik",
+        "header": "Преузмите {Sora} новчаник са {polkaswapHighlight}",
         "info": "Замените токене са различитих мрежа - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Обезбедите фонд ликвидности и зарадите % од провизија."
     },
     "releaseNotesText": "Напомене о издању",
@@ -1133,5 +1134,6 @@
             "jsonFields": "ЈСОН датотека нема обавезна поља"
         }
     },
-    "hashiBridgeText": "{Hashi} most"
+    "hashiBridgeText": "{Hashi} most",
+    "disclaimerTitle": "Одрицање одговорности:"
 }

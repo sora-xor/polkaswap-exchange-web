@@ -305,6 +305,7 @@
         "referrer": "Perujuk",
         "referral": "Rujukan"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Ubah jaringan di {Metamask}",
     "transactionText": "Transaksi | Tansaksi Lainny",
     "connectWalletText": "Hubungkan akun",
@@ -313,7 +314,6 @@
     "connectWalletTextTooltip": "Hubungkan ke Jaringan {Sora} menggunakan {PolkadotJs}",
     "selectNodeText": "Pilih node",
     "bridgeText": "Bridge",
-    "disclaimerTitle": "Penafian:",
     "disclaimer": "{disclaimerPrefix} Situs web ini dikelola oleh komunitas {Sora}. Sebelum melanjutkan menggunakan situs web ini, harap tinjau {polkaswapFaqLink} dan dokumentasinya, yang berisi penjelasan rinci tentang cara kerja {appName}, serta {memorandumLink}, dan {privacyLink}. Dokumen-dokumen ini sangat penting untuk pengalaman pengguna yang aman dan positif. Dengan menggunakan {appName}, Anda menyatakan bahwa Anda telah membaca dan memahami dokumen-dokumen ini. Anda juga mengakui hal-hal berikut: 1) satu-satunya tanggung jawab Anda untuk mematuhi semua undang-undang yang mungkin berlaku untuk penggunaan khusus Anda atas {appName} di yurisdiksi hukum Anda; 2) pemahaman Anda bahwa versi {appName} saat ini adalah versi alfa: belum sepenuhnya diuji, dan beberapa fungsi mungkin tidak berfungsi seperti yang dirancang; dan 3) pemahaman dan penerimaan sukarela Anda atas risiko yang terkait dengan penggunaan {appName}, termasuk, namun tidak terbatas pada, risiko kehilangan token. Sekali lagi, mohon jangan melanjutkan tanpa membaca FAQ {polkaswapFaqLink}, {memorandumLink}, dan {privacyLink}!",
     "poweredBy": "Didukung oleh",
     "confirmTransactionText": "Konfirmasi transaksi untuk {direction}",
@@ -628,9 +628,9 @@
             "total": "Total"
         },
         "successCopy": "Hash transaksi telah disalin ke clipboard",
-        "pending": "{network} transaksi tertunda...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} transaksi tertunda...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -911,6 +911,7 @@
         "bondedXOR": "Ikatan XOR",
         "referralsNumber": "{number} rujukan",
         "startInviting": "Obligasi XOR untuk merujuk orang lain",
+        "preview": "Undang pengguna baru dan dapatkan 10% dari biaya transaksi mereka.<br \/>Untuk mulai, beri obligasi dalam jumlah XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
@@ -975,8 +976,8 @@
         "title": "Transaksi jembatan berhasil"
     },
     "mobilePopup": {
-        "header": "Unduh {Sora} Wallet dengan fitur {polkaswapHighlight}",
         "sideMenu": "Dapatkan Dompet {Sora}",
+        "header": "Unduh {Sora} Wallet dengan fitur {polkaswapHighlight}",
         "info": "Tukar token dari jaringan yang berbeda - {Sora}, {Ethereum}, Polkadot, {Kusama}. Sediakan kumpulan likuiditas dan dapatkan % dari biaya pertukaran."
     },
     "releaseNotesText": "Catatan rilis",
@@ -1133,5 +1134,6 @@
             "jsonFields": "File JSON tidak memiliki bidang yang wajib diisi"
         }
     },
-    "hashiBridgeText": "Jembatan {Hashi}"
+    "hashiBridgeText": "Jembatan {Hashi}",
+    "disclaimerTitle": "Penafian:"
 }

@@ -305,6 +305,7 @@
         "referrer": "Atọkasi",
         "referral": "Ifiranṣẹ"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Yi nẹtiwọọki pada ni {Metamask}",
     "transactionText": "awon isowo | awon isowo",
     "connectWalletText": "So ifowisi pọ",
@@ -313,7 +314,6 @@
     "connectWalletTextTooltip": "Sopọ si Nẹtiwọọki {Sora} pẹlu {PolkadotJs}",
     "selectNodeText": "Yan ipade",
     "bridgeText": "Afara",
-    "disclaimerTitle": "Akiyesi:",
     "disclaimer": "{disclaimerPrefix} Oju opo wẹẹbu yii ni itọju nipasẹ agbegbe {Sora}. Ṣaaju ki o to tẹsiwaju lati lo oju opo wẹẹbu yii, jọwọ ṣe atunyẹwo {polkaswapFaqLink} ati iwe, eyiti o ni alaye alaye lori bi {appName} ṣe n ṣiṣẹ, ati pẹlu {memorandumLink}, ati {privacyLink}. Awọn iwe aṣẹ wọnyi jẹ pataki si aabo olumulo ati aabo olumulo. Nipa lilo {appName}, o gba pe o ti ka ati loye awọn iwe wọnyi. O tun gba eleyi: Ikini) ojuṣe rẹ nikan fun ibamu pẹlu gbogbo awọn ofin ti o le kan si lilo rẹ pato ti {appName} ni aṣẹ ofin rẹ; Ikeji) oye rẹ pe ẹya lọwọlọwọ ti {appName} jẹ ẹya alpha: ko ti ni idanwo ni kikun, ati pe awọn iṣẹ kan le ma ṣe bi a ti ṣe apẹrẹ; ati Iketa) oye rẹ ati gbigba iyọọda ti awọn eewu ti o wa ninu lilo {appName}, pẹlu, ṣugbọn kii ṣe opin si, eewu ti awọn ami tokini padanu. Lẹẹkan si, jọwọ maṣe tẹsiwaju laisi kika {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "poweredBy": "Itileyin lati",
     "confirmTransactionText": "Jẹrisi iṣowo ni {direction}",
@@ -628,9 +628,9 @@
             "total": "Lapapọ"
         },
         "successCopy": "Ti daakọ elile iṣowo si agekuru naa",
-        "pending": "idunadura ni isunmọtosi ni {network}",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "idunadura ni isunmọtosi ni {network}",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -911,6 +911,7 @@
         "bondedXOR": "XOR ti o ni asopọ",
         "referralsNumber": "awọn itọkasi {number}",
         "startInviting": "Bond XOR lati tọka si awọn miiran",
+        "preview": "Pe awọn olumulo titun ati gba 10% lati awọn idiyele idunadura wọn. <br \/> Lati bẹrẹ, di eyikeyi iye ti XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Kọ ẹkọ diẹ sii <\/a>",
         "deposit": "Idogo",
         "balance": "Iwontunwonsi",
         "networkFee": "@:networkFeeText",
@@ -975,8 +976,8 @@
         "title": "Idunadura Bridge aseyori"
     },
     "mobilePopup": {
-        "header": "Ṣe igbasilẹ apamọwọ {Sora} pẹlu {polkaswapHighlight} awọn ẹya ara ẹrọ",
         "sideMenu": "Ṣe igbasilẹ apamọwọ {Sora}",
+        "header": "Ṣe igbasilẹ apamọwọ {Sora} pẹlu {polkaswapHighlight} awọn ẹya ara ẹrọ",
         "info": "Siwopu àmi lati yatọ si nẹtiwọki - {Sora}, {Ethereum}, Polkadot, {Kusama}. Pese adagun oloomi ati jo'gun% lati awọn idiyele paṣipaarọ."
     },
     "releaseNotesText": "Awọn akọsilẹ idasilẹ",
@@ -1133,5 +1134,6 @@
             "jsonFields": "Faili JSON ko ni awọn aaye ti a beere"
         }
     },
-    "hashiBridgeText": "{Hashi} Afara"
+    "hashiBridgeText": "{Hashi} Afara",
+    "disclaimerTitle": "Akiyesi:"
 }

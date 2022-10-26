@@ -212,6 +212,7 @@
             "title": "Transaktion inskickad",
             "desc": "Skapa {symbol} token"
         },
+        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Misslyckades med att hämta en avgift för en transaktion",
@@ -304,6 +305,7 @@
         "referrer": "Referrer",
         "referral": "Hänvisning"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Ändra nätverk i {Metamask}",
     "transactionText": "transaktion | transaktioner",
     "connectWalletText": "Anslut konto",
@@ -312,7 +314,6 @@
     "connectWalletTextTooltip": "Anslut till {Sora} Nätverk med {PolkadotJs}",
     "selectNodeText": "Välj Nätverks-nod",
     "bridgeText": "Brygga",
-    "disclaimerTitle": "Ansvarsfriskrivning:",
     "disclaimer": "{disclaimerPrefix} Den här webbplatsen underhålls av {Sora} -communityn. Innan du fortsätter att använda denna webbplatsen, vänligen läs igenom {polkaswapFaqLink} och dokumentation som innehåller en detaljerad förklaring av hur {appName} fungerar, samt {memorandumLink} och {privacyLink}. Dessa dokument är avgörande för en säker och positiv användarupplevelse. Genom att använda {appName} bekräftar du att du har läst och förstått dessa dokument. Du medger även följande: 1) ditt enskilda ansvar att efterfölja alla lagar som kan gälla för din särskilda användning av {appName} i din juridiska jurisdiktion;\n 2) din förståelse för att den nuvarande versionen av {appName} är en alpha-version: den har inte testats fullständigt och vissa funktioner kanske inte fungerar som designat; och\n 3) din förståelse och frivilliga acceptans av riskerna med att använda {appName}, inklusive men inte begränsat till risken att förlora tokens. Återigen, fortsätt inte utan att läsa {polkaswapFaqLink}, {memorandumLink} och {privacyLink}!",
     "poweredBy": "Drivs av",
     "confirmTransactionText": "Bekräfta transaktion i {direction}",
@@ -627,9 +628,9 @@
             "total": "Totalsumma"
         },
         "successCopy": "Transaktionshash är kopierad till urklipp",
-        "pending": "{network} transaktion väntande...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} transaktion väntande...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -975,8 +976,8 @@
         "title": "Bryggtransaktion lyckad"
     },
     "mobilePopup": {
-        "header": "Ladda ner {Sora} Wallet med {polkaswapHighlight} funktioner",
         "sideMenu": "Skaffa {Sora} Wallet",
+        "header": "Ladda ner {Sora} Wallet med {polkaswapHighlight} funktioner",
         "info": "Byt ut tokens från olika nätverk - {Sora}, {Ethereum}, Polkadot, {Kusama}. Bidra med likviditet i en pool och tjäna % från växlingsavgifter."
     },
     "releaseNotesText": "Utgivningsanmärkningar",
@@ -1133,5 +1134,6 @@
             "jsonFields": "JSON-fil har inte obligatoriska fält"
         }
     },
-    "hashiBridgeText": "{Hashi} bro"
+    "hashiBridgeText": "{Hashi} bro",
+    "disclaimerTitle": "Ansvarsfriskrivning:"
 }

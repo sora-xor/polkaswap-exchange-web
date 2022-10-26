@@ -212,6 +212,7 @@
             "title": "Transaksjon sendt",
             "desc": "Opprett {symbol} token"
         },
+        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Mislyktes i å hente transaksjonsgebyr",
@@ -304,6 +305,7 @@
         "referrer": "Henviser",
         "referral": "Henvisning"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Bytt nettverk i {Metamask}",
     "transactionText": "transaksjon | transaksjoner",
     "connectWalletText": "Koble til konto",
@@ -312,7 +314,6 @@
     "connectWalletTextTooltip": "Koble til {Sora} Network med {PolkadotJs}",
     "selectNodeText": "Velg node",
     "bridgeText": "Bro",
-    "disclaimerTitle": "Ansvarsfraskrivelse:",
     "disclaimer": "{disclaimerPrefix} Dette nettstedet vedlikeholdes av {Sora} -fellesskapet. Før du fortsetter å bruke dette nettstedet, må du lese {polkaswapFaqLink} og dokumentasjonen, som inkluderer en detaljert forklaring på hvordan {appName} fungerer, samt {memorandumLink} og {privacyLink}. Disse dokumentene er avgjørende for en sikker og positiv brukeropplevelse. Ved å bruke {appName} erkjenner du at du har lest og forstått disse dokumentene. Du erkjenner også følgende: 1) ditt eget ansvar for å overholde alle lover som kan gjelde for din spesielle bruk av {appName} i din juridiske jurisdiksjon; 2) din forståelse av at den nåværende versjonen av {appName} er en alfaversjon: den er ikke fullstendig testet, og noen funksjoner fungerer kanskje ikke som designet; og 3) din forståelse og frivillig aksept av risikoen ved bruk av {appName}, inkludert, men ikke begrenset til, risikoen for å miste tokens. Igjen, ikke fortsett uten å lese {polkaswapFaqLink}, {memorandumLink} og {privacyLink}!",
     "poweredBy": "Drevet av",
     "confirmTransactionText": "Bekreft transaksjonen i {direction}",
@@ -627,9 +628,9 @@
             "total": "Total"
         },
         "successCopy": "Transaksjons hash er kopiert til utklippstavlen",
-        "pending": "{network} transaksjon pågår...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} transaksjon pågår...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -910,6 +911,7 @@
         "bondedXOR": "XOR Bundet",
         "referralsNumber": "{number}-henvisninger",
         "startInviting": "Bond XOR for å henvise andre",
+        "preview": "Inviter nye brukere og få 10% fra deres transaksjonsgebyrer.<br \/>For å starte, obligasjon et hvilket som helst beløp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Lær mer<\/a>",
         "deposit": "Innskudd",
         "balance": "Balanse",
         "networkFee": "@:networkFeeText",
@@ -974,8 +976,8 @@
         "title": "Brotransaksjonen ble vellykket"
     },
     "mobilePopup": {
-        "header": "Last ned {Sora} Wallet med {polkaswapHighlight} funksjoner",
         "sideMenu": "Få {Sora} Wallet",
+        "header": "Last ned {Sora} Wallet med {polkaswapHighlight} funksjoner",
         "info": "Bytt ut tokens fra forskjellige nettverk - {Sora}, {Ethereum}, Polkadot, {Kusama}. Gi likviditetspool og tjen % fra vekslingsgebyrer."
     },
     "releaseNotesText": "Utgivelsesnotater",
@@ -1132,5 +1134,6 @@
             "jsonFields": "JSON-filen har ikke obligatoriske felt"
         }
     },
-    "hashiBridgeText": "{Hashi} bro"
+    "hashiBridgeText": "{Hashi} bro",
+    "disclaimerTitle": "Ansvarsfraskrivelse:"
 }

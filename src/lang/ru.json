@@ -305,6 +305,7 @@
         "referrer": "Реферер",
         "referral": "Реферал"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Сменить сеть в {Metamask}",
     "transactionText": "транзакцию | транзакции",
     "connectWalletText": "Подключить аккаунт",
@@ -313,7 +314,6 @@
     "connectWalletTextTooltip": "Подключение к сети {Sora} с помощью {PolkadotJs}",
     "selectNodeText": "Выбрать узел",
     "bridgeText": "Мост",
-    "disclaimerTitle": "Отказ от ответственности:",
     "disclaimer": "{disclaimerPrefix} этот веб-сайт поддерживается {Sora} сообществом. Прежде чем продолжить использование этого веб-сайта, просмотрите {polkaswapFaqLink} и документацию, которая включает подробное объяснение принципов работы {appName}, а также {memorandumLink} и {privacyLink}. Эти документы важны для обеспечения безопасности и положительного пользовательского опыта. Используя {appName}, вы подтверждаете, что прочитали и поняли эти документы. Вы также соглашаетесь со следующим: 1) Вы несете исключительную ответственность за соблюдение всех законов, которые могут применяться к использованию вами {appName} в Вашей правовой юрисдикции; 2) Вы понимаете, что текущая версия {appName} является альфа-версией: она не была полностью протестирована, и некоторые функции могут работать не так, как задумано; и 3) Вы понимаете и добровольно принимаете риски, связанные с использованием {appName}, включая, помимо прочего, риск потери токенов. Еще раз подчеркиваем - пожалуйста, не используйте сервис, не прочитав {polkaswapFaqLink}, {memorandumLink} и {privacyLink}!",
     "poweredBy": "Работает на",
     "confirmTransactionText": "Подтвердите транзакцию в {direction}",
@@ -628,9 +628,9 @@
             "total": "Всего"
         },
         "successCopy": "Хеш транзакции скопирован в буфер обмена",
-        "pending": "{network} транзакция в процессе...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} транзакция в процессе...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -911,6 +911,7 @@
         "bondedXOR": "XOR зарезервировано",
         "referralsNumber": "{number} рефералов",
         "startInviting": "Bond XOR для приглашения других",
+        "preview": "Приглашайте новых пользователей и получайте 10% от их транзакционных сборов.<br \/>Чтобы начать, зарезервируйте любую сумму XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Узнать больше<\/a>",
         "deposit": "Пополнить",
         "balance": "Баланс",
         "networkFee": "@:networkFeeText",
@@ -975,8 +976,8 @@
         "title": "Транзакция моста прошла успешно"
     },
     "mobilePopup": {
-        "header": "Загрузите кошелек {Sora} с функциями {polkaswapHighlight}",
         "sideMenu": "Получить {Sora} Wallet",
+        "header": "Загрузите кошелек {Sora} с функциями {polkaswapHighlight}",
         "info": "Обмен токенами из разных сетей — {Sora}, {Ethereum}, Polkadot, {Kusama}. Обеспечьте пул ликвидности и зарабатывайте % от биржевых комиссий."
     },
     "releaseNotesText": "О версии приложения",
@@ -1133,5 +1134,6 @@
             "jsonFields": "JSON-файл не содержит обязательных полей"
         }
     },
-    "hashiBridgeText": "мост {Hashi}"
+    "hashiBridgeText": "мост {Hashi}",
+    "disclaimerTitle": "Отказ от ответственности:"
 }

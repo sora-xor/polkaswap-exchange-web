@@ -212,6 +212,7 @@
             "title": "Transakce byla odeslána",
             "desc": "Vytvořit token {symbol}"
         },
+        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Získání poplatku za transakci se nezdařilo.",
@@ -304,6 +305,7 @@
         "referrer": "Doporučitel",
         "referral": "Doporučení"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Změnit síť v {Metamask}",
     "transactionText": "transakce",
     "connectWalletText": "Připojit účet",
@@ -312,7 +314,6 @@
     "connectWalletTextTooltip": "Připojte se k síti {Sora} pomocí {PolkadotJs}",
     "selectNodeText": "Vyberte síťový node",
     "bridgeText": "Bridge",
-    "disclaimerTitle": "Disclaimer \/ Zřeknutí se odpovědnosti:",
     "disclaimer": "{disclaimerPrefix} Tento web spravuje komunita {Sora}. Před dalším používáním tohoto webu, si prosím prostudujte {polkaswapFaqLink} a dokumentaci, která obsahuje podrobné vysvětlení toho, jak {appName} funguje, a také {memorandumLink} a {privacyLink}. Tyto dokumenty jsou zásadní pro bezpečnou a pozitivní uživatelskou zkušenost. Používáním {appName} potvrzujete, že jste si tyto dokumenty přečetli a porozuměli jim. Rovněž berete na vědomí následující: 1) svou výhradní odpovědnost za soulad se všemi zákony, které se mohou vztahovat na vaše konkrétní použití {appName} ve vaší právní jurisdikci; 2) chápete, že aktuální verze {appName} je alfa verzí: nebyla plně otestována a některé funkce nemusí fungovat tak, jak byly navrženy; a 3) vaše porozumění a dobrovolné přijetí rizik spojených s používáním {appName}, mimo jiné včetně rizika ztráty tokenů. Ještě jednou vás žádáme, abyste nepokračovali bez přečtení {polkaswapFaqLink}, {memorandumLink}, a {privacyLink}!",
     "poweredBy": "Běží na",
     "confirmTransactionText": "Potvrďte transakci ve {direction}",
@@ -627,9 +628,9 @@
             "total": "Celkem"
         },
         "successCopy": "Hash transakce je zkopírován do schránky",
-        "pending": "{network} transakce čeká na vyřízení...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} transakce čeká na vyřízení...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -910,6 +911,7 @@
         "bondedXOR": "Vázané XOR",
         "referralsNumber": "{number} doporučení",
         "startInviting": "Bond XOR doporučit ostatním",
+        "preview": "Pozvěte nové uživatele a získejte 10 % z jejich transakčních poplatků.<br \/>Pro začátek se zavažte libovolnou částkou XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Zjistěte více<\/a>",
         "deposit": "Vklad",
         "balance": "Zůstatek",
         "networkFee": "@:networkFeeText",
@@ -1132,5 +1134,6 @@
             "jsonFields": "Soubor JSON neobsahuje povinná pole"
         }
     },
-    "hashiBridgeText": "Most {Hashi}"
+    "hashiBridgeText": "Most {Hashi}",
+    "disclaimerTitle": "Disclaimer \/ Zřeknutí se odpovědnosti:"
 }

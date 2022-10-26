@@ -212,6 +212,7 @@
             "title": "交易已提交",
             "desc": "创建{symbol}代币"
         },
+        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "无法获得交易费用",
@@ -304,6 +305,7 @@
         "referrer": "推荐人",
         "referral": "推荐"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "在 {Metamask} 中更改网络",
     "transactionText": "交易 | 交易",
     "connectWalletText": "连接账户",
@@ -312,7 +314,6 @@
     "connectWalletTextTooltip": "用{PolkadotJs}连接到{Sora}网络",
     "selectNodeText": "选择网络节点",
     "bridgeText": "转接桥",
-    "disclaimerTitle": "免责声明:",
     "disclaimer": "{disclaimerPrefix} 本网站由{Sora} 社区维护。在继续使用本网站之前，请查看{polkaswapFaqLink} 和文档，其中包括有关 {appName} 工作原理的详细说明，以及 {memorandumLink} 和 {privacyLink}。这些文档对于安全和积极的用户体验至关重要。通过使用 {appName}，您承认您已阅读并理解这些文件。您还承认以下内容：1) 您全权负责遵守在您的法律管辖范围内可能适用于您对 {appName} 的特定使用的所有法律； 2）您对{appName}当前版本为alpha版本的理解：尚未经过全面测试，部分功能可能无法按设计执行； 3) 您理解并自愿接受使用 {appName} 所涉及的风险，包括但不限于丢失代币的风险。再一次提醒，在没有阅读{polkaswapFaqLink}、{memorandumLink} 和{privacyLink}之前，请不要继续！",
     "poweredBy": "启动于",
     "confirmTransactionText": "确认在{direction}的交易",
@@ -627,9 +628,9 @@
             "total": "总共"
         },
         "successCopy": "交易哈希已被复制到剪贴板上",
-        "pending": "{network} 交易等待确认...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} 交易等待确认...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -910,6 +911,7 @@
         "bondedXOR": "XOR绑定",
         "referralsNumber": "{number}推荐者",
         "startInviting": "绑定 XOR 以推荐他人",
+        "preview": "邀请新用户并从他们的交易费用中获得 10%。 <br\/>首先，绑定任意数量的XOR。 <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">了解更多<\/a>",
         "deposit": "存款",
         "balance": "余额",
         "networkFee": "@:networkFeeText",
@@ -974,8 +976,8 @@
         "title": "转接桥交易成功"
     },
     "mobilePopup": {
-        "header": "下载具有{polkaswapHighlight}功能的 {Sora} 钱包",
         "sideMenu": "获取 {Sora} 钱包",
+        "header": "下载具有{polkaswapHighlight}功能的 {Sora} 钱包",
         "info": "兑换来自不同网络的代币 - {Sora}、以太坊、{Polkadot}、{Kusama}。提供流动流动池并从交易费用中赚取 %。"
     },
     "releaseNotesText": "发行说明",
@@ -1132,5 +1134,6 @@
             "jsonFields": "JSON 文件没有必填字段"
         }
     },
-    "hashiBridgeText": "{Hashi}桥"
+    "hashiBridgeText": "{Hashi}桥",
+    "disclaimerTitle": "免责声明:"
 }

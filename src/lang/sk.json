@@ -212,6 +212,7 @@
             "title": "Transakcia bola odoslaná",
             "desc": "Vytvoriť {symbol} token"
         },
+        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Nepodarilo sa získať poplatok za transakciu",
@@ -304,6 +305,7 @@
         "referrer": "Sprostredkovateľ",
         "referral": "Doporučenie"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Zmeňiť sieť v {Metamask}",
     "transactionText": "transakcia | transakcie",
     "connectWalletText": "Pripojiť účet",
@@ -312,7 +314,6 @@
     "connectWalletTextTooltip": "Pripojte sa k sieti {Sora} pomocou rozšírenia {PolkadotJs}",
     "selectNodeText": "Vybrať uzol",
     "bridgeText": "Most",
-    "disclaimerTitle": "Vylúčenie zodpovednosti:",
     "disclaimer": "{disclaimerPrefix} Táto webová stránka je spravovaná komunitou {Sora}. Pred pokračovaním v používaní tejto webovej stránky si preštudujte {polkaswapFaqLink} a dokumentáciu, ktorá obsahuje podrobné vysvetlenie fungovania aplikácie {appName}, ako aj {memorandumLink} a {privacyLink}. Tieto dokumenty sú nevyhnutné pre bezpečnú a pozitívnu používateľskú skúsenosť. Používaním aplikácie {appName} beriete na vedomie, že ste si tieto dokumenty prečítali a porozumeli im. Ďalej beriete na vedomie nasledovné: 1) vašu výlučnú zodpovednosť za dodržiavanie všetkých zákonov, ktoré sa môžu vzťahovať na vaše konkrétne používanie programu {appName} vo vašej právnej jurisdikcii; 2) chápete, že súčasná verzia programu {appName} je verzia alfa: nebola úplne testovaná a niektoré funkcie nemusia fungovať tak, ako boli navrhnuté; 3) vaše porozumenie a dobrovoľné prijatie rizík spojených s používaním programu {appName}, vrátane, ale nie výlučne, rizika straty tokenov. Ešte raz si, prosím, prečítajte {polkaswapFaqLink}, {memorandumLink}, a {privacyLink}!",
     "poweredBy": "Používa technológiu",
     "confirmTransactionText": "Potvrdiť transakciu v {direction}",
@@ -627,9 +628,9 @@
             "total": "Celkom"
         },
         "successCopy": "Hash transakcie bol skopírovaný do schránky",
-        "pending": "{network} transakcia vo fáze spracovania…",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} transakcia vo fáze spracovania…",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -910,6 +911,7 @@
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} odporúčaní",
         "startInviting": "Bond XOR odporučiť ostatným",
+        "preview": "Pozvite nových používateľov a získajte 10 % z ich transakčných poplatkov. <br\/> Na začiatok prilepte ľubovoľné množstvo XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Ďalšie informácie <\/a>",
         "deposit": "Záloha",
         "balance": "Zostatok",
         "networkFee": "@:networkFeeText",
@@ -974,8 +976,8 @@
         "title": "Most transakcia úspešná"
     },
     "mobilePopup": {
-        "header": "Stiahnite si peňaženku {Sora} s {polkaswapHighlight}",
         "sideMenu": "Získajte {Sora} Wallet",
+        "header": "Stiahnite si peňaženku {Sora} s {polkaswapHighlight}",
         "info": "Vymieňajte si tokeny z rôznych sietí – {Sora}, {Ethereum}, Polkadot, {Kusama}. Poskytnite fond likvidity a získajte % z poplatkov za výmenu."
     },
     "releaseNotesText": "Poznámky k vydaniu",
@@ -1132,5 +1134,6 @@
             "jsonFields": "Súbor JSON neobsahuje povinné polia"
         }
     },
-    "hashiBridgeText": "Most {Hashi}"
+    "hashiBridgeText": "Most {Hashi}",
+    "disclaimerTitle": "Vylúčenie zodpovednosti:"
 }

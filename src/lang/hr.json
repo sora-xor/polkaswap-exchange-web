@@ -212,6 +212,7 @@
             "title": "Transakcija je poslana",
             "desc": "Napravite {symbol} token"
         },
+        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Dobivanje naknade za transakciju nije uspjelo",
@@ -304,6 +305,7 @@
         "referrer": "Preporučitelj",
         "referral": "Preporuka"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Promijenite mrežu u {Metamask}",
     "transactionText": "transakcija | transakcije",
     "connectWalletText": "Povežite račun",
@@ -312,7 +314,6 @@
     "connectWalletTextTooltip": "Povežite se na {Sora} mrežu pomoću {PolkadotJs}",
     "selectNodeText": "Odaberite nod",
     "bridgeText": "Most",
-    "disclaimerTitle": "Disclaimer:",
     "disclaimer": "{disclaimerPrefix} Ova web stranica održava zajednica {Sora}. Prije nego što nastavite koristiti ovu web stranicu, pregledajte {polkaswapFaqLink} i dokumentaciju, koja uključuje detaljno objašnjenje o tome kako {appName} radi, kao i {memorandumLink} i {privacyLink}. Ti su dokumenti ključni za sigurno i pozitivno korisničko iskustvo. Koristeći {appName}, potvrđujete da ste pročitali i razumjeli ove dokumente. Također potvrđujete sljedeće: 1) svoju isključivu odgovornost za poštivanje svih zakona koji se mogu primjenjivati na vašu posebnu upotrebu {appName} u vašoj pravnoj nadležnosti; 2) vaše razumijevanje da je trenutna verzija {appName} alfa verzija: nije u potpunosti testirana, a neke funkcije možda neće funkcionirati kako je dizajnirano; i 3) vaše razumijevanje i dobrovoljno prihvaćanje rizika povezanih s korištenjem {appName}, uključujući, ali ne ograničavajući se na, rizik od gubitka tokena. Još jednom, nemojte nastaviti bez čitanja {polkaswapFaqLink}, {memorandumLink} i {privacyLink}!",
     "poweredBy": "Podržano od strane",
     "confirmTransactionText": "Potvrdite transakciju u {direction}",
@@ -627,9 +628,9 @@
             "total": "Ukupno"
         },
         "successCopy": "Hash transakcije kopira se u međuspremnik",
-        "pending": "{network} transakcija na čekanju...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} transakcija na čekanju...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -910,6 +911,7 @@
         "bondedXOR": "XOR vezano",
         "referralsNumber": "Broj preporuka {number}",
         "startInviting": "Povežite XOR za upućivanje drugih",
+        "preview": "Pozovite nove korisnike i ostvarite 10% od njihovih transakcijskih naknada. <br \/> Za početak povežite bilo koju količinu XORa. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Saznajte više <\/a>",
         "deposit": "Polog",
         "balance": "Stanje",
         "networkFee": "@:networkFeeText",
@@ -974,8 +976,8 @@
         "title": "Most transakcija uspjela"
     },
     "mobilePopup": {
-        "header": "Preuzmite {Sora} Novčanik sa značajkama {polkaswapHighlight}",
         "sideMenu": "Preuzmite {Sora} Wallet",
+        "header": "Preuzmite {Sora} Novčanik sa značajkama {polkaswapHighlight}",
         "info": "Zamijenite tokene s različitih mreža - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Osigurajte fond likvidnosti i zaradite % od naknada za razmjenu."
     },
     "releaseNotesText": "Bilješke o izdanju",
@@ -1132,5 +1134,6 @@
             "jsonFields": "JSON datoteka nema obavezna polja"
         }
     },
-    "hashiBridgeText": "{Hashi} most"
+    "hashiBridgeText": "{Hashi} most",
+    "disclaimerTitle": "Disclaimer:"
 }

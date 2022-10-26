@@ -212,6 +212,7 @@
             "title": "Tranzakció elküldve",
             "desc": "{symbol} token létrehozása"
         },
+        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Nem sikerült díjat kérni a tranzakcióért",
@@ -304,6 +305,7 @@
         "referrer": "Ajánló",
         "referral": "Ajánlás"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Hálózatváltás a {Metamask}",
     "transactionText": "tranzakció | tranzakciók",
     "connectWalletText": "Fiók csatlakoztatása",
@@ -312,7 +314,6 @@
     "connectWalletTextTooltip": "Csatlakozás a {Sora} hálózathoz a {PolkadotJs} segítségével",
     "selectNodeText": "Hálózati csomópont kiválasztása",
     "bridgeText": "Híd",
-    "disclaimerTitle": "Jogi nyilatkozat:",
     "disclaimer": "{disclaimerPrefix} Ezt a weboldalt a {Sora} közösség tartja fenn. Mielőtt folytatnád a weboldal használatát, kérjük, olvasd el a {polkaswapFaqLink} -et és a dokumentációt, amely részletes magyarázatot tartalmaz a {appName} működéséről, valamint a {memorandumLink} -et és a {privacyLink} -et. Ezek a dokumentumok elengedhetetlenek a biztonságos és pozitív felhasználói élményhez. A {appName} használatával elismered, hogy elolvastad és megértetted ezeket a dokumentumokat. Továbbá elismered a következőket: 1) a Te kizárólagos felelősséged a {appName} adott használatára vonatkozó összes törvény betartása, amelyek az országod joghatósága alatt érvényesek lehetnek; 2) megértetted, hogy a {appName} jelenlegi verziója egy alfa verzió: nem lett teljes körűen tesztelve, és egyes funkciók nem feltétlenül működnek a tervezett módon; és 3) megértetted és önkéntesen elfogadod a {appName} használatával járó kockázatokat, beleértve, de nem kizárólagosan, a tokenek elvesztésének kockázatát. Még egyszer, kérjük, ne folytasd a {polkaswapFaqLink}, {memorandumLink} és {privacyLink} elolvasása nélkül!",
     "poweredBy": "Üzemelteti a ",
     "confirmTransactionText": "Tranzakció megerősítése {direction}",
@@ -627,9 +628,9 @@
             "total": "Összesen"
         },
         "successCopy": "A tranzakciós hash a vágólapra másolva",
-        "pending": "{network} tranzakció folyamatban...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} tranzakció folyamatban...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -910,6 +911,7 @@
         "bondedXOR": "XOR lekötve",
         "referralsNumber": "{number} ajánlások",
         "startInviting": "Kössle XOR-t, és hívj meg másokat",
+        "preview": "Hívj meg új felhasználókat, és 10%-ot kapsz a tranzakciós díjaikból.<br \/> Kezdetben köss le bármilyen összegű XOR-t <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Tudjon meg többet<\/a>",
         "deposit": "Befizetés",
         "balance": "Egyenleg",
         "networkFee": "@:networkFeeText",
@@ -974,8 +976,8 @@
         "title": "A hídtranzakció sikeres"
     },
     "mobilePopup": {
-        "header": "A {Sora} Wallet letöltése {polkaswapHighlight} funkcióival",
         "sideMenu": "Szerezze be a {Sora} Wallet",
+        "header": "A {Sora} Wallet letöltése {polkaswapHighlight} funkcióival",
         "info": "Cserélje ki a tokeneket különböző hálózatokból - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Biztosítson likviditási készletet, és keressen %-ot a cseredíjakból."
     },
     "releaseNotesText": "Kiadási megjegyzések",
@@ -1132,5 +1134,6 @@
             "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
         }
     },
-    "hashiBridgeText": "{Hashi} híd"
+    "hashiBridgeText": "{Hashi} híd",
+    "disclaimerTitle": "Jogi nyilatkozat:"
 }

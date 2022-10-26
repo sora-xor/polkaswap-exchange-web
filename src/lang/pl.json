@@ -212,6 +212,7 @@
             "title": "Transakcja została złożona.",
             "desc": "Utwórz token {symbol}"
         },
+        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Nie udało się pobrać opłaty za transakcję.",
@@ -304,6 +305,7 @@
         "referrer": "Osoba polecająca",
         "referral": "Kod polecający"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Zmień sieć w portfelu {Metamask}",
     "transactionText": "transakcja | transakcje",
     "connectWalletText": "Połącz z kontem",
@@ -312,7 +314,6 @@
     "connectWalletTextTooltip": "Połącz się z siecią {Sora} za pomocą {PolkadotJs}",
     "selectNodeText": "Wybierz węzeł sieci",
     "bridgeText": "Most",
-    "disclaimerTitle": "Zastrzeżenie:",
     "disclaimer": "{disclaimerPrefix} Niniejsza strona internetowa jest prowadzona przez społeczność sieci {Sora}. Zanim zaczniesz korzystać z tej witryny, zapoznaj się z {polkaswapFaqLink} i dokumentacją, która zawiera szczegółowe wyjaśnienia dotyczące działania giełdy {appName}. Przeczytaj także {memorandumLink} oraz tekst {privacyLink}. Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z {appName}, potwierdzasz, że przeczytałeś(-łaś) i rozumiesz przedstawione dokumenty. Potwierdzasz również, co następuje: 1) ponosisz wyłączną odpowiedzialność związaną z przestrzeganiem wszystkich przepisów, które mogą mieć zastosowanie do korzystania z {appName} w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja {appName} jest wersją alfa: nie została w pełni przetestowana, a niektóre jej funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z {appName}, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj {polkaswapFaqLink}, {memorandumLink}, a także tekst {privacyLink}!",
     "poweredBy": "Technologia:",
     "confirmTransactionText": "Potwierdź transakcję w {direction}",
@@ -627,9 +628,9 @@
             "total": "Łącznie"
         },
         "successCopy": "Skrót transakcji został skopiowany do schowka.",
-        "pending": "Transakcja {network} w toku...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "Transakcja {network} w toku...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -910,6 +911,7 @@
         "bondedXOR": "Rezerwy w XOR",
         "referralsNumber": "{number} zaproszonych",
         "startInviting": "Bond XOR, aby polecić innym",
+        "preview": "Zaproś nowych użytkowników, by otrzymać 10% z ich opłat transakcyjnych.<br \/>Aby rozpocząć, utwórz rezerwy w dowolnej kwocie waluty XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej.<\/a>",
         "deposit": "Deponuj",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
@@ -974,8 +976,8 @@
         "title": "Transakcja pomostowa powiodła się"
     },
     "mobilePopup": {
-        "header": "Pobierz portfel {Sora} z {polkaswapHighlight}",
         "sideMenu": "Pobierz {Sora} Wallet",
+        "header": "Pobierz portfel {Sora} z {polkaswapHighlight}",
         "info": "Zamień tokeny z różnych sieci - {Sora}, {Ethereum}, Polkadot, {Kusama}. Zapewnij pulę płynności i zarabiaj % na opłatach za wymianę."
     },
     "releaseNotesText": "Informacje o wydaniu",
@@ -1132,5 +1134,6 @@
             "jsonFields": "Plik JSON nie zawiera wymaganych pól"
         }
     },
-    "hashiBridgeText": "Most {Hashi}"
+    "hashiBridgeText": "Most {Hashi}",
+    "disclaimerTitle": "Zastrzeżenie:"
 }

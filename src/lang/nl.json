@@ -305,6 +305,7 @@
         "referrer": "Verwijzer",
         "referral": "Verwijzing"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Netwerk wijzigen in {Metamask}",
     "transactionText": "transactie | transacties",
     "connectWalletText": "Account aansluiten",
@@ -313,7 +314,6 @@
     "connectWalletTextTooltip": "Maak verbinding met {Sora} Network met {PolkadotJs}",
     "selectNodeText": "Selecteer node",
     "bridgeText": "Bridge",
-    "disclaimerTitle": "Disclaimer:",
     "disclaimer": "{disclaimerPrefix} Deze website wordt onderhouden door de {Sora}-gemeenschap. Voordat u doorgaat met het gebruiken van deze website, dient u de {polkaswapFaqLink} en documentatie te lezen, die een gedetailleerde uitleg bevat over hoe {appName} werkt, evenals de {memorandumLink} en {privacyLink}. Deze documenten zijn cruciaal voor een veilige en positieve gebruikerservaring. Door {appName} te gebruiken, erkent u deze documenten te hebben gelezen en begrepen. U erkent ook het volgende: 1) uw enige verantwoordelijkheid voor de naleving van alle wetten die van toepassing kunnen zijn op uw specifieke gebruik van {appName} in uw rechtsgebied; 2) uw begrip dat de huidige versie van {appName} een alfaversie is: deze is niet volledig getest en sommige functies werken mogelijk niet zoals bedoeld; en 3) uw begrip en vrijwillige aanvaarding van de risico's die verbonden zijn aan het gebruik van {appName}, inclusief, maar niet beperkt tot, het risico van verlies van tokens. Ga alsjeblieft niet verder zonder de {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "poweredBy": "Powered by",
     "confirmTransactionText": "Bevestig transactie in {direction}",
@@ -628,9 +628,9 @@
             "total": "Totaal"
         },
         "successCopy": "Transactiehash werd naar het klembord gekopieerd",
-        "pending": "{network} transactie in behandeling...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} transactie in behandeling...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -911,6 +911,7 @@
         "bondedXOR": "XOR Gebonden",
         "referralsNumber": "{number} verwijzingen",
         "startInviting": "Bond XOR om anderen door te verwijzen",
+        "preview": "Nodig nieuwe gebruikers uit en ontvang 10% van hun transactiekosten.<br \/>Om te beginnen, borg elk bedrag van XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Meer informatie<\/a>",
         "deposit": "Storting",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
@@ -975,8 +976,8 @@
         "title": "Overbrugtransactie succesvol"
     },
     "mobilePopup": {
-        "header": "Download {Sora} Wallet met {polkaswapHighlight} - functies",
         "sideMenu": "Download de {Sora} Wallet",
+        "header": "Download {Sora} Wallet met {polkaswapHighlight} - functies",
         "info": "Ruil tokens van verschillende netwerken - {Sora}, {Ethereum}, Polkadot, {Kusama}. Bied een liquiditeitspool en verdien % aan wisselkosten."
     },
     "releaseNotesText": "Release-opmerkingen",
@@ -1133,5 +1134,6 @@
             "jsonFields": "JSON-bestand heeft geen verplichte velden"
         }
     },
-    "hashiBridgeText": "{Hashi} brug"
+    "hashiBridgeText": "{Hashi} brug",
+    "disclaimerTitle": "Disclaimer:"
 }

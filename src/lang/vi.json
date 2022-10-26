@@ -212,6 +212,7 @@
             "title": "Giao dịch đã gửi đi",
             "desc": "Tạo token {symbol}"
         },
+        "tooltipValue": "@:networkFeeTooltipText",
         "fee": "@:networkFeeText",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Không nhận được phí cho một giao dịch",
@@ -304,6 +305,7 @@
         "referrer": "Người giới thiệu",
         "referral": "Giới thiệu"
     },
+    "appName": "{Polkaswap}",
     "changeNetworkText": "Thay đổi mạng trong {Metamask}",
     "transactionText": "giao dịch | những giao dịch",
     "connectWalletText": "Kết nối tài khoản",
@@ -312,7 +314,6 @@
     "connectWalletTextTooltip": "Kết nối tới Mạng {Sora} với {PolkadotJs}",
     "selectNodeText": "Chọn node",
     "bridgeText": "Cầu nối",
-    "disclaimerTitle": "Disclaimer:",
     "disclaimer": "{disclaimerPrefix} Trang web này được duy trì bởi cộng đồng {Sora}. Trước khi tiếp tục sử dụng trang web này, vui lòng xem lại {polkaswapFaqLink} và tài liệu, bao gồm một lời giải thích chi tiết về cách {appName} hoạt động, cũng như {memorandumLink} và {privacyLink}. Những tài liệu này rất quan trọng đối với trải nghiệm người dùng an toàn và tích cực. Bằng cách sử dụng {appName}, bạn thừa nhận rằng bạn đã đọc và hiểu những tài liệu này. Bạn cũng thừa nhận những điều sau đây: 1) trách nhiệm duy nhất của bạn về việc tuân thủ tất cả các luật có thể áp dụng cho việc sử dụng {appName} cụ thể của bạn trong thẩm quyền pháp lý của bạn; 2) sự hiểu biết của bạn rằng phiên bản hiện tại của {appName} là một phiên bản alpha: nó chưa được thử nghiệm đầy đủ và một số chức năng có thể không hoạt động như thiết kế; và 3) sự hiểu biết của bạn và tự nguyện chấp nhận các rủi ro liên quan đến việc sử dụng {appName}, bao gồm, nhưng không giới hạn, nguy cơ mất token. Vui lòng không tiếp tục mà không đọc {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "poweredBy": "Được cung cấp bởi",
     "confirmTransactionText": "Xác nhận giao dịch {direction}",
@@ -627,9 +628,9 @@
             "total": "Tất cả"
         },
         "successCopy": "Đã sao chép mã giao dịch vào bộ nhớ tạm",
-        "pending": "{network} giao dịch đang chờ xử lý...",
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
+        "pending": "{network} giao dịch đang chờ xử lý...",
         "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
@@ -910,6 +911,7 @@
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} giới thiệu",
         "startInviting": "Bond XOR để giới thiệu những người khác",
+        "preview": "Mời người dùng mới và nhận 10% từ phí giao dịch của họ. <br \/> Để bắt đầu, hãy bond số lượng XOR bất kỳ. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Tìm hiểu thêm <\/a>",
         "deposit": "Gửi vào",
         "balance": "Số dư",
         "networkFee": "@:networkFeeText",
@@ -974,8 +976,8 @@
         "title": "Giao dịch cầu nối thành công"
     },
     "mobilePopup": {
-        "header": "Tải xuống Ví {Sora} với các tính năng của {polkaswapHighlight}",
         "sideMenu": "Tải xuống Ví {Sora}",
+        "header": "Tải xuống Ví {Sora} với các tính năng của {polkaswapHighlight}",
         "info": "Hoán đổi token từ các mạng khác nhau - {Sora}, {Ethereum}, Polkadot, {Kusama}. Cung cấp pool thanh khoản và kiếm % từ phí giao dịch."
     },
     "releaseNotesText": "Ghi chú phát hành",
@@ -1132,5 +1134,6 @@
             "jsonFields": "Tệp JSON không có các trường bắt buộc"
         }
     },
-    "hashiBridgeText": "Cầu {Hashi}"
+    "hashiBridgeText": "Cầu {Hashi}",
+    "disclaimerTitle": "Disclaimer:"
 }
