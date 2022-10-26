@@ -304,7 +304,6 @@
         "referrer": "Sprostredkovateľ",
         "referral": "Doporučenie"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Zmeňiť sieť v {Metamask}",
     "transactionText": "transakcia | transakcie",
     "connectWalletText": "Pripojiť účet",
@@ -375,7 +374,7 @@
         "title": "Pomoc",
         "termsOfService": "Podmienky poskytovania služby",
         "privacyPolicy": "Zásady ochrany osobných údajov",
-        "appVersion": "Verzia @:appName",
+        "appVersion": "Verzia {appName}",
         "contactUs": "Kontaktujte nás"
     },
     "aboutNetworkDialog": {
@@ -641,7 +640,7 @@
         "expectedAddress": "Očakávaná adresa v {Metamask}",
         "title": "Preklenovacia transakcia",
         "expectedMetaMaskAddress": "Očakávaná adresa v {Metamask}:",
-        "allowToken": "Povoliť @:appName použitie vášho {tokenSymbol}",
+        "allowToken": "Povoliť {appName} použitie vášho {tokenSymbol}",
         "approveToken": "Upozorňujeme, že token je potrebné schváliť iba raz. Ak má vaše rozšírenie viacero žiadostí o schválenie tokenu, uistite sa, že ste potvrdili iba tú poslednú, zatiaľ čo ostatné odmietnite.",
         "blocksLeft": "Zostáva {count} blokov..."
     },
@@ -842,7 +841,7 @@
             },
             "supportError": {
                 "title": "Token nie je podporovaný",
-                "text": "Bohužiaľ token zakúpený cez @:moonpayText ešte nie je podporovaný mostom {Hashi} v {Polkaswap}. Normálne by mali byť k dispozícii na nákup iba podporované tokeny cez MoonPay v {Polkaswap}, preto sa niekde muselo niečo pokaziť. Neváhajte a dajte komunite vedieť o tomto prípade v <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Skupina {Polkaswap} Telegram <\/a> ."
+                "text": "Bohužiaľ token zakúpený cez @:moonpayText ešte nie je podporovaný mostom {Hashi} v {Polkaswap}. Normálne by mali byť k dispozícii na nákup iba podporované tokeny cez MoonPay v {Polkaswap}, preto sa niekde muselo niečo pokaziť. Neváhajte a dajte komunite vedieť o tomto prípade v <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> Skupina {Polkaswap} Telegram <\/a> ."
             },
             "feeError": {
                 "title": "Nie je dostatok ETH pre most tx",

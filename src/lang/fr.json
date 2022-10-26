@@ -304,7 +304,6 @@
         "referrer": "Référent",
         "referral": "Référence"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Changer de réseau dans {Metamask}",
     "transactionText": "transaction | transactions",
     "connectWalletText": "Connecter le compte",
@@ -375,7 +374,7 @@
         "title": "Aide",
         "termsOfService": "Conditions d'utilisation",
         "privacyPolicy": "Politique de confidentialité",
-        "appVersion": "@:appName version",
+        "appVersion": "{appName} version",
         "contactUs": "Nous contacter"
     },
     "aboutNetworkDialog": {
@@ -641,7 +640,7 @@
         "expectedAddress": "Adresse attendue dans {Metamask}",
         "title": "Transaction de pont",
         "expectedMetaMaskAddress": "Adresse attendue dans {Metamask}:",
-        "allowToken": "Autoriser @:appName à utiliser votre {tokenSymbol}",
+        "allowToken": "Autoriser {appName} à utiliser votre {tokenSymbol}",
         "approveToken": "Veuillez noter qu'il n'est nécessaire d'approuver le jeton qu'une seule fois. Si votre extension a plusieurs demandes d'approbation de jetons, assurez-vous de ne confirmer que la dernière tout en rejetant le reste.",
         "blocksLeft": "{count} blocs restants..."
     },
@@ -842,7 +841,7 @@
             },
             "supportError": {
                 "title": "Jeton introuvable",
-                "text": "Malheureusement, le jeton acheté via @:moonpayText n'est pas encore pris en charge par le pont {Hashi} de {Polkaswap}. Normalement, seuls les jetons pris en charge devraient être disponibles à l'achat via MoonPay à {Polkaswap}, donc quelque chose a dû mal tourner quelque part. N'hésitez pas à informer la communauté de ce cas dans le <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Groupe de télégrammes {Polkaswap} <\/a> ."
+                "text": "Malheureusement, le jeton acheté via @:moonpayText n'est pas encore pris en charge par le pont {Hashi} de {Polkaswap}. Normalement, seuls les jetons pris en charge devraient être disponibles à l'achat via MoonPay à {Polkaswap}, donc quelque chose a dû mal tourner quelque part. N'hésitez pas à informer la communauté de ce cas dans le <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> Groupe de télégrammes {Polkaswap} <\/a> ."
             },
             "feeError": {
                 "title": "Pas assez de fonds pour les frais de minage",

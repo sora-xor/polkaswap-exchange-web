@@ -304,7 +304,6 @@
         "referrer": "Doporučitel",
         "referral": "Doporučení"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Změnit síť v {Metamask}",
     "transactionText": "transakce",
     "connectWalletText": "Připojit účet",
@@ -375,7 +374,7 @@
         "title": "Nápověda",
         "termsOfService": "Smluvní podmínky",
         "privacyPolicy": "Zásady ochrany osobních údajů",
-        "appVersion": "@:appName verze",
+        "appVersion": "{appName} verze",
         "contactUs": "Kontaktujte nás"
     },
     "aboutNetworkDialog": {
@@ -641,7 +640,7 @@
         "expectedAddress": "Očekávaná adresa v {Metamask}",
         "title": "Bridge transakce",
         "expectedMetaMaskAddress": "Očekávaná adresa v {Metamask}:",
-        "allowToken": "Povolit @:appName používat vaše {tokenSymbol}",
+        "allowToken": "Povolit {appName} používat vaše {tokenSymbol}",
         "approveToken": "Upozorňujeme, že token je nutné schválit pouze jednou. Pokud má vaše rozšíření více žádostí o schválení tokenu, nezapomeňte potvrdit pouze poslední a zbytek odmítnout.",
         "blocksLeft": "Zbývá {count} bloků..."
     },
@@ -842,7 +841,7 @@
             },
             "supportError": {
                 "title": "Token není podporován",
-                "text": "Token zakoupený prostřednictvím @:moonpayText bohužel zatím není podporován {Hashi} bridge v {Polkaswap}. Za normálních okolností by měly být v {Polkaswap} k nákupu přes MoonPay k dispozici pouze podporované tokeny, proto musela někde nastat chyba. Neváhejte prosím o tomto případu informovat komunitu v <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">{Polkaswap} Telegram group<\/a>."
+                "text": "Token zakoupený prostřednictvím @:moonpayText bohužel zatím není podporován {Hashi} bridge v {Polkaswap}. Za normálních okolností by měly být v {Polkaswap} k nákupu přes MoonPay k dispozici pouze podporované tokeny, proto musela někde nastat chyba. Neváhejte prosím o tomto případu informovat komunitu v <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\">{Polkaswap} Telegram group<\/a>."
             },
             "feeError": {
                 "title": "Nedostatek ETH pro bridge transakci",

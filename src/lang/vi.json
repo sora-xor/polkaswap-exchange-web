@@ -304,7 +304,6 @@
         "referrer": "Người giới thiệu",
         "referral": "Giới thiệu"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Thay đổi mạng trong {Metamask}",
     "transactionText": "giao dịch | những giao dịch",
     "connectWalletText": "Kết nối tài khoản",
@@ -375,7 +374,7 @@
         "title": "Trợ giúp",
         "termsOfService": "Điều khoản dịch vụ",
         "privacyPolicy": "Chính sách bảo mật",
-        "appVersion": "Phiên bản @:appName",
+        "appVersion": "Phiên bản {appName}",
         "contactUs": "Liên hệ với chúng tôi"
     },
     "aboutNetworkDialog": {
@@ -641,7 +640,7 @@
         "expectedAddress": "Địa chỉ dự kiến trên {Metamask}",
         "title": "Giao dịch cầu nối",
         "expectedMetaMaskAddress": "Địa chỉ dự kiến trên {Metamask}:",
-        "allowToken": "Cho phép @:appName được dùng {tokenSymbol} của bạn",
+        "allowToken": "Cho phép {appName} được dùng {tokenSymbol} của bạn",
         "approveToken": "Xin lưu ý rằng chỉ cần phê duyệt token một lần. Nếu tiện ích mở rộng của bạn có nhiều yêu cầu phê duyệt token, hãy đảm bảo chỉ xác nhận yêu cầu cuối cùng trong khi từ chối phần còn lại.",
         "blocksLeft": "{count} block còn lại..."
     },
@@ -842,7 +841,7 @@
             },
             "supportError": {
                 "title": "Token chưa được hỗ trợ",
-                "text": "Rất tiếc, mã thông báo được mua qua @:moonpayText chưa được hỗ trợ bởi cầu {Hashi} trong {Polkaswap}. Thông thường, chỉ những token được hỗ trợ mới có thể mua qua MoonPay ở {Polkaswap}, do đó, chắc chắn đã xảy ra sự cố ở đâu đó. Vui lòng cho cộng đồng biết về trường hợp này trong <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> {Polkaswap} Telegram nhóm <\/a> ."
+                "text": "Rất tiếc, mã thông báo được mua qua @:moonpayText chưa được hỗ trợ bởi cầu {Hashi} trong {Polkaswap}. Thông thường, chỉ những token được hỗ trợ mới có thể mua qua MoonPay ở {Polkaswap}, do đó, chắc chắn đã xảy ra sự cố ở đâu đó. Vui lòng cho cộng đồng biết về trường hợp này trong <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> {Polkaswap} Telegram nhóm <\/a> ."
             },
             "feeError": {
                 "title": "Không đủ ETH cho cấu nối tx",

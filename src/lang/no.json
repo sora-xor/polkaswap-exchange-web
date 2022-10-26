@@ -304,7 +304,6 @@
         "referrer": "Henviser",
         "referral": "Henvisning"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Bytt nettverk i {Metamask}",
     "transactionText": "transaksjon | transaksjoner",
     "connectWalletText": "Koble til konto",
@@ -375,7 +374,7 @@
         "title": "Hjelp",
         "termsOfService": "Vilkår for bruk",
         "privacyPolicy": "Personvernerklæring",
-        "appVersion": "@:appName versjon",
+        "appVersion": "{appName} versjon",
         "contactUs": "Kontakt oss"
     },
     "aboutNetworkDialog": {
@@ -641,7 +640,7 @@
         "expectedAddress": "Forventet adresse i {Metamask}",
         "title": "Bro Transaksjon",
         "expectedMetaMaskAddress": "Forventet adresse i {Metamask}:",
-        "allowToken": "Tillat @:appName å bruke {tokenSymbol}",
+        "allowToken": "Tillat {appName} å bruke {tokenSymbol}",
         "approveToken": "Vær oppmerksom på at det bare er nødvendig å godkjenne tokenet én gang. Hvis utvidelsen din har flere forespørsler om godkjenning av token, må du bare bekrefte den siste mens du avviser resten.",
         "blocksLeft": "{count} blokker igjen..."
     },
@@ -842,7 +841,7 @@
             },
             "supportError": {
                 "title": "Token støttes ikke",
-                "text": "Dessverre støttes ikke tokenet som er kjøpt via @:moonpayText av {Hashi} -broen i {Polkaswap}. Normalt skal bare de støttede tokens være tilgjengelig for kjøp via MoonPay i {Polkaswap}, derfor må noe ha gått galt et sted. Ikke nøl med å informere samfunnet om denne saken i <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> {Polkaswap} Telegram group <\/a> ."
+                "text": "Dessverre støttes ikke tokenet som er kjøpt via @:moonpayText av {Hashi} -broen i {Polkaswap}. Normalt skal bare de støttede tokens være tilgjengelig for kjøp via MoonPay i {Polkaswap}, derfor må noe ha gått galt et sted. Ikke nøl med å informere samfunnet om denne saken i <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> {Polkaswap} Telegram group <\/a> ."
             },
             "feeError": {
                 "title": "Ikke nok ETH for broen tx",

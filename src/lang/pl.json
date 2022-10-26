@@ -304,7 +304,6 @@
         "referrer": "Osoba polecająca",
         "referral": "Kod polecający"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Zmień sieć w portfelu {Metamask}",
     "transactionText": "transakcja | transakcje",
     "connectWalletText": "Połącz z kontem",
@@ -375,7 +374,7 @@
         "title": "Pomoc",
         "termsOfService": "Warunki korzystania z usług",
         "privacyPolicy": "Polityka prywatności",
-        "appVersion": "Wersja @:appName",
+        "appVersion": "Wersja {Polkaswap}",
         "contactUs": "Skontaktuj się z nami"
     },
     "aboutNetworkDialog": {
@@ -641,7 +640,7 @@
         "expectedAddress": "Spodziewany adres w portfelu {Metamask}",
         "title": "Transakcja mostowa",
         "expectedMetaMaskAddress": "Spodziewany adres w portfelu {Metamask}:",
-        "allowToken": "Zezwól @:appName na użycie Twojego {tokenSymbol}",
+        "allowToken": "Zezwól {appName} na użycie Twojego {tokenSymbol}",
         "approveToken": "Pamiętaj, że wystarczy raz zatwierdzić token. Jeśli Twoje rozszerzenie otrzymuje wiele żądań o zatwierdzenie tokena, pamiętaj, by potwierdzić tylko ostatnią, a pozostałe odrzucić.",
         "blocksLeft": "pozostało {count} bloków..."
     },
@@ -842,7 +841,7 @@
             },
             "supportError": {
                 "title": "Token nie jest obsługiwany.",
-                "text": "Niestety, token zakupiony przez @:moonpayText nie jest jeszcze obsługiwany przez most {Hashi} w {Polkaswap}. Zasadniczo tylko obsługiwane tokeny powinny być dostępne do zakupu za pośrednictwem MoonPay w {Polkaswap}, tak więc coś gdzieś musiało pójść nie tak. Nie wahaj się poinformować społeczność o tej sprawie w <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">grupie {Polkaswap} na Telegramie<\/a>."
+                "text": "Niestety, token zakupiony przez @:moonpayText nie jest jeszcze obsługiwany przez most {Hashi} w {Polkaswap}. Zasadniczo tylko obsługiwane tokeny powinny być dostępne do zakupu za pośrednictwem MoonPay w {Polkaswap}, tak więc coś gdzieś musiało pójść nie tak. Nie wahaj się poinformować społeczność o tej sprawie w <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\">grupie {Polkaswap} na Telegramie<\/a>."
             },
             "feeError": {
                 "title": "Niewystarczająca ilość ETH, by przesłać środki przez most.",

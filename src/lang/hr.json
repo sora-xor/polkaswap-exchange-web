@@ -304,7 +304,6 @@
         "referrer": "Preporučitelj",
         "referral": "Preporuka"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Promijenite mrežu u {Metamask}",
     "transactionText": "transakcija | transakcije",
     "connectWalletText": "Povežite račun",
@@ -375,7 +374,7 @@
         "title": "Pomoć",
         "termsOfService": "Uvjeti pružanja usluge",
         "privacyPolicy": "Pravila o privatnosti",
-        "appVersion": "@:appName verzija",
+        "appVersion": "{appName} verzija",
         "contactUs": "Kontaktirajte nas"
     },
     "aboutNetworkDialog": {
@@ -641,7 +640,7 @@
         "expectedAddress": "Očekivana adresa u {Metamask}",
         "title": "Bridge transakcije",
         "expectedMetaMaskAddress": "Očekivana adresa u {Metamask}:",
-        "allowToken": "Dopustite @:appName da koristi vaš {tokenSymbol}",
+        "allowToken": "Dopustite {appName} da koristi vaš {tokenSymbol}",
         "approveToken": "Napominjemo da je token potrebno odobriti samo jednom. Ako vaše proširenje ima više zahtjeva za odobrenje tokena, svakako potvrdite samo posljednji, odbijajući ostale.",
         "blocksLeft": "{count} preostalo blokova..."
     },
@@ -842,7 +841,7 @@
             },
             "supportError": {
                 "title": "Token nije podržan",
-                "text": "Nažalost, token kupljen putem @:moonpayText još nije podržan od strane {Hashi} mosta u {Polkaswap}. Obično bi samo podržani tokeni trebali biti dostupni za kupnju putem MoonPaya u {Polkaswap}, stoga je negdje nešto pošlo po zlu. Ne ustručavajte se obavijestiti zajednicu o ovom slučaju u <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> {Polkaswap} Telegram grupa <\/a> ."
+                "text": "Nažalost, token kupljen putem @:moonpayText još nije podržan od strane {Hashi} mosta u {Polkaswap}. Obično bi samo podržani tokeni trebali biti dostupni za kupnju putem MoonPaya u {Polkaswap}, stoga je negdje nešto pošlo po zlu. Ne ustručavajte se obavijestiti zajednicu o ovom slučaju u <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> {Polkaswap} Telegram grupa <\/a> ."
             },
             "feeError": {
                 "title": "Nema dovoljno ETHa za most tx",

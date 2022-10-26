@@ -304,7 +304,6 @@
         "referrer": "Ajánló",
         "referral": "Ajánlás"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Hálózatváltás a {Metamask}",
     "transactionText": "tranzakció | tranzakciók",
     "connectWalletText": "Fiók csatlakoztatása",
@@ -375,7 +374,7 @@
         "title": "Segítség",
         "termsOfService": "Általános Szerződési Feltételek",
         "privacyPolicy": "Adatvédelmi irányelvek",
-        "appVersion": "@:appName verzió",
+        "appVersion": "{appName} verzió",
         "contactUs": "Kapcsolat"
     },
     "aboutNetworkDialog": {
@@ -641,7 +640,7 @@
         "expectedAddress": "Várható {Metamask} cím",
         "title": "Híd tranzakció",
         "expectedMetaMaskAddress": "Várható cím a {Metamask}:",
-        "allowToken": "Engedélyezd, hogy a @:appName használhassa a {tokenSymbol}",
+        "allowToken": "Engedélyezd, hogy a {appName} használhassa a {tokenSymbol}",
         "approveToken": "Felhívjuk figyelmedet, hogy a tokent csak egyszer kell jóváhagyni. Ha a kiterjesztésnek több token jóváhagyási kérelmed van, győződj meg róla, hogy csak az utolsót erősíted meg, míg a többit elutasítod.",
         "blocksLeft": "{count} blokk maradt..."
     },
@@ -842,7 +841,7 @@
             },
             "supportError": {
                 "title": "Nem támogatott token",
-                "text": "Sajnos a @:moonpayText keresztül vásárolt tokent még nem támogatja a {Polkaswap} {Hashi} hídja. Normális esetben csak a támogatott tokeneknek kellene elérhetőnek lenniük a MoonPay-en keresztül történő vásárláshoz a {Polkaswap}ban, ezért valami valahol elromolhatott. Kérjük, ne habozz, hogy tájékoztasd a közösséget erről az esetről a <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">{Polkaswap} Telegram csoportjában<\/a>."
+                "text": "Sajnos a @:moonpayText keresztül vásárolt tokent még nem támogatja a {Polkaswap} {Hashi} hídja. Normális esetben csak a támogatott tokeneknek kellene elérhetőnek lenniük a MoonPay-en keresztül történő vásárláshoz a {Polkaswap}ban, ezért valami valahol elromolhatott. Kérjük, ne habozz, hogy tájékoztasd a közösséget erről az esetről a <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\">{Polkaswap} Telegram csoportjában<\/a>."
             },
             "feeError": {
                 "title": "Nincs elég ETH a híd tranzakcióhoz",

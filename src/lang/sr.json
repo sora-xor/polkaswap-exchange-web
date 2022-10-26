@@ -304,7 +304,6 @@
         "referrer": "Предложилтељ",
         "referral": "Препорука"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Промените мрежу у Метамаску",
     "transactionText": "трансакција | трансакције",
     "connectWalletText": "Повежите рачун",
@@ -375,7 +374,7 @@
         "title": "Помоћ",
         "termsOfService": "Услови коришћења",
         "privacyPolicy": "Правила о приватности",
-        "appVersion": "@:appName верзија",
+        "appVersion": "{appName} верзија",
         "contactUs": "Контактирајте нас"
     },
     "aboutNetworkDialog": {
@@ -641,7 +640,7 @@
         "expectedAddress": "Очекивана адреса у {Metamask}",
         "title": "Бриџ трансакције",
         "expectedMetaMaskAddress": "Очекивана адреса у {Metamask}:",
-        "allowToken": "Дозволите @:appName да користи ваш {tokenSymbol}",
+        "allowToken": "Дозволите {appName} да користи ваш {tokenSymbol}",
         "approveToken": "Имаjте на уму да је потребно само једном одобрити токен. Ако ваш додатак има више захтева за одобрење токена, обавезно потврдите само последњи док одбацујете остале.",
         "blocksLeft": "Преостало је {count} блокова..."
     },
@@ -842,7 +841,7 @@
             },
             "supportError": {
                 "title": "Токен није подржан",
-                "text": "Нажалост, токен купљен преко @:moonpayText још увек није подржан од стране {Hashi} мостa у {Polkaswap}. Обично само подржани токени треба да буду доступни за куповину преко MoonPay у {Polkaswap}, стога је негде нешто пошло по злу. Не устручавајте се да обавестите заједницу о овом случају у <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> {Polkaswap} Телеграм група <\/a> ."
+                "text": "Нажалост, токен купљен преко @:moonpayText још увек није подржан од стране {Hashi} мостa у {Polkaswap}. Обично само подржани токени треба да буду доступни за куповину преко MoonPay у {Polkaswap}, стога је негде нешто пошло по злу. Не устручавајте се да обавестите заједницу о овом случају у <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> {Polkaswap} Телеграм група <\/a> ."
             },
             "feeError": {
                 "title": "Нема довољно ETH за мост ткс",

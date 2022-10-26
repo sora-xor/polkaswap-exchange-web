@@ -305,7 +305,6 @@
         "referrer": "Perujuk",
         "referral": "Rujukan"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Ubah jaringan di {Metamask}",
     "transactionText": "Transaksi | Tansaksi Lainny",
     "connectWalletText": "Hubungkan akun",
@@ -376,7 +375,7 @@
         "title": "Bantuan",
         "termsOfService": "Ketentuan Layanan",
         "privacyPolicy": "Kebijakan Privasi",
-        "appVersion": "@:appName Versi",
+        "appVersion": "{appName} Versi",
         "contactUs": "Hubungi Kami"
     },
     "aboutNetworkDialog": {
@@ -642,7 +641,7 @@
         "expectedAddress": "Alamat yang diharapkan di {Metamask}",
         "title": "Jembatan Transaksi",
         "expectedMetaMaskAddress": "Alamat yang diharapkan di {Metamask}",
-        "allowToken": "Izinkan @:appName untuk menggunakan {tokenSymbol}",
+        "allowToken": "Izinkan {appName} untuk menggunakan {tokenSymbol}",
         "approveToken": "Harap dicatat bahwa itu hanya diperlukan untuk menyetujui token sekali. Jika ekstensi Anda memiliki beberapa permintaan persetujuan token, pastikan untuk hanya mengonfirmasi yang terakhir sambil menolak sisanya.",
         "blocksLeft": "{count} blok kiri..."
     },
@@ -843,7 +842,7 @@
             },
             "supportError": {
                 "title": "Token tidak didukung",
-                "text": "Sayangnya token yang dibeli melalui @:moonpayText belum didukung oleh {Hashi} bridge di {Polkaswap}. Biasanya hanya token yang didukung yang tersedia untuk dibeli melalui MoonPay di {Polkaswap}, oleh karena itu pasti ada yang tidak beres di suatu tempat. Jangan ragu untuk memberi tahu komunitas tentang kasus ini di <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Grup Telegram {Polkaswap} <\/a> ."
+                "text": "Sayangnya token yang dibeli melalui @:moonpayText belum didukung oleh {Hashi} bridge di {Polkaswap}. Biasanya hanya token yang didukung yang tersedia untuk dibeli melalui MoonPay di {Polkaswap}, oleh karena itu pasti ada yang tidak beres di suatu tempat. Jangan ragu untuk memberi tahu komunitas tentang kasus ini di <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> Grup Telegram {Polkaswap} <\/a> ."
             },
             "feeError": {
                 "title": "Tidak cukup ETH untuk jembatan tx",

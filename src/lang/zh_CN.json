@@ -304,7 +304,6 @@
         "referrer": "推荐人",
         "referral": "推荐"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "在 {Metamask} 中更改网络",
     "transactionText": "交易 | 交易",
     "connectWalletText": "连接账户",
@@ -375,7 +374,7 @@
         "title": "帮助",
         "termsOfService": "服务条款",
         "privacyPolicy": "隐私政策",
-        "appVersion": "@:appName 版本",
+        "appVersion": "{appName} 版本",
         "contactUs": "联系我们"
     },
     "aboutNetworkDialog": {
@@ -641,7 +640,7 @@
         "expectedAddress": "在{Metamask}中预期的地址",
         "title": "转接桥交易",
         "expectedMetaMaskAddress": "{Metamask} 中的预期地址：",
-        "allowToken": "允许 @:appName 使用您的{tokenSymbol}",
+        "allowToken": "允许 {appName} 使用您的{tokenSymbol}",
         "approveToken": "请注意，只需要批准一次代币。如果您的扩展程序中有多个代币批准请求，请确保仅确认最后一个并拒绝其余请求。",
         "blocksLeft": "{count}个区块等待确认..."
     },
@@ -842,7 +841,7 @@
             },
             "supportError": {
                 "title": "不支持的代币",
-                "text": "很遗憾，{Polkaswap} 中的 {Hashi} 桥还不支持通过 @:moonpayText 购买的代币。通常只有支持的代币才能通过 {Polkaswap} 中的 MoonPay 购买，因此一定是哪里出了问题。请不要犹豫，在<a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> {Polkaswap} 电报群<\/a>里联系我们让社区知晓您的此次案例 。"
+                "text": "很遗憾，{Polkaswap} 中的 {Hashi} 桥还不支持通过 @:moonpayText 购买的代币。通常只有支持的代币才能通过 {Polkaswap} 中的 MoonPay 购买，因此一定是哪里出了问题。请不要犹豫，在<a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> {Polkaswap} 电报群<\/a>里联系我们让社区知晓您的此次案例 。"
             },
             "feeError": {
                 "title": "没有足够的 ETH 用于转接桥交易",

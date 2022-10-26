@@ -376,7 +376,7 @@
         "title": "Օգնություն",
         "termsOfService": "Սպասարկման պայմաններ",
         "privacyPolicy": "Գաղտնիության քաղաքականություն",
-        "appVersion": "@:appName տարբերակը",
+        "appVersion": "{appName} տարբերակը",
         "contactUs": "Կապվեք մեզ հետ"
     },
     "aboutNetworkDialog": {
@@ -642,7 +642,7 @@
         "expectedAddress": "Սպասվող հասցե @հասցեում ՝ {Metamask}",
         "title": "Կամուրջի գործարք",
         "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ {Metamask}",
-        "allowToken": "Թույլ տվեք @:appName ին օգտագործել ձեր {tokenSymbol}",
+        "allowToken": "Թույլ տվեք {appName} ին օգտագործել ձեր {tokenSymbol}",
         "approveToken": "Խնդրում ենք նկատի ունենալ, որ անհրաժեշտ է միայն մեկ անգամ հաստատել նշանը: Եթե ձեր ընդլայնումն ունի նշանների հաստատման բազմաթիվ խնդրանքներ, համոզվեք, որ միայն վերջինը հաստատեք ՝ մնացածը մերժելով:",
         "blocksLeft": "{count} բլոկները մնացել են..."
     },
@@ -843,7 +843,7 @@
             },
             "supportError": {
                 "title": "Նշանը չի աջակցվում",
-                "text": "Ցավոք, @:moonpayText-ի միջոցով գնված նշանը դեռեւս չի աջակցվում Պոլկասվափի {Hashi} կամրջով: Սովորաբար միայն աջակցվող նշանները պետք է մատչելի լինեն Պոլկասվափի MoonPay-ի միջոցով գնելու համար, ուստի ինչ-որ բան պետք է որ ինչ-որ տեղ սխալ լիներ։ Խնդրում ենք չվարանել համայնքին տեղեկացնել այս դեպքի մասին <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">{Polkaswap} Telegram group<\/a>."
+                "text": "Ցավոք, @:moonpayText-ի միջոցով գնված նշանը դեռեւս չի աջակցվում Պոլկասվափի {Hashi} կամրջով: Սովորաբար միայն աջակցվող նշանները պետք է մատչելի լինեն Պոլկասվափի MoonPay-ի միջոցով գնելու համար, ուստի ինչ-որ բան պետք է որ ինչ-որ տեղ սխալ լիներ։ Խնդրում ենք չվարանել համայնքին տեղեկացնել այս դեպքի մասին <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\">{Polkaswap} Telegram group<\/a>."
             },
             "feeError": {
                 "title": "Կամրջի համար tx բավարար ETH չէ",

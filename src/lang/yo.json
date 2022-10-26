@@ -305,7 +305,6 @@
         "referrer": "Atọkasi",
         "referral": "Ifiranṣẹ"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Yi nẹtiwọọki pada ni {Metamask}",
     "transactionText": "awon isowo | awon isowo",
     "connectWalletText": "So ifowisi pọ",
@@ -376,7 +375,7 @@
         "title": "Iranlowo ",
         "termsOfService": "Awọn ofin lilo",
         "privacyPolicy": "Ofin Asiri ",
-        "appVersion": "eya @:appName",
+        "appVersion": "eya {appName}",
         "contactUs": "Pe wa"
     },
     "aboutNetworkDialog": {
@@ -642,7 +641,7 @@
         "expectedAddress": "Adirẹsi ti a nireti ni {Metamask}",
         "title": "Idunadura Bridge",
         "expectedMetaMaskAddress": "Adirẹsi ti a nireti ni {Metamask}",
-        "allowToken": "Gba @:appName lati lo {tokenSymbol}",
+        "allowToken": "Gba {appName} lati lo {tokenSymbol}",
         "approveToken": "Jọwọ ṣe akiyesi pe o nilo lati fọwọsi ami (tokini)-ẹri lẹẹkan. Ti itẹsiwaju rẹ ba ni awọn ibeere ifọwọsi ọpọ, rii daju lati jẹrisi ọkan ti o kẹhin lakoko ti o kọ iyoku.",
         "blocksLeft": "{count} osi..."
     },
@@ -843,7 +842,7 @@
             },
             "supportError": {
                 "title": "Tokini ko ni atilẹyin",
-                "text": "Laanu tokini ti o ra nipasẹ @:moonpayText ko ni atilẹyin sibẹsibẹ nipasẹ afara {Hashi} ni {Polkaswap}. Ni deede awọn tokini ti o ni atilẹyin nikan yẹ ki o wa fun rira nipasẹ MoonPay ni {Polkaswap}, nitorinaa ohun kan gbọdọ ti jẹ aṣiṣe ni ibikan. Jọwọ ma ṣe ṣiyemeji lati jẹ ki agbegbe mọ nipa ọran yii ni <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Ẹgbẹ Telegram {Polkaswap} <\/a> ."
+                "text": "Laanu tokini ti o ra nipasẹ @:moonpayText ko ni atilẹyin sibẹsibẹ nipasẹ afara {Hashi} ni {Polkaswap}. Ni deede awọn tokini ti o ni atilẹyin nikan yẹ ki o wa fun rira nipasẹ MoonPay ni {Polkaswap}, nitorinaa ohun kan gbọdọ ti jẹ aṣiṣe ni ibikan. Jọwọ ma ṣe ṣiyemeji lati jẹ ki agbegbe mọ nipa ọran yii ni <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> Ẹgbẹ Telegram {Polkaswap} <\/a> ."
             },
             "feeError": {
                 "title": "Ko ti to ETH fun afara tx",

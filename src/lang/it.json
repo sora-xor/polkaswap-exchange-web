@@ -305,7 +305,6 @@
         "referrer": "Referente",
         "referral": "Referral"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Cambia rete in {Metamask}",
     "transactionText": "transazione | transazioni",
     "connectWalletText": "Connetti account",
@@ -376,7 +375,7 @@
         "title": "Aiuto",
         "termsOfService": "Termini di servizio",
         "privacyPolicy": "Politica della privacy",
-        "appVersion": "@:appName versione",
+        "appVersion": "{appName} versione",
         "contactUs": "Contattaci"
     },
     "aboutNetworkDialog": {
@@ -642,7 +641,7 @@
         "expectedAddress": "Indirizzo previsto in {Metamask}",
         "title": "Transazione sul Bridge",
         "expectedMetaMaskAddress": "Indirizzo previsto in {Metamask}",
-        "allowToken": "Consenti a @:appName di utilizzare il tuo {tokenSymbol}",
+        "allowToken": "Consenti a {appName} di utilizzare il tuo {tokenSymbol}",
         "approveToken": "Tieni presente che è necessario approvare il token solo una volta. Se la tua estensione ha più richieste di approvazione di token, assicurati di confermare solo l'ultima mentre rifiuti le altre.",
         "blocksLeft": "{count} blocchi rimasti..."
     },
@@ -843,7 +842,7 @@
             },
             "supportError": {
                 "title": "Token non supportato",
-                "text": "Sfortunatamente il token acquistato tramite @:moonpayText non è ancora supportato dal bridge {Hashi} in {Polkaswap}. Normalmente solo i token supportati dovrebbero essere disponibili per l'acquisto tramite MoonPay in {Polkaswap}, quindi qualcosa deve essere andato storto da qualche parte. Non esitare a informare la community di questo caso nel <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Gruppo Telegram {Polkaswap} <\/a> ."
+                "text": "Sfortunatamente il token acquistato tramite @:moonpayText non è ancora supportato dal bridge {Hashi} in {Polkaswap}. Normalmente solo i token supportati dovrebbero essere disponibili per l'acquisto tramite MoonPay in {Polkaswap}, quindi qualcosa deve essere andato storto da qualche parte. Non esitare a informare la community di questo caso nel <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> Gruppo Telegram {Polkaswap} <\/a> ."
             },
             "feeError": {
                 "title": "Non abbastanza ETH per il bridge tx",

@@ -305,7 +305,6 @@
         "referrer": "Реферер",
         "referral": "Реферал"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Сменить сеть в {Metamask}",
     "transactionText": "транзакцию | транзакции",
     "connectWalletText": "Подключить аккаунт",
@@ -376,7 +375,7 @@
         "title": "Помощь",
         "termsOfService": "Условия предоставления услуг",
         "privacyPolicy": "Политика конфиденциальности",
-        "appVersion": "@:appName версия",
+        "appVersion": "{appName} версия",
         "contactUs": "Свяжитесь с нами"
     },
     "aboutNetworkDialog": {
@@ -642,7 +641,7 @@
         "expectedAddress": "Ожидаемый адрес в {Metamask}",
         "title": "Транзакция Моста",
         "expectedMetaMaskAddress": "Ожидаемый адрес в {Metamask}",
-        "allowToken": "Разрешить @:appName использовать ваши {tokenSymbol}",
+        "allowToken": "Разрешить {appName} использовать ваши {tokenSymbol}",
         "approveToken": "Обратите внимание, что подтверждать токен нужно только один раз. Если ваше расширение имеет несколько запросов на утверждение токена, убедитесь, что вы подтвердили только последний из них, а остальные отклонили.",
         "blocksLeft": "{count} блоков осталось..."
     },
@@ -843,7 +842,7 @@
             },
             "supportError": {
                 "title": "Токен не поддерживается",
-                "text": "К сожалению, токен, приобретенный через @:moonpayText, еще не поддерживается мостом {Hashi} в {Polkaswap}. Обычно только поддерживаемые токены должны быть доступны для покупки через MoonPay в {Polkaswap}, следовательно, где-то что-то пошло не так. Не стесняйтесь сообщить сообществу об этом случае в <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> группу {Polkaswap} в Telegram <\/a> ."
+                "text": "К сожалению, токен, приобретенный через @:moonpayText, еще не поддерживается мостом {Hashi} в {Polkaswap}. Обычно только поддерживаемые токены должны быть доступны для покупки через MoonPay в {Polkaswap}, следовательно, где-то что-то пошло не так. Не стесняйтесь сообщить сообществу об этом случае в <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> группу {Polkaswap} в Telegram <\/a> ."
             },
             "feeError": {
                 "title": "Недостаточно ETH для транзакции по мосту",

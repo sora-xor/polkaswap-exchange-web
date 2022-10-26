@@ -304,7 +304,6 @@
         "referrer": "Referrer",
         "referral": "Hänvisning"
     },
-    "appName": "{Polkaswap}",
     "changeNetworkText": "Ändra nätverk i {Metamask}",
     "transactionText": "transaktion | transaktioner",
     "connectWalletText": "Anslut konto",
@@ -375,7 +374,7 @@
         "title": "Hjälp",
         "termsOfService": "Användarvillkor",
         "privacyPolicy": "Integritetspolicy",
-        "appVersion": "@:appName version",
+        "appVersion": "{appName} version",
         "contactUs": "Kontakta oss"
     },
     "aboutNetworkDialog": {
@@ -641,7 +640,7 @@
         "expectedAddress": "Förväntad adress i {Metamask}",
         "title": "Transaktion över Brygga",
         "expectedMetaMaskAddress": "Förväntad adress i {Metamask}:",
-        "allowToken": "Tillåt @:appName att använda din {tokenSymbol}",
+        "allowToken": "Tillåt {appName} att använda din {tokenSymbol}",
         "approveToken": "Vänligen observera att tokens endast behöver godkännas en gång. Om ditt tillägg har flera begäranden, godkänn endast den sista begäran och avvisa de resterande .",
         "blocksLeft": "{count} block kvar..."
     },
@@ -842,7 +841,7 @@
             },
             "supportError": {
                 "title": "Token stöds ej",
-                "text": "Tyvärr stöds inte den token köpt via @:moonpayText ännu av {Hashi}-bryggan i {Polkaswap}. Normalt bör endast tokens som stöds vara tillgängliga för köp via MoonPay i {Polkaswap}, vilket betyder att något måste ha gått fel någonstans. Vänligen tveka inte att meddela community om denna händelse i <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">{Polkaswap} Telegram gruppen<\/a>."
+                "text": "Tyvärr stöds inte den token köpt via @:moonpayText ännu av {Hashi}-bryggan i {Polkaswap}. Normalt bör endast tokens som stöds vara tillgängliga för köp via MoonPay i {Polkaswap}, vilket betyder att något måste ha gått fel någonstans. Vänligen tveka inte att meddela community om denna händelse i <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\">{Polkaswap} Telegram gruppen<\/a>."
             },
             "feeError": {
                 "title": "Inte tillräckligt med ETH för brygg-tx",

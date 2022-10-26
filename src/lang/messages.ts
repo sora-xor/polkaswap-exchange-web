@@ -111,7 +111,7 @@ export default {
     title: 'Help',
     termsOfService: 'Terms of Service',
     privacyPolicy: 'Privacy Policy',
-    appVersion: '@:appName version',
+    appVersion: '{appName} version',
     contactUs: 'Contact us',
   },
   aboutNetworkDialog: {
@@ -455,7 +455,7 @@ export default {
     connectWallet: '@:connectWalletText',
     changeAccount: '@:changeAccountText in {Metamask}',
     expectedAddress: 'Expected address in {Metamask}',
-    allowToken: 'Allow @:appName to use your {tokenSymbol}',
+    allowToken: 'Allow {appName} to use your {tokenSymbol}',
     approveToken:
       'Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.',
   },
@@ -641,7 +641,7 @@ export default {
       },
       [MoonpayNotifications.SupportError]: {
         title: 'Token not supported',
-        text: 'Unfortunately the token purchased via @:moonpayText is not yet supported by the {{Hashi}} bridge in {Polkaswap}. Normally only the supported tokens should be available for purchase via @:moonpayText in {Polkaswap}, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class="link" href="https://t.me/polkaswap" target="_blank" rel="nofollow noopener" title="@:appName">{Polkaswap} Telegram group</a>',
+        text: 'Unfortunately the token purchased via @:moonpayText is not yet supported by the {{Hashi}} bridge in {Polkaswap}. Normally only the supported tokens should be available for purchase via @:moonpayText in {Polkaswap}, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class="link" href="https://t.me/polkaswap" target="_blank" rel="nofollow noopener" title="{Polkaswap}">{Polkaswap} Telegram group</a>',
       },
       [MoonpayNotifications.FeeError]: {
         title: 'Not enough ETH for the bridge tx',
