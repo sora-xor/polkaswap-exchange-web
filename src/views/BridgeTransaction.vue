@@ -151,7 +151,7 @@
               }}</template>
               <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
               <template v-else-if="txWaitingForApprove">{{
-                t('bridgeTransaction.allowToken', { appName: app.name, tokenSymbol: assetSymbol })
+                t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
               }}</template>
               <template v-else>{{
                 t('bridgeTransaction.confirm', {

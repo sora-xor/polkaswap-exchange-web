@@ -305,7 +305,7 @@
         "referrer": "Referente",
         "referral": "Referencia"
     },
-    "appName": "{Polkaswap}",
+    "appName": "{AppName}",
     "changeNetworkText": "Cambiar de red en {Metamask}",
     "transactionText": "transacción | transacciones",
     "connectWalletText": "Conectar cuenta",
@@ -314,13 +314,13 @@
     "connectWalletTextTooltip": "Conectar a la Red {Sora} con {PolkadotJs}",
     "selectNodeText": "Seleccione el nodo de red",
     "bridgeText": "Puente",
-    "disclaimer": "{disclaimerPrefix} Este sitio web es mantenido por la comunidad {Sora}. Antes de continuar utilizando este sitio web, por favor revise las {polkaswapFaqLink} y la documentación, que incluye una explicación detallada sobre el funcionamiento de {appName}, así como el {memorandumLink}, y la {privacyLink}. Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar {appName}, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de {appName} en su jurisdicción legal; 2) su comprensión de que la versión actual de {appName} es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de {appName}, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡por favor no continúe sin leer el {polkaswapFaqLink}, las {memorandumLink} y la {privacyLink}!",
+    "disclaimer": "{disclaimerPrefix} Este sitio web es mantenido por la comunidad {Sora}. Antes de continuar utilizando este sitio web, por favor revise las {polkaswapFaqLink} y la documentación, que incluye una explicación detallada sobre el funcionamiento de {AppName}, así como el {memorandumLink}, y la {privacyLink}. Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar {AppName}, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de {AppName} en su jurisdicción legal; 2) su comprensión de que la versión actual de {AppName} es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de {AppName}, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡por favor no continúe sin leer el {polkaswapFaqLink}, las {memorandumLink} y la {privacyLink}!",
     "poweredBy": "Desarrollado por",
     "confirmTransactionText": "Confirmar transacción en {direction}",
     "retryText": "Reintentar",
     "networkFeeText": "Tarifa de red",
     "networkFeeTooltipText": "La comisión de la red se utiliza para garantizar el crecimiento y el rendimiento estable del sistema {Sora}.",
-    "ethNetworkFeeTooltipText": "Por favor, tenga en cuenta que las tarifas de la red {Ethereum} mostradas en {Polkaswap} son sólo estimaciones aproximadas, puede ver la cantidad correcta de la tarifa en su cartera {Ethereum} conectada antes de confirmar la transacción.",
+    "ethNetworkFeeTooltipText": "Por favor, tenga en cuenta que las tarifas de la red {Ethereum} mostradas en {AppName} son sólo estimaciones aproximadas, puede ver la cantidad correcta de la tarifa en su cartera {Ethereum} conectada antes de confirmar la transacción.",
     "marketText": "Mercado",
     "marketAlgorithmText": "Algoritmo de mercado",
     "firstPerSecond": "{first} por {second}",
@@ -367,7 +367,7 @@
         "faucet": "Grifo",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "Memorando y condiciones de servicio de {Polkaswap}",
+        "memorandum": "Memorando y condiciones de servicio de {AppName}",
         "privacy": "Política de privacidad",
         "info": "Información y comunidad"
     },
@@ -375,7 +375,7 @@
         "title": "Ayuda",
         "termsOfService": "Términos de servicio",
         "privacyPolicy": "Política de privacidad",
-        "appVersion": "Versión {appName}",
+        "appVersion": "Versión {AppName}",
         "contactUs": "Contáctenos"
     },
     "aboutNetworkDialog": {
@@ -383,7 +383,7 @@
         "learnMore": "@:learnMoreText",
         "network": {
             "title": "¿Qué es {Sora}?",
-            "description": "{Polkaswap} está construido sobre la Red {Sora}, y el token {Sora} (XOR) se utiliza para la provisión de gas\/comisiones y liquidez en {Polkaswap}. La red {Sora} permite reducir las tarifas, agilizar las transacciones y simplificar la finalización del consenso, y se centra en ofrecer interoperabilidad en otros ecosistemas de blockchain como {Ethereum}."
+            "description": "{AppName} está construido sobre la Red {Sora}, y el token {Sora} (XOR) se utiliza para la provisión de gas\/comisiones y liquidez en {AppName}. La red {Sora} permite reducir las tarifas, agilizar las transacciones y simplificar la finalización del consenso, y se centra en ofrecer interoperabilidad en otros ecosistemas de blockchain como {Ethereum}."
         },
         "polkadot": {
             "title": "¿Qué es {PolkadotJs}?",
@@ -460,15 +460,15 @@
         "description": "Intercambio de Activos a través de Cadena cruzada, creación y listado sencillo de nuevos Activos y los intercambios más fáciles de la historia. ¡El futuro interoperable de {Polkadot} está aquí y nosotros estamos a la vanguardia!",
         "trading": {
             "title": "Comercio más rápido",
-            "first": "{Polkaswap} es un protocolo AMM DEX no custodiado para el intercambio de tokens basado en las cadenas principales de {Polkadot} y {Kusama}, parachains de {Polkadot} y {Kusama}, y blockchains conectadas directamente a través de puentes.",
-            "second": "{Polkaswap} elimina los intermediarios de confianza y ofrece la oportunidad de negociar más rápidamente",
-            "third": "{Polkaswap} es un proyecto comunitario y los desarrolladores colaboran en el código de fuente abierta utilizando el"
+            "first": "{AppName} es un protocolo AMM DEX no custodiado para el intercambio de tokens basado en las cadenas principales de {Polkadot} y {Kusama}, parachains de {Polkadot} y {Kusama}, y blockchains conectadas directamente a través de puentes.",
+            "second": "{AppName} elimina los intermediarios de confianza y ofrece la oportunidad de negociar más rápidamente",
+            "third": "{AppName} es un proyecto comunitario y los desarrolladores colaboran en el código de fuente abierta utilizando el"
         },
         "liquidity": {
             "title": "Liquidez ilimitada",
-            "first": "{Polkaswap} combina múltiples fuentes de liquidez bajo un algoritmo común de agregación de liquidez, operando completamente en cadena, de manera descentralizada y sin intermediarios.",
+            "first": "{AppName} combina múltiples fuentes de liquidez bajo un algoritmo común de agregación de liquidez, operando completamente en cadena, de manera descentralizada y sin intermediarios.",
             "second": "Cuando los traders llaman la función de intercambio, el algoritmo de agregación de liquidez completará las órdenes utilizando las mejores ofertas en todas las fuentes de liquidez. Las fuentes de liquidez pueden ser otros DEX, libros de ordenes u otras fuentes añadidas por API.",
-            "third": "Dado que {Polkaswap} es un proyecto de código abierto, cualquiera puede añadir más fuentes de liquidez haciendo contribuciones al código base de {Polkaswap}."
+            "third": "Dado que {AppName} es un proyecto de código abierto, cualquiera puede añadir más fuentes de liquidez haciendo contribuciones al código base de {AppName}."
         },
         "swap": {
             "title": "Intercambia cualquier token",
@@ -478,20 +478,20 @@
         },
         "pswap": {
             "title": "Tokens PSWAP",
-            "first": "PSWAP fue creado por el gobierno de la comunidad mediante la votación de su lanzamiento. Es un token de utilidad y gobernanza utilizado para recompensar a los proveedores de liquidez en {Polkaswap}. A diferencia de la mayoría de otros tokens de recompensa, PSWAP se quema con las transacciones y disminuye su oferta con el tiempo.",
-            "second": "El {percent}% de la comisión por cada intercambio en el DEX de {Polkaswap} se utiliza para recomprar tokens PSWAP, que luego se queman. Al principio, el 90% de los tokens PSWAP quemados se reacuñan para asignarlos a los proveedores de liquidez, pero con el tiempo este porcentaje se reducirá al 35% después de 4 años."
+            "first": "PSWAP fue creado por el gobierno de la comunidad mediante la votación de su lanzamiento. Es un token de utilidad y gobernanza utilizado para recompensar a los proveedores de liquidez en {AppName}. A diferencia de la mayoría de otros tokens de recompensa, PSWAP se quema con las transacciones y disminuye su oferta con el tiempo.",
+            "second": "El {percent}% de la comisión por cada intercambio en el DEX de {AppName} se utiliza para recomprar tokens PSWAP, que luego se queman. Al principio, el 90% de los tokens PSWAP quemados se reacuñan para asignarlos a los proveedores de liquidez, pero con el tiempo este porcentaje se reducirá al 35% después de 4 años."
         },
         "links": {
             "first": {
                 "title": "Conviértase en Validador {Sora}",
-                "desc": "Asegura el futuro de la Red {Sora} y de las aplicaciones descentralizadas como {Polkaswap}, y gana recompensas en el camino convirtiéndote en un validador de {Sora}."
+                "desc": "Asegura el futuro de la Red {Sora} y de las aplicaciones descentralizadas como {AppName}, y gana recompensas en el camino convirtiéndote en un validador de {Sora}."
             },
             "second": {
                 "title": "Conectar una cadena a {Sora}",
-                "desc": "Haga crecer la economía mundial descentralizada conectando más cadenas a {Sora} y {Polkaswap} utilizando el protocolo del puente {Hashi}."
+                "desc": "Haga crecer la economía mundial descentralizada conectando más cadenas a {Sora} y {AppName} utilizando el protocolo del puente {Hashi}."
             }
         },
-        "network": "{Polkaswap} está construido sobre la Red {Sora}, centrándose en la interoperabilidad para conectar el resto del ecosistema criptográfico a {Polkadot}."
+        "network": "{AppName} está construido sobre la Red {Sora}, centrándose en la interoperabilidad para conectar el resto del ecosistema criptográfico a {Polkadot}."
     },
     "exchange": {
         "Swap": "Intercambio",
@@ -641,7 +641,7 @@
         "expectedAddress": "Dirección esperada en {Metamask}",
         "title": "Transacción puente",
         "expectedMetaMaskAddress": "Dirección esperada en {Metamask}",
-        "allowToken": "Permitir que {appName} utilice su {tokenSymbol}",
+        "allowToken": "Permitir que {AppName} utilice su {tokenSymbol}",
         "approveToken": "Tenga en cuenta que sólo es necesario aprobar el token una vez. Si su extensión tiene varias solicitudes de aprobación de tokens, asegúrese de confirmar solo la última y rechazar el resto.",
         "blocksLeft": "{count} bloques faltantes"
     },
@@ -828,8 +828,8 @@
         "name": "Nombre",
         "assetId": "ID del Activo"
     },
-    "memorandum": "Memorándum {Polkaswap} y condiciones de servicio",
-    "FAQ": "Preguntas frecuentes sobre {Polkaswap}",
+    "memorandum": "Memorándum {AppName} y condiciones de servicio",
+    "FAQ": "Preguntas frecuentes sobre {AppName}",
     "connectedAccount": "Cuenta conectada",
     "selectNodeConnected": "Conectado a: {chain}",
     "moonpayText": "MoonPay",
@@ -838,11 +838,11 @@
         "notifications": {
             "success": {
                 "title": "Fichas compradas",
-                "text": "La compra de tokens ha finalizado. La transacción del puente {Hashi} comenzará automáticamente tan pronto como se hayan recibido los tokens en la cuenta {Ethereum} conectada. Es seguro cerrar esta ventana y continuar usando {Polkaswap}. Habrá una notificación sobre la transacción puente cuando esté lista."
+                "text": "La compra de tokens ha finalizado. La transacción del puente {Hashi} comenzará automáticamente tan pronto como se hayan recibido los tokens en la cuenta {Ethereum} conectada. Es seguro cerrar esta ventana y continuar usando {AppName}. Habrá una notificación sobre la transacción puente cuando esté lista."
             },
             "supportError": {
                 "title": "Token no admitido",
-                "text": "Desafortunadamente, el token comprado a través de @:moonpayText aún no es compatible con el puente {Hashi} en {Polkaswap}. Normalmente, solo los tokens admitidos deberían estar disponibles para su compra a través de MoonPay en {Polkaswap}, por lo que algo debe haber salido mal en alguna parte. No dude en informar a la comunidad sobre este caso en el <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> grupo de Telegram {Polkaswap} <\/a>."
+                "text": "Desafortunadamente, el token comprado a través de @:moonpayText aún no es compatible con el puente {Hashi} en {AppName}. Normalmente, solo los tokens admitidos deberían estar disponibles para su compra a través de MoonPay en {AppName}, por lo que algo debe haber salido mal en alguna parte. No dude en informar a la comunidad sobre este caso en el <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> grupo de Telegram {AppName} <\/a>."
             },
             "feeError": {
                 "title": "No hay suficiente ETH para el puente tx",
@@ -936,7 +936,7 @@
             "text": "Confirmar",
             "bond": "Confirmar vinculación",
             "unbond": "Confirmar desvinculación",
-            "inviteTitle": "Has sido invitado a {Polkaswap}",
+            "inviteTitle": "Has sido invitado a {AppName}",
             "inviteDescription": "Por cada transacción, el 10% de la tarifa se destinará a su referente, sin ningún costo adicional para usted.",
             "signInvitation": "Aprobar",
             "freeOfCharge": "Esta acción es gratuita",
@@ -951,7 +951,7 @@
             "label": "Enlace o código de invitación",
             "approve": "Aprobar",
             "approved": "Aprobado",
-            "description": "Puede ser referido a {Polkaswap},<br\/>escriba el enlace o el código del referente",
+            "description": "Puede ser referido a {AppName},<br\/>escriba el enlace o el código del referente",
             "referredBy": "Has sido referido por {referrer}",
             "info": "Cuando pague una tarifa por la transacción,<br\/>el 10% se destinará a su referente",
             "referredLablel": "Dirección de referencia"
@@ -1065,7 +1065,7 @@
         "info": "Le enviaremos solo actualizaciones relevantes sobre su billetera, por ejemplo: cambios en el saldo de activos",
         "button": "Permitir notificaciones",
         "agree": "Si, entiendo",
-        "notificationBlocked": "Para recibir notificaciones sobre {appName}, permita las notificaciones en la configuración nativa de su navegador",
+        "notificationBlocked": "Para recibir notificaciones sobre {AppName}, permita las notificaciones en la configuración nativa de su navegador",
         "pointer": "Presione \"Permitir\" para activar las notificaciones"
     },
     "assetDeposit": "El saldo de los activos ha sido depositado",
@@ -1082,7 +1082,7 @@
     },
     "desktop": {
         "welcome": {
-            "header": "¡Bienvenido a {Polkaswap}!",
+            "header": "¡Bienvenido a {AppName}!",
             "headline": "Configuremos tu cuenta",
             "text": "Cree su cuenta de {Sora} Network o inicie sesión en las antiguas utilizando una frase mnemotécnica o la importación .json. Esto le permite firmar transacciones de forma segura y administrar activos en {Sora} Network.",
             "createAccount": "Crea una cuenta",

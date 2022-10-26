@@ -28,7 +28,6 @@
                 v-html="
                   t('disclaimer', {
                     disclaimerPrefix,
-                    appName: app.name,
                     polkaswapFaqLink,
                     memorandumLink,
                     privacyLink,
@@ -70,7 +69,7 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
 import MobilePopup from '@/components/MobilePopup/MobilePopup.vue';
 
-import { PageNames, Components, Language, Links, app } from '@/consts';
+import { PageNames, Components, Language, Links } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -96,8 +95,6 @@ import { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
-  readonly app = app;
-
   menuVisibility = false;
   showConfirmInviteUser = false;
   showMobilePopup = false;

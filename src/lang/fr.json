@@ -305,7 +305,7 @@
         "referrer": "Référent",
         "referral": "Référence"
     },
-    "appName": "{Polkaswap}",
+    "appName": "{AppName}",
     "changeNetworkText": "Changer de réseau dans {Metamask}",
     "transactionText": "transaction | transactions",
     "connectWalletText": "Connecter le compte",
@@ -314,13 +314,13 @@
     "connectWalletTextTooltip": "Connectez-vous au réseau {Sora} avec {PolkadotJs}",
     "selectNodeText": "Sélectionnez le nœud",
     "bridgeText": "Pont",
-    "disclaimer": "{disclaimerPrefix} ce site Web est maintenu par la communauté {Sora}. Avant de continuer à utiliser ce site Web, veuillez consulter le {polkaswapFaqLink} et la documentation, qui comprend une explication détaillée du fonctionnement de {appName}, ainsi que le {memorandumLink} et le {privacyLink}. Ces documents sont cruciaux pour une expérience utilisateur sécurisée et positive. En utilisant {appName}, vous reconnaissez avoir lu et compris ces documents. Vous reconnaissez également ce qui suit: 1) votre seule responsabilité de vous conformer à toutes les lois qui peuvent s'appliquer à votre utilisation particulière de {appName} dans votre juridiction légale; 2) votre compréhension que la version actuelle de {appName} est une version alpha: elle n'a pas été entièrement testée et certaines fonctions peuvent ne pas fonctionner comme prévu; et 3) votre compréhension et votre acceptation volontaire des risques liés à l'utilisation de {appName}, y compris, mais sans s'y limiter, le risque de perdre des jetons. Encore une fois, veuillez ne pas continuer sans lire les {polkaswapFaqLink}, {memorandumLink} et {privacyLink}!",
+    "disclaimer": "{disclaimerPrefix} ce site Web est maintenu par la communauté {Sora}. Avant de continuer à utiliser ce site Web, veuillez consulter le {polkaswapFaqLink} et la documentation, qui comprend une explication détaillée du fonctionnement de {AppName}, ainsi que le {memorandumLink} et le {privacyLink}. Ces documents sont cruciaux pour une expérience utilisateur sécurisée et positive. En utilisant {AppName}, vous reconnaissez avoir lu et compris ces documents. Vous reconnaissez également ce qui suit: 1) votre seule responsabilité de vous conformer à toutes les lois qui peuvent s'appliquer à votre utilisation particulière de {AppName} dans votre juridiction légale; 2) votre compréhension que la version actuelle de {AppName} est une version alpha: elle n'a pas été entièrement testée et certaines fonctions peuvent ne pas fonctionner comme prévu; et 3) votre compréhension et votre acceptation volontaire des risques liés à l'utilisation de {AppName}, y compris, mais sans s'y limiter, le risque de perdre des jetons. Encore une fois, veuillez ne pas continuer sans lire les {polkaswapFaqLink}, {memorandumLink} et {privacyLink}!",
     "poweredBy": "Alimenté par",
     "confirmTransactionText": "Confirmez la transaction dans {direction}",
     "retryText": "Réessayer",
     "networkFeeText": "Frais de réseau",
     "networkFeeTooltipText": "Les frais de réseau sont utilisés pour assurer la croissance et les performances stables du système {Sora}.",
-    "ethNetworkFeeTooltipText": "Veuillez noter que les frais de réseau {Ethereum} affichés sur {Polkaswap} ne sont que des estimations approximatives, vous pouvez voir le montant exact des frais dans votre portefeuille {Ethereum} connecté avant de confirmer la transaction.",
+    "ethNetworkFeeTooltipText": "Veuillez noter que les frais de réseau {Ethereum} affichés sur {AppName} ne sont que des estimations approximatives, vous pouvez voir le montant exact des frais dans votre portefeuille {Ethereum} connecté avant de confirmer la transaction.",
     "marketText": "Marché",
     "marketAlgorithmText": "Algorithme de marché",
     "firstPerSecond": "{first} par {second}",
@@ -367,7 +367,7 @@
         "faucet": "Robinet",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "Mémorandum et conditions d'utilisation de {Polkaswap}",
+        "memorandum": "Mémorandum et conditions d'utilisation de {AppName}",
         "privacy": "Politique de confidentialité",
         "info": "Info & Communauté"
     },
@@ -375,7 +375,7 @@
         "title": "Aide",
         "termsOfService": "Conditions d'utilisation",
         "privacyPolicy": "Politique de confidentialité",
-        "appVersion": "{appName} version",
+        "appVersion": "{AppName} version",
         "contactUs": "Nous contacter"
     },
     "aboutNetworkDialog": {
@@ -383,7 +383,7 @@
         "learnMore": "Pour en savoir plus",
         "network": {
             "title": "Qu'est-ce que {Sora}?",
-            "description": "{Polkaswap} est construit sur le réseau {Sora} et le jeton {Sora} (XOR) est utilisé pour le gaz\/les frais et la fourniture de liquidités sur {Polkaswap}. {Sora} Network permet des frais réduits, des transactions plus rapides et une finalisation de consensus plus simple et se concentre sur l'interopérabilité entre d'autres écosystèmes de blockchain comme {Ethereum}."
+            "description": "{AppName} est construit sur le réseau {Sora} et le jeton {Sora} (XOR) est utilisé pour le gaz\/les frais et la fourniture de liquidités sur {AppName}. {Sora} Network permet des frais réduits, des transactions plus rapides et une finalisation de consensus plus simple et se concentre sur l'interopérabilité entre d'autres écosystèmes de blockchain comme {Ethereum}."
         },
         "polkadot": {
             "title": "Qu'est-ce que {PolkadotJs}?",
@@ -460,15 +460,15 @@
         "description": "Échange inter-chaînes d'actifs, création et listing simples de nouveaux actifs, et les échanges les plus simples jamais réalisés. L'avenir interopérable de {Polkadot} est là et nous sommes aux avant-postes !",
         "trading": {
             "title": "Trading plus rapide",
-            "first": "{Polkaswap} est un protocole AMM-DEX non dépositaire pour l'échange de jetons basé sur le réseau {Polkadot}, les parachains et les blockchains connectés via des ponts.",
-            "second": "{Polkaswap} supprime les intermédiaires de confiance et offre la possibilité d'un trading plus rapide",
-            "third": "{Polkaswap} est un projet communautaire et les développeurs collaborent sur le code open source en utilisant le"
+            "first": "{AppName} est un protocole AMM-DEX non dépositaire pour l'échange de jetons basé sur le réseau {Polkadot}, les parachains et les blockchains connectés via des ponts.",
+            "second": "{AppName} supprime les intermédiaires de confiance et offre la possibilité d'un trading plus rapide",
+            "third": "{AppName} est un projet communautaire et les développeurs collaborent sur le code open source en utilisant le"
         },
         "liquidity": {
             "title": "Liquidité illimitée",
-            "first": "{Polkaswap} combine plusieurs sources de liquidité sous un algorithme d'agrégation de liquidité commun, fonctionnant entièrement sur la chaîne, de manière décentralisée et sans recours à des intermédiaries de confiance.",
+            "first": "{AppName} combine plusieurs sources de liquidité sous un algorithme d'agrégation de liquidité commun, fonctionnant entièrement sur la chaîne, de manière décentralisée et sans recours à des intermédiaries de confiance.",
             "second": "Lorsque les traders appellent la fonction d'échange, l'algorithme d'agrégation de liquidité remplira les commandes en utilisant les meilleures offres sur toutes les sources de liquidité. Les sources de liquidité peuvent être d'autres DEX, des carnets de commandes ou d'autres sources basées sur des API.",
-            "third": "Parce que {Polkaswap} est un projet open source, n'importe qui peut ajouter plus de sources de liquidités en contribuant au code de base de {Polkaswap}."
+            "third": "Parce que {AppName} est un projet open source, n'importe qui peut ajouter plus de sources de liquidités en contribuant au code de base de {AppName}."
         },
         "swap": {
             "title": "Échangez n'importe quel jeton",
@@ -478,20 +478,20 @@
         },
         "pswap": {
             "title": "Jetons PSWAP",
-            "first": "PSWAP a été créé par la gouvernance communautaire en votant sur sa sortie. Il s'agit d'un jeton d'utilité et de gouvernance utilisé pour récompenser les fournisseurs de liquidités sur {Polkaswap}. Contrairement à la plupart des autres jetons de récompense, PSWAP est brûlé avec les transactions et l'offre diminue au fil du temps.",
-            "second": "Les frais de {percent}% sur chaque échange sur le {Polkaswap} DEX sont utilisés pour racheter des jetons PSWAP, qui sont ensuite brûlés. Au début, 90% des jetons PSWAP brûlés sont réutilisés pour être alloués aux fournisseurs de liquidités, mais avec le temps, ce pourcentage diminuera à 35% après 4 ans."
+            "first": "PSWAP a été créé par la gouvernance communautaire en votant sur sa sortie. Il s'agit d'un jeton d'utilité et de gouvernance utilisé pour récompenser les fournisseurs de liquidités sur {AppName}. Contrairement à la plupart des autres jetons de récompense, PSWAP est brûlé avec les transactions et l'offre diminue au fil du temps.",
+            "second": "Les frais de {percent}% sur chaque échange sur le {AppName} DEX sont utilisés pour racheter des jetons PSWAP, qui sont ensuite brûlés. Au début, 90% des jetons PSWAP brûlés sont réutilisés pour être alloués aux fournisseurs de liquidités, mais avec le temps, ce pourcentage diminuera à 35% après 4 ans."
         },
         "links": {
             "first": {
                 "title": "Devenez un validateur {Sora}",
-                "desc": "Sécurisez l'avenir du réseau {Sora} et des applications décentralisées comme {Polkaswap}, et gagnez des récompenses en devenant un validateur {Sora}."
+                "desc": "Sécurisez l'avenir du réseau {Sora} et des applications décentralisées comme {AppName}, et gagnez des récompenses en devenant un validateur {Sora}."
             },
             "second": {
                 "title": "Connecter une chaîne à {Sora}",
-                "desc": "Développez l'économie mondiale décentralisée en connectant davantage de chaînes à {Sora} et {Polkaswap} à l'aide du protocole de pont {Hashi}."
+                "desc": "Développez l'économie mondiale décentralisée en connectant davantage de chaînes à {Sora} et {AppName} à l'aide du protocole de pont {Hashi}."
             }
         },
-        "network": "{Polkaswap} est construit sur le réseau {Sora}, en se concentrant sur l'interopérabilité pour connecter le reste de l'écosystème crypto à {Polkadot}."
+        "network": "{AppName} est construit sur le réseau {Sora}, en se concentrant sur l'interopérabilité pour connecter le reste de l'écosystème crypto à {Polkadot}."
     },
     "exchange": {
         "Swap": "Échanger",
@@ -641,7 +641,7 @@
         "expectedAddress": "Adresse attendue dans {Metamask}",
         "title": "Transaction de pont",
         "expectedMetaMaskAddress": "Adresse attendue dans {Metamask}:",
-        "allowToken": "Autoriser {appName} à utiliser votre {tokenSymbol}",
+        "allowToken": "Autoriser {AppName} à utiliser votre {tokenSymbol}",
         "approveToken": "Veuillez noter qu'il n'est nécessaire d'approuver le jeton qu'une seule fois. Si votre extension a plusieurs demandes d'approbation de jetons, assurez-vous de ne confirmer que la dernière tout en rejetant le reste.",
         "blocksLeft": "{count} blocs restants..."
     },
@@ -828,8 +828,8 @@
         "name": "Nom",
         "assetId": "ID Actif"
     },
-    "memorandum": "Note et conditions d'utilisation de {Polkaswap}",
-    "FAQ": "FAQ {Polkaswap}",
+    "memorandum": "Note et conditions d'utilisation de {AppName}",
+    "FAQ": "FAQ {AppName}",
     "connectedAccount": "Compte connecté",
     "selectNodeConnected": "Connecté à: {chain}",
     "moonpayText": "MoonPay",
@@ -838,11 +838,11 @@
         "notifications": {
             "success": {
                 "title": "Jetons achetés",
-                "text": "L'achat du jeton est terminé. La transaction de pont {Hashi} démarrera automatiquement dès que les jetons auront été reçus sur le compte {Ethereum} connecté. Vous pouvez fermer cette fenêtre en toute sécurité et continuer à utiliser {Polkaswap}. Il y aura une notification sur la transaction de pont lorsqu'elle sera prête."
+                "text": "L'achat du jeton est terminé. La transaction de pont {Hashi} démarrera automatiquement dès que les jetons auront été reçus sur le compte {Ethereum} connecté. Vous pouvez fermer cette fenêtre en toute sécurité et continuer à utiliser {AppName}. Il y aura une notification sur la transaction de pont lorsqu'elle sera prête."
             },
             "supportError": {
                 "title": "Jeton introuvable",
-                "text": "Malheureusement, le jeton acheté via @:moonpayText n'est pas encore pris en charge par le pont {Hashi} de {Polkaswap}. Normalement, seuls les jetons pris en charge devraient être disponibles à l'achat via MoonPay à {Polkaswap}, donc quelque chose a dû mal tourner quelque part. N'hésitez pas à informer la communauté de ce cas dans le <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> Groupe de télégrammes {Polkaswap} <\/a> ."
+                "text": "Malheureusement, le jeton acheté via @:moonpayText n'est pas encore pris en charge par le pont {Hashi} de {AppName}. Normalement, seuls les jetons pris en charge devraient être disponibles à l'achat via MoonPay à {AppName}, donc quelque chose a dû mal tourner quelque part. N'hésitez pas à informer la communauté de ce cas dans le <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> Groupe de télégrammes {AppName} <\/a> ."
             },
             "feeError": {
                 "title": "Pas assez de fonds pour les frais de minage",
@@ -936,7 +936,7 @@
             "text": "Confirmer",
             "bond": "Confirmer le lien",
             "unbond": "Confirmer la dissociation",
-            "inviteTitle": "Vous avez été invité à {Polkaswap}",
+            "inviteTitle": "Vous avez été invité à {AppName}",
             "inviteDescription": "Pour chaque transaction, 10% des frais iront à votre parrain, sans frais supplémentaires pour vous.",
             "signInvitation": "Approuver",
             "freeOfCharge": "Cette action est gratuite",
@@ -951,7 +951,7 @@
             "label": "Lien ou code d'invitation",
             "approve": "Approuver",
             "approved": "Approuvé",
-            "description": "Vous pouvez être référé à {Polkaswap},<br\/>saisissez le lien ou le code du référent",
+            "description": "Vous pouvez être référé à {AppName},<br\/>saisissez le lien ou le code du référent",
             "referredBy": "Vous avez été référé par {referrer}",
             "info": "Lorsque vous paierez des frais pour la transaction,<br\/>10% iront à votre parrain",
             "referredLablel": "Adresse référencée"
@@ -1065,7 +1065,7 @@
         "info": "Nous vous enverrons uniquement les mises à jour pertinentes concernant votre portefeuille, par exemple : les modifications du solde des actifs",
         "button": "Activer les notifications",
         "agree": "Oui je comprends",
-        "notificationBlocked": "Pour recevoir les notifications concernant {appName} , veuillez autoriser les notifications dans les paramètres natifs de votre navigateur",
+        "notificationBlocked": "Pour recevoir les notifications concernant {AppName} , veuillez autoriser les notifications dans les paramètres natifs de votre navigateur",
         "pointer": "Appuyez sur \"Autoriser\" pour activer les notifications"
     },
     "assetDeposit": "Le solde de l'actif a été déposé",
@@ -1082,7 +1082,7 @@
     },
     "desktop": {
         "welcome": {
-            "header": "Bienvenue sur {Polkaswap} !",
+            "header": "Bienvenue sur {AppName} !",
             "headline": "Configurons votre compte",
             "text": "Créez votre compte {Sora} Network ou connectez-vous aux anciens en utilisant une phrase mnémonique ou une importation .json. Cela vous permet de signer en toute sécurité des transactions et de gérer des actifs dans {Sora} Network.",
             "createAccount": "Créer un compte",

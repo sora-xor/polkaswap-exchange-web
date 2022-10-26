@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="help-information">
-      <div class="help-block">{{ t('helpDialog.appVersion', { appName: app.name }) }} {{ app.version }}</div>
+      <div class="help-block">{{ t('helpDialog.appVersion') }} {{ app.version }}</div>
       <div class="help-block">
         {{ t('helpDialog.contactUs') }}<br />
         {{ app.email }}

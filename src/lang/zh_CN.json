@@ -305,7 +305,7 @@
         "referrer": "推荐人",
         "referral": "推荐"
     },
-    "appName": "{Polkaswap}",
+    "appName": "{AppName}",
     "changeNetworkText": "在 {Metamask} 中更改网络",
     "transactionText": "交易 | 交易",
     "connectWalletText": "连接账户",
@@ -314,7 +314,7 @@
     "connectWalletTextTooltip": "用{PolkadotJs}连接到{Sora}网络",
     "selectNodeText": "选择网络节点",
     "bridgeText": "转接桥",
-    "disclaimer": "{disclaimerPrefix} 本网站由{Sora} 社区维护。在继续使用本网站之前，请查看{polkaswapFaqLink} 和文档，其中包括有关 {appName} 工作原理的详细说明，以及 {memorandumLink} 和 {privacyLink}。这些文档对于安全和积极的用户体验至关重要。通过使用 {appName}，您承认您已阅读并理解这些文件。您还承认以下内容：1) 您全权负责遵守在您的法律管辖范围内可能适用于您对 {appName} 的特定使用的所有法律； 2）您对{appName}当前版本为alpha版本的理解：尚未经过全面测试，部分功能可能无法按设计执行； 3) 您理解并自愿接受使用 {appName} 所涉及的风险，包括但不限于丢失代币的风险。再一次提醒，在没有阅读{polkaswapFaqLink}、{memorandumLink} 和{privacyLink}之前，请不要继续！",
+    "disclaimer": "{disclaimerPrefix} 本网站由{Sora} 社区维护。在继续使用本网站之前，请查看{polkaswapFaqLink} 和文档，其中包括有关 {AppName} 工作原理的详细说明，以及 {memorandumLink} 和 {privacyLink}。这些文档对于安全和积极的用户体验至关重要。通过使用 {AppName}，您承认您已阅读并理解这些文件。您还承认以下内容：1) 您全权负责遵守在您的法律管辖范围内可能适用于您对 {AppName} 的特定使用的所有法律； 2）您对{AppName}当前版本为alpha版本的理解：尚未经过全面测试，部分功能可能无法按设计执行； 3) 您理解并自愿接受使用 {AppName} 所涉及的风险，包括但不限于丢失代币的风险。再一次提醒，在没有阅读{polkaswapFaqLink}、{memorandumLink} 和{privacyLink}之前，请不要继续！",
     "poweredBy": "启动于",
     "confirmTransactionText": "确认在{direction}的交易",
     "retryText": "重试",
@@ -367,7 +367,7 @@
         "faucet": "水龙头",
         "github": "GitHub",
         "sorawiki": "{Sora} Wiki",
-        "memorandum": "{Polkaswap} 备忘录和服务条款",
+        "memorandum": "{AppName} 备忘录和服务条款",
         "privacy": "隐私政策",
         "info": "信息与社区"
     },
@@ -375,7 +375,7 @@
         "title": "帮助",
         "termsOfService": "服务条款",
         "privacyPolicy": "隐私政策",
-        "appVersion": "{appName} 版本",
+        "appVersion": "{AppName} 版本",
         "contactUs": "联系我们"
     },
     "aboutNetworkDialog": {
@@ -383,7 +383,7 @@
         "learnMore": "@:learnMoreText",
         "network": {
             "title": "什么是{Sora}？",
-            "description": "{Polkaswap}建立在{Sora}网络之上，{Sora}代币（XOR）被用于Polkaswap上的费用和流动性供应。{Sora}网络允许减少的费用和加快交易，并简化共识的最终确定，专注于提供跨其他区块链生态系统的互操作性，如{Ethereum}。"
+            "description": "{AppName}建立在{Sora}网络之上，{Sora}代币（XOR）被用于Polkaswap上的费用和流动性供应。{Sora}网络允许减少的费用和加快交易，并简化共识的最终确定，专注于提供跨其他区块链生态系统的互操作性，如{Ethereum}。"
         },
         "polkadot": {
             "title": "什么是 {PolkadotJs}？",
@@ -460,15 +460,15 @@
         "description": "资产的跨链交换，新资产的简单创建和上市，以及最简单的兑换。{Polkadot}的可互操作性未来就在这里，并且我们走在最前沿！",
         "trading": {
             "title": "更快的交易",
-            "first": "{Polkaswap} 是一种非托管的跨链 AMM DEX 协议，用于互换基于 {Polkadot} 和 {Kusama} 中继链、{Polkadot} 和 {Kusama} 平行链以及通过转接桥直接连接区块链的代币。",
-            "second": "{Polkaswap} 消除了对受信任的中介机构的依赖，并提供了更快速的交易机会",
+            "first": "{AppName} 是一种非托管的跨链 AMM DEX 协议，用于互换基于 {Polkadot} 和 {Kusama} 中继链、{Polkadot} 和 {Kusama} 平行链以及通过转接桥直接连接区块链的代币。",
+            "second": "{AppName} 消除了对受信任的中介机构的依赖，并提供了更快速的交易机会",
             "third": "Polkaswap是一个社区项目，开发者们在开源代码上进行合作，使用的是"
         },
         "liquidity": {
             "title": "无限流动性",
-            "first": "{appName}在一个共同的流动性聚集算法下结合了多个流动性来源，以一种完全无需信任和去中心化的方式在链上运行。",
+            "first": "{AppName}在一个共同的流动性聚集算法下结合了多个流动性来源，以一种完全无需信任和去中心化的方式在链上运行。",
             "second": "当交易者调用兑换功能时，流动性聚合算法将使用所有流动性来源的最佳报价来填补订单。流动性来源可以是其他DEXs、订单簿、或其他API驱动的来源。",
-            "third": "由于{appName}是一个开源项目，任何人都可以通过对{appName}代码库的贡献增加更多的流动性来源。"
+            "third": "由于{AppName}是一个开源项目，任何人都可以通过对{AppName}代码库的贡献增加更多的流动性来源。"
         },
         "swap": {
             "title": "交换任何代币",
@@ -478,20 +478,20 @@
         },
         "pswap": {
             "title": "PSWAP 代币",
-            "first": "PSWAP 是由社区治理通过对其发布进行投票而创建的。它是一种实用和治理代币，用于奖励 {Polkaswap} 上的流动性提供者。与大多数其他奖励代币不同的是，PSWAP 会随着交易而被销毁，并且供应量会随着时间的推移而减少。",
-            "second": "{Polkaswap} DEX 上每次兑换的{percent}% 费用用于回购 PSWAP 代币，然后将其销毁。起初，90% 的PSWAP 代币销毁被重新分配给流动性提供者，但随着时间的推移，这个百分比将在 4 年后降至 35%。"
+            "first": "PSWAP 是由社区治理通过对其发布进行投票而创建的。它是一种实用和治理代币，用于奖励 {AppName} 上的流动性提供者。与大多数其他奖励代币不同的是，PSWAP 会随着交易而被销毁，并且供应量会随着时间的推移而减少。",
+            "second": "{AppName} DEX 上每次兑换的{percent}% 费用用于回购 PSWAP 代币，然后将其销毁。起初，90% 的PSWAP 代币销毁被重新分配给流动性提供者，但随着时间的推移，这个百分比将在 4 年后降至 35%。"
         },
         "links": {
             "first": {
                 "title": "成为SORA验证人",
-                "desc": "保护 {Sora} 网络和 {Polkaswap} 等去中心化应用程序的未来，并通过成为 {Sora} 验证者一路获得奖励。"
+                "desc": "保护 {Sora} 网络和 {AppName} 等去中心化应用程序的未来，并通过成为 {Sora} 验证者一路获得奖励。"
             },
             "second": {
                 "title": "连接一条链到 {Sora}",
-                "desc": "使用 {Hashi} 桥接协议将更多链连接到 {Sora} 和 {Polkaswap}，从而发展去中心化的世界经济。"
+                "desc": "使用 {Hashi} 桥接协议将更多链连接到 {Sora} 和 {AppName}，从而发展去中心化的世界经济。"
             }
         },
-        "network": "{appName}建立在SORA网络上，专注于互操作性，将加密货币生态系统的其他部分连接到{Polkadot}。"
+        "network": "{AppName}建立在SORA网络上，专注于互操作性，将加密货币生态系统的其他部分连接到{Polkadot}。"
     },
     "exchange": {
         "Swap": "兑换",
@@ -641,7 +641,7 @@
         "expectedAddress": "在{Metamask}中预期的地址",
         "title": "转接桥交易",
         "expectedMetaMaskAddress": "{Metamask} 中的预期地址：",
-        "allowToken": "允许 {appName} 使用您的{tokenSymbol}",
+        "allowToken": "允许 {AppName} 使用您的{tokenSymbol}",
         "approveToken": "请注意，只需要批准一次代币。如果您的扩展程序中有多个代币批准请求，请确保仅确认最后一个并拒绝其余请求。",
         "blocksLeft": "{count}个区块等待确认..."
     },
@@ -828,8 +828,8 @@
         "name": "名字",
         "assetId": "资产 ID"
     },
-    "memorandum": "{Polkaswap} 备忘录和服务条款",
-    "FAQ": "{Polkaswap} 常见问题",
+    "memorandum": "{AppName} 备忘录和服务条款",
+    "FAQ": "{AppName} 常见问题",
     "connectedAccount": "已连接的账户",
     "selectNodeConnected": "已连接到： {chain}",
     "moonpayText": "MoonPay",
@@ -838,11 +838,11 @@
         "notifications": {
             "success": {
                 "title": "代币购买",
-                "text": "代币购买完成。一旦在连接的以太坊账户中收到代币，{Hashi} 桥接交易将自动开始。关闭此窗口并继续使用 {Polkaswap} 是安全的。准备好后会有关于转接桥交易的通知。"
+                "text": "代币购买完成。一旦在连接的以太坊账户中收到代币，{Hashi} 桥接交易将自动开始。关闭此窗口并继续使用 {AppName} 是安全的。准备好后会有关于转接桥交易的通知。"
             },
             "supportError": {
                 "title": "不支持的代币",
-                "text": "很遗憾，{Polkaswap} 中的 {Hashi} 桥还不支持通过 @:moonpayText 购买的代币。通常只有支持的代币才能通过 {Polkaswap} 中的 MoonPay 购买，因此一定是哪里出了问题。请不要犹豫，在<a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{Polkaswap}\"> {Polkaswap} 电报群<\/a>里联系我们让社区知晓您的此次案例 。"
+                "text": "很遗憾，{AppName} 中的 {Hashi} 桥还不支持通过 @:moonpayText 购买的代币。通常只有支持的代币才能通过 {AppName} 中的 MoonPay 购买，因此一定是哪里出了问题。请不要犹豫，在<a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> {AppName} 电报群<\/a>里联系我们让社区知晓您的此次案例 。"
             },
             "feeError": {
                 "title": "没有足够的 ETH 用于转接桥交易",
@@ -936,7 +936,7 @@
             "text": "确认",
             "bond": "确认绑定",
             "unbond": "确认解绑",
-            "inviteTitle": "您已被邀请加入 {Polkaswap}",
+            "inviteTitle": "您已被邀请加入 {AppName}",
             "inviteDescription": "对于每笔交易，您的推荐人将收取 10% 的费用，您无需支付任何额外费用。",
             "signInvitation": "批准",
             "freeOfCharge": "此活动是免费的",
@@ -951,7 +951,7 @@
             "label": "邀请链接或代码",
             "approve": "批准",
             "approved": "已批准",
-            "description": "您可以被推荐到{Polkaswap}， <br\/>输入推荐人的链接或者邀请码",
+            "description": "您可以被推荐到{AppName}， <br\/>输入推荐人的链接或者邀请码",
             "referredBy": "您已被 {referrer}推荐",
             "info": "当您支付交易费用时， <br\/> 10% 将归您的推荐人",
             "referredLablel": "推荐地址"
@@ -1065,7 +1065,7 @@
         "info": "我们只会向您发送有关您钱包的相关更新，例如：资产余额变化",
         "button": "启用通知",
         "agree": "是的我明白",
-        "notificationBlocked": "要接收有关{appName}的通知，请在浏览器的本机设置中允许通知",
+        "notificationBlocked": "要接收有关{AppName}的通知，请在浏览器的本机设置中允许通知",
         "pointer": "按“允许”打开通知"
     },
     "assetDeposit": "资产余额已存入",
@@ -1082,7 +1082,7 @@
     },
     "desktop": {
         "welcome": {
-            "header": "欢迎来到 {Polkaswap}！",
+            "header": "欢迎来到 {AppName}！",
             "headline": "让我们设置您的帐户",
             "text": "创建您的 {Sora} 网络帐户或使用助记词或 .json 导入登录旧帐户。这使您可以安全地签署交易并管理 {Sora} 网络中的资产。",
             "createAccount": "创建一个帐户",
