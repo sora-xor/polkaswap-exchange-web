@@ -128,7 +128,7 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { getter, action, mutation, state } from '@/store/decorators';
-import { getMaxValue, isMaxButtonAvailable, isXorAccountAsset, hasInsufficientBalance, getAssetBalance } from '@/utils';
+import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBalance } from '@/utils';
 import type { LiquidityParams } from '@/store/pool/types';
 import type { FocusedField } from '@/store/addLiquidity/types';
 import type { PricesPayload } from '@/store/prices/types';
@@ -262,18 +262,14 @@ export default class AddLiquidity extends Mixins(
   }
 
   get isInsufficientBalance(): boolean {
-    if (!(this.firstToken && this.secondToken)) return false;
-
     if (this.isLoggedIn && this.areTokensSelected) {
-      if (isXorAccountAsset(this.firstToken) || isXorAccountAsset(this.secondToken)) {
-        if (hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.networkFee)) {
-          this.insufficientBalanceTokenSymbol = this.firstToken.symbol;
-          return true;
-        }
-        if (hasInsufficientBalance(this.secondToken, this.secondTokenValue, this.networkFee)) {
-          this.insufficientBalanceTokenSymbol = this.secondToken.symbol;
-          return true;
-        }
+      if (hasInsufficientBalance(this.firstToken as AccountAsset, this.firstTokenValue, this.networkFee)) {
+        this.insufficientBalanceTokenSymbol = (this.firstToken as AccountAsset).symbol;
+        return true;
+      }
+      if (hasInsufficientBalance(this.secondToken as AccountAsset, this.secondTokenValue, this.networkFee)) {
+        this.insufficientBalanceTokenSymbol = (this.secondToken as AccountAsset).symbol;
+        return true;
       }
     }
     return false;
