@@ -12,7 +12,7 @@ export default {
   ...walletEn,
   // {AppName} project keys
   appName: '{AppName}',
-  hashiBridgeText: '{{Hashi}} bridge',
+  hashiBridgeText: '{Hashi} bridge',
   moonpayText: 'MoonPay',
   changeNetworkText: 'Change network in {Metamask}',
   transactionText: 'transaction | transactions',
@@ -261,7 +261,7 @@ export default {
     trading: {
       title: 'Faster Trading',
       first:
-        '{AppName} is a non-custodial, cross-chain AMM DEX protocol for swapping tokens based on {Polkadot} and {Kusama} relay chains, {Polkadot} and {{Kusama}} parachains, and blockchains directly connected via bridges.',
+        '{AppName} is a non-custodial, cross-chain AMM DEX protocol for swapping tokens based on {Polkadot} and {Kusama} relay chains, {Polkadot} and {Kusama} parachains, and blockchains directly connected via bridges.',
       second: '{AppName} removes trusted intermediaries and provides the opportunity for faster trading',
       third: '{AppName} is a community project and devs collaborate on the open source code using the',
     },
@@ -296,7 +296,7 @@ export default {
       },
       second: {
         title: 'Connect a Chain to {Sora}',
-        desc: 'Grow the decentralized world economy by connecting more chains to {Sora} and {AppName} using the {{Hashi}} bridge protocol.',
+        desc: 'Grow the decentralized world economy by connecting more chains to {Sora} and {AppName} using the {Hashi} bridge protocol.',
       },
     },
     network:
@@ -355,7 +355,7 @@ export default {
     strategicBonusApy: 'Strategic Bonus APY',
   },
   bridge: {
-    title: '{{Hashi}} Bridge',
+    title: '{Hashi} Bridge',
     info: 'Convert tokens between the {Sora} and {Ethereum} networks.',
     balance: 'Balance',
     connectWallet: '@:connectWalletText',
@@ -637,15 +637,15 @@ export default {
     notifications: {
       [MoonpayNotifications.Success]: {
         title: 'Tokens purchased',
-        text: 'Token purchase is finished. The {{Hashi}} bridge transaction will start automatically as soon as the tokens have been received in the connected {Ethereum} account. It is safe to close this window and continue using {AppName}. There will be a notification about the bridge transaction when ready.',
+        text: 'Token purchase is finished. The {Hashi} bridge transaction will start automatically as soon as the tokens have been received in the connected {Ethereum} account. It is safe to close this window and continue using {AppName}. There will be a notification about the bridge transaction when ready.',
       },
       [MoonpayNotifications.SupportError]: {
         title: 'Token not supported',
-        text: 'Unfortunately the token purchased via @:moonpayText is not yet supported by the {{Hashi}} bridge in {AppName}. Normally only the supported tokens should be available for purchase via @:moonpayText in {AppName}, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class="link" href="https://t.me/polkaswap" target="_blank" rel="nofollow noopener" title="{AppName}">{AppName} Telegram group</a>',
+        text: 'Unfortunately the token purchased via @:moonpayText is not yet supported by the {Hashi} bridge in {AppName}. Normally only the supported tokens should be available for purchase via @:moonpayText in {AppName}, hence something must have gone wrong somewhere. Please don’t hesitate to let the community know about this case in the <a class="link" href="https://t.me/polkaswap" target="_blank" rel="nofollow noopener" title="{AppName}">{AppName} Telegram group</a>',
       },
       [MoonpayNotifications.FeeError]: {
         title: 'Not enough ETH for the bridge tx',
-        text: 'Unfortunately the {{Hashi}} bridge transaction has failed due to there not being enough ETH to pay for the {Ethereum} network transation fees. Please add more ETH and try again.',
+        text: 'Unfortunately the {Hashi} bridge transaction has failed due to there not being enough ETH to pay for the {Ethereum} network transation fees. Please add more ETH and try again.',
       },
       [MoonpayNotifications.TransactionError]: {
         title: 'Transaction has failed',
@@ -653,11 +653,11 @@ export default {
       },
       [MoonpayNotifications.AmountError]: {
         title: 'Insufficient balance',
-        text: 'Unfortunately the {{Hashi}} bridge transaction has failed due to there not being enough tokens for transaction. Please check your {Ethereum} account balance and try again.',
+        text: 'Unfortunately the {Hashi} bridge transaction has failed due to there not being enough tokens for transaction. Please check your {Ethereum} account balance and try again.',
       },
       [MoonpayNotifications.AccountAddressError]: {
         title: 'Wrong {Ethereum} account',
-        text: 'Unfortunately, the {{Hashi}} bridge transaction failed due to the recipient address of the tokens in the @:moonpayText order does not match your current {Ethereum} account address. Please switch {Ethereum} account in extension and try again.',
+        text: 'Unfortunately, the {Hashi} bridge transaction failed due to the recipient address of the tokens in the @:moonpayText order does not match your current {Ethereum} account address. Please switch {Ethereum} account in extension and try again.',
       },
     },
     buttons: {
@@ -748,7 +748,7 @@ export default {
   mobilePopup: {
     header: 'Download {Sora} Wallet with {polkaswapHighlight} features',
     sideMenu: 'Get {Sora} Wallet',
-    info: 'Swap tokens from different networks - {Sora}, {Ethereum}, {Polkadot}, {{Kusama}}. Provide liquidity pool and earn % from exchange fees.',
+    info: 'Swap tokens from different networks - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Provide liquidity pool and earn % from exchange fees.',
   },
   demeterFarming: {
     staking: {
