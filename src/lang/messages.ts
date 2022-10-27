@@ -5,7 +5,7 @@ import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 
 import { PageNames, RewardsTabsItems } from '../consts';
 import { EvmNetworkType } from '../utils/ethers-util';
-import { MoonpayNotifications } from '@/components/Moonpay/consts';
+import { MoonpayNotifications } from '../components/Moonpay/consts';
 
 export default {
   // Wallet project keys
