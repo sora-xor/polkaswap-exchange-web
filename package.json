@@ -58,7 +58,7 @@
     "@vue/cli-plugin-unit-jest": "^5.0.0-beta.4",
     "@vue/cli-plugin-vuex": "^5.0.0-beta.4",
     "@vue/cli-service": "^5.0.0-beta.4",
-    "@vue/composition-api": "^1.7.0",
+    "@vue/composition-api": "^1.7.1",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-standard": "^6.1.0",
     "@vue/eslint-config-typescript": "^8.0.0",
@@ -86,7 +86,7 @@
     "vue-cli-plugin-electron-builder": "^3.0.0-alpha.3",
     "vue-cli-plugin-test-attrs": "^0.1.5",
     "vue-svg-loader": "^0.16.0",
-    "vue-template-compiler": "^2.6.14"
+    "vue-template-compiler": "^2.7.13"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
