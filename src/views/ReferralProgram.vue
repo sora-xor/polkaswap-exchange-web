@@ -453,7 +453,7 @@ export default class ReferralProgram extends Mixins(
     .el-pagination {
       display: flex;
       justify-content: space-between;
-      padding: #{$inner-spacing-mini / 2} $inner-spacing-medium 0;
+      padding: $inner-spacing-tiny $inner-spacing-medium 0;
       &__total {
         margin-right: auto;
         padding-left: 0;
@@ -670,7 +670,7 @@ export default class ReferralProgram extends Mixins(
     .el-button {
       margin-top: $inner-spacing-medium;
       &.s-secondary {
-        width: calc(50% - #{$inner-spacing-small / 2});
+        width: calc(50% - (#{$inner-spacing-small} / 2));
       }
       &.s-primary {
         width: 100%;
