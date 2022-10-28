@@ -4,6 +4,11 @@ module.exports = {
   publicPath: './',
   configureWebpack: (config) => {
     config.plugins.push(new NodePolyfillPlugin());
+    config.stats = {
+      preset: 'verbose',
+      loggingTrace: true,
+      moduleTrace: true,
+    };
     // bundle all dependencies from node_modules to vendors
     config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
     config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
@@ -81,4 +86,9 @@ module.exports = {
   },
   productionSourceMap: false,
   runtimeCompiler: true,
+  devServer: {
+    client: {
+      logging: 'log',
+    },
+  }
 };
