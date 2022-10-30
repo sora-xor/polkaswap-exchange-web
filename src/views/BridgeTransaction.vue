@@ -952,13 +952,13 @@ $network-title-max-width: 250px;
     color: var(--s-color-status-error);
     display: flex;
     flex-flow: column nowrap;
-    padding: 0 $inner-spacing-mini / 2;
+    padding: 0 $inner-spacing-tiny;
     margin-bottom: $inner-spacing-medium;
     line-height: var(--s-line-height-mini);
     text-align: left;
 
     &__title {
-      margin-bottom: $inner-spacing-mini / 2;
+      margin-bottom: $inner-spacing-tiny;
       text-transform: uppercase;
       font-weight: 300;
     }
@@ -1000,11 +1000,11 @@ $network-title-max-width: 250px;
     line-height: var(--s-line-height-medium);
     .s-icon--network {
       font-size: var(--s-heading4-font-size);
-      margin-left: $inner-spacing-mini / 4;
+      margin-left: calc(#{$inner-spacing-mini} / 4);
     }
     &-separator {
-      margin-right: $inner-spacing-mini / 2;
-      margin-left: $inner-spacing-mini / 2;
+      margin-right: $inner-spacing-tiny;
+      margin-left: $inner-spacing-tiny;
       font-size: var(--s-heading3-font-size);
       font-weight: 300;
     }

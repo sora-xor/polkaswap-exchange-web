@@ -531,7 +531,7 @@ export default class Rewards extends Mixins(
     font-size: var(--s-font-size-mini);
     line-height: var(--s-line-height-big);
     margin-top: $inner-spacing-small;
-    padding: 0 $inner-spacing-mini / 2;
+    padding: 0 $inner-spacing-tiny;
   }
 
   &-fee {

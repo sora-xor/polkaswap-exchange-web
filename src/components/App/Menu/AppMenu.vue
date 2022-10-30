@@ -250,7 +250,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
       .app-sidebar {
         width: 50%;
-        min-width: $breakpoint_mobile / 2;
+        min-width: calc(#{$breakpoint_mobile} / 2);
         background-color: var(--s-color-utility-body);
         padding: $inner-spacing-mini $inner-spacing-medium;
         filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));

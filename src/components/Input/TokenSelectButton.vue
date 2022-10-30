@@ -85,16 +85,16 @@ $baseClass: '.token-select-button';
 
 #{$baseClass} {
   &__logo {
-    margin-right: $inner-spacing-mini / 2;
+    margin-right: $inner-spacing-tiny;
   }
 
   &__text {
-    margin: 0 $inner-spacing-mini / 2;
+    margin: 0 $inner-spacing-tiny;
     font-weight: 800 !important;
   }
 
   &__icon {
-    margin-left: $inner-spacing-mini / 2;
+    margin-left: $inner-spacing-tiny;
     background-color: var(--s-color-base-on-accent);
     color: var(--s-color-base-content-tertiary) !important;
     border-radius: var(--s-border-radius-medium);

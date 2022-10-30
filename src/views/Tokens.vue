@@ -500,7 +500,7 @@ $fixed-column-width: 280px;
       & > th {
         background: var(--s-color-utility-surface);
         .cell {
-          padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+          padding: $inner-spacing-tiny $inner-spacing-mini;
         }
       }
     }
@@ -665,7 +665,7 @@ $cell-logo-width: 32px;
       line-height: var(--s-line-height-small);
 
       & > span {
-        margin-right: $inner-spacing-mini / 2;
+        margin-right: $inner-spacing-tiny;
         white-space: nowrap;
       }
     }

@@ -68,7 +68,7 @@ $tooltip-placements: 'left', 'right';
     margin-right: auto;
 
     &-icon {
-      margin-left: $inner-spacing-mini / 2;
+      margin-left: $inner-spacing-tiny;
       color: var(--s-color-base-content-tertiary);
     }
   }

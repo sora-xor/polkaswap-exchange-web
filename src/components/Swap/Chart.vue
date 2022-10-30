@@ -931,7 +931,7 @@ $skeleton-label-width: 34px;
 .charts {
   &-price {
     display: flex;
-    margin-bottom: $inner-spacing-mini / 2;
+    margin-bottom: $inner-spacing-tiny;
     font-weight: 800;
     font-size: var(--s-heading3-font-size);
     line-height: var(--s-line-height-extra-small);
@@ -998,7 +998,7 @@ $skeleton-label-width: 34px;
 }
 
 .charts-skeleton {
-  $margin-right: #{$inner-spacing-mini / 2};
+  $margin-right: #{$inner-spacing-tiny};
   $skeleton-label-width-mobile: calc((100% - #{$margin-right} * 10) / 11);
   $skeleton-spacing: 18px;
   position: relative;
