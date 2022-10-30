@@ -37,6 +37,7 @@
           active-hover-color="transparent"
         >
           <sidebar-item-content
+            v-if="false"
             icon="star-16"
             title="Vote on Survey!"
             href="https://soramitsu.typeform.com/Polkaswap"
