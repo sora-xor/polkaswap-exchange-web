@@ -67,7 +67,7 @@ export default {
     [PageNames.Support]: 'Support',
     [PageNames.Wallet]: 'Wallet',
     [PageNames.Rewards]: 'Rewards',
-    [PageNames.Tokens]: 'Tokens',
+    [PageNames.ExploreTokens]: 'Tokens',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.PageNotFound]: 'Page Not Found',
@@ -82,7 +82,7 @@ export default {
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
-    [PageNames.Tokens]: 'Tokens',
+    [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
   },
   headerMenu: {

@@ -122,6 +122,19 @@ const routes: Array<RouteConfig> = [
     ],
   },
   {
+    path: '/explore',
+    name: PageNames.ExploreContainer,
+    component: lazyView(PageNames.ExploreContainer),
+    redirect: { name: PageNames.ExploreTokens },
+    children: [
+      {
+        path: 'tokens',
+        name: PageNames.ExploreTokens,
+        component: lazyView(PageNames.ExploreTokens),
+      },
+    ],
+  },
+  {
     path: '/rewards',
     name: PageNames.Rewards,
     component: lazyView(PageNames.RewardsTabs),
@@ -156,11 +169,6 @@ const routes: Array<RouteConfig> = [
         },
       },
     ],
-  },
-  {
-    path: '/tokens',
-    name: PageNames.Tokens,
-    component: lazyView(PageNames.Tokens),
   },
   {
     path: '/moonpay-history',

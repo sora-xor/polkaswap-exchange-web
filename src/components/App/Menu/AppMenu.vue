@@ -93,6 +93,7 @@ import {
   BridgeChildPages,
   RewardsChildPages,
   StakingChildPages,
+  ExploreChildPages,
   SidebarMenuGroups,
   FaucetLink,
   Components,
@@ -134,6 +135,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
     if (StakingChildPages.includes(router.currentRoute.name as any)) {
       return PageNames.StakingContainer;
+    }
+    if (ExploreChildPages.includes(router.currentRoute.name as PageNames)) {
+      return PageNames.ExploreContainer;
     }
     return router.currentRoute.name as string;
   }

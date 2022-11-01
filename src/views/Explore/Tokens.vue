@@ -1,6 +1,6 @@
 <template>
   <div :class="containerClasses" v-loading="parentLoading || loading">
-    <generic-page-header :title="t('pageTitle.Tokens')" class="page-header-title--tokens">
+    <generic-page-header :title="pageTitle" class="page-header-title--tokens">
       <search-input
         v-model="query"
         :placeholder="t('selectToken.searchPlaceholder')"
@@ -167,7 +167,7 @@ import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
-import { Components } from '@/consts';
+import { Components, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
 import { calcPriceChange } from '@/utils';
 import { getter, action } from '@/store/decorators';
@@ -271,6 +271,10 @@ export default class Tokens extends Mixins(
   property = '';
 
   tokensData: Record<string, TokenData> = {};
+
+  get pageTitle(): string {
+    return this.t(`pageTitle.${PageNames.ExploreTokens}`);
+  }
 
   get hasTokensData(): boolean {
     return Object.keys(this.tokensData).length !== 0;

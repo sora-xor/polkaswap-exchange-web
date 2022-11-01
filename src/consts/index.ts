@@ -133,6 +133,8 @@ export enum PageNames {
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
   StakingContainer = 'StakingContainer',
+  ExploreContainer = 'Explore/Container',
+  ExploreTokens = 'Explore/Tokens',
 }
 
 export enum Components {
@@ -250,7 +252,7 @@ const AccountMenu: Array<SidebarMenuItem> = [
 const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
     icon: 'various-bone-24',
-    title: PageNames.Tokens,
+    title: PageNames.ExploreContainer,
   },
   {
     icon: 'file-file-text-24',
@@ -315,6 +317,7 @@ export const RewardsChildPages = [
 ];
 
 export const StakingChildPages = [DemeterPageNames.Staking];
+export const ExploreChildPages = [PageNames.ExploreTokens];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',
