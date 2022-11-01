@@ -6,7 +6,6 @@ import { ZeroStringValue } from '@/consts';
 import type { RegisterAssetWithExternalBalance } from './types';
 
 const DISABLED_ASSETS_FOR_BRIDGE = [
-  '0x0083a6b3fbc6edae06f115c8953ddd7cbfba0b74579d6ea190f96853073b76f4', // USDT
   '0x000974185b33df1db9beae5df570d68b8db8b517bb3d5c509eea906a81414c91', // OMG
   '0x00e16b53b05b8a7378f8f3080bef710634f387552b1d1916edc578bda89d49e5', // BAT
   '0x009749fbd2661866f0151e367365b7c5cc4b2c90070b4f745d0bb84f2ffb3b33', // HT

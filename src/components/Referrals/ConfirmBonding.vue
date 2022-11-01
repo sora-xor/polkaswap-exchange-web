@@ -16,7 +16,7 @@
     <s-divider />
     <info-line
       :label="t('referralProgram.networkFee')"
-      :label-tooltip="t('referralProgram.networkFeeTooltip')"
+      :label-tooltip="t('networkFeeTooltipText')"
       :value="formattedNetworkFee"
       :asset-symbol="xorSymbol"
       :fiat-value="getFiatAmountByCodecString(networkFee)"

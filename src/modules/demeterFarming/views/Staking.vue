@@ -123,7 +123,7 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
 
     .token-logo {
       margin-right: $inner-spacing-medium;
-      margin-top: $inner-spacing-mini / 2;
+      margin-top: $inner-spacing-tiny;
     }
   }
 }

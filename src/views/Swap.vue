@@ -179,6 +179,7 @@ export default class Swap extends Mixins(
 ) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.swap.dexQuoteData private dexQuoteData!: Record<DexId, DexQuoteData>;
+  @state.swap.enabledAssets private enabledAssets!: PrimaryMarketsEnabledAssets;
   @state.swap.isExchangeB isExchangeB!: boolean;
   @state.swap.fromValue fromValue!: string;
   @state.swap.toValue toValue!: string;
@@ -473,9 +474,12 @@ export default class Swap extends Mixins(
     this.enabledAssetsSubscription = null;
   }
 
-  private subscribeOnEnabledAssets(): void {
+  private subscribeOnEnabledAssetsAndSwapReserves(): void {
     this.cleanEnabledAssetsSubscription();
-    this.enabledAssetsSubscription = api.swap.subscribeOnPrimaryMarketsEnabledAssets().subscribe(this.setEnabledAssets);
+    this.enabledAssetsSubscription = api.swap.subscribeOnPrimaryMarketsEnabledAssets().subscribe((enabledAssets) => {
+      this.setEnabledAssets(enabledAssets);
+      this.subscribeOnSwapReserves();
+    });
   }
 
   private cleanSwapReservesSubscription(): void {
@@ -492,6 +496,7 @@ export default class Swap extends Mixins(
       .subscribeOnAllDexesReserves(
         (this.tokenFrom as AccountAsset).address,
         (this.tokenTo as AccountAsset).address,
+        this.enabledAssets,
         this.liquiditySource as LiquiditySourceTypes
       )
       .subscribe((results) => {
@@ -584,8 +589,7 @@ export default class Swap extends Mixins(
 
   private enableSwapSubscriptions(): void {
     this.updateBalanceSubscriptions();
-    this.subscribeOnEnabledAssets();
-    this.subscribeOnSwapReserves();
+    this.subscribeOnEnabledAssetsAndSwapReserves();
   }
 
   private resetSwapSubscriptions(): void {

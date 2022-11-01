@@ -202,7 +202,7 @@ export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
   text-transform: uppercase;
 
   &-icon {
-    margin-left: $inner-spacing-mini / 2;
+    margin-left: $inner-spacing-tiny;
   }
 }
 </style>

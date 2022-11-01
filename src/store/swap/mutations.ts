@@ -55,7 +55,7 @@ const mutations = defineMutations<SwapState>()({
     state.liquidityProviderFee = value;
   },
   setPrimaryMarketsEnabledAssets(state, assets: PrimaryMarketsEnabledAssets): void {
-    state.enabledAssets = { ...assets };
+    state.enabledAssets = Object.freeze({ ...assets });
   },
   setRewards(state, rewards: Array<LPRewardsInfo>): void {
     state.rewards = [...rewards];
@@ -71,11 +71,11 @@ const mutations = defineMutations<SwapState>()({
   ): void {
     state.dexQuoteData = {
       ...state.dexQuoteData,
-      [dexId]: {
+      [dexId]: Object.freeze({
         payload,
         paths,
         pairLiquiditySources: liquiditySources,
-      },
+      }),
     };
   },
   selectDexId(state, dexId: number) {

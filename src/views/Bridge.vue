@@ -491,7 +491,7 @@ export default class Bridge extends Mixins(
   }
 
   getCopyTooltip(isSoraNetwork = false): string {
-    return this.copyTooltip(this.t(`bridge.${isSoraNetwork ? 'soraAddress' : 'ethereumAddress'}`));
+    return this.copyTooltip(isSoraNetwork ? this.t('bridge.soraAddress') : this.t('bridge.ethereumAddress'));
   }
 
   async handleSwitchItems(): Promise<void> {
