@@ -1,9 +1,15 @@
+const { defineConfig } = require('@vue/cli-service');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
-module.exports = {
+module.exports = defineConfig({
   publicPath: './',
   configureWebpack: (config) => {
     config.plugins.push(new NodePolyfillPlugin());
+    config.stats = {
+      preset: 'verbose',
+      loggingTrace: true,
+      moduleTrace: true,
+    };
     // bundle all dependencies from node_modules to vendors
     config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
     config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
@@ -28,40 +34,40 @@ module.exports = {
     }
   },
   /* eslint-disable */
+  /* prettier-ignore-start */
   chainWebpack: (config) => {
     const svgRule = config.module.rule('svg');
     svgRule.uses.clear();
     config.module
       .rule('svg')
-      .oneOf('inline-svg')
-      .resourceQuery(/inline/)
-      .use('babel')
-      .loader('babel-loader')
-      .end()
-      .use('vue-svg-loader')
-      .loader('vue-svg-loader')
-      .end()
-      .end()
-      .oneOf('file')
-      .use('file-loader')
-      .loader('file-loader')
-      .end()
-      .end();
+        .oneOf('inline-svg')
+          .resourceQuery(/inline/)
+          .use('babel')
+            .loader('babel-loader')
+            .end()
+          .use('vue-svg-loader')
+            .loader('vue-svg-loader')
+            .end()
+          .end()
+        .oneOf('file')
+          .type('asset/resource')
+          .end();
 
     // https://webpack.js.org/guides/asset-modules/
     const imagesRule = config.module.rule('images');
     imagesRule.uses.clear();
     config.module
       .rule('images')
-      .oneOf('asset-inline')
-      .resourceQuery(/inline/)
-      .type('asset/inline')
-      .end()
-      .oneOf('asset')
-      .type('asset')
-      .end();
+        .oneOf('asset-inline')
+          .resourceQuery(/inline/)
+          .type('asset/inline')
+          .end()
+        .oneOf('asset')
+          .type('asset')
+          .end();
   },
   /* eslint-enable */
+  /* prettier-ignore-end */
   css: {
     loaderOptions: {
       sass: {
@@ -81,4 +87,9 @@ module.exports = {
   },
   productionSourceMap: false,
   runtimeCompiler: true,
-};
+  devServer: {
+    client: {
+      logging: 'log',
+    },
+  },
+});

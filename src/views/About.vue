@@ -20,7 +20,9 @@
         style="width: 75%; height: auto; margin-top: 120px; height: 343px"
       />
       <p class="gradient trading">{{ t('about.trading.title') }}</p>
-      <p class="text" style="margin-top: 15px">{{ t('about.trading.first') }}</p>
+      <p class="text" style="margin-top: 15px">
+        {{ t('about.trading.first') }}
+      </p>
       <s-image :src="images.about02_1" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
       <p class="text">{{ t('about.trading.second') }}</p>
       <s-image :src="images.about02_2" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
@@ -77,7 +79,9 @@
       <p class="gradient pswap">{{ t('about.pswap.title') }}</p>
       <p class="text">{{ t('about.pswap.first') }}</p>
       <s-image :src="images.about05_1" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
-      <p class="text" style="margin-bottom: 120px">{{ t('about.pswap.second', { percent: feePercent }) }}</p>
+      <p class="text" style="margin-bottom: 120px">
+        {{ t('about.pswap.second', { percent: feePercent }) }}
+      </p>
 
       <div class="about-video" style="margin-bottom: 120px">
         <a
@@ -106,7 +110,10 @@
             class="unselectable icon"
             style="height: 49px"
           />
-          <span class="title">{{ t('about.links.first.title') }}<img :src="images.about07_3" class="link" /></span>
+          <span class="title">
+            {{ t('about.links.first.title') }}
+            <img :src="images.about07_3" class="link" />
+          </span>
           <p class="text">{{ t('about.links.first.desc') }}</p>
           <a class="link-mask" href="https://sora.org/validator" target="_blank" rel="nofollow noopener" />
         </div>
@@ -119,14 +126,21 @@
             class="unselectable icon"
             style="height: 49px"
           />
-          <span class="title">{{ t('about.links.second.title') }}<img :src="images.about07_3" class="link" /></span>
-          <p class="text">{{ t('about.links.second.desc') }}</p>
+          <span class="title">
+            {{ t('about.links.second.title') }}
+            <img :src="images.about07_3" class="link" />
+          </span>
+          <p class="text">
+            {{ t('about.links.second.desc') }}
+          </p>
           <a class="link-mask" href="https://sora.org" target="_blank" rel="nofollow noopener" />
         </div>
       </div>
       <div class="about-network">
         <s-image :src="images.about08" lazy fit="fill" draggable="false" class="unselectable network-img" />
-        <p class="text">{{ t('about.network') }}</p>
+        <p class="text">
+          {{ t('about.network') }}
+        </p>
       </div>
     </div>
     <footer class="app-footer">
@@ -144,7 +158,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import Web3Logo from '@/components/logo/Web3.vue';
-
+import { app } from '@/consts';
 import { getter } from '@/store/decorators';
 
 @Component({

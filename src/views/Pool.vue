@@ -206,7 +206,7 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
 
     .pair-logo {
       margin-right: $inner-spacing-medium;
-      margin-top: $inner-spacing-mini / 2;
+      margin-top: $inner-spacing-tiny;
     }
   }
 }

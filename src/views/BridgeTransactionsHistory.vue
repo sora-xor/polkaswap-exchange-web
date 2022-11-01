@@ -402,7 +402,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     }
 
     &-text + &-icon {
-      margin-left: $inner-spacing-mini / 2;
+      margin-left: $inner-spacing-tiny;
     }
   }
 }

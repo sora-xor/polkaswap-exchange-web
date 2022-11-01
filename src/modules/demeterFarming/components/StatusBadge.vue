@@ -69,7 +69,7 @@ $status-badge-width: 140px;
   width: $status-badge-width;
   height: var(--s-size-small);
 
-  padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+  padding: $inner-spacing-tiny $inner-spacing-mini;
   border-radius: calc(var(--s-border-radius-small) / 2);
 
   box-shadow: var(--s-shadow-element-pressed);

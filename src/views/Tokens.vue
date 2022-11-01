@@ -31,7 +31,7 @@
           <div class="tokens-item-info tokens-item-info--body">
             <div class="tokens-item-name">{{ row.name }}</div>
             <div class="tokens-item-address">
-              <span>{{ t('soraText') }}:</span>&nbsp;
+              <span>{{ TranslationConsts.Sora }}:</span>&nbsp;
               <token-address
                 class="tokens-item-address__value"
                 :show-name="false"
@@ -41,7 +41,7 @@
               />
             </div>
             <div v-if="row.externalAddress" class="tokens-item-address">
-              <span>{{ t('ethereumText') }}:</span>&nbsp;
+              <span>{{ TranslationConsts.Ethereum }}:</span>&nbsp;
               <token-address
                 class="tokens-item-address__value"
                 :show-name="false"
@@ -500,7 +500,7 @@ $fixed-column-width: 280px;
       & > th {
         background: var(--s-color-utility-surface);
         .cell {
-          padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+          padding: $inner-spacing-tiny $inner-spacing-mini;
         }
       }
     }
@@ -665,7 +665,7 @@ $cell-logo-width: 32px;
       line-height: var(--s-line-height-small);
 
       & > span {
-        margin-right: $inner-spacing-mini / 2;
+        margin-right: $inner-spacing-tiny;
         white-space: nowrap;
       }
     }

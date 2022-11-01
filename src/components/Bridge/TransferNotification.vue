@@ -117,7 +117,7 @@ export default class TransferNotification extends Mixins(TranslationMixin) {
     margin-left: $inner-spacing-mini;
 
     .metamask-icon {
-      margin-left: -$inner-spacing-mini / 2;
+      margin-left: -$inner-spacing-tiny;
     }
   }
 }
