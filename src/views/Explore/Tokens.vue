@@ -1,16 +1,13 @@
 <template>
-  <div :class="containerClasses" v-loading="parentLoading || loading">
-    <generic-page-header :title="pageTitle" class="page-header-title--tokens">
-      <search-input
-        v-model="query"
-        :placeholder="t('selectToken.searchPlaceholder')"
-        autofocus
-        @clear="handleResetSearch"
-        class="tokens-table-search"
-      />
-    </generic-page-header>
-
-    <s-table ref="table" :data="tableItems" :highlight-current-row="false" size="small" class="tokens-table">
+  <div>
+    <s-table
+      ref="table"
+      v-loading="loading"
+      :data="tableItems"
+      :highlight-current-row="false"
+      size="small"
+      class="tokens-table"
+    >
       <!-- Index -->
       <s-table-column width="280" label="#" fixed-position="left">
         <template #header>
@@ -160,7 +157,7 @@
 import Vue from 'vue';
 import { gql } from '@urql/core';
 import { FPNumber } from '@sora-substrate/util';
-import { Component, Mixins, Ref } from 'vue-property-decorator';
+import { Component, Mixins, Ref, Prop } from 'vue-property-decorator';
 import { mixins, components, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar';
@@ -260,6 +257,8 @@ export default class Tokens extends Mixins(
 ) {
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
+  @Prop({ default: '', type: String }) readonly exploreQuery!: string;
+
   @Ref('table') readonly tableComponent!: any;
 
   @getter.assets.whitelistAssets private items!: Array<Asset>;
@@ -278,18 +277,6 @@ export default class Tokens extends Mixins(
 
   get hasTokensData(): boolean {
     return Object.keys(this.tokensData).length !== 0;
-  }
-
-  get containerClasses(): Array<string> {
-    const baseClass = 'container';
-    const tokensContainerClass = `${baseClass}--tokens`;
-    const cssClasses: Array<string> = [baseClass, tokensContainerClass];
-
-    if (!this.hasTokensData) {
-      cssClasses.push(`${tokensContainerClass}-hidden`);
-    }
-
-    return cssClasses;
   }
 
   get isDefaultSort(): boolean {
@@ -329,7 +316,7 @@ export default class Tokens extends Mixins(
   }
 
   get filteredItems(): TableItem[] {
-    return this.filterAssetsByQuery(this.preparedItems)(this.searchQuery) as TableItem[];
+    return this.filterAssetsByQuery(this.preparedItems)(this.exploreQuery) as TableItem[];
   }
 
   get sortedItems(): TableItem[] {
@@ -575,35 +562,11 @@ $fixed-column-width: 280px;
     margin: auto;
   }
 }
-
-.tokens-table-search {
-  .s-button--clear:focus {
-    outline: none !important;
-    i {
-      @include focus-outline($inner: true, $borderRadius: 50%);
-    }
-  }
-}
 </style>
 
 <style lang="scss" scoped>
-$search-input-width: 382px;
-$container-width: 75vw;
-$container-max-width: 952px;
-$container-min-width: $breakpoint_mobile;
 $cell-index-width: 40px;
 $cell-logo-width: 32px;
-
-.container--tokens {
-  width: $container-width;
-  max-width: $container-max-width;
-  min-width: $container-min-width;
-  margin: $inner-spacing-big $inner-spacing-big 0;
-
-  &-hidden {
-    max-width: $container-min-width;
-  }
-}
 
 .tokens-table {
   display: flex;
@@ -622,11 +585,6 @@ $cell-logo-width: 32px;
     display: flex;
     align-items: center;
     margin: auto;
-  }
-
-  &-search {
-    max-width: $search-input-width;
-    margin-left: $inner-spacing-medium;
   }
 }
 
