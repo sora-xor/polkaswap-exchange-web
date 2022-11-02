@@ -135,6 +135,9 @@ export enum PageNames {
   StakingContainer = 'StakingContainer',
   ExploreContainer = 'Explore/Container',
   ExploreTokens = 'Explore/Tokens',
+  ExploreStaking = 'Explore/Staking',
+  ExploreFarming = 'Explore/Farming',
+  ExplorePools = 'Explore/Pools',
 }
 
 export enum Components {

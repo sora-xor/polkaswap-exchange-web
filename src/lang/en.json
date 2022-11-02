@@ -339,6 +339,9 @@
         "RemoveLiquidity": "Remove Liquidity",
         "PageNotFound": "Page Not Found",
         "Explore/Tokens": "Tokens",
+        "Explore/Pools": "Pools",
+        "Explore/Staking": "Staking",
+        "Explore/Farming": "Farming",
         "Rewards": "Rewards"
     },
     "mainMenu": {

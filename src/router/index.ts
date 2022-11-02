@@ -128,6 +128,21 @@ const routes: Array<RouteConfig> = [
     redirect: { name: PageNames.ExploreTokens },
     children: [
       {
+        path: 'staking',
+        name: PageNames.ExploreStaking,
+        component: lazyView(PageNames.ExploreStaking),
+      },
+      {
+        path: 'farming',
+        name: PageNames.ExploreFarming,
+        component: lazyView(PageNames.ExploreFarming),
+      },
+      {
+        path: 'pools',
+        name: PageNames.ExplorePools,
+        component: lazyView(PageNames.ExplorePools),
+      },
+      {
         path: 'tokens',
         name: PageNames.ExploreTokens,
         component: lazyView(PageNames.ExploreTokens),
