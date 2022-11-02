@@ -8,14 +8,21 @@
       <generic-page-header :title="pageTitle" class="page-header-title--explore">
         <search-input
           v-model="exploreQuery"
-          :placeholder="t('selectToken.searchPlaceholder')"
+          :placeholder="t('searchText')"
           autofocus
           @clear="resetSearch"
           class="explore-search"
         />
       </generic-page-header>
 
-      <router-view v-bind="{ exploreQuery, ...$attrs }" v-on="$listeners" />
+      <router-view
+        v-bind="{
+          exploreQuery,
+          parentLoading,
+          ...$attrs,
+        }"
+        v-on="$listeners"
+      />
     </div>
   </div>
 </template>
@@ -77,7 +84,7 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 <style lang="scss" scoped>
 $container-max-width: 952px;
 $container-min-width: $breakpoint_mobile;
-$search-input-width: 382px;
+$search-input-width: 290px;
 
 .container--explore {
   max-width: $container-max-width;

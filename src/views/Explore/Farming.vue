@@ -5,8 +5,11 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import DemeterPageMixin from '@/modules/demeterFarming/mixins/PageMixin';
 
 @Component
-export default class ExploreFarming extends Mixins(TranslationMixin) {}
+export default class ExploreFarming extends Mixins(DemeterPageMixin) {
+  // override DemeterPageMixin
+  isFarmingPage = true;
+}
 </script>
