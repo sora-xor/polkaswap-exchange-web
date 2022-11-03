@@ -65,7 +65,7 @@
                 @click="handleCopyAddress(transactionFromHash, $event)"
               />
               <s-dropdown
-                v-if="(isSoraToEvm && soraExpolrerLinks.length) || !isSoraToEvm"
+                v-if="hasExplorerLinksForFirstTx"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
@@ -197,7 +197,7 @@
                 @click="handleCopyAddress(transactionToHash, $event)"
               />
               <s-dropdown
-                v-if="(!isSoraToEvm && soraExpolrerLinks.length) || isSoraToEvm"
+                v-if="hasExplorerLinksForSecondTx"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
@@ -642,7 +642,7 @@ export default class BridgeTransaction extends Mixins(
     }
     const baseLinks = getExplorerLinks(this.soraNetwork);
     const txId = this.soraTxId || this.soraTxBlockId;
-    if (!txId) {
+    if (!(baseLinks.length && txId)) {
       return [];
     }
     if (!this.soraTxId) {
@@ -737,13 +737,20 @@ export default class BridgeTransaction extends Mixins(
     return classes.join(' ');
   }
 
+  get hasExplorerLinksForFirstTx(): boolean {
+    return (this.isSoraToEvm && !!this.soraExpolrerLinks.length) || !this.isSoraToEvm;
+  }
+
+  get hasExplorerLinksForSecondTx(): boolean {
+    return (!this.isSoraToEvm && !!this.soraExpolrerLinks.length) || this.isSoraToEvm;
+  }
+
   get firstTxHashContainerClasses(): string {
-    return this.getHashContainerClasses();
+    return this.getHashContainerClasses(this.hasExplorerLinksForFirstTx);
   }
 
   get secondTxHashContainerClasses(): string {
-    // cuz we don't show SORA tx for ETH->SORA flow
-    return this.getHashContainerClasses();
+    return this.getHashContainerClasses(this.hasExplorerLinksForSecondTx);
   }
 
   get formattedNetworkStep1(): string {

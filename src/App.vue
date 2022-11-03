@@ -15,7 +15,7 @@
         <s-scrollbar class="app-body-scrollbar">
           <div v-if="blockNumber && !isAboutPage" class="block-number">
             <s-tooltip :content="t('blockNumberText')" placement="bottom" tabindex="-1">
-              <a class="block-number-link" :href="soraExplorerLink" target="_blank" rel="nofollow noopener">
+              <a class="block-number-link" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
                 <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
               </a>
             </s-tooltip>
@@ -269,8 +269,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     return new FPNumber(this.blockNumber).toLocaleString();
   }
 
-  get soraExplorerLink(): string {
-    return getExplorerLinks(this.soraNetwork)[0].value;
+  get blockExplorerLink(): Nullable<string> {
+    const links = getExplorerLinks(this.soraNetwork);
+    if (!links.length) {
+      return null;
+    }
+    return links[0].value;
   }
 
   get showBrowserNotifPopup(): boolean {
