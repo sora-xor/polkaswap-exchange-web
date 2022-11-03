@@ -128,7 +128,7 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.sortTransactions(this.getPageItems(this.filteredHistory, start, end), true);
   }
 
-  async created(): Promise<void> {
+  created(): void {
     this.withParentLoading(async () => {
       this.setHistory();
       await this.updateHistory();
