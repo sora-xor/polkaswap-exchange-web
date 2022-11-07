@@ -20,5 +20,9 @@ def pipeline = new org.js.AppPipeline(steps: this,
     ipfsHashChatID: '-1001375555544',
     stageDeploy: true,
     downstreamJob: '../deploy/exchange-stage1'
+    scanDAST: true,
+    arachniURL: 'https://test.polkaswap.io',
+    arachniExclude: 'js|css',
+    arachniPlugin: ''
 )
 pipeline.runPipeline()
