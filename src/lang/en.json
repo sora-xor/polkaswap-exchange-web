@@ -195,9 +195,6 @@
             "title": "Tokens",
             "switchBtn": "Verified assets only"
         },
-        "AddAssetNFT": {
-            "title": "NFTs"
-        },
         "searchInputText": "Search by Asset ID, Name or Ticker Symbol"
     },
     "createToken": {
@@ -240,7 +237,6 @@
         "provideContent": "Provide content",
         "selectLocalFile": "Select local file",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Source",
@@ -394,14 +390,14 @@
         "errors": {
             "connection": "An error occurred while connecting to the node\n{address}\n",
             "network": "The node\n{address}\n is from the another network\n",
-            "existing": "This node is already added: '{title}'\n"
+            "existing": "This node is already added: {title}\n"
         },
         "messages": {
-            "connected": "Connection estabilished with node\n{address}\n",
+            "connected": "Connection established with node\n{address}\n",
             "selectNode": "Please select node to connect from the node list"
         },
         "warnings": {
-            "disconnect": "Сonnection to the node has been lost. Reconnecting..."
+            "disconnect": "Connection to the node has been lost. Reconnecting..."
         }
     },
     "selectNodeDialog": {
@@ -1024,39 +1020,39 @@
     "historyErrorMessages": {
         "generalError": "Something went wrong",
         "balances": {
-            "LiquidityRestrictions": "Account liquidity restrictions prevent withdrawal"
+            "liquidityrestrictions": "Account liquidity restrictions prevent withdrawal"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Source balance is not large enough",
-            "TargetBalanceIsNotLargeEnough": "Destination balance is not large enough",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Provided amounts are too diverse",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Amounts are out of required bounds",
-            "UnableToDepositXorLessThanMinimum": "XOR lower than the minimum value (0.007)",
-            "ZeroValueInAmountParameter": "Amount parameter has zero value"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Source balance is not large enough",
+            "targetbalanceisnotlargeenough": "Destination balance is not large enough",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Provided amounts are too diverse",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Amounts are out of required bounds",
+            "unabletodepositxorlessthanminimum": "XOR lower than the minimum value (0.007)",
+            "zerovalueinamountparameter": "Amount parameter has zero value"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "Pool pair already exists",
-            "SlippageLimitExceeded": "Slippage tolerance has not met proper limits"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Pool pair already exists",
+            "slippagelimitexceeded": "Slippage tolerance has not met proper limits"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Account already has a referrer",
-            "ReferrerInsufficientBalance": "Referrer does not have enough of reserved balance"
+            "alreadyhasreferrer": "Account already has a referrer",
+            "referrerinsufficientbalance": "Referrer does not have enough of reserved balance"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Rewards program has already finished",
-            "CantCalculateReward": "Failed to perform reward calculation",
-            "NoRewardsForAsset": "There are no rewards for this asset"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Rewards program has already finished",
+            "cantcalculatereward": "Failed to perform reward calculation",
+            "norewardsforasset": "There are no rewards for this asset"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "Selected liquidity source is not allowed"
+        "liquidityproxy": {
+            "forbiddenfilter": "Selected liquidity source is not allowed"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Insufficient funds",
-            "InsufficientLPTokens": "Insufficient liquidity provision tokens",
-            "PoolDoesNotHaveRewards": "Pool does not have rewards"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Insufficient funds",
+            "insufficientlptokens": "Insufficient liquidity provision tokens",
+            "pooldoesnothaverewards": "Pool does not have rewards"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "An error occurred while calculating the price"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "An error occurred while calculating the price"
         }
     },
     "receivedText": "Received",
@@ -1073,8 +1069,7 @@
     "ofText": "{first} of {second}",
     "filter": {
         "all": "All",
-        "token": "Tokens",
-        "nft": "NFTs",
+        "token": "Currencies",
         "verifiedOnly": "Show verified assets only",
         "zeroBalance": "Hide 0 balance assets",
         "showAssets": "Show assets",

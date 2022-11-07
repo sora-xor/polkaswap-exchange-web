@@ -54,7 +54,7 @@
             "EthBridgeOutgoing": "Mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}"
         },
         "error": {
-            "Transfer": "Gagal mengirim {amount} {symbol} ke {address}",
+            "Transfer": "Gagal {action} {amount} {symbol} {direction} {address}",
             "Swap": "Gagal menswap {amount} {symbol} dengan {amount2} {symbol2}",
             "AddLiquidity": "Gagal menyuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RemoveLiquidity": "Gagal menghapus {amount} {symbol} dan {amount2} {symbol2}",
@@ -88,7 +88,7 @@
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi {PolkadotJs} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Sepertinya tidak ada akun di ekstensi {extension} anda. Tambahkan akun dan coba lagi.",
-        "noAccount": "{PolkadotJs} akun error. Silakan periksa akun Anda di ekstensi {PolkadotJs}",
+        "noAccount": "{extension} akun error. Silakan periksa akun Anda di ekstensi {extension}",
         "noExtension": "Tidak ada {extension} yang ditemukan. Silakan instal dan muat ulang halaman ini",
         "noSigner": "Akses ditolak. Buka setelan ekstensi {extension} dan buka \"Kelola Akses Situs Web\" untuk mengizinkan."
     },
@@ -195,9 +195,6 @@
             "title": "Token",
             "switchBtn": "Hanya aset yang diverifikasi"
         },
-        "AddAssetNFT": {
-            "title": "NFT"
-        },
         "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker"
     },
     "createToken": {
@@ -240,7 +237,6 @@
         "provideContent": "Menyediakan konten",
         "selectLocalFile": "Pilih file lokal",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Sumber",
@@ -392,12 +388,12 @@
     },
     "node": {
         "errors": {
-            "connection": "Terjadi kesalahan saat menghubungkan ke node\n {address}",
-            "network": "Node\n {address}\n berasal dari jaringan lain",
-            "existing": "Node ini sudah ditambahkan: '{title}'"
+            "connection": "Terjadi kesalahan saat menghubungkan ke node\n{address}\n",
+            "network": "Node\n{address}\n berasal dari jaringan lain\n",
+            "existing": "Node ini sudah ditambahkan: {title}\n"
         },
         "messages": {
-            "connected": "Koneksi dibuat dengan node\n {address}",
+            "connected": "Koneksi dibuat dengan node\n{address}\n",
             "selectNode": "Silakan pilih node untuk terhubung dari daftar node"
         },
         "warnings": {
@@ -491,7 +487,7 @@
                 "desc": "Tumbuhkan ekonomi dunia yang terdesentralisasi dengan menghubungkan lebih banyak Chain ke {Sora} dan {AppName} menggunakan protokol jembatan {Hashi}."
             }
         },
-        "network": "{AppName} dibangun diatas Jaringan {Sora}, berfokus pada interoperabilitas untuk menghubungkan ekosistem kripto lainnya untuk Polkadot."
+        "network": "{AppName} dibangun di Jaringan {Sora} , dengan fokus pada interoperabilitas untuk menghubungkan ekosistem kripto lainnya ke {Polkadot} ."
     },
     "exchange": {
         "Swap": "Swap",
@@ -695,7 +691,7 @@
     "confirmSupply": {
         "title": "Anda akan menerima",
         "outputDescription": "Output merupakan estimasi. Jika harga berubah lebih dari {slippageTolerance}% transaksi Anda akan dikembalikan.",
-        "poolTokensBurned": "{first} - {second} Token Pool Dibakar",
+        "poolTokensBurned": "{first}-{second} Token Pool Dibakar",
         "price": "Harga"
     },
     "addLiquidity": {
@@ -722,7 +718,7 @@
         "title": "Pengaturan",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
-            "main": "- pilihan untuk memilih antara Pasar Primer (TBC), Pasar Sekunder (XYK) atau algoritma cerdas gabungan untuk menjamin harga terbaik untuk setiap transaksi yang diperoleh."
+            "main": " - pilihan untuk memilih antara Pasar Primer (TBC), Pasar Sekunder (XYK) atau algoritma cerdas gabungan untuk menjamin harga terbaik untuk setiap transaksi yang diperoleh."
         },
         "slippageTolerance": "TOLERANSI SLIPPAGE",
         "slippageToleranceHint": "Transaksi Anda akan dikembalikan jika harga berubah tidak menguntungkan lebih dari persentase ini.",
@@ -815,7 +811,7 @@
         "messages": {
             "checkExtension": "{name} ekstensi sedang sibuk, harap periksa",
             "extensionLogin": "Silakan masuk ke ekstensi {name} Anda",
-            "installExtension": "{name} ekstensi tidak ditemukan. Silahkan menginstal!",
+            "installExtension": "ekstensi {name} tidak ditemukan. Silakan instal! \n\n Sudah memasang ekstensi? Silakan muat ulang halaman",
             "reloadPage": "Muat ulang halaman"
         }
     },
@@ -911,7 +907,7 @@
         "bondedXOR": "Ikatan XOR",
         "referralsNumber": "{number} rujukan",
         "startInviting": "Obligasi XOR untuk merujuk orang lain",
-        "preview": "Undang pengguna baru dan dapatkan 10% dari biaya transaksi mereka.<br \/>Untuk mulai, beri obligasi dalam jumlah XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
+        "preview": "Undang pengguna baru dan dapatkan 10% dari biaya transaksi mereka.<br\/>Untuk mulai, beri obligasi dalam jumlah XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
@@ -978,7 +974,7 @@
     "mobilePopup": {
         "sideMenu": "Dapatkan Dompet {Sora}",
         "header": "Unduh {Sora} Wallet dengan fitur {polkaswapHighlight}",
-        "info": "Tukar token dari jaringan yang berbeda - {Sora}, {Ethereum}, Polkadot, {Kusama}. Sediakan kumpulan likuiditas dan dapatkan % dari biaya pertukaran."
+        "info": "Tukar token dari jaringan yang berbeda - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Sediakan kumpulan likuiditas dan dapatkan % dari biaya pertukaran."
     },
     "releaseNotesText": "Catatan rilis",
     "copiedText": "Disalin!",
@@ -1024,39 +1020,39 @@
     "historyErrorMessages": {
         "generalError": "Ada yang salah",
         "balances": {
-            "LiquidityRestrictions": "Pembatasan likuiditas akun mencegah penarikan"
+            "liquidityrestrictions": "Pembatasan likuiditas akun mencegah penarikan"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Saldo sumber tidak cukup besar",
-            "TargetBalanceIsNotLargeEnough": "Saldo tujuan tidak cukup besar",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Jumlah yang disediakan terlalu beragam",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Jumlahnya di luar batas yang dipersyaratkan",
-            "UnableToDepositXorLessThanMinimum": "XOR lebih rendah dari nilai minimum (0,007)",
-            "ZeroValueInAmountParameter": "Parameter jumlah memiliki nilai nol"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Saldo sumber tidak cukup besar",
+            "targetbalanceisnotlargeenough": "Saldo tujuan tidak cukup besar",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Jumlah yang disediakan terlalu beragam",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Jumlahnya di luar batas yang dipersyaratkan",
+            "unabletodepositxorlessthanminimum": "XOR lebih rendah dari nilai minimum (0,007)",
+            "zerovalueinamountparameter": "Parameter jumlah memiliki nilai nol"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "Pasangan kolam sudah ada",
-            "SlippageLimitExceeded": "Toleransi selip belum memenuhi batas yang tepat"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Pasangan kolam sudah ada",
+            "slippagelimitexceeded": "Toleransi selip belum memenuhi batas yang tepat"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Akun sudah memiliki referer",
-            "ReferrerInsufficientBalance": "Perujuk tidak memiliki cukup saldo cadangan"
+            "alreadyhasreferrer": "Akun sudah memiliki referer",
+            "referrerinsufficientbalance": "Perujuk tidak memiliki cukup saldo cadangan"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Program hadiah telah selesai",
-            "CantCalculateReward": "Gagal melakukan perhitungan hadiah",
-            "NoRewardsForAsset": "Tidak ada imbalan untuk aset ini"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Program hadiah telah selesai",
+            "cantcalculatereward": "Gagal melakukan perhitungan hadiah",
+            "norewardsforasset": "Tidak ada imbalan untuk aset ini"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "Sumber likuiditas yang dipilih tidak diperbolehkan"
+        "liquidityproxy": {
+            "forbiddenfilter": "Sumber likuiditas yang dipilih tidak diperbolehkan"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Dana tidak mencukupi",
-            "InsufficientLPTokens": "Token penyediaan likuiditas tidak mencukupi",
-            "PoolDoesNotHaveRewards": "Pool tidak memiliki hadiah"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Dana tidak mencukupi",
+            "insufficientlptokens": "Token penyediaan likuiditas tidak mencukupi",
+            "pooldoesnothaverewards": "Pool tidak memiliki hadiah"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Terjadi kesalahan saat menghitung harga"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Terjadi kesalahan saat menghitung harga"
         }
     },
     "receivedText": "Diterima",
@@ -1073,8 +1069,7 @@
     "ofText": "{first} dari {second}",
     "filter": {
         "all": "Semua",
-        "token": "Token",
-        "nft": "NFT",
+        "token": "Mata Uang",
         "verifiedOnly": "Tampilkan aset terverifikasi saja",
         "zeroBalance": "Sembunyikan 0 aset saldo",
         "showAssets": "Tampilkan aset",

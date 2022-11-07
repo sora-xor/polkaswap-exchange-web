@@ -88,7 +88,7 @@
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření {PolkadotJs}. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Zdá se, že ve vašem rozšíření {extension} nejsou žádné účty. Přidejte účet a zkuste to znovu prosím.",
-        "noAccount": "Chyba účtu {PolkadotJs}. Zkontrolujte prosím svůj účet v rozšíření {PolkadotJs}.",
+        "noAccount": "Chyba účtu {extension}. Zkontrolujte prosím svůj účet v rozšíření {extension}.",
         "noExtension": "Nebylo nalezeno žádné {extension} . Nainstalujte jej a znovu načtěte tuto stránku",
         "noSigner": "Přístup odepřen. Přejděte do nastavení {extension} a povolte otevřením možnosti Správa přístupu k webu."
     },
@@ -195,9 +195,6 @@
             "title": "Tokeny",
             "switchBtn": "Pouze ověřená aktiva"
         },
-        "AddAssetNFT": {
-            "title": "NFT"
-        },
         "searchInputText": "Vyhledávání podle Asset ID, Name nebo Ticker Symbol"
     },
     "createToken": {
@@ -240,7 +237,6 @@
         "provideContent": "Poskytněte obsah",
         "selectLocalFile": "Vyberte místní soubor",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Zdroj",
@@ -394,10 +390,10 @@
         "errors": {
             "connection": "Při připojování k nodu došlo k chybě\n{address}\n",
             "network": "Node\n{address}\n je z jiné sítě\n",
-            "existing": "Tento node je již přidán: '{title}'\n"
+            "existing": "Tento node je již přidán: {title}\n"
         },
         "messages": {
-            "connected": "Spojení navázáno s nodem\n {address}\n",
+            "connected": "Spojení navázáno s nodem\n{address}\n",
             "selectNode": "Vyberte node pro připojení ze seznamu nodů, prosím."
         },
         "warnings": {
@@ -695,7 +691,7 @@
     "confirmSupply": {
         "title": "Váš podíl v poolu bude",
         "outputDescription": "Výstup je odhadován. Pokud se cena změní o více než {slippageTolerance}%, transakce se vrátí zpět.",
-        "poolTokensBurned": "{first} - {second} Pool tokeny spálené",
+        "poolTokensBurned": "{first}-{second} Pool tokeny spálené",
         "price": "Cena"
     },
     "addLiquidity": {
@@ -911,7 +907,7 @@
         "bondedXOR": "Vázané XOR",
         "referralsNumber": "{number} doporučení",
         "startInviting": "Bond XOR doporučit ostatním",
-        "preview": "Pozvěte nové uživatele a získejte 10 % z jejich transakčních poplatků.<br \/>Pro začátek se zavažte libovolnou částkou XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Zjistěte více<\/a>",
+        "preview": "Pozvěte nové uživatele a získejte 10 % z jejich transakčních poplatků.<br\/>Pro začátek se zavažte libovolnou částkou XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Zjistěte více<\/a>",
         "deposit": "Vklad",
         "balance": "Zůstatek",
         "networkFee": "@:networkFeeText",
@@ -1024,39 +1020,39 @@
     "historyErrorMessages": {
         "generalError": "Něco se pokazilo",
         "balances": {
-            "LiquidityRestrictions": "Omezení likvidity účtu brání výběru"
+            "liquidityrestrictions": "Omezení likvidity účtu brání výběru"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Zdrojová bilance není dostatečně velká",
-            "TargetBalanceIsNotLargeEnough": "Cílová bilance není dostatečně velká",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Poskytované částky jsou příliš různorodé",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Částky jsou mimo požadované hranice",
-            "UnableToDepositXorLessThanMinimum": "XOR nižší než minimální hodnota (0,007)",
-            "ZeroValueInAmountParameter": "Parametr množství má nulovou hodnotu"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Zdrojová bilance není dostatečně velká",
+            "targetbalanceisnotlargeenough": "Cílová bilance není dostatečně velká",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Poskytované částky jsou příliš různorodé",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Částky jsou mimo požadované hranice",
+            "unabletodepositxorlessthanminimum": "XOR nižší než minimální hodnota (0,007)",
+            "zerovalueinamountparameter": "Parametr množství má nulovou hodnotu"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "Pool pár již existuje",
-            "SlippageLimitExceeded": "Tolerance prokluzu nesplňuje správné limity"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Pool pár již existuje",
+            "slippagelimitexceeded": "Tolerance prokluzu nesplňuje správné limity"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Účet již má referrera",
-            "ReferrerInsufficientBalance": "Referrer nemá dostatek rezervovaného zůstatku"
+            "alreadyhasreferrer": "Účet již má referrera",
+            "referrerinsufficientbalance": "Referrer nemá dostatek rezervovaného zůstatku"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Program odměn již skončil",
-            "CantCalculateReward": "Výpočet odměny se nezdařil",
-            "NoRewardsForAsset": "Za toto aktivum nejsou žádné odměny"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Program odměn již skončil",
+            "cantcalculatereward": "Výpočet odměny se nezdařil",
+            "norewardsforasset": "Za toto aktivum nejsou žádné odměny"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "Vybraný zdroj likvidity není povolen"
+        "liquidityproxy": {
+            "forbiddenfilter": "Vybraný zdroj likvidity není povolen"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Nedostatečné finanční prostředky",
-            "InsufficientLPTokens": "Nedostatek tokenů pro poskytování likvidity",
-            "PoolDoesNotHaveRewards": "Pool nemá odměny"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Nedostatečné finanční prostředky",
+            "insufficientlptokens": "Nedostatek tokenů pro poskytování likvidity",
+            "pooldoesnothaverewards": "Pool nemá odměny"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Při výpočtu ceny došlo k chybě"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Při výpočtu ceny došlo k chybě"
         }
     },
     "receivedText": "Přijato",
@@ -1073,8 +1069,7 @@
     "ofText": "{first} z {second}",
     "filter": {
         "all": "Všechny",
-        "token": "Tokeny",
-        "nft": "NFT",
+        "token": "Měny",
         "verifiedOnly": "Zobrazit pouze ověřená díla",
         "zeroBalance": "Skrýt 0 bilančních aktiv",
         "showAssets": "Zobrazit aktiva",
@@ -1130,7 +1125,7 @@
             "password": "Heslo se neshoduje",
             "passwords": "Hesla se neshodují",
             "mnemonic": "Byla zadána neplatná mnemotechnická pomůcka bip39",
-            "mnemonicLength": "Mnemotechnika by měla obsahovat {číslo} slov",
+            "mnemonicLength": "Mnemotechnika by měla obsahovat {number} slov",
             "jsonFields": "Soubor JSON neobsahuje povinná pole"
         }
     },

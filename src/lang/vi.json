@@ -88,7 +88,7 @@
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) {PolkadotJs}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Dường như không có tài khoản nào trong tiện ích (extension) {extension}. Vui lòng thêm tài khoản và thử lại.",
-        "noAccount": "Tài khoản {PolkadotJs} gặp lỗi. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) {PolkadotJs}.",
+        "noAccount": "Tài khoản {extension} gặp lỗi. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) {extension}.",
         "noExtension": "Không tìm thấy {extension} . Vui lòng cài đặt nó và tải lại trang này",
         "noSigner": "Quyền truy cập bị từ chối. Đi tới cài đặt tiện ích {extension} và mở \"Quản lý quyền truy cập trang web\" để cho phép."
     },
@@ -195,9 +195,6 @@
             "title": "Token",
             "switchBtn": "Chỉ nội dung đã xác minh"
         },
-        "AddAssetNFT": {
-            "title": "NFT"
-        },
         "searchInputText": "Tìm kiếm theo ID, tên hoặc ký hiệu mã"
     },
     "createToken": {
@@ -240,7 +237,6 @@
         "provideContent": "Cung cấp nội dung",
         "selectLocalFile": "Chọn tập tin từ máy",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Nguồn",
@@ -393,8 +389,8 @@
     "node": {
         "errors": {
             "connection": "Phát sinh lỗi trong quá trình kết nối đến node\n{address}\n",
-            "network": "Node\n{address}\nđến từ một mạng khác\n",
-            "existing": "Node này đã được thêm vào: '{title}'\n"
+            "network": "Node\n{address}\n đến từ một mạng khác\n",
+            "existing": "Node này đã được thêm vào: {title}\n"
         },
         "messages": {
             "connected": "Thiếp lập kết nối với node\n{address}\n",
@@ -491,7 +487,7 @@
                 "desc": "Phát triển nền kinh tế thế giới phi tập trung bằng cách kết nối nhiều chuỗi hơn vào {Sora} và {AppName} thông qua giao thức cầu {Hashi}."
             }
         },
-        "network": "{AppName} được xây dựng trên Mạng {Sora}, tập trung vào khả năng tương tác để kết nối với cả hệ sinh thái Polkadot."
+        "network": "{AppName} được xây dựng trên Mạng {Sora}, tập trung vào khả năng tương tác để kết nối với cả hệ sinh thái {Polkadot}."
     },
     "exchange": {
         "Swap": "Hoán đổi",
@@ -740,7 +736,7 @@
         "min": "TỐI THIỂU",
         "marketAlgorithms": {
             "SMART": "{smartAlgorithm} định tuyến thanh khoản đảm bảo giá tốt nhất cho giao dịch bất kỳ bằng cách kết hợp mức giá tốt nhất hiện có trên thị trường. Khi thuận lợi, Token Bonding Curve {tbcAlgorithm} sẽ dùng để tạo thanh khoản miễn là giá của tài sản hợp lý hơn các nguồn khác, vì thế pool {xycAlgorithm} được khai thác.",
-            "TBC": "{tbcAlgorithm} — chỉ mua từ Token Bonding Curve (Thị trường sơ cấp). Vị thế có thể bất lợi so với giá từ Pool XYK (Thị trường thứ cấp), nhưng về lâu dài thì giá trị nhận được từ phần thưởng được tặng có thể có giá trị hơn.",
+            "TBC": "{tbcAlgorithm} - chỉ mua từ Đường cong liên kết mã thông báo (Thị trường sơ cấp). Có khả năng giá có thể trở nên bất lợi so với nhóm {xycAlgorithm} (Thị trường thứ cấp), nhưng giá trị nhận được từ phần thưởng được trao có thể trở nên ưu đãi hơn nhiều theo thời gian.",
             "XYK": "{xycAlgorithm} - chỉ mua từ Pool XYK (thị trường thứ cấp). Hoán đổi gốc từ Pool XYK."
         },
         "charts": "Biểu đồ",
@@ -773,7 +769,7 @@
             "connectExternalAccount": "Kết nối với 1 tài khoản {Ethereum} để kiểm tra phần thường PSWAP và VAL khả dụng",
             "connectAccounts": "Để yêu cầu phần thưởng PSWAP và VAL, bạn cần kết nối với cả 2 tài khoản {Sora} và {Ethereum} của bạn.",
             "connectAnotherAccount": "Kết nối với tài khoản {Ethereum} khác để kiểm tra phần thường PSWAP và VAL khả dụng",
-            "howToClaimRewards": "Để yêu cầu phần thưởng {symbols} bạn cần ký tên {count} {transactions} tại {destination}. Phần thưởng sẽ được chuyển đến tài khoản {Sora} của bạn. "
+            "howToClaimRewards": "Để yêu cầu phần thưởng {symbols} bạn cần ký tên {count} {transactions} tại {destination}. Phần thưởng sẽ được chuyển đến tài khoản {Sora} của bạn."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -911,7 +907,7 @@
         "bondedXOR": "XOR Bonded",
         "referralsNumber": "{number} giới thiệu",
         "startInviting": "Bond XOR để giới thiệu những người khác",
-        "preview": "Mời người dùng mới và nhận 10% từ phí giao dịch của họ. <br \/> Để bắt đầu, hãy bond số lượng XOR bất kỳ. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Tìm hiểu thêm <\/a>",
+        "preview": "Mời người dùng mới và nhận 10% từ phí giao dịch của họ. <br\/> Để bắt đầu, hãy bond số lượng XOR bất kỳ. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Tìm hiểu thêm <\/a>",
         "deposit": "Gửi vào",
         "balance": "Số dư",
         "networkFee": "@:networkFeeText",
@@ -978,7 +974,7 @@
     "mobilePopup": {
         "sideMenu": "Tải xuống Ví {Sora}",
         "header": "Tải xuống Ví {Sora} với các tính năng của {polkaswapHighlight}",
-        "info": "Hoán đổi token từ các mạng khác nhau - {Sora}, {Ethereum}, Polkadot, {Kusama}. Cung cấp pool thanh khoản và kiếm % từ phí giao dịch."
+        "info": "Hoán đổi token từ các mạng khác nhau - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Cung cấp pool thanh khoản và kiếm % từ phí giao dịch."
     },
     "releaseNotesText": "Ghi chú phát hành",
     "copiedText": "Đã sao chép!",
@@ -1024,39 +1020,39 @@
     "historyErrorMessages": {
         "generalError": "Đã xảy ra sự cố",
         "balances": {
-            "LiquidityRestrictions": "Hạn chế thanh khoản tài khoản ngăn cản việc rút tiền"
+            "liquidityrestrictions": "Hạn chế thanh khoản tài khoản ngăn cản việc rút tiền"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Số dư nguồn không đủ lớn",
-            "TargetBalanceIsNotLargeEnough": "Số dư điểm đến không đủ lớn",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Số tiền được cung cấp quá đa dạng",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Số tiền nằm ngoài giới hạn yêu cầu",
-            "UnableToDepositXorLessThanMinimum": "XOR thấp hơn giá trị nhỏ nhất (0,007)",
-            "ZeroValueInAmountParameter": "Tham số số tiền có giá trị bằng không"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Số dư nguồn không đủ lớn",
+            "targetbalanceisnotlargeenough": "Số dư điểm đến không đủ lớn",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Số tiền được cung cấp quá đa dạng",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Số tiền nằm ngoài giới hạn yêu cầu",
+            "unabletodepositxorlessthanminimum": "XOR thấp hơn giá trị nhỏ nhất (0,007)",
+            "zerovalueinamountparameter": "Tham số số tiền có giá trị bằng không"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "Cặp tiền thanh khoản đã tồn tại",
-            "SlippageLimitExceeded": "Khả năng chịu trượt giá chưa thích hợp"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Cặp tiền thanh khoản đã tồn tại",
+            "slippagelimitexceeded": "Khả năng chịu trượt giá chưa thích hợp"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Tài khoản đã có liên kết giới thiệu",
-            "ReferrerInsufficientBalance": "Người giới thiệu không có đủ số dư dự phòng"
+            "alreadyhasreferrer": "Tài khoản đã có liên kết giới thiệu",
+            "referrerinsufficientbalance": "Người giới thiệu không có đủ số dư dự phòng"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Chương trình phần thưởng đã kết thúc",
-            "CantCalculateReward": "Không thể thực hiện tính toán phần thưởng",
-            "NoRewardsForAsset": "Không có phần thưởng nào cho tài sản này"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Chương trình phần thưởng đã kết thúc",
+            "cantcalculatereward": "Không thể thực hiện tính toán phần thưởng",
+            "norewardsforasset": "Không có phần thưởng nào cho tài sản này"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "Nguồn thanh khoản đã chọn không được phép"
+        "liquidityproxy": {
+            "forbiddenfilter": "Nguồn thanh khoản đã chọn không được phép"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Không đủ tiền",
-            "InsufficientLPTokens": "Mã thông báo cung cấp thanh khoản không đủ",
-            "PoolDoesNotHaveRewards": "Pool không có phần thưởng"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Không đủ tiền",
+            "insufficientlptokens": "Mã thông báo cung cấp thanh khoản không đủ",
+            "pooldoesnothaverewards": "Pool không có phần thưởng"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Đã xảy ra lỗi khi tính giá"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Đã xảy ra lỗi khi tính giá"
         }
     },
     "receivedText": "Nhận được",
@@ -1073,8 +1069,7 @@
     "ofText": "{first} của {second}",
     "filter": {
         "all": "Tất cả",
-        "token": "Token",
-        "nft": "NFT",
+        "token": "Tiền tệ",
         "verifiedOnly": "Chỉ hiển thị nội dung đã xác minh",
         "zeroBalance": "Ẩn tài sản có số dư là 0",
         "showAssets": "Hiển thị tài sản",

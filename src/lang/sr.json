@@ -34,7 +34,7 @@
         "ClaimRewards": "Захтевајте награде",
         "andText": "и",
         "finalized": {
-            "Transfer": "Послато {amount} {symbol} на {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Замењено {amount} {symbol} за {amount2} {symbol2}",
             "AddLiquidity": "Испоручено {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Уклоњено {amount} {symbol} и {amount2} {symbol2}",
@@ -86,9 +86,9 @@
         "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Није пронађена ниједна екстензија Polkadot.{js}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noExtensions": "Није пронађена ниједна екстензија {PolkadotJs}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Чини се да у вашој екстензији {extension} нема рачуна. Додајте рачун и покушајте поново.",
-        "noAccount": "Грешка рачуна Polkadot.{js}. Проверите свој рачун у екстензији {PolkadotJs}",
+        "noAccount": "Грешка рачуна {extension}. Проверите свој рачун у екстензији {extension}",
         "noExtension": "Није пронађен ниједан {extension} . Инсталирајте и поново учитајте ову страницу",
         "noSigner": "Приступ одбијен. Идите на подешавања {extension} и отворите „Управљање приступом веб локацији“ да бисте дозволили."
     },
@@ -195,9 +195,6 @@
             "title": "Токени",
             "switchBtn": "Само верификована средства"
         },
-        "AddAssetNFT": {
-            "title": "NFT"
-        },
         "searchInputText": "Претрага по ИД средства, имену или симболу ознаке"
     },
     "createToken": {
@@ -240,7 +237,6 @@
         "provideContent": "Обезбедите садржај",
         "selectLocalFile": "Изаберите локалну датотеку",
         "CreateSimpleToken": "Токен",
-        "CreateNftToken": "НФТ",
         "nft": {
             "source": {
                 "label": "Извор",
@@ -306,7 +302,7 @@
         "referral": "Препорука"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Промените мрежу у Метамаску",
+    "changeNetworkText": "Промените мрежу у {Metamask}",
     "transactionText": "трансакција | трансакције",
     "connectWalletText": "Повежите рачун",
     "changeAccountText": "Промените рачун",
@@ -392,12 +388,12 @@
     },
     "node": {
         "errors": {
-            "connection": "Дошло је до грешке при повезивању са нодом\n {address}\n",
-            "network": "Нод\n {address}\n је из друге мреже\n",
-            "existing": "Овај нод је већ додат: '{теитл}'\n"
+            "connection": "Дошло је до грешке при повезивању са нодом\n{address}\n",
+            "network": "Нод\n{address}\n је из друге мреже\n",
+            "existing": "Овај чвор је већ додат: {title}\n"
         },
         "messages": {
-            "connected": "Веза је успостављена са нодом\n {address}\n",
+            "connected": "Веза је успостављена са нодом\n{address}\n",
             "selectNode": "Изаберите нод за повезивање са листе нодова"
         },
         "warnings": {
@@ -462,7 +458,7 @@
             "title": "Брже трговање",
             "first": "{AppName} је унакрсни AMM DEX протокол за размену токена заснован на {Polkadot} и {Kusama} релејним ланцима, {Polkadot} и {Kusama} paračejn и blokčejn директно повезаних преко мостова.",
             "second": "{AppName} уклања поуздане посреднике и пружа прилику за брже трговање",
-            "third": "Полкасвап је пројекат заједнице и програмери сарађују на отвореном коду користећи"
+            "third": "{AppName} је пројекат заједнице и програмери сарађују на отвореном коду користећи"
         },
         "liquidity": {
             "title": "Безгранична ликвидност",
@@ -491,7 +487,7 @@
                 "desc": "Развијте децентрализовану светску економију повезивањем више ланаца са {Sora} и {AppName} користећи {Hashi} мост протокол."
             }
         },
-        "network": "{AppName} је изграђен на {Sora} мрежи, фокусирајући се на интероперабилност за повезивање остатка крипто екосистема са polkadot-om."
+        "network": "{AppName} је изграђен на {Sora} мрежи, фокусирајући се на интероперабилност за повезивање остатка крипто екосистема са {Polkadot}."
     },
     "exchange": {
         "Swap": "Замените",
@@ -595,7 +591,7 @@
     },
     "bridgeTransaction": {
         "details": "{from} за {to}",
-        "for": "за",
+        "for": " за ",
         "steps": {
             "step": "{step} од 2",
             "step1": "1.",
@@ -678,7 +674,7 @@
         "pricePool": "Цене и накнаде",
         "shareOfPool": "Удео у пулу",
         "firstPerSecond": "@:firstPerSecond",
-        "firstSecondPoolTokens": "{first} - {second} Пул",
+        "firstSecondPoolTokens": "{first}-{second} Пул",
         "connect": "Повежите новчаник",
         "supply": "Снабдевање",
         "yourPosition": "Ваша позиција",
@@ -695,7 +691,7 @@
     "confirmSupply": {
         "title": "Ваш удео у пулу ће бити",
         "outputDescription": "Излаз је процењен. Ако се цена промени више од {slippageTolerance}%, ваша трансакција ће бити враћена.",
-        "poolTokensBurned": "{first} - {second} Спаљени токени пула",
+        "poolTokensBurned": "{first}-{second} Спаљени токени пула",
         "price": "Цена"
     },
     "addLiquidity": {
@@ -722,7 +718,7 @@
         "title": "Подешавања",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
-            "main": "- могућност избора између примарног тржишта (TBC), секундарног тржишта (XYK) или комбинованог паметног алгоритма за гарантовано најбољу цену за било коју трансакцију."
+            "main": " - могућност избора између примарног тржишта (TBC), секундарног тржишта (XYK) или комбинованог паметног алгоритма за гарантовано најбољу цену за било коју трансакцију."
         },
         "slippageTolerance": "ТОЛЕРАНЦИЈА КЛИЗАЊА",
         "slippageToleranceHint": "Ваша трансакција ће се вратити ако се цена неповољно промени за више од овог процента.",
@@ -797,7 +793,7 @@
             "MarketMakerVolume": "Kreiranje tržišta",
             "LiquidityProvisionFarming": "Farming"
         },
-        "vested": "Stečeno",
+        "vested": "stečeno",
         "forText": "за",
         "totalVested": "Укупне награде",
         "claimableAmountDoneVesting": "Награде које се могу потраживати",
@@ -911,7 +907,7 @@
         "bondedXOR": "XOR Vezan",
         "referralsNumber": "{number} препоруке",
         "startInviting": "Vežite XOR да бисте упутили друге",
-        "preview": "Позовите нове кориснике и добијте 10% од њихових накнада за трансакције. <br \/> За почетак, повежите било коју количину XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Сазнајте више <\/a>",
+        "preview": "Позовите нове кориснике и добијте 10% од њихових накнада за трансакције. <br\/> За почетак, повежите било коју количину XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Сазнајте више <\/a>",
         "deposit": "Депозит",
         "balance": "Салдо",
         "networkFee": "@:networkFeeText",
@@ -1024,39 +1020,39 @@
     "historyErrorMessages": {
         "generalError": "Nešto je pošlo naopako",
         "balances": {
-            "LiquidityRestrictions": "Ограничења ликвидности рачуна спречавају повлачење"
+            "liquidityrestrictions": "Ограничења ликвидности рачуна спречавају повлачење"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Изворни баланс није довољно велик",
-            "TargetBalanceIsNotLargeEnough": "Saldo odredišta nije dovoljno velik",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Obezbeđeni iznosi su previše raznovrsni",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Износи су ван потребних граница",
-            "UnableToDepositXorLessThanMinimum": "XOR мањи од минималне вредности (0,007)",
-            "ZeroValueInAmountParameter": "Параметар износа има нулту вредност"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Изворни баланс није довољно велик",
+            "targetbalanceisnotlargeenough": "Saldo odredišta nije dovoljno velik",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Obezbeđeni iznosi su previše raznovrsni",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Износи су ван потребних граница",
+            "unabletodepositxorlessthanminimum": "XOR мањи од минималне вредности (0,007)",
+            "zerovalueinamountparameter": "Параметар износа има нулту вредност"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "Pool пар већ постоји",
-            "SlippageLimitExceeded": "Толеранција клизања није достигла одговарајуће границе"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Pool пар већ постоји",
+            "slippagelimitexceeded": "Толеранција клизања није достигла одговарајуће границе"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Налог већ има упућивача",
-            "ReferrerInsufficientBalance": "Preporučilac nema dovoljno rezerve na stanju"
+            "alreadyhasreferrer": "Налог већ има упућивача",
+            "referrerinsufficientbalance": "Preporučilac nema dovoljno rezerve na stanju"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Програм награђивања је већ завршен",
-            "CantCalculateReward": "Обрачун награде није успео",
-            "NoRewardsForAsset": "Не постоје награде за ово средство"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Програм награђивања је већ завршен",
+            "cantcalculatereward": "Обрачун награде није успео",
+            "norewardsforasset": "Не постоје награде за ово средство"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "Изабрани извор ликвидности није дозвољен"
+        "liquidityproxy": {
+            "forbiddenfilter": "Изабрани извор ликвидности није дозвољен"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Недовољно средстава",
-            "InsufficientLPTokens": "Недовољни токени за обезбеђивање ликвидности",
-            "PoolDoesNotHaveRewards": "Пул нема награде"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Недовољно средстава",
+            "insufficientlptokens": "Недовољни токени за обезбеђивање ликвидности",
+            "pooldoesnothaverewards": "Пул нема награде"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Дошло је до грешке при израчунавању цене"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Дошло је до грешке при израчунавању цене"
         }
     },
     "receivedText": "Примљено",
@@ -1073,8 +1069,7 @@
     "ofText": "{first} од {second}",
     "filter": {
         "all": "Све",
-        "token": "Tokeni",
-        "nft": "NFT",
+        "token": "Валуте",
         "verifiedOnly": "Прикажи само верификована средства",
         "zeroBalance": "Сакриј 0 balans sredstava",
         "showAssets": "Прикажи средства",
@@ -1082,9 +1077,9 @@
     },
     "desktop": {
         "welcome": {
-            "header": "Добродошли у Полкасвап!",
+            "header": "Добродошли у {AppName}!",
             "headline": "Хајде да подесимо ваш налог",
-            "text": "Креирајте свој СОРА Нетворк налог или се пријавите на старе користећи мнемоничке фразе или .јсон импорт. Ово вам омогућава да безбедно потписујете трансакције и управљате имовином у СОРА мрежи.",
+            "text": "Креирајте свој {Sora} Нетворк налог или се пријавите на старе користећи мнемоничке фразе или .јсон импорт. Ово вам омогућава да безбедно потписујете трансакције и управљате имовином у {Sora} мрежи.",
             "createAccount": "Направи налог",
             "importAccount": "Увези налог"
         },

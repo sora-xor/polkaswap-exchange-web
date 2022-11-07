@@ -195,9 +195,6 @@
             "title": "Tokens",
             "switchBtn": "Solo activos verificados"
         },
-        "AddAssetNFT": {
-            "title": "NFT"
-        },
         "searchInputText": "Buscar por ID de activo, nombre o símbolo de etiqueta"
     },
     "createToken": {
@@ -240,7 +237,6 @@
         "provideContent": "Proporcionar contenido",
         "selectLocalFile": "Seleccionar archivo local",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Fuente",
@@ -393,11 +389,11 @@
     "node": {
         "errors": {
             "connection": "Se ha producido un error al conectarse al nodo\n{address}\n",
-            "network": "El nodo\n {address}\n es de otra red\n",
-            "existing": "Este nodo ya está agregado: '{title}'"
+            "network": "El nodo\n{address}\n es de otra red\n",
+            "existing": "Este nodo ya está agregado: {title}\n"
         },
         "messages": {
-            "connected": "Conexión establecida con el nodo\n{address}",
+            "connected": "Conexión establecida con el nodo\n{address}\n",
             "selectNode": "Por favor seleccione el nodo a conectar de la lista de nodos"
         },
         "warnings": {
@@ -595,7 +591,7 @@
     },
     "bridgeTransaction": {
         "details": "{from} para {to}",
-        "for": "por",
+        "for": " por ",
         "steps": {
             "step": "{step} de 2",
             "step1": "primero",
@@ -722,7 +718,7 @@
         "title": "Ajustes",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
-            "main": "- opción para elegir entre mercado primario (TBC), mercado secundario (XYK) o un algoritmo inteligente combinado para garantizar el mejor precio para cualquier transacción dada."
+            "main": " - opción para elegir entre mercado primario (TBC), mercado secundario (XYK) o un algoritmo inteligente combinado para garantizar el mejor precio para cualquier transacción dada."
         },
         "slippageTolerance": "TOLERANCIA AL DESLIZAMIENTO",
         "slippageToleranceHint": "Su transacción se revertirá si el precio cambia desfavorablemente en más de este porcentaje.",
@@ -1024,39 +1020,39 @@
     "historyErrorMessages": {
         "generalError": "Algo salió mal",
         "balances": {
-            "LiquidityRestrictions": "Las restricciones de liquidez de la cuenta impiden el retiro"
+            "liquidityrestrictions": "Las restricciones de liquidez de la cuenta impiden el retiro"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "El saldo de la fuente no es lo suficientemente grande",
-            "TargetBalanceIsNotLargeEnough": "El saldo de destino no es lo suficientemente grande",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Las cantidades proporcionadas son demasiado diversas",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Los montos están fuera de los límites requeridos",
-            "UnableToDepositXorLessThanMinimum": "XOR inferior al valor mínimo (0,007)",
-            "ZeroValueInAmountParameter": "El parámetro de cantidad tiene valor cero"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "El saldo de la fuente no es lo suficientemente grande",
+            "targetbalanceisnotlargeenough": "El saldo de destino no es lo suficientemente grande",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Las cantidades proporcionadas son demasiado diversas",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Los montos están fuera de los límites requeridos",
+            "unabletodepositxorlessthanminimum": "XOR inferior al valor mínimo (0,007)",
+            "zerovalueinamountparameter": "El parámetro de cantidad tiene valor cero"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "El par de la piscina ya existe",
-            "SlippageLimitExceeded": "La tolerancia al deslizamiento no ha alcanzado los límites adecuados"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "El par de la piscina ya existe",
+            "slippagelimitexceeded": "La tolerancia al deslizamiento no ha alcanzado los límites adecuados"
         },
         "referrals": {
-            "AlreadyHasReferrer": "La cuenta ya tiene un referente",
-            "ReferrerInsufficientBalance": "El remitente no tiene suficiente saldo reservado"
+            "alreadyhasreferrer": "La cuenta ya tiene un referente",
+            "referrerinsufficientbalance": "El remitente no tiene suficiente saldo reservado"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "El programa de recompensas ya ha finalizado",
-            "CantCalculateReward": "No se pudo realizar el cálculo de la recompensa",
-            "NoRewardsForAsset": "No hay recompensas para este activo."
+        "vestedrewards": {
+            "rewardssupplyshortage": "El programa de recompensas ya ha finalizado",
+            "cantcalculatereward": "No se pudo realizar el cálculo de la recompensa",
+            "norewardsforasset": "No hay recompensas para este activo."
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "La fuente de liquidez seleccionada no está permitida"
+        "liquidityproxy": {
+            "forbiddenfilter": "La fuente de liquidez seleccionada no está permitida"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Fondos insuficientes",
-            "InsufficientLPTokens": "Tokens de provisión de liquidez insuficientes",
-            "PoolDoesNotHaveRewards": "La piscina no tiene recompensas."
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Fondos insuficientes",
+            "insufficientlptokens": "Tokens de provisión de liquidez insuficientes",
+            "pooldoesnothaverewards": "La piscina no tiene recompensas."
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Ocurrió un error al calcular el precio"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Ocurrió un error al calcular el precio"
         }
     },
     "receivedText": "Recibido",
@@ -1073,8 +1069,7 @@
     "ofText": "{first} de {second}",
     "filter": {
         "all": "Todo",
-        "token": "Tokens",
-        "nft": "NFTs",
+        "token": "Monedas",
         "verifiedOnly": "Mostrar solo activos verificados",
         "zeroBalance": "Ocultar activos de saldo 0",
         "showAssets": "Mostrar activos",

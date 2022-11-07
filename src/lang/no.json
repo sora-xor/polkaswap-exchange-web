@@ -54,7 +54,7 @@
             "EthBridgeOutgoing": "Overførte {amount} {symbol} fra {Sora} til {Ethereum}"
         },
         "error": {
-            "Transfer": "Kunne ikke sende {amount} {symbol} til {address}",
+            "Transfer": "Kunne ikke {action} {amount} {symbol} {direction} {address}",
             "Swap": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Kunne ikke levere {amount} {symbol} og {amount2} {symbol2}",
             "RemoveLiquidity": "Kunne ikke fjerne {amount} {symbol} og {amount2} {symbol2}",
@@ -88,12 +88,12 @@
     "polkadotjs": {
         "noExtensions": "Finner ingen {PolkadotJs} utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Det ser ikke ut til å være noen kontoer i {extension} utvidelsen. Legg til en konto, og prøv på nytt.",
-        "noAccount": "{PolkadotJs} kontofeil. Sjekk kontoen din i {PolkadotJs} utvidelsen",
+        "noAccount": "{extension} kontofeil. Sjekk kontoen din i {extension} utvidelsen",
         "noExtension": "Ingen {extension} -utvidelse ble funnet. Installer den og last inn denne siden på nytt",
         "noSigner": "Ingen tilgang. Gå til utvidelsesinnstillingene for {extension} og åpne «Administrer nettstedtilgang» for å tillate."
     },
     "connection": {
-        "title": "SORA Nettverkskonto",
+        "title": "{Sora} Nettverkskonto",
         "text": "Koble til {Sora} Network-kontoene dine eller opprett nye med {PolkadotJs} nettleserutvidelse. Denne utvidelsen lar deg sikkert signere transaksjoner og administrere aktiva i {Sora} Network.",
         "noAccounts": "Finner ingen konto i nettleserutvidelsen {extension}. Legg til en konto, og prøv på nytt.",
         "selectAccount": "Velg kontoen du vil arbeide med",
@@ -195,9 +195,6 @@
             "title": "Tokens",
             "switchBtn": "Kun bekreftede eiendeler"
         },
-        "AddAssetNFT": {
-            "title": "NFT-er"
-        },
         "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol"
     },
     "createToken": {
@@ -240,7 +237,6 @@
         "provideContent": "Gi innhold",
         "selectLocalFile": "Velg lokal fil",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Kilde",
@@ -392,12 +388,12 @@
     },
     "node": {
         "errors": {
-            "connection": "Det oppstod en feil under tilkobling til noden\n{address}",
-            "network": "Noden\n{address}\ner fra et annet nettverk",
-            "existing": "Noden er allerede lagt til: '{title}'"
+            "connection": "Det oppstod en feil under tilkobling til noden\n{address}\n",
+            "network": "Noden\n{address}\n er fra et annet nettverk\n",
+            "existing": "Denne noden er allerede lagt til: {title}\n"
         },
         "messages": {
-            "connected": "Tilkobling etablert til node\n{address}",
+            "connected": "Tilkobling etablert til node\n{address}\n",
             "selectNode": "Velg en node som skal tilkobles fra listen"
         },
         "warnings": {
@@ -460,7 +456,7 @@
         "description": "Utveksling på tvers av kjeder av aktiva, enkel opprettelse og notering av nye aktiva, og de enkleste byttene noensinne. {Polkadot} interoperable fremtid er her, og vi er i forkant!",
         "trading": {
             "title": "Raskere handel",
-            "first": "{AppName} er en ikke-depot-, krysskjedet AMM DEX-protokoll for å bytte tokens basert på Polkadot- og {Kusama}-relékjeder, {Polkadot} og {Kusama} parachains, og blokkjeder direkte forbundet via broer.",
+            "first": "{AppName} er en ikke-depot-, krysskjedet AMM DEX-protokoll for å bytte tokens basert på {Polkadot}- og {Kusama}-relékjeder, {Polkadot} og {Kusama} parachains, og blokkjeder direkte forbundet via broer.",
             "second": "{AppName} fjerner pålitelige mellomledd og gir mulighet for raskere handel",
             "third": "{AppName} er et samfunnsprosjekt og utviklere samarbeider om åpen kildekode ved hjelp av"
         },
@@ -472,7 +468,7 @@
         },
         "swap": {
             "title": "Bytt hvilket som helst token",
-            "first": "Gå utover grensene for nåværende DEX-er ved å legge til tokens fra Polkadot-økosystemet så vel som andre blokkjeder.",
+            "first": "Gå utover grensene for nåværende DEX-er ved å legge til tokens fra {Polkadot}-økosystemet så vel som andre blokkjeder.",
             "second": "Lag, liste og bytt dine egne tokens på {Sora} -nettverket.",
             "third": "Vår kjerneinfrastruktur bruker Parity Substrate, som er mer skalerbar enn {Ethereum}, og benytter ikke dyr gruvedrift for konsensus."
         },
@@ -491,7 +487,7 @@
                 "desc": "Utvid den desentraliserte verdensøkonomien ved å koble flere kjeder til {Sora} og {AppName} ved hjelp av {Hashi}-broprotokollen."
             }
         },
-        "network": "{AppName} er bygget på {Sora} Network, med fokus på interoperabilitet for å koble resten av kryptoøkosystemet til Polkadot."
+        "network": "{AppName} er bygget på {Sora} -nettverket, med fokus på interoperabilitet for å koble resten av kryptoøkosystemet til {Polkadot} ."
     },
     "exchange": {
         "Swap": "Bytte",
@@ -595,7 +591,7 @@
     },
     "bridgeTransaction": {
         "details": "{from} for {to}",
-        "for": "for",
+        "for": " for ",
         "steps": {
             "step": "{step} av 2",
             "step1": "1.",
@@ -678,7 +674,7 @@
         "pricePool": "Priser og gebyrer",
         "shareOfPool": "Andel av pool",
         "firstPerSecond": "@:firstPerSecond",
-        "firstSecondPoolTokens": "{first} - {second} Pool",
+        "firstSecondPoolTokens": "{first}-{second} Pool",
         "connect": "Koble til lommebok",
         "supply": "Forsyning",
         "yourPosition": "Din posisjon",
@@ -695,7 +691,7 @@
     "confirmSupply": {
         "title": "Din pool andel vil være",
         "outputDescription": "Beløp er estimert. Hvis prisen endres mer enn {slippageTolerance}%, vil transaksjonen gå tilbake.",
-        "poolTokensBurned": "{first} - {second} Pool tokens brent",
+        "poolTokensBurned": "{first}-{second} Pool tokens brent",
         "price": "Pris"
     },
     "addLiquidity": {
@@ -722,7 +718,7 @@
         "title": "Innstillinger",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
-            "main": "- mulighet til å velge mellom Primærmarkedet (TBC), Sekundærmarkedet (XYK) eller en kombinert smart algoritme for garantert beste pris for en gitt transaksjon."
+            "main": " - mulighet til å velge mellom Primærmarkedet (TBC), Sekundærmarkedet (XYK) eller en kombinert smart algoritme for garantert beste pris for en gitt transaksjon."
         },
         "slippageTolerance": "SLIPPAGE TOLERANSE",
         "slippageToleranceHint": "Transaksjonen din vil gå tilbake hvis prisen endres ugunstig med mer enn denne prosentandelen.",
@@ -797,7 +793,7 @@
             "MarketMakerVolume": "Markedsproduksjon",
             "LiquidityProvisionFarming": "Farming"
         },
-        "vested": "Midlertidig låst",
+        "vested": "midlertidig låst",
         "forText": "for",
         "totalVested": "Total belønning",
         "claimableAmountDoneVesting": "Tilgjengelige belønninger",
@@ -911,7 +907,7 @@
         "bondedXOR": "XOR Bundet",
         "referralsNumber": "{number}-henvisninger",
         "startInviting": "Bond XOR for å henvise andre",
-        "preview": "Inviter nye brukere og få 10% fra deres transaksjonsgebyrer.<br \/>For å starte, obligasjon et hvilket som helst beløp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Lær mer<\/a>",
+        "preview": "Inviter nye brukere og få 10% fra deres transaksjonsgebyrer.<br\/>For å starte, obligasjon et hvilket som helst beløp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Lær mer<\/a>",
         "deposit": "Innskudd",
         "balance": "Balanse",
         "networkFee": "@:networkFeeText",
@@ -978,7 +974,7 @@
     "mobilePopup": {
         "sideMenu": "Få {Sora} Wallet",
         "header": "Last ned {Sora} Wallet med {polkaswapHighlight} funksjoner",
-        "info": "Bytt ut tokens fra forskjellige nettverk - {Sora}, {Ethereum}, Polkadot, {Kusama}. Gi likviditetspool og tjen % fra vekslingsgebyrer."
+        "info": "Bytt ut tokens fra forskjellige nettverk - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Gi likviditetspool og tjen % fra vekslingsgebyrer."
     },
     "releaseNotesText": "Utgivelsesnotater",
     "copiedText": "Kopiert!",
@@ -1024,39 +1020,39 @@
     "historyErrorMessages": {
         "generalError": "Noe gikk galt",
         "balances": {
-            "LiquidityRestrictions": "Kontolikviditetsbegrensninger forhindrer uttak"
+            "liquidityrestrictions": "Kontolikviditetsbegrensninger forhindrer uttak"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Kildebalansen er ikke stor nok",
-            "TargetBalanceIsNotLargeEnough": "Destinasjonsbalansen er ikke stor nok",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Forutsatt at beløpene er for forskjellige",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Beløp er utenfor påkrevde grenser",
-            "UnableToDepositXorLessThanMinimum": "XOR lavere enn minimumsverdien (0,007)",
-            "ZeroValueInAmountParameter": "Mengdeparameteren har nullverdi"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Kildebalansen er ikke stor nok",
+            "targetbalanceisnotlargeenough": "Destinasjonsbalansen er ikke stor nok",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Forutsatt at beløpene er for forskjellige",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Beløp er utenfor påkrevde grenser",
+            "unabletodepositxorlessthanminimum": "XOR lavere enn minimumsverdien (0,007)",
+            "zerovalueinamountparameter": "Mengdeparameteren har nullverdi"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "Pool-par eksisterer allerede",
-            "SlippageLimitExceeded": "Sklitoleranse har ikke nådd riktige grenser"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Pool-par eksisterer allerede",
+            "slippagelimitexceeded": "Sklitoleranse har ikke nådd riktige grenser"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Kontoen har allerede en henvisning",
-            "ReferrerInsufficientBalance": "Henviseren har ikke nok av reservert saldo"
+            "alreadyhasreferrer": "Kontoen har allerede en henvisning",
+            "referrerinsufficientbalance": "Henviseren har ikke nok av reservert saldo"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Belønningsprogrammet er allerede ferdig",
-            "CantCalculateReward": "Kunne ikke utføre belønningsberegning",
-            "NoRewardsForAsset": "Det er ingen belønninger for denne ressursen"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Belønningsprogrammet er allerede ferdig",
+            "cantcalculatereward": "Kunne ikke utføre belønningsberegning",
+            "norewardsforasset": "Det er ingen belønninger for denne ressursen"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "Valgt likviditetskilde er ikke tillatt"
+        "liquidityproxy": {
+            "forbiddenfilter": "Valgt likviditetskilde er ikke tillatt"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Utilstrekkelige midler",
-            "InsufficientLPTokens": "Utilstrekkelige likviditetsavsetningssymboler",
-            "PoolDoesNotHaveRewards": "Bassenget har ikke belønninger"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Utilstrekkelige midler",
+            "insufficientlptokens": "Utilstrekkelige likviditetsavsetningssymboler",
+            "pooldoesnothaverewards": "Bassenget har ikke belønninger"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Det oppsto en feil under beregning av prisen"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Det oppsto en feil under beregning av prisen"
         }
     },
     "receivedText": "Tok imot",
@@ -1073,8 +1069,7 @@
     "ofText": "{first} av {second}",
     "filter": {
         "all": "Alle",
-        "token": "Tokens",
-        "nft": "NFT-er",
+        "token": "Valutaer",
         "verifiedOnly": "Vis kun bekreftede eiendeler",
         "zeroBalance": "Skjul 0 saldoaktiva",
         "showAssets": "Vis eiendeler",

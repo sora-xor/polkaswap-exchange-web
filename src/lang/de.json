@@ -54,7 +54,7 @@
             "EthBridgeOutgoing": "Übertragen von {amount} {symbol} von {Sora} nach {Ethereum}"
         },
         "error": {
-            "Transfer": "Senden von {amount} {symbol} an {address} fehlgeschlagen",
+            "Transfer": "Fehler bei {action} {amount} {symbol} {direction} {address}",
             "Swap": "Tausch von {amount} {symbol} gegen {amount2} {symbol2} fehlgeschlagen",
             "AddLiquidity": "Fehler bei der Bereitstellung von {amount} {symbol} und {amount2} {symbol2}",
             "RemoveLiquidity": "Fehler beim Entfernen von {amount} {symbol} und {amount2} {symbol2}",
@@ -93,7 +93,7 @@
         "noSigner": "Zugriff abgelehnt. Gehe zu den Erweiterungseinstellungen von {extension} und öffne \"Website-Zugriff verwalten\", um dies zuzulassen."
     },
     "connection": {
-        "title": "SORA-Netzwerk-Konto",
+        "title": "{Sora}-Netzwerk-Konto",
         "text": "Verbinde deine {Sora}-Netzwerk-Konten oder erstelle neue Konten mit der {PolkadotJs} -Browser-Erweiterung. Diese Erweiterung ermöglicht es dir, Transaktionen sicher zu unterzeichnen und Assets im {Sora}-Netzwerk zu verwalten.",
         "noAccounts": "Es wurde kein Konto in deiner {extension} Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
@@ -195,9 +195,6 @@
             "title": "Token",
             "switchBtn": "Nur verifizierte Assets"
         },
-        "AddAssetNFT": {
-            "title": "NFTs"
-        },
         "searchInputText": "Suche nach Asset-ID, Name oder Tickersymbol"
     },
     "createToken": {
@@ -240,7 +237,6 @@
         "provideContent": "Inhalt bereitstellen",
         "selectLocalFile": "Lokale Datei auswählen",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Quelle",
@@ -393,11 +389,11 @@
     "node": {
         "errors": {
             "connection": "Beim Verbinden mit dem Node ist ein Fehler aufgetreten\n {address}\n",
-            "network": "Der Node\n {address}\n ist aus einem anderen Netzwerk\n",
-            "existing": "Dieser Node wurde bereits hinzugefügt: '{title}'\n"
+            "network": "Der Node\n{address}\n ist aus einem anderen Netzwerk\n",
+            "existing": "Dieser Node wurde bereits hinzugefügt: {title}\n"
         },
         "messages": {
-            "connected": "Verbindung mit dem Node hergestellt\n {address}\n",
+            "connected": "Verbindung mit dem Node hergestellt\n{address}\n",
             "selectNode": "Bitte, wähle den zu verbindenden Node aus der Nodeliste"
         },
         "warnings": {
@@ -479,7 +475,7 @@
         "pswap": {
             "title": "PSWAP Token",
             "first": "PSWAP wurde von der Community Governance erstellt, indem über seine Veröffentlichung abgestimmt wurde. Es ist ein Utility- und Governance-Token, der verwendet wird, um Liquiditätsanbieter auf {AppName} zu belohnen. Im Gegensatz zu den meisten anderen Belohnungstoken wird PSWAP mit Transaktionen verbrannt und das Angebot nimmt im Laufe der Zeit ab.",
-            "second": "Die {percent}% Gebühr für jeden Tausch auf der {Polkadot} DEX wird genutzt, um PSWAP-Token zurückzukaufen, die dann verbrannt werden. Zu Beginn werden 90% der verbrannten PSWAP-Token neu gemintet, um sie an die Liquiditätsanbieter zu verteilen, aber mit der Zeit verringert sich der Prozentsatz auf letztlich 35% nach 4 Jahren."
+            "second": "Die {percent}% Gebühr für jeden Tausch auf der {AppName} DEX wird genutzt, um PSWAP-Token zurückzukaufen, die dann verbrannt werden. Zu Beginn werden 90% der verbrannten PSWAP-Token neu gemintet, um sie an die Liquiditätsanbieter zu verteilen, aber mit der Zeit verringert sich der Prozentsatz auf letztlich 35% nach 4 Jahren."
         },
         "links": {
             "first": {
@@ -722,7 +718,7 @@
         "title": "Einstellungen",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
-            "main": "- die Möglichkeit, zwischen dem Primärmarkt (TBC), dem Sekundärmarkt (XYK) oder einem kombinierten intelligenten Algorithmus zu wählen, der den besten Preis für eine bestimmte Transaktion garantiert."
+            "main": " - die Möglichkeit, zwischen dem Primärmarkt (TBC), dem Sekundärmarkt (XYK) oder einem kombinierten intelligenten Algorithmus zu wählen, der den besten Preis für eine bestimmte Transaktion garantiert."
         },
         "slippageTolerance": "ABWEICHUNGSTOLERANZ",
         "slippageToleranceHint": "Die Transaktion wird rückgängig gemacht, wenn sich der Preis um mehr als diesen Prozentsatz zu deinen Ungunsten verändert.",
@@ -892,8 +888,8 @@
     "learnMoreText": "Mehr erfahren",
     "marketMakerCountdown": {
         "title": "Market Maker Countdown",
-        "blocks": "Blocks",
-        "daysLeft": "Tage übrig",
+        "blocks": "blocks",
+        "daysLeft": "tage übrig",
         "txs": "Transaktionen",
         "volume": "MM Transaktions-Volume",
         "description": "20 Millionen PSWAP \/ Monat werden an Market Makers mit mindestens 500 Transaktionen \/ Monat im Wert von über 1 XOR verteilt."
@@ -911,7 +907,7 @@
         "bondedXOR": "XOR gebonded",
         "referralsNumber": "{number} Referrals",
         "startInviting": "Bonde XOR, um andere zu empfehlen",
-        "preview": "Lade neue Nutzer ein und erhalte 10% von deren Transaktionsgebühren.<br \/>Um zu beginnen, bonde eine beliebige Menge an XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Mehr erfahren<\/a>",
+        "preview": "Lade neue Nutzer ein und erhalte 10% von deren Transaktionsgebühren.<br\/>Um zu beginnen, bonde eine beliebige Menge an XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Mehr erfahren<\/a>",
         "deposit": "Einzahlung",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
@@ -1024,39 +1020,39 @@
     "historyErrorMessages": {
         "generalError": "Etwas ist schief gelaufen",
         "balances": {
-            "LiquidityRestrictions": "Einschränkungen der Kontoliquidität verhindern eine Auszahlung"
+            "liquidityrestrictions": "Einschränkungen der Kontoliquidität verhindern eine Auszahlung"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Quellguthaben ist nicht groß genug",
-            "TargetBalanceIsNotLargeEnough": "Zielguthaben ist nicht groß genug",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Vorausgesetzte Beträge sind zu unterschiedlich",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Die Beträge liegen außerhalb der erforderlichen Grenzen",
-            "UnableToDepositXorLessThanMinimum": "XOR niedriger als der Mindestwert (0,007)",
-            "ZeroValueInAmountParameter": "Betragsparameter hat Nullwert"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Quellguthaben ist nicht groß genug",
+            "targetbalanceisnotlargeenough": "Zielguthaben ist nicht groß genug",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Vorausgesetzte Beträge sind zu unterschiedlich",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Die Beträge liegen außerhalb der erforderlichen Grenzen",
+            "unabletodepositxorlessthanminimum": "XOR niedriger als der Mindestwert (0,007)",
+            "zerovalueinamountparameter": "Betragsparameter hat Nullwert"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "Poolpaar existiert bereits",
-            "SlippageLimitExceeded": "Slippagetoleranz hat die richtige Grenze nicht erreicht"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Poolpaar existiert bereits",
+            "slippagelimitexceeded": "Slippagetoleranz hat die richtige Grenze nicht erreicht"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Das Konto hat bereits einen Referrer",
-            "ReferrerInsufficientBalance": "Referrer hat nicht genug Guthaben"
+            "alreadyhasreferrer": "Das Konto hat bereits einen Referrer",
+            "referrerinsufficientbalance": "Referrer hat nicht genug Guthaben"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Das Prämienprogramm ist bereits beendet",
-            "CantCalculateReward": "Prämienberechnung konnte nicht durchgeführt werden",
-            "NoRewardsForAsset": "Für dieses Asset gibt es keine Belohnungen"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Das Prämienprogramm ist bereits beendet",
+            "cantcalculatereward": "Prämienberechnung konnte nicht durchgeführt werden",
+            "norewardsforasset": "Für dieses Asset gibt es keine Belohnungen"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "Ausgewählte Liquiditätsquelle ist nicht zulässig"
+        "liquidityproxy": {
+            "forbiddenfilter": "Ausgewählte Liquiditätsquelle ist nicht zulässig"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Unzureichende Mittel",
-            "InsufficientLPTokens": "Unzureichende Liquiditätsbereitstellungstoken",
-            "PoolDoesNotHaveRewards": "Pool hat keine Belohnungen"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Unzureichende Mittel",
+            "insufficientlptokens": "Unzureichende Liquiditätsbereitstellungstoken",
+            "pooldoesnothaverewards": "Pool hat keine Belohnungen"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Bei der Berechnung des Preises ist ein Fehler aufgetreten"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Bei der Berechnung des Preises ist ein Fehler aufgetreten"
         }
     },
     "receivedText": "Erhalten",
@@ -1073,8 +1069,7 @@
     "ofText": "{first} von {second}",
     "filter": {
         "all": "Alle",
-        "token": "Token",
-        "nft": "NFTs",
+        "token": "Währungen",
         "verifiedOnly": "Nur verifizierte Assets anzeigen",
         "zeroBalance": "0 Guthaben ausblenden",
         "showAssets": "Vermögen anzeigen",

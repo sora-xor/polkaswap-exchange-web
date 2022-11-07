@@ -34,7 +34,7 @@
         "ClaimRewards": "Zatražite nagrade",
         "andText": "i",
         "finalized": {
-            "Transfer": "Poslan je {amount} {symbol} na {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Zamijenjeno je {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Isporučeno {amount} {symbol} i {amount2} {symbol2}",
             "RemoveLiquidity": "Uklonjeno {amount} {symbol} i {amount2} {symbol2}",
@@ -54,7 +54,7 @@
             "EthBridgeOutgoing": "Preneseno {amount} {symbol} s {Sora} na {Ethereum}"
         },
         "error": {
-            "Transfer": "Nije uspjelo {amount} {symbol} u {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address} nije uspio",
             "Swap": "Zamjena {amount} {symbol} za {amount2} {symbol2} nije uspjela",
             "AddLiquidity": "Opskrba {amount} {symbol} i {amount2} {symbol2} nije uspjela",
             "RemoveLiquidity": "Uklanjanje{amount} {symbol} i {amount2} {symbol2} nije uspjelo",
@@ -88,7 +88,7 @@
     "polkadotjs": {
         "noExtensions": "Nije pronađeno proširenje {PolkadotJs}. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Čini se da u vašem proširenju {extension} nema računa. Dodajte račun i pokušajte ponovo.",
-        "noAccount": "{PolkadotJs} pogreška računa. Provjerite svoj račun u proširenju {PolkadotJs}",
+        "noAccount": "{extension} pogreška računa. Provjerite svoj račun u proširenju {extension}",
         "noExtension": "Nije pronađeno {extension} . Instalirajte ga i ponovno učitajte ovu stranicu",
         "noSigner": "Pristup odbijen. Idite na postavke {extension} i otvorite \"Upravljanje pristupom web-mjestu\" da dopustite."
     },
@@ -195,9 +195,6 @@
             "title": "Tokeni",
             "switchBtn": "Samo provjerena sredstva"
         },
-        "AddAssetNFT": {
-            "title": "NFT"
-        },
         "searchInputText": "Pretraživanje po ID-u sredstva, nazivu ili simbolu oznake"
     },
     "createToken": {
@@ -240,7 +237,6 @@
         "provideContent": "Dajte sadržaj",
         "selectLocalFile": "Odaberite lokalnu datoteku",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Izvor",
@@ -392,12 +388,12 @@
     },
     "node": {
         "errors": {
-            "connection": "Došlo je do pogreške pri povezivanju s nodom\n {address}\n",
+            "connection": "Došlo je do pogreške pri povezivanju s nodom\n{address}\n",
             "network": "Nod\n{address}\n je s druge mreže\n",
-            "existing": "Ovaj nod je već dodan: '{title}'\n"
+            "existing": "Ovaj nod je već dodan: {title}\n"
         },
         "messages": {
-            "connected": "Veza uspostavljena nodom\n {address}\n",
+            "connected": "Veza uspostavljena nodom\n{address}\n",
             "selectNode": "Molimo odaberite nod za povezivanje s popisa nodova"
         },
         "warnings": {
@@ -468,13 +464,13 @@
             "title": "Bezgranična likvidnost",
             "first": "{AppName} kombinira više izvora likvidnosti pod zajedničkim algoritmom za prikupljanje likvidnosti, koji djeluju potpuno na lancu, na način od povjerenja i decentraliziran.",
             "second": "Kada trgovci pozovu funkciju zamjene, algoritam za prikupljanje likvidnosti ispunit će račune koristeći najbolje ponude iz svih izvora likvidnosti. Izvori likvidnosti mogu biti drugi DEX-ovi, knjige narudžbi ili drugi izvori vođeni API-jem.",
-            "third": "Budući da je {AppName} projekt otvorenog koda, svatko može dodati više izvora likvidnosti doprinoseći polkaswapskoj bazi kodova."
+            "third": "Budući da je {AppName} projekt otvorenog koda, svatko može dodati više izvora likvidnosti doprinoseći bazi koda {AppName}."
         },
         "swap": {
             "title": "Zamijenite bilo koji token",
             "first": "Prijeđite preko granica trenutnih DEX-a dodavanjem tokena iz {Polkadot} ekosustava, kao i drugih blockchaina.",
             "second": "Stvorite, navedite i trgujte vlastitim tokenima na mreži {Sora}.",
-            "third": "Naša temeljna infrastruktura koristi Parity Substrate, koji je skalabilniji od Ethereuma i ne koristi skupo rudarstvo za postizanje konsenzusa."
+            "third": "Naša temeljna infrastruktura koristi Parity Substrate, koji je skalabilniji od {Ethereum} i ne koristi skupo rudarenje za konsenzus."
         },
         "pswap": {
             "title": "PSWAP tokeni",
@@ -487,7 +483,7 @@
                 "desc": "Osigurajte budućnost {Sora} mreže i decentraliziranih aplikacija kao što je {AppName} i usput zaradite nagrade tako što ćete postati {Sora} validator."
             },
             "second": {
-                "title": "Spojite lanac na SORИ",
+                "title": "Spojite lanac na {Sora}",
                 "desc": "Povećajte decentraliziranu svjetsku ekonomiju povezivanjem više lanaca sa {Sora}-om i {AppName} pomoću {Hashi} most protokola."
             }
         },
@@ -595,7 +591,7 @@
     },
     "bridgeTransaction": {
         "details": "{from} za {to}",
-        "for": "za",
+        "for": " za ",
         "steps": {
             "step": "{step} od 2",
             "step1": "1.",
@@ -678,7 +674,7 @@
         "pricePool": "Cijene i naknade",
         "shareOfPool": "Udio u pulu",
         "firstPerSecond": "@:firstPerSecond",
-        "firstSecondPoolTokens": "{first} - {second} Pul",
+        "firstSecondPoolTokens": "{first}-{second} Pul",
         "connect": "Spojite novčanik",
         "supply": "Opskrba",
         "yourPosition": "Vaša pozicija",
@@ -695,7 +691,7 @@
     "confirmSupply": {
         "title": "Vaš udio u pulu bit će",
         "outputDescription": "Procjenjuje se izlaz. Ako se cijena promijeni više od {slippageTolerance}%, vaša će se transakcija vratiti.",
-        "poolTokensBurned": "{first} - {second} Spaljeni pul tokeni",
+        "poolTokensBurned": "{first}-{second} Spaljeni pul tokeni",
         "price": "Cijena"
     },
     "addLiquidity": {
@@ -911,7 +907,7 @@
         "bondedXOR": "XOR vezano",
         "referralsNumber": "Broj preporuka {number}",
         "startInviting": "Povežite XOR za upućivanje drugih",
-        "preview": "Pozovite nove korisnike i ostvarite 10% od njihovih transakcijskih naknada. <br \/> Za početak povežite bilo koju količinu XORa. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Saznajte više <\/a>",
+        "preview": "Pozovite nove korisnike i ostvarite 10% od njihovih transakcijskih naknada. <br\/> Za početak povežite bilo koju količinu XORa. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Saznajte više <\/a>",
         "deposit": "Polog",
         "balance": "Stanje",
         "networkFee": "@:networkFeeText",
@@ -1024,39 +1020,39 @@
     "historyErrorMessages": {
         "generalError": "Nešto je pošlo po zlu",
         "balances": {
-            "LiquidityRestrictions": "Ograničenja likvidnosti računa sprječavaju povlačenje"
+            "liquidityrestrictions": "Ograničenja likvidnosti računa sprječavaju povlačenje"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Bilans izvora nije dovoljno velik",
-            "TargetBalanceIsNotLargeEnough": "Stanje odredišta nije dovoljno veliko",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Pod uvjetom da su iznosi previše raznoliki",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Iznosi su izvan potrebnih granica",
-            "UnableToDepositXorLessThanMinimum": "XOR manji od minimalne vrijednosti (0,007)",
-            "ZeroValueInAmountParameter": "Parametar iznosa ima nultu vrijednost"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Bilans izvora nije dovoljno velik",
+            "targetbalanceisnotlargeenough": "Stanje odredišta nije dovoljno veliko",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Pod uvjetom da su iznosi previše raznoliki",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Iznosi su izvan potrebnih granica",
+            "unabletodepositxorlessthanminimum": "XOR manji od minimalne vrijednosti (0,007)",
+            "zerovalueinamountparameter": "Parametar iznosa ima nultu vrijednost"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "Par bazena već postoji",
-            "SlippageLimitExceeded": "Tolerancija klizanja nije dosegla odgovarajuće granice"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Par bazena već postoji",
+            "slippagelimitexceeded": "Tolerancija klizanja nije dosegla odgovarajuće granice"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Račun već ima preporuku",
-            "ReferrerInsufficientBalance": "Preporučatelj nema dovoljno rezerviranog stanja"
+            "alreadyhasreferrer": "Račun već ima preporuku",
+            "referrerinsufficientbalance": "Preporučatelj nema dovoljno rezerviranog stanja"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Program nagrađivanja je već završen",
-            "CantCalculateReward": "Izračun nagrade nije uspio",
-            "NoRewardsForAsset": "Za ovu imovinu nema nagrada"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Program nagrađivanja je već završen",
+            "cantcalculatereward": "Izračun nagrade nije uspio",
+            "norewardsforasset": "Za ovu imovinu nema nagrada"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "Odabrani izvor likvidnosti nije dopušten"
+        "liquidityproxy": {
+            "forbiddenfilter": "Odabrani izvor likvidnosti nije dopušten"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Nedostatna sredstva",
-            "InsufficientLPTokens": "Nedovoljni tokeni za osiguranje likvidnosti",
-            "PoolDoesNotHaveRewards": "Pool nema nagrade"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Nedostatna sredstva",
+            "insufficientlptokens": "Nedovoljni tokeni za osiguranje likvidnosti",
+            "pooldoesnothaverewards": "Pool nema nagrade"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Došlo je do greške prilikom izračuna cijene"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Došlo je do greške prilikom izračuna cijene"
         }
     },
     "receivedText": "Primljeno",
@@ -1073,8 +1069,7 @@
     "ofText": "{first} od {second}",
     "filter": {
         "all": "Sve",
-        "token": "Tokeni",
-        "nft": "NFT-ovi",
+        "token": "Valute",
         "verifiedOnly": "Prikaži samo provjerenu imovinu",
         "zeroBalance": "Sakrij 0 salda imovine",
         "showAssets": "Prikaži imovinu",
