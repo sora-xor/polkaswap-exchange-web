@@ -580,3 +580,193 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
   }
 }
+
+@mixin explore-table {
+  $fixed-column-width: 280px;
+  $cell-index-width: 40px;
+  $cell-logo-width: 32px;
+
+  // table misc styles
+  .explore-table {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1;
+
+    &__primary {
+      color: var(--s-color-base-content-secondary);
+    }
+    &__secondary {
+      color: var(--s-color-base-content-quaternary);
+      font-size: var(--s-font-size-extra-mini);
+    }
+    &-head {
+      display: flex;
+      align-items: center;
+      margin: auto;
+    }
+    &-pagination {
+      display: flex;
+      margin-top: $inner-spacing-medium;
+    
+      .el-pagination__total {
+        margin: auto;
+      }
+    }
+  }
+
+  // el-table style overrides
+  .explore-table.el-table {
+    background: transparent;
+  
+    thead {
+      text-transform: uppercase;
+      font-size: var(--s-font-size-small);
+      letter-spacing: var(--s-letter-spacing-mini);
+  
+      [class^='s-icon-'],
+      [class*=' s-icon-'] {
+        @include icon-styles;
+      }
+    }
+  
+    tr,
+    th {
+      &,
+      &:hover {
+        & > td,
+        & > th {
+          background: var(--s-color-utility-surface);
+          .cell {
+            padding: $inner-spacing-tiny $inner-spacing-mini;
+          }
+        }
+      }
+    }
+  
+    .el-table__fixed {
+      height: 100% !important;
+  
+      &:before,
+      &:after {
+        content: unset;
+      }
+  
+      .el-table__fixed-body-wrapper {
+        height: 100% !important;
+      }
+    }
+  
+    .el-table__body-wrapper {
+      height: auto !important;
+  
+      &.is-scrolling-left ~ .el-table__fixed {
+        box-shadow: inherit;
+      }
+  
+      .el-scrollbar__bar.is-horizontal {
+        right: 0;
+        left: unset;
+        width: calc(100% - #{$fixed-column-width});
+      }
+    }
+  
+    &.el-table--scrollable-x {
+      .el-table__body-wrapper {
+        overflow-x: hidden;
+      }
+    }
+  
+    .el-table__empty-block {
+      width: 100% !important;
+    }
+  
+    .el-table__empty-text {
+      color: var(--s-color-base-content-tertiary); // TODO [1.4]: remove after fix in ui-lib
+    }
+  }
+
+  // table cell styles
+  .explore-table-item {
+    &-index {
+      width: $cell-index-width;
+      display: inline-block;
+      vertical-align: middle;
+  
+      &--body {
+        color: var(--s-color-base-content-tertiary);
+        font-size: var(--s-font-size-small);
+        font-weight: 800;
+      }
+  
+      &--head {
+        cursor: pointer;
+  
+        &.active {
+          color: var(--s-color-theme-accent);
+        }
+      }
+    }
+    &-logo {
+      display: inline-block;
+      vertical-align: middle;
+      text-align: center;
+      width: $cell-logo-width;
+      margin: 0 $inner-spacing-mini;
+    }
+    &-info {
+      display: inline-block;
+      vertical-align: middle;
+      line-height: var(--s-line-height-medium);
+      letter-spacing: var(--s-letter-spacing-mini);
+      margin: 0 $inner-spacing-mini;
+  
+      &--head {
+        flex-flow: column wrap;
+        line-height: var(--s-line-height-small);
+  
+        & > span {
+          margin-right: $inner-spacing-tiny;
+          white-space: nowrap;
+        }
+      }
+  
+      &--body {
+        font-weight: 300;
+      }
+    }
+    &-symbol {
+      flex: 1;
+      background-color: var(--s-color-base-border-secondary);
+      border-radius: var(--s-border-radius-medium);
+      font-size: var(--s-font-size-big);
+      font-weight: 800;
+      line-height: var(--s-line-height-big);
+      letter-spacing: var(--s-letter-spacing-small);
+      text-align: center;
+    }
+    &-name {
+      font-size: var(--s-font-size-small);
+      font-weight: 600;
+    }
+    &-address {
+      display: flex;
+      font-size: var(--s-font-size-extra-mini);
+    }
+    &-price {
+      font-size: var(--s-font-size-medium);
+      white-space: nowrap;
+    }
+    &-amount.formatted-amount--fiat-value {
+      color: var(--s-color-base-content-primary);
+    }
+    &-address {
+      .tokens-item-address__value {
+        &.token-address {
+          font-size: var(--s-font-size-extra-mini);
+          font-weight: 400;
+          color: var(--s-color-base-content-primary);
+        }
+      }
+    }
+  }
+}

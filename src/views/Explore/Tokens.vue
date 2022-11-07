@@ -6,41 +6,41 @@
       :data="tableItems"
       :highlight-current-row="false"
       size="small"
-      class="tokens-table"
+      class="explore-table"
     >
       <!-- Index -->
       <s-table-column width="280" label="#" fixed-position="left">
         <template #header>
-          <div class="tokens-item-index">
-            <span @click="handleResetSort" :class="['tokens-item-index--head', { active: isDefaultSort }]">#</span>
+          <div class="explore-table-item-index">
+            <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">#</span>
           </div>
-          <div class="tokens-item-logo">
-            <s-icon name="various-bone-24" size="14px" class="tokens-item-logo--head" />
+          <div class="explore-table-item-logo">
+            <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head" />
           </div>
-          <div class="tokens-item-info tokens-item-info--head">
-            <span class="tokens-table__primary">{{ t('tokens.name') }}</span>
-            <span class="tokens-table__secondary">({{ t('tokens.assetId') }})</span>
+          <div class="explore-table-item-info explore-table-item-info--head">
+            <span class="explore-table__primary">{{ t('tokens.name') }}</span>
+            <span class="explore-table__secondary">({{ t('tokens.assetId') }})</span>
           </div>
         </template>
         <template v-slot="{ $index, row }">
-          <span class="tokens-item-index tokens-item-index--body">{{ $index + startIndex + 1 }}</span>
-          <token-logo class="tokens-item-logo tokens-item-logo--body" :token-symbol="row.symbol" />
-          <div class="tokens-item-info tokens-item-info--body">
-            <div class="tokens-item-name">{{ row.name }}</div>
-            <div class="tokens-item-address">
+          <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
+          <token-logo class="explore-table-item-logo explore-table-item-logo--body" :token-symbol="row.symbol" />
+          <div class="explore-table-item-info explore-table-item-info--body">
+            <div class="explore-table-item-name">{{ row.name }}</div>
+            <div class="explore-table-item-address">
               <span>{{ TranslationConsts.Sora }}:</span>&nbsp;
               <token-address
-                class="tokens-item-address__value"
+                class="explore-table-item-address__value"
                 :show-name="false"
                 :name="row.name"
                 :symbol="row.symbol"
                 :address="row.address"
               />
             </div>
-            <div v-if="row.externalAddress" class="tokens-item-address">
+            <div v-if="row.externalAddress" class="explore-table-item-address">
               <span>{{ TranslationConsts.Ethereum }}:</span>&nbsp;
               <token-address
-                class="tokens-item-address__value"
+                class="explore-table-item-address__value"
                 :show-name="false"
                 :name="row.name"
                 :symbol="row.symbol"
@@ -53,12 +53,12 @@
       <!-- Symbol -->
       <s-table-column width="104" header-align="center" align="center" prop="symbol">
         <template #header>
-          <sort-button name="symbol" class="tokens-table--center" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="tokens-table__primary">{{ t('tokens.symbol') }}</span>
+          <sort-button name="symbol" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="explore-table__primary">{{ t('tokens.symbol') }}</span>
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <div class="tokens-item-symbol">{{ row.symbol }}</div>
+          <div class="explore-table-item-symbol">{{ row.symbol }}</div>
         </template>
       </s-table-column>
 
@@ -67,7 +67,7 @@
         <s-table-column width="104" header-align="left" align="left">
           <template #header>
             <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
-              <span class="tokens-table__primary">Price</span>
+              <span class="explore-table__primary">Price</span>
             </sort-button>
           </template>
           <template v-slot="{ row }">
@@ -76,7 +76,7 @@
               fiat-default-rounding
               :font-weight-rate="FontWeightRate.MEDIUM"
               :value="row.priceFormatted"
-              class="tokens-item-price"
+              class="explore-table-item-price"
             />
           </template>
         </s-table-column>
@@ -84,7 +84,7 @@
         <s-table-column width="104" header-align="right" align="right">
           <template #header>
             <sort-button name="priceChangeDay" :sort="{ order, property }" @change-sort="changeSort">
-              <span class="tokens-table__primary">1D %</span>
+              <span class="explore-table__primary">1D %</span>
             </sort-button>
           </template>
           <template v-slot="{ row }">
@@ -95,7 +95,7 @@
         <s-table-column width="104" header-align="left" align="left">
           <template #header>
             <sort-button name="priceChangeWeek" :sort="{ order, property }" @change-sort="changeSort">
-              <span class="tokens-table__primary">7D %</span>
+              <span class="explore-table__primary">7D %</span>
             </sort-button>
           </template>
           <template v-slot="{ row }">
@@ -106,7 +106,7 @@
         <s-table-column width="104" header-align="right" align="right">
           <template #header>
             <sort-button name="volumeWeek" :sort="{ order, property }" @change-sort="changeSort">
-              <span class="tokens-table__primary">1D Vol.</span>
+              <span class="explore-table__primary">1D Vol.</span>
             </sort-button>
           </template>
           <template v-slot="{ row }">
@@ -114,7 +114,7 @@
               is-fiat-value
               :font-weight-rate="FontWeightRate.MEDIUM"
               :value="row.volumeWeekFormatted.amount"
-              class="tokens-item-price tokens-item-amount"
+              class="explore-table-item-price explore-table-item-amount"
             >
               {{ row.volumeWeekFormatted.suffix }}
             </formatted-amount>
@@ -124,7 +124,7 @@
         <s-table-column width="104" header-align="right" align="right">
           <template #header>
             <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
-              <span class="tokens-table__primary">TVL</span>
+              <span class="explore-table__primary">TVL</span>
             </sort-button>
           </template>
           <template v-slot="{ row }">
@@ -132,7 +132,7 @@
               is-fiat-value
               :font-weight-rate="FontWeightRate.MEDIUM"
               :value="row.tvlFormatted.amount"
-              class="tokens-item-price tokens-item-amount"
+              class="explore-table-item-price explore-table-item-amount"
             >
               {{ row.tvlFormatted.suffix }}
             </formatted-amount>
@@ -142,7 +142,7 @@
     </s-table>
 
     <s-pagination
-      class="tokens-table-pagination"
+      class="explore-table-pagination"
       :layout="'prev, total, next'"
       :current-page.sync="currentPage"
       :page-size="pageAmount"
@@ -163,10 +163,11 @@ import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/c
 import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+import type { AmountWithSuffix } from '@/types/formats';
 
 import { Components, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
-import { calcPriceChange } from '@/utils';
+import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 import { getter, action } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -178,11 +179,6 @@ type TokenData = {
   startPriceDay: FPNumber;
   startPriceWeek: FPNumber;
   volume: FPNumber;
-};
-
-type AmountWithSuffix = {
-  amount: string;
-  suffix: string;
 };
 
 type TableItem = {
@@ -239,11 +235,9 @@ const AssetsQuery = gql`
 
 @Component({
   components: {
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PriceChange: lazyComponent(Components.PriceChange),
     SortButton,
     TokenAddress: components.TokenAddress,
-    SearchInput: components.SearchInput,
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
   },
@@ -308,9 +302,9 @@ export default class Tokens extends Mixins(
         priceChangeWeek: fpPriceChangeWeek.toNumber(),
         priceChangeWeekFP: fpPriceChangeWeek,
         volumeWeek: fpVolumeWeek.toNumber(),
-        volumeWeekFormatted: this.formatAmount(fpVolumeWeek),
+        volumeWeekFormatted: formatAmountWithSuffix(fpVolumeWeek),
         tvl: tvl.toNumber(),
-        tvlFormatted: this.formatAmount(tvl),
+        tvlFormatted: formatAmountWithSuffix(tvl),
       };
     });
   }
@@ -442,222 +436,9 @@ export default class Tokens extends Mixins(
   private async updateAssetsData(): Promise<void> {
     this.tokensData = await this.fetchTokensData();
   }
-
-  private formatAmount(value: FPNumber): AmountWithSuffix {
-    const val = value.toNumber();
-    const format = (value: string) => new FPNumber(value).toLocaleString();
-
-    if (Math.trunc(val / 1_000_000) > 0) {
-      const amount = format((val / 1_000_000).toFixed(2));
-      return { amount, suffix: 'M' };
-    } else if (Math.trunc(val / 1_000) > 0) {
-      const amount = format((val / 1_000).toFixed(2));
-      return { amount, suffix: 'K' };
-    } else {
-      const amount = format(val.toFixed(2));
-      return { amount, suffix: '' };
-    }
-  }
 }
 </script>
 
 <style lang="scss">
-$fixed-column-width: 280px;
-
-.page-header-title--tokens {
-  justify-content: space-between;
-  align-items: center;
-}
-
-.tokens-table.el-table {
-  background: transparent;
-
-  thead {
-    text-transform: uppercase;
-    font-size: var(--s-font-size-small);
-    letter-spacing: var(--s-letter-spacing-mini);
-
-    [class^='s-icon-'],
-    [class*=' s-icon-'] {
-      @include icon-styles;
-    }
-  }
-
-  tr,
-  th {
-    &,
-    &:hover {
-      & > td,
-      & > th {
-        background: var(--s-color-utility-surface);
-        .cell {
-          padding: $inner-spacing-tiny $inner-spacing-mini;
-        }
-      }
-    }
-  }
-
-  .el-table__fixed {
-    height: 100% !important;
-
-    &:before,
-    &:after {
-      content: unset;
-    }
-
-    .el-table__fixed-body-wrapper {
-      height: 100% !important;
-    }
-  }
-
-  .el-table__body-wrapper {
-    height: auto !important;
-
-    &.is-scrolling-left ~ .el-table__fixed {
-      box-shadow: inherit;
-    }
-
-    .el-scrollbar__bar.is-horizontal {
-      right: 0;
-      left: unset;
-      width: calc(100% - #{$fixed-column-width});
-    }
-  }
-
-  &.el-table--scrollable-x {
-    .el-table__body-wrapper {
-      overflow-x: hidden;
-    }
-  }
-
-  .el-table__empty-block {
-    width: 100% !important;
-  }
-
-  .el-table__empty-text {
-    color: var(--s-color-base-content-tertiary); // TODO [1.4]: remove after fix in ui-lib
-  }
-
-  .tokens-item {
-    &-amount.formatted-amount--fiat-value {
-      color: var(--s-color-base-content-primary);
-    }
-    &-address {
-      .tokens-item-address__value {
-        &.token-address {
-          font-size: var(--s-font-size-extra-mini);
-          font-weight: 400;
-          color: var(--s-color-base-content-primary);
-        }
-      }
-    }
-  }
-}
-
-.tokens-table-pagination {
-  display: flex;
-  margin-top: $inner-spacing-medium;
-
-  .el-pagination__total {
-    margin: auto;
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-$cell-index-width: 40px;
-$cell-logo-width: 32px;
-
-.tokens-table {
-  display: flex;
-  flex-flow: column nowrap;
-  flex: 1;
-
-  &__primary {
-    color: var(--s-color-base-content-secondary);
-  }
-  &__secondary {
-    color: var(--s-color-base-content-quaternary);
-    font-size: var(--s-font-size-extra-mini);
-  }
-
-  &-head {
-    display: flex;
-    align-items: center;
-    margin: auto;
-  }
-}
-
-.tokens-item {
-  &-index {
-    width: $cell-index-width;
-    display: inline-block;
-    vertical-align: middle;
-
-    &--body {
-      color: var(--s-color-base-content-tertiary);
-      font-size: var(--s-font-size-small);
-      font-weight: 800;
-    }
-
-    &--head {
-      cursor: pointer;
-
-      &.active {
-        color: var(--s-color-theme-accent);
-      }
-    }
-  }
-  &-logo {
-    display: inline-block;
-    vertical-align: middle;
-    text-align: center;
-    width: $cell-logo-width;
-    margin: 0 $inner-spacing-mini;
-  }
-  &-info {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: var(--s-line-height-medium);
-    letter-spacing: var(--s-letter-spacing-mini);
-    margin: 0 $inner-spacing-mini;
-
-    &--head {
-      flex-flow: column wrap;
-      line-height: var(--s-line-height-small);
-
-      & > span {
-        margin-right: $inner-spacing-tiny;
-        white-space: nowrap;
-      }
-    }
-
-    &--body {
-      font-weight: 300;
-    }
-  }
-  &-symbol {
-    flex: 1;
-    background-color: var(--s-color-base-border-secondary);
-    border-radius: var(--s-border-radius-medium);
-    font-size: var(--s-font-size-big);
-    font-weight: 800;
-    line-height: var(--s-line-height-big);
-    letter-spacing: var(--s-letter-spacing-small);
-    text-align: center;
-  }
-  &-name {
-    font-size: var(--s-font-size-small);
-    font-weight: 600;
-  }
-  &-address {
-    display: flex;
-    font-size: var(--s-font-size-extra-mini);
-  }
-
-  &-price {
-    font-size: var(--s-font-size-medium);
-    white-space: nowrap;
-  }
-}
+@include explore-table;
 </style>
