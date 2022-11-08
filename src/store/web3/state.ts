@@ -1,14 +1,14 @@
 import { BridgeNetworks } from '@sora-substrate/util';
 
 import { ZeroStringValue } from '@/consts';
-import ethersUtil from '@/utils/ethers-util';
+import ethersUtil, { EvmNetworkType } from '@/utils/ethers-util';
 import type { Web3State } from './types';
 
 export function initialState(): Web3State {
   return {
     evmAddress: ethersUtil.getEvmUserAddress(),
     evmBalance: ZeroStringValue,
-    networkType: ethersUtil.getEvmNetworkTypeFromStorage(),
+    networkType: null,
     subNetworks: [],
     evmNetwork: BridgeNetworks.ETH_NETWORK_ID,
     contractAddress: {
