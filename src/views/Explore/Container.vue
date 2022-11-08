@@ -7,11 +7,11 @@
     <div class="container container--explore" v-loading="parentLoading">
       <generic-page-header :title="pageTitle" class="page-header-title--explore">
         <search-input
+          autofocus
+          class="explore-search"
           v-model="exploreQuery"
           :placeholder="t('searchText')"
-          autofocus
           @clear="resetSearch"
-          class="explore-search"
         />
       </generic-page-header>
 

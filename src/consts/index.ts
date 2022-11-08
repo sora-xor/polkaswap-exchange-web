@@ -135,8 +135,10 @@ export enum PageNames {
   StakingContainer = 'StakingContainer',
   ExploreContainer = 'Explore/Container',
   ExploreTokens = 'Explore/Tokens',
-  ExploreStaking = 'Explore/Staking',
+  ExploreDemeter = 'Explore/Demeter',
+  // just for router name & different titles
   ExploreFarming = 'Explore/Farming',
+  ExploreStaking = 'Explore/Staking',
   ExplorePools = 'Explore/Pools',
 }
 

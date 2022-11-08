@@ -599,10 +599,12 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       color: var(--s-color-base-content-quaternary);
       font-size: var(--s-font-size-extra-mini);
     }
-    &-head {
+    &__accent {
+      color: var(--s-color-status-warning);
+    }
+    &-cell {
       display: flex;
       align-items: center;
-      margin: auto;
     }
     &-pagination {
       display: flex;
@@ -617,6 +619,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   // el-table style overrides
   .explore-table.el-table {
     background: transparent;
+    font-size: var(--s-font-size-medium);
+    font-weight: 600;
   
     thead {
       text-transform: uppercase;
@@ -712,6 +716,10 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       text-align: center;
       width: $cell-logo-width;
       margin: 0 $inner-spacing-mini;
+
+      &--plain {
+        margin: 0;
+      }
     }
     &-info {
       display: inline-block;

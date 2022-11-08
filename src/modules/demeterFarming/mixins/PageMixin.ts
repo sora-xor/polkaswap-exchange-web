@@ -1,4 +1,4 @@
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import { action, getter } from '@/store/decorators';
@@ -8,6 +8,8 @@ import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 @Component
 export default class PageMixin extends Mixins(mixins.TransactionMixin) {
+  @Prop({ default: true, type: Boolean }) readonly isFarmingPage!: boolean;
+
   @getter.demeterFarming.farmingPools farmingPools!: DataMap<DemeterPool[]>;
   @getter.demeterFarming.stakingPools stakingPools!: DataMap<DemeterPool[]>;
   @getter.demeterFarming.accountFarmingPools accountFarmingPools!: DataMap<DemeterAccountPool[]>;
@@ -16,9 +18,6 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
   @action.demeterFarming.deposit deposit!: (params: DemeterLiquidityParams) => Promise<void>;
   @action.demeterFarming.withdraw withdraw!: (params: DemeterLiquidityParams) => Promise<void>;
   @action.demeterFarming.claimRewards private claimRewards!: (pool: DemeterAccountPool) => Promise<void>;
-
-  // override it for Staking page
-  isFarmingPage = true;
 
   showStakeDialog = false;
   showClaimDialog = false;

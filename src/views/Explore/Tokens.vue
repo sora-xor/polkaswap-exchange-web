@@ -24,7 +24,7 @@
         </template>
         <template v-slot="{ $index, row }">
           <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
-          <token-logo class="explore-table-item-logo explore-table-item-logo--body" :token-symbol="row.symbol" />
+          <token-logo class="explore-table-item-logo" :token-symbol="row.symbol" />
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.name }}</div>
             <div class="explore-table-item-address">
@@ -154,24 +154,21 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import { gql } from '@urql/core';
 import { FPNumber } from '@sora-substrate/util';
-import { Component, Mixins, Ref, Prop } from 'vue-property-decorator';
-import { mixins, components, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
-import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar';
+import { Component, Mixins } from 'vue-property-decorator';
+import { components, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 import type { AmountWithSuffix } from '@/types/formats';
 
-import { Components, PageNames } from '@/consts';
+import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 import { getter, action } from '@/store/decorators';
 
+import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
 import SortButton from '@/components/SortButton.vue';
 
 type TokenData = {
@@ -242,39 +239,14 @@ const AssetsQuery = gql`
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class Tokens extends Mixins(
-  mixins.LoadingMixin,
-  mixins.PaginationSearchMixin,
-  mixins.FormattedAmountMixin,
-  TranslationMixin,
-  AssetsSearchMixin
-) {
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
-
-  @Prop({ default: '', type: String }) readonly exploreQuery!: string;
-
-  @Ref('table') readonly tableComponent!: any;
-
+export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   @getter.assets.whitelistAssets private items!: Array<Asset>;
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
-
   @action.assets.updateRegisteredAssets private updateRegisteredAssets!: AsyncVoidFn;
-
-  order = '';
-  property = '';
 
   tokensData: Record<string, TokenData> = {};
 
-  get pageTitle(): string {
-    return this.t(`pageTitle.${PageNames.ExploreTokens}`);
-  }
-
   get hasTokensData(): boolean {
     return Object.keys(this.tokensData).length !== 0;
-  }
-
-  get isDefaultSort(): boolean {
-    return !this.order || !this.property;
   }
 
   get preparedItems(): TableItem[] {
@@ -309,81 +281,9 @@ export default class Tokens extends Mixins(
     });
   }
 
-  get filteredItems(): TableItem[] {
-    return this.filterAssetsByQuery(this.preparedItems)(this.exploreQuery) as TableItem[];
-  }
-
-  get sortedItems(): TableItem[] {
-    if (!this.order || !this.property) return this.filteredItems;
-
-    const isAscending = this.order === SortDirection.ASC;
-
-    return [...this.filteredItems].sort((a, b) => {
-      const aValue = a[this.property];
-      const bValue = b[this.property];
-
-      if (aValue === bValue) return 0;
-
-      return (isAscending ? aValue > bValue : aValue < bValue) ? 1 : -1;
-    });
-  }
-
-  get tableItems(): TableItem[] {
-    return this.getPageItems(this.sortedItems);
-  }
-
-  async mounted(): Promise<void> {
-    await this.$nextTick();
-
-    this.initScrollbar();
-
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        await Promise.all([this.updateRegisteredAssets(), this.updateAssetsData()]);
-      });
-    });
-  }
-
-  private initScrollbar(): void {
-    const Scrollbar = Vue.extend(SScrollbar);
-    const scrollbar = new Scrollbar();
-    scrollbar.$mount();
-
-    const elTable = this.tableComponent.$refs.table;
-    const elTableBodyWrapper = elTable.$refs.bodyWrapper;
-    const elTableHeaderWrapper = elTable.$refs.headerWrapper;
-    const elTableNativeTable = elTableBodyWrapper.getElementsByTagName('table')[0];
-    const scrollbarWrap = scrollbar.$el.getElementsByClassName('el-scrollbar__wrap')[0];
-    const scrollbarView = scrollbar.$el.getElementsByClassName('el-scrollbar__view')[0];
-
-    elTableBodyWrapper.appendChild(scrollbar.$el);
-    scrollbarView.appendChild(elTableNativeTable);
-
-    this.$watch(
-      () => (scrollbar.$children[0] as any).moveX,
-      () => {
-        const scrollLeft = scrollbarWrap.scrollLeft;
-        // to scroll table content
-        elTableBodyWrapper.scrollLeft = scrollLeft;
-        elTableHeaderWrapper.scrollLeft = scrollLeft;
-        // to render box shadow on fixed table
-        elTable.scrollPosition = scrollLeft === 0 ? 'left' : 'right';
-      }
-    );
-  }
-
-  changeSort({ order = '', property = '' } = {}): void {
-    this.order = order;
-    this.property = property;
-  }
-
-  handleResetSort(): void {
-    this.changeSort();
-  }
-
-  handleResetSearch(): void {
-    this.resetPage();
-    this.resetSearch();
+  // ExplorePageMixin method implementation
+  async updateExploreData(): Promise<void> {
+    await Promise.all([this.updateRegisteredAssets(), this.updateAssetsData()]);
   }
 
   private async fetchTokensData(): Promise<Record<string, TokenData>> {

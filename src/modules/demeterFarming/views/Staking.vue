@@ -89,9 +89,6 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
 export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) {
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<Asset>;
 
-  // override PageMixin
-  isFarmingPage = false;
-
   activeCollapseItems: string[] = [];
 
   updateActiveCollapseItems(items: string[]) {

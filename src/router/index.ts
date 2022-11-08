@@ -85,6 +85,7 @@ const routes: Array<RouteConfig> = [
             path: '',
             name: DemeterPageNames.Pool,
             component: demeterLazyView(DemeterPageNames.Pool),
+            props: { isFarmingPage: false },
           },
           {
             path: 'add/:firstAddress?/:secondAddress?',
@@ -116,6 +117,7 @@ const routes: Array<RouteConfig> = [
             path: '',
             name: DemeterPageNames.Staking,
             component: demeterLazyView(DemeterPageNames.Staking),
+            props: { isFarmingPage: false },
           },
         ],
       },
@@ -134,12 +136,14 @@ const routes: Array<RouteConfig> = [
           {
             path: 'staking',
             name: PageNames.ExploreStaking,
-            component: lazyView(PageNames.ExploreStaking),
+            component: lazyView(PageNames.ExploreDemeter),
+            props: { isFarmingPage: false },
           },
           {
             path: 'farming',
             name: PageNames.ExploreFarming,
-            component: lazyView(PageNames.ExploreFarming),
+            component: lazyView(PageNames.ExploreDemeter),
+            props: { isFarmingPage: true },
           },
         ],
       },
