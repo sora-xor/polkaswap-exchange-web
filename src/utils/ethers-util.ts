@@ -303,15 +303,7 @@ function removeEvmUserAddress(): void {
   storage.remove('evmAddress');
 }
 
-function storeEvmNetworkType(network: string): void {
-  storage.set('evmNetworkType', EvmNetworkTypeName[network] || network);
-}
-
-function removeEvmNetworkType(): void {
-  storage.remove('evmNetworkType');
-}
-
-async function getEvmNetworkType(): Promise<string> {
+async function fetchEvmNetworkType(): Promise<string> {
   const ethersInstance = await getEthersInstance();
   const network = await ethersInstance.getNetwork();
   const networkType = ethers.utils.hexValue(network.chainId);
@@ -381,9 +373,7 @@ export default {
   checkAccountIsConnected,
   storeEvmUserAddress,
   getEvmUserAddress,
-  storeEvmNetworkType,
-  getEvmNetworkType,
-  removeEvmNetworkType,
+  fetchEvmNetworkType,
   getEthersInstance,
   removeEvmUserAddress,
   watchEthereum,
