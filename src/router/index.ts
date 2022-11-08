@@ -85,7 +85,7 @@ const routes: Array<RouteConfig> = [
             path: '',
             name: DemeterPageNames.Pool,
             component: demeterLazyView(DemeterPageNames.Pool),
-            props: { isFarmingPage: false },
+            props: { isFarmingPage: true },
           },
           {
             path: 'add/:firstAddress?/:secondAddress?',

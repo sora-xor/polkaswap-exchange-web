@@ -9,7 +9,7 @@ import type { DemeterPool, DemeterRewardToken } from '@sora-substrate/util/build
 @Component
 export default class AprMixin extends Mixins(mixins.FormattedAmountMixin) {
   // allocation * token_per_block * multiplier
-  getEmission(pool: DemeterPool, tokenInfo: DemeterRewardToken): FPNumber {
+  getEmission(pool: DemeterPool, tokenInfo: Nullable<DemeterRewardToken>): FPNumber {
     const isFarm = !!pool?.isFarm;
     const allocation = (isFarm ? tokenInfo?.farmsAllocation : tokenInfo?.stakingAllocation) ?? FPNumber.ZERO;
     const tokenPerBlock = tokenInfo?.tokenPerBlock ?? FPNumber.ZERO;
@@ -22,27 +22,30 @@ export default class AprMixin extends Mixins(mixins.FormattedAmountMixin) {
     return allocation.mul(tokenPerBlock).mul(multiplier);
   }
 
-  async getLiquidityInPool(pool: DemeterPool): Promise<FPNumber> {
+  async getPoolData(
+    pool: DemeterPool
+  ): Promise<Nullable<{ price: FPNumber; supply?: FPNumber; reserves?: FPNumber[] }>> {
     const poolAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice({ address: pool.poolAsset } as Asset) ?? 0);
 
     if (pool.isFarm) {
       const poolInfo = api.poolXyk.getInfo(XOR.address, pool.poolAsset);
 
-      if (!poolInfo) return FPNumber.ZERO;
+      if (!poolInfo) return null;
 
-      const poolTotalSupply = new FPNumber(await api.api.query.poolXYK.totalIssuances(poolInfo.address));
+      const supply = new FPNumber(await api.api.query.poolXYK.totalIssuances(poolInfo.address));
+      const reserves = (await api.poolXyk.getReserves(XOR.address, pool.poolAsset)).map((reserve) =>
+        FPNumber.fromCodecValue(reserve)
+      );
+      const poolAssetReserves = reserves[1];
+      const poolTokenPrice = poolAssetReserves.mul(poolAssetPrice).mul(new FPNumber(2)).div(supply);
 
-      const poolReserves = await api.poolXyk.getReserves(XOR.address, pool.poolAsset);
-      const poolAssetReserves = FPNumber.fromCodecValue(poolReserves[1]);
-      const poolTokenPrice = poolAssetReserves.mul(poolAssetPrice).mul(new FPNumber(2)).div(poolTotalSupply);
-
-      return pool.totalTokensInPool.mul(poolTokenPrice);
+      return { price: poolTokenPrice, supply, reserves };
     } else {
-      return pool.totalTokensInPool.mul(poolAssetPrice);
+      return { price: poolAssetPrice };
     }
   }
 
-  getApr(pool: DemeterPool, tokenInfo: DemeterRewardToken, liquidityInPool: FPNumber): FPNumber {
+  getApr(pool: DemeterPool, tokenInfo: Nullable<DemeterRewardToken>, liquidityInPool: FPNumber): FPNumber {
     if (liquidityInPool.isZero()) return FPNumber.ZERO;
 
     const blocksPerYear = new FPNumber(5_256_000);
@@ -52,5 +55,12 @@ export default class AprMixin extends Mixins(mixins.FormattedAmountMixin) {
     );
 
     return emission.mul(blocksPerYear).mul(rewardAssetPrice).div(liquidityInPool).mul(FPNumber.HUNDRED);
+  }
+
+  formatDecimalPlaces(value: FPNumber, asPercent = false) {
+    const formatted = value.dp(2).toLocaleString();
+    const postfix = asPercent ? '%' : '';
+
+    return `${formatted}${postfix}`;
   }
 }

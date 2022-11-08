@@ -605,6 +605,10 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &-cell {
       display: flex;
       align-items: center;
+
+      & + & {
+        margin-top: $inner-spacing-mini;
+      }
     }
     &-pagination {
       display: flex;

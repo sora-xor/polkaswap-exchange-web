@@ -1,6 +1,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 
+import AprMixin from './AprMixin';
 import AccountPoolMixin from './AccountPoolMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -14,7 +15,7 @@ import type { DemeterRewardToken } from '@sora-substrate/util/build/demeterFarmi
 import { ZeroStringValue } from '@/consts';
 
 @Component
-export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin) {
+export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, TranslationMixin) {
   @Prop({ default: () => null, type: Object }) readonly liquidity!: AccountLiquidity;
 
   @getter.demeterFarming.tokenInfos private tokenInfos!: DataMap<DemeterRewardToken>;
@@ -142,8 +143,6 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   get tvl(): string {
     if (!this.pool) return ZeroStringValue;
 
-    const format = (value: FPNumber) => value.dp(2).toLocaleString();
-
     if (this.isFarm) {
       // calc liquidty locked price through account liquidity
       const liquidityLockedPrice = FPNumber.fromCodecValue(this.liquidity.firstBalance)
@@ -152,11 +151,11 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
         .mul(this.baseAssetPrice)
         .mul(new FPNumber(2));
 
-      return format(liquidityLockedPrice);
+      return this.formatDecimalPlaces(liquidityLockedPrice);
     } else {
       const assetLockedPrice = this.pool.totalTokensInPool.mul(this.poolAssetPrice);
 
-      return format(assetLockedPrice);
+      return this.formatDecimalPlaces(assetLockedPrice);
     }
   }
 
@@ -185,31 +184,16 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
     }
   }
 
-  // allocation * token_per_block * multiplier
   get emission(): FPNumber {
-    const allocation =
-      (this.isFarm ? this.tokenInfo?.farmsAllocation : this.tokenInfo?.stakingAllocation) ?? FPNumber.ZERO;
-    const tokenPerBlock = this.tokenInfo?.tokenPerBlock ?? FPNumber.ZERO;
-    const poolMultiplier = new FPNumber(this.pool.multiplier);
-    const tokenMultiplier = new FPNumber(
-      (this.isFarm ? this.tokenInfo?.farmsTotalMultiplier : this.tokenInfo?.stakingTotalMultiplier) ?? 0
-    );
-    const multiplier = poolMultiplier.div(tokenMultiplier);
-
-    return allocation.mul(tokenPerBlock).mul(multiplier);
+    return this.getEmission(this.pool, this.tokenInfo);
   }
 
-  // allocation * token_per_block * multiplier * 5256000 * reward_token_price / liquidityInPool * 100
   get apr(): FPNumber {
-    if (!this.pool || (this.isFarm && !this.liquidity) || this.liquidityInPool.isZero()) return FPNumber.ZERO;
-
-    const blocksPerYear = new FPNumber(5_256_000);
-
-    return this.emission.mul(blocksPerYear).mul(this.rewardAssetPrice).div(this.liquidityInPool).mul(FPNumber.HUNDRED);
+    return this.getApr(this.pool, this.tokenInfo, this.liquidityInPool);
   }
 
   get aprFormatted(): string {
-    return this.apr.dp(2).toLocaleString() + '%';
+    return this.formatDecimalPlaces(this.apr, true);
   }
 
   get emitParams(): object {

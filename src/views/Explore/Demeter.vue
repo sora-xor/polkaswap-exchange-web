@@ -51,6 +51,22 @@
           </div>
         </template>
       </s-table-column>
+      <!-- Account tokens -->
+      <s-table-column v-if="isLoggedIn" width="118" header-align="right" align="right">
+        <template #header>
+          <span class="explore-table__primary">Your token</span>
+        </template>
+        <template v-slot="{ row }">
+          <div v-for="({ asset, balance }, index) in row.accountTokens" :key="index" class="explore-table-cell">
+            <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
+            <formatted-amount
+              :font-size-rate="FontSizeRate.SMALL"
+              :value="balance"
+              class="explore-table-item-price explore-table-item-amount"
+            />
+          </div>
+        </template>
+      </s-table-column>
       <!-- APR -->
       <s-table-column width="104" header-align="right" align="right">
         <template #header>
@@ -71,19 +87,6 @@
         </template>
         <template v-slot="{ row }">
           {{ row.depositFeeFormatted }}
-        </template>
-      </s-table-column>
-      <!-- Balance -->
-      <s-table-column v-if="isLoggedIn" width="118" header-align="right" align="right">
-        <template #header>
-          <span class="explore-table__primary">Your token</span>
-        </template>
-        <template v-slot="{ row }">
-          <formatted-amount
-            :font-size-rate="FontSizeRate.SMALL"
-            :value="row.balance"
-            class="explore-table-item-price explore-table-item-amount"
-          />
         </template>
       </s-table-column>
       <!-- TVL -->
@@ -119,9 +122,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import { components } from '@soramitsu/soraneo-wallet-web';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import DemeterPageMixin from '@/modules/demeterFarming/mixins/PageMixin';
@@ -146,7 +150,20 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPage
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.demeterFarming.tokenInfos private tokenInfos!: DataMap<DemeterRewardToken>;
 
-  liquiditiesInPools = {};
+  @Watch('pools')
+  private async updatePoolsData() {
+    await this.withParentLoading(async () => {
+      this.poolsData = {};
+      await Promise.all(
+        this.items.map(async (pool) => {
+          const poolData = await this.getPoolData(pool);
+          this.poolsData = { ...this.poolsData, [pool.poolAsset]: poolData };
+        })
+      );
+    });
+  }
+
+  poolsData = {};
 
   get items(): DemeterPool[] {
     return Object.values(this.pools).flat() as DemeterPool[];
@@ -158,39 +175,41 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPage
       const rewardAsset = this.getAsset(pool.rewardAsset);
       const tokenInfo = this.tokenInfos[pool.rewardAsset];
       const accountPool = this.getAccountPool(pool);
+      const poolData = this.poolsData[pool.poolAsset];
+      const poolTokenPrice = poolData?.price ?? FPNumber.ZERO;
+      const accountPooledTokens = accountPool?.pooledTokens ?? FPNumber.ZERO;
 
       const depositFee = new FPNumber(pool.depositFee ?? 0).mul(FPNumber.HUNDRED);
-      const liquidityInPool = this.liquiditiesInPools[pool.poolAsset]?.[pool.rewardAsset] ?? FPNumber.ZERO;
+      const liquidityInPool = poolTokenPrice.mul(pool.totalTokensInPool);
       const apr = this.getApr(pool, tokenInfo, liquidityInPool);
-      const balance = accountPool?.pooledTokens ?? FPNumber.ZERO;
+      const accountTokens = (
+        pool.isFarm
+          ? [
+              {
+                asset: XOR,
+                balance: poolData ? poolData.reserves[0].mul(accountPooledTokens).div(poolData.supply) : FPNumber.ZERO,
+              },
+              {
+                asset: poolAsset,
+                balance: poolData ? poolData.reserves[1].mul(accountPooledTokens).div(poolData.supply) : FPNumber.ZERO,
+              },
+            ]
+          : [{ asset: poolAsset, balance: accountPooledTokens }]
+      ).map((item) => ({ ...item, balance: this.formatDecimalPlaces(item.balance) }));
 
       return {
         poolAsset,
         rewardAsset,
         rewardAssetSymbol: rewardAsset?.symbol ?? '',
         depositFee: depositFee.toNumber(),
-        depositFeeFormatted: depositFee.dp(2).toLocaleString() + '%',
+        depositFeeFormatted: this.formatDecimalPlaces(depositFee, true),
         tvl: liquidityInPool.toNumber(),
         tvlFormatted: formatAmountWithSuffix(liquidityInPool),
         apr: apr.toNumber(),
-        aprFormatted: apr.dp(2).toLocaleString() + '%',
-        balance: balance.dp(2).toLocaleString(),
+        aprFormatted: this.formatDecimalPlaces(apr, true),
+        accountTokens,
       };
     });
-  }
-
-  // ExplorePageMixin method implementation
-  async updateExploreData(): Promise<void> {
-    await Promise.all(
-      this.items.map(async (pool) => {
-        const { poolAsset, rewardAsset } = pool;
-        const liquidity = await this.getLiquidityInPool(pool);
-        if (!this.liquiditiesInPools[poolAsset]) {
-          this.liquiditiesInPools[poolAsset] = {};
-        }
-        this.liquiditiesInPools[poolAsset][rewardAsset] = liquidity;
-      })
-    );
   }
 }
 </script>
