@@ -1057,6 +1057,9 @@
                     "termsAndConditions": "Terms and Conditions",
                     "agreement": "By clicking Submit Routing i accept the ADAR",
                     "submit": "route assets"
+                },
+                "messages": {
+                    "routeAssetsCompleted": "All transactions completed"
                 }
             }
         }

@@ -18,6 +18,10 @@ const mutations = defineMutations<RouteAssetsState>()({
   setSubscriptions(state, subscriptions = []): void {
     state.subscriptions = subscriptions;
   },
+  setRecipientStatus(state, { id, status }) {
+    const recipient = state.recipients.find((recipient) => recipient.id === id);
+    if (recipient) recipient.status = status;
+  },
 });
 
 export default mutations;
