@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Պատճենել ցանցի հասցեն",
         "soraAddress": "@:soraText հասցե",
-        "ethereumAddress": "@:ethereumText հասցե"
+        "ethereumAddress": "@:ethereumText հասցե",
+        "disabledTitle": "HASHI Bridge-ի ժամանակավոր սպասարկում:",
+        "disabledText": "Կամուրջը կգործի ինչպես միշտ, երբ իրականացվեն բոլոր հիմնական բարելավումները:"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",

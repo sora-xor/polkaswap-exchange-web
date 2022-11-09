@@ -148,6 +148,9 @@ const actions = defineActions({
     return historyItem;
   },
   async signEvmTransactionSoraToEvm(context, id: string): Promise<SignTxResult> {
+    // TODO [ETH-MERGE]: Remove this
+    return { hash: '', fee: null };
+    /*
     const { getters, rootState, rootGetters } = bridgeActionContext(context);
     const tx = bridgeApi.getHistory(id) as Nullable<BridgeHistory>;
 
@@ -224,8 +227,12 @@ const actions = defineActions({
       hash: transaction.hash,
       fee,
     };
+    */
   },
   async signEvmTransactionEvmToSora(context, id: string): Promise<SignTxResult> {
+    // TODO [ETH-MERGE]: Remove this
+    return { hash: '', fee: null };
+    /*
     const { commit, rootState, rootGetters, rootDispatch } = bridgeActionContext(context);
     const tx = bridgeApi.getHistory(id);
 
@@ -323,6 +330,7 @@ const actions = defineActions({
       console.error(error);
       throw error;
     }
+    */
   },
   async handleBridgeTx(context, id: string): Promise<void> {
     const { commit } = bridgeActionContext(context);

@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Netwerkadres kopiëren",
         "soraAddress": "@:soraText adres",
-        "ethereumAddress": "@:ethereumText adres"
+        "ethereumAddress": "@:ethereumText adres",
+        "disabledTitle": "HASHI Bridge Tijdelijk Onderhoud!",
+        "disabledText": "De brug zal normaal functioneren zodra alle belangrijke upgrades zijn geïmplementeerd."
     },
     "selectRegisteredAsset": {
         "title": "Kies een token",

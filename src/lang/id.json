@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Salin alamat jaringan",
         "soraAddress": "@:soraText alamat",
-        "ethereumAddress": "@:ethereumText alamat"
+        "ethereumAddress": "@:ethereumText alamat",
+        "disabledTitle": "Pemeliharaan Sementara Jembatan HASHI!",
+        "disabledText": "Jembatan akan berfungsi seperti biasa setelah semua peningkatan besar dilaksanakan."
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",

@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Copier l'adresse réseau",
         "soraAddress": "@:soraText adresse",
-        "ethereumAddress": "@:ethereumText adresse"
+        "ethereumAddress": "@:ethereumText adresse",
+        "disabledTitle": "Maintenance temporaire du pont HASHI!",
+        "disabledText": "Le pont fonctionnera comme d'habitude une fois que toutes les mises à niveau majeures auront été mises en œuvre."
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",

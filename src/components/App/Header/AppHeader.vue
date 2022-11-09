@@ -202,8 +202,8 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
       margin-left: 0;
     }
   }
-  // TODO: Check for moonpay=false, seems like an issue
-  // margin-left: auto;
+  // TODO [ETH-MERGE]: Check for moonpay=false
+  margin-left: auto;
 
   @include desktop {
     margin-left: auto;

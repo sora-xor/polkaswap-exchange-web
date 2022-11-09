@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Skopiuj adres sieciowy",
         "soraAddress": "@:soraText adres",
-        "ethereumAddress": "@:ethereumText adres"
+        "ethereumAddress": "@:ethereumText adres",
+        "disabledTitle": "Tymczasowa konserwacja mostu HASHI!",
+        "disabledText": "Po wdrożeniu wszystkich głównych aktualizacji most będzie działał normalnie."
     },
     "selectRegisteredAsset": {
         "title": "Wybierz token",

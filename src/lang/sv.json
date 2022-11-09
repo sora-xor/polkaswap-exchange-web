@@ -557,7 +557,9 @@
         "energy": "@:evm.EWC",
         "copy": "Kopiera nätverksadress",
         "soraAddress": "@:soraText adress",
-        "ethereumAddress": "@:ethereumText adress"
+        "ethereumAddress": "@:ethereumText adress",
+        "disabledTitle": "HASHI Bridge tillfälligt underhåll!",
+        "disabledText": "Bron kommer att fungera som vanligt när alla större uppgraderingar är genomförda."
     },
     "selectRegisteredAsset": {
         "title": "Välj en token",
