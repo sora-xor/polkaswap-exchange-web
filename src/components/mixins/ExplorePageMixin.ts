@@ -33,7 +33,7 @@ export default class ExplorePageMixin extends Mixins(
     return !this.order || !this.property;
   }
 
-  get preparedItems() {
+  get preparedItems(): any[] {
     console.warn('[ExplorePageMixin]: "preparedItems" computed property is not implemented');
     return [];
   }

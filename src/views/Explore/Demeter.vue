@@ -23,18 +23,27 @@
         </template>
         <template v-slot="{ $index, row }">
           <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
-          <token-logo
-            class="explore-table-item-logo explore-table-item-logo--body"
-            :token-symbol="row.poolAsset.symbol"
-          />
+          <token-logo v-if="row.assets.length === 1" class="explore-table-item-logo" :token="row.assets[0]" />
+          <tokens-row v-else :assets="row.assets" size="small" class="explore-table-item-logo" />
           <div class="explore-table-item-info explore-table-item-info--body">
-            <div class="explore-table-item-name">{{ row.poolAsset.symbol }}</div>
-            <div class="explore-table__secondary">{{ row.poolAsset.name }}</div>
+            <div class="explore-table-item-name">{{ row.name }}</div>
+            <div v-if="row.description" class="explore-table__secondary">{{ row.description }}</div>
           </div>
         </template>
       </s-table-column>
+      <!-- APR -->
+      <s-table-column width="104" header-align="right" align="right">
+        <template #header>
+          <sort-button name="apr" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="explore-table__primary">{{ TranslationConsts.APR }}</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <span class="explore-table__accent">{{ row.aprFormatted }}</span>
+        </template>
+      </s-table-column>
       <!-- Reward Token -->
-      <s-table-column width="152" header-align="left" align="left">
+      <s-table-column width="120" header-align="left" align="left">
         <template #header>
           <sort-button name="rewardAssetSymbol" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">Reward</span>
@@ -51,33 +60,6 @@
           </div>
         </template>
       </s-table-column>
-      <!-- Account tokens -->
-      <s-table-column v-if="isLoggedIn" width="118" header-align="right" align="right">
-        <template #header>
-          <span class="explore-table__primary">Your token</span>
-        </template>
-        <template v-slot="{ row }">
-          <div v-for="({ asset, balance }, index) in row.accountTokens" :key="index" class="explore-table-cell">
-            <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
-            <formatted-amount
-              :font-size-rate="FontSizeRate.SMALL"
-              :value="balance"
-              class="explore-table-item-price explore-table-item-amount"
-            />
-          </div>
-        </template>
-      </s-table-column>
-      <!-- APR -->
-      <s-table-column width="104" header-align="right" align="right">
-        <template #header>
-          <sort-button name="apr" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="explore-table__primary">{{ TranslationConsts.APR }}</span>
-          </sort-button>
-        </template>
-        <template v-slot="{ row }">
-          <span class="explore-table__accent">{{ row.aprFormatted }}</span>
-        </template>
-      </s-table-column>
       <!-- Fee -->
       <s-table-column width="80" header-align="right" align="right">
         <template #header>
@@ -87,6 +69,24 @@
         </template>
         <template v-slot="{ row }">
           {{ row.depositFeeFormatted }}
+        </template>
+      </s-table-column>
+      <!-- Account tokens -->
+      <s-table-column v-if="isLoggedIn" width="140" header-align="right" align="right">
+        <template #header>
+          <span class="explore-table__primary">Your token</span>
+        </template>
+        <template v-slot="{ row }">
+          <div class="explore-table-item-tokens">
+            <div v-for="({ asset, balance }, index) in row.accountTokens" :key="index" class="explore-table-cell">
+              <formatted-amount
+                :font-size-rate="FontSizeRate.SMALL"
+                :value="balance"
+                class="explore-table-item-price explore-table-item-amount"
+              />
+              <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
+            </div>
+          </div>
         </template>
       </s-table-column>
       <!-- TVL -->
@@ -131,6 +131,8 @@ import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import DemeterPageMixin from '@/modules/demeterFarming/mixins/PageMixin';
 import AprMixin from '@/modules/demeterFarming/mixins/AprMixin';
 
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 import { getter } from '@/store/decorators';
 import { formatAmountWithSuffix } from '@/utils';
 
@@ -140,6 +142,7 @@ import type { DemeterPool, DemeterRewardToken } from '@sora-substrate/util/build
 
 @Component({
   components: {
+    TokensRow: lazyComponent(Components.TokensRow),
     SortButton,
     TokenAddress: components.TokenAddress,
     TokenLogo: components.TokenLogo,
@@ -173,12 +176,16 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPage
     return this.items.map((pool) => {
       const poolAsset = this.getAsset(pool.poolAsset);
       const rewardAsset = this.getAsset(pool.rewardAsset);
+      const rewardAssetSymbol = rewardAsset?.symbol ?? '';
       const tokenInfo = this.tokenInfos[pool.rewardAsset];
       const accountPool = this.getAccountPool(pool);
       const poolData = this.poolsData[pool.poolAsset];
       const poolTokenPrice = poolData?.price ?? FPNumber.ZERO;
       const accountPooledTokens = accountPool?.pooledTokens ?? FPNumber.ZERO;
 
+      const assets = pool.isFarm ? [XOR, poolAsset] : [poolAsset];
+      const name = assets.map((asset) => asset?.symbol ?? '').join('-');
+      const description = pool.isFarm ? '' : poolAsset?.name ?? '';
       const depositFee = new FPNumber(pool.depositFee ?? 0).mul(FPNumber.HUNDRED);
       const liquidityInPool = poolTokenPrice.mul(pool.totalTokensInPool);
       const apr = this.getApr(pool, tokenInfo, liquidityInPool);
@@ -198,9 +205,11 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPage
       ).map((item) => ({ ...item, balance: this.formatDecimalPlaces(item.balance) }));
 
       return {
-        poolAsset,
+        assets,
+        name,
+        description,
         rewardAsset,
-        rewardAssetSymbol: rewardAsset?.symbol ?? '',
+        rewardAssetSymbol,
         depositFee: depositFee.toNumber(),
         depositFeeFormatted: this.formatDecimalPlaces(depositFee, true),
         tvl: liquidityInPool.toNumber(),

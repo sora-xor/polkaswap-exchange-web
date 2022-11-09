@@ -584,7 +584,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 @mixin explore-table {
   $fixed-column-width: 280px;
   $cell-index-width: 40px;
-  $cell-logo-width: 32px;
+  $cell-logo-width: 36px;
+  $tokens-row-width: 52px;
 
   // table misc styles
   .explore-table {
@@ -608,6 +609,10 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
       & + & {
         margin-top: $inner-spacing-mini;
+      }
+
+      & > *:not(:last-child) {
+        margin-right: $inner-spacing-small;
       }
     }
     &-pagination {
@@ -715,14 +720,20 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       }
     }
     &-logo {
-      display: inline-block;
+      display: inline-block !important;
       vertical-align: middle;
       text-align: center;
-      width: $cell-logo-width;
       margin: 0 $inner-spacing-mini;
+      width: $cell-logo-width;
+
+      &.tokens-row {
+        margin: 0;
+        width: $tokens-row-width;
+      }
 
       &--plain {
         margin: 0;
+        width: initial;
       }
     }
     &-info {
@@ -763,6 +774,11 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &-address {
       display: flex;
       font-size: var(--s-font-size-extra-mini);
+    }
+    &-tokens {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: flex-end;
     }
     &-price {
       font-size: var(--s-font-size-medium);

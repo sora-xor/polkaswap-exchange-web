@@ -37,16 +37,6 @@
                 :address="row.address"
               />
             </div>
-            <div v-if="row.externalAddress" class="explore-table-item-address">
-              <span>{{ TranslationConsts.Ethereum }}:</span>&nbsp;
-              <token-address
-                class="explore-table-item-address__value"
-                :show-name="false"
-                :name="row.name"
-                :symbol="row.symbol"
-                :address="row.externalAddress"
-              />
-            </div>
           </div>
         </template>
       </s-table-column>
@@ -164,7 +154,7 @@ import type { AmountWithSuffix } from '@/types/formats';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
-import { getter, action } from '@/store/decorators';
+import { getter } from '@/store/decorators';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 
@@ -179,7 +169,6 @@ type TokenData = {
 };
 
 type TableItem = {
-  externalAddress: string;
   price: number;
   priceFormatted: string;
   priceChangeDay: number;
@@ -241,7 +230,6 @@ const AssetsQuery = gql`
 })
 export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   @getter.assets.whitelistAssets private items!: Array<Asset>;
-  @action.assets.updateRegisteredAssets private updateRegisteredAssets!: AsyncVoidFn;
 
   tokensData: Record<string, TokenData> = {};
 
@@ -251,8 +239,6 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
   get preparedItems(): TableItem[] {
     return this.items.map((item) => {
-      const externalAddress = this.getAsset(item.address)?.externalAddress ?? '';
-
       const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(item) ?? 0);
       const fpPriceDay = this.tokensData[item.address]?.startPriceDay ?? FPNumber.ZERO;
       const fpPriceWeek = this.tokensData[item.address]?.startPriceWeek ?? FPNumber.ZERO;
@@ -266,7 +252,6 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
       return {
         ...item,
-        externalAddress,
         price: fpPrice.toNumber(),
         priceFormatted: fpPrice.toLocaleString(),
         priceChangeDay: fpPriceChangeDay.toNumber(),
@@ -283,7 +268,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
   // ExplorePageMixin method implementation
   async updateExploreData(): Promise<void> {
-    await Promise.all([this.updateRegisteredAssets(), this.updateAssetsData()]);
+    await this.updateAssetsData();
   }
 
   private async fetchTokensData(): Promise<Record<string, TokenData>> {

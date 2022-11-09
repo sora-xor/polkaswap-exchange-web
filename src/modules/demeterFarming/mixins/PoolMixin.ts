@@ -164,6 +164,8 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
   }
 
   get liquidityInPool(): FPNumber {
+    if (!this.pool) return FPNumber.ZERO;
+
     if (this.isFarm) {
       const accountPoolShare = new FPNumber(this.liquidity.poolShare).div(FPNumber.HUNDRED);
       const lpTokens = this.liqudityLP.div(accountPoolShare);

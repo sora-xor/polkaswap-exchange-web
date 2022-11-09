@@ -82,7 +82,7 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 </style>
 
 <style lang="scss" scoped>
-$container-max-width: 952px;
+$container-max-width: 75vw;
 $container-min-width: $breakpoint_mobile;
 $search-input-width: 290px;
 
@@ -96,7 +96,7 @@ $search-input-width: 290px;
   &-container {
     display: flex;
     flex-flow: column nowrap;
-    align-content: center;
+    align-items: center;
   }
 
   &-search {
