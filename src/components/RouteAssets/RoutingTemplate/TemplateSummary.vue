@@ -5,7 +5,12 @@
         <generic-page-header :title="t('adar.routeAssets.routingTemplate.summary.title')" class="page-header__title" />
       </div>
       <div class="routing-template-summary__accept-button">
-        <s-button type="primary" class="s-typography-button--big" @click="onRouteAssetsButtonClick">
+        <s-button
+          type="primary"
+          class="s-typography-button--big"
+          :disabled="routeAssetsIsNotAllowed"
+          @click="onRouteAssetsButtonClick"
+        >
           {{ submitButtonTitle }}
         </s-button>
       </div>
@@ -32,7 +37,7 @@
           }}
         </p>
         <div class="usd-property">
-          <span class="usd-property__data">{{ summaryData.totalUsd.toLocaleString('en-US') }}</span>
+          <span class="usd-property__data">{{ totalUsdRouted }}</span>
         </div>
       </div>
       <s-divider v-if="processed" />
@@ -53,9 +58,7 @@
         </p>
         <div>
           <span class="amount-property__symbol">{{ asset.symbol }}</span>
-          <span class="amount-property__amount">{{
-            Number(summaryData.totalAssetRequired).toLocaleString('en-US')
-          }}</span>
+          <span class="amount-property__amount">{{ totalTokenAmount }}</span>
         </div>
       </div>
       <s-divider v-if="!processed" />
@@ -88,9 +91,14 @@
       <div v-if="processed" class="total-transactions">
         <p>{{ 'total transaction success' }}</p>
         <div>
-          <span class="total-transactions__completed">{{ 24 }}</span>
+          <span
+            class="total-transactions__completed"
+            :class="areErrorsTransactions ? 'total-transactions__completed_with-errors' : ''"
+          >
+            {{ completeTransactionsNumber }}
+          </span>
           /
-          <span class="total-transactions__total">{{ 25 }}</span>
+          <span class="total-transactions__total">{{ totalTransactionsNumber }}</span>
           <span><s-icon class="status__icon" :class="`status__icon_successed`" :name="'basic-check-marks-24'" /></span>
         </div>
       </div>
@@ -169,9 +177,7 @@
           </template>
           <template v-slot="{ row }">
             <div class="amount-property">
-              <span> {{ getTotalTransactionsSuccess(row).successed }} </span>/{{
-                getTotalTransactionsSuccess(row).total
-              }}
+              <span> {{ row.successedTransactions }} </span>/ {{ row.totalTransactions }}
             </div>
           </template>
         </s-table-column>
@@ -182,7 +188,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { Components, PageNames } from '@/consts';
 import { lazyComponent, goTo } from '@/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -191,6 +197,8 @@ import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import { getter, state } from '@/store/decorators';
 import { FPNumber } from '@sora-substrate/util';
 import { copyToClipboard, formatAssetBalance } from '@/utils';
+import { Recipient, RecipientStatus } from '@/store/routeAssets/types';
+import { sumBy } from 'lodash';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
@@ -201,6 +209,7 @@ export default class TemplateSummary extends Mixins(TranslationMixin) {
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
   @state.wallet.account.fiatPriceAndApyObject private fiatPriceAndApyObject!: any;
   @getter.routeAssets.isProcessed processed!: boolean;
+  @getter.routeAssets.validRecipients validRecipients!: Array<any>;
 
   @Prop({ default: () => XOR }) readonly asset!: Asset;
   @Prop() summaryData!: any;
@@ -241,15 +250,10 @@ export default class TemplateSummary extends Mixins(TranslationMixin) {
     return formatAssetBalance(asset) || '0';
   }
 
-  getAssetUSDPrice(asset) {
-    return this.formatNumber(FPNumber.fromCodecValue(this.fiatPriceAndApyObject[asset.address]?.price, 18));
-  }
-
-  getTotalTransactionsSuccess(tableRow) {
-    return {
-      total: 8,
-      successed: 8,
-    };
+  getRecipientTokenAmount(recipient) {
+    return this.formatNumber(
+      recipient.usd / Number(FPNumber.fromCodecValue(this.fiatPriceAndApyObject[this.asset.address]?.price, 18))
+    );
   }
 
   onSwapIconClick() {
@@ -257,7 +261,25 @@ export default class TemplateSummary extends Mixins(TranslationMixin) {
   }
 
   onRouteAssetsButtonClick() {
+    if (this.routeAssetsIsNotAllowed) return;
     if (!this.processed) this.$emit('onRouteAssetsClick');
+  }
+
+  get areErrorsTransactions() {
+    return this.validRecipients.some((rec) => rec.status === RecipientStatus.FAILED);
+  }
+
+  get totalTransactionsNumber() {
+    return this.validRecipients.length;
+  }
+
+  get completeTransactionsNumber() {
+    // return this.validRecipients.filter((rec) => rec.status !== RecipientStatus.PENDING).length;
+    return this.summaryData.successedTransactions;
+  }
+
+  get routeAssetsIsNotAllowed() {
+    return Number(this.assetsNeeded) > 0 || Number(this.balance) === 0;
   }
 
   get arrowState() {
@@ -266,6 +288,28 @@ export default class TemplateSummary extends Mixins(TranslationMixin) {
 
   get xor() {
     return XOR;
+  }
+
+  get totalTokenAmount() {
+    return this.processed ? this.tokensRouted : Number(this.summaryData.totalAssetRequired).toLocaleString('en-US');
+  }
+
+  get totalUsdRouted() {
+    return this.processed ? this.usdRouted : this.summaryData.totalUsd.toLocaleString('en-US');
+  }
+
+  get tokensRouted() {
+    return sumBy(
+      this.validRecipients.filter((rec) => rec.status === RecipientStatus.SUCCESS),
+      (item: Recipient) => Number(this.getRecipientTokenAmount(item))
+    );
+  }
+
+  get usdRouted() {
+    return sumBy(
+      this.validRecipients.filter((rec) => rec.status === RecipientStatus.SUCCESS),
+      (item: Recipient) => Number(item.usd)
+    );
   }
 
   get submitButtonTitle() {
@@ -343,6 +387,14 @@ export default class TemplateSummary extends Mixins(TranslationMixin) {
       > div {
         font-size: var(--s-font-size-big);
         width: 65%;
+      }
+    }
+  }
+
+  .total-transactions {
+    &__completed {
+      &_with-errors {
+        color: red;
       }
     }
   }

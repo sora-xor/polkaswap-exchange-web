@@ -11,7 +11,7 @@
         @onRouteAssetsClick="onRouteAssets"
         @onTokenSelectClick="onTokenSelect"
       ></template-summary>
-      <transaction-overview></transaction-overview>
+      <transaction-overview @repeatTransaction="onRepeatTransaction"></transaction-overview>
       <authorize-dialog
         :asset="asset"
         :total-assets="totalAssetRequiredString"
@@ -30,14 +30,16 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { api, FPNumber } from '@sora-substrate/util/build';
+import { mixins, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber } from '@sora-substrate/util/build';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, state, mutation, action } from '@/store/decorators';
+import { getter, state, action } from '@/store/decorators';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { groupBy, sumBy } from 'lodash';
+import { Recipient, RecipientStatus } from '@/store/routeAssets/types';
+import { Asset } from '@sora-substrate/util/build/assets/types';
 @Component({
   components: {
     TemplateSummary: lazyComponent(Components.TemplateSummary),
@@ -48,15 +50,14 @@ import { groupBy, sumBy } from 'lodash';
 })
 export default class RoutingTemplate extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @state.wallet.account.fiatPriceAndApyObject private fiatPriceAndApyObject!: any;
+  @state.wallet.account.fiatPriceAndApyObject private fiatPriceAndApyObject!: SUBQUERY_TYPES.FiatPriceAndApyObject;
 
-  @getter.routeAssets.recipients recipients!: Array<any>;
-  @getter.routeAssets.subscriptions subscriptions!: Array<any>;
+  @getter.routeAssets.recipients recipients!: Array<Recipient>;
+  @getter.routeAssets.validRecipients validRecipients!: Array<Recipient>;
   @getter.routeAssets.isProcessed processed!: boolean;
   @action.routeAssets.cleanSwapReservesSubscription cleanSwapReservesSubscription!: void;
-  @action.routeAssets.runAssetsRouting runAssetsRouting!: any;
-
-  // processed = false;
+  @action.routeAssets.runAssetsRouting runAssetsRouting!: (asset: Asset) => Promise<void>;
+  @action.routeAssets.repeatTransaction private repeatTransaction!: ({ inputAsset, id }) => Promise<void>;
   showAuthorizeRoutingDialog = false;
   showSelectTokenDialog = false;
   asset = this.xor;
@@ -77,28 +78,61 @@ export default class RoutingTemplate extends Mixins(mixins.LoadingMixin, Transla
     this.showAuthorizeRoutingDialog = true;
   }
 
-  authorize() {
-    this.runAssetsRouting(this.asset);
-    // this.processed = true;
+  async authorize() {
     this.showAuthorizeRoutingDialog = false;
+    try {
+      await this.runAssetsRouting(this.asset);
+      this.$notify({
+        message: `${this.t('adar.routeAssets.routingTemplate.messages.routeAssetsCompleted')}`,
+        type: 'success',
+        title: '',
+      });
+    } catch (error) {
+      this.$notify({
+        message: `${this.t('warningText')} ${error}`,
+        type: 'warning',
+        title: '',
+      });
+    }
+  }
+
+  async onRepeatTransaction(recipient: Recipient) {
+    try {
+      await this.repeatTransaction({ inputAsset: this.asset, id: recipient.id });
+      this.$notify({
+        message: `${this.t('adar.routeAssets.routingTemplate.messages.routeAssetsCompleted')}`,
+        type: 'success',
+        title: '',
+      });
+    } catch (error) {
+      this.$notify({
+        message: `${this.t('warningText')} ${error}`,
+        type: 'warning',
+        title: '',
+      });
+    }
   }
 
   get summaryTableData() {
     return Object.values(
       groupBy(
-        this.recipients.map((item) => ({ symbol: item.asset.symbol, ...item })),
+        this.validRecipients.map((item) => ({ symbol: item.asset.symbol, ...item })),
         'symbol'
       )
-    ).map((assetArray: any) => {
+    ).map((assetArray: Array<Recipient>) => {
       return {
         asset: assetArray[0].asset,
-        usd: sumBy(assetArray, (item: any) => Number(item.usd)),
-        total: sumBy(assetArray, (item: any) => Number(item.amount)),
-        required: sumBy(assetArray, (item: any) => Number(item.usd)) / Number(this.getAssetUSDPrice(this.asset)),
+        usd: sumBy(assetArray, (item: Recipient) => Number(item.usd)),
+        total: sumBy(assetArray, (item: Recipient) => Number(this.getTokenEquivalent(item))),
+        required: sumBy(assetArray, (item: Recipient) => Number(item.usd)) / Number(this.getAssetUSDPrice(this.asset)),
         totalTransactions: assetArray.length,
-        successedTransactions: assetArray.length,
+        successedTransactions: assetArray.filter((item: Recipient) => item.status === RecipientStatus.SUCCESS).length,
       };
     });
+  }
+
+  getTokenEquivalent(recipient) {
+    return (recipient.usd / Number(this.getAssetUSDPrice(recipient.asset))).toFixed(2);
   }
 
   get totalAssetRequiredString() {
@@ -111,7 +145,7 @@ export default class RoutingTemplate extends Mixins(mixins.LoadingMixin, Transla
   }
 
   get totalUsd() {
-    return this.recipients?.reduce((partialSum, a) => partialSum + Number(a.usd), 0);
+    return this.validRecipients?.reduce((partialSum, a) => partialSum + Number(a.usd), 0);
   }
 
   get summaryData() {
@@ -119,11 +153,12 @@ export default class RoutingTemplate extends Mixins(mixins.LoadingMixin, Transla
       tableData: this.summaryTableData,
       totalAssetRequired: this.totalAssetRequiredString,
       totalUsd: this.totalUsd,
+      successedTransactions: sumBy(this.summaryTableData, (item) => item.successedTransactions),
     };
   }
 
-  getAssetUSDPrice(asset) {
-    return FPNumber.fromCodecValue(this.fiatPriceAndApyObject[asset.address]?.price, 18).toFixed(2);
+  getAssetUSDPrice(asset: Asset) {
+    return FPNumber.fromCodecValue(this.fiatPriceAndApyObject[asset.address]?.price ?? 0, 18).toFixed(2);
   }
 
   get xor() {

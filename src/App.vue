@@ -129,6 +129,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     message: string;
   }) => AsyncVoidFn;
 
+  @action.routeAssets.updateRecipients private updateRecipients!: (file?: File) => void;
+
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
     if (!whitelistAssetArray.length) return;
@@ -155,6 +157,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @Watch('isSoraAccountConnected')
   private async confirmInviteUserIfConnected(isSoraConnected: boolean): Promise<void> {
+    this.updateRecipients();
     if (isSoraConnected) {
       await this.confirmInvititation();
     }

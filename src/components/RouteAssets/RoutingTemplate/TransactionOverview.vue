@@ -72,7 +72,7 @@
           <template v-slot="{ row }">
             <div class="amount-property">
               <span class="amount-property__symbol">{{ row.asset.symbol }}</span>
-              <span class="amount-property__amount">{{ row.amount }}</span>
+              <span class="amount-property__amount">{{ getAmount(row) }}</span>
             </div>
           </template>
         </s-table-column>
@@ -101,13 +101,14 @@
               icon="basic-more-vertical-24"
               placement="bottom-end"
               :disabled="!processed"
-              @select="(action) => action(row.id)"
+              @select="(action) => action(row)"
             >
               <template slot="menu">
                 <s-dropdown-item
                   v-for="(link, idx) in dropdownMenuItems"
                   :key="idx"
                   :value="link.action"
+                  :disabled="!processed"
                   class="s-dropdown-menu__item menu__link"
                 >
                   {{ link.title }}
@@ -137,9 +138,11 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { copyToClipboard } from '@/utils';
-import { getter } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
+import { FPNumber } from '@sora-substrate/util';
+import { RecipientStatus } from '@/store/routeAssets/types';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
@@ -149,11 +152,9 @@ import { getter } from '@/store/decorators';
 export default class TransactionOverview extends Mixins(TranslationMixin, mixins.PaginationSearchMixin) {
   @getter.routeAssets.isProcessed processed!: boolean;
   @getter.routeAssets.recipients recipients!: Array<any>;
+  @state.wallet.account.fiatPriceAndApyObject private fiatPriceAndApyObject!: any;
 
   showTable = false;
-  showFullWalletAddress = false;
-
-  toggleShowFullWalletAddress() {}
 
   dropdownMenuItems = [
     {
@@ -162,7 +163,9 @@ export default class TransactionOverview extends Mixins(TranslationMixin, mixins
     },
     {
       title: 'Repeat',
-      action: () => {},
+      action: (row) => {
+        this.$emit('repeatTransaction', row);
+      },
     },
   ];
 
@@ -189,18 +192,28 @@ export default class TransactionOverview extends Mixins(TranslationMixin, mixins
     this.showTable = !this.showTable;
   }
 
-  addressIsValid(address) {
-    return api.validateAddress(address);
-  }
-
   getStatus(recipient) {
-    if (!this.processed) return this.addressIsValid(recipient.wallet) ? 'Address valid' : 'Address invalid';
-    else return this.addressIsValid(recipient.wallet) ? 'pending' : 'Address invalid';
+    return recipient.status;
   }
 
   getStatusClass(recipient) {
-    if (!this.processed) return this.addressIsValid(recipient.wallet) ? 'valid' : 'invalid';
-    if (this.processed && !this.addressIsValid(recipient.wallet)) return 'invalid';
+    return [RecipientStatus.ADDRESS_INVALID, RecipientStatus.FAILED].includes(recipient.status)
+      ? 'invalid'
+      : recipient.status === RecipientStatus.SUCCESS
+      ? 'success'
+      : '';
+  }
+
+  getAmount(recipient) {
+    return this.formatNumber(recipient.usd / Number(this.getAssetUSDPrice(recipient.asset)));
+  }
+
+  getAssetUSDPrice(asset) {
+    return this.formatNumber(FPNumber.fromCodecValue(this.fiatPriceAndApyObject[asset.address]?.price, 18));
+  }
+
+  formatNumber(num: number | FPNumber) {
+    return num.toFixed(2);
   }
 
   get tableData() {
@@ -265,12 +278,13 @@ export default class TransactionOverview extends Mixins(TranslationMixin, mixins
       border: 2px solid var(--s-color-status-warning);
       color: var(--s-color-status-warning);
       white-space: nowrap;
-      &_successed {
+      &_success {
         border: 2px solid var(--s-color-status-success);
         color: var(--s-color-status-success);
       }
       &_invalid,
-      &_error {
+      &_error,
+      &_failed {
         border: 2px solid var(--s-color-status-error);
         color: var(--s-color-status-error);
       }
