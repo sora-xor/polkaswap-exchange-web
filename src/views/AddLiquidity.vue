@@ -237,10 +237,13 @@ export default class AddLiquidity extends Mixins(
   }
 
   get isXorSufficientForNextOperation(): boolean {
-    return this.isXorSufficientForNextTx({
+    const params: { type: Operation; amount?: FPNumber } = {
       type: Operation.AddLiquidity,
-      amount: this.getFPNumber(this.firstTokenValue),
-    });
+    };
+    if (this.firstAddress === XOR.address) {
+      params.amount = this.getFPNumber(this.firstTokenValue);
+    }
+    return this.isXorSufficientForNextTx(params);
   }
 
   get isFirstMaxButtonAvailable(): boolean {
