@@ -55,9 +55,9 @@ export default class RoutingTemplate extends Mixins(mixins.LoadingMixin, Transla
   @getter.routeAssets.recipients recipients!: Array<Recipient>;
   @getter.routeAssets.validRecipients validRecipients!: Array<Recipient>;
   @getter.routeAssets.isProcessed processed!: boolean;
-  @action.routeAssets.cleanSwapReservesSubscription cleanSwapReservesSubscription!: void;
   @action.routeAssets.runAssetsRouting runAssetsRouting!: (asset: Asset) => Promise<void>;
   @action.routeAssets.repeatTransaction private repeatTransaction!: ({ inputAsset, id }) => Promise<void>;
+  @action.routeAssets.subscribeOnReserves private subscribeOnReserves!: (asset: Asset) => void;
   showAuthorizeRoutingDialog = false;
   showSelectTokenDialog = false;
   asset = this.xor;
@@ -68,6 +68,7 @@ export default class RoutingTemplate extends Mixins(mixins.LoadingMixin, Transla
 
   onTokenSelected(token) {
     this.asset = token;
+    this.subscribeOnReserves(token);
   }
 
   back() {
