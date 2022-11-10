@@ -192,7 +192,7 @@
         "scam": "SCAM",
         "next": "Další",
         "AddAssetToken": {
-            "title": "Tokeny",
+            "title": "Měny",
             "switchBtn": "Pouze ověřená aktiva"
         },
         "searchInputText": "Vyhledávání podle Asset ID, Name nebo Ticker Symbol"

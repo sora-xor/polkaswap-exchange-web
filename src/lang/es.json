@@ -192,7 +192,7 @@
         "scam": "ESTAFA",
         "next": "Siguiente",
         "AddAssetToken": {
-            "title": "Tokens",
+            "title": "Monedas",
             "switchBtn": "Solo activos verificados"
         },
         "searchInputText": "Buscar por ID de activo, nombre o símbolo de etiqueta"

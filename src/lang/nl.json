@@ -192,7 +192,7 @@
         "scam": "OPLICHTERIJ",
         "next": "Volgende",
         "AddAssetToken": {
-            "title": "Tokens",
+            "title": "Valuta",
             "switchBtn": "Alleen geverifieerde activa"
         },
         "searchInputText": "Zoeken op activa-ID, naam of tickersymbool"

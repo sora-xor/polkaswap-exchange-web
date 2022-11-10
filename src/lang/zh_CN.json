@@ -192,7 +192,7 @@
         "scam": "骗局",
         "next": "下一个",
         "AddAssetToken": {
-            "title": "代币",
+            "title": "货币",
             "switchBtn": "仅经过验证的资产"
         },
         "searchInputText": "按资产 ID、名称或股票代码搜索"

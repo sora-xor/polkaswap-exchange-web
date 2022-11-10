@@ -192,7 +192,7 @@
         "scam": "SCAM",
         "next": "Berikutnya",
         "AddAssetToken": {
-            "title": "Token",
+            "title": "Mata Uang",
             "switchBtn": "Hanya aset yang diverifikasi"
         },
         "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker"

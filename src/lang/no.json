@@ -192,7 +192,7 @@
         "scam": "SVINDEL",
         "next": "Neste",
         "AddAssetToken": {
-            "title": "Tokens",
+            "title": "Valutaer",
             "switchBtn": "Kun bekreftede eiendeler"
         },
         "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol"

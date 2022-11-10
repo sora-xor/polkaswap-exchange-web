@@ -192,7 +192,7 @@
         "scam": "SCAM",
         "next": "Next",
         "AddAssetToken": {
-            "title": "Token",
+            "title": "Valute",
             "switchBtn": "Solo asset verificati"
         },
         "searchInputText": "Cerca per ID asset, nome o simbolo del ticker"

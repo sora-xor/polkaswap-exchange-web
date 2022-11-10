@@ -192,7 +192,7 @@
         "scam": "PODVOD",
         "next": "Nasledujúci",
         "AddAssetToken": {
-            "title": "Tokeny",
+            "title": "Meny",
             "switchBtn": "Iba overené aktíva"
         },
         "searchInputText": "Vyhľadávajte podľa Asset ID, Name alebo Ticker Symbol"
