@@ -7,7 +7,7 @@
       class="app-controls app-controls--moonpay s-flex"
       :class="{ 'app-controls--moonpay--dark': themeIsDark }"
     >
-      <s-button
+      <!-- <s-button
         type="tertiary"
         size="medium"
         icon="various-atom-24"
@@ -16,7 +16,7 @@
       >
         <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
-      <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
+      <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" /> -->
     </div>
     <div
       class="app-controls app-controls--settings-panel s-flex"

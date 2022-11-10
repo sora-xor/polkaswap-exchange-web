@@ -95,6 +95,10 @@ const actions = defineActions({
     if (!recipient) {
       return Promise.reject(new Error('Cant find transaction by this Id'));
     }
+    commit.setRecipientStatus({
+      id: recipient.id,
+      status: RecipientStatus.PENDING,
+    });
     const transferParams = getTransferParams(context, inputAsset, recipient);
     if (!transferParams) return Promise.reject(new Error('Cant find transaction by this Id'));
     const action = transferParams.action;
@@ -117,6 +121,10 @@ const actions = defineActions({
     const { getters, commit } = routeAssetsActionContext(context);
     commit.setProcessed(true);
     const data = getters.validRecipients.map((recipient) => {
+      commit.setRecipientStatus({
+        id: recipient.id,
+        status: RecipientStatus.PENDING,
+      });
       return getTransferParams(context, inputAsset, recipient);
     });
     await executeBatchSwapAndSend(context, data);

@@ -125,6 +125,10 @@ export default class RoutingTemplate extends Mixins(mixins.LoadingMixin, Transla
         usd: sumBy(assetArray, (item: Recipient) => Number(item.usd)),
         total: sumBy(assetArray, (item: Recipient) => Number(this.getTokenEquivalent(item))),
         required: sumBy(assetArray, (item: Recipient) => Number(item.usd)) / Number(this.getAssetUSDPrice(this.asset)),
+        // required: sumBy(assetArray, (item: Recipient) => {
+        //   const operation = item.asset.address === this.asset.address ? Operation.Transfer : Operation.SwapAndSend;
+        //   return Number(item.usd) / Number(this.getAssetUSDPrice(this.asset)) + this.getNetworkFee(operation);
+        // }),
         totalTransactions: assetArray.length,
         successedTransactions: assetArray.filter((item: Recipient) => item.status === RecipientStatus.SUCCESS).length,
       };
@@ -134,6 +138,10 @@ export default class RoutingTemplate extends Mixins(mixins.LoadingMixin, Transla
   getTokenEquivalent(recipient) {
     return (recipient.usd / Number(this.getAssetUSDPrice(recipient.asset))).toFixed(2);
   }
+
+  // getNetworkFee(operation): number {
+  //   return Number(this.formatCodecNumber(this.networkFees[operation]));
+  // }
 
   get totalAssetRequiredString() {
     return this.totalAssetRequired.toFixed(2);

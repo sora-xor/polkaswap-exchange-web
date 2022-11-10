@@ -50,142 +50,142 @@ const routes: Array<RouteConfig> = [
     name: PageNames.Wallet,
     component: lazyView(PageNames.Wallet),
   },
-  {
-    path: '/send',
-    name: PageNames.Send,
-    component: lazyView(PageNames.Send),
-  },
-  {
-    path: '/bridge',
-    component: lazyView(PageNames.BridgeContainer),
-    children: [
-      {
-        path: '',
-        name: PageNames.Bridge,
-        component: lazyView(PageNames.Bridge),
-      },
-      {
-        path: 'history',
-        name: PageNames.BridgeTransactionsHistory,
-        component: lazyView(PageNames.BridgeTransactionsHistory),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'transaction',
-        name: PageNames.BridgeTransaction,
-        component: lazyView(PageNames.BridgeTransaction),
-        meta: { requiresAuth: true },
-      },
-    ],
-  },
-  {
-    path: '/pool',
-    component: lazyView(PageNames.PoolContainer),
-    children: [
-      {
-        path: '',
-        component: demeterLazyView(DemeterPageNames.DataContainer),
-        children: [
-          {
-            path: '',
-            name: DemeterPageNames.Pool,
-            component: demeterLazyView(DemeterPageNames.Pool),
-          },
-          {
-            path: 'add/:firstAddress?/:secondAddress?',
-            name: PageNames.AddLiquidity,
-            component: lazyView(PageNames.AddLiquidity),
-            meta: { requiresAuth: true },
-          },
-          {
-            path: 'remove/:firstAddress/:secondAddress',
-            name: PageNames.RemoveLiquidity,
-            component: lazyView(PageNames.RemoveLiquidity),
-            meta: { requiresAuth: true },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    path: '/staking',
-    name: PageNames.StakingContainer,
-    component: lazyView(PageNames.StakingContainer),
-    redirect: { name: DemeterPageNames.Staking },
-    children: [
-      {
-        path: 'demeter',
-        component: demeterLazyView(DemeterPageNames.DataContainer),
-        children: [
-          {
-            path: '',
-            name: DemeterPageNames.Staking,
-            component: demeterLazyView(DemeterPageNames.Staking),
-          },
-        ],
-      },
-    ],
-  },
-  {
-    path: '/rewards',
-    name: PageNames.Rewards,
-    component: lazyView(PageNames.RewardsTabs),
-  },
-  {
-    path: '/referral/bond',
-    name: PageNames.ReferralBonding,
-    component: lazyView(PageNames.ReferralBonding),
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
-    path: '/referral/unbond',
-    name: PageNames.ReferralUnbonding,
-    component: lazyView(PageNames.ReferralBonding),
-    meta: {
-      requiresAuth: true,
-    },
-  },
-  {
-    path: '/referral',
-    name: PageNames.Referral,
-    component: lazyView(PageNames.RewardsTabs),
-    meta: { isReferralProgram: true },
-    children: [
-      {
-        path: ':referrerAddress?',
-        meta: {
-          isInvitationRoute: true,
-          requiresAuth: true,
-        },
-      },
-    ],
-  },
-  {
-    path: '/tokens',
-    name: PageNames.Tokens,
-    component: lazyView(PageNames.Tokens),
-  },
-  {
-    path: '/moonpay-history',
-    name: PageNames.MoonpayHistory,
-    component: lazyView(PageNames.MoonpayHistory),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/stats',
-    name: PageNames.Stats,
-  },
-  {
-    path: '/support',
-    name: PageNames.Support,
-  },
-  {
-    path: '/kyc',
-    name: PageNames.KYC,
-    component: lazyView(PageNames.KYC),
-  },
+  // {
+  //   path: '/send',
+  //   name: PageNames.Send,
+  //   component: lazyView(PageNames.Send),
+  // },
+  // {
+  //   path: '/bridge',
+  //   component: lazyView(PageNames.BridgeContainer),
+  //   children: [
+  //     {
+  //       path: '',
+  //       name: PageNames.Bridge,
+  //       component: lazyView(PageNames.Bridge),
+  //     },
+  //     {
+  //       path: 'history',
+  //       name: PageNames.BridgeTransactionsHistory,
+  //       component: lazyView(PageNames.BridgeTransactionsHistory),
+  //       meta: { requiresAuth: true },
+  //     },
+  //     {
+  //       path: 'transaction',
+  //       name: PageNames.BridgeTransaction,
+  //       component: lazyView(PageNames.BridgeTransaction),
+  //       meta: { requiresAuth: true },
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: '/pool',
+  //   component: lazyView(PageNames.PoolContainer),
+  //   children: [
+  //     {
+  //       path: '',
+  //       component: demeterLazyView(DemeterPageNames.DataContainer),
+  //       children: [
+  //         {
+  //           path: '',
+  //           name: DemeterPageNames.Pool,
+  //           component: demeterLazyView(DemeterPageNames.Pool),
+  //         },
+  //         {
+  //           path: 'add/:firstAddress?/:secondAddress?',
+  //           name: PageNames.AddLiquidity,
+  //           component: lazyView(PageNames.AddLiquidity),
+  //           meta: { requiresAuth: true },
+  //         },
+  //         {
+  //           path: 'remove/:firstAddress/:secondAddress',
+  //           name: PageNames.RemoveLiquidity,
+  //           component: lazyView(PageNames.RemoveLiquidity),
+  //           meta: { requiresAuth: true },
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: '/staking',
+  //   name: PageNames.StakingContainer,
+  //   component: lazyView(PageNames.StakingContainer),
+  //   redirect: { name: DemeterPageNames.Staking },
+  //   children: [
+  //     {
+  //       path: 'demeter',
+  //       component: demeterLazyView(DemeterPageNames.DataContainer),
+  //       children: [
+  //         {
+  //           path: '',
+  //           name: DemeterPageNames.Staking,
+  //           component: demeterLazyView(DemeterPageNames.Staking),
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: '/rewards',
+  //   name: PageNames.Rewards,
+  //   component: lazyView(PageNames.RewardsTabs),
+  // },
+  // {
+  //   path: '/referral/bond',
+  //   name: PageNames.ReferralBonding,
+  //   component: lazyView(PageNames.ReferralBonding),
+  //   meta: {
+  //     requiresAuth: true,
+  //   },
+  // },
+  // {
+  //   path: '/referral/unbond',
+  //   name: PageNames.ReferralUnbonding,
+  //   component: lazyView(PageNames.ReferralBonding),
+  //   meta: {
+  //     requiresAuth: true,
+  //   },
+  // },
+  // {
+  //   path: '/referral',
+  //   name: PageNames.Referral,
+  //   component: lazyView(PageNames.RewardsTabs),
+  //   meta: { isReferralProgram: true },
+  //   children: [
+  //     {
+  //       path: ':referrerAddress?',
+  //       meta: {
+  //         isInvitationRoute: true,
+  //         requiresAuth: true,
+  //       },
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: '/tokens',
+  //   name: PageNames.Tokens,
+  //   component: lazyView(PageNames.Tokens),
+  // },
+  // {
+  //   path: '/moonpay-history',
+  //   name: PageNames.MoonpayHistory,
+  //   component: lazyView(PageNames.MoonpayHistory),
+  //   meta: { requiresAuth: true },
+  // },
+  // {
+  //   path: '/stats',
+  //   name: PageNames.Stats,
+  // },
+  // {
+  //   path: '/support',
+  //   name: PageNames.Support,
+  // },
+  // {
+  //   path: '/kyc',
+  //   name: PageNames.KYC,
+  //   component: lazyView(PageNames.KYC),
+  // },
   {
     path: '/route-assets',
     name: PageNames.RouteAssets,
