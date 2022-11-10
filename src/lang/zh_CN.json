@@ -557,9 +557,7 @@
         "energy": "@:evm.EWC",
         "copy": "复制网络地址",
         "soraAddress": "@:soraText 地址",
-        "ethereumAddress": "@:ethereumText 地址",
-        "disabledTitle": "哈士桥临时维修！",
-        "disabledText": "一旦实施了所有主要升级，这座桥将照常运行。"
+        "ethereumAddress": "@:ethereumText 地址"
     },
     "selectRegisteredAsset": {
         "title": "选择一个代币",

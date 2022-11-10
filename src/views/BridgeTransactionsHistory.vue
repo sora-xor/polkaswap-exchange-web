@@ -298,7 +298,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   }
   &:hover {
     background-color: var(--s-color-base-background-hover);
-    // cursor: pointer; TODO [ETH-MERGE]: disabled because of ETH Merge
+    cursor: pointer;
   }
   &-info {
     font-size: var(--s-font-size-mini);

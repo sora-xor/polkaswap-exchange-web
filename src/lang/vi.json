@@ -557,9 +557,7 @@
         "energy": "@:evm.EWC",
         "copy": "Sao chép địa chỉ mạng",
         "soraAddress": "địa chỉ @:soraText",
-        "ethereumAddress": "địa chỉ @:ethereumText",
-        "disabledTitle": "Cầu HASHI Bảo trì tạm thời!",
-        "disabledText": "Cây cầu sẽ hoạt động như bình thường sau khi tất cả các nâng cấp lớn được thực hiện."
+        "ethereumAddress": "địa chỉ @:ethereumText"
     },
     "selectRegisteredAsset": {
         "title": "Chọn token",

@@ -557,9 +557,7 @@
         "energy": "@:evm.EWC",
         "copy": "Hálózati cím másolása",
         "soraAddress": "@:soraText cím",
-        "ethereumAddress": "@:ethereumText cím",
-        "disabledTitle": "A HASHI híd ideiglenes karbantartása!",
-        "disabledText": "A híd a szokásos módon fog működni, miután az összes főbb fejlesztést végrehajtják."
+        "ethereumAddress": "@:ethereumText cím"
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",

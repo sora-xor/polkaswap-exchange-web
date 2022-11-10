@@ -557,9 +557,7 @@
         "energy": "@:evm.EWC",
         "copy": "Kopiraj mrežnu adresu",
         "soraAddress": "@:soraText adresa",
-        "ethereumAddress": "@:ethereumText adresa",
-        "disabledTitle": "Privremeno održavanje mosta HASHI!",
-        "disabledText": "Most će funkcionirati kao i obično nakon što se provedu sve glavne nadogradnje."
+        "ethereumAddress": "@:ethereumText adresa"
     },
     "selectRegisteredAsset": {
         "title": "Odaberite token",
