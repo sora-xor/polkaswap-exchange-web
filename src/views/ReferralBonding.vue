@@ -6,52 +6,16 @@
       @back="handleBack"
     />
     <s-form class="el-form--actions" :show-message="false">
-      <s-float-input
-        class="s-input--token-value"
-        size="medium"
+      <token-input
+        :balance="balance"
+        :is-max-available="isMaxButtonAvailable"
+        :title="t(`referralProgram.${isBond ? 'deposit' : 'action.unbond'}`)"
+        :token="xor"
         :value="amount"
-        :decimals="xorDecimals"
-        has-locale-string
-        :delimiters="delimiters"
-        :max="xorMaxValue"
         @input="handleInputXor"
-      >
-        <div slot="top" class="input-line">
-          <div class="input-title">
-            <span class="input-title--uppercase input-title--primary">
-              {{ t(`referralProgram.${isBond ? 'deposit' : 'action.unbond'}`) }}
-            </span>
-          </div>
-          <div v-if="xorBalance && xorBalance.transferable" class="input-value">
-            <span class="input-value--uppercase">{{ t('referralProgram.balance') }}</span>
-            <formatted-amount-with-fiat-value
-              value-can-be-hidden
-              with-left-shift
-              value-class="input-value--primary"
-              :value="xorFormattedBondedBalance"
-              :fiat-value="xorFormattedFiatBalance"
-            />
-          </div>
-        </div>
-        <div slot="right" class="s-flex el-buttons">
-          <s-button
-            v-if="isMaxButtonAvailable"
-            class="el-button--max s-typography-button--small"
-            type="primary"
-            alternative
-            size="mini"
-            border-radius="mini"
-            @click="handleMaxValue"
-          >
-            {{ t('buttons.max') }}
-          </s-button>
-          <token-select-button class="el-button--select-token" :token="xor" />
-        </div>
-        <div slot="bottom" class="input-line input-line--footer">
-          <formatted-amount v-if="xorPrice" is-fiat-value :value="formattedFiatAmount" />
-          <token-address :name="xorName" :symbol="xorSymbol" :address="xorAddress" class="input-value" />
-        </div>
-      </s-float-input>
+        @max="handleMaxValue"
+      />
+
       <s-button
         class="action-button s-typography-button--large"
         type="primary"
@@ -94,7 +58,7 @@ import type { AccountAsset, AccountBalance } from '@sora-substrate/util/build/as
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import { getMaxValue, hasInsufficientBalance, asZeroValue, formatAssetBalance } from '@/utils';
+import { getMaxValue, hasInsufficientBalance, asZeroValue, getAssetBalance } from '@/utils';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
 import { getter, mutation, state } from '@/store/decorators';
@@ -102,12 +66,9 @@ import { getter, mutation, state } from '@/store/decorators';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenInput: lazyComponent(Components.TokenInput),
     ReferralsConfirmBonding: lazyComponent(Components.ReferralsConfirmBonding),
-    FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
-    TokenAddress: components.TokenAddress,
   },
 })
 export default class ReferralBonding extends Mixins(
@@ -134,34 +95,12 @@ export default class ReferralBonding extends Mixins(
     return XOR.decimals;
   }
 
-  get xorAddress(): string {
-    return XOR.address;
-  }
-
-  get xorName(): string {
-    return XOR.name;
-  }
-
-  get xorMaxValue(): string {
-    return this.getMax(this.xorAddress);
-  }
-
-  get xorPrice(): Nullable<CodecString> {
-    return this.getAssetFiatPrice(XOR);
-  }
-
   get xorBalance(): Nullable<AccountBalance> {
     return this.xor?.balance;
   }
 
-  get xorFormattedBondedBalance(): Nullable<string> {
-    return formatAssetBalance(this.xor, { isBondedBalance: this.isBondedBalance });
-  }
-
-  get xorFormattedFiatBalance(): Nullable<string> {
-    return this.isBond
-      ? this.getFiatBalance(this.xor as AccountAsset | undefined) // TODO: [arch] getFiatBalance(asset: Nullable<...>)
-      : this.getFiatAmountByCodecString(this.xorBalance?.bonded ?? '0');
+  get balance(): CodecString {
+    return getAssetBalance(this.xor, { isBondedBalance: this.isBondedBalance });
   }
 
   get isBond(): boolean {
@@ -174,10 +113,6 @@ export default class ReferralBonding extends Mixins(
 
   get hasZeroAmount(): boolean {
     return asZeroValue(this.amount);
-  }
-
-  get formattedFiatAmount(): string {
-    return this.amount ? this.getFiatAmountByString(this.amount, XOR) ?? ZeroStringValue : ZeroStringValue;
   }
 
   get isMaxButtonAvailable(): boolean {
@@ -270,7 +205,6 @@ export default class ReferralBonding extends Mixins(
 
 <style lang="scss" scoped>
 .el-form--actions {
-  @include buttons;
   @include full-width-button('action-button');
 
   .action-button {

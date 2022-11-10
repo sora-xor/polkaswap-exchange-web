@@ -36,20 +36,20 @@ import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util'
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
-import DialogMixin from '@/components/mixins/DialogMixin';
-import DialogBase from '@/components/DialogBase.vue';
+// import DialogMixin from '@/components/mixins/DialogMixin';
+// import DialogBase from '@/components/DialogBase.vue';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { state, getter } from '@/store/decorators';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
     TokenLogo: components.TokenLogo,
   },
 })
-export default class ConfirmSend extends Mixins(mixins.TransactionMixin, DialogMixin) {
+export default class ConfirmSend extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @state.swap.fromValue fromValue!: string;

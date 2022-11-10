@@ -2,6 +2,8 @@ import invert from 'lodash/fp/invert';
 import { KnownAssets, KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
+import { DemeterPageNames } from '@/modules/demeterFarming/consts';
+
 import pkg from '../../package.json';
 import { KnownBridgeAsset } from '../utils/ethers-util';
 
@@ -78,6 +80,7 @@ export const Links = {
   terms: 'https://wiki.sora.org/polkaswap/terms',
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
+  demeterFarmingPlatform: 'https://farming.deotoken.io/',
 };
 
 export const ObjectInit = () => null;
@@ -112,7 +115,6 @@ export enum PageNames {
   Support = 'Support',
   Wallet = 'Wallet',
   PoolContainer = 'PoolContainer',
-  CreatePair = 'CreatePair',
   AddLiquidity = 'AddLiquidity',
   RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
@@ -131,6 +133,10 @@ export enum PageNames {
   MoonpayHistory = 'MoonpayHistory',
   Send = 'Send',
   KYC = 'KYC',
+  StakingContainer = 'StakingContainer',
+  RouteAssets = 'RouteAssets',
+  UploadCSV = 'UploadCSV',
+  RoutingTemplate = 'RoutingTemplate',
 }
 
 export enum Components {
@@ -142,8 +148,12 @@ export enum Components {
   MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
   AppMenu = 'App/Menu/AppMenu',
   AppInfoPopper = 'App/Menu/AppInfoPopper',
+  BrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
+  BrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
   PairTokenLogo = 'PairTokenLogo',
-  ConfirmSwap = 'ConfirmSwap',
+  SwapConfirm = 'Swap/Confirm',
+  SwapChart = 'Swap/Chart',
+  StatusActionBadge = 'Swap/StatusActionBadge',
   ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
   ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
   SettingsDialog = 'SettingsDialog',
@@ -154,7 +164,6 @@ export enum Components {
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
-  StatusActionBadge = 'StatusActionBadge',
   ExternalLink = 'ExternalLink',
   // HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',
@@ -172,6 +181,7 @@ export enum Components {
   ReferralsConfirmBonding = 'Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'Referrals/ConfirmInviteUser',
   TokenSelectButton = 'Input/TokenSelectButton',
+  TokenInput = 'Input/TokenInput',
   SelectLanguageDialog = 'SelectLanguageDialog',
   SelectAssetList = 'SelectAsset/List',
   SelectToken = 'SelectAsset/SelectToken',
@@ -192,6 +202,15 @@ export enum Components {
   ConfirmSend = 'ConfirmSend',
   BridgeTransferNotification = 'Bridge/TransferNotification',
   MobilePopup = 'MobilePopup/MobilePopup',
+  // Pool
+  PoolInfo = 'Pool/PoolInfo',
+  PriceChange = 'PriceChange',
+  UploadCSVDialog = 'RouteAssets/UploadCSVDialog',
+  TemplateSummary = 'RouteAssets/RoutingTemplate/TemplateSummary',
+  TransactionOverview = 'RouteAssets/RoutingTemplate/TransactionOverview',
+  AuthorizeRoutingTemplateDialog = 'RouteAssets/AuthorizeRoutingTemplateDialog',
+  UploadCSV = 'RouteAssets/UploadCSV',
+  RoutingTemplate = 'RouteAssets/RoutingTemplate',
 }
 
 export enum RewardsTabsItems {
@@ -211,24 +230,28 @@ interface SidebarMenuItemLink extends SidebarMenuItem {
 
 const MainMenu: Array<SidebarMenuItem> = [
   {
+    icon: 'arrows-arrow-bold-right-24',
+    title: PageNames.RouteAssets,
+  },
+  {
     icon: 'arrows-swap-90-24',
     title: PageNames.Swap,
   },
-  {
-    icon: 'finance-send-24',
-    title: PageNames.Send,
-  },
-  {
-    icon: 'basic-drop-24',
-    title: PageNames.Pool,
-  },
-  {
-    icon: 'grid-block-distribute-vertically-24',
-    title: PageNames.Bridge,
-  },
   // {
-  //   icon: 'various-pocket-24',
-  //   title: PageNames.Auctions,
+  //   icon: 'finance-send-24',
+  //   title: PageNames.Send,
+  // },
+  // {
+  //   icon: 'basic-drop-24',
+  //   title: PageNames.Pool,
+  // },
+  // {
+  //   icon: 'basic-layers-24',
+  //   title: PageNames.StakingContainer,
+  // },
+  // {
+  //   icon: 'grid-block-distribute-vertically-24',
+  //   title: PageNames.Bridge,
   // },
 ];
 
@@ -237,25 +260,25 @@ const AccountMenu: Array<SidebarMenuItem> = [
     icon: 'finance-wallet-24',
     title: PageNames.Wallet,
   },
-  {
-    icon: 'basic-circle-star-24',
-    title: PageNames.Rewards,
-  },
-  {
-    icon: 'basic-user-24',
-    title: PageNames.KYC,
-  },
+  // {
+  //   icon: 'basic-circle-star-24',
+  //   title: PageNames.Rewards,
+  // },
+  // {
+  //   icon: 'basic-user-24',
+  //   title: PageNames.KYC,
+  // },
 ];
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
-  {
-    icon: 'various-bone-24',
-    title: PageNames.Tokens,
-  },
   // {
-  //   icon: 'file-file-text-24',
-  //   title: PageNames.About,
+  //   icon: 'various-bone-24',
+  //   title: PageNames.Tokens,
   // },
+  {
+    icon: 'file-file-text-24',
+    title: PageNames.About,
+  },
 ];
 
 export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
@@ -306,13 +329,15 @@ export const FaucetLink: SidebarMenuItemLink = {
 export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
-export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity, PageNames.CreatePair];
+export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
 export const RewardsChildPages = [
   PageNames.Rewards,
   PageNames.Referral,
   PageNames.ReferralBonding,
   PageNames.ReferralUnbonding,
 ];
+
+export const StakingChildPages = [DemeterPageNames.Staking];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',
@@ -327,15 +352,6 @@ export const AboutTopics = [
   { title: Topics.AddLiquidity, icon: 'basic-drop-24' },
   { title: Topics.PriceFeeds, icon: 'software-terminal-24' },
 ];
-
-export enum LogoSize {
-  MINI = 'mini',
-  SMALL = 'small',
-  MEDIUM = 'medium',
-  BIG = 'big',
-  BIGGER = 'bigger',
-  LARGE = 'large',
-}
 
 export enum EvmSymbol {
   ETH = 'ETH',
@@ -381,3 +397,9 @@ export const EthereumGasLimits = [
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
+
+// TODO: merge with TranslationConsts from wallet
+export enum TranslationConsts {
+  APR = 'APR', // Annual percentage rate
+  ROI = 'ROI', // Return of investment
+}

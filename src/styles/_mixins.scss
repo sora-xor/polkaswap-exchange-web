@@ -3,7 +3,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
 $primary-button-color: var(--s-color-theme-accent);
 $primary-button-color-hover: var(--s-color-theme-accent-hover);
-$primary-button-box-shadow: 0px 0px 20px #99910D;
+$primary-button-box-shadow: 0px 0px 20px #99910d;
 
 // TODO 4 alexnatalia: Right now this is just a mixin because there are no appropriate focus behaviour for some elements (tabs for example) and we need more time to investigate the problem
 @mixin focus {
@@ -30,7 +30,7 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   }
 }
 
-@mixin element-size($className: "", $width: 40px, $height: $width) {
+@mixin element-size($className: '', $width: 40px, $height: $width) {
   .#{$className} {
     height: $height;
     width: $width;
@@ -54,7 +54,7 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   overflow: hidden;
 }
 
-@mixin generic-input-lines($inputLineClass: "input-line") {
+@mixin generic-input-lines($inputLineClass: 'input-line') {
   .#{$inputLineClass} {
     display: flex;
     justify-content: space-between;
@@ -121,28 +121,56 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   .el-buttons {
     display: flex;
     align-items: center;
-  }
 
-  .el-button {
-    &--max {
-      margin-right: $inner-spacing-mini / 2;
-      margin-left: $inner-spacing-mini / 2;
-      background-color: var(--s-color-theme-accent) !important;
-      &.el-button.neumorphic {
-        box-shadow: $button-custom-shadow;
+    &--between {
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .el-button {
+      &--max {
+        margin-right: $inner-spacing-mini / 2;
+        margin-left: $inner-spacing-mini / 2;
+        background-color: var(--s-color-theme-accent) !important;
+
+        &:last-child {
+          margin-right: 0;
+        }
       }
     }
+
+    .el-button {
+      &--max {
+        &.neumorphic {
+          box-shadow: $button-custom-shadow;
+        }
+      }
+    }
+
     &--select-token {
-      margin-left: $inner-spacing-mini / 2;
       &.token-select-button--token {
-        &, &:hover, &:active, &:focus, &.focusing, &.s-pressed {
+        &,
+        &:hover,
+        &:active,
+        &:focus,
+        &.focusing,
+        &.s-pressed {
           background-color: var(--s-color-utility-surface);
         }
-        &:hover, &:active, &:focus, &.focusing, &.s-pressed {
+        &:hover,
+        &:active,
+        &:focus,
+        &.focusing,
+        &.s-pressed {
           box-shadow: var(--s-shadow-element-pressed);
         }
       }
-      &, &:hover, &:active, &:focus, &.focusing, &.s-pressed {
+      &,
+      &:hover,
+      &:active,
+      &:focus,
+      &.focusing,
+      &.s-pressed {
         box-shadow: $button-custom-shadow;
       }
     }
@@ -171,7 +199,7 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   }
 }
 
-@mixin info-line ($class: 'swap-info') {
+@mixin info-line($class: 'swap-info') {
   .#{$class} {
     display: flex;
     align-items: center;
@@ -227,7 +255,7 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   }
 }
 
-@mixin search-item ($class: 'el-form-item--search') {
+@mixin search-item($class: 'el-form-item--search') {
   .#{$class} {
     margin-bottom: 0;
     position: relative;
@@ -251,7 +279,7 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   }
 }
 
-@mixin bridge-content ($min-height: 400px) {
+@mixin bridge-content($min-height: 400px) {
   min-height: $min-height;
   margin-top: $basic-spacing * 2;
   width: 100%;
@@ -264,7 +292,7 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   letter-spacing: var(--s-letter-spacing-small);
 }
 
-@mixin svg-icon ($url: '', $width: var(--s-icon-font-size-mini), $height: $width) {
+@mixin svg-icon($url: '', $width: var(--s-icon-font-size-mini), $height: $width) {
   display: block;
   width: $width;
   height: $height;
@@ -276,7 +304,7 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   background-size: 100%;
 }
 
-@mixin status-icon ($withLoading: false) {
+@mixin status-icon($withLoading: false) {
   &-icon {
     align-self: center;
     @include svg-icon;
@@ -285,15 +313,15 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
       @if $withLoading == true {
         @include loading;
       }
-      background-image: url("~@/assets/img/status-pending.svg");
+      background-image: url('~@/assets/img/status-pending.svg');
       height: var(--s-font-size-mini);
       width: var(--s-font-size-mini);
     }
     &--error {
-      background-image: url("~@/assets/img/status-error.svg");
+      background-image: url('~@/assets/img/status-error.svg');
     }
     &--success {
-      background-image: url("~@/assets/img/status-success.svg");
+      background-image: url('~@/assets/img/status-success.svg');
     }
   }
 }
@@ -313,7 +341,7 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
 // TODO 4 alexnatalia: Check these styles later
 @mixin button-styles {
   font-weight: 600 !important;
-  text-transform:  uppercase;
+  text-transform: uppercase;
   font-size: $s-font-size-button;
   line-height: var(--s-line-height-small);
   letter-spacing: var(--s-letter-spacing-small);
@@ -339,7 +367,7 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
 }
 
 @mixin exchange-tabs {
-  $tabs-class: ".el-tabs";
+  $tabs-class: '.el-tabs';
 
   .s-tabs.s-tabs--exchange {
     &#{$tabs-class} {
@@ -366,7 +394,9 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
               box-shadow: none !important;
             }
             &.is-disabled {
-              &, &:hover, &:focus.is-focus {
+              &,
+              &:hover,
+              &:focus.is-focus {
                 color: var(--s-color-base-content-tertiary);
               }
             }
@@ -450,7 +480,8 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
     }
 
     .el-collapse-item__header {
-      height: #{$collapse-icon-height + $inner-spacing-medium * 2};
+      height: auto;
+      min-height: #{$collapse-icon-height + $inner-spacing-medium * 2};
       line-height: $collapse-icon-height;
       padding: $inner-spacing-medium;
     }
@@ -469,21 +500,24 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   font-weight: 600;
 }
 
-@mixin scrollbar ($marginOffset: 0, $verticalRight: 2px) {
+@mixin scrollbar($marginOffset: 0, $verticalRight: 2px) {
   &.el-scrollbar {
     margin-left: $marginOffset;
     margin-right: $marginOffset;
 
-    .el-scrollbar__wrap {
+    & > .el-scrollbar__wrap {
       overflow-x: hidden;
       margin-bottom: 0px !important; // to disable element-ui negative margin
     }
-    .el-scrollbar__wrap, .el-scrollbar__view {
-      display: flex;
-      flex: 1;
-      flex-flow: column nowrap;
+    & > .el-scrollbar__wrap {
+      &,
+      & > .el-scrollbar__view {
+        display: flex;
+        flex: 1;
+        flex-flow: column nowrap;
+      }
     }
-    .el-scrollbar__bar {
+    & > .el-scrollbar__bar {
       &.is-vertical {
         right: $verticalRight;
       }
@@ -491,7 +525,7 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   }
 }
 
-@mixin icon-styles ($hasPointerCursor: false) {
+@mixin icon-styles($hasPointerCursor: false) {
   color: var(--s-color-base-content-tertiary);
   transition: var(--s-transition-default);
   @if $hasPointerCursor == true {
@@ -502,10 +536,108 @@ $primary-button-box-shadow: 0px 0px 20px #99910D;
   }
 }
 
-@mixin copy-address () {
+@mixin copy-address() {
   cursor: pointer;
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+@mixin input-slider() {
+  display: inline-block;
+
+  &.one-char .el-input__inner {
+    width: 1ch;
+  }
+  &.two-char .el-input__inner {
+    width: 2ch;
+  }
+  &.three-char .el-input__inner {
+    width: 3ch;
+  }
+
+  .s-input__content {
+    .percent {
+      font-size: var(--s-heading1-font-size);
+    }
+  }
+
+  .s-input__input {
+    flex: 0;
+  }
+
+  .el-input__inner {
+    font-size: var(--s-heading1-font-size) !important;
+    line-height: var(--s-line-height-mini) !important;
+    letter-spacing: var(--s-letter-spacing-mini) !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
+    height: auto !important;
+    min-width: 1ch;
+    max-width: 3ch;
+  }
+
+  .el-slider__runway {
+    background-color: var(--s-color-base-content-tertiary);
+  }
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@mixin routes-table {
+  background: transparent;
+
+  th.el-table__cell .cell span {
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: var(--s-font-size-small);
+    color: var(--s-color-brand-day);
+    white-space: nowrap;
+  }
+
+  th.el-table__cell .cell {
+    white-space: nowrap;
+  }
+
+  tr,
+  th {
+    &,
+    &:hover {
+      background: transparent;
+
+      & > td,
+      & > th {
+        // background: transparent;
+
+        .cell {
+          padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+          word-break: break-word;
+        }
+      }
+    }
+  }
+
+  .el-table__body-wrapper {
+    height: auto !important;
+  }
+}
+
+@mixin pagination {
+  display: flex;
+  margin-top: $inner-spacing-medium;
+  .el-pagination__total {
+    margin: auto;
   }
 }

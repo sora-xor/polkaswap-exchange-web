@@ -1,208 +1,131 @@
 <template>
-  <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
-    <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
-      <status-action-badge>
-        <template #label>{{ t('marketText') }}:</template>
-        <template #value>{{ swapMarketAlgorithm }}</template>
-        <template #action>
-          <s-button
-            class="el-button--settings"
-            type="action"
-            icon="basic-settings-24"
-            :disabled="!marketAlgorithmsAvailable"
-            @click="openSettingsDialog"
-          />
+  <div class="swap-container">
+    <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
+      <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
+        <status-action-badge>
+          <template #label>{{ t('marketText') }}:</template>
+          <template #value>{{ swapMarketAlgorithm }}</template>
+          <template #action>
+            <s-button
+              class="el-button--settings"
+              type="action"
+              icon="basic-settings-24"
+              :disabled="!marketAlgorithmsAvailable"
+              @click="openSettingsDialog"
+            />
+          </template>
+        </status-action-badge>
+      </generic-page-header>
+
+      <token-input
+        data-test-name="swapFrom"
+        is-select-available
+        :balance="getTokenBalance(tokenFrom)"
+        :is-max-available="isMaxSwapAvailable"
+        :title="t('transfers.from')"
+        :token="tokenFrom"
+        :value="fromValue"
+        @input="handleInputFieldFrom"
+        @focus="handleFocusField(false)"
+        @max="handleMaxValue"
+        @select="openSelectTokenDialog(true)"
+      >
+        <template #title-append v-if="areTokensSelected && !isZeroToAmount && isExchangeB">
+          <span class="input-title--uppercase input-title--primary"> ({{ t('swap.estimated') }}) </span>
         </template>
-      </status-action-badge>
-    </generic-page-header>
-    <s-float-input
-      class="s-input--token-value"
-      size="medium"
-      data-test-name="swapFrom"
-      :value="fromValue"
-      :decimals="tokenFromDecimals"
-      has-locale-string
-      :delimiters="delimiters"
-      :max="tokenFromMax"
-      @input="handleInputFieldFrom"
-      @focus="handleFocusField(false)"
-    >
-      <div slot="top" class="input-line">
-        <div class="input-title">
-          <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
-          <span
-            v-if="areTokensSelected && !isZeroToAmount && isExchangeB"
-            class="input-title--uppercase input-title--primary"
-          >
-            ({{ t('swap.estimated') }})
-          </span>
-        </div>
-        <div v-if="isLoggedIn && tokenFrom && tokenFrom.balance" class="input-value">
-          <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
-          <formatted-amount-with-fiat-value
-            value-can-be-hidden
-            with-left-shift
-            value-class="input-value--primary"
-            :value="formatBalance(tokenFrom)"
-            :fiat-value="getFiatBalance(tokenFrom)"
-          />
-        </div>
-      </div>
-      <div slot="right" class="s-flex el-buttons">
-        <s-button
-          v-if="tokenFrom && isMaxSwapAvailable"
-          class="el-button--max s-typography-button--small"
-          type="primary"
-          alternative
-          size="mini"
-          border-radius="mini"
-          @click="handleMaxValue"
-        >
-          {{ t('buttons.max') }}
-        </s-button>
-        <token-select-button
-          class="el-button--select-token"
-          data-test-name="selectToken"
-          icon="chevron-down-rounded-16"
-          :token="tokenFrom"
-          @click="openSelectTokenDialog(true)"
-        />
-      </div>
-      <div slot="bottom" class="input-line input-line--footer">
-        <formatted-amount v-if="tokenFrom && tokenFromPrice" is-fiat-value :value="fromFiatAmount" />
-        <token-address
-          v-if="tokenFrom"
-          :name="tokenFrom.name"
-          :symbol="tokenFrom.symbol"
-          :address="tokenFrom.address"
-          class="input-value"
-        />
-      </div>
-    </s-float-input>
-    <s-button
-      class="el-button--switch-tokens"
-      data-test-name="switchToken"
-      type="action"
-      icon="arrows-swap-90-24"
-      :disabled="!areTokensSelected"
-      @click="handleSwitchTokens"
-    />
-    <s-float-input
-      class="s-input--token-value"
-      size="medium"
-      data-test-name="swapTo"
-      :value="toValue"
-      :decimals="tokenToDecimals"
-      has-locale-string
-      :delimiters="delimiters"
-      :max="tokenToMax"
-      @input="handleInputFieldTo"
-      @focus="handleFocusField(true)"
-    >
-      <div slot="top" class="input-line">
-        <div class="input-title">
-          <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
-          <span
-            v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB"
-            class="input-title--uppercase input-title--primary"
-          >
-            ({{ t('swap.estimated') }})
-          </span>
-        </div>
-        <div v-if="isLoggedIn && tokenTo && tokenTo.balance" class="input-value">
-          <span class="input-value--uppercase">{{ t('exchange.balance') }}</span>
-          <formatted-amount-with-fiat-value
-            value-can-be-hidden
-            with-left-shift
-            value-class="input-value--primary"
-            :value="formatBalance(tokenTo)"
-            :fiat-value="getFiatBalance(tokenTo)"
-          />
-        </div>
-      </div>
-      <div slot="right" class="s-flex el-buttons">
-        <token-select-button
-          class="el-button--select-token"
-          data-test-name="selectToken"
-          icon="chevron-down-rounded-16"
-          :token="tokenTo"
-          @click="openSelectTokenDialog(false)"
-        />
-      </div>
-      <div slot="bottom" class="input-line input-line--footer">
-        <div v-if="tokenTo && tokenToPrice" class="price-difference">
-          <formatted-amount is-fiat-value :value="toFiatAmount" />
+      </token-input>
+
+      <s-button
+        class="el-button--switch-tokens"
+        data-test-name="switchToken"
+        type="action"
+        icon="arrows-swap-90-24"
+        :disabled="!areTokensSelected"
+        @click="handleSwitchTokens"
+      />
+
+      <token-input
+        data-test-name="swapTo"
+        is-select-available
+        :balance="getTokenBalance(tokenTo)"
+        :title="t('transfers.to')"
+        :token="tokenTo"
+        :value="toValue"
+        @input="handleInputFieldTo"
+        @focus="handleFocusField(true)"
+        @select="openSelectTokenDialog(false)"
+      >
+        <template #title-append v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB">
+          <span class="input-title--uppercase input-title--primary"> ({{ t('swap.estimated') }}) </span>
+        </template>
+        <template #fiat-amount-append v-if="tokenTo">
           <value-status-wrapper :value="fiatDifference" class="price-difference__value">
             (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
           </value-status-wrapper>
-        </div>
-        <token-address
-          v-if="tokenTo"
-          :name="tokenTo.name"
-          :symbol="tokenTo.symbol"
-          :address="tokenTo.address"
-          class="input-value"
-        />
-      </div>
-    </s-float-input>
-    <slippage-tolerance class="slippage-tolerance-settings" />
-    <s-button
-      v-if="!isLoggedIn"
-      type="primary"
-      class="action-button s-typography-button--large"
-      @click="handleConnectWallet"
-    >
-      {{ t('swap.connectWallet') }}
-    </s-button>
-    <s-button
-      v-else
-      class="action-button s-typography-button--large"
-      data-test-name="confirmSwap"
-      type="primary"
-      :disabled="isConfirmSwapDisabled"
-      :loading="isSelectAssetLoading"
-      @click="handleConfirmSwap"
-    >
-      <template v-if="!areTokensSelected">
-        {{ t('buttons.chooseTokens') }}
-      </template>
-      <template v-else-if="!isAvailable">
-        {{ t('swap.pairIsNotCreated') }}
-      </template>
-      <template v-else-if="areZeroAmounts">
-        {{ t('buttons.enterAmount') }}
-      </template>
-      <template v-else-if="isInsufficientLiquidity">
-        {{ t('swap.insufficientLiquidity') }}
-      </template>
-      <template v-else-if="isInsufficientBalance">
-        {{ t('exchange.insufficientBalance', { tokenSymbol: tokenFromSymbol }) }}
-      </template>
-      <template v-else-if="isInsufficientXorForFee">
-        {{ t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
-      </template>
-      <template v-else>
-        {{ t('exchange.Swap') }}
-      </template>
-    </s-button>
-    <swap-transaction-details
-      v-if="areTokensSelected && !hasZeroAmount"
-      class="info-line-container"
-      :info-only="false"
-    />
-    <select-token
-      :visible.sync="showSelectTokenDialog"
-      :connected="isLoggedIn"
-      :asset="isTokenFromSelected ? tokenTo : tokenFrom"
-      @select="selectToken"
-    />
-    <confirm-swap
-      :visible.sync="showConfirmSwapDialog"
-      :isInsufficientBalance="isInsufficientBalance"
-      @confirm="confirmSwap"
-    />
-    <settings-dialog :visible.sync="showSettings" />
-  </s-form>
+        </template>
+      </token-input>
+
+      <slippage-tolerance class="slippage-tolerance-settings" />
+
+      <s-button
+        v-if="!isLoggedIn"
+        type="primary"
+        class="action-button s-typography-button--large"
+        @click="handleConnectWallet"
+      >
+        {{ t('swap.connectWallet') }}
+      </s-button>
+      <s-button
+        v-else
+        class="action-button s-typography-button--large"
+        data-test-name="confirmSwap"
+        type="primary"
+        :disabled="isConfirmSwapDisabled"
+        :loading="isSelectAssetLoading"
+        @click="handleConfirmSwap"
+      >
+        <template v-if="!areTokensSelected">
+          {{ t('buttons.chooseTokens') }}
+        </template>
+        <template v-else-if="!isAvailable">
+          {{ t('swap.pairIsNotCreated') }}
+        </template>
+        <template v-else-if="areZeroAmounts">
+          {{ t('buttons.enterAmount') }}
+        </template>
+        <template v-else-if="isInsufficientLiquidity">
+          {{ t('swap.insufficientLiquidity') }}
+        </template>
+        <template v-else-if="isInsufficientBalance">
+          {{ t('exchange.insufficientBalance', { tokenSymbol: tokenFromSymbol }) }}
+        </template>
+        <template v-else-if="isInsufficientXorForFee">
+          {{ t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
+        </template>
+        <template v-else>
+          {{ t('exchange.Swap') }}
+        </template>
+      </s-button>
+      <swap-transaction-details
+        v-if="areTokensSelected && !hasZeroAmount"
+        class="info-line-container"
+        :info-only="false"
+      />
+      <select-token
+        :visible.sync="showSelectTokenDialog"
+        :connected="isLoggedIn"
+        :asset="isTokenFromSelected ? tokenTo : tokenFrom"
+        @select="selectToken"
+      />
+      <swap-confirm
+        :visible.sync="showConfirmSwapDialog"
+        :isInsufficientBalance="isInsufficientBalance"
+        @confirm="confirmSwap"
+      />
+      <settings-dialog :visible.sync="showSettings" />
+    </s-form>
+    <swap-chart v-if="chartsEnabled" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -210,7 +133,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
-import type { Subscription } from '@polkadot/x-rxjs';
+import type { Subscription } from 'rxjs';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
@@ -230,7 +153,7 @@ import {
   hasInsufficientBalance,
   hasInsufficientXorForFee,
   asZeroValue,
-  formatAssetBalance,
+  getAssetBalance,
   debouncedInputHandler,
 } from '@/utils';
 import router, { lazyComponent } from '@/router';
@@ -243,14 +166,13 @@ import { action, getter, mutation, state } from '@/store/decorators';
     SettingsDialog: lazyComponent(Components.SettingsDialog),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     SelectToken: lazyComponent(Components.SelectToken),
-    ConfirmSwap: lazyComponent(Components.ConfirmSwap),
+    SwapConfirm: lazyComponent(Components.SwapConfirm),
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenInput: lazyComponent(Components.TokenInput),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
+    SwapChart: lazyComponent(Components.SwapChart),
     FormattedAmount: components.FormattedAmount,
-    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    TokenAddress: components.TokenAddress,
   },
 })
 export default class Swap extends Mixins(
@@ -269,6 +191,7 @@ export default class Swap extends Mixins(
   @getter.assets.xor private xor!: AccountAsset;
   @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
+  @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
@@ -288,8 +211,8 @@ export default class Swap extends Mixins(
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
   @action.swap.reset private reset!: AsyncVoidFn;
   @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
-  @action.swap.resetSubscriptions private resetSubscriptions!: AsyncVoidFn;
-  @action.swap.updateSubscriptions private updateSubscriptions!: AsyncVoidFn;
+  @action.swap.resetSubscriptions private resetBalanceSubscriptions!: AsyncVoidFn;
+  @action.swap.updateSubscriptions private updateBalanceSubscriptions!: AsyncVoidFn;
 
   @Watch('liquiditySource')
   private handleLiquiditySourceChange(): void {
@@ -306,13 +229,9 @@ export default class Swap extends Mixins(
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean) {
     if (nodeConnected) {
-      this.updateSubscriptions();
-      this.subscribeOnEnabledAssets();
-      this.subscribeOnSwapReserves();
+      this.enableSwapSubscriptions();
     } else {
-      this.resetSubscriptions();
-      this.cleanEnabledAssetsSubscription();
-      this.cleanSwapReservesSubscription();
+      this.resetSwapSubscriptions();
     }
   }
 
@@ -328,22 +247,6 @@ export default class Swap extends Mixins(
 
   get tokenFromSymbol(): string {
     return this.tokenFrom?.symbol ?? '';
-  }
-
-  get tokenFromMax(): string {
-    return this.getMax(this.tokenFrom?.address);
-  }
-
-  get tokenToMax(): string {
-    return this.getMax(this.tokenTo?.address);
-  }
-
-  get tokenFromDecimals(): number {
-    return this.tokenFrom?.decimals ?? FPNumber.DEFAULT_PRECISION;
-  }
-
-  get tokenToDecimals(): number {
-    return this.tokenTo?.decimals ?? FPNumber.DEFAULT_PRECISION;
   }
 
   get areTokensSelected(): boolean {
@@ -446,14 +349,6 @@ export default class Swap extends Mixins(
     return FPNumber.lte(fpAmount, this.Zero);
   }
 
-  get tokenFromPrice(): Nullable<CodecString> {
-    return this.tokenFrom ? this.getAssetFiatPrice(this.tokenFrom) : null;
-  }
-
-  get tokenToPrice(): Nullable<CodecString> {
-    return this.tokenTo ? this.getAssetFiatPrice(this.tokenTo) : null;
-  }
-
   get networkFee(): CodecString {
     return this.networkFees[Operation.Swap];
   }
@@ -476,14 +371,12 @@ export default class Swap extends Mixins(
         await this.setTokenToAddress();
       }
 
-      if (!this.enabledAssetsSubscription) {
-        this.subscribeOnEnabledAssets();
-      }
+      this.enableSwapSubscriptions();
     });
   }
 
-  formatBalance(token: AccountAsset): string {
-    return formatAssetBalance(token);
+  getTokenBalance(token: AccountAsset): CodecString {
+    return getAssetBalance(token);
   }
 
   resetFieldFrom(): void {
@@ -666,9 +559,20 @@ export default class Swap extends Mixins(
     this.showSettings = true;
   }
 
-  beforeDestroy(): void {
+  private enableSwapSubscriptions(): void {
+    this.updateBalanceSubscriptions();
+    this.subscribeOnEnabledAssets();
+    this.subscribeOnSwapReserves();
+  }
+
+  private resetSwapSubscriptions(): void {
+    this.resetBalanceSubscriptions();
     this.cleanEnabledAssetsSubscription();
     this.cleanSwapReservesSubscription();
+  }
+
+  beforeDestroy(): void {
+    this.resetSwapSubscriptions();
   }
 
   destroyed(): void {
@@ -676,6 +580,45 @@ export default class Swap extends Mixins(
   }
 }
 </script>
+
+<style lang="scss">
+.app-main--has-charts {
+  .container--charts {
+    min-width: calc(#{$bridge-width} * 0.75);
+  }
+}
+@include desktop {
+  .app-main--has-charts {
+    .swap-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: $inner-spacing-medium;
+      .el-form {
+        flex-shrink: 0;
+      }
+      .el-form,
+      .container--charts {
+        margin-right: $basic-spacing-small;
+        margin-left: $basic-spacing-small;
+      }
+    }
+    .el-form--actions {
+      flex-shrink: 0;
+    }
+  }
+}
+
+@include large-desktop {
+  .app-main--has-charts {
+    .container--charts {
+      min-width: $bridge-width;
+      max-width: calc(#{$bridge-width} * 2);
+      flex-grow: 1;
+    }
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .el-form--actions {
@@ -702,14 +645,8 @@ export default class Swap extends Mixins(
   justify-content: space-between;
   align-items: center;
 }
+
 .price-difference {
-  display: flex;
-  align-items: center;
-
-  & > * {
-    flex-shrink: 0;
-  }
-
   &__value {
     font-weight: 600;
     font-size: var(--s-font-size-small);

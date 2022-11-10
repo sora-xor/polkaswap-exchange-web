@@ -36,6 +36,14 @@ const getters = defineGetters<SettingsState>()({
     const { state, getters } = settingsGetterContext(args);
     return !!getters.moonpayApiKey && !!state.featureFlags.moonpay;
   },
+  chartsEnabled(...args): boolean {
+    const { state } = settingsGetterContext(args);
+    return !!state.featureFlags.charts;
+  },
+  notificationActivated(...args): boolean {
+    const { state } = settingsGetterContext(args);
+    return state.browserNotifsPermission === 'granted';
+  },
 });
 
 export default getters;

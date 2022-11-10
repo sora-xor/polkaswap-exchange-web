@@ -4,24 +4,31 @@ import storage, { settingsStorage } from '@/utils/storage';
 import type { SettingsState } from './types';
 
 function initialState(): SettingsState {
+  const node = settingsStorage.get('node');
+  const customNodes = settingsStorage.get('customNodes');
+  const isBrowserNotificationApiAvailable = 'Notification' in window;
   return {
     featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: (storage.get('marketAlgorithm') || DefaultMarketAlgorithm) as MarketAlgorithms,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
-    node: JSON.parse(settingsStorage.get('node')) || {},
+    isBrowserNotificationApiAvailable,
+    browserNotifsPermission: isBrowserNotificationApiAvailable ? Notification.permission : 'default',
+    node: node ? JSON.parse(node) : {},
     language: getLocale(),
     defaultNodes: [],
-    customNodes: JSON.parse(settingsStorage.get('customNodes')) || [],
+    customNodes: customNodes ? JSON.parse(customNodes) : [],
     nodeAddressConnecting: '',
     nodeConnectionAllowance: true,
     chainGenesisHash: '',
     faucetUrl: '',
     selectNodeDialogVisibility: false,
     selectLanguageDialogVisibility: false,
+    browserNotifPopupVisibility: false,
+    browserNotifPopupBlockedVisibility: false,
     blockNumber: 0,
     blockNumberUpdates: null,
-    kycData: JSON.parse(storage.get('kyc')) || {},
+    kycData: JSON.parse(storage.get('kyc') || '{}') || {},
   };
 }
 

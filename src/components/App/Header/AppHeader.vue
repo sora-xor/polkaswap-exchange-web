@@ -7,7 +7,7 @@
       class="app-controls app-controls--moonpay s-flex"
       :class="{ 'app-controls--moonpay--dark': themeIsDark }"
     >
-      <s-button
+      <!-- <s-button
         type="tertiary"
         size="medium"
         icon="various-atom-24"
@@ -16,7 +16,7 @@
       >
         <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
-      <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
+      <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" /> -->
     </div>
     <div
       class="app-controls app-controls--settings-panel s-flex"
@@ -44,14 +44,14 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 
 import { lazyComponent, goTo } from '@/router';
-import { PageNames, Components, LogoSize } from '@/consts';
+import { PageNames, Components } from '@/consts';
 import { getter, mutation } from '@/store/decorators';
 
 @Component({
@@ -92,7 +92,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   get nodeLogo() {
     return {
-      size: LogoSize.MEDIUM,
+      size: WALLET_CONSTS.LogoSize.MEDIUM,
       tokenSymbol: XOR.symbol,
     };
   }

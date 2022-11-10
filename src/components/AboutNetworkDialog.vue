@@ -10,21 +10,20 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from './mixins/TranslationMixin';
-import DialogMixin from './mixins/DialogMixin';
-import DialogBase from './DialogBase.vue';
 
 import { Components, Links } from '@/consts';
 import { lazyComponent } from '@/router';
 
 @Component({
   components: {
-    DialogBase,
+    DialogBase: components.DialogBase,
     ExternalLink: lazyComponent(Components.ExternalLink),
   },
 })
-export default class AboutNetworkDialog extends Mixins(TranslationMixin, DialogMixin) {
+export default class AboutNetworkDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {
   get aboutBlocks() {
     return [
       {

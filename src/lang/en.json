@@ -44,7 +44,12 @@
             "ReferralReserveXor": "Bonded XOR successfully",
             "ReferralUnreserveXor": "Unbonded XOR successfully",
             "ReferralSetInvitedUser": "Referral is set successfully",
-            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
+            "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Supplied {symbol} and {symbol2} {amount} LP tokens",
+            "DemeterFarmingWithdrawLiquidity": "Removed {symbol} and {symbol2} {amount} LP tokens",
+            "DemeterFarmingStakeToken": "Added {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Removed {amount} {symbol}",
+            "DemeterFarmingGetRewards": "{amount} {symbol} claimed successfully"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -57,17 +62,29 @@
             "ReferralReserveXor": "Failed to bond XOR",
             "ReferralUnreserveXor": "Failed to unbond XOR",
             "ReferralSetInvitedUser": "Failed to set referral",
-            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}"
+            "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
+            "DemeterFarmingDepositLiquidity": "Failed to supply {amount} {symbol} and {symbol2} LP tokens",
+            "DemeterFarmingWithdrawLiquidity": "Failed to remove {amount} {symbol} and {symbol2} LP tokens",
+            "DemeterFarmingStakeToken": "Failed to add {amount} {symbol}",
+            "DemeterFarmingUnstakeToken": "Failed to remove {amount} {symbol}",
+            "DemeterFarmingGetRewards": "Failed to claim {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
         "ReferralSetInvitedUser": "Set Referral",
-        "SwapAndSend": "Swap and Send"
+        "SwapAndSend": "Swap and Send",
+        "DemeterFarmingDepositLiquidity": "Stake Liquidity",
+        "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
+        "DemeterFarmingStakeToken": "Stake Token",
+        "DemeterFarmingUnstakeToken": "Unstake Token",
+        "DemeterFarmingGetRewards": "Claim Rewards"
     },
     "polkadotjs": {
         "noExtensions": "No Polkadot.js extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "There seems to be no accounts in your Polkadot.js extension. Please add an account and try again.",
-        "noAccount": "Polkadot.js account error. Please check your account in the Polkadot.js extension"
+        "noAccount": "{extension} account error. Please check your account in the {extension} extension",
+        "noExtension": "No {extension} extension was found. Please install it and reload this page",
+        "noSigner": "Access denied. Go to {extension} extension settings and open \"Manage Website Access\" to allow."
     },
     "connection": {
         "title": "SORA Network account",
@@ -82,6 +99,10 @@
             "learnMore": "Learn more",
             "connect": "Connect account",
             "refresh": "Refresh"
+        },
+        "selectWallet": "Select a wallet to work with",
+        "wallet": {
+            "install": "Install"
         }
     },
     "wallet": {
@@ -113,13 +134,18 @@
     "account": {
         "successCopy": "Wallet address is copied to the clipboard",
         "copy": "Copy address",
-        "switch": "Switch account"
+        "switch": "Switch account",
+        "walletAddress": "Wallet address"
     },
     "history": {
         "clearHistory": "Clear history",
         "filterPlaceholder": "Filter by Address, Symbol, Type or Block ID",
         "empty": "Your transactions will appear here",
-        "emptySearch": "No transactions found"
+        "emptySearch": "No transactions found",
+        "firstText": "First",
+        "lastText": "Last",
+        "prevText": "Previous",
+        "nextText": "Next"
     },
     "assets": {
         "empty": "There are no assets",
@@ -141,26 +167,18 @@
             "bonded": "- Bonded"
         },
         "totalAssetsValue": "Your total assets value:",
-        "details": "Details"
+        "details": "Details",
+        "assetId": "Asset ID"
     },
     "asset": {
         "remove": "Remove asset",
         "select": "Select an asset",
-        "recieve": "Receive {symbol}"
+        "receive": "Receive {symbol}"
     },
     "addAsset": {
         "title": "@:addAssetText",
         "action": "@:addAssetText",
         "success": "Asset {symbol} was added successfully!",
-        "AddAssetSearch": {
-            "title": "@:searchText",
-            "placeholder": "Filter by Asset ID, Name or Ticker Symbol"
-        },
-        "AddAssetCustom": {
-            "title": "Custom asset",
-            "addressPlaceholder": "@:addressText",
-            "symbolPlaceholder": "Asset symbol"
-        },
         "empty": "No tokens found",
         "alreadyAttached": "Token was already attached",
         "understand": "I understand",
@@ -169,7 +187,15 @@
         "approved": "Asset approved by community",
         "unknown": "Unknown source",
         "scam": "SCAM",
-        "next": "Next"
+        "next": "Next",
+        "AddAssetToken": {
+            "title": "Tokens",
+            "switchBtn": "Verified assets only"
+        },
+        "AddAssetNFT": {
+            "title": "NFTs"
+        },
+        "searchInputText": "Search by Asset ID, Name or Ticker Symbol"
     },
     "createToken": {
         "title": "@:createTokenText",
@@ -327,8 +353,10 @@
         "Support": "Support",
         "CreatePair": "Create Pair",
         "Tokens": "Tokens",
+        "StakingContainer": "Staking",
         "Send": "Send",
-        "KYC": "KYC"
+        "KYC": "KYC",
+        "RouteAssets": "Route Assets"
     },
     "social": {
         "twitter": "Twitter",
@@ -502,7 +530,8 @@
         "swapOutputMessage": "Output is estimated. You will receive at least {transactionValue} or the transaction will revert.",
         "rewardsForSwap": "PSWAP Strategic Rewards",
         "swapInputMessage": "Input is estimated. You will sell maximum {transactionValue} or the transaction will revert.",
-        "route": "Route"
+        "route": "Route",
+        "errorFetching": "Error fetching the data"
     },
     "pool": {
         "connectWallet": "@:connectWalletText",
@@ -514,7 +543,7 @@
         "pooledToken": "{tokenSymbol} Pooled",
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Your pool share",
-        "unknownAsset": "Unknown asset",
+        "unknownAsset": "@:unknownAssetText",
         "description": "When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
         "strategicBonusApy": "Strategic Bonus APY"
     },
@@ -540,7 +569,9 @@
         "networkInfo": "Bridge @:soraText Network with:",
         "ethereum": "@:ethereumText",
         "energy": "@:evm.EWC",
-        "copy": "Copy network address"
+        "copy": "Copy network address",
+        "soraAddress": "@:soraText address",
+        "ethereumAddress": "@:ethereumText address"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -692,7 +723,8 @@
         "description": "Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.",
         "outputMessage": "Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.",
         "confirmTitle": "You will receive",
-        "shareOfPool": "Share of pool after transaction"
+        "shareOfPool": "Share of pool after transaction",
+        "locked": "{percent} of your pool is in staking"
     },
     "dexSettings": {
         "title": "Transaction settings",
@@ -847,7 +879,7 @@
         },
         "history": {
             "title": "Purchase history",
-            "empty": "No data"
+            "empty": "@:noDataText"
         },
         "confirmations": {
             "txReady": "Transaction Ready For Bridge"
@@ -856,7 +888,6 @@
             "transfer": "Tokens successfully purchased!\nClick to start the bridge transaction"
         }
     },
-    "recievedText": "Recieved",
     "light": "Light",
     "dark": "Dark",
     "headerMenu": {
@@ -972,13 +1003,77 @@
             },
             "save": "Save",
             "reset": "Reset"
+        },
+        "routeAssets": {
+            "uploadCSV": {
+                "title": "Advanced Digital Asset Routing",
+                "description": "ADAR is an Advanced Digital Asset Routing solution for businesses to seamlessy transmit digital assets to payeers around the world, in multiple currencies, at a fraction of today’s prevailing transaction costs, without excessive paperwork and settlement times.",
+                "nextButton": "Process routing template",
+                "downloadButton": "Download routing template",
+                "uploadDialog" : {
+                    "title": "Upload",
+                    "body": "Upload .CSV file to initiate assets routing ",
+                    "browseButton": "Browse files"
+                }
+            },
+            "routingTemplate": {
+                "submitButton": "Route Assets",
+                "downloadOverviewButton": "download transaction overview",
+                "backButton": "Back to Upload",
+                "summary": {
+                    "title": "Routing Template Summary",
+                    "asset": "Input Asset",
+                    "usdCount": "Total usd to be routed",
+                    "usdRouted": "Total usd routed",
+                    "usdAuthorized": "Total usd authorized",
+                    "estimatedTokes": "Total estimated {token} required (+5%)",
+                    "available": "Total {token} available",
+                    "tokenRouted": "Total {token} routed",
+                    "add": "add",
+                    "detailsToggle": "Summary details",
+                    "table": {
+                        "asset": "output Asset",
+                        "usd": "usd equivalent",
+                        "usdRouted": "total USD routed",
+                        "total": "total estimated",
+                        "totalRouted": "Total {token} routed",
+                        "required": "estimated {token} required",
+                        "transactions": "total transaction success"
+                    }
+                },
+                "overview": {
+                    "title":"Transaction Overview",
+                    "name": "name",
+                    "wallet":"WALLET",
+                    "usd":"USD Equivalent",
+                    "asset":"Asset",
+                    "amount":"estimated Amount ",
+                    "status":"Status"
+                },
+                "authorizeDialog": {
+                    "title":"Authorize Routing Template",
+                    "asset":"Input Asset",
+                    "total":"Total",
+                    "termsAndConditions": "Terms and Conditions",
+                    "agreement": "By clicking Submit Routing i accept the ADAR",
+                    "submit": "route assets"
+                },
+                "messages": {
+                    "routeAssetsCompleted": "All transactions completed"
+                }
+            }
         }
     },    
     "code": {
         "download": "Download QR Code",
         "upload": "Scan QR",
-        "recieve": "Receive",
-        "invalid": "Invalid QR Code"
+        "invalid": "Invalid QR Code",
+        "import": "Import an image",
+        "scan": "Scan with camera",
+        "allowanceError": "Check your camera availability and browser permissions to use it",
+        "receive": "Receive",
+        "camera": "Camera",
+        "allowanceRequest": "Press “Allow” access to camera"
     },
     "bridgeTransferNotification": {
         "addToken": "Add {symbol} to @:metamask",
@@ -989,5 +1084,95 @@
         "header": "Download SORA Wallet with <span class=\"popup-info__headline--highlight\">Polkaswap<\/span> features",
         "info": "Swap tokens from different networks - SORA, Ethereum, Polkadot, Kusama. Provide liquidity pool and earn % from exchange fees."
     },
-    "releaseNotesText": "Release notes"
+    "releaseNotesText": "Release notes",
+    "copiedText": "Copied!",
+    "copyWithValue": "Copy {value}",
+    "copiedWithValue": "{value} is copied!",
+    "signAndClaimText": "Sign and claim",
+    "balanceText": "Balance",
+    "unknownAssetText": "Unknown asset",
+    "demeterFarming": {
+        "staking": {
+            "active": "Staking active",
+            "inactive": "Stake to earn additional rewards",
+            "stopped": "Staking stopped"
+        },
+        "info": {
+            "earned": "{symbol} earned",
+            "fee": "Fee",
+            "feeTooltip": "Deposit fee is applied to your amount to stake",
+            "owned": "{symbol} @:balanceText",
+            "poolShare": "Your pool share staked",
+            "poolShareWillBe": "Your pool share staked will be",
+            "rewardToken": "Reward token",
+            "stake": "Your {symbol} staked",
+            "stakeWillBe": "Your {symbol} stake will be",
+            "totalLiquidityLocked": "Total liquidity locked"
+        },
+        "actions": {
+            "add": "Stake more",
+            "claim": "Claim rewards",
+            "remove": "Remove stake",
+            "start": "Start staking"
+        },
+        "amountAdd": "Amount to stake",
+        "amountRemove": "Amount to remove",
+        "poweredBy": "Powered by Demeter Farming",
+        "calculator": "Calculator",
+        "results": "Results",
+        "rewards": "{symbol} rewards"
+    },
+    "staking": {
+        "title": "Staking"
+    },
+    "historyErrorMessages": {
+        "generalError": "Something went wrong",
+        "balances": {
+            "LiquidityRestrictions": "Account liquidity restrictions prevent withdrawal"
+        },
+        "poolXyk": {
+            "SourceBalanceIsNotLargeEnough": "Source balance is not large enough",
+            "TargetBalanceIsNotLargeEnough": "Destination balance is not large enough",
+            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Provided amounts are too diverse",
+            "CalculatedValueIsNotMeetsRequiredBoundaries": "Amounts are out of required bounds",
+            "UnableToDepositXorLessThanMinimum": "XOR lower than the minimum value (0.007)",
+            "ZeroValueInAmountParameter": "Amount parameter has zero value"
+        },
+        "xstPool": {
+            "PoolAlreadyInitializedForPair": "Pool pair already exists",
+            "SlippageLimitExceeded": "Slippage tolerance has not met proper limits"
+        },
+        "referrals": {
+            "AlreadyHasReferrer": "Account already has a referrer",
+            "ReferrerInsufficientBalance": "Referrer does not have enough of reserved balance"
+        },
+        "vestedRewards": {
+            "RewardsSupplyShortage": "Rewards program has already finished",
+            "CantCalculateReward": "Failed to perform reward calculation",
+            "NoRewardsForAsset": "There are no rewards for this asset"
+        },
+        "liquidityProxy": {
+            "ForbiddenFilter": "Selected liquidity source is not allowed"
+        },
+        "demeterFarmingPlatform": {
+            "InsufficientFunds": "Insufficient funds",
+            "InsufficientLPTokens": "Insufficient liquidity provision tokens",
+            "PoolDoesNotHaveRewards": "Pool does not have rewards"
+        },
+        "multicollateralBondingCurvePool": {
+            "PriceCalculationFailed": "An error occurred while calculating the price"
+        }
+    },
+    "receivedText": "Received",
+    "browserNotificationDialog": {
+        "title": "Enable browser notifications",
+        "info": "We will send you only relevant updates about your wallet, for example: asset balance changes",
+        "button": "Enable notifications",
+        "agree": "Yes, I understand",
+        "notificationBlocked": "To receive the notifications about {appName}, please, allow the notifications in your browser's native settings",
+        "pointer": "Press “Allow” to turn notifications on"
+    },
+    "assetDeposit": "Asset balance has been deposited",
+    "noDataText": "No data",
+    "ofText": "{first} of {second}"
 }

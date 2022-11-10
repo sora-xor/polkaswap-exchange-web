@@ -88,11 +88,8 @@
             </div>
             <div v-if="isNetworkAConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <s-tooltip :content="t('bridge.copy')" border-radius="mini" placement="bottom-end">
-                <span
-                  class="bridge-network-address"
-                  @click.stop="handleCopyAddress(accountAddressFrom, getBridgeItemTitle(isSoraToEvm))"
-                >
+              <s-tooltip :content="getCopyTooltip(isSoraToEvm)" border-radius="mini" placement="bottom-end">
+                <span class="bridge-network-address" @click="handleCopyAddress(accountAddressFrom, $event)">
                   {{ formatAddress(accountAddressFrom, 8) }}
                 </span>
               </s-tooltip>
@@ -160,11 +157,8 @@
             </div>
             <div v-if="isNetworkBConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <s-tooltip :content="t('bridge.copy')" border-radius="mini" placement="bottom-end">
-                <span
-                  class="bridge-network-address"
-                  @click.stop="handleCopyAddress(accountAddressTo, getBridgeItemTitle(!isSoraToEvm))"
-                >
+              <s-tooltip :content="getCopyTooltip(!isSoraToEvm)" border-radius="mini" placement="bottom-end">
+                <span class="bridge-network-address" @click="handleCopyAddress(accountAddressTo, $event)">
                   {{ formatAddress(accountAddressTo, 8) }}
                 </span>
               </s-tooltip>
@@ -187,10 +181,13 @@
           data-test-name="nextButton"
           type="primary"
           :disabled="isConfirmTxDisabled"
-          :loading="isSelectAssetLoading"
+          :loading="isConfirmTxLoading"
           @click="handleConfirmTransaction"
         >
-          <template v-if="!isAssetSelected">
+          <template v-if="!isValidNetworkType">
+            {{ t('bridge.changeNetwork') }}
+          </template>
+          <template v-else-if="!isAssetSelected">
             {{ t('buttons.chooseAToken') }}
           </template>
           <template v-else-if="!isRegisteredAsset">
@@ -198,9 +195,6 @@
           </template>
           <template v-else-if="!areNetworksConnected">
             {{ t('bridge.next') }}
-          </template>
-          <template v-else-if="!isValidNetworkType">
-            {{ t('bridge.changeNetwork') }}
           </template>
           <template v-else-if="isZeroAmount">
             {{ t('buttons.enterAmount') }}
@@ -277,7 +271,6 @@ import {
   getAssetBalance,
   asZeroValue,
   isEthereumAddress,
-  copyToClipboard,
 } from '@/utils';
 import type { SubNetwork } from '@/utils/ethers-util';
 import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
@@ -300,6 +293,7 @@ import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecima
 export default class Bridge extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.NetworkFeeWarningMixin,
+  mixins.CopyAddressMixin,
   BridgeMixin,
   NetworkFormatterMixin,
   NetworkFeeDialogMixin,
@@ -312,6 +306,7 @@ export default class Bridge extends Mixins(
   @state.web3.subNetworks subNetworks!: Array<SubNetwork>;
   @state.bridge.amount amount!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
+  @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
 
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAssetWithDecimals>;
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
@@ -322,7 +317,7 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setAmount setAmount!: (value: string) => void;
 
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
-  @action.bridge.resetBridgeForm private resetBridgeForm!: (withAddress?: boolean) => Promise<void>;
+  @action.bridge.resetBridgeForm private resetBridgeForm!: AsyncVoidFn;
   @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncVoidFn;
   @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncVoidFn;
   @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
@@ -343,9 +338,7 @@ export default class Bridge extends Mixins(
   showConfirmTransactionDialog = false;
 
   get assetAddress(): string {
-    if (!this.asset) return '';
-
-    return this.asset.address;
+    return this.asset?.address ?? '';
   }
 
   get firstFieldFiatBalance(): Nullable<string> {
@@ -426,16 +419,18 @@ export default class Bridge extends Mixins(
   get isConfirmTxDisabled(): boolean {
     return (
       !this.isAssetSelected ||
+      !this.isRegisteredAsset ||
       !this.areNetworksConnected ||
       !this.isValidNetworkType ||
-      !this.isAssetSelected ||
       this.isZeroAmount ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
-      this.isInsufficientBalance ||
-      !this.isRegisteredAsset ||
-      this.evmNetworkFeeFetching
+      this.isInsufficientBalance
     );
+  }
+
+  get isConfirmTxLoading(): boolean {
+    return this.isSelectAssetLoading || this.evmNetworkFeeFetching || this.registeredAssetsFetching;
   }
 
   get isXorSufficientForNextOperation(): boolean {
@@ -449,10 +444,7 @@ export default class Bridge extends Mixins(
   }
 
   getDecimals(isSora = true): number | undefined {
-    if (!this.asset) {
-      return undefined;
-    }
-    return isSora ? this.asset.decimals : this.asset.externalDecimals;
+    return isSora ? this.asset?.decimals : this.asset?.externalDecimals;
   }
 
   get accountAddressFrom(): string {
@@ -464,7 +456,7 @@ export default class Bridge extends Mixins(
   }
 
   formatBalance(isSora = true): string {
-    if (!this.isRegisteredAsset) {
+    if (!this.isRegisteredAsset || !this.asset) {
       return '-';
     }
     const balance = getAssetBalance(this.asset, { internal: isSora });
@@ -477,7 +469,7 @@ export default class Bridge extends Mixins(
 
   created(): void {
     // we should reset data only on created, because it's used on another bridge views
-    this.resetBridgeForm(!!router.currentRoute.params?.address);
+    this.resetBridgeForm();
   }
 
   destroyed(): void {
@@ -486,6 +478,10 @@ export default class Bridge extends Mixins(
 
   getBridgeItemTitle(isSoraNetwork = false): string {
     return this.t(this.formatNetwork(isSoraNetwork));
+  }
+
+  getCopyTooltip(isSoraNetwork = false): string {
+    return this.copyTooltip(this.t(`bridge.${isSoraNetwork ? 'soraAddress' : 'ethereumAddress'}`));
   }
 
   async handleSwitchItems(): Promise<void> {
@@ -559,23 +555,6 @@ export default class Bridge extends Mixins(
       this.setHistoryId(id);
       router.push({ name: PageNames.BridgeTransaction });
     });
-  }
-
-  async handleCopyAddress(accountId: string, bridgeItemTitle: string): Promise<void> {
-    try {
-      await copyToClipboard(accountId);
-      this.$notify({
-        message: this.t('transaction.successCopy', { value: bridgeItemTitle }),
-        type: 'success',
-        title: '',
-      });
-    } catch (error) {
-      this.$notify({
-        message: `${this.t('warningText')} ${error}`,
-        type: 'warning',
-        title: '',
-      });
-    }
   }
 }
 </script>

@@ -10,9 +10,9 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { LogoSize, ObjectInit } from '@/consts';
+import { ObjectInit } from '@/consts';
 
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
   components: {
@@ -22,7 +22,8 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 export default class PairTokenLogo extends Mixins(TranslationMixin) {
   @Prop({ type: Object, default: ObjectInit }) readonly firstToken!: AccountAsset | Asset;
   @Prop({ type: Object, default: ObjectInit }) readonly secondToken!: AccountAsset | Asset;
-  @Prop({ type: String, default: LogoSize.MEDIUM, required: false }) readonly size!: LogoSize;
+  @Prop({ type: String, default: WALLET_CONSTS.LogoSize.MEDIUM, required: false })
+  readonly size!: WALLET_CONSTS.LogoSize;
 
   get computedClasses(): string {
     const componentClass = 'pair-logo';
@@ -50,7 +51,7 @@ export default class PairTokenLogo extends Mixins(TranslationMixin) {
     &:first-child {
       top: 0;
       left: 0;
-      z-index: 1;
+      z-index: $app-content-layer;
     }
     &:last-child {
       bottom: 0;
@@ -61,4 +62,5 @@ export default class PairTokenLogo extends Mixins(TranslationMixin) {
 
 @include element-size('pair-logo--mini', 24px);
 @include element-size('pair-logo--small', 36px);
+@include element-size('pair-logo--medium', 44px);
 </style>

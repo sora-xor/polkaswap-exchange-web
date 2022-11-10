@@ -56,7 +56,8 @@
                 type="action"
                 alternative
                 icon="basic-copy-24"
-                @click="handleCopyTransactionHash(transactionFromHash)"
+                :tooltip="copyTransactionHashTooltip"
+                @click="handleCopyAddress(transactionFromHash, $event)"
               />
               <s-dropdown
                 v-if="(isSoraToEvm && soraExpolrerLinks.length) || !isSoraToEvm"
@@ -183,7 +184,8 @@
                 type="action"
                 alternative
                 icon="basic-copy-24"
-                @click="handleCopyTransactionHash(transactionToHash)"
+                :tooltip="copyTransactionHashTooltip"
+                @click="handleCopyAddress(transactionToHash, $event)"
               />
               <s-dropdown
                 v-if="(!isSoraToEvm && soraExpolrerLinks.length) || isSoraToEvm"
@@ -301,12 +303,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { action, state, getter, mutation } from '@/store/decorators';
-import {
-  copyToClipboard,
-  hasInsufficientBalance,
-  hasInsufficientXorForFee,
-  hasInsufficientEvmNativeTokenForFee,
-} from '@/utils';
+import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { bridgeApi, STATES, isOutgoingTransaction, isUnsignedFromPart } from '@/utils/bridge';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
@@ -320,7 +317,12 @@ const FORMATTED_HASH_LENGTH = 24;
     InfoLine: components.InfoLine,
   },
 })
-export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixin, BridgeMixin, NetworkFormatterMixin) {
+export default class BridgeTransaction extends Mixins(
+  mixins.FormattedAmountMixin,
+  mixins.CopyAddressMixin,
+  BridgeMixin,
+  NetworkFormatterMixin
+) {
   readonly KnownSymbols = KnownSymbols;
   readonly collapseItems = {
     from: 'step-from',
@@ -458,6 +460,10 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return this.historyItem?.transactionStep ?? 1;
   }
 
+  get copyTransactionHashTooltip(): string {
+    return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
+  }
+
   get activeCollapseItems(): Array<string> {
     if (this.isTransactionToCompleted) {
       return [];
@@ -554,7 +560,7 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
   }
 
   get formattedSoraNetworkFee(): string {
-    return this.getStringFromCodec(this.txSoraNetworkFee, this.xor.decimals);
+    return this.getStringFromCodec(this.txSoraNetworkFee, this.xor?.decimals);
   }
 
   get soraNetworkFeeFiatValue(): Nullable<string> {
@@ -745,23 +751,6 @@ export default class BridgeTransaction extends Mixins(mixins.FormattedAmountMixi
     return Math.max(blocksLeft, 0);
   }
 
-  async handleCopyTransactionHash(hash: string): Promise<void> {
-    try {
-      await copyToClipboard(hash);
-      this.$notify({
-        message: this.t('bridgeTransaction.successCopy'),
-        type: 'success',
-        title: '',
-      });
-    } catch (error) {
-      this.$notify({
-        message: `${this.t('warningText')} ${error}`,
-        type: 'warning',
-        title: '',
-      });
-    }
-  }
-
   get failedClassStep1(): string {
     return this.getFailedClass(this.isTransactionFromFailed);
   }
@@ -924,7 +913,7 @@ $network-title-max-width: 250px;
     .s-button--hash-copy,
     .s-dropdown--hash-menu {
       position: absolute;
-      z-index: 1;
+      z-index: $app-content-layer;
       top: 0;
       bottom: 0;
       margin-top: auto;

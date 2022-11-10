@@ -305,28 +305,15 @@ function storeEvmNetworkType(network: string): void {
   storage.set('evmNetworkType', EvmNetworkTypeName[network] || network);
 }
 
-function getEvmNetworkTypeFromStorage(): string {
-  // return storage.get('evmNetworkType') || '' TODO: [1.5] return it back after 1.4 release to mainnet
-  let evmNetworkType = storage.get('evmNetworkType') || '';
-  if (evmNetworkType === 'homestead') {
-    evmNetworkType = 'main';
-  }
-  return evmNetworkType;
-}
-
 function removeEvmNetworkType(): void {
   storage.remove('evmNetworkType');
 }
 
 async function getEvmNetworkType(): Promise<string> {
-  const networkType = getEvmNetworkTypeFromStorage();
-  if (!networkType || networkType === 'undefined') {
-    const ethersInstance = await getEthersInstance();
-    const network = await ethersInstance.getNetwork();
-    const networkType = ethers.utils.hexValue(network.chainId);
-    return EvmNetworkTypeName[networkType];
-  }
-  return networkType;
+  const ethersInstance = await getEthersInstance();
+  const network = await ethersInstance.getNetwork();
+  const networkType = ethers.utils.hexValue(network.chainId);
+  return EvmNetworkTypeName[networkType];
 }
 
 /**
@@ -394,7 +381,6 @@ export default {
   getEvmUserAddress,
   storeEvmNetworkType,
   getEvmNetworkType,
-  getEvmNetworkTypeFromStorage,
   removeEvmNetworkType,
   getEthersInstance,
   removeEvmUserAddress,
