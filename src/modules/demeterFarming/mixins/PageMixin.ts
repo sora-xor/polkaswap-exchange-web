@@ -3,6 +3,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import { action, getter } from '@/store/decorators';
 
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
@@ -25,6 +26,7 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
 
   poolAsset: Nullable<string> = null;
   rewardAsset: Nullable<string> = null;
+  liquidity: Nullable<AccountLiquidity> = null;
 
   isAddingStake = true;
 
@@ -96,14 +98,15 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
     this.showClaimDialog = true;
   }
 
-  showPoolCalculator(params: { poolAsset: string; rewardAsset: string }): void {
+  showPoolCalculator(params: { poolAsset: string; rewardAsset: string; liquidity?: AccountLiquidity }): void {
     this.setDialogParams(params);
     this.showCalculatorDialog = true;
   }
 
-  private setDialogParams({ poolAsset, rewardAsset }: { poolAsset: string; rewardAsset: string }): void {
-    this.poolAsset = poolAsset;
-    this.rewardAsset = rewardAsset;
+  private setDialogParams(params: { poolAsset: string; rewardAsset: string; liquidity?: AccountLiquidity }): void {
+    this.poolAsset = params.poolAsset;
+    this.rewardAsset = params.rewardAsset;
+    this.liquidity = params.liquidity;
   }
 
   async handleStakeAction(

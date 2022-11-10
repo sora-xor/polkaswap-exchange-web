@@ -612,7 +612,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       }
 
       & > *:not(:last-child) {
-        margin-right: $inner-spacing-small;
+        margin-right: $inner-spacing-mini;
       }
     }
     &-pagination {
@@ -725,11 +725,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       text-align: center;
       margin: 0 $inner-spacing-mini;
       width: $cell-logo-width;
-
-      &.tokens-row {
-        margin: 0;
-        width: $tokens-row-width;
-      }
 
       &--plain {
         margin: 0;

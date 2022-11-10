@@ -24,7 +24,13 @@
         <template v-slot="{ $index, row }">
           <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
           <token-logo v-if="row.assets.length === 1" class="explore-table-item-logo" :token="row.assets[0]" />
-          <tokens-row v-else :assets="row.assets" size="small" class="explore-table-item-logo" />
+          <pair-token-logo
+            v-else
+            :first-token="row.assets[0]"
+            :second-token="row.assets[1]"
+            size="small"
+            class="explore-table-item-logo"
+          />
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.name }}</div>
             <div v-if="row.description" class="explore-table__secondary">{{ row.description }}</div>
@@ -32,7 +38,7 @@
         </template>
       </s-table-column>
       <!-- APR -->
-      <s-table-column width="104" header-align="right" align="right">
+      <s-table-column width="120" header-align="right" align="right">
         <template #header>
           <sort-button name="apr" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">{{ TranslationConsts.APR }}</span>
@@ -40,6 +46,15 @@
         </template>
         <template v-slot="{ row }">
           <span class="explore-table__accent">{{ row.aprFormatted }}</span>
+          <calculator-button
+            @click.native="
+              showPoolCalculator({
+                poolAsset: row.poolAsset.address,
+                rewardAsset: row.rewardAsset.address,
+                liquidity: row.liquidity,
+              })
+            "
+          />
         </template>
       </s-table-column>
       <!-- Reward Token -->
@@ -118,18 +133,28 @@
       @prev-click="handlePrevClick"
       @next-click="handleNextClick"
     />
+
+    <calculator-dialog
+      :visible.sync="showCalculatorDialog"
+      :pool="selectedPool"
+      :account-pool="selectedAccountPool"
+      :liquidity="liquidity"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { api, components } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import DemeterPageMixin from '@/modules/demeterFarming/mixins/PageMixin';
 import AprMixin from '@/modules/demeterFarming/mixins/AprMixin';
+
+import { demeterLazyComponent } from '@/modules/demeterFarming/router';
+import { DemeterComponents } from '@/modules/demeterFarming/consts';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -138,11 +163,15 @@ import { formatAmountWithSuffix } from '@/utils';
 
 import SortButton from '@/components/SortButton.vue';
 
+import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { DemeterPool, DemeterRewardToken } from '@sora-substrate/util/build/demeterFarming/types';
 
 @Component({
   components: {
-    TokensRow: lazyComponent(Components.TokensRow),
+    CalculatorButton: demeterLazyComponent(DemeterComponents.CalculatorButton),
+    CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SortButton,
     TokenAddress: components.TokenAddress,
     TokenLogo: components.TokenLogo,
@@ -157,12 +186,13 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPage
   private async updatePoolsData() {
     await this.withParentLoading(async () => {
       this.poolsData = {};
-      await Promise.all(
-        this.items.map(async (pool) => {
-          const poolData = await this.getPoolData(pool);
+      for (const pool of this.items) {
+        if (!this.poolsData[pool.poolAsset]) {
+          console.log('request');
+          const poolData = await this.getPoolData(pool.poolAsset, pool.isFarm);
           this.poolsData = { ...this.poolsData, [pool.poolAsset]: poolData };
-        })
-      );
+        }
+      }
     });
   }
 
@@ -182,6 +212,17 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPage
       const poolData = this.poolsData[pool.poolAsset];
       const poolTokenPrice = poolData?.price ?? FPNumber.ZERO;
       const accountPooledTokens = accountPool?.pooledTokens ?? FPNumber.ZERO;
+      const liquidity: Nullable<AccountLiquidity> = pool.isFarm
+        ? {
+            address: poolData?.address,
+            balance: poolData?.supply.toCodecString(),
+            firstAddress: XOR.address,
+            firstBalance: poolData?.reserves[0].toCodecString(),
+            secondAddress: poolAsset?.address ?? '',
+            secondBalance: poolData?.reserves[1].toCodecString(),
+            poolShare: '1',
+          }
+        : null;
 
       const assets = pool.isFarm ? [XOR, poolAsset] : [poolAsset];
       const name = assets.map((asset) => asset?.symbol ?? '').join('-');
@@ -208,6 +249,7 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPage
         assets,
         name,
         description,
+        poolAsset,
         rewardAsset,
         rewardAssetSymbol,
         depositFee: depositFee.toNumber(),
@@ -217,8 +259,34 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPage
         apr: apr.toNumber(),
         aprFormatted: this.formatDecimalPlaces(apr, true),
         accountTokens,
+        liquidity,
       };
     });
+  }
+
+  async getPoolData(
+    poolAssetAddress: string,
+    isFarm: boolean
+  ): Promise<Nullable<{ price: FPNumber; supply?: FPNumber; reserves?: FPNumber[]; address?: string }>> {
+    const poolAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice({ address: poolAssetAddress } as Asset) ?? 0);
+
+    if (isFarm) {
+      const poolInfo = api.poolXyk.getInfo(XOR.address, poolAssetAddress);
+
+      if (!poolInfo) return null;
+
+      const address = poolInfo.address;
+      const supply = new FPNumber(await api.api.query.poolXYK.totalIssuances(poolInfo.address));
+      const reserves = (await api.poolXyk.getReserves(XOR.address, poolAssetAddress)).map((reserve) =>
+        FPNumber.fromCodecValue(reserve)
+      );
+      const poolAssetReserves = reserves[1];
+      const poolTokenPrice = poolAssetReserves.mul(poolAssetPrice).mul(new FPNumber(2)).div(supply);
+
+      return { price: poolTokenPrice, supply, reserves, address };
+    } else {
+      return { price: poolAssetPrice };
+    }
   }
 }
 </script>

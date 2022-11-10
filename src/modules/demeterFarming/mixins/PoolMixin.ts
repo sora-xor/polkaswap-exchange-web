@@ -33,7 +33,7 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
   }
 
   get baseAsset(): Nullable<AccountAsset> {
-    return this.getAsset(this.liquidity?.firstAddress);
+    return this.getAsset(this.liquidity?.firstAddress) ?? this.xor;
   }
 
   get baseAssetDecimals(): number {
@@ -64,7 +64,7 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
     return this.baseAsset ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.baseAsset) ?? 0) : FPNumber.ZERO;
   }
 
-  get liqudityLP(): FPNumber {
+  get liquidityLP(): FPNumber {
     return FPNumber.fromCodecValue(getAssetBalance(this.liquidity, { parseAsLiquidity: true }) ?? 0);
   }
 
@@ -101,7 +101,7 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
   }
 
   get funds(): FPNumber {
-    return this.isFarm ? this.liqudityLP : this.poolAssetBalance;
+    return this.isFarm ? this.liquidityLP : this.poolAssetBalance;
   }
 
   get lockedFunds(): FPNumber {
@@ -144,9 +144,9 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
     if (!this.pool) return ZeroStringValue;
 
     if (this.isFarm) {
-      // calc liquidty locked price through account liquidity
+      // calc liquidty locked price through liquidity
       const liquidityLockedPrice = FPNumber.fromCodecValue(this.liquidity.firstBalance)
-        .div(this.liqudityLP)
+        .div(this.liquidityLP)
         .mul(this.pool.totalTokensInPool)
         .mul(this.baseAssetPrice)
         .mul(new FPNumber(2));
@@ -168,7 +168,7 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
 
     if (this.isFarm) {
       const accountPoolShare = new FPNumber(this.liquidity.poolShare).div(FPNumber.HUNDRED);
-      const lpTokens = this.liqudityLP.div(accountPoolShare);
+      const lpTokens = this.liquidityLP.div(accountPoolShare);
       const liquidityLockedPercent = this.pool.totalTokensInPool.div(lpTokens);
       // calc pool price through account liquidity
       const wholeLiquidityPrice = FPNumber.fromCodecValue(this.liquidity.firstBalance, this.baseAsset?.decimals)
