@@ -822,9 +822,7 @@
         "title": "Language"
     },
     "tokens": {
-        "title": "Listed Tokens",
         "symbol": "Symbol",
-        "name": "Name",
         "assetId": "Asset ID"
     },
     "memorandum": "{AppName} Memorandum and Terms of Services",

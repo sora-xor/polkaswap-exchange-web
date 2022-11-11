@@ -18,7 +18,7 @@
             <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head" />
           </div>
           <div class="explore-table-item-info explore-table-item-info--head">
-            <span class="explore-table__primary">{{ t('tokens.name') }}</span>
+            <span class="explore-table__primary">{{ t('nameText') }}</span>
             <span class="explore-table__secondary">({{ t('tokens.assetId') }})</span>
           </div>
         </template>

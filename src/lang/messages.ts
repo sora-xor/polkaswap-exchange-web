@@ -540,9 +540,7 @@ export default {
     locked: '{percent} of your pool is in staking',
   },
   tokens: {
-    title: 'Listed Tokens',
     symbol: 'Symbol',
-    name: 'Name',
     assetId: 'Asset ID',
   },
   dexSettings: {

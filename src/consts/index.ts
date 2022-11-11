@@ -256,7 +256,7 @@ const AccountMenu: Array<SidebarMenuItem> = [
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
-    icon: 'various-bone-24',
+    icon: 'various-items-24',
     title: PageNames.ExploreContainer,
   },
   {

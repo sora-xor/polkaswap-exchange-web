@@ -18,7 +18,7 @@
             <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head" />
           </div>
           <div class="explore-table-item-info explore-table-item-info--head">
-            <span class="explore-table__primary">{{ t('tokens.name') }}</span>
+            <span class="explore-table__primary">{{ t('nameText') }}</span>
           </div>
         </template>
         <template v-slot="{ $index, row }">
@@ -89,7 +89,7 @@
       <!-- Account tokens -->
       <s-table-column v-if="isLoggedIn" width="140" header-align="right" align="right">
         <template #header>
-          <span class="explore-table__primary">Your token</span>
+          <span class="explore-table__primary">Investment</span>
         </template>
         <template v-slot="{ row }">
           <div class="explore-table-item-tokens">
