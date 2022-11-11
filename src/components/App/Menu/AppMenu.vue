@@ -39,6 +39,7 @@
           active-hover-color="transparent"
         >
           <sidebar-item-content
+            v-if="false"
             v-button
             icon="star-16"
             title="Vote on Survey!"

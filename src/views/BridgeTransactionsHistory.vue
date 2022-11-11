@@ -128,8 +128,8 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.sortTransactions(this.getPageItems(this.filteredHistory, start, end), true);
   }
 
-  async created(): Promise<void> {
-    await this.withParentLoading(async () => {
+  created(): void {
+    this.withParentLoading(async () => {
       this.setHistory();
       await this.updateHistory();
       if (this.historyPage !== 1) {
@@ -138,6 +138,7 @@ export default class BridgeTransactionsHistory extends Mixins(
           this.isLtrDirection = false;
         }
       }
+    }).finally(() => {
       this.loading = false;
     });
   }

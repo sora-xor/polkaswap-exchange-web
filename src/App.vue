@@ -13,9 +13,9 @@
       </app-menu>
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar">
-          <div v-if="blockNumber && !isAboutPage" class="block-number">
+          <div v-if="blockNumber && !isCurrentPageTooWide" class="block-number">
             <s-tooltip :content="t('blockNumberText')" placement="bottom" tabindex="-1">
-              <a class="block-number-link" :href="soraExplorerLink" target="_blank" rel="nofollow noopener">
+              <a class="block-number-link" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
                 <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
               </a>
             </s-tooltip>
@@ -245,12 +245,16 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     });
   }
 
+  private get isSwapPageWithCharts(): boolean {
+    return this.$route.name === PageNames.Swap && this.chartsEnabled;
+  }
+
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
   }
 
-  get isSwapPage(): boolean {
-    return this.$route.name === PageNames.Swap;
+  get isCurrentPageTooWide(): boolean {
+    return this.isAboutPage || this.isSwapPageWithCharts || this.$route.name === PageNames.Tokens;
   }
 
   get appClasses(): Array<string> {
@@ -259,7 +263,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     if (this.$route.name) {
       cssClasses.push(`${baseClass}--${this.$route.name.toLowerCase()}`);
     }
-    if (this.chartsEnabled && this.isSwapPage) {
+    if (this.isSwapPageWithCharts) {
       cssClasses.push(`${baseClass}--has-charts`);
     }
     return cssClasses;
@@ -269,8 +273,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     return new FPNumber(this.blockNumber).toLocaleString();
   }
 
-  get soraExplorerLink(): string {
-    return getExplorerLinks(this.soraNetwork)[0].value;
+  get blockExplorerLink(): Nullable<string> {
+    const links = getExplorerLinks(this.soraNetwork);
+    if (!links.length) {
+      return null;
+    }
+    return links[0].value;
   }
 
   get showBrowserNotifPopup(): boolean {
