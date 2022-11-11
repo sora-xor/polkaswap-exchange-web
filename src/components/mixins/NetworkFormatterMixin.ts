@@ -7,7 +7,7 @@ import { state, getter } from '@/store/decorators';
 
 @Component
 export default class NetworkFormatterMixin extends Vue {
-  @state.web3.networkType networkType!: EvmNetworkType;
+  @state.web3.networkType networkType!: Nullable<EvmNetworkType>;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   @getter.web3.defaultNetworkType defaultNetworkType!: Nullable<EvmNetworkType>;

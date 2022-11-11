@@ -15,7 +15,7 @@
     "searchText": "Zoeken",
     "cancelText": "Annuleer",
     "saveText": "Opslaan",
-    "logoutText": "Log uit.",
+    "logoutText": "Log uit",
     "sendText": "Verzend",
     "addressText": "Adres",
     "amountText": "Bedrag",
@@ -39,7 +39,7 @@
             "AddLiquidity": "Opgegeven {amount} {symbol} en {amount2} {symbol2}",
             "RemoveLiquidity": "{amount} {symbol} en {amount2} {symbol2} werden verwijderd",
             "CreatePair": "{amount} {symbol} en {amount2} {symbol2} werden geleverd",
-            "RegisterAsset": "Geregistreerd {symbool} asset",
+            "RegisterAsset": "Geregistreerd {symbol} asset",
             "ClaimRewards": "Beloning succesvol geclaimd {rewards}",
             "ReferralReserveXor": "Bonded XOR met succes",
             "ReferralUnreserveXor": "Unbonded XOR met succes",
@@ -59,7 +59,7 @@
             "AddLiquidity": "Kon {amount} {symbol} en {amount2} {symbol2} niet toevoegen",
             "RemoveLiquidity": "Het is niet gelukt om {amount} {symbol} en {amount2} {symbol2}",
             "CreatePair": "Kon {amount} {symbol} en {amount2} {symbol2} niet toevoegen",
-            "RegisterAsset": "Mislukt om {symbool} asset te registreren",
+            "RegisterAsset": "Mislukt om {symbol} asset te registreren",
             "ClaimRewards": "Kan geen beloningen claimen {rewards}",
             "ReferralReserveXor": "Kan XOR niet binden",
             "ReferralUnreserveXor": "Kan de obligatie niet ongedaan maken XOR",
@@ -88,13 +88,13 @@
     "polkadotjs": {
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Er lijken geen accounts te zijn in uw {extension} extensie. Voeg een account toe en probeer het opnieuw.",
-        "noAccount": "{PolkadotJs}-accountfout. Controleer uw account in de {PolkadotJs}-extensie",
+        "noAccount": "{extension}-accountfout. Controleer uw account in de {extension}-extensie",
         "noExtension": "Er is geen {extension} -extensie gevonden. Installeer het en laad deze pagina opnieuw",
         "noSigner": "Toegang geweigerd. Ga naar {extension} extensie-instellingen en open \"Websitetoegang beheren\" om toe te staan."
     },
     "connection": {
-        "title": "SORA Netwerk account",
-        "text": "Verbind uw {Sora} Netwerk accounts of maak nieuwe aan met {PolkadotJs} browser extensie. Met deze extensie kunt u veilig transacties ondertekenen en assets beheren in {Sora} Network.",
+        "title": "{Sora} Netwerk account",
+        "text": "Verbind of maak je {Sora} Netwerkaccount aan met {extensions} extensies. Met deze extensies kun je veilig transacties ondertekenen en activa beheren in {Sora} Network.",
         "noAccounts": "Geen account gevonden in uw {extension} browser extensie. Voeg een account toe en probeer het opnieuw.",
         "selectAccount": "Selecteer account om mee te werken",
         "action": {
@@ -192,11 +192,8 @@
         "scam": "OPLICHTERIJ",
         "next": "Volgende",
         "AddAssetToken": {
-            "title": "Tokens",
+            "title": "Valuta",
             "switchBtn": "Alleen geverifieerde activa"
-        },
-        "AddAssetNFT": {
-            "title": "NFT's"
         },
         "searchInputText": "Zoeken op activa-ID, naam of tickersymbool"
     },
@@ -210,13 +207,13 @@
         "confirm": "@:confirmText",
         "success": {
             "title": "Transactie ingediend",
-            "desc": "Maak {symbool} token"
+            "desc": "Maak {symbol} token"
         },
         "tooltipValue": "Om een token te creëren, moet je een vergoeding betalen",
         "fee": "Netwerkvergoeding",
         "insufficientBalance": "@:insufficientBalanceText",
         "feeError": "Mislukt om een vergoeding voor een transactie te krijgen",
-        "error": "Mislukt om {symbool} token aan te maken",
+        "error": "Mislukt om {symbol} token aan te maken",
         "tokenSymbol": {
             "placeholder": "Token symbool",
             "desc": "Dit is een id voor het token. U kunt 1 tot 7 tekens gebruiken voor de selectie."
@@ -240,7 +237,6 @@
         "provideContent": "Inhoud bieden",
         "selectLocalFile": "Selecteer lokaal bestand",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Bron",
@@ -294,7 +290,7 @@
         "copy": "Kopieer {value}",
         "history": {
             "created": "Transactie voor {amount} {symbol} is aangemaakt.",
-            "submitted": "Transactie ingediend met vergoeding van {vergoeding} {symbool}",
+            "submitted": "Transactie ingediend met vergoeding van {fee} {symbol}",
             "confirmed": "Transactie bevestigd"
         },
         "viewIn": {
@@ -392,9 +388,9 @@
     },
     "node": {
         "errors": {
-            "connection": "Er is een fout opgetreden tijdens het verbinden met de node\n{adres}\n",
-            "network": "De node\n{address} behoort tot het andere netwerk\n",
-            "existing": "Deze node is reeds toegevoegd:"
+            "connection": "Er is een fout opgetreden tijdens het verbinden met de node\n{address}\n",
+            "network": "De node\n{address}\n behoort tot het andere netwerk\n",
+            "existing": "Dit knooppunt is al toegevoegd: {title}\n"
         },
         "messages": {
             "connected": "Verbinding tot stand gebracht met node\n{address}\n",
@@ -460,7 +456,7 @@
         "description": "Cross-chain uitwisseling van assets, eenvoudige creatie en notering van nieuwe assets en de gemakkelijkste swaps beschikbaar. De interoperabele toekomst van {Polkadot} is hier en wij lopen voorop!",
         "trading": {
             "title": "Sneller traden",
-            "first": "{AppName} is een non-custodial, cross-chain AMM DEX-protocol voor het swappen van tokens op basis van Polkadot- en {Kusama} relay chains, Polkadot- en {Kusama} parachains en blockchains die rechtstreeks zijn verbonden via Bridges.",
+            "first": "{AppName} is een non-custodial, cross-chain AMM DEX-protocol voor het swappen van tokens op basis van {Polkadot}- en {Kusama} relay chains, {Polkadot}- en {Kusama} parachains en blockchains die rechtstreeks zijn verbonden via Bridges.",
             "second": "{AppName} verwijdert vertrouwde tussenpersonen en biedt de mogelijkheid tot sneller traden",
             "third": "{AppName} is een community project en ontwikkelaars werken samen aan de open source code met behulp van de"
         },
@@ -472,7 +468,7 @@
         },
         "swap": {
             "title": "Swap elk token",
-            "first": "Overschrijd de grenzen van huidige DEX'en door tokens uit het Polkadot-ecosysteem en andere blockchains toe te voegen.",
+            "first": "Ga verder dan de limieten van de huidige DEX's door tokens uit het {Polkadot} -ecosysteem en andere blockchains toe te voegen.",
             "second": "Creëer, noteer en verhandel uw eigen tokens op het {Sora} netwerk.",
             "third": "Onze kerninfrastructuur maakt gebruik van Parity Substrate, dat schaalbaarder is dan {Ethereum}, en maakt geen gebruik van dure mining voor consensus."
         },
@@ -491,7 +487,7 @@
                 "desc": "Laat de gedecentraliseerde wereldeconomie groeien door meer chains te verbinden met {Sora} en {AppName} met behulp van het {Hashi} bridge protocol."
             }
         },
-        "network": "{AppName} is gebouwd op het {Sora}-netwerk, gericht op interoperabiliteit om de rest van het crypto-ecosysteem te verbinden met Polkadot."
+        "network": "{AppName} is gebouwd op het {Sora} -netwerk, gericht op interoperabiliteit om de rest van het crypto-ecosysteem te verbinden met {Polkadot} ."
     },
     "exchange": {
         "Swap": "Swap",
@@ -535,7 +531,7 @@
         "removeLiquidity": "Verwijderen",
         "createPair": "Maak een paar",
         "pooledToken": "{tokenSymbol} gepoold",
-        "pairTokens": "{Pair} Pool Tokens",
+        "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Uw aandeel in de pool",
         "unknownAsset": "Onbekend asset",
         "description": "Wanneer u liquiditeit toevoegt, krijgt u pooltokens die uw positie vertegenwoordigen. Deze tokens verdienen automatisch vergoedingen die evenredig zijn aan uw aandeel in de pool en kunnen op elk moment worden ingewisseld.",
@@ -594,16 +590,16 @@
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
-        "details": "{van} voor {naar}",
+        "details": "{from} voor {to}",
         "for": " voor ",
         "steps": {
-            "step": "{stap} van 2",
+            "step": "{step} van 2",
             "step1": "1e",
             "step2": "2e"
         },
         "status": {
             "pending": "{step} transacties in behandeling...",
-            "failed": "{stap} transacties mislukt. @:(retryText).",
+            "failed": "{step} transacties mislukt. @:(retryText).",
             "confirm": "Bevestig 2e van 2 transacties...",
             "complete": "Compleet",
             "convertionComplete": "Conversie compleet"
@@ -679,7 +675,7 @@
         "shareOfPool": "Aandeel van de pool",
         "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{eerste}-{tweede} Pool tokens",
-        "connect": "wallet verbinden",
+        "connect": "Wallet verbinden",
         "supply": "Toevoegen",
         "yourPosition": "Uw positie",
         "yourPositionEstimated": "Uw positie (geschat)",
@@ -695,7 +691,7 @@
     "confirmSupply": {
         "title": "Jouw aandeel in de pool bedraagt",
         "outputDescription": "De output wordt geschat. Als de prijs meer dan {slippageTolerance}% verandert, wordt uw transactie teruggedraaid.",
-        "poolTokensBurned": "{\\a6}-{\\a6} Pool Tokens Verbrand",
+        "poolTokensBurned": "{first}-{second} Pool Tokens Verbrand",
         "price": "Prijs"
     },
     "addLiquidity": {
@@ -761,9 +757,9 @@
             "success": "Succesvol geclaimd"
         },
         "transactions": {
-            "confimation": "{order} van {totaal} transacties bevestigen...",
+            "confimation": "{order} van {total} transacties bevestigen...",
             "success": "U ontvangt binnenkort uw beloningen",
-            "failed": "{order} van {totaal} transacties mislukt. @:retryText"
+            "failed": "{order} van {total} transacties mislukt. @:retryText"
         },
         "signing": {
             "extension": "{PolkadotJs} browser extensie",
@@ -773,7 +769,7 @@
             "connectExternalAccount": "Verbind een {Ethereum}-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
             "connectAccounts": "Om je PSWAP- en VAL-beloningen te claimen, moet je zowel je {Sora}-als {Ethereum}-accounts verbinden.",
             "connectAnotherAccount": "Verbind een ander {Ethereum}-account om te controleren op beschikbare PSWAP- en VAL-beloningen.",
-            "howToClaimRewards": "Om je {symbols} beloningen te claimen moet je {count} {transacties} in {destination} tekenen. Beloningen zullen worden gestort op uw {Sora} account."
+            "howToClaimRewards": "Om uw {symbols} -beloningen te claimen, moet u {count} {transactions} in {destination} ondertekenen. Beloningen worden gestort op je {Sora} -account."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -797,7 +793,7 @@
             "MarketMakerVolume": "Market Making",
             "LiquidityProvisionFarming": "Farming"
         },
-        "vested": "Gevestigde",
+        "vested": "gevestigde",
         "forText": "voor",
         "totalVested": "Totale beloningen",
         "claimableAmountDoneVesting": "Opeisbare beloningen",
@@ -813,9 +809,9 @@
         "default": "{Ethereum} provider",
         "metamask": "{Metamask}",
         "messages": {
-            "checkExtension": "{naam} extensie is bezet, gelieve ze te controleren",
-            "extensionLogin": "Gelieve in te loggen op uw {naam} extensie",
-            "installExtension": "{name} extensie is niet gevonden. Gelieve ze te installeren!",
+            "checkExtension": "{name} extensie is bezet, gelieve ze te controleren",
+            "extensionLogin": "Gelieve in te loggen op uw {name} extensie",
+            "installExtension": "{name} extensie is niet gevonden. Installeer het alstublieft! \n\n Extensie al geïnstalleerd? Herlaad alstublieft de pagina",
             "reloadPage": "Herlaad pagina"
         }
     },
@@ -911,7 +907,7 @@
         "bondedXOR": "XOR Gebonden",
         "referralsNumber": "{number} verwijzingen",
         "startInviting": "Bond XOR om anderen door te verwijzen",
-        "preview": "Nodig nieuwe gebruikers uit en ontvang 10% van hun transactiekosten.<br \/>Om te beginnen, borg elk bedrag van XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Meer informatie<\/a>",
+        "preview": "Nodig nieuwe gebruikers uit en ontvang 10% van hun transactiekosten.<br\/>Om te beginnen, borg elk bedrag van XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Meer informatie<\/a>",
         "deposit": "Storting",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
@@ -978,7 +974,7 @@
     "mobilePopup": {
         "sideMenu": "Download de {Sora} Wallet",
         "header": "Download {Sora} Wallet met {polkaswapHighlight} - functies",
-        "info": "Ruil tokens van verschillende netwerken - {Sora}, {Ethereum}, Polkadot, {Kusama}. Bied een liquiditeitspool en verdien % aan wisselkosten."
+        "info": "Ruil tokens van verschillende netwerken — {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Bied een liquiditeitspool en verdien % aan wisselkosten."
     },
     "releaseNotesText": "Release-opmerkingen",
     "copiedText": "Gekopieerd!",
@@ -1024,39 +1020,39 @@
     "historyErrorMessages": {
         "generalError": "Er is iets fout gegaan",
         "balances": {
-            "LiquidityRestrictions": "Rekeningliquiditeitsbeperkingen voorkomen opname"
+            "liquidityrestrictions": "Rekeningliquiditeitsbeperkingen voorkomen opname"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Bronsaldo is niet groot genoeg",
-            "TargetBalanceIsNotLargeEnough": "Bestemmingssaldo is niet groot genoeg",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Mits de bedragen te divers zijn",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Bedragen zijn buiten de vereiste grenzen",
-            "UnableToDepositXorLessThanMinimum": "XOR lager dan de minimumwaarde (0,007)",
-            "ZeroValueInAmountParameter": "De parameter Bedrag heeft een waarde van nul"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Bronsaldo is niet groot genoeg",
+            "targetbalanceisnotlargeenough": "Bestemmingssaldo is niet groot genoeg",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Mits de bedragen te divers zijn",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Bedragen zijn buiten de vereiste grenzen",
+            "unabletodepositxorlessthanminimum": "XOR lager dan de minimumwaarde (0,007)",
+            "zerovalueinamountparameter": "De parameter Bedrag heeft een waarde van nul"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "Poolpaar bestaat al",
-            "SlippageLimitExceeded": "Sliptolerantie heeft niet aan de juiste limieten voldaan"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Poolpaar bestaat al",
+            "slippagelimitexceeded": "Sliptolerantie heeft niet aan de juiste limieten voldaan"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Account heeft al een verwijzer",
-            "ReferrerInsufficientBalance": "Verwijzer heeft niet genoeg gereserveerd saldo"
+            "alreadyhasreferrer": "Account heeft al een verwijzer",
+            "referrerinsufficientbalance": "Verwijzer heeft niet genoeg gereserveerd saldo"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Beloningsprogramma is al afgelopen",
-            "CantCalculateReward": "Kan beloningsberekening niet uitvoeren",
-            "NoRewardsForAsset": "Er zijn geen beloningen voor dit item"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Beloningsprogramma is al afgelopen",
+            "cantcalculatereward": "Kan beloningsberekening niet uitvoeren",
+            "norewardsforasset": "Er zijn geen beloningen voor dit item"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "Geselecteerde liquiditeitsbron is niet toegestaan"
+        "liquidityproxy": {
+            "forbiddenfilter": "Geselecteerde liquiditeitsbron is niet toegestaan"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Onvoldoende middelen",
-            "InsufficientLPTokens": "Onvoldoende liquiditeitsvoorziening tokens",
-            "PoolDoesNotHaveRewards": "Pool heeft geen beloningen"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Onvoldoende middelen",
+            "insufficientlptokens": "Onvoldoende liquiditeitsvoorziening tokens",
+            "pooldoesnothaverewards": "Pool heeft geen beloningen"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Er is een fout opgetreden bij het berekenen van de prijs"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Er is een fout opgetreden bij het berekenen van de prijs"
         }
     },
     "receivedText": "Ontvangen",
@@ -1073,8 +1069,7 @@
     "ofText": "{first} van {second}",
     "filter": {
         "all": "Alle",
-        "token": "Tokens",
-        "nft": "NFT's",
+        "token": "Valuta",
         "verifiedOnly": "Toon alleen geverifieerde activa",
         "zeroBalance": "Verberg 0 tegoeden",
         "showAssets": "Items weergeven",

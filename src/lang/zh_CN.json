@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "{Sora}网络账户",
-        "text": "使用{PolkadotJs}浏览器扩展连接您的SORA网络账户或创建新账户。这个扩展允许您在SORA网络中安全地签署交易和管理资产。",
+        "text": "连接或创建具有 {extensions} 扩展的 {Sora} 网络帐户。这些扩展允许您安全地签署交易并管理{Sora}网络中的资产。",
         "noAccounts": "在您的{extension}浏览器扩展中没有找到账户。请添加一个账户并重试。",
         "selectAccount": "选择要使用的账户",
         "action": {
@@ -192,11 +192,8 @@
         "scam": "骗局",
         "next": "下一个",
         "AddAssetToken": {
-            "title": "代币",
+            "title": "货币",
             "switchBtn": "仅经过验证的资产"
-        },
-        "AddAssetNFT": {
-            "title": "NFTs"
         },
         "searchInputText": "按资产 ID、名称或股票代码搜索"
     },
@@ -240,7 +237,6 @@
         "provideContent": "提供内容",
         "selectLocalFile": "选择本地文件",
         "CreateSimpleToken": "代币",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "来源",
@@ -320,7 +316,7 @@
     "retryText": "重试",
     "networkFeeText": "网络费用",
     "networkFeeTooltipText": "网络费是用来保证{Sora}系统的增长和稳定的性能。",
-    "ethNetworkFeeTooltipText": "请注意，Polkaswap上显示的以太坊网络费用只是粗略估计，在确认交易之前，您可以在连接的以太坊钱包中看到正确的费用数额。",
+    "ethNetworkFeeTooltipText": "请注意， {AppName}上显示的{Ethereum}网络费用仅为粗略估算，您可以在确认交易之前在已连接的{Ethereum}钱包中查看正确的费用金额。",
     "marketText": "市场",
     "marketAlgorithmText": "市场算法",
     "firstPerSecond": "{first}每{second}",
@@ -383,7 +379,7 @@
         "learnMore": "@:learnMoreText",
         "network": {
             "title": "什么是{Sora}？",
-            "description": "{AppName}建立在{Sora}网络之上，{Sora}代币（XOR）被用于Polkaswap上的费用和流动性供应。{Sora}网络允许减少的费用和加快交易，并简化共识的最终确定，专注于提供跨其他区块链生态系统的互操作性，如{Ethereum}。"
+            "description": "{AppName}建立在{Sora}网络之上，{Sora}代币（XOR）被用于{AppName}上的费用和流动性供应。{Sora}网络允许减少的费用和加快交易，并简化共识的最终确定，专注于提供跨其他区块链生态系统的互操作性，如{Ethereum}。"
         },
         "polkadot": {
             "title": "什么是 {PolkadotJs}？",
@@ -394,7 +390,7 @@
         "errors": {
             "connection": "连接到节点时发生错误\n{address}\n",
             "network": "该节点\n{address}\n 是来自另一个网络\n",
-            "existing": "此节点已添加：'{title}'\n"
+            "existing": "此节点已添加：{title}\n"
         },
         "messages": {
             "connected": "与节点建立连接\n{address}\n",
@@ -462,7 +458,7 @@
             "title": "更快的交易",
             "first": "{AppName} 是一种非托管的跨链 AMM DEX 协议，用于互换基于 {Polkadot} 和 {Kusama} 中继链、{Polkadot} 和 {Kusama} 平行链以及通过转接桥直接连接区块链的代币。",
             "second": "{AppName} 消除了对受信任的中介机构的依赖，并提供了更快速的交易机会",
-            "third": "Polkaswap是一个社区项目，开发者们在开源代码上进行合作，使用的是"
+            "third": "{AppName}是一个社区项目，开发者们在开源代码上进行合作，使用的是"
         },
         "liquidity": {
             "title": "无限流动性",
@@ -472,9 +468,9 @@
         },
         "swap": {
             "title": "交换任何代币",
-            "first": "通过添加来自Polkadot生态系统以及其他区块链的代币，超越当前DEX的限制。",
+            "first": "通过添加来自{Polkadot}生态系统以及其他区块链的代币，超越当前 DEX 的限制。",
             "second": "在 {Sora} 网络上创建、列出和交易您自己的代币。",
-            "third": "我们的核心基础设施使用 Parity Substrate，它比以太坊更具可扩展性，并且不使用昂贵的挖矿来达成共识。"
+            "third": "我们的核心基础设施使用 Parity Substrate，它比{Ethereum}更具可扩展性，并且不使用昂贵的挖矿来达成共识。"
         },
         "pswap": {
             "title": "PSWAP 代币",
@@ -483,7 +479,7 @@
         },
         "links": {
             "first": {
-                "title": "成为SORA验证人",
+                "title": "成为{Sora}验证人",
                 "desc": "保护 {Sora} 网络和 {AppName} 等去中心化应用程序的未来，并通过成为 {Sora} 验证者一路获得奖励。"
             },
             "second": {
@@ -491,7 +487,7 @@
                 "desc": "使用 {Hashi} 桥接协议将更多链连接到 {Sora} 和 {AppName}，从而发展去中心化的世界经济。"
             }
         },
-        "network": "{AppName}建立在SORA网络上，专注于互操作性，将加密货币生态系统的其他部分连接到{Polkadot}。"
+        "network": "{AppName}建立在{Sora}网络之上，专注于将加密生态系统的其余部分连接到{Polkadot}的互操作性。"
     },
     "exchange": {
         "Swap": "兑换",
@@ -595,7 +591,7 @@
     },
     "bridgeTransaction": {
         "details": "{from}为{to}",
-        "for": "给",
+        "for": " 给 ",
         "steps": {
             "step": "{step} of 2",
             "step1": "第一个",
@@ -678,7 +674,7 @@
         "pricePool": "价格和费用",
         "shareOfPool": "流动池份额",
         "firstPerSecond": "@:firstPerSecond",
-        "firstSecondPoolTokens": "{first} - {second}流动池",
+        "firstSecondPoolTokens": "{first}-{second}流动池",
         "connect": "连接钱包",
         "supply": "供应",
         "yourPosition": "您的头寸",
@@ -695,7 +691,7 @@
     "confirmSupply": {
         "title": "您的流动池份额将是",
         "outputDescription": "产出是估计的。如果价格变化超过{slippageTolerance}%，您的交易将被取消。",
-        "poolTokensBurned": "{first} - {second}流动池代币被销毁",
+        "poolTokensBurned": "{first}-{second}流动池代币被销毁",
         "price": "价格"
     },
     "addLiquidity": {
@@ -722,7 +718,7 @@
         "title": "设置",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
-            "main": "- 在一级市场 (TBC)、二级市场 (XYK) 或组合智能算法之间进行选择，以保证任何给定交易的最佳价格。"
+            "main": " - 在一级市场 (TBC)、二级市场 (XYK) 或组合智能算法之间进行选择，以保证任何给定交易的最佳价格。"
         },
         "slippageTolerance": "滑点公差",
         "slippageToleranceHint": "如果价格的不利变化超过此百分比，您的交易将被取消。",
@@ -803,7 +799,7 @@
         "claimableAmountDoneVesting": "可申领金额(完成归属)",
         "groups": {
             "strategic": "战略奖励",
-            "external": "连接以太坊账户的奖励",
+            "external": "连接的{Ethereum}帐户的奖励",
             "crowdloan": "众贷奖励"
         },
         "Rewards": "奖励",
@@ -815,7 +811,7 @@
         "messages": {
             "checkExtension": "{name}扩展很忙，请检查它",
             "extensionLogin": "请登录到您的{name}扩展",
-            "installExtension": "找不到{name}扩展。请安装它！",
+            "installExtension": "未找到{name}扩展名。请安装它！ \n\n已经安装了扩展？请重新加载页面",
             "reloadPage": "重新加载页面"
         }
     },
@@ -838,7 +834,7 @@
         "notifications": {
             "success": {
                 "title": "代币购买",
-                "text": "代币购买完成。一旦在连接的以太坊账户中收到代币，{Hashi} 桥接交易将自动开始。关闭此窗口并继续使用 {AppName} 是安全的。准备好后会有关于转接桥交易的通知。"
+                "text": "代币购买完成。一旦在连接的{Ethereum}帐户中收到代币， {Hashi}桥接交易将自动启动。关闭此窗口并继续使用{AppName}是安全的。准备好后会有关于桥接交易的通知。"
             },
             "supportError": {
                 "title": "不支持的代币",
@@ -846,7 +842,7 @@
             },
             "feeError": {
                 "title": "没有足够的 ETH 用于转接桥交易",
-                "text": "很遗憾，由于没有足够的 ETH 来支付以太坊网络的交易费用，{Hashi} 桥交易失败了。请添加更多 ETH，然后重试。"
+                "text": "不幸的是，由于没有足够的 ETH 来支付{Ethereum}网络交易费用， {Hashi}桥接交易失败。请添加更多 ETH 并重试。"
             },
             "transactionError": {
                 "title": "交易失败",
@@ -854,11 +850,11 @@
             },
             "amountError": {
                 "title": "余额不足",
-                "text": "很遗憾，由于没有足够的代币进行交易，{Hashi} 桥交易失败了。请检查您的以太坊账户余额并重试。"
+                "text": "不幸的是，由于没有足够的令牌进行交易， {Hashi}桥交易失败。请检查您的{Ethereum}帐户余额，然后重试。"
             },
             "accountAddressError": {
-                "title": "错误的以太坊账户",
-                "text": "很遗憾，由于@:moonpayText 订单中代币的接收地址与您当前的以太坊账户地址不匹配，{Hashi} 桥接交易失败。请在扩展中切换以太坊账户并重试。"
+                "title": "错误{Ethereum}帐户",
+                "text": "很遗憾，由于@:moonpayText 订单中代币的收件人地址与您当前的{Ethereum}账户地址不匹配， {Hashi}桥接交易失败。请在扩展程序中切换{Ethereum}帐户，然后重试。"
             }
         },
         "buttons": {
@@ -978,7 +974,7 @@
     "mobilePopup": {
         "sideMenu": "获取 {Sora} 钱包",
         "header": "下载具有{polkaswapHighlight}功能的 {Sora} 钱包",
-        "info": "兑换来自不同网络的代币 - {Sora}、以太坊、{Polkadot}、{Kusama}。提供流动流动池并从交易费用中赚取 %。"
+        "info": "兑换来自不同网络的代币 - {Sora}、{Ethereum}、{Polkadot}、{Kusama}。提供流动流动池并从交易费用中赚取 %。"
     },
     "releaseNotesText": "发行说明",
     "copiedText": "已复制！",
@@ -1024,39 +1020,39 @@
     "historyErrorMessages": {
         "generalError": "出问题了",
         "balances": {
-            "LiquidityRestrictions": "账户流动性限制阻止提款"
+            "liquidityrestrictions": "账户流动性限制阻止提款"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "源余额不够大",
-            "TargetBalanceIsNotLargeEnough": "目标余额不够大",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "提供的数额过于多样化",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "数额超出要求的范围",
-            "UnableToDepositXorLessThanMinimum": "XOR 低于最小值 (0.007)",
-            "ZeroValueInAmountParameter": "金额参数价值为零"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "源余额不够大",
+            "targetbalanceisnotlargeenough": "目标余额不够大",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "提供的数额过于多样化",
+            "calculatedvalueisnotmeetsrequiredboundaries": "数额超出要求的范围",
+            "unabletodepositxorlessthanminimum": "XOR 低于最小值 (0.007)",
+            "zerovalueinamountparameter": "金额参数价值为零"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "流动池对已存在",
-            "SlippageLimitExceeded": "滑点公差未达到恰当的限度"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "流动池对已存在",
+            "slippagelimitexceeded": "滑点公差未达到恰当的限度"
         },
         "referrals": {
-            "AlreadyHasReferrer": "账户已有一位推荐人",
-            "ReferrerInsufficientBalance": "推荐人的预留余额不足"
+            "alreadyhasreferrer": "账户已有一位推荐人",
+            "referrerinsufficientbalance": "推荐人的预留余额不足"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "奖励计划已经结束",
-            "CantCalculateReward": "奖励计算失败",
-            "NoRewardsForAsset": "该资产没有奖励"
+        "vestedrewards": {
+            "rewardssupplyshortage": "奖励计划已经结束",
+            "cantcalculatereward": "奖励计算失败",
+            "norewardsforasset": "该资产没有奖励"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "您选择的流动性来源不被允许"
+        "liquidityproxy": {
+            "forbiddenfilter": "您选择的流动性来源不被允许"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "资金不足",
-            "InsufficientLPTokens": "流动性提供代币不足",
-            "PoolDoesNotHaveRewards": "流动池没有奖励"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "资金不足",
+            "insufficientlptokens": "流动性提供代币不足",
+            "pooldoesnothaverewards": "流动池没有奖励"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "计算价格时出错"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "计算价格时出错"
         }
     },
     "receivedText": "已收到",
@@ -1073,8 +1069,7 @@
     "ofText": "{first}的{second}",
     "filter": {
         "all": "全部",
-        "token": "代币",
-        "nft": "NFT",
+        "token": "货币",
         "verifiedOnly": "只显示经过验证的资产",
         "zeroBalance": "隐藏0余额资产",
         "showAssets": "显示资产",
