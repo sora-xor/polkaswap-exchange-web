@@ -174,13 +174,11 @@ import type { DemeterPool, DemeterRewardToken } from '@sora-substrate/util/build
     CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SortButton,
-    TokenAddress: components.TokenAddress,
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
   },
 })
 export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPageMixin, AprMixin) {
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.demeterFarming.tokenInfos private tokenInfos!: DataMap<DemeterRewardToken>;
 
   @Watch('pools')

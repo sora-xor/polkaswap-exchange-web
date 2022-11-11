@@ -30,13 +30,12 @@
             class="explore-table-item-logo"
           />
           <div class="explore-table-item-info explore-table-item-info--body">
-            <div class="explore-table-item-name">{{ row.name }}</div>
-            <div v-if="row.description" class="explore-table__secondary">{{ row.description }}</div>
+            <div class="explore-table-item-name">{{ row.baseAsset.symbol }}-{{ row.targetAsset.symbol }}</div>
           </div>
         </template>
       </s-table-column>
       <!-- APY -->
-      <s-table-column width="120" header-align="right" align="right">
+      <s-table-column v-if="hasApyColumnData" width="120" header-align="right" align="right">
         <template #header>
           <sort-button name="apy" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">APY</span>
@@ -46,8 +45,26 @@
           <span class="explore-table__accent">{{ row.apyFormatted }}</span>
         </template>
       </s-table-column>
+      <!-- Account tokens -->
+      <s-table-column v-if="isLoggedIn" width="140" header-align="right" align="right">
+        <template #header>
+          <span class="explore-table__primary">Your token</span>
+        </template>
+        <template v-slot="{ row }">
+          <div class="explore-table-item-tokens">
+            <div v-for="({ asset, balance }, index) in row.accountTokens" :key="index" class="explore-table-cell">
+              <formatted-amount
+                :font-size-rate="FontSizeRate.SMALL"
+                :value="balance"
+                class="explore-table-item-price explore-table-item-amount"
+              />
+              <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
+            </div>
+          </div>
+        </template>
+      </s-table-column>
       <!-- TVL -->
-      <s-table-column width="104" header-align="right" align="right">
+      <s-table-column v-if="pricesAvailable" width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">TVL</span>
@@ -87,21 +104,37 @@ import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/c
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
+import { state } from '@/store/decorators';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
 import SortButton from '@/components/SortButton.vue';
 
+import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { AmountWithSuffix } from '@/types/formats';
+
+type TableItem = {
+  baseAsset: Asset;
+  targetAsset: Asset;
+  apy: number;
+  apyFormatted: string;
+  tvl: number;
+  tvlFormatted: AmountWithSuffix;
+  accountTokens: { asset: Asset; balance: string }[];
+};
+
 @Component({
   components: {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SortButton,
+    TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
   },
 })
 export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMixin) {
-  readonly defaultSort = { prop: 'tvl', order: SortDirection.DESC };
+  @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
   // override ExplorePageMixin
   order = SortDirection.DESC;
@@ -109,7 +142,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
 
   poolReserves: Record<string, string[]> = {};
 
-  get preparedItems() {
+  get preparedItems(): TableItem[] {
     return Object.entries(this.poolReserves).reduce<any>((buffer, [key, reserves]) => {
       const matches = key.match(/0x\w{64}/g);
 
@@ -127,20 +160,37 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
       ).mul(FPNumber.HUNDRED);
       const fpTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves).mul(new FPNumber(2));
 
-      const name = [baseAsset, targetAsset].map((asset) => asset?.symbol ?? '').join('-');
+      const accountPool = this.accountLiquidity.find(
+        (liquidity) => liquidity.firstAddress === baseAsset.address && liquidity.secondAddress === targetAsset.address
+      );
+
+      const accountTokens = [
+        {
+          asset: baseAsset,
+          balance: formatDecimalPlaces(FPNumber.fromCodecValue(accountPool?.firstBalance ?? 0)),
+        },
+        {
+          asset: targetAsset,
+          balance: formatDecimalPlaces(FPNumber.fromCodecValue(accountPool?.secondBalance ?? 0)),
+        },
+      ];
 
       buffer.push({
         baseAsset,
         targetAsset,
-        name,
         apy: fpApy.toNumber(),
         apyFormatted: formatDecimalPlaces(fpApy, true),
         tvl: fpTvl.toNumber(),
         tvlFormatted: formatAmountWithSuffix(fpTvl),
+        accountTokens,
       });
 
       return buffer;
     }, []);
+  }
+
+  get hasApyColumnData(): boolean {
+    return this.preparedItems.some((item) => item.apy !== 0);
   }
 
   async updateExploreData(): Promise<void> {
@@ -148,3 +198,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
   }
 }
 </script>
+
+<style lang="scss">
+@include explore-table;
+</style>

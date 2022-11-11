@@ -24,10 +24,15 @@ export default class ExplorePageMixin extends Mixins(
     this.currentPage = 1;
   }
 
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
 
   order = '';
   property = '';
+
+  get pricesAvailable(): boolean {
+    return Object.keys(this.fiatPriceAndApyObject).length > 0;
+  }
 
   get isDefaultSort(): boolean {
     return !this.order || !this.property;
@@ -40,13 +45,21 @@ export default class ExplorePageMixin extends Mixins(
 
   get filteredItems() {
     const search = this.exploreQuery.toLowerCase().trim();
+
+    if (!search) return this.preparedItems;
+
     const filterAsset = (asset): boolean =>
-      asset.name?.toLowerCase?.()?.includes?.(search) ||
-      asset.symbol?.toLowerCase?.()?.includes?.(search) ||
-      asset.address?.toLowerCase?.() === search;
+      asset?.name?.toLowerCase?.()?.includes?.(search) ||
+      asset?.symbol?.toLowerCase?.()?.includes?.(search) ||
+      asset?.address?.toLowerCase?.() === search;
 
     return this.preparedItems.filter(
-      (item: any) => filterAsset(item) || filterAsset(item.poolAsset) || filterAsset(item.rewardAsset)
+      (item: any) =>
+        filterAsset(item) ||
+        filterAsset(item.poolAsset) ||
+        filterAsset(item.rewardAsset) ||
+        filterAsset(item.baseAsset) ||
+        filterAsset(item.targetAsset)
     );
   }
 

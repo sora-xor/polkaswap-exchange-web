@@ -149,8 +149,14 @@ const routes: Array<RouteConfig> = [
       },
       {
         path: 'pools',
-        name: PageNames.ExplorePools,
-        component: lazyView(PageNames.ExplorePools),
+        component: lazyView(PageNames.PoolContainer),
+        children: [
+          {
+            path: '',
+            name: PageNames.ExplorePools,
+            component: lazyView(PageNames.ExplorePools),
+          },
+        ],
       },
       {
         path: 'tokens',

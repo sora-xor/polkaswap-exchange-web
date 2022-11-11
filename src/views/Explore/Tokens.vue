@@ -51,25 +51,25 @@
           <div class="explore-table-item-symbol">{{ row.symbol }}</div>
         </template>
       </s-table-column>
+      <!-- Price -->
+      <s-table-column v-if="pricesAvailable" width="104" header-align="left" align="left">
+        <template #header>
+          <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="explore-table__primary">Price</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <formatted-amount
+            is-fiat-value
+            fiat-default-rounding
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :value="row.priceFormatted"
+            class="explore-table-item-price"
+          />
+        </template>
+      </s-table-column>
 
       <template v-if="hasTokensData">
-        <!-- Price -->
-        <s-table-column width="104" header-align="left" align="left">
-          <template #header>
-            <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
-              <span class="explore-table__primary">Price</span>
-            </sort-button>
-          </template>
-          <template v-slot="{ row }">
-            <formatted-amount
-              is-fiat-value
-              fiat-default-rounding
-              :font-weight-rate="FontWeightRate.MEDIUM"
-              :value="row.priceFormatted"
-              class="explore-table-item-price"
-            />
-          </template>
-        </s-table-column>
         <!-- 1D Price Change -->
         <s-table-column width="104" header-align="right" align="right">
           <template #header>
