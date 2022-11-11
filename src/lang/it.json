@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "{Sora} Network account",
-        "text": "Collega i tuoi account di rete {Sora} o creane di nuovi con l'estensione del browser {PolkadotJs}. Questa estensione consente di firmare transazioni in modo sicuro e gestire gli assets in {Sora} Network.",
+        "text": "Collega o crea il tuo account di rete {Sora} con {extensions}. Queste estensioni ti consentono di firmare in modo sicuro le transazioni e gestire le risorse nella rete {Sora}.",
         "noAccounts": "Nessun account trovato nell'estensione del browser {extension} Aggiungi un account e riprova.",
         "selectAccount": "Seleziona l'account con cui lavorare",
         "action": {

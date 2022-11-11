@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "{Sora}网络账户",
-        "text": "使用{PolkadotJs}浏览器扩展连接您的{Sora}网络账户或创建新账户。这个扩展允许您在{Sora}网络中安全地签署交易和管理资产。",
+        "text": "连接或创建具有 {extensions} 扩展的 {Sora} 网络帐户。这些扩展允许您安全地签署交易并管理{Sora}网络中的资产。",
         "noAccounts": "在您的{extension}浏览器扩展中没有找到账户。请添加一个账户并重试。",
         "selectAccount": "选择要使用的账户",
         "action": {

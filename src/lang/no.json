@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "{Sora} Nettverkskonto",
-        "text": "Koble til {Sora} Network-kontoene dine eller opprett nye med {PolkadotJs} nettleserutvidelse. Denne utvidelsen lar deg sikkert signere transaksjoner og administrere aktiva i {Sora} Network.",
+        "text": "Koble til eller opprett din {Sora} Network-konto med {extensions} -utvidelser. Disse utvidelsene lar deg signere transaksjoner og administrere aktiva i {Sora} -nettverket på en sikker måte.",
         "noAccounts": "Finner ingen konto i nettleserutvidelsen {extension}. Legg til en konto, og prøv på nytt.",
         "selectAccount": "Velg kontoen du vil arbeide med",
         "action": {

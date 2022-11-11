@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "Ifowosi {Sora} Nẹtiwọọki",
-        "text": "So awọn akọọlẹ Nẹtiwọọki {Sora} rẹ pọ tabi ṣẹda awọn tuntun pẹlu itẹsiwaju {PolkadotJs} Ifaagun yii fun ọ laaye lati fowo si awọn iṣowo lailewu ati ṣakoso awọn ohun-ini ni Nẹtiwọọki {Sora}.",
+        "text": "Sopọ tabi ṣẹda akọọlẹ {Sora} rẹ pẹlu {extensions}. Awọn amugbooro wọnyi gba ọ laaye lati fowo si awọn iṣowo ni aabo ati ṣakoso awọn ohun-ini ni {Sora}.",
         "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
         "selectAccount": "Yan ifowosi lati ṣiṣẹ pẹlu rẹ",
         "action": {

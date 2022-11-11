@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "Cuenta de la Red {Sora}",
-        "text": "Conecte sus cuentas de la Red {Sora} o cree otras nuevas con la extensión de navegador {PolkadotJs}. Esta extensión le permite firmar de forma segura las transacciones y gestionar Activos en la Red {Sora}.",
+        "text": "Conéctese o cree su cuenta de {Sora} Network con {extensions} extensiones. Estas extensiones le permiten firmar transacciones de forma segura y administrar activos en {Sora} Network.",
         "noAccounts": "No se ha encontrado ninguna cuenta en su extensión de navegador {extension}. Por favor añade una cuenta e inténtalo de nuevo.",
         "selectAccount": "Seleccione la cuenta con la que desea trabajar",
         "action": {

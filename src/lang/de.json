@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "{Sora}-Netzwerk-Konto",
-        "text": "Verbinde deine {Sora}-Netzwerk-Konten oder erstelle neue Konten mit der {PolkadotJs} -Browser-Erweiterung. Diese Erweiterung ermöglicht es dir, Transaktionen sicher zu unterzeichnen und Assets im {Sora}-Netzwerk zu verwalten.",
+        "text": "Verbinden oder erstellen Sie Ihr {Sora} -Netzwerkkonto mit {extensions} -Erweiterungen. Mit diesen Erweiterungen können Sie Transaktionen sicher signieren und Vermögenswerte im {Sora} -Netzwerk verwalten.",
         "noAccounts": "Es wurde kein Konto in deiner {extension} Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
         "action": {

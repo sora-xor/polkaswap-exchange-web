@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "{Sora} Network account",
-        "text": "Connect your {Sora} Network accounts or create new ones with {PolkadotJs} browser extension. This extension allows you to securely sign transactions and manage assets in {Sora} Network.",
+        "text": "Connect or create your {Sora} Network account with {extensions} extensions. These extensions allow you to securely sign transactions and manage assets in {Sora} Network.",
         "noAccounts": "No account found in your {extension} browser extension. Please add an account and try again.",
         "selectAccount": "Select account to work with",
         "action": {

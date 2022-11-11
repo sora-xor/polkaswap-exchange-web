@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "Sieťový účet {Sora}",
-        "text": "Pripojte svoje účty {Sora} alebo si pomocou rozšírenia prehliadača {PolkadotJs} vytvorte nové. Toto rozšírenie vám umožňuje bezpečne podpisovať transakcie a spravovať aktíva v sieti {Sora}.",
+        "text": "Pripojte alebo vytvorte svoj účet siete {Sora} s {extensions}. Tieto rozšírenia vám umožňujú bezpečne podpisovať transakcie a spravovať aktíva v sieti {Sora}.",
         "noAccounts": "Vo vašom rozšírení prehliadača {extension} nebol nájdený žiadny účet. Pridajte účet a skúste to znova.",
         "selectAccount": "Vyberte účet, s ktorým chcete pracovať",
         "action": {

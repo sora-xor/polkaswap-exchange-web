@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "Akun Jaringan {Sora}",
-        "text": "Hubungkan akun {Sora} Network Anda atau buat akun baru dengan ekstensi browser {PolkadotJs} Ekstensi ini memungkinkan Anda untuk menandatangani transaksi dan mengelola aset dengan aman di Jaringan {Sora}.",
+        "text": "Hubungkan atau buat akun Jaringan {Sora} Anda dengan {extensions}. Ekstensi ini memungkinkan Anda menandatangani transaksi dan mengelola aset dengan aman di Jaringan {Sora}.",
         "noAccounts": "Tidak ada akun yang ditemukan di ekstensi browser {extension} anda. Silakan tambahkan akun, lalu coba kembali.",
         "selectAccount": "Pilih akun untuk dikerjakan",
         "action": {

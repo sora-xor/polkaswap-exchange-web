@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "{Sora} hálózati fiók",
-        "text": "Csatlakoztasd {Sora} Network fiókjaidat vagy hozz létre újakat a {PolkadotJs} böngészőbővítménnyel. Ez a bővítmény lehetővé teszi a tranzakciók biztonságos aláírását és az eszközök kezelését a {Sora} hálózaton.",
+        "text": "Csatlakoztassa vagy hozza létre {Sora} hálózati fiókját {extensions} bővítménnyel. Ezek a bővítmények lehetővé teszik a tranzakciók biztonságos aláírását és az eszközök kezelését a {Sora} hálózaton.",
         "noAccounts": "Nincs fiók a {extension} böngészőbővítményben. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
         "action": {

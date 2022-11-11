@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "{Sora}-Nätverkskonto",
-        "text": "Anslut dina {Sora} nätverkskonton eller skapa nya med {PolkadotJs} webbläsartillägg. Detta tillägg ger dig möjlighet att signera transaktioner på ett säkert sätt och hantera tillgångar i {Sora}-Nätverk.",
+        "text": "Anslut eller skapa ditt {Sora} Network-konto med {extensions} -tillägg. Med dessa tillägg kan du säkert signera transaktioner och hantera tillgångar i {Sora} -nätverket.",
         "noAccounts": "Inget konto hittades i ditt {extension} webbläsartillägg. Vänligen lägg till ett konto och försök igen.",
         "selectAccount": "Välj konto att arbeta med",
         "action": {

@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "Compte réseau {Sora}",
-        "text": "Connectez vos comptes de réseau {Sora} ou créez-en de nouveaux avec l'extension de navigateur {PolkadotJs} Cette extension vous permet de signer en toute sécurité des transactions et de gérer vos jetons dans le réseau {Sora}.",
+        "text": "Connectez ou créez votre compte réseau {Sora} avec les {extensions}. Ces extensions vous permettent de signer en toute sécurité des transactions et de gérer des actifs dans {Sora} Network.",
         "noAccounts": "Aucun compte n'a été trouvé dans votre extension de navigateur {extension} Veuillez ajouter un compte et réessayer.",
         "selectAccount": "Sélectionnez le compte approprié",
         "action": {

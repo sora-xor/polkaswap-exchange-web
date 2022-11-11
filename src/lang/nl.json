@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "{Sora} Netwerk account",
-        "text": "Verbind uw {Sora} Netwerk accounts of maak nieuwe aan met {PolkadotJs} browser extensie. Met deze extensie kunt u veilig transacties ondertekenen en assets beheren in {Sora} Network.",
+        "text": "Verbind of maak je {Sora} Netwerkaccount aan met {extensions} extensies. Met deze extensies kun je veilig transacties ondertekenen en activa beheren in {Sora} Network.",
         "noAccounts": "Geen account gevonden in uw {extension} browser extensie. Voeg een account toe en probeer het opnieuw.",
         "selectAccount": "Selecteer account om mee te werken",
         "action": {

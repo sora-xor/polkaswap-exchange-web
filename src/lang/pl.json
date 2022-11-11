@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "Konto sieci {Sora}",
-        "text": "Podłącz swoje konta sieci {Sora} lub utwórz nowe za pomocą rozszerzenia przeglądarki {PolkadotJs}. To rozszerzenie umożliwia bezpieczne podpisywanie transakcji i zarządzanie zasobami w sieci {Sora}.",
+        "text": "Połącz lub utwórz konto sieciowe {Sora} z {extensions}. Te rozszerzenia umożliwiają bezpieczne podpisywanie transakcji i zarządzanie zasobami w sieci {Sora}.",
         "noAccounts": "W Twoim rozszerzeniu przeglądarki {extension} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
         "action": {

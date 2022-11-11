@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "Tài khoản Mạng {Sora}",
-        "text": "Kết nối tài khoản mạng {Sora} của bạn hoặc tạo tài khoản mới với tiện ích (extension) {PolkadotJs}. Tiện ích mở rộng (extension) này cho phép bạn ký giao dịch và quản lý tài sản một cách an toàn trên mạng {Sora}.",
+        "text": "Kết nối hoặc tạo tài khoản Mạng {Sora} của bạn với các {extensions}. Các tiện ích mở rộng này cho phép bạn ký các giao dịch và quản lý tài sản trong Mạng {Sora} một cách an toàn.",
         "noAccounts": "Không có tài khoản nào trong tiện ích (extension) {extension} của bạn. Vui lòng thêm tài khoản và thử lại.",
         "selectAccount": "Chọn tài khoản để dùng",
         "action": {

@@ -94,7 +94,7 @@
     },
     "connection": {
         "title": "Račun mreže {Sora}",
-        "text": "Povežite svoje {Sora} mrežne račune ili stvorite nove pomoću proširenja preglednika {PolkadotJs}. Ovo proširenje omogućuje vam sigurno potpisivanje transakcija i upravljanje sredstvom u {Sora} mreži.",
+        "text": "Povežite ili izradite svoj {Sora} mrežni račun s {extensions}. Ova proširenja vam omogućuju sigurno potpisivanje transakcija i upravljanje sredstvima u mreži {Sora}.",
         "noAccounts": "U proširenju preglednika {extension} nije pronađen račun. Dodajte račun i pokušajte ponovno.",
         "selectAccount": "Odaberite račun za rad",
         "action": {
