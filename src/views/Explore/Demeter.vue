@@ -181,16 +181,18 @@ import type { DemeterPool, DemeterRewardToken } from '@sora-substrate/util/build
 export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPageMixin, AprMixin) {
   @getter.demeterFarming.tokenInfos private tokenInfos!: DataMap<DemeterRewardToken>;
 
-  @Watch('pools')
+  @Watch('pools', { deep: true })
   private async updatePoolsData() {
-    await this.withParentLoading(async () => {
-      this.poolsData = {};
-      for (const pool of this.items) {
-        if (!this.poolsData[pool.poolAsset]) {
-          const poolData = await this.getPoolData(pool.poolAsset, pool.isFarm);
-          this.poolsData = { ...this.poolsData, [pool.poolAsset]: poolData };
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        this.poolsData = {};
+        for (const pool of this.items) {
+          if (!this.poolsData[pool.poolAsset]) {
+            const poolData = await this.getPoolData(pool.poolAsset, pool.isFarm);
+            this.poolsData = { ...this.poolsData, [pool.poolAsset]: poolData };
+          }
         }
-      }
+      });
     });
   }
 

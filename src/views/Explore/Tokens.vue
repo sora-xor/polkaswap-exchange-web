@@ -28,7 +28,6 @@
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.name }}</div>
             <div class="explore-table-item-address">
-              <span>{{ TranslationConsts.Sora }}:</span>&nbsp;
               <token-address
                 class="explore-table-item-address__value"
                 :show-name="false"
