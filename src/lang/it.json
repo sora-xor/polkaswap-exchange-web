@@ -54,7 +54,7 @@
             "EthBridgeOutgoing": "Trasferito {amount} {symbol} da {Sora} a {Ethereum}"
         },
         "error": {
-            "Transfer": "Impossibile inviare {amount} {symbol} a {address}",
+            "Transfer": "Impossibile {action} {amount} {symbol} {direction} {address}",
             "Swap": "Impossibile scambiare {amount} {symbol} con {amount2} {symbol2}",
             "AddLiquidity": "Impossibile fornire {amount} {symbol} e {amount2} {symbol2}",
             "RemoveLiquidity": "Impossibile rimuovere {amount} {symbol} e {amount2} {symbol2}",
@@ -88,13 +88,13 @@
     "polkadotjs": {
         "noExtensions": "Nessuna estensione {PolkadotJs} trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Sembra che non ci siano account nella tua estensione {extension}. Aggiungi un account e riprova.",
-        "noAccount": "Errore dell'account {PolkadotJs}. Controlla il tuo account nell'estensione {PolkadotJs}",
+        "noAccount": "Errore dell'account {extension}. Controlla il tuo account nell'estensione {extension}",
         "noExtension": "Non è stata trovata alcuna {extension} . Si prega di installarlo e ricaricare questa pagina",
         "noSigner": "Accesso negato. Vai alle impostazioni {extension} e apri \"Gestisci accesso al sito web\" per consentire."
     },
     "connection": {
-        "title": "SORA Network account",
-        "text": "Collega i tuoi account di rete {Sora} o creane di nuovi con l'estensione del browser {PolkadotJs}. Questa estensione consente di firmare transazioni in modo sicuro e gestire gli assets in {Sora} Network.",
+        "title": "{Sora} Network account",
+        "text": "Collega o crea il tuo account di rete {Sora} con {extensions}. Queste estensioni ti consentono di firmare in modo sicuro le transazioni e gestire le risorse nella rete {Sora}.",
         "noAccounts": "Nessun account trovato nell'estensione del browser {extension} Aggiungi un account e riprova.",
         "selectAccount": "Seleziona l'account con cui lavorare",
         "action": {
@@ -192,11 +192,8 @@
         "scam": "SCAM",
         "next": "Next",
         "AddAssetToken": {
-            "title": "Token",
+            "title": "Valute",
             "switchBtn": "Solo asset verificati"
-        },
-        "AddAssetNFT": {
-            "title": "NFT"
         },
         "searchInputText": "Cerca per ID asset, nome o simbolo del ticker"
     },
@@ -240,7 +237,6 @@
         "provideContent": "Fornisci contenuti",
         "selectLocalFile": "Seleziona file locale",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Fonte",
@@ -301,7 +297,7 @@
             "sorascan": "Visualizza su Sorascan",
             "subscan": "Visualizza in Subscan"
         },
-        "txId": "ID della transazione\n",
+        "txId": "ID della transazione",
         "referrer": "Referente",
         "referral": "Referral"
     },
@@ -394,10 +390,10 @@
         "errors": {
             "connection": "Si è verificato un errore durante la connessione al nodo\n{address}\n",
             "network": "Il nodo\n{address}\n proviene da un'altra rete\n",
-            "existing": "Questo nodo è già stato aggiunto: '{title}'\n"
+            "existing": "Questo nodo è già stato aggiunto: {title}\n"
         },
         "messages": {
-            "connected": "Connessione stabilita con il nodo\n {address}\n",
+            "connected": "Connessione stabilita con il nodo\n{address}\n",
             "selectNode": "Seleziona il nodo a cui connettersi dall'elenco"
         },
         "warnings": {
@@ -491,7 +487,7 @@
                 "desc": "Fai crescere l'economia mondiale decentralizzata collegando più chains a {Sora} e {AppName} utilizzando il protocollo {Hashi} bridge."
             }
         },
-        "network": "{AppName} è basato sulla rete {Sora}, si concentra sull'interoperabilità per connettere il resto dell'ecosistema crypto a Polkadot."
+        "network": "{AppName} è basato sulla rete {Sora}, concentrandosi sull'interoperabilità per connettere il resto dell'ecosistema crittografico a {Polkadot}."
     },
     "exchange": {
         "Swap": "Scambia",
@@ -595,7 +591,7 @@
     },
     "bridgeTransaction": {
         "details": "{from} per {to}",
-        "for": "per",
+        "for": " per ",
         "steps": {
             "step": "{step} di 2",
             "step1": "1°",
@@ -678,7 +674,7 @@
         "pricePool": "Prezzi e fees",
         "shareOfPool": "Quota della pool",
         "firstPerSecond": "@:firstPerSecond",
-        "firstSecondPoolTokens": "{first} - {second} Pool",
+        "firstSecondPoolTokens": "{first}-{second} Pool",
         "connect": "Connetti wallet",
         "supply": "Fornisci",
         "yourPosition": "La tua posizione",
@@ -695,7 +691,7 @@
     "confirmSupply": {
         "title": "La tua share della pool sarà",
         "outputDescription": "L'output è stimato. Se il prezzo cambiasse più di {slippageTolerance}% la tua transazione tornerà indietro.",
-        "poolTokensBurned": "{first} - {second} Pool Tokens Bruciati",
+        "poolTokensBurned": "{first}-{second} Pool Tokens Bruciati",
         "price": "Prezzo"
     },
     "addLiquidity": {
@@ -722,7 +718,7 @@
         "title": "Impostazioni",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
-            "main": "- opzione per scegliere tra mercato primario (TBC), mercato secondario (XYK) o un algoritmo intelligente combinato per ottenere il miglior prezzo garantito per qualsiasi transazione."
+            "main": " - opzione per scegliere tra mercato primario (TBC), mercato secondario (XYK) o un algoritmo intelligente combinato per ottenere il miglior prezzo garantito per qualsiasi transazione."
         },
         "slippageTolerance": "TOLLERANZA DI SLIPPAGE",
         "slippageToleranceHint": "La transazione verrà annullata se il prezzo cambia in modo sfavorevole di oltre questa percentuale.",
@@ -815,7 +811,7 @@
         "messages": {
             "checkExtension": "L'estensione {name} non è stata trovata. Si prega di controllarla",
             "extensionLogin": "Per favore accedi all' estensione {name}",
-            "installExtension": "L'estensione {name} non è stata trovata. Si prega di installarla!",
+            "installExtension": "L'estensione {name} non è stata trovata. Si prega di installarlo! \n\n Estensione già installata? Si prega di ricaricare la pagina",
             "reloadPage": "Ricarica la pagina"
         }
     },
@@ -911,7 +907,7 @@
         "bondedXOR": "XOR legato",
         "referralsNumber": "{number} referenze",
         "startInviting": "Bond XOR per fare riferimento ad altri",
-        "preview": "Invita nuovi utenti e ottieni il 10% dalle loro commissioni di transazione.<br \/>Per iniziare, lega qualsiasi quantità di XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Per saperne di più<\/a>",
+        "preview": "Invita nuovi utenti e ottieni il 10% dalle loro commissioni di transazione.<br\/>Per iniziare, lega qualsiasi quantità di XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Per saperne di più<\/a>",
         "deposit": "Deposita",
         "balance": "Bilancia",
         "networkFee": "@:networkFeeText",
@@ -1024,39 +1020,39 @@
     "historyErrorMessages": {
         "generalError": "Qualcosa è andato storto",
         "balances": {
-            "LiquidityRestrictions": "Le restrizioni sulla liquidità del conto impediscono il prelievo"
+            "liquidityrestrictions": "Le restrizioni sulla liquidità del conto impediscono il prelievo"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Il bilanciamento della sorgente non è abbastanza grande",
-            "TargetBalanceIsNotLargeEnough": "Il saldo della destinazione non è abbastanza grande",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Gli importi forniti sono troppo diversi",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Gli importi sono fuori dai limiti richiesti",
-            "UnableToDepositXorLessThanMinimum": "XOR inferiore al valore minimo (0,007)",
-            "ZeroValueInAmountParameter": "Il parametro Amount ha valore zero"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Il bilanciamento della sorgente non è abbastanza grande",
+            "targetbalanceisnotlargeenough": "Il saldo della destinazione non è abbastanza grande",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Gli importi forniti sono troppo diversi",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Gli importi sono fuori dai limiti richiesti",
+            "unabletodepositxorlessthanminimum": "XOR inferiore al valore minimo (0,007)",
+            "zerovalueinamountparameter": "Il parametro Amount ha valore zero"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "La coppia di pool esiste già",
-            "SlippageLimitExceeded": "La tolleranza allo slittamento non ha soddisfatto i limiti appropriati"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "La coppia di pool esiste già",
+            "slippagelimitexceeded": "La tolleranza allo slittamento non ha soddisfatto i limiti appropriati"
         },
         "referrals": {
-            "AlreadyHasReferrer": "L'account ha già un referrer",
-            "ReferrerInsufficientBalance": "Il referrer non ha abbastanza saldo riservato"
+            "alreadyhasreferrer": "L'account ha già un referrer",
+            "referrerinsufficientbalance": "Il referrer non ha abbastanza saldo riservato"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Il programma a premi è già terminato",
-            "CantCalculateReward": "Impossibile eseguire il calcolo della ricompensa",
-            "NoRewardsForAsset": "Non ci sono premi per questa risorsa"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Il programma a premi è già terminato",
+            "cantcalculatereward": "Impossibile eseguire il calcolo della ricompensa",
+            "norewardsforasset": "Non ci sono premi per questa risorsa"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "La fonte di liquidità selezionata non è consentita"
+        "liquidityproxy": {
+            "forbiddenfilter": "La fonte di liquidità selezionata non è consentita"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Fondi insufficienti",
-            "InsufficientLPTokens": "Token di fornitura di liquidità insufficienti",
-            "PoolDoesNotHaveRewards": "La piscina non ha ricompense"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Fondi insufficienti",
+            "insufficientlptokens": "Token di fornitura di liquidità insufficienti",
+            "pooldoesnothaverewards": "La piscina non ha ricompense"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Si è verificato un errore durante il calcolo del prezzo"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Si è verificato un errore durante il calcolo del prezzo"
         }
     },
     "receivedText": "Ricevuto",
@@ -1073,8 +1069,7 @@
     "ofText": "{first} di {second}",
     "filter": {
         "all": "Tutto",
-        "token": "Token",
-        "nft": "NFT",
+        "token": "Valute",
         "verifiedOnly": "Mostra solo risorse verificate",
         "zeroBalance": "Nascondi 0 saldo attivo",
         "showAssets": "Mostra risorse",
@@ -1083,7 +1078,7 @@
     "desktop": {
         "welcome": {
             "header": "Benvenuto in {AppName}!",
-            "headline": "configuriamo il tuo account",
+            "headline": "Configuriamo il tuo account",
             "text": "Crea il tuo account di rete {Sora} o accedi a quelli vecchi usando la frase mnemonica o l'importazione .json. Ciò ti consente di firmare transazioni in modo sicuro e gestire le risorse nella rete {Sora}.",
             "createAccount": "Creare un account",
             "importAccount": "Importa account"

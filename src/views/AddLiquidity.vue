@@ -99,7 +99,7 @@
       :second-token-value="secondTokenValue"
       :price="price"
       :price-reversed="priceReversed"
-      :slippage-tolerance="slippageTolerance"
+      :slippage-tolerance="slippageToleranceValue"
       @confirm="handleConfirmAddLiquidity"
     />
 
@@ -155,7 +155,7 @@ export default class AddLiquidity extends Mixins(
 ) {
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  @state.settings.slippageTolerance slippageTolerance!: string;
+  @state.settings.slippageTolerance slippageToleranceValue!: string;
   @state.addLiquidity.focusedField private focusedField!: FocusedField;
 
   @getter.assets.xor private xor!: AccountAsset;
@@ -237,10 +237,13 @@ export default class AddLiquidity extends Mixins(
   }
 
   get isXorSufficientForNextOperation(): boolean {
-    return this.isXorSufficientForNextTx({
+    const params: { type: Operation; amount?: FPNumber } = {
       type: Operation.AddLiquidity,
-      amount: this.getFPNumber(this.firstTokenValue),
-    });
+    };
+    if (this.firstAddress === XOR.address) {
+      params.amount = this.getFPNumber(this.firstTokenValue);
+    }
+    return this.isXorSufficientForNextTx(params);
   }
 
   get isFirstMaxButtonAvailable(): boolean {
