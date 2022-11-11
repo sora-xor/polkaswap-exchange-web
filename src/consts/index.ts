@@ -322,7 +322,12 @@ export const RewardsChildPages = [
 ];
 
 export const StakingChildPages = [DemeterPageNames.Staking];
-export const ExploreChildPages = [PageNames.ExploreTokens];
+export const ExploreChildPages = [
+  PageNames.ExploreTokens,
+  PageNames.ExplorePools,
+  PageNames.ExploreFarming,
+  PageNames.ExploreStaking,
+];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',

@@ -99,6 +99,8 @@ export default class ExplorePageMixin extends Mixins(
     const scrollbar = new Scrollbar();
     scrollbar.$mount();
 
+    if (!this.tableComponent) return;
+
     const elTable = this.tableComponent.$refs.table;
     const elTableBodyWrapper = elTable.$refs.bodyWrapper;
     const elTableHeaderWrapper = elTable.$refs.headerWrapper;

@@ -148,6 +148,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import DemeterPageMixin from '@/modules/demeterFarming/mixins/PageMixin';
@@ -159,7 +160,7 @@ import { DemeterComponents } from '@/modules/demeterFarming/consts';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { getter } from '@/store/decorators';
-import { formatAmountWithSuffix } from '@/utils';
+import { formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
 import SortButton from '@/components/SortButton.vue';
 
@@ -188,13 +189,16 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPage
       this.poolsData = {};
       for (const pool of this.items) {
         if (!this.poolsData[pool.poolAsset]) {
-          console.log('request');
           const poolData = await this.getPoolData(pool.poolAsset, pool.isFarm);
           this.poolsData = { ...this.poolsData, [pool.poolAsset]: poolData };
         }
       }
     });
   }
+
+  // override ExplorePageMixin
+  order = SortDirection.DESC;
+  property = 'apr';
 
   poolsData = {};
 
@@ -228,8 +232,8 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPage
       const name = assets.map((asset) => asset?.symbol ?? '').join('-');
       const description = pool.isFarm ? '' : poolAsset?.name ?? '';
       const depositFee = new FPNumber(pool.depositFee ?? 0).mul(FPNumber.HUNDRED);
-      const liquidityInPool = poolTokenPrice.mul(pool.totalTokensInPool);
-      const apr = this.getApr(pool, tokenInfo, liquidityInPool);
+      const tvl = poolTokenPrice.mul(pool.totalTokensInPool);
+      const apr = this.getApr(pool, tokenInfo, tvl);
       const accountTokens = (
         pool.isFarm
           ? [
@@ -243,7 +247,7 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPage
               },
             ]
           : [{ asset: poolAsset, balance: accountPooledTokens }]
-      ).map((item) => ({ ...item, balance: this.formatDecimalPlaces(item.balance) }));
+      ).map((item) => ({ ...item, balance: formatDecimalPlaces(item.balance) }));
 
       return {
         assets,
@@ -253,18 +257,18 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterPage
         rewardAsset,
         rewardAssetSymbol,
         depositFee: depositFee.toNumber(),
-        depositFeeFormatted: this.formatDecimalPlaces(depositFee, true),
-        tvl: liquidityInPool.toNumber(),
-        tvlFormatted: formatAmountWithSuffix(liquidityInPool),
+        depositFeeFormatted: formatDecimalPlaces(depositFee, true),
+        tvl: tvl.toNumber(),
+        tvlFormatted: formatAmountWithSuffix(tvl),
         apr: apr.toNumber(),
-        aprFormatted: this.formatDecimalPlaces(apr, true),
+        aprFormatted: formatDecimalPlaces(apr, true),
         accountTokens,
         liquidity,
       };
     });
   }
 
-  async getPoolData(
+  private async getPoolData(
     poolAssetAddress: string,
     isFarm: boolean
   ): Promise<Nullable<{ price: FPNumber; supply?: FPNumber; reserves?: FPNumber[]; address?: string }>> {

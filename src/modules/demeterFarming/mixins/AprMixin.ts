@@ -21,8 +21,8 @@ export default class AprMixin extends Mixins(mixins.FormattedAmountMixin) {
     return allocation.mul(tokenPerBlock).mul(multiplier);
   }
 
-  getApr(pool: DemeterPool, tokenInfo: Nullable<DemeterRewardToken>, liquidityInPool: FPNumber): FPNumber {
-    if (liquidityInPool.isZero()) return FPNumber.ZERO;
+  getApr(pool: DemeterPool, tokenInfo: Nullable<DemeterRewardToken>, tvl: FPNumber): FPNumber {
+    if (tvl.isZero()) return FPNumber.ZERO;
 
     const blocksPerYear = new FPNumber(5_256_000);
     const emission = this.getEmission(pool, tokenInfo);
@@ -30,13 +30,6 @@ export default class AprMixin extends Mixins(mixins.FormattedAmountMixin) {
       this.getAssetFiatPrice({ address: pool.rewardAsset } as Asset) ?? 0
     );
 
-    return emission.mul(blocksPerYear).mul(rewardAssetPrice).div(liquidityInPool).mul(FPNumber.HUNDRED);
-  }
-
-  formatDecimalPlaces(value: FPNumber, asPercent = false) {
-    const formatted = value.dp(2).toLocaleString();
-    const postfix = asPercent ? '%' : '';
-
-    return `${formatted}${postfix}`;
+    return emission.mul(blocksPerYear).mul(rewardAssetPrice).div(tvl).mul(FPNumber.HUNDRED);
   }
 }

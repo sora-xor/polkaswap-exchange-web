@@ -780,7 +780,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       white-space: nowrap;
     }
     &-amount.formatted-amount--fiat-value {
-      color: var(--s-color-base-content-primary);
+      color: var(--s-color-base-content-primary) !important;
     }
     &-address {
       .tokens-item-address__value {

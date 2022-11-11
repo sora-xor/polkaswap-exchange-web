@@ -287,3 +287,10 @@ export const formatAmountWithSuffix = (value: FPNumber): AmountWithSuffix => {
     return { amount, suffix: '' };
   }
 };
+
+export const formatDecimalPlaces = (value: FPNumber, asPercent = false): string => {
+  const formatted = value.dp(2).toLocaleString();
+  const postfix = asPercent ? '%' : '';
+
+  return `${formatted}${postfix}`;
+};

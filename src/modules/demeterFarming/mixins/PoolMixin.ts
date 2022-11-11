@@ -7,12 +7,11 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter } from '@/store/decorators';
 
-import { getAssetBalance } from '@/utils';
+import { getAssetBalance, formatDecimalPlaces } from '@/utils';
 
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { DemeterRewardToken } from '@sora-substrate/util/build/demeterFarming/types';
-import { ZeroStringValue } from '@/consts';
 
 @Component
 export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, TranslationMixin) {
@@ -140,50 +139,23 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
       : this.t('demeterFarming.info.stake', { symbol: this.poolAssetSymbol });
   }
 
-  get tvl(): string {
-    if (!this.pool) return ZeroStringValue;
+  get tvl(): FPNumber {
+    if (!this.pool) return FPNumber.ZERO;
 
     if (this.isFarm) {
       // calc liquidty locked price through liquidity
-      const liquidityLockedPrice = FPNumber.fromCodecValue(this.liquidity.firstBalance)
+      return FPNumber.fromCodecValue(this.liquidity.firstBalance)
         .div(this.liquidityLP)
         .mul(this.pool.totalTokensInPool)
         .mul(this.baseAssetPrice)
         .mul(new FPNumber(2));
-
-      return this.formatDecimalPlaces(liquidityLockedPrice);
     } else {
-      const assetLockedPrice = this.pool.totalTokensInPool.mul(this.poolAssetPrice);
-
-      return this.formatDecimalPlaces(assetLockedPrice);
+      return this.pool.totalTokensInPool.mul(this.poolAssetPrice);
     }
   }
 
   get tvlFormatted(): string {
-    return `$${this.tvl}`;
-  }
-
-  get liquidityInPool(): FPNumber {
-    if (!this.pool) return FPNumber.ZERO;
-
-    if (this.isFarm) {
-      const accountPoolShare = new FPNumber(this.liquidity.poolShare).div(FPNumber.HUNDRED);
-      const lpTokens = this.liquidityLP.div(accountPoolShare);
-      const liquidityLockedPercent = this.pool.totalTokensInPool.div(lpTokens);
-      // calc pool price through account liquidity
-      const wholeLiquidityPrice = FPNumber.fromCodecValue(this.liquidity.firstBalance, this.baseAsset?.decimals)
-        .mul(this.baseAssetPrice)
-        .mul(new FPNumber(2))
-        .div(accountPoolShare);
-
-      return liquidityLockedPercent.mul(wholeLiquidityPrice);
-    } else {
-      // if stake is empty, show arp if user will stake all his tokens
-      const liquidityTokens = this.pool.totalTokensInPool.isZero()
-        ? this.poolAssetBalance
-        : this.pool.totalTokensInPool;
-      return liquidityTokens.mul(this.poolAssetPrice);
-    }
+    return `$${formatDecimalPlaces(this.tvl)}`;
   }
 
   get emission(): FPNumber {
@@ -191,11 +163,11 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
   }
 
   get apr(): FPNumber {
-    return this.getApr(this.pool, this.tokenInfo, this.liquidityInPool);
+    return this.getApr(this.pool, this.tokenInfo, this.tvl);
   }
 
   get aprFormatted(): string {
-    return this.formatDecimalPlaces(this.apr, true);
+    return formatDecimalPlaces(this.apr, true);
   }
 
   get emitParams(): object {
