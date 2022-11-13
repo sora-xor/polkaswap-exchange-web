@@ -1,52 +1,22 @@
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
-import { action, getter } from '@/store/decorators';
+import { action } from '@/store/decorators';
 
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import BasePageMixin from './BasePageMixin';
+
 import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 @Component
-export default class PageMixin extends Mixins(mixins.TransactionMixin) {
-  @Prop({ default: true, type: Boolean }) readonly isFarmingPage!: boolean;
-
-  @getter.demeterFarming.farmingPools farmingPools!: DataMap<DemeterPool[]>;
-  @getter.demeterFarming.stakingPools stakingPools!: DataMap<DemeterPool[]>;
-  @getter.demeterFarming.accountFarmingPools accountFarmingPools!: DataMap<DemeterAccountPool[]>;
-  @getter.demeterFarming.accountStakingPools accountStakingPools!: DataMap<DemeterAccountPool[]>;
-
+export default class PageMixin extends Mixins(BasePageMixin, mixins.TransactionMixin) {
   @action.demeterFarming.deposit deposit!: (params: DemeterLiquidityParams) => Promise<void>;
   @action.demeterFarming.withdraw withdraw!: (params: DemeterLiquidityParams) => Promise<void>;
   @action.demeterFarming.claimRewards private claimRewards!: (pool: DemeterAccountPool) => Promise<void>;
 
   showStakeDialog = false;
   showClaimDialog = false;
-  showCalculatorDialog = false;
-
-  poolAsset: Nullable<string> = null;
-  rewardAsset: Nullable<string> = null;
-  liquidity: Nullable<AccountLiquidity> = null;
-
   isAddingStake = true;
-
-  get pools(): DataMap<DemeterPool[]> {
-    return this.isFarmingPage ? this.farmingPools : this.stakingPools;
-  }
-
-  get accountPools(): DataMap<DemeterAccountPool[]> {
-    return this.isFarmingPage ? this.accountFarmingPools : this.accountStakingPools;
-  }
-
-  get selectedPool(): Nullable<DemeterPool> {
-    if (!this.poolAsset || !this.pools[this.poolAsset]) return null;
-
-    return this.pools[this.poolAsset].find((pool) => pool.rewardAsset === this.rewardAsset);
-  }
-
-  get selectedAccountPool(): Nullable<DemeterAccountPool> {
-    return this.selectedPool ? this.getAccountPool(this.selectedPool) : null;
-  }
 
   getAvailablePools(pools: DemeterPool[]): Array<{ pool: DemeterPool; accountPool: Nullable<DemeterAccountPool> }> {
     if (!Array.isArray(pools)) return [];
@@ -67,19 +37,7 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
     }, []);
   }
 
-  getAccountPool(pool: DemeterPool): Nullable<DemeterAccountPool> {
-    return this.accountPools[pool.poolAsset]?.find((accountPool) => accountPool.rewardAsset === pool.rewardAsset);
-  }
-
-  hasActivePools(address: string): boolean {
-    return this.pools[address]?.some((pool) => !pool.isRemoved);
-  }
-
-  hasAccountPoolsForPoolAsset(address: string): boolean {
-    return this.accountPools[address]?.some((accountPool) => this.isActiveAccountPool(accountPool));
-  }
-
-  isActiveAccountPool(accountPool: DemeterAccountPool): boolean {
+  private isActiveAccountPool(accountPool: DemeterAccountPool): boolean {
     return !accountPool.pooledTokens.isZero() || !accountPool.rewards.isZero();
   }
 
@@ -96,17 +54,6 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
   claimPoolRewards(params: { poolAsset: string; rewardAsset: string }): void {
     this.setDialogParams(params);
     this.showClaimDialog = true;
-  }
-
-  showPoolCalculator(params: { poolAsset: string; rewardAsset: string; liquidity?: AccountLiquidity }): void {
-    this.setDialogParams(params);
-    this.showCalculatorDialog = true;
-  }
-
-  private setDialogParams(params: { poolAsset: string; rewardAsset: string; liquidity?: AccountLiquidity }): void {
-    this.poolAsset = params.poolAsset;
-    this.rewardAsset = params.rewardAsset;
-    this.liquidity = params.liquidity;
   }
 
   async handleStakeAction(

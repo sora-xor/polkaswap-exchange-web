@@ -193,6 +193,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
     return this.preparedItems.some((item) => item.apy !== 0);
   }
 
+  // ExplorePageMixin method implementation
   async updateExploreData(): Promise<void> {
     this.poolReserves = await api.poolXyk.getAllReserves();
   }
