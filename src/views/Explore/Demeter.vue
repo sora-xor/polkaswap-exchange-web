@@ -213,7 +213,10 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
         for (const pool of this.items) {
           if (!this.poolsData[pool.poolAsset]) {
             const poolData = await this.getPoolData(pool.poolAsset, pool.isFarm);
-            this.poolsData = { ...this.poolsData, [pool.poolAsset]: poolData };
+
+            if (poolData) {
+              this.poolsData = { ...this.poolsData, [pool.poolAsset]: poolData };
+            }
           }
         }
       });
@@ -232,22 +235,25 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
 
   get preparedItems(): TableItem[] {
     return this.items.map((pool) => {
-      const poolAsset = this.getAsset(pool.poolAsset);
-      const rewardAsset = this.getAsset(pool.rewardAsset);
+      const poolAsset = this.getAsset(pool.poolAsset) as Asset;
+      const rewardAsset = this.getAsset(pool.rewardAsset) as Asset;
       const rewardAssetSymbol = rewardAsset?.symbol ?? '';
       const tokenInfo = this.tokenInfos[pool.rewardAsset];
       const accountPool = this.getAccountPool(pool);
       const poolData = this.poolsData[pool.poolAsset];
       const poolTokenPrice = poolData?.price ?? FPNumber.ZERO;
+      const poolBaseReserves = poolData?.reserves?.[0] ?? FPNumber.ZERO;
+      const poolTargetReserves = poolData?.reserves?.[1] ?? FPNumber.ZERO;
+      const poolSupply = poolData?.supply ?? FPNumber.ZERO;
       const accountPooledTokens = accountPool?.pooledTokens ?? FPNumber.ZERO;
       const liquidity: Nullable<AccountLiquidity> = pool.isFarm
         ? {
-            address: poolData?.address,
-            balance: poolData?.supply.toCodecString(),
+            address: poolData?.address ?? '',
+            balance: poolSupply.toCodecString(),
             firstAddress: XOR.address,
-            firstBalance: poolData?.reserves[0].toCodecString(),
+            firstBalance: poolBaseReserves.toCodecString(),
             secondAddress: poolAsset?.address ?? '',
-            secondBalance: poolData?.reserves[1].toCodecString(),
+            secondBalance: poolTargetReserves.toCodecString(),
             poolShare: '1',
           }
         : null;
@@ -263,11 +269,15 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
           ? [
               {
                 asset: XOR,
-                balance: poolData ? poolData.reserves[0].mul(accountPooledTokens).div(poolData.supply) : FPNumber.ZERO,
+                balance: !poolSupply.isZero()
+                  ? poolBaseReserves.mul(accountPooledTokens).div(poolSupply)
+                  : FPNumber.ZERO,
               },
               {
                 asset: poolAsset,
-                balance: poolData ? poolData.reserves[1].mul(accountPooledTokens).div(poolData.supply) : FPNumber.ZERO,
+                balance: !poolSupply.isZero()
+                  ? poolTargetReserves.mul(accountPooledTokens).div(poolSupply)
+                  : FPNumber.ZERO,
               },
             ]
           : [{ asset: poolAsset, balance: accountPooledTokens }]

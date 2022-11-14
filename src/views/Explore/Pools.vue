@@ -104,14 +104,14 @@ import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/c
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import { state } from '@/store/decorators';
+import { state, getter } from '@/store/decorators';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
 import SortButton from '@/components/SortButton.vue';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { AmountWithSuffix } from '@/types/formats';
 
@@ -135,6 +135,7 @@ type TableItem = {
 })
 export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMixin) {
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
+  @getter.wallet.account.whitelist private whitelist!: Whitelist;
 
   // override ExplorePageMixin
   order = SortDirection.DESC;
@@ -146,7 +147,8 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
     return Object.entries(this.poolReserves).reduce<any>((buffer, [key, reserves]) => {
       const matches = key.match(/0x\w{64}/g);
 
-      if (!matches || !matches[0] || !matches[1]) return buffer;
+      if (!matches || !matches[0] || !matches[1] || !this.whitelist[matches[0]] || !this.whitelist[matches[1]])
+        return buffer;
 
       const baseAsset = this.getAsset(matches[0]);
       const targetAsset = this.getAsset(matches[1]);
