@@ -1,6 +1,5 @@
 <template>
   <div>
-    <button @click="embed">Embed layout</button>
     <div>
       <div id="kyc"></div>
       <div id="finish" style="display: none">
@@ -8,77 +7,21 @@
       </div>
     </div>
   </div>
-  <!-- <div>
-    <div class="sora-card__no-spam">No spam! Only to secure your account</div>
-    <div class="test">
-      <s-input
-        placeholder="Phone number"
-        v-model="phoneNumber"
-        :disabled="loading"
-        class="what"
-        v-cleave="{ date: true, datePattern: ['m'] }"
-      ></s-input>
-      <s-button
-        type="secondary"
-        :disabled="sendSmsDisabled"
-        class="sora-card__send-sms-btn s-typography-button--large"
-        @click="sendSms"
-      >
-        SEND SMS CODE
-      </s-button>
-    </div>
-    <input
-      v-model="phoneNumber"
-      class="input-element"
-      v-cleave="{ phoneNumber: true, delimiter: ' ', blocks: [2, 3, 3, 4] }"
-    />
-
-    <p class="sora-card__input-description">PayWings will send you a verification code</p>
-    <s-input placeholder="Verification code" v-model="verificationCode" :disabled="loading"></s-input>
-    <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="verifyCode">
-      {{ buttonText }}
-    </s-button>
-  </div> -->
 </template>
 
 <script lang="ts">
 import { loadScript } from 'vue-plugin-load-script';
+import { uuid } from 'uuidv4';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { isNumber } from 'lodash';
 
 @Component
-export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @Prop({ default: '', type: String }) readonly accessToken!: string;
-  phoneNumberString = '';
-  verificationCode = '';
-  ccMonth = '';
-  ccNumber = '';
 
   verifyCode(): void {
     this.$emit('confirm-sms');
-  }
-
-  get phoneNumber(): string {
-    if (this.ccNumber.charAt(0) === '+') {
-      return this.ccNumber;
-    }
-    return '+' + this.ccNumber;
-  }
-
-  set phoneNumber(value) {
-    this.phoneNumber = value;
-  }
-
-  sendSms(): void {}
-
-  get buttonText() {
-    return 'ENTER THE VERIFICATION CODE';
-  }
-
-  get sendSmsDisabled(): boolean {
-    return false;
   }
 
   async getReferenceNumber(): Promise<string> {
@@ -90,21 +33,30 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        ReferenceID: Math.floor(Math.random() * 10000).toString(),
-        MobileNumber: '+79998887755',
-        Email: 'haxiyir650@ilusale.com',
+        ReferenceID: 'faf',
       }),
     });
 
+    console.log('result', result);
+
     const data = await result.json();
+    console.log('data', data);
     return data.ReferenceNumber;
   }
 
-  async embed(): Promise<void> {
+  async mounted(): Promise<void> {
     console.log('embed called');
     const referenceNumber = await this.getReferenceNumber();
-    console.log('this.accessToken', this.accessToken);
+    // const accessToken = this.accessToken;
+    // console.log('this.accessToken', this.accessToken);
     console.log('referenceNumber', referenceNumber);
+
+    const accessToken = sessionStorage.getItem('access-token');
+    const refreshToken = sessionStorage.getItem('refresh-token');
+
+    console.log('accessToken', accessToken);
+    console.log('refreshToken', refreshToken);
+
     loadScript('https://kyc-test.soracard.com/web/v2/webkyc.js')
       .then(() => {
         // @ts-expect-error no-undef
@@ -112,12 +64,12 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
           KycCredentials: {
             Username: 'E7A6CB83-630E-4D24-88C5-18AAF96032A4', // api username
             Password: '75A55B7E-A18F-4498-9092-58C7D6BDB333', // api password
-            EndpointUrl: 'https://kyc-test.soracard.com/mobile',
+            Domain: 'soracard.com',
             env: 'Test', // use Test for test environment and Prod for production
             UnifiedLoginApiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
           },
           KycSettings: {
-            AppReferenceID: Math.floor(Math.random() * 10000).toString(),
+            AppReferenceID: uuid(), // uuid-4
             Language: 'en', // supported languages 'en'
             ReferenceNumber: referenceNumber,
             ElementId: '#kyc', // id of element in which web kyc will be injected
@@ -129,9 +81,9 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
           },
           KycUserData: {
             // Sample data without prefilled values
-            FirstName: 'first',
-            MiddleName: 'middle',
-            LastName: 'last',
+            FirstName: '',
+            MiddleName: '',
+            LastName: '',
             Email: '', // must be valid email address
             MobileNumber: '', // if value is prefilled must be in valid international format eg. "+386 40 040 040" (without spaces)
             Address1: '',
@@ -141,7 +93,10 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
             City: '',
             State: '',
             CountryCode: '', // ISO 3 country code
-            AccessToken: this.accessToken,
+          },
+          UserCredentials: {
+            AccessToken: accessToken,
+            RefreshToken: refreshToken,
           },
         })
           .on('Error', function (data) {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="parentLoading">
     <div class="map">
       <div class="map__text-info">
         <div class="map__section">
@@ -47,7 +47,8 @@
     <div id="authOpen"></div>
 
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirm">
-      LET’S START
+      <span class="text">LET’S START</span>
+      <s-icon name="arrows-arrow-top-right-24" size="18" class="" />
     </s-button>
   </div>
 </template>
@@ -59,6 +60,8 @@ import { Component, Mixins } from 'vue-property-decorator';
 import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
 import CardIcon from '@/assets/img/sora-card/card.svg?inline';
 import UserIcon from '@/assets/img/sora-card/user.svg?inline';
+import { delay } from '@/utils';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
   components: {
@@ -67,7 +70,7 @@ import UserIcon from '@/assets/img/sora-card/user.svg?inline';
     UserIcon,
   },
 })
-export default class RoadMap extends Mixins(TranslationMixin) {
+export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   firstPointChecked = true;
   firstPointCurrent = false;
   secondPointChecked = false;
@@ -75,12 +78,11 @@ export default class RoadMap extends Mixins(TranslationMixin) {
   thirdPointChecked = false;
   thirdPointCurrent = false;
 
-  handleConfirm(): void {
-    const accessToken = sessionStorage.getItem('access-token');
-    this.$emit('confirm-start', accessToken);
-  }
+  async handleConfirm(): Promise<void> {
+    // sessionStorage.removeItem('access-token');
+    // sessionStorage.removeItem('expiration-time');
+    // sessionStorage.removeItem('refresh-token');
 
-  mounted(): void {
     loadScript('https://auth-test.paywings.io/auth/sdk.js')
       .then(() => {
         const conf = {
@@ -92,16 +94,35 @@ export default class RoadMap extends Mixins(TranslationMixin) {
         };
 
         try {
-          // @ts-expect-error undef
+          // @ts-expect-error injected variable
           const auth = new PopupOAuth(conf).connect();
         } catch (error) {
-          console.log('error', error);
+          console.error('error', error);
         }
       })
       .catch((error) => {
         // Failed to fetch script
-        console.log('error', error);
+        console.error('error', error);
       });
+
+    const accessToken = await this.getAccessToken();
+
+    this.$emit('confirm-start', accessToken);
+  }
+
+  async getAccessToken(): Promise<string | null> {
+    await this.waitOnAccessTokenAvailability();
+
+    return sessionStorage.getItem('access-token');
+  }
+
+  async waitOnAccessTokenAvailability(ms = 300): Promise<void> {
+    const accessToken = sessionStorage.getItem('access-token');
+
+    if (accessToken) return;
+
+    await delay(ms);
+    return await this.waitOnAccessTokenAvailability();
   }
 }
 </script>
@@ -185,6 +206,17 @@ export default class RoadMap extends Mixins(TranslationMixin) {
     color: #fff;
     position: relative;
     margin-left: 3px;
+  }
+}
+
+.s-icon-arrows-arrow-top-right-24 {
+  margin-left: 8px;
+}
+
+[design-system-theme='dark'] {
+  .map {
+    box-shadow: -5px -5px 10px rgba(155, 111, 165, 0.25), 2px 2px 15px #492067,
+      inset 1px 1px 2px rgba(155, 111, 165, 0.25);
   }
 }
 </style>

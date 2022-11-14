@@ -1,9 +1,9 @@
 <template>
-  <wallet-base :title="title" :show-back="true" @back="handleBack" class="sora-card">
+  <wallet-base v-loading="loading" :title="title" :show-back="showBack" @back="handleBack" class="sora-card">
     <terms-and-conditions v-if="step === KycProcess.TermsAndConditions" @confirm-tos="confirmToS" />
     <road-map v-else-if="step === KycProcess.RoadMap" @confirm-start="confirmProcess" />
-    <sms-code v-else-if="step === KycProcess.ConfirmPhone" @confirm-sms="confirmSendSms" :accessToken="accessToken" />
-    <email v-else-if="step === KycProcess.ConfirmEmail" />
+    <kyc-view v-else-if="step === KycProcess.KycView" @confirm-sms="confirmSendSms" :accessToken="accessToken" />
+    <confirmation-info v-else-if="step === KycProcess.ConfirmationInfo" />
   </wallet-base>
 </template>
 
@@ -17,8 +17,8 @@ import TranslationMixin from '../mixins/TranslationMixin';
 enum KycProcess {
   TermsAndConditions,
   RoadMap,
-  ConfirmPhone,
-  ConfirmEmail,
+  KycView,
+  ConfirmationInfo,
 }
 
 @Component({
@@ -26,8 +26,8 @@ enum KycProcess {
     WalletBase: components.WalletBase,
     TermsAndConditions: lazyComponent(Components.TermsAndConditions),
     RoadMap: lazyComponent(Components.RoadMap),
-    SmsCode: lazyComponent(Components.SmsCode),
-    Email: lazyComponent(Components.Email),
+    KycView: lazyComponent(Components.KycView),
+    ConfirmationInfo: lazyComponent(Components.ConfirmationInfo),
   },
 })
 export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.LoadingMixin) {
@@ -47,14 +47,19 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
       return;
     }
 
-    if (this.step === KycProcess.ConfirmPhone) {
+    if (this.step === KycProcess.KycView) {
       this.step = KycProcess.RoadMap;
       return;
     }
 
-    if (this.step === KycProcess.ConfirmEmail) {
-      this.step = KycProcess.ConfirmPhone;
+    if (this.step === KycProcess.ConfirmationInfo) {
+      this.step = KycProcess.KycView;
     }
+  }
+
+  get showBack(): boolean {
+    if (this.step === KycProcess.ConfirmationInfo) return false;
+    return true;
   }
 
   get title(): string {
@@ -63,26 +68,30 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
         return 'Terms & Conditions';
       case KycProcess.RoadMap:
         return 'Complete KYC';
-      case KycProcess.ConfirmPhone:
-        return 'Verify your phone number';
-      case KycProcess.ConfirmEmail:
-        return 'Verify your email';
+      case KycProcess.KycView:
+        return 'Complete KYC';
+      case KycProcess.ConfirmationInfo:
+        return '';
       default:
         return '';
     }
   }
 
   confirmToS(): void {
+    console.log('confirmTos');
+    if (sessionStorage.getItem('access-token')) {
+      this.step = KycProcess.KycView;
+    }
     this.step = KycProcess.RoadMap;
   }
 
   confirmProcess(accessToken: string): void {
     this.accessToken = accessToken;
-    this.step = KycProcess.ConfirmPhone;
+    this.step = KycProcess.KycView;
   }
 
   confirmSendSms(): void {
-    this.step = KycProcess.ConfirmEmail;
+    this.step = KycProcess.ConfirmationInfo;
   }
 }
 </script>

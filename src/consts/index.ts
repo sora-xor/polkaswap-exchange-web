@@ -151,9 +151,13 @@ export enum Components {
   SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
   SoraCardKYC = 'SoraCard/SoraCardKYC',
   TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
+  // Subject to change
+  TermsAndConditionsDialog = 'SoraCard/policies/TermsAndConditionsDialog',
+  PrivacyPolicyDialog = 'SoraCard/policies/PrivacyPolicyDialog',
+  NonDisclosureAgreementDialog = 'SoraCard/policies/NonDisclosureAgreementDialog',
   RoadMap = 'SoraCard/steps/RoadMap',
-  SmsCode = 'SoraCard/steps/SmsCode',
-  Email = 'SoraCard/steps/Email',
+  KycView = 'SoraCard/steps/KycView',
+  ConfirmationInfo = 'SoraCard/steps/ConfirmationInfo',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',
   StatusActionBadge = 'Swap/StatusActionBadge',
@@ -214,7 +218,7 @@ export enum RewardsTabsItems {
 }
 
 interface SidebarMenuItem {
-  icon: string;
+  icon?: string;
   title: string;
   disabled?: boolean;
 }
@@ -259,7 +263,7 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
     title: PageNames.Tokens,
   },
   {
-    icon: 'various-bone-24',
+    icon: 'sora-card',
     title: PageNames.SoraCard,
   },
   {

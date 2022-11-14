@@ -13,27 +13,84 @@
     <s-button
       type="primary"
       class="sora-card__btn s-typography-button--large"
-      :loading="loading"
+      :loading="loading || !isPriceCalculated"
       @click="handleConfirm"
     >
-      APPLY FOR CARD
+      <span class="text"> {{ buttonText }}</span>
     </s-button>
+    <div v-if="isPriceCalculated && isLoggedIn" class="sora-card__balance-indicator">
+      <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
+      <p class="sora-card__balance-indicator-text">{{ balanceIndicatorText }}</p>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber } from '@sora-substrate/math';
 import SoraCard from '@/assets/img/sora-card/sora-card.svg?inline';
+import { getter, state } from '@/store/decorators';
+import { PageNames } from '@/consts';
+import router from '@/router';
+import { delay } from '@/utils';
+import TranslationMixin from '../mixins/TranslationMixin';
 
 @Component({
   components: {
     SoraCard,
   },
 })
-export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin) {
+export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
+  @state.prices.euroBalance private euroBalance!: string;
+  @state.prices.xorToDeposit private xorToDeposit!: FPNumber;
+  @getter.prices.isEuroBalanceEnough private isEuroBalanceEnough!: boolean;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+
+  isPriceCalculated = false;
+
+  get buttonText(): string {
+    if (!this.isLoggedIn) {
+      return this.t('connectWalletText');
+    }
+    if (this.isEuroBalanceEnough) {
+      return 'APPLY FOR CARD';
+    }
+    return `GET ${100 - parseInt(this.euroBalance, 10)}€ OF XOR TO QUALIFY`;
+  }
+
+  get balanceIndicatorText(): string {
+    const euroBalance = parseInt(this.euroBalance, 10);
+    return `${this.isEuroBalanceEnough ? '100' : euroBalance}€/100€ of XOR in your wallet`;
+  }
+
+  getIconClass(): string {
+    if (this.isEuroBalanceEnough) {
+      return 'sora-card__icon--checked';
+    }
+    return '';
+  }
+
   handleConfirm(): void {
     this.$emit('confirm-apply');
+
+    // if (!this.isLoggedIn) {
+    //   router.push({ name: PageNames.Wallet });
+    //   return;
+    // }
+    // if (!this.isEuroBalanceEnough) {
+    //   router.push({ name: PageNames.Bridge, params: { xorToDeposit: this.xorToDeposit.toString() } });
+    // }
+  }
+
+  async priceLoading(): Promise<void> {
+    this.isPriceCalculated = false;
+    await delay(800);
+    this.isPriceCalculated = true;
+  }
+
+  mounted(): void {
+    this.priceLoading();
   }
 }
 </script>
@@ -68,12 +125,34 @@ $color: #ee2233;
       margin: 24px;
       font-size: 18px;
       font-weight: 600;
-      color: $color;
+      color: #fff;
     }
   }
 
   &__image {
-    margin-top: -58px;
+    margin-top: -56px;
+    height: 311px;
   }
+
+  &__balance-indicator {
+    margin-top: 24px;
+    &-text {
+      display: inline-block;
+      font-size: 16px;
+    }
+
+    .s-icon-basic-check-mark-24 {
+      margin-right: 16px;
+      color: var(--s-color-base-content-tertiary);
+    }
+
+    .sora-card__icon--checked {
+      color: $color;
+    }
+  }
+}
+
+.el-button.is-loading {
+  background-color: unset !important;
 }
 </style>

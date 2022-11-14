@@ -435,7 +435,7 @@ export default class Swap extends Mixins(
       );
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
-      this.setAmountWithoutImpact(amountWithoutImpact);
+      this.setAmountWithoutImpact(amountWithoutImpact || '');
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
     } catch (error: any) {
@@ -466,6 +466,7 @@ export default class Swap extends Mixins(
       .subscribeOnReserves(
         (this.tokenFrom as AccountAsset).address,
         (this.tokenTo as AccountAsset).address,
+        // @ts-expect-error line
         this.liquiditySource as LiquiditySourceTypes // TODO: Add Nullable<LiquiditySourceTypes> to the lib
       )
       .subscribe(this.onChangeSwapReserves);

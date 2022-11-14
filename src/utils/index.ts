@@ -173,6 +173,12 @@ export const getAssetDecimals = (asset: any, { internal = true } = {}): number |
   return internal ? asset.decimals : asset.externalDecimals;
 };
 
+export const getXorPerEuroRatio = async () => {
+  const priceResult = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=sora&vs_currencies=eur');
+  const parsedData = await priceResult.json();
+  return parsedData.sora.eur;
+};
+
 export const formatAssetBalance = (
   asset: any,
   {
