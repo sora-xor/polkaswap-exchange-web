@@ -14,9 +14,11 @@
         <div v-loading="loading" class="history-items">
           <template v-if="hasHistory">
             <div
+              v-button
               class="history-item"
               v-for="item in filteredHistoryItems"
               :key="`history-${item.id}`"
+              tabindex="0"
               @click="showHistory(item.id)"
             >
               <div class="history-item-info">
@@ -126,8 +128,8 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.sortTransactions(this.getPageItems(this.filteredHistory, start, end), true);
   }
 
-  async created(): Promise<void> {
-    await this.withParentLoading(async () => {
+  created(): void {
+    this.withParentLoading(async () => {
       this.setHistory();
       await this.updateHistory();
       if (this.historyPage !== 1) {
@@ -136,6 +138,7 @@ export default class BridgeTransactionsHistory extends Mixins(
           this.isLtrDirection = false;
         }
       }
+    }).finally(() => {
       this.loading = false;
     });
   }
@@ -314,7 +317,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   padding: $inner-spacing-mini $inner-spacing-medium;
   border-radius: var(--s-border-radius-small);
 
-  &:not(:first-child) {
+  &:not(:first-child):not(:focus) {
     position: relative;
     &:before {
       position: absolute;
@@ -333,6 +336,9 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   &:hover {
     background-color: var(--s-color-base-background-hover);
     cursor: pointer;
+  }
+  &:focus + .history-item:before {
+    background-color: transparent;
   }
   &-info {
     font-size: var(--s-font-size-mini);
@@ -397,7 +403,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     }
 
     &-text + &-icon {
-      margin-left: $inner-spacing-mini / 2;
+      margin-left: $inner-spacing-tiny;
     }
   }
 }

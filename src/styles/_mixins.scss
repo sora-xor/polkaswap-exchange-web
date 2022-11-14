@@ -19,7 +19,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       margin-left: auto;
     }
     &-balance-value {
-      margin-left: $inner-spacing-mini / 2;
+      margin-left: $inner-spacing-tiny;
       letter-spacing: var(--s-letter-spacing-big);
       word-break: break-all;
     }
@@ -62,7 +62,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     letter-spacing: var(--s-letter-spacing-small);
 
     &--footer {
-      margin-top: $inner-spacing-mini / 2;
+      margin-top: $inner-spacing-tiny;
       margin-bottom: 0;
       min-height: $inner-spacing-mini * 2.25;
       .formatted-amount--fiat-value {
@@ -97,7 +97,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       }
 
       & > *:not(:last-child):not(.input-value--primary) {
-        margin-right: $inner-spacing-mini / 2;
+        margin-right: $inner-spacing-tiny;
       }
     }
 
@@ -106,7 +106,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       justify-content: flex-end;
       margin-left: $inner-spacing-mini;
       .formatted-amount--fiat-value {
-        margin-left: $inner-spacing-mini / 2;
+        margin-left: $inner-spacing-tiny;
         text-align: right;
       }
     }
@@ -124,8 +124,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
 
     .el-button {
-      margin-right: $inner-spacing-mini / 2;
-      margin-left: $inner-spacing-mini / 2;
+      margin-right: $inner-spacing-tiny;
+      margin-left: $inner-spacing-tiny;
 
       &:last-child {
         margin-right: 0;
@@ -382,6 +382,9 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         min-height: calc(#{$select-asset-item-height} * 6);
       }
     }
+    .asset {
+      @include focus-outline($withOffset: true);
+    }
   }
 }
 
@@ -549,5 +552,31 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
   .el-slider__runway {
     background-color: var(--s-color-base-content-tertiary);
+  }
+}
+
+@mixin focus-outline($inner: false, $focusWithin: false, $borderRadius: '', $withOffset: false) {
+  $outline: 1px solid var(--s-color-outline);
+  @if $inner == true {
+    outline: $outline;
+    @if $borderRadius != '' {
+      border-radius: $borderRadius;
+    }
+  } @else {
+    @if $focusWithin == true {
+      &:focus-within {
+        outline: $outline;
+      }
+    } @else {
+      &:focus:not(:active) {
+        outline: $outline;
+        @if $borderRadius != '' {
+          border-radius: $borderRadius;
+        }
+      }
+    }
+    @if $withOffset == true {
+      outline-offset: -1px;
+    }
   }
 }

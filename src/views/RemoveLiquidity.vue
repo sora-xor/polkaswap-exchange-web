@@ -14,7 +14,7 @@
         :value="String(removePartInput)"
         :decimals="0"
         :disabled="liquidityLocked"
-        :max="100"
+        :max="MAX_PART"
         @input="handleRemovePartChange"
         @focus="setFocusedField('removePart')"
         @blur="resetFocusedField"
@@ -23,12 +23,13 @@
         <div slot="right" class="el-buttons el-buttons--between">
           <span class="percent">%</span>
           <s-button
+            v-if="isMaxButtonAvailable"
             class="el-button--max s-typography-button--small"
             type="primary"
             alternative
             size="mini"
             border-radius="mini"
-            @click.stop="handleRemovePartChange(100)"
+            @click.stop="handleRemovePartChange(MAX_PART)"
           >
             {{ t('buttons.max') }}
           </s-button>
@@ -158,6 +159,7 @@ export default class RemoveLiquidity extends Mixins(
   NetworkFeeDialogMixin
 ) {
   readonly XOR_SYMBOL = XOR.symbol;
+  readonly MAX_PART = 100;
 
   @state.removeLiquidity.liquidityAmount private liquidityAmount!: string;
   @state.removeLiquidity.focusedField private focusedField!: string;
@@ -254,7 +256,8 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isEmptyAmount(): boolean {
-    return !this.removePart || !Number(this.liquidityAmount) || !this.firstTokenAmount || !this.secondTokenAmount;
+    // We don't check removePart for less than 1%
+    return !Number(this.liquidityAmount) || !this.firstTokenAmount || !this.secondTokenAmount;
   }
 
   get liquidityLocked(): boolean {
@@ -315,9 +318,13 @@ export default class RemoveLiquidity extends Mixins(
     });
   }
 
+  get isMaxButtonAvailable(): boolean {
+    return this.removePart !== this.MAX_PART;
+  }
+
   handleRemovePartChange(value: string): void {
     const newValue = parseFloat(value) || 0;
-    this.removePartInput = Math.min(Math.max(newValue, 0), 100);
+    this.removePartInput = Math.min(Math.max(newValue, 0), this.MAX_PART);
     this.setRemovePart(this.removePartInput);
   }
 

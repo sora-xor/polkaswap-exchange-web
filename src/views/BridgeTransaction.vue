@@ -50,7 +50,12 @@
               </div>
             </template>
             <div v-if="transactionFromHash" :class="firstTxHashContainerClasses">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="firstTxHash" readonly />
+              <s-input
+                :placeholder="t('bridgeTransaction.transactionHash')"
+                :value="firstTxHash"
+                readonly
+                tabindex="-1"
+              />
               <s-button
                 class="s-button--hash-copy"
                 type="action"
@@ -60,12 +65,13 @@
                 @click="handleCopyAddress(transactionFromHash, $event)"
               />
               <s-dropdown
-                v-if="(isSoraToEvm && soraExpolrerLinks.length) || !isSoraToEvm"
+                v-if="hasExplorerLinksForFirstTx"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
                 icon="basic-more-vertical-24"
                 placement="bottom-end"
+                tabindex="0"
                 @select="isSoraToEvm ? undefined : handleOpenEtherscan()"
               >
                 <template slot="menu">
@@ -84,7 +90,9 @@
                     </a>
                   </template>
                   <s-dropdown-item v-else class="s-dropdown-menu__item">
-                    <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
+                    <span>
+                      {{ t('bridgeTransaction.viewInEtherscan') }}
+                    </span>
                   </s-dropdown-item>
                 </template>
               </s-dropdown>
@@ -124,11 +132,7 @@
             >
               <span
                 v-if="isTransactionFromPending"
-                v-html="
-                  t('bridgeTransaction.pending', {
-                    network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`),
-                  })
-                "
+                v-html="t('bridgeTransaction.pending', { network: transactionPendingNetwork })"
               />
               <template v-else-if="!(isSoraToEvm || isExternalAccountConnected)">{{
                 t('bridgeTransaction.connectWallet')
@@ -178,7 +182,12 @@
               <span class="transaction-error__value">{{ transactionEvmAddress }}</span>
             </div>
             <div v-if="isTransactionFromCompleted && transactionToHash" :class="secondTxHashContainerClasses">
-              <s-input :placeholder="t('bridgeTransaction.transactionHash')" :value="secondTxHash" readonly />
+              <s-input
+                :placeholder="t('bridgeTransaction.transactionHash')"
+                :value="secondTxHash"
+                readonly
+                tabindex="-1"
+              />
               <s-button
                 class="s-button--hash-copy"
                 type="action"
@@ -188,12 +197,13 @@
                 @click="handleCopyAddress(transactionToHash, $event)"
               />
               <s-dropdown
-                v-if="(!isSoraToEvm && soraExpolrerLinks.length) || isSoraToEvm"
+                v-if="hasExplorerLinksForSecondTx"
                 class="s-dropdown--hash-menu"
                 borderRadius="mini"
                 type="ellipsis"
                 icon="basic-more-vertical-24"
                 placement="bottom-end"
+                tabindex="0"
                 @select="!isSoraToEvm ? undefined : handleOpenEtherscan()"
               >
                 <template slot="menu">
@@ -212,7 +222,9 @@
                     </a>
                   </template>
                   <s-dropdown-item v-else class="s-dropdown-menu__item">
-                    <span>{{ t('bridgeTransaction.viewInEtherscan') }}</span>
+                    <span>
+                      {{ t('bridgeTransaction.viewInEtherscan') }}
+                    </span>
                   </s-dropdown-item>
                 </template>
               </s-dropdown>
@@ -630,7 +642,7 @@ export default class BridgeTransaction extends Mixins(
     }
     const baseLinks = getExplorerLinks(this.soraNetwork);
     const txId = this.soraTxId || this.soraTxBlockId;
-    if (!txId) {
+    if (!(baseLinks.length && txId)) {
       return [];
     }
     if (!this.soraTxId) {
@@ -725,13 +737,20 @@ export default class BridgeTransaction extends Mixins(
     return classes.join(' ');
   }
 
+  get hasExplorerLinksForFirstTx(): boolean {
+    return (this.isSoraToEvm && !!this.soraExpolrerLinks.length) || !this.isSoraToEvm;
+  }
+
+  get hasExplorerLinksForSecondTx(): boolean {
+    return (!this.isSoraToEvm && !!this.soraExpolrerLinks.length) || this.isSoraToEvm;
+  }
+
   get firstTxHashContainerClasses(): string {
-    return this.getHashContainerClasses();
+    return this.getHashContainerClasses(this.hasExplorerLinksForFirstTx);
   }
 
   get secondTxHashContainerClasses(): string {
-    // cuz we don't show SORA tx for ETH->SORA flow
-    return this.getHashContainerClasses();
+    return this.getHashContainerClasses(this.hasExplorerLinksForSecondTx);
   }
 
   get formattedNetworkStep1(): string {
@@ -757,6 +776,12 @@ export default class BridgeTransaction extends Mixins(
 
   get failedClassStep2(): string {
     return this.getFailedClass(this.isTransactionToFailed);
+  }
+
+  get transactionPendingNetwork(): string {
+    return `<span class="network-title">${this.t(
+      `bridgeTransaction.${this.isSoraToEvm ? 'sora' : 'ethereum'}`
+    )}</span>`;
   }
 
   private getFailedClass(transactionFailed?: boolean): string {
@@ -864,6 +889,12 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
 .s-button--hash-copy,
 .s-dropdown--hash-menu {
   right: $inner-spacing-medium;
+  &,
+  .el-tooltip {
+    &:focus {
+      outline: auto;
+    }
+  }
 }
 .s-dropdown--hash-menu {
   display: block;
@@ -928,13 +959,13 @@ $network-title-max-width: 250px;
     color: var(--s-color-status-error);
     display: flex;
     flex-flow: column nowrap;
-    padding: 0 $inner-spacing-mini / 2;
+    padding: 0 $inner-spacing-tiny;
     margin-bottom: $inner-spacing-medium;
     line-height: var(--s-line-height-mini);
     text-align: left;
 
     &__title {
-      margin-bottom: $inner-spacing-mini / 2;
+      margin-bottom: $inner-spacing-tiny;
       text-transform: uppercase;
       font-weight: 300;
     }
@@ -976,11 +1007,11 @@ $network-title-max-width: 250px;
     line-height: var(--s-line-height-medium);
     .s-icon--network {
       font-size: var(--s-heading4-font-size);
-      margin-left: $inner-spacing-mini / 4;
+      margin-left: calc(#{$inner-spacing-mini} / 4);
     }
     &-separator {
-      margin-right: $inner-spacing-mini / 2;
-      margin-left: $inner-spacing-mini / 2;
+      margin-right: $inner-spacing-tiny;
+      margin-left: $inner-spacing-tiny;
       font-size: var(--s-heading3-font-size);
       font-weight: 300;
     }

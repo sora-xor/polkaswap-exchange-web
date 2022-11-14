@@ -1,5 +1,12 @@
 <template>
-  <s-button :type="buttonType" :class="computedClasses" size="small" border-radius="mini" v-on="$listeners">
+  <s-button
+    :type="buttonType"
+    :class="computedClasses"
+    :tabindex="tabindex"
+    size="small"
+    border-radius="mini"
+    v-on="$listeners"
+  >
     <component
       v-if="hasToken"
       :is="tokenLogoComponent"
@@ -34,6 +41,7 @@ export default class TokenSelectButton extends Mixins(TranslationMixin) {
   @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset;
   @Prop({ type: Array, default: () => [] }) readonly tokens!: Array<AccountAsset | Asset>;
   @Prop({ type: String, default: '' }) readonly icon!: boolean;
+  @Prop({ type: [Number, String], default: 0 }) readonly tabindex!: number | string;
 
   get hasToken(): boolean {
     return this.tokens.length !== 0 || !!this.token;
@@ -77,16 +85,16 @@ $baseClass: '.token-select-button';
 
 #{$baseClass} {
   &__logo {
-    margin-right: $inner-spacing-mini / 2;
+    margin-right: $inner-spacing-tiny;
   }
 
   &__text {
-    margin: 0 $inner-spacing-mini / 2;
+    margin: 0 $inner-spacing-tiny;
     font-weight: 800 !important;
   }
 
   &__icon {
-    margin-left: $inner-spacing-mini / 2;
+    margin-left: $inner-spacing-tiny;
     background-color: var(--s-color-base-on-accent);
     color: var(--s-color-base-content-tertiary) !important;
     border-radius: var(--s-border-radius-medium);
