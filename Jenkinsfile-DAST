@@ -1,0 +1,37 @@
+@Library('jenkins-library@SNE-261-arachni')
+
+String agentLabel        = 'docker-build-agent'
+String targetEnvironment =  getEnvFromJobName()
+String jobList           = '../polkaswap-' + targetEnvironment
+//List   jobParams         = [
+//    string(defaultValue: targetEnvironment, name: 'targetEnvironment', trim: true),
+//    booleanParam(defaultValue: false, name: 'fullClean'),
+//    booleanParam(defaultValue: false, name: 'createProject'),
+//    booleanParam(defaultValue: false, name: 'stagingSlot'),
+//    ]
+String arachniURL = 'https://test.polkaswap.io',
+String arachniExclude = 'js|css',
+String arachniPlugin = ''
+
+properties([
+//    parameters( jobParams ),
+    pipelineTriggers([upstream( jobList )])
+])
+
+pipeline {
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '20'))
+        timestamps()
+        disableConcurrentBuilds()
+    }
+    agent {
+        docker {
+            label agentLabel
+            image envImageName
+        }
+    }
+    stages {
+        stage('Arachni scan') {
+            steps.arachni(arachniURL, arachniExclude, arachniPlugin)            }
+        }
+}
