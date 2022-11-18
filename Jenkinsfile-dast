@@ -9,8 +9,8 @@ String jobList           = '../polkaswap-' + targetEnvironment
 //    booleanParam(defaultValue: false, name: 'createProject'),
 //    booleanParam(defaultValue: false, name: 'stagingSlot'),
 //    ]
-String arachniURL = 'https://test.polkaswap.io',
-String arachniExclude = 'js|css',
+String arachniURL = 'https://test.polkaswap.io'
+String arachniExclude = 'js|css'
 String arachniPlugin = ''
 
 properties([
