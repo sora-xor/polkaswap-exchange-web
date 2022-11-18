@@ -3,10 +3,10 @@
 String agentLabel             = 'docker-build-agent'
 String registry               = 'docker.soramitsu.co.jp'
 String dockerBuildToolsUserId = 'bot-build-tools-ro'
-String envImageName           = 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu-extended'
-String targetEnvironment      =  getEnvFromJobName()
-String jobList                = 'exchange-' + targetEnvironment
-String arachniURL             = 'https://test.polkaswap.io'
+List environments             = ['deploy/exchange-dev', 'deploy/exchange-stage1']
+String targetEnvironment      = getEnvFromJobName(environments)
+String jobList                = targetEnvironment
+String arachniURL             = targetEnvironment == 'exchange-stage1' ? 'https://test.polkaswap.io' : 'https://exchange.dev.sora2.tachi.soramitsu.co.jp/'
 String arachniExclude         = 'js|css'
 String arachniPlugin          = ''
 
