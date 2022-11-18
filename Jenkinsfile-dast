@@ -28,9 +28,7 @@ pipeline {
         disableConcurrentBuilds()
     }
     agent {
-        docker {
-            label agentLabel
-        }
+        label agentLabel
     }
     stages {
         stage('Arachni scan') {
