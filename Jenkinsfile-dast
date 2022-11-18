@@ -32,7 +32,7 @@ pipeline {
     }
     stages {
         stage('Arachni scan') {
-            steps.arachni(arachniURL, arachniExclude, arachniPlugin)
+            arachni(arachniURL, arachniExclude, arachniPlugin)
         }
     }
     post {
