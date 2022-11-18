@@ -6,7 +6,7 @@ String dockerBuildToolsUserId = 'bot-build-tools-ro'
 String environments             = 'deploy/exchange-dev, deploy/exchange-stage1'
 String targetEnvironment      = environments
 String jobList                = targetEnvironment
-String arachniURL             = targetEnvironment == 'deploy/exchange-stage1' ? 'https://exchange.dev.sora2.tachi.soramitsu.co.jp/' : 'https://test.polkaswap.io'
+String arachniURL             = targetEnvironment == 'deploy/exchange-stage1' ? 'https://test.polkaswap.io' : 'https://exchange.dev.sora2.tachi.soramitsu.co.jp/'
 String arachniExclude         = 'js|css'
 String arachniPlugin          = ''
 
