@@ -32,6 +32,10 @@ pipeline {
     }
     stages {
         stage('Arachni scan') {
-            steps.arachni(arachniURL, arachniExclude, arachniPlugin)            }
+            steps.arachni(arachniURL, arachniExclude, arachniPlugin)
         }
+    }
+    post {
+        cleanup { cleanWs() }
+    }
 }
