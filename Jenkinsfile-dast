@@ -1,6 +1,7 @@
 @Library('jenkins-library@SNE-261-arachni')
 
 String agentLabel        = 'docker-build-agent'
+String envImageName      = 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu-extended'
 String targetEnvironment =  getEnvFromJobName()
 String jobList           = '../polkaswap-' + targetEnvironment
 //List   jobParams         = [
