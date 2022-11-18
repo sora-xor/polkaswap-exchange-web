@@ -1,23 +1,16 @@
 @Library('jenkins-library@SNE-261-arachni')
 
-String agentLabel        = 'docker-build-agent'
+String agentLabel             = 'docker-build-agent'
 String registry               = 'docker.soramitsu.co.jp'
 String dockerBuildToolsUserId = 'bot-build-tools-ro'
-String envImageName      = 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu-extended'
-String targetEnvironment =  getEnvFromJobName()
-String jobList           = '../polkaswap-' + targetEnvironment
-//List   jobParams         = [
-//    string(defaultValue: targetEnvironment, name: 'targetEnvironment', trim: true),
-//    booleanParam(defaultValue: false, name: 'fullClean'),
-//    booleanParam(defaultValue: false, name: 'createProject'),
-//    booleanParam(defaultValue: false, name: 'stagingSlot'),
-//    ]
-String arachniURL = 'https://test.polkaswap.io'
-String arachniExclude = 'js|css'
-String arachniPlugin = ''
+String envImageName           = 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu-extended'
+String targetEnvironment      =  getEnvFromJobName()
+String jobList                = 'exchange-' + targetEnvironment
+String arachniURL             = 'https://test.polkaswap.io'
+String arachniExclude         = 'js|css'
+String arachniPlugin          = ''
 
 properties([
-//    parameters( jobParams ),
     pipelineTriggers([upstream( jobList )])
 ])
 
