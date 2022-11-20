@@ -78,7 +78,6 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
   }
 
   confirmToS(): void {
-    console.log('confirmTos');
     if (sessionStorage.getItem('access-token')) {
       this.step = KycProcess.KycView;
     }

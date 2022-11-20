@@ -72,15 +72,15 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   }
 
   handleConfirm(): void {
-    this.$emit('confirm-apply');
+    if (!this.isLoggedIn) {
+      router.push({ name: PageNames.Wallet });
+      return;
+    }
+    if (!this.isEuroBalanceEnough) {
+      router.push({ name: PageNames.Bridge, params: { xorToDeposit: this.xorToDeposit.toString() } });
+    }
 
-    // if (!this.isLoggedIn) {
-    //   router.push({ name: PageNames.Wallet });
-    //   return;
-    // }
-    // if (!this.isEuroBalanceEnough) {
-    //   router.push({ name: PageNames.Bridge, params: { xorToDeposit: this.xorToDeposit.toString() } });
-    // }
+    this.$emit('confirm-apply');
   }
 
   async priceLoading(): Promise<void> {

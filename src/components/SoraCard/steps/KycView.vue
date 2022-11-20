@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- <button @click="openPayWings">Click</button> -->
     <div>
       <div id="kyc"></div>
       <div id="finish" style="display: none">
@@ -11,7 +12,7 @@
 
 <script lang="ts">
 import { loadScript } from 'vue-plugin-load-script';
-import { uuid } from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
@@ -24,32 +25,31 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
     this.$emit('confirm-sms');
   }
 
+  // openPayWings(): void {
+  //   this.embed();
+  // }
+
   async getReferenceNumber(): Promise<string> {
-    const result = await fetch('https://kyc-test.soracard.com/Whitelabel/GetReferenceNumber', {
+    const result = await fetch('https://sora-card.sc1.dev.sora2.soramitsu.co.jp/get-reference-number', {
       method: 'POST',
-      headers: {
-        Authorization:
-          'Basic NEVGMURBNEMtRjAxMS00NkMyLUI5ODAtMDZFOEY5RDc5MUE5OjUxMEEzRjVELTU5OEItNDY5MC05MTJGLTk1MzMyNDE4NTBBOQ==',
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
-        ReferenceID: 'faf',
+        ReferenceID: uuidv4(),
       }),
     });
 
     console.log('result', result);
 
-    const data = await result.json();
+    const data = await result.json(); // тут не парсит
     console.log('data', data);
     return data.ReferenceNumber;
   }
 
   async mounted(): Promise<void> {
     console.log('embed called');
-    const referenceNumber = await this.getReferenceNumber();
+    // const referenceNumber = await this.getReferenceNumber();
     // const accessToken = this.accessToken;
     // console.log('this.accessToken', this.accessToken);
-    console.log('referenceNumber', referenceNumber);
+    // console.log('referenceNumber', referenceNumber);
 
     const accessToken = sessionStorage.getItem('access-token');
     const refreshToken = sessionStorage.getItem('refresh-token');
@@ -69,9 +69,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
             UnifiedLoginApiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
           },
           KycSettings: {
-            AppReferenceID: uuid(), // uuid-4
+            AppReferenceID: uuidv4(),
             Language: 'en', // supported languages 'en'
-            ReferenceNumber: referenceNumber,
+            // ReferenceNumber: referenceNumber,
             ElementId: '#kyc', // id of element in which web kyc will be injected
             Logo: '',
             WelcomeHidden: false, // false show welcome screen, true skip welcome screen
@@ -124,13 +124,13 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
 </style>
 
 <style lang="scss">
-.test {
-  position: relative;
+// .test {
+//   position: relative;
 
-  .el-button {
-    transform: scale(0.75);
-  }
-}
+//   .el-button {
+//     transform: scale(0.75);
+//   }
+// }
 .sora-card__send-sms-btn {
   position: absolute;
   right: -10px;

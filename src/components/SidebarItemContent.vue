@@ -1,5 +1,6 @@
 <template>
   <component :is="tag" :class="classes">
+    <!-- TODO: [TECH] move from fonts provided values -->
     <div v-if="icon === 'sora-card'" class="icon-container">
       <side-menu-card class="sora-card-sidebar-icon" />
     </div>
