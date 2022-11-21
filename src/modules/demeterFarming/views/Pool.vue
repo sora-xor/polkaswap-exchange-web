@@ -4,7 +4,7 @@
       <template #title-append="{ liquidity, activeCollapseItems }">
         <div v-if="getStatusBadgeVisibility(liquidity.address, activeCollapseItems)" class="s-flex farming-pool-badges">
           <status-badge
-            v-for="item in getAvailablePools(pools[liquidity.secondAddress])"
+            v-for="item in getLiquidityFarmingPools(liquidity)"
             :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}`"
             :liquidity="liquidity"
             :pool="item.pool"
@@ -16,7 +16,7 @@
       </template>
       <template #append="liquidity">
         <pool-card
-          v-for="item in getAvailablePools(pools[liquidity.secondAddress])"
+          v-for="item in getLiquidityFarmingPools(liquidity)"
           :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}`"
           :liquidity="liquidity"
           :pool="item.pool"
@@ -59,6 +59,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import PageMixin from '../mixins/PageMixin';
 
@@ -88,6 +89,13 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
 
   get selectedAccountLiquidity(): Nullable<AccountLiquidity> {
     return this.accountLiquidity.find((liquidity) => liquidity.secondAddress === this.poolAsset) ?? null;
+  }
+
+  getLiquidityFarmingPools(liquidity: AccountLiquidity) {
+    // DEMETER FARMING ONLY FOR XOR POOLS!
+    if (liquidity.firstAddress !== XOR.address) return [];
+
+    return this.getAvailablePools(this.pools[liquidity.secondAddress]);
   }
 }
 </script>
