@@ -1,5 +1,6 @@
 import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 import type { Subscription } from 'rxjs';
@@ -27,8 +28,15 @@ const actions = defineActions({
 
       await new Promise<void>((resolve) => {
         subscription = observable.subscribe((rewards) => {
+          // [TODO] move fix to js-lib
+          const format = (value: string) => FPNumber.fromCodecValue(value, 54).dp(18).toCodecString();
+          const prepared = rewards.map((item) => ({
+            ...item,
+            amount: format(item.amount),
+            total: item.total ? format(item.total) : undefined,
+          }));
           // XOR is not claimable
-          const crowdloanRewards = rewards.filter((item) => item.asset.address !== XOR.address);
+          const crowdloanRewards = prepared.filter((item) => item.asset.address !== XOR.address);
 
           commit.setRewards({ crowdloanRewards });
           const crowdloanRewardsAreAvailable = getters.crowdloanRewardsAvailable.length;
