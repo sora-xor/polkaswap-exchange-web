@@ -6,7 +6,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter } from '@/store/decorators';
 
-import { getAssetBalance } from '@/utils';
+import { getAssetBalance, formatDecimalPlaces } from '@/utils';
 
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -142,8 +142,6 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   get tvl(): string {
     if (!this.pool) return ZeroStringValue;
 
-    const format = (value: FPNumber) => value.dp(2).toLocaleString();
-
     if (this.isFarm) {
       // calc liquidty locked price through account liquidity
       const liquidityLockedPrice = FPNumber.fromCodecValue(this.liquidity.firstBalance)
@@ -152,11 +150,11 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
         .mul(this.baseAssetPrice)
         .mul(new FPNumber(2));
 
-      return format(liquidityLockedPrice);
+      return formatDecimalPlaces(liquidityLockedPrice);
     } else {
       const assetLockedPrice = this.pool.totalTokensInPool.mul(this.poolAssetPrice);
 
-      return format(assetLockedPrice);
+      return formatDecimalPlaces(assetLockedPrice);
     }
   }
 
@@ -209,7 +207,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   }
 
   get aprFormatted(): string {
-    return this.apr.dp(2).toLocaleString() + '%';
+    return formatDecimalPlaces(this.apr, true);
   }
 
   get emitParams(): object {
