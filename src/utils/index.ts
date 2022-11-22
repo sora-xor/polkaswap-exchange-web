@@ -270,3 +270,10 @@ export const calcPriceChange = (current: FPNumber, prev: FPNumber): FPNumber => 
 
   return current.sub(prev).div(prev).mul(FPNumber.HUNDRED);
 };
+
+export const formatDecimalPlaces = (value: FPNumber, asPercent = false): string => {
+  const formatted = new FPNumber(value.toFixed(2)).toLocaleString();
+  const postfix = asPercent ? '%' : '';
+
+  return `${formatted}${postfix}`;
+};
