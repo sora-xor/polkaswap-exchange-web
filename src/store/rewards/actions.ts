@@ -29,9 +29,11 @@ const actions = defineActions({
       await new Promise<void>((resolve) => {
         subscription = observable.subscribe((rewards) => {
           // [TODO] move fix to js-lib
+          const format = (value: string) => FPNumber.fromCodecValue(value, 54).dp(18).toCodecString();
           const prepared = rewards.map((item) => ({
             ...item,
-            amount: FPNumber.fromCodecValue(item.amount, 54).dp(18).toCodecString(),
+            amount: format(item.amount),
+            total: item.total ? format(item.total) : undefined,
           }));
           // XOR is not claimable
           const crowdloanRewards = prepared.filter((item) => item.asset.address !== XOR.address);
