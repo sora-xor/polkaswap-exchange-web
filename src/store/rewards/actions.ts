@@ -29,11 +29,15 @@ const actions = defineActions({
       await new Promise<void>((resolve) => {
         subscription = observable.subscribe((rewards) => {
           // [TODO] move fix to js-lib
-          const format = (value: string) => FPNumber.fromCodecValue(value, 54).dp(18).toCodecString();
+          const format = (value: string, decimals: number) => {
+            return FPNumber.fromCodecValue(value, decimals * 2)
+              .dp(18)
+              .toCodecString();
+          };
           const prepared = rewards.map((item) => ({
             ...item,
-            amount: format(item.amount),
-            total: item.total ? format(item.total) : undefined,
+            amount: format(item.amount, item.asset.decimals),
+            total: item.total ? format(item.total, item.asset.decimals) : undefined,
           }));
           // XOR is not claimable
           const crowdloanRewards = prepared.filter((item) => item.asset.address !== XOR.address);
