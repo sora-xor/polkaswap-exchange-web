@@ -14,10 +14,9 @@
           :default-active="getCurrentPath()"
           @select="onSelect"
         >
-          <s-menu-item-group v-for="(group, index) in sidebarMenuItems" :key="index">
+          <s-menu-item-group v-for="(item, index) in sidebarMenuItems" :key="index">
             <s-menu-item
               v-button
-              v-for="item in group"
               :key="item.title"
               :index="item.title"
               :disabled="item.disabled"

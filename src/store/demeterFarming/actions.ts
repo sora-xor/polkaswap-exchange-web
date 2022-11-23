@@ -14,6 +14,7 @@ const actions = defineActions({
 
     commit.resetPoolsUpdates();
 
+    // @ts-expect-error null
     const subscription = (await api.demeterFarming.getPoolsObservable()).subscribe((pools) => {
       commit.setPools(pools);
     });
@@ -26,6 +27,7 @@ const actions = defineActions({
 
     commit.resetTokensUpdates();
 
+    // @ts-expect-error null
     const subscription = (await api.demeterFarming.getTokenInfosObservable()).subscribe((tokens) => {
       commit.setTokens(tokens);
     });

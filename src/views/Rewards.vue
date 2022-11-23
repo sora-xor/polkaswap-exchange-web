@@ -36,6 +36,7 @@
                 is-codec-string
               />
               <rewards-amount-table
+                v-if="!isDesktop"
                 class="rewards-table"
                 v-model="selectedExternalRewardsModel"
                 :item="externalRewardsGroupItem"
@@ -158,7 +159,7 @@ export default class Rewards extends Mixins(
   @getter.rewards.vestedRewardsAvailable vestedRewardsAvailable!: boolean;
   @getter.rewards.rewardsByAssetsList rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
   @getter.rewards.externalRewardsSelected externalRewardsSelected!: boolean;
-  @getter.settings.isDesktop private isDesktop!: boolean;
+  @getter.settings.isDesktop isDesktop!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
 
   @mutation.rewards.reset private reset!: VoidFunction;

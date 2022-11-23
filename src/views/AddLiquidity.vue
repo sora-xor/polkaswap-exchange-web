@@ -124,6 +124,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import BaseTokenPairMixin from '@/components/mixins/BaseTokenPairMixin';
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
@@ -153,7 +154,8 @@ export default class AddLiquidity extends Mixins(
   mixins.ConfirmTransactionMixin,
   BaseTokenPairMixin,
   NetworkFeeDialogMixin,
-  TokenSelectMixin
+  TokenSelectMixin,
+  ConfirmDialogMixin
 ) {
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 

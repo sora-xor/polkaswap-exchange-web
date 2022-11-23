@@ -197,6 +197,7 @@ export default class Swap extends Mixins(
   @getter.swap.tokenTo tokenTo!: AccountAsset;
   @getter.swap.isAvailable isAvailable!: boolean;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
+  @state.settings.slippageTolerance private slippageTolerance!: string;
   @getter.settings.isDesktop isDesktop!: boolean;
 
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
