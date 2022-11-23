@@ -334,8 +334,11 @@
         "AddLiquidityId": "Thêm Thanh Khoản",
         "RemoveLiquidity": "Rút Thanh Khoản",
         "PageNotFound": "Trang không tìm thấy",
-        "Tokens": "Tokens",
-        "Rewards": "Phần thưởng"
+        "Rewards": "Phần thưởng",
+        "Explore\/Tokens": "Token",
+        "Explore\/Pools": "hồ bơi",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming"
     },
     "mainMenu": {
         "Swap": "Đổi",
@@ -348,8 +351,8 @@
         "Stats": "Thống kê",
         "Support": "Hỗ trợ",
         "CreatePair": "Tạo một cặp token",
-        "Tokens": "Token",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Khám phá"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Ngôn ngữ"
     },
     "tokens": {
-        "title": "Token đã niêm yết",
         "symbol": "Mã",
-        "name": "Tên",
         "assetId": "ID tài sản"
     },
     "memorandum": "Bản ghi nhớ và Điều khoản dịch vụ {AppName}",

@@ -334,8 +334,11 @@
         "AddLiquidityId": "Liquidität hinzufügen",
         "RemoveLiquidity": "Liquidität entfernen",
         "PageNotFound": "Seite nicht gefunden",
-        "Tokens": "Token",
-        "Rewards": "Belohnungen"
+        "Rewards": "Belohnungen",
+        "Explore\/Tokens": "Token",
+        "Explore\/Pools": "Toto",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming"
     },
     "mainMenu": {
         "Swap": "Tauschen",
@@ -348,8 +351,8 @@
         "Stats": "Statistiken",
         "Support": "Support",
         "CreatePair": "Erstelle ein Paar",
-        "Tokens": "Token",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Entdecken"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Sprache"
     },
     "tokens": {
-        "title": "Gelistete Token",
         "symbol": "Symbol",
-        "name": "Name",
         "assetId": "Asset-ID"
     },
     "memorandum": "{AppName} Memorandum und Nutzungsbedingungen",

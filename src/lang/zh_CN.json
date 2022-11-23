@@ -334,8 +334,11 @@
         "AddLiquidityId": "增加流动性",
         "RemoveLiquidity": "删除流动性",
         "PageNotFound": "找不到网页",
-        "Tokens": "代币",
-        "Rewards": "奖励"
+        "Rewards": "奖励",
+        "Explore\/Tokens": "代币",
+        "Explore\/Pools": "游泳池",
+        "Explore\/Staking": "质押",
+        "Explore\/Farming": "农耕"
     },
     "mainMenu": {
         "Swap": "交换",
@@ -348,8 +351,8 @@
         "Stats": "统计数据",
         "Support": "支持",
         "CreatePair": "创建流动性对",
-        "Tokens": "代币",
-        "StakingContainer": "质押"
+        "StakingContainer": "质押",
+        "Explore\/Container": "探索"
     },
     "social": {
         "twitter": "推特",
@@ -819,9 +822,7 @@
         "title": "语言"
     },
     "tokens": {
-        "title": "已列出的代币",
         "symbol": "符号",
-        "name": "名字",
         "assetId": "资产 ID"
     },
     "memorandum": "{AppName} 备忘录和服务条款",

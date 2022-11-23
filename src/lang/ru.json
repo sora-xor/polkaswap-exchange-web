@@ -334,8 +334,11 @@
         "AddLiquidityId": "Добавить ликвидность",
         "RemoveLiquidity": "Забрать ликвидность",
         "PageNotFound": "Страница не найдена",
-        "Tokens": "Токены",
-        "Rewards": "Награды"
+        "Rewards": "Награды",
+        "Explore\/Tokens": "Токены",
+        "Explore\/Pools": "Пулы",
+        "Explore\/Staking": "Стейкинг",
+        "Explore\/Farming": "Фарминг"
     },
     "mainMenu": {
         "Swap": "Обмен",
@@ -348,8 +351,8 @@
         "Stats": "Статистика",
         "Support": "Поддержка",
         "CreatePair": "Создать пару",
-        "Tokens": "Токены",
-        "StakingContainer": "Стекинг"
+        "StakingContainer": "Стекинг",
+        "Explore\/Container": "Исследовать"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Язык"
     },
     "tokens": {
-        "title": "Список токенов",
         "symbol": "Символ",
-        "name": "Название",
         "assetId": "ID актива"
     },
     "memorandum": "Меморандум {AppName} и Условия предоставления услуг",

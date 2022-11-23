@@ -334,11 +334,11 @@
         "AddLiquidityId": "Add Liquidity",
         "RemoveLiquidity": "Remove Liquidity",
         "PageNotFound": "Page Not Found",
-        "Explore/Tokens": "Tokens",
-        "Explore/Pools": "Pools",
-        "Explore/Staking": "Staking",
-        "Explore/Farming": "Farming",
-        "Rewards": "Rewards"
+        "Rewards": "Rewards",
+        "Explore\/Tokens": "Tokens",
+        "Explore\/Pools": "Pools",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -352,7 +352,7 @@
         "Support": "Support",
         "CreatePair": "Create Pair",
         "StakingContainer": "Staking",
-        "Explore/Container": "Explore"
+        "Explore\/Container": "Explore"
     },
     "social": {
         "twitter": "Twitter",
