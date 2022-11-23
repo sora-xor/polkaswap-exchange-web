@@ -41,7 +41,7 @@
         <a class="countdown-info-link" target="_blank" rel="nofollow noopener" :href="link">{{ t('learnMoreText') }}</a>
       </div>
     </div>
-    <s-tooltip slot="reference" :content="t('marketMakerCountdown.title')" :disabled="tooltipDisabled">
+    <s-tooltip slot="reference" :content="t('marketMakerCountdown.title')" :disabled="tooltipDisabled" tabindex="-1">
       <countdown unit="MM" :percentage="transactionsPercentage" :count="accountMarketMakerInfo.count" />
     </s-tooltip>
   </el-popover>
@@ -205,7 +205,7 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
   }
 
   &__unit {
-    margin-left: $inner-spacing-mini / 2;
+    margin-left: $inner-spacing-tiny;
   }
 }
 
@@ -218,7 +218,7 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
   &__value {
     display: flex;
     color: var(--s-color-base-content-primary);
-    margin-left: $inner-spacing-mini / 2;
+    margin-left: $inner-spacing-tiny;
   }
 }
 </style>

@@ -9,6 +9,7 @@
     <s-form class="el-form--actions" :show-message="false">
       <token-input
         :balance="getTokenBalance(firstToken)"
+        is-select-available
         :is-max-available="isFirstMaxButtonAvailable"
         :title="t('createPair.deposit')"
         :token="firstToken"
@@ -18,6 +19,7 @@
         @focus="setFocusedField('firstTokenValue')"
         @blur="resetFocusedField"
         @max="handleAddLiquidityMaxValue($event, setFirstTokenValue)"
+        @select="openSelectTokenDialog(true)"
       />
 
       <s-icon class="icon-divider" name="plus-16" />
@@ -34,7 +36,7 @@
         @focus="setFocusedField('secondTokenValue')"
         @blur="resetFocusedField"
         @max="handleAddLiquidityMaxValue($event, setSecondTokenValue)"
-        @select="openSelectSecondTokenDialog"
+        @select="openSelectTokenDialog(false)"
       />
 
       <slippage-tolerance class="slippage-tolerance-settings" />
@@ -79,10 +81,12 @@
     </s-form>
 
     <select-token
-      :visible.sync="showSelectSecondTokenDialog"
+      :visible.sync="showSelectTokenDialog"
       :connected="isLoggedIn"
-      :asset="firstToken"
-      @select="selectSecondTokenAddress($event.address)"
+      :asset="isFirstTokenSelected ? secondToken : firstToken"
+      :is-main-token-providers="isFirstTokenSelected"
+      :disabled-custom="isFirstTokenSelected"
+      @select="selectToken"
     />
 
     <confirm-token-pair-dialog
@@ -95,7 +99,7 @@
       :second-token-value="secondTokenValue"
       :price="price"
       :price-reversed="priceReversed"
-      :slippage-tolerance="slippageTolerance"
+      :slippage-tolerance="slippageToleranceValue"
       @confirm="handleConfirmAddLiquidity"
     />
 
@@ -125,7 +129,7 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { getter, action, mutation, state } from '@/store/decorators';
-import { getMaxValue, isMaxButtonAvailable, isXorAccountAsset, hasInsufficientBalance, getAssetBalance } from '@/utils';
+import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBalance } from '@/utils';
 import type { LiquidityParams } from '@/store/pool/types';
 import type { FocusedField } from '@/store/addLiquidity/types';
 import type { PricesPayload } from '@/store/prices/types';
@@ -153,7 +157,7 @@ export default class AddLiquidity extends Mixins(
 ) {
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  @state.settings.slippageTolerance slippageTolerance!: string;
+  @state.settings.slippageTolerance slippageToleranceValue!: string;
   @state.addLiquidity.focusedField private focusedField!: FocusedField;
 
   @getter.assets.xor private xor!: AccountAsset;
@@ -175,8 +179,8 @@ export default class AddLiquidity extends Mixins(
   @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
   @mutation.addLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
 
-  showSelectSecondTokenDialog = false;
-  showConfirmDialog = false;
+  showSelectTokenDialog = false;
+  isFirstTokenSelected = false;
   insufficientBalanceTokenSymbol = '';
 
   @Watch('isLoggedIn')
@@ -236,10 +240,13 @@ export default class AddLiquidity extends Mixins(
   }
 
   get isXorSufficientForNextOperation(): boolean {
-    return this.isXorSufficientForNextTx({
+    const params: { type: Operation; amount?: FPNumber } = {
       type: Operation.AddLiquidity,
-      amount: this.getFPNumber(this.firstTokenValue),
-    });
+    };
+    if (this.firstAddress === XOR.address) {
+      params.amount = this.getFPNumber(this.firstTokenValue);
+    }
+    return this.isXorSufficientForNextTx(params);
   }
 
   get isFirstMaxButtonAvailable(): boolean {
@@ -261,18 +268,14 @@ export default class AddLiquidity extends Mixins(
   }
 
   get isInsufficientBalance(): boolean {
-    if (!(this.firstToken && this.secondToken)) return false;
-
     if (this.isLoggedIn && this.areTokensSelected) {
-      if (isXorAccountAsset(this.firstToken) || isXorAccountAsset(this.secondToken)) {
-        if (hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.networkFee)) {
-          this.insufficientBalanceTokenSymbol = this.firstToken.symbol;
-          return true;
-        }
-        if (hasInsufficientBalance(this.secondToken, this.secondTokenValue, this.networkFee)) {
-          this.insufficientBalanceTokenSymbol = this.secondToken.symbol;
-          return true;
-        }
+      if (hasInsufficientBalance(this.firstToken as AccountAsset, this.firstTokenValue, this.networkFee)) {
+        this.insufficientBalanceTokenSymbol = (this.firstToken as AccountAsset).symbol;
+        return true;
+      }
+      if (hasInsufficientBalance(this.secondToken as AccountAsset, this.secondTokenValue, this.networkFee)) {
+        this.insufficientBalanceTokenSymbol = (this.secondToken as AccountAsset).symbol;
+        return true;
       }
     }
     return false;
@@ -321,14 +324,22 @@ export default class AddLiquidity extends Mixins(
     return getAssetBalance(token);
   }
 
-  openSelectSecondTokenDialog(): void {
-    this.showSelectSecondTokenDialog = true;
+  openSelectTokenDialog(isFirstToken: boolean): void {
+    this.isFirstTokenSelected = isFirstToken;
+    this.showSelectTokenDialog = true;
   }
 
-  async selectSecondTokenAddress(address: string): Promise<void> {
-    await this.withSelectAssetLoading(async () => {
-      this.setSecondTokenAddress(address);
-    });
+  async selectToken(token: AccountAsset): Promise<void> {
+    const address = token?.address;
+    if (address) {
+      await this.withSelectAssetLoading(async () => {
+        if (this.isFirstTokenSelected) {
+          await this.setFirstTokenAddress(address);
+        } else {
+          await this.setSecondTokenAddress(address);
+        }
+      });
+    }
   }
 
   async handleConfirmAddLiquidity(): Promise<void> {

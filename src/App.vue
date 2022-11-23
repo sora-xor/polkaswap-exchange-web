@@ -13,9 +13,9 @@
       </app-menu>
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar">
-          <div v-if="blockNumber && !isAboutPage" class="block-number">
-            <s-tooltip :content="t('blockNumberText')" placement="bottom">
-              <a class="block-number-link" :href="soraExplorerLink" target="_blank" rel="nofollow noopener">
+          <div v-if="blockNumber && !isCurrentPageTooWide" class="block-number">
+            <s-tooltip :content="t('blockNumberText')" placement="bottom" tabindex="-1">
+              <a class="block-number-link" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
                 <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
               </a>
             </s-tooltip>
@@ -23,7 +23,17 @@
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <div class="app-disclaimer-container">
-              <p class="app-disclaimer" v-html="t('disclaimer')" />
+              <p
+                class="app-disclaimer"
+                v-html="
+                  t('disclaimer', {
+                    disclaimerPrefix,
+                    polkaswapFaqLink,
+                    memorandumLink,
+                    privacyLink,
+                  })
+                "
+              />
             </div>
           </div>
           <footer class="app-footer">
@@ -59,7 +69,7 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
 import MobilePopup from '@/components/MobilePopup/MobilePopup.vue';
 
-import { PageNames, Components, Language } from '@/consts';
+import { PageNames, Components, Language, Links } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -169,6 +179,26 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
+  get disclaimerPrefix(): string {
+    return `<span class="app-disclaimer__title">${this.t('disclaimerTitle')}</span>`;
+  }
+
+  get memorandumLink(): string {
+    return this.generateDisclaimerLink(Links.terms, this.t('memorandum'));
+  }
+
+  get privacyLink(): string {
+    return this.generateDisclaimerLink(Links.privacy, this.t('helpDialog.privacyPolicy'));
+  }
+
+  get polkaswapFaqLink(): string {
+    return this.generateDisclaimerLink(Links.faq, this.t('FAQ'));
+  }
+
+  generateDisclaimerLink(href: string, content: string): string {
+    return `<a href="${href}" target="_blank" rel="nofollow noopener" class="link" title="${content}">${content}</a>`;
+  }
+
   async confirmInvititation(): Promise<void> {
     await this.getReferrer();
     if (this.storageReferrer) {
@@ -215,18 +245,25 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     });
   }
 
+  private get isSwapPageWithCharts(): boolean {
+    return this.$route.name === PageNames.Swap && this.chartsEnabled;
+  }
+
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
   }
 
-  get isSwapPage(): boolean {
-    return this.$route.name === PageNames.Swap;
+  get isCurrentPageTooWide(): boolean {
+    return this.isAboutPage || this.isSwapPageWithCharts || this.$route.name === PageNames.Tokens;
   }
 
   get appClasses(): Array<string> {
     const baseClass = 'app-main';
     const cssClasses: Array<string> = [baseClass];
-    if (this.chartsEnabled && this.isSwapPage) {
+    if (this.$route.name) {
+      cssClasses.push(`${baseClass}--${this.$route.name.toLowerCase()}`);
+    }
+    if (this.isSwapPageWithCharts) {
       cssClasses.push(`${baseClass}--has-charts`);
     }
     return cssClasses;
@@ -236,8 +273,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     return new FPNumber(this.blockNumber).toLocaleString();
   }
 
-  get soraExplorerLink(): string {
-    return getExplorerLinks(this.soraNetwork)[0].value;
+  get blockExplorerLink(): Nullable<string> {
+    const links = getExplorerLinks(this.soraNetwork);
+    if (!links.length) {
+      return null;
+    }
+    return links[0].value;
   }
 
   get showBrowserNotifPopup(): boolean {
@@ -344,6 +385,15 @@ ul ul {
       margin-left: calc(50% - (var(--s-size-medium) / 2));
       > svg {
         display: none;
+      }
+    }
+  }
+
+  &-main.app-main {
+    &--rewards,
+    &--referral {
+      .app-content {
+        width: 100%;
       }
     }
   }
@@ -490,6 +540,9 @@ ul ul {
   &__title {
     color: var(--s-color-theme-accent);
   }
+  a:not(:active) {
+    @include focus-outline;
+  }
 }
 
 .link {
@@ -510,39 +563,73 @@ i.icon-divider {
   @include icon-styles;
 }
 
-@include desktop {
-  .app-main.app-main--has-charts {
-    .app-menu {
-      position: relative;
-    }
-    .app-content {
-      width: 100%;
-      padding-left: $basic-spacing * 2;
-      .app-disclaimer {
-        $margin-left: 10px;
-        max-width: calc(#{$bridge-width} + #{$margin-left});
-        padding-right: $inner-spacing-big;
-        padding-left: calc(#{$inner-spacing-big} + #{$margin-left});
-        &-container {
-          margin-left: auto;
-          margin-right: auto;
-          max-width: calc(#{$bridge-width} * 2 + #{$basic-spacing-small});
+@include large-desktop(true) {
+  .app-main {
+    &.app-main--tokens {
+      .app-menu {
+        position: relative;
+
+        @include large-mobile(true) {
+          position: fixed;
         }
       }
     }
+  }
+}
 
-    .block-number-link {
-      z-index: $app-body-layer;
+@include tablet {
+  .app-footer {
+    flex-direction: row;
+    .app-disclaimer-container {
+      padding-right: $inner-spacing-large;
+    }
+  }
+
+  .block-number {
+    display: block;
+  }
+}
+
+@include desktop {
+  .app-main {
+    &.app-main--swap.app-main--has-charts {
+      .app-menu {
+        position: relative;
+      }
+    }
+
+    &.app-main--has-charts {
+      .app-content {
+        width: 100%;
+        padding-left: $basic-spacing * 2;
+        .app-disclaimer {
+          $margin-left: 10px;
+          max-width: calc(#{$bridge-width} + #{$margin-left});
+          padding-right: $inner-spacing-big;
+          padding-left: calc(#{$inner-spacing-big} + #{$margin-left});
+          &-container {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: calc(#{$bridge-width} * 2 + #{$basic-spacing-small});
+          }
+        }
+      }
+
+      .block-number-link {
+        z-index: $app-body-layer;
+      }
     }
   }
 }
 
 @include large-desktop {
-  .app-main.app-main--has-charts {
-    .app-content {
-      .app-disclaimer {
-        &-container {
-          max-width: calc(#{$bridge-width} * 3 + #{$basic-spacing-small} * 4);
+  .app-main {
+    &.app-main--has-charts {
+      .app-content {
+        .app-disclaimer {
+          &-container {
+            max-width: calc(#{$bridge-width} * 3 + #{$basic-spacing-small} * 4);
+          }
         }
       }
     }
@@ -641,19 +728,6 @@ $sora-logo-width: 173.7px;
   &__image {
     width: $sora-logo-width;
     height: $sora-logo-height;
-  }
-}
-
-@include tablet {
-  .app-footer {
-    flex-direction: row;
-    .app-disclaimer-container {
-      padding-right: $inner-spacing-large;
-    }
-  }
-
-  .block-number {
-    display: block;
   }
 }
 </style>

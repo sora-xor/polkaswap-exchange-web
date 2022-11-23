@@ -12,7 +12,7 @@
           <token-logo :token="token" size="medium" class="token-logo" />
           <div>
             <h3 class="staking-info-title">{{ token.symbol }}</h3>
-            <div class="s-flex">
+            <div class="s-flex staking-info-badges">
               <status-badge
                 v-for="item of token.items"
                 :key="item.pool.rewardAsset"
@@ -123,7 +123,7 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
 
     .token-logo {
       margin-right: $inner-spacing-medium;
-      margin-top: $inner-spacing-mini / 2;
+      margin-top: $inner-spacing-tiny;
     }
   }
 }
@@ -146,6 +146,10 @@ $title-height: 42px;
   height: 100%;
 }
 
+.staking-info-badges {
+  flex-flow: wrap;
+}
+
 .staking-info {
   &-title {
     font-weight: 700;
@@ -153,12 +157,6 @@ $title-height: 42px;
     text-align: left;
     height: $title-height;
     line-height: $title-height;
-  }
-
-  &-badge {
-    & + & {
-      margin-left: $inner-spacing-mini;
-    }
   }
 
   &-card {

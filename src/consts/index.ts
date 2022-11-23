@@ -77,6 +77,7 @@ export const Links = {
     tutorial: 'https://medium.com/sora-xor/how-to-run-a-sora-testnet-node-a4d42a9de1af',
   },
   marketMaker: 'https://medium.com/polkaswap/pswap-rewards-part-3-polkaswap-market-making-rebates-1856f62ccfaa',
+  faq: 'https://wiki.sora.org/polkaswap/polkaswap-faq',
   terms: 'https://wiki.sora.org/polkaswap/terms',
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
@@ -156,6 +157,7 @@ export enum Components {
   SettingsTabs = 'Settings/Tabs',
   SlippageTolerance = 'Settings/SlippageTolerance',
   MarketAlgorithm = 'Settings/MarketAlgorithm',
+  ChartsSwitch = 'Settings/ChartsSwitch',
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
@@ -367,9 +369,3 @@ export const EthereumGasLimits = [
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
-
-// TODO: merge with TranslationConsts from wallet
-export enum TranslationConsts {
-  APR = 'APR', // Annual percentage rate
-  ROI = 'ROI', // Return of investment
-}

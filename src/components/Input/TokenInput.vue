@@ -19,13 +19,14 @@
       </div>
       <div class="input-value">
         <slot name="balance">
-          <template v-if="token">
+          <template v-if="isBalanceAvailable">
             <span class="input-value--uppercase">{{ t('balanceText') }}</span>
             <formatted-amount-with-fiat-value
               value-can-be-hidden
               with-left-shift
               value-class="input-value--primary"
               :value="formattedBalance"
+              :has-fiat-value="!!tokenPrice"
               :fiat-value="formattedFiatBalance"
             />
           </template>
@@ -48,12 +49,13 @@
         class="el-button--select-token"
         :icon="selectTokenIcon"
         :token="token"
+        :tabindex="tokenTabIndex"
         @click.stop="handleSelectToken"
       />
     </div>
     <div slot="bottom" class="input-line input-line--footer">
       <div class="s-flex">
-        <formatted-amount v-if="tokenPrice" is-fiat-value :value="fiatAmount" />
+        <formatted-amount v-if="!!tokenPrice" is-fiat-value :value="fiatAmount" />
         <slot name="fiat-amount-append" />
       </div>
 
@@ -77,6 +79,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
+import { getter } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -105,6 +108,12 @@ export default class TokenInput extends Mixins(
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
+  @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
+
+  get isBalanceAvailable(): boolean {
+    return this.isLoggedIn && !!this.token;
+  }
+
   get address(): string {
     return this.token?.address ?? '';
   }
@@ -114,11 +123,15 @@ export default class TokenInput extends Mixins(
   }
 
   get max(): string {
-    return this.getMax(this.address);
+    return this.MaxInputNumber;
   }
 
   get selectTokenIcon(): Nullable<string> {
     return this.isSelectAvailable ? 'chevron-down-rounded-16' : undefined;
+  }
+
+  get tokenTabIndex(): number {
+    return this.isSelectAvailable ? 0 : -1;
   }
 
   get fpBalance(): FPNumber {

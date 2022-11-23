@@ -2,15 +2,15 @@
   <dialog-base class="popup" :visible.sync="isVisible">
     <div class="popup-mobile">
       <div class="popup-info">
-        <h3 class="popup-info__headline" v-html="t('mobilePopup.header')" />
+        <h3 class="popup-info__headline" v-html="t('mobilePopup.header', { polkaswapHighlight })" />
         <p class="popup-info__text">
           {{ t('mobilePopup.info') }}
         </p>
         <div>
-          <a :href="StoreLinks.AppStore" target="_blank" rel="nofollow noopener">
+          <a :href="StoreLinks.AppStore" target="_blank" rel="nofollow noopener" tabindex="-1">
             <s-button class="logo logo__app-store">App Store</s-button>
           </a>
-          <a :href="StoreLinks.GooglePlay" target="_blank" rel="nofollow noopener">
+          <a :href="StoreLinks.GooglePlay" target="_blank" rel="nofollow noopener" tabindex="-1">
             <s-button class="logo logo__google-play">Google Play</s-button>
           </a>
         </div>
@@ -28,7 +28,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '../mixins/TranslationMixin';
-import { StoreLinks } from '../../consts';
+import { StoreLinks, app } from '../../consts';
 
 import QrCode from '../../assets/img/mobile/qr-code.svg?inline';
 
@@ -42,6 +42,10 @@ export default class MobilePopup extends Mixins(mixins.DialogMixin, TranslationM
   @Prop({ type: String }) readonly fee!: string;
 
   StoreLinks = StoreLinks;
+
+  get polkaswapHighlight(): string {
+    return `<span class="popup-info__headline--highlight">${app.name}</span>`;
+  }
 
   handleConfirm(): void {
     this.closeDialog();

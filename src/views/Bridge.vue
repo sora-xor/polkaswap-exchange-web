@@ -33,7 +33,7 @@
           :value="amount"
           :decimals="getDecimals(isSoraToEvm)"
           :delimiters="delimiters"
-          :max="getMax(assetAddress)"
+          :max="MaxInputNumber"
           :disabled="!areNetworksConnected || !isAssetSelected"
           class="s-input--token-value"
           data-test-name="bridgeFrom"
@@ -88,7 +88,12 @@
             </div>
             <div v-if="isNetworkAConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <s-tooltip :content="getCopyTooltip(isSoraToEvm)" border-radius="mini" placement="bottom-end">
+              <s-tooltip
+                :content="getCopyTooltip(isSoraToEvm)"
+                border-radius="mini"
+                placement="bottom-end"
+                tabindex="-1"
+              >
                 <span class="bridge-network-address" @click="handleCopyAddress(accountAddressFrom, $event)">
                   {{ formatAddress(accountAddressFrom, 8) }}
                 </span>
@@ -119,7 +124,7 @@
           :value="amount"
           :decimals="getDecimals(!isSoraToEvm)"
           :delimiters="delimiters"
-          :max="getMax(assetAddress)"
+          :max="MaxInputNumber"
           class="s-input--token-value"
           data-test-name="bridgeTo"
           has-locale-string
@@ -157,7 +162,12 @@
             </div>
             <div v-if="isNetworkBConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <s-tooltip :content="getCopyTooltip(!isSoraToEvm)" border-radius="mini" placement="bottom-end">
+              <s-tooltip
+                :content="getCopyTooltip(!isSoraToEvm)"
+                border-radius="mini"
+                placement="bottom-end"
+                tabindex="-1"
+              >
                 <span class="bridge-network-address" @click="handleCopyAddress(accountAddressTo, $event)">
                   {{ formatAddress(accountAddressTo, 8) }}
                 </span>
@@ -481,7 +491,7 @@ export default class Bridge extends Mixins(
   }
 
   getCopyTooltip(isSoraNetwork = false): string {
-    return this.copyTooltip(this.t(`bridge.${isSoraNetwork ? 'soraAddress' : 'ethereumAddress'}`));
+    return this.copyTooltip(isSoraNetwork ? this.t('bridge.soraAddress') : this.t('bridge.ethereumAddress'));
   }
 
   async handleSwitchItems(): Promise<void> {
