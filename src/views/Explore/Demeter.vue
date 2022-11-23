@@ -2,14 +2,14 @@
   <div>
     <s-table
       ref="table"
-      v-loading="loading"
+      v-loading="loadingState"
       :data="tableItems"
       :highlight-current-row="false"
       size="small"
       class="explore-table"
     >
       <!-- Index -->
-      <s-table-column width="280" label="#" fixed-position="left">
+      <s-table-column width="240" label="#" fixed-position="left">
         <template #header>
           <div class="explore-table-item-index">
             <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">#</span>
@@ -38,7 +38,7 @@
         </template>
       </s-table-column>
       <!-- APR -->
-      <s-table-column width="120" header-align="right" align="right">
+      <s-table-column width="140" header-align="right" align="right">
         <template #header>
           <sort-button name="apr" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">{{ TranslationConsts.APR }}</span>
@@ -95,6 +95,7 @@
           <div class="explore-table-item-tokens">
             <div v-for="({ asset, balance }, index) in row.accountTokens" :key="index" class="explore-table-cell">
               <formatted-amount
+                value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-price explore-table-item-amount"
@@ -209,16 +210,23 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
   private async updatePoolsData() {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.poolsData = {};
-        for (const pool of this.items) {
-          if (!this.poolsData[pool.poolAsset]) {
-            const poolData = await this.getPoolData(pool.poolAsset, pool.isFarm);
+        const buffer = {};
+        const isFarm = this.isFarmingPage;
+        const poolAssets = [...new Set(this.items.map((item) => item.poolAsset))];
 
-            if (poolData) {
-              this.poolsData = { ...this.poolsData, [pool.poolAsset]: poolData };
+        await Promise.allSettled(
+          poolAssets.map(async (asset) => {
+            if (!buffer[asset]) {
+              const poolData = await this.getPoolData(asset, isFarm);
+
+              if (poolData) {
+                buffer[asset] = poolData;
+              }
             }
-          }
-        }
+          })
+        );
+
+        this.poolsData = buffer;
       });
     });
   }

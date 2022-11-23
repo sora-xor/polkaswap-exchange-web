@@ -30,6 +30,10 @@ export default class ExplorePageMixin extends Mixins(
   order = '';
   property = '';
 
+  get loadingState(): boolean {
+    return this.parentLoading || this.loading;
+  }
+
   get pricesAvailable(): boolean {
     return Object.keys(this.fiatPriceAndApyObject).length > 0;
   }
@@ -87,11 +91,7 @@ export default class ExplorePageMixin extends Mixins(
 
     this.initScrollbar();
 
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        await this.updateExploreData();
-      });
-    });
+    await this.updateExploreData();
   }
 
   changeSort({ order = '', property = '' } = {}): void {

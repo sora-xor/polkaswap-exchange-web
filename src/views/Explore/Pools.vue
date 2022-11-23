@@ -2,14 +2,14 @@
   <div>
     <s-table
       ref="table"
-      v-loading="loading"
+      v-loading="loadingState"
       :data="tableItems"
       :highlight-current-row="false"
       size="small"
       class="explore-table"
     >
       <!-- Index -->
-      <s-table-column width="280" label="#" fixed-position="left">
+      <s-table-column width="240" label="#" fixed-position="left">
         <template #header>
           <div class="explore-table-item-index">
             <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">#</span>
@@ -54,6 +54,7 @@
           <div class="explore-table-item-tokens">
             <div v-for="({ asset, balance }, index) in row.accountTokens" :key="index" class="explore-table-cell">
               <formatted-amount
+                value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-price explore-table-item-amount"
@@ -197,7 +198,11 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
 
   // ExplorePageMixin method implementation
   async updateExploreData(): Promise<void> {
-    this.poolReserves = await api.poolXyk.getAllReserves();
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        this.poolReserves = await api.poolXyk.getAllReserves();
+      });
+    });
   }
 }
 </script>

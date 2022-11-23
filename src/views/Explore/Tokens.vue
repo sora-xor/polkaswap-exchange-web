@@ -2,7 +2,7 @@
   <div>
     <s-table
       ref="table"
-      v-loading="loading"
+      v-loading="loadingState"
       :data="tableItems"
       :highlight-current-row="false"
       size="small"
@@ -267,7 +267,11 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
   // ExplorePageMixin method implementation
   async updateExploreData(): Promise<void> {
-    await this.updateAssetsData();
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        this.tokensData = await this.fetchTokensData();
+      });
+    });
   }
 
   private async fetchTokensData(): Promise<Record<string, TokenData>> {
@@ -315,10 +319,6 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
       console.error(error);
       return tokensData;
     }
-  }
-
-  private async updateAssetsData(): Promise<void> {
-    this.tokensData = await this.fetchTokensData();
   }
 }
 </script>
