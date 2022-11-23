@@ -4,6 +4,7 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { waitForAccountPair } from '@/utils';
 import { demeterFarmingActionContext } from '@/store/demeterFarming';
 
+import type { Subscription } from 'rxjs';
 import type { DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
@@ -14,9 +15,17 @@ const actions = defineActions({
 
     commit.resetPoolsUpdates();
 
-    // @ts-expect-error null
-    const subscription = (await api.demeterFarming.getPoolsObservable()).subscribe((pools) => {
-      commit.setPools(pools);
+    const observable = await api.demeterFarming.getPoolsObservable();
+
+    if (!observable) return;
+
+    let subscription!: Subscription;
+
+    await new Promise<void>((resolve) => {
+      subscription = observable.subscribe((pools) => {
+        commit.setPools(pools);
+        resolve();
+      });
     });
 
     commit.setPoolsUpdates(subscription);
@@ -27,9 +36,17 @@ const actions = defineActions({
 
     commit.resetTokensUpdates();
 
-    // @ts-expect-error null
-    const subscription = (await api.demeterFarming.getTokenInfosObservable()).subscribe((tokens) => {
-      commit.setTokens(tokens);
+    const observable = await api.demeterFarming.getTokenInfosObservable();
+
+    if (!observable) return;
+
+    let subscription!: Subscription;
+
+    await new Promise<void>((resolve) => {
+      subscription = observable.subscribe((tokens) => {
+        commit.setTokens(tokens);
+        resolve();
+      });
     });
 
     commit.setTokensUpdates(subscription);
@@ -42,13 +59,20 @@ const actions = defineActions({
 
     if (!rootGetters.wallet.account.isLoggedIn) return;
 
-    await waitForAccountPair(() => {
-      const subscription = api.demeterFarming.getAccountPoolsObservable().subscribe((accountPools) => {
-        commit.setAccountPools(accountPools);
-      });
+    await waitForAccountPair();
 
-      commit.setAccountPoolsUpdates(subscription);
+    const observable = api.demeterFarming.getAccountPoolsObservable();
+
+    let subscription!: Subscription;
+
+    await new Promise<void>((resolve) => {
+      subscription = observable.subscribe((accountPools) => {
+        commit.setAccountPools(accountPools);
+        resolve();
+      });
     });
+
+    commit.setAccountPoolsUpdates(subscription);
   },
 
   unsubscribeUpdates(context): void {
