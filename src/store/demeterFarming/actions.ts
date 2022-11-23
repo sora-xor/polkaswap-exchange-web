@@ -15,15 +15,8 @@ const actions = defineActions({
 
     commit.resetPoolsUpdates();
 
-    const observable = await api.demeterFarming.getPoolsObservable();
-
-    let subscription!: Subscription;
-
-    await new Promise<void>((resolve) => {
-      subscription = observable.subscribe((pools) => {
-        commit.setPools(pools);
-        resolve();
-      });
+    const subscription = (await api.demeterFarming.getPoolsObservable()).subscribe((pools) => {
+      commit.setPools(pools);
     });
 
     commit.setPoolsUpdates(subscription);
@@ -34,15 +27,8 @@ const actions = defineActions({
 
     commit.resetTokensUpdates();
 
-    const observable = await api.demeterFarming.getTokenInfosObservable();
-
-    let subscription!: Subscription;
-
-    await new Promise<void>((resolve) => {
-      subscription = observable.subscribe((tokens) => {
-        commit.setTokens(tokens);
-        resolve();
-      });
+    const subscription = (await api.demeterFarming.getTokenInfosObservable()).subscribe((tokens) => {
+      commit.setTokens(tokens);
     });
 
     commit.setTokensUpdates(subscription);
