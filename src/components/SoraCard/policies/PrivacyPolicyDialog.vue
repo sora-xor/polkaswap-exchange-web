@@ -1,7 +1,7 @@
 <template>
-  <dialog-base :visible.sync="isVisible" title="Privacy Policy">
-    <div>
-      <iframe :src="`https://soracard.com/privacy/`" width="100%" height="100" frameborder="0"> </iframe>
+  <dialog-base :visible.sync="isVisible" class="terms-of-service-dialog" title="Privacy Policy">
+    <div class="tos__section">
+      <iframe :src="`https://soracard.com/privacy/`" width="100%" height="600px" frameborder="0"> </iframe>
     </div>
   </dialog-base>
 </template>
@@ -19,3 +19,15 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 })
 export default class PrivacyPolicyDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {}
 </script>
+
+<style lang="scss" scoped>
+.tos__section {
+  width: 100%;
+  height: 600px;
+  background-color: var(--s-color-base-background);
+  box-shadow: var(--s-shadow-element);
+  border-radius: var(--s-border-radius-small);
+  padding: 0;
+  overflow: hidden;
+}
+</style>

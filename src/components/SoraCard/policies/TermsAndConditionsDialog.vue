@@ -1,9 +1,7 @@
 <template>
-  <dialog-base :visible.sync="isVisible" class="what" title="Terms & Conditions">
+  <dialog-base :visible.sync="isVisible" class="terms-of-service-dialog" title="Terms & Conditions">
     <div class="tos__section">
-      <s-scrollbar class="tos__section-scrollbar">
-        <iframe :src="`https://soracard.com/privacy/`" width="100%" height="600px" frameborder="0"> </iframe>
-      </s-scrollbar>
+      <iframe :src="`https://soracard.com/terms/`" width="100%" height="600px" frameborder="0"> </iframe>
     </div>
   </dialog-base>
 </template>
@@ -23,7 +21,7 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
 </script>
 
 <style lang="scss">
-.what .el-dialog {
+.terms-of-service-dialog .el-dialog {
   max-width: 1000px !important;
 }
 </style>
@@ -37,10 +35,5 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
   border-radius: var(--s-border-radius-small);
   padding: 0;
   overflow: hidden;
-
-  &-scrollbar {
-    height: 600px;
-    @include scrollbar;
-  }
 }
 </style>

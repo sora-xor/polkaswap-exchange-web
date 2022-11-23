@@ -79,10 +79,6 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   thirdPointCurrent = false;
 
   async handleConfirm(): Promise<void> {
-    // sessionStorage.removeItem('access-token');
-    // sessionStorage.removeItem('expiration-time');
-    // sessionStorage.removeItem('refresh-token');
-
     loadScript('https://auth-test.paywings.io/auth/sdk.js')
       .then(() => {
         const conf = {

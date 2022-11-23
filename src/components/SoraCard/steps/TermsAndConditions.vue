@@ -20,18 +20,12 @@
         <span class="tos__section-point">Privacy Policy</span>
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>
-      <!-- <div class="line" />
-      <div class="tos__section-block" @click="openDialog('nonDisclosureAgreement')">
-        <span class="tos__section-point">Non-disclosure agreement</span>
-        <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
-      </div> -->
     </div>
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirmToS">
       <span class="text">ACCEPT & CONTINUE</span>
     </s-button>
     <terms-and-conditions-dialog :visible.sync="showTermsAndConditionsDialog" />
     <privacy-policy-dialog :visible.sync="showPrivacyPolicyDialog" />
-    <non-disclosure-agreement :visible.sync="showNonDisclosureAgreement" />
   </div>
 </template>
 
@@ -46,13 +40,11 @@ import TranslationMixin from '../../mixins/TranslationMixin';
   components: {
     TermsAndConditionsDialog: lazyComponent(Components.TermsAndConditionsDialog),
     PrivacyPolicyDialog: lazyComponent(Components.PrivacyPolicyDialog),
-    NonDisclosureAgreement: lazyComponent(Components.NonDisclosureAgreementDialog),
   },
 })
 export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   showTermsAndConditionsDialog = false;
   showPrivacyPolicyDialog = false;
-  showNonDisclosureAgreement = false;
 
   handleConfirmToS(): void {
     this.$emit('confirm-tos');
@@ -61,7 +53,6 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
   openDialog(policy: string): void {
     if (policy === 't&c') this.showTermsAndConditionsDialog = true;
     if (policy === 'privacyPolicy') this.showPrivacyPolicyDialog = true;
-    if (policy === 'nonDisclosureAgreement') this.showNonDisclosureAgreement = true;
   }
 }
 </script>

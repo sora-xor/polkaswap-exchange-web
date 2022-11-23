@@ -39,14 +39,14 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
 
     console.log('result', result);
 
-    const data = await result.json(); // тут не парсит
+    const data = await result.json();
     console.log('data', data);
     return data.ReferenceNumber;
   }
 
   async mounted(): Promise<void> {
     console.log('embed called');
-    // const referenceNumber = await this.getReferenceNumber();
+    const referenceNumber = await this.getReferenceNumber();
     // const accessToken = this.accessToken;
     // console.log('this.accessToken', this.accessToken);
     // console.log('referenceNumber', referenceNumber);
@@ -69,9 +69,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
             UnifiedLoginApiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
           },
           KycSettings: {
-            AppReferenceID: uuidv4(),
+            AppReferenceID: 'random thing',
             Language: 'en', // supported languages 'en'
-            // ReferenceNumber: referenceNumber,
+            ReferenceNumber: referenceNumber,
             ElementId: '#kyc', // id of element in which web kyc will be injected
             Logo: '',
             WelcomeHidden: false, // false show welcome screen, true skip welcome screen
@@ -124,13 +124,6 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
 </style>
 
 <style lang="scss">
-// .test {
-//   position: relative;
-
-//   .el-button {
-//     transform: scale(0.75);
-//   }
-// }
 .sora-card__send-sms-btn {
   position: absolute;
   right: -10px;

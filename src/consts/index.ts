@@ -155,7 +155,6 @@ export enum Components {
   // Subject to change
   TermsAndConditionsDialog = 'SoraCard/policies/TermsAndConditionsDialog',
   PrivacyPolicyDialog = 'SoraCard/policies/PrivacyPolicyDialog',
-  NonDisclosureAgreementDialog = 'SoraCard/policies/NonDisclosureAgreementDialog',
   RoadMap = 'SoraCard/steps/RoadMap',
   KycView = 'SoraCard/steps/KycView',
   ConfirmationInfo = 'SoraCard/steps/ConfirmationInfo',

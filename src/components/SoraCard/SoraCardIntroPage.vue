@@ -5,9 +5,9 @@
     </div>
     <div class="sora-card__intro">
       <span class="sora-card__intro-name">SORA CARD</span>
-      <h3 class="sora-card__intro-title">Pay with your crypto online, in-store or withdraw in ATM</h3>
+      <h3 class="sora-card__intro-title">Get a debit card connected to your SORA Wallet</h3>
       <span class="sora-card__intro-info">
-        Get Euro IBAN account and Mastercard Debit Card connected to your SORA Wallet
+        Pay with your crypto online, in-store or withdraw in ATM with Euro IBAN & Debit card
       </span>
     </div>
     <s-button
@@ -112,12 +112,13 @@ $color: #ee2233;
     &-title {
       width: 85%;
       text-align: center;
+      font-weight: 600;
     }
 
     &-info {
       margin-top: 16px;
       font-weight: 300;
-      width: 85%;
+      width: 80%;
       text-align: center;
     }
 
