@@ -41,7 +41,6 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -58,10 +57,8 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
   @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;
   @state.swap.isExchangeB isExchangeB!: boolean;
-  @state.swap.selectedDexId private selectedDexId!: number;
 
   @getter.swap.minMaxReceived private minMaxReceived!: CodecString;
-  @getter.swap.swapLiquiditySource private liquiditySource!: LiquiditySourceTypes;
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
   @getter.swap.tokenTo tokenTo!: AccountAsset;
 

@@ -47,7 +47,8 @@
         </s-scrollbar>
       </div>
     </div>
-    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
+    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" @confirm="inviteUser" />
+    <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
     <bridge-transfer-notification />
     <mobile-popup :visible.sync="showMobilePopup" />
     <browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
@@ -61,7 +62,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber, History, connection, HistoryItem } from '@sora-substrate/util';
-import { components, mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { api, components, mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
@@ -91,10 +92,11 @@ import { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
     BrowserNotifsEnableDialog: lazyComponent(Components.BrowserNotifsEnableDialog),
     BrowserNotifsBlockedDialog: lazyComponent(Components.BrowserNotifsBlockedDialog),
     NotificationEnablingPage: components.NotificationEnablingPage,
+    ConfirmDialog: components.ConfirmDialog,
     MobilePopup,
   },
 })
-export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
+export default class App extends Mixins(mixins.TransactionMixin, mixins.ConfirmTransactionMixin, NodeErrorMixin) {
   menuVisibility = false;
   showConfirmInviteUser = false;
   showMobilePopup = false;
@@ -111,6 +113,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;
+  @getter.settings.isDesktop private isDesktop!: boolean;
   @getter.settings.chartsEnabled chartsEnabled!: boolean;
 
   @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
@@ -124,6 +127,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
   @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
+  @mutation.referrals.approveReferrer private approveReferrer!: (value: boolean) => void;
   @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
 
@@ -316,6 +320,24 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   setDarkPage(value: boolean) {
     this.showNotifsDarkPage = value;
+  }
+
+  async inviteUser(): Promise<void> {
+    this.approveReferrer(true);
+
+    if (this.isDesktop) {
+      this.openConfirmationDialog();
+      await this.waitOnNextTxConfirmation();
+      if (!this.isTxDialogConfirmed) {
+        return;
+      }
+    }
+
+    try {
+      await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferrer));
+    } catch (error) {
+      this.approveReferrer(false);
+    }
   }
 
   handleAppMenuClick(e: Event): void {
