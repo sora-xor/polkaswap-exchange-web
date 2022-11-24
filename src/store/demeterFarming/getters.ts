@@ -1,5 +1,6 @@
 import { defineGetters } from 'direct-vuex';
 import { FPNumber } from '@sora-substrate/math';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import { demeterFarmingGetterContext } from './index';
 
@@ -49,10 +50,13 @@ const getters = defineGetters<DemeterFarmingState>()({
 
     return state.tokens.reduce((buffer, token) => ({ ...buffer, [token.assetId]: token }), {});
   },
-  getLockedAmount(...args): (poolAsset: string, isFarm: boolean) => FPNumber {
+  getLockedAmount(...args): (baseAsset: string, poolAsset: string, isFarm: boolean) => FPNumber {
     const { getters } = demeterFarmingGetterContext(args);
 
-    return (poolAsset: string, isFarm = true) => {
+    return (baseAsset: string, poolAsset: string, isFarm = true) => {
+      // DEMETER FARMING ONLY FOR XOR POOLS!
+      if (baseAsset !== XOR.address) return FPNumber.ZERO;
+
       const pools = isFarm ? getters.accountFarmingPools : getters.accountStakingPools;
 
       if (!pools[poolAsset]) return FPNumber.ZERO;

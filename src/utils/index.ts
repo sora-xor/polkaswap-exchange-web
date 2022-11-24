@@ -249,12 +249,12 @@ export const toQueryString = (params: any): string => {
     .join('&');
 };
 
-export const waitForAccountPair = async (func: VoidFunction): Promise<any> => {
+export const waitForAccountPair = async (func?: VoidFunction): Promise<any> => {
   if (!api.accountPair) {
     await delay();
     return await waitForAccountPair(func);
   } else {
-    return func();
+    return func?.();
   }
 };
 
@@ -275,4 +275,11 @@ export const calcPriceChange = (current: FPNumber, prev: FPNumber): FPNumber => 
   if (prev.isZero()) return FPNumber.gt(current, FPNumber.ZERO) ? FPNumber.HUNDRED : FPNumber.ZERO;
 
   return current.sub(prev).div(prev).mul(FPNumber.HUNDRED);
+};
+
+export const formatDecimalPlaces = (value: FPNumber, asPercent = false): string => {
+  const formatted = new FPNumber(value.toFixed(2)).toLocaleString();
+  const postfix = asPercent ? '%' : '';
+
+  return `${formatted}${postfix}`;
 };

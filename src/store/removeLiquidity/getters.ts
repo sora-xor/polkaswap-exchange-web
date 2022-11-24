@@ -29,8 +29,9 @@ const getters = defineGetters<RemoveLiquidityState>()({
 
     if (!rootGetters.demeterFarming || !getters.liquidity) return FPNumber.ZERO;
 
+    const baseAsset = getters.liquidity.firstAddress;
     const poolAsset = getters.liquidity.secondAddress;
-    const lockedBalance = rootGetters.demeterFarming.getLockedAmount(poolAsset, true);
+    const lockedBalance = rootGetters.demeterFarming.getLockedAmount(baseAsset, poolAsset, true);
     const balance = getters.liquidityBalanceFull;
     const maxLocked = FPNumber.min(balance, lockedBalance) as FPNumber;
 
