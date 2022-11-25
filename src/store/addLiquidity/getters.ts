@@ -10,7 +10,12 @@ import type { RegisteredAccountAssetWithDecimals } from '../assets/types';
 const getters = defineGetters<AddLiquidityState>()({
   firstToken(...args): Nullable<RegisteredAccountAssetWithDecimals> {
     const { state, rootGetters } = addLiquidityGetterContext(args);
-    return rootGetters.assets.assetDataByAddress(state.firstTokenAddress);
+    const token = rootGetters.assets.assetDataByAddress(state.firstTokenAddress);
+    const balance = state.firstTokenBalance;
+    if (balance) {
+      return { ...token, balance } as RegisteredAccountAssetWithDecimals;
+    }
+    return token;
   },
   secondToken(...args): Nullable<RegisteredAccountAssetWithDecimals> {
     const { state, rootGetters } = addLiquidityGetterContext(args);

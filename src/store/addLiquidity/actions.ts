@@ -2,6 +2,7 @@ import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 import type { ActionContext } from 'vuex';
+import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import { addLiquidityActionContext } from '@/store/addLiquidity';
@@ -32,20 +33,41 @@ async function estimateMinted(context: ActionContext<any, any>): Promise<void> {
   }
 }
 
-async function checkReserve(context: ActionContext<any, any>): Promise<void> {
-  const { getters, commit } = addLiquidityActionContext(context);
-  const { firstToken, secondToken } = getters;
+function updateFirstTokenValue(context: ActionContext<any, any>) {
+  const { getters, commit, state } = addLiquidityActionContext(context);
 
-  if (firstToken && secondToken) {
-    try {
-      const reserve = await api.poolXyk.getReserves(firstToken.address, secondToken.address);
-      commit.setReserve(reserve);
+  const value = state.secondTokenValue;
 
-      await estimateMinted(context);
-    } catch (error) {
-      console.error('addLiquidity:checkReserve', error);
-    }
+  if (!value) {
+    commit.setFirstTokenValue();
+  } else if (getters.isNotFirstLiquidityProvider) {
+    const firstTokenValue = new FPNumber(value)
+      .mul(FPNumber.fromCodecValue(getters.reserveA))
+      .div(FPNumber.fromCodecValue(getters.reserveB))
+      .toString();
+    commit.setFirstTokenValue(firstTokenValue);
   }
+
+  estimateMinted(context);
+}
+
+function updateSecondTokenValue(context: ActionContext<any, any>) {
+  const { getters, commit, state } = addLiquidityActionContext(context);
+
+  const value = state.firstTokenValue;
+
+  if (!value) {
+    commit.setSecondTokenValue();
+  } else if (getters.isNotFirstLiquidityProvider) {
+    commit.setSecondTokenValue(
+      new FPNumber(value)
+        .mul(FPNumber.fromCodecValue(getters.reserveB))
+        .div(FPNumber.fromCodecValue(getters.reserveA))
+        .toString()
+    );
+  }
+
+  estimateMinted(context);
 }
 
 async function checkLiquidity(context: ActionContext<any, any>): Promise<void> {
@@ -56,8 +78,6 @@ async function checkLiquidity(context: ActionContext<any, any>): Promise<void> {
     try {
       const isAvailable = await api.poolXyk.check(firstToken.address, secondToken.address);
       commit.setIsAvailable(isAvailable);
-
-      await checkReserve(context);
     } catch (error) {
       console.error('addLiquidity:checkLiquidity', error);
     }
@@ -66,14 +86,30 @@ async function checkLiquidity(context: ActionContext<any, any>): Promise<void> {
 
 const actions = defineActions({
   async setFirstTokenAddress(context, address: string): Promise<void> {
-    const { commit } = addLiquidityActionContext(context);
+    const { commit, dispatch, getters, rootGetters } = addLiquidityActionContext(context);
+
+    const updateBalance = (balance: Nullable<AccountBalance>) => commit.setFirstTokenBalance(balance);
+
     commit.setFirstTokenAddress(address);
     commit.setFirstTokenValue();
     commit.setSecondTokenValue();
+
+    balanceSubscriptions.remove('first', { updateBalance });
+
+    if (
+      getters.firstToken?.address &&
+      !(getters.firstToken.address in rootGetters.wallet.account.accountAssetsAddressTable)
+    ) {
+      balanceSubscriptions.add('first', { updateBalance, token: getters.firstToken });
+    }
+
     await checkLiquidity(context);
+
+    dispatch.subscribeOnReserves();
   },
+
   async setSecondTokenAddress(context, address: string): Promise<void> {
-    const { commit, getters, rootGetters } = addLiquidityActionContext(context);
+    const { commit, dispatch, getters, rootGetters } = addLiquidityActionContext(context);
 
     const updateBalance = (balance: Nullable<AccountBalance>) => commit.setSecondTokenBalance(balance);
 
@@ -91,50 +127,27 @@ const actions = defineActions({
     }
 
     await checkLiquidity(context);
+    dispatch.subscribeOnReserves();
   },
+
   async setFirstTokenValue(context, value: string): Promise<void> {
-    const { commit, getters, state } = addLiquidityActionContext(context);
+    const { commit } = addLiquidityActionContext(context);
 
-    if ((!state.focusedField || state.focusedField === 'firstTokenValue') && value !== state.firstTokenValue) {
-      commit.setFocusedField('firstTokenValue');
+    commit.setFocusedField('firstTokenValue');
+    commit.setFirstTokenValue(value);
 
-      commit.setFirstTokenValue(value);
-
-      if (!value) {
-        commit.setSecondTokenValue();
-      } else if (getters.isNotFirstLiquidityProvider) {
-        commit.setSecondTokenValue(
-          new FPNumber(value)
-            .mul(FPNumber.fromCodecValue(getters.reserveB))
-            .div(FPNumber.fromCodecValue(getters.reserveA))
-            .toString()
-        );
-      }
-
-      estimateMinted(context);
-    }
+    updateSecondTokenValue(context);
   },
+
   async setSecondTokenValue(context, value: string): Promise<void> {
-    const { commit, getters, state } = addLiquidityActionContext(context);
+    const { commit } = addLiquidityActionContext(context);
 
-    if ((!state.focusedField || state.focusedField === 'secondTokenValue') && value !== state.secondTokenValue) {
-      commit.setFocusedField('secondTokenValue');
+    commit.setFocusedField('secondTokenValue');
+    commit.setSecondTokenValue(value);
 
-      commit.setSecondTokenValue(value);
-
-      if (!value) {
-        commit.setFirstTokenValue();
-      } else if (getters.isNotFirstLiquidityProvider) {
-        const firstTokenValue = new FPNumber(value)
-          .mul(FPNumber.fromCodecValue(getters.reserveA))
-          .div(FPNumber.fromCodecValue(getters.reserveB))
-          .toString();
-        commit.setFirstTokenValue(firstTokenValue);
-      }
-
-      estimateMinted(context);
-    }
+    updateFirstTokenValue(context);
   },
+
   async addLiquidity(context): Promise<void> {
     const { getters, state, rootState } = addLiquidityActionContext(context);
     const { firstToken, secondToken } = getters;
@@ -182,10 +195,46 @@ const actions = defineActions({
       updateBalance: (balance: Nullable<AccountBalance>) => commit.setSecondTokenBalance(balance),
     });
 
+    commit.resetReserveSubscription();
+
     commit.setFirstTokenAddress();
     commit.setSecondTokenAddress();
     commit.setFirstTokenValue();
     commit.setSecondTokenValue();
+  },
+
+  subscribeOnReserves(context): void {
+    const { commit, dispatch, getters } = addLiquidityActionContext(context);
+    const { firstToken, secondToken } = getters;
+
+    commit.resetReserveSubscription();
+
+    if (firstToken && secondToken) {
+      // [TODO]: subscription to js-lib
+      const subscription = api.apiRx.query.poolXYK
+        .reserves(firstToken.address, secondToken.address)
+        .subscribe((result) => {
+          const correctReserves = result && result.length === 2;
+
+          const reserveA = correctReserves ? new FPNumber(result[0], firstToken.decimals).toCodecString() : '0';
+          const reserveB = correctReserves ? new FPNumber(result[1], secondToken.decimals).toCodecString() : '0';
+
+          dispatch.updateReserves([reserveA, reserveB]);
+        });
+
+      commit.setReserveSubscription(subscription);
+    }
+  },
+
+  updateReserves(context, reserves: Array<CodecString>): void {
+    const { commit, state } = addLiquidityActionContext(context);
+    commit.setReserve(reserves);
+
+    if (state.focusedField === 'secondTokenValue') {
+      updateFirstTokenValue(context);
+    } else {
+      updateSecondTokenValue(context);
+    }
   },
 });
 

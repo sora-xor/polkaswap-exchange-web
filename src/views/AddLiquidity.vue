@@ -17,7 +17,6 @@
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setFirstTokenValue)"
         @focus="setFocusedField('firstTokenValue')"
-        @blur="resetFocusedField"
         @max="handleAddLiquidityMaxValue($event, setFirstTokenValue)"
         @select="openSelectTokenDialog(true)"
       />
@@ -34,7 +33,6 @@
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setSecondTokenValue)"
         @focus="setFocusedField('secondTokenValue')"
-        @blur="resetFocusedField"
         @max="handleAddLiquidityMaxValue($event, setSecondTokenValue)"
         @select="openSelectTokenDialog(false)"
       />
@@ -133,6 +131,8 @@ import type { LiquidityParams } from '@/store/pool/types';
 import type { FocusedField } from '@/store/addLiquidity/types';
 import type { PricesPayload } from '@/store/prices/types';
 
+type SetValue = (v: string) => Promise<void>;
+
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
@@ -174,7 +174,6 @@ export default class AddLiquidity extends Mixins(
 
   @mutation.prices.resetPrices resetPrices!: VoidFunction;
   @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
-  @mutation.addLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
 
   showSelectTokenDialog = false;
   isFirstTokenSelected = false;
@@ -278,11 +277,9 @@ export default class AddLiquidity extends Mixins(
     return false;
   }
 
-  handleAddLiquidityMaxValue(token: Nullable<AccountAsset>, setValue: (v: string) => Promise<void>): void {
-    if (this.focusedField) {
-      this.resetFocusedField();
-    }
-    this.handleMaxValue(token, setValue);
+  async handleAddLiquidityMaxValue(token: Nullable<AccountAsset>, setValue: SetValue): Promise<void> {
+    if (!token) return;
+    await this.handleTokenChange(getMaxValue(token, this.networkFee), setValue);
   }
 
   async handleAddLiquidity(): Promise<void> {
@@ -297,13 +294,7 @@ export default class AddLiquidity extends Mixins(
     this.openConfirmDialog();
   }
 
-  handleMaxValue(token: Nullable<AccountAsset>, setValue: (v: string) => Promise<void>): void {
-    if (!token) return;
-    setValue(getMaxValue(token, this.networkFee));
-    this.updatePrices();
-  }
-
-  async handleTokenChange(value: string, setValue: (v: string) => Promise<void>): Promise<void> {
+  async handleTokenChange(value: string, setValue: SetValue): Promise<void> {
     await setValue(value);
     this.updatePrices();
   }
