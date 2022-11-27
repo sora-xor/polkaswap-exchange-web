@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@soramitsu/soraneo-wallet-web';
 
 import PageMixin from '../mixins/PageMixin';
 import { demeterLazyComponent } from '../router';
@@ -88,9 +88,8 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin, mixins.ConfirmTransactionMixin) {
+export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) {
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<Asset>;
-  @getter.settings.isDesktop private isDesktop!: boolean;
 
   // override PageMixin
   isFarmingPage = false;
@@ -114,19 +113,6 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin, 
         items,
       };
     });
-  }
-
-  async signTx(): Promise<boolean> {
-    if (!this.isDesktop) return true;
-
-    this.openConfirmationDialog();
-    await this.waitOnNextTxConfirmation();
-
-    if (this.isTxDialogConfirmed) {
-      return true;
-    }
-
-    return false;
   }
 }
 </script>

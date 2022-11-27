@@ -7,7 +7,8 @@ import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build
 
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 @Component
-export default class PageMixin extends Mixins(mixins.TransactionMixin) {
+export default class PageMixin extends Mixins(mixins.TransactionMixin, mixins.ConfirmTransactionMixin) {
+  @getter.settings.isDesktop private isDesktop!: boolean;
   @getter.demeterFarming.farmingPools farmingPools!: DataMap<DemeterPool[]>;
   @getter.demeterFarming.stakingPools stakingPools!: DataMap<DemeterPool[]>;
   @getter.demeterFarming.accountFarmingPools accountFarmingPools!: DataMap<DemeterAccountPool[]>;
@@ -131,5 +132,18 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
       await this.claimRewards(pool);
       api.lockPair();
     });
+  }
+
+  async signTx(): Promise<boolean> {
+    if (!this.isDesktop) return true;
+
+    this.openConfirmationDialog();
+    await this.waitOnNextTxConfirmation();
+
+    if (this.isTxDialogConfirmed) {
+      return true;
+    }
+
+    return false;
   }
 }

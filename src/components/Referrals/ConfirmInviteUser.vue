@@ -40,6 +40,7 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, m
   @state.referrals.storageReferrer private storageReferrer!: string;
 
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
+  @mutation.referrals.approveReferrer private approveReferrer!: (value: boolean) => void;
 
   get hasReferrer(): boolean {
     return !!this.referrer;
@@ -55,9 +56,25 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, m
 
   async handleConfirmInviteUser(): Promise<void> {
     if (!this.hasReferrer) {
-      this.$emit('confirm');
+      this.approveReferrer(true);
+
+      this.$emit('confirm', async () => {
+        try {
+          await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferrer));
+          this.resetStorageReferrer();
+        } catch (error) {
+          this.approveReferrer(false);
+        }
+      });
     }
     this.isVisible = false;
+  }
+
+  @Watch('isVisible')
+  private isDialogVisible(isVisible: boolean): void {
+    if (!isVisible && this.storageReferrer) {
+      // this.resetStorageReferrer();
+    }
   }
 }
 </script>

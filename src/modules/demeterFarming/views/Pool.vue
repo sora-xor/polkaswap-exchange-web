@@ -71,7 +71,7 @@ import { DemeterComponents } from '../consts';
 import { lazyView } from '@/router';
 import { PageNames } from '@/consts';
 
-import { getter, state } from '@/store/decorators';
+import { state } from '@/store/decorators';
 
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
@@ -87,10 +87,8 @@ import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types'
     ConfirmDialog: components.ConfirmDialog,
   },
 })
-export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMixin, mixins.ConfirmTransactionMixin) {
+export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMixin) {
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
-
-  @getter.settings.isDesktop private isDesktop!: boolean;
 
   get selectedAccountLiquidity(): Nullable<AccountLiquidity> {
     return this.accountLiquidity.find((liquidity) => liquidity.secondAddress === this.poolAsset) ?? null;
@@ -101,19 +99,6 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
     if (liquidity.firstAddress !== XOR.address) return [];
 
     return this.getAvailablePools(this.pools[liquidity.secondAddress]);
-  }
-
-  async signTx(): Promise<boolean> {
-    if (!this.isDesktop) return true;
-
-    this.openConfirmationDialog();
-    await this.waitOnNextTxConfirmation();
-
-    if (this.isTxDialogConfirmed) {
-      return true;
-    }
-
-    return false;
   }
 }
 </script>

@@ -47,7 +47,7 @@
         </s-scrollbar>
       </div>
     </div>
-    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" @confirm="inviteUser" />
+    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" @confirm="signTx" />
     <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
     <bridge-transfer-notification />
     <mobile-popup :visible.sync="showMobilePopup" />
@@ -62,7 +62,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber, History, connection, HistoryItem } from '@sora-substrate/util';
-import { api, components, mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 
@@ -127,7 +127,6 @@ export default class App extends Mixins(mixins.TransactionMixin, mixins.ConfirmT
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
   @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
-  @mutation.referrals.approveReferrer private approveReferrer!: (value: boolean) => void;
   @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
 
@@ -322,22 +321,17 @@ export default class App extends Mixins(mixins.TransactionMixin, mixins.ConfirmT
     this.showNotifsDarkPage = value;
   }
 
-  async inviteUser(): Promise<void> {
-    if (this.isDesktop) {
-      this.openConfirmationDialog();
-      await this.waitOnNextTxConfirmation();
-      if (!this.isTxDialogConfirmed) {
-        return;
-      }
+  async signTx(inviteUser: AsyncVoidFn): Promise<void> {
+    if (!this.isDesktop) {
+      await inviteUser();
+      return;
     }
 
-    this.approveReferrer(true);
+    this.openConfirmationDialog();
+    await this.waitOnNextTxConfirmation();
 
-    try {
-      await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferrer));
-      this.resetStorageReferrer();
-    } catch (error) {
-      this.approveReferrer(false);
+    if (this.isTxDialogConfirmed) {
+      await inviteUser();
     }
   }
 
