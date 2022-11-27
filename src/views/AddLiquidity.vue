@@ -354,14 +354,9 @@ export default class AddLiquidity extends Mixins(
         }
       }
 
-      try {
-        await this.withNotifications(this.addLiquidity);
-        api.lockPair();
-        this.handleBack();
-      } catch (error: any) {
-        console.error(error);
-        this.$alert(this.t(error.message), { title: this.t('errorText') });
-      }
+      await this.withNotifications(this.addLiquidity);
+      api.lockPair();
+      this.handleBack();
     });
   }
 
