@@ -91,6 +91,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
   mounted(): void {
     this.priceLoading();
+    // clearTokensFromSessionStorage()
   }
 }
 </script>

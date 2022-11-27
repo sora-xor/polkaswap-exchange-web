@@ -35,6 +35,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
   private unsubscribeAccountLiquidityListAndUpdates!: AsyncVoidFn;
 
   step: Step = Step.Intro;
+  isUserPassedKyc = false;
 
   Step = Step;
 
@@ -47,6 +48,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
   }
 
   async created(): Promise<void> {
+    if (this.isUserPassedKyc) {
+      this.step = Step.KYC;
+    }
+
     this.setStartSubscriptions([
       this.subscribeOnAccountLiquidityList,
       this.subscribeOnAccountLiquidityUpdates,

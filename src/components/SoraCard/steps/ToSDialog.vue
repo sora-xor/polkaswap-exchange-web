@@ -1,13 +1,13 @@
 <template>
   <dialog-base :visible.sync="isVisible" class="terms-of-service-dialog" title="Terms & Conditions">
-    <div class="tos__section">
-      <iframe :src="`https://soracard.com/terms/`" width="100%" height="600px" frameborder="0"> </iframe>
+    <div v-loading="loading" class="tos__section">
+      <iframe :src="srcLink" width="100%" height="600px" frameborder="0"></iframe>
     </div>
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -17,7 +17,15 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
     DialogBase: components.DialogBase,
   },
 })
-export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {}
+export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {
+  @Prop({ default: '', type: String }) readonly srcLink!: string;
+
+  loading = true;
+
+  updated(): void {
+    setTimeout(() => (this.loading = false), 500);
+  }
+}
 </script>
 
 <style lang="scss">

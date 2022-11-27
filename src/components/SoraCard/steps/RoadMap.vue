@@ -16,10 +16,10 @@
           <div v-else class="point" />
         </div>
         <div class="map__section">
-          <card-icon class="map__icon"></card-icon>
+          <user-icon class="map__icon"></user-icon>
           <div>
-            <h4 class="map__point">Submit personal data</h4>
-            <span class="map__point-desc">Full name & proof of address</span>
+            <h4 class="map__point">Verify documents</h4>
+            <span class="map__point-desc">Selfie with a document</span>
             <div class="line"></div>
           </div>
           <div v-if="secondPointChecked" class="point point--checked">
@@ -29,10 +29,10 @@
           <div v-else class="point" />
         </div>
         <div class="map__section">
-          <user-icon class="map__icon"></user-icon>
+          <card-icon class="map__icon"></card-icon>
           <div>
-            <h4 class="map__point">Verify documents</h4>
-            <span class="map__point-desc">Selfie with a document</span>
+            <h4 class="map__point">Submit personal data</h4>
+            <span class="map__point-desc">Full name & proof of address</span>
             <div class="line line--last"></div>
           </div>
           <div v-if="thirdPointChecked" class="point point--checked">
@@ -47,7 +47,7 @@
     <div id="authOpen"></div>
 
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirm">
-      <span class="text">LET’S START</span>
+      <span class="text">{{ btnText() }}</span>
       <s-icon name="arrows-arrow-top-right-24" size="18" class="" />
     </s-button>
   </div>
@@ -71,14 +71,25 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
   },
 })
 export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  firstPointChecked = true;
-  firstPointCurrent = false;
+  firstPointChecked = false;
+  firstPointCurrent = true;
   secondPointChecked = false;
-  secondPointCurrent = true;
+  secondPointCurrent = false;
   thirdPointChecked = false;
   thirdPointCurrent = false;
 
+  btnText(): string {
+    if (sessionStorage.getItem('access-token')) {
+      return 'FINISH THE KYC';
+    }
+    return 'LET’S START';
+  }
+
   async handleConfirm(): Promise<void> {
+    if (sessionStorage.getItem('access-token')) {
+      this.$emit('confirm-start');
+    }
+
     loadScript('https://auth-test.paywings.io/auth/sdk.js')
       .then(() => {
         const conf = {
@@ -90,7 +101,7 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
         };
 
         try {
-          // @ts-expect-error injected variable
+          // @ts-expect-error injected class
           const auth = new PopupOAuth(conf).connect();
         } catch (error) {
           console.error('error', error);
@@ -102,8 +113,8 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
       });
 
     const accessToken = await this.getAccessToken();
-
-    this.$emit('confirm-start', accessToken);
+    this.firstPointChecked = true;
+    this.secondPointCurrent = true;
   }
 
   async getAccessToken(): Promise<string | null> {
@@ -119,6 +130,13 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
 
     await delay(ms);
     return await this.waitOnAccessTokenAvailability();
+  }
+
+  mounted(): void {
+    if (sessionStorage.getItem('access-token')) {
+      this.firstPointChecked = true;
+      this.secondPointCurrent = true;
+    }
   }
 }
 </script>

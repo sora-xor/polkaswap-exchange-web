@@ -24,27 +24,28 @@
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirmToS">
       <span class="text">ACCEPT & CONTINUE</span>
     </s-button>
-    <terms-and-conditions-dialog :visible.sync="showTermsAndConditionsDialog" />
-    <privacy-policy-dialog :visible.sync="showPrivacyPolicyDialog" />
+    <tos-dialog :visible.sync="showTermsAndConditionsDialog" :srcLink="TosExternalLinks.Terms" />
+    <tos-dialog :visible.sync="showPrivacyPolicyDialog" :srcLink="TosExternalLinks.Privacy" />
   </div>
 </template>
 
 <script lang="ts">
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { Components, TosExternalLinks } from '@/consts';
+import { lazyComponent } from '@/router';
 import TranslationMixin from '../../mixins/TranslationMixin';
 
 @Component({
   components: {
-    TermsAndConditionsDialog: lazyComponent(Components.TermsAndConditionsDialog),
-    PrivacyPolicyDialog: lazyComponent(Components.PrivacyPolicyDialog),
+    TosDialog: lazyComponent(Components.ToSDialog),
   },
 })
 export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   showTermsAndConditionsDialog = false;
   showPrivacyPolicyDialog = false;
+
+  TosExternalLinks = TosExternalLinks;
 
   handleConfirmToS(): void {
     this.$emit('confirm-tos');

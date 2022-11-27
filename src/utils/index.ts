@@ -174,9 +174,19 @@ export const getAssetDecimals = (asset: any, { internal = true } = {}): number |
 };
 
 export const getXorPerEuroRatio = async () => {
-  const priceResult = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=sora&vs_currencies=eur');
-  const parsedData = await priceResult.json();
-  return parsedData.sora.eur;
+  try {
+    const priceResult = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=sora&vs_currencies=eur');
+    const parsedData = await priceResult.json();
+    return parsedData.sora.eur;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const clearTokensFromSessionStorage = () => {
+  sessionStorage.removeItem('access-token');
+  sessionStorage.removeItem('refresh-token');
+  sessionStorage.removeItem('expiration-time');
 };
 
 export const formatAssetBalance = (

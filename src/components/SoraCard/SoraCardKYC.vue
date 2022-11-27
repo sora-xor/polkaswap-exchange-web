@@ -2,16 +2,16 @@
   <wallet-base v-loading="loading" :title="title" :show-back="showBack" @back="handleBack" class="sora-card">
     <terms-and-conditions v-if="step === KycProcess.TermsAndConditions" @confirm-tos="confirmToS" />
     <road-map v-else-if="step === KycProcess.RoadMap" @confirm-start="confirmProcess" />
-    <kyc-view v-else-if="step === KycProcess.KycView" @confirm-sms="confirmSendSms" :accessToken="accessToken" />
+    <kyc-view v-else-if="step === KycProcess.KycView" @confirm-kyc="confirmWindow" :accessToken="accessToken" />
     <confirmation-info v-else-if="step === KycProcess.ConfirmationInfo" />
   </wallet-base>
 </template>
 
 <script lang="ts">
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 import TranslationMixin from '../mixins/TranslationMixin';
 
 enum KycProcess {
@@ -33,6 +33,7 @@ enum KycProcess {
 export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   step: KycProcess = KycProcess.TermsAndConditions;
   accessToken = '';
+  isUserPassedKyc = false;
 
   KycProcess = KycProcess;
 
@@ -89,8 +90,15 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
     this.step = KycProcess.KycView;
   }
 
-  confirmSendSms(): void {
-    this.step = KycProcess.ConfirmationInfo;
+  confirmWindow(value: boolean): void {
+    console.log('value', value);
+    value ? (this.step = KycProcess.ConfirmationInfo) : (this.step = KycProcess.RoadMap);
+  }
+
+  mounted(): void {
+    if (this.isUserPassedKyc) {
+      this.step = KycProcess.KycView; // Write logic to redirect to confirmation window
+    }
   }
 }
 </script>

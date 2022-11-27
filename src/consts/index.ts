@@ -152,9 +152,7 @@ export enum Components {
   SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
   SoraCardKYC = 'SoraCard/SoraCardKYC',
   TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
-  // Subject to change
-  TermsAndConditionsDialog = 'SoraCard/policies/TermsAndConditionsDialog',
-  PrivacyPolicyDialog = 'SoraCard/policies/PrivacyPolicyDialog',
+  ToSDialog = 'SoraCard/steps/ToSDialog',
   RoadMap = 'SoraCard/steps/RoadMap',
   KycView = 'SoraCard/steps/KycView',
   ConfirmationInfo = 'SoraCard/steps/ConfirmationInfo',
@@ -311,6 +309,11 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
 export const StoreLinks = {
   AppStore: 'https://apps.apple.com/us/app/sora-dae/id1457566711',
   GooglePlay: 'https://play.google.com/store/apps/details?id=jp.co.soramitsu.sora',
+};
+
+export const TosExternalLinks = {
+  Terms: `https://soracard.com/terms/`,
+  Privacy: `https://soracard.com/privacy/`,
 };
 
 export const FaucetLink: SidebarMenuItemLink = {

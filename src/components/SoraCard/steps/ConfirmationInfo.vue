@@ -51,7 +51,7 @@ enum CardIssueStatus {
   },
 })
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  cardIssueState = CardIssueStatus.Success;
+  cardIssueState = CardIssueStatus.Wait;
 
   CardIssueStatus = CardIssueStatus;
 
