@@ -45,22 +45,23 @@
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
       :is-adding="isAddingStake"
-      @add="handleStakeAction($event, deposit)"
-      @remove="handleStakeAction($event, withdraw)"
+      @add="handleStakeAction($event, deposit, signTx)"
+      @remove="handleStakeAction($event, withdraw, signTx)"
     />
     <claim-dialog
       :visible.sync="showClaimDialog"
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
-      @confirm="handleClaimRewards"
+      @confirm="handleClaimRewards($event, signTx)"
     />
     <calculator-dialog :visible.sync="showCalculatorDialog" :pool="selectedPool" :account-pool="selectedAccountPool" />
+    <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import PageMixin from '../mixins/PageMixin';
 import { demeterLazyComponent } from '../router';
@@ -83,11 +84,13 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
     StakeDialog: demeterLazyComponent(DemeterComponents.StakeDialog),
     ClaimDialog: demeterLazyComponent(DemeterComponents.ClaimDialog),
     CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
+    ConfirmDialog: components.ConfirmDialog,
     TokenLogo: components.TokenLogo,
   },
 })
-export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) {
+export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin, mixins.ConfirmTransactionMixin) {
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<Asset>;
+  @getter.settings.isDesktop private isDesktop!: boolean;
 
   // override PageMixin
   isFarmingPage = false;
@@ -111,6 +114,19 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
         items,
       };
     });
+  }
+
+  async signTx(): Promise<boolean> {
+    if (!this.isDesktop) return true;
+
+    this.openConfirmationDialog();
+    await this.waitOnNextTxConfirmation();
+
+    if (this.isTxDialogConfirmed) {
+      return true;
+    }
+
+    return false;
   }
 }
 </script>

@@ -1,5 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import { action, getter } from '@/store/decorators';
 
@@ -109,18 +109,27 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
 
   async handleStakeAction(
     params: DemeterLiquidityParams,
-    action: (params: DemeterLiquidityParams) => Promise<void>
+    action: (params: DemeterLiquidityParams) => Promise<void>,
+    isTransactionSigned: () => Promise<boolean>
   ): Promise<void> {
+    this.showStakeDialog = false;
+
+    if (!(await isTransactionSigned())) return;
+
     await this.withNotifications(async () => {
       await action(params);
-      this.showStakeDialog = false;
+      api.lockPair();
     });
   }
 
-  async handleClaimRewards(pool: DemeterAccountPool): Promise<void> {
+  async handleClaimRewards(pool: DemeterAccountPool, isTransactionSigned: () => Promise<boolean>): Promise<void> {
+    this.showClaimDialog = false;
+
+    if (!(await isTransactionSigned())) return;
+
     await this.withNotifications(async () => {
       await this.claimRewards(pool);
-      this.showClaimDialog = false;
+      api.lockPair();
     });
   }
 }

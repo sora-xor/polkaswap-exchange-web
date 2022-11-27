@@ -37,14 +37,14 @@
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
       :is-adding="isAddingStake"
-      @add="handleStakeAction($event, deposit)"
-      @remove="handleStakeAction($event, withdraw)"
+      @add="handleStakeAction($event, deposit, signTx)"
+      @remove="handleStakeAction($event, withdraw, signTx)"
     />
     <claim-dialog
       :visible.sync="showClaimDialog"
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
-      @confirm="handleClaimRewards"
+      @confirm="handleClaimRewards($event, signTx)"
     />
 
     <calculator-dialog
@@ -53,12 +53,14 @@
       :account-pool="selectedAccountPool"
       :liquidity="selectedAccountLiquidity"
     />
+
+    <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import PageMixin from '../mixins/PageMixin';
@@ -69,7 +71,7 @@ import { DemeterComponents } from '../consts';
 import { lazyView } from '@/router';
 import { PageNames } from '@/consts';
 
-import { state } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
 
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
@@ -82,10 +84,13 @@ import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types'
     StakeDialog: demeterLazyComponent(DemeterComponents.StakeDialog),
     ClaimDialog: demeterLazyComponent(DemeterComponents.ClaimDialog),
     CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
+    ConfirmDialog: components.ConfirmDialog,
   },
 })
-export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMixin) {
+export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMixin, mixins.ConfirmTransactionMixin) {
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
+
+  @getter.settings.isDesktop private isDesktop!: boolean;
 
   get selectedAccountLiquidity(): Nullable<AccountLiquidity> {
     return this.accountLiquidity.find((liquidity) => liquidity.secondAddress === this.poolAsset) ?? null;
@@ -96,6 +101,19 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
     if (liquidity.firstAddress !== XOR.address) return [];
 
     return this.getAvailablePools(this.pools[liquidity.secondAddress]);
+  }
+
+  async signTx(): Promise<boolean> {
+    if (!this.isDesktop) return true;
+
+    this.openConfirmationDialog();
+    await this.waitOnNextTxConfirmation();
+
+    if (this.isTxDialogConfirmed) {
+      return true;
+    }
+
+    return false;
   }
 }
 </script>
