@@ -154,8 +154,8 @@ export default class AddLiquidity extends Mixins(
   mixins.ConfirmTransactionMixin,
   BaseTokenPairMixin,
   NetworkFeeDialogMixin,
-  TokenSelectMixin,
-  ConfirmDialogMixin
+  ConfirmDialogMixin,
+  TokenSelectMixin
 ) {
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
@@ -299,7 +299,7 @@ export default class AddLiquidity extends Mixins(
       }
       this.isWarningFeeDialogConfirmed = false;
     }
-    this.showConfirmDialog = true;
+    this.openConfirmDialog();
   }
 
   handleMaxValue(token: Nullable<AccountAsset>, setValue: (v: string) => Promise<void>): void {
@@ -345,24 +345,24 @@ export default class AddLiquidity extends Mixins(
   }
 
   async handleConfirmAddLiquidity(): Promise<void> {
-    if (this.isDesktop) {
-      this.openConfirmationDialog();
-      await this.waitOnNextTxConfirmation();
-      if (!this.isTxDialogConfirmed) {
-        return;
+    await this.handleConfirmDialog(async () => {
+      if (this.isDesktop) {
+        this.openConfirmationDialog();
+        await this.waitOnNextTxConfirmation();
+        if (!this.isTxDialogConfirmed) {
+          return;
+        }
       }
-    }
 
-    try {
-      await this.withNotifications(this.addLiquidity);
-      api.lockPair();
-      this.handleBack();
-    } catch (error: any) {
-      console.error(error);
-      this.$alert(this.t(error.message), { title: this.t('errorText') });
-    }
-
-    this.showConfirmDialog = false;
+      try {
+        await this.withNotifications(this.addLiquidity);
+        api.lockPair();
+        this.handleBack();
+      } catch (error: any) {
+        console.error(error);
+        this.$alert(this.t(error.message), { title: this.t('errorText') });
+      }
+    });
   }
 
   handleBack(): void {
