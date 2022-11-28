@@ -596,7 +596,7 @@ export default class Swap extends Mixins(
       this.resetFieldTo();
       this.setExchangeB(false);
     } catch {
-      // handled in swap call
+      // handled by swap call
     }
   }
 

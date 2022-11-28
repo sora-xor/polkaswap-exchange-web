@@ -102,6 +102,8 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
               this.selectedDexId
             )
         );
+
+        api.lockPair();
       });
     }
     this.isVisible = false;

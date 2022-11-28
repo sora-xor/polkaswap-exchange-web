@@ -30,7 +30,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 
-import { state, mutation } from '@/store/decorators';
+import { state, mutation, getter } from '@/store/decorators';
 
 @Component({
   components: { DialogBase: components.DialogBase },
@@ -38,6 +38,8 @@ import { state, mutation } from '@/store/decorators';
 export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
   @state.referrals.referrer private referrer!: string;
   @state.referrals.storageReferrer private storageReferrer!: string;
+
+  @getter.settings.isDesktop private isDesktop!: boolean;
 
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
   @mutation.referrals.approveReferrer private approveReferrer!: (value: boolean) => void;
@@ -56,24 +58,24 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, m
 
   async handleConfirmInviteUser(): Promise<void> {
     if (!this.hasReferrer) {
-      this.approveReferrer(true);
-
       this.$emit('confirm', async () => {
+        this.approveReferrer(true);
         try {
           await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferrer));
-          this.resetStorageReferrer();
         } catch (error) {
           this.approveReferrer(false);
         }
+        this.isVisible = false;
       });
+    } else {
+      this.isVisible = false;
     }
-    this.isVisible = false;
   }
 
   @Watch('isVisible')
   private isDialogVisible(isVisible: boolean): void {
     if (!isVisible && this.storageReferrer) {
-      // this.resetStorageReferrer();
+      this.resetStorageReferrer();
     }
   }
 }
