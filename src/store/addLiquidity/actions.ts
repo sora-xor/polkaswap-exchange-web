@@ -70,20 +70,6 @@ function updateSecondTokenValue(context: ActionContext<any, any>) {
   estimateMinted(context);
 }
 
-async function checkLiquidity(context: ActionContext<any, any>): Promise<void> {
-  const { getters, commit } = addLiquidityActionContext(context);
-  const { firstToken, secondToken } = getters;
-
-  if (firstToken && secondToken) {
-    try {
-      const isAvailable = await api.poolXyk.check(firstToken.address, secondToken.address);
-      commit.setIsAvailable(isAvailable);
-    } catch (error) {
-      console.error('addLiquidity:checkLiquidity', error);
-    }
-  }
-}
-
 const actions = defineActions({
   async setFirstTokenAddress(context, address: string): Promise<void> {
     const { commit, dispatch, getters, rootGetters } = addLiquidityActionContext(context);
@@ -103,8 +89,7 @@ const actions = defineActions({
       balanceSubscriptions.add('first', { updateBalance, token: getters.firstToken });
     }
 
-    await checkLiquidity(context);
-
+    dispatch.subscribeOnAvailability();
     dispatch.subscribeOnReserves();
   },
 
@@ -126,7 +111,7 @@ const actions = defineActions({
       balanceSubscriptions.add('second', { updateBalance, token: getters.secondToken });
     }
 
-    await checkLiquidity(context);
+    dispatch.subscribeOnAvailability();
     dispatch.subscribeOnReserves();
   },
 
@@ -191,16 +176,39 @@ const actions = defineActions({
   async resetData(context): Promise<void> {
     const { commit } = addLiquidityActionContext(context);
 
+    balanceSubscriptions.remove('first', {
+      updateBalance: (balance: Nullable<AccountBalance>) => commit.setFirstTokenBalance(balance),
+    });
     balanceSubscriptions.remove('second', {
       updateBalance: (balance: Nullable<AccountBalance>) => commit.setSecondTokenBalance(balance),
     });
 
+    commit.resetAvailabilitySubscription();
     commit.resetReserveSubscription();
 
     commit.setFirstTokenAddress();
     commit.setSecondTokenAddress();
     commit.setFirstTokenValue();
     commit.setSecondTokenValue();
+  },
+
+  subscribeOnAvailability(context): void {
+    const { commit, getters } = addLiquidityActionContext(context);
+    const { firstToken, secondToken } = getters;
+
+    commit.resetAvailabilitySubscription();
+
+    if (firstToken && secondToken) {
+      // [TODO]: subscription to js-lib
+      const subscription = api.apiRx.query.poolXYK
+        .properties(firstToken.address, secondToken.address)
+        .subscribe((result) => {
+          const isAvailable = !!result && result.isSome;
+          commit.setIsAvailable(isAvailable);
+        });
+
+      commit.setAvailabilitySubscription(subscription);
+    }
   },
 
   subscribeOnReserves(context): void {

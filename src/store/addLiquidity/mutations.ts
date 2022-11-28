@@ -35,6 +35,13 @@ const mutations = defineMutations<AddLiquidityState>()({
     state.reserveSubscription?.unsubscribe();
     state.reserveSubscription = null;
   },
+  setAvailabilitySubscription(state, subscription: Subscription): void {
+    state.availabilitySubscription = subscription;
+  },
+  resetAvailabilitySubscription(state): void {
+    state.availabilitySubscription?.unsubscribe();
+    state.availabilitySubscription = null;
+  },
   setMintedAndSupply(state, { minted, pts }: { minted: CodecString; pts: CodecString }): void {
     state.minted = minted;
     state.totalSupply = pts;
