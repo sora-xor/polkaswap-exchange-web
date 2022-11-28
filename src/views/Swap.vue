@@ -189,12 +189,12 @@ export default class Swap extends Mixins(
   @state.swap.toValue toValue!: string;
 
   @getter.assets.xor private xor!: AccountAsset;
-  @getter.swap.swapLiquiditySource private liquiditySource!: LiquiditySourceTypes;
+  @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
-  @getter.swap.tokenTo tokenTo!: AccountAsset;
+  @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
+  @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.swap.isAvailable isAvailable!: boolean;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
   @state.settings.slippageTolerance private slippageTolerance!: string;
@@ -581,36 +581,22 @@ export default class Swap extends Mixins(
     this.showConfirmSwapDialog = true;
   }
 
-  async confirmSwap(isSwapConfirmed: boolean): Promise<void> {
-    if (isSwapConfirmed) {
-      if (this.isDesktop) {
-        this.openConfirmationDialog();
-        await this.waitOnNextTxConfirmation();
-        if (!this.isTxDialogConfirmed) {
-          return;
-        }
+  async confirmSwap(swap: AsyncVoidFn): Promise<void> {
+    if (this.isDesktop) {
+      this.openConfirmationDialog();
+      await this.waitOnNextTxConfirmation();
+      if (!this.isTxDialogConfirmed) {
+        return;
       }
+    }
 
-      try {
-        await this.withNotifications(
-          async () =>
-            await api.swap.execute(
-              this.tokenFrom,
-              this.tokenTo,
-              this.fromValue,
-              this.toValue,
-              this.slippageTolerance,
-              this.isExchangeB,
-              this.liquiditySource
-            )
-        );
-      } catch {}
-
-      api.lockPair();
-
+    try {
+      swap();
       this.resetFieldFrom();
       this.resetFieldTo();
       this.setExchangeB(false);
+    } catch {
+      // handled in swap call
     }
   }
 

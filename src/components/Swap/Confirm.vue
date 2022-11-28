@@ -38,9 +38,10 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -54,11 +55,14 @@ import { state, getter } from '@/store/decorators';
   },
 })
 export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
+  @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;
   @state.swap.isExchangeB isExchangeB!: boolean;
+  @state.swap.selectedDexId private selectedDexId!: number;
 
   @getter.swap.minMaxReceived private minMaxReceived!: CodecString;
+  @getter.swap.swapLiquiditySource private liquiditySource!: LiquiditySourceTypes;
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
   @getter.swap.tokenTo tokenTo!: AccountAsset;
 
@@ -83,9 +87,22 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
         this.t('exchange.insufficientBalance', { tokenSymbol: this.tokenFrom ? this.tokenFrom.symbol : '' }),
         { title: this.t('errorText') }
       );
-      this.$emit('confirm');
     } else {
-      this.$emit('confirm', true);
+      this.$emit('confirm', async () => {
+        await this.withNotifications(
+          async () =>
+            await api.swap.execute(
+              this.tokenFrom,
+              this.tokenTo,
+              this.fromValue,
+              this.toValue,
+              this.slippageTolerance,
+              this.isExchangeB,
+              this.liquiditySource,
+              this.selectedDexId
+            )
+        );
+      });
     }
     this.isVisible = false;
   }
