@@ -34,7 +34,7 @@ async function estimateMinted(context: ActionContext<any, any>): Promise<void> {
   }
 }
 
-function updateFirstTokenValue(context: ActionContext<any, any>) {
+function updateFirstTokenValue(context: ActionContext<any, any>): void {
   const { getters, commit, state } = addLiquidityActionContext(context);
 
   const value = state.secondTokenValue;
@@ -52,7 +52,7 @@ function updateFirstTokenValue(context: ActionContext<any, any>) {
   estimateMinted(context);
 }
 
-function updateSecondTokenValue(context: ActionContext<any, any>) {
+function updateSecondTokenValue(context: ActionContext<any, any>): void {
   const { getters, commit, state } = addLiquidityActionContext(context);
 
   const value = state.firstTokenValue;

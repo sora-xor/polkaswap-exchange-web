@@ -5,11 +5,12 @@ import { FPNumber } from '@sora-substrate/util';
 import type { ActionContext } from 'vuex';
 
 import { removeLiquidityActionContext } from '@/store/removeLiquidity';
+import { FocusedField } from './types';
 import type { LiquidityParams } from '../pool/types';
 
 async function getTotalSupply(context: ActionContext<any, any>): Promise<void> {
   const { state, getters, commit } = removeLiquidityActionContext(context);
-  const { firstToken, secondToken } = getters;
+  const { firstToken, secondToken, reserveA, reserveB } = getters;
 
   if (!(firstToken && secondToken)) {
     return;
@@ -20,8 +21,8 @@ async function getTotalSupply(context: ActionContext<any, any>): Promise<void> {
       secondToken,
       state.firstTokenAmount,
       state.secondTokenAmount,
-      state.reserveA,
-      state.reserveB
+      reserveA,
+      reserveB
     );
     commit.setTotalSupply(pts);
   } catch (error) {
@@ -30,19 +31,66 @@ async function getTotalSupply(context: ActionContext<any, any>): Promise<void> {
   }
 }
 
-async function getLiquidityReserves(context: ActionContext<any, any>): Promise<void> {
-  const { state, commit } = removeLiquidityActionContext(context);
-  try {
-    const [reserveA, reserveB] = await api.poolXyk.getReserves(state.firstTokenAddress, state.secondTokenAddress);
-    commit.setLiquidityReserves({ reserveA, reserveB });
-  } catch (error) {
-    console.error('removeLiquidity:getLiquidityReserves', error);
+function updateFirstTokenAmount(context: ActionContext<any, any>): void {
+  const { state, commit, getters } = removeLiquidityActionContext(context);
+
+  const value = state.secondTokenAmount;
+
+  if (value && Number.isFinite(+value)) {
+    const part = new FPNumber(value).div(getters.secondTokenBalance);
+
+    commit.setRemovePart(Math.round(part.mul(FPNumber.HUNDRED).toNumber()).toString());
+    commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
+    commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance).toString());
+  } else {
+    commit.setRemovePart();
+    commit.setLiquidityAmount();
+    commit.setFirstTokenAmount();
   }
+
+  getRemoveLiquidityData(context);
+}
+
+function updateSecondTokenAmount(context: ActionContext<any, any>): void {
+  const { state, commit, getters } = removeLiquidityActionContext(context);
+
+  const value = state.firstTokenAmount;
+
+  if (value && Number.isFinite(+value)) {
+    const part = Number.isFinite(+value) ? new FPNumber(value).div(getters.firstTokenBalance) : FPNumber.ZERO;
+
+    commit.setRemovePart(Math.round(part.mul(FPNumber.HUNDRED).toNumber()).toString());
+    commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
+    commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance).toString());
+  } else {
+    commit.setRemovePart();
+    commit.setLiquidityAmount();
+    commit.setSecondTokenAmount();
+  }
+
+  getRemoveLiquidityData(context);
+}
+
+function updateRemovePart(context: ActionContext<any, any>): void {
+  const { state, commit, getters } = removeLiquidityActionContext(context);
+
+  const part = new FPNumber(state.removePart).div(FPNumber.HUNDRED);
+
+  if (!part.isZero()) {
+    commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
+    commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance).toString());
+    commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance).toString());
+  } else {
+    commit.setLiquidityAmount();
+    commit.setFirstTokenAmount();
+    commit.setSecondTokenAmount();
+  }
+
+  getRemoveLiquidityData(context);
 }
 
 const getRemoveLiquidityData = debounce(
   async (context: ActionContext<any, any>) => {
-    await getLiquidityReserves(context);
     await getTotalSupply(context);
   },
   500,
@@ -60,68 +108,29 @@ const actions = defineActions({
       console.error(error);
     }
   },
-  async setRemovePart(context, removePart: number): Promise<void> {
-    const { commit, state, getters } = removeLiquidityActionContext(context);
+  async setRemovePart(context, removePart: string): Promise<void> {
+    const { commit } = removeLiquidityActionContext(context);
 
-    if (!state.focusedField || state.focusedField === 'removePart') {
-      commit.setFocusedField('removePart');
-      const partAmount = new FPNumber(Math.round(removePart));
+    commit.setFocusedField(FocusedField.Percent);
+    commit.setRemovePart(removePart);
 
-      if (removePart) {
-        const part = partAmount.div(FPNumber.HUNDRED);
-        commit.setRemovePart(partAmount.toNumber());
-        commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
-        commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance).toString());
-        commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance).toString());
-      } else {
-        commit.setRemovePart();
-        commit.setLiquidityAmount();
-        commit.setFirstTokenAmount();
-        commit.setSecondTokenAmount();
-      }
-
-      await getRemoveLiquidityData(context);
-    }
+    updateRemovePart(context);
   },
-  async setFirstTokenAmount(context, firstTokenAmount: string): Promise<void> {
-    const { commit, state, getters } = removeLiquidityActionContext(context);
+  async setFirstTokenAmount(context, value: string): Promise<void> {
+    const { commit } = removeLiquidityActionContext(context);
 
-    if (!state.focusedField || state.focusedField === 'firstTokenAmount') {
-      commit.setFocusedField('firstTokenAmount');
-      if (firstTokenAmount) {
-        if (!Number.isNaN(firstTokenAmount)) {
-          const part = new FPNumber(firstTokenAmount).div(getters.firstTokenBalance);
-          commit.setRemovePart(Math.round(part.mul(FPNumber.HUNDRED).toNumber()));
-          commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
-          commit.setFirstTokenAmount(firstTokenAmount);
-          commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance).toString());
-        }
-      } else {
-        commit.setFirstTokenAmount();
-      }
+    commit.setFocusedField(FocusedField.First);
+    commit.setFirstTokenAmount(value);
 
-      await getRemoveLiquidityData(context);
-    }
+    updateSecondTokenAmount(context);
   },
-  async setSecondTokenAmount(context, secondTokenAmount: string): Promise<void> {
-    const { commit, state, getters } = removeLiquidityActionContext(context);
+  async setSecondTokenAmount(context, value: string): Promise<void> {
+    const { commit } = removeLiquidityActionContext(context);
 
-    if (!state.focusedField || state.focusedField === 'secondTokenAmount') {
-      commit.setFocusedField('secondTokenAmount');
-      if (secondTokenAmount) {
-        if (!Number.isNaN(secondTokenAmount)) {
-          const part = new FPNumber(secondTokenAmount).div(getters.secondTokenBalance);
-          commit.setRemovePart(Math.round(part.mul(FPNumber.HUNDRED).toNumber()));
-          commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
-          commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance).toString());
-          commit.setSecondTokenAmount(secondTokenAmount);
-        }
-      } else {
-        commit.setSecondTokenAmount();
-      }
+    commit.setFocusedField(FocusedField.Second);
+    commit.setSecondTokenAmount(value);
 
-      await getRemoveLiquidityData(context);
-    }
+    updateFirstTokenAmount(context);
   },
   async removeLiquidity(context): Promise<void> {
     const { state, getters, rootState } = removeLiquidityActionContext(context);
@@ -133,8 +142,8 @@ const actions = defineActions({
       firstToken,
       secondToken,
       state.liquidityAmount,
-      state.reserveA,
-      state.reserveB,
+      getters.reserveA,
+      getters.reserveB,
       state.totalSupply,
       rootState.settings.slippageTolerance
     );

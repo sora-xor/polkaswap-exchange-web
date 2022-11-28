@@ -9,8 +9,8 @@ const mutations = defineMutations<RemoveLiquidityState>()({
     state.firstTokenAddress = firstAddress;
     state.secondTokenAddress = secondAddress;
   },
-  setRemovePart(state, value?: Nullable<number>): void {
-    state.removePart = value || 0;
+  setRemovePart(state, value?: Nullable<string>): void {
+    state.removePart = value || '';
   },
   setLiquidityAmount(state, value?: Nullable<string>): void {
     state.liquidityAmount = value || '';
@@ -23,10 +23,6 @@ const mutations = defineMutations<RemoveLiquidityState>()({
   },
   setTotalSupply(state, value?: Nullable<CodecString>): void {
     state.totalSupply = value || ZeroStringValue;
-  },
-  setLiquidityReserves(state, { reserveA, reserveB }: { reserveA: CodecString; reserveB: CodecString }): void {
-    state.reserveA = reserveA;
-    state.reserveB = reserveB;
   },
   setFocusedField(state, value: Nullable<FocusedField>): void {
     state.focusedField = value;

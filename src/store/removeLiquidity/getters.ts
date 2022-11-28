@@ -16,6 +16,26 @@ const getters = defineGetters<RemoveLiquidityState>()({
       (liquidity) => liquidity.firstAddress === firstTokenAddress && liquidity.secondAddress === secondTokenAddress
     );
   },
+  reserveA(...args): string {
+    const { getters } = removeLiquidityGetterContext(args);
+
+    if (!getters.liquidity) return ZeroStringValue;
+
+    const poolShare = new FPNumber(getters.liquidity.poolShare);
+    const reserve = FPNumber.fromCodecValue(getters.liquidity.firstBalance, getters.firstToken?.decimals);
+
+    return reserve.div(poolShare).toCodecString();
+  },
+  reserveB(...args): string {
+    const { getters } = removeLiquidityGetterContext(args);
+
+    if (!getters.liquidity) return ZeroStringValue;
+
+    const poolShare = new FPNumber(getters.liquidity.poolShare);
+    const reserve = FPNumber.fromCodecValue(getters.liquidity.secondBalance, getters.secondToken?.decimals);
+
+    return reserve.div(poolShare).toCodecString();
+  },
   // Liquidity full balance (without locked balance)
   liquidityBalanceFull(...args): FPNumber {
     const { getters } = removeLiquidityGetterContext(args);
