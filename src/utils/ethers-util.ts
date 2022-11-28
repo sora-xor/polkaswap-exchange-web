@@ -3,11 +3,11 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
+import { KnownAssets, KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import type { BridgeNetworks, CodecString } from '@sora-substrate/util';
 
 import axiosInstance from '../api';
 import storage from './storage';
-import { EthereumGasLimits } from '@/consts';
 
 type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
 type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
@@ -38,6 +38,44 @@ interface AbiItem {
   type: AbiType;
   gas?: number;
 }
+
+const gasLimit = {
+  approve: 70000,
+  sendERC20ToSidechain: 86000,
+  sendEthToSidechain: 50000,
+  mintTokensByPeers: 255000,
+  receiveByEthereumAssetAddress: 250000,
+  receiveBySidechainAssetId: 255000,
+};
+
+export enum KnownBridgeAsset {
+  VAL = 'VAL',
+  XOR = 'XOR',
+  Other = 'OTHER',
+}
+/**
+ * It's in gwei.
+ * Zero index means ETH -> SORA
+ * First index means SORA -> ETH
+ */
+export const EthereumGasLimits = [
+  // ETH -> SORA
+  {
+    [XOR.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.sendEthToSidechain,
+    [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+  },
+  // SORA -> ETH
+  {
+    [XOR.address]: gasLimit.mintTokensByPeers,
+    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.mintTokensByPeers,
+    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.receiveBySidechainAssetId,
+    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.receiveByEthereumAssetAddress,
+    [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
+  },
+];
 
 export const ABI = {
   balance: [
@@ -134,12 +172,6 @@ export interface SubNetwork {
     VAL: { MASTER: string };
     OTHER: { MASTER: string };
   };
-}
-
-export enum KnownBridgeAsset {
-  VAL = 'VAL',
-  XOR = 'XOR',
-  Other = 'OTHER',
 }
 
 export enum ContractNetwork {
