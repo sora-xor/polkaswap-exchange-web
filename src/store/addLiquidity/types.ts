@@ -2,7 +2,10 @@ import type { Subscription } from 'rxjs';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
-export type FocusedField = 'firstTokenValue' | 'secondTokenValue';
+export enum FocusedField {
+  First = 'firstTokenValue',
+  Second = 'secondTokenValue',
+}
 
 export type AddLiquidityState = {
   firstTokenAddress: string;

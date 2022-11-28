@@ -137,7 +137,6 @@ import { Components, PageNames } from '@/consts';
 import { hasInsufficientXorForFee } from '@/utils';
 import { getter, state, mutation, action } from '@/store/decorators';
 import type { LiquidityParams } from '@/store/pool/types';
-import type { PricesPayload } from '@/store/prices/types';
 import type { FocusedField } from '@/store/removeLiquidity/types';
 
 @Component({
@@ -166,8 +165,6 @@ export default class RemoveLiquidity extends Mixins(
   @state.removeLiquidity.firstTokenAmount firstTokenAmount!: string;
   @state.removeLiquidity.secondTokenAmount secondTokenAmount!: string;
   @state.removeLiquidity.removePart removePart!: number;
-  @state.prices.price price!: string;
-  @state.prices.priceReversed priceReversed!: string;
 
   @getter.assets.xor private xor!: Nullable<AccountAsset>;
   @getter.removeLiquidity.liquidityBalanceFull private liquidityBalanceFull!: FPNumber;
@@ -178,6 +175,8 @@ export default class RemoveLiquidity extends Mixins(
   @getter.removeLiquidity.firstTokenBalance firstTokenBalance!: FPNumber;
   @getter.removeLiquidity.secondTokenBalance secondTokenBalance!: FPNumber;
   @getter.removeLiquidity.shareOfPool shareOfPool!: string;
+  @getter.removeLiquidity.price price!: string;
+  @getter.removeLiquidity.priceReversed priceReversed!: string;
 
   @mutation.removeLiquidity.setFocusedField setFocusedField!: (field: FocusedField) => void;
   @mutation.removeLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
@@ -189,9 +188,6 @@ export default class RemoveLiquidity extends Mixins(
   @action.removeLiquidity.setFirstTokenAmount setFirstTokenAmount!: (amount: string) => Promise<void>;
   @action.removeLiquidity.setSecondTokenAmount setSecondTokenAmount!: (amount: string) => Promise<void>;
 
-  @mutation.prices.resetPrices private resetPrices!: VoidFunction;
-  @action.prices.getPrices private getPrices!: (options?: PricesPayload) => Promise<void>;
-
   @Watch('removePart')
   private removePartChange(newValue: number): void {
     this.handleRemovePartChange(String(newValue));
@@ -199,8 +195,6 @@ export default class RemoveLiquidity extends Mixins(
 
   @Watch('liquidity')
   private liquidityChange(): void {
-    this.updatePrices();
-
     switch (this.focusedField) {
       case 'firstTokenAmount':
       case 'secondTokenAmount': {
@@ -236,7 +230,7 @@ export default class RemoveLiquidity extends Mixins(
       if (!this.liquidity) {
         return this.handleBack();
       }
-      this.updatePrices();
+
       this.addListenerToSliderDragButton();
     });
   }
@@ -244,7 +238,6 @@ export default class RemoveLiquidity extends Mixins(
   beforeDestroy(): void {
     this.removeListenerFromSliderDragButton();
     this.resetData();
-    this.resetPrices();
   }
 
   get firstTokenAddress(): string {
@@ -337,16 +330,6 @@ export default class RemoveLiquidity extends Mixins(
 
   getTokenMaxAmount(tokenBalance: FPNumber): string {
     return tokenBalance.toString();
-  }
-
-  private updatePrices(): void {
-    const { firstTokenBalance, secondTokenBalance } = this;
-    this.getPrices({
-      assetAAddress: this.firstTokenAddress ?? this.firstToken.address,
-      assetBAddress: this.secondTokenAddress ?? this.secondToken.address,
-      amountA: firstTokenBalance.toString(),
-      amountB: secondTokenBalance.toString(),
-    });
   }
 
   async handleTokenChange(value: string, setValue: (v: any) => Promise<any>): Promise<any> {

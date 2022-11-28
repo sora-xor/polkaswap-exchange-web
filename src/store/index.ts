@@ -4,7 +4,6 @@ import { createDirectStore, StoreOrModuleOptions } from 'direct-vuex';
 import { vuex } from '@soramitsu/soraneo-wallet-web';
 import type { DirectActions, DirectGetters, DirectMutations, DirectState } from 'direct-vuex/types/direct-types';
 
-import prices from './prices';
 import router from './router';
 import web3 from './web3';
 import assets from './assets';
@@ -23,7 +22,6 @@ Vue.use(Vuex);
 
 const modules = {
   wallet: vuex.walletModules.wallet,
-  prices,
   router,
   web3,
   assets,

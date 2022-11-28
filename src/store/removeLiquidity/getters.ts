@@ -1,5 +1,6 @@
 import { defineGetters } from 'direct-vuex';
 import { FPNumber } from '@sora-substrate/util';
+import { api } from '@soramitsu/soraneo-wallet-web';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import { removeLiquidityGetterContext } from '@/store/removeLiquidity';
@@ -93,6 +94,22 @@ const getters = defineGetters<RemoveLiquidityState>()({
     if (balance.isZero() || totalSupply.isZero() || totalSupplyAfter.isZero()) return ZeroStringValue;
 
     return balance.sub(removed).div(totalSupplyAfter).mul(FPNumber.HUNDRED).toLocaleString() || ZeroStringValue;
+  },
+  price(...args): string {
+    const { getters } = removeLiquidityGetterContext(args);
+    const { firstToken, secondToken, liquidity } = getters;
+    if (!(liquidity && firstToken && secondToken)) {
+      return ZeroStringValue;
+    }
+    return api.divideAssets(firstToken, secondToken, liquidity.firstBalance, liquidity.secondBalance, false);
+  },
+  priceReversed(...args): string {
+    const { getters } = removeLiquidityGetterContext(args);
+    const { firstToken, secondToken, liquidity } = getters;
+    if (!(liquidity && firstToken && secondToken)) {
+      return ZeroStringValue;
+    }
+    return api.divideAssets(firstToken, secondToken, liquidity.firstBalance, liquidity.secondBalance, true);
   },
 });
 

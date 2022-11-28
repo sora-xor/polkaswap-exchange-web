@@ -16,7 +16,7 @@
         :value="firstTokenValue"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setFirstTokenValue)"
-        @focus="setFocusedField('firstTokenValue')"
+        @focus="setFocusedField(FocusedField.First)"
         @max="handleAddLiquidityMaxValue($event, setFirstTokenValue)"
         @select="openSelectTokenDialog(true)"
       />
@@ -32,7 +32,7 @@
         :value="secondTokenValue"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setSecondTokenValue)"
-        @focus="setFocusedField('secondTokenValue')"
+        @focus="setFocusedField(FocusedField.Second)"
         @max="handleAddLiquidityMaxValue($event, setSecondTokenValue)"
         @select="openSelectTokenDialog(false)"
       />
@@ -127,9 +127,8 @@ import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { getter, action, mutation, state } from '@/store/decorators';
 import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBalance } from '@/utils';
+import { FocusedField } from '@/store/addLiquidity/types';
 import type { LiquidityParams } from '@/store/pool/types';
-import type { FocusedField } from '@/store/addLiquidity/types';
-import type { PricesPayload } from '@/store/prices/types';
 
 type SetValue = (v: string) => Promise<void>;
 
@@ -153,17 +152,15 @@ export default class AddLiquidity extends Mixins(
   ConfirmDialogMixin,
   TokenSelectMixin
 ) {
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+  readonly FocusedField = FocusedField;
 
   @state.settings.slippageTolerance slippageToleranceValue!: string;
-  @state.addLiquidity.focusedField private focusedField!: FocusedField;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.addLiquidity.shareOfPool shareOfPool!: string;
   @getter.addLiquidity.liquidityInfo liquidityInfo!: Nullable<AccountLiquidity>;
 
-  @action.prices.getPrices getPrices!: (options?: PricesPayload) => Promise<void>;
   @action.addLiquidity.setFirstTokenAddress setFirstTokenAddress!: (address: string) => Promise<void>;
   @action.addLiquidity.setSecondTokenAddress setSecondTokenAddress!: (address: string) => Promise<void>;
   @action.addLiquidity.setFirstTokenValue setFirstTokenValue!: (address: string) => Promise<void>;
@@ -172,7 +169,6 @@ export default class AddLiquidity extends Mixins(
   @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>;
   @action.addLiquidity.resetData resetData!: AsyncVoidFn;
 
-  @mutation.prices.resetPrices resetPrices!: VoidFunction;
   @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
 
   showSelectTokenDialog = false;
@@ -204,7 +200,6 @@ export default class AddLiquidity extends Mixins(
   }
 
   destroyed(): void {
-    this.resetPrices();
     this.resetData();
   }
 
@@ -296,16 +291,6 @@ export default class AddLiquidity extends Mixins(
 
   async handleTokenChange(value: string, setValue: SetValue): Promise<void> {
     await setValue(value);
-    this.updatePrices();
-  }
-
-  updatePrices(): void {
-    this.getPrices({
-      assetAAddress: this.firstToken?.address,
-      assetBAddress: this.secondToken?.address,
-      amountA: this.firstTokenValue,
-      amountB: this.secondTokenValue,
-    });
   }
 
   getTokenBalance(token: any): CodecString {

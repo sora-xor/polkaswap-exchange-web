@@ -6,6 +6,7 @@ import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import { addLiquidityActionContext } from '@/store/addLiquidity';
+import { FocusedField } from '@/store/addLiquidity/types';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import type { LiquidityParams } from '@/store/pool/types';
 
@@ -118,7 +119,7 @@ const actions = defineActions({
   async setFirstTokenValue(context, value: string): Promise<void> {
     const { commit } = addLiquidityActionContext(context);
 
-    commit.setFocusedField('firstTokenValue');
+    commit.setFocusedField(FocusedField.First);
     commit.setFirstTokenValue(value);
 
     updateSecondTokenValue(context);
@@ -127,7 +128,7 @@ const actions = defineActions({
   async setSecondTokenValue(context, value: string): Promise<void> {
     const { commit } = addLiquidityActionContext(context);
 
-    commit.setFocusedField('secondTokenValue');
+    commit.setFocusedField(FocusedField.Second);
     commit.setSecondTokenValue(value);
 
     updateFirstTokenValue(context);

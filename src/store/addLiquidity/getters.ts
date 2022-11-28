@@ -1,4 +1,5 @@
 import { defineGetters } from 'direct-vuex';
+import { api } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
@@ -67,6 +68,22 @@ const getters = defineGetters<AddLiquidityState>()({
     if (total.isZero() && minted.isZero()) return full.toLocaleString(); // pair created but hasn't liquidity
 
     return minted.add(existed).div(total.add(minted)).mul(full).toLocaleString() || ZeroStringValue;
+  },
+  price(...args): string {
+    const { state, getters } = addLiquidityGetterContext(args);
+    const { firstToken, secondToken } = getters;
+    if (!(firstToken && secondToken)) {
+      return ZeroStringValue;
+    }
+    return api.divideAssets(firstToken, secondToken, state.firstTokenValue, state.secondTokenValue, false);
+  },
+  priceReversed(...args): string {
+    const { state, getters } = addLiquidityGetterContext(args);
+    const { firstToken, secondToken } = getters;
+    if (!(firstToken && secondToken)) {
+      return ZeroStringValue;
+    }
+    return api.divideAssets(firstToken, secondToken, state.firstTokenValue, state.secondTokenValue, true);
   },
 });
 
