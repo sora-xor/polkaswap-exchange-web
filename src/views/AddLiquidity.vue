@@ -61,7 +61,7 @@
       </s-button>
 
       <template v-if="areTokensSelected">
-        <div v-if="!isAvailable && emptyAssets" class="info-line-container">
+        <div v-if="!(isAvailable && isNotFirstLiquidityProvider) && emptyAssets" class="info-line-container">
           <p class="info-line-container__title">{{ t('createPair.firstLiquidityProvider') }}</p>
           <info-line>
             <template #info-line-prefix>
@@ -161,6 +161,7 @@ export default class AddLiquidity extends Mixins(
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.addLiquidity.shareOfPool shareOfPool!: string;
   @getter.addLiquidity.liquidityInfo liquidityInfo!: Nullable<AccountLiquidity>;
+  @getter.addLiquidity.isNotFirstLiquidityProvider isNotFirstLiquidityProvider!: boolean;
 
   @action.addLiquidity.setFirstTokenAddress setFirstTokenAddress!: (address: string) => Promise<void>;
   @action.addLiquidity.setSecondTokenAddress setSecondTokenAddress!: (address: string) => Promise<void>;

@@ -154,6 +154,8 @@ const actions = defineActions({
     commit.setLiquidityAmount();
     commit.setFirstTokenAmount();
     commit.setSecondTokenAmount();
+    commit.setTotalSupply();
+    commit.resetFocusedField();
   },
 });
 
