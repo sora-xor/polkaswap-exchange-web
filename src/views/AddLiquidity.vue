@@ -98,6 +98,7 @@
       :price="price"
       :price-reversed="priceReversed"
       :slippage-tolerance="slippageToleranceValue"
+      :insufficient-balance-token-symbol="insufficientBalanceTokenSymbol"
       @confirm="handleConfirmAddLiquidity"
     />
 
@@ -269,6 +270,7 @@ export default class AddLiquidity extends Mixins(
         return true;
       }
     }
+    this.insufficientBalanceTokenSymbol = '';
     return false;
   }
 
