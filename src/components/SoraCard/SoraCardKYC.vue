@@ -91,7 +91,6 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
   }
 
   confirmWindow(value: boolean): void {
-    console.log('value', value);
     value ? (this.step = KycProcess.ConfirmationInfo) : (this.step = KycProcess.RoadMap);
   }
 

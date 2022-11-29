@@ -29,10 +29,6 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
     this.$emit('confirm-sms');
   }
 
-  // openPayWings(): void {
-  //   this.embed();
-  // }
-
   async getReferenceNumber(): Promise<string> {
     const result = await fetch('https://sora-card.sc1.dev.sora2.soramitsu.co.jp/get-reference-number', {
       method: 'POST',
@@ -95,7 +91,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
           },
         })
           .on('Error', (data) => {
-            console.log('error', data);
+            // console.log('error', data);
 
             clearTokensFromSessionStorage();
 
@@ -111,7 +107,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
           .on('Success', (data) => {
             // Integrator handles UI from this point on on successful kyc
             // alert('Kyc was successfull, integrator takes control of flow from now on')
-            console.log('success', data);
+            // console.log('success', data);
             this.$emit('confirm-kyc', true);
 
             // document.getElementById('kyc')!.style.display = 'none';
