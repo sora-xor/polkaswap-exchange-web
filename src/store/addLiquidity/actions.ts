@@ -39,14 +39,17 @@ function updateFirstTokenValue(context: ActionContext<any, any>): void {
 
   const value = state.secondTokenValue;
 
-  if (!value) {
-    commit.setFirstTokenValue();
-  } else if (getters.isNotFirstLiquidityProvider) {
-    const firstTokenValue = new FPNumber(value)
-      .mul(FPNumber.fromCodecValue(getters.reserveA))
-      .div(FPNumber.fromCodecValue(getters.reserveB))
-      .toString();
-    commit.setFirstTokenValue(firstTokenValue);
+  if (getters.isNotFirstLiquidityProvider) {
+    if (!value) {
+      commit.setFirstTokenValue();
+    } else {
+      commit.setFirstTokenValue(
+        new FPNumber(value)
+          .mul(FPNumber.fromCodecValue(getters.reserveA))
+          .div(FPNumber.fromCodecValue(getters.reserveB))
+          .toString()
+      );
+    }
   }
 
   estimateMinted(context);
@@ -57,15 +60,17 @@ function updateSecondTokenValue(context: ActionContext<any, any>): void {
 
   const value = state.firstTokenValue;
 
-  if (!value) {
-    commit.setSecondTokenValue();
-  } else if (getters.isNotFirstLiquidityProvider) {
-    commit.setSecondTokenValue(
-      new FPNumber(value)
-        .mul(FPNumber.fromCodecValue(getters.reserveB))
-        .div(FPNumber.fromCodecValue(getters.reserveA))
-        .toString()
-    );
+  if (getters.isNotFirstLiquidityProvider) {
+    if (!value) {
+      commit.setSecondTokenValue();
+    } else {
+      commit.setSecondTokenValue(
+        new FPNumber(value)
+          .mul(FPNumber.fromCodecValue(getters.reserveB))
+          .div(FPNumber.fromCodecValue(getters.reserveA))
+          .toString()
+      );
+    }
   }
 
   estimateMinted(context);
