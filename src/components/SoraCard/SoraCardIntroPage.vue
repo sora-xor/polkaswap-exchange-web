@@ -33,7 +33,7 @@ import SoraCard from '@/assets/img/sora-card/sora-card.svg?inline';
 import { getter, state } from '@/store/decorators';
 import { PageNames } from '@/consts';
 import router from '@/router';
-import { delay } from '@/utils';
+import { delay, clearTokensFromSessionStorage } from '@/utils';
 import TranslationMixin from '../mixins/TranslationMixin';
 
 @Component({
@@ -91,7 +91,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
   mounted(): void {
     this.priceLoading();
-    // clearTokensFromSessionStorage()
+    clearTokensFromSessionStorage();
   }
 }
 </script>
