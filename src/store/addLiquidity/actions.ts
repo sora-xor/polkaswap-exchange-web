@@ -2,7 +2,6 @@ import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 import type { ActionContext } from 'vuex';
-import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import { addLiquidityActionContext } from '@/store/addLiquidity';
@@ -44,7 +43,7 @@ function updateTokenSubscription(context: ActionContext<any, any>, field: Focuse
   const setTokenBalance = isFirst ? setFirstTokenBalance : setSecondTokenBalance;
   const updateBalance = (balance: Nullable<AccountBalance>) => setTokenBalance(balance);
 
-  balanceSubscriptions.remove(field, { updateBalance });
+  balanceSubscriptions.remove(field);
 
   if (
     rootGetters.wallet.account.isLoggedIn &&
@@ -195,12 +194,8 @@ const actions = defineActions({
   async resetSubscriptions(context): Promise<void> {
     const { commit } = addLiquidityActionContext(context);
 
-    balanceSubscriptions.remove(FocusedField.First, {
-      updateBalance: (balance: Nullable<AccountBalance>) => commit.setFirstTokenBalance(balance),
-    });
-    balanceSubscriptions.remove(FocusedField.Second, {
-      updateBalance: (balance: Nullable<AccountBalance>) => commit.setSecondTokenBalance(balance),
-    });
+    balanceSubscriptions.remove(FocusedField.First);
+    balanceSubscriptions.remove(FocusedField.Second);
 
     commit.resetAvailabilitySubscription();
     commit.resetReserveSubscription();

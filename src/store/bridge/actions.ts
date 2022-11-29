@@ -53,7 +53,7 @@ const actions = defineActions({
     const { getters, commit, rootGetters } = bridgeActionContext(context);
     const updateBalance = (balance: Nullable<AccountBalance>) => commit.setAssetBalance(balance);
 
-    balanceSubscriptions.remove('asset', { updateBalance });
+    balanceSubscriptions.remove('asset');
 
     if (
       rootGetters.wallet.account.isLoggedIn &&
@@ -64,10 +64,7 @@ const actions = defineActions({
     }
   },
   async resetBalanceSubscription(context): Promise<void> {
-    const { commit } = bridgeActionContext(context);
-    balanceSubscriptions.remove('asset', {
-      updateBalance: (balance: Nullable<AccountBalance>) => commit.setAssetBalance(balance),
-    });
+    balanceSubscriptions.remove('asset');
   },
   async setAssetAddress(context, address?: string): Promise<void> {
     const { commit, dispatch } = bridgeActionContext(context);
