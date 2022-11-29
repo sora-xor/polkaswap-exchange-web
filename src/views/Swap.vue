@@ -219,13 +219,6 @@ export default class Swap extends Mixins(
     this.subscribeOnSwapReserves();
   }
 
-  @Watch('isLoggedIn')
-  private handleLoggedInStateChange(isLoggedIn: boolean, wasLoggedIn: boolean): void {
-    if (!wasLoggedIn && isLoggedIn) {
-      this.recountSwapValues();
-    }
-  }
-
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean) {
     if (nodeConnected) {
