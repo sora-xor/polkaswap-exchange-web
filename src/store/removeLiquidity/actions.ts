@@ -1,4 +1,3 @@
-import debounce from 'lodash/debounce';
 import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
@@ -7,29 +6,6 @@ import type { ActionContext } from 'vuex';
 import { removeLiquidityActionContext } from '@/store/removeLiquidity';
 import { FocusedField } from './types';
 import type { LiquidityParams } from '../pool/types';
-
-async function getTotalSupply(context: ActionContext<any, any>): Promise<void> {
-  const { state, getters, commit } = removeLiquidityActionContext(context);
-  const { firstToken, secondToken, reserveA, reserveB } = getters;
-
-  if (!(firstToken && secondToken)) {
-    return;
-  }
-  try {
-    const [_, pts] = await api.poolXyk.estimatePoolTokensMinted(
-      firstToken,
-      secondToken,
-      state.firstTokenAmount,
-      state.secondTokenAmount,
-      reserveA,
-      reserveB
-    );
-    commit.setTotalSupply(pts);
-  } catch (error) {
-    console.error('removeLiquidity:getTotalSupply', error);
-    commit.setTotalSupply();
-  }
-}
 
 function updateFirstTokenAmount(context: ActionContext<any, any>): void {
   const { state, commit, getters } = removeLiquidityActionContext(context);
@@ -47,8 +23,6 @@ function updateFirstTokenAmount(context: ActionContext<any, any>): void {
     commit.setLiquidityAmount();
     commit.setFirstTokenAmount();
   }
-
-  getRemoveLiquidityData(context);
 }
 
 function updateSecondTokenAmount(context: ActionContext<any, any>): void {
@@ -67,8 +41,6 @@ function updateSecondTokenAmount(context: ActionContext<any, any>): void {
     commit.setLiquidityAmount();
     commit.setSecondTokenAmount();
   }
-
-  getRemoveLiquidityData(context);
 }
 
 function updateRemovePart(context: ActionContext<any, any>): void {
@@ -85,21 +57,39 @@ function updateRemovePart(context: ActionContext<any, any>): void {
     commit.setFirstTokenAmount();
     commit.setSecondTokenAmount();
   }
-
-  getRemoveLiquidityData(context);
 }
-
-const getRemoveLiquidityData = debounce(getTotalSupply, 500, { leading: true });
 
 const actions = defineActions({
   async setLiquidity(context, { firstAddress, secondAddress }: LiquidityParams): Promise<void> {
-    const { commit } = removeLiquidityActionContext(context);
+    const { commit, dispatch } = removeLiquidityActionContext(context);
     try {
       commit.setAddresses({ firstAddress, secondAddress });
 
-      await getRemoveLiquidityData(context);
+      await dispatch.getTotalSupply();
     } catch (error) {
       console.error(error);
+    }
+  },
+  // [TODO]: add total suuply to account liquidity
+  async getTotalSupply(context: ActionContext<any, any>): Promise<void> {
+    const { state, getters, commit } = removeLiquidityActionContext(context);
+    const { firstToken, secondToken, reserveA, reserveB } = getters;
+
+    if (firstToken && secondToken) {
+      try {
+        const [_, pts] = await api.poolXyk.estimatePoolTokensMinted(
+          firstToken,
+          secondToken,
+          state.firstTokenAmount,
+          state.secondTokenAmount,
+          reserveA,
+          reserveB
+        );
+        commit.setTotalSupply(pts);
+      } catch (error) {
+        console.error('removeLiquidity:getTotalSupply', error);
+        commit.setTotalSupply();
+      }
     }
   },
   async setRemovePart(context, removePart: string): Promise<void> {

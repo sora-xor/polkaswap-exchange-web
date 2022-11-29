@@ -188,6 +188,7 @@ export default class RemoveLiquidity extends Mixins(
   @action.removeLiquidity.resetData private resetData!: AsyncVoidFn;
   @action.removeLiquidity.setFirstTokenAmount setFirstTokenAmount!: (amount: string) => Promise<void>;
   @action.removeLiquidity.setSecondTokenAmount setSecondTokenAmount!: (amount: string) => Promise<void>;
+  @action.removeLiquidity.getTotalSupply getTotalSupply!: AsyncVoidFn;
 
   @Watch('liquidity', { deep: true })
   private liquidityChange(): void {
@@ -210,6 +211,7 @@ export default class RemoveLiquidity extends Mixins(
         break;
       }
     }
+    this.getTotalSupply();
   }
 
   sliderInput: any;
