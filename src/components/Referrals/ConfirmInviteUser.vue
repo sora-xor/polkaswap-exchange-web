@@ -30,7 +30,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 
-import { state, mutation, getter } from '@/store/decorators';
+import { state, mutation } from '@/store/decorators';
 
 @Component({
   components: { DialogBase: components.DialogBase },
@@ -38,8 +38,6 @@ import { state, mutation, getter } from '@/store/decorators';
 export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
   @state.referrals.referrer private referrer!: string;
   @state.referrals.storageReferrer private storageReferrer!: string;
-
-  @getter.settings.isDesktop private isDesktop!: boolean;
 
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
   @mutation.referrals.approveReferrer private approveReferrer!: (value: boolean) => void;
@@ -62,6 +60,7 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, m
         this.approveReferrer(true);
         try {
           await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferrer));
+          api.lockPair();
         } catch (error) {
           this.approveReferrer(false);
         }

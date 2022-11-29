@@ -20,7 +20,7 @@
         class="action-button s-typography-button--large"
         type="primary"
         :disabled="isConfirmBondDisabled"
-        @click="handleConfirmBond"
+        @click="openConfirmBond"
       >
         <template v-if="hasZeroAmount">
           {{ t('buttons.enterAmount') }}
@@ -175,33 +175,26 @@ export default class ReferralBonding extends Mixins(
     this.handleInputXor(getMaxValue(this.xor, this.networkFee, false, this.isBondedBalance));
   }
 
-  async handleConfirmBond(): Promise<void> {
+  openConfirmBond(): void {
+    this.showConfirmBondDialog = true;
+  }
+
+  async confirmBond(bond: AsyncVoidFn): Promise<void> {
     if (this.isDesktop) {
       this.openConfirmationDialog();
       await this.waitOnNextTxConfirmation();
       if (!this.isTxDialogConfirmed) {
         return;
       }
-      this.confirmBond();
-    } else {
-      this.showConfirmBondDialog = true;
     }
-  }
 
-  async confirmBond(): Promise<void> {
     try {
-      await this.withNotifications(
-        async () =>
-          await (this.isBond
-            ? api.referralSystem.reserveXor(this.amount)
-            : api.referralSystem.unreserveXor(this.amount))
-      );
-
-      api.lockPair();
-
+      bond();
       this.resetAmount();
       this.handleBack();
-    } catch {}
+    } catch {
+      // handled by bond call
+    }
   }
 
   handleBack(): void {

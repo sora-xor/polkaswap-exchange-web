@@ -77,8 +77,17 @@ export default class ConfirmBonding extends Mixins(
   }
 
   async handleConfirmBonding(): Promise<void> {
-    this.$emit('confirm');
-    this.isVisible = false;
+    this.$emit('confirm', async () => {
+      await this.withNotifications(
+        async () =>
+          await (this.isBond
+            ? api.referralSystem.reserveXor(this.amount)
+            : api.referralSystem.unreserveXor(this.amount))
+      );
+      api.lockPair();
+
+      this.isVisible = false;
+    });
   }
 }
 </script>
