@@ -18,6 +18,7 @@ interface SortData {
 export default class SortButton extends Vue {
   @Prop({ default: '', type: String }) readonly name!: string;
   @Prop({ default: () => ({}), type: Object }) readonly sort!: SortData;
+  @Prop({ default: SortDirection.DESC, type: String }) readonly defaultSort!: SortDirection;
 
   get active(): boolean {
     return this.name === this.sort.property;
@@ -36,9 +37,16 @@ export default class SortButton extends Vue {
   }
 
   onClick(): void {
+    const order =
+      this.name === this.sort.property
+        ? this.sort.order === SortDirection.ASC
+          ? SortDirection.DESC
+          : SortDirection.ASC
+        : this.defaultSort;
+
     this.$emit('change-sort', {
       property: this.name,
-      order: this.sort.order === SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC,
+      order,
     });
   }
 }

@@ -147,6 +147,7 @@ import { gql } from '@urql/core';
 import { FPNumber } from '@sora-substrate/util';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
+import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { AmountWithSuffix } from '@/types/formats';
 
@@ -231,6 +232,9 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   @getter.assets.whitelistAssets private items!: Array<Asset>;
 
   tokensData: Record<string, TokenData> = {};
+  // override ExplorePageMixin
+  order = SortDirection.DESC;
+  property = 'tvl';
 
   get hasTokensData(): boolean {
     return Object.keys(this.tokensData).length !== 0;
