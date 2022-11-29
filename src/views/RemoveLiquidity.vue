@@ -37,7 +37,7 @@
         <div slot="bottom">
           <s-slider
             class="slider-container"
-            :value="!!removePart ? Number(removePart) : undefined"
+            :value="sliderValue"
             :disabled="liquidityLocked"
             :showTooltip="false"
             @change="handleRemovePartChange"
@@ -235,6 +235,10 @@ export default class RemoveLiquidity extends Mixins(
     this.resetData();
   }
 
+  get sliderValue(): Nullable<number> {
+    return this.removePart ? Number(this.removePart) : undefined;
+  }
+
   get firstTokenAddress(): string {
     return this.$route.params.firstAddress;
   }
@@ -311,10 +315,8 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   handleRemovePartChange(value: string | number): void {
-    const prepared = String(value);
-
-    if (prepared !== this.removePart) {
-      this.setRemovePart(prepared);
+    if (Number(value) !== Number(this.removePart)) {
+      this.setRemovePart(String(value));
     }
   }
 

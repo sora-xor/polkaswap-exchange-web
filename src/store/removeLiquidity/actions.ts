@@ -89,13 +89,7 @@ function updateRemovePart(context: ActionContext<any, any>): void {
   getRemoveLiquidityData(context);
 }
 
-const getRemoveLiquidityData = debounce(
-  async (context: ActionContext<any, any>) => {
-    await getTotalSupply(context);
-  },
-  500,
-  { leading: true }
-);
+const getRemoveLiquidityData = debounce(getTotalSupply, 500, { leading: true });
 
 const actions = defineActions({
   async setLiquidity(context, { firstAddress, secondAddress }: LiquidityParams): Promise<void> {
