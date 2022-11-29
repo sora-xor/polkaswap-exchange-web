@@ -22,7 +22,7 @@ function updateTokenSubscription(context: ActionContext<any, any>, dir: Directio
 
   const token = dir === Direction.From ? tokenFrom : tokenTo;
   const setTokenBalance = dir === Direction.From ? setTokenFromBalance : setTokenToBalance;
-  const updateBalance = (balance: AccountBalance) => setTokenBalance(balance);
+  const updateBalance = (balance: Nullable<AccountBalance>) => setTokenBalance(balance);
 
   balanceSubscriptions.remove(dir, { updateBalance });
 
@@ -88,10 +88,10 @@ const actions = defineActions({
   async resetSubscriptions(context): Promise<void> {
     const { commit } = swapActionContext(context);
     balanceSubscriptions.remove(Direction.From, {
-      updateBalance: (balance: AccountBalance) => commit.setTokenFromBalance(balance),
+      updateBalance: (balance: Nullable<AccountBalance>) => commit.setTokenFromBalance(balance),
     });
     balanceSubscriptions.remove(Direction.To, {
-      updateBalance: (balance: AccountBalance) => commit.setTokenToBalance(balance),
+      updateBalance: (balance: Nullable<AccountBalance>) => commit.setTokenToBalance(balance),
     });
   },
   async reset(context): Promise<void> {

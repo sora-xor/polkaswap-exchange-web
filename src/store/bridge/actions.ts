@@ -51,7 +51,7 @@ function bridgeDataToHistoryItem(
 const actions = defineActions({
   async updateBalanceSubscription(context): Promise<void> {
     const { getters, commit, rootGetters } = bridgeActionContext(context);
-    const updateBalance = (balance: AccountBalance) => commit.setAssetBalance(balance);
+    const updateBalance = (balance: Nullable<AccountBalance>) => commit.setAssetBalance(balance);
 
     balanceSubscriptions.remove('asset', { updateBalance });
 
@@ -66,7 +66,7 @@ const actions = defineActions({
   async resetBalanceSubscription(context): Promise<void> {
     const { commit } = bridgeActionContext(context);
     balanceSubscriptions.remove('asset', {
-      updateBalance: (balance: AccountBalance) => commit.setAssetBalance(balance),
+      updateBalance: (balance: Nullable<AccountBalance>) => commit.setAssetBalance(balance),
     });
   },
   async setAssetAddress(context, address?: string): Promise<void> {

@@ -34,6 +34,27 @@ async function estimateMinted(context: ActionContext<any, any>): Promise<void> {
   }
 }
 
+function updateTokenSubscription(context: ActionContext<any, any>, field: FocusedField): void {
+  const { getters, commit, rootGetters } = addLiquidityActionContext(context);
+  const { firstToken, secondToken } = getters;
+  const { setFirstTokenBalance, setSecondTokenBalance } = commit;
+
+  const isFirst = field === FocusedField.First;
+  const token = isFirst ? firstToken : secondToken;
+  const setTokenBalance = isFirst ? setFirstTokenBalance : setSecondTokenBalance;
+  const updateBalance = (balance: Nullable<AccountBalance>) => setTokenBalance(balance);
+
+  balanceSubscriptions.remove(field, { updateBalance });
+
+  if (
+    rootGetters.wallet.account.isLoggedIn &&
+    token?.address &&
+    !(token.address in rootGetters.wallet.account.accountAssetsAddressTable)
+  ) {
+    balanceSubscriptions.add(field, { updateBalance, token });
+  }
+}
+
 function updateFirstTokenValue(context: ActionContext<any, any>): void {
   const { getters, commit, state } = addLiquidityActionContext(context);
 
@@ -78,65 +99,45 @@ function updateSecondTokenValue(context: ActionContext<any, any>): void {
 
 const actions = defineActions({
   async setFirstTokenAddress(context, address: string): Promise<void> {
-    const { commit, dispatch, getters, rootGetters } = addLiquidityActionContext(context);
-
-    const updateBalance = (balance: Nullable<AccountBalance>) => commit.setFirstTokenBalance(balance);
+    const { commit, dispatch } = addLiquidityActionContext(context);
 
     commit.setFirstTokenAddress(address);
     commit.setFirstTokenValue();
     commit.setSecondTokenValue();
 
-    balanceSubscriptions.remove('first', { updateBalance });
-
-    if (
-      getters.firstToken?.address &&
-      !(getters.firstToken.address in rootGetters.wallet.account.accountAssetsAddressTable)
-    ) {
-      balanceSubscriptions.add('first', { updateBalance, token: getters.firstToken });
-    }
-
+    updateTokenSubscription(context, FocusedField.First);
     dispatch.subscribeOnAvailability();
     dispatch.subscribeOnReserves();
   },
 
   async setSecondTokenAddress(context, address: string): Promise<void> {
-    const { commit, dispatch, getters, rootGetters } = addLiquidityActionContext(context);
-
-    const updateBalance = (balance: Nullable<AccountBalance>) => commit.setSecondTokenBalance(balance);
+    const { commit, dispatch } = addLiquidityActionContext(context);
 
     commit.setSecondTokenAddress(address);
     commit.setFirstTokenValue();
     commit.setSecondTokenValue();
 
-    balanceSubscriptions.remove('second', { updateBalance });
-
-    if (
-      getters.secondToken?.address &&
-      !(getters.secondToken.address in rootGetters.wallet.account.accountAssetsAddressTable)
-    ) {
-      balanceSubscriptions.add('second', { updateBalance, token: getters.secondToken });
-    }
-
+    updateTokenSubscription(context, FocusedField.Second);
     dispatch.subscribeOnAvailability();
     dispatch.subscribeOnReserves();
   },
 
   async setFirstTokenValue(context, value: string): Promise<void> {
-    const { commit } = addLiquidityActionContext(context);
+    const { commit, dispatch } = addLiquidityActionContext(context);
 
     commit.setFocusedField(FocusedField.First);
     commit.setFirstTokenValue(value);
 
-    updateSecondTokenValue(context);
+    dispatch.updateValues();
   },
 
   async setSecondTokenValue(context, value: string): Promise<void> {
-    const { commit } = addLiquidityActionContext(context);
+    const { commit, dispatch } = addLiquidityActionContext(context);
 
     commit.setFocusedField(FocusedField.Second);
     commit.setSecondTokenValue(value);
 
-    updateFirstTokenValue(context);
+    dispatch.updateValues();
   },
 
   async addLiquidity(context): Promise<void> {
@@ -166,6 +167,7 @@ const actions = defineActions({
       );
     }
   },
+
   async setDataFromLiquidity(context, { firstAddress, secondAddress }: LiquidityParams): Promise<void> {
     const { dispatch } = addLiquidityActionContext(context);
 
@@ -179,18 +181,35 @@ const actions = defineActions({
     await dispatch.setFirstTokenAddress(first);
     await dispatch.setSecondTokenAddress(second);
   },
-  async resetData(context): Promise<void> {
+
+  async updateSubscriptions(context): Promise<void> {
+    const { dispatch } = addLiquidityActionContext(context);
+
+    updateTokenSubscription(context, FocusedField.First);
+    updateTokenSubscription(context, FocusedField.Second);
+
+    dispatch.subscribeOnAvailability();
+    dispatch.subscribeOnReserves();
+  },
+
+  async resetSubscriptions(context): Promise<void> {
     const { commit } = addLiquidityActionContext(context);
 
-    balanceSubscriptions.remove('first', {
+    balanceSubscriptions.remove(FocusedField.First, {
       updateBalance: (balance: Nullable<AccountBalance>) => commit.setFirstTokenBalance(balance),
     });
-    balanceSubscriptions.remove('second', {
+    balanceSubscriptions.remove(FocusedField.Second, {
       updateBalance: (balance: Nullable<AccountBalance>) => commit.setSecondTokenBalance(balance),
     });
 
     commit.resetAvailabilitySubscription();
     commit.resetReserveSubscription();
+  },
+
+  async resetData(context): Promise<void> {
+    const { commit, dispatch } = addLiquidityActionContext(context);
+
+    dispatch.resetSubscriptions();
 
     commit.setFirstTokenAddress();
     commit.setSecondTokenAddress();
@@ -233,18 +252,19 @@ const actions = defineActions({
           const reserveA = correctReserves ? new FPNumber(result[0], firstToken.decimals).toCodecString() : '0';
           const reserveB = correctReserves ? new FPNumber(result[1], secondToken.decimals).toCodecString() : '0';
 
-          dispatch.updateReserves([reserveA, reserveB]);
+          commit.setReserve([reserveA, reserveB]);
+
+          dispatch.updateValues();
         });
 
       commit.setReserveSubscription(subscription);
     }
   },
 
-  updateReserves(context, reserves: Array<CodecString>): void {
-    const { commit, state } = addLiquidityActionContext(context);
-    commit.setReserve(reserves);
+  updateValues(context): void {
+    const { state } = addLiquidityActionContext(context);
 
-    if (state.focusedField === 'secondTokenValue') {
+    if (state.focusedField === FocusedField.Second) {
       updateFirstTokenValue(context);
     } else {
       updateSecondTokenValue(context);

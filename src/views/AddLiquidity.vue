@@ -169,6 +169,8 @@ export default class AddLiquidity extends Mixins(
   @action.addLiquidity.setSecondTokenValue setSecondTokenValue!: (address: string) => Promise<void>;
   @action.addLiquidity.addLiquidity private addLiquidity!: AsyncVoidFn;
   @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>;
+  @action.addLiquidity.updateSubscriptions updateSubscriptions!: AsyncVoidFn;
+  @action.addLiquidity.resetSubscriptions resetSubscriptions!: AsyncVoidFn;
   @action.addLiquidity.resetData resetData!: AsyncVoidFn;
 
   @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
@@ -181,6 +183,15 @@ export default class AddLiquidity extends Mixins(
   private handleLoggedInStateChange(isLoggedIn: boolean, wasLoggedIn: boolean): void {
     if (wasLoggedIn && !isLoggedIn) {
       this.handleBack();
+    }
+  }
+
+  @Watch('nodeIsConnected')
+  private updateConnectionSubsriptions(nodeConnected: boolean) {
+    if (nodeConnected) {
+      this.updateSubscriptions();
+    } else {
+      this.resetSubscriptions();
     }
   }
 
