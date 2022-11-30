@@ -13,9 +13,9 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import SideMenuCard from '@/assets/img/sora-card/sidebar.svg?inline';
-
 import TranslationMixin from './mixins/TranslationMixin';
+import SideMenuCard from '@/assets/img/sora-card/sidebar.svg?inline';
+// const SideMenuCard = () => import(`@/assets/img/sora-card/sidebar.svg?inline`);
 
 @Component({
   components: {

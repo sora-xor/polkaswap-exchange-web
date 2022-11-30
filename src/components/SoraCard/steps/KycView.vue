@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { loadScript } from 'vue-plugin-load-script';
+import { loadScript, unloadScript } from 'vue-plugin-load-script';
 import { v4 as uuidv4 } from 'uuid';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -24,10 +24,6 @@ import { clearTokensFromSessionStorage } from '@/utils';
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @Prop({ default: '', type: String }) readonly accessToken!: string;
-
-  verifyCode(): void {
-    this.$emit('confirm-sms');
-  }
 
   async getReferenceNumber(): Promise<string> {
     const result = await fetch('https://sora-card.sc1.dev.sora2.soramitsu.co.jp/get-reference-number', {
@@ -100,6 +96,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
               title: '',
             });
             this.$emit('confirm-kyc', false);
+            unloadScript('https://kyc-test.soracard.com/web/v2/webkyc.js');
 
             // Integrator will be notified if user cancels KYC or something went wrong
             // alert('Something went wrong ' + data.StatusDescription);
@@ -109,6 +106,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
             // alert('Kyc was successfull, integrator takes control of flow from now on')
             // console.log('success', data);
             this.$emit('confirm-kyc', true);
+            unloadScript('https://kyc-test.soracard.com/web/v2/webkyc.js');
 
             // document.getElementById('kyc')!.style.display = 'none';
             // document.getElementById('finish')!.style.display = 'block';

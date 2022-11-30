@@ -46,7 +46,12 @@
 
     <div id="authOpen"></div>
 
-    <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirm">
+    <s-button
+      :loading="btnLoading"
+      type="primary"
+      class="sora-card__btn s-typography-button--large"
+      @click="handleConfirm"
+    >
       <span class="text">{{ btnText() }}</span>
       <s-icon name="arrows-arrow-top-right-24" size="18" class="" />
     </s-button>
@@ -54,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { loadScript } from 'vue-plugin-load-script';
+import { loadScript, unloadScript } from 'vue-plugin-load-script';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Component, Mixins } from 'vue-property-decorator';
 import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
@@ -78,6 +83,8 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   thirdPointChecked = false;
   thirdPointCurrent = false;
 
+  btnLoading = false;
+
   btnText(): string {
     if (sessionStorage.getItem('access-token')) {
       return 'FINISH THE KYC';
@@ -88,6 +95,8 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   async handleConfirm(): Promise<void> {
     if (sessionStorage.getItem('access-token')) {
       this.$emit('confirm-start');
+      unloadScript('https://auth-test.paywings.io/auth/sdk.js');
+      return;
     }
 
     loadScript('https://auth-test.paywings.io/auth/sdk.js')
@@ -112,9 +121,11 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
         console.error('error', error);
       });
 
+    this.btnLoading = true;
     const accessToken = await this.getAccessToken();
     this.firstPointChecked = true;
     this.secondPointCurrent = true;
+    this.btnLoading = false;
   }
 
   async getAccessToken(): Promise<string | null> {
@@ -232,5 +243,9 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
     box-shadow: -5px -5px 10px rgba(155, 111, 165, 0.25), 2px 2px 15px #492067,
       inset 1px 1px 2px rgba(155, 111, 165, 0.25);
   }
+}
+
+.el-button.is-loading {
+  background-color: unset !important;
 }
 </style>

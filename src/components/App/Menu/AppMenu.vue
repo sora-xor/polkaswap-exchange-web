@@ -222,6 +222,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 }
 
+// TODO: [TECH] move from fonts provided values
 .sora-card-sidebar-icon {
   path {
     fill: var(--s-color-base-content-tertiary) !important;
