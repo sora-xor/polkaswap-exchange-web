@@ -133,6 +133,7 @@ export enum PageNames {
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
   StakingContainer = 'StakingContainer',
+  SoraCard = 'SoraCard',
 }
 
 export enum Components {
@@ -147,6 +148,14 @@ export enum Components {
   BrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
   BrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
   PairTokenLogo = 'PairTokenLogo',
+  SoraCard = 'SoraCard',
+  SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
+  SoraCardKYC = 'SoraCard/SoraCardKYC',
+  TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
+  ToSDialog = 'SoraCard/steps/ToSDialog',
+  RoadMap = 'SoraCard/steps/RoadMap',
+  KycView = 'SoraCard/steps/KycView',
+  ConfirmationInfo = 'SoraCard/steps/ConfirmationInfo',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',
   StatusActionBadge = 'Swap/StatusActionBadge',
@@ -208,7 +217,7 @@ export enum RewardsTabsItems {
 }
 
 interface SidebarMenuItem {
-  icon: string;
+  icon?: string;
   title: string;
   disabled?: boolean;
 }
@@ -251,6 +260,10 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
     icon: 'various-bone-24',
     title: PageNames.Tokens,
+  },
+  {
+    icon: 'sora-card',
+    title: PageNames.SoraCard,
   },
   {
     icon: 'file-file-text-24',
@@ -296,6 +309,11 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
 export const StoreLinks = {
   AppStore: 'https://apps.apple.com/us/app/sora-dae/id1457566711',
   GooglePlay: 'https://play.google.com/store/apps/details?id=jp.co.soramitsu.sora',
+};
+
+export const TosExternalLinks = {
+  Terms: `https://soracard.com/terms/`,
+  Privacy: `https://soracard.com/privacy/`,
 };
 
 export const FaucetLink: SidebarMenuItemLink = {

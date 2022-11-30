@@ -221,6 +221,33 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
   }
 }
+
+// TODO: [TECH] move from fonts provided values
+.sora-card-sidebar-icon {
+  path {
+    fill: var(--s-color-base-content-tertiary) !important;
+  }
+}
+
+.el-menu-item:not(.is-active):not(.is-disabled) {
+  .sidebar-item-content {
+    &:hover .sora-card-sidebar-icon path {
+      fill: var(--s-color-base-content-secondary) !important;
+    }
+  }
+}
+
+.el-menu-item.is-disabled {
+  &:hover path {
+    fill: var(--s-color-base-content-tertiary) !important;
+  }
+}
+
+.is-active .sora-card-sidebar-icon {
+  path {
+    fill: var(--s-color-theme-accent) !important;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
