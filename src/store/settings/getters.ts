@@ -46,7 +46,6 @@ const getters = defineGetters<SettingsState>()({
   },
   soraCardEnabled(...args): boolean {
     const { state } = settingsGetterContext(args);
-    console.log('state.featureFlags.soraCard', state.featureFlags.soraCard);
     return !!state.featureFlags.soraCard;
   },
   notificationActivated(...args): boolean {
