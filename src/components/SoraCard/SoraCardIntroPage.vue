@@ -42,9 +42,9 @@ import TranslationMixin from '../mixins/TranslationMixin';
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  @state.prices.euroBalance private euroBalance!: string;
-  @state.prices.xorToDeposit private xorToDeposit!: FPNumber;
-  @getter.prices.isEuroBalanceEnough private isEuroBalanceEnough!: boolean;
+  @state.soraCard.euroBalance private euroBalance!: string;
+  @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
+  @getter.soraCard.isEuroBalanceEnough private isEuroBalanceEnough!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   isPriceCalculated = false;

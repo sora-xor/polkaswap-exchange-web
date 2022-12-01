@@ -1,11 +1,11 @@
 import { defineGetters } from 'direct-vuex';
-import { pricesGetterContext } from '.';
+import { soraCardGetterContext } from '.';
 
-import { PriceState } from './types';
+import { SoraCardState } from './types';
 
-const getters = defineGetters<PriceState>()({
+const getters = defineGetters<SoraCardState>()({
   isEuroBalanceEnough(...args): boolean {
-    const { state } = pricesGetterContext(args);
+    const { state } = soraCardGetterContext(args);
     const euroBalance = parseInt(state.euroBalance, 10);
     return euroBalance > 100;
   },
