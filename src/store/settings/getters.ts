@@ -44,6 +44,11 @@ const getters = defineGetters<SettingsState>()({
     const { state } = settingsGetterContext(args);
     return !!state.featureFlags.charts && state.сhartsEnabled;
   },
+  soraCardEnabled(...args): boolean {
+    const { state } = settingsGetterContext(args);
+    console.log('state.featureFlags.soraCard', state.featureFlags.soraCard);
+    return !!state.featureFlags.soraCard;
+  },
   notificationActivated(...args): boolean {
     const { state } = settingsGetterContext(args);
     return state.browserNotifsPermission === 'granted';
