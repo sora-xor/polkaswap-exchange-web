@@ -29,8 +29,8 @@ enum Step {
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
   @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncVoidFn;
   @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncVoidFn;
-  @action.prices.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncVoidFn;
-  @action.prices.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncVoidFn;
+  @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncVoidFn;
+  @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncVoidFn;
   @action.pool.unsubscribeAccountLiquidityListAndUpdates
   private unsubscribeAccountLiquidityListAndUpdates!: AsyncVoidFn;
 

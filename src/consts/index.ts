@@ -216,7 +216,7 @@ export enum RewardsTabsItems {
   ReferralProgram = PageNames.ReferralProgram,
 }
 
-interface SidebarMenuItem {
+export interface SidebarMenuItem {
   icon?: string;
   title: string;
   disabled?: boolean;
@@ -321,7 +321,7 @@ export const FaucetLink: SidebarMenuItemLink = {
   title: 'faucet',
 };
 
-export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
+export const SidebarMenuGroups = [...MainMenu, ...AccountMenu, ...OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
 export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
