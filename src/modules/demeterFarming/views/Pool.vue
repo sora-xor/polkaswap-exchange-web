@@ -71,6 +71,7 @@ import { PageNames } from '@/consts';
 import { state } from '@/store/decorators';
 
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 
 @Component({
   inheritAttrs: false,
@@ -94,8 +95,22 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
     );
   }
 
+  get farmingPoolsByLiquidities(): Record<string, { pool: DemeterPool; accountPool: Nullable<DemeterAccountPool> }[]> {
+    return this.accountLiquidity.reduce((buffer, liquidity) => {
+      const key = this.getLiquidityKey(liquidity);
+
+      buffer[key] = this.getAvailablePools(this.pools[liquidity.firstAddress]?.[liquidity.secondAddress]);
+
+      return buffer;
+    }, {});
+  }
+
   getLiquidityFarmingPools(liquidity: AccountLiquidity) {
-    return this.getAvailablePools(this.pools[liquidity.firstAddress]?.[liquidity.secondAddress]);
+    return this.farmingPoolsByLiquidities[this.getLiquidityKey(liquidity)] ?? [];
+  }
+
+  private getLiquidityKey(liquidity: AccountLiquidity): string {
+    return [liquidity.firstAddress, liquidity.secondAddress].join(';');
   }
 }
 </script>
