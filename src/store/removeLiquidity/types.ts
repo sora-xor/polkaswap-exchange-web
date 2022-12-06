@@ -14,5 +14,4 @@ export type RemoveLiquidityState = {
   firstTokenAmount: string;
   secondTokenAmount: string;
   focusedField: Nullable<FocusedField>;
-  totalSupply: CodecString;
 };

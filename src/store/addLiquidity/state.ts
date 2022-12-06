@@ -10,12 +10,13 @@ function initialState(): AddLiquidityState {
     firstTokenBalance: null,
     secondTokenBalance: null,
     focusedField: null,
+    minted: ZeroStringValue,
     // pool reserves
     reserve: null,
     reserveSubscription: null,
     // pool lp tokens
-    minted: ZeroStringValue,
     totalSupply: ZeroStringValue,
+    totalSupplySubscription: null,
     // pool availability
     isAvailable: false,
     availabilitySubscription: null,

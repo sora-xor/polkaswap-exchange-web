@@ -10,7 +10,6 @@ function initialState(): RemoveLiquidityState {
     firstTokenAmount: '',
     secondTokenAmount: '',
     focusedField: null,
-    totalSupply: ZeroStringValue,
   };
 }
 

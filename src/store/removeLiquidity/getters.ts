@@ -16,25 +16,37 @@ const getters = defineGetters<RemoveLiquidityState>()({
       (liquidity) => liquidity.firstAddress === firstTokenAddress && liquidity.secondAddress === secondTokenAddress
     );
   },
+  totalSupply(...args): string {
+    const { getters } = removeLiquidityGetterContext(args);
+
+    return getters.liquidity?.totalSupply ?? ZeroStringValue;
+  },
+  poolShare(...args): FPNumber {
+    const { getters } = removeLiquidityGetterContext(args);
+
+    const totalSupply = FPNumber.fromCodecValue(getters.totalSupply);
+
+    if (totalSupply.isZero()) return FPNumber.ZERO;
+
+    return getters.liquidityBalanceFull.div(totalSupply);
+  },
   reserveA(...args): string {
     const { getters } = removeLiquidityGetterContext(args);
 
-    if (!getters.liquidity) return ZeroStringValue;
+    if (!getters.liquidity || getters.poolShare.isZero()) return ZeroStringValue;
 
-    const poolShare = new FPNumber(getters.liquidity.poolShare);
     const reserve = FPNumber.fromCodecValue(getters.liquidity.firstBalance, getters.firstToken?.decimals);
 
-    return reserve.div(poolShare).toCodecString();
+    return reserve.div(getters.poolShare).toCodecString();
   },
   reserveB(...args): string {
     const { getters } = removeLiquidityGetterContext(args);
 
-    if (!getters.liquidity) return ZeroStringValue;
+    if (!getters.liquidity || getters.poolShare.isZero()) return ZeroStringValue;
 
-    const poolShare = new FPNumber(getters.liquidity.poolShare);
     const reserve = FPNumber.fromCodecValue(getters.liquidity.secondBalance, getters.secondToken?.decimals);
 
-    return reserve.div(poolShare).toCodecString();
+    return reserve.div(getters.poolShare).toCodecString();
   },
   // Liquidity full balance (without locked balance)
   liquidityBalanceFull(...args): FPNumber {
@@ -108,7 +120,7 @@ const getters = defineGetters<RemoveLiquidityState>()({
 
     const balance = getters.liquidityBalanceFull;
     const removed = new FPNumber(state.liquidityAmount ?? 0);
-    const totalSupply = FPNumber.fromCodecValue(state.totalSupply);
+    const totalSupply = FPNumber.fromCodecValue(getters.totalSupply);
     const totalSupplyAfter = totalSupply.sub(removed);
 
     if (balance.isZero() || totalSupply.isZero() || totalSupplyAfter.isZero()) return ZeroStringValue;

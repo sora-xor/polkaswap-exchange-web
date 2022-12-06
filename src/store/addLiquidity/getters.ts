@@ -51,8 +51,21 @@ const getters = defineGetters<AddLiquidityState>()({
     return !!state.reserve?.length && +getters.reserveA !== 0 && +getters.reserveB !== 0;
   },
   minted(...args): CodecString {
-    const { state } = addLiquidityGetterContext(args);
-    return state.minted || ZeroStringValue;
+    const { state, getters } = addLiquidityGetterContext(args);
+
+    if (!(getters.firstToken && getters.secondToken)) return ZeroStringValue;
+
+    const [minted] = api.poolXyk.estimatePoolTokensMinted(
+      getters.firstToken,
+      getters.secondToken,
+      state.firstTokenValue,
+      state.secondTokenValue,
+      getters.reserveA,
+      getters.reserveB,
+      state.totalSupply
+    );
+
+    return minted;
   },
   totalSupply(...args): CodecString {
     const { state } = addLiquidityGetterContext(args);

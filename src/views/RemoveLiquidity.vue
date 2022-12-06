@@ -179,16 +179,15 @@ export default class RemoveLiquidity extends Mixins(
   @getter.removeLiquidity.price price!: string;
   @getter.removeLiquidity.priceReversed priceReversed!: string;
 
+  @mutation.removeLiquidity.setAddresses private setAddresses!: (params: LiquidityParams) => void;
   @mutation.removeLiquidity.setFocusedField setFocusedField!: (field: FocusedField) => void;
   @mutation.removeLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
 
   @action.removeLiquidity.setRemovePart private setRemovePart!: (removePart: string) => Promise<void>;
-  @action.removeLiquidity.setLiquidity private setLiquidity!: (args: LiquidityParams) => Promise<void>;
   @action.removeLiquidity.removeLiquidity private removeLiquidity!: AsyncVoidFn;
   @action.removeLiquidity.resetData private resetData!: AsyncVoidFn;
   @action.removeLiquidity.setFirstTokenAmount setFirstTokenAmount!: (amount: string) => Promise<void>;
   @action.removeLiquidity.setSecondTokenAmount setSecondTokenAmount!: (amount: string) => Promise<void>;
-  @action.removeLiquidity.getTotalSupply getTotalSupply!: AsyncVoidFn;
 
   @Watch('liquidity', { deep: true })
   private liquidityChange(): void {
@@ -211,7 +210,6 @@ export default class RemoveLiquidity extends Mixins(
         break;
       }
     }
-    this.getTotalSupply();
   }
 
   sliderInput: any;
@@ -219,7 +217,7 @@ export default class RemoveLiquidity extends Mixins(
 
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
-      await this.setLiquidity({
+      this.setAddresses({
         firstAddress: this.firstTokenAddress,
         secondAddress: this.secondTokenAddress,
       });

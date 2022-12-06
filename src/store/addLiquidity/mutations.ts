@@ -3,10 +3,12 @@ import type { Subscription } from 'rxjs';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
-import { ZeroStringValue } from '@/consts';
 import type { AddLiquidityState, FocusedField } from './types';
 
 const mutations = defineMutations<AddLiquidityState>()({
+  setFocusedField(state, value: FocusedField): void {
+    state.focusedField = value;
+  },
   setFirstTokenAddress(state, value?: Nullable<string>): void {
     state.firstTokenAddress = value || '';
   },
@@ -35,6 +37,9 @@ const mutations = defineMutations<AddLiquidityState>()({
     state.reserveSubscription?.unsubscribe();
     state.reserveSubscription = null;
   },
+  setAvailability(state, value: boolean): void {
+    state.isAvailable = value;
+  },
   setAvailabilitySubscription(state, subscription: Subscription): void {
     state.availabilitySubscription = subscription;
   },
@@ -42,22 +47,15 @@ const mutations = defineMutations<AddLiquidityState>()({
     state.availabilitySubscription?.unsubscribe();
     state.availabilitySubscription = null;
   },
-  setMintedAndSupply(state, { minted, pts }: { minted: CodecString; pts: CodecString }): void {
-    state.minted = minted;
-    state.totalSupply = pts;
+  setTotalSupply(state, totalSupply: CodecString) {
+    state.totalSupply = totalSupply;
   },
-  resetMintedAndSupply(state): void {
-    state.minted = ZeroStringValue;
-    state.totalSupply = ZeroStringValue;
+  setTotalSupplySubscription(state, subscription: Subscription): void {
+    state.totalSupplySubscription = subscription;
   },
-  setFocusedField(state, value: FocusedField): void {
-    state.focusedField = value;
-  },
-  resetFocusedField(state): void {
-    state.focusedField = null;
-  },
-  setIsAvailable(state, value: boolean): void {
-    state.isAvailable = value;
+  resetTotalSupplySubscription(state): void {
+    state.totalSupplySubscription?.unsubscribe();
+    state.totalSupplySubscription = null;
   },
 });
 

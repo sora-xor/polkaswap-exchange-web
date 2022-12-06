@@ -21,9 +21,6 @@ const mutations = defineMutations<RemoveLiquidityState>()({
   setSecondTokenAmount(state, value?: Nullable<string>): void {
     state.secondTokenAmount = value || '';
   },
-  setTotalSupply(state, value?: Nullable<CodecString>): void {
-    state.totalSupply = value || ZeroStringValue;
-  },
   setFocusedField(state, value: Nullable<FocusedField>): void {
     state.focusedField = value;
   },

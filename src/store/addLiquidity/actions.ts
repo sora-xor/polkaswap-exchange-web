@@ -8,30 +8,9 @@ import { addLiquidityActionContext } from '@/store/addLiquidity';
 import { FocusedField } from '@/store/addLiquidity/types';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import type { LiquidityParams } from '@/store/pool/types';
+import { ZeroStringValue } from '@/consts';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
-
-async function estimateMinted(context: ActionContext<any, any>): Promise<void> {
-  const { state, getters, commit } = addLiquidityActionContext(context);
-  const { firstToken, secondToken } = getters;
-
-  if (firstToken?.address && secondToken?.address) {
-    try {
-      const [minted, pts] = await api.poolXyk.estimatePoolTokensMinted(
-        firstToken,
-        secondToken,
-        state.firstTokenValue,
-        state.secondTokenValue,
-        getters.reserveA,
-        getters.reserveB
-      );
-      commit.setMintedAndSupply({ minted, pts });
-    } catch (error) {
-      console.error('addLiquidity:estimateMinted', error);
-      commit.resetMintedAndSupply();
-    }
-  }
-}
 
 function updateTokenSubscription(context: ActionContext<any, any>, field: FocusedField): void {
   const { getters, commit, rootGetters } = addLiquidityActionContext(context);
@@ -71,8 +50,6 @@ function updateFirstTokenValue(context: ActionContext<any, any>): void {
       );
     }
   }
-
-  estimateMinted(context);
 }
 
 function updateSecondTokenValue(context: ActionContext<any, any>): void {
@@ -92,8 +69,6 @@ function updateSecondTokenValue(context: ActionContext<any, any>): void {
       );
     }
   }
-
-  estimateMinted(context);
 }
 
 const actions = defineActions({
@@ -107,6 +82,7 @@ const actions = defineActions({
     updateTokenSubscription(context, FocusedField.First);
     dispatch.subscribeOnAvailability();
     dispatch.subscribeOnReserves();
+    dispatch.subscribeOnTotalSupply();
   },
 
   async setSecondTokenAddress(context, address: string): Promise<void> {
@@ -119,6 +95,7 @@ const actions = defineActions({
     updateTokenSubscription(context, FocusedField.Second);
     dispatch.subscribeOnAvailability();
     dispatch.subscribeOnReserves();
+    dispatch.subscribeOnTotalSupply();
   },
 
   async setFirstTokenValue(context, value: string): Promise<void> {
@@ -189,6 +166,7 @@ const actions = defineActions({
 
     dispatch.subscribeOnAvailability();
     dispatch.subscribeOnReserves();
+    dispatch.subscribeOnTotalSupply();
   },
 
   async resetSubscriptions(context): Promise<void> {
@@ -199,6 +177,7 @@ const actions = defineActions({
 
     commit.resetAvailabilitySubscription();
     commit.resetReserveSubscription();
+    commit.resetTotalSupplySubscription();
   },
 
   async resetData(context): Promise<void> {
@@ -219,12 +198,10 @@ const actions = defineActions({
     commit.resetAvailabilitySubscription();
 
     if (firstToken && secondToken) {
-      // [TODO]: subscription to js-lib
-      const subscription = api.apiRx.query.poolXYK
-        .properties(firstToken.address, secondToken.address)
+      const subscription = api.poolXyk
+        .getPoolPropertiesObservable(firstToken.address, secondToken.address)
         .subscribe((result) => {
-          const isAvailable = !!result && result.isSome;
-          commit.setIsAvailable(isAvailable);
+          commit.setAvailability(!!result);
         });
 
       commit.setAvailabilitySubscription(subscription);
@@ -238,21 +215,31 @@ const actions = defineActions({
     commit.resetReserveSubscription();
 
     if (firstToken && secondToken) {
-      // [TODO]: subscription to js-lib
-      const subscription = api.apiRx.query.poolXYK
-        .reserves(firstToken.address, secondToken.address)
-        .subscribe((result) => {
-          const correctReserves = result && result.length === 2;
-
-          const reserveA = correctReserves ? new FPNumber(result[0], firstToken.decimals).toCodecString() : '0';
-          const reserveB = correctReserves ? new FPNumber(result[1], secondToken.decimals).toCodecString() : '0';
-
-          commit.setReserve([reserveA, reserveB]);
-
+      const subscription = api.poolXyk
+        .getReservesObservable(firstToken.address, secondToken.address)
+        .subscribe((reserves) => {
+          commit.setReserve(reserves);
           dispatch.updateValues();
         });
 
       commit.setReserveSubscription(subscription);
+    }
+  },
+
+  subscribeOnTotalSupply(context): void {
+    const { commit, getters } = addLiquidityActionContext(context);
+    const { firstToken, secondToken } = getters;
+
+    commit.resetTotalSupplySubscription();
+
+    if (firstToken && secondToken) {
+      const subscription = api.poolXyk
+        .getTotalSupplyObservable(firstToken.address, secondToken.address)
+        .subscribe((totalSupply) => {
+          commit.setTotalSupply(totalSupply ?? ZeroStringValue);
+        });
+
+      commit.setTotalSupplySubscription(subscription);
     }
   },
 

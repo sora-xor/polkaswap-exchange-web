@@ -60,38 +60,6 @@ function updateRemovePart(context: ActionContext<any, any>): void {
 }
 
 const actions = defineActions({
-  async setLiquidity(context, { firstAddress, secondAddress }: LiquidityParams): Promise<void> {
-    const { commit, dispatch } = removeLiquidityActionContext(context);
-    try {
-      commit.setAddresses({ firstAddress, secondAddress });
-
-      await dispatch.getTotalSupply();
-    } catch (error) {
-      console.error(error);
-    }
-  },
-  // [TODO]: add total suuply to account liquidity
-  async getTotalSupply(context: ActionContext<any, any>): Promise<void> {
-    const { state, getters, commit } = removeLiquidityActionContext(context);
-    const { firstToken, secondToken, reserveA, reserveB } = getters;
-
-    if (firstToken && secondToken) {
-      try {
-        const [_, pts] = await api.poolXyk.estimatePoolTokensMinted(
-          firstToken,
-          secondToken,
-          state.firstTokenAmount,
-          state.secondTokenAmount,
-          reserveA,
-          reserveB
-        );
-        commit.setTotalSupply(pts);
-      } catch (error) {
-        console.error('removeLiquidity:getTotalSupply', error);
-        commit.setTotalSupply();
-      }
-    }
-  },
   async setRemovePart(context, removePart: string): Promise<void> {
     const { commit } = removeLiquidityActionContext(context);
 
@@ -128,7 +96,7 @@ const actions = defineActions({
       state.liquidityAmount,
       getters.reserveA,
       getters.reserveB,
-      state.totalSupply,
+      getters.totalSupply,
       rootState.settings.slippageTolerance
     );
   },
@@ -138,7 +106,6 @@ const actions = defineActions({
     commit.setLiquidityAmount();
     commit.setFirstTokenAmount();
     commit.setSecondTokenAmount();
-    commit.setTotalSupply();
     commit.resetFocusedField();
   },
 });

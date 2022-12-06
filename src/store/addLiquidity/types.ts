@@ -18,6 +18,7 @@ export type AddLiquidityState = {
   reserveSubscription: Nullable<Subscription>;
   minted: CodecString;
   totalSupply: CodecString;
+  totalSupplySubscription: Nullable<Subscription>;
   focusedField: Nullable<FocusedField>;
   isAvailable: boolean;
   availabilitySubscription: Nullable<Subscription>;
