@@ -4,8 +4,8 @@
       <template #title-append="{ liquidity, activeCollapseItems }">
         <div v-if="getStatusBadgeVisibility(liquidity.address, activeCollapseItems)" class="s-flex farming-pool-badges">
           <status-badge
-            v-for="item in getLiquidityFarmingPools(liquidity)"
-            :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}`"
+            v-for="(item, index) in getLiquidityFarmingPools(liquidity)"
+            :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}-${index}`"
             :liquidity="liquidity"
             :pool="item.pool"
             :account-pool="item.accountPool"
@@ -16,8 +16,8 @@
       </template>
       <template #append="liquidity">
         <pool-card
-          v-for="item in getLiquidityFarmingPools(liquidity)"
-          :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}`"
+          v-for="(item, index) in getLiquidityFarmingPools(liquidity)"
+          :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}-${index}`"
           :liquidity="liquidity"
           :pool="item.pool"
           :account-pool="item.accountPool"
@@ -59,7 +59,6 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import PageMixin from '../mixins/PageMixin';
 
@@ -88,14 +87,15 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
   get selectedAccountLiquidity(): Nullable<AccountLiquidity> {
-    return this.accountLiquidity.find((liquidity) => liquidity.secondAddress === this.poolAsset) ?? null;
+    return (
+      this.accountLiquidity.find(
+        (liquidity) => liquidity.firstAddress === this.baseAsset && liquidity.secondAddress === this.poolAsset
+      ) ?? null
+    );
   }
 
   getLiquidityFarmingPools(liquidity: AccountLiquidity) {
-    // DEMETER FARMING ONLY FOR XOR POOLS!
-    if (liquidity.firstAddress !== XOR.address) return [];
-
-    return this.getAvailablePools(this.pools[liquidity.secondAddress]);
+    return this.getAvailablePools(this.pools[liquidity.firstAddress]?.[liquidity.secondAddress]);
   }
 }
 </script>
