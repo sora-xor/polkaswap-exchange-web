@@ -10,6 +10,7 @@
         Pay with your crypto online, in-store or withdraw in ATM with Euro IBAN & Debit card
       </span>
     </div>
+    <button @click="openX1">open x1</button>
     <s-button
       type="primary"
       class="sora-card__btn s-typography-button--large"
@@ -22,6 +23,7 @@
       <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
       <p class="sora-card__balance-indicator-text">{{ balanceIndicatorText }}</p>
     </div>
+    <x1 :visible.sync="showX1Dialog" />
   </div>
 </template>
 
@@ -31,14 +33,15 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
 import SoraCard from '@/assets/img/sora-card/sora-card.svg?inline';
 import { getter, state } from '@/store/decorators';
-import { PageNames } from '@/consts';
-import router from '@/router';
+import router, { lazyComponent } from '@/router';
+import { PageNames, Components } from '@/consts';
 import { delay, clearTokensFromSessionStorage } from '@/utils';
 import TranslationMixin from '../mixins/TranslationMixin';
 
 @Component({
   components: {
     SoraCard,
+    X1: lazyComponent(Components.X1),
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
@@ -48,6 +51,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   isPriceCalculated = false;
+  showX1Dialog = false;
 
   get buttonText(): string {
     if (!this.isLoggedIn) {
@@ -69,6 +73,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
       return 'sora-card__icon--checked';
     }
     return '';
+  }
+
+  openX1(): void {
+    this.showX1Dialog = true;
   }
 
   handleConfirm(): void {

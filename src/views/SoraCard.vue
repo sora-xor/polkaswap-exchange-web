@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div v-loading="loading" v-if="loading" class="loading-page container"></div>
     <sora-card-intro v-if="step === Step.Intro" @confirm-apply="confirmApply" />
     <sora-card-kyc v-else-if="step === Step.KYC" @go-to-intro="openIntro" />
   </div>

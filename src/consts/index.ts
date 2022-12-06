@@ -209,6 +209,7 @@ export enum Components {
   // Pool
   PoolInfo = 'Pool/PoolInfo',
   PriceChange = 'PriceChange',
+  X1 = 'X1/X1',
 }
 
 export enum RewardsTabsItems {
