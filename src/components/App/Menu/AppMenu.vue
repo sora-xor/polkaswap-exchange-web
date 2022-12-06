@@ -14,10 +14,9 @@
           :default-active="getCurrentPath()"
           @select="onSelect"
         >
-          <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
+          <s-menu-item-group v-for="(item, index) in sidebarMenuItems" :key="index">
             <s-menu-item
               v-button
-              v-for="item in group"
               :key="item.title"
               :index="item.title"
               :disabled="item.disabled"
@@ -95,6 +94,7 @@ import {
   RewardsChildPages,
   StakingChildPages,
   SidebarMenuGroups,
+  SidebarMenuItem,
   FaucetLink,
   Components,
 } from '@/consts';
@@ -114,6 +114,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
 
   @state.settings.faucetUrl faucetUrl!: string;
+  @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
   readonly SidebarMenuGroups = SidebarMenuGroups;
@@ -121,6 +122,11 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   get mainMenuActiveColor(): string {
     return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
+  }
+
+  get sidebarMenuItems(): Array<SidebarMenuItem> {
+    if (this.soraCardEnabled) return SidebarMenuGroups;
+    return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.SoraCard);
   }
 
   getCurrentPath(): string {
@@ -219,6 +225,33 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     &:focus {
       background-color: unset !important;
     }
+  }
+}
+
+// TODO: [TECH] move from fonts provided values
+.sora-card-sidebar-icon {
+  path {
+    fill: var(--s-color-base-content-tertiary) !important;
+  }
+}
+
+.el-menu-item:not(.is-active):not(.is-disabled) {
+  .sidebar-item-content {
+    &:hover .sora-card-sidebar-icon path {
+      fill: var(--s-color-base-content-secondary) !important;
+    }
+  }
+}
+
+.el-menu-item.is-disabled {
+  &:hover path {
+    fill: var(--s-color-base-content-tertiary) !important;
+  }
+}
+
+.is-active .sora-card-sidebar-icon {
+  path {
+    fill: var(--s-color-theme-accent) !important;
   }
 }
 </style>
