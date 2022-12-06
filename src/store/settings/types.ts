@@ -6,6 +6,7 @@ import type { Node } from '@/types/nodes';
 export type FeatureFlags = {
   moonpay?: boolean;
   charts?: boolean;
+  soraCard?: boolean;
 };
 
 export type SettingsState = {

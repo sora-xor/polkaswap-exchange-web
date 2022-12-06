@@ -1,6 +1,6 @@
 export type PriceState = {
-  price: string;
-  priceReversed: string;
+  price: string | undefined;
+  priceReversed: string | undefined;
 };
 
 export type PricesPayload = Partial<{

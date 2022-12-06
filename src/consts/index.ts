@@ -140,6 +140,7 @@ export enum PageNames {
   ExploreFarming = 'Explore/Farming',
   ExploreStaking = 'Explore/Staking',
   ExplorePools = 'Explore/Pools',
+  SoraCard = 'SoraCard',
 }
 
 export enum Components {
@@ -154,6 +155,14 @@ export enum Components {
   BrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
   BrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
   PairTokenLogo = 'PairTokenLogo',
+  SoraCard = 'SoraCard',
+  SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
+  SoraCardKYC = 'SoraCard/SoraCardKYC',
+  TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
+  ToSDialog = 'SoraCard/steps/ToSDialog',
+  RoadMap = 'SoraCard/steps/RoadMap',
+  KycView = 'SoraCard/steps/KycView',
+  ConfirmationInfo = 'SoraCard/steps/ConfirmationInfo',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',
   StatusActionBadge = 'Swap/StatusActionBadge',
@@ -214,8 +223,8 @@ export enum RewardsTabsItems {
   ReferralProgram = PageNames.ReferralProgram,
 }
 
-interface SidebarMenuItem {
-  icon: string;
+export interface SidebarMenuItem {
+  icon?: string;
   title: string;
   disabled?: boolean;
 }
@@ -258,6 +267,10 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
     icon: 'various-items-24',
     title: PageNames.ExploreContainer,
+  },
+  {
+    icon: 'sora-card',
+    title: PageNames.SoraCard,
   },
   {
     icon: 'file-file-text-24',
@@ -305,12 +318,17 @@ export const StoreLinks = {
   GooglePlay: 'https://play.google.com/store/apps/details?id=jp.co.soramitsu.sora',
 };
 
+export const TosExternalLinks = {
+  Terms: `https://soracard.com/terms/`,
+  Privacy: `https://soracard.com/privacy/`,
+};
+
 export const FaucetLink: SidebarMenuItemLink = {
   icon: 'software-terminal-24',
   title: 'faucet',
 };
 
-export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
+export const SidebarMenuGroups = [...MainMenu, ...AccountMenu, ...OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
 export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];

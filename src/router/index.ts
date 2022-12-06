@@ -51,6 +51,11 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Wallet),
   },
   {
+    path: '/card',
+    name: PageNames.SoraCard,
+    component: lazyView(PageNames.SoraCard),
+  },
+  {
     path: '/bridge',
     component: lazyView(PageNames.BridgeContainer),
     children: [
@@ -262,6 +267,13 @@ router.beforeEach((to, from, next) => {
       return;
     }
   }
+
+  if (!store.getters.settings.soraCardEnabled && to.name === PageNames.SoraCard) {
+    next({ name: PageNames.Swap });
+    store.commit.router.setRoute({ prev, current: PageNames.Swap });
+    return;
+  }
+
   store.commit.router.setRoute({ prev, current: to.name as PageNames });
   next();
 });
