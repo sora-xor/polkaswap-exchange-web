@@ -39,8 +39,8 @@
             class="slider-container"
             :value="sliderValue"
             :disabled="liquidityLocked"
-            :showTooltip="false"
-            @change="handleRemovePartChange"
+            :show-tooltip="false"
+            @input="handleRemovePartChange"
           />
           <div v-if="hasLockedPart" class="input-line input-line--footer locked-part">
             {{ t('removeLiquidity.locked', { percent: liquidityBalanceLockedPercent }) }}

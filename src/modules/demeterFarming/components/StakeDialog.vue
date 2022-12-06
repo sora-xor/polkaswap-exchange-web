@@ -48,8 +48,8 @@
             slot="bottom"
             class="slider-container"
             :value="Number(value)"
-            :showTooltip="false"
-            @change="handleValue"
+            :show-tooltip="false"
+            @input="handleValue"
           />
         </s-float-input>
 
