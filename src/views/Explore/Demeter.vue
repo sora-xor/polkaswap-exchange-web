@@ -49,6 +49,7 @@
           <calculator-button
             @click.native="
               showPoolCalculator({
+                baseAsset: row.baseAsset.address,
                 poolAsset: row.poolAsset.address,
                 rewardAsset: row.rewardAsset.address,
                 liquidity: row.liquidity,
@@ -193,6 +194,10 @@ type TableItem = {
   liquidity: Nullable<AccountLiquidity>;
 };
 
+const lpKey = (baseAsset: string, poolAsset: string): string => {
+  return [baseAsset, poolAsset].join(';');
+};
+
 @Component({
   components: {
     CalculatorButton: demeterLazyComponent(DemeterComponents.CalculatorButton),
@@ -212,15 +217,16 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
       await this.withParentLoading(async () => {
         const buffer = {};
         const isFarm = this.isFarmingPage;
-        const poolAssets = [...new Set(this.items.map((item) => item.poolAsset))];
+        const keys = this.items.map((item) => lpKey(item.baseAsset, item.poolAsset));
+        const poolKeys = [...new Set(keys)];
 
         await Promise.allSettled(
-          poolAssets.map(async (asset) => {
-            if (!buffer[asset]) {
-              const poolData = await this.getPoolData(asset, isFarm);
+          poolKeys.map(async (key) => {
+            if (!buffer[key]) {
+              const poolData = await this.getPoolData(key, isFarm);
 
               if (poolData) {
-                buffer[asset] = poolData;
+                buffer[key] = poolData;
               }
             }
           })
@@ -238,17 +244,20 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
   poolsData: Record<string, PoolData> = {};
 
   get items(): DemeterPool[] {
-    return Object.values(this.pools).flat() as DemeterPool[];
+    return Object.values(this.pools)
+      .map((poolMap) => Object.values(poolMap))
+      .flat(2) as DemeterPool[];
   }
 
   get preparedItems(): TableItem[] {
     return this.items.map((pool) => {
+      const baseAsset = this.getAsset(pool.baseAsset) as Asset;
       const poolAsset = this.getAsset(pool.poolAsset) as Asset;
       const rewardAsset = this.getAsset(pool.rewardAsset) as Asset;
       const rewardAssetSymbol = rewardAsset?.symbol ?? '';
       const tokenInfo = this.tokenInfos[pool.rewardAsset];
       const accountPool = this.getAccountPool(pool);
-      const poolData = this.poolsData[pool.poolAsset];
+      const poolData = this.poolsData[lpKey(pool.baseAsset, pool.poolAsset)];
       const poolTokenPrice = poolData?.price ?? FPNumber.ZERO;
       const poolBaseReserves = poolData?.reserves?.[0] ?? FPNumber.ZERO;
       const poolTargetReserves = poolData?.reserves?.[1] ?? FPNumber.ZERO;
@@ -258,15 +267,18 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
         ? {
             address: poolData?.address ?? '',
             balance: poolSupply.toCodecString(),
-            firstAddress: XOR.address,
+            firstAddress: baseAsset.address ?? '',
             firstBalance: poolBaseReserves.toCodecString(),
             secondAddress: poolAsset?.address ?? '',
             secondBalance: poolTargetReserves.toCodecString(),
             poolShare: '1',
+            reserveA: '1',
+            reserveB: '1',
+            totalSupply: '1',
           }
         : null;
 
-      const assets = pool.isFarm ? [XOR, poolAsset] : [poolAsset];
+      const assets = pool.isFarm ? [baseAsset, poolAsset] : [poolAsset];
       const name = assets.map((asset) => asset?.symbol ?? '').join('-');
       const description = pool.isFarm ? '' : poolAsset?.name ?? '';
       const depositFee = new FPNumber(pool.depositFee ?? 0).mul(FPNumber.HUNDRED);
@@ -276,7 +288,7 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
         pool.isFarm
           ? [
               {
-                asset: XOR,
+                asset: baseAsset,
                 balance: !poolSupply.isZero()
                   ? poolBaseReserves.mul(accountPooledTokens).div(poolSupply)
                   : FPNumber.ZERO,
@@ -295,6 +307,7 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
         assets,
         name,
         description,
+        baseAsset,
         poolAsset,
         rewardAsset,
         rewardAssetSymbol,
@@ -310,21 +323,26 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
     });
   }
 
-  private async getPoolData(poolAssetAddress: string, isFarm: boolean): Promise<Nullable<PoolData>> {
-    const poolAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice({ address: poolAssetAddress } as Asset) ?? 0);
+  private async getPoolData(key: string, isFarm: boolean): Promise<Nullable<PoolData>> {
+    const [baseAsset, poolAsset] = key.split(';');
+
+    const poolAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice({ address: poolAsset } as Asset) ?? 0);
 
     if (isFarm) {
-      const poolInfo = api.poolXyk.getInfo(XOR.address, poolAssetAddress);
+      const poolInfo = api.poolXyk.getInfo(baseAsset, poolAsset);
 
       if (!poolInfo) return null;
 
       const address = poolInfo.address;
-      const supply = new FPNumber(await api.api.query.poolXYK.totalIssuances(poolInfo.address));
-      const reserves = (await api.poolXyk.getReserves(XOR.address, poolAssetAddress)).map((reserve) =>
+      const totalIssuance = await api.api.query.poolXYK.totalIssuances(poolInfo.address);
+      const supply = totalIssuance.isEmpty ? FPNumber.ZERO : new FPNumber(totalIssuance);
+      const reserves = (await api.poolXyk.getReserves(baseAsset, poolAsset)).map((reserve) =>
         FPNumber.fromCodecValue(reserve)
       );
       const poolAssetReserves = reserves[1];
-      const poolTokenPrice = poolAssetReserves.mul(poolAssetPrice).mul(new FPNumber(2)).div(supply);
+      const poolTokenPrice = supply.isZero()
+        ? FPNumber.ZERO
+        : poolAssetReserves.mul(poolAssetPrice).mul(new FPNumber(2)).div(supply);
 
       return { price: poolTokenPrice, supply, reserves, address };
     } else {

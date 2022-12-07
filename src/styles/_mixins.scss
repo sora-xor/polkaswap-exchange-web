@@ -645,7 +645,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     tr,
     th {
       &,
-      &:hover {
+      &:hover,
+      &.hover-row {
         & > td,
         & > th {
           background: var(--s-color-utility-surface);
@@ -655,7 +656,12 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         }
       }
     }
-  
+
+    th.el-table__cell.is-leaf,
+    td.el-table__cell {
+      border-color: var(--s-color-base-border-secondary);
+    }
+
     .el-table__fixed {
       height: 100% !important;
   
