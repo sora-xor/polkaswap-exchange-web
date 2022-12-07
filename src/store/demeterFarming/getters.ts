@@ -58,7 +58,7 @@ const getters = defineGetters<DemeterFarmingState>()({
     return (baseAsset: string, poolAsset: string, isFarm = true) => {
       const pools = isFarm ? getters.accountFarmingPools : getters.accountStakingPools;
 
-      if (!Array.isArray(pools[baseAsset][poolAsset])) return FPNumber.ZERO;
+      if (!Array.isArray(pools[baseAsset]?.[poolAsset])) return FPNumber.ZERO;
 
       return pools[baseAsset][poolAsset].reduce((value, accountPool) => {
         return FPNumber.max(value, accountPool.pooledTokens) as FPNumber;
