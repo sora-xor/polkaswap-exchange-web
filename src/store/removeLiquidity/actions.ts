@@ -5,7 +5,6 @@ import type { ActionContext } from 'vuex';
 
 import { removeLiquidityActionContext } from '@/store/removeLiquidity';
 import { FocusedField } from './types';
-import type { LiquidityParams } from '../pool/types';
 
 function updateFirstTokenAmount(context: ActionContext<any, any>): void {
   const { state, commit, getters } = removeLiquidityActionContext(context);

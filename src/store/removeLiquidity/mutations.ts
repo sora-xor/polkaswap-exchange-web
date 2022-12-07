@@ -1,11 +1,10 @@
 import { defineMutations } from 'direct-vuex';
-import type { CodecString } from '@sora-substrate/util';
 
-import { ZeroStringValue } from '@/consts';
+import type { LiquidityParams } from '@/store/pool/types';
 import type { FocusedField, RemoveLiquidityState } from './types';
 
 const mutations = defineMutations<RemoveLiquidityState>()({
-  setAddresses(state, { firstAddress, secondAddress }: { firstAddress: string; secondAddress: string }): void {
+  setAddresses(state, { firstAddress, secondAddress }: LiquidityParams): void {
     state.firstTokenAddress = firstAddress;
     state.secondTokenAddress = secondAddress;
   },

@@ -21,32 +21,15 @@ const getters = defineGetters<RemoveLiquidityState>()({
 
     return getters.liquidity?.totalSupply ?? ZeroStringValue;
   },
-  poolShare(...args): FPNumber {
-    const { getters } = removeLiquidityGetterContext(args);
-
-    const totalSupply = FPNumber.fromCodecValue(getters.totalSupply);
-
-    if (totalSupply.isZero()) return FPNumber.ZERO;
-
-    return getters.liquidityBalanceFull.div(totalSupply);
-  },
   reserveA(...args): string {
     const { getters } = removeLiquidityGetterContext(args);
 
-    if (!getters.liquidity || getters.poolShare.isZero()) return ZeroStringValue;
-
-    const reserve = FPNumber.fromCodecValue(getters.liquidity.firstBalance, getters.firstToken?.decimals);
-
-    return reserve.div(getters.poolShare).toCodecString();
+    return getters.liquidity?.reserveA ?? ZeroStringValue;
   },
   reserveB(...args): string {
     const { getters } = removeLiquidityGetterContext(args);
 
-    if (!getters.liquidity || getters.poolShare.isZero()) return ZeroStringValue;
-
-    const reserve = FPNumber.fromCodecValue(getters.liquidity.secondBalance, getters.secondToken?.decimals);
-
-    return reserve.div(getters.poolShare).toCodecString();
+    return getters.liquidity?.reserveB ?? ZeroStringValue;
   },
   // Liquidity full balance (without locked balance)
   liquidityBalanceFull(...args): FPNumber {
