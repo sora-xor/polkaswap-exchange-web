@@ -173,6 +173,22 @@ export const getAssetDecimals = (asset: any, { internal = true } = {}): number |
   return internal ? asset.decimals : asset.externalDecimals;
 };
 
+export const getXorPerEuroRatio = async () => {
+  try {
+    const priceResult = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=sora&vs_currencies=eur');
+    const parsedData = await priceResult.json();
+    return parsedData.sora.eur;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const clearTokensFromSessionStorage = () => {
+  sessionStorage.removeItem('access-token');
+  sessionStorage.removeItem('refresh-token');
+  sessionStorage.removeItem('expiration-time');
+};
+
 export const formatAssetBalance = (
   asset: any,
   {
@@ -243,12 +259,12 @@ export const toQueryString = (params: any): string => {
     .join('&');
 };
 
-export const waitForAccountPair = async (func: VoidFunction): Promise<any> => {
+export const waitForAccountPair = async (func?: VoidFunction): Promise<any> => {
   if (!api.accountPair) {
     await delay();
     return await waitForAccountPair(func);
   } else {
-    return func();
+    return func?.();
   }
 };
 

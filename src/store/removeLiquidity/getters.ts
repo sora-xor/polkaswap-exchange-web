@@ -1,5 +1,6 @@
 import { defineGetters } from 'direct-vuex';
 import { FPNumber } from '@sora-substrate/util';
+import { api } from '@soramitsu/soraneo-wallet-web';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import { removeLiquidityGetterContext } from '@/store/removeLiquidity';
@@ -14,6 +15,21 @@ const getters = defineGetters<RemoveLiquidityState>()({
     return rootState.pool.accountLiquidity.find(
       (liquidity) => liquidity.firstAddress === firstTokenAddress && liquidity.secondAddress === secondTokenAddress
     );
+  },
+  totalSupply(...args): string {
+    const { getters } = removeLiquidityGetterContext(args);
+
+    return getters.liquidity?.totalSupply ?? ZeroStringValue;
+  },
+  reserveA(...args): string {
+    const { getters } = removeLiquidityGetterContext(args);
+
+    return getters.liquidity?.reserveA ?? ZeroStringValue;
+  },
+  reserveB(...args): string {
+    const { getters } = removeLiquidityGetterContext(args);
+
+    return getters.liquidity?.reserveB ?? ZeroStringValue;
   },
   // Liquidity full balance (without locked balance)
   liquidityBalanceFull(...args): FPNumber {
@@ -87,12 +103,28 @@ const getters = defineGetters<RemoveLiquidityState>()({
 
     const balance = getters.liquidityBalanceFull;
     const removed = new FPNumber(state.liquidityAmount ?? 0);
-    const totalSupply = FPNumber.fromCodecValue(state.totalSupply);
+    const totalSupply = FPNumber.fromCodecValue(getters.totalSupply);
     const totalSupplyAfter = totalSupply.sub(removed);
 
     if (balance.isZero() || totalSupply.isZero() || totalSupplyAfter.isZero()) return ZeroStringValue;
 
     return balance.sub(removed).div(totalSupplyAfter).mul(FPNumber.HUNDRED).toLocaleString() || ZeroStringValue;
+  },
+  price(...args): string {
+    const { getters } = removeLiquidityGetterContext(args);
+    const { firstToken, secondToken, liquidity } = getters;
+    if (!(liquidity && firstToken && secondToken)) {
+      return ZeroStringValue;
+    }
+    return api.divideAssets(firstToken, secondToken, liquidity.firstBalance, liquidity.secondBalance, false);
+  },
+  priceReversed(...args): string {
+    const { getters } = removeLiquidityGetterContext(args);
+    const { firstToken, secondToken, liquidity } = getters;
+    if (!(liquidity && firstToken && secondToken)) {
+      return ZeroStringValue;
+    }
+    return api.divideAssets(firstToken, secondToken, liquidity.firstBalance, liquidity.secondBalance, true);
   },
 });
 

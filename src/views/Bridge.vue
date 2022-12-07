@@ -477,9 +477,15 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(balance, decimals);
   }
 
-  created(): void {
-    // we should reset data only on created, because it's used on another bridge views
-    this.resetBridgeForm();
+  async created(): Promise<void> {
+    if (this.$route.params.xorToDeposit) {
+      await this.selectAsset(this.xor);
+      this.setSoraToEvm(false);
+      this.setAmount(this.$route.params.xorToDeposit);
+    } else {
+      // we should reset data only on created, because it's used on another bridge views
+      this.resetBridgeForm();
+    }
   }
 
   destroyed(): void {
