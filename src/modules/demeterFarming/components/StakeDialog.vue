@@ -2,8 +2,14 @@
   <dialog-base :visible.sync="isVisible" :title="title">
     <div class="stake-dialog">
       <s-row v-if="poolAsset" flex align="middle">
-        <pair-token-logo v-if="baseAsset" :first-token="baseAsset" :second-token="poolAsset" class="title-logo" />
-        <token-logo v-else :token="poolAsset" class="title-logo" />
+        <pair-token-logo
+          v-if="baseAsset"
+          key="token"
+          :first-token="baseAsset"
+          :second-token="poolAsset"
+          class="title-logo"
+        />
+        <token-logo v-else key="pair" :token="poolAsset" class="title-logo" />
         <span class="stake-dialog-title">
           <template v-if="baseAsset">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
         </span>
@@ -22,6 +28,7 @@
       <s-form class="el-form--actions" :show-message="false">
         <s-float-input
           v-if="isFarm"
+          key="farm-input"
           size="medium"
           :class="['s-input--stake-part', 's-input--token-value', valuePartCharClass]"
           :value="value"
@@ -55,6 +62,7 @@
 
         <token-input
           v-else
+          key="stake-input"
           :balance="stakingBalanceCodec"
           :is-max-available="isMaxButtonAvailable"
           :title="inputTitle"

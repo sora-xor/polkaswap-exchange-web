@@ -42,18 +42,19 @@
       />
       <info-line
         v-if="hasStake"
+        key="has-stake"
         value-can-be-hidden
         :label="poolShareText"
         :value="poolShareFormatted"
         :fiat-value="poolShareFiat"
       />
-      <template v-else>
-        <info-line
-          :label="t('demeterFarming.info.fee')"
-          :label-tooltip="t('demeterFarming.info.feeTooltip')"
-          :value="depositFeeFormatted"
-        />
-      </template>
+      <info-line
+        v-else
+        key="no-stake"
+        :label="t('demeterFarming.info.fee')"
+        :label-tooltip="t('demeterFarming.info.feeTooltip')"
+        :value="depositFeeFormatted"
+      />
 
       <template #buttons v-if="hasStake || hasRewards">
         <s-button type="secondary" class="s-typography-button--medium" @click="claim" :disabled="!hasRewards">{{

@@ -35,7 +35,7 @@
         </template>
       </s-table-column>
       <!-- APY -->
-      <s-table-column v-if="hasApyColumnData" width="120" header-align="right" align="right">
+      <s-table-column v-if="hasApyColumnData" key="apy" width="120" header-align="right" align="right">
         <template #header>
           <sort-button name="apy" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">APY</span>
@@ -46,7 +46,7 @@
         </template>
       </s-table-column>
       <!-- Account tokens -->
-      <s-table-column v-if="isLoggedIn" width="140" header-align="right" align="right">
+      <s-table-column v-if="isLoggedIn" key="logged" width="140" header-align="right" align="right">
         <template #header>
           <span class="explore-table__primary">Investment</span>
         </template>
@@ -65,7 +65,7 @@
         </template>
       </s-table-column>
       <!-- TVL -->
-      <s-table-column v-if="pricesAvailable" width="104" header-align="right" align="right">
+      <s-table-column v-if="pricesAvailable" key="tvl" width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">TVL</span>

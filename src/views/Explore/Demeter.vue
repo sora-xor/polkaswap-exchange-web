@@ -23,9 +23,15 @@
         </template>
         <template v-slot="{ $index, row }">
           <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
-          <token-logo v-if="row.assets.length === 1" class="explore-table-item-logo" :token="row.assets[0]" />
+          <token-logo
+            v-if="row.assets.length === 1"
+            key="token"
+            class="explore-table-item-logo"
+            :token="row.assets[0]"
+          />
           <pair-token-logo
             v-else
+            key="pair"
             :first-token="row.assets[0]"
             :second-token="row.assets[1]"
             size="small"
@@ -33,7 +39,7 @@
           />
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.name }}</div>
-            <div v-if="row.description" class="explore-table__secondary">{{ row.description }}</div>
+            <div v-if="row.description" key="description" class="explore-table__secondary">{{ row.description }}</div>
           </div>
         </template>
       </s-table-column>
@@ -88,7 +94,7 @@
         </template>
       </s-table-column>
       <!-- Account tokens -->
-      <s-table-column v-if="isLoggedIn" width="140" header-align="right" align="right">
+      <s-table-column v-if="isLoggedIn" key="logged" width="140" header-align="right" align="right">
         <template #header>
           <span class="explore-table__primary">Investment</span>
         </template>
