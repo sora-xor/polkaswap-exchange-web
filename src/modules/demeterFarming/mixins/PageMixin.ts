@@ -45,13 +45,13 @@ export default class PageMixin extends Mixins(BasePageMixin, mixins.TransactionM
     return !activeCollapseItems.includes(address);
   }
 
-  changePoolStake(params: { poolAsset: string; rewardAsset: string }, isAddingStake = true): void {
+  changePoolStake(params: { baseAsset: string; poolAsset: string; rewardAsset: string }, isAddingStake = true): void {
     this.isAddingStake = isAddingStake;
     this.setDialogParams(params);
     this.showStakeDialog = true;
   }
 
-  claimPoolRewards(params: { poolAsset: string; rewardAsset: string }): void {
+  claimPoolRewards(params: { baseAsset: string; poolAsset: string; rewardAsset: string }): void {
     this.setDialogParams(params);
     this.showClaimDialog = true;
   }

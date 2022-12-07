@@ -1,11 +1,9 @@
 import invert from 'lodash/fp/invert';
-import { KnownAssets, KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 import pkg from '../../package.json';
-import { KnownBridgeAsset } from '../utils/ethers-util';
 
 export const app = {
   version: pkg.version,
@@ -365,38 +363,6 @@ export enum EvmSymbol {
   ETH = 'ETH',
   VT = 'VT',
 }
-
-const gasLimit = {
-  approve: 70000,
-  sendERC20ToSidechain: 86000,
-  sendEthToSidechain: 50000,
-  mintTokensByPeers: 255000,
-  receiveByEthereumAssetAddress: 250000,
-  receiveBySidechainAssetId: 255000,
-};
-/**
- * It's in gwei.
- * Zero index means ETH -> SORA
- * First index means SORA -> ETH
- */
-export const EthereumGasLimits = [
-  // ETH -> SORA
-  {
-    [XOR.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.sendEthToSidechain,
-    [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-  },
-  // SORA -> ETH
-  {
-    [XOR.address]: gasLimit.mintTokensByPeers,
-    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.mintTokensByPeers,
-    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.receiveBySidechainAssetId,
-    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.receiveByEthereumAssetAddress,
-    [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
-  },
-];
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';

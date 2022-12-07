@@ -27,7 +27,7 @@ const mutations = defineMutations<SwapState>()({
   resetTokenFromAddress(state): void {
     state.tokenFromAddress = '';
   },
-  setTokenFromBalance(state, balance: AccountBalance): void {
+  setTokenFromBalance(state, balance: Nullable<AccountBalance>): void {
     state.tokenFromBalance = balance;
   },
   setTokenToAddress(state, address: string): void {
@@ -36,7 +36,7 @@ const mutations = defineMutations<SwapState>()({
   resetTokenToAddress(state): void {
     state.tokenToAddress = '';
   },
-  setTokenToBalance(state, balance: AccountBalance): void {
+  setTokenToBalance(state, balance: Nullable<AccountBalance>): void {
     state.tokenToBalance = balance;
   },
   setFromValue(state, value: string): void {
