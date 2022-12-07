@@ -37,8 +37,19 @@
     <info-line :value="`1 ${secondToken.symbol} = ${formattedPrice}`" :asset-symbol="firstToken.symbol" />
     <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
     <template #footer>
-      <s-button type="primary" class="s-typography-button--large" :loading="parentLoading" @click="handleConfirm">
-        {{ t('exchange.confirm') }}
+      <s-button
+        type="primary"
+        class="s-typography-button--large"
+        :loading="parentLoading"
+        :disabled="!!insufficientBalanceTokenSymbol"
+        @click="handleConfirm"
+      >
+        <template v-if="insufficientBalanceTokenSymbol">
+          {{ t('exchange.insufficientBalance', { tokenSymbol: insufficientBalanceTokenSymbol }) }}
+        </template>
+        <template v-else>
+          {{ t('exchange.confirm') }}
+        </template>
       </s-button>
     </template>
   </dialog-base>
@@ -75,6 +86,7 @@ export default class ConfirmTokenPairDialog extends Mixins(
   @Prop({ type: String }) readonly price!: string;
   @Prop({ type: String }) readonly priceReversed!: string;
   @Prop({ type: String }) readonly slippageTolerance!: string;
+  @Prop({ type: String }) readonly insufficientBalanceTokenSymbol!: string;
 
   get formattedFirstTokenValue(): string {
     return this.formatStringValue(this.firstTokenValue, this.firstToken?.decimals);
