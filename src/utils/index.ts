@@ -2,6 +2,7 @@ import debounce from 'lodash/debounce';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { RegisteredAccountAsset, FPNumber, CodecString } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { Route } from 'vue-router';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
@@ -229,11 +230,12 @@ export const updateFpNumberLocale = (locale: string): void => {
   FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(locale).substring(1, 2);
 };
 
-export const updateDocumentTitle = (to?: any) => {
+export const updateDocumentTitle = (to?: Route) => {
   const page = to ?? router.currentRoute;
+  const pageName = page?.name;
 
-  if (page && page.name && i18n.te(`pageTitle.${page.name}`)) {
-    document.title = `${i18n.t(`pageTitle.${page.name}`)} - ${app.name}`;
+  if (pageName && i18n.te(`pageTitle.${pageName}`)) {
+    document.title = `${i18n.t(`pageTitle.${pageName}`)} - ${app.name}`;
   } else {
     document.title = app.title;
   }

@@ -1,13 +1,14 @@
 import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
+import VueRouter, { NavigationGuardNext, RouteConfig } from 'vue-router';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { api } from '@sora-substrate/util';
 
+import store from '@/store';
+import { updateDocumentTitle } from '@/utils';
 import { PageNames, BridgeChildPages } from '@/consts';
+
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 import { demeterLazyView } from '@/modules/demeterFarming/router';
-
-import store from '@/store';
 
 Vue.use(VueRouter);
 
@@ -197,8 +198,14 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const prev = from.name as Nullable<PageNames>;
+  const current = to.name as PageNames;
+  const setRoute = (name: PageNames, withNext = true) => {
+    store.commit.router.setRoute({ prev, current: name });
+    next(withNext ? { name } : undefined);
+    updateDocumentTitle(to);
+  };
   const isLoggedIn = store.getters.wallet.account.isLoggedIn;
-  if (prev !== PageNames.BridgeTransaction && to.name === PageNames.BridgeTransactionsHistory) {
+  if (prev !== PageNames.BridgeTransaction && current === PageNames.BridgeTransactionsHistory) {
     store.commit.bridge.setHistoryPage(1);
   }
   if (to.matched.some((record) => record.meta.isInvitationRoute)) {
@@ -206,37 +213,25 @@ router.beforeEach((to, from, next) => {
       store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
     }
     if (isLoggedIn) {
-      next({ name: PageNames.Referral });
-      store.commit.router.setRoute({ prev, current: PageNames.Referral });
+      setRoute(PageNames.Referral);
       return;
     }
   }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (
-      BridgeChildPages.includes(to.name as PageNames) &&
-      isLoggedIn &&
-      !store.getters.web3.isExternalAccountConnected
-    ) {
-      next({ name: PageNames.Bridge });
-      store.commit.router.setRoute({ prev, current: PageNames.Bridge });
+    if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.web3.isExternalAccountConnected) {
+      setRoute(PageNames.Bridge);
       return;
     }
-
     if (!isLoggedIn) {
-      next({ name: PageNames.Wallet });
-      store.commit.router.setRoute({ prev, current: PageNames.Wallet });
+      setRoute(PageNames.Wallet);
       return;
     }
   }
-
   if (!store.getters.settings.soraCardEnabled && to.name === PageNames.SoraCard) {
-    next({ name: PageNames.Swap });
-    store.commit.router.setRoute({ prev, current: PageNames.Swap });
+    setRoute(PageNames.Swap);
     return;
   }
-
-  store.commit.router.setRoute({ prev, current: to.name as PageNames });
-  next();
+  setRoute(current, false);
 });
 
 export { lazyComponent, lazyView, goTo };
