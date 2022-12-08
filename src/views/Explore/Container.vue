@@ -1,8 +1,10 @@
 <template>
   <div class="explore-container">
-    <s-tabs class="explore-tabs" type="rounded" :value="pageName" @click="handleTabClick">
-      <s-tab v-for="tab in tabs" :key="tab.name" :name="tab.name" :label="tab.label"> </s-tab>
-    </s-tabs>
+    <div class="explore-tabs-container">
+      <s-tabs class="explore-tabs" type="rounded" :value="pageName" @click="handleTabClick">
+        <s-tab v-for="tab in tabs" :key="tab.name" :name="tab.name" :label="tab.label"> </s-tab>
+      </s-tabs>
+    </div>
 
     <div class="container container--explore" v-loading="parentLoading">
       <generic-page-header :title="pageTitle" class="page-header-title--explore">
@@ -45,7 +47,7 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
   exploreQuery = '';
 
   get tabs(): Array<{ name: string; label: string }> {
-    return [PageNames.ExploreStaking, PageNames.ExploreFarming, PageNames.ExplorePools, PageNames.ExploreTokens].map(
+    return [PageNames.ExploreFarming, PageNames.ExplorePools, PageNames.ExploreStaking, PageNames.ExploreTokens].map(
       (name) => ({
         name,
         label: this.t(`pageTitle.${name}`),
@@ -73,7 +75,10 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 
 <style lang="scss">
 .explore-tabs {
-  margin-top: $inner-spacing-big;
+  &-container {
+    margin-top: $inner-spacing-big;
+    min-height: var(--s-size-small);
+  }
 
   .el-tabs__header {
     margin: 0 auto;
