@@ -495,9 +495,9 @@ $fixed-column-width: 280px;
   tr,
   th {
     &,
-    &:hover {
-      & > td,
-      & > th {
+    &:hover &.hover-row {
+      & > td.el-table__cell,
+      & > th.el-table__cell {
         background: var(--s-color-utility-surface);
         .cell {
           padding: $inner-spacing-tiny $inner-spacing-mini;
