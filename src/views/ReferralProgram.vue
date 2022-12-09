@@ -149,7 +149,7 @@
             <p class="referrer-description" v-html="t('referralProgram.referrer.description')" />
           </template>
           <s-card v-if="referrer" shadow="always" size="small" border-radius="medium">
-            <div class="referrer-link-details">
+            <div class="referrer-link-details with-referrer">
               <div class="referral-link-label">{{ t('referralProgram.referrer.referredLablel') }}</div>
               <div class="referral-link" v-html="referrerLink.label" />
             </div>
@@ -709,9 +709,11 @@ export default class ReferralProgram extends Mixins(
     &-details {
       display: flex;
       flex-direction: column;
-      margin-right: $inner-spacing-mini;
-      overflow: hidden;
       color: var(--s-color-theme-accent);
+      &.with-referrer {
+        margin-right: $inner-spacing-mini;
+        overflow: hidden;
+      }
     }
     &,
     &-label {

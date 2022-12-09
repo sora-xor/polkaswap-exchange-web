@@ -10,7 +10,7 @@
           </div>
         </div>
         <div class="chart-filters">
-          <s-tabs type="rounded" :value="selectedFilter.name" @click="selectFilter">
+          <s-tabs type="rounded" :value="selectedFilter.name" @input="selectFilter">
             <s-tab
               v-for="filter in filters"
               :key="filter.name"
@@ -877,7 +877,7 @@ export default class SwapChart extends Mixins(
     this.subscribeToPriceUpdates();
   }
 
-  selectFilter({ name }): void {
+  selectFilter(name: string): void {
     const filter = this.filters.find((item) => item.name === name);
 
     if (!filter) return;

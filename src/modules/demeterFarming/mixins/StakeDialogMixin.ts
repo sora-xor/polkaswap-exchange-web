@@ -7,7 +7,7 @@ import PoolMixin from './PoolMixin';
 import type { CodecString } from '@sora-substrate/util';
 
 @Component
-export default class StakeDialogMixin extends Mixins(PoolMixin, mixins.DialogMixin) {
+export default class StakeDialogMixin extends Mixins(PoolMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
 
   get networkFee(): CodecString {
