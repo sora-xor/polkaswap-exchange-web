@@ -13,13 +13,6 @@
       </app-menu>
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar">
-          <div v-if="blockNumber && !isCurrentPageTooWide" class="block-number">
-            <s-tooltip :content="t('blockNumberText')" placement="bottom" tabindex="-1">
-              <a class="block-number-link" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
-                <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
-              </a>
-            </s-tooltip>
-          </div>
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <div class="app-disclaimer-container">
@@ -47,6 +40,7 @@
         </s-scrollbar>
       </div>
     </div>
+    <app-footer />
     <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
     <bridge-transfer-notification />
     <mobile-popup :visible.sync="showMobilePopup" />
@@ -85,6 +79,7 @@ import type { FeatureFlags } from '@/store/settings/types';
     SoraLogo,
     AppHeader: lazyComponent(Components.AppHeader),
     AppMenu: lazyComponent(Components.AppMenu),
+    AppFooter: lazyComponent(Components.AppFooter),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
@@ -100,12 +95,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showMobilePopup = false;
   showNotifsDarkPage = false;
 
-  @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer storageReferrer!: string;
   @state.settings.browserNotifPopupVisibility browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility browserNotifPopupBlocked!: boolean;
-  @state.settings.blockNumber blockNumber!: number;
 
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
@@ -270,18 +263,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     return cssClasses;
   }
 
-  get blockNumberFormatted(): string {
-    return new FPNumber(this.blockNumber).toLocaleString();
-  }
-
-  get blockExplorerLink(): Nullable<string> {
-    const links = getExplorerLinks(this.soraNetwork);
-    if (!links.length) {
-      return null;
-    }
-    return links[0].value;
-  }
-
   get showBrowserNotifPopup(): boolean {
     return this.browserNotifPopup;
   }
@@ -406,33 +387,6 @@ ul ul {
     &-scrollbar {
       flex: 1;
     }
-  }
-}
-
-.block-number {
-  display: none;
-
-  &-link {
-    display: flex;
-    align-items: center;
-    color: var(--s-color-status-success);
-    font-size: var(--s-font-size-extra-mini);
-    text-decoration: none;
-    font-weight: 300;
-    position: absolute;
-    top: 10px;
-    right: 24px;
-    line-height: 150%;
-  }
-
-  &-icon {
-    $block-icon-size: 7px;
-
-    background-color: var(--s-color-status-success);
-    border-radius: 50%;
-    height: $block-icon-size;
-    width: $block-icon-size;
-    margin-right: 2px;
   }
 }
 
@@ -585,10 +539,6 @@ i.icon-divider {
       padding-right: $inner-spacing-large;
     }
   }
-
-  .block-number {
-    display: block;
-  }
 }
 
 @include desktop {
@@ -614,10 +564,6 @@ i.icon-divider {
             max-width: calc(#{$bridge-width} * 2 + #{$basic-spacing-small});
           }
         }
-      }
-
-      .block-number-link {
-        z-index: $app-body-layer;
       }
     }
   }
@@ -647,7 +593,7 @@ $sora-logo-width: 173.7px;
     display: flex;
     align-items: stretch;
     overflow: hidden;
-    height: calc(100vh - #{$header-height});
+    height: calc(100vh - #{$header-height} - #{$footer-height});
     position: relative;
   }
 
