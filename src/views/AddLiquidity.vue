@@ -89,7 +89,7 @@
 
     <confirm-token-pair-dialog
       :visible.sync="showConfirmDialog"
-      :parent-loading="parentLoading"
+      :parent-loading="parentLoading || loading"
       :share-of-pool="shareOfPool"
       :first-token="firstToken"
       :second-token="secondToken"

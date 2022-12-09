@@ -96,6 +96,7 @@
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
+        :loading="parentLoading"
         :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
         @click="handleConfirm"
       >

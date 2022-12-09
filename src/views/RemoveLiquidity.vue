@@ -109,7 +109,7 @@
 
     <confirm-remove-liquidity
       :visible.sync="showConfirmDialog"
-      :parent-loading="parentLoading"
+      :parent-loading="parentLoading || loading"
       @confirm="handleConfirmRemoveLiquidity"
     />
 
