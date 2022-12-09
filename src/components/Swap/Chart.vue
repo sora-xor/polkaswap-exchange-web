@@ -868,7 +868,6 @@ export default class SwapChart extends Mixins(
   }
 
   changeFilter(filter: ChartFilter): void {
-    console.log('changeFilter', filter);
     this.selectedFilter = filter;
     this.forceUpdatePrices();
   }
