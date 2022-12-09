@@ -711,6 +711,7 @@ export default class ReferralProgram extends Mixins(
       flex-direction: column;
       color: var(--s-color-theme-accent);
       &.with-referrer {
+        margin-right: $inner-spacing-mini;
         overflow: hidden;
       }
     }
