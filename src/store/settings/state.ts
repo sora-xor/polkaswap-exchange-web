@@ -30,6 +30,8 @@ function initialState(): SettingsState {
     browserNotifPopupBlockedVisibility: false,
     blockNumber: 0,
     blockNumberUpdates: null,
+    internetConnection: null,
+    internetConnectionSpeed: null,
   };
 }
 

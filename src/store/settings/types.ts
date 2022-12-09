@@ -31,6 +31,8 @@ export type SettingsState = {
   browserNotifsPermission: NotificationPermission;
   blockNumber: number;
   blockNumberUpdates: Nullable<Subscription>;
+  internetConnection: Nullable<boolean>;
+  internetConnectionSpeed: Nullable<number>;
 };
 
 export type NodesHashTable = {

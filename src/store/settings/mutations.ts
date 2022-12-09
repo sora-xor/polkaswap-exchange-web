@@ -87,6 +87,15 @@ const mutations = defineMutations<SettingsState>()({
     state.blockNumberUpdates?.unsubscribe();
     state.blockNumberUpdates = null;
   },
+  setInternetConnectionEnabled(state): void {
+    state.internetConnection = true;
+  },
+  setInternetConnectionDisabled(state): void {
+    state.internetConnection = false;
+  },
+  setInternetConnectionSpeed(state): void {
+    state.internetConnectionSpeed = ((navigator as any)?.connection?.downlink as number) ?? 0;
+  },
 });
 
 export default mutations;
