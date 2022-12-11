@@ -7,7 +7,6 @@ import { demeterFarmingActionContext } from '@/store/demeterFarming';
 import type { Subscription } from 'rxjs';
 import type { DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 const actions = defineActions({
   async subscribeOnPools(context): Promise<void> {
@@ -88,49 +87,64 @@ const actions = defineActions({
   async deposit(context, params: DemeterLiquidityParams): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
 
-    const { poolAsset: poolAssetAddress, rewardAsset: rewardAssetAddress, isFarm } = params.pool;
+    const {
+      baseAsset: baseAssetAddress,
+      poolAsset: poolAssetAddress,
+      rewardAsset: rewardAssetAddress,
+      isFarm,
+    } = params.pool;
 
+    const baseAsset = rootGetters.assets.assetsDataTable[baseAssetAddress];
     const poolAsset = rootGetters.assets.assetsDataTable[poolAssetAddress];
     const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
     const desiredAmount = params.value.toString();
 
-    const args: [Asset, Asset, string] = [poolAsset, rewardAsset, desiredAmount];
-
     if (isFarm) {
-      await api.demeterFarming.depositLiquidity(...args);
+      await api.demeterFarming.depositLiquidity(desiredAmount, poolAsset, rewardAsset, baseAsset);
     } else {
-      await api.demeterFarming.stake(...args);
+      await api.demeterFarming.stake(poolAsset, rewardAsset, desiredAmount);
     }
   },
 
   async withdraw(context, params: DemeterLiquidityParams): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
 
-    const { poolAsset: poolAssetAddress, rewardAsset: rewardAssetAddress, isFarm } = params.pool;
+    const {
+      baseAsset: baseAssetAddress,
+      poolAsset: poolAssetAddress,
+      rewardAsset: rewardAssetAddress,
+      isFarm,
+    } = params.pool;
 
+    const baseAsset = rootGetters.assets.assetsDataTable[baseAssetAddress];
     const poolAsset = rootGetters.assets.assetsDataTable[poolAssetAddress];
     const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
     const desiredAmount = params.value.toString();
 
-    const args: [Asset, Asset, string] = [poolAsset, rewardAsset, desiredAmount.toString()];
-
     if (isFarm) {
-      await api.demeterFarming.withdrawLiquidity(...args);
+      await api.demeterFarming.withdrawLiquidity(desiredAmount, poolAsset, rewardAsset, baseAsset);
     } else {
-      await api.demeterFarming.unstake(...args);
+      await api.demeterFarming.unstake(poolAsset, rewardAsset, desiredAmount);
     }
   },
 
   async claimRewards(context, pool: DemeterAccountPool): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
 
-    const { poolAsset: poolAssetAddress, rewardAsset: rewardAssetAddress, isFarm, rewards } = pool;
+    const {
+      baseAsset: baseAssetAddress,
+      poolAsset: poolAssetAddress,
+      rewardAsset: rewardAssetAddress,
+      isFarm,
+      rewards,
+    } = pool;
 
+    const baseAsset = rootGetters.assets.assetsDataTable[baseAssetAddress];
     const poolAsset = rootGetters.assets.assetsDataTable[poolAssetAddress];
     const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
     const amount = rewards.toString();
 
-    await api.demeterFarming.getRewards(poolAsset, rewardAsset, isFarm, amount);
+    await api.demeterFarming.getRewards(isFarm, poolAsset, rewardAsset, baseAsset, amount);
   },
 });
 

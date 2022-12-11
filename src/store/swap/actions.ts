@@ -22,9 +22,9 @@ function updateTokenSubscription(context: ActionContext<any, any>, dir: Directio
 
   const token = dir === Direction.From ? tokenFrom : tokenTo;
   const setTokenBalance = dir === Direction.From ? setTokenFromBalance : setTokenToBalance;
-  const updateBalance = (balance: AccountBalance) => setTokenBalance(balance);
+  const updateBalance = (balance: Nullable<AccountBalance>) => setTokenBalance(balance);
 
-  balanceSubscriptions.remove(dir, { updateBalance });
+  balanceSubscriptions.remove(dir);
 
   if (
     rootGetters.wallet.account.isLoggedIn &&
@@ -86,13 +86,8 @@ const actions = defineActions({
     updateTokenSubscription(context, Direction.To);
   },
   async resetSubscriptions(context): Promise<void> {
-    const { commit } = swapActionContext(context);
-    balanceSubscriptions.remove(Direction.From, {
-      updateBalance: (balance: AccountBalance) => commit.setTokenFromBalance(balance),
-    });
-    balanceSubscriptions.remove(Direction.To, {
-      updateBalance: (balance: AccountBalance) => commit.setTokenToBalance(balance),
-    });
+    balanceSubscriptions.remove(Direction.From);
+    balanceSubscriptions.remove(Direction.To);
   },
   async reset(context): Promise<void> {
     const { commit, dispatch } = swapActionContext(context);

@@ -94,9 +94,9 @@ import {
   RewardsChildPages,
   StakingChildPages,
   SidebarMenuGroups,
+  SidebarMenuItem,
   FaucetLink,
   Components,
-  SidebarMenuItem,
 } from '@/consts';
 
 import router, { lazyComponent } from '@/router';
@@ -114,6 +114,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
 
   @state.settings.faucetUrl faucetUrl!: string;
+  @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
   @getter.settings.isDesktop private isDesktop!: boolean;
 
@@ -126,6 +127,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   get sidebarMenuItems(): Array<SidebarMenuItem> {
     if (!this.isDesktop) return SidebarMenuGroups;
     return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.Bridge);
+    // if (this.soraCardEnabled) return SidebarMenuGroups;
+    // return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.SoraCard);
   }
 
   getCurrentPath(): string {
@@ -224,6 +227,33 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     &:focus {
       background-color: unset !important;
     }
+  }
+}
+
+// TODO: [TECH] move from fonts provided values
+.sora-card-sidebar-icon {
+  path {
+    fill: var(--s-color-base-content-tertiary) !important;
+  }
+}
+
+.el-menu-item:not(.is-active):not(.is-disabled) {
+  .sidebar-item-content {
+    &:hover .sora-card-sidebar-icon path {
+      fill: var(--s-color-base-content-secondary) !important;
+    }
+  }
+}
+
+.el-menu-item.is-disabled {
+  &:hover path {
+    fill: var(--s-color-base-content-tertiary) !important;
+  }
+}
+
+.is-active .sora-card-sidebar-icon {
+  path {
+    fill: var(--s-color-theme-accent) !important;
   }
 }
 </style>

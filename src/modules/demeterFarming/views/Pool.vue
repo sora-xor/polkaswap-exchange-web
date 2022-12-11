@@ -4,8 +4,8 @@
       <template #title-append="{ liquidity, activeCollapseItems }">
         <div v-if="getStatusBadgeVisibility(liquidity.address, activeCollapseItems)" class="s-flex farming-pool-badges">
           <status-badge
-            v-for="item in getLiquidityFarmingPools(liquidity)"
-            :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}`"
+            v-for="(item, index) in getLiquidityFarmingPools(liquidity)"
+            :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}-${index}`"
             :liquidity="liquidity"
             :pool="item.pool"
             :account-pool="item.accountPool"
@@ -16,8 +16,8 @@
       </template>
       <template #append="liquidity">
         <pool-card
-          v-for="item in getLiquidityFarmingPools(liquidity)"
-          :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}`"
+          v-for="(item, index) in getLiquidityFarmingPools(liquidity)"
+          :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}-${index}`"
           :liquidity="liquidity"
           :pool="item.pool"
           :account-pool="item.accountPool"
@@ -37,6 +37,7 @@
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
       :is-adding="isAddingStake"
+      :parent-loading="parentLoading || loading"
       @add="handleStakeAction($event, deposit, signTx)"
       @remove="handleStakeAction($event, withdraw, signTx)"
     />
@@ -44,6 +45,7 @@
       :visible.sync="showClaimDialog"
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
+      :parent-loading="parentLoading || loading"
       @confirm="handleClaimRewards($event, signTx)"
     />
 
@@ -74,6 +76,7 @@ import { PageNames } from '@/consts';
 import { state } from '@/store/decorators';
 
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 
 @Component({
   inheritAttrs: false,
@@ -91,14 +94,29 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
   get selectedAccountLiquidity(): Nullable<AccountLiquidity> {
-    return this.accountLiquidity.find((liquidity) => liquidity.secondAddress === this.poolAsset) ?? null;
+    return (
+      this.accountLiquidity.find(
+        (liquidity) => liquidity.firstAddress === this.baseAsset && liquidity.secondAddress === this.poolAsset
+      ) ?? null
+    );
+  }
+
+  get farmingPoolsByLiquidities(): Record<string, { pool: DemeterPool; accountPool: Nullable<DemeterAccountPool> }[]> {
+    return this.accountLiquidity.reduce((buffer, liquidity) => {
+      const key = this.getLiquidityKey(liquidity);
+
+      buffer[key] = this.getAvailablePools(this.pools[liquidity.firstAddress]?.[liquidity.secondAddress]);
+
+      return buffer;
+    }, {});
   }
 
   getLiquidityFarmingPools(liquidity: AccountLiquidity) {
-    // DEMETER FARMING ONLY FOR XOR POOLS!
-    if (liquidity.firstAddress !== XOR.address) return [];
+    return this.farmingPoolsByLiquidities[this.getLiquidityKey(liquidity)] ?? [];
+  }
 
-    return this.getAvailablePools(this.pools[liquidity.secondAddress]);
+  private getLiquidityKey(liquidity: AccountLiquidity): string {
+    return [liquidity.firstAddress, liquidity.secondAddress].join(';');
   }
 }
 </script>

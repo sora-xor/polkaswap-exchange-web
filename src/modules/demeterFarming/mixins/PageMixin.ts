@@ -7,12 +7,12 @@ import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build
 
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 @Component
-export default class PageMixin extends Mixins(mixins.TransactionMixin, mixins.ConfirmTransactionMixin) {
+export default class PageMixin extends Mixins(mixins.TransactionMixin) {
   @getter.settings.isDesktop private isDesktop!: boolean;
-  @getter.demeterFarming.farmingPools farmingPools!: DataMap<DemeterPool[]>;
-  @getter.demeterFarming.stakingPools stakingPools!: DataMap<DemeterPool[]>;
-  @getter.demeterFarming.accountFarmingPools accountFarmingPools!: DataMap<DemeterAccountPool[]>;
-  @getter.demeterFarming.accountStakingPools accountStakingPools!: DataMap<DemeterAccountPool[]>;
+  @getter.demeterFarming.farmingPools farmingPools!: DoubleMap<DemeterPool[]>;
+  @getter.demeterFarming.stakingPools stakingPools!: DoubleMap<DemeterPool[]>;
+  @getter.demeterFarming.accountFarmingPools accountFarmingPools!: DoubleMap<DemeterAccountPool[]>;
+  @getter.demeterFarming.accountStakingPools accountStakingPools!: DoubleMap<DemeterAccountPool[]>;
 
   @action.demeterFarming.deposit deposit!: (params: DemeterLiquidityParams) => Promise<void>;
   @action.demeterFarming.withdraw withdraw!: (params: DemeterLiquidityParams) => Promise<void>;
@@ -25,23 +25,24 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin, mixins.Co
   showClaimDialog = false;
   showCalculatorDialog = false;
 
+  baseAsset: Nullable<string> = null;
   poolAsset: Nullable<string> = null;
   rewardAsset: Nullable<string> = null;
 
   isAddingStake = true;
 
-  get pools(): DataMap<DemeterPool[]> {
+  get pools(): DoubleMap<DemeterPool[]> {
     return this.isFarmingPage ? this.farmingPools : this.stakingPools;
   }
 
-  get accountPools(): DataMap<DemeterAccountPool[]> {
+  get accountPools(): DoubleMap<DemeterAccountPool[]> {
     return this.isFarmingPage ? this.accountFarmingPools : this.accountStakingPools;
   }
 
   get selectedPool(): Nullable<DemeterPool> {
-    if (!this.poolAsset || !this.pools[this.poolAsset]) return null;
+    if (!this.baseAsset || !this.poolAsset || !this.pools[this.baseAsset][this.poolAsset]) return null;
 
-    return this.pools[this.poolAsset].find((pool) => pool.rewardAsset === this.rewardAsset);
+    return this.pools[this.baseAsset][this.poolAsset].find((pool) => pool.rewardAsset === this.rewardAsset);
   }
 
   get selectedAccountPool(): Nullable<DemeterAccountPool> {
@@ -68,15 +69,9 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin, mixins.Co
   }
 
   getAccountPool(pool: DemeterPool): Nullable<DemeterAccountPool> {
-    return this.accountPools[pool.poolAsset]?.find((accountPool) => accountPool.rewardAsset === pool.rewardAsset);
-  }
-
-  hasActivePools(address: string): boolean {
-    return this.pools[address]?.some((pool) => !pool.isRemoved);
-  }
-
-  hasAccountPoolsForPoolAsset(address: string): boolean {
-    return this.accountPools[address]?.some((accountPool) => this.isActiveAccountPool(accountPool));
+    return this.accountPools[pool.baseAsset]?.[pool.poolAsset]?.find(
+      (accountPool) => accountPool.rewardAsset === pool.rewardAsset
+    );
   }
 
   isActiveAccountPool(accountPool: DemeterAccountPool): boolean {
@@ -87,25 +82,26 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin, mixins.Co
     return !activeCollapseItems.includes(address);
   }
 
-  changePoolStake(params: { poolAsset: string; rewardAsset: string }, isAddingStake = true): void {
+  changePoolStake(params: { baseAsset: string; poolAsset: string; rewardAsset: string }, isAddingStake = true): void {
     this.isAddingStake = isAddingStake;
     this.setDialogParams(params);
     this.showStakeDialog = true;
   }
 
-  claimPoolRewards(params: { poolAsset: string; rewardAsset: string }): void {
+  claimPoolRewards(params: { baseAsset: string; poolAsset: string; rewardAsset: string }): void {
     this.setDialogParams(params);
     this.showClaimDialog = true;
   }
 
-  showPoolCalculator(params: { poolAsset: string; rewardAsset: string }): void {
+  showPoolCalculator(params: { baseAsset: string; poolAsset: string; rewardAsset: string }): void {
     this.setDialogParams(params);
     this.showCalculatorDialog = true;
   }
 
-  private setDialogParams({ poolAsset, rewardAsset }: { poolAsset: string; rewardAsset: string }): void {
-    this.poolAsset = poolAsset;
-    this.rewardAsset = rewardAsset;
+  private setDialogParams(params: { baseAsset: string; poolAsset: string; rewardAsset: string }): void {
+    this.baseAsset = params.baseAsset;
+    this.poolAsset = params.poolAsset;
+    this.rewardAsset = params.rewardAsset;
   }
 
   async handleStakeAction(

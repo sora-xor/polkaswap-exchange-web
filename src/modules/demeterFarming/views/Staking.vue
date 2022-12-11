@@ -7,14 +7,19 @@
     </s-card>
 
     <s-collapse class="demeter-staking-list" @change="updateActiveCollapseItems">
-      <s-collapse-item v-for="token of tokensData" :key="token.address" :name="token.address" class="staking-info">
+      <s-collapse-item
+        v-for="token in tokensData"
+        :key="token.asset.address"
+        :name="token.asset.address"
+        class="staking-info"
+      >
         <template #title>
-          <token-logo :token="token" size="medium" class="token-logo" />
+          <token-logo :token="token.asset" size="medium" class="token-logo" />
           <div>
-            <h3 class="staking-info-title">{{ token.symbol }}</h3>
+            <h3 class="staking-info-title">{{ token.asset.symbol }}</h3>
             <div class="s-flex staking-info-badges">
               <status-badge
-                v-for="item of token.items"
+                v-for="item in token.items"
                 :key="item.pool.rewardAsset"
                 :pool="item.pool"
                 :account-pool="item.accountPool"
@@ -26,7 +31,7 @@
         </template>
 
         <pool-card
-          v-for="item of token.items"
+          v-for="item in token.items"
           :key="item.pool.rewardAsset"
           :pool="item.pool"
           :account-pool="item.accountPool"
@@ -45,6 +50,7 @@
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
       :is-adding="isAddingStake"
+      :parent-loading="parentLoading || loading"
       @add="handleStakeAction($event, deposit, signTx)"
       @remove="handleStakeAction($event, withdraw, signTx)"
     />
@@ -52,6 +58,7 @@
       :visible.sync="showClaimDialog"
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
+      :parent-loading="parentLoading || loading"
       @confirm="handleClaimRewards($event, signTx)"
     />
     <calculator-dialog :visible.sync="showCalculatorDialog" :pool="selectedPool" :account-pool="selectedAccountPool" />
@@ -75,6 +82,12 @@ import { Components } from '@/consts';
 import { getter } from '@/store/decorators';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
+
+type StakingItem = {
+  asset: Asset;
+  items: Array<{ pool: DemeterPool; accountPool: Nullable<DemeterAccountPool> }>;
+};
 
 @Component({
   components: {
@@ -101,18 +114,22 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
   }
 
   get tokensData(): object {
-    return Object.entries(this.pools).map(([address, pools]) => {
+    return Object.entries(this.pools).reduce<StakingItem[]>((buffer, [address, poolsMap]) => {
       const asset = this.getAsset(address);
-      const symbol = asset?.symbol ?? this.t('unknownAssetText');
-      const items = this.getAvailablePools(pools);
 
-      return {
+      if (!asset) return buffer;
+
+      const items = this.getAvailablePools(poolsMap?.[address]);
+
+      if (!items.length) return buffer;
+
+      buffer.push({
         asset,
-        symbol,
-        address,
         items,
-      };
-    });
+      });
+
+      return buffer;
+    }, []);
   }
 }
 </script>
