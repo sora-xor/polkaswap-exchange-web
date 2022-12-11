@@ -53,8 +53,11 @@
       @click="handleConfirm"
     >
       <span class="text">{{ btnText() }}</span>
-      <s-icon name="arrows-arrow-top-right-24" size="18" class="" />
+      <s-icon v-if="!btnLoading" name="arrows-arrow-top-right-24" size="18" />
     </s-button>
+    <notification-enabling-page v-if="permissionDialogVisibility">
+      {{ t('code.allowanceRequest') }}
+    </notification-enabling-page>
   </div>
 </template>
 
@@ -66,13 +69,14 @@ import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
 import CardIcon from '@/assets/img/sora-card/card.svg?inline';
 import UserIcon from '@/assets/img/sora-card/user.svg?inline';
 import { delay } from '@/utils';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
   components: {
     EmailIcon,
     CardIcon,
     UserIcon,
+    NotificationEnablingPage: components.NotificationEnablingPage,
   },
 })
 export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin) {
@@ -83,6 +87,7 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   thirdPointChecked = false;
   thirdPointCurrent = false;
 
+  permissionDialogVisibility = false;
   btnLoading = false;
 
   btnText(): string {
@@ -92,7 +97,49 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
     return 'LET’S START';
   }
 
+  async checkMediaDevicesAllowance(context): Promise<boolean> {
+    try {
+      const cameraAvailability = await this.checkDevicesAvailability();
+
+      if (!cameraAvailability) throw new Error('[KYC Camera]: Cannot find camera device');
+
+      const cameraPermisssion = await this.checkCameraPermission();
+
+      if (cameraPermisssion === 'denied') throw new Error('[KYC Camera]: Check camera browser permissions');
+
+      this.permissionDialogVisibility = cameraPermisssion !== 'granted';
+      // request to allow use camera
+      if (context === 'SoraCard' && cameraPermisssion === 'granted') {
+        return true;
+      }
+      await navigator.mediaDevices.getUserMedia({ video: true });
+      return true;
+    } catch (error) {
+      console.error(error);
+
+      this.$notify({
+        message: this.t('code.allowanceError'),
+        type: 'error',
+        title: '',
+      });
+
+      return false;
+    } finally {
+      this.permissionDialogVisibility = false;
+    }
+  }
+
   async handleConfirm(): Promise<void> {
+    console.log(navigator.permissions.query());
+
+    try {
+      const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('SoraCard');
+
+      if (!mediaDevicesAllowance) return;
+    } catch (error) {
+      console.error('[KYC Sora Card]: Camera error.', error);
+    }
+
     if (sessionStorage.getItem('access-token')) {
       this.$emit('confirm-start');
       unloadScript('https://auth-test.paywings.io/auth/sdk.js');
@@ -141,6 +188,30 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
 
     await delay(ms);
     return await this.waitOnAccessTokenAvailability();
+  }
+
+  // TODO: take this method from @wallet/utils
+  async checkDevicesAvailability(): Promise<boolean> {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+
+      return devices.some((device) => device.kind === 'videoinput');
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
+
+  // TODO: take this method from @wallet/utils
+  async checkCameraPermission(): Promise<string> {
+    try {
+      const { state } = await navigator.permissions.query({ name: 'camera' } as any);
+
+      return state;
+    } catch (error) {
+      console.error(error);
+      return '';
+    }
   }
 
   mounted(): void {
@@ -236,6 +307,7 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
 
 .s-icon-arrows-arrow-top-right-24 {
   margin-left: 8px;
+  color: #fff;
 }
 
 [design-system-theme='dark'] {

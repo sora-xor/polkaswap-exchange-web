@@ -23,7 +23,7 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
   loading = true;
 
   updated(): void {
-    setTimeout(() => (this.loading = false), 500);
+    setTimeout(() => (this.loading = false), 700);
   }
 }
 </script>

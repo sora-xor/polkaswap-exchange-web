@@ -4,25 +4,64 @@
       <sora-card />
     </div>
     <div class="sora-card__intro">
-      <span class="sora-card__intro-name">SORA CARD</span>
-      <h3 class="sora-card__intro-title">Get a debit card connected to your SORA Wallet</h3>
+      <h3 class="sora-card__intro-title">Get SORA Card</h3>
       <span class="sora-card__intro-info">
-        Pay with your crypto online, in-store or withdraw in ATM with Euro IBAN & Debit card
+        Top up SORA Card with fiat or crypto and pay online, in-store or withdraw in ATM. Get Euro IBAN account and
+        Mastercard Debit Card.
       </span>
     </div>
-    <button @click="openX1">open x1</button>
-    <s-button
-      type="primary"
-      class="sora-card__btn s-typography-button--large"
-      :loading="loading || !isPriceCalculated"
-      @click="handleConfirm"
-    >
-      <span class="text"> {{ buttonText }}</span>
-    </s-button>
+    <div v-if="isLoggedIn" class="sora-card__balance-indicator">
+      <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
+      <p class="sora-card__balance-indicator-text">
+        <span class="sora-card__balance-indicator-text--bold">€0</span> annual re-issuance fee
+      </p>
+    </div>
     <div v-if="isPriceCalculated && isLoggedIn" class="sora-card__balance-indicator">
       <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
-      <p class="sora-card__balance-indicator-text">{{ balanceIndicatorText }}</p>
+      <p class="sora-card__balance-indicator-text">
+        <span class="sora-card__balance-indicator-text--bold">{{ balanceIndicatorAmount }}</span> of XOR in your account
+        for free start
+      </p>
     </div>
+    <div class="sora-card__options">
+      <div v-if="isEuroBalanceEnough || !isLoggedIn" class="sora-card__options--enough-euro">
+        <s-button
+          type="primary"
+          class="sora-card__btn s-typography-button--large"
+          :loading="loading || !isPriceCalculated"
+          @click="handleConfirm"
+        >
+          <span class="text"> {{ buttonText }}</span>
+        </s-button>
+      </div>
+      <div class="sora-card__options--not-enough-euro" v-else>
+        <s-button
+          type="primary"
+          class="sora-card__btn sora-card__btn--fiat-buy s-typography-button--large"
+          :loading="loading || !isPriceCalculated"
+          @click="openX1"
+        >
+          <span class="text">BUY XOR WITH FIAT</span>
+        </s-button>
+        <s-button
+          class="sora-card__btn--bridge s-typography-button--large"
+          :loading="loading || !isPriceCalculated"
+          @click="bridgeTokens"
+        >
+          <span class="text">BRIDGE TOKENS</span>
+        </s-button>
+        <p class="line">OR</p>
+        <s-button
+          type="tertiary"
+          class="sora-card__btn--fiat-issuance s-typography-button--large"
+          :loading="loading || !isPriceCalculated"
+          @click="issueCardByPaywings"
+        >
+          <span class="text">ISSUE CARD FOR €12</span>
+        </s-button>
+      </div>
+    </div>
+    <span v-if="isLoggedIn" class="sora-card__user-applied">I've already applied</span>
     <x1 :visible.sync="showX1Dialog" />
   </div>
 </template>
@@ -47,7 +86,7 @@ import TranslationMixin from '../mixins/TranslationMixin';
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @state.soraCard.euroBalance private euroBalance!: string;
   @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
-  @getter.soraCard.isEuroBalanceEnough private isEuroBalanceEnough!: boolean;
+  @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   isPriceCalculated = false;
@@ -58,14 +97,14 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
       return this.t('connectWalletText');
     }
     if (this.isEuroBalanceEnough) {
-      return 'APPLY FOR CARD';
+      return 'GET SORA CARD FOR FREE';
     }
     return `GET ${100 - parseInt(this.euroBalance, 10)}€ OF XOR TO QUALIFY`;
   }
 
-  get balanceIndicatorText(): string {
+  get balanceIndicatorAmount(): string {
     const euroBalance = parseInt(this.euroBalance, 10);
-    return `${this.isEuroBalanceEnough ? '100' : euroBalance}€/100€ of XOR in your wallet`;
+    return `€${this.isEuroBalanceEnough ? '100' : euroBalance}/100`;
   }
 
   getIconClass(): string {
@@ -79,13 +118,20 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     this.showX1Dialog = true;
   }
 
+  bridgeTokens(): void {
+    if (!this.isEuroBalanceEnough) {
+      router.push({ name: PageNames.Bridge, params: { xorToDeposit: this.xorToDeposit.toString() } });
+    }
+  }
+
+  issueCardByPaywings(): void {
+    console.warn('¯\\_(ツ)_/¯');
+  }
+
   handleConfirm(): void {
     if (!this.isLoggedIn) {
       router.push({ name: PageNames.Wallet });
       return;
-    }
-    if (!this.isEuroBalanceEnough) {
-      router.push({ name: PageNames.Bridge, params: { xorToDeposit: this.xorToDeposit.toString() } });
     }
 
     this.$emit('confirm-apply');
@@ -122,20 +168,32 @@ $color: #ee2233;
       width: 85%;
       text-align: center;
       font-weight: 600;
+      margin-top: 24px;
+      font-size: 28px;
     }
 
     &-info {
       margin-top: 16px;
+      margin-bottom: 20px;
       font-weight: 300;
-      width: 80%;
+      line-height: 19px;
+      width: 90%;
       text-align: center;
+      padding-inline: 10px;
     }
+  }
 
-    &-name {
-      margin: 24px;
-      font-size: 18px;
-      font-weight: 600;
-      color: #fff;
+  &__options {
+    width: 100%;
+  }
+
+  &__user-applied {
+    margin-top: 24px;
+    color: var(--s-color-base-content-secondary);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--s-color-base-content-secondary);
+    &:hover {
+      cursor: pointer;
     }
   }
 
@@ -145,10 +203,16 @@ $color: #ee2233;
   }
 
   &__balance-indicator {
-    margin-top: 24px;
+    background-color: var(--s-color-base-border-primary);
+    padding: 8px 16px;
+    margin-top: 16px;
+    border-radius: 8px;
     &-text {
       display: inline-block;
-      font-size: 16px;
+      font-size: 14px;
+      &--bold {
+        font-weight: 600;
+      }
     }
 
     .s-icon-basic-check-mark-24 {
@@ -160,6 +224,39 @@ $color: #ee2233;
       color: $color;
     }
   }
+
+  &__btn {
+    &--fiat-buy,
+    &--bridge {
+      width: 48%;
+      .text {
+        font-size: 18px;
+      }
+    }
+    &--fiat-issuance {
+      width: 100%;
+    }
+  }
+}
+
+.line {
+  width: 100%;
+  display: flex;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  flex-direction: row;
+  text-transform: uppercase;
+  color: var(--s-color-base-content-secondary);
+}
+
+.line::before,
+.line::after {
+  content: '';
+  flex: 1 1;
+  border-bottom: 2px solid var(--s-color-base-border-primary);
+  margin: auto;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .el-button.is-loading {

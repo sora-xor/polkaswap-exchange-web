@@ -1,7 +1,7 @@
 <template>
   <div class="sora-card">
     <div>
-      <div class="sora-card-kyc-view">
+      <div class="sora-card-kyc-view" v-loading="loadingKycView">
         <s-scrollbar>
           <div id="kyc"></div>
           <div id="finish" style="display: none">
@@ -18,12 +18,14 @@ import { loadScript, unloadScript } from 'vue-plugin-load-script';
 import { v4 as uuidv4 } from 'uuid';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { clearTokensFromSessionStorage } from '@/utils';
 
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @Prop({ default: '', type: String }) readonly accessToken!: string;
+
+  loadingKycView = true;
 
   async getReferenceNumber(): Promise<string> {
     const result = await fetch('https://sora-card.sc1.dev.sora2.soramitsu.co.jp/get-reference-number', {
@@ -52,11 +54,11 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
             Username: 'E7A6CB83-630E-4D24-88C5-18AAF96032A4', // api username
             Password: '75A55B7E-A18F-4498-9092-58C7D6BDB333', // api password
             Domain: 'soracard.com',
-            env: 'Test', // use Test for test environment and Prod for production
+            env: WALLET_CONSTS.SoraNetwork.Test, // use Test for test environment and Prod for production
             UnifiedLoginApiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
           },
           KycSettings: {
-            AppReferenceID: 'random thing',
+            AppReferenceID: uuidv4(),
             Language: 'en', // supported languages 'en'
             ReferenceNumber: referenceNumber,
             ElementId: '#kyc', // id of element in which web kyc will be injected
@@ -65,6 +67,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
             WelcomeTitle: '',
             DocumentCheckWindowHeight: '50vh',
             DocumentCheckWindowWidth: '100%',
+            HideLoader: true,
           },
           KycUserData: {
             // Sample data without prefilled values
@@ -87,9 +90,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
           },
         })
           .on('Error', (data) => {
-            // console.log('error', data);
+            console.log('error', data);
 
-            clearTokensFromSessionStorage();
+            // clearTokensFromSessionStorage();
 
             this.$notify({
               message: 'Your access token has expired',
@@ -115,6 +118,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
       .catch(() => {
         // Failed to fetch script
       });
+    setTimeout(() => {
+      this.loadingKycView = false;
+    }, 5000);
   }
 }
 </script>

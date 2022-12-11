@@ -3,13 +3,12 @@
     <div class="wrapper" v-loading="loadingX1">
       <div
         id="sprkwdgt-WYL6QBNC"
-        data-hideemail="true"
-        data-symbol="BTC-EUR"
-        :data-cost="restEuroToDeposit"
-        data-max-cost="100"
-        datalocale="es"
+        :data-address="accountAddress"
+        data-from-currency="EUR"
+        :data-from-amount="restEuroToDeposit"
+        data-locale="en"
         data-hide-buy-more-button="true"
-        data-hide-try-again-button="true"
+        data-hide-try-again-button="false"
         data-payload="{ session_id: 16 }"
       ></div>
     </div>
@@ -20,7 +19,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
-import { state } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -29,6 +28,7 @@ import { state } from '@/store/decorators';
 })
 export default class X1 extends Mixins(mixins.DialogMixin, mixins.LoadingMixin) {
   @state.soraCard.euroBalance private euroBalance!: string;
+  @getter.soraCard.accountAddress accountAddress!: string;
 
   loadingX1 = true;
 
