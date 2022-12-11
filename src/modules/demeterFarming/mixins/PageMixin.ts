@@ -7,7 +7,7 @@ import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build
 
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 @Component
-export default class PageMixin extends Mixins(mixins.TransactionMixin) {
+export default class PageMixin extends Mixins(mixins.TransactionMixin, mixins.ConfirmTransactionMixin) {
   @getter.settings.isDesktop private isDesktop!: boolean;
   @getter.demeterFarming.farmingPools farmingPools!: DoubleMap<DemeterPool[]>;
   @getter.demeterFarming.stakingPools stakingPools!: DoubleMap<DemeterPool[]>;
