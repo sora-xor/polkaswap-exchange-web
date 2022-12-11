@@ -5,3 +5,5 @@ type AsyncVoidFn = () => Promise<void>;
 type DataMap<T> = {
   [key: string]: T;
 };
+
+type DoubleMap<T> = DataMap<DataMap<T>>;

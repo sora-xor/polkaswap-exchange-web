@@ -32,7 +32,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
   }
 
   get baseAsset(): Nullable<AccountAsset> {
-    return this.getAsset(this.liquidity?.firstAddress);
+    return this.getAsset(this.pool?.baseAsset);
   }
 
   get baseAssetDecimals(): number {
@@ -212,6 +212,7 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
 
   get emitParams(): object {
     return {
+      baseAsset: this.pool.baseAsset,
       poolAsset: this.pool.poolAsset,
       rewardAsset: this.pool.rewardAsset,
     };

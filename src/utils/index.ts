@@ -2,6 +2,7 @@ import debounce from 'lodash/debounce';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { RegisteredAccountAsset, FPNumber, CodecString } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { Route } from 'vue-router';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
@@ -173,6 +174,22 @@ export const getAssetDecimals = (asset: any, { internal = true } = {}): number |
   return internal ? asset.decimals : asset.externalDecimals;
 };
 
+export const getXorPerEuroRatio = async () => {
+  try {
+    const priceResult = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=sora&vs_currencies=eur');
+    const parsedData = await priceResult.json();
+    return parsedData.sora.eur;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const clearTokensFromSessionStorage = () => {
+  sessionStorage.removeItem('access-token');
+  sessionStorage.removeItem('refresh-token');
+  sessionStorage.removeItem('expiration-time');
+};
+
 export const formatAssetBalance = (
   asset: any,
   {
@@ -213,11 +230,12 @@ export const updateFpNumberLocale = (locale: string): void => {
   FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(locale).substring(1, 2);
 };
 
-export const updateDocumentTitle = (to?: any) => {
+export const updateDocumentTitle = (to?: Route) => {
   const page = to ?? router.currentRoute;
+  const pageName = page?.name;
 
-  if (page && page.name && i18n.te(`pageTitle.${page.name}`)) {
-    document.title = `${i18n.t(`pageTitle.${page.name}`)} - ${app.name}`;
+  if (pageName && i18n.te(`pageTitle.${pageName}`)) {
+    document.title = `${i18n.t(`pageTitle.${pageName}`)} - ${app.name}`;
   } else {
     document.title = app.title;
   }
@@ -243,12 +261,12 @@ export const toQueryString = (params: any): string => {
     .join('&');
 };
 
-export const waitForAccountPair = async (func: VoidFunction): Promise<any> => {
+export const waitForAccountPair = async (func?: VoidFunction): Promise<any> => {
   if (!api.accountPair) {
     await delay();
     return await waitForAccountPair(func);
   } else {
-    return func();
+    return func?.();
   }
 };
 

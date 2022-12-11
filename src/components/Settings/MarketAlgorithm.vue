@@ -6,7 +6,7 @@
         <span>{{ t('dexSettings.marketAlgorithmTooltip.main') }}</span>
       </div>
     </settings-header>
-    <settings-tabs :value="currentMarketAlgorithm" :tabs="marketAlgorithmTabs" @click="selectTab" />
+    <settings-tabs :value="currentMarketAlgorithm" :tabs="marketAlgorithmTabs" @input="selectTab" />
   </div>
 </template>
 
@@ -53,7 +53,7 @@ export default class MarketAlgorithm extends Mixins(TranslationMixin) {
     return `<span class="algorithm">${type}</span>`;
   }
 
-  selectTab({ name }): void {
+  selectTab(name: MarketAlgorithms): void {
     this.setMarketAlgorithm(name);
   }
 }

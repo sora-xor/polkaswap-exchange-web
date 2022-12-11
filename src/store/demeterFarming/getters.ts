@@ -13,37 +13,39 @@ import type { DemeterFarmingState } from './types';
 
 type Pool = DemeterPool | DemeterAccountPool;
 
-const createPoolsMap = <T extends Pool>(pools: Array<T>, isFarm = true): DataMap<T[]> => {
+const createPoolsDoubleMap = <T extends Pool>(pools: Array<T>, isFarm = true): DoubleMap<T[]> => {
   return pools.reduce((buffer, pool) => {
     if (pool.isFarm !== isFarm) return buffer;
 
-    if (!buffer[pool.poolAsset]) buffer[pool.poolAsset] = [];
-    buffer[pool.poolAsset].push(pool);
+    if (!buffer[pool.baseAsset]) buffer[pool.baseAsset] = {};
+    if (!buffer[pool.baseAsset][pool.poolAsset]) buffer[pool.baseAsset][pool.poolAsset] = [];
+
+    buffer[pool.baseAsset][pool.poolAsset].push(pool);
 
     return buffer;
   }, {});
 };
 
 const getters = defineGetters<DemeterFarmingState>()({
-  farmingPools(...args): DataMap<DemeterPool[]> {
+  farmingPools(...args): DoubleMap<DemeterPool[]> {
     const { state } = demeterFarmingGetterContext(args);
 
-    return createPoolsMap(state.pools, true);
+    return createPoolsDoubleMap(state.pools, true);
   },
-  stakingPools(...args): DataMap<DemeterPool[]> {
+  stakingPools(...args): DoubleMap<DemeterPool[]> {
     const { state } = demeterFarmingGetterContext(args);
 
-    return createPoolsMap(state.pools, false);
+    return createPoolsDoubleMap(state.pools, false);
   },
-  accountFarmingPools(...args): DataMap<DemeterAccountPool[]> {
+  accountFarmingPools(...args): DoubleMap<DemeterAccountPool[]> {
     const { state } = demeterFarmingGetterContext(args);
 
-    return createPoolsMap(state.accountPools, true);
+    return createPoolsDoubleMap(state.accountPools, true);
   },
-  accountStakingPools(...args): DataMap<DemeterAccountPool[]> {
+  accountStakingPools(...args): DoubleMap<DemeterAccountPool[]> {
     const { state } = demeterFarmingGetterContext(args);
 
-    return createPoolsMap(state.accountPools, false);
+    return createPoolsDoubleMap(state.accountPools, false);
   },
   tokenInfos(...args): DataMap<DemeterRewardToken> {
     const { state } = demeterFarmingGetterContext(args);
@@ -54,14 +56,11 @@ const getters = defineGetters<DemeterFarmingState>()({
     const { getters } = demeterFarmingGetterContext(args);
 
     return (baseAsset: string, poolAsset: string, isFarm = true) => {
-      // DEMETER FARMING ONLY FOR XOR POOLS!
-      if (baseAsset !== XOR.address) return FPNumber.ZERO;
-
       const pools = isFarm ? getters.accountFarmingPools : getters.accountStakingPools;
 
-      if (!pools[poolAsset]) return FPNumber.ZERO;
+      if (!Array.isArray(pools[baseAsset]?.[poolAsset])) return FPNumber.ZERO;
 
-      return pools[poolAsset].reduce((value, accountPool) => {
+      return pools[baseAsset][poolAsset].reduce((value, accountPool) => {
         return FPNumber.max(value, accountPool.pooledTokens) as FPNumber;
       }, FPNumber.ZERO);
     };

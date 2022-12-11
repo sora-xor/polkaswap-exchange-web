@@ -1,11 +1,9 @@
 import invert from 'lodash/fp/invert';
-import { KnownAssets, KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 import pkg from '../../package.json';
-import { KnownBridgeAsset } from '../utils/ethers-util';
 
 export const app = {
   version: pkg.version,
@@ -133,6 +131,7 @@ export enum PageNames {
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
   StakingContainer = 'StakingContainer',
+  SoraCard = 'SoraCard',
 }
 
 export enum Components {
@@ -147,6 +146,14 @@ export enum Components {
   BrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
   BrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
   PairTokenLogo = 'PairTokenLogo',
+  SoraCard = 'SoraCard',
+  SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
+  SoraCardKYC = 'SoraCard/SoraCardKYC',
+  TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
+  ToSDialog = 'SoraCard/steps/ToSDialog',
+  RoadMap = 'SoraCard/steps/RoadMap',
+  KycView = 'SoraCard/steps/KycView',
+  ConfirmationInfo = 'SoraCard/steps/ConfirmationInfo',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',
   StatusActionBadge = 'Swap/StatusActionBadge',
@@ -207,8 +214,8 @@ export enum RewardsTabsItems {
   ReferralProgram = PageNames.ReferralProgram,
 }
 
-interface SidebarMenuItem {
-  icon: string;
+export interface SidebarMenuItem {
+  icon?: string;
   title: string;
   disabled?: boolean;
 }
@@ -251,6 +258,10 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
     icon: 'various-bone-24',
     title: PageNames.Tokens,
+  },
+  {
+    icon: 'sora-card',
+    title: PageNames.SoraCard,
   },
   {
     icon: 'file-file-text-24',
@@ -298,12 +309,17 @@ export const StoreLinks = {
   GooglePlay: 'https://play.google.com/store/apps/details?id=jp.co.soramitsu.sora',
 };
 
+export const TosExternalLinks = {
+  Terms: `https://soracard.com/terms/`,
+  Privacy: `https://soracard.com/privacy/`,
+};
+
 export const FaucetLink: SidebarMenuItemLink = {
   icon: 'software-terminal-24',
   title: 'faucet',
 };
 
-export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
+export const SidebarMenuGroups = [...MainMenu, ...AccountMenu, ...OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
 export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
@@ -334,38 +350,6 @@ export enum EvmSymbol {
   ETH = 'ETH',
   VT = 'VT',
 }
-
-const gasLimit = {
-  approve: 70000,
-  sendERC20ToSidechain: 86000,
-  sendEthToSidechain: 50000,
-  mintTokensByPeers: 255000,
-  receiveByEthereumAssetAddress: 250000,
-  receiveBySidechainAssetId: 255000,
-};
-/**
- * It's in gwei.
- * Zero index means ETH -> SORA
- * First index means SORA -> ETH
- */
-export const EthereumGasLimits = [
-  // ETH -> SORA
-  {
-    [XOR.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.sendEthToSidechain,
-    [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-  },
-  // SORA -> ETH
-  {
-    [XOR.address]: gasLimit.mintTokensByPeers,
-    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.mintTokensByPeers,
-    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.receiveBySidechainAssetId,
-    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.receiveByEthereumAssetAddress,
-    [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
-  },
-];
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
