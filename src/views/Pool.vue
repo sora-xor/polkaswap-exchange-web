@@ -10,22 +10,20 @@
       </p>
       <s-collapse v-else class="pool-list" :borders="true" @change="updateActiveCollapseItems">
         <s-collapse-item
-          v-for="liquidityItem of accountLiquidity"
+          v-for="liquidityItem of accountLiquidityData"
           :key="liquidityItem.address"
           :name="liquidityItem.address"
           class="pool-info-container"
         >
           <template #title>
             <pair-token-logo
-              :first-token="getAsset(liquidityItem.firstAddress)"
-              :second-token="getAsset(liquidityItem.secondAddress)"
+              :first-token="liquidityItem.firstAsset"
+              :second-token="liquidityItem.secondAsset"
               size="small"
             />
             <div class="pool-info-container-block">
               <h3 class="pool-info-container__title">
-                {{
-                  getPairTitle(getAssetSymbol(liquidityItem.firstAddress), getAssetSymbol(liquidityItem.secondAddress))
-                }}
+                {{ liquidityItem.title }}
               </h3>
               <slot name="title-append" v-bind="{ liquidity: liquidityItem, activeCollapseItems }" />
             </div>
@@ -35,28 +33,22 @@
             <info-line
               is-formatted
               value-can-be-hidden
-              :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.firstAddress) })"
-              :value="getFirstBalance(liquidityItem)"
-              :fiat-value="getFiatAmountByCodecString(liquidityItem.firstBalance, getAsset(liquidityItem.firstAddress))"
+              :label="t('pool.pooledToken', { tokenSymbol: liquidityItem.firstAssetSymbol })"
+              :value="liquidityItem.firstBalanceFormatted"
+              :fiat-value="liquidityItem.firstBalanceFiat"
             />
             <info-line
               is-formatted
               value-can-be-hidden
-              :label="t('pool.pooledToken', { tokenSymbol: getAssetSymbol(liquidityItem.secondAddress) })"
-              :value="getSecondBalance(liquidityItem)"
-              :fiat-value="
-                getFiatAmountByCodecString(liquidityItem.secondBalance, getAsset(liquidityItem.secondAddress))
-              "
+              :label="t('pool.pooledToken', { tokenSymbol: liquidityItem.secondAssetSymbol })"
+              :value="liquidityItem.secondBalanceFormatted"
+              :fiat-value="liquidityItem.secondBalanceFiat"
             />
+            <info-line value-can-be-hidden :label="t('pool.poolShare')" :value="liquidityItem.poolShareFormatted" />
             <info-line
-              value-can-be-hidden
-              :label="t('pool.poolShare')"
-              :value="getPoolShare(liquidityItem.poolShare)"
-            />
-            <info-line
-              v-if="hasStrategicBonusApy(liquidityItem.secondAddress)"
+              v-if="liquidityItem.apyFormatted"
               :label="t('pool.strategicBonusApy')"
-              :value="getStrategicBonusApy(liquidityItem.secondAddress)"
+              :value="liquidityItem.apyFormatted"
             />
 
             <template #buttons>
@@ -88,7 +80,7 @@
       class="el-button--add-liquidity s-typography-button--large"
       data-test-name="addLiquidity"
       type="primary"
-      @click="handleAddLiquidity()"
+      @click="handleAddLiquidity"
     >
       {{ t('pool.addLiquidity') }}
     </s-button>
@@ -101,7 +93,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -123,24 +115,39 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
-  @state.wallet.account.assets private assets!: Array<Asset>;
   @state.pool.accountLiquidity accountLiquidity!: Array<AccountLiquidity>;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   activeCollapseItems: string[] = [];
 
+  get accountLiquidityData() {
+    return this.accountLiquidity.map((liquidity) => {
+      const firstAsset = this.getAsset(liquidity.firstAddress);
+      const firstAssetSymbol = this.getAssetSymbol(firstAsset);
+      const secondAsset = this.getAsset(liquidity.secondAddress);
+      const secondAssetSymbol = this.getAssetSymbol(secondAsset);
+
+      return {
+        ...liquidity,
+        firstAsset,
+        firstAssetSymbol,
+        firstBalanceFormatted: this.formatCodecNumber(liquidity.firstBalance, liquidity.decimals),
+        firstBalanceFiat: firstAsset ? this.getFiatAmountByCodecString(liquidity.firstBalance, firstAsset) : '0',
+        secondAsset,
+        secondAssetSymbol,
+        secondBalanceFormatted: this.formatCodecNumber(liquidity.secondBalance, liquidity.decimals),
+        secondBalanceFiat: secondAsset ? this.getFiatAmountByCodecString(liquidity.secondBalance, secondAsset) : '0',
+        poolShareFormatted: `${this.formatStringValue(liquidity.poolShare)}%`,
+        apyFormatted: this.getStrategicBonusApy(liquidity.secondAddress),
+        title: this.getPairTitle(firstAssetSymbol, secondAssetSymbol),
+      };
+    });
+  }
+
   updateActiveCollapseItems(items: string[]) {
     this.activeCollapseItems = items;
-  }
-
-  getAsset(address: string): Asset {
-    return this.assets.find((a) => a.address === address) as Asset;
-  }
-
-  getAssetSymbol(address: string): string {
-    const asset = this.assets.find((a) => a.address === address);
-    return asset ? asset.symbol : this.t('pool.unknownAsset');
   }
 
   handleAddLiquidity(first?: string, second?: string): void {
@@ -161,34 +168,18 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
     router.push({ name: PageNames.Wallet });
   }
 
-  getPairTitle(firstTokenSymbol?: string, secondTokenSymbol?: string): string {
+  private getAssetSymbol(asset: Nullable<AccountAsset>): string {
+    return asset?.symbol ?? this.t('pool.unknownAsset');
+  }
+
+  private getPairTitle(firstTokenSymbol?: string, secondTokenSymbol?: string): string {
     if (firstTokenSymbol && secondTokenSymbol) {
       return `${firstTokenSymbol}-${secondTokenSymbol}`;
     }
     return '';
   }
 
-  getFirstBalance(liquidityItem: AccountLiquidity): string {
-    return this.formatCodecNumber(liquidityItem.firstBalance, liquidityItem.decimals);
-  }
-
-  getSecondBalance(liquidityItem: AccountLiquidity): string {
-    return this.formatCodecNumber(liquidityItem.secondBalance, liquidityItem.decimals);
-  }
-
-  getBalance(liquidityItem: AccountLiquidity): string {
-    return this.formatCodecNumber(liquidityItem.balance, liquidityItem.decimals);
-  }
-
-  getPoolShare(poolShare: string): string {
-    return `${this.formatStringValue(poolShare)}%`;
-  }
-
-  hasStrategicBonusApy(targetAssetAddress: string): boolean {
-    return !!this.fiatPriceAndApyObject[targetAssetAddress]?.strategicBonusApy;
-  }
-
-  getStrategicBonusApy(targetAssetAddress: string): string {
+  private getStrategicBonusApy(targetAssetAddress: string): string {
     const apy = this.fiatPriceAndApyObject[targetAssetAddress]?.strategicBonusApy;
     if (!apy) {
       return '';

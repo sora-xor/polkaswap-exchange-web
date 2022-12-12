@@ -35,10 +35,6 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
     return this.getAsset(this.pool?.baseAsset);
   }
 
-  get baseAssetDecimals(): number {
-    return this.baseAsset?.decimals ?? FPNumber.DEFAULT_PRECISION;
-  }
-
   get poolAsset(): Nullable<AccountAsset> {
     return this.getAsset(this.pool?.poolAsset);
   }
@@ -65,12 +61,6 @@ export default class PoolMixin extends Mixins(AccountPoolMixin, TranslationMixin
 
   get liqudityLP(): FPNumber {
     return FPNumber.fromCodecValue(getAssetBalance(this.liquidity, { parseAsLiquidity: true }) ?? 0);
-  }
-
-  get baseAssetBalance(): FPNumber {
-    if (!this.baseAsset) return FPNumber.ZERO;
-
-    return FPNumber.fromCodecValue(getAssetBalance(this.baseAsset) ?? 0, this.baseAssetDecimals);
   }
 
   get poolAssetBalance(): FPNumber {

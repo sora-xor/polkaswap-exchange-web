@@ -1,6 +1,5 @@
 import { defineGetters } from 'direct-vuex';
 import { FPNumber } from '@sora-substrate/math';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import { demeterFarmingGetterContext } from './index';
 
@@ -13,7 +12,7 @@ import type { DemeterFarmingState } from './types';
 
 type Pool = DemeterPool | DemeterAccountPool;
 
-const createPoolsDoubleMap = <T extends Pool>(pools: Array<T>, isFarm = true): DoubleMap<T[]> => {
+const createPoolsDoubleMap = <T extends Pool>(pools: readonly T[], isFarm = true): DoubleMap<T[]> => {
   return pools.reduce((buffer, pool) => {
     if (pool.isFarm !== isFarm) return buffer;
 

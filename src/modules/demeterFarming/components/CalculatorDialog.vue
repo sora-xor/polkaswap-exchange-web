@@ -66,7 +66,7 @@ import StakeDialogMixin from '../mixins/StakeDialogMixin';
 
 import { lazyComponent } from '@/router';
 import { Components, Links } from '@/consts';
-import { isMaxButtonAvailable, getMaxValue } from '@/utils';
+import { getAssetBalance, isMaxButtonAvailable, getMaxValue } from '@/utils';
 
 @Component({
   components: {
@@ -99,6 +99,16 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
 
   get rewardsText(): string {
     return `${this.rewardAssetSymbol} rewards`;
+  }
+
+  get baseAssetDecimals(): number {
+    return this.baseAsset?.decimals ?? FPNumber.DEFAULT_PRECISION;
+  }
+
+  get baseAssetBalance(): FPNumber {
+    if (!this.baseAsset) return FPNumber.ZERO;
+
+    return FPNumber.fromCodecValue(getAssetBalance(this.baseAsset) ?? 0, this.baseAssetDecimals);
   }
 
   get isBaseAssetMaxButtonAvailable(): boolean {
