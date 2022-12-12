@@ -56,16 +56,19 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, m
 
   async handleConfirmInviteUser(): Promise<void> {
     if (!this.hasReferrer) {
-      this.approveReferrer(true);
-      try {
-        await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferrer));
-        this.$emit('confirm', true);
-      } catch (error) {
-        this.approveReferrer(false);
-        this.$emit('confirm');
-      }
+      this.$emit('confirm', async () => {
+        this.approveReferrer(true);
+        try {
+          await this.withNotifications(async () => await api.referralSystem.setInvitedUser(this.storageReferrer));
+          api.lockPair();
+        } catch (error) {
+          this.approveReferrer(false);
+        }
+        this.isVisible = false;
+      });
+    } else {
+      this.isVisible = false;
     }
-    this.isVisible = false;
   }
 
   @Watch('isVisible')

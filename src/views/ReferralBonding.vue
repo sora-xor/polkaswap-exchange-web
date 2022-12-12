@@ -20,7 +20,7 @@
         class="action-button s-typography-button--large"
         type="primary"
         :disabled="isConfirmBondDisabled"
-        @click="handleConfirmBond"
+        @click="openConfirmBond"
       >
         <template v-if="hasZeroAmount">
           {{ t('buttons.enterAmount') }}
@@ -44,13 +44,14 @@
         is-formatted
       />
       <referrals-confirm-bonding :visible.sync="showConfirmBondDialog" @confirm="confirmBond" />
+      <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
     </s-form>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
@@ -68,18 +69,22 @@ import { getter, mutation, state } from '@/store/decorators';
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokenInput: lazyComponent(Components.TokenInput),
     ReferralsConfirmBonding: lazyComponent(Components.ReferralsConfirmBonding),
+    ConfirmDialog: components.ConfirmDialog,
     InfoLine: components.InfoLine,
   },
 })
 export default class ReferralBonding extends Mixins(
   mixins.FormattedAmountMixin,
   TranslationMixin,
-  mixins.LoadingMixin
+  mixins.LoadingMixin,
+  mixins.TransactionMixin,
+  mixins.ConfirmTransactionMixin
 ) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.referrals.amount amount!: string;
 
   @getter.assets.xor xor!: Nullable<AccountAsset>;
+  @getter.settings.isDesktop isDesktop!: boolean;
 
   @mutation.referrals.setAmount private setAmount!: (amount: string) => void;
   @mutation.referrals.resetAmount private resetAmount!: VoidFunction;
@@ -170,14 +175,25 @@ export default class ReferralBonding extends Mixins(
     this.handleInputXor(getMaxValue(this.xor, this.networkFee, false, this.isBondedBalance));
   }
 
-  handleConfirmBond(): void {
+  openConfirmBond(): void {
     this.showConfirmBondDialog = true;
   }
 
-  async confirmBond(isBondConfirmed: boolean): Promise<void> {
-    if (isBondConfirmed) {
+  async confirmBond(bond: AsyncVoidFn): Promise<void> {
+    if (this.isDesktop) {
+      this.openConfirmationDialog();
+      await this.waitOnNextTxConfirmation();
+      if (!this.isTxDialogConfirmed) {
+        return;
+      }
+    }
+
+    try {
+      bond();
       this.resetAmount();
       this.handleBack();
+    } catch {
+      // handled by bond call
     }
   }
 

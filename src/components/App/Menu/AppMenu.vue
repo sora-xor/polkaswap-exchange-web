@@ -114,10 +114,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
 
   @state.settings.faucetUrl faucetUrl!: string;
-  @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
+  @getter.settings.isDesktop private isDesktop!: boolean;
 
-  readonly SidebarMenuGroups = SidebarMenuGroups;
   readonly FaucetLink = FaucetLink;
 
   get mainMenuActiveColor(): string {
@@ -125,8 +124,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   get sidebarMenuItems(): Array<SidebarMenuItem> {
-    if (this.soraCardEnabled) return SidebarMenuGroups;
-    return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.SoraCard);
+    if (!this.isDesktop) return SidebarMenuGroups;
+    return SidebarMenuGroups.filter(
+      (menuItem) => ![PageNames.Bridge, PageNames.SoraCard].includes(menuItem.title as PageNames)
+    );
   }
 
   getCurrentPath(): string {

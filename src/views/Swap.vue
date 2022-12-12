@@ -116,6 +116,7 @@
         :isInsufficientBalance="isInsufficientBalance"
         @confirm="confirmSwap"
       />
+      <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
       <settings-dialog :visible.sync="showSettings" />
     </s-form>
     <swap-chart v-if="chartsEnabled" />
@@ -169,11 +170,14 @@ import { action, getter, mutation, state } from '@/store/decorators';
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     SwapChart: lazyComponent(Components.SwapChart),
     FormattedAmount: components.FormattedAmount,
+    ConfirmDialog: components.ConfirmDialog,
   },
 })
 export default class Swap extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.LoadingMixin,
+  mixins.ConfirmTransactionMixin,
+  mixins.TransactionMixin,
   TranslationMixin,
   TokenSelectMixin
 ) {
@@ -193,6 +197,8 @@ export default class Swap extends Mixins(
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.swap.isAvailable isAvailable!: boolean;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
+  @state.settings.slippageTolerance private slippageTolerance!: string;
+  @getter.settings.isDesktop isDesktop!: boolean;
 
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
@@ -568,11 +574,22 @@ export default class Swap extends Mixins(
     this.showConfirmSwapDialog = true;
   }
 
-  async confirmSwap(isSwapConfirmed: boolean): Promise<void> {
-    if (isSwapConfirmed) {
+  async confirmSwap(swap: AsyncVoidFn): Promise<void> {
+    if (this.isDesktop) {
+      this.openConfirmationDialog();
+      await this.waitOnNextTxConfirmation();
+      if (!this.isTxDialogConfirmed) {
+        return;
+      }
+    }
+
+    try {
+      swap();
       this.resetFieldFrom();
       this.resetFieldTo();
       this.setExchangeB(false);
+    } catch {
+      // handled by swap call
     }
   }
 

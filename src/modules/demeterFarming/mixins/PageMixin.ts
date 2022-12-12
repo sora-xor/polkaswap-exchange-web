@@ -1,5 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import { action, getter } from '@/store/decorators';
 
@@ -7,7 +7,8 @@ import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build
 
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 @Component
-export default class PageMixin extends Mixins(mixins.TransactionMixin) {
+export default class PageMixin extends Mixins(mixins.TransactionMixin, mixins.ConfirmTransactionMixin) {
+  @getter.settings.isDesktop private isDesktop!: boolean;
   @getter.demeterFarming.farmingPools farmingPools!: DoubleMap<DemeterPool[]>;
   @getter.demeterFarming.stakingPools stakingPools!: DoubleMap<DemeterPool[]>;
   @getter.demeterFarming.accountFarmingPools accountFarmingPools!: DoubleMap<DemeterAccountPool[]>;
@@ -105,18 +106,40 @@ export default class PageMixin extends Mixins(mixins.TransactionMixin) {
 
   async handleStakeAction(
     params: DemeterLiquidityParams,
-    action: (params: DemeterLiquidityParams) => Promise<void>
+    action: (params: DemeterLiquidityParams) => Promise<void>,
+    isTransactionSigned: () => Promise<boolean>
   ): Promise<void> {
+    this.showStakeDialog = false;
+
+    if (!(await isTransactionSigned())) return;
+
     await this.withNotifications(async () => {
       await action(params);
-      this.showStakeDialog = false;
+      api.lockPair();
     });
   }
 
-  async handleClaimRewards(pool: DemeterAccountPool): Promise<void> {
+  async handleClaimRewards(pool: DemeterAccountPool, isTransactionSigned: () => Promise<boolean>): Promise<void> {
+    this.showClaimDialog = false;
+
+    if (!(await isTransactionSigned())) return;
+
     await this.withNotifications(async () => {
       await this.claimRewards(pool);
-      this.showClaimDialog = false;
+      api.lockPair();
     });
+  }
+
+  async signTx(): Promise<boolean> {
+    if (!this.isDesktop) return true;
+
+    this.openConfirmationDialog();
+    await this.waitOnNextTxConfirmation();
+
+    if (this.isTxDialogConfirmed) {
+      return true;
+    }
+
+    return false;
   }
 }

@@ -87,9 +87,8 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
         this.t('exchange.insufficientBalance', { tokenSymbol: this.tokenFrom ? this.tokenFrom.symbol : '' }),
         { title: this.t('errorText') }
       );
-      this.$emit('confirm');
     } else {
-      try {
+      this.$emit('confirm', async () => {
         await this.withNotifications(
           async () =>
             await api.swap.execute(
@@ -103,10 +102,9 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
               this.selectedDexId
             )
         );
-        this.$emit('confirm', true);
-      } catch (error) {
-        this.$emit('confirm');
-      }
+
+        api.lockPair();
+      });
     }
     this.isVisible = false;
   }

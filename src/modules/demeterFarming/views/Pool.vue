@@ -38,15 +38,15 @@
       :account-pool="selectedAccountPool"
       :is-adding="isAddingStake"
       :parent-loading="parentLoading || loading"
-      @add="handleStakeAction($event, deposit)"
-      @remove="handleStakeAction($event, withdraw)"
+      @add="handleStakeAction($event, deposit, signTx)"
+      @remove="handleStakeAction($event, withdraw, signTx)"
     />
     <claim-dialog
       :visible.sync="showClaimDialog"
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
       :parent-loading="parentLoading || loading"
-      @confirm="handleClaimRewards"
+      @confirm="handleClaimRewards($event, signTx)"
     />
 
     <calculator-dialog
@@ -55,12 +55,15 @@
       :account-pool="selectedAccountPool"
       :liquidity="selectedAccountLiquidity"
     />
+
+    <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import PageMixin from '../mixins/PageMixin';
 
@@ -84,6 +87,7 @@ import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build
     StakeDialog: demeterLazyComponent(DemeterComponents.StakeDialog),
     ClaimDialog: demeterLazyComponent(DemeterComponents.ClaimDialog),
     CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
+    ConfirmDialog: components.ConfirmDialog,
   },
 })
 export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMixin) {

@@ -102,6 +102,8 @@
       @confirm="handleConfirmAddLiquidity"
     />
 
+    <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
+
     <network-fee-warning-dialog
       :visible.sync="showWarningFeeDialog"
       :fee="removeLiquidityFormattedFee"
@@ -112,16 +114,16 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import BaseTokenPairMixin from '@/components/mixins/BaseTokenPairMixin';
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
@@ -142,12 +144,14 @@ type SetValue = (v: string) => Promise<void>;
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenInput: lazyComponent(Components.TokenInput),
     AddLiquidityTransactionDetails: lazyComponent(Components.AddLiquidityTransactionDetails),
+    ConfirmDialog: components.ConfirmDialog,
     InfoLine: components.InfoLine,
   },
 })
 export default class AddLiquidity extends Mixins(
   mixins.TransactionMixin,
   mixins.NetworkFeeWarningMixin,
+  mixins.ConfirmTransactionMixin,
   BaseTokenPairMixin,
   NetworkFeeDialogMixin,
   ConfirmDialogMixin,
@@ -162,6 +166,7 @@ export default class AddLiquidity extends Mixins(
   @getter.addLiquidity.shareOfPool shareOfPool!: string;
   @getter.addLiquidity.liquidityInfo liquidityInfo!: Nullable<AccountLiquidity>;
   @getter.addLiquidity.isNotFirstLiquidityProvider isNotFirstLiquidityProvider!: boolean;
+  @getter.settings.isDesktop private isDesktop!: boolean;
 
   @action.addLiquidity.setFirstTokenAddress setFirstTokenAddress!: (address: string) => Promise<void>;
   @action.addLiquidity.setSecondTokenAddress setSecondTokenAddress!: (address: string) => Promise<void>;
@@ -331,7 +336,16 @@ export default class AddLiquidity extends Mixins(
 
   async handleConfirmAddLiquidity(): Promise<void> {
     await this.handleConfirmDialog(async () => {
+      if (this.isDesktop) {
+        this.openConfirmationDialog();
+        await this.waitOnNextTxConfirmation();
+        if (!this.isTxDialogConfirmed) {
+          return;
+        }
+      }
+
       await this.withNotifications(this.addLiquidity);
+      api.lockPair();
       this.handleBack();
     });
   }

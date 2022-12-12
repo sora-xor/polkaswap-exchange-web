@@ -47,7 +47,8 @@
         </s-scrollbar>
       </div>
     </div>
-    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
+    <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" @confirm="signTx" />
+    <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
     <bridge-transfer-notification />
     <mobile-popup :visible.sync="showMobilePopup" />
     <browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
@@ -91,10 +92,11 @@ import type { FeatureFlags } from '@/store/settings/types';
     BrowserNotifsEnableDialog: lazyComponent(Components.BrowserNotifsEnableDialog),
     BrowserNotifsBlockedDialog: lazyComponent(Components.BrowserNotifsBlockedDialog),
     NotificationEnablingPage: components.NotificationEnablingPage,
+    ConfirmDialog: components.ConfirmDialog,
     MobilePopup,
   },
 })
-export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
+export default class App extends Mixins(mixins.TransactionMixin, mixins.ConfirmTransactionMixin, NodeErrorMixin) {
   menuVisibility = false;
   showConfirmInviteUser = false;
   showMobilePopup = false;
@@ -111,6 +113,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;
+  @getter.settings.isDesktop private isDesktop!: boolean;
   @getter.settings.chartsEnabled chartsEnabled!: boolean;
 
   @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
@@ -205,7 +208,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (this.storageReferrer === this.account.address) {
         this.resetStorageReferrer();
       } else {
-        this.showConfirmInviteUser = true;
+        setTimeout(() => {
+          this.showConfirmInviteUser = true;
+        }, 3000);
       }
     }
   }
@@ -317,6 +322,20 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   setDarkPage(value: boolean) {
     this.showNotifsDarkPage = value;
+  }
+
+  async signTx(inviteUser: AsyncVoidFn): Promise<void> {
+    if (!this.isDesktop) {
+      await inviteUser();
+      return;
+    }
+
+    this.openConfirmationDialog();
+    await this.waitOnNextTxConfirmation();
+
+    if (this.isTxDialogConfirmed) {
+      await inviteUser();
+    }
   }
 
   handleAppMenuClick(e: Event): void {

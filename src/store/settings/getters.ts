@@ -52,6 +52,10 @@ const getters = defineGetters<SettingsState>()({
     const { state } = settingsGetterContext(args);
     return state.browserNotifsPermission === 'granted';
   },
+  isDesktop(...args): boolean {
+    const { rootState } = settingsGetterContext(args);
+    return rootState.wallet.settings.isDesktop;
+  },
 });
 
 export default getters;

@@ -51,17 +51,18 @@
       :account-pool="selectedAccountPool"
       :is-adding="isAddingStake"
       :parent-loading="parentLoading || loading"
-      @add="handleStakeAction($event, deposit)"
-      @remove="handleStakeAction($event, withdraw)"
+      @add="handleStakeAction($event, deposit, signTx)"
+      @remove="handleStakeAction($event, withdraw, signTx)"
     />
     <claim-dialog
       :visible.sync="showClaimDialog"
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
       :parent-loading="parentLoading || loading"
-      @confirm="handleClaimRewards"
+      @confirm="handleClaimRewards($event, signTx)"
     />
     <calculator-dialog :visible.sync="showCalculatorDialog" :pool="selectedPool" :account-pool="selectedAccountPool" />
+    <confirm-dialog :visible.sync="showConfirmTxDialog" @confirm="confirmTransactionDialog" />
   </div>
 </template>
 
@@ -96,6 +97,7 @@ type StakingItem = {
     StakeDialog: demeterLazyComponent(DemeterComponents.StakeDialog),
     ClaimDialog: demeterLazyComponent(DemeterComponents.ClaimDialog),
     CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
+    ConfirmDialog: components.ConfirmDialog,
     TokenLogo: components.TokenLogo,
   },
 })
