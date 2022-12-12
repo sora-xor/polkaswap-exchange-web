@@ -2,16 +2,16 @@
   <dialog-base :visible.sync="isVisible" :title="`${TranslationConsts.APR} ${t('demeterFarming.calculator')}`">
     <div class="calculator-dialog">
       <s-row v-if="poolAsset" flex align="middle">
-        <pair-token-logo v-if="baseAsset" :first-token="baseAsset" :second-token="poolAsset" class="title-logo" />
+        <pair-token-logo v-if="isFarm" :first-token="baseAsset" :second-token="poolAsset" class="title-logo" />
         <token-logo v-else :token="poolAsset" class="title-logo" />
         <span class="calculator-dialog-title">
-          <template v-if="baseAsset">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
+          <template v-if="isFarm">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
         </span>
       </s-row>
 
       <s-form class="el-form--actions" :show-message="false">
         <token-input
-          v-if="baseAsset"
+          v-if="isFarm"
           :balance="baseAssetBalance.toCodecString()"
           :is-max-available="isBaseAssetMaxButtonAvailable"
           :title="t('demeterFarming.amountAdd')"
@@ -21,7 +21,7 @@
           @max="handleBaseAssetMax"
         />
 
-        <s-icon v-if="baseAsset && poolAsset" class="icon-divider" name="plus-16" />
+        <s-icon v-if="isFarm" class="icon-divider" name="plus-16" />
 
         <token-input
           v-if="poolAsset"

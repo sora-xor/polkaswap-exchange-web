@@ -845,7 +845,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
         .el-loading-spinner {
           top: 0;
           margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
-          margin-left: calc(#{$header-icon-size - $header-spinner-size} / 2);
           .circular {
             width: $header-spinner-size;
             height: $header-spinner-size;
