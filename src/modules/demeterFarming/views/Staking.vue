@@ -50,6 +50,7 @@
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
       :is-adding="isAddingStake"
+      :parent-loading="parentLoading || loading"
       @add="handleStakeAction($event, deposit)"
       @remove="handleStakeAction($event, withdraw)"
     />
@@ -57,6 +58,7 @@
       :visible.sync="showClaimDialog"
       :pool="selectedPool"
       :account-pool="selectedAccountPool"
+      :parent-loading="parentLoading || loading"
       @confirm="handleClaimRewards"
     />
     <calculator-dialog :visible.sync="showCalculatorDialog" :pool="selectedPool" :account-pool="selectedAccountPool" />

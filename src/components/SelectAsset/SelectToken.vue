@@ -1,6 +1,6 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="t('selectToken.title')" custom-class="asset-select">
-    <s-tabs v-model="tabValue" class="s-tabs--exchange" type="rounded" @click="handleTabClick">
+    <s-tabs :value="tabValue" class="s-tabs--exchange" type="rounded" @input="handleTabChange">
       <search-input
         ref="search"
         v-model="query"
@@ -106,7 +106,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
 
   @Watch('visible')
-  async handleTabChange(value: boolean): Promise<void> {
+  async handleTabReset(value: boolean): Promise<void> {
     if (!value) return;
 
     this.tabValue = first(this.tokenTabs);
@@ -179,7 +179,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     api.assets.removeAccountAsset(asset.address);
   }
 
-  handleTabClick({ name }): void {
+  handleTabChange(name: Tabs): void {
     this.tabValue = name;
     this.handleClearSearch();
   }

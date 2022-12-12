@@ -64,6 +64,7 @@ import { FPNumber, History, connection, HistoryItem } from '@sora-substrate/util
 import { components, mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
+import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
@@ -73,12 +74,11 @@ import { PageNames, Components, Language, Links } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { preloadFontFace } from '@/utils';
+import { preloadFontFace, updateDocumentTitle } from '@/utils';
 import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions } from '@/types/nodes';
 import type { SubNetwork } from '@/utils/ethers-util';
 import type { FeatureFlags } from '@/store/settings/types';
-import { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -242,6 +242,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // connection to node
       await this.runAppConnectionToNode();
+      updateDocumentTitle(); // For the first load
     });
   }
 

@@ -292,13 +292,13 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     title: 'twitter',
     href: 'https://twitter.com/polkaswap',
   },
-  // TODO: Update this icon name to appropriate one after font fix
+  // TODO: [FONT] Update this icon name to appropriate one after font fix
   {
     icon: 'symbols-hash-24',
     title: 'reddit',
     href: 'https://www.reddit.com/r/Polkaswap',
   },
-  // TODO: Update this icon name to appropriate one after font fix
+  // TODO: [FONT] Update this icon name to appropriate one after font fix
   {
     icon: 'symbols-peace-24',
     title: 'medium',

@@ -10,7 +10,7 @@
         />
         <token-logo v-else :token="poolAsset" class="title-logo" />
         <span class="calculator-dialog-title">
-          <template v-if="isFarm && baseAsset">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
+          <template v-if="isFarm">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
         </span>
       </s-row>
 
@@ -44,7 +44,7 @@
 
       <div class="duration">
         <info-line label="Duration" class="duration-title" />
-        <s-tabs type="rounded" :value="selectedPeriod" @click="selectPeriod" class="duration-tabs">
+        <s-tabs type="rounded" :value="selectedPeriod" @input="selectPeriod" class="duration-tabs">
           <s-tab v-for="period in intervals" :key="period" :name="String(period)" :label="`${period}D`" />
         </s-tabs>
       </div>
@@ -181,7 +181,7 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
     return new FPNumber(this.calculatedRoiPercent.toFixed(2)).toLocaleString() + '%';
   }
 
-  selectPeriod({ name }): void {
+  selectPeriod(name: string): void {
     this.interval = Number(name);
   }
 
