@@ -1,7 +1,7 @@
 <template>
   <dialog-base :visible.sync="isVisible" :show-close-button="false" custom-class="dialog--confirm-invite-user">
-    <div :class="computedIconClasses">
-      <s-icon v-if="!hasReferrer" name="file-file-text-24" size="40px" />
+    <div class="invite-user-icon" :class="{ 'invite-user-icon--error': hasReferrer }">
+      <s-icon :name="iconName" :size="iconSize" />
     </div>
     <p class="invite-user-title">
       {{ t(`referralProgram.confirm.${hasReferrer ? 'hasReferrer' : 'invite'}Title`) }}
@@ -46,12 +46,12 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, m
     return !!this.referrer;
   }
 
-  get computedIconClasses(): Array<string> {
-    const cssClasses: Array<string> = ['invite-user-icon'];
-    if (this.hasReferrer) {
-      cssClasses.push('invite-user-icon--error');
-    }
-    return cssClasses;
+  get iconName(): string {
+    return this.hasReferrer ? 'notifications-alert-triangle-24' : 'file-file-text-24';
+  }
+
+  get iconSize(): number {
+    return this.hasReferrer ? 64 : 40;
   }
 
   async handleConfirmInviteUser(): Promise<void> {
@@ -95,12 +95,14 @@ $invite-user-icon-size: 64px;
     align-items: center;
     background-color: var(--s-color-status-error);
     border-radius: 50%;
-    .s-icon-file-file-text-24 {
+    > i {
       color: var(--s-color-base-on-accent);
     }
     &--error {
-      background: url('~@/assets/img/referrer-error.svg') no-repeat;
-      border-radius: 0;
+      background-color: transparent;
+      > i {
+        color: var(--s-color-status-error);
+      }
     }
   }
   &-title,
