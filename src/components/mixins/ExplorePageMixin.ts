@@ -39,7 +39,7 @@ export default class ExplorePageMixin extends Mixins(
   }
 
   get isDefaultSort(): boolean {
-    return !this.order || !this.property;
+    return !(this.order && this.property);
   }
 
   get preparedItems(): any[] {
@@ -68,7 +68,7 @@ export default class ExplorePageMixin extends Mixins(
   }
 
   get sortedItems() {
-    if (!this.order || !this.property) return this.filteredItems;
+    if (this.isDefaultSort) return this.filteredItems;
 
     const isAscending = this.order === SortDirection.ASC;
 

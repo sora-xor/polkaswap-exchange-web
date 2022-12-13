@@ -4,12 +4,12 @@
       <s-row v-if="poolAsset" flex align="middle">
         <pair-token-logo
           v-if="baseAsset"
-          key="token"
+          key="pair"
           :first-token="baseAsset"
           :second-token="poolAsset"
           class="title-logo"
         />
-        <token-logo v-else key="pair" :token="poolAsset" class="title-logo" />
+        <token-logo v-else key="token" :token="poolAsset" class="title-logo" />
         <span class="stake-dialog-title">
           <template v-if="baseAsset">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
         </span>

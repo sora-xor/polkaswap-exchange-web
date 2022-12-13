@@ -1,7 +1,7 @@
 <template>
   <div class="explore-container">
     <div class="explore-tabs-container">
-      <s-tabs class="explore-tabs" type="rounded" :value="pageName" @click="handleTabClick">
+      <s-tabs class="explore-tabs" type="rounded" :value="pageName" @input="handleTabChange">
         <s-tab v-for="tab in tabs" :key="tab.name" :name="tab.name" :label="tab.label"> </s-tab>
       </s-tabs>
     </div>
@@ -63,7 +63,7 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
     return this.t(`pageTitle.${this.pageName}`);
   }
 
-  handleTabClick({ name }): void {
+  handleTabChange(name: string): void {
     router.push({ name });
   }
 

@@ -663,7 +663,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
 
     .el-table__fixed {
-      height: 100% !important;
+      height: 100% !important; // overrides element-ui js style property
   
       &:before,
       &:after {
@@ -671,12 +671,12 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       }
   
       .el-table__fixed-body-wrapper {
-        height: 100% !important;
+        height: 100% !important; // overrides element-ui js style property
       }
     }
   
     .el-table__body-wrapper {
-      height: auto !important;
+      height: auto !important; // overrides element-ui js style property
   
       &.is-scrolling-left ~ .el-table__fixed {
         box-shadow: inherit;
@@ -694,9 +694,9 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         overflow-x: hidden;
       }
     }
-  
+
     .el-table__empty-block {
-      width: 100% !important;
+      width: 100% !important; // overrides element-ui js style property
     }
   
     .el-table__empty-text {
@@ -726,7 +726,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       }
     }
     &-logo {
-      display: inline-block !important;
+      display: inline-block;
       vertical-align: middle;
       text-align: center;
       margin: 0 $inner-spacing-mini;

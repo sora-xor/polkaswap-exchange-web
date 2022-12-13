@@ -122,7 +122,7 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
 
   get userTokensDeposit(): FPNumber {
     return this.isFarm
-      ? this.liquidityLP
+      ? this.lpBalance
           .mul(new FPNumber(this.poolAssetValue || 0))
           .div(FPNumber.fromCodecValue(this.liquidity?.secondBalance ?? 0))
       : new FPNumber(this.poolAssetValue || 0);

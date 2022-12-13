@@ -63,7 +63,7 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
     return this.baseAsset ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.baseAsset) ?? 0) : FPNumber.ZERO;
   }
 
-  get liquidityLP(): FPNumber {
+  get lpBalance(): FPNumber {
     return FPNumber.fromCodecValue(getAssetBalance(this.liquidity, { parseAsLiquidity: true }) ?? 0);
   }
 
@@ -100,7 +100,7 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
   }
 
   get funds(): FPNumber {
-    return this.isFarm ? this.liquidityLP : this.poolAssetBalance;
+    return this.isFarm ? this.lpBalance : this.poolAssetBalance;
   }
 
   get lockedFunds(): FPNumber {
@@ -145,7 +145,7 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
     if (this.isFarm) {
       // calc liquidty locked price through liquidity
       return FPNumber.fromCodecValue(this.liquidity.firstBalance)
-        .div(this.liquidityLP)
+        .div(this.lpBalance)
         .mul(this.pool.totalTokensInPool)
         .mul(this.baseAssetPrice)
         .mul(new FPNumber(2));

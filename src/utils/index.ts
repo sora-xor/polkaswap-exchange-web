@@ -290,6 +290,7 @@ export const calcPriceChange = (current: FPNumber, prev: FPNumber): FPNumber => 
   return current.sub(prev).div(prev).mul(FPNumber.HUNDRED);
 };
 
+// [TODO]: move to FPNumber
 export const formatAmountWithSuffix = (value: FPNumber): AmountWithSuffix => {
   const val = value.toNumber();
   const format = (value: string) => new FPNumber(value).toLocaleString();
