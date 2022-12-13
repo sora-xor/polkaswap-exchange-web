@@ -102,9 +102,6 @@ type StakingItem = {
 export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) {
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<Asset>;
 
-  // override PageMixin
-  isFarmingPage = false;
-
   activeCollapseItems: string[] = [];
 
   updateActiveCollapseItems(items: string[]) {

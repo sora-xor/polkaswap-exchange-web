@@ -131,6 +131,13 @@ export enum PageNames {
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
   StakingContainer = 'StakingContainer',
+  ExploreContainer = 'Explore/Container',
+  ExploreTokens = 'Explore/Tokens',
+  ExploreDemeter = 'Explore/Demeter',
+  // just for router name & different titles
+  ExploreFarming = 'Explore/Farming',
+  ExploreStaking = 'Explore/Staking',
+  ExplorePools = 'Explore/Pools',
   SoraCard = 'SoraCard',
 }
 
@@ -256,8 +263,8 @@ const AccountMenu: Array<SidebarMenuItem> = [
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
-    icon: 'various-bone-24',
-    title: PageNames.Tokens,
+    icon: 'various-items-24',
+    title: PageNames.ExploreContainer,
   },
   {
     icon: 'sora-card',
@@ -331,6 +338,12 @@ export const RewardsChildPages = [
 ];
 
 export const StakingChildPages = [DemeterPageNames.Staking];
+export const ExploreChildPages = [
+  PageNames.ExploreTokens,
+  PageNames.ExplorePools,
+  PageNames.ExploreFarming,
+  PageNames.ExploreStaking,
+];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',

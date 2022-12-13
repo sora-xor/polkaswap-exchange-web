@@ -96,8 +96,8 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
-  @getter.assets.nonWhitelistDivisibleAssets private nonWhitelistAssets!: { [key: string]: Asset };
-  @getter.assets.nonWhitelistDivisibleAccountAssets private nonWhitelistAccountAssets!: { [key: string]: AccountAsset };
+  @getter.assets.nonWhitelistDivisibleAssets private nonWhitelistAssets!: Record<string, Asset>;
+  @getter.assets.nonWhitelistDivisibleAccountAssets private nonWhitelistAccountAssets!: Record<string, AccountAsset>;
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
   @getter.wallet.account.whitelist public whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;

@@ -334,8 +334,11 @@
         "AddLiquidityId": "Tambah Likuiditas",
         "RemoveLiquidity": "Hapus Likuiditas",
         "PageNotFound": "Halaman Tidak Ditemukan",
-        "Tokens": "Token",
-        "Rewards": "Hadiah"
+        "Rewards": "Hadiah",
+        "Explore\/Tokens": "Token",
+        "Explore\/Pools": "Kolam",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -348,8 +351,8 @@
         "Stats": "Statistik",
         "Support": "Dukungan",
         "CreatePair": "Buat Pair",
-        "Tokens": "Token",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Menjelajahi"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Bahasa"
     },
     "tokens": {
-        "title": "Token Terdaftar",
         "symbol": "Simbol",
-        "name": "Nama",
         "assetId": "ID Aset"
     },
     "memorandum": "Memorandum {AppName} dan Ketentuan Layanan",

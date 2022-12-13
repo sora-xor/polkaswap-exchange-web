@@ -41,7 +41,7 @@ export default class PairTokenLogo extends Mixins(TranslationMixin) {
 <style lang="scss" scoped>
 .pair-logo {
   position: relative;
-  display: block;
+  display: inline-block;
   margin-right: $inner-spacing-mini;
   flex-shrink: 0;
 

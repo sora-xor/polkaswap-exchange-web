@@ -565,14 +565,12 @@ i.icon-divider {
 }
 
 @include large-desktop(true) {
-  .app-main {
-    &.app-main--tokens {
-      .app-menu {
-        position: relative;
+  .app-main[class*='app-main--explore/'] {
+    .app-menu {
+      position: relative;
 
-        @include large-mobile(true) {
-          position: fixed;
-        }
+      @include large-mobile(true) {
+        position: fixed;
       }
     }
   }

@@ -52,7 +52,6 @@ export default class SelectRegisteredAsset extends Mixins(TranslationMixin, Sele
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
   @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;
-  @state.wallet.account.assets private assets!: Array<Asset>;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
   @getter.wallet.account.accountAssetsAddressTable private accountAssetsAddressTable!: WALLET_TYPES.AccountAssetsTable;
