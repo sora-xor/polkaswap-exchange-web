@@ -334,8 +334,11 @@
         "AddLiquidityId": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
         "PageNotFound": "Pagina niet gevonden",
-        "Tokens": "Tokens",
-        "Rewards": "Beloningen"
+        "Rewards": "Beloningen",
+        "Explore\/Tokens": "Tokens",
+        "Explore\/Pools": "Zwembaden",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -348,8 +351,8 @@
         "Stats": "Stats",
         "Support": "Support",
         "CreatePair": "Maak Paar",
-        "Tokens": "Tokens",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Ontdekken"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Taal"
     },
     "tokens": {
-        "title": "Vermelde tokens",
         "symbol": "Symbool",
-        "name": "Naam",
         "assetId": "Asset-ID"
     },
     "memorandum": "{AppName} memorandum en servicevoorwaarden",

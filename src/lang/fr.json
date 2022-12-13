@@ -334,8 +334,11 @@
         "AddLiquidityId": "Ajouter de la liquidité",
         "RemoveLiquidity": "Retirer de la liquidité",
         "PageNotFound": "Page introuvable",
-        "Tokens": "Jetons",
-        "Rewards": "Récompenses"
+        "Rewards": "Récompenses",
+        "Explore\/Tokens": "Jetons",
+        "Explore\/Pools": "Piscines",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming"
     },
     "mainMenu": {
         "Swap": "Échanger",
@@ -348,8 +351,8 @@
         "Stats": "Statistiques",
         "Support": "Support",
         "CreatePair": "Créer une paire",
-        "Tokens": "Jetons",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Explorer"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Langue"
     },
     "tokens": {
-        "title": "Jetons listés",
         "symbol": "Symbole",
-        "name": "Nom",
         "assetId": "ID Actif"
     },
     "memorandum": "Note et conditions d'utilisation de {AppName}",

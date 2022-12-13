@@ -334,8 +334,11 @@
         "AddLiquidityId": "Poolhoz hozzáadás",
         "RemoveLiquidity": "Poolból eltávolítás",
         "PageNotFound": "Az oldal nem található",
-        "Tokens": "Tokenek",
-        "Rewards": "Jutalmak"
+        "Rewards": "Jutalmak",
+        "Explore\/Tokens": "Tokenek",
+        "Explore\/Pools": "Totó",
+        "Explore\/Staking": "Letét",
+        "Explore\/Farming": "Farmolás"
     },
     "mainMenu": {
         "Swap": "Váltás",
@@ -348,8 +351,8 @@
         "Stats": "Statisztikák",
         "Support": "Támogatás",
         "CreatePair": "Pár létrehozása",
-        "Tokens": "Tokenek",
-        "StakingContainer": "Letét"
+        "StakingContainer": "Letét",
+        "Explore\/Container": "Kutat"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Nyelv"
     },
     "tokens": {
-        "title": "Listázott tokenek",
         "symbol": "Szimbólum",
-        "name": "Név",
         "assetId": "Eszköz azonosítója"
     },
     "memorandum": "{AppName} Memorandum és Általános Szerződési Feltételek",

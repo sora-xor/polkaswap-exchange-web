@@ -334,8 +334,11 @@
         "AddLiquidityId": "Přidat likviditu",
         "RemoveLiquidity": "Odebrat likviditu",
         "PageNotFound": "Stránka nenalezena",
-        "Tokens": "Tokeny",
-        "Rewards": "Odměny"
+        "Rewards": "Odměny",
+        "Explore\/Tokens": "Tokeny",
+        "Explore\/Pools": "Bazény",
+        "Explore\/Staking": "Stakování",
+        "Explore\/Farming": "Farming"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -348,8 +351,8 @@
         "Stats": "Statistiky",
         "Support": "Podpora",
         "CreatePair": "Vytvořit pár",
-        "Tokens": "Tokeny",
-        "StakingContainer": "Stakování"
+        "StakingContainer": "Stakování",
+        "Explore\/Container": "Prozkoumat"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Jazyk"
     },
     "tokens": {
-        "title": "Zalistované tokeny",
         "symbol": "Symbol",
-        "name": "Název",
         "assetId": "ID aktiva"
     },
     "memorandum": "{AppName} Memorandum a Smluvní podmínky",

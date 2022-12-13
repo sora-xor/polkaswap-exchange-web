@@ -334,8 +334,11 @@
         "AddLiquidityId": "Pridať likviditu",
         "RemoveLiquidity": "Odobrať likviditu",
         "PageNotFound": "Stránka nebola nájdená",
-        "Tokens": "Tokeny",
-        "Rewards": "Odmeny"
+        "Rewards": "Odmeny",
+        "Explore\/Tokens": "Tokeny",
+        "Explore\/Pools": "Bazény",
+        "Explore\/Staking": "Stakovanie",
+        "Explore\/Farming": "Farmárčenie"
     },
     "mainMenu": {
         "Swap": "Výmena",
@@ -348,8 +351,8 @@
         "Stats": "Štatistiky",
         "Support": "Podpora",
         "CreatePair": "Vytvoriť pár",
-        "Tokens": "Tokeny",
-        "StakingContainer": "Stakovanie"
+        "StakingContainer": "Stakovanie",
+        "Explore\/Container": "Preskúmať"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Jazyk"
     },
     "tokens": {
-        "title": "Zoznam tokenov",
         "symbol": "Symbol",
-        "name": "Názov",
         "assetId": "ID aktíva"
     },
     "memorandum": "{AppName} Memorandum a Podmienky poskytovania služieb",

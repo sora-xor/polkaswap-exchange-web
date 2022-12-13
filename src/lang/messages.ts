@@ -67,7 +67,10 @@ export default {
     [PageNames.Support]: 'Support',
     [PageNames.Wallet]: 'Wallet',
     [PageNames.Rewards]: 'Rewards',
-    [PageNames.Tokens]: 'Tokens',
+    [PageNames.ExploreTokens]: 'Tokens',
+    [PageNames.ExplorePools]: 'Pools',
+    [PageNames.ExploreStaking]: 'Staking',
+    [PageNames.ExploreFarming]: 'Farming',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.PageNotFound]: 'Page Not Found',
@@ -82,7 +85,7 @@ export default {
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
-    [PageNames.Tokens]: 'Tokens',
+    [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
   },
   headerMenu: {
@@ -537,9 +540,7 @@ export default {
     locked: '{percent} of your pool is in staking',
   },
   tokens: {
-    title: 'Listed Tokens',
     symbol: 'Symbol',
-    name: 'Name',
     assetId: 'Asset ID',
   },
   dexSettings: {
