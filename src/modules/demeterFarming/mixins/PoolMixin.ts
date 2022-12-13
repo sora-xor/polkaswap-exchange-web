@@ -27,10 +27,6 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
     return !this.pool?.isRemoved;
   }
 
-  get hasStake(): boolean {
-    return this.accountPool ? !this.lockedFunds.isZero() : false;
-  }
-
   get baseAsset(): Nullable<AccountAsset> {
     return this.getAsset(this.pool?.baseAsset);
   }
@@ -45,10 +41,6 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
 
   get poolAssetDecimals(): number {
     return this.poolAsset?.decimals ?? FPNumber.DEFAULT_PRECISION;
-  }
-
-  get poolAssetAddress(): string {
-    return this.poolAsset?.address ?? '';
   }
 
   get poolAssetPrice(): FPNumber {
@@ -91,10 +83,6 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
 
   get funds(): FPNumber {
     return this.isFarm ? this.lpBalance : this.poolAssetBalance;
-  }
-
-  get lockedFunds(): FPNumber {
-    return this.accountPool?.pooledTokens ?? FPNumber.ZERO;
   }
 
   get availableFunds(): FPNumber {
@@ -146,10 +134,6 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
 
   get tvlFormatted(): string {
     return `$${formatDecimalPlaces(this.tvl)}`;
-  }
-
-  get emission(): FPNumber {
-    return this.getEmission(this.pool, this.tokenInfo);
   }
 
   get apr(): FPNumber {

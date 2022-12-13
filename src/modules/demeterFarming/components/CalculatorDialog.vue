@@ -4,20 +4,20 @@
       <s-row v-if="poolAsset" flex align="middle">
         <pair-token-logo
           v-if="isFarm && baseAsset"
+          key="pair"
           :first-token="baseAsset"
           :second-token="poolAsset"
           class="title-logo"
         />
-        <token-logo v-else :token="poolAsset" class="title-logo" />
+        <token-logo v-else key="token" :token="poolAsset" class="title-logo" />
         <span class="calculator-dialog-title">
           <template v-if="isFarm">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
         </span>
       </s-row>
 
       <s-form class="el-form--actions" :show-message="false">
-        <template v-if="isFarm">
+        <template v-if="isFarm && baseAsset">
           <token-input
-            v-if="baseAsset"
             :balance="baseAssetBalance.toCodecString()"
             :is-max-available="isBaseAssetMaxButtonAvailable"
             :title="t('demeterFarming.amountAdd')"
@@ -27,7 +27,7 @@
             @max="handleBaseAssetMax"
           />
 
-          <s-icon v-if="baseAsset && poolAsset" class="icon-divider" name="plus-16" />
+          <s-icon v-if="poolAsset" class="icon-divider" name="plus-16" />
         </template>
 
         <token-input
@@ -142,6 +142,10 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
     const depositFee = new FPNumber(this.depositFee);
 
     return this.userTokensDeposit.mul(FPNumber.ONE.sub(depositFee));
+  }
+
+  get emission(): FPNumber {
+    return this.getEmission(this.pool, this.tokenInfo);
   }
 
   get calculatedRewards(): FPNumber {

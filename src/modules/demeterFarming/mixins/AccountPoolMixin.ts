@@ -68,4 +68,12 @@ export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin
   get hasRewards(): boolean {
     return !this.rewards.isZero();
   }
+
+  get hasStake(): boolean {
+    return this.accountPool ? !this.lockedFunds.isZero() : false;
+  }
+
+  get lockedFunds(): FPNumber {
+    return this.accountPool?.pooledTokens ?? FPNumber.ZERO;
+  }
 }

@@ -69,6 +69,7 @@
         <template v-if="activeStatus">
           <s-button
             v-if="isLoggedIn"
+            key="connected"
             type="primary"
             class="s-typography-button--large action-button"
             :disabled="depositDisabled"
@@ -76,7 +77,13 @@
           >
             {{ primaryButtonText }}
           </s-button>
-          <s-button v-else type="primary" class="s-typography-button--large action-button" @click="handleConnectWallet">
+          <s-button
+            v-else
+            type="primary"
+            key="disconnected"
+            class="s-typography-button--large action-button"
+            @click="handleConnectWallet"
+          >
             {{ t('connectWalletText') }}
           </s-button>
         </template>
