@@ -69,10 +69,6 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
     return this.pool?.depositFee ?? 0;
   }
 
-  get depositFeeFormatted(): string {
-    return `${this.depositFee * 100}%`;
-  }
-
   get funds(): FPNumber {
     return this.isFarm ? this.lpBalance : this.poolAssetBalance;
   }
@@ -83,30 +79,6 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
 
   get depositDisabled(): boolean {
     return !this.activeStatus || this.availableFunds.isZero();
-  }
-
-  get poolShare(): FPNumber {
-    if (!this.isFarm) return this.lockedFunds;
-
-    if (this.funds.isZero()) return FPNumber.ZERO;
-    // use .min because pooled LP could be greater that liquiduty LP
-    return (FPNumber.min(this.lockedFunds, this.funds) as FPNumber).div(this.funds).mul(FPNumber.HUNDRED);
-  }
-
-  get poolShareFormatted(): string {
-    return this.poolShare.toLocaleString() + (this.isFarm ? '%' : '');
-  }
-
-  get poolShareFiat(): Nullable<string> {
-    if (this.isFarm) return null;
-
-    return this.getFiatAmountByFPNumber(this.poolShare, this.poolAsset as AccountAsset);
-  }
-
-  get poolShareText(): string {
-    return this.isFarm
-      ? this.t('demeterFarming.info.poolShare')
-      : this.t('demeterFarming.info.stake', { symbol: this.poolAssetSymbol });
   }
 
   get tvl(): FPNumber {
@@ -122,10 +94,6 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
     } else {
       return this.pool.totalTokensInPool.mul(this.poolAssetPrice);
     }
-  }
-
-  get tvlFormatted(): string {
-    return `$${formatDecimalPlaces(this.tvl)}`;
   }
 
   get emission(): FPNumber {

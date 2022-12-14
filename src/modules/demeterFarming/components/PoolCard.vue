@@ -100,7 +100,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
-import PoolMixin from '../mixins/PoolMixin';
+import PoolCardMixin from '../mixins/PoolCardMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter } from '@/store/decorators';
@@ -119,7 +119,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
     InfoLine: components.InfoLine,
   },
 })
-export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
+export default class PoolCard extends Mixins(PoolCardMixin, TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly border!: boolean;
   @Prop({ default: false, type: Boolean }) readonly showBalance!: boolean;
 

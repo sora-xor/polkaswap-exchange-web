@@ -126,11 +126,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber } from '@sora-substrate/util';
+import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber, Operation } from '@sora-substrate/util';
 
-import StakeDialogMixin from '../mixins/StakeDialogMixin';
+import PoolCardMixin from '../mixins/PoolCardMixin';
 
 import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
@@ -149,7 +149,9 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class StakeDialog extends Mixins(StakeDialogMixin) {
+export default class StakeDialog extends Mixins(PoolCardMixin, mixins.DialogMixin, mixins.LoadingMixin) {
+  @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
+
   @Watch('visible')
   private resetValue() {
     this.value = '';
@@ -157,10 +159,24 @@ export default class StakeDialog extends Mixins(StakeDialogMixin) {
 
   value = '';
 
+  get networkFee(): CodecString {
+    const operation = this.isAdding
+      ? Operation.DemeterFarmingDepositLiquidity
+      : Operation.DemeterFarmingWithdrawLiquidity;
+
+    return this.networkFees[operation];
+  }
+
   get title(): string {
     const actionKey = this.isAdding ? (this.hasStake ? 'add' : 'start') : 'remove';
 
     return this.t(`demeterFarming.actions.${actionKey}`);
+  }
+
+  get inputTitle(): string {
+    const key = this.isAdding ? 'amountAdd' : 'amountRemove';
+
+    return this.t(`demeterFarming.${key}`);
   }
 
   get valuePartCharClass(): string {

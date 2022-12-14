@@ -65,11 +65,12 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber } from '@sora-substrate/util';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber, Operation } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
-import StakeDialogMixin from '../mixins/StakeDialogMixin';
+import PoolCardMixin from '../mixins/PoolCardMixin';
 
 import { lazyComponent } from '@/router';
 import { Components, Links } from '@/consts';
@@ -84,7 +85,7 @@ import { getAssetBalance, isMaxButtonAvailable, getMaxValue, formatDecimalPlaces
     TokenLogo: components.TokenLogo,
   },
 })
-export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
+export default class CalculatorDialog extends Mixins(PoolCardMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   @Watch('visible')
   private resetValue() {
     this.baseAssetValue = '';
@@ -99,6 +100,10 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
   interval = 1;
 
   readonly link = Links.demeterFarmingPlatform;
+
+  get networkFee(): CodecString {
+    return this.networkFees[Operation.DemeterFarmingDepositLiquidity];
+  }
 
   get selectedPeriod(): string {
     return String(this.interval);
