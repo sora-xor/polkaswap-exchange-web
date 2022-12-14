@@ -356,7 +356,8 @@
         "StakingContainer": "Staking",
         "Send": "Send",
         "KYC": "KYC",
-        "RouteAssets": "Route Assets"
+        "RouteAssets": "Route Assets",
+        "NewRouteAssets": "Route Assets"
     },
     "social": {
         "twitter": "Twitter",

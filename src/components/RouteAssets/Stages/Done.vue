@@ -1,0 +1,260 @@
+<template>
+  <div class="route-assets-review-details">
+    <div class="container route-assets-upload-template">
+      <div class="route-assets__page-header-title">Routing completed</div>
+      <div class="route-assets__page-header-description">
+        {{ `View the details of your recent routing transaction` }}
+      </div>
+      <div class="fields-container">
+        <div class="field">
+          <div class="field__label">INPUT ASSET</div>
+          <div class="field__value">
+            <div>{{ inputToken.symbol }}</div>
+            <div>
+              <token-logo class="token-logo" :token="inputToken" />
+            </div>
+          </div>
+        </div>
+        <s-divider />
+        <div class="field">
+          <div class="field__label">total</div>
+          <div class="field__value">
+            {{ totalAmount }} <span class="usd">{{ totalUSD }}</span>
+          </div>
+        </div>
+        <s-divider />
+        <div class="field" v-if="incompletedRecipientsLength > 0">
+          <div class="field__label">FAILED TRANSACTIONS</div>
+          <warning-message class="warning-message" :text="'re-run failed transactions'" :isError="true" />
+          <div class="field__value">
+            {{ incompletedRecipientsLength }}
+          </div>
+        </div>
+      </div>
+      <div class="buttons-container">
+        <s-button
+          type="primary"
+          class="s-typography-button--big"
+          @click.stop="showFailedTransactionsDialog = true"
+          v-if="withErrors"
+        >
+          {{ 'RE-RUN FAILED TRANSACTIONS' }}
+        </s-button>
+        <s-button type="primary" class="s-typography-button--big" :disabled="withErrors" @click.stop="downloadPDF">
+          {{ 'DOWNLOAD PDF OVERVIEW' }}
+        </s-button>
+      </div>
+    </div>
+    <div v-if="summaryData.length > 0" class="container routing-details-section">
+      <div class="route-assets__page-header-title">Routing Details</div>
+      <div v-for="(assetData, idx) in summaryData" :key="idx" class="asset-data-container fields-container">
+        <div class="asset-title">
+          <div>
+            <token-logo class="token-logo" :token="assetData.asset" />
+          </div>
+          <div>{{ assetData.asset.symbol }}</div>
+        </div>
+        <div class="field">
+          <div class="field__label">recipients</div>
+          <div class="field__value">{{ assetData.recipientsNumber }}</div>
+        </div>
+        <s-divider />
+        <div class="field">
+          <div class="field__label">token AMOUNT routed</div>
+          <div class="field__value">{{ formatNumber(assetData.total) }}</div>
+          <div class="field__value usd">{{ formatNumber(assetData.usd) }}</div>
+        </div>
+        <s-divider />
+        <div class="field">
+          <div class="field__label">Status</div>
+          <div class="field__value" :class="`field__value_${assetData.status}`">{{ assetData.status }}</div>
+        </div>
+      </div>
+    </div>
+    <failed-transactions-dialog :visible.sync="showFailedTransactionsDialog"></failed-transactions-dialog>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Mixins } from 'vue-property-decorator';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { action, getter, state } from '@/store/decorators';
+import { components, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { groupBy, sumBy } from 'lodash';
+import { Recipient, RecipientStatus } from '@/store/routeAssets/types';
+import { FPNumber } from '@sora-substrate/util/build';
+import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import { formatAssetBalance } from '@/utils';
+import WarningMessage from '../WarningMessage.vue';
+import { jsPDF as JsPDF } from 'jspdf';
+@Component({
+  components: {
+    TokenLogo: components.TokenLogo,
+    WarningMessage,
+    FailedTransactionsDialog: lazyComponent(Components.RouteAssetsFailedTransactionsDialog),
+  },
+})
+export default class RoutingCompleted extends Mixins(TranslationMixin) {
+  @getter.routeAssets.inputToken inputToken!: Asset;
+  @getter.routeAssets.completedRecipients private completedRecipients!: Array<Recipient>;
+  @getter.routeAssets.incompletedRecipients private incompletedRecipients!: Array<Recipient>;
+  @state.wallet.account.fiatPriceAndApyObject private fiatPriceAndApyObject!: SUBQUERY_TYPES.FiatPriceAndApyObject;
+  @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
+
+  showFailedTransactionsDialog = false;
+
+  get incompletedRecipientsLength() {
+    return this.incompletedRecipients.length;
+  }
+
+  get totalAmount() {
+    return this.formatNumber(this.totalUSD / Number(this.getAssetUSDPrice(this.inputToken)));
+  }
+
+  get totalUSD() {
+    return sumBy(this.completedRecipients, (item: Recipient) => Number(item.usd));
+  }
+
+  get withErrors() {
+    return this.incompletedRecipientsLength > 0;
+  }
+
+  get summaryData() {
+    return Object.values(
+      groupBy(
+        this.completedRecipients.map((item) => ({ symbol: item.asset.symbol, ...item })),
+        'symbol'
+      )
+    ).map((assetArray: Array<Recipient>) => {
+      return {
+        recipientsNumber: assetArray.length,
+        asset: assetArray[0].asset,
+        usd: sumBy(assetArray, (item: Recipient) => Number(item.usd)),
+        total: sumBy(assetArray, (item: Recipient) => Number(item.amount)),
+        required:
+          sumBy(assetArray, (item: Recipient) => Number(item.usd)) / Number(this.getAssetUSDPrice(this.inputToken)),
+        totalTransactions: assetArray.length,
+        status: this.getStatus(assetArray),
+      };
+    });
+  }
+
+  getStatus(assetArray) {
+    if (assetArray.some((recipient) => recipient.status === RecipientStatus.FAILED)) return 'failed';
+    return assetArray.find((recipient) => recipient.status === RecipientStatus.PENDING) ? 'waiting' : 'routed';
+  }
+
+  get balance(): string {
+    const asset = this.accountAssets.find((item) => item.address === this.inputToken.address);
+    return formatAssetBalance(asset) || '0';
+  }
+
+  getAssetUSDPrice(asset: Asset) {
+    return FPNumber.fromCodecValue(this.fiatPriceAndApyObject[asset.address]?.price ?? 0, 18);
+  }
+
+  formatNumber(num) {
+    return !num || !Number.isFinite(num)
+      ? '-'
+      : num.toLocaleString('en-US', {
+          maximumFractionDigits: 4,
+        });
+  }
+
+  downloadPDF() {
+    const doc = new JsPDF({ putOnlyUsedFonts: true, orientation: 'landscape' });
+    const headers = ['n', 'name', 'wallet', 'usd', 'token', 'inputToken', 'amount', 'status'];
+    const data = this.completedRecipients.map((recipient, idx) => {
+      return {
+        n: `${idx + 1}`,
+        name: recipient.name.toString(),
+        wallet: recipient.wallet.toString(),
+        usd: recipient.usd.toString(),
+        token: recipient.asset.symbol,
+        inputToken: this.inputToken.symbol,
+        amount: (recipient.amount?.toFixed(5) || '').toString(),
+        status: recipient.status.toString(),
+      };
+    });
+    doc.table(1, 1, data, headers, { autoSize: true, fontSize: 12 });
+    doc.save(`ADAR-${new Date().toLocaleDateString('en-GB')}.pdf`);
+  }
+}
+</script>
+
+<style lang="scss">
+.route-assets-review-details {
+  width: 464px;
+  text-align: center;
+  font-weight: 300;
+  font-feature-settings: 'case' on;
+  margin: 0 auto;
+
+  &__button {
+    width: 100%;
+    padding: inherit 30px;
+  }
+
+  .token-logo {
+    > span {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .routing-details-section {
+    text-align: left;
+
+    & > * {
+      margin-bottom: $inner-spacing-medium;
+    }
+
+    .asset-title {
+      @include flex-start;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 20px;
+      margin-bottom: $inner-spacing-medium;
+
+      .token-logo {
+        > span {
+          width: 36px;
+          height: 36px;
+        }
+      }
+    }
+
+    .asset-data-container {
+      box-shadow: var(--s-shadow-element);
+      border-radius: 30px;
+      background: var(--s-color-utility-body);
+      padding: 16px;
+    }
+  }
+}
+</style>
+
+<style scoped lang="scss">
+.container {
+  min-height: auto;
+}
+
+.usd {
+  color: var(--s-color-status-warning);
+  &::before {
+    content: '~ $';
+    display: inline;
+  }
+}
+
+.buttons-container {
+  button {
+    display: block;
+    width: 100%;
+    margin: 16px 0 0 0;
+  }
+}
+</style>

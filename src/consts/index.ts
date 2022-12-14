@@ -134,7 +134,7 @@ export enum PageNames {
   Send = 'Send',
   KYC = 'KYC',
   StakingContainer = 'StakingContainer',
-  RouteAssets = 'RouteAssets',
+  RouteAssets = 'NewRouteAssets',
   UploadCSV = 'UploadCSV',
   RoutingTemplate = 'RoutingTemplate',
 }
@@ -211,6 +211,18 @@ export enum Components {
   AuthorizeRoutingTemplateDialog = 'RouteAssets/AuthorizeRoutingTemplateDialog',
   UploadCSV = 'RouteAssets/UploadCSV',
   RoutingTemplate = 'RouteAssets/RoutingTemplate',
+  RouteAssetsAuthorize = 'RouteAssets/Stages/Authorize',
+  RouteAssetsDone = 'RouteAssets/Stages/Done',
+  RouteAssetsProcessTemplate = 'RouteAssets/Stages/ProcessTemplate',
+  RouteAssetsReviewDetails = 'RouteAssets/Stages/ReviewDetails',
+  RouteAssetsRouting = 'RouteAssets/Stages/Routing',
+  RouteAssetsTransactionOverview = 'RouteAssets/Stages/TransactionOverview',
+  RouteAssetsUploadTemplate = 'RouteAssets/Stages/UploadTemplate',
+  RouteAssetsNavigation = 'App/Header/RouteAssetsNavigation',
+  RouteAssetsFixIssuesDialog = 'RouteAssets/FixIssuesDialog',
+  RouteAssetsSelectInputAssetDialog = 'RouteAssets/SelectInputAssetDialog',
+  RouteAssetsSwapDialog = 'RouteAssets/SwapDialog',
+  RouteAssetsFailedTransactionsDialog = 'RouteAssets/FailedTransactionsDialog',
 }
 
 export enum RewardsTabsItems {

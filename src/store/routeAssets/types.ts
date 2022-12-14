@@ -6,12 +6,12 @@ import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build
 export type Recipient = {
   name: string;
   wallet: string;
-  processed: boolean;
   usd: number;
   asset: Asset;
   amount?: number;
   status: string;
   id: string;
+  isCompleted?: boolean;
 };
 
 export type RouteAssetsSubscription = {
@@ -30,10 +30,25 @@ export enum RecipientStatus {
   SUCCESS = 'Success',
 }
 
+export type RoutedToken = {
+  token: Asset;
+  amount: number;
+};
+
+export type ProcessingState = {
+  currentStageIndex: number;
+  inputToken: Asset;
+  tokensRouted?: Array<RoutedToken>;
+};
+
+export type Stage = {
+  title: string;
+  component: string;
+};
+
 export type RouteAssetsState = {
   recipients: Array<Recipient>;
   file: Nullable<File>;
-  processed: boolean;
-  uploadCSVPage: boolean;
   subscriptions: Array<RouteAssetsSubscription>;
+  processingState: ProcessingState;
 };
