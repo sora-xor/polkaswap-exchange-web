@@ -2,7 +2,10 @@
   <div>
     <pool-base v-bind="{ parentLoading, ...$attrs }" v-on="$listeners">
       <template #title-append="{ liquidity, activeCollapseItems }">
-        <div v-if="getStatusBadgeVisibility(liquidity.address, activeCollapseItems)" class="s-flex farming-pool-badges">
+        <div
+          v-show="getStatusBadgeVisibility(liquidity.address, activeCollapseItems)"
+          class="s-flex farming-pool-badges"
+        >
           <status-badge
             v-for="(item, index) in getLiquidityFarmingPools(liquidity)"
             :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}-${index}`"
@@ -109,6 +112,10 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
 
   getLiquidityFarmingPools(liquidity: AccountLiquidity) {
     return this.farmingPoolsByLiquidities[this.getLiquidityKey(liquidity)] ?? [];
+  }
+
+  getStatusBadgeVisibility(address: string, activeCollapseItems: string[]): boolean {
+    return !activeCollapseItems.includes(address);
   }
 
   private getLiquidityKey(liquidity: AccountLiquidity): string {

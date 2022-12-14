@@ -73,7 +73,7 @@ import StakeDialogMixin from '../mixins/StakeDialogMixin';
 
 import { lazyComponent } from '@/router';
 import { Components, Links } from '@/consts';
-import { getAssetBalance, isMaxButtonAvailable, getMaxValue } from '@/utils';
+import { getAssetBalance, isMaxButtonAvailable, getMaxValue, formatDecimalPlaces } from '@/utils';
 
 @Component({
   components: {
@@ -105,7 +105,7 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
   }
 
   get rewardsText(): string {
-    return `${this.rewardAssetSymbol} rewards`;
+    return this.t('demeterFarming.rewards', { symbol: this.rewardAssetSymbol });
   }
 
   get baseAssetDecimals(): number {
@@ -192,7 +192,7 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
   }
 
   get calculatedRoiPercentFormatted(): string {
-    return new FPNumber(this.calculatedRoiPercent.toFixed(2)).toLocaleString() + '%';
+    return formatDecimalPlaces(this.calculatedRoiPercent, true);
   }
 
   selectPeriod(name: string): void {

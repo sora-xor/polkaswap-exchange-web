@@ -41,10 +41,6 @@ export default class PageMixin extends Mixins(BasePageMixin, mixins.TransactionM
     return !accountPool.pooledTokens.isZero() || !accountPool.rewards.isZero();
   }
 
-  getStatusBadgeVisibility(address: string, activeCollapseItems: string[]): boolean {
-    return !activeCollapseItems.includes(address);
-  }
-
   changePoolStake(params: { baseAsset: string; poolAsset: string; rewardAsset: string }, isAddingStake = true): void {
     this.isAddingStake = isAddingStake;
     this.setDialogParams(params);
