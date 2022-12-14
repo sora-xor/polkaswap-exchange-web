@@ -31,6 +31,10 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
     return this.getAsset(this.pool?.baseAsset);
   }
 
+  get baseAssetPrice(): FPNumber {
+    return this.baseAsset ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.baseAsset) ?? 0) : FPNumber.ZERO;
+  }
+
   get poolAsset(): Nullable<AccountAsset> {
     return this.getAsset(this.pool?.poolAsset);
   }
@@ -47,26 +51,14 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
     return this.poolAsset ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.poolAsset) ?? 0) : FPNumber.ZERO;
   }
 
-  get baseAssetPrice(): FPNumber {
-    return this.baseAsset ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.baseAsset) ?? 0) : FPNumber.ZERO;
-  }
-
-  get lpBalance(): FPNumber {
-    return FPNumber.fromCodecValue(getAssetBalance(this.liquidity, { parseAsLiquidity: true }) ?? 0);
-  }
-
   get poolAssetBalance(): FPNumber {
     if (!this.poolAsset) return FPNumber.ZERO;
 
     return FPNumber.fromCodecValue(getAssetBalance(this.poolAsset) ?? 0, this.poolAssetDecimals);
   }
 
-  get poolAssetBalanceFormatted(): string {
-    return this.poolAssetBalance.toLocaleString();
-  }
-
-  get poolAssetBalanceFiat(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.poolAssetBalance, this.poolAsset as AccountAsset);
+  get lpBalance(): FPNumber {
+    return FPNumber.fromCodecValue(getAssetBalance(this.liquidity, { parseAsLiquidity: true }) ?? 0);
   }
 
   get tokenInfo(): Nullable<DemeterRewardToken> {

@@ -110,6 +110,8 @@ import { DemeterComponents } from '../consts';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames, Links } from '@/consts';
 
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+
 @Component({
   components: {
     CalculatorButton: demeterLazyComponent(DemeterComponents.CalculatorButton),
@@ -133,6 +135,14 @@ export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
 
   get primaryButtonText(): string {
     return this.t(`demeterFarming.actions.${this.hasStake ? 'add' : 'start'}`);
+  }
+
+  get poolAssetBalanceFormatted(): string {
+    return this.poolAssetBalance.toLocaleString();
+  }
+
+  get poolAssetBalanceFiat(): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.poolAssetBalance, this.poolAsset as AccountAsset);
   }
 
   handleConnectWallet(): void {
