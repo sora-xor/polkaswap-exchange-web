@@ -136,8 +136,12 @@ export default class PoolMixin extends Mixins(AprMixin, AccountPoolMixin, Transl
     return `$${formatDecimalPlaces(this.tvl)}`;
   }
 
+  get emission(): FPNumber {
+    return this.getEmission(this.pool, this.tokenInfo);
+  }
+
   get apr(): FPNumber {
-    return this.getApr(this.pool, this.tokenInfo, this.tvl);
+    return this.getApr(this.emission, this.tvl, this.rewardAssetPrice);
   }
 
   get aprFormatted(): string {

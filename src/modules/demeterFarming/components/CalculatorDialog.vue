@@ -144,10 +144,6 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
     return this.userTokensDeposit.mul(FPNumber.ONE.sub(depositFee));
   }
 
-  get emission(): FPNumber {
-    return this.getEmission(this.pool, this.tokenInfo);
-  }
-
   get calculatedRewards(): FPNumber {
     if (!this.pool) return FPNumber.ZERO;
 

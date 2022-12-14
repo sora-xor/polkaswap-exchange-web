@@ -261,6 +261,9 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
       const poolAsset = this.getAsset(pool.poolAsset) as Asset;
       const rewardAsset = this.getAsset(pool.rewardAsset) as Asset;
       const rewardAssetSymbol = rewardAsset?.symbol ?? '';
+      const rewardAssetPrice = FPNumber.fromCodecValue(
+        this.getAssetFiatPrice({ address: pool.rewardAsset } as Asset) ?? 0
+      );
       const tokenInfo = this.tokenInfos[pool.rewardAsset];
       const accountPool = this.getAccountPool(pool);
       const poolData = this.poolsData[lpKey(pool.baseAsset, pool.poolAsset)];
@@ -289,7 +292,8 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
       const description = pool.isFarm ? '' : poolAsset?.name ?? '';
       const depositFee = new FPNumber(pool.depositFee ?? 0).mul(FPNumber.HUNDRED);
       const tvl = poolTokenPrice.mul(pool.totalTokensInPool);
-      const apr = this.getApr(pool, tokenInfo, tvl);
+      const emission = this.getEmission(pool, tokenInfo);
+      const apr = this.getApr(emission, tvl, rewardAssetPrice);
       const accountTokens = (
         pool.isFarm
           ? [

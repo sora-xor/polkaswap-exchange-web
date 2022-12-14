@@ -16,7 +16,3 @@ export type AssetsState = {
 };
 
 export type RegisteredAccountAssetWithDecimals = RegisteredAccountAsset & { externalDecimals: number };
-
-export type RegisteredAccountAssetObject = {
-  [key: string]: RegisteredAccountAssetWithDecimals;
-};
