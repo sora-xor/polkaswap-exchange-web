@@ -2,12 +2,12 @@
   <header class="header">
     <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
-    <div
+    <!-- <div
       v-if="moonpayEnabled"
       class="app-controls app-controls--moonpay s-flex"
       :class="{ 'app-controls--moonpay--dark': themeIsDark }"
-    >
-      <!-- <s-button
+    > -->
+    <!-- <s-button
         type="tertiary"
         size="medium"
         icon="various-atom-24"
@@ -17,7 +17,8 @@
         <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
       <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" /> -->
-    </div>
+    <!-- </div> -->
+    <route-assets-navigation v-if="showRouteAssetsNavigation" class="app-controls s-flex" />
     <div
       class="app-controls app-controls--settings-panel s-flex"
       :class="{ 'app-controls--settings-panel--dark': themeIsDark }"
@@ -67,6 +68,7 @@ import { getter, mutation } from '@/store/decorators';
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
+    RouteAssetsNavigation: lazyComponent(Components.RouteAssetsNavigation),
     TokenLogo: components.TokenLogo,
   },
 })
@@ -99,6 +101,10 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   get themeIsDark() {
     return this.libraryTheme === Theme.DARK;
+  }
+
+  get showRouteAssetsNavigation() {
+    return this.$route.path.includes('route-assets');
   }
 
   openNodeSelectionDialog(): void {

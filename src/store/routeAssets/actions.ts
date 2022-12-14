@@ -6,11 +6,29 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { RouteAssetsSubscription, RecipientStatus } from './types';
-import { FPNumber } from '@sora-substrate/util/build';
+import { FPNumber, Operation } from '@sora-substrate/util/build';
+import { formatAddress } from '@/utils';
 
 const actions = defineActions({
-  updateRecipients(context, file?: File): void {
+  processingNextStage(context) {
+    const { commit } = routeAssetsActionContext(context);
+    commit.progressCurrentStageIndex(1);
+  },
+  processingPreviousStage(context) {
+    const { commit } = routeAssetsActionContext(context);
+    commit.progressCurrentStageIndex(-1);
+  },
+  setInputToken(context, asset) {
+    const { commit } = routeAssetsActionContext(context);
+    commit.setInputToken(asset);
+  },
+  cancelProcessing(context) {
     const { commit, rootGetters, dispatch } = routeAssetsActionContext(context);
+    dispatch.cleanSwapReservesSubscription();
+    commit.clearData();
+  },
+  async updateRecipients(context, file?: File): Promise<void> {
+    const { commit, rootGetters, dispatch, rootState } = routeAssetsActionContext(context);
     if (!file) {
       commit.clearData();
       return;
@@ -20,33 +38,59 @@ const actions = defineActions({
       return Object.values(assetsTable)?.find((item: Asset) => item.symbol === assetName.toUpperCase());
     };
 
-    Papa.parse(file, {
+    const data: Array<any> = [];
+    const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
+
+    await Papa.parse(file, {
       header: false,
       skipEmptyLines: true,
       comments: '//',
-      complete: (results) => {
-        const result = results.data.map((data) => {
-          return {
-            name: data[0],
-            wallet: data[1],
-            usd: data[2],
-            asset: findAsset(data[3]),
-            amount: data[4],
-            status: api.validateAddress(data[1]) ? RecipientStatus.ADDRESS_VALID : RecipientStatus.ADDRESS_INVALID,
-            id: (crypto as any).randomUUID(),
-          };
+      step: (row) => {
+        // console.log((row.meta.cursor / file.size) * 100);
+        const usd = row.data[2]?.replace(/,/g, '');
+        const asset = findAsset(row.data[3]) || XOR;
+        const amount = Number(usd) / Number(getAssetUSDPrice(asset, priceObject));
+        data.push({
+          name: row.data[0],
+          wallet: row.data[1],
+          usd: usd,
+          asset: asset,
+          amount: amount,
+          status: api.validateAddress(row.data[1]) ? RecipientStatus.ADDRESS_VALID : RecipientStatus.ADDRESS_INVALID,
+          id: (crypto as any).randomUUID(),
+          isCompleted: false,
         });
-        commit.setData({ file, recipients: result });
+      },
+      complete: () => {
+        // const result = results.data.map((data) => {
+        //   return {
+        //     name: data[0],
+        //     wallet: data[1],
+        //     usd: data[2],
+        //     asset: findAsset(data[3]),
+        //     amount: data[4],
+        //     status: api.validateAddress(data[1]) ? RecipientStatus.ADDRESS_VALID : RecipientStatus.ADDRESS_INVALID,
+        //     id: (crypto as any).randomUUID(),
+        //   };
+        // });
+        commit.setData({ file, recipients: data });
         dispatch.subscribeOnReserves();
       },
     });
+  },
+
+  editRecipient(context, { id, name, wallet, usd, asset }): void {
+    const { commit, rootState } = routeAssetsActionContext(context);
+    const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
+    const amount = Number(usd) / Number(getAssetUSDPrice(asset, priceObject));
+    commit.editRecipient({ id, name, wallet, usd, amount, asset });
   },
 
   subscribeOnReserves(context, sourceToken: Asset = XOR): void {
     const { commit, rootGetters, getters, dispatch } = routeAssetsActionContext(context);
     const liquiditySources = rootGetters.swap.swapLiquiditySource;
     const tokens = [...new Set<Asset>(getters.recipients.map((item) => item.asset))]
-      .map((item: Asset) => item.address)
+      .map((item: Asset) => item?.address)
       .filter((item) => item !== sourceToken.address);
     const currentsPulls = [] as Array<RouteAssetsSubscription>;
 
@@ -73,7 +117,7 @@ const actions = defineActions({
   },
 
   async setSubscriptionPayload(context, { payload, inputAssetId, outputAssetId }): Promise<void> {
-    const { state, rootState } = routeAssetsActionContext(context);
+    const { state, rootState, getters, commit, dispatch } = routeAssetsActionContext(context);
 
     const { paths, liquiditySources } = api.swap.getPathsAndPairLiquiditySources(
       inputAssetId,
@@ -87,10 +131,22 @@ const actions = defineActions({
       subscription.liquiditySources = liquiditySources;
       subscription.payload = payload;
     }
+    dispatch.updateTokenAmounts();
   },
 
-  async repeatTransaction(context, { inputAsset, id }): Promise<void> {
+  updateTokenAmounts(context): void {
+    const { state, rootState, getters, commit } = routeAssetsActionContext(context);
+    const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
+    const recipients = getters.recipients;
+    recipients.forEach((recipient) => {
+      const amount = Number(recipient.usd) / Number(getAssetUSDPrice(recipient.asset, priceObject));
+      commit.setRecipientTokenAmount({ id: recipient.id, amount });
+    });
+  },
+
+  async repeatTransaction(context, id): Promise<void> {
     const { getters, commit } = routeAssetsActionContext(context);
+    const inputAsset = getters.inputToken;
     const recipient = getters.recipients.find((recipient) => recipient.id === id);
     if (!recipient) {
       return Promise.reject(new Error('Cant find transaction by this Id'));
@@ -108,6 +164,7 @@ const actions = defineActions({
           id: recipient.id,
           status: RecipientStatus.SUCCESS,
         });
+        commit.setRecipientCompleted(recipient.id);
       })
       .catch(() => {
         commit.setRecipientStatus({
@@ -117,17 +174,22 @@ const actions = defineActions({
       });
   },
 
-  async runAssetsRouting(context, inputAsset): Promise<void> {
+  async runAssetsRouting(context): Promise<void> {
     const { getters, commit } = routeAssetsActionContext(context);
-    commit.setProcessed(true);
-    const data = getters.validRecipients.map((recipient) => {
+    const inputAsset = getters.inputToken;
+    const data = getters.incompletedRecipients.map((recipient) => {
       commit.setRecipientStatus({
         id: recipient.id,
         status: RecipientStatus.PENDING,
       });
       return getTransferParams(context, inputAsset, recipient);
     });
-    await executeBatchSwapAndSend(context, data);
+    // await executeBatchSwapAndSend(context, data);
+    const transfers = data.filter((item) => item?.transfer);
+    const swapAndSend = data.filter((item) => !item?.transfer);
+
+    await executeBatchSwapAndSend(context, swapAndSend);
+    await executeTransfer(context, transfers);
   },
 
   cleanSwapReservesSubscription(context): void {
@@ -149,9 +211,27 @@ function getTransferParams(context, inputAsset, recipient) {
   if (recipient.asset.address === inputAsset.address) {
     const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
     const amount = Number(recipient.usd) / Number(getAssetUSDPrice(recipient.asset, priceObject));
+    const transfer = api.api.tx.assets.transfer(
+      inputAsset.address,
+      recipient.wallet,
+      new FPNumber(amount, inputAsset.decimals).toCodecString()
+    );
+    const formattedToAddress =
+      recipient.wallet.slice(0, 2) === 'cn' ? recipient.wallet : formatAddress(recipient.wallet);
+    const history = {
+      symbol: recipient.asset.symbol,
+      to: formattedToAddress,
+      amount: `${amount}`,
+      assetAddress: recipient.wallet,
+      type: Operation.Transfer,
+    };
     return {
       action: async () => await api.transfer(recipient.asset, recipient.wallet, amount),
       recipient,
+      transfer: {
+        extrinsic: transfer,
+        history: history,
+      },
     };
   } else {
     const subscription = getters.subscriptions.find((sub) => sub.assetAddress === recipient.asset.address);
@@ -190,8 +270,8 @@ function getTransferParams(context, inputAsset, recipient) {
 async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> {
   const { commit } = routeAssetsActionContext(context);
 
-  async function processArray() {
-    for (const tx of data) {
+  async function processArray(transactions) {
+    for (const tx of transactions) {
       await tx
         .action()
         .then(() => {
@@ -199,6 +279,7 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
             id: tx.recipient.id,
             status: RecipientStatus.SUCCESS,
           });
+          commit.setRecipientCompleted(tx.recipient.id);
         })
         .catch(() => {
           commit.setRecipientStatus({
@@ -209,7 +290,37 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
     }
   }
 
-  await processArray();
+  await processArray(data);
+}
+
+async function executeTransfer(context, data: Array<any>): Promise<any> {
+  const { commit } = routeAssetsActionContext(context);
+  if (data.length < 1) return;
+  await api
+    .submitExtrinsic(api.api.tx.utility.batchAll(data.map((item) => item.transfer.extrinsic)), api.account.pair, {
+      symbol: data[0].recipient.asset.symbol,
+      from: api.account.pair.address,
+      assetAddress: data[0].recipient.asset.symbol,
+      type: Operation.Transfer,
+    })
+    .then(() => {
+      data.forEach((tr) => {
+        commit.setRecipientStatus({
+          id: tr.recipient.id,
+          status: RecipientStatus.SUCCESS,
+        });
+        commit.setRecipientCompleted(tr.recipient.id);
+      });
+    })
+    .catch((err) => {
+      data.forEach((tr) => {
+        commit.setRecipientStatus({
+          id: tr.recipient.id,
+          status: RecipientStatus.FAILED,
+        });
+      });
+      throw new Error(err);
+    });
 }
 
 function getSwapParams(tokenFrom, tokenTo, value, isExchangeB, liquiditySource, paths, payload) {

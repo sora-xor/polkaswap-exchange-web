@@ -513,42 +513,42 @@ i.icon-divider {
 }
 
 @include desktop {
-  .app-main.app-main--has-charts {
-    .app-menu {
-      position: relative;
-    }
-    .app-content {
-      width: 100%;
-      padding-left: $basic-spacing * 2;
-      .app-disclaimer {
-        $margin-left: 10px;
-        max-width: calc(#{$bridge-width} + #{$margin-left});
-        padding-right: $inner-spacing-big;
-        padding-left: calc(#{$inner-spacing-big} + #{$margin-left});
-        &-container {
-          margin-left: auto;
-          margin-right: auto;
-          max-width: calc(#{$bridge-width} * 2 + #{$basic-spacing-small});
-        }
-      }
-    }
+  // .app-main.app-main--has-charts {
+  //   .app-menu {
+  //     position: relative;
+  //   }
+  //   .app-content {
+  //     width: 100%;
+  //     padding-left: $basic-spacing * 2;
+  //     .app-disclaimer {
+  //       $margin-left: 10px;
+  //       max-width: calc(#{$bridge-width} + #{$margin-left});
+  //       padding-right: $inner-spacing-big;
+  //       padding-left: calc(#{$inner-spacing-big} + #{$margin-left});
+  //       &-container {
+  //         margin-left: auto;
+  //         margin-right: auto;
+  //         max-width: calc(#{$bridge-width} * 2 + #{$basic-spacing-small});
+  //       }
+  //     }
+  //   }
 
-    .block-number-link {
-      z-index: $app-body-layer;
-    }
-  }
+  //   .block-number-link {
+  //     z-index: $app-body-layer;
+  //   }
+  // }
 }
 
 @include large-desktop {
-  .app-main.app-main--has-charts {
-    .app-content {
-      .app-disclaimer {
-        &-container {
-          max-width: calc(#{$bridge-width} * 3 + #{$basic-spacing-small} * 4);
-        }
-      }
-    }
-  }
+  // .app-main.app-main--has-charts {
+  //   .app-content {
+  //     .app-disclaimer {
+  //       &-container {
+  //         max-width: calc(#{$bridge-width} * 3 + #{$basic-spacing-small} * 4);
+  //       }
+  //     }
+  //   }
+  // }
 }
 </style>
 
