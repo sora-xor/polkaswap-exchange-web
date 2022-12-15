@@ -142,12 +142,7 @@
       @next-click="handleNextClick"
     />
 
-    <calculator-dialog
-      :visible.sync="showCalculatorDialog"
-      :pool="selectedPool"
-      :account-pool="selectedAccountPool"
-      :liquidity="liquidity"
-    />
+    <calculator-dialog :visible.sync="showCalculatorDialog" v-bind="selectedDerivedPool" :liquidity="liquidity" />
   </div>
 </template>
 
@@ -155,27 +150,25 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import DemeterBasePageMixin from '@/modules/demeterFarming/mixins/BasePageMixin';
-import AprMixin from '@/modules/demeterFarming/mixins/AprMixin';
 
 import { demeterLazyComponent } from '@/modules/demeterFarming/router';
 import { DemeterComponents } from '@/modules/demeterFarming/consts';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { getter } from '@/store/decorators';
 import { formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
 import SortButton from '@/components/SortButton.vue';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-import type { DemeterPool, DemeterRewardToken } from '@sora-substrate/util/build/demeterFarming/types';
+import type { DemeterPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { AmountWithSuffix } from '@/types/formats';
+import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
 
 type PoolData = {
   price: FPNumber;
@@ -214,7 +207,7 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBasePageMixin, AprMixin) {
+export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBasePageMixin) {
   @Watch('pools', { deep: true })
   private async updatePoolsData() {
     await this.withLoading(async () => {
@@ -253,11 +246,17 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
       .flat(2) as DemeterPool[];
   }
 
+  get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {
+    if (!this.selectedPool) return null;
+
+    return this.prepareDerivedPoolData(this.selectedPool, this.selectedAccountPool, this.liquidity);
+  }
+
   get preparedItems(): TableItem[] {
     return this.items.map((pool) => {
-      const baseAsset = this.getAsset(pool.baseAsset) as Asset;
-      const poolAsset = this.getAsset(pool.poolAsset) as Asset;
-      const rewardAsset = this.getAsset(pool.rewardAsset) as Asset;
+      const baseAsset = this.demeterAssetsData[pool.baseAsset] as Asset;
+      const poolAsset = this.demeterAssetsData[pool.poolAsset] as Asset;
+      const rewardAsset = this.demeterAssetsData[pool.rewardAsset] as Asset;
       const rewardAssetSymbol = rewardAsset?.symbol ?? '';
       const rewardAssetPrice = FPNumber.fromCodecValue(
         this.getAssetFiatPrice({ address: pool.rewardAsset } as Asset) ?? 0
