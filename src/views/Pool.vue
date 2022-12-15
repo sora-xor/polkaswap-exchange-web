@@ -2,13 +2,17 @@
   <div v-loading="parentLoading" class="container el-form--pool">
     <generic-page-header class="page-header--pool" :title="t('exchange.Pool')" :tooltip="t('pool.description')" />
     <div v-loading="parentLoading" class="pool-wrapper" data-test-name="Pools">
-      <p v-if="!isLoggedIn" class="pool-info-container pool-info-container--empty">
+      <p v-if="!isLoggedIn" key="not-logged" class="pool-info-container pool-info-container--empty">
         {{ t('pool.connectToWallet') }}
       </p>
-      <p v-else-if="!accountLiquidity.length || parentLoading" class="pool-info-container pool-info-container--empty">
+      <p
+        v-else-if="!accountLiquidity.length || parentLoading"
+        key="pools-empty"
+        class="pool-info-container pool-info-container--empty"
+      >
         {{ t('pool.liquidityNotFound') }}
       </p>
-      <s-collapse v-else class="pool-list" :borders="true" @change="updateActiveCollapseItems">
+      <s-collapse v-else key="has-pools" class="pool-list" :borders="true" @change="updateActiveCollapseItems">
         <s-collapse-item
           v-for="liquidityItem of accountLiquidityData"
           :key="liquidityItem.address"

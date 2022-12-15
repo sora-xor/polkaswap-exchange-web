@@ -1,14 +1,84 @@
-import { Component, Mixins } from 'vue-property-decorator';
-import { FPNumber } from '@sora-substrate/util';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { FPNumber, Operation } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
-import AccountPoolMixin from './AccountPoolMixin';
+import PoolStatusMixin from './PoolStatusMixin';
 
-import { formatDecimalPlaces } from '@/utils';
+import { getter, state } from '@/store/decorators';
+import { hasInsufficientXorForFee } from '@/utils';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { NetworkFeesObject, CodecString } from '@sora-substrate/util';
+
+import type { DemeterAsset } from '@/modules/demeterFarming/types';
 
 @Component
-export default class PoolCardMixin extends Mixins(AccountPoolMixin) {
+export default class PoolCardMixin extends Mixins(PoolStatusMixin) {
+  @Prop({ default: () => null, type: Object }) readonly baseAsset!: DemeterAsset;
+  @Prop({ default: () => '', type: String }) readonly tvl!: string;
+
+  @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
+
+  @getter.assets.xor xor!: Nullable<AccountAsset>;
+
+  // Override it component for another use case
+  get networkFee(): CodecString {
+    return this.networkFees[Operation.DemeterFarmingGetRewards];
+  }
+
+  get formattedNetworkFee(): string {
+    return this.formatCodecNumber(this.networkFee);
+  }
+
+  get isInsufficientXorForFee(): boolean {
+    return !!this.xor && hasInsufficientXorForFee(this.xor, this.networkFee);
+  }
+
+  get xorSymbol(): string {
+    return XOR.symbol;
+  }
+
+  get rewardAssetSymbol(): string {
+    return this.rewardAsset?.symbol ?? '';
+  }
+
+  get rewards(): FPNumber {
+    return this.accountPool?.rewards ?? FPNumber.ZERO;
+  }
+
+  get rewardsFormatted(): string {
+    return this.rewards.toLocaleString();
+  }
+
+  get rewardAssetPrice(): FPNumber {
+    return this.rewardAsset?.price ?? FPNumber.ZERO;
+  }
+
+  get rewardsFiat(): Nullable<string> {
+    if (!this.rewardAsset) return null;
+    return this.getFiatAmountByFPNumber(this.rewards, this.rewardAsset as Asset);
+  }
+
+  get hasRewards(): boolean {
+    return !this.rewards.isZero();
+  }
+
+  get poolAssetSymbol(): string {
+    return this.poolAsset?.symbol ?? '';
+  }
+
+  get poolAssetPrice(): FPNumber {
+    return this.poolAsset?.price ?? FPNumber.ZERO;
+  }
+
+  get depositFee(): number {
+    return this.pool?.depositFee ?? 0;
+  }
+
+  get depositFeeFormatted(): string {
+    return `${this.depositFee * 100}%`;
+  }
+
   get poolShare(): FPNumber {
     if (!this.isFarm) return this.lockedFunds;
 
@@ -33,7 +103,15 @@ export default class PoolCardMixin extends Mixins(AccountPoolMixin) {
       : this.t('demeterFarming.info.stake', { symbol: this.poolAssetSymbol });
   }
 
-  get depositFeeFormatted(): string {
-    return `${this.depositFee * 100}%`;
+  remove(): void {
+    this.$emit('remove', this.emitParams);
+  }
+
+  claim(): void {
+    this.$emit('claim', this.emitParams);
+  }
+
+  calculator(): void {
+    this.$emit('calculator', this.emitParams);
   }
 }

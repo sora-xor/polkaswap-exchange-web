@@ -32,27 +32,30 @@
       </template>
     </pool-base>
 
-    <stake-dialog
-      :visible.sync="showStakeDialog"
-      :liquidity="selectedAccountLiquidity"
-      :parent-loading="parentLoading || loading"
-      v-bind="selectedDerivedPool"
-      @add="handleStakeAction($event, deposit)"
-      @remove="handleStakeAction($event, withdraw)"
-    />
+    <template v-if="selectedDerivedPool">
+      <stake-dialog
+        :visible.sync="showStakeDialog"
+        :is-adding="isAddingStake"
+        :liquidity="selectedAccountLiquidity"
+        :parent-loading="parentLoading || loading"
+        v-bind="selectedDerivedPool"
+        @add="handleStakeAction($event, deposit)"
+        @remove="handleStakeAction($event, withdraw)"
+      />
 
-    <claim-dialog
-      :visible.sync="showClaimDialog"
-      :parent-loading="parentLoading || loading"
-      v-bind="selectedDerivedPool"
-      @confirm="handleClaimRewards"
-    />
+      <claim-dialog
+        :visible.sync="showClaimDialog"
+        :parent-loading="parentLoading || loading"
+        v-bind="selectedDerivedPool"
+        @confirm="handleClaimRewards"
+      />
 
-    <calculator-dialog
-      :visible.sync="showCalculatorDialog"
-      :liquidity="selectedAccountLiquidity"
-      v-bind="selectedDerivedPool"
-    />
+      <calculator-dialog
+        :visible.sync="showCalculatorDialog"
+        :liquidity="selectedAccountLiquidity"
+        v-bind="selectedDerivedPool"
+      />
+    </template>
   </div>
 </template>
 
@@ -95,8 +98,8 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
     );
   }
 
-  get selectedDerivedPool(): DemeterPoolDerivedData | object {
-    if (!this.selectedPool) return {};
+  get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {
+    if (!this.selectedPool) return null;
 
     return this.prepareDerivedPoolData(
       {

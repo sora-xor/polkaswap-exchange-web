@@ -60,7 +60,6 @@ export default class BasePageMixin extends Mixins(AprMixin, mixins.FormattedAmou
   }
 
   get demeterAssetsData(): Record<string, DemeterAsset> {
-    console.log('demeterAssetsData');
     return this.uniqueAssets.reduce((buffer, address) => {
       const asset = this.getAsset(address);
       const price = asset ? FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0) : FPNumber.ZERO;

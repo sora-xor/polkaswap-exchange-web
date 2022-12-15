@@ -1,15 +1,13 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber } from '@sora-substrate/math';
 
 import { action } from '@/store/decorators';
 
 import BasePageMixin from './BasePageMixin';
 
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 
-import type { DemeterPoolDerived, DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+import type { DemeterPoolDerived } from '@/modules/demeterFarming/types';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component

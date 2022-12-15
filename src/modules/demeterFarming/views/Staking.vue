@@ -43,23 +43,25 @@
       </s-collapse-item>
     </s-collapse>
 
-    <stake-dialog
-      :visible.sync="showStakeDialog"
-      :is-adding="isAddingStake"
-      :parent-loading="parentLoading || loading"
-      v-bind="selectedDerivedPool"
-      @add="handleStakeAction($event, deposit)"
-      @remove="handleStakeAction($event, withdraw)"
-    />
+    <template v-if="selectedDerivedPool">
+      <stake-dialog
+        :visible.sync="showStakeDialog"
+        :is-adding="isAddingStake"
+        :parent-loading="parentLoading || loading"
+        v-bind="selectedDerivedPool"
+        @add="handleStakeAction($event, deposit)"
+        @remove="handleStakeAction($event, withdraw)"
+      />
 
-    <claim-dialog
-      :visible.sync="showClaimDialog"
-      :parent-loading="parentLoading || loading"
-      v-bind="selectedDerivedPool"
-      @confirm="handleClaimRewards"
-    />
+      <claim-dialog
+        :visible.sync="showClaimDialog"
+        :parent-loading="parentLoading || loading"
+        v-bind="selectedDerivedPool"
+        @confirm="handleClaimRewards"
+      />
 
-    <calculator-dialog :visible.sync="showCalculatorDialog" v-bind="selectedDerivedPool" />
+      <calculator-dialog :visible.sync="showCalculatorDialog" v-bind="selectedDerivedPool" />
+    </template>
   </div>
 </template>
 
@@ -75,8 +77,6 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-
-import { getter } from '@/store/decorators';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { DemeterPoolDerived, DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
@@ -104,8 +104,8 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
     this.activeCollapseItems = items;
   }
 
-  get selectedDerivedPool(): DemeterPoolDerivedData | object {
-    if (!this.selectedPool) return {};
+  get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {
+    if (!this.selectedPool) return null;
 
     return this.prepareDerivedPoolData({
       pool: this.selectedPool,

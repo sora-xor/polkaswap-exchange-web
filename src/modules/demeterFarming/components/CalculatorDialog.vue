@@ -70,7 +70,7 @@ import { FPNumber, Operation } from '@sora-substrate/util';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
-import AccountPoolMixin from '../mixins/AccountPoolMixin';
+import PoolCardMixin from '../mixins/PoolCardMixin';
 
 import { lazyComponent } from '@/router';
 import { Components, Links } from '@/consts';
@@ -85,7 +85,7 @@ import { getAssetBalance, isMaxButtonAvailable, getMaxValue, formatDecimalPlaces
     TokenLogo: components.TokenLogo,
   },
 })
-export default class CalculatorDialog extends Mixins(AccountPoolMixin, mixins.DialogMixin, mixins.LoadingMixin) {
+export default class CalculatorDialog extends Mixins(PoolCardMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   @Prop({ default: () => FPNumber.ZERO, type: Object }) readonly emission!: FPNumber;
 
   @Watch('visible')
