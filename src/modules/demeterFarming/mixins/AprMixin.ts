@@ -2,6 +2,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { DemeterPool, DemeterRewardToken } from '@sora-substrate/util/build/demeterFarming/types';
 
 const BLOCKS_PER_YEAR = new FPNumber(5_256_000);
@@ -27,5 +28,22 @@ export default class AprMixin extends Mixins(mixins.FormattedAmountMixin) {
     if (tvl.isZero()) return FPNumber.ZERO;
 
     return emission.mul(BLOCKS_PER_YEAR).mul(rewardAssetPrice).div(tvl).mul(FPNumber.HUNDRED);
+  }
+
+  getTvl(pool: DemeterPool, poolAssetPrice: FPNumber, liquidity?: Nullable<AccountLiquidity>): FPNumber {
+    if (!pool) return FPNumber.ZERO;
+
+    if (pool.isFarm) {
+      if (!liquidity) return FPNumber.ZERO;
+
+      // calc liquidity locked price through liquidity
+      return FPNumber.fromCodecValue(liquidity.secondBalance)
+        .div(FPNumber.fromCodecValue(liquidity.balance))
+        .mul(pool.totalTokensInPool)
+        .mul(poolAssetPrice)
+        .mul(new FPNumber(2));
+    } else {
+      return pool.totalTokensInPool.mul(poolAssetPrice);
+    }
   }
 }

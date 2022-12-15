@@ -1,14 +1,14 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 
-import PoolMixin from './PoolMixin';
+import AccountPoolMixin from './AccountPoolMixin';
 
 import { formatDecimalPlaces } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
-export default class PoolCardMixin extends Mixins(PoolMixin) {
+export default class PoolCardMixin extends Mixins(AccountPoolMixin) {
   get poolShare(): FPNumber {
     if (!this.isFarm) return this.lockedFunds;
 
@@ -24,7 +24,7 @@ export default class PoolCardMixin extends Mixins(PoolMixin) {
   get poolShareFiat(): Nullable<string> {
     if (this.isFarm) return null;
 
-    return this.getFiatAmountByFPNumber(this.poolShare, this.poolAsset as AccountAsset);
+    return this.getFiatAmountByFPNumber(this.poolShare, this.poolAsset as unknown as AccountAsset);
   }
 
   get poolShareText(): string {

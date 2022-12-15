@@ -215,8 +215,6 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
   },
 })
 export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBasePageMixin, AprMixin) {
-  @getter.demeterFarming.tokenInfos private tokenInfos!: DataMap<DemeterRewardToken>;
-
   @Watch('pools', { deep: true })
   private async updatePoolsData() {
     await this.withLoading(async () => {

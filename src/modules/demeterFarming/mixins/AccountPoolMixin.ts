@@ -4,16 +4,26 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import { getter, state } from '@/store/decorators';
-import { hasInsufficientXorForFee } from '@/utils';
+import { hasInsufficientXorForFee, formatDecimalPlaces, getAssetBalance } from '@/utils';
 
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { NetworkFeesObject, CodecString } from '@sora-substrate/util';
 
+import type { DemeterAsset } from '@/modules/demeterFarming/types';
+
 @Component
-export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin) {
+export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin, mixins.TranslationMixin) {
+  @Prop({ default: () => null, type: Object }) readonly liquidity!: AccountLiquidity;
   @Prop({ default: () => null, type: Object }) readonly pool!: DemeterPool;
   @Prop({ default: () => null, type: Object }) readonly accountPool!: DemeterAccountPool;
+  @Prop({ default: () => null, type: Object }) readonly baseAsset!: DemeterAsset;
+  @Prop({ default: () => null, type: Object }) readonly poolAsset!: DemeterAsset;
+  @Prop({ default: () => null, type: Object }) readonly rewardAsset!: DemeterAsset;
+  @Prop({ default: () => FPNumber.ZERO, type: Object }) readonly emission!: FPNumber;
+  @Prop({ default: () => FPNumber.ZERO, type: Object }) readonly tvl!: FPNumber;
+  @Prop({ default: () => FPNumber.ZERO, type: Object }) readonly apr!: FPNumber;
 
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
 
@@ -41,10 +51,6 @@ export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin
     return XOR.symbol;
   }
 
-  get rewardAsset(): Nullable<Asset> {
-    return this.getAsset(this.pool?.rewardAsset);
-  }
-
   get rewardAssetSymbol(): string {
     return this.rewardAsset?.symbol ?? '';
   }
@@ -57,8 +63,9 @@ export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin
     return this.rewards.toLocaleString();
   }
 
+  // [TODO]
   get rewardAssetPrice(): FPNumber {
-    return this.rewardAsset ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.rewardAsset) ?? 0) : FPNumber.ZERO;
+    return this.rewardAsset.price;
   }
 
   get rewardsFiat(): Nullable<string> {
@@ -69,11 +76,81 @@ export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin
     return !this.rewards.isZero();
   }
 
+  get lockedFunds(): FPNumber {
+    return this.accountPool?.pooledTokens ?? FPNumber.ZERO;
+  }
+
   get hasStake(): boolean {
     return this.accountPool ? !this.lockedFunds.isZero() : false;
   }
 
-  get lockedFunds(): FPNumber {
-    return this.accountPool?.pooledTokens ?? FPNumber.ZERO;
+  get isFarm(): boolean {
+    return !!this.pool?.isFarm;
+  }
+
+  get activeStatus(): boolean {
+    return !this.pool?.isRemoved;
+  }
+
+  get poolAssetSymbol(): string {
+    return this.poolAsset?.symbol ?? '';
+  }
+
+  // [TODO]
+  get poolAssetPrice(): FPNumber {
+    return this.poolAsset.price;
+  }
+
+  // [TODO]
+  get poolAssetBalance(): FPNumber {
+    return FPNumber.fromCodecValue(getAssetBalance(this.poolAsset) ?? 0, this.poolAsset.decimals);
+  }
+
+  get lpBalance(): FPNumber {
+    return FPNumber.fromCodecValue(getAssetBalance(this.liquidity, { parseAsLiquidity: true }) ?? 0);
+  }
+
+  get depositFee(): number {
+    return this.pool?.depositFee ?? 0;
+  }
+
+  get funds(): FPNumber {
+    return this.isFarm ? this.lpBalance : this.poolAssetBalance;
+  }
+
+  get availableFunds(): FPNumber {
+    return this.isFarm ? (FPNumber.max(this.lockedFunds, this.funds) as FPNumber).sub(this.lockedFunds) : this.funds;
+  }
+
+  get depositDisabled(): boolean {
+    return !this.activeStatus || this.availableFunds.isZero();
+  }
+
+  get aprFormatted(): string {
+    return formatDecimalPlaces(this.apr, true);
+  }
+
+  get emitParams(): object {
+    return {
+      baseAsset: this.pool.baseAsset,
+      poolAsset: this.pool.poolAsset,
+      rewardAsset: this.pool.rewardAsset,
+    };
+  }
+
+  add(): void {
+    this.$emit('add', this.emitParams);
+  }
+
+  remove(): void {
+    this.$emit('remove', this.emitParams);
+  }
+
+  claim(): void {
+    this.$emit('claim', this.emitParams);
+  }
+
+  calculator(): void {
+    this.$emit('calculator', this.emitParams);
   }
 }

@@ -16,14 +16,14 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
-import PoolMixin from '../mixins/PoolMixin';
+import AccountPoolMixin from '../mixins/AccountPoolMixin';
 
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
   },
 })
-export default class StatusBadge extends Mixins(PoolMixin) {
+export default class StatusBadge extends Mixins(AccountPoolMixin) {
   get title(): string {
     if (!this.activeStatus) return this.t('demeterFarming.staking.stopped');
 

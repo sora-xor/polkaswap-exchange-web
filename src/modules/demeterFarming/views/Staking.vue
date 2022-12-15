@@ -81,11 +81,11 @@ import { Components } from '@/consts';
 import { getter } from '@/store/decorators';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
+import type { DemeterPoolDerived } from '@/modules/demeterFarming/types';
 
 type StakingItem = {
   asset: Asset;
-  items: Array<{ pool: DemeterPool; accountPool: Nullable<DemeterAccountPool> }>;
+  items: Array<DemeterPoolDerived>;
 };
 
 @Component({
@@ -100,8 +100,6 @@ type StakingItem = {
   },
 })
 export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) {
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<Asset>;
-
   activeCollapseItems: string[] = [];
 
   updateActiveCollapseItems(items: string[]) {

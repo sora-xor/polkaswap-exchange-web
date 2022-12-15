@@ -1,13 +1,17 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber } from '@sora-substrate/math';
 
 import { action } from '@/store/decorators';
 
 import BasePageMixin from './BasePageMixin';
 
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 
+import type { DemeterPoolDerived, DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
+
 @Component
 export default class PageMixin extends Mixins(BasePageMixin, mixins.TransactionMixin) {
   @action.demeterFarming.deposit deposit!: (params: DemeterLiquidityParams) => Promise<void>;
@@ -18,20 +22,20 @@ export default class PageMixin extends Mixins(BasePageMixin, mixins.TransactionM
   showClaimDialog = false;
   isAddingStake = true;
 
-  getAvailablePools(pools: DemeterPool[]): Array<{ pool: DemeterPool; accountPool: Nullable<DemeterAccountPool> }> {
+  getAvailablePools(pools: DemeterPool[]): DemeterPoolDerived[] {
     if (!Array.isArray(pools)) return [];
 
-    return pools.reduce<{ pool: DemeterPool; accountPool: Nullable<DemeterAccountPool> }[]>((buffer, pool) => {
+    return pools.reduce<DemeterPoolDerived[]>((buffer, pool) => {
       const poolIsActive = !pool.isRemoved;
       const accountPool = this.getAccountPool(pool);
       const accountPoolIsActive = !!accountPool && this.isActiveAccountPool(accountPool);
 
-      if (poolIsActive || accountPoolIsActive) {
-        buffer.push({
-          pool,
-          accountPool,
-        });
-      }
+      if (!(poolIsActive || accountPoolIsActive)) return buffer;
+
+      buffer.push({
+        pool,
+        accountPool,
+      });
 
       return buffer;
     }, []);

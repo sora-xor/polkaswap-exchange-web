@@ -12,6 +12,12 @@
             :liquidity="liquidity"
             :pool="item.pool"
             :account-pool="item.accountPool"
+            :base-asset="item.baseAsset"
+            :pool-asset="item.poolAsset"
+            :reward-asset="item.rewardAsset"
+            :emission="item.emission"
+            :tvl="item.tvl"
+            :apr="item.apr"
             @add="changePoolStake($event, true)"
             class="farming-pool-badge"
           />
@@ -24,6 +30,12 @@
           :liquidity="liquidity"
           :pool="item.pool"
           :account-pool="item.accountPool"
+          :base-asset="item.baseAsset"
+          :pool-asset="item.poolAsset"
+          :reward-asset="item.rewardAsset"
+          :emission="item.emission"
+          :tvl="item.tvl"
+          :apr="item.apr"
           @add="changePoolStake($event, true)"
           @remove="changePoolStake($event, false)"
           @claim="claimPoolRewards"
@@ -37,26 +49,23 @@
     <stake-dialog
       :visible.sync="showStakeDialog"
       :liquidity="selectedAccountLiquidity"
-      :pool="selectedPool"
-      :account-pool="selectedAccountPool"
-      :is-adding="isAddingStake"
       :parent-loading="parentLoading || loading"
+      v-bind="selectedDerivedPool"
       @add="handleStakeAction($event, deposit)"
       @remove="handleStakeAction($event, withdraw)"
     />
+
     <claim-dialog
       :visible.sync="showClaimDialog"
-      :pool="selectedPool"
-      :account-pool="selectedAccountPool"
       :parent-loading="parentLoading || loading"
+      v-bind="selectedDerivedPool"
       @confirm="handleClaimRewards"
     />
 
     <calculator-dialog
       :visible.sync="showCalculatorDialog"
-      :pool="selectedPool"
-      :account-pool="selectedAccountPool"
       :liquidity="selectedAccountLiquidity"
+      v-bind="selectedDerivedPool"
     />
   </div>
 </template>
@@ -76,7 +85,7 @@ import { PageNames } from '@/consts';
 import { state } from '@/store/decorators';
 
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
+import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
 
 @Component({
   inheritAttrs: false,
@@ -100,11 +109,24 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
     );
   }
 
-  get farmingPoolsByLiquidities(): Record<string, { pool: DemeterPool; accountPool: Nullable<DemeterAccountPool> }[]> {
+  get selectedDerivedPool(): DemeterPoolDerivedData | object {
+    if (!this.selectedPool) return {};
+
+    return this.prepareDerivedPoolData(
+      {
+        pool: this.selectedPool,
+        accountPool: this.selectedAccountPool,
+      },
+      this.selectedAccountLiquidity
+    );
+  }
+
+  get farmingPoolsByLiquidities(): Record<string, DemeterPoolDerivedData[]> {
     return this.accountLiquidity.reduce((buffer, liquidity) => {
       const key = this.getLiquidityKey(liquidity);
+      const availablePools = this.getAvailablePools(this.pools[liquidity.firstAddress]?.[liquidity.secondAddress]);
 
-      buffer[key] = this.getAvailablePools(this.pools[liquidity.firstAddress]?.[liquidity.secondAddress]);
+      buffer[key] = availablePools.map((derived) => this.prepareDerivedPoolData(derived, liquidity));
 
       return buffer;
     }, {});
