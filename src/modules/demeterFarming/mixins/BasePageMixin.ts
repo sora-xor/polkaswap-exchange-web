@@ -96,8 +96,34 @@ export default class BasePageMixin extends Mixins(AprMixin, mixins.FormattedAmou
     return this.selectedPool ? this.getAccountPool(this.selectedPool) : null;
   }
 
-  prepareDerivedPoolData(item: DemeterPoolDerived, liquidity?: Nullable<AccountLiquidity>): DemeterPoolDerivedData {
-    const { pool, accountPool } = item;
+  getDerivedPools(pools: DemeterPool[]): DemeterPoolDerived[] {
+    if (!Array.isArray(pools)) return [];
+
+    return pools.reduce<DemeterPoolDerived[]>((buffer, pool) => {
+      const poolIsActive = !pool.isRemoved;
+      const accountPool = this.getAccountPool(pool);
+      const accountPoolIsActive = !!accountPool && this.isActiveAccountPool(accountPool);
+
+      if (!(poolIsActive || accountPoolIsActive)) return buffer;
+
+      buffer.push({
+        pool,
+        accountPool,
+      });
+
+      return buffer;
+    }, []);
+  }
+
+  private isActiveAccountPool(accountPool: DemeterAccountPool): boolean {
+    return !(accountPool.pooledTokens.isZero() && accountPool.rewards.isZero());
+  }
+
+  prepareDerivedPoolData(
+    pool: DemeterPool,
+    accountPool: Nullable<DemeterAccountPool>,
+    liquidity?: Nullable<AccountLiquidity>
+  ): DemeterPoolDerivedData {
     const baseAsset = this.demeterAssetsData[pool.baseAsset];
     const poolAsset = this.demeterAssetsData[pool.poolAsset];
     const rewardAsset = this.demeterAssetsData[pool.rewardAsset];
@@ -127,25 +153,26 @@ export default class BasePageMixin extends Mixins(AprMixin, mixins.FormattedAmou
     );
   }
 
-  showPoolCalculator(params: {
+  async showPoolCalculator(params: {
     baseAsset: string;
     poolAsset: string;
     rewardAsset: string;
     liquidity?: AccountLiquidity;
-  }): void {
-    this.setDialogParams(params);
+  }): Promise<void> {
+    await this.setDialogParams(params);
     this.showCalculatorDialog = true;
   }
 
-  setDialogParams(params: {
+  async setDialogParams(params: {
     baseAsset: string;
     poolAsset: string;
     rewardAsset: string;
     liquidity?: AccountLiquidity;
-  }): void {
+  }): Promise<void> {
     this.baseAsset = params.baseAsset;
     this.poolAsset = params.poolAsset;
     this.rewardAsset = params.rewardAsset;
     this.liquidity = params.liquidity;
+    await this.$nextTick();
   }
 }

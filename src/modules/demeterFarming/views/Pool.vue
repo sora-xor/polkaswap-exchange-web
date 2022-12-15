@@ -101,21 +101,17 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
   get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {
     if (!this.selectedPool) return null;
 
-    return this.prepareDerivedPoolData(
-      {
-        pool: this.selectedPool,
-        accountPool: this.selectedAccountPool,
-      },
-      this.selectedAccountLiquidity
-    );
+    return this.prepareDerivedPoolData(this.selectedPool, this.selectedAccountPool, this.selectedAccountLiquidity);
   }
 
   get farmingPoolsByLiquidities(): Record<string, DemeterPoolDerivedData[]> {
     return this.accountLiquidity.reduce((buffer, liquidity) => {
       const key = this.getLiquidityKey(liquidity);
-      const availablePools = this.getAvailablePools(this.pools[liquidity.firstAddress]?.[liquidity.secondAddress]);
+      const derivedPools = this.getDerivedPools(this.pools[liquidity.firstAddress]?.[liquidity.secondAddress]);
 
-      buffer[key] = availablePools.map((derived) => this.prepareDerivedPoolData(derived, liquidity));
+      buffer[key] = derivedPools.map((derived) =>
+        this.prepareDerivedPoolData(derived.pool, derived.accountPool, liquidity)
+      );
 
       return buffer;
     }, {});
@@ -123,10 +119,6 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
 
   getLiquidityFarmingPools(liquidity: AccountLiquidity) {
     return this.farmingPoolsByLiquidities[this.getLiquidityKey(liquidity)] ?? [];
-  }
-
-  getStatusBadgeVisibility(address: string, activeCollapseItems: string[]): boolean {
-    return !activeCollapseItems.includes(address);
   }
 
   private getLiquidityKey(liquidity: AccountLiquidity): string {

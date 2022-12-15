@@ -17,7 +17,10 @@
           <token-logo :token="token.asset" size="medium" class="token-logo" />
           <div>
             <h3 class="staking-info-title">{{ token.asset.symbol }}</h3>
-            <div class="s-flex staking-info-badges">
+            <div
+              v-show="getStatusBadgeVisibility(token.asset.address, activeCollapseItems)"
+              class="s-flex staking-info-badges"
+            >
               <status-badge
                 v-for="item in token.items"
                 :key="item.pool.rewardAsset"
@@ -79,11 +82,11 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { DemeterPoolDerived, DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
 
 type StakingItem = {
   asset: Asset;
-  items: Array<DemeterPoolDerived>;
+  items: Array<DemeterPoolDerivedData>;
 };
 
 @Component({
@@ -107,10 +110,7 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
   get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {
     if (!this.selectedPool) return null;
 
-    return this.prepareDerivedPoolData({
-      pool: this.selectedPool,
-      accountPool: this.selectedAccountPool,
-    });
+    return this.prepareDerivedPoolData(this.selectedPool, this.selectedAccountPool);
   }
 
   get tokensData(): object {
@@ -119,8 +119,8 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
 
       if (!asset) return buffer;
 
-      const available = this.getAvailablePools(poolsMap?.[address]);
-      const items = available.map((item) => this.prepareDerivedPoolData(item));
+      const derived = this.getDerivedPools(poolsMap?.[address]);
+      const items = derived.map((item) => this.prepareDerivedPoolData(item.pool, item.accountPool));
 
       if (!items.length) return buffer;
 
