@@ -33,10 +33,6 @@ export default class PoolCardMixin extends Mixins(AccountPoolMixin) {
       : this.t('demeterFarming.info.stake', { symbol: this.poolAssetSymbol });
   }
 
-  get tvlFormatted(): string {
-    return `$${formatDecimalPlaces(this.tvl)}`;
-  }
-
   get depositFeeFormatted(): string {
     return `${this.depositFee * 100}%`;
   }

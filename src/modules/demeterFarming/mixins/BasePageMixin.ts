@@ -6,6 +6,8 @@ import { state, getter } from '@/store/decorators';
 
 import AprMixin from './AprMixin';
 
+import { formatDecimalPlaces } from '@/utils';
+
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type {
@@ -97,13 +99,15 @@ export default class BasePageMixin extends Mixins(AprMixin, mixins.FormattedAmou
 
   prepareDerivedPoolData(item: DemeterPoolDerived, liquidity?: Nullable<AccountLiquidity>): DemeterPoolDerivedData {
     const { pool, accountPool } = item;
-    const baseAsset = this.demeterAssetsData[pool.poolAsset];
+    const baseAsset = this.demeterAssetsData[pool.baseAsset];
     const poolAsset = this.demeterAssetsData[pool.poolAsset];
     const rewardAsset = this.demeterAssetsData[pool.rewardAsset];
     const tokenInfo = this.tokenInfos[pool.rewardAsset];
     const emission = this.getEmission(pool, tokenInfo);
     const tvl = this.getTvl(pool, poolAsset.price, liquidity);
     const apr = this.getApr(emission, tvl, rewardAsset.price);
+    const aprFormatted = formatDecimalPlaces(apr, true);
+    const tvlFormatted = `$${formatDecimalPlaces(tvl)}`;
 
     return {
       pool,
@@ -113,8 +117,8 @@ export default class BasePageMixin extends Mixins(AprMixin, mixins.FormattedAmou
       poolAsset,
       rewardAsset,
       emission,
-      tvl,
-      apr,
+      tvl: tvlFormatted,
+      apr: aprFormatted,
     };
   }
 

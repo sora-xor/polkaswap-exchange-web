@@ -20,7 +20,7 @@
         :value="poolAssetBalanceFormatted"
         :fiat-value="poolAssetBalanceFiat"
       />
-      <info-line v-if="pricesAvailable" :value="aprFormatted">
+      <info-line v-if="pricesAvailable" :value="apr">
         <template #info-line-prefix>
           <div class="apr">
             <span class="apr-label">{{ TranslationConsts.APR }}</span>
@@ -30,7 +30,7 @@
           </div>
         </template>
       </info-line>
-      <info-line v-if="pricesAvailable" :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvlFormatted" />
+      <info-line v-if="pricesAvailable" :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvl" />
       <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
 
       <info-line

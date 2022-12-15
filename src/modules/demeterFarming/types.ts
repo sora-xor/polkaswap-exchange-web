@@ -21,6 +21,6 @@ export type DemeterPoolDerivedData = DemeterPoolDerived & {
   poolAsset: DemeterAsset;
   rewardAsset: DemeterAsset;
   emission: FPNumber;
-  tvl: FPNumber;
-  apr: FPNumber;
+  tvl: string;
+  apr: string;
 };

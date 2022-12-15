@@ -21,8 +21,7 @@
               <status-badge
                 v-for="item in token.items"
                 :key="item.pool.rewardAsset"
-                :pool="item.pool"
-                :account-pool="item.accountPool"
+                v-bind="item"
                 @add="changePoolStake($event, true)"
                 class="staking-info-badge"
               />
@@ -33,8 +32,7 @@
         <pool-card
           v-for="item in token.items"
           :key="item.pool.rewardAsset"
-          :pool="item.pool"
-          :account-pool="item.accountPool"
+          v-bind="item"
           @add="changePoolStake($event, true)"
           @remove="changePoolStake($event, false)"
           @claim="claimPoolRewards"
@@ -47,21 +45,21 @@
 
     <stake-dialog
       :visible.sync="showStakeDialog"
-      :pool="selectedPool"
-      :account-pool="selectedAccountPool"
       :is-adding="isAddingStake"
       :parent-loading="parentLoading || loading"
+      v-bind="selectedDerivedPool"
       @add="handleStakeAction($event, deposit)"
       @remove="handleStakeAction($event, withdraw)"
     />
+
     <claim-dialog
       :visible.sync="showClaimDialog"
-      :pool="selectedPool"
-      :account-pool="selectedAccountPool"
       :parent-loading="parentLoading || loading"
+      v-bind="selectedDerivedPool"
       @confirm="handleClaimRewards"
     />
-    <calculator-dialog :visible.sync="showCalculatorDialog" :pool="selectedPool" :account-pool="selectedAccountPool" />
+
+    <calculator-dialog :visible.sync="showCalculatorDialog" v-bind="selectedDerivedPool" />
   </div>
 </template>
 
@@ -81,7 +79,7 @@ import { Components } from '@/consts';
 import { getter } from '@/store/decorators';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { DemeterPoolDerived } from '@/modules/demeterFarming/types';
+import type { DemeterPoolDerived, DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
 
 type StakingItem = {
   asset: Asset;
@@ -106,13 +104,23 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
     this.activeCollapseItems = items;
   }
 
+  get selectedDerivedPool(): DemeterPoolDerivedData | object {
+    if (!this.selectedPool) return {};
+
+    return this.prepareDerivedPoolData({
+      pool: this.selectedPool,
+      accountPool: this.selectedAccountPool,
+    });
+  }
+
   get tokensData(): object {
     return Object.entries(this.pools).reduce<StakingItem[]>((buffer, [address, poolsMap]) => {
       const asset = this.getAsset(address);
 
       if (!asset) return buffer;
 
-      const items = this.getAvailablePools(poolsMap?.[address]);
+      const available = this.getAvailablePools(poolsMap?.[address]);
+      const items = available.map((item) => this.prepareDerivedPoolData(item));
 
       if (!items.length) return buffer;
 

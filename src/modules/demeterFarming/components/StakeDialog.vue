@@ -16,12 +16,10 @@
       </s-row>
 
       <div v-if="isAdding" class="stake-dialog-info">
-        <info-line v-if="pricesAvailable" :label="TranslationConsts.APR" :value="aprFormatted" />
-        <info-line
-          v-if="pricesAvailable"
-          :label="t('demeterFarming.info.totalLiquidityLocked')"
-          :value="tvlFormatted"
-        />
+        <template v-if="pricesAvailable">
+          <info-line :label="TranslationConsts.APR" :value="apr" />
+          <info-line :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvl" />
+        </template>
         <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
       </div>
 
@@ -209,7 +207,7 @@ export default class StakeDialog extends Mixins(PoolCardMixin, mixins.DialogMixi
   }
 
   get poolShareAfterFiat(): Nullable<string> {
-    if (this.isFarm) return null;
+    if (this.isFarm || !this.poolAsset) return null;
 
     return this.getFiatAmountByFPNumber(this.poolShareAfter, this.poolAsset as AccountAsset);
   }

@@ -4,7 +4,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 import { getter, state } from '@/store/decorators';
-import { hasInsufficientXorForFee, formatDecimalPlaces, getAssetBalance } from '@/utils';
+import { hasInsufficientXorForFee, getAssetBalance } from '@/utils';
 
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
@@ -21,14 +21,12 @@ export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin
   @Prop({ default: () => null, type: Object }) readonly baseAsset!: DemeterAsset;
   @Prop({ default: () => null, type: Object }) readonly poolAsset!: DemeterAsset;
   @Prop({ default: () => null, type: Object }) readonly rewardAsset!: DemeterAsset;
-  @Prop({ default: () => FPNumber.ZERO, type: Object }) readonly emission!: FPNumber;
-  @Prop({ default: () => FPNumber.ZERO, type: Object }) readonly tvl!: FPNumber;
-  @Prop({ default: () => FPNumber.ZERO, type: Object }) readonly apr!: FPNumber;
+  @Prop({ default: () => '', type: String }) readonly tvl!: string;
+  @Prop({ default: () => '', type: String }) readonly apr!: string;
 
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
 
   @getter.assets.xor xor!: Nullable<AccountAsset>;
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   get pricesAvailable(): boolean {
     return Object.keys(this.fiatPriceAndApyObject).length > 0;
@@ -63,12 +61,12 @@ export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin
     return this.rewards.toLocaleString();
   }
 
-  // [TODO]
   get rewardAssetPrice(): FPNumber {
-    return this.rewardAsset.price;
+    return this.rewardAsset?.price ?? FPNumber.ZERO;
   }
 
   get rewardsFiat(): Nullable<string> {
+    if (!this.rewardAsset) return null;
     return this.getFiatAmountByFPNumber(this.rewards, this.rewardAsset as Asset);
   }
 
@@ -96,14 +94,12 @@ export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin
     return this.poolAsset?.symbol ?? '';
   }
 
-  // [TODO]
   get poolAssetPrice(): FPNumber {
-    return this.poolAsset.price;
+    return this.poolAsset?.price ?? FPNumber.ZERO;
   }
 
-  // [TODO]
   get poolAssetBalance(): FPNumber {
-    return FPNumber.fromCodecValue(getAssetBalance(this.poolAsset) ?? 0, this.poolAsset.decimals);
+    return FPNumber.fromCodecValue(getAssetBalance(this.poolAsset) ?? 0, this.poolAsset?.decimals);
   }
 
   get lpBalance(): FPNumber {
@@ -124,10 +120,6 @@ export default class AccountPoolMixin extends Mixins(mixins.FormattedAmountMixin
 
   get depositDisabled(): boolean {
     return !this.activeStatus || this.availableFunds.isZero();
-  }
-
-  get aprFormatted(): string {
-    return formatDecimalPlaces(this.apr, true);
   }
 
   get emitParams(): object {
