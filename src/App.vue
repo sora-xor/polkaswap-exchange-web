@@ -207,7 +207,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (this.storageReferrer === this.account.address) {
         this.resetStorageReferrer();
       } else {
-        this.showConfirmInviteUser = true;
+        setTimeout(() => {
+          this.showConfirmInviteUser = true; // Delay here for better UX
+        }, 3_000); // TODO: this logic should be moved and fixed in life cycle
       }
     }
   }
