@@ -285,7 +285,7 @@ export default class SwapChart extends Mixins(
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
   forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
 
-  priceUpdateWatcher: Nullable<VoidFunction> = null;
+  priceUpdateWatcher: Nullable<FnWithoutArgs> = null;
   priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;

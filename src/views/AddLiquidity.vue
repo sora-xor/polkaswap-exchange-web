@@ -167,11 +167,11 @@ export default class AddLiquidity extends Mixins(
   @action.addLiquidity.setSecondTokenAddress setSecondTokenAddress!: (address: string) => Promise<void>;
   @action.addLiquidity.setFirstTokenValue setFirstTokenValue!: (address: string) => Promise<void>;
   @action.addLiquidity.setSecondTokenValue setSecondTokenValue!: (address: string) => Promise<void>;
-  @action.addLiquidity.addLiquidity private addLiquidity!: AsyncVoidFn;
+  @action.addLiquidity.addLiquidity private addLiquidity!: AsyncFnWithoutArgs;
   @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>;
-  @action.addLiquidity.updateSubscriptions updateSubscriptions!: AsyncVoidFn;
-  @action.addLiquidity.resetSubscriptions resetSubscriptions!: AsyncVoidFn;
-  @action.addLiquidity.resetData resetData!: AsyncVoidFn;
+  @action.addLiquidity.updateSubscriptions updateSubscriptions!: AsyncFnWithoutArgs;
+  @action.addLiquidity.resetSubscriptions resetSubscriptions!: AsyncFnWithoutArgs;
+  @action.addLiquidity.resetData resetData!: AsyncFnWithoutArgs;
 
   @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
 

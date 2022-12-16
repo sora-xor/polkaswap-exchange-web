@@ -27,12 +27,11 @@ enum Step {
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
-  @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncVoidFn;
-  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncVoidFn;
-  @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncVoidFn;
-  @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncVoidFn;
-  @action.pool.unsubscribeAccountLiquidityListAndUpdates
-  private unsubscribeAccountLiquidityListAndUpdates!: AsyncVoidFn;
+  @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncFnWithoutArgs;
+  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncFnWithoutArgs;
+  @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
+  @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncFnWithoutArgs;
+  @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribeLPUpdates!: AsyncFnWithoutArgs;
 
   step: Step = Step.Intro;
   isUserPassedKyc = false;
@@ -57,7 +56,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
       this.subscribeOnAccountLiquidityUpdates,
       this.subscribeToTotalXorBalance,
     ]);
-    this.setResetSubscriptions([this.unsubscribeFromTotalXorBalance, this.unsubscribeAccountLiquidityListAndUpdates]);
+    this.setResetSubscriptions([this.unsubscribeFromTotalXorBalance, this.unsubscribeLPUpdates]);
   }
 
   async beforeDestroy(): Promise<void> {

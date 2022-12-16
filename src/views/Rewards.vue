@@ -157,15 +157,15 @@ export default class Rewards extends Mixins(
   @getter.rewards.externalRewardsSelected externalRewardsSelected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
 
-  @mutation.rewards.reset private reset!: VoidFunction;
+  @mutation.rewards.reset private reset!: FnWithoutArgs;
 
   @action.rewards.setSelectedRewards private setSelectedRewards!: (args: SelectedRewards) => Promise<void>;
   @action.rewards.getExternalRewards private getExternalRewards!: (address: string) => Promise<void>;
   @action.rewards.claimRewards private claimRewards!: (options: ClaimRewardsParams) => Promise<void>;
-  @action.rewards.subscribeOnRewards private subscribeOnRewards!: AsyncVoidFn;
-  @action.rewards.unsubscribeFromRewards private unsubscribeFromRewards!: AsyncVoidFn;
+  @action.rewards.subscribeOnRewards private subscribeOnRewards!: AsyncFnWithoutArgs;
+  @action.rewards.unsubscribeFromRewards private unsubscribeFromRewards!: AsyncFnWithoutArgs;
 
-  private unwatchEthereum!: VoidFunction;
+  private unwatchEthereum!: FnWithoutArgs;
 
   destroyed(): void {
     this.reset();

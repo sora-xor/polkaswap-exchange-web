@@ -33,7 +33,7 @@ import type { MoonpayTransaction } from '@/utils/moonpay';
 })
 export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
   widgetUrl = '';
-  transactionsPolling!: VoidFunction;
+  transactionsPolling!: FnWithoutArgs;
 
   @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
@@ -44,7 +44,7 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
   @state.moonpay.dialogVisibility private dialogVisibility!: boolean;
 
   @mutation.moonpay.setDialogVisibility private setDialogVisibility!: (flag: boolean) => void;
-  @action.moonpay.createTransactionsPolling private createTransactionsPolling!: () => Promise<VoidFunction>;
+  @action.moonpay.createTransactionsPolling private createTransactionsPolling!: () => Promise<FnWithoutArgs>;
 
   @Watch('isLoggedIn', { immediate: true })
   private handleLoggedInStateChange(isLoggedIn: boolean): void {

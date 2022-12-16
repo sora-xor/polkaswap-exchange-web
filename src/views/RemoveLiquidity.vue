@@ -181,11 +181,11 @@ export default class RemoveLiquidity extends Mixins(
 
   @mutation.removeLiquidity.setAddresses private setAddresses!: (params: LiquidityParams) => void;
   @mutation.removeLiquidity.setFocusedField setFocusedField!: (field: FocusedField) => void;
-  @mutation.removeLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
+  @mutation.removeLiquidity.resetFocusedField resetFocusedField!: FnWithoutArgs;
 
   @action.removeLiquidity.setRemovePart private setRemovePart!: (removePart: string) => Promise<void>;
-  @action.removeLiquidity.removeLiquidity private removeLiquidity!: AsyncVoidFn;
-  @action.removeLiquidity.resetData private resetData!: AsyncVoidFn;
+  @action.removeLiquidity.removeLiquidity private removeLiquidity!: AsyncFnWithoutArgs;
+  @action.removeLiquidity.resetData private resetData!: AsyncFnWithoutArgs;
   @action.removeLiquidity.setFirstTokenAmount setFirstTokenAmount!: (amount: string) => Promise<void>;
   @action.removeLiquidity.setSecondTokenAmount setSecondTokenAmount!: (amount: string) => Promise<void>;
 
