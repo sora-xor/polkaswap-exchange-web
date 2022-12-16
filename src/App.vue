@@ -143,6 +143,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     message: string;
   }) => Promise<void>;
 
+  // [DESKTOP] To Enable Desktop
+  // @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
+
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
     if (!whitelistAssetArray.length) return;
@@ -215,6 +218,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async created() {
+    // [DESKTOP] To Enable Desktop
+    // this.setIsDesktop(true);
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
 
