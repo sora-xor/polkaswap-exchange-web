@@ -82,7 +82,7 @@ export default class ReferralBonding extends Mixins(
   @getter.assets.xor xor!: Nullable<AccountAsset>;
 
   @mutation.referrals.setAmount private setAmount!: (amount: string) => void;
-  @mutation.referrals.resetAmount private resetAmount!: VoidFunction;
+  @mutation.referrals.resetAmount private resetAmount!: FnWithoutArgs;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   showConfirmBondDialog = false;

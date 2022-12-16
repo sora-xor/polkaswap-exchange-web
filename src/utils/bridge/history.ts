@@ -193,7 +193,7 @@ export class EthBridgeHistory {
     assets: RegisteredAccountAssetObject,
     networkFees: NetworkFeesObject,
     contracts?: string[],
-    updateCallback?: AsyncVoidFn | VoidFunction
+    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     const currentHistory = bridgeApi.historyList as BridgeHistory[];
     const historyElements = await this.fetchHistoryElements(address, this.historySyncTimestamp);
