@@ -39,7 +39,7 @@ export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, m
   @state.referrals.referrer private referrer!: string;
   @state.referrals.storageReferrer private storageReferrer!: string;
 
-  @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
+  @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
   @mutation.referrals.approveReferrer private approveReferrer!: (value: boolean) => void;
 
   get hasReferrer(): boolean {

@@ -205,14 +205,14 @@ export default class Swap extends Mixins(
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
-  @action.swap.reset private reset!: AsyncVoidFn;
+  @action.swap.reset private reset!: AsyncFnWithoutArgs;
   @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (data: {
     dexId: number;
     payload: QuotePayload;
   }) => void;
 
-  @action.swap.resetSubscriptions private resetBalanceSubscriptions!: AsyncVoidFn;
-  @action.swap.updateSubscriptions private updateBalanceSubscriptions!: AsyncVoidFn;
+  @action.swap.resetSubscriptions private resetBalanceSubscriptions!: AsyncFnWithoutArgs;
+  @action.swap.updateSubscriptions private updateBalanceSubscriptions!: AsyncFnWithoutArgs;
 
   @Watch('liquiditySource')
   private handleLiquiditySourceChange(): void {

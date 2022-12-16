@@ -112,7 +112,7 @@ import { getter, state } from '@/store/decorators';
 export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isAboutPageOpened!: boolean;
-  @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
+  @Prop({ default: () => {}, type: Function }) readonly onSelect!: FnWithoutArgs;
 
   @state.settings.faucetUrl faucetUrl!: string;
   @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;

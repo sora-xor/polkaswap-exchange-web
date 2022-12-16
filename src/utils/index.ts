@@ -262,7 +262,7 @@ export const toQueryString = (params: any): string => {
     .join('&');
 };
 
-export const waitForAccountPair = async (func?: VoidFunction): Promise<any> => {
+export const waitForAccountPair = async (func?: FnWithoutArgs | AsyncFnWithoutArgs): Promise<any> => {
   if (!api.accountPair) {
     await delay();
     return await waitForAccountPair(func);

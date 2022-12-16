@@ -349,7 +349,7 @@ export default class BridgeTransaction extends Mixins(
   @getter.bridge.historyItem private historyItem!: Nullable<BridgeHistory>;
   @getter.bridge.isTxEvmAccount isTxEvmAccount!: boolean;
 
-  @mutation.bridge.setHistory setHistory!: VoidFunction;
+  @mutation.bridge.setHistory setHistory!: FnWithoutArgs;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
   @action.bridge.handleBridgeTx private handleBridgeTx!: (id: string) => Promise<void>;
 
