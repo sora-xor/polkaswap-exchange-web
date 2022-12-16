@@ -32,30 +32,28 @@
       </template>
     </pool-base>
 
-    <template v-if="selectedDerivedPool">
-      <stake-dialog
-        :visible.sync="showStakeDialog"
-        :is-adding="isAddingStake"
-        :liquidity="selectedAccountLiquidity"
-        :parent-loading="parentLoading || loading"
-        v-bind="selectedDerivedPool"
-        @add="handleStakeAction($event, deposit)"
-        @remove="handleStakeAction($event, withdraw)"
-      />
+    <stake-dialog
+      :visible.sync="showStakeDialog"
+      :is-adding="isAddingStake"
+      :liquidity="selectedAccountLiquidity"
+      :parent-loading="parentLoading || loading"
+      v-bind="selectedDerivedPool"
+      @add="handleStakeAction($event, deposit)"
+      @remove="handleStakeAction($event, withdraw)"
+    />
 
-      <claim-dialog
-        :visible.sync="showClaimDialog"
-        :parent-loading="parentLoading || loading"
-        v-bind="selectedDerivedPool"
-        @confirm="handleClaimRewards"
-      />
+    <claim-dialog
+      :visible.sync="showClaimDialog"
+      :parent-loading="parentLoading || loading"
+      v-bind="selectedDerivedPool"
+      @confirm="handleClaimRewards"
+    />
 
-      <calculator-dialog
-        :visible.sync="showCalculatorDialog"
-        :liquidity="selectedAccountLiquidity"
-        v-bind="selectedDerivedPool"
-      />
-    </template>
+    <calculator-dialog
+      :visible.sync="showCalculatorDialog"
+      :liquidity="selectedAccountLiquidity"
+      v-bind="selectedDerivedPool"
+    />
   </div>
 </template>
 

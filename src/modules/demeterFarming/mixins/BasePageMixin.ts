@@ -64,17 +64,9 @@ export default class BasePageMixin extends Mixins(AprMixin, mixins.FormattedAmou
       const asset = this.getAsset(address);
       const price = asset ? FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0) : FPNumber.ZERO;
 
-      return {
-        ...buffer,
-        [address]: {
-          address,
-          symbol: asset?.symbol ?? '',
-          name: asset?.name,
-          decimals: asset?.decimals,
-          balance: asset?.balance,
-          price,
-        },
-      };
+      buffer[address] = { ...asset, price };
+
+      return buffer;
     }, {});
   }
 
@@ -153,26 +145,25 @@ export default class BasePageMixin extends Mixins(AprMixin, mixins.FormattedAmou
     );
   }
 
-  async showPoolCalculator(params: {
+  showPoolCalculator(params: {
     baseAsset: string;
     poolAsset: string;
     rewardAsset: string;
     liquidity?: AccountLiquidity;
-  }): Promise<void> {
-    await this.setDialogParams(params);
+  }): void {
+    this.setDialogParams(params);
     this.showCalculatorDialog = true;
   }
 
-  async setDialogParams(params: {
+  setDialogParams(params: {
     baseAsset: string;
     poolAsset: string;
     rewardAsset: string;
     liquidity?: AccountLiquidity;
-  }): Promise<void> {
+  }): void {
     this.baseAsset = params.baseAsset;
     this.poolAsset = params.poolAsset;
     this.rewardAsset = params.rewardAsset;
     this.liquidity = params.liquidity;
-    await this.$nextTick();
   }
 }

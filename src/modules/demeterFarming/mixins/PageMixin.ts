@@ -19,17 +19,14 @@ export default class PageMixin extends Mixins(BasePageMixin, mixins.TransactionM
   showClaimDialog = false;
   isAddingStake = true;
 
-  async changePoolStake(
-    params: { baseAsset: string; poolAsset: string; rewardAsset: string },
-    isAddingStake = true
-  ): Promise<void> {
+  changePoolStake(params: { baseAsset: string; poolAsset: string; rewardAsset: string }, isAddingStake = true): void {
     this.isAddingStake = isAddingStake;
-    await this.setDialogParams(params);
+    this.setDialogParams(params);
     this.showStakeDialog = true;
   }
 
-  async claimPoolRewards(params: { baseAsset: string; poolAsset: string; rewardAsset: string }): Promise<void> {
-    await this.setDialogParams(params);
+  claimPoolRewards(params: { baseAsset: string; poolAsset: string; rewardAsset: string }): void {
+    this.setDialogParams(params);
     this.showClaimDialog = true;
   }
 

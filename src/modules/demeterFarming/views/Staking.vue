@@ -46,25 +46,23 @@
       </s-collapse-item>
     </s-collapse>
 
-    <template v-if="selectedDerivedPool">
-      <stake-dialog
-        :visible.sync="showStakeDialog"
-        :is-adding="isAddingStake"
-        :parent-loading="parentLoading || loading"
-        v-bind="selectedDerivedPool"
-        @add="handleStakeAction($event, deposit)"
-        @remove="handleStakeAction($event, withdraw)"
-      />
+    <stake-dialog
+      :visible.sync="showStakeDialog"
+      :is-adding="isAddingStake"
+      :parent-loading="parentLoading || loading"
+      v-bind="selectedDerivedPool"
+      @add="handleStakeAction($event, deposit)"
+      @remove="handleStakeAction($event, withdraw)"
+    />
 
-      <claim-dialog
-        :visible.sync="showClaimDialog"
-        :parent-loading="parentLoading || loading"
-        v-bind="selectedDerivedPool"
-        @confirm="handleClaimRewards"
-      />
+    <claim-dialog
+      :visible.sync="showClaimDialog"
+      :parent-loading="parentLoading || loading"
+      v-bind="selectedDerivedPool"
+      @confirm="handleClaimRewards"
+    />
 
-      <calculator-dialog :visible.sync="showCalculatorDialog" v-bind="selectedDerivedPool" />
-    </template>
+    <calculator-dialog :visible.sync="showCalculatorDialog" v-bind="selectedDerivedPool" />
   </div>
 </template>
 
@@ -113,9 +111,9 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
     return this.prepareDerivedPoolData(this.selectedPool, this.selectedAccountPool);
   }
 
-  get tokensData(): object {
+  get tokensData(): StakingItem[] {
     return Object.entries(this.pools).reduce<StakingItem[]>((buffer, [address, poolsMap]) => {
-      const asset = this.getAsset(address);
+      const asset = this.demeterAssetsData[address];
 
       if (!asset) return buffer;
 
