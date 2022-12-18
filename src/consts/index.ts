@@ -151,11 +151,11 @@ export enum Components {
   SoraCard = 'SoraCard',
   SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
   SoraCardKYC = 'SoraCard/SoraCardKYC',
+  ConfirmationInfo = 'SoraCard/ConfirmationInfo',
   TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
   ToSDialog = 'SoraCard/steps/ToSDialog',
   RoadMap = 'SoraCard/steps/RoadMap',
   KycView = 'SoraCard/steps/KycView',
-  ConfirmationInfo = 'SoraCard/steps/ConfirmationInfo',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',
   StatusActionBadge = 'Swap/StatusActionBadge',
@@ -209,7 +209,8 @@ export enum Components {
   // Pool
   PoolInfo = 'Pool/PoolInfo',
   PriceChange = 'PriceChange',
-  X1 = 'X1/X1',
+  X1Dialog = 'X1/X1Dialog',
+  PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
 }
 
 export enum RewardsTabsItems {

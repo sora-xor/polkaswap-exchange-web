@@ -1,8 +1,6 @@
 <template>
   <div class="container sora-card">
-    <div class="sora-card__image">
-      <sora-card />
-    </div>
+    <img src="@/assets/img/sora-card/sora-card.png?inline" class="sora-card__image" />
     <div class="sora-card__intro">
       <h3 class="sora-card__intro-title">Get SORA Card</h3>
       <span class="sora-card__intro-info">
@@ -61,8 +59,9 @@
         </s-button>
       </div>
     </div>
-    <span v-if="isLoggedIn" class="sora-card__user-applied">I've already applied</span>
-    <x1 :visible.sync="showX1Dialog" />
+    <span v-if="isLoggedIn" @click="loginUser" class="sora-card__user-applied">I've already applied</span>
+    <x1-dialog :visible.sync="showX1Dialog" />
+    <paywings-dialog :visible.sync="showPaywingsDialog" />
   </div>
 </template>
 
@@ -70,7 +69,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
-import SoraCard from '@/assets/img/sora-card/sora-card.svg?inline';
+
 import { getter, state } from '@/store/decorators';
 import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
@@ -79,18 +78,20 @@ import TranslationMixin from '../mixins/TranslationMixin';
 
 @Component({
   components: {
-    SoraCard,
-    X1: lazyComponent(Components.X1),
+    X1Dialog: lazyComponent(Components.X1Dialog),
+    PaywingsDialog: lazyComponent(Components.PaywingsDialog),
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @state.soraCard.euroBalance private euroBalance!: string;
   @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
+
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   isPriceCalculated = false;
   showX1Dialog = false;
+  showPaywingsDialog = false;
 
   get buttonText(): string {
     if (!this.isLoggedIn) {
@@ -125,7 +126,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   }
 
   issueCardByPaywings(): void {
-    console.warn('¯\\_(ツ)_/¯');
+    this.showPaywingsDialog = true;
   }
 
   handleConfirm(): void {
@@ -137,6 +138,12 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     this.$emit('confirm-apply');
   }
 
+  loginUser(): void {
+    clearTokensFromSessionStorage();
+    const userApplied = true;
+    this.$emit('confirm-apply', userApplied);
+  }
+
   async priceLoading(): Promise<void> {
     this.isPriceCalculated = false;
     await delay(800);
@@ -145,7 +152,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
   mounted(): void {
     this.priceLoading();
-    clearTokensFromSessionStorage();
   }
 }
 </script>
@@ -157,6 +163,8 @@ $color: #ee2233;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  max-width: 520px;
+  margin-top: 30px;
 
   &__intro {
     display: flex;

@@ -28,11 +28,24 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
   loadingKycView = true;
 
   async getReferenceNumber(): Promise<string> {
+    const token = sessionStorage.getItem('access-token');
+
     const result = await fetch('https://sora-card.sc1.dev.sora2.soramitsu.co.jp/get-reference-number', {
       method: 'POST',
       body: JSON.stringify({
         ReferenceID: uuidv4(),
+
+        MobileNumber: '',
+        Email: '',
+        AddressChanged: false,
+        DocumentChanged: false,
+        IbanTypeID: null,
+        CardTypeID: null,
+        AdditionalData: '',
       }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     const data = await result.json();

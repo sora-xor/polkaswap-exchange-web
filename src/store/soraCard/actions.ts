@@ -3,7 +3,9 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 
 import { getXorPerEuroRatio, waitForAccountPair } from '@/utils';
+import { defineUserStatus } from '@/utils/card';
 import { soraCardActionContext } from './../soraCard';
+import { CardIssueStatus } from '@/types/card';
 
 const actions = defineActions({
   calculateXorRestPrice(context, xorPerEuro): void {
@@ -51,6 +53,17 @@ const actions = defineActions({
     setTimeout(() => {
       commit.resetTotalXorBalanceUpdates();
     }, 1000 * 60 * 5);
+  },
+
+  async getUserKycStatus(context): Promise<void> {
+    const { commit } = soraCardActionContext(context);
+
+    const status: CardIssueStatus | undefined = await defineUserStatus();
+    // remove
+    // status = CardIssueStatus.Reject;
+    // status = undefined;
+
+    commit.setUserStatus(status);
   },
 });
 

@@ -63,13 +63,15 @@
 
 <script lang="ts">
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
+import { action, state } from '@/store/decorators';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
 import CardIcon from '@/assets/img/sora-card/card.svg?inline';
 import UserIcon from '@/assets/img/sora-card/user.svg?inline';
-import { delay } from '@/utils';
+import { clearTokensFromSessionStorage, delay } from '@/utils';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { CardIssueStatus } from '@/types/card';
 
 @Component({
   components: {
@@ -79,7 +81,12 @@ import { mixins, components } from '@soramitsu/soraneo-wallet-web';
     NotificationEnablingPage: components.NotificationEnablingPage,
   },
 })
-export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.CameraPermissionMixin) {
+  @state.soraCard.userKycStatus private userKycStatus!: CardIssueStatus;
+  @action.soraCard.getUserKycStatus private getUserKycStatus!: AsyncVoidFn;
+
+  @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
+
   firstPointChecked = false;
   firstPointCurrent = true;
   secondPointChecked = false;
@@ -97,41 +104,7 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
     return 'LET’S START';
   }
 
-  async checkMediaDevicesAllowance(context): Promise<boolean> {
-    try {
-      const cameraAvailability = await this.checkDevicesAvailability();
-
-      if (!cameraAvailability) throw new Error('[KYC Camera]: Cannot find camera device');
-
-      const cameraPermisssion = await this.checkCameraPermission();
-
-      if (cameraPermisssion === 'denied') throw new Error('[KYC Camera]: Check camera browser permissions');
-
-      this.permissionDialogVisibility = cameraPermisssion !== 'granted';
-      // request to allow use camera
-      if (context === 'SoraCard' && cameraPermisssion === 'granted') {
-        return true;
-      }
-      await navigator.mediaDevices.getUserMedia({ video: true });
-      return true;
-    } catch (error) {
-      console.error(error);
-
-      this.$notify({
-        message: this.t('code.allowanceError'),
-        type: 'error',
-        title: '',
-      });
-
-      return false;
-    } finally {
-      this.permissionDialogVisibility = false;
-    }
-  }
-
   async handleConfirm(): Promise<void> {
-    console.log(navigator.permissions.query());
-
     try {
       const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('SoraCard');
 
@@ -141,7 +114,14 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
     }
 
     if (sessionStorage.getItem('access-token')) {
-      this.$emit('confirm-start');
+      await this.getUserKycStatus();
+
+      if (this.userKycStatus === CardIssueStatus.Success) {
+        this.$emit('confirm-start-kyc', false);
+      } else {
+        this.$emit('confirm-start-kyc', true);
+      }
+
       unloadScript('https://auth-test.paywings.io/auth/sdk.js');
       return;
     }
@@ -190,34 +170,13 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
     return await this.waitOnAccessTokenAvailability();
   }
 
-  // TODO: take this method from @wallet/utils
-  async checkDevicesAvailability(): Promise<boolean> {
-    try {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-
-      return devices.some((device) => device.kind === 'videoinput');
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
-  }
-
-  // TODO: take this method from @wallet/utils
-  async checkCameraPermission(): Promise<string> {
-    try {
-      const { state } = await navigator.permissions.query({ name: 'camera' } as any);
-
-      return state;
-    } catch (error) {
-      console.error(error);
-      return '';
-    }
-  }
-
   mounted(): void {
-    if (sessionStorage.getItem('access-token')) {
-      this.firstPointChecked = true;
-      this.secondPointCurrent = true;
+    clearTokensFromSessionStorage();
+
+    if (this.userApplied) {
+      this.firstPointCurrent = true;
+      this.secondPointChecked = true;
+      this.thirdPointChecked = true;
     }
   }
 }

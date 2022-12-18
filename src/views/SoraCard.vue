@@ -1,66 +1,90 @@
 <template>
   <div>
-    <sora-card-intro v-if="step === Step.Intro" @confirm-apply="confirmApply" />
-    <sora-card-kyc v-else-if="step === Step.KYC" @go-to-intro="openIntro" />
+    <confirmation-info v-if="step === Step.ConfirmationInfo" />
+    <sora-card-intro v-else-if="step === Step.StartPage" @confirm-apply="confirmApply" />
+    <sora-card-kyc v-else-if="step === Step.KYC" @go-to-start="openStartPage" :userApplied="userApplied" />
   </div>
 </template>
 
 <script lang="ts">
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import { action } from '@/store/decorators';
+import { action, state } from '@/store/decorators';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 import { Component, Mixins } from 'vue-property-decorator';
+import { CardIssueStatus } from '@/types/card';
 
 enum Step {
-  Intro = 'Intro',
+  StartPage = 'StartPage',
   KYC = 'KYC',
+  ConfirmationInfo = 'ConfirmationInfo',
 }
 
 @Component({
   components: {
     SoraCardIntro: lazyComponent(Components.SoraCardIntroPage),
     SoraCardKyc: lazyComponent(Components.SoraCardKYC),
+    ConfirmationInfo: lazyComponent(Components.ConfirmationInfo),
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
+  @state.soraCard.userKycStatus private userKycStatus!: CardIssueStatus;
+
   @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncVoidFn;
   @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncVoidFn;
+  @action.soraCard.getUserKycStatus private getUserKycStatus!: AsyncVoidFn;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncVoidFn;
   @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncVoidFn;
   @action.pool.unsubscribeAccountLiquidityListAndUpdates
   private unsubscribeAccountLiquidityListAndUpdates!: AsyncVoidFn;
 
-  step: Step = Step.Intro;
-  isUserPassedKyc = false;
+  step: Nullable<Step> = null;
+  userApplied = false;
 
   Step = Step;
 
-  confirmApply(): void {
+  confirmApply(userApplied: boolean): void {
+    this.userApplied = userApplied;
     this.step = Step.KYC;
   }
 
-  openIntro(): void {
-    this.step = Step.Intro;
+  openStartPage(withoutCheck: boolean): void {
+    if (withoutCheck) {
+      this.step = Step.ConfirmationInfo;
+      return;
+    }
+
+    this.checkKyc();
+  }
+
+  async checkKyc(): Promise<void> {
+    await this.getUserKycStatus();
+
+    if (this.userKycStatus) {
+      this.step = Step.ConfirmationInfo;
+    } else {
+      this.step = Step.StartPage;
+    }
   }
 
   async created(): Promise<void> {
-    if (this.isUserPassedKyc) {
-      this.step = Step.KYC;
-    }
-
     this.setStartSubscriptions([
       this.subscribeOnAccountLiquidityList,
       this.subscribeOnAccountLiquidityUpdates,
       this.subscribeToTotalXorBalance,
     ]);
+
     this.setResetSubscriptions([this.unsubscribeFromTotalXorBalance, this.unsubscribeAccountLiquidityListAndUpdates]);
   }
 
   async beforeDestroy(): Promise<void> {
     await this.unsubscribeFromTotalXorBalance();
+  }
+
+  mounted(): void {
+    this.checkKyc();
   }
 }
 </script>

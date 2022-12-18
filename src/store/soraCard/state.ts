@@ -4,6 +4,7 @@ import { FPNumber } from '@sora-substrate/util';
 
 function initialState(): SoraCardState {
   return {
+    userKycStatus: undefined,
     euroBalance: ZeroStringValue,
     totalXorBalance: FPNumber.ZERO,
     xorToDeposit: FPNumber.ZERO,
