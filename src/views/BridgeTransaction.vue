@@ -349,7 +349,7 @@ export default class BridgeTransaction extends Mixins(
   @getter.bridge.historyItem private historyItem!: Nullable<BridgeHistory>;
   @getter.bridge.isTxEvmAccount isTxEvmAccount!: boolean;
 
-  @mutation.bridge.setHistory setHistory!: VoidFunction;
+  @mutation.bridge.setHistory setHistory!: FnWithoutArgs;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
   @action.bridge.handleBridgeTx private handleBridgeTx!: (id: string) => Promise<void>;
 
@@ -845,7 +845,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
         .el-loading-spinner {
           top: 0;
           margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
-          margin-left: calc(#{$header-icon-size - $header-spinner-size} / 2);
           .circular {
             width: $header-spinner-size;
             height: $header-spinner-size;

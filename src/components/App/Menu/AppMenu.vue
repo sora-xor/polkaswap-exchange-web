@@ -93,6 +93,7 @@ import {
   BridgeChildPages,
   RewardsChildPages,
   StakingChildPages,
+  ExploreChildPages,
   SidebarMenuGroups,
   SidebarMenuItem,
   FaucetLink,
@@ -111,7 +112,7 @@ import { getter, state } from '@/store/decorators';
 export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isAboutPageOpened!: boolean;
-  @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
+  @Prop({ default: () => {}, type: Function }) readonly onSelect!: FnWithoutArgs;
 
   @state.settings.faucetUrl faucetUrl!: string;
   @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
@@ -141,6 +142,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
     if (StakingChildPages.includes(router.currentRoute.name as any)) {
       return PageNames.StakingContainer;
+    }
+    if (ExploreChildPages.includes(router.currentRoute.name as PageNames)) {
+      return PageNames.ExploreContainer;
     }
     return router.currentRoute.name as string;
   }

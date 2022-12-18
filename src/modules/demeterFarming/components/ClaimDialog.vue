@@ -35,6 +35,7 @@
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
+        :loading="parentLoading"
         :disabled="isInsufficientXorForFee"
         @click="confirm"
       >
@@ -64,7 +65,12 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class ClaimDialog extends Mixins(AccountPoolMixin, TranslationMixin, mixins.DialogMixin) {
+export default class ClaimDialog extends Mixins(
+  AccountPoolMixin,
+  TranslationMixin,
+  mixins.DialogMixin,
+  mixins.LoadingMixin
+) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
   confirm(): void {

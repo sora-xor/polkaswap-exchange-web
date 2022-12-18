@@ -5,14 +5,11 @@ function initialState(): RemoveLiquidityState {
   return {
     firstTokenAddress: '',
     secondTokenAddress: '',
-    removePart: 0,
+    removePart: '',
     liquidityAmount: '',
     firstTokenAmount: '',
     secondTokenAmount: '',
     focusedField: null,
-    reserveA: ZeroStringValue,
-    reserveB: ZeroStringValue,
-    totalSupply: ZeroStringValue,
   };
 }
 

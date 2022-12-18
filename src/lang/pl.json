@@ -334,8 +334,11 @@
         "AddLiquidityId": "Dodawanie płynności",
         "RemoveLiquidity": "Usuwanie płynności",
         "PageNotFound": "Nie znaleziono strony.",
-        "Tokens": "Tokeny",
-        "Rewards": "Wynagrodzenie"
+        "Rewards": "Wynagrodzenie",
+        "Explore\/Tokens": "Tokeny",
+        "Explore\/Pools": "Baseny",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming"
     },
     "mainMenu": {
         "Swap": "Wymiana",
@@ -348,8 +351,8 @@
         "Stats": "Statystyki",
         "Support": "Pomoc",
         "CreatePair": "Utwórz parę",
-        "Tokens": "Tokeny",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Badać"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Język"
     },
     "tokens": {
-        "title": "Tokeny umieszczone na giełdzie",
         "symbol": "Symbol",
-        "name": "Nazwa",
         "assetId": "Identyfikator waluty"
     },
     "memorandum": "Memo giełdy {AppName} i Warunki korzystania z usług",

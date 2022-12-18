@@ -95,7 +95,7 @@ export default class BridgeTransactionsHistory extends Mixins(
 ) {
   @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;
 
-  @action.bridge.updateHistory private updateHistory!: AsyncVoidFn;
+  @action.bridge.updateHistory private updateHistory!: AsyncFnWithoutArgs;
 
   @getter.bridge.historyPage historyPage!: number;
 

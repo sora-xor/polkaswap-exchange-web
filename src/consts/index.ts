@@ -1,11 +1,9 @@
 import invert from 'lodash/fp/invert';
-import { KnownAssets, KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 import pkg from '../../package.json';
-import { KnownBridgeAsset } from '../utils/ethers-util';
 
 export const app = {
   version: pkg.version,
@@ -133,6 +131,13 @@ export enum PageNames {
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
   StakingContainer = 'StakingContainer',
+  ExploreContainer = 'Explore/Container',
+  ExploreTokens = 'Explore/Tokens',
+  ExploreDemeter = 'Explore/Demeter',
+  // just for router name & different titles
+  ExploreFarming = 'Explore/Farming',
+  ExploreStaking = 'Explore/Staking',
+  ExplorePools = 'Explore/Pools',
   SoraCard = 'SoraCard',
 }
 
@@ -260,8 +265,8 @@ const AccountMenu: Array<SidebarMenuItem> = [
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
-    icon: 'various-bone-24',
-    title: PageNames.Tokens,
+    icon: 'various-items-24',
+    title: PageNames.ExploreContainer,
   },
   {
     icon: 'sora-card',
@@ -289,13 +294,13 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     title: 'twitter',
     href: 'https://twitter.com/polkaswap',
   },
-  // TODO: Update this icon name to appropriate one after font fix
+  // TODO: [FONT] Update this icon name to appropriate one after font fix
   {
     icon: 'symbols-hash-24',
     title: 'reddit',
     href: 'https://www.reddit.com/r/Polkaswap',
   },
-  // TODO: Update this icon name to appropriate one after font fix
+  // TODO: [FONT] Update this icon name to appropriate one after font fix
   {
     icon: 'symbols-peace-24',
     title: 'medium',
@@ -335,6 +340,12 @@ export const RewardsChildPages = [
 ];
 
 export const StakingChildPages = [DemeterPageNames.Staking];
+export const ExploreChildPages = [
+  PageNames.ExploreTokens,
+  PageNames.ExplorePools,
+  PageNames.ExploreFarming,
+  PageNames.ExploreStaking,
+];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',
@@ -354,38 +365,6 @@ export enum EvmSymbol {
   ETH = 'ETH',
   VT = 'VT',
 }
-
-const gasLimit = {
-  approve: 70000,
-  sendERC20ToSidechain: 86000,
-  sendEthToSidechain: 50000,
-  mintTokensByPeers: 255000,
-  receiveByEthereumAssetAddress: 250000,
-  receiveBySidechainAssetId: 255000,
-};
-/**
- * It's in gwei.
- * Zero index means ETH -> SORA
- * First index means SORA -> ETH
- */
-export const EthereumGasLimits = [
-  // ETH -> SORA
-  {
-    [XOR.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.sendEthToSidechain,
-    [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-  },
-  // SORA -> ETH
-  {
-    [XOR.address]: gasLimit.mintTokensByPeers,
-    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.mintTokensByPeers,
-    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.receiveBySidechainAssetId,
-    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.receiveByEthereumAssetAddress,
-    [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
-  },
-];
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';

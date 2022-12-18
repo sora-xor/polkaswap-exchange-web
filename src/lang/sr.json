@@ -334,8 +334,11 @@
         "AddLiquidityId": "Додати ликвидност",
         "RemoveLiquidity": "Уклони ликвидност",
         "PageNotFound": "Страница није пронађена",
-        "Tokens": "Токени",
-        "Rewards": "Награде"
+        "Rewards": "Награде",
+        "Explore\/Tokens": "Токени",
+        "Explore\/Pools": "Базени",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming"
     },
     "mainMenu": {
         "Swap": "Замените",
@@ -348,8 +351,8 @@
         "Stats": "Статистикa",
         "Support": "Подршка",
         "CreatePair": "Направите пар",
-        "Tokens": "Токени",
-        "StakingContainer": "Стeкинг"
+        "StakingContainer": "Стeкинг",
+        "Explore\/Container": "Истражите"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Језик"
     },
     "tokens": {
-        "title": "Наведени токени",
         "symbol": "Симбол",
-        "name": "Име",
         "assetId": "ИД средства"
     },
     "memorandum": "{AppName} Меморандум и Услови коришћења услуге",

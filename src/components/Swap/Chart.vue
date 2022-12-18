@@ -10,7 +10,7 @@
           </div>
         </div>
         <div class="chart-filters">
-          <s-tabs type="rounded" :value="selectedFilter.name" @click="selectFilter">
+          <s-tabs type="rounded" :value="selectedFilter.name" @input="selectFilter">
             <s-tab
               v-for="filter in filters"
               :key="filter.name"
@@ -285,7 +285,7 @@ export default class SwapChart extends Mixins(
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
   forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
 
-  priceUpdateWatcher: Nullable<VoidFunction> = null;
+  priceUpdateWatcher: Nullable<FnWithoutArgs> = null;
   priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
@@ -877,7 +877,7 @@ export default class SwapChart extends Mixins(
     this.subscribeToPriceUpdates();
   }
 
-  selectFilter({ name }): void {
+  selectFilter(name: string): void {
     const filter = this.filters.find((item) => item.name === name);
 
     if (!filter) return;

@@ -1,4 +1,5 @@
 import { defineGetters } from 'direct-vuex';
+import { api } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
@@ -10,7 +11,12 @@ import type { RegisteredAccountAssetWithDecimals } from '../assets/types';
 const getters = defineGetters<AddLiquidityState>()({
   firstToken(...args): Nullable<RegisteredAccountAssetWithDecimals> {
     const { state, rootGetters } = addLiquidityGetterContext(args);
-    return rootGetters.assets.assetDataByAddress(state.firstTokenAddress);
+    const token = rootGetters.assets.assetDataByAddress(state.firstTokenAddress);
+    const balance = state.firstTokenBalance;
+    if (balance) {
+      return { ...token, balance } as RegisteredAccountAssetWithDecimals;
+    }
+    return token;
   },
   secondToken(...args): Nullable<RegisteredAccountAssetWithDecimals> {
     const { state, rootGetters } = addLiquidityGetterContext(args);
@@ -45,8 +51,21 @@ const getters = defineGetters<AddLiquidityState>()({
     return !!state.reserve?.length && +getters.reserveA !== 0 && +getters.reserveB !== 0;
   },
   minted(...args): CodecString {
-    const { state } = addLiquidityGetterContext(args);
-    return state.minted || ZeroStringValue;
+    const { state, getters } = addLiquidityGetterContext(args);
+
+    if (!(getters.firstToken && getters.secondToken)) return ZeroStringValue;
+
+    const [minted] = api.poolXyk.estimatePoolTokensMinted(
+      getters.firstToken,
+      getters.secondToken,
+      state.firstTokenValue,
+      state.secondTokenValue,
+      getters.reserveA,
+      getters.reserveB,
+      state.totalSupply
+    );
+
+    return minted;
   },
   totalSupply(...args): CodecString {
     const { state } = addLiquidityGetterContext(args);
@@ -62,6 +81,22 @@ const getters = defineGetters<AddLiquidityState>()({
     if (total.isZero() && minted.isZero()) return full.toLocaleString(); // pair created but hasn't liquidity
 
     return minted.add(existed).div(total.add(minted)).mul(full).toLocaleString() || ZeroStringValue;
+  },
+  price(...args): string {
+    const { state, getters } = addLiquidityGetterContext(args);
+    const { firstToken, secondToken } = getters;
+    if (!(firstToken && secondToken)) {
+      return ZeroStringValue;
+    }
+    return api.divideAssets(firstToken, secondToken, state.firstTokenValue, state.secondTokenValue, false);
+  },
+  priceReversed(...args): string {
+    const { state, getters } = addLiquidityGetterContext(args);
+    const { firstToken, secondToken } = getters;
+    if (!(firstToken && secondToken)) {
+      return ZeroStringValue;
+    }
+    return api.divideAssets(firstToken, secondToken, state.firstTokenValue, state.secondTokenValue, true);
   },
 });
 

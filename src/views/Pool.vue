@@ -101,7 +101,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -123,10 +123,10 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
-  @state.wallet.account.assets private assets!: Array<Asset>;
   @state.pool.accountLiquidity accountLiquidity!: Array<AccountLiquidity>;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   activeCollapseItems: string[] = [];
 
@@ -134,12 +134,9 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
     this.activeCollapseItems = items;
   }
 
-  getAsset(address: string): Asset {
-    return this.assets.find((a) => a.address === address) as Asset;
-  }
-
   getAssetSymbol(address: string): string {
-    const asset = this.assets.find((a) => a.address === address);
+    const asset = this.getAsset(address);
+
     return asset ? asset.symbol : this.t('pool.unknownAsset');
   }
 

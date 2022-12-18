@@ -2,8 +2,14 @@
   <dialog-base :visible.sync="isVisible" :title="title">
     <div class="stake-dialog">
       <s-row v-if="poolAsset" flex align="middle">
-        <pair-token-logo v-if="baseAsset" :first-token="baseAsset" :second-token="poolAsset" class="title-logo" />
-        <token-logo v-else :token="poolAsset" class="title-logo" />
+        <pair-token-logo
+          v-if="baseAsset"
+          key="pair"
+          :first-token="baseAsset"
+          :second-token="poolAsset"
+          class="title-logo"
+        />
+        <token-logo v-else key="token" :token="poolAsset" class="title-logo" />
         <span class="stake-dialog-title">
           <template v-if="baseAsset">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
         </span>
@@ -22,6 +28,7 @@
       <s-form class="el-form--actions" :show-message="false">
         <s-float-input
           v-if="isFarm"
+          key="farm-input"
           size="medium"
           :class="['s-input--stake-part', 's-input--token-value', valuePartCharClass]"
           :value="value"
@@ -48,13 +55,14 @@
             slot="bottom"
             class="slider-container"
             :value="Number(value)"
-            :showTooltip="false"
-            @change="handleValue"
+            :show-tooltip="false"
+            @input="handleValue"
           />
         </s-float-input>
 
         <token-input
           v-else
+          key="stake-input"
           :balance="stakingBalanceCodec"
           :is-max-available="isMaxButtonAvailable"
           :title="inputTitle"
@@ -96,6 +104,7 @@
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
+        :loading="parentLoading"
         :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
         @click="handleConfirm"
       >

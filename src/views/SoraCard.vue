@@ -32,13 +32,12 @@ enum Step {
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
   @state.soraCard.userKycStatus private userKycStatus!: CardIssueStatus;
 
-  @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncVoidFn;
-  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncVoidFn;
-  @action.soraCard.getUserKycStatus private getUserKycStatus!: AsyncVoidFn;
-  @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncVoidFn;
-  @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncVoidFn;
-  @action.pool.unsubscribeAccountLiquidityListAndUpdates
-  private unsubscribeAccountLiquidityListAndUpdates!: AsyncVoidFn;
+  @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncFnWithoutArgs;
+  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncFnWithoutArgs;
+  @action.soraCard.getUserKycStatus private getUserKycStatus!: AsyncFnWithoutArgs;
+  @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
+  @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncFnWithoutArgs;
+  @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribeLPUpdates!: AsyncFnWithoutArgs;
 
   step: Nullable<Step> = null;
   userApplied = false;
@@ -75,8 +74,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
       this.subscribeOnAccountLiquidityUpdates,
       this.subscribeToTotalXorBalance,
     ]);
-
-    this.setResetSubscriptions([this.unsubscribeFromTotalXorBalance, this.unsubscribeAccountLiquidityListAndUpdates]);
+    this.setResetSubscriptions([this.unsubscribeFromTotalXorBalance, this.unsubscribeLPUpdates]);
   }
 
   async beforeDestroy(): Promise<void> {

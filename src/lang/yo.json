@@ -334,8 +334,11 @@
         "AddLiquidityId": "Fi liquidity si",
         "RemoveLiquidity": "Yọ liquidity kuro",
         "PageNotFound": "A o ri ojuwe",
-        "Tokens": "Awon Tokini",
-        "Rewards": "Ere"
+        "Rewards": "Ere",
+        "Explore\/Tokens": "Awọn ami-ami",
+        "Explore\/Pools": "Pools",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Ogbin"
     },
     "mainMenu": {
         "Swap": "Iŕopo",
@@ -348,8 +351,8 @@
         "Stats": "Iṣiro",
         "Support": "Atilẹyin",
         "CreatePair": "Ṣẹda Pair",
-        "Tokens": "Awọn Tokini",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Ye"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Edé"
     },
     "tokens": {
-        "title": "Akojọ awon token",
         "symbol": "Ami",
-        "name": "Orukọ",
         "assetId": "Idanimo dukia"
     },
     "memorandum": "Memorandum {AppName} ati Awọn ofin lilo",

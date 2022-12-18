@@ -14,7 +14,7 @@ const getters = defineGetters<AssetsState>()({
       api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist)
     );
   },
-  nonWhitelistDivisibleAssets(...args): { [key: string]: Asset } {
+  nonWhitelistDivisibleAssets(...args): Record<string, Asset> {
     const { rootState, rootGetters } = assetsGetterContext(args);
     return rootState.wallet.account.assets.reduce((buffer, asset: Asset) => {
       if (!api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist) && asset.decimals) {
@@ -23,7 +23,7 @@ const getters = defineGetters<AssetsState>()({
       return buffer;
     }, {});
   },
-  nonWhitelistDivisibleAccountAssets(...args): { [key: string]: AccountAsset } {
+  nonWhitelistDivisibleAccountAssets(...args): Record<string, AccountAsset> {
     const { rootState, rootGetters } = assetsGetterContext(args);
     return rootState.wallet.account.accountAssets.reduce((buffer, asset: AccountAsset) => {
       if (!api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist) && asset.decimals) {

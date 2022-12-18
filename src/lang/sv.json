@@ -334,8 +334,11 @@
         "AddLiquidityId": "Lägg till Likviditet",
         "RemoveLiquidity": "Ta Bort Likviditet",
         "PageNotFound": "Sidan Hittades Inte",
-        "Tokens": "Tokens",
-        "Rewards": "Rewards"
+        "Rewards": "Rewards",
+        "Explore\/Tokens": "Tokens",
+        "Explore\/Pools": "Pooler",
+        "Explore\/Staking": "Utsättning",
+        "Explore\/Farming": "Farming"
     },
     "mainMenu": {
         "Swap": "Byt",
@@ -348,8 +351,8 @@
         "Stats": "Statistik",
         "Support": "Assistans",
         "CreatePair": "Skapa Par",
-        "Tokens": "Tokens",
-        "StakingContainer": "Utsättning"
+        "StakingContainer": "Utsättning",
+        "Explore\/Container": "Utforska"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Språk"
     },
     "tokens": {
-        "title": "Listade Tokens",
         "symbol": "Symbol",
-        "name": "Namn",
         "assetId": "Tillgångs-ID"
     },
     "memorandum": "{AppName} Promemoria och Användarvillkor",

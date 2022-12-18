@@ -334,8 +334,11 @@
         "AddLiquidityId": "Dodajte likvidnost",
         "RemoveLiquidity": "Uklonite likvidnost",
         "PageNotFound": "Stranica nije pronađena",
-        "Tokens": "Tokeni",
-        "Rewards": "Nagrade"
+        "Rewards": "Nagrade",
+        "Explore\/Tokens": "Tokeni",
+        "Explore\/Pools": "Bazeni",
+        "Explore\/Staking": "Ulaganje",
+        "Explore\/Farming": "Farmanje"
     },
     "mainMenu": {
         "Swap": "Zamijenite",
@@ -348,8 +351,8 @@
         "Stats": "Statistika",
         "Support": "Suport",
         "CreatePair": "Stvorite par",
-        "Tokens": "Tokeni",
-        "StakingContainer": "Ulaganje"
+        "StakingContainer": "Ulaganje",
+        "Explore\/Container": "Istražiti"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Jezik"
     },
     "tokens": {
-        "title": "Navedeni tokeni",
         "symbol": "Simbol",
-        "name": "Ime",
         "assetId": "ID sredstva"
     },
     "memorandum": "{AppName} Memorandum i Uvjeti pružanja usluga",

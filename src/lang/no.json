@@ -334,8 +334,11 @@
         "AddLiquidityId": "Legg til likviditet",
         "RemoveLiquidity": "Fjern likviditet",
         "PageNotFound": "Side ikke funnet",
-        "Tokens": "Tokens",
-        "Rewards": "Belønninger"
+        "Rewards": "Belønninger",
+        "Explore\/Tokens": "Tokens",
+        "Explore\/Pools": "Bassenger",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming"
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -348,8 +351,8 @@
         "Stats": "Statistikk",
         "Support": "Brukerstøtte",
         "CreatePair": "Opprett par",
-        "Tokens": "Tokens",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Utforske"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +822,7 @@
         "title": "Språk"
     },
     "tokens": {
-        "title": "Oppførte token",
         "symbol": "Symbol",
-        "name": "Navn",
         "assetId": "Aktivum ID"
     },
     "memorandum": "{AppName} Memorandum og vilkår for bruk",
