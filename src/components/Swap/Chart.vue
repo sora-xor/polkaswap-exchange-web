@@ -298,7 +298,7 @@ export default class SwapChart extends Mixins(
 
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
   private forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
-
+  private priceUpdateRequestId = 0;
   private priceUpdateWatcher: Nullable<FnWithoutArgs> = null;
   private priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
 
@@ -725,7 +725,7 @@ export default class SwapChart extends Mixins(
     return Math.max(this.getPrecision(min), this.getPrecision(max));
   }
 
-  private getHistoricalPrices(resetChartData = false): void {
+  private async getHistoricalPrices(resetChartData = false): Promise<void> {
     if (resetChartData) {
       this.clearData();
     } else if (this.loading || this.isAllHistoricalPricesFetched(this.pageInfos)) {
@@ -736,26 +736,28 @@ export default class SwapChart extends Mixins(
     if (this.tokensAddresses.length === 2 && !this.isAvailable) return;
 
     const addresses = [...this.tokensAddresses];
+    const requestId = Date.now();
 
-    this.withApi(async () => {
-      await this.withLoading(async () => {
-        try {
-          const response = await this.getChartData(addresses, this.selectedFilter, this.pageInfos);
+    this.priceUpdateRequestId = requestId;
 
-          // if no response, or tokens were changed, return
-          if (!response || !isEqual(addresses)(this.tokensAddresses)) return;
+    await this.withApi(async () => {
+      try {
+        const response = await this.getChartData(addresses, this.selectedFilter, this.pageInfos);
 
-          this.limits = response.limits;
-          this.pageInfos = response.pageInfos;
-          this.precision = response.precision;
-          this.prices = [...this.prices, ...response.prices];
+        // if no response, or tokens were changed, return
+        if (!(response && isEqual(addresses)(this.tokensAddresses) && isEqual(requestId)(this.priceUpdateRequestId)))
+          return;
 
-          this.isFetchingError = false;
-        } catch (error) {
-          this.isFetchingError = true;
-          console.error(error);
-        }
-      });
+        this.limits = response.limits;
+        this.pageInfos = response.pageInfos;
+        this.precision = response.precision;
+        this.prices = [...this.prices, ...response.prices];
+
+        this.isFetchingError = false;
+      } catch (error) {
+        this.isFetchingError = true;
+        console.error(error);
+      }
     });
   }
 
