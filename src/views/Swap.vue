@@ -666,6 +666,7 @@ export default class Swap extends Mixins(
   &__value {
     font-weight: 600;
     font-size: var(--s-font-size-small);
+    white-space: nowrap;
 
     & > span {
       padding-right: 2px;
