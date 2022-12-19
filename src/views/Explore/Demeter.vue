@@ -243,7 +243,8 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
   get items(): DemeterPool[] {
     return Object.values(this.pools)
       .map((poolMap) => Object.values(poolMap))
-      .flat(2) as DemeterPool[];
+      .flat(2)
+      .filter((pool) => !pool.isRemoved) as DemeterPool[];
   }
 
   get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {

@@ -118,7 +118,7 @@
       />
       <settings-dialog :visible.sync="showSettings" />
     </s-form>
-    <swap-chart v-if="chartsEnabled" />
+    <swap-chart v-if="chartsEnabled" :token-from="tokenFrom" :token-to="tokenTo" :is-available="isAvailable" />
   </div>
 </template>
 
