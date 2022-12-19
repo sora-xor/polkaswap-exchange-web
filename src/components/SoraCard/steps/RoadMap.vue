@@ -83,7 +83,7 @@ import { CardIssueStatus } from '@/types/card';
 })
 export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.CameraPermissionMixin) {
   @state.soraCard.userKycStatus private userKycStatus!: CardIssueStatus;
-  @action.soraCard.getUserKycStatus private getUserKycStatus!: AsyncVoidFn;
+  @action.soraCard.getUserKycStatus private getUserKycStatus!: AsyncFnWithoutArgs;
 
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
