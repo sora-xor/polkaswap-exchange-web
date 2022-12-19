@@ -9,7 +9,7 @@
       class="explore-table"
     >
       <!-- Index -->
-      <s-table-column width="280" label="#" fixed-position="left">
+      <s-table-column width="320" label="#" fixed-position="left">
         <template #header>
           <div class="explore-table-item-index">
             <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">#</span>
@@ -40,7 +40,7 @@
         </template>
       </s-table-column>
       <!-- Symbol -->
-      <s-table-column width="104" header-align="center" align="center" prop="symbol">
+      <s-table-column width="108" header-align="center" align="center" prop="symbol">
         <template #header>
           <sort-button name="symbol" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">{{ t('tokens.symbol') }}</span>
@@ -51,7 +51,7 @@
         </template>
       </s-table-column>
       <!-- Price -->
-      <s-table-column v-if="pricesAvailable" key="price" width="104" header-align="left" align="left">
+      <s-table-column v-if="pricesAvailable" key="price" width="130" header-align="left" align="left">
         <template #header>
           <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">Price</span>
@@ -256,7 +256,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
       return {
         ...item,
         price: fpPrice.toNumber(),
-        priceFormatted: fpPrice.toLocaleString(),
+        priceFormatted: new FPNumber(fpPrice.toFixed(7)).toLocaleString(),
         priceChangeDay: fpPriceChangeDay.toNumber(),
         priceChangeDayFP: fpPriceChangeDay,
         priceChangeWeek: fpPriceChangeWeek.toNumber(),
