@@ -1,5 +1,5 @@
 <template>
-  <div class="route-assets">
+  <div v-loading="parentLoading" class="route-assets">
     <component :is="component"></component>
     <!-- <div class="temp-div">
       <s-button
