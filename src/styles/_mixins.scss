@@ -587,68 +587,6 @@ $primary-button-box-shadow: 0px 0px 20px #99910d;
   }
 }
 
-@mixin flex-between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-@mixin flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@mixin flex-start {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-@mixin routes-table {
-  background: transparent;
-
-  th.el-table__cell .cell span {
-    text-transform: uppercase;
-    font-weight: 800;
-    font-size: var(--s-font-size-small);
-    color: var(--s-color-brand-day);
-    white-space: nowrap;
-  }
-
-  th.el-table__cell .cell {
-    white-space: nowrap;
-  }
-
-  tr,
-  th {
-    &,
-    &:hover {
-      background: transparent;
-
-      & > td,
-      & > th {
-        // background: transparent;
-
-        .cell {
-          padding: $inner-spacing-mini / 2 $inner-spacing-mini;
-          word-break: break-word;
-        }
-      }
-    }
-  }
-
-  .el-table__body-wrapper {
-    height: auto !important;
-  }
-}
-
-@mixin pagination {
-  display: flex;
-  margin-top: $inner-spacing-medium;
-  .el-pagination__total {
-    margin: auto;
-  }}
 @mixin focus-outline($inner: false, $focusWithin: false, $borderRadius: '', $withOffset: false) {
   $outline: 1px solid var(--s-color-outline);
   @if $inner == true {

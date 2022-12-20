@@ -24,12 +24,13 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Components } from '@/consts';
+import { AdarComponents } from '@/consts/adar';
 import { lazyComponent } from '@/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    UploadCsvDialog: lazyComponent(Components.UploadCSVDialog),
+    UploadCsvDialog: lazyComponent(AdarComponents.UploadCSVDialog),
   },
 })
 export default class UploadCSV extends Mixins(TranslationMixin) {

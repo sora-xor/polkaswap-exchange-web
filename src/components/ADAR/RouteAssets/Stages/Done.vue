@@ -77,7 +77,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Components } from '@/consts';
+import { AdarComponents } from '@/consts/adar';
 import { lazyComponent } from '@/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
@@ -93,7 +93,7 @@ import { jsPDF as JsPDF } from 'jspdf';
   components: {
     TokenLogo: components.TokenLogo,
     WarningMessage,
-    FailedTransactionsDialog: lazyComponent(Components.RouteAssetsFailedTransactionsDialog),
+    FailedTransactionsDialog: lazyComponent(AdarComponents.RouteAssetsFailedTransactionsDialog),
   },
 })
 export default class RoutingCompleted extends Mixins(TranslationMixin) {

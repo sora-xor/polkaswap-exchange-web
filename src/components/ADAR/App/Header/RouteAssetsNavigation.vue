@@ -18,7 +18,7 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import AdarLogo from '@/components/logo/Adar.vue';
 import { getter } from '@/store/decorators';
-import { Stages } from '@/store/routeAssets/consts';
+import { Stages } from '@/consts/adar';
 
 @Component({
   components: {

@@ -4,7 +4,7 @@ import { routeAssetsGetterContext } from '@/store/routeAssets';
 import type { Recipient, RouteAssetsState, RouteAssetsSubscription } from './types';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import state from './state';
-import { Stages } from './consts';
+import { Stages } from '@/consts/adar';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import { Subscription } from 'rxjs';
 

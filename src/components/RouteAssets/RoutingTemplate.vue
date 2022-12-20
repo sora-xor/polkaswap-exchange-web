@@ -40,11 +40,12 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { groupBy, sumBy } from 'lodash';
 import { Recipient, RecipientStatus } from '@/store/routeAssets/types';
 import { Asset } from '@sora-substrate/util/build/assets/types';
+import { AdarComponents } from '@/consts/adar';
 @Component({
   components: {
-    TemplateSummary: lazyComponent(Components.TemplateSummary),
-    TransactionOverview: lazyComponent(Components.TransactionOverview),
-    AuthorizeDialog: lazyComponent(Components.AuthorizeRoutingTemplateDialog),
+    TemplateSummary: lazyComponent(AdarComponents.TemplateSummary),
+    TransactionOverview: lazyComponent(AdarComponents.TransactionOverview),
+    AuthorizeDialog: lazyComponent(AdarComponents.AuthorizeRoutingTemplateDialog),
     SelectToken: lazyComponent(Components.SelectToken),
   },
 })

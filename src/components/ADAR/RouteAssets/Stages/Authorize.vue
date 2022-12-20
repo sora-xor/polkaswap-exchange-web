@@ -52,8 +52,6 @@ import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import { components, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 @Component({
   components: {
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    UploadCsvDialog: lazyComponent(Components.UploadCSVDialog),
     TokenLogo: components.TokenLogo,
   },
 })

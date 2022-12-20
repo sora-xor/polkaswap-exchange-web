@@ -8,6 +8,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Components } from '@/consts';
+import { AdarComponents } from '@/consts/adar';
 import { lazyComponent } from '@/router';
 import { getter, action, mutation } from '@/store/decorators';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -16,8 +17,8 @@ import { PrimaryMarketsEnabledAssets } from '@sora-substrate/liquidity-proxy';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    RoutingTemplate: lazyComponent(Components.RoutingTemplate),
-    UploadCsv: lazyComponent(Components.UploadCSV),
+    RoutingTemplate: lazyComponent(AdarComponents.RoutingTemplate),
+    UploadCsv: lazyComponent(AdarComponents.UploadCSV),
   },
 })
 export default class RouteAssets extends Mixins(mixins.LoadingMixin, TranslationMixin) {

@@ -1,0 +1,70 @@
+
+@mixin flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  @mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  @mixin flex-start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  @mixin routes-table {
+    background: transparent;
+  
+    th.el-table__cell .cell span {
+      text-transform: uppercase;
+      font-weight: 800;
+      font-size: var(--s-font-size-small);
+      color: var(--s-color-brand-day);
+      white-space: nowrap;
+    }
+  
+    th.el-table__cell .cell {
+      white-space: nowrap;
+    }
+  
+    tr,
+    th {
+      &,
+      &:hover {
+        background: transparent;
+  
+        & > td,
+        & > th {
+          // background: transparent;
+  
+          .cell {
+            padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+            word-break: break-word;
+          }
+        }
+      }
+      &:hover,
+      &.hover-row {
+        & > td,
+        & > th {
+          background: var(--s-color-base-background);
+        }
+      }
+    }
+  
+    .el-table__body-wrapper {
+      height: auto !important;
+    }
+  }
+  
+  @mixin pagination {
+    display: flex;
+    margin-top: $inner-spacing-medium;
+    .el-pagination__total {
+      margin: auto;
+    }}

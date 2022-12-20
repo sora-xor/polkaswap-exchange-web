@@ -103,6 +103,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Components } from '@/consts';
+import { AdarComponents } from '@/consts/adar';
 import { lazyComponent } from '@/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
@@ -116,9 +117,9 @@ import WarningMessage from '../WarningMessage.vue';
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
-    SwapDialog: lazyComponent(Components.RouteAssetsSwapDialog),
+    SwapDialog: lazyComponent(AdarComponents.RouteAssetsSwapDialog),
     WarningMessage,
-    SelectInputAssetDialog: lazyComponent(Components.RouteAssetsSelectInputAssetDialog),
+    SelectInputAssetDialog: lazyComponent(AdarComponents.RouteAssetsSelectInputAssetDialog),
   },
 })
 export default class ReviewDetails extends Mixins(TranslationMixin) {

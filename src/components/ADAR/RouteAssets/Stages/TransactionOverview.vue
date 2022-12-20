@@ -170,6 +170,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Components } from '@/consts';
+import { AdarComponents } from '@/consts/adar';
 import { lazyComponent } from '@/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
@@ -181,8 +182,7 @@ import validate from '@/store/routeAssets/utils';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    UploadCsvDialog: lazyComponent(Components.UploadCSVDialog),
-    SelectInputAssetDialog: lazyComponent(Components.RouteAssetsSelectInputAssetDialog),
+    SelectInputAssetDialog: lazyComponent(AdarComponents.RouteAssetsSelectInputAssetDialog),
     TokenLogo: components.TokenLogo,
     SearchInput: components.SearchInput,
   },

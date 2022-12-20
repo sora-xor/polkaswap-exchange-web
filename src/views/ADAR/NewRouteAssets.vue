@@ -23,7 +23,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Components } from '@/consts';
+import { AdarComponents } from '@/consts/adar';
 import { lazyComponent } from '@/router';
 import { getter, action, mutation } from '@/store/decorators';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -32,13 +32,13 @@ import { LiquiditySourceTypes, PrimaryMarketsEnabledAssets } from '@sora-substra
 import { FeatureFlags } from '@/store/settings/types';
 @Component({
   components: {
-    Authorize: lazyComponent(Components.RouteAssetsAuthorize),
-    Done: lazyComponent(Components.RouteAssetsDone),
-    ProcessTemplate: lazyComponent(Components.RouteAssetsProcessTemplate),
-    ReviewDetails: lazyComponent(Components.RouteAssetsReviewDetails),
-    Routing: lazyComponent(Components.RouteAssetsRouting),
-    TransactionOverview: lazyComponent(Components.RouteAssetsTransactionOverview),
-    UploadTemplate: lazyComponent(Components.RouteAssetsUploadTemplate),
+    Authorize: lazyComponent(AdarComponents.RouteAssetsAuthorize),
+    Done: lazyComponent(AdarComponents.RouteAssetsDone),
+    ProcessTemplate: lazyComponent(AdarComponents.RouteAssetsProcessTemplate),
+    ReviewDetails: lazyComponent(AdarComponents.RouteAssetsReviewDetails),
+    Routing: lazyComponent(AdarComponents.RouteAssetsRouting),
+    TransactionOverview: lazyComponent(AdarComponents.RouteAssetsTransactionOverview),
+    UploadTemplate: lazyComponent(AdarComponents.RouteAssetsUploadTemplate),
   },
 })
 export default class RouteAssets extends Mixins(mixins.LoadingMixin, TranslationMixin) {
