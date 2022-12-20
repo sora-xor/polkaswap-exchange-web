@@ -4,25 +4,24 @@ import type { VUEX_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type store from '@/store';
 
 type BaseModuleDecorator<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> = {
-  prices: VUEX_TYPES.BaseDecorator<T1>;
-  router: VUEX_TYPES.BaseDecorator<T2>;
-  web3: VUEX_TYPES.BaseDecorator<T3>;
-  assets: VUEX_TYPES.BaseDecorator<T4>;
-  settings: VUEX_TYPES.BaseDecorator<T5>;
-  swap: VUEX_TYPES.BaseDecorator<T6>;
-  referrals: VUEX_TYPES.BaseDecorator<T7>;
-  pool: VUEX_TYPES.BaseDecorator<T8>;
-  moonpay: VUEX_TYPES.BaseDecorator<T9>;
-  bridge: VUEX_TYPES.BaseDecorator<T10>;
-  addLiquidity: VUEX_TYPES.BaseDecorator<T11>;
-  removeLiquidity: VUEX_TYPES.BaseDecorator<T12>;
-  rewards: VUEX_TYPES.BaseDecorator<T13>;
-  demeterFarming: VUEX_TYPES.BaseDecorator<T14>;
-  routeAssets: VUEX_TYPES.BaseDecorator<T15>;
+  router: VUEX_TYPES.BaseDecorator<T1>;
+  web3: VUEX_TYPES.BaseDecorator<T2>;
+  assets: VUEX_TYPES.BaseDecorator<T3>;
+  settings: VUEX_TYPES.BaseDecorator<T4>;
+  swap: VUEX_TYPES.BaseDecorator<T5>;
+  referrals: VUEX_TYPES.BaseDecorator<T6>;
+  pool: VUEX_TYPES.BaseDecorator<T7>;
+  moonpay: VUEX_TYPES.BaseDecorator<T8>;
+  bridge: VUEX_TYPES.BaseDecorator<T9>;
+  addLiquidity: VUEX_TYPES.BaseDecorator<T10>;
+  removeLiquidity: VUEX_TYPES.BaseDecorator<T11>;
+  rewards: VUEX_TYPES.BaseDecorator<T12>;
+  demeterFarming: VUEX_TYPES.BaseDecorator<T13>;
+  routeAssets: VUEX_TYPES.BaseDecorator<T14>;
+  soraCard: VUEX_TYPES.BaseDecorator<T15>;
 };
 
 export type StateDecorators = BaseModuleDecorator<
-  typeof store.state.prices,
   typeof store.state.router,
   typeof store.state.web3,
   typeof store.state.assets,
@@ -36,12 +35,12 @@ export type StateDecorators = BaseModuleDecorator<
   typeof store.state.removeLiquidity,
   typeof store.state.rewards,
   typeof store.state.demeterFarming,
-  typeof store.state.routeAssets
+  typeof store.state.routeAssets,
+  typeof store.state.soraCard
 > &
   VUEX_TYPES.WalletStateDecorators;
 
 export type GettersDecorators = BaseModuleDecorator<
-  typeof store.getters.prices,
   typeof store.getters.router,
   typeof store.getters.web3,
   typeof store.getters.assets,
@@ -55,12 +54,12 @@ export type GettersDecorators = BaseModuleDecorator<
   typeof store.getters.removeLiquidity,
   typeof store.getters.rewards,
   typeof store.getters.demeterFarming,
-  typeof store.getters.routeAssets
+  typeof store.getters.routeAssets,
+  typeof store.getters.soraCard
 > &
   VUEX_TYPES.WalletGettersDecorators & { libraryDesignSystem: VueDecorator; libraryTheme: VueDecorator };
 
 export type CommitDecorators = BaseModuleDecorator<
-  typeof store.commit.prices,
   typeof store.commit.router,
   typeof store.commit.web3,
   typeof store.commit.assets,
@@ -74,12 +73,12 @@ export type CommitDecorators = BaseModuleDecorator<
   typeof store.commit.removeLiquidity,
   typeof store.commit.rewards,
   typeof store.commit.demeterFarming,
-  typeof store.commit.routeAssets
+  typeof store.commit.routeAssets,
+  typeof store.commit.soraCard
 > &
   VUEX_TYPES.WalletCommitDecorators;
 
 export type DispatchDecorators = BaseModuleDecorator<
-  typeof store.dispatch.prices,
   typeof store.dispatch.router,
   typeof store.dispatch.web3,
   typeof store.dispatch.assets,
@@ -93,6 +92,7 @@ export type DispatchDecorators = BaseModuleDecorator<
   typeof store.dispatch.removeLiquidity,
   typeof store.dispatch.rewards,
   typeof store.dispatch.demeterFarming,
-  typeof store.dispatch.routeAssets
+  typeof store.dispatch.routeAssets,
+  typeof store.dispatch.soraCard
 > &
   VUEX_TYPES.WalletDispatchDecorators;

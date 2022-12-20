@@ -240,8 +240,8 @@ export default class ProcessTemplate extends Mixins(TranslationMixin) {
   }
 
   &__file-info {
-    background: #f4f0f1;
-    box-shadow: 1px 1px 5px #ffffff, inset -5px -5px 5px rgba(255, 255, 255, 0.5), inset 1px 1px 10px rgba(0, 0, 0, 0.1);
+    background: var(--s-color-utility-body);
+    box-shadow: var(--s-shadow-element);
     border-radius: 24px;
     padding: 11px 16px;
     @include flex-start;

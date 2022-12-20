@@ -33,7 +33,7 @@
           :value="amount"
           :decimals="getDecimals(isSoraToEvm)"
           :delimiters="delimiters"
-          :max="getMax(assetAddress)"
+          :max="MaxInputNumber"
           :disabled="!areNetworksConnected || !isAssetSelected"
           class="s-input--token-value"
           data-test-name="bridgeFrom"
@@ -88,7 +88,12 @@
             </div>
             <div v-if="isNetworkAConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <s-tooltip :content="getCopyTooltip(isSoraToEvm)" border-radius="mini" placement="bottom-end">
+              <s-tooltip
+                :content="getCopyTooltip(isSoraToEvm)"
+                border-radius="mini"
+                placement="bottom-end"
+                tabindex="-1"
+              >
                 <span class="bridge-network-address" @click="handleCopyAddress(accountAddressFrom, $event)">
                   {{ formatAddress(accountAddressFrom, 8) }}
                 </span>
@@ -119,7 +124,7 @@
           :value="amount"
           :decimals="getDecimals(!isSoraToEvm)"
           :delimiters="delimiters"
-          :max="getMax(assetAddress)"
+          :max="MaxInputNumber"
           class="s-input--token-value"
           data-test-name="bridgeTo"
           has-locale-string
@@ -157,7 +162,12 @@
             </div>
             <div v-if="isNetworkBConnected" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <s-tooltip :content="getCopyTooltip(!isSoraToEvm)" border-radius="mini" placement="bottom-end">
+              <s-tooltip
+                :content="getCopyTooltip(!isSoraToEvm)"
+                border-radius="mini"
+                placement="bottom-end"
+                tabindex="-1"
+              >
                 <span class="bridge-network-address" @click="handleCopyAddress(accountAddressTo, $event)">
                   {{ formatAddress(accountAddressTo, 8) }}
                 </span>
@@ -317,10 +327,10 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setAmount setAmount!: (value: string) => void;
 
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
-  @action.bridge.resetBridgeForm private resetBridgeForm!: AsyncVoidFn;
-  @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncVoidFn;
-  @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncVoidFn;
-  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
+  @action.bridge.resetBridgeForm private resetBridgeForm!: AsyncFnWithoutArgs;
+  @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
 
@@ -467,9 +477,15 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(balance, decimals);
   }
 
-  created(): void {
-    // we should reset data only on created, because it's used on another bridge views
-    this.resetBridgeForm();
+  async created(): Promise<void> {
+    if (this.$route.params.xorToDeposit) {
+      await this.selectAsset(this.xor);
+      this.setSoraToEvm(false);
+      this.setAmount(this.$route.params.xorToDeposit);
+    } else {
+      // we should reset data only on created, because it's used on another bridge views
+      this.resetBridgeForm();
+    }
   }
 
   destroyed(): void {
@@ -481,7 +497,7 @@ export default class Bridge extends Mixins(
   }
 
   getCopyTooltip(isSoraNetwork = false): string {
-    return this.copyTooltip(this.t(`bridge.${isSoraNetwork ? 'soraAddress' : 'ethereumAddress'}`));
+    return this.copyTooltip(isSoraNetwork ? this.t('bridge.soraAddress') : this.t('bridge.ethereumAddress'));
   }
 
   async handleSwitchItems(): Promise<void> {

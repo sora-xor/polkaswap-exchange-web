@@ -3,7 +3,6 @@ import { vuex } from '@soramitsu/soraneo-wallet-web';
 const { WalletModules } = vuex;
 
 export enum Module {
-  Prices = 'prices',
   Router = 'router',
   Web3 = 'web3',
   Assets = 'assets',
@@ -19,6 +18,7 @@ export enum Module {
   Rewards = 'rewards',
   DemeterFarming = 'demeterFarming',
   RouteAssets = 'routeAssets',
+  SoraCard = 'soraCard',
 }
 
 export const Modules = [...Object.values(Module), ...WalletModules];

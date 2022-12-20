@@ -77,7 +77,6 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { action, mutation, state } from '@/store/decorators';
 import { FPNumber } from '@sora-substrate/util/build';
 import validate from '@/store/routeAssets/utils';
-import actions from '@/store/prices/actions';
 
 const initModel: any = {
   name: '',

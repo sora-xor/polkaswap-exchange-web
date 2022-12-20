@@ -10,7 +10,7 @@
           </div>
         </div>
         <div class="chart-filters">
-          <s-tabs type="rounded" :value="selectedFilter.name" @click="selectFilter">
+          <s-tabs type="rounded" :value="selectedFilter.name" @input="selectFilter">
             <s-tab
               v-for="filter in filters"
               :key="filter.name"
@@ -285,7 +285,7 @@ export default class SwapChart extends Mixins(
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
   forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
 
-  priceUpdateWatcher: Nullable<VoidFunction> = null;
+  priceUpdateWatcher: Nullable<FnWithoutArgs> = null;
   priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
@@ -354,15 +354,6 @@ export default class SwapChart extends Mixins(
     return calcPriceChange(rangeClosePrice, rangeStartPrice);
   }
 
-  get timeFormat(): string {
-    switch (this.selectedFilter.type) {
-      case SUBQUERY_TYPES.AssetSnapshotTypes.DAY:
-        return 'll';
-      default:
-        return 'LT';
-    }
-  }
-
   get axisLabelCSS() {
     return {
       fontFamily: 'Sora',
@@ -373,15 +364,14 @@ export default class SwapChart extends Mixins(
   }
 
   get gridLeftOffset(): number {
-    return (
-      AXIS_OFFSET +
-      2 * LABEL_PADDING +
-      getTextWidth(
-        String(this.limits.max.toFixed(this.precision)),
-        this.axisLabelCSS.fontFamily,
-        this.axisLabelCSS.fontSize
-      )
+    const maxLabel = this.limits.max * 10;
+    const axisLabelWidth = getTextWidth(
+      String(maxLabel.toFixed(this.precision)),
+      this.axisLabelCSS.fontFamily,
+      this.axisLabelCSS.fontSize
     );
+
+    return AXIS_OFFSET + 2 * LABEL_PADDING + axisLabelWidth;
   }
 
   // ordered by timestamp ASC
@@ -438,7 +428,8 @@ export default class SwapChart extends Mixins(
             const date = dayjs(+value);
             const isNewDay = date.hour() === 0 && date.minute() === 0;
             const isNewMonth = date.date() === 1 && isNewDay;
-            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'LT';
+            // TODO: "LT" formatted labels (hours) sometimes overlaps (AM\PM issue)
+            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'HH:mm';
             const formatted = this.formatDate(+value, timeFormat);
 
             if (isNewMonth) {
@@ -452,10 +443,12 @@ export default class SwapChart extends Mixins(
           },
           rich: {
             monthStyle: {
-              fornWeight: 'bold',
+              fontSize: 10,
+              fontWeight: 'bold',
             },
             dateStyle: {
-              fornWeight: 'bold',
+              fontSize: 10,
+              fontWeight: 'bold',
             },
           },
           color: this.theme.color.base.content.secondary,
@@ -884,7 +877,7 @@ export default class SwapChart extends Mixins(
     this.subscribeToPriceUpdates();
   }
 
-  selectFilter({ name }): void {
+  selectFilter(name: string): void {
     const filter = this.filters.find((item) => item.name === name);
 
     if (!filter) return;
@@ -899,7 +892,7 @@ export default class SwapChart extends Mixins(
 
   handleZoom(event: any): void {
     event?.stop?.();
-    if (event?.wheelDelta === -1 && this.zoomStart === 0 && this.zoomEnd === 100) {
+    if (event?.wheelDelta < 0 && this.zoomStart === 0 && this.zoomEnd === 100) {
       this.updatePrices();
     }
   }
@@ -938,7 +931,7 @@ $skeleton-label-width: 34px;
 .charts {
   &-price {
     display: flex;
-    margin-bottom: $inner-spacing-mini / 2;
+    margin-bottom: $inner-spacing-tiny;
     font-weight: 800;
     font-size: var(--s-heading3-font-size);
     line-height: var(--s-line-height-extra-small);
@@ -1005,7 +998,7 @@ $skeleton-label-width: 34px;
 }
 
 .charts-skeleton {
-  $margin-right: #{$inner-spacing-mini / 2};
+  $margin-right: #{$inner-spacing-tiny};
   $skeleton-label-width-mobile: calc((100% - #{$margin-right} * 10) / 11);
   $skeleton-spacing: 18px;
   position: relative;

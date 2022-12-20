@@ -4,7 +4,6 @@ import { createDirectStore, StoreOrModuleOptions } from 'direct-vuex';
 import { vuex } from '@soramitsu/soraneo-wallet-web';
 import type { DirectActions, DirectGetters, DirectMutations, DirectState } from 'direct-vuex/types/direct-types';
 
-import prices from './prices';
 import router from './router';
 import web3 from './web3';
 import assets from './assets';
@@ -19,12 +18,12 @@ import removeLiquidity from './removeLiquidity';
 import rewards from './rewards';
 import demeterFarming from './demeterFarming';
 import routeAssets from './routeAssets';
+import soraCard from './soraCard';
 
 Vue.use(Vuex);
 
 const modules = {
   wallet: vuex.walletModules.wallet,
-  prices,
   router,
   web3,
   assets,
@@ -39,6 +38,7 @@ const modules = {
   rewards,
   demeterFarming,
   routeAssets,
+  soraCard,
 };
 
 const { store, rootGetterContext, rootActionContext } = createDirectStore({

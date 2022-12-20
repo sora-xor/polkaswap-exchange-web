@@ -79,14 +79,26 @@ export default class Wallet extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .container--wallet {
+  padding: 0;
   > .el-card {
     &__header {
       padding-top: 0;
       padding-right: 0;
       padding-left: 0;
+
+      .base-title_action {
+        > button {
+          display: none;
+        }
+      }
     }
     &__body {
       padding: $inner-spacing-medium 0 0;
+
+      button.liquidity.asset-details-action,
+      button.bridge.asset-details-action {
+        display: none !important;
+      }
     }
   }
   .history .history-items {

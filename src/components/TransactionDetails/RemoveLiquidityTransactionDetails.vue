@@ -47,12 +47,12 @@ export default class RemoveLiquidityTransactionDetails extends Mixins(mixins.For
   readonly XOR_SYMBOL = XOR.symbol;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @state.prices.priceReversed priceReversed!: string;
-  @state.prices.price price!: string;
 
   @getter.removeLiquidity.shareOfPool shareOfPool!: string;
   @getter.removeLiquidity.firstToken firstToken!: Nullable<Asset>;
   @getter.removeLiquidity.secondToken secondToken!: Nullable<Asset>;
+  @getter.removeLiquidity.priceReversed priceReversed!: string;
+  @getter.removeLiquidity.price price!: string;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
 

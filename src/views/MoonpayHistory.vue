@@ -12,9 +12,11 @@
         <div class="moonpay-history-title">{{ t('moonpay.history.title') }}</div>
         <div :class="['moonpay-history-list', { empty: emptyHistory }]" v-loading="loading">
           <div
+            v-button
             v-for="item in formattedItems"
             :key="item.id"
             class="moonpay-history-item"
+            tabindex="0"
             @click="navigateToDetails(item)"
           >
             <div class="moonpay-history-item-data">
@@ -114,10 +116,10 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   @getter.moonpay.currenciesById private currenciesById!: MoonpayCurrenciesById;
   @getter.libraryTheme libraryTheme!: Theme;
 
-  @action.moonpay.getTransactions private getTransactions!: AsyncVoidFn;
-  @action.moonpay.getCurrencies private getCurrencies!: AsyncVoidFn;
+  @action.moonpay.getTransactions private getTransactions!: AsyncFnWithoutArgs;
+  @action.moonpay.getCurrencies private getCurrencies!: AsyncFnWithoutArgs;
 
-  private unwatchEthereum!: VoidFunction;
+  private unwatchEthereum!: FnWithoutArgs;
 
   pageAmount = 5; // override PaginationSearchMixin
   currentView = HistoryView;

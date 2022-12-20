@@ -6,6 +6,7 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import state from './state';
 import { Stages } from './consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
+import { Subscription } from 'rxjs';
 
 const getters = defineGetters<RouteAssetsState>()({
   recipients(...args): Array<Recipient> {
@@ -27,6 +28,10 @@ const getters = defineGetters<RouteAssetsState>()({
   subscriptions(...args): Array<RouteAssetsSubscription> {
     const { state } = routeAssetsGetterContext(args);
     return state.subscriptions;
+  },
+  enabledAssetsSubscription(...args): Nullable<Subscription> {
+    const { state } = routeAssetsGetterContext(args);
+    return state.enabledAssetsSubscription;
   },
   isDataExisting(): boolean {
     return state.recipients.length > 0;

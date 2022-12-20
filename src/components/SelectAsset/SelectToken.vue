@@ -1,6 +1,6 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="t('selectToken.title')" custom-class="asset-select">
-    <s-tabs v-model="tabValue" class="s-tabs--exchange" type="rounded" @click="handleTabClick">
+    <s-tabs :value="tabValue" class="s-tabs--exchange" type="rounded" @input="handleTabChange">
       <search-input
         ref="search"
         v-model="query"
@@ -12,7 +12,7 @@
 
       <s-tab :label="t('selectToken.assets.title')" name="assets"></s-tab>
 
-      <s-tab :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
+      <s-tab :disabled="disabledCustom" :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
         <template v-if="customAsset">
           <span v-if="alreadyAttached">{{ t('selectToken.custom.alreadyAttached') }}</span>
 
@@ -64,6 +64,7 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
+import { XOR, XSTUSD } from '@sora-substrate/util/build/assets/consts';
 
 enum Tabs {
   Assets = 'assets',
@@ -88,13 +89,15 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset;
   @Prop({ default: false, type: Boolean }) readonly accountAssetsOnly!: boolean;
   @Prop({ default: false, type: Boolean }) readonly notNullBalanceOnly!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly disabledCustom!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isMainTokenProviders!: boolean;
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
 
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
-  @getter.assets.nonWhitelistDivisibleAssets private nonWhitelistAssets!: { [key: string]: Asset };
-  @getter.assets.nonWhitelistDivisibleAccountAssets private nonWhitelistAccountAssets!: { [key: string]: AccountAsset };
+  @getter.assets.nonWhitelistDivisibleAssets private nonWhitelistAssets!: Record<string, Asset>;
+  @getter.assets.nonWhitelistDivisibleAccountAssets private nonWhitelistAccountAssets!: Record<string, AccountAsset>;
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
   @getter.wallet.account.whitelist public whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
@@ -103,23 +106,19 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
 
   @Watch('visible')
-  async handleTabChange(value: boolean): Promise<void> {
+  async handleTabReset(value: boolean): Promise<void> {
     if (!value) return;
 
     this.tabValue = first(this.tokenTabs);
   }
 
   get whitelistAssetsList(): Array<AccountAsset> {
-    const {
-      asset: excludeAsset,
-      whitelistAssets: assets,
-      accountAssetsAddressTable,
-      notNullBalanceOnly,
-      accountAssetsOnly,
-    } = this;
+    const whiteList = this.isMainTokenProviders ? this.getMainSources() : this.whitelistAssets;
+
+    const { asset: excludeAsset, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this;
 
     return this.getAssetsWithBalances({
-      assets,
+      assets: whiteList,
       accountAssetsAddressTable,
       notNullBalanceOnly,
       accountAssetsOnly,
@@ -159,6 +158,12 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     return Object.values(this.nonWhitelistAccountAssets).sort(this.sortByBalance());
   }
 
+  private getMainSources(): Array<Asset> {
+    const mainSourceAddresses = [XOR.address, XSTUSD.address];
+
+    return this.whitelistAssets.filter((asset) => mainSourceAddresses.includes(asset.address));
+  }
+
   async handleAddAsset(): Promise<void> {
     if (!this.customAsset) return;
 
@@ -174,7 +179,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     api.assets.removeAccountAsset(asset.address);
   }
 
-  handleTabClick({ name }): void {
+  handleTabChange(name: Tabs): void {
     this.tabValue = name;
     this.handleClearSearch();
   }
@@ -190,7 +195,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     }
   }
 
-  @include exchange-tabs();
+  @include exchange-tabs;
 }
 </style>
 
@@ -200,6 +205,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   margin-left: $inner-spacing-big;
   margin-bottom: $inner-spacing-medium;
   width: calc(100% - 2 * #{$inner-spacing-big});
+  @include focus-outline($withOffset: true);
 }
 
 .token-list_text {

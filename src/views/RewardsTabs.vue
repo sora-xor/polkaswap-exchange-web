@@ -1,6 +1,6 @@
 <template>
   <div class="container rewards-tabs">
-    <s-tabs :value="currentTab" type="card" @change="handleChangeTab">
+    <s-tabs :value="currentTab" type="card" @input="handleChangeTab">
       <s-tab
         v-for="rewardsTab in RewardsTabsItems"
         :key="rewardsTab"

@@ -15,7 +15,7 @@
         </template>
       </status-action-badge>
     </generic-page-header>
-    <s-float-input
+    <!-- <s-float-input
       class="s-input--token-value"
       size="medium"
       :value="fromValue"
@@ -76,7 +76,24 @@
           class="input-value"
         />
       </div>
-    </s-float-input>
+    </s-float-input> -->
+    <token-input
+      data-test-name="swapFrom"
+      is-select-available
+      :balance="getTokenBalance(tokenFrom)"
+      :is-max-available="isMaxSwapAvailable"
+      :title="t('transfers.from')"
+      :token="tokenFrom"
+      :value="fromValue"
+      @input="handleInputFieldFrom"
+      @focus="handleFocusField(false)"
+      @max="handleMaxValue"
+      @select="openSelectTokenDialog(true)"
+    >
+      <template #title-append v-if="areTokensSelected && !isZeroToAmount && isExchangeB">
+        <span class="input-title--uppercase input-title--primary"> ({{ t('swap.estimated') }}) </span>
+      </template>
+    </token-input>
     <s-button
       class="el-button--switch-tokens"
       type="action"
@@ -84,7 +101,7 @@
       :disabled="!areTokensSelected || assetsAreEqual"
       @click="handleSwitchTokens"
     />
-    <s-float-input
+    <!-- <s-float-input
       class="s-input--token-value"
       size="medium"
       :value="valueToDisplayed"
@@ -140,7 +157,27 @@
           class="input-value"
         />
       </div>
-    </s-float-input>
+    </s-float-input> -->
+    <token-input
+      data-test-name="swapTo"
+      is-select-available
+      :balance="getTokenBalance(tokenTo)"
+      :title="t('transfers.to')"
+      :token="tokenTo"
+      :value="toValue"
+      @input="handleInputFieldTo"
+      @focus="handleFocusField(true)"
+      @select="openSelectTokenDialog(false)"
+    >
+      <template #title-append v-if="areTokensSelected && !isZeroFromAmount && !isExchangeB">
+        <span class="input-title--uppercase input-title--primary"> ({{ t('swap.estimated') }}) </span>
+      </template>
+      <template #fiat-amount-append v-if="tokenTo">
+        <value-status-wrapper :value="fiatDifference" class="price-difference__value">
+          (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
+        </value-status-wrapper>
+      </template>
+    </token-input>
     <!-- SEND -->
     <s-input
       v-if="isSend"
@@ -251,6 +288,7 @@ import type {
   QuotePayload,
   PrimaryMarketsEnabledAssets,
   LPRewardsInfo,
+  SwapResult,
 } from '@sora-substrate/liquidity-proxy/build/types';
 import { getter, state, mutation, action } from '@/store/decorators';
 
@@ -262,11 +300,14 @@ import {
   hasInsufficientBalance,
   hasInsufficientXorForFee,
   asZeroValue,
-  formatAssetBalance,
+  getAssetBalance,
   debouncedInputHandler,
+  formatAssetBalance,
 } from '@/utils';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames, MarketAlgorithms } from '@/consts';
+import { DexQuoteData } from '@/store/swap/types';
+import { DexId } from '@sora-substrate/util/build/dex/consts';
 
 @Component({
   components: {
@@ -378,8 +419,9 @@ export default class Send extends Mixins(mixins.FormattedAmountMixin, Translatio
   }
   // __________________________________________________________
 
-  @state.swap.paths private paths!: QuotePaths;
-  @state.swap.payload private payload!: QuotePayload;
+  // @state.swap.paths private paths!: QuotePaths;
+  // @state.swap.payload private payload!: QuotePayload;
+  @state.swap.dexQuoteData private dexQuoteData!: Record<DexId, DexQuoteData>;
   @state.swap.isExchangeB isExchangeB!: boolean;
   @state.swap.fromValue fromValue!: string;
   @state.swap.toValue toValue!: string;
@@ -406,10 +448,18 @@ export default class Send extends Mixins(mixins.FormattedAmountMixin, Translatio
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
-  @action.swap.reset private reset!: AsyncVoidFn;
-  @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
-  @action.swap.resetSubscriptions private resetSubscriptions!: AsyncVoidFn;
-  @action.swap.updateSubscriptions private updateSubscriptions!: AsyncVoidFn;
+  @action.swap.reset private reset!: AsyncFnWithoutArgs;
+  // @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
+  @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (data: {
+    dexId: number;
+    payload: QuotePayload;
+  }) => void;
+
+  @action.swap.resetSubscriptions private resetSubscriptions!: AsyncFnWithoutArgs;
+  @action.swap.updateSubscriptions private updateSubscriptions!: AsyncFnWithoutArgs;
+  @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
+  @state.swap.enabledAssets private enabledAssets!: PrimaryMarketsEnabledAssets;
+  @action.swap.updateSubscriptions private updateBalanceSubscriptions!: AsyncFnWithoutArgs;
 
   @Watch('liquiditySource')
   private handleLiquiditySourceChange(): void {
@@ -580,10 +630,20 @@ export default class Send extends Mixins(mixins.FormattedAmountMixin, Translatio
         await this.setTokenToAddress();
       }
 
-      if (!this.enabledAssetsSubscription) {
-        this.subscribeOnEnabledAssets();
-      }
+      // if (!this.enabledAssetsSubscription) {
+      //   this.subscribeOnEnabledAssets();
+      // }
+      this.enableSwapSubscriptions();
     });
+  }
+
+  private enableSwapSubscriptions(): void {
+    this.updateBalanceSubscriptions();
+    this.subscribeOnEnabledAssets();
+  }
+
+  getTokenBalance(token: AccountAsset): CodecString {
+    return getAssetBalance(token);
   }
 
   formatBalance(token: AccountAsset): string {
@@ -626,30 +686,83 @@ export default class Send extends Mixins(mixins.FormattedAmountMixin, Translatio
     }
   }
 
+  // private runRecountSwapValues(): void {
+  //   const value = this.isExchangeB ? this.toValue : this.fromValue;
+  //   if (!this.areTokensSelected || asZeroValue(value) || this.assetsAreEqual) return;
+
+  //   const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue;
+  //   const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo;
+  //   const oppositeToken = (this.isExchangeB ? this.tokenFrom : this.tokenTo) as AccountAsset;
+
+  //   try {
+  //     // TODO: [ARCH] Asset -> AccountAsset
+  //     const { amount, fee, rewards, amountWithoutImpact } = api.swap.getResult(
+  //       this.tokenFrom as Asset,
+  //       this.tokenTo as Asset,
+  //       value,
+  //       this.isExchangeB,
+  //       [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
+  //       this.paths,
+  //       this.payload
+  //     );
+
+  //     setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
+  //     this.setAmountWithoutImpact(amountWithoutImpact);
+  //     this.setLiquidityProviderFee(fee);
+  //     this.setRewards(rewards);
+  //   } catch (error: any) {
+  //     console.error(error);
+  //     resetOppositeValue();
+  //   }
+  // }
   private runRecountSwapValues(): void {
     const value = this.isExchangeB ? this.toValue : this.fromValue;
-    if (!this.areTokensSelected || asZeroValue(value) || this.assetsAreEqual) return;
-
+    if (!this.areTokensSelected || asZeroValue(value)) return;
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue;
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo;
     const oppositeToken = (this.isExchangeB ? this.tokenFrom : this.tokenTo) as AccountAsset;
+    const dexes = api.dex.dexList;
 
     try {
-      // TODO: [ARCH] Asset -> AccountAsset
-      const { amount, fee, rewards, amountWithoutImpact } = api.swap.getResult(
-        this.tokenFrom as Asset,
-        this.tokenTo as Asset,
-        value,
-        this.isExchangeB,
-        [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
-        this.paths,
-        this.payload
-      );
+      // TODO: [ARCH] Asset -> Asset | AccountAsset
+      const results = dexes.reduce<{ [dexId: number]: SwapResult }>((buffer, { dexId }) => {
+        const swapResult = api.swap.getResult(
+          this.tokenFrom as Asset,
+          this.tokenTo as Asset,
+          value,
+          this.isExchangeB,
+          [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
+          this.dexQuoteData[dexId].paths,
+          this.dexQuoteData[dexId].payload as QuotePayload,
+          dexId as DexId
+        );
+
+        return { ...buffer, [dexId]: swapResult };
+      }, {});
+
+      let bestDexId: number = DexId.XOR;
+
+      for (const currentDexId in results) {
+        const currAmount = FPNumber.fromCodecValue(results[currentDexId].amount);
+        const bestAmount = FPNumber.fromCodecValue(results[bestDexId].amount);
+
+        if (currAmount.isZero()) continue;
+
+        if (
+          (FPNumber.isLessThan(currAmount, bestAmount) && this.isExchangeB) ||
+          (FPNumber.isLessThan(bestAmount, currAmount) && !this.isExchangeB)
+        ) {
+          bestDexId = +currentDexId;
+        }
+      }
+
+      const { amount, amountWithoutImpact, fee, rewards } = results[bestDexId];
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
-      this.setAmountWithoutImpact(amountWithoutImpact);
+      this.setAmountWithoutImpact(amountWithoutImpact as string);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
+      this.selectDexId(bestDexId);
     } catch (error: any) {
       console.error(error);
       resetOppositeValue();
@@ -664,9 +777,17 @@ export default class Send extends Mixins(mixins.FormattedAmountMixin, Translatio
     this.enabledAssetsSubscription = null;
   }
 
+  // private subscribeOnEnabledAssets(): void {
+  //   this.cleanEnabledAssetsSubscription();
+  //   this.enabledAssetsSubscription = api.swap.subscribeOnPrimaryMarketsEnabledAssets().subscribe(this.setEnabledAssets);
+  // }
+
   private subscribeOnEnabledAssets(): void {
     this.cleanEnabledAssetsSubscription();
-    this.enabledAssetsSubscription = api.swap.subscribeOnPrimaryMarketsEnabledAssets().subscribe(this.setEnabledAssets);
+    this.enabledAssetsSubscription = api.swap.subscribeOnPrimaryMarketsEnabledAssets().subscribe((enabledAssets) => {
+      this.setEnabledAssets(enabledAssets);
+      this.subscribeOnSwapReserves();
+    });
   }
 
   private cleanSwapReservesSubscription(): void {
@@ -677,23 +798,41 @@ export default class Send extends Mixins(mixins.FormattedAmountMixin, Translatio
     this.liquidityReservesSubscription = null;
   }
 
+  // private subscribeOnSwapReserves(): void {
+  //   this.cleanSwapReservesSubscription();
+  //   if (!this.areTokensSelected || this.assetsAreEqual) return;
+  //   this.liquidityReservesSubscription = api.swap
+  //     .subscribeOnReserves(
+  //       (this.tokenFrom as AccountAsset).address,
+  //       (this.tokenTo as AccountAsset).address,
+  //       this.liquiditySource as LiquiditySourceTypes
+  //     )
+  //     .subscribe(this.onChangeSwapReserves);
+  // }
+
   private subscribeOnSwapReserves(): void {
     this.cleanSwapReservesSubscription();
-    if (!this.areTokensSelected || this.assetsAreEqual) return;
+
+    if (!this.areTokensSelected) return;
+
     this.liquidityReservesSubscription = api.swap
-      .subscribeOnReserves(
+      .subscribeOnAllDexesReserves(
         (this.tokenFrom as AccountAsset).address,
         (this.tokenTo as AccountAsset).address,
+        this.enabledAssets,
         this.liquiditySource as LiquiditySourceTypes
       )
-      .subscribe(this.onChangeSwapReserves);
+      .subscribe((results) => {
+        results.forEach((result) => this.setSubscriptionPayload(result));
+        this.runRecountSwapValues();
+      });
   }
 
-  private async onChangeSwapReserves(payload: QuotePayload): Promise<void> {
-    await this.setSubscriptionPayload(payload);
+  // private async onChangeSwapReserves(payload: QuotePayload): Promise<void> {
+  //   await this.setSubscriptionPayload(payload);
 
-    this.runRecountSwapValues();
-  }
+  //   this.runRecountSwapValues();
+  // }
 
   handleFocusField(isExchangeB = false): void {
     const isZeroValue = isExchangeB ? this.isZeroToAmount : this.isZeroFromAmount;

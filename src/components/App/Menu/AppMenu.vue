@@ -14,12 +14,13 @@
           :default-active="getCurrentPath()"
           @select="onSelect"
         >
-          <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
+          <s-menu-item-group v-for="(item, index) in sidebarMenuItems" :key="index">
             <s-menu-item
-              v-for="item in group"
+              v-button
               :key="item.title"
               :index="item.title"
               :disabled="item.disabled"
+              tabindex="0"
               class="menu-item"
             >
               <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
@@ -40,6 +41,7 @@
             icon="symbols-24"
             :title="t('mobilePopup.sideMenu')"
             class="el-menu-item menu-item--small"
+            tabindex="0"
             @click.native="openSoraDownloadDialog"
           />
           <app-info-popper>
@@ -73,7 +75,9 @@ import {
   BridgeChildPages,
   RewardsChildPages,
   StakingChildPages,
+  ExploreChildPages,
   SidebarMenuGroups,
+  SidebarMenuItem,
   FaucetLink,
   Components,
 } from '@/consts';
@@ -90,9 +94,10 @@ import { getter, state } from '@/store/decorators';
 export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isAboutPageOpened!: boolean;
-  @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
+  @Prop({ default: () => {}, type: Function }) readonly onSelect!: FnWithoutArgs;
 
   @state.settings.faucetUrl faucetUrl!: string;
+  @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
   readonly SidebarMenuGroups = SidebarMenuGroups;
@@ -100,6 +105,11 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   get mainMenuActiveColor(): string {
     return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
+  }
+
+  get sidebarMenuItems(): Array<SidebarMenuItem> {
+    if (this.soraCardEnabled) return SidebarMenuGroups;
+    return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.SoraCard);
   }
 
   getCurrentPath(): string {
@@ -114,6 +124,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
     if (StakingChildPages.includes(router.currentRoute.name as any)) {
       return PageNames.StakingContainer;
+    }
+    if (ExploreChildPages.includes(router.currentRoute.name as PageNames)) {
+      return PageNames.ExploreContainer;
     }
     return router.currentRoute.name as string;
   }
@@ -155,6 +168,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
 
+    &.marketing .icon-container > i {
+      color: var(--s-color-theme-accent);
+    }
+
     &.is-disabled {
       opacity: 1;
       color: var(--s-color-base-content-secondary) !important;
@@ -168,6 +185,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       &:focus {
         i {
           color: var(--s-color-base-content-secondary) !important;
+        }
+        &.marketing i {
+          color: var(--s-color-theme-accent-focused) !important;
         }
       }
     }
@@ -189,8 +209,35 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
     &:focus {
-      background-color: unset;
+      background-color: unset !important;
     }
+  }
+}
+
+// TODO: [TECH] move from fonts provided values
+.sora-card-sidebar-icon {
+  path {
+    fill: var(--s-color-base-content-tertiary) !important;
+  }
+}
+
+.el-menu-item:not(.is-active):not(.is-disabled) {
+  .sidebar-item-content {
+    &:hover .sora-card-sidebar-icon path {
+      fill: var(--s-color-base-content-secondary) !important;
+    }
+  }
+}
+
+.el-menu-item.is-disabled {
+  &:hover path {
+    fill: var(--s-color-base-content-tertiary) !important;
+  }
+}
+
+.is-active .sora-card-sidebar-icon {
+  path {
+    fill: var(--s-color-theme-accent) !important;
   }
 }
 </style>
@@ -207,7 +254,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     right: 0;
     z-index: $app-sidebar-layer;
 
-    @include mobile {
+    @include large-mobile(true) {
       position: fixed;
 
       &.visible {
@@ -223,7 +270,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
       .app-sidebar {
         width: 50%;
-        min-width: $breakpoint_mobile / 2;
+        min-width: calc(#{$breakpoint_mobile} / 2);
         background-color: var(--s-color-utility-body);
         padding: $inner-spacing-mini $inner-spacing-medium;
         filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));
@@ -325,6 +372,13 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
       @include tablet {
         padding: 0 $inner-spacing-small;
+      }
+    }
+
+    &.marketing {
+      color: var(--s-color-theme-accent);
+      &:hover {
+        color: var(--s-color-theme-accent-focused);
       }
     }
   }

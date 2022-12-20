@@ -107,6 +107,10 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
     return this.$route.path.includes('route-assets');
   }
 
+  get areMoonpayButtonsVisible(): boolean {
+    return this.moonpayEnabled && this.isLoggedIn;
+  }
+
   openNodeSelectionDialog(): void {
     this.setSelectNodeDialogVisibility(true);
   }
@@ -235,6 +239,10 @@ $app-controls-shadow--dark: inset 1px 1px 2px #52523d;
     }
   }
 
+  &.without-moonpay {
+    margin-left: auto;
+  }
+
   @include desktop {
     margin-left: auto;
   }
@@ -289,7 +297,7 @@ $app-controls-shadow--dark: inset 1px 1px 2px #52523d;
 }
 
 .app-logo--header {
-  @include mobile {
+  @include large-mobile(true) {
     display: none;
   }
 }

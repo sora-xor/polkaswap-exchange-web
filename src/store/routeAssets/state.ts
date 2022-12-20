@@ -6,6 +6,8 @@ function initialState(): RouteAssetsState {
     recipients: [],
     file: null,
     subscriptions: [],
+    enabledAssetsSubscription: null,
+    enabledAssets: {},
     processingState: {
       currentStageIndex: 0,
       inputToken: XOR,

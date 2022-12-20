@@ -34,7 +34,7 @@
       <info-line
         v-if="isLoggedIn"
         :label="t('swap.networkFee')"
-        :label-tooltip="t('swap.networkFeeTooltip')"
+        :label-tooltip="t('networkFeeTooltipText')"
         :value="formattedNetworkFee"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
@@ -46,7 +46,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR, KnownAssets } from '@sora-substrate/util/build/assets/consts';
 import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
@@ -83,6 +83,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   @state.swap.liquidityProviderFee private liquidityProviderFee!: CodecString;
   @state.swap.rewards private rewards!: Array<LPRewardsInfo>;
   @state.swap.isExchangeB isExchangeB!: boolean;
+  @state.swap.selectedDexId private selectedDexId!: number;
 
   @getter.swap.price private price!: string;
   @getter.swap.priceReversed private priceReversed!: string;
@@ -106,9 +107,10 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   get swapRoute(): Array<string> {
     const fromToken: string = this.tokenFrom?.symbol ?? '';
     const toToken: string = this.tokenTo?.symbol ?? '';
-    const xorToken: string = XOR.symbol;
+    const baseAssetId = api.dex.getBaseAssetId(this.selectedDexId);
+    const baseToken = KnownAssets.get(baseAssetId).symbol;
 
-    return [...new Set([fromToken, xorToken, toToken])]; // To remove doubled XOR if the route is simple
+    return [...new Set([fromToken, baseToken, toToken])]; // To remove doubled XOR if the route is simple
   }
 
   get priceValues(): Array<PriceValue> {
