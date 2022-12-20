@@ -20,7 +20,7 @@
         :value="poolAssetBalanceFormatted"
         :fiat-value="poolAssetBalanceFiat"
       />
-      <info-line v-if="pricesAvailable" :value="aprFormatted">
+      <info-line v-if="pricesAvailable" :value="apr">
         <template #info-line-prefix>
           <div class="apr">
             <span class="apr-label">{{ TranslationConsts.APR }}</span>
@@ -30,7 +30,7 @@
           </div>
         </template>
       </info-line>
-      <info-line v-if="pricesAvailable" :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvlFormatted" />
+      <info-line v-if="pricesAvailable" :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvl" />
       <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
 
       <info-line
@@ -69,6 +69,7 @@
         <template v-if="activeStatus">
           <s-button
             v-if="isLoggedIn"
+            key="connected"
             type="primary"
             class="s-typography-button--large action-button"
             :disabled="depositDisabled"
@@ -76,7 +77,13 @@
           >
             {{ primaryButtonText }}
           </s-button>
-          <s-button v-else type="primary" class="s-typography-button--large action-button" @click="handleConnectWallet">
+          <s-button
+            v-else
+            type="primary"
+            key="disconnected"
+            class="s-typography-button--large action-button"
+            @click="handleConnectWallet"
+          >
             {{ t('connectWalletText') }}
           </s-button>
         </template>
@@ -93,7 +100,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
-import PoolMixin from '../mixins/PoolMixin';
+import PoolCardMixin from '../mixins/PoolCardMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter } from '@/store/decorators';
@@ -103,6 +110,8 @@ import { DemeterComponents } from '../consts';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames, Links } from '@/consts';
 
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+
 @Component({
   components: {
     CalculatorButton: demeterLazyComponent(DemeterComponents.CalculatorButton),
@@ -110,7 +119,7 @@ import { Components, PageNames, Links } from '@/consts';
     InfoLine: components.InfoLine,
   },
 })
-export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
+export default class PoolCard extends Mixins(PoolCardMixin, TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly border!: boolean;
   @Prop({ default: false, type: Boolean }) readonly showBalance!: boolean;
 
@@ -126,6 +135,14 @@ export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
 
   get primaryButtonText(): string {
     return this.t(`demeterFarming.actions.${this.hasStake ? 'add' : 'start'}`);
+  }
+
+  get poolAssetBalanceFormatted(): string {
+    return this.poolAssetBalance.toLocaleString();
+  }
+
+  get poolAssetBalanceFiat(): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.poolAssetBalance, this.poolAsset as AccountAsset);
   }
 
   handleConnectWallet(): void {

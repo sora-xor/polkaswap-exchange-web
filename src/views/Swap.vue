@@ -118,7 +118,7 @@
       />
       <settings-dialog :visible.sync="showSettings" />
     </s-form>
-    <swap-chart v-if="chartsEnabled" />
+    <swap-chart v-if="chartsEnabled" :token-from="tokenFrom" :token-to="tokenTo" :is-available="isAvailable" />
   </div>
 </template>
 
@@ -153,7 +153,7 @@ import {
   debouncedInputHandler,
 } from '@/utils';
 import router, { lazyComponent } from '@/router';
-import { Components, MarketAlgorithms, PageNames } from '@/consts';
+import { Components, MarketAlgorithms, PageNames, ZeroStringValue } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
 
 @Component({
@@ -263,13 +263,13 @@ export default class Swap extends Mixins(
   }
 
   get fromFiatAmount(): string {
-    if (!this.tokenFrom) return '0';
-    return this.fromValue ? this.getFiatAmountByString(this.fromValue, this.tokenFrom) || '0' : '0';
+    if (!(this.tokenFrom && this.fromValue)) return ZeroStringValue;
+    return this.getFiatAmountByString(this.fromValue, this.tokenFrom) || ZeroStringValue;
   }
 
   get toFiatAmount(): string {
-    if (!this.tokenTo) return '0';
-    return this.toValue ? this.getFiatAmountByString(this.toValue, this.tokenTo) || '0' : '0';
+    if (!(this.tokenTo && this.toValue)) return ZeroStringValue;
+    return this.getFiatAmountByString(this.toValue, this.tokenTo) || ZeroStringValue;
   }
 
   get fiatDifference(): string {

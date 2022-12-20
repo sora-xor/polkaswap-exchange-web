@@ -90,7 +90,7 @@
 import dayjs from 'dayjs';
 import isEqual from 'lodash/fp/isEqual';
 import { graphic } from 'echarts';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import { SSkeleton, SSkeletonItem } from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton';
 
@@ -109,11 +109,10 @@ import CandleIcon from '@/assets/img/charts/candle.svg?inline';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { getter } from '@/store/decorators';
-import { debouncedInputHandler, getTextWidth, calcPriceChange } from '@/utils';
+import { debouncedInputHandler, getTextWidth, calcPriceChange, formatDecimalPlaces } from '@/utils';
 import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 type ChartDataItem = {
   timestamp: number;
@@ -237,6 +236,21 @@ const AXIS_OFFSET = 8;
 
 const SYNC_INTERVAL = 6 * 1000;
 
+const signific =
+  (value: FPNumber) =>
+  (positive: string, negative: string, zero: string): string => {
+    return FPNumber.gt(value, FPNumber.ZERO) ? positive : FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
+  };
+
+const formatChange = (value: FPNumber): string => {
+  const sign = signific(value)('+', '', '');
+  const priceChange = formatDecimalPlaces(value, true);
+
+  return `${sign}${priceChange}`;
+};
+
+const formatPrice = (value: number, symbol: string) => `${new FPNumber(value).toLocaleString()} ${symbol}`;
+
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
@@ -256,9 +270,9 @@ export default class SwapChart extends Mixins(
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin
 ) {
-  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
-  @getter.swap.tokenTo tokenTo!: AccountAsset;
-  @getter.swap.isAvailable isAvailable!: boolean;
+  @Prop({ default: () => null, type: Object }) readonly tokenFrom!: Nullable<AccountAsset>;
+  @Prop({ default: () => null, type: Object }) readonly tokenTo!: Nullable<AccountAsset>;
+  @Prop({ default: false, type: Boolean }) readonly isAvailable!: boolean;
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
@@ -272,21 +286,21 @@ export default class SwapChart extends Mixins(
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   // ordered by timestamp DESC
-  prices: ChartDataItem[] = [];
-  pageInfos: Partial<SUBQUERY_TYPES.PageInfo>[] = [];
-  zoomStart = 0; // percentage of zoom start position
-  zoomEnd = 100; // percentage of zoom end position
-  precision = 2;
-  limits = {
+  private prices: ChartDataItem[] = [];
+  private pageInfos: Partial<SUBQUERY_TYPES.PageInfo>[] = [];
+  private zoomStart = 0; // percentage of zoom start position
+  private zoomEnd = 100; // percentage of zoom end position
+  private precision = 2;
+  private limits = {
     min: Infinity,
     max: 0,
   };
 
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
-  forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
-
-  priceUpdateWatcher: Nullable<FnWithoutArgs> = null;
-  priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
+  private forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
+  private priceUpdateRequestId = 0;
+  private priceUpdateWatcher: Nullable<FnWithoutArgs> = null;
+  private priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
@@ -311,8 +325,8 @@ export default class SwapChart extends Mixins(
     return this.tokenTo?.symbol ?? 'USD';
   }
 
-  get tokens(): Asset[] {
-    return [this.tokenFrom, this.tokenTo].filter((token) => !!token);
+  get tokens(): AccountAsset[] {
+    return [this.tokenFrom, this.tokenTo].filter((token) => !!token) as AccountAsset[];
   }
 
   get tokensAddresses(): string[] {
@@ -537,17 +551,7 @@ export default class SwapChart extends Mixins(
         formatter: (params) => {
           const { data, seriesType } = params[0];
 
-          const signific = (value: FPNumber) => (positive: string, negative: string, zero: string) =>
-            FPNumber.gt(value, FPNumber.ZERO) ? positive : FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
-          const formatPrice = (value: number) => `${new FPNumber(value).toLocaleString()} ${this.symbol}`;
-          const formatChange = (value: FPNumber) => {
-            const sign = signific(value)('+', '', '');
-            const priceChange = this.formatPriceChange(value);
-
-            return `${sign}${priceChange}%`;
-          };
-
-          if (seriesType === CHART_TYPES.LINE) return formatPrice(data[1]);
+          if (seriesType === CHART_TYPES.LINE) return formatPrice(data[1], this.symbol);
 
           if (seriesType === CHART_TYPES.CANDLE) {
             const [timestamp, open, close, low, high] = data;
@@ -559,10 +563,10 @@ export default class SwapChart extends Mixins(
             );
 
             const rows = [
-              { title: 'Open', data: formatPrice(open) },
-              { title: 'High', data: formatPrice(high) },
-              { title: 'Low', data: formatPrice(low) },
-              { title: 'Close', data: formatPrice(close) },
+              { title: 'Open', data: formatPrice(open, this.symbol) },
+              { title: 'High', data: formatPrice(high, this.symbol) },
+              { title: 'Low', data: formatPrice(low, this.symbol) },
+              { title: 'Close', data: formatPrice(close, this.symbol) },
               { title: 'Change', data: formatChange(change), color: changeColor },
             ];
 
@@ -721,7 +725,7 @@ export default class SwapChart extends Mixins(
     return Math.max(this.getPrecision(min), this.getPrecision(max));
   }
 
-  private getHistoricalPrices(resetChartData = false): void {
+  private async getHistoricalPrices(resetChartData = false): Promise<void> {
     if (resetChartData) {
       this.clearData();
     } else if (this.loading || this.isAllHistoricalPricesFetched(this.pageInfos)) {
@@ -732,26 +736,28 @@ export default class SwapChart extends Mixins(
     if (this.tokensAddresses.length === 2 && !this.isAvailable) return;
 
     const addresses = [...this.tokensAddresses];
+    const requestId = Date.now();
 
-    this.withApi(async () => {
-      await this.withLoading(async () => {
-        try {
-          const response = await this.getChartData(addresses, this.selectedFilter, this.pageInfos);
+    this.priceUpdateRequestId = requestId;
 
-          // if no response, or tokens were changed, return
-          if (!response || !isEqual(addresses)(this.tokensAddresses)) return;
+    await this.withApi(async () => {
+      try {
+        const response = await this.getChartData(addresses, this.selectedFilter, this.pageInfos);
 
-          this.limits = response.limits;
-          this.pageInfos = response.pageInfos;
-          this.precision = response.precision;
-          this.prices = [...this.prices, ...response.prices];
+        // if no response, or tokens were changed, return
+        if (!(response && isEqual(addresses)(this.tokensAddresses) && isEqual(requestId)(this.priceUpdateRequestId)))
+          return;
 
-          this.isFetchingError = false;
-        } catch (error) {
-          this.isFetchingError = true;
-          console.error(error);
-        }
-      });
+        this.limits = response.limits;
+        this.pageInfos = response.pageInfos;
+        this.precision = response.precision;
+        this.prices = [...this.prices, ...response.prices];
+
+        this.isFetchingError = false;
+      } catch (error) {
+        this.isFetchingError = true;
+        console.error(error);
+      }
     });
   }
 
@@ -918,10 +924,6 @@ export default class SwapChart extends Mixins(
 
   private isAllHistoricalPricesFetched(pageInfos: Partial<SUBQUERY_TYPES.PageInfo>[]): boolean {
     return pageInfos.some((pageInfo) => !pageInfo.hasNextPage);
-  }
-
-  private formatPriceChange(value: FPNumber): string {
-    return new FPNumber(value.toFixed(2)).toLocaleString();
   }
 }
 </script>

@@ -20,7 +20,7 @@ const mutations = defineMutations<PoolState>()({
     state.accountLiquidityUpdates = null;
   },
   setAccountLiquidity(state, liquidity: Array<AccountLiquidity>): void {
-    state.accountLiquidity = [...liquidity]; // update vuex state by creating new copy of array
+    state.accountLiquidity = Object.freeze([...liquidity]); // update vuex state by creating new copy of array
   },
   resetAccountLiquidity(state): void {
     state.accountLiquidity = [];

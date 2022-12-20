@@ -11,8 +11,8 @@ import { STATES } from './types';
 import { isOutgoingTransaction, getEvmTxRecieptByHash } from './utils';
 import { ZeroStringValue } from '@/consts';
 
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
-import type { RegisteredAccountAssetObject } from '@/store/assets/types';
 
 type TimestampMap<T> = {
   [key: number]: T;
@@ -190,7 +190,7 @@ export class EthBridgeHistory {
 
   public async updateAccountHistory(
     address: string,
-    assets: RegisteredAccountAssetObject,
+    assets: Record<string, Asset>,
     networkFees: NetworkFeesObject,
     contracts?: string[],
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs

@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <s-card shadow="always" size="small" class="status-action-badge">
     <span class="status-action-badge__label"><slot name="label" /></span>
     <span class="status-action-badge__value"><slot name="value" /></span>

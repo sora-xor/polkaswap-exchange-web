@@ -1,18 +1,47 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber } from '@sora-substrate/math';
 
-import { getter } from '@/store/decorators';
+import { state, getter } from '@/store/decorators';
 
+import AprMixin from './AprMixin';
+
+import { formatDecimalPlaces } from '@/utils';
+
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
+import type {
+  DemeterPool,
+  DemeterAccountPool,
+  DemeterRewardToken,
+} from '@sora-substrate/util/build/demeterFarming/types';
+
+import type { DemeterAsset, DemeterPoolDerived, DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+
+type Pool = DemeterPool | DemeterAccountPool;
+
+const createPoolsDoubleMap = <T extends Pool>(pools: readonly T[], isFarm = true): DoubleMap<T[]> => {
+  return pools.reduce((buffer, pool) => {
+    if (pool.isFarm !== isFarm) return buffer;
+
+    if (!buffer[pool.baseAsset]) buffer[pool.baseAsset] = {};
+    if (!buffer[pool.baseAsset][pool.poolAsset]) buffer[pool.baseAsset][pool.poolAsset] = [];
+
+    buffer[pool.baseAsset][pool.poolAsset].push(pool);
+
+    return buffer;
+  }, {});
+};
 
 @Component
-export default class BasePageMixin extends Mixins() {
+export default class BasePageMixin extends Mixins(AprMixin, mixins.FormattedAmountMixin) {
   @Prop({ default: true, type: Boolean }) readonly isFarmingPage!: boolean;
 
-  @getter.demeterFarming.farmingPools farmingPools!: DoubleMap<DemeterPool[]>;
-  @getter.demeterFarming.stakingPools stakingPools!: DoubleMap<DemeterPool[]>;
-  @getter.demeterFarming.accountFarmingPools accountFarmingPools!: DoubleMap<DemeterAccountPool[]>;
-  @getter.demeterFarming.accountStakingPools accountStakingPools!: DoubleMap<DemeterAccountPool[]>;
+  @state.demeterFarming.pools demeterPools!: DemeterPool[];
+  @state.demeterFarming.accountPools demeterAccountPools!: DemeterAccountPool[];
+
+  @getter.demeterFarming.tokenInfos tokenInfos!: DataMap<DemeterRewardToken>;
+  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   showCalculatorDialog = false;
 
@@ -21,12 +50,32 @@ export default class BasePageMixin extends Mixins() {
   rewardAsset: Nullable<string> = null;
   liquidity: Nullable<AccountLiquidity> = null;
 
+  get uniqueAssets(): string[] {
+    const adresses = this.demeterPools.reduce<string[]>((buffer, pool) => {
+      buffer.push(pool.baseAsset, pool.poolAsset, pool.rewardAsset);
+      return buffer;
+    }, []);
+
+    return [...new Set(adresses)];
+  }
+
+  get demeterAssetsData(): Record<string, DemeterAsset> {
+    return this.uniqueAssets.reduce((buffer, address) => {
+      const asset = this.getAsset(address);
+      const price = asset ? FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0) : FPNumber.ZERO;
+
+      buffer[address] = { ...asset, price };
+
+      return buffer;
+    }, {});
+  }
+
   get pools(): DoubleMap<DemeterPool[]> {
-    return this.isFarmingPage ? this.farmingPools : this.stakingPools;
+    return createPoolsDoubleMap(this.demeterPools, this.isFarmingPage);
   }
 
   get accountPools(): DoubleMap<DemeterAccountPool[]> {
-    return this.isFarmingPage ? this.accountFarmingPools : this.accountStakingPools;
+    return createPoolsDoubleMap(this.demeterAccountPools, this.isFarmingPage);
   }
 
   get selectedPool(): Nullable<DemeterPool> {
@@ -37,6 +86,57 @@ export default class BasePageMixin extends Mixins() {
 
   get selectedAccountPool(): Nullable<DemeterAccountPool> {
     return this.selectedPool ? this.getAccountPool(this.selectedPool) : null;
+  }
+
+  getDerivedPools(pools: DemeterPool[]): DemeterPoolDerived[] {
+    if (!Array.isArray(pools)) return [];
+
+    return pools.reduce<DemeterPoolDerived[]>((buffer, pool) => {
+      const poolIsActive = !pool.isRemoved;
+      const accountPool = this.getAccountPool(pool);
+      const accountPoolIsActive = !!accountPool && this.isActiveAccountPool(accountPool);
+
+      if (!(poolIsActive || accountPoolIsActive)) return buffer;
+
+      buffer.push({
+        pool,
+        accountPool,
+      });
+
+      return buffer;
+    }, []);
+  }
+
+  private isActiveAccountPool(accountPool: DemeterAccountPool): boolean {
+    return !(accountPool.pooledTokens.isZero() && accountPool.rewards.isZero());
+  }
+
+  prepareDerivedPoolData(
+    pool: DemeterPool,
+    accountPool: Nullable<DemeterAccountPool>,
+    liquidity?: Nullable<AccountLiquidity>
+  ): DemeterPoolDerivedData {
+    const baseAsset = this.demeterAssetsData[pool.baseAsset];
+    const poolAsset = this.demeterAssetsData[pool.poolAsset];
+    const rewardAsset = this.demeterAssetsData[pool.rewardAsset];
+    const tokenInfo = this.tokenInfos[pool.rewardAsset];
+    const emission = this.getEmission(pool, tokenInfo);
+    const tvl = this.getTvl(pool, poolAsset.price, liquidity);
+    const apr = this.getApr(emission, tvl, rewardAsset.price);
+    const aprFormatted = formatDecimalPlaces(apr, true);
+    const tvlFormatted = `$${formatDecimalPlaces(tvl)}`;
+
+    return {
+      pool,
+      accountPool,
+      tokenInfo,
+      baseAsset,
+      poolAsset,
+      rewardAsset,
+      emission,
+      tvl: tvlFormatted,
+      apr: aprFormatted,
+    };
   }
 
   getAccountPool(pool: DemeterPool): Nullable<DemeterAccountPool> {
