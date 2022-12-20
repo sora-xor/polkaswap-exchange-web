@@ -184,7 +184,9 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
   }
 
   private getStrategicBonusApy(targetAssetAddress: string): string {
-    const apy = this.fiatPriceAndApyObject[targetAssetAddress]?.strategicBonusApy;
+    // [TODO:SUBQUERY] update
+    const apy = '0';
+    // const apy = this.fiatPriceObject[targetAssetAddress]?.strategicBonusApy;
     if (!apy) {
       return '';
     }

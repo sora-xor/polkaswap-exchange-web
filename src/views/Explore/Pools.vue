@@ -159,7 +159,9 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
       const fpBaseAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(baseAsset) ?? 0);
       const fpBaseAssetReserves = FPNumber.fromCodecValue(reserves[0] ?? 0);
       const fpApy = FPNumber.fromCodecValue(
-        this.fiatPriceAndApyObject[targetAsset.address]?.strategicBonusApy ?? 0
+        // [TODO:SUBQUERY] update
+        '0'
+        // this.fiatPriceAndApyObject[targetAsset.address]?.strategicBonusApy ?? 0
       ).mul(FPNumber.HUNDRED);
       const fpTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves).mul(new FPNumber(2));
 

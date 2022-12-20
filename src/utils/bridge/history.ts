@@ -175,7 +175,7 @@ export class EthBridgeHistory {
 
     do {
       const variables = { after, filter, first: 100 };
-      const response = await SubqueryExplorerService.getAccountTransactions(variables);
+      const response = await SubqueryExplorerService.account.getHistory(variables);
 
       if (!response) return history;
 

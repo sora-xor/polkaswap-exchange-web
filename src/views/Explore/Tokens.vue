@@ -190,9 +190,7 @@ const AssetsQuery = gql`
       }
       nodes {
         id
-        reserves: poolXYK {
-          targetAssetReserves
-        }
+        liquidity
         daySnapshots: data(
           filter: { and: [{ timestamp: { greaterThanOrEqualTo: $dayTimestamp } }, { type: { equalTo: HOUR } }] }
           orderBy: [TIMESTAMP_ASC]
@@ -310,7 +308,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
           }, FPNumber.ZERO);
 
           tokensData[item.id] = {
-            reserves: new FPNumber(item.reserves?.targetAssetReserves ?? 0),
+            reserves: FPNumber.fromCodecValue(item.liquidity ?? 0),
             startPriceDay: new FPNumber(item.daySnapshots.nodes?.[0]?.priceUSD?.open ?? 0),
             startPriceWeek: new FPNumber(item.weekSnapshot.nodes?.[0]?.priceUSD?.open ?? 0),
             volume,

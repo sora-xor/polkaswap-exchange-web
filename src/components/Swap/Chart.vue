@@ -110,7 +110,6 @@ import CandleIcon from '@/assets/img/charts/candle.svg?inline';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { debouncedInputHandler, getTextWidth, calcPriceChange, formatDecimalPlaces } from '@/utils';
-import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -249,7 +248,9 @@ const formatChange = (value: FPNumber): string => {
   return `${sign}${priceChange}`;
 };
 
-const formatPrice = (value: number, symbol: string) => `${new FPNumber(value).toLocaleString()} ${symbol}`;
+const formatPrice = (value: number, symbol: string) => {
+  return `${new FPNumber(value).toLocaleString()} ${symbol}`;
+};
 
 @Component({
   components: {
@@ -527,9 +528,10 @@ export default class SwapChart extends Mixins(
       dataZoom: [
         {
           type: 'inside',
-          start: 0,
+          start: 100,
           end: 100,
-          minValueSpan: SECONDS_IN_TYPE[this.selectedFilter.type] * 11, // minimum 11 elements like on skeleton
+          minValueSpan: SECONDS_IN_TYPE[this.selectedFilter.type] * this.selectedFilter.count, // minimum 11 elements like on skeleton
+          maxValueSpan: SECONDS_IN_TYPE[this.selectedFilter.type] * this.selectedFilter.count,
         },
       ],
       color: [this.theme.color.theme.accent, this.theme.color.status.success],
@@ -639,7 +641,7 @@ export default class SwapChart extends Mixins(
   // ordered ty timestamp DESC
   private async fetchData(address: string, filter: ChartFilter, pageInfo?: Partial<SUBQUERY_TYPES.PageInfo>) {
     const { type, count } = filter;
-    const nodes: AssetSnapshot[] = [];
+    const nodes: SUBQUERY_TYPES.AssetSnapshotEntity[] = [];
 
     let hasNextPage = pageInfo?.hasNextPage ?? true;
     let endCursor = pageInfo?.endCursor ?? '';
@@ -647,12 +649,12 @@ export default class SwapChart extends Mixins(
 
     do {
       const first = Math.min(fetchCount, 100); // how many items should be fetched by request
-      const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, type, first, endCursor);
+      const response = await SubqueryExplorerService.price.getHistoricalPriceForAsset(address, type, first, endCursor);
 
       if (!response) throw new Error('Chart data fetch error');
 
-      hasNextPage = response.hasNextPage;
-      endCursor = response.endCursor;
+      hasNextPage = response.pageInfo.hasNextPage;
+      endCursor = response.pageInfo.endCursor;
       nodes.push(...response.nodes);
       fetchCount -= response.nodes.length;
     } while (hasNextPage && fetchCount > 0);
@@ -663,29 +665,53 @@ export default class SwapChart extends Mixins(
   private async getChartData(
     addresses: string[],
     filter: ChartFilter,
-    paginationInfos?: Partial<SUBQUERY_TYPES.PageInfo>[]
+    paginationInfos: Partial<SUBQUERY_TYPES.PageInfo>[],
+    currentPrices: ChartDataItem[]
   ) {
     const collections = await Promise.all(
-      addresses.map((address, index) => this.fetchData(address, filter, paginationInfos?.[index]))
+      addresses.map((address, index) => this.fetchData(address, filter, paginationInfos[index]))
     );
 
     if (!collections.every((collection) => !!collection.nodes.length)) return null;
 
-    const pageInfos = collections.map((item: any) => ({
+    const pageInfos = collections.map((item) => ({
       hasNextPage: item.hasNextPage,
       endCursor: item.endCursor,
     }));
 
-    const groups = collections.map((collection: any) =>
-      collection.nodes.map((item) => {
+    const groups: ChartDataItem[][] = [];
+
+    for (const collection of collections) {
+      const fixedSizeSample: ChartDataItem[] = [];
+      const timestampDifference = SECONDS_IN_TYPE[filter.type];
+
+      for (const item of collection.nodes) {
+        const buffer: ChartDataItem[] = [];
+
+        const timestamp = +item.timestamp * 1000;
         const price = this.preparePriceData(item);
 
-        return {
-          timestamp: +item.timestamp * 1000,
-          price,
-        };
-      })
-    );
+        const lastTimestamp =
+          fixedSizeSample[fixedSizeSample.length - 1]?.timestamp ??
+          currentPrices[currentPrices.length - 1]?.timestamp ??
+          Date.now();
+
+        let processedTimestamp = timestamp;
+
+        while (lastTimestamp - processedTimestamp > timestampDifference) {
+          processedTimestamp = processedTimestamp + timestampDifference;
+
+          buffer.push({
+            timestamp: processedTimestamp,
+            price: new Array(4).fill(price[1]),
+          });
+        }
+
+        fixedSizeSample.push(...buffer.reverse(), { timestamp, price });
+      }
+
+      groups.push(fixedSizeSample);
+    }
 
     const prices: ChartDataItem[] = [];
     const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
@@ -696,7 +722,7 @@ export default class SwapChart extends Mixins(
       const b = groups[1]?.[i];
 
       const timestamp = (a?.timestamp ?? b?.timestamp) as number;
-      const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0]) as number[];
+      const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0]) as number[];
 
       // if "open" & "close" prices are zero, we are going to time, where pool is not created
       if (price[0] === 0 && price[1] === 0) break;
@@ -742,7 +768,7 @@ export default class SwapChart extends Mixins(
 
     await this.withApi(async () => {
       try {
-        const response = await this.getChartData(addresses, this.selectedFilter, this.pageInfos);
+        const response = await this.getChartData(addresses, this.selectedFilter, this.pageInfos, this.prices);
 
         // if no response, or tokens were changed, return
         if (!(response && isEqual(addresses)(this.tokensAddresses) && isEqual(requestId)(this.priceUpdateRequestId)))
@@ -778,7 +804,7 @@ export default class SwapChart extends Mixins(
     const addresses = [...this.tokensAddresses];
 
     this.priceUpdateWatcher = this.$watch(
-      () => this.fiatPriceAndApyObject,
+      () => this.fiatPriceObject,
       (updated) => this.handlePriceUpdates(addresses, updated)
     );
 
@@ -814,14 +840,14 @@ export default class SwapChart extends Mixins(
     });
   }
 
-  private handlePriceUpdates(addresses: string[], fiatPriceAndApyObject: SUBQUERY_TYPES.FiatPriceAndApyObject): void {
+  private handlePriceUpdates(addresses: string[], fiatPriceObject: SUBQUERY_TYPES.FiatPriceObject): void {
     if (!isEqual(addresses)(this.tokensAddresses)) return;
 
     const timestamp = this.getCurrentSnapshotTimestamp();
     const lastItem = this.prices[0];
 
     const [priceA, priceB] = this.tokensAddresses.map((address) =>
-      FPNumber.fromCodecValue(fiatPriceAndApyObject[address]?.price ?? 0).toNumber()
+      FPNumber.fromCodecValue(fiatPriceObject[address] ?? 0).toNumber()
     );
     const price = Number.isFinite(priceB) ? this.dividePrice(priceA, priceB) : priceA;
     const min = Math.min(this.limits.min, price);
@@ -847,7 +873,7 @@ export default class SwapChart extends Mixins(
     });
   }
 
-  private preparePriceData(item: AssetSnapshot): number[] {
+  private preparePriceData(item: SUBQUERY_TYPES.AssetSnapshotEntity): number[] {
     const { open, close, low, high } = item.priceUSD;
 
     return [+open, +close, +low, +high];

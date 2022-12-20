@@ -123,7 +123,9 @@ export default class ConfirmTokenPairDialog extends Mixins(
   get strategicBonusApy(): Nullable<string> {
     if (!this.secondToken) return null;
     // It won't be in template when not defined
-    const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy;
+    // [TODO:SUBQUERY] update
+    const strategicBonusApy = '0';
+    // const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy;
     if (!strategicBonusApy) {
       return null;
     }
