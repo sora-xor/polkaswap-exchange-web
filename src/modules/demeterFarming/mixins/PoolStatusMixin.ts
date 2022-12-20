@@ -11,7 +11,7 @@ import type { DemeterAsset } from '@/modules/demeterFarming/types';
 
 @Component
 export default class PoolStatusMixin extends Mixins(mixins.FormattedAmountMixin, mixins.TranslationMixin) {
-  @Prop({ default: () => null, type: Object }) readonly liquidity!: AccountLiquidity;
+  @Prop({ default: () => null, type: Object }) readonly liquidity!: Nullable<AccountLiquidity>;
   @Prop({ default: () => null, type: Object }) readonly pool!: DemeterPool;
   @Prop({ default: () => null, type: Object }) readonly accountPool!: DemeterAccountPool;
   @Prop({ default: () => null, type: Object }) readonly poolAsset!: DemeterAsset;
@@ -58,7 +58,7 @@ export default class PoolStatusMixin extends Mixins(mixins.FormattedAmountMixin,
     return !this.activeStatus || this.availableFunds.isZero();
   }
 
-  get emitParams(): object {
+  get emitParams() {
     return {
       baseAsset: this.pool.baseAsset,
       poolAsset: this.pool.poolAsset,
