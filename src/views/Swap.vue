@@ -2,13 +2,29 @@
   <div class="swap-container">
     <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
       <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
-        <status-action-badge>
-          <template #label>{{ t('marketText') }}:</template>
-          <template #value>{{ swapMarketAlgorithm }}</template>
-          <template #action>
-            <s-button class="el-button--settings" type="action" icon="basic-settings-24" @click="openSettingsDialog" />
-          </template>
-        </status-action-badge>
+        <div class="swap-settings-buttons">
+          <status-action-badge>
+            <template #label>{{ t('marketText') }}:</template>
+            <template #value>{{ swapMarketAlgorithm }}</template>
+            <template #action>
+              <s-button
+                class="el-button--settings"
+                type="action"
+                icon="basic-settings-24"
+                @click="openSettingsDialog"
+              />
+            </template>
+          </status-action-badge>
+
+          <svg-icon-button
+            v-if="chartsFlagEnabled"
+            icon="line-icon"
+            size="medium"
+            :tooltip="t('dexSettings.сhartsDescription')"
+            :active="chartsEnabled"
+            @click="toggleChart"
+          />
+        </div>
       </generic-page-header>
 
       <token-input
@@ -168,6 +184,7 @@ import { action, getter, mutation, state } from '@/store/decorators';
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     SwapChart: lazyComponent(Components.SwapChart),
+    SvgIconButton: lazyComponent(Components.SvgIconButton),
     FormattedAmount: components.FormattedAmount,
   },
 })
@@ -177,6 +194,7 @@ export default class Swap extends Mixins(
   TranslationMixin,
   TokenSelectMixin
 ) {
+  @state.settings.сhartsEnabled сhartsEnabled!: boolean;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.swap.dexQuoteData private dexQuoteData!: Record<DexId, DexQuoteData>;
   @state.swap.enabledAssets private enabledAssets!: PrimaryMarketsEnabledAssets;
@@ -186,6 +204,7 @@ export default class Swap extends Mixins(
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
+  @getter.settings.chartsFlagEnabled chartsFlagEnabled!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
@@ -194,6 +213,7 @@ export default class Swap extends Mixins(
   @getter.swap.isAvailable isAvailable!: boolean;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
 
+  @mutation.settings.setChartsEnabled private setChartsEnabled!: (value: boolean) => void;
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setAmountWithoutImpact private setAmountWithoutImpact!: (amount: CodecString) => void;
@@ -580,6 +600,10 @@ export default class Swap extends Mixins(
     this.showSettings = true;
   }
 
+  toggleChart(): void {
+    this.setChartsEnabled(!this.chartsEnabled);
+  }
+
   private enableSwapSubscriptions(): void {
     this.updateBalanceSubscriptions();
     this.subscribeOnEnabledAssetsAndSwapReserves();
@@ -660,6 +684,15 @@ export default class Swap extends Mixins(
 .page-header--swap {
   justify-content: space-between;
   align-items: center;
+}
+
+.swap-settings-buttons {
+  display: flex;
+  align-items: center;
+
+  & > *:not(:first-child) {
+    margin-left: $inner-spacing-small;
+  }
 }
 
 .price-difference {

@@ -111,8 +111,6 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
-import SortButton from '@/components/SortButton.vue';
-
 import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { AmountWithSuffix } from '@/types/formats';
@@ -130,7 +128,7 @@ type TableItem = {
 @Component({
   components: {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    SortButton,
+    SortButton: lazyComponent(Components.SortButton),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
   },
