@@ -1,7 +1,12 @@
 import { Asset } from '@sora-substrate/util/build/assets/types';
 import { Subscription } from 'rxjs';
-import type { QuotePaths, QuotePayload } from '@sora-substrate/liquidity-proxy/build/types';
+import type {
+  QuotePaths,
+  QuotePayload,
+  PrimaryMarketsEnabledAssets,
+} from '@sora-substrate/liquidity-proxy/build/types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { DexQuoteData } from '../swap/types';
 
 export type Recipient = {
   name: string;
@@ -20,6 +25,9 @@ export type RouteAssetsSubscription = {
   paths: Nullable<QuotePaths>;
   liquiditySources: Nullable<LiquiditySourceTypes[]>;
   assetAddress: string;
+  dexId?: number;
+  selectedDexId?: number;
+  dexQuoteData?: Record<number, DexQuoteData>;
 };
 
 export enum RecipientStatus {
@@ -50,5 +58,7 @@ export type RouteAssetsState = {
   recipients: Array<Recipient>;
   file: Nullable<File>;
   subscriptions: Array<RouteAssetsSubscription>;
+  enabledAssetsSubscription?: Nullable<Subscription>;
   processingState: ProcessingState;
+  enabledAssets: PrimaryMarketsEnabledAssets;
 };

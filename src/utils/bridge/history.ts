@@ -75,12 +75,13 @@ export class EthBridgeHistory {
     contracts?: string[]
   ): Promise<EthTransactionsMap> {
     const key = address.toLowerCase();
+    const contractsToLower = (contracts || []).map((contract) => contract.toLowerCase());
 
     if (!this.ethAccountTransactionsMap[key]) {
       const ethStartBlock = await this.getEthStartBlock(fromTimestamp);
       const history = await this.etherscanInstance.getHistory(address, ethStartBlock);
       const filtered = history.reduce<EthTransactionsMap>((buffer, tx) => {
-        if (!contracts || (!!tx.to && contracts.includes(tx.to.toLowerCase()))) {
+        if (!contracts || (!!tx.to && contractsToLower.includes(tx.to.toLowerCase()))) {
           buffer[tx.hash] = tx;
         }
 
@@ -192,7 +193,7 @@ export class EthBridgeHistory {
     assets: RegisteredAccountAssetObject,
     networkFees: NetworkFeesObject,
     contracts?: string[],
-    updateCallback?: AsyncVoidFn | VoidFunction
+    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     const currentHistory = bridgeApi.historyList as BridgeHistory[];
     const historyElements = await this.fetchHistoryElements(address, this.historySyncTimestamp);

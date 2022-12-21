@@ -36,9 +36,17 @@ const getters = defineGetters<SettingsState>()({
     const { state, getters } = settingsGetterContext(args);
     return !!getters.moonpayApiKey && !!state.featureFlags.moonpay;
   },
-  chartsEnabled(...args): boolean {
+  chartsFlagEnabled(...args): boolean {
     const { state } = settingsGetterContext(args);
     return !!state.featureFlags.charts;
+  },
+  chartsEnabled(...args): boolean {
+    const { state } = settingsGetterContext(args);
+    return !!state.featureFlags.charts && state.сhartsEnabled;
+  },
+  soraCardEnabled(...args): boolean {
+    const { state } = settingsGetterContext(args);
+    return !!state.featureFlags.soraCard;
   },
   notificationActivated(...args): boolean {
     const { state } = settingsGetterContext(args);

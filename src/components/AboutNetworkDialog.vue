@@ -72,7 +72,7 @@ export default class AboutNetworkDialog extends Mixins(TranslationMixin, mixins.
     }
 
     &-icon {
-      margin-left: $inner-spacing-mini / 2;
+      margin-left: $inner-spacing-tiny;
       font-size: 0.75em !important;
     }
   }

@@ -1,13 +1,14 @@
 import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
+import VueRouter, { NavigationGuardNext, RouteConfig } from 'vue-router';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { api } from '@sora-substrate/util';
 
-import { PageNames, BridgeChildPages } from '@/consts';
+import store from '@/store';
+import { updateDocumentTitle } from '@/utils';
+import { PageNames, BridgeChildPages, AdarPageNames } from '@/consts';
+
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 import { demeterLazyView } from '@/modules/demeterFarming/router';
-
-import store from '@/store';
 
 Vue.use(VueRouter);
 
@@ -38,7 +39,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/swap',
     name: PageNames.Swap,
-    component: lazyView(PageNames.Send),
+    component: lazyView(PageNames.Swap),
   },
   {
     path: '/about',
@@ -54,6 +55,21 @@ const routes: Array<RouteConfig> = [
   //   path: '/send',
   //   name: PageNames.Send,
   //   component: lazyView(PageNames.Send),
+  // },
+  // {
+  //   path: '/kyc',
+  //   name: PageNames.KYC,
+  //   component: lazyView(PageNames.KYC),
+  // },
+  {
+    path: '/route-assets',
+    name: AdarPageNames.RouteAssets,
+    component: lazyView(AdarPageNames.RouteAssets),
+  },
+  // {
+  //   path: '/card',
+  //   name: PageNames.SoraCard,
+  //   component: lazyView(PageNames.SoraCard),
   // },
   // {
   //   path: '/bridge',
@@ -90,6 +106,7 @@ const routes: Array<RouteConfig> = [
   //           path: '',
   //           name: DemeterPageNames.Pool,
   //           component: demeterLazyView(DemeterPageNames.Pool),
+  //           props: { isFarmingPage: true },
   //         },
   //         {
   //           path: 'add/:firstAddress?/:secondAddress?',
@@ -121,8 +138,51 @@ const routes: Array<RouteConfig> = [
   //           path: '',
   //           name: DemeterPageNames.Staking,
   //           component: demeterLazyView(DemeterPageNames.Staking),
+  //           props: { isFarmingPage: false },
   //         },
   //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: '/explore',
+  //   name: PageNames.ExploreContainer,
+  //   component: lazyView(PageNames.ExploreContainer),
+  //   redirect: { name: PageNames.ExploreFarming },
+  //   children: [
+  //     {
+  //       path: 'demeter',
+  //       component: demeterLazyView(DemeterPageNames.DataContainer),
+  //       children: [
+  //         {
+  //           path: 'staking',
+  //           name: PageNames.ExploreStaking,
+  //           component: lazyView(PageNames.ExploreDemeter),
+  //           props: { isFarmingPage: false },
+  //         },
+  //         {
+  //           path: 'farming',
+  //           name: PageNames.ExploreFarming,
+  //           component: lazyView(PageNames.ExploreDemeter),
+  //           props: { isFarmingPage: true },
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: 'pools',
+  //       component: lazyView(PageNames.PoolContainer),
+  //       children: [
+  //         {
+  //           path: '',
+  //           name: PageNames.ExplorePools,
+  //           component: lazyView(PageNames.ExplorePools),
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: 'tokens',
+  //       name: PageNames.ExploreTokens,
+  //       component: lazyView(PageNames.ExploreTokens),
   //     },
   //   ],
   // },
@@ -163,11 +223,6 @@ const routes: Array<RouteConfig> = [
   //   ],
   // },
   // {
-  //   path: '/tokens',
-  //   name: PageNames.Tokens,
-  //   component: lazyView(PageNames.Tokens),
-  // },
-  // {
   //   path: '/moonpay-history',
   //   name: PageNames.MoonpayHistory,
   //   component: lazyView(PageNames.MoonpayHistory),
@@ -181,16 +236,6 @@ const routes: Array<RouteConfig> = [
   //   path: '/support',
   //   name: PageNames.Support,
   // },
-  // {
-  //   path: '/kyc',
-  //   name: PageNames.KYC,
-  //   component: lazyView(PageNames.KYC),
-  // },
-  {
-    path: '/route-assets',
-    name: PageNames.RouteAssets,
-    component: lazyView(PageNames.RouteAssets),
-  },
   {
     path: '*',
     redirect: '/swap',
@@ -207,8 +252,14 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const prev = from.name as Nullable<PageNames>;
+  const current = to.name as PageNames;
+  const setRoute = (name: PageNames, withNext = true) => {
+    store.commit.router.setRoute({ prev, current: name });
+    next(withNext ? { name } : undefined);
+    updateDocumentTitle(to);
+  };
   const isLoggedIn = store.getters.wallet.account.isLoggedIn;
-  if (prev !== PageNames.BridgeTransaction && to.name === PageNames.BridgeTransactionsHistory) {
+  if (prev !== PageNames.BridgeTransaction && current === PageNames.BridgeTransactionsHistory) {
     store.commit.bridge.setHistoryPage(1);
   }
   if (to.matched.some((record) => record.meta.isInvitationRoute)) {
@@ -216,30 +267,25 @@ router.beforeEach((to, from, next) => {
       store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
     }
     if (isLoggedIn) {
-      next({ name: PageNames.Referral });
-      store.commit.router.setRoute({ prev, current: PageNames.Referral });
+      setRoute(PageNames.Referral);
       return;
     }
   }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (
-      BridgeChildPages.includes(to.name as PageNames) &&
-      isLoggedIn &&
-      !store.getters.web3.isExternalAccountConnected
-    ) {
-      next({ name: PageNames.Bridge });
-      store.commit.router.setRoute({ prev, current: PageNames.Bridge });
+    if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.web3.isExternalAccountConnected) {
+      setRoute(PageNames.Bridge);
       return;
     }
-
     if (!isLoggedIn) {
-      next({ name: PageNames.Wallet });
-      store.commit.router.setRoute({ prev, current: PageNames.Wallet });
+      setRoute(PageNames.Wallet);
       return;
     }
   }
-  store.commit.router.setRoute({ prev, current: to.name as PageNames });
-  next();
+  if (!store.getters.settings.soraCardEnabled && to.name === PageNames.SoraCard) {
+    setRoute(PageNames.Swap);
+    return;
+  }
+  setRoute(current, false);
 });
 
 export { lazyComponent, lazyView, goTo };

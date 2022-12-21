@@ -9,10 +9,10 @@
       </div>
     </div>
     <div class="help-information">
-      <div class="help-block">{{ t('helpDialog.appVersion') }} {{ appVersion }}</div>
+      <div class="help-block">{{ t('helpDialog.appVersion') }} {{ app.version }}</div>
       <div class="help-block">
         {{ t('helpDialog.contactUs') }}<br />
-        {{ appEmail }}
+        {{ app.email }}
       </div>
     </div>
   </dialog-base>
@@ -32,8 +32,7 @@ import { app, Links } from '@/consts';
   },
 })
 export default class HelpDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {
-  readonly appVersion = app.version;
-  readonly appEmail = app.email;
+  readonly app = app;
 
   get links(): Array<{ title: string; href: string }> {
     return [

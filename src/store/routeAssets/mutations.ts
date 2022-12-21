@@ -2,6 +2,12 @@ import { defineMutations } from 'direct-vuex';
 
 import type { RouteAssetsState, Recipient } from './types';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type {
+  QuotePaths,
+  PrimaryMarketsEnabledAssets,
+  QuotePayload,
+  LPRewardsInfo,
+} from '@sora-substrate/liquidity-proxy/build/types';
 
 const mutations = defineMutations<RouteAssetsState>()({
   setData(state, { file, recipients }: { file: File; recipients: Array<Recipient> }): void {
@@ -16,6 +22,13 @@ const mutations = defineMutations<RouteAssetsState>()({
   },
   setSubscriptions(state, subscriptions = []): void {
     state.subscriptions = subscriptions;
+  },
+  setEnabledAssetsSubscription(state, subscription): void {
+    state.enabledAssetsSubscription = subscription;
+  },
+  cleanEnabledAssetsSubscription(state) {
+    state.enabledAssetsSubscription?.unsubscribe();
+    state.enabledAssetsSubscription = null;
   },
   setRecipientStatus(state, { id, status }) {
     const recipient = state.recipients.find((recipient) => recipient.id === id);
@@ -53,6 +66,9 @@ const mutations = defineMutations<RouteAssetsState>()({
   },
   setTokensRouted(state, tokens) {
     state.processingState.tokensRouted = tokens.maps((token) => ({ token, amount: 0 }));
+  },
+  setPrimaryMarketsEnabledAssets(state, assets: PrimaryMarketsEnabledAssets): void {
+    state.enabledAssets = Object.freeze({ ...assets });
   },
 });
 

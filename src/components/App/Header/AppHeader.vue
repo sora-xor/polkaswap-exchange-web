@@ -52,7 +52,7 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 
 import { lazyComponent, goTo } from '@/router';
-import { PageNames, Components } from '@/consts';
+import { PageNames, Components, AdarComponents } from '@/consts';
 import { getter, mutation } from '@/store/decorators';
 
 @Component({
@@ -68,7 +68,7 @@ import { getter, mutation } from '@/store/decorators';
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
-    RouteAssetsNavigation: lazyComponent(Components.RouteAssetsNavigation),
+    RouteAssetsNavigation: lazyComponent(AdarComponents.RouteAssetsNavigation),
     TokenLogo: components.TokenLogo,
   },
 })
@@ -105,6 +105,10 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   get showRouteAssetsNavigation() {
     return this.$route.path.includes('route-assets');
+  }
+
+  get areMoonpayButtonsVisible(): boolean {
+    return this.moonpayEnabled && this.isLoggedIn;
   }
 
   openNodeSelectionDialog(): void {
@@ -235,6 +239,10 @@ $app-controls-shadow--dark: inset 1px 1px 2px #52523d;
     }
   }
 
+  &.without-moonpay {
+    margin-left: auto;
+  }
+
   @include desktop {
     margin-left: auto;
   }
@@ -289,7 +297,7 @@ $app-controls-shadow--dark: inset 1px 1px 2px #52523d;
 }
 
 .app-logo--header {
-  @include mobile {
+  @include large-mobile(true) {
     display: none;
   }
 }

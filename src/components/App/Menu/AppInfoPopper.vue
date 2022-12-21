@@ -29,7 +29,7 @@
       </div>
       <div class="app-info__versions">
         <div>{{ app.name }} v{{ app.version }}</div>
-        <div v-if="specVersion">{{ t('soraText') }} v{{ specVersion }}</div>
+        <div v-if="specVersion">{{ TranslationConsts.Sora }} v{{ specVersion }}</div>
       </div>
     </div>
     <template #reference>
@@ -109,6 +109,9 @@ $popper-mix-width: 170px;
 .app-info {
   .el-divider {
     margin: 0;
+  }
+  &-link:not(:active) {
+    @include focus-outline;
   }
 }
 </style>

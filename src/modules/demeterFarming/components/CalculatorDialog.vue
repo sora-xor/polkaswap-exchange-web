@@ -2,26 +2,33 @@
   <dialog-base :visible.sync="isVisible" :title="`${TranslationConsts.APR} ${t('demeterFarming.calculator')}`">
     <div class="calculator-dialog">
       <s-row v-if="poolAsset" flex align="middle">
-        <pair-token-logo v-if="baseAsset" :first-token="baseAsset" :second-token="poolAsset" class="title-logo" />
+        <pair-token-logo
+          v-if="isFarm && baseAsset"
+          :first-token="baseAsset"
+          :second-token="poolAsset"
+          class="title-logo"
+        />
         <token-logo v-else :token="poolAsset" class="title-logo" />
         <span class="calculator-dialog-title">
-          <template v-if="baseAsset">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
+          <template v-if="isFarm">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
         </span>
       </s-row>
 
       <s-form class="el-form--actions" :show-message="false">
-        <token-input
-          v-if="baseAsset"
-          :balance="baseAssetBalance.toCodecString()"
-          :is-max-available="isBaseAssetMaxButtonAvailable"
-          :title="t('demeterFarming.amountAdd')"
-          :token="baseAsset"
-          :value="baseAssetValue"
-          @input="handleBaseAssetValue"
-          @max="handleBaseAssetMax"
-        />
+        <template v-if="isFarm">
+          <token-input
+            v-if="baseAsset"
+            :balance="baseAssetBalance.toCodecString()"
+            :is-max-available="isBaseAssetMaxButtonAvailable"
+            :title="t('demeterFarming.amountAdd')"
+            :token="baseAsset"
+            :value="baseAssetValue"
+            @input="handleBaseAssetValue"
+            @max="handleBaseAssetMax"
+          />
 
-        <s-icon v-if="baseAsset && poolAsset" class="icon-divider" name="plus-16" />
+          <s-icon v-if="baseAsset && poolAsset" class="icon-divider" name="plus-16" />
+        </template>
 
         <token-input
           v-if="poolAsset"
@@ -37,7 +44,7 @@
 
       <div class="duration">
         <info-line label="Duration" class="duration-title" />
-        <s-tabs type="rounded" :value="selectedPeriod" @click="selectPeriod" class="duration-tabs">
+        <s-tabs type="rounded" :value="selectedPeriod" @input="selectPeriod" class="duration-tabs">
           <s-tab v-for="period in intervals" :key="period" :name="String(period)" :label="`${period}D`" />
         </s-tabs>
       </div>
@@ -115,7 +122,7 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
 
   get userTokensDeposit(): FPNumber {
     return this.isFarm
-      ? this.liqudityLP
+      ? this.lpBalance
           .mul(new FPNumber(this.poolAssetValue || 0))
           .div(FPNumber.fromCodecValue(this.liquidity?.secondBalance ?? 0))
       : new FPNumber(this.poolAssetValue || 0);
@@ -152,7 +159,7 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
   get calculatedRoiPercent(): FPNumber {
     const depositInPoolsAsset = new FPNumber(this.poolAssetValue || 0);
 
-    if (depositInPoolsAsset.isZero()) return FPNumber.ZERO;
+    if (depositInPoolsAsset.isZero() || this.poolAssetPrice.isZero()) return FPNumber.ZERO;
 
     // for liquidity pool we multiply deposit in pool asset by 2
     const multiplier = this.isFarm ? 2 : 1;
@@ -174,7 +181,7 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
     return new FPNumber(this.calculatedRoiPercent.toFixed(2)).toLocaleString() + '%';
   }
 
-  selectPeriod({ name }): void {
+  selectPeriod(name: string): void {
     this.interval = Number(name);
   }
 

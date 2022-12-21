@@ -41,7 +41,7 @@
         <a class="countdown-info-link" target="_blank" rel="nofollow noopener" :href="link">{{ t('learnMoreText') }}</a>
       </div>
     </div>
-    <s-tooltip slot="reference" :content="t('marketMakerCountdown.title')" :disabled="tooltipDisabled">
+    <s-tooltip slot="reference" :content="t('marketMakerCountdown.title')" :disabled="tooltipDisabled" tabindex="-1">
       <countdown unit="MM" :percentage="transactionsPercentage" :count="accountMarketMakerInfo.count" />
     </s-tooltip>
   </el-popover>
@@ -70,11 +70,8 @@ const BLOCKS_IN_MONTH = BLOCKS_IN_DAY * 30;
   },
 })
 export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterMixin, TranslationMixin) {
-  @action.rewards.subscribeOnAccountMarketMakerInfo
-  private subscribeOnAccountMarketMakerInfo!: AsyncVoidFn;
-
-  @mutation.rewards.unsubscribeAccountMarketMakerInfo
-  private unsubscribeAccountMarketMakerInfo!: VoidFunction;
+  @action.rewards.subscribeOnAccountMarketMakerInfo private subscribe!: AsyncFnWithoutArgs;
+  @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribe!: FnWithoutArgs;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
@@ -86,9 +83,9 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
   @Watch('nodeIsConnected')
   private async updateSubscriptions(value: boolean) {
     if (value) {
-      await this.subscribeOnAccountMarketMakerInfo();
+      await this.subscribe();
     } else {
-      this.unsubscribeAccountMarketMakerInfo();
+      this.unsubscribe();
     }
   }
 
@@ -205,7 +202,7 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
   }
 
   &__unit {
-    margin-left: $inner-spacing-mini / 2;
+    margin-left: $inner-spacing-tiny;
   }
 }
 
@@ -218,7 +215,7 @@ export default class MarketMakerCountdown extends Mixins(mixins.NumberFormatterM
   &__value {
     display: flex;
     color: var(--s-color-base-content-primary);
-    margin-left: $inner-spacing-mini / 2;
+    margin-left: $inner-spacing-tiny;
   }
 }
 </style>

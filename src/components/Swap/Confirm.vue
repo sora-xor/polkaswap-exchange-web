@@ -76,6 +76,7 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
   @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;
   @state.swap.isExchangeB isExchangeB!: boolean;
+  @state.swap.selectedDexId private selectedDexId!: number;
 
   @getter.swap.minMaxReceived private minMaxReceived!: CodecString;
   @getter.swap.swapLiquiditySource private liquiditySource!: LiquiditySourceTypes;
@@ -135,7 +136,8 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
               this.toValue,
               this.slippageTolerance,
               this.isExchangeB,
-              this.liquiditySource
+              this.liquiditySource,
+              this.selectedDexId
             );
           }
         });

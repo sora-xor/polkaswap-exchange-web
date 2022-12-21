@@ -1,3 +1,5 @@
+@use "sass:math";
+
 $basic-spacing: 16px; // 10px;
 $basic-spacing-mini: 5px;
 $basic-spacing-small: $basic-spacing-mini * 2;
@@ -7,6 +9,7 @@ $inner-window-width: 464px;
 $inner-window-height: 217px;
 
 $inner-spacing-mini: 8px;
+$inner-spacing-tiny: math.div($inner-spacing-mini, 2);
 $inner-spacing-small: $inner-spacing-mini * 1.5;
 $inner-spacing-medium: $inner-spacing-mini * 2;
 $inner-spacing-big: $inner-spacing-mini * 3;

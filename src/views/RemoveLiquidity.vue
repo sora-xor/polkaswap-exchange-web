@@ -11,24 +11,25 @@
         ref="removePart"
         size="medium"
         :class="['s-input--token-value', 's-input--remove-part', removePartCharClass]"
-        :value="String(removePartInput)"
+        :value="removePart"
         :decimals="0"
         :disabled="liquidityLocked"
-        :max="100"
+        :max="MAX_PART"
         @input="handleRemovePartChange"
-        @focus="setFocusedField('removePart')"
+        @focus="setFocusedField(FocusedField.Percent)"
         @blur="resetFocusedField"
       >
         <div slot="top" class="amount">{{ t('removeLiquidity.amount') }}</div>
         <div slot="right" class="el-buttons el-buttons--between">
           <span class="percent">%</span>
           <s-button
+            v-if="isMaxButtonAvailable"
             class="el-button--max s-typography-button--small"
             type="primary"
             alternative
             size="mini"
             border-radius="mini"
-            @click.stop="handleRemovePartChange(100)"
+            @click.stop="handleRemovePartChange(MAX_PART)"
           >
             {{ t('buttons.max') }}
           </s-button>
@@ -36,10 +37,10 @@
         <div slot="bottom">
           <s-slider
             class="slider-container"
-            :value="removePartInput"
+            :value="sliderValue"
             :disabled="liquidityLocked"
-            :showTooltip="false"
-            @change="handleRemovePartChange"
+            :show-tooltip="false"
+            @input="handleRemovePartChange"
           />
           <div v-if="hasLockedPart" class="input-line input-line--footer locked-part">
             {{ t('removeLiquidity.locked', { percent: liquidityBalanceLockedPercent }) }}
@@ -55,7 +56,7 @@
         :token="firstToken"
         :value="firstTokenAmount"
         @input="setFirstTokenAmount"
-        @focus="setFocusedField('firstTokenAmount')"
+        @focus="setFocusedField(FocusedField.First)"
         @blur="resetFocusedField"
       >
         <template #balance>-</template>
@@ -70,7 +71,7 @@
         :token="secondToken"
         :value="secondTokenAmount"
         @input="setSecondTokenAmount"
-        @focus="setFocusedField('secondTokenAmount')"
+        @focus="setFocusedField(FocusedField.Second)"
         @blur="resetFocusedField"
       >
         <template #balance>-</template>
@@ -108,7 +109,7 @@
 
     <confirm-remove-liquidity
       :visible.sync="showConfirmDialog"
-      :parent-loading="parentLoading"
+      :parent-loading="parentLoading || loading"
       @confirm="handleConfirmRemoveLiquidity"
     />
 
@@ -135,9 +136,8 @@ import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { hasInsufficientXorForFee } from '@/utils';
 import { getter, state, mutation, action } from '@/store/decorators';
+import { FocusedField } from '@/store/removeLiquidity/types';
 import type { LiquidityParams } from '@/store/pool/types';
-import type { PricesPayload } from '@/store/prices/types';
-import type { FocusedField } from '@/store/removeLiquidity/types';
 
 @Component({
   components: {
@@ -158,14 +158,14 @@ export default class RemoveLiquidity extends Mixins(
   NetworkFeeDialogMixin
 ) {
   readonly XOR_SYMBOL = XOR.symbol;
+  readonly MAX_PART = 100;
+  readonly FocusedField = FocusedField;
 
   @state.removeLiquidity.liquidityAmount private liquidityAmount!: string;
   @state.removeLiquidity.focusedField private focusedField!: string;
   @state.removeLiquidity.firstTokenAmount firstTokenAmount!: string;
   @state.removeLiquidity.secondTokenAmount secondTokenAmount!: string;
-  @state.removeLiquidity.removePart removePart!: number;
-  @state.prices.price price!: string;
-  @state.prices.priceReversed priceReversed!: string;
+  @state.removeLiquidity.removePart removePart!: string;
 
   @getter.assets.xor private xor!: Nullable<AccountAsset>;
   @getter.removeLiquidity.liquidityBalanceFull private liquidityBalanceFull!: FPNumber;
@@ -176,33 +176,25 @@ export default class RemoveLiquidity extends Mixins(
   @getter.removeLiquidity.firstTokenBalance firstTokenBalance!: FPNumber;
   @getter.removeLiquidity.secondTokenBalance secondTokenBalance!: FPNumber;
   @getter.removeLiquidity.shareOfPool shareOfPool!: string;
+  @getter.removeLiquidity.price price!: string;
+  @getter.removeLiquidity.priceReversed priceReversed!: string;
 
+  @mutation.removeLiquidity.setAddresses private setAddresses!: (params: LiquidityParams) => void;
   @mutation.removeLiquidity.setFocusedField setFocusedField!: (field: FocusedField) => void;
-  @mutation.removeLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
+  @mutation.removeLiquidity.resetFocusedField resetFocusedField!: FnWithoutArgs;
 
-  @action.removeLiquidity.setRemovePart private setRemovePart!: (removePart: number) => Promise<void>;
-  @action.removeLiquidity.setLiquidity private setLiquidity!: (args: LiquidityParams) => Promise<void>;
-  @action.removeLiquidity.removeLiquidity private removeLiquidity!: AsyncVoidFn;
-  @action.removeLiquidity.resetData private resetData!: AsyncVoidFn;
+  @action.removeLiquidity.setRemovePart private setRemovePart!: (removePart: string) => Promise<void>;
+  @action.removeLiquidity.removeLiquidity private removeLiquidity!: AsyncFnWithoutArgs;
+  @action.removeLiquidity.resetData private resetData!: AsyncFnWithoutArgs;
   @action.removeLiquidity.setFirstTokenAmount setFirstTokenAmount!: (amount: string) => Promise<void>;
   @action.removeLiquidity.setSecondTokenAmount setSecondTokenAmount!: (amount: string) => Promise<void>;
 
-  @mutation.prices.resetPrices private resetPrices!: VoidFunction;
-  @action.prices.getPrices private getPrices!: (options?: PricesPayload) => Promise<void>;
-
-  @Watch('removePart')
-  private removePartChange(newValue: number): void {
-    this.handleRemovePartChange(String(newValue));
-  }
-
-  @Watch('liquidity')
+  @Watch('liquidity', { deep: true })
   private liquidityChange(): void {
-    this.updatePrices();
-
     switch (this.focusedField) {
-      case 'firstTokenAmount':
-      case 'secondTokenAmount': {
-        const isFirstToken = this.focusedField === 'firstTokenAmount';
+      case FocusedField.First:
+      case FocusedField.Second: {
+        const isFirstToken = this.focusedField === FocusedField.First;
 
         const balance = Number(this.getTokenMaxAmount(isFirstToken ? this.firstTokenBalance : this.secondTokenBalance));
         const amount = Number(isFirstToken ? this.firstTokenAmount : this.secondTokenAmount);
@@ -214,19 +206,18 @@ export default class RemoveLiquidity extends Mixins(
         break;
       }
       default: {
-        this.handleRemovePartChange(String(this.removePart));
+        this.setRemovePart(this.removePart);
         break;
       }
     }
   }
 
-  removePartInput = 0;
   sliderInput: any;
   sliderDragButton: any;
 
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
-      await this.setLiquidity({
+      this.setAddresses({
         firstAddress: this.firstTokenAddress,
         secondAddress: this.secondTokenAddress,
       });
@@ -234,7 +225,7 @@ export default class RemoveLiquidity extends Mixins(
       if (!this.liquidity) {
         return this.handleBack();
       }
-      this.updatePrices();
+
       this.addListenerToSliderDragButton();
     });
   }
@@ -242,7 +233,10 @@ export default class RemoveLiquidity extends Mixins(
   beforeDestroy(): void {
     this.removeListenerFromSliderDragButton();
     this.resetData();
-    this.resetPrices();
+  }
+
+  get sliderValue(): Nullable<number> {
+    return this.removePart ? Number(this.removePart) : undefined;
   }
 
   get firstTokenAddress(): string {
@@ -254,7 +248,8 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isEmptyAmount(): boolean {
-    return !this.removePart || !Number(this.liquidityAmount) || !this.firstTokenAmount || !this.secondTokenAmount;
+    // We don't check removePart for less than 1%
+    return !Number(this.liquidityAmount) || !this.firstTokenAmount || !this.secondTokenAmount;
   }
 
   get liquidityLocked(): boolean {
@@ -296,7 +291,7 @@ export default class RemoveLiquidity extends Mixins(
       {
         3: 'three',
         2: 'two',
-      }[this.removePartInput.toString().length] ?? 'one';
+      }[this.removePart.length] ?? 'one';
 
     return `${charClassName}-char`;
   }
@@ -315,14 +310,18 @@ export default class RemoveLiquidity extends Mixins(
     });
   }
 
-  handleRemovePartChange(value: string): void {
-    const newValue = parseFloat(value) || 0;
-    this.removePartInput = Math.min(Math.max(newValue, 0), 100);
-    this.setRemovePart(this.removePartInput);
+  get isMaxButtonAvailable(): boolean {
+    return Number(this.removePart) !== this.MAX_PART;
+  }
+
+  handleRemovePartChange(value: string | number): void {
+    if (Number(value) !== Number(this.removePart)) {
+      this.setRemovePart(String(value));
+    }
   }
 
   focusSliderInput(): void {
-    this.setFocusedField('removePart');
+    this.setFocusedField(FocusedField.Percent);
     if (this.sliderInput) {
       this.sliderInput.focus();
     }
@@ -330,16 +329,6 @@ export default class RemoveLiquidity extends Mixins(
 
   getTokenMaxAmount(tokenBalance: FPNumber): string {
     return tokenBalance.toString();
-  }
-
-  private updatePrices(): void {
-    const { firstTokenBalance, secondTokenBalance } = this;
-    this.getPrices({
-      assetAAddress: this.firstTokenAddress ?? this.firstToken.address,
-      assetBAddress: this.secondTokenAddress ?? this.secondToken.address,
-      amountA: firstTokenBalance.toString(),
-      amountB: secondTokenBalance.toString(),
-    });
   }
 
   async handleTokenChange(value: string, setValue: (v: any) => Promise<any>): Promise<any> {
