@@ -7,6 +7,7 @@ export type PoolState = {
   accountLiquidityList: Nullable<Subscription>;
   accountLiquidityUpdates: Nullable<Subscription>;
   poolApyObject: PoolApyObject;
+  poolApySubscription: Nullable<VoidFunction>;
 };
 
 export type LiquidityParams = {

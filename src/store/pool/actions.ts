@@ -37,6 +37,8 @@ const actions = defineActions({
     commit.resetAccountLiquidityList();
     commit.resetAccountLiquidityUpdates();
     commit.resetAccountLiquidity();
+    commit.resetPoolApySubscription();
+    commit.resetPoolApyObject();
     api.poolXyk.unsubscribeFromAllUpdates();
   },
   async getPoolApyObject(context): Promise<void> {
@@ -47,6 +49,23 @@ const actions = defineActions({
     if (data) {
       commit.setPoolApyObject(data);
     }
+  },
+  async subscribeOnPoolsApy(context): Promise<void> {
+    const { commit, dispatch } = poolActionContext(context);
+    commit.resetPoolApySubscription();
+
+    await dispatch.getPoolApyObject();
+
+    const subscription = SubqueryExplorerService.pool.createPoolsApySubscription(
+      (apy) => {
+        commit.updatePoolApyObject(apy);
+      },
+      () => {
+        commit.resetPoolApyObject();
+      }
+    );
+
+    commit.setPoolApySubscription(subscription);
   },
 });
 

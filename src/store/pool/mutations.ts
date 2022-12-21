@@ -29,6 +29,19 @@ const mutations = defineMutations<PoolState>()({
   setPoolApyObject(state, object: PoolApyObject): void {
     state.poolApyObject = object;
   },
+  resetPoolApyObject(state): void {
+    state.poolApyObject = {};
+  },
+  updatePoolApyObject(state, poolApyObject: PoolApyObject): void {
+    state.poolApyObject = { ...state.poolApyObject, ...poolApyObject };
+  },
+  setPoolApySubscription(state, subscription: VoidFunction): void {
+    state.poolApySubscription = subscription;
+  },
+  resetPoolApySubscription(state): void {
+    state.poolApySubscription?.();
+    state.poolApySubscription = null;
+  },
 });
 
 export default mutations;
