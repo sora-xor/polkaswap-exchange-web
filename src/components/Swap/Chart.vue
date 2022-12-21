@@ -252,6 +252,42 @@ const formatPrice = (value: number, symbol: string) => {
   return `${new FPNumber(value).toLocaleString()} ${symbol}`;
 };
 
+const preparePriceData = (item: SUBQUERY_TYPES.AssetSnapshotEntity): number[] => {
+  const { open, close, low, high } = item.priceUSD;
+
+  return [+open, +close, +low, +high];
+};
+
+const normalizeShapshots = (
+  collection: SUBQUERY_TYPES.AssetSnapshotEntity[],
+  difference: number,
+  lastTimestamp: number
+): ChartDataItem[] => {
+  const sample: ChartDataItem[] = [];
+
+  for (const item of collection) {
+    const buffer: ChartDataItem[] = [];
+
+    const timestamp = +item.timestamp * 1000;
+    const price = preparePriceData(item);
+
+    const prevTimestamp = sample[sample.length - 1]?.timestamp ?? lastTimestamp;
+
+    let currentTimestamp = timestamp;
+
+    while ((currentTimestamp += difference) < prevTimestamp) {
+      buffer.push({
+        timestamp: currentTimestamp,
+        price: new Array(4).fill(price[1]),
+      });
+    }
+
+    sample.push(...buffer.reverse(), { timestamp, price });
+  }
+
+  return sample;
+};
+
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
@@ -528,10 +564,9 @@ export default class SwapChart extends Mixins(
       dataZoom: [
         {
           type: 'inside',
-          start: 100,
+          start: 0,
           end: 100,
-          minValueSpan: SECONDS_IN_TYPE[this.selectedFilter.type] * this.selectedFilter.count, // minimum 11 elements like on skeleton
-          maxValueSpan: SECONDS_IN_TYPE[this.selectedFilter.type] * this.selectedFilter.count,
+          minValueSpan: SECONDS_IN_TYPE[this.selectedFilter.type] * 11, // minimum 11 elements like on skeleton
         },
       ],
       color: [this.theme.color.theme.accent, this.theme.color.status.success],
@@ -666,7 +701,7 @@ export default class SwapChart extends Mixins(
     addresses: string[],
     filter: ChartFilter,
     paginationInfos: Partial<SUBQUERY_TYPES.PageInfo>[],
-    currentPrices: ChartDataItem[]
+    lastTimestamp: number
   ) {
     const collections = await Promise.all(
       addresses.map((address, index) => this.fetchData(address, filter, paginationInfos[index]))
@@ -674,46 +709,16 @@ export default class SwapChart extends Mixins(
 
     if (!collections.every((collection) => !!collection.nodes.length)) return null;
 
-    const pageInfos = collections.map((item) => ({
-      hasNextPage: item.hasNextPage,
-      endCursor: item.endCursor,
-    }));
-
+    const pageInfos: Partial<SUBQUERY_TYPES.PageInfo>[] = [];
+    const prices: ChartDataItem[] = [];
     const groups: ChartDataItem[][] = [];
+    const difference = SECONDS_IN_TYPE[filter.type];
 
-    for (const collection of collections) {
-      const fixedSizeSample: ChartDataItem[] = [];
-      const timestampDifference = SECONDS_IN_TYPE[filter.type];
-
-      for (const item of collection.nodes) {
-        const buffer: ChartDataItem[] = [];
-
-        const timestamp = +item.timestamp * 1000;
-        const price = this.preparePriceData(item);
-
-        const lastTimestamp =
-          fixedSizeSample[fixedSizeSample.length - 1]?.timestamp ??
-          currentPrices[currentPrices.length - 1]?.timestamp ??
-          Date.now();
-
-        let processedTimestamp = timestamp;
-
-        while (lastTimestamp - processedTimestamp > timestampDifference) {
-          processedTimestamp = processedTimestamp + timestampDifference;
-
-          buffer.push({
-            timestamp: processedTimestamp,
-            price: new Array(4).fill(price[1]),
-          });
-        }
-
-        fixedSizeSample.push(...buffer.reverse(), { timestamp, price });
-      }
-
-      groups.push(fixedSizeSample);
+    for (const { hasNextPage, endCursor, nodes } of collections) {
+      groups.push(normalizeShapshots(nodes, difference, lastTimestamp));
+      pageInfos.push({ hasNextPage, endCursor });
     }
 
-    const prices: ChartDataItem[] = [];
     const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
     let { min, max } = this.limits;
 
@@ -763,12 +768,13 @@ export default class SwapChart extends Mixins(
 
     const addresses = [...this.tokensAddresses];
     const requestId = Date.now();
+    const lastTimestamp = this.prices[this.prices.length - 1]?.timestamp ?? Date.now();
 
     this.priceUpdateRequestId = requestId;
 
     await this.withApi(async () => {
       try {
-        const response = await this.getChartData(addresses, this.selectedFilter, this.pageInfos, this.prices);
+        const response = await this.getChartData(addresses, this.selectedFilter, this.pageInfos, lastTimestamp);
 
         // if no response, or tokens were changed, return
         if (!(response && isEqual(addresses)(this.tokensAddresses) && isEqual(requestId)(this.priceUpdateRequestId)))
@@ -873,12 +879,6 @@ export default class SwapChart extends Mixins(
     });
   }
 
-  private preparePriceData(item: SUBQUERY_TYPES.AssetSnapshotEntity): number[] {
-    const { open, close, low, high } = item.priceUSD;
-
-    return [+open, +close, +low, +high];
-  }
-
   private dividePrice(priceA: number, priceB: number) {
     return priceB !== 0 ? priceA / priceB : 0;
   }
@@ -924,7 +924,7 @@ export default class SwapChart extends Mixins(
 
   handleZoom(event: any): void {
     event?.stop?.();
-    if (event?.wheelDelta < 0 && this.zoomStart === 0 && this.zoomEnd === 100) {
+    if (event?.wheelDelta < 0 && this.zoomStart === 0) {
       this.updatePrices();
     }
   }
