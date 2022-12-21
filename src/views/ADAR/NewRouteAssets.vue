@@ -43,6 +43,7 @@ import { FeatureFlags } from '@/store/settings/types';
 })
 export default class RouteAssets extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @action.routeAssets.subscribeOnReserves private subscribeOnReserves!: () => void;
+  @action.routeAssets.cleanSwapReservesSubscription private cleanSwapReservesSubscription!: () => void;
   @mutation.swap.setPrimaryMarketsEnabledAssets private setEnabledAssets!: (args: PrimaryMarketsEnabledAssets) => void;
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
   @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
@@ -51,18 +52,6 @@ export default class RouteAssets extends Mixins(mixins.LoadingMixin, Translation
   // @action.routeAssets.processingNextStage nextStage!: any;
   // @action.routeAssets.processingPreviousStage previousStage!: any;
 
-  // enabledAssetsSubscription: Nullable<Subscription> = null;
-
-  // private subscribeOnEnabledAssets(): void {
-  //   this.cleanEnabledAssetsSubscription();
-  //   this.enabledAssetsSubscription = api.swap.subscribeOnPrimaryMarketsEnabledAssets().subscribe(this.setEnabledAssets);
-  // }
-
-  // private cleanEnabledAssetsSubscription(): void {
-  //   this.enabledAssetsSubscription?.unsubscribe();
-  //   this.enabledAssetsSubscription = null;
-  // }
-
   @Watch('liquiditySource')
   private handleLiquiditySourceChange(): void {
     this.subscribeOnReserves();
@@ -70,13 +59,13 @@ export default class RouteAssets extends Mixins(mixins.LoadingMixin, Translation
 
   created() {
     this.withApi(async () => {
-      // this.subscribeOnEnabledAssets();
+      this.subscribeOnReserves();
       this.setFeatureFlags({ charts: false, moonpay: false });
     });
   }
 
   beforeDestroy(): void {
-    // this.cleanEnabledAssetsSubscription();
+    this.cleanSwapReservesSubscription();
   }
 
   get component() {

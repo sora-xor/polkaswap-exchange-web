@@ -22,8 +22,9 @@ const actions = defineActions({
     commit.progressCurrentStageIndex(-1);
   },
   setInputToken(context, asset) {
-    const { commit } = routeAssetsActionContext(context);
+    const { commit, dispatch } = routeAssetsActionContext(context);
     commit.setInputToken(asset);
+    dispatch.subscribeOnReserves();
   },
   cancelProcessing(context) {
     const { commit, rootGetters, dispatch } = routeAssetsActionContext(context);
@@ -99,7 +100,7 @@ const actions = defineActions({
     if (!tokens || tokens.length < 1) return;
     const currentsPulls = [] as Array<RouteAssetsSubscription>;
 
-    commit.cleanEnabledAssetsSubscription();
+    dispatch.cleanSwapReservesSubscription();
     const enabledAssetsSubscription = api.swap
       .subscribeOnPrimaryMarketsEnabledAssets()
       .subscribe((enabledAssetsList) => {
@@ -148,6 +149,7 @@ const actions = defineActions({
       enabledAssets,
       dexId
     );
+
     const subscription = state.subscriptions.find((item) => item.assetAddress === outputAssetId);
     if (subscription) {
       subscription.paths = paths;
