@@ -1,6 +1,7 @@
 import { defineMutations } from 'direct-vuex';
 import type { Subscription } from 'rxjs';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import type { PoolState } from './types';
 
@@ -24,6 +25,9 @@ const mutations = defineMutations<PoolState>()({
   },
   resetAccountLiquidity(state): void {
     state.accountLiquidity = [];
+  },
+  setPoolApyObject(state, object: PoolApyObject): void {
+    state.poolApyObject = object;
   },
 });
 

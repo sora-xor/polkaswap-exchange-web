@@ -20,9 +20,10 @@ export default class PoolContainer extends Mixins(SubscriptionsMixin) {
   @action.pool.subscribeOnAccountLiquidityList private subscribeOnList!: AsyncFnWithoutArgs;
   @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnUpdates!: AsyncFnWithoutArgs;
   @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribe!: AsyncFnWithoutArgs;
+  @action.pool.getPoolApyObject private getPoolApyObject!: AsyncFnWithoutArgs;
 
   created(): void {
-    this.setStartSubscriptions([this.subscribeOnList, this.subscribeOnUpdates]);
+    this.setStartSubscriptions([this.subscribeOnList, this.subscribeOnUpdates, this.getPoolApyObject]);
     this.setResetSubscriptions([this.unsubscribe]);
   }
 }

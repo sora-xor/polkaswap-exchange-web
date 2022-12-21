@@ -101,6 +101,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
@@ -115,7 +116,12 @@ import { getter, state } from '@/store/decorators';
     InfoLine: components.InfoLine,
   },
 })
-export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.LoadingMixin, TranslationMixin) {
+export default class Pool extends Mixins(
+  mixins.FormattedAmountMixin,
+  mixins.LoadingMixin,
+  TranslationMixin,
+  PoolApyMixin
+) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
@@ -144,7 +150,7 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
         secondBalanceFormatted: this.formatCodecNumber(liquidity.secondBalance, liquidity.decimals),
         secondBalanceFiat: secondAsset ? this.getFiatAmountByCodecString(liquidity.secondBalance, secondAsset) : '0',
         poolShareFormatted: `${this.formatStringValue(liquidity.poolShare)}%`,
-        apyFormatted: this.getStrategicBonusApy(liquidity.secondAddress),
+        apyFormatted: this.getStrategicBonusApy(liquidity.firstAddress, liquidity.secondAddress),
         title: this.getPairTitle(firstAssetSymbol, secondAssetSymbol),
       };
     });
@@ -183,10 +189,8 @@ export default class Pool extends Mixins(mixins.FormattedAmountMixin, mixins.Loa
     return '';
   }
 
-  private getStrategicBonusApy(targetAssetAddress: string): string {
-    // [TODO:SUBQUERY] update
-    const apy = '0';
-    // const apy = this.fiatPriceObject[targetAssetAddress]?.strategicBonusApy;
+  private getStrategicBonusApy(firstAddress: string, secondAddress: string): string {
+    const apy = this.getPoolApy(firstAddress, secondAddress);
     if (!apy) {
       return '';
     }
