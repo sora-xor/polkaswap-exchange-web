@@ -5,7 +5,7 @@ import { api } from '@sora-substrate/util';
 
 import store from '@/store';
 import { updateDocumentTitle } from '@/utils';
-import { PageNames, BridgeChildPages, Adar } from '@/consts';
+import { PageNames, BridgeChildPages, AdarPageNames } from '@/consts';
 
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 import { demeterLazyView } from '@/modules/demeterFarming/router';
@@ -63,8 +63,8 @@ const routes: Array<RouteConfig> = [
   // },
   {
     path: '/route-assets',
-    name: Adar.AdarPageNames.RouteAssets,
-    component: lazyView(Adar.AdarPageNames.RouteAssets),
+    name: AdarPageNames.RouteAssets,
+    component: lazyView(AdarPageNames.RouteAssets),
   },
   // {
   //   path: '/card',

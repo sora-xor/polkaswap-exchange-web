@@ -4,9 +4,9 @@ import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/cons
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 import pkg from '../../package.json';
-import * as AdarData from './adar';
+import { AdarComponents, AdarPageNames, Stages as AdarRouteAssetsStages } from './adar';
 
-export * as Adar from './adar';
+export { AdarComponents, AdarPageNames, AdarRouteAssetsStages };
 
 export const app = {
   version: pkg.version,
@@ -262,7 +262,7 @@ interface SidebarMenuItemLink extends SidebarMenuItem {
 const MainMenu: Array<SidebarMenuItem> = [
   {
     icon: 'arrows-arrow-bold-right-24',
-    title: AdarData.AdarPageNames.RouteAssets,
+    title: AdarPageNames.RouteAssets,
   },
   {
     icon: 'arrows-swap-90-24',

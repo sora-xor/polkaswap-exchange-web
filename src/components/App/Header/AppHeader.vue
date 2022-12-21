@@ -52,7 +52,7 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 
 import { lazyComponent, goTo } from '@/router';
-import { PageNames, Components, Adar } from '@/consts';
+import { PageNames, Components, AdarComponents } from '@/consts';
 import { getter, mutation } from '@/store/decorators';
 
 @Component({
@@ -68,7 +68,7 @@ import { getter, mutation } from '@/store/decorators';
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
-    RouteAssetsNavigation: lazyComponent(Adar.AdarComponents.RouteAssetsNavigation),
+    RouteAssetsNavigation: lazyComponent(AdarComponents.RouteAssetsNavigation),
     TokenLogo: components.TokenLogo,
   },
 })
