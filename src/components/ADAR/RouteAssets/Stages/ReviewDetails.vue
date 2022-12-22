@@ -157,7 +157,7 @@ export default class ReviewDetails extends Mixins(TranslationMixin) {
   }
 
   get remainingAmountRequired() {
-    return this.estimatedAmount - Number(this.totalTokensAvailable);
+    return this.estimatedAmount - Number(this.totalTokensAvailable?.replace(/,/g, ''));
   }
 
   get summaryData() {
