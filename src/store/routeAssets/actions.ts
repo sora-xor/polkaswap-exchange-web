@@ -54,7 +54,6 @@ const actions = defineActions({
         const usd = row.data[2]?.replace(/,/g, '');
         const asset = findAsset(row.data[3]) || XOR;
         const amount = Number(usd) / Number(getAssetUSDPrice(asset, priceObject));
-        console.dir(amount);
         data.push({
           name: row.data[0],
           wallet: row.data[1],

@@ -1,7 +1,7 @@
 <template>
   <div v-loading="parentLoading" class="route-assets">
     <component :is="component"></component>
-    <!-- <div class="temp-div">
+    <div class="temp-div">
       <s-button
         type="primary"
         class="s-typography-button--big route-assets-upload-csv__button"
@@ -16,7 +16,7 @@
       >
         {{ 'Next step' }}
       </s-button>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -49,8 +49,8 @@ export default class RouteAssets extends Mixins(mixins.LoadingMixin, Translation
   @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
 
   @getter.routeAssets.currentStageComponentName currentStageComponentName!: string;
-  // @action.routeAssets.processingNextStage nextStage!: any;
-  // @action.routeAssets.processingPreviousStage previousStage!: any;
+  @action.routeAssets.processingNextStage nextStage!: any;
+  @action.routeAssets.processingPreviousStage previousStage!: any;
 
   @Watch('liquiditySource')
   private handleLiquiditySourceChange(): void {

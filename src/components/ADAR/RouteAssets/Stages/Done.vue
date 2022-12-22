@@ -86,7 +86,6 @@ import { groupBy, sumBy } from 'lodash';
 import { Recipient, RecipientStatus } from '@/store/routeAssets/types';
 import { FPNumber } from '@sora-substrate/util/build';
 import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import { formatAssetBalance } from '@/utils';
 import WarningMessage from '../WarningMessage.vue';
 import { jsPDF as JsPDF } from 'jspdf';
 @Component({
@@ -144,11 +143,6 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
   getStatus(assetArray) {
     if (assetArray.some((recipient) => recipient.status === RecipientStatus.FAILED)) return 'failed';
     return assetArray.find((recipient) => recipient.status === RecipientStatus.PENDING) ? 'waiting' : 'routed';
-  }
-
-  get balance(): string {
-    const asset = this.accountAssets.find((item) => item.address === this.inputToken.address);
-    return formatAssetBalance(asset) || '0';
   }
 
   getAssetUSDPrice(asset: Asset) {
