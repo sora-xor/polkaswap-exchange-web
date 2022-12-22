@@ -21,17 +21,15 @@
           </s-tabs>
         </div>
         <div class="s-flex chart-types">
-          <s-button
+          <svg-icon-button
             v-for="{ type, icon, active } in chartTypeButtons"
             :key="type"
-            type="action"
-            size="small"
-            :class="['chart-type', { 's-pressed': active }]"
+            :icon="icon"
+            :active="active"
             :disabled="parentLoading || loading"
+            size="small"
             @click="selectChartType(type)"
-          >
-            <component :is="icon" :class="{ active }" />
-          </s-button>
+          />
         </div>
       </div>
     </div>
@@ -104,9 +102,8 @@ import {
 
 import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import LineIcon from '@/assets/img/charts/line.svg?inline';
-import CandleIcon from '@/assets/img/charts/candle.svg?inline';
 
+import { SvgIcons } from '@/components/Button/SvgIconButton/icons';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { debouncedInputHandler, getTextWidth, calcPriceChange, formatDecimalPlaces } from '@/utils';
@@ -145,8 +142,8 @@ type ChartFilter = {
 };
 
 const CHART_TYPE_ICONS = {
-  [CHART_TYPES.LINE]: LineIcon,
-  [CHART_TYPES.CANDLE]: CandleIcon,
+  [CHART_TYPES.LINE]: SvgIcons.LineIcon,
+  [CHART_TYPES.CANDLE]: SvgIcons.CandleIcon,
 };
 
 const SECONDS_IN_TYPE = {
@@ -292,8 +289,7 @@ const normalizeShapshots = (
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
-    LineIcon,
-    CandleIcon,
+    SvgIconButton: lazyComponent(Components.SvgIconButton),
     TokensRow: lazyComponent(Components.TokensRow),
     PriceChange: lazyComponent(Components.PriceChange),
     SSkeleton,
@@ -1007,20 +1003,6 @@ $skeleton-label-width: 34px;
     }
     &.is-disabled {
       cursor: not-allowed;
-    }
-  }
-}
-
-.chart-type {
-  svg {
-    & > path {
-      fill: var(--s-color-base-content-tertiary);
-    }
-
-    &.active {
-      & > path {
-        fill: var(--s-color-theme-accent);
-      }
     }
   }
 }

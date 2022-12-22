@@ -162,8 +162,6 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
-import SortButton from '@/components/SortButton.vue';
-
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { DemeterPool } from '@sora-substrate/util/build/demeterFarming/types';
@@ -202,7 +200,7 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
     CalculatorButton: demeterLazyComponent(DemeterComponents.CalculatorButton),
     CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    SortButton,
+    SortButton: lazyComponent(Components.SortButton),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
   },
