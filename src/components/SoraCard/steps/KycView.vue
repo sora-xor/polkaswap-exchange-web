@@ -102,9 +102,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
           },
         })
           .on('Error', (data) => {
-            console.log('error', data);
-
-            // clearTokensFromSessionStorage();
+            console.error('[SoraCard]: Error while initiating KYC', data);
 
             this.$notify({
               message: 'Your access token has expired',

@@ -54,7 +54,7 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
         }, 1500);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   }
 
