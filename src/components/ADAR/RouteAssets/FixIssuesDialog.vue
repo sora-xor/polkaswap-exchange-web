@@ -54,6 +54,7 @@
             <token-logo class="token-logo" :token="model.asset" />
           </div>
         </div>
+        <warning-message v-if="amountError" class="warning-message" :text="amountError" :isError="amountError" />
         <!-- <p class="field__status">{{ item.status }}</p> -->
       </div>
       <s-divider />
@@ -64,6 +65,9 @@
         :disabled="submitIsDisabled"
       >
         {{ 'Fix issue' }}
+      </s-button>
+      <s-button type="primary" class="s-typography-button--big browse-button" @click.stop="onDeleteClick">
+        {{ 'Delete recipient' }}
       </s-button>
     </dialog-base>
   </div>
@@ -77,6 +81,7 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { action, mutation, state } from '@/store/decorators';
 import { FPNumber } from '@sora-substrate/util/build';
 import validate from '@/store/routeAssets/utils';
+import WarningMessage from './WarningMessage.vue';
 
 const initModel: any = {
   name: '',
@@ -90,6 +95,7 @@ const initModel: any = {
   components: {
     DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
+    WarningMessage,
   },
 })
 export default class FixIssuesDialog extends Mixins(
@@ -99,6 +105,7 @@ export default class FixIssuesDialog extends Mixins(
 ) {
   // @mutation.routeAssets.editRecipient editRecipient!: any;
   @action.routeAssets.editRecipient editRecipient!: any;
+  @action.routeAssets.deleteRecipient deleteRecipient!: any;
   @Prop() readonly recipient!: Recipient;
   @Prop() readonly currentIssueIdx!: number;
   @Prop() readonly totalIssuesCount!: number;
@@ -120,6 +127,10 @@ export default class FixIssuesDialog extends Mixins(
     return isNaN(this.model.usd) ? 'Should be a number' : null;
   }
 
+  get amountError() {
+    return isNaN(this.model.amount) ? "Token price hasn't been found" : '';
+  }
+
   changeIssueIdx(delta) {
     const newValue = this.currentIssueIdx + delta;
     if (newValue >= this.totalIssuesCount || newValue < 0) return;
@@ -138,6 +149,10 @@ export default class FixIssuesDialog extends Mixins(
 
   get submitIsDisabled() {
     return !validate.validate(this.model);
+  }
+
+  onDeleteClick() {
+    this.deleteRecipient(this.recipient.id);
   }
 
   onSaveClick() {
@@ -188,7 +203,12 @@ export default class FixIssuesDialog extends Mixins(
 .browse-button {
   width: 100%;
   margin-bottom: 16px;
-  margin-top: 24px;
+  margin-left: 0;
+  margin-right: 0;
+
+  &:first {
+    margin-top: 24px;
+  }
 }
 
 .field {
@@ -196,6 +216,7 @@ export default class FixIssuesDialog extends Mixins(
   font-weight: 300;
   font-size: 13px;
   @include flex-between;
+  position: relative;
 
   &__status {
     display: flex;
@@ -252,5 +273,11 @@ export default class FixIssuesDialog extends Mixins(
     color: white;
     cursor: pointer;
   }
+}
+
+.warning-message {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: -12px;
 }
 </style>

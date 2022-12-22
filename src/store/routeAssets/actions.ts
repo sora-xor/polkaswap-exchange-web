@@ -54,6 +54,7 @@ const actions = defineActions({
         const usd = row.data[2]?.replace(/,/g, '');
         const asset = findAsset(row.data[3]) || XOR;
         const amount = Number(usd) / Number(getAssetUSDPrice(asset, priceObject));
+        console.dir(amount);
         data.push({
           name: row.data[0],
           wallet: row.data[1],
@@ -88,6 +89,11 @@ const actions = defineActions({
     const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
     const amount = Number(usd) / Number(getAssetUSDPrice(asset, priceObject));
     commit.editRecipient({ id, name, wallet, usd, amount, asset });
+  },
+
+  deleteRecipient(context, id): void {
+    const { commit, rootState } = routeAssetsActionContext(context);
+    commit.deleteRecipient(id);
   },
 
   subscribeOnReserves(context, tkn: Asset = XOR): void {

@@ -128,9 +128,10 @@ export default class ProcessTemplate extends Mixins(TranslationMixin) {
   }
 
   get amountsStatus() {
+    const areErrors = this.incorrectAmountCount > 0;
     return {
-      title: `Calculated`,
-      correct: true,
+      title: areErrors ? `${this.incorrectAmountCount} issues found` : `Calculated`,
+      correct: !areErrors,
     };
   }
 
@@ -173,6 +174,10 @@ export default class ProcessTemplate extends Mixins(TranslationMixin) {
 
   get incorrectUSD() {
     return this.recipients.filter((recipient) => !validate.usd(recipient.usd)).length;
+  }
+
+  get incorrectAmountCount() {
+    return this.recipients.filter((recipient) => !validate.amount(recipient.amount)).length;
   }
 
   get nextButtonTitle() {
