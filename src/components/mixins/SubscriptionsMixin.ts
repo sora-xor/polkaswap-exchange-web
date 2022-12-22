@@ -9,7 +9,7 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   startSubscriptionsList: Array<AsyncFnWithoutArgs> = [];
-  resetSubscriptionsList: Array<AsyncFnWithoutArgs> = [];
+  resetSubscriptionsList: Array<FnWithoutArgs> = [];
 
   @Watch('isLoggedIn')
   @Watch('nodeIsConnected')
@@ -37,7 +37,7 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
     this.startSubscriptionsList = list;
   }
 
-  public setResetSubscriptions(list: AsyncFnWithoutArgs[]) {
+  public setResetSubscriptions(list: FnWithoutArgs[]) {
     this.resetSubscriptionsList = list;
   }
 

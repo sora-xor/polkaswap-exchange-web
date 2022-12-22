@@ -90,7 +90,7 @@
 import dayjs from 'dayjs';
 import isEqual from 'lodash/fp/isEqual';
 import { graphic } from 'echarts';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import { SSkeleton, SSkeletonItem } from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton';
 
@@ -109,11 +109,9 @@ import CandleIcon from '@/assets/img/charts/candle.svg?inline';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { getter } from '@/store/decorators';
-import { debouncedInputHandler, getTextWidth, calcPriceChange } from '@/utils';
-import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+import { debouncedInputHandler, getTextWidth, calcPriceChange, formatDecimalPlaces } from '@/utils';
 
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 type ChartDataItem = {
   timestamp: number;
@@ -237,6 +235,59 @@ const AXIS_OFFSET = 8;
 
 const SYNC_INTERVAL = 6 * 1000;
 
+const signific =
+  (value: FPNumber) =>
+  (positive: string, negative: string, zero: string): string => {
+    return FPNumber.gt(value, FPNumber.ZERO) ? positive : FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
+  };
+
+const formatChange = (value: FPNumber): string => {
+  const sign = signific(value)('+', '', '');
+  const priceChange = formatDecimalPlaces(value, true);
+
+  return `${sign}${priceChange}`;
+};
+
+const formatPrice = (value: number, symbol: string) => {
+  return `${new FPNumber(value).toLocaleString()} ${symbol}`;
+};
+
+const preparePriceData = (item: SUBQUERY_TYPES.AssetSnapshotEntity): number[] => {
+  const { open, close, low, high } = item.priceUSD;
+
+  return [+open, +close, +low, +high];
+};
+
+const normalizeShapshots = (
+  collection: SUBQUERY_TYPES.AssetSnapshotEntity[],
+  difference: number,
+  lastTimestamp: number
+): ChartDataItem[] => {
+  const sample: ChartDataItem[] = [];
+
+  for (const item of collection) {
+    const buffer: ChartDataItem[] = [];
+
+    const timestamp = +item.timestamp * 1000;
+    const price = preparePriceData(item);
+
+    const prevTimestamp = sample[sample.length - 1]?.timestamp ?? lastTimestamp;
+
+    let currentTimestamp = timestamp;
+
+    while ((currentTimestamp += difference) < prevTimestamp) {
+      buffer.push({
+        timestamp: currentTimestamp,
+        price: new Array(4).fill(price[1]),
+      });
+    }
+
+    sample.push(...buffer.reverse(), { timestamp, price });
+  }
+
+  return sample;
+};
+
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
@@ -256,9 +307,9 @@ export default class SwapChart extends Mixins(
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin
 ) {
-  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
-  @getter.swap.tokenTo tokenTo!: AccountAsset;
-  @getter.swap.isAvailable isAvailable!: boolean;
+  @Prop({ default: () => null, type: Object }) readonly tokenFrom!: Nullable<AccountAsset>;
+  @Prop({ default: () => null, type: Object }) readonly tokenTo!: Nullable<AccountAsset>;
+  @Prop({ default: false, type: Boolean }) readonly isAvailable!: boolean;
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
@@ -272,21 +323,21 @@ export default class SwapChart extends Mixins(
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   // ordered by timestamp DESC
-  prices: ChartDataItem[] = [];
-  pageInfos: Partial<SUBQUERY_TYPES.PageInfo>[] = [];
-  zoomStart = 0; // percentage of zoom start position
-  zoomEnd = 100; // percentage of zoom end position
-  precision = 2;
-  limits = {
+  private prices: ChartDataItem[] = [];
+  private pageInfos: Partial<SUBQUERY_TYPES.PageInfo>[] = [];
+  private zoomStart = 0; // percentage of zoom start position
+  private zoomEnd = 100; // percentage of zoom end position
+  private precision = 2;
+  private limits = {
     min: Infinity,
     max: 0,
   };
 
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
-  forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
-
-  priceUpdateWatcher: Nullable<FnWithoutArgs> = null;
-  priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
+  private forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
+  private priceUpdateRequestId = 0;
+  private priceUpdateWatcher: Nullable<FnWithoutArgs> = null;
+  private priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
@@ -311,8 +362,8 @@ export default class SwapChart extends Mixins(
     return this.tokenTo?.symbol ?? 'USD';
   }
 
-  get tokens(): Asset[] {
-    return [this.tokenFrom, this.tokenTo].filter((token) => !!token);
+  get tokens(): AccountAsset[] {
+    return [this.tokenFrom, this.tokenTo].filter((token) => !!token) as AccountAsset[];
   }
 
   get tokensAddresses(): string[] {
@@ -537,17 +588,7 @@ export default class SwapChart extends Mixins(
         formatter: (params) => {
           const { data, seriesType } = params[0];
 
-          const signific = (value: FPNumber) => (positive: string, negative: string, zero: string) =>
-            FPNumber.gt(value, FPNumber.ZERO) ? positive : FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
-          const formatPrice = (value: number) => `${new FPNumber(value).toLocaleString()} ${this.symbol}`;
-          const formatChange = (value: FPNumber) => {
-            const sign = signific(value)('+', '', '');
-            const priceChange = this.formatPriceChange(value);
-
-            return `${sign}${priceChange}%`;
-          };
-
-          if (seriesType === CHART_TYPES.LINE) return formatPrice(data[1]);
+          if (seriesType === CHART_TYPES.LINE) return formatPrice(data[1], this.symbol);
 
           if (seriesType === CHART_TYPES.CANDLE) {
             const [timestamp, open, close, low, high] = data;
@@ -559,10 +600,10 @@ export default class SwapChart extends Mixins(
             );
 
             const rows = [
-              { title: 'Open', data: formatPrice(open) },
-              { title: 'High', data: formatPrice(high) },
-              { title: 'Low', data: formatPrice(low) },
-              { title: 'Close', data: formatPrice(close) },
+              { title: 'Open', data: formatPrice(open, this.symbol) },
+              { title: 'High', data: formatPrice(high, this.symbol) },
+              { title: 'Low', data: formatPrice(low, this.symbol) },
+              { title: 'Close', data: formatPrice(close, this.symbol) },
               { title: 'Change', data: formatChange(change), color: changeColor },
             ];
 
@@ -635,7 +676,7 @@ export default class SwapChart extends Mixins(
   // ordered ty timestamp DESC
   private async fetchData(address: string, filter: ChartFilter, pageInfo?: Partial<SUBQUERY_TYPES.PageInfo>) {
     const { type, count } = filter;
-    const nodes: AssetSnapshot[] = [];
+    const nodes: SUBQUERY_TYPES.AssetSnapshotEntity[] = [];
 
     let hasNextPage = pageInfo?.hasNextPage ?? true;
     let endCursor = pageInfo?.endCursor ?? '';
@@ -643,12 +684,12 @@ export default class SwapChart extends Mixins(
 
     do {
       const first = Math.min(fetchCount, 100); // how many items should be fetched by request
-      const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, type, first, endCursor);
+      const response = await SubqueryExplorerService.price.getHistoricalPriceForAsset(address, type, first, endCursor);
 
       if (!response) throw new Error('Chart data fetch error');
 
-      hasNextPage = response.hasNextPage;
-      endCursor = response.endCursor;
+      hasNextPage = response.pageInfo.hasNextPage;
+      endCursor = response.pageInfo.endCursor;
       nodes.push(...response.nodes);
       fetchCount -= response.nodes.length;
     } while (hasNextPage && fetchCount > 0);
@@ -659,31 +700,25 @@ export default class SwapChart extends Mixins(
   private async getChartData(
     addresses: string[],
     filter: ChartFilter,
-    paginationInfos?: Partial<SUBQUERY_TYPES.PageInfo>[]
+    paginationInfos: Partial<SUBQUERY_TYPES.PageInfo>[],
+    lastTimestamp: number
   ) {
     const collections = await Promise.all(
-      addresses.map((address, index) => this.fetchData(address, filter, paginationInfos?.[index]))
+      addresses.map((address, index) => this.fetchData(address, filter, paginationInfos[index]))
     );
 
     if (!collections.every((collection) => !!collection.nodes.length)) return null;
 
-    const pageInfos = collections.map((item: any) => ({
-      hasNextPage: item.hasNextPage,
-      endCursor: item.endCursor,
-    }));
-
-    const groups = collections.map((collection: any) =>
-      collection.nodes.map((item) => {
-        const price = this.preparePriceData(item);
-
-        return {
-          timestamp: +item.timestamp * 1000,
-          price,
-        };
-      })
-    );
-
+    const pageInfos: Partial<SUBQUERY_TYPES.PageInfo>[] = [];
     const prices: ChartDataItem[] = [];
+    const groups: ChartDataItem[][] = [];
+    const difference = SECONDS_IN_TYPE[filter.type];
+
+    for (const { hasNextPage, endCursor, nodes } of collections) {
+      groups.push(normalizeShapshots(nodes, difference, lastTimestamp));
+      pageInfos.push({ hasNextPage, endCursor });
+    }
+
     const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
     let { min, max } = this.limits;
 
@@ -692,7 +727,7 @@ export default class SwapChart extends Mixins(
       const b = groups[1]?.[i];
 
       const timestamp = (a?.timestamp ?? b?.timestamp) as number;
-      const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0]) as number[];
+      const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0]) as number[];
 
       // if "open" & "close" prices are zero, we are going to time, where pool is not created
       if (price[0] === 0 && price[1] === 0) break;
@@ -721,7 +756,7 @@ export default class SwapChart extends Mixins(
     return Math.max(this.getPrecision(min), this.getPrecision(max));
   }
 
-  private getHistoricalPrices(resetChartData = false): void {
+  private async getHistoricalPrices(resetChartData = false): Promise<void> {
     if (resetChartData) {
       this.clearData();
     } else if (this.loading || this.isAllHistoricalPricesFetched(this.pageInfos)) {
@@ -732,26 +767,29 @@ export default class SwapChart extends Mixins(
     if (this.tokensAddresses.length === 2 && !this.isAvailable) return;
 
     const addresses = [...this.tokensAddresses];
+    const requestId = Date.now();
+    const lastTimestamp = this.prices[this.prices.length - 1]?.timestamp ?? Date.now();
 
-    this.withApi(async () => {
-      await this.withLoading(async () => {
-        try {
-          const response = await this.getChartData(addresses, this.selectedFilter, this.pageInfos);
+    this.priceUpdateRequestId = requestId;
 
-          // if no response, or tokens were changed, return
-          if (!response || !isEqual(addresses)(this.tokensAddresses)) return;
+    await this.withApi(async () => {
+      try {
+        const response = await this.getChartData(addresses, this.selectedFilter, this.pageInfos, lastTimestamp);
 
-          this.limits = response.limits;
-          this.pageInfos = response.pageInfos;
-          this.precision = response.precision;
-          this.prices = [...this.prices, ...response.prices];
+        // if no response, or tokens were changed, return
+        if (!(response && isEqual(addresses)(this.tokensAddresses) && isEqual(requestId)(this.priceUpdateRequestId)))
+          return;
 
-          this.isFetchingError = false;
-        } catch (error) {
-          this.isFetchingError = true;
-          console.error(error);
-        }
-      });
+        this.limits = response.limits;
+        this.pageInfos = response.pageInfos;
+        this.precision = response.precision;
+        this.prices = [...this.prices, ...response.prices];
+
+        this.isFetchingError = false;
+      } catch (error) {
+        this.isFetchingError = true;
+        console.error(error);
+      }
     });
   }
 
@@ -772,7 +810,7 @@ export default class SwapChart extends Mixins(
     const addresses = [...this.tokensAddresses];
 
     this.priceUpdateWatcher = this.$watch(
-      () => this.fiatPriceAndApyObject,
+      () => this.fiatPriceObject,
       (updated) => this.handlePriceUpdates(addresses, updated)
     );
 
@@ -808,14 +846,14 @@ export default class SwapChart extends Mixins(
     });
   }
 
-  private handlePriceUpdates(addresses: string[], fiatPriceAndApyObject: SUBQUERY_TYPES.FiatPriceAndApyObject): void {
+  private handlePriceUpdates(addresses: string[], fiatPriceObject: SUBQUERY_TYPES.FiatPriceObject): void {
     if (!isEqual(addresses)(this.tokensAddresses)) return;
 
     const timestamp = this.getCurrentSnapshotTimestamp();
     const lastItem = this.prices[0];
 
     const [priceA, priceB] = this.tokensAddresses.map((address) =>
-      FPNumber.fromCodecValue(fiatPriceAndApyObject[address]?.price ?? 0).toNumber()
+      FPNumber.fromCodecValue(fiatPriceObject[address] ?? 0).toNumber()
     );
     const price = Number.isFinite(priceB) ? this.dividePrice(priceA, priceB) : priceA;
     const min = Math.min(this.limits.min, price);
@@ -839,12 +877,6 @@ export default class SwapChart extends Mixins(
       timestamp,
       price: priceData,
     });
-  }
-
-  private preparePriceData(item: AssetSnapshot): number[] {
-    const { open, close, low, high } = item.priceUSD;
-
-    return [+open, +close, +low, +high];
   }
 
   private dividePrice(priceA: number, priceB: number) {
@@ -918,10 +950,6 @@ export default class SwapChart extends Mixins(
 
   private isAllHistoricalPricesFetched(pageInfos: Partial<SUBQUERY_TYPES.PageInfo>[]): boolean {
     return pageInfos.some((pageInfo) => !pageInfo.hasNextPage);
-  }
-
-  private formatPriceChange(value: FPNumber): string {
-    return new FPNumber(value.toFixed(2)).toLocaleString();
   }
 }
 </script>

@@ -35,7 +35,7 @@ export default class ExplorePageMixin extends Mixins(
   }
 
   get pricesAvailable(): boolean {
-    return Object.keys(this.fiatPriceAndApyObject).length > 0;
+    return Object.keys(this.fiatPriceObject).length > 0;
   }
 
   get isDefaultSort(): boolean {

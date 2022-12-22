@@ -4,20 +4,20 @@
       <s-row v-if="poolAsset" flex align="middle">
         <pair-token-logo
           v-if="isFarm && baseAsset"
+          key="pair"
           :first-token="baseAsset"
           :second-token="poolAsset"
           class="title-logo"
         />
-        <token-logo v-else :token="poolAsset" class="title-logo" />
+        <token-logo v-else key="token" :token="poolAsset" class="title-logo" />
         <span class="calculator-dialog-title">
           <template v-if="isFarm">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
         </span>
       </s-row>
 
       <s-form class="el-form--actions" :show-message="false">
-        <template v-if="isFarm">
+        <template v-if="isFarm && baseAsset">
           <token-input
-            v-if="baseAsset"
             :balance="baseAssetBalance.toCodecString()"
             :is-max-available="isBaseAssetMaxButtonAvailable"
             :title="t('demeterFarming.amountAdd')"
@@ -27,7 +27,7 @@
             @max="handleBaseAssetMax"
           />
 
-          <s-icon v-if="baseAsset && poolAsset" class="icon-divider" name="plus-16" />
+          <s-icon v-if="poolAsset" class="icon-divider" name="plus-16" />
         </template>
 
         <token-input
@@ -64,16 +64,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber } from '@sora-substrate/util';
+import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber, Operation } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
-import StakeDialogMixin from '../mixins/StakeDialogMixin';
+import PoolCardMixin from '../mixins/PoolCardMixin';
 
 import { lazyComponent } from '@/router';
 import { Components, Links } from '@/consts';
-import { isMaxButtonAvailable, getMaxValue } from '@/utils';
+import { getAssetBalance, isMaxButtonAvailable, getMaxValue, formatDecimalPlaces } from '@/utils';
 
 @Component({
   components: {
@@ -84,7 +85,9 @@ import { isMaxButtonAvailable, getMaxValue } from '@/utils';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
+export default class CalculatorDialog extends Mixins(PoolCardMixin, mixins.DialogMixin, mixins.LoadingMixin) {
+  @Prop({ default: () => FPNumber.ZERO, type: Object }) readonly emission!: FPNumber;
+
   @Watch('visible')
   private resetValue() {
     this.baseAssetValue = '';
@@ -100,12 +103,26 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
 
   readonly link = Links.demeterFarmingPlatform;
 
+  get networkFee(): CodecString {
+    return this.networkFees[Operation.DemeterFarmingDepositLiquidity];
+  }
+
   get selectedPeriod(): string {
     return String(this.interval);
   }
 
   get rewardsText(): string {
-    return `${this.rewardAssetSymbol} rewards`;
+    return this.t('demeterFarming.rewards', { symbol: this.rewardAssetSymbol });
+  }
+
+  get baseAssetDecimals(): number {
+    return this.baseAsset?.decimals ?? FPNumber.DEFAULT_PRECISION;
+  }
+
+  get baseAssetBalance(): FPNumber {
+    if (!this.baseAsset) return FPNumber.ZERO;
+
+    return FPNumber.fromCodecValue(getAssetBalance(this.baseAsset) ?? 0, this.baseAssetDecimals);
   }
 
   get isBaseAssetMaxButtonAvailable(): boolean {
@@ -153,6 +170,8 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
   }
 
   get calculatedRewardsFiat(): Nullable<string> {
+    if (!this.rewardAsset) return null;
+
     return this.getFiatAmountByFPNumber(this.calculatedRewards, this.rewardAsset as AccountAsset);
   }
 
@@ -178,7 +197,7 @@ export default class CalculatorDialog extends Mixins(StakeDialogMixin) {
   }
 
   get calculatedRoiPercentFormatted(): string {
-    return new FPNumber(this.calculatedRoiPercent.toFixed(2)).toLocaleString() + '%';
+    return formatDecimalPlaces(this.calculatedRoiPercent, true);
   }
 
   selectPeriod(name: string): void {

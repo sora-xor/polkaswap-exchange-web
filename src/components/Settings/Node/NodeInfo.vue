@@ -26,6 +26,7 @@
         :placeholder="t('addressText')"
         v-model="nodeModel.address"
         :disabled="existing && !removable"
+        @change="changeNodeAddress"
       />
     </s-form-item>
     <s-button
@@ -143,6 +144,10 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
 
   get nodeDataChanged(): boolean {
     return this.nodeModel.name !== this.node.name || this.nodeModel.address !== this.node.address;
+  }
+
+  changeNodeAddress(value: string): void {
+    this.nodeModel.address = value.trim().toLowerCase();
   }
 
   async submitForm(): Promise<void> {
