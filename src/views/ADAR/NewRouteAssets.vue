@@ -1,7 +1,7 @@
 <template>
   <div v-loading="parentLoading" class="route-assets">
     <component :is="component"></component>
-    <div class="temp-div">
+    <!-- <div class="temp-div">
       <s-button
         type="primary"
         class="s-typography-button--big route-assets-upload-csv__button"
@@ -16,7 +16,7 @@
       >
         {{ 'Next step' }}
       </s-button>
-    </div>
+    </div> -->
   </div>
 </template>
 
