@@ -90,6 +90,11 @@ const actions = defineActions({
     commit.editRecipient({ id, name, wallet, usd, amount, asset });
   },
 
+  deleteRecipient(context, id): void {
+    const { commit, rootState } = routeAssetsActionContext(context);
+    commit.deleteRecipient(id);
+  },
+
   subscribeOnReserves(context, tkn: Asset = XOR): void {
     const { commit, rootGetters, getters, dispatch } = routeAssetsActionContext(context);
     const liquiditySources = rootGetters.swap.swapLiquiditySource;

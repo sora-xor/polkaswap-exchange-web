@@ -57,6 +57,10 @@ const mutations = defineMutations<RouteAssetsState>()({
       recipient.asset = asset;
     }
   },
+  deleteRecipient(state, id) {
+    const idx = state.recipients.findIndex((item) => item.id === id);
+    state.recipients.splice(idx, 1);
+  },
   setCurrentStageIndex(state, index) {
     state.processingState.currentStageIndex = index;
   },

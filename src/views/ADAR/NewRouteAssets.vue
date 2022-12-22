@@ -49,8 +49,8 @@ export default class RouteAssets extends Mixins(mixins.LoadingMixin, Translation
   @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
 
   @getter.routeAssets.currentStageComponentName currentStageComponentName!: string;
-  // @action.routeAssets.processingNextStage nextStage!: any;
-  // @action.routeAssets.processingPreviousStage previousStage!: any;
+  @action.routeAssets.processingNextStage nextStage!: any;
+  @action.routeAssets.processingPreviousStage previousStage!: any;
 
   @Watch('liquiditySource')
   private handleLiquiditySourceChange(): void {

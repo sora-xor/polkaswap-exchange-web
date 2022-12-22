@@ -4,7 +4,12 @@ import { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 export default {
   validate(recipient: Recipient) {
-    return this.wallet(recipient.wallet) && this.asset(recipient.asset) && this.usd(recipient.usd);
+    return (
+      this.wallet(recipient.wallet) &&
+      this.asset(recipient.asset) &&
+      this.usd(recipient.usd) &&
+      this.amount(recipient.amount)
+    );
   },
 
   name(name: Nullable<string>) {
@@ -21,5 +26,9 @@ export default {
 
   usd(usd: Nullable<number>) {
     return usd && !isNaN(usd);
+  },
+
+  amount(amount: Nullable<number>) {
+    return amount && !isNaN(amount);
   },
 };

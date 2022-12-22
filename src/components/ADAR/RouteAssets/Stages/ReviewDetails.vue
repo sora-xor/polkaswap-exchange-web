@@ -110,9 +110,9 @@ import { action, getter, state } from '@/store/decorators';
 import { components, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { groupBy, sumBy } from 'lodash';
 import { Recipient } from '@/store/routeAssets/types';
-import { FPNumber } from '@sora-substrate/util/build';
+import { CodecString, FPNumber } from '@sora-substrate/util/build';
 import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import { formatAssetBalance } from '@/utils';
+import { formatAssetBalance, getAssetBalance } from '@/utils';
 import WarningMessage from '../WarningMessage.vue';
 @Component({
   components: {
@@ -153,11 +153,11 @@ export default class ReviewDetails extends Mixins(TranslationMixin) {
   }
 
   get totalTokensAvailable() {
-    return Number(this.balance);
+    return this.formattedBalance;
   }
 
   get remainingAmountRequired() {
-    return this.estimatedAmount - this.totalTokensAvailable;
+    return this.estimatedAmount - Number(this.totalTokensAvailable);
   }
 
   get summaryData() {
@@ -179,13 +179,27 @@ export default class ReviewDetails extends Mixins(TranslationMixin) {
     });
   }
 
-  get balance(): string {
-    const asset = this.accountAssets.find((item) => item.address === this.inputToken.address);
-    return formatAssetBalance(asset) || '0';
+  get fpBalance(): FPNumber {
+    if (!this.getTokenBalance) return FPNumber.ZERO;
+
+    return FPNumber.fromCodecValue(this.getTokenBalance, this.decimals);
+  }
+
+  get decimals(): number {
+    return this.inputToken?.decimals ?? FPNumber.DEFAULT_PRECISION;
+  }
+
+  get formattedBalance(): string {
+    return this.fpBalance.toLocaleString();
   }
 
   getAssetUSDPrice(asset: Asset) {
     return FPNumber.fromCodecValue(this.fiatPriceAndApyObject[asset.address]?.price ?? 0, 18);
+  }
+
+  get getTokenBalance(): CodecString {
+    const asset = this.accountAssets.find((item) => item.address === this.inputToken.address);
+    return getAssetBalance(asset);
   }
 
   formatNumber(num) {
