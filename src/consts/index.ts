@@ -171,7 +171,6 @@ export enum Components {
   SettingsTabs = 'Settings/Tabs',
   SlippageTolerance = 'Settings/SlippageTolerance',
   MarketAlgorithm = 'Settings/MarketAlgorithm',
-  ChartsSwitch = 'Settings/ChartsSwitch',
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
@@ -214,6 +213,9 @@ export enum Components {
   // Pool
   PoolInfo = 'Pool/PoolInfo',
   PriceChange = 'PriceChange',
+  // Button
+  SortButton = 'Button/SortButton',
+  SvgIconButton = 'Button/SvgIconButton/SvgIconButton',
   X1Dialog = 'X1/X1Dialog',
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
 }

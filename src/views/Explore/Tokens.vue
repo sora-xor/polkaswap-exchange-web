@@ -159,7 +159,6 @@ import { getter } from '@/store/decorators';
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import SortButton from '@/components/SortButton.vue';
 
 type TokenData = {
   reserves: FPNumber;
@@ -220,7 +219,7 @@ const AssetsQuery = gql`
 @Component({
   components: {
     PriceChange: lazyComponent(Components.PriceChange),
-    SortButton,
+    SortButton: lazyComponent(Components.SortButton),
     TokenAddress: components.TokenAddress,
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
