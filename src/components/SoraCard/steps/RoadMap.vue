@@ -48,12 +48,13 @@
 
     <s-button
       :loading="btnLoading"
+      :disabled="btnDisabled"
       type="primary"
       class="sora-card__btn s-typography-button--large"
       @click="handleConfirm"
     >
-      <span class="text">{{ btnText() }}</span>
-      <s-icon v-if="!btnLoading" name="arrows-arrow-top-right-24" size="18" />
+      <span class="text">{{ btnText }}</span>
+      <s-icon v-if="showArrow" name="arrows-arrow-top-right-24" size="18" />
     </s-button>
     <notification-enabling-page v-if="permissionDialogVisibility">
       {{ t('code.allowanceRequest') }}
@@ -63,15 +64,17 @@
 
 <script lang="ts">
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
-import { action, state } from '@/store/decorators';
+import { action, getter, state } from '@/store/decorators';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
 import CardIcon from '@/assets/img/sora-card/card.svg?inline';
 import UserIcon from '@/assets/img/sora-card/user.svg?inline';
-import { clearTokensFromSessionStorage, delay } from '@/utils';
+import { delay } from '@/utils';
+import { clearTokensFromSessionStorage } from '@/utils/card';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { CardIssueStatus } from '@/types/card';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 @Component({
   components: {
@@ -81,8 +84,14 @@ import { CardIssueStatus } from '@/types/card';
     NotificationEnablingPage: components.NotificationEnablingPage,
   },
 })
-export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.CameraPermissionMixin) {
+export default class RoadMap extends Mixins(
+  TranslationMixin,
+  mixins.LoadingMixin,
+  mixins.CameraPermissionMixin,
+  mixins.TranslationMixin
+) {
   @state.soraCard.userKycStatus private userKycStatus!: CardIssueStatus;
+  @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
   @action.soraCard.getUserKycStatus private getUserKycStatus!: AsyncFnWithoutArgs;
 
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
@@ -93,16 +102,13 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   secondPointCurrent = false;
   thirdPointChecked = false;
   thirdPointCurrent = false;
+  showArrow = true;
 
-  permissionDialogVisibility = false;
+  btnText = 'LET’S START';
+  btnDisabled = false;
   btnLoading = false;
 
-  btnText(): string {
-    if (sessionStorage.getItem('access-token')) {
-      return 'FINISH THE KYC';
-    }
-    return 'LET’S START';
-  }
+  permissionDialogVisibility = false;
 
   async handleConfirm(): Promise<void> {
     try {
@@ -140,18 +146,45 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
           // @ts-expect-error injected class
           const auth = new PopupOAuth(conf).connect();
         } catch (error) {
-          console.error('error', error);
+          console.error('[SoraCard]: Failed to start Paywings OAuth script', error);
         }
       })
       .catch((error) => {
-        // Failed to fetch script
-        console.error('error', error);
+        console.error('[SoraCard]: Failed to fetch Paywings OAuth script', error);
       });
 
     this.btnLoading = true;
-    const accessToken = await this.getAccessToken();
+    this.showArrow = false;
+    await this.getAccessToken();
+    await this.getUserKycStatus();
+
+    if (this.userKycStatus) {
+      this.$emit('confirm-start-kyc', false);
+      return;
+    } else if (this.userApplied) {
+      // user didn't finish KYC, suggest to continue
+      this.secondPointChecked = false;
+      this.thirdPointChecked = false;
+      this.$notify({
+        title: '',
+        message: 'KYC process has not been finished.',
+        type: 'info',
+      });
+    }
+
     this.firstPointChecked = true;
     this.secondPointCurrent = true;
+
+    // additionally check if they have enough balance to apply for card
+    if (!this.isEuroBalanceEnough) {
+      this.btnText = this.t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
+      this.btnDisabled = true;
+      this.showArrow = false;
+    } else {
+      this.btnText = 'FINISH THE KYC';
+      this.showArrow = true;
+    }
+
     this.btnLoading = false;
   }
 

@@ -19,7 +19,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { clearTokensFromSessionStorage } from '@/utils';
 
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixin) {

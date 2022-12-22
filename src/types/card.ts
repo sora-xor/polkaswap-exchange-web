@@ -1,7 +1,7 @@
 export enum CardIssueStatus {
-  Pending,
-  Success,
-  Reject,
+  Pending = 'Pending',
+  Success = 'Success',
+  Reject = 'Reject',
 }
 
-export type Token = 'accessToken' | 'refreshToken';
+export type TokenType = 'accessToken' | 'refreshToken';

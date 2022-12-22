@@ -1,6 +1,6 @@
 <template>
   <div>
-    <confirmation-info v-if="step === Step.ConfirmationInfo" />
+    <confirmation-info v-loading="loading" v-if="step === Step.ConfirmationInfo" />
     <sora-card-intro v-else-if="step === Step.StartPage" @confirm-apply="confirmApply" />
     <sora-card-kyc v-else-if="step === Step.KYC" @go-to-start="openStartPage" :userApplied="userApplied" />
   </div>
@@ -113,6 +113,13 @@ $color: #ee2233;
   }
 }
 
+.is-disabled {
+  background-color: unset !important;
+  .text {
+    color: unset !important;
+  }
+}
+
 .sora-card__no-spam {
   text-align: center;
   color: var(--s-color-base-content-secondary);
@@ -129,9 +136,6 @@ $color: #ee2233;
 
 [design-system-theme='light'] {
   .sora-card {
-    &__intro-name {
-      color: #ee2233 !important;
-    }
   }
 }
 

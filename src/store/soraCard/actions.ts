@@ -2,8 +2,8 @@ import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 
-import { getXorPerEuroRatio, waitForAccountPair } from '@/utils';
-import { defineUserStatus } from '@/utils/card';
+import { waitForAccountPair } from '@/utils';
+import { defineUserStatus, getXorPerEuroRatio } from '@/utils/card';
 import { soraCardActionContext } from './../soraCard';
 import { CardIssueStatus } from '@/types/card';
 
@@ -17,10 +17,10 @@ const actions = defineActions({
     commit.setXorPriceToDeposit(euroToPayInXor);
   },
 
-  async calculateXorBalanceInEuros(context, xorTotalBalance: FPNumber): Promise<void> {
+  async calculateXorBalanceInEuros(context, { xorPerEuro, xorTotalBalance }): Promise<void> {
     const { commit, dispatch } = soraCardActionContext(context);
+
     try {
-      const xorPerEuro: string = await getXorPerEuroRatio();
       const xorPerEuroFPN = FPNumber.fromNatural(xorPerEuro);
       const euroBalance = xorTotalBalance.mul(xorPerEuroFPN).toNumber();
       commit.setEuroBalance(euroBalance.toString());
@@ -38,10 +38,12 @@ const actions = defineActions({
 
     if (!rootGetters.wallet.account.isLoggedIn) return;
 
+    const xorPerEuro: string = await getXorPerEuroRatio();
+
     await waitForAccountPair(async () => {
       const subscription = api.assets.getTotalXorBalanceObservable().subscribe((xorTotalBalance: FPNumber) => {
         commit.setTotalXorBalance(xorTotalBalance);
-        dispatch.calculateXorBalanceInEuros(xorTotalBalance);
+        dispatch.calculateXorBalanceInEuros({ xorPerEuro, xorTotalBalance });
       });
 
       commit.setTotalXorBalanceUpdates(subscription);
@@ -59,9 +61,6 @@ const actions = defineActions({
     const { commit } = soraCardActionContext(context);
 
     const status: CardIssueStatus | undefined = await defineUserStatus();
-    // remove
-    // status = CardIssueStatus.Reject;
-    // status = undefined;
 
     commit.setUserStatus(status);
   },

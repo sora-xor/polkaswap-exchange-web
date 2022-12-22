@@ -73,7 +73,8 @@ import { FPNumber } from '@sora-substrate/math';
 import { getter, state } from '@/store/decorators';
 import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
-import { delay, clearTokensFromSessionStorage } from '@/utils';
+import { delay } from '@/utils';
+import { clearTokensFromSessionStorage } from '@/utils/card';
 import TranslationMixin from '../mixins/TranslationMixin';
 
 @Component({
