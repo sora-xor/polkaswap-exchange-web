@@ -130,7 +130,7 @@ import type {
   FiatPriceObject,
 } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
-// open, close, low, high
+/** "open", "close", "low", "high" data */
 type OCLH = [number, number, number, number];
 
 type SnapshotItem = {
@@ -138,7 +138,7 @@ type SnapshotItem = {
   price: OCLH;
 };
 
-// timestamp, open, close, high, low
+/** "timestamp", "open", "close", "low", "high" data */
 type ChartDataItem = [number, ...OCLH];
 
 enum TIMEFRAME_TYPES {
