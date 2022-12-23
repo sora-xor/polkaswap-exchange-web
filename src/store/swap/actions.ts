@@ -58,6 +58,17 @@ const actions = defineActions({
     updateTokenSubscription(context, Direction.To);
   },
 
+  async switchTokens(context): Promise<void> {
+    const { commit, state } = swapActionContext(context);
+    const { tokenFromAddress: from, tokenToAddress: to } = state;
+    if (from && to) {
+      commit.setTokenFromAddress(to);
+      commit.setTokenToAddress(from);
+      updateTokenSubscription(context, Direction.From);
+      updateTokenSubscription(context, Direction.To);
+    }
+  },
+
   setSubscriptionPayload(context, { dexId, payload }: { dexId: number; payload: QuotePayload }): void {
     const { state, getters, commit } = swapActionContext(context);
 
