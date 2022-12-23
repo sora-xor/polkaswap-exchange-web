@@ -267,8 +267,14 @@ const preparePriceData = (item: AssetSnapshotEntity): number[] => {
   return [+open, +close, +low, +high];
 };
 
-const normalizeShapshots = (
-  collection: AssetSnapshotEntity[],
+const toChartDataItem = (item: AssetSnapshotEntity): ChartDataItem => {
+  const timestamp = +item.timestamp * 1000;
+  const price = preparePriceData(item);
+  return { timestamp, price };
+};
+
+const normalizeChartData = (
+  collection: ChartDataItem[],
   difference: number,
   lastTimestamp: number
 ): ChartDataItem[] => {
@@ -276,22 +282,18 @@ const normalizeShapshots = (
 
   for (const item of collection) {
     const buffer: ChartDataItem[] = [];
-
-    const timestamp = +item.timestamp * 1000;
-    const price = preparePriceData(item);
-
     const prevTimestamp = sample[sample.length - 1]?.timestamp ?? lastTimestamp;
 
-    let currentTimestamp = timestamp;
+    let currentTimestamp = item.timestamp;
 
     while ((currentTimestamp += difference) < prevTimestamp) {
       buffer.push({
         timestamp: currentTimestamp,
-        price: new Array(4).fill(price[1]),
+        price: new Array(4).fill(item.price[1]),
       });
     }
 
-    sample.push(...buffer.reverse(), { timestamp, price });
+    sample.push(...buffer.reverse(), item);
   }
 
   return sample;
@@ -321,9 +323,9 @@ export default class SwapChart extends Mixins(
 
   @Watch('tokensAddresses')
   private handleTokensChange(current: string[], prev: string[]): void {
-    const a = current.slice().sort();
-    const b = prev.slice().sort();
-    if (!isEqual(a)(b)) {
+    // const a = current.slice().sort();
+    // const b = prev.slice().sort();
+    if (!isEqual(current)(prev)) {
       this.forceUpdatePrices();
     }
   }
@@ -332,8 +334,9 @@ export default class SwapChart extends Mixins(
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   // ordered by timestamp DESC
+  private samplesBuffer: Record<string, readonly ChartDataItem[]> = {};
+  private pageInfos: Record<string, Partial<PageInfo>> = {};
   private prices: readonly ChartDataItem[] = [];
-  private pageInfos: Partial<PageInfo>[] = [];
   private zoomStart = 0; // percentage of zoom start position
   private zoomEnd = 100; // percentage of zoom end position
   private precision = 2;
@@ -393,6 +396,12 @@ export default class SwapChart extends Mixins(
 
   get fiatPriceFormatted(): string {
     return this.fiatPrice.toLocaleString();
+  }
+
+  get isAllHistoricalPricesFetched(): boolean {
+    return Object.entries(this.pageInfos).some(([address, pageInfo]) => {
+      return !pageInfo.hasNextPage && !this.samplesBuffer[address]?.length;
+    });
   }
 
   get visibleChartItemsRange(): [number, number] {
@@ -465,8 +474,51 @@ export default class SwapChart extends Mixins(
     return !this.loading && (this.isFetchingError || this.chartDataEmpty);
   }
 
-  get chartSpec(): any {
-    const common = {
+  get chartOptionSeries() {
+    return this.isLineChart
+      ? [
+          {
+            type: 'line',
+            encode: {
+              y: 'close',
+            },
+            showSymbol: false,
+            areaStyle: {
+              opacity: 0.8,
+              color: new graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'rgba(248, 8, 123, 0.25)',
+                },
+                {
+                  offset: 1,
+                  color: 'rgba(255, 49, 148, 0.03)',
+                },
+              ]),
+            },
+          },
+        ]
+      : [
+          {
+            type: 'candlestick',
+            barMaxWidth: 10,
+            itemStyle: {
+              color: this.theme.color.status.success,
+              borderColor: this.theme.color.status.success,
+              color0: this.theme.color.theme.accentHover,
+              borderColor0: this.theme.color.theme.accentHover,
+              borderWidth: 2,
+            },
+          },
+        ];
+  }
+
+  get chartSpec() {
+    return {
+      dataset: {
+        source: this.chartData.map((item) => [+item.timestamp, ...item.price]),
+        dimensions: ['timestamp', 'open', 'close', 'high', 'low'],
+      },
       grid: {
         left: this.gridLeftOffset,
         right: 0,
@@ -595,11 +647,10 @@ export default class SwapChart extends Mixins(
         },
         formatter: (params) => {
           const { data, seriesType } = params[0];
-
-          if (seriesType === CHART_TYPES.LINE) return formatPrice(data[1], this.symbol);
+          const [timestamp, open, close, low, high] = data;
+          if (seriesType === CHART_TYPES.LINE) return formatPrice(close, this.symbol);
 
           if (seriesType === CHART_TYPES.CANDLE) {
-            const [timestamp, open, close, low, high] = data;
             const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
             const changeColor = signific(change)(
               this.theme.color.status.success,
@@ -632,45 +683,8 @@ export default class SwapChart extends Mixins(
           }
         },
       },
+      series: this.chartOptionSeries,
     };
-
-    const series = this.isLineChart
-      ? [
-          {
-            type: 'line',
-            showSymbol: false,
-            data: this.chartData.map((item) => [+item.timestamp, item.price[1]]),
-            areaStyle: {
-              opacity: 0.8,
-              color: new graphic.LinearGradient(0, 0, 0, 1, [
-                {
-                  offset: 0,
-                  color: 'rgba(248, 8, 123, 0.25)',
-                },
-                {
-                  offset: 1,
-                  color: 'rgba(255, 49, 148, 0.03)',
-                },
-              ]),
-            },
-          },
-        ]
-      : [
-          {
-            type: 'candlestick',
-            data: this.chartData.map((item) => [+item.timestamp, ...item.price]),
-            barMaxWidth: 10,
-            itemStyle: {
-              color: this.theme.color.status.success,
-              borderColor: this.theme.color.status.success,
-              color0: this.theme.color.theme.accentHover,
-              borderColor0: this.theme.color.theme.accentHover,
-              borderWidth: 2,
-            },
-          },
-        ];
-
-    return { ...common, series };
   }
 
   created(): void {
@@ -708,26 +722,34 @@ export default class SwapChart extends Mixins(
   private async getChartData(
     addresses: string[],
     filter: ChartFilter,
-    paginationInfos: Partial<PageInfo>[],
-    lastTimestamp: number = Date.now()
+    paginationInfos: Record<string, Partial<PageInfo>>,
+    buffer: Record<string, readonly ChartDataItem[]>,
+    lastTimestamp?: number
   ) {
-    const collections = await Promise.all(
-      addresses.map((address, index) => this.fetchData(address, filter, paginationInfos[index]))
+    const snapshots = await Promise.all(
+      addresses.map((address, index) => this.fetchData(address, filter, paginationInfos[address]))
     );
 
-    if (!collections.every((collection) => !!collection.nodes.length)) return null;
+    // if (!snapshots.every((snapshot) => !!snapshot.nodes.length)) return null;
 
-    const pageInfos: Partial<PageInfo>[] = [];
+    const pageInfos: Record<string, Partial<PageInfo>> = {};
     const prices: ChartDataItem[] = [];
     const groups: ChartDataItem[][] = [];
     const difference = SECONDS_IN_TYPE[filter.type];
+    const timestamp =
+      lastTimestamp ?? Math.max(snapshots[0]?.nodes[0].timestamp ?? 0, snapshots[1]?.nodes[0].timestamp ?? 0) * 1000;
 
-    for (const { hasNextPage, endCursor, nodes } of collections) {
-      groups.push(normalizeShapshots(nodes, difference, lastTimestamp));
-      pageInfos.push({ hasNextPage, endCursor });
-    }
+    snapshots.forEach(({ hasNextPage, endCursor, nodes }, index) => {
+      const address = addresses[index];
+      const items = nodes.map((node) => toChartDataItem(node));
+      const itemsBuffer = buffer[address] ?? [];
+      const normalizedItems = normalizeChartData(itemsBuffer.concat(items), difference, timestamp);
+      groups.push(normalizedItems);
+      pageInfos[address] = { hasNextPage, endCursor };
+    });
 
-    const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
+    const size = Math.min(groups[0]?.length ?? Infinity, groups[1]?.length ?? Infinity);
+
     let { min, max } = this.limits;
 
     for (let i = 0; i < size; i++) {
@@ -757,6 +779,8 @@ export default class SwapChart extends Mixins(
       pageInfos,
       precision,
       prices,
+      size,
+      groups,
     };
   }
 
@@ -767,7 +791,7 @@ export default class SwapChart extends Mixins(
   private async getHistoricalPrices(resetChartData = false): Promise<void> {
     if (resetChartData) {
       this.clearData();
-    } else if (this.loading || this.isAllHistoricalPricesFetched(this.pageInfos)) {
+    } else if (this.loading || this.isAllHistoricalPricesFetched) {
       return;
     }
 
@@ -782,16 +806,27 @@ export default class SwapChart extends Mixins(
 
     await this.withApi(async () => {
       try {
-        const response = await this.getChartData(addresses, this.selectedFilter, this.pageInfos, lastTimestamp);
+        const response = await this.getChartData(
+          addresses,
+          this.selectedFilter,
+          this.pageInfos,
+          this.samplesBuffer,
+          lastTimestamp
+        );
 
         // if no response, or tokens were changed, return
         if (!(response && isEqual(addresses)(this.tokensAddresses) && isEqual(requestId)(this.priceUpdateRequestId)))
           return;
+        const { size, groups, prices, pageInfos, precision, limits } = response;
 
-        this.limits = response.limits;
-        this.pageInfos = response.pageInfos;
-        this.precision = response.precision;
-        this.updatePricesCollection([...this.prices, ...response.prices]);
+        addresses.forEach((address, index) => {
+          this.samplesBuffer[address] = Object.freeze(groups[index].slice(size));
+        });
+
+        this.limits = limits;
+        this.pageInfos = pageInfos;
+        this.precision = precision;
+        this.updatePricesCollection([...this.prices, ...prices]);
 
         this.isFetchingError = false;
       } catch (error) {
@@ -896,8 +931,9 @@ export default class SwapChart extends Mixins(
   }
 
   private clearData(): void {
+    this.samplesBuffer = {};
+    this.pageInfos = {};
     this.prices = [];
-    this.pageInfos = [];
     this.zoomStart = 0;
     this.zoomEnd = 100;
     this.limits = {
@@ -958,10 +994,6 @@ export default class SwapChart extends Mixins(
     }
 
     return precision;
-  }
-
-  private isAllHistoricalPricesFetched(pageInfos: Partial<PageInfo>[]): boolean {
-    return pageInfos.some((pageInfo) => !pageInfo.hasNextPage);
   }
 }
 </script>
