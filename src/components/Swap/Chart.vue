@@ -4,10 +4,18 @@
       <div class="header">
         <div class="selected-tokens">
           <tokens-row border :assets="tokens" size="medium" />
-          <div v-if="tokenFrom" class="token-title">
-            <span>{{ tokenFrom.symbol }}</span>
-            <span v-if="tokenTo">/{{ tokenTo.symbol }}</span>
+          <div v-if="tokenA" class="token-title">
+            <span>{{ tokenA.symbol }}</span>
+            <span v-if="tokenB">/{{ tokenB.symbol }}</span>
           </div>
+          <s-button
+            v-if="this.tokensPair"
+            :class="{ 's-pressed': isReversedChart }"
+            type="action"
+            alternative
+            icon="arrows-swap-90-24"
+            @click="revertChart"
+          />
         </div>
         <div class="chart-filters">
           <s-tabs type="rounded" :value="selectedFilter.name" @input="selectFilter">
@@ -323,10 +331,16 @@ export default class SwapChart extends Mixins(
   @Prop({ default: () => null, type: Object }) readonly tokenTo!: Nullable<AccountAsset>;
   @Prop({ default: false, type: Boolean }) readonly isAvailable!: boolean;
 
-  @Watch('tokensAddresses')
+  @Watch('inputTokensAddresses')
   private handleTokensChange(current: string[], prev: string[]): void {
     if (!isEqual(current)(prev)) {
-      this.forceUpdatePrices();
+      const currentChartPair = this.isReversedChart ? [...prev].reverse() : prev;
+
+      this.isReversedChart = false;
+
+      if (!isEqual(current)(currentChartPair)) {
+        this.forceUpdatePrices();
+      }
     }
   }
 
@@ -353,17 +367,36 @@ export default class SwapChart extends Mixins(
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
+  isReversedChart = false;
 
   get isLineChart(): boolean {
     return this.chartType === CHART_TYPES.LINE;
   }
 
+  get inputTokensAddresses(): string[] {
+    const filtered = [this.tokenFrom, this.tokenTo].filter((token) => !!token) as AccountAsset[];
+
+    return filtered.map((token) => token.address);
+  }
+
+  get tokenA() {
+    return this.isReversedChart ? this.tokenTo : this.tokenFrom;
+  }
+
+  get tokenB() {
+    return this.isReversedChart ? this.tokenFrom : this.tokenTo;
+  }
+
   get tokens(): AccountAsset[] {
-    return [this.tokenFrom, this.tokenTo].filter((token) => !!token) as AccountAsset[];
+    return [this.tokenA, this.tokenB].filter((token) => !!token) as AccountAsset[];
   }
 
   get tokensAddresses(): string[] {
     return this.tokens.map((token) => token.address);
+  }
+
+  get tokensPair(): boolean {
+    return this.tokensAddresses.length === 2;
   }
 
   get chartTypeButtons(): { type: CHART_TYPES; icon: any; active: boolean }[] {
@@ -379,15 +412,15 @@ export default class SwapChart extends Mixins(
   }
 
   get symbol(): string {
-    return this.tokenTo?.symbol ?? 'USD';
+    return this.tokenB?.symbol ?? 'USD';
   }
 
   get fromFiatPrice(): FPNumber {
-    return this.tokenFrom ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenFrom) ?? 0) : FPNumber.ZERO;
+    return this.tokenA ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenA) ?? 0) : FPNumber.ZERO;
   }
 
   get toFiatPrice(): FPNumber {
-    return this.tokenTo ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenTo) ?? 0) : FPNumber.ZERO;
+    return this.tokenB ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenB) ?? 0) : FPNumber.ZERO;
   }
 
   get fiatPrice(): FPNumber {
@@ -735,15 +768,13 @@ export default class SwapChart extends Mixins(
     return Math.max(this.getPrecision(min), this.getPrecision(max));
   }
 
-  private async getHistoricalPrices(resetChartData = false): Promise<void> {
-    if (resetChartData) {
-      this.clearData();
-    } else if (this.loading || this.isAllHistoricalPricesFetched) {
+  private async getHistoricalPrices(): Promise<void> {
+    if (this.loading || this.isAllHistoricalPricesFetched) {
       return;
     }
 
     // prevent fetching if tokens pair not created
-    if (this.tokensAddresses.length === 2 && !this.isAvailable) return;
+    if (this.tokensPair && !this.isAvailable) return;
 
     const addresses = [...this.tokensAddresses];
     const requestId = Date.now();
@@ -906,7 +937,7 @@ export default class SwapChart extends Mixins(
     return priceA.map((price, index) => this.dividePrice(price, priceB[index])) as OCLH;
   }
 
-  private clearData(): void {
+  private clearData(saveReversedState = false): void {
     this.samplesBuffer = {};
     this.pageInfos = {};
     this.prices = [];
@@ -917,6 +948,10 @@ export default class SwapChart extends Mixins(
       max: 0,
     };
     this.precision = 2;
+
+    if (!saveReversedState) {
+      this.isReversedChart = false;
+    }
   }
 
   private updatePricesCollection(items: SnapshotItem[]): void {
@@ -925,11 +960,12 @@ export default class SwapChart extends Mixins(
 
   changeFilter(filter: ChartFilter): void {
     this.selectedFilter = filter;
-    this.forceUpdatePrices();
+    this.forceUpdatePrices(true);
   }
 
-  private async resetAndUpdatePrices(): Promise<void> {
-    await this.updatePrices(true);
+  private async resetAndUpdatePrices(saveReversedState = false): Promise<void> {
+    this.clearData(saveReversedState);
+    await this.updatePrices();
     this.subscribeToPriceUpdates();
   }
 
@@ -957,6 +993,11 @@ export default class SwapChart extends Mixins(
     const data = event?.batch?.[0];
     this.zoomStart = data?.start ?? 0;
     this.zoomEnd = data?.end ?? 0;
+  }
+
+  revertChart(): void {
+    this.isReversedChart = !this.isReversedChart;
+    this.forceUpdatePrices(true);
   }
 
   private getPrecision(value: number): number {
@@ -1175,7 +1216,6 @@ $skeleton-label-width: 34px;
     flex-shrink: 0;
   }
   &-title {
-    margin-left: $inner-spacing-mini;
     font-size: var(--s-font-size-medium);
     line-height: var(--s-line-height-medium);
     font-weight: 600;
@@ -1201,6 +1241,10 @@ $skeleton-label-width: 34px;
 .selected-tokens {
   display: flex;
   align-items: center;
+
+  & > *:not(:first-child) {
+    margin-left: $inner-spacing-mini;
+  }
 }
 
 @include large-desktop {
