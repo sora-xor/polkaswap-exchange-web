@@ -151,6 +151,10 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
     }
   }
 
+  .sora-card__btn {
+    width: 100%;
+  }
+
   .line {
     height: 1px;
     margin: 14px 0;

@@ -11,6 +11,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { delay } from '@/utils';
 
 @Component({
   components: {
@@ -22,8 +23,11 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
 
   loading = true;
 
-  updated(): void {
-    setTimeout(() => (this.loading = false), 700);
+  async updated(): Promise<void> {
+    if (this.loading) {
+      await delay(800);
+      this.loading = false;
+    }
   }
 }
 </script>

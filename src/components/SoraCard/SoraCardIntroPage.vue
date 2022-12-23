@@ -26,7 +26,7 @@
         <s-button
           type="primary"
           class="sora-card__btn s-typography-button--large"
-          :loading="loading || !isPriceCalculated"
+          :loading="getBtnLoading()"
           @click="handleConfirm"
         >
           <span class="text"> {{ buttonText }}</span>
@@ -36,14 +36,14 @@
         <s-button
           type="primary"
           class="sora-card__btn sora-card__btn--fiat-buy s-typography-button--large"
-          :loading="loading || !isPriceCalculated"
+          :loading="getBtnLoading()"
           @click="openX1"
         >
           <span class="text">BUY XOR WITH FIAT</span>
         </s-button>
         <s-button
           class="sora-card__btn--bridge s-typography-button--large"
-          :loading="loading || !isPriceCalculated"
+          :loading="getBtnLoading()"
           @click="bridgeTokens"
         >
           <span class="text">BRIDGE TOKENS</span>
@@ -52,7 +52,7 @@
         <s-button
           type="tertiary"
           class="sora-card__btn--fiat-issuance s-typography-button--large"
-          :loading="loading || !isPriceCalculated"
+          :loading="getBtnLoading()"
           @click="issueCardByPaywings"
         >
           <span class="text">ISSUE CARD FOR €12</span>
@@ -98,10 +98,8 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     if (!this.isLoggedIn) {
       return this.t('connectWalletText');
     }
-    if (this.isEuroBalanceEnough) {
-      return 'GET SORA CARD FOR FREE';
-    }
-    return `GET ${100 - parseInt(this.euroBalance, 10)}€ OF XOR TO QUALIFY`;
+
+    return 'GET SORA CARD FOR FREE';
   }
 
   get balanceIndicatorAmount(): string {
@@ -114,6 +112,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
       return 'sora-card__icon--checked';
     }
     return '';
+  }
+
+  getBtnLoading(): boolean {
+    return this.loading || !this.isPriceCalculated;
   }
 
   openX1(): void {
@@ -235,6 +237,7 @@ $color: #ee2233;
   }
 
   &__btn {
+    width: 100%;
     &--fiat-buy,
     &--bridge {
       width: 48%;

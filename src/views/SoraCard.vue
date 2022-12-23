@@ -96,10 +96,9 @@ $color: #ee2233;
   margin-top: 15px;
 }
 
-.sora-card__btn {
+.el-button.neumorphic.s-primary.sora-card__btn {
   margin-top: 24px;
-  width: 100%;
-  background-color: $color !important;
+  background-color: $color;
 
   span.text {
     font-variation-settings: 'wght' 700 !important;
@@ -107,16 +106,19 @@ $color: #ee2233;
     color: #fff;
   }
 }
-.is-loading {
-  span.text {
-    color: transparent !important;
-  }
-}
 
-.is-disabled {
-  background-color: unset !important;
-  .text {
-    color: unset !important;
+.sora-card {
+  .is-loading {
+    span.text {
+      color: transparent !important;
+    }
+  }
+
+  .el-button.neumorphic.s-primary.sora-card__btn.is-disabled {
+    background-color: unset;
+    .text {
+      color: unset;
+    }
   }
 }
 

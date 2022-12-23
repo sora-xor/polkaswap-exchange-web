@@ -7,17 +7,17 @@
           v-if="cardIssueState === CardIssueStatus.Pending"
           name="time-time-24"
           class="sora-card__card-icon-element"
-        ></s-icon>
+        />
         <s-icon
           v-if="cardIssueState === CardIssueStatus.Success"
           name="basic-check-marks-24"
           class="sora-card__card-icon-element"
-        ></s-icon>
+        />
         <s-icon
           v-if="cardIssueState === CardIssueStatus.Reject"
           name="basic-close-24"
           class="sora-card__card-icon-element"
-        ></s-icon>
+        />
       </div>
     </div>
 

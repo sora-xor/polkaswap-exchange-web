@@ -122,11 +122,7 @@ export default class RoadMap extends Mixins(
     if (sessionStorage.getItem('access-token')) {
       await this.getUserKycStatus();
 
-      if (this.userKycStatus === CardIssueStatus.Success) {
-        this.$emit('confirm-start-kyc', false);
-      } else {
-        this.$emit('confirm-start-kyc', true);
-      }
+      this.$emit('confirm-start-kyc', this.userKycStatus !== CardIssueStatus.Success);
 
       unloadScript('https://auth-test.paywings.io/auth/sdk.js');
       return;
@@ -295,6 +291,10 @@ export default class RoadMap extends Mixins(
     position: relative;
     margin-left: 3px;
   }
+}
+
+.sora-card__btn {
+  width: 100%;
 }
 
 .s-icon-arrows-arrow-top-right-24 {
