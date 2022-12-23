@@ -122,10 +122,16 @@ import type {
   FiatPriceObject,
 } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
-type ChartDataItem = {
+// open, close, low, high
+type OCLH = [number, number, number, number];
+
+type SnapshotItem = {
   timestamp: number;
-  price: number[];
+  price: OCLH;
 };
+
+// timestamp, open, close, high, low
+type ChartDataItem = [number, ...OCLH];
 
 enum TIMEFRAME_TYPES {
   FIVE_MINUTES = 'FIVE_MINUTES',
@@ -261,27 +267,23 @@ const formatPrice = (value: number, symbol: string) => {
   return `${new FPNumber(value).toLocaleString()} ${symbol}`;
 };
 
-const preparePriceData = (item: AssetSnapshotEntity): number[] => {
+const preparePriceData = (item: AssetSnapshotEntity): OCLH => {
   const { open, close, low, high } = item.priceUSD;
 
   return [+open, +close, +low, +high];
 };
 
-const toChartDataItem = (item: AssetSnapshotEntity): ChartDataItem => {
+const transformSnapshot = (item: AssetSnapshotEntity): SnapshotItem => {
   const timestamp = +item.timestamp * 1000;
   const price = preparePriceData(item);
   return { timestamp, price };
 };
 
-const normalizeChartData = (
-  collection: ChartDataItem[],
-  difference: number,
-  lastTimestamp: number
-): ChartDataItem[] => {
-  const sample: ChartDataItem[] = [];
+const normalizeSnapshots = (collection: SnapshotItem[], difference: number, lastTimestamp: number): SnapshotItem[] => {
+  const sample: SnapshotItem[] = [];
 
   for (const item of collection) {
-    const buffer: ChartDataItem[] = [];
+    const buffer: SnapshotItem[] = [];
     const prevTimestamp = sample[sample.length - 1]?.timestamp ?? lastTimestamp;
 
     let currentTimestamp = item.timestamp;
@@ -289,7 +291,7 @@ const normalizeChartData = (
     while ((currentTimestamp += difference) < prevTimestamp) {
       buffer.push({
         timestamp: currentTimestamp,
-        price: new Array(4).fill(item.price[1]),
+        price: [item.price[1], item.price[1], item.price[1], item.price[1]],
       });
     }
 
@@ -334,9 +336,9 @@ export default class SwapChart extends Mixins(
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   // ordered by timestamp DESC
-  private samplesBuffer: Record<string, readonly ChartDataItem[]> = {};
+  private samplesBuffer: Record<string, readonly SnapshotItem[]> = {};
   private pageInfos: Record<string, Partial<PageInfo>> = {};
-  private prices: readonly ChartDataItem[] = [];
+  private prices: readonly SnapshotItem[] = [];
   private zoomStart = 0; // percentage of zoom start position
   private zoomEnd = 100; // percentage of zoom end position
   private precision = 2;
@@ -404,6 +406,10 @@ export default class SwapChart extends Mixins(
     });
   }
 
+  get timeDifference(): number {
+    return SECONDS_IN_TYPE[this.selectedFilter.type];
+  }
+
   get visibleChartItemsRange(): [number, number] {
     const itemsCount = this.chartData.length;
     const startIndex = Math.floor((itemsCount * this.zoomStart) / 100);
@@ -417,8 +423,8 @@ export default class SwapChart extends Mixins(
    */
   get priceChange(): FPNumber {
     const [startIndex, endIndex] = this.visibleChartItemsRange;
-    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.price?.[1] ?? 0); // "close" price
-    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.price?.[1] ?? 0); // "close" price
+    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.[2] ?? 0); // "close" price
+    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.[2] ?? 0); // "close" price
 
     return calcPriceChange(rangeClosePrice, rangeStartPrice);
   }
@@ -443,35 +449,32 @@ export default class SwapChart extends Mixins(
     return AXIS_OFFSET + 2 * LABEL_PADDING + axisLabelWidth;
   }
 
-  // ordered by timestamp ASC
   get chartData(): readonly ChartDataItem[] {
     const groups: ChartDataItem[] = [];
     const {
       prices,
       selectedFilter: { group },
     } = this;
+    // ordered by timestamp ASC
+    const ordered = prices.slice().reverse();
 
-    for (let i = prices.length - 1; i >= 0; i--) {
+    for (let i = 0; i < ordered.length; i++) {
       if (!group || i % group === 0) {
-        groups.push(prices[i]);
+        groups.push([ordered[i].timestamp, ...ordered[i].price]);
       } else {
         const last = groups[groups.length - 1];
 
-        last.price[1] = prices[i].price[1]; // close
-        last.price[2] = Math.min(last.price[2], prices[i].price[2]); // low
-        last.price[3] = Math.max(last.price[3], prices[i].price[3]); // high
+        last[2] = ordered[i].price[1]; // close
+        last[3] = Math.min(last[3], ordered[i].price[2]); // low
+        last[4] = Math.max(last[4], ordered[i].price[3]); // high
       }
     }
 
     return Object.freeze(groups);
   }
 
-  get chartDataEmpty(): boolean {
-    return this.chartData.length === 0;
-  }
-
   get chartDataIssue(): boolean {
-    return !this.loading && (this.isFetchingError || this.chartDataEmpty);
+    return !this.loading && (this.isFetchingError || this.chartData.length === 0);
   }
 
   get chartOptionSeries() {
@@ -516,7 +519,7 @@ export default class SwapChart extends Mixins(
   get chartSpec() {
     return {
       dataset: {
-        source: this.chartData.map((item) => [+item.timestamp, ...item.price]),
+        source: this.chartData,
         dimensions: ['timestamp', 'open', 'close', 'high', 'low'],
       },
       grid: {
@@ -626,7 +629,7 @@ export default class SwapChart extends Mixins(
           type: 'inside',
           start: 0,
           end: 100,
-          minValueSpan: SECONDS_IN_TYPE[this.selectedFilter.type] * 11, // minimum 11 elements like on skeleton
+          minValueSpan: this.timeDifference * 11, // minimum 11 elements like on skeleton
         },
       ],
       color: [this.theme.color.theme.accent, this.theme.color.status.success],
@@ -719,71 +722,6 @@ export default class SwapChart extends Mixins(
     return { nodes, hasNextPage, endCursor };
   }
 
-  private async getChartData(
-    addresses: string[],
-    filter: ChartFilter,
-    paginationInfos: Record<string, Partial<PageInfo>>,
-    buffer: Record<string, readonly ChartDataItem[]>,
-    lastTimestamp?: number
-  ) {
-    const snapshots = await Promise.all(
-      addresses.map((address, index) => this.fetchData(address, filter, paginationInfos[address]))
-    );
-
-    // if (!snapshots.every((snapshot) => !!snapshot.nodes.length)) return null;
-
-    const pageInfos: Record<string, Partial<PageInfo>> = {};
-    const prices: ChartDataItem[] = [];
-    const groups: ChartDataItem[][] = [];
-    const difference = SECONDS_IN_TYPE[filter.type];
-    const timestamp =
-      lastTimestamp ?? Math.max(snapshots[0]?.nodes[0].timestamp ?? 0, snapshots[1]?.nodes[0].timestamp ?? 0) * 1000;
-
-    snapshots.forEach(({ hasNextPage, endCursor, nodes }, index) => {
-      const address = addresses[index];
-      const items = nodes.map((node) => toChartDataItem(node));
-      const itemsBuffer = buffer[address] ?? [];
-      const normalizedItems = normalizeChartData(itemsBuffer.concat(items), difference, timestamp);
-      groups.push(normalizedItems);
-      pageInfos[address] = { hasNextPage, endCursor };
-    });
-
-    const size = Math.min(groups[0]?.length ?? Infinity, groups[1]?.length ?? Infinity);
-
-    let { min, max } = this.limits;
-
-    for (let i = 0; i < size; i++) {
-      const a = groups[0]?.[i];
-      const b = groups[1]?.[i];
-
-      const timestamp = (a?.timestamp ?? b?.timestamp) as number;
-      const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0]) as number[];
-
-      // if "open" & "close" prices are zero, we are going to time, where pool is not created
-      if (price[0] === 0 && price[1] === 0) break;
-
-      prices.push({
-        timestamp,
-        price,
-      });
-
-      min = Math.min(min, ...price);
-      max = Math.max(max, ...price);
-    }
-
-    const precision = this.getUpdatedPrecision(min, max);
-    const limits = { min, max };
-
-    return {
-      limits,
-      pageInfos,
-      precision,
-      prices,
-      size,
-      groups,
-    };
-  }
-
   private getUpdatedPrecision(min: number, max: number): number {
     return Math.max(this.getPrecision(min), this.getPrecision(max));
   }
@@ -806,26 +744,57 @@ export default class SwapChart extends Mixins(
 
     await this.withApi(async () => {
       try {
-        const response = await this.getChartData(
-          addresses,
-          this.selectedFilter,
-          this.pageInfos,
-          this.samplesBuffer,
-          lastTimestamp
+        const snapshots = await Promise.all(
+          addresses.map((address) => this.fetchData(address, this.selectedFilter, this.pageInfos[address]))
         );
 
         // if no response, or tokens were changed, return
-        if (!(response && isEqual(addresses)(this.tokensAddresses) && isEqual(requestId)(this.priceUpdateRequestId)))
+        if (!(snapshots && isEqual(addresses)(this.tokensAddresses) && isEqual(requestId)(this.priceUpdateRequestId)))
           return;
-        const { size, groups, prices, pageInfos, precision, limits } = response;
+
+        const pageInfos: Record<string, Partial<PageInfo>> = {};
+        const prices: SnapshotItem[] = [];
+        const groups: SnapshotItem[][] = [];
+        const timestamp =
+          lastTimestamp ??
+          Math.max(snapshots[0]?.nodes[0].timestamp ?? 0, snapshots[1]?.nodes[0].timestamp ?? 0) * 1000;
+
+        snapshots.forEach(({ hasNextPage, endCursor, nodes }, index) => {
+          const address = addresses[index];
+          const items = nodes.map((node) => transformSnapshot(node));
+          const buffer = this.samplesBuffer[address] ?? [];
+          const normalized = normalizeSnapshots(buffer.concat(items), this.timeDifference, timestamp);
+          groups.push(normalized);
+          pageInfos[address] = { hasNextPage, endCursor };
+        });
+
+        const size = Math.min(groups[0]?.length ?? Infinity, groups[1]?.length ?? Infinity);
+
+        let { min, max } = this.limits;
+
+        for (let i = 0; i < size; i++) {
+          const a = groups[0]?.[i];
+          const b = groups[1]?.[i];
+
+          const timestamp = (a?.timestamp ?? b?.timestamp) as number;
+          const price = b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0];
+
+          // if "open" & "close" prices are zero, we are going to time, where pool is not created
+          if (price[0] === 0 && price[1] === 0) break;
+
+          prices.push({ timestamp, price });
+
+          min = Math.min(min, ...price);
+          max = Math.max(max, ...price);
+        }
 
         addresses.forEach((address, index) => {
           this.samplesBuffer[address] = Object.freeze(groups[index].slice(size));
         });
 
-        this.limits = limits;
+        this.limits = { min, max };
         this.pageInfos = pageInfos;
-        this.precision = precision;
+        this.precision = this.getUpdatedPrecision(min, max);
         this.updatePricesCollection([...this.prices, ...prices]);
 
         this.isFetchingError = false;
@@ -866,7 +835,7 @@ export default class SwapChart extends Mixins(
 
   private getCurrentSnapshotTimestamp(): number {
     const now = Math.floor(Date.now() / 1000);
-    const seconds = SECONDS_IN_TYPE[this.selectedFilter.type] / 1000;
+    const seconds = this.timeDifference / 1000;
     const index = Math.floor(now / seconds);
     const timestamp = seconds * index * 1000;
 
@@ -885,8 +854,8 @@ export default class SwapChart extends Mixins(
     if (!lastItem || timestamp === lastItem.timestamp) return;
 
     const close = lastItem.price[1];
-    const price = [close, close, close, close];
-    const item = { timestamp, price };
+    const price: OCLH = [close, close, close, close];
+    const item: SnapshotItem = { timestamp, price };
 
     this.updatePricesCollection([item, ...this.prices]);
   }
@@ -910,7 +879,7 @@ export default class SwapChart extends Mixins(
 
     const isCurrentTimeframe = lastItem?.timestamp === timestamp;
 
-    const priceData = [isCurrentTimeframe ? open : price, price, Math.min(low, price), Math.max(high, price)];
+    const priceData: OCLH = [isCurrentTimeframe ? open : price, price, Math.min(low, price), Math.max(high, price)];
     const item = { timestamp, price: priceData };
     const prices = [...this.prices];
     if (isCurrentTimeframe) {
@@ -926,8 +895,8 @@ export default class SwapChart extends Mixins(
     return priceB !== 0 ? priceA / priceB : 0;
   }
 
-  private dividePrices(priceA: number[], priceB: number[]) {
-    return priceA.map((price, index) => this.dividePrice(price, priceB[index]));
+  private dividePrices(priceA: OCLH, priceB: OCLH): OCLH {
+    return priceA.map((price, index) => this.dividePrice(price, priceB[index])) as OCLH;
   }
 
   private clearData(): void {
@@ -943,7 +912,7 @@ export default class SwapChart extends Mixins(
     this.precision = 2;
   }
 
-  private updatePricesCollection(items: ChartDataItem[]): void {
+  private updatePricesCollection(items: SnapshotItem[]): void {
     this.prices = Object.freeze(items);
   }
 
