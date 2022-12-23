@@ -89,7 +89,7 @@ const mutations = defineMutations<SettingsState>()({
   },
   setKYCData(state, data) {
     state.kycData = { ...data };
-    storage.set('kyc', JSON.stringify(state.kycData));
+    // storage.set('kyc', JSON.stringify(state.kycData));
   },
 });
 

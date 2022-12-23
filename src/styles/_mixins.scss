@@ -69,12 +69,13 @@ $primary-button-box-shadow: 0px 0px 20px #99910d;
       margin-top: $inner-spacing-tiny;
       margin-bottom: 0;
       min-height: $inner-spacing-mini * 2.25;
+
       .formatted-amount--fiat-value {
         flex-grow: 1;
         margin-right: calc(var(--s-basic-spacing) / 2);
         font-size: var(--s-font-size-small);
-        font-weight: 600;
-        word-break: break-all;
+        white-space: nowrap;
+
         + .token-address {
           margin-left: var(--s-basic-spacing);
         }
@@ -801,7 +802,7 @@ $primary-button-box-shadow: 0px 0px 20px #99910d;
       text-align: center;
     }
     &-name {
-      font-size: var(--s-font-size-small);
+      font-size: var(--s-font-size-extra-small);
       font-weight: 600;
     }
     &-address {

@@ -60,7 +60,7 @@ export default class AuthorizeRoutingTemplate extends Mixins(TranslationMixin) {
   @action.routeAssets.runAssetsRouting runAssetsRouting!: any;
   @getter.routeAssets.inputToken inputToken!: Asset;
   @getter.routeAssets.recipients private recipients!: Array<Recipient>;
-  @state.wallet.account.fiatPriceAndApyObject private fiatPriceAndApyObject!: SUBQUERY_TYPES.FiatPriceAndApyObject;
+  @state.wallet.account.fiatPriceObject private fiatPriceObject!: any;
   @action.routeAssets.cancelProcessing private cancelProcessing!: () => void;
   email = '';
   checkboxValue = false;
@@ -74,7 +74,7 @@ export default class AuthorizeRoutingTemplate extends Mixins(TranslationMixin) {
   }
 
   getAssetUSDPrice(asset: Asset) {
-    return FPNumber.fromCodecValue(this.fiatPriceAndApyObject[asset.address]?.price ?? 0, 18);
+    return FPNumber.fromCodecValue(this.fiatPriceObject[asset.address] ?? 0, 18);
   }
 
   formatNumber(num) {

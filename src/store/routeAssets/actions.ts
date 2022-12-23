@@ -43,7 +43,7 @@ const actions = defineActions({
     };
 
     const data: Array<any> = [];
-    const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
+    const priceObject = rootState.wallet.account.fiatPriceObject;
 
     await Papa.parse(file, {
       header: false,
@@ -85,7 +85,7 @@ const actions = defineActions({
 
   editRecipient(context, { id, name, wallet, usd, asset }): void {
     const { commit, rootState } = routeAssetsActionContext(context);
-    const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
+    const priceObject = rootState.wallet.account.fiatPriceObject;
     const amount = Number(usd) / Number(getAssetUSDPrice(asset, priceObject));
     commit.editRecipient({ id, name, wallet, usd, amount, asset });
   },
@@ -175,7 +175,7 @@ const actions = defineActions({
 
   updateTokenAmounts(context): void {
     const { state, rootState, getters, commit } = routeAssetsActionContext(context);
-    const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
+    const priceObject = rootState.wallet.account.fiatPriceObject;
     const recipients = getters.recipients;
     recipients.forEach((recipient) => {
       const amount = Number(recipient.usd) / Number(getAssetUSDPrice(recipient.asset, priceObject));
@@ -242,14 +242,14 @@ const actions = defineActions({
   },
 });
 
-function getAssetUSDPrice(asset, fiatPriceAndApyObject) {
-  return FPNumber.fromCodecValue(fiatPriceAndApyObject[asset.address]?.price, 18).toFixed(2);
+function getAssetUSDPrice(asset, fiatPriceObject) {
+  return FPNumber.fromCodecValue(fiatPriceObject[asset.address], 18).toFixed(2);
 }
 
 function getTransferParams(context, inputAsset, recipient) {
   const { rootState, getters, rootGetters } = routeAssetsActionContext(context);
   if (recipient.asset.address === inputAsset.address) {
-    const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
+    const priceObject = rootState.wallet.account.fiatPriceObject;
     const amount = Number(recipient.usd) / Number(getAssetUSDPrice(recipient.asset, priceObject));
     const transfer = api.api.tx.assets.transfer(
       inputAsset.address,
@@ -279,9 +279,7 @@ function getTransferParams(context, inputAsset, recipient) {
     const { paths, payload, liquiditySources, dexQuoteData } = subscription;
     const tokenEquivalent =
       Number(recipient.usd) /
-      Number(
-        FPNumber.fromCodecValue(rootState.wallet.account.fiatPriceAndApyObject[recipient.asset.address]?.price, 18)
-      );
+      Number(FPNumber.fromCodecValue(rootState.wallet.account.fiatPriceObject[recipient.asset.address], 18));
     const dexes = api.dex.dexList;
 
     try {

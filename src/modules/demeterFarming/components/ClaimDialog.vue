@@ -54,7 +54,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import AccountPoolMixin from '../mixins/AccountPoolMixin';
+import PoolCardMixin from '../mixins/PoolCardMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component({
@@ -66,7 +66,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
   },
 })
 export default class ClaimDialog extends Mixins(
-  AccountPoolMixin,
+  PoolCardMixin,
   TranslationMixin,
   mixins.DialogMixin,
   mixins.LoadingMixin

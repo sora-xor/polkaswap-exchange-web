@@ -144,7 +144,7 @@ export default class FixIssuesDialog extends Mixins(
   }
 
   get assetUSDPrice() {
-    return FPNumber.fromCodecValue(this.fiatPriceAndApyObject[this.model.asset.address]?.price ?? 0, 18).toFixed(4);
+    return FPNumber.fromCodecValue(this.fiatPriceObject[this.model.asset.address] ?? 0, 18).toFixed(4);
   }
 
   get submitIsDisabled() {

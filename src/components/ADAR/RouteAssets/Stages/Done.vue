@@ -99,7 +99,7 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
   @getter.routeAssets.inputToken inputToken!: Asset;
   @getter.routeAssets.completedRecipients private completedRecipients!: Array<Recipient>;
   @getter.routeAssets.incompletedRecipients private incompletedRecipients!: Array<Recipient>;
-  @state.wallet.account.fiatPriceAndApyObject private fiatPriceAndApyObject!: SUBQUERY_TYPES.FiatPriceAndApyObject;
+  @state.wallet.account.fiatPriceObject private fiatPriceObject!: any;
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
 
   showFailedTransactionsDialog = false;
@@ -146,7 +146,7 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
   }
 
   getAssetUSDPrice(asset: Asset) {
-    return FPNumber.fromCodecValue(this.fiatPriceAndApyObject[asset.address]?.price ?? 0, 18);
+    return FPNumber.fromCodecValue(this.fiatPriceObject[asset.address] ?? 0, 18);
   }
 
   formatNumber(num) {

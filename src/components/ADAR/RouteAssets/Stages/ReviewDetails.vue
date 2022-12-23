@@ -126,7 +126,7 @@ export default class ReviewDetails extends Mixins(TranslationMixin) {
   @getter.routeAssets.inputToken inputToken!: Asset;
   @action.routeAssets.processingNextStage nextStage!: () => void;
   @getter.routeAssets.recipients private recipients!: Array<Recipient>;
-  @state.wallet.account.fiatPriceAndApyObject private fiatPriceAndApyObject!: SUBQUERY_TYPES.FiatPriceAndApyObject;
+  @state.wallet.account.fiatPriceObject private fiatPriceObject!: any;
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
   @action.routeAssets.setInputToken setInputToken!: (asset: Asset) => void;
   @action.routeAssets.cancelProcessing private cancelProcessing!: () => void;
@@ -194,7 +194,7 @@ export default class ReviewDetails extends Mixins(TranslationMixin) {
   }
 
   getAssetUSDPrice(asset: Asset) {
-    return FPNumber.fromCodecValue(this.fiatPriceAndApyObject[asset.address]?.price ?? 0, 18);
+    return FPNumber.fromCodecValue(this.fiatPriceObject[asset.address] ?? 0, 18);
   }
 
   get getTokenBalance(): CodecString {
