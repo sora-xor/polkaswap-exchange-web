@@ -518,7 +518,7 @@ export default class SwapChart extends Mixins(
     return {
       dataset: {
         source: this.chartData,
-        dimensions: ['timestamp', 'open', 'close', 'high', 'low'],
+        dimensions: ['timestamp', 'open', 'close', 'low', 'high'],
       },
       grid: {
         left: this.gridLeftOffset,
@@ -697,12 +697,23 @@ export default class SwapChart extends Mixins(
   }
 
   // ordered ty timestamp DESC
-  private async fetchData(address: string, filter: ChartFilter, pageInfo?: Partial<PageInfo>) {
-    const { type, count } = filter;
+  private async fetchData(address: string) {
+    const { type, count } = this.selectedFilter;
+    const pageInfo = this.pageInfos[address];
+    const buffer = this.samplesBuffer[address] ?? [];
     const nodes: AssetSnapshotEntity[] = [];
 
     let hasNextPage = pageInfo?.hasNextPage ?? true;
     let endCursor = pageInfo?.endCursor ?? '';
+
+    if (buffer.length >= count) {
+      return {
+        nodes,
+        hasNextPage,
+        endCursor,
+      };
+    }
+
     let fetchCount = count;
 
     do {
@@ -742,21 +753,7 @@ export default class SwapChart extends Mixins(
 
     await this.withApi(async () => {
       try {
-        const buffersLengths = addresses.map((address) => this.samplesBuffer[address]?.length ?? 0);
-        const bufferHasSnapshots = this.selectedFilter.count <= Math.min(...buffersLengths);
-        const snapshots = await Promise.all(
-          addresses.map((address) => {
-            const pageInfo = this.pageInfos[address];
-
-            return bufferHasSnapshots
-              ? {
-                  nodes: [],
-                  hasNextPage: pageInfo.hasNextPage as boolean,
-                  endCursor: pageInfo.endCursor as string,
-                }
-              : this.fetchData(address, this.selectedFilter, pageInfo);
-          })
-        );
+        const snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
 
         // if no response, or tokens were changed, return
         if (!(snapshots && isEqual(addresses)(this.tokensAddresses) && isEqual(requestId)(this.priceUpdateRequestId)))
@@ -767,7 +764,7 @@ export default class SwapChart extends Mixins(
         const groups: SnapshotItem[][] = [];
         const timestamp =
           lastTimestamp ??
-          Math.max(snapshots[0]?.nodes[0].timestamp ?? 0, snapshots[1]?.nodes[0].timestamp ?? 0) * 1000;
+          Math.max(snapshots[0]?.nodes[0]?.timestamp ?? 0, snapshots[1]?.nodes[0]?.timestamp ?? 0) * 1000;
 
         snapshots.forEach(({ hasNextPage, endCursor, nodes }, index) => {
           const address = addresses[index];
