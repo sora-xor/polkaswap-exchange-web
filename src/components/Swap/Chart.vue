@@ -325,8 +325,6 @@ export default class SwapChart extends Mixins(
 
   @Watch('tokensAddresses')
   private handleTokensChange(current: string[], prev: string[]): void {
-    // const a = current.slice().sort();
-    // const b = prev.slice().sort();
     if (!isEqual(current)(prev)) {
       this.forceUpdatePrices();
     }
@@ -744,8 +742,20 @@ export default class SwapChart extends Mixins(
 
     await this.withApi(async () => {
       try {
+        const buffersLengths = addresses.map((address) => this.samplesBuffer[address]?.length ?? 0);
+        const bufferHasSnapshots = this.selectedFilter.count <= Math.min(...buffersLengths);
         const snapshots = await Promise.all(
-          addresses.map((address) => this.fetchData(address, this.selectedFilter, this.pageInfos[address]))
+          addresses.map((address) => {
+            const pageInfo = this.pageInfos[address];
+
+            return bufferHasSnapshots
+              ? {
+                  nodes: [],
+                  hasNextPage: pageInfo.hasNextPage as boolean,
+                  endCursor: pageInfo.endCursor as string,
+                }
+              : this.fetchData(address, this.selectedFilter, pageInfo);
+          })
         );
 
         // if no response, or tokens were changed, return
@@ -768,7 +778,7 @@ export default class SwapChart extends Mixins(
           pageInfos[address] = { hasNextPage, endCursor };
         });
 
-        const size = Math.min(groups[0]?.length ?? Infinity, groups[1]?.length ?? Infinity);
+        const size = Math.min(groups[0]?.length ?? Infinity, groups[1]?.length ?? Infinity, this.selectedFilter.count);
 
         let { min, max } = this.limits;
 
