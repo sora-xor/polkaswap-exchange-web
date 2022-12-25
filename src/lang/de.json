@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "Toto",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Farming"
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Tauschen",
@@ -352,7 +353,8 @@
         "Support": "Support",
         "CreatePair": "Erstelle ein Paar",
         "StakingContainer": "Staking",
-        "Explore\/Container": "Entdecken"
+        "Explore\/Container": "Entdecken",
+        "SoraCard": "{Sora} Karte"
     },
     "social": {
         "twitter": "Twitter",

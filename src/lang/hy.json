@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Նշաններ",
         "Explore\/Pools": "Լողավազաններ",
         "Explore\/Staking": "Ցուցադրում",
-        "Explore\/Farming": "Ֆարմինգ"
+        "Explore\/Farming": "Ֆարմինգ",
+        "Staking": "Ցուցադրում"
     },
     "mainMenu": {
         "Swap": "Փոխանակում",
@@ -352,7 +353,8 @@
         "Support": "Աջակցություն",
         "CreatePair": "Ստեղծել զույգ",
         "StakingContainer": "Ցուցադրում",
-        "Explore\/Container": "Հետազոտել"
+        "Explore\/Container": "Հետազոտել",
+        "SoraCard": "{Sora} Քարտ"
     },
     "social": {
         "twitter": "Twitter",

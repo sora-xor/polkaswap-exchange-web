@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Токени",
         "Explore\/Pools": "Базени",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Farming"
+        "Explore\/Farming": "Farming",
+        "Staking": "Ulaganje"
     },
     "mainMenu": {
         "Swap": "Замените",
@@ -352,7 +353,8 @@
         "Support": "Подршка",
         "CreatePair": "Направите пар",
         "StakingContainer": "Стeкинг",
-        "Explore\/Container": "Истражите"
+        "Explore\/Container": "Истражите",
+        "SoraCard": "{Sora} картица"
     },
     "social": {
         "twitter": "Twitter",

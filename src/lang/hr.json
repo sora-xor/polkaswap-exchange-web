@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Tokeni",
         "Explore\/Pools": "Bazeni",
         "Explore\/Staking": "Ulaganje",
-        "Explore\/Farming": "Farmanje"
+        "Explore\/Farming": "Farmanje",
+        "Staking": "Ulaganje"
     },
     "mainMenu": {
         "Swap": "Zamijenite",
@@ -352,7 +353,8 @@
         "Support": "Suport",
         "CreatePair": "Stvorite par",
         "StakingContainer": "Ulaganje",
-        "Explore\/Container": "Istražiti"
+        "Explore\/Container": "Istražiti",
+        "SoraCard": "Kartica {Sora}"
     },
     "social": {
         "twitter": "Twitter",
