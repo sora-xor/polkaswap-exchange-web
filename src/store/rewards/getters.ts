@@ -61,11 +61,6 @@ const getters = defineGetters<RewardsState>()({
           symbol: KnownSymbols.PSWAP,
           amount: '',
         } as RewardsAmountHeaderItem,
-        {
-          asset: KnownAssets.get(KnownSymbols.VAL),
-          symbol: KnownSymbols.VAL,
-          amount: '',
-        } as RewardsAmountHeaderItem,
       ];
     }
 
