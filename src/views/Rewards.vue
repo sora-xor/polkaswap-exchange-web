@@ -1,6 +1,6 @@
 <template>
-  <div v-loading="parentLoading" class="rewards">
-    <div class="rewards-content" v-loading="!parentLoading && loading">
+  <div class="rewards">
+    <div class="rewards-content" v-loading="parentLoading || loading">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">
         <div :class="['rewards-box', libraryTheme]">
           <tokens-row :assets="rewardTokens" />
