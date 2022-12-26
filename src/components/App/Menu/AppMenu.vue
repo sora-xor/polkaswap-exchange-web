@@ -100,7 +100,7 @@ import {
   Components,
 } from '@/consts';
 
-import router, { lazyComponent } from '@/router';
+import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
 @Component({
@@ -131,22 +131,23 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   get currentPath(): string {
-    if (PoolChildPages.includes(router.currentRoute.name as PageNames)) {
+    const currentName = this.$route.name as any;
+    if (PoolChildPages.includes(currentName)) {
       return PageNames.Pool;
     }
-    if (BridgeChildPages.includes(router.currentRoute.name as PageNames)) {
+    if (BridgeChildPages.includes(currentName)) {
       return PageNames.Bridge;
     }
-    if (RewardsChildPages.includes(router.currentRoute.name as PageNames)) {
+    if (RewardsChildPages.includes(currentName)) {
       return PageNames.Rewards;
     }
-    if (StakingChildPages.includes(router.currentRoute.name as any)) {
+    if (StakingChildPages.includes(currentName)) {
       return PageNames.StakingContainer;
     }
-    if (ExploreChildPages.includes(router.currentRoute.name as PageNames)) {
+    if (ExploreChildPages.includes(currentName)) {
       return PageNames.ExploreContainer;
     }
-    return router.currentRoute.name as string;
+    return currentName as string;
   }
 
   openSoraDownloadDialog(): void {
