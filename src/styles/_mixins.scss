@@ -703,6 +703,10 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     .el-table__empty-text {
       color: var(--s-color-base-content-tertiary); // TODO [1.4]: remove after fix in ui-lib
     }
+
+    .cell {
+      word-break: normal;
+    }
   }
 
   // table cell styles

@@ -48,7 +48,7 @@
       <!-- Account tokens -->
       <s-table-column v-if="isLoggedIn" key="logged" width="140" header-align="right" align="right">
         <template #header>
-          <span class="explore-table__primary">Investment</span>
+          <span class="explore-table__primary">{{ t('balanceText') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="explore-table-item-tokens">
