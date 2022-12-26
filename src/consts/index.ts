@@ -118,9 +118,8 @@ export enum PageNames {
   RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
   Rewards = 'Rewards',
-  Referral = 'Referral',
-  RewardsTabs = 'RewardsTabs',
   ReferralProgram = 'ReferralProgram',
+  RewardsTabs = 'RewardsTabs',
   ReferralBonding = 'ReferralBonding',
   ReferralUnbonding = 'ReferralUnbonding',
   PageNotFound = 'PageNotFound',
@@ -334,7 +333,7 @@ export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTr
 export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
 export const RewardsChildPages = [
   PageNames.Rewards,
-  PageNames.Referral,
+  PageNames.ReferralProgram,
   PageNames.ReferralBonding,
   PageNames.ReferralUnbonding,
 ];

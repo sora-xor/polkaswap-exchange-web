@@ -194,9 +194,8 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/referral',
-    name: PageNames.Referral,
+    name: PageNames.ReferralProgram,
     component: lazyView(PageNames.RewardsTabs),
-    meta: { isReferralProgram: true },
     children: [
       {
         path: ':referrerAddress?',
@@ -252,7 +251,7 @@ router.beforeEach((to, from, next) => {
       store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
     }
     if (isLoggedIn) {
-      setRoute(PageNames.Referral);
+      setRoute(PageNames.ReferralProgram);
       return;
     }
   }

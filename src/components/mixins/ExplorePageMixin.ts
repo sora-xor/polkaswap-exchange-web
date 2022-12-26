@@ -108,11 +108,11 @@ export default class ExplorePageMixin extends Mixins(
   }
 
   private initScrollbar(): void {
+    if (!this.tableComponent) return;
+
     const Scrollbar = Vue.extend(SScrollbar);
     const scrollbar = new Scrollbar();
     scrollbar.$mount();
-
-    if (!this.tableComponent) return;
 
     const elTable = this.tableComponent.$refs.table;
     const elTableBodyWrapper = elTable.$refs.bodyWrapper;
