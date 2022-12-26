@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Quinielas",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Agricultura"
+        "Explore\/Farming": "Agricultura",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Intercambio",
@@ -352,7 +353,8 @@
         "Support": "Soporte",
         "CreatePair": "Crear par",
         "StakingContainer": "Staking",
-        "Explore\/Container": "Explorar"
+        "Explore\/Container": "Explorar",
+        "SoraCard": "{Sora} Tarjeta"
     },
     "social": {
         "twitter": "Twitter",

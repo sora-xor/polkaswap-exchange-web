@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Токены",
         "Explore\/Pools": "Пулы",
         "Explore\/Staking": "Стейкинг",
-        "Explore\/Farming": "Фарминг"
+        "Explore\/Farming": "Фарминг",
+        "Staking": "Стейкинг"
     },
     "mainMenu": {
         "Swap": "Обмен",
@@ -352,7 +353,8 @@
         "Support": "Поддержка",
         "CreatePair": "Создать пару",
         "StakingContainer": "Стекинг",
-        "Explore\/Container": "Исследовать"
+        "Explore\/Container": "Исследовать",
+        "SoraCard": "{Sora} карта"
     },
     "social": {
         "twitter": "Twitter",
