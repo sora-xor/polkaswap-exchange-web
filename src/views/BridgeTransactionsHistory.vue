@@ -1,7 +1,15 @@
 <template>
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
-      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack" />
+      <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
+        <s-button
+          type="action"
+          icon="arrows-swap-90-24"
+          :disabled="historyLoading"
+          :tooltip="t('bridgeHistory.restoreHistory')"
+          @click="updateHistory(true)"
+        />
+      </generic-page-header>
       <s-form class="history-form" :show-message="false">
         <search-input
           v-if="history.length"
@@ -94,8 +102,8 @@ export default class BridgeTransactionsHistory extends Mixins(
   mixins.NumberFormatterMixin
 ) {
   @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;
-
-  @action.bridge.updateHistory private updateHistory!: AsyncFnWithoutArgs;
+  @state.bridge.historyLoading historyLoading!: boolean;
+  @action.bridge.updateHistory private updateHistory!: (clearHistory?: boolean) => Promise<void>;
 
   @getter.bridge.historyPage historyPage!: number;
 
