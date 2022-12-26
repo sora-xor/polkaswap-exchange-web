@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Pooler",
         "Explore\/Staking": "Utsättning",
-        "Explore\/Farming": "Farming"
+        "Explore\/Farming": "Farming",
+        "Staking": "Utsättning"
     },
     "mainMenu": {
         "Swap": "Byt",
@@ -352,7 +353,8 @@
         "Support": "Assistans",
         "CreatePair": "Skapa Par",
         "StakingContainer": "Utsättning",
-        "Explore\/Container": "Utforska"
+        "Explore\/Container": "Utforska",
+        "SoraCard": ""
     },
     "social": {
         "twitter": "Twitter",

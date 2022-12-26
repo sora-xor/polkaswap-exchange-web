@@ -3,6 +3,7 @@ import { en as walletEn, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation, TransactionStatus } from '@sora-substrate/util';
 import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 
+import { DemeterPageNames } from '../modules/demeterFarming/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
 import { EvmNetworkType } from '../utils/ethers-util';
 import { MoonpayNotifications } from '../components/Moonpay/consts';
@@ -74,6 +75,7 @@ export default {
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.PageNotFound]: 'Page Not Found',
+    [DemeterPageNames.Staking]: 'Staking',
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',

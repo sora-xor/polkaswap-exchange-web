@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Awọn ami-ami",
         "Explore\/Pools": "Pools",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Ogbin"
+        "Explore\/Farming": "Ogbin",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Iŕopo",
@@ -352,7 +353,8 @@
         "Support": "Atilẹyin",
         "CreatePair": "Ṣẹda Pair",
         "StakingContainer": "Staking",
-        "Explore\/Container": "Ye"
+        "Explore\/Container": "Ye",
+        "SoraCard": "Kaadi {Sora}"
     },
     "social": {
         "twitter": "Twitter",

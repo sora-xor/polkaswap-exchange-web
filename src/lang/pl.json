@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Tokeny",
         "Explore\/Pools": "Baseny",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Farming"
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Wymiana",
@@ -352,7 +353,8 @@
         "Support": "Pomoc",
         "CreatePair": "Utwórz parę",
         "StakingContainer": "Staking",
-        "Explore\/Container": "Badać"
+        "Explore\/Container": "Badać",
+        "SoraCard": "{Sora} Karta"
     },
     "social": {
         "twitter": "Twitter",

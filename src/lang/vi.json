@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "hồ bơi",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Farming"
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Đổi",
@@ -352,7 +353,8 @@
         "Support": "Hỗ trợ",
         "CreatePair": "Tạo một cặp token",
         "StakingContainer": "Staking",
-        "Explore\/Container": "Khám phá"
+        "Explore\/Container": "Khám phá",
+        "SoraCard": "{Sora} Thẻ"
     },
     "social": {
         "twitter": "Twitter",

@@ -338,7 +338,8 @@
         "Explore\/Tokens": "代币",
         "Explore\/Pools": "游泳池",
         "Explore\/Staking": "质押",
-        "Explore\/Farming": "农耕"
+        "Explore\/Farming": "农耕",
+        "Staking": "质押"
     },
     "mainMenu": {
         "Swap": "交换",
@@ -352,7 +353,8 @@
         "Support": "支持",
         "CreatePair": "创建流动性对",
         "StakingContainer": "质押",
-        "Explore\/Container": "探索"
+        "Explore\/Container": "探索",
+        "SoraCard": "{Sora}卡"
     },
     "social": {
         "twitter": "推特",

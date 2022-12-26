@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Jetons",
         "Explore\/Pools": "Piscines",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Farming"
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Échanger",
@@ -352,7 +353,8 @@
         "Support": "Support",
         "CreatePair": "Créer une paire",
         "StakingContainer": "Staking",
-        "Explore\/Container": "Explorer"
+        "Explore\/Container": "Explorer",
+        "SoraCard": "{Sora} Carte"
     },
     "social": {
         "twitter": "Twitter",
