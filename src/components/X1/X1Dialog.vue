@@ -1,8 +1,11 @@
 <template>
   <dialog-base :visible.sync="isVisible" class="x1-dialog">
     <div class="wrapper" v-loading="loadingX1">
+      <div id="sprkwdgt-WUQBA5U2"></div>
+      <div id="sprkwdgt-WUQBA5U2"></div>
+
       <div
-        id="sprkwdgt-WYL6QBNC"
+        id="sprkwdgt-WUQBA5U2"
         :data-address="accountAddress"
         data-from-currency="EUR"
         :data-from-amount="restEuroToDeposit"
@@ -30,7 +33,7 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   @state.soraCard.euroBalance private euroBalance!: string;
   @getter.soraCard.accountAddress accountAddress!: string;
 
-  loadingX1 = true;
+  loadingX1 = false;
 
   @Watch('isVisible', { immediate: true })
   private handleVisibleStateChange(visible: boolean): void {
@@ -46,8 +49,8 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
     return 100 - parseInt(this.euroBalance, 10);
   }
 
-  loadX1(): void {
-    loadScript('https://dev.x1ex.com/widgets/sdk.js')
+  async loadX1(): Promise<void> {
+    await loadScript('https://x1ex.com/widgets/sdk.js')
       .then((data) => {
         setTimeout(() => {
           this.loadingX1 = false;
@@ -59,7 +62,7 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   }
 
   unloadX1(): void {
-    unloadScript('https://dev.x1ex.com/widgets/sdk.js').catch(() => {});
+    unloadScript('https://x1ex.com/widgets/sdk.js').catch(() => {});
   }
 }
 </script>

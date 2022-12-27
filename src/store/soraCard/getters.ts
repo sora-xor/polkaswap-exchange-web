@@ -1,3 +1,4 @@
+import { KycStatus, VerificationStatus } from '@/types/card';
 import { defineGetters } from 'direct-vuex';
 import { soraCardGetterContext } from '.';
 
@@ -12,6 +13,33 @@ const getters = defineGetters<SoraCardState>()({
     const { state } = soraCardGetterContext(args);
     const euroBalance = parseInt(state.euroBalance, 10);
     return euroBalance > 100;
+  },
+  currentStatus(...args): VerificationStatus | undefined {
+    // CHECKME: carefully check what each status defines.
+    const { state } = soraCardGetterContext(args);
+    const { kycStatus, verificationStatus } = state;
+
+    if (!kycStatus) return;
+    if (!verificationStatus) return;
+    if (kycStatus === KycStatus.Started) return;
+
+    if (
+      [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
+      verificationStatus === VerificationStatus.Pending
+    ) {
+      return VerificationStatus.Pending;
+    }
+
+    if (
+      [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
+      verificationStatus === VerificationStatus.Accepted
+    ) {
+      return VerificationStatus.Accepted;
+    }
+
+    if ([KycStatus.Failed, KycStatus.Rejected].includes(kycStatus)) {
+      return VerificationStatus.Rejected;
+    }
   },
 });
 

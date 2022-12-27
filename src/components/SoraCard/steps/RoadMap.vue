@@ -64,7 +64,7 @@
 
 <script lang="ts">
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
-import { action, getter, state } from '@/store/decorators';
+import { action, getter } from '@/store/decorators';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
@@ -73,7 +73,7 @@ import UserIcon from '@/assets/img/sora-card/user.svg?inline';
 import { delay } from '@/utils';
 import { clearTokensFromSessionStorage } from '@/utils/card';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { CardIssueStatus } from '@/types/card';
+import { KycStatus, VerificationStatus } from '@/types/card';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 @Component({
@@ -90,9 +90,10 @@ export default class RoadMap extends Mixins(
   mixins.CameraPermissionMixin,
   mixins.TranslationMixin
 ) {
-  @state.soraCard.userKycStatus private userKycStatus!: CardIssueStatus;
+  @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
-  @action.soraCard.getUserKycStatus private getUserKycStatus!: AsyncFnWithoutArgs;
+
+  @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
 
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
@@ -120,9 +121,13 @@ export default class RoadMap extends Mixins(
     }
 
     if (sessionStorage.getItem('access-token')) {
-      await this.getUserKycStatus();
+      await this.getUserStatus();
 
-      this.$emit('confirm-start-kyc', this.userKycStatus !== CardIssueStatus.Success);
+      if ([VerificationStatus.Pending, VerificationStatus.Accepted].includes(this.currentStatus)) {
+        this.$emit('confirm-start-kyc', false);
+      } else {
+        this.$emit('confirm-start-kyc', true);
+      }
 
       unloadScript('https://auth-test.paywings.io/auth/sdk.js');
       return;
@@ -152,9 +157,9 @@ export default class RoadMap extends Mixins(
     this.btnLoading = true;
     this.showArrow = false;
     await this.getAccessToken();
-    await this.getUserKycStatus();
+    await this.getUserStatus();
 
-    if (this.userKycStatus) {
+    if (this.currentStatus) {
       this.$emit('confirm-start-kyc', false);
       return;
     } else if (this.userApplied) {

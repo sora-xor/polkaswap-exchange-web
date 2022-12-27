@@ -1,4 +1,4 @@
-import { CardIssueStatus } from '@/types/card';
+import { KycStatus, VerificationStatus } from '@/types/card';
 import { defineMutations } from 'direct-vuex';
 
 import type { SoraCardState } from './types';
@@ -20,8 +20,11 @@ const mutations = defineMutations<SoraCardState>()({
     state.totalXorBalanceUpdates?.unsubscribe();
     state.totalXorBalanceUpdates = null;
   },
-  setUserStatus(state, status: CardIssueStatus | undefined) {
-    state.userKycStatus = status;
+  setKycStatus(state, status: KycStatus | undefined) {
+    state.kycStatus = status;
+  },
+  setVerificationStatus(state, status: VerificationStatus | undefined) {
+    state.verificationStatus = status;
   },
 });
 

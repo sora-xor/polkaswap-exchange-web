@@ -5,7 +5,7 @@ import { FPNumber } from '@sora-substrate/util';
 import { waitForAccountPair } from '@/utils';
 import { defineUserStatus, getXorPerEuroRatio } from '@/utils/card';
 import { soraCardActionContext } from './../soraCard';
-import { CardIssueStatus } from '@/types/card';
+import { Status } from '@/types/card';
 
 const actions = defineActions({
   calculateXorRestPrice(context, xorPerEuro): void {
@@ -57,12 +57,13 @@ const actions = defineActions({
     }, 1000 * 60 * 5);
   },
 
-  async getUserKycStatus(context): Promise<void> {
+  async getUserStatus(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
 
-    const status: CardIssueStatus | undefined = await defineUserStatus();
+    const { kycStatus, verificationStatus }: Status = await defineUserStatus();
 
-    commit.setUserStatus(status);
+    commit.setKycStatus(kycStatus);
+    commit.setVerificationStatus(verificationStatus);
   },
 });
 

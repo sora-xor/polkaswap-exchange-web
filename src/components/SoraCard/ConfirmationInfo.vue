@@ -3,18 +3,14 @@
     <div class="sora-card__card">
       <img src="@/assets/img/sora-card/sora_card_front.png?inline" class="sora-card__card-image" />
       <div class="sora-card__card-icon" :class="getComputedIconClass()">
+        <s-icon v-if="status === VerificationStatus.Pending" name="time-time-24" class="sora-card__card-icon-element" />
         <s-icon
-          v-if="cardIssueState === CardIssueStatus.Pending"
-          name="time-time-24"
-          class="sora-card__card-icon-element"
-        />
-        <s-icon
-          v-if="cardIssueState === CardIssueStatus.Success"
+          v-if="status === VerificationStatus.Accepted"
           name="basic-check-marks-24"
           class="sora-card__card-icon-element"
         />
         <s-icon
-          v-if="cardIssueState === CardIssueStatus.Reject"
+          v-if="status === VerificationStatus.Rejected"
           name="basic-close-24"
           class="sora-card__card-icon-element"
         />
@@ -37,51 +33,51 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { CardIssueStatus } from '@/types/card';
-import { state } from '@/store/decorators';
+import { VerificationStatus } from '@/types/card';
+import { getter } from '@/store/decorators';
 
 @Component
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  @state.soraCard.userKycStatus private userKycStatus!: CardIssueStatus;
+  @getter.soraCard.currentStatus currentStatus!: VerificationStatus;
 
-  cardIssueState = CardIssueStatus.Pending;
+  VerificationStatus = VerificationStatus;
 
-  CardIssueStatus = CardIssueStatus;
+  status = VerificationStatus.Pending;
 
   get buttonText() {
     return 'Try to complete KYC again';
   }
 
   get showTryAgainBtn(): boolean {
-    if (this.cardIssueState === CardIssueStatus.Reject) return true;
+    if (this.currentStatus === VerificationStatus.Rejected) return true;
     return false;
   }
 
   getHeaderText(): string | undefined {
-    switch (this.cardIssueState) {
-      case CardIssueStatus.Pending:
+    switch (this.currentStatus) {
+      case VerificationStatus.Pending:
         return 'KYC completed. Waiting for the results';
-      case CardIssueStatus.Success:
+      case VerificationStatus.Accepted:
         return 'You’re approved for SORA Card';
-      case CardIssueStatus.Reject:
+      case VerificationStatus.Rejected:
         return 'You’re not been approved for SORA Card';
     }
   }
 
   getComputedIconClass(): string | undefined {
-    switch (this.cardIssueState) {
-      case CardIssueStatus.Pending:
+    switch (this.currentStatus) {
+      case VerificationStatus.Pending:
         return 'sora-card__card-icon--waiting';
-      case CardIssueStatus.Success:
+      case VerificationStatus.Accepted:
         return 'sora-card__card-icon--success';
-      case CardIssueStatus.Reject:
+      case VerificationStatus.Rejected:
         return 'sora-card__card-icon--reject';
     }
   }
 
   mounted(): void {
-    if (this.userKycStatus) {
-      this.cardIssueState = this.userKycStatus;
+    if (this.currentStatus) {
+      this.status = this.currentStatus;
     }
   }
 }

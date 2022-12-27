@@ -1,15 +1,17 @@
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 
-import { CardIssueStatus } from '../types/card';
+import { KycStatus, Status, VerificationStatus } from '../types/card';
 
 // Defines user's KYC status.
 // If accessToken expired, tries to get new JWT pair via refreshToken;
 // if not, forces user to pass phone number again to create new JWT pair in sessionStorage.
-export async function defineUserStatus(): Promise<CardIssueStatus | undefined> {
+export async function defineUserStatus(): Promise<Status> {
   const sessionRefreshToken = sessionStorage.getItem('refresh-token');
   let sessionAccessToken = sessionStorage.getItem('access-token');
 
-  if (!(sessionAccessToken && sessionRefreshToken)) return;
+  if (!(sessionAccessToken && sessionRefreshToken)) {
+    return emptyStatusFields();
+  }
 
   if (isAccessTokenExpired(sessionAccessToken)) {
     const accessToken = await getUpdatedJwtPair(sessionRefreshToken);
@@ -17,13 +19,13 @@ export async function defineUserStatus(): Promise<CardIssueStatus | undefined> {
     if (accessToken) {
       sessionAccessToken = accessToken;
     } else {
-      return;
+      return emptyStatusFields();
     }
   }
 
-  const status = await getKysStatus(sessionAccessToken);
+  const { kycStatus, verificationStatus } = await getUserStatus(sessionAccessToken);
 
-  return status;
+  return { kycStatus, verificationStatus };
 }
 
 async function getUpdatedJwtPair(refreshToken: string | null): Promise<string | null> {
@@ -56,8 +58,8 @@ async function getUpdatedJwtPair(refreshToken: string | null): Promise<string | 
   return null;
 }
 
-async function getKysStatus(accessToken: string | null): Promise<CardIssueStatus | undefined> {
-  if (!accessToken) return;
+async function getUserStatus(accessToken: string | null): Promise<Status> {
+  if (!accessToken) return emptyStatusFields();
 
   try {
     const result = await fetch('https://sora-card.sc1.dev.sora2.soramitsu.co.jp/kyc-last-status', {
@@ -68,13 +70,17 @@ async function getKysStatus(accessToken: string | null): Promise<CardIssueStatus
     });
 
     const lastRecord = await result.json();
-    const lastRecordStatus = lastRecord.verification_status;
+    const verificationStatus: VerificationStatus = lastRecord.verification_status;
+    const kycStatus: KycStatus = lastRecord.kyc_status;
 
-    if (Object.keys(CardIssueStatus).includes(lastRecordStatus)) {
-      return CardIssueStatus[lastRecordStatus];
+    if (Object.keys(VerificationStatus).includes(verificationStatus) && Object.keys(KycStatus).includes(kycStatus)) {
+      return { verificationStatus, kycStatus };
     }
+
+    return emptyStatusFields();
   } catch (error) {
-    console.error('[SoraCard]: Error while getting KYC status', error);
+    console.error('[SoraCard]: Error while getting KYC and verification statuses', error);
+    return emptyStatusFields();
   }
 }
 
@@ -111,3 +117,8 @@ export const clearTokensFromSessionStorage = () => {
   sessionStorage.removeItem('refresh-token');
   sessionStorage.removeItem('expiration-time');
 };
+
+const emptyStatusFields = (): Status => ({
+  verificationStatus: undefined,
+  kycStatus: undefined,
+});

@@ -9,12 +9,12 @@
 <script lang="ts">
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import { action, state } from '@/store/decorators';
+import { action, getter, state } from '@/store/decorators';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 import { Component, Mixins } from 'vue-property-decorator';
-import { CardIssueStatus } from '@/types/card';
+import { VerificationStatus } from '@/types/card';
 
 enum Step {
   StartPage = 'StartPage',
@@ -30,11 +30,11 @@ enum Step {
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
-  @state.soraCard.userKycStatus private userKycStatus!: CardIssueStatus;
+  @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
 
   @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncFnWithoutArgs;
   @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncFnWithoutArgs;
-  @action.soraCard.getUserKycStatus private getUserKycStatus!: AsyncFnWithoutArgs;
+  @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
   @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncFnWithoutArgs;
   @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribeLPUpdates!: AsyncFnWithoutArgs;
@@ -59,9 +59,9 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
   }
 
   async checkKyc(): Promise<void> {
-    await this.getUserKycStatus();
+    await this.getUserStatus();
 
-    if (this.userKycStatus) {
+    if (this.currentStatus) {
       this.step = Step.ConfirmationInfo;
     } else {
       this.step = Step.StartPage;
@@ -134,11 +134,6 @@ $color: #ee2233;
   font-weight: 300;
   line-height: var(--s-line-height-base);
   padding: var(--s-basic-spacing) calc(var(--s-basic-spacing) * 1.5) calc(var(--s-basic-spacing) * 2);
-}
-
-[design-system-theme='light'] {
-  .sora-card {
-  }
 }
 
 .loading-page {
