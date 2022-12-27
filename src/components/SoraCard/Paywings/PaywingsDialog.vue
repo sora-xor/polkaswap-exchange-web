@@ -1,5 +1,7 @@
 <template>
-  <dialog-base :visible.sync="isVisible" class="x1-dialog"> PW view </dialog-base>
+  <dialog-base v-loading="loading" :visible.sync="isVisible" class="pw-dialog">
+    <div class="wrapper" v-loading="true"></div>
+  </dialog-base>
 </template>
 
 <script lang="ts">
@@ -40,20 +42,9 @@ export default class PaywingsDialog extends Mixins(mixins.DialogMixin, mixins.Lo
 </script>
 
 <style lang="scss">
-.x1-dialog .el-dialog {
+.pw-dialog .el-dialog {
   .wrapper {
     min-height: 420px;
   }
-}
-
-#pw-creditcard-form {
-  border: 1px solid #bbb;
-  padding: 0.5rem;
-  background-color: #fff;
-}
-.input-container {
-  height: 1.5rem;
-  border-bottom: 1px solid grey;
-  margin-bottom: 1rem;
 }
 </style>

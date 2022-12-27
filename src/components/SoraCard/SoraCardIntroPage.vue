@@ -26,7 +26,7 @@
         <s-button
           type="primary"
           class="sora-card__btn s-typography-button--large"
-          :loading="getBtnLoading()"
+          :loading="btnLoading"
           @click="handleConfirm"
         >
           <span class="text"> {{ buttonText }}</span>
@@ -36,23 +36,19 @@
         <s-button
           type="primary"
           class="sora-card__btn sora-card__btn--fiat-buy s-typography-button--large"
-          :loading="getBtnLoading()"
+          :loading="btnLoading"
           @click="openX1"
         >
           <span class="text">BUY XOR WITH FIAT</span>
         </s-button>
-        <s-button
-          class="sora-card__btn--bridge s-typography-button--large"
-          :loading="getBtnLoading()"
-          @click="bridgeTokens"
-        >
+        <s-button class="sora-card__btn--bridge s-typography-button--large" :loading="btnLoading" @click="bridgeTokens">
           <span class="text">BRIDGE TOKENS</span>
         </s-button>
         <p class="line">OR</p>
         <s-button
           type="tertiary"
           class="sora-card__btn--fiat-issuance s-typography-button--large"
-          :loading="getBtnLoading()"
+          :loading="btnLoading"
           @click="issueCardByPaywings"
         >
           <span class="text">ISSUE CARD FOR €12</span>
@@ -114,7 +110,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     return '';
   }
 
-  getBtnLoading(): boolean {
+  get btnLoading(): boolean {
     return this.loading || !this.isPriceCalculated;
   }
 
