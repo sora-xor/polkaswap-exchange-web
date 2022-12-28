@@ -118,9 +118,8 @@ export enum PageNames {
   RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
   Rewards = 'Rewards',
-  Referral = 'Referral',
-  RewardsTabs = 'RewardsTabs',
   ReferralProgram = 'ReferralProgram',
+  RewardsTabs = 'RewardsTabs',
   ReferralBonding = 'ReferralBonding',
   ReferralUnbonding = 'ReferralUnbonding',
   PageNotFound = 'PageNotFound',
@@ -131,6 +130,13 @@ export enum PageNames {
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
   StakingContainer = 'StakingContainer',
+  ExploreContainer = 'Explore/Container',
+  ExploreTokens = 'Explore/Tokens',
+  ExploreDemeter = 'Explore/Demeter',
+  // just for router name & different titles
+  ExploreFarming = 'Explore/Farming',
+  ExploreStaking = 'Explore/Staking',
+  ExplorePools = 'Explore/Pools',
   SoraCard = 'SoraCard',
 }
 
@@ -164,7 +170,6 @@ export enum Components {
   SettingsTabs = 'Settings/Tabs',
   SlippageTolerance = 'Settings/SlippageTolerance',
   MarketAlgorithm = 'Settings/MarketAlgorithm',
-  ChartsSwitch = 'Settings/ChartsSwitch',
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
@@ -207,6 +212,9 @@ export enum Components {
   // Pool
   PoolInfo = 'Pool/PoolInfo',
   PriceChange = 'PriceChange',
+  // Button
+  SortButton = 'Button/SortButton',
+  SvgIconButton = 'Button/SvgIconButton/SvgIconButton',
 }
 
 export enum RewardsTabsItems {
@@ -256,8 +264,8 @@ const AccountMenu: Array<SidebarMenuItem> = [
 
 const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
-    icon: 'various-bone-24',
-    title: PageNames.Tokens,
+    icon: 'various-items-24',
+    title: PageNames.ExploreContainer,
   },
   {
     icon: 'sora-card',
@@ -325,12 +333,18 @@ export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTr
 export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
 export const RewardsChildPages = [
   PageNames.Rewards,
-  PageNames.Referral,
+  PageNames.ReferralProgram,
   PageNames.ReferralBonding,
   PageNames.ReferralUnbonding,
 ];
 
 export const StakingChildPages = [DemeterPageNames.Staking];
+export const ExploreChildPages = [
+  PageNames.ExploreTokens,
+  PageNames.ExplorePools,
+  PageNames.ExploreFarming,
+  PageNames.ExploreStaking,
+];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',

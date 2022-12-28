@@ -11,7 +11,7 @@
           text-color="var(--s-color-base-content-primary)"
           :active-text-color="mainMenuActiveColor"
           active-hover-color="transparent"
-          :default-active="getCurrentPath()"
+          :default-active="currentPath"
           @select="onSelect"
         >
           <s-menu-item-group v-for="(item, index) in sidebarMenuItems" :key="index">
@@ -93,13 +93,14 @@ import {
   BridgeChildPages,
   RewardsChildPages,
   StakingChildPages,
+  ExploreChildPages,
   SidebarMenuGroups,
   SidebarMenuItem,
   FaucetLink,
   Components,
 } from '@/consts';
 
-import router, { lazyComponent } from '@/router';
+import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
 @Component({
@@ -111,7 +112,7 @@ import { getter, state } from '@/store/decorators';
 export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isAboutPageOpened!: boolean;
-  @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
+  @Prop({ default: () => {}, type: Function }) readonly onSelect!: FnWithoutArgs;
 
   @state.settings.faucetUrl faucetUrl!: string;
   @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
@@ -129,20 +130,24 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.SoraCard);
   }
 
-  getCurrentPath(): string {
-    if (PoolChildPages.includes(router.currentRoute.name as PageNames)) {
+  get currentPath(): string {
+    const currentName = this.$route.name as any;
+    if (PoolChildPages.includes(currentName)) {
       return PageNames.Pool;
     }
-    if (BridgeChildPages.includes(router.currentRoute.name as PageNames)) {
+    if (BridgeChildPages.includes(currentName)) {
       return PageNames.Bridge;
     }
-    if (RewardsChildPages.includes(router.currentRoute.name as PageNames)) {
+    if (RewardsChildPages.includes(currentName)) {
       return PageNames.Rewards;
     }
-    if (StakingChildPages.includes(router.currentRoute.name as any)) {
+    if (StakingChildPages.includes(currentName)) {
       return PageNames.StakingContainer;
     }
-    return router.currentRoute.name as string;
+    if (ExploreChildPages.includes(currentName)) {
+      return PageNames.ExploreContainer;
+    }
+    return currentName as string;
   }
 
   openSoraDownloadDialog(): void {

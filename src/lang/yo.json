@@ -43,7 +43,7 @@
             "ClaimRewards": "A ti gba ere ni aseyori {rewards}",
             "ReferralReserveXor": "XOR ti sopọ ni aṣeyọri",
             "ReferralUnreserveXor": "XOR ti ko ni asopọ ni aṣeyọri",
-            "ReferralSetInvitedUser": "Itọkasi ti ṣeto ni aṣeyọri",
+            "ReferralSetInvitedUser": "{role} {address} ti ṣeto ni aṣeyọri",
             "SwapAndSend": "Paarọ {amount} {symbol} fun {amount2} {symbol2} ati {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Pese {symbol} ati {symbol2} {amount} LP àmi",
             "DemeterFarmingWithdrawLiquidity": "Yọ kuro {symbol} ati {symbol2} {amount} LP àmi",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Kuna lati beere awọn ere {rewards}",
             "ReferralReserveXor": "Ti kuna lati ṣopọ mọ XOR",
             "ReferralUnreserveXor": "O kuna lati yọkuro XOR",
-            "ReferralSetInvitedUser": "Kuna lati ṣeto itọkasi",
+            "ReferralSetInvitedUser": "Kuna lati ṣeto {role} {address}",
             "SwapAndSend": "O kuna lati paarọ {amount} {symbol} fun {amount2} {symbol2} ati {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Ti kuna lati pese {amount} {symbol} ati {symbol2} LP àmi",
             "DemeterFarmingWithdrawLiquidity": "Kuna lati yọkuro {amount} {symbol} ati {symbol2} LP",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Iwe adehun XOR",
         "ReferralUnreserveXor": "Yọ XOR kuro",
-        "ReferralSetInvitedUser": "Ṣeto itọkasi",
+        "ReferralSetInvitedUser": "Ṣeto {role}",
         "SwapAndSend": "Siwopu ati Firanṣẹ",
         "DemeterFarmingDepositLiquidity": "Atokun Olomi",
         "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "Fi liquidity si",
         "RemoveLiquidity": "Yọ liquidity kuro",
         "PageNotFound": "A o ri ojuwe",
-        "Tokens": "Awon Tokini",
-        "Rewards": "Ere"
+        "Rewards": "Ere",
+        "Explore\/Tokens": "Awọn ami-ami",
+        "Explore\/Pools": "Pools",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Ogbin",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Iŕopo",
@@ -348,8 +352,9 @@
         "Stats": "Iṣiro",
         "Support": "Atilẹyin",
         "CreatePair": "Ṣẹda Pair",
-        "Tokens": "Awọn Tokini",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Ye",
+        "SoraCard": "Kaadi {Sora}"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +824,7 @@
         "title": "Edé"
     },
     "tokens": {
-        "title": "Akojọ awon token",
         "symbol": "Ami",
-        "name": "Orukọ",
         "assetId": "Idanimo dukia"
     },
     "memorandum": "Memorandum {AppName} ati Awọn ofin lilo",

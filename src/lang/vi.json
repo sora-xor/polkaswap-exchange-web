@@ -43,7 +43,7 @@
             "ClaimRewards": "Đã yêu cầu thành công phần thưởng {rewards}",
             "ReferralReserveXor": "Bonded XOR thành công",
             "ReferralUnreserveXor": "Unbonded XOR thành công",
-            "ReferralSetInvitedUser": "Thiết lập giới thiệu thành công",
+            "ReferralSetInvitedUser": "Thiết lập {role} {address} thành công",
             "SwapAndSend": "Đã hoán đổi {amount} {symbol} cho {amount2} {symbol2} và {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Đã cung cấp mã thông báo LP {symbol} và {symbol2} {amount}",
             "DemeterFarmingWithdrawLiquidity": "Loại bỏ thanh khoản token {symbol} và {symbol2} {amount}",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Không xác nhận được phần thưởng {rewards}",
             "ReferralReserveXor": "Thất bại khi bond XOR",
             "ReferralUnreserveXor": "Thất bại khi unbond XOR",
-            "ReferralSetInvitedUser": "Thất bại trong việc đặt giới thiệu",
+            "ReferralSetInvitedUser": "Thất bại trong việc đặt {role} {address}",
             "SwapAndSend": "Thất bại trong việc hoán đổi {amount} {symbol} cho {amount2} {symbol2} và {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Thất bại trong việc cung cấp thanh khoản token {amount} {symbol} và {symbol2}",
             "DemeterFarmingWithdrawLiquidity": "Thất bại trong việc loại bỏ thanh khoản token {amount} {symbol} và {symbol2}",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
-        "ReferralSetInvitedUser": "Thiết lập giới thiệu",
+        "ReferralSetInvitedUser": "Thiết lập {role}",
         "SwapAndSend": "Hoán đổi và Gửi",
         "DemeterFarmingDepositLiquidity": "Thanh khoản stake",
         "DemeterFarmingWithdrawLiquidity": "Không tham gia thanh khoản",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "Thêm Thanh Khoản",
         "RemoveLiquidity": "Rút Thanh Khoản",
         "PageNotFound": "Trang không tìm thấy",
-        "Tokens": "Tokens",
-        "Rewards": "Phần thưởng"
+        "Rewards": "Phần thưởng",
+        "Explore\/Tokens": "Token",
+        "Explore\/Pools": "hồ bơi",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Đổi",
@@ -348,8 +352,9 @@
         "Stats": "Thống kê",
         "Support": "Hỗ trợ",
         "CreatePair": "Tạo một cặp token",
-        "Tokens": "Token",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Khám phá",
+        "SoraCard": "{Sora} Thẻ"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +824,7 @@
         "title": "Ngôn ngữ"
     },
     "tokens": {
-        "title": "Token đã niêm yết",
         "symbol": "Mã",
-        "name": "Tên",
         "assetId": "ID tài sản"
     },
     "memorandum": "Bản ghi nhớ và Điều khoản dịch vụ {AppName}",

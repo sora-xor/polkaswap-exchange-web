@@ -17,12 +17,13 @@ import { action } from '@/store/decorators';
 
 @Component
 export default class PoolContainer extends Mixins(SubscriptionsMixin) {
-  @action.pool.subscribeOnAccountLiquidityList private subscribeOnList!: AsyncVoidFn;
-  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnUpdates!: AsyncVoidFn;
-  @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribe!: AsyncVoidFn;
+  @action.pool.subscribeOnAccountLiquidityList private subscribeOnList!: AsyncFnWithoutArgs;
+  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnUpdates!: AsyncFnWithoutArgs;
+  @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribe!: AsyncFnWithoutArgs;
+  @action.pool.subscribeOnPoolsApy private subscribeOnPoolsApy!: AsyncFnWithoutArgs;
 
   created(): void {
-    this.setStartSubscriptions([this.subscribeOnList, this.subscribeOnUpdates]);
+    this.setStartSubscriptions([this.subscribeOnList, this.subscribeOnUpdates, this.subscribeOnPoolsApy]);
     this.setResetSubscriptions([this.unsubscribe]);
   }
 }

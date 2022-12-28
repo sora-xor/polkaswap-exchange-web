@@ -43,7 +43,7 @@
             "ClaimRewards": "Награда је успешно преузета {rewards}",
             "ReferralReserveXor": "Успешно повезивање КСОРа",
             "ReferralUnreserveXor": "Одвајање XOR је успешно",
-            "ReferralSetInvitedUser": "Препорука је успешно постављена",
+            "ReferralSetInvitedUser": "{role} {address} је успешно постављена",
             "SwapAndSend": "Замењено {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Испоручени {symbol} и {symbol2} {amount} ЛП токени",
             "DemeterFarmingWithdrawLiquidity": "Уклоњени су токени {symbol} и {symbol2} {amount} ЛП",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Преузимање награда {rewards} није успело",
             "ReferralReserveXor": "Повезивање XOR није успело",
             "ReferralUnreserveXor": "Одвајање XOR није успело",
-            "ReferralSetInvitedUser": "Постављање препоруке није успело",
+            "ReferralSetInvitedUser": "Постављање {role} {address} није успело",
             "SwapAndSend": "Замена {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address} није успела",
             "DemeterFarmingDepositLiquidity": "Достављање {amount} {symbol} и {symbol2} ЛП токена није успело",
             "DemeterFarmingWithdrawLiquidity": "Уклањање {amount} {symbol} и {symbol2} ЛП токена није успело",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Veži XOR",
         "ReferralUnreserveXor": "Razveži XOR",
-        "ReferralSetInvitedUser": "Поставите препоруку",
+        "ReferralSetInvitedUser": "Поставите {role}",
         "SwapAndSend": "Замените и пошаљте",
         "DemeterFarmingDepositLiquidity": "Uloži u likvidnost",
         "DemeterFarmingWithdrawLiquidity": "Povuci ulaganje iz likvidnosti",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "Додати ликвидност",
         "RemoveLiquidity": "Уклони ликвидност",
         "PageNotFound": "Страница није пронађена",
-        "Tokens": "Токени",
-        "Rewards": "Награде"
+        "Rewards": "Награде",
+        "Explore\/Tokens": "Токени",
+        "Explore\/Pools": "Базени",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming",
+        "Staking": "Ulaganje"
     },
     "mainMenu": {
         "Swap": "Замените",
@@ -348,8 +352,9 @@
         "Stats": "Статистикa",
         "Support": "Подршка",
         "CreatePair": "Направите пар",
-        "Tokens": "Токени",
-        "StakingContainer": "Стeкинг"
+        "StakingContainer": "Стeкинг",
+        "Explore\/Container": "Истражите",
+        "SoraCard": "{Sora} картица"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +824,7 @@
         "title": "Језик"
     },
     "tokens": {
-        "title": "Наведени токени",
         "symbol": "Симбол",
-        "name": "Име",
         "assetId": "ИД средства"
     },
     "memorandum": "{AppName} Меморандум и Услови коришћења услуге",

@@ -86,6 +86,7 @@ const actions = defineActions({
 
   async deposit(context, params: DemeterLiquidityParams): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
+    const { assetsDataTable: table } = rootGetters.assets;
 
     const {
       baseAsset: baseAssetAddress,
@@ -94,9 +95,9 @@ const actions = defineActions({
       isFarm,
     } = params.pool;
 
-    const baseAsset = rootGetters.assets.assetsDataTable[baseAssetAddress];
-    const poolAsset = rootGetters.assets.assetsDataTable[poolAssetAddress];
-    const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
+    const baseAsset = table[baseAssetAddress];
+    const poolAsset = table[poolAssetAddress];
+    const rewardAsset = table[rewardAssetAddress];
     const desiredAmount = params.value.toString();
 
     if (isFarm) {
@@ -108,6 +109,7 @@ const actions = defineActions({
 
   async withdraw(context, params: DemeterLiquidityParams): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
+    const { assetsDataTable: table } = rootGetters.assets;
 
     const {
       baseAsset: baseAssetAddress,
@@ -116,9 +118,9 @@ const actions = defineActions({
       isFarm,
     } = params.pool;
 
-    const baseAsset = rootGetters.assets.assetsDataTable[baseAssetAddress];
-    const poolAsset = rootGetters.assets.assetsDataTable[poolAssetAddress];
-    const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
+    const baseAsset = table[baseAssetAddress];
+    const poolAsset = table[poolAssetAddress];
+    const rewardAsset = table[rewardAssetAddress];
     const desiredAmount = params.value.toString();
 
     if (isFarm) {
@@ -130,6 +132,7 @@ const actions = defineActions({
 
   async claimRewards(context, pool: DemeterAccountPool): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
+    const { assetsDataTable: table } = rootGetters.assets;
 
     const {
       baseAsset: baseAssetAddress,
@@ -139,9 +142,9 @@ const actions = defineActions({
       rewards,
     } = pool;
 
-    const baseAsset = rootGetters.assets.assetsDataTable[baseAssetAddress];
-    const poolAsset = rootGetters.assets.assetsDataTable[poolAssetAddress];
-    const rewardAsset = rootGetters.assets.assetsDataTable[rewardAssetAddress];
+    const baseAsset = table[baseAssetAddress];
+    const poolAsset = table[poolAssetAddress];
+    const rewardAsset = table[rewardAssetAddress];
     const amount = rewards.toString();
 
     await api.demeterFarming.getRewards(isFarm, poolAsset, rewardAsset, baseAsset, amount);

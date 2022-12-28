@@ -55,6 +55,7 @@
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
+    <confirm-dialog v-if="isDesktop" />
   </s-design-system-provider>
 </template>
 
@@ -91,6 +92,7 @@ import type { FeatureFlags } from '@/store/settings/types';
     BrowserNotifsEnableDialog: lazyComponent(Components.BrowserNotifsEnableDialog),
     BrowserNotifsBlockedDialog: lazyComponent(Components.BrowserNotifsBlockedDialog),
     NotificationEnablingPage: components.NotificationEnablingPage,
+    ConfirmDialog: components.ConfirmDialog,
     MobilePopup,
   },
 })
@@ -121,25 +123,28 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
-  @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
-  @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: VoidFunction;
-  @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
+  @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
+  @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: FnWithoutArgs;
+  @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
-  @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
+  @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
 
   @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
-  @action.wallet.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncVoidFn;
-  @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncVoidFn;
-  @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncVoidFn;
+  @action.wallet.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncFnWithoutArgs;
+  @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncFnWithoutArgs;
+  @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncFnWithoutArgs;
   @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
-  @action.settings.setBlockNumber private setBlockNumber!: AsyncVoidFn;
+  @action.settings.setBlockNumber private setBlockNumber!: AsyncFnWithoutArgs;
   @action.web3.setSmartContracts private setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
-  @action.referrals.getReferrer private getReferrer!: AsyncVoidFn;
+  @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
   @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
     asset: WhitelistArrayItem;
     message: string;
-  }) => AsyncVoidFn;
+  }) => Promise<void>;
+
+  // [DESKTOP] To Enable Desktop
+  // @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
 
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
@@ -205,12 +210,16 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (this.storageReferrer === this.account.address) {
         this.resetStorageReferrer();
       } else {
-        this.showConfirmInviteUser = true;
+        setTimeout(() => {
+          this.showConfirmInviteUser = true; // Delay here for better UX
+        }, 3_000); // TODO: this logic should be moved and fixed in life cycle
       }
     }
   }
 
   async created() {
+    // [DESKTOP] To Enable Desktop
+    // this.setIsDesktop(true);
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
 
@@ -565,14 +574,12 @@ i.icon-divider {
 }
 
 @include large-desktop(true) {
-  .app-main {
-    &.app-main--tokens {
-      .app-menu {
-        position: relative;
+  .app-main[class*='app-main--explore/'] {
+    .app-menu {
+      position: relative;
 
-        @include large-mobile(true) {
-          position: fixed;
-        }
+      @include large-mobile(true) {
+        position: fixed;
       }
     }
   }

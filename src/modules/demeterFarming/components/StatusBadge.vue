@@ -7,7 +7,7 @@
 
     <div class="status-badge-title">
       <div>{{ title }}</div>
-      <div v-if="pricesAvailable" class="status-badge-title--mini">{{ aprFormatted }} APR</div>
+      <div v-if="pricesAvailable" class="status-badge-title--mini">{{ apr }} APR</div>
     </div>
   </div>
 </template>
@@ -16,14 +16,14 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
-import PoolMixin from '../mixins/PoolMixin';
+import PoolStatusMixin from '../mixins/PoolStatusMixin';
 
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
   },
 })
-export default class StatusBadge extends Mixins(PoolMixin) {
+export default class StatusBadge extends Mixins(PoolStatusMixin) {
   get title(): string {
     if (!this.activeStatus) return this.t('demeterFarming.staking.stopped');
 

@@ -43,7 +43,7 @@
             "ClaimRewards": "A jutalom sikeresen igényelve {rewards}",
             "ReferralReserveXor": "Sikeresen lekötött XOR",
             "ReferralUnreserveXor": "Sikeresen feloldott XOR",
-            "ReferralSetInvitedUser": "Az ajánló sikeresen be van állítva",
+            "ReferralSetInvitedUser": "Az {role} {address} sikeresen be van állítva",
             "SwapAndSend": "{amount} {symbol} kicserélve {amount2} {symbol2} -re és {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Mellékelt {symbol} és {symbol2} {amount} LP token",
             "DemeterFarmingWithdrawLiquidity": "{symbol} és {symbol2} {amount} LP token eltávolítva",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Nem sikerült igényelni a jutalmakat {rewards}",
             "ReferralReserveXor": "Nem sikerült a XOR lekötése",
             "ReferralUnreserveXor": "Nem sikerült feloldani az XOR-t",
-            "ReferralSetInvitedUser": "Nem sikerült beállítani az ajánlást",
+            "ReferralSetInvitedUser": "Nem sikerült beállítani az {role} {address}",
             "SwapAndSend": "Nem sikerült az {amount} {symbol} {amount2} {symbol2} és {action} {direction} {address} értékre",
             "DemeterFarmingDepositLiquidity": "Nem sikerült megadni az {amount} {symbol} és {symbol2} LP tokeneket",
             "DemeterFarmingWithdrawLiquidity": "Nem sikerült eltávolítani az {amount} {symbol} és {symbol2} LP tokeneket",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
-        "ReferralSetInvitedUser": "Ajánló megadása",
+        "ReferralSetInvitedUser": "{role} megadása",
         "SwapAndSend": "Váltás és küldés",
         "DemeterFarmingDepositLiquidity": "Tét Likviditás",
         "DemeterFarmingWithdrawLiquidity": "Likviditás visszavonása",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "Poolhoz hozzáadás",
         "RemoveLiquidity": "Poolból eltávolítás",
         "PageNotFound": "Az oldal nem található",
-        "Tokens": "Tokenek",
-        "Rewards": "Jutalmak"
+        "Rewards": "Jutalmak",
+        "Explore\/Tokens": "Tokenek",
+        "Explore\/Pools": "Totó",
+        "Explore\/Staking": "Letét",
+        "Explore\/Farming": "Farmolás",
+        "Staking": "Letét"
     },
     "mainMenu": {
         "Swap": "Váltás",
@@ -348,8 +352,9 @@
         "Stats": "Statisztikák",
         "Support": "Támogatás",
         "CreatePair": "Pár létrehozása",
-        "Tokens": "Tokenek",
-        "StakingContainer": "Letét"
+        "StakingContainer": "Letét",
+        "Explore\/Container": "Kutat",
+        "SoraCard": "{Sora} Kártya"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +824,7 @@
         "title": "Nyelv"
     },
     "tokens": {
-        "title": "Listázott tokenek",
         "symbol": "Szimbólum",
-        "name": "Név",
         "assetId": "Eszköz azonosítója"
     },
     "memorandum": "{AppName} Memorandum és Általános Szerződési Feltételek",

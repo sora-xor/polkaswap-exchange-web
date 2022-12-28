@@ -43,7 +43,7 @@
             "ClaimRewards": "Belohnung erfolgreich beansprucht {rewards}",
             "ReferralReserveXor": "Bonden von XOR erfolgreich",
             "ReferralUnreserveXor": "Unbonden von XOR erfolgreich",
-            "ReferralSetInvitedUser": "Referral wurde erfolgreich eingerichtet",
+            "ReferralSetInvitedUser": "{role} {address} wurde erfolgreich eingerichtet",
             "SwapAndSend": "{amount} {symbol} gegen {amount2} {symbol2} und {action} {direction} {address} getauscht",
             "DemeterFarmingDepositLiquidity": "{symbol} und {symbol2} {amount} LP-Token bereitgestellt",
             "DemeterFarmingWithdrawLiquidity": "{symbol} und {symbol2} {amount} LP-Token entfernt",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Belohnungen konnten nicht beansprucht werden {rewards}",
             "ReferralReserveXor": "Bonden von XOR fehlgeschlagen",
             "ReferralUnreserveXor": "Unbonden von XOR fehlgeschlagen",
-            "ReferralSetInvitedUser": "Festlegen des Referrals fehlgeschlagen",
+            "ReferralSetInvitedUser": "Festlegen des {role} {address} fehlgeschlagen",
             "SwapAndSend": "{amount} {symbol} konnte nicht gegen {amount2} {symbol2} und {action} {direction} {address} getauscht werden",
             "DemeterFarmingDepositLiquidity": "{amount} {symbol} und {symbol2} LP-Token konnten nicht bereitgestellt werden",
             "DemeterFarmingWithdrawLiquidity": "{amount} {symbol} und {symbol2} LP-Token konnten nicht entfernt werden",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
-        "ReferralSetInvitedUser": "Referral festlegen",
+        "ReferralSetInvitedUser": "{role} festlegen",
         "SwapAndSend": "Tauschen und senden",
         "DemeterFarmingDepositLiquidity": "Stake Liquidität",
         "DemeterFarmingWithdrawLiquidity": "Unstake Liquidität",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "Liquidität hinzufügen",
         "RemoveLiquidity": "Liquidität entfernen",
         "PageNotFound": "Seite nicht gefunden",
-        "Tokens": "Token",
-        "Rewards": "Belohnungen"
+        "Rewards": "Belohnungen",
+        "Explore\/Tokens": "Token",
+        "Explore\/Pools": "Toto",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Tauschen",
@@ -348,8 +352,9 @@
         "Stats": "Statistiken",
         "Support": "Support",
         "CreatePair": "Erstelle ein Paar",
-        "Tokens": "Token",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Entdecken",
+        "SoraCard": "{Sora} Karte"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +824,7 @@
         "title": "Sprache"
     },
     "tokens": {
-        "title": "Gelistete Token",
         "symbol": "Symbol",
-        "name": "Name",
         "assetId": "Asset-ID"
     },
     "memorandum": "{AppName} Memorandum und Nutzungsbedingungen",

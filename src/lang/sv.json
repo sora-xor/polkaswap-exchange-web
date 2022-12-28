@@ -43,7 +43,7 @@
             "ClaimRewards": "Belöning hävdad framgångsrikt {rewards}",
             "ReferralReserveXor": "XOR bonded framgångsrikt",
             "ReferralUnreserveXor": "XOR unbonded framgångsrikt",
-            "ReferralSetInvitedUser": "Hänvisning tillämpades framgångsrikt",
+            "ReferralSetInvitedUser": "{role} {address} tillämpades framgångsrikt",
             "SwapAndSend": "Bytte {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Medföljer {symbol} och {symbol2} {amount} LP-polletter",
             "DemeterFarmingWithdrawLiquidity": "Tog bort {symbol} och {symbol2} {amount} LP-tokens",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Misslyckades med att begära belöningar {rewards}",
             "ReferralReserveXor": "Misslyckades med att bond XOR",
             "ReferralUnreserveXor": "Misslyckades med att unbond XOR",
-            "ReferralSetInvitedUser": "Misslyckades med att tillämpa hänvisning",
+            "ReferralSetInvitedUser": "Misslyckades med att tillämpa {role} {address}",
             "SwapAndSend": "Misslyckades med att byta {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Det gick inte att ange {amount} {symbol} och {symbol2} LP-tokens",
             "DemeterFarmingWithdrawLiquidity": "Det gick inte att ta bort {amount} {symbol} och {symbol2} LP-tokens",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
-        "ReferralSetInvitedUser": "Tillämpa Hänvisning",
+        "ReferralSetInvitedUser": "Tillämpa {role}",
         "SwapAndSend": "Byt och Skicka",
         "DemeterFarmingDepositLiquidity": "Insats likviditet",
         "DemeterFarmingWithdrawLiquidity": "Unstake likviditet",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "Lägg till Likviditet",
         "RemoveLiquidity": "Ta Bort Likviditet",
         "PageNotFound": "Sidan Hittades Inte",
-        "Tokens": "Tokens",
-        "Rewards": "Rewards"
+        "Rewards": "Rewards",
+        "Explore\/Tokens": "Tokens",
+        "Explore\/Pools": "Pooler",
+        "Explore\/Staking": "Utsättning",
+        "Explore\/Farming": "Farming",
+        "Staking": "Utsättning"
     },
     "mainMenu": {
         "Swap": "Byt",
@@ -348,8 +352,9 @@
         "Stats": "Statistik",
         "Support": "Assistans",
         "CreatePair": "Skapa Par",
-        "Tokens": "Tokens",
-        "StakingContainer": "Utsättning"
+        "StakingContainer": "Utsättning",
+        "Explore\/Container": "Utforska",
+        "SoraCard": ""
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +824,7 @@
         "title": "Språk"
     },
     "tokens": {
-        "title": "Listade Tokens",
         "symbol": "Symbol",
-        "name": "Namn",
         "assetId": "Tillgångs-ID"
     },
     "memorandum": "{AppName} Promemoria och Användarvillkor",

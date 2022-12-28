@@ -11,6 +11,7 @@ import i18n from '@/lang';
 import { app, ZeroStringValue } from '@/consts';
 
 import storage from './storage';
+import type { AmountWithSuffix } from '@/types/formats';
 import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 export const copyToClipboard = async (text: string): Promise<void> => {
@@ -261,7 +262,7 @@ export const toQueryString = (params: any): string => {
     .join('&');
 };
 
-export const waitForAccountPair = async (func?: VoidFunction): Promise<any> => {
+export const waitForAccountPair = async (func?: FnWithoutArgs | AsyncFnWithoutArgs): Promise<any> => {
   if (!api.accountPair) {
     await delay();
     return await waitForAccountPair(func);
@@ -287,6 +288,23 @@ export const calcPriceChange = (current: FPNumber, prev: FPNumber): FPNumber => 
   if (prev.isZero()) return FPNumber.gt(current, FPNumber.ZERO) ? FPNumber.HUNDRED : FPNumber.ZERO;
 
   return current.sub(prev).div(prev).mul(FPNumber.HUNDRED);
+};
+
+// [TODO]: move to FPNumber
+export const formatAmountWithSuffix = (value: FPNumber): AmountWithSuffix => {
+  const val = value.toNumber();
+  const format = (value: string) => new FPNumber(value).toLocaleString();
+
+  if (Math.trunc(val / 1_000_000) > 0) {
+    const amount = format((val / 1_000_000).toFixed(2));
+    return { amount, suffix: 'M' };
+  } else if (Math.trunc(val / 1_000) > 0) {
+    const amount = format((val / 1_000).toFixed(2));
+    return { amount, suffix: 'K' };
+  } else {
+    const amount = format(val.toFixed(2));
+    return { amount, suffix: '' };
+  }
 };
 
 export const formatDecimalPlaces = (value: FPNumber, asPercent = false): string => {

@@ -43,7 +43,7 @@
             "ClaimRewards": "Wynagrodzenie odebrano z powodzeniem {rewards}",
             "ReferralReserveXor": "Rezerwy w walucie XOR utworzono z powodzeniem",
             "ReferralUnreserveXor": "Rezerwy w walucie XOR uwolniono z powodzeniem",
-            "ReferralSetInvitedUser": "Kod polecający został utworzony z powodzeniem",
+            "ReferralSetInvitedUser": "{role} {address} został utworzony z powodzeniem",
             "SwapAndSend": "Zamieniono {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Dostarczone {symbol} i {symbol2} {amount} tokeny LP",
             "DemeterFarmingWithdrawLiquidity": "Usunięto {symbol} i {symbol2} {amount} tokeny LP",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Nie udało się odebrać wynagrodzenia {rewards}.",
             "ReferralReserveXor": "Nie udało się utworzyć rezerw w walucie XOR",
             "ReferralUnreserveXor": "Nie udało się uwolnić rezerw w walucie XOR",
-            "ReferralSetInvitedUser": "Nie udało się utworzyć kodu polecającego.",
+            "ReferralSetInvitedUser": "Nie udało się utworzyć {role} {address}",
             "SwapAndSend": "Nie udało się zamienić {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Nie udało się dostarczyć {amount} {symbol} i {symbol2} LP tokenów",
             "DemeterFarmingWithdrawLiquidity": "Nie udało się usunąć {amount} {symbol} i {symbol2} LP tokenów",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
-        "ReferralSetInvitedUser": "Utwórz kod polecający",
+        "ReferralSetInvitedUser": "Utwórz {role}",
         "SwapAndSend": "Zamień i wyślij",
         "DemeterFarmingDepositLiquidity": "Stawka Płynność",
         "DemeterFarmingWithdrawLiquidity": "Niewystaw płynności",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "Dodawanie płynności",
         "RemoveLiquidity": "Usuwanie płynności",
         "PageNotFound": "Nie znaleziono strony.",
-        "Tokens": "Tokeny",
-        "Rewards": "Wynagrodzenie"
+        "Rewards": "Wynagrodzenie",
+        "Explore\/Tokens": "Tokeny",
+        "Explore\/Pools": "Baseny",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Wymiana",
@@ -348,8 +352,9 @@
         "Stats": "Statystyki",
         "Support": "Pomoc",
         "CreatePair": "Utwórz parę",
-        "Tokens": "Tokeny",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Badać",
+        "SoraCard": "{Sora} Karta"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +824,7 @@
         "title": "Język"
     },
     "tokens": {
-        "title": "Tokeny umieszczone na giełdzie",
         "symbol": "Symbol",
-        "name": "Nazwa",
         "assetId": "Identyfikator waluty"
     },
     "memorandum": "Memo giełdy {AppName} i Warunki korzystania z usług",

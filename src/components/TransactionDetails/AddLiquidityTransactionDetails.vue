@@ -50,6 +50,7 @@ import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types'
 
 import BaseTokenPairMixin from '../mixins/BaseTokenPairMixin';
 import TranslationMixin from '../mixins/TranslationMixin';
+import PoolApyMixin from '../mixins/PoolApyMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -61,7 +62,7 @@ import { getter } from '@/store/decorators';
     TransactionDetails: lazyComponent(Components.TransactionDetails),
   },
 })
-export default class AddLiquidityTransactionDetails extends Mixins(TranslationMixin, BaseTokenPairMixin) {
+export default class AddLiquidityTransactionDetails extends Mixins(TranslationMixin, BaseTokenPairMixin, PoolApyMixin) {
   @getter.addLiquidity.liquidityInfo private liquidityInfo!: Nullable<AccountLiquidity>;
   @getter.addLiquidity.shareOfPool shareOfPool!: string;
 
@@ -76,9 +77,8 @@ export default class AddLiquidityTransactionDetails extends Mixins(TranslationMi
   }
 
   get strategicBonusApy(): Nullable<string> {
-    if (!this.secondToken) return null;
     // It won't be in template when not defined
-    const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy;
+    const strategicBonusApy = this.getPoolApy(this.firstToken?.address, this.secondToken?.address);
     if (!strategicBonusApy) {
       return null;
     }

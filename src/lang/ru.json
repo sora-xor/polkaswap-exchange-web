@@ -43,7 +43,7 @@
             "ClaimRewards": "Награды получены успешно {rewards}",
             "ReferralReserveXor": "XOR успешно зарезервированы",
             "ReferralUnreserveXor": "XOR успешно выведены из резерва",
-            "ReferralSetInvitedUser": "Реферал успешно установлен",
+            "ReferralSetInvitedUser": "{role} {address} успешно установлен",
             "SwapAndSend": "Совершен обмен {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Предоставлено {symbol} и {symbol2} {amount} LP токенов",
             "DemeterFarmingWithdrawLiquidity": "Удалены {symbol} и {symbol2} {amount} LP токены",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Не удалось получить вознаграждения {rewards}",
             "ReferralReserveXor": "Не удалось зарезервировать XOR",
             "ReferralUnreserveXor": "Не удалось вывести XOR из резерва",
-            "ReferralSetInvitedUser": "Не удалось установить реферала",
+            "ReferralSetInvitedUser": "Не удалось установить {role} {address}",
             "SwapAndSend": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Не удалось предоставить {amount} {symbol} и {symbol2} LP токены",
             "DemeterFarmingWithdrawLiquidity": "Не удалось удалить {amount} {symbol} и {symbol2} LP токены",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
-        "ReferralSetInvitedUser": "Установить реферала",
+        "ReferralSetInvitedUser": "Установить {role}",
         "SwapAndSend": "Обменять и отправить",
         "DemeterFarmingDepositLiquidity": "Стейкинг ликвидности",
         "DemeterFarmingWithdrawLiquidity": "Отменить стейк ликвидности",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "Добавить ликвидность",
         "RemoveLiquidity": "Забрать ликвидность",
         "PageNotFound": "Страница не найдена",
-        "Tokens": "Токены",
-        "Rewards": "Награды"
+        "Rewards": "Награды",
+        "Explore\/Tokens": "Токены",
+        "Explore\/Pools": "Пулы",
+        "Explore\/Staking": "Стейкинг",
+        "Explore\/Farming": "Фарминг",
+        "Staking": "Стейкинг"
     },
     "mainMenu": {
         "Swap": "Обмен",
@@ -348,8 +352,9 @@
         "Stats": "Статистика",
         "Support": "Поддержка",
         "CreatePair": "Создать пару",
-        "Tokens": "Токены",
-        "StakingContainer": "Стекинг"
+        "StakingContainer": "Стекинг",
+        "Explore\/Container": "Исследовать",
+        "SoraCard": "{Sora} карта"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +824,7 @@
         "title": "Язык"
     },
     "tokens": {
-        "title": "Список токенов",
         "symbol": "Символ",
-        "name": "Название",
         "assetId": "ID актива"
     },
     "memorandum": "Меморандум {AppName} и Условия предоставления услуг",

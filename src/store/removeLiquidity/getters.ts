@@ -53,7 +53,7 @@ const getters = defineGetters<RemoveLiquidityState>()({
 
     return maxLocked;
   },
-  // Liqudity free balance (full - locked)
+  // Liquidity free balance (full - locked)
   liquidityBalance(...args): FPNumber {
     const { getters } = removeLiquidityGetterContext(args);
 
