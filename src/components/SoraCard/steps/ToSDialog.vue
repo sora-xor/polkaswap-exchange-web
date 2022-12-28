@@ -1,7 +1,7 @@
 <template>
   <dialog-base :visible.sync="isVisible" class="terms-of-service-dialog" title="Terms & Conditions">
     <div v-loading="loading" class="tos__section">
-      <iframe :src="srcLink" width="100%" height="600px" frameborder="0"></iframe>
+      <iframe @load="onIFrameLoad" :src="srcLink" width="100%" height="600px" frameborder="0"></iframe>
     </div>
   </dialog-base>
 </template>
@@ -11,7 +11,6 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { delay } from '@/utils';
 
 @Component({
   components: {
@@ -23,11 +22,8 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
 
   loading = true;
 
-  async updated(): Promise<void> {
-    if (this.loading) {
-      await delay(800);
-      this.loading = false;
-    }
+  onIFrameLoad(): void {
+    this.loading = false;
   }
 }
 </script>

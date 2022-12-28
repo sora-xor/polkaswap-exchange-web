@@ -3,14 +3,18 @@
     <div class="sora-card__card">
       <img src="@/assets/img/sora-card/sora_card_front.png?inline" class="sora-card__card-image" />
       <div class="sora-card__card-icon" :class="getComputedIconClass()">
-        <s-icon v-if="status === VerificationStatus.Pending" name="time-time-24" class="sora-card__card-icon-element" />
         <s-icon
-          v-if="status === VerificationStatus.Accepted"
+          v-if="currentStatus === VerificationStatus.Pending"
+          name="time-time-24"
+          class="sora-card__card-icon-element"
+        />
+        <s-icon
+          v-if="currentStatus === VerificationStatus.Accepted"
           name="basic-check-marks-24"
           class="sora-card__card-icon-element"
         />
         <s-icon
-          v-if="status === VerificationStatus.Rejected"
+          v-if="currentStatus === VerificationStatus.Rejected"
           name="basic-close-24"
           class="sora-card__card-icon-element"
         />
@@ -42,8 +46,6 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
 
   VerificationStatus = VerificationStatus;
 
-  status = VerificationStatus.Pending;
-
   get buttonText() {
     return 'Try to complete KYC again';
   }
@@ -72,12 +74,6 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
         return 'sora-card__card-icon--success';
       case VerificationStatus.Rejected:
         return 'sora-card__card-icon--reject';
-    }
-  }
-
-  mounted(): void {
-    if (this.currentStatus) {
-      this.status = this.currentStatus;
     }
   }
 }

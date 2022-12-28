@@ -52,9 +52,7 @@ const actions = defineActions({
 
   async unsubscribeFromTotalXorBalance(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
-    setTimeout(() => {
-      commit.resetTotalXorBalanceUpdates();
-    }, 1000 * 60 * 5);
+    commit.resetTotalXorBalanceUpdates();
   },
 
   async getUserStatus(context): Promise<void> {

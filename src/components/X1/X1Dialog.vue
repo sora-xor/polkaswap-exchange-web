@@ -2,17 +2,14 @@
   <dialog-base :visible.sync="isVisible" class="x1-dialog">
     <div class="wrapper" v-loading="loadingX1">
       <!-- Prod widget -->
-      <div id="sprkwdgt-WUQBA5U2"></div>
-      <!-- Dev widget (XOR not supported) -->
       <div
-        id="sprkwdgt-WYL6QBNC"
-        :data-address="accountAddress"
+        id="sprkwdgt-WUQBA5U2"
         data-from-currency="EUR"
+        :data-address="accountAddress"
         :data-from-amount="restEuroToDeposit"
+        :data-hide-buy-more-button="true"
+        :data-hide-try-again-button="false"
         data-locale="en"
-        data-hide-buy-more-button="true"
-        data-hide-try-again-button="false"
-        data-payload="{ session_id: 16 }"
       ></div>
     </div>
   </dialog-base>
@@ -50,8 +47,7 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   }
 
   loadX1(): void {
-    // TODO: subtitute prod widget URL https://x1ex.com/widgets/sdk.js when ready
-    loadScript('https://dev.x1ex.com/widgets/sdk.js')
+    loadScript('https://x1ex.com/widgets/sdk.js')
       .then((data) => {
         setTimeout(() => {
           this.loadingX1 = false;
@@ -63,7 +59,7 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   }
 
   unloadX1(): void {
-    unloadScript('https://dev.x1ex.com/widgets/sdk.js').catch(() => {});
+    unloadScript('https://x1ex.com/widgets/sdk.js').catch(() => {});
   }
 }
 </script>
