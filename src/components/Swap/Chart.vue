@@ -102,6 +102,7 @@
 <script lang="ts">
 import dayjs from 'dayjs';
 import isEqual from 'lodash/fp/isEqual';
+import last from 'lodash/fp/last';
 import { graphic } from 'echarts';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
@@ -292,7 +293,7 @@ const normalizeSnapshots = (collection: SnapshotItem[], difference: number, last
 
   for (const item of collection) {
     const buffer: SnapshotItem[] = [];
-    const prevTimestamp = sample[sample.length - 1]?.timestamp ?? lastTimestamp;
+    const prevTimestamp = last(sample)?.timestamp ?? lastTimestamp;
 
     let currentTimestamp = item.timestamp;
 
@@ -493,11 +494,13 @@ export default class SwapChart extends Mixins(
       if (!group || i % group === 0) {
         groups.push([ordered[i].timestamp, ...ordered[i].price]);
       } else {
-        const last = groups[groups.length - 1];
+        const lastGroup = last(groups);
 
-        last[2] = ordered[i].price[1]; // close
-        last[3] = Math.min(last[3], ordered[i].price[2]); // low
-        last[4] = Math.max(last[4], ordered[i].price[3]); // high
+        if (lastGroup) {
+          lastGroup[2] = ordered[i].price[1]; // close
+          lastGroup[3] = Math.min(lastGroup[3], ordered[i].price[2]); // low
+          lastGroup[4] = Math.max(lastGroup[4], ordered[i].price[3]); // high
+        }
       }
     }
 
@@ -778,7 +781,7 @@ export default class SwapChart extends Mixins(
 
     const addresses = [...this.tokensAddresses];
     const requestId = Date.now();
-    const lastTimestamp = this.prices[this.prices.length - 1]?.timestamp;
+    const lastTimestamp = last(this.prices)?.timestamp ?? Date.now();
 
     this.priceUpdateRequestId = requestId;
 
