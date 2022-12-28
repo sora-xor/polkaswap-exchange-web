@@ -256,6 +256,12 @@ const CANDLE_CHART_FILTERS = [
 
 const LABEL_PADDING = 4;
 const AXIS_OFFSET = 8;
+const AXIS_LABEL_CSS = {
+  fontFamily: 'Sora',
+  fontSize: 10,
+  fontWeight: 300,
+  lineHeigth: 1.5,
+};
 
 const SYNC_INTERVAL = 6 * 1000;
 
@@ -280,6 +286,14 @@ const preparePriceData = (item: AssetSnapshotEntity): OCLH => {
   const { open, close, low, high } = item.priceUSD;
 
   return [+open, +close, +low, +high];
+};
+
+const dividePrice = (priceA: number, priceB: number): number => {
+  return priceB !== 0 ? priceA / priceB : 0;
+};
+
+const dividePrices = (priceA: OCLH, priceB: OCLH): OCLH => {
+  return priceA.map((price, index) => dividePrice(price, priceB[index])) as OCLH;
 };
 
 const transformSnapshot = (item: AssetSnapshotEntity): SnapshotItem => {
@@ -308,6 +322,19 @@ const normalizeSnapshots = (collection: SnapshotItem[], difference: number, last
   }
 
   return sample;
+};
+
+const getPrecision = (value: number): number => {
+  let precision = 2;
+
+  if (value === 0 || !Number.isFinite(value)) return precision;
+
+  while (Math.floor(value) <= 0) {
+    value = value * 10;
+    precision++;
+  }
+
+  return precision;
 };
 
 @Component({
@@ -461,21 +488,12 @@ export default class SwapChart extends Mixins(
     return calcPriceChange(rangeClosePrice, rangeStartPrice);
   }
 
-  get axisLabelCSS() {
-    return {
-      fontFamily: 'Sora',
-      fontSize: 10,
-      fontWeight: 300,
-      lineHeigth: 1.5,
-    };
-  }
-
   get gridLeftOffset(): number {
     const maxLabel = this.limits.max * 10;
     const axisLabelWidth = getTextWidth(
       String(maxLabel.toFixed(this.precision)),
-      this.axisLabelCSS.fontFamily,
-      this.axisLabelCSS.fontSize
+      AXIS_LABEL_CSS.fontFamily,
+      AXIS_LABEL_CSS.fontSize
     );
 
     return AXIS_OFFSET + 2 * LABEL_PADDING + axisLabelWidth;
@@ -600,7 +618,7 @@ export default class SwapChart extends Mixins(
             },
           },
           color: this.theme.color.base.content.secondary,
-          ...this.axisLabelCSS,
+          ...AXIS_LABEL_CSS,
         },
         axisPointer: {
           lineStyle: {
@@ -625,7 +643,7 @@ export default class SwapChart extends Mixins(
         offset: AXIS_OFFSET,
         scale: true,
         axisLabel: {
-          ...this.axisLabelCSS,
+          ...AXIS_LABEL_CSS,
           margin: 0,
           padding: LABEL_PADDING - 1,
           formatter: (value) => {
@@ -642,11 +660,9 @@ export default class SwapChart extends Mixins(
             color: this.theme.color.status.success,
           },
           label: {
+            ...AXIS_LABEL_CSS,
             backgroundColor: this.theme.color.status.success,
-            fontFamily: 'Sora',
-            fontSize: 10,
             fontWeight: 400,
-            lineHeigth: 1.5,
             padding: [LABEL_PADDING, LABEL_PADDING],
             precision: this.precision,
             color: this.theme.color.base.onAccent,
@@ -768,7 +784,7 @@ export default class SwapChart extends Mixins(
   }
 
   private getUpdatedPrecision(min: number, max: number): number {
-    return Math.max(this.getPrecision(min), this.getPrecision(max));
+    return Math.max(getPrecision(min), getPrecision(max));
   }
 
   private async getHistoricalPrices(): Promise<void> {
@@ -818,7 +834,7 @@ export default class SwapChart extends Mixins(
           const b = groups[1]?.[i];
 
           const timestamp = (a?.timestamp ?? b?.timestamp) as number;
-          const price = b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0];
+          const price = b?.price && a?.price ? dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0];
 
           // if "open" & "close" prices are zero, we are going to time, where pool is not created
           if (price[0] === 0 && price[1] === 0) break;
@@ -910,7 +926,7 @@ export default class SwapChart extends Mixins(
     const [priceA, priceB] = this.tokensAddresses.map((address) =>
       FPNumber.fromCodecValue(fiatPriceObject[address] ?? 0).toNumber()
     );
-    const price = Number.isFinite(priceB) ? this.dividePrice(priceA, priceB) : priceA;
+    const price = Number.isFinite(priceB) ? dividePrice(priceA, priceB) : priceA;
     const min = Math.min(this.limits.min, price);
     const max = Math.max(this.limits.max, price);
 
@@ -930,14 +946,6 @@ export default class SwapChart extends Mixins(
     this.precision = this.getUpdatedPrecision(min, max);
     this.limits = { min, max };
     this.updatePricesCollection(prices);
-  }
-
-  private dividePrice(priceA: number, priceB: number) {
-    return priceB !== 0 ? priceA / priceB : 0;
-  }
-
-  private dividePrices(priceA: OCLH, priceB: OCLH): OCLH {
-    return priceA.map((price, index) => this.dividePrice(price, priceB[index])) as OCLH;
   }
 
   private clearData(saveReversedState = false): void {
@@ -1001,19 +1009,6 @@ export default class SwapChart extends Mixins(
   revertChart(): void {
     this.isReversedChart = !this.isReversedChart;
     this.forceUpdatePrices(true);
-  }
-
-  private getPrecision(value: number): number {
-    let precision = 2;
-
-    if (value === 0 || !Number.isFinite(value)) return precision;
-
-    while (Math.floor(value) <= 0) {
-      value = value * 10;
-      precision++;
-    }
-
-    return precision;
   }
 }
 </script>
