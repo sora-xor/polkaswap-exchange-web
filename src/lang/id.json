@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "Kolam",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Farming"
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -352,7 +353,8 @@
         "Support": "Dukungan",
         "CreatePair": "Buat Pair",
         "StakingContainer": "Staking",
-        "Explore\/Container": "Menjelajahi"
+        "Explore\/Container": "Menjelajahi",
+        "SoraCard": "{Sora} Kartu"
     },
     "social": {
         "twitter": "Twitter",

@@ -182,7 +182,7 @@ export default class ReferralBonding extends Mixins(
   }
 
   handleBack(): void {
-    router.push({ name: PageNames.Referral });
+    router.push({ name: PageNames.ReferralProgram });
   }
 
   destroyed(): void {

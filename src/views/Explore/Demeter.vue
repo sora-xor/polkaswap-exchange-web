@@ -96,17 +96,21 @@
       <!-- Account tokens -->
       <s-table-column v-if="isLoggedIn" key="logged" width="140" header-align="right" align="right">
         <template #header>
-          <span class="explore-table__primary">Investment</span>
+          <span class="explore-table__primary">{{ t('balanceText') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="explore-table-item-tokens">
-            <div v-for="({ asset, balance }, index) in row.accountTokens" :key="index" class="explore-table-cell">
+            <div
+              v-for="({ asset, balance, balancePrefix }, index) in row.accountTokens"
+              :key="index"
+              class="explore-table-cell"
+            >
               <formatted-amount
                 value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-price explore-table-item-amount"
-              />
+              ><template #prefix>{{ balancePrefix }}</template></formatted-amount>
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
             </div>
           </div>
@@ -188,6 +192,7 @@ type TableItem = {
   tvlFormatted: AmountWithSuffix;
   apr: number;
   aprFormatted: string;
+  accountTokens: { asset: Asset; balance: string; balancePrefix: string }[];
   liquidity: Nullable<AccountLiquidity>;
 };
 
@@ -307,7 +312,11 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
               },
             ]
           : [{ asset: poolAsset, balance: accountPooledTokens }]
-      ).map((item) => ({ ...item, balance: formatDecimalPlaces(item.balance) }));
+      ).map((item) => ({
+        ...item,
+        balance: formatDecimalPlaces(item.balance),
+        balancePrefix: !item.balance.isZero() ? '~' : '',
+      }));
 
       return {
         assets,

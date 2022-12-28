@@ -188,6 +188,12 @@ export class EthBridgeHistory {
     return history as HistoryElement[];
   }
 
+  public async clearHistory(updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs): Promise<void> {
+    this.historySyncTimestamp = 0;
+    bridgeApi.clearHistory();
+    await updateCallback?.();
+  }
+
   public async updateAccountHistory(
     address: string,
     assets: Record<string, Asset>,

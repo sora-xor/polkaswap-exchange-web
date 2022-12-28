@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Tokenek",
         "Explore\/Pools": "Totó",
         "Explore\/Staking": "Letét",
-        "Explore\/Farming": "Farmolás"
+        "Explore\/Farming": "Farmolás",
+        "Staking": "Letét"
     },
     "mainMenu": {
         "Swap": "Váltás",
@@ -352,7 +353,8 @@
         "Support": "Támogatás",
         "CreatePair": "Pár létrehozása",
         "StakingContainer": "Letét",
-        "Explore\/Container": "Kutat"
+        "Explore\/Container": "Kutat",
+        "SoraCard": "{Sora} Kártya"
     },
     "social": {
         "twitter": "Twitter",

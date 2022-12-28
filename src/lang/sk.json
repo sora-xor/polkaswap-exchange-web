@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Tokeny",
         "Explore\/Pools": "Bazény",
         "Explore\/Staking": "Stakovanie",
-        "Explore\/Farming": "Farmárčenie"
+        "Explore\/Farming": "Farmárčenie",
+        "Staking": "Stakovanie"
     },
     "mainMenu": {
         "Swap": "Výmena",
@@ -352,7 +353,8 @@
         "Support": "Podpora",
         "CreatePair": "Vytvoriť pár",
         "StakingContainer": "Stakovanie",
-        "Explore\/Container": "Preskúmať"
+        "Explore\/Container": "Preskúmať",
+        "SoraCard": "{Sora} Karta"
     },
     "social": {
         "twitter": "Twitter",

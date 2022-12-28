@@ -225,6 +225,7 @@ export default class Swap extends Mixins(
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
+  @action.swap.switchTokens private switchTokens!: AsyncFnWithoutArgs;
   @action.swap.reset private reset!: AsyncFnWithoutArgs;
   @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (data: {
     dexId: number;
@@ -536,10 +537,8 @@ export default class Swap extends Mixins(
 
   async handleSwitchTokens(): Promise<void> {
     if (!(this.tokenFrom && this.tokenTo)) return;
-    const [fromAddress, toAddress] = [this.tokenFrom.address, this.tokenTo.address];
 
-    await this.setTokenFromAddress(toAddress);
-    await this.setTokenToAddress(fromAddress);
+    await this.switchTokens();
 
     if (this.isExchangeB) {
       this.setExchangeB(false);
