@@ -125,7 +125,7 @@
         :visible.sync="showSelectTokenDialog"
         :connected="isLoggedIn"
         :asset="isTokenFromSelected ? tokenTo : tokenFrom"
-        @select="selectToken"
+        @select="handleSelectToken"
       />
       <swap-confirm
         :visible.sync="showConfirmSwapDialog"
@@ -570,7 +570,7 @@ export default class Swap extends Mixins(
     this.showSelectTokenDialog = true;
   }
 
-  async selectToken(token: AccountAsset): Promise<void> {
+  async handleSelectToken(token: AccountAsset): Promise<void> {
     if (token) {
       await this.withSelectAssetLoading(async () => {
         if (this.isTokenFromSelected) {
