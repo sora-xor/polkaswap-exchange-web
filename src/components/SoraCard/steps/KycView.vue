@@ -15,25 +15,29 @@
 
 <script lang="ts">
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
-import { v4 as uuidv4 } from 'uuid';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { v4 as uuidv4 } from 'uuid';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { state } from '@/store/decorators';
+import { soraCard } from '@/utils/card';
 
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
+
   @Prop({ default: '', type: String }) readonly accessToken!: string;
 
   loadingKycView = true;
 
-  async getReferenceNumber(): Promise<string> {
+  async getReferenceNumber(URL: string): Promise<string> {
     const token = sessionStorage.getItem('access-token');
 
-    const result = await fetch('https://sora-card.sc1.dev.sora2.soramitsu.co.jp/get-reference-number', {
+    const result = await fetch(URL, {
       method: 'POST',
       body: JSON.stringify({
         ReferenceID: uuidv4(),
-
         MobileNumber: '',
         Email: '',
         AddressChanged: false,
@@ -53,21 +57,23 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   async mounted(): Promise<void> {
-    const referenceNumber = await this.getReferenceNumber();
+    const { kycService, soraProxy } = soraCard(this.soraNetwork);
+
+    const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
 
     const accessToken = sessionStorage.getItem('access-token');
     const refreshToken = sessionStorage.getItem('refresh-token');
 
-    loadScript('https://kyc-test.soracard.com/web/v2/webkyc.js')
+    loadScript(kycService.sdkURL)
       .then(() => {
         // @ts-expect-error no-undef
         Paywings.WebKyc.create({
           KycCredentials: {
-            Username: 'E7A6CB83-630E-4D24-88C5-18AAF96032A4', // api username
-            Password: '75A55B7E-A18F-4498-9092-58C7D6BDB333', // api password
+            Username: kycService.username, // api username
+            Password: kycService.pass, // api password
             Domain: 'soracard.com',
-            env: WALLET_CONSTS.SoraNetwork.Test, // use Test for test environment and Prod for production
-            UnifiedLoginApiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
+            env: kycService.env, // use Test for test environment and Prod for production
+            UnifiedLoginApiKey: kycService.unifiedApiKey,
           },
           KycSettings: {
             AppReferenceID: uuidv4(),
@@ -109,7 +115,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
               title: '',
             });
             this.$emit('confirm-kyc', false);
-            unloadScript('https://kyc-test.soracard.com/web/v2/webkyc.js');
+            unloadScript(kycService.sdkURL);
 
             // Integrator will be notified if user cancels KYC or something went wrong
             // alert('Something went wrong ' + data.StatusDescription);
@@ -119,7 +125,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
             // alert('Kyc was successfull, integrator takes control of flow from now on')
             // console.log('success', data);
             this.$emit('confirm-kyc', true);
-            unloadScript('https://kyc-test.soracard.com/web/v2/webkyc.js');
+            unloadScript(kycService.sdkURL);
 
             // document.getElementById('kyc')!.style.display = 'none';
             // document.getElementById('finish')!.style.display = 'block';

@@ -1,3 +1,4 @@
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 
 import { KycStatus, Status, VerificationStatus } from '../types/card';
@@ -122,3 +123,63 @@ const emptyStatusFields = (): Status => ({
   verificationStatus: undefined,
   kycStatus: undefined,
 });
+
+export function soraCard(soraNetwork: string) {
+  const getAuthServiceData = (soraNetwork: string) => {
+    const test = {
+      sdkURL: 'https://auth-test.paywings.io/auth/sdk.js',
+      authURL: 'https://auth-test.soracard.com',
+      apiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
+    };
+
+    const prod = {
+      sdkURL: '',
+      authURL: '',
+      apiKey: '',
+    };
+
+    return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
+  };
+
+  const getKycServiceData = (soraNetwork: string) => {
+    const test = {
+      sdkURL: 'https://kyc-test.soracard.com/web/v2/webkyc.js',
+      username: 'E7A6CB83-630E-4D24-88C5-18AAF96032A4',
+      pass: '75A55B7E-A18F-4498-9092-58C7D6BDB333',
+      env: WALLET_CONSTS.SoraNetwork.Test,
+      unifiedApiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
+    };
+
+    const prod = {
+      sdkURL: '',
+      username: '',
+      pass: '',
+      env: WALLET_CONSTS.SoraNetwork.Prod,
+      unifiedApiKey: '',
+    };
+
+    return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
+  };
+
+  const getSoraProxyEndpoints = (soraNetwork: string) => {
+    const test = {
+      referenceNumberEndpoint: 'https://sora-card.sc1.dev.sora2.soramitsu.co.jp/get-reference-number',
+    };
+
+    const prod = {
+      referenceNumberEndpoint: '',
+    };
+
+    return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
+  };
+
+  const authService = getAuthServiceData(soraNetwork);
+  const kycService = getKycServiceData(soraNetwork);
+  const soraProxy = getSoraProxyEndpoints(soraNetwork);
+
+  return {
+    authService,
+    kycService,
+    soraProxy,
+  };
+}

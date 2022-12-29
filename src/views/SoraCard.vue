@@ -9,7 +9,7 @@
 <script lang="ts">
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import { action, getter, state } from '@/store/decorators';
+import { action, getter } from '@/store/decorators';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 

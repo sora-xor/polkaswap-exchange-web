@@ -64,16 +64,16 @@
 
 <script lang="ts">
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
-import { action, getter } from '@/store/decorators';
+import { action, getter, state } from '@/store/decorators';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
 import CardIcon from '@/assets/img/sora-card/card.svg?inline';
 import UserIcon from '@/assets/img/sora-card/user.svg?inline';
 import { delay } from '@/utils';
-import { clearTokensFromSessionStorage } from '@/utils/card';
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { KycStatus, VerificationStatus } from '@/types/card';
+import { clearTokensFromSessionStorage, soraCard } from '@/utils/card';
+import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { VerificationStatus } from '@/types/card';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 @Component({
@@ -90,6 +90,8 @@ export default class RoadMap extends Mixins(
   mixins.CameraPermissionMixin,
   mixins.TranslationMixin
 ) {
+  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
+
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
 
@@ -112,6 +114,8 @@ export default class RoadMap extends Mixins(
   permissionDialogVisibility = false;
 
   async handleConfirm(): Promise<void> {
+    const { authService } = soraCard(this.soraNetwork);
+
     try {
       const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('SoraCard');
 
@@ -129,17 +133,17 @@ export default class RoadMap extends Mixins(
         this.$emit('confirm-start-kyc', true);
       }
 
-      unloadScript('https://auth-test.paywings.io/auth/sdk.js');
+      unloadScript(authService.sdkURL);
       return;
     }
 
-    loadScript('https://auth-test.paywings.io/auth/sdk.js')
+    loadScript(authService.sdkURL)
       .then(() => {
         const conf = {
-          authURL: ' https://auth-test.soracard.com',
+          authURL: authService.authURL,
           elementBind: '#authOpen',
           accessTokenTypeID: 1,
-          apiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
+          apiKey: authService.apiKey,
           userTypeID: 2,
         };
 
