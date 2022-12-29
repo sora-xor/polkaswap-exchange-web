@@ -4,9 +4,7 @@ import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/cons
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 import pkg from '../../package.json';
-import { AdarComponents, AdarPageNames, Stages as AdarRouteAssetsStages } from './adar';
-
-export { AdarComponents, AdarPageNames, AdarRouteAssetsStages };
+import { AdarPageNames } from '@/modules/ADAR/consts';
 
 export const app = {
   version: pkg.version,

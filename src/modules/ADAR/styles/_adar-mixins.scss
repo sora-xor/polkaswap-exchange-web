@@ -50,8 +50,7 @@
       }
       &:hover,
       &.hover-row {
-        & > td,
-        & > th {
+        & > td {
           background: var(--s-color-base-background);
         }
       }

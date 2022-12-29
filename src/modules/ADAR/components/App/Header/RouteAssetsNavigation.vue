@@ -18,7 +18,7 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import AdarLogo from '@/components/logo/Adar.vue';
 import { getter } from '@/store/decorators';
-import { Stages } from '@/consts/adar';
+import { Stages } from '@/modules/ADAR/consts';
 
 @Component({
   components: {
@@ -26,7 +26,6 @@ import { Stages } from '@/consts/adar';
   },
 })
 export default class RouteAssetsNavigation extends Vue {
-  @getter.routeAssets.isDataExisting private isDataExisting!: boolean;
   @getter.routeAssets.currentStageIndex private currentStageIndex!: number;
   @getter.routeAssets.currentStageComponentTitle currentStageComponentTitle!: string;
 

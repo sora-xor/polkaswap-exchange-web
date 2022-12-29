@@ -1,5 +1,5 @@
 <template>
-  <div class="container route-assets-upload-template">
+  <div v-if="!parsingError" class="container route-assets-upload-template">
     <div class="route-assets__page-header-title">Upload Routing Template for processing</div>
     <div class="route-assets__page-header-description">
       {{ `Upload your Process Routing Template as a .CSV file` }}
@@ -27,7 +27,16 @@
       </div>
     </div>
     <p class="route-assets-upload-template__label">Don’t have a template? <a class="route-assets__ref">Download</a></p>
-    <input type="file" @change="uploadFile" ref="file" hidden />
+    <input type="file" @change="uploadFile" ref="file" hidden accept=".csv" />
+  </div>
+  <div v-else class="container route-assets-upload-template">
+    <div class="route-assets__page-header-title">The .csv file couldn’t be parsed.</div>
+    <div class="route-assets__page-header-description">
+      {{ `Please, upload new file or re-start the process.` }}
+    </div>
+    <s-button type="primary" class="s-typography-button--big restart-button" @click.stop="onRestartClick">
+      {{ 'RE-START PROCESS' }}
+    </s-button>
   </div>
 </template>
 
@@ -41,8 +50,11 @@ import { action } from '@/store/decorators';
 export default class UploadTemplate extends Mixins(TranslationMixin) {
   @action.routeAssets.updateRecipients private updateRecipients!: (file?: File) => Promise<void>;
   @action.routeAssets.processingNextStage nextStage!: () => void;
+  @action.routeAssets.cancelProcessing private cancelProcessing!: () => void;
   dragOver = false;
   file: Nullable<File> = null;
+
+  parsingError = false;
 
   dragover(event) {
     event.preventDefault();
@@ -61,9 +73,21 @@ export default class UploadTemplate extends Mixins(TranslationMixin) {
     this.uploadFile();
   }
 
+  onRestartClick() {
+    this.cancelProcessing();
+    this.parsingError = false;
+  }
+
   async uploadFile() {
-    await this.updateRecipients(this.fileElement.files[0]);
-    this.nextStage();
+    this.updateRecipients(this.fileElement.files[0])
+      .then(() => {
+        this.nextStage();
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        this.parsingError = true;
+      });
   }
 
   onBrowseButtonClick() {
@@ -134,5 +158,12 @@ export default class UploadTemplate extends Mixins(TranslationMixin) {
     filter: blur(2.2px) brightness(0.5);
     cursor: grab;
   }
+}
+
+.restart-button {
+  width: 100%;
+  margin-bottom: 16px;
+  margin-left: 0;
+  margin-right: 0;
 }
 </style>

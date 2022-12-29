@@ -63,10 +63,11 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter } from '@/store/decorators';
 import { Recipient } from '@/store/routeAssets/types';
 import validate from '@/store/routeAssets/utils';
-import { AdarComponents } from '@/consts/adar';
+import { AdarComponents } from '@/modules/ADAR/consts';
+import { adarLazyComponent } from '@/modules/ADAR/router';
 @Component({
   components: {
-    FixIssuesDialog: lazyComponent(AdarComponents.RouteAssetsFixIssuesDialog),
+    FixIssuesDialog: adarLazyComponent(AdarComponents.RouteAssetsFixIssuesDialog),
   },
 })
 export default class ProcessTemplate extends Mixins(TranslationMixin) {

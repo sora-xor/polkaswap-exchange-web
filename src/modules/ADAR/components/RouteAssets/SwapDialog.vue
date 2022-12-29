@@ -21,6 +21,7 @@ export default class SwapDialog extends Mixins(mixins.TransactionMixin, mixins.D
 
 <style lang="scss">
 .dialog__swap {
+  z-index: 3000 !important;
   .el-dialog {
     max-width: 500px;
     padding: 20px;

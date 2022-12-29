@@ -119,7 +119,7 @@
           :layout="'prev, total, next'"
           :current-page.sync="currentPage"
           :page-size="pageAmount"
-          :total="tableData.length"
+          :total="filteredItems.length"
           @prev-click="handlePrevClick"
           @next-click="handleNextClick"
         />
@@ -245,11 +245,16 @@ export default class FailedTransactionsDialog extends Mixins(
   }
 
   get filteredItems() {
-    return this.recipients?.filter((recipient) => recipient.name.toLowerCase().includes(this.query.toLowerCase()));
+    const search = this.query.toLowerCase().trim();
+
+    if (!search) return this.recipients;
+    return (
+      this.recipients?.filter((recipient) => recipient.name.toLowerCase().includes(this.query.toLowerCase())) || []
+    );
   }
 
   get tableData() {
-    return this.getPageItems(this.filteredItems || []);
+    return this.getPageItems(this.filteredItems) || [];
   }
 
   get xor() {

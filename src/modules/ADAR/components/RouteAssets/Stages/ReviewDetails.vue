@@ -103,8 +103,9 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Components } from '@/consts';
-import { AdarComponents } from '@/consts/adar';
+import { AdarComponents } from '@/modules/ADAR/consts';
 import { lazyComponent } from '@/router';
+import { adarLazyComponent } from '@/modules/ADAR/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
 import { components, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
@@ -117,9 +118,9 @@ import WarningMessage from '../WarningMessage.vue';
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
-    SwapDialog: lazyComponent(AdarComponents.RouteAssetsSwapDialog),
+    SwapDialog: adarLazyComponent(AdarComponents.RouteAssetsSwapDialog),
     WarningMessage,
-    SelectInputAssetDialog: lazyComponent(AdarComponents.RouteAssetsSelectInputAssetDialog),
+    SelectInputAssetDialog: adarLazyComponent(AdarComponents.RouteAssetsSelectInputAssetDialog),
   },
 })
 export default class ReviewDetails extends Mixins(TranslationMixin) {
