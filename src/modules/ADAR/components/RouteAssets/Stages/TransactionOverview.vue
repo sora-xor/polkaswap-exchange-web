@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="!tableData || tableData.length < 1" class="container routing-template-transactions">
+  <div v-loading="!tableData" class="container routing-template-transactions">
     <div class="routing-template-transactions__header">
       <!-- <div> -->
       <generic-page-header
@@ -23,9 +23,9 @@
           <template #header>
             <span>{{ '#' }}</span>
           </template>
-          <template v-slot="{ $index }">
+          <template v-slot="{ row }">
             <div>
-              <span>{{ $index + 1 }}</span>
+              <span>{{ row.num }}</span>
             </div>
           </template>
         </s-table-column>
@@ -116,7 +116,7 @@
         </s-table-column>
 
         <!-- MENU -->
-        <s-table-column width="40">
+        <!-- <s-table-column width="40">
           <template v-slot="{ row }">
             <s-dropdown
               class="s-dropdown--hash-menu"
@@ -140,14 +140,14 @@
               </template>
             </s-dropdown>
           </template>
-        </s-table-column>
+        </s-table-column> -->
       </s-table>
       <s-pagination
         class="transactions-table-pagination"
         :layout="'prev, total, next'"
         :current-page.sync="currentPage"
         :page-size="pageAmount"
-        :total="tableData.length"
+        :total="filteredItems.length"
         @prev-click="handlePrevClick"
         @next-click="handleNextClick"
       />
@@ -169,9 +169,10 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Components } from '@/consts';
-import { AdarComponents } from '@/consts/adar';
-import { lazyComponent } from '@/router';
+import { Components, PageNames } from '@/consts';
+import { AdarComponents } from '@/modules/ADAR/consts';
+import router, { lazyComponent } from '@/router';
+import { adarLazyComponent } from '@/modules/ADAR/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
@@ -182,7 +183,7 @@ import validate from '@/store/routeAssets/utils';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    SelectInputAssetDialog: lazyComponent(AdarComponents.RouteAssetsSelectInputAssetDialog),
+    SelectInputAssetDialog: adarLazyComponent(AdarComponents.RouteAssetsSelectInputAssetDialog),
     TokenLogo: components.TokenLogo,
     SearchInput: components.SearchInput,
   },
@@ -192,6 +193,7 @@ export default class TransactionOverview extends Mixins(TranslationMixin, mixins
   @action.routeAssets.setInputToken setInputToken!: any;
   @action.routeAssets.processingNextStage nextStage!: any;
   @action.routeAssets.processingPreviousStage previousStage!: any;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   showSelectInputAssetDialog = false;
 
@@ -222,7 +224,15 @@ export default class TransactionOverview extends Mixins(TranslationMixin, mixins
   pageAmount = 10;
 
   onContinueClick() {
-    this.showSelectInputAssetDialog = true;
+    if (this.isLoggedIn) {
+      this.showSelectInputAssetDialog = true;
+      return;
+    }
+    this.handleConnectWallet();
+  }
+
+  handleConnectWallet(): void {
+    router.push({ name: PageNames.Wallet });
   }
 
   formatAddress(wallet) {
@@ -267,11 +277,16 @@ export default class TransactionOverview extends Mixins(TranslationMixin, mixins
   }
 
   get filteredItems() {
-    return this.recipients?.filter((recipient) => recipient.name.toLowerCase().includes(this.query.toLowerCase()));
+    const search = this.query.toLowerCase().trim();
+
+    if (!search) return this.recipients;
+    return (
+      this.recipients?.filter((recipient) => recipient.name.toLowerCase().includes(this.query.toLowerCase())) || []
+    );
   }
 
   get tableData() {
-    return this.getPageItems(this.filteredItems || []);
+    return this.getPageItems(this.filteredItems?.map((item, idx) => ({ num: idx + 1, ...item }))) || [];
   }
 
   get xor() {

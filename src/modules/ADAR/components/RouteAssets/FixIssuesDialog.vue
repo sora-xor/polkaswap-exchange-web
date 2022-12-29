@@ -37,7 +37,7 @@
       <div class="field">
         <p class="field__label">{{ 'ASSET' }}</p>
         <div class="field__status">
-          <div>{{ model.asset.symbol }}</div>
+          <div>{{ assetSymbol }}</div>
           <div>
             <token-logo class="token-logo" :token="model.asset" />
           </div>
@@ -49,7 +49,7 @@
         <p class="field__label">{{ 'estimated amount' }}</p>
         <div class="field__status">
           <div>{{ amount }}</div>
-          <div>{{ model.asset.symbol }}</div>
+          <div>{{ assetSymbol }}</div>
           <div>
             <token-logo class="token-logo" :token="model.asset" />
           </div>
@@ -115,6 +115,10 @@ export default class FixIssuesDialog extends Mixins(
     this.model = { ...initModel };
   }
 
+  get assetSymbol() {
+    return this.model.asset?.symbol;
+  }
+
   get amount() {
     return this.localTokenAmount;
   }
@@ -124,11 +128,11 @@ export default class FixIssuesDialog extends Mixins(
   }
 
   get usdError() {
-    return isNaN(this.model.usd) ? 'Should be a number' : null;
+    return !validate.usd(this.model.usd) ? 'Should be a number' : null;
   }
 
   get amountError() {
-    return isNaN(this.model.amount) ? "Token price hasn't been found" : '';
+    return !validate.amount(this.model.amount) ? "Token price hasn't been found" : '';
   }
 
   changeIssueIdx(delta) {
@@ -144,7 +148,8 @@ export default class FixIssuesDialog extends Mixins(
   }
 
   get assetUSDPrice() {
-    return FPNumber.fromCodecValue(this.fiatPriceAndApyObject[this.model.asset.address]?.price ?? 0, 18).toFixed(4);
+    if (!this.model.asset?.address) return 0;
+    return FPNumber.fromCodecValue(this.fiatPriceObject[this.model.asset.address] ?? 0, 18).toFixed(8);
   }
 
   get submitIsDisabled() {

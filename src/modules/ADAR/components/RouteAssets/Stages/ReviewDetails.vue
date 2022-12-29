@@ -103,8 +103,9 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { Components } from '@/consts';
-import { AdarComponents } from '@/consts/adar';
+import { AdarComponents } from '@/modules/ADAR/consts';
 import { lazyComponent } from '@/router';
+import { adarLazyComponent } from '@/modules/ADAR/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
 import { components, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
@@ -117,16 +118,16 @@ import WarningMessage from '../WarningMessage.vue';
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
-    SwapDialog: lazyComponent(AdarComponents.RouteAssetsSwapDialog),
+    SwapDialog: adarLazyComponent(AdarComponents.RouteAssetsSwapDialog),
     WarningMessage,
-    SelectInputAssetDialog: lazyComponent(AdarComponents.RouteAssetsSelectInputAssetDialog),
+    SelectInputAssetDialog: adarLazyComponent(AdarComponents.RouteAssetsSelectInputAssetDialog),
   },
 })
 export default class ReviewDetails extends Mixins(TranslationMixin) {
   @getter.routeAssets.inputToken inputToken!: Asset;
   @action.routeAssets.processingNextStage nextStage!: () => void;
   @getter.routeAssets.recipients private recipients!: Array<Recipient>;
-  @state.wallet.account.fiatPriceAndApyObject private fiatPriceAndApyObject!: SUBQUERY_TYPES.FiatPriceAndApyObject;
+  @state.wallet.account.fiatPriceObject private fiatPriceObject!: any;
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
   @action.routeAssets.setInputToken setInputToken!: (asset: Asset) => void;
   @action.routeAssets.cancelProcessing private cancelProcessing!: () => void;
@@ -194,7 +195,7 @@ export default class ReviewDetails extends Mixins(TranslationMixin) {
   }
 
   getAssetUSDPrice(asset: Asset) {
-    return FPNumber.fromCodecValue(this.fiatPriceAndApyObject[asset.address]?.price ?? 0, 18);
+    return FPNumber.fromCodecValue(this.fiatPriceObject[asset.address] ?? 0, 18);
   }
 
   get getTokenBalance(): CodecString {

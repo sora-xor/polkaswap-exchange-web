@@ -23,39 +23,36 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
-import { AdarComponents } from '@/consts/adar';
-import { lazyComponent } from '@/router';
+import { AdarComponents } from '@/modules/ADAR/consts';
+import { adarLazyComponent } from '@/modules/ADAR/router';
 import { getter, action, mutation } from '@/store/decorators';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Subscription } from 'rxjs';
 import { LiquiditySourceTypes, PrimaryMarketsEnabledAssets } from '@sora-substrate/liquidity-proxy';
 import { FeatureFlags } from '@/store/settings/types';
 @Component({
   components: {
-    Authorize: lazyComponent(AdarComponents.RouteAssetsAuthorize),
-    Done: lazyComponent(AdarComponents.RouteAssetsDone),
-    ProcessTemplate: lazyComponent(AdarComponents.RouteAssetsProcessTemplate),
-    ReviewDetails: lazyComponent(AdarComponents.RouteAssetsReviewDetails),
-    Routing: lazyComponent(AdarComponents.RouteAssetsRouting),
-    TransactionOverview: lazyComponent(AdarComponents.RouteAssetsTransactionOverview),
-    UploadTemplate: lazyComponent(AdarComponents.RouteAssetsUploadTemplate),
+    Authorize: adarLazyComponent(AdarComponents.RouteAssetsAuthorize),
+    Done: adarLazyComponent(AdarComponents.RouteAssetsDone),
+    ProcessTemplate: adarLazyComponent(AdarComponents.RouteAssetsProcessTemplate),
+    ReviewDetails: adarLazyComponent(AdarComponents.RouteAssetsReviewDetails),
+    Routing: adarLazyComponent(AdarComponents.RouteAssetsRouting),
+    TransactionOverview: adarLazyComponent(AdarComponents.RouteAssetsTransactionOverview),
+    UploadTemplate: adarLazyComponent(AdarComponents.RouteAssetsUploadTemplate),
   },
 })
 export default class RouteAssets extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @action.routeAssets.subscribeOnReserves private subscribeOnReserves!: () => void;
   @action.routeAssets.cleanSwapReservesSubscription private cleanSwapReservesSubscription!: () => void;
-  @mutation.swap.setPrimaryMarketsEnabledAssets private setEnabledAssets!: (args: PrimaryMarketsEnabledAssets) => void;
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
-  @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
 
   @getter.routeAssets.currentStageComponentName currentStageComponentName!: string;
   @action.routeAssets.processingNextStage nextStage!: any;
   @action.routeAssets.processingPreviousStage previousStage!: any;
 
-  @Watch('liquiditySource')
-  private handleLiquiditySourceChange(): void {
-    this.subscribeOnReserves();
-  }
+  // @Watch('liquiditySource')
+  // private handleLiquiditySourceChange(): void {
+  //   this.subscribeOnReserves();
+  // }
 
   created() {
     this.withApi(async () => {

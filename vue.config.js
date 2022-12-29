@@ -71,7 +71,7 @@ module.exports = defineConfig({
           @import "@/styles/_layout.scss";
           @import "@/styles/_mixins.scss";
           @import "@/styles/_typography.scss";
-          @import "@/styles/ADAR/_adar-mixins.scss";
+          @import "@/modules/ADAR/styles/_adar-mixins.scss";
         `,
       },
     },

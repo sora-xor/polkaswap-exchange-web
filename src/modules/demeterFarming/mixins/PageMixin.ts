@@ -5,9 +5,10 @@ import { action } from '@/store/decorators';
 
 import BasePageMixin from './BasePageMixin';
 
-import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
+import type { DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
+
 @Component
 export default class PageMixin extends Mixins(BasePageMixin, mixins.TransactionMixin) {
   @action.demeterFarming.deposit deposit!: (params: DemeterLiquidityParams) => Promise<void>;
@@ -17,33 +18,6 @@ export default class PageMixin extends Mixins(BasePageMixin, mixins.TransactionM
   showStakeDialog = false;
   showClaimDialog = false;
   isAddingStake = true;
-
-  getAvailablePools(pools: DemeterPool[]): Array<{ pool: DemeterPool; accountPool: Nullable<DemeterAccountPool> }> {
-    if (!Array.isArray(pools)) return [];
-
-    return pools.reduce<{ pool: DemeterPool; accountPool: Nullable<DemeterAccountPool> }[]>((buffer, pool) => {
-      const poolIsActive = !pool.isRemoved;
-      const accountPool = this.getAccountPool(pool);
-      const accountPoolIsActive = !!accountPool && this.isActiveAccountPool(accountPool);
-
-      if (poolIsActive || accountPoolIsActive) {
-        buffer.push({
-          pool,
-          accountPool,
-        });
-      }
-
-      return buffer;
-    }, []);
-  }
-
-  private isActiveAccountPool(accountPool: DemeterAccountPool): boolean {
-    return !accountPool.pooledTokens.isZero() || !accountPool.rewards.isZero();
-  }
-
-  getStatusBadgeVisibility(address: string, activeCollapseItems: string[]): boolean {
-    return !activeCollapseItems.includes(address);
-  }
 
   changePoolStake(params: { baseAsset: string; poolAsset: string; rewardAsset: string }, isAddingStake = true): void {
     this.isAddingStake = isAddingStake;
@@ -71,5 +45,9 @@ export default class PageMixin extends Mixins(BasePageMixin, mixins.TransactionM
       await this.claimRewards(pool);
       this.showClaimDialog = false;
     });
+  }
+
+  getStatusBadgeVisibility(address: string, activeCollapseItems: string[]): boolean {
+    return !activeCollapseItems.includes(address);
   }
 }

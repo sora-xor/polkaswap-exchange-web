@@ -11,7 +11,7 @@
           text-color="var(--s-color-base-content-primary)"
           :active-text-color="mainMenuActiveColor"
           active-hover-color="transparent"
-          :default-active="getCurrentPath()"
+          :default-active="currentPath"
           @select="onSelect"
         >
           <s-menu-item-group v-for="(item, index) in sidebarMenuItems" :key="index">
@@ -112,7 +112,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.SoraCard);
   }
 
-  getCurrentPath(): string {
+  get currentPath(): string {
     if (PoolChildPages.includes(router.currentRoute.name as PageNames)) {
       return PageNames.Pool;
     }

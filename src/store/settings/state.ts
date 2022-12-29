@@ -31,7 +31,7 @@ function initialState(): SettingsState {
     browserNotifPopupBlockedVisibility: false,
     blockNumber: 0,
     blockNumberUpdates: null,
-    kycData: JSON.parse(storage.get('kyc') || '{}') || {},
+    kycData: {},
   };
 }
 

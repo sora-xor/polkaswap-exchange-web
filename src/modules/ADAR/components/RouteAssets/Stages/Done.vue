@@ -40,8 +40,16 @@
         >
           {{ 'RE-RUN FAILED TRANSACTIONS' }}
         </s-button>
-        <s-button type="primary" class="s-typography-button--big" :disabled="withErrors" @click.stop="downloadPDF">
+        <s-button type="secondary" class="s-typography-button--big" @click.stop="downloadPDF">
           {{ 'DOWNLOAD PDF OVERVIEW' }}
+        </s-button>
+        <s-button
+          type="link"
+          class="s-typography-button--big open-finish-routing-button"
+          @click.stop="openFinishRoutingDialog"
+          v-if="withErrors"
+        >
+          <span>{{ `Re-run doesn’t help? Finish routing anyway` }}</span>
         </s-button>
       </div>
     </div>
@@ -72,13 +80,18 @@
       </div>
     </div>
     <failed-transactions-dialog :visible.sync="showFailedTransactionsDialog"></failed-transactions-dialog>
+    <confirm-finish-routing-dialog
+      :visible.sync="showFinishRoutingDialog"
+      @onConfirmClick="onFinishRouting"
+    ></confirm-finish-routing-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { AdarComponents } from '@/consts/adar';
+import { AdarComponents } from '@/modules/ADAR/consts';
 import { lazyComponent } from '@/router';
+import { adarLazyComponent } from '@/modules/ADAR/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
 import { components, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
@@ -92,17 +105,20 @@ import { jsPDF as JsPDF } from 'jspdf';
   components: {
     TokenLogo: components.TokenLogo,
     WarningMessage,
-    FailedTransactionsDialog: lazyComponent(AdarComponents.RouteAssetsFailedTransactionsDialog),
+    FailedTransactionsDialog: adarLazyComponent(AdarComponents.RouteAssetsFailedTransactionsDialog),
+    ConfirmFinishRoutingDialog: adarLazyComponent(AdarComponents.RouteAssetsConfirmFinishRoutingDialog),
   },
 })
 export default class RoutingCompleted extends Mixins(TranslationMixin) {
   @getter.routeAssets.inputToken inputToken!: Asset;
   @getter.routeAssets.completedRecipients private completedRecipients!: Array<Recipient>;
   @getter.routeAssets.incompletedRecipients private incompletedRecipients!: Array<Recipient>;
-  @state.wallet.account.fiatPriceAndApyObject private fiatPriceAndApyObject!: SUBQUERY_TYPES.FiatPriceAndApyObject;
+  @state.wallet.account.fiatPriceObject private fiatPriceObject!: any;
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
+  @action.routeAssets.cancelProcessing private cancelProcessing!: () => void;
 
   showFailedTransactionsDialog = false;
+  showFinishRoutingDialog = false;
 
   get incompletedRecipientsLength() {
     return this.incompletedRecipients.length;
@@ -146,7 +162,7 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
   }
 
   getAssetUSDPrice(asset: Asset) {
-    return FPNumber.fromCodecValue(this.fiatPriceAndApyObject[asset.address]?.price ?? 0, 18);
+    return FPNumber.fromCodecValue(this.fiatPriceObject[asset.address] ?? 0, 18);
   }
 
   formatNumber(num) {
@@ -155,6 +171,15 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
       : num.toLocaleString('en-US', {
           maximumFractionDigits: 4,
         });
+  }
+
+  openFinishRoutingDialog() {
+    this.showFinishRoutingDialog = true;
+  }
+
+  onFinishRouting() {
+    this.cancelProcessing();
+    this.showFinishRoutingDialog = false;
   }
 
   downloadPDF() {
@@ -250,5 +275,13 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
     width: 100%;
     margin: 16px 0 0 0;
   }
+}
+
+.open-finish-routing-button {
+  font-weight: 400;
+  font-size: 14px;
+  text-decoration: underline;
+  color: var(--s-color-base-content-secondary);
+  text-transform: none;
 }
 </style>

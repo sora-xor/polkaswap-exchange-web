@@ -4,9 +4,7 @@ import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/cons
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 import pkg from '../../package.json';
-import { AdarComponents, AdarPageNames, Stages as AdarRouteAssetsStages } from './adar';
-
-export { AdarComponents, AdarPageNames, AdarRouteAssetsStages };
+import { AdarPageNames } from '@/modules/ADAR/consts';
 
 export const app = {
   version: pkg.version,
@@ -179,7 +177,6 @@ export enum Components {
   SettingsTabs = 'Settings/Tabs',
   SlippageTolerance = 'Settings/SlippageTolerance',
   MarketAlgorithm = 'Settings/MarketAlgorithm',
-  ChartsSwitch = 'Settings/ChartsSwitch',
   SelectNode = 'Settings/Node/SelectNode',
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
@@ -224,24 +221,9 @@ export enum Components {
   // Pool
   PoolInfo = 'Pool/PoolInfo',
   PriceChange = 'PriceChange',
-  // UploadCSVDialog = 'RouteAssets/UploadCSVDialog',
-  // TemplateSummary = 'RouteAssets/RoutingTemplate/TemplateSummary',
-  // TransactionOverview = 'RouteAssets/RoutingTemplate/TransactionOverview',
-  // AuthorizeRoutingTemplateDialog = 'RouteAssets/AuthorizeRoutingTemplateDialog',
-  // UploadCSV = 'RouteAssets/UploadCSV',
-  // RoutingTemplate = 'RouteAssets/RoutingTemplate',
-  // RouteAssetsAuthorize = 'RouteAssets/Stages/Authorize',
-  // RouteAssetsDone = 'RouteAssets/Stages/Done',
-  // RouteAssetsProcessTemplate = 'RouteAssets/Stages/ProcessTemplate',
-  // RouteAssetsReviewDetails = 'RouteAssets/Stages/ReviewDetails',
-  // RouteAssetsRouting = 'RouteAssets/Stages/Routing',
-  // RouteAssetsTransactionOverview = 'RouteAssets/Stages/TransactionOverview',
-  // RouteAssetsUploadTemplate = 'RouteAssets/Stages/UploadTemplate',
-  // RouteAssetsNavigation = 'App/Header/RouteAssetsNavigation',
-  // RouteAssetsFixIssuesDialog = 'RouteAssets/FixIssuesDialog',
-  // RouteAssetsSelectInputAssetDialog = 'RouteAssets/SelectInputAssetDialog',
-  // RouteAssetsSwapDialog = 'RouteAssets/SwapDialog',
-  // RouteAssetsFailedTransactionsDialog = 'RouteAssets/FailedTransactionsDialog',
+  // Button
+  SortButton = 'Button/SortButton',
+  SvgIconButton = 'Button/SvgIconButton/SvgIconButton',
 }
 
 export enum RewardsTabsItems {

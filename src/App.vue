@@ -134,8 +134,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   // [DESKTOP] To Enable Desktop
   // @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
 
-  @action.routeAssets.cancelProcessing private cancelProcessing!: () => void;
-
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
     if (!whitelistAssetArray.length) return;
@@ -162,7 +160,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @Watch('isSoraAccountConnected')
   private async confirmInviteUserIfConnected(isSoraConnected: boolean): Promise<void> {
-    this.cancelProcessing();
     if (isSoraConnected) {
       await this.confirmInvititation();
     }

@@ -106,13 +106,12 @@ import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/c
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 
 import { state, getter } from '@/store/decorators';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
-
-import SortButton from '@/components/SortButton.vue';
 
 import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
@@ -131,12 +130,12 @@ type TableItem = {
 @Component({
   components: {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
-    SortButton,
+    SortButton: lazyComponent(Components.SortButton),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMixin) {
+export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMixin, PoolApyMixin) {
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
 
@@ -158,11 +157,12 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
 
       if (!baseAsset || !targetAsset) return buffer;
 
+      const poolInfo = api.poolXyk.getInfo(baseAsset.address, targetAsset.address);
       const fpBaseAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(baseAsset) ?? 0);
       const fpBaseAssetReserves = FPNumber.fromCodecValue(reserves[0] ?? 0);
-      const fpApy = FPNumber.fromCodecValue(
-        this.fiatPriceAndApyObject[targetAsset.address]?.strategicBonusApy ?? 0
-      ).mul(FPNumber.HUNDRED);
+      const fpApy = FPNumber.fromCodecValue(this.getPoolApy(baseAsset.address, targetAsset.address) ?? 0).mul(
+        FPNumber.HUNDRED
+      );
       const fpTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves).mul(new FPNumber(2));
 
       const accountPool = this.accountLiquidity.find(

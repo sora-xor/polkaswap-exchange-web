@@ -29,6 +29,6 @@ export default {
   },
 
   amount(amount: Nullable<number>) {
-    return amount && !isNaN(amount);
+    return amount && !isNaN(amount) && Number.isFinite(amount);
   },
 };

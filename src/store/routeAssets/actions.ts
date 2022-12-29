@@ -37,55 +37,57 @@ const actions = defineActions({
       commit.clearData();
       return;
     }
-    const assetsTable = rootGetters.assets.assetsDataTable;
+    const assetsTable = rootState.wallet.account.whitelistArray;
     const findAsset = (assetName: string) => {
-      return Object.values(assetsTable)?.find((item: Asset) => item.symbol === assetName.toUpperCase());
+      return assetsTable.find((item: Asset) => item.symbol === assetName.toUpperCase());
     };
 
     const data: Array<any> = [];
-    const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
+    const priceObject = rootState.wallet.account.fiatPriceObject;
 
-    await Papa.parse(file, {
-      header: false,
-      skipEmptyLines: true,
-      comments: '//',
-      step: (row) => {
-        // console.log((row.meta.cursor / file.size) * 100);
-        const usd = row.data[2]?.replace(/,/g, '');
-        const asset = findAsset(row.data[3]) || XOR;
-        const amount = Number(usd) / Number(getAssetUSDPrice(asset, priceObject));
-        data.push({
-          name: row.data[0],
-          wallet: row.data[1],
-          usd: usd,
-          asset: asset,
-          amount: amount,
-          status: api.validateAddress(row.data[1]) ? RecipientStatus.ADDRESS_VALID : RecipientStatus.ADDRESS_INVALID,
-          id: (crypto as any).randomUUID(),
-          isCompleted: false,
-        });
-      },
-      complete: () => {
-        // const result = results.data.map((data) => {
-        //   return {
-        //     name: data[0],
-        //     wallet: data[1],
-        //     usd: data[2],
-        //     asset: findAsset(data[3]),
-        //     amount: data[4],
-        //     status: api.validateAddress(data[1]) ? RecipientStatus.ADDRESS_VALID : RecipientStatus.ADDRESS_INVALID,
-        //     id: (crypto as any).randomUUID(),
-        //   };
-        // });
-        commit.setData({ file, recipients: data });
-        dispatch.subscribeOnReserves();
-      },
+    return new Promise((resolve, reject) => {
+      Papa.parse(file, {
+        header: false,
+        skipEmptyLines: true,
+        comments: '//',
+        step: (row, parser) => {
+          // console.log((row.meta.cursor / file.size) * 100);
+          try {
+            const usd = row.data[2]?.replace(/,/g, '');
+            const asset = findAsset(row.data[3]);
+            const amount = Number(usd) / Number(getAssetUSDPrice(asset, priceObject));
+            data.push({
+              name: row.data[0],
+              wallet: row.data[1],
+              usd: usd,
+              asset: asset,
+              amount: amount,
+              status: api.validateAddress(row.data[1])
+                ? RecipientStatus.ADDRESS_VALID
+                : RecipientStatus.ADDRESS_INVALID,
+              id: (crypto as any).randomUUID(),
+              isCompleted: false,
+            });
+          } catch (error) {
+            parser.abort();
+          }
+        },
+        complete: ({ errors }) => {
+          if (errors.length < 1) {
+            resolve();
+            commit.setData({ file, recipients: data });
+            dispatch.subscribeOnReserves();
+          } else {
+            reject(new Error('Parcing failed'));
+          }
+        },
+      });
     });
   },
 
   editRecipient(context, { id, name, wallet, usd, asset }): void {
     const { commit, rootState } = routeAssetsActionContext(context);
-    const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
+    const priceObject = rootState.wallet.account.fiatPriceObject;
     const amount = Number(usd) / Number(getAssetUSDPrice(asset, priceObject));
     commit.editRecipient({ id, name, wallet, usd, amount, asset });
   },
@@ -99,7 +101,7 @@ const actions = defineActions({
     const { commit, rootGetters, getters, dispatch } = routeAssetsActionContext(context);
     const liquiditySources = rootGetters.swap.swapLiquiditySource;
     const sourceToken = getters.inputToken;
-    const tokens = [...new Set<Asset>(getters.recipients.map((item) => item.asset))]
+    const tokens = [...new Set<Asset>(getters.recipients.filter((item) => item.asset).map((item) => item.asset))]
       .map((item: Asset) => item?.address)
       .filter((item) => item !== sourceToken.address);
     if (!tokens || tokens.length < 1) return;
@@ -175,7 +177,7 @@ const actions = defineActions({
 
   updateTokenAmounts(context): void {
     const { state, rootState, getters, commit } = routeAssetsActionContext(context);
-    const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
+    const priceObject = rootState.wallet.account.fiatPriceObject;
     const recipients = getters.recipients;
     recipients.forEach((recipient) => {
       const amount = Number(recipient.usd) / Number(getAssetUSDPrice(recipient.asset, priceObject));
@@ -242,14 +244,15 @@ const actions = defineActions({
   },
 });
 
-function getAssetUSDPrice(asset, fiatPriceAndApyObject) {
-  return FPNumber.fromCodecValue(fiatPriceAndApyObject[asset.address]?.price, 18).toFixed(2);
+function getAssetUSDPrice(asset, fiatPriceObject) {
+  if (!asset) return null;
+  return FPNumber.fromCodecValue(fiatPriceObject[asset.address], 18).toFixed(18);
 }
 
 function getTransferParams(context, inputAsset, recipient) {
   const { rootState, getters, rootGetters } = routeAssetsActionContext(context);
   if (recipient.asset.address === inputAsset.address) {
-    const priceObject = rootState.wallet.account.fiatPriceAndApyObject;
+    const priceObject = rootState.wallet.account.fiatPriceObject;
     const amount = Number(recipient.usd) / Number(getAssetUSDPrice(recipient.asset, priceObject));
     const transfer = api.api.tx.assets.transfer(
       inputAsset.address,
@@ -279,9 +282,7 @@ function getTransferParams(context, inputAsset, recipient) {
     const { paths, payload, liquiditySources, dexQuoteData } = subscription;
     const tokenEquivalent =
       Number(recipient.usd) /
-      Number(
-        FPNumber.fromCodecValue(rootState.wallet.account.fiatPriceAndApyObject[recipient.asset.address]?.price, 18)
-      );
+      Number(FPNumber.fromCodecValue(rootState.wallet.account.fiatPriceObject[recipient.asset.address], 18));
     const dexes = api.dex.dexList;
 
     try {
