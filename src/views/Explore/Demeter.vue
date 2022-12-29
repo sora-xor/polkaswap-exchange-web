@@ -268,6 +268,7 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
       );
       const tokenInfo = this.tokenInfos[pool.rewardAsset];
       const accountPool = this.getAccountPool(pool);
+      const isAccountItem = !!accountPool && this.isActiveAccountPool(accountPool);
       const poolData = this.poolsData[lpKey(pool.baseAsset, pool.poolAsset)];
       const poolTokenPrice = poolData?.price ?? FPNumber.ZERO;
       const poolBaseReserves = poolData?.reserves?.[0] ?? FPNumber.ZERO;
@@ -333,7 +334,7 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
         tvlFormatted: formatAmountWithSuffix(tvl),
         apr: apr.toNumber(),
         aprFormatted: formatDecimalPlaces(apr, true),
-        isAccountItem: !!accountPool,
+        isAccountItem,
         accountTokens,
         liquidity,
       };

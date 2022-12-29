@@ -107,7 +107,7 @@ export default class BasePageMixin extends Mixins(AprMixin, mixins.FormattedAmou
     }, []);
   }
 
-  private isActiveAccountPool(accountPool: DemeterAccountPool): boolean {
+  isActiveAccountPool(accountPool: DemeterAccountPool): boolean {
     return !(accountPool.pooledTokens.isZero() && accountPool.rewards.isZero());
   }
 

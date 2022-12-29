@@ -655,7 +655,6 @@ export default class Swap extends Mixins(
 @include large-desktop {
   .app-main--has-charts {
     .container--charts {
-      min-width: $bridge-width;
       max-width: calc(#{$bridge-width} * 2);
       flex-grow: 1;
     }
