@@ -1133,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "Мост {Hashi}",
-    "disclaimerTitle": "Отказ от ответственности:"
+    "disclaimerTitle": "Отказ от ответственности:",
+    "explore": {
+        "showOnlyMyPositions": "Показать только мои позиции"
+    }
 }

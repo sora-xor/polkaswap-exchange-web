@@ -1133,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "Jembatan {Hashi}",
-    "disclaimerTitle": "Penafian:"
+    "disclaimerTitle": "Penafian:",
+    "explore": {
+        "showOnlyMyPositions": "Hanya tampilkan posisi saya"
+    }
 }
