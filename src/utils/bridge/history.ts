@@ -3,22 +3,16 @@ import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { ethers } from 'ethers';
 import { BridgeNetworks, BridgeTxStatus, Operation } from '@sora-substrate/util';
-import { SubqueryExplorerService, historyElementsFilter, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { SubqueryExplorerService, historyElementsFilter, SUBQUERY_TYPES, api } from '@soramitsu/soraneo-wallet-web';
 
 import ethersUtil from '@/utils/ethers-util';
 import { bridgeApi } from './api';
 import { STATES } from './types';
-import {
-  isOutgoingTransaction,
-  getSoraHashByEthereumHash,
-  getEvmTxRecieptByHash,
-  getSoraBlockHash,
-  getSoraBlockTimestamp,
-} from './utils';
+import { isOutgoingTransaction, getEvmTxRecieptByHash } from './utils';
 import { ZeroStringValue } from '@/consts';
 
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
-import type { RegisteredAccountAssetObject } from '@/store/assets/types';
 
 type TimestampMap<T> = {
   [key: number]: T;
@@ -81,12 +75,13 @@ export class EthBridgeHistory {
     contracts?: string[]
   ): Promise<EthTransactionsMap> {
     const key = address.toLowerCase();
+    const contractsToLower = (contracts || []).map((contract) => contract.toLowerCase());
 
     if (!this.ethAccountTransactionsMap[key]) {
       const ethStartBlock = await this.getEthStartBlock(fromTimestamp);
       const history = await this.etherscanInstance.getHistory(address, ethStartBlock);
       const filtered = history.reduce<EthTransactionsMap>((buffer, tx) => {
-        if (!contracts || (!!tx.to && contracts.includes(tx.to.toLowerCase()))) {
+        if (!contracts || (!!tx.to && contractsToLower.includes(tx.to.toLowerCase()))) {
           buffer[tx.hash] = tx;
         }
 
@@ -128,8 +123,8 @@ export class EthBridgeHistory {
 
     // if the last item is Incoming trasfer, timestamp will be sora network start time
     if (historyElement.module === SUBQUERY_TYPES.ModuleNames.BridgeMultisig) {
-      const soraStartBlock = await getSoraBlockHash(1);
-      const soraStartTimestamp = await getSoraBlockTimestamp(soraStartBlock);
+      const soraStartBlock = await api.system.getBlockHash(1);
+      const soraStartTimestamp = await api.system.getBlockTimestamp(soraStartBlock);
 
       return soraStartTimestamp;
     }
@@ -180,7 +175,7 @@ export class EthBridgeHistory {
 
     do {
       const variables = { after, filter, first: 100 };
-      const response = await SubqueryExplorerService.getAccountTransactions(variables);
+      const response = await SubqueryExplorerService.account.getHistory(variables);
 
       if (!response) return history;
 
@@ -193,12 +188,18 @@ export class EthBridgeHistory {
     return history as HistoryElement[];
   }
 
+  public async clearHistory(updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs): Promise<void> {
+    this.historySyncTimestamp = 0;
+    bridgeApi.clearHistory();
+    await updateCallback?.();
+  }
+
   public async updateAccountHistory(
     address: string,
-    assets: RegisteredAccountAssetObject,
+    assets: Record<string, Asset>,
     networkFees: NetworkFeesObject,
     contracts?: string[],
-    updateCallback?: AsyncVoidFn | VoidFunction
+    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     const currentHistory = bridgeApi.historyList as BridgeHistory[];
     const historyElements = await this.fetchHistoryElements(address, this.historySyncTimestamp);
@@ -229,7 +230,7 @@ export class EthBridgeHistory {
       // skip, if local bridge transaction has "Done" status
       if (localHistoryItem?.status === BridgeTxStatus.Done) continue;
 
-      const hash = isOutgoing ? requestHash : await getSoraHashByEthereumHash(this.externalNetwork, requestHash);
+      const hash = isOutgoing ? requestHash : await bridgeApi.getSoraHashByEthereumHash(requestHash);
       const amount = historyElementData.amount;
       const assetAddress = historyElementData.assetId;
       const from = address;
@@ -239,9 +240,7 @@ export class EthBridgeHistory {
       const soraNetworkFee = isOutgoing ? networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
       const soraTimestamp = historyElement.timestamp * 1000;
       const soraPartCompleted =
-        !isOutgoing ||
-        (!!hash && (await bridgeApi.api.query.ethBridge.requestStatuses(externalNetwork, hash))).toString() ===
-          BridgeTxStatus.Ready;
+        !isOutgoing || (!!hash && (await bridgeApi.getRequestStatus(hash))) === BridgeTxStatus.Ready;
       const transactionStep = soraPartCompleted ? 2 : 1;
 
       const ethereumTx = isOutgoing

@@ -98,7 +98,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
    * @returns string - bridge history item id
    */
   async prepareBridgeHistoryItemData(transaction: MoonpayTransaction): Promise<BridgeHistory> {
-    return await this.withLoading(async () => {
+    return await this.withLoading<BridgeHistory>(async () => {
       // this is not really good, but we should change evm network to ethereum before fetching transaction data
       await this.prepareEvmNetwork();
       // get necessary ethereum transaction data

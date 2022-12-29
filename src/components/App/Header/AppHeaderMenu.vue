@@ -28,7 +28,7 @@
             {{ text }}
           </s-dropdown-item>
           <div
-            v-if="!notificationActivated"
+            v-if="!notificationActivated && isBrowserNotificationApiAvailable"
             @click="openNotificationDialog"
             class="notif-option el-dropdown-menu__item header-menu__item"
           >
@@ -50,7 +50,7 @@
         <s-icon :name="icon" :size="iconSize" />
       </s-button>
       <s-button
-        v-if="!notificationActivated"
+        v-if="!notificationActivated && isBrowserNotificationApiAvailable"
         type="action"
         :tooltip="t('browserNotificationDialog.button')"
         @click="openNotificationDialog"
@@ -96,10 +96,11 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly HeaderMenuType = HeaderMenuType;
 
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
+  @state.settings.isBrowserNotificationApiAvailable isBrowserNotificationApiAvailable!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
   @getter.settings.notificationActivated notificationActivated!: boolean;
 
-  @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: AsyncVoidFn;
+  @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: FnWithoutArgs;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopupEnabled!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
@@ -184,10 +185,12 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   openNotificationDialog(): void {
-    if (Notification.permission === 'denied') {
-      this.setBrowserNotifsPopupBlocked(true);
-    } else if (Notification.permission === 'default') {
-      this.setBrowserNotifsPopupEnabled(true);
+    if (this.isBrowserNotificationApiAvailable) {
+      if (Notification.permission === 'denied') {
+        this.setBrowserNotifsPopupBlocked(true);
+      } else if (Notification.permission === 'default') {
+        this.setBrowserNotifsPopupEnabled(true);
+      }
     }
   }
 

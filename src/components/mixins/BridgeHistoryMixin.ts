@@ -15,8 +15,9 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   @state.router.prev prevRoute!: Nullable<PageNames>;
 
   @mutation.bridge.setSoraToEvm setSoraToEvm!: (value: boolean) => void;
+  @mutation.bridge.setHistoryPage setHistoryPage!: (historyPage?: number) => void;
   @mutation.bridge.setHistoryId setHistoryId!: (id?: string) => void;
-  @mutation.bridge.setHistory setHistory!: VoidFunction;
+  @mutation.bridge.setHistory setHistory!: FnWithoutArgs;
 
   @action.bridge.setAssetAddress setAssetAddress!: (address?: string) => Promise<void>;
   @action.bridge.generateHistoryItem generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;

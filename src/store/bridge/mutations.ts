@@ -34,6 +34,9 @@ const mutations = defineMutations<BridgeState>()({
   setHistory(state): void {
     state.history = [...bridgeApi.historyList] as Array<BridgeHistory>;
   },
+  setHistoryPage(state, historyPage?: number): void {
+    state.historyPage = historyPage || 1;
+  },
   setHistoryId(state, id?: string): void {
     state.historyId = id || '';
   },

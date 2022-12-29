@@ -11,7 +11,7 @@
         :asset-symbol="asset.symbol"
       />
     </div>
-    <s-icon slot="reference" name="info-16" size="14px" class="reward-item-tooltip-value-icon" />
+    <s-icon slot="reference" name="info-16" size="14px" class="reward-item-tooltip-value-icon" tabindex="-1" />
   </el-popover>
 </template>
 
@@ -68,7 +68,7 @@ $tooltip-placements: 'left', 'right';
     margin-right: auto;
 
     &-icon {
-      margin-left: $inner-spacing-mini / 2;
+      margin-left: $inner-spacing-tiny;
       color: var(--s-color-base-content-tertiary);
     }
   }

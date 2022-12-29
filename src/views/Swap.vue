@@ -2,19 +2,29 @@
   <div class="swap-container">
     <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
       <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
-        <status-action-badge>
-          <template #label>{{ t('marketText') }}:</template>
-          <template #value>{{ swapMarketAlgorithm }}</template>
-          <template #action>
-            <s-button
-              class="el-button--settings"
-              type="action"
-              icon="basic-settings-24"
-              :disabled="!marketAlgorithmsAvailable"
-              @click="openSettingsDialog"
-            />
-          </template>
-        </status-action-badge>
+        <div class="swap-settings-buttons">
+          <status-action-badge>
+            <template #label>{{ t('marketText') }}:</template>
+            <template #value>{{ swapMarketAlgorithm }}</template>
+            <template #action>
+              <s-button
+                class="el-button--settings"
+                type="action"
+                icon="basic-settings-24"
+                @click="openSettingsDialog"
+              />
+            </template>
+          </status-action-badge>
+
+          <svg-icon-button
+            v-if="chartsFlagEnabled"
+            icon="line-icon"
+            size="medium"
+            :tooltip="t('dexSettings.сhartsDescription')"
+            :active="chartsEnabled"
+            @click="toggleChart"
+          />
+        </div>
       </generic-page-header>
 
       <token-input
@@ -124,7 +134,7 @@
       />
       <settings-dialog :visible.sync="showSettings" />
     </s-form>
-    <swap-chart v-if="chartsEnabled" />
+    <swap-chart v-if="chartsEnabled" :token-from="tokenFrom" :token-to="tokenTo" :is-available="isAvailable" />
   </div>
 </template>
 
@@ -133,16 +143,18 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
+import { DexId } from '@sora-substrate/util/build/dex/consts';
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { Subscription } from 'rxjs';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type {
-  QuotePaths,
   QuotePayload,
   PrimaryMarketsEnabledAssets,
   LPRewardsInfo,
+  SwapResult,
 } from '@sora-substrate/liquidity-proxy/build/types';
+import type { DexQuoteData } from '@/store/swap/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
@@ -157,7 +169,7 @@ import {
   debouncedInputHandler,
 } from '@/utils';
 import router, { lazyComponent } from '@/router';
-import { Components, MarketAlgorithms, PageNames } from '@/consts';
+import { Components, MarketAlgorithms, PageNames, ZeroStringValue } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
 
 @Component({
@@ -172,6 +184,7 @@ import { action, getter, mutation, state } from '@/store/decorators';
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     SwapChart: lazyComponent(Components.SwapChart),
+    SvgIconButton: lazyComponent(Components.SvgIconButton),
     FormattedAmount: components.FormattedAmount,
   },
 })
@@ -181,24 +194,26 @@ export default class Swap extends Mixins(
   TranslationMixin,
   TokenSelectMixin
 ) {
+  @state.settings.сhartsEnabled сhartsEnabled!: boolean;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @state.swap.paths private paths!: QuotePaths;
-  @state.swap.payload private payload!: QuotePayload;
+  @state.swap.dexQuoteData private dexQuoteData!: Record<DexId, DexQuoteData>;
+  @state.swap.enabledAssets private enabledAssets!: PrimaryMarketsEnabledAssets;
   @state.swap.isExchangeB isExchangeB!: boolean;
   @state.swap.fromValue fromValue!: string;
   @state.swap.toValue toValue!: string;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
+  @getter.settings.chartsFlagEnabled chartsFlagEnabled!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.swap.isAvailable isAvailable!: boolean;
-  @getter.swap.marketAlgorithmsAvailable marketAlgorithmsAvailable!: boolean;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
 
+  @mutation.settings.setChartsEnabled private setChartsEnabled!: (value: boolean) => void;
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setAmountWithoutImpact private setAmountWithoutImpact!: (amount: CodecString) => void;
@@ -206,36 +221,31 @@ export default class Swap extends Mixins(
   @mutation.swap.setLiquidityProviderFee private setLiquidityProviderFee!: (value: CodecString) => void;
   @mutation.swap.setPrimaryMarketsEnabledAssets private setEnabledAssets!: (args: PrimaryMarketsEnabledAssets) => void;
   @mutation.swap.setRewards private setRewards!: (rewards: Array<LPRewardsInfo>) => void;
+  @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
-  @action.swap.reset private reset!: AsyncVoidFn;
-  @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload: QuotePayload) => Promise<void>;
-  @action.swap.resetSubscriptions private resetSubscriptions!: AsyncVoidFn;
-  @action.swap.updateSubscriptions private updateSubscriptions!: AsyncVoidFn;
+  @action.swap.switchTokens private switchTokens!: AsyncFnWithoutArgs;
+  @action.swap.reset private reset!: AsyncFnWithoutArgs;
+  @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (data: {
+    dexId: number;
+    payload: QuotePayload;
+  }) => void;
+
+  @action.swap.resetSubscriptions private resetBalanceSubscriptions!: AsyncFnWithoutArgs;
+  @action.swap.updateSubscriptions private updateBalanceSubscriptions!: AsyncFnWithoutArgs;
 
   @Watch('liquiditySource')
   private handleLiquiditySourceChange(): void {
     this.subscribeOnSwapReserves();
   }
 
-  @Watch('isLoggedIn')
-  private handleLoggedInStateChange(isLoggedIn: boolean, wasLoggedIn: boolean): void {
-    if (!wasLoggedIn && isLoggedIn) {
-      this.recountSwapValues();
-    }
-  }
-
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean) {
     if (nodeConnected) {
-      this.updateSubscriptions();
-      this.subscribeOnEnabledAssets();
-      this.subscribeOnSwapReserves();
+      this.enableSwapSubscriptions();
     } else {
-      this.resetSubscriptions();
-      this.cleanEnabledAssetsSubscription();
-      this.cleanSwapReservesSubscription();
+      this.resetSwapSubscriptions();
     }
   }
 
@@ -274,13 +284,13 @@ export default class Swap extends Mixins(
   }
 
   get fromFiatAmount(): string {
-    if (!this.tokenFrom) return '0';
-    return this.fromValue ? this.getFiatAmountByString(this.fromValue, this.tokenFrom) || '0' : '0';
+    if (!(this.tokenFrom && this.fromValue)) return ZeroStringValue;
+    return this.getFiatAmountByString(this.fromValue, this.tokenFrom) || ZeroStringValue;
   }
 
   get toFiatAmount(): string {
-    if (!this.tokenTo) return '0';
-    return this.toValue ? this.getFiatAmountByString(this.toValue, this.tokenTo) || '0' : '0';
+    if (!(this.tokenTo && this.toValue)) return ZeroStringValue;
+    return this.getFiatAmountByString(this.toValue, this.tokenTo) || ZeroStringValue;
   }
 
   get fiatDifference(): string {
@@ -375,9 +385,7 @@ export default class Swap extends Mixins(
         await this.setTokenToAddress();
       }
 
-      if (!this.enabledAssetsSubscription) {
-        this.subscribeOnEnabledAssets();
-      }
+      this.enableSwapSubscriptions();
     });
   }
 
@@ -427,23 +435,48 @@ export default class Swap extends Mixins(
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue;
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo;
     const oppositeToken = (this.isExchangeB ? this.tokenFrom : this.tokenTo) as AccountAsset;
+    const dexes = api.dex.dexList;
 
     try {
       // TODO: [ARCH] Asset -> Asset | AccountAsset
-      const { amount, fee, rewards, amountWithoutImpact } = api.swap.getResult(
-        this.tokenFrom as Asset,
-        this.tokenTo as Asset,
-        value,
-        this.isExchangeB,
-        [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
-        this.paths,
-        this.payload
-      );
+      const results = dexes.reduce<{ [dexId: number]: SwapResult }>((buffer, { dexId }) => {
+        const swapResult = api.swap.getResult(
+          this.tokenFrom as Asset,
+          this.tokenTo as Asset,
+          value,
+          this.isExchangeB,
+          [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
+          this.dexQuoteData[dexId].paths,
+          this.dexQuoteData[dexId].payload as QuotePayload,
+          dexId as DexId
+        );
+
+        return { ...buffer, [dexId]: swapResult };
+      }, {});
+
+      let bestDexId: number = DexId.XOR;
+
+      for (const currentDexId in results) {
+        const currAmount = FPNumber.fromCodecValue(results[currentDexId].amount);
+        const bestAmount = FPNumber.fromCodecValue(results[bestDexId].amount);
+
+        if (currAmount.isZero()) continue;
+
+        if (
+          (FPNumber.isLessThan(currAmount, bestAmount) && this.isExchangeB) ||
+          (FPNumber.isLessThan(bestAmount, currAmount) && !this.isExchangeB)
+        ) {
+          bestDexId = +currentDexId;
+        }
+      }
+
+      const { amount, amountWithoutImpact, fee, rewards } = results[bestDexId];
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
-      this.setAmountWithoutImpact(amountWithoutImpact);
+      this.setAmountWithoutImpact(amountWithoutImpact as string);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
+      this.selectDexId(bestDexId);
     } catch (error: any) {
       console.error(error);
       resetOppositeValue();
@@ -455,9 +488,12 @@ export default class Swap extends Mixins(
     this.enabledAssetsSubscription = null;
   }
 
-  private subscribeOnEnabledAssets(): void {
+  private subscribeOnEnabledAssetsAndSwapReserves(): void {
     this.cleanEnabledAssetsSubscription();
-    this.enabledAssetsSubscription = api.swap.subscribeOnPrimaryMarketsEnabledAssets().subscribe(this.setEnabledAssets);
+    this.enabledAssetsSubscription = api.swap.subscribeOnPrimaryMarketsEnabledAssets().subscribe((enabledAssets) => {
+      this.setEnabledAssets(enabledAssets);
+      this.subscribeOnSwapReserves();
+    });
   }
 
   private cleanSwapReservesSubscription(): void {
@@ -467,20 +503,20 @@ export default class Swap extends Mixins(
 
   private subscribeOnSwapReserves(): void {
     this.cleanSwapReservesSubscription();
+
     if (!this.areTokensSelected) return;
+
     this.liquidityReservesSubscription = api.swap
-      .subscribeOnReserves(
+      .subscribeOnAllDexesReserves(
         (this.tokenFrom as AccountAsset).address,
         (this.tokenTo as AccountAsset).address,
-        this.liquiditySource as LiquiditySourceTypes // TODO: Add Nullable<LiquiditySourceTypes> to the lib
+        this.enabledAssets,
+        this.liquiditySource as LiquiditySourceTypes
       )
-      .subscribe(this.onChangeSwapReserves);
-  }
-
-  private async onChangeSwapReserves(payload: QuotePayload): Promise<void> {
-    await this.setSubscriptionPayload(payload);
-
-    this.runRecountSwapValues();
+      .subscribe((results) => {
+        results.forEach((result) => this.setSubscriptionPayload(result));
+        this.runRecountSwapValues();
+      });
   }
 
   handleFocusField(isExchangeB = false): void {
@@ -501,10 +537,8 @@ export default class Swap extends Mixins(
 
   async handleSwitchTokens(): Promise<void> {
     if (!(this.tokenFrom && this.tokenTo)) return;
-    const [fromAddress, toAddress] = [this.tokenFrom.address, this.tokenTo.address];
 
-    await this.setTokenFromAddress(toAddress);
-    await this.setTokenToAddress(fromAddress);
+    await this.switchTokens();
 
     if (this.isExchangeB) {
       this.setExchangeB(false);
@@ -565,9 +599,23 @@ export default class Swap extends Mixins(
     this.showSettings = true;
   }
 
-  beforeDestroy(): void {
+  toggleChart(): void {
+    this.setChartsEnabled(!this.chartsEnabled);
+  }
+
+  private enableSwapSubscriptions(): void {
+    this.updateBalanceSubscriptions();
+    this.subscribeOnEnabledAssetsAndSwapReserves();
+  }
+
+  private resetSwapSubscriptions(): void {
+    this.resetBalanceSubscriptions();
     this.cleanEnabledAssetsSubscription();
     this.cleanSwapReservesSubscription();
+  }
+
+  beforeDestroy(): void {
+    this.resetSwapSubscriptions();
   }
 
   destroyed(): void {
@@ -577,7 +625,12 @@ export default class Swap extends Mixins(
 </script>
 
 <style lang="scss">
-@include large-desktop {
+.app-main--has-charts {
+  .container--charts {
+    min-width: calc(#{$bridge-width} * 0.75);
+  }
+}
+@include desktop {
   .app-main--has-charts {
     .swap-container {
       display: flex;
@@ -596,9 +649,14 @@ export default class Swap extends Mixins(
     .el-form--actions {
       flex-shrink: 0;
     }
+  }
+}
+
+@include large-desktop {
+  .app-main--has-charts {
     .container--charts {
       min-width: $bridge-width;
-      max-width: 100%;
+      max-width: calc(#{$bridge-width} * 2);
       flex-grow: 1;
     }
   }
@@ -627,10 +685,20 @@ export default class Swap extends Mixins(
   align-items: center;
 }
 
+.swap-settings-buttons {
+  display: flex;
+  align-items: center;
+
+  & > *:not(:first-child) {
+    margin-left: $inner-spacing-small;
+  }
+}
+
 .price-difference {
   &__value {
     font-weight: 600;
     font-size: var(--s-font-size-small);
+    white-space: nowrap;
 
     & > span {
       padding-right: 2px;

@@ -22,7 +22,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { mutation } from '@/store/decorators';
+import { state, mutation } from '@/store/decorators';
 
 @Component({
   components: {
@@ -34,13 +34,16 @@ export default class BrowserNotifsEnableDialog extends Mixins(
   mixins.LoadingMixin,
   mixins.DialogMixin
 ) {
+  @state.settings.isBrowserNotificationApiAvailable isBrowserNotificationApiAvailable!: boolean;
   @mutation.settings.setBrowserNotifsAgreement setBrowserNotifsAgreement!: (value: NotificationPermission) => void;
   async handleConfirm(): Promise<void> {
-    this.closeDialog();
-    this.$emit('set-dark-page', true);
-    const permission = await Notification.requestPermission();
-    this.setBrowserNotifsAgreement(permission);
-    this.$emit('set-dark-page', false);
+    if (this.isBrowserNotificationApiAvailable) {
+      this.closeDialog();
+      this.$emit('set-dark-page', true);
+      const permission = await Notification.requestPermission();
+      this.setBrowserNotifsAgreement(permission);
+      this.$emit('set-dark-page', false);
+    }
   }
 }
 </script>

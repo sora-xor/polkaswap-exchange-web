@@ -2,7 +2,7 @@
   <header class="header">
     <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
-    <div v-if="moonpayEnabled" class="app-controls app-controls--moonpay s-flex">
+    <div v-if="areMoonpayButtonsVisible" class="app-controls app-controls--moonpay s-flex">
       <s-button
         type="tertiary"
         size="medium"
@@ -12,9 +12,9 @@
       >
         <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
-      <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
+      <moonpay-history-button class="moonpay-button moonpay-button--history" />
     </div>
-    <div class="app-controls s-flex">
+    <div class="app-controls s-flex" :class="{ 'without-moonpay': !areMoonpayButtonsVisible }">
       <market-maker-countdown />
       <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
         <token-logo class="node-control__logo token-logo" v-bind="nodeLogo" />
@@ -37,7 +37,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
@@ -45,12 +45,12 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
 
 import { lazyComponent, goTo } from '@/router';
-import { PageNames, Components, LogoSize } from '@/consts';
+import { PageNames, Components } from '@/consts';
 import { getter, mutation } from '@/store/decorators';
 
 @Component({
   components: {
-    WalletAvatar: components.WalletAvatar as any,
+    WalletAvatar: components.WalletAvatar,
     PolkaswapLogo,
     AccountButton: lazyComponent(Components.AccountButton),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
@@ -87,9 +87,13 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   get nodeLogo() {
     return {
-      size: LogoSize.MEDIUM,
+      size: WALLET_CONSTS.LogoSize.MEDIUM,
       tokenSymbol: XOR.symbol,
     };
+  }
+
+  get areMoonpayButtonsVisible(): boolean {
+    return this.moonpayEnabled && this.isLoggedIn;
   }
 
   openNodeSelectionDialog(): void {
@@ -203,6 +207,10 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
     }
   }
 
+  &.without-moonpay {
+    margin-left: auto;
+  }
+
   @include desktop {
     margin-left: auto;
   }
@@ -229,7 +237,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 }
 
 .app-logo--header {
-  @include mobile {
+  @include large-mobile(true) {
     display: none;
   }
 }

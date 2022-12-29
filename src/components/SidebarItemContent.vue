@@ -1,6 +1,10 @@
 <template>
   <component :is="tag" :class="classes">
-    <div v-if="icon" class="icon-container">
+    <!-- TODO: [TECH] move from fonts provided values -->
+    <div v-if="icon === 'sora-card'" class="icon-container">
+      <side-menu-card class="sora-card-sidebar-icon" />
+    </div>
+    <div v-else-if="icon" class="icon-container">
       <s-icon :name="icon" size="28" />
     </div>
     <span>{{ title }}</span>
@@ -9,10 +13,15 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-
 import TranslationMixin from './mixins/TranslationMixin';
+import SideMenuCard from '@/assets/img/sora-card/sidebar.svg?inline';
+// const SideMenuCard = () => import(`@/assets/img/sora-card/sidebar.svg?inline`);
 
-@Component
+@Component({
+  components: {
+    SideMenuCard,
+  },
+})
 export default class SidebarItemContent extends Mixins(TranslationMixin) {
   @Prop({ default: '', type: String }) readonly icon!: string;
   @Prop({ default: '', type: String }) readonly title!: string;
@@ -82,5 +91,11 @@ $icon-size: 42px;
     background-color: transparent;
     box-shadow: none;
   }
+}
+.sora-card-sidebar-icon {
+  display: block;
+  margin: auto;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 </style>

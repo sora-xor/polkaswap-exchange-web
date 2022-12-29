@@ -37,7 +37,7 @@
       </s-button>
       <info-line
         :label="t('referralProgram.networkFee')"
-        :label-tooltip="t('referralProgram.networkFeeTooltip')"
+        :label-tooltip="t('networkFeeTooltipText')"
         :value="formattedNetworkFee"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
@@ -82,7 +82,7 @@ export default class ReferralBonding extends Mixins(
   @getter.assets.xor xor!: Nullable<AccountAsset>;
 
   @mutation.referrals.setAmount private setAmount!: (amount: string) => void;
-  @mutation.referrals.resetAmount private resetAmount!: VoidFunction;
+  @mutation.referrals.resetAmount private resetAmount!: FnWithoutArgs;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   showConfirmBondDialog = false;
@@ -182,7 +182,7 @@ export default class ReferralBonding extends Mixins(
   }
 
   handleBack(): void {
-    router.push({ name: PageNames.Referral });
+    router.push({ name: PageNames.ReferralProgram });
   }
 
   destroyed(): void {

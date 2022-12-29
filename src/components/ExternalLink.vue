@@ -21,7 +21,7 @@ export default class ExternalLink extends Vue {
   color: var(--s-color-theme-accent);
 
   &__icon {
-    margin-left: $inner-spacing-mini / 2;
+    margin-left: $inner-spacing-tiny;
     font-size: 0.75em !important;
 
     &,

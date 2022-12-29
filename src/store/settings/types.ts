@@ -6,12 +6,14 @@ import type { Node } from '@/types/nodes';
 export type FeatureFlags = {
   moonpay?: boolean;
   charts?: boolean;
+  soraCard?: boolean;
 };
 
 export type SettingsState = {
   featureFlags: FeatureFlags;
   slippageTolerance: string;
   marketAlgorithm: MarketAlgorithms;
+  сhartsEnabled: boolean;
   transactionDeadline: number;
   node: Partial<Node>;
   language: string;
@@ -25,6 +27,7 @@ export type SettingsState = {
   selectLanguageDialogVisibility: boolean;
   browserNotifPopupVisibility: boolean;
   browserNotifPopupBlockedVisibility: boolean;
+  isBrowserNotificationApiAvailable: boolean;
   browserNotifsPermission: NotificationPermission;
   blockNumber: number;
   blockNumberUpdates: Nullable<Subscription>;

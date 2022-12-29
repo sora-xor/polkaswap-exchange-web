@@ -1,3 +1,4 @@
+import omit from 'lodash/fp/omit';
 import { defineMutations } from 'direct-vuex';
 import type { CodecString } from '@sora-substrate/util';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
@@ -14,7 +15,7 @@ import type { SwapState } from './types';
 
 const mutations = defineMutations<SwapState>()({
   reset(state): void {
-    const s = initialState();
+    const s = omit(['tokenFromAddress', 'tokenToAddress'], initialState());
 
     Object.keys(s).forEach((key) => {
       state[key] = s[key];
@@ -26,7 +27,7 @@ const mutations = defineMutations<SwapState>()({
   resetTokenFromAddress(state): void {
     state.tokenFromAddress = '';
   },
-  setTokenFromBalance(state, balance: AccountBalance): void {
+  setTokenFromBalance(state, balance: Nullable<AccountBalance>): void {
     state.tokenFromBalance = balance;
   },
   setTokenToAddress(state, address: string): void {
@@ -35,7 +36,7 @@ const mutations = defineMutations<SwapState>()({
   resetTokenToAddress(state): void {
     state.tokenToAddress = '';
   },
-  setTokenToBalance(state, balance: AccountBalance): void {
+  setTokenToBalance(state, balance: Nullable<AccountBalance>): void {
     state.tokenToBalance = balance;
   },
   setFromValue(state, value: string): void {
@@ -53,20 +54,32 @@ const mutations = defineMutations<SwapState>()({
   setLiquidityProviderFee(state, value: CodecString): void {
     state.liquidityProviderFee = value;
   },
-  setPairLiquiditySources(state, liquiditySources: Array<LiquiditySourceTypes>): void {
-    state.pairLiquiditySources = [...liquiditySources];
-  },
-  setPaths(state, paths: QuotePaths): void {
-    state.paths = { ...paths };
-  },
   setPrimaryMarketsEnabledAssets(state, assets: PrimaryMarketsEnabledAssets): void {
-    state.enabledAssets = { ...assets };
+    state.enabledAssets = Object.freeze({ ...assets });
   },
   setRewards(state, rewards: Array<LPRewardsInfo>): void {
     state.rewards = [...rewards];
   },
-  setSubscriptionPayload(state, payload: QuotePayload): void {
-    state.payload = payload;
+  setSubscriptionPayload(
+    state,
+    {
+      dexId,
+      payload,
+      paths,
+      liquiditySources,
+    }: { payload: QuotePayload; dexId: number; paths: QuotePaths; liquiditySources: Array<LiquiditySourceTypes> }
+  ): void {
+    state.dexQuoteData = {
+      ...state.dexQuoteData,
+      [dexId]: Object.freeze({
+        payload,
+        paths,
+        pairLiquiditySources: liquiditySources,
+      }),
+    };
+  },
+  selectDexId(state, dexId: number) {
+    state.selectedDexId = dexId;
   },
 });
 

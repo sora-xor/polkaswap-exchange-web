@@ -1,6 +1,6 @@
 <template>
   <div class="container rewards-tabs">
-    <s-tabs :value="currentTab" type="card" @change="handleChangeTab">
+    <s-tabs :value="currentTab" type="card" @input="handleChangeTab">
       <s-tab
         v-for="rewardsTab in RewardsTabsItems"
         :key="rewardsTab"
@@ -8,19 +8,17 @@
         :name="rewardsTab"
       />
     </s-tabs>
-    <component :is="currentTab" />
+    <component :is="currentTab" :parent-loading="parentLoading" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { PageNames, RewardsTabsItems } from '@/consts';
 import router, { lazyView } from '@/router';
-import { state } from '@/store/decorators';
-
-const ReferralSystemPages = [PageNames.ReferralBonding, PageNames.ReferralUnbonding];
 
 @Component({
   components: {
@@ -28,25 +26,15 @@ const ReferralSystemPages = [PageNames.ReferralBonding, PageNames.ReferralUnbond
     ReferralProgram: lazyView(PageNames.ReferralProgram),
   },
 })
-export default class RewardsTabs extends Mixins(TranslationMixin) {
+export default class RewardsTabs extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   readonly RewardsTabsItems = RewardsTabsItems;
 
-  @state.router.prev private prevRoute!: Nullable<PageNames>;
-  @state.router.current private currentRoute!: PageNames;
-
-  currentTab: RewardsTabsItems = RewardsTabsItems.Rewards;
-
-  created(): void {
-    if (ReferralSystemPages.includes(this.prevRoute as PageNames) || this.currentRoute === PageNames.Referral) {
-      this.currentTab = RewardsTabsItems.ReferralProgram;
-    }
+  get currentTab(): string {
+    return this.$route.name as string;
   }
 
-  handleChangeTab(value: RewardsTabsItems): void {
-    this.currentTab = value;
-    router.push({
-      name: this.currentTab === RewardsTabsItems.Rewards ? PageNames.Rewards : PageNames.Referral,
-    });
+  handleChangeTab(name: string): void {
+    router.push({ name });
   }
 }
 </script>

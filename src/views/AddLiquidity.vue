@@ -9,15 +9,16 @@
     <s-form class="el-form--actions" :show-message="false">
       <token-input
         :balance="getTokenBalance(firstToken)"
+        is-select-available
         :is-max-available="isFirstMaxButtonAvailable"
         :title="t('createPair.deposit')"
         :token="firstToken"
         :value="firstTokenValue"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setFirstTokenValue)"
-        @focus="setFocusedField('firstTokenValue')"
-        @blur="resetFocusedField"
+        @focus="setFocusedField(FocusedField.First)"
         @max="handleAddLiquidityMaxValue($event, setFirstTokenValue)"
+        @select="openSelectTokenDialog(true)"
       />
 
       <s-icon class="icon-divider" name="plus-16" />
@@ -31,10 +32,9 @@
         :value="secondTokenValue"
         :disabled="!areTokensSelected"
         @input="handleTokenChange($event, setSecondTokenValue)"
-        @focus="setFocusedField('secondTokenValue')"
-        @blur="resetFocusedField"
+        @focus="setFocusedField(FocusedField.Second)"
         @max="handleAddLiquidityMaxValue($event, setSecondTokenValue)"
-        @select="openSelectSecondTokenDialog"
+        @select="openSelectTokenDialog(false)"
       />
 
       <slippage-tolerance class="slippage-tolerance-settings" />
@@ -61,7 +61,7 @@
       </s-button>
 
       <template v-if="areTokensSelected">
-        <div v-if="!isAvailable && emptyAssets" class="info-line-container">
+        <div v-if="!(isAvailable && isNotFirstLiquidityProvider) && emptyAssets" class="info-line-container">
           <p class="info-line-container__title">{{ t('createPair.firstLiquidityProvider') }}</p>
           <info-line>
             <template #info-line-prefix>
@@ -79,15 +79,17 @@
     </s-form>
 
     <select-token
-      :visible.sync="showSelectSecondTokenDialog"
+      :visible.sync="showSelectTokenDialog"
       :connected="isLoggedIn"
-      :asset="firstToken"
-      @select="selectSecondTokenAddress($event.address)"
+      :asset="isFirstTokenSelected ? secondToken : firstToken"
+      :is-main-token-providers="isFirstTokenSelected"
+      :disabled-custom="isFirstTokenSelected"
+      @select="selectToken"
     />
 
     <confirm-token-pair-dialog
       :visible.sync="showConfirmDialog"
-      :parent-loading="parentLoading"
+      :parent-loading="parentLoading || loading"
       :share-of-pool="shareOfPool"
       :first-token="firstToken"
       :second-token="secondToken"
@@ -95,7 +97,8 @@
       :second-token-value="secondTokenValue"
       :price="price"
       :price-reversed="priceReversed"
-      :slippage-tolerance="slippageTolerance"
+      :slippage-tolerance="slippageToleranceValue"
+      :insufficient-balance-token-symbol="insufficientBalanceTokenSymbol"
       @confirm="handleConfirmAddLiquidity"
     />
 
@@ -124,10 +127,11 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { getter, action, mutation, state } from '@/store/decorators';
-import { getMaxValue, isMaxButtonAvailable, isXorAccountAsset, hasInsufficientBalance, getAssetBalance } from '@/utils';
+import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBalance } from '@/utils';
+import { FocusedField } from '@/store/addLiquidity/types';
 import type { LiquidityParams } from '@/store/pool/types';
-import type { FocusedField } from '@/store/addLiquidity/types';
-import type { PricesPayload } from '@/store/prices/types';
+
+type SetValue = (v: string) => Promise<void>;
 
 @Component({
   components: {
@@ -149,36 +153,45 @@ export default class AddLiquidity extends Mixins(
   ConfirmDialogMixin,
   TokenSelectMixin
 ) {
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+  readonly FocusedField = FocusedField;
 
-  @state.settings.slippageTolerance slippageTolerance!: string;
-  @state.addLiquidity.focusedField private focusedField!: FocusedField;
+  @state.settings.slippageTolerance slippageToleranceValue!: string;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.addLiquidity.shareOfPool shareOfPool!: string;
   @getter.addLiquidity.liquidityInfo liquidityInfo!: Nullable<AccountLiquidity>;
+  @getter.addLiquidity.isNotFirstLiquidityProvider isNotFirstLiquidityProvider!: boolean;
 
-  @action.prices.getPrices getPrices!: (options?: PricesPayload) => Promise<void>;
   @action.addLiquidity.setFirstTokenAddress setFirstTokenAddress!: (address: string) => Promise<void>;
   @action.addLiquidity.setSecondTokenAddress setSecondTokenAddress!: (address: string) => Promise<void>;
   @action.addLiquidity.setFirstTokenValue setFirstTokenValue!: (address: string) => Promise<void>;
   @action.addLiquidity.setSecondTokenValue setSecondTokenValue!: (address: string) => Promise<void>;
-  @action.addLiquidity.addLiquidity private addLiquidity!: AsyncVoidFn;
+  @action.addLiquidity.addLiquidity private addLiquidity!: AsyncFnWithoutArgs;
   @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>;
-  @action.addLiquidity.resetData resetData!: (withAssets?: boolean) => Promise<void>;
+  @action.addLiquidity.updateSubscriptions updateSubscriptions!: AsyncFnWithoutArgs;
+  @action.addLiquidity.resetSubscriptions resetSubscriptions!: AsyncFnWithoutArgs;
+  @action.addLiquidity.resetData resetData!: AsyncFnWithoutArgs;
 
-  @mutation.prices.resetPrices resetPrices!: VoidFunction;
   @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
-  @mutation.addLiquidity.resetFocusedField resetFocusedField!: VoidFunction;
 
-  showSelectSecondTokenDialog = false;
+  showSelectTokenDialog = false;
+  isFirstTokenSelected = false;
   insufficientBalanceTokenSymbol = '';
 
   @Watch('isLoggedIn')
   private handleLoggedInStateChange(isLoggedIn: boolean, wasLoggedIn: boolean): void {
     if (wasLoggedIn && !isLoggedIn) {
       this.handleBack();
+    }
+  }
+
+  @Watch('nodeIsConnected')
+  private updateConnectionSubsriptions(nodeConnected: boolean) {
+    if (nodeConnected) {
+      this.updateSubscriptions();
+    } else {
+      this.resetSubscriptions();
     }
   }
 
@@ -200,8 +213,7 @@ export default class AddLiquidity extends Mixins(
   }
 
   destroyed(): void {
-    this.resetPrices();
-    this.resetData(!!(this.firstAddress && this.secondAddress));
+    this.resetData();
   }
 
   get firstAddress(): string {
@@ -232,10 +244,13 @@ export default class AddLiquidity extends Mixins(
   }
 
   get isXorSufficientForNextOperation(): boolean {
-    return this.isXorSufficientForNextTx({
+    const params: { type: Operation; amount?: FPNumber } = {
       type: Operation.AddLiquidity,
-      amount: this.getFPNumber(this.firstTokenValue),
-    });
+    };
+    if (this.firstAddress === XOR.address) {
+      params.amount = this.getFPNumber(this.firstTokenValue);
+    }
+    return this.isXorSufficientForNextTx(params);
   }
 
   get isFirstMaxButtonAvailable(): boolean {
@@ -257,28 +272,23 @@ export default class AddLiquidity extends Mixins(
   }
 
   get isInsufficientBalance(): boolean {
-    if (!(this.firstToken && this.secondToken)) return false;
-
     if (this.isLoggedIn && this.areTokensSelected) {
-      if (isXorAccountAsset(this.firstToken) || isXorAccountAsset(this.secondToken)) {
-        if (hasInsufficientBalance(this.firstToken, this.firstTokenValue, this.networkFee)) {
-          this.insufficientBalanceTokenSymbol = this.firstToken.symbol;
-          return true;
-        }
-        if (hasInsufficientBalance(this.secondToken, this.secondTokenValue, this.networkFee)) {
-          this.insufficientBalanceTokenSymbol = this.secondToken.symbol;
-          return true;
-        }
+      if (hasInsufficientBalance(this.firstToken as AccountAsset, this.firstTokenValue, this.networkFee)) {
+        this.insufficientBalanceTokenSymbol = (this.firstToken as AccountAsset).symbol;
+        return true;
+      }
+      if (hasInsufficientBalance(this.secondToken as AccountAsset, this.secondTokenValue, this.networkFee)) {
+        this.insufficientBalanceTokenSymbol = (this.secondToken as AccountAsset).symbol;
+        return true;
       }
     }
+    this.insufficientBalanceTokenSymbol = '';
     return false;
   }
 
-  handleAddLiquidityMaxValue(token: Nullable<AccountAsset>, setValue: (v: string) => Promise<void>): void {
-    if (this.focusedField) {
-      this.resetFocusedField();
-    }
-    this.handleMaxValue(token, setValue);
+  async handleAddLiquidityMaxValue(token: Nullable<AccountAsset>, setValue: SetValue): Promise<void> {
+    if (!token) return;
+    await this.handleTokenChange(getMaxValue(token, this.networkFee), setValue);
   }
 
   async handleAddLiquidity(): Promise<void> {
@@ -293,38 +303,30 @@ export default class AddLiquidity extends Mixins(
     this.openConfirmDialog();
   }
 
-  handleMaxValue(token: Nullable<AccountAsset>, setValue: (v: string) => Promise<void>): void {
-    if (!token) return;
-    setValue(getMaxValue(token, this.networkFee));
-    this.updatePrices();
-  }
-
-  async handleTokenChange(value: string, setValue: (v: string) => Promise<void>): Promise<void> {
+  async handleTokenChange(value: string, setValue: SetValue): Promise<void> {
     await setValue(value);
-    this.updatePrices();
-  }
-
-  updatePrices(): void {
-    this.getPrices({
-      assetAAddress: this.firstToken?.address,
-      assetBAddress: this.secondToken?.address,
-      amountA: this.firstTokenValue,
-      amountB: this.secondTokenValue,
-    });
   }
 
   getTokenBalance(token: any): CodecString {
     return getAssetBalance(token);
   }
 
-  openSelectSecondTokenDialog(): void {
-    this.showSelectSecondTokenDialog = true;
+  openSelectTokenDialog(isFirstToken: boolean): void {
+    this.isFirstTokenSelected = isFirstToken;
+    this.showSelectTokenDialog = true;
   }
 
-  async selectSecondTokenAddress(address: string): Promise<void> {
-    await this.withSelectAssetLoading(async () => {
-      this.setSecondTokenAddress(address);
-    });
+  async selectToken(token: AccountAsset): Promise<void> {
+    const address = token?.address;
+    if (address) {
+      await this.withSelectAssetLoading(async () => {
+        if (this.isFirstTokenSelected) {
+          await this.setFirstTokenAddress(address);
+        } else {
+          await this.setSecondTokenAddress(address);
+        }
+      });
+    }
   }
 
   async handleConfirmAddLiquidity(): Promise<void> {

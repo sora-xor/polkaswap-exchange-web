@@ -8,7 +8,7 @@ export function initialState(): Web3State {
   return {
     evmAddress: ethersUtil.getEvmUserAddress(),
     evmBalance: ZeroStringValue,
-    networkType: ethersUtil.getEvmNetworkTypeFromStorage(),
+    networkType: null,
     subNetworks: [],
     evmNetwork: BridgeNetworks.ETH_NETWORK_ID,
     contractAddress: {

@@ -4,43 +4,45 @@
       <div class="header">
         <div class="selected-tokens">
           <tokens-row border :assets="tokens" size="medium" />
-          <div v-if="tokenFrom" class="token-title">
-            <span>{{ tokenFrom.symbol }}</span>
-            <span v-if="tokenTo">/{{ tokenTo.symbol }}</span>
+          <div v-if="tokenA" class="token-title">
+            <span>{{ tokenA.symbol }}</span>
+            <span v-if="tokenB">/{{ tokenB.symbol }}</span>
           </div>
+          <s-button
+            v-if="this.tokensPair"
+            :class="{ 's-pressed': isReversedChart }"
+            type="action"
+            alternative
+            icon="arrows-swap-90-24"
+            @click="revertChart"
+          />
         </div>
-
-        <div class="s-flex chart-controls">
-          <div class="chart-filters">
-            <s-tabs type="rounded" :value="selectedFilter.name" @click="selectFilter">
-              <s-tab
-                v-for="filter in filters"
-                :key="filter.name"
-                :name="filter.name"
-                :label="filter.label"
-                :disabled="parentLoading || loading"
-              />
-            </s-tabs>
-          </div>
-
-          <div class="s-flex chart-types">
-            <s-button
-              v-for="{ type, icon, active } in chartTypeButtons"
-              :key="type"
-              type="action"
-              size="small"
-              :class="['chart-type', { 's-pressed': active }]"
+        <div class="chart-filters">
+          <s-tabs type="rounded" :value="selectedFilter.name" @input="selectFilter">
+            <s-tab
+              v-for="filter in filters"
+              :key="filter.name"
+              :name="filter.name"
+              :label="filter.label"
               :disabled="parentLoading || loading"
-              @click="selectChartType(type)"
-            >
-              <component :is="icon" :class="{ active }" />
-            </s-button>
-          </div>
+            />
+          </s-tabs>
+        </div>
+        <div class="s-flex chart-types">
+          <svg-icon-button
+            v-for="{ type, icon, active } in chartTypeButtons"
+            :key="type"
+            :icon="icon"
+            :active="active"
+            :disabled="parentLoading || loading"
+            size="small"
+            @click="selectChartType(type)"
+          />
         </div>
       </div>
     </div>
 
-    <s-skeleton :loading="parentLoading || loading || isFetchingError" :throttle="0">
+    <s-skeleton :loading="parentLoading || loading || chartDataIssue" :throttle="0">
       <template #template>
         <div v-loading="loading" class="charts-skeleton">
           <s-skeleton-item element="rect" class="charts-skeleton-price" />
@@ -55,10 +57,19 @@
           <div class="charts-skeleton-line charts-skeleton-line--lables">
             <s-skeleton-item v-for="i in 11" :key="i" element="rect" class="charts-skeleton-label" />
           </div>
-          <div v-if="isFetchingError && !loading" class="charts-skeleton-error">
-            <s-icon name="clear-X-16" :size="'32px'" />
-            <p class="charts-skeleton-error-message">{{ t('swap.errorFetching') }}</p>
-            <s-button class="el-button--select-token" type="secondary" size="small" @click="retryUpdatePrices">
+          <div v-if="chartDataIssue" class="charts-skeleton-error">
+            <s-icon v-if="isFetchingError" name="clear-X-16" :size="'32px'" />
+            <p class="charts-skeleton-error-message">
+              <template v-if="isFetchingError">{{ t('swap.errorFetching') }}</template>
+              <template v-else>{{ t('noDataText') }}</template>
+            </p>
+            <s-button
+              v-if="isFetchingError"
+              class="el-button--select-token"
+              type="secondary"
+              size="small"
+              @click="updatePrices"
+            >
               {{ t('retryText') }}
             </s-button>
           </div>
@@ -75,7 +86,14 @@
           />
         </div>
         <price-change v-if="!isFetchingError" :value="priceChange" />
-        <v-chart class="chart" :option="chartSpec" autoresize @zr:mousewheel="handleZoom" @datazoom="changeZoomLevel" />
+        <v-chart
+          ref="chart"
+          class="chart"
+          :option="chartSpec"
+          autoresize
+          @zr:mousewheel="handleZoom"
+          @datazoom="changeZoomLevel"
+        />
       </template>
     </s-skeleton>
   </div>
@@ -83,9 +101,9 @@
 
 <script lang="ts">
 import dayjs from 'dayjs';
-import last from 'lodash/fp/last';
+import isEqual from 'lodash/fp/isEqual';
 import { graphic } from 'echarts';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import { SSkeleton, SSkeletonItem } from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton';
 
@@ -99,21 +117,29 @@ import {
 
 import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import LineIcon from '@/assets/img/charts/line.svg?inline';
-import CandleIcon from '@/assets/img/charts/candle.svg?inline';
 
+import { SvgIcons } from '@/components/Button/SvgIconButton/icons';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { getter } from '@/store/decorators';
-import { debouncedInputHandler, getTextWidth, calcPriceChange } from '@/utils';
-import { AssetSnapshot } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+import { debouncedInputHandler, getTextWidth, calcPriceChange, formatDecimalPlaces } from '@/utils';
 
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type {
+  PageInfo,
+  AssetSnapshotEntity,
+  FiatPriceObject,
+} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
-type ChartDataItem = {
+/** "open", "close", "low", "high" data */
+type OCLH = [number, number, number, number];
+
+type SnapshotItem = {
   timestamp: number;
-  price: number[];
+  price: OCLH;
 };
+
+/** "timestamp", "open", "close", "low", "high" data */
+type ChartDataItem = [number, ...OCLH];
 
 enum TIMEFRAME_TYPES {
   FIVE_MINUTES = 'FIVE_MINUTES',
@@ -142,8 +168,14 @@ type ChartFilter = {
 };
 
 const CHART_TYPE_ICONS = {
-  [CHART_TYPES.LINE]: LineIcon,
-  [CHART_TYPES.CANDLE]: CandleIcon,
+  [CHART_TYPES.LINE]: SvgIcons.LineIcon,
+  [CHART_TYPES.CANDLE]: SvgIcons.CandleIcon,
+};
+
+const SECONDS_IN_TYPE = {
+  [SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT]: 5 * 60 * 1000,
+  [SUBQUERY_TYPES.AssetSnapshotTypes.HOUR]: 60 * 60 * 1000,
+  [SUBQUERY_TYPES.AssetSnapshotTypes.DAY]: 24 * 60 * 60 * 1000,
 };
 
 const LINE_CHART_FILTERS: ChartFilter[] = [
@@ -162,8 +194,8 @@ const LINE_CHART_FILTERS: ChartFilter[] = [
   {
     name: TIMEFRAME_TYPES.MONTH,
     label: '1M',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
-    count: 24 * 30, // hours in month
+    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    count: 30, // days in month
   },
   {
     name: TIMEFRAME_TYPES.YEAR,
@@ -222,13 +254,66 @@ const CANDLE_CHART_FILTERS = [
 ];
 
 const LABEL_PADDING = 4;
+const AXIS_OFFSET = 8;
+
+const SYNC_INTERVAL = 6 * 1000;
+
+const signific =
+  (value: FPNumber) =>
+  (positive: string, negative: string, zero: string): string => {
+    return FPNumber.gt(value, FPNumber.ZERO) ? positive : FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
+  };
+
+const formatChange = (value: FPNumber): string => {
+  const sign = signific(value)('+', '', '');
+  const priceChange = formatDecimalPlaces(value, true);
+
+  return `${sign}${priceChange}`;
+};
+
+const formatPrice = (value: number, symbol: string) => {
+  return `${new FPNumber(value).toLocaleString()} ${symbol}`;
+};
+
+const preparePriceData = (item: AssetSnapshotEntity): OCLH => {
+  const { open, close, low, high } = item.priceUSD;
+
+  return [+open, +close, +low, +high];
+};
+
+const transformSnapshot = (item: AssetSnapshotEntity): SnapshotItem => {
+  const timestamp = +item.timestamp * 1000;
+  const price = preparePriceData(item);
+  return { timestamp, price };
+};
+
+const normalizeSnapshots = (collection: SnapshotItem[], difference: number, lastTimestamp: number): SnapshotItem[] => {
+  const sample: SnapshotItem[] = [];
+
+  for (const item of collection) {
+    const buffer: SnapshotItem[] = [];
+    const prevTimestamp = sample[sample.length - 1]?.timestamp ?? lastTimestamp;
+
+    let currentTimestamp = item.timestamp;
+
+    while ((currentTimestamp += difference) < prevTimestamp) {
+      buffer.push({
+        timestamp: currentTimestamp,
+        price: [item.price[1], item.price[1], item.price[1], item.price[1]],
+      });
+    }
+
+    sample.push(...buffer.reverse(), item);
+  }
+
+  return sample;
+};
 
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
-    LineIcon,
-    CandleIcon,
+    SvgIconButton: lazyComponent(Components.SvgIconButton),
     TokensRow: lazyComponent(Components.TokensRow),
     PriceChange: lazyComponent(Components.PriceChange),
     SSkeleton,
@@ -242,36 +327,76 @@ export default class SwapChart extends Mixins(
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin
 ) {
-  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
-  @getter.swap.tokenTo tokenTo!: AccountAsset;
+  @Prop({ default: () => null, type: Object }) readonly tokenFrom!: Nullable<AccountAsset>;
+  @Prop({ default: () => null, type: Object }) readonly tokenTo!: Nullable<AccountAsset>;
+  @Prop({ default: false, type: Boolean }) readonly isAvailable!: boolean;
 
-  @Watch('tokenFrom')
-  @Watch('tokenTo')
-  private handleTokenChange(): void {
-    this.clearData();
-    this.updatePrices();
+  @Watch('inputTokensAddresses')
+  private handleTokensChange(current: string[], prev: string[]): void {
+    if (!isEqual(current)(prev)) {
+      const currentChartPair = this.isReversedChart ? [...prev].reverse() : prev;
+
+      this.isReversedChart = false;
+
+      if (!isEqual(current)(currentChartPair)) {
+        this.forceUpdatePrices();
+      }
+    }
   }
 
   isFetchingError = false;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   // ordered by timestamp DESC
-  prices: ChartDataItem[] = [];
-  pageInfos: SUBQUERY_TYPES.PageInfo[] = [];
-  zoomStart = 0; // percentage of zoom start position
-  precision = 2;
-  limits = {
+  private samplesBuffer: Record<string, readonly SnapshotItem[]> = {};
+  private pageInfos: Record<string, Partial<PageInfo>> = {};
+  private prices: readonly SnapshotItem[] = [];
+  private zoomStart = 0; // percentage of zoom start position
+  private zoomEnd = 100; // percentage of zoom end position
+  private precision = 2;
+  private limits = {
     min: Infinity,
     max: 0,
   };
 
-  updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250);
+  updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
+  private forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
+  private priceUpdateRequestId = 0;
+  private priceUpdateWatcher: Nullable<FnWithoutArgs> = null;
+  private priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
+  isReversedChart = false;
 
   get isLineChart(): boolean {
     return this.chartType === CHART_TYPES.LINE;
+  }
+
+  get inputTokensAddresses(): string[] {
+    const filtered = [this.tokenFrom, this.tokenTo].filter((token) => !!token) as AccountAsset[];
+
+    return filtered.map((token) => token.address);
+  }
+
+  get tokenA() {
+    return this.isReversedChart ? this.tokenTo : this.tokenFrom;
+  }
+
+  get tokenB() {
+    return this.isReversedChart ? this.tokenFrom : this.tokenTo;
+  }
+
+  get tokens(): AccountAsset[] {
+    return [this.tokenA, this.tokenB].filter((token) => !!token) as AccountAsset[];
+  }
+
+  get tokensAddresses(): string[] {
+    return this.tokens.map((token) => token.address);
+  }
+
+  get tokensPair(): boolean {
+    return this.tokensAddresses.length === 2;
   }
 
   get chartTypeButtons(): { type: CHART_TYPES; icon: any; active: boolean }[] {
@@ -287,19 +412,15 @@ export default class SwapChart extends Mixins(
   }
 
   get symbol(): string {
-    return this.tokenTo?.symbol ?? 'USD';
-  }
-
-  get tokens(): Asset[] {
-    return [this.tokenFrom, this.tokenTo].filter((token) => !!token);
+    return this.tokenB?.symbol ?? 'USD';
   }
 
   get fromFiatPrice(): FPNumber {
-    return this.tokenFrom ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenFrom) ?? 0) : FPNumber.ZERO;
+    return this.tokenA ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenA) ?? 0) : FPNumber.ZERO;
   }
 
   get toFiatPrice(): FPNumber {
-    return this.tokenTo ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenTo) ?? 0) : FPNumber.ZERO;
+    return this.tokenB ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenB) ?? 0) : FPNumber.ZERO;
   }
 
   get fiatPrice(): FPNumber {
@@ -310,22 +431,33 @@ export default class SwapChart extends Mixins(
     return this.fiatPrice.toLocaleString();
   }
 
-  /**
-   * Price change between current price and the last shapshot
-   */
-  get priceChange(): FPNumber {
-    const lastFiatPrice = new FPNumber(last(this.chartData)?.price?.[0] ?? 0);
-
-    return calcPriceChange(this.fiatPrice, lastFiatPrice);
+  get isAllHistoricalPricesFetched(): boolean {
+    return Object.entries(this.pageInfos).some(([address, pageInfo]) => {
+      return !pageInfo.hasNextPage && !this.samplesBuffer[address]?.length;
+    });
   }
 
-  get timeFormat(): string {
-    switch (this.selectedFilter.type) {
-      case SUBQUERY_TYPES.AssetSnapshotTypes.DAY:
-        return 'DD MMM';
-      default:
-        return 'HH:mm';
-    }
+  get timeDifference(): number {
+    return SECONDS_IN_TYPE[this.selectedFilter.type];
+  }
+
+  get visibleChartItemsRange(): [number, number] {
+    const itemsCount = this.chartData.length;
+    const startIndex = Math.floor((itemsCount * this.zoomStart) / 100);
+    const endIndex = Math.ceil((itemsCount * this.zoomEnd) / 100) - 1;
+
+    return [startIndex, endIndex];
+  }
+
+  /**
+   * Price change in visible range
+   */
+  get priceChange(): FPNumber {
+    const [startIndex, endIndex] = this.visibleChartItemsRange;
+    const rangeStartPrice = new FPNumber(this.chartData[startIndex]?.[2] ?? 0); // "close" price
+    const rangeClosePrice = new FPNumber(this.chartData[endIndex]?.[2] ?? 0); // "close" price
+
+    return calcPriceChange(rangeClosePrice, rangeStartPrice);
   }
 
   get axisLabelCSS() {
@@ -338,52 +470,98 @@ export default class SwapChart extends Mixins(
   }
 
   get gridLeftOffset(): number {
-    return (
-      2 * LABEL_PADDING +
-      getTextWidth(
-        String(this.limits.max.toFixed(this.precision)),
-        this.axisLabelCSS.fontFamily,
-        this.axisLabelCSS.fontSize
-      )
+    const maxLabel = this.limits.max * 10;
+    const axisLabelWidth = getTextWidth(
+      String(maxLabel.toFixed(this.precision)),
+      this.axisLabelCSS.fontFamily,
+      this.axisLabelCSS.fontSize
     );
+
+    return AXIS_OFFSET + 2 * LABEL_PADDING + axisLabelWidth;
   }
 
-  // ordered by timestamp ASC
-  get chartData(): ChartDataItem[] {
-    const prices = [...this.prices].reverse();
-    const group = this.selectedFilter.group;
-    const type = this.chartType;
-
-    if (!group) return prices;
-
+  get chartData(): readonly ChartDataItem[] {
     const groups: ChartDataItem[] = [];
+    const {
+      prices,
+      selectedFilter: { group },
+    } = this;
+    // ordered by timestamp ASC
+    const ordered = prices.slice().reverse();
 
-    for (let i = 0; i < prices.length; i++) {
-      if (i % group === 0) {
-        groups.push(prices[i]);
-      } else if (type === CHART_TYPES.CANDLE) {
+    for (let i = 0; i < ordered.length; i++) {
+      if (!group || i % group === 0) {
+        groups.push([ordered[i].timestamp, ...ordered[i].price]);
+      } else {
         const last = groups[groups.length - 1];
 
-        last.price[1] = prices[i].price[1]; // close
-        last.price[2] = Math.min(last.price[2], prices[i].price[2]); // low
-        last.price[3] = Math.max(last.price[3], prices[i].price[3]); // high
+        last[2] = ordered[i].price[1]; // close
+        last[3] = Math.min(last[3], ordered[i].price[2]); // low
+        last[4] = Math.max(last[4], ordered[i].price[3]); // high
       }
     }
 
-    return groups;
+    return Object.freeze(groups);
   }
 
-  get chartSpec(): any {
-    const common = {
+  get chartDataIssue(): boolean {
+    return !this.loading && (this.isFetchingError || this.chartData.length === 0);
+  }
+
+  get chartOptionSeries() {
+    return this.isLineChart
+      ? [
+          {
+            type: 'line',
+            encode: {
+              y: 'close',
+            },
+            showSymbol: false,
+            areaStyle: {
+              opacity: 0.8,
+              color: new graphic.LinearGradient(0, 0, 0, 1, [
+                {
+                  offset: 0,
+                  color: 'rgba(248, 8, 123, 0.25)',
+                },
+                {
+                  offset: 1,
+                  color: 'rgba(255, 49, 148, 0.03)',
+                },
+              ]),
+            },
+          },
+        ]
+      : [
+          {
+            type: 'candlestick',
+            barMaxWidth: 10,
+            itemStyle: {
+              color: this.theme.color.status.success,
+              borderColor: this.theme.color.status.success,
+              color0: this.theme.color.theme.accentHover,
+              borderColor0: this.theme.color.theme.accentHover,
+              borderWidth: 2,
+            },
+          },
+        ];
+  }
+
+  get chartSpec() {
+    return {
+      dataset: {
+        source: this.chartData,
+        dimensions: ['timestamp', 'open', 'close', 'low', 'high'],
+      },
       grid: {
         left: this.gridLeftOffset,
         right: 0,
-        bottom: 20,
+        bottom: 20 + AXIS_OFFSET,
         top: 20,
       },
       xAxis: {
-        type: 'category',
-        data: this.chartData.map((item) => item.timestamp),
+        offset: AXIS_OFFSET,
+        type: 'time',
         axisTick: {
           show: false,
         },
@@ -391,8 +569,32 @@ export default class SwapChart extends Mixins(
           show: false,
         },
         axisLabel: {
-          formatter: (value: string) => {
-            return dayjs(+value).format(this.timeFormat);
+          formatter: (value) => {
+            const date = dayjs(+value);
+            const isNewDay = date.hour() === 0 && date.minute() === 0;
+            const isNewMonth = date.date() === 1 && isNewDay;
+            // TODO: "LT" formatted labels (hours) sometimes overlaps (AM\PM issue)
+            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'HH:mm';
+            const formatted = this.formatDate(+value, timeFormat);
+
+            if (isNewMonth) {
+              return `{monthStyle|${formatted.charAt(0).toUpperCase() + formatted.slice(1)}}`;
+            }
+            if (isNewDay) {
+              return `{dateStyle|${formatted}}`;
+            }
+
+            return formatted;
+          },
+          rich: {
+            monthStyle: {
+              fontSize: 10,
+              fontWeight: 'bold',
+            },
+            dateStyle: {
+              fontSize: 10,
+              fontWeight: 'bold',
+            },
           },
           color: this.theme.color.base.content.secondary,
           ...this.axisLabelCSS,
@@ -409,13 +611,15 @@ export default class SwapChart extends Mixins(
             lineHeigth: 1.5,
             margin: 0,
             formatter: ({ value }) => {
-              return this.formatDate(+value); // locale format
+              return this.formatDate(+value, 'LLL'); // locale format
             },
           },
         },
+        boundaryGap: this.isLineChart ? false : [0.005, 0.005],
       },
       yAxis: {
         type: 'value',
+        offset: AXIS_OFFSET,
         scale: true,
         axisLabel: {
           ...this.axisLabelCSS,
@@ -456,6 +660,7 @@ export default class SwapChart extends Mixins(
           type: 'inside',
           start: 0,
           end: 100,
+          minValueSpan: this.timeDifference * 11, // minimum 11 elements like on skeleton
         },
       ],
       color: [this.theme.color.theme.accent, this.theme.color.status.success],
@@ -476,21 +681,10 @@ export default class SwapChart extends Mixins(
         },
         formatter: (params) => {
           const { data, seriesType } = params[0];
-
-          const signific = (value: FPNumber) => (positive: string, negative: string, zero: string) =>
-            FPNumber.gt(value, FPNumber.ZERO) ? positive : FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
-          const formatPrice = (value: number) => `${new FPNumber(value).toLocaleString()} ${this.symbol}`;
-          const formatChange = (value: FPNumber) => {
-            const sign = signific(value)('+', '', '');
-            const priceChange = this.formatPriceChange(value);
-
-            return `${sign}${priceChange}%`;
-          };
-
-          if (seriesType === CHART_TYPES.LINE) return formatPrice(data);
+          const [timestamp, open, close, low, high] = data;
+          if (seriesType === CHART_TYPES.LINE) return formatPrice(close, this.symbol);
 
           if (seriesType === CHART_TYPES.CANDLE) {
-            const [index, open, close, low, high] = data;
             const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
             const changeColor = signific(change)(
               this.theme.color.status.success,
@@ -499,10 +693,10 @@ export default class SwapChart extends Mixins(
             );
 
             const rows = [
-              { title: 'Open', data: formatPrice(open) },
-              { title: 'High', data: formatPrice(high) },
-              { title: 'Low', data: formatPrice(low) },
-              { title: 'Close', data: formatPrice(close) },
+              { title: 'Open', data: formatPrice(open, this.symbol) },
+              { title: 'High', data: formatPrice(high, this.symbol) },
+              { title: 'Low', data: formatPrice(low, this.symbol) },
+              { title: 'Close', data: formatPrice(close, this.symbol) },
               { title: 'Change', data: formatChange(change), color: changeColor },
             ];
 
@@ -523,67 +717,46 @@ export default class SwapChart extends Mixins(
           }
         },
       },
+      series: this.chartOptionSeries,
     };
-
-    const series = this.isLineChart
-      ? [
-          {
-            type: 'line',
-            showSymbol: false,
-            data: this.chartData.map((item) => item.price[0]),
-            areaStyle: {
-              opacity: 0.8,
-              color: new graphic.LinearGradient(0, 0, 0, 1, [
-                {
-                  offset: 0,
-                  color: 'rgba(248, 8, 123, 0.25)',
-                },
-                {
-                  offset: 1,
-                  color: 'rgba(255, 49, 148, 0.03)',
-                },
-              ]),
-            },
-          },
-        ]
-      : [
-          {
-            type: 'candlestick',
-            data: this.chartData.map((item) => item.price),
-            itemStyle: {
-              color: this.theme.color.status.success,
-              borderColor: this.theme.color.status.success,
-              color0: this.theme.color.theme.accentHover,
-              borderColor0: this.theme.color.theme.accentHover,
-              borderWidth: 2,
-            },
-          },
-        ];
-
-    return { ...common, series };
   }
 
   created(): void {
-    this.updatePrices();
+    this.forceUpdatePrices();
+  }
+
+  beforeDestroy(): void {
+    this.unsubscribeFromPriceUpdates();
   }
 
   // ordered ty timestamp DESC
-  async fetchData(address: string, filter: ChartFilter, pageInfo?: SUBQUERY_TYPES.PageInfo) {
-    const { type, count } = filter;
-    const nodes: AssetSnapshot[] = [];
+  private async fetchData(address: string) {
+    const { type, count } = this.selectedFilter;
+    const pageInfo = this.pageInfos[address];
+    const buffer = this.samplesBuffer[address] ?? [];
+    const nodes: AssetSnapshotEntity[] = [];
 
     let hasNextPage = pageInfo?.hasNextPage ?? true;
     let endCursor = pageInfo?.endCursor ?? '';
+
+    if (buffer.length >= count) {
+      return {
+        nodes,
+        hasNextPage,
+        endCursor,
+      };
+    }
+
     let fetchCount = count;
 
     do {
       const first = Math.min(fetchCount, 100); // how many items should be fetched by request
-      const response = await SubqueryExplorerService.getHistoricalPriceForAsset(address, type, first, endCursor);
+      const response = await SubqueryExplorerService.price.getHistoricalPriceForAsset(address, type, first, endCursor);
 
       if (!response) throw new Error('Chart data fetch error');
 
-      hasNextPage = response.hasNextPage;
-      endCursor = response.endCursor;
+      hasNextPage = response.pageInfo.hasNextPage;
+      endCursor = response.pageInfo.endCursor;
       nodes.push(...response.nodes);
       fetchCount -= response.nodes.length;
     } while (hasNextPage && fetchCount > 0);
@@ -591,102 +764,212 @@ export default class SwapChart extends Mixins(
     return { nodes, hasNextPage, endCursor };
   }
 
-  getHistoricalPrices(): void {
-    if (this.loading || this.pageInfos.some((pageInfo) => !pageInfo.hasNextPage)) return;
+  private getUpdatedPrecision(min: number, max: number): number {
+    return Math.max(this.getPrecision(min), this.getPrecision(max));
+  }
 
-    this.withApi(async () => {
-      await this.withLoading(async () => {
-        try {
-          const addresses = [this.tokenFrom?.address, this.tokenTo?.address].filter(Boolean);
-          const collections = await Promise.all(
-            addresses.map((address, index) => this.fetchData(address, this.selectedFilter, this.pageInfos[index]))
-          );
+  private async getHistoricalPrices(): Promise<void> {
+    if (this.loading || this.isAllHistoricalPricesFetched) {
+      return;
+    }
 
-          if (!collections.every((collection) => !!collection)) return;
+    // prevent fetching if tokens pair not created
+    if (this.tokensPair && !this.isAvailable) return;
 
-          this.pageInfos = collections.map((item: any) => ({
-            hasNextPage: item.hasNextPage,
-            endCursor: item.endCursor,
-          }));
+    const addresses = [...this.tokensAddresses];
+    const requestId = Date.now();
+    const lastTimestamp = this.prices[this.prices.length - 1]?.timestamp;
 
-          const groups = collections.map((collection: any) =>
-            collection.nodes.map((item) => {
-              const price = this.preparePriceData(item, this.chartType);
+    this.priceUpdateRequestId = requestId;
 
-              return {
-                timestamp: +item.timestamp * 1000,
-                price,
-              };
-            })
-          );
+    await this.withApi(async () => {
+      try {
+        const snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
 
-          const prices: ChartDataItem[] = [];
-          const size = Math.max(groups[0]?.length ?? 0, groups[1]?.length ?? 0);
-          let { min, max } = this.limits;
+        // if no response, or tokens were changed, return
+        if (!(snapshots && isEqual(addresses)(this.tokensAddresses) && isEqual(requestId)(this.priceUpdateRequestId)))
+          return;
 
-          for (let i = 0; i < size; i++) {
-            const a = groups[0]?.[i];
-            const b = groups[1]?.[i];
+        const pageInfos: Record<string, Partial<PageInfo>> = {};
+        const prices: SnapshotItem[] = [];
+        const groups: SnapshotItem[][] = [];
+        const timestamp =
+          lastTimestamp ??
+          Math.max(snapshots[0]?.nodes[0]?.timestamp ?? 0, snapshots[1]?.nodes[0]?.timestamp ?? 0) * 1000;
 
-            const timestamp = (a?.timestamp ?? b?.timestamp) as number;
-            const price = (b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0]) as number[];
+        snapshots.forEach(({ hasNextPage, endCursor, nodes }, index) => {
+          const address = addresses[index];
+          const items = nodes.map((node) => transformSnapshot(node));
+          const buffer = this.samplesBuffer[address] ?? [];
+          const normalized = normalizeSnapshots(buffer.concat(items), this.timeDifference, timestamp);
+          groups.push(normalized);
+          pageInfos[address] = { hasNextPage, endCursor };
+        });
 
-            prices.push({
-              timestamp,
-              price,
-            });
+        const size = Math.min(groups[0]?.length ?? Infinity, groups[1]?.length ?? Infinity, this.selectedFilter.count);
 
-            min = Math.min(min, ...price);
-            max = Math.max(max, ...price);
-          }
+        let { min, max } = this.limits;
 
-          this.precision = Math.max(this.getPrecision(min), this.getPrecision(max));
-          this.limits = { min, max };
-          this.prices = [...this.prices, ...prices];
-          this.isFetchingError = false;
-        } catch (error) {
-          this.isFetchingError = true;
-          console.error(error);
+        for (let i = 0; i < size; i++) {
+          const a = groups[0]?.[i];
+          const b = groups[1]?.[i];
+
+          const timestamp = (a?.timestamp ?? b?.timestamp) as number;
+          const price = b?.price && a?.price ? this.dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0];
+
+          // if "open" & "close" prices are zero, we are going to time, where pool is not created
+          if (price[0] === 0 && price[1] === 0) break;
+
+          prices.push({ timestamp, price });
+
+          min = Math.min(min, ...price);
+          max = Math.max(max, ...price);
         }
-      });
+
+        addresses.forEach((address, index) => {
+          this.samplesBuffer[address] = Object.freeze(groups[index].slice(size));
+        });
+
+        this.limits = { min, max };
+        this.pageInfos = pageInfos;
+        this.precision = this.getUpdatedPrecision(min, max);
+        this.updatePricesCollection([...this.prices, ...prices]);
+
+        this.isFetchingError = false;
+      } catch (error) {
+        this.isFetchingError = true;
+        console.error(error);
+      }
     });
   }
 
-  private preparePriceData(item: AssetSnapshot, chartType: CHART_TYPES): number[] {
-    const { open, close, low, high } = item.priceUSD;
-    const priceData = [+open];
-
-    if (chartType === CHART_TYPES.CANDLE) {
-      priceData.push(+close, +low, +high);
+  private unsubscribeFromPriceUpdates(): void {
+    if (this.priceUpdateWatcher) {
+      this.priceUpdateWatcher();
     }
-
-    return priceData;
+    if (this.priceUpdateTimestampSync) {
+      clearInterval(this.priceUpdateTimestampSync as number);
+    }
+    this.priceUpdateWatcher = null;
+    this.priceUpdateTimestampSync = null;
   }
 
-  private dividePrices(priceA: number[], priceB: number[]) {
-    const div = (a: number, b: number) => (b !== 0 ? a / b : 0);
+  private subscribeToPriceUpdates(): void {
+    this.unsubscribeFromPriceUpdates();
 
-    return priceA.map((price, index) => div(price, priceB[index]));
+    const addresses = [...this.tokensAddresses];
+
+    this.priceUpdateWatcher = this.$watch(
+      () => this.fiatPriceObject,
+      (updated, prev) => {
+        if (updated && (!prev || addresses.some((addr) => updated[addr] !== prev[addr]))) {
+          this.handlePriceUpdates(addresses, updated);
+        }
+      }
+    );
+
+    this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(addresses), SYNC_INTERVAL);
   }
 
-  private clearData(): void {
+  private getCurrentSnapshotTimestamp(): number {
+    const now = Math.floor(Date.now() / 1000);
+    const seconds = this.timeDifference / 1000;
+    const index = Math.floor(now / seconds);
+    const timestamp = seconds * index * 1000;
+
+    return timestamp;
+  }
+
+  /**
+   * Creates new price item snapshot
+   */
+  private handlePriceTimestampSync(addresses: string[]): void {
+    if (!isEqual(addresses)(this.tokensAddresses)) return;
+
+    const timestamp = this.getCurrentSnapshotTimestamp();
+    const lastItem = this.prices[0];
+
+    if (!lastItem || timestamp === lastItem.timestamp) return;
+
+    const close = lastItem.price[1];
+    const price: OCLH = [close, close, close, close];
+    const item: SnapshotItem = { timestamp, price };
+
+    this.updatePricesCollection([item, ...this.prices]);
+  }
+
+  private handlePriceUpdates(addresses: string[], fiatPriceObject: FiatPriceObject): void {
+    if (!isEqual(addresses)(this.tokensAddresses)) return;
+
+    const timestamp = this.getCurrentSnapshotTimestamp();
+    const lastItem = this.prices[0];
+
+    const [priceA, priceB] = this.tokensAddresses.map((address) =>
+      FPNumber.fromCodecValue(fiatPriceObject[address] ?? 0).toNumber()
+    );
+    const price = Number.isFinite(priceB) ? this.dividePrice(priceA, priceB) : priceA;
+    const min = Math.min(this.limits.min, price);
+    const max = Math.max(this.limits.max, price);
+
+    const open = lastItem?.price?.[0] ?? price;
+    const low = lastItem?.price?.[2] ?? price;
+    const high = lastItem?.price?.[3] ?? price;
+
+    const isCurrentTimeframe = lastItem?.timestamp === timestamp;
+
+    const priceData: OCLH = [isCurrentTimeframe ? open : price, price, Math.min(low, price), Math.max(high, price)];
+    const item = { timestamp, price: priceData };
+    const prices = [...this.prices];
+    if (isCurrentTimeframe) {
+      prices.shift();
+    }
+    prices.unshift(item);
+    this.precision = this.getUpdatedPrecision(min, max);
+    this.limits = { min, max };
+    this.updatePricesCollection(prices);
+  }
+
+  private dividePrice(priceA: number, priceB: number) {
+    return priceB !== 0 ? priceA / priceB : 0;
+  }
+
+  private dividePrices(priceA: OCLH, priceB: OCLH): OCLH {
+    return priceA.map((price, index) => this.dividePrice(price, priceB[index])) as OCLH;
+  }
+
+  private clearData(saveReversedState = false): void {
+    this.samplesBuffer = {};
+    this.pageInfos = {};
     this.prices = [];
-    this.pageInfos = [];
     this.zoomStart = 0;
+    this.zoomEnd = 100;
     this.limits = {
       min: Infinity,
       max: 0,
     };
     this.precision = 2;
+
+    if (!saveReversedState) {
+      this.isReversedChart = false;
+    }
+  }
+
+  private updatePricesCollection(items: SnapshotItem[]): void {
+    this.prices = Object.freeze(items);
   }
 
   changeFilter(filter: ChartFilter): void {
     this.selectedFilter = filter;
-    this.clearData();
-    this.updatePrices();
+    this.forceUpdatePrices(true);
   }
 
-  selectFilter({ name }): void {
+  private async resetAndUpdatePrices(saveReversedState = false): Promise<void> {
+    this.clearData(saveReversedState);
+    await this.updatePrices();
+    this.subscribeToPriceUpdates();
+  }
+
+  selectFilter(name: string): void {
     const filter = this.filters.find((item) => item.name === name);
 
     if (!filter) return;
@@ -701,17 +984,20 @@ export default class SwapChart extends Mixins(
 
   handleZoom(event: any): void {
     event?.stop?.();
-    if (event?.wheelDelta === -1 && this.zoomStart === 0) {
+    if (event?.wheelDelta < 0 && this.zoomStart === 0 && this.zoomEnd === 100) {
       this.updatePrices();
     }
   }
 
   changeZoomLevel(event: any): void {
-    this.zoomStart = event?.batch?.[0]?.start ?? 0;
+    const data = event?.batch?.[0];
+    this.zoomStart = data?.start ?? 0;
+    this.zoomEnd = data?.end ?? 0;
   }
 
-  retryUpdatePrices(event: any): void {
-    this.updatePrices();
+  revertChart(): void {
+    this.isReversedChart = !this.isReversedChart;
+    this.forceUpdatePrices(true);
   }
 
   private getPrecision(value: number): number {
@@ -726,18 +1012,15 @@ export default class SwapChart extends Mixins(
 
     return precision;
   }
-
-  private formatPriceChange(value: FPNumber): string {
-    return value.dp(2).toLocaleString();
-  }
 }
 </script>
 
 <style lang="scss">
+$skeleton-label-width: 34px;
 .charts {
   &-price {
     display: flex;
-    margin-bottom: $inner-spacing-mini / 2;
+    margin-bottom: $inner-spacing-tiny;
     font-weight: 800;
     font-size: var(--s-heading3-font-size);
     line-height: var(--s-line-height-extra-small);
@@ -771,6 +1054,8 @@ export default class SwapChart extends Mixins(
 }
 
 .chart-filters {
+  width: 100%;
+  order: 1;
   .el-tabs__header {
     margin-bottom: 0;
   }
@@ -787,23 +1072,9 @@ export default class SwapChart extends Mixins(
   }
 }
 
-.chart-type {
-  svg {
-    & > path {
-      fill: var(--s-color-base-content-tertiary);
-    }
-
-    &.active {
-      & > path {
-        fill: var(--s-color-theme-accent);
-      }
-    }
-  }
-}
-
 .charts-skeleton {
-  $margin-right: #{$inner-spacing-mini / 2};
-  $label-width: 34px;
+  $margin-right: #{$inner-spacing-tiny};
+  $skeleton-label-width-mobile: calc((100% - #{$margin-right} * 10) / 11);
   $skeleton-spacing: 18px;
   position: relative;
   .el-loading-mask {
@@ -833,7 +1104,7 @@ export default class SwapChart extends Mixins(
         width: 42px;
       }
       + .charts-skeleton-line {
-        margin-top: 23px;
+        margin-top: 19px;
       }
     }
   }
@@ -841,21 +1112,21 @@ export default class SwapChart extends Mixins(
     display: flex;
     align-items: center;
     flex-grow: 0;
-    margin-top: 27px;
+    margin-top: 22px;
     &--lables {
       justify-content: space-between;
       margin-top: $inner-spacing-medium;
-      padding-left: calc(#{$margin-right} + #{$label-width});
+      padding-left: calc(#{$margin-right} + #{$skeleton-label-width});
     }
   }
   &-label.el-skeleton__item.el-skeleton__rect {
     height: 8px;
-    width: $label-width;
+    width: $skeleton-label-width-mobile;
     margin-bottom: 0;
     margin-right: $margin-right;
   }
   &-border.el-skeleton__rect {
-    width: calc(100% - 38px);
+    width: calc(100% - #{$skeleton-label-width-mobile} - #{$margin-right});
     height: 1px;
   }
   &-error {
@@ -885,10 +1156,10 @@ export default class SwapChart extends Mixins(
   }
 }
 
-@include large-desktop {
+@include desktop {
   .container--charts {
     position: relative;
-    z-index: 1;
+    z-index: $app-content-layer;
   }
   .chart-filters {
     .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
@@ -896,11 +1167,34 @@ export default class SwapChart extends Mixins(
     }
   }
 }
+
+@include large-desktop {
+  .charts-skeleton {
+    &-price {
+      &-impact {
+        + .charts-skeleton-line {
+          margin-top: 20px;
+        }
+      }
+    }
+    &-line {
+      margin-top: 26px;
+    }
+    &-label.el-skeleton__item.el-skeleton__rect {
+      max-width: $skeleton-label-width;
+    }
+  }
+  .chart-filters {
+    margin-left: auto;
+    width: auto;
+    order: initial;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
 .chart {
-  height: 323px;
+  height: 283px;
 }
 .tokens {
   display: flex;
@@ -922,7 +1216,6 @@ export default class SwapChart extends Mixins(
     flex-shrink: 0;
   }
   &-title {
-    margin-left: $inner-spacing-mini;
     font-size: var(--s-font-size-medium);
     line-height: var(--s-line-height-medium);
     font-weight: 600;
@@ -948,11 +1241,15 @@ export default class SwapChart extends Mixins(
 .selected-tokens {
   display: flex;
   align-items: center;
+
+  & > *:not(:first-child) {
+    margin-left: $inner-spacing-mini;
+  }
 }
 
-.chart-controls {
-  & > *:not(:last-child) {
-    margin-right: $inner-spacing-medium;
+@include large-desktop {
+  .chart {
+    height: 323px;
   }
 }
 </style>
