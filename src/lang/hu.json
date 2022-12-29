@@ -1133,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "{Hashi} híd",
-    "disclaimerTitle": "Jogi nyilatkozat:"
+    "disclaimerTitle": "Jogi nyilatkozat:",
+    "explore": {
+        "showOnlyMyPositions": "Csak az én pozíciómat mutasd"
+    }
 }

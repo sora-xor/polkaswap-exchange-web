@@ -545,6 +545,9 @@ export default {
     symbol: 'Symbol',
     assetId: 'Asset ID',
   },
+  explore: {
+    showOnlyMyPositions: 'Show only my positions',
+  },
   dexSettings: {
     title: 'Transaction settings',
     marketAlgorithm: '@.upper:marketAlgorithmText',
