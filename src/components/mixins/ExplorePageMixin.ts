@@ -19,6 +19,7 @@ export default class ExplorePageMixin extends Mixins(
 
   @Ref('table') readonly tableComponent!: any;
   @Prop({ default: '', type: String }) readonly exploreQuery!: string;
+  @Prop({ default: false, type: Boolean }) readonly isAccountItems!: boolean;
   @Watch('exploreQuery')
   private resetCurrentPage(): void {
     this.currentPage = 1;

@@ -17,9 +17,15 @@
         />
       </generic-page-header>
 
+      <div v-if="switcherAvailable" class="switcher">
+        <s-switch v-model="isAccountItems" />
+        <span>{{ t('explore.showOnlyMyPositions') }}</span>
+      </div>
+
       <router-view
         v-bind="{
           exploreQuery,
+          isAccountItems,
           parentLoading,
           ...$attrs,
         }"
@@ -45,6 +51,7 @@ import { PageNames, Components } from '@/consts';
 })
 export default class ExploreContainer extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   exploreQuery = '';
+  isAccountItems = false;
 
   get tabs(): Array<{ name: string; label: string }> {
     return [PageNames.ExploreFarming, PageNames.ExplorePools, PageNames.ExploreStaking, PageNames.ExploreTokens].map(
@@ -61,6 +68,10 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 
   get pageTitle(): string {
     return this.t(`pageTitle.${this.pageName}`);
+  }
+
+  get switcherAvailable(): boolean {
+    return this.pageName !== PageNames.ExploreTokens;
   }
 
   handleTabChange(name: string): void {
@@ -95,6 +106,10 @@ $search-input-width: 290px;
   max-width: $container-max-width;
   min-width: $container-min-width;
   margin: $inner-spacing-big $inner-spacing-big 0;
+
+  & > *:not(:last-child) {
+    margin-bottom: $inner-spacing-medium;
+  }
 }
 
 .explore {
@@ -120,5 +135,14 @@ $search-input-width: 290px;
 .page-header-title--explore {
   justify-content: space-between;
   align-items: center;
+}
+
+.switcher {
+  display: flex;
+  align-items: center;
+
+  & > span {
+    margin-left: $inner-spacing-small;
+  }
 }
 </style>

@@ -1133,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "{Hashi} most",
-    "disclaimerTitle": "Одрицање одговорности:"
+    "disclaimerTitle": "Одрицање одговорности:",
+    "explore": {
+        "showOnlyMyPositions": "Prikaži samo moje pozicije"
+    }
 }

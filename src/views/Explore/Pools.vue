@@ -126,6 +126,7 @@ type TableItem = {
   apyFormatted: string;
   tvl: number;
   tvlFormatted: AmountWithSuffix;
+  isAccountItem: boolean;
   accountTokens: { asset: Asset; balance: string; balancePrefix: string }[];
 };
 
@@ -147,7 +148,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
 
   poolReserves: Record<string, string[]> = {};
 
-  get preparedItems(): TableItem[] {
+  get items(): TableItem[] {
     return Object.entries(this.poolReserves).reduce<any>((buffer, [key, reserves]) => {
       const matches = key.match(/0x\w{64}/g);
 
@@ -157,19 +158,18 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
       const baseAsset = this.getAsset(matches[0]);
       const targetAsset = this.getAsset(matches[1]);
 
-      if (!baseAsset || !targetAsset) return buffer;
+      if (!(baseAsset && targetAsset)) return buffer;
 
-      const poolInfo = api.poolXyk.getInfo(baseAsset.address, targetAsset.address);
+      const accountPool = this.accountLiquidity.find(
+        (liquidity) => liquidity.firstAddress === baseAsset.address && liquidity.secondAddress === targetAsset.address
+      );
+
       const fpBaseAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(baseAsset) ?? 0);
       const fpBaseAssetReserves = FPNumber.fromCodecValue(reserves[0] ?? 0);
       const fpApy = FPNumber.fromCodecValue(this.getPoolApy(baseAsset.address, targetAsset.address) ?? 0).mul(
         FPNumber.HUNDRED
       );
       const fpTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves).mul(new FPNumber(2));
-
-      const accountPool = this.accountLiquidity.find(
-        (liquidity) => liquidity.firstAddress === baseAsset.address && liquidity.secondAddress === targetAsset.address
-      );
 
       const accountTokens = [
         {
@@ -191,6 +191,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
         apyFormatted: formatDecimalPlaces(fpApy, true),
         tvl: fpTvl.toNumber(),
         tvlFormatted: formatAmountWithSuffix(fpTvl),
+        isAccountItem: !!accountPool,
         accountTokens,
       });
 
@@ -198,8 +199,14 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
     }, []);
   }
 
+  get preparedItems(): TableItem[] {
+    if (!this.isAccountItems) return this.items;
+
+    return this.items.filter((item) => item.isAccountItem);
+  }
+
   get hasApyColumnData(): boolean {
-    return this.preparedItems.some((item) => item.apy !== 0);
+    return this.items.some((item) => item.apy !== 0);
   }
 
   // ExplorePageMixin method implementation

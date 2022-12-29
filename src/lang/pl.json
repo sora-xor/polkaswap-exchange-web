@@ -1133,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "Most {Hashi}",
-    "disclaimerTitle": "Zastrzeżenie:"
+    "disclaimerTitle": "Zastrzeżenie:",
+    "explore": {
+        "showOnlyMyPositions": "Pokaż tylko moje pozycje"
+    }
 }
