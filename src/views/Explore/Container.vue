@@ -18,7 +18,7 @@
       </generic-page-header>
 
       <div v-if="switcherAvailable" class="switcher">
-        <s-switch v-model="isAccountItems" />
+        <s-switch v-model="isAccountItemsOnly" />
         <span>{{ t('explore.showOnlyMyPositions') }}</span>
       </div>
 
@@ -40,8 +40,11 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import storage from '@/utils/storage';
 import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
+
+const storageKey = 'exploreAccountItems';
 
 @Component({
   components: {
@@ -51,7 +54,16 @@ import { PageNames, Components } from '@/consts';
 })
 export default class ExploreContainer extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   exploreQuery = '';
-  isAccountItems = false;
+  isAccountItems = Boolean(storage.get(storageKey as any));
+
+  get isAccountItemsOnly(): boolean {
+    return this.isAccountItems;
+  }
+
+  set isAccountItemsOnly(value: boolean) {
+    storage.set(storageKey as any, value);
+    this.isAccountItems = value;
+  }
 
   get tabs(): Array<{ name: string; label: string }> {
     return [PageNames.ExploreFarming, PageNames.ExplorePools, PageNames.ExploreStaking, PageNames.ExploreTokens].map(
