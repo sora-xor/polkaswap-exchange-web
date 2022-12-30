@@ -111,16 +111,17 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 
 <style lang="scss" scoped>
 $container-max-width: 75vw;
-$container-min-width: $breakpoint_mobile;
 $search-input-width: 290px;
 
 .container--explore {
-  max-width: $container-max-width;
-  min-width: $container-min-width;
   margin: $inner-spacing-big $inner-spacing-big 0;
 
   & > *:not(:last-child) {
     margin-bottom: $inner-spacing-medium;
+  }
+
+  @include tablet {
+    max-width: $container-max-width;
   }
 }
 

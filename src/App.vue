@@ -667,14 +667,12 @@ $sora-logo-width: 173.7px;
       overflow: hidden;
 
       .app-content .app-disclaimer-container {
-        min-width: 800px;
         width: 100%;
         max-width: 900px;
         padding: 0 20px;
         margin: 0 auto 120px;
       }
       .app-footer {
-        min-width: 800px;
         justify-content: center;
       }
     }
