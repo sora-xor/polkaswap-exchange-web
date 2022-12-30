@@ -43,7 +43,7 @@
             "ClaimRewards": "Պարգևատրումը հաջողությամբ հաստատված է {rewards}",
             "ReferralReserveXor": "XOR-ը հաջողությամբ կապակցվեց",
             "ReferralUnreserveXor": "XOR-ը հաջողությամբ ունբոնդ",
-            "ReferralSetInvitedUser": "Հղումը դրվում է հաջողությամբ",
+            "ReferralSetInvitedUser": "{role} {address} դրվում է հաջողությամբ",
             "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Տրամադրված {symbol} և {symbol2} {amount} LP ժետոններ",
             "DemeterFarmingWithdrawLiquidity": "Հեռացվել են {symbol} և {symbol2} {amount} LP նշանները",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Չհաջողվեց հաստատել պարգեւատրումները {rewards}",
             "ReferralReserveXor": "Չհաջողվեց կապել XOR-ը",
             "ReferralUnreserveXor": "Ունբոնդ Ձախողվել է XOR-ը",
-            "ReferralSetInvitedUser": "Չհաջողվեց սահմանել ուղղորդում",
+            "ReferralSetInvitedUser": "Չհաջողվեց սահմանել {role} {address}",
             "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} և {symbol2} LP նշաններ",
             "DemeterFarmingWithdrawLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {symbol2} LP նշանները",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
-        "ReferralSetInvitedUser": "Սահմանել ուղղորդում",
+        "ReferralSetInvitedUser": "Սահմանել {role}",
         "SwapAndSend": "Փոխանակեք և ուղարկեք",
         "DemeterFarmingDepositLiquidity": "Բաժնի իրացվելիություն",
         "DemeterFarmingWithdrawLiquidity": "Չվճարված իրացվելիություն",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "Ավելացնել իրացվելիություն",
         "RemoveLiquidity": "Հեռացնել իրացվելիությունը",
         "PageNotFound": "Էջը չի գտնվել",
-        "Tokens": "Տոկեններ",
-        "Rewards": "Պարգեւներ"
+        "Rewards": "Պարգեւներ",
+        "Explore\/Tokens": "Նշաններ",
+        "Explore\/Pools": "Լողավազաններ",
+        "Explore\/Staking": "Ցուցադրում",
+        "Explore\/Farming": "Ֆարմինգ",
+        "Staking": "Ցուցադրում"
     },
     "mainMenu": {
         "Swap": "Փոխանակում",
@@ -348,8 +352,9 @@
         "Stats": "Վիճակագրություն",
         "Support": "Աջակցություն",
         "CreatePair": "Ստեղծել զույգ",
-        "Tokens": "Տոկեններ",
-        "StakingContainer": "Ցուցադրում"
+        "StakingContainer": "Ցուցադրում",
+        "Explore\/Container": "Հետազոտել",
+        "SoraCard": "{Sora} Քարտ"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +824,7 @@
         "title": "Լեզու"
     },
     "tokens": {
-        "title": "Թվարկված Տոկեններ",
         "symbol": "Խորհրդանիշ",
-        "name": "Անուն",
         "assetId": "Ակտիվի ID"
     },
     "memorandum": "{AppName}- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
@@ -1130,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "{Hashi} կամուրջ",
-    "disclaimerTitle": "Հրաժարում պատասխանատվությունից:"
+    "disclaimerTitle": "Հրաժարում պատասխանատվությունից:",
+    "explore": {
+        "showOnlyMyPositions": "Ցույց տալ միայն իմ դիրքերը"
+    }
 }

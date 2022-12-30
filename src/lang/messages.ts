@@ -3,6 +3,7 @@ import { en as walletEn, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation, TransactionStatus } from '@sora-substrate/util';
 import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 
+import { DemeterPageNames } from '../modules/demeterFarming/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
 import { EvmNetworkType } from '../utils/ethers-util';
 import { MoonpayNotifications } from '../components/Moonpay/consts';
@@ -67,10 +68,14 @@ export default {
     [PageNames.Support]: 'Support',
     [PageNames.Wallet]: 'Wallet',
     [PageNames.Rewards]: 'Rewards',
-    [PageNames.Tokens]: 'Tokens',
+    [PageNames.ExploreTokens]: 'Tokens',
+    [PageNames.ExplorePools]: 'Pools',
+    [PageNames.ExploreStaking]: 'Staking',
+    [PageNames.ExploreFarming]: 'Farming',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.PageNotFound]: 'Page Not Found',
+    [DemeterPageNames.Staking]: 'Staking',
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',
@@ -82,7 +87,7 @@ export default {
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Stats',
     [PageNames.Support]: 'Support',
-    [PageNames.Tokens]: 'Tokens',
+    [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
   },
   headerMenu: {
@@ -183,7 +188,7 @@ export default {
     [Operation.ClaimRewards]: 'Claim Rewards',
     [Operation.ReferralReserveXor]: 'Bond XOR',
     [Operation.ReferralUnreserveXor]: 'Unbond XOR',
-    [Operation.ReferralSetInvitedUser]: 'Set Referral',
+    [Operation.ReferralSetInvitedUser]: 'Set {role}',
     [Operation.DemeterFarmingDepositLiquidity]: 'Add Liquidity Stake',
     [Operation.DemeterFarmingWithdrawLiquidity]: 'Remove Liquidity Stake',
     [Operation.DemeterFarmingStakeToken]: 'Add Stake',
@@ -202,7 +207,7 @@ export default {
       [Operation.ClaimRewards]: 'Reward claimed successfully {rewards}',
       [Operation.ReferralReserveXor]: 'Bonded XOR successfully',
       [Operation.ReferralUnreserveXor]: 'Unbonded XOR successfully',
-      [Operation.ReferralSetInvitedUser]: 'Set Referral',
+      [Operation.ReferralSetInvitedUser]: 'Set {role} {address}',
       [Operation.DemeterFarmingDepositLiquidity]: 'Supplied {symbol} and {symbol2} {amount} LP tokens',
       [Operation.DemeterFarmingWithdrawLiquidity]: 'Removed {symbol} and {symbol2} {amount} LP tokens',
       [Operation.DemeterFarmingStakeToken]: 'Added {amount} {symbol}',
@@ -221,7 +226,7 @@ export default {
       [Operation.ClaimRewards]: 'Failed to claim rewards {rewards}',
       [Operation.ReferralReserveXor]: 'Failed to bond XOR',
       [Operation.ReferralUnreserveXor]: 'Failed to unbonded XOR',
-      [Operation.ReferralSetInvitedUser]: 'Failed to set referral',
+      [Operation.ReferralSetInvitedUser]: 'Failed to set {role} {address}',
       [Operation.DemeterFarmingDepositLiquidity]: 'Failed to supply {amount} {symbol} and {symbol2} LP tokens',
       [Operation.DemeterFarmingWithdrawLiquidity]: 'Failed to remove {amount} {symbol} and {symbol2} LP tokens',
       [Operation.DemeterFarmingStakeToken]: 'Failed to add {amount} {symbol}',
@@ -537,10 +542,11 @@ export default {
     locked: '{percent} of your pool is in staking',
   },
   tokens: {
-    title: 'Listed Tokens',
     symbol: 'Symbol',
-    name: 'Name',
     assetId: 'Asset ID',
+  },
+  explore: {
+    showOnlyMyPositions: 'Show only my positions',
   },
   dexSettings: {
     title: 'Transaction settings',

@@ -5,7 +5,7 @@ import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/type
 
 import { assetsGetterContext } from '@/store/assets';
 import { findAssetInCollection } from '@/utils';
-import type { AssetsState, RegisteredAccountAssetObject, RegisteredAccountAssetWithDecimals } from './types';
+import type { AssetsState, RegisteredAccountAssetWithDecimals } from './types';
 
 const getters = defineGetters<AssetsState>()({
   whitelistAssets(...args): Array<Asset> {
@@ -14,7 +14,7 @@ const getters = defineGetters<AssetsState>()({
       api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist)
     );
   },
-  nonWhitelistDivisibleAssets(...args): { [key: string]: Asset } {
+  nonWhitelistDivisibleAssets(...args): Record<string, Asset> {
     const { rootState, rootGetters } = assetsGetterContext(args);
     return rootState.wallet.account.assets.reduce((buffer, asset: Asset) => {
       if (!api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist) && asset.decimals) {
@@ -23,7 +23,7 @@ const getters = defineGetters<AssetsState>()({
       return buffer;
     }, {});
   },
-  nonWhitelistDivisibleAccountAssets(...args): { [key: string]: AccountAsset } {
+  nonWhitelistDivisibleAccountAssets(...args): Record<string, AccountAsset> {
     const { rootState, rootGetters } = assetsGetterContext(args);
     return rootState.wallet.account.accountAssets.reduce((buffer, asset: AccountAsset) => {
       if (!api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist) && asset.decimals) {
@@ -32,37 +32,38 @@ const getters = defineGetters<AssetsState>()({
       return buffer;
     }, {});
   },
-  assetsDataTable(...args): RegisteredAccountAssetObject {
-    const { state, rootState, rootGetters } = assetsGetterContext(args);
-    const { accountAssetsAddressTable } = rootGetters.wallet.account;
-    const { assets } = rootState.wallet.account;
-    const { registeredAssets } = state;
+  assetsDataTable(...args): Record<string, Asset> {
+    const { rootState } = assetsGetterContext(args);
 
-    return assets.reduce<RegisteredAccountAssetObject>((result, asset: Asset) => {
+    return rootState.wallet.account.assets.reduce((result, asset) => {
+      return {
+        ...result,
+        [asset.address]: asset,
+      };
+    }, {});
+  },
+  assetDataByAddress(...args): (address?: Nullable<string>) => Nullable<RegisteredAccountAssetWithDecimals> {
+    const { getters, state, rootGetters } = assetsGetterContext(args);
+
+    return (address?: Nullable<string>): Nullable<RegisteredAccountAssetWithDecimals> => {
+      if (!address) return undefined;
+
+      const asset = getters.assetsDataTable[address];
+
+      if (!asset) return null;
+
       const { externalAddress, externalBalance, externalDecimals } =
-        findAssetInCollection(asset, registeredAssets) || {};
-      const { balance } = accountAssetsAddressTable[asset.address] || {};
+        findAssetInCollection(asset, state.registeredAssets) || {};
 
-      const item = {
+      const { balance } = rootGetters.wallet.account.accountAssetsAddressTable[asset.address] || {};
+
+      return {
         ...asset,
         balance,
         externalAddress,
         externalBalance,
         externalDecimals,
       };
-
-      return {
-        ...result,
-        [asset.address]: item,
-      };
-    }, {});
-  },
-  assetDataByAddress(...args): (address?: Nullable<string>) => Nullable<RegisteredAccountAssetWithDecimals> {
-    const { getters } = assetsGetterContext(args);
-    return (address?: Nullable<string>): Nullable<RegisteredAccountAssetWithDecimals> => {
-      if (!address) return undefined;
-
-      return getters.assetsDataTable[address];
     };
   },
   xor(...args): Nullable<RegisteredAccountAssetWithDecimals> {

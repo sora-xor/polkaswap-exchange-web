@@ -43,7 +43,7 @@
             "ClaimRewards": "Innhenting av belønning var vellykket {rewards}",
             "ReferralReserveXor": "Bondet XOR vellykket",
             "ReferralUnreserveXor": "Ubundet XOR vellykket",
-            "ReferralSetInvitedUser": "Henvisning er satt",
+            "ReferralSetInvitedUser": "{role} {address} er satt",
             "SwapAndSend": "Byttet {amount} {symbol} med {amount2} {symbol2} og {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Levert {symbol} og {symbol2} {amount} LP-tokens",
             "DemeterFarmingWithdrawLiquidity": "Fjernet {symbol} og {symbol2} {amount} LP-tokens",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Kunne ikke kreve belønninger {rewards}",
             "ReferralReserveXor": "Kunne ikke binde XOR",
             "ReferralUnreserveXor": "Kunne ikke frigjøre XOR",
-            "ReferralSetInvitedUser": "Kunne ikke angi henvisning",
+            "ReferralSetInvitedUser": "Kunne ikke angi {role} {address}",
             "SwapAndSend": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2} og {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Kunne ikke oppgi {amount} {symbol} og {symbol2} LP-tokens",
             "DemeterFarmingWithdrawLiquidity": "Kunne ikke fjerne {amount} {symbol} og {symbol2} LP-tokens",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
-        "ReferralSetInvitedUser": "Angi henvisning",
+        "ReferralSetInvitedUser": "Angi {role}",
         "SwapAndSend": "Bytt og send",
         "DemeterFarmingDepositLiquidity": "Innsats likviditet",
         "DemeterFarmingWithdrawLiquidity": "Unstake likviditet",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "Legg til likviditet",
         "RemoveLiquidity": "Fjern likviditet",
         "PageNotFound": "Side ikke funnet",
-        "Tokens": "Tokens",
-        "Rewards": "Belønninger"
+        "Rewards": "Belønninger",
+        "Explore\/Tokens": "Tokens",
+        "Explore\/Pools": "Bassenger",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -348,8 +352,9 @@
         "Stats": "Statistikk",
         "Support": "Brukerstøtte",
         "CreatePair": "Opprett par",
-        "Tokens": "Tokens",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Utforske",
+        "SoraCard": "{Sora} Kort"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +824,7 @@
         "title": "Språk"
     },
     "tokens": {
-        "title": "Oppførte token",
         "symbol": "Symbol",
-        "name": "Navn",
         "assetId": "Aktivum ID"
     },
     "memorandum": "{AppName} Memorandum og vilkår for bruk",
@@ -1130,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "{Hashi} bro",
-    "disclaimerTitle": "Ansvarsfraskrivelse:"
+    "disclaimerTitle": "Ansvarsfraskrivelse:",
+    "explore": {
+        "showOnlyMyPositions": "Vis bare mine posisjoner"
+    }
 }

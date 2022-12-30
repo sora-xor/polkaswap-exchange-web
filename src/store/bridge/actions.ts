@@ -93,7 +93,7 @@ const actions = defineActions({
     return bridgeHistory;
   },
   // TODO: Need to restore transactions for all networks
-  async updateHistory(context): Promise<void> {
+  async updateHistory(context, clearHistory = false): Promise<void> {
     const { commit, state, dispatch, rootState, rootGetters } = bridgeActionContext(context);
     if (state.historyLoading) return;
 
@@ -108,6 +108,10 @@ const actions = defineActions({
     );
     const contracts = compact(contractsArray);
     const updateCallback = () => commit.setHistory();
+
+    if (clearHistory) {
+      await bridgeHistory.clearHistory(updateCallback);
+    }
 
     await bridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, updateCallback);
 

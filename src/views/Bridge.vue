@@ -327,10 +327,10 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setAmount setAmount!: (value: string) => void;
 
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
-  @action.bridge.resetBridgeForm private resetBridgeForm!: AsyncVoidFn;
-  @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncVoidFn;
-  @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncVoidFn;
-  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
+  @action.bridge.resetBridgeForm private resetBridgeForm!: AsyncFnWithoutArgs;
+  @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
 
@@ -448,7 +448,7 @@ export default class Bridge extends Mixins(
 
     return this.isXorSufficientForNextTx({
       type: this.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
-      isXorAccountAsset: isXorAccountAsset(this.asset),
+      isXor: isXorAccountAsset(this.asset),
       amount: this.getFPNumber(this.amount),
     });
   }

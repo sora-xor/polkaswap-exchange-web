@@ -10,7 +10,7 @@ import type { DemeterFarmingState } from './types';
 
 const mutations = defineMutations<DemeterFarmingState>()({
   setPools(state, pools: Array<DemeterPool>): void {
-    state.pools = [...pools];
+    state.pools = Object.freeze([...pools]);
   },
   setPoolsUpdates(state, updates: Subscription): void {
     state.poolsUpdates = updates;
@@ -21,7 +21,7 @@ const mutations = defineMutations<DemeterFarmingState>()({
   },
 
   setTokens(state, tokens: Array<DemeterRewardToken>): void {
-    state.tokens = [...tokens];
+    state.tokens = Object.freeze([...tokens]);
   },
   setTokensUpdates(state, updates: Subscription): void {
     state.tokensUpdates = updates;
@@ -32,7 +32,7 @@ const mutations = defineMutations<DemeterFarmingState>()({
   },
 
   setAccountPools(state, pools: Array<DemeterAccountPool>): void {
-    state.accountPools = [...pools];
+    state.accountPools = Object.freeze([...pools]);
   },
   setAccountPoolsUpdates(state, updates: Subscription): void {
     state.accountPoolsUpdates = updates;

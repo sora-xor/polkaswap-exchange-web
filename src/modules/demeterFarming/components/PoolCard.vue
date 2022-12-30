@@ -20,18 +20,17 @@
         :value="poolAssetBalanceFormatted"
         :fiat-value="poolAssetBalanceFiat"
       />
-      <info-line v-if="pricesAvailable" :value="aprFormatted">
+      <info-line v-if="pricesAvailable" :value="apr">
         <template #info-line-prefix>
           <div class="apr">
             <span class="apr-label">{{ TranslationConsts.APR }}</span>
-            <div class="calculator-btn" @click="calculator">
+            <calculator-button @click.native="calculator">
               <span>{{ t('demeterFarming.calculator') }}</span>
-              <calculator-icon class="calculator-btn-icon" />
-            </div>
+            </calculator-button>
           </div>
         </template>
       </info-line>
-      <info-line v-if="pricesAvailable" :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvlFormatted" />
+      <info-line v-if="pricesAvailable" :label="t('demeterFarming.info.totalLiquidityLocked')" :value="tvl" />
       <info-line :label="t('demeterFarming.info.rewardToken')" :value="rewardAssetSymbol" />
 
       <info-line
@@ -43,18 +42,19 @@
       />
       <info-line
         v-if="hasStake"
+        key="has-stake"
         value-can-be-hidden
         :label="poolShareText"
         :value="poolShareFormatted"
         :fiat-value="poolShareFiat"
       />
-      <template v-else>
-        <info-line
-          :label="t('demeterFarming.info.fee')"
-          :label-tooltip="t('demeterFarming.info.feeTooltip')"
-          :value="depositFeeFormatted"
-        />
-      </template>
+      <info-line
+        v-else
+        key="no-stake"
+        :label="t('demeterFarming.info.fee')"
+        :label-tooltip="t('demeterFarming.info.feeTooltip')"
+        :value="depositFeeFormatted"
+      />
 
       <template #buttons v-if="hasStake || hasRewards">
         <s-button type="secondary" class="s-typography-button--medium" @click="claim" :disabled="!hasRewards">{{
@@ -69,6 +69,7 @@
         <template v-if="activeStatus">
           <s-button
             v-if="isLoggedIn"
+            key="connected"
             type="primary"
             class="s-typography-button--large action-button"
             :disabled="depositDisabled"
@@ -76,7 +77,13 @@
           >
             {{ primaryButtonText }}
           </s-button>
-          <s-button v-else type="primary" class="s-typography-button--large action-button" @click="handleConnectWallet">
+          <s-button
+            v-else
+            type="primary"
+            key="disconnected"
+            class="s-typography-button--large action-button"
+            @click="handleConnectWallet"
+          >
             {{ t('connectWalletText') }}
           </s-button>
         </template>
@@ -93,24 +100,26 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
-import PoolMixin from '../mixins/PoolMixin';
-import CalculatorIcon from '@/assets/img/calculator/signs.svg?inline';
-
+import PoolCardMixin from '../mixins/PoolCardMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter } from '@/store/decorators';
 
+import { demeterLazyComponent } from '../router';
+import { DemeterComponents } from '../consts';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames, Links } from '@/consts';
 
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+
 @Component({
   components: {
-    CalculatorIcon,
+    CalculatorButton: demeterLazyComponent(DemeterComponents.CalculatorButton),
     PoolInfo: lazyComponent(Components.PoolInfo),
     InfoLine: components.InfoLine,
   },
 })
-export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
+export default class PoolCard extends Mixins(PoolCardMixin, TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly border!: boolean;
   @Prop({ default: false, type: Boolean }) readonly showBalance!: boolean;
 
@@ -126,6 +135,14 @@ export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
 
   get primaryButtonText(): string {
     return this.t(`demeterFarming.actions.${this.hasStake ? 'add' : 'start'}`);
+  }
+
+  get poolAssetBalanceFormatted(): string {
+    return this.poolAssetBalance.toLocaleString();
+  }
+
+  get poolAssetBalanceFiat(): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.poolAssetBalance, this.poolAsset as AccountAsset);
   }
 
   handleConnectWallet(): void {
@@ -182,27 +199,7 @@ export default class PoolCard extends Mixins(PoolMixin, TranslationMixin) {
   align-items: center;
 
   &-label {
-    & + .calculator-btn {
-      margin-left: $inner-spacing-mini;
-    }
-  }
-}
-
-.calculator-btn {
-  display: inline-flex;
-  align-items: center;
-  color: var(--s-color-theme-accent);
-  cursor: pointer;
-  background: var(--s-color-utility-surface);
-  border-radius: calc(var(--s-border-radius-mini) / 2);
-  font-size: var(--s-font-size-mini);
-  font-weight: 400;
-  line-height: var(--s-line-height-medium);
-  padding: 2px 8px;
-  text-transform: uppercase;
-
-  &-icon {
-    margin-left: $inner-spacing-tiny;
+    margin-right: $inner-spacing-mini;
   }
 }
 </style>
