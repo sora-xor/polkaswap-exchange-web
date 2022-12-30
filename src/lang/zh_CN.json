@@ -43,7 +43,7 @@
             "ClaimRewards": "{rewards}奖励申领成功",
             "ReferralReserveXor": "绑定XOR成功",
             "ReferralUnreserveXor": "解绑XOR成功",
-            "ReferralSetInvitedUser": "推荐设置成功",
+            "ReferralSetInvitedUser": "{role} {address} 设置成功",
             "SwapAndSend": "已将{amount} {symbol}兑换为{amount2} {symbol2}和{action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "已提供{symbol}和{symbol2} {amount} 流动性提供代币",
             "DemeterFarmingWithdrawLiquidity": "已移除{symbol}和{symbol2} {amount} 流动性提供代币",
@@ -63,7 +63,7 @@
             "ClaimRewards": "未能申领奖励{rewards}。",
             "ReferralReserveXor": "绑定XOR失败",
             "ReferralUnreserveXor": "XOR解绑失败",
-            "ReferralSetInvitedUser": "设置推荐失败",
+            "ReferralSetInvitedUser": "设置 {role} {address} 失败",
             "SwapAndSend": "无法将{amount} {symbol}兑换为{amount2} {symbol2}和{action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "提供{amount} {symbol}和{symbol2} LP 代币失败",
             "DemeterFarmingWithdrawLiquidity": "移除{amount} {symbol}和{symbol2} LP 令牌失败",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
-        "ReferralSetInvitedUser": "设置推荐",
+        "ReferralSetInvitedUser": "设置 {role}",
         "SwapAndSend": "兑换和发送",
         "DemeterFarmingDepositLiquidity": "质押流动性",
         "DemeterFarmingWithdrawLiquidity": "未质押流动性",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "增加流动性",
         "RemoveLiquidity": "删除流动性",
         "PageNotFound": "找不到网页",
-        "Tokens": "代币",
-        "Rewards": "奖励"
+        "Rewards": "奖励",
+        "Explore\/Tokens": "代币",
+        "Explore\/Pools": "游泳池",
+        "Explore\/Staking": "质押",
+        "Explore\/Farming": "农耕",
+        "Staking": "质押"
     },
     "mainMenu": {
         "Swap": "交换",
@@ -348,8 +352,9 @@
         "Stats": "统计数据",
         "Support": "支持",
         "CreatePair": "创建流动性对",
-        "Tokens": "代币",
-        "StakingContainer": "质押"
+        "StakingContainer": "质押",
+        "Explore\/Container": "探索",
+        "SoraCard": "{Sora}卡"
     },
     "social": {
         "twitter": "推特",
@@ -819,9 +824,7 @@
         "title": "语言"
     },
     "tokens": {
-        "title": "已列出的代币",
         "symbol": "符号",
-        "name": "名字",
         "assetId": "资产 ID"
     },
     "memorandum": "{AppName} 备忘录和服务条款",
@@ -1130,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "{Hashi}桥",
-    "disclaimerTitle": "免责声明:"
+    "disclaimerTitle": "免责声明:",
+    "explore": {
+        "showOnlyMyPositions": "只显示我的位置"
+    }
 }

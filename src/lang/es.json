@@ -43,7 +43,7 @@
             "ClaimRewards": "{rewards} Recompensa reclamada correctamente",
             "ReferralReserveXor": "XOR viculado con éxito",
             "ReferralUnreserveXor": "XOR desvinculado con éxito",
-            "ReferralSetInvitedUser": "La referencia se estableció correctamente",
+            "ReferralSetInvitedUser": "La {role} {address} se estableció correctamente",
             "SwapAndSend": "Se cambió {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Suministrado {symbol} y {symbol2} {amount} tokens LP",
             "DemeterFarmingWithdrawLiquidity": "Se eliminaron {symbol} y {symbol2} {amount} tokens LP",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Fallo al reclamar Recompensas {rewards}",
             "ReferralReserveXor": "Error al vincular XOR",
             "ReferralUnreserveXor": "Error al desvincular XOR",
-            "ReferralSetInvitedUser": "No se pudo establecer la referencia",
+            "ReferralSetInvitedUser": "No se pudo establecer la {role} {address}",
             "SwapAndSend": "Error al cambiar {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Error al proporcionar {amount} {symbol} y {symbol2} tokens LP",
             "DemeterFarmingWithdrawLiquidity": "Error al eliminar {amount} {symbol} y {symbol2} tokens LP",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Vincular XOR",
         "ReferralUnreserveXor": "Desvincular XOR",
-        "ReferralSetInvitedUser": "Establecer referencia",
+        "ReferralSetInvitedUser": "Establecer {role}",
         "SwapAndSend": "Intercambiar y enviar",
         "DemeterFarmingDepositLiquidity": "Liquidez de la participación",
         "DemeterFarmingWithdrawLiquidity": "Quitar liquidez",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "Añadir Liquidez",
         "RemoveLiquidity": "Remover Liquidez",
         "PageNotFound": "Página no encontrada",
-        "Tokens": "Tokens",
-        "Rewards": "Recompensas"
+        "Rewards": "Recompensas",
+        "Explore\/Tokens": "Tokens",
+        "Explore\/Pools": "Quinielas",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Agricultura",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Intercambio",
@@ -348,8 +352,9 @@
         "Stats": "Estadísticas",
         "Support": "Soporte",
         "CreatePair": "Crear par",
-        "Tokens": "Tokens",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Explorar",
+        "SoraCard": "{Sora} Tarjeta"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +824,7 @@
         "title": "Idioma"
     },
     "tokens": {
-        "title": "Tokens listados",
         "symbol": "Símbolo",
-        "name": "Nombre",
         "assetId": "ID del Activo"
     },
     "memorandum": "Memorándum {AppName} y condiciones de servicio",
@@ -1130,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "Puente {Hashi}",
-    "disclaimerTitle": "Aviso legal:"
+    "disclaimerTitle": "Aviso legal:",
+    "explore": {
+        "showOnlyMyPositions": "Mostrar solo mis posiciones"
+    }
 }

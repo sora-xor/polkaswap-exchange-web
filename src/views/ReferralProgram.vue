@@ -218,13 +218,13 @@ export default class ReferralProgram extends Mixins(
   @getter.assets.xor xor!: Nullable<AccountAsset>;
   @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
 
-  @mutation.referrals.reset private reset!: VoidFunction;
-  @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
+  @mutation.referrals.reset private reset!: FnWithoutArgs;
+  @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
+  @mutation.referrals.resetReferrerSubscription private resetReferrerSubscription!: FnWithoutArgs;
   @mutation.referrals.setStorageReferrer private setStorageReferrer!: (value: string) => void;
-  @action.referrals.subscribeOnInvitedUsers private subscribeOnInvitedUsers!: AsyncVoidFn;
-  @action.referrals.getReferrer private getReferrer!: AsyncVoidFn;
-  @action.referrals.subscribeOnReferrer private subscribeOnReferrer!: AsyncVoidFn;
-  @mutation.referrals.resetReferrerSubscription private resetReferrerSubscription!: VoidFunction;
+  @action.referrals.subscribeOnInvitedUsers private subscribeOnInvitedUsers!: AsyncFnWithoutArgs;
+  @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
+  @action.referrals.subscribeOnReferrer private subscribeOnReferrer!: AsyncFnWithoutArgs;
 
   @Watch('isSoraAccountConnected')
   private async updateSubscriptions(value: boolean): Promise<void> {

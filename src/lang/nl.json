@@ -43,7 +43,7 @@
             "ClaimRewards": "Beloning succesvol geclaimd {rewards}",
             "ReferralReserveXor": "Bonded XOR met succes",
             "ReferralUnreserveXor": "Unbonded XOR met succes",
-            "ReferralSetInvitedUser": "Verwijzing is succesvol ingesteld",
+            "ReferralSetInvitedUser": "{role} {address} is succesvol ingesteld",
             "SwapAndSend": "{amount} {symbol} geruild voor {amount2} {symbol2} en {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Meegeleverde {symbol} en {symbol2} {amount} LP tokens",
             "DemeterFarmingWithdrawLiquidity": "{symbol} en {symbol2} {amount} LP tokens verwijderd",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Kan geen beloningen claimen {rewards}",
             "ReferralReserveXor": "Kan XOR niet binden",
             "ReferralUnreserveXor": "Kan de obligatie niet ongedaan maken XOR",
-            "ReferralSetInvitedUser": "Kan verwijzing niet instellen",
+            "ReferralSetInvitedUser": "Kan {role} {address} niet instellen",
             "SwapAndSend": "Kan {amount} {symbol} niet omwisselen voor {amount2} {symbol2} en {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Kan {amount} {symbol} en {symbol2} LP-tokens niet leveren",
             "DemeterFarmingWithdrawLiquidity": "Kan {amount} {symbol} en {symbol2} LP-tokens niet verwijderen",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
-        "ReferralSetInvitedUser": "Verwijzing instellen",
+        "ReferralSetInvitedUser": "{role} instellen",
         "SwapAndSend": "Ruilen en verzenden",
         "DemeterFarmingDepositLiquidity": "Liquiditeit van het aandeel",
         "DemeterFarmingWithdrawLiquidity": "Liquiditeit ongedaan maken",
@@ -334,8 +334,12 @@
         "AddLiquidityId": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
         "PageNotFound": "Pagina niet gevonden",
-        "Tokens": "Tokens",
-        "Rewards": "Beloningen"
+        "Rewards": "Beloningen",
+        "Explore\/Tokens": "Tokens",
+        "Explore\/Pools": "Zwembaden",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -348,8 +352,9 @@
         "Stats": "Stats",
         "Support": "Support",
         "CreatePair": "Maak Paar",
-        "Tokens": "Tokens",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Ontdekken",
+        "SoraCard": "{Sora} Kaart"
     },
     "social": {
         "twitter": "Twitter",
@@ -819,9 +824,7 @@
         "title": "Taal"
     },
     "tokens": {
-        "title": "Vermelde tokens",
         "symbol": "Symbool",
-        "name": "Naam",
         "assetId": "Asset-ID"
     },
     "memorandum": "{AppName} memorandum en servicevoorwaarden",
@@ -1130,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "{Hashi} brug",
-    "disclaimerTitle": "Disclaimer:"
+    "disclaimerTitle": "Disclaimer:",
+    "explore": {
+        "showOnlyMyPositions": "Toon alleen mijn posities"
+    }
 }

@@ -32,7 +32,7 @@ type GetBridgeHistoryInstance = () => Promise<EthBridgeHistory>;
 type ShowNotification = (tx: BridgeHistory) => void;
 
 interface BridgeCommonOptions {
-  updateHistory: VoidFunction;
+  updateHistory: FnWithoutArgs;
   showNotification: ShowNotification;
   getAssetByAddress: GetAssetByAddress;
   getActiveHistoryItem: GetActiveHistoryItem;
@@ -52,7 +52,7 @@ interface BridgeReducerOptions extends BridgeCommonOptions {
 
 class BridgeTransactionStateHandler {
   protected readonly signEvm!: SignEvm;
-  protected readonly updateHistory!: VoidFunction;
+  protected readonly updateHistory!: FnWithoutArgs;
   protected readonly showNotification!: ShowNotification;
   protected readonly getAssetByAddress!: GetAssetByAddress;
   protected readonly getActiveHistoryItem!: GetActiveHistoryItem;

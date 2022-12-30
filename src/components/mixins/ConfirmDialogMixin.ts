@@ -10,7 +10,7 @@ export default class ConfirmDialogMixin extends Mixins(TranslationMixin) {
     this.showConfirmDialog = true;
   }
 
-  async handleConfirmDialog(func: AsyncVoidFn): Promise<void> {
+  async handleConfirmDialog(func: AsyncFnWithoutArgs): Promise<void> {
     try {
       await func();
       this.showConfirmDialog = false;

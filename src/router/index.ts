@@ -91,6 +91,7 @@ const routes: Array<RouteConfig> = [
             path: '',
             name: DemeterPageNames.Pool,
             component: demeterLazyView(DemeterPageNames.Pool),
+            props: { isFarmingPage: true },
           },
           {
             path: 'add/:firstAddress?/:secondAddress?',
@@ -122,8 +123,51 @@ const routes: Array<RouteConfig> = [
             path: '',
             name: DemeterPageNames.Staking,
             component: demeterLazyView(DemeterPageNames.Staking),
+            props: { isFarmingPage: false },
           },
         ],
+      },
+    ],
+  },
+  {
+    path: '/explore',
+    name: PageNames.ExploreContainer,
+    component: lazyView(PageNames.ExploreContainer),
+    redirect: { name: PageNames.ExploreFarming },
+    children: [
+      {
+        path: 'demeter',
+        component: demeterLazyView(DemeterPageNames.DataContainer),
+        children: [
+          {
+            path: 'staking',
+            name: PageNames.ExploreStaking,
+            component: lazyView(PageNames.ExploreDemeter),
+            props: { isFarmingPage: false },
+          },
+          {
+            path: 'farming',
+            name: PageNames.ExploreFarming,
+            component: lazyView(PageNames.ExploreDemeter),
+            props: { isFarmingPage: true },
+          },
+        ],
+      },
+      {
+        path: 'pools',
+        component: lazyView(PageNames.PoolContainer),
+        children: [
+          {
+            path: '',
+            name: PageNames.ExplorePools,
+            component: lazyView(PageNames.ExplorePools),
+          },
+        ],
+      },
+      {
+        path: 'tokens',
+        name: PageNames.ExploreTokens,
+        component: lazyView(PageNames.ExploreTokens),
       },
     ],
   },
@@ -150,9 +194,8 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/referral',
-    name: PageNames.Referral,
+    name: PageNames.ReferralProgram,
     component: lazyView(PageNames.RewardsTabs),
-    meta: { isReferralProgram: true },
     children: [
       {
         path: ':referrerAddress?',
@@ -162,11 +205,6 @@ const routes: Array<RouteConfig> = [
         },
       },
     ],
-  },
-  {
-    path: '/tokens',
-    name: PageNames.Tokens,
-    component: lazyView(PageNames.Tokens),
   },
   {
     path: '/moonpay-history',
@@ -213,7 +251,7 @@ router.beforeEach((to, from, next) => {
       store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
     }
     if (isLoggedIn) {
-      setRoute(PageNames.Referral);
+      setRoute(PageNames.ReferralProgram);
       return;
     }
   }
