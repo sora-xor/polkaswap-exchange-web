@@ -1133,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "{Hashi} bro",
-    "disclaimerTitle": "Ansvarsfraskrivelse:"
+    "disclaimerTitle": "Ansvarsfraskrivelse:",
+    "explore": {
+        "showOnlyMyPositions": "Vis bare mine posisjoner"
+    }
 }

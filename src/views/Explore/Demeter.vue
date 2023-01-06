@@ -43,6 +43,24 @@
           </div>
         </template>
       </s-table-column>
+      <!-- Reward Token -->
+      <s-table-column width="120" header-align="left" align="left">
+        <template #header>
+          <sort-button name="rewardAssetSymbol" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="explore-table__primary">Reward</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <div class="explore-table-cell">
+            <token-logo
+              size="small"
+              class="explore-table-item-logo explore-table-item-logo--plain"
+              :token-symbol="row.rewardAsset.symbol"
+            />
+            <div class="explore-table-item-name">{{ row.rewardAsset.symbol }}</div>
+          </div>
+        </template>
+      </s-table-column>
       <!-- APR -->
       <s-table-column width="140" header-align="right" align="right">
         <template #header>
@@ -62,24 +80,6 @@
               })
             "
           />
-        </template>
-      </s-table-column>
-      <!-- Reward Token -->
-      <s-table-column width="120" header-align="left" align="left">
-        <template #header>
-          <sort-button name="rewardAssetSymbol" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="explore-table__primary">Reward</span>
-          </sort-button>
-        </template>
-        <template v-slot="{ row }">
-          <div class="explore-table-cell">
-            <token-logo
-              size="small"
-              class="explore-table-item-logo explore-table-item-logo--plain"
-              :token-symbol="row.rewardAsset.symbol"
-            />
-            <div class="explore-table-item-name">{{ row.rewardAsset.symbol }}</div>
-          </div>
         </template>
       </s-table-column>
       <!-- Fee -->
@@ -192,6 +192,7 @@ type TableItem = {
   tvlFormatted: AmountWithSuffix;
   apr: number;
   aprFormatted: string;
+  isAccountItem: boolean;
   accountTokens: { asset: Asset; balance: string; balancePrefix: string }[];
   liquidity: Nullable<AccountLiquidity>;
 };
@@ -217,7 +218,7 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
       await this.withParentLoading(async () => {
         const buffer = {};
         const isFarm = this.isFarmingPage;
-        const keys = this.items.map((item) => lpKey(item.baseAsset, item.poolAsset));
+        const keys = this.list.map((item) => lpKey(item.baseAsset, item.poolAsset));
         const poolKeys = [...new Set(keys)];
 
         await Promise.allSettled(
@@ -243,7 +244,7 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
 
   poolsData: Record<string, PoolData> = {};
 
-  get items(): DemeterPool[] {
+  get list(): DemeterPool[] {
     return Object.values(this.pools)
       .map((poolMap) => Object.values(poolMap))
       .flat(2)
@@ -256,8 +257,8 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
     return this.prepareDerivedPoolData(this.selectedPool, this.selectedAccountPool, this.liquidity);
   }
 
-  get preparedItems(): TableItem[] {
-    return this.items.map((pool) => {
+  get items(): TableItem[] {
+    return this.list.map((pool) => {
       const baseAsset = this.demeterAssetsData[pool.baseAsset] as Asset;
       const poolAsset = this.demeterAssetsData[pool.poolAsset] as Asset;
       const rewardAsset = this.demeterAssetsData[pool.rewardAsset] as Asset;
@@ -267,6 +268,7 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
       );
       const tokenInfo = this.tokenInfos[pool.rewardAsset];
       const accountPool = this.getAccountPool(pool);
+      const isAccountItem = !!accountPool && this.isActiveAccountPool(accountPool);
       const poolData = this.poolsData[lpKey(pool.baseAsset, pool.poolAsset)];
       const poolTokenPrice = poolData?.price ?? FPNumber.ZERO;
       const poolBaseReserves = poolData?.reserves?.[0] ?? FPNumber.ZERO;
@@ -332,10 +334,17 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
         tvlFormatted: formatAmountWithSuffix(tvl),
         apr: apr.toNumber(),
         aprFormatted: formatDecimalPlaces(apr, true),
+        isAccountItem,
         accountTokens,
         liquidity,
       };
     });
+  }
+
+  get preparedItems(): TableItem[] {
+    if (!this.isAccountItems) return this.items;
+
+    return this.items.filter((item) => item.isAccountItem);
   }
 
   private async getPoolData(key: string, isFarm: boolean): Promise<Nullable<PoolData>> {

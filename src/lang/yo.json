@@ -1133,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "{Hashi} Afara",
-    "disclaimerTitle": "Akiyesi:"
+    "disclaimerTitle": "Akiyesi:",
+    "explore": {
+        "showOnlyMyPositions": "Ṣe afihan awọn ipo mi nikan"
+    }
 }

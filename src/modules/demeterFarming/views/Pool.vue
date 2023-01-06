@@ -128,6 +128,11 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
 <style lang="scss" scoped>
 .farming-pool-badges {
   flex-flow: wrap;
+  margin: -$inner-spacing-mini / 2;
+
+  & > * {
+    margin: $inner-spacing-mini / 2;
+  }
 }
 .demeter-pool {
   margin-top: $inner-spacing-medium;

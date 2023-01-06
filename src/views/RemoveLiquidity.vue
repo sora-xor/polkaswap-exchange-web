@@ -123,7 +123,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -218,8 +218,8 @@ export default class RemoveLiquidity extends Mixins(
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
       this.setAddresses({
-        firstAddress: this.firstTokenAddress,
-        secondAddress: this.secondTokenAddress,
+        firstAddress: this.firstRouteAddress,
+        secondAddress: this.secondRouteAddress,
       });
       // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
       if (!this.liquidity) {
@@ -239,11 +239,13 @@ export default class RemoveLiquidity extends Mixins(
     return this.removePart ? Number(this.removePart) : undefined;
   }
 
-  get firstTokenAddress(): string {
+  /** First token address from route object */
+  get firstRouteAddress(): string {
     return this.$route.params.firstAddress;
   }
 
-  get secondTokenAddress(): string {
+  /** Second token address from route object */
+  get secondRouteAddress(): string {
     return this.$route.params.secondAddress;
   }
 
@@ -305,9 +307,13 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isXorSufficientForNextOperation(): boolean {
-    return this.isXorSufficientForNextTx({
-      type: Operation.RemoveLiquidity,
-    });
+    const params: WALLET_CONSTS.NetworkFeeWarningOptions = { type: Operation.RemoveLiquidity };
+
+    if (this.firstToken?.address === XOR.address) {
+      params.amount = this.getFPNumber(this.firstTokenAmount);
+      params.isXor = true;
+    }
+    return this.isXorSufficientForNextTx(params);
   }
 
   get isMaxButtonAvailable(): boolean {

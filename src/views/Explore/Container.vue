@@ -17,9 +17,15 @@
         />
       </generic-page-header>
 
+      <div v-if="switcherAvailable" class="switcher">
+        <s-switch v-model="isAccountItemsOnly" />
+        <span>{{ t('explore.showOnlyMyPositions') }}</span>
+      </div>
+
       <router-view
         v-bind="{
           exploreQuery,
+          isAccountItems,
           parentLoading,
           ...$attrs,
         }"
@@ -34,8 +40,11 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import storage from '@/utils/storage';
 import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
+
+const storageKey = 'exploreAccountItems';
 
 @Component({
   components: {
@@ -45,6 +54,16 @@ import { PageNames, Components } from '@/consts';
 })
 export default class ExploreContainer extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   exploreQuery = '';
+  isAccountItems = Boolean(storage.get(storageKey as any));
+
+  get isAccountItemsOnly(): boolean {
+    return this.isAccountItems;
+  }
+
+  set isAccountItemsOnly(value: boolean) {
+    storage.set(storageKey as any, value);
+    this.isAccountItems = value;
+  }
 
   get tabs(): Array<{ name: string; label: string }> {
     return [PageNames.ExploreFarming, PageNames.ExplorePools, PageNames.ExploreStaking, PageNames.ExploreTokens].map(
@@ -61,6 +80,10 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 
   get pageTitle(): string {
     return this.t(`pageTitle.${this.pageName}`);
+  }
+
+  get switcherAvailable(): boolean {
+    return this.pageName !== PageNames.ExploreTokens;
   }
 
   handleTabChange(name: string): void {
@@ -88,13 +111,18 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 
 <style lang="scss" scoped>
 $container-max-width: 75vw;
-$container-min-width: $breakpoint_mobile;
 $search-input-width: 290px;
 
 .container--explore {
-  max-width: $container-max-width;
-  min-width: $container-min-width;
   margin: $inner-spacing-big $inner-spacing-big 0;
+
+  & > *:not(:last-child) {
+    margin-bottom: $inner-spacing-medium;
+  }
+
+  @include tablet {
+    max-width: $container-max-width;
+  }
 }
 
 .explore {
@@ -120,5 +148,14 @@ $search-input-width: 290px;
 .page-header-title--explore {
   justify-content: space-between;
   align-items: center;
+}
+
+.switcher {
+  display: flex;
+  align-items: center;
+
+  & > span {
+    margin-left: $inner-spacing-small;
+  }
 }
 </style>
