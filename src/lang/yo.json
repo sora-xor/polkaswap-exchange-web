@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Akiyesi:",
     "explore": {
         "showOnlyMyPositions": "Ṣe afihan awọn ipo mi nikan"
+    },
+    "tooltips": {
+        "roi": "{ROI} duro fun Pada lori Idoko-owo. O ṣe iṣiro nipasẹ pinpin èrè ti o jo'gun lori idoko-owo nipasẹ idiyele ti idoko-owo yẹn ni deede ogorun kan.",
+        "tvl": "{TVL} duro fun Titiipa Iye Lapapọ. O duro fun awọn ami titiipa ninu awọn adagun-odo ni deede dola."
     }
 }

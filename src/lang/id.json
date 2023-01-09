@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Penafian:",
     "explore": {
         "showOnlyMyPositions": "Hanya tampilkan posisi saya"
+    },
+    "tooltips": {
+        "roi": "{ROI} adalah singkatan dari Pengembalian Investasi. Ini dihitung dengan membagi laba yang diperoleh dari investasi dengan biaya investasi itu dalam persentase yang setara.",
+        "tvl": "{TVL} adalah singkatan dari Total Value Locked. Ini mewakili token yang dikunci di kumpulan dalam setara dolar."
     }
 }

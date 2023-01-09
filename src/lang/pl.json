@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Zastrzeżenie:",
     "explore": {
         "showOnlyMyPositions": "Pokaż tylko moje pozycje"
+    },
+    "tooltips": {
+        "roi": "{ROI} oznacza zwrot z inwestycji. Oblicza się go, dzieląc zysk uzyskany z inwestycji przez koszt tej inwestycji w ekwiwalencie procentowym.",
+        "tvl": "{TVL} oznacza całkowitą zablokowaną wartość. Reprezentuje tokeny zamknięte w pulach w ekwiwalencie dolara."
     }
 }

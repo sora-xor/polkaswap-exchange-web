@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Jogi nyilatkozat:",
     "explore": {
         "showOnlyMyPositions": "Csak az én pozíciómat mutasd"
+    },
+    "tooltips": {
+        "roi": "A {ROI} a befektetés megtérülését jelenti. Kiszámítása úgy történik, hogy a befektetésen megszerzett nyereséget elosztjuk a befektetés százalékban kifejezett költségével.",
+        "tvl": "A {TVL} a Total Value Locked rövidítése. A készletekbe zárt tokeneket jelenti dollárban kifejezve."
     }
 }

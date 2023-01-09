@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Aviso legal:",
     "explore": {
         "showOnlyMyPositions": "Mostrar solo mis posiciones"
+    },
+    "tooltips": {
+        "roi": "{ROI} significa Retorno de la Inversión. Se calcula dividiendo la ganancia obtenida en una inversión por el costo de esa inversión en un porcentaje equivalente.",
+        "tvl": "{TVL} significa valor total bloqueado. Representa tokens bloqueados en los grupos en el equivalente en dólares."
     }
 }
