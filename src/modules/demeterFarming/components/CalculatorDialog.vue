@@ -52,7 +52,11 @@
       <div class="results">
         <div class="results-title">{{ TranslationConsts.APR }} {{ t('demeterFarming.results') }}</div>
 
-        <info-line :label="TranslationConsts.ROI" :value="calculatedRoiPercentFormatted" />
+        <info-line
+          :label="TranslationConsts.ROI"
+          :label-tooltip="t('tooltips.roi')"
+          :value="calculatedRoiPercentFormatted"
+        />
         <info-line :label="rewardsText" :value="calculatedRewardsFormatted" :fiat-value="calculatedRewardsFiat" />
       </div>
 

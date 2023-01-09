@@ -113,7 +113,10 @@
         <s-table-column width="104" header-align="right" align="right">
           <template #header>
             <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
-              <span class="explore-table__primary">TVL</span>
+              <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
+              <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
+                <s-icon name="info-16" size="14px" />
+              </s-tooltip>
             </sort-button>
           </template>
           <template v-slot="{ row }">

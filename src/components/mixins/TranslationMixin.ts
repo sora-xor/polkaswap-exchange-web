@@ -20,15 +20,18 @@ const OrdinalRules = {
   },
 };
 
+const TranslationConsts = {
+  ...WALLET_CONSTS.TranslationConsts,
+  // extending consts
+  AppName: app.name,
+  TVL: 'TVL',
+};
+
 @Component
 export default class TranslationMixin extends Mixins(mixins.TranslationMixin) {
   @state.settings.language language!: string;
 
-  readonly TranslationConsts = {
-    ...WALLET_CONSTS.TranslationConsts,
-    // extending consts
-    AppName: app.name,
-  };
+  readonly TranslationConsts = TranslationConsts;
 
   tOrdinal(n) {
     return OrdinalRules[this.$i18n.locale]?.(n) ?? n;
