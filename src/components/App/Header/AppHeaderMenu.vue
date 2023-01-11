@@ -76,6 +76,7 @@ enum HeaderMenuType {
   Theme = 'theme',
   Language = 'language',
   Notification = 'notification',
+  Disclaimer = 'disclaimer',
 }
 
 type MenuItem = {
@@ -136,6 +137,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     return this.t('headerMenu.switchTheme', { theme });
   }
 
+  get disclaimerText(): string {
+    return 'Show Disclaimer';
+  }
+
   private getHideBalancesIcon(isDropdown = false): string {
     if (isDropdown) {
       return this.shouldBalanceBeHidden ? 'basic-eye-no-24' : 'basic-filterlist-24';
@@ -164,6 +169,11 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         value: HeaderMenuType.Language,
         icon: 'basic-globe-24',
         text: this.t('headerMenu.switchLanguage'),
+      },
+      {
+        value: HeaderMenuType.Disclaimer,
+        icon: 'info-16',
+        text: this.disclaimerText,
       },
     ];
   }
@@ -209,6 +219,9 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         break;
       case HeaderMenuType.Language:
         this.setLanguageDialogVisibility(true);
+        break;
+      case HeaderMenuType.Disclaimer:
+        // this.toggleDislaimer();
         break;
     }
   }
