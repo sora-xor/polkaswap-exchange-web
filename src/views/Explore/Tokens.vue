@@ -12,7 +12,9 @@
       <s-table-column width="320" label="#" fixed-position="left">
         <template #header>
           <div class="explore-table-item-index">
-            <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">#</span>
+            <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
+              #
+            </span>
           </div>
           <div class="explore-table-item-logo">
             <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head" />
