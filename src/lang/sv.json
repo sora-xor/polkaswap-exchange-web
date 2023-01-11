@@ -354,7 +354,7 @@
         "CreatePair": "Skapa Par",
         "StakingContainer": "Utsättning",
         "Explore\/Container": "Utforska",
-        "SoraCard": ""
+        "SoraCard": "{Sora} Kort"
     },
     "social": {
         "twitter": "Twitter",
@@ -1133,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "{Hashi} bro",
-    "disclaimerTitle": "Ansvarsfriskrivning:"
+    "disclaimerTitle": "Ansvarsfriskrivning:",
+    "explore": {
+        "showOnlyMyPositions": "Visa bara mina positioner"
+    }
 }

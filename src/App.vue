@@ -210,9 +210,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (this.storageReferrer === this.account.address) {
         this.resetStorageReferrer();
       } else {
-        setTimeout(() => {
-          this.showConfirmInviteUser = true; // Delay here for better UX
-        }, 3_000); // TODO: this logic should be moved and fixed in life cycle
+        this.withApi(() => {
+          this.showConfirmInviteUser = true;
+        });
       }
     }
   }
@@ -667,14 +667,12 @@ $sora-logo-width: 173.7px;
       overflow: hidden;
 
       .app-content .app-disclaimer-container {
-        min-width: 800px;
         width: 100%;
         max-width: 900px;
         padding: 0 20px;
         margin: 0 auto 120px;
       }
       .app-footer {
-        min-width: 800px;
         justify-content: center;
       }
     }

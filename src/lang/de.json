@@ -1133,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "{Hashi} Brücke",
-    "disclaimerTitle": "Haftungsausschluss:"
+    "disclaimerTitle": "Haftungsausschluss:",
+    "explore": {
+        "showOnlyMyPositions": "Nur meine Positionen anzeigen"
+    }
 }

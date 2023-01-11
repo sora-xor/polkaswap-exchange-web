@@ -1133,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "Cầu {Hashi}",
-    "disclaimerTitle": "Disclaimer:"
+    "disclaimerTitle": "Disclaimer:",
+    "explore": {
+        "showOnlyMyPositions": "Chỉ hiển thị vị trí của tôi"
+    }
 }

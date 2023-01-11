@@ -1133,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "Most {Hashi}",
-    "disclaimerTitle": "Vylúčenie zodpovednosti:"
+    "disclaimerTitle": "Vylúčenie zodpovednosti:",
+    "explore": {
+        "showOnlyMyPositions": "Zobraziť iba moje pozície"
+    }
 }

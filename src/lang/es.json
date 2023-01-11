@@ -1133,5 +1133,8 @@
         }
     },
     "hashiBridgeText": "Puente {Hashi}",
-    "disclaimerTitle": "Aviso legal:"
+    "disclaimerTitle": "Aviso legal:",
+    "explore": {
+        "showOnlyMyPositions": "Mostrar solo mis posiciones"
+    }
 }
