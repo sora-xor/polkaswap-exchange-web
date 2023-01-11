@@ -54,7 +54,6 @@
       @click="handleConfirm"
     >
       <span class="text">{{ btnText }}</span>
-      <s-icon v-if="showArrow" name="arrows-arrow-top-right-24" size="18" />
     </s-button>
     <notification-enabling-page v-if="permissionDialogVisibility">
       {{ t('code.allowanceRequest') }}
@@ -105,7 +104,6 @@ export default class RoadMap extends Mixins(
   secondPointCurrent = false;
   thirdPointChecked = false;
   thirdPointCurrent = false;
-  showArrow = true;
 
   btnText = 'LET’S START';
   btnDisabled = false;
@@ -159,7 +157,6 @@ export default class RoadMap extends Mixins(
       });
 
     this.btnLoading = true;
-    this.showArrow = false;
     await this.getAccessToken();
     await this.getUserStatus();
 
@@ -184,10 +181,8 @@ export default class RoadMap extends Mixins(
     if (!this.isEuroBalanceEnough) {
       this.btnText = this.t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
       this.btnDisabled = true;
-      this.showArrow = false;
     } else {
       this.btnText = 'FINISH THE KYC';
-      this.showArrow = true;
     }
 
     this.btnLoading = false;

@@ -1,5 +1,5 @@
 <template>
-  <div class="sora-card">
+  <div class="sora-card class1">
     <div>
       <div class="sora-card-kyc-view" v-loading="loadingKycView">
         <s-scrollbar>
@@ -141,8 +141,10 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
 }
 </script>
 
-<style lang="scss" scoped>
-@import 'https://kyc-test.soracard.com/web/v2/webkyc.css';
+<style lang="scss" module>
+.class1 {
+  @import 'https://kyc-test.soracard.com/web/v2/webkyc.css';
+}
 </style>
 
 <style lang="scss">

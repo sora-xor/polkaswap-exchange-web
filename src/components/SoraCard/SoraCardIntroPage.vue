@@ -228,7 +228,7 @@ $color: #ee2233;
     }
 
     .sora-card__icon--checked {
-      color: $color;
+      // color: $color;
     }
   }
 

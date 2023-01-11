@@ -70,9 +70,9 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
 
   async created(): Promise<void> {
     this.setStartSubscriptions([
+      this.subscribeToTotalXorBalance,
       this.subscribeOnAccountLiquidityList,
       this.subscribeOnAccountLiquidityUpdates,
-      this.subscribeToTotalXorBalance,
     ]);
     this.setResetSubscriptions([this.unsubscribeFromTotalXorBalance, this.unsubscribeLPUpdates]);
   }
@@ -88,7 +88,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
 </script>
 
 <style lang="scss">
-$color: #ee2233;
+// $color: #ee2233; // TODO: likely to be changed
 
 .sora-card__loader {
   height: 619px;
@@ -98,29 +98,30 @@ $color: #ee2233;
 
 .el-button.neumorphic.s-primary.sora-card__btn {
   margin-top: 24px;
-  background-color: $color;
+  // background-color: $color;
 
   span.text {
     font-variation-settings: 'wght' 700 !important;
     font-size: 19px;
-    color: #fff;
+    // color: #fff;
   }
 }
 
-.sora-card {
-  .is-loading {
-    span.text {
-      color: transparent !important;
-    }
-  }
+// TODO: relates to color scheme
+// .sora-card {
+//   .is-loading {
+//     span.text {
+//       color: transparent !important;
+//     }
+//   }
 
-  .el-button.neumorphic.s-primary.sora-card__btn.is-disabled {
-    background-color: unset;
-    .text {
-      color: unset;
-    }
-  }
-}
+//   .el-button.neumorphic.s-primary.sora-card__btn.is-disabled {
+//     background-color: unset;
+//     .text {
+//       color: unset;
+//     }
+//   }
+// }
 
 .sora-card__no-spam {
   text-align: center;

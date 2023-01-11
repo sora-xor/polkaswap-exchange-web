@@ -38,10 +38,12 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
 .tos__section {
   width: 100%;
   height: 600px;
-  background-color: var(--s-color-base-background);
+  // background-color: var(--s-color-base-background);
   box-shadow: var(--s-shadow-element);
-  border-radius: var(--s-border-radius-small);
+  border-radius: 10px;
   padding: 0;
+  padding-left: 20px;
+  padding-right: 4px;
   overflow: hidden;
 }
 </style>

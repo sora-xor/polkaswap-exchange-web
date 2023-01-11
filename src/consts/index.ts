@@ -320,8 +320,19 @@ export const StoreLinks = {
 };
 
 export const TosExternalLinks = {
-  Terms: `https://soracard.com/terms/`,
-  Privacy: `https://soracard.com/privacy/`,
+  Terms: `https://soracard.com/terms/en/polkaswap/`,
+  Privacy: `https://soracard.com/privacy/en/polkaswap/`,
+  getLinks: function (darkMode = 'light') {
+    return darkMode === 'dark'
+      ? {
+          Terms: this.Terms.concat('?dark'),
+          Privacy: this.Privacy.concat('?dark'),
+        }
+      : {
+          Terms: this.Terms,
+          Privacy: this.Privacy,
+        };
+  },
 };
 
 export const FaucetLink: SidebarMenuItemLink = {
