@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Disclaimer:",
     "explore": {
         "showOnlyMyPositions": "Pokaži samo moje pozicije"
+    },
+    "tooltips": {
+        "roi": "{ROI} je kratica za povrat ulaganja. Izračunava se dijeljenjem dobiti ostvarene ulaganjem troškom tog ulaganja u postotnom ekvivalentu.",
+        "tvl": "{TVL} je kratica za Total Value Locked. Predstavlja tokene zaključane u bazenima u dolarskoj protuvrijednosti."
     }
 }

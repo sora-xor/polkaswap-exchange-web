@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Disclaimer \/ Zřeknutí se odpovědnosti:",
     "explore": {
         "showOnlyMyPositions": "Zobrazit pouze moje pozice"
+    },
+    "tooltips": {
+        "roi": "{ROI} znamená návratnost investic. Vypočítá se vydělením zisku získaného z investice náklady na tuto investici v procentuálním ekvivalentu.",
+        "tvl": "{TVL} znamená Total Value Locked. Představuje tokeny zamčené v poolech v ekvivalentu dolaru."
     }
 }
