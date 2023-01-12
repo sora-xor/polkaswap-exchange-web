@@ -514,13 +514,15 @@ export default class Bridge extends Mixins(
   }
 
   async handleConfirmTransaction(): Promise<void> {
-    if (!this.isXorSufficientForNextOperation) {
-      this.openWarningFeeDialog();
-      await this.waitOnNextTxFailureConfirmation();
-      if (!this.isWarningFeeDialogConfirmed) {
-        return;
+    if (this.allowFeePopup) {
+      if (!this.isXorSufficientForNextOperation) {
+        this.openWarningFeeDialog();
+        await this.waitOnNextTxFailureConfirmation();
+        if (!this.isWarningFeeDialogConfirmed) {
+          return;
+        }
+        this.isWarningFeeDialogConfirmed = false;
       }
-      this.isWarningFeeDialogConfirmed = false;
     }
 
     await this.checkConnectionToExternalAccount(() => {
