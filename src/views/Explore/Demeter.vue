@@ -12,7 +12,9 @@
       <s-table-column width="240" label="#" fixed-position="left">
         <template #header>
           <div class="explore-table-item-index">
-            <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">#</span>
+            <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
+              #
+            </span>
           </div>
           <div class="explore-table-item-logo">
             <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head" />
@@ -110,7 +112,9 @@
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-price explore-table-item-amount"
-              ><template #prefix>{{ balancePrefix }}</template></formatted-amount>
+              >
+                <template #prefix>{{ balancePrefix }}</template>
+              </formatted-amount>
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
             </div>
           </div>
