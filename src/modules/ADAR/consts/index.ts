@@ -27,7 +27,7 @@ export const Stages: Array<Stage> = [
   createStage('Process template', 'processTemplate'),
   createStage('Transaction Overview', 'transactionOverview'),
   createStage('Review details', 'reviewDetails'),
-  createStage('Authorize', 'authorize'),
+  // createStage('Authorize', 'authorize'),
   createStage('Routing', 'routing'),
   createStage('Done', 'done'),
 ];
