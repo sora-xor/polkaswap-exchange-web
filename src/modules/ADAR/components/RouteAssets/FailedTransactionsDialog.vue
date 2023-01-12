@@ -173,40 +173,70 @@ export default class FailedTransactionsDialog extends Mixins(
   }
 
   async reRunTransaction(recipient) {
-    try {
-      await this.repeatTransaction(recipient.id);
-      this.$notify({
-        message: `${this.t('adar.routeAssets.routingTemplate.messages.routeAssetsCompleted')}`,
-        type: 'success',
-        title: '',
+    this.repeatTransaction(recipient.id)
+      .then(() => {
+        this.$notify({
+          message: `${this.t('adar.routeAssets.routingTemplate.messages.routeAssetsCompleted')}`,
+          type: 'success',
+          title: '',
+        });
+      })
+      .catch((error) => {
+        this.$notify({
+          message: `${this.t('warningText')} ${error}`,
+          type: 'warning',
+          title: '',
+        });
       });
-    } catch (error) {
-      this.$notify({
-        message: `${this.t('warningText')} ${error}`,
-        type: 'warning',
-        title: '',
-      });
-    }
   }
 
+  // async reRunAll() {
+  //   try {
+  //     this.buttonsDisabled = true;
+  //     await this.runAssetsRouting();
+  //     this.buttonsDisabled = false;
+  //     this.$emit('update:visible', false);
+  //     this.$notify({
+  //       message: `${this.t('adar.routeAssets.routingTemplate.messages.routeAssetsCompleted')}`,
+  //       type: 'success',
+  //       title: '',
+  //     });
+  //   } catch (error) {
+  //     this.$notify({
+  //       message: `${this.t('warningText')} ${error}`,
+  //       type: 'warning',
+  //       title: '',
+  //     });
+  //   }
+  // }
+
   async reRunAll() {
-    try {
-      this.buttonsDisabled = true;
-      await this.runAssetsRouting();
-      this.buttonsDisabled = false;
-      this.$emit('update:visible', false);
-      this.$notify({
-        message: `${this.t('adar.routeAssets.routingTemplate.messages.routeAssetsCompleted')}`,
-        type: 'success',
-        title: '',
+    this.buttonsDisabled = true;
+    this.runAssetsRouting()
+      .then(() => {
+        this.buttonsDisabled = false;
+        if (this.recipients.length < 1) {
+          this.$emit('update:visible', false);
+          this.$notify({
+            message: `${this.t('adar.routeAssets.routingTemplate.messages.routeAssetsCompleted')}`,
+            type: 'success',
+            title: '',
+          });
+        } else {
+          this.$notify({
+            message: `${this.t('warningText')}`,
+            type: 'warning',
+            title: '',
+          });
+        }
+      })
+      .catch((error) => {
+        this.$notify({
+          message: `${this.t('warningText')} ${error}`,
+          type: 'warning',
+          title: '',
+        });
       });
-    } catch (error) {
-      this.$notify({
-        message: `${this.t('warningText')} ${error}`,
-        type: 'warning',
-        title: '',
-      });
-    }
   }
 
   formatAddress(wallet) {

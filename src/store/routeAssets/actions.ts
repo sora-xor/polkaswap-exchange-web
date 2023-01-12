@@ -199,20 +199,30 @@ const actions = defineActions({
     const transferParams = getTransferParams(context, inputAsset, recipient);
     if (!transferParams) return Promise.reject(new Error('Cant find transaction by this Id'));
     const action = transferParams.action;
-    await action()
-      .then(() => {
-        commit.setRecipientStatus({
-          id: recipient.id,
-          status: RecipientStatus.SUCCESS,
+    try {
+      if (!action) throw new Error('Cant get transfer params');
+      await action()
+        .then(() => {
+          commit.setRecipientStatus({
+            id: recipient.id,
+            status: RecipientStatus.SUCCESS,
+          });
+          commit.setRecipientCompleted(recipient.id);
+        })
+        .catch(() => {
+          commit.setRecipientStatus({
+            id: recipient.id,
+            status: RecipientStatus.FAILED,
+          });
+          return Promise.reject(new Error('Transaction failed'));
         });
-        commit.setRecipientCompleted(recipient.id);
-      })
-      .catch(() => {
-        commit.setRecipientStatus({
-          id: recipient.id,
-          status: RecipientStatus.FAILED,
-        });
+    } catch (e) {
+      commit.setRecipientStatus({
+        id: recipient.id,
+        status: RecipientStatus.FAILED,
       });
+      return Promise.reject(new Error('Transaction failed'));
+    }
   },
 
   async runAssetsRouting(context): Promise<void> {
@@ -338,7 +348,11 @@ function getTransferParams(context, inputAsset, recipient) {
           ),
         recipient,
       };
-    } catch (error: any) {}
+    } catch (error: any) {
+      return {
+        recipient,
+      };
+    }
   }
 }
 
@@ -347,21 +361,28 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
 
   async function processArray(transactions) {
     for (const tx of transactions) {
-      await tx
-        .action()
-        .then(() => {
-          commit.setRecipientStatus({
-            id: tx.recipient.id,
-            status: RecipientStatus.SUCCESS,
+      try {
+        await tx
+          .action()
+          .then(() => {
+            commit.setRecipientStatus({
+              id: tx.recipient.id,
+              status: RecipientStatus.SUCCESS,
+            });
+            commit.setRecipientCompleted(tx.recipient.id);
+          })
+          .catch(() => {
+            commit.setRecipientStatus({
+              id: tx.recipient.id,
+              status: RecipientStatus.FAILED,
+            });
           });
-          commit.setRecipientCompleted(tx.recipient.id);
-        })
-        .catch(() => {
-          commit.setRecipientStatus({
-            id: tx.recipient.id,
-            status: RecipientStatus.FAILED,
-          });
+      } catch (err) {
+        commit.setRecipientStatus({
+          id: tx.recipient.id,
+          status: RecipientStatus.FAILED,
         });
+      }
     }
   }
 

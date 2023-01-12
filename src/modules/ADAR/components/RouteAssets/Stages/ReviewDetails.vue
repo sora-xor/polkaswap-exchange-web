@@ -62,7 +62,7 @@
         </div>
         <s-divider v-if="!noIssues" />
         <div class="buttons-container">
-          <s-button type="primary" class="s-typography-button--big" :disabled="!noIssues" @click.stop="nextStage">
+          <s-button type="primary" class="s-typography-button--big" :disabled="!noIssues" @click.stop="onContinueClick">
             {{ 'Continue' }}
           </s-button>
           <s-button type="secondary" class="s-typography-button--big" @click.stop="cancelButtonAction">
@@ -131,6 +131,7 @@ export default class ReviewDetails extends Mixins(TranslationMixin) {
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
   @action.routeAssets.setInputToken setInputToken!: (asset: Asset) => void;
   @action.routeAssets.cancelProcessing private cancelProcessing!: () => void;
+  @action.routeAssets.runAssetsRouting private runAssetsRouting!: any;
 
   showSwapDialog = false;
   showSelectInputAssetDialog = false;
@@ -217,6 +218,11 @@ export default class ReviewDetails extends Mixins(TranslationMixin) {
 
   cancelButtonAction() {
     this.cancelProcessing();
+  }
+
+  onContinueClick() {
+    this.runAssetsRouting();
+    this.nextStage();
   }
 }
 </script>

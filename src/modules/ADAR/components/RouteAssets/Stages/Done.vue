@@ -101,6 +101,7 @@ import { FPNumber } from '@sora-substrate/util/build';
 import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import WarningMessage from '../WarningMessage.vue';
 import { jsPDF as JsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
@@ -184,20 +185,23 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
 
   downloadPDF() {
     const doc = new JsPDF({ putOnlyUsedFonts: true, orientation: 'landscape' });
-    const headers = ['n', 'name', 'wallet', 'usd', 'token', 'inputToken', 'amount', 'status'];
+    const headers = ['№', 'Name', 'Wallet', 'USD', 'Token', 'Input Token', 'Amount', 'Status'];
     const data = this.completedRecipients.map((recipient, idx) => {
-      return {
-        n: `${idx + 1}`,
-        name: recipient.name.toString(),
-        wallet: recipient.wallet.toString(),
-        usd: recipient.usd.toString(),
-        token: recipient.asset.symbol,
-        inputToken: this.inputToken.symbol,
-        amount: (recipient.amount?.toFixed(5) || '').toString(),
-        status: recipient.status.toString(),
-      };
+      return [
+        `${idx + 1}`,
+        recipient.name.toString(),
+        recipient.wallet.toString(),
+        recipient.usd.toString(),
+        recipient.asset.symbol,
+        this.inputToken.symbol,
+        (recipient.amount?.toFixed(5) || '').toString(),
+        recipient.status.toString(),
+      ];
     });
-    doc.table(1, 1, data, headers, { autoSize: true, fontSize: 12 });
+    autoTable(doc, {
+      head: [headers],
+      body: data,
+    });
     doc.save(`ADAR-${new Date().toLocaleDateString('en-GB')}.pdf`);
   }
 }
