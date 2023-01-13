@@ -61,6 +61,9 @@ const mutations = defineMutations<SettingsState>()({
   setSelectLanguageDialogVisibility(state, value: boolean): void {
     state.selectLanguageDialogVisibility = value;
   },
+  setDisclaimerDialogVisibility(state): void {
+    state.disclaimerVisibility = !state.disclaimerVisibility;
+  },
   setBrowserNotifsPopupEnabled(state, value: boolean): void {
     state.browserNotifPopupVisibility = value;
   },

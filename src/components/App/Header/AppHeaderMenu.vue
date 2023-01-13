@@ -105,6 +105,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopupEnabled!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
+  @mutation.settings.setDisclaimerDialogVisibility private setDisclaimerDialogVisibility!: (flag: boolean) => void;
 
   isLargeDesktop: boolean = window.innerWidth >= BREAKPOINT;
 
@@ -221,7 +222,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         this.setLanguageDialogVisibility(true);
         break;
       case HeaderMenuType.Disclaimer:
-        // this.toggleDislaimer();
+        this.setDisclaimerDialogVisibility(true);
         break;
     }
   }

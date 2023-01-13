@@ -146,6 +146,7 @@ export enum Components {
   AppHeaderMenu = 'App/Header/AppHeaderMenu',
   AccountButton = 'App/Header/AccountButton',
   AppLogoButton = 'App/Header/AppLogoButton',
+  Disclaimer = 'Disclaimer',
   MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
   AppMenu = 'App/Menu/AppMenu',
   AppInfoPopper = 'App/Menu/AppInfoPopper',

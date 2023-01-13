@@ -22,6 +22,7 @@
           </div>
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
+            <disclaimer v-if="disclaimerVisibility" />
             <div class="app-disclaimer-container">
               <p
                 class="app-disclaimer"
@@ -87,6 +88,7 @@ import type { FeatureFlags } from '@/store/settings/types';
     AppHeader: lazyComponent(Components.AppHeader),
     AppMenu: lazyComponent(Components.AppMenu),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
+    Disclaimer: lazyComponent(Components.Disclaimer),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
     BrowserNotifsEnableDialog: lazyComponent(Components.BrowserNotifsEnableDialog),
@@ -107,6 +109,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.referrals.storageReferrer storageReferrer!: string;
   @state.settings.browserNotifPopupVisibility browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility browserNotifPopupBlocked!: boolean;
+  @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.settings.blockNumber blockNumber!: number;
 
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;

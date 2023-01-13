@@ -25,6 +25,7 @@ export type SettingsState = {
   faucetUrl: string;
   selectNodeDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
+  disclaimerVisibility: boolean;
   browserNotifPopupVisibility: boolean;
   browserNotifPopupBlockedVisibility: boolean;
   isBrowserNotificationApiAvailable: boolean;
