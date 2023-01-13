@@ -14,6 +14,7 @@ export function initialState(): SwapState {
     isExchangeB: false,
     enabledAssets: {},
     rewards: [],
+    path: [],
     selectedDexId: DexId.XOR,
     dexQuoteData: {},
   };

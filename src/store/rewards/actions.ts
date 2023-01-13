@@ -200,18 +200,15 @@ const actions = defineActions({
   },
 
   async subscribeOnAccountMarketMakerInfo(context): Promise<void> {
-    const { commit, rootGetters } = rewardsActionContext(context);
-    commit.unsubscribeAccountMarketMakerInfo();
-
-    if (!rootGetters.wallet.account.isLoggedIn) return;
-
-    await waitForAccountPair(() => {
-      const subscription = api.rewards.subscribeOnAccountMarketMakerInfo().subscribe((info) => {
-        commit.setAccountMarketMakerInfo(info);
-      });
-
-      commit.setAccountMarketMakerUpdates(subscription);
-    });
+    // const { commit, rootGetters } = rewardsActionContext(context);
+    // commit.unsubscribeAccountMarketMakerInfo();
+    // if (!rootGetters.wallet.account.isLoggedIn) return;
+    // await waitForAccountPair(() => {
+    //   const subscription = api.rewards.subscribeOnAccountMarketMakerInfo().subscribe((info) => {
+    //     commit.setAccountMarketMakerInfo(info);
+    //   });
+    //   commit.setAccountMarketMakerUpdates(subscription);
+    // });
   },
 });
 
