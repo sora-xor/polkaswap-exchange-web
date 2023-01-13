@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Disclaimer:",
     "explore": {
         "showOnlyMyPositions": "Mostra solo le mie posizioni"
+    },
+    "tooltips": {
+        "roi": "{ROI} sta per ritorno sull'investimento. Viene calcolato dividendo il profitto ottenuto su un investimento per il costo di tale investimento in una percentuale equivalente.",
+        "tvl": "{TVL} sta per Total Value Locked. Rappresenta i token bloccati nei pool nell'equivalente in dollari."
     }
 }

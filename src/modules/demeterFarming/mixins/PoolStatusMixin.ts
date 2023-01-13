@@ -4,13 +4,15 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import { getAssetBalance } from '@/utils';
 
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 
 import type { DemeterAsset } from '@/modules/demeterFarming/types';
 
 @Component
-export default class PoolStatusMixin extends Mixins(mixins.FormattedAmountMixin, mixins.TranslationMixin) {
+export default class PoolStatusMixin extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   @Prop({ default: () => null, type: Object }) readonly liquidity!: Nullable<AccountLiquidity>;
   @Prop({ default: () => null, type: Object }) readonly pool!: DemeterPool;
   @Prop({ default: () => null, type: Object }) readonly accountPool!: DemeterAccountPool;

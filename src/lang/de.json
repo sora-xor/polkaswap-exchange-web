@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Haftungsausschluss:",
     "explore": {
         "showOnlyMyPositions": "Nur meine Positionen anzeigen"
+    },
+    "tooltips": {
+        "roi": "{ROI} steht für Return on Investment. Es wird berechnet, indem der mit einer Investition erzielte Gewinn durch die Kosten dieser Investition in einem prozentualen Äquivalent dividiert wird.",
+        "tvl": "{TVL} steht für Total Value Locked. Es stellt Token dar, die in den Pools im Dollaräquivalent gesperrt sind."
     }
 }

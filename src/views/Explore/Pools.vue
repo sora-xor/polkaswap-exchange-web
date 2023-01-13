@@ -12,7 +12,9 @@
       <s-table-column width="240" label="#" fixed-position="left">
         <template #header>
           <div class="explore-table-item-index">
-            <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">#</span>
+            <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
+              #
+            </span>
           </div>
           <div class="explore-table-item-logo">
             <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head" />
@@ -62,7 +64,9 @@
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-price explore-table-item-amount"
-              ><template #prefix>{{ balancePrefix }}</template></formatted-amount>
+              >
+                <template #prefix>{{ balancePrefix }}</template>
+              </formatted-amount>
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
             </div>
           </div>
@@ -72,7 +76,10 @@
       <s-table-column v-if="pricesAvailable" key="tvl" width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="explore-table__primary">TVL</span>
+            <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
+            <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
+              <s-icon name="info-16" size="14px" />
+            </s-tooltip>
           </sort-button>
         </template>
         <template v-slot="{ row }">
@@ -160,6 +167,8 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
 
       if (!(baseAsset && targetAsset)) return buffer;
 
+      const name = `${baseAsset.symbol}-${targetAsset.symbol}`; // For search
+
       const accountPool = this.accountLiquidity.find(
         (liquidity) => liquidity.firstAddress === baseAsset.address && liquidity.secondAddress === targetAsset.address
       );
@@ -185,6 +194,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
       ];
 
       buffer.push({
+        name,
         baseAsset,
         targetAsset,
         apy: fpApy.toNumber(),

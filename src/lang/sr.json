@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Одрицање одговорности:",
     "explore": {
         "showOnlyMyPositions": "Prikaži samo moje pozicije"
+    },
+    "tooltips": {
+        "roi": "{ROI} označava povraćaj investicije. Obračunava se deljenjem dobiti ostvarene na investiciji po trošku te investicije u procentualno ekvivalentnom iznosu.",
+        "tvl": "{TVL} označava da je ukupna vrednost zaključana. Predstavlja simbole zakljuиane u bazenima u dolarskom ekvivalentu."
     }
 }
