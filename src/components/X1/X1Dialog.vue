@@ -1,9 +1,8 @@
 <template>
   <dialog-base :visible.sync="isVisible" class="x1-dialog">
     <div class="wrapper" v-loading="loadingX1">
-      <!-- Prod widget -->
       <div
-        id="sprkwdgt-WUQBA5U2"
+        :id="widgetId"
         data-from-currency="EUR"
         :data-address="accountAddress"
         :data-from-amount="restEuroToDeposit"
@@ -17,8 +16,10 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { X1Api, X1Widget } from '@/utils/x1';
 import { getter, state } from '@/store/decorators';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
 
 @Component({
@@ -28,8 +29,10 @@ import { loadScript, unloadScript } from 'vue-plugin-load-script';
 })
 export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingMixin) {
   @state.soraCard.euroBalance private euroBalance!: string;
+  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @getter.soraCard.accountAddress accountAddress!: string;
 
+  X1Widget: X1Widget = { sdkUrl: '', widgetId: '' };
   loadingX1 = false;
 
   @Watch('isVisible', { immediate: true })
@@ -46,9 +49,13 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
     return 100 - parseInt(this.euroBalance, 10);
   }
 
+  get widgetId(): string {
+    return this.X1Widget.widgetId;
+  }
+
   loadX1(): void {
-    loadScript('https://x1ex.com/widgets/sdk.js')
-      .then((data) => {
+    loadScript(this.X1Widget.sdkUrl)
+      .then(() => {
         setTimeout(() => {
           this.loadingX1 = false;
         }, 1500);
@@ -59,7 +66,11 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   }
 
   unloadX1(): void {
-    unloadScript('https://x1ex.com/widgets/sdk.js').catch(() => {});
+    unloadScript(this.X1Widget.sdkUrl).catch(() => {});
+  }
+
+  mounted(): void {
+    this.X1Widget = X1Api.getWidget(this.soraNetwork);
   }
 }
 </script>

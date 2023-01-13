@@ -1,5 +1,6 @@
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import store from '../store';
 
 import { KycStatus, Status, VerificationStatus } from '../types/card';
 
@@ -30,7 +31,8 @@ export async function defineUserStatus(): Promise<Status> {
 }
 
 async function getUpdatedJwtPair(refreshToken: string | null): Promise<string | null> {
-  const apiKey = '6974528a-ee11-4509-b549-a8d02c1aec0d';
+  const soraNetwork = store.state.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
+  const { apiKey } = soraCard(soraNetwork).authService;
   const buffer = Buffer.from(apiKey);
 
   try {
