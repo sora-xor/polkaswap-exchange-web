@@ -520,7 +520,6 @@ export default class Bridge extends Mixins(
       if (!this.isWarningFeeDialogConfirmed) {
         return;
       }
-      this.isWarningFeeDialogConfirmed = false;
     }
 
     await this.checkConnectionToExternalAccount(() => {

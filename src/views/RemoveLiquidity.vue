@@ -361,7 +361,6 @@ export default class RemoveLiquidity extends Mixins(
       if (!this.isWarningFeeDialogConfirmed) {
         return;
       }
-      this.isWarningFeeDialogConfirmed = false;
     }
 
     this.openConfirmDialog();

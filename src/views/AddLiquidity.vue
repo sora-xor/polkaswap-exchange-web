@@ -291,7 +291,6 @@ export default class AddLiquidity extends Mixins(
       if (!this.isWarningFeeDialogConfirmed) {
         return;
       }
-      this.isWarningFeeDialogConfirmed = false;
     }
 
     this.openConfirmDialog();
