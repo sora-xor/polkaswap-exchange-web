@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Avertissement:",
     "explore": {
         "showOnlyMyPositions": "Afficher uniquement mes positions"
+    },
+    "tooltips": {
+        "roi": "{ROI} signifie retour sur investissement. Il est calculé en divisant le bénéfice réalisé sur un investissement par le coût de cet investissement en pourcentage équivalent.",
+        "tvl": "{TVL} signifie Total Value Locked. Il représente les jetons verrouillés dans les pools en équivalent dollar."
     }
 }

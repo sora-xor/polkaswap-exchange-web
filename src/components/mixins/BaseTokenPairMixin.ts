@@ -6,8 +6,10 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import { state, getter } from '@/store/decorators';
 
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+
 @Component
-export default class BaseTokenPairMixin extends Mixins(mixins.TranslationMixin, mixins.FormattedAmountMixin) {
+export default class BaseTokenPairMixin extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
   readonly XOR_SYMBOL = XOR.symbol;
 
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;

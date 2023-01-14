@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "免责声明:",
     "explore": {
         "showOnlyMyPositions": "只显示我的位置"
+    },
+    "tooltips": {
+        "roi": "{ROI}代表投资回报率。它的计算方法是将投资赚取的利润除以该投资的成本（以等值百分比表示）。",
+        "tvl": "{TVL}代表锁定的总价值。它代表以美元等价物锁定在池中的代币。"
     }
 }
