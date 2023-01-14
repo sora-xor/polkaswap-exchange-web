@@ -79,8 +79,6 @@ export default class Wallet extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .container--wallet {
-  padding: 0;
-
   .history .history-items {
     padding: 0 $inner-spacing-mini;
   }
