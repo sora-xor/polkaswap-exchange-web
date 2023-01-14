@@ -285,7 +285,7 @@ export default class AddLiquidity extends Mixins(
   }
 
   async handleAddLiquidity(): Promise<void> {
-    if (!this.isXorSufficientForNextOperation) {
+    if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
       await this.waitOnNextTxFailureConfirmation();
       if (!this.isWarningFeeDialogConfirmed) {
@@ -293,6 +293,7 @@ export default class AddLiquidity extends Mixins(
       }
       this.isWarningFeeDialogConfirmed = false;
     }
+
     this.openConfirmDialog();
   }
 

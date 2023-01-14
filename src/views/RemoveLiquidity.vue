@@ -355,7 +355,7 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   async handleRemoveLiquidity(): Promise<void> {
-    if (!this.isXorSufficientForNextOperation) {
+    if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
       await this.waitOnNextTxFailureConfirmation();
       if (!this.isWarningFeeDialogConfirmed) {
@@ -363,6 +363,7 @@ export default class RemoveLiquidity extends Mixins(
       }
       this.isWarningFeeDialogConfirmed = false;
     }
+
     this.openConfirmDialog();
   }
 
