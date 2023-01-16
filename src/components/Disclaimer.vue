@@ -15,11 +15,6 @@
           })
         "
       />
-      <p class="disclaimer__text--fiat">
-        Fiat values or dollar equivalents of tokens represented on Polkaswap are approximate and may not be accurate due
-        to instabilities of the statistics services, such as Substrate & Subquery. Please, check the status of these
-        services in the connection status bar.
-      </p>
     </div>
     <s-button
       v-if="!userDisclaimerApprove"
