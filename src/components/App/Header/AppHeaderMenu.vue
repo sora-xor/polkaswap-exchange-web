@@ -96,8 +96,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
 
+  @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @state.settings.isBrowserNotificationApiAvailable isBrowserNotificationApiAvailable!: boolean;
+
   @getter.libraryTheme private libraryTheme!: Theme;
   @getter.settings.notificationActivated notificationActivated!: boolean;
 
@@ -139,7 +141,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   get disclaimerText(): string {
-    return 'Show Disclaimer';
+    return this.disclaimerVisibility ? this.t('headerMenu.hideDisclaimer') : this.t('headerMenu.showDisclaimer');
   }
 
   private getHideBalancesIcon(isDropdown = false): string {

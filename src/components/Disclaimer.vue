@@ -2,7 +2,7 @@
   <div class="disclaimer">
     <div class="disclaimer__header">
       <div class="disclaimer__header-title">{{ disclaimerTitle }}</div>
-      <s-icon class="disclaimer__header-close-btn" size="32px" name="basic-clear-X-xs-24" @click.native="handleClose" />
+      <s-icon class="disclaimer__header-close-btn" size="28px" name="basic-clear-X-xs-24" @click.native="handleClose" />
     </div>
     <div class="disclaimer__text">
       <p
@@ -23,7 +23,7 @@
       @click="handleAccept"
       class="disclaimer__accept-btn"
     >
-      Accept
+      {{ t('acceptText') }}
     </s-button>
   </div>
 </template>
@@ -85,10 +85,10 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
   border-radius: var(--s-border-radius-medium);
   box-shadow: -5px -5px 10px #ffffff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
   width: 24%;
-  padding: 16px;
+  padding: calc(var(--s-size-small) / 2);
   position: absolute;
-  top: 24px;
-  right: 20px;
+  top: var(--s-size-mini);
+  right: var(--s-size-mini);
   z-index: 5;
 
   &__header {
@@ -96,7 +96,7 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
     justify-content: space-between;
     &-title {
       font-weight: 600;
-      font-size: 16px;
+      font-size: var(--s-font-size-small);
       display: flex;
       align-items: center;
     }
@@ -116,20 +116,16 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
     border-radius: var(--s-border-radius-medium);
     background-color: #f4f0f1;
     margin-top: 6px;
-    padding: 18px;
+    padding: $basic-spacing;
     font-size: var(--s-font-size-extra-mini);
     font-weight: 300;
     line-height: var(--s-line-height-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
-
-    &--fiat {
-      margin-top: 14px;
-    }
   }
 
   &__accept-btn {
-    margin-top: 16px;
+    margin-top: $basic-spacing;
     width: 100%;
   }
 }
