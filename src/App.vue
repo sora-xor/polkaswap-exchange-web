@@ -23,19 +23,6 @@
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <disclaimer v-if="disclaimerVisibility" />
-            <div class="app-disclaimer-container">
-              <p
-                class="app-disclaimer"
-                v-html="
-                  t('disclaimer', {
-                    disclaimerPrefix,
-                    polkaswapFaqLink,
-                    memorandumLink,
-                    privacyLink,
-                  })
-                "
-              />
-            </div>
           </div>
           <footer class="app-footer">
             <div class="sora-logo">
@@ -589,9 +576,6 @@ i.icon-divider {
 @include tablet {
   .app-footer {
     flex-direction: row;
-    .app-disclaimer-container {
-      padding-right: $inner-spacing-large;
-    }
   }
 
   .block-number {
@@ -611,35 +595,10 @@ i.icon-divider {
       .app-content {
         width: 100%;
         padding-left: $basic-spacing * 2;
-        .app-disclaimer {
-          $margin-left: 10px;
-          max-width: calc(#{$bridge-width} + #{$margin-left});
-          padding-right: $inner-spacing-big;
-          padding-left: calc(#{$inner-spacing-big} + #{$margin-left});
-          &-container {
-            margin-left: auto;
-            margin-right: auto;
-            max-width: calc(#{$bridge-width} * 2 + #{$basic-spacing-small});
-          }
-        }
       }
 
       .block-number-link {
         z-index: $app-body-layer;
-      }
-    }
-  }
-}
-
-@include large-desktop {
-  .app-main {
-    &.app-main--has-charts {
-      .app-content {
-        .app-disclaimer {
-          &-container {
-            max-width: calc(#{$bridge-width} * 3 + #{$basic-spacing-small} * 4);
-          }
-        }
       }
     }
   }
@@ -666,13 +625,6 @@ $sora-logo-width: 173.7px;
     flex-flow: column nowrap;
     &__about {
       overflow: hidden;
-
-      .app-content .app-disclaimer-container {
-        width: 100%;
-        max-width: 900px;
-        padding: 0 20px;
-        margin: 0 auto 120px;
-      }
       .app-footer {
         justify-content: center;
       }
@@ -682,23 +634,7 @@ $sora-logo-width: 173.7px;
   &-content {
     flex: 1;
     margin: auto;
-
-    .app-disclaimer-container {
-      margin-left: auto;
-      margin-bottom: $inner-spacing-big;
-      margin-right: auto;
-      max-width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
-      text-align: justify;
-    }
-  }
-
-  &-disclaimer {
-    margin-top: $basic-spacing-medium;
-    font-size: var(--s-font-size-extra-mini);
-    font-weight: 300;
-    line-height: var(--s-line-height-extra-small);
-    letter-spacing: var(--s-letter-spacing-small);
-    color: var(--s-color-base-content-secondary);
+    width: 100%;
   }
 
   &-footer {
