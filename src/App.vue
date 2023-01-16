@@ -117,7 +117,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
-  @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: FnWithoutArgs;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
@@ -327,7 +326,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     await this.resetNetworkSubscriptions();
     this.resetBlockNumberSubscription();
     this.unsubscribeFromInvitedUsers();
-    this.unsubscribeMarketMakerInfo();
     await connection.close();
   }
 
