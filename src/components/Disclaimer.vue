@@ -83,7 +83,7 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
 .disclaimer {
   background-color: var(--s-color-utility-surface);
   border-radius: var(--s-border-radius-medium);
-  box-shadow: -5px -5px 10px #ffffff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
+  box-shadow: var(--s-shadow-dialog);
   width: 24%;
   padding: calc(var(--s-size-small) / 2);
   position: absolute;
@@ -112,9 +112,9 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
   }
 
   &__text {
-    box-shadow: 1px 1px 5px #ffffff, inset -5px -5px 5px rgba(255, 255, 255, 0.5), inset 1px 1px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--s-shadow-dialog);
     border-radius: var(--s-border-radius-medium);
-    background-color: #f4f0f1;
+    background-color: var(--s-color-base-background);
     margin-top: 6px;
     padding: $basic-spacing;
     font-size: var(--s-font-size-extra-mini);
@@ -127,13 +127,6 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
   &__accept-btn {
     margin-top: $basic-spacing;
     width: 100%;
-  }
-}
-
-[design-system-theme='dark'] {
-  .disclaimer {
-    box-shadow: -5px -5px 10px rgba(155, 111, 165, 0.25), 2px 2px 15px #492067,
-      inset 1px 1px 2px rgba(155, 111, 165, 0.25);
   }
 }
 </style>
