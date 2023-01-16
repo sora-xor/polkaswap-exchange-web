@@ -888,8 +888,8 @@
         "switchTheme": "Switch to {theme} Mode",
         "switchLanguage": "Choose Language",
         "selectNode": "@:selectNodeText",
-        "showDiscalimer": "Show Disclaimer",
-        "hideDiscalimer": "Hide Disclaimer"
+        "showDisclaimer": "Show Disclaimer",
+        "hideDisclaimer": "Hide Disclaimer"
     },
     "sentText": "Sent",
     "learnMoreText": "Learn more",
