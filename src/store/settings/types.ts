@@ -14,6 +14,7 @@ export type SettingsState = {
   slippageTolerance: string;
   marketAlgorithm: MarketAlgorithms;
   сhartsEnabled: boolean;
+  userDisclaimerApprove: boolean;
   transactionDeadline: number;
   node: Partial<Node>;
   language: string;

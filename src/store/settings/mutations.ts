@@ -77,6 +77,10 @@ const mutations = defineMutations<SettingsState>()({
     state.language = value;
     settingsStorage.set('language', value);
   },
+  setUserDisclaimerApprove(state): void {
+    state.userDisclaimerApprove = true;
+    settingsStorage.set('disclaimerApprove', true);
+  },
   setFeatureFlags(state, featureFlags: FeatureFlags = {}): void {
     state.featureFlags = { ...state.featureFlags, ...featureFlags };
   },
