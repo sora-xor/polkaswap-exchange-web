@@ -1,5 +1,4 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
 
 import { state, getter } from '@/store/decorators';
@@ -34,7 +33,7 @@ const createPoolsDoubleMap = <T extends Pool>(pools: readonly T[], isFarm = true
 };
 
 @Component
-export default class BasePageMixin extends Mixins(AprMixin, mixins.FormattedAmountMixin) {
+export default class BasePageMixin extends Mixins(AprMixin) {
   @Prop({ default: true, type: Boolean }) readonly isFarmingPage!: boolean;
 
   @state.demeterFarming.pools demeterPools!: DemeterPool[];

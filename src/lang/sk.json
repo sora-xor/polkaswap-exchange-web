@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Vylúčenie zodpovednosti:",
     "explore": {
         "showOnlyMyPositions": "Zobraziť iba moje pozície"
+    },
+    "tooltips": {
+        "roi": "{ROI} znamená návratnosť investícií. Vypočítava sa vydelením zisku získaného z investície nákladmi na túto investíciu v percentuálnom ekvivalente.",
+        "tvl": "{TVL} znamená Total Value Locked. Predstavuje tokeny uzamknuté v bazénoch v ekvivalente dolára."
     }
 }

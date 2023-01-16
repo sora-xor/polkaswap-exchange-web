@@ -12,7 +12,9 @@
       <s-table-column width="240" label="#" fixed-position="left">
         <template #header>
           <div class="explore-table-item-index">
-            <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">#</span>
+            <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
+              #
+            </span>
           </div>
           <div class="explore-table-item-logo">
             <s-icon name="various-bone-24" size="14px" class="explore-table-item-logo--head" />
@@ -110,7 +112,9 @@
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-price explore-table-item-amount"
-              ><template #prefix>{{ balancePrefix }}</template></formatted-amount>
+              >
+                <template #prefix>{{ balancePrefix }}</template>
+              </formatted-amount>
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
             </div>
           </div>
@@ -120,7 +124,10 @@
       <s-table-column width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="explore-table__primary">TVL</span>
+            <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
+            <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
+              <s-icon name="info-16" size="14px" />
+            </s-tooltip>
           </sort-button>
         </template>
         <template v-slot="{ row }">
@@ -157,6 +164,7 @@ import { api, components } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DemeterBasePageMixin from '@/modules/demeterFarming/mixins/BasePageMixin';
 
 import { demeterLazyComponent } from '@/modules/demeterFarming/router';
@@ -211,7 +219,7 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBasePageMixin) {
+export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBasePageMixin, ExplorePageMixin) {
   @Watch('pools', { deep: true })
   private async updatePoolsData() {
     await this.withLoading(async () => {
