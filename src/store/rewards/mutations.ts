@@ -2,7 +2,6 @@ import omit from 'lodash/fp/omit';
 import { defineMutations } from 'direct-vuex';
 import type { Subscription } from 'rxjs';
 import type { CodecString } from '@sora-substrate/util';
-import type { AccountMarketMakerInfo } from '@sora-substrate/util/build/rewards/types';
 
 import { initialState } from './state';
 import type { RewardsState } from './types';
@@ -11,13 +10,7 @@ import type { SelectedRewards, AccountRewards, RewardsAmountHeaderItem } from '@
 const mutations = defineMutations<RewardsState>()({
   reset(state): void {
     const s = omit(
-      [
-        'accountMarketMakerUpdates',
-        'accountMarketMakerInfo',
-        'liquidityProvisionRewardsSubscription',
-        'vestedRewardsSubscription',
-        'crowdloanRewardsSubscription',
-      ],
+      ['liquidityProvisionRewardsSubscription', 'vestedRewardsSubscription', 'crowdloanRewardsSubscription'],
       initialState()
     );
 
@@ -57,18 +50,6 @@ const mutations = defineMutations<RewardsState>()({
   },
   getFeeFailure(state): void {
     state.feeFetching = false;
-  },
-  // market maker subscription
-  setAccountMarketMakerInfo(state, info: Nullable<AccountMarketMakerInfo>): void {
-    state.accountMarketMakerInfo = info;
-  },
-  setAccountMarketMakerUpdates(state, subscription: Subscription): void {
-    state.accountMarketMakerUpdates = subscription;
-  },
-  unsubscribeAccountMarketMakerInfo(state): void {
-    state.accountMarketMakerUpdates?.unsubscribe();
-    state.accountMarketMakerUpdates = null;
-    state.accountMarketMakerInfo = null;
   },
   // pswap distribution subscription
   setLiquidityProvisionRewardsUpdates(state, subscription: Subscription): void {

@@ -55,6 +55,14 @@ export default class SortButton extends Vue {
 <style lang="scss">
 .sort-button {
   cursor: pointer;
+
+  & > * {
+    vertical-align: middle;
+
+    &:not(:last-child) {
+      margin-right: $inner-spacing-tiny;
+    }
+  }
 }
 .sort-icon {
   display: inline-flex;

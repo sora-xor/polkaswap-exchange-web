@@ -60,6 +60,9 @@ const mutations = defineMutations<SwapState>()({
   setRewards(state, rewards: Array<LPRewardsInfo>): void {
     state.rewards = [...rewards];
   },
+  setPath(state, path: string[]): void {
+    state.path = [...path];
+  },
   setSubscriptionPayload(
     state,
     {

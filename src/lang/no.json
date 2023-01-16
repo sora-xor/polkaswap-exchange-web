@@ -1136,5 +1136,9 @@
     "disclaimerTitle": "Ansvarsfraskrivelse:",
     "explore": {
         "showOnlyMyPositions": "Vis bare mine posisjoner"
+    },
+    "tooltips": {
+        "roi": "{ROI} står for Return on Investment. Den beregnes ved å dele fortjenesten opptjent på en investering med kostnaden for den investeringen i en prosentekvivalent.",
+        "tvl": "{TVL} står for Total Value Locked. Det representerer tokens som er låst i bassengene i dollarekvivalenten."
     }
 }
