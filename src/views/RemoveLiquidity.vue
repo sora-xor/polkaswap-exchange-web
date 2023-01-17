@@ -42,8 +42,11 @@
             :show-tooltip="false"
             @input="handleRemovePartChange"
           />
-          <div v-if="hasLockedPart" class="input-line input-line--footer locked-part">
-            {{ t('removeLiquidity.locked', { percent: liquidityBalanceLockedPercent }) }}
+          <div v-if="hasCeresLockedPart" class="input-line input-line--footer locked-part">
+            {{ t('removeLiquidity.locked', { percent: getLockedPercent(ceresLockedBalance) }) }}
+          </div>
+          <div v-if="hasDemeterLockedPart" class="input-line input-line--footer locked-part">
+            {{ t('removeLiquidity.locked', { percent: getLockedPercent(demeterLockedBalance) }) }}
           </div>
         </div>
       </s-float-input>
@@ -134,7 +137,7 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { hasInsufficientXorForFee } from '@/utils';
+import { hasInsufficientXorForFee, formatDecimalPlaces } from '@/utils';
 import { getter, state, mutation, action } from '@/store/decorators';
 import { FocusedField } from '@/store/removeLiquidity/types';
 import type { LiquidityParams } from '@/store/pool/types';
@@ -170,6 +173,8 @@ export default class RemoveLiquidity extends Mixins(
   @getter.assets.xor private xor!: Nullable<AccountAsset>;
   @getter.removeLiquidity.liquidityBalanceFull private liquidityBalanceFull!: FPNumber;
   @getter.removeLiquidity.liquidityBalance private liquidityBalance!: FPNumber;
+  @getter.removeLiquidity.demeterLockedBalance private demeterLockedBalance!: FPNumber;
+  @getter.removeLiquidity.ceresLockedBalance private ceresLockedBalance!: FPNumber;
   @getter.removeLiquidity.liquidity liquidity!: AccountLiquidity;
   @getter.removeLiquidity.firstToken firstToken!: Asset;
   @getter.removeLiquidity.secondToken secondToken!: Asset;
@@ -258,18 +263,12 @@ export default class RemoveLiquidity extends Mixins(
     return this.liquidityBalance.isZero();
   }
 
-  get hasLockedPart(): boolean {
-    return FPNumber.isLessThan(this.liquidityBalance, this.liquidityBalanceFull);
+  get hasCeresLockedPart(): boolean {
+    return !this.ceresLockedBalance.isZero();
   }
 
-  get liquidityBalanceLockedPercent() {
-    return (
-      this.liquidityBalanceFull
-        .sub(this.liquidityBalance)
-        .div(this.liquidityBalanceFull)
-        .mul(FPNumber.HUNDRED)
-        .toLocaleString() + '%'
-    );
+  get hasDemeterLockedPart(): boolean {
+    return !this.demeterLockedBalance.isZero();
   }
 
   get isInsufficientBalance(): boolean {
@@ -335,6 +334,12 @@ export default class RemoveLiquidity extends Mixins(
 
   getTokenMaxAmount(tokenBalance: FPNumber): string {
     return tokenBalance.toString();
+  }
+
+  getLockedPercent(lockedBalance: FPNumber): string {
+    const percent = lockedBalance.div(this.liquidityBalanceFull).mul(FPNumber.HUNDRED);
+
+    return formatDecimalPlaces(percent, true);
   }
 
   async handleTokenChange(value: string, setValue: (v: any) => Promise<any>): Promise<any> {
