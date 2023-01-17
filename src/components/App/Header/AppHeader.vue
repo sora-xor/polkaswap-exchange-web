@@ -63,7 +63,6 @@ import { getter, mutation } from '@/store/decorators';
     AccountButton: lazyComponent(Components.AccountButton),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     AppHeaderMenu: lazyComponent(Components.AppHeaderMenu),
-    MarketMakerCountdown: lazyComponent(Components.MarketMakerCountdown),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     Moonpay: lazyComponent(Components.Moonpay),
@@ -151,20 +150,17 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   &--history {
     max-width: 134px;
-
-    .moonpay-button-text {
-      display: none;
-
-      @include large-mobile {
-        display: inline-block;
-      }
-    }
   }
 
   &-text {
+    display: none;
     white-space: normal;
     text-align: left;
     letter-spacing: var(--s-letter-spacing-small);
+
+    @include large-mobile {
+      display: inline-block;
+    }
   }
 
   & i + &-text {

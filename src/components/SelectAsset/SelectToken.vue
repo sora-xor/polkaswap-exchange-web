@@ -10,7 +10,7 @@
         class="token-search"
       />
 
-      <s-tab :label="t('selectToken.assets.title')" name="assets"></s-tab>
+      <s-tab :label="t('selectToken.assets.title')" name="assets" />
 
       <s-tab :disabled="disabledCustom" :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
         <template v-if="customAsset">
@@ -35,6 +35,7 @@
       </s-tab>
 
       <select-asset-list
+        v-show="shouldAssetsListBeShown"
         :assets="activeAssetsList"
         :size="assetsListSize"
         :connected="connected"
@@ -134,6 +135,11 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     return this.tabValue === Tabs.Custom;
   }
 
+  /** Only for empty list for custom tab case when searching */
+  get shouldAssetsListBeShown(): boolean {
+    return !(this.isCustomTabActive && !this.activeAssetsList.length && this.searchQuery);
+  }
+
   get assetsListSize(): number {
     return this.isCustomTabActive ? 5 : 6;
   }
@@ -155,7 +161,16 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get sortedNonWhitelistAccountAssets(): Array<AccountAsset> {
-    return Object.values(this.nonWhitelistAccountAssets).sort(this.sortByBalance());
+    const { asset: excludeAsset, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this;
+    // TODO: we already have balances in nonWhitelistAccountAssets.
+    // Need to improve that logic
+    return this.getAssetsWithBalances({
+      assets: Object.values(this.nonWhitelistAccountAssets),
+      accountAssetsAddressTable,
+      notNullBalanceOnly,
+      accountAssetsOnly,
+      excludeAsset,
+    }).sort(this.sortByBalance());
   }
 
   private getMainSources(): Array<Asset> {

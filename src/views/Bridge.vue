@@ -448,7 +448,7 @@ export default class Bridge extends Mixins(
 
     return this.isXorSufficientForNextTx({
       type: this.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
-      isXorAccountAsset: isXorAccountAsset(this.asset),
+      isXor: isXorAccountAsset(this.asset),
       amount: this.getFPNumber(this.amount),
     });
   }

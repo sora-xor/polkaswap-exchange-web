@@ -107,5 +107,15 @@ export default class Wallet extends Mixins(TranslationMixin) {
   .s-icon-basic-check-mark-24 {
     @include icon-styles;
   }
+
+  @include large-mobile(true) {
+    .account-credentials_description {
+      .account-credentials_address {
+        .first {
+          width: 36px;
+        }
+      }
+    }
+  }
 }
 </style>

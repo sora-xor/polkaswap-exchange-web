@@ -269,7 +269,7 @@ router.beforeEach((to, from, next) => {
       store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
     }
     if (isLoggedIn) {
-      setRoute(PageNames.Referral);
+      setRoute(PageNames.ReferralProgram);
       return;
     }
   }

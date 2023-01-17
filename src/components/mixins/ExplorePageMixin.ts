@@ -19,6 +19,7 @@ export default class ExplorePageMixin extends Mixins(
 
   @Ref('table') readonly tableComponent!: any;
   @Prop({ default: '', type: String }) readonly exploreQuery!: string;
+  @Prop({ default: false, type: Boolean }) readonly isAccountItems!: boolean;
   @Watch('exploreQuery')
   private resetCurrentPage(): void {
     this.currentPage = 1;
@@ -108,11 +109,11 @@ export default class ExplorePageMixin extends Mixins(
   }
 
   private initScrollbar(): void {
+    if (!this.tableComponent) return;
+
     const Scrollbar = Vue.extend(SScrollbar);
     const scrollbar = new Scrollbar();
     scrollbar.$mount();
-
-    if (!this.tableComponent) return;
 
     const elTable = this.tableComponent.$refs.table;
     const elTableBodyWrapper = elTable.$refs.bodyWrapper;

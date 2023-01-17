@@ -166,6 +166,11 @@ $title-height: 42px;
 
 .staking-info-badges {
   flex-flow: wrap;
+  margin: -$inner-spacing-mini / 2;
+
+  & > * {
+    margin: $inner-spacing-mini / 2;
+  }
 }
 
 .staking-info {

@@ -45,6 +45,24 @@
           </div>
         </template>
       </s-table-column>
+      <!-- Reward Token -->
+      <s-table-column width="120" header-align="left" align="left">
+        <template #header>
+          <sort-button name="rewardAssetSymbol" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="explore-table__primary">Reward</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <div class="explore-table-cell">
+            <token-logo
+              size="small"
+              class="explore-table-item-logo explore-table-item-logo--plain"
+              :token-symbol="row.rewardAsset.symbol"
+            />
+            <div class="explore-table-item-name">{{ row.rewardAsset.symbol }}</div>
+          </div>
+        </template>
+      </s-table-column>
       <!-- APR -->
       <s-table-column width="140" header-align="right" align="right">
         <template #header>
@@ -66,24 +84,6 @@
           />
         </template>
       </s-table-column>
-      <!-- Reward Token -->
-      <s-table-column width="120" header-align="left" align="left">
-        <template #header>
-          <sort-button name="rewardAssetSymbol" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="explore-table__primary">Reward</span>
-          </sort-button>
-        </template>
-        <template v-slot="{ row }">
-          <div class="explore-table-cell">
-            <token-logo
-              size="small"
-              class="explore-table-item-logo explore-table-item-logo--plain"
-              :token-symbol="row.rewardAsset.symbol"
-            />
-            <div class="explore-table-item-name">{{ row.rewardAsset.symbol }}</div>
-          </div>
-        </template>
-      </s-table-column>
       <!-- Fee -->
       <s-table-column width="80" header-align="right" align="right">
         <template #header>
@@ -98,17 +98,23 @@
       <!-- Account tokens -->
       <s-table-column v-if="isLoggedIn" key="logged" width="140" header-align="right" align="right">
         <template #header>
-          <span class="explore-table__primary">Investment</span>
+          <span class="explore-table__primary">{{ t('balanceText') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="explore-table-item-tokens">
-            <div v-for="({ asset, balance }, index) in row.accountTokens" :key="index" class="explore-table-cell">
+            <div
+              v-for="({ asset, balance, balancePrefix }, index) in row.accountTokens"
+              :key="index"
+              class="explore-table-cell"
+            >
               <formatted-amount
                 value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-price explore-table-item-amount"
-              />
+              >
+                <template #prefix>{{ balancePrefix }}</template>
+              </formatted-amount>
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
             </div>
           </div>
@@ -118,7 +124,10 @@
       <s-table-column width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="explore-table__primary">TVL</span>
+            <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
+            <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
+              <s-icon name="info-16" size="14px" />
+            </s-tooltip>
           </sort-button>
         </template>
         <template v-slot="{ row }">
@@ -155,6 +164,7 @@ import { api, components } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import DemeterBasePageMixin from '@/modules/demeterFarming/mixins/BasePageMixin';
 
 import { demeterLazyComponent } from '@/modules/demeterFarming/router';
@@ -190,6 +200,8 @@ type TableItem = {
   tvlFormatted: AmountWithSuffix;
   apr: number;
   aprFormatted: string;
+  isAccountItem: boolean;
+  accountTokens: { asset: Asset; balance: string; balancePrefix: string }[];
   liquidity: Nullable<AccountLiquidity>;
 };
 
@@ -207,14 +219,14 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBasePageMixin) {
+export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBasePageMixin, ExplorePageMixin) {
   @Watch('pools', { deep: true })
   private async updatePoolsData() {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
         const buffer = {};
         const isFarm = this.isFarmingPage;
-        const keys = this.items.map((item) => lpKey(item.baseAsset, item.poolAsset));
+        const keys = this.list.map((item) => lpKey(item.baseAsset, item.poolAsset));
         const poolKeys = [...new Set(keys)];
 
         await Promise.allSettled(
@@ -240,7 +252,7 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
 
   poolsData: Record<string, PoolData> = {};
 
-  get items(): DemeterPool[] {
+  get list(): DemeterPool[] {
     return Object.values(this.pools)
       .map((poolMap) => Object.values(poolMap))
       .flat(2)
@@ -253,8 +265,8 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
     return this.prepareDerivedPoolData(this.selectedPool, this.selectedAccountPool, this.liquidity);
   }
 
-  get preparedItems(): TableItem[] {
-    return this.items.map((pool) => {
+  get items(): TableItem[] {
+    return this.list.map((pool) => {
       const baseAsset = this.demeterAssetsData[pool.baseAsset] as Asset;
       const poolAsset = this.demeterAssetsData[pool.poolAsset] as Asset;
       const rewardAsset = this.demeterAssetsData[pool.rewardAsset] as Asset;
@@ -264,6 +276,7 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
       );
       const tokenInfo = this.tokenInfos[pool.rewardAsset];
       const accountPool = this.getAccountPool(pool);
+      const isAccountItem = !!accountPool && this.isActiveAccountPool(accountPool);
       const poolData = this.poolsData[lpKey(pool.baseAsset, pool.poolAsset)];
       const poolTokenPrice = poolData?.price ?? FPNumber.ZERO;
       const poolBaseReserves = poolData?.reserves?.[0] ?? FPNumber.ZERO;
@@ -309,7 +322,11 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
               },
             ]
           : [{ asset: poolAsset, balance: accountPooledTokens }]
-      ).map((item) => ({ ...item, balance: formatDecimalPlaces(item.balance) }));
+      ).map((item) => ({
+        ...item,
+        balance: formatDecimalPlaces(item.balance),
+        balancePrefix: !item.balance.isZero() ? '~' : '',
+      }));
 
       return {
         assets,
@@ -325,10 +342,17 @@ export default class ExploreDemeter extends Mixins(ExplorePageMixin, DemeterBase
         tvlFormatted: formatAmountWithSuffix(tvl),
         apr: apr.toNumber(),
         aprFormatted: formatDecimalPlaces(apr, true),
+        isAccountItem,
         accountTokens,
         liquidity,
       };
     });
+  }
+
+  get preparedItems(): TableItem[] {
+    if (!this.isAccountItems) return this.items;
+
+    return this.items.filter((item) => item.isAccountItem);
   }
 
   private async getPoolData(key: string, isFarm: boolean): Promise<Nullable<PoolData>> {

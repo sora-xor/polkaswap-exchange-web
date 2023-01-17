@@ -43,7 +43,7 @@
             "ClaimRewards": "Récompense réclamée avec succès {rewards}",
             "ReferralReserveXor": "XOR lié avec succès",
             "ReferralUnreserveXor": "XOR avec succès délié",
-            "ReferralSetInvitedUser": "La référence est définie avec succès",
+            "ReferralSetInvitedUser": "La {role} {address} est définie avec succès",
             "SwapAndSend": "Échange de {amount} {symbol} contre {amount2} {symbol2} et {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Fourni {symbol} et {symbol2} {amount} jetons LP",
             "DemeterFarmingWithdrawLiquidity": "Suppression des jetons LP {symbol} et {symbol2} {amount}",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Échec de la réclamation des récompenses {rewards}",
             "ReferralReserveXor": "Échec de la liaison XOR",
             "ReferralUnreserveXor": "Échec de la dissociation XOR",
-            "ReferralSetInvitedUser": "Échec de la définition de la référence",
+            "ReferralSetInvitedUser": "Échec de la définition de la {role} {address}",
             "SwapAndSend": "Échec de l'échange de {amount} {symbol} contre {amount2} {symbol2} et {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Impossible de fournir {amount} {symbol} et {symbol2} jetons LP",
             "DemeterFarmingWithdrawLiquidity": "Échec de la suppression de {amount} {symbol} et {symbol2} jetons LP",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
-        "ReferralSetInvitedUser": "Définir la référence",
+        "ReferralSetInvitedUser": "Définir la {role}",
         "SwapAndSend": "Échanger et envoyer",
         "DemeterFarmingDepositLiquidity": "Liquidité de la participation",
         "DemeterFarmingWithdrawLiquidity": "Libérer la liquidité",
@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Jetons",
         "Explore\/Pools": "Piscines",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Farming"
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Échanger",
@@ -352,7 +353,8 @@
         "Support": "Support",
         "CreatePair": "Créer une paire",
         "StakingContainer": "Staking",
-        "Explore\/Container": "Explorer"
+        "Explore\/Container": "Explorer",
+        "SoraCard": "{Sora} Carte"
     },
     "social": {
         "twitter": "Twitter",
@@ -1131,5 +1133,12 @@
         }
     },
     "hashiBridgeText": "Pont {Hashi}",
-    "disclaimerTitle": "Avertissement:"
+    "disclaimerTitle": "Avertissement:",
+    "explore": {
+        "showOnlyMyPositions": "Afficher uniquement mes positions"
+    },
+    "tooltips": {
+        "roi": "{ROI} signifie retour sur investissement. Il est calculé en divisant le bénéfice réalisé sur un investissement par le coût de cet investissement en pourcentage équivalent.",
+        "tvl": "{TVL} signifie Total Value Locked. Il représente les jetons verrouillés dans les pools en équivalent dollar."
+    }
 }

@@ -75,7 +75,6 @@ export const Links = {
   nodes: {
     tutorial: 'https://medium.com/sora-xor/how-to-run-a-sora-testnet-node-a4d42a9de1af',
   },
-  marketMaker: 'https://medium.com/polkaswap/pswap-rewards-part-3-polkaswap-market-making-rebates-1856f62ccfaa',
   faq: 'https://wiki.sora.org/polkaswap/polkaswap-faq',
   terms: 'https://wiki.sora.org/polkaswap/terms',
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
@@ -119,9 +118,8 @@ export enum PageNames {
   RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
   Rewards = 'Rewards',
-  Referral = 'Referral',
-  RewardsTabs = 'RewardsTabs',
   ReferralProgram = 'ReferralProgram',
+  RewardsTabs = 'RewardsTabs',
   ReferralBonding = 'ReferralBonding',
   ReferralUnbonding = 'ReferralUnbonding',
   PageNotFound = 'PageNotFound',
@@ -153,7 +151,6 @@ export enum Components {
   AppHeaderMenu = 'App/Header/AppHeaderMenu',
   AccountButton = 'App/Header/AccountButton',
   AppLogoButton = 'App/Header/AppLogoButton',
-  MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
   AppMenu = 'App/Menu/AppMenu',
   AppInfoPopper = 'App/Menu/AppInfoPopper',
   BrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
@@ -358,7 +355,7 @@ export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTr
 export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
 export const RewardsChildPages = [
   PageNames.Rewards,
-  PageNames.Referral,
+  PageNames.ReferralProgram,
   PageNames.ReferralBonding,
   PageNames.ReferralUnbonding,
 ];

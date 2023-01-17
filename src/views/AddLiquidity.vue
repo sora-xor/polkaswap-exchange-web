@@ -112,8 +112,8 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
@@ -197,10 +197,10 @@ export default class AddLiquidity extends Mixins(
 
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
-      if (this.firstAddress && this.secondAddress) {
+      if (this.firstRouteAddress && this.secondRouteAddress) {
         await this.setData({
-          firstAddress: this.firstAddress,
-          secondAddress: this.secondAddress,
+          firstAddress: this.firstRouteAddress,
+          secondAddress: this.secondRouteAddress,
         });
         // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
         if (!this.liquidityInfo) {
@@ -216,27 +216,18 @@ export default class AddLiquidity extends Mixins(
     this.resetData();
   }
 
-  get firstAddress(): string {
-    return router.currentRoute.params.firstAddress;
+  /** First token address from route object */
+  get firstRouteAddress(): string {
+    return this.$route.params.firstAddress;
   }
 
-  get secondAddress(): string {
-    return router.currentRoute.params.secondAddress;
+  /** Second token address from route object */
+  get secondRouteAddress(): string {
+    return this.$route.params.secondAddress;
   }
 
   get areTokensSelected(): boolean {
     return !!(this.firstToken && this.secondToken);
-  }
-
-  get chooseTokenClasses(): string {
-    const buttonClass = 'el-button';
-    const classes = [buttonClass, buttonClass + '--choose-token'];
-
-    if (this.secondAddress) {
-      classes.push(`${buttonClass}--disabled`);
-    }
-
-    return classes.join(' ');
   }
 
   get removeLiquidityFormattedFee(): string {
@@ -244,11 +235,13 @@ export default class AddLiquidity extends Mixins(
   }
 
   get isXorSufficientForNextOperation(): boolean {
-    const params: { type: Operation; amount?: FPNumber } = {
-      type: Operation.AddLiquidity,
+    const params: WALLET_CONSTS.NetworkFeeWarningOptions = {
+      type: this.isAvailable ? Operation.AddLiquidity : Operation.CreatePair,
     };
-    if (this.firstAddress === XOR.address) {
+
+    if (this.firstToken?.address === XOR.address) {
       params.amount = this.getFPNumber(this.firstTokenValue);
+      params.isXor = true;
     }
     return this.isXorSufficientForNextTx(params);
   }

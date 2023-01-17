@@ -43,7 +43,7 @@
             "ClaimRewards": "Reward claimed successfully {rewards}",
             "ReferralReserveXor": "Bonded XOR successfully",
             "ReferralUnreserveXor": "Unbonded XOR successfully",
-            "ReferralSetInvitedUser": "Referral is set successfully",
+            "ReferralSetInvitedUser": "{role} {address} is set successfully",
             "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Supplied {symbol} and {symbol2} {amount} LP tokens",
             "DemeterFarmingWithdrawLiquidity": "Removed {symbol} and {symbol2} {amount} LP tokens",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Failed to claim rewards {rewards}",
             "ReferralReserveXor": "Failed to bond XOR",
             "ReferralUnreserveXor": "Failed to unbond XOR",
-            "ReferralSetInvitedUser": "Failed to set referral",
+            "ReferralSetInvitedUser": "Failed to set {role} {address}",
             "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Failed to supply {amount} {symbol} and {symbol2} LP tokens",
             "DemeterFarmingWithdrawLiquidity": "Failed to remove {amount} {symbol} and {symbol2} LP tokens",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
-        "ReferralSetInvitedUser": "Set Referral",
+        "ReferralSetInvitedUser": "Set {role}",
         "SwapAndSend": "Swap and Send",
         "DemeterFarmingDepositLiquidity": "Stake Liquidity",
         "DemeterFarmingWithdrawLiquidity": "Unstake Liquidity",
@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Pools",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Farming"
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -350,13 +351,13 @@
         "About": "About",
         "Stats": "Stats",
         "Support": "Support",
-        "SoraCard": "SORA Card",
         "CreatePair": "Create Pair",
         "Tokens": "Tokens",
         "Send": "Send",
         "RouteAssets": "Route Assets",
         "StakingContainer": "Staking",
-        "Explore\/Container": "Explore"
+        "Explore\/Container": "Explore",
+        "SoraCard": "{Sora} Card"
     },
     "social": {
         "twitter": "Twitter",
@@ -1228,5 +1229,12 @@
         }
     },
     "hashiBridgeText": "{Hashi} bridge",
-    "disclaimerTitle": "Disclaimer:"
+    "disclaimerTitle": "Disclaimer:",
+    "explore": {
+        "showOnlyMyPositions": "Show only my positions"
+    },
+    "tooltips": {
+        "roi": "{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.",
+        "tvl": "{TVL} stands for Total Value Locked. It represents tokens locked in the pools in the dollar equivalent."
+    }
 }
