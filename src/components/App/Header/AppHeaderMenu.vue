@@ -18,12 +18,13 @@
       >
         <template #menu>
           <s-dropdown-item
-            v-for="{ value, icon, text } in dropdownHeaderMenuItems"
+            v-for="{ value, icon, text, disabled } in dropdownHeaderMenuItems"
             :key="value"
             class="header-menu__item"
             :data-test-name="value"
             :icon="icon"
             :value="value"
+            :disabled="disabled"
           >
             {{ text }}
           </s-dropdown-item>
@@ -40,12 +41,13 @@
     </s-button>
     <template v-else>
       <s-button
-        v-for="{ value, icon, text } in headerMenuItems"
+        v-for="{ value, icon, text, disabled } in headerMenuItems"
         :key="value"
         type="action"
         class="s-pressed"
         :tooltip="text"
         @click="handleSelectHeaderMenu(value)"
+        :disabled="disabled"
       >
         <s-icon :name="icon" :size="iconSize" />
       </s-button>
@@ -83,6 +85,7 @@ type MenuItem = {
   value: HeaderMenuType;
   icon: string;
   text: string;
+  disabled?: boolean;
 };
 
 const BREAKPOINT = 1440;
@@ -97,6 +100,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly HeaderMenuType = HeaderMenuType;
 
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
+  @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @state.settings.isBrowserNotificationApiAvailable isBrowserNotificationApiAvailable!: boolean;
 
@@ -177,6 +181,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         value: HeaderMenuType.Disclaimer,
         icon: 'info-16',
         text: this.disclaimerText,
+        disabled: this.discalimerDisabled,
       },
     ];
   }
@@ -187,6 +192,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   get dropdownHeaderMenuItems(): Array<MenuItem> {
     return this.getHeaderMenuItems(true);
+  }
+
+  get discalimerDisabled(): boolean {
+    return this.disclaimerVisibility && !this.userDisclaimerApprove;
   }
 
   mounted(): void {
@@ -301,5 +310,10 @@ $icon-size: 28px;
   &:hover &__bell--dropdown {
     color: var(--s-color-base-content-secondary);
   }
+}
+
+.el-dropdown-menu__item.header-menu__item.is-disabled {
+  pointer-events: initial;
+  cursor: not-allowed;
 }
 </style>

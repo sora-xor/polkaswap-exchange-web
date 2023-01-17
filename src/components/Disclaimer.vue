@@ -2,7 +2,13 @@
   <div class="disclaimer">
     <div class="disclaimer__header">
       <div class="disclaimer__header-title">{{ disclaimerTitle }}</div>
-      <s-icon class="disclaimer__header-close-btn" size="28px" name="basic-clear-X-xs-24" @click.native="handleClose" />
+      <s-icon
+        v-if="userDisclaimerApprove"
+        class="disclaimer__header-close-btn"
+        size="28px"
+        name="basic-clear-X-xs-24"
+        @click.native="handleClose"
+      />
     </div>
     <div class="disclaimer__text">
       <p
@@ -47,6 +53,7 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
     this.loadingAcceptBtn = true;
     await delay(1400);
     this.setUserDisclaimerApprove();
+    this.setDisclaimerDialogVisibility();
   }
 
   handleClose(): void {
