@@ -15,7 +15,6 @@
       <moonpay-history-button class="moonpay-button moonpay-button--history" />
     </div>
     <div class="app-controls s-flex" :class="{ 'without-moonpay': !areMoonpayButtonsVisible }">
-      <market-maker-countdown />
       <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
         <token-logo class="node-control__logo token-logo" v-bind="nodeLogo" />
       </s-button>
@@ -55,7 +54,6 @@ import { getter, mutation } from '@/store/decorators';
     AccountButton: lazyComponent(Components.AccountButton),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     AppHeaderMenu: lazyComponent(Components.AppHeaderMenu),
-    MarketMakerCountdown: lazyComponent(Components.MarketMakerCountdown),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     Moonpay: lazyComponent(Components.Moonpay),
