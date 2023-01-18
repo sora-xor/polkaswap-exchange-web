@@ -43,7 +43,7 @@
             "ClaimRewards": "Ricompensa richiesta con successo {rewards}",
             "ReferralReserveXor": "XOR legato con successo",
             "ReferralUnreserveXor": "XOR non legato con successo",
-            "ReferralSetInvitedUser": "Il referral è impostato correttamente",
+            "ReferralSetInvitedUser": "Il {role} {address} è impostato correttamente",
             "SwapAndSend": "Scambiato {amount} {symbol} con {amount2} {symbol2} e {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Gettoni LP forniti {symbol} e {symbol2} {amount}",
             "DemeterFarmingWithdrawLiquidity": "Rimossi i token LP {symbol} e {symbol2} {amount}",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Impossibile richiedere i premi {rewards}",
             "ReferralReserveXor": "Fallito il legame XOR",
             "ReferralUnreserveXor": "Impossibile disaggregare XOR",
-            "ReferralSetInvitedUser": "Impossibile impostare il rinvio",
+            "ReferralSetInvitedUser": "Impossibile impostare il {role} {address}",
             "SwapAndSend": "Impossibile scambiare {amount} {symbol} con {amount2} {symbol2} e {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Impossibile fornire i token LP {amount} {symbol} e {symbol2}",
             "DemeterFarmingWithdrawLiquidity": "Impossibile rimuovere i token LP {amount} {symbol} e {symbol2}",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
-        "ReferralSetInvitedUser": "Imposta referral",
+        "ReferralSetInvitedUser": "Imposta {role}",
         "SwapAndSend": "Scambia e invia",
         "DemeterFarmingDepositLiquidity": "Liquidità di partecipazione",
         "DemeterFarmingWithdrawLiquidity": "Liquidità svincolata",
@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "Piscine",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Farming"
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Scambia",
@@ -352,7 +353,8 @@
         "Support": "Supporto",
         "CreatePair": "Crea una pair",
         "StakingContainer": "Staking",
-        "Explore\/Container": "Esplorare"
+        "Explore\/Container": "Esplorare",
+        "SoraCard": "{Sora} Card"
     },
     "social": {
         "twitter": "Twitter",
@@ -1131,5 +1133,12 @@
         }
     },
     "hashiBridgeText": "Ponte {Hashi}",
-    "disclaimerTitle": "Disclaimer:"
+    "disclaimerTitle": "Disclaimer:",
+    "explore": {
+        "showOnlyMyPositions": "Mostra solo le mie posizioni"
+    },
+    "tooltips": {
+        "roi": "{ROI} sta per ritorno sull'investimento. Viene calcolato dividendo il profitto ottenuto su un investimento per il costo di tale investimento in una percentuale equivalente.",
+        "tvl": "{TVL} sta per Total Value Locked. Rappresenta i token bloccati nei pool nell'equivalente in dollari."
+    }
 }

@@ -125,7 +125,7 @@
         :visible.sync="showSelectTokenDialog"
         :connected="isLoggedIn"
         :asset="isTokenFromSelected ? tokenTo : tokenFrom"
-        @select="selectToken"
+        @select="handleSelectToken"
       />
       <swap-confirm
         :visible.sync="showConfirmSwapDialog"
@@ -221,10 +221,12 @@ export default class Swap extends Mixins(
   @mutation.swap.setLiquidityProviderFee private setLiquidityProviderFee!: (value: CodecString) => void;
   @mutation.swap.setPrimaryMarketsEnabledAssets private setEnabledAssets!: (args: PrimaryMarketsEnabledAssets) => void;
   @mutation.swap.setRewards private setRewards!: (rewards: Array<LPRewardsInfo>) => void;
+  @mutation.swap.setPath private setPath!: (path: Array<string>) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
+  @action.swap.switchTokens private switchTokens!: AsyncFnWithoutArgs;
   @action.swap.reset private reset!: AsyncFnWithoutArgs;
   @action.swap.setSubscriptionPayload private setSubscriptionPayload!: (data: {
     dexId: number;
@@ -469,12 +471,13 @@ export default class Swap extends Mixins(
         }
       }
 
-      const { amount, amountWithoutImpact, fee, rewards } = results[bestDexId];
+      const { amount, amountWithoutImpact, fee, rewards, path } = results[bestDexId];
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact as string);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
+      this.setPath(path);
       this.selectDexId(bestDexId);
     } catch (error: any) {
       console.error(error);
@@ -536,10 +539,8 @@ export default class Swap extends Mixins(
 
   async handleSwitchTokens(): Promise<void> {
     if (!(this.tokenFrom && this.tokenTo)) return;
-    const [fromAddress, toAddress] = [this.tokenFrom.address, this.tokenTo.address];
 
-    await this.setTokenFromAddress(toAddress);
-    await this.setTokenToAddress(fromAddress);
+    await this.switchTokens();
 
     if (this.isExchangeB) {
       this.setExchangeB(false);
@@ -571,7 +572,7 @@ export default class Swap extends Mixins(
     this.showSelectTokenDialog = true;
   }
 
-  async selectToken(token: AccountAsset): Promise<void> {
+  async handleSelectToken(token: AccountAsset): Promise<void> {
     if (token) {
       await this.withSelectAssetLoading(async () => {
         if (this.isTokenFromSelected) {
@@ -656,7 +657,6 @@ export default class Swap extends Mixins(
 @include large-desktop {
   .app-main--has-charts {
     .container--charts {
-      min-width: $bridge-width;
       max-width: calc(#{$bridge-width} * 2);
       flex-grow: 1;
     }

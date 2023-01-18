@@ -112,7 +112,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
-  @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: FnWithoutArgs;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
@@ -198,9 +197,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (this.storageReferrer === this.account.address) {
         this.resetStorageReferrer();
       } else {
-        setTimeout(() => {
-          this.showConfirmInviteUser = true; // Delay here for better UX
-        }, 3_000); // TODO: this logic should be moved and fixed in life cycle
+        this.withApi(() => {
+          this.showConfirmInviteUser = true;
+        });
       }
     }
   }
@@ -223,7 +222,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       }
 
       await this.setApiKeys(data?.API_KEYS);
-      this.setFeatureFlags(data?.FEATURE_FLAGS);
+      // __________ADAR______________________________________________________
+      // this.setFeatureFlags(data?.FEATURE_FLAGS);
+      this.setFeatureFlags({ charts: false, moonpay: false });
+      // ____________________________________________________________________
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
@@ -334,7 +336,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     await this.resetNetworkSubscriptions();
     this.resetBlockNumberSubscription();
     this.unsubscribeFromInvitedUsers();
-    this.unsubscribeMarketMakerInfo();
     await connection.close();
   }
 
@@ -656,14 +657,12 @@ $sora-logo-width: 173.7px;
       overflow: hidden;
 
       .app-content .app-disclaimer-container {
-        min-width: 800px;
         width: 100%;
         max-width: 900px;
         padding: 0 20px;
         margin: 0 auto 120px;
       }
       .app-footer {
-        min-width: 800px;
         justify-content: center;
       }
     }

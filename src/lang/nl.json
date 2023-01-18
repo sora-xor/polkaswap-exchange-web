@@ -43,7 +43,7 @@
             "ClaimRewards": "Beloning succesvol geclaimd {rewards}",
             "ReferralReserveXor": "Bonded XOR met succes",
             "ReferralUnreserveXor": "Unbonded XOR met succes",
-            "ReferralSetInvitedUser": "Verwijzing is succesvol ingesteld",
+            "ReferralSetInvitedUser": "{role} {address} is succesvol ingesteld",
             "SwapAndSend": "{amount} {symbol} geruild voor {amount2} {symbol2} en {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Meegeleverde {symbol} en {symbol2} {amount} LP tokens",
             "DemeterFarmingWithdrawLiquidity": "{symbol} en {symbol2} {amount} LP tokens verwijderd",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Kan geen beloningen claimen {rewards}",
             "ReferralReserveXor": "Kan XOR niet binden",
             "ReferralUnreserveXor": "Kan de obligatie niet ongedaan maken XOR",
-            "ReferralSetInvitedUser": "Kan verwijzing niet instellen",
+            "ReferralSetInvitedUser": "Kan {role} {address} niet instellen",
             "SwapAndSend": "Kan {amount} {symbol} niet omwisselen voor {amount2} {symbol2} en {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Kan {amount} {symbol} en {symbol2} LP-tokens niet leveren",
             "DemeterFarmingWithdrawLiquidity": "Kan {amount} {symbol} en {symbol2} LP-tokens niet verwijderen",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
-        "ReferralSetInvitedUser": "Verwijzing instellen",
+        "ReferralSetInvitedUser": "{role} instellen",
         "SwapAndSend": "Ruilen en verzenden",
         "DemeterFarmingDepositLiquidity": "Liquiditeit van het aandeel",
         "DemeterFarmingWithdrawLiquidity": "Liquiditeit ongedaan maken",
@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Zwembaden",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Farming"
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -352,7 +353,8 @@
         "Support": "Support",
         "CreatePair": "Maak Paar",
         "StakingContainer": "Staking",
-        "Explore\/Container": "Ontdekken"
+        "Explore\/Container": "Ontdekken",
+        "SoraCard": "{Sora} Kaart"
     },
     "social": {
         "twitter": "Twitter",
@@ -1131,5 +1133,12 @@
         }
     },
     "hashiBridgeText": "{Hashi} brug",
-    "disclaimerTitle": "Disclaimer:"
+    "disclaimerTitle": "Disclaimer:",
+    "explore": {
+        "showOnlyMyPositions": "Toon alleen mijn posities"
+    },
+    "tooltips": {
+        "roi": "{ROI} staat voor Return on Investment. Het wordt berekend door de winst op een investering te delen door de kosten van die investering in een procentueel equivalent.",
+        "tvl": "{TVL} staat voor Total Value Locked. Het vertegenwoordigt tokens die in de pools zijn opgesloten in het equivalent van de dollar."
+    }
 }

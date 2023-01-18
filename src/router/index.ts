@@ -45,8 +45,8 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/about',
-    name: PageNames.About,
-    component: lazyView(PageNames.About),
+    name: AdarPageNames.About,
+    component: adarLazyView(AdarPageNames.About),
   },
   {
     path: '/wallet',
@@ -269,7 +269,7 @@ router.beforeEach((to, from, next) => {
       store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
     }
     if (isLoggedIn) {
-      setRoute(PageNames.Referral);
+      setRoute(PageNames.ReferralProgram);
       return;
     }
   }

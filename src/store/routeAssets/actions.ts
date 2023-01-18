@@ -3,7 +3,7 @@ import { routeAssetsActionContext } from '@/store/routeAssets';
 import Papa from 'papaparse';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy';
+import { getPathsAndPairLiquiditySources } from '@sora-substrate/liquidity-proxy';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { RouteAssetsSubscription, RecipientStatus } from './types';
 import { FPNumber, Operation } from '@sora-substrate/util/build';
@@ -11,6 +11,7 @@ import { formatAddress } from '@/utils';
 import type { DexQuoteData } from '@/store/swap/types';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import type { QuotePayload, SwapResult } from '@sora-substrate/liquidity-proxy/build/types';
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 const actions = defineActions({
   processingNextStage(context) {
@@ -147,14 +148,20 @@ const actions = defineActions({
 
     const { dexId, payload } = data;
     // tbc & xst is enabled only on dex 0
-    const enabledAssets = dexId === DexId.XOR ? state.enabledAssets : { tbc: [], xst: [] };
+    if (!(inputAssetId && outputAssetId && payload)) {
+      return;
+    }
 
-    const { paths, liquiditySources } = api.swap.getPathsAndPairLiquiditySources(
-      inputAssetId,
-      outputAssetId,
+    // tbc & xst is enabled only on dex 0
+    const enabledAssets = dexId === DexId.XOR ? state.enabledAssets : { tbc: [], xst: [] };
+    const baseAssetId = api.dex.getBaseAssetId(dexId);
+    const syntheticBaseAssetId = api.dex.getSyntheticBaseAssetId(dexId);
+
+    const { paths, liquiditySources } = getPathsAndPairLiquiditySources(
       payload,
       enabledAssets,
-      dexId
+      baseAssetId,
+      syntheticBaseAssetId
     );
 
     const subscription = state.subscriptions.find((item) => item.assetAddress === outputAssetId);

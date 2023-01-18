@@ -50,17 +50,23 @@
       <!-- Account tokens -->
       <s-table-column v-if="isLoggedIn" key="logged" width="140" header-align="right" align="right">
         <template #header>
-          <span class="explore-table__primary">Investment</span>
+          <span class="explore-table__primary">{{ t('balanceText') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="explore-table-item-tokens">
-            <div v-for="({ asset, balance }, index) in row.accountTokens" :key="index" class="explore-table-cell">
+            <div
+              v-for="({ asset, balance, balancePrefix }, index) in row.accountTokens"
+              :key="index"
+              class="explore-table-cell"
+            >
               <formatted-amount
                 value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-price explore-table-item-amount"
-              />
+              >
+                <template #prefix>{{ balancePrefix }}</template>
+              </formatted-amount>
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
             </div>
           </div>
@@ -70,7 +76,10 @@
       <s-table-column v-if="pricesAvailable" key="tvl" width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="explore-table__primary">TVL</span>
+            <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
+            <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
+              <s-icon name="info-16" size="14px" />
+            </s-tooltip>
           </sort-button>
         </template>
         <template v-slot="{ row }">
@@ -124,7 +133,8 @@ type TableItem = {
   apyFormatted: string;
   tvl: number;
   tvlFormatted: AmountWithSuffix;
-  accountTokens: { asset: Asset; balance: string }[];
+  isAccountItem: boolean;
+  accountTokens: { asset: Asset; balance: string; balancePrefix: string }[];
 };
 
 @Component({
@@ -145,7 +155,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
 
   poolReserves: Record<string, string[]> = {};
 
-  get preparedItems(): TableItem[] {
+  get items(): TableItem[] {
     return Object.entries(this.poolReserves).reduce<any>((buffer, [key, reserves]) => {
       const matches = key.match(/0x\w{64}/g);
 
@@ -155,9 +165,14 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
       const baseAsset = this.getAsset(matches[0]);
       const targetAsset = this.getAsset(matches[1]);
 
-      if (!baseAsset || !targetAsset) return buffer;
+      if (!(baseAsset && targetAsset)) return buffer;
 
-      const poolInfo = api.poolXyk.getInfo(baseAsset.address, targetAsset.address);
+      const name = `${baseAsset.symbol}-${targetAsset.symbol}`; // For search
+
+      const accountPool = this.accountLiquidity.find(
+        (liquidity) => liquidity.firstAddress === baseAsset.address && liquidity.secondAddress === targetAsset.address
+      );
+
       const fpBaseAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(baseAsset) ?? 0);
       const fpBaseAssetReserves = FPNumber.fromCodecValue(reserves[0] ?? 0);
       const fpApy = FPNumber.fromCodecValue(this.getPoolApy(baseAsset.address, targetAsset.address) ?? 0).mul(
@@ -165,28 +180,28 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
       );
       const fpTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves).mul(new FPNumber(2));
 
-      const accountPool = this.accountLiquidity.find(
-        (liquidity) => liquidity.firstAddress === baseAsset.address && liquidity.secondAddress === targetAsset.address
-      );
-
       const accountTokens = [
         {
           asset: baseAsset,
           balance: formatDecimalPlaces(FPNumber.fromCodecValue(accountPool?.firstBalance ?? 0)),
+          balancePrefix: accountPool ? '~' : '',
         },
         {
           asset: targetAsset,
           balance: formatDecimalPlaces(FPNumber.fromCodecValue(accountPool?.secondBalance ?? 0)),
+          balancePrefix: accountPool ? '~' : '',
         },
       ];
 
       buffer.push({
+        name,
         baseAsset,
         targetAsset,
         apy: fpApy.toNumber(),
         apyFormatted: formatDecimalPlaces(fpApy, true),
         tvl: fpTvl.toNumber(),
         tvlFormatted: formatAmountWithSuffix(fpTvl),
+        isAccountItem: !!accountPool,
         accountTokens,
       });
 
@@ -194,8 +209,14 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
     }, []);
   }
 
+  get preparedItems(): TableItem[] {
+    if (!this.isAccountItems) return this.items;
+
+    return this.items.filter((item) => item.isAccountItem);
+  }
+
   get hasApyColumnData(): boolean {
-    return this.preparedItems.some((item) => item.apy !== 0);
+    return this.items.some((item) => item.apy !== 0);
   }
 
   // ExplorePageMixin method implementation

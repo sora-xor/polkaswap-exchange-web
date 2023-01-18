@@ -43,7 +43,7 @@
             "ClaimRewards": "Đã yêu cầu thành công phần thưởng {rewards}",
             "ReferralReserveXor": "Bonded XOR thành công",
             "ReferralUnreserveXor": "Unbonded XOR thành công",
-            "ReferralSetInvitedUser": "Thiết lập giới thiệu thành công",
+            "ReferralSetInvitedUser": "Thiết lập {role} {address} thành công",
             "SwapAndSend": "Đã hoán đổi {amount} {symbol} cho {amount2} {symbol2} và {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Đã cung cấp mã thông báo LP {symbol} và {symbol2} {amount}",
             "DemeterFarmingWithdrawLiquidity": "Loại bỏ thanh khoản token {symbol} và {symbol2} {amount}",
@@ -63,7 +63,7 @@
             "ClaimRewards": "Không xác nhận được phần thưởng {rewards}",
             "ReferralReserveXor": "Thất bại khi bond XOR",
             "ReferralUnreserveXor": "Thất bại khi unbond XOR",
-            "ReferralSetInvitedUser": "Thất bại trong việc đặt giới thiệu",
+            "ReferralSetInvitedUser": "Thất bại trong việc đặt {role} {address}",
             "SwapAndSend": "Thất bại trong việc hoán đổi {amount} {symbol} cho {amount2} {symbol2} và {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Thất bại trong việc cung cấp thanh khoản token {amount} {symbol} và {symbol2}",
             "DemeterFarmingWithdrawLiquidity": "Thất bại trong việc loại bỏ thanh khoản token {amount} {symbol} và {symbol2}",
@@ -75,7 +75,7 @@
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
-        "ReferralSetInvitedUser": "Thiết lập giới thiệu",
+        "ReferralSetInvitedUser": "Thiết lập {role}",
         "SwapAndSend": "Hoán đổi và Gửi",
         "DemeterFarmingDepositLiquidity": "Thanh khoản stake",
         "DemeterFarmingWithdrawLiquidity": "Không tham gia thanh khoản",
@@ -338,7 +338,8 @@
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "hồ bơi",
         "Explore\/Staking": "Staking",
-        "Explore\/Farming": "Farming"
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Đổi",
@@ -352,7 +353,8 @@
         "Support": "Hỗ trợ",
         "CreatePair": "Tạo một cặp token",
         "StakingContainer": "Staking",
-        "Explore\/Container": "Khám phá"
+        "Explore\/Container": "Khám phá",
+        "SoraCard": "{Sora} Thẻ"
     },
     "social": {
         "twitter": "Twitter",
@@ -1131,5 +1133,12 @@
         }
     },
     "hashiBridgeText": "Cầu {Hashi}",
-    "disclaimerTitle": "Disclaimer:"
+    "disclaimerTitle": "Disclaimer:",
+    "explore": {
+        "showOnlyMyPositions": "Chỉ hiển thị vị trí của tôi"
+    },
+    "tooltips": {
+        "roi": "{ROI} là viết tắt của Lợi tức đầu tư. Nó được tính bằng cách chia lợi nhuận kiếm được từ một khoản đầu tư cho chi phí của khoản đầu tư đó theo tỷ lệ phần trăm tương đương.",
+        "tvl": "{TVL} là viết tắt của Tổng giá trị bị khóa. Nó đại diện cho các mã thông báo bị khóa trong các nhóm tính bằng đô la tương đương."
+    }
 }
