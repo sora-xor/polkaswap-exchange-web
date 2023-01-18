@@ -2,7 +2,7 @@
   <wallet-base v-loading="loading" :title="title" :show-back="true" @back="handleBack" class="sora-card">
     <terms-and-conditions v-if="step === KycProcess.TermsAndConditions" @confirm-tos="confirmToS" />
     <road-map v-else-if="step === KycProcess.RoadMap" @confirm-start-kyc="confirmProcess" :userApplied="userApplied" />
-    <kyc-view v-else-if="step === KycProcess.KycView" @confirm-kyc="openConfirmationInfo" />
+    <kyc-view v-else-if="step === KycProcess.KycView" @confirm-kyc="redirectToView" />
   </wallet-base>
 </template>
 
@@ -77,8 +77,8 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
     this.$emit('go-to-start', withoutCheck);
   }
 
-  openConfirmationInfo(success: boolean): void {
-    success ? this.$emit('go-to-start') : (this.step = KycProcess.RoadMap);
+  redirectToView(success: boolean): void {
+    success ? this.$emit('go-to-start', success) : (this.step = KycProcess.RoadMap);
   }
 
   mounted(): void {

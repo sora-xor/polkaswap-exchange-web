@@ -4,7 +4,7 @@
       <img src="@/assets/img/sora-card/sora_card_front.png?inline" class="sora-card__card-image" />
       <div class="sora-card__card-icon" :class="getComputedIconClass()">
         <s-icon
-          v-if="currentStatus === VerificationStatus.Pending"
+          v-if="!currentStatus || currentStatus === VerificationStatus.Pending"
           name="time-time-24"
           class="sora-card__card-icon-element"
         />
@@ -56,6 +56,8 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   }
 
   getHeaderText(): string | undefined {
+    if (!this.currentStatus) return 'KYC completed. Waiting for the results';
+
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
         return 'KYC completed. Waiting for the results';
@@ -67,6 +69,8 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   }
 
   getComputedIconClass(): string | undefined {
+    if (!this.currentStatus) return 'sora-card__card-icon--waiting';
+
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
         return 'sora-card__card-icon--waiting';

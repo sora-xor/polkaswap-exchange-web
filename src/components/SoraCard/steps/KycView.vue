@@ -1,5 +1,5 @@
 <template>
-  <div class="sora-card class1">
+  <div class="sora-card sora-card-kyc-wrapper">
     <div>
       <div class="sora-card-kyc-view" v-loading="loadingKycView">
         <s-scrollbar>
@@ -141,37 +141,20 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
 }
 </script>
 
-<style lang="scss" module>
-.class1 {
+<style lang="scss">
+.sora-card-kyc-wrapper {
   @import 'https://kyc-test.soracard.com/web/v2/webkyc.css';
+
+  .container {
+    padding: 0;
+  }
 }
 </style>
 
 <style lang="scss">
-#kyc {
-  // height: 300px;
-}
 .sora-card-kyc-view {
   .container {
-    // height: 400px;
     margin: 0;
-    // padding: 0;
-    background-color: transparent;
-    width: 100%;
-  }
-
-  .PW-form {
-    // height: auto;
-
-    .col-12 {
-      padding-left: 0px !important;
-      padding-right: 0px !important;
-
-      #VideoKycFrame {
-        padding-left: 15px !important;
-        padding-right: 15px !important;
-      }
-    }
   }
 
   .el-scrollbar__wrap {
@@ -179,8 +162,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 }
 
-.sumsub-logo {
-  fill: none;
-  color: white !important;
+#VideoKycFrame {
+  iframe {
+    background-color: white;
+  }
 }
 </style>
