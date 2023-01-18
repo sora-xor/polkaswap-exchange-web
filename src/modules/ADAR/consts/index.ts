@@ -4,6 +4,7 @@ export enum AdarPageNames {
   Send = 'Send',
   KYC = 'KYC',
   RouteAssets = 'RouteAssets',
+  About = 'About',
 }
 
 export enum AdarComponents {

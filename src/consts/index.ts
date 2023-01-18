@@ -295,7 +295,7 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
   // },
   {
     icon: 'file-file-text-24',
-    title: PageNames.About,
+    title: AdarPageNames.About,
   },
 ];
 

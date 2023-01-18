@@ -222,7 +222,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       }
 
       await this.setApiKeys(data?.API_KEYS);
-      this.setFeatureFlags(data?.FEATURE_FLAGS);
+      // __________ADAR______________________________________________________
+      // this.setFeatureFlags(data?.FEATURE_FLAGS);
+      this.setFeatureFlags({ charts: false, moonpay: false });
+      // ____________________________________________________________________
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);

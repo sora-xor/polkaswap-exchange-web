@@ -1052,7 +1052,40 @@
                 "messages": {
                     "routeAssetsCompleted": "All transactions completed"
                 }
-            }
+            },
+            "continue": "Continue",
+            "cancelProcessing": "Cancel processing",
+            "stagesNames": {
+                "authorize": "Authorize",
+                "done": "Done",
+                "processTemplate": "Process template",
+                "reviewDetails": "Review Details",
+                "routing": "Routing",
+                "transactionOverview": "Transaction overview",
+                "uploadTemplate": "Upload tempolte"
+            },
+            "stages": {
+                "uploadTemplate": {
+                    "title": "Upload Routing Template for processing",
+                    "description": "Upload your Process Routing Template as a .CSV file",
+                    "instruction": "Drop your completed process routing template or click to upload",
+                    "typesInfo": "Supported file types: CSV",
+                    "uploadButtonTitle": "upload",
+                    "templateHelp": "Dont have a template?",
+                    "download": "Download"
+                },
+                "processTemplate": {
+                    "recipients": "Recipients",
+                    "assets": "Assets",
+                    "usd": "usd",
+                    "wallets": "wallets",
+                    "amount": "amount",
+                    "title": "Process routing template",
+                    "description": "Our system is processing your uploaded Routing Template"
+                }
+            },
+            "dialogs": {},
+            "messages": {}
         }
     },    
     "code": {
