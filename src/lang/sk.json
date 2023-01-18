@@ -717,7 +717,7 @@
         "outputMessage": "Výsledná čiastka je len odhadom. Ak sa cena zmení o viac ako {slippageTolerance}%, transakcia bude zrušená.",
         "confirmTitle": "Obdržíte",
         "shareOfPool": "Podiel vo fonde po transakcii",
-        "locked": "V stávke je {percent} vášho fondu"
+        "locked": "V {lock} je {percent} vášho fondu"
     },
     "dexSettings": {
         "title": "Nastavenie",

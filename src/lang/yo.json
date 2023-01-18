@@ -717,7 +717,7 @@
         "outputMessage": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance} % iṣowo rẹ yoo pada.",
         "confirmTitle": "Iwo yoo gba",
         "shareOfPool": "Pinpin pool lẹhin idunadura",
-        "locked": "{percent} ti adagun-omi rẹ wa ni idiyele"
+        "locked": "{percent} ti adagun-omi rẹ wa ni {lock}"
     },
     "dexSettings": {
         "title": "Ètò",

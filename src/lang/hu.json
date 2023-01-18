@@ -717,7 +717,7 @@
         "outputMessage": "Becsült eredmény. Ha az ár a {slippageTolerance}%-nál nagyobb mértékben változik, a tranzakció visszafordul.",
         "confirmTitle": "Kapni fogsz",
         "shareOfPool": "A pool részesedése a tranzakció után",
-        "locked": "A készlet {percent} -a tétben van"
+        "locked": "A készlet {percent} -a {lock} van"
     },
     "dexSettings": {
         "title": "Beállítások",

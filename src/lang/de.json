@@ -717,7 +717,7 @@
         "outputMessage": "Die Ausgabe ist geschätzt. Wenn sich der Preis um mehr als {slippageTolerance}% ändert, wird die Transaktion rückgängig gemacht.",
         "confirmTitle": "Du erhältst",
         "shareOfPool": "Anteil am Pool nach der Transaktion",
-        "locked": "{percent} deines Pools befinden sich im Staking"
+        "locked": "{percent} deines Pools befinden sich im {lock}"
     },
     "dexSettings": {
         "title": "Einstellungen",

@@ -717,7 +717,7 @@
         "outputMessage": "Beløp er estimert. Hvis prisen endres mer enn {slippageTolerance}%, vil transaksjonen gå tilbake.",
         "confirmTitle": "Du vil motta",
         "shareOfPool": "Andel av pool etter transaksjon",
-        "locked": "{percent} av puljen din er i innsats"
+        "locked": "{percent} av puljen din er i {lock}"
     },
     "dexSettings": {
         "title": "Innstillinger",

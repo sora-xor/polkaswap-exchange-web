@@ -717,7 +717,7 @@
         "outputMessage": "L'output è stimato. Se il prezzo cambiasse più di {slippageTolerance}% la tua transazione tornerà indietro.",
         "confirmTitle": "Riceverai",
         "shareOfPool": "Quota della pool dopo la transazione",
-        "locked": "{percent} della tua piscina è in staking"
+        "locked": "{percent} della tua piscina è in {lock}"
     },
     "dexSettings": {
         "title": "Impostazioni",

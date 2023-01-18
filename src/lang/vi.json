@@ -717,7 +717,7 @@
         "outputMessage": "Kết quả là ước lượng. Nếu giá biến động hơn {slippageTolerance}% thì giao dịch của bạn sẽ hoàn tác.",
         "confirmTitle": "Bạn sẽ nhận được",
         "shareOfPool": "Cổ phần của Pool sau giao dịch",
-        "locked": "{percent} nhóm của bạn đang được đặt cược"
+        "locked": "{percent} nhóm của bạn đang bị {lock}"
     },
     "dexSettings": {
         "title": "Cài đặt",

@@ -717,7 +717,7 @@
         "outputMessage": "Le montant à recevoir est estimé. Si le prix change de plus de {slippageTolerance}%, votre transaction sera annulée.",
         "confirmTitle": "Vous allez recevoir",
         "shareOfPool": "Part du pool après transaction",
-        "locked": "{percent} de votre pool est en jalonnement"
+        "locked": "{percent} de votre pool est en {lock}"
     },
     "dexSettings": {
         "title": "Réglages",

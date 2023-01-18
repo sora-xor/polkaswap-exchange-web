@@ -42,11 +42,8 @@
             :show-tooltip="false"
             @input="handleRemovePartChange"
           />
-          <div v-if="hasCeresLockedPart" class="input-line input-line--footer locked-part">
-            {{ t('removeLiquidity.locked', { percent: getLockedPercent(ceresLockedBalance) }) }}
-          </div>
-          <div v-if="hasDemeterLockedPart" class="input-line input-line--footer locked-part">
-            {{ t('removeLiquidity.locked', { percent: getLockedPercent(demeterLockedBalance) }) }}
+          <div v-for="{ balance, lock } in locks" :key="lock" class="input-line input-line--footer locked-part">
+            {{ t('removeLiquidity.locked', { percent: getLockedPercent(balance), lock }) }}
           </div>
         </div>
       </s-float-input>
@@ -263,12 +260,17 @@ export default class RemoveLiquidity extends Mixins(
     return this.liquidityBalance.isZero();
   }
 
-  get hasCeresLockedPart(): boolean {
-    return !this.ceresLockedBalance.isZero();
-  }
-
-  get hasDemeterLockedPart(): boolean {
-    return !this.demeterLockedBalance.isZero();
+  get locks(): Array<{ balance: FPNumber; lock: string }> {
+    return [
+      {
+        balance: this.ceresLockedBalance,
+        lock: 'Ceres Liquidity Locker',
+      },
+      {
+        balance: this.demeterLockedBalance,
+        lock: 'Demeter Farming',
+      },
+    ].filter((item) => !item.balance.isZero());
   }
 
   get isInsufficientBalance(): boolean {
@@ -316,7 +318,7 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isMaxButtonAvailable(): boolean {
-    return Number(this.removePart) !== this.MAX_PART;
+    return !this.liquidityLocked && Number(this.removePart) !== this.MAX_PART;
   }
 
   handleRemovePartChange(value: string | number): void {

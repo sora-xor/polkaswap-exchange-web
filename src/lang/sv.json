@@ -717,7 +717,7 @@
         "outputMessage": "Utdata är beräknad ungefärligt. Om priset ändras mer än {slippageTolerance} så återgår din transaktion.",
         "confirmTitle": "Du kommer att mottaga",
         "shareOfPool": "Andel av poolen efter transaktionen",
-        "locked": "{percent} av din pool är i insats"
+        "locked": "{percent} av din pool är i {lock}"
     },
     "dexSettings": {
         "title": "Inställningar",
