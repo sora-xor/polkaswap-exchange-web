@@ -42,8 +42,8 @@
             :show-tooltip="false"
             @input="handleRemovePartChange"
           />
-          <div v-for="{ balance, lock } in locks" :key="lock" class="input-line input-line--footer locked-part">
-            {{ t('removeLiquidity.locked', { percent: getLockedPercent(balance), lock }) }}
+          <div v-for="{ percent, lock } in locks" :key="lock" class="input-line input-line--footer locked-part">
+            <span class="locked-part-percent">{{ percent }}</span> {{ t('removeLiquidity.locked', { lock }) }}
           </div>
         </div>
       </s-float-input>
@@ -260,17 +260,26 @@ export default class RemoveLiquidity extends Mixins(
     return this.liquidityBalance.isZero();
   }
 
-  get locks(): Array<{ balance: FPNumber; lock: string }> {
+  get locks(): { percent: string; lock: string }[] {
     return [
-      {
-        balance: this.ceresLockedBalance,
-        lock: 'Ceres Liquidity Locker',
-      },
       {
         balance: this.demeterLockedBalance,
         lock: 'Demeter Farming',
       },
-    ].filter((item) => !item.balance.isZero());
+      {
+        balance: this.ceresLockedBalance,
+        lock: 'Ceres Liquidity Locker',
+      },
+    ].reduce<{ percent: string; lock: string }[]>((buffer, { balance, lock }) => {
+      if (!balance.isZero()) {
+        buffer.push({
+          lock,
+          percent: this.getLockedPercent(balance),
+        });
+      }
+
+      return buffer;
+    }, []);
   }
 
   get isInsufficientBalance(): boolean {
@@ -406,6 +415,11 @@ export default class RemoveLiquidity extends Mixins(
 .locked-part {
   color: var(--s-color-base-content-secondary);
   text-transform: uppercase;
+  justify-content: flex-start;
+
+  &-percent {
+    width: 50px;
+  }
 }
 </style>
 
