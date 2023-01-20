@@ -477,7 +477,7 @@ export default class Swap extends Mixins(
       this.setAmountWithoutImpact(amountWithoutImpact as string);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
-      this.setPath(path);
+      this.setPath(path as string[]);
       this.selectDexId(bestDexId);
     } catch (error: any) {
       console.error(error);
