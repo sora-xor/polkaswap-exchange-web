@@ -26,9 +26,6 @@ module.exports = defineConfig({
       // should be before 'ts-loader'
       test: /\.worker\.ts$/,
       loader: 'worker-loader',
-      options: {
-        worker: 'SharedWorker',
-      },
     });
 
     if (process.env.NODE_ENV === 'production') {
