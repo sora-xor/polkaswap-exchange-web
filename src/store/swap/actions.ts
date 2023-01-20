@@ -61,10 +61,13 @@ const actions = defineActions({
 
   async switchTokens(context): Promise<void> {
     const { commit, state } = swapActionContext(context);
-    const { tokenFromAddress: from, tokenToAddress: to } = state;
+    const { tokenFromAddress: from, tokenToAddress: to, fromValue, toValue, isExchangeB } = state;
     if (from && to) {
       commit.setTokenFromAddress(to);
       commit.setTokenToAddress(from);
+      commit.setFromValue(toValue);
+      commit.setToValue(fromValue);
+      commit.setExchangeB(!isExchangeB);
       updateTokenSubscription(context, Direction.From);
       updateTokenSubscription(context, Direction.To);
     }

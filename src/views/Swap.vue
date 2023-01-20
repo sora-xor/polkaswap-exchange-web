@@ -477,7 +477,7 @@ export default class Swap extends Mixins(
       this.setAmountWithoutImpact(amountWithoutImpact as string);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
-      this.setPath(path);
+      this.setPath(path as string[]);
       this.selectDexId(bestDexId);
     } catch (error: any) {
       console.error(error);
@@ -538,17 +538,9 @@ export default class Swap extends Mixins(
   }
 
   async handleSwitchTokens(): Promise<void> {
-    if (!(this.tokenFrom && this.tokenTo)) return;
+    if (!this.areTokensSelected) return;
 
     await this.switchTokens();
-
-    if (this.isExchangeB) {
-      this.setExchangeB(false);
-      this.handleInputFieldFrom(this.toValue);
-    } else {
-      this.setExchangeB(true);
-      this.handleInputFieldTo(this.fromValue);
-    }
 
     this.subscribeOnSwapReserves();
   }
