@@ -22,6 +22,15 @@ module.exports = defineConfig({
         });
       });
 
+    config.module.rules.unshift({
+      // should be before 'ts-loader'
+      test: /\.worker\.ts$/,
+      loader: 'worker-loader',
+      options: {
+        worker: 'SharedWorker',
+      },
+    });
+
     if (process.env.NODE_ENV === 'production') {
       const buildDateTime = Date.now();
       config.output.filename = `js/[name].[contenthash:8].${buildDateTime}.js`;
