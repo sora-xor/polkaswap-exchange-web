@@ -88,16 +88,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
 </script>
 
 <style lang="scss">
-// $color: #ee2233; // TODO: likely to be changed
-
-.sora-card__loader {
-  height: 619px;
-  position: absolute;
-  margin-top: 15px;
-}
+// $color: #ee2233; // TODO: [STYLES] likely to be changed
 
 .el-button.neumorphic.s-primary.sora-card__btn {
-  margin-top: 24px;
+  margin-top: var(--s-size-mini);
   // background-color: $color;
 
   span.text {
@@ -107,7 +101,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
   }
 }
 
-// TODO: relates to color scheme
+// TODO: relates to chosen color scheme
 // .sora-card {
 //   .is-loading {
 //     span.text {
@@ -122,25 +116,4 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
 //     }
 //   }
 // }
-
-.sora-card__no-spam {
-  text-align: center;
-  color: var(--s-color-base-content-secondary);
-  margin-bottom: 8px;
-}
-
-.sora-card__input-description {
-  color: var(--s-color-base-content-primary);
-  font-size: var(--s-font-size-extra-small);
-  font-weight: 300;
-  line-height: var(--s-line-height-base);
-  padding: var(--s-basic-spacing) calc(var(--s-basic-spacing) * 1.5) calc(var(--s-basic-spacing) * 2);
-}
-
-.loading-page {
-  position: absolute;
-  height: 618px;
-  width: 470px;
-  margin-top: -18px;
-}
 </style>

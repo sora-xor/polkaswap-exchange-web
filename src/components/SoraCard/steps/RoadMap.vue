@@ -221,20 +221,20 @@ export default class RoadMap extends Mixins(
   width: 100%;
   background-color: var(--s-color-base-background);
   border-radius: var(--s-border-radius-small);
-  box-shadow: -5px -5px 10px #ffffff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
-  padding: 20px 16px;
-  margin-bottom: 16px;
+  box-shadow: var(--s-shadow-dialog);
+  padding: 20px $basic-spacing;
+  margin-bottom: $basic-spacing;
 
   &__section {
     display: flex;
     align-items: flex-start;
-    margin-top: 16px;
+    margin-top: $basic-spacing;
     width: 100%;
 
     .line {
       height: 1px;
       width: 270px;
-      margin-top: 16px;
+      margin-top: $basic-spacing;
       background-color: var(--s-color-base-border-secondary);
 
       &--last {
@@ -258,6 +258,7 @@ export default class RoadMap extends Mixins(
       border-radius: 50%;
       border: 1px solid var(--s-color-base-content-secondary);
 
+      // TODO: [STYLES] change color scheme
       &--current {
         border-color: #ee2233;
         background-color: #ffe5e8;
@@ -271,13 +272,13 @@ export default class RoadMap extends Mixins(
   }
 
   &__icon {
-    margin: 5px 16px 0 0;
+    margin: 5px $basic-spacing 0 0;
     color: var(--s-color-base-content-tertiary);
   }
 
   &__point {
     font-weight: 600;
-    font-size: 18px;
+    font-size: var(--s-font-size-big);
   }
 
   &__text-info {
@@ -299,21 +300,5 @@ export default class RoadMap extends Mixins(
 
 .sora-card__btn {
   width: 100%;
-}
-
-.s-icon-arrows-arrow-top-right-24 {
-  margin-left: 8px;
-  color: #fff;
-}
-
-[design-system-theme='dark'] {
-  .map {
-    box-shadow: -5px -5px 10px rgba(155, 111, 165, 0.25), 2px 2px 15px #492067,
-      inset 1px 1px 2px rgba(155, 111, 165, 0.25);
-  }
-}
-
-.el-button.is-loading {
-  background-color: unset !important;
 }
 </style>

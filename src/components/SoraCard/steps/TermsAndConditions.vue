@@ -73,9 +73,9 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
     width: 100%;
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-small);
-    box-shadow: -5px -5px 10px #ffffff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
-    padding: 20px 16px;
-    margin-bottom: 16px;
+    box-shadow: var(--s-shadow-dialog);
+    padding: 20px $basic-spacing;
+    margin-bottom: $basic-spacing;
     position: relative;
 
     &-header {
@@ -85,7 +85,7 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
 
     &-paragraph {
       color: var(--s-color-base-content-secondary);
-      margin-bottom: 8px;
+      margin-bottom: calc(var(--s-basic-spacing) / 2);
     }
 
     &-warning-icon {
@@ -115,11 +115,11 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
 
   &__section {
     width: 100%;
-    // background-color: var(--s-color-base-background);
+    background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-small);
-    box-shadow: -5px -5px 10px #ffffff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
-    padding: 20px 16px;
-    margin-bottom: 16px;
+    box-shadow: var(--s-shadow-dialog);
+    padding: 20px $basic-spacing;
+    margin-bottom: $basic-spacing;
     position: relative;
 
     &-block {
@@ -150,13 +150,13 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
     &-header {
       font-weight: 500;
       margin-bottom: 10px;
-      padding-right: 24px;
+      padding-right: var(--s-size-mini);
     }
 
     &-paragraph {
       color: var(--s-color-base-content-secondary);
-      margin-bottom: 24px;
-      padding-right: 24px;
+      margin-bottom: var(--s-size-mini);
+      padding-right: var(--s-size-mini);
     }
   }
 
@@ -168,19 +168,6 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
     height: 1px;
     margin: 14px 0;
     background-color: var(--s-color-base-border-secondary);
-  }
-}
-
-[design-system-theme='dark'] {
-  .tos {
-    &__disclaimer {
-      box-shadow: -5px -5px 10px rgba(155, 111, 165, 0.25), 2px 2px 15px #492067,
-        inset 1px 1px 2px rgba(155, 111, 165, 0.25);
-    }
-    &__section {
-      box-shadow: -5px -5px 10px rgba(155, 111, 165, 0.25), 2px 2px 15px #492067,
-        inset 1px 1px 2px rgba(155, 111, 165, 0.25);
-    }
   }
 }
 </style>

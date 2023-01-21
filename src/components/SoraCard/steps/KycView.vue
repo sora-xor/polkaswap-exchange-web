@@ -164,7 +164,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
 
 #VideoKycFrame {
   iframe {
-    background-color: white;
+    background-color: #fff;
   }
 }
 </style>

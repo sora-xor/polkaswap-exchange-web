@@ -90,14 +90,14 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   justify-content: center;
   align-items: center;
   &__header {
-    margin-top: 24px;
+    margin-top: var(--s-size-mini);
     text-align: center;
     font-weight: 600;
     font-size: 28px;
     width: 80%;
   }
   &__status-info {
-    margin-top: 16px;
+    margin-top: $basic-spacing;
     text-align: center;
     width: 85%;
   }

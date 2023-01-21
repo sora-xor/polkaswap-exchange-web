@@ -91,6 +91,6 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
 
 <style lang="scss" scoped>
 .el-card {
-  margin: 24px auto 0;
+  margin: var(--s-size-mini) auto 0;
 }
 </style>

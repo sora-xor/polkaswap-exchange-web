@@ -175,12 +175,12 @@ $color: #ee2233;
       width: 85%;
       text-align: center;
       font-weight: 600;
-      margin-top: 24px;
+      margin-top: var(--s-size-mini);
       font-size: 28px;
     }
 
     &-info {
-      margin-top: 16px;
+      margin-top: $basic-spacing;
       margin-bottom: 20px;
       font-weight: 300;
       line-height: 19px;
@@ -197,7 +197,7 @@ $color: #ee2233;
   &__user-applied {
     margin-top: 24px;
     color: var(--s-color-base-content-secondary);
-    padding-bottom: 8px;
+    padding-bottom: calc(var(--s-basic-spacing) / 2);
     border-bottom: 1px solid var(--s-color-base-content-secondary);
     &:hover {
       cursor: pointer;
@@ -211,24 +211,24 @@ $color: #ee2233;
 
   &__balance-indicator {
     background-color: var(--s-color-base-border-primary);
-    padding: 8px 16px;
-    margin-top: 16px;
-    border-radius: 8px;
+    padding: calc(var(--s-basic-spacing) / 2) var(--s-basic-spacing);
+    margin-top: var(--s-basic-spacing);
+    border-radius: calc(var(--s-basic-spacing) / 2);
     &-text {
       display: inline-block;
-      font-size: 14px;
+      font-size: var(--s-font-size-small);
       &--bold {
         font-weight: 600;
       }
     }
 
     .s-icon-basic-check-mark-24 {
-      margin-right: 16px;
+      margin-right: var(--s-basic-spacing);
       color: var(--s-color-base-content-tertiary);
     }
 
     .sora-card__icon--checked {
-      // color: $color;
+      color: var(--s-color-theme-accent);
     }
   }
 
@@ -238,7 +238,7 @@ $color: #ee2233;
     &--bridge {
       width: 48%;
       .text {
-        font-size: 18px;
+        font-size: var(--s-heading4-font-size);
       }
     }
     &--fiat-issuance {
@@ -250,8 +250,8 @@ $color: #ee2233;
 .line {
   width: 100%;
   display: flex;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: var(--s-basic-spacing);
+  margin-bottom: var(--s-basic-spacing);
   flex-direction: row;
   text-transform: uppercase;
   color: var(--s-color-base-content-secondary);
@@ -265,9 +265,5 @@ $color: #ee2233;
   margin: auto;
   margin-left: 10px;
   margin-right: 10px;
-}
-
-.el-button.is-loading {
-  background-color: unset !important;
 }
 </style>
