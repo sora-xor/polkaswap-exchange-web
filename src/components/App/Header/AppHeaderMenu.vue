@@ -242,7 +242,6 @@ $icon-size: 28px;
     line-height: $dropdown-item-line-height;
     font-weight: 300;
     font-size: var(--s-font-size-small);
-    letter-spacing: var(--s-letter-spacing-small);
     font-feature-settings: 'case' on;
     color: var(--s-color-base-content-secondary);
     display: flex;

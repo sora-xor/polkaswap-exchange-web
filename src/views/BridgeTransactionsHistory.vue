@@ -271,7 +271,6 @@ export default class BridgeTransactionsHistory extends Mixins(
     display: flex;
     align-items: baseline;
     font-weight: 600;
-    letter-spacing: var(--s-letter-spacing-small);
   }
   &--search {
     .el-input__inner {

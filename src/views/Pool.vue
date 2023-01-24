@@ -255,7 +255,6 @@ $title-height: 42px;
         line-height: var(--s-line-height-medium);
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: var(--s-letter-spacing-small);
         text-align: center;
       }
 
@@ -266,7 +265,6 @@ $title-height: 42px;
       &__title {
         flex: 1;
         font-weight: 700;
-        letter-spacing: var(--s-letter-spacing-small);
         text-align: left;
         min-height: $title-height;
         line-height: $title-height;

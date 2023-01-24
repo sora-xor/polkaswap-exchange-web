@@ -56,6 +56,5 @@ export default class StatsCard extends Mixins() {}
   font-size: var(--s-font-size-medium);
   line-height: var(--s-line-height-medium);
   font-weight: 600;
-  letter-spacing: var(--s-letter-spacing-small);
 }
 </style>

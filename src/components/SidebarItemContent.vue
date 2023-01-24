@@ -71,7 +71,6 @@ $icon-size: 42px;
     @include icon-styles(true);
   }
   & + span {
-    letter-spacing: var(--s-letter-spacing-small);
     margin-left: $inner-spacing-small;
 
     @include large-mobile {

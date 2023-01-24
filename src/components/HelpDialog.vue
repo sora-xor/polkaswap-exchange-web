@@ -72,7 +72,6 @@ export default class HelpDialog extends Mixins(TranslationMixin, mixins.DialogMi
       color: unset;
       font-size: var(--s-heading4-font-size);
       line-height: var(--s-line-height-medium);
-      letter-spacing: var(--s-letter-spacing-small);
 
       &_divider {
         margin: unset;

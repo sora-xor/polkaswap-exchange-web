@@ -59,7 +59,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     font-size: var(--s-font-size-mini);
     font-weight: 300;
     line-height: var(--s-line-height-medium);
-    letter-spacing: var(--s-letter-spacing-small);
 
     &--footer {
       margin-top: $inner-spacing-tiny;
@@ -260,7 +259,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   height: var(--s-size-small);
   font-size: $s-font-size-input;
   line-height: var(--s-line-height-small);
-  letter-spacing: var(--s-letter-spacing-small);
 }
 
 @mixin svg-icon ($url: '', $width: var(--s-icon-font-size-mini), $height: $width) {
@@ -315,7 +313,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   text-transform:  uppercase;
   font-size: $s-font-size-button;
   line-height: var(--s-line-height-small);
-  letter-spacing: var(--s-letter-spacing-small);
 }
 
 @mixin next-button {
@@ -773,7 +770,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       font-size: var(--s-font-size-big);
       font-weight: 800;
       line-height: var(--s-line-height-big);
-      letter-spacing: var(--s-letter-spacing-small);
       text-align: center;
     }
     &-name {

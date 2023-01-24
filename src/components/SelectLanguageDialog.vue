@@ -97,8 +97,6 @@ $list-items: 7;
   }
 }
 .select-language-item {
-  letter-spacing: var(--s-letter-spacing-small);
-
   &__value {
     color: var(--s-color-base-content-primary);
     font-size: var(--s-font-size-medium);

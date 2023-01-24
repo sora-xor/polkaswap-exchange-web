@@ -152,7 +152,6 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
   line-height: var(--s-line-height-medium);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: var(--s-letter-spacing-small);
   text-align: center;
 }
 </style>
@@ -176,7 +175,6 @@ $title-height: 42px;
 .staking-info {
   &-title {
     font-weight: 700;
-    letter-spacing: var(--s-letter-spacing-small);
     text-align: left;
     height: $title-height;
     line-height: $title-height;

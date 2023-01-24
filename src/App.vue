@@ -367,6 +367,7 @@ html {
   overflow-y: hidden;
   font-size: var(--s-font-size-small);
   line-height: var(--s-line-height-base);
+  letter-spacing: var(--s-letter-spacing-small);
 }
 
 ul ul {
@@ -571,18 +572,6 @@ i.icon-divider {
   @include icon-styles;
 }
 
-@include large-desktop(true) {
-  .app-main[class*='app-main--explore/'] {
-    .app-menu {
-      position: relative;
-
-      @include large-mobile(true) {
-        position: fixed;
-      }
-    }
-  }
-}
-
 @include tablet {
   .app-footer {
     flex-direction: row;
@@ -694,7 +683,6 @@ $sora-logo-width: 173.7px;
     font-size: var(--s-font-size-extra-mini);
     font-weight: 300;
     line-height: var(--s-line-height-extra-small);
-    letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
   }
 

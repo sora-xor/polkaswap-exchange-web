@@ -51,7 +51,6 @@ export default class SettingsHeader extends Mixins(TranslationMixin) {
   color: var(--s-color-base-content-secondary);
   font-size: var(--s-font-size-small);
   line-height: var(--s-line-height-small);
-  letter-spacing: var(--s-letter-spacing-small);
   font-weight: 800;
 
   .el-tooltip {

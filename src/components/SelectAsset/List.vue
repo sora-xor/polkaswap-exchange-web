@@ -85,7 +85,6 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
 
     &__balance {
       line-height: var(--s-line-height-small);
-      letter-spacing: var(--s-letter-spacing-small);
       font-weight: 800;
     }
 

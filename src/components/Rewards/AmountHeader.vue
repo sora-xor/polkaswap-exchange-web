@@ -70,7 +70,6 @@ export default class AmountHeader extends Mixins(mixins.FormattedAmountMixin, mi
     &__amount,
     .formatted-amount--fiat-value {
       font-weight: 700;
-      letter-spacing: var(--s-letter-spacing-small);
     }
 
     .formatted-amount--fiat-value {

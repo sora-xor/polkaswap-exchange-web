@@ -62,7 +62,6 @@ export default class SimpleNotification extends Mixins(TranslationMixin) {
   &__text {
     font-size: var(--s-font-size-small);
     font-weight: 300;
-    letter-spacing: var(--s-letter-spacing-small);
     line-height: var(--s-line-height-medium);
   }
 

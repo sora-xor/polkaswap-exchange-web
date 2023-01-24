@@ -56,7 +56,6 @@ $network-logo-size: 49px;
 .networks-info,
 .network-name {
   line-height: var(--s-line-height-medium);
-  letter-spacing: var(--s-letter-spacing-small);
 }
 
 .networks {

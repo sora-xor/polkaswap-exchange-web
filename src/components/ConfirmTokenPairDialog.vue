@@ -201,7 +201,6 @@ export default class ConfirmTokenPairDialog extends Mixins(
   font-size: var(--s-heading4-font-size);
   font-weight: 800;
   line-height: var(--s-line-height-medium);
-  letter-spacing: var(--s-letter-spacing-small);
   justify-content: center;
 }
 </style>

@@ -345,7 +345,6 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     align-items: center;
     border-radius: var(--s-border-radius-small);
     flex-flow: row nowrap;
-    letter-spacing: var(--s-letter-spacing-small);
     line-height: var(--s-line-height-medium);
     font-size: var(--s-font-size-small);
     font-weight: 300;

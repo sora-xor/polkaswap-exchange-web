@@ -1,17 +1,65 @@
 <template>
   <div class="stats-container">
-    <s-card class="stats-card" border-radius="small" shadow="always" size="medium" primary> 1 </s-card>
+    <stats-card class="grid-item">
+      <template #title>Network statistics</template>
 
-    <s-card class="stats-card stats-card--half" border-radius="small" shadow="always" size="medium" primary> 2 </s-card>
+      <div class="stats-row">
+        <div class="stats-column">
+          <s-card size="small" border-radius="mini">
+            <div slot="header" class="stats-card-title">TRANSACTIONS</div>
+            <div class="stats-card-data">
+              <span>873.060K</span>
+            </div>
+          </s-card>
+        </div>
+        <div class="stats-column">
+          <div class="stats-column-title">TRANSACTIONS</div>
+          <div class="stats-column-data">
+            <span>873.060K</span>
+          </div>
+        </div>
+        <div class="stats-column">
+          <div class="stats-column-title">TRANSACTIONS</div>
+          <div class="stats-column-data">
+            <span>873.060K</span>
+          </div>
+        </div>
+        <div class="stats-column">
+          <div class="stats-column-title">TRANSACTIONS</div>
+          <div class="stats-column-data">
+            <span>873.060K</span>
+          </div>
+        </div>
+        <div class="stats-column">
+          <div class="stats-column-title">TRANSACTIONS</div>
+          <div class="stats-column-data">
+            <span>873.060K</span>
+          </div>
+        </div>
+      </div>
+    </stats-card>
 
-    <s-card class="stats-card stats-card--half" border-radius="small" shadow="always" size="medium" primary> 3 </s-card>
+    <stats-card class="grid-item grid-item--50">
+      <template #title>TVL</template>
+    </stats-card>
+
+    <stats-card class="grid-item grid-item--50">
+      <template #title>Volume</template>
+    </stats-card>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 
-@Component
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
+
+@Component({
+  components: {
+    StatsCard: lazyComponent(Components.StatsCard),
+  },
+})
 export default class Stats extends Mixins() {}
 </script>
 
@@ -20,23 +68,42 @@ $container-max-width: 989px;
 $gap: $inner-spacing-medium;
 
 .stats-container {
+  width: 75vw;
+  max-width: $container-max-width;
+
   display: flex;
   flex-flow: row wrap;
   align-items: flex-start;
   justify-content: space-between;
   gap: $gap;
-  max-width: $container-max-width;
-  margin: $inner-spacing-big $inner-spacing-big 0;
 }
 
-.stats-card {
+.grid-item {
   width: 100%;
-  min-width: calc(#{$inner-window-width} * 0.75);
 
-  &--half {
+  &--50 {
     @include tablet {
       max-width: calc(50% - (#{$gap} / 2));
     }
+  }
+}
+
+.stats-row {
+  display: flex;
+  flex-flow: row wrap;
+  gap: $inner-spacing-mini;
+
+  .stats-column {
+    width: calc(20% - ((#{$inner-spacing-mini} * 4) / 5));
+    min-width: 180px;
+  }
+}
+
+.stats-card {
+  &-title {
+    color: var(--s-color-base-content-secondary);
+    font-size: var(--s-font-size-small);
+    font-weight: 800;
   }
 }
 </style>

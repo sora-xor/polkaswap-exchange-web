@@ -118,7 +118,6 @@ $invite-user-icon-size: 64px;
   &-free-charge {
     font-size: var(--s-font-size-small);
     line-height: var(--s-line-height-medium);
-    letter-spacing: var(--s-letter-spacing-small);
   }
   &-free-charge {
     margin-top: $inner-spacing-small;

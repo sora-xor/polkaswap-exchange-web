@@ -306,7 +306,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
 
-    @include tablet {
+    @include large-desktop {
       position: absolute;
       right: initial;
     }
@@ -382,7 +382,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       font-size: var(--s-font-size-extra-mini);
       font-weight: 300;
       padding: 0;
-      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
       color: var(--s-color-base-content-secondary);
 

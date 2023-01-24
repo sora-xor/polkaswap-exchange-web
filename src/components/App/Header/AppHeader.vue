@@ -136,7 +136,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
     display: none;
     white-space: normal;
     text-align: left;
-    letter-spacing: var(--s-letter-spacing-small);
 
     @include large-mobile {
       display: inline-block;

@@ -112,7 +112,6 @@ $node-list-items: 5;
 
     &__label {
       color: var(--s-color-base-content-primary);
-      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
       @include radio-title;
     }
@@ -121,7 +120,6 @@ $node-list-items: 5;
       color: var(--s-color-base-content-secondary);
       font-size: var(--s-font-size-mini);
       font-weight: 300;
-      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
     }
   }

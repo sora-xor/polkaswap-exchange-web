@@ -638,7 +638,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       justify-content: space-between;
       flex-wrap: wrap;
       font-size: var(--s-font-size-mini);
-      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
       color: var(--s-color-base-content-primary);
     }

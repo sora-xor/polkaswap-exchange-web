@@ -121,7 +121,6 @@ $social-link-min-height: 34px;
 
 .app-info {
   line-height: var(--s-line-height-medium);
-  letter-spacing: var(--s-letter-spacing-small);
 
   & > *:not(:last-child) {
     margin-bottom: $inner-spacing-small;

@@ -30,7 +30,6 @@ $base-class: '.status-action-badge';
   line-height: var(--s-line-height-medium);
   font-size: var(--s-font-size-mini);
   font-weight: 300;
-  letter-spacing: var(--s-letter-spacing-small);
   text-transform: uppercase;
   overflow: unset;
   box-shadow: var(--s-shadow-element);

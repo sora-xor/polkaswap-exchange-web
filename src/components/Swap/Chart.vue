@@ -1020,7 +1020,6 @@ $skeleton-label-width: 34px;
     font-weight: 800;
     font-size: var(--s-heading3-font-size);
     line-height: var(--s-line-height-extra-small);
-    letter-spacing: var(--s-letter-spacing-small);
 
     .formatted-amount {
       &__integer {
@@ -1126,7 +1125,6 @@ $skeleton-label-width: 34px;
       font-weight: 400;
       font-size: var(--s-font-size-medium);
       line-height: var(--s-line-height-medium);
-      letter-spacing: var(--s-letter-spacing-small);
     }
     .el-button.s-secondary {
       padding-right: $inner-spacing-big;

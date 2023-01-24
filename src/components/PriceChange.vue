@@ -53,7 +53,6 @@ export default class PriceChange extends Vue {
   color: var(--s-color-theme-accent);
   font-size: var(--s-font-size-medium);
   font-weight: 600;
-  letter-spacing: var(--s-letter-spacing-small);
   line-height: var(--s-line-height-medium);
 
   &--increased {
