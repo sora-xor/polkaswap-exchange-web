@@ -71,7 +71,6 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
 
   mounted(): void {
     this.X1Widget = X1Api.getWidget('Prod'); // TODO: change to this.soraNetwork later
-    console.log('this.here', this.X1Widget);
   }
 }
 </script>
