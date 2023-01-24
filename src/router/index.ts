@@ -215,6 +215,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/stats',
     name: PageNames.Stats,
+    component: lazyView(PageNames.Stats),
   },
   {
     path: '/support',

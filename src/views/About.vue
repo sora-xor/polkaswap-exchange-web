@@ -278,7 +278,7 @@ export default class About extends Mixins(TranslationMixin) {
 }
 
 .about {
-  margin: auto;
+  margin: -$inner-spacing-big auto 0;
   min-width: 800px;
   &-main {
     display: flex;

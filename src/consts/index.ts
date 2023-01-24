@@ -129,10 +129,10 @@ export enum PageNames {
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
   StakingContainer = 'StakingContainer',
+  // just for router name & different titles
   ExploreContainer = 'Explore/Container',
   ExploreTokens = 'Explore/Tokens',
   ExploreDemeter = 'Explore/Demeter',
-  // just for router name & different titles
   ExploreFarming = 'Explore/Farming',
   ExploreStaking = 'Explore/Staking',
   ExplorePools = 'Explore/Pools',
@@ -213,6 +213,8 @@ export enum Components {
   // Button
   SortButton = 'Button/SortButton',
   SvgIconButton = 'Button/SvgIconButton/SvgIconButton',
+  // Card
+  StatsCard = 'Card/StatsCard',
 }
 
 export enum RewardsTabsItems {
@@ -264,6 +266,10 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
   {
     icon: 'various-items-24',
     title: PageNames.ExploreContainer,
+  },
+  {
+    icon: 'various-planet-24',
+    title: PageNames.Stats,
   },
   {
     icon: 'sora-card',

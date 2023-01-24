@@ -610,13 +610,13 @@ i.icon-divider {
         padding-left: $basic-spacing * 2;
         .app-disclaimer {
           $margin-left: 10px;
-          max-width: calc(#{$bridge-width} + #{$margin-left});
+          max-width: calc(#{$inner-window-width} + #{$margin-left});
           padding-right: $inner-spacing-big;
           padding-left: calc(#{$inner-spacing-big} + #{$margin-left});
           &-container {
             margin-left: auto;
             margin-right: auto;
-            max-width: calc(#{$bridge-width} * 2 + #{$basic-spacing-small});
+            max-width: calc(#{$inner-window-width} * 2 + #{$basic-spacing-small});
           }
         }
       }
@@ -634,7 +634,7 @@ i.icon-divider {
       .app-content {
         .app-disclaimer {
           &-container {
-            max-width: calc(#{$bridge-width} * 3 + #{$basic-spacing-small} * 4);
+            max-width: calc(#{$inner-window-width} * 3 + #{$basic-spacing-small} * 4);
           }
         }
       }
@@ -678,7 +678,7 @@ $sora-logo-width: 173.7px;
 
   &-content {
     flex: 1;
-    margin: auto;
+    margin: $inner-spacing-big auto 0;
 
     .app-disclaimer-container {
       margin-left: auto;

@@ -1,46 +1,44 @@
 <template>
-  <div class="container container--charts" v-loading="parentLoading">
-    <div class="tokens-info-container">
-      <div class="header">
-        <div class="selected-tokens">
-          <tokens-row border :assets="tokens" size="medium" />
-          <div v-if="tokenA" class="token-title">
-            <span>{{ tokenA.symbol }}</span>
-            <span v-if="tokenB">/{{ tokenB.symbol }}</span>
-          </div>
-          <s-button
-            v-if="this.tokensPair"
-            :class="{ 's-pressed': isReversedChart }"
-            type="action"
-            alternative
-            icon="arrows-swap-90-24"
-            @click="revertChart"
-          />
-        </div>
-        <div class="chart-filters">
-          <s-tabs type="rounded" :value="selectedFilter.name" @input="selectFilter">
-            <s-tab
-              v-for="filter in filters"
-              :key="filter.name"
-              :name="filter.name"
-              :label="filter.label"
-              :disabled="parentLoading || loading"
-            />
-          </s-tabs>
-        </div>
-        <div class="s-flex chart-types">
-          <svg-icon-button
-            v-for="{ type, icon, active } in chartTypeButtons"
-            :key="type"
-            :icon="icon"
-            :active="active"
-            :disabled="parentLoading || loading"
-            size="small"
-            @click="selectChartType(type)"
-          />
-        </div>
+  <stats-card v-loading="parentLoading">
+    <template #title>
+      <tokens-row border :assets="tokens" size="medium" />
+      <div v-if="tokenA" class="token-title">
+        <span>{{ tokenA.symbol }}</span>
+        <span v-if="tokenB">/{{ tokenB.symbol }}</span>
       </div>
-    </div>
+      <s-button
+        v-if="tokensPair"
+        :class="{ 's-pressed': isReversedChart }"
+        type="action"
+        alternative
+        icon="arrows-swap-90-24"
+        @click="revertChart"
+      />
+    </template>
+
+    <template #filters>
+      <s-tabs class="chart-filters" type="rounded" :value="selectedFilter.name" @input="selectFilter">
+        <s-tab
+          v-for="filter in filters"
+          :key="filter.name"
+          :name="filter.name"
+          :label="filter.label"
+          :disabled="parentLoading || loading"
+        />
+      </s-tabs>
+    </template>
+
+    <template #types>
+      <svg-icon-button
+        v-for="{ type, icon, active } in chartTypeButtons"
+        :key="type"
+        :icon="icon"
+        :active="active"
+        :disabled="parentLoading || loading"
+        size="small"
+        @click="selectChartType(type)"
+      />
+    </template>
 
     <s-skeleton :loading="parentLoading || loading || chartDataIssue" :throttle="0">
       <template #template>
@@ -76,15 +74,14 @@
         </div>
       </template>
       <template>
-        <div class="charts-price">
-          <formatted-amount
-            :value="fiatPriceFormatted"
-            :font-weight-rate="FontWeightRate.MEDIUM"
-            :font-size-rate="FontWeightRate.MEDIUM"
-            :asset-symbol="symbol"
-            symbol-as-decimal
-          />
-        </div>
+        <formatted-amount
+          class="charts-price"
+          :value="fiatPriceFormatted"
+          :font-weight-rate="FontWeightRate.MEDIUM"
+          :font-size-rate="FontWeightRate.MEDIUM"
+          :asset-symbol="symbol"
+          symbol-as-decimal
+        />
         <price-change v-if="!isFetchingError" :value="priceChange" />
         <v-chart
           ref="chart"
@@ -96,7 +93,7 @@
         />
       </template>
     </s-skeleton>
-  </div>
+  </stats-card>
 </template>
 
 <script lang="ts">
@@ -344,6 +341,7 @@ const getPrecision = (value: number): number => {
     SvgIconButton: lazyComponent(Components.SvgIconButton),
     TokensRow: lazyComponent(Components.TokensRow),
     PriceChange: lazyComponent(Components.PriceChange),
+    StatsCard: lazyComponent(Components.StatsCard),
     SSkeleton,
     SSkeletonItem,
   },
@@ -1023,19 +1021,7 @@ $skeleton-label-width: 34px;
     font-size: var(--s-heading3-font-size);
     line-height: var(--s-line-height-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
-    &-change {
-      font-weight: 600;
-      font-size: var(--s-font-size-medium);
-      line-height: var(--s-line-height-medium);
-      color: var(--s-color-theme-accent);
-      letter-spacing: inherit;
-      &--increased {
-        color: var(--s-color-theme-secondary-hover);
-      }
-      &-arrow {
-        color: inherit;
-      }
-    }
+
     .formatted-amount {
       &__integer {
         font-weight: inherit;
@@ -1052,13 +1038,11 @@ $skeleton-label-width: 34px;
 }
 
 .chart-filters {
-  width: 100%;
-  order: 1;
   .el-tabs__header {
     margin-bottom: 0;
   }
 
-  .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
+  &.s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
     padding: 0 $inner-spacing-mini;
     text-transform: initial;
     &:not(.is-active).is-disabled {
@@ -1159,11 +1143,6 @@ $skeleton-label-width: 34px;
     position: relative;
     z-index: $app-content-layer;
   }
-  .chart-filters {
-    .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
-      padding: 0 $basic-spacing-small;
-    }
-  }
 }
 
 @include large-desktop {
@@ -1182,67 +1161,12 @@ $skeleton-label-width: 34px;
       max-width: $skeleton-label-width;
     }
   }
-  .chart-filters {
-    margin-left: auto;
-    width: auto;
-    order: initial;
-  }
 }
 </style>
 
 <style lang="scss" scoped>
 .chart {
   height: 283px;
-}
-.tokens {
-  display: flex;
-  flex-direction: column;
-  font-size: var(--s-heading2-font-size);
-  line-height: var(--s-line-height-small);
-  &-info-container {
-    display: flex;
-    flex-direction: column;
-  }
-}
-.token {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  margin-bottom: $inner-spacing-medium;
-  &-logo {
-    display: block;
-    flex-shrink: 0;
-  }
-  &-title {
-    font-size: var(--s-font-size-medium);
-    line-height: var(--s-line-height-medium);
-    font-weight: 600;
-    letter-spacing: var(--s-letter-spacing-small);
-  }
-}
-
-.header {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  justify-content: space-between;
-
-  & > * {
-    margin-bottom: $inner-spacing-small;
-
-    &:not(:last-child) {
-      margin-right: $inner-spacing-medium;
-    }
-  }
-}
-
-.selected-tokens {
-  display: flex;
-  align-items: center;
-
-  & > *:not(:first-child) {
-    margin-left: $inner-spacing-mini;
-  }
 }
 
 @include large-desktop {
