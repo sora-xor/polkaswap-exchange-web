@@ -15,6 +15,6 @@ export enum VerificationStatus {
 export type Token = 'accessToken' | 'refreshToken';
 
 export interface Status {
-  verificationStatus: VerificationStatus | undefined;
-  kycStatus: KycStatus | undefined;
+  verificationStatus: Nullable<VerificationStatus>;
+  kycStatus: Nullable<KycStatus>;
 }

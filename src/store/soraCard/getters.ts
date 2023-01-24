@@ -14,14 +14,14 @@ const getters = defineGetters<SoraCardState>()({
     const euroBalance = parseInt(state.euroBalance, 10);
     return euroBalance > 100;
   },
-  currentStatus(...args): VerificationStatus | undefined {
+  currentStatus(...args): Nullable<VerificationStatus> {
     // CHECKME: carefully check what each status defines.
     const { state } = soraCardGetterContext(args);
     const { kycStatus, verificationStatus } = state;
 
-    if (!kycStatus) return;
-    if (!verificationStatus) return;
-    if (kycStatus === KycStatus.Started) return;
+    if (!kycStatus) return null;
+    if (!verificationStatus) return null;
+    if (kycStatus === KycStatus.Started) return null;
 
     if (
       [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&

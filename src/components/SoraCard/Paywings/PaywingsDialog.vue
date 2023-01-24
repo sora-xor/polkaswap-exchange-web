@@ -10,6 +10,7 @@ import { getter, state } from '@/store/decorators';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
 
+// TODO: Set up widget for payment
 @Component({
   components: {
     DialogBase: components.DialogBase,
@@ -28,11 +29,11 @@ export default class PaywingsDialog extends Mixins(mixins.DialogMixin, mixins.Lo
     }
   }
 
-  loadPaywings(): void {
+  private loadPaywings(): void {
     loadScript('https://checkout.paywings.io/HostedFields/custom/js/client.min.js').then(() => {});
   }
 
-  unloadPaywings(): void {
+  private unloadPaywings(): void {
     unloadScript('https://checkout.paywings.io/HostedFields/custom/js/client.min.js').catch(() => {});
   }
 }

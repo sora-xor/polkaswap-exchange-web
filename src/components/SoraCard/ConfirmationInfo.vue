@@ -1,7 +1,13 @@
 <template>
   <div class="sora-card container" v-loading="loading">
     <div class="sora-card__card">
-      <img src="@/assets/img/sora-card/sora_card_front.png?inline" class="sora-card__card-image" />
+      <s-image
+        src="card/sora-card-front.png"
+        lazy
+        fit="cover"
+        draggable="false"
+        class="unselectable sora-card__card-image"
+      />
       <div class="sora-card__card-icon" :class="getComputedIconClass()">
         <s-icon
           v-if="!currentStatus || currentStatus === VerificationStatus.Pending"
@@ -27,7 +33,11 @@
       Paywings. We will notify you.
     </p>
 
-    <s-button v-if="showTryAgainBtn" type="primary" class="sora-card__btn s-typography-button--large">
+    <s-button
+      v-if="currentStatus === VerificationStatus.Rejected"
+      type="primary"
+      class="sora-card__btn s-typography-button--large"
+    >
       <span class="text">{{ buttonText }}</span>
     </s-button>
   </div>
@@ -44,18 +54,13 @@ import { getter } from '@/store/decorators';
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @getter.soraCard.currentStatus currentStatus!: VerificationStatus;
 
-  VerificationStatus = VerificationStatus;
+  readonly VerificationStatus = VerificationStatus;
 
-  get buttonText() {
+  get buttonText(): string {
     return 'Try to complete KYC again';
   }
 
-  get showTryAgainBtn(): boolean {
-    if (this.currentStatus === VerificationStatus.Rejected) return true;
-    return false;
-  }
-
-  getHeaderText(): string | undefined {
+  getHeaderText(): Nullable<string> {
     if (!this.currentStatus) return 'KYC completed. Waiting for the results';
 
     switch (this.currentStatus) {
@@ -65,19 +70,25 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
         return 'You’re approved for SORA Card';
       case VerificationStatus.Rejected:
         return 'You’re not been approved for SORA Card';
+      default:
+        return null;
     }
   }
 
-  getComputedIconClass(): string | undefined {
-    if (!this.currentStatus) return 'sora-card__card-icon--waiting';
+  getComputedIconClass(): string {
+    const base = 'sora-card__card-icon';
+
+    if (!this.currentStatus) return `${base}--waiting`;
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
-        return 'sora-card__card-icon--waiting';
+        return `${base}--waiting`;
       case VerificationStatus.Accepted:
-        return 'sora-card__card-icon--success';
+        return `${base}--succcess`;
       case VerificationStatus.Rejected:
-        return 'sora-card__card-icon--reject';
+        return `${base}--reject`;
+      default:
+        return '';
     }
   }
 }

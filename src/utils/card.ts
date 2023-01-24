@@ -30,7 +30,7 @@ export async function defineUserStatus(): Promise<Status> {
   return { kycStatus, verificationStatus };
 }
 
-async function getUpdatedJwtPair(refreshToken: string | null): Promise<string | null> {
+async function getUpdatedJwtPair(refreshToken: string): Promise<Nullable<string>> {
   const soraNetwork = store.state.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
   const { apiKey } = soraCard(soraNetwork).authService;
   const buffer = Buffer.from(apiKey);
@@ -61,7 +61,7 @@ async function getUpdatedJwtPair(refreshToken: string | null): Promise<string | 
   return null;
 }
 
-async function getUserStatus(accessToken: string | null): Promise<Status> {
+async function getUserStatus(accessToken: string): Promise<Status> {
   if (!accessToken) return emptyStatusFields();
 
   try {

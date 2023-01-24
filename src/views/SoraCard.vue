@@ -32,12 +32,9 @@ enum Step {
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
 
-  @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncFnWithoutArgs;
-  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncFnWithoutArgs;
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
   @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncFnWithoutArgs;
-  @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribeLPUpdates!: AsyncFnWithoutArgs;
 
   step: Nullable<Step> = null;
   userApplied = false;
@@ -69,12 +66,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
   }
 
   async created(): Promise<void> {
-    this.setStartSubscriptions([
-      this.subscribeToTotalXorBalance,
-      this.subscribeOnAccountLiquidityList,
-      this.subscribeOnAccountLiquidityUpdates,
-    ]);
-    this.setResetSubscriptions([this.unsubscribeFromTotalXorBalance, this.unsubscribeLPUpdates]);
+    await this.subscribeToTotalXorBalance();
   }
 
   async beforeDestroy(): Promise<void> {

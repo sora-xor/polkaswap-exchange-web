@@ -1,6 +1,6 @@
 <template>
   <div class="container sora-card">
-    <img src="@/assets/img/sora-card/sora-card.png?inline" class="sora-card__image" />
+    <s-image src="card/sora-card.png" lazy fit="cover" draggable="false" class="unselectable sora-card__image" />
     <div class="sora-card__intro">
       <h3 class="sora-card__intro-title">Get SORA Card</h3>
       <span class="sora-card__intro-info">

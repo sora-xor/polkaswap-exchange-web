@@ -20,10 +20,10 @@ const mutations = defineMutations<SoraCardState>()({
     state.totalXorBalanceUpdates?.unsubscribe();
     state.totalXorBalanceUpdates = null;
   },
-  setKycStatus(state, status: KycStatus | undefined) {
+  setKycStatus(state, status: Nullable<KycStatus>) {
     state.kycStatus = status;
   },
-  setVerificationStatus(state, status: VerificationStatus | undefined) {
+  setVerificationStatus(state, status: Nullable<VerificationStatus>) {
     state.verificationStatus = status;
   },
 });
