@@ -72,7 +72,10 @@ const mutations = defineMutations<SwapState>()({
     state.dexQuoteData = {
       ...state.dexQuoteData,
       [dexId]: Object.freeze({
-        payload,
+        payload: {
+          ...payload,
+          lockedSources: payload.lockedSources.flat(),
+        },
         paths,
         pairLiquiditySources: liquiditySources,
       }),
