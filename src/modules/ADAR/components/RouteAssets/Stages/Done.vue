@@ -51,6 +51,9 @@
         >
           <span>{{ `Re-run doesn’t help? Finish routing anyway` }}</span>
         </s-button>
+        <s-button v-else type="primary" class="s-typography-button--big" @click.stop="onFinishRouting">
+          {{ 'FINISH' }}
+        </s-button>
       </div>
     </div>
     <div v-if="summaryData.length > 0" class="container routing-details-section">
@@ -114,6 +117,7 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
   @getter.routeAssets.inputToken inputToken!: Asset;
   @getter.routeAssets.completedRecipients private completedRecipients!: Array<Recipient>;
   @getter.routeAssets.incompletedRecipients private incompletedRecipients!: Array<Recipient>;
+  @getter.routeAssets.recipients private recipients!: Array<Recipient>;
   @state.wallet.account.fiatPriceObject private fiatPriceObject!: any;
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
   @action.routeAssets.cancelProcessing private cancelProcessing!: () => void;
@@ -186,7 +190,7 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
   downloadPDF() {
     const doc = new JsPDF({ putOnlyUsedFonts: true, orientation: 'landscape' });
     const headers = ['№', 'Name', 'Wallet', 'USD', 'Token', 'Input Token', 'Amount', 'Status'];
-    const data = this.completedRecipients.map((recipient, idx) => {
+    const data = this.recipients.map((recipient, idx) => {
       return [
         `${idx + 1}`,
         recipient.name.toString(),
