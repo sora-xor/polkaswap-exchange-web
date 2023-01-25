@@ -213,8 +213,10 @@ export enum Components {
   // Button
   SortButton = 'Button/SortButton',
   SvgIconButton = 'Button/SvgIconButton/SvgIconButton',
-  // Card
-  StatsCard = 'Card/StatsCard',
+  // Stats
+  StatsCard = 'Stats/StatsCard',
+  StatsFilter = 'Stats/StatsFilter',
+  NetworkStats = 'Stats/components/NetworkStats',
 }
 
 export enum RewardsTabsItems {

@@ -1,51 +1,10 @@
 <template>
   <div class="stats-container">
-    <stats-card class="grid-item">
-      <template #title>Network statistics</template>
+    <network-stats class="grid-item" />
 
-      <div class="stats-row">
-        <div class="stats-column">
-          <s-card size="small" border-radius="mini">
-            <div slot="header" class="stats-card-title">TRANSACTIONS</div>
-            <div class="stats-card-data">
-              <span>873.060K</span>
-            </div>
-          </s-card>
-        </div>
-        <div class="stats-column">
-          <div class="stats-column-title">TRANSACTIONS</div>
-          <div class="stats-column-data">
-            <span>873.060K</span>
-          </div>
-        </div>
-        <div class="stats-column">
-          <div class="stats-column-title">TRANSACTIONS</div>
-          <div class="stats-column-data">
-            <span>873.060K</span>
-          </div>
-        </div>
-        <div class="stats-column">
-          <div class="stats-column-title">TRANSACTIONS</div>
-          <div class="stats-column-data">
-            <span>873.060K</span>
-          </div>
-        </div>
-        <div class="stats-column">
-          <div class="stats-column-title">TRANSACTIONS</div>
-          <div class="stats-column-data">
-            <span>873.060K</span>
-          </div>
-        </div>
-      </div>
-    </stats-card>
+    <div class="grid-item grid-item--50">TVL</div>
 
-    <stats-card class="grid-item grid-item--50">
-      <template #title>TVL</template>
-    </stats-card>
-
-    <stats-card class="grid-item grid-item--50">
-      <template #title>Volume</template>
-    </stats-card>
+    <div class="grid-item grid-item--50">Volume</div>
   </div>
 </template>
 
@@ -57,7 +16,7 @@ import { Components } from '@/consts';
 
 @Component({
   components: {
-    StatsCard: lazyComponent(Components.StatsCard),
+    NetworkStats: lazyComponent(Components.NetworkStats),
   },
 })
 export default class Stats extends Mixins() {}
@@ -85,25 +44,6 @@ $gap: $inner-spacing-medium;
     @include tablet {
       max-width: calc(50% - (#{$gap} / 2));
     }
-  }
-}
-
-.stats-row {
-  display: flex;
-  flex-flow: row wrap;
-  gap: $inner-spacing-mini;
-
-  .stats-column {
-    width: calc(20% - ((#{$inner-spacing-mini} * 4) / 5));
-    min-width: 180px;
-  }
-}
-
-.stats-card {
-  &-title {
-    color: var(--s-color-base-content-secondary);
-    font-size: var(--s-font-size-small);
-    font-weight: 800;
   }
 }
 </style>

@@ -4,10 +4,10 @@
       <div class="s-flex stats-card-title header-title">
         <slot name="title" />
       </div>
-      <div class="s-flex stats-card-filters">
+      <div v-if="$slots.filters" class="s-flex stats-card-filters">
         <slot name="filters" />
       </div>
-      <div class="s-flex stats-card-types">
+      <div v-if="$slots.types" class="s-flex stats-card-types">
         <slot name="types" />
       </div>
     </div>
@@ -41,7 +41,6 @@ export default class StatsCard extends Mixins() {}
   }
 
   &-filters {
-    width: 100%;
     order: 1;
 
     @include large-desktop {

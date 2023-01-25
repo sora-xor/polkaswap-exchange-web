@@ -432,8 +432,6 @@ export default class About extends Mixins(TranslationMixin) {
         width: 50px;
       }
       .title {
-        font-family: Sora;
-        font-style: normal;
         font-weight: bold;
         font-size: 36px;
         line-height: 100%;
@@ -479,8 +477,6 @@ export default class About extends Mixins(TranslationMixin) {
 }
 
 .text {
-  font-family: Sora;
-  font-style: normal;
   font-weight: 200;
   font-size: 18px;
   line-height: 1.4;
@@ -542,8 +538,6 @@ export default class About extends Mixins(TranslationMixin) {
     }
   }
 
-  font-family: Sora;
-  font-style: normal;
   font-weight: 800;
   box-decoration-break: clone;
   -webkit-text-fill-color: transparent;

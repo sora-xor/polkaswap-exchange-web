@@ -17,15 +17,7 @@
     </template>
 
     <template #filters>
-      <s-tabs class="chart-filters" type="rounded" :value="selectedFilter.name" @input="selectFilter">
-        <s-tab
-          v-for="filter in filters"
-          :key="filter.name"
-          :name="filter.name"
-          :label="filter.label"
-          :disabled="parentLoading || loading"
-        />
-      </s-tabs>
+      <stats-filter :filters="filters" :value="selectedFilter" @input="changeFilter" />
     </template>
 
     <template #types>
@@ -105,13 +97,7 @@ import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import { SSkeleton, SSkeletonItem } from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton';
 
-import {
-  components,
-  mixins,
-  SubqueryExplorerService,
-  WALLET_CONSTS,
-  SUBQUERY_TYPES,
-} from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -120,7 +106,9 @@ import { SvgIcons } from '@/components/Button/SvgIconButton/icons';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { debouncedInputHandler, getTextWidth, calcPriceChange, formatDecimalPlaces } from '@/utils';
+import { Timeframes, SnapshotTypes } from '@/types/filters';
 
+import type { SnapshotFilter } from '@/types/filters';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type {
   PageInfo,
@@ -139,31 +127,10 @@ type SnapshotItem = {
 /** "timestamp", "open", "close", "low", "high" data */
 type ChartDataItem = [number, ...OCLH];
 
-enum TIMEFRAME_TYPES {
-  FIVE_MINUTES = 'FIVE_MINUTES',
-  FIFTEEN_MINUTES = 'FIFTEEN_MINUTES',
-  THIRTY_MINUTES = 'THIRTY_MINUTES',
-  HOUR = 'HOUR',
-  FOUR_HOURS = 'FOUR_HOURS',
-  DAY = 'DAY',
-  WEEK = 'WEEK',
-  MONTH = 'MONTH',
-  YEAR = 'YEAR',
-  ALL = 'ALL',
-}
-
 enum CHART_TYPES {
   LINE = 'line',
   CANDLE = 'candlestick',
 }
-
-type ChartFilter = {
-  name: TIMEFRAME_TYPES;
-  label: string;
-  type: SUBQUERY_TYPES.AssetSnapshotTypes;
-  count: number;
-  group?: number;
-};
 
 const CHART_TYPE_ICONS = {
   [CHART_TYPES.LINE]: SvgIcons.LineIcon,
@@ -171,82 +138,82 @@ const CHART_TYPE_ICONS = {
 };
 
 const SECONDS_IN_TYPE = {
-  [SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT]: 5 * 60 * 1000,
-  [SUBQUERY_TYPES.AssetSnapshotTypes.HOUR]: 60 * 60 * 1000,
-  [SUBQUERY_TYPES.AssetSnapshotTypes.DAY]: 24 * 60 * 60 * 1000,
+  [SnapshotTypes.DEFAULT]: 5 * 60 * 1000,
+  [SnapshotTypes.HOUR]: 60 * 60 * 1000,
+  [SnapshotTypes.DAY]: 24 * 60 * 60 * 1000,
 };
 
-const LINE_CHART_FILTERS: ChartFilter[] = [
+const LINE_CHART_FILTERS: SnapshotFilter[] = [
   {
-    name: TIMEFRAME_TYPES.DAY,
+    name: Timeframes.DAY,
     label: '1D',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    type: SnapshotTypes.DEFAULT,
     count: 288, // 5 mins in day
   },
   {
-    name: TIMEFRAME_TYPES.WEEK,
+    name: Timeframes.WEEK,
     label: '1W',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    type: SnapshotTypes.HOUR,
     count: 24 * 7, // hours in week
   },
   {
-    name: TIMEFRAME_TYPES.MONTH,
+    name: Timeframes.MONTH,
     label: '1M',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    type: SnapshotTypes.DAY,
     count: 30, // days in month
   },
   {
-    name: TIMEFRAME_TYPES.YEAR,
+    name: Timeframes.YEAR,
     label: '1Y',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    type: SnapshotTypes.DAY,
     count: 365, // days in year
   },
   {
-    name: TIMEFRAME_TYPES.ALL,
+    name: Timeframes.ALL,
     label: 'ALL',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    type: SnapshotTypes.DAY,
     count: Infinity,
   },
 ];
 
 const CANDLE_CHART_FILTERS = [
   {
-    name: TIMEFRAME_TYPES.FIVE_MINUTES,
+    name: Timeframes.FIVE_MINUTES,
     label: '5m',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    type: SnapshotTypes.DEFAULT,
     count: 48, // 5 mins in 4 hours
   },
   {
-    name: TIMEFRAME_TYPES.FIFTEEN_MINUTES,
+    name: Timeframes.FIFTEEN_MINUTES,
     label: '15m',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    type: SnapshotTypes.DEFAULT,
     count: 48 * 3, // 5 mins in 12 hours,
     group: 3, // 5 min in 15 min
   },
   {
-    name: TIMEFRAME_TYPES.THIRTY_MINUTES,
+    name: Timeframes.THIRTY_MINUTES,
     label: '30m',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    type: SnapshotTypes.DEFAULT,
     count: 48 * 3 * 2, // 5 mins in 24 hours,
     group: 6, // 5 min in 30 min
   },
   {
-    name: TIMEFRAME_TYPES.HOUR,
+    name: Timeframes.HOUR,
     label: '1h',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    type: SnapshotTypes.HOUR,
     count: 24, // hours in day
   },
   {
-    name: TIMEFRAME_TYPES.FOUR_HOURS,
+    name: Timeframes.FOUR_HOURS,
     label: '4h',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    type: SnapshotTypes.HOUR,
     count: 24 * 4, // hours in 4 days,
     group: 4, // 1 hour in 4 hours
   },
   {
-    name: TIMEFRAME_TYPES.DAY,
+    name: Timeframes.DAY,
     label: '1D',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    type: SnapshotTypes.DAY,
     count: 90, // days in 3 months
   },
 ];
@@ -342,6 +309,7 @@ const getPrecision = (value: number): number => {
     TokensRow: lazyComponent(Components.TokensRow),
     PriceChange: lazyComponent(Components.PriceChange),
     StatsCard: lazyComponent(Components.StatsCard),
+    StatsFilter: lazyComponent(Components.StatsFilter),
     SSkeleton,
     SSkeletonItem,
   },
@@ -392,7 +360,7 @@ export default class SwapChart extends Mixins(
   private priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
-  selectedFilter: ChartFilter = LINE_CHART_FILTERS[0];
+  selectedFilter: SnapshotFilter = LINE_CHART_FILTERS[0];
   isReversedChart = false;
 
   get isLineChart(): boolean {
@@ -433,7 +401,7 @@ export default class SwapChart extends Mixins(
     }));
   }
 
-  get filters(): ChartFilter[] {
+  get filters(): SnapshotFilter[] {
     return this.isLineChart ? LINE_CHART_FILTERS : CANDLE_CHART_FILTERS;
   }
 
@@ -768,7 +736,12 @@ export default class SwapChart extends Mixins(
 
     do {
       const first = Math.min(fetchCount, 100); // how many items should be fetched by request
-      const response = await SubqueryExplorerService.price.getHistoricalPriceForAsset(address, type, first, endCursor);
+      const response = await SubqueryExplorerService.price.getHistoricalPriceForAsset(
+        address,
+        type as any,
+        first,
+        endCursor
+      );
 
       if (!response) throw new Error('Chart data fetch error');
 
@@ -967,7 +940,7 @@ export default class SwapChart extends Mixins(
     this.prices = Object.freeze(items);
   }
 
-  changeFilter(filter: ChartFilter): void {
+  changeFilter(filter: SnapshotFilter): void {
     this.selectedFilter = filter;
     this.forceUpdatePrices(true);
   }
@@ -976,14 +949,6 @@ export default class SwapChart extends Mixins(
     this.clearData(saveReversedState);
     await this.updatePrices();
     this.subscribeToPriceUpdates();
-  }
-
-  selectFilter(name: string): void {
-    const filter = this.filters.find((item) => item.name === name);
-
-    if (!filter) return;
-
-    this.changeFilter(filter);
   }
 
   selectChartType(type: CHART_TYPES): void {
@@ -1032,23 +997,6 @@ $skeleton-label-width: 34px;
       &__symbol {
         color: var(--s-color-base-content-secondary);
       }
-    }
-  }
-}
-
-.chart-filters {
-  .el-tabs__header {
-    margin-bottom: 0;
-  }
-
-  &.s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
-    padding: 0 $inner-spacing-mini;
-    text-transform: initial;
-    &:not(.is-active).is-disabled {
-      color: var(--s-color-base-content-primary);
-    }
-    &.is-disabled {
-      cursor: not-allowed;
     }
   }
 }
