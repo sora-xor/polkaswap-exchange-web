@@ -8,6 +8,10 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
+@mixin columns($columns, $gap) {
+  width: calc((100% / $columns) - ((#{$gap} * (#{$columns} - 1)) / $columns));
+}
+
 @mixin token-styles {
   .token {
     display: flex;

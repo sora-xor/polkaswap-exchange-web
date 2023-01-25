@@ -6,8 +6,13 @@
       <stats-filter :disabled="loading" :filters="filters" :value="filter" @input="changeFilter" />
     </template>
 
-    <div class="stats-row" v-loading="loading">
-      <div v-for="{ title, value, change } in networkStats" :key="title" class="stats-column">
+    <div class="stats-row">
+      <div
+        v-for="{ title, symbol, amount, suffix, change } in networkStats"
+        :key="title"
+        class="stats-column"
+        v-loading="loading"
+      >
         <s-card size="small" border-radius="mini">
           <div slot="header" class="stats-card-title">{{ title }}</div>
           <div class="stats-card-data">
@@ -15,8 +20,9 @@
               class="stats-card-value"
               :font-weight-rate="FontWeightRate.MEDIUM"
               :font-size-rate="FontSizeRate.MEDIUM"
-              :value="value"
-            />
+              :value="amount"
+              :asset-symbol="symbol"
+            >{{ suffix }}</formatted-amount>
             <price-change :value="change" />
           </div>
         </s-card>
@@ -32,11 +38,12 @@ import last from 'lodash/fp/last';
 import { FPNumber } from '@sora-substrate/math';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { Timeframes, SnapshotTypes } from '@/types/filters';
-import { calcPriceChange, formatDecimalPlaces } from '@/utils';
+import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 
 import type { SnapshotFilter } from '@/types/filters';
 
@@ -113,6 +120,7 @@ const COLUMNS = [
   {
     title: 'Fees',
     prop: 'fees',
+    symbol: KnownSymbols.XOR,
   },
   {
     title: 'ETH to SORA',
@@ -176,12 +184,13 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
   get networkStats() {
     const [curr, prev] = [first(this.grous), last(this.grous)];
 
-    return COLUMNS.map(({ title, prop }) => {
+    return COLUMNS.map(({ prop, ...rest }) => {
       const propCurr = curr?.[prop] ?? FPNumber.ZERO;
       const propPrev = prev?.[prop] ?? FPNumber.ZERO;
       const propChange = calcPriceChange(propCurr, propPrev);
+      const { amount, suffix } = formatAmountWithSuffix(propCurr);
 
-      return { title, value: formatDecimalPlaces(propCurr), change: propChange };
+      return { ...rest, amount, suffix, change: propChange };
     });
   }
 
@@ -225,16 +234,31 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
 }
 </script>
 
+<style lang="scss">
+.stats-column .el-loading-mask {
+  border-radius: var(--s-border-radius-mini);
+}
+</style>
+
 <style lang="scss" scoped>
+$gap: $inner-spacing-mini;
+
 .stats-row {
   display: flex;
   flex-flow: row wrap;
-  gap: $inner-spacing-mini;
+  gap: $gap;
   margin-top: $inner-spacing-mini * 2.5;
 
   .stats-column {
-    width: calc(20% - ((#{$inner-spacing-mini} * 4) / 5));
-    min-width: 180px;
+    @include columns(2, $gap);
+
+    @include tablet {
+      @include columns(3, $gap);
+    }
+
+    @include desktop {
+      @include columns(5, $gap);
+    }
   }
 }
 
@@ -253,7 +277,6 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
   }
   &-value {
     font-size: var(--s-font-size-big);
-    font-weight: 800;
   }
 }
 </style>

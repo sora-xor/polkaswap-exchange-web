@@ -29,6 +29,7 @@ $gap: $inner-spacing-medium;
 .stats-container {
   width: 75vw;
   max-width: $container-max-width;
+  margin: auto;
 
   display: flex;
   flex-flow: row wrap;
@@ -42,7 +43,7 @@ $gap: $inner-spacing-medium;
 
   &--50 {
     @include tablet {
-      max-width: calc(50% - (#{$gap} / 2));
+      @include columns(2, $gap);
     }
   }
 }
