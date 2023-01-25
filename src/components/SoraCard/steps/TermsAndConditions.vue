@@ -24,8 +24,7 @@
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirmToS">
       <span class="text">ACCEPT & CONTINUE</span>
     </s-button>
-    <tos-dialog :visible.sync="showTermsAndConditionsDialog" :srcLink="termsLink" />
-    <tos-dialog :visible.sync="showPrivacyPolicyDialog" :srcLink="privacyLink" />
+    <tos-dialog :visible.sync="showDialog" :srcLink="link" :key="link" />
   </div>
 </template>
 
@@ -44,8 +43,9 @@ import { Theme } from '@soramitsu/soramitsu-js-ui';
   },
 })
 export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  showTermsAndConditionsDialog = false;
-  showPrivacyPolicyDialog = false;
+  showDialog = false;
+  link = '';
+
   @getter.libraryTheme libraryTheme!: Theme;
 
   get termsLink(): string {
@@ -61,8 +61,13 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
   }
 
   openDialog(policy: string): void {
-    if (policy === 't&c') this.showTermsAndConditionsDialog = true;
-    if (policy === 'privacyPolicy') this.showPrivacyPolicyDialog = true;
+    if (policy === 't&c') {
+      this.link = this.termsLink;
+    }
+    if (policy === 'privacyPolicy') {
+      this.link = this.privacyLink;
+    }
+    this.showDialog = true;
   }
 }
 </script>

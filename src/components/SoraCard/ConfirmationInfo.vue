@@ -8,7 +8,7 @@
         draggable="false"
         class="unselectable sora-card__card-image"
       />
-      <div class="sora-card__card-icon" :class="getComputedIconClass()">
+      <div class="sora-card__card-icon" :class="computedIconClass">
         <s-icon
           v-if="!currentStatus || currentStatus === VerificationStatus.Pending"
           name="time-time-24"
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="sora-card__header">{{ getHeaderText() }}</div>
+    <div class="sora-card__header">{{ headerText }}</div>
     <p class="sora-card__status-info">
       We will let you know if you’re eligible for the SORA card as soon as we get information from our partner,
       Paywings. We will notify you.
@@ -60,7 +60,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     return 'Try to complete KYC again';
   }
 
-  getHeaderText(): Nullable<string> {
+  get headerText(): Nullable<string> {
     if (!this.currentStatus) return 'KYC completed. Waiting for the results';
 
     switch (this.currentStatus) {
@@ -75,7 +75,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     }
   }
 
-  getComputedIconClass(): string {
+  get computedIconClass(): string {
     const base = 'sora-card__card-icon';
 
     if (!this.currentStatus) return `${base}--waiting`;

@@ -30,6 +30,7 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
 
 <style lang="scss">
 .terms-of-service-dialog .el-dialog {
+  margin-top: 12vh !important;
   max-width: 1000px !important;
 }
 </style>

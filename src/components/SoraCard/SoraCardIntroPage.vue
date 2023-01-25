@@ -145,7 +145,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
   async priceLoading(): Promise<void> {
     this.isPriceCalculated = false;
-    await delay(800);
+    await delay(700); // don't allow user do too preliminary click before its balance calculated
     this.isPriceCalculated = true;
   }
 
