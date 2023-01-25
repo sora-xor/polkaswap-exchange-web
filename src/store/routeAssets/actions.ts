@@ -1,17 +1,21 @@
 import { defineActions } from 'direct-vuex';
 import { routeAssetsActionContext } from '@/store/routeAssets';
 import Papa from 'papaparse';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { getPathsAndPairLiquiditySources } from '@sora-substrate/liquidity-proxy';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { RouteAssetsSubscription, RecipientStatus } from './types';
 import { FPNumber, Operation } from '@sora-substrate/util/build';
-import { formatAddress } from '@/utils';
+import { formatAddress, getAssetBalance } from '@/utils';
 import type { DexQuoteData } from '@/store/swap/types';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import type { QuotePayload, SwapResult } from '@sora-substrate/liquidity-proxy/build/types';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { groupBy } from 'lodash';
+import { NumberLike } from '@sora-substrate/math';
+import { Messages } from '@sora-substrate/util/build/logger';
+import { assert } from '@polkadot/util';
 
 const actions = defineActions({
   processingNextStage(context) {
@@ -242,7 +246,6 @@ const actions = defineActions({
       });
       return getTransferParams(context, inputAsset, recipient);
     });
-    // await executeBatchSwapAndSend(context, data);
     const transfers = data.filter((item) => item?.transfer);
     const swapAndSend = data.filter((item) => !item?.transfer);
 
@@ -353,7 +356,13 @@ function getTransferParams(context, inputAsset, recipient) {
             undefined,
             bestDexId as DexId
           ),
+        swapAndSendData: {
+          address: recipient.wallet,
+          targetAmount: tokenEquivalent,
+          asset: recipient.asset,
+        },
         recipient,
+        assetAddress: recipient.asset.address,
       };
     } catch (error: any) {
       return {
@@ -362,38 +371,109 @@ function getTransferParams(context, inputAsset, recipient) {
     }
   }
 }
+// __________________________OLD_________________________________________
+
+// async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> {
+//   const { commit } = routeAssetsActionContext(context);
+
+//   async function processArray(transactions) {
+//     for (const tx of transactions) {
+//       try {
+//         await tx
+//           .action()
+//           .then(() => {
+//             commit.setRecipientStatus({
+//               id: tx.recipient.id,
+//               status: RecipientStatus.SUCCESS,
+//             });
+//             commit.setRecipientCompleted(tx.recipient.id);
+//           })
+//           .catch(() => {
+//             commit.setRecipientStatus({
+//               id: tx.recipient.id,
+//               status: RecipientStatus.FAILED,
+//             });
+//           });
+//       } catch (err) {
+//         commit.setRecipientStatus({
+//           id: tx.recipient.id,
+//           status: RecipientStatus.FAILED,
+//         });
+//       }
+//     }
+//   }
+
+//   await processArray(data);
+// }
+// ______________________________________________________________________
 
 async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> {
-  const { commit } = routeAssetsActionContext(context);
+  const { commit, getters } = routeAssetsActionContext(context);
+  const inputAsset = getters.inputToken;
+  const groupedData = Object.values(groupBy(data, 'assetAddress'));
+  const processArrayData = groupedData.map((recipients) => {
+    const recievers = recipients.map((item) => {
+      const decimals = item.swapAndSendData.asset.decimals;
+      const targetAmount = new FPNumber(item.swapAndSendData.targetAmount, decimals).toCodecString();
+      return {
+        accountId: item.swapAndSendData.address,
+        targetAmount,
+        recipientId: item.recipient.id,
+      };
+    });
+    const maxInputAmount = getAssetBalance(inputAsset);
+    const outputAsset = recipients[0].swapAndSendData.asset;
+    return { recievers, params: calcTxParams(inputAsset, outputAsset, maxInputAmount, undefined, true) };
+  });
+  // if (!this.root.assets.getAsset(assetB.address)) {
+  //   this.root.assets.addAccountAsset(assetB.address);
+  // }
+
+  // const formattedToAddress = receiver.slice(0, 2) === 'cn' ? receiver : this.root.formatAddress(receiver);
 
   async function processArray(transactions) {
     for (const tx of transactions) {
       try {
-        await tx
-          .action()
+        const { params } = tx;
+        await api
+          .submitExtrinsic(
+            (api.api.tx.liquidityProxy as any).swapTransferBatch(tx.recievers, ...params.args),
+            api.account.pair,
+            {
+              symbol: inputAsset.symbol,
+              assetAddress: inputAsset.address,
+              type: Operation.SwapAndSend,
+            }
+          )
           .then(() => {
-            commit.setRecipientStatus({
-              id: tx.recipient.id,
-              status: RecipientStatus.SUCCESS,
+            tx.recievers.forEach((reciever) => {
+              commit.setRecipientStatus({
+                id: reciever.recipientId,
+                status: RecipientStatus.SUCCESS,
+              });
+              commit.setRecipientCompleted(reciever.recipientId);
             });
-            commit.setRecipientCompleted(tx.recipient.id);
           })
           .catch(() => {
-            commit.setRecipientStatus({
-              id: tx.recipient.id,
-              status: RecipientStatus.FAILED,
+            tx.recievers.forEach((reciever) => {
+              commit.setRecipientStatus({
+                id: reciever.recipientId,
+                status: RecipientStatus.FAILED,
+              });
             });
           });
       } catch (err) {
-        commit.setRecipientStatus({
-          id: tx.recipient.id,
-          status: RecipientStatus.FAILED,
+        tx.recievers.forEach((reciever) => {
+          commit.setRecipientStatus({
+            id: reciever.recipientId,
+            status: RecipientStatus.FAILED,
+          });
         });
       }
     }
   }
 
-  await processArray(data);
+  await processArray(processArrayData);
 }
 
 async function executeTransfer(context, data: Array<any>): Promise<any> {
@@ -424,6 +504,48 @@ async function executeTransfer(context, data: Array<any>): Promise<any> {
       });
       throw new Error(err);
     });
+}
+
+function calcTxParams(
+  assetA: Asset | AccountAsset,
+  assetB: Asset | AccountAsset,
+  // amountA: NumberLike,
+  amountB: NumberLike,
+  slippageTolerance: NumberLike = api.defaultSlippageTolerancePercent,
+  isExchangeB = false,
+  liquiditySource = LiquiditySourceTypes.Default,
+  dexId = DexId.XOR
+) {
+  assert(api.account, Messages.connectWallet);
+  const desiredDecimals = (!isExchangeB ? assetA : assetB).decimals;
+  const resultDecimals = (!isExchangeB ? assetB : assetA).decimals;
+  const desiredCodecString = new FPNumber(amountB, desiredDecimals).toCodecString();
+  const result = new FPNumber(amountB, resultDecimals);
+  const resultMulSlippage = result.mul(new FPNumber(Number(slippageTolerance) / 100));
+  const liquiditySources = liquiditySource ? [liquiditySource] : [];
+  const params = {} as any;
+  if (!isExchangeB) {
+    params.WithDesiredInput = {
+      desiredAmountIn: desiredCodecString,
+      minAmountOut: result.sub(resultMulSlippage).toCodecString(),
+    };
+  } else {
+    params.WithDesiredOutput = {
+      desiredAmountOut: desiredCodecString,
+      maxAmountIn: result.add(resultMulSlippage).toCodecString(),
+    };
+  }
+  return {
+    args: [
+      dexId,
+      assetA.address,
+      assetB.address,
+      // params,
+      result.toCodecString(),
+      liquiditySources,
+      liquiditySource === LiquiditySourceTypes.Default ? 'Disabled' : 'AllowSelected',
+    ],
+  };
 }
 
 export default actions;
