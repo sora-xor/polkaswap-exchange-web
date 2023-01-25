@@ -73,6 +73,9 @@ async function getUserStatus(accessToken: string): Promise<Status> {
     });
 
     const lastRecord = await result.json();
+
+    if (!lastRecord) return emptyStatusFields();
+
     const verificationStatus: VerificationStatus = lastRecord.verification_status;
     const kycStatus: KycStatus = lastRecord.kyc_status;
 
