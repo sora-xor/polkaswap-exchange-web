@@ -220,6 +220,7 @@ export enum Components {
   StatsCard = 'Stats/StatsCard',
   StatsFilter = 'Stats/StatsFilter',
   NetworkStats = 'Stats/components/NetworkStats',
+  NetworkTvlChart = 'Stats/components/TvlChart',
 }
 
 export enum RewardsTabsItems {

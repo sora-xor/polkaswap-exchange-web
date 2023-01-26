@@ -36,8 +36,8 @@ import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { SECONDS_IN_TYPE } from '@/consts/snapshots';
-import { Timeframes, SnapshotTypes } from '@/types/filters';
+import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
+import { SnapshotTypes } from '@/types/filters';
 import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 
 import type { AmountWithSuffix } from '@/types/formats';
@@ -80,44 +80,6 @@ const StatsQuery = gql`
     }
   }
 `;
-
-const NETWORK_STATS_FILTERS = [
-  {
-    name: Timeframes.DAY,
-    label: '1D',
-    type: SnapshotTypes.HOUR,
-    count: 48,
-    group: 24,
-  },
-  {
-    name: Timeframes.WEEK,
-    label: '1W',
-    type: SnapshotTypes.DAY,
-    count: 14,
-    group: 7,
-  },
-  {
-    name: Timeframes.MONTH,
-    label: '1M',
-    type: SnapshotTypes.DAY,
-    count: 60,
-    group: 30,
-  },
-  {
-    name: Timeframes.QUARTER,
-    label: '3M',
-    type: SnapshotTypes.MONTH,
-    count: 6,
-    group: 3,
-  },
-  {
-    name: Timeframes.YEAR,
-    label: '1Y',
-    type: SnapshotTypes.MONTH,
-    count: 24,
-    group: 12,
-  },
-];
 
 const COLUMNS = [
   {
@@ -183,11 +145,11 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
   }
 
   private groupData(data: NetworkSnapshot[]): Nullable<NetworkSnapshot> {
-    return data.reduce((buffer, item) => {
+    return data.reduce<Nullable<NetworkSnapshot>>((buffer, item) => {
       if (!buffer) return item;
 
-      for (const prop in buffer) {
-        buffer[prop] = buffer[prop].add(item[prop]);
+      for (const { prop } of COLUMNS) {
+        (buffer[prop] as FPNumber) = (buffer[prop] as FPNumber).add(item[prop]);
       }
 
       return buffer;
@@ -196,11 +158,11 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
 
   private async updateData(): Promise<void> {
     await this.withLoading(async () => {
-      const { type, group } = this.filter;
+      const { type, count } = this.filter;
       const seconds = SECONDS_IN_TYPE[type];
       const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
-      const aTime = now - seconds * group;
-      const bTime = aTime - seconds * group;
+      const aTime = now - seconds * count;
+      const bTime = aTime - seconds * count;
 
       const [curr, prev] = await Promise.all([this.fetchData(now, aTime, type), this.fetchData(aTime, bTime, type)]);
 

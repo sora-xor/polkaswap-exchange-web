@@ -2,7 +2,7 @@
   <div class="stats-container">
     <network-stats class="grid-item" />
 
-    <div class="grid-item grid-item--50">TVL</div>
+    <network-tvl-chart class="grid-item grid-item--50" />
 
     <div class="grid-item grid-item--50">Volume</div>
   </div>
@@ -17,6 +17,7 @@ import { Components } from '@/consts';
 @Component({
   components: {
     NetworkStats: lazyComponent(Components.NetworkStats),
+    NetworkTvlChart: lazyComponent(Components.NetworkTvlChart),
   },
 })
 export default class Stats extends Mixins() {}
