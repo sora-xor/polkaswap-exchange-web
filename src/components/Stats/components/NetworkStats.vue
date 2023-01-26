@@ -7,12 +7,7 @@
     </template>
 
     <div class="stats-row">
-      <div
-        v-for="{ title, symbol, amount, suffix, change } in networkStats"
-        :key="title"
-        class="stats-column"
-        v-loading="loading"
-      >
+      <div v-for="{ title, symbol, value, change } in columns" :key="title" class="stats-column" v-loading="loading">
         <s-card size="small" border-radius="mini">
           <div slot="header" class="stats-card-title">{{ title }}</div>
           <div class="stats-card-data">
@@ -20,9 +15,9 @@
               class="stats-card-value"
               :font-weight-rate="FontWeightRate.MEDIUM"
               :font-size-rate="FontSizeRate.MEDIUM"
-              :value="amount"
+              :value="value.amount"
               :asset-symbol="symbol"
-            >{{ suffix }}</formatted-amount>
+            >{{ value.suffix }}</formatted-amount>
             <price-change :value="change" />
           </div>
         </s-card>
@@ -45,6 +40,7 @@ import { Components } from '@/consts';
 import { Timeframes, SnapshotTypes } from '@/types/filters';
 import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 
+import type { AmountWithSuffix } from '@/types/formats';
 import type { SnapshotFilter } from '@/types/filters';
 
 type NetworkSnapshot = {
@@ -53,6 +49,13 @@ type NetworkSnapshot = {
   bridgeIncomingTransactions: FPNumber;
   bridgeOutgoingTransactions: FPNumber;
   fees: FPNumber;
+};
+
+type NetworkStatsColumn = {
+  value: AmountWithSuffix;
+  change: FPNumber;
+  title: string;
+  symbol: string;
 };
 
 const StatsQuery = gql`
@@ -181,16 +184,16 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
     return groups;
   }
 
-  get networkStats() {
+  get columns(): NetworkStatsColumn[] {
     const [curr, prev] = [first(this.grous), last(this.grous)];
 
-    return COLUMNS.map(({ prop, ...rest }) => {
+    return COLUMNS.map(({ prop, title, symbol }) => {
       const propCurr = curr?.[prop] ?? FPNumber.ZERO;
       const propPrev = prev?.[prop] ?? FPNumber.ZERO;
       const propChange = calcPriceChange(propCurr, propPrev);
-      const { amount, suffix } = formatAmountWithSuffix(propCurr);
+      const value = formatAmountWithSuffix(propCurr);
 
-      return { ...rest, amount, suffix, change: propChange };
+      return { title, symbol, value, change: propChange };
     });
   }
 
