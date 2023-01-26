@@ -365,6 +365,7 @@ function getTransferParams(context, inputAsset, recipient) {
         assetAddress: recipient.asset.address,
       };
     } catch (error: any) {
+      throw new Error(error);
       return {
         recipient,
       };
@@ -520,7 +521,7 @@ function calcTxParams(
   const desiredDecimals = (!isExchangeB ? assetA : assetB).decimals;
   const resultDecimals = (!isExchangeB ? assetB : assetA).decimals;
   const desiredCodecString = new FPNumber(amountB, desiredDecimals).toCodecString();
-  const result = new FPNumber(amountB, resultDecimals);
+  const result = new FPNumber(amountB, desiredDecimals);
   const resultMulSlippage = result.mul(new FPNumber(Number(slippageTolerance) / 100));
   const liquiditySources = liquiditySource ? [liquiditySource] : [];
   const params = {} as any;
@@ -541,7 +542,8 @@ function calcTxParams(
       assetA.address,
       assetB.address,
       // params,
-      result.toCodecString(),
+      // result.toCodecString(),
+      FPNumber.fromCodecValue(amountB, assetB.decimals).toCodecString(),
       liquiditySources,
       liquiditySource === LiquiditySourceTypes.Default ? 'Disabled' : 'AllowSelected',
     ],
