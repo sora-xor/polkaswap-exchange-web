@@ -714,7 +714,7 @@
         "outputMessage": "Вывод является оценочным. Если цена изменится более чем на {slippageTolerance}%, ваша транзакция будет отменена.",
         "confirmTitle": "Вы получите",
         "shareOfPool": "Доля пула после транзакции",
-        "locked": "{percent} вашего пула находится в стейкинге"
+        "locked": "{percent} вашего пула находится в {lock}"
     },
     "dexSettings": {
         "title": "Настройки",
@@ -1140,5 +1140,6 @@
     "createTokenText": "Создать токен",
     "comingSoonText": "Скоро будет доступно",
     "confirmText": "Подтвердить",
-    "createTokenTextNFT": "Создать NFT"
+    "createTokenTextNFT": "Создать NFT",
+    "doNotShowText": "Больше не показывать"
 }

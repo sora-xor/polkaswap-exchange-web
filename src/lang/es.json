@@ -714,7 +714,7 @@
         "outputMessage": "La cantidad es estimada. Si el precio cambia más de {slippageTolerance}% su transacción se revertirá.",
         "confirmTitle": "Usted recibirá",
         "shareOfPool": "Parte del fondo común después de la transacción",
-        "locked": "{percent} de su piscina está en participación"
+        "locked": "{percent} de su piscina está en {lock}"
     },
     "dexSettings": {
         "title": "Ajustes",
@@ -1140,5 +1140,6 @@
     "createTokenText": "Crear",
     "comingSoonText": "Próximamente",
     "confirmText": "Confirmar",
-    "createTokenTextNFT": "Crear NFT"
+    "createTokenTextNFT": "Crear NFT",
+    "doNotShowText": "No me muestres esto de nuevo"
 }

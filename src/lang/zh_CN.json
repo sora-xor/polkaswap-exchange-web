@@ -714,7 +714,7 @@
         "outputMessage": "产出是估计的。如果价格变化超过 {slippageTolerance}% ，您的交易将被取消。",
         "confirmTitle": "您将收到",
         "shareOfPool": "交易后的流动池份额",
-        "locked": "{percent}您的流动池正在质押中"
+        "locked": "{percent} 您的流动资金池处于 {lock}"
     },
     "dexSettings": {
         "title": "设置",
@@ -1140,5 +1140,6 @@
     "createTokenText": "创建",
     "comingSoonText": "即将推出",
     "confirmText": "确认",
-    "createTokenTextNFT": "创建 NFT"
+    "createTokenTextNFT": "创建 NFT",
+    "doNotShowText": "不要再给我看这个"
 }

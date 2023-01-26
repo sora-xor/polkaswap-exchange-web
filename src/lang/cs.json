@@ -714,7 +714,7 @@
         "outputMessage": "Výstup je odhadován. Pokud se cena změní o více než {slippageTolerance}%, transakce se vrátí zpět.",
         "confirmTitle": "Obdržíte",
         "shareOfPool": "Podíl z poolu po transakci",
-        "locked": "{percent} vašeho fondu je ve sázce"
+        "locked": "{percent} vašeho fondu je ve {lock}"
     },
     "dexSettings": {
         "title": "Nastavení",
@@ -1140,5 +1140,6 @@
     "createTokenText": "Vytvořit",
     "comingSoonText": "Již brzy",
     "confirmText": "Potvrdit",
-    "createTokenTextNFT": "Vytvořte NFT"
+    "createTokenTextNFT": "Vytvořte NFT",
+    "doNotShowText": "Už mi to neukazuj"
 }

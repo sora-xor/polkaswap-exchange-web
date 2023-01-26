@@ -714,7 +714,7 @@
         "outputMessage": "Wynik jest szacunkowy. Jeśli cena zmieni się o więcej niż {slippageTolerance}%, Twoja transakcja zostanie anulowana.",
         "confirmTitle": "Otrzymasz",
         "shareOfPool": "Udział w puli po transakcji",
-        "locked": "{percent} Twojej puli jest obstawiane"
+        "locked": "{percent} Twojej puli jest {lock}"
     },
     "dexSettings": {
         "title": "Ustawienia",
@@ -1140,5 +1140,6 @@
     "createTokenText": "Utwórz token",
     "comingSoonText": "Już wkrótce...",
     "confirmText": "Potwierdź",
-    "createTokenTextNFT": "Utwórz token NFT"
+    "createTokenTextNFT": "Utwórz token NFT",
+    "doNotShowText": "Nie pokazuj mi tego więcej"
 }

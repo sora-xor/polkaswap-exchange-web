@@ -714,7 +714,7 @@
         "outputMessage": "Излаз је процењен. Ако се цена промени више од {slippageTolerance}%, ваша трансакција ће бити враћена.",
         "confirmTitle": "Добићете",
         "shareOfPool": "Удео у пулу након трансакције",
-        "locked": "{percent} вашег pula је у улози"
+        "locked": "{percent} вашег pula је у {lock}"
     },
     "dexSettings": {
         "title": "Подешавања",
@@ -1140,5 +1140,6 @@
     "createTokenText": "Креирајте",
     "comingSoonText": "Долази ускоро",
     "confirmText": "Потврдите",
-    "createTokenTextNFT": "Креирајте НФТ"
+    "createTokenTextNFT": "Креирајте НФТ",
+    "doNotShowText": "Не показуј ми ово поново"
 }

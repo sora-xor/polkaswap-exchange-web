@@ -714,7 +714,7 @@
         "outputMessage": "Արդյունքը գնահատվում է: Եթե գինը փոխվի ավելի քան {slippageTolerance} %, ձեր գործարքը կվերականգնվի:",
         "confirmTitle": "Դուք կստանաք",
         "shareOfPool": "Գործարքից հետո լողավազանի մասնաբաժինը",
-        "locked": "Ձեր լողավազանի {percent} -ը խաղադրույքի մեջ է"
+        "locked": "Ձեր լողավազանի {percent} -ը {lock} մեջ է"
     },
     "dexSettings": {
         "title": "Կարգավորումներ",
@@ -1140,5 +1140,6 @@
     "createTokenText": "Ստեղծել տոկեն",
     "comingSoonText": "Շուտով",
     "confirmText": "Հաստատել",
-    "createTokenTextNFT": "Ստեղծեք NFT"
+    "createTokenTextNFT": "Ստեղծեք NFT",
+    "doNotShowText": "Սա ինձ այլևս ցույց մի տուր"
 }

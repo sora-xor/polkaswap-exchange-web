@@ -714,7 +714,7 @@
         "outputMessage": "De output wordt geschat. Als de prijs meer dan {slippageTolerance}% verandert, zal uw transactie worden teruggedraaid.",
         "confirmTitle": "U ontvangt",
         "shareOfPool": "Aandeel van pool na transactie",
-        "locked": "{percent} van uw pool is in staking"
+        "locked": "{percent} van uw pool is in {lock}"
     },
     "dexSettings": {
         "title": "Instellingen",
@@ -1140,5 +1140,6 @@
     "createTokenText": "Maak token",
     "comingSoonText": "Binnenkort beschikbaar",
     "confirmText": "Bevestigen",
-    "createTokenTextNFT": "NFT maken"
+    "createTokenTextNFT": "NFT maken",
+    "doNotShowText": "Laat me dit niet nog een keer zien"
 }
