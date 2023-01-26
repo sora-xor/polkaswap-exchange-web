@@ -7,6 +7,8 @@ function initialState(): PoolState {
     accountLiquidityUpdates: null,
     poolApyObject: {},
     poolApySubscription: null,
+    accountLockedLiquidity: [],
+    accountLockedLiquiditySubscription: null,
   };
 }
 

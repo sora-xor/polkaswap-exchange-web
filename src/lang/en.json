@@ -714,7 +714,7 @@
         "outputMessage": "Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.",
         "confirmTitle": "You will receive",
         "shareOfPool": "Share of pool after transaction",
-        "locked": "{percent} deines Pools befinden sich im {lock}"
+        "locked": "{percent} of your pool is in {lock}"
     },
     "dexSettings": {
         "title": "Settings",
