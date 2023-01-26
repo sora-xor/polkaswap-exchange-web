@@ -1,6 +1,6 @@
 import { Storage } from '@sora-substrate/util';
-import { storage as soraStorage } from '@soramitsu/soraneo-wallet-web';
+import { storage as soraStorage, settingsStorage as settingsStorageInternal } from '@soramitsu/soraneo-wallet-web';
 
-export const settingsStorage = new Storage('dexSettings');
+export const settingsStorage: Storage = settingsStorageInternal; // TODO: update keys
 
 export default soraStorage;
