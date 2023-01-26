@@ -1,14 +1,13 @@
 <template>
-  <wallet-base v-loading="loading" :title="title" :show-back="showBack" @back="handleBack" class="sora-card">
+  <wallet-base v-loading="loading" :title="title" :show-back="true" @back="handleBack" class="sora-card">
     <terms-and-conditions v-if="step === KycProcess.TermsAndConditions" @confirm-tos="confirmToS" />
-    <road-map v-else-if="step === KycProcess.RoadMap" @confirm-start="confirmProcess" />
-    <kyc-view v-else-if="step === KycProcess.KycView" @confirm-kyc="confirmWindow" :accessToken="accessToken" />
-    <confirmation-info v-else-if="step === KycProcess.ConfirmationInfo" />
+    <road-map v-else-if="step === KycProcess.RoadMap" @confirm-start-kyc="confirmProcess" :userApplied="userApplied" />
+    <kyc-view v-else-if="step === KycProcess.KycView" @confirm-kyc="redirectToView" />
   </wallet-base>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -18,7 +17,6 @@ enum KycProcess {
   TermsAndConditions,
   RoadMap,
   KycView,
-  ConfirmationInfo,
 }
 
 @Component({
@@ -27,19 +25,18 @@ enum KycProcess {
     TermsAndConditions: lazyComponent(Components.TermsAndConditions),
     RoadMap: lazyComponent(Components.RoadMap),
     KycView: lazyComponent(Components.KycView),
-    ConfirmationInfo: lazyComponent(Components.ConfirmationInfo),
   },
 })
 export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
+
   step: KycProcess = KycProcess.TermsAndConditions;
-  accessToken = '';
-  isUserPassedKyc = false;
 
   KycProcess = KycProcess;
 
   handleBack(): void {
     if (this.step === KycProcess.TermsAndConditions) {
-      this.$emit('go-to-intro');
+      this.$emit('go-to-start');
       return;
     }
 
@@ -50,17 +47,7 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
 
     if (this.step === KycProcess.KycView) {
       this.step = KycProcess.RoadMap;
-      return;
     }
-
-    if (this.step === KycProcess.ConfirmationInfo) {
-      this.step = KycProcess.KycView;
-    }
-  }
-
-  get showBack(): boolean {
-    if (this.step === KycProcess.ConfirmationInfo) return false;
-    return true;
   }
 
   get title(): string {
@@ -71,32 +58,32 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
         return 'Complete KYC';
       case KycProcess.KycView:
         return 'Complete KYC';
-      case KycProcess.ConfirmationInfo:
-        return '';
       default:
         return '';
     }
   }
 
   confirmToS(): void {
-    if (sessionStorage.getItem('access-token')) {
-      this.step = KycProcess.KycView;
-    }
     this.step = KycProcess.RoadMap;
   }
 
-  confirmProcess(accessToken: string): void {
-    this.accessToken = accessToken;
-    this.step = KycProcess.KycView;
+  confirmProcess(startKyc: boolean): void {
+    if (startKyc) {
+      this.step = KycProcess.KycView;
+      return;
+    }
+
+    const withoutCheck = true;
+    this.$emit('go-to-start', withoutCheck);
   }
 
-  confirmWindow(value: boolean): void {
-    value ? (this.step = KycProcess.ConfirmationInfo) : (this.step = KycProcess.RoadMap);
+  redirectToView(success: boolean): void {
+    success ? this.$emit('go-to-start', success) : (this.step = KycProcess.RoadMap);
   }
 
   mounted(): void {
-    if (this.isUserPassedKyc) {
-      this.step = KycProcess.KycView; // Write logic to redirect to confirmation window
+    if (this.userApplied) {
+      this.step = KycProcess.RoadMap;
     }
   }
 }
@@ -104,6 +91,6 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
 
 <style lang="scss" scoped>
 .el-card {
-  margin: 24px auto 0;
+  margin: var(--s-size-mini) auto 0;
 }
 </style>

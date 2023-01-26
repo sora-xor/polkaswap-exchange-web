@@ -2,8 +2,10 @@ import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 
-import { getXorPerEuroRatio, waitForAccountPair } from '@/utils';
+import { waitForAccountPair } from '@/utils';
+import { defineUserStatus, getXorPerEuroRatio } from '@/utils/card';
 import { soraCardActionContext } from './../soraCard';
+import { Status } from '@/types/card';
 
 const actions = defineActions({
   calculateXorRestPrice(context, xorPerEuro): void {
@@ -15,10 +17,10 @@ const actions = defineActions({
     commit.setXorPriceToDeposit(euroToPayInXor);
   },
 
-  async calculateXorBalanceInEuros(context, xorTotalBalance: FPNumber): Promise<void> {
+  async calculateXorBalanceInEuros(context, { xorPerEuro, xorTotalBalance }): Promise<void> {
     const { commit, dispatch } = soraCardActionContext(context);
+
     try {
-      const xorPerEuro: string = await getXorPerEuroRatio();
       const xorPerEuroFPN = FPNumber.fromNatural(xorPerEuro);
       const euroBalance = xorTotalBalance.mul(xorPerEuroFPN).toNumber();
       commit.setEuroBalance(euroBalance.toString());
@@ -36,10 +38,12 @@ const actions = defineActions({
 
     if (!rootGetters.wallet.account.isLoggedIn) return;
 
+    const xorPerEuro: string = await getXorPerEuroRatio();
+
     await waitForAccountPair(async () => {
       const subscription = api.assets.getTotalXorBalanceObservable().subscribe((xorTotalBalance: FPNumber) => {
         commit.setTotalXorBalance(xorTotalBalance);
-        dispatch.calculateXorBalanceInEuros(xorTotalBalance);
+        dispatch.calculateXorBalanceInEuros({ xorPerEuro, xorTotalBalance });
       });
 
       commit.setTotalXorBalanceUpdates(subscription);
@@ -48,9 +52,16 @@ const actions = defineActions({
 
   async unsubscribeFromTotalXorBalance(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
-    setTimeout(() => {
-      commit.resetTotalXorBalanceUpdates();
-    }, 1000 * 60 * 5);
+    commit.resetTotalXorBalanceUpdates();
+  },
+
+  async getUserStatus(context): Promise<void> {
+    const { commit } = soraCardActionContext(context);
+
+    const { kycStatus, verificationStatus }: Status = await defineUserStatus();
+
+    commit.setKycStatus(kycStatus);
+    commit.setVerificationStatus(verificationStatus);
   },
 });
 
