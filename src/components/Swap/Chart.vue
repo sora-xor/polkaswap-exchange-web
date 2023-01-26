@@ -105,6 +105,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { SvgIcons } from '@/components/Button/SvgIconButton/icons';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { SECONDS_IN_TYPE } from '@/consts/snapshots';
 import { debouncedInputHandler, getTextWidth, calcPriceChange, formatDecimalPlaces } from '@/utils';
 import { Timeframes, SnapshotTypes } from '@/types/filters';
 
@@ -135,12 +136,6 @@ enum CHART_TYPES {
 const CHART_TYPE_ICONS = {
   [CHART_TYPES.LINE]: SvgIcons.LineIcon,
   [CHART_TYPES.CANDLE]: SvgIcons.CandleIcon,
-};
-
-const SECONDS_IN_TYPE = {
-  [SnapshotTypes.DEFAULT]: 5 * 60 * 1000,
-  [SnapshotTypes.HOUR]: 60 * 60 * 1000,
-  [SnapshotTypes.DAY]: 24 * 60 * 60 * 1000,
 };
 
 const LINE_CHART_FILTERS: SnapshotFilter[] = [
@@ -434,7 +429,7 @@ export default class SwapChart extends Mixins(
   }
 
   get timeDifference(): number {
-    return SECONDS_IN_TYPE[this.selectedFilter.type];
+    return SECONDS_IN_TYPE[this.selectedFilter.type] * 1000;
   }
 
   get visibleChartItemsRange(): [number, number] {

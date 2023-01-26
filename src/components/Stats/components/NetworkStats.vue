@@ -7,7 +7,7 @@
     </template>
 
     <div class="stats-row">
-      <div v-for="{ title, symbol, value, change } in columns" :key="title" class="stats-column" v-loading="loading">
+      <div v-for="{ title, value, change } in columns" :key="title" class="stats-column" v-loading="loading">
         <s-card size="small" border-radius="mini">
           <div slot="header" class="stats-card-title">{{ title }}</div>
           <div class="stats-card-data">
@@ -16,8 +16,9 @@
               :font-weight-rate="FontWeightRate.MEDIUM"
               :font-size-rate="FontSizeRate.MEDIUM"
               :value="value.amount"
-              :asset-symbol="symbol"
-            >{{ value.suffix }}</formatted-amount>
+              :asset-symbol="value.suffix"
+              symbol-as-decimal
+            />
             <price-change :value="change" />
           </div>
         </s-card>
@@ -28,8 +29,6 @@
 
 <script lang="ts">
 import { gql } from '@urql/core';
-import first from 'lodash/fp/first';
-import last from 'lodash/fp/last';
 import { FPNumber } from '@sora-substrate/math';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
@@ -37,6 +36,7 @@ import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { SECONDS_IN_TYPE } from '@/consts/snapshots';
 import { Timeframes, SnapshotTypes } from '@/types/filters';
 import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 
@@ -55,12 +55,20 @@ type NetworkStatsColumn = {
   value: AmountWithSuffix;
   change: FPNumber;
   title: string;
-  symbol: string;
 };
 
 const StatsQuery = gql`
-  query StatsQuery($first: Int, $type: SnapshotType) {
-    networkSnapshots(first: $first, orderBy: TIMESTAMP_DESC, filter: { type: { equalTo: $type } }) {
+  query StatsQuery($type: SnapshotType, $from: Int, $to: Int) {
+    networkSnapshots(
+      orderBy: TIMESTAMP_DESC
+      filter: {
+        and: [
+          { type: { equalTo: $type } }
+          { timestamp: { lessThanOrEqualTo: $from } }
+          { timestamp: { greaterThanOrEqualTo: $to } }
+        ]
+      }
+    ) {
       nodes {
         timestamp
         accounts
@@ -121,9 +129,8 @@ const COLUMNS = [
     prop: 'accounts',
   },
   {
-    title: 'Fees',
+    title: `Fees (${KnownSymbols.XOR})`,
     prop: 'fees',
-    symbol: KnownSymbols.XOR,
   },
   {
     title: 'ETH to SORA',
@@ -149,51 +156,24 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
   readonly filters = NETWORK_STATS_FILTERS;
 
   filter = NETWORK_STATS_FILTERS[0];
-  data: NetworkSnapshot[] = [];
+
+  currData: Nullable<NetworkSnapshot> = null;
+  prevData: Nullable<NetworkSnapshot> = null;
 
   created(): void {
     this.updateData();
   }
 
-  get grous() {
-    const groups: NetworkSnapshot[] = [];
-    const { group } = this.filter;
-
-    for (let i = 0; i < this.data.length; i++) {
-      const current = this.data[i];
-
-      if (!group || i % group === 0) {
-        groups.push(current);
-      } else {
-        const lastGroup = last(groups);
-
-        if (lastGroup) {
-          lastGroup.accounts = lastGroup.accounts.add(current.accounts);
-          lastGroup.transactions = lastGroup.transactions.add(current.transactions);
-          lastGroup.bridgeIncomingTransactions = lastGroup.bridgeIncomingTransactions.add(
-            current.bridgeIncomingTransactions
-          );
-          lastGroup.bridgeOutgoingTransactions = lastGroup.bridgeOutgoingTransactions.add(
-            current.bridgeOutgoingTransactions
-          );
-          lastGroup.fees = lastGroup.fees.add(current.fees);
-        }
-      }
-    }
-
-    return groups;
-  }
-
   get columns(): NetworkStatsColumn[] {
-    const [curr, prev] = [first(this.grous), last(this.grous)];
+    const { currData: curr, prevData: prev } = this;
 
-    return COLUMNS.map(({ prop, title, symbol }) => {
+    return COLUMNS.map(({ prop, title }) => {
       const propCurr = curr?.[prop] ?? FPNumber.ZERO;
       const propPrev = prev?.[prop] ?? FPNumber.ZERO;
       const propChange = calcPriceChange(propCurr, propPrev);
       const value = formatAmountWithSuffix(propCurr);
 
-      return { title, symbol, value, change: propChange };
+      return { title, value, change: propChange };
     });
   }
 
@@ -202,18 +182,36 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
     this.updateData();
   }
 
-  private async updateData(): Promise<void> {
-    this.data = [];
+  private groupData(data: NetworkSnapshot[]): Nullable<NetworkSnapshot> {
+    return data.reduce((buffer, item) => {
+      if (!buffer) return item;
 
+      for (const prop in buffer) {
+        buffer[prop] = buffer[prop].add(item[prop]);
+      }
+
+      return buffer;
+    }, null);
+  }
+
+  private async updateData(): Promise<void> {
     await this.withLoading(async () => {
-      this.data = await this.fetchData();
+      const { type, group } = this.filter;
+      const seconds = SECONDS_IN_TYPE[type];
+      const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
+      const aTime = now - seconds * group;
+      const bTime = aTime - seconds * group;
+
+      const [curr, prev] = await Promise.all([this.fetchData(now, aTime, type), this.fetchData(aTime, bTime, type)]);
+
+      this.currData = this.groupData(curr);
+      this.prevData = this.groupData(prev);
     });
   }
 
-  private async fetchData(): Promise<NetworkSnapshot[]> {
+  private async fetchData(from: number, to: number, type: SnapshotTypes): Promise<NetworkSnapshot[]> {
     try {
-      const { count: first, type } = this.filter;
-      const response = await SubqueryExplorerService.request(StatsQuery, { first, type });
+      const response = await SubqueryExplorerService.request(StatsQuery, { from, to, type });
 
       if (!response || !response.networkSnapshots) return [];
 
