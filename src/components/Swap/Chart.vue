@@ -327,10 +327,12 @@ const normalizeSnapshots = (collection: SnapshotItem[], difference: number, last
 const getPrecision = (value: number): number => {
   let precision = 2;
 
-  if (value <= 0 || !Number.isFinite(value)) return precision;
+  if (value === 0 || !Number.isFinite(value)) return precision;
 
-  while (Math.floor(value) <= 0) {
-    value = value * 10;
+  let abs = Math.abs(value);
+
+  while (Math.floor(abs) <= 0) {
+    abs = abs * 10;
     precision++;
   }
 
