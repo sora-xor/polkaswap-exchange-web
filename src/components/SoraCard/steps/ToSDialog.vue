@@ -1,7 +1,7 @@
 <template>
   <dialog-base :visible.sync="isVisible" class="terms-of-service-dialog" title="Terms & Conditions">
     <div v-loading="loading" class="tos__section">
-      <iframe :src="srcLink" width="100%" height="600px" frameborder="0"></iframe>
+      <iframe @load="onIFrameLoad" :src="srcLink" width="100%" height="600px" frameborder="0"></iframe>
     </div>
   </dialog-base>
 </template>
@@ -22,14 +22,15 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
 
   loading = true;
 
-  updated(): void {
-    setTimeout(() => (this.loading = false), 500);
+  onIFrameLoad(): void {
+    this.loading = false;
   }
 }
 </script>
 
 <style lang="scss">
 .terms-of-service-dialog .el-dialog {
+  margin-top: 12vh !important;
   max-width: 1000px !important;
 }
 </style>
@@ -38,10 +39,12 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
 .tos__section {
   width: 100%;
   height: 600px;
-  background-color: var(--s-color-base-background);
+  // background-color: var(--s-color-base-background);
   box-shadow: var(--s-shadow-element);
-  border-radius: var(--s-border-radius-small);
+  border-radius: 10px;
   padding: 0;
+  padding-left: 20px;
+  padding-right: 4px;
   overflow: hidden;
 }
 </style>
