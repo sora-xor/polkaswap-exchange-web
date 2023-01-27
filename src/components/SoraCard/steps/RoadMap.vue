@@ -112,7 +112,7 @@ export default class RoadMap extends Mixins(
   permissionDialogVisibility = false;
 
   async handleConfirm(): Promise<void> {
-    const { authService } = soraCard(this.soraNetwork);
+    // const { authService } = soraCard(this.soraNetwork);
 
     try {
       const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('SoraCard');
@@ -122,70 +122,72 @@ export default class RoadMap extends Mixins(
       console.error('[KYC Sora Card]: Camera error.', error);
     }
 
-    if (sessionStorage.getItem('access-token')) {
-      await this.getUserStatus();
+    this.$emit('confirm');
 
-      if ([VerificationStatus.Pending, VerificationStatus.Accepted].includes(this.currentStatus)) {
-        this.$emit('confirm-start-kyc', false);
-      } else {
-        this.$emit('confirm-start-kyc', true);
-      }
+    // if (sessionStorage.getItem('access-token')) {
+    //   await this.getUserStatus();
 
-      unloadScript(authService.sdkURL);
-      return;
-    }
+    //   if ([VerificationStatus.Pending, VerificationStatus.Accepted].includes(this.currentStatus)) {
+    //     this.$emit('confirm-start-kyc', false);
+    //   } else {
+    //     this.$emit('confirm-start-kyc', true);
+    //   }
 
-    loadScript(authService.sdkURL)
-      .then(() => {
-        const conf = {
-          authURL: authService.authURL,
-          elementBind: '#authOpen',
-          accessTokenTypeID: 1,
-          apiKey: authService.apiKey,
-          userTypeID: 2,
-        };
+    //   unloadScript(authService.sdkURL);
+    //   return;
+    // }
 
-        try {
-          // @ts-expect-error injected class
-          const auth = new PopupOAuth(conf).connect();
-        } catch (error) {
-          console.error('[SoraCard]: Failed to start Paywings OAuth script', error);
-        }
-      })
-      .catch((error) => {
-        console.error('[SoraCard]: Failed to fetch Paywings OAuth script', error);
-      });
+    // loadScript(authService.sdkURL)
+    //   .then(() => {
+    //     const conf = {
+    //       authURL: authService.authURL,
+    //       elementBind: '#authOpen',
+    //       accessTokenTypeID: 1,
+    //       apiKey: authService.apiKey,
+    //       userTypeID: 2,
+    //     };
 
-    this.btnLoading = true;
-    await this.getAccessToken();
-    await this.getUserStatus();
+    //     try {
+    //       // @ts-expect-error injected class
+    //       const auth = new PopupOAuth(conf).connect();
+    //     } catch (error) {
+    //       console.error('[SoraCard]: Failed to start Paywings OAuth script', error);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error('[SoraCard]: Failed to fetch Paywings OAuth script', error);
+    //   });
 
-    if (this.currentStatus) {
-      this.$emit('confirm-start-kyc', false);
-      return;
-    } else if (this.userApplied) {
-      // user didn't finish KYC, suggest to continue
-      this.secondPointChecked = false;
-      this.thirdPointChecked = false;
-      this.$notify({
-        title: '',
-        message: 'KYC process has not been finished.',
-        type: 'info',
-      });
-    }
+    // this.btnLoading = true;
+    // await this.getAccessToken();
+    // await this.getUserStatus();
+
+    // if (this.currentStatus) {
+    //   this.$emit('confirm-start-kyc', false);
+    //   return;
+    // } else if (this.userApplied) {
+    //   // user didn't finish KYC, suggest to continue
+    //   this.secondPointChecked = false;
+    //   this.thirdPointChecked = false;
+    //   this.$notify({
+    //     title: '',
+    //     message: 'KYC process has not been finished.',
+    //     type: 'info',
+    //   });
+    // }
 
     this.firstPointChecked = true;
     this.secondPointCurrent = true;
 
     // additionally check if they have enough balance to apply for card
-    if (!this.isEuroBalanceEnough) {
-      this.btnText = this.t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
-      this.btnDisabled = true;
-    } else {
-      this.btnText = 'FINISH THE KYC';
-    }
+    // if (!this.isEuroBalanceEnough) {
+    //   this.btnText = this.t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
+    //   this.btnDisabled = true;
+    // } else {
+    //   this.btnText = 'FINISH THE KYC';
+    // }
 
-    this.btnLoading = false;
+    // this.btnLoading = false;
   }
 
   async getAccessToken(): Promise<string | null> {

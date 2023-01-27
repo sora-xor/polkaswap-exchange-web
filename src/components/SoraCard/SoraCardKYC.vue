@@ -1,7 +1,8 @@
 <template>
   <wallet-base v-loading="loading" :title="title" :show-back="true" @back="handleBack" class="sora-card">
     <terms-and-conditions v-if="step === KycProcess.TermsAndConditions" @confirm-tos="confirmToS" />
-    <road-map v-else-if="step === KycProcess.RoadMap" @confirm-start-kyc="confirmProcess" :userApplied="userApplied" />
+    <road-map v-else-if="step === KycProcess.RoadMap" @confirm="confirmPhone" :userApplied="userApplied" />
+    <phone v-else-if="step === KycProcess.Phone" />
     <kyc-view v-else-if="step === KycProcess.KycView" @confirm-kyc="redirectToView" />
   </wallet-base>
 </template>
@@ -16,6 +17,8 @@ import TranslationMixin from '../mixins/TranslationMixin';
 enum KycProcess {
   TermsAndConditions,
   RoadMap,
+  Phone,
+  Email,
   KycView,
 }
 
@@ -24,6 +27,8 @@ enum KycProcess {
     WalletBase: components.WalletBase,
     TermsAndConditions: lazyComponent(Components.TermsAndConditions),
     RoadMap: lazyComponent(Components.RoadMap),
+    Phone: lazyComponent(Components.Phone),
+    Email: lazyComponent(Components.Email),
     KycView: lazyComponent(Components.KycView),
   },
 })
@@ -45,6 +50,11 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
       return;
     }
 
+    if (this.step === KycProcess.Phone) {
+      this.step = KycProcess.RoadMap;
+      return;
+    }
+
     if (this.step === KycProcess.KycView) {
       this.step = KycProcess.RoadMap;
     }
@@ -56,6 +66,8 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
         return 'Terms & Conditions';
       case KycProcess.RoadMap:
         return 'Complete KYC';
+      case KycProcess.Phone:
+        return 'Phone Confirmation';
       case KycProcess.KycView:
         return 'Complete KYC';
       default:
@@ -67,15 +79,19 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
     this.step = KycProcess.RoadMap;
   }
 
-  confirmProcess(startKyc: boolean): void {
-    if (startKyc) {
-      this.step = KycProcess.KycView;
-      return;
-    }
-
-    const withoutCheck = true;
-    this.$emit('go-to-start', withoutCheck);
+  confirmPhone(): void {
+    this.step = KycProcess.Phone;
   }
+
+  // confirmProcess(startKyc: boolean): void {
+  //   if (startKyc) {
+  //     this.step = KycProcess.KycView;
+  //     return;
+  //   }
+
+  //   const withoutCheck = true;
+  //   this.$emit('go-to-start', withoutCheck);
+  // }
 
   redirectToView(success: boolean): void {
     success ? this.$emit('go-to-start', success) : (this.step = KycProcess.RoadMap);

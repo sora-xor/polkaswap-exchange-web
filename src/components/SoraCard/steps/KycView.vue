@@ -19,12 +19,12 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { v4 as uuidv4 } from 'uuid';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { state } from '@/store/decorators';
 import { soraCard } from '@/utils/card';
 
 @Component
-export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class KycView extends Mixins(TranslationMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
   @Prop({ default: '', type: String }) readonly accessToken!: string;
@@ -61,6 +61,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
 
     const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
 
+    // TODO: take from localStorage
     const accessToken = sessionStorage.getItem('access-token');
     const refreshToken = sessionStorage.getItem('refresh-token');
 
