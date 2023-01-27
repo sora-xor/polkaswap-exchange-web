@@ -4,7 +4,7 @@
 
     <network-tvl-chart class="grid-item grid-item--50" />
 
-    <div class="grid-item grid-item--50">Volume</div>
+    <network-tvl-chart class="grid-item grid-item--50" />
   </div>
 </template>
 
@@ -43,7 +43,7 @@ $gap: $inner-spacing-medium;
   width: 100%;
 
   &--50 {
-    @include tablet {
+    @include desktop {
       @include columns(2, $gap);
     }
   }

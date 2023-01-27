@@ -20,7 +20,7 @@ export const NETWORK_STATS_FILTERS: SnapshotFilter[] = [
     name: Timeframes.WEEK,
     label: '1W',
     type: SnapshotTypes.DAY,
-    count: 7,
+    count: 24 * 7,
   },
   {
     name: Timeframes.MONTH,
@@ -31,8 +31,8 @@ export const NETWORK_STATS_FILTERS: SnapshotFilter[] = [
   {
     name: Timeframes.QUARTER,
     label: '3M',
-    type: SnapshotTypes.MONTH,
-    count: 3,
+    type: SnapshotTypes.DAY,
+    count: 90,
   },
   {
     name: Timeframes.YEAR,

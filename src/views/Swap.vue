@@ -663,6 +663,10 @@ export default class Swap extends Mixins(
   @include desktop(true) {
     max-width: $inner-window-width;
   }
+
+  @include desktop {
+    flex-flow: row nowrap;
+  }
 }
 
 .page-header--swap {

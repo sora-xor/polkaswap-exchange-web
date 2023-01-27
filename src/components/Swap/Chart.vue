@@ -32,59 +32,30 @@
       />
     </template>
 
-    <s-skeleton :loading="parentLoading || loading || chartDataIssue" :throttle="0">
-      <template #template>
-        <div v-loading="loading" class="charts-skeleton">
-          <s-skeleton-item element="rect" class="charts-skeleton-price" />
-          <div class="charts-skeleton-price-impact">
-            <s-skeleton-item element="circle" />
-            <s-skeleton-item element="rect" />
-          </div>
-          <div v-for="i in 9" :key="i" class="charts-skeleton-line">
-            <s-skeleton-item element="rect" class="charts-skeleton-label" />
-            <s-skeleton-item element="rect" class="charts-skeleton-border" />
-          </div>
-          <div class="charts-skeleton-line charts-skeleton-line--lables">
-            <s-skeleton-item v-for="i in 11" :key="i" element="rect" class="charts-skeleton-label" />
-          </div>
-          <div v-if="chartDataIssue" class="charts-skeleton-error">
-            <s-icon v-if="isFetchingError" name="clear-X-16" :size="'32px'" />
-            <p class="charts-skeleton-error-message">
-              <template v-if="isFetchingError">{{ t('swap.errorFetching') }}</template>
-              <template v-else>{{ t('noDataText') }}</template>
-            </p>
-            <s-button
-              v-if="isFetchingError"
-              class="el-button--select-token"
-              type="secondary"
-              size="small"
-              @click="updatePrices"
-            >
-              {{ t('retryText') }}
-            </s-button>
-          </div>
-        </div>
-      </template>
-      <template>
-        <formatted-amount
-          class="charts-price"
-          :value="fiatPriceFormatted"
-          :font-weight-rate="FontWeightRate.MEDIUM"
-          :font-size-rate="FontWeightRate.MEDIUM"
-          :asset-symbol="symbol"
-          symbol-as-decimal
-        />
-        <price-change v-if="!isFetchingError" :value="priceChange" />
-        <v-chart
-          ref="chart"
-          class="chart"
-          :option="chartSpec"
-          autoresize
-          @zr:mousewheel="handleZoom"
-          @datazoom="changeZoomLevel"
-        />
-      </template>
-    </s-skeleton>
+    <chart-skeleton
+      :loading="parentLoading || loading"
+      :is-empty="chartData.length === 0"
+      :is-error="isFetchingError"
+      @retry="updatePrices"
+    >
+      <formatted-amount
+        class="charts-price"
+        :value="fiatPriceFormatted"
+        :font-weight-rate="FontWeightRate.MEDIUM"
+        :font-size-rate="FontWeightRate.MEDIUM"
+        :asset-symbol="symbol"
+        symbol-as-decimal
+      />
+      <price-change v-if="!isFetchingError" :value="priceChange" />
+      <v-chart
+        ref="chart"
+        class="chart"
+        :option="chartSpec"
+        autoresize
+        @zr:mousewheel="handleZoom"
+        @datazoom="changeZoomLevel"
+      />
+    </chart-skeleton>
   </stats-card>
 </template>
 
@@ -95,7 +66,6 @@ import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
-import { SSkeleton, SSkeletonItem } from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton';
 
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
@@ -307,8 +277,7 @@ const getPrecision = (value: number): number => {
     PriceChange: lazyComponent(Components.PriceChange),
     StatsCard: lazyComponent(Components.StatsCard),
     StatsFilter: lazyComponent(Components.StatsFilter),
-    SSkeleton,
-    SSkeletonItem,
+    ChartSkeleton: lazyComponent(Components.ChartSkeleton),
   },
 })
 export default class SwapChart extends Mixins(
@@ -486,10 +455,6 @@ export default class SwapChart extends Mixins(
     }
 
     return Object.freeze(groups);
-  }
-
-  get chartDataIssue(): boolean {
-    return !this.loading && (this.isFetchingError || this.chartData.length === 0);
   }
 
   get chartOptionSeries() {
@@ -974,7 +939,6 @@ export default class SwapChart extends Mixins(
 </script>
 
 <style lang="scss">
-$skeleton-label-width: 34px;
 .charts {
   &-price {
     display: flex;
@@ -998,123 +962,10 @@ $skeleton-label-width: 34px;
   }
 }
 
-.charts-skeleton {
-  $margin-right: #{$inner-spacing-tiny};
-  $skeleton-label-width-mobile: calc((100% - #{$margin-right} * 10) / 11);
-  $skeleton-spacing: 18px;
-  position: relative;
-  .el-loading-mask {
-    background-color: transparent;
-  }
-  .el-skeleton__item {
-    background: var(--s-color-base-border-secondary);
-  }
-  &-price {
-    width: 157px;
-    &.el-skeleton__item.el-skeleton__rect {
-      height: $skeleton-spacing;
-      margin-bottom: $inner-spacing-medium;
-    }
-    &-impact {
-      display: flex;
-      max-width: 150px;
-      > :first-child,
-      > :last-child {
-        height: 9px;
-      }
-      > :first-child {
-        width: 9px;
-        margin-right: $margin-right;
-      }
-      > :last-child {
-        width: 42px;
-      }
-      + .charts-skeleton-line {
-        margin-top: 19px;
-      }
-    }
-  }
-  &-line {
-    display: flex;
-    align-items: center;
-    flex-grow: 0;
-    margin-top: 22px;
-    &--lables {
-      justify-content: space-between;
-      margin-top: $inner-spacing-medium;
-      padding-left: calc(#{$margin-right} + #{$skeleton-label-width});
-    }
-  }
-  &-label.el-skeleton__item.el-skeleton__rect {
-    height: 8px;
-    width: $skeleton-label-width-mobile;
-    margin-bottom: 0;
-    margin-right: $margin-right;
-  }
-  &-border.el-skeleton__rect {
-    width: calc(100% - #{$skeleton-label-width-mobile} - #{$margin-right});
-    height: 1px;
-  }
-  &-error {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    &-message {
-      margin-top: $skeleton-spacing;
-      margin-bottom: $skeleton-spacing;
-      font-weight: 400;
-      font-size: var(--s-font-size-medium);
-      line-height: var(--s-line-height-medium);
-    }
-    .el-button.s-secondary {
-      padding-right: $inner-spacing-big;
-      padding-left: $inner-spacing-big;
-    }
-  }
-  .s-icon-clear-X-16:before {
-    color: var(--s-color-status-error);
-  }
-}
-
 @include desktop {
   .container--charts {
     position: relative;
     z-index: $app-content-layer;
-  }
-}
-
-@include large-desktop {
-  .charts-skeleton {
-    &-price {
-      &-impact {
-        + .charts-skeleton-line {
-          margin-top: 20px;
-        }
-      }
-    }
-    &-line {
-      margin-top: 26px;
-    }
-    &-label.el-skeleton__item.el-skeleton__rect {
-      max-width: $skeleton-label-width;
-    }
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-.chart {
-  height: 283px;
-}
-
-@include large-desktop {
-  .chart {
-    height: 323px;
   }
 }
 </style>

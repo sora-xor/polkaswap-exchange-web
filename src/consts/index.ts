@@ -216,6 +216,8 @@ export enum Components {
   // Paywings
   X1Dialog = 'X1/X1Dialog',
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
+  // Chart
+  ChartSkeleton = 'Chart/ChartSkeleton',
   // Stats
   StatsCard = 'Stats/StatsCard',
   StatsFilter = 'Stats/StatsFilter',
