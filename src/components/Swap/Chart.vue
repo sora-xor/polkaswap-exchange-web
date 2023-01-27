@@ -558,7 +558,6 @@ export default class SwapChart extends Mixins(
             fontSize: 11,
             fontWeight: 400,
             lineHeigth: 1.5,
-            margin: 0,
             formatter: ({ value }) => {
               return this.formatDate(+value, 'LLL'); // locale format
             },

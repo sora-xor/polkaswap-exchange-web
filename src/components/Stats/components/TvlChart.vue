@@ -9,6 +9,7 @@
     <chart-skeleton
       :loading="parentLoading || loading"
       :is-empty="data.length === 0"
+      :is-error="isFetchingError"
       :y-label="false"
       @retry="updateData"
     >
@@ -68,6 +69,7 @@ const NetworkTvlQuery = gql`
   }
 `;
 
+const AXIS_OFFSET = 8;
 const AXIS_LABEL_CSS = {
   fontFamily: 'Sora',
   fontSize: 10,
@@ -92,6 +94,7 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, mixins.Transla
   filter: SnapshotFilter = NETWORK_STATS_FILTERS[0];
 
   data: NetworkTvlSnapshot[] = [];
+  isFetchingError = false;
 
   created(): void {
     this.updateData();
@@ -123,9 +126,10 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, mixins.Transla
         top: 20,
         left: 0,
         right: 0,
-        bottom: 20,
+        bottom: 20 + AXIS_OFFSET,
       },
       xAxis: {
+        offset: AXIS_OFFSET,
         type: 'time',
         axisTick: {
           show: false,
@@ -168,6 +172,17 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, mixins.Transla
           lineStyle: {
             color: this.theme.color.status.success,
           },
+          label: {
+            show: true,
+            backgroundColor: this.theme.color.status.success,
+            color: this.theme.color.base.onAccent,
+            fontSize: 11,
+            fontWeight: 400,
+            lineHeigth: 1.5,
+            formatter: ({ value }) => {
+              return this.formatDate(+value, 'LLL'); // locale format
+            },
+          },
         },
         boundaryGap: false,
       },
@@ -186,6 +201,11 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, mixins.Transla
           fontSize: 11,
           fontFamily: 'Sora',
           fontWeight: 400,
+        },
+        formatter: (params) => {
+          const { data } = params[0];
+          const [timestamp, value] = data;
+          return `$ ${new FPNumber(value).toLocaleString()}`;
         },
       },
       series: [
@@ -223,33 +243,34 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, mixins.Transla
 
   private async updateData(): Promise<void> {
     await this.withLoading(async () => {
-      const { type, count } = this.filter;
-      const seconds = SECONDS_IN_TYPE[type];
-      const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
-      const to = now - seconds * count;
+      try {
+        const { type, count } = this.filter;
+        const seconds = SECONDS_IN_TYPE[type];
+        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
+        const to = now - seconds * count;
 
-      this.data = await this.fetchData(now, to, type);
+        this.data = await this.fetchData(now, to, type);
+        this.isFetchingError = false;
+      } catch (error) {
+        console.error(error);
+        this.isFetchingError = true;
+      }
     });
   }
 
   private async fetchData(from: number, to: number, type: SnapshotTypes): Promise<NetworkTvlSnapshot[]> {
-    try {
-      const response = await SubqueryExplorerService.request(NetworkTvlQuery, { from, to, type });
+    const response = await SubqueryExplorerService.request(NetworkTvlQuery, { from, to, type });
 
-      if (!response || !response.networkSnapshots) return [];
+    if (!response || !response.networkSnapshots) return [];
 
-      const data = response.networkSnapshots.nodes.map((node) => {
-        return {
-          timestamp: +node.timestamp * 1000,
-          value: +node.liquidityUSD,
-        };
-      });
+    const data = response.networkSnapshots.nodes.map((node) => {
+      return {
+        timestamp: +node.timestamp * 1000,
+        value: +node.liquidityUSD,
+      };
+    });
 
-      return data;
-    } catch (error) {
-      console.log(error);
-      return [];
-    }
+    return data;
   }
 }
 </script>
