@@ -173,26 +173,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  get disclaimerPrefix(): string {
-    return `<span class="app-disclaimer__title">${this.t('disclaimerTitle')}</span>`;
-  }
-
-  get memorandumLink(): string {
-    return this.generateDisclaimerLink(Links.terms, this.t('memorandum'));
-  }
-
-  get privacyLink(): string {
-    return this.generateDisclaimerLink(Links.privacy, this.t('helpDialog.privacyPolicy'));
-  }
-
-  get polkaswapFaqLink(): string {
-    return this.generateDisclaimerLink(Links.faq, this.t('FAQ'));
-  }
-
-  generateDisclaimerLink(href: string, content: string): string {
-    return `<a href="${href}" target="_blank" rel="nofollow noopener" class="link" title="${content}">${content}</a>`;
-  }
-
   async confirmInvititation(): Promise<void> {
     await this.getReferrer();
     if (this.storageReferrer) {
@@ -532,14 +512,6 @@ ul ul {
   @include container-styles;
   .el-loading-mask {
     border-radius: var(--s-border-radius-medium);
-  }
-}
-.app-disclaimer {
-  &__title {
-    color: var(--s-color-theme-accent);
-  }
-  a:not(:active) {
-    @include focus-outline;
   }
 }
 

@@ -46,6 +46,7 @@ import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
 import { lazyComponent, goTo } from '@/router';
 import { PageNames, Components } from '@/consts';
 import { getter, mutation } from '@/store/decorators';
+import { settingsStorage } from '@/utils/storage';
 
 @Component({
   components: {
@@ -74,6 +75,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
   @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
 
   @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
+  @mutation.settings.setDisclaimerDialogVisibility private setDisclaimerDialogVisibility!: () => void;
 
   goTo = goTo;
 
@@ -110,6 +112,12 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   toggleMenu(): void {
     this.$emit('toggle-menu');
+  }
+
+  mounted(): void {
+    const disclaimerApprove = settingsStorage.get('disclaimerApprove');
+
+    if (!disclaimerApprove) this.setDisclaimerDialogVisibility();
   }
 }
 </script>

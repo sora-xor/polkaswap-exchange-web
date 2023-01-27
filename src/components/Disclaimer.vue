@@ -51,7 +51,7 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
 
   async handleAccept(): Promise<void> {
     this.loadingAcceptBtn = true;
-    await delay(1400);
+    await delay(1200);
     this.setUserDisclaimerApprove();
     this.setDisclaimerDialogVisibility();
   }
