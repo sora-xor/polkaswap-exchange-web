@@ -102,7 +102,9 @@
         },
         "selectWallet": "Pilih dompet untuk digunakan",
         "wallet": {
-            "install": "Install"
+            "install": "Install",
+            "connected": "Terhubung",
+            "notConnected": "Tidak terhubung"
         }
     },
     "wallet": {

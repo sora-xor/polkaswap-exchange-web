@@ -102,7 +102,9 @@
         },
         "selectWallet": "Odaberite novčanik s kojim ćete raditi",
         "wallet": {
-            "install": "Instalirati"
+            "install": "Instalirati",
+            "connected": "Povezan",
+            "notConnected": "Nije povezano"
         }
     },
     "wallet": {

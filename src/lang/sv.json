@@ -102,7 +102,9 @@
         },
         "selectWallet": "Välj en plånbok att arbeta med",
         "wallet": {
-            "install": "Installera"
+            "install": "Installera",
+            "connected": "Ansluten",
+            "notConnected": "Ej ansluten"
         }
     },
     "wallet": {

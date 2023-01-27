@@ -102,7 +102,9 @@
         },
         "selectWallet": "Выберите кошелек для работы",
         "wallet": {
-            "install": "Установить"
+            "install": "Установить",
+            "connected": "Подключено",
+            "notConnected": "Не подключен"
         }
     },
     "wallet": {
