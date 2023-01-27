@@ -102,7 +102,9 @@
         },
         "selectWallet": "Válasszon egy pénztárcát, amellyel dolgozni szeretne",
         "wallet": {
-            "install": "Telepítés"
+            "install": "Telepítés",
+            "connected": "csatlakoztatva",
+            "notConnected": "Nem kapcsolódik"
         }
     },
     "wallet": {

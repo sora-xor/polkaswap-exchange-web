@@ -102,7 +102,9 @@
         },
         "selectWallet": "Seleccione una billetera con la que trabajar",
         "wallet": {
-            "install": "Instalar"
+            "install": "Instalar",
+            "connected": "Conectado",
+            "notConnected": "No conectado"
         }
     },
     "wallet": {

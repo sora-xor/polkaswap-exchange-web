@@ -102,7 +102,9 @@
         },
         "selectWallet": "Yan apamọwọ kan lati ṣiṣẹ pẹlu",
         "wallet": {
-            "install": "Fi sori ẹrọ"
+            "install": "Fi sori ẹrọ",
+            "connected": "Ti sopọ",
+            "notConnected": "Ko ti sopọ"
         }
     },
     "wallet": {

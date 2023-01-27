@@ -102,7 +102,9 @@
         },
         "selectWallet": "Ընտրեք դրամապանակ՝ աշխատելու համար",
         "wallet": {
-            "install": "Տեղադրեք"
+            "install": "Տեղադրեք",
+            "connected": "Միացված է",
+            "notConnected": "Միացված չէ"
         }
     },
     "wallet": {

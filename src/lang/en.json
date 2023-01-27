@@ -102,7 +102,9 @@
         },
         "selectWallet": "Select a wallet to work with",
         "wallet": {
-            "install": "Install"
+            "install": "Install",
+            "connected": "Connected",
+            "notConnected": "Not connected"
         }
     },
     "wallet": {
