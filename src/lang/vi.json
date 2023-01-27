@@ -102,7 +102,9 @@
         },
         "selectWallet": "Chọn một ví để kết nối",
         "wallet": {
-            "install": "Cài đặt"
+            "install": "Cài đặt",
+            "connected": "kết nối",
+            "notConnected": "Không kết nối"
         }
     },
     "wallet": {

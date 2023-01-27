@@ -102,7 +102,9 @@
         },
         "selectWallet": "Seleziona un portafoglio con cui lavorare",
         "wallet": {
-            "install": "Installare"
+            "install": "Installare",
+            "connected": "Collegato",
+            "notConnected": "Non connesso"
         }
     },
     "wallet": {

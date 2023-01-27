@@ -102,7 +102,9 @@
         },
         "selectWallet": "Velg en lommebok du vil jobbe med",
         "wallet": {
-            "install": "Installere"
+            "install": "Installere",
+            "connected": "Tilkoblet",
+            "notConnected": "Ikke tilkoblet"
         }
     },
     "wallet": {
