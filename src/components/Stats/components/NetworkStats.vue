@@ -190,7 +190,7 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
 
       return data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return [];
     }
   }

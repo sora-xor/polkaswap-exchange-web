@@ -4,7 +4,7 @@
 
     <network-tvl-chart class="grid-item grid-item--50" />
 
-    <network-tvl-chart class="grid-item grid-item--50" />
+    <network-volume-chart class="grid-item grid-item--50" />
   </div>
 </template>
 
@@ -18,6 +18,7 @@ import { Components } from '@/consts';
   components: {
     NetworkStats: lazyComponent(Components.NetworkStats),
     NetworkTvlChart: lazyComponent(Components.NetworkTvlChart),
+    NetworkVolumeChart: lazyComponent(Components.NetworkVolumeChart),
   },
 })
 export default class Stats extends Mixins() {}
