@@ -7,8 +7,6 @@
     "importText": "Importálás",
     "settingsText": "Beállítások",
     "addAssetText": "Eszköz hozzáadása",
-    "createTokenText": "Token létrehozása",
-    "comingSoonText": "Hamarosan...",
     "successText": "Siker",
     "warningText": "Figyelmeztetés",
     "swapText": "Váltás",
@@ -19,7 +17,6 @@
     "sendText": "Küldés",
     "addressText": "Cím",
     "amountText": "Összeg",
-    "confirmText": "Megerősítés",
     "errorText": "HIba",
     "insufficientBalanceText": "Elégtelen {tokenSymbol} egyenleg",
     "unknownErrorText": "HIBA Valami elromlott...",
@@ -105,7 +102,9 @@
         },
         "selectWallet": "Válasszon egy pénztárcát, amellyel dolgozni szeretne",
         "wallet": {
-            "install": "Telepítés"
+            "install": "Telepítés",
+            "connected": "csatlakoztatva",
+            "notConnected": "Nem kapcsolódik"
         }
     },
     "wallet": {
@@ -127,12 +126,12 @@
         "enterAmount": "Összeg megadása",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Tranzakció megerősítése",
-        "confirm": "@:confirmText",
         "errorAddress": "Érvénytelen cím. Kérjük, ellenőrizd és próbáld újra.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Tokenek küldése a {Sora} hálózat fiókjai között",
         "addressWarning": "A tokeneket az alábbi {Sora} címre küldjük. Győződj meg arról, hogy a címzett hozzáférhet a {Sora} lánchoz a tokenek használatához:",
-        "addressError": "Nem küldhetsz tokent ugyanahhoz a fiókhoz, amelyhez jelenleg csatlakozol."
+        "addressError": "Nem küldhetsz tokent ugyanahhoz a fiókhoz, amelyhez jelenleg csatlakozol.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "A tárca címe a vágólapra másolva",
@@ -152,7 +151,6 @@
     },
     "assets": {
         "empty": "Nincsenek eszközök",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -171,7 +169,8 @@
         },
         "totalAssetsValue": "Az összes eszköz értéke:",
         "details": "Részletek",
-        "assetId": "Eszköz azonosítója"
+        "assetId": "Eszköz azonosítója",
+        "add": "@:addAssetText"
     },
     "asset": {
         "remove": "Eszköz eltávolítása",
@@ -179,8 +178,6 @@
         "receive": "{symbol} fogadása"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Az eszköz {symbol} sikeresen hozzáadva!",
         "empty": "Nem található token",
         "alreadyAttached": "Tokent már csatolták",
@@ -195,16 +192,15 @@
             "title": "Valuták",
             "switchBtn": "Csak ellenőrzött eszközök"
         },
-        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján"
+        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján",
+        "title": "@:addAssetText",
+        "action": "@:addAssetText"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Egyéni eszköz létrehozása és telepítése a {Sora} hálózaton",
-        "action": "@:createTokenText",
         "enterSymbol": "Írd be a token szimbólumot",
         "enterName": "Írd be a token nevét",
         "enterSupply": "Add meg a token kínálatot",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Tranzakció elküldve",
             "desc": "{symbol} token létrehozása"
@@ -230,10 +226,6 @@
             "placeholder": "Bővíthető kínálat",
             "desc": "Képesség több token generálására."
         },
-        "titleCommon": "Létrehozás",
-        "confirmTokenTitleCommon": "Token létrehozása",
-        "confirmTokenTitleNFT": "NFT létrehozása",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Tartalom megadása",
         "selectLocalFile": "Helyi fájl kiválasztása",
         "CreateSimpleToken": "Token",
@@ -267,7 +259,14 @@
         "divisible": {
             "placeholder": "Osztható",
             "desc": "Az NFTképessége, hogy frakcionált részekre oszlik. A likviditási tartalékképzés csak osztható eszközökkel működik."
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Létrehozás",
+        "confirmTokenTitleCommon": "Token létrehozása",
+        "confirmTokenTitleNFT": "NFT létrehozása",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Tranzakció részletei",
@@ -502,8 +501,8 @@
         "price": "Ár",
         "transactionSubmitted": "Tranzakció elküldve",
         "transactionMessage": "{firstToken} és {secondToken}",
-        "confirm": "Megerősítés",
-        "ok": "Rendben"
+        "ok": "Rendben",
+        "confirm": "Megerősítés"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +553,6 @@
         "connectWallets": "Csatlakoztasd a tárcákat a tranzakciós előzmények megtekintéséhez.",
         "soraNetworkFee": "{Sora} hálózati díj",
         "ethereumNetworkFee": "{Ethereum} Hálózati díj",
-        "tooltipValue": "@:comingSoonText",
         "total": "Összesen",
         "viewHistory": "Tranzakciók előzményeinek megtekintése",
         "transactionSubmitted": "Tranzakció elküldve",
@@ -566,7 +564,8 @@
         "energy": "@:evm.EWC",
         "copy": "Hálózati cím másolása",
         "soraAddress": "{Sora} cím",
-        "ethereumAddress": "{Ethereum} cím"
+        "ethereumAddress": "{Ethereum} cím",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",
@@ -717,7 +716,7 @@
         "outputMessage": "Becsült eredmény. Ha az ár a {slippageTolerance}%-nál nagyobb mértékben változik, a tranzakció visszafordul.",
         "confirmTitle": "Kapni fogsz",
         "shareOfPool": "A pool részesedése a tranzakció után",
-        "locked": "A készlet {percent} -a tétben van"
+        "locked": "A készlet {percent} -a {lock} van"
     },
     "dexSettings": {
         "title": "Beállítások",
@@ -932,7 +931,6 @@
         "bondTitle": "XOR lekötése",
         "unbondTitle": "XOR feloldása",
         "confirm": {
-            "text": "Megerősítés",
             "bond": "Lekötés megerősítése",
             "unbond": "Feloldás megerősítése",
             "inviteTitle": "Meghívtak a {AppName}",
@@ -941,7 +939,8 @@
             "freeOfCharge": "Ez az intézkedés ingyenes",
             "hasReferrerTitle": "Már beállítottad az ajánlót",
             "hasReferrerDescription": "Sajnos csak egyet lehet beállítani",
-            "ok": "Rendben"
+            "ok": "Rendben",
+            "text": "Megerősítés"
         },
         "referrer": {
             "title": "Az ajánló hozzáadása",
@@ -958,7 +957,6 @@
         "insufficientBondedAmount": "További hivatkozások meghívásához legalább {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Tranzakció részletei",
-    "createTokenTextNFT": "NFT létrehozása",
     "code": {
         "download": "QR-kód letöltése",
         "upload": "QR-kód beolvasása",
@@ -1140,5 +1138,10 @@
     "tooltips": {
         "roi": "A {ROI} a befektetés megtérülését jelenti. Kiszámítása úgy történik, hogy a befektetésen megszerzett nyereséget elosztjuk a befektetés százalékban kifejezett költségével.",
         "tvl": "A {TVL} a Total Value Locked rövidítése. A készletekbe zárt tokeneket jelenti dollárban kifejezve."
-    }
+    },
+    "createTokenText": "Token létrehozása",
+    "comingSoonText": "Hamarosan...",
+    "confirmText": "Megerősítés",
+    "createTokenTextNFT": "NFT létrehozása",
+    "doNotShowText": "Ne mutasd ezt még egyszer"
 }

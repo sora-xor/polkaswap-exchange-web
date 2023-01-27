@@ -39,16 +39,32 @@ const getters = defineGetters<RemoveLiquidityState>()({
 
     return FPNumber.fromCodecValue(getters.liquidity.balance);
   },
-  // Liquidity locked balance
-  liquidityBalanceLocked(...args): FPNumber {
+  // Liquidity locked balance in demeterFarmingPlatform
+  demeterLockedBalance(...args): FPNumber {
     const { getters, rootGetters } = removeLiquidityGetterContext(args);
 
-    if (!rootGetters.demeterFarming || !getters.liquidity) return FPNumber.ZERO;
+    if (!getters.liquidity || !rootGetters.demeterFarming) return FPNumber.ZERO;
 
     const baseAsset = getters.liquidity.firstAddress;
     const poolAsset = getters.liquidity.secondAddress;
-    const lockedBalance = rootGetters.demeterFarming.getLockedAmount(baseAsset, poolAsset, true);
     const balance = getters.liquidityBalanceFull;
+    const lockedBalance = rootGetters.demeterFarming.getLockedAmount(baseAsset, poolAsset, true);
+
+    const maxLocked = FPNumber.min(balance, lockedBalance) as FPNumber;
+
+    return maxLocked;
+  },
+  // Liquidity locked balance in demeterFarmingPlatform
+  ceresLockedBalance(...args): FPNumber {
+    const { getters, rootGetters } = removeLiquidityGetterContext(args);
+
+    if (!getters.liquidity) return FPNumber.ZERO;
+
+    const baseAsset = getters.liquidity.firstAddress;
+    const poolAsset = getters.liquidity.secondAddress;
+    const balance = getters.liquidityBalanceFull;
+    const lockedBalance = rootGetters.pool.getLockedAmount(baseAsset, poolAsset);
+
     const maxLocked = FPNumber.min(balance, lockedBalance) as FPNumber;
 
     return maxLocked;
@@ -58,9 +74,11 @@ const getters = defineGetters<RemoveLiquidityState>()({
     const { getters } = removeLiquidityGetterContext(args);
 
     const balance = getters.liquidityBalanceFull;
-    const lockedBalance = getters.liquidityBalanceLocked;
+    const demeterLockedBalance = getters.demeterLockedBalance;
+    const ceresLockedBalance = getters.ceresLockedBalance;
+    const maxLocked = FPNumber.max(demeterLockedBalance, ceresLockedBalance) as FPNumber;
 
-    return balance.sub(lockedBalance);
+    return balance.sub(maxLocked);
   },
   firstToken(...args): Nullable<RegisteredAccountAssetWithDecimals> {
     const { getters, rootGetters } = removeLiquidityGetterContext(args);
