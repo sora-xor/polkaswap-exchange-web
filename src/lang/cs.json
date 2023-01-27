@@ -102,7 +102,9 @@
         },
         "selectWallet": "Vyberte peněženku, se kterou chcete pracovat",
         "wallet": {
-            "install": "Nainstalujte"
+            "install": "Nainstalujte",
+            "connected": "Připojeno",
+            "notConnected": "Nepřipojený"
         }
     },
     "wallet": {

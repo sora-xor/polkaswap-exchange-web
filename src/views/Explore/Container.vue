@@ -43,6 +43,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import storage from '@/utils/storage';
 import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
+import { getter } from '@/store/decorators';
 
 const storageKey = 'exploreAccountItems';
 
@@ -53,6 +54,8 @@ const storageKey = 'exploreAccountItems';
   },
 })
 export default class ExploreContainer extends Mixins(mixins.LoadingMixin, TranslationMixin) {
+  @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
+
   exploreQuery = '';
   isAccountItems = Boolean(storage.get(storageKey as any));
 
@@ -82,8 +85,9 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
     return this.t(`pageTitle.${this.pageName}`);
   }
 
+  /** Shown only for logged in users and for any tab on page except Tokens */
   get switcherAvailable(): boolean {
-    return this.pageName !== PageNames.ExploreTokens;
+    return this.pageName !== PageNames.ExploreTokens && this.isLoggedIn;
   }
 
   handleTabChange(name: string): void {

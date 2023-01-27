@@ -102,7 +102,9 @@
         },
         "selectWallet": "Wybierz portfel do pracy",
         "wallet": {
-            "install": "zainstalować"
+            "install": "zainstalować",
+            "connected": "Połączony",
+            "notConnected": "Nie połączony"
         }
     },
     "wallet": {

@@ -102,7 +102,9 @@
         },
         "selectWallet": "Изаберите новчаник са којим ћете радити",
         "wallet": {
-            "install": "Инсталирај"
+            "install": "Инсталирај",
+            "connected": "Повезан",
+            "notConnected": "Није повезан"
         }
     },
     "wallet": {

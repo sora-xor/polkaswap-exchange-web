@@ -102,7 +102,9 @@
         },
         "selectWallet": "Selecteer een portemonnee om mee te werken",
         "wallet": {
-            "install": "Installeren"
+            "install": "Installeren",
+            "connected": "Verbonden",
+            "notConnected": "Niet verbonden"
         }
     },
     "wallet": {
