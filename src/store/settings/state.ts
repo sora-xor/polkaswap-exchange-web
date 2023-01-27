@@ -28,7 +28,7 @@ function initialState(): SettingsState {
     faucetUrl: '',
     selectNodeDialogVisibility: false,
     selectLanguageDialogVisibility: false,
-    disclaimerVisibility: false,
+    disclaimerVisibility: !disclaimerApprove,
     browserNotifPopupVisibility: false,
     browserNotifPopupBlockedVisibility: false,
     blockNumber: 0,
