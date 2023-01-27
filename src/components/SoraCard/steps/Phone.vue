@@ -1,7 +1,13 @@
 <template>
   <div>
     <div class="sora-card__number-input">
-      <s-input placeholder="Phone number" v-model="phoneNumber" :disabled="phoneInputDisabled" class="what"></s-input>
+      <s-input
+        placeholder="Phone number"
+        type="number"
+        v-model="phoneNumber"
+        :disabled="phoneInputDisabled"
+        class="what"
+      ></s-input>
       <s-button
         type="secondary"
         :disabled="sendSmsDisabled"
@@ -46,6 +52,8 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   smsResendCount = 35;
   smsResendText = '';
 
+  loginApi: any = null;
+
   @Watch('smsResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
     const digit = value.toString().length > 1 ? '' : '0';
@@ -53,11 +61,21 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     this.smsResendText = `RESEND IN 0:${countDown}`;
   }
 
-  verifyCode(): void {}
+  verifyCode(): void {
+    // TODO: check for length before sending
+    const otp = 123456;
+    this.loginApi.PayWingsOtpCredentialVerification(otp).catch((error) => {
+      console.error(error);
+    });
+  }
 
   sendSms(): void {
-    this.smsSent = true;
+    const number = '79198591623';
+    this.loginApi.PaywingsSendOtp(number, 'Your verification code is: @Otp').catch((error) => {
+      console.error(error);
+    });
 
+    this.smsSent = true;
     this.startSmsCountDown();
 
     // TODO: focus code input
@@ -102,23 +120,36 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     }, 1000);
   }
 
-  async getReferenceNumber(): Promise<string> {
-    const result = await fetch('https://kyc-test.soracard.com/Whitelabel/GetReferenceNumber', {
-      method: 'POST',
-      headers: {
-        Authorization:
-          'Basic NEVGMURBNEMtRjAxMS00NkMyLUI5ODAtMDZFOEY5RDc5MUE5OjUxMEEzRjVELTU5OEItNDY5MC05MTJGLTk1MzMyNDE4NTBBOQ==',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ReferenceID: Math.floor(Math.random() * 10000).toString(),
-        MobileNumber: '+79999999992',
-        Email: 'norig53938@ilusale.com',
-      }),
-    });
+  mounted(): void {
+    loadScript('https://auth-test.soracard.com/WebSDK/WebSDK.js')
+      .then(() => {
+        // @ts-expect-error no undefined
+        console.log('Paywings', Paywings);
+        // @ts-expect-error no undefined
+        this.loginApi = Paywings.UnifiedLogin.create({
+          Domain: 'soracard.com',
+          UnifiedLoginApiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
+          env: 'Test',
+          AccessTokenTypeID: 1,
+          UserTypeID: 2,
+          ClientDescription: 'Auth',
+        })
+          .on('SendOtp-Success', function (data) {
+            console.log('it was sent');
+          })
+          .on('Otp-Verification-Success', function (data) {
+            console.log('User is logged in');
+            // Tokens are stored in local storage localStorage.getItem('PW-token'); localStorage.getItem('PW-refresh-token');
+            /* Minimal registration is required */
+          });
 
-    const data = await result.json();
-    return data.ReferenceNumber;
+        console.log('this.loginApi', this.loginApi);
+      })
+      .catch(() => {
+        // Failed to fetch script
+      });
+
+    console.log('this.loginApi', this.loginApi);
   }
 }
 </script>
