@@ -196,7 +196,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   handleTabChange(name: Tabs): void {
     this.tabValue = name;
-    this.handleClearSearch();
+    this.clearAndFocusSearch();
   }
 }
 </script>
