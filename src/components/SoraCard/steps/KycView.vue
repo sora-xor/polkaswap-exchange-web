@@ -1,7 +1,7 @@
 <template>
-  <div class="sora-card">
+  <div class="sora-card sora-card-kyc-wrapper">
     <div>
-      <div class="sora-card-kyc-view">
+      <div class="sora-card-kyc-view" v-loading="loadingKycView">
         <s-scrollbar>
           <div id="kyc"></div>
           <div id="finish" style="display: none">
@@ -15,22 +15,40 @@
 
 <script lang="ts">
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
-import { v4 as uuidv4 } from 'uuid';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { v4 as uuidv4 } from 'uuid';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { clearTokensFromSessionStorage } from '@/utils';
+import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { state } from '@/store/decorators';
+import { soraCard } from '@/utils/card';
 
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
+
   @Prop({ default: '', type: String }) readonly accessToken!: string;
 
-  async getReferenceNumber(): Promise<string> {
-    const result = await fetch('https://sora-card.sc1.dev.sora2.soramitsu.co.jp/get-reference-number', {
+  loadingKycView = true;
+
+  async getReferenceNumber(URL: string): Promise<string> {
+    const token = sessionStorage.getItem('access-token');
+
+    const result = await fetch(URL, {
       method: 'POST',
       body: JSON.stringify({
         ReferenceID: uuidv4(),
+        MobileNumber: '',
+        Email: '',
+        AddressChanged: false,
+        DocumentChanged: false,
+        IbanTypeID: null,
+        CardTypeID: null,
+        AdditionalData: '',
       }),
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     const data = await result.json();
@@ -39,24 +57,26 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   async mounted(): Promise<void> {
-    const referenceNumber = await this.getReferenceNumber();
+    const { kycService, soraProxy } = soraCard(this.soraNetwork);
+
+    const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
 
     const accessToken = sessionStorage.getItem('access-token');
     const refreshToken = sessionStorage.getItem('refresh-token');
 
-    loadScript('https://kyc-test.soracard.com/web/v2/webkyc.js')
+    loadScript(kycService.sdkURL)
       .then(() => {
         // @ts-expect-error no-undef
         Paywings.WebKyc.create({
           KycCredentials: {
-            Username: 'E7A6CB83-630E-4D24-88C5-18AAF96032A4', // api username
-            Password: '75A55B7E-A18F-4498-9092-58C7D6BDB333', // api password
+            Username: kycService.username, // api username
+            Password: kycService.pass, // api password
             Domain: 'soracard.com',
-            env: 'Test', // use Test for test environment and Prod for production
-            UnifiedLoginApiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
+            env: kycService.env, // use Test for test environment and Prod for production
+            UnifiedLoginApiKey: kycService.unifiedApiKey,
           },
           KycSettings: {
-            AppReferenceID: 'random thing',
+            AppReferenceID: uuidv4(),
             Language: 'en', // supported languages 'en'
             ReferenceNumber: referenceNumber,
             ElementId: '#kyc', // id of element in which web kyc will be injected
@@ -65,6 +85,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
             WelcomeTitle: '',
             DocumentCheckWindowHeight: '50vh',
             DocumentCheckWindowWidth: '100%',
+            HideLoader: true,
           },
           KycUserData: {
             // Sample data without prefilled values
@@ -87,16 +108,14 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
           },
         })
           .on('Error', (data) => {
-            // console.log('error', data);
-
-            clearTokensFromSessionStorage();
+            console.error('[SoraCard]: Error while initiating KYC', data);
 
             this.$notify({
               message: 'Your access token has expired',
               title: '',
             });
             this.$emit('confirm-kyc', false);
-            unloadScript('https://kyc-test.soracard.com/web/v2/webkyc.js');
+            unloadScript(kycService.sdkURL);
 
             // Integrator will be notified if user cancels KYC or something went wrong
             // alert('Something went wrong ' + data.StatusDescription);
@@ -106,7 +125,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
             // alert('Kyc was successfull, integrator takes control of flow from now on')
             // console.log('success', data);
             this.$emit('confirm-kyc', true);
-            unloadScript('https://kyc-test.soracard.com/web/v2/webkyc.js');
+            unloadScript(kycService.sdkURL);
 
             // document.getElementById('kyc')!.style.display = 'none';
             // document.getElementById('finish')!.style.display = 'block';
@@ -115,39 +134,27 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
       .catch(() => {
         // Failed to fetch script
       });
+    setTimeout(() => {
+      this.loadingKycView = false;
+    }, 5000);
   }
 }
 </script>
 
-<style lang="scss" scoped>
-@import 'https://kyc-test.soracard.com/web/v2/webkyc.css';
+<style lang="scss">
+.sora-card-kyc-wrapper {
+  @import 'https://kyc-test.soracard.com/web/v2/webkyc.css';
+
+  .container {
+    padding: 0;
+  }
+}
 </style>
 
 <style lang="scss">
-#kyc {
-  // height: 300px;
-}
 .sora-card-kyc-view {
   .container {
-    // height: 400px;
     margin: 0;
-    // padding: 0;
-    background-color: transparent;
-    width: 100%;
-  }
-
-  .PW-form {
-    // height: auto;
-
-    .col-12 {
-      padding-left: 0px !important;
-      padding-right: 0px !important;
-
-      #VideoKycFrame {
-        padding-left: 15px !important;
-        padding-right: 15px !important;
-      }
-    }
   }
 
   .el-scrollbar__wrap {
@@ -155,8 +162,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 }
 
-.sumsub-logo {
-  fill: none;
-  color: white !important;
+#VideoKycFrame {
+  iframe {
+    background-color: #fff;
+  }
 }
 </style>

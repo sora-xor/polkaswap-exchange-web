@@ -42,8 +42,8 @@
             :show-tooltip="false"
             @input="handleRemovePartChange"
           />
-          <div v-if="hasLockedPart" class="input-line input-line--footer locked-part">
-            {{ t('removeLiquidity.locked', { percent: liquidityBalanceLockedPercent }) }}
+          <div v-for="{ percent, lock } in locks" :key="lock" class="input-line input-line--footer locked-part">
+            <span class="locked-part-percent">{{ percent }}</span> {{ t('removeLiquidity.locked', { lock }) }}
           </div>
         </div>
       </s-float-input>
@@ -134,7 +134,7 @@ import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { hasInsufficientXorForFee } from '@/utils';
+import { hasInsufficientXorForFee, formatDecimalPlaces } from '@/utils';
 import { getter, state, mutation, action } from '@/store/decorators';
 import { FocusedField } from '@/store/removeLiquidity/types';
 import type { LiquidityParams } from '@/store/pool/types';
@@ -170,6 +170,8 @@ export default class RemoveLiquidity extends Mixins(
   @getter.assets.xor private xor!: Nullable<AccountAsset>;
   @getter.removeLiquidity.liquidityBalanceFull private liquidityBalanceFull!: FPNumber;
   @getter.removeLiquidity.liquidityBalance private liquidityBalance!: FPNumber;
+  @getter.removeLiquidity.demeterLockedBalance private demeterLockedBalance!: FPNumber;
+  @getter.removeLiquidity.ceresLockedBalance private ceresLockedBalance!: FPNumber;
   @getter.removeLiquidity.liquidity liquidity!: AccountLiquidity;
   @getter.removeLiquidity.firstToken firstToken!: Asset;
   @getter.removeLiquidity.secondToken secondToken!: Asset;
@@ -258,18 +260,26 @@ export default class RemoveLiquidity extends Mixins(
     return this.liquidityBalance.isZero();
   }
 
-  get hasLockedPart(): boolean {
-    return FPNumber.isLessThan(this.liquidityBalance, this.liquidityBalanceFull);
-  }
+  get locks(): { percent: string; lock: string }[] {
+    return [
+      {
+        balance: this.demeterLockedBalance,
+        lock: 'Demeter Farming',
+      },
+      {
+        balance: this.ceresLockedBalance,
+        lock: 'Ceres Liquidity Locker',
+      },
+    ].reduce<{ percent: string; lock: string }[]>((buffer, { balance, lock }) => {
+      if (!balance.isZero()) {
+        buffer.push({
+          lock,
+          percent: this.getLockedPercent(balance),
+        });
+      }
 
-  get liquidityBalanceLockedPercent() {
-    return (
-      this.liquidityBalanceFull
-        .sub(this.liquidityBalance)
-        .div(this.liquidityBalanceFull)
-        .mul(FPNumber.HUNDRED)
-        .toLocaleString() + '%'
-    );
+      return buffer;
+    }, []);
   }
 
   get isInsufficientBalance(): boolean {
@@ -317,7 +327,7 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isMaxButtonAvailable(): boolean {
-    return Number(this.removePart) !== this.MAX_PART;
+    return !this.liquidityLocked && Number(this.removePart) !== this.MAX_PART;
   }
 
   handleRemovePartChange(value: string | number): void {
@@ -335,6 +345,12 @@ export default class RemoveLiquidity extends Mixins(
 
   getTokenMaxAmount(tokenBalance: FPNumber): string {
     return tokenBalance.toString();
+  }
+
+  getLockedPercent(lockedBalance: FPNumber): string {
+    const percent = lockedBalance.div(this.liquidityBalanceFull).mul(FPNumber.HUNDRED);
+
+    return formatDecimalPlaces(percent, true);
   }
 
   async handleTokenChange(value: string, setValue: (v: any) => Promise<any>): Promise<any> {
@@ -355,7 +371,7 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   async handleRemoveLiquidity(): Promise<void> {
-    if (!this.isXorSufficientForNextOperation) {
+    if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
       await this.waitOnNextTxFailureConfirmation();
       if (!this.isWarningFeeDialogConfirmed) {
@@ -399,6 +415,11 @@ export default class RemoveLiquidity extends Mixins(
 .locked-part {
   color: var(--s-color-base-content-secondary);
   text-transform: uppercase;
+  justify-content: flex-start;
+
+  &-percent {
+    width: 50px;
+  }
 }
 </style>
 
