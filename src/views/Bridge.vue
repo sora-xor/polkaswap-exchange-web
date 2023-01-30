@@ -493,7 +493,7 @@ export default class Bridge extends Mixins(
   }
 
   getBridgeItemTitle(isSoraNetwork = false): string {
-    return this.t(this.formatNetwork(isSoraNetwork));
+    return this.formatNetwork(isSoraNetwork);
   }
 
   getCopyTooltip(isSoraNetwork = false): string {

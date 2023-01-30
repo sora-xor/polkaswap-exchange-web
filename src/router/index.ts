@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import VueRouter, { NavigationGuardNext, RouteConfig } from 'vue-router';
+import VueRouter, { RouteConfig } from 'vue-router';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { api } from '@sora-substrate/util';
 
@@ -223,9 +223,6 @@ const routes: Array<RouteConfig> = [
   {
     path: '*',
     redirect: '/swap',
-    // TODO: Turn on redirect to PageNotFound
-    // name: PageNames.PageNotFound,
-    // component: lazyComponent(PageNames.PageNotFound)
   },
 ];
 

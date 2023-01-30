@@ -83,12 +83,7 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
     NotificationEnablingPage: components.NotificationEnablingPage,
   },
 })
-export default class RoadMap extends Mixins(
-  TranslationMixin,
-  mixins.LoadingMixin,
-  mixins.CameraPermissionMixin,
-  mixins.TranslationMixin
-) {
+export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.CameraPermissionMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;

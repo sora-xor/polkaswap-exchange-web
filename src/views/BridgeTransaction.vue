@@ -754,11 +754,11 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get formattedNetworkStep1(): string {
-    return this.t(this.formatNetwork(this.isSoraToEvm, true));
+    return this.formatNetwork(this.isSoraToEvm, true);
   }
 
   get formattedNetworkStep2(): string {
-    return this.t(this.formatNetwork(!this.isSoraToEvm, true));
+    return this.formatNetwork(!this.isSoraToEvm, true);
   }
 
   get comfirmationBlocksLeft(): number {
