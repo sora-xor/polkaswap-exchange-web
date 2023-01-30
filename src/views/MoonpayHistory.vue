@@ -82,7 +82,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { BridgeHistory } from '@sora-substrate/util';
 
-import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin';
+import MoonpayBridgeInitMixin from '@/components/pages/Moonpay/BridgeInitMixin';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
 
 import ethersUtil from '@/utils/ethers-util';

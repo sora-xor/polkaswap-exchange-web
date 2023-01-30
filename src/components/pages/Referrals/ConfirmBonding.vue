@@ -46,7 +46,7 @@ import { state } from '@/store/decorators';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class ConfirmBonding extends Mixins(
+export default class ReferralsConfirmBonding extends Mixins(
   mixins.TransactionMixin,
   mixins.FormattedAmountMixin,
   mixins.DialogMixin

@@ -49,9 +49,9 @@
     </div>
     <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
     <bridge-transfer-notification />
-    <mobile-popup :visible.sync="showMobilePopup" />
-    <browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
-    <browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
+    <app-mobile-popup :visible.sync="showMobilePopup" />
+    <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
+    <app-browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
@@ -69,7 +69,6 @@ import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
-import MobilePopup from '@/components/MobilePopup/MobilePopup.vue';
 
 import { PageNames, Components, Language, Links } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
@@ -86,14 +85,14 @@ import type { FeatureFlags } from '@/store/settings/types';
     SoraLogo,
     AppHeader: lazyComponent(Components.AppHeader),
     AppMenu: lazyComponent(Components.AppMenu),
+    AppMobilePopup: lazyComponent(Components.AppMobilePopup),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
+    AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),
+    AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
-    BrowserNotifsEnableDialog: lazyComponent(Components.BrowserNotifsEnableDialog),
-    BrowserNotifsBlockedDialog: lazyComponent(Components.BrowserNotifsBlockedDialog),
     NotificationEnablingPage: components.NotificationEnablingPage,
     ConfirmDialog: components.ConfirmDialog,
-    MobilePopup,
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {

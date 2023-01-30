@@ -29,7 +29,7 @@ import { getter } from '@/store/decorators';
     WalletAvatar: components.WalletAvatar,
   },
 })
-export default class AccountButton extends Mixins(TranslationMixin) {
+export default class AppAccountButton extends Mixins(TranslationMixin) {
   @getter.wallet.account.account account!: WALLET_TYPES.PolkadotJsAccount;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 

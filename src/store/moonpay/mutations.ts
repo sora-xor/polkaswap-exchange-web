@@ -1,7 +1,7 @@
 import { defineMutations } from 'direct-vuex';
 
 import type { MoonpayCurrency, MoonpayTransaction } from '@/utils/moonpay';
-import type { MoonpayNotifications } from '@/components/Moonpay/consts';
+import type { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import type { BridgeTxData, MoonpayState } from './types';
 
 const mutations = defineMutations<MoonpayState>()({

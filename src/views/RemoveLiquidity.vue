@@ -107,7 +107,7 @@
       />
     </s-form>
 
-    <confirm-remove-liquidity
+    <remove-liquidity-confirm
       :visible.sync="showConfirmDialog"
       :parent-loading="parentLoading || loading"
       @confirm="handleConfirmRemoveLiquidity"
@@ -141,11 +141,11 @@ import type { LiquidityParams } from '@/store/pool/types';
 
 @Component({
   components: {
+    RemoveLiquidityConfirm: lazyComponent(Components.RemoveLiquidityConfirm),
+    RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    ConfirmRemoveLiquidity: lazyComponent(Components.ConfirmRemoveLiquidity),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
-    RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
     TokenInput: lazyComponent(Components.TokenInput),
     InfoLine: components.InfoLine,
   },

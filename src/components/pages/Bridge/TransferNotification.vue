@@ -41,7 +41,7 @@ import type { Whitelist } from '@sora-substrate/util/build/assets/types';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class TransferNotification extends Mixins(TranslationMixin) {
+export default class BridgeTransferNotification extends Mixins(TranslationMixin) {
   @state.bridge.notificationData private tx!: Nullable<BridgeHistory>;
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;

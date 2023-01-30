@@ -48,9 +48,9 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
-import BaseTokenPairMixin from '../mixins/BaseTokenPairMixin';
-import TranslationMixin from '../mixins/TranslationMixin';
-import PoolApyMixin from '../mixins/PoolApyMixin';
+import BaseTokenPairMixin from '@/components/mixins/BaseTokenPairMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';

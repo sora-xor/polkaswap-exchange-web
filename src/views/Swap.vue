@@ -3,7 +3,7 @@
     <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
       <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
         <div class="swap-settings-buttons">
-          <status-action-badge>
+          <swap-status-action-badge>
             <template #label>{{ t('marketText') }}:</template>
             <template #value>{{ swapMarketAlgorithm }}</template>
             <template #action>
@@ -14,7 +14,7 @@
                 @click="openSettingsDialog"
               />
             </template>
-          </status-action-badge>
+          </swap-status-action-badge>
 
           <svg-icon-button
             v-if="chartsFlagEnabled"
@@ -185,7 +185,7 @@ import { action, getter, mutation, state } from '@/store/decorators';
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     SelectToken: lazyComponent(Components.SelectToken),
     SwapConfirm: lazyComponent(Components.SwapConfirm),
-    StatusActionBadge: lazyComponent(Components.StatusActionBadge),
+    SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
     TokenInput: lazyComponent(Components.TokenInput),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),

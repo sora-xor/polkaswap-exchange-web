@@ -27,7 +27,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class RewardItemTooltip extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+export default class RewardsItemTooltip extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
   @Prop({ required: true, type: String }) readonly value!: string;

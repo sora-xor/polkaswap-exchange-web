@@ -27,7 +27,7 @@
                     "
                     :fiat-font-size-rate="FontSizeRate.MEDIUM"
                   >
-                    <reward-item-tooltip
+                    <rewards-item-tooltip
                       v-if="formatted.total && index === 0"
                       :value="formatted.total.amount"
                       :asset="formatted.total.asset"
@@ -66,7 +66,11 @@
                         :fiat-value="getFiatAmountByCodecString(limitItem.amount, limitItem.asset)"
                         :fiat-font-size-rate="FontSizeRate.MEDIUM"
                       >
-                        <reward-item-tooltip v-if="limitItem.total" :value="limitItem.total" :asset="limitItem.asset" />
+                        <rewards-item-tooltip
+                          v-if="limitItem.total"
+                          :value="limitItem.total"
+                          :asset="limitItem.asset"
+                        />
                       </formatted-amount-with-fiat-value>
                     </div>
                   </template>
@@ -102,7 +106,7 @@ import { Components } from '@/consts';
     RewardItemTooltip: lazyComponent(Components.RewardItemTooltip),
   },
 })
-export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
   @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo;

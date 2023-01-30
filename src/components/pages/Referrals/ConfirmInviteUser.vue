@@ -35,7 +35,7 @@ import { state, mutation } from '@/store/decorators';
 @Component({
   components: { DialogBase: components.DialogBase },
 })
-export default class ConfirmInviteUser extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
+export default class ReferralsConfirmInviteUser extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
   @state.referrals.referrer private referrer!: string;
   @state.referrals.storageReferrer private storageReferrer!: string;
 

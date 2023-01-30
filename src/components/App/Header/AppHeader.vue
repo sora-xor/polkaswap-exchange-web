@@ -18,7 +18,7 @@
       <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
         <token-logo class="node-control__logo token-logo" v-bind="nodeLogo" />
       </s-button>
-      <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
+      <app-account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
       <app-header-menu />
     </div>
 
@@ -51,7 +51,7 @@ import { getter, mutation } from '@/store/decorators';
   components: {
     WalletAvatar: components.WalletAvatar,
     PolkaswapLogo,
-    AccountButton: lazyComponent(Components.AccountButton),
+    AppAccountButton: lazyComponent(Components.AppAccountButton),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     AppHeaderMenu: lazyComponent(Components.AppHeaderMenu),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),

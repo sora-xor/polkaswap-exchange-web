@@ -6,7 +6,7 @@ import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import ethersUtil from '@/utils/ethers-util';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
-import { MoonpayNotifications } from '@/components/Moonpay/consts';
+import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import { state, action, mutation, getter } from '@/store/decorators';
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';

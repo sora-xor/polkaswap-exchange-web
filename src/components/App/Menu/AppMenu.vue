@@ -23,7 +23,7 @@
               tabindex="0"
               class="menu-item"
             >
-              <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
+              <app-sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
             </s-menu-item>
           </s-menu-item-group>
         </s-menu>
@@ -37,7 +37,7 @@
           active-text-color="var(--s-color-base-content-tertiary)"
           active-hover-color="transparent"
         >
-          <sidebar-item-content
+          <app-sidebar-item-content
             v-if="false"
             v-button
             icon="star-16"
@@ -48,7 +48,7 @@
             rel="nofollow noopener"
             class="el-menu-item menu-item--small marketing"
           />
-          <sidebar-item-content
+          <app-sidebar-item-content
             v-button
             icon="symbols-24"
             :title="t('mobilePopup.sideMenu')"
@@ -57,7 +57,7 @@
             @click.native="openSoraDownloadDialog"
           />
           <app-info-popper>
-            <sidebar-item-content
+            <app-sidebar-item-content
               v-button
               icon="info-16"
               :title="t('footerMenu.info')"
@@ -65,7 +65,7 @@
               tabindex="0"
             />
           </app-info-popper>
-          <sidebar-item-content
+          <app-sidebar-item-content
             v-if="faucetUrl"
             :icon="FaucetLink.icon"
             :title="t(`footerMenu.${FaucetLink.title}`)"
@@ -106,7 +106,7 @@ import { getter, state } from '@/store/decorators';
 @Component({
   components: {
     AppInfoPopper: lazyComponent(Components.AppInfoPopper),
-    SidebarItemContent: lazyComponent(Components.SidebarItemContent),
+    AppSidebarItemContent: lazyComponent(Components.AppSidebarItemContent),
   },
 })
 export default class AppMenu extends Mixins(TranslationMixin) {

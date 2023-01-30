@@ -27,7 +27,7 @@ import { RewardsAmountHeaderItem } from '@/types/rewards';
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class AmountHeader extends Mixins(mixins.FormattedAmountMixin, mixins.NumberFormatterMixin) {
+export default class RewardsAmountHeader extends Mixins(mixins.FormattedAmountMixin, mixins.NumberFormatterMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
   @Prop({ default: () => [], type: Array }) items!: Array<RewardsAmountHeaderItem>;

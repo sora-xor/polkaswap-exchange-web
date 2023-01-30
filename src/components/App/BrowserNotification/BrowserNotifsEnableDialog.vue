@@ -29,7 +29,7 @@ import { state, mutation } from '@/store/decorators';
     DialogBase: components.DialogBase,
   },
 })
-export default class BrowserNotifsEnableDialog extends Mixins(
+export default class AppBrowserNotifsEnableDialog extends Mixins(
   TranslationMixin,
   mixins.LoadingMixin,
   mixins.DialogMixin

@@ -9,7 +9,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import type { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
 @Component
-export default class GradientBox extends Vue {
+export default class RewardsGradientBox extends Vue {
   @Prop({ default: '', type: String }) symbol!: KnownSymbols;
 
   get symbolClass(): string {

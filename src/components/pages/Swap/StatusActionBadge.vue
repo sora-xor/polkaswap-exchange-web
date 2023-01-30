@@ -10,7 +10,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class StatusActionBadge extends Vue {}
+export default class SwapStatusActionBadge extends Vue {}
 </script>
 
 <style lang="scss">

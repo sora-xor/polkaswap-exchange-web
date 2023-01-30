@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import TranslationMixin from './mixins/TranslationMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SideMenuCard from '@/assets/img/sora-card/sidebar.svg?inline';
 // const SideMenuCard = () => import(`@/assets/img/sora-card/sidebar.svg?inline`);
 
@@ -22,7 +22,7 @@ import SideMenuCard from '@/assets/img/sora-card/sidebar.svg?inline';
     SideMenuCard,
   },
 })
-export default class SidebarItemContent extends Mixins(TranslationMixin) {
+export default class AppSidebarItemContent extends Mixins(TranslationMixin) {
   @Prop({ default: '', type: String }) readonly icon!: string;
   @Prop({ default: '', type: String }) readonly title!: string;
   @Prop({ default: 'div', type: String }) readonly tag!: string;

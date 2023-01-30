@@ -1,10 +1,10 @@
 <template>
   <div class="stats-container">
-    <network-stats class="grid-item" />
+    <stats-network-stats class="grid-item" />
 
-    <network-tvl-chart class="grid-item grid-item--50" />
+    <stats-tvl-chart class="grid-item grid-item--50" />
 
-    <network-volume-chart class="grid-item grid-item--50" />
+    <stats-volume-chart class="grid-item grid-item--50" />
   </div>
 </template>
 
@@ -16,9 +16,9 @@ import { Components } from '@/consts';
 
 @Component({
   components: {
-    NetworkStats: lazyComponent(Components.NetworkStats),
-    NetworkTvlChart: lazyComponent(Components.NetworkTvlChart),
-    NetworkVolumeChart: lazyComponent(Components.NetworkVolumeChart),
+    StatsNetworkStats: lazyComponent(Components.StatsNetworkStats),
+    StatsTvlChart: lazyComponent(Components.StatsTvlChart),
+    StatsVolumeChart: lazyComponent(Components.StatsVolumeChart),
   },
 })
 export default class Stats extends Mixins() {}

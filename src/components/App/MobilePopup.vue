@@ -38,7 +38,7 @@ import QrCode from '../../assets/img/mobile/qr-code.svg?inline';
     QrCode,
   },
 })
-export default class MobilePopup extends Mixins(mixins.DialogMixin, TranslationMixin) {
+export default class AppMobilePopup extends Mixins(mixins.DialogMixin, TranslationMixin) {
   @Prop({ type: String }) readonly fee!: string;
 
   StoreLinks = StoreLinks;

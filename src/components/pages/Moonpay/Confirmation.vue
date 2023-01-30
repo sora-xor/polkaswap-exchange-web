@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 
-import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin';
+import MoonpayBridgeInitMixin from '@/components/pages/Moonpay/BridgeInitMixin';
 import MoonpayLogo from '@/components/logo/Moonpay.vue';
 
 import { lazyComponent } from '@/router';

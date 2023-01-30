@@ -9,7 +9,7 @@
       @bridge="handleBridge"
       @learn-more="openAboutNetworkDialog"
     />
-    <about-network-dialog :visible.sync="showAboutNetworkDialog" />
+    <wallet-about-network-dialog :visible.sync="showAboutNetworkDialog" />
   </div>
 </template>
 
@@ -27,7 +27,7 @@ import { action, getter } from '@/store/decorators';
 
 @Component({
   components: {
-    AboutNetworkDialog: lazyComponent(Components.AboutNetworkDialog),
+    WalletAboutNetworkDialog: lazyComponent(Components.WalletAboutNetworkDialog),
   },
 })
 export default class Wallet extends Mixins(TranslationMixin) {

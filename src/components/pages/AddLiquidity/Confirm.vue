@@ -73,7 +73,7 @@ import { AccountAsset } from '@sora-substrate/util/build/assets/types';
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
   },
 })
-export default class ConfirmTokenPairDialog extends Mixins(
+export default class ConfirmAddLiquidity extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.LoadingMixin,
   mixins.DialogMixin,
