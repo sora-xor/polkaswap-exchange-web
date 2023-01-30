@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { defineActions } from 'direct-vuex';
 import { routeAssetsActionContext } from '@/store/routeAssets';
 import Papa from 'papaparse';
@@ -12,7 +13,7 @@ import type { DexQuoteData } from '@/store/swap/types';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import type { QuotePayload, SwapResult } from '@sora-substrate/liquidity-proxy/build/types';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { groupBy } from 'lodash';
+import { groupBy, sumBy } from 'lodash';
 import { NumberLike } from '@sora-substrate/math';
 import { Messages } from '@sora-substrate/util/build/logger';
 import { assert } from '@polkadot/util';
@@ -360,6 +361,7 @@ function getTransferParams(context, inputAsset, recipient) {
           address: recipient.wallet,
           targetAmount: tokenEquivalent,
           asset: recipient.asset,
+          dexId: bestDexId,
         },
         recipient,
         assetAddress: recipient.asset.address,
@@ -420,22 +422,34 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
         accountId: item.swapAndSendData.address,
         targetAmount,
         recipientId: item.recipient.id,
+        targetAmountNum: Number(item.swapAndSendData.targetAmount),
+        dexId: item.swapAndSendData.dexId,
       };
     });
     const maxInputAmount = getAssetBalance(inputAsset);
     const outputAsset = recipients[0].swapAndSendData.asset;
-    return { recievers, params: calcTxParams(inputAsset, outputAsset, maxInputAmount, undefined, true) };
+    if (!api.assets.getAsset(outputAsset.address)) {
+      api.assets.addAccountAsset(outputAsset.address);
+    }
+    const dexId = recievers[0].dexId;
+    const options = {
+      approxSum: sumBy(recievers, (item: any) => item.targetAmountNum),
+      outputAsset,
+    };
+    return {
+      recievers,
+      params: calcTxParams(inputAsset, outputAsset, maxInputAmount, undefined, dexId),
+      options,
+    };
   });
-  // if (!this.root.assets.getAsset(assetB.address)) {
-  //   this.root.assets.addAccountAsset(assetB.address);
-  // }
 
   // const formattedToAddress = receiver.slice(0, 2) === 'cn' ? receiver : this.root.formatAddress(receiver);
 
   async function processArray(transactions) {
     for (const tx of transactions) {
       try {
-        const { params } = tx;
+        const { params, options } = tx;
+        console.dir(tx);
         await api
           .submitExtrinsic(
             (api.api.tx.liquidityProxy as any).swapTransferBatch(tx.recievers, ...params.args),
@@ -443,7 +457,10 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
             {
               symbol: inputAsset.symbol,
               assetAddress: inputAsset.address,
-              type: Operation.SwapAndSend,
+              amount: `${options.approxSum.toFixed(6)}`,
+              symbol2: options.outputAsset.symbol,
+              asset2Address: options.outputAsset.address,
+              type: Operation.Swap,
             }
           )
           .then(() => {
@@ -455,7 +472,8 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
               commit.setRecipientCompleted(reciever.recipientId);
             });
           })
-          .catch(() => {
+          .catch((err) => {
+            console.dir(err);
             tx.recievers.forEach((reciever) => {
               commit.setRecipientStatus({
                 id: reciever.recipientId,
@@ -464,6 +482,7 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
             });
           });
       } catch (err) {
+        console.dir(err);
         tx.recievers.forEach((reciever) => {
           commit.setRecipientStatus({
             id: reciever.recipientId,
@@ -484,6 +503,7 @@ async function executeTransfer(context, data: Array<any>): Promise<any> {
     .submitExtrinsic(api.api.tx.utility.batchAll(data.map((item) => item.transfer.extrinsic)), api.account.pair, {
       symbol: data[0].recipient.asset.symbol,
       from: api.account.pair.address,
+      to: api.account.pair.address,
       assetAddress: data[0].recipient.asset.symbol,
       type: Operation.Transfer,
     })
@@ -507,43 +527,66 @@ async function executeTransfer(context, data: Array<any>): Promise<any> {
     });
 }
 
+// function calcTxParams(
+//   assetA: Asset | AccountAsset,
+//   assetB: Asset | AccountAsset,
+//   // amountA: NumberLike,
+//   amountB: NumberLike,
+//   slippageTolerance: NumberLike = api.defaultSlippageTolerancePercent,
+//   isExchangeB = false,
+//   liquiditySource = LiquiditySourceTypes.Default,
+//   dexId = DexId.XOR
+// ) {
+//   assert(api.account, Messages.connectWallet);
+//   const desiredDecimals = (!isExchangeB ? assetA : assetB).decimals;
+//   const resultDecimals = (!isExchangeB ? assetB : assetA).decimals;
+//   const desiredCodecString = new FPNumber(amountB, desiredDecimals).toCodecString();
+//   const result = new FPNumber(amountB, desiredDecimals);
+//   const resultMulSlippage = result.mul(new FPNumber(Number(slippageTolerance) / 100));
+//   const liquiditySources = liquiditySource ? [liquiditySource] : [];
+//   const params = {} as any;
+//   if (!isExchangeB) {
+//     params.WithDesiredInput = {
+//       desiredAmountIn: desiredCodecString,
+//       minAmountOut: result.sub(resultMulSlippage).toCodecString(),
+//     };
+//   } else {
+//     params.WithDesiredOutput = {
+//       desiredAmountOut: desiredCodecString,
+//       maxAmountIn: result.add(resultMulSlippage).toCodecString(),
+//     };
+//   }
+//   return {
+//     args: [
+//       dexId,
+//       assetA.address,
+//       assetB.address,
+//       // params,
+//       // result.toCodecString(),
+//       FPNumber.fromCodecValue(amountB, assetA.decimals).toCodecString(),
+//       liquiditySources,
+//       liquiditySource === LiquiditySourceTypes.Default ? 'Disabled' : 'AllowSelected',
+//     ],
+//   };
+// }
+
 function calcTxParams(
-  assetA: Asset | AccountAsset,
-  assetB: Asset | AccountAsset,
-  // amountA: NumberLike,
-  amountB: NumberLike,
-  slippageTolerance: NumberLike = api.defaultSlippageTolerancePercent,
-  isExchangeB = false,
+  assetFrom: Asset | AccountAsset,
+  assetTo: Asset | AccountAsset,
+  maxAmount: NumberLike,
   liquiditySource = LiquiditySourceTypes.Default,
   dexId = DexId.XOR
 ) {
   assert(api.account, Messages.connectWallet);
-  const desiredDecimals = (!isExchangeB ? assetA : assetB).decimals;
-  const resultDecimals = (!isExchangeB ? assetB : assetA).decimals;
-  const desiredCodecString = new FPNumber(amountB, desiredDecimals).toCodecString();
-  const result = new FPNumber(amountB, desiredDecimals);
-  const resultMulSlippage = result.mul(new FPNumber(Number(slippageTolerance) / 100));
+  const decimals = assetTo.decimals;
+  const amount = FPNumber.fromCodecValue(maxAmount, decimals).toCodecString();
   const liquiditySources = liquiditySource ? [liquiditySource] : [];
-  const params = {} as any;
-  if (!isExchangeB) {
-    params.WithDesiredInput = {
-      desiredAmountIn: desiredCodecString,
-      minAmountOut: result.sub(resultMulSlippage).toCodecString(),
-    };
-  } else {
-    params.WithDesiredOutput = {
-      desiredAmountOut: desiredCodecString,
-      maxAmountIn: result.add(resultMulSlippage).toCodecString(),
-    };
-  }
   return {
     args: [
       dexId,
-      assetA.address,
-      assetB.address,
-      // params,
-      // result.toCodecString(),
-      FPNumber.fromCodecValue(amountB, assetB.decimals).toCodecString(),
+      assetFrom.address,
+      assetTo.address,
+      amount,
       liquiditySources,
       liquiditySource === LiquiditySourceTypes.Default ? 'Disabled' : 'AllowSelected',
     ],
