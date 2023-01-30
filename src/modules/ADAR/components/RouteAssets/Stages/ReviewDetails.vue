@@ -108,7 +108,7 @@ import { lazyComponent } from '@/router';
 import { adarLazyComponent } from '@/modules/ADAR/router';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
-import { components, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { groupBy, sumBy } from 'lodash';
 import { Recipient } from '@/store/routeAssets/types';
 import { CodecString, FPNumber } from '@sora-substrate/util/build';
@@ -123,7 +123,7 @@ import WarningMessage from '../WarningMessage.vue';
     SelectInputAssetDialog: adarLazyComponent(AdarComponents.RouteAssetsSelectInputAssetDialog),
   },
 })
-export default class ReviewDetails extends Mixins(TranslationMixin) {
+export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   @getter.routeAssets.inputToken inputToken!: Asset;
   @action.routeAssets.processingNextStage nextStage!: () => void;
   @getter.routeAssets.recipients private recipients!: Array<Recipient>;
