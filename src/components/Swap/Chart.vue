@@ -60,8 +60,6 @@
 </template>
 
 <script lang="ts">
-import dayjs from 'dayjs';
-import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
@@ -69,8 +67,7 @@ import { FPNumber } from '@sora-substrate/util';
 
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import ChartSpecMixin from '@/components/Chart/SpecMixin';
 
 import { SvgIcons } from '@/components/Button/SvgIconButton/icons';
 import { lazyComponent } from '@/router';
@@ -281,8 +278,7 @@ const getPrecision = (value: number): number => {
   },
 })
 export default class SwapChart extends Mixins(
-  TranslationMixin,
-  ThemePaletteMixin,
+  ChartSpecMixin,
   mixins.LoadingMixin,
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin
@@ -457,45 +453,6 @@ export default class SwapChart extends Mixins(
     return Object.freeze(groups);
   }
 
-  get chartOptionSeries() {
-    return this.isLineChart
-      ? [
-          {
-            type: 'line',
-            encode: {
-              y: 'close',
-            },
-            showSymbol: false,
-            areaStyle: {
-              opacity: 0.8,
-              color: new graphic.LinearGradient(0, 0, 0, 1, [
-                {
-                  offset: 0,
-                  color: 'rgba(248, 8, 123, 0.25)',
-                },
-                {
-                  offset: 1,
-                  color: 'rgba(255, 49, 148, 0.03)',
-                },
-              ]),
-            },
-          },
-        ]
-      : [
-          {
-            type: 'candlestick',
-            barMaxWidth: 10,
-            itemStyle: {
-              color: this.theme.color.status.success,
-              borderColor: this.theme.color.status.success,
-              color0: this.theme.color.theme.accentHover,
-              borderColor0: this.theme.color.theme.accentHover,
-              borderWidth: 2,
-            },
-          },
-        ];
-  }
-
   get chartSpec() {
     return {
       dataset: {
@@ -509,60 +466,7 @@ export default class SwapChart extends Mixins(
         top: 20,
       },
       xAxis: {
-        offset: AXIS_OFFSET,
-        type: 'time',
-        axisTick: {
-          show: false,
-        },
-        axisLine: {
-          show: false,
-        },
-        axisLabel: {
-          formatter: (value) => {
-            const date = dayjs(+value);
-            const isNewDay = date.hour() === 0 && date.minute() === 0;
-            const isNewMonth = date.date() === 1 && isNewDay;
-            // TODO: "LT" formatted labels (hours) sometimes overlaps (AM\PM issue)
-            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'HH:mm';
-            const formatted = this.formatDate(+value, timeFormat);
-
-            if (isNewMonth) {
-              return `{monthStyle|${formatted.charAt(0).toUpperCase() + formatted.slice(1)}}`;
-            }
-            if (isNewDay) {
-              return `{dateStyle|${formatted}}`;
-            }
-
-            return formatted;
-          },
-          rich: {
-            monthStyle: {
-              fontSize: 10,
-              fontWeight: 'bold',
-            },
-            dateStyle: {
-              fontSize: 10,
-              fontWeight: 'bold',
-            },
-          },
-          color: this.theme.color.base.content.secondary,
-          ...AXIS_LABEL_CSS,
-        },
-        axisPointer: {
-          lineStyle: {
-            color: this.theme.color.status.success,
-          },
-          label: {
-            backgroundColor: this.theme.color.status.success,
-            color: this.theme.color.base.onAccent,
-            fontSize: 11,
-            fontWeight: 400,
-            lineHeigth: 1.5,
-            formatter: ({ value }) => {
-              return this.formatDate(+value, 'LLL'); // locale format
-            },
-          },
-        },
+        ...this.xAxisSpec(),
         boundaryGap: this.isLineChart ? false : [0.005, 0.005],
       },
       yAxis: {
@@ -611,20 +515,7 @@ export default class SwapChart extends Mixins(
       ],
       color: [this.theme.color.theme.accent, this.theme.color.status.success],
       tooltip: {
-        show: true,
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-        },
-        backgroundColor: this.theme.color.utility.body,
-        borderColor: this.theme.color.base.border.secondary,
-        extraCssText: `box-shadow: ${this.theme.shadow.dialog}; border-radius: ${this.theme.border.radius.mini}`,
-        textStyle: {
-          color: this.theme.color.base.content.secondary,
-          fontSize: 11,
-          fontFamily: 'Sora',
-          fontWeight: 400,
-        },
+        ...this.tooltipSpec(),
         formatter: (params) => {
           const { data, seriesType } = params[0];
           const [timestamp, open, close, low, high] = data;
@@ -663,7 +554,7 @@ export default class SwapChart extends Mixins(
           }
         },
       },
-      series: this.chartOptionSeries,
+      series: [this.isLineChart ? this.lineSeriesSpec('close') : this.candlestickSeriesSpec()],
     };
   }
 

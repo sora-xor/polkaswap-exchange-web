@@ -24,16 +24,14 @@
 </template>
 
 <script lang="ts">
-import dayjs from 'dayjs';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
-import { graphic } from 'echarts';
 import { gql } from '@urql/core';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
 
-import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
+import ChartSpecMixin from '@/components/Chart/SpecMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -70,12 +68,6 @@ const NetworkVolumeQuery = gql`
 `;
 
 const AXIS_OFFSET = 8;
-const AXIS_LABEL_CSS = {
-  fontFamily: 'Sora',
-  fontSize: 10,
-  fontWeight: 300,
-  lineHeigth: 1.5,
-};
 
 @Component({
   components: {
@@ -86,7 +78,7 @@ const AXIS_LABEL_CSS = {
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class TvlChart extends Mixins(mixins.LoadingMixin, mixins.TranslationMixin, ThemePaletteMixin) {
+export default class TvlChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
   readonly filters = NETWORK_STATS_FILTERS;
@@ -129,97 +121,21 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, mixins.Transla
         bottom: 20 + AXIS_OFFSET,
       },
       xAxis: {
-        offset: AXIS_OFFSET,
-        type: 'time',
-        axisTick: {
-          show: false,
-        },
-        axisLine: {
-          show: false,
-        },
-        axisLabel: {
-          formatter: (value) => {
-            const date = dayjs(+value);
-            const isNewDay = date.hour() === 0 && date.minute() === 0;
-            const isNewMonth = date.date() === 1 && isNewDay;
-            // TODO: "LT" formatted labels (hours) sometimes overlaps (AM\PM issue)
-            const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'HH:mm';
-            const formatted = this.formatDate(+value, timeFormat);
-
-            if (isNewMonth) {
-              return `{monthStyle|${formatted.charAt(0).toUpperCase() + formatted.slice(1)}}`;
-            }
-            if (isNewDay) {
-              return `{dateStyle|${formatted}}`;
-            }
-
-            return formatted;
-          },
-          rich: {
-            monthStyle: {
-              fontSize: 10,
-              fontWeight: 'bold',
-            },
-            dateStyle: {
-              fontSize: 10,
-              fontWeight: 'bold',
-            },
-          },
-          color: this.theme.color.base.content.secondary,
-          ...AXIS_LABEL_CSS,
-        },
-        axisPointer: {
-          lineStyle: {
-            color: this.theme.color.status.success,
-          },
-          label: {
-            show: true,
-            backgroundColor: this.theme.color.status.success,
-            color: this.theme.color.base.onAccent,
-            fontSize: 11,
-            fontWeight: 400,
-            lineHeigth: 1.5,
-            formatter: ({ value }) => {
-              return this.formatDate(+value, 'LLL'); // locale format
-            },
-          },
-        },
-        boundaryGap: false,
+        ...this.xAxisSpec(),
       },
       yAxis: {
         show: false,
         type: 'value',
       },
       tooltip: {
-        show: true,
-        trigger: 'axis',
-        backgroundColor: this.theme.color.utility.body,
-        borderColor: this.theme.color.base.border.secondary,
-        extraCssText: `box-shadow: ${this.theme.shadow.dialog}; border-radius: ${this.theme.border.radius.mini}`,
-        textStyle: {
-          color: this.theme.color.base.content.secondary,
-          fontSize: 11,
-          fontFamily: 'Sora',
-          fontWeight: 400,
-        },
+        ...this.tooltipSpec(),
         formatter: (params) => {
           const { data } = params[0];
           const [timestamp, value] = data;
           return `$ ${new FPNumber(value).toLocaleString()}`;
         },
       },
-      series: [
-        {
-          type: 'bar',
-          encode: {
-            y: 'value',
-          },
-          showSymbol: false,
-          itemStyle: {
-            color: this.theme.color.theme.accent,
-          },
-        },
-      ],
+      series: [this.barSeriesSpec('value')],
     };
   }
 
@@ -229,7 +145,7 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, mixins.Transla
   }
 
   private async updateData(): Promise<void> {
-    await this.withLoading(async () => {
+    await this.withApi(async () => {
       try {
         const { type, count } = this.filter;
         const seconds = SECONDS_IN_TYPE[type];

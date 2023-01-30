@@ -157,7 +157,7 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
   }
 
   private async updateData(): Promise<void> {
-    await this.withLoading(async () => {
+    await this.withApi(async () => {
       const { type, count } = this.filter;
       const seconds = SECONDS_IN_TYPE[type];
       const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
@@ -173,6 +173,7 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
 
   private async fetchData(from: number, to: number, type: SnapshotTypes): Promise<NetworkSnapshot[]> {
     try {
+      console.log('fetchData');
       const response = await SubqueryExplorerService.request(StatsQuery, { from, to, type });
 
       if (!response || !response.networkSnapshots) return [];
