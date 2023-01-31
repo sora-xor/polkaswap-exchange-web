@@ -1,11 +1,11 @@
 <template>
   <div class="market-algorithm">
-    <settings-header :title="t('dexSettings.marketAlgorithm')">
+    <swap-settings-header :title="t('dexSettings.marketAlgorithm')">
       <div slot="tooltip-content">
         <strong>{{ t('marketAlgorithmText') }}</strong>
         <span>{{ t('dexSettings.marketAlgorithmTooltip.main') }}</span>
       </div>
-    </settings-header>
+    </swap-settings-header>
     <settings-tabs :value="currentMarketAlgorithm" :tabs="marketAlgorithmTabs" @input="selectTab" />
   </div>
 </template>
@@ -23,11 +23,11 @@ import type { TabItem } from '@/types/tabs';
 
 @Component({
   components: {
-    SettingsHeader: lazyComponent(Components.SettingsHeader),
+    SwapSettingsHeader: lazyComponent(Components.SwapSettingsHeader),
     SettingsTabs: lazyComponent(Components.SettingsTabs),
   },
 })
-export default class MarketAlgorithm extends Mixins(TranslationMixin) {
+export default class SwapMarketAlgorithm extends Mixins(TranslationMixin) {
   @state.settings.marketAlgorithm marketAlgorithm!: MarketAlgorithms;
   @getter.swap.marketAlgorithms private marketAlgorithms!: Array<MarketAlgorithms>;
   @getter.swap.marketAlgorithmsAvailable marketAlgorithmsAvailable!: boolean;

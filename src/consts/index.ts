@@ -151,6 +151,10 @@ export enum Components {
   AppInfoPopper = 'App/Menu/AppInfoPopper',
   AppBrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
   AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
+  SelectNodeDialog = 'App/Settings/Node/SelectNodeDialog',
+  SelectNode = 'App/Settings/Node/SelectNode',
+  NodeInfo = 'App/Settings/Node/NodeInfo',
+  SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
   // other
   SoraCard = 'SoraCard',
   SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
@@ -160,18 +164,7 @@ export enum Components {
   ToSDialog = 'SoraCard/steps/ToSDialog',
   RoadMap = 'SoraCard/steps/RoadMap',
   KycView = 'SoraCard/steps/KycView',
-  SettingsHeader = 'Settings/Header',
-  SettingsTabs = 'Settings/Tabs',
-  SlippageTolerance = 'Settings/SlippageTolerance',
-  MarketAlgorithm = 'Settings/MarketAlgorithm',
-  SelectNode = 'Settings/Node/SelectNode',
-  NodeInfo = 'Settings/Node/NodeInfo',
-  SelectNodeDialog = 'SelectNodeDialog',
   // HelpDialog = 'HelpDialog',
-  NetworkFeeWarningDialog = 'NetworkFeeWarningDialog',
-  SelectLanguageDialog = 'SelectLanguageDialog',
-  SelectAssetList = 'SelectAsset/List',
-  SelectToken = 'SelectAsset/SelectToken',
   // Paywings
   X1Dialog = 'X1/X1Dialog',
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
@@ -201,7 +194,9 @@ export enum Components {
   SwapChart = 'pages/Swap/Chart',
   SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',
-  SwapSettings = 'pages/Swap/Settings',
+  SwapSettings = 'pages/Swap/Settings/Settings',
+  SwapSettingsHeader = 'pages/Swap/Settings/Header',
+  SwapMarketAlgorithm = 'pages/Swap/Settings/MarketAlgorithm',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
@@ -220,7 +215,6 @@ export enum Components {
   PairTokenLogo = 'shared/PairTokenLogo',
   PriceChange = 'shared/PriceChange',
   ValueStatusWrapper = 'shared/ValueStatusWrapper',
-  ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
   TransactionDetails = 'shared/TransactionDetails',
   PoolInfo = 'shared/PoolInfo',
   // Shared Buttons
@@ -229,6 +223,15 @@ export enum Components {
   // Shared Input
   TokenInput = 'shared/Input/TokenInput',
   TokenSelectButton = 'shared/Input/TokenSelectButton',
+  // Shared Dialogs
+  ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
+  NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',
+  // Shared Asset selection
+  SelectAssetList = 'shared/SelectAsset/List',
+  SelectToken = 'shared/SelectAsset/SelectToken',
+  // Shared Settings
+  SettingsTabs = 'shared/Settings/Tabs',
+  SlippageTolerance = 'shared/Settings/SlippageTolerance',
   // Shared Stats
   StatsCard = 'shared/Stats/StatsCard',
   StatsFilter = 'shared/Stats/StatsFilter',
