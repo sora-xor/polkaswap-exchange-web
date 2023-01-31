@@ -33,7 +33,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
@@ -48,7 +48,7 @@ import { state, getter } from '@/store/decorators';
     SearchInput: components.SearchInput,
   },
 })
-export default class SelectRegisteredAsset extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
+export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
   @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;

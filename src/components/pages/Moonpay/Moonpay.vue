@@ -13,7 +13,7 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
-import MoonpayLogo from '@/components/logo/Moonpay.vue';
+import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 import MoonpayBridgeInitMixin from './MoonpayBridgeInitMixin';
 
 import { getCssVariableValue } from '@/utils';

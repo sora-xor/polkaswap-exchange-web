@@ -287,12 +287,12 @@ import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecima
 
 @Component({
   components: {
+    BridgeSelectAsset: lazyComponent(Components.BridgeSelectAsset),
+    BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
+    BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    SelectNetwork: lazyComponent(Components.SelectNetwork),
-    SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
-    BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,

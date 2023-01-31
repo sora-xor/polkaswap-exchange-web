@@ -14,7 +14,7 @@ const AXIS_LABEL_CSS = {
 };
 
 @Component
-export default class SpecMixin extends Mixins(ThemePaletteMixin, mixins.TranslationMixin) {
+export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, mixins.TranslationMixin) {
   xAxisSpec() {
     return {
       type: 'time',

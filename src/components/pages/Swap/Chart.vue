@@ -67,7 +67,7 @@ import { FPNumber } from '@sora-substrate/util';
 
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import ChartSpecMixin from '@/components/Chart/SpecMixin';
+import ChartSpecMixin from '@/components/shared/Chart/SpecMixin';
 
 import { SvgIcons } from '@/components/Button/SvgIconButton/icons';
 import { lazyComponent } from '@/router';

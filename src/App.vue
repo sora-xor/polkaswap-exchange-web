@@ -68,7 +68,7 @@ import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
-import SoraLogo from '@/components/logo/Sora.vue';
+import SoraLogo from '@/components/shared/Logo/Sora.vue';
 
 import { PageNames, Components, Language, Links } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';

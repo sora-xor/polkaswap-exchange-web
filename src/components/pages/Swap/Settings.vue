@@ -18,7 +18,7 @@ import { Components } from '@/consts';
     MarketAlgorithm: lazyComponent(Components.MarketAlgorithm),
   },
 })
-export default class SettingsDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {}
+export default class SwapSettings extends Mixins(TranslationMixin, mixins.DialogMixin) {}
 </script>
 
 <style lang="scss">

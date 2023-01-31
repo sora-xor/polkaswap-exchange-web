@@ -18,7 +18,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 
-import MoonpayLogo from '@/components/logo/Moonpay.vue';
+import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 
 import { mutation, state, getter } from '@/store/decorators';
 import { Components } from '@/consts';

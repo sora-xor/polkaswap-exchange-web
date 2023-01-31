@@ -31,7 +31,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
 
-import ChartSpecMixin from '@/components/Chart/SpecMixin';
+import ChartSpecMixin from '@/components/shared/Chart/SpecMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';

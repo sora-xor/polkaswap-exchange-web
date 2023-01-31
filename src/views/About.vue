@@ -157,7 +157,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import Web3Logo from '@/components/logo/Web3.vue';
+import Web3Logo from '@/components/shared/Logo/Web3.vue';
 import { getter } from '@/store/decorators';
 
 @Component({

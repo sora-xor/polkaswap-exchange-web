@@ -160,7 +160,6 @@ export enum Components {
   ToSDialog = 'SoraCard/steps/ToSDialog',
   RoadMap = 'SoraCard/steps/RoadMap',
   KycView = 'SoraCard/steps/KycView',
-  SettingsDialog = 'SettingsDialog',
   SettingsHeader = 'Settings/Header',
   SettingsTabs = 'Settings/Tabs',
   SlippageTolerance = 'Settings/SlippageTolerance',
@@ -169,28 +168,13 @@ export enum Components {
   NodeInfo = 'Settings/Node/NodeInfo',
   SelectNodeDialog = 'SelectNodeDialog',
   // HelpDialog = 'HelpDialog',
-  SelectNetwork = 'SelectNetwork',
   NetworkFeeWarningDialog = 'NetworkFeeWarningDialog',
-  BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
-  TokenSelectButton = 'Input/TokenSelectButton',
-  TokenInput = 'Input/TokenInput',
   SelectLanguageDialog = 'SelectLanguageDialog',
   SelectAssetList = 'SelectAsset/List',
   SelectToken = 'SelectAsset/SelectToken',
-  SelectRegisteredAsset = 'SelectAsset/SelectRegisteredAsset',
-  // Pool
-  PoolInfo = 'Pool/PoolInfo',
-  // Button
-  SortButton = 'Button/SortButton',
-  SvgIconButton = 'Button/SvgIconButton/SvgIconButton',
   // Paywings
   X1Dialog = 'X1/X1Dialog',
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
-  // Chart
-  ChartSkeleton = 'Chart/ChartSkeleton',
-  StatsCard = 'Stats/StatsCard',
-  StatsFilter = 'Stats/StatsFilter',
   // Add Liquidity Page
   AddLiquidityConfirm = 'pages/AddLiquidity/Confirm',
   AddLiquidityTransactionDetails = 'pages/AddLiquidity/TransactionDetails',
@@ -200,6 +184,8 @@ export enum Components {
   // Bridge Page
   BridgeTransactionDetails = 'pages/Bridge/TransactionDetails',
   BridgeTransferNotification = 'pages/Bridge/TransferNotification',
+  BridgeSelectAsset = 'pages/Bridge/SelectAsset',
+  BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
   // Moonpay Page
   Moonpay = 'pages/Moonpay/Moonpay',
   MoonpayWidget = 'pages/Moonpay/MoonpayWidget',
@@ -215,6 +201,7 @@ export enum Components {
   SwapChart = 'pages/Swap/Chart',
   SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',
+  SwapSettings = 'pages/Swap/Settings',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
@@ -235,6 +222,18 @@ export enum Components {
   ValueStatusWrapper = 'shared/ValueStatusWrapper',
   ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
   TransactionDetails = 'shared/TransactionDetails',
+  PoolInfo = 'shared/PoolInfo',
+  // Shared Buttons
+  SortButton = 'shared/Button/SortButton',
+  SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',
+  // Shared Input
+  TokenInput = 'shared/Input/TokenInput',
+  TokenSelectButton = 'shared/Input/TokenSelectButton',
+  // Shared Stats
+  StatsCard = 'shared/Stats/StatsCard',
+  StatsFilter = 'shared/Stats/StatsFilter',
+  // Shared Chart
+  ChartSkeleton = 'shared/Chart/ChartSkeleton',
 }
 
 export enum RewardsTabsItems {

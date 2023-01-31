@@ -8,7 +8,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
-import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
+import PolkaswapLogo from '@/components/shared/Logo/Polkaswap.vue';
 
 @Component({
   components: {

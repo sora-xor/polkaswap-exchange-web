@@ -132,7 +132,7 @@
         :isInsufficientBalance="isInsufficientBalance"
         @confirm="confirmSwap"
       />
-      <settings-dialog :visible.sync="showSettings" />
+      <swap-settings :visible.sync="showSettings" />
     </s-form>
     <swap-chart
       v-if="chartsEnabled"
@@ -180,16 +180,16 @@ import { action, getter, mutation, state } from '@/store/decorators';
 
 @Component({
   components: {
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    SettingsDialog: lazyComponent(Components.SettingsDialog),
-    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    SelectToken: lazyComponent(Components.SelectToken),
+    SwapSettings: lazyComponent(Components.SwapSettings),
     SwapConfirm: lazyComponent(Components.SwapConfirm),
     SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
-    TokenInput: lazyComponent(Components.TokenInput),
-    ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     SwapChart: lazyComponent(Components.SwapChart),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
+    SelectToken: lazyComponent(Components.SelectToken),
+    TokenInput: lazyComponent(Components.TokenInput),
+    ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SvgIconButton: lazyComponent(Components.SvgIconButton),
     FormattedAmount: components.FormattedAmount,
   },

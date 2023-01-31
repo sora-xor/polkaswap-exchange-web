@@ -41,7 +41,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
-import PolkaswapLogo from '@/components/logo/Polkaswap.vue';
+import PolkaswapLogo from '@/components/shared/Logo/Polkaswap.vue';
 
 import { lazyComponent, goTo } from '@/router';
 import { PageNames, Components } from '@/consts';

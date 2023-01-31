@@ -23,7 +23,7 @@ import { SubNetwork } from '@/utils/ethers-util';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class SelectNetwork extends Mixins(TranslationMixin, mixins.DialogMixin) {
+export default class BridgeSelectNetwork extends Mixins(TranslationMixin, mixins.DialogMixin) {
   @Prop({ default: () => [], type: Array }) subNetworks!: Array<SubNetwork>;
   @ModelSync('value', 'input', { type: Number })
   readonly selectedNetworkId!: number;

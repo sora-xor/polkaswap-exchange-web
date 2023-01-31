@@ -83,7 +83,7 @@ import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web
 import type { BridgeHistory } from '@sora-substrate/util';
 
 import MoonpayBridgeInitMixin from '@/components/pages/Moonpay/BridgeInitMixin';
-import MoonpayLogo from '@/components/logo/Moonpay.vue';
+import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getCssVariableValue, toQueryString } from '@/utils';
