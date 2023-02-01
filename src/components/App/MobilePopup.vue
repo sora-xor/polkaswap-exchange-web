@@ -27,10 +27,10 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import TranslationMixin from '../mixins/TranslationMixin';
-import { StoreLinks, app } from '../../consts';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { StoreLinks, app } from '@/consts';
 
-import QrCode from '../../assets/img/mobile/qr-code.svg?inline';
+import QrCode from '@/assets/img/mobile/qr-code.svg?inline';
 
 @Component({
   components: {

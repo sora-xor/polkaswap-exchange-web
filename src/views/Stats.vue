@@ -4,7 +4,9 @@
 
     <stats-tvl-chart class="grid-item grid-item--50" />
 
-    <stats-volume-chart class="grid-item grid-item--50" />
+    <stats-bar-chart class="grid-item grid-item--50" />
+
+    <stats-bar-chart class="grid-item grid-item--50" fees />
   </div>
 </template>
 
@@ -18,7 +20,7 @@ import { Components } from '@/consts';
   components: {
     StatsNetworkStats: lazyComponent(Components.StatsNetworkStats),
     StatsTvlChart: lazyComponent(Components.StatsTvlChart),
-    StatsVolumeChart: lazyComponent(Components.StatsVolumeChart),
+    StatsBarChart: lazyComponent(Components.StatsBarChart),
   },
 })
 export default class Stats extends Mixins() {}

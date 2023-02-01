@@ -69,7 +69,7 @@ import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@sor
 
 import ChartSpecMixin from '@/components/shared/Chart/SpecMixin';
 
-import { SvgIcons } from '@/components/Button/SvgIconButton/icons';
+import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';

@@ -33,7 +33,7 @@ import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { NodeModel } from '@/components/Settings/Node/consts';
+import { NodeModel } from '@/components/App/Settings/Node/consts';
 import { Node, NodeItem, ConnectToNodeOptions } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
 import { getter, state, action } from '@/store/decorators';

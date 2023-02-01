@@ -22,7 +22,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
-import TranslationMixin from './mixins/TranslationMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { app, Links } from '@/consts';
 

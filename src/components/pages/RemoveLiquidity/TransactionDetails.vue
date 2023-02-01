@@ -34,7 +34,7 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import TranslationMixin from '@components/mixins/TranslationMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';

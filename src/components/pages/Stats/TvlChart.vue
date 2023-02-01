@@ -78,7 +78,7 @@ const AXIS_OFFSET = 8;
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class TvlChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin) {
+export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
   readonly filters = NETWORK_STATS_FILTERS;
@@ -167,9 +167,11 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin
     if (!response || !response.networkSnapshots) return [];
 
     const data = response.networkSnapshots.nodes.map((node) => {
+      const value = +node.liquidityUSD;
+
       return {
         timestamp: +node.timestamp * 1000,
-        value: +node.liquidityUSD,
+        value: Number.isFinite(value) ? value : 0,
       };
     });
 

@@ -17,7 +17,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import TranslationMixin from '../mixins/TranslationMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component
 export default class TransactionDetails extends Mixins(TranslationMixin) {

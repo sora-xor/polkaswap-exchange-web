@@ -32,7 +32,6 @@ import { gql } from '@urql/core';
 import { FPNumber } from '@sora-substrate/math';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -48,7 +47,6 @@ type NetworkSnapshot = {
   transactions: FPNumber;
   bridgeIncomingTransactions: FPNumber;
   bridgeOutgoingTransactions: FPNumber;
-  fees: FPNumber;
 };
 
 type NetworkStatsColumn = {
@@ -75,7 +73,6 @@ const StatsQuery = gql`
         transactions
         bridgeIncomingTransactions
         bridgeOutgoingTransactions
-        fees
       }
     }
   }
@@ -89,10 +86,6 @@ const COLUMNS = [
   {
     title: 'Accounts',
     prop: 'accounts',
-  },
-  {
-    title: `Fees (${KnownSymbols.XOR})`,
-    prop: 'fees',
   },
   {
     title: 'ETH to SORA',
@@ -173,7 +166,6 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
 
   private async fetchData(from: number, to: number, type: SnapshotTypes): Promise<NetworkSnapshot[]> {
     try {
-      console.log('fetchData');
       const response = await SubqueryExplorerService.request(StatsQuery, { from, to, type });
 
       if (!response || !response.networkSnapshots) return [];
@@ -183,7 +175,6 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
           timestamp: +node.timestamp * 1000,
           accounts: new FPNumber(node.accounts),
           transactions: new FPNumber(node.transactions),
-          fees: FPNumber.fromCodecValue(node.fees),
           bridgeIncomingTransactions: new FPNumber(node.bridgeIncomingTransactions),
           bridgeOutgoingTransactions: new FPNumber(node.bridgeOutgoingTransactions),
         };
@@ -221,7 +212,7 @@ $gap: $inner-spacing-mini;
     }
 
     @include desktop {
-      @include columns(5, $gap);
+      @include columns(4, $gap);
     }
   }
 }

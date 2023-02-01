@@ -1,6 +1,6 @@
 <template>
   <stats-card>
-    <template #title>Volume</template>
+    <template #title>{{ title }}</template>
 
     <template #filters>
       <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
@@ -27,7 +27,7 @@
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { gql } from '@urql/core';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
 
@@ -44,11 +44,11 @@ import type { AmountWithSuffix } from '@/types/formats';
 
 type NetworkTvlSnapshot = {
   timestamp: number;
-  value: number;
+  value: FPNumber;
 };
 
 const NetworkVolumeQuery = gql`
-  query NetworkVolumeQuery($type: SnapshotType, $from: Int, $to: Int) {
+  query NetworkVolumeQuery($fees: Boolean!, $type: SnapshotType, $from: Int, $to: Int) {
     networkSnapshots(
       orderBy: TIMESTAMP_DESC
       filter: {
@@ -61,13 +61,18 @@ const NetworkVolumeQuery = gql`
     ) {
       nodes {
         timestamp
-        volumeUSD
+        volumeUSD @skip(if: $fees)
+        fees @include(if: $fees)
       }
     }
   }
 `;
 
 const AXIS_OFFSET = 8;
+
+const getTotalValue = (data: NetworkTvlSnapshot[]) => {
+  return data.reduce((acc, item) => acc.add(item.value), FPNumber.ZERO);
+};
 
 @Component({
   components: {
@@ -78,7 +83,9 @@ const AXIS_OFFSET = 8;
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class TvlChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin) {
+export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin) {
+  @Prop({ default: false, type: Boolean }) readonly fees!: boolean;
+
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
   readonly filters = NETWORK_STATS_FILTERS;
@@ -86,10 +93,16 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin
   filter: SnapshotFilter = NETWORK_STATS_FILTERS[0];
 
   data: NetworkTvlSnapshot[] = [];
+  prevData: NetworkTvlSnapshot[] = [];
+
   isFetchingError = false;
 
   created(): void {
     this.updateData();
+  }
+
+  get title(): string {
+    return this.fees ? 'Fees' : 'Volume';
   }
 
   get firstValue(): FPNumber {
@@ -100,18 +113,24 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin
     return new FPNumber(last(this.data)?.value ?? 0);
   }
 
+  get total() {
+    return getTotalValue(this.data);
+  }
+
   get amount(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.firstValue);
+    return formatAmountWithSuffix(this.total);
   }
 
   get priceChange(): FPNumber {
-    return calcPriceChange(this.firstValue, this.lastValue);
+    const prev = getTotalValue(this.prevData);
+
+    return calcPriceChange(this.total, prev);
   }
 
   get chartSpec() {
     return {
       dataset: {
-        source: this.data.map((item) => [item.timestamp, item.value]),
+        source: this.data.map((item) => [item.timestamp, item.value.toNumber()]),
         dimensions: ['timestamp', 'value'],
       },
       grid: {
@@ -125,7 +144,6 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin
       },
       yAxis: {
         show: false,
-        type: 'value',
       },
       tooltip: {
         ...this.tooltipSpec(),
@@ -144,15 +162,54 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin
     this.updateData();
   }
 
+  private normalizeData(collection: NetworkTvlSnapshot[], difference: number, from: number, to: number) {
+    const sample: NetworkTvlSnapshot[] = [];
+
+    const iterate = (prevTimestamp: number, currentTimestamp: number, difference: number) => {
+      const buffer: NetworkTvlSnapshot[] = [];
+
+      while ((currentTimestamp += difference) < prevTimestamp) {
+        buffer.push({
+          timestamp: currentTimestamp,
+          value: FPNumber.ZERO,
+        });
+      }
+
+      return buffer.reverse();
+    };
+
+    for (const item of collection) {
+      const prevTimestamp = last(sample)?.timestamp ?? from;
+      const buffer = iterate(prevTimestamp, item.timestamp, difference);
+
+      sample.push(...buffer, item);
+    }
+
+    const lastSampleTimestamp = last(sample)?.timestamp ?? from;
+    const buffer = iterate(lastSampleTimestamp, to, difference);
+    sample.push(...buffer);
+
+    return sample;
+  }
+
   private async updateData(): Promise<void> {
     await this.withApi(async () => {
       try {
+        const { fees } = this;
         const { type, count } = this.filter;
         const seconds = SECONDS_IN_TYPE[type];
         const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
-        const to = now - seconds * count;
+        const aTime = now - seconds * count;
+        const bTime = aTime - seconds * count;
 
-        this.data = await this.fetchData(now, to, type);
+        const [curr, prev] = await Promise.all([
+          this.fetchData(fees, now, aTime, type),
+          this.fetchData(fees, aTime, bTime, type),
+        ]);
+
+        this.data = this.normalizeData(curr, seconds * 1000, now * 1000, aTime * 1000);
+        this.prevData = prev;
+
         this.isFetchingError = false;
       } catch (error) {
         console.error(error);
@@ -161,15 +218,17 @@ export default class TvlChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin
     });
   }
 
-  private async fetchData(from: number, to: number, type: SnapshotTypes): Promise<NetworkTvlSnapshot[]> {
-    const response = await SubqueryExplorerService.request(NetworkVolumeQuery, { from, to, type });
+  private async fetchData(fees: boolean, from: number, to: number, type: SnapshotTypes): Promise<NetworkTvlSnapshot[]> {
+    const response = await SubqueryExplorerService.request(NetworkVolumeQuery, { fees, from, to, type });
 
     if (!response || !response.networkSnapshots) return [];
 
     const data = response.networkSnapshots.nodes.map((node) => {
+      const value = fees ? FPNumber.fromCodecValue(node.fees) : new FPNumber(node.volumeUSD);
+
       return {
         timestamp: +node.timestamp * 1000,
-        value: +node.volumeUSD,
+        value: value.isFinity() ? value : FPNumber.ZERO,
       };
     });
 

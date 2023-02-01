@@ -14,13 +14,13 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
-import MoonpayBridgeInitMixin from './MoonpayBridgeInitMixin';
+import MoonpayBridgeInitMixin from './BridgeInitMixin';
 
 import { getCssVariableValue } from '@/utils';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { getter, state, mutation, action } from '@/store/decorators';
-import { MoonpayNotifications } from '@/components/Moonpay/consts';
+import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 
 import type { MoonpayTransaction } from '@/utils/moonpay';
 

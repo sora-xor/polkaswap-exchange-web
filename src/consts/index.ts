@@ -181,14 +181,14 @@ export enum Components {
   BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
   // Moonpay Page
   Moonpay = 'pages/Moonpay/Moonpay',
-  MoonpayWidget = 'pages/Moonpay/MoonpayWidget',
+  MoonpayWidget = 'pages/Moonpay/Widget',
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
   MoonpayHistoryButton = 'pages/Moonpay/HistoryButton',
   // Stats Page
   StatsNetworkStats = 'pages/Stats/NetworkStats',
   StatsTvlChart = 'pages/Stats/TvlChart',
-  StatsVolumeChart = 'pages/Stats//VolumeChart',
+  StatsBarChart = 'pages/Stats/BarChart',
   // Swap Page
   SwapConfirm = 'pages/Swap/Confirm',
   SwapChart = 'pages/Swap/Chart',

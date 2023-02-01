@@ -19,7 +19,7 @@ export const NETWORK_STATS_FILTERS: SnapshotFilter[] = [
   {
     name: Timeframes.WEEK,
     label: '1W',
-    type: SnapshotTypes.DAY,
+    type: SnapshotTypes.HOUR,
     count: 24 * 7,
   },
   {
