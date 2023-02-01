@@ -59,10 +59,6 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
   exploreQuery = '';
   isAccountItems = JSON.parse(storage.get(storageKey as any) ?? false);
 
-  created() {
-    console.log(typeof storage.get(storageKey as any));
-  }
-
   get isAccountItemsOnly(): boolean {
     return this.isAccountItems;
   }
