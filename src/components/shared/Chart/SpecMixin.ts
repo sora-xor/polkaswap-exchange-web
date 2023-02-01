@@ -92,7 +92,7 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, mixins.Tra
     };
   }
 
-  lineSeriesSpec(encodeY: string) {
+  lineSeriesSpec(encodeY: string, color = this.theme.color.theme.accent, areaStyle = true) {
     return {
       type: 'line',
       encode: {
@@ -100,21 +100,21 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, mixins.Tra
       },
       showSymbol: false,
       itemStyle: {
-        color: this.theme.color.theme.accent,
+        color,
       },
-      areaStyle: {
-        opacity: 0.8,
-        color: new graphic.LinearGradient(0, 0, 0, 1, [
-          {
-            offset: 0,
-            color: 'rgba(248, 8, 123, 0.25)',
-          },
-          {
-            offset: 1,
-            color: 'rgba(255, 49, 148, 0.03)',
-          },
-        ]),
-      },
+      // areaStyle: areaStyle ? {
+      //   opacity: 0.8,
+      //   color: new graphic.LinearGradient(0, 0, 0, 1, [
+      //     {
+      //       offset: 0,
+      //       color: 'rgba(248, 8, 123, 0.25)',
+      //     },
+      //     {
+      //       offset: 1,
+      //       color: 'rgba(255, 49, 148, 0.03)',
+      //     },
+      //   ]),
+      // } : false,
     };
   }
 

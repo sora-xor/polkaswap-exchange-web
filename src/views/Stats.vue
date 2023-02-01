@@ -7,6 +7,8 @@
     <stats-bar-chart class="grid-item grid-item--50" />
 
     <stats-bar-chart class="grid-item grid-item--50" fees />
+
+    <stats-supply-chart class="grid-item grid-item--50" />
   </div>
 </template>
 
@@ -21,6 +23,7 @@ import { Components } from '@/consts';
     StatsNetworkStats: lazyComponent(Components.StatsNetworkStats),
     StatsTvlChart: lazyComponent(Components.StatsTvlChart),
     StatsBarChart: lazyComponent(Components.StatsBarChart),
+    StatsSupplyChart: lazyComponent(Components.StatsSupplyChart),
   },
 })
 export default class Stats extends Mixins() {}

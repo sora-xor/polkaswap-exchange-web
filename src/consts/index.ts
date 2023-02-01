@@ -189,6 +189,7 @@ export enum Components {
   StatsNetworkStats = 'pages/Stats/NetworkStats',
   StatsTvlChart = 'pages/Stats/TvlChart',
   StatsBarChart = 'pages/Stats/BarChart',
+  StatsSupplyChart = 'pages/Stats/SupplyChart',
   // Swap Page
   SwapConfirm = 'pages/Swap/Confirm',
   SwapChart = 'pages/Swap/Chart',
