@@ -17,6 +17,7 @@ export type Recipient = {
   status: string;
   id: string;
   isCompleted?: boolean;
+  txId?: string;
 };
 
 export type RouteAssetsSubscription = {

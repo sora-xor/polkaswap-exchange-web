@@ -29,14 +29,14 @@
           <!-- NAME -->
           <s-table-column prop="name" sortable>
             <template #header>
-              <span>{{ t('adar.routeAssets.routingTemplate.overview.name') }}</span>
+              <span>{{ 'name' }}</span>
             </template>
           </s-table-column>
 
           <!-- WALLET -->
           <s-table-column prop="wallet" width="130">
             <template #header>
-              <span>{{ t('adar.routeAssets.routingTemplate.overview.wallet') }}</span>
+              <span>{{ 'wallet' }}</span>
             </template>
             <template v-slot="{ row }">
               <s-dropdown
@@ -62,7 +62,7 @@
           <!-- USD -->
           <s-table-column prop="usd" class="usd-column" sortable>
             <template #header>
-              <span>{{ t('adar.routeAssets.routingTemplate.overview.usd') }}</span>
+              <span>{{ 'usd' }}</span>
             </template>
             <template v-slot="{ row }">
               <div>
@@ -89,7 +89,7 @@
           <!-- STATUS -->
           <s-table-column prop="status" class="status-property" width="158">
             <template #header>
-              <span>{{ t('adar.routeAssets.routingTemplate.overview.status') }}</span>
+              <span>{{ 'status' }}</span>
             </template>
             <template v-slot="{ row }">
               <div class="status-property__data">
@@ -106,7 +106,7 @@
               <s-button
                 type="primary"
                 class="s-typography-button--big rerun-button"
-                :disabled="buttonsDisabled"
+                :disabled="isButtonDisabled(row)"
                 @click.stop="reRunTransaction(row)"
               >
                 {{ 'RE-RUN' }}
@@ -124,7 +124,12 @@
           @next-click="handleNextClick"
         />
       </div>
-      <s-button type="primary" class="s-typography-button--big rerun-all-button" @click.stop="reRunAll">
+      <s-button
+        type="primary"
+        class="s-typography-button--big rerun-all-button"
+        @click.stop="reRunAll"
+        :disabled="rerunAllButtonDisabled"
+      >
         {{ 'RE-RUN ALL' }}
       </s-button>
     </dialog-base>
@@ -132,10 +137,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { action, getter } from '@/store/decorators';
-import { Recipient } from '@/store/routeAssets/types';
+import { Recipient, RecipientStatus } from '@/store/routeAssets/types';
 import { copyToClipboard, formatAddress } from '@/utils';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 @Component({
@@ -152,8 +157,6 @@ export default class FailedTransactionsDialog extends Mixins(
   @getter.routeAssets.incompletedRecipients private recipients!: Array<Recipient>;
   @action.routeAssets.repeatTransaction private repeatTransaction!: ({ inputAsset, id }) => Promise<void>;
   @action.routeAssets.runAssetsRouting runAssetsRouting!: () => Promise<void>;
-
-  buttonsDisabled = false;
 
   async handleCopyAddress(address): Promise<void> {
     try {
@@ -173,61 +176,20 @@ export default class FailedTransactionsDialog extends Mixins(
   }
 
   async reRunTransaction(recipient) {
-    this.repeatTransaction(recipient.id)
-      .then(() => {
-        this.$notify({
-          message: `${this.t('adar.routeAssets.routingTemplate.messages.routeAssetsCompleted')}`,
-          type: 'success',
-          title: '',
-        });
-      })
-      .catch((error) => {
-        this.$notify({
-          message: `${this.t('warningText')} ${error}`,
-          type: 'warning',
-          title: '',
-        });
+    this.repeatTransaction(recipient.id).catch((error) => {
+      this.$notify({
+        message: `${this.t('warningText')} ${error}`,
+        type: 'warning',
+        title: '',
       });
+    });
   }
 
-  // async reRunAll() {
-  //   try {
-  //     this.buttonsDisabled = true;
-  //     await this.runAssetsRouting();
-  //     this.buttonsDisabled = false;
-  //     this.$emit('update:visible', false);
-  //     this.$notify({
-  //       message: `${this.t('adar.routeAssets.routingTemplate.messages.routeAssetsCompleted')}`,
-  //       type: 'success',
-  //       title: '',
-  //     });
-  //   } catch (error) {
-  //     this.$notify({
-  //       message: `${this.t('warningText')} ${error}`,
-  //       type: 'warning',
-  //       title: '',
-  //     });
-  //   }
-  // }
-
   async reRunAll() {
-    this.buttonsDisabled = true;
     this.runAssetsRouting()
       .then(() => {
-        this.buttonsDisabled = false;
         if (this.recipients.length < 1) {
           this.$emit('update:visible', false);
-          this.$notify({
-            message: `${this.t('adar.routeAssets.routingTemplate.messages.routeAssetsCompleted')}`,
-            type: 'success',
-            title: '',
-          });
-        } else {
-          this.$notify({
-            message: `${this.t('warningText')}`,
-            type: 'warning',
-            title: '',
-          });
         }
       })
       .catch((error) => {
@@ -274,6 +236,14 @@ export default class FailedTransactionsDialog extends Mixins(
     this.resetSearch();
   }
 
+  isButtonDisabled(recipient) {
+    return recipient.status !== RecipientStatus.FAILED;
+  }
+
+  get rerunAllButtonDisabled() {
+    return this.recipients.some((item) => item.status === RecipientStatus.PENDING);
+  }
+
   get filteredItems() {
     const search = this.query.toLowerCase().trim();
 
@@ -289,6 +259,15 @@ export default class FailedTransactionsDialog extends Mixins(
 
   get xor() {
     return XOR;
+  }
+
+  get recipientsLength() {
+    return this.recipients.length;
+  }
+
+  @Watch('recipientsLength')
+  recipientsLengthHandler(newVal) {
+    if (newVal === 0) this.$emit('update:visible', false);
   }
 }
 </script>

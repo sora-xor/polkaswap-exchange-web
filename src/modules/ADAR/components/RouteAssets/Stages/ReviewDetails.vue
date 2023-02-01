@@ -159,7 +159,7 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   }
 
   get remainingAmountRequired() {
-    return this.estimatedAmount - Number(this.totalTokensAvailable?.replace(/,/g, ''));
+    return this.estimatedAmount - this.fpBalance.toNumber();
   }
 
   get summaryData() {
@@ -192,7 +192,9 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   }
 
   get formattedBalance(): string {
-    return this.fpBalance.toLocaleString();
+    return this.fpBalance.toNumber().toLocaleString('en-US', {
+      maximumFractionDigits: 6,
+    });
   }
 
   getAssetUSDPrice(asset: Asset) {

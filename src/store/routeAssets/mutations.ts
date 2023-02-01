@@ -34,6 +34,10 @@ const mutations = defineMutations<RouteAssetsState>()({
     const recipient = state.recipients.find((recipient) => recipient.id === id);
     if (recipient) recipient.status = status;
   },
+  setRecipientTxId(state, { id, txId }) {
+    const recipient = state.recipients.find((recipient) => recipient.id === id);
+    if (recipient) recipient.txId = txId;
+  },
   setRecipientCompleted(state, id) {
     const recipient = state.recipients.find((recipient) => recipient.id === id);
     if (recipient) recipient.isCompleted = true;
