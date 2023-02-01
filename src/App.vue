@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { FPNumber, History, connection, HistoryItem } from '@sora-substrate/util';
+import { FPNumber, History, connection, HistoryItem, TransactionStatus, Operation } from '@sora-substrate/util';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
@@ -68,6 +68,8 @@ import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions } from '@/types/nodes';
 import type { SubNetwork } from '@/utils/ethers-util';
 import type { FeatureFlags } from '@/store/settings/types';
+import getters from './store/web3/getters';
+import { RecipientStatus } from './store/routeAssets/types';
 
 @Component({
   components: {
@@ -141,6 +143,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @Watch('firstReadyTransaction', { deep: true })
   private handleNotifyAboutTransaction(value: History, oldValue: History): void {
+    this.handleChangeTransactionADAR(value, oldValue);
     this.handleChangeTransaction(value, oldValue);
   }
 
@@ -350,6 +353,76 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // we handled error using callback, do nothing
     }
   }
+
+  // ________________________ADAR____________________________________________________________________________________________
+  @getter.routeAssets.recipients private recipients!: any;
+  @mutation.routeAssets.setRecipientStatus private setRecipientStatus!: any;
+  @mutation.routeAssets.setRecipientCompleted private setRecipientCompleted!: any;
+  @getter.wallet.transactions.activeTxs activeTransactions!: Array<HistoryItem>;
+
+  handleChangeTransactionADAR(value: Nullable<HistoryItem>, oldValue: Nullable<HistoryItem>): void {
+    if (
+      !value ||
+      !value.status ||
+      ![TransactionStatus.InBlock, TransactionStatus.Finalized, TransactionStatus.Error].includes(
+        value.status as TransactionStatus
+      ) ||
+      ![Operation.SwapAndSend, Operation.Transfer].includes(value.type)
+    ) {
+      return;
+    }
+
+    // console.group('WATCHER');
+    // console.dir(value);
+    // console.groupEnd();
+
+    const message = this.getMessage(value, this.shouldBalanceBeHidden);
+    const isNewTx = !oldValue || oldValue.id !== value.id;
+    const recipients = this.recipients.filter((item) => item.txId === value.id);
+
+    if (recipients.length < 1) return;
+
+    if (value.status === TransactionStatus.Error) {
+      recipients.forEach((reciever) => {
+        this.setRecipientStatus({
+          id: reciever.id,
+          status: RecipientStatus.FAILED,
+        });
+      });
+    } else if (value.status === TransactionStatus.InBlock || isNewTx) {
+      if (isNewTx) {
+        recipients.forEach((reciever) => {
+          this.setRecipientStatus({
+            id: reciever.id,
+            status: RecipientStatus.SUCCESS,
+          });
+          this.setRecipientCompleted(reciever.id);
+        });
+      }
+    }
+    // remove active tx on finalized or error status
+    // this.removeActiveTxs([value.id as string]);
+  }
+
+  get invalidTransaction() {
+    return this.activeTransactions.find((t: HistoryItem) =>
+      [TransactionStatus.Invalid].includes(t.status as TransactionStatus)
+    );
+  }
+
+  @Watch('invalidTransaction', { deep: true, immediate: true })
+  private handleInvalidTransaction(value: HistoryItem): void {
+    if (!value || ![Operation.SwapAndSend, Operation.Transfer].includes(value.type)) return;
+    const recipients = this.recipients.filter((item) => item.txId === value.id);
+    recipients.forEach((reciever) => {
+      this.setRecipientStatus({
+        id: reciever.id,
+        status: RecipientStatus.FAILED,
+      });
+    });
+    if (recipients.length > 0) this.removeActiveTxs([value.id as string]);
+  }
+  // _________________________________________________________________________________________________________________
 }
 </script>
 

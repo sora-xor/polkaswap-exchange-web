@@ -8,12 +8,12 @@ import { getPathsAndPairLiquiditySources } from '@sora-substrate/liquidity-proxy
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { RouteAssetsSubscription, RecipientStatus } from './types';
 import { FPNumber, Operation } from '@sora-substrate/util/build';
-import { formatAddress, getAssetBalance } from '@/utils';
+import { formatAddress, getAssetBalance, delay } from '@/utils';
 import type { DexQuoteData } from '@/store/swap/types';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import type { QuotePayload, SwapResult } from '@sora-substrate/liquidity-proxy/build/types';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { groupBy, sumBy } from 'lodash';
+import { findLast, groupBy, sumBy } from 'lodash';
 import { NumberLike } from '@sora-substrate/math';
 import { Messages } from '@sora-substrate/util/build/logger';
 import { assert } from '@polkadot/util';
@@ -198,7 +198,7 @@ const actions = defineActions({
   },
 
   async repeatTransaction(context, id): Promise<void> {
-    const { getters, commit } = routeAssetsActionContext(context);
+    const { getters, commit, rootCommit } = routeAssetsActionContext(context);
     const inputAsset = getters.inputToken;
     const recipient = getters.recipients.find((recipient) => recipient.id === id);
     if (!recipient) {
@@ -213,13 +213,15 @@ const actions = defineActions({
     const action = transferParams.action;
     try {
       if (!action) throw new Error('Cant get transfer params');
+      const time = Date.now();
       await action()
-        .then(() => {
-          commit.setRecipientStatus({
+        .then(async () => {
+          const lastTx = await getLastTransaction(time);
+          rootCommit.wallet.transactions.addActiveTx(lastTx.id as string);
+          commit.setRecipientTxId({
             id: recipient.id,
-            status: RecipientStatus.SUCCESS,
+            txId: lastTx.id,
           });
-          commit.setRecipientCompleted(recipient.id);
         })
         .catch(() => {
           commit.setRecipientStatus({
@@ -411,7 +413,7 @@ function getTransferParams(context, inputAsset, recipient) {
 // ______________________________________________________________________
 
 async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> {
-  const { commit, getters } = routeAssetsActionContext(context);
+  const { commit, getters, rootCommit } = routeAssetsActionContext(context);
   const inputAsset = getters.inputToken;
   const groupedData = Object.values(groupBy(data, 'assetAddress'));
   const processArrayData = groupedData.map((recipients) => {
@@ -447,49 +449,53 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
 
   async function processArray(transactions) {
     for (const tx of transactions) {
-      try {
-        const { params, options } = tx;
-        console.dir(tx);
-        await api
-          .submitExtrinsic(
-            (api.api.tx.liquidityProxy as any).swapTransferBatch(tx.recievers, ...params.args),
-            api.account.pair,
-            {
-              symbol: inputAsset.symbol,
-              assetAddress: inputAsset.address,
-              amount: `${options.approxSum.toFixed(6)}`,
-              symbol2: options.outputAsset.symbol,
-              asset2Address: options.outputAsset.address,
-              type: Operation.Swap,
-            }
-          )
-          .then(() => {
-            tx.recievers.forEach((reciever) => {
-              commit.setRecipientStatus({
-                id: reciever.recipientId,
-                status: RecipientStatus.SUCCESS,
+      await withLoading(async () => {
+        try {
+          const { params, options } = tx;
+          const time = Date.now();
+          await api
+            .submitExtrinsic(
+              (api.api.tx.liquidityProxy as any).swapTransferBatch(tx.recievers, ...params.args),
+              api.account.pair,
+              {
+                symbol: inputAsset.symbol,
+                assetAddress: inputAsset.address,
+                amount2: `${options.approxSum.toFixed(6)}`,
+                symbol2: options.outputAsset.symbol,
+                asset2Address: options.outputAsset.address,
+                to: api.account.pair.address,
+                type: Operation.SwapAndSend,
+              }
+            )
+            .then(async () => {
+              const lastTx = await getLastTransaction(time);
+              rootCommit.wallet.transactions.addActiveTx(lastTx.id as string);
+              tx.recievers.forEach((reciever) => {
+                commit.setRecipientTxId({
+                  id: reciever.recipientId,
+                  txId: lastTx.id,
+                });
               });
-              commit.setRecipientCompleted(reciever.recipientId);
+            })
+            .catch((err) => {
+              console.dir(err);
+              tx.recievers.forEach((reciever) => {
+                commit.setRecipientStatus({
+                  id: reciever.recipientId,
+                  status: RecipientStatus.FAILED,
+                });
+              });
             });
-          })
-          .catch((err) => {
-            console.dir(err);
-            tx.recievers.forEach((reciever) => {
-              commit.setRecipientStatus({
-                id: reciever.recipientId,
-                status: RecipientStatus.FAILED,
-              });
+        } catch (err) {
+          console.dir(err);
+          tx.recievers.forEach((reciever) => {
+            commit.setRecipientStatus({
+              id: reciever.recipientId,
+              status: RecipientStatus.FAILED,
             });
           });
-      } catch (err) {
-        console.dir(err);
-        tx.recievers.forEach((reciever) => {
-          commit.setRecipientStatus({
-            id: reciever.recipientId,
-            status: RecipientStatus.FAILED,
-          });
-        });
-      }
+        }
+      });
     }
   }
 
@@ -497,8 +503,9 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
 }
 
 async function executeTransfer(context, data: Array<any>): Promise<any> {
-  const { commit } = routeAssetsActionContext(context);
+  const { commit, rootCommit } = routeAssetsActionContext(context);
   if (data.length < 1) return;
+  const time = Date.now();
   await api
     .submitExtrinsic(api.api.tx.utility.batchAll(data.map((item) => item.transfer.extrinsic)), api.account.pair, {
       symbol: data[0].recipient.asset.symbol,
@@ -507,13 +514,14 @@ async function executeTransfer(context, data: Array<any>): Promise<any> {
       assetAddress: data[0].recipient.asset.symbol,
       type: Operation.Transfer,
     })
-    .then(() => {
-      data.forEach((tr) => {
-        commit.setRecipientStatus({
-          id: tr.recipient.id,
-          status: RecipientStatus.SUCCESS,
+    .then(async () => {
+      const lastTx = await getLastTransaction(time);
+      rootCommit.wallet.transactions.addActiveTx(lastTx.id as string);
+      data.forEach((reciever) => {
+        commit.setRecipientTxId({
+          id: reciever.recipient.id,
+          txId: lastTx.id,
         });
-        commit.setRecipientCompleted(tr.recipient.id);
       });
     })
     .catch((err) => {
@@ -527,48 +535,28 @@ async function executeTransfer(context, data: Array<any>): Promise<any> {
     });
 }
 
-// function calcTxParams(
-//   assetA: Asset | AccountAsset,
-//   assetB: Asset | AccountAsset,
-//   // amountA: NumberLike,
-//   amountB: NumberLike,
-//   slippageTolerance: NumberLike = api.defaultSlippageTolerancePercent,
-//   isExchangeB = false,
-//   liquiditySource = LiquiditySourceTypes.Default,
-//   dexId = DexId.XOR
-// ) {
-//   assert(api.account, Messages.connectWallet);
-//   const desiredDecimals = (!isExchangeB ? assetA : assetB).decimals;
-//   const resultDecimals = (!isExchangeB ? assetB : assetA).decimals;
-//   const desiredCodecString = new FPNumber(amountB, desiredDecimals).toCodecString();
-//   const result = new FPNumber(amountB, desiredDecimals);
-//   const resultMulSlippage = result.mul(new FPNumber(Number(slippageTolerance) / 100));
-//   const liquiditySources = liquiditySource ? [liquiditySource] : [];
-//   const params = {} as any;
-//   if (!isExchangeB) {
-//     params.WithDesiredInput = {
-//       desiredAmountIn: desiredCodecString,
-//       minAmountOut: result.sub(resultMulSlippage).toCodecString(),
-//     };
-//   } else {
-//     params.WithDesiredOutput = {
-//       desiredAmountOut: desiredCodecString,
-//       maxAmountIn: result.add(resultMulSlippage).toCodecString(),
-//     };
-//   }
-//   return {
-//     args: [
-//       dexId,
-//       assetA.address,
-//       assetB.address,
-//       // params,
-//       // result.toCodecString(),
-//       FPNumber.fromCodecValue(amountB, assetA.decimals).toCodecString(),
-//       liquiditySources,
-//       liquiditySource === LiquiditySourceTypes.Default ? 'Disabled' : 'AllowSelected',
-//     ],
-//   };
-// }
+async function getLastTransaction(time: number): Promise<any> {
+  const tx = findLast(api.historyList as any, (item) => Number(item.startTime) > time);
+  if (!tx) {
+    await delay();
+    return await getLastTransaction(time);
+  }
+  return tx;
+}
+
+let loading = false;
+
+async function withLoading<T = void>(func: FnWithoutArgs<T> | AsyncFnWithoutArgs<T>): Promise<T> {
+  loading = true;
+  try {
+    return await func();
+  } catch (e) {
+    console.error(e);
+    throw e;
+  } finally {
+    loading = false;
+  }
+}
 
 function calcTxParams(
   assetFrom: Asset | AccountAsset,

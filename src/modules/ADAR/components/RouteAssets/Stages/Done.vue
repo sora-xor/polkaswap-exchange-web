@@ -189,15 +189,15 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
 
   downloadPDF() {
     const doc = new JsPDF({ putOnlyUsedFonts: true, orientation: 'landscape' });
-    const headers = ['№', 'Name', 'Wallet', 'USD', 'Token', 'Input Token', 'Amount', 'Status'];
+    const headers = ['№', 'Name', 'Wallet', 'USD', 'Input Token', 'Token', 'Amount', 'Status'];
     const data = this.recipients.map((recipient, idx) => {
       return [
         `${idx + 1}`,
         recipient.name.toString(),
         recipient.wallet.toString(),
         recipient.usd.toString(),
-        recipient.asset.symbol,
         this.inputToken.symbol,
+        recipient.asset.symbol,
         (recipient.amount?.toFixed(5) || '').toString(),
         recipient.status.toString(),
       ];

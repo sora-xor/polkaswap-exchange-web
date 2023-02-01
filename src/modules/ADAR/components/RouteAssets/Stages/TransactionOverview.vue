@@ -2,10 +2,7 @@
   <div v-loading="!tableData" class="container routing-template-transactions">
     <div class="routing-template-transactions__header">
       <!-- <div> -->
-      <generic-page-header
-        :title="`${t('adar.routeAssets.routingTemplate.overview.title')} (${recipients.length})`"
-        class="page-header__title"
-      >
+      <generic-page-header :title="`Transaction overview (${recipients.length})`" class="page-header__title">
       </generic-page-header>
       <search-input
         v-model="query"
@@ -44,14 +41,14 @@
         <!-- NAME -->
         <s-table-column prop="name" sortable>
           <template #header>
-            <span>{{ t('adar.routeAssets.routingTemplate.overview.name') }}</span>
+            <span>{{ 'name' }}</span>
           </template>
         </s-table-column>
 
         <!-- WALLET -->
         <s-table-column prop="wallet" width="130">
           <template #header>
-            <span>{{ t('adar.routeAssets.routingTemplate.overview.wallet') }}</span>
+            <span>{{ 'wallet' }}</span>
           </template>
           <template v-slot="{ row }">
             <s-dropdown
@@ -77,7 +74,7 @@
         <!-- USD -->
         <s-table-column prop="usd" class="usd-column" sortable>
           <template #header>
-            <span>{{ t('adar.routeAssets.routingTemplate.overview.usd') }}</span>
+            <span>{{ 'usd' }}</span>
           </template>
           <template v-slot="{ row }">
             <div>
@@ -104,7 +101,7 @@
         <!-- STATUS -->
         <s-table-column prop="status" class="status-property" width="158">
           <template #header>
-            <span>{{ t('adar.routeAssets.routingTemplate.overview.status') }}</span>
+            <span>{{ 'status' }}</span>
           </template>
           <template v-slot="{ row }">
             <div class="status-property__data">
