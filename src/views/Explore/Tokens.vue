@@ -289,7 +289,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     const now = Math.floor(Date.now() / (5 * 60 * 1000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
     const dayTimestamp = now - 60 * 60 * 24; // latest day snapshot (unix)
     const weekTimestamp = now - 60 * 60 * 24 * 7; // latest week snapshot (unix)
-    const ids = this.items.map((item) => item.address);
+    const ids = this.items.map((item) => item.address); // only whitelisted assets
 
     const tokensData = {};
     let hasNextPage = true;
