@@ -48,8 +48,9 @@ type NetworkTvlSnapshot = {
 };
 
 const NetworkTvlQuery = gql`
-  query NetworkTvlQuery($type: SnapshotType, $from: Int, $to: Int) {
+  query NetworkTvlQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
     networkSnapshots(
+      after: $after
       orderBy: TIMESTAMP_DESC
       filter: {
         and: [
@@ -59,6 +60,10 @@ const NetworkTvlQuery = gql`
         ]
       }
     ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       nodes {
         timestamp
         liquidityUSD
@@ -162,20 +167,30 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   private async fetchData(from: number, to: number, type: SnapshotTypes): Promise<NetworkTvlSnapshot[]> {
-    const response = await SubqueryExplorerService.request(NetworkTvlQuery, { from, to, type });
+    const buffer = [];
 
-    if (!response || !response.networkSnapshots) return [];
+    let hasNextPage = true;
+    let after = '';
 
-    const data = response.networkSnapshots.nodes.map((node) => {
-      const value = +node.liquidityUSD;
+    do {
+      const response = await SubqueryExplorerService.request(NetworkTvlQuery, { after, from, to, type });
 
-      return {
-        timestamp: +node.timestamp * 1000,
-        value: Number.isFinite(value) ? value : 0,
-      };
-    });
+      if (!response || !response.networkSnapshots) return buffer;
 
-    return data;
+      hasNextPage = response.networkSnapshots.pageInfo.hasNextPage;
+      after = response.networkSnapshots.pageInfo.endCursor;
+
+      response.networkSnapshots.nodes.forEach((node) => {
+        const value = +node.liquidityUSD;
+
+        buffer.push({
+          timestamp: +node.timestamp * 1000,
+          value: Number.isFinite(value) ? value : 0,
+        });
+      });
+    } while (hasNextPage);
+
+    return buffer;
   }
 }
 </script>

@@ -14,8 +14,9 @@
       @retry="updateData"
     >
       <formatted-amount class="chart-price" :value="amount.amount">
-        <template #prefix>$</template>
+        <template v-if="!fees" #prefix>$</template>
         {{ amount.suffix }}
+        <template v-if="fees">XOR</template>
       </formatted-amount>
       <price-change :value="priceChange" />
       <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
@@ -48,8 +49,9 @@ type NetworkTvlSnapshot = {
 };
 
 const NetworkVolumeQuery = gql`
-  query NetworkVolumeQuery($fees: Boolean!, $type: SnapshotType, $from: Int, $to: Int) {
+  query NetworkVolumeQuery($after: Cursor, $fees: Boolean!, $type: SnapshotType, $from: Int, $to: Int) {
     networkSnapshots(
+      after: $after
       orderBy: TIMESTAMP_DESC
       filter: {
         and: [
@@ -59,6 +61,10 @@ const NetworkVolumeQuery = gql`
         ]
       }
     ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       nodes {
         timestamp
         volumeUSD @skip(if: $fees)
@@ -219,20 +225,30 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   private async fetchData(fees: boolean, from: number, to: number, type: SnapshotTypes): Promise<NetworkTvlSnapshot[]> {
-    const response = await SubqueryExplorerService.request(NetworkVolumeQuery, { fees, from, to, type });
+    const buffer = [];
 
-    if (!response || !response.networkSnapshots) return [];
+    let hasNextPage = true;
+    let after = '';
 
-    const data = response.networkSnapshots.nodes.map((node) => {
-      const value = fees ? FPNumber.fromCodecValue(node.fees) : new FPNumber(node.volumeUSD);
+    do {
+      const response = await SubqueryExplorerService.request(NetworkVolumeQuery, { after, fees, from, to, type });
 
-      return {
-        timestamp: +node.timestamp * 1000,
-        value: value.isFinity() ? value : FPNumber.ZERO,
-      };
-    });
+      if (!response || !response.networkSnapshots) return buffer;
 
-    return data;
+      hasNextPage = response.networkSnapshots.pageInfo.hasNextPage;
+      after = response.networkSnapshots.pageInfo.endCursor;
+
+      response.networkSnapshots.nodes.forEach((node) => {
+        const value = fees ? FPNumber.fromCodecValue(node.fees) : new FPNumber(node.volumeUSD);
+
+        buffer.push({
+          timestamp: +node.timestamp * 1000,
+          value: value.isFinity() ? value : FPNumber.ZERO,
+        });
+      });
+    } while (hasNextPage);
+
+    return buffer;
   }
 }
 </script>
