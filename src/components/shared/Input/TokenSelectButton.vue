@@ -18,6 +18,7 @@
     />
     <span class="token-select-button__text">{{ buttonText }}</span>
     <s-icon v-if="icon" class="token-select-button__icon" :name="icon" size="18" />
+    <slot />
   </s-button>
 </template>
 

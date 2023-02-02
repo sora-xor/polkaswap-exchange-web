@@ -167,7 +167,7 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   private async fetchData(from: number, to: number, type: SnapshotTypes): Promise<NetworkTvlSnapshot[]> {
-    const buffer = [];
+    const buffer: NetworkTvlSnapshot[] = [];
 
     let hasNextPage = true;
     let after = '';

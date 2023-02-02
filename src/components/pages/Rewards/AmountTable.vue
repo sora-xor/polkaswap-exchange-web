@@ -103,7 +103,7 @@ import { Components } from '@/consts';
   components: {
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    RewardItemTooltip: lazyComponent(Components.RewardItemTooltip),
+    RewardsItemTooltip: lazyComponent(Components.RewardsItemTooltip),
   },
 })
 export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {

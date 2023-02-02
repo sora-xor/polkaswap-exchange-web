@@ -225,7 +225,7 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   private async fetchData(fees: boolean, from: number, to: number, type: SnapshotTypes): Promise<NetworkTvlSnapshot[]> {
-    const buffer = [];
+    const buffer: NetworkTvlSnapshot[] = [];
 
     let hasNextPage = true;
     let after = '';

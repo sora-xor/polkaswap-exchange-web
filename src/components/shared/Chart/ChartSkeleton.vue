@@ -96,6 +96,7 @@ $skeleton-label-width: 34px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
+    position: relative;
   }
 
   &-price {

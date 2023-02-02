@@ -93,7 +93,7 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, mixins.Tra
   }
 
   lineSeriesSpec(encodeY: string, color = this.theme.color.theme.accent, areaStyle = true) {
-    return {
+    const spec: any = {
       type: 'line',
       encode: {
         y: encodeY,
@@ -102,20 +102,25 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, mixins.Tra
       itemStyle: {
         color,
       },
-      // areaStyle: areaStyle ? {
-      //   opacity: 0.8,
-      //   color: new graphic.LinearGradient(0, 0, 0, 1, [
-      //     {
-      //       offset: 0,
-      //       color: 'rgba(248, 8, 123, 0.25)',
-      //     },
-      //     {
-      //       offset: 1,
-      //       color: 'rgba(255, 49, 148, 0.03)',
-      //     },
-      //   ]),
-      // } : false,
     };
+
+    if (areaStyle) {
+      spec.areaStyle = {
+        opacity: 0.8,
+        color: new graphic.LinearGradient(0, 0, 0, 1, [
+          {
+            offset: 0,
+            color: 'rgba(248, 8, 123, 0.25)',
+          },
+          {
+            offset: 1,
+            color: 'rgba(255, 49, 148, 0.03)',
+          },
+        ]),
+      };
+    }
+
+    return spec;
   }
 
   barSeriesSpec(encodeY: string) {
