@@ -11,8 +11,8 @@ def pipeline = new org.js.AppPipeline(steps: this,
     sonarProjectKey:    'jp.co.soramitsu:adar-web',
     stageDeploy: true,
     downstreamJob: '../deploy/web-stage1'
-    // copyToBranches: ['fleek-pre', 'fleek'],
-    // copyFile: 'env.json',
+    copyToBranches: ['fleek-pre', 'fleek'],
+    copyFile: 'env.json',
     // ipfsHashNotification: true,
     // fleekDefaultSiteName: 'long-firefly-8047',
     // ipfsHashChatID: '-1001375555544'
