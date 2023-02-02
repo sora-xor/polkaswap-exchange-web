@@ -6,15 +6,16 @@ def pipeline = new org.js.AppPipeline(steps: this,
     dockerRegistryCred: 'bot-adar-rw',
     // buildEnvironment: buildEnvironment,
     // secretScannerExclusion: 'Jenkinsfile-UCAN',
+    dockerImageTags: ['adar': 'latest', 'adar-dev': 'dev'],
     copyStaticToBranch: true,
-    sonarProjectName:   'adar-web',
-    sonarProjectKey:    'jp.co.soramitsu:adar-web',
+    sonarProjectName: 'adar-web',
+    sonarProjectKey: 'jp.co.soramitsu:adar-web',
     stageDeploy: true,
-    downstreamJob: '../deploy/web-stage1'
+    downstreamJob: '../deploy/web-stage1',
     copyToBranches: ['fleek-pre', 'fleek'],
     copyFile: 'env.json',
     // ipfsHashNotification: true,
-    // fleekDefaultSiteName: 'long-firefly-8047',
+    fleekDefaultSiteName: 'dawn-block-3896'
     // ipfsHashChatID: '-1001375555544'
 )
 pipeline.runPipeline()
