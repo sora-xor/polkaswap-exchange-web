@@ -10,12 +10,16 @@
               and cost effective to pay large numbers of global suppliers and employees on a recurring basis
             </h3>
           </div>
+          <div class="description-section__ref">
+            <a href="https://www.adar.com" target="_blank">learn more</a>
+          </div>
           <img
             src="/adar/about/about1.png"
             alt="ADAR desktop app"
             class="description-section__picture"
             data-aos="fade-up"
             data-aos-delay="200"
+            loading="lazy"
           />
         </div>
       </section>
@@ -161,11 +165,34 @@ export default class About extends Mixins(TranslationMixin) {
     &__picture {
       width: 1000px;
       margin: 40px auto;
+      border-radius: 12px;
+      box-shadow: var(--s-shadow-element-pressed);
+      pointer-events: none;
     }
 
     h1 {
       margin: 40px auto;
       font-weight: 700;
+    }
+
+    &__ref {
+      @include flex-center;
+      margin: 40px auto 0 auto;
+      a {
+        display: block;
+        font-size: 20px;
+        padding: 20px 40px;
+        border-radius: 24px;
+        background-color: var(--s-color-theme-accent);
+        color: white;
+        text-decoration: none;
+        text-transform: capitalize;
+        font-weight: 300;
+
+        &:hover {
+          background-color: var(--s-color-theme-accent-hover);
+        }
+      }
     }
   }
 }
