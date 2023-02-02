@@ -1,4 +1,4 @@
-# polkaswap-exchange-web
+# adar
 
 ## Project deploy info
 There is `public/env.json` file which contains `BASE_API_URL` and `DEFAULT_NETWORKS` variables.
