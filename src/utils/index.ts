@@ -279,7 +279,10 @@ export const formatAmountWithSuffix = (value: FPNumber): AmountWithSuffix => {
   const val = value.toNumber();
   const format = (value: string) => new FPNumber(value).toLocaleString();
 
-  if (Math.trunc(val / 1_000_000) > 0) {
+  if (Math.trunc(val / 1_000_000_000) > 0) {
+    const amount = format((val / 1_000_000_000).toFixed(2));
+    return { amount, suffix: 'B' };
+  } else if (Math.trunc(val / 1_000_000) > 0) {
     const amount = format((val / 1_000_000).toFixed(2));
     return { amount, suffix: 'M' };
   } else if (Math.trunc(val / 1_000) > 0) {

@@ -70,11 +70,16 @@ $skeleton-label-width: 34px;
 .charts-container {
   .chart {
     height: 283px;
-  }
 
-  @include large-desktop {
-    .chart {
+    @include large-desktop {
       height: 323px;
+    }
+
+    &-price {
+      margin-bottom: $inner-spacing-tiny;
+      font-weight: 600;
+      font-size: var(--s-heading3-font-size);
+      line-height: var(--s-line-height-extra-small);
     }
   }
 }
@@ -110,7 +115,7 @@ $skeleton-label-width: 34px;
     &-impact {
       display: flex;
       max-width: 150px;
-      margin-top: 10px;
+      margin-top: 6px;
       margin-bottom: 2px;
 
       > :first-child,
@@ -135,7 +140,7 @@ $skeleton-label-width: 34px;
 
     &--lables {
       justify-content: space-between;
-      margin-top: $inner-spacing-medium;
+      margin-bottom: $inner-spacing-small;
 
       &.offset {
         padding-left: calc(#{$margin-right} + #{$skeleton-label-width});

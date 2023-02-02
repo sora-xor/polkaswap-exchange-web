@@ -252,12 +252,3 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.chart-price {
-  margin-bottom: $inner-spacing-tiny;
-  font-weight: 600;
-  font-size: var(--s-heading3-font-size);
-  line-height: var(--s-line-height-extra-small);
-}
-</style>

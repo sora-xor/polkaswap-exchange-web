@@ -95,6 +95,7 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, mixins.Tra
   lineSeriesSpec(encodeY: string, color = this.theme.color.theme.accent, areaStyle = true) {
     const spec: any = {
       type: 'line',
+      name: encodeY,
       encode: {
         y: encodeY,
       },

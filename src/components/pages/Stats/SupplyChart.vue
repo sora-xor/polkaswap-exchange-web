@@ -7,15 +7,7 @@
     </template>
 
     <template #types>
-      <s-dropdown ref="dropdown" tabindex="-1" trigger="click" class="token-select-dropdown" @select="handleSelect">
-        <token-select-button :token="token" icon="chevron-down-rounded-16" @click="handleButtonClick" />
-
-        <template #menu>
-          <s-dropdown-item v-for="item in tokens" :value="item.address" :key="item.address" tabindex="0">
-            {{ item.symbol }}
-          </s-dropdown-item>
-        </template>
-      </s-dropdown>
+      <token-select-dropdown :token="token" :tokens="tokens" @select="changeToken" />
     </template>
 
     <chart-skeleton
@@ -38,10 +30,11 @@
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { gql } from '@urql/core';
-import { Component, Mixins, Ref } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
 import { NativeAssets } from '@sora-substrate/util/build/assets/consts';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import ChartSpecMixin from '@/components/shared/Chart/SpecMixin';
 
@@ -53,8 +46,6 @@ import { SnapshotTypes } from '@/types/filters';
 
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
-
-import type SDropdown from '@soramitsu/soramitsu-js-ui/lib/components/Dropdown/SDropdown/SDropdown.vue';
 
 type AssetSupplySnapshot = {
   timestamp: number;
@@ -109,13 +100,11 @@ const getExtremum = (data, prop: string, min = false) => {
     PriceChange: lazyComponent(Components.PriceChange),
     StatsCard: lazyComponent(Components.StatsCard),
     StatsFilter: lazyComponent(Components.StatsFilter),
-    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    TokenSelectDropdown: lazyComponent(Components.TokenSelectDropdown),
     FormattedAmount: components.FormattedAmount,
   },
 })
 export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin) {
-  @Ref('dropdown') readonly dropdown!: SDropdown;
-
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
   readonly filters = ASSET_SUPPLY_LINE_FILTERS;
@@ -214,6 +203,15 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           yAxisIndex: 1,
         },
       ],
+      legend: {
+        orient: 'horizontal',
+        top: 0,
+        right: 0,
+        icon: 'circle',
+        textStyle: {
+          color: this.theme.color.base.content.secondary,
+        },
+      },
     };
   }
 
@@ -222,14 +220,9 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
     this.updateData();
   }
 
-  handleSelect(address: string): void {
-    this.token = this.tokens.find((token) => token.address === address) ?? this.tokens[0];
+  changeToken(token: Asset): void {
+    this.token = token;
     this.updateData();
-  }
-
-  handleButtonClick(): void {
-    // emulate click in el-dropdown
-    (this.dropdown.$refs.dropdown as SDropdown).handleClick();
   }
 
   private async updateData(): Promise<void> {
@@ -281,22 +274,3 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   }
 }
 </script>
-
-<style lang="scss">
-.token-select-dropdown {
-  & > span {
-    & > i {
-      display: none;
-    }
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-.chart-price {
-  margin-bottom: $inner-spacing-tiny;
-  font-weight: 600;
-  font-size: var(--s-heading3-font-size);
-  line-height: var(--s-line-height-extra-small);
-}
-</style>
