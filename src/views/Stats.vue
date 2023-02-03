@@ -4,11 +4,11 @@
 
     <stats-tvl-chart class="grid-item grid-item--50" :parent-loading="parentLoading" />
 
-    <!-- <stats-bar-chart class="grid-item grid-item--50" :parent-loading="parentLoading" />
+    <stats-bar-chart class="grid-item grid-item--50" :parent-loading="parentLoading" />
 
     <stats-bar-chart class="grid-item grid-item--50" fees :parent-loading="parentLoading" />
 
-    <stats-supply-chart class="grid-item grid-item--50" :parent-loading="parentLoading" /> -->
+    <stats-supply-chart class="grid-item grid-item--50" :parent-loading="parentLoading" />
   </div>
 </template>
 

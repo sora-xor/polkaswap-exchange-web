@@ -38,7 +38,7 @@ import { gql } from '@urql/core';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
-import { NativeAssets } from '@sora-substrate/util/build/assets/consts';
+import { XOR, VAL, PSWAP, XSTUSD, XST, TBCD } from '@sora-substrate/util/build/assets/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
@@ -111,10 +111,10 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
   readonly filters = ASSET_SUPPLY_LINE_FILTERS;
-  readonly tokens = NativeAssets;
+  readonly tokens = [XOR, VAL, PSWAP, XSTUSD, XST, TBCD];
 
   filter: SnapshotFilter = ASSET_SUPPLY_LINE_FILTERS[0];
-  token = NativeAssets[0];
+  token = XOR;
 
   data: AssetSupplySnapshot[] = [];
 
