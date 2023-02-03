@@ -25,7 +25,6 @@
       </section>
     </div>
     <footer class="app-footer">
-      <web-3-logo :theme="libraryTheme" draggable="false" class="web3 unselectable" />
       <div class="hr" />
     </footer>
   </div>
