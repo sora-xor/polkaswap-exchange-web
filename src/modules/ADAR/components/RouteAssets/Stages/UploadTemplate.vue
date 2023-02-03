@@ -26,7 +26,9 @@
         </s-button>
       </div>
     </div>
-    <p class="route-assets-upload-template__label">Don’t have a template? <a class="route-assets__ref">Download</a></p>
+    <p class="route-assets-upload-template__label">
+      Don’t have a template? <a href="/adar/template.csv" download class="route-assets__ref">Download</a>
+    </p>
     <input type="file" @change="uploadFile" ref="file" hidden accept=".csv" />
   </div>
   <div v-else class="container route-assets-upload-template">
