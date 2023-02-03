@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { graphic } from 'echarts';
+import merge from 'lodash/fp/merge';
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -15,8 +15,17 @@ const AXIS_LABEL_CSS = {
 
 @Component
 export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, mixins.TranslationMixin) {
-  xAxisSpec() {
-    return {
+  gridSpec(options: any = {}) {
+    return merge({
+      top: 20,
+      left: 0,
+      right: 0,
+      bottom: 20 + AXIS_OFFSET,
+    })(options);
+  }
+
+  xAxisSpec(options: any = {}) {
+    return merge({
       type: 'time',
       axisTick: {
         show: false,
@@ -73,11 +82,11 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, mixins.Tra
         },
       },
       boundaryGap: false,
-    };
+    })(options);
   }
 
-  tooltipSpec() {
-    return {
+  tooltipSpec(options: any = {}) {
+    return merge({
       show: true,
       trigger: 'axis',
       backgroundColor: this.theme.color.utility.body,
@@ -89,56 +98,37 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, mixins.Tra
         fontFamily: 'Sora',
         fontWeight: 400,
       },
-    };
+    })(options);
   }
 
-  lineSeriesSpec(encodeY: string, color = this.theme.color.theme.accent, areaStyle = true) {
-    const spec: any = {
+  lineSeriesSpec(options: any = {}) {
+    return merge({
       type: 'line',
-      name: encodeY,
       encode: {
-        y: encodeY,
-      },
-      showSymbol: false,
-      itemStyle: {
-        color,
-      },
-    };
-
-    if (areaStyle) {
-      spec.areaStyle = {
-        opacity: 0.8,
-        color: new graphic.LinearGradient(0, 0, 0, 1, [
-          {
-            offset: 0,
-            color: 'rgba(248, 8, 123, 0.25)',
-          },
-          {
-            offset: 1,
-            color: 'rgba(255, 49, 148, 0.03)',
-          },
-        ]),
-      };
-    }
-
-    return spec;
-  }
-
-  barSeriesSpec(encodeY: string) {
-    return {
-      type: 'bar',
-      encode: {
-        y: encodeY,
+        y: 'value',
       },
       showSymbol: false,
       itemStyle: {
         color: this.theme.color.theme.accent,
       },
-    };
+    })(options);
   }
 
-  candlestickSeriesSpec() {
-    return {
+  barSeriesSpec(options: any = {}) {
+    return merge({
+      type: 'bar',
+      encode: {
+        y: 'value',
+      },
+      showSymbol: false,
+      itemStyle: {
+        color: this.theme.color.theme.accent,
+      },
+    })(options);
+  }
+
+  candlestickSeriesSpec(options: any = {}) {
+    return merge({
       type: 'candlestick',
       barMaxWidth: 10,
       itemStyle: {
@@ -148,6 +138,6 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, mixins.Tra
         borderColor0: this.theme.color.theme.accentHover,
         borderWidth: 2,
       },
-    };
+    })(options);
   }
 }

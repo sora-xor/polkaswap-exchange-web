@@ -150,17 +150,19 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
   }
 
   private async updateData(): Promise<void> {
-    await this.withApi(async () => {
-      const { type, count } = this.filter;
-      const seconds = SECONDS_IN_TYPE[type];
-      const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
-      const aTime = now - seconds * count;
-      const bTime = aTime - seconds * count;
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        const { type, count } = this.filter;
+        const seconds = SECONDS_IN_TYPE[type];
+        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
+        const aTime = now - seconds * count;
+        const bTime = aTime - seconds * count;
 
-      const [curr, prev] = await Promise.all([this.fetchData(now, aTime, type), this.fetchData(aTime, bTime, type)]);
+        const [curr, prev] = await Promise.all([this.fetchData(now, aTime, type), this.fetchData(aTime, bTime, type)]);
 
-      this.currData = this.groupData(curr);
-      this.prevData = this.groupData(prev);
+        this.currData = this.groupData(curr);
+        this.prevData = this.groupData(prev);
+      });
     });
   }
 
@@ -206,10 +208,6 @@ $gap: $inner-spacing-mini;
 
   .stats-column {
     @include columns(2, $gap);
-
-    @include tablet {
-      @include columns(3, $gap);
-    }
 
     @include desktop {
       @include columns(4, $gap);

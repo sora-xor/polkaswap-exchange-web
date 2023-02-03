@@ -26,17 +26,18 @@
 <script lang="ts">
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
+import { graphic } from 'echarts';
 import { gql } from '@urql/core';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
 
-import ChartSpecMixin from '@/components/shared/Chart/SpecMixin';
+import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
-import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
+import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 import { SnapshotTypes } from '@/types/filters';
 
 import type { SnapshotFilter } from '@/types/filters';
@@ -49,7 +50,7 @@ type NetworkTvlSnapshot = {
 
 const NetworkTvlQuery = gql`
   query NetworkTvlQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
-    networkSnapshots(
+    entities: networkSnapshots(
       after: $after
       orderBy: TIMESTAMP_DESC
       filter: {
@@ -71,8 +72,6 @@ const NetworkTvlQuery = gql`
     }
   }
 `;
-
-const AXIS_OFFSET = 8;
 
 @Component({
   components: {
@@ -119,28 +118,36 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
         source: this.data.map((item) => [item.timestamp, item.value]),
         dimensions: ['timestamp', 'value'],
       },
-      grid: {
-        top: 20,
-        left: 0,
-        right: 0,
-        bottom: 20 + AXIS_OFFSET,
-      },
-      xAxis: {
-        ...this.xAxisSpec(),
-      },
+      grid: this.gridSpec(),
+      xAxis: this.xAxisSpec(),
       yAxis: {
         show: false,
         type: 'value',
       },
-      tooltip: {
-        ...this.tooltipSpec(),
+      tooltip: this.tooltipSpec({
         formatter: (params) => {
           const { data } = params[0];
           const [timestamp, value] = data;
-          return `$ ${new FPNumber(value).toLocaleString()}`;
+          return `$ ${formatDecimalPlaces(value)}`;
         },
-      },
-      series: [this.lineSeriesSpec('value')],
+      }),
+      series: [
+        this.lineSeriesSpec({
+          areaStyle: {
+            opacity: 0.8,
+            color: new graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgba(248, 8, 123, 0.25)',
+              },
+              {
+                offset: 1,
+                color: 'rgba(255, 49, 148, 0.03)',
+              },
+            ]),
+          },
+        }),
+      ],
     };
   }
 
@@ -150,19 +157,21 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   private async updateData(): Promise<void> {
-    await this.withApi(async () => {
-      try {
-        const { type, count } = this.filter;
-        const seconds = SECONDS_IN_TYPE[type];
-        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
-        const to = now - seconds * count;
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        try {
+          const { type, count } = this.filter;
+          const seconds = SECONDS_IN_TYPE[type];
+          const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
+          const to = now - seconds * count;
 
-        this.data = await this.fetchData(now, to, type);
-        this.isFetchingError = false;
-      } catch (error) {
-        console.error(error);
-        this.isFetchingError = true;
-      }
+          this.data = await this.fetchData(now, to, type);
+          this.isFetchingError = false;
+        } catch (error) {
+          console.error(error);
+          this.isFetchingError = true;
+        }
+      });
     });
   }
 
@@ -175,12 +184,12 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
     do {
       const response = await SubqueryExplorerService.request(NetworkTvlQuery, { after, from, to, type });
 
-      if (!response || !response.networkSnapshots) return buffer;
+      if (!response || !response.entities) return buffer;
 
-      hasNextPage = response.networkSnapshots.pageInfo.hasNextPage;
-      after = response.networkSnapshots.pageInfo.endCursor;
+      hasNextPage = response.entities.pageInfo.hasNextPage;
+      after = response.entities.pageInfo.endCursor;
 
-      response.networkSnapshots.nodes.forEach((node) => {
+      response.entities.nodes.forEach((node) => {
         const value = +node.liquidityUSD;
 
         buffer.push({

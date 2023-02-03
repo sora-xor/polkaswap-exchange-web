@@ -16,7 +16,6 @@
       <formatted-amount class="chart-price" :value="amount.amount">
         <template v-if="!fees" #prefix>$</template>
         {{ amount.suffix }}
-        <template v-if="fees">XOR</template>
       </formatted-amount>
       <price-change :value="priceChange" />
       <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
@@ -32,12 +31,12 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
 
-import ChartSpecMixin from '@/components/shared/Chart/SpecMixin';
+import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
-import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
+import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 import { SnapshotTypes } from '@/types/filters';
 
 import type { SnapshotFilter } from '@/types/filters';
@@ -74,8 +73,6 @@ const NetworkVolumeQuery = gql`
   }
 `;
 
-const AXIS_OFFSET = 8;
-
 const getTotalValue = (data: NetworkTvlSnapshot[]) => {
   return data.reduce((acc, item) => acc.add(item.value), FPNumber.ZERO);
 };
@@ -108,7 +105,7 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   get title(): string {
-    return this.fees ? 'Fees' : 'Volume';
+    return this.fees ? 'Fees (XOR)' : 'Volume';
   }
 
   get firstValue(): FPNumber {
@@ -139,27 +136,19 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
         source: this.data.map((item) => [item.timestamp, item.value.toNumber()]),
         dimensions: ['timestamp', 'value'],
       },
-      grid: {
-        top: 20,
-        left: 0,
-        right: 0,
-        bottom: 20 + AXIS_OFFSET,
-      },
-      xAxis: {
-        ...this.xAxisSpec(),
-      },
+      grid: this.gridSpec(),
+      xAxis: this.xAxisSpec(),
       yAxis: {
         show: false,
       },
-      tooltip: {
-        ...this.tooltipSpec(),
+      tooltip: this.tooltipSpec({
         formatter: (params) => {
           const { data } = params[0];
           const [timestamp, value] = data;
-          return `$ ${new FPNumber(value).toLocaleString()}`;
+          return `${this.fees ? '' : '$'} ${formatDecimalPlaces(value)}`;
         },
-      },
-      series: [this.barSeriesSpec('value')],
+      }),
+      series: [this.barSeriesSpec()],
     };
   }
 
@@ -199,28 +188,30 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   private async updateData(): Promise<void> {
-    await this.withApi(async () => {
-      try {
-        const { fees } = this;
-        const { type, count } = this.filter;
-        const seconds = SECONDS_IN_TYPE[type];
-        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
-        const aTime = now - seconds * count;
-        const bTime = aTime - seconds * count;
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        try {
+          const { fees } = this;
+          const { type, count } = this.filter;
+          const seconds = SECONDS_IN_TYPE[type];
+          const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
+          const aTime = now - seconds * count;
+          const bTime = aTime - seconds * count;
 
-        const [curr, prev] = await Promise.all([
-          this.fetchData(fees, now, aTime, type),
-          this.fetchData(fees, aTime, bTime, type),
-        ]);
+          const [curr, prev] = await Promise.all([
+            this.fetchData(fees, now, aTime, type),
+            this.fetchData(fees, aTime, bTime, type),
+          ]);
 
-        this.data = this.normalizeData(curr, seconds * 1000, now * 1000, aTime * 1000);
-        this.prevData = prev;
+          this.data = this.normalizeData(curr, seconds * 1000, now * 1000, aTime * 1000);
+          this.prevData = prev;
 
-        this.isFetchingError = false;
-      } catch (error) {
-        console.error(error);
-        this.isFetchingError = true;
-      }
+          this.isFetchingError = false;
+        } catch (error) {
+          console.error(error);
+          this.isFetchingError = true;
+        }
+      });
     });
   }
 

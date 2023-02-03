@@ -35,6 +35,7 @@ export default class ThemePaletteMixin extends Vue {
         status: {
           success: css('--s-color-status-success'),
           error: css('--s-color-status-error'),
+          warning: css('--s-color-status-warning'),
         },
       },
       border: {

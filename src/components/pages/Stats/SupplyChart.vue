@@ -7,7 +7,12 @@
     </template>
 
     <template #types>
-      <token-select-dropdown :token="token" :tokens="tokens" @select="changeToken" />
+      <token-select-dropdown
+        :token="token"
+        :tokens="tokens"
+        :disabled="parentLoading || loading"
+        @select="changeToken"
+      />
     </template>
 
     <chart-skeleton
@@ -36,12 +41,12 @@ import { FPNumber } from '@sora-substrate/math';
 import { NativeAssets } from '@sora-substrate/util/build/assets/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
-import ChartSpecMixin from '@/components/shared/Chart/SpecMixin';
+import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, ASSET_SUPPLY_LINE_FILTERS } from '@/consts/snapshots';
-import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
+import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 import { SnapshotTypes } from '@/types/filters';
 
 import type { SnapshotFilter } from '@/types/filters';
@@ -49,7 +54,7 @@ import type { AmountWithSuffix } from '@/types/formats';
 
 type AssetSupplySnapshot = {
   timestamp: number;
-  supply: number;
+  value: number;
   mint: number;
   burn: number;
 };
@@ -74,15 +79,13 @@ const AssetSupplyQuery = gql`
       }
       nodes {
         timestamp
-        supply
+        value: supply
         mint
         burn
       }
     }
   }
 `;
-
-const AXIS_OFFSET = 8;
 
 const toNumber = (value: string): number => {
   const fp = FPNumber.fromCodecValue(value);
@@ -118,11 +121,11 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   isFetchingError = false;
 
   get firstValue(): FPNumber {
-    return new FPNumber(first(this.data)?.supply ?? 0);
+    return new FPNumber(first(this.data)?.value ?? 0);
   }
 
   get lastValue(): FPNumber {
-    return new FPNumber(last(this.data)?.supply ?? 0);
+    return new FPNumber(last(this.data)?.value ?? 0);
   }
 
   get amount(): AmountWithSuffix {
@@ -134,8 +137,8 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   }
 
   get supplyRange(): [number, number] {
-    const max = getExtremum(this.data, 'supply');
-    const min = getExtremum(this.data, 'supply', true);
+    const max = getExtremum(this.data, 'value');
+    const min = getExtremum(this.data, 'value', true);
     const diff = max - min;
 
     return [max, min - diff];
@@ -155,18 +158,11 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   get chartSpec() {
     return {
       dataset: {
-        source: this.data.map((item) => [item.timestamp, item.supply, item.mint, item.burn]),
+        source: this.data.map((item) => [item.timestamp, item.value, item.mint, item.burn]),
         dimensions: ['timestamp', 'supply', 'mint', 'burn'],
       },
-      grid: {
-        top: 20,
-        left: 0,
-        right: 0,
-        bottom: 20 + AXIS_OFFSET,
-      },
-      xAxis: {
-        ...this.xAxisSpec(),
-      },
+      grid: this.gridSpec(),
+      xAxis: this.xAxisSpec(),
       yAxis: [
         {
           type: 'value',
@@ -181,27 +177,37 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           min: this.mintBurnRange[1],
         },
       ],
-      tooltip: {
-        ...this.tooltipSpec(),
-        // formatter: (params) => {
-        //   const { data } = params[0];
-        //   const [timestamp, value] = data;
-        //   return `$ ${new FPNumber(value).toLocaleString()}`;
-        // },
-      },
+      tooltip: this.tooltipSpec({
+        valueFormatter: (value) => formatDecimalPlaces(value),
+      }),
       series: [
-        {
-          ...this.lineSeriesSpec('supply', this.theme.color.theme.accent, false),
+        this.lineSeriesSpec({
+          encode: { y: 'value' },
+          itemStyle: {
+            color: this.theme.color.status.warning,
+          },
+          name: 'Supply',
           yAxisIndex: 0,
-        },
-        {
-          ...this.lineSeriesSpec('mint', this.theme.color.status.success, false),
+          areaStyle: undefined,
+        }),
+        this.lineSeriesSpec({
+          encode: { y: 'mint' },
+          itemStyle: {
+            color: this.theme.color.status.success,
+          },
+          name: 'Mint',
           yAxisIndex: 1,
-        },
-        {
-          ...this.lineSeriesSpec('burn', this.theme.color.status.error, false),
+          areaStyle: undefined,
+        }),
+        this.lineSeriesSpec({
+          encode: { y: 'burn' },
+          itemStyle: {
+            color: this.theme.color.status.error,
+          },
+          name: 'Burn',
           yAxisIndex: 1,
-        },
+          areaStyle: undefined,
+        }),
       ],
       legend: {
         orient: 'horizontal',
@@ -226,23 +232,25 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   }
 
   private async updateData(): Promise<void> {
-    await this.withApi(async () => {
-      try {
-        const id = this.token.address;
-        const { type, count } = this.filter;
-        const seconds = SECONDS_IN_TYPE[type];
-        const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
-        const aTime = now - seconds * count;
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        try {
+          const id = this.token.address;
+          const { type, count } = this.filter;
+          const seconds = SECONDS_IN_TYPE[type];
+          const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
+          const aTime = now - seconds * count;
 
-        const data = await this.fetchData(id, now, aTime, type);
+          const data = await this.fetchData(id, now, aTime, type);
 
-        this.data = data;
+          this.data = data;
 
-        this.isFetchingError = false;
-      } catch (error) {
-        console.error(error);
-        this.isFetchingError = true;
-      }
+          this.isFetchingError = false;
+        } catch (error) {
+          console.error(error);
+          this.isFetchingError = true;
+        }
+      });
     });
   }
 
@@ -263,7 +271,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
       response.assetSnapshots.nodes.forEach((node) => {
         buffer.push({
           timestamp: +node.timestamp * 1000,
-          supply: toNumber(node.supply),
+          value: toNumber(node.value),
           mint: toNumber(node.mint),
           burn: toNumber(node.burn),
         });

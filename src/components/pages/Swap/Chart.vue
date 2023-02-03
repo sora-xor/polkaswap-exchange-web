@@ -62,12 +62,13 @@
 <script lang="ts">
 import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
+import { graphic } from 'echarts';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import ChartSpecMixin from '@/components/shared/Chart/SpecMixin';
+import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 
 import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
 import { lazyComponent } from '@/router';
@@ -459,16 +460,12 @@ export default class SwapChart extends Mixins(
         source: this.chartData,
         dimensions: ['timestamp', 'open', 'close', 'low', 'high'],
       },
-      grid: {
+      grid: this.gridSpec({
         left: this.gridLeftOffset,
-        right: 0,
-        bottom: 20 + AXIS_OFFSET,
-        top: 20,
-      },
-      xAxis: {
-        ...this.xAxisSpec(),
+      }),
+      xAxis: this.xAxisSpec({
         boundaryGap: this.isLineChart ? false : [0.005, 0.005],
-      },
+      }),
       yAxis: {
         type: 'value',
         offset: AXIS_OFFSET,
@@ -514,8 +511,10 @@ export default class SwapChart extends Mixins(
         },
       ],
       color: [this.theme.color.theme.accent, this.theme.color.status.success],
-      tooltip: {
-        ...this.tooltipSpec(),
+      tooltip: this.tooltipSpec({
+        axisPointer: {
+          type: 'cross',
+        },
         formatter: (params) => {
           const { data, seriesType } = params[0];
           const [timestamp, open, close, low, high] = data;
@@ -553,8 +552,27 @@ export default class SwapChart extends Mixins(
             `;
           }
         },
-      },
-      series: [this.isLineChart ? this.lineSeriesSpec('close') : this.candlestickSeriesSpec()],
+      }),
+      series: [
+        this.isLineChart
+          ? this.lineSeriesSpec({
+              encode: { y: 'close' },
+              areaStyle: {
+                opacity: 0.8,
+                color: new graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: 'rgba(248, 8, 123, 0.25)',
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgba(255, 49, 148, 0.03)',
+                  },
+                ]),
+              },
+            })
+          : this.candlestickSeriesSpec(),
+      ],
     };
   }
 
