@@ -121,7 +121,6 @@ export enum PageNames {
   RewardsTabs = 'RewardsTabs',
   ReferralBonding = 'ReferralBonding',
   ReferralUnbonding = 'ReferralUnbonding',
-  PageNotFound = 'PageNotFound',
   BridgeContainer = 'BridgeContainer',
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
@@ -164,7 +163,6 @@ export enum Components {
   ToSDialog = 'SoraCard/steps/ToSDialog',
   RoadMap = 'SoraCard/steps/RoadMap',
   KycView = 'SoraCard/steps/KycView',
-  // HelpDialog = 'HelpDialog',
   // Paywings
   X1Dialog = 'X1/X1Dialog',
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',

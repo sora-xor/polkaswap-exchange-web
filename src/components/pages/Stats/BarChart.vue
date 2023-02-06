@@ -29,6 +29,7 @@ import last from 'lodash/fp/last';
 import { gql } from '@urql/core';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { FPNumber } from '@sora-substrate/math';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
@@ -73,8 +74,28 @@ const NetworkVolumeQuery = gql`
   }
 `;
 
-const getTotalValue = (data: NetworkTvlSnapshot[]) => {
+const getTotalValue = (data: NetworkTvlSnapshot[]): FPNumber => {
   return data.reduce((acc, item) => acc.add(item.value), FPNumber.ZERO);
+};
+
+const iterate = (prevTimestamp: number, currentTimestamp: number, difference: number): NetworkTvlSnapshot[] => {
+  const buffer: NetworkTvlSnapshot[] = [];
+
+  while ((currentTimestamp += difference) < prevTimestamp) {
+    buffer.push({
+      timestamp: currentTimestamp,
+      value: FPNumber.ZERO,
+    });
+  }
+
+  return buffer.reverse();
+};
+
+const normalizeTo = (sample: NetworkTvlSnapshot[], difference: number, from: number, to: number): void => {
+  const prevTimestamp = last(sample)?.timestamp ?? from;
+  const buffer = iterate(prevTimestamp, to, difference);
+
+  sample.push(...buffer);
 };
 
 @Component({
@@ -105,7 +126,7 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   get title(): string {
-    return this.fees ? 'Fees (XOR)' : 'Volume';
+    return this.fees ? `Fees (${XOR.symbol})` : 'Volume';
   }
 
   get firstValue(): FPNumber {
@@ -160,29 +181,12 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   private normalizeData(collection: NetworkTvlSnapshot[], difference: number, from: number, to: number) {
     const sample: NetworkTvlSnapshot[] = [];
 
-    const iterate = (prevTimestamp: number, currentTimestamp: number, difference: number) => {
-      const buffer: NetworkTvlSnapshot[] = [];
-
-      while ((currentTimestamp += difference) < prevTimestamp) {
-        buffer.push({
-          timestamp: currentTimestamp,
-          value: FPNumber.ZERO,
-        });
-      }
-
-      return buffer.reverse();
-    };
-
     for (const item of collection) {
-      const prevTimestamp = last(sample)?.timestamp ?? from;
-      const buffer = iterate(prevTimestamp, item.timestamp, difference);
-
-      sample.push(...buffer, item);
+      normalizeTo(sample, difference, from, item.timestamp);
+      sample.push(item);
     }
 
-    const lastSampleTimestamp = last(sample)?.timestamp ?? from;
-    const buffer = iterate(lastSampleTimestamp, to, difference);
-    sample.push(...buffer);
+    normalizeTo(sample, difference, from, to);
 
     return sample;
   }

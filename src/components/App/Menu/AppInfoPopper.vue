@@ -62,7 +62,7 @@ export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.Loadi
   get textLinks(): Array<{ title: string; href: string }> {
     return [
       {
-        title: this.t('helpDialog.privacyPolicy'),
+        title: this.t('footerMenu.privacy'),
         href: Links.privacy,
       },
       {

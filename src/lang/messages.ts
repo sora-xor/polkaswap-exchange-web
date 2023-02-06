@@ -74,7 +74,6 @@ export default {
     [PageNames.ExploreFarming]: 'Farming',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
-    [PageNames.PageNotFound]: 'Page Not Found',
     [DemeterPageNames.Staking]: 'Staking',
   },
   mainMenu: {

@@ -224,9 +224,6 @@ const routes: Array<RouteConfig> = [
   {
     path: '*',
     redirect: '/swap',
-    // TODO: Turn on redirect to PageNotFound
-    // name: PageNames.PageNotFound,
-    // component: lazyComponent(PageNames.PageNotFound)
   },
 ];
 

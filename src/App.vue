@@ -191,7 +191,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   get privacyLink(): string {
-    return this.generateDisclaimerLink(Links.privacy, this.t('helpDialog.privacyPolicy'));
+    return this.generateDisclaimerLink(Links.privacy, this.t('footerMenu.privacy'));
   }
 
   get polkaswapFaqLink(): string {
