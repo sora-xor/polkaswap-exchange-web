@@ -228,52 +228,62 @@ export interface SidebarMenuItem {
   disabled?: boolean;
 }
 
-interface SidebarMenuItemLink extends SidebarMenuItem {
+export interface SidebarMenuItemLink extends SidebarMenuItem {
+  /** It's required for href if it's used */
   href?: string;
 }
 
-const MainMenu: Array<SidebarMenuItem> = [
+const MainMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'arrows-swap-90-24',
     title: PageNames.Swap,
+    href: '/#/swap',
   },
   {
     icon: 'basic-drop-24',
     title: PageNames.Pool,
+    href: '/#/pool',
   },
   {
     icon: 'basic-layers-24',
     title: PageNames.StakingContainer,
+    href: '/#/staking',
   },
   {
     icon: 'grid-block-distribute-vertically-24',
     title: PageNames.Bridge,
+    href: '/#/bridge',
   },
 ];
 
-const AccountMenu: Array<SidebarMenuItem> = [
+const AccountMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'finance-wallet-24',
     title: PageNames.Wallet,
+    href: '/#/wallet',
   },
   {
     icon: 'basic-circle-star-24',
     title: PageNames.Rewards,
+    href: '/#/rewards',
   },
 ];
 
-const OtherPagesMenu: Array<SidebarMenuItem> = [
+const OtherPagesMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'various-items-24',
     title: PageNames.ExploreContainer,
+    href: '/#/explore',
   },
   {
     icon: 'sora-card',
     title: PageNames.SoraCard,
+    href: '/#/card',
   },
   {
     icon: 'file-file-text-24',
     title: PageNames.About,
+    href: '/#/about',
   },
 ];
 

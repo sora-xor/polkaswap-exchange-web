@@ -23,7 +23,14 @@
               tabindex="0"
               class="menu-item"
             >
-              <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
+              <sidebar-item-content
+                tag="a"
+                rel="nofollow noopener"
+                :href="item.href"
+                :icon="item.icon"
+                :title="t(`mainMenu.${item.title}`)"
+                @click="() => false /** To ignore left click */"
+              />
             </s-menu-item>
           </s-menu-item-group>
         </s-menu>
@@ -95,7 +102,7 @@ import {
   StakingChildPages,
   ExploreChildPages,
   SidebarMenuGroups,
-  SidebarMenuItem,
+  SidebarMenuItemLink,
   FaucetLink,
   Components,
 } from '@/consts';
@@ -125,7 +132,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
   }
 
-  get sidebarMenuItems(): Array<SidebarMenuItem> {
+  get sidebarMenuItems(): Array<SidebarMenuItemLink> {
     if (this.soraCardEnabled) return SidebarMenuGroups;
     return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.SoraCard);
   }
