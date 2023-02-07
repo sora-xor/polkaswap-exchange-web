@@ -78,7 +78,7 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
 <style lang="scss">
 .x1-dialog .el-dialog {
   .wrapper {
-    min-height: 420px;
+    min-height: 320px;
   }
 }
 </style>

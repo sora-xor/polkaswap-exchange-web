@@ -26,6 +26,9 @@ const mutations = defineMutations<SoraCardState>()({
   setVerificationStatus(state, status: Nullable<VerificationStatus>) {
     state.verificationStatus = status;
   },
+  setPayWingsAuthSdk(state, authLogin: any) {
+    state.authLogin = authLogin;
+  },
 });
 
 export default mutations;

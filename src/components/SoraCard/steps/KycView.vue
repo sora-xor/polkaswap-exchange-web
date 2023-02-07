@@ -32,7 +32,7 @@ export default class KycView extends Mixins(TranslationMixin) {
   loadingKycView = true;
 
   async getReferenceNumber(URL: string): Promise<string> {
-    const token = sessionStorage.getItem('access-token');
+    const token = localStorage.getItem('PW-token');
 
     const result = await fetch(URL, {
       method: 'POST',
@@ -60,10 +60,6 @@ export default class KycView extends Mixins(TranslationMixin) {
     const { kycService, soraProxy } = soraCard(this.soraNetwork);
 
     const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
-
-    // TODO: take from localStorage
-    const accessToken = sessionStorage.getItem('access-token');
-    const refreshToken = sessionStorage.getItem('refresh-token');
 
     loadScript(kycService.sdkURL)
       .then(() => {
@@ -104,15 +100,15 @@ export default class KycView extends Mixins(TranslationMixin) {
             CountryCode: '', // ISO 3 country code
           },
           UserCredentials: {
-            AccessToken: accessToken,
-            RefreshToken: refreshToken,
+            AccessToken: localStorage.getItem('PW-token'),
+            RefreshToken: localStorage.getItem('PW-refresh-token'),
           },
         })
           .on('Error', (data) => {
             console.error('[SoraCard]: Error while initiating KYC', data);
 
             this.$notify({
-              message: 'Your access token has expired',
+              message: 'Something went wrong. Please, start again',
               title: '',
             });
             this.$emit('confirm-kyc', false);
@@ -124,7 +120,7 @@ export default class KycView extends Mixins(TranslationMixin) {
           .on('Success', (data) => {
             // Integrator handles UI from this point on on successful kyc
             // alert('Kyc was successfull, integrator takes control of flow from now on')
-            // console.log('success', data);
+
             this.$emit('confirm-kyc', true);
             unloadScript(kycService.sdkURL);
 
@@ -154,6 +150,12 @@ export default class KycView extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .sora-card-kyc-view {
+  height: 800px;
+
+  .el-scrollbar {
+    height: 800px;
+  }
+
   .container {
     margin: 0;
   }
@@ -167,5 +169,9 @@ export default class KycView extends Mixins(TranslationMixin) {
   iframe {
     background-color: #fff;
   }
+}
+
+section.content {
+  min-height: 800px;
 }
 </style>

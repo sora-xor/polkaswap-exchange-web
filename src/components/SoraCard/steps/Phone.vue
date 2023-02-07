@@ -2,12 +2,13 @@
   <div>
     <div class="sora-card__number-input">
       <s-input
+        ref="number"
         placeholder="Phone number"
         type="number"
         v-model="phoneNumber"
         :disabled="phoneInputDisabled"
-        class="what"
-      ></s-input>
+      />
+      <!-- <input v-mask="['+# (###) ### ## ##']" /> TODO: format number depending on country code-->
       <s-button
         type="secondary"
         :disabled="sendSmsDisabled"
@@ -17,18 +18,24 @@
         {{ sendSmsButtonText }}
       </s-button>
     </div>
+    <div>
+      <p class="sora-card__number-input-desc">{{ phoneInputDescription }}</p>
+      <s-icon v-if="smsSent" class="sora-card__icon" name="basic-check-mark-24" size="14px" />
+    </div>
     <s-input
-      tabindex="0"
+      ref="codes"
       placeholder="Verification code"
       v-model="verificationCode"
-      :disabled="loading"
-      ref="code"
-    ></s-input>
+      :disabled="otpInputDisabled"
+      maxlength="6"
+      type="number"
+    />
     <s-button
       :disabled="buttonDisabled"
       type="primary"
       class="sora-card__btn s-typography-button--large"
       @click="verifyCode"
+      :loading="sendOtpBtnLoading"
     >
       <span class="text"> {{ buttonText }}</span>
     </s-button>
@@ -36,21 +43,33 @@
 </template>
 
 <script lang="ts">
-import { loadScript } from 'vue-plugin-load-script';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { action, getter, state } from '@/store/decorators';
+import { VerificationStatus } from '@/types/card';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 @Component
 export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @Prop({ default: '', type: String }) readonly accessToken!: string;
+  @state.soraCard.authLogin authLogin!: any;
+
+  @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
+  @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
+
+  @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
+  @action.soraCard.initPayWingsAuthSdk initPayWingsAuthSdk!: () => Promise<void>;
+
+  @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
   phoneNumber = '';
   verificationCode = '';
   smsSent = false;
   smsResendTimer = null;
-  smsResendCount = 35;
+  smsResendCount = 59;
   smsResendText = '';
+  sendOtpBtnLoading = false;
+  notPassedKycAndNotHasXorEnough = false;
 
   loginApi: any = null;
 
@@ -63,28 +82,35 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 
   verifyCode(): void {
     // TODO: check for length before sending
-    const otp = 123456;
-    this.loginApi.PayWingsOtpCredentialVerification(otp).catch((error) => {
+
+    this.authLogin.PayWingsOtpCredentialVerification(this.verificationCode).catch((error) => {
+      this.sendOtpBtnLoading = false;
+      this.verificationCode = '';
+      this.$notify({
+        message: 'Code is incorrect',
+        type: 'error',
+        title: '',
+      });
       console.error(error);
     });
+
+    this.sendOtpBtnLoading = true;
   }
 
   sendSms(): void {
-    const number = '79198591623';
-    this.loginApi.PaywingsSendOtp(number, 'Your verification code is: @Otp').catch((error) => {
+    this.authLogin.PayWingsSendOtp('+' + this.phoneNumber, 'Your verification code is: @Otp').catch((error) => {
       console.error(error);
     });
 
-    this.smsSent = true;
     this.startSmsCountDown();
-
-    // TODO: focus code input
-    // console.log((this.$refs.code as Vue).$el);
-    ((this.$refs.code as Vue).$el as HTMLElement).focus();
   }
 
   get buttonDisabled() {
-    return !this.verificationCode;
+    return !this.verificationCode || this.notPassedKycAndNotHasXorEnough;
+  }
+
+  get otpInputDisabled(): boolean {
+    return !this.smsSent || !this.phoneNumber;
   }
 
   get buttonText(): string {
@@ -92,7 +118,15 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
       return 'ENTER THE VERIFICATION CODE';
     }
 
+    if (this.notPassedKycAndNotHasXorEnough) {
+      return this.t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
+    }
+
     return 'CONFIRM SMS CODE';
+  }
+
+  set buttonText(value) {
+    this.buttonText = value;
   }
 
   get sendSmsButtonText(): string {
@@ -108,11 +142,16 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     return this.smsSent;
   }
 
+  get phoneInputDescription(): string {
+    if (this.smsSent) return 'We’ve sent you an SMS code. Check your inbox!';
+    return 'We’ll send you an SMS code.';
+  }
+
   startSmsCountDown(): void {
     const interval = setInterval(() => {
       this.smsResendCount--;
 
-      if (this.smsResendCount < -1) {
+      if (this.smsResendCount < 0) {
         this.smsSent = false;
         this.smsResendCount = 30;
         clearInterval(interval);
@@ -120,36 +159,81 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     }, 1000);
   }
 
-  mounted(): void {
-    loadScript('https://auth-test.soracard.com/WebSDK/WebSDK.js')
-      .then(() => {
-        // @ts-expect-error no undefined
-        console.log('Paywings', Paywings);
-        // @ts-expect-error no undefined
-        this.loginApi = Paywings.UnifiedLogin.create({
-          Domain: 'soracard.com',
-          UnifiedLoginApiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
-          env: 'Test',
-          AccessTokenTypeID: 1,
-          UserTypeID: 2,
-          ClientDescription: 'Auth',
-        })
-          .on('SendOtp-Success', function (data) {
-            console.log('it was sent');
-          })
-          .on('Otp-Verification-Success', function (data) {
-            console.log('User is logged in');
-            // Tokens are stored in local storage localStorage.getItem('PW-token'); localStorage.getItem('PW-refresh-token');
-            /* Minimal registration is required */
-          });
+  async mounted(): Promise<void> {
+    (this.$refs.number as HTMLInputElement).focus();
 
-        console.log('this.loginApi', this.loginApi);
+    await this.initPayWingsAuthSdk();
+
+    if (!this.authLogin) return;
+
+    this.authLogin
+      .on('SendOtp-Success', () => {
+        this.smsSent = true;
+
+        // (this.$refs.codes as HTMLInputElement).focus();
       })
-      .catch(() => {
-        // Failed to fetch script
-      });
+      .on('MinimalRegistrationReq', () => {
+        this.sendOtpBtnLoading = false;
 
-    console.log('this.loginApi', this.loginApi);
+        if (this.userApplied) {
+          this.$notify({
+            title: '',
+            message: 'KYC process has not been finished.',
+            type: 'info',
+          });
+        }
+
+        if (!this.isEuroBalanceEnough) {
+          this.notPassedKycAndNotHasXorEnough = true;
+
+          return;
+        }
+
+        const state = {
+          goToEmail: true,
+          startKyc: false,
+          showBanner: false,
+        };
+
+        this.$emit('confirm', state);
+        this.sendOtpBtnLoading = false;
+      })
+      .on('Otp-Verification-Success', async () => {
+        await this.getUserStatus();
+
+        if (!this.currentStatus) {
+          if (this.userApplied) {
+            this.$notify({
+              title: '',
+              message: 'KYC process has not been finished.',
+              type: 'info',
+            });
+          }
+
+          if (!this.isEuroBalanceEnough) {
+            this.notPassedKycAndNotHasXorEnough = true;
+            this.sendOtpBtnLoading = false;
+
+            return;
+          }
+
+          const state = {
+            goToEmail: false,
+            startKyc: true,
+            showBanner: false,
+          };
+
+          this.$emit('confirm', state);
+        } else {
+          const state = {
+            goToEmail: false,
+            startKyc: false,
+            showBanner: true,
+          };
+
+          this.$emit('confirm', state);
+        }
+      });
   }
 }
 </script>
@@ -158,11 +242,24 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 .sora-card {
   &__number-input {
     position: relative;
-    margin-bottom: 16px;
 
     .el-button {
       transform: scale(0.75);
     }
+
+    &-desc {
+      display: inline-block;
+      color: var(--s-color-base-content-primary);
+      font-size: var(--s-font-size-extra-small);
+      font-weight: 300;
+      line-height: var(--s-line-height-base);
+      padding: var(--s-basic-spacing) var(--s-basic-spacing) calc(var(--s-basic-spacing) * 2)
+        calc(var(--s-basic-spacing) * 1.5);
+    }
+  }
+
+  &__icon {
+    color: var(--s-color-status-success);
   }
 
   &__btn {
@@ -175,5 +272,14 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     top: 8px;
     font-size: 16px;
   }
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }
 </style>
