@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import VueRouter, { NavigationGuardNext, RouteConfig } from 'vue-router';
+import VueRouter, { RouteConfig } from 'vue-router';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { api } from '@sora-substrate/util';
 
@@ -34,7 +34,12 @@ async function goTo(name: PageNames): Promise<void> {
   if (router.currentRoute.name === name) {
     return;
   }
-  router.push({ name });
+  try {
+    store.commit.router.setLoading(true);
+    await router.push({ name });
+  } finally {
+    store.commit.router.setLoading(false);
+  }
 }
 
 const routes: Array<RouteConfig> = [
