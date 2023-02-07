@@ -200,7 +200,7 @@ export class EthBridgeHistory {
 
   public async clearHistory(updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs): Promise<void> {
     this.historySyncTimestamp = 0;
-    bridgeApi.clearHistory();
+    ethBridgeApi.clearHistory();
     await updateCallback?.();
   }
 
