@@ -49,17 +49,40 @@
             :isError="!noIssues"
           />
         </div>
-        <s-divider />
-        <div class="field" v-if="!noIssues">
-          <div class="field__label">remaining AMOUNT required</div>
-          <div class="field__value">
-            <s-button type="primary" class="s-typography-button--mini add-button" @click.stop="onAddFundsClick">
-              {{ 'Add' }}
-            </s-button>
-            {{ formatNumber(remainingAmountRequired) }}
-            <token-logo class="token-logo" :token="inputToken" />
+        <template v-if="!noIssues">
+          <s-divider />
+          <div class="field">
+            <div class="field__label">remaining AMOUNT required</div>
+            <div class="field__value">
+              <s-button
+                type="primary"
+                class="s-typography-button--mini add-button"
+                @click.stop="onAddFundsClick('routing')"
+              >
+                {{ 'Add' }}
+              </s-button>
+              {{ formatNumber(remainingAmountRequired) }}
+              <token-logo class="token-logo" :token="inputToken" />
+            </div>
           </div>
-        </div>
+        </template>
+        <template v-if="showXorRequiredField">
+          <s-divider />
+          <div class="field">
+            <div class="field__label">XOR fee required</div>
+            <div class="field__value">
+              <s-button
+                type="primary"
+                class="s-typography-button--mini add-button"
+                @click.stop="onAddFundsClick('fee')"
+              >
+                {{ 'Add' }}
+              </s-button>
+              {{ formatNumber(xorFeeRequired) }}
+              <token-logo class="token-logo" :token="xor" />
+            </div>
+          </div>
+        </template>
         <s-divider v-if="!noIssues" />
         <div class="buttons-container">
           <s-button type="primary" class="s-typography-button--big" :disabled="!noIssues" @click.stop="onContinueClick">
@@ -92,7 +115,7 @@
         </div>
       </div>
     </div>
-    <swap-dialog :visible.sync="showSwapDialog" :presetSwapData="presetSwapData"></swap-dialog>
+    <swap-dialog :visible.sync="showSwapDialog" :presetSwapData="swapData"></swap-dialog>
     <select-input-asset-dialog
       :visible.sync="showSelectInputAssetDialog"
       @onInputAssetSelected="onInputAssetSelected"
@@ -130,6 +153,7 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   @action.routeAssets.setInputToken setInputToken!: (asset: Asset) => void;
   @action.routeAssets.cancelProcessing private cancelProcessing!: () => void;
   @action.routeAssets.runAssetsRouting private runAssetsRouting!: any;
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
 
   showSwapDialog = false;
   showSelectInputAssetDialog = false;
@@ -148,16 +172,45 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   }
 
   get estimatedAmount() {
-    const sum = sumBy(this.summaryData, (item) => item.required);
-    return sum * 1.05;
+    const sum = sumBy(this.summaryData, (item) => item.required) * 1.05;
+    const isInputAssetXor = this.inputToken?.symbol === XOR.symbol;
+    return isInputAssetXor ? sum + this.xorFeeAmount : sum;
   }
 
   get totalTokensAvailable() {
     return this.formattedBalance;
   }
 
+  get xorNetworkFee() {
+    return FPNumber.fromCodecValue(this.networkFees[Operation.SwapAndSend]).toNumber();
+  }
+
   get remainingAmountRequired() {
-    return this.estimatedAmount - this.fpBalance.toNumber();
+    const isInputAssetXor = this.inputToken?.symbol === XOR.symbol;
+    return isInputAssetXor
+      ? this.estimatedAmount + this.xorFeeAmount - this.fpBalance.toNumber()
+      : this.estimatedAmount - this.fpBalance.toNumber();
+  }
+
+  get xorFeeAmount() {
+    return this.summaryData.reduce((sum, item) => {
+      const isTransfer = item.asset.address === this.inputToken.address;
+      const fee = isTransfer ? this.networkFees[Operation.Transfer] : this.networkFees[Operation.SwapAndSend];
+      return sum + FPNumber.fromCodecValue(fee).toNumber();
+    }, 0);
+  }
+
+  get xorFeeRequired() {
+    return this.xorFeeAmount * 1.05 - this.xorBalance;
+  }
+
+  get showXorRequiredField() {
+    return this.xorFeeAmount > this.xorBalance && this.inputToken.address !== XOR.address;
+  }
+
+  get xorBalance() {
+    const asset = this.accountAssets.find((item) => item.address === XOR.address);
+    return FPNumber.fromCodecValue(getAssetBalance(asset), asset?.decimals).toNumber();
   }
 
   get summaryData() {
@@ -179,8 +232,10 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
     });
   }
 
-  get presetSwapData(): PresetSwapData {
-    const isInputAssetXor = this.inputToken.symbol === XOR.symbol;
+  action: 'fee' | 'routing' = 'fee';
+
+  get routingSwapData(): PresetSwapData {
+    const isInputAssetXor = this.inputToken?.symbol === XOR?.symbol;
     const assetFrom = isInputAssetXor ? VAL : XOR;
     const assetTo = this.inputToken;
     const valueTo = this.remainingAmountRequired;
@@ -189,6 +244,26 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
       assetTo,
       valueTo,
     };
+  }
+
+  get xorFeeSwapData(): PresetSwapData {
+    const assetFrom = VAL;
+    const assetTo = XOR;
+    const valueTo = this.xorFeeRequired;
+    return {
+      assetFrom,
+      assetTo,
+      valueTo,
+    };
+  }
+
+  get swapData(): PresetSwapData {
+    return this.action === 'fee' ? this.xorFeeSwapData : this.routingSwapData;
+  }
+
+  onAddFundsClick(action: 'fee' | 'routing') {
+    this.action = action;
+    this.showSwapDialog = true;
   }
 
   get fpBalance(): FPNumber {
@@ -216,6 +291,10 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
     return getAssetBalance(asset);
   }
 
+  get xor() {
+    return XOR;
+  }
+
   formatNumber(num) {
     return !num || !Number.isFinite(num)
       ? '-'
@@ -224,9 +303,9 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
         });
   }
 
-  onAddFundsClick() {
-    this.showSwapDialog = true;
-  }
+  // onAddFundsClick() {
+  //   this.showSwapDialog = true;
+  // }
 
   cancelButtonAction() {
     this.cancelProcessing();

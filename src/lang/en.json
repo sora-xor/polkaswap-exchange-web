@@ -7,8 +7,6 @@
     "importText": "Import",
     "settingsText": "Settings",
     "addAssetText": "Add asset",
-    "createTokenText": "Create",
-    "comingSoonText": "Coming Soon",
     "successText": "Success",
     "warningText": "Warning",
     "swapText": "Swap",
@@ -19,7 +17,6 @@
     "sendText": "Send",
     "addressText": "Address",
     "amountText": "Amount",
-    "confirmText": "Confirm",
     "errorText": "Error",
     "insufficientBalanceText": "Insufficient {tokenSymbol} balance",
     "unknownErrorText": "ERROR Something went wrong...",
@@ -105,7 +102,9 @@
         },
         "selectWallet": "Select a wallet to work with",
         "wallet": {
-            "install": "Install"
+            "install": "Install",
+            "connected": "Connected",
+            "notConnected": "Not connected"
         }
     },
     "wallet": {
@@ -127,12 +126,12 @@
         "enterAmount": "Enter amount",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Confirm transaction",
-        "confirm": "@:confirmText",
         "errorAddress": "Invalid address. Please check it and try again.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Send tokens between {Sora} network accounts",
         "addressWarning": "Tokens will be sent to the {Sora} address below. Make sure the recipient can access the {Sora} chain to use the tokens:",
-        "addressError": "You cannot send tokens to the same account that you are currently connected to."
+        "addressError": "You cannot send tokens to the same account that you are currently connected to.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Wallet address is copied to the clipboard",
@@ -152,7 +151,6 @@
     },
     "assets": {
         "empty": "There are no assets",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -171,7 +169,8 @@
         },
         "totalAssetsValue": "Total assets value:",
         "details": "Details",
-        "assetId": "Asset ID"
+        "assetId": "Asset ID",
+        "add": "@:addAssetText"
     },
     "asset": {
         "remove": "Remove asset",
@@ -179,8 +178,6 @@
         "receive": "Receive {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Asset {symbol} was added successfully!",
         "empty": "No tokens found",
         "alreadyAttached": "Token was already attached",
@@ -195,16 +192,15 @@
             "title": "Currencies",
             "switchBtn": "Verified assets only"
         },
-        "searchInputText": "Search by Asset ID, Name or Ticker Symbol"
+        "searchInputText": "Search by Asset ID, Name or Ticker Symbol",
+        "title": "@:addAssetText",
+        "action": "@:addAssetText"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Create and deploy custom asset on {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Enter token symbol",
         "enterName": "Enter token name",
         "enterSupply": "Enter token supply",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Transaction submitted",
             "desc": "Create {symbol} token"
@@ -230,10 +226,6 @@
             "placeholder": "Extensible supply",
             "desc": "Ability to mint more tokens."
         },
-        "titleCommon": "Create",
-        "confirmTokenTitleCommon": "Create Token",
-        "confirmTokenTitleNFT": "Create NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Provide content",
         "selectLocalFile": "Select local file",
         "CreateSimpleToken": "Token",
@@ -267,7 +259,14 @@
         "divisible": {
             "placeholder": "Divisible",
             "desc": "Ability of NFT to divide into fractional parts. Liquidity provisioning only works with divisible assets"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Create",
+        "confirmTokenTitleCommon": "Create Token",
+        "confirmTokenTitleNFT": "Create NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Transaction details",
@@ -505,8 +504,8 @@
         "price": "Price",
         "transactionSubmitted": "Transaction submitted",
         "transactionMessage": "{firstToken} and {secondToken}",
-        "confirm": "Confirm",
-        "ok": "OK"
+        "ok": "OK",
+        "confirm": "Confirm"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -557,7 +556,6 @@
         "connectWallets": "Connect wallets to view respective transaction history.",
         "soraNetworkFee": "{Sora} Network Fee",
         "ethereumNetworkFee": "{Ethereum} Network Fee",
-        "tooltipValue": "@:comingSoonText",
         "total": "Total",
         "viewHistory": "View transactions history",
         "transactionSubmitted": "Transaction submitted",
@@ -569,7 +567,8 @@
         "energy": "@:evm.EWC",
         "copy": "Copy network address",
         "soraAddress": "{Sora} address",
-        "ethereumAddress": "{Ethereum} address"
+        "ethereumAddress": "{Ethereum} address",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -720,7 +719,7 @@
         "outputMessage": "Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.",
         "confirmTitle": "You will receive",
         "shareOfPool": "Share of pool after transaction",
-        "locked": "{percent} of your pool is in staking"
+        "locked": "{percent} of your pool is in {lock}"
     },
     "dexSettings": {
         "title": "Settings",
@@ -935,7 +934,6 @@
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",
         "confirm": {
-            "text": "Confirm",
             "bond": "Confirm bond",
             "unbond": "Confirm unbond",
             "inviteTitle": "You have been invited to {AppName}",
@@ -944,7 +942,8 @@
             "freeOfCharge": "This action is free of charge",
             "hasReferrerTitle": "You’ve already set your referrer",
             "hasReferrerDescription": "Unfortunately, you can only set one",
-            "ok": "OK"
+            "ok": "OK",
+            "text": "Confirm"
         },
         "referrer": {
             "title": "Add your referrer",
@@ -961,7 +960,6 @@
         "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaction Details",
-    "createTokenTextNFT": "Create NFT",
     "adar": {
         "send": {
             "Swap": "Exchange",
@@ -1269,5 +1267,10 @@
     "tooltips": {
         "roi": "{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.",
         "tvl": "{TVL} stands for Total Value Locked. It represents tokens locked in the pools in the dollar equivalent."
-    }
+    },
+    "createTokenText": "Create",
+    "comingSoonText": "Coming Soon",
+    "confirmText": "Confirm",
+    "createTokenTextNFT": "Create NFT",
+    "doNotShowText": "Don’t show me this again"
 }

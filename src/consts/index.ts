@@ -159,11 +159,11 @@ export enum Components {
   SoraCard = 'SoraCard',
   SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
   SoraCardKYC = 'SoraCard/SoraCardKYC',
+  ConfirmationInfo = 'SoraCard/ConfirmationInfo',
   TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
   ToSDialog = 'SoraCard/steps/ToSDialog',
   RoadMap = 'SoraCard/steps/RoadMap',
   KycView = 'SoraCard/steps/KycView',
-  ConfirmationInfo = 'SoraCard/steps/ConfirmationInfo',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',
   StatusActionBadge = 'Swap/StatusActionBadge',
@@ -221,6 +221,8 @@ export enum Components {
   // Button
   SortButton = 'Button/SortButton',
   SvgIconButton = 'Button/SvgIconButton/SvgIconButton',
+  X1Dialog = 'X1/X1Dialog',
+  PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
 }
 
 export enum RewardsTabsItems {
@@ -340,8 +342,19 @@ export const StoreLinks = {
 };
 
 export const TosExternalLinks = {
-  Terms: `https://soracard.com/terms/`,
-  Privacy: `https://soracard.com/privacy/`,
+  Terms: `https://soracard.com/terms/en/polkaswap/`,
+  Privacy: `https://soracard.com/privacy/en/polkaswap/`,
+  getLinks: function (darkMode = 'light') {
+    return darkMode === 'dark'
+      ? {
+          Terms: this.Terms.concat('?dark'),
+          Privacy: this.Privacy.concat('?dark'),
+        }
+      : {
+          Terms: this.Terms,
+          Privacy: this.Privacy,
+        };
+  },
 };
 
 export const FaucetLink: SidebarMenuItemLink = {

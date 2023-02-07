@@ -48,34 +48,56 @@
 
     <s-button
       :loading="btnLoading"
+      :disabled="btnDisabled"
       type="primary"
       class="sora-card__btn s-typography-button--large"
       @click="handleConfirm"
     >
-      <span class="text">{{ btnText() }}</span>
-      <s-icon name="arrows-arrow-top-right-24" size="18" class="" />
+      <span class="text">{{ btnText }}</span>
     </s-button>
+    <notification-enabling-page v-if="permissionDialogVisibility">
+      {{ t('code.allowanceRequest') }}
+    </notification-enabling-page>
   </div>
 </template>
 
 <script lang="ts">
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
+import { action, getter, state } from '@/store/decorators';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
 import CardIcon from '@/assets/img/sora-card/card.svg?inline';
 import UserIcon from '@/assets/img/sora-card/user.svg?inline';
 import { delay } from '@/utils';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { clearTokensFromSessionStorage, soraCard } from '@/utils/card';
+import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { VerificationStatus } from '@/types/card';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 @Component({
   components: {
     EmailIcon,
     CardIcon,
     UserIcon,
+    NotificationEnablingPage: components.NotificationEnablingPage,
   },
 })
-export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class RoadMap extends Mixins(
+  TranslationMixin,
+  mixins.LoadingMixin,
+  mixins.CameraPermissionMixin,
+  mixins.TranslationMixin
+) {
+  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
+
+  @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
+  @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
+
+  @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
+
+  @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
+
   firstPointChecked = false;
   firstPointCurrent = true;
   secondPointChecked = false;
@@ -83,29 +105,43 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   thirdPointChecked = false;
   thirdPointCurrent = false;
 
+  btnText = 'LET’S START';
+  btnDisabled = false;
   btnLoading = false;
 
-  btnText(): string {
-    if (sessionStorage.getItem('access-token')) {
-      return 'FINISH THE KYC';
-    }
-    return 'LET’S START';
-  }
+  permissionDialogVisibility = false;
 
   async handleConfirm(): Promise<void> {
+    const { authService } = soraCard(this.soraNetwork);
+
+    try {
+      const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('SoraCard');
+
+      if (!mediaDevicesAllowance) return;
+    } catch (error) {
+      console.error('[KYC Sora Card]: Camera error.', error);
+    }
+
     if (sessionStorage.getItem('access-token')) {
-      this.$emit('confirm-start');
-      unloadScript('https://auth-test.paywings.io/auth/sdk.js');
+      await this.getUserStatus();
+
+      if ([VerificationStatus.Pending, VerificationStatus.Accepted].includes(this.currentStatus)) {
+        this.$emit('confirm-start-kyc', false);
+      } else {
+        this.$emit('confirm-start-kyc', true);
+      }
+
+      unloadScript(authService.sdkURL);
       return;
     }
 
-    loadScript('https://auth-test.paywings.io/auth/sdk.js')
+    loadScript(authService.sdkURL)
       .then(() => {
         const conf = {
-          authURL: ' https://auth-test.soracard.com',
+          authURL: authService.authURL,
           elementBind: '#authOpen',
           accessTokenTypeID: 1,
-          apiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
+          apiKey: authService.apiKey,
           userTypeID: 2,
         };
 
@@ -113,18 +149,42 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
           // @ts-expect-error injected class
           const auth = new PopupOAuth(conf).connect();
         } catch (error) {
-          console.error('error', error);
+          console.error('[SoraCard]: Failed to start Paywings OAuth script', error);
         }
       })
       .catch((error) => {
-        // Failed to fetch script
-        console.error('error', error);
+        console.error('[SoraCard]: Failed to fetch Paywings OAuth script', error);
       });
 
     this.btnLoading = true;
-    const accessToken = await this.getAccessToken();
+    await this.getAccessToken();
+    await this.getUserStatus();
+
+    if (this.currentStatus) {
+      this.$emit('confirm-start-kyc', false);
+      return;
+    } else if (this.userApplied) {
+      // user didn't finish KYC, suggest to continue
+      this.secondPointChecked = false;
+      this.thirdPointChecked = false;
+      this.$notify({
+        title: '',
+        message: 'KYC process has not been finished.',
+        type: 'info',
+      });
+    }
+
     this.firstPointChecked = true;
     this.secondPointCurrent = true;
+
+    // additionally check if they have enough balance to apply for card
+    if (!this.isEuroBalanceEnough) {
+      this.btnText = this.t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
+      this.btnDisabled = true;
+    } else {
+      this.btnText = 'FINISH THE KYC';
+    }
+
     this.btnLoading = false;
   }
 
@@ -144,9 +204,12 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   mounted(): void {
-    if (sessionStorage.getItem('access-token')) {
-      this.firstPointChecked = true;
-      this.secondPointCurrent = true;
+    clearTokensFromSessionStorage();
+
+    if (this.userApplied) {
+      this.firstPointCurrent = true;
+      this.secondPointChecked = true;
+      this.thirdPointChecked = true;
     }
   }
 }
@@ -158,20 +221,20 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   width: 100%;
   background-color: var(--s-color-base-background);
   border-radius: var(--s-border-radius-small);
-  box-shadow: -5px -5px 10px #ffffff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
-  padding: 20px 16px;
-  margin-bottom: 16px;
+  box-shadow: var(--s-shadow-dialog);
+  padding: 20px $basic-spacing;
+  margin-bottom: $basic-spacing;
 
   &__section {
     display: flex;
     align-items: flex-start;
-    margin-top: 16px;
+    margin-top: $basic-spacing;
     width: 100%;
 
     .line {
       height: 1px;
       width: 270px;
-      margin-top: 16px;
+      margin-top: $basic-spacing;
       background-color: var(--s-color-base-border-secondary);
 
       &--last {
@@ -195,6 +258,7 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
       border-radius: 50%;
       border: 1px solid var(--s-color-base-content-secondary);
 
+      // TODO: [STYLES] change color scheme
       &--current {
         border-color: #ee2233;
         background-color: #ffe5e8;
@@ -208,13 +272,13 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   &__icon {
-    margin: 5px 16px 0 0;
+    margin: 5px $basic-spacing 0 0;
     color: var(--s-color-base-content-tertiary);
   }
 
   &__point {
     font-weight: 600;
-    font-size: 18px;
+    font-size: var(--s-font-size-big);
   }
 
   &__text-info {
@@ -234,18 +298,7 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 }
 
-.s-icon-arrows-arrow-top-right-24 {
-  margin-left: 8px;
-}
-
-[design-system-theme='dark'] {
-  .map {
-    box-shadow: -5px -5px 10px rgba(155, 111, 165, 0.25), 2px 2px 15px #492067,
-      inset 1px 1px 2px rgba(155, 111, 165, 0.25);
-  }
-}
-
-.el-button.is-loading {
-  background-color: unset !important;
+.sora-card__btn {
+  width: 100%;
 }
 </style>

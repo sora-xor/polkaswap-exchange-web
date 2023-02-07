@@ -19,11 +19,17 @@ import { action } from '@/store/decorators';
 export default class PoolContainer extends Mixins(SubscriptionsMixin) {
   @action.pool.subscribeOnAccountLiquidityList private subscribeOnList!: AsyncFnWithoutArgs;
   @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnUpdates!: AsyncFnWithoutArgs;
+  @action.pool.subscribeOnAccountLockedLiquidity private subscribeOnLocked!: AsyncFnWithoutArgs;
   @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribe!: AsyncFnWithoutArgs;
   @action.pool.subscribeOnPoolsApy private subscribeOnPoolsApy!: AsyncFnWithoutArgs;
 
   created(): void {
-    this.setStartSubscriptions([this.subscribeOnList, this.subscribeOnUpdates, this.subscribeOnPoolsApy]);
+    this.setStartSubscriptions([
+      this.subscribeOnList,
+      this.subscribeOnUpdates,
+      this.subscribeOnLocked,
+      this.subscribeOnPoolsApy,
+    ]);
     this.setResetSubscriptions([this.unsubscribe]);
   }
 }

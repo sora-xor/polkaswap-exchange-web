@@ -26,7 +26,7 @@ export default class SwapDialog extends Mixins(mixins.TransactionMixin, mixins.D
   @Prop({ default: 0 }) presetSwapData!: PresetSwapData;
 
   get presetDataValueTo() {
-    return this.presetSwapData.valueTo;
+    return this.presetSwapData?.valueTo;
   }
 
   roundNumber(num) {
@@ -34,7 +34,7 @@ export default class SwapDialog extends Mixins(mixins.TransactionMixin, mixins.D
   }
 
   get networkSwapFee(): number {
-    return FPNumber.fromCodecValue(this.networkFees[Operation.Swap]).toNumber();
+    return FPNumber.fromCodecValue(this.networkFees[Operation.Swap]).toNumber() * 2;
   }
 
   @Watch('visible')
@@ -55,7 +55,7 @@ export default class SwapDialog extends Mixins(mixins.TransactionMixin, mixins.D
     }
   }
 
-  @Watch('presetDataValueTo')
+  @Watch('presetDataValueTo', { deep: true })
   onValueToChanged(newVal) {
     if (newVal <= 0) {
       this.$emit('update:visible', false);

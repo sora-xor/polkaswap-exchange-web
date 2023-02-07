@@ -3,8 +3,8 @@
     <div class="tos__disclaimer">
       <h4 class="tos__disclaimer-header">Discaimer</h4>
       <p class="tos__disclaimer-paragraph">
-        SORA community does not collect any of your personal data, but to get the SORA Card and IBAN account you need to
-        go through KYC process with a card issuer.
+        To get an IBAN account needed for the SORA Card, users are required to undergo a KYC process with the card
+        issuer. This is required compliance. The SORA community does not and will not collect any of your personal data.
       </p>
       <div class="tos__disclaimer-warning-icon">
         <s-icon name="notifications-alert-triangle-24" size="28px" />
@@ -24,8 +24,7 @@
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirmToS">
       <span class="text">ACCEPT & CONTINUE</span>
     </s-button>
-    <tos-dialog :visible.sync="showTermsAndConditionsDialog" :srcLink="TosExternalLinks.Terms" />
-    <tos-dialog :visible.sync="showPrivacyPolicyDialog" :srcLink="TosExternalLinks.Privacy" />
+    <tos-dialog :visible.sync="showDialog" :srcLink="link" :key="link" />
   </div>
 </template>
 
@@ -35,6 +34,8 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Components, TosExternalLinks } from '@/consts';
 import { lazyComponent } from '@/router';
 import TranslationMixin from '../../mixins/TranslationMixin';
+import { getter } from '@/store/decorators';
+import { Theme } from '@soramitsu/soramitsu-js-ui';
 
 @Component({
   components: {
@@ -42,18 +43,31 @@ import TranslationMixin from '../../mixins/TranslationMixin';
   },
 })
 export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  showTermsAndConditionsDialog = false;
-  showPrivacyPolicyDialog = false;
+  showDialog = false;
+  link = '';
 
-  TosExternalLinks = TosExternalLinks;
+  @getter.libraryTheme libraryTheme!: Theme;
+
+  get termsLink(): string {
+    return TosExternalLinks.getLinks(this.libraryTheme).Terms;
+  }
+
+  get privacyLink(): string {
+    return TosExternalLinks.getLinks(this.libraryTheme).Privacy;
+  }
 
   handleConfirmToS(): void {
     this.$emit('confirm-tos');
   }
 
   openDialog(policy: string): void {
-    if (policy === 't&c') this.showTermsAndConditionsDialog = true;
-    if (policy === 'privacyPolicy') this.showPrivacyPolicyDialog = true;
+    if (policy === 't&c') {
+      this.link = this.termsLink;
+    }
+    if (policy === 'privacyPolicy') {
+      this.link = this.privacyLink;
+    }
+    this.showDialog = true;
   }
 }
 </script>
@@ -64,9 +78,9 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
     width: 100%;
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-small);
-    box-shadow: -5px -5px 10px #ffffff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
-    padding: 20px 16px;
-    margin-bottom: 16px;
+    box-shadow: var(--s-shadow-dialog);
+    padding: 20px $basic-spacing;
+    margin-bottom: $basic-spacing;
     position: relative;
 
     &-header {
@@ -76,7 +90,7 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
 
     &-paragraph {
       color: var(--s-color-base-content-secondary);
-      margin-bottom: 8px;
+      margin-bottom: calc(var(--s-basic-spacing) / 2);
     }
 
     &-warning-icon {
@@ -108,9 +122,9 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
     width: 100%;
     background-color: var(--s-color-base-background);
     border-radius: var(--s-border-radius-small);
-    box-shadow: -5px -5px 10px #ffffff, 1px 1px 10px rgba(0, 0, 0, 0.1), inset 1px 1px 2px rgba(255, 255, 255, 0.8);
-    padding: 20px 16px;
-    margin-bottom: 16px;
+    box-shadow: var(--s-shadow-dialog);
+    padding: 20px $basic-spacing;
+    margin-bottom: $basic-spacing;
     position: relative;
 
     &-block {
@@ -141,33 +155,24 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
     &-header {
       font-weight: 500;
       margin-bottom: 10px;
-      padding-right: 24px;
+      padding-right: var(--s-size-mini);
     }
 
     &-paragraph {
       color: var(--s-color-base-content-secondary);
-      margin-bottom: 24px;
-      padding-right: 24px;
+      margin-bottom: var(--s-size-mini);
+      padding-right: var(--s-size-mini);
     }
+  }
+
+  .sora-card__btn {
+    width: 100%;
   }
 
   .line {
     height: 1px;
     margin: 14px 0;
     background-color: var(--s-color-base-border-secondary);
-  }
-}
-
-[design-system-theme='dark'] {
-  .tos {
-    &__disclaimer {
-      box-shadow: -5px -5px 10px rgba(155, 111, 165, 0.25), 2px 2px 15px #492067,
-        inset 1px 1px 2px rgba(155, 111, 165, 0.25);
-    }
-    &__section {
-      box-shadow: -5px -5px 10px rgba(155, 111, 165, 0.25), 2px 2px 15px #492067,
-        inset 1px 1px 2px rgba(155, 111, 165, 0.25);
-    }
   }
 }
 </style>
