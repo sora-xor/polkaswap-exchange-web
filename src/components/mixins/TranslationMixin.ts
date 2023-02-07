@@ -25,6 +25,7 @@ const TranslationConsts = {
   // extending consts
   AppName: app.name,
   TVL: 'TVL',
+  EVM: 'EVM',
 };
 
 @Component

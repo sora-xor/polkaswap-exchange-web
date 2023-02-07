@@ -81,7 +81,6 @@ import type { ConnectToNodeOptions } from '@/types/nodes';
 import type { EvmNetworkId } from '@/consts/evm';
 import type { FeatureFlags } from '@/store/settings/types';
 import type { EthBridgeSettings } from '@/store/web3/types';
-import { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

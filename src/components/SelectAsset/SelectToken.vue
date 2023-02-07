@@ -152,16 +152,12 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get sortedNonWhitelistAccountAssets(): Array<AccountAsset> {
-    const { asset: excludeAsset, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this;
+    const { asset: excludeAsset } = this;
     // TODO: we already have balances in nonWhitelistAccountAssets.
     // Need to improve that logic
-    return this.getAssetsWithBalances({
-      assets: Object.values(this.nonWhitelistAccountAssets),
-      accountAssetsAddressTable,
-      notNullBalanceOnly,
-      accountAssetsOnly,
-      excludeAsset,
-    }).sort(this.sortByBalance());
+    return this.getAssetsWithBalances(Object.values(this.nonWhitelistAccountAssets), excludeAsset).sort(
+      this.sortByBalance()
+    );
   }
 
   private getMainSources(): Array<Asset> {
