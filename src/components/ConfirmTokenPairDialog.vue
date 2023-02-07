@@ -37,8 +37,19 @@
     <info-line :value="`1 ${secondToken.symbol} = ${formattedPrice}`" :asset-symbol="firstToken.symbol" />
     <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
     <template #footer>
-      <s-button type="primary" class="s-typography-button--large" :loading="parentLoading" @click="handleConfirm">
-        {{ t('exchange.confirm') }}
+      <s-button
+        type="primary"
+        class="s-typography-button--large"
+        :loading="parentLoading"
+        :disabled="!!insufficientBalanceTokenSymbol"
+        @click="handleConfirm"
+      >
+        <template v-if="insufficientBalanceTokenSymbol">
+          {{ t('exchange.insufficientBalance', { tokenSymbol: insufficientBalanceTokenSymbol }) }}
+        </template>
+        <template v-else>
+          {{ t('exchange.confirm') }}
+        </template>
       </s-button>
     </template>
   </dialog-base>
@@ -49,6 +60,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -65,7 +77,8 @@ export default class ConfirmTokenPairDialog extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.LoadingMixin,
   mixins.DialogMixin,
-  TranslationMixin
+  TranslationMixin,
+  PoolApyMixin
 ) {
   @Prop({ type: String, default: '100' }) readonly shareOfPool!: string;
   @Prop({ type: Object }) readonly firstToken!: Nullable<AccountAsset>;
@@ -75,6 +88,7 @@ export default class ConfirmTokenPairDialog extends Mixins(
   @Prop({ type: String }) readonly price!: string;
   @Prop({ type: String }) readonly priceReversed!: string;
   @Prop({ type: String }) readonly slippageTolerance!: string;
+  @Prop({ type: String }) readonly insufficientBalanceTokenSymbol!: string;
 
   get formattedFirstTokenValue(): string {
     return this.formatStringValue(this.firstTokenValue, this.firstToken?.decimals);
@@ -109,9 +123,8 @@ export default class ConfirmTokenPairDialog extends Mixins(
   }
 
   get strategicBonusApy(): Nullable<string> {
-    if (!this.secondToken) return null;
     // It won't be in template when not defined
-    const strategicBonusApy = this.fiatPriceAndApyObject[this.secondToken.address]?.strategicBonusApy;
+    const strategicBonusApy = this.getPoolApy(this.firstToken?.address, this.secondToken?.address);
     if (!strategicBonusApy) {
       return null;
     }

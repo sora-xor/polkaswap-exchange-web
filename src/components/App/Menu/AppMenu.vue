@@ -11,13 +11,12 @@
           text-color="var(--s-color-base-content-primary)"
           :active-text-color="mainMenuActiveColor"
           active-hover-color="transparent"
-          :default-active="getCurrentPath()"
+          :default-active="currentPath"
           @select="onSelect"
         >
-          <s-menu-item-group v-for="(group, index) in SidebarMenuGroups" :key="index">
+          <s-menu-item-group v-for="(item, index) in sidebarMenuItems" :key="index">
             <s-menu-item
               v-button
-              v-for="item in group"
               :key="item.title"
               :index="item.title"
               :disabled="item.disabled"
@@ -39,6 +38,7 @@
           active-hover-color="transparent"
         >
           <sidebar-item-content
+            v-if="false"
             v-button
             icon="star-16"
             title="Vote on Survey!"
@@ -93,12 +93,14 @@ import {
   BridgeChildPages,
   RewardsChildPages,
   StakingChildPages,
+  ExploreChildPages,
   SidebarMenuGroups,
+  SidebarMenuItem,
   FaucetLink,
   Components,
 } from '@/consts';
 
-import router, { lazyComponent } from '@/router';
+import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
 @Component({
@@ -110,9 +112,10 @@ import { getter, state } from '@/store/decorators';
 export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isAboutPageOpened!: boolean;
-  @Prop({ default: () => {}, type: Function }) readonly onSelect!: VoidFunction;
+  @Prop({ default: () => {}, type: Function }) readonly onSelect!: FnWithoutArgs;
 
   @state.settings.faucetUrl faucetUrl!: string;
+  @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
   readonly SidebarMenuGroups = SidebarMenuGroups;
@@ -122,20 +125,29 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
   }
 
-  getCurrentPath(): string {
-    if (PoolChildPages.includes(router.currentRoute.name as PageNames)) {
+  get sidebarMenuItems(): Array<SidebarMenuItem> {
+    if (this.soraCardEnabled) return SidebarMenuGroups;
+    return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.SoraCard);
+  }
+
+  get currentPath(): string {
+    const currentName = this.$route.name as any;
+    if (PoolChildPages.includes(currentName)) {
       return PageNames.Pool;
     }
-    if (BridgeChildPages.includes(router.currentRoute.name as PageNames)) {
+    if (BridgeChildPages.includes(currentName)) {
       return PageNames.Bridge;
     }
-    if (RewardsChildPages.includes(router.currentRoute.name as PageNames)) {
+    if (RewardsChildPages.includes(currentName)) {
       return PageNames.Rewards;
     }
-    if (StakingChildPages.includes(router.currentRoute.name as any)) {
+    if (StakingChildPages.includes(currentName)) {
       return PageNames.StakingContainer;
     }
-    return router.currentRoute.name as string;
+    if (ExploreChildPages.includes(currentName)) {
+      return PageNames.ExploreContainer;
+    }
+    return currentName as string;
   }
 
   openSoraDownloadDialog(): void {
@@ -220,6 +232,33 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
   }
 }
+
+// TODO: [TECH] move from fonts provided values
+.sora-card-sidebar-icon {
+  path {
+    fill: var(--s-color-base-content-tertiary) !important;
+  }
+}
+
+.el-menu-item:not(.is-active):not(.is-disabled) {
+  .sidebar-item-content {
+    &:hover .sora-card-sidebar-icon path {
+      fill: var(--s-color-base-content-secondary) !important;
+    }
+  }
+}
+
+.el-menu-item.is-disabled {
+  &:hover path {
+    fill: var(--s-color-base-content-tertiary) !important;
+  }
+}
+
+.is-active .sora-card-sidebar-icon {
+  path {
+    fill: var(--s-color-theme-accent) !important;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -250,7 +289,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
       .app-sidebar {
         width: 50%;
-        min-width: $breakpoint_mobile / 2;
+        min-width: calc(#{$breakpoint_mobile} / 2);
         background-color: var(--s-color-utility-body);
         padding: $inner-spacing-mini $inner-spacing-medium;
         filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));

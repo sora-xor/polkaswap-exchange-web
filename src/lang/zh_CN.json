@@ -7,8 +7,6 @@
     "importText": "导入",
     "settingsText": "设置",
     "addAssetText": "添加资产",
-    "createTokenText": "创建",
-    "comingSoonText": "即将推出",
     "successText": "成功",
     "warningText": "警告",
     "swapText": "交换",
@@ -19,7 +17,6 @@
     "sendText": "发送",
     "addressText": "地址",
     "amountText": "数额",
-    "confirmText": "确认",
     "errorText": "错误",
     "insufficientBalanceText": "{tokenSymbol}余额不足",
     "unknownErrorText": "错误 出了点问题...",
@@ -43,15 +40,15 @@
             "ClaimRewards": "{rewards}奖励申领成功",
             "ReferralReserveXor": "绑定XOR成功",
             "ReferralUnreserveXor": "解绑XOR成功",
-            "ReferralSetInvitedUser": "推荐设置成功",
+            "ReferralSetInvitedUser": "{role} {address} 设置成功",
             "SwapAndSend": "已将{amount} {symbol}兑换为{amount2} {symbol2}和{action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "已提供{symbol}和{symbol2} {amount} 流动性提供代币",
             "DemeterFarmingWithdrawLiquidity": "已移除{symbol}和{symbol2} {amount} 流动性提供代币",
             "DemeterFarmingStakeToken": "已添加{amount} {symbol}",
             "DemeterFarmingUnstakeToken": "已移除{amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol}成功申领",
-            "EthBridgeIncoming": "将{amount} {symbol}从 @:ethereumText 转移到 @:soraText",
-            "EthBridgeOutgoing": "将{amount} {symbol}从 @:soraText 转移到 @:ethereumText"
+            "EthBridgeIncoming": "将{amount} {symbol}从 {Ethereum} 转移到 {Sora}",
+            "EthBridgeOutgoing": "将{amount} {symbol}从 {Sora} 转移到 {Ethereum}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -63,19 +60,19 @@
             "ClaimRewards": "未能申领奖励{rewards}。",
             "ReferralReserveXor": "绑定XOR失败",
             "ReferralUnreserveXor": "XOR解绑失败",
-            "ReferralSetInvitedUser": "设置推荐失败",
+            "ReferralSetInvitedUser": "设置 {role} {address} 失败",
             "SwapAndSend": "无法将{amount} {symbol}兑换为{amount2} {symbol2}和{action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "提供{amount} {symbol}和{symbol2} LP 代币失败",
             "DemeterFarmingWithdrawLiquidity": "移除{amount} {symbol}和{symbol2} LP 令牌失败",
             "DemeterFarmingStakeToken": "添加{amount} {symbol}失败",
             "DemeterFarmingUnstakeToken": "移除失败{amount} {symbol}",
             "DemeterFarmingGetRewards": "申领失败{symbol}",
-            "EthBridgeIncoming": "将{amount} {symbol}从 @:ethereumText 转移到 @:soraText 失败",
-            "EthBridgeOutgoing": "将{amount} {symbol}从 @:soraText 转移到 @:ethereumText 失败"
+            "EthBridgeIncoming": "将{amount} {symbol}从 {Ethereum} 转移到 {Sora} 失败",
+            "EthBridgeOutgoing": "将{amount} {symbol}从 {Sora} 转移到 {Ethereum} 失败"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
-        "ReferralSetInvitedUser": "设置推荐",
+        "ReferralSetInvitedUser": "设置 {role}",
         "SwapAndSend": "兑换和发送",
         "DemeterFarmingDepositLiquidity": "质押流动性",
         "DemeterFarmingWithdrawLiquidity": "未质押流动性",
@@ -86,15 +83,15 @@
         "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "没有找到 Polkadot{.js} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noExtensions": "没有找到 {PolkadotJs} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "您的{extension}扩展中似乎没有账户。请添加一个账户并再次尝试。",
         "noAccount": "{extension} 帐户错误. 请在{extension} 中检查您的帐户",
         "noExtension": "未找到{extension}扩展名。请安装它并重新加载此页面",
         "noSigner": "拒绝访问。转到{extension}扩展设置并打开“管理网站访问”以允许。"
     },
     "connection": {
-        "title": "SORA网络账户",
-        "text": "使用Polkadot{.js}浏览器扩展连接您的SORA网络账户或创建新账户。这个扩展允许您在SORA网络中安全地签署交易和管理资产。",
+        "title": "{Sora}网络账户",
+        "text": "连接或创建具有 {extensions} 扩展的 {Sora} 网络帐户。这些扩展允许您安全地签署交易并管理{Sora}网络中的资产。",
         "noAccounts": "在您的{extension}浏览器扩展中没有找到账户。请添加一个账户并重试。",
         "selectAccount": "选择要使用的账户",
         "action": {
@@ -105,11 +102,13 @@
         },
         "selectWallet": "选择要使用的钱包",
         "wallet": {
-            "install": "安装"
+            "install": "安装",
+            "connected": "连接的",
+            "notConnected": "未连接"
         }
     },
     "wallet": {
-        "title": "SORA网络账户",
+        "title": "{Sora}网络账户",
         "WalletAssets": "资产",
         "WalletActivity": "活动",
         "addAsset": "@:addAssetText",
@@ -127,12 +126,12 @@
         "enterAmount": "输入数额",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "确认交易",
-        "confirm": "@:confirmText",
         "errorAddress": "无效地址。请检查并重试。",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "在SORA网络账户之间发送代币",
-        "addressWarning": "代币将被发送至以下SORA地址。请确保收件人能够访问SORA链以使用代币。",
-        "addressError": "您不能向您当前已连接的同一个账户发送代币。"
+        "tooltip": "在{Sora}网络账户之间发送代币",
+        "addressWarning": "代币将被发送至以下{Sora}地址。请确保收件人能够访问{Sora}链以使用代币。",
+        "addressError": "您不能向您当前已连接的同一个账户发送代币。",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "钱包地址已被复制到剪贴板上",
@@ -152,7 +151,6 @@
     },
     "assets": {
         "empty": "没有资产",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -171,7 +169,8 @@
         },
         "totalAssetsValue": "您的总资产价值：",
         "details": "细节",
-        "assetId": "资产 ID"
+        "assetId": "资产 ID",
+        "add": "@:addAssetText"
     },
     "asset": {
         "remove": "移除资产",
@@ -179,8 +178,6 @@
         "receive": "接收{symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "资产{symbol}添加成功！",
         "empty": "未找到代币",
         "alreadyAttached": "代币已附加",
@@ -192,22 +189,18 @@
         "scam": "骗局",
         "next": "下一个",
         "AddAssetToken": {
-            "title": "代币",
+            "title": "货币",
             "switchBtn": "仅经过验证的资产"
         },
-        "AddAssetNFT": {
-            "title": "NFTs"
-        },
-        "searchInputText": "按资产 ID、名称或股票代码搜索"
+        "searchInputText": "按资产 ID、名称或股票代码搜索",
+        "title": "@:addAssetText",
+        "action": "@:addAssetText"
     },
     "createToken": {
-        "title": "@:createTokenText",
-        "desc": "在 SORA 上创建和部署自定义资产",
-        "action": "@:createTokenText",
+        "desc": "在 {Sora} 上创建和部署自定义资产",
         "enterSymbol": "输入代币符号",
         "enterName": "输入代币名称",
         "enterSupply": "输入代币供应",
-        "confirm": "@:confirmText",
         "success": {
             "title": "交易已提交",
             "desc": "创建{symbol}代币"
@@ -233,14 +226,9 @@
             "placeholder": "可扩展的供应",
             "desc": "铸造更多代币的能力。"
         },
-        "titleCommon": "创建",
-        "confirmTokenTitleCommon": "创建代币",
-        "confirmTokenTitleNFT": "创建 NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "提供内容",
         "selectLocalFile": "选择本地文件",
         "CreateSimpleToken": "代币",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "来源",
@@ -271,7 +259,14 @@
         "divisible": {
             "placeholder": "可分的",
             "desc": "NFT 分割成小数部分的能力。流动性拨备仅适用于可分割资产"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "创建",
+        "confirmTokenTitleCommon": "创建代币",
+        "confirmTokenTitleNFT": "创建 NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "交易细节",
@@ -305,25 +300,22 @@
         "referrer": "推荐人",
         "referral": "推荐"
     },
-    "appName": "Polkaswap",
-    "soraText": "SORA",
-    "ethereumText": "以太坊",
-    "changeNetworkText": "在 Metamask 中更改网络",
+    "appName": "{AppName}",
+    "changeNetworkText": "在 {Metamask} 中更改网络",
     "transactionText": "交易 | 交易",
     "connectWalletText": "连接账户",
     "changeAccountText": "更改账户",
     "connectedText": "已连接",
-    "connectWalletTextTooltip": "用polkadot{.js}连接到@:soraText网络",
+    "connectWalletTextTooltip": "用{PolkadotJs}连接到{Sora}网络",
     "selectNodeText": "选择网络节点",
     "bridgeText": "转接桥",
-    "disclaimer": "<span class=\"app-disclaimer__title\">免责声明<\/span>：本网站由@:soraText 社区维护。在继续使用本网站之前，请查看@:polkaswapFaqLink 和文档，其中包括有关 Polkaswap 工作原理的详细说明，以及 @:memorandumLink 和 @:(privacyLink)。这些文档对于安全和积极的用户体验至关重要。通过使用 Polkaswap，您承认您已阅读并理解这些文件。您还承认以下内容：1) 您全权负责遵守在您的法律管辖范围内可能适用于您对 Polkaswap 的特定使用的所有法律； 2）您对Polkaswap当前版本为alpha版本的理解：尚未经过全面测试，部分功能可能无法按设计执行； 3) 您理解并自愿接受使用 Polkaswap 所涉及的风险，包括但不限于丢失代币的风险。再一次提醒，在没有阅读@:polkaswapFaqLink、@:memorandumLink 和@:privacyLink之前，请不要继续！",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\"> @:FAQ <\/a>",
+    "disclaimer": "{disclaimerPrefix} 本网站由{Sora} 社区维护。在继续使用本网站之前，请查看{polkaswapFaqLink} 和文档，其中包括有关 {AppName} 工作原理的详细说明，以及 {memorandumLink} 和 {privacyLink}。这些文档对于安全和积极的用户体验至关重要。通过使用 {AppName}，您承认您已阅读并理解这些文件。您还承认以下内容：1) 您全权负责遵守在您的法律管辖范围内可能适用于您对 {AppName} 的特定使用的所有法律； 2）您对{AppName}当前版本为alpha版本的理解：尚未经过全面测试，部分功能可能无法按设计执行； 3) 您理解并自愿接受使用 {AppName} 所涉及的风险，包括但不限于丢失代币的风险。再一次提醒，在没有阅读{polkaswapFaqLink}、{memorandumLink} 和{privacyLink}之前，请不要继续！",
     "poweredBy": "启动于",
     "confirmTransactionText": "确认在{direction}的交易",
     "retryText": "重试",
     "networkFeeText": "网络费用",
-    "networkFeeTooltipText": "网络费是用来保证@:soraText系统的增长和稳定的性能。",
-    "ethNetworkFeeTooltipText": "请注意，Polkaswap上显示的以太坊网络费用只是粗略估计，在确认交易之前，您可以在连接的以太坊钱包中看到正确的费用数额。",
+    "networkFeeTooltipText": "网络费是用来保证{Sora}系统的增长和稳定的性能。",
+    "ethNetworkFeeTooltipText": "请注意， {AppName}上显示的{Ethereum}网络费用仅为粗略估算，您可以在确认交易之前在已连接的{Ethereum}钱包中查看正确的费用金额。",
     "marketText": "市场",
     "marketAlgorithmText": "市场算法",
     "firstPerSecond": "{first}每{second}",
@@ -341,8 +333,12 @@
         "AddLiquidityId": "增加流动性",
         "RemoveLiquidity": "删除流动性",
         "PageNotFound": "找不到网页",
-        "Tokens": "代币",
-        "Rewards": "奖励"
+        "Rewards": "奖励",
+        "Explore\/Tokens": "代币",
+        "Explore\/Pools": "游泳池",
+        "Explore\/Staking": "质押",
+        "Explore\/Farming": "农耕",
+        "Staking": "质押"
     },
     "mainMenu": {
         "Swap": "交换",
@@ -355,8 +351,9 @@
         "Stats": "统计数据",
         "Support": "支持",
         "CreatePair": "创建流动性对",
-        "Tokens": "代币",
-        "StakingContainer": "质押"
+        "StakingContainer": "质押",
+        "Explore\/Container": "探索",
+        "SoraCard": "{Sora}卡"
     },
     "social": {
         "twitter": "推特",
@@ -364,13 +361,13 @@
         "medium": "Medium",
         "reddit": "Reddit",
         "github": "GitHub",
-        "wiki": "@:soraText Wiki"
+        "wiki": "{Sora} Wiki"
     },
     "footerMenu": {
         "faucet": "水龙头",
         "github": "GitHub",
-        "sorawiki": "@:soraText Wiki",
-        "memorandum": "Polkaswap 备忘录和服务条款",
+        "sorawiki": "{Sora} Wiki",
+        "memorandum": "{AppName} 备忘录和服务条款",
         "privacy": "隐私政策",
         "info": "信息与社区"
     },
@@ -378,28 +375,26 @@
         "title": "帮助",
         "termsOfService": "服务条款",
         "privacyPolicy": "隐私政策",
-        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
-        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
-        "appVersion": "@:appName 版本",
+        "appVersion": "{AppName} 版本",
         "contactUs": "联系我们"
     },
     "aboutNetworkDialog": {
         "title": "关于",
         "learnMore": "@:learnMoreText",
         "network": {
-            "title": "什么是@:soraText？",
-            "description": "Polkaswap建立在@:soraText网络之上，@:soraText代币（XOR）被用于Polkaswap上的费用和流动性供应。@:soraText网络允许减少的费用和加快交易，并简化共识的最终确定，专注于提供跨其他区块链生态系统的互操作性，如@:(ethereumText)。"
+            "title": "什么是{Sora}？",
+            "description": "{AppName}建立在{Sora}网络之上，{Sora}代币（XOR）被用于{AppName}上的费用和流动性供应。{Sora}网络允许减少的费用和加快交易，并简化共识的最终确定，专注于提供跨其他区块链生态系统的互操作性，如{Ethereum}。"
         },
         "polkadot": {
-            "title": "什么是 polkadot{.js}？",
-            "description": "Polkadot{.js}扩展是一个可用于 Firefox 浏览器和 Chrome 的浏览器扩展，专门用于管理基于 Substrate 的链的账户，包括 @:soraText、Polkadot 和 Kusama。您可以添加、导入和导出账户并签署您从授权的网站发起的交易或外部信息。"
+            "title": "什么是 {PolkadotJs}？",
+            "description": "{PolkadotJs}扩展是一个可用于 Firefox 浏览器和 Chrome 的浏览器扩展，专门用于管理基于 Substrate 的链的账户，包括 {Sora}、{Polkadot} 和 {Kusama}。您可以添加、导入和导出账户并签署您从授权的网站发起的交易或外部信息。"
         }
     },
     "node": {
         "errors": {
             "connection": "连接到节点时发生错误\n{address}\n",
             "network": "该节点\n{address}\n 是来自另一个网络\n",
-            "existing": "此节点已添加：'{title}'\n"
+            "existing": "此节点已添加：{title}\n"
         },
         "messages": {
             "connected": "与节点建立连接\n{address}\n",
@@ -410,10 +405,10 @@
         }
     },
     "selectNodeDialog": {
-        "title": "@:soraText 网络节点选择",
+        "title": "{Sora} 网络节点选择",
         "addNode": "添加自定义节点",
         "customNode": "自定义节点",
-        "howToSetupOwnNode": "如何设置您自己的@:soraText节点",
+        "howToSetupOwnNode": "如何设置您自己的{Sora}节点",
         "select": "选择",
         "connected": "已连接",
         "selectNodeForEnvironment": "{environment}环境选择一个节点：",
@@ -441,62 +436,62 @@
         "title": "找不到网页",
         "body": "404"
     },
-    "metamask": "MetaMask",
+    "metamask": "{Metamask}",
     "sora": {
-        "Dev": "@:soraText 开发网",
-        "Test": "@:soraText 测试网",
-        "Prod": "@:soraText 主网",
-        "Stage": "@:soraText 测试网"
+        "Dev": "{Sora} 开发网",
+        "Test": "{Sora} 测试网",
+        "Prod": "{Sora} 主网",
+        "Stage": "{Sora} 测试网"
     },
     "evm": {
-        "main": "以太坊主网",
-        "ropsten": "以太坊 Ropsten",
-        "rinkeby": "以太坊 Rinkeby",
-        "kovan": "以太坊 Kovan",
-        "goerli": "以太坊 Goerli",
+        "main": "{Ethereum} 主网",
+        "ropsten": "{Ethereum} Ropsten",
+        "rinkeby": "{Ethereum} Rinkeby",
+        "kovan": "{Ethereum} Kovan",
+        "goerli": "{Ethereum} Goerli",
         "private": "Volta 测试网",
         "EWC": "Energy Web Chain"
     },
     "providers": {
-        "metamask": "@:metamask"
+        "metamask": "{Metamask}"
     },
     "about": {
         "title": "迈向可互操作未来的 DEX。",
-        "description": "资产的跨链交换，新资产的简单创建和上市，以及最简单的兑换。Polkadot的可互操作性未来就在这里，并且我们走在最前沿！",
+        "description": "资产的跨链交换，新资产的简单创建和上市，以及最简单的兑换。{Polkadot}的可互操作性未来就在这里，并且我们走在最前沿！",
         "trading": {
             "title": "更快的交易",
-            "first": "Polkaswap 是一种非托管的跨链 AMM DEX 协议，用于互换基于 Polkadot 和 Kusama 中继链、Polkadot 和 Kusama 平行链以及通过转接桥直接连接区块链的代币。",
-            "second": "Polkaswap 消除了对受信任的中介机构的依赖，并提供了更快速的交易机会",
-            "third": "Polkaswap是一个社区项目，开发者们在开源代码上进行合作，使用的是"
+            "first": "{AppName} 是一种非托管的跨链 AMM DEX 协议，用于互换基于 {Polkadot} 和 {Kusama} 中继链、{Polkadot} 和 {Kusama} 平行链以及通过转接桥直接连接区块链的代币。",
+            "second": "{AppName} 消除了对受信任的中介机构的依赖，并提供了更快速的交易机会",
+            "third": "{AppName}是一个社区项目，开发者们在开源代码上进行合作，使用的是"
         },
         "liquidity": {
             "title": "无限流动性",
-            "first": "Polkaswap在一个共同的流动性聚集算法下结合了多个流动性来源，以一种完全无需信任和去中心化的方式在链上运行。",
+            "first": "{AppName}在一个共同的流动性聚集算法下结合了多个流动性来源，以一种完全无需信任和去中心化的方式在链上运行。",
             "second": "当交易者调用兑换功能时，流动性聚合算法将使用所有流动性来源的最佳报价来填补订单。流动性来源可以是其他DEXs、订单簿、或其他API驱动的来源。",
-            "third": "由于Polkaswap是一个开源项目，任何人都可以通过对Polkaswap代码库的贡献增加更多的流动性来源。"
+            "third": "由于{AppName}是一个开源项目，任何人都可以通过对{AppName}代码库的贡献增加更多的流动性来源。"
         },
         "swap": {
             "title": "交换任何代币",
-            "first": "通过添加来自Polkadot生态系统以及其他区块链的代币，超越当前DEX的限制。",
-            "second": "在 SORA 网络上创建、列出和交易您自己的代币。",
-            "third": "我们的核心基础设施使用 Parity Substrate，它比以太坊更具可扩展性，并且不使用昂贵的挖矿来达成共识。"
+            "first": "通过添加来自{Polkadot}生态系统以及其他区块链的代币，超越当前 DEX 的限制。",
+            "second": "在 {Sora} 网络上创建、列出和交易您自己的代币。",
+            "third": "我们的核心基础设施使用 Parity Substrate，它比{Ethereum}更具可扩展性，并且不使用昂贵的挖矿来达成共识。"
         },
         "pswap": {
             "title": "PSWAP 代币",
-            "first": "PSWAP 是由社区治理通过对其发布进行投票而创建的。它是一种实用和治理代币，用于奖励 Polkaswap 上的流动性提供者。与大多数其他奖励代币不同的是，PSWAP 会随着交易而被销毁，并且供应量会随着时间的推移而减少。",
-            "second": "Polkaswap DEX 上每次兑换的{percent}% 费用用于回购 PSWAP 代币，然后将其销毁。起初，90% 的PSWAP 代币销毁被重新分配给流动性提供者，但随着时间的推移，这个百分比将在 4 年后降至 35%。"
+            "first": "PSWAP 是由社区治理通过对其发布进行投票而创建的。它是一种实用和治理代币，用于奖励 {AppName} 上的流动性提供者。与大多数其他奖励代币不同的是，PSWAP 会随着交易而被销毁，并且供应量会随着时间的推移而减少。",
+            "second": "{AppName} DEX 上每次兑换的{percent}% 费用用于回购 PSWAP 代币，然后将其销毁。起初，90% 的PSWAP 代币销毁被重新分配给流动性提供者，但随着时间的推移，这个百分比将在 4 年后降至 35%。"
         },
         "links": {
             "first": {
-                "title": "成为SORA验证人",
-                "desc": "保护 SORA 网络和 Polkaswap 等去中心化应用程序的未来，并通过成为 SORA 验证者一路获得奖励。"
+                "title": "成为{Sora}验证人",
+                "desc": "保护 {Sora} 网络和 {AppName} 等去中心化应用程序的未来，并通过成为 {Sora} 验证者一路获得奖励。"
             },
             "second": {
-                "title": "连接一条链到 SORA",
-                "desc": "使用 HASHI 桥接协议将更多链连接到 SORA 和 Polkaswap，从而发展去中心化的世界经济。"
+                "title": "连接一条链到 {Sora}",
+                "desc": "使用 {Hashi} 桥接协议将更多链连接到 {Sora} 和 {AppName}，从而发展去中心化的世界经济。"
             }
         },
-        "network": "Polkaswap建立在SORA网络上，专注于互操作性，将加密货币生态系统的其他部分连接到Polkadot。"
+        "network": "{AppName}建立在{Sora}网络之上，专注于将加密生态系统的其余部分连接到{Polkadot}的互操作性。"
     },
     "exchange": {
         "Swap": "兑换",
@@ -506,8 +501,8 @@
         "price": "价钱",
         "transactionSubmitted": "已提交的交易",
         "transactionMessage": "{firstToken}和{secondToken}",
-        "confirm": "确认",
-        "ok": "好的"
+        "ok": "好的",
+        "confirm": "确认"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -522,7 +517,6 @@
         "liquidityProviderFeeTooltip": "每笔交易的一部分（{liquidityProviderFee}%）作为协议激励流向流动性提供者。",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "{tokenSymbol}数量不足",
         "insufficientLiquidity": "流动性不足",
@@ -548,8 +542,8 @@
         "strategicBonusApy": "战略奖金APY"
     },
     "bridge": {
-        "title": "HASHI桥",
-        "info": "在@:soraText和@:ethereumText网络之间转换代币。",
+        "title": "{Hashi}桥",
+        "info": "在{Sora}和{Ethereum}网络之间转换代币。",
         "balance": "余额",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -557,34 +551,34 @@
         "changeNetwork": "@:changeNetworkText",
         "next": "下一个",
         "connectWallets": "连接钱包以查看各自的交易历史。",
-        "soraNetworkFee": "@:soraText 网络费用",
-        "ethereumNetworkFee": "@:ethereumText 网络费用",
-        "tooltipValue": "@:comingSoonText",
+        "soraNetworkFee": "{Sora} 网络费用",
+        "ethereumNetworkFee": "{Ethereum} 网络费用",
         "total": "总共",
         "viewHistory": "查看交易记录",
         "transactionSubmitted": "交易已提交",
         "transactionMessage": "{assetA}为{assetB}",
         "notRegisteredAsset": "资产{assetSymbol}未注册",
         "selectNetwork": "选择网络",
-        "networkInfo": "与 @:soraText 网络桥接：",
-        "ethereum": "@:ethereumText",
+        "networkInfo": "与 {Sora} 网络桥接：",
+        "ethereum": "{Ethereum}",
         "energy": "@:evm.EWC",
         "copy": "复制网络地址",
-        "soraAddress": "@:soraText 地址",
-        "ethereumAddress": "@:ethereumText 地址"
+        "soraAddress": "{Sora} 地址",
+        "ethereumAddress": "{Ethereum} 地址",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "选择一个代币",
         "search": {
             "title": "代币",
             "placeholder": "按资产 ID、名称或代币符号进行筛选",
-            "networkLabelSora": "@:soraText 网络代币",
-            "networkLabelEthereum": "@:ethereumText网络镜像代币",
+            "networkLabelSora": "{Sora} 网络代币",
+            "networkLabelEthereum": "{Ethereum}网络镜像代币",
             "emptyListMessage": "没有结果"
         },
         "customAsset": {
             "title": "自定义",
-            "customInfo": "重要提醒！自定义代币必须在@:(soraText) 中注册。",
+            "customInfo": "重要提醒！自定义代币必须在{Sora} 中注册。",
             "registerToken": "注册代币",
             "addressPlaceholder": "资产 ID",
             "symbolPlaceholder": "代币符号",
@@ -596,14 +590,12 @@
         "confirmTransaction": "确认交易",
         "insufficientBalance": "@:insufficientBalanceText",
         "changeNetwork": "@:changeNetworkText",
-        "metamask": "@:metamask",
-        "sora": "@:soraText",
         "confirm": "@:confirmTransactionText",
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
         "details": "{from}为{to}",
-        "for": "给",
+        "for": " 给 ",
         "steps": {
             "step": "{step} of 2",
             "step1": "第一个",
@@ -625,7 +617,7 @@
             "done": "完成",
             "waitingForConfirmation": "等待确认..."
         },
-        "viewInEtherscan": "在Etherscan中查看",
+        "viewInEtherscan": "在{Etherscan}中查看",
         "networkTitle": "{network}交易",
         "transactionHash": "交易哈希值",
         "networkInfo": {
@@ -636,20 +628,20 @@
             "total": "总共"
         },
         "successCopy": "交易哈希已被复制到剪贴板上",
-        "ethereum": "@:ethereumText",
-        "sora": "@:soraText",
-        "pending": "<span class=\"network-title\"> {network} <\/span>交易等待确认...",
+        "ethereum": "{Ethereum}",
+        "sora": "{Sora}",
+        "pending": "{network} 交易等待确认...",
         "retry": "@:retryText",
-        "metamask": "@:metamask",
+        "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "创建新的交易",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "changeAccount": "@:changeAccountText 中的 @:metamask",
-        "expectedAddress": "在@:metamask中预期的地址",
+        "changeAccount": "@:changeAccountText 中的 {Metamask}",
+        "expectedAddress": "在{Metamask}中预期的地址",
         "title": "转接桥交易",
-        "expectedMetaMaskAddress": "MetaMask 中的预期地址：",
-        "allowToken": "允许 @:appName 使用您的{tokenSymbol}",
+        "expectedMetaMaskAddress": "{Metamask} 中的预期地址：",
+        "allowToken": "允许 {AppName} 使用您的{tokenSymbol}",
         "approveToken": "请注意，只需要批准一次代币。如果您的扩展程序中有多个代币批准请求，请确保仅确认最后一个并拒绝其余请求。",
         "blocksLeft": "{count}个区块等待确认..."
     },
@@ -686,7 +678,7 @@
         "pricePool": "价格和费用",
         "shareOfPool": "流动池份额",
         "firstPerSecond": "@:firstPerSecond",
-        "firstSecondPoolTokens": "{first} - {second}流动池",
+        "firstSecondPoolTokens": "{first}-{second}流动池",
         "connect": "连接钱包",
         "supply": "供应",
         "yourPosition": "您的头寸",
@@ -703,7 +695,7 @@
     "confirmSupply": {
         "title": "您的流动池份额将是",
         "outputDescription": "产出是估计的。如果价格变化超过{slippageTolerance}%，您的交易将被取消。",
-        "poolTokensBurned": "{first} - {second}流动池代币被销毁",
+        "poolTokensBurned": "{first}-{second}流动池代币被销毁",
         "price": "价格"
     },
     "addLiquidity": {
@@ -724,13 +716,13 @@
         "outputMessage": "产出是估计的。如果价格变化超过 {slippageTolerance}% ，您的交易将被取消。",
         "confirmTitle": "您将收到",
         "shareOfPool": "交易后的流动池份额",
-        "locked": "{percent}您的流动池正在质押中"
+        "locked": "{percent} 您的流动资金池处于 {lock}"
     },
     "dexSettings": {
         "title": "设置",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
-            "main": "- 在一级市场 (TBC)、二级市场 (XYK) 或组合智能算法之间进行选择，以保证任何给定交易的最佳价格。"
+            "main": " - 在一级市场 (TBC)、二级市场 (XYK) 或组合智能算法之间进行选择，以保证任何给定交易的最佳价格。"
         },
         "slippageTolerance": "滑点公差",
         "slippageToleranceHint": "如果价格的不利变化超过此百分比，您的交易将被取消。",
@@ -747,9 +739,9 @@
         "port": "端口",
         "min": "最小",
         "marketAlgorithms": {
-            "SMART": "<span class=\"algorithm\"> SMART <\/span>流动性路由通过仅结合所有可用市场的最佳价格选项来确保任何交易的最佳价格。当可用时，只要资产价格比其他来源更实惠，代币绑定曲线（ <span class=\"algorithm\"> TBC <\/span> <span class=\"algorithm\"> XYK <\/span>流动池将被利用。",
-            "TBC": "<span class=\"algorithm\"> TBC <\/span> — 仅从代币绑定曲线（一级市场）购买。 <span class=\"algorithm\"> XYK <\/span>流动池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
-            "XYK": "<span class=\"algorithm\"> XYK <\/span> — 仅从 XYK 池（二级市场）购买。传统的 XYK 流动池兑换。"
+            "SMART": "{smartAlgorithm}流动性路由通过仅结合所有可用市场的最佳价格选项来确保任何交易的最佳价格。当可用时，只要资产价格比其他来源更实惠，代币绑定曲线（ {tbcAlgorithm} {xycAlgorithm}流动池将被利用。",
+            "TBC": "{tbcAlgorithm} — 仅从代币绑定曲线（一级市场）购买。 {xycAlgorithm}流动池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
+            "XYK": "{xycAlgorithm} — 仅从 XYK 池（二级市场）购买。传统的 XYK 流动池兑换。"
         },
         "charts": "图表",
         "сhartsDescription": "查看代币价格图表"
@@ -763,7 +755,6 @@
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "和",
         "claiming": {
             "pending": "声称...",
@@ -775,21 +766,21 @@
             "failed": "{order} 的 {total} 交易失败. @:retryText"
         },
         "signing": {
-            "extension": "polkadot{.js}浏览器扩展",
-            "accounts": "您的@:soraText 和@:ethereumText 账户分别为"
+            "extension": "{PolkadotJs}浏览器扩展",
+            "accounts": "您的{Sora} 和{Ethereum} 账户分别为"
         },
         "hint": {
-            "connectExternalAccount": "连接@:ethereumText 账户以检查可申领的 PSWAP 和 VAL 奖励。",
-            "connectAccounts": "要申领您的 PSWAP 和 VAL 奖励，您需要连接您的 @:soraText 和 @:ethereumText 账户。",
-            "connectAnotherAccount": "连接另一个@:ethereumText 账户以检查可申领的PSWAP和VAL奖励。",
-            "howToClaimRewards": "要申领您的{symbols}奖励，您需要在{destination}中签署{count}{transactions}奖励将存入您的@:soraText 账户。"
+            "connectExternalAccount": "连接{Ethereum} 账户以检查可申领的 PSWAP 和 VAL 奖励。",
+            "connectAccounts": "要申领您的 PSWAP 和 VAL 奖励，您需要连接您的 {Sora} 和 {Ethereum} 账户。",
+            "connectAnotherAccount": "连接另一个{Ethereum} 账户以检查可申领的PSWAP和VAL奖励。",
+            "howToClaimRewards": "要申领您的{symbols}奖励，您需要在{destination}中签署{count}{transactions}奖励将存入您的{Sora} 账户。"
         },
         "action": {
             "connectWallet": "@:connectWalletText",
-            "connectExternalWallet": "连接@:ethereumText 账号",
+            "connectExternalWallet": "连接{Ethereum} 账号",
             "signAndClaim": "签名并申领",
-            "pendingInternal": "@:soraText 交易等待确认...",
-            "pendingExternal": "@:ethereumText 交易等待确认...",
+            "pendingInternal": "{Sora} 交易等待确认...",
+            "pendingExternal": "{Ethereum} 交易等待确认...",
             "retry": "@:retryText",
             "checkRewards": "查看",
             "insufficientBalance": "@:insufficientBalanceText"
@@ -799,11 +790,10 @@
         },
         "events": {
             "XorErc20": "XOR ERC-20",
-            "SoraFarmHarvest": "@:(soraText).农场收获",
+            "SoraFarmHarvest": "{Sora}.农场收获",
             "NtfAirdrop": "NFT空投",
             "LiquidityProvision": "从流动性提供中获得的费用",
             "BuyOnBondingCurve": "从 TBC 购买",
-            "NftAirdrop": "NFT 空投",
             "MarketMakerVolume": "做市商",
             "LiquidityProvisionFarming": "农业"
         },
@@ -813,19 +803,19 @@
         "claimableAmountDoneVesting": "可申领金额(完成归属)",
         "groups": {
             "strategic": "战略奖励",
-            "external": "连接以太坊账户的奖励",
+            "external": "连接的{Ethereum}帐户的奖励",
             "crowdloan": "众贷奖励"
         },
         "Rewards": "奖励",
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "@:ethereumText 提供者",
-        "metamask": "@:metamask",
+        "default": "{Ethereum} 提供者",
+        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name}扩展很忙，请检查它",
             "extensionLogin": "请登录到您的{name}扩展",
-            "installExtension": "找不到{name}扩展。请安装它！",
+            "installExtension": "未找到{name}扩展名。请安装它！ \n\n已经安装了扩展？请重新加载页面",
             "reloadPage": "重新加载页面"
         }
     },
@@ -833,15 +823,11 @@
         "title": "语言"
     },
     "tokens": {
-        "title": "已列出的代币",
         "symbol": "符号",
-        "name": "名字",
         "assetId": "资产 ID"
     },
-    "memorandum": "Polkaswap 备忘录和服务条款",
-    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\"> @:memorandum <\/a>",
-    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
-    "FAQ": "Polkaswap 常见问题",
+    "memorandum": "{AppName} 备忘录和服务条款",
+    "FAQ": "{AppName} 常见问题",
     "connectedAccount": "已连接的账户",
     "selectNodeConnected": "已连接到： {chain}",
     "moonpayText": "MoonPay",
@@ -850,15 +836,15 @@
         "notifications": {
             "success": {
                 "title": "代币购买",
-                "text": "代币购买完成。一旦在连接的以太坊账户中收到代币，HASHI 桥接交易将自动开始。关闭此窗口并继续使用 Polkaswap 是安全的。准备好后会有关于转接桥交易的通知。"
+                "text": "代币购买完成。一旦在连接的{Ethereum}帐户中收到代币， {Hashi}桥接交易将自动启动。关闭此窗口并继续使用{AppName}是安全的。准备好后会有关于桥接交易的通知。"
             },
             "supportError": {
                 "title": "不支持的代币",
-                "text": "很遗憾，Polkaswap 中的 HASHI 桥还不支持通过 @:moonpayText 购买的代币。通常只有支持的代币才能通过 Polkaswap 中的 MoonPay 购买，因此一定是哪里出了问题。请不要犹豫，在<a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Polkaswap 电报群<\/a>里联系我们让社区知晓您的此次案例 。"
+                "text": "很遗憾，{AppName} 中的 {Hashi} 桥还不支持通过 @:moonpayText 购买的代币。通常只有支持的代币才能通过 {AppName} 中的 MoonPay 购买，因此一定是哪里出了问题。请不要犹豫，在<a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> {AppName} 电报群<\/a>里联系我们让社区知晓您的此次案例 。"
             },
             "feeError": {
                 "title": "没有足够的 ETH 用于转接桥交易",
-                "text": "很遗憾，由于没有足够的 ETH 来支付以太坊网络的交易费用，HASHI 桥交易失败了。请添加更多 ETH，然后重试。"
+                "text": "不幸的是，由于没有足够的 ETH 来支付{Ethereum}网络交易费用， {Hashi}桥接交易失败。请添加更多 ETH 并重试。"
             },
             "transactionError": {
                 "title": "交易失败",
@@ -866,11 +852,11 @@
             },
             "amountError": {
                 "title": "余额不足",
-                "text": "很遗憾，由于没有足够的代币进行交易，HASHI 桥交易失败了。请检查您的以太坊账户余额并重试。"
+                "text": "不幸的是，由于没有足够的令牌进行交易， {Hashi}桥交易失败。请检查您的{Ethereum}帐户余额，然后重试。"
             },
             "accountAddressError": {
-                "title": "错误的以太坊账户",
-                "text": "很遗憾，由于@:moonpayText 订单中代币的接收地址与您当前的以太坊账户地址不匹配，HASHI 桥接交易失败。请在扩展中切换以太坊账户并重试。"
+                "title": "错误{Ethereum}帐户",
+                "text": "很遗憾，由于@:moonpayText 订单中代币的收件人地址与您当前的{Ethereum}账户地址不匹配， {Hashi}桥接交易失败。请在扩展程序中切换{Ethereum}帐户，然后重试。"
             }
         },
         "buttons": {
@@ -913,13 +899,13 @@
     "confirmNextTxFailure": {
         "header": "注意",
         "info": "在此交易后，您的 XOR 余额将低于{fee}XOR。 您将无法支付另一笔交易的网络费用。",
-        "payoff": "您必须使用转接桥从其他网络获取 XOR，从另一个 SORA 账户发送 XOR，或者将您账户中已有的任何其他代币兑换为 XOR。",
+        "payoff": "您必须使用转接桥从其他网络获取 XOR，从另一个 {Sora} 账户发送 XOR，或者将您账户中已有的任何其他代币兑换为 XOR。",
         "button": "是的，我了解风险"
     },
     "blockNumberText": "区块数",
     "referralProgram": {
         "title": "推荐计划",
-        "connectAccount": "想要邀请用户，您需要连接您的 SORA 账户。",
+        "connectAccount": "想要邀请用户，您需要连接您的 {Sora} 账户。",
         "bondedXOR": "XOR绑定",
         "referralsNumber": "{number}推荐者",
         "startInviting": "绑定 XOR 以推荐他人",
@@ -927,7 +913,6 @@
         "deposit": "存款",
         "balance": "余额",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "绑定余额不足",
         "action": {
@@ -946,16 +931,16 @@
         "bondTitle": "绑定XOR",
         "unbondTitle": "解绑XOR",
         "confirm": {
-            "text": "确认",
             "bond": "确认绑定",
             "unbond": "确认解绑",
-            "inviteTitle": "您已被邀请加入 Polkaswap",
+            "inviteTitle": "您已被邀请加入 {AppName}",
             "inviteDescription": "对于每笔交易，您的推荐人将收取 10% 的费用，您无需支付任何额外费用。",
             "signInvitation": "批准",
             "freeOfCharge": "此活动是免费的",
             "hasReferrerTitle": "您已经设置好了您的推荐人",
             "hasReferrerDescription": "亲爱的真不巧，您只能设置一个",
-            "ok": "好的"
+            "ok": "好的",
+            "text": "确认"
         },
         "referrer": {
             "title": "添加您的推荐人",
@@ -964,7 +949,7 @@
             "label": "邀请链接或代码",
             "approve": "批准",
             "approved": "已批准",
-            "description": "您可以被推荐到Polkaswap， <br\/>输入推荐人的链接或者邀请码",
+            "description": "您可以被推荐到{AppName}， <br\/>输入推荐人的链接或者邀请码",
             "referredBy": "您已被 {referrer}推荐",
             "info": "当您支付交易费用时， <br\/> 10% 将归您的推荐人",
             "referredLablel": "推荐地址"
@@ -972,7 +957,6 @@
         "insufficientBondedAmount": "要邀请更多推荐者，请至少绑定 {inviteUserFee} XOR"
     },
     "transactionDetailsText": "交易详情",
-    "createTokenTextNFT": "创建 NFT",
     "code": {
         "download": "下载QR码",
         "upload": "扫描QR",
@@ -985,13 +969,13 @@
         "allowanceRequest": "按“允许”访问相机"
     },
     "bridgeTransferNotification": {
-        "addToken": "将{symbol}添加到 @:metamask",
+        "addToken": "将{symbol}添加到 {Metamask}",
         "title": "转接桥交易成功"
     },
     "mobilePopup": {
-        "sideMenu": "获取 SORA 钱包",
-        "header": "下载具有<span class=\"popup-info__headline--highlight\"> Polkaswap <\/span>功能的 SORA 钱包",
-        "info": "兑换来自不同网络的代币 - SORA、以太坊、Polkadot、Kusama。提供流动流动池并从交易费用中赚取 %。"
+        "sideMenu": "获取 {Sora} 钱包",
+        "header": "下载具有{polkaswapHighlight}功能的 {Sora} 钱包",
+        "info": "兑换来自不同网络的代币 - {Sora}、{Ethereum}、{Polkadot}、{Kusama}。提供流动流动池并从交易费用中赚取 %。"
     },
     "releaseNotesText": "发行说明",
     "copiedText": "已复制！",
@@ -1037,39 +1021,39 @@
     "historyErrorMessages": {
         "generalError": "出问题了",
         "balances": {
-            "LiquidityRestrictions": "账户流动性限制阻止提款"
+            "liquidityrestrictions": "账户流动性限制阻止提款"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "源余额不够大",
-            "TargetBalanceIsNotLargeEnough": "目标余额不够大",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "提供的数额过于多样化",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "数额超出要求的范围",
-            "UnableToDepositXorLessThanMinimum": "XOR 低于最小值 (0.007)",
-            "ZeroValueInAmountParameter": "金额参数价值为零"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "源余额不够大",
+            "targetbalanceisnotlargeenough": "目标余额不够大",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "提供的数额过于多样化",
+            "calculatedvalueisnotmeetsrequiredboundaries": "数额超出要求的范围",
+            "unabletodepositxorlessthanminimum": "XOR 低于最小值 (0.007)",
+            "zerovalueinamountparameter": "金额参数价值为零"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "流动池对已存在",
-            "SlippageLimitExceeded": "滑点公差未达到恰当的限度"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "流动池对已存在",
+            "slippagelimitexceeded": "滑点公差未达到恰当的限度"
         },
         "referrals": {
-            "AlreadyHasReferrer": "账户已有一位推荐人",
-            "ReferrerInsufficientBalance": "推荐人的预留余额不足"
+            "alreadyhasreferrer": "账户已有一位推荐人",
+            "referrerinsufficientbalance": "推荐人的预留余额不足"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "奖励计划已经结束",
-            "CantCalculateReward": "奖励计算失败",
-            "NoRewardsForAsset": "该资产没有奖励"
+        "vestedrewards": {
+            "rewardssupplyshortage": "奖励计划已经结束",
+            "cantcalculatereward": "奖励计算失败",
+            "norewardsforasset": "该资产没有奖励"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "您选择的流动性来源不被允许"
+        "liquidityproxy": {
+            "forbiddenfilter": "您选择的流动性来源不被允许"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "资金不足",
-            "InsufficientLPTokens": "流动性提供代币不足",
-            "PoolDoesNotHaveRewards": "流动池没有奖励"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "资金不足",
+            "insufficientlptokens": "流动性提供代币不足",
+            "pooldoesnothaverewards": "流动池没有奖励"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "计算价格时出错"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "计算价格时出错"
         }
     },
     "receivedText": "已收到",
@@ -1078,7 +1062,7 @@
         "info": "我们只会向您发送有关您钱包的相关更新，例如：资产余额变化",
         "button": "启用通知",
         "agree": "是的我明白",
-        "notificationBlocked": "要接收有关{appName}的通知，请在浏览器的本机设置中允许通知",
+        "notificationBlocked": "要接收有关{AppName}的通知，请在浏览器的本机设置中允许通知",
         "pointer": "按“允许”打开通知"
     },
     "assetDeposit": "资产余额已存入",
@@ -1086,8 +1070,7 @@
     "ofText": "{first}的{second}",
     "filter": {
         "all": "全部",
-        "token": "代币",
-        "nft": "NFT",
+        "token": "货币",
         "verifiedOnly": "只显示经过验证的资产",
         "zeroBalance": "隐藏0余额资产",
         "showAssets": "显示资产",
@@ -1095,9 +1078,9 @@
     },
     "desktop": {
         "welcome": {
-            "header": "欢迎来到 Polkaswap！",
+            "header": "欢迎来到 {AppName}！",
             "headline": "让我们设置您的帐户",
-            "text": "创建您的 SORA 网络帐户或使用助记词或 .json 导入登录旧帐户。这使您可以安全地签署交易并管理 SORA 网络中的资产。",
+            "text": "创建您的 {Sora} 网络帐户或使用助记词或 .json 导入登录旧帐户。这使您可以安全地签署交易并管理 {Sora} 网络中的资产。",
             "createAccount": "创建一个帐户",
             "importAccount": "进口账户"
         },
@@ -1147,5 +1130,18 @@
             "jsonFields": "JSON 文件没有必填字段"
         }
     },
-    "hashiBridgeText": "HASHI桥"
+    "hashiBridgeText": "{Hashi}桥",
+    "disclaimerTitle": "免责声明:",
+    "explore": {
+        "showOnlyMyPositions": "只显示我的位置"
+    },
+    "tooltips": {
+        "roi": "{ROI}代表投资回报率。它的计算方法是将投资赚取的利润除以该投资的成本（以等值百分比表示）。",
+        "tvl": "{TVL}代表锁定的总价值。它代表以美元等价物锁定在池中的代币。"
+    },
+    "createTokenText": "创建",
+    "comingSoonText": "即将推出",
+    "confirmText": "确认",
+    "createTokenTextNFT": "创建 NFT",
+    "doNotShowText": "不要再给我看这个"
 }

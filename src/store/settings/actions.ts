@@ -25,6 +25,15 @@ async function updateNetworkChainGenesisHash(context: ActionContext<any, any>): 
   }
 }
 
+async function closeConnectionWithInfo(isConnected?: boolean) {
+  const { endpoint: currentEndpoint, opened } = connection;
+
+  if (currentEndpoint && opened) {
+    await connection.close(isConnected);
+    console.info('Disconnected from node', currentEndpoint);
+  }
+}
+
 const actions = defineActions({
   async connectToNode(context, options: ConnectToNodeOptions = {}): Promise<void> {
     const { dispatch, commit, state, rootDispatch, rootState, getters } = settingsActionContext(context);
@@ -82,7 +91,7 @@ const actions = defineActions({
     const isReconnection = !connectionOpenOptions.once;
     const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting;
     const connectionOnDisconnected = async () => {
-      await connection.close(false);
+      await closeConnectionWithInfo(false);
       if (typeof onDisconnect === 'function') {
         onDisconnect(node as Node);
       }
@@ -94,18 +103,16 @@ const actions = defineActions({
         throw new Error('Node address is not set');
       }
       commit.setNodeRequest({ node, isReconnection });
+
       console.info('Connection request to node', endpoint);
 
-      const { endpoint: currentEndpoint, opened } = connection;
-      if (currentEndpoint && opened) {
-        await connection.close();
-        console.info('Disconnected from node', currentEndpoint);
-      }
+      await closeConnectionWithInfo();
 
       await connection.open(endpoint, {
         ...connectionOpenOptions,
         eventListeners: [['disconnected', connectionOnDisconnected]],
       });
+
       if (connectingNodeChanged()) return;
 
       console.info('Connected to node', connection.endpoint);
@@ -118,6 +125,9 @@ const actions = defineActions({
           await updateNetworkChainGenesisHash(context);
         }
         if (nodeChainGenesisHash !== state.chainGenesisHash) {
+          // disconnect from node to prevent network subscriptions activation
+          await closeConnectionWithInfo();
+
           throw new AppHandledError(
             {
               key: 'node.errors.network',

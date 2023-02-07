@@ -42,6 +42,12 @@ interface AbiItem {
   gas?: number;
 }
 
+export enum KnownBridgeAsset {
+  VAL = 'VAL',
+  XOR = 'XOR',
+  Other = 'OTHER',
+}
+
 export const ABI = {
   balance: [
     // balanceOf
@@ -282,8 +288,8 @@ async function getEthersInstance(): Promise<ethersProvider> {
 async function watchEthereum(cb: {
   onAccountChange: (addressList: string[]) => void;
   onNetworkChange: (networkId: string) => void;
-  onDisconnect: VoidFunction;
-}): Promise<VoidFunction> {
+  onDisconnect: FnWithoutArgs;
+}): Promise<FnWithoutArgs> {
   await getEthersInstance();
 
   const ethereum = (window as any).ethereum;

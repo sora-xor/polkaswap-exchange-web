@@ -20,7 +20,9 @@
         style="width: 75%; height: auto; margin-top: 120px; height: 343px"
       />
       <p class="gradient trading">{{ t('about.trading.title') }}</p>
-      <p class="text" style="margin-top: 15px">{{ t('about.trading.first') }}</p>
+      <p class="text" style="margin-top: 15px">
+        {{ t('about.trading.first') }}
+      </p>
       <s-image :src="images.about02_1" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
       <p class="text">{{ t('about.trading.second') }}</p>
       <s-image :src="images.about02_2" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
@@ -77,7 +79,9 @@
       <p class="gradient pswap">{{ t('about.pswap.title') }}</p>
       <p class="text">{{ t('about.pswap.first') }}</p>
       <s-image :src="images.about05_1" lazy fit="initial" draggable="false" class="unselectable bubble-icon" />
-      <p class="text" style="margin-bottom: 120px">{{ t('about.pswap.second', { percent: feePercent }) }}</p>
+      <p class="text" style="margin-bottom: 120px">
+        {{ t('about.pswap.second', { percent: feePercent }) }}
+      </p>
 
       <div class="about-video" style="margin-bottom: 120px">
         <a
@@ -106,7 +110,10 @@
             class="unselectable icon"
             style="height: 49px"
           />
-          <span class="title">{{ t('about.links.first.title') }}<img :src="images.about07_3" class="link" /></span>
+          <span class="title">
+            {{ t('about.links.first.title') }}
+            <img :src="images.about07_3" class="link" />
+          </span>
           <p class="text">{{ t('about.links.first.desc') }}</p>
           <a class="link-mask" href="https://sora.org/validator" target="_blank" rel="nofollow noopener" />
         </div>
@@ -119,14 +126,21 @@
             class="unselectable icon"
             style="height: 49px"
           />
-          <span class="title">{{ t('about.links.second.title') }}<img :src="images.about07_3" class="link" /></span>
-          <p class="text">{{ t('about.links.second.desc') }}</p>
+          <span class="title">
+            {{ t('about.links.second.title') }}
+            <img :src="images.about07_3" class="link" />
+          </span>
+          <p class="text">
+            {{ t('about.links.second.desc') }}
+          </p>
           <a class="link-mask" href="https://sora.org" target="_blank" rel="nofollow noopener" />
         </div>
       </div>
       <div class="about-network">
         <s-image :src="images.about08" lazy fit="fill" draggable="false" class="unselectable network-img" />
-        <p class="text">{{ t('about.network') }}</p>
+        <p class="text">
+          {{ t('about.network') }}
+        </p>
       </div>
     </div>
     <footer class="app-footer">
@@ -144,7 +158,6 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import Web3Logo from '@/components/logo/Web3.vue';
-
 import { getter } from '@/store/decorators';
 
 @Component({
@@ -316,34 +329,6 @@ export default class About extends Mixins(TranslationMixin) {
       transform: translate(-50%, -50%);
       width: fit-content;
     }
-
-    &-block-1 {
-      top: 26%;
-      right: 7.5%;
-      width: 40%;
-
-      position: absolute;
-    }
-    &-block-2 {
-      top: 38%;
-      right: 5.5%;
-      width: 45%;
-
-      position: absolute;
-    }
-    &-block-3 {
-      top: 54%;
-      right: 5.5%;
-      width: 45%;
-
-      position: absolute;
-    }
-    &-shadow-1 {
-      position: absolute;
-      top: -110%;
-      z-index: $app-background-layer;
-      width: 100%;
-    }
   }
   &-liquidity {
     min-width: 800px;
@@ -361,34 +346,6 @@ export default class About extends Mixins(TranslationMixin) {
       left: 32%;
       transform: translate(-50%, -50%);
       width: 40%;
-    }
-
-    &-block-1 {
-      top: 56.5%;
-      left: 30.5%;
-      width: 37%;
-      position: absolute;
-      transform: translate(-50%, -50%);
-    }
-    &-block-2 {
-      top: 75%;
-      left: 36%;
-      width: 55%;
-      position: absolute;
-      transform: translate(-50%, -50%);
-    }
-    &-block-3 {
-      top: 94%;
-      left: 36%;
-      width: 55%;
-      position: absolute;
-      transform: translate(-50%, -50%);
-    }
-    &-shadow-1 {
-      position: absolute;
-      top: -110%;
-      z-index: $app-background-layer;
-      width: 100%;
     }
   }
   &-swap {
@@ -408,34 +365,6 @@ export default class About extends Mixins(TranslationMixin) {
       transform: translate(-50%, -50%);
       width: 40%;
     }
-
-    &-block-1 {
-      top: 24%;
-      right: 7.5%;
-      width: 40%;
-
-      position: absolute;
-    }
-    &-block-2 {
-      top: 28%;
-      right: 5.5%;
-      width: 45%;
-
-      position: absolute;
-    }
-    &-block-3 {
-      top: 48%;
-      right: 5.5%;
-      width: 45%;
-
-      position: absolute;
-    }
-    &-shadow-1 {
-      position: absolute;
-      top: -150%;
-      z-index: $app-background-layer;
-      width: 100%;
-    }
   }
   &-pswap {
     min-width: 800px;
@@ -454,27 +383,6 @@ export default class About extends Mixins(TranslationMixin) {
       transform: translate(-50%, -50%);
       width: 40%;
     }
-
-    &-block-1 {
-      top: 36%;
-      right: 33%;
-      width: 33%;
-
-      position: absolute;
-    }
-    &-block-2 {
-      top: 62%;
-      left: 32%;
-      width: 50%;
-
-      position: absolute;
-    }
-    &-shadow-1 {
-      position: absolute;
-      top: -70%;
-      z-index: $app-background-layer;
-      width: 100%;
-    }
   }
   &-video {
     display: flex;
@@ -486,17 +394,6 @@ export default class About extends Mixins(TranslationMixin) {
     .preview {
       min-width: 70%;
       cursor: pointer;
-    }
-
-    &-shadow-1 {
-      position: absolute;
-      top: -100%;
-      z-index: $app-background-layer;
-      width: 120%;
-
-      @media screen and (max-width: 1200px) {
-        width: 100%;
-      }
     }
   }
   &-links {
@@ -559,13 +456,6 @@ export default class About extends Mixins(TranslationMixin) {
         height: 100%;
         width: 100%;
       }
-    }
-
-    &-shadow-1 {
-      position: absolute;
-      top: 0;
-      z-index: $app-background-layer;
-      width: 100%;
     }
   }
   &-network {

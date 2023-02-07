@@ -2,7 +2,7 @@
   <header class="header">
     <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
-    <div v-if="moonpayEnabled" class="app-controls app-controls--moonpay s-flex">
+    <div v-if="areMoonpayButtonsVisible" class="app-controls app-controls--moonpay s-flex">
       <s-button
         type="tertiary"
         size="medium"
@@ -12,10 +12,9 @@
       >
         <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
-      <moonpay-history-button v-if="isLoggedIn" class="moonpay-button moonpay-button--history" />
+      <moonpay-history-button class="moonpay-button moonpay-button--history" />
     </div>
-    <div class="app-controls s-flex">
-      <market-maker-countdown />
+    <div class="app-controls s-flex" :class="{ 'without-moonpay': !areMoonpayButtonsVisible }">
       <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
         <token-logo class="node-control__logo token-logo" v-bind="nodeLogo" />
       </s-button>
@@ -50,12 +49,11 @@ import { getter, mutation } from '@/store/decorators';
 
 @Component({
   components: {
-    WalletAvatar: components.WalletAvatar as any,
+    WalletAvatar: components.WalletAvatar,
     PolkaswapLogo,
     AccountButton: lazyComponent(Components.AccountButton),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     AppHeaderMenu: lazyComponent(Components.AppHeaderMenu),
-    MarketMakerCountdown: lazyComponent(Components.MarketMakerCountdown),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     Moonpay: lazyComponent(Components.Moonpay),
@@ -90,6 +88,10 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
       size: WALLET_CONSTS.LogoSize.MEDIUM,
       tokenSymbol: XOR.symbol,
     };
+  }
+
+  get areMoonpayButtonsVisible(): boolean {
+    return this.moonpayEnabled && this.isLoggedIn;
   }
 
   openNodeSelectionDialog(): void {
@@ -128,20 +130,17 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   &--history {
     max-width: 134px;
-
-    .moonpay-button-text {
-      display: none;
-
-      @include large-mobile {
-        display: inline-block;
-      }
-    }
   }
 
   &-text {
+    display: none;
     white-space: normal;
     text-align: left;
     letter-spacing: var(--s-letter-spacing-small);
+
+    @include large-mobile {
+      display: inline-block;
+    }
   }
 
   & i + &-text {
@@ -203,8 +202,9 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
     }
   }
 
-  // TODO: Check for moonpay=false, seems like an issue
-  // margin-left: auto;
+  &.without-moonpay {
+    margin-left: auto;
+  }
 
   @include desktop {
     margin-left: auto;

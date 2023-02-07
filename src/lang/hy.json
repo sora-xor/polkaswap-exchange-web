@@ -7,8 +7,6 @@
     "importText": "Ներմուծել",
     "settingsText": "Կարգավորումներ",
     "addAssetText": "Ավելացնել ակտիվ",
-    "createTokenText": "Ստեղծել տոկեն",
-    "comingSoonText": "Շուտով",
     "successText": "Հաջողություն",
     "warningText": "Զգուշացում",
     "swapText": "Փոխանակել",
@@ -19,7 +17,6 @@
     "sendText": "Ուղարկել",
     "addressText": "Հասցե",
     "amountText": "Գումար",
-    "confirmText": "Հաստատել",
     "errorText": "Սխալ",
     "insufficientBalanceText": "Անբավարար {tokenSymbol} հաշիվ",
     "unknownErrorText": "Սխալ Ինչ-որ բան սխալ է տեղի ունեցել...",
@@ -43,15 +40,15 @@
             "ClaimRewards": "Պարգևատրումը հաջողությամբ հաստատված է {rewards}",
             "ReferralReserveXor": "XOR-ը հաջողությամբ կապակցվեց",
             "ReferralUnreserveXor": "XOR-ը հաջողությամբ ունբոնդ",
-            "ReferralSetInvitedUser": "Հղումը դրվում է հաջողությամբ",
+            "ReferralSetInvitedUser": "{role} {address} դրվում է հաջողությամբ",
             "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Տրամադրված {symbol} և {symbol2} {amount} LP ժետոններ",
             "DemeterFarmingWithdrawLiquidity": "Հեռացվել են {symbol} և {symbol2} {amount} LP նշանները",
             "DemeterFarmingStakeToken": "Ավելացվեց {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Հեռացվել է {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} ը հաջողությամբ ներկայացվեց",
-            "EthBridgeIncoming": "Փոխանցվել է {amount} {symbol} @:ethereumText ից @:soraText",
-            "EthBridgeOutgoing": "Փոխանցվել է {amount} {symbol} @:soraText ից @:ethereumText"
+            "EthBridgeIncoming": "Փոխանցվել է {amount} {symbol} {Ethereum} ից {Sora}",
+            "EthBridgeOutgoing": "Փոխանցվել է {amount} {symbol} {Sora} ից {Ethereum}"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -63,19 +60,19 @@
             "ClaimRewards": "Չհաջողվեց հաստատել պարգեւատրումները {rewards}",
             "ReferralReserveXor": "Չհաջողվեց կապել XOR-ը",
             "ReferralUnreserveXor": "Ունբոնդ Ձախողվել է XOR-ը",
-            "ReferralSetInvitedUser": "Չհաջողվեց սահմանել ուղղորդում",
+            "ReferralSetInvitedUser": "Չհաջողվեց սահմանել {role} {address}",
             "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} և {symbol2} LP նշաններ",
             "DemeterFarmingWithdrawLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {symbol2} LP նշանները",
             "DemeterFarmingStakeToken": "Չհաջողվեց ավելացնել {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Չհաջողվեց հեռացնել {amount} {symbol}",
             "DemeterFarmingGetRewards": "Չհաջողվեց պահանջել {symbol}",
-            "EthBridgeIncoming": "Չհաջողվեց փոխանցել {amount} {symbol} -ը @:ethereumText ից @:soraText ին",
-            "EthBridgeOutgoing": "Չհաջողվեց փոխանցել {amount} {symbol} -ը @:soraText ից @:ethereumText ին"
+            "EthBridgeIncoming": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Ethereum} ից {Sora} ին",
+            "EthBridgeOutgoing": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Sora} ից {Ethereum} ին"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
-        "ReferralSetInvitedUser": "Սահմանել ուղղորդում",
+        "ReferralSetInvitedUser": "Սահմանել {role}",
         "SwapAndSend": "Փոխանակեք և ուղարկեք",
         "DemeterFarmingDepositLiquidity": "Բաժնի իրացվելիություն",
         "DemeterFarmingWithdrawLiquidity": "Չվճարված իրացվելիություն",
@@ -86,15 +83,15 @@
         "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Polkadot{.js} ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
+        "noExtensions": "{PolkadotJs} ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Ձեր {extension} ընդլայնման մեջ կարծես որևէ հաշիվ չկա: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
-        "noAccount": "Polkadot.js հաշվի սխալ: Խնդրում ենք ստուգել ձեր հաշիվը Polkadot.js ընդլայնման մեջ",
+        "noAccount": "{extension} հաշվի սխալ: Խնդրում ենք ստուգել ձեր հաշիվը {extension} ընդլայնման մեջ",
         "noExtension": "{extension} ընդլայնում չի գտնվել: Խնդրում ենք տեղադրել այն և վերաբեռնել այս էջը",
         "noSigner": "Մուտքն արգելված է. Գնացեք {extension} ընդլայնման կարգավորումներ և բացեք «Կառավարել վեբ կայքի մուտքը»՝ թույլ տալու համար:"
     },
     "connection": {
-        "title": "SORA ցանցի հաշիվ",
-        "text": "Միացրեք ձեր SORA ցանցի հաշիվները կամ ստեղծեք նորերը Polkadot{.js} բրաուզերի ընդլայնմամբ: Այս ընդլայնումը թույլ է տալիս Ձեզ ապահով կերպով կնքել գործարքներ և կառավարել ակտիվները SORA ցանցում:",
+        "title": "{Sora} ցանցի հաշիվ",
+        "text": "Միացրեք կամ ստեղծեք ձեր {Sora} ցանցի հաշիվը {extensions} ընդլայնումներով: Այս ընդլայնումները թույլ են տալիս ապահով կերպով ստորագրել գործարքները և կառավարել ակտիվները {Sora} ցանցում:",
         "noAccounts": "{extension} բրաուզերի ընդլայնման մեջ հաշիվ չի գտնվել: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
         "selectAccount": "Ընտրել հաշիվ աշխատելու համար",
         "action": {
@@ -105,11 +102,13 @@
         },
         "selectWallet": "Ընտրեք դրամապանակ՝ աշխատելու համար",
         "wallet": {
-            "install": "Տեղադրեք"
+            "install": "Տեղադրեք",
+            "connected": "Միացված է",
+            "notConnected": "Միացված չէ"
         }
     },
     "wallet": {
-        "title": "SORA ցանցի հաշիվ",
+        "title": "{Sora} ցանցի հաշիվ",
         "WalletAssets": "Ակտիվներ",
         "WalletActivity": "Գործունեություն",
         "addAsset": "@:addAssetText",
@@ -127,12 +126,12 @@
         "enterAmount": "Մուտքագրեք գումարը",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Հաստատել գործարքը",
-        "confirm": "@:confirmText",
         "errorAddress": "Անվավեր հասցե: Խնդրում ենք ստուգել այն և կրկին փորձել:",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "Ուղարկեք նշաններ SORA ցանցի հաշիվների միջև",
-        "addressWarning": "Նշանները կուղարկվեն ստորև նշված SORA հասցեին: Համոզվեք, որ ստացողը կարող է մուտք գործել SORA ցանց ՝ խորհրդանիշներ օգտագործելու համար.",
-        "addressError": "Դուք չեք կարող նշաններ ուղարկել նույն հաշվին, որին այժմ կապված եք:"
+        "tooltip": "Ուղարկեք նշաններ {Sora} ցանցի հաշիվների միջև",
+        "addressWarning": "Նշանները կուղարկվեն ստորև նշված {Sora} հասցեին: Համոզվեք, որ ստացողը կարող է մուտք գործել {Sora} ցանց ՝ խորհրդանիշներ օգտագործելու համար.",
+        "addressError": "Դուք չեք կարող նշաններ ուղարկել նույն հաշվին, որին այժմ կապված եք:",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Դրամապանակի հասցեն պատճենվում է սեղմատախտակին",
@@ -152,7 +151,6 @@
     },
     "assets": {
         "empty": "Ակտիվներ չկան",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -171,7 +169,8 @@
         },
         "totalAssetsValue": "Ձեր ակտիվների ընդհանուր արժեքը.",
         "details": "Մանրամասներ",
-        "assetId": "Ակտիվի ID"
+        "assetId": "Ակտիվի ID",
+        "add": "@:addAssetText"
     },
     "asset": {
         "remove": "Հեռացնել ակտիվը",
@@ -179,35 +178,29 @@
         "receive": "Ստանալ {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Ակտիվը {symbol} հաջողությամբ ավելացվեց:",
         "empty": "Ոչ մի տոկեն չի գտնվել",
         "alreadyAttached": "Տոկենն արդեն կցված էր",
         "understand": "Ես հասկանում եմ",
         "warningTitle": "Կատարե՛ք առևտուր Ձեր սեփական ռիսկով",
-        "warningMessage": "Յուրաքանչյուրը կարող է ստեղծել տոկեն, այդ թվում `ստեղծել գոյություն ունեցող տոկենների կեղծ տարբերակներ, որոնք հավակնում են ներկայացնել նախագծեր:\n Եթե գնեք այս տոկենը, հնարավոր է, որ չկարողանաք  այն հետ վաճառել:",
+        "warningMessage": "Յուրաքանչյուրը կարող է ստեղծել տոկեն, այդ թվում `ստեղծել գոյություն ունեցող տոկենների կեղծ տարբերակներ, որոնք հավակնում են ներկայացնել նախագծեր:\n Եթե գնեք այս տոկենը, հնարավոր է, որ չկարողանաք այն հետ վաճառել:",
         "approved": "Ակտիվը հաստատված է համայնքի կողմից",
         "unknown": "Անհայտ աղբյուր",
         "scam": "Խաբեություն",
         "next": "Հաջորդը",
         "AddAssetToken": {
-            "title": "Տոկեններ",
+            "title": "Արժույթներ",
             "switchBtn": "Միայն ստուգված ակտիվներ"
         },
-        "AddAssetNFT": {
-            "title": "NFT"
-        },
-        "searchInputText": "Որոնում ըստ ակտիվի ID-ի, անվանման կամ նշիչի նշանի"
+        "searchInputText": "Որոնում ըստ ակտիվի ID-ի, անվանման կամ նշիչի նշանի",
+        "title": "@:addAssetText",
+        "action": "@:addAssetText"
     },
     "createToken": {
-        "title": "@:createTokenText",
-        "desc": "Ստեղծեք և տեղակայեք անհատական ակտիվ SORA- ում",
-        "action": "@:createTokenText",
+        "desc": "Ստեղծեք և տեղակայեք անհատական ակտիվ {Sora}- ում",
         "enterSymbol": "Մուտքագրեք տոկենի սիմվոլը",
         "enterName": "Մուտքագրեք տոկենի անվանումը",
         "enterSupply": "Մուտքագրեք տոկենի մատակարարը",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Գործարքը ներկայացված է",
             "desc": "Ստեղծեք {symbol} տոկեն"
@@ -233,14 +226,9 @@
             "placeholder": "Ընդարձակվող մատակարարում",
             "desc": "Ավելի շատ նշաններ հատելու ունակություն:"
         },
-        "titleCommon": "Ստեղծել",
-        "confirmTokenTitleCommon": "Ստեղծեք նշան",
-        "confirmTokenTitleNFT": "Ստեղծեք NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Տրամադրել բովանդակություն",
         "selectLocalFile": "Ընտրեք տեղական ֆայլը",
         "CreateSimpleToken": "Նշան",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Աղբյուր",
@@ -271,7 +259,14 @@
         "divisible": {
             "placeholder": "Բաժանելի",
             "desc": "NFT-ի կոտորակային մասերի բաժանվելու ունակությունը: Իրացվելիության տրամադրումն աշխատում է միայն բաժանելի ակտիվների հետ"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Ստեղծել",
+        "confirmTokenTitleCommon": "Ստեղծեք նշան",
+        "confirmTokenTitleNFT": "Ստեղծեք NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Գործարքի պարամետրերը",
@@ -305,25 +300,22 @@
         "referrer": "Ուղղորդող",
         "referral": "Ուղղորդում"
     },
-    "appName": "Polkaswap (Փոլքասվափ)",
-    "soraText": "Սորա",
-    "ethereumText": "Ethereum",
-    "changeNetworkText": "Փոխել ցանցը Metamask- ում",
+    "appName": "{AppName} (Փոլքասվափ)",
+    "changeNetworkText": "Փոխել ցանցը {Metamask}- ում",
     "transactionText": "գործարք | գործարքներ",
     "connectWalletText": "Միանալ հաշվին",
     "changeAccountText": "Փոխել հաշիվը",
     "connectedText": "Միացված է",
-    "connectWalletTextTooltip": "Միացեք @:soraText Network-ին polkadot{.js} -ի միջոցով",
+    "connectWalletTextTooltip": "Միացեք {Sora} Network-ին {PolkadotJs} -ի միջոցով",
     "selectNodeText": "Ընտրել հանգույցը",
     "bridgeText": "Կամուրջ",
-    "disclaimer": "<span class=\"app-disclaimer__title\"> Հրաժարում պատասխանատվությունից <\/span> . Այս կայքը պահպանվում է @:soraText համայնքի կողմից: Նախքան այս կայքի օգտագործումը շարունակելը, խնդրում ենք ծանոթանալ @:(polkaswapFaqLink)-ին և փաստաթղթերին, որոնք ներառում են մանրամասն բացատրություն, թե ինչպես է աշխատում Polkaswap-ը, ինչպես նաև @:memorandumLink և @:(privacyLink): Այս փաստաթղթերը չափազանց կարևոր են օգտատերերի անվտանգ և դրական փորձի համար: Օգտվելով Polkaswap-ից՝ դուք ընդունում եք, որ կարդացել և հասկացել եք այս փաստաթղթերը: Դուք նաև ընդունում եք հետևյալը. 1) ձեր միանձնյա պատասխանատվությունը բոլոր օրենքներին համապատասխանելու համար, որոնք կարող են կիրառվել ձեր իրավական իրավասության մեջ Polkaswap-ի հատուկ օգտագործման համար. 2) ձեր ըմբռնումը, որ Polkaswap-ի ներկայիս տարբերակը ալֆա տարբերակ է. այն ամբողջությամբ չի փորձարկվել, և որոշ գործառույթներ կարող են չաշխատել այնպես, ինչպես նախատեսված է. և 3) Polkaswap-ի օգտագործման հետ կապված ռիսկերի ձեր ըմբռնումը և կամավոր ընդունումը, ներառյալ, բայց չսահմանափակվելով դրանցով, նշաններ կորցնելու ռիսկը: Խնդրում ենք չշարունակել առանց @:polkaswapFaqLink, @:memorandumLink, @:(privacyLink)-ը կարդալու:",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
+    "disclaimer": "{disclaimerPrefix} Այս կայքը պահպանվում է {Sora} համայնքի կողմից: Նախքան այս կայքի օգտագործումը շարունակելը, խնդրում ենք ծանոթանալ {polkaswapFaqLink}-ին և փաստաթղթերին, որոնք ներառում են մանրամասն բացատրություն, թե ինչպես է աշխատում {AppName}-ը, ինչպես նաև {memorandumLink} և {privacyLink}: Այս փաստաթղթերը չափազանց կարևոր են օգտատերերի անվտանգ և դրական փորձի համար: Օգտվելով {AppName}-ից՝ դուք ընդունում եք, որ կարդացել և հասկացել եք այս փաստաթղթերը: Դուք նաև ընդունում եք հետևյալը. 1) ձեր միանձնյա պատասխանատվությունը բոլոր օրենքներին համապատասխանելու համար, որոնք կարող են կիրառվել ձեր իրավական իրավասության մեջ {AppName}-ի հատուկ օգտագործման համար. 2) ձեր ըմբռնումը, որ {AppName}-ի ներկայիս տարբերակը ալֆա տարբերակ է. այն ամբողջությամբ չի փորձարկվել, և որոշ գործառույթներ կարող են չաշխատել այնպես, ինչպես նախատեսված է. և 3) {AppName}-ի օգտագործման հետ կապված ռիսկերի ձեր ըմբռնումը և կամավոր ընդունումը, ներառյալ, բայց չսահմանափակվելով դրանցով, նշաններ կորցնելու ռիսկը: Խնդրում ենք չշարունակել առանց {polkaswapFaqLink}, {memorandumLink}, {privacyLink}-ը կարդալու:",
     "poweredBy": "Երաշխավորվոած է",
     "confirmTransactionText": "Հաստատեք գործարքը {direction}",
     "retryText": "Նորից փորձել",
     "networkFeeText": "Ցանցային վճար",
-    "networkFeeTooltipText": "Ցանցի վճարն օգտագործվում է @:soraText համակարգի աճն ու կայուն աշխատանքը ապահովելու համար:",
-    "ethNetworkFeeTooltipText": "Խնդրում ենք նկատի ունենալ, որ Polkaswap- ում ցուցադրված Ethereum ցանցի վճարները միայն կոպիտ գնահատականներ են, նախքան գործարքը հաստատելը, դուք կարող եք տեսնել վճարման ճիշտ գումարը Ձեր միացված Ethereum դրամապանակում:",
+    "networkFeeTooltipText": "Ցանցի վճարն օգտագործվում է {Sora} համակարգի աճն ու կայուն աշխատանքը ապահովելու համար:",
+    "ethNetworkFeeTooltipText": "Խնդրում ենք նկատի ունենալ, որ {AppName}- ում ցուցադրված {Ethereum} ցանցի վճարները միայն կոպիտ գնահատականներ են, նախքան գործարքը հաստատելը, դուք կարող եք տեսնել վճարման ճիշտ գումարը Ձեր միացված {Ethereum} դրամապանակում:",
     "marketText": "Շուկա",
     "marketAlgorithmText": "Շուկայի ալգորիթմ",
     "firstPerSecond": "{first} յուրաքանչյուր {second}",
@@ -341,8 +333,12 @@
         "AddLiquidityId": "Ավելացնել իրացվելիություն",
         "RemoveLiquidity": "Հեռացնել իրացվելիությունը",
         "PageNotFound": "Էջը չի գտնվել",
-        "Tokens": "Տոկեններ",
-        "Rewards": "Պարգեւներ"
+        "Rewards": "Պարգեւներ",
+        "Explore\/Tokens": "Նշաններ",
+        "Explore\/Pools": "Լողավազաններ",
+        "Explore\/Staking": "Ցուցադրում",
+        "Explore\/Farming": "Ֆարմինգ",
+        "Staking": "Ցուցադրում"
     },
     "mainMenu": {
         "Swap": "Փոխանակում",
@@ -355,8 +351,9 @@
         "Stats": "Վիճակագրություն",
         "Support": "Աջակցություն",
         "CreatePair": "Ստեղծել զույգ",
-        "Tokens": "Տոկեններ",
-        "StakingContainer": "Ցուցադրում"
+        "StakingContainer": "Ցուցադրում",
+        "Explore\/Container": "Հետազոտել",
+        "SoraCard": "{Sora} Քարտ"
     },
     "social": {
         "twitter": "Twitter",
@@ -364,13 +361,13 @@
         "medium": "Medium",
         "reddit": "Reddit",
         "github": "GitHub",
-        "wiki": "@:soraText Wiki"
+        "wiki": "{Sora} Wiki"
     },
     "footerMenu": {
         "faucet": "Faucet(Ֆասեթ)",
         "github": "GitHub",
-        "sorawiki": "@:soraText Wiki",
-        "memorandum": "Polkaswap- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
+        "sorawiki": "{Sora} Wiki",
+        "memorandum": "{AppName}- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
         "privacy": "Գաղտնիության քաղաքականություն",
         "info": "Ինֆո & Հասարակություն"
     },
@@ -378,31 +375,29 @@
         "title": "Օգնություն",
         "termsOfService": "Սպասարկման պայմաններ",
         "privacyPolicy": "Գաղտնիության քաղաքականություն",
-        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
-        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
-        "appVersion": "@:appName տարբերակը",
+        "appVersion": "{AppName} տարբերակը",
         "contactUs": "Կապվեք մեզ հետ"
     },
     "aboutNetworkDialog": {
         "title": "Մասին",
         "learnMore": "Իմանալ ավելին",
         "network": {
-            "title": "Ի՞նչ է @:soraText ը:",
-            "description": "Polkaswap- ը կառուցված է @:soraText ցանցի հիման վրա, իսկ @:soraText տոկենը (XOR) օգտագործվում է Polkaswap- ում գազի \/ վճարների և իրացվելիության ապահովման համար: @:soraText ցանցը թույլ է տալիս նվազեցնել վճարները, արագացնել գործարքները և ավելի պարզ համաձայնության հասնելը և կենտրոնացած է այլ բլոկչեյն էկոհամակարգերի միջև փոխգործունակության ապահովման վրա, ինչպիսիք են @:(ethereumText):"
+            "title": "Ի՞նչ է {Sora} ը:",
+            "description": "{AppName}- ը կառուցված է {Sora} ցանցի հիման վրա, իսկ {Sora} տոկենը (XOR) օգտագործվում է {AppName}- ում գազի \/ վճարների և իրացվելիության ապահովման համար: {Sora} ցանցը թույլ է տալիս նվազեցնել վճարները, արագացնել գործարքները և ավելի պարզ համաձայնության հասնելը և կենտրոնացած է այլ բլոկչեյն էկոհամակարգերի միջև փոխգործունակության ապահովման վրա, ինչպիսիք են {Ethereum}:"
         },
         "polkadot": {
-            "title": "Ի՞նչ է polkadot{.js}-ը :",
-            "description": "Polkadot{.js} ընդլայնումը Firefox- ի և Chrome- ի համար հասանելի բրաուզերի ընդլայնում է, որը շեշտադրված է Substrate- ի վրա հիմնված շղթաների հաշիվների կառավարմանը, ներառյալ @:soraText, Polkadot և Kusama: Կարող եք ավելացնել, ներմուծել և արտահանել հաշիվներ և կնքել գործարքներ կամ այլազերծումներ, որոնք նախաձեռնել եք ձեր կողմից թույլատրված կայքերից:"
+            "title": "Ի՞նչ է {PolkadotJs}-ը :",
+            "description": "{PolkadotJs} ընդլայնումը Firefox- ի և Chrome- ի համար հասանելի բրաուզերի ընդլայնում է, որը շեշտադրված է Substrate- ի վրա հիմնված շղթաների հաշիվների կառավարմանը, ներառյալ {Sora}, {Polkadot} և {Kusama}: Կարող եք ավելացնել, ներմուծել և արտահանել հաշիվներ և կնքել գործարքներ կամ այլազերծումներ, որոնք նախաձեռնել եք ձեր կողմից թույլատրված կայքերից:"
         }
     },
     "node": {
         "errors": {
-            "connection": "Հանգույցին միանալու ժամանակ սխալ է տեղի ունեցել\n {address}\n",
-            "network": "Հանգույցը\n {address}\n մեկ այլ ցանցից է\n",
-            "existing": "Այս հանգույցն արդեն ավելացվել է' '{title}'\n"
+            "connection": "Հանգույցին միանալու ժամանակ սխալ է տեղի ունեցել\n{address}\n",
+            "network": "Հանգույցը\n{address}\n մեկ այլ ցանցից է\n",
+            "existing": "Այս հանգույցն արդեն ավելացվել է' {title}\n"
         },
         "messages": {
-            "connected": "Հանգույցի հետ կապը հաստատված է\n {address}\n",
+            "connected": "Հանգույցի հետ կապը հաստատված է\n{address}\n",
             "selectNode": "Խնդրում ենք հանգույցների ցանկից միանալու համար ընտրել հանգույց"
         },
         "warnings": {
@@ -410,10 +405,10 @@
         }
     },
     "selectNodeDialog": {
-        "title": "@:soraText Ցանցային հանգույցի ընտրություն",
+        "title": "{Sora} Ցանցային հանգույցի ընտրություն",
         "addNode": "Ավելացրեք օգտատերի հանգույցը",
         "customNode": "Օգտատերի հանգույց",
-        "howToSetupOwnNode": "Ինչպես կարգավորել ձեր սեփական @:soraText հանգույցը",
+        "howToSetupOwnNode": "Ինչպես կարգավորել ձեր սեփական {Sora} հանգույցը",
         "select": "Ընտրել",
         "connected": "Միացված է",
         "selectNodeForEnvironment": "Ընտրեք հանգույց {environment} միջավայրի համար.",
@@ -441,62 +436,62 @@
         "title": "Էջը գտնված չէ",
         "body": "404"
     },
-    "metamask": "MetaMask",
+    "metamask": "{Metamask}",
     "sora": {
-        "Dev": "@:soraText Դեվնեթ",
-        "Test": "@:soraText Թեսթնեթ",
-        "Prod": "@:soraText Մայնեթ",
-        "Stage": "@:soraText Թեսթնեթ"
+        "Dev": "{Sora} Դեվնեթ",
+        "Test": "{Sora} Թեսթնեթ",
+        "Prod": "{Sora} Մայնեթ",
+        "Stage": "{Sora} Թեսթնեթ"
     },
     "evm": {
-        "main": "Էթերիում Մայննեթ",
-        "ropsten": "Էթերիում Րոփսթեն",
-        "rinkeby": "Էթերիում Րինքբի",
-        "kovan": "Էթերիում Քովան",
-        "goerli": "Էթերիում Գյորլի",
+        "main": "{Ethereum} Մայննեթ",
+        "ropsten": "{Ethereum} Րոփսթեն",
+        "rinkeby": "{Ethereum} Րինքբի",
+        "kovan": "{Ethereum} Քովան",
+        "goerli": "{Ethereum} Գյորլի",
         "private": "Վոլտա Թեստնեթ",
         "EWC": "Էներգիայի վեբ շղթա"
     },
     "providers": {
-        "metamask": "@:metamask"
+        "metamask": "{Metamask}"
     },
     "about": {
         "title": "Համատեղելի ապագայի DEX- ը:",
-        "description": "Ակտիվների շղթայական փոխանակում, նոր ակտիվների պարզ ձևավորում և ցուցակագրում և երբևէ ամենահեշտ փոխանակումները: Polkadot- ի փոխգործունակ ապագան այստեղ է, և մենք առաջնագծում ենք:",
+        "description": "Ակտիվների շղթայական փոխանակում, նոր ակտիվների պարզ ձևավորում և ցուցակագրում և երբևէ ամենահեշտ փոխանակումները: {Polkadot}- ի փոխգործունակ ապագան այստեղ է, և մենք առաջնագծում ենք:",
         "trading": {
             "title": "Ավելի արագ առևտուր",
-            "first": "Polkaswap- ը ոչ ռեցեպտորային, խաչաձեւ շղթայական AMM DEX պրոտոկոլ է ՝ տոկեններ փոխանակելու համար, հիմնված  Polkadot և Kusama ռելեներ շղթաների, Polkadot և Kusama պարաչեյներիի և բլոկչեյների միջոցով, որոնք ուղղակիորեն կապվում են կամուրջների միջոցով",
-            "second": "Polkaswap- ը հեռացնում է վստահելի միջնորդներին և հնարավորություն է տալիս ավելի արագ առևտրի",
-            "third": "Polkaswap- ը համայնքային նախագիծ է, և ծրագրավորողները համագործակցում են բաց կոդով `օգտագործելով"
+            "first": "{AppName}- ը ոչ ռեցեպտորային, խաչաձեւ շղթայական AMM DEX պրոտոկոլ է ՝ տոկեններ փոխանակելու համար, հիմնված {Polkadot} և {Kusama} ռելեներ շղթաների, {Polkadot} և {Kusama} պարաչեյներիի և բլոկչեյների միջոցով, որոնք ուղղակիորեն կապվում են կամուրջների միջոցով",
+            "second": "{AppName}- ը հեռացնում է վստահելի միջնորդներին և հնարավորություն է տալիս ավելի արագ առևտրի",
+            "third": "{AppName}- ը համայնքային նախագիծ է, և ծրագրավորողները համագործակցում են բաց կոդով `օգտագործելով"
         },
         "liquidity": {
             "title": "Անսահման իրացվելիություն",
-            "first": "Polkaswap- ը համատեղում է իրացվելիության բազմաթիվ աղբյուրներ իրացվելիության ագրեգացման ընդհանուր ալգորիթմի ներքո, որոնք ամբողջովին գործում են  շղթայով, վստահության կարիք չներկայացնող և ապակենտրոնացված ձևով:",
-            "second": "Երբ վաճառականները կանչում  են փոխանակման ֆունկցիան, իրացվելիության միավորման ալգորիթմը լրացնում է պատվերները `օգտագործելով իրացվելիության բոլոր աղբյուրների լավագույն առաջարկները: Իրացվելիության աղբյուրները կարող են լինել այլ DEX- եր, պատվերների գրքեր կամ API- ով պայմանավորված այլ աղբյուրներ:",
-            "third": "Քանի որ Polkaswap- ը բաց աղբյուրի նախագիծ է, յուրաքանչյուրը կարող է ավելացնել իրացվելիության ավելի շատ աղբյուրներ ՝ ներդրումներ կատարելով Polkaswap կոդային բազայում :"
+            "first": "{AppName}- ը համատեղում է իրացվելիության բազմաթիվ աղբյուրներ իրացվելիության ագրեգացման ընդհանուր ալգորիթմի ներքո, որոնք ամբողջովին գործում են շղթայով, վստահության կարիք չներկայացնող և ապակենտրոնացված ձևով:",
+            "second": "Երբ վաճառականները կանչում են փոխանակման ֆունկցիան, իրացվելիության միավորման ալգորիթմը լրացնում է պատվերները `օգտագործելով իրացվելիության բոլոր աղբյուրների լավագույն առաջարկները: Իրացվելիության աղբյուրները կարող են լինել այլ DEX- եր, պատվերների գրքեր կամ API- ով պայմանավորված այլ աղբյուրներ:",
+            "third": "Քանի որ {AppName}- ը բաց աղբյուրի նախագիծ է, յուրաքանչյուրը կարող է ավելացնել իրացվելիության ավելի շատ աղբյուրներ ՝ ներդրումներ կատարելով {AppName} կոդային բազայում :"
         },
         "swap": {
             "title": "Փոխանակեք ցանկացած տոկեն",
-            "first": "Դուրս եկեք ներկայիս DEX- երի սահմաններից ՝ ավելացնելով նշաններ Polkadot էկոհամակարգից, ինչպես նաև այլ բլոկչեյներից:",
-            "second": "Ստեղծեք, ցուցակագրեք և վաճառեք ձեր սեփական տոկենները SORA ցանցում:",
-            "third": "Մեր հիմնական ենթակառուցվածքն օգտագործում է Parity Substrate- ը, որն ավելի մասշտաբային է, քան Ethereum- ը և չի օգտագործում թանկարժեք հանքարդյունաբերություն `համաձայնության համար:"
+            "first": "Դուրս եկեք ներկայիս DEX- երի սահմաններից ՝ ավելացնելով նշաններ {Polkadot} էկոհամակարգից, ինչպես նաև այլ բլոկչեյներից:",
+            "second": "Ստեղծեք, ցուցակագրեք և վաճառեք ձեր սեփական տոկենները {Sora} ցանցում:",
+            "third": "Մեր հիմնական ենթակառուցվածքն օգտագործում է Parity Substrate- ը, որն ավելի մասշտաբային է, քան {Ethereum}- ը և չի օգտագործում թանկարժեք հանքարդյունաբերություն `համաձայնության համար:"
         },
         "pswap": {
             "title": "PSWAP Տոկեններ",
-            "first": "PSWAP- ը ստեղծվել է համայնքային կառավարման միջոցով `քվեարկելով դրա թողարկման համար: Դա օգտակար և կառավարման տոկեն է, որն օգտագործվում է Polkaswap- ի իրացվելիության մատակարարներին պարգևատրելու համար: Ի տարբերություն այլ պարգևատրման տոկենների, PSWAP- ն այրվում է գործարքների արդյունքում և ժամանակի ընթացքում մատակարարման ծավալների հետ նվազում է:",
-            "second": "{percent} % Վճարը Polkaswap DEX- ի յուրաքանչյուր փոխանակման համար օգտագործվում է PSWAP տոկենները հետ գնելու համար, որոնք այնուհետև այրվում են: Սկզբում այրված PSWAP տոկենների 90% -ը վերափոխվում է `իրացվելիություն տրամադրողներին հատկացումներ կատարելու համար, սակայն ժամանակի հետ այս ցուցանիշը 4 տարի անց կնվազի մինչև 35%:"
+            "first": "PSWAP- ը ստեղծվել է համայնքային կառավարման միջոցով `քվեարկելով դրա թողարկման համար: Դա օգտակար և կառավարման տոկեն է, որն օգտագործվում է {AppName}- ի իրացվելիության մատակարարներին պարգևատրելու համար: Ի տարբերություն այլ պարգևատրման տոկենների, PSWAP- ն այրվում է գործարքների արդյունքում և ժամանակի ընթացքում մատակարարման ծավալների հետ նվազում է:",
+            "second": "{percent} % Վճարը {AppName} DEX- ի յուրաքանչյուր փոխանակման համար օգտագործվում է PSWAP տոկենները հետ գնելու համար, որոնք այնուհետև այրվում են: Սկզբում այրված PSWAP տոկենների 90% -ը վերափոխվում է `իրացվելիություն տրամադրողներին հատկացումներ կատարելու համար, սակայն ժամանակի հետ այս ցուցանիշը 4 տարի անց կնվազի մինչև 35%:"
         },
         "links": {
             "first": {
-                "title": "Դարձեք SORA- ի վալիդատոր",
-                "desc": "Ապահովեք SORA ցանցի և ապակենտրոնացված ծրագրերի ապագան, ինչպիսին է Polkaswap- ը, և այսպիսով ստացեք պարգևներ ՝ դառնալով SORA վավերացնող:"
+                "title": "Դարձեք {Sora}- ի վալիդատոր",
+                "desc": "Ապահովեք {Sora} ցանցի և ապակենտրոնացված ծրագրերի ապագան, ինչպիսին է {AppName}- ը, և այսպիսով ստացեք պարգևներ ՝ դառնալով {Sora} վավերացնող:"
             },
             "second": {
-                "title": "Միացրեք շղթան SORA- ին",
-                "desc": "Զարգացրու չեզոքացված համաշխարհային տնտեսությունը՝ ավելի շատ շղթաներ միացնելով SORA-ին և Polkaswap-ին՝ օգտագործելով HASHI կամրջային պրոտոկոլը։"
+                "title": "Միացրեք շղթան {Sora}- ին",
+                "desc": "Զարգացրու չեզոքացված համաշխարհային տնտեսությունը՝ ավելի շատ շղթաներ միացնելով {Sora}-ին և {AppName}-ին՝ օգտագործելով {Hashi} կամրջային պրոտոկոլը։"
             }
         },
-        "network": "Polkaswap- ը կառուցված է SORA ցանցի հիման վրա `կենտրոնանալով փոխգործակցության վրա` կրիպտո-էկոհամակարգի մնացյալ մասը Polkadot- ին միացնելու համար:"
+        "network": "{AppName} -ը կառուցված է {Sora} ցանցի վրա՝ կենտրոնանալով փոխգործունակության վրա՝ կրիպտոէկոհամակարգի մնացած մասը {Polkadot} -ին միացնելու համար:"
     },
     "exchange": {
         "Swap": "Փոխանակում",
@@ -506,8 +501,8 @@
         "price": "Գին",
         "transactionSubmitted": "Գործարքը ներկայացված է",
         "transactionMessage": "{firstToken} և {secondToken}",
-        "confirm": "Հաստատել",
-        "ok": "Լավ"
+        "ok": "Լավ",
+        "confirm": "Հաստատել"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -522,7 +517,6 @@
         "liquidityProviderFeeTooltip": "Յուրաքանչյուր առևտրի մի մասը ({liquidityProviderFee}%) բաժին է ընկնում իրացվելիության մատակարարներին ՝ որպես պրոտոկոլային խթան:",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "{tokenSymbol} անբավարար գումար",
         "insufficientLiquidity": "Անբավարար իրացվելիություն",
@@ -540,7 +534,7 @@
         "addLiquidity": "Ավելացնել",
         "removeLiquidity": "Հեռացնել",
         "createPair": "Զույգ կազմել",
-        "pooledToken": "վերապահված",
+        "pooledToken": "{tokenSymbol} Պուլճուած",
         "pairTokens": "{pair} պահուստային տոկեններ",
         "poolShare": "Ձեր պահուստի բաժինը",
         "unknownAsset": "Անհայտ ակտիվ",
@@ -548,8 +542,8 @@
         "strategicBonusApy": "Ռազմավարական բոնուս APY"
     },
     "bridge": {
-        "title": "ՀԱՇԻ կամուրջ",
-        "info": "Փոխարկել տոկենները @:soraText և @:ethereumText ցանցերի միջև:",
+        "title": "{Hashi} կամուրջ",
+        "info": "Փոխարկել տոկենները {Sora} և {Ethereum} ցանցերի միջև:",
         "balance": "Բալանս",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -557,34 +551,34 @@
         "changeNetwork": "@:changeNetworkText",
         "next": "Հաջորդը",
         "connectWallets": "Միացրեք դրամապանակները ՝ համապատասխան գործարքի պատմությունը դիտելու համար:",
-        "soraNetworkFee": "@:soraText ցանցային վճար",
-        "ethereumNetworkFee": "@:ethereumText ցանցային վճար",
-        "tooltipValue": "@:comingSoonText",
+        "soraNetworkFee": "{Sora} ցանցային վճար",
+        "ethereumNetworkFee": "{Ethereum} ցանցային վճար",
         "total": "Ընդհանուր",
         "viewHistory": "Դիտել գործարքների պատմությունը",
         "transactionSubmitted": "Գործարքը ներկայացված է",
         "transactionMessage": "{assetA} -ն {assetB}- ի համար",
-        "notRegisteredAsset": "Ակտիվը  {assetSymbol} գրանցված չէ",
+        "notRegisteredAsset": "Ակտիվը {assetSymbol} գրանցված չէ",
         "selectNetwork": "Ընտրեք ցանցը",
-        "networkInfo": "Միացեք @:soraText Ցանցով.",
-        "ethereum": "@:ethereumText",
+        "networkInfo": "Միացեք {Sora} Ցանցով.",
+        "ethereum": "{Ethereum}",
         "energy": "@:evm.EWC",
         "copy": "Պատճենել ցանցի հասցեն",
-        "soraAddress": "@:soraText հասցե",
-        "ethereumAddress": "@:ethereumText հասցե"
+        "soraAddress": "{Sora} հասցե",
+        "ethereumAddress": "{Ethereum} հասցե",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",
         "search": {
             "title": "Տոկեններ",
             "placeholder": "Ֆիլտր ըստ Ակտիվի ID-ի, Անվան կամ Նշիչի սիմվոլի",
-            "networkLabelSora": "@:soraText ցանցի տոկեններ",
-            "networkLabelEthereum": "@:ethereumText ցանցի հայելային տոկեններ",
+            "networkLabelSora": "{Sora} ցանցի տոկեններ",
+            "networkLabelEthereum": "{Ethereum} ցանցի հայելային տոկեններ",
             "emptyListMessage": "Ոչ մի արդյունք"
         },
         "customAsset": {
             "title": "Պատվեր",
-            "customInfo": "Կարևո՛ր է: Պատվերով տոկենները պետք է գրանցված լինեն @:(soraText) - ում:",
+            "customInfo": "Կարևո՛ր է: Պատվերով տոկենները պետք է գրանցված լինեն {Sora} - ում:",
             "registerToken": "Գրանցել token",
             "addressPlaceholder": "Ակտիվի ID",
             "symbolPlaceholder": "Տոկենի խորհրդանիշ",
@@ -594,23 +588,21 @@
     },
     "confirmBridgeTransactionDialog": {
         "confirmTransaction": "Հաստատել գործարքը",
-        "insufficientBalance": "@:insufficBalanceText",
+        "insufficientBalance": "@:insufficientBalanceText",
         "changeNetwork": "@:changeNetworkText",
-        "metamask": "@:metamask",
-        "sora": "@:soraText",
         "confirm": "@:confirmTransactionText",
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
         "details": "{from} համար {to}",
-        "for": "համար",
+        "for": " համար ",
         "steps": {
             "step": "2-ի {step}",
             "step1": "1-ին",
             "step2": "2-րդ"
         },
         "status": {
-            "pending": "{step} գործարքները սպասման մեջ են ",
+            "pending": "{step} գործարքները սպասման մեջ են",
             "failed": "{step} գործարքները ձախողվեցին: @:(retryText).",
             "confirm": "Հաստատեք 2 գործարքներից 2-րդը...",
             "complete": "Վերջացված է",
@@ -625,7 +617,7 @@
             "done": "Վերջացված է",
             "waitingForConfirmation": "Հաստատման սպասում..."
         },
-        "viewInEtherscan": "Դիտել Etherscan- ում",
+        "viewInEtherscan": "Դիտել {Etherscan}- ում",
         "networkTitle": "{network} գործարք",
         "transactionHash": "Գործարքի հաշ(կոդ)",
         "networkInfo": {
@@ -636,20 +628,20 @@
             "total": "Ընդհանուր"
         },
         "successCopy": "Գործարքի հաշը պատճենահանված է սեղմատախտակին",
-        "ethereum": "@:ethereumText",
-        "sora": "@:soraText",
-        "pending": "<span class=\"network-title\"> {network} <\/span> գործարքը սպասման մեջ է...",
+        "ethereum": "{Ethereum}",
+        "sora": "{Sora}",
+        "pending": "{network} գործարքը սպասման մեջ է...",
         "retry": "@:retryText",
-        "metamask": "@:metamask",
+        "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Ստեղծել նոր գործարք",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "changeAccount": "@:changeAccountText in @:metamask",
-        "expectedAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask",
+        "changeAccount": "@:changeAccountText in {Metamask}",
+        "expectedAddress": "Սպասվող հասցե @հասցեում ՝ {Metamask}",
         "title": "Կամուրջի գործարք",
-        "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ @:metamask",
-        "allowToken": "Թույլ տվեք @:appName ին օգտագործել ձեր {tokenSymbol}",
+        "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ {Metamask}",
+        "allowToken": "Թույլ տվեք {AppName} ին օգտագործել ձեր {tokenSymbol}",
         "approveToken": "Խնդրում ենք նկատի ունենալ, որ անհրաժեշտ է միայն մեկ անգամ հաստատել նշանը: Եթե ձեր ընդլայնումն ունի նշանների հաստատման բազմաթիվ խնդրանքներ, համոզվեք, որ միայն վերջինը հաստատեք ՝ մնացածը մերժելով:",
         "blocksLeft": "{count} բլոկները մնացել են..."
     },
@@ -703,7 +695,7 @@
     "confirmSupply": {
         "title": "Դուք կստանաք",
         "outputDescription": "Արդյունքը գնահատվում է: Եթե գինը փոխվի ավելի քան {slippageTolerance}%, ձեր գործարքը կվերականգնվի:",
-        "poolTokensBurned": "{first} - {second} Այրվել են պահուստի տոկենները",
+        "poolTokensBurned": "{first}-{second} Այրվել են պահուստի տոկենները",
         "price": "Գին"
     },
     "addLiquidity": {
@@ -724,7 +716,7 @@
         "outputMessage": "Արդյունքը գնահատվում է: Եթե գինը փոխվի ավելի քան {slippageTolerance} %, ձեր գործարքը կվերականգնվի:",
         "confirmTitle": "Դուք կստանաք",
         "shareOfPool": "Գործարքից հետո լողավազանի մասնաբաժինը",
-        "locked": "Ձեր լողավազանի {percent} -ը խաղադրույքի մեջ է"
+        "locked": "Ձեր լողավազանի {percent} -ը {lock} մեջ է"
     },
     "dexSettings": {
         "title": "Կարգավորումներ",
@@ -747,9 +739,9 @@
         "port": "PORT",
         "min": "MIN",
         "marketAlgorithms": {
-            "SMART": "<span class=\"algorithm\"> SMART <\/span> իրացվելիության երթուղին ապահովում է ցանկացած գործարքի լավագույն գինը `համատեղելով մատչելի բոլոր շուկաներից միայն լավագույն գների տարբերակները: Հասանելիության դեպքում, Token Bonding Curve-ը ( <span class=\"algorithm\"> TBC <\/span> ) կօգտագործվի իրացվելիության համար, քանի դեռ ակտիվի գինն ավելի մատչելի է, քան այլ աղբյուրներինը, որոնց վրա <span class=\"algorithm\"> XYK <\/span>պահուստն օգտագործվում է:",
-            "TBC": "<span class=\"algorithm\"> TBC <\/span> - գնում միայն Token Bonding Curve- ից (Առաջնային շուկա): Հնարավոր է, որ գինը կարող է անբարենպաստ դառնալ <span class=\"algorithm\"> XYK <\/span> պահուստի (Երկրորդային շուկա) համեմատ, բայց հատկացված պարգևներից ստացված արժեքը ժամանակի ընթացքում կարող է շատ ավելի բարենպաստ լինել: ,",
-            "XYK": "<span class=\"algorithm\"> XYK <\/span> - գնում միայն XYK պահուստներից (երկրորդային շուկա): Ավանդական XYK պահուստների փոխանակում:"
+            "SMART": "{smartAlgorithm} իրացվելիության երթուղին ապահովում է ցանկացած գործարքի լավագույն գինը `համատեղելով մատչելի բոլոր շուկաներից միայն լավագույն գների տարբերակները: Հասանելիության դեպքում, Token Bonding Curve-ը ({tbcAlgorithm}) կօգտագործվի իրացվելիության համար, քանի դեռ ակտիվի գինն ավելի մատչելի է, քան այլ աղբյուրներինը, որոնց վրա {xycAlgorithm}պահուստն օգտագործվում է:",
+            "TBC": "{tbcAlgorithm} - գնում միայն Token Bonding Curve- ից (Առաջնային շուկա): Հնարավոր է, որ գինը կարող է անբարենպաստ դառնալ {xycAlgorithm} պահուստի (Երկրորդային շուկա) համեմատ, բայց հատկացված պարգևներից ստացված արժեքը ժամանակի ընթացքում կարող է շատ ավելի բարենպաստ լինել: ,",
+            "XYK": "{xycAlgorithm} - գնում միայն XYK պահուստներից (երկրորդային շուկա): Ավանդական XYK պահուստների փոխանակում:"
         },
         "charts": "Գծապատկերներ",
         "сhartsDescription": "Դիտեք գծապատկերները խորհրդանշական գների համար"
@@ -763,7 +755,6 @@
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "և",
         "claiming": {
             "pending": "Հաստատման ընթացքում է...",
@@ -775,21 +766,21 @@
             "failed": "{order} ի {total} գործարքները ձախողվեցին: @:retryText"
         },
         "signing": {
-            "extension": "polkadot{.js} բրաուզերի հավելված",
-            "accounts": "Ձեր @:soraText և @:ethereumText հաշիվները համապատասխանաբար"
+            "extension": "{PolkadotJs} բրաուզերի հավելված",
+            "accounts": "Ձեր {Sora} և {Ethereum} հաշիվները համապատասխանաբար"
         },
         "hint": {
-            "connectExternalAccount": "Միացրեք @:ethereumText հաշվին՝ ստուգելու համար առկա PSWAP եւ VAL պարգեւատրումները:",
-            "connectAccounts": "Ձեր PSWAP և VAL պարգևւատրումները հաստատելու համար անհրաժեշտ է միացնել և՛ ձեր @:soraText և՛ @:ethereumText հաշիվները:",
-            "connectAnotherAccount": "Միացեք այլ @:ethereumText հաշվին ստուգելու համար առկա PSWAP և VAL պարգևատրումները:",
-            "howToClaimRewards": "Ձեր պարգևատրումը հաստատելու{symbols} համար, Դուք պետք է մուտք {transactions}գործեք{destination}: Պարգևատրումները կկուտակվեն Ձեր @:soraText հաշվում:"
+            "connectExternalAccount": "Միացրեք {Ethereum} հաշվին՝ ստուգելու համար առկա PSWAP եւ VAL պարգեւատրումները:",
+            "connectAccounts": "Ձեր PSWAP և VAL պարգևւատրումները հաստատելու համար անհրաժեշտ է միացնել և՛ ձեր {Sora} և՛ {Ethereum} հաշիվները:",
+            "connectAnotherAccount": "Միացեք այլ {Ethereum} հաշվին ստուգելու համար առկա PSWAP և VAL պարգևատրումները:",
+            "howToClaimRewards": "Ձեր {symbols} պարգևները ստանալու համար դուք պետք է գրանցվեք {count} {transactions} {destination} ում: Պարգևները կվճարվեն ձեր {Sora} հաշվին:"
         },
         "action": {
             "connectWallet": "@:connectWalletText",
-            "connectExternalWallet": "Միացնել @:ethereumText հաշիվը",
+            "connectExternalWallet": "Միացնել {Ethereum} հաշիվը",
             "signAndClaim": "Ստորագրեք և հաստատեք",
-            "pendingInternal": "@:soraText գործարքը ընթացքի մեջ է...",
-            "pendingExternal": "@:ethereumText գործարքը ընթացքի մեջ է ...",
+            "pendingInternal": "{Sora} գործարքը ընթացքի մեջ է...",
+            "pendingExternal": "{Ethereum} գործարքը ընթացքի մեջ է ...",
             "retry": "@:retryText",
             "checkRewards": "Ստուգել",
             "insufficientBalance": "@:insufficientBalanceText"
@@ -799,11 +790,10 @@
         },
         "events": {
             "XorErc20": "XOR ERC-20",
-            "SoraFarmHarvest": "@:(soraText).farm բերք",
+            "SoraFarmHarvest": "{Sora}.farm բերք",
             "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Հեղուկի մատակարարումից ստացված վճարներ",
-            "BuyOnBondingCurve": "TBC-ից գնելու դեպքում  ստրատեգիական պարգևատրումներ",
-            "NftAirdrop": "NFT Airdrop",
+            "BuyOnBondingCurve": "TBC-ից գնելու դեպքում ստրատեգիական պարգևատրումներ",
             "MarketMakerVolume": "Շուկա ստեղծող",
             "LiquidityProvisionFarming": "Ֆարմինգ"
         },
@@ -812,20 +802,20 @@
         "totalVested": "երաշխավորված",
         "claimableAmountDoneVesting": "Պահանջվող գումարը (կատարված ապահովումը)",
         "groups": {
-            "strategic": "PSWAP ստրատեգիական պարգևատրումներ",
-            "external": "Պարգևատրումներ կապված ethereum հաշվի համար",
+            "strategic": "Ռազմավարական պարգևներ",
+            "external": "Պարգևատրումներ կապված {Ethereum} հաշվի համար",
             "crowdloan": "Crowdloan պարգևներ"
         },
         "Rewards": "Պարգեւներ",
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "@:ethereumText մատակարար",
-        "metamask": "@:metamask",
+        "default": "{Ethereum} մատակարար",
+        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name} Հավելվածը զբաղված է, խնդրում ենք ստուգել այն",
             "extensionLogin": "Խնդրում ենք մուտք գործելՁեր {name} հավելված",
-            "installExtension": "{name} Հավելվածը չի գտնվել: Խնդրում ենք տեղադրել այն:",
+            "installExtension": "{name} ընդլայնումը չի գտնվել: Խնդրում ենք տեղադրել այն: \n\n Արդեն տեղադրե՞լ եք ընդլայնում: Խնդրում ենք վերաբեռնել էջը",
             "reloadPage": "Վերաբեռնել էջը"
         }
     },
@@ -833,15 +823,11 @@
         "title": "Լեզու"
     },
     "tokens": {
-        "title": "Թվարկված Տոկեններ",
         "symbol": "Խորհրդանիշ",
-        "name": "Անուն",
         "assetId": "Ակտիվի ID"
     },
-    "memorandum": "Polkaswap- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
-    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\">@:memorandum<\/a>",
-    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\">@:helpDialog.privacyPolicy<\/a>",
-    "FAQ": "Polkaswap ՀՏՀ",
+    "memorandum": "{AppName}- ի հուշագիր և ծառայությունների մատուցման պայմաններ",
+    "FAQ": "{AppName} ՀՏՀ",
     "connectedAccount": "Միացված հաշիվ",
     "selectNodeConnected": "Միացված է ՝ {chain}",
     "moonpayText": "MoonPay",
@@ -850,15 +836,15 @@
         "notifications": {
             "success": {
                 "title": "Գնված նշաններ",
-                "text": "Տոկենի գնումն ավարտված է: HASHI կամուրջի գործարքը կսկսվի ավտոմատ կերպով, հենց որ միացված Էթերիումի հաշվի մեջ ստացվել են նշանները: Անվտանգ է փակել այս պատուհանը եւ շարունակել օգտագործել Polkaswap. Կամրջի գործարքի մասին ծանուցում կլինի, երբ պատրաստ լինի:"
+                "text": "Նշանների գնումն ավարտված է: {Hashi} կամուրջի գործարքը կսկսվի ավտոմատ կերպով, հենց որ ժետոնները ստացվեն միացված {Ethereum} հաշվում: Ապահով է փակել այս պատուհանը և շարունակել օգտագործել {AppName} : Կամուրջի գործարքի մասին ծանուցում կլինի, երբ պատրաստ լինի:"
             },
             "supportError": {
                 "title": "Նշանը չի աջակցվում",
-                "text": "Ցավոք, @:moonpayText-ի միջոցով գնված նշանը դեռեւս չի աջակցվում Պոլկասվափի HASHI կամրջով: Սովորաբար միայն աջակցվող նշանները պետք է մատչելի լինեն Պոլկասվափի MoonPay-ի միջոցով գնելու համար, ուստի ինչ-որ բան պետք է որ ինչ-որ տեղ սխալ լիներ։ Խնդրում ենք չվարանել համայնքին տեղեկացնել այս դեպքի մասին <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\">Polkaswap Telegram group<\/a>."
+                "text": "Ցավոք, @:moonpayText-ի միջոցով գնված նշանը դեռ չի աջակցվում {AppName} -ի {Hashi} կամրջի կողմից: Սովորաբար միայն աջակցվող թոքենները պետք է հասանելի լինեն MoonPay-ի միջոցով {AppName} -ում գնելու համար, հետևաբար ինչ-որ տեղ ինչ-որ բան սխալ է տեղի ունեցել: Խնդրում ենք մի հապաղեք տեղեկացնել համայնքին այս դեպքի մասին <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> {AppName} Telegram խումբ <\/a> :"
             },
             "feeError": {
                 "title": "Կամրջի համար tx բավարար ETH չէ",
-                "text": "Ցավոք, HASHI կամուրջի գործարքը ձախողվել է, քանի որ բավականաչափ ETH չկար Ethereum ցանցի տրանսլյացիայի ծախսերը վճարելու համար: Խնդրում ենք ավելացնել ավելին ETH եւ կրկին փորձել:"
+                "text": "Ցավոք, {Hashi} կամուրջի գործարքը ձախողվել է, քանի որ բավականաչափ ETH չկար {Ethereum} ցանցի տրանսլյացիայի ծախսերը վճարելու համար: Խնդրում ենք ավելացնել ավելին ETH եւ կրկին փորձել:"
             },
             "transactionError": {
                 "title": "Գործարքը ձախողվեց",
@@ -866,11 +852,11 @@
             },
             "amountError": {
                 "title": "Անբավարար մնացորդ",
-                "text": "Ցավոք, HASHI կամրջի գործարքը ձախողվել է, քանի որ գործարքի համար բավարար նշաններ չկան: Խնդրում ենք ստուգել ձեր Ethereum հաշվի հաշվեկշիռը եւ կրկին փորձել:"
+                "text": "Ցավոք, {Hashi} կամրջի գործարքը ձախողվել է, քանի որ գործարքի համար բավարար նշաններ չկան: Խնդրում ենք ստուգել ձեր {Ethereum} հաշվի հաշվեկշիռը եւ կրկին փորձել:"
             },
             "accountAddressError": {
-                "title": "Սխալ Ethereum հաշիվ",
-                "text": "Ցավոք, HASHI կամրջի գործարքը ձախողվեց @:moonpayText պատվերի նշանը ստացողի հասցեի պատճառով, որը չի համապատասխանում ձեր ընթացիկ Ethereum հաշվի հասցեին: Խնդրում ենք երկարացման դեպքում փոխել Ethereum հաշիվը եւ կրկին փորձել:"
+                "title": "Սխալ {Ethereum} հաշիվ",
+                "text": "Ցավոք, {Hashi} կամրջի գործարքը ձախողվեց @:moonpayText պատվերի նշանը ստացողի հասցեի պատճառով, որը չի համապատասխանում ձեր ընթացիկ {Ethereum} հաշվի հասցեին: Խնդրում ենք երկարացման դեպքում փոխել {Ethereum} հաշիվը եւ կրկին փորձել:"
             }
         },
         "buttons": {
@@ -913,21 +899,20 @@
     "confirmNextTxFailure": {
         "header": "Ուշադրություն",
         "info": "Այս գործարքից հետո ձեր XOR մնացորդը կլինի {fee} Դուք չեք կարողանա վճարել ցանցի վճարը մեկ այլ գործարքի համար:",
-        "payoff": "Դուք պետք է օգտագործեք Bridge-ը XOR-ը այլ ցանցերից ստանալու, XOR-ի ուղարկված մեկ այլ SORA հաշվից կամ ձեր հաշվում եղած ցանկացած այլ նշան XOR-ով փոխելու համար:",
+        "payoff": "Դուք պետք է օգտագործեք Bridge-ը XOR-ը այլ ցանցերից ստանալու, XOR-ի ուղարկված մեկ այլ {Sora} հաշվից կամ ձեր հաշվում եղած ցանկացած այլ նշան XOR-ով փոխելու համար:",
         "button": "Այո, ես հասկանում եմ ռիսկը"
     },
     "blockNumberText": "Արգելափակման համարը",
     "referralProgram": {
         "title": "Ուղղորդման ծրագիր",
-        "connectAccount": "Օգտագործողներին հրավիրելու համար անհրաժեշտ է միացնել ձեր SORA հաշիվը:",
+        "connectAccount": "Օգտագործողներին հրավիրելու համար անհրաժեշտ է միացնել ձեր {Sora} հաշիվը:",
         "bondedXOR": "XOR Խճճված",
         "referralsNumber": "{number} ուղղորդումներ",
         "startInviting": "Bond XOR՝ ուրիշներին ուղղորդելու համար",
-        "preview": "Հրավիրեք նոր օգտվողներ և ստացեք 10% նրանց գործարքների վճարներից: <br \/> Սկսելու համար կապեք XOR-ի ցանկացած քանակություն: <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Իմացեք ավելին <\/a>",
+        "preview": "Հրավիրեք նոր օգտվողներ և ստացեք 10% նրանց գործարքների վճարներից: <br\/> Սկսելու համար կապեք XOR-ի ցանկացած քանակություն: <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Իմացեք ավելին <\/a>",
         "deposit": "Ավանդ",
         "balance": "Բալանս",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Պարտատոմսերի անբավարար մնացորդ",
         "action": {
@@ -946,16 +931,16 @@
         "bondTitle": "Բոնդ XOR",
         "unbondTitle": "Ունբոնդ XOR",
         "confirm": {
-            "text": "Հաստատել",
             "bond": "Հաստատել պարտատոմ",
             "unbond": "Հաստատել չպարտատոմսը",
-            "inviteTitle": "Դուք հրավիրվել եք Polkaswap",
+            "inviteTitle": "Դուք հրավիրվել եք {AppName}",
             "inviteDescription": "Յուրաքանչյուր գործարքի համար միջնորդավճարի 10%-ը կգնա ձեր ուղղորդողին՝ առանց ձեզ համար հավելյալ ծախսերի:",
             "signInvitation": "Հաստատել",
             "freeOfCharge": "Այս գործողությունը անվճար է",
             "hasReferrerTitle": "Դուք արդեն սահմանել եք ձեր ուղղորդիչը",
             "hasReferrerDescription": "Ցավոք, դուք կարող եք սահմանել միայն մեկը",
-            "ok": "Լավ"
+            "ok": "Լավ",
+            "text": "Հաստատել"
         },
         "referrer": {
             "title": "Ավելացրեք ձեր ուղղորդիչը",
@@ -964,7 +949,7 @@
             "label": "Հրավերի հղում կամ ծածկագիր",
             "approve": "Հաստատել",
             "approved": "Հաստատված է",
-            "description": "Դուք կարող եք հղում կատարել Polkaswap-ին,<br\/>մուտքագրեք հղումը կամ ուղղորդողի կոդը",
+            "description": "Դուք կարող եք հղում կատարել {AppName}-ին,<br\/>մուտքագրեք հղումը կամ ուղղորդողի կոդը",
             "referredBy": "Ձեզ ուղղորդել է {referrer} ը",
             "info": "Երբ գործարքի համար վճար կվճարեք,<br\/>10%-ը կգնա ձեր ուղղորդողին",
             "referredLablel": "Նշված հասցեն"
@@ -972,7 +957,6 @@
         "insufficientBondedAmount": "Ավելի շատ referrals հրավիրելու համար, bond առնվազն {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Գործարքի մանրամասները",
-    "createTokenTextNFT": "Ստեղծեք NFT",
     "code": {
         "download": "Ներբեռնեք QR կոդը",
         "upload": "Սկան QR",
@@ -985,13 +969,13 @@
         "allowanceRequest": "Սեղմեք «Թույլատրել» մուտքը տեսախցիկ"
     },
     "bridgeTransferNotification": {
-        "addToken": "Ավելացնել {symbol} է @:metamask",
+        "addToken": "Ավելացնել {symbol} է {Metamask}",
         "title": "Կամուրջի գործարքը հաջողվեց"
     },
     "mobilePopup": {
-        "sideMenu": "Ստացեք SORA Wallet",
-        "header": "Ներբեռնեք SORA դրամապանակը <span class=\"popup-info__headline--highlight\"> Polkaswap <\/span> հատկանիշներով",
-        "info": "Փոխանակեք նշաններ տարբեր ցանցերից՝ SORA, Ethereum, Polkadot, Kusama: Ապահովեք իրացվելիության ֆոնդ և վաստակեք տոկոս փոխանակման վճարներից:"
+        "sideMenu": "Ստացեք {Sora} Wallet",
+        "header": "Ներբեռնեք {Sora} դրամապանակը {polkaswapHighlight} հատկանիշներով",
+        "info": "Փոխանակեք նշաններ տարբեր ցանցերից՝ {Sora}, {Ethereum}, {Polkadot}, {Kusama}: Ապահովեք իրացվելիության ֆոնդ և վաստակեք տոկոս փոխանակման վճարներից:"
     },
     "releaseNotesText": "Թողարկման նշումներ",
     "copiedText": "Պատճենվել է!",
@@ -1037,39 +1021,39 @@
     "historyErrorMessages": {
         "generalError": "Ինչ որ բան այնպես չգնաց",
         "balances": {
-            "LiquidityRestrictions": "Հաշվի իրացվելիության սահմանափակումները կանխում են դուրսբերումը"
+            "liquidityrestrictions": "Հաշվի իրացվելիության սահմանափակումները կանխում են դուրսբերումը"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Աղբյուրի հաշվեկշիռը բավականաչափ մեծ չէ",
-            "TargetBalanceIsNotLargeEnough": "Նպատակակետի հաշվեկշիռը բավականաչափ մեծ չէ",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Տրամադրված գումարները չափազանց բազմազան են",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Գումարները դուրս են պահանջվող սահմաններից",
-            "UnableToDepositXorLessThanMinimum": "XOR նվազագույն արժեքից ցածր (0,007)",
-            "ZeroValueInAmountParameter": "Գումարի պարամետրը զրո արժեք ունի"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Աղբյուրի հաշվեկշիռը բավականաչափ մեծ չէ",
+            "targetbalanceisnotlargeenough": "Նպատակակետի հաշվեկշիռը բավականաչափ մեծ չէ",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Տրամադրված գումարները չափազանց բազմազան են",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Գումարները դուրս են պահանջվող սահմաններից",
+            "unabletodepositxorlessthanminimum": "XOR նվազագույն արժեքից ցածր (0,007)",
+            "zerovalueinamountparameter": "Գումարի պարամետրը զրո արժեք ունի"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "Լողավազանների զույգն արդեն գոյություն ունի",
-            "SlippageLimitExceeded": "Սայթաքման հանդուրժողականությունը չի համապատասխանում համապատասխան սահմաններին"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Լողավազանների զույգն արդեն գոյություն ունի",
+            "slippagelimitexceeded": "Սայթաքման հանդուրժողականությունը չի համապատասխանում համապատասխան սահմաններին"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Հաշիվն արդեն ունի ուղղորդող",
-            "ReferrerInsufficientBalance": "Ուղղորդողին չի բավականացնում վերապահված մնացորդը"
+            "alreadyhasreferrer": "Հաշիվն արդեն ունի ուղղորդող",
+            "referrerinsufficientbalance": "Ուղղորդողին չի բավականացնում վերապահված մնացորդը"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Պարգևատրման ծրագիրն արդեն ավարտված է",
-            "CantCalculateReward": "Չհաջողվեց կատարել պարգևների հաշվարկը",
-            "NoRewardsForAsset": "Այս ակտիվի համար պարգևներ չկան"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Պարգևատրման ծրագիրն արդեն ավարտված է",
+            "cantcalculatereward": "Չհաջողվեց կատարել պարգևների հաշվարկը",
+            "norewardsforasset": "Այս ակտիվի համար պարգևներ չկան"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում"
+        "liquidityproxy": {
+            "forbiddenfilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Անբավարար միջոցներ",
-            "InsufficientLPTokens": "Անբավարար իրացվելիության տրամադրման նշաններ",
-            "PoolDoesNotHaveRewards": "Լողավազանը պարգևներ չունի"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Անբավարար միջոցներ",
+            "insufficientlptokens": "Անբավարար իրացվելիության տրամադրման նշաններ",
+            "pooldoesnothaverewards": "Լողավազանը պարգևներ չունի"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Գինը հաշվարկելիս սխալ է տեղի ունեցել"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Գինը հաշվարկելիս սխալ է տեղի ունեցել"
         }
     },
     "receivedText": "Ստացվել է",
@@ -1078,7 +1062,7 @@
         "info": "Մենք ձեզ կուղարկենք միայն համապատասխան թարմացումներ ձեր դրամապանակի վերաբերյալ, օրինակ՝ ակտիվների մնացորդի փոփոխությունները",
         "button": "Միացնել ծանուցումները",
         "agree": "Այո ես հասկանում եմ",
-        "notificationBlocked": "{appName}-ի մասին ծանուցումներ ստանալու համար խնդրում ենք թույլատրել ծանուցումները ձեր բրաուզերի բնիկ կարգավորումներում",
+        "notificationBlocked": "{AppName}-ի մասին ծանուցումներ ստանալու համար խնդրում ենք թույլատրել ծանուցումները ձեր բրաուզերի բնիկ կարգավորումներում",
         "pointer": "Սեղմեք «Թույլատրել»՝ ծանուցումները միացնելու համար"
     },
     "assetDeposit": "Ակտիվների մնացորդը մուտքագրվել է",
@@ -1086,8 +1070,7 @@
     "ofText": "{first} -ի {second}",
     "filter": {
         "all": "Բոլորը",
-        "token": "Նշաններ",
-        "nft": "NFT-ներ",
+        "token": "Արժույթներ",
         "verifiedOnly": "Ցուցադրել միայն հաստատված ակտիվները",
         "zeroBalance": "Թաքցնել 0 մնացորդային ակտիվներ",
         "showAssets": "Ցույց տալ ակտիվները",
@@ -1095,9 +1078,9 @@
     },
     "desktop": {
         "welcome": {
-            "header": "Բարի գալուստ Polkaswap:",
+            "header": "Բարի գալուստ {AppName}:",
             "headline": "Եկեք կարգավորենք ձեր հաշիվը",
-            "text": "Ստեղծեք ձեր SORA ցանցի հաշիվը կամ մուտք գործեք հին հաշիվներ՝ օգտագործելով մեմոնիկ արտահայտությունը կամ .json ներմուծումը: Սա թույլ է տալիս ապահով կերպով ստորագրել գործարքները և կառավարել ակտիվները SORA ցանցում:",
+            "text": "Ստեղծեք ձեր {Sora} ցանցի հաշիվը կամ մուտք գործեք հին հաշիվներ՝ օգտագործելով մեմոնիկ արտահայտությունը կամ .json ներմուծումը: Սա թույլ է տալիս ապահով կերպով ստորագրել գործարքները և կառավարել ակտիվները {Sora} ցանցում:",
             "createAccount": "Ստեղծել հաշիվ",
             "importAccount": "Ներմուծել հաշիվ"
         },
@@ -1147,5 +1130,18 @@
             "jsonFields": "JSON ֆայլը պարտադիր դաշտեր չունի"
         }
     },
-    "hashiBridgeText": "HASHI կամուրջ"
+    "hashiBridgeText": "{Hashi} կամուրջ",
+    "disclaimerTitle": "Հրաժարում պատասխանատվությունից:",
+    "explore": {
+        "showOnlyMyPositions": "Ցույց տալ միայն իմ դիրքերը"
+    },
+    "tooltips": {
+        "roi": "{ROI} նշանակում է ներդրումների վերադարձ: Այն հաշվարկվում է ներդրումներից ստացված շահույթը բաժանելով այդ ներդրման արժեքին` տոկոսային համարժեքով:",
+        "tvl": "{TVL} ը նշանակում է կողպված ընդհանուր արժեքը: Այն ներկայացնում է լողավազաններում փակված ժետոնները դոլարի համարժեքով:"
+    },
+    "createTokenText": "Ստեղծել տոկեն",
+    "comingSoonText": "Շուտով",
+    "confirmText": "Հաստատել",
+    "createTokenTextNFT": "Ստեղծեք NFT",
+    "doNotShowText": "Սա ինձ այլևս ցույց մի տուր"
 }

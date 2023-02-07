@@ -1,18 +1,18 @@
-$font-weight-100: "wght" 100;
-$font-weight-200: "wght" 200;
-$font-weight-300: "wght" 300;
-$font-weight-400: "wght" 400;
-$font-weight-500: "wght" 500;
-$font-weight-600: "wght" 600;
-$font-weight-700: "wght" 700;
-$font-weight-800: "wght" 800;
+$font-weight-100: 'wght' 100;
+$font-weight-200: 'wght' 200;
+$font-weight-300: 'wght' 300;
+$font-weight-400: 'wght' 400;
+$font-weight-500: 'wght' 500;
+$font-weight-600: 'wght' 600;
+$font-weight-700: 'wght' 700;
+$font-weight-800: 'wght' 800;
 
 @include generic-input-lines;
 
 /* Networks Icons */
-$s-icon-sora: "\0041";
-$s-icon-eth: "\0044";
-$s-icon-energy: "\0048";
+$s-icon-sora: '\0041';
+$s-icon-eth: '\0044';
+$s-icon-energy: '\0048';
 .s-icon-sora {
   &:before {
     content: $s-icon-sora;
@@ -36,13 +36,15 @@ $s-icon-energy: "\0048";
 [design-system-theme="light"] {
   .s-icon--network.s-icon {
     &-sora {
-      &, &:hover {
-        color: #E3232C !important;
+      &,
+      &:hover {
+        color: #e3232c !important;
       }
     }
     &-eth {
-      &, &:hover {
-        color: #627EEA !important;
+      &,
+      &:hover {
+        color: #627eea !important;
       }
     }
   }
@@ -53,7 +55,8 @@ h3 {
   text-transform: capitalize;
 }
 // TODO: fix outline issue in js ui library
-.el-tooltip, .el-slider__button-wrapper {
+.el-tooltip,
+.el-slider__button-wrapper {
   outline: none;
 }
 
@@ -63,19 +66,33 @@ button.el-button--max {
   font-variation-settings: $font-weight-800 !important;
 }
 
-div.el-pagination button, div.el-collapse-item__wrap { background-color: unset !important; }
-span.el-pagination__total { padding: 0 8px; }
+div.el-pagination button,
+div.el-collapse-item__wrap {
+  background-color: unset !important;
+}
+span.el-pagination__total {
+  padding: 0 8px;
+}
 
 /* FORMS */
-div.history-item-operation { color: var(--s-color-theme-accent-hover) !important; }
-div.transaction-row_key { text-transform: uppercase; }
-div.transaction-row_value{ color: var(--s-color-base-content-quaternary) !important; font-weight: 600; }
+div.history-item-operation {
+  color: var(--s-color-theme-accent-hover) !important;
+}
+div.transaction-row_key {
+  text-transform: uppercase;
+}
+div.transaction-row_value {
+  color: var(--s-color-base-content-quaternary) !important;
+  font-weight: 600;
+}
 
-i.el-notification__icon.el-icon-success, i.el-notification__icon.el-icon-success:hover {
+i.el-notification__icon.el-icon-success,
+i.el-notification__icon.el-icon-success:hover {
   color: var(--s-color-status-success) !important;
 }
 /*_______________________ CURRENT UI FIXES FOR CONSISTENCY (GENERALLY BASED ON TEST USERS FEEDBACK) _______________________*/
-button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-medium.s-border-radius-small.s-primary.s-i-position-left span {
+button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-medium.s-border-radius-small.s-primary.s-i-position-left
+  span {
   font-size: var(--s-icon-font-size-mini) !important;
 }
 

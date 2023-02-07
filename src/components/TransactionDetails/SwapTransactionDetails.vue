@@ -32,7 +32,7 @@
       <info-line
         v-if="isLoggedIn"
         :label="t('swap.networkFee')"
-        :label-tooltip="t('swap.networkFeeTooltip')"
+        :label-tooltip="t('networkFeeTooltipText')"
         :value="formattedNetworkFee"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
@@ -80,6 +80,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.swap.liquidityProviderFee private liquidityProviderFee!: CodecString;
   @state.swap.rewards private rewards!: Array<LPRewardsInfo>;
+  @state.swap.path private path!: Array<string>;
   @state.swap.isExchangeB isExchangeB!: boolean;
   @state.swap.selectedDexId private selectedDexId!: number;
 
@@ -91,6 +92,8 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   @getter.swap.minMaxReceived minMaxReceived!: CodecString;
   @getter.swap.priceImpact priceImpact!: string;
 
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
+
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
 
   get liquidityProviderFeeTooltipText(): string {
@@ -98,12 +101,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   }
 
   get swapRoute(): Array<string> {
-    const fromToken: string = this.tokenFrom?.symbol ?? '';
-    const toToken: string = this.tokenTo?.symbol ?? '';
-    const baseAssetId = api.dex.getBaseAssetId(this.selectedDexId);
-    const baseToken = KnownAssets.get(baseAssetId).symbol;
-
-    return [...new Set([fromToken, baseToken, toToken])]; // To remove doubled XOR if the route is simple
+    return this.path.map((assetId) => this.getAsset(assetId)?.symbol ?? '?');
   }
 
   get priceValues(): Array<PriceValue> {

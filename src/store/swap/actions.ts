@@ -1,5 +1,6 @@
 import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import { getPathsAndPairLiquiditySources } from '@sora-substrate/liquidity-proxy';
 import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { QuotePayload } from '@sora-substrate/liquidity-proxy/build/types';
@@ -22,9 +23,9 @@ function updateTokenSubscription(context: ActionContext<any, any>, dir: Directio
 
   const token = dir === Direction.From ? tokenFrom : tokenTo;
   const setTokenBalance = dir === Direction.From ? setTokenFromBalance : setTokenToBalance;
-  const updateBalance = (balance: AccountBalance) => setTokenBalance(balance);
+  const updateBalance = (balance: Nullable<AccountBalance>) => setTokenBalance(balance);
 
-  balanceSubscriptions.remove(dir, { updateBalance });
+  balanceSubscriptions.remove(dir);
 
   if (
     rootGetters.wallet.account.isLoggedIn &&
@@ -58,6 +59,22 @@ const actions = defineActions({
     updateTokenSubscription(context, Direction.To);
   },
 
+  async switchTokens(context): Promise<void> {
+    const { commit, state } = swapActionContext(context);
+    const { tokenFromAddress: from, tokenToAddress: to, fromValue, toValue, isExchangeB } = state;
+    if (from && to) {
+      const [valueFrom, valueTo] = isExchangeB ? [toValue, ''] : ['', fromValue];
+
+      commit.setTokenFromAddress(to);
+      commit.setTokenToAddress(from);
+      commit.setFromValue(valueFrom);
+      commit.setToValue(valueTo);
+      commit.setExchangeB(!isExchangeB);
+      updateTokenSubscription(context, Direction.From);
+      updateTokenSubscription(context, Direction.To);
+    }
+  },
+
   setSubscriptionPayload(context, { dexId, payload }: { dexId: number; payload: QuotePayload }): void {
     const { state, getters, commit } = swapActionContext(context);
 
@@ -69,14 +86,15 @@ const actions = defineActions({
     }
 
     // tbc & xst is enabled only on dex 0
-    const enabledAssets = dexId === DexId.XOR ? state.enabledAssets : { tbc: [], xst: [] };
+    const enabledAssets = dexId === DexId.XOR ? state.enabledAssets : { tbc: [], xst: [], lockedSources: [] };
+    const baseAssetId = api.dex.getBaseAssetId(dexId);
+    const syntheticBaseAssetId = api.dex.getSyntheticBaseAssetId(dexId);
 
-    const { paths, liquiditySources } = api.swap.getPathsAndPairLiquiditySources(
-      inputAssetId,
-      outputAssetId,
+    const { paths, liquiditySources } = getPathsAndPairLiquiditySources(
       payload,
       enabledAssets,
-      dexId
+      baseAssetId,
+      syntheticBaseAssetId
     );
 
     commit.setSubscriptionPayload({ dexId, liquiditySources, paths, payload });
@@ -86,13 +104,8 @@ const actions = defineActions({
     updateTokenSubscription(context, Direction.To);
   },
   async resetSubscriptions(context): Promise<void> {
-    const { commit } = swapActionContext(context);
-    balanceSubscriptions.remove(Direction.From, {
-      updateBalance: (balance: AccountBalance) => commit.setTokenFromBalance(balance),
-    });
-    balanceSubscriptions.remove(Direction.To, {
-      updateBalance: (balance: AccountBalance) => commit.setTokenToBalance(balance),
-    });
+    balanceSubscriptions.remove(Direction.From);
+    balanceSubscriptions.remove(Direction.To);
   },
   async reset(context): Promise<void> {
     const { commit, dispatch } = swapActionContext(context);

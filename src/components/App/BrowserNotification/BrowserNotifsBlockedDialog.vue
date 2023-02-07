@@ -2,7 +2,7 @@
   <dialog-base class="browser-notification" :title="t('browserNotificationDialog.title')" :visible.sync="isVisible">
     <div class="browser-notification-dialog">
       <p class="browser-notification-dialog__info">
-        {{ t('browserNotificationDialog.notificationBlocked', { appName: app.name }) }}
+        {{ t('browserNotificationDialog.notificationBlocked') }}
       </p>
       <s-button
         type="primary"

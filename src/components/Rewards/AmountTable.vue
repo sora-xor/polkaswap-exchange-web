@@ -301,7 +301,7 @@ export default class AmountTable extends Mixins(mixins.FormattedAmountMixin, Tra
       line-height: var(--s-line-height-reset);
       font-weight: 300;
       text-transform: uppercase;
-      margin-bottom: $inner-spacing-mini / 2;
+      margin-bottom: $inner-spacing-tiny;
     }
 
     &__amount {

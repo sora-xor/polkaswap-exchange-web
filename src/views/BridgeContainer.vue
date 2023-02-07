@@ -18,22 +18,15 @@ import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import ethersUtil from '@/utils/ethers-util';
 import { action } from '@/store/decorators';
 
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
-
-@Component({
-  components: {
-    SelectNetwork: lazyComponent(Components.SelectNetwork),
-  },
-})
+@Component
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
-  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
+  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.updateEvmBlockNumber private updateEvmBlockNumber!: (block?: number) => Promise<void>;
-  @action.bridge.subscribeOnHistory subscribeOnHistory!: AsyncVoidFn;
-  @action.bridge.unsubscribeFromHistory unsubscribeFromHistory!: AsyncVoidFn;
+  @action.bridge.subscribeOnHistory subscribeOnHistory!: AsyncFnWithoutArgs;
+  @action.bridge.unsubscribeFromHistory unsubscribeFromHistory!: AsyncFnWithoutArgs;
   @action.assets.updateRegisteredAssets private updateExternalBalances!: (reset?: boolean) => Promise<void>;
 
-  private unwatchEthereum!: VoidFunction;
+  private unwatchEthereum!: FnWithoutArgs;
   private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
 
   async created(): Promise<void> {

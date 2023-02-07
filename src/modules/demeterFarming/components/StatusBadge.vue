@@ -7,7 +7,7 @@
 
     <div class="status-badge-title">
       <div>{{ title }}</div>
-      <div v-if="pricesAvailable" class="status-badge-title--mini">{{ aprFormatted }} APR</div>
+      <div v-if="pricesAvailable" class="status-badge-title--mini">{{ apr }} APR</div>
     </div>
   </div>
 </template>
@@ -16,14 +16,14 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
-import PoolMixin from '../mixins/PoolMixin';
+import PoolStatusMixin from '../mixins/PoolStatusMixin';
 
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
   },
 })
-export default class StatusBadge extends Mixins(PoolMixin) {
+export default class StatusBadge extends Mixins(PoolStatusMixin) {
   get title(): string {
     if (!this.activeStatus) return this.t('demeterFarming.staking.stopped');
 
@@ -69,22 +69,13 @@ $status-badge-width: 140px;
   width: $status-badge-width;
   height: var(--s-size-small);
 
-  padding: $inner-spacing-mini / 2 $inner-spacing-mini;
+  padding: $inner-spacing-tiny $inner-spacing-mini;
   border-radius: calc(var(--s-border-radius-small) / 2);
 
   box-shadow: var(--s-shadow-element-pressed);
 
   background: var(--s-color-theme-accent);
   color: var(--s-color-base-on-accent);
-
-  &:nth-child(2n) {
-    // 2 items per row
-    margin-left: $inner-spacing-mini;
-  }
-  &:nth-child(n + 3) {
-    // Starting from 2nd row
-    margin-top: $inner-spacing-mini;
-  }
 
   &.active {
     background: var(--s-color-base-on-accent);

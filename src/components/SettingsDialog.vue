@@ -1,17 +1,12 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="t('dexSettings.title')" custom-class="settings">
     <market-algorithm />
-    <template v-if="chartsFlagEnabled">
-      <s-divider />
-      <charts-switch />
-    </template>
   </dialog-base>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { getter } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
@@ -21,12 +16,9 @@ import { Components } from '@/consts';
   components: {
     DialogBase: components.DialogBase,
     MarketAlgorithm: lazyComponent(Components.MarketAlgorithm),
-    ChartsSwitch: lazyComponent(Components.ChartsSwitch),
   },
 })
-export default class SettingsDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {
-  @getter.settings.chartsFlagEnabled chartsFlagEnabled!: boolean;
-}
+export default class SettingsDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {}
 </script>
 
 <style lang="scss">

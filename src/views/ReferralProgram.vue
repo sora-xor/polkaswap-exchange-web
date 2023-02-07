@@ -27,7 +27,7 @@
           {{ t('referralProgram.insufficientBondedAmount', { inviteUserFee }) }}
         </div>
         <s-card v-else class="referral-link-container" shadow="always" size="small" border-radius="medium">
-          <div class="referral-link-details">
+          <div class="referral-link-details with-text">
             <div class="referral-link-label">{{ t('referralProgram.invitationLink') }}</div>
             <div class="referral-link" v-html="referralLink.label" />
           </div>
@@ -149,7 +149,7 @@
             <p class="referrer-description" v-html="t('referralProgram.referrer.description')" />
           </template>
           <s-card v-if="referrer" shadow="always" size="small" border-radius="medium">
-            <div class="referrer-link-details">
+            <div class="referrer-link-details with-text">
               <div class="referral-link-label">{{ t('referralProgram.referrer.referredLablel') }}</div>
               <div class="referral-link" v-html="referrerLink.label" />
             </div>
@@ -218,13 +218,13 @@ export default class ReferralProgram extends Mixins(
   @getter.assets.xor xor!: Nullable<AccountAsset>;
   @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
 
-  @mutation.referrals.reset private reset!: VoidFunction;
-  @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
+  @mutation.referrals.reset private reset!: FnWithoutArgs;
+  @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
+  @mutation.referrals.resetReferrerSubscription private resetReferrerSubscription!: FnWithoutArgs;
   @mutation.referrals.setStorageReferrer private setStorageReferrer!: (value: string) => void;
-  @action.referrals.subscribeOnInvitedUsers private subscribeOnInvitedUsers!: AsyncVoidFn;
-  @action.referrals.getReferrer private getReferrer!: AsyncVoidFn;
-  @action.referrals.subscribeOnReferrer private subscribeOnReferrer!: AsyncVoidFn;
-  @mutation.referrals.resetReferrerSubscription private resetReferrerSubscription!: VoidFunction;
+  @action.referrals.subscribeOnInvitedUsers private subscribeOnInvitedUsers!: AsyncFnWithoutArgs;
+  @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
+  @action.referrals.subscribeOnReferrer private subscribeOnReferrer!: AsyncFnWithoutArgs;
 
   @Watch('isSoraAccountConnected')
   private async updateSubscriptions(value: boolean): Promise<void> {
@@ -453,7 +453,7 @@ export default class ReferralProgram extends Mixins(
     .el-pagination {
       display: flex;
       justify-content: space-between;
-      padding: #{$inner-spacing-mini / 2} $inner-spacing-medium 0;
+      padding: $inner-spacing-tiny $inner-spacing-medium 0;
       &__total {
         margin-right: auto;
         padding-left: 0;
@@ -670,7 +670,7 @@ export default class ReferralProgram extends Mixins(
     .el-button {
       margin-top: $inner-spacing-medium;
       &.s-secondary {
-        width: calc(50% - #{$inner-spacing-small / 2});
+        width: calc(50% - (#{$inner-spacing-small} / 2));
       }
       &.s-primary {
         width: 100%;
@@ -709,9 +709,11 @@ export default class ReferralProgram extends Mixins(
     &-details {
       display: flex;
       flex-direction: column;
-      margin-right: $inner-spacing-mini;
-      overflow: hidden;
       color: var(--s-color-theme-accent);
+      &.with-text {
+        margin-right: $inner-spacing-mini;
+        overflow: hidden;
+      }
     }
     &,
     &-label {

@@ -1,6 +1,6 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="t('selectToken.title')" custom-class="asset-select">
-    <s-tabs v-model="tabValue" class="s-tabs--exchange" type="rounded" @click="handleTabClick">
+    <s-tabs :value="tabValue" class="s-tabs--exchange" type="rounded" @input="handleTabChange">
       <search-input
         ref="search"
         v-model="query"
@@ -10,7 +10,7 @@
         class="token-search"
       />
 
-      <s-tab :label="t('selectToken.assets.title')" name="assets"></s-tab>
+      <s-tab :label="t('selectToken.assets.title')" name="assets" />
 
       <s-tab :disabled="disabledCustom" :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
         <template v-if="customAsset">
@@ -35,6 +35,7 @@
       </s-tab>
 
       <select-asset-list
+        v-show="shouldAssetsListBeShown"
         :assets="activeAssetsList"
         :size="assetsListSize"
         :connected="connected"
@@ -94,8 +95,8 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
-  @getter.assets.nonWhitelistDivisibleAssets private nonWhitelistAssets!: { [key: string]: Asset };
-  @getter.assets.nonWhitelistDivisibleAccountAssets private nonWhitelistAccountAssets!: { [key: string]: AccountAsset };
+  @getter.assets.nonWhitelistDivisibleAssets private nonWhitelistAssets!: Record<string, Asset>;
+  @getter.assets.nonWhitelistDivisibleAccountAssets private nonWhitelistAccountAssets!: Record<string, AccountAsset>;
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
   @getter.wallet.account.whitelist public whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
@@ -103,7 +104,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
 
   @Watch('visible')
-  async handleTabChange(value: boolean): Promise<void> {
+  async handleTabReset(value: boolean): Promise<void> {
     if (!value) return;
 
     this.tabValue = first(this.tokenTabs);
@@ -123,6 +124,11 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   get isCustomTabActive(): boolean {
     return this.tabValue === Tabs.Custom;
+  }
+
+  /** Only for empty list for custom tab case when searching */
+  get shouldAssetsListBeShown(): boolean {
+    return !(this.isCustomTabActive && !this.activeAssetsList.length && this.searchQuery);
   }
 
   get assetsListSize(): number {
@@ -146,7 +152,16 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get sortedNonWhitelistAccountAssets(): Array<AccountAsset> {
-    return Object.values(this.nonWhitelistAccountAssets).sort(this.sortByBalance());
+    const { asset: excludeAsset, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this;
+    // TODO: we already have balances in nonWhitelistAccountAssets.
+    // Need to improve that logic
+    return this.getAssetsWithBalances({
+      assets: Object.values(this.nonWhitelistAccountAssets),
+      accountAssetsAddressTable,
+      notNullBalanceOnly,
+      accountAssetsOnly,
+      excludeAsset,
+    }).sort(this.sortByBalance());
   }
 
   private getMainSources(): Array<Asset> {
@@ -170,9 +185,9 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     api.assets.removeAccountAsset(asset.address);
   }
 
-  handleTabClick({ name }): void {
+  handleTabChange(name: Tabs): void {
     this.tabValue = name;
-    this.handleClearSearch();
+    this.clearAndFocusSearch();
   }
 }
 </script>

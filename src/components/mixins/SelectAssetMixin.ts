@@ -18,9 +18,7 @@ export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearch
     await this.$nextTick();
 
     if (!value) return;
-
-    this.handleClearSearch();
-    this.focusSearchInput();
+    this.clearAndFocusSearch();
   }
 
   query = '';
@@ -31,6 +29,11 @@ export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearch
 
   public handleClearSearch(): void {
     this.query = '';
+  }
+
+  public clearAndFocusSearch(): void {
+    this.handleClearSearch();
+    this.focusSearchInput();
   }
 
   public sortByBalance(external = false) {

@@ -213,7 +213,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import evmBridge from '@/utils/bridge/evm';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { action, state, getter, mutation } from '@/store/decorators';
+import { state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/evm/utils';
@@ -246,7 +246,7 @@ export default class BridgeTransaction extends Mixins(
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
   @getter.bridge.historyItem private historyItem!: Nullable<EvmHistory>;
 
-  @mutation.bridge.setInternalHistory setHistory!: VoidFunction;
+  @mutation.bridge.setInternalHistory setHistory!: FnWithoutArgs;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
 
   get txInProcess(): boolean {
@@ -460,7 +460,7 @@ export default class BridgeTransaction extends Mixins(
     }
     const baseLinks = getExplorerLinks(this.soraNetwork);
     const txId = this.soraTxId || this.soraTxBlockId;
-    if (!txId) {
+    if (!(baseLinks.length && txId)) {
       return [];
     }
     if (!this.soraTxId) {
@@ -581,7 +581,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
         .el-loading-spinner {
           top: 0;
           margin-top: calc(#{$header-icon-size - $header-spinner-size} / 2);
-          margin-left: calc(#{$header-icon-size - $header-spinner-size} / 2);
           .circular {
             width: $header-spinner-size;
             height: $header-spinner-size;
@@ -703,13 +702,13 @@ $network-title-max-width: 250px;
     color: var(--s-color-status-error);
     display: flex;
     flex-flow: column nowrap;
-    padding: 0 $inner-spacing-mini / 2;
+    padding: 0 $inner-spacing-tiny;
     margin-bottom: $inner-spacing-medium;
     line-height: var(--s-line-height-mini);
     text-align: left;
 
     &__title {
-      margin-bottom: $inner-spacing-mini / 2;
+      margin-bottom: $inner-spacing-tiny;
       text-transform: uppercase;
       font-weight: 300;
     }
@@ -751,11 +750,11 @@ $network-title-max-width: 250px;
     line-height: var(--s-line-height-medium);
     .s-icon--network {
       font-size: var(--s-heading4-font-size);
-      margin-left: $inner-spacing-mini / 4;
+      margin-left: calc(#{$inner-spacing-mini} / 4);
     }
     &-separator {
-      margin-right: $inner-spacing-mini / 2;
-      margin-left: $inner-spacing-mini / 2;
+      margin-right: $inner-spacing-tiny;
+      margin-left: $inner-spacing-tiny;
       font-size: var(--s-heading3-font-size);
       font-weight: 300;
     }

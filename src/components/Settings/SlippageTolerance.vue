@@ -11,7 +11,7 @@
         </template>
         <div :class="slippageToleranceClasses">
           <div class="slippage-tolerance-default">
-            <settings-tabs :value="slippageTolerance" :tabs="SlippageToleranceTabs" @click="selectTab" />
+            <settings-tabs :value="slippageTolerance" :tabs="SlippageToleranceTabs" @input="selectTab" />
           </div>
           <div class="slippage-tolerance-custom">
             <s-float-input
@@ -126,7 +126,7 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
     return '';
   }
 
-  selectTab({ name }): void {
+  selectTab(name: string): void {
     this.setSlippageTolerance(name);
   }
 

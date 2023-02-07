@@ -147,8 +147,8 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.sortTransactions(this.getPageItems(this.filteredHistory, start, end), true);
   }
 
-  async created(): Promise<void> {
-    await this.withParentLoading(async () => {
+  created(): void {
+    this.withParentLoading(async () => {
       this.setHistory();
 
       if (this.historyPage !== 1) {
@@ -157,6 +157,7 @@ export default class BridgeTransactionsHistory extends Mixins(
           this.isLtrDirection = false;
         }
       }
+    }).finally(() => {
       this.loading = false;
     });
   }
@@ -414,7 +415,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     }
 
     &-text + &-icon {
-      margin-left: $inner-spacing-mini / 2;
+      margin-left: $inner-spacing-tiny;
     }
   }
 }

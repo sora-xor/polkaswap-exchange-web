@@ -19,8 +19,8 @@ import { isOutgoingTransaction } from '@/utils/bridge/eth/utils';
 
 import { ZeroStringValue } from '@/consts';
 
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
-import type { RegisteredAccountAssetObject } from '@/store/assets/types';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
@@ -185,7 +185,7 @@ export class EthBridgeHistory {
 
     do {
       const variables = { after, filter, first: 100 };
-      const response = await SubqueryExplorerService.getAccountTransactions(variables);
+      const response = await SubqueryExplorerService.account.getHistory(variables);
 
       if (!response) return history;
 
@@ -198,12 +198,18 @@ export class EthBridgeHistory {
     return history as HistoryElement[];
   }
 
+  public async clearHistory(updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs): Promise<void> {
+    this.historySyncTimestamp = 0;
+    bridgeApi.clearHistory();
+    await updateCallback?.();
+  }
+
   public async updateAccountHistory(
     address: string,
-    assets: RegisteredAccountAssetObject,
+    assets: Record<string, Asset>,
     networkFees: NetworkFeesObject,
     contracts?: string[],
-    updateCallback?: AsyncVoidFn | VoidFunction
+    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     const currentHistory = ethBridgeApi.historyList as BridgeHistory[];
     const historyElements = await this.fetchHistoryElements(address, this.historySyncTimestamp);

@@ -55,8 +55,8 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
 
   // update selected evm network without metamask request
   @mutation.web3.setSelectedEvmNetwork setSelectedEvmNetwork!: (evmNetworkId: EvmNetworkId) => void;
-  @mutation.web3.resetEvmAddress private resetEvmAddress!: VoidFunction;
-  @mutation.web3.reset private resetWeb3Store!: VoidFunction;
+  @mutation.web3.resetEvmAddress private resetEvmAddress!: FnWithoutArgs;
+  @mutation.web3.reset private resetWeb3Store!: FnWithoutArgs;
   @mutation.web3.setEvmAddress switchExternalAccount!: (address: string) => void;
 
   @action.web3.connectExternalAccount private connectExternalAccount!: (provider: Provider) => Promise<void>;
@@ -121,7 +121,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     }
   }
 
-  async checkConnectionToExternalAccount(func: AsyncVoidFn | VoidFunction): Promise<void> {
+  async checkConnectionToExternalAccount(func: FnWithoutArgs | AsyncFnWithoutArgs): Promise<void> {
     const connected = await ethersUtil.checkAccountIsConnected(this.evmAddress);
 
     if (!connected) {

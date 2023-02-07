@@ -8,12 +8,12 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
-  startSubscriptionsList: AsyncVoidFn[] = [];
-  resetSubscriptionsList: AsyncVoidFn[] = [];
+  startSubscriptionsList: Array<AsyncFnWithoutArgs> = [];
+  resetSubscriptionsList: Array<FnWithoutArgs> = [];
 
   @Watch('isLoggedIn')
   @Watch('nodeIsConnected')
-  private async restartSubscriptions(value: boolean) {
+  private async restartSubscriptions(value: boolean): Promise<void> {
     if (value) {
       await this.updateSubscriptions();
     } else {
@@ -33,11 +33,11 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
     this.resetSubscriptions();
   }
 
-  public setStartSubscriptions(list: AsyncVoidFn[]) {
+  public setStartSubscriptions(list: AsyncFnWithoutArgs[]) {
     this.startSubscriptionsList = list;
   }
 
-  public setResetSubscriptions(list: AsyncVoidFn[]) {
+  public setResetSubscriptions(list: FnWithoutArgs[]) {
     this.resetSubscriptionsList = list;
   }
 

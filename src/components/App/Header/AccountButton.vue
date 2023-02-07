@@ -34,7 +34,10 @@ export default class AccountButton extends Mixins(TranslationMixin) {
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   get accountTooltip(): string {
-    return this.t(`${this.isLoggedIn ? 'connectedAccount' : 'connectWalletTextTooltip'}`);
+    if (this.isLoggedIn) {
+      return this.t('connectedAccount');
+    }
+    return this.t('connectWalletTextTooltip');
   }
 
   get accountInfo(): string {

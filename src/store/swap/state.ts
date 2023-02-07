@@ -12,8 +12,11 @@ export function initialState(): SwapState {
     amountWithoutImpact: '',
     liquidityProviderFee: '',
     isExchangeB: false,
-    enabledAssets: {},
+    enabledAssets: {
+      lockedSources: [],
+    },
     rewards: [],
+    path: [],
     selectedDexId: DexId.XOR,
     dexQuoteData: {},
   };

@@ -116,10 +116,10 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   @getter.moonpay.currenciesById private currenciesById!: MoonpayCurrenciesById;
   @getter.libraryTheme libraryTheme!: Theme;
 
-  @action.moonpay.getTransactions private getTransactions!: AsyncVoidFn;
-  @action.moonpay.getCurrencies private getCurrencies!: AsyncVoidFn;
+  @action.moonpay.getTransactions private getTransactions!: AsyncFnWithoutArgs;
+  @action.moonpay.getCurrencies private getCurrencies!: AsyncFnWithoutArgs;
 
-  private unwatchEthereum!: VoidFunction;
+  private unwatchEthereum!: FnWithoutArgs;
 
   pageAmount = 5; // override PaginationSearchMixin
   currentView = HistoryView;

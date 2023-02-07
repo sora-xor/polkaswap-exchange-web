@@ -7,8 +7,6 @@
     "importText": "Увоз",
     "settingsText": "Подешавања",
     "addAssetText": "Додајте средство",
-    "createTokenText": "Креирајте",
-    "comingSoonText": "Долази ускоро",
     "successText": "Успешно",
     "warningText": "Упозорење",
     "swapText": "Замените",
@@ -19,7 +17,6 @@
     "sendText": "Пошаљите",
     "addressText": "Адреса",
     "amountText": "Износ",
-    "confirmText": "Потврдите",
     "errorText": "Грешка",
     "insufficientBalanceText": "Недовољно стање {tokenSymbol}",
     "unknownErrorText": "ГРЕШКА Нешто је пошло наопако...",
@@ -34,7 +31,7 @@
         "ClaimRewards": "Захтевајте награде",
         "andText": "и",
         "finalized": {
-            "Transfer": "Послато  {amount} {symbol} на {address}",
+            "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Замењено {amount} {symbol} за {amount2} {symbol2}",
             "AddLiquidity": "Испоручено {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Уклоњено {amount} {symbol} и {amount2} {symbol2}",
@@ -43,15 +40,15 @@
             "ClaimRewards": "Награда је успешно преузета {rewards}",
             "ReferralReserveXor": "Успешно повезивање КСОРа",
             "ReferralUnreserveXor": "Одвајање XOR је успешно",
-            "ReferralSetInvitedUser": "Препорука је успешно постављена",
+            "ReferralSetInvitedUser": "{role} {address} је успешно постављена",
             "SwapAndSend": "Замењено {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Испоручени {symbol} и {symbol2} {amount} ЛП токени",
             "DemeterFarmingWithdrawLiquidity": "Уклоњени су токени {symbol} и {symbol2} {amount} ЛП",
             "DemeterFarmingStakeToken": "Додато {amount} {symbol}",
             "DemeterFarmingUnstakeToken": "Уклоњено {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} је успешно положено",
-            "EthBridgeIncoming": "Пренето {amount} {symbol} са @:ethereumtext у @:soratext",
-            "EthBridgeOutgoing": "Пренето {amount} {symbol} са @:soratext у @:ethereumtext"
+            "EthBridgeIncoming": "Пренето {amount} {symbol} са {Ethereum} у {Sora}",
+            "EthBridgeOutgoing": "Пренето {amount} {symbol} са {Sora} у {Ethereum}"
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
@@ -63,19 +60,19 @@
             "ClaimRewards": "Преузимање награда {rewards} није успело",
             "ReferralReserveXor": "Повезивање XOR није успело",
             "ReferralUnreserveXor": "Одвајање XOR није успело",
-            "ReferralSetInvitedUser": "Постављање препоруке није успело",
+            "ReferralSetInvitedUser": "Постављање {role} {address} није успело",
             "SwapAndSend": "Замена {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address} није успела",
             "DemeterFarmingDepositLiquidity": "Достављање {amount} {symbol} и {symbol2} ЛП токена није успело",
             "DemeterFarmingWithdrawLiquidity": "Уклањање {amount} {symbol} и {symbol2} ЛП токена није успело",
             "DemeterFarmingStakeToken": "Додавање {amount} {symbol} није успело",
             "DemeterFarmingUnstakeToken": "Уклањање {amount} {symbol} није успело",
             "DemeterFarmingGetRewards": "Захтевање за {symbol} није успело",
-            "EthBridgeIncoming": "Пренос {amount} {symbol} из @:ethereumtext у @:soratext није успео",
-            "EthBridgeOutgoing": "Пренос {amount} {symbol} са @:soratext на @:ethereumtext није успео"
+            "EthBridgeIncoming": "Пренос {amount} {symbol} из {Ethereum} у {Sora} није успео",
+            "EthBridgeOutgoing": "Пренос {amount} {symbol} са {Sora} на {Ethereum} није успео"
         },
         "ReferralReserveXor": "Veži XOR",
         "ReferralUnreserveXor": "Razveži XOR",
-        "ReferralSetInvitedUser": "Поставите препоруку",
+        "ReferralSetInvitedUser": "Поставите {role}",
         "SwapAndSend": "Замените и пошаљте",
         "DemeterFarmingDepositLiquidity": "Uloži u likvidnost",
         "DemeterFarmingWithdrawLiquidity": "Povuci ulaganje iz likvidnosti",
@@ -86,15 +83,15 @@
         "EthBridgeOutgoing": "@:hashiBridgeText"
     },
     "polkadotjs": {
-        "noExtensions": "Није пронађена ниједна екстензија Polkadot.{js}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
+        "noExtensions": "Није пронађена ниједна екстензија {PolkadotJs}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Чини се да у вашој екстензији {extension} нема рачуна. Додајте рачун и покушајте поново.",
-        "noAccount": "Грешка рачуна Polkadot.{js}. Проверите свој рачун у екстензији Polkadot.js",
+        "noAccount": "Грешка рачуна {extension}. Проверите свој рачун у екстензији {extension}",
         "noExtension": "Није пронађен ниједан {extension} . Инсталирајте и поново учитајте ову страницу",
         "noSigner": "Приступ одбијен. Идите на подешавања {extension} и отворите „Управљање приступом веб локацији“ да бисте дозволили."
     },
     "connection": {
-        "title": "Рачун мреже SORA",
-        "text": "Повежите своје рачуне SORA мреже или направите нове помоћу Polkadot{.js} екстензије за прегледач. Овa екстензијa вам омогућава да безбедно потписујете трансакције и управљате средством у SORA мрежи.",
+        "title": "Рачун мреже {Sora}",
+        "text": "Повежите или направите свој {Sora} мрежни налог са {extensions} екстензијама. Ова проширења вам омогућавају да безбедно потписујете трансакције и управљате имовином у мрежи {Sora}.",
         "noAccounts": "Није пронађен ниједан рачун у екстензију прегледача {extension} . Додајте рачун и покушајте поново.",
         "selectAccount": "Изаберите рачун са којим ћете радити",
         "action": {
@@ -105,11 +102,13 @@
         },
         "selectWallet": "Изаберите новчаник са којим ћете радити",
         "wallet": {
-            "install": "Инсталирај"
+            "install": "Инсталирај",
+            "connected": "Повезан",
+            "notConnected": "Није повезан"
         }
     },
     "wallet": {
-        "title": "Рачун мреже SORA",
+        "title": "Рачун мреже {Sora}",
         "WalletAssets": "Средства",
         "WalletActivity": "Активност",
         "addAsset": "@:addAssetText",
@@ -127,12 +126,12 @@
         "enterAmount": "Унесите износ",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Потврдите трансакцију",
-        "confirm": "@:confirmText",
         "errorAddress": "Погрешна адреса. Проверите и покушајте поново.",
         "feeTooltip": "@:networkFeeTooltipText",
-        "tooltip": "Шаљите токене између рачуна SORA мреже",
-        "addressWarning": "Токени ће бити послати на SORA адресу испод. Уверите се да прималац може да приступи ланцу SORA да би користио токене:",
-        "addressError": "Не можете слати токене на исти рачун са којим сте тренутно повезани."
+        "tooltip": "Шаљите токене између рачуна {Sora} мреже",
+        "addressWarning": "Токени ће бити послати на {Sora} адресу испод. Уверите се да прималац може да приступи ланцу {Sora} да би користио токене:",
+        "addressError": "Не можете слати токене на исти рачун са којим сте тренутно повезани.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Адреса новчаника се копира у међуспремник",
@@ -152,7 +151,6 @@
     },
     "assets": {
         "empty": "Нема средстава",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -171,7 +169,8 @@
         },
         "totalAssetsValue": "Укупна вредност средства:",
         "details": "Детаљи",
-        "assetId": "ИД средства"
+        "assetId": "ИД средства",
+        "add": "@:addAssetText"
     },
     "asset": {
         "remove": "Уклоните средство",
@@ -179,8 +178,6 @@
         "receive": "Примите {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Средство {symbol} је успешно додатo!",
         "empty": "Нису пронађени токени",
         "alreadyAttached": "Токен је већ био прикачен",
@@ -192,22 +189,18 @@
         "scam": "ПРЕВАРА",
         "next": "Следећи",
         "AddAssetToken": {
-            "title": "Токени",
+            "title": "Валуте",
             "switchBtn": "Само верификована средства"
         },
-        "AddAssetNFT": {
-            "title": "NFT"
-        },
-        "searchInputText": "Претрага по ИД средства, имену или симболу ознаке"
+        "searchInputText": "Претрага по ИД средства, имену или симболу ознаке",
+        "title": "@:addAssetText",
+        "action": "@:addAssetText"
     },
     "createToken": {
-        "title": "@:createTokenText",
-        "desc": "Креирајте и примените прилагођено средство на SORA",
-        "action": "@:createTokenText",
+        "desc": "Креирајте и примените прилагођено средство на {Sora}",
         "enterSymbol": "Унесите симбол токена",
         "enterName": "Унесите назив токена",
         "enterSupply": "Унесите залиху токена",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Трансакција је послата",
             "desc": "Направите {symbol} токен"
@@ -233,14 +226,9 @@
             "placeholder": "Прошириво снабдевање",
             "desc": "Могућност ковања више токена."
         },
-        "titleCommon": "Креирајте",
-        "confirmTokenTitleCommon": "Креираjте Токен",
-        "confirmTokenTitleNFT": "Креирајте НФТ",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Обезбедите садржај",
         "selectLocalFile": "Изаберите локалну датотеку",
         "CreateSimpleToken": "Токен",
-        "CreateNftToken": "НФТ",
         "nft": {
             "source": {
                 "label": "Извор",
@@ -271,7 +259,14 @@
         "divisible": {
             "placeholder": "Дељивo",
             "desc": "Способност НФТ-а да се дели на фракционе делове. Резервисање ликвидности функционише само са дељивим средствима"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Креирајте",
+        "confirmTokenTitleCommon": "Креираjте Токен",
+        "confirmTokenTitleNFT": "Креирајте НФТ",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Детаљи трансакције",
@@ -305,25 +300,22 @@
         "referrer": "Предложилтељ",
         "referral": "Препорука"
     },
-    "appName": "Polkaswap",
-    "soraText": "SORA",
-    "ethereumText": "Ethereum",
-    "changeNetworkText": "Промените мрежу у Метамаску",
+    "appName": "{AppName}",
+    "changeNetworkText": "Промените мрежу у {Metamask}",
     "transactionText": "трансакција | трансакције",
     "connectWalletText": "Повежите рачун",
     "changeAccountText": "Промените рачун",
     "connectedText": "Повезанo",
-    "connectWalletTextTooltip": "Повежите се на @:soraText мрежу помоћу polkadot{.js}",
+    "connectWalletTextTooltip": "Повежите се на {Sora} мрежу помоћу {PolkadotJs}",
     "selectNodeText": "Изаберите нод",
     "bridgeText": "Мост",
-    "disclaimer": "<span class=\"app-disclaimer__title\"> Одрицање одговорности <\/span>: Ову веб страницу одржава заједница @:(soraText). Пре него што наставите да користите ову веб страницу, прегледајте @:polkaswapFaqLink и документацију, која укључује детаљно објашњење о томе како Polkaswap функционише, као и @:memorandumLink и @:(privacyLink). Ови документи су кључни за безбедно и позитивно корисничко искуство. Коришћењем Polkaswap, потврђујете да сте прочитали и разумели ове документе. Такође прихватате следеће: 1) своју искључиву одговорност за поштовање свих закона који се могу применити на вашу конкретну употребу Polkaswap-а у вашој правној јурисдикцији; 2) ваше разумевање да је тренутна верзија Polkaswap-а алфа верзија: није у потпуности тестирана и неке функције можда неће радити како је дизајнирано; и 3) ваше разумевање и добровољно прихватање ризика повезаних са коришћењем Polkaswap-а, укључујући, али не ограничавајући се на, ризик од губитка токена. Немојте наставити без читања @:polkaswapFaqLink, @:memorandumLink, @:(privacyLink)!",
-    "polkaswapFaqLink": "<a class=\"link\" href=\"https:\/\/wiki.sora.org\/polkaswap\/polkaswap-faq\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:FAQ\">@:FAQ<\/a>",
+    "disclaimer": "{disclaimerPrefix} Ову веб страницу одржава заједница {Sora}. Пре него што наставите да користите ову веб страницу, прегледајте {polkaswapFaqLink} и документацију, која укључује детаљно објашњење о томе како {AppName} функционише, као и {memorandumLink} и {privacyLink}. Ови документи су кључни за безбедно и позитивно корисничко искуство. Коришћењем {AppName}-а, потврђујете да сте прочитали и разумели ове документе. Такође прихватате следеће: 1) своју искључиву одговорност за поштовање свих закона који се могу применити на вашу конкретну употребу {AppName}-а у вашој правној јурисдикцији; 2) ваше разумевање да је тренутна верзија {AppName}-а алфа верзија: није у потпуности тестирана и неке функције можда неће радити како је дизајнирано; и 3) ваше разумевање и добровољно прихватање ризика повезаних са коришћењем {AppName}-а, укључујући, али не ограничавајући се на, ризик од губитка токена. Немојте наставити без читања {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "poweredBy": "Подржава oд",
     "confirmTransactionText": "Потврдите трансакцију у {direction}",
     "retryText": "Покушајте поново",
     "networkFeeText": "Мрежна накнада",
-    "networkFeeTooltipText": "Мрежна накнада се користи да би се обезбедио раст и стабилне перформансе @:soraText система.",
-    "ethNetworkFeeTooltipText": "Имајте на уму да су накнаде за Ethereum мрежу приказане на Polkaswap само грубе процене, можете видети тачан износ накнаде у свом повезаном Ethereum новчанику пре него што потврдите трансакцију.",
+    "networkFeeTooltipText": "Мрежна накнада се користи да би се обезбедио раст и стабилне перформансе {Sora} система.",
+    "ethNetworkFeeTooltipText": "Имајте на уму да су накнаде за {Ethereum} мрежу приказане на {AppName} само грубе процене, можете видети тачан износ накнаде у свом повезаном {Ethereum} новчанику пре него што потврдите трансакцију.",
     "marketText": "Тржиште",
     "marketAlgorithmText": "Тржишни алгоритам",
     "firstPerSecond": "{first} по {second}",
@@ -341,8 +333,12 @@
         "AddLiquidityId": "Додати ликвидност",
         "RemoveLiquidity": "Уклони ликвидност",
         "PageNotFound": "Страница није пронађена",
-        "Tokens": "Токени",
-        "Rewards": "Награде"
+        "Rewards": "Награде",
+        "Explore\/Tokens": "Токени",
+        "Explore\/Pools": "Базени",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming",
+        "Staking": "Ulaganje"
     },
     "mainMenu": {
         "Swap": "Замените",
@@ -355,8 +351,9 @@
         "Stats": "Статистикa",
         "Support": "Подршка",
         "CreatePair": "Направите пар",
-        "Tokens": "Токени",
-        "StakingContainer": "Стeкинг"
+        "StakingContainer": "Стeкинг",
+        "Explore\/Container": "Истражите",
+        "SoraCard": "{Sora} картица"
     },
     "social": {
         "twitter": "Twitter",
@@ -364,45 +361,43 @@
         "medium": "Medium",
         "reddit": "Reddit",
         "github": "GitHub",
-        "wiki": "@:soraText Wiki"
+        "wiki": "{Sora} Wiki"
     },
     "footerMenu": {
         "faucet": "Faucet",
         "github": "GitHub",
-        "sorawiki": "@:soraText Wiki",
-        "memorandum": "Polkaswap Меморандум и Услови коришћења услуге",
+        "sorawiki": "{Sora} Wiki",
+        "memorandum": "{AppName} Меморандум и Услови коришћења услуге",
         "privacy": "Politika privatnosti",
         "info": "Информација & Заједница"
     },
     "helpDialog": {
         "title": "Помоћ",
         "termsOfService": "Услови коришћења",
-        "privacyPolicy": "Politika privatnosti",
-        "termsOfServiceLink": "https:\/\/wiki.sora.org\/polkaswap\/terms",
-        "privacyPolicyLink": "https:\/\/wiki.sora.org\/polkaswap\/privacy",
-        "appVersion": "@:appName верзија",
+        "privacyPolicy": "Правила о приватности",
+        "appVersion": "{AppName} верзија",
         "contactUs": "Контактирајте нас"
     },
     "aboutNetworkDialog": {
         "title": "О",
         "learnMore": "@:learnMoreText",
         "network": {
-            "title": "Шта је @:soraText?",
-            "description": "Polkaswap је изграђен на @:soraText мрежи, а @:soraText токен (XOR) се користи за обезбеђивање гаса\/накнаде и ликвидности на Polkaswap. @:soraText мрежа омогућава смањене накнаде, брже трансакције и једноставнију финализацију консензуса и фокусирана је на испоруку интероперабилности у другим блокчеин екосистемима као што је @:(ethereumText)."
+            "title": "Шта је {Sora}?",
+            "description": "{AppName} је изграђен на {Sora} мрежи, а {Sora} токен (XOR) се користи за обезбеђивање гаса\/накнаде и ликвидности на {AppName}. {Sora} мрежа омогућава смањене накнаде, брже трансакције и једноставнију финализацију консензуса и фокусирана је на испоруку интероперабилности у другим блокчеин екосистемима као што је {Ethereum}."
         },
         "polkadot": {
-            "title": "Шта је polkadot{.js}?",
-            "description": "Polkadot{.js} екстензија је проширење прегледача доступно за Firefox и Chrome намењено управљању рачунима за ланце засноване на Substrate, укључујући @:soraText, Polkadot и Kusama. Можете да додајете, увозите и извозите рачуне и потписујете трансакције или екстринзике које сте покренули са веб странице које сте овластили."
+            "title": "Шта је {PolkadotJs}?",
+            "description": "{PolkadotJs} екстензија је проширење прегледача доступно за Firefox и Chrome намењено управљању рачунима за ланце засноване на Substrate, укључујући {Sora}, {Polkadot} и {Kusama}. Можете да додајете, увозите и извозите рачуне и потписујете трансакције или екстринзике које сте покренули са веб странице које сте овластили."
         }
     },
     "node": {
         "errors": {
-            "connection": "Дошло је до грешке при повезивању са нодом\n {address}\n",
-            "network": "Нод\n {address}\n је из друге мреже\n",
-            "existing": "Овај нод је већ додат: '{теитл}'\n"
+            "connection": "Дошло је до грешке при повезивању са нодом\n{address}\n",
+            "network": "Нод\n{address}\n је из друге мреже\n",
+            "existing": "Овај чвор је већ додат: {title}\n"
         },
         "messages": {
-            "connected": "Веза је успостављена са нодом\n {address}\n",
+            "connected": "Веза је успостављена са нодом\n{address}\n",
             "selectNode": "Изаберите нод за повезивање са листе нодова"
         },
         "warnings": {
@@ -410,10 +405,10 @@
         }
     },
     "selectNodeDialog": {
-        "title": "@:soraText Избор мрежног нода",
+        "title": "{Sora} Избор мрежног нода",
         "addNode": "Додајте прилагођени нод",
         "customNode": "Прилагођени нод",
-        "howToSetupOwnNode": "Како да подесите свој @:soraText нод",
+        "howToSetupOwnNode": "Како да подесите свој {Sora} нод",
         "select": "Изаберите",
         "connected": "Повезанo",
         "selectNodeForEnvironment": "Изаберите нод за {environment}:",
@@ -441,62 +436,62 @@
         "title": "Страница није пронађена",
         "body": "404"
     },
-    "metamask": "MetaMask",
+    "metamask": "{Metamask}",
     "sora": {
-        "Dev": "@:soraText Девнет",
-        "Test": "@:soraText Тестнет",
-        "Prod": "@:soraText Меиннет",
-        "Stage": "@:soraText Тестнет"
+        "Dev": "{Sora} Девнет",
+        "Test": "{Sora} Тестнет",
+        "Prod": "{Sora} Меиннет",
+        "Stage": "{Sora} Тестнет"
     },
     "evm": {
-        "main": "Ethereum Mainnet",
-        "ropsten": "Ethereum Ropsten",
-        "rinkeby": "Ethereum Rinkeby",
-        "kovan": "Ethereum Kovan",
-        "goerli": "Ethereum Goerli",
+        "main": "{Ethereum} Mainnet",
+        "ropsten": "{Ethereum} Ropsten",
+        "rinkeby": "{Ethereum} Rinkeby",
+        "kovan": "{Ethereum} Kovan",
+        "goerli": "{Ethereum} Goerli",
         "private": "Волта Тестнет",
         "EWC": "Energy Wеб Čejn"
     },
     "providers": {
-        "metamask": "@:метамаск"
+        "metamask": "{Metamask}"
     },
     "about": {
         "title": "DEX за интероперабилну будућност.",
-        "description": "Унакрсна размена средстава, једноставно креирање и листање нових средстава, и најлакше размене икада. Интероперабилна будућност Polkadot је ту и ми смо на челу!",
+        "description": "Унакрсна размена средстава, једноставно креирање и листање нових средстава, и најлакше размене икада. Интероперабилна будућност {Polkadot} је ту и ми смо на челу!",
         "trading": {
             "title": "Брже трговање",
-            "first": "Polkaswap је унакрсни AMM DEX протокол за размену токена заснован на Polkadot и Kusama релејним ланцима, Polkadot и Kusama paračejn и blokčejn директно повезаних преко мостова.",
-            "second": "Polkaswap уклања поуздане посреднике и пружа прилику за брже трговање",
-            "third": "Полкасвап је пројекат заједнице и програмери сарађују на отвореном коду користећи"
+            "first": "{AppName} је унакрсни AMM DEX протокол за размену токена заснован на {Polkadot} и {Kusama} релејним ланцима, {Polkadot} и {Kusama} paračejn и blokčejn директно повезаних преко мостова.",
+            "second": "{AppName} уклања поуздане посреднике и пружа прилику за брже трговање",
+            "third": "{AppName} је пројекат заједнице и програмери сарађују на отвореном коду користећи"
         },
         "liquidity": {
             "title": "Безгранична ликвидност",
-            "first": "Polkaswap комбинује више извора ликвидности под заједничким алгоритмом агрегације ликвидности, који функционише у потпуности на ланцу, на неповерљив и децентрализован начин.",
+            "first": "{AppName} комбинује више извора ликвидности под заједничким алгоритмом агрегације ликвидности, који функционише у потпуности на ланцу, на неповерљив и децентрализован начин.",
             "second": "Када трговци позову функцију размене, алгоритам агрегације ликвидности ће испунити рачуне користећи најбоље понуде у свим изворима ликвидности. Извори ликвидности могу бити други DEX, књиге рачуна или други извори вођени API.",
-            "third": "Пошто је Polkaswap пројекат отвореног кода, свако може додати више извора ликвидности давањем доприноса Polkaswap бази кодова."
+            "third": "Пошто је {AppName} пројекат отвореног кода, свако може додати више извора ликвидности давањем доприноса {AppName} бази кодова."
         },
         "swap": {
             "title": "Замените било који токен",
-            "first": "Идите ван граница тренутних DEX додавањем токена из Polkadot екосистема, као и других blockchain-ova.",
-            "second": "Kreirajte, objavite i trgujte sopstvenim tokenima na SORA mreži.",
-            "third": "Наша основна инфраструктура користи Parity Substrate, који је скалабилнији од Ethereum и не користи скупо рударење за консензус."
+            "first": "Идите ван граница тренутних DEX додавањем токена из {Polkadot} екосистема, као и других blockchain-ova.",
+            "second": "Kreirajte, objavite i trgujte sopstvenim tokenima na {Sora} mreži.",
+            "third": "Наша основна инфраструктура користи Parity Substrate, који је скалабилнији од {Ethereum} и не користи скупо рударење за консензус."
         },
         "pswap": {
             "title": "PSWAP токени",
-            "first": "PSWAP је креирала управа заједнице гласањем о његовом ослобађању. То је услужни и управљачки токен који се користи за награђивање добављача ликвидности на Polkaswap. За разлику од већине других токена за награду, PSWAP се сагорева са трансакцијама и временом се смањује понуда.",
-            "second": "Накнада од {percent}% за сваку замену на Polkaswap DEX се користи за откуп PSWAP токена, који се затим спаљују. У почетку, 90% спаљених PSWAP токена се враћа на расподелу добављачима ликвидности, али временом ће се овај проценат смањити на 35% након 4 године."
+            "first": "PSWAP је креирала управа заједнице гласањем о његовом ослобађању. То је услужни и управљачки токен који се користи за награђивање добављача ликвидности на {AppName}. За разлику од већине других токена за награду, PSWAP се сагорева са трансакцијама и временом се смањује понуда.",
+            "second": "Накнада од {percent}% за сваку замену на {AppName} DEX се користи за откуп PSWAP токена, који се затим спаљују. У почетку, 90% спаљених PSWAP токена се враћа на расподелу добављачима ликвидности, али временом ће се овај проценат смањити на 35% након 4 године."
         },
         "links": {
             "first": {
-                "title": "Постаните валидатор SORA",
-                "desc": "Обезбедите будућност SORA мреже и децентрализованих апликација као што је Polkaswap, и успут зарадите награде тако што ћете постати SORA валидатор."
+                "title": "Постаните валидатор {Sora}",
+                "desc": "Обезбедите будућност {Sora} мреже и децентрализованих апликација као што је {AppName}, и успут зарадите награде тако што ћете постати {Sora} валидатор."
             },
             "second": {
-                "title": "Повежите ланац на SORA",
-                "desc": "Развијте децентрализовану светску економију повезивањем више ланаца са SORA и Polkaswap користећи HASHI мост протокол."
+                "title": "Повежите ланац на {Sora}",
+                "desc": "Развијте децентрализовану светску економију повезивањем више ланаца са {Sora} и {AppName} користећи {Hashi} мост протокол."
             }
         },
-        "network": "Polkaswap је изграђен на SORA мрежи, фокусирајући се на интероперабилност за повезивање остатка крипто екосистема са polkadot-om."
+        "network": "{AppName} је изграђен на {Sora} мрежи, фокусирајући се на интероперабилност за повезивање остатка крипто екосистема са {Polkadot}."
     },
     "exchange": {
         "Swap": "Замените",
@@ -506,8 +501,8 @@
         "price": "Цена",
         "transactionSubmitted": "Трансакција је послата",
         "transactionMessage": "{firstToken} и {secondToken}",
-        "confirm": "Потврдите",
-        "ok": "У реду"
+        "ok": "У реду",
+        "confirm": "Потврдите"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -522,7 +517,6 @@
         "liquidityProviderFeeTooltip": "Део сваке трговине ({liquidityProviderFee}%) иде добављачима ликвидности као протоколарни подстицај.",
         "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Недовољна количина {tokenSymbol}",
         "insufficientLiquidity": "Недовољна ликвидност",
@@ -548,8 +542,8 @@
         "strategicBonusApy": "Стратешки бонус APY"
     },
     "bridge": {
-        "title": "Мост HASHI",
-        "info": "Претворите токене између @:soraText и @:ethereumText мрежа.",
+        "title": "Мост {Hashi}",
+        "info": "Претворите токене између {Sora} и {Ethereum} мрежа.",
         "balance": "Салдо",
         "connectWallet": "@:connectWalletText",
         "connected": "@:connectedText",
@@ -557,34 +551,34 @@
         "changeNetwork": "@:changeNetworkText",
         "next": "Следећи",
         "connectWallets": "Повежите новчанике да бисте видели одговарајућу историју трансакција.",
-        "soraNetworkFee": "@:soraText мрежна накнада",
-        "ethereumNetworkFee": "@:ethereumText мрежна накнада",
-        "tooltipValue": "@:comingSoonText",
+        "soraNetworkFee": "{Sora} мрежна накнада",
+        "ethereumNetworkFee": "{Ethereum} мрежна накнада",
         "total": "Укупно",
         "viewHistory": "Погледајте историју трансакција",
         "transactionSubmitted": "Трансакција је послата",
         "transactionMessage": "{assetA} за {assetB}",
         "notRegisteredAsset": "Средство {assetSymbol} није регистровано",
         "selectNetwork": "Изаберите мрежу",
-        "networkInfo": "Бриџ @:soraText мрежа са:",
-        "ethereum": "@:ethereumText",
+        "networkInfo": "Бриџ {Sora} мрежа са:",
+        "ethereum": "{Ethereum}",
         "energy": "@:evm.EWC",
         "copy": "Копирајте мрежну адресу",
-        "soraAddress": "@:soraText adresa",
-        "ethereumAddress": "@:ethereumText adresa"
+        "soraAddress": "{Sora} adresa",
+        "ethereumAddress": "{Ethereum} adresa",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Изаберите токен",
         "search": {
             "title": "Токени",
             "placeholder": "Филтрирајте према ИД-у средства, имену или симболу ознаке",
-            "networkLabelSora": "@:soraText мрежни токени",
-            "networkLabelEthereum": "@:ethereumText мрежни токени огледала",
+            "networkLabelSora": "{Sora} мрежни токени",
+            "networkLabelEthereum": "{Ethereum} мрежни токени огледала",
             "emptyListMessage": "Нема резултата"
         },
         "customAsset": {
             "title": "Обичај",
-            "customInfo": "Важно! Прилагођени токени морају бити регистровани у @:(soraText).",
+            "customInfo": "Важно! Прилагођени токени морају бити регистровани у {Sora}.",
             "registerToken": "Registrujte token",
             "addressPlaceholder": "ИД средства",
             "symbolPlaceholder": "Симбол токена",
@@ -596,14 +590,12 @@
         "confirmTransaction": "Потврдите трансакцију",
         "insufficientBalance": "@:insufficientBalanceText",
         "changeNetwork": "@:changeNetworkText",
-        "metamask": "@:metamask",
-        "sora": "@:soraText",
         "confirm": "@:confirmTransactionText",
         "buttonConfirm": "@:confirmText"
     },
     "bridgeTransaction": {
         "details": "{from} за {to}",
-        "for": "за",
+        "for": " за ",
         "steps": {
             "step": "{step} од 2",
             "step1": "1.",
@@ -625,7 +617,7 @@
             "done": "Комплетно",
             "waitingForConfirmation": "Чека се потврда..."
         },
-        "viewInEtherscan": "Погледајте у Etherscan",
+        "viewInEtherscan": "Погледајте у {Etherscan}",
         "networkTitle": "{network} трансакција",
         "transactionHash": "Хеш трансакције",
         "networkInfo": {
@@ -636,20 +628,20 @@
             "total": "Укупно"
         },
         "successCopy": "Хеш трансакције се копира у међуспремник",
-        "ethereum": "@:ethereumText",
-        "sora": "@:soraText",
-        "pending": "<span class=\"network-title\"> {network} <\/span> трансакција на чекању...",
+        "ethereum": "{Ethereum}",
+        "sora": "{Sora}",
+        "pending": "{network} трансакција на чекању...",
         "retry": "@:retryText",
-        "metamask": "@:metamask",
+        "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Правите нову трансакцију",
         "changeNetwork": "@:changeNetworkText",
         "connectWallet": "@:connectWalletText",
-        "changeAccount": "@:changeAccountText у @:metamask",
-        "expectedAddress": "Очекивана адреса у @:metamask",
+        "changeAccount": "@:changeAccountText у {Metamask}",
+        "expectedAddress": "Очекивана адреса у {Metamask}",
         "title": "Бриџ трансакције",
-        "expectedMetaMaskAddress": "Очекивана адреса у MetaMask:",
-        "allowToken": "Дозволите @:appName да користи ваш {tokenSymbol}",
+        "expectedMetaMaskAddress": "Очекивана адреса у {Metamask}:",
+        "allowToken": "Дозволите {AppName} да користи ваш {tokenSymbol}",
         "approveToken": "Имаjте на уму да је потребно само једном одобрити токен. Ако ваш додатак има више захтева за одобрење токена, обавезно потврдите само последњи док одбацујете остале.",
         "blocksLeft": "Преостало је {count} блокова..."
     },
@@ -686,7 +678,7 @@
         "pricePool": "Цене и накнаде",
         "shareOfPool": "Удео у пулу",
         "firstPerSecond": "@:firstPerSecond",
-        "firstSecondPoolTokens": "{first} - {second} Пул",
+        "firstSecondPoolTokens": "{first}-{second} Пул",
         "connect": "Повежите новчаник",
         "supply": "Снабдевање",
         "yourPosition": "Ваша позиција",
@@ -703,7 +695,7 @@
     "confirmSupply": {
         "title": "Ваш удео у пулу ће бити",
         "outputDescription": "Излаз је процењен. Ако се цена промени више од {slippageTolerance}%, ваша трансакција ће бити враћена.",
-        "poolTokensBurned": "{first} - {second} Спаљени токени пула",
+        "poolTokensBurned": "{first}-{second} Спаљени токени пула",
         "price": "Цена"
     },
     "addLiquidity": {
@@ -724,13 +716,13 @@
         "outputMessage": "Излаз је процењен. Ако се цена промени више од {slippageTolerance}%, ваша трансакција ће бити враћена.",
         "confirmTitle": "Добићете",
         "shareOfPool": "Удео у пулу након трансакције",
-        "locked": "{percent} вашег pula је у улози"
+        "locked": "{percent} вашег pula је у {lock}"
     },
     "dexSettings": {
         "title": "Подешавања",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
-            "main": "- могућност избора између примарног тржишта (TBC), секундарног тржишта (XYK) или комбинованог паметног алгоритма за гарантовано најбољу цену за било коју трансакцију."
+            "main": " - могућност избора између примарног тржишта (TBC), секундарног тржишта (XYK) или комбинованог паметног алгоритма за гарантовано најбољу цену за било коју трансакцију."
         },
         "slippageTolerance": "ТОЛЕРАНЦИЈА КЛИЗАЊА",
         "slippageToleranceHint": "Ваша трансакција ће се вратити ако се цена неповољно промени за више од овог процента.",
@@ -747,9 +739,9 @@
         "port": "ПОРТ",
         "min": "МИН",
         "marketAlgorithms": {
-            "SMART": "<span class=\"algorithm\"> SMART <\/span> усмеравање ликвидности обезбеђује најбољу цену за било коју трансакцију комбиновањем само најбољих опција цена са свих доступних тржишта. Када је доступна, крива везивања токена ( <span class=\"algorithm\"> TBC <\/span> ) ће се користити за ликвидност све док је цена средсвта приступачнија него из других извора, на основу чега <span class=\"algorithm\"> XYK <\/span> pool се користи.",
-            "TBC": "<span class=\"algorithm\"> TBC <\/span> — купујете само са криве везивања токена (примарно тржиште). Постоји могућност да цена може постати неповољнија у поређењу са <span class=\"algorithm\"> XYK <\/span> пулом (секундарно тржиште), али вредност добијена од стечених награда може се временом показати много повољнијом .",
-            "XYK": "<span class=\"algorithm\"> XYK <\/span> — купујете само из XYK пула (секундарно тржиште). Традиционална XYK замена пула."
+            "SMART": "{smartAlgorithm} усмеравање ликвидности обезбеђује најбољу цену за било коју трансакцију комбиновањем само најбољих опција цена са свих доступних тржишта. Када је доступна, крива везивања токена ({tbcAlgorithm}) ће се користити за ликвидност све док је цена средсвта приступачнија него из других извора, на основу чега {xycAlgorithm} пул се користи.",
+            "TBC": "{tbcAlgorithm} — купујете само са криве везивања токена (примарно тржиште). Постоји могућност да цена може постати неповољнија у поређењу са {xycAlgorithm} пулом (секундарно тржиште), али вредност добијена од стечених награда може се временом показати много повољнијом .",
+            "XYK": "{xycAlgorithm} — купујете само из XYK пула (секундарно тржиште). Традиционална XYK замена пула."
         },
         "charts": "Цхартс",
         "сhartsDescription": "Погледајте графиконе за цене токена"
@@ -763,7 +755,6 @@
         "changeAccount": "@:changeAccountText",
         "connected": "@:connectedText",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "andText": "и",
         "claiming": {
             "pending": "Prisvajanje...",
@@ -775,21 +766,21 @@
             "failed": "{order} од {total} трансакција није успело. @:retryText"
         },
         "signing": {
-            "extension": "polkadot{.js} проширење pretraživača",
-            "accounts": "ваши @:soraText и @:ethereumText рачуни респективно"
+            "extension": "{PolkadotJs} проширење pretraživača",
+            "accounts": "ваши {Sora} и {Ethereum} рачуни респективно"
         },
         "hint": {
-            "connectExternalAccount": "Повежите рачун @:ethereumText да бисте проверили доступне PSWAP и VAL награде.",
-            "connectAccounts": "Да бисте преузели своје PSWAP и VAL награде, потребно је да повежете оба рачуна @:soraText и @:(ethereumText).",
-            "connectAnotherAccount": "Повежите други рачун @:ethereumText да бисте проверили да ли постоје доступне PSWAP и VAL награде.",
-            "howToClaimRewards": "Да бисте преузели своје {symbols} награде, потребно је да потпишете {count} {transactions} у {destination} . Награде ће бити депоноване на ваш @:soraText рачун."
+            "connectExternalAccount": "Повежите рачун {Ethereum} да бисте проверили доступне PSWAP и VAL награде.",
+            "connectAccounts": "Да бисте преузели своје PSWAP и VAL награде, потребно је да повежете оба рачуна {Sora} и {Ethereum}.",
+            "connectAnotherAccount": "Повежите други рачун {Ethereum} да бисте проверили да ли постоје доступне PSWAP и VAL награде.",
+            "howToClaimRewards": "Да бисте преузели своје {symbols} награде, потребно је да потпишете {count} {transactions} у {destination} . Награде ће бити депоноване на ваш {Sora} рачун."
         },
         "action": {
             "connectWallet": "@:connectWalletText",
-            "connectExternalWallet": "Повежите @:ethereumText рачун",
+            "connectExternalWallet": "Повежите {Ethereum} рачун",
             "signAndClaim": "Потпишите и затражите",
-            "pendingInternal": "@:soraText трансакција на чекању...",
-            "pendingExternal": "@:ethereumText трансакција на чекању...",
+            "pendingInternal": "{Sora} трансакција на чекању...",
+            "pendingExternal": "{Ethereum} трансакција на чекању...",
             "retry": "@:retryText",
             "checkRewards": "Proveri",
             "insufficientBalance": "@:insufficientBalanceText"
@@ -799,29 +790,28 @@
         },
         "events": {
             "XorErc20": "XOR ERC-20",
-            "SoraFarmHarvest": "@:(soraText).farm харвест",
+            "SoraFarmHarvest": "{Sora}.farm харвест",
             "NtfAirdrop": "NFT Airdrop",
             "LiquidityProvision": "Накнаде добијене давањем ликвидности",
             "BuyOnBondingCurve": "купује од TBC",
-            "NftAirdrop": "NFT Airdrop",
             "MarketMakerVolume": "Kreiranje tržišta",
             "LiquidityProvisionFarming": "Farming"
         },
-        "vested": "Stečeno",
+        "vested": "stečeno",
         "forText": "за",
         "totalVested": "Укупне награде",
         "claimableAmountDoneVesting": "Награде које се могу потраживати",
         "groups": {
             "strategic": "Стратешке награде",
-            "external": "Награде за повезани Ethereum рачун",
+            "external": "Награде за повезани {Ethereum} рачун",
             "crowdloan": "Kraudloun nagrade"
         },
         "Rewards": "Награде",
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "@:ethereumText provajder",
-        "metamask": "@:metamask",
+        "default": "{Ethereum} provajder",
+        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name} екстензија је заузета, molimo proverite",
             "extensionLogin": "Пријавите се на своју екстензију {name}",
@@ -833,15 +823,11 @@
         "title": "Језик"
     },
     "tokens": {
-        "title": "Наведени токени",
         "symbol": "Симбол",
-        "name": "Име",
         "assetId": "ИД средства"
     },
-    "memorandum": "Polkaswap Меморандум и Услови коришћења услуге",
-    "memorandumLink": "<a href=\"@:helpDialog.termsOfServiceLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:memorandum\"> @:memorandum <\/a>",
-    "privacyLink": "<a href=\"@:helpDialog.privacyPolicyLink\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\" title=\"@:helpDialog.privacyPolicy\"> @:helpDialog.privacyPolicy <\/a>",
-    "FAQ": "Polkaswap FAQ",
+    "memorandum": "{AppName} Меморандум и Услови коришћења услуге",
+    "FAQ": "{AppName} FAQ",
     "connectedAccount": "Повезани рачун",
     "selectNodeConnected": "Повезано са: {chain}",
     "moonpayText": "MoonPay",
@@ -850,15 +836,15 @@
         "notifications": {
             "success": {
                 "title": "Купљени токени",
-                "text": "Kupovina tokena je završena. Transakcija na HASHI mostu počeće automatski čim tokeni budu primljeni na povezani Ethereum nalog. Bezbedno je zatvoriti ovaj prozor i nastaviti da koristite Polkaswap. Biće obaveštenje o transakciji na mosta kada budete spremni."
+                "text": "Kupovina tokena je završena. Transakcija na {Hashi} mostu počeće automatski čim tokeni budu primljeni na povezani {Ethereum} nalog. Bezbedno je zatvoriti ovaj prozor i nastaviti da koristite {AppName}. Biće obaveštenje o transakciji na mosta kada budete spremni."
             },
             "supportError": {
                 "title": "Токен није подржан",
-                "text": "Нажалост, токен купљен преко @:moonpayText још увек није подржан од стране HASHI мостa у Polkaswap. Обично само подржани токени треба да буду доступни за куповину преко MoonPay у Polkaswap, стога је негде нешто пошло по злу. Не устручавајте се да обавестите заједницу о овом случају у <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"@:appName\"> Polkaswap Телеграм група <\/a> ."
+                "text": "Нажалост, токен купљен преко @:moonpayText још увек није подржан од стране {Hashi} мостa у {AppName}. Обично само подржани токени треба да буду доступни за куповину преко MoonPay у {AppName}, стога је негде нешто пошло по злу. Не устручавајте се да обавестите заједницу о овом случају у <a class=\"link\" href=\"https:\/\/t.me\/polkaswap\" target=\"_blank\" rel=\"nofollow noopener\" title=\"{AppName}\"> {AppName} Телеграм група <\/a> ."
             },
             "feeError": {
                 "title": "Нема довољно ETH за мост ткс",
-                "text": "Нажалост, transakcija na HASHI mostu није успела јер није било довољно ЕТХа за плаћање накнада за трансакциону мрежу Ethereum. Додајте још ЕТХ и покушајте поново."
+                "text": "Нажалост, transakcija na {Hashi} mostu није успела јер није било довољно ЕТХа за плаћање накнада за трансакциону мрежу {Ethereum}. Додајте још ЕТХ и покушајте поново."
             },
             "transactionError": {
                 "title": "Трансакција није успела",
@@ -866,11 +852,11 @@
             },
             "amountError": {
                 "title": "Недовољно balans",
-                "text": "Нажалост, трансакција на HASHI мосту није успела јер нема довољно токена за трансакцију. Проверите стање на Ethereum рачуну и покушајте поново."
+                "text": "Нажалост, трансакција на {Hashi} мосту није успела јер нема довољно токена за трансакцију. Проверите стање на {Ethereum} рачуну и покушајте поново."
             },
             "accountAddressError": {
-                "title": "Погрешан Ethereum рачун",
-                "text": "Нажалост, трансакција на HASHI мосту није успела јер адреса примаоца токена у рачуну @:moonpayText не одговара вашој тренутној адреси Ethereum рачуна. Пребаците Ethereum рачун у екстензију и покушајте поново."
+                "title": "Погрешан {Ethereum} рачун",
+                "text": "Нажалост, трансакција на {Hashi} мосту није успела јер адреса примаоца токена у рачуну @:moonpayText не одговара вашој тренутној адреси {Ethereum} рачуна. Пребаците {Ethereum} рачун у екстензију и покушајте поново."
             }
         },
         "buttons": {
@@ -913,21 +899,20 @@
     "confirmNextTxFailure": {
         "header": "Пажња",
         "info": "Ваше XOR стање ће бити мање од {fee} XOR након ове трансакције. Нећете моћи да платите мрежну накнаду за другу трансакцију.",
-        "payoff": "Морали бисте да користите мост да добијете XOR са других мрежа, да добијете XOR са другог SORA рачуна или да замените било који други токен који је већ на вашем рачуну у XOR.",
+        "payoff": "Морали бисте да користите мост да добијете XOR са других мрежа, да добијете XOR са другог {Sora} рачуна или да замените било који други токен који је већ на вашем рачуну у XOR.",
         "button": "Да, разумем ризик"
     },
     "blockNumberText": "Број блока",
     "referralProgram": {
         "title": "Програм препорука",
-        "connectAccount": "Да бисте позвали кориснике потребно је да повежете свој SORA рачун.",
+        "connectAccount": "Да бисте позвали кориснике потребно је да повежете свој {Sora} рачун.",
         "bondedXOR": "XOR Vezan",
         "referralsNumber": "{number} препоруке",
         "startInviting": "Vežite XOR да бисте упутили друге",
-        "preview": "Позовите нове кориснике и добијте 10% од њихових накнада за трансакције. <br \/> За почетак, повежите било коју количину XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Сазнајте више <\/a>",
+        "preview": "Позовите нове кориснике и добијте 10% од њихових накнада за трансакције. <br\/> За почетак, повежите било коју количину XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Сазнајте више <\/a>",
         "deposit": "Депозит",
         "balance": "Салдо",
         "networkFee": "@:networkFeeText",
-        "networkFeeTooltip": "@:networkFeeTooltipText",
         "insufficientBalance": "@:insuficienteBalanceText",
         "insufficientBondedBalance": "Недовољно везано стање",
         "action": {
@@ -946,16 +931,16 @@
         "bondTitle": "Veži XOR",
         "unbondTitle": "Razveži XOR",
         "confirm": {
-            "text": "Потврдите",
             "bond": "Потврдите vezivanje",
             "unbond": "Потврдите odvezivanje",
-            "inviteTitle": "Позвани сте у Polkaswap",
+            "inviteTitle": "Позвани сте у {AppName}",
             "inviteDescription": "За сваку трансакцију, 10% накнаде ће ићи вашем referentu, без икаквих додатних трошкова за вас.",
             "signInvitation": "Одобрите",
             "freeOfCharge": "Ова акција је бесплатна",
             "hasReferrerTitle": "Већ сте подесили свог referenta",
             "hasReferrerDescription": "Нажалост, можете поставити само једну",
-            "ok": "У реду"
+            "ok": "У реду",
+            "text": "Потврдите"
         },
         "referrer": {
             "title": "Додајте свог referenta",
@@ -964,7 +949,7 @@
             "label": "Линк за позив или код",
             "approve": "Одобрите",
             "approved": "Одобрено",
-            "description": "Можете бити упућени на Polkaswap, <br\/> укуцајте линк или код реферера",
+            "description": "Можете бити упућени на {AppName}, <br\/> укуцајте линк или код реферера",
             "referredBy": "Препоручио вас је {referrer}",
             "info": "Када платите накнаду за трансакцију, <br\/> 10% ће отићи вашем referentu",
             "referredLablel": "Препоручена адреса"
@@ -972,7 +957,6 @@
         "insufficientBondedAmount": "Da biste pozvali više preporuka, najmanje povežite {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Детаљи трансакције",
-    "createTokenTextNFT": "Креирајте НФТ",
     "code": {
         "download": "Преузмите QR код",
         "upload": "Skeniraj QR",
@@ -985,13 +969,13 @@
         "allowanceRequest": "Притисните „Дозволи“ приступ камери"
     },
     "bridgeTransferNotification": {
-        "addToken": "Додајте {symbol} у @:metamask",
+        "addToken": "Додајте {symbol} у {Metamask}",
         "title": "Transakcija na mostu uspešna"
     },
     "mobilePopup": {
-        "sideMenu": "Преузмите SORA novčanik",
-        "header": "Преузмите СОРА новчаник са <span class=\"popup-info__headline--highlight\"> Полкасвап <\/span> karakteristikama",
-        "info": "Замените токене са различитих мрежа - СОРА, Етхереум, Полкадот, Кусама. Обезбедите фонд ликвидности и зарадите % од провизија."
+        "sideMenu": "Преузмите {Sora} novčanik",
+        "header": "Преузмите {Sora} новчаник са {polkaswapHighlight}",
+        "info": "Замените токене са различитих мрежа - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Обезбедите фонд ликвидности и зарадите % од провизија."
     },
     "releaseNotesText": "Напомене о издању",
     "copiedText": "Копирано!",
@@ -1037,39 +1021,39 @@
     "historyErrorMessages": {
         "generalError": "Nešto je pošlo naopako",
         "balances": {
-            "LiquidityRestrictions": "Ограничења ликвидности рачуна спречавају повлачење"
+            "liquidityrestrictions": "Ограничења ликвидности рачуна спречавају повлачење"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Изворни баланс није довољно велик",
-            "TargetBalanceIsNotLargeEnough": "Saldo odredišta nije dovoljno velik",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Obezbeđeni iznosi su previše raznovrsni",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Износи су ван потребних граница",
-            "UnableToDepositXorLessThanMinimum": "XOR мањи од минималне вредности (0,007)",
-            "ZeroValueInAmountParameter": "Параметар износа има нулту вредност"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Изворни баланс није довољно велик",
+            "targetbalanceisnotlargeenough": "Saldo odredišta nije dovoljno velik",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Obezbeđeni iznosi su previše raznovrsni",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Износи су ван потребних граница",
+            "unabletodepositxorlessthanminimum": "XOR мањи од минималне вредности (0,007)",
+            "zerovalueinamountparameter": "Параметар износа има нулту вредност"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "Pool пар већ постоји",
-            "SlippageLimitExceeded": "Толеранција клизања није достигла одговарајуће границе"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Pool пар већ постоји",
+            "slippagelimitexceeded": "Толеранција клизања није достигла одговарајуће границе"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Налог већ има упућивача",
-            "ReferrerInsufficientBalance": "Preporučilac nema dovoljno rezerve na stanju"
+            "alreadyhasreferrer": "Налог већ има упућивача",
+            "referrerinsufficientbalance": "Preporučilac nema dovoljno rezerve na stanju"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Програм награђивања је већ завршен",
-            "CantCalculateReward": "Обрачун награде није успео",
-            "NoRewardsForAsset": "Не постоје награде за ово средство"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Програм награђивања је већ завршен",
+            "cantcalculatereward": "Обрачун награде није успео",
+            "norewardsforasset": "Не постоје награде за ово средство"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "Изабрани извор ликвидности није дозвољен"
+        "liquidityproxy": {
+            "forbiddenfilter": "Изабрани извор ликвидности није дозвољен"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Недовољно средстава",
-            "InsufficientLPTokens": "Недовољни токени за обезбеђивање ликвидности",
-            "PoolDoesNotHaveRewards": "Пул нема награде"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Недовољно средстава",
+            "insufficientlptokens": "Недовољни токени за обезбеђивање ликвидности",
+            "pooldoesnothaverewards": "Пул нема награде"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Дошло је до грешке при израчунавању цене"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Дошло је до грешке при израчунавању цене"
         }
     },
     "receivedText": "Примљено",
@@ -1078,7 +1062,7 @@
         "info": "Слаћемо вам само релевантна ажурирања о вашем новчанику, на пример: промене стања средстава",
         "button": "Омогући обавештења",
         "agree": "Да, разумем",
-        "notificationBlocked": "Да бисте примали обавештења о {appName}, дозволите обавештења у основним подешавањима прегледача",
+        "notificationBlocked": "Да бисте примали обавештења о {AppName}, дозволите обавештења у основним подешавањима прегледача",
         "pointer": "Притисните „Дозволи“ да бисте укључили обавештења"
     },
     "assetDeposit": "Стање средстава је депоновано",
@@ -1086,8 +1070,7 @@
     "ofText": "{first} од {second}",
     "filter": {
         "all": "Све",
-        "token": "Tokeni",
-        "nft": "NFT",
+        "token": "Валуте",
         "verifiedOnly": "Прикажи само верификована средства",
         "zeroBalance": "Сакриј 0 balans sredstava",
         "showAssets": "Прикажи средства",
@@ -1095,9 +1078,9 @@
     },
     "desktop": {
         "welcome": {
-            "header": "Добродошли у Полкасвап!",
+            "header": "Добродошли у {AppName}!",
             "headline": "Хајде да подесимо ваш налог",
-            "text": "Креирајте свој СОРА Нетворк налог или се пријавите на старе користећи мнемоничке фразе или .јсон импорт. Ово вам омогућава да безбедно потписујете трансакције и управљате имовином у СОРА мрежи.",
+            "text": "Креирајте свој {Sora} Нетворк налог или се пријавите на старе користећи мнемоничке фразе или .јсон импорт. Ово вам омогућава да безбедно потписујете трансакције и управљате имовином у {Sora} мрежи.",
             "createAccount": "Направи налог",
             "importAccount": "Увези налог"
         },
@@ -1147,5 +1130,18 @@
             "jsonFields": "ЈСОН датотека нема обавезна поља"
         }
     },
-    "hashiBridgeText": "HASHI most"
+    "hashiBridgeText": "{Hashi} most",
+    "disclaimerTitle": "Одрицање одговорности:",
+    "explore": {
+        "showOnlyMyPositions": "Prikaži samo moje pozicije"
+    },
+    "tooltips": {
+        "roi": "{ROI} označava povraćaj investicije. Obračunava se deljenjem dobiti ostvarene na investiciji po trošku te investicije u procentualno ekvivalentnom iznosu.",
+        "tvl": "{TVL} označava da je ukupna vrednost zaključana. Predstavlja simbole zakljuиane u bazenima u dolarskom ekvivalentu."
+    },
+    "createTokenText": "Креирајте",
+    "comingSoonText": "Долази ускоро",
+    "confirmText": "Потврдите",
+    "createTokenTextNFT": "Креирајте НФТ",
+    "doNotShowText": "Не показуј ми ово поново"
 }

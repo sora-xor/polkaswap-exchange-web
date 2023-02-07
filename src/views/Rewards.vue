@@ -1,6 +1,6 @@
 <template>
-  <div v-loading="parentLoading" class="rewards">
-    <div class="rewards-content" v-loading="!parentLoading && loading">
+  <div class="rewards">
+    <div class="rewards-content" v-loading="parentLoading || loading">
       <gradient-box class="rewards-block" :symbol="gradientSymbol">
         <div :class="['rewards-box', libraryTheme]">
           <tokens-row :assets="rewardTokens" />
@@ -157,15 +157,15 @@ export default class Rewards extends Mixins(
   @getter.rewards.externalRewardsSelected externalRewardsSelected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
 
-  @mutation.rewards.reset private reset!: VoidFunction;
+  @mutation.rewards.reset private reset!: FnWithoutArgs;
 
   @action.rewards.setSelectedRewards private setSelectedRewards!: (args: SelectedRewards) => Promise<void>;
   @action.rewards.getExternalRewards private getExternalRewards!: (address: string) => Promise<void>;
   @action.rewards.claimRewards private claimRewards!: (options: ClaimRewardsParams) => Promise<void>;
-  @action.rewards.subscribeOnRewards private subscribeOnRewards!: AsyncVoidFn;
-  @action.rewards.unsubscribeFromRewards private unsubscribeFromRewards!: AsyncVoidFn;
+  @action.rewards.subscribeOnRewards private subscribeOnRewards!: AsyncFnWithoutArgs;
+  @action.rewards.unsubscribeFromRewards private unsubscribeFromRewards!: AsyncFnWithoutArgs;
 
-  private unwatchEthereum!: VoidFunction;
+  private unwatchEthereum!: FnWithoutArgs;
 
   destroyed(): void {
     this.reset();
@@ -312,7 +312,7 @@ export default class Rewards extends Mixins(
   get feeInfo(): object {
     return {
       label: this.t('rewards.networkFee'),
-      labelTooltip: this.t('rewards.networkFeeTooltip'),
+      labelTooltip: this.t('networkFeeTooltipText'),
       value: this.formatCodecNumber(this.fee),
       assetSymbol: KnownSymbols.XOR,
     };
@@ -529,7 +529,7 @@ export default class Rewards extends Mixins(
     font-size: var(--s-font-size-mini);
     line-height: var(--s-line-height-big);
     margin-top: $inner-spacing-small;
-    padding: 0 $inner-spacing-mini / 2;
+    padding: 0 $inner-spacing-tiny;
   }
 
   &-fee {

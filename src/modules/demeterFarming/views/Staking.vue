@@ -7,17 +7,24 @@
     </s-card>
 
     <s-collapse class="demeter-staking-list" @change="updateActiveCollapseItems">
-      <s-collapse-item v-for="token of tokensData" :key="token.address" :name="token.address" class="staking-info">
+      <s-collapse-item
+        v-for="token in tokensData"
+        :key="token.asset.address"
+        :name="token.asset.address"
+        class="staking-info"
+      >
         <template #title>
-          <token-logo :token="token" size="medium" class="token-logo" />
+          <token-logo :token="token.asset" size="medium" class="token-logo" />
           <div>
-            <h3 class="staking-info-title">{{ token.symbol }}</h3>
-            <div class="s-flex staking-info-badges">
+            <h3 class="staking-info-title">{{ token.asset.symbol }}</h3>
+            <div
+              v-show="getStatusBadgeVisibility(token.asset.address, activeCollapseItems)"
+              class="s-flex staking-info-badges"
+            >
               <status-badge
-                v-for="item of token.items"
+                v-for="item in token.items"
                 :key="item.pool.rewardAsset"
-                :pool="item.pool"
-                :account-pool="item.accountPool"
+                v-bind="item"
                 @add="changePoolStake($event, true)"
                 class="staking-info-badge"
               />
@@ -26,10 +33,9 @@
         </template>
 
         <pool-card
-          v-for="item of token.items"
+          v-for="item in token.items"
           :key="item.pool.rewardAsset"
-          :pool="item.pool"
-          :account-pool="item.accountPool"
+          v-bind="item"
           @add="changePoolStake($event, true)"
           @remove="changePoolStake($event, false)"
           @claim="claimPoolRewards"
@@ -42,19 +48,21 @@
 
     <stake-dialog
       :visible.sync="showStakeDialog"
-      :pool="selectedPool"
-      :account-pool="selectedAccountPool"
       :is-adding="isAddingStake"
+      :parent-loading="parentLoading || loading"
+      v-bind="selectedDerivedPool"
       @add="handleStakeAction($event, deposit)"
       @remove="handleStakeAction($event, withdraw)"
     />
+
     <claim-dialog
       :visible.sync="showClaimDialog"
-      :pool="selectedPool"
-      :account-pool="selectedAccountPool"
+      :parent-loading="parentLoading || loading"
+      v-bind="selectedDerivedPool"
       @confirm="handleClaimRewards"
     />
-    <calculator-dialog :visible.sync="showCalculatorDialog" :pool="selectedPool" :account-pool="selectedAccountPool" />
+
+    <calculator-dialog :visible.sync="showCalculatorDialog" v-bind="selectedDerivedPool" />
   </div>
 </template>
 
@@ -71,9 +79,13 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
-import { getter } from '@/store/decorators';
-
 import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+
+type StakingItem = {
+  asset: Asset;
+  items: Array<DemeterPoolDerivedData>;
+};
 
 @Component({
   components: {
@@ -87,30 +99,36 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) {
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<Asset>;
-
-  // override PageMixin
-  isFarmingPage = false;
-
   activeCollapseItems: string[] = [];
 
   updateActiveCollapseItems(items: string[]) {
     this.activeCollapseItems = items;
   }
 
-  get tokensData(): object {
-    return Object.entries(this.pools).map(([address, pools]) => {
-      const asset = this.getAsset(address);
-      const symbol = asset?.symbol ?? this.t('unknownAssetText');
-      const items = this.getAvailablePools(pools);
+  get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {
+    if (!this.selectedPool) return null;
 
-      return {
+    return this.prepareDerivedPoolData(this.selectedPool, this.selectedAccountPool);
+  }
+
+  get tokensData(): StakingItem[] {
+    return Object.entries(this.pools).reduce<StakingItem[]>((buffer, [address, poolsMap]) => {
+      const asset = this.demeterAssetsData[address];
+
+      if (!asset) return buffer;
+
+      const derived = this.getDerivedPools(poolsMap?.[address]);
+      const items = derived.map((item) => this.prepareDerivedPoolData(item.pool, item.accountPool));
+
+      if (!items.length) return buffer;
+
+      buffer.push({
         asset,
-        symbol,
-        address,
         items,
-      };
-    });
+      });
+
+      return buffer;
+    }, []);
   }
 }
 </script>
@@ -123,7 +141,7 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
 
     .token-logo {
       margin-right: $inner-spacing-medium;
-      margin-top: $inner-spacing-mini / 2;
+      margin-top: $inner-spacing-tiny;
     }
   }
 }
@@ -148,6 +166,11 @@ $title-height: 42px;
 
 .staking-info-badges {
   flex-flow: wrap;
+  margin: -$inner-spacing-mini / 2;
+
+  & > * {
+    margin: $inner-spacing-mini / 2;
+  }
 }
 
 .staking-info {

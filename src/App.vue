@@ -13,9 +13,9 @@
       </app-menu>
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar">
-          <div v-if="blockNumber && !isAboutPage" class="block-number">
+          <div v-if="blockNumber && !isCurrentPageTooWide" class="block-number">
             <s-tooltip :content="t('blockNumberText')" placement="bottom" tabindex="-1">
-              <a class="block-number-link" :href="soraExplorerLink" target="_blank" rel="nofollow noopener">
+              <a class="block-number-link" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
                 <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
               </a>
             </s-tooltip>
@@ -23,7 +23,17 @@
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <div class="app-disclaimer-container">
-              <p class="app-disclaimer" v-html="t('disclaimer')" />
+              <p
+                class="app-disclaimer"
+                v-html="
+                  t('disclaimer', {
+                    disclaimerPrefix,
+                    polkaswapFaqLink,
+                    memorandumLink,
+                    privacyLink,
+                  })
+                "
+              />
             </div>
           </div>
           <footer class="app-footer">
@@ -45,6 +55,7 @@
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
+    <confirm-dialog v-if="isDesktop" />
   </s-design-system-provider>
 </template>
 
@@ -54,16 +65,17 @@ import { FPNumber, History, connection, HistoryItem } from '@sora-substrate/util
 import { components, mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
+import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
 import MobilePopup from '@/components/MobilePopup/MobilePopup.vue';
 
-import { PageNames, Components, Language } from '@/consts';
+import { PageNames, Components, Language, Links } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { preloadFontFace } from '@/utils';
+import { preloadFontFace, updateDocumentTitle } from '@/utils';
 import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions } from '@/types/nodes';
 import type { EvmNetworkId } from '@/consts/evm';
@@ -82,6 +94,7 @@ import { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
     BrowserNotifsEnableDialog: lazyComponent(Components.BrowserNotifsEnableDialog),
     BrowserNotifsBlockedDialog: lazyComponent(Components.BrowserNotifsBlockedDialog),
     NotificationEnablingPage: components.NotificationEnablingPage,
+    ConfirmDialog: components.ConfirmDialog,
     MobilePopup,
   },
 })
@@ -113,7 +126,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
-  @mutation.rewards.unsubscribeAccountMarketMakerInfo private unsubscribeMarketMakerInfo!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
   @mutation.web3.setEvmNetworksIds private setEvmNetworksIds!: (data: EvmNetworkId[]) => void;
   @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => void;
@@ -121,17 +133,20 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
 
   @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
-  @action.wallet.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncVoidFn;
-  @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncVoidFn;
-  @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncVoidFn;
+  @action.wallet.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncFnWithoutArgs;
+  @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncFnWithoutArgs;
+  @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncFnWithoutArgs;
   @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
-  @action.settings.setBlockNumber private setBlockNumber!: AsyncVoidFn;
-  @action.referrals.getReferrer private getReferrer!: AsyncVoidFn;
+  @action.settings.setBlockNumber private setBlockNumber!: AsyncFnWithoutArgs;
+  @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
   @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
     asset: WhitelistArrayItem;
     message: string;
-  }) => AsyncVoidFn;
+  }) => Promise<void>;
+
+  // [DESKTOP] To Enable Desktop
+  // @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
 
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
@@ -171,18 +186,42 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
+  get disclaimerPrefix(): string {
+    return `<span class="app-disclaimer__title">${this.t('disclaimerTitle')}</span>`;
+  }
+
+  get memorandumLink(): string {
+    return this.generateDisclaimerLink(Links.terms, this.t('memorandum'));
+  }
+
+  get privacyLink(): string {
+    return this.generateDisclaimerLink(Links.privacy, this.t('helpDialog.privacyPolicy'));
+  }
+
+  get polkaswapFaqLink(): string {
+    return this.generateDisclaimerLink(Links.faq, this.t('FAQ'));
+  }
+
+  generateDisclaimerLink(href: string, content: string): string {
+    return `<a href="${href}" target="_blank" rel="nofollow noopener" class="link" title="${content}">${content}</a>`;
+  }
+
   async confirmInvititation(): Promise<void> {
     await this.getReferrer();
     if (this.storageReferrer) {
       if (this.storageReferrer === this.account.address) {
         this.resetStorageReferrer();
       } else {
-        this.showConfirmInviteUser = true;
+        this.withApi(() => {
+          this.showConfirmInviteUser = true;
+        });
       }
     }
   }
 
   async created() {
+    // [DESKTOP] To Enable Desktop
+    // this.setIsDesktop(true);
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
 
@@ -215,15 +254,20 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // connection to node
       await this.runAppConnectionToNode();
+      updateDocumentTitle(); // For the first load
     });
+  }
+
+  private get isSwapPageWithCharts(): boolean {
+    return this.$route.name === PageNames.Swap && this.chartsEnabled;
   }
 
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
   }
 
-  get isSwapPage(): boolean {
-    return this.$route.name === PageNames.Swap;
+  get isCurrentPageTooWide(): boolean {
+    return this.isAboutPage || this.isSwapPageWithCharts || this.$route.name === PageNames.Tokens;
   }
 
   get appClasses(): Array<string> {
@@ -232,7 +276,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     if (this.$route.name) {
       cssClasses.push(`${baseClass}--${this.$route.name.toLowerCase()}`);
     }
-    if (this.chartsEnabled && this.isSwapPage) {
+    if (this.isSwapPageWithCharts) {
       cssClasses.push(`${baseClass}--has-charts`);
     }
     return cssClasses;
@@ -242,8 +286,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     return new FPNumber(this.blockNumber).toLocaleString();
   }
 
-  get soraExplorerLink(): string {
-    return getExplorerLinks(this.soraNetwork)[0].value;
+  get blockExplorerLink(): Nullable<string> {
+    const links = getExplorerLinks(this.soraNetwork);
+    if (!links.length) {
+      return null;
+    }
+    return links[0].value;
   }
 
   get showBrowserNotifPopup(): boolean {
@@ -301,7 +349,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     await this.resetNetworkSubscriptions();
     this.resetBlockNumberSubscription();
     this.unsubscribeFromInvitedUsers();
-    this.unsubscribeMarketMakerInfo();
     await connection.close();
   }
 
@@ -529,14 +576,12 @@ i.icon-divider {
 }
 
 @include large-desktop(true) {
-  .app-main {
-    &.app-main--tokens {
-      .app-menu {
-        position: relative;
+  .app-main[class*='app-main--explore/'] {
+    .app-menu {
+      position: relative;
 
-        @include large-mobile(true) {
-          position: fixed;
-        }
+      @include large-mobile(true) {
+        position: fixed;
       }
     }
   }
@@ -624,14 +669,12 @@ $sora-logo-width: 173.7px;
       overflow: hidden;
 
       .app-content .app-disclaimer-container {
-        min-width: 800px;
         width: 100%;
         max-width: 900px;
         padding: 0 20px;
         margin: 0 auto 120px;
       }
       .app-footer {
-        min-width: 800px;
         justify-content: center;
       }
     }

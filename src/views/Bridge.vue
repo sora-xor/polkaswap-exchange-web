@@ -343,10 +343,10 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setAmount setAmount!: (value: string) => void;
 
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
-  @action.bridge.resetBridgeForm private resetBridgeForm!: AsyncVoidFn;
-  @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncVoidFn;
-  @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncVoidFn;
-  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
+  @action.bridge.resetBridgeForm private resetBridgeForm!: AsyncFnWithoutArgs;
+  @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<EvmHistory>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
 
@@ -463,7 +463,7 @@ export default class Bridge extends Mixins(
 
     return this.isXorSufficientForNextTx({
       type: this.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
-      isXorAccountAsset: isXorAccountAsset(this.asset),
+      isXor: isXorAccountAsset(this.asset),
       amount: this.getFPNumber(this.amount),
     });
   }
@@ -492,9 +492,15 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(balance, decimals);
   }
 
-  created(): void {
-    // we should reset data only on created, because it's used on another bridge views
-    this.resetBridgeForm();
+  async created(): Promise<void> {
+    if (this.$route.params.xorToDeposit) {
+      await this.selectAsset(this.xor);
+      this.setSoraToEvm(false);
+      this.setAmount(this.$route.params.xorToDeposit);
+    } else {
+      // we should reset data only on created, because it's used on another bridge views
+      this.resetBridgeForm();
+    }
   }
 
   destroyed(): void {
@@ -506,7 +512,7 @@ export default class Bridge extends Mixins(
   }
 
   getCopyTooltip(isSoraNetwork = false): string {
-    return this.copyTooltip(this.t(`bridge.${isSoraNetwork ? 'soraAddress' : 'ethereumAddress'}`));
+    return this.copyTooltip(isSoraNetwork ? this.t('bridge.soraAddress') : this.t('bridge.ethereumAddress'));
   }
 
   async handleSwitchItems(): Promise<void> {

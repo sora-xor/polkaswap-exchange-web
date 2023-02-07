@@ -37,7 +37,7 @@ const actions = defineActions({
       commit.updateTxsFailure();
     }
   },
-  async createTransactionsPolling(context): Promise<VoidFunction> {
+  async createTransactionsPolling(context): Promise<FnWithoutArgs> {
     const { dispatch, commit } = moonpayActionContext(context);
     commit.setPollingTimestamp();
 

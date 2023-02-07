@@ -100,7 +100,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @getter.libraryTheme private libraryTheme!: Theme;
   @getter.settings.notificationActivated notificationActivated!: boolean;
 
-  @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: AsyncVoidFn;
+  @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: FnWithoutArgs;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopupEnabled!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;

@@ -19,7 +19,7 @@
       </div>
       <div class="input-value">
         <slot name="balance">
-          <template v-if="token">
+          <template v-if="isBalanceAvailable">
             <span class="input-value--uppercase">{{ t('balanceText') }}</span>
             <formatted-amount-with-fiat-value
               value-can-be-hidden
@@ -79,6 +79,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
+import { getter } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -106,6 +107,12 @@ export default class TokenInput extends Mixins(
   readonly amount!: string;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+
+  @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
+
+  get isBalanceAvailable(): boolean {
+    return this.isLoggedIn && !!this.token;
+  }
 
   get address(): string {
     return this.token?.address ?? '';

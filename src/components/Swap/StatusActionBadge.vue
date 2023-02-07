@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <s-card shadow="always" size="small" class="status-action-badge">
     <span class="status-action-badge__label"><slot name="label" /></span>
     <span class="status-action-badge__value"><slot name="value" /></span>
@@ -15,7 +15,7 @@ export default class StatusActionBadge extends Vue {}
 
 <style lang="scss">
 .status-action-badge.s-card.neumorphic.s-size-small {
-  padding: $inner-spacing-mini / 2 $inner-spacing-big * 2 $inner-spacing-mini / 2 $inner-spacing-small;
+  padding: $inner-spacing-tiny $inner-spacing-big * 2 $inner-spacing-tiny $inner-spacing-small;
 }
 </style>
 
@@ -38,7 +38,7 @@ $base-class: '.status-action-badge';
   max-width: $max-width;
 
   #{$base-class}__label {
-    margin-right: $inner-spacing-mini / 2;
+    margin-right: $inner-spacing-tiny;
   }
 
   #{$base-class}__value {
