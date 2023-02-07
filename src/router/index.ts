@@ -17,7 +17,13 @@ const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet;
 const lazyComponent = (name: string) => () => import(`@/components/${name}.vue`);
 const lazyView = (name: string) => () => import(`@/views/${name}.vue`);
 
-function goTo(name: PageNames): void {
+/**
+ * Use this function instead just `router.push`.
+ *
+ * It checks wallet routing, page loading and the current route.
+ * if the current route isn't the same as param, then it will wait for `router.push`
+ */
+async function goTo(name: PageNames): Promise<void> {
   if (name === PageNames.Wallet) {
     if (!store.getters.wallet.account.isLoggedIn) {
       store.commit.wallet.router.navigate({ name: WALLET_CONSTS.RouteNames.WalletConnection });
