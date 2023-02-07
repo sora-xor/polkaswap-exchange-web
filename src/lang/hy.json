@@ -7,8 +7,6 @@
     "importText": "Ներմուծել",
     "settingsText": "Կարգավորումներ",
     "addAssetText": "Ավելացնել ակտիվ",
-    "createTokenText": "Ստեղծել տոկեն",
-    "comingSoonText": "Շուտով",
     "successText": "Հաջողություն",
     "warningText": "Զգուշացում",
     "swapText": "Փոխանակել",
@@ -19,7 +17,6 @@
     "sendText": "Ուղարկել",
     "addressText": "Հասցե",
     "amountText": "Գումար",
-    "confirmText": "Հաստատել",
     "errorText": "Սխալ",
     "insufficientBalanceText": "Անբավարար {tokenSymbol} հաշիվ",
     "unknownErrorText": "Սխալ Ինչ-որ բան սխալ է տեղի ունեցել...",
@@ -105,7 +102,9 @@
         },
         "selectWallet": "Ընտրեք դրամապանակ՝ աշխատելու համար",
         "wallet": {
-            "install": "Տեղադրեք"
+            "install": "Տեղադրեք",
+            "connected": "Միացված է",
+            "notConnected": "Միացված չէ"
         }
     },
     "wallet": {
@@ -127,12 +126,12 @@
         "enterAmount": "Մուտքագրեք գումարը",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Հաստատել գործարքը",
-        "confirm": "@:confirmText",
         "errorAddress": "Անվավեր հասցե: Խնդրում ենք ստուգել այն և կրկին փորձել:",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Ուղարկեք նշաններ {Sora} ցանցի հաշիվների միջև",
         "addressWarning": "Նշանները կուղարկվեն ստորև նշված {Sora} հասցեին: Համոզվեք, որ ստացողը կարող է մուտք գործել {Sora} ցանց ՝ խորհրդանիշներ օգտագործելու համար.",
-        "addressError": "Դուք չեք կարող նշաններ ուղարկել նույն հաշվին, որին այժմ կապված եք:"
+        "addressError": "Դուք չեք կարող նշաններ ուղարկել նույն հաշվին, որին այժմ կապված եք:",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Դրամապանակի հասցեն պատճենվում է սեղմատախտակին",
@@ -152,7 +151,6 @@
     },
     "assets": {
         "empty": "Ակտիվներ չկան",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -171,7 +169,8 @@
         },
         "totalAssetsValue": "Ձեր ակտիվների ընդհանուր արժեքը.",
         "details": "Մանրամասներ",
-        "assetId": "Ակտիվի ID"
+        "assetId": "Ակտիվի ID",
+        "add": "@:addAssetText"
     },
     "asset": {
         "remove": "Հեռացնել ակտիվը",
@@ -179,8 +178,6 @@
         "receive": "Ստանալ {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Ակտիվը {symbol} հաջողությամբ ավելացվեց:",
         "empty": "Ոչ մի տոկեն չի գտնվել",
         "alreadyAttached": "Տոկենն արդեն կցված էր",
@@ -195,16 +192,15 @@
             "title": "Արժույթներ",
             "switchBtn": "Միայն ստուգված ակտիվներ"
         },
-        "searchInputText": "Որոնում ըստ ակտիվի ID-ի, անվանման կամ նշիչի նշանի"
+        "searchInputText": "Որոնում ըստ ակտիվի ID-ի, անվանման կամ նշիչի նշանի",
+        "title": "@:addAssetText",
+        "action": "@:addAssetText"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Ստեղծեք և տեղակայեք անհատական ակտիվ {Sora}- ում",
-        "action": "@:createTokenText",
         "enterSymbol": "Մուտքագրեք տոկենի սիմվոլը",
         "enterName": "Մուտքագրեք տոկենի անվանումը",
         "enterSupply": "Մուտքագրեք տոկենի մատակարարը",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Գործարքը ներկայացված է",
             "desc": "Ստեղծեք {symbol} տոկեն"
@@ -230,10 +226,6 @@
             "placeholder": "Ընդարձակվող մատակարարում",
             "desc": "Ավելի շատ նշաններ հատելու ունակություն:"
         },
-        "titleCommon": "Ստեղծել",
-        "confirmTokenTitleCommon": "Ստեղծեք նշան",
-        "confirmTokenTitleNFT": "Ստեղծեք NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Տրամադրել բովանդակություն",
         "selectLocalFile": "Ընտրեք տեղական ֆայլը",
         "CreateSimpleToken": "Նշան",
@@ -267,7 +259,14 @@
         "divisible": {
             "placeholder": "Բաժանելի",
             "desc": "NFT-ի կոտորակային մասերի բաժանվելու ունակությունը: Իրացվելիության տրամադրումն աշխատում է միայն բաժանելի ակտիվների հետ"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Ստեղծել",
+        "confirmTokenTitleCommon": "Ստեղծեք նշան",
+        "confirmTokenTitleNFT": "Ստեղծեք NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Գործարքի պարամետրերը",
@@ -502,8 +501,8 @@
         "price": "Գին",
         "transactionSubmitted": "Գործարքը ներկայացված է",
         "transactionMessage": "{firstToken} և {secondToken}",
-        "confirm": "Հաստատել",
-        "ok": "Լավ"
+        "ok": "Լավ",
+        "confirm": "Հաստատել"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +553,6 @@
         "connectWallets": "Միացրեք դրամապանակները ՝ համապատասխան գործարքի պատմությունը դիտելու համար:",
         "soraNetworkFee": "{Sora} ցանցային վճար",
         "ethereumNetworkFee": "{Ethereum} ցանցային վճար",
-        "tooltipValue": "@:comingSoonText",
         "total": "Ընդհանուր",
         "viewHistory": "Դիտել գործարքների պատմությունը",
         "transactionSubmitted": "Գործարքը ներկայացված է",
@@ -566,7 +564,8 @@
         "energy": "@:evm.EWC",
         "copy": "Պատճենել ցանցի հասցեն",
         "soraAddress": "{Sora} հասցե",
-        "ethereumAddress": "{Ethereum} հասցե"
+        "ethereumAddress": "{Ethereum} հասցե",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",
@@ -717,7 +716,7 @@
         "outputMessage": "Արդյունքը գնահատվում է: Եթե գինը փոխվի ավելի քան {slippageTolerance} %, ձեր գործարքը կվերականգնվի:",
         "confirmTitle": "Դուք կստանաք",
         "shareOfPool": "Գործարքից հետո լողավազանի մասնաբաժինը",
-        "locked": "Ձեր լողավազանի {percent} -ը խաղադրույքի մեջ է"
+        "locked": "Ձեր լողավազանի {percent} -ը {lock} մեջ է"
     },
     "dexSettings": {
         "title": "Կարգավորումներ",
@@ -932,7 +931,6 @@
         "bondTitle": "Բոնդ XOR",
         "unbondTitle": "Ունբոնդ XOR",
         "confirm": {
-            "text": "Հաստատել",
             "bond": "Հաստատել պարտատոմ",
             "unbond": "Հաստատել չպարտատոմսը",
             "inviteTitle": "Դուք հրավիրվել եք {AppName}",
@@ -941,7 +939,8 @@
             "freeOfCharge": "Այս գործողությունը անվճար է",
             "hasReferrerTitle": "Դուք արդեն սահմանել եք ձեր ուղղորդիչը",
             "hasReferrerDescription": "Ցավոք, դուք կարող եք սահմանել միայն մեկը",
-            "ok": "Լավ"
+            "ok": "Լավ",
+            "text": "Հաստատել"
         },
         "referrer": {
             "title": "Ավելացրեք ձեր ուղղորդիչը",
@@ -958,7 +957,6 @@
         "insufficientBondedAmount": "Ավելի շատ referrals հրավիրելու համար, bond առնվազն {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Գործարքի մանրամասները",
-    "createTokenTextNFT": "Ստեղծեք NFT",
     "code": {
         "download": "Ներբեռնեք QR կոդը",
         "upload": "Սկան QR",
@@ -1140,5 +1138,10 @@
     "tooltips": {
         "roi": "{ROI} նշանակում է ներդրումների վերադարձ: Այն հաշվարկվում է ներդրումներից ստացված շահույթը բաժանելով այդ ներդրման արժեքին` տոկոսային համարժեքով:",
         "tvl": "{TVL} ը նշանակում է կողպված ընդհանուր արժեքը: Այն ներկայացնում է լողավազաններում փակված ժետոնները դոլարի համարժեքով:"
-    }
+    },
+    "createTokenText": "Ստեղծել տոկեն",
+    "comingSoonText": "Շուտով",
+    "confirmText": "Հաստատել",
+    "createTokenTextNFT": "Ստեղծեք NFT",
+    "doNotShowText": "Սա ինձ այլևս ցույց մի տուր"
 }

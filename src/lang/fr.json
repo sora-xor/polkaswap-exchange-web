@@ -7,8 +7,6 @@
     "importText": "Importer",
     "settingsText": "Paramètres",
     "addAssetText": "Ajouter un actif",
-    "createTokenText": "Créer un jeton",
-    "comingSoonText": "Bientôt disponible",
     "successText": "Succès",
     "warningText": "Attention",
     "swapText": "Échanger",
@@ -19,7 +17,6 @@
     "sendText": "Envoyer",
     "addressText": "Adresse",
     "amountText": "Montant",
-    "confirmText": "Confirmer",
     "errorText": "Erreur",
     "insufficientBalanceText": "Solde {tokenSymbol} insuffisant",
     "unknownErrorText": "ERREUR Une erreur s'est produite...",
@@ -105,7 +102,9 @@
         },
         "selectWallet": "Sélectionnez un portefeuille avec lequel travailler",
         "wallet": {
-            "install": "Installer"
+            "install": "Installer",
+            "connected": "Connecté",
+            "notConnected": "Pas connecté"
         }
     },
     "wallet": {
@@ -127,12 +126,12 @@
         "enterAmount": "Entrez le montant",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Confirmer la transaction",
-        "confirm": "@:confirmText",
         "errorAddress": "Adresse invalide. Veuillez la vérifier et réessayer.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Envoyer des jetons entre des comptes du réseau {Sora}",
         "addressWarning": "Les jetons seront envoyés à l'adresse {Sora} ci-dessous. Assurez-vous que le destinataire peut accéder à la chaîne {Sora} pour utiliser les jetons:",
-        "addressError": "Vous ne pouvez pas envoyer de jetons au même compte auquel vous êtes actuellement connecté."
+        "addressError": "Vous ne pouvez pas envoyer de jetons au même compte auquel vous êtes actuellement connecté.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "L'adresse du portefeuille est copiée dans le presse-papiers",
@@ -152,7 +151,6 @@
     },
     "assets": {
         "empty": "Il n'y a pas d'actifs",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -171,7 +169,8 @@
         },
         "totalAssetsValue": "Valeur total de vos actifs:",
         "details": "Détails",
-        "assetId": "ID de l'Actif"
+        "assetId": "ID de l'Actif",
+        "add": "@:addAssetText"
     },
     "asset": {
         "remove": "Retirer l'actif",
@@ -179,8 +178,6 @@
         "receive": "Recevoir {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "L'actif {symbol} a été ajouté avec succès!",
         "empty": "Aucun jeton trouvé",
         "alreadyAttached": "Le jeton était déjà attaché",
@@ -195,16 +192,15 @@
             "title": "Devises",
             "switchBtn": "Actifs vérifiés uniquement"
         },
-        "searchInputText": "Rechercher par ID d'actif, nom ou symbole boursier"
+        "searchInputText": "Rechercher par ID d'actif, nom ou symbole boursier",
+        "title": "@:addAssetText",
+        "action": "@:addAssetText"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Créer et déployer des ressources personnalisées sur {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Entrez le symbole du jeton",
         "enterName": "Entrez le nom du jeton",
         "enterSupply": "Saisir l'offre de jeton",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Transaction soumise",
             "desc": "Créer un jeton {symbol}"
@@ -230,10 +226,6 @@
             "placeholder": "Approvisionnement extensible",
             "desc": "Possibilité de miner plus de jetons."
         },
-        "titleCommon": "Créer",
-        "confirmTokenTitleCommon": "Créer un jeton",
-        "confirmTokenTitleNFT": "Créer NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Fournir du contenu",
         "selectLocalFile": "Sélectionnez le fichier local",
         "CreateSimpleToken": "Token",
@@ -267,7 +259,14 @@
         "divisible": {
             "placeholder": "Divisible",
             "desc": "Capacité de NFT à se diviser en parties fractionnaires. Le provisionnement de liquidité ne fonctionne qu'avec des actifs divisibles"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Créer",
+        "confirmTokenTitleCommon": "Créer un jeton",
+        "confirmTokenTitleNFT": "Créer NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Détails de la transaction",
@@ -502,8 +501,8 @@
         "price": "Prix",
         "transactionSubmitted": "Transaction soumise",
         "transactionMessage": "{firstToken} et {secondToken}",
-        "confirm": "Confirmer",
-        "ok": "OK"
+        "ok": "OK",
+        "confirm": "Confirmer"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +553,6 @@
         "connectWallets": "Connectez les portefeuilles pour afficher l'historique des transactions.",
         "soraNetworkFee": "{Sora} Frais de réseau",
         "ethereumNetworkFee": "{Ethereum} Frais de réseau",
-        "tooltipValue": "@:comingSoonText",
         "total": "Total",
         "viewHistory": "Afficher l'historique des transactions",
         "transactionSubmitted": "Transaction soumise",
@@ -566,7 +564,8 @@
         "energy": "@:evm.EWC",
         "copy": "Copier l'adresse réseau",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse"
+        "ethereumAddress": "{Ethereum} adresse",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -717,7 +716,7 @@
         "outputMessage": "Le montant à recevoir est estimé. Si le prix change de plus de {slippageTolerance}%, votre transaction sera annulée.",
         "confirmTitle": "Vous allez recevoir",
         "shareOfPool": "Part du pool après transaction",
-        "locked": "{percent} de votre pool est en jalonnement"
+        "locked": "{percent} de votre pool est en {lock}"
     },
     "dexSettings": {
         "title": "Réglages",
@@ -932,7 +931,6 @@
         "bondTitle": "Lier XOR",
         "unbondTitle": "Délier XOR",
         "confirm": {
-            "text": "Confirmer",
             "bond": "Confirmer le lien",
             "unbond": "Confirmer la dissociation",
             "inviteTitle": "Vous avez été invité à {AppName}",
@@ -941,7 +939,8 @@
             "freeOfCharge": "Cette action est gratuite",
             "hasReferrerTitle": "Vous avez déjà défini votre référent",
             "hasReferrerDescription": "Malheureusement, vous ne pouvez définir qu'un seul",
-            "ok": "OK"
+            "ok": "OK",
+            "text": "Confirmer"
         },
         "referrer": {
             "title": "Ajoutez votre référent",
@@ -958,7 +957,6 @@
         "insufficientBondedAmount": "Pour inviter plus de références, liez au moins {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Détails de la transaction",
-    "createTokenTextNFT": "Créer NFT",
     "code": {
         "download": "Télécharger QR Code",
         "upload": "Scanner le QR code",
@@ -1140,5 +1138,10 @@
     "tooltips": {
         "roi": "{ROI} signifie retour sur investissement. Il est calculé en divisant le bénéfice réalisé sur un investissement par le coût de cet investissement en pourcentage équivalent.",
         "tvl": "{TVL} signifie Total Value Locked. Il représente les jetons verrouillés dans les pools en équivalent dollar."
-    }
+    },
+    "createTokenText": "Créer un jeton",
+    "comingSoonText": "Bientôt disponible",
+    "confirmText": "Confirmer",
+    "createTokenTextNFT": "Créer NFT",
+    "doNotShowText": "Ne me montre plus ça"
 }

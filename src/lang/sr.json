@@ -7,8 +7,6 @@
     "importText": "Увоз",
     "settingsText": "Подешавања",
     "addAssetText": "Додајте средство",
-    "createTokenText": "Креирајте",
-    "comingSoonText": "Долази ускоро",
     "successText": "Успешно",
     "warningText": "Упозорење",
     "swapText": "Замените",
@@ -19,7 +17,6 @@
     "sendText": "Пошаљите",
     "addressText": "Адреса",
     "amountText": "Износ",
-    "confirmText": "Потврдите",
     "errorText": "Грешка",
     "insufficientBalanceText": "Недовољно стање {tokenSymbol}",
     "unknownErrorText": "ГРЕШКА Нешто је пошло наопако...",
@@ -105,7 +102,9 @@
         },
         "selectWallet": "Изаберите новчаник са којим ћете радити",
         "wallet": {
-            "install": "Инсталирај"
+            "install": "Инсталирај",
+            "connected": "Повезан",
+            "notConnected": "Није повезан"
         }
     },
     "wallet": {
@@ -127,12 +126,12 @@
         "enterAmount": "Унесите износ",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Потврдите трансакцију",
-        "confirm": "@:confirmText",
         "errorAddress": "Погрешна адреса. Проверите и покушајте поново.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Шаљите токене између рачуна {Sora} мреже",
         "addressWarning": "Токени ће бити послати на {Sora} адресу испод. Уверите се да прималац може да приступи ланцу {Sora} да би користио токене:",
-        "addressError": "Не можете слати токене на исти рачун са којим сте тренутно повезани."
+        "addressError": "Не можете слати токене на исти рачун са којим сте тренутно повезани.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Адреса новчаника се копира у међуспремник",
@@ -152,7 +151,6 @@
     },
     "assets": {
         "empty": "Нема средстава",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -171,7 +169,8 @@
         },
         "totalAssetsValue": "Укупна вредност средства:",
         "details": "Детаљи",
-        "assetId": "ИД средства"
+        "assetId": "ИД средства",
+        "add": "@:addAssetText"
     },
     "asset": {
         "remove": "Уклоните средство",
@@ -179,8 +178,6 @@
         "receive": "Примите {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Средство {symbol} је успешно додатo!",
         "empty": "Нису пронађени токени",
         "alreadyAttached": "Токен је већ био прикачен",
@@ -195,16 +192,15 @@
             "title": "Валуте",
             "switchBtn": "Само верификована средства"
         },
-        "searchInputText": "Претрага по ИД средства, имену или симболу ознаке"
+        "searchInputText": "Претрага по ИД средства, имену или симболу ознаке",
+        "title": "@:addAssetText",
+        "action": "@:addAssetText"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Креирајте и примените прилагођено средство на {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Унесите симбол токена",
         "enterName": "Унесите назив токена",
         "enterSupply": "Унесите залиху токена",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Трансакција је послата",
             "desc": "Направите {symbol} токен"
@@ -230,10 +226,6 @@
             "placeholder": "Прошириво снабдевање",
             "desc": "Могућност ковања више токена."
         },
-        "titleCommon": "Креирајте",
-        "confirmTokenTitleCommon": "Креираjте Токен",
-        "confirmTokenTitleNFT": "Креирајте НФТ",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Обезбедите садржај",
         "selectLocalFile": "Изаберите локалну датотеку",
         "CreateSimpleToken": "Токен",
@@ -267,7 +259,14 @@
         "divisible": {
             "placeholder": "Дељивo",
             "desc": "Способност НФТ-а да се дели на фракционе делове. Резервисање ликвидности функционише само са дељивим средствима"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Креирајте",
+        "confirmTokenTitleCommon": "Креираjте Токен",
+        "confirmTokenTitleNFT": "Креирајте НФТ",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Детаљи трансакције",
@@ -502,8 +501,8 @@
         "price": "Цена",
         "transactionSubmitted": "Трансакција је послата",
         "transactionMessage": "{firstToken} и {secondToken}",
-        "confirm": "Потврдите",
-        "ok": "У реду"
+        "ok": "У реду",
+        "confirm": "Потврдите"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +553,6 @@
         "connectWallets": "Повежите новчанике да бисте видели одговарајућу историју трансакција.",
         "soraNetworkFee": "{Sora} мрежна накнада",
         "ethereumNetworkFee": "{Ethereum} мрежна накнада",
-        "tooltipValue": "@:comingSoonText",
         "total": "Укупно",
         "viewHistory": "Погледајте историју трансакција",
         "transactionSubmitted": "Трансакција је послата",
@@ -566,7 +564,8 @@
         "energy": "@:evm.EWC",
         "copy": "Копирајте мрежну адресу",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Изаберите токен",
@@ -717,7 +716,7 @@
         "outputMessage": "Излаз је процењен. Ако се цена промени више од {slippageTolerance}%, ваша трансакција ће бити враћена.",
         "confirmTitle": "Добићете",
         "shareOfPool": "Удео у пулу након трансакције",
-        "locked": "{percent} вашег pula је у улози"
+        "locked": "{percent} вашег pula је у {lock}"
     },
     "dexSettings": {
         "title": "Подешавања",
@@ -932,7 +931,6 @@
         "bondTitle": "Veži XOR",
         "unbondTitle": "Razveži XOR",
         "confirm": {
-            "text": "Потврдите",
             "bond": "Потврдите vezivanje",
             "unbond": "Потврдите odvezivanje",
             "inviteTitle": "Позвани сте у {AppName}",
@@ -941,7 +939,8 @@
             "freeOfCharge": "Ова акција је бесплатна",
             "hasReferrerTitle": "Већ сте подесили свог referenta",
             "hasReferrerDescription": "Нажалост, можете поставити само једну",
-            "ok": "У реду"
+            "ok": "У реду",
+            "text": "Потврдите"
         },
         "referrer": {
             "title": "Додајте свог referenta",
@@ -958,7 +957,6 @@
         "insufficientBondedAmount": "Da biste pozvali više preporuka, najmanje povežite {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Детаљи трансакције",
-    "createTokenTextNFT": "Креирајте НФТ",
     "code": {
         "download": "Преузмите QR код",
         "upload": "Skeniraj QR",
@@ -1140,5 +1138,10 @@
     "tooltips": {
         "roi": "{ROI} označava povraćaj investicije. Obračunava se deljenjem dobiti ostvarene na investiciji po trošku te investicije u procentualno ekvivalentnom iznosu.",
         "tvl": "{TVL} označava da je ukupna vrednost zaključana. Predstavlja simbole zakljuиane u bazenima u dolarskom ekvivalentu."
-    }
+    },
+    "createTokenText": "Креирајте",
+    "comingSoonText": "Долази ускоро",
+    "confirmText": "Потврдите",
+    "createTokenTextNFT": "Креирајте НФТ",
+    "doNotShowText": "Не показуј ми ово поново"
 }
