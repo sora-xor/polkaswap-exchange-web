@@ -6,6 +6,7 @@ export enum EvmNetworkId {
   EthereumRinkeby = 4,
   EthereumGoerli = 5,
   EthereumKovan = 42,
+  EthereumSepolia = 11155111,
   // Binance Smart Chain
   BinanceSmartChainMainnet = 56,
   BinanceSmartChainTestnet = 97,
@@ -103,6 +104,18 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
     rpcUrls: ['https://kovan.infura.io/v3/'],
     blockExplorerUrls: ['https://kovan.etherscan.io'],
     shortName: 'Kovan',
+  },
+  [EvmNetworkId.EthereumSepolia]: {
+    id: EvmNetworkId.EthereumSepolia,
+    name: 'Ethereum Sepolia Testnet',
+    nativeCurrency: {
+      name: 'SepoliaETH',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    rpcUrls: ['https://sepolia.infura.io/v3/'],
+    blockExplorerUrls: ['https://sepolia.etherscan.io'],
+    shortName: 'Sepolia',
   },
   [EvmNetworkId.BinanceSmartChainMainnet]: {
     id: EvmNetworkId.BinanceSmartChainMainnet,
