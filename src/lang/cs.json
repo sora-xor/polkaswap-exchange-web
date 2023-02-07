@@ -7,8 +7,6 @@
     "importText": "Importovat",
     "settingsText": "Nastavení",
     "addAssetText": "Přidat aktivum",
-    "createTokenText": "Vytvořit",
-    "comingSoonText": "Již brzy",
     "successText": "Úspěch",
     "warningText": "Varování",
     "swapText": "Swap",
@@ -19,7 +17,6 @@
     "sendText": "Odeslat",
     "addressText": "Adresa",
     "amountText": "Částka",
-    "confirmText": "Potvrdit",
     "errorText": "Chyba",
     "insufficientBalanceText": "Nedostatečný zůstatek {tokenSymbol}",
     "unknownErrorText": "CHYBA Něco se pokazilo...",
@@ -105,7 +102,9 @@
         },
         "selectWallet": "Vyberte peněženku, se kterou chcete pracovat",
         "wallet": {
-            "install": "Nainstalujte"
+            "install": "Nainstalujte",
+            "connected": "Připojeno",
+            "notConnected": "Nepřipojený"
         }
     },
     "wallet": {
@@ -127,12 +126,12 @@
         "enterAmount": "Zadejte částku",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Potvrďte transakci",
-        "confirm": "@:confirmText",
         "errorAddress": "Neplatná adresa. Zkontrolujte ji a zkuste to znovu.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Poslat tokeny mezi síťovými účty {Sora}",
         "addressWarning": "Tokeny budou zaslány na níže uvedenou {Sora} adresu. Ujistěte se, že příjemce má přístup k {Sora} chainu, aby mohl tokeny používat:",
-        "addressError": "Tokeny nelze odesílat na stejný účet, ke kterému jste právě připojeni."
+        "addressError": "Tokeny nelze odesílat na stejný účet, ke kterému jste právě připojeni.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Adresa peněženky je zkopírována do schránky",
@@ -152,7 +151,6 @@
     },
     "assets": {
         "empty": "Nejsou k dispozici žádná aktiva",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -171,7 +169,8 @@
         },
         "totalAssetsValue": "Celková hodnota vašich aktiv:",
         "details": "Podrobnosti",
-        "assetId": "ID aktiva"
+        "assetId": "ID aktiva",
+        "add": "@:addAssetText"
     },
     "asset": {
         "remove": "Odebrat aktivum",
@@ -179,8 +178,6 @@
         "receive": "Přijmout {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Aktivum {symbol} bylo úspěšně přidáno!",
         "empty": "Žádné tokeny nenalezeny",
         "alreadyAttached": "Token byl již přidán",
@@ -195,16 +192,15 @@
             "title": "Měny",
             "switchBtn": "Pouze ověřená aktiva"
         },
-        "searchInputText": "Vyhledávání podle Asset ID, Name nebo Ticker Symbol"
+        "searchInputText": "Vyhledávání podle Asset ID, Name nebo Ticker Symbol",
+        "title": "@:addAssetText",
+        "action": "@:addAssetText"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Vytvořte a zaveďte vlastní aktivum na síti {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Zadejte symbol tokenu",
         "enterName": "Zadejte název tokenu",
         "enterSupply": "Zadejte množství tokenů",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Transakce byla odeslána",
             "desc": "Vytvořit token {symbol}"
@@ -230,10 +226,6 @@
             "placeholder": "Rozšiřitelná nabídka",
             "desc": "Možnost tisknout více tokenů."
         },
-        "titleCommon": "Vytvořit",
-        "confirmTokenTitleCommon": "Vytvořit token",
-        "confirmTokenTitleNFT": "Vytvořit NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Poskytněte obsah",
         "selectLocalFile": "Vyberte místní soubor",
         "CreateSimpleToken": "Token",
@@ -267,7 +259,14 @@
         "divisible": {
             "placeholder": "Dělitelný",
             "desc": "Schopnost NFT dělit se na dílčí části. Opravné položky likvidity fungují pouze u dělitelných aktiv"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Vytvořit",
+        "confirmTokenTitleCommon": "Vytvořit token",
+        "confirmTokenTitleNFT": "Vytvořit NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Detaily transakce",
@@ -502,8 +501,8 @@
         "price": "Cena",
         "transactionSubmitted": "Transakce byla odeslána",
         "transactionMessage": "{firstToken} a {secondToken}",
-        "confirm": "Potvrdit",
-        "ok": "OK"
+        "ok": "OK",
+        "confirm": "Potvrdit"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +553,6 @@
         "connectWallets": "Připojte peněženky pro zobrazení historie příslušných transakcí.",
         "soraNetworkFee": "{Sora} síťový poplatek",
         "ethereumNetworkFee": "{Ethereum} síťový poplatek",
-        "tooltipValue": "@:comingSoonText",
         "total": "Celkem",
         "viewHistory": "Zobrazit historii transakcí",
         "transactionSubmitted": "Transakce byla odeslána",
@@ -566,7 +564,8 @@
         "energy": "@:evm.EWC",
         "copy": "Zkopírujte síťovou adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Vyberte token",
@@ -717,7 +716,7 @@
         "outputMessage": "Výstup je odhadován. Pokud se cena změní o více než {slippageTolerance}%, transakce se vrátí zpět.",
         "confirmTitle": "Obdržíte",
         "shareOfPool": "Podíl z poolu po transakci",
-        "locked": "{percent} vašeho fondu je ve sázce"
+        "locked": "{percent} vašeho fondu je ve {lock}"
     },
     "dexSettings": {
         "title": "Nastavení",
@@ -932,7 +931,6 @@
         "bondTitle": "Vázat XOR",
         "unbondTitle": "Zrušit vazbu XOR",
         "confirm": {
-            "text": "Potvrdit",
             "bond": "Potvrďte vazbu",
             "unbond": "Potvrďte zrušení vazby",
             "inviteTitle": "Byli jste pozváni na {AppName}",
@@ -941,7 +939,8 @@
             "freeOfCharge": "Tato akce je bezplatná",
             "hasReferrerTitle": "Již jste nastavili svého referrera",
             "hasReferrerDescription": "Bohužel můžete nastavit pouze jeden",
-            "ok": "OK"
+            "ok": "OK",
+            "text": "Potvrdit"
         },
         "referrer": {
             "title": "Přidejte svého referrera",
@@ -958,7 +957,6 @@
         "insufficientBondedAmount": "Chcete-li pozvat více doporučení, spojte alespoň {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detaily transakce",
-    "createTokenTextNFT": "Vytvořte NFT",
     "code": {
         "download": "Stáhnout QR kód",
         "upload": "Skenovat QR",
@@ -1140,5 +1138,10 @@
     "tooltips": {
         "roi": "{ROI} znamená návratnost investic. Vypočítá se vydělením zisku získaného z investice náklady na tuto investici v procentuálním ekvivalentu.",
         "tvl": "{TVL} znamená Total Value Locked. Představuje tokeny zamčené v poolech v ekvivalentu dolaru."
-    }
+    },
+    "createTokenText": "Vytvořit",
+    "comingSoonText": "Již brzy",
+    "confirmText": "Potvrdit",
+    "createTokenTextNFT": "Vytvořte NFT",
+    "doNotShowText": "Už mi to neukazuj"
 }

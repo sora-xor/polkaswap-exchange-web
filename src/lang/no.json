@@ -7,8 +7,6 @@
     "importText": "Importere",
     "settingsText": "Innstillinger",
     "addAssetText": "Legg til aktiva",
-    "createTokenText": "Opprett token",
-    "comingSoonText": "Kommer snart",
     "successText": "Suksess",
     "warningText": "Advarsel",
     "swapText": "Bytte",
@@ -19,7 +17,6 @@
     "sendText": "Send",
     "addressText": "Adresse",
     "amountText": "Beløp",
-    "confirmText": "Bekrefte",
     "errorText": "Feil",
     "insufficientBalanceText": "Utilstrekkelig {tokenSymbol} saldo",
     "unknownErrorText": "FEIL Noe gikk galt...",
@@ -105,7 +102,9 @@
         },
         "selectWallet": "Velg en lommebok du vil jobbe med",
         "wallet": {
-            "install": "Installere"
+            "install": "Installere",
+            "connected": "Tilkoblet",
+            "notConnected": "Ikke tilkoblet"
         }
     },
     "wallet": {
@@ -127,12 +126,12 @@
         "enterAmount": "Angi beløp",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Bekreft transaksjon",
-        "confirm": "@:confirmText",
         "errorAddress": "Ugyldig adresse. Kontroller den, og prøv på nytt.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Send tokens mellom kontoer på {Sora} -nettverket",
         "addressWarning": "Tokens vil bli sendt til {Sora} -adressen nedenfor. Sørg for at mottaker har tilgang til {Sora} -kjeden for å bruke tokenene:",
-        "addressError": "Du kan ikke sende tokens til samme konto du er tilkoblet med."
+        "addressError": "Du kan ikke sende tokens til samme konto du er tilkoblet med.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Lommebokadressen kopieres til utklippstavlen",
@@ -152,7 +151,6 @@
     },
     "assets": {
         "empty": "Det finnes ingen aktiva",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -171,7 +169,8 @@
         },
         "totalAssetsValue": "Totalverdi aktiva:",
         "details": "Detaljer",
-        "assetId": "Aktivum ID"
+        "assetId": "Aktivum ID",
+        "add": "@:addAssetText"
     },
     "asset": {
         "remove": "Fjern aktiva",
@@ -179,8 +178,6 @@
         "receive": "Motta {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Ressursen {symbol} ble lagt til.",
         "empty": "Finner ingen token",
         "alreadyAttached": "Token er allerede vedlagt",
@@ -195,16 +192,15 @@
             "title": "Valutaer",
             "switchBtn": "Kun bekreftede eiendeler"
         },
-        "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol"
+        "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol",
+        "title": "@:addAssetText",
+        "action": "@:addAssetText"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Opprett og distribuer egendefinert token på {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Angi tokensymbol",
         "enterName": "Angi tokennavn",
         "enterSupply": "Angi tokenforsyning (antall)",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Transaksjon sendt",
             "desc": "Opprett {symbol} token"
@@ -230,10 +226,6 @@
             "placeholder": "Utvidbar forsyning",
             "desc": "Evne til å lage flere tokens."
         },
-        "titleCommon": "Skape",
-        "confirmTokenTitleCommon": "Opprett token",
-        "confirmTokenTitleNFT": "Lag NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Gi innhold",
         "selectLocalFile": "Velg lokal fil",
         "CreateSimpleToken": "Token",
@@ -267,7 +259,14 @@
         "divisible": {
             "placeholder": "Delelig",
             "desc": "NFTs evne til å dele opp i brøkdeler. Likviditetsavsetning fungerer kun med delbare eiendeler"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Skape",
+        "confirmTokenTitleCommon": "Opprett token",
+        "confirmTokenTitleNFT": "Lag NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Transaksjonsdetaljer",
@@ -502,8 +501,8 @@
         "price": "Pris",
         "transactionSubmitted": "Transaksjon sendt",
         "transactionMessage": "{firstToken} og {secondToken}",
-        "confirm": "Bekrefte",
-        "ok": "OK"
+        "ok": "OK",
+        "confirm": "Bekrefte"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +553,6 @@
         "connectWallets": "Koble til lommebøker for å se respektive transaksjonshistorikk.",
         "soraNetworkFee": "{Sora} Nettverksgebyr",
         "ethereumNetworkFee": "{Ethereum} Nettverksgebyr",
-        "tooltipValue": "@:comingSoonText",
         "total": "Total",
         "viewHistory": "Se transaksjonshistorikk",
         "transactionSubmitted": "Transaksjon sendt",
@@ -566,7 +564,8 @@
         "energy": "@:evm.EWC",
         "copy": "Kopier nettverksadressen",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse"
+        "ethereumAddress": "{Ethereum} adresse",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Velg token",
@@ -717,7 +716,7 @@
         "outputMessage": "Beløp er estimert. Hvis prisen endres mer enn {slippageTolerance}%, vil transaksjonen gå tilbake.",
         "confirmTitle": "Du vil motta",
         "shareOfPool": "Andel av pool etter transaksjon",
-        "locked": "{percent} av puljen din er i innsats"
+        "locked": "{percent} av puljen din er i {lock}"
     },
     "dexSettings": {
         "title": "Innstillinger",
@@ -932,7 +931,6 @@
         "bondTitle": "Knytte bånd XOR",
         "unbondTitle": "Koble ut XOR",
         "confirm": {
-            "text": "Bekrefte",
             "bond": "Bekreft obligasjon",
             "unbond": "Bekreft frigjøring",
             "inviteTitle": "Du har blitt invitert til {AppName}",
@@ -941,7 +939,8 @@
             "freeOfCharge": "Denne handlingen er gratis",
             "hasReferrerTitle": "Du har allerede angitt henvisningsadressen din",
             "hasReferrerDescription": "Dessverre kan du bare angi én",
-            "ok": "OK"
+            "ok": "OK",
+            "text": "Bekrefte"
         },
         "referrer": {
             "title": "Legg til henvisningsadressen din",
@@ -958,7 +957,6 @@
         "insufficientBondedAmount": "Hvis du vil invitere flere henvisninger, binder du minst {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaksjonsdetaljer",
-    "createTokenTextNFT": "Lag NFT",
     "code": {
         "download": "Last ned QR-kode",
         "upload": "Skann QR",
@@ -1140,5 +1138,10 @@
     "tooltips": {
         "roi": "{ROI} står for Return on Investment. Den beregnes ved å dele fortjenesten opptjent på en investering med kostnaden for den investeringen i en prosentekvivalent.",
         "tvl": "{TVL} står for Total Value Locked. Det representerer tokens som er låst i bassengene i dollarekvivalenten."
-    }
+    },
+    "createTokenText": "Opprett token",
+    "comingSoonText": "Kommer snart",
+    "confirmText": "Bekrefte",
+    "createTokenTextNFT": "Lag NFT",
+    "doNotShowText": "Ikke vis meg dette igjen"
 }
