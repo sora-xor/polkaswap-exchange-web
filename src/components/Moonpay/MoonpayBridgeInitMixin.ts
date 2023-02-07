@@ -2,15 +2,13 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { Operation } from '@sora-substrate/util';
 import type { CodecString } from '@sora-substrate/util';
 import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/consts';
+import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
 import { MoonpayNotifications } from '@/components/Moonpay/consts';
 import { state, action, mutation, getter } from '@/store/decorators';
-import { EvmNetworkId } from '@/consts/evm';
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
@@ -30,7 +28,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @state.moonpay.api moonpayApi!: MoonpayApi;
   @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<EvmHistory>;
   @state.web3.evmBalance evmBalance!: CodecString;
-  @state.web3.moonpayEvmNetwork moonpayEvmNetwork!: EvmNetworkId;
+  @state.web3.moonpayEvmNetwork moonpayEvmNetwork!: EvmNetwork;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   @getter.settings.moonpayApiKey moonpayApiKey!: string;

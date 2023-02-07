@@ -13,12 +13,12 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { getter, mutation, state } from '@/store/decorators';
 
-import { EvmNetworkId } from '@/consts/evm';
 import type { EvmNetworkData } from '@/consts/evm';
 
 @Component({
@@ -44,11 +44,11 @@ export default class SelectNetwork extends Mixins(TranslationMixin) {
     this.setSelectNetworkDialogVisibility(flag);
   }
 
-  get selectedEvmNetworkId(): Nullable<EvmNetworkId> {
+  get selectedEvmNetworkId(): Nullable<EvmNetwork> {
     return this.selectedEvmNetwork?.id ?? null;
   }
 
-  set selectedEvmNetworkId(value: Nullable<EvmNetworkId>) {
+  set selectedEvmNetworkId(value: Nullable<EvmNetwork>) {
     this.$emit('change', value);
   }
 }

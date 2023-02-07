@@ -205,7 +205,7 @@ import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
 import type { CodecString } from '@sora-substrate/util';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -219,7 +219,7 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/evm/utils';
 
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
-import type { EvmNetworkId, EvmLinkType } from '@/consts/evm';
+import type { EvmLinkType } from '@/consts/evm';
 
 const FORMATTED_HASH_LENGTH = 24;
 
@@ -287,8 +287,8 @@ export default class BridgeTransaction extends Mixins(
     return this.asset?.symbol ?? '';
   }
 
-  get externalNetworkId(): Nullable<EvmNetworkId> {
-    return this.historyItem?.externalNetwork as unknown as EvmNetworkId;
+  get externalNetworkId(): Nullable<EvmNetwork> {
+    return this.historyItem?.externalNetwork as unknown as EvmNetwork;
   }
 
   get evmIcon(): string {
@@ -448,7 +448,7 @@ export default class BridgeTransaction extends Mixins(
     return `s-icon--network s-icon-${this.isSoraToEvm ? this.evmIcon : 'sora'}`;
   }
 
-  handleOpenEvmExplorer(hash: string, type: EvmLinkType, networkId: EvmNetworkId): void {
+  handleOpenEvmExplorer(hash: string, type: EvmLinkType, networkId: EvmNetwork): void {
     const url = this.getEvmExplorerLink(hash, type, networkId);
     const win = window.open(url, '_blank');
     win && win.focus();

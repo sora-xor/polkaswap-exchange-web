@@ -4,8 +4,8 @@ import { CodecString } from '@sora-substrate/util';
 import ethersUtil from '@/utils/ethers-util';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { initialState } from './state';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
-import type { EvmNetworkId } from '@/consts/evm';
 import type { EthBridgeContracts } from '@/utils/bridge/eth/types';
 import type { Web3State } from './types';
 
@@ -29,15 +29,15 @@ const mutations = defineMutations<Web3State>()({
     state.evmAddress = '';
     ethersUtil.removeEvmUserAddress();
   },
-  setEvmNetworksIds(state, networksIds: EvmNetworkId[]): void {
+  setEvmNetworksIds(state, networksIds: EvmNetwork[]): void {
     state.evmNetworksIds = networksIds;
   },
   // by provider
-  setEvmNetwork(state, networkId: EvmNetworkId): void {
+  setEvmNetwork(state, networkId: EvmNetwork): void {
     state.evmNetwork = networkId;
   },
   // by user
-  setSelectedEvmNetwork(state, networkId: EvmNetworkId): void {
+  setSelectedEvmNetwork(state, networkId: EvmNetwork): void {
     state.evmNetworkSelected = networkId;
     ethersUtil.storeSelectedEvmNetwork(networkId);
     evmBridgeApi.externalNetwork = networkId;
@@ -51,10 +51,7 @@ const mutations = defineMutations<Web3State>()({
   },
 
   // for eth bridge history
-  setEthBridgeSettings(
-    state,
-    { evmNetwork, address }: { evmNetwork: EvmNetworkId; address: EthBridgeContracts }
-  ): void {
+  setEthBridgeSettings(state, { evmNetwork, address }: { evmNetwork: EvmNetwork; address: EthBridgeContracts }): void {
     state.ethBridgeEvmNetwork = evmNetwork;
     state.ethBridgeContractAddress = {
       XOR: address.XOR,
@@ -63,7 +60,7 @@ const mutations = defineMutations<Web3State>()({
     };
   },
 
-  setMoonpayEvmNetwork(state, evmNetwork: EvmNetworkId): void {
+  setMoonpayEvmNetwork(state, evmNetwork: EvmNetwork): void {
     state.moonpayEvmNetwork = evmNetwork;
   },
 });

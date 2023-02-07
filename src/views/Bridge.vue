@@ -277,7 +277,7 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -298,7 +298,6 @@ import {
 } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { EvmNetworkId } from '@/consts/evm';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 @Component({
@@ -586,7 +585,7 @@ export default class Bridge extends Mixins(
     });
   }
 
-  changeEvmNetwork(evmNetwork: EvmNetworkId): void {
+  changeEvmNetwork(evmNetwork: EvmNetwork): void {
     this.selectEvmNetwork(evmNetwork);
     this.subscribeOnHistory();
   }

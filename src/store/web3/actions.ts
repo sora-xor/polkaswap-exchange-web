@@ -3,7 +3,7 @@ import { defineActions } from 'direct-vuex';
 import { web3ActionContext } from '@/store/web3';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { EvmNetworkId } from '@/consts/evm';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 import type { Provider } from '@/utils/ethers-util';
 
 const actions = defineActions({
@@ -19,7 +19,7 @@ const actions = defineActions({
     commit.setEvmNetwork(evmNetwork);
   },
 
-  async selectEvmNetwork(context, evmNetwork: EvmNetworkId): Promise<void> {
+  async selectEvmNetwork(context, evmNetwork: EvmNetwork): Promise<void> {
     const { commit, getters, state } = web3ActionContext(context);
     commit.setSelectedEvmNetwork(evmNetwork);
 

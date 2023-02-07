@@ -17,8 +17,7 @@ import type { SignTxResult } from './types';
 // EVM
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
-import type { EvmHistory, EvmTransaction } from '@sora-substrate/util/build/evm/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/consts';
+import type { EvmHistory, EvmNetwork, EvmTransaction } from '@sora-substrate/util/build/evm/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();

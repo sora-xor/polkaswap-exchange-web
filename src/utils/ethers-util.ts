@@ -6,11 +6,12 @@ import { FPNumber } from '@sora-substrate/util';
 import { XOR, VAL, PSWAP, ETH } from '@sora-substrate/util/build/assets/consts';
 
 import type { CodecString } from '@sora-substrate/util';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import storage from './storage';
 import { ZeroStringValue } from '@/consts';
 
-import type { EvmNetworkData, EvmNetworkId } from '@/consts/evm';
+import type { EvmNetworkData } from '@/consts/evm';
 
 type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
 type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
@@ -450,14 +451,16 @@ function removeEvmUserAddress(): void {
   storage.remove('evmAddress');
 }
 
-function getSelectedEvmNetwork(): Nullable<EvmNetworkId> {
-  const evmNetwork = Number(storage.get('evmNetwork'));
+function getSelectedEvmNetwork(): Nullable<EvmNetwork> {
+  // [TODO EVM]: remove any
+  const evmNetwork = Number(storage.get('evmNetwork' as any));
 
   return Number.isFinite(evmNetwork) ? evmNetwork : null;
 }
 
-function storeSelectedEvmNetwork(evmNetwork: EvmNetworkId) {
-  storage.set('evmNetwork', evmNetwork);
+function storeSelectedEvmNetwork(evmNetwork: EvmNetwork) {
+  // [TODO EVM]: remove any
+  storage.set('evmNetwork' as any, evmNetwork);
 }
 
 export default {

@@ -80,7 +80,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -89,9 +89,8 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { state, mutation } from '@/store/decorators';
+import { state } from '@/store/decorators';
 
-import type { EvmNetworkId } from '@/consts/evm';
 import type { EvmAccountAsset } from '@/store/assets/types';
 
 @Component({
@@ -162,7 +161,7 @@ export default class BridgeTransactionsHistory extends Mixins(
     });
   }
 
-  changeEvmNetwork(evmNetwork: EvmNetworkId): void {
+  changeEvmNetwork(evmNetwork: EvmNetwork): void {
     this.setSelectedEvmNetwork(evmNetwork);
     this.subscribeOnHistory();
   }

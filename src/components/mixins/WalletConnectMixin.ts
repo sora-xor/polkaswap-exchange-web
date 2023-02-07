@@ -1,4 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import router from '@/router';
 import { getWalletAddress, formatAddress } from '@/utils';
@@ -8,7 +9,7 @@ import { action, getter, mutation, state } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import type { EvmNetworkId, EvmNetworkData } from '@/consts/evm';
+import type { EvmNetworkData } from '@/consts/evm';
 
 const checkExtensionKey = 'provider.messages.checkExtension';
 const installExtensionKey = 'provider.messages.installExtension';
@@ -54,14 +55,14 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @getter.web3.selectedEvmNetwork selectedEvmNetwork!: Nullable<EvmNetworkData>;
 
   // update selected evm network without metamask request
-  @mutation.web3.setSelectedEvmNetwork setSelectedEvmNetwork!: (evmNetworkId: EvmNetworkId) => void;
+  @mutation.web3.setSelectedEvmNetwork setSelectedEvmNetwork!: (evmNetworkId: EvmNetwork) => void;
   @mutation.web3.resetEvmAddress private resetEvmAddress!: FnWithoutArgs;
   @mutation.web3.reset private resetWeb3Store!: FnWithoutArgs;
   @mutation.web3.setEvmAddress switchExternalAccount!: (address: string) => void;
 
   @action.web3.connectExternalAccount private connectExternalAccount!: (provider: Provider) => Promise<void>;
   @action.web3.connectEvmNetwork connectEvmNetwork!: (networkHex?: string) => void;
-  @action.web3.selectEvmNetwork selectEvmNetwork!: (networkId: EvmNetworkId) => void;
+  @action.web3.selectEvmNetwork selectEvmNetwork!: (networkId: EvmNetwork) => void;
   @action.web3.restoreSelectedEvmNetwork restoreSelectedEvmNetwork!: AsyncFnWithoutArgs;
 
   getWalletAddress = getWalletAddress;

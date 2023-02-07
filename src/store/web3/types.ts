@@ -1,23 +1,23 @@
 import type { CodecString } from '@sora-substrate/util';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
-import type { EvmNetworkId } from '@/consts/evm';
 import type { EthBridgeContracts } from '@/utils/bridge/eth/types';
 
 export type EthBridgeSettings = {
-  evmNetwork: EvmNetworkId;
+  evmNetwork: EvmNetwork;
   contractAddress: EthBridgeContracts;
 };
 
 export type Web3State = {
   evmAddress: string;
   evmBalance: CodecString;
-  evmNetwork: Nullable<EvmNetworkId>;
-  evmNetworksIds: EvmNetworkId[];
-  evmNetworkSelected: Nullable<EvmNetworkId>;
+  evmNetwork: Nullable<EvmNetwork>;
+  evmNetworksIds: EvmNetwork[];
+  evmNetworkSelected: Nullable<EvmNetwork>;
 
   selectNetworkDialogVisibility: boolean;
 
-  ethBridgeEvmNetwork: EvmNetworkId;
+  ethBridgeEvmNetwork: EvmNetwork;
   ethBridgeContractAddress: EthBridgeContracts;
-  moonpayEvmNetwork: Nullable<EvmNetworkId>;
+  moonpayEvmNetwork: Nullable<EvmNetwork>;
 };

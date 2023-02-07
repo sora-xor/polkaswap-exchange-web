@@ -1,7 +1,7 @@
 import ethersUtil from '@/utils/ethers-util';
+import { EvmNetworkId } from '@sora-substrate/util/build/evm/consts';
 
 import { ZeroStringValue } from '@/consts';
-import { EvmNetworkId } from '@/consts/evm';
 
 import type { Web3State } from './types';
 
@@ -16,7 +16,7 @@ export function initialState(): Web3State {
     selectNetworkDialogVisibility: false,
 
     // eth bridge history
-    ethBridgeEvmNetwork: EvmNetworkId.EthereumRinkeby,
+    ethBridgeEvmNetwork: EvmNetworkId.EthereumSepolia,
     ethBridgeContractAddress: {
       XOR: '',
       VAL: '',

@@ -1,10 +1,11 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import { state, getter } from '@/store/decorators';
 
 import { EvmLinkType, EVM_NETWORKS } from '@/consts/evm';
-import type { EvmNetworkData, EvmNetworkId } from '@/consts/evm';
+import type { EvmNetworkData } from '@/consts/evm';
 
 @Component
 export default class NetworkFormatterMixin extends Vue {
@@ -22,12 +23,12 @@ export default class NetworkFormatterMixin extends Vue {
   }
 
   // TODO [EVM] add network icons
-  getEvmIcon(evmNetwork?: EvmNetworkId): string {
+  getEvmIcon(evmNetwork?: EvmNetwork): string {
     return 'eth';
   }
 
   // TODO [EVM] check network explorers links
-  getEvmExplorerLink(hash: string, type: EvmLinkType, networkId: EvmNetworkId): string {
+  getEvmExplorerLink(hash: string, type: EvmLinkType, networkId: EvmNetwork): string {
     if (!hash) return '';
 
     const network = EVM_NETWORKS[networkId];

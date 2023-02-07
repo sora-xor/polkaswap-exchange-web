@@ -56,11 +56,11 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString } from '@sora-substrate/util';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { ZeroStringValue, Components } from '@/consts';
-import { EvmNetworkId } from '@/consts/evm';
 import { lazyComponent } from '@/router';
 
 @Component({
@@ -76,7 +76,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   TranslationMixin,
   NetworkFormatterMixin
 ) {
-  @Prop({ default: EvmNetworkId.EthereumMainnet, type: Number }) readonly evmNetwork!: EvmNetworkId;
+  @Prop({ default: 0, type: Number }) readonly evmNetwork!: EvmNetwork;
   @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;
   @Prop({ default: () => undefined, type: Object }) readonly asset!: Nullable<Asset>;
   @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;

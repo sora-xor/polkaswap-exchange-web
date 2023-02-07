@@ -66,6 +66,7 @@ import { components, mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } fro
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/logo/Sora.vue';
@@ -78,7 +79,6 @@ import { action, getter, mutation, state } from '@/store/decorators';
 import { preloadFontFace, updateDocumentTitle } from '@/utils';
 import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions } from '@/types/nodes';
-import type { EvmNetworkId } from '@/consts/evm';
 import type { FeatureFlags } from '@/store/settings/types';
 import type { EthBridgeSettings } from '@/store/web3/types';
 
@@ -126,9 +126,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
-  @mutation.web3.setEvmNetworksIds private setEvmNetworksIds!: (data: EvmNetworkId[]) => void;
+  @mutation.web3.setEvmNetworksIds private setEvmNetworksIds!: (data: EvmNetwork[]) => void;
   @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => void;
-  @mutation.web3.setMoonpayEvmNetwork private setMoonpayEvmNetwork!: (evmNetwork: EvmNetworkId) => void;
+  @mutation.web3.setMoonpayEvmNetwork private setMoonpayEvmNetwork!: (evmNetwork: EvmNetwork) => void;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
 
   @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
