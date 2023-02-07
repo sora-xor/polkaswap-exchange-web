@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { countryCodeEmoji, emojiCountryCode } from 'country-code-emoji';
+import { countryCodeEmoji } from 'country-code-emoji';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -33,7 +33,7 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
   @Prop({ default: '', type: String }) readonly title!: string;
 
   loading = true;
-  flags = [];
+  flags: string[] = [];
 
   unsupportedCountriesCodes = [
     'DZ',
@@ -86,7 +86,6 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
   }
 
   mounted(): void {
-    // @ts-expect-error dff
     this.flags = Object.values(this.unsupportedCountriesCodes).map(countryCodeEmoji);
   }
 }
