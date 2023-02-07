@@ -92,7 +92,7 @@
         </div>
       </div>
     </div>
-    <swap-dialog :visible.sync="showSwapDialog"></swap-dialog>
+    <swap-dialog :visible.sync="showSwapDialog" :presetSwapData="presetSwapData"></swap-dialog>
     <select-input-asset-dialog
       :visible.sync="showSelectInputAssetDialog"
       @onInputAssetSelected="onInputAssetSelected"
@@ -102,19 +102,17 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Components } from '@/consts';
 import { AdarComponents } from '@/modules/ADAR/consts';
-import { lazyComponent } from '@/router';
 import { adarLazyComponent } from '@/modules/ADAR/router';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
-import { components, mixins, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { groupBy, sumBy } from 'lodash';
-import { Recipient } from '@/store/routeAssets/types';
-import { CodecString, FPNumber } from '@sora-substrate/util/build';
+import type { PresetSwapData, Recipient } from '@/store/routeAssets/types';
+import { CodecString, FPNumber, NetworkFeesObject, Operation } from '@sora-substrate/util/build';
 import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import { formatAssetBalance, getAssetBalance } from '@/utils';
+import { getAssetBalance } from '@/utils';
 import WarningMessage from '../WarningMessage.vue';
+import { XOR, VAL } from '@sora-substrate/util/build/assets/consts';
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
@@ -179,6 +177,18 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
         totalTransactions: assetArray.length,
       };
     });
+  }
+
+  get presetSwapData(): PresetSwapData {
+    const isInputAssetXor = this.inputToken.symbol === XOR.symbol;
+    const assetFrom = isInputAssetXor ? VAL : XOR;
+    const assetTo = this.inputToken;
+    const valueTo = this.remainingAmountRequired;
+    return {
+      assetFrom,
+      assetTo,
+      valueTo,
+    };
   }
 
   get fpBalance(): FPNumber {

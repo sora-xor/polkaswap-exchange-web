@@ -1,5 +1,8 @@
 <template>
-  <s-scrollbar class="app-menu app-sidebar-scrollbar" :class="{ visible, 'app-menu__about': isAboutPageOpened }">
+  <s-scrollbar
+    class="app-menu app-sidebar-scrollbar"
+    :class="{ visible, 'app-menu__about': isAboutPageOpened, 'app-menu__route-assets': isRouteAssetsPage }"
+  >
     <aside class="app-sidebar">
       <slot name="head"></slot>
       <div class="app-sidebar-menu">
@@ -84,6 +87,7 @@ import {
 
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
+import { AdarPageNames } from '@/modules/ADAR/consts';
 
 @Component({
   components: {
@@ -134,6 +138,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   openSoraDownloadDialog(): void {
     this.$emit('open-download-dialog');
+  }
+
+  get isRouteAssetsPage(): boolean {
+    return this.$route.name === AdarPageNames.RouteAssets;
   }
 }
 </script>
@@ -294,6 +302,12 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
 
     &__about {
+      @include tablet {
+        position: relative;
+      }
+    }
+
+    &__route-assets {
       @include tablet {
         position: relative;
       }
