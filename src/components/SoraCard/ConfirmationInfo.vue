@@ -37,14 +37,6 @@
     <p v-if="currentStatus === VerificationStatus.Rejected" class="sora-card__status-info">
       Your application has failed.
     </p>
-
-    <s-button
-      v-if="currentStatus === VerificationStatus.Rejected"
-      type="primary"
-      class="sora-card__btn s-typography-button--large"
-    >
-      <span class="text">{{ buttonText }}</span>
-    </s-button>
   </div>
 </template>
 
@@ -72,9 +64,9 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       case VerificationStatus.Pending:
         return 'KYC completed. Waiting for the results';
       case VerificationStatus.Accepted:
-        return 'You’re approved for SORA Card';
+        return 'Your application has been approved';
       case VerificationStatus.Rejected:
-        return 'You’re not been approved for SORA Card';
+        return 'Your application has not been approved';
       default:
         return null;
     }
