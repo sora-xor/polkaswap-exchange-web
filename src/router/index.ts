@@ -24,6 +24,7 @@ const lazyView = (name: string) => () => import(`@/views/${name}.vue`);
  * if the current route isn't the same as param, then it will wait for `router.push`
  */
 async function goTo(name: PageNames): Promise<void> {
+  const current = router.currentRoute.name;
   if (name === PageNames.Wallet) {
     if (!store.getters.wallet.account.isLoggedIn) {
       store.commit.wallet.router.navigate({ name: WALLET_CONSTS.RouteNames.WalletConnection });
@@ -31,8 +32,14 @@ async function goTo(name: PageNames): Promise<void> {
       store.commit.wallet.router.navigate({ name: WALLET_DEFAULT_ROUTE });
     }
   }
-  if (router.currentRoute.name === name) {
+  if (current === name) {
     return;
+  }
+  if (current === PageNames.ExploreFarming && name === PageNames.ExploreContainer) {
+    return; // Page by default
+  }
+  if (current === DemeterPageNames.Staking && name === PageNames.StakingContainer) {
+    return; // Page by default
   }
   try {
     store.commit.router.setLoading(true);

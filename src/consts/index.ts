@@ -361,10 +361,10 @@ export const RewardsChildPages = [
 
 export const StakingChildPages = [DemeterPageNames.Staking];
 export const ExploreChildPages = [
-  PageNames.ExploreTokens,
-  PageNames.ExplorePools,
-  PageNames.ExploreFarming,
+  PageNames.ExploreFarming, // By default
   PageNames.ExploreStaking,
+  PageNames.ExplorePools,
+  PageNames.ExploreTokens,
 ];
 
 export enum Topics {
