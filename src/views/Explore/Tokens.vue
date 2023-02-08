@@ -187,7 +187,7 @@ type TableItem = {
 
 const AssetsQuery = gql`
   query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    assets(after: $after, filter: { and: [{ id: { in: $ids } }, { liquidity: { greaterThan: "0" } }] }) {
+    assets(after: $after, filter: { and: [{ id: { in: $ids } }, { liquidity: { greaterThan: "1" } }] }) {
       pageInfo {
         hasNextPage
         endCursor
