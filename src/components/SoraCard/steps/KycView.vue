@@ -19,12 +19,12 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { v4 as uuidv4 } from 'uuid';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { state } from '@/store/decorators';
 import { soraCard } from '@/utils/card';
 
 @Component
-export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class KycView extends Mixins(TranslationMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
   @Prop({ default: '', type: String }) readonly accessToken!: string;
@@ -32,7 +32,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
   loadingKycView = true;
 
   async getReferenceNumber(URL: string): Promise<string> {
-    const token = sessionStorage.getItem('access-token');
+    const token = localStorage.getItem('PW-token');
 
     const result = await fetch(URL, {
       method: 'POST',
@@ -60,9 +60,6 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
     const { kycService, soraProxy } = soraCard(this.soraNetwork);
 
     const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
-
-    const accessToken = sessionStorage.getItem('access-token');
-    const refreshToken = sessionStorage.getItem('refresh-token');
 
     loadScript(kycService.sdkURL)
       .then(() => {
@@ -103,15 +100,15 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
             CountryCode: '', // ISO 3 country code
           },
           UserCredentials: {
-            AccessToken: accessToken,
-            RefreshToken: refreshToken,
+            AccessToken: localStorage.getItem('PW-token'),
+            RefreshToken: localStorage.getItem('PW-refresh-token'),
           },
         })
           .on('Error', (data) => {
             console.error('[SoraCard]: Error while initiating KYC', data);
 
             this.$notify({
-              message: 'Your access token has expired',
+              message: 'Something went wrong. Please, start again',
               title: '',
             });
             this.$emit('confirm-kyc', false);
@@ -123,7 +120,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
           .on('Success', (data) => {
             // Integrator handles UI from this point on on successful kyc
             // alert('Kyc was successfull, integrator takes control of flow from now on')
-            // console.log('success', data);
+
             this.$emit('confirm-kyc', true);
             unloadScript(kycService.sdkURL);
 
@@ -153,6 +150,12 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
 
 <style lang="scss">
 .sora-card-kyc-view {
+  height: 800px;
+
+  .el-scrollbar {
+    height: 800px;
+  }
+
   .container {
     margin: 0;
   }
@@ -166,5 +169,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.LoadingMixi
   iframe {
     background-color: #fff;
   }
+}
+
+section.content {
+  min-height: 800px;
 }
 </style>
