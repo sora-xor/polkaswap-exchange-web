@@ -50,7 +50,7 @@ async function getUpdatedJwtPair(refreshToken: string): Promise<Nullable<string>
   const buffer = Buffer.from(apiKey);
 
   try {
-    const response = await fetch(getSoraProxyEndpoints(soraNetwork).lastKycStatusEndpoint, {
+    const response = await fetch('https://api-auth-test.soracard.com/RequestNewAccessToken', {
       method: 'POST',
       headers: {
         Authorization: `Basic ${buffer.toString('base64')}, Bearer ${refreshToken}`,
@@ -76,8 +76,10 @@ async function getUpdatedJwtPair(refreshToken: string): Promise<Nullable<string>
 async function getUserStatus(accessToken: string): Promise<Status> {
   if (!accessToken) return emptyStatusFields();
 
+  const soraNetwork = store.state.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
+
   try {
-    const result = await fetch('https://backend.dev.sora-card.tachi.soramitsu.co.jp/kyc-last-status', {
+    const result = await fetch(getSoraProxyEndpoints(soraNetwork).lastKycStatusEndpoint, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
