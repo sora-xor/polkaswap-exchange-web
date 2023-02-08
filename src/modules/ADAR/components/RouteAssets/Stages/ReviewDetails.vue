@@ -45,7 +45,7 @@
           </div>
           <warning-message
             class="warning-message"
-            :text="noIssues ? 'ALL ISSUES ARE FIXED' : 'insufficient funds'"
+            :text="noIssues ? 'balance is ok' : 'insufficient funds'"
             :isError="!noIssues"
           />
         </div>
