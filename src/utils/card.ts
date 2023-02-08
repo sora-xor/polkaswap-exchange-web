@@ -8,8 +8,8 @@ import { KycStatus, Status, VerificationStatus } from '../types/card';
 // If accessToken expired, tries to get new JWT pair via refreshToken;
 // if not, forces user to pass phone number again to create new JWT pair in sessionStorage.
 export async function defineUserStatus(): Promise<Status> {
-  const sessionRefreshToken = sessionStorage.getItem('refresh-token');
-  let sessionAccessToken = sessionStorage.getItem('access-token');
+  const sessionRefreshToken = localStorage.getItem('PW-refresh-token');
+  let sessionAccessToken = localStorage.getItem('PW-token');
 
   if (!(sessionAccessToken && sessionRefreshToken)) {
     return emptyStatusFields();
@@ -45,11 +45,9 @@ async function getUpdatedJwtPair(refreshToken: string): Promise<Nullable<string>
 
     if (response.status === 200 && response.ok === true) {
       const accessToken = response.headers.get('accesstoken');
-      const expirationTime = response.headers.get('expirationtime');
 
-      if (accessToken && expirationTime) {
-        sessionStorage.setItem('access-token', accessToken);
-        sessionStorage.setItem('expiration-time', expirationTime);
+      if (accessToken) {
+        localStorage.setItem('PW-token', accessToken);
       }
 
       return accessToken;
@@ -119,9 +117,8 @@ export const getXorPerEuroRatio = async () => {
 };
 
 export const clearTokensFromSessionStorage = () => {
-  sessionStorage.removeItem('access-token');
-  sessionStorage.removeItem('refresh-token');
-  sessionStorage.removeItem('expiration-time');
+  localStorage.removeItem('PW-token');
+  localStorage.removeItem('PW-refresh-token');
 };
 
 const emptyStatusFields = (): Status => ({

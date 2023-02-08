@@ -44,7 +44,7 @@
         <s-button class="sora-card__btn--bridge s-typography-button--large" :loading="btnLoading" @click="bridgeTokens">
           <span class="text">BRIDGE TOKENS</span>
         </s-button>
-        <p class="line">OR</p>
+        <!-- TODO: bring back when option becomes available<p class="line">OR</p>
         <s-button
           type="tertiary"
           class="sora-card__btn--fiat-issuance s-typography-button--large"
@@ -52,7 +52,7 @@
           @click="issueCardByPaywings"
         >
           <span class="text">ISSUE CARD FOR €12</span>
-        </s-button>
+        </s-button> -->
       </div>
     </div>
     <span v-if="isLoggedIn" @click="loginUser" class="sora-card__user-applied">I've already applied</span>
@@ -157,7 +157,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 </script>
 
 <style lang="scss" scoped>
-$color: #ee2233;
 .sora-card {
   display: flex;
   flex-direction: column;

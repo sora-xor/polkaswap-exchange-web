@@ -1,5 +1,18 @@
 <template>
   <dialog-base :visible.sync="isVisible" class="x1-dialog">
+    <div v-if="!isMainnet" class="disclaimer">
+      <div class="disclaimer-warning-icon">
+        <s-icon name="notifications-alert-triangle-24" size="42px" />
+      </div>
+      <div>
+        <p class="disclaimer__text">DO NOT ENTER your real card number. This is test environment.</p>
+        <p class="disclaimer__text">Please, use the following ones:</p>
+        <ul>
+          <li>4012000000060085</li>
+          <li>4066330000000004</li>
+        </ul>
+      </div>
+    </div>
     <div class="wrapper" v-loading="loadingX1">
       <div
         :id="widgetId"
@@ -53,6 +66,10 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
     return this.X1Widget.widgetId;
   }
 
+  get isMainnet(): boolean {
+    return this.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod;
+  }
+
   loadX1(): void {
     loadScript(this.X1Widget.sdkUrl)
       .then(() => {
@@ -78,7 +95,33 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
 <style lang="scss">
 .x1-dialog .el-dialog {
   .wrapper {
-    min-height: 420px;
+    min-height: 320px;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+.disclaimer {
+  display: flex;
+  width: 100%;
+  height: auto;
+  border-radius: 28px;
+  background-color: var(--s-color-status-error-background);
+  padding: $basic-spacing;
+  margin-bottom: $basic-spacing / 2;
+  color: var(--s-color-status-error);
+
+  .disclaimer-warning-icon {
+    margin-right: $basic-spacing;
+
+    .s-icon-notifications-alert-triangle-24 {
+      display: block;
+      color: var(--s-color-status-error);
+    }
+  }
+
+  ul {
+    margin-top: $basic-spacing / 2;
   }
 }
 </style>
