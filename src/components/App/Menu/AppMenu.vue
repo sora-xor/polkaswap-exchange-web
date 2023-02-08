@@ -1,5 +1,8 @@
 <template>
-  <s-scrollbar class="app-menu app-sidebar-scrollbar" :class="{ visible, 'app-menu__about': isAboutPageOpened }">
+  <s-scrollbar
+    class="app-menu app-sidebar-scrollbar"
+    :class="{ visible, 'app-menu__about': isAboutPageOpened, 'app-menu__loading': pageLoading }"
+  >
     <aside class="app-sidebar">
       <slot name="head"></slot>
       <div class="app-sidebar-menu">
@@ -122,6 +125,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) readonly onSelect!: FnWithoutArgs;
 
   @state.settings.faucetUrl faucetUrl!: string;
+  @state.router.loading pageLoading!: boolean;
   @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
@@ -322,6 +326,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       @include tablet {
         position: relative;
       }
+    }
+
+    &__loading {
+      z-index: $app-above-loader-layer;
     }
   }
 
