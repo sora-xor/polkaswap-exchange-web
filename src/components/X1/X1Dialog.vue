@@ -109,7 +109,6 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   background-color: var(--s-color-status-error-background);
   padding: $basic-spacing;
   margin-bottom: $basic-spacing / 2;
-  color: var(--s-color-status-error);
 
   .disclaimer-warning-icon {
     margin-right: $basic-spacing;
