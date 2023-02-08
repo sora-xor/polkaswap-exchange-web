@@ -24,7 +24,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import EmailValidator from 'email-validator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { mutation, state } from '@/store/decorators';
+import { state } from '@/store/decorators';
 
 @Component
 export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixin) {

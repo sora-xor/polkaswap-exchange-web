@@ -1,6 +1,6 @@
 <template>
   <dialog-base :visible.sync="isVisible" class="x1-dialog">
-    <div v-if="soraNetwork !== WALLET_CONSTS.SoraNetwork.Prod" class="disclaimer">
+    <div v-if="!isMainnet" class="disclaimer">
       <div class="disclaimer-warning-icon">
         <s-icon name="notifications-alert-triangle-24" size="42px" />
       </div>
@@ -45,8 +45,6 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @getter.soraCard.accountAddress accountAddress!: string;
 
-  WALLET_CONSTS = WALLET_CONSTS;
-
   X1Widget: X1Widget = { sdkUrl: '', widgetId: '' };
   loadingX1 = false;
 
@@ -66,6 +64,10 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
 
   get widgetId(): string {
     return this.X1Widget.widgetId;
+  }
+
+  get isMainnet(): boolean {
+    return this.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod;
   }
 
   loadX1(): void {

@@ -8,8 +8,8 @@
     </div>
     <div v-else class="tos__section">
       <ul class="sora-card__unsupported-countries">
-        <li v-for="(country, index) in unsupportedCountries" :key="country">
-          <span class="flags">{{ flags[index] }} </span> {{ country }}
+        <li v-for="(country, index) in Object.values(unsupportedCountries)" :key="country">
+          <span class="flags">{{ Object.keys(unsupportedCountries).map(countryCodeEmoji)[index] }} </span> {{ country }}
         </li>
       </ul>
     </div>
@@ -35,58 +35,33 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
   loading = true;
   flags: string[] = [];
 
-  unsupportedCountriesCodes = [
-    'DZ',
-    'BD',
-    'BY',
-    'BO',
-    'KH',
-    'CN',
-    'CU',
-    'GH',
-    'IR',
-    'JO',
-    'KP',
-    'KG',
-    'MK',
-    'NP',
-    'NG',
-    'RU',
-    'SD',
-    'SY',
-    'TH',
-    'US',
-  ];
+  countryCodeEmoji = countryCodeEmoji;
 
-  unsupportedCountries = [
-    'Algeria',
-    'Bangladesh',
-    'Belarus',
-    'Bolivia',
-    'Cambodia',
-    'China',
-    'Cuba',
-    'Ghana',
-    'Iran',
-    'Jordan',
-    'Korea',
-    'Kyrgyzstan',
-    'Macedonia',
-    'Nepal',
-    'Nigeria',
-    'Russian Federation',
-    'Sudan',
-    'Syria',
-    'Thailand',
-    'USA',
-  ];
+  unsupportedCountries = {
+    dz: 'Algeria',
+    bd: 'Bangladesh',
+    by: 'Belarus',
+    bo: 'Bolivia',
+    kh: 'Cambodia',
+    cn: 'China',
+    cu: 'Cuba',
+    gh: 'Ghana',
+    ir: 'Iran',
+    jo: 'Jordan',
+    kp: 'Korea',
+    kg: 'Kyrgyzstan',
+    mk: 'Macedonia',
+    np: 'Nepal',
+    ng: 'Nigeria',
+    ru: 'Russian Federation',
+    sd: 'Sudan',
+    sy: 'Syria',
+    th: 'Thailand',
+    us: 'United States',
+  };
 
   onIFrameLoad(): void {
     this.loading = false;
-  }
-
-  mounted(): void {
-    this.flags = Object.values(this.unsupportedCountriesCodes).map(countryCodeEmoji);
   }
 }
 </script>
