@@ -4,6 +4,20 @@ import store from '../store';
 
 import { KycStatus, Status, VerificationStatus } from '../types/card';
 
+const getSoraProxyEndpoints = (soraNetwork: string) => {
+  const test = {
+    referenceNumberEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/get-reference-number',
+    lastKycStatusEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/kyc-last-status',
+  };
+
+  const prod = {
+    referenceNumberEndpoint: '',
+    lastKycStatusEndpoint: '',
+  };
+
+  return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
+};
+
 // Defines user's KYC status.
 // If accessToken expired, tries to get new JWT pair via refreshToken;
 // if not, forces user to pass phone number again to create new JWT pair in sessionStorage.
@@ -36,7 +50,7 @@ async function getUpdatedJwtPair(refreshToken: string): Promise<Nullable<string>
   const buffer = Buffer.from(apiKey);
 
   try {
-    const response = await fetch('https://api-auth-test.soracard.com/RequestNewAccessToken', {
+    const response = await fetch(getSoraProxyEndpoints(soraNetwork).lastKycStatusEndpoint, {
       method: 'POST',
       headers: {
         Authorization: `Basic ${buffer.toString('base64')}, Bearer ${refreshToken}`,
@@ -63,7 +77,7 @@ async function getUserStatus(accessToken: string): Promise<Status> {
   if (!accessToken) return emptyStatusFields();
 
   try {
-    const result = await fetch('https://sora-card.sc1.dev.sora2.soramitsu.co.jp/kyc-last-status', {
+    const result = await fetch('https://backend.dev.sora-card.tachi.soramitsu.co.jp/kyc-last-status', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -158,18 +172,6 @@ export function soraCard(soraNetwork: string) {
       pass: '',
       env: WALLET_CONSTS.SoraNetwork.Prod,
       unifiedApiKey: '',
-    };
-
-    return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
-  };
-
-  const getSoraProxyEndpoints = (soraNetwork: string) => {
-    const test = {
-      referenceNumberEndpoint: 'https://sora-card.sc1.dev.sora2.soramitsu.co.jp/get-reference-number',
-    };
-
-    const prod = {
-      referenceNumberEndpoint: '',
     };
 
     return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
