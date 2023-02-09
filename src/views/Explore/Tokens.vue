@@ -154,6 +154,11 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { components, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type {
+  AssetEntity,
+  AssetSnapshotEntity,
+  EntitiesQueryResponse,
+} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 import type { AmountWithSuffix } from '@/types/formats';
 
 import { Components } from '@/consts';
@@ -162,8 +167,16 @@ import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 import { getter } from '@/store/decorators';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+
+type AssetData = AssetEntity & {
+  daySnapshots: {
+    nodes: AssetSnapshotEntity[];
+  };
+  weekSnapshot: {
+    nodes: AssetSnapshotEntity[];
+  };
+};
 
 type TokenData = {
   reserves: FPNumber;
@@ -185,9 +198,9 @@ type TableItem = {
   tvlFormatted: AmountWithSuffix;
 } & Asset;
 
-const AssetsQuery = gql`
+const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
   query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    assets(after: $after, filter: { and: [{ id: { in: $ids } }, { liquidity: { greaterThan: "1" } }] }) {
+    entities: assets(after: $after, filter: { and: [{ id: { in: $ids } }, { liquidity: { greaterThan: "1" } }] }) {
       pageInfo {
         hasNextPage
         endCursor
@@ -220,6 +233,23 @@ const AssetsQuery = gql`
     }
   }
 `;
+
+const parse = (item: AssetData): Record<string, TokenData> => {
+  const volume = item.daySnapshots.nodes.reduce((buffer, snapshot) => {
+    const hourVolume = new FPNumber(snapshot.volume.amountUSD);
+
+    return buffer.add(hourVolume);
+  }, FPNumber.ZERO);
+
+  return {
+    [item.id]: {
+      reserves: FPNumber.fromCodecValue(item.liquidity ?? 0),
+      startPriceDay: new FPNumber(item.daySnapshots.nodes?.[0]?.priceUSD?.open ?? 0),
+      startPriceWeek: new FPNumber(item.weekSnapshot.nodes?.[0]?.priceUSD?.open ?? 0),
+      volume,
+    },
+  };
+};
 
 @Component({
   components: {
@@ -291,45 +321,12 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     const weekTimestamp = now - 60 * 60 * 24 * 7; // latest week snapshot (unix)
     const ids = this.items.map((item) => item.address); // only whitelisted assets
 
-    const tokensData = {};
-    let hasNextPage = true;
-    let after = '';
+    const variables = { ids, dayTimestamp, weekTimestamp };
+    const items = await SubqueryExplorerService.fetchAndParseEntities(parse, AssetsQuery, variables);
 
-    try {
-      do {
-        const response = await SubqueryExplorerService.request(AssetsQuery, {
-          after,
-          ids,
-          dayTimestamp,
-          weekTimestamp,
-        });
+    if (!items) return {};
 
-        if (!response || !response.assets) return tokensData;
-
-        hasNextPage = response.assets.pageInfo.hasNextPage;
-        after = response.assets.pageInfo.endCursor;
-
-        response.assets.nodes.forEach((item) => {
-          const volume = item.daySnapshots.nodes.reduce((buffer, snapshot) => {
-            const hourVolume = new FPNumber(snapshot.volume.amountUSD);
-
-            return buffer.add(hourVolume);
-          }, FPNumber.ZERO);
-
-          tokensData[item.id] = {
-            reserves: FPNumber.fromCodecValue(item.liquidity ?? 0),
-            startPriceDay: new FPNumber(item.daySnapshots.nodes?.[0]?.priceUSD?.open ?? 0),
-            startPriceWeek: new FPNumber(item.weekSnapshot.nodes?.[0]?.priceUSD?.open ?? 0),
-            volume,
-          };
-        });
-      } while (hasNextPage);
-
-      return tokensData;
-    } catch (error) {
-      console.error(error);
-      return tokensData;
-    }
+    return items.reduce((acc, item) => ({ ...acc, ...item }), {});
   }
 }
 </script>
