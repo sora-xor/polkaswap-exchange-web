@@ -9,13 +9,13 @@ import { Status } from '@/types/card';
 import { loadScript } from 'vue-plugin-load-script';
 
 const actions = defineActions({
-  calculateXorRestPrice(context, xorPerEuro): void {
+  calculateXorRestPrice(context, xorPerEuro: FPNumber): void {
     const { state, commit } = soraCardActionContext(context);
     const { totalXorBalance } = state;
     const euroToPay = FPNumber.HUNDRED.add(FPNumber.ONE).sub(totalXorBalance.mul(xorPerEuro));
     const euroToPayInXor = euroToPay.div(xorPerEuro);
 
-    commit.setXorPriceToDeposit(euroToPayInXor);
+    commit.setXorPriceToDeposit(euroToPayInXor.dp(3));
   },
 
   async calculateXorBalanceInEuros(context, { xorPerEuro, xorTotalBalance }): Promise<void> {
