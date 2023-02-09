@@ -111,7 +111,6 @@
         "title": "{Sora} ցանցի հաշիվ",
         "WalletAssets": "Ակտիվներ",
         "WalletActivity": "Գործունեություն",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -169,8 +168,7 @@
         },
         "totalAssetsValue": "Ձեր ակտիվների ընդհանուր արժեքը.",
         "details": "Մանրամասներ",
-        "assetId": "Ակտիվի ID",
-        "add": "@:addAssetText"
+        "assetId": "Ակտիվի ID"
     },
     "asset": {
         "remove": "Հեռացնել ակտիվը",
@@ -192,9 +190,7 @@
             "title": "Արժույթներ",
             "switchBtn": "Միայն ստուգված ակտիվներ"
         },
-        "searchInputText": "Որոնում ըստ ակտիվի ID-ի, անվանման կամ նշիչի նշանի",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Որոնում ըստ ակտիվի ID-ի, անվանման կամ նշիչի նշանի"
     },
     "createToken": {
         "desc": "Ստեղծեք և տեղակայեք անհատական ակտիվ {Sora}- ում",
@@ -292,11 +288,8 @@
             "submitted": "Գործարքը ներկայացվել է {fee} {symbol} վճարով",
             "confirmed": "Գործարքը հաստատված է"
         },
-        "viewIn": {
-            "sorascan": "Դիտել SORAScan- ում",
-            "subscan": "Դիտել Subscan- ում"
-        },
         "txId": "Գործարքի ID",
+        "viewIn": "Դիտել {explorer}- ում",
         "referrer": "Ուղղորդող",
         "referral": "Ուղղորդում"
     },
@@ -332,7 +325,6 @@
         "AddLiquidity": "Ավելացնել իրացվելիություն",
         "AddLiquidityId": "Ավելացնել իրացվելիություն",
         "RemoveLiquidity": "Հեռացնել իրացվելիությունը",
-        "PageNotFound": "Էջը չի գտնվել",
         "Rewards": "Պարգեւներ",
         "Explore\/Tokens": "Նշաններ",
         "Explore\/Pools": "Լողավազաններ",
@@ -432,26 +424,7 @@
         "from": "Սկսած",
         "to": "Դեպի"
     },
-    "pageNotFound": {
-        "title": "Էջը գտնված չէ",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Դեվնեթ",
-        "Test": "{Sora} Թեսթնեթ",
-        "Prod": "{Sora} Մայնեթ",
-        "Stage": "{Sora} Թեսթնեթ"
-    },
-    "evm": {
-        "main": "{Ethereum} Մայննեթ",
-        "ropsten": "{Ethereum} Րոփսթեն",
-        "rinkeby": "{Ethereum} Րինքբի",
-        "kovan": "{Ethereum} Քովան",
-        "goerli": "{Ethereum} Գյորլի",
-        "private": "Վոլտա Թեստնեթ",
-        "EWC": "Էներգիայի վեբ շղթա"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +533,6 @@
         "notRegisteredAsset": "Ակտիվը {assetSymbol} գրանցված չէ",
         "selectNetwork": "Ընտրեք ցանցը",
         "networkInfo": "Միացեք {Sora} Ցանցով.",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Պատճենել ցանցի հասցեն",
         "soraAddress": "{Sora} հասցե",
         "ethereumAddress": "{Ethereum} հասցե",
@@ -617,7 +588,6 @@
             "done": "Վերջացված է",
             "waitingForConfirmation": "Հաստատման սպասում..."
         },
-        "viewInEtherscan": "Դիտել {Etherscan}- ում",
         "networkTitle": "{network} գործարք",
         "transactionHash": "Գործարքի հաշ(կոդ)",
         "networkInfo": {
