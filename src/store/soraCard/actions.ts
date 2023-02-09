@@ -1,11 +1,12 @@
 import { defineActions } from 'direct-vuex';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 
 import { waitForAccountPair } from '@/utils';
-import { defineUserStatus, getXorPerEuroRatio } from '@/utils/card';
+import { defineUserStatus, getXorPerEuroRatio, soraCard } from '@/utils/card';
 import { soraCardActionContext } from './../soraCard';
 import { Status } from '@/types/card';
+import { loadScript } from 'vue-plugin-load-script';
 
 const actions = defineActions({
   calculateXorRestPrice(context, xorPerEuro): void {
@@ -62,6 +63,27 @@ const actions = defineActions({
 
     commit.setKycStatus(kycStatus);
     commit.setVerificationStatus(verificationStatus);
+  },
+
+  async initPayWingsAuthSdk(context): Promise<void> {
+    const { commit, rootState } = soraCardActionContext(context);
+    const soraNetwork = rootState.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
+    const { authService } = soraCard(soraNetwork);
+
+    await loadScript(authService.sdkURL).then(() => {
+      // TODO: annotate via TS main calls
+      // @ts-expect-error no undefined
+      const login = Paywings.WebSDK.create({
+        Domain: 'soracard.com',
+        UnifiedLoginApiKey: authService.apiKey,
+        env: authService.env,
+        AccessTokenTypeID: 1,
+        UserTypeID: 2,
+        ClientDescription: 'Auth',
+      });
+
+      commit.setPayWingsAuthSdk(login);
+    });
   },
 });
 

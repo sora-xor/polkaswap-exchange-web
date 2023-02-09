@@ -4,6 +4,7 @@ function initialState(): RouterState {
   return {
     current: null,
     prev: null,
+    loading: false,
   };
 }
 
