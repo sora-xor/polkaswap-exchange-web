@@ -200,7 +200,7 @@ type TableItem = {
 
 const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
   query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    entities: assets(after: $after, filter: { id: { in: $ids } }) {
+    entities: assets(after: $after, filter: { and: [{ id: { in: $ids } }, { liquidity: { greaterThan: "1" } }] }) {
       pageInfo {
         hasNextPage
         endCursor
@@ -273,20 +273,23 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   }
 
   get preparedItems(): TableItem[] {
-    return this.items.map((item) => {
-      const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(item) ?? 0);
-      const fpPriceDay = this.tokensData[item.address]?.startPriceDay ?? FPNumber.ZERO;
-      const fpPriceWeek = this.tokensData[item.address]?.startPriceWeek ?? FPNumber.ZERO;
-      const fpVolumeWeek = this.tokensData[item.address]?.volume ?? FPNumber.ZERO;
+    return Object.entries(this.tokensData).reduce<TableItem[]>((buffer, [address, tokenData]) => {
+      const asset = this.getAsset(address);
 
+      if (!asset) return buffer;
+
+      const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0);
+      const fpPriceDay = tokenData?.startPriceDay ?? FPNumber.ZERO;
+      const fpPriceWeek = tokenData?.startPriceWeek ?? FPNumber.ZERO;
+      const fpVolumeWeek = tokenData?.volume ?? FPNumber.ZERO;
       const fpPriceChangeDay = calcPriceChange(fpPrice, fpPriceDay);
       const fpPriceChangeWeek = calcPriceChange(fpPrice, fpPriceWeek);
 
-      const reserves = this.tokensData[item.address]?.reserves ?? FPNumber.ZERO;
+      const reserves = tokenData?.reserves ?? FPNumber.ZERO;
       const tvl = reserves.mul(fpPrice);
 
-      return {
-        ...item,
+      buffer.push({
+        ...asset,
         price: fpPrice.toNumber(),
         priceFormatted: new FPNumber(fpPrice.toFixed(7)).toLocaleString(),
         priceChangeDay: fpPriceChangeDay.toNumber(),
@@ -297,8 +300,10 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
         volumeWeekFormatted: formatAmountWithSuffix(fpVolumeWeek),
         tvl: tvl.toNumber(),
         tvlFormatted: formatAmountWithSuffix(tvl),
-      };
-    });
+      });
+
+      return buffer;
+    }, []);
   }
 
   // ExplorePageMixin method implementation
@@ -314,7 +319,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     const now = Math.floor(Date.now() / (5 * 60 * 1000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
     const dayTimestamp = now - 60 * 60 * 24; // latest day snapshot (unix)
     const weekTimestamp = now - 60 * 60 * 24 * 7; // latest week snapshot (unix)
-    const ids = this.items.map((item) => item.address);
+    const ids = this.items.map((item) => item.address); // only whitelisted assets
 
     const variables = { ids, dayTimestamp, weekTimestamp };
     const items = await SubqueryExplorerService.fetchAndParseEntities(parse, AssetsQuery, variables);

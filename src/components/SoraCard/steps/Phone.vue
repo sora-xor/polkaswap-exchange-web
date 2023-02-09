@@ -143,7 +143,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   get phoneInputDescription(): string {
-    if (this.smsSent) return 'We’ve sent you an SMS code. Check your inbox!';
+    if (this.smsSent) return 'We’ve sent you an SMS code. Check your messages!';
     return 'We’ll send you an SMS code.';
   }
 
