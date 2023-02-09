@@ -18,7 +18,7 @@ const lazyComponent = (name: string) => () => import(`@/components/${name}.vue`)
 const lazyView = (name: string) => () => import(`@/views/${name}.vue`);
 
 /**
- * Use this function instead just `router.push`.
+ * Use this function instead just `router.push` when page loading is required.
  *
  * It checks wallet routing, page loading and the current route.
  * if the current route isn't the same as param, then it will wait for `router.push`
