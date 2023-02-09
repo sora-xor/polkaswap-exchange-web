@@ -274,10 +274,6 @@ router.beforeEach((to, from, next) => {
       return;
     }
   }
-  if (!store.getters.settings.soraCardEnabled && to.name === PageNames.SoraCard) {
-    setRoute(PageNames.Swap);
-    return;
-  }
   setRoute(current, false);
 });
 
