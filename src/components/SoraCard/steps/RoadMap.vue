@@ -4,7 +4,7 @@
       <div class="map__text-info">
         <div class="map__section">
           <email-icon class="map__icon"></email-icon>
-          <div>
+          <div class="text">
             <h4 class="map__point">Verify contact info</h4>
             <span class="map__point-desc">Email and phone number</span>
             <div class="line"></div>
@@ -17,7 +17,7 @@
         </div>
         <div class="map__section">
           <user-icon class="map__icon"></user-icon>
-          <div>
+          <div class="text">
             <h4 class="map__point">Verify documents</h4>
             <span class="map__point-desc">Selfie with a document</span>
             <div class="line"></div>
@@ -30,7 +30,7 @@
         </div>
         <div class="map__section">
           <card-icon class="map__icon"></card-icon>
-          <div>
+          <div class="text">
             <h4 class="map__point">Submit personal data</h4>
             <span class="map__point-desc">Full name & proof of address</span>
             <div class="line line--last"></div>
@@ -140,9 +140,16 @@ export default class RoadMap extends Mixins(
 
   &__section {
     display: flex;
-    align-items: flex-start;
-    margin-top: $basic-spacing;
+    align-items: center;
     width: 100%;
+
+    .text {
+      padding-top: $basic-spacing;
+    }
+
+    &:last-child .text {
+      margin-bottom: $basic-spacing;
+    }
 
     .line {
       height: 1px;
