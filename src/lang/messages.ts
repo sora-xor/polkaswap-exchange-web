@@ -416,7 +416,6 @@ export default {
       waitingForConfirmation: 'Waiting for confirmation...',
     },
     blocksLeft: '{count} blocks left...',
-    viewInEtherscan: 'View in {Etherscan}',
     networkTitle: '{network} transaction',
     transactionHash: 'Transaction hash',
     networkInfo: {
