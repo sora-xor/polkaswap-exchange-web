@@ -10,6 +10,7 @@ function initialState(): SoraCardState {
     totalXorBalance: FPNumber.ZERO,
     xorToDeposit: FPNumber.ZERO,
     totalXorBalanceUpdates: null,
+    authLogin: null,
   };
 }
 

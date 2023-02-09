@@ -28,18 +28,15 @@
     </div>
 
     <div class="sora-card__header">{{ headerText }}</div>
-    <p class="sora-card__status-info">
-      We will let you know if you’re eligible for the SORA card as soon as we get information from our partner,
-      Paywings. We will notify you.
+    <p v-if="currentStatus === VerificationStatus.Pending" class="sora-card__status-info">
+      You have successfully completed your KYC application. The review is pending and you can expect a decision shortly.
     </p>
-
-    <s-button
-      v-if="currentStatus === VerificationStatus.Rejected"
-      type="primary"
-      class="sora-card__btn s-typography-button--large"
-    >
-      <span class="text">{{ buttonText }}</span>
-    </s-button>
+    <p v-if="currentStatus === VerificationStatus.Accepted" class="sora-card__status-info">
+      Your KYC verification is successful and we are already preparing to send you the SORA card!
+    </p>
+    <p v-if="currentStatus === VerificationStatus.Rejected" class="sora-card__status-info">
+      Your application has failed.
+    </p>
   </div>
 </template>
 
@@ -67,9 +64,9 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       case VerificationStatus.Pending:
         return 'KYC completed. Waiting for the results';
       case VerificationStatus.Accepted:
-        return 'You’re approved for SORA Card';
+        return 'Your application has been approved';
       case VerificationStatus.Rejected:
-        return 'You’re not been approved for SORA Card';
+        return 'Your application has not been approved';
       default:
         return null;
     }
@@ -84,7 +81,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       case VerificationStatus.Pending:
         return `${base}--waiting`;
       case VerificationStatus.Accepted:
-        return `${base}--succcess`;
+        return `${base}--success`;
       case VerificationStatus.Rejected:
         return `${base}--reject`;
       default:
@@ -111,6 +108,11 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     margin-top: $basic-spacing;
     text-align: center;
     width: 85%;
+    font-weight: 300;
+    line-height: 150%;
+  }
+  &__btn {
+    width: 100%;
   }
   &__card {
     position: relative;
@@ -138,6 +140,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       }
       &--success {
         background-color: var(--s-color-theme-secondary);
+        opacity: 0.95;
       }
       &--reject {
         background-color: var(--s-color-status-error);

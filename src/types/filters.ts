@@ -1,3 +1,5 @@
+import type { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+
 export enum Timeframes {
   FIVE_MINUTES = 'FIVE_MINUTES',
   FIFTEEN_MINUTES = 'FIFTEEN_MINUTES',
@@ -10,13 +12,6 @@ export enum Timeframes {
   QUARTER = 'QUARTER',
   YEAR = 'YEAR',
   ALL = 'ALL',
-}
-
-export enum SnapshotTypes {
-  DEFAULT = 'DEFAULT',
-  HOUR = 'HOUR',
-  DAY = 'DAY',
-  MONTH = 'MONTH',
 }
 
 export type SnapshotFilter = {

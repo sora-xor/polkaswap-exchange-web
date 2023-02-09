@@ -65,8 +65,8 @@ import last from 'lodash/fp/last';
 import { graphic } from 'echarts';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
-
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 
@@ -75,7 +75,7 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
 import { debouncedInputHandler, getTextWidth, calcPriceChange, formatDecimalPlaces } from '@/utils';
-import { Timeframes, SnapshotTypes } from '@/types/filters';
+import { Timeframes } from '@/types/filters';
 
 import type { SnapshotFilter } from '@/types/filters';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -111,7 +111,7 @@ const LINE_CHART_FILTERS: SnapshotFilter[] = [
     name: Timeframes.DAY,
     label: '1D',
     type: SnapshotTypes.DEFAULT,
-    count: 288, // 5 mins in day
+    count: 288,
   },
   {
     name: Timeframes.WEEK,

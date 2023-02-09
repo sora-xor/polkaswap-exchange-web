@@ -37,6 +37,7 @@ import last from 'lodash/fp/last';
 import { gql } from '@urql/core';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 import { FPNumber } from '@sora-substrate/math';
 import { XOR, VAL, PSWAP, XSTUSD, XST, TBCD } from '@sora-substrate/util/build/assets/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
@@ -47,7 +48,6 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, ASSET_SUPPLY_LINE_FILTERS } from '@/consts/snapshots';
 import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
-import { SnapshotTypes } from '@/types/filters';
 
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';

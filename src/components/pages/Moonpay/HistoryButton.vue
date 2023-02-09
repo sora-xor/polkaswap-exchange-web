@@ -18,7 +18,7 @@ import type { BridgeHistory } from '@sora-substrate/util';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import router from '@/router';
+import { goTo } from '@/router';
 import { PageNames } from '@/consts';
 import { state, mutation } from '@/store/decorators';
 
@@ -58,7 +58,7 @@ export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, Tra
     if (this.isReadyForTransfer) {
       this.setConfirmationVisibility(true);
     } else {
-      router.push({ name: PageNames.MoonpayHistory });
+      goTo(PageNames.MoonpayHistory);
     }
   }
 }

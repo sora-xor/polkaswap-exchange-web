@@ -1,4 +1,6 @@
-import { SnapshotTypes, Timeframes } from '@/types/filters';
+import { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+
+import { Timeframes } from '@/types/filters';
 
 import type { SnapshotFilter } from '@/types/filters';
 

@@ -6,6 +6,7 @@ import { waitForAccountPair } from '@/utils';
 import { defineUserStatus, getXorPerEuroRatio } from '@/utils/card';
 import { soraCardActionContext } from './../soraCard';
 import { Status } from '@/types/card';
+import { loadScript } from 'vue-plugin-load-script';
 
 const actions = defineActions({
   calculateXorRestPrice(context, xorPerEuro): void {
@@ -62,6 +63,25 @@ const actions = defineActions({
 
     commit.setKycStatus(kycStatus);
     commit.setVerificationStatus(verificationStatus);
+  },
+
+  async initPayWingsAuthSdk(context): Promise<void> {
+    const { commit } = soraCardActionContext(context);
+
+    await loadScript('https://auth-test.soracard.com/WebSDK/WebSDK.js').then(() => {
+      // TODO: annotate via TS main calls
+      // @ts-expect-error no undefined
+      const login = Paywings.WebSDK.create({
+        Domain: 'soracard.com',
+        UnifiedLoginApiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
+        env: 'Test',
+        AccessTokenTypeID: 1,
+        UserTypeID: 2,
+        ClientDescription: 'Auth',
+      });
+
+      commit.setPayWingsAuthSdk(login);
+    });
   },
 });
 

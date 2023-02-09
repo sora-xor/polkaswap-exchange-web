@@ -32,11 +32,11 @@ import { gql } from '@urql/core';
 import { FPNumber } from '@sora-substrate/math';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
-import { SnapshotTypes } from '@/types/filters';
 import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 
 import type { AmountWithSuffix } from '@/types/formats';
