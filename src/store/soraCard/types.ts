@@ -9,4 +9,5 @@ export type SoraCardState = {
   totalXorBalance: FPNumber;
   xorToDeposit: FPNumber;
   totalXorBalanceUpdates: Nullable<Subscription>;
+  authLogin: any;
 };

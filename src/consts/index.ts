@@ -157,6 +157,8 @@ export enum Components {
   TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
   ToSDialog = 'SoraCard/steps/ToSDialog',
   RoadMap = 'SoraCard/steps/RoadMap',
+  Phone = 'SoraCard/steps/Phone',
+  Email = 'SoraCard/steps/Email',
   KycView = 'SoraCard/steps/KycView',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',

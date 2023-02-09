@@ -6,25 +6,30 @@
         To get an IBAN account needed for the SORA Card, users are required to undergo a KYC process with the card
         issuer. This is required compliance. The SORA community does not and will not collect any of your personal data.
       </p>
-      <div class="tos__disclaimer-warning-icon">
+      <div class="tos__disclaimer-warning icon">
         <s-icon name="notifications-alert-triangle-24" size="28px" />
       </div>
     </div>
     <div class="tos__section">
       <div class="tos__section-block" @click="openDialog('t&c')">
-        <span class="tos__section-point">Terms & Conditions</span>
+        <span class="tos__section-point">{{ termsAndConditionsTitle }}</span>
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>
       <div class="line" />
       <div class="tos__section-block" @click="openDialog('privacyPolicy')">
-        <span class="tos__section-point">Privacy Policy</span>
+        <span class="tos__section-point">{{ privacyPolicyTitle }}</span>
+        <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
+      </div>
+      <div class="line" />
+      <div class="tos__section-block" @click="openDialog('unsupported')">
+        <span class="tos__section-point">{{ unsupportedCountriesTitle }}</span>
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>
     </div>
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirmToS">
       <span class="text">ACCEPT & CONTINUE</span>
     </s-button>
-    <tos-dialog :visible.sync="showDialog" :srcLink="link" :key="link" />
+    <tos-dialog :visible.sync="showDialog" :srcLink="link" :title="dialogTitle" :key="link" />
   </div>
 </template>
 
@@ -44,7 +49,13 @@ import { Theme } from '@soramitsu/soramitsu-js-ui';
 })
 export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   showDialog = false;
+  nonSupportedCountriesDialog = false;
+  dialogTitle = '';
   link = '';
+
+  termsAndConditionsTitle = 'Terms & Conditions';
+  privacyPolicyTitle = 'Privacy Policy';
+  unsupportedCountriesTitle = 'Unsupported Сountries';
 
   @getter.libraryTheme libraryTheme!: Theme;
 
@@ -57,15 +68,21 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
   }
 
   handleConfirmToS(): void {
-    this.$emit('confirm-tos');
+    this.$emit('confirm');
   }
 
   openDialog(policy: string): void {
     if (policy === 't&c') {
       this.link = this.termsLink;
+      this.dialogTitle = this.termsAndConditionsTitle;
     }
     if (policy === 'privacyPolicy') {
       this.link = this.privacyLink;
+      this.dialogTitle = this.privacyPolicyTitle;
+    }
+    if (policy === 'unsupported') {
+      this.link = '';
+      this.dialogTitle = this.unsupportedCountriesTitle;
     }
     this.showDialog = true;
   }
@@ -93,16 +110,16 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
       margin-bottom: calc(var(--s-basic-spacing) / 2);
     }
 
-    &-warning-icon {
+    &-warning.icon {
       position: absolute;
       background-color: #479aef;
-      border: 2.25257px solid #f7f3f4 !important;
-      box-shadow: -4px -3px 30px rgba(255, 255, 255, 0.9), 20px 20px 60px rgba(0, 0, 0, 0.1), inset 1px 1px 10px #ffffff;
+      border: 2.25257px solid #f7f3f4;
+      box-shadow: var(--s-shadow-element-pressed);
       top: 20px;
       right: 20px;
       border-radius: 50%;
       color: #fff;
-      width: 46px !important;
+      width: 46px;
       height: 46px;
 
       .s-icon-notifications-alert-triangle-24 {
