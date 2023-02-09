@@ -226,6 +226,12 @@ export interface SidebarMenuItem {
   icon?: string;
   title: string;
   disabled?: boolean;
+  /**
+   * When page has a redirection it's better to set the final route to avoid errors from router.
+   *
+   * So, when the final route is different from title `index` should be used for menu
+   */
+  index?: string;
 }
 
 export interface SidebarMenuItemLink extends SidebarMenuItem {
@@ -248,6 +254,7 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     icon: 'basic-layers-24',
     title: PageNames.StakingContainer,
     href: '/#/staking',
+    index: DemeterPageNames.Staking,
   },
   {
     icon: 'grid-block-distribute-vertically-24',
@@ -274,6 +281,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     icon: 'various-items-24',
     title: PageNames.ExploreContainer,
     href: '/#/explore',
+    index: PageNames.ExploreFarming,
   },
   {
     icon: 'sora-card',

@@ -35,12 +35,6 @@ async function goTo(name: PageNames): Promise<void> {
   if (current === name) {
     return;
   }
-  if (current === PageNames.ExploreFarming && name === PageNames.ExploreContainer) {
-    return; // Page by default
-  }
-  if (current === DemeterPageNames.Staking && name === PageNames.StakingContainer) {
-    return; // Page by default
-  }
   try {
     store.commit.router.setLoading(true);
     await router.push({ name });

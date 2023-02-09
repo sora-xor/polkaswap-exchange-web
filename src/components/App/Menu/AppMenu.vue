@@ -21,7 +21,7 @@
             <s-menu-item
               v-button
               :key="item.title"
-              :index="item.title"
+              :index="item.index || item.title"
               :disabled="item.disabled"
               tabindex="0"
               class="menu-item"
@@ -32,7 +32,7 @@
                 :href="item.href"
                 :icon="item.icon"
                 :title="t(`mainMenu.${item.title}`)"
-                @click="() => false /** To ignore left click */"
+                @click.native="preventAnchorNavigation"
               />
             </s-menu-item>
           </s-menu-item-group>
@@ -112,6 +112,7 @@ import {
 
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
+import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 @Component({
   components: {
@@ -153,16 +154,21 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       return PageNames.Rewards;
     }
     if (StakingChildPages.includes(currentName)) {
-      return PageNames.StakingContainer;
+      return DemeterPageNames.Staking;
     }
     if (ExploreChildPages.includes(currentName)) {
-      return PageNames.ExploreContainer;
+      return PageNames.ExploreFarming;
     }
     return currentName as string;
   }
 
   openSoraDownloadDialog(): void {
     this.$emit('open-download-dialog');
+  }
+
+  /** To ignore left click */
+  preventAnchorNavigation(e?: Event): void {
+    e?.preventDefault();
   }
 }
 </script>
