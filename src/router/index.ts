@@ -235,9 +235,6 @@ const routes: Array<RouteConfig> = [
   {
     path: '*',
     redirect: '/swap',
-    // TODO: Turn on redirect to PageNotFound
-    // name: PageNames.PageNotFound,
-    // component: lazyComponent(PageNames.PageNotFound)
   },
 ];
 
@@ -276,10 +273,6 @@ router.beforeEach((to, from, next) => {
       setRoute(PageNames.Wallet);
       return;
     }
-  }
-  if (!store.getters.settings.soraCardEnabled && to.name === PageNames.SoraCard) {
-    setRoute(PageNames.Swap);
-    return;
   }
   setRoute(current, false);
 });

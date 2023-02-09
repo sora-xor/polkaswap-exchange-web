@@ -111,7 +111,6 @@
         "title": "Аккаунт сети {Sora}",
         "WalletAssets": "Активы",
         "WalletActivity": "Активность",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -169,8 +168,7 @@
         },
         "totalAssetsValue": "Общая стоимость ваших активов:",
         "details": "Детали",
-        "assetId": "ID актива",
-        "add": "@:addAssetText"
+        "assetId": "ID актива"
     },
     "asset": {
         "remove": "Удалить актив",
@@ -192,9 +190,7 @@
             "title": "Валюта",
             "switchBtn": "Только проверенные активы"
         },
-        "searchInputText": "Поиск по идентификатору актива, имени или символу тикера",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Поиск по идентификатору актива, имени или символу тикера"
     },
     "createToken": {
         "desc": "Создание и развертывание своего актива на {Sora}",
@@ -292,11 +288,8 @@
             "submitted": "Транзакция отправлена с комиссией в размере {fee} {symbol}",
             "confirmed": "Транзакция подтверждена"
         },
-        "viewIn": {
-            "sorascan": "Смотреть в SORAScan",
-            "subscan": "Смотреть в Subscan"
-        },
         "txId": "ID транзакции",
+        "viewIn": "Смотреть в {explorer}",
         "referrer": "Реферер",
         "referral": "Реферал"
     },
@@ -332,7 +325,6 @@
         "AddLiquidity": "Добавить ликвидность",
         "AddLiquidityId": "Добавить ликвидность",
         "RemoveLiquidity": "Забрать ликвидность",
-        "PageNotFound": "Страница не найдена",
         "Rewards": "Награды",
         "Explore\/Tokens": "Токены",
         "Explore\/Pools": "Пулы",
@@ -432,26 +424,7 @@
         "from": "Из",
         "to": "На"
     },
-    "pageNotFound": {
-        "title": "Страница не найдена",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Сеть для разработчиков",
-        "Test": "{Sora} Тестовая сеть",
-        "Prod": "{Sora} Основная сеть",
-        "Stage": "{Sora} Тестовая сеть"
-    },
-    "evm": {
-        "main": "Основная сеть {Ethereum}",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +533,6 @@
         "notRegisteredAsset": "Актив {assetSymbol} не зарегистрирован",
         "selectNetwork": "Выбрать сеть",
         "networkInfo": "Соединить {Sora} Сеть с:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Скопировать адрес сети",
         "soraAddress": "{Sora} адрес",
         "ethereumAddress": "{Ethereum} адрес",
@@ -617,7 +588,6 @@
             "done": "Выполнено",
             "waitingForConfirmation": "Ожидание подтверждения..."
         },
-        "viewInEtherscan": "Посмотреть в {Etherscan}",
         "networkTitle": "{network} транзакция",
         "transactionHash": "Хеш транзакции",
         "networkInfo": {

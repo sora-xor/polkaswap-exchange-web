@@ -111,7 +111,6 @@
         "title": "{Sora} Nettverkskonto",
         "WalletAssets": "Aktiva",
         "WalletActivity": "Aktivitet",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -169,8 +168,7 @@
         },
         "totalAssetsValue": "Totalverdi aktiva:",
         "details": "Detaljer",
-        "assetId": "Aktivum ID",
-        "add": "@:addAssetText"
+        "assetId": "Aktivum ID"
     },
     "asset": {
         "remove": "Fjern aktiva",
@@ -192,9 +190,7 @@
             "title": "Valutaer",
             "switchBtn": "Kun bekreftede eiendeler"
         },
-        "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol"
     },
     "createToken": {
         "desc": "Opprett og distribuer egendefinert token på {Sora}",
@@ -292,11 +288,8 @@
             "submitted": "Transaksjon sendt med gebyr på {fee} {symbol}",
             "confirmed": "Transaksjon bekreftet"
         },
-        "viewIn": {
-            "sorascan": "Vis i SORAScan",
-            "subscan": "Vis i Subscan"
-        },
         "txId": "Transaksjons ID",
+        "viewIn": "Vis i {explorer}",
         "referrer": "Henviser",
         "referral": "Henvisning"
     },
@@ -332,7 +325,6 @@
         "AddLiquidity": "Legg til likviditet",
         "AddLiquidityId": "Legg til likviditet",
         "RemoveLiquidity": "Fjern likviditet",
-        "PageNotFound": "Side ikke funnet",
         "Rewards": "Belønninger",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Bassenger",
@@ -432,26 +424,7 @@
         "from": "Fra",
         "to": "Til"
     },
-    "pageNotFound": {
-        "title": "Side ikke funnet",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +533,6 @@
         "notRegisteredAsset": "Aktivum {assetSymbol} er ikke registrert",
         "selectNetwork": "Velg nettverk",
         "networkInfo": "Bridge {Sora} Network med:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Kopier nettverksadressen",
         "soraAddress": "{Sora} adresse",
         "ethereumAddress": "{Ethereum} adresse",
@@ -617,7 +588,6 @@
             "done": "Ferdig",
             "waitingForConfirmation": "Venter på bekreftelse..."
         },
-        "viewInEtherscan": "Vis i {Etherscan}",
         "networkTitle": "{network} transaksjon",
         "transactionHash": "Transaksjon hash",
         "networkInfo": {

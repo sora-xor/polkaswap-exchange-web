@@ -111,7 +111,6 @@
         "title": "Рачун мреже {Sora}",
         "WalletAssets": "Средства",
         "WalletActivity": "Активност",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -169,8 +168,7 @@
         },
         "totalAssetsValue": "Укупна вредност средства:",
         "details": "Детаљи",
-        "assetId": "ИД средства",
-        "add": "@:addAssetText"
+        "assetId": "ИД средства"
     },
     "asset": {
         "remove": "Уклоните средство",
@@ -192,9 +190,7 @@
             "title": "Валуте",
             "switchBtn": "Само верификована средства"
         },
-        "searchInputText": "Претрага по ИД средства, имену или симболу ознаке",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Претрага по ИД средства, имену или симболу ознаке"
     },
     "createToken": {
         "desc": "Креирајте и примените прилагођено средство на {Sora}",
@@ -292,11 +288,8 @@
             "submitted": "Трансакција је послата уз накнаду од {fee} {symbol}",
             "confirmed": "Трансакција потврђена"
         },
-        "viewIn": {
-            "sorascan": "Погледајте у SORAScan",
-            "subscan": "Прикажите у Субскену"
-        },
         "txId": "ИД трансакције",
+        "viewIn": "Прикажите у {explorer}",
         "referrer": "Предложилтељ",
         "referral": "Препорука"
     },
@@ -332,7 +325,6 @@
         "AddLiquidity": "Додати ликвидност",
         "AddLiquidityId": "Додати ликвидност",
         "RemoveLiquidity": "Уклони ликвидност",
-        "PageNotFound": "Страница није пронађена",
         "Rewards": "Награде",
         "Explore\/Tokens": "Токени",
         "Explore\/Pools": "Базени",
@@ -432,26 +424,7 @@
         "from": "Од",
         "to": "До"
     },
-    "pageNotFound": {
-        "title": "Страница није пронађена",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Девнет",
-        "Test": "{Sora} Тестнет",
-        "Prod": "{Sora} Меиннет",
-        "Stage": "{Sora} Тестнет"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Волта Тестнет",
-        "EWC": "Energy Wеб Čejn"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +533,6 @@
         "notRegisteredAsset": "Средство {assetSymbol} није регистровано",
         "selectNetwork": "Изаберите мрежу",
         "networkInfo": "Бриџ {Sora} мрежа са:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Копирајте мрежну адресу",
         "soraAddress": "{Sora} adresa",
         "ethereumAddress": "{Ethereum} adresa",
@@ -617,7 +588,6 @@
             "done": "Комплетно",
             "waitingForConfirmation": "Чека се потврда..."
         },
-        "viewInEtherscan": "Погледајте у {Etherscan}",
         "networkTitle": "{network} трансакција",
         "transactionHash": "Хеш трансакције",
         "networkInfo": {

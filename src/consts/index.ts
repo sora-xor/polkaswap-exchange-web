@@ -121,7 +121,6 @@ export enum PageNames {
   RewardsTabs = 'RewardsTabs',
   ReferralBonding = 'ReferralBonding',
   ReferralUnbonding = 'ReferralUnbonding',
-  PageNotFound = 'PageNotFound',
   BridgeContainer = 'BridgeContainer',
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',

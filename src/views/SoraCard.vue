@@ -10,8 +10,8 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import { action, getter } from '@/store/decorators';
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
+import { goTo, lazyComponent } from '@/router';
+import { Components, PageNames } from '@/consts';
 
 import { Component, Mixins } from 'vue-property-decorator';
 import { VerificationStatus } from '@/types/card';
@@ -31,6 +31,7 @@ enum Step {
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
+  @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
@@ -65,8 +66,11 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
     }
   }
 
-  async created(): Promise<void> {
-    await this.subscribeToTotalXorBalance();
+  created(): void {
+    if (!this.soraCardEnabled) {
+      goTo(PageNames.Swap);
+    }
+    this.subscribeToTotalXorBalance();
   }
 
   async beforeDestroy(): Promise<void> {

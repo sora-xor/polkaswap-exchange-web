@@ -111,7 +111,6 @@
         "title": "{Sora}-Nätverkskonto",
         "WalletAssets": "Tillgångar",
         "WalletActivity": "Aktivitet",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -169,8 +168,7 @@
         },
         "totalAssetsValue": "Dina tillgångars sammanlagda värde: ",
         "details": "Detaljer",
-        "assetId": "Tillgångs-ID",
-        "add": "@:addAssetText"
+        "assetId": "Tillgångs-ID"
     },
     "asset": {
         "remove": "Ta bort tillgång",
@@ -192,9 +190,7 @@
             "title": "Valutor",
             "switchBtn": "Endast verifierade tillgångar"
         },
-        "searchInputText": "Sök efter Tillgångs-ID, Namn eller Ticker-symbol",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Sök efter Tillgångs-ID, Namn eller Ticker-symbol"
     },
     "createToken": {
         "desc": "Skapa och utplacera anpassad tillgång på {Sora}",
@@ -292,11 +288,8 @@
             "submitted": "Transaktion inskickad med avgift på {fee} {symbol}",
             "confirmed": "Transaktion bekräftad"
         },
-        "viewIn": {
-            "sorascan": "Visa i SORAScan",
-            "subscan": "VIsa i Subscan"
-        },
         "txId": "Transaktions-ID",
+        "viewIn": "Visa i {explorer}",
         "referrer": "Referrer",
         "referral": "Hänvisning"
     },
@@ -332,7 +325,6 @@
         "AddLiquidity": "Lägg Till Likviditet",
         "AddLiquidityId": "Lägg till Likviditet",
         "RemoveLiquidity": "Ta Bort Likviditet",
-        "PageNotFound": "Sidan Hittades Inte",
         "Rewards": "Rewards",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Pooler",
@@ -432,26 +424,7 @@
         "from": "Från",
         "to": "Till"
     },
-    "pageNotFound": {
-        "title": "Sida hittades inte",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +533,6 @@
         "notRegisteredAsset": "Tillgång {assetSymbol} är ej registrerad",
         "selectNetwork": "Välj nätverk",
         "networkInfo": "Brygga {Sora} Nätverk med:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Kopiera nätverksadress",
         "soraAddress": "{Sora} adress",
         "ethereumAddress": "{Ethereum} adress",
@@ -617,7 +588,6 @@
             "done": "Slutförd",
             "waitingForConfirmation": "Väntar på bekräftelse..."
         },
-        "viewInEtherscan": "Visa i {Etherscan}",
         "networkTitle": "{network} transaktion",
         "transactionHash": "Transaktionshash",
         "networkInfo": {
