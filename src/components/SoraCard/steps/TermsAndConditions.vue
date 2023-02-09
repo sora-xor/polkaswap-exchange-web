@@ -6,7 +6,7 @@
         To get an IBAN account needed for the SORA Card, users are required to undergo a KYC process with the card
         issuer. This is required compliance. The SORA community does not and will not collect any of your personal data.
       </p>
-      <div class="tos__disclaimer-warning-icon">
+      <div class="tos__disclaimer-warning icon">
         <s-icon name="notifications-alert-triangle-24" size="28px" />
       </div>
     </div>
@@ -110,16 +110,16 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
       margin-bottom: calc(var(--s-basic-spacing) / 2);
     }
 
-    &-warning-icon {
+    &-warning.icon {
       position: absolute;
       background-color: #479aef;
-      border: 2.25257px solid #f7f3f4 !important;
-      box-shadow: -4px -3px 30px rgba(255, 255, 255, 0.9), 20px 20px 60px rgba(0, 0, 0, 0.1), inset 1px 1px 10px #ffffff;
+      border: 2.25257px solid #f7f3f4;
+      box-shadow: var(--s-shadow-element-pressed);
       top: 20px;
       right: 20px;
       border-radius: 50%;
       color: #fff;
-      width: 46px !important;
+      width: 46px;
       height: 46px;
 
       .s-icon-notifications-alert-triangle-24 {

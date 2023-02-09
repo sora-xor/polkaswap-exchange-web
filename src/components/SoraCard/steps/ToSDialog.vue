@@ -8,8 +8,8 @@
     </div>
     <div v-else class="tos__section">
       <ul class="sora-card__unsupported-countries">
-        <li v-for="(country, index) in Object.values(unsupportedCountries)" :key="country">
-          <span class="flags">{{ Object.keys(unsupportedCountries).map(countryCodeEmoji)[index] }} </span> {{ country }}
+        <li v-for="[key, value] in Object.entries(unsupportedCountries)" :key="key">
+          <span class="flags">{{ countryCodeEmoji(key) }} </span> {{ value }}
         </li>
       </ul>
     </div>
@@ -77,12 +77,13 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
 .tos__section {
   width: 100%;
   height: 600px;
-  // background-color: var(--s-color-base-background);
+  background-color: transparent;
   box-shadow: var(--s-shadow-element);
   border-radius: 10px;
   padding: 0;
-  padding-left: 20px;
-  padding-right: 4px;
+  padding-left: $basic-spacing;
+  padding-right: $inner-spacing-tiny;
+  padding-top: $inner-spacing-mini;
   overflow: hidden;
 }
 
@@ -94,18 +95,18 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
 
     li {
       list-style: none;
-      margin: 10px;
+      margin: $basic-spacing-small;
       font-weight: 600;
       font-size: 18px;
 
       .flags {
-        margin-right: 4px;
+        margin-right: $inner-spacing-tiny;
       }
     }
   }
 
   &__excuse {
-    margin-bottom: 16px;
+    margin-bottom: $basic-spacing;
     font-size: 18px;
   }
 }
