@@ -31,29 +31,41 @@ export default class KycView extends Mixins(TranslationMixin) {
 
   loadingKycView = true;
 
-  async getReferenceNumber(URL: string): Promise<string> {
+  async getReferenceNumber(URL: string): Promise<string | undefined> {
+    const { kycService } = soraCard(this.soraNetwork);
     const token = localStorage.getItem('PW-token');
 
-    const result = await fetch(URL, {
-      method: 'POST',
-      body: JSON.stringify({
-        ReferenceID: uuidv4(),
-        MobileNumber: '',
-        Email: '',
-        AddressChanged: false,
-        DocumentChanged: false,
-        IbanTypeID: null,
-        CardTypeID: null,
-        AdditionalData: '',
-      }),
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const result = await fetch(URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          ReferenceID: uuidv4(),
+          MobileNumber: '',
+          Email: '',
+          AddressChanged: false,
+          DocumentChanged: false,
+          IbanTypeID: null,
+          CardTypeID: null,
+          AdditionalData: '',
+        }),
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const data = await result.json();
+      const data = await result.json();
 
-    return data.ReferenceNumber;
+      return data.ReferenceNumber;
+    } catch (data) {
+      console.error('[SoraCard]: Error while initiating KYC', data);
+
+      this.$notify({
+        message: 'Something went wrong. Please, start again',
+        title: '',
+      });
+      this.$emit('confirm-kyc', false);
+      unloadScript(kycService.sdkURL);
+    }
   }
 
   async mounted(): Promise<void> {

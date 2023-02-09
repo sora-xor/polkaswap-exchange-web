@@ -145,15 +145,15 @@ const emptyStatusFields = (): Status => ({
 export function soraCard(soraNetwork: string) {
   const getAuthServiceData = (soraNetwork: string) => {
     const test = {
-      sdkURL: 'https://auth-test.paywings.io/auth/sdk.js',
-      authURL: 'https://auth-test.soracard.com',
+      sdkURL: 'https://auth-test.soracard.com/WebSDK/WebSDK.js',
       apiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
+      env: WALLET_CONSTS.SoraNetwork.Test,
     };
 
     const prod = {
       sdkURL: '',
-      authURL: '',
       apiKey: '',
+      env: WALLET_CONSTS.SoraNetwork.Prod,
     };
 
     return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
