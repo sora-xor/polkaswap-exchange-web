@@ -45,7 +45,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { action, getter, state } from '@/store/decorators';
 import { VerificationStatus } from '@/types/card';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
@@ -53,6 +53,7 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 @Component
 export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.soraCard.authLogin authLogin!: any;
+  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
@@ -134,6 +135,10 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     return 'SEND SMS CODE';
   }
 
+  get isMainnet(): boolean {
+    return this.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod;
+  }
+
   get sendSmsDisabled(): boolean {
     return !this.phoneNumber || this.smsSent;
   }
@@ -143,7 +148,11 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   get phoneInputDescription(): string {
-    if (this.smsSent) return 'We’ve sent you an SMS code. Check your messages!';
+    if (this.smsSent) {
+      return this.isMainnet
+        ? 'We’ve sent you an SMS code. Check your messages!'
+        : 'Your code for testing purposes: 123456';
+    }
     return 'We’ll send you an SMS code.';
   }
 

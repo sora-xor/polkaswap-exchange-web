@@ -95,10 +95,10 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
 </script>
 
 <style lang="scss">
-.x1-dialog .el-dialog {
-  .wrapper {
-    min-height: 320px;
-  }
+.x1-dialog .el-dialog .wrapper {
+  min-height: 320px;
+  padding: $basic-spacing-medium;
+  margin: -10px -20px -20px;
 }
 </style>
 
@@ -110,9 +110,9 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   border-radius: 28px;
   background-color: var(--s-color-status-error-background);
   padding: $basic-spacing;
-  margin-bottom: $basic-spacing / 2;
+  margin-bottom: $inner-spacing-small;
 
-  .disclaimer-warning-icon {
+  & &-warning-icon {
     margin-right: $basic-spacing;
 
     .s-icon-notifications-alert-triangle-24 {
@@ -124,5 +124,8 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   ul {
     margin-top: $basic-spacing / 2;
   }
+}
+[design-system-theme='dark'] .disclaimer-warning-icon .s-icon-notifications-alert-triangle-24 {
+  color: var(--s-color-base-content-primary);
 }
 </style>
