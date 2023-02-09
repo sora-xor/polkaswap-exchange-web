@@ -41,8 +41,6 @@ const pendingIcon = 'time-time-24';
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @getter.soraCard.currentStatus currentStatus!: VerificationStatus;
 
-  readonly VerificationStatus = VerificationStatus;
-
   get buttonText(): string {
     return tryAgainText;
   }

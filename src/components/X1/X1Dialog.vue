@@ -5,11 +5,13 @@
         <s-icon name="notifications-alert-triangle-24" size="42px" />
       </div>
       <div>
-        <p class="disclaimer__text">DO NOT ENTER your real card number. This is test environment.</p>
-        <p class="disclaimer__text">Please, use the following ones:</p>
+        <p class="disclaimer__text">DO NOT ENTER YOUR REAL CARD NUMBER. This is a test environment.</p>
+        <p class="disclaimer__text">Please use the following card details:</p>
         <ul>
-          <li>4012000000060085</li>
-          <li>4066330000000004</li>
+          <li>Card number: 4012 0000 0006 0085</li>
+          <li>Card CVV: 123</li>
+          <li>Card expiration date: Input any date</li>
+          <li>Card owner name: Input any name & surname</li>
         </ul>
       </div>
     </div>
