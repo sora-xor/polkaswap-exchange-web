@@ -62,6 +62,7 @@ import { action, getter, state } from '@/store/decorators';
 import { VerificationStatus } from '@/types/card';
 
 const MIN_PHONE_LENGTH_WITH_CODE = 8;
+const RESEND_INTERVAL = 59;
 
 @Component
 export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin) {
@@ -83,7 +84,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   private countryCodeInternal = '';
   private phoneNumberInternal = '';
   private smsResendText = '';
-  private smsResendCount = 59;
+  private smsResendCount = RESEND_INTERVAL;
   private notPassedKycAndNotHasXorEnough = false; // may be removed and `isEuroBalanceEnough` used instead?
 
   verificationCode = '';
@@ -212,7 +213,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 
       if (this.smsResendCount < 0) {
         this.smsSent = false;
-        this.smsResendCount = 30;
+        this.smsResendCount = RESEND_INTERVAL;
         clearInterval(interval);
       }
     }, 1000);

@@ -26,6 +26,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { state } from '@/store/decorators';
 
+const RESEND_INTERVAL = 59;
+
 @Component
 export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.soraCard.authLogin authLogin!: any;
@@ -36,7 +38,7 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   emailSent = false;
   emailSentFirstTime = false;
   emailResendText = '';
-  emailResendCount = 59;
+  emailResendCount = RESEND_INTERVAL;
 
   @Watch('emailResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
@@ -90,7 +92,7 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
 
       if (this.emailResendCount < 0) {
         this.emailSent = false;
-        this.emailResendCount = 59;
+        this.emailResendCount = RESEND_INTERVAL;
         clearInterval(interval);
       }
     }, 1000);
