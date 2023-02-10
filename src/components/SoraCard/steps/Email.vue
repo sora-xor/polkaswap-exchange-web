@@ -62,6 +62,8 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
     this.authLogin.SendVerificationEmail().catch(function (error) {
       console.error(error);
     });
+
+    this.emailSent = true;
   }
 
   get emailInputDescription(): string {
@@ -88,7 +90,7 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
 
       if (this.emailResendCount < 0) {
         this.emailSent = false;
-        this.emailResendCount = 30;
+        this.emailResendCount = 59;
         clearInterval(interval);
       }
     }, 1000);
