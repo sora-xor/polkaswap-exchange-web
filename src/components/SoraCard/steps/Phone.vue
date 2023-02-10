@@ -38,7 +38,6 @@
       v-model="verificationCode"
       :disabled="otpInputDisabled"
       maxlength="6"
-      type="number"
     />
     <s-button
       :disabled="buttonDisabled"
