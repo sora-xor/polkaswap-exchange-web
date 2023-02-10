@@ -29,6 +29,7 @@
               <sidebar-item-content
                 tag="a"
                 rel="nofollow noopener"
+                tabindex="-1"
                 :href="item.href"
                 :icon="item.icon"
                 :title="t(`mainMenu.${item.title}`)"
