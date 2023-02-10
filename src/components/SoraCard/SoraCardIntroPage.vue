@@ -20,7 +20,7 @@
         {{ freeStartUsingDesc }}
       </p>
     </div>
-    <div class="sora-card__options" v-loading="!wasEuroBalanceLoaded">
+    <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
       <div v-if="isEuroBalanceEnough || !isLoggedIn" class="sora-card__options--enough-euro">
         <s-button
           type="primary"
