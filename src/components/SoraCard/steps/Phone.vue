@@ -1,14 +1,24 @@
 <template>
   <div>
     <div class="sora-card__number-input">
-      <s-input
-        ref="number"
-        placeholder="Phone number"
-        type="number"
-        v-model="phoneNumber"
-        :disabled="phoneInputDisabled"
-      />
-      <!-- <input v-mask="['+# (###) ### ## ##']" /> TODO: format number depending on country code-->
+      <div class="phone-container s-flex">
+        <s-input
+          ref="code"
+          class="phone-code"
+          :placeholder="countryCodePlaceholder"
+          v-maska="'+###'"
+          v-model="countryCode"
+          :disabled="phoneInputDisabled"
+        />
+        <s-input
+          ref="phone"
+          class="phone-number"
+          placeholder="Phone number"
+          v-maska="'############'"
+          v-model="phoneNumber"
+          :disabled="phoneInputDisabled"
+        />
+      </div>
       <s-button
         type="secondary"
         :disabled="sendSmsDisabled"
@@ -23,7 +33,7 @@
       <s-icon v-if="smsSent" class="sora-card__icon" name="basic-check-mark-24" size="14px" />
     </div>
     <s-input
-      ref="codes"
+      ref="otp"
       placeholder="Verification code"
       v-model="verificationCode"
       :disabled="otpInputDisabled"
@@ -50,6 +60,8 @@ import { action, getter, state } from '@/store/decorators';
 import { VerificationStatus } from '@/types/card';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 
+const MIN_PHONE_LENGTH_WITH_CODE = 8;
+
 @Component
 export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.soraCard.authLogin authLogin!: any;
@@ -64,6 +76,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
   phoneNumber = '';
+  phoneCode = '';
   verificationCode = '';
   smsSent = false;
   smsResendTimer = null;
@@ -99,11 +112,30 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   sendSms(): void {
-    this.authLogin.PayWingsSendOtp('+' + this.phoneNumber, 'Your verification code is: @Otp').catch((error) => {
-      console.error(error);
-    });
+    this.authLogin
+      .PayWingsSendOtp(`${this.countryCode}${this.phoneNumber}`, 'Your verification code is: @Otp')
+      .catch((error) => {
+        console.error(error);
+      });
 
     this.startSmsCountDown();
+  }
+
+  get countryCode(): string {
+    return this.phoneCode;
+  }
+
+  set countryCode(numChar: string) {
+    if (numChar.length > 3) {
+      (this.$refs.phone as HTMLInputElement).focus();
+    }
+
+    this.phoneCode = numChar;
+  }
+
+  /** Real example when `countryCode` is empty */
+  get countryCodePlaceholder(): string {
+    return this.countryCode ? 'Code' : '+44';
   }
 
   get buttonDisabled() {
@@ -111,7 +143,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   get otpInputDisabled(): boolean {
-    return !this.smsSent || !this.phoneNumber;
+    return !this.smsSent || !this.isPhoneNumberValid;
   }
 
   get buttonText(): string {
@@ -139,8 +171,13 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     return this.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod;
   }
 
+  get isPhoneNumberValid(): boolean {
+    const code = this.countryCode.replace('+', '');
+    return !!(+code && this.phoneNumber && `${code}${this.phoneNumber}`.length >= MIN_PHONE_LENGTH_WITH_CODE);
+  }
+
   get sendSmsDisabled(): boolean {
-    return !this.phoneNumber || this.smsSent;
+    return !this.isPhoneNumberValid || this.smsSent;
   }
 
   get phoneInputDisabled(): boolean {
@@ -169,7 +206,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   async mounted(): Promise<void> {
-    (this.$refs.number as HTMLInputElement).focus();
+    (this.$refs.code as HTMLInputElement).focus();
 
     await this.initPayWingsAuthSdk();
 
@@ -178,8 +215,9 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     this.authLogin
       .on('SendOtp-Success', () => {
         this.smsSent = true;
-
-        // (this.$refs.codes as HTMLInputElement).focus();
+        this.$nextTick(() => {
+          (this.$refs.otp as HTMLInputElement).focus();
+        });
       })
       .on('MinimalRegistrationReq', () => {
         this.sendOtpBtnLoading = false;
@@ -290,5 +328,21 @@ input[type='number'] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+}
+</style>
+
+<style lang="scss" scoped>
+.phone {
+  &-code {
+    flex: 1;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  &-number {
+    flex: 5;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: 2px;
+  }
 }
 </style>
