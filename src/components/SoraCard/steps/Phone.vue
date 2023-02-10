@@ -53,39 +53,42 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Component, Mixins, Prop, Watch, Ref } from 'vue-property-decorator';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
 import { VerificationStatus } from '@/types/card';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 const MIN_PHONE_LENGTH_WITH_CODE = 8;
 
 @Component
 export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.soraCard.authLogin authLogin!: any;
-  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.soraCard.authLogin private authLogin!: any;
+  @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
-  @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
+  @getter.soraCard.isEuroBalanceEnough private isEuroBalanceEnough!: boolean;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
-  @action.soraCard.initPayWingsAuthSdk initPayWingsAuthSdk!: () => Promise<void>;
+  @action.soraCard.initPayWingsAuthSdk private initPayWingsAuthSdk!: AsyncFnWithoutArgs;
 
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
-  phoneNumber = '';
-  phoneCode = '';
+  @Ref('code') private readonly inputCode!: HTMLInputElement;
+  @Ref('phone') private readonly inputPhone!: HTMLInputElement;
+  @Ref('otp') private readonly inputOtp!: HTMLInputElement;
+
+  private countryCodeInternal = '';
+  private phoneNumberInternal = '';
+  private smsResendText = '';
+  private smsResendCount = 59;
+  private notPassedKycAndNotHasXorEnough = false; // may be removed and `isEuroBalanceEnough` used instead?
+
   verificationCode = '';
   smsSent = false;
-  smsResendTimer = null;
-  smsResendCount = 59;
-  smsResendText = '';
   sendOtpBtnLoading = false;
-  notPassedKycAndNotHasXorEnough = false;
-
-  loginApi: any = null;
 
   @Watch('smsResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
@@ -122,15 +125,25 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   get countryCode(): string {
-    return this.phoneCode;
+    return this.countryCodeInternal;
   }
 
-  set countryCode(numChar: string) {
-    if (numChar.length > 3) {
-      (this.$refs.phone as HTMLInputElement).focus();
+  set countryCode(value: string) {
+    if (value.length > 3) {
+      this.inputPhone.focus();
     }
+    this.countryCodeInternal = value;
+  }
 
-    this.phoneCode = numChar;
+  get phoneNumber(): string {
+    return this.phoneNumberInternal;
+  }
+
+  set phoneNumber(value: string) {
+    if (!value.length) {
+      this.inputCode.focus();
+    }
+    this.phoneNumberInternal = value;
   }
 
   /** Real example when `countryCode` is empty */
@@ -206,7 +219,8 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   async mounted(): Promise<void> {
-    (this.$refs.code as HTMLInputElement).focus();
+    await this.$nextTick();
+    this.inputCode.focus();
 
     await this.initPayWingsAuthSdk();
 
@@ -216,7 +230,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
       .on('SendOtp-Success', () => {
         this.smsSent = true;
         this.$nextTick(() => {
-          (this.$refs.otp as HTMLInputElement).focus();
+          this.inputOtp.focus();
         });
       })
       .on('MinimalRegistrationReq', () => {
