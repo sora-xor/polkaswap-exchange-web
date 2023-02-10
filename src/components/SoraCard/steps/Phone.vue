@@ -8,15 +8,13 @@
           v-maska="'+###'"
           v-model="countryCode"
           :disabled="phoneInputDisabled"
-          :style="{ flex: 1 }"
         />
         <s-input
           ref="number"
           class="phone-number"
-          :style="{ flex: 5 }"
           placeholder="Phone number"
-          v-model="phoneNumber"
           v-maska="'############'"
+          v-model="phoneNumber"
           :disabled="phoneInputDisabled"
         />
       </div>
