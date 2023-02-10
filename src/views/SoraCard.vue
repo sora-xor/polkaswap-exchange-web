@@ -7,14 +7,14 @@
 </template>
 
 <script lang="ts">
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import { action, getter } from '@/store/decorators';
 import { goTo, lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-
-import { Component, Mixins } from 'vue-property-decorator';
-import { VerificationStatus } from '@/types/card';
+import type { VerificationStatus } from '@/types/card';
 
 enum Step {
   StartPage = 'StartPage',
@@ -31,7 +31,7 @@ enum Step {
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
-  @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
+  @getter.settings.soraCardEnabled private soraCardEnabled!: Nullable<boolean>;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
@@ -41,6 +41,13 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
   userApplied = false;
 
   Step = Step;
+
+  @Watch('soraCardEnabled', { immediate: true })
+  private checkAvailability(value: Nullable<boolean>): void {
+    if (value === false) {
+      goTo(PageNames.Swap);
+    }
+  }
 
   confirmApply(userApplied: boolean): void {
     this.userApplied = userApplied;
@@ -67,9 +74,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
   }
 
   created(): void {
-    if (!this.soraCardEnabled) {
-      goTo(PageNames.Swap);
-    }
     this.subscribeToTotalXorBalance();
   }
 
