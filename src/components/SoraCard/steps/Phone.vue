@@ -35,9 +35,9 @@
     <s-input
       ref="otp"
       placeholder="Verification code"
+      v-maska="'######'"
       v-model="verificationCode"
       :disabled="otpInputDisabled"
-      maxlength="6"
     />
     <s-button
       :disabled="buttonDisabled"
@@ -61,6 +61,7 @@ import { action, getter, state } from '@/store/decorators';
 import { VerificationStatus } from '@/types/card';
 
 const MIN_PHONE_LENGTH_WITH_CODE = 8;
+const OTP_CODE_LENGTH = 6;
 const RESEND_INTERVAL = 59;
 
 @Component
@@ -152,7 +153,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   get buttonDisabled() {
-    return !this.verificationCode || this.notPassedKycAndNotHasXorEnough;
+    return this.verificationCode.length !== OTP_CODE_LENGTH || this.notPassedKycAndNotHasXorEnough;
   }
 
   get otpInputDisabled(): boolean {
@@ -160,7 +161,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   get buttonText(): string {
-    if (!this.verificationCode) {
+    if (this.verificationCode.length !== OTP_CODE_LENGTH) {
       return 'ENTER THE VERIFICATION CODE';
     }
 
