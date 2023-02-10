@@ -15,7 +15,7 @@ const actions = defineActions({
     const euroToPay = FPNumber.HUNDRED.add(FPNumber.ONE).sub(totalXorBalance.mul(xorPerEuro));
     const euroToPayInXor = euroToPay.div(xorPerEuro);
 
-    commit.setXorPriceToDeposit(euroToPayInXor.dp(3));
+    commit.setXorPriceToDeposit(euroToPayInXor.dp(3)); // it's rounded cuz it'll be shown in Bridge
   },
 
   async calculateXorBalanceInEuros(context, { xorPerEuro, xorTotalBalance }): Promise<void> {
@@ -42,12 +42,17 @@ const actions = defineActions({
     const xorPerEuro: string = await getXorPerEuroRatio();
 
     await waitForAccountPair(async () => {
-      const subscription = api.assets.getTotalXorBalanceObservable().subscribe((xorTotalBalance: FPNumber) => {
-        commit.setTotalXorBalance(xorTotalBalance);
-        dispatch.calculateXorBalanceInEuros({ xorPerEuro, xorTotalBalance });
-      });
+      await new Promise<void>((resolve) => {
+        const subscription = api.assets.getTotalXorBalanceObservable().subscribe(async (xorTotalBalance: FPNumber) => {
+          commit.setTotalXorBalance(xorTotalBalance);
+          await dispatch.calculateXorBalanceInEuros({ xorPerEuro, xorTotalBalance });
+          resolve();
+        });
 
-      commit.setTotalXorBalanceUpdates(subscription);
+        commit.setTotalXorBalanceUpdates(subscription);
+      });
+      // After first call
+      commit.setEuroBalanceLoaded(true);
     });
   },
 

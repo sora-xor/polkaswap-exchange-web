@@ -20,7 +20,7 @@
         {{ freeStartUsingDesc }}
       </p>
     </div>
-    <div class="sora-card__options">
+    <div class="sora-card__options" v-loading="!wasEuroBalanceLoaded">
       <div v-if="isEuroBalanceEnough || !isLoggedIn" class="sora-card__options--enough-euro">
         <s-button
           type="primary"
@@ -100,6 +100,7 @@ Get a Euro IBAN account and a Mastercard Debit Card`;
 
   @state.soraCard.euroBalance private euroBalance!: string;
   @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
+  @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
 
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
@@ -187,6 +188,19 @@ Get a Euro IBAN account and a Mastercard Debit Card`;
   }
 }
 </script>
+
+<style lang="scss">
+.sora-card__options {
+  .el-loading-mask {
+    padding: 0px 20px 20px;
+    margin: 0 -20px -20px;
+    background-color: var(--s-color-utility-surface);
+    .el-loading-spinner {
+      margin-left: calc(50% - var(--s-size-medium) + 10px / 2);
+    }
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .sora-card {
