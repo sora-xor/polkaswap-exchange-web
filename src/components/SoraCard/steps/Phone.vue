@@ -11,6 +11,7 @@
           :disabled="phoneInputDisabled"
         />
         <s-input
+          ref="phone"
           class="phone-number"
           placeholder="Phone number"
           v-maska="'############'"
@@ -75,7 +76,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
   phoneNumber = '';
-  countryCode = '';
+  phoneCode = '';
   verificationCode = '';
   smsSent = false;
   smsResendTimer = null;
@@ -118,6 +119,18 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
       });
 
     this.startSmsCountDown();
+  }
+
+  get countryCode(): string {
+    return this.phoneCode;
+  }
+
+  set countryCode(numChar: string) {
+    if (numChar.length > 3) {
+      (this.$refs.phone as HTMLInputElement).focus();
+    }
+
+    this.phoneCode = numChar;
   }
 
   /** Real example when `countryCode` is empty */
