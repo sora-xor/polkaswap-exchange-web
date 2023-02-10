@@ -6,7 +6,7 @@
       </div>
       <div>
         <p class="disclaimer__text">DO NOT ENTER YOUR REAL CARD NUMBER. This is a test environment.</p>
-        <p class="disclaimer__text">Please use the following card details:</p>
+        <p class="disclaimer__text">Please, use the following card details:</p>
         <ul>
           <li>Card number: 4012 0000 0006 0085</li>
           <li>Card CVV: 123</li>

@@ -3,6 +3,7 @@
     <div class="sora-card__number-input">
       <div class="phone-container s-flex">
         <s-input
+          ref="code"
           class="phone-code"
           :placeholder="countryCodePlaceholder"
           v-maska="'+###'"
@@ -10,7 +11,6 @@
           :disabled="phoneInputDisabled"
         />
         <s-input
-          ref="number"
           class="phone-number"
           placeholder="Phone number"
           v-maska="'############'"
@@ -18,7 +18,6 @@
           :disabled="phoneInputDisabled"
         />
       </div>
-      <!-- <input v-mask="['+# (###) ### ## ##']" /> TODO: format number depending on country code-->
       <s-button
         type="secondary"
         :disabled="sendSmsDisabled"
@@ -33,7 +32,7 @@
       <s-icon v-if="smsSent" class="sora-card__icon" name="basic-check-mark-24" size="14px" />
     </div>
     <s-input
-      ref="codes"
+      ref="otp"
       placeholder="Verification code"
       v-model="verificationCode"
       :disabled="otpInputDisabled"
@@ -194,7 +193,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   async mounted(): Promise<void> {
-    (this.$refs.number as HTMLInputElement).focus();
+    (this.$refs.code as HTMLInputElement).focus();
 
     await this.initPayWingsAuthSdk();
 
@@ -203,8 +202,9 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     this.authLogin
       .on('SendOtp-Success', () => {
         this.smsSent = true;
-
-        // (this.$refs.codes as HTMLInputElement).focus();
+        this.$nextTick(() => {
+          (this.$refs.otp as HTMLInputElement).focus();
+        });
       })
       .on('MinimalRegistrationReq', () => {
         this.sendOtpBtnLoading = false;
