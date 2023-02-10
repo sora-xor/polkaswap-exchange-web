@@ -1,13 +1,25 @@
 <template>
   <div>
     <div class="sora-card__number-input">
-      <s-input
-        ref="number"
-        placeholder="Phone number"
-        type="number"
-        v-model="phoneNumber"
-        :disabled="phoneInputDisabled"
-      />
+      <div class="phone-container s-flex">
+        <s-input
+          class="phone-code"
+          :placeholder="countryCodePlaceholder"
+          v-maska="'+###'"
+          v-model="countryCode"
+          :disabled="phoneInputDisabled"
+          :style="{ flex: 1 }"
+        />
+        <s-input
+          ref="number"
+          class="phone-number"
+          :style="{ flex: 5 }"
+          placeholder="Phone number"
+          v-model="phoneNumber"
+          v-maska="'############'"
+          :disabled="phoneInputDisabled"
+        />
+      </div>
       <!-- <input v-mask="['+# (###) ### ## ##']" /> TODO: format number depending on country code-->
       <s-button
         type="secondary"
@@ -50,6 +62,8 @@ import { action, getter, state } from '@/store/decorators';
 import { VerificationStatus } from '@/types/card';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 
+const MIN_PHONE_LENGTH_WITH_CODE = 8;
+
 @Component
 export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.soraCard.authLogin authLogin!: any;
@@ -64,6 +78,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
   phoneNumber = '';
+  countryCode = '';
   verificationCode = '';
   smsSent = false;
   smsResendTimer = null;
@@ -99,11 +114,18 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   sendSms(): void {
-    this.authLogin.PayWingsSendOtp('+' + this.phoneNumber, 'Your verification code is: @Otp').catch((error) => {
-      console.error(error);
-    });
+    this.authLogin
+      .PayWingsSendOtp(`${this.countryCode}${this.phoneNumber}`, 'Your verification code is: @Otp')
+      .catch((error) => {
+        console.error(error);
+      });
 
     this.startSmsCountDown();
+  }
+
+  /** Real example when `countryCode` is empty */
+  get countryCodePlaceholder(): string {
+    return this.countryCode ? 'Code' : '+1';
   }
 
   get buttonDisabled() {
@@ -111,7 +133,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   get otpInputDisabled(): boolean {
-    return !this.smsSent || !this.phoneNumber;
+    return !this.smsSent || !this.isPhoneNumberValid;
   }
 
   get buttonText(): string {
@@ -139,8 +161,13 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     return this.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod;
   }
 
+  get isPhoneNumberValid(): boolean {
+    const code = this.countryCode.replace('+', '');
+    return !!(+code && this.phoneNumber && `${code}${this.phoneNumber}`.length >= MIN_PHONE_LENGTH_WITH_CODE);
+  }
+
   get sendSmsDisabled(): boolean {
-    return !this.phoneNumber || this.smsSent;
+    return !this.isPhoneNumberValid || this.smsSent;
   }
 
   get phoneInputDisabled(): boolean {
@@ -290,5 +317,21 @@ input[type='number'] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+}
+</style>
+
+<style lang="scss" scoped>
+.phone {
+  &-code {
+    flex: 1;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  &-number {
+    flex: 5;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: 2px;
+  }
 }
 </style>
