@@ -1,10 +1,16 @@
 <template>
   <div class="sora-card">
-    <s-input placeholder="Email" v-model="email" :disabled="loading" type="email" />
+    <s-input maxlength="320" placeholder="Email" v-model="email" :disabled="loading" type="email" />
     <p class="sora-card__email-input-description">{{ emailInputDescription }}</p>
     <s-icon v-if="emailSent" name="basic-check-mark-24" size="16px" />
-    <s-input class="sora-card__input-name" placeholder="First Name" v-model="firstName" :disabled="loading" />
-    <s-input placeholder="Last Name" v-model="lastName" :disabled="loading" />
+    <s-input
+      class="sora-card__input-name"
+      maxlength="50"
+      placeholder="First Name"
+      v-model="firstName"
+      :disabled="loading"
+    />
+    <s-input maxlength="50" placeholder="Last Name" v-model="lastName" :disabled="loading" />
     <p class="sora-card__name-input-description">Use your real name.</p>
     <s-button
       type="primary"
