@@ -135,7 +135,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 
   /** Real example when `countryCode` is empty */
   get countryCodePlaceholder(): string {
-    return this.countryCode ? 'Code' : '+1';
+    return this.countryCode ? 'Code' : '+44';
   }
 
   get buttonDisabled() {
