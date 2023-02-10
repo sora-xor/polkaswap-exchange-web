@@ -111,7 +111,6 @@
         "title": "{Sora} Network account",
         "WalletAssets": "Assets",
         "WalletActivity": "Activity",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -169,8 +168,7 @@
         },
         "totalAssetsValue": "Total assets value:",
         "details": "Details",
-        "assetId": "Asset ID",
-        "add": "@:addAssetText"
+        "assetId": "Asset ID"
     },
     "asset": {
         "remove": "Remove asset",
@@ -192,9 +190,7 @@
             "title": "Currencies",
             "switchBtn": "Verified assets only"
         },
-        "searchInputText": "Search by Asset ID, Name or Ticker Symbol",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Search by Asset ID, Name or Ticker Symbol"
     },
     "createToken": {
         "desc": "Create and deploy custom asset on {Sora}",
@@ -292,11 +288,8 @@
             "submitted": "Transaction submitted with fee of {fee} {symbol}",
             "confirmed": "Transaction confirmed"
         },
-        "viewIn": {
-            "sorascan": "View in SORAScan",
-            "subscan": "View in Subscan"
-        },
         "txId": "Transaction Id",
+        "viewIn": "View in {explorer}",
         "referrer": "Referrer",
         "referral": "Referral"
     },
@@ -332,7 +325,6 @@
         "AddLiquidity": "Add Liquidity",
         "AddLiquidityId": "Add Liquidity",
         "RemoveLiquidity": "Remove Liquidity",
-        "PageNotFound": "Page Not Found",
         "Rewards": "Rewards",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Pools",
@@ -432,26 +424,7 @@
         "from": "From",
         "to": "To"
     },
-    "pageNotFound": {
-        "title": "Page not found",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +533,6 @@
         "notRegisteredAsset": "Asset {assetSymbol} is not registered",
         "selectNetwork": "Select network",
         "networkInfo": "Bridge {Sora} Network with:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Copy network address",
         "soraAddress": "{Sora} address",
         "ethereumAddress": "{Ethereum} address",
@@ -617,7 +588,6 @@
             "done": "Complete",
             "waitingForConfirmation": "Waiting for confirmation..."
         },
-        "viewInEtherscan": "View in {Etherscan}",
         "networkTitle": "{network} transaction",
         "transactionHash": "Transaction hash",
         "networkInfo": {

@@ -12,7 +12,7 @@
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap" />
       </app-menu>
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
-        <s-scrollbar class="app-body-scrollbar">
+        <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <div class="app-disclaimer-container">
@@ -101,6 +101,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.referrals.storageReferrer storageReferrer!: string;
   @state.settings.browserNotifPopupVisibility browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility browserNotifPopupBlocked!: boolean;
+  @state.router.loading pageLoading!: boolean;
 
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;

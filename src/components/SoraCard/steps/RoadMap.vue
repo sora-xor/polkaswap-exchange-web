@@ -4,7 +4,7 @@
       <div class="map__text-info">
         <div class="map__section">
           <email-icon class="map__icon"></email-icon>
-          <div>
+          <div class="text">
             <h4 class="map__point">Verify contact info</h4>
             <span class="map__point-desc">Email and phone number</span>
             <div class="line"></div>
@@ -17,7 +17,7 @@
         </div>
         <div class="map__section">
           <user-icon class="map__icon"></user-icon>
-          <div>
+          <div class="text">
             <h4 class="map__point">Verify documents</h4>
             <span class="map__point-desc">Selfie with a document</span>
             <div class="line"></div>
@@ -30,7 +30,7 @@
         </div>
         <div class="map__section">
           <card-icon class="map__icon"></card-icon>
-          <div>
+          <div class="text">
             <h4 class="map__point">Submit personal data</h4>
             <span class="map__point-desc">Full name & proof of address</span>
             <div class="line line--last"></div>
@@ -62,18 +62,14 @@
 </template>
 
 <script lang="ts">
-import { loadScript, unloadScript } from 'vue-plugin-load-script';
-import { action, getter, state } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
 import CardIcon from '@/assets/img/sora-card/card.svg?inline';
 import UserIcon from '@/assets/img/sora-card/user.svg?inline';
-import { delay } from '@/utils';
-import { clearTokensFromSessionStorage, soraCard } from '@/utils/card';
+import { clearTokensFromSessionStorage } from '@/utils/card';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { VerificationStatus } from '@/types/card';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
 
 @Component({
   components: {
@@ -83,18 +79,10 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
     NotificationEnablingPage: components.NotificationEnablingPage,
   },
 })
-export default class RoadMap extends Mixins(
-  TranslationMixin,
-  mixins.LoadingMixin,
-  mixins.CameraPermissionMixin,
-  mixins.TranslationMixin
-) {
+export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.CameraPermissionMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
-  @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
-
-  @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
 
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
@@ -112,8 +100,6 @@ export default class RoadMap extends Mixins(
   permissionDialogVisibility = false;
 
   async handleConfirm(): Promise<void> {
-    const { authService } = soraCard(this.soraNetwork);
-
     try {
       const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('SoraCard');
 
@@ -122,85 +108,7 @@ export default class RoadMap extends Mixins(
       console.error('[KYC Sora Card]: Camera error.', error);
     }
 
-    if (sessionStorage.getItem('access-token')) {
-      await this.getUserStatus();
-
-      if ([VerificationStatus.Pending, VerificationStatus.Accepted].includes(this.currentStatus)) {
-        this.$emit('confirm-start-kyc', false);
-      } else {
-        this.$emit('confirm-start-kyc', true);
-      }
-
-      unloadScript(authService.sdkURL);
-      return;
-    }
-
-    loadScript(authService.sdkURL)
-      .then(() => {
-        const conf = {
-          authURL: authService.authURL,
-          elementBind: '#authOpen',
-          accessTokenTypeID: 1,
-          apiKey: authService.apiKey,
-          userTypeID: 2,
-        };
-
-        try {
-          // @ts-expect-error injected class
-          const auth = new PopupOAuth(conf).connect();
-        } catch (error) {
-          console.error('[SoraCard]: Failed to start Paywings OAuth script', error);
-        }
-      })
-      .catch((error) => {
-        console.error('[SoraCard]: Failed to fetch Paywings OAuth script', error);
-      });
-
-    this.btnLoading = true;
-    await this.getAccessToken();
-    await this.getUserStatus();
-
-    if (this.currentStatus) {
-      this.$emit('confirm-start-kyc', false);
-      return;
-    } else if (this.userApplied) {
-      // user didn't finish KYC, suggest to continue
-      this.secondPointChecked = false;
-      this.thirdPointChecked = false;
-      this.$notify({
-        title: '',
-        message: 'KYC process has not been finished.',
-        type: 'info',
-      });
-    }
-
-    this.firstPointChecked = true;
-    this.secondPointCurrent = true;
-
-    // additionally check if they have enough balance to apply for card
-    if (!this.isEuroBalanceEnough) {
-      this.btnText = this.t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
-      this.btnDisabled = true;
-    } else {
-      this.btnText = 'FINISH THE KYC';
-    }
-
-    this.btnLoading = false;
-  }
-
-  async getAccessToken(): Promise<string | null> {
-    await this.waitOnAccessTokenAvailability();
-
-    return sessionStorage.getItem('access-token');
-  }
-
-  async waitOnAccessTokenAvailability(ms = 300): Promise<void> {
-    const accessToken = sessionStorage.getItem('access-token');
-
-    if (accessToken) return;
-
-    await delay(ms);
-    return await this.waitOnAccessTokenAvailability();
+    this.$emit('confirm');
   }
 
   mounted(): void {
@@ -227,9 +135,16 @@ export default class RoadMap extends Mixins(
 
   &__section {
     display: flex;
-    align-items: flex-start;
-    margin-top: $basic-spacing;
+    align-items: center;
     width: 100%;
+
+    .text {
+      padding-top: $basic-spacing;
+    }
+
+    &:last-child .text {
+      margin-bottom: $basic-spacing;
+    }
 
     .line {
       height: 1px;
@@ -258,15 +173,14 @@ export default class RoadMap extends Mixins(
       border-radius: 50%;
       border: 1px solid var(--s-color-base-content-secondary);
 
-      // TODO: [STYLES] change color scheme
       &--current {
-        border-color: #ee2233;
-        background-color: #ffe5e8;
+        border-color: var(--s-color-theme-accent);
+        background-color: rgba(248, 8, 123, 0.1);
       }
 
       &--checked {
-        background-color: #ee2233;
-        border-color: #ee2233;
+        background-color: var(--s-color-theme-accent);
+        border-color: var(--s-color-theme-accent);
       }
     }
   }

@@ -111,7 +111,6 @@
         "title": "Účet sítě {Sora}",
         "WalletAssets": "Aktiva",
         "WalletActivity": "Aktivita",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -169,8 +168,7 @@
         },
         "totalAssetsValue": "Celková hodnota vašich aktiv:",
         "details": "Podrobnosti",
-        "assetId": "ID aktiva",
-        "add": "@:addAssetText"
+        "assetId": "ID aktiva"
     },
     "asset": {
         "remove": "Odebrat aktivum",
@@ -192,9 +190,7 @@
             "title": "Měny",
             "switchBtn": "Pouze ověřená aktiva"
         },
-        "searchInputText": "Vyhledávání podle Asset ID, Name nebo Ticker Symbol",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Vyhledávání podle Asset ID, Name nebo Ticker Symbol"
     },
     "createToken": {
         "desc": "Vytvořte a zaveďte vlastní aktivum na síti {Sora}",
@@ -292,11 +288,8 @@
             "submitted": "Transakce byla odeslána s poplatkem ve výši {fee} {symbol}",
             "confirmed": "Transakce potvrzena"
         },
-        "viewIn": {
-            "sorascan": "Zobrazit v SORAScan",
-            "subscan": "Zobrazit v Subscan"
-        },
         "txId": "Id transakce",
+        "viewIn": "Zobrazit v {explorer}",
         "referrer": "Doporučitel",
         "referral": "Doporučení"
     },
@@ -332,7 +325,6 @@
         "AddLiquidity": "Přidat likviditu",
         "AddLiquidityId": "Přidat likviditu",
         "RemoveLiquidity": "Odebrat likviditu",
-        "PageNotFound": "Stránka nenalezena",
         "Rewards": "Odměny",
         "Explore\/Tokens": "Tokeny",
         "Explore\/Pools": "Bazény",
@@ -432,26 +424,7 @@
         "from": "Z",
         "to": "Na"
     },
-    "pageNotFound": {
-        "title": "Stránka nenalezena",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +533,6 @@
         "notRegisteredAsset": "Aktivum {assetSymbol} není zaregistrováno",
         "selectNetwork": "Vyberte síť",
         "networkInfo": "Přemostit {Sora} síť s:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Zkopírujte síťovou adresu",
         "soraAddress": "{Sora} adresa",
         "ethereumAddress": "{Ethereum} adresa",
@@ -617,7 +588,6 @@
             "done": "Hotovo",
             "waitingForConfirmation": "Čeká se na potvrzení..."
         },
-        "viewInEtherscan": "Zobrazit v {Etherscan}",
         "networkTitle": "{network} transakce",
         "transactionHash": "Hash transakce",
         "networkInfo": {

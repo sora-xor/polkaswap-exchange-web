@@ -120,7 +120,7 @@ import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 import { state, getter } from '@/store/decorators';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
+import { formatAmountWithSuffix, formatDecimalPlaces, asZeroValue } from '@/utils';
 
 import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
@@ -157,6 +157,9 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
 
   get items(): TableItem[] {
     return Object.entries(this.poolReserves).reduce<any>((buffer, [key, reserves]) => {
+      // dont show empty pools
+      if (reserves.some((reserve) => asZeroValue(reserve))) return buffer;
+
       const matches = key.match(/0x\w{64}/g);
 
       if (!matches || !matches[0] || !matches[1] || !this.whitelist[matches[0]] || !this.whitelist[matches[1]])

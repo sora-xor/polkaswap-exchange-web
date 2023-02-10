@@ -111,7 +111,6 @@
         "title": "{Sora} hálózati fiók",
         "WalletAssets": "Eszközök",
         "WalletActivity": "Aktivitás",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -169,8 +168,7 @@
         },
         "totalAssetsValue": "Az összes eszköz értéke:",
         "details": "Részletek",
-        "assetId": "Eszköz azonosítója",
-        "add": "@:addAssetText"
+        "assetId": "Eszköz azonosítója"
     },
     "asset": {
         "remove": "Eszköz eltávolítása",
@@ -192,9 +190,7 @@
             "title": "Valuták",
             "switchBtn": "Csak ellenőrzött eszközök"
         },
-        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján"
     },
     "createToken": {
         "desc": "Egyéni eszköz létrehozása és telepítése a {Sora} hálózaton",
@@ -292,11 +288,8 @@
             "submitted": "{fee} {symbol} díjjal benyújtott tranzakció",
             "confirmed": "A tranzakció megerősítve"
         },
-        "viewIn": {
-            "sorascan": "Megtekintés SORAScan-en",
-            "subscan": "Megtekintés Subscan-ben"
-        },
         "txId": "Tranzakció azonosítója",
+        "viewIn": "Megtekintés {explorer}-ben",
         "referrer": "Ajánló",
         "referral": "Ajánlás"
     },
@@ -332,7 +325,6 @@
         "AddLiquidity": "Poolhoz hozzáadás",
         "AddLiquidityId": "Poolhoz hozzáadás",
         "RemoveLiquidity": "Poolból eltávolítás",
-        "PageNotFound": "Az oldal nem található",
         "Rewards": "Jutalmak",
         "Explore\/Tokens": "Tokenek",
         "Explore\/Pools": "Totó",
@@ -432,26 +424,7 @@
         "from": "-tól",
         "to": "Számára"
     },
-    "pageNotFound": {
-        "title": "Az oldal nem található",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Teszthálózat",
-        "Prod": "{Sora} Főhálózat",
-        "Stage": "{Sora} Teszthálózat"
-    },
-    "evm": {
-        "main": "{Ethereum} főhálózat",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Teszthálózat",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +533,6 @@
         "notRegisteredAsset": "Az eszköz {assetSymbol} nincs regisztrálva",
         "selectNetwork": "Hálózat kiválasztása",
         "networkInfo": "{Sora} hálózati híd a következőkkel:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Hálózati cím másolása",
         "soraAddress": "{Sora} cím",
         "ethereumAddress": "{Ethereum} cím",
@@ -617,7 +588,6 @@
             "done": "Teljesítve",
             "waitingForConfirmation": "Megerősítésre vár..."
         },
-        "viewInEtherscan": "Megtekintés {Etherscan}en",
         "networkTitle": "{network} tranzakció",
         "transactionHash": "Tranzakciós hash",
         "networkInfo": {
