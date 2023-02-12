@@ -85,7 +85,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   private phoneNumberInternal = '';
   private smsResendText = '';
   private smsResendCount = RESEND_INTERVAL;
-  private notPassedKycAndNotHasXorEnough = false; // may be removed and `isEuroBalanceEnough` used instead?
+  private notPassedKycAndNotHasXorEnough = false;
 
   verificationCode = '';
   smsSent = false;
@@ -300,10 +300,24 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .sora-card {
   &__number-input {
     position: relative;
+
+    .phone {
+      &-code {
+        flex: 1;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      &-number {
+        flex: 5;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin-left: 2px;
+      }
+    }
 
     .el-button {
       transform: scale(0.75);
@@ -343,21 +357,5 @@ input[type='number'] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-}
-</style>
-
-<style lang="scss" scoped>
-.phone {
-  &-code {
-    flex: 1;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  &-number {
-    flex: 5;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    margin-left: 2px;
-  }
 }
 </style>
