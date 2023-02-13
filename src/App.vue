@@ -12,7 +12,7 @@
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap" />
       </app-menu>
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
-        <s-scrollbar class="app-body-scrollbar">
+        <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div v-if="blockNumber && !isCurrentPageTooWide" class="block-number">
             <s-tooltip :content="t('blockNumberText')" placement="bottom" tabindex="-1">
               <a class="block-number-link" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
@@ -98,6 +98,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.browserNotifPopupVisibility browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility browserNotifPopupBlocked!: boolean;
   @state.settings.blockNumber blockNumber!: number;
+  @state.router.loading pageLoading!: boolean;
 
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;

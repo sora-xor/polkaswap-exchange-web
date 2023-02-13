@@ -111,7 +111,6 @@
         "title": "{Sora} Netwerk account",
         "WalletAssets": "Assets",
         "WalletActivity": "Activiteit",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -169,8 +168,7 @@
         },
         "totalAssetsValue": "Totale waarde van bezittingen:",
         "details": "Details",
-        "assetId": "Asset-ID",
-        "add": "@:addAssetText"
+        "assetId": "Asset-ID"
     },
     "asset": {
         "remove": "Asset verwijderen",
@@ -192,9 +190,7 @@
             "title": "Valuta",
             "switchBtn": "Alleen geverifieerde activa"
         },
-        "searchInputText": "Zoeken op activa-ID, naam of tickersymbool",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Zoeken op activa-ID, naam of tickersymbool"
     },
     "createToken": {
         "desc": "Creëer en implementeer aangepaste asset op {Sora}",
@@ -292,11 +288,8 @@
             "submitted": "Transactie ingediend met vergoeding van {fee} {symbol}",
             "confirmed": "Transactie bevestigd"
         },
-        "viewIn": {
-            "sorascan": "Bekijk in Sorascan",
-            "subscan": "Bekijk in Subscan"
-        },
         "txId": "Transactie ID",
+        "viewIn": "Bekijk in {explorer}",
         "referrer": "Verwijzer",
         "referral": "Verwijzing"
     },
@@ -332,7 +325,6 @@
         "AddLiquidity": "Liquiditeit toevoegen",
         "AddLiquidityId": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
-        "PageNotFound": "Pagina niet gevonden",
         "Rewards": "Beloningen",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Zwembaden",
@@ -432,26 +424,7 @@
         "from": "Van",
         "to": "Naar"
     },
-    "pageNotFound": {
-        "title": "Pagina niet gevonden",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +533,6 @@
         "notRegisteredAsset": "Asset {assetSymbol} is niet geregistreerd",
         "selectNetwork": "Selecteer netwerk",
         "networkInfo": "Bridge {Sora} Netwerk met:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Netwerkadres kopiëren",
         "soraAddress": "{Sora} adres",
         "ethereumAddress": "{Ethereum} adres",
@@ -617,7 +588,6 @@
             "done": "Compleet",
             "waitingForConfirmation": "Wachten op bevestiging..."
         },
-        "viewInEtherscan": "Bekijk in {Etherscan}",
         "networkTitle": "{network} transactie",
         "transactionHash": "Transactie hash",
         "networkInfo": {

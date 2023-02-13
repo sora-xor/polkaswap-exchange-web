@@ -111,7 +111,6 @@
         "title": "Konto sieci {Sora}",
         "WalletAssets": "Waluty",
         "WalletActivity": "Aktywność",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -169,8 +168,7 @@
         },
         "totalAssetsValue": "Twoja łączna wartość walut:",
         "details": "Szczegóły",
-        "assetId": "Identyfikator waluty",
-        "add": "@:addAssetText"
+        "assetId": "Identyfikator waluty"
     },
     "asset": {
         "remove": "Usuń walutę",
@@ -192,9 +190,7 @@
             "title": "Waluty",
             "switchBtn": "Tylko zweryfikowane zasoby"
         },
-        "searchInputText": "Wyszukaj według identyfikatora zasobu, nazwy lub symbolu giełdowego",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Wyszukaj według identyfikatora zasobu, nazwy lub symbolu giełdowego"
     },
     "createToken": {
         "desc": "Twórz i wdrażaj niestandardowe waluty w sieci {Sora}",
@@ -292,11 +288,8 @@
             "submitted": "Transakcja została złożona z opłatą w wysokości {fee} {symbol}.",
             "confirmed": "Transakcja potwierdzona"
         },
-        "viewIn": {
-            "sorascan": "Pokaż w SORAScan",
-            "subscan": "Pokaż w Subscanie"
-        },
         "txId": "Identyfikator transakcji",
+        "viewIn": "Pokaż w {explorer}",
         "referrer": "Osoba polecająca",
         "referral": "Kod polecający"
     },
@@ -332,7 +325,6 @@
         "AddLiquidity": "Dodawanie płynności",
         "AddLiquidityId": "Dodawanie płynności",
         "RemoveLiquidity": "Usuwanie płynności",
-        "PageNotFound": "Nie znaleziono strony.",
         "Rewards": "Wynagrodzenie",
         "Explore\/Tokens": "Tokeny",
         "Explore\/Pools": "Baseny",
@@ -432,26 +424,7 @@
         "from": "Z",
         "to": "Na"
     },
-    "pageNotFound": {
-        "title": "Nie znaleziono strony.",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +533,6 @@
         "notRegisteredAsset": "Waluta {assetSymbol} nie jest zarejestrowana.",
         "selectNetwork": "Wybierz sieć",
         "networkInfo": "Połącz za pomocą mostu sieć {Sora} z:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Skopiuj adres sieciowy",
         "soraAddress": "{Sora} adres",
         "ethereumAddress": "{Ethereum} adres",
@@ -617,7 +588,6 @@
             "done": "Ukończono",
             "waitingForConfirmation": "Oczekiwanie na potwierdzenie..."
         },
-        "viewInEtherscan": "Pokaż w {Etherscan}ie",
         "networkTitle": "transakcji sieci {network}",
         "transactionHash": "Skrót transakcji",
         "networkInfo": {

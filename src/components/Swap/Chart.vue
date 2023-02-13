@@ -163,7 +163,7 @@ enum CHART_TYPES {
 type ChartFilter = {
   name: TIMEFRAME_TYPES;
   label: string;
-  type: SUBQUERY_TYPES.AssetSnapshotTypes;
+  type: SUBQUERY_TYPES.SnapshotTypes;
   count: number;
   group?: number;
 };
@@ -174,40 +174,40 @@ const CHART_TYPE_ICONS = {
 };
 
 const SECONDS_IN_TYPE = {
-  [SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT]: 5 * 60 * 1000,
-  [SUBQUERY_TYPES.AssetSnapshotTypes.HOUR]: 60 * 60 * 1000,
-  [SUBQUERY_TYPES.AssetSnapshotTypes.DAY]: 24 * 60 * 60 * 1000,
+  [SUBQUERY_TYPES.SnapshotTypes.DEFAULT]: 5 * 60 * 1000,
+  [SUBQUERY_TYPES.SnapshotTypes.HOUR]: 60 * 60 * 1000,
+  [SUBQUERY_TYPES.SnapshotTypes.DAY]: 24 * 60 * 60 * 1000,
 };
 
 const LINE_CHART_FILTERS: ChartFilter[] = [
   {
     name: TIMEFRAME_TYPES.DAY,
     label: '1D',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
     count: 288, // 5 mins in day
   },
   {
     name: TIMEFRAME_TYPES.WEEK,
     label: '1W',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    type: SUBQUERY_TYPES.SnapshotTypes.HOUR,
     count: 24 * 7, // hours in week
   },
   {
     name: TIMEFRAME_TYPES.MONTH,
     label: '1M',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
     count: 30, // days in month
   },
   {
     name: TIMEFRAME_TYPES.YEAR,
     label: '1Y',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
     count: 365, // days in year
   },
   {
     name: TIMEFRAME_TYPES.ALL,
     label: 'ALL',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
     count: Infinity,
   },
 ];
@@ -216,40 +216,40 @@ const CANDLE_CHART_FILTERS = [
   {
     name: TIMEFRAME_TYPES.FIVE_MINUTES,
     label: '5m',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
     count: 48, // 5 mins in 4 hours
   },
   {
     name: TIMEFRAME_TYPES.FIFTEEN_MINUTES,
     label: '15m',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
     count: 48 * 3, // 5 mins in 12 hours,
     group: 3, // 5 min in 15 min
   },
   {
     name: TIMEFRAME_TYPES.THIRTY_MINUTES,
     label: '30m',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DEFAULT,
+    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
     count: 48 * 3 * 2, // 5 mins in 24 hours,
     group: 6, // 5 min in 30 min
   },
   {
     name: TIMEFRAME_TYPES.HOUR,
     label: '1h',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    type: SUBQUERY_TYPES.SnapshotTypes.HOUR,
     count: 24, // hours in day
   },
   {
     name: TIMEFRAME_TYPES.FOUR_HOURS,
     label: '4h',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.HOUR,
+    type: SUBQUERY_TYPES.SnapshotTypes.HOUR,
     count: 24 * 4, // hours in 4 days,
     group: 4, // 1 hour in 4 hours
   },
   {
     name: TIMEFRAME_TYPES.DAY,
     label: '1D',
-    type: SUBQUERY_TYPES.AssetSnapshotTypes.DAY,
+    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
     count: 90, // days in 3 months
   },
 ];

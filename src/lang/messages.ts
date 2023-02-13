@@ -74,7 +74,6 @@ export default {
     [PageNames.ExploreFarming]: 'Farming',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
-    [PageNames.PageNotFound]: 'Page Not Found',
     [DemeterPageNames.Staking]: 'Staking',
   },
   mainMenu: {
@@ -236,26 +235,7 @@ export default {
       [Operation.EthBridgeOutgoing]: 'Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}',
     },
   },
-  pageNotFound: {
-    title: 'Page not found',
-    body: '404',
-  },
   metamask: '{Metamask}',
-  sora: {
-    [WALLET_CONSTS.SoraNetwork.Dev]: '{Sora} Devnet',
-    [WALLET_CONSTS.SoraNetwork.Test]: '{Sora} Testnet',
-    [WALLET_CONSTS.SoraNetwork.Stage]: '{Sora} Testnet',
-    [WALLET_CONSTS.SoraNetwork.Prod]: '{Sora} Mainnet',
-  },
-  evm: {
-    [EvmNetworkType.Mainnet]: '{Ethereum} Mainnet',
-    [EvmNetworkType.Ropsten]: '{Ethereum} Ropsten',
-    [EvmNetworkType.Rinkeby]: '{Ethereum} Rinkeby',
-    [EvmNetworkType.Kovan]: '{Ethereum} Kovan',
-    [EvmNetworkType.Goerli]: '{Ethereum} Goerli',
-    [EvmNetworkType.Private]: 'Volta Testnet',
-    [EvmNetworkType.EWC]: 'Energy Web Chain',
-  },
   providers: {
     metamask: '{Metamask}',
   },
@@ -379,8 +359,6 @@ export default {
     notRegisteredAsset: 'Asset {assetSymbol} is not registered',
     selectNetwork: 'Select network',
     networkInfo: 'Bridge {Sora} Network with:',
-    ethereum: '{Ethereum}',
-    energy: '@:evm.EWC',
     copy: 'Copy network address',
     soraAddress: '{Sora} address',
     ethereumAddress: '{Ethereum} address',
@@ -438,7 +416,6 @@ export default {
       waitingForConfirmation: 'Waiting for confirmation...',
     },
     blocksLeft: '{count} blocks left...',
-    viewInEtherscan: 'View in {Etherscan}',
     networkTitle: '{network} transaction',
     transactionHash: 'Transaction hash',
     networkInfo: {

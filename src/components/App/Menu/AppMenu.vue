@@ -1,7 +1,12 @@
 <template>
   <s-scrollbar
     class="app-menu app-sidebar-scrollbar"
-    :class="{ visible, 'app-menu__about': isAboutPageOpened, 'app-menu__route-assets': isRouteAssetsPage }"
+    :class="{
+      visible,
+      'app-menu__about': isAboutPageOpened,
+      'app-menu__loading': pageLoading,
+      'app-menu__route-assets': isRouteAssetsPage,
+    }"
   >
     <aside class="app-sidebar">
       <slot name="head"></slot>
@@ -21,12 +26,20 @@
             <s-menu-item
               v-button
               :key="item.title"
-              :index="item.title"
+              :index="item.index || item.title"
               :disabled="item.disabled"
               tabindex="0"
               class="menu-item"
             >
-              <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
+              <sidebar-item-content
+                tag="a"
+                rel="nofollow noopener"
+                tabindex="-1"
+                :href="item.href"
+                :icon="item.icon"
+                :title="t(`mainMenu.${item.title}`)"
+                @click.native="preventAnchorNavigation"
+              />
             </s-menu-item>
           </s-menu-item-group>
         </s-menu>
@@ -80,7 +93,7 @@ import {
   StakingChildPages,
   ExploreChildPages,
   SidebarMenuGroups,
-  SidebarMenuItem,
+  SidebarMenuItemLink,
   FaucetLink,
   Components,
 } from '@/consts';
@@ -88,6 +101,7 @@ import {
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { AdarPageNames } from '@/modules/ADAR/consts';
+import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 @Component({
   components: {
@@ -101,6 +115,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) readonly onSelect!: FnWithoutArgs;
 
   @state.settings.faucetUrl faucetUrl!: string;
+  @state.router.loading pageLoading!: boolean;
   @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
@@ -111,7 +126,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
   }
 
-  get sidebarMenuItems(): Array<SidebarMenuItem> {
+  get sidebarMenuItems(): Array<SidebarMenuItemLink> {
     if (this.soraCardEnabled) return SidebarMenuGroups;
     return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.SoraCard);
   }
@@ -128,10 +143,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       return PageNames.Rewards;
     }
     if (StakingChildPages.includes(currentName)) {
-      return PageNames.StakingContainer;
+      return DemeterPageNames.Staking;
     }
     if (ExploreChildPages.includes(currentName)) {
-      return PageNames.ExploreContainer;
+      return PageNames.ExploreFarming;
     }
     return currentName as string;
   }
@@ -142,6 +157,11 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   get isRouteAssetsPage(): boolean {
     return this.$route.name === AdarPageNames.RouteAssets;
+  }
+
+  /** To ignore left click */
+  preventAnchorNavigation(e?: Event): void {
+    e?.preventDefault();
   }
 }
 </script>
@@ -311,6 +331,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       @include tablet {
         position: relative;
       }
+    }
+    &__loading {
+      z-index: $app-above-loader-layer;
     }
   }
 
