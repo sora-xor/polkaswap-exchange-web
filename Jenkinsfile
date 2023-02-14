@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@feature/DOPS-2232/pr-gen') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
@@ -19,6 +19,12 @@ def pipeline = new org.js.AppPipeline(steps: this,
     copyFile: 'env.json',
     ipfsHashNotification: true,
     fleekDefaultSiteName: 'long-firefly-8047',
-    ipfsHashChatID: '-1001375555544'
+    ipfsHashChatID: '-1001375555544',
+    k8sPrDeploy = true,
+    vaultPrPath = "argocd-cc/src/charts/sora2/polkaswap-exchange-web/environments/tachi/",
+    vaultUser = "polkaswap-ro",
+    vaultCredId = "pswapVaultCredential",
+    valuesDestPath = "infra/test-app2/environments/tachi2/",
+    devValuesPath = "dev/dev/values.yaml"
 )
 pipeline.runPipeline()
