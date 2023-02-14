@@ -23,7 +23,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     k8sPrDeploy: true,
     vaultPrPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/environments/tachi/",
     vaultUser: "polkaswap-ro",
-    vaultCredId: "pswapVaultCredential",
+    vaultCredId: "pswapVaultCreds",
     valuesDestPath: "infra/test-app2/environments/tachi2/",
     devValuesPath: "dev/dev/values.yaml",
     disableSonar: true
