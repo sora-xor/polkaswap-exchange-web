@@ -158,9 +158,7 @@ export default class KycView extends Mixins(TranslationMixin) {
     padding: 0;
   }
 }
-</style>
 
-<style lang="scss">
 .sora-card-kyc-view {
   height: 800px;
 

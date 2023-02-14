@@ -88,32 +88,12 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
 </script>
 
 <style lang="scss">
-// $color: #ee2233; // TODO: [STYLES] likely to be changed
-
 .el-button.neumorphic.s-primary.sora-card__btn {
   margin-top: var(--s-size-mini);
-  // background-color: $color;
 
   span.text {
     font-variation-settings: 'wght' 700 !important;
     font-size: 19px;
-    // color: #fff;
   }
 }
-
-// TODO: relates to chosen color scheme
-// .sora-card {
-//   .is-loading {
-//     span.text {
-//       color: transparent !important;
-//     }
-//   }
-
-//   .el-button.neumorphic.s-primary.sora-card__btn.is-disabled {
-//     background-color: unset;
-//     .text {
-//       color: unset;
-//     }
-//   }
-// }
 </style>
