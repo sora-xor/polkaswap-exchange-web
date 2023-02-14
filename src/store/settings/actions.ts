@@ -24,11 +24,11 @@ async function updateNetworkChainGenesisHash(context: ActionContext<any, any>): 
   }
 }
 
-async function closeConnectionWithInfo(isConnected?: boolean) {
+async function closeConnectionWithInfo() {
   const { endpoint: currentEndpoint, opened } = connection;
 
   if (currentEndpoint && opened) {
-    await connection.close(isConnected);
+    await connection.close();
     console.info('Disconnected from node', currentEndpoint);
   }
 }
@@ -87,7 +87,7 @@ const actions = defineActions({
     const isReconnection = !connectionOpenOptions.once;
     const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting;
     const connectionOnDisconnected = async () => {
-      await closeConnectionWithInfo(false);
+      await closeConnectionWithInfo();
       if (typeof onDisconnect === 'function') {
         onDisconnect(node as Node);
       }
