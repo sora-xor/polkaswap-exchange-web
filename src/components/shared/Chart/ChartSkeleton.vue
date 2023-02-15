@@ -76,6 +76,9 @@ $skeleton-label-width: 34px;
     }
 
     &-price {
+      display: flex;
+      align-items: center;
+      gap: $inner-spacing-mini;
       margin-bottom: $inner-spacing-tiny;
       font-weight: 600;
       font-size: var(--s-heading3-font-size);

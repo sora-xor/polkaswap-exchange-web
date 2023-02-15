@@ -1,6 +1,12 @@
 <template>
   <stats-card>
-    <template #title>{{ title }}</template>
+    <template #title>
+      <token-logo v-if="fees" :token="XOR" />
+      <span>{{ title }}</span>
+      <s-tooltip v-if="tooltip" border-radius="mini" :content="tooltip">
+        <s-icon name="info-16" size="14px" />
+      </s-tooltip>
+    </template>
 
     <template #filters>
       <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
@@ -105,6 +111,7 @@ const normalizeTo = (sample: NetworkTvlSnapshot[], difference: number, from: num
     StatsCard: lazyComponent(Components.StatsCard),
     StatsFilter: lazyComponent(Components.StatsFilter),
     FormattedAmount: components.FormattedAmount,
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin) {
@@ -113,6 +120,7 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
   readonly filters = NETWORK_STATS_FILTERS;
+  readonly XOR = XOR;
 
   filter: SnapshotFilter = NETWORK_STATS_FILTERS[0];
 
@@ -126,7 +134,11 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   get title(): string {
-    return this.fees ? `Fees (${XOR.symbol})` : 'Volume';
+    return this.fees ? 'Fees' : 'Volume';
+  }
+
+  get tooltip(): string {
+    return this.fees ? this.t('networkFeeTooltipText') : '';
   }
 
   get firstValue(): FPNumber {

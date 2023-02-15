@@ -1,13 +1,13 @@
 <template>
   <stats-card>
-    <template #title>Network statistics</template>
+    <template #title>{{ t('pageTitle.Stats') }}</template>
 
     <template #filters>
       <stats-filter :disabled="loading" :filters="filters" :value="filter" @input="changeFilter" />
     </template>
 
     <div class="stats-row">
-      <div v-for="{ title, value, change } in columns" :key="title" class="stats-column" v-loading="loading">
+      <div v-for="{ title, value, change } in statsColumns" :key="title" class="stats-column" v-loading="loading">
         <s-card size="small" border-radius="mini">
           <div slot="header" class="stats-card-title">{{ title }}</div>
           <div class="stats-card-data">
@@ -33,6 +33,8 @@ import { FPNumber } from '@sora-substrate/math';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
@@ -78,25 +80,6 @@ const StatsQuery = gql`
   }
 `;
 
-const COLUMNS = [
-  {
-    title: 'Transactions',
-    prop: 'transactions',
-  },
-  {
-    title: 'Accounts',
-    prop: 'accounts',
-  },
-  {
-    title: 'ETH to SORA',
-    prop: 'bridgeIncomingTransactions',
-  },
-  {
-    title: 'SORA to ETH',
-    prop: 'bridgeOutgoingTransactions',
-  },
-];
-
 @Component({
   components: {
     PriceChange: lazyComponent(Components.PriceChange),
@@ -105,7 +88,7 @@ const COLUMNS = [
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
+export default class NetworkStats extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
   readonly filters = NETWORK_STATS_FILTERS;
@@ -119,10 +102,34 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
     this.updateData();
   }
 
-  get columns(): NetworkStatsColumn[] {
+  get columns() {
+    const { Sora, Ethereum } = this.TranslationConsts;
+    const Arrow = String.fromCodePoint(0x2192);
+
+    return [
+      {
+        title: this.tc('transactionText', 2),
+        prop: 'transactions',
+      },
+      {
+        title: this.tc('accountText', 2),
+        prop: 'accounts',
+      },
+      {
+        title: [Ethereum, Arrow, Sora].join(' '),
+        prop: 'bridgeIncomingTransactions',
+      },
+      {
+        title: [Sora, Arrow, Ethereum].join(' '),
+        prop: 'bridgeOutgoingTransactions',
+      },
+    ];
+  }
+
+  get statsColumns(): NetworkStatsColumn[] {
     const { currData: curr, prevData: prev } = this;
 
-    return COLUMNS.map(({ prop, title }) => {
+    return this.columns.map(({ prop, title }) => {
       const propCurr = curr?.[prop] ?? FPNumber.ZERO;
       const propPrev = prev?.[prop] ?? FPNumber.ZERO;
       const propChange = calcPriceChange(propCurr, propPrev);
@@ -141,7 +148,7 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin) {
     return data.reduce<Nullable<NetworkSnapshot>>((buffer, item) => {
       if (!buffer) return item;
 
-      for (const { prop } of COLUMNS) {
+      for (const { prop } of this.columns) {
         (buffer[prop] as FPNumber) = (buffer[prop] as FPNumber).add(item[prop]);
       }
 

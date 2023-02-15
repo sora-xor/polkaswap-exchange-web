@@ -295,6 +295,7 @@
     },
     "appName": "{AppName}",
     "changeNetworkText": "Change network in {Metamask}",
+    "accountText": "account | accounts",
     "transactionText": "transaction | transactions",
     "connectWalletText": "Connect account",
     "changeAccountText": "Change account",

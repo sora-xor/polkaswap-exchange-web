@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import merge from 'lodash/fp/merge';
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 const AXIS_OFFSET = 8;
 const AXIS_LABEL_CSS = {
@@ -14,7 +14,7 @@ const AXIS_LABEL_CSS = {
 };
 
 @Component
-export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, mixins.TranslationMixin) {
+export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, TranslationMixin) {
   gridSpec(options: any = {}) {
     return merge({
       top: 20,

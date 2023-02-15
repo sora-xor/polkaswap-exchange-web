@@ -1,6 +1,11 @@
 <template>
   <stats-card>
-    <template #title>TVL</template>
+    <template #title>
+      <span>{{ TranslationConsts.TVL }}</span>
+      <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
+        <s-icon name="info-16" size="14px" />
+      </s-tooltip>
+    </template>
 
     <template #filters>
       <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
