@@ -57,7 +57,7 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
 
   exploreQuery = '';
-  isAccountItems = JSON.parse(storage.get(storageKey as any) ?? false);
+  isAccountItems = storage.get(storageKey as any) ? JSON.parse(storage.get(storageKey as any)) : false;
 
   get isAccountItemsOnly(): boolean {
     return this.isAccountItems;
