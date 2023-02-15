@@ -32,7 +32,11 @@ import { gql } from '@urql/core';
 import { FPNumber } from '@sora-substrate/math';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+import type {
+  SnapshotTypes,
+  EntitiesQueryResponse,
+  NetworkSnapshotEntity,
+} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -51,15 +55,19 @@ type NetworkSnapshot = {
   bridgeOutgoingTransactions: FPNumber;
 };
 
+type NetworkSnapshotData = NetworkSnapshot & {
+  timestamp: number;
+};
+
 type NetworkStatsColumn = {
   value: AmountWithSuffix;
   change: FPNumber;
   title: string;
 };
 
-const StatsQuery = gql`
+const StatsQuery = gql<EntitiesQueryResponse<NetworkSnapshotEntity>>`
   query StatsQuery($type: SnapshotType, $from: Int, $to: Int) {
-    networkSnapshots(
+    entities: networkSnapshots(
       orderBy: TIMESTAMP_DESC
       filter: {
         and: [
@@ -69,6 +77,10 @@ const StatsQuery = gql`
         ]
       }
     ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       nodes {
         timestamp
         accounts
@@ -79,6 +91,16 @@ const StatsQuery = gql`
     }
   }
 `;
+
+const parse = (node: NetworkSnapshotEntity): NetworkSnapshotData => {
+  return {
+    timestamp: +node.timestamp * 1000,
+    accounts: new FPNumber(node.accounts),
+    transactions: new FPNumber(node.transactions),
+    bridgeIncomingTransactions: new FPNumber(node.bridgeIncomingTransactions),
+    bridgeOutgoingTransactions: new FPNumber(node.bridgeOutgoingTransactions),
+  };
+};
 
 @Component({
   components: {
@@ -144,7 +166,7 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin, Translatio
     this.updateData();
   }
 
-  private groupData(data: NetworkSnapshot[]): Nullable<NetworkSnapshot> {
+  private groupData(data: NetworkSnapshotData[]): Nullable<NetworkSnapshot> {
     return data.reduce<Nullable<NetworkSnapshot>>((buffer, item) => {
       if (!buffer) return item;
 
@@ -173,27 +195,10 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin, Translatio
     });
   }
 
-  private async fetchData(from: number, to: number, type: SnapshotTypes): Promise<NetworkSnapshot[]> {
-    try {
-      const response = await SubqueryExplorerService.request(StatsQuery, { from, to, type });
+  private async fetchData(from: number, to: number, type: SnapshotTypes): Promise<NetworkSnapshotData[]> {
+    const data = await SubqueryExplorerService.fetchAllEntities(StatsQuery, { from, to, type }, parse);
 
-      if (!response || !response.networkSnapshots) return [];
-
-      const data = response.networkSnapshots.nodes.map((node) => {
-        return {
-          timestamp: +node.timestamp * 1000,
-          accounts: new FPNumber(node.accounts),
-          transactions: new FPNumber(node.transactions),
-          bridgeIncomingTransactions: new FPNumber(node.bridgeIncomingTransactions),
-          bridgeOutgoingTransactions: new FPNumber(node.bridgeOutgoingTransactions),
-        };
-      });
-
-      return data;
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
+    return data ?? [];
   }
 }
 </script>

@@ -36,7 +36,11 @@ import { gql } from '@urql/core';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
-import type { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+import type {
+  SnapshotTypes,
+  EntitiesQueryResponse,
+  NetworkSnapshotEntity,
+} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 
@@ -48,12 +52,12 @@ import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 
-type NetworkTvlSnapshot = {
+type ChartData = {
   timestamp: number;
   value: number;
 };
 
-const NetworkTvlQuery = gql`
+const NetworkTvlQuery = gql<EntitiesQueryResponse<NetworkSnapshotEntity>>`
   query NetworkTvlQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
     entities: networkSnapshots(
       after: $after
@@ -78,6 +82,15 @@ const NetworkTvlQuery = gql`
   }
 `;
 
+const parse = (node: NetworkSnapshotEntity): ChartData => {
+  const value = +node.liquidityUSD;
+
+  return {
+    timestamp: +node.timestamp * 1000,
+    value: Number.isFinite(value) ? value : 0,
+  };
+};
+
 @Component({
   components: {
     ChartSkeleton: lazyComponent(Components.ChartSkeleton),
@@ -94,7 +107,7 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
 
   filter: SnapshotFilter = NETWORK_STATS_FILTERS[0];
 
-  data: NetworkTvlSnapshot[] = [];
+  data: ChartData[] = [];
   isFetchingError = false;
 
   created(): void {
@@ -180,31 +193,10 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
     });
   }
 
-  private async fetchData(from: number, to: number, type: SnapshotTypes): Promise<NetworkTvlSnapshot[]> {
-    const buffer: NetworkTvlSnapshot[] = [];
+  private async fetchData(from: number, to: number, type: SnapshotTypes): Promise<ChartData[]> {
+    const data = await SubqueryExplorerService.fetchAllEntities(NetworkTvlQuery, { from, to, type }, parse);
 
-    let hasNextPage = true;
-    let after = '';
-
-    do {
-      const response = await SubqueryExplorerService.request(NetworkTvlQuery, { after, from, to, type });
-
-      if (!response || !response.entities) return buffer;
-
-      hasNextPage = response.entities.pageInfo.hasNextPage;
-      after = response.entities.pageInfo.endCursor;
-
-      response.entities.nodes.forEach((node) => {
-        const value = +node.liquidityUSD;
-
-        buffer.push({
-          timestamp: +node.timestamp * 1000,
-          value: Number.isFinite(value) ? value : 0,
-        });
-      });
-    } while (hasNextPage);
-
-    return buffer;
+    return data ?? [];
   }
 }
 </script>

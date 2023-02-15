@@ -40,7 +40,11 @@ import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@sor
 import { FPNumber } from '@sora-substrate/math';
 import { XOR, VAL, PSWAP, XSTUSD, XST, TBCD } from '@sora-substrate/util/build/assets/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+import type {
+  SnapshotTypes,
+  EntitiesQueryResponse,
+  AssetSnapshotEntity,
+} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 
@@ -52,16 +56,16 @@ import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 
-type AssetSupplySnapshot = {
+type ChartData = {
   timestamp: number;
   value: number;
   mint: number;
   burn: number;
 };
 
-const AssetSupplyQuery = gql`
+const AssetSupplyQuery = gql<EntitiesQueryResponse<AssetSnapshotEntity>>`
   query AssetSupplyQuery($after: Cursor, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
-    assetSnapshots(
+    entities: assetSnapshots(
       after: $after
       orderBy: TIMESTAMP_DESC
       filter: {
@@ -79,7 +83,7 @@ const AssetSupplyQuery = gql`
       }
       nodes {
         timestamp
-        value: supply
+        supply
         mint
         burn
       }
@@ -95,6 +99,15 @@ const toNumber = (value: string): number => {
 
 const getExtremum = (data, prop: string, min = false) => {
   return data.reduce((acc, item) => Math[min ? 'min' : 'max'](acc, item[prop]), min ? Infinity : 0);
+};
+
+const parse = (node: AssetSnapshotEntity): ChartData => {
+  return {
+    timestamp: +node.timestamp * 1000,
+    value: toNumber(node.supply),
+    mint: toNumber(node.mint),
+    burn: toNumber(node.burn),
+  };
 };
 
 @Component({
@@ -116,7 +129,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   filter: SnapshotFilter = ASSET_SUPPLY_LINE_FILTERS[0];
   token = XOR;
 
-  data: AssetSupplySnapshot[] = [];
+  data: ChartData[] = [];
 
   isFetchingError = false;
 
@@ -254,31 +267,10 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
     });
   }
 
-  private async fetchData(id: string, from: number, to: number, type: SnapshotTypes): Promise<AssetSupplySnapshot[]> {
-    const buffer: AssetSupplySnapshot[] = [];
+  private async fetchData(id: string, from: number, to: number, type: SnapshotTypes): Promise<ChartData[]> {
+    const data = await SubqueryExplorerService.fetchAllEntities(AssetSupplyQuery, { id, from, to, type }, parse);
 
-    let hasNextPage = true;
-    let after = '';
-
-    do {
-      const response = await SubqueryExplorerService.request(AssetSupplyQuery, { after, id, from, to, type });
-
-      if (!response || !response.assetSnapshots) return buffer;
-
-      hasNextPage = response.assetSnapshots.pageInfo.hasNextPage;
-      after = response.assetSnapshots.pageInfo.endCursor;
-
-      response.assetSnapshots.nodes.forEach((node) => {
-        buffer.push({
-          timestamp: +node.timestamp * 1000,
-          value: toNumber(node.value),
-          mint: toNumber(node.mint),
-          burn: toNumber(node.burn),
-        });
-      });
-    } while (hasNextPage);
-
-    return buffer;
+    return data ?? [];
   }
 }
 </script>
