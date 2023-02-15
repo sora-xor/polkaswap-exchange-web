@@ -30,8 +30,8 @@ import { graphic } from 'echarts';
 import { gql } from '@urql/core';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 import { FPNumber } from '@sora-substrate/math';
+import type { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 

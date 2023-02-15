@@ -26,7 +26,7 @@
               tabindex="0"
               class="menu-item"
             >
-              <sidebar-item-content
+              <app-sidebar-item-content
                 tag="a"
                 rel="nofollow noopener"
                 tabindex="-1"

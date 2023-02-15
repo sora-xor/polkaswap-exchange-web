@@ -65,8 +65,13 @@ import last from 'lodash/fp/last';
 import { graphic } from 'echarts';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
-import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+import {
+  components,
+  mixins,
+  SubqueryExplorerService,
+  WALLET_CONSTS,
+  SUBQUERY_TYPES,
+} from '@soramitsu/soraneo-wallet-web';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 
@@ -84,6 +89,8 @@ import type {
   AssetSnapshotEntity,
   FiatPriceObject,
 } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+
+const { SnapshotTypes } = SUBQUERY_TYPES;
 
 /** "open", "close", "low", "high" data */
 type OCLH = [number, number, number, number];

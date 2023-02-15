@@ -1,8 +1,10 @@
-import { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+import { SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import { Timeframes } from '@/types/filters';
 
 import type { SnapshotFilter } from '@/types/filters';
+
+const { SnapshotTypes } = SUBQUERY_TYPES;
 
 export const SECONDS_IN_TYPE = {
   [SnapshotTypes.DEFAULT]: 5 * 60,
