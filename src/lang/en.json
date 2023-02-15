@@ -295,7 +295,6 @@
     },
     "appName": "{AppName}",
     "changeNetworkText": "Change network in {Metamask}",
-    "accountText": "account | accounts",
     "transactionText": "transaction | transactions",
     "connectWalletText": "Connect account",
     "changeAccountText": "Change account",
@@ -1114,5 +1113,6 @@
     "comingSoonText": "Coming Soon",
     "confirmText": "Confirm",
     "createTokenTextNFT": "Create NFT",
-    "doNotShowText": "Don’t show me this again"
+    "doNotShowText": "Don’t show me this again",
+    "accountText": "account | accounts"
 }

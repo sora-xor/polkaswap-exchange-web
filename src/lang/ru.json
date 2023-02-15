@@ -1113,5 +1113,6 @@
     "comingSoonText": "Скоро будет доступно",
     "confirmText": "Подтвердить",
     "createTokenTextNFT": "Создать NFT",
-    "doNotShowText": "Больше не показывать"
+    "doNotShowText": "Больше не показывать",
+    "accountText": "аккаунт | аккаунты"
 }

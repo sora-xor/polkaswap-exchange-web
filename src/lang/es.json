@@ -1113,5 +1113,6 @@
     "comingSoonText": "Próximamente",
     "confirmText": "Confirmar",
     "createTokenTextNFT": "Crear NFT",
-    "doNotShowText": "No me muestres esto de nuevo"
+    "doNotShowText": "No me muestres esto de nuevo",
+    "accountText": "cuenta | cuentas"
 }
