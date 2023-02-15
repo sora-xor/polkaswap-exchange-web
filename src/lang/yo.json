@@ -111,7 +111,6 @@
         "title": "Ifowosi {Sora} Nẹtiwọọki",
         "WalletAssets": "Awọn dukia",
         "WalletActivity": "Iṣẹ iṣe",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -169,8 +168,7 @@
         },
         "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:",
         "details": "Awọn alaye",
-        "assetId": "Idanimo dukia",
-        "add": "@:addAssetText"
+        "assetId": "Idanimo dukia"
     },
     "asset": {
         "remove": "Yọ dukia kuro",
@@ -192,9 +190,7 @@
             "title": "Awọn owo nina",
             "switchBtn": "Awọn ohun-ini ti a rii daju nikan"
         },
-        "searchInputText": "Wa nipasẹ ID Dukia, Orukọ tabi Aami Tika",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Wa nipasẹ ID Dukia, Orukọ tabi Aami Tika"
     },
     "createToken": {
         "desc": "Ṣẹda ki o ran awọn dukia atowunwa lori {Sora}",
@@ -292,11 +288,8 @@
             "submitted": "Iṣowo ti a fi silẹ pẹlu owo ti {fee} {symbol}",
             "confirmed": "Iṣowo ti a ti gba"
         },
-        "viewIn": {
-            "sorascan": "Wo ni SORAScan",
-            "subscan": "Wo ni Subscan"
-        },
         "txId": "Id Idunadura",
+        "viewIn": "Wo ni {explorer}",
         "referrer": "Atọkasi",
         "referral": "Ifiranṣẹ"
     },
@@ -332,7 +325,6 @@
         "AddLiquidity": "Fi liquidity si",
         "AddLiquidityId": "Fi liquidity si",
         "RemoveLiquidity": "Yọ liquidity kuro",
-        "PageNotFound": "A o ri ojuwe",
         "Rewards": "Ere",
         "Explore\/Tokens": "Awọn ami-ami",
         "Explore\/Pools": "Pools",
@@ -432,26 +424,7 @@
         "from": "Lati",
         "to": "Si"
     },
-    "pageNotFound": {
-        "title": "A o ri ojuwe",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Agbara Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +533,6 @@
         "notRegisteredAsset": "Dukia {assetSymbol} ko forukọsilẹ",
         "selectNetwork": "Yan nẹtiwọọki",
         "networkInfo": "Safara {Sora} Nẹtiwọọki pẹlu:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Daakọ adirẹsi nẹtiwọki",
         "soraAddress": "{Sora} adirẹsi",
         "ethereumAddress": "{Ethereum} adirẹsi",
@@ -617,7 +588,6 @@
             "done": "Pari",
             "waitingForConfirmation": "Nduro fun idaniloju..."
         },
-        "viewInEtherscan": "Wo ni {Etherscan}",
         "networkTitle": "idunadura {network}",
         "transactionHash": "Ami Iṣowo",
         "networkInfo": {

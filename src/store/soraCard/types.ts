@@ -6,6 +6,7 @@ export type SoraCardState = {
   kycStatus: Nullable<KycStatus>;
   verificationStatus: Nullable<VerificationStatus>;
   euroBalance: string;
+  wasEuroBalanceLoaded: boolean;
   totalXorBalance: FPNumber;
   xorToDeposit: FPNumber;
   totalXorBalanceUpdates: Nullable<Subscription>;

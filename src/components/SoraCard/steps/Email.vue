@@ -1,10 +1,16 @@
 <template>
   <div class="sora-card">
-    <s-input placeholder="Email" v-model="email" :disabled="loading" type="email" />
+    <s-input maxlength="320" placeholder="Email" v-model="email" :disabled="loading" type="email" />
     <p class="sora-card__email-input-description">{{ emailInputDescription }}</p>
     <s-icon v-if="emailSent" name="basic-check-mark-24" size="16px" />
-    <s-input class="sora-card__input-name" placeholder="First Name" v-model="firstName" :disabled="loading" />
-    <s-input placeholder="Last Name" v-model="lastName" :disabled="loading" />
+    <s-input
+      class="sora-card__input-name"
+      maxlength="50"
+      placeholder="First Name"
+      v-model="firstName"
+      :disabled="loading"
+    />
+    <s-input maxlength="50" placeholder="Last Name" v-model="lastName" :disabled="loading" />
     <p class="sora-card__name-input-description">Use your real name.</p>
     <s-button
       type="primary"
@@ -26,6 +32,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { state } from '@/store/decorators';
 
+const RESEND_INTERVAL = 59;
+
 @Component
 export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.soraCard.authLogin authLogin!: any;
@@ -36,7 +44,7 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   emailSent = false;
   emailSentFirstTime = false;
   emailResendText = '';
-  emailResendCount = 59;
+  emailResendCount = RESEND_INTERVAL;
 
   @Watch('emailResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
@@ -62,6 +70,8 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
     this.authLogin.SendVerificationEmail().catch(function (error) {
       console.error(error);
     });
+
+    this.emailSent = true;
   }
 
   get emailInputDescription(): string {
@@ -88,7 +98,7 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
 
       if (this.emailResendCount < 0) {
         this.emailSent = false;
-        this.emailResendCount = 30;
+        this.emailResendCount = RESEND_INTERVAL;
         clearInterval(interval);
       }
     }, 1000);
@@ -125,7 +135,7 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   &__input-name {
-    margin-bottom: 16px;
+    margin-bottom: $basic-spacing;
   }
 
   &__name-input-description {
@@ -145,6 +155,10 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
     line-height: var(--s-line-height-base);
     padding: var(--s-basic-spacing) var(--s-basic-spacing) calc(var(--s-basic-spacing) * 2)
       calc(var(--s-basic-spacing) * 1.5);
+  }
+
+  &__btn {
+    width: 100%;
   }
 }
 </style>

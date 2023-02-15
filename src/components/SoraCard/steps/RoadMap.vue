@@ -79,12 +79,7 @@ import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web
     NotificationEnablingPage: components.NotificationEnablingPage,
   },
 })
-export default class RoadMap extends Mixins(
-  TranslationMixin,
-  mixins.LoadingMixin,
-  mixins.CameraPermissionMixin,
-  mixins.TranslationMixin
-) {
+export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.CameraPermissionMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;

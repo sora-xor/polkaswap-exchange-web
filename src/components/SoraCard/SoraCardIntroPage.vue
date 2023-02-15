@@ -2,26 +2,25 @@
   <div class="container sora-card">
     <s-image src="card/sora-card.png" lazy fit="cover" draggable="false" class="unselectable sora-card__image" />
     <div class="sora-card__intro">
-      <h3 class="sora-card__intro-title">Get SORA Card</h3>
+      <h3 class="sora-card__intro-title">{{ getCardTitle }}</h3>
       <span class="sora-card__intro-info">
-        Top up SORA Card with fiat or crypto and pay online, in-store or withdraw in ATM. Get Euro IBAN account and
-        Mastercard Debit Card.
+        {{ getCardText }}
       </span>
     </div>
     <div v-if="isLoggedIn" class="sora-card__balance-indicator">
       <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
       <p class="sora-card__balance-indicator-text">
-        <span class="sora-card__balance-indicator-text--bold">€0</span> annual re-issuance fee
+        <span class="sora-card__balance-indicator-text--bold">€0</span> {{ feeDesc }}
       </p>
     </div>
     <div v-if="isPriceCalculated && isLoggedIn" class="sora-card__balance-indicator">
       <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
       <p class="sora-card__balance-indicator-text">
-        <span class="sora-card__balance-indicator-text--bold">{{ balanceIndicatorAmount }}</span> of XOR in your account
-        for free start
+        <span class="sora-card__balance-indicator-text--bold">{{ balanceIndicatorAmount }}</span>
+        {{ freeStartUsingDesc }}
       </p>
     </div>
-    <div class="sora-card__options">
+    <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
       <div v-if="isEuroBalanceEnough || !isLoggedIn" class="sora-card__options--enough-euro">
         <s-button
           type="primary"
@@ -32,30 +31,20 @@
           <span class="text"> {{ buttonText }}</span>
         </s-button>
       </div>
-      <div class="sora-card__options--not-enough-euro" v-else>
+      <div v-else class="sora-card__options--not-enough-euro s-flex">
         <s-button
-          type="primary"
-          class="sora-card__btn sora-card__btn--fiat-buy s-typography-button--large"
+          v-for="item in buyOptions"
+          class="sora-card__btn sora-card__btn--buy s-typography-button--large"
+          :key="item.type"
+          :type="item.button"
           :loading="btnLoading"
-          @click="openX1"
+          @click="buyTokens(item.type)"
         >
-          <span class="text">BUY XOR WITH FIAT</span>
+          <span class="text">{{ item.text }}</span>
         </s-button>
-        <s-button class="sora-card__btn--bridge s-typography-button--large" :loading="btnLoading" @click="bridgeTokens">
-          <span class="text">BRIDGE TOKENS</span>
-        </s-button>
-        <!-- TODO: bring back when option becomes available<p class="line">OR</p>
-        <s-button
-          type="tertiary"
-          class="sora-card__btn--fiat-issuance s-typography-button--large"
-          :loading="btnLoading"
-          @click="issueCardByPaywings"
-        >
-          <span class="text">ISSUE CARD FOR €12</span>
-        </s-button> -->
       </div>
     </div>
-    <span v-if="isLoggedIn" @click="loginUser" class="sora-card__user-applied">I've already applied</span>
+    <span v-if="isLoggedIn" @click="loginUser" class="sora-card__user-applied">{{ alreadyAppliedText }}</span>
     <x1-dialog :visible.sync="showX1Dialog" />
     <paywings-dialog :visible.sync="showPaywingsDialog" />
   </div>
@@ -73,6 +62,19 @@ import { delay } from '@/utils';
 import { clearTokensFromSessionStorage } from '@/utils/card';
 import TranslationMixin from '../mixins/TranslationMixin';
 
+enum BuyButtonType {
+  X1,
+  Bridge,
+  Paywings,
+}
+type BuyButton = { type: BuyButtonType; text: string; button: 'primary' | 'secondary' | 'tertiary' };
+const hundred = '100';
+// Lokalise
+const buyUsingX1 = 'BUY XOR';
+const buyUsingBridge = 'BRIDGE TOKENS';
+// const buyUsingPaywings = 'ISSUE CARD FOR €12';
+const getCardForFree = 'GET SORA CARD FOR FREE';
+//
 @Component({
   components: {
     X1Dialog: lazyComponent(Components.X1Dialog),
@@ -80,8 +82,25 @@ import TranslationMixin from '../mixins/TranslationMixin';
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
+  // Lokalise
+  readonly alreadyAppliedText = "I've already applied";
+  readonly freeStartUsingDesc = 'of XOR in your account for free start';
+  readonly feeDesc = 'annual re-issuance fee';
+  readonly getCardTitle = 'Get SORA Card';
+  readonly getCardText = `Top up your SORA Card with fiat or crypto and pay online, in-store or withdraw from an ATM.\n
+Get a Euro IBAN account and a Mastercard Debit Card`;
+  //
+
+  readonly buyOptions: Array<BuyButton> = [
+    { type: BuyButtonType.X1, text: buyUsingX1, button: 'primary' },
+    { type: BuyButtonType.Bridge, text: buyUsingBridge, button: 'secondary' },
+    // TODO: [CARD] bring back when option becomes available
+    // { type: BuyButtonType.Paywings, text: buyUsingPaywings, button: 'tertiary' },
+  ];
+
   @state.soraCard.euroBalance private euroBalance!: string;
   @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
+  @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
 
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
@@ -95,12 +114,12 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
       return this.t('connectWalletText');
     }
 
-    return 'GET SORA CARD FOR FREE';
+    return getCardForFree;
   }
 
   get balanceIndicatorAmount(): string {
     const euroBalance = parseInt(this.euroBalance, 10);
-    return `€${this.isEuroBalanceEnough ? '100' : euroBalance}/100`;
+    return `€${this.isEuroBalanceEnough ? hundred : euroBalance}/${hundred}`;
   }
 
   getIconClass(): string {
@@ -114,18 +133,32 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     return this.loading || !this.isPriceCalculated;
   }
 
-  openX1(): void {
+  private openX1(): void {
     this.showX1Dialog = true;
   }
 
-  bridgeTokens(): void {
+  private issueCardByPaywings(): void {
+    this.showPaywingsDialog = true;
+  }
+
+  private bridgeTokens(): void {
     if (!this.isEuroBalanceEnough) {
       router.push({ name: PageNames.Bridge, params: { xorToDeposit: this.xorToDeposit.toString() } });
     }
   }
 
-  issueCardByPaywings(): void {
-    this.showPaywingsDialog = true;
+  buyTokens(type: BuyButtonType): void {
+    switch (type) {
+      case BuyButtonType.X1:
+        this.openX1();
+        break;
+      case BuyButtonType.Bridge:
+        this.bridgeTokens();
+        break;
+      case BuyButtonType.Paywings:
+        this.issueCardByPaywings();
+        break;
+    }
   }
 
   handleConfirm(): void {
@@ -155,6 +188,19 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   }
 }
 </script>
+
+<style lang="scss">
+.sora-card__options {
+  .el-loading-mask {
+    padding: 0px 20px 20px;
+    margin: 0 -20px -20px;
+    background-color: var(--s-color-utility-surface);
+    .el-loading-spinner {
+      margin-left: calc(50% - var(--s-size-medium) + 10px / 2);
+    }
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .sora-card {
@@ -234,15 +280,11 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
   &__btn {
     width: 100%;
-    &--fiat-buy,
-    &--bridge {
-      width: 48%;
+    &--buy {
+      margin-top: var(--s-size-mini);
       .text {
         font-size: var(--s-heading4-font-size);
       }
-    }
-    &--fiat-issuance {
-      width: 100%;
     }
   }
 }

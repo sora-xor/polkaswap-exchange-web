@@ -5,11 +5,13 @@
         <s-icon name="notifications-alert-triangle-24" size="42px" />
       </div>
       <div>
-        <p class="disclaimer__text">DO NOT ENTER your real card number. This is test environment.</p>
-        <p class="disclaimer__text">Please, use the following ones:</p>
+        <p class="disclaimer__text">DO NOT ENTER YOUR REAL CARD NUMBER. This is a test environment.</p>
+        <p class="disclaimer__text">Please, use the following card details:</p>
         <ul>
-          <li>4012000000060085</li>
-          <li>4066330000000004</li>
+          <li>Card number: 4012 0000 0006 0085</li>
+          <li>Card CVV: 123</li>
+          <li>Card expiration date: Input any date</li>
+          <li>Card owner name: Input any name & surname</li>
         </ul>
       </div>
     </div>
@@ -93,10 +95,10 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
 </script>
 
 <style lang="scss">
-.x1-dialog .el-dialog {
-  .wrapper {
-    min-height: 320px;
-  }
+.x1-dialog .el-dialog .wrapper {
+  min-height: 320px;
+  padding: $basic-spacing-medium;
+  margin: -10px -20px -20px;
 }
 </style>
 
@@ -108,9 +110,9 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   border-radius: 28px;
   background-color: var(--s-color-status-error-background);
   padding: $basic-spacing;
-  margin-bottom: $basic-spacing / 2;
+  margin-bottom: $inner-spacing-small;
 
-  .disclaimer-warning-icon {
+  & &-warning-icon {
     margin-right: $basic-spacing;
 
     .s-icon-notifications-alert-triangle-24 {
@@ -122,5 +124,8 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   ul {
     margin-top: $basic-spacing / 2;
   }
+}
+[design-system-theme='dark'] .disclaimer-warning-icon .s-icon-notifications-alert-triangle-24 {
+  color: var(--s-color-base-content-primary);
 }
 </style>
