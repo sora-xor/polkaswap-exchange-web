@@ -25,7 +25,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     vaultUser: "polkaswap-ro",
     vaultCredId: "pswapVaultCreds",
     valuesDestPath: "infra/test-app2/environments/tachi2/",
-    devValuesPath: "dev/dev/values.yaml",
+    devValuesPath: "dev/dev/",
     disableSonar: true
 )
 pipeline.runPipeline()
