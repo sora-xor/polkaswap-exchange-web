@@ -74,15 +74,15 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
   get title(): string {
     switch (this.step) {
       case KycProcess.TermsAndConditions:
-        return 'Terms & Conditions';
+        return this.t('card.termsAndConditions');
       case KycProcess.RoadMap:
-        return 'Complete KYC';
+        return this.t('card.completeKYC');
       case KycProcess.Phone:
-        return 'Phone Confirmation';
+        return this.t('card.phoneConfirmation');
       case KycProcess.Email:
-        return 'Email Confirmation';
+        return this.t('card.emailConfirmation');
       case KycProcess.KycView:
-        return 'Complete KYC';
+        return this.t('card.completeKYC');
       default:
         return '';
     }

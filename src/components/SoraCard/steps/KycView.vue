@@ -60,7 +60,7 @@ export default class KycView extends Mixins(TranslationMixin) {
       console.error('[SoraCard]: Error while initiating KYC', data);
 
       this.$notify({
-        message: 'Something went wrong. Please, start again',
+        message: this.t('card.infoMessageTryAgain'),
         title: '',
       });
       this.$emit('confirm-kyc', false);
@@ -120,7 +120,7 @@ export default class KycView extends Mixins(TranslationMixin) {
             console.error('[SoraCard]: Error while initiating KYC', data);
 
             this.$notify({
-              message: 'Something went wrong. Please, start again',
+              message: this.t('card.infoMessageTryAgain'),
               title: '',
             });
             this.$emit('confirm-kyc', false);
