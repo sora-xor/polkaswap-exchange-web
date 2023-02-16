@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@fix/DOPS-2232/pr-gen') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
@@ -24,7 +24,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     vaultPrPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/environments/tachi/",
     vaultUser: "polkaswap-ro",
     vaultCredId: "pswapVaultCreds",
-    valuesDestPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/environments/tachi/",
+    valuesDestPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/",
     devValuesPath: "dev/dev/"
 )
 pipeline.runPipeline()
