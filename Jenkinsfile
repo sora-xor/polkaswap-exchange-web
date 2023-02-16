@@ -1,4 +1,4 @@
-@Library('jenkins-library@SNE-261-arachni') _
+@Library('jenkins-library') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
@@ -20,9 +20,5 @@ def pipeline = new org.js.AppPipeline(steps: this,
     ipfsHashChatID: '-1001375555544',
     stageDeploy: true,
     downstreamJob: '../deploy/exchange-stage1',
-    scanDAST: true,
-    arachniURL: 'https://test.polkaswap.io',
-    arachniExclude: 'js|css',
-    arachniPlugin: ''
 )
 pipeline.runPipeline()
