@@ -98,9 +98,16 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     this.smsResendText = `RESEND IN 0:${countDown}`;
   }
 
-  verifyCode(): void {
-    // TODO: check for length before sending
+  @Watch('isEuroBalanceEnough', { immediate: true })
+  private handleXorDeposit(isEnough: boolean): void {
+    if (isEnough) {
+      this.notPassedKycAndNotHasXorEnough = false;
+      this.verificationCode = '';
+      this.smsSent = false;
+    }
+  }
 
+  verifyCode(): void {
     this.authLogin.PayWingsOtpCredentialVerification(this.verificationCode).catch((error) => {
       this.sendOtpBtnLoading = false;
       this.verificationCode = '';
@@ -109,7 +116,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
         type: 'error',
         title: '',
       });
-      console.error(error);
+      console.error('[SoraCard]: Auth', error);
     });
 
     this.sendOtpBtnLoading = true;
@@ -119,7 +126,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     this.authLogin
       .PayWingsSendOtp(`${this.countryCode}${this.phoneNumber}`, 'Your verification code is: @Otp')
       .catch((error) => {
-        console.error(error);
+        console.error('[SoraCard]: Auth', error);
       });
 
     this.startSmsCountDown();
@@ -213,6 +220,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 
       if (this.smsResendCount < 0) {
         this.smsSent = false;
+        this.verificationCode = '';
         this.smsResendCount = RESEND_INTERVAL;
         clearInterval(interval);
       }
