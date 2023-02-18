@@ -77,7 +77,13 @@ export async function setI18nLocale(lang: Language): Promise<void> {
       `@/lang/${filename}.json`
     );
 
-    i18n.setLocaleMessage(locale, messages);
+    const { default: messagesCard } = await import(
+      /* webpackChunkName: "lang-[request]" */
+      /* webpackMode: "lazy" */
+      `@/lang/card/${filename}.json`
+    );
+
+    i18n.setLocaleMessage(locale, { ...messages, ...messagesCard });
     loadedLanguages.push(locale);
   }
 

@@ -225,8 +225,6 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 
     this.authLogin
       .on('SendOtp-Success', () => {
-        console.log('sms has been sent');
-
         this.smsSent = true;
         this.$nextTick(() => {
           this.inputOtp.focus();
