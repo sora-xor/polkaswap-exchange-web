@@ -16,15 +16,17 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
+import StatsNetworkStats from '@/components/pages/Stats/NetworkStats.vue';
+import StatsTvlChart from '@/components/pages/Stats/TvlChart.vue';
+import StatsBarChart from '@/components/pages/Stats/BarChart.vue';
+import StatsSupplyChart from '@/components/pages/Stats/SupplyChart.vue';
 
 @Component({
   components: {
-    StatsNetworkStats: lazyComponent(Components.StatsNetworkStats),
-    StatsTvlChart: lazyComponent(Components.StatsTvlChart),
-    StatsBarChart: lazyComponent(Components.StatsBarChart),
-    StatsSupplyChart: lazyComponent(Components.StatsSupplyChart),
+    StatsNetworkStats,
+    StatsTvlChart,
+    StatsBarChart,
+    StatsSupplyChart,
   },
 })
 export default class Stats extends Mixins(mixins.LoadingMixin) {}

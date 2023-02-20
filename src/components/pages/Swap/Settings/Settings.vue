@@ -9,13 +9,16 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+
+import SwapMarketAlgorithm from './MarketAlgorithm.vue';
+
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 
 @Component({
   components: {
     DialogBase: components.DialogBase,
-    SwapMarketAlgorithm: lazyComponent(Components.SwapMarketAlgorithm),
+    SwapMarketAlgorithm,
   },
 })
 export default class SwapSettings extends Mixins(TranslationMixin, mixins.DialogMixin) {}

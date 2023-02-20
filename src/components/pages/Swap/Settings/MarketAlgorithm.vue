@@ -15,6 +15,8 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
+import SwapSettingsHeader from './Header.vue';
+
 import { lazyComponent } from '@/router';
 import { Components, MarketAlgorithms } from '@/consts';
 import { state, getter, mutation } from '@/store/decorators';
@@ -23,7 +25,7 @@ import type { TabItem } from '@/types/tabs';
 
 @Component({
   components: {
-    SwapSettingsHeader: lazyComponent(Components.SwapSettingsHeader),
+    SwapSettingsHeader,
     SettingsTabs: lazyComponent(Components.SettingsTabs),
   },
 })

@@ -68,7 +68,10 @@ import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
+
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
+import AppHeader from '@/components/App/Header/AppHeader.vue';
+import AppMenu from '@/components/App/Menu/AppMenu.vue';
 
 import { PageNames, Components, Language, Links } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
@@ -83,8 +86,8 @@ import type { FeatureFlags } from '@/store/settings/types';
 @Component({
   components: {
     SoraLogo,
-    AppHeader: lazyComponent(Components.AppHeader),
-    AppMenu: lazyComponent(Components.AppMenu),
+    AppHeader,
+    AppMenu,
     AppMobilePopup: lazyComponent(Components.AppMobilePopup),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),

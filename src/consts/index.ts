@@ -140,14 +140,8 @@ export enum PageNames {
 
 export enum Components {
   // App
-  AppHeader = 'App/Header/AppHeader',
-  AppHeaderMenu = 'App/Header/AppHeaderMenu',
-  AppAccountButton = 'App/Header/AccountButton',
   AppLogoButton = 'App/Header/AppLogoButton',
-  AppMenu = 'App/Menu/AppMenu',
-  AppSidebarItemContent = 'App/Menu/SidebarItemContent',
   AppMobilePopup = 'App/MobilePopup',
-  AppInfoPopper = 'App/Menu/AppInfoPopper',
   AppBrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
   AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
   SelectNodeDialog = 'App/Settings/Node/SelectNodeDialog',
@@ -185,19 +179,12 @@ export enum Components {
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
   MoonpayHistoryButton = 'pages/Moonpay/HistoryButton',
-  // Stats Page
-  StatsNetworkStats = 'pages/Stats/NetworkStats',
-  StatsTvlChart = 'pages/Stats/TvlChart',
-  StatsBarChart = 'pages/Stats/BarChart',
-  StatsSupplyChart = 'pages/Stats/SupplyChart',
   // Swap Page
   SwapConfirm = 'pages/Swap/Confirm',
   SwapChart = 'pages/Swap/Chart',
   SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',
   SwapSettings = 'pages/Swap/Settings/Settings',
-  SwapSettingsHeader = 'pages/Swap/Settings/Header',
-  SwapMarketAlgorithm = 'pages/Swap/Settings/MarketAlgorithm',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
@@ -205,7 +192,6 @@ export enum Components {
   RewardsAmountHeader = 'pages/Rewards/AmountHeader',
   RewardsAmountTable = 'pages/Rewards/AmountTable',
   RewardsGradientBox = 'pages/Rewards/GradientBox',
-  RewardsItemTooltip = 'pages/Rewards/ItemTooltip',
   // Wallet Page
   WalletAboutNetworkDialog = 'pages/Wallet/AboutNetworkDialog',
   // Shared

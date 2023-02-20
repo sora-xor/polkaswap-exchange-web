@@ -41,7 +41,11 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
+
 import PolkaswapLogo from '@/components/shared/Logo/Polkaswap.vue';
+import AppAccountButton from './AppAccountButton.vue';
+import AppHeaderMenu from './AppHeaderMenu.vue';
+import AppLogoButton from './AppLogoButton.vue';
 
 import { lazyComponent, goTo } from '@/router';
 import { PageNames, Components } from '@/consts';
@@ -49,11 +53,10 @@ import { getter, mutation } from '@/store/decorators';
 
 @Component({
   components: {
-    WalletAvatar: components.WalletAvatar,
     PolkaswapLogo,
-    AppAccountButton: lazyComponent(Components.AppAccountButton),
-    AppLogoButton: lazyComponent(Components.AppLogoButton),
-    AppHeaderMenu: lazyComponent(Components.AppHeaderMenu),
+    AppAccountButton,
+    AppHeaderMenu,
+    AppLogoButton,
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     Moonpay: lazyComponent(Components.Moonpay),
@@ -61,6 +64,7 @@ import { getter, mutation } from '@/store/decorators';
     MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
     TokenLogo: components.TokenLogo,
+    WalletAvatar: components.WalletAvatar,
   },
 })
 export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {

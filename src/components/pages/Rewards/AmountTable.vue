@@ -94,6 +94,9 @@ import type ElCheckbox from 'element-ui/lib/checkbox';
 import type { RewardInfo } from '@sora-substrate/util/build/rewards/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+
+import RewardsItemTooltip from './ItemTooltip.vue';
+
 import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards';
 import { asZeroValue } from '@/utils';
 import { lazyComponent } from '@/router';
@@ -103,7 +106,7 @@ import { Components } from '@/consts';
   components: {
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
-    RewardsItemTooltip: lazyComponent(Components.RewardsItemTooltip),
+    RewardsItemTooltip,
   },
 })
 export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {

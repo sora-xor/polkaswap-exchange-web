@@ -98,6 +98,9 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
+import AppSidebarItemContent from './SidebarItemContent.vue';
+import AppInfoPopper from './AppInfoPopper.vue';
+
 import {
   PageNames,
   PoolChildPages,
@@ -108,17 +111,15 @@ import {
   SidebarMenuGroups,
   SidebarMenuItemLink,
   FaucetLink,
-  Components,
 } from '@/consts';
 
-import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 @Component({
   components: {
-    AppInfoPopper: lazyComponent(Components.AppInfoPopper),
-    AppSidebarItemContent: lazyComponent(Components.AppSidebarItemContent),
+    AppInfoPopper,
+    AppSidebarItemContent,
   },
 })
 export default class AppMenu extends Mixins(TranslationMixin) {
