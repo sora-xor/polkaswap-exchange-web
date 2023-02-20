@@ -136,7 +136,10 @@
         "successCopy": "Adres portfela został skopiowany do schowka.",
         "copy": "Kopiuj adres",
         "switch": "Przełącz konto",
-        "walletAddress": "Adres portfela"
+        "walletAddress": "Adres portfela",
+        "delete": "Usuń konto",
+        "rename": "Zmień nazwę konta",
+        "export": "Eksportuj .json"
     },
     "history": {
         "clearHistory": "Wyczyść historię",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Podano nieprawidłowy mnemonik bip39",
             "mnemonicLength": "Mnemonik powinien zawierać {number} słów",
             "jsonFields": "Plik JSON nie zawiera wymaganych pól"
-        }
+        },
+        "assetsAtRiskText": "Aktywa zagrożone!",
+        "deleteAccountText": "Konta nie można odzyskać bez frazy początkowej, pliku .json lub jeśli jest on przechowywany w jakimś rozszerzeniu. Zostaniesz wylogowany."
     },
     "hashiBridgeText": "Most {Hashi}",
     "disclaimerTitle": "Zastrzeżenie:",

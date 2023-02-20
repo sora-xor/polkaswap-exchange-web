@@ -136,7 +136,10 @@
         "successCopy": "Adresa peňaženky bola skopírovaná do schránky",
         "copy": "Kopírovať adresu",
         "switch": "Prepnúť účet",
-        "walletAddress": "Adresa peňaženky"
+        "walletAddress": "Adresa peňaženky",
+        "delete": "Zmazať účet",
+        "rename": "Premenovať účet",
+        "export": "Exportujte súbor .json"
     },
     "history": {
         "clearHistory": "Vymazať históriu",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Zadaný nesprávny mnemotechnický znak bip39",
             "mnemonicLength": "Mnemotechnika by mala obsahovať {number} slov",
             "jsonFields": "Súbor JSON neobsahuje povinné polia"
-        }
+        },
+        "assetsAtRiskText": "Majetok v ohrození!",
+        "deleteAccountText": "Účet nie je možné obnoviť bez počiatočnej frázy, súboru .json alebo ak je uložený v nejakej prípone. Budete odhlásení."
     },
     "hashiBridgeText": "Most {Hashi}",
     "disclaimerTitle": "Vylúčenie zodpovednosti:",

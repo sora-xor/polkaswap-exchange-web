@@ -136,7 +136,10 @@
         "successCopy": "Plånboksadressen kopieras till klippbordet",
         "copy": "Kopiera adress",
         "switch": "Byt konto",
-        "walletAddress": "Plånboksadress"
+        "walletAddress": "Plånboksadress",
+        "delete": "Radera konto",
+        "rename": "Byt namn på konto",
+        "export": "Exportera .json"
     },
     "history": {
         "clearHistory": "Rensa historik",
@@ -1098,7 +1101,9 @@
             "mnemonic": "En ogiltig bip39-minnesanteckning har angetts.",
             "mnemonicLength": "Mnemonic bör innehålla {number} ord",
             "jsonFields": "JSON-fil har inte obligatoriska fält"
-        }
+        },
+        "assetsAtRiskText": "Tillgångar i riskzonen!",
+        "deleteAccountText": "Kontot kan inte återställas utan en fröfras, .json-fil eller om det är lagrat i något tillägg. Du kommer att loggas ut."
     },
     "hashiBridgeText": "{Hashi} bro",
     "disclaimerTitle": "Ansvarsfriskrivning:",

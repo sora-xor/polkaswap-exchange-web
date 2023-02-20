@@ -136,7 +136,10 @@
         "successCopy": "Wallet Adresse wurde in die Zwischenablage kopiert",
         "copy": "Adresse kopieren",
         "switch": "Konto wechseln",
-        "walletAddress": "Wallet-Adresse"
+        "walletAddress": "Wallet-Adresse",
+        "delete": "Konto löschen",
+        "rename": "Bennene den Account um",
+        "export": "Exportieren Sie .json"
     },
     "history": {
         "clearHistory": "Verlauf löschen",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Ungültige bip39-Mnemonik angegeben",
             "mnemonicLength": "Mnemonik sollte {number} Wörter enthalten",
             "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder"
-        }
+        },
+        "assetsAtRiskText": "Vermögen in Gefahr!",
+        "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet."
     },
     "hashiBridgeText": "{Hashi} Brücke",
     "disclaimerTitle": "Haftungsausschluss:",
