@@ -32,6 +32,9 @@ const mutations = defineMutations<SoraCardState>()({
   setPayWingsAuthSdk(state, authLogin: any): void {
     state.authLogin = authLogin;
   },
+  setHasKycAttempts(state, hasAttempt: boolean) {
+    state.hasFreeAttempts = hasAttempt;
+  },
 });
 
 export default mutations;

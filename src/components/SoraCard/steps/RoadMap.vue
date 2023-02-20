@@ -68,7 +68,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
 import CardIcon from '@/assets/img/sora-card/card.svg?inline';
 import UserIcon from '@/assets/img/sora-card/user.svg?inline';
-import { clearTokensFromSessionStorage } from '@/utils/card';
+import { clearTokensFromLocalStorage } from '@/utils/card';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
@@ -112,7 +112,7 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   mounted(): void {
-    clearTokensFromSessionStorage();
+    clearTokensFromLocalStorage();
 
     if (this.userApplied) {
       this.firstPointCurrent = true;

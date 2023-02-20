@@ -1,6 +1,6 @@
 <template>
   <div>
-    <confirmation-info v-loading="loading" v-if="step === Step.ConfirmationInfo" />
+    <confirmation-info v-if="step === Step.ConfirmationInfo" v-loading="loading" @confirm-apply="openStartPage" />
     <sora-card-intro v-else-if="step === Step.StartPage" @confirm-apply="confirmApply" />
     <sora-card-kyc v-else-if="step === Step.KYC" @go-to-start="openStartPage" :userApplied="userApplied" />
   </div>

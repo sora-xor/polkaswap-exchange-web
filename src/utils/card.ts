@@ -20,7 +20,7 @@ const getSoraProxyEndpoints = (soraNetwork: string) => {
 
 // Defines user's KYC status.
 // If accessToken expired, tries to get new JWT pair via refreshToken;
-// if not, forces user to pass phone number again to create new JWT pair in sessionStorage.
+// if not, forces user to pass phone number again to create new JWT pair in localStorage.
 export async function defineUserStatus(): Promise<Status> {
   const sessionRefreshToken = localStorage.getItem('PW-refresh-token');
   let sessionAccessToken = localStorage.getItem('PW-token');
@@ -132,7 +132,7 @@ export const getXorPerEuroRatio = async () => {
   }
 };
 
-export const clearTokensFromSessionStorage = () => {
+export const clearTokensFromLocalStorage = () => {
   localStorage.removeItem('PW-token');
   localStorage.removeItem('PW-refresh-token');
 };

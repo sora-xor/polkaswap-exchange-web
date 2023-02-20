@@ -94,6 +94,13 @@ const actions = defineActions({
       commit.setPayWingsAuthSdk(login);
     });
   },
+
+  async getUserKycAttempt(context): Promise<void> {
+    const { commit } = soraCardActionContext(context);
+    // TODO: get all records for a particular user, count how many are Rejected (?)
+    // if more than 2, set noMoreFreeAttepmt
+    commit.setHasKycAttempts(false);
+  },
 });
 
 export default actions;

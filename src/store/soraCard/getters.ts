@@ -15,31 +15,33 @@ const getters = defineGetters<SoraCardState>()({
     return euroBalance > 100;
   },
   currentStatus(...args): Nullable<VerificationStatus> {
-    // CHECKME: carefully check what each status defines.
-    const { state } = soraCardGetterContext(args);
-    const { kycStatus, verificationStatus } = state;
+    return VerificationStatus.Rejected;
 
-    if (!kycStatus) return null;
-    if (!verificationStatus) return null;
-    if (kycStatus === KycStatus.Started) return null;
+    // // CHECKME: carefully check what each status defines.
+    // const { state } = soraCardGetterContext(args);
+    // const { kycStatus, verificationStatus } = state;
 
-    if (
-      [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
-      verificationStatus === VerificationStatus.Pending
-    ) {
-      return VerificationStatus.Pending;
-    }
+    // if (!kycStatus) return null;
+    // if (!verificationStatus) return null;
+    // if (kycStatus === KycStatus.Started) return null;
 
-    if (
-      [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
-      verificationStatus === VerificationStatus.Accepted
-    ) {
-      return VerificationStatus.Accepted;
-    }
+    // if (
+    //   [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
+    //   verificationStatus === VerificationStatus.Pending
+    // ) {
+    //   return VerificationStatus.Pending;
+    // }
 
-    if ([KycStatus.Failed, KycStatus.Rejected].includes(kycStatus)) {
-      return VerificationStatus.Rejected;
-    }
+    // if (
+    //   [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
+    //   verificationStatus === VerificationStatus.Accepted
+    // ) {
+    //   return VerificationStatus.Accepted;
+    // }
+
+    // if ([KycStatus.Failed, KycStatus.Rejected].includes(kycStatus)) {
+    //   return VerificationStatus.Rejected;
+    // }
   },
 });
 
