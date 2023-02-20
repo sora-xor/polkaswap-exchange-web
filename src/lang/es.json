@@ -136,7 +136,10 @@
         "successCopy": "La dirección de la cartera se ha copiado en el portapapeles",
         "copy": "Copiar dirección",
         "switch": "Cambiar de cuenta",
-        "walletAddress": "Dirección de la cartera"
+        "walletAddress": "Dirección de la cartera",
+        "delete": "Borrar cuenta",
+        "rename": "Vuelva a nombrar la cuenta",
+        "export": "Exportar .json"
     },
     "history": {
         "clearHistory": "Borrar el historial",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Mnemónico bip39 especificado no válido",
             "mnemonicLength": "El mnemónico debe contener {number} palabras",
             "jsonFields": "El archivo JSON no tiene los campos requeridos"
-        }
+        },
+        "assetsAtRiskText": "¡Activos en riesgo!",
+        "deleteAccountText": "La cuenta no se puede recuperar sin una frase inicial, un archivo .json o si está almacenada en alguna extensión. Serás desconectado."
     },
     "hashiBridgeText": "Puente {Hashi}",
     "disclaimerTitle": "Aviso legal:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "Próximamente",
     "confirmText": "Confirmar",
     "createTokenTextNFT": "Crear NFT",
-    "doNotShowText": "No me muestres esto de nuevo"
+    "doNotShowText": "No me muestres esto de nuevo",
+    "accountText": "cuenta | cuentas"
 }

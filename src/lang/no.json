@@ -136,7 +136,10 @@
         "successCopy": "Lommebokadressen kopieres til utklippstavlen",
         "copy": "Kopier adresse",
         "switch": "Bytt konto",
-        "walletAddress": "Lommebokadresse"
+        "walletAddress": "Lommebokadresse",
+        "delete": "Slett konto",
+        "rename": "Gi nytt navn til kontoen",
+        "export": "Eksporter .json"
     },
     "history": {
         "clearHistory": "Slett historikk",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Ugyldig bip39 mnemonic spesifisert",
             "mnemonicLength": "Mnemonic skal inneholde {number} ord",
             "jsonFields": "JSON-filen har ikke obligatoriske felt"
-        }
+        },
+        "assetsAtRiskText": "Eiendeler i fare!",
+        "deleteAccountText": "Kontoen kan ikke gjenopprettes uten en frøfrase, .json-fil eller hvis den er lagret i en filtype. Du vil bli logget ut."
     },
     "hashiBridgeText": "{Hashi} bro",
     "disclaimerTitle": "Ansvarsfraskrivelse:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "Kommer snart",
     "confirmText": "Bekrefte",
     "createTokenTextNFT": "Lag NFT",
-    "doNotShowText": "Ikke vis meg dette igjen"
+    "doNotShowText": "Ikke vis meg dette igjen",
+    "accountText": "konto | kontoer"
 }
