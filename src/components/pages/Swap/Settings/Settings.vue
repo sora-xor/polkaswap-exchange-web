@@ -10,10 +10,7 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import SwapMarketAlgorithm from './MarketAlgorithm.vue';
-
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
+import SwapMarketAlgorithm from './MarketAlgorithm/MarketAlgorithm.vue';
 
 @Component({
   components: {
