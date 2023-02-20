@@ -8,7 +8,7 @@
     </div>
     <div v-else class="tos__section">
       <ul class="sora-card__unsupported-countries">
-        <li v-for="[key, value] in Object.entries(unsupportedCountries)" :key="key">
+        <li v-for="[key, value] in unsupportedCountries" :key="key">
           <span class="flags">{{ countryCodeEmoji(key) }} </span> {{ value }}
         </li>
       </ul>
@@ -37,7 +37,11 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
 
   countryCodeEmoji = countryCodeEmoji;
 
-  unsupportedCountries = {
+  get unsupportedCountries(): Array<string>[] {
+    return Object.entries(this.blacklistedCountries);
+  }
+
+  blacklistedCountries = {
     dz: 'Algeria',
     bd: 'Bangladesh',
     by: 'Belarus',

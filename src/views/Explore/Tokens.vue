@@ -322,7 +322,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     const ids = this.items.map((item) => item.address); // only whitelisted assets
 
     const variables = { ids, dayTimestamp, weekTimestamp };
-    const items = await SubqueryExplorerService.fetchAndParseEntities(parse, AssetsQuery, variables);
+    const items = await SubqueryExplorerService.fetchAllEntities(AssetsQuery, variables, parse);
 
     if (!items) return {};
 

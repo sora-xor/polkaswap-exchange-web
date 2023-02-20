@@ -1,7 +1,7 @@
 <template>
   <div class="tos" v-loading="parentLoading">
     <div class="tos__disclaimer">
-      <h4 class="tos__disclaimer-header">Discaimer</h4>
+      <h4 class="tos__disclaimer-header">Disclaimer</h4>
       <p class="tos__disclaimer-paragraph">
         To get an IBAN account needed for the SORA Card, users are required to undergo a KYC process with the card
         issuer. This is required compliance. The SORA community does not and will not collect any of your personal data.
@@ -89,7 +89,7 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .tos {
   &__disclaimer {
     width: 100%;

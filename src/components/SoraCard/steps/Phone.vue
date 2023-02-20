@@ -85,7 +85,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   private phoneNumberInternal = '';
   private smsResendText = '';
   private smsResendCount = RESEND_INTERVAL;
-  private notPassedKycAndNotHasXorEnough = false; // may be removed and `isEuroBalanceEnough` used instead?
+  private notPassedKycAndNotHasXorEnough = false;
 
   verificationCode = '';
   smsSent = false;
@@ -98,9 +98,16 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     this.smsResendText = `RESEND IN 0:${countDown}`;
   }
 
-  verifyCode(): void {
-    // TODO: check for length before sending
+  @Watch('isEuroBalanceEnough', { immediate: true })
+  private handleXorDeposit(isEnough: boolean): void {
+    if (isEnough) {
+      this.notPassedKycAndNotHasXorEnough = false;
+      this.verificationCode = '';
+      this.smsSent = false;
+    }
+  }
 
+  verifyCode(): void {
     this.authLogin.PayWingsOtpCredentialVerification(this.verificationCode).catch((error) => {
       this.sendOtpBtnLoading = false;
       this.verificationCode = '';
@@ -109,7 +116,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
         type: 'error',
         title: '',
       });
-      console.error(error);
+      console.error('[SoraCard]: Auth', error);
     });
 
     this.sendOtpBtnLoading = true;
@@ -119,7 +126,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     this.authLogin
       .PayWingsSendOtp(`${this.countryCode}${this.phoneNumber}`, 'Your verification code is: @Otp')
       .catch((error) => {
-        console.error(error);
+        console.error('[SoraCard]: Auth', error);
       });
 
     this.startSmsCountDown();
@@ -213,6 +220,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 
       if (this.smsResendCount < 0) {
         this.smsSent = false;
+        this.verificationCode = '';
         this.smsResendCount = RESEND_INTERVAL;
         clearInterval(interval);
       }
@@ -300,10 +308,24 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .sora-card {
   &__number-input {
     position: relative;
+
+    .phone {
+      &-code {
+        flex: 1;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      &-number {
+        flex: 5;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin-left: 2px;
+      }
+    }
 
     .el-button {
       transform: scale(0.75);
@@ -343,21 +365,5 @@ input[type='number'] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-}
-</style>
-
-<style lang="scss" scoped>
-.phone {
-  &-code {
-    flex: 1;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  &-number {
-    flex: 5;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    margin-left: 2px;
-  }
 }
 </style>

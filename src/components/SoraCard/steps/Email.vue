@@ -135,7 +135,7 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   &__input-name {
-    margin-bottom: 16px;
+    margin-bottom: $basic-spacing;
   }
 
   &__name-input-description {
@@ -155,6 +155,10 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
     line-height: var(--s-line-height-base);
     padding: var(--s-basic-spacing) var(--s-basic-spacing) calc(var(--s-basic-spacing) * 2)
       calc(var(--s-basic-spacing) * 1.5);
+  }
+
+  &__btn {
+    width: 100%;
   }
 }
 </style>

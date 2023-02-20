@@ -136,7 +136,10 @@
         "successCopy": "Adresa novčanika kopira se u međuspremnik",
         "copy": "Kopirajte adresu",
         "switch": "Promjenite račun",
-        "walletAddress": "Adresa novčanika"
+        "walletAddress": "Adresa novčanika",
+        "delete": "Izbriši račun",
+        "rename": "Preimenuj račun",
+        "export": "Izvezi .json"
     },
     "history": {
         "clearHistory": "Očistite povijest",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Naveden je nevažeći mnemonik bip39",
             "mnemonicLength": "Mnemotehnika treba sadržavati {number} riječi",
             "jsonFields": "JSON datoteka nema obavezna polja"
-        }
+        },
+        "assetsAtRiskText": "Imovina u opasnosti!",
+        "deleteAccountText": "Račun se ne može oporaviti bez početne fraze, .json datoteke ili ako je pohranjena u nekoj ekstenziji. Bit ćete odjavljeni."
     },
     "hashiBridgeText": "{Hashi} most",
     "disclaimerTitle": "Disclaimer:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "Dolazi uskoro",
     "confirmText": "Potvrdite",
     "createTokenTextNFT": "Napravite NFT",
-    "doNotShowText": "Ne pokazuj mi ovo više"
+    "doNotShowText": "Ne pokazuj mi ovo više",
+    "accountText": "račun | računi"
 }
