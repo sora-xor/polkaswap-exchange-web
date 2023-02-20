@@ -131,6 +131,7 @@ import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types'
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
+import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
@@ -155,7 +156,8 @@ export default class RemoveLiquidity extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.TransactionMixin,
   ConfirmDialogMixin,
-  NetworkFeeDialogMixin
+  NetworkFeeDialogMixin,
+  SelectedTokenRouteMixin
 ) {
   readonly XOR_SYMBOL = XOR.symbol;
   readonly MAX_PART = 100;
@@ -239,16 +241,6 @@ export default class RemoveLiquidity extends Mixins(
 
   get sliderValue(): Nullable<number> {
     return this.removePart ? Number(this.removePart) : undefined;
-  }
-
-  /** First token address from route object */
-  get firstRouteAddress(): string {
-    return this.$route.params.firstAddress;
-  }
-
-  /** Second token address from route object */
-  get secondRouteAddress(): string {
-    return this.$route.params.secondAddress;
   }
 
   get isEmptyAmount(): boolean {

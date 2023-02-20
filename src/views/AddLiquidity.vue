@@ -114,7 +114,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { XOR, XSTUSD } from '@sora-substrate/util/build/assets/consts';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -123,6 +123,7 @@ import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import BaseTokenPairMixin from '@/components/mixins/BaseTokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
+import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
@@ -151,7 +152,8 @@ export default class AddLiquidity extends Mixins(
   BaseTokenPairMixin,
   NetworkFeeDialogMixin,
   ConfirmDialogMixin,
-  TokenSelectMixin
+  TokenSelectMixin,
+  SelectedTokenRouteMixin
 ) {
   readonly FocusedField = FocusedField;
 
@@ -196,16 +198,14 @@ export default class AddLiquidity extends Mixins(
   }
 
   async mounted(): Promise<void> {
+    console.log('mounted');
     await this.withParentLoading(async () => {
-      if (this.firstRouteAddress && this.secondRouteAddress) {
+      this.parseCurrentRoute();
+      if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
         await this.setData({
           firstAddress: this.firstRouteAddress,
           secondAddress: this.secondRouteAddress,
         });
-        // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-        if (!this.liquidityInfo) {
-          return this.handleBack();
-        }
       } else {
         await this.setFirstTokenAddress(XOR.address);
       }
@@ -213,17 +213,8 @@ export default class AddLiquidity extends Mixins(
   }
 
   destroyed(): void {
+    console.log('destroyed');
     this.resetData();
-  }
-
-  /** First token address from route object */
-  get firstRouteAddress(): string {
-    return this.$route.params.firstAddress;
-  }
-
-  /** Second token address from route object */
-  get secondRouteAddress(): string {
-    return this.$route.params.secondAddress;
   }
 
   get areTokensSelected(): boolean {
@@ -318,8 +309,13 @@ export default class AddLiquidity extends Mixins(
         } else {
           await this.setSecondTokenAddress(address);
         }
+        if (this.firstToken?.address === XSTUSD.address && this.secondToken?.address === XOR.address) {
+          await this.setFirstTokenAddress(XOR.address);
+          await this.setSecondTokenAddress(XSTUSD.address);
+        }
       });
     }
+    this.updateRouteAfterSelectTokens(this.firstToken, this.secondToken);
   }
 
   async handleConfirmAddLiquidity(): Promise<void> {

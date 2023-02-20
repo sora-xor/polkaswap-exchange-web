@@ -31,7 +31,7 @@ enum Step {
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
-  @getter.settings.soraCardEnabled private soraCardEnabled!: Nullable<boolean>;
+  @getter.settings.soraCardEnabled soraCardEnabled!: Nullable<boolean>;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
@@ -44,6 +44,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
 
   @Watch('soraCardEnabled', { immediate: true })
   private checkAvailability(value: Nullable<boolean>): void {
+    console.info('SoraCard.vue::soraCardEnabled:', value); // For tests on PR env
     if (value === false) {
       goTo(PageNames.Swap);
     }

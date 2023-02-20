@@ -60,7 +60,7 @@
                 type="secondary"
                 class="s-typography-button--medium"
                 data-test-name="addLiquidity"
-                @click="handleAddLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
+                @click="handleAddLiquidity(liquidityItem)"
               >
                 {{ t('pool.addLiquidity') }}
               </s-button>
@@ -68,7 +68,7 @@
                 type="secondary"
                 class="s-typography-button--medium"
                 data-test-name="removeLiquidity"
-                @click="handleRemoveLiquidity(liquidityItem.firstAddress, liquidityItem.secondAddress)"
+                @click="handleRemoveLiquidity(liquidityItem)"
               >
                 {{ t('pool.removeLiquidity') }}
               </s-button>
@@ -84,7 +84,7 @@
       class="el-button--add-liquidity s-typography-button--large"
       data-test-name="addLiquidity"
       type="primary"
-      @click="handleAddLiquidity"
+      @click="handleAddLiquidity()"
     >
       {{ t('pool.addLiquidity') }}
     </s-button>
@@ -96,7 +96,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
@@ -106,6 +106,20 @@ import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { getter, state } from '@/store/decorators';
+
+type LiquidityItem = AccountLiquidity & {
+  firstAsset?: Nullable<AccountAsset>;
+  firstAssetSymbol?: string;
+  firstBalanceFormatted?: string;
+  firstBalanceFiat?: Nullable<string>;
+  secondAsset?: Nullable<AccountAsset>;
+  secondAssetSymbol?: string;
+  secondBalanceFormatted?: string;
+  secondBalanceFiat?: Nullable<string>;
+  poolShareFormatted?: string;
+  apyFormatted?: string;
+  title?: string;
+};
 
 @Component({
   components: {
@@ -129,6 +143,7 @@ export default class Pool extends Mixins(
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
+  @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
 
   activeCollapseItems: string[] = [];
 
@@ -160,18 +175,25 @@ export default class Pool extends Mixins(
     this.activeCollapseItems = items;
   }
 
-  handleAddLiquidity(first?: string, second?: string): void {
-    if (!(first || second)) {
+  private getRouteParams(item: LiquidityItem): { first: string; second: string } {
+    const firstSymbol = item.firstAssetSymbol ?? '';
+    const secondSymbol = item.secondAssetSymbol ?? '';
+    // If symbol is whitelisted -> symbol, else -> address
+    const first = this.whitelistIdsBySymbol[firstSymbol] ? firstSymbol : item.firstAddress;
+    const second = this.whitelistIdsBySymbol[secondSymbol] ? secondSymbol : item.secondAddress;
+    return { first, second };
+  }
+
+  handleAddLiquidity(item?: LiquidityItem): void {
+    if (!item) {
       router.push({ name: PageNames.AddLiquidity });
       return;
     }
-    const firstAddress = first || '';
-    const secondAddress = second || '';
-    router.push({ name: PageNames.AddLiquidity, params: { firstAddress, secondAddress } });
+    router.push({ name: PageNames.AddLiquidity, params: this.getRouteParams(item) });
   }
 
-  handleRemoveLiquidity(firstAddress: string, secondAddress: string): void {
-    router.push({ name: PageNames.RemoveLiquidity, params: { firstAddress, secondAddress } });
+  handleRemoveLiquidity(item: LiquidityItem): void {
+    router.push({ name: PageNames.RemoveLiquidity, params: this.getRouteParams(item) });
   }
 
   handleConnectWallet(): void {

@@ -49,7 +49,7 @@ const routes: Array<RouteConfig> = [
     redirect: '/swap',
   },
   {
-    path: '/swap',
+    path: '/swap/:first?/:second?',
     name: PageNames.Swap,
     component: lazyView(PageNames.Swap),
   },
@@ -106,13 +106,13 @@ const routes: Array<RouteConfig> = [
             props: { isFarmingPage: true },
           },
           {
-            path: 'add/:firstAddress?/:secondAddress?',
+            path: 'add/:first?/:second?',
             name: PageNames.AddLiquidity,
             component: lazyView(PageNames.AddLiquidity),
             meta: { requiresAuth: true },
           },
           {
-            path: 'remove/:firstAddress/:secondAddress',
+            path: 'remove/:first/:second',
             name: PageNames.RemoveLiquidity,
             component: lazyView(PageNames.RemoveLiquidity),
             meta: { requiresAuth: true },
@@ -244,6 +244,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  console.log('router.beforeEach');
   const prev = from.name as Nullable<PageNames>;
   const current = to.name as PageNames;
   const setRoute = (name: PageNames, withNext = true) => {

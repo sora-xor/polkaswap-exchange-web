@@ -158,6 +158,7 @@ import type { DexQuoteData } from '@/store/swap/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
+import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
 
 import {
   isMaxButtonAvailable,
@@ -192,7 +193,8 @@ export default class Swap extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.LoadingMixin,
   TranslationMixin,
-  TokenSelectMixin
+  TokenSelectMixin,
+  SelectedTokenRouteMixin
 ) {
   @state.settings.сhartsEnabled сhartsEnabled!: boolean;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
@@ -381,7 +383,11 @@ export default class Swap extends Mixins(
 
   created() {
     this.withApi(async () => {
-      if (!this.tokenFrom) {
+      this.parseCurrentRoute();
+      if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
+        await this.setTokenFromAddress(this.firstRouteAddress);
+        await this.setTokenToAddress(this.secondRouteAddress);
+      } else if (!this.tokenFrom) {
         await this.setTokenFromAddress(XOR.address);
         await this.setTokenToAddress();
       }
@@ -542,6 +548,8 @@ export default class Swap extends Mixins(
     await this.switchTokens();
 
     this.subscribeOnSwapReserves();
+
+    this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
   }
 
   handleMaxValue(): void {
@@ -574,6 +582,7 @@ export default class Swap extends Mixins(
         this.subscribeOnSwapReserves();
       });
     }
+    this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
   }
 
   handleConfirmSwap(): void {
