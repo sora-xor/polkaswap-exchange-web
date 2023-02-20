@@ -136,7 +136,10 @@
         "successCopy": "Alamat dompet disalin ke clipboard",
         "copy": "Salin alamat",
         "switch": "Ganti akun",
-        "walletAddress": "Alamat dompet"
+        "walletAddress": "Alamat dompet",
+        "delete": "Hapus akun",
+        "rename": "Ganti nama akun",
+        "export": "Ekspor .json"
     },
     "history": {
         "clearHistory": "Bersihkan riwayat",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Mnemonic bip39 yang ditentukan tidak valid",
             "mnemonicLength": "Mnemonic harus berisi {number} kata",
             "jsonFields": "File JSON tidak memiliki bidang yang wajib diisi"
-        }
+        },
+        "assetsAtRiskText": "Aset berisiko!",
+        "deleteAccountText": "Akun tidak dapat dipulihkan tanpa seed frase, file .json atau jika disimpan dalam beberapa ekstensi. Anda akan keluar."
     },
     "hashiBridgeText": "Jembatan {Hashi}",
     "disclaimerTitle": "Penafian:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "Segera Hadir",
     "confirmText": "Konfirmasi",
     "createTokenTextNFT": "Buat NFT",
-    "doNotShowText": "Jangan tunjukkan ini lagi"
+    "doNotShowText": "Jangan tunjukkan ini lagi",
+    "accountText": "akun | akun"
 }

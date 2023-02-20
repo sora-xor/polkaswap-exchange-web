@@ -136,7 +136,10 @@
         "successCopy": "Wallet address is copied to the clipboard",
         "copy": "Copy address",
         "switch": "Switch account",
-        "walletAddress": "Wallet address"
+        "walletAddress": "Wallet address",
+        "delete": "Delete account",
+        "rename": "Rename account",
+        "export": "Export .json"
     },
     "history": {
         "clearHistory": "Clear history",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Invalid bip39 mnemonic specified",
             "mnemonicLength": "Mnemonic should contain {number} words",
             "jsonFields": "JSON file does not have required fields"
-        }
+        },
+        "assetsAtRiskText": "Assets at risk!",
+        "deleteAccountText": "Account can’t be recovered without a seed phrase, .json file or if it’s stored in some extension. You will be logged out."
     },
     "hashiBridgeText": "{Hashi} bridge",
     "disclaimerTitle": "Disclaimer:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "Coming Soon",
     "confirmText": "Confirm",
     "createTokenTextNFT": "Create NFT",
-    "doNotShowText": "Don’t show me this again"
+    "doNotShowText": "Don’t show me this again",
+    "accountText": "account | accounts"
 }

@@ -136,7 +136,10 @@
         "successCopy": "Địa chỉ ví được sao chép vào bảng tạm",
         "copy": "Sao chép địa chỉ",
         "switch": "Chuyển đổi tài khoản",
-        "walletAddress": "Địa chỉ ví"
+        "walletAddress": "Địa chỉ ví",
+        "delete": "Xóa tài khoản",
+        "rename": "Đổi tên tài khoản",
+        "export": "Xuất .json"
     },
     "history": {
         "clearHistory": "Xóa lịch sử",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Đã chỉ định ghi nhớ bip39 không hợp lệ",
             "mnemonicLength": "Cụm từ ghi nhớ phải chứa {number} từ",
             "jsonFields": "Tệp JSON không có các trường bắt buộc"
-        }
+        },
+        "assetsAtRiskText": "Tài sản có nguy cơ!",
+        "deleteAccountText": "Không thể khôi phục tài khoản nếu không có cụm từ gốc, tệp .json hoặc nếu tài khoản được lưu trữ trong một số tiện ích mở rộng. Bạn sẽ được đăng xuất."
     },
     "hashiBridgeText": "Cầu {Hashi}",
     "disclaimerTitle": "Disclaimer:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "Sắp ra mắt",
     "confirmText": "Xác nhận",
     "createTokenTextNFT": "Tạo NFT",
-    "doNotShowText": "Đừng cho tôi xem cái này nữa"
+    "doNotShowText": "Đừng cho tôi xem cái này nữa",
+    "accountText": "tài khoản | tài khoản"
 }
