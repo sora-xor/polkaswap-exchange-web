@@ -1,21 +1,13 @@
 @Library('jenkins-library@SNE-261-arachni')
 
-String environments             = 'deploy/exchange-dev, deploy/exchange-stage1'
+String environments           = 'deploy/exchange-dev, deploy/exchange-stage1'
 String targetEnvironment      = environments
 String jobList                = targetEnvironment
-String targetEnvironment      = 'deploy/exchange-dev, deploy/exchange-stage1'
 String arachniURL             = targetEnvironment == 'deploy/exchange-stage1' ? 'https://test.polkaswap.io' : 'https://exchange.dev.sora2.tachi.soramitsu.co.jp/'
-String arachniExclude         = 'js|css'
-String arachniPlugin          = ''
 
-
-properties([
-    pipelineTriggers([upstream( jobList )])
-])
-
-def pipeline = new org.soramitsu.DASTPipeline(steps: this,
+def pipeline = new org.soramitsu.DASTPipeline(
+    steps: this,
     arachniURL: arachniURL,
-    erachniExclude: arachniExclude,
-    arachniPlugin: arachniPlugin
+    jobList: lobList
 )
 pipeline.runPipeline()
