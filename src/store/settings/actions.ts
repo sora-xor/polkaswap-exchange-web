@@ -102,7 +102,7 @@ const actions = defineActions({
     };
 
     const connectionOnReady = () => {
-      (connection as any).addEventListener('disconnected', connectionOnDisconnected);
+      connection.addEventListener('disconnected', connectionOnDisconnected);
     };
 
     try {
