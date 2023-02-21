@@ -102,14 +102,15 @@
         },
         "selectWallet": "Selecteer een portemonnee om mee te werken",
         "wallet": {
-            "install": "Installeren"
+            "install": "Installeren",
+            "connected": "Verbonden",
+            "notConnected": "Niet verbonden"
         }
     },
     "wallet": {
         "title": "{Sora} Netwerk account",
         "WalletAssets": "Assets",
         "WalletActivity": "Activiteit",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -135,7 +136,10 @@
         "successCopy": "Wallet-adres werd gekopieerd naar het klembord",
         "copy": "Adres kopiëren",
         "switch": "Van account wisselen",
-        "walletAddress": "Portemonnee adres"
+        "walletAddress": "Portemonnee adres",
+        "delete": "Account verwijderen",
+        "rename": "Hernoem account",
+        "export": "Exporteer .json"
     },
     "history": {
         "clearHistory": "Geschiedenis wissen",
@@ -167,8 +171,7 @@
         },
         "totalAssetsValue": "Totale waarde van bezittingen:",
         "details": "Details",
-        "assetId": "Asset-ID",
-        "add": "@:addAssetText"
+        "assetId": "Asset-ID"
     },
     "asset": {
         "remove": "Asset verwijderen",
@@ -190,9 +193,7 @@
             "title": "Valuta",
             "switchBtn": "Alleen geverifieerde activa"
         },
-        "searchInputText": "Zoeken op activa-ID, naam of tickersymbool",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Zoeken op activa-ID, naam of tickersymbool"
     },
     "createToken": {
         "desc": "Creëer en implementeer aangepaste asset op {Sora}",
@@ -290,11 +291,8 @@
             "submitted": "Transactie ingediend met vergoeding van {fee} {symbol}",
             "confirmed": "Transactie bevestigd"
         },
-        "viewIn": {
-            "sorascan": "Bekijk in Sorascan",
-            "subscan": "Bekijk in Subscan"
-        },
         "txId": "Transactie ID",
+        "viewIn": "Bekijk in {explorer}",
         "referrer": "Verwijzer",
         "referral": "Verwijzing"
     },
@@ -330,7 +328,6 @@
         "AddLiquidity": "Liquiditeit toevoegen",
         "AddLiquidityId": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
-        "PageNotFound": "Pagina niet gevonden",
         "Rewards": "Beloningen",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Zwembaden",
@@ -430,26 +427,7 @@
         "from": "Van",
         "to": "Naar"
     },
-    "pageNotFound": {
-        "title": "Pagina niet gevonden",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -558,8 +536,6 @@
         "notRegisteredAsset": "Asset {assetSymbol} is niet geregistreerd",
         "selectNetwork": "Selecteer netwerk",
         "networkInfo": "Bridge {Sora} Netwerk met:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Netwerkadres kopiëren",
         "soraAddress": "{Sora} adres",
         "ethereumAddress": "{Ethereum} adres",
@@ -615,7 +591,6 @@
             "done": "Compleet",
             "waitingForConfirmation": "Wachten op bevestiging..."
         },
-        "viewInEtherscan": "Bekijk in {Etherscan}",
         "networkTitle": "{network} transactie",
         "transactionHash": "Transactie hash",
         "networkInfo": {
@@ -1126,7 +1101,9 @@
             "mnemonic": "Ongeldig bip39 geheugensteuntje opgegeven",
             "mnemonicLength": "Mnemonic moet {number} woorden bevatten",
             "jsonFields": "JSON-bestand heeft geen verplichte velden"
-        }
+        },
+        "assetsAtRiskText": "Activa in gevaar!",
+        "deleteAccountText": "Account kan niet worden hersteld zonder een seed-zin, een .json bestand of als het is opgeslagen in een extensie. U wordt uitgelogd."
     },
     "hashiBridgeText": "{Hashi} brug",
     "disclaimerTitle": "Disclaimer:",
@@ -1141,5 +1118,6 @@
     "comingSoonText": "Binnenkort beschikbaar",
     "confirmText": "Bevestigen",
     "createTokenTextNFT": "NFT maken",
-    "doNotShowText": "Laat me dit niet nog een keer zien"
+    "doNotShowText": "Laat me dit niet nog een keer zien",
+    "accountText": "rekening | rekeningen"
 }

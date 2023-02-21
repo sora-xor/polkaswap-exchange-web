@@ -102,14 +102,15 @@
         },
         "selectWallet": "Chọn một ví để kết nối",
         "wallet": {
-            "install": "Cài đặt"
+            "install": "Cài đặt",
+            "connected": "kết nối",
+            "notConnected": "Không kết nối"
         }
     },
     "wallet": {
         "title": "Tài khoản Mạng {Sora}",
         "WalletAssets": "Tài sản",
         "WalletActivity": "Hoạt động",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -135,7 +136,10 @@
         "successCopy": "Địa chỉ ví được sao chép vào bảng tạm",
         "copy": "Sao chép địa chỉ",
         "switch": "Chuyển đổi tài khoản",
-        "walletAddress": "Địa chỉ ví"
+        "walletAddress": "Địa chỉ ví",
+        "delete": "Xóa tài khoản",
+        "rename": "Đổi tên tài khoản",
+        "export": "Xuất .json"
     },
     "history": {
         "clearHistory": "Xóa lịch sử",
@@ -167,8 +171,7 @@
         },
         "totalAssetsValue": "Tổng giá trị tài sản:",
         "details": "Chi tiết",
-        "assetId": "ID tài sản",
-        "add": "@:addAssetText"
+        "assetId": "ID tài sản"
     },
     "asset": {
         "remove": "Loại bỏ tài sản",
@@ -190,9 +193,7 @@
             "title": "Tiền tệ",
             "switchBtn": "Chỉ nội dung đã xác minh"
         },
-        "searchInputText": "Tìm kiếm theo ID, tên hoặc ký hiệu mã",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Tìm kiếm theo ID, tên hoặc ký hiệu mã"
     },
     "createToken": {
         "desc": "Tạo và triển khai tài sản tùy chỉnh trên {Sora}",
@@ -290,11 +291,8 @@
             "submitted": "Giao dịch được gửi với phí {fee} {symbol}",
             "confirmed": "Giao dịch đã được xác nhận"
         },
-        "viewIn": {
-            "sorascan": "Xem trên SORAscan",
-            "subscan": "Xem trong Subscan"
-        },
         "txId": "ID giao dịch",
+        "viewIn": "Xem trong {explorer}",
         "referrer": "Người giới thiệu",
         "referral": "Giới thiệu"
     },
@@ -330,7 +328,6 @@
         "AddLiquidity": "Thêm Thanh Khoản",
         "AddLiquidityId": "Thêm Thanh Khoản",
         "RemoveLiquidity": "Rút Thanh Khoản",
-        "PageNotFound": "Trang không tìm thấy",
         "Rewards": "Phần thưởng",
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "hồ bơi",
@@ -430,26 +427,7 @@
         "from": "Từ",
         "to": "Đến"
     },
-    "pageNotFound": {
-        "title": "Không tìm thấy trang",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "Mạng chính {Ethereum}",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -558,8 +536,6 @@
         "notRegisteredAsset": "Tài sản {assetSymbol} không được đăng ký",
         "selectNetwork": "Chọn mạng",
         "networkInfo": "Cầu nối Mạng {Sora} với:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Sao chép địa chỉ mạng",
         "soraAddress": "địa chỉ {Sora}",
         "ethereumAddress": "địa chỉ {Ethereum}",
@@ -615,7 +591,6 @@
             "done": "Hoàn tất",
             "waitingForConfirmation": "Đang chờ xác nhận..."
         },
-        "viewInEtherscan": "Xem trên {Etherscan}",
         "networkTitle": "giao dịch {network}",
         "transactionHash": "Chi tiết giao dịch",
         "networkInfo": {
@@ -1126,7 +1101,9 @@
             "mnemonic": "Đã chỉ định ghi nhớ bip39 không hợp lệ",
             "mnemonicLength": "Cụm từ ghi nhớ phải chứa {number} từ",
             "jsonFields": "Tệp JSON không có các trường bắt buộc"
-        }
+        },
+        "assetsAtRiskText": "Tài sản có nguy cơ!",
+        "deleteAccountText": "Không thể khôi phục tài khoản nếu không có cụm từ gốc, tệp .json hoặc nếu tài khoản được lưu trữ trong một số tiện ích mở rộng. Bạn sẽ được đăng xuất."
     },
     "hashiBridgeText": "Cầu {Hashi}",
     "disclaimerTitle": "Disclaimer:",
@@ -1141,5 +1118,6 @@
     "comingSoonText": "Sắp ra mắt",
     "confirmText": "Xác nhận",
     "createTokenTextNFT": "Tạo NFT",
-    "doNotShowText": "Đừng cho tôi xem cái này nữa"
+    "doNotShowText": "Đừng cho tôi xem cái này nữa",
+    "accountText": "tài khoản | tài khoản"
 }

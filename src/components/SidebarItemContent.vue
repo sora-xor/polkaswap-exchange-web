@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" :class="classes">
+  <component :is="tag" :class="classes" :tabindex="tabindex">
     <!-- TODO: [TECH] move from fonts provided values -->
     <div v-if="icon === 'sora-card'" class="icon-container">
       <side-menu-card class="sora-card-sidebar-icon" />
@@ -26,6 +26,7 @@ export default class SidebarItemContent extends Mixins(TranslationMixin) {
   @Prop({ default: '', type: String }) readonly icon!: string;
   @Prop({ default: '', type: String }) readonly title!: string;
   @Prop({ default: 'div', type: String }) readonly tag!: string;
+  @Prop() readonly tabindex!: string | number;
 
   get classes(): Array<string> {
     const base = 'sidebar-item-content';
@@ -97,5 +98,8 @@ $icon-size: 42px;
   margin: auto;
   background-repeat: no-repeat;
   background-position: center center;
+}
+.el-menu-item:not(.is-active):not(.is-disabled):focus .sora-card-sidebar-icon path {
+  fill: var(--s-color-base-content-secondary) !important; // focus state of sora card item
 }
 </style>

@@ -102,14 +102,15 @@
         },
         "selectWallet": "选择要使用的钱包",
         "wallet": {
-            "install": "安装"
+            "install": "安装",
+            "connected": "连接的",
+            "notConnected": "未连接"
         }
     },
     "wallet": {
         "title": "{Sora}网络账户",
         "WalletAssets": "资产",
         "WalletActivity": "活动",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -135,7 +136,10 @@
         "successCopy": "钱包地址已被复制到剪贴板上",
         "copy": "复制地址",
         "switch": "切换账户",
-        "walletAddress": "钱包地址"
+        "walletAddress": "钱包地址",
+        "delete": "删除帐户",
+        "rename": "重命名帐户",
+        "export": "导出.json"
     },
     "history": {
         "clearHistory": "清除历史记录",
@@ -167,8 +171,7 @@
         },
         "totalAssetsValue": "您的总资产价值：",
         "details": "细节",
-        "assetId": "资产 ID",
-        "add": "@:addAssetText"
+        "assetId": "资产 ID"
     },
     "asset": {
         "remove": "移除资产",
@@ -190,9 +193,7 @@
             "title": "货币",
             "switchBtn": "仅经过验证的资产"
         },
-        "searchInputText": "按资产 ID、名称或股票代码搜索",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "按资产 ID、名称或股票代码搜索"
     },
     "createToken": {
         "desc": "在 {Sora} 上创建和部署自定义资产",
@@ -290,11 +291,8 @@
             "submitted": "已提交的交易费用为{fee} {symbol}",
             "confirmed": "交易已确认"
         },
-        "viewIn": {
-            "sorascan": "在 SORAScan 中查看",
-            "subscan": "在Subscan中查看"
-        },
         "txId": "交易ID",
+        "viewIn": "在{explorer}中查看",
         "referrer": "推荐人",
         "referral": "推荐"
     },
@@ -330,7 +328,6 @@
         "AddLiquidity": "增加流动性",
         "AddLiquidityId": "增加流动性",
         "RemoveLiquidity": "删除流动性",
-        "PageNotFound": "找不到网页",
         "Rewards": "奖励",
         "Explore\/Tokens": "代币",
         "Explore\/Pools": "游泳池",
@@ -430,26 +427,7 @@
         "from": "从",
         "to": "至"
     },
-    "pageNotFound": {
-        "title": "找不到网页",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} 开发网",
-        "Test": "{Sora} 测试网",
-        "Prod": "{Sora} 主网",
-        "Stage": "{Sora} 测试网"
-    },
-    "evm": {
-        "main": "{Ethereum} 主网",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta 测试网",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -558,8 +536,6 @@
         "notRegisteredAsset": "资产{assetSymbol}未注册",
         "selectNetwork": "选择网络",
         "networkInfo": "与 {Sora} 网络桥接：",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "复制网络地址",
         "soraAddress": "{Sora} 地址",
         "ethereumAddress": "{Ethereum} 地址",
@@ -615,7 +591,6 @@
             "done": "完成",
             "waitingForConfirmation": "等待确认..."
         },
-        "viewInEtherscan": "在{Etherscan}中查看",
         "networkTitle": "{network}交易",
         "transactionHash": "交易哈希值",
         "networkInfo": {
@@ -1126,7 +1101,9 @@
             "mnemonic": "指定无效的bip39助记符",
             "mnemonicLength": "助记符应包含{number}单词",
             "jsonFields": "JSON 文件没有必填字段"
-        }
+        },
+        "assetsAtRiskText": "资产有风险！",
+        "deleteAccountText": "如果没有助记词、.json 文件或存储在某些扩展名中，则无法恢复帐户。您将被注销。"
     },
     "hashiBridgeText": "{Hashi}桥",
     "disclaimerTitle": "免责声明:",
@@ -1141,5 +1118,6 @@
     "comingSoonText": "即将推出",
     "confirmText": "确认",
     "createTokenTextNFT": "创建 NFT",
-    "doNotShowText": "不要再给我看这个"
+    "doNotShowText": "不要再给我看这个",
+    "accountText": "帐户 | 帐户"
 }
