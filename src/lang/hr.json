@@ -111,7 +111,6 @@
         "title": "Račun mreže {Sora}",
         "WalletAssets": "Sredstva",
         "WalletActivity": "Aktivnost",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "Adresa novčanika kopira se u međuspremnik",
         "copy": "Kopirajte adresu",
         "switch": "Promjenite račun",
-        "walletAddress": "Adresa novčanika"
+        "walletAddress": "Adresa novčanika",
+        "delete": "Izbriši račun",
+        "rename": "Preimenuj račun",
+        "export": "Izvezi .json"
     },
     "history": {
         "clearHistory": "Očistite povijest",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "Ukupna vrijednost vaše sredstvo:",
         "details": "Pojedinosti",
-        "assetId": "ID sredstva",
-        "add": "@:addAssetText"
+        "assetId": "ID sredstva"
     },
     "asset": {
         "remove": "Uklonite sredstvo",
@@ -192,9 +193,7 @@
             "title": "Valute",
             "switchBtn": "Samo provjerena sredstva"
         },
-        "searchInputText": "Pretraživanje po ID-u sredstva, nazivu ili simbolu oznake",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Pretraživanje po ID-u sredstva, nazivu ili simbolu oznake"
     },
     "createToken": {
         "desc": "Izradite i primijenite prilagođena sredstva na {Sora}",
@@ -292,11 +291,8 @@
             "submitted": "Transakcija poslana uz naknadu od {fee} {symbol}",
             "confirmed": "Transakcija potvrđena"
         },
-        "viewIn": {
-            "sorascan": "Pogledajte u SORAScan",
-            "subscan": "Pogledajte u Subscanu"
-        },
         "txId": "ID transakcije",
+        "viewIn": "Pogledajte u {explorer}",
         "referrer": "Preporučitelj",
         "referral": "Preporuka"
     },
@@ -332,7 +328,6 @@
         "AddLiquidity": "Dodajte likvidnost",
         "AddLiquidityId": "Dodajte likvidnost",
         "RemoveLiquidity": "Uklonite likvidnost",
-        "PageNotFound": "Stranica nije pronađena",
         "Rewards": "Nagrade",
         "Explore\/Tokens": "Tokeni",
         "Explore\/Pools": "Bazeni",
@@ -432,26 +427,7 @@
         "from": "Od",
         "to": "Do"
     },
-    "pageNotFound": {
-        "title": "Stranica nije pronađena",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +536,6 @@
         "notRegisteredAsset": "Sredstvo {assetSymbol} nije registrirano",
         "selectNetwork": "Odaberite mrežu",
         "networkInfo": "Bridge {Sora} mrežna naknada s:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Kopiraj mrežnu adresu",
         "soraAddress": "{Sora} adresa",
         "ethereumAddress": "{Ethereum} adresa",
@@ -617,7 +591,6 @@
             "done": "Potpuno",
             "waitingForConfirmation": "Čeka se potvrda..."
         },
-        "viewInEtherscan": "Prikažite u {Etherscan}u",
         "networkTitle": "{network} transakcija",
         "transactionHash": "Hash transakcije",
         "networkInfo": {
@@ -1128,7 +1101,9 @@
             "mnemonic": "Naveden je nevažeći mnemonik bip39",
             "mnemonicLength": "Mnemotehnika treba sadržavati {number} riječi",
             "jsonFields": "JSON datoteka nema obavezna polja"
-        }
+        },
+        "assetsAtRiskText": "Imovina u opasnosti!",
+        "deleteAccountText": "Račun se ne može oporaviti bez početne fraze, .json datoteke ili ako je pohranjena u nekoj ekstenziji. Bit ćete odjavljeni."
     },
     "hashiBridgeText": "{Hashi} most",
     "disclaimerTitle": "Disclaimer:",
@@ -1143,5 +1118,6 @@
     "comingSoonText": "Dolazi uskoro",
     "confirmText": "Potvrdite",
     "createTokenTextNFT": "Napravite NFT",
-    "doNotShowText": "Ne pokazuj mi ovo više"
+    "doNotShowText": "Ne pokazuj mi ovo više",
+    "accountText": "račun | računi"
 }

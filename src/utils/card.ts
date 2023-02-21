@@ -4,12 +4,26 @@ import store from '../store';
 
 import { KycStatus, Status, VerificationStatus } from '../types/card';
 
+const getSoraProxyEndpoints = (soraNetwork: string) => {
+  const test = {
+    referenceNumberEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/get-reference-number',
+    lastKycStatusEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/kyc-last-status',
+  };
+
+  const prod = {
+    referenceNumberEndpoint: '',
+    lastKycStatusEndpoint: '',
+  };
+
+  return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
+};
+
 // Defines user's KYC status.
 // If accessToken expired, tries to get new JWT pair via refreshToken;
 // if not, forces user to pass phone number again to create new JWT pair in sessionStorage.
 export async function defineUserStatus(): Promise<Status> {
-  const sessionRefreshToken = sessionStorage.getItem('refresh-token');
-  let sessionAccessToken = sessionStorage.getItem('access-token');
+  const sessionRefreshToken = localStorage.getItem('PW-refresh-token');
+  let sessionAccessToken = localStorage.getItem('PW-token');
 
   if (!(sessionAccessToken && sessionRefreshToken)) {
     return emptyStatusFields();
@@ -45,11 +59,9 @@ async function getUpdatedJwtPair(refreshToken: string): Promise<Nullable<string>
 
     if (response.status === 200 && response.ok === true) {
       const accessToken = response.headers.get('accesstoken');
-      const expirationTime = response.headers.get('expirationtime');
 
-      if (accessToken && expirationTime) {
-        sessionStorage.setItem('access-token', accessToken);
-        sessionStorage.setItem('expiration-time', expirationTime);
+      if (accessToken) {
+        localStorage.setItem('PW-token', accessToken);
       }
 
       return accessToken;
@@ -64,8 +76,10 @@ async function getUpdatedJwtPair(refreshToken: string): Promise<Nullable<string>
 async function getUserStatus(accessToken: string): Promise<Status> {
   if (!accessToken) return emptyStatusFields();
 
+  const soraNetwork = store.state.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
+
   try {
-    const result = await fetch('https://sora-card.sc1.dev.sora2.soramitsu.co.jp/kyc-last-status', {
+    const result = await fetch(getSoraProxyEndpoints(soraNetwork).lastKycStatusEndpoint, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -119,9 +133,8 @@ export const getXorPerEuroRatio = async () => {
 };
 
 export const clearTokensFromSessionStorage = () => {
-  sessionStorage.removeItem('access-token');
-  sessionStorage.removeItem('refresh-token');
-  sessionStorage.removeItem('expiration-time');
+  localStorage.removeItem('PW-token');
+  localStorage.removeItem('PW-refresh-token');
 };
 
 const emptyStatusFields = (): Status => ({
@@ -132,15 +145,15 @@ const emptyStatusFields = (): Status => ({
 export function soraCard(soraNetwork: string) {
   const getAuthServiceData = (soraNetwork: string) => {
     const test = {
-      sdkURL: 'https://auth-test.paywings.io/auth/sdk.js',
-      authURL: 'https://auth-test.soracard.com',
+      sdkURL: 'https://auth-test.soracard.com/WebSDK/WebSDK.js',
       apiKey: '6974528a-ee11-4509-b549-a8d02c1aec0d',
+      env: WALLET_CONSTS.SoraNetwork.Test,
     };
 
     const prod = {
       sdkURL: '',
-      authURL: '',
       apiKey: '',
+      env: WALLET_CONSTS.SoraNetwork.Prod,
     };
 
     return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
@@ -161,18 +174,6 @@ export function soraCard(soraNetwork: string) {
       pass: '',
       env: WALLET_CONSTS.SoraNetwork.Prod,
       unifiedApiKey: '',
-    };
-
-    return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
-  };
-
-  const getSoraProxyEndpoints = (soraNetwork: string) => {
-    const test = {
-      referenceNumberEndpoint: 'https://sora-card.sc1.dev.sora2.soramitsu.co.jp/get-reference-number',
-    };
-
-    const prod = {
-      referenceNumberEndpoint: '',
     };
 
     return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;

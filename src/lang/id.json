@@ -111,7 +111,6 @@
         "title": "Akun Jaringan {Sora}",
         "WalletAssets": "Aset",
         "WalletActivity": "Aktivitas",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "Alamat dompet disalin ke clipboard",
         "copy": "Salin alamat",
         "switch": "Ganti akun",
-        "walletAddress": "Alamat dompet"
+        "walletAddress": "Alamat dompet",
+        "delete": "Hapus akun",
+        "rename": "Ganti nama akun",
+        "export": "Ekspor .json"
     },
     "history": {
         "clearHistory": "Bersihkan riwayat",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "Nilai total aset Anda:",
         "details": "Rincian",
-        "assetId": "ID Aset",
-        "add": "@:addAssetText"
+        "assetId": "ID Aset"
     },
     "asset": {
         "remove": "Hapus aset",
@@ -192,9 +193,7 @@
             "title": "Mata Uang",
             "switchBtn": "Hanya aset yang diverifikasi"
         },
-        "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker"
     },
     "createToken": {
         "desc": "Buat dan terapkan kostum aset di {Sora}",
@@ -292,11 +291,8 @@
             "submitted": "Transaksi diajukan dengan biaya {fee} {symbol}",
             "confirmed": "Transaksi dikonfirmasi"
         },
-        "viewIn": {
-            "sorascan": "Lihat di Sorascan",
-            "subscan": "Lihat di Subscan"
-        },
         "txId": "Id transaksi",
+        "viewIn": "Lihat di {explorer}",
         "referrer": "Perujuk",
         "referral": "Rujukan"
     },
@@ -332,7 +328,6 @@
         "AddLiquidity": "Tambah Likuiditas",
         "AddLiquidityId": "Tambah Likuiditas",
         "RemoveLiquidity": "Hapus Likuiditas",
-        "PageNotFound": "Halaman Tidak Ditemukan",
         "Rewards": "Hadiah",
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "Kolam",
@@ -432,26 +427,7 @@
         "from": "Dari",
         "to": "Untuk"
     },
-    "pageNotFound": {
-        "title": "Halaman tidak ditemukan",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Testnet Volta",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +536,6 @@
         "notRegisteredAsset": "Aset {assetSymbol} tidak terdaftar",
         "selectNetwork": "Pilih jaringan",
         "networkInfo": "Bridge Jaringan {Sora} dengan:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Salin alamat jaringan",
         "soraAddress": "{Sora} alamat",
         "ethereumAddress": "{Ethereum} alamat",
@@ -617,7 +591,6 @@
             "done": "Berhasil",
             "waitingForConfirmation": "Menunggu konfirmasi..."
         },
-        "viewInEtherscan": "Lihat di {Etherscan}",
         "networkTitle": "Transaksi {network}",
         "transactionHash": "Hash transaksi",
         "networkInfo": {
@@ -1128,7 +1101,9 @@
             "mnemonic": "Mnemonic bip39 yang ditentukan tidak valid",
             "mnemonicLength": "Mnemonic harus berisi {number} kata",
             "jsonFields": "File JSON tidak memiliki bidang yang wajib diisi"
-        }
+        },
+        "assetsAtRiskText": "Aset berisiko!",
+        "deleteAccountText": "Akun tidak dapat dipulihkan tanpa seed frase, file .json atau jika disimpan dalam beberapa ekstensi. Anda akan keluar."
     },
     "hashiBridgeText": "Jembatan {Hashi}",
     "disclaimerTitle": "Penafian:",
@@ -1143,5 +1118,6 @@
     "comingSoonText": "Segera Hadir",
     "confirmText": "Konfirmasi",
     "createTokenTextNFT": "Buat NFT",
-    "doNotShowText": "Jangan tunjukkan ini lagi"
+    "doNotShowText": "Jangan tunjukkan ini lagi",
+    "accountText": "akun | akun"
 }

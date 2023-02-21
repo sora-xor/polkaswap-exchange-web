@@ -9,37 +9,12 @@
         class="unselectable sora-card__card-image"
       />
       <div class="sora-card__card-icon" :class="computedIconClass">
-        <s-icon
-          v-if="!currentStatus || currentStatus === VerificationStatus.Pending"
-          name="time-time-24"
-          class="sora-card__card-icon-element"
-        />
-        <s-icon
-          v-if="currentStatus === VerificationStatus.Accepted"
-          name="basic-check-marks-24"
-          class="sora-card__card-icon-element"
-        />
-        <s-icon
-          v-if="currentStatus === VerificationStatus.Rejected"
-          name="basic-close-24"
-          class="sora-card__card-icon-element"
-        />
+        <s-icon class="sora-card__card-icon-element" :name="icon" />
       </div>
     </div>
 
-    <div class="sora-card__header">{{ headerText }}</div>
-    <p class="sora-card__status-info">
-      We will let you know if you’re eligible for the SORA card as soon as we get information from our partner,
-      Paywings. We will notify you.
-    </p>
-
-    <s-button
-      v-if="currentStatus === VerificationStatus.Rejected"
-      type="primary"
-      class="sora-card__btn s-typography-button--large"
-    >
-      <span class="text">{{ buttonText }}</span>
-    </s-button>
+    <div class="sora-card__header">{{ title }}</div>
+    <p class="sora-card__status-info">{{ text }}</p>
   </div>
 </template>
 
@@ -50,28 +25,68 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { VerificationStatus } from '@/types/card';
 import { getter } from '@/store/decorators';
 
+// Lokalise
+const pendingTitle = 'Your KYC is completed. Waiting for the results';
+const acceptedTitle = 'Your application has been approved';
+const rejectedTitle = 'Your application has not been approved';
+const tryAgainText = 'Try to complete KYC again';
+const pendingText =
+  'You have successfully completed your KYC application. The review is pending, you can expect a decision shortly.';
+const acceptedText = 'Your KYC verification is successful and we are already preparing to send you the SORA card!';
+const rejectedText = 'Your application has failed.';
+//
+const pendingIcon = 'time-time-24';
+
 @Component
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @getter.soraCard.currentStatus currentStatus!: VerificationStatus;
 
-  readonly VerificationStatus = VerificationStatus;
-
   get buttonText(): string {
-    return 'Try to complete KYC again';
+    return tryAgainText;
   }
 
-  get headerText(): Nullable<string> {
-    if (!this.currentStatus) return 'KYC completed. Waiting for the results';
+  get title(): string {
+    if (!this.currentStatus) return pendingTitle;
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
-        return 'KYC completed. Waiting for the results';
+        return pendingTitle;
       case VerificationStatus.Accepted:
-        return 'You’re approved for SORA Card';
+        return acceptedTitle;
       case VerificationStatus.Rejected:
-        return 'You’re not been approved for SORA Card';
+        return rejectedTitle;
       default:
-        return null;
+        return pendingTitle;
+    }
+  }
+
+  get text(): string {
+    if (!this.currentStatus) return pendingText;
+
+    switch (this.currentStatus) {
+      case VerificationStatus.Pending:
+        return pendingText;
+      case VerificationStatus.Accepted:
+        return acceptedText;
+      case VerificationStatus.Rejected:
+        return rejectedText;
+      default:
+        return pendingText;
+    }
+  }
+
+  get icon(): string {
+    if (!this.currentStatus) return pendingIcon;
+
+    switch (this.currentStatus) {
+      case VerificationStatus.Pending:
+        return pendingIcon;
+      case VerificationStatus.Accepted:
+        return 'basic-check-marks-24';
+      case VerificationStatus.Rejected:
+        return 'basic-close-24';
+      default:
+        return pendingIcon;
     }
   }
 
@@ -84,7 +99,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       case VerificationStatus.Pending:
         return `${base}--waiting`;
       case VerificationStatus.Accepted:
-        return `${base}--succcess`;
+        return `${base}--success`;
       case VerificationStatus.Rejected:
         return `${base}--reject`;
       default:
@@ -111,6 +126,11 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     margin-top: $basic-spacing;
     text-align: center;
     width: 85%;
+    font-weight: 300;
+    line-height: 150%;
+  }
+  &__btn {
+    width: 100%;
   }
   &__card {
     position: relative;
@@ -138,6 +158,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       }
       &--success {
         background-color: var(--s-color-theme-secondary);
+        opacity: 0.95;
       }
       &--reject {
         background-color: var(--s-color-status-error);

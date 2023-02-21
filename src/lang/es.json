@@ -111,7 +111,6 @@
         "title": "Cuenta de la Red {Sora}",
         "WalletAssets": "Activos",
         "WalletActivity": "Actividad",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "La dirección de la cartera se ha copiado en el portapapeles",
         "copy": "Copiar dirección",
         "switch": "Cambiar de cuenta",
-        "walletAddress": "Dirección de la cartera"
+        "walletAddress": "Dirección de la cartera",
+        "delete": "Borrar cuenta",
+        "rename": "Vuelva a nombrar la cuenta",
+        "export": "Exportar .json"
     },
     "history": {
         "clearHistory": "Borrar el historial",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "El valor total de sus activos:",
         "details": "Detalles",
-        "assetId": "ID del Activo",
-        "add": "@:addAssetText"
+        "assetId": "ID del Activo"
     },
     "asset": {
         "remove": "Eliminar el Activo",
@@ -192,9 +193,7 @@
             "title": "Monedas",
             "switchBtn": "Solo activos verificados"
         },
-        "searchInputText": "Buscar por ID de activo, nombre o símbolo de etiqueta",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Buscar por ID de activo, nombre o símbolo de etiqueta"
     },
     "createToken": {
         "desc": "Crear y desplegar Activos personalizados en {Sora}",
@@ -292,11 +291,8 @@
             "submitted": "Transacción enviada con una comisión de {fee} {symbol}",
             "confirmed": "Transacción confirmada"
         },
-        "viewIn": {
-            "sorascan": "Ver en SORAscan",
-            "subscan": "Ver en Subscan"
-        },
         "txId": "ID de transacción",
+        "viewIn": "Ver en {explorer}",
         "referrer": "Referente",
         "referral": "Referencia"
     },
@@ -332,7 +328,6 @@
         "AddLiquidity": "Añadir Liquidez",
         "AddLiquidityId": "Añadir Liquidez",
         "RemoveLiquidity": "Remover Liquidez",
-        "PageNotFound": "Página no encontrada",
         "Rewards": "Recompensas",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Quinielas",
@@ -432,26 +427,7 @@
         "from": "Desde",
         "to": "A"
     },
-    "pageNotFound": {
-        "title": "Página no encontrada",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Red de desarrolladores",
-        "Test": "{Sora} Red de prueba",
-        "Prod": "{Sora} Red principal",
-        "Stage": "{Sora} Red de prueba"
-    },
-    "evm": {
-        "main": "Red principal de {Ethereum}",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +536,6 @@
         "notRegisteredAsset": "El Activo {assetSymbol} no está registrado",
         "selectNetwork": "Seleccionar red",
         "networkInfo": "Puente de la red {Sora} con:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Copiar dirección de red",
         "soraAddress": "Dirección de {Sora}",
         "ethereumAddress": "dirección {Ethereum}",
@@ -617,7 +591,6 @@
             "done": "Completo",
             "waitingForConfirmation": "Esperando confirmación..."
         },
-        "viewInEtherscan": "Ver en {Etherscan}",
         "networkTitle": "Transacción de {network}",
         "transactionHash": "Hash de la transacción",
         "networkInfo": {
@@ -1081,8 +1054,8 @@
             "header": "¡Bienvenido a {AppName}!",
             "headline": "Configuremos tu cuenta",
             "text": "Cree su cuenta de {Sora} Network o inicie sesión en las antiguas utilizando una frase mnemotécnica o la importación .json. Esto le permite firmar transacciones de forma segura y administrar activos en {Sora} Network.",
-            "createAccount": "Crea una cuenta",
-            "importAccount": "Cuenta de importación"
+            "createAccount": "Crear una cuenta",
+            "importAccount": "Importar Cuenta"
         },
         "heading": {
             "seedPhraseTitle": "Frase semilla",
@@ -1127,8 +1100,10 @@
             "passwords": "Las contraseñas no coinciden",
             "mnemonic": "Mnemónico bip39 especificado no válido",
             "mnemonicLength": "El mnemónico debe contener {number} palabras",
-            "jsonFields": "El archivo JSON no tiene campos requeridos"
-        }
+            "jsonFields": "El archivo JSON no tiene los campos requeridos"
+        },
+        "assetsAtRiskText": "¡Activos en riesgo!",
+        "deleteAccountText": "La cuenta no se puede recuperar sin una frase inicial, un archivo .json o si está almacenada en alguna extensión. Serás desconectado."
     },
     "hashiBridgeText": "Puente {Hashi}",
     "disclaimerTitle": "Aviso legal:",
@@ -1137,11 +1112,12 @@
     },
     "tooltips": {
         "roi": "{ROI} significa Retorno de la Inversión. Se calcula dividiendo la ganancia obtenida en una inversión por el costo de esa inversión en un porcentaje equivalente.",
-        "tvl": "{TVL} significa valor total bloqueado. Representa tokens bloqueados en los grupos en el equivalente en dólares."
+        "tvl": "{TVL} significa valor total bloqueado. Representa tokens bloqueados en los pares de liquidez en su equivalente en dólares."
     },
     "createTokenText": "Crear",
     "comingSoonText": "Próximamente",
     "confirmText": "Confirmar",
     "createTokenTextNFT": "Crear NFT",
-    "doNotShowText": "No me muestres esto de nuevo"
+    "doNotShowText": "No me muestres esto de nuevo",
+    "accountText": "cuenta | cuentas"
 }

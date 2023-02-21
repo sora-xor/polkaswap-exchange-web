@@ -7,9 +7,11 @@ function initialState(): SoraCardState {
     kycStatus: undefined,
     verificationStatus: undefined,
     euroBalance: ZeroStringValue,
+    wasEuroBalanceLoaded: false,
     totalXorBalance: FPNumber.ZERO,
     xorToDeposit: FPNumber.ZERO,
     totalXorBalanceUpdates: null,
+    authLogin: null,
   };
 }
 

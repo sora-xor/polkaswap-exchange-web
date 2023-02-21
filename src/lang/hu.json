@@ -111,7 +111,6 @@
         "title": "{Sora} hálózati fiók",
         "WalletAssets": "Eszközök",
         "WalletActivity": "Aktivitás",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "A tárca címe a vágólapra másolva",
         "copy": "Cím másolása",
         "switch": "Fiókváltás",
-        "walletAddress": "Pénztárca címe"
+        "walletAddress": "Pénztárca címe",
+        "delete": "Fiók törlése",
+        "rename": "Fiók átnevezése",
+        "export": ".json exportálása"
     },
     "history": {
         "clearHistory": "Előzmények törlése",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "Az összes eszköz értéke:",
         "details": "Részletek",
-        "assetId": "Eszköz azonosítója",
-        "add": "@:addAssetText"
+        "assetId": "Eszköz azonosítója"
     },
     "asset": {
         "remove": "Eszköz eltávolítása",
@@ -192,9 +193,7 @@
             "title": "Valuták",
             "switchBtn": "Csak ellenőrzött eszközök"
         },
-        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján"
     },
     "createToken": {
         "desc": "Egyéni eszköz létrehozása és telepítése a {Sora} hálózaton",
@@ -292,11 +291,8 @@
             "submitted": "{fee} {symbol} díjjal benyújtott tranzakció",
             "confirmed": "A tranzakció megerősítve"
         },
-        "viewIn": {
-            "sorascan": "Megtekintés SORAScan-en",
-            "subscan": "Megtekintés Subscan-ben"
-        },
         "txId": "Tranzakció azonosítója",
+        "viewIn": "Megtekintés {explorer}-ben",
         "referrer": "Ajánló",
         "referral": "Ajánlás"
     },
@@ -332,7 +328,6 @@
         "AddLiquidity": "Poolhoz hozzáadás",
         "AddLiquidityId": "Poolhoz hozzáadás",
         "RemoveLiquidity": "Poolból eltávolítás",
-        "PageNotFound": "Az oldal nem található",
         "Rewards": "Jutalmak",
         "Explore\/Tokens": "Tokenek",
         "Explore\/Pools": "Totó",
@@ -432,26 +427,7 @@
         "from": "-tól",
         "to": "Számára"
     },
-    "pageNotFound": {
-        "title": "Az oldal nem található",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Teszthálózat",
-        "Prod": "{Sora} Főhálózat",
-        "Stage": "{Sora} Teszthálózat"
-    },
-    "evm": {
-        "main": "{Ethereum} főhálózat",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Teszthálózat",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +536,6 @@
         "notRegisteredAsset": "Az eszköz {assetSymbol} nincs regisztrálva",
         "selectNetwork": "Hálózat kiválasztása",
         "networkInfo": "{Sora} hálózati híd a következőkkel:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Hálózati cím másolása",
         "soraAddress": "{Sora} cím",
         "ethereumAddress": "{Ethereum} cím",
@@ -617,7 +591,6 @@
             "done": "Teljesítve",
             "waitingForConfirmation": "Megerősítésre vár..."
         },
-        "viewInEtherscan": "Megtekintés {Etherscan}en",
         "networkTitle": "{network} tranzakció",
         "transactionHash": "Tranzakciós hash",
         "networkInfo": {
@@ -1128,7 +1101,9 @@
             "mnemonic": "Érvénytelen bip39 emlékeztető van megadva",
             "mnemonicLength": "A mnemonikának {number} szót kell tartalmaznia",
             "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
-        }
+        },
+        "assetsAtRiskText": "Veszélyben lévő eszközök!",
+        "deleteAccountText": "A fiókot nem lehet visszaállítani kezdő kifejezés, .json fájl nélkül, vagy ha azt valamilyen kiterjesztéssel tárolják. Ön ki lesz jelentkezve."
     },
     "hashiBridgeText": "{Hashi} híd",
     "disclaimerTitle": "Jogi nyilatkozat:",
@@ -1143,5 +1118,6 @@
     "comingSoonText": "Hamarosan...",
     "confirmText": "Megerősítés",
     "createTokenTextNFT": "NFT létrehozása",
-    "doNotShowText": "Ne mutasd ezt még egyszer"
+    "doNotShowText": "Ne mutasd ezt még egyszer",
+    "accountText": "számla | fiókok"
 }

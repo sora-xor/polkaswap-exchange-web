@@ -85,14 +85,12 @@
                       rel="nofollow noopener"
                     >
                       <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
-                        {{ t(`transaction.viewIn.${link.type}`) }}
+                        {{ t('transaction.viewIn', { explorer: link.type }) }}
                       </s-dropdown-item>
                     </a>
                   </template>
                   <s-dropdown-item v-else class="s-dropdown-menu__item">
-                    <span>
-                      {{ t('bridgeTransaction.viewInEtherscan') }}
-                    </span>
+                    <span>{{ viewInEtherscan }}</span>
                   </s-dropdown-item>
                 </template>
               </s-dropdown>
@@ -217,14 +215,12 @@
                       rel="nofollow noopener"
                     >
                       <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
-                        {{ t(`transaction.viewIn.${link.type}`) }}
+                        {{ t('transaction.viewIn', { explorer: link.type }) }}
                       </s-dropdown-item>
                     </a>
                   </template>
                   <s-dropdown-item v-else class="s-dropdown-menu__item">
-                    <span>
-                      {{ t('bridgeTransaction.viewInEtherscan') }}
-                    </span>
+                    <span>{{ viewInEtherscan }}</span>
                   </s-dropdown-item>
                 </template>
               </s-dropdown>
@@ -352,6 +348,10 @@ export default class BridgeTransaction extends Mixins(
   @mutation.bridge.setHistory setHistory!: FnWithoutArgs;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
   @action.bridge.handleBridgeTx private handleBridgeTx!: (id: string) => Promise<void>;
+
+  get viewInEtherscan(): string {
+    return this.t('transaction.viewIn', { explorer: this.TranslationConsts.Etherscan });
+  }
 
   get txInProcess(): boolean {
     if (!this.historyItem?.id) return false;
@@ -646,17 +646,31 @@ export default class BridgeTransaction extends Mixins(
       return [];
     }
     if (!this.soraTxId) {
-      return baseLinks.map(({ type, value }) => ({ type, value: `${value}/block/${txId}` }));
+      // txId is block
+      return baseLinks.map(({ type, value }) => {
+        const link = { type } as WALLET_CONSTS.ExplorerLink;
+        if (type === WALLET_CONSTS.ExplorerType.Polkadot) {
+          link.value = `${value}/${txId}`;
+        } else {
+          link.value = `${value}/block/${txId}`;
+        }
+        return link;
+      });
     }
-    return baseLinks.map(({ type, value }) => {
-      const link = { type } as WALLET_CONSTS.ExplorerLink;
-      if (type === WALLET_CONSTS.ExplorerType.Sorascan) {
-        link.value = `${value}/transaction/${txId}`;
-      } else {
-        link.value = `${value}/extrinsic/${txId}`;
-      }
-      return link;
-    });
+    return baseLinks
+      .map(({ type, value }) => {
+        const link = { type } as WALLET_CONSTS.ExplorerLink;
+        if (type === WALLET_CONSTS.ExplorerType.Sorascan) {
+          link.value = `${value}/transaction/${txId}`;
+        } else if (WALLET_CONSTS.ExplorerType.Subscan) {
+          link.value = `${value}/extrinsic/${txId}`;
+        } else if (this.soraTxBlockId) {
+          // ExplorerType.Polkadot
+          link.value = `${value}/${this.soraTxBlockId}`;
+        }
+        return link;
+      })
+      .filter((value) => !!value.value); // Polkadot explorer won't be shown without block
   }
 
   get firstTxHash(): string {
@@ -754,11 +768,11 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get formattedNetworkStep1(): string {
-    return this.t(this.formatNetwork(this.isSoraToEvm, true));
+    return this.formatNetwork(this.isSoraToEvm, true);
   }
 
   get formattedNetworkStep2(): string {
-    return this.t(this.formatNetwork(!this.isSoraToEvm, true));
+    return this.formatNetwork(!this.isSoraToEvm, true);
   }
 
   get comfirmationBlocksLeft(): number {

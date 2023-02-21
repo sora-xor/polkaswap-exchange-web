@@ -111,7 +111,6 @@
         "title": "{Sora}-Netzwerk-Konto",
         "WalletAssets": "Assets",
         "WalletActivity": "Aktivität",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "Wallet Adresse wurde in die Zwischenablage kopiert",
         "copy": "Adresse kopieren",
         "switch": "Konto wechseln",
-        "walletAddress": "Wallet-Adresse"
+        "walletAddress": "Wallet-Adresse",
+        "delete": "Konto löschen",
+        "rename": "Bennene den Account um",
+        "export": "Exportieren Sie .json"
     },
     "history": {
         "clearHistory": "Verlauf löschen",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "Gesamtwert deiner Assets:",
         "details": "Details",
-        "assetId": "Asset-ID",
-        "add": "@:addAssetText"
+        "assetId": "Asset-ID"
     },
     "asset": {
         "remove": "Asset entfernen",
@@ -192,9 +193,7 @@
             "title": "Währungen",
             "switchBtn": "Nur verifizierte Assets"
         },
-        "searchInputText": "Suche nach Asset-ID, Name oder Tickersymbol",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Suche nach Asset-ID, Name oder Tickersymbol"
     },
     "createToken": {
         "desc": "Erstelle und nutze benutzerdefinierte Assets auf {Sora}",
@@ -292,11 +291,8 @@
             "submitted": "Transaktion mit einer Gebühr von {fee} {symbol} übermittelt",
             "confirmed": "Transaktion bestätigt"
         },
-        "viewIn": {
-            "sorascan": "Auf SORAScan ansehen",
-            "subscan": "Auf Subscan ansehen"
-        },
         "txId": "Transaktions-ID",
+        "viewIn": "Auf {explorer} ansehen",
         "referrer": "Referrer",
         "referral": "Referral"
     },
@@ -332,7 +328,6 @@
         "AddLiquidity": "Liquidität hinzufügen",
         "AddLiquidityId": "Liquidität hinzufügen",
         "RemoveLiquidity": "Liquidität entfernen",
-        "PageNotFound": "Seite nicht gefunden",
         "Rewards": "Belohnungen",
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "Toto",
@@ -432,26 +427,7 @@
         "from": "Von",
         "to": "An"
     },
-    "pageNotFound": {
-        "title": "Seite nicht gefunden",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +536,6 @@
         "notRegisteredAsset": "Asset {assetSymbol} ist nicht registriert",
         "selectNetwork": "Netzwerk auswählen",
         "networkInfo": "Bridge {Sora} Netzwerk mit:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Netzwerkadresse kopieren",
         "soraAddress": "{Sora} Adresse",
         "ethereumAddress": "{Ethereum} Adresse",
@@ -617,7 +591,6 @@
             "done": "Erfolgreich",
             "waitingForConfirmation": "Warten auf Bestätigung..."
         },
-        "viewInEtherscan": "Auf {Etherscan} anzeigen",
         "networkTitle": "{network} Transaktion",
         "transactionHash": "Transaktions-ID",
         "networkInfo": {
@@ -1128,7 +1101,9 @@
             "mnemonic": "Ungültige bip39-Mnemonik angegeben",
             "mnemonicLength": "Mnemonik sollte {number} Wörter enthalten",
             "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder"
-        }
+        },
+        "assetsAtRiskText": "Vermögen in Gefahr!",
+        "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet."
     },
     "hashiBridgeText": "{Hashi} Brücke",
     "disclaimerTitle": "Haftungsausschluss:",
@@ -1143,5 +1118,6 @@
     "comingSoonText": "Demnächst verfügbar",
     "confirmText": "Bestätigen",
     "createTokenTextNFT": "NFT erstellen",
-    "doNotShowText": "Zeig mir das nicht noch einmal"
+    "doNotShowText": "Zeig mir das nicht noch einmal",
+    "accountText": "Konto | Konten"
 }
