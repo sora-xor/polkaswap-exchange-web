@@ -2,9 +2,8 @@
     "card": {
         "termsAndConditions": "Términos y condiciones",
         "disclaimerCollectData": "Para obtener una cuenta IBAN necesaria para la tarjeta SORA, los usuarios deben realizar un proceso KYC con el emisor de la tarjeta. Este es un cumplimiento obligatorio. La comunidad SORA no recopila ni recopilará ninguno de sus datos personales.",
-        "privacyPolicy": "política de privacidad",
+        "privacyPolicy": "Política de privacidad",
         "acceptAndContinue": "Aceptar y continuar",
-        "resendInBtn": "Reenviar en %02d:% 02d",
         "emailPlaceholder": "Correo electrónico",
         "sendCodeBtn": "Enviar código SMS",
         "firstNamePlaceholder": "Nombre de pila",
@@ -12,6 +11,7 @@
         "phonePlaceholder": "Número de teléfono",
         "sendEmailLinkBtn": "Enviar enlace",
         "statusAcceptText": "¡Tu verificación KYC fue exitosa y ya nos estamos preparando para enviarte la tarjeta SORA!",
+        "noFreeKycTitle": "",
         "unsupportedCountries": "Países no admitidos",
         "getSoraCardTitle": "Obtenga la tarjeta SORA",
         "alreadyAppliedTip": "ya he aplicado",
@@ -23,7 +23,7 @@
         "freeStartDesc": "{value} de XOR en su cuenta para comenzar gratis",
         "completeKYC": "KYC completo",
         "phoneConfirmation": "Confirmación telefónica",
-        "emailConfirmation": "confirmación de correo electrónico",
+        "emailConfirmation": "confirmación de correo",
         "roadmap": {
             "contactInfoTitle": "Verificar información de contacto",
             "contactInfoDesc": "Correo electrónico y número de teléfono",
@@ -48,6 +48,7 @@
         "blacklistedCountriesExcuse": "Lamentablemente, en este momento no podemos admitir los siguientes países:",
         "statusPendingText": "Ha completado con éxito su solicitud KYC. La revisión está pendiente y puede esperar una decisión en breve. <br \/> <br \/> Por lo general, la decisión se toma el mismo día, pero en algunos casos puede demorar hasta 3 días.",
         "statusPendingTitle": "KYC completado. Esperando los resultados",
-        "statusAcceptTitle": "Su solicitud ha sido aprobada"
+        "statusAcceptTitle": "Su solicitud ha sido aprobada",
+        "resendInBtn": "REENVIAR EN {value}"
     }
 }

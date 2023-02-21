@@ -94,8 +94,8 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   @Watch('smsResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
     const digit = value.toString().length > 1 ? '' : '0';
-    const countDown = `${digit}${value}`;
-    this.smsResendText = this.t('card.resendInBtn', { countDown }); // `RESEND IN 0:${countDown}`;
+    const countDown = `0:${digit}${value}`;
+    this.smsResendText = this.t('card.resendInBtn', { value: countDown });
   }
 
   verifyCode(): void {

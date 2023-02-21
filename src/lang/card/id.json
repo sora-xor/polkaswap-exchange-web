@@ -4,7 +4,6 @@
         "disclaimerCollectData": "Untuk mendapatkan akun IBAN yang diperlukan untuk SORA Card, pengguna diharuskan menjalani proses KYC dengan penerbit kartu. Ini diperlukan kepatuhan. Komunitas SORA tidak dan tidak akan mengumpulkan data pribadi Anda.",
         "privacyPolicy": "Kebijakan pribadi",
         "acceptAndContinue": "Terima & Lanjutkan",
-        "resendInBtn": "Kirim ulang dalam %02d:% 02d",
         "emailPlaceholder": "Surel",
         "sendCodeBtn": "Kirim kode SMS",
         "firstNamePlaceholder": "Nama depan",
@@ -12,6 +11,7 @@
         "phonePlaceholder": "Nomor telepon",
         "sendEmailLinkBtn": "Kirim tautan",
         "statusAcceptText": "Verifikasi KYC Anda berhasil dan kami sedang mempersiapkan untuk mengirimkan kartu SORA kepada Anda!",
+        "noFreeKycTitle": "",
         "unsupportedCountries": "Negara yang Tidak Didukung",
         "getSoraCardTitle": "Dapatkan Kartu SORA",
         "alreadyAppliedTip": "Saya sudah melamar",
@@ -48,6 +48,7 @@
         "blacklistedCountriesExcuse": "Sayangnya, saat ini kami tidak dapat mendukung negara-negara berikut:",
         "statusPendingText": "Anda telah berhasil menyelesaikan aplikasi KYC Anda. Peninjauan sedang menunggu keputusan dan Anda dapat mengharapkan keputusan segera. <br \/> <br \/> Biasanya pengambilan keputusan dilakukan pada hari yang sama, namun terkadang bisa memakan waktu hingga 3 hari.",
         "statusPendingTitle": "KYC selesai. Menunggu hasil",
-        "statusAcceptTitle": "Permohonan Anda telah disetujui"
+        "statusAcceptTitle": "Permohonan Anda telah disetujui",
+        "resendInBtn": "KIRIM ULANG KE {value}"
     }
 }

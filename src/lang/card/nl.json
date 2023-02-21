@@ -4,7 +4,6 @@
         "disclaimerCollectData": "Om een IBAN-rekening voor de SORA-kaart te krijgen, moeten gebruikers een KYC-procedure ondergaan bij de uitgever van de kaart. Dit is verplichte naleving. De SORA-gemeenschap verzamelt geen persoonlijke gegevens en zal dat ook niet doen.",
         "privacyPolicy": "Privacybeleid",
         "acceptAndContinue": "Accepteren en doorgaan",
-        "resendInBtn": "Opnieuw verzenden in %02d:%02d",
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Verzenden",
         "firstNamePlaceholder": "Voornaam",
@@ -12,6 +11,7 @@
         "phonePlaceholder": "Telefoonnummer",
         "sendEmailLinkBtn": "Link nogmaals versturen",
         "statusAcceptText": "Uw KYC-verificatie is succesvol en we zijn al bezig met de voorbereidingen om u de SORA Card te sturen!",
+        "noFreeKycTitle": "Geen gratis KYC pogingen meer",
         "unsupportedCountries": "Niet-ondersteunde landen",
         "getSoraCardTitle": "Koop een SORA-kaart",
         "alreadyAppliedTip": "Ik heb al gesolliciteerd",
@@ -48,6 +48,7 @@
         "blacklistedCountriesExcuse": "Helaas kunnen we op dit moment de volgende landen niet ondersteunen:",
         "statusPendingText": "U heeft uw KYC-aanvraag succesvol afgerond. De beoordeling is in behandeling en u kunt binnenkort een beslissing verwachten. <br \/> <br \/> Meestal wordt de beslissing dezelfde dag genomen, maar in sommige gevallen kan het tot 3 dagen duren.",
         "statusPendingTitle": "KYC voltooid. Wachten op de resultaten",
-        "statusAcceptTitle": "Uw aanvraag is goedgekeurd"
+        "statusAcceptTitle": "Uw aanvraag is goedgekeurd",
+        "resendInBtn": "OPNIEUW VERZENDEN BINNEN {value}"
     }
 }

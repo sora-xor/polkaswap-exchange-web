@@ -15,10 +15,7 @@
     </div>
     <div v-if="isPriceCalculated && isLoggedIn" class="sora-card__balance-indicator">
       <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
-      <p class="sora-card__balance-indicator-text">
-        <span class="sora-card__balance-indicator-text--bold">{{ balanceIndicatorAmount }}</span>
-        {{ freeStartUsingDesc }}
-      </p>
+      <p class="sora-card__balance-indicator-text" v-html="freeStartUsingDesc" />
     </div>
     <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
       <div v-if="isEuroBalanceEnough || !isLoggedIn" class="sora-card__options--enough-euro">
@@ -51,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
 
@@ -82,10 +79,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   // buyUsingPaywings = 'ISSUE CARD FOR €12';
   readonly getCardForFree = this.t('card.getSoraCardBtn');
   readonly alreadyAppliedText = this.t('card.alreadyAppliedTip');
-  readonly freeStartUsingDesc = this.t('card.freeStartDesc', { value: this.balanceIndicatorAmount });
-  readonly feeDesc = this.t('card.reIssuanceFee');
   readonly getCardTitle = this.t('card.getSoraCardTitle');
   readonly getCardText = this.t('card.getSoraCardDesc');
+  readonly feeDesc = this.t('card.reIssuanceFee');
+  freeStartUsingDesc = '';
 
   readonly buyOptions: Array<BuyButton> = [
     { type: BuyButtonType.X1, text: this.buyUsingX1, button: 'primary' },
@@ -105,6 +102,11 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   showX1Dialog = false;
   showPaywingsDialog = false;
 
+  @Watch('euroBalance', { immediate: true })
+  private handleEuroBalanceTranslationChange(value: number): void {
+    this.freeStartUsingDesc = this.t('card.freeStartDesc', { value: this.balanceIndicatorAmount });
+  }
+
   get buttonText(): string {
     if (!this.isLoggedIn) {
       return this.t('connectWalletText');
@@ -115,7 +117,9 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
   get balanceIndicatorAmount(): string {
     const euroBalance = parseInt(this.euroBalance, 10);
-    return `€${this.isEuroBalanceEnough ? hundred : euroBalance}/${hundred}`;
+    return `<span class="sora-card__balance-indicator-text--bold">€${
+      this.isEuroBalanceEnough ? hundred : euroBalance
+    }/${hundred}</span>`;
   }
 
   getIconClass(): string {
@@ -195,6 +199,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
       margin-left: calc(50% - var(--s-size-medium) + 10px / 2);
     }
   }
+}
+
+.sora-card__balance-indicator-text--bold {
+  font-weight: 600;
 }
 </style>
 

@@ -55,8 +55,8 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   @Watch('emailResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
     const digit = value.toString().length > 1 ? '' : '0';
-    const countDown = `${digit}${value}`;
-    this.emailResendText = this.t('card.resendEmailLinkBtn', { value: countDown });
+    const countDown = `00:${digit}${value}`;
+    this.emailResendText = this.t('card.resendInBtn', { value: countDown });
   }
 
   handleSendEmail(): void {

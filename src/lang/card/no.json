@@ -4,7 +4,6 @@
         "disclaimerCollectData": "For å få en IBAN-konto som kreves for SORA-kortet, må brukerne gjennomgå en KYC-prosess med kortutstederen. Dette er påkrevd samsvar. SORA-fellesskapet samler ikke inn og vil ikke samle inn noen av dine personopplysninger.",
         "privacyPolicy": "Personvernerklæring",
         "acceptAndContinue": "Godta og fortsett",
-        "resendInBtn": "Send på nytt om %02d:% 02d",
         "emailPlaceholder": "E-post",
         "sendCodeBtn": "Send SMS-kode",
         "firstNamePlaceholder": "Fornavn",
@@ -12,6 +11,7 @@
         "phonePlaceholder": "Telefonnummer",
         "sendEmailLinkBtn": "Send lenke",
         "statusAcceptText": "KYC-verifiseringen din er vellykket, og vi forbereder oss allerede på å sende deg SORA-kortet!",
+        "noFreeKycTitle": "",
         "unsupportedCountries": "Land som ikke støttes",
         "getSoraCardTitle": "Få SORA-kort",
         "alreadyAppliedTip": "Jeg har allerede søkt",
@@ -48,6 +48,7 @@
         "blacklistedCountriesExcuse": "Dessverre kan vi for øyeblikket ikke støtte følgende land:",
         "statusPendingText": "Du har fullført KYC-søknaden din. Evalueringen avventer, og du kan forvente en avgjørelse innen kort tid. <br \/> <br \/> Vanligvis tas avgjørelsen samme dag, men kan i noen tilfeller ta opptil 3 dager.",
         "statusPendingTitle": "KYC fullført. Venter på resultatene",
-        "statusAcceptTitle": "Søknaden din er godkjent"
+        "statusAcceptTitle": "Søknaden din er godkjent",
+        "resendInBtn": "SEND PÅ NYTT I {value}"
     }
 }

@@ -4,7 +4,6 @@
         "disclaimerCollectData": "Aby uzyskać konto IBAN potrzebne do karty SORA, użytkownicy muszą przejść proces KYC z wystawcą karty. Jest to wymagana zgodność. Społeczność SORA nie gromadzi i nie będzie gromadzić żadnych danych osobowych.",
         "privacyPolicy": "Polityka prywatności",
         "acceptAndContinue": "Zaakceptuj i kontynuuj",
-        "resendInBtn": "Wyślij ponownie za %02d:% 02d",
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Wyślij kod SMS",
         "firstNamePlaceholder": "Imię",
@@ -12,6 +11,7 @@
         "phonePlaceholder": "Numer telefonu",
         "sendEmailLinkBtn": "Wyślij link",
         "statusAcceptText": "Twoja weryfikacja KYC przebiegła pomyślnie i już przygotowujemy się do wysłania Ci karty SORA!",
+        "noFreeKycTitle": "",
         "unsupportedCountries": "Nieobsługiwane kraje",
         "getSoraCardTitle": "Zdobądź kartę SORA",
         "alreadyAppliedTip": "Już się zgłosiłem",
@@ -23,7 +23,7 @@
         "freeStartDesc": "{value} XOR na Twoim koncie na darmowy start",
         "completeKYC": "Ukończ KYC",
         "phoneConfirmation": "Potwierdzenie telefoniczne",
-        "emailConfirmation": "Potwierdzenie wiadomości e-mail",
+        "emailConfirmation": "Potwierdzenie e-mail",
         "roadmap": {
             "contactInfoTitle": "Zweryfikuj dane kontaktowe",
             "contactInfoDesc": "Adres e-mail i numer telefonu",
@@ -48,6 +48,7 @@
         "blacklistedCountriesExcuse": "Niestety, w tej chwili nie jesteśmy w stanie obsługiwać następujących krajów:",
         "statusPendingText": "Pomyślnie ukończyłeś aplikację KYC. Przegląd jest w toku i wkrótce możesz spodziewać się decyzji. <br \/> <br \/> Zwykle decyzja jest podejmowana tego samego dnia, ale w niektórych przypadkach może to potrwać do 3 dni.",
         "statusPendingTitle": "KYC zakończone. Czekam na wyniki",
-        "statusAcceptTitle": "Twoje zgłoszenie zostało zatwierdzone"
+        "statusAcceptTitle": "Twoje zgłoszenie zostało zatwierdzone",
+        "resendInBtn": "WYŚLIJ PONOWNIE W {value}"
     }
 }

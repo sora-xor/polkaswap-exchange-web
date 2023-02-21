@@ -4,7 +4,6 @@
         "disclaimerCollectData": "Aby uživatelé získali účet IBAN potřebný pro kartu SORA, musí podstoupit proces KYC u vydavatele karty. Toto je vyžadováno dodržování. Komunita SORA neshromažďuje a nebude shromažďovat žádné vaše osobní údaje.",
         "privacyPolicy": "Zásady ochrany osobních údajů",
         "acceptAndContinue": "Přijmout a pokračovat",
-        "resendInBtn": "Znovu odeslat za %02d:% 02d",
         "emailPlaceholder": "E-mailem",
         "sendCodeBtn": "Pošlete SMS kód",
         "firstNamePlaceholder": "Jméno",
@@ -12,6 +11,7 @@
         "phonePlaceholder": "Telefonní číslo",
         "sendEmailLinkBtn": "Poslat odkaz",
         "statusAcceptText": "Vaše ověření KYC bylo úspěšné a my se již připravujeme na zaslání karty SORA!",
+        "noFreeKycTitle": "",
         "unsupportedCountries": "Nepodporované země",
         "getSoraCardTitle": "Získejte kartu SORA",
         "alreadyAppliedTip": "Už jsem podal přihlášku",
@@ -48,6 +48,7 @@
         "blacklistedCountriesExcuse": "Bohužel v tuto chvíli nejsme schopni podporovat následující země:",
         "statusPendingText": "Úspěšně jste dokončili svou žádost KYC. Kontrola čeká a brzy můžete očekávat rozhodnutí. <br \/> <br \/> Obvykle je rozhodnutí učiněno ve stejný den, ale v některých případech může trvat až 3 dny.",
         "statusPendingTitle": "KYC dokončeno. Čekání na výsledky",
-        "statusAcceptTitle": "Vaše žádost byla schválena"
+        "statusAcceptTitle": "Vaše žádost byla schválena",
+        "resendInBtn": "ZNOVU ODESLAT V {value}"
     }
 }

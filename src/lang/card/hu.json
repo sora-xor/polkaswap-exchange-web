@@ -4,7 +4,6 @@
         "disclaimerCollectData": "A SORA Kártyához szükséges IBAN fiók megszerzéséhez a felhasználóknak KYC folyamatot kell végrehajtaniuk a kártya kibocsátójánál. Ez kötelező megfelelés. A SORA közösség nem gyűjti és nem is fogja gyűjteni az Ön személyes adatait.",
         "privacyPolicy": "Adatvédelmi irányelvek",
         "acceptAndContinue": "Elfogadás és folytatás",
-        "resendInBtn": "Újraküldés itt %02d:% 02d",
         "emailPlaceholder": "Email",
         "sendCodeBtn": "SMS kód küldése",
         "firstNamePlaceholder": "Keresztnév",
@@ -12,6 +11,7 @@
         "phonePlaceholder": "Telefonszám",
         "sendEmailLinkBtn": "Link elküldése",
         "statusAcceptText": "A KYC ellenőrzése sikeres, és már készülünk a SORA kártya elküldésére!",
+        "noFreeKycTitle": "",
         "unsupportedCountries": "Nem támogatott országok",
         "getSoraCardTitle": "Szerezzen SORA kártyát",
         "alreadyAppliedTip": "Már jelentkeztem",
@@ -48,6 +48,7 @@
         "blacklistedCountriesExcuse": "Sajnos jelenleg nem áll módunkban támogatni a következő országokat:",
         "statusPendingText": "Sikeresen kitöltötte KYC-jelentkezését. A felülvizsgálat függőben van, és hamarosan döntésre számíthat. <br \/> <br \/> Általában még aznap megszületik a döntés, de egyes esetekben akár 3 napig is eltarthat.",
         "statusPendingTitle": "A KYC befejeződött. Várjuk az eredményeket",
-        "statusAcceptTitle": "Jelentkezését jóváhagyták"
+        "statusAcceptTitle": "Jelentkezését jóváhagyták",
+        "resendInBtn": "ÚJRAKÜLDÉS {value}"
     }
 }

@@ -4,7 +4,6 @@
         "disclaimerCollectData": "To get an IBAN account needed for the SORA Card, users are required to undergo a KYC process with the card issuer. This is required compliance. The SORA community does not and will not collect any of your personal data.",
         "privacyPolicy": "Privacy Policy",
         "acceptAndContinue": "Accept & Continue",
-        "resendInBtn": "Resend in %02d:%02d",
         "emailPlaceholder": "Email",
         "sendCodeBtn": "Send SMS code",
         "firstNamePlaceholder": "First name",
@@ -12,6 +11,7 @@
         "phonePlaceholder": "Phone Number",
         "sendEmailLinkBtn": "Send link",
         "statusAcceptText": "Your KYC verification is successful and we are already preparing to send you the SORA card!",
+        "noFreeKycTitle": "No more free attempts",
         "unsupportedCountries": "Unsupported Countries",
         "getSoraCardTitle": "Get SORA Card",
         "alreadyAppliedTip": "I've already applied",
@@ -48,6 +48,7 @@
         "blacklistedCountriesExcuse": "Unfortunately, at this moment we’re not able to support the following countries:",
         "statusPendingText": "You have successfully completed your KYC application. The review is pending and you can expect a decision shortly.<br \/><br \/>Usually the decision is made the same day, but in some cases can take up to 3 days.",
         "statusPendingTitle": "KYC completed. Waiting for the results",
-        "statusAcceptTitle": "Your application has been approved"
+        "statusAcceptTitle": "Your application has been approved",
+        "resendInBtn": "RESEND IN {value}"
     }
 }

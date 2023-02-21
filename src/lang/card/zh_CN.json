@@ -4,7 +4,6 @@
         "disclaimerCollectData": "要获得 SORA 卡所需的 IBAN 帐户，用户需要通过发卡机构进行 KYC 流程。这是必需的合规性。 SORA 社区不会也不会收集您的任何个人数据。",
         "privacyPolicy": "隐私政策",
         "acceptAndContinue": "接受并继续",
-        "resendInBtn": "在%02d:% 02d",
         "emailPlaceholder": "电子邮件",
         "sendCodeBtn": "发送短信代码",
         "firstNamePlaceholder": "名",
@@ -12,6 +11,7 @@
         "phonePlaceholder": "电话号码",
         "sendEmailLinkBtn": "发送链接",
         "statusAcceptText": "您的 KYC 验证成功，我们已经准备向您发送 SORA 卡！",
+        "noFreeKycTitle": "",
         "unsupportedCountries": "不受支持的国家",
         "getSoraCardTitle": "索拉卡",
         "alreadyAppliedTip": "我已经申请了",
@@ -48,6 +48,7 @@
         "blacklistedCountriesExcuse": "很遗憾，目前我们无法支持以下国家\/地区：",
         "statusPendingText": "您已成功完成 KYC 申请。审查正在进行中，您可以期待很快做出决定。 <br \/> <br \/>通常在同一天做出决定，但在某些情况下可能需要长达 3 天的时间。",
         "statusPendingTitle": "KYC完成。等待结果",
-        "statusAcceptTitle": "您的申请已获批准"
+        "statusAcceptTitle": "您的申请已获批准",
+        "resendInBtn": "重发{value}"
     }
 }
