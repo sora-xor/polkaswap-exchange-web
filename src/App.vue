@@ -50,7 +50,14 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber, History, connection, HistoryItem } from '@sora-substrate/util';
-import { components, mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import {
+  components,
+  mixins,
+  getExplorerLinks,
+  WALLET_CONSTS,
+  WALLET_TYPES,
+  settingsStorage,
+} from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
@@ -114,6 +121,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
+  @mutation.settings.setDisclaimerDialogVisibility private setDisclaimerDialogVisibility!: () => void;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
@@ -222,6 +230,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // connection to node
       await this.runAppConnectionToNode();
       updateDocumentTitle(); // For the first load
+      this.showDisclaimer();
     });
   }
 
@@ -296,6 +305,14 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   setDarkPage(value: boolean) {
     this.showNotifsDarkPage = value;
+  }
+
+  showDisclaimer(): void {
+    const disclaimerApprove = settingsStorage.get('disclaimerApprove');
+
+    if (!disclaimerApprove) {
+      setTimeout(() => this.setDisclaimerDialogVisibility(), 3000);
+    }
   }
 
   handleAppMenuClick(e: Event): void {
