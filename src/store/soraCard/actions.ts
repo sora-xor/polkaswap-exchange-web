@@ -6,7 +6,7 @@ import { waitForAccountPair } from '@/utils';
 import { defineUserStatus, getXorPerEuroRatio, soraCard } from '@/utils/card';
 import { soraCardActionContext } from './../soraCard';
 import { Status } from '@/types/card';
-import { loadScript } from 'vue-plugin-load-script';
+import { loadScript, unloadScript } from 'vue-plugin-load-script';
 
 const actions = defineActions({
   calculateXorRestPrice(context, xorPerEuro: FPNumber): void {
@@ -74,6 +74,10 @@ const actions = defineActions({
     const { commit, rootState } = soraCardActionContext(context);
     const soraNetwork = rootState.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
     const { authService } = soraCard(soraNetwork);
+
+    await unloadScript(authService.sdkURL).catch(() => {
+      /* no need to handle */
+    });
 
     await loadScript(authService.sdkURL).then(() => {
       // TODO: annotate via TS main calls

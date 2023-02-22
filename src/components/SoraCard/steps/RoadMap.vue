@@ -104,7 +104,7 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
 
       if (!mediaDevicesAllowance) return;
     } catch (error) {
-      console.error('[KYC Sora Card]: Camera error.', error);
+      console.error('[SoraCard]: Camera error.', error);
     }
 
     this.$emit('confirm');
