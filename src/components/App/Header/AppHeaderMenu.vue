@@ -233,6 +233,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         this.setLanguageDialogVisibility(true);
         break;
       case HeaderMenuType.Disclaimer:
+        if (this.discalimerDisabled) return;
         this.setDisclaimerDialogVisibility();
         break;
     }

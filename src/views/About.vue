@@ -520,9 +520,6 @@ export default class About extends Mixins(TranslationMixin) {
     width: 100%;
     margin: 0 auto;
   }
-  .disclaimer {
-    margin-top: 40px;
-  }
 }
 
 .gradient {

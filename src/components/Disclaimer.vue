@@ -65,7 +65,7 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
   }
 
   get disclaimerPrefix(): string {
-    return `<span class="app-disclaimer__title">${this.t('disclaimerTitle')}</span>`;
+    return `<span class="disclaimer__prefix">${this.t('disclaimerTitle')}</span>`;
   }
 
   get memorandumLink(): string {
@@ -92,6 +92,8 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
   border-radius: var(--s-border-radius-medium);
   box-shadow: var(--s-shadow-dialog);
   width: 24%;
+  min-width: 335px;
+  max-width: 550px;
   padding: calc(var(--s-size-small) / 2);
   position: absolute;
   top: var(--s-size-mini);
@@ -135,5 +137,11 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
     margin-top: $basic-spacing;
     width: 100%;
   }
+}
+</style>
+
+<style lang="scss">
+.disclaimer__prefix {
+  color: var(--s-color-theme-accent);
 }
 </style>
