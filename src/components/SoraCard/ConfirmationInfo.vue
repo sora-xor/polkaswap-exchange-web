@@ -33,8 +33,8 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   readonly pendingText = this.t('card.statusPendingText');
   readonly acceptedTitle = this.t('card.statusAcceptTitle');
   readonly acceptedText = this.t('card.statusAcceptText');
-  readonly rejectedTitle = 'Your application has not been approved';
-  readonly rejectedText = 'Your application has failed.';
+  readonly rejectedTitle = 'Application rejected'; // TODO
+  readonly rejectedText = 'Your application has failed.'; // TODO
 
   get title(): string {
     if (!this.currentStatus) return this.pendingTitle;
