@@ -1,6 +1,6 @@
 <template>
   <stats-card>
-    <template #title>Supply</template>
+    <template #title>Total Supply</template>
 
     <template #filters>
       <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
@@ -208,7 +208,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           itemStyle: {
             color: this.theme.color.status.success,
           },
-          name: 'Mint',
+          name: 'Remint',
           yAxisIndex: 1,
           areaStyle: undefined,
         }),
@@ -230,6 +230,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
         textStyle: {
           color: this.theme.color.base.content.secondary,
         },
+        selectedMode: false,
       },
     };
   }

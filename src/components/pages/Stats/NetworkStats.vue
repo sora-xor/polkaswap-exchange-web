@@ -66,8 +66,9 @@ type NetworkStatsColumn = {
 };
 
 const StatsQuery = gql<EntitiesQueryResponse<NetworkSnapshotEntity>>`
-  query StatsQuery($type: SnapshotType, $from: Int, $to: Int) {
+  query StatsQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
     entities: networkSnapshots(
+      after: $after
       orderBy: TIMESTAMP_DESC
       filter: {
         and: [

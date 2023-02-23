@@ -39,7 +39,7 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
           const isNewDay = date.hour() === 0 && date.minute() === 0;
           const isNewMonth = date.date() === 1 && isNewDay;
           // TODO: "LT" formatted labels (hours) sometimes overlaps (AM\PM issue)
-          const timeFormat = isNewMonth ? 'MMMM' : isNewDay ? 'D' : 'HH:mm';
+          const timeFormat = isNewMonth ? 'MMM' : isNewDay ? 'D' : 'HH:mm';
           const formatted = this.formatDate(+value, timeFormat);
 
           if (isNewMonth) {
@@ -51,10 +51,12 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
 
           return formatted;
         },
+        hideOverlap: true,
         rich: {
           monthStyle: {
             fontSize: 10,
             fontWeight: 'bold',
+            marginTop: 10,
           },
           dateStyle: {
             fontSize: 10,

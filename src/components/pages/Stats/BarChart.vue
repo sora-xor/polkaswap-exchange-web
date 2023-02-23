@@ -1,7 +1,6 @@
 <template>
   <stats-card>
     <template #title>
-      <token-logo v-if="fees" :token="XOR" />
       <span>{{ title }}</span>
       <s-tooltip v-if="tooltip" border-radius="mini" :content="tooltip">
         <s-icon name="info-16" size="14px" />
@@ -22,6 +21,7 @@
       <formatted-amount class="chart-price" :value="amount.amount">
         <template v-if="!fees" #prefix>$</template>
         {{ amount.suffix }}
+        <template v-if="fees">&nbsp;{{ XOR.symbol }}</template>
       </formatted-amount>
       <price-change :value="priceChange" />
       <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
@@ -193,7 +193,9 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
         formatter: (params) => {
           const { data } = params[0];
           const [timestamp, value] = data;
-          return `${this.fees ? '' : '$'} ${formatDecimalPlaces(value)}`;
+          const amount = formatDecimalPlaces(value);
+
+          return this.fees ? `${amount} ${XOR.symbol}` : `$ ${amount}`;
         },
       }),
       series: [this.barSeriesSpec()],
