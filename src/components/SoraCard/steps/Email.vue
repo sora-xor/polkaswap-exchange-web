@@ -109,16 +109,24 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
 
     this.authLogin
       .on('Verification-Email-Sent-Success', () => {
+        console.log('Verification-Email-Sent-Success EMAIL.vue');
+
         this.emailSent = true;
       })
       .on('Otp-Verification-Success', () => {
+        console.log('Otp-Verification-Success EMAIL.vue');
+
         // Tokens are stored in local storage localStorage.getItem('PW-token'); localStorage.getItem('PW-refresh-token');
         /* Minimal registration is required */
       })
       .on('Verification-Email-ReSent-Success', () => {
+        console.log('Verification-Email-ReSent-Success');
+
         this.emailSent = true;
       })
       .on('Email-verified', () => {
+        console.log('Email-verified');
+
         this.$emit('confirm');
       });
   }
