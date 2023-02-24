@@ -16,19 +16,17 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { lazyComponent } from '@/router';
 
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 
 import { mutation, state, getter } from '@/store/decorators';
-import { Components } from '@/consts';
 import { MoonpayNotifications } from './consts';
 
 @Component({
   components: {
-    DialogBase: components.DialogBase,
     MoonpayLogo,
-    SimpleNotification: lazyComponent(Components.SimpleNotification),
+    DialogBase: components.DialogBase,
+    SimpleNotification: components.SimpleNotification,
   },
 })
 export default class MoonpayNotification extends Mixins(TranslationMixin) {

@@ -23,8 +23,6 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
 
 import ethersUtil from '@/utils/ethers-util';
 import { isEthereumAddress } from '@/utils';
@@ -36,7 +34,7 @@ import type { Whitelist } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
-    SimpleNotification: lazyComponent(Components.SimpleNotification),
+    SimpleNotification: components.SimpleNotification,
     DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
   },

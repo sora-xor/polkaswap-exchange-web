@@ -198,7 +198,6 @@ export enum Components {
   GenericPageHeader = 'shared/GenericPageHeader',
   ExternalLink = 'shared/ExternalLink',
   TokensRow = 'shared/TokensRow',
-  SimpleNotification = 'shared/SimpleNotification',
   PairTokenLogo = 'shared/PairTokenLogo',
   PriceChange = 'shared/PriceChange',
   ValueStatusWrapper = 'shared/ValueStatusWrapper',
