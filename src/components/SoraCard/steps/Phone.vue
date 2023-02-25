@@ -57,7 +57,7 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { action, getter, state } from '@/store/decorators';
+import { action, getter, mutation, state } from '@/store/decorators';
 import { VerificationStatus } from '@/types/card';
 
 const MIN_PHONE_LENGTH_WITH_CODE = 8;
@@ -67,13 +67,18 @@ const RESEND_INTERVAL = 59;
 @Component
 export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.soraCard.authLogin private authLogin!: any;
+  @state.soraCard.hasFreeAttempts hasFreeAttempts!: boolean;
+  @state.soraCard.wantsToPassKycAgain wantsToPassKycAgain!: boolean;
   @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
   @getter.soraCard.isEuroBalanceEnough private isEuroBalanceEnough!: boolean;
 
+  @mutation.soraCard.setWillToPassKycAgain setWillToPassKycAgain!: (boolean) => void;
+
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.initPayWingsAuthSdk private initPayWingsAuthSdk!: AsyncFnWithoutArgs;
+  @action.soraCard.getUserKycAttempt getUserKycAttempt!: AsyncFnWithoutArgs;
 
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
@@ -270,6 +275,22 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
       })
       .on('Otp-Verification-Success', async () => {
         await this.getUserStatus();
+
+        if (this.currentStatus === VerificationStatus.Rejected) {
+          await this.getUserKycAttempt();
+
+          if (this.wantsToPassKycAgain && this.hasFreeAttempts) {
+            const state = {
+              goToEmail: false,
+              startKyc: true,
+              showBanner: false,
+            };
+
+            this.$emit('confirm', state);
+            this.setWillToPassKycAgain(false);
+            return;
+          }
+        }
 
         if (!this.currentStatus) {
           if (this.userApplied) {

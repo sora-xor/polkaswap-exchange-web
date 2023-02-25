@@ -13,6 +13,7 @@ function initialState(): SoraCardState {
     totalXorBalanceUpdates: null,
     authLogin: null,
     hasFreeAttempts: null,
+    wantsToPassKycAgain: false,
   };
 }
 

@@ -3,7 +3,7 @@ import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 
 import { waitForAccountPair } from '@/utils';
-import { defineUserStatus, getXorPerEuroRatio, soraCard } from '@/utils/card';
+import { defineUserStatus, getXorPerEuroRatio, getFreeKycAttemptCount, soraCard } from '@/utils/card';
 import { soraCardActionContext } from './../soraCard';
 import { Status } from '@/types/card';
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
@@ -15,7 +15,7 @@ const actions = defineActions({
     const euroToPay = FPNumber.HUNDRED.add(FPNumber.ONE).sub(totalXorBalance.mul(xorPerEuro));
     const euroToPayInXor = euroToPay.div(xorPerEuro);
 
-    commit.setXorPriceToDeposit(euroToPayInXor.dp(3)); // it's rounded cuz it'll be shown in Bridge
+    commit.setXorPriceToDeposit(euroToPayInXor.dp(3)); // TODO: round up number
   },
 
   async calculateXorBalanceInEuros(context, { xorPerEuro, xorTotalBalance }): Promise<void> {
@@ -97,9 +97,9 @@ const actions = defineActions({
 
   async getUserKycAttempt(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
-    // TODO: get all records for a particular user, count how many are Rejected (?)
-    // if more than 2, set noMoreFreeAttepmt
-    commit.setHasKycAttempts(false);
+    const isFreeAttemptAvailable = await getFreeKycAttemptCount();
+
+    commit.setHasKycAttempts(isFreeAttemptAvailable);
   },
 });
 

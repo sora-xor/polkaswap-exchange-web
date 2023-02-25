@@ -35,6 +35,9 @@ const mutations = defineMutations<SoraCardState>()({
   setHasKycAttempts(state, hasAttempt: boolean) {
     state.hasFreeAttempts = hasAttempt;
   },
+  setWillToPassKycAgain(state, will: boolean) {
+    state.wantsToPassKycAgain = will;
+  },
 });
 
 export default mutations;

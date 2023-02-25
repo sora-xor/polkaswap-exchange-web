@@ -16,20 +16,22 @@
     <div class="sora-card__header">{{ title }}</div>
     <p class="sora-card__status-info">{{ text }}</p>
 
-    <s-button
-      v-if="showTryMoreBtn"
-      type="primary"
-      class="sora-card__btn s-typography-button--large"
-      @click="handleKycRetry"
-    >
-      <span class="text">Try to complete KYC again</span>
-    </s-button>
-    <div v-else class="sora-card__no-more-free-kyc">
-      <h4>No more free attempts</h4>
-      <p class="sora-card__no-more-free-kyc-text">
-        You have used your free attempts to pass the KYC process. We kindly ask you to wait until the next update of the
-        application to proceed with paid attempts.
-      </p>
+    <div v-if="currentStatus === VerificationStatus.Rejected" class="sora-card__rejection">
+      <s-button
+        v-if="hasFreeAttempts"
+        type="primary"
+        class="sora-card__btn s-typography-button--large"
+        @click="handleKycRetry"
+      >
+        <span class="text">Try to complete KYC again</span>
+      </s-button>
+      <div v-else class="sora-card__no-more-free-kyc">
+        <h4>No more free attempts</h4>
+        <p class="sora-card__no-more-free-kyc-text">
+          You have used your free attempts to pass the KYC process. We kindly ask you to wait until the next update of
+          the application to proceed with paid attempts.
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -39,7 +41,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { VerificationStatus } from '@/types/card';
-import { action, getter, state } from '@/store/decorators';
+import { action, getter, mutation, state } from '@/store/decorators';
 import { clearTokensFromLocalStorage } from '@/utils/card';
 
 // Lokalise
@@ -57,14 +59,11 @@ const pendingIcon = 'time-time-24';
 @Component
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @state.soraCard.hasFreeAttempts hasFreeAttempts!: boolean;
-
   @getter.soraCard.currentStatus currentStatus!: VerificationStatus;
-
+  @mutation.soraCard.setWillToPassKycAgain setWillToPassKycAgain!: (boolean) => void;
   @action.soraCard.getUserKycAttempt getUserKycAttempt!: AsyncFnWithoutArgs;
 
-  get showTryMoreBtn(): boolean {
-    return this.hasFreeAttempts && this.currentStatus === VerificationStatus.Rejected;
-  }
+  VerificationStatus = VerificationStatus;
 
   get buttonText(): string {
     return tryAgainText;
@@ -134,13 +133,12 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
 
   handleKycRetry(): void {
     clearTokensFromLocalStorage();
-    // this.$emit('confirm-apply');
+    this.setWillToPassKycAgain(true);
+    this.$emit('confirm-apply');
   }
 
   async mounted(): Promise<void> {
-    if (this.currentStatus === VerificationStatus.Rejected) {
-      await this.getUserKycAttempt();
-    }
+    await this.getUserKycAttempt();
   }
 }
 </script>
@@ -164,6 +162,9 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     width: 85%;
     font-weight: 300;
     line-height: 150%;
+  }
+  &__rejection {
+    width: 100%;
   }
   &__btn {
     width: 100%;

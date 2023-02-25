@@ -8,11 +8,15 @@ const getSoraProxyEndpoints = (soraNetwork: string) => {
   const test = {
     referenceNumberEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/get-reference-number',
     lastKycStatusEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/kyc-last-status',
+    kycAttemptCountEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/kyc-attempt-count',
+    newAccessTokenEndpoint: 'https://api-auth-test.soracard.com/RequestNewAccessToken',
   };
 
   const prod = {
     referenceNumberEndpoint: '',
     lastKycStatusEndpoint: '',
+    kycAttemptCountEndpoint: '',
+    newAccessTokenEndpoint: '',
   };
 
   return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
@@ -50,7 +54,7 @@ async function getUpdatedJwtPair(refreshToken: string): Promise<Nullable<string>
   const buffer = Buffer.from(apiKey);
 
   try {
-    const response = await fetch('https://api-auth-test.soracard.com/RequestNewAccessToken', {
+    const response = await fetch(getSoraProxyEndpoints(soraNetwork).newAccessTokenEndpoint, {
       method: 'POST',
       headers: {
         Authorization: `Basic ${buffer.toString('base64')}, Bearer ${refreshToken}`,
@@ -129,6 +133,42 @@ export const getXorPerEuroRatio = async () => {
     return parsedData.sora.eur;
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const getFreeKycAttemptCount = async () => {
+  const sessionRefreshToken = localStorage.getItem('PW-refresh-token');
+  let sessionAccessToken = localStorage.getItem('PW-token');
+
+  if (!(sessionAccessToken && sessionRefreshToken)) {
+    return null;
+  }
+
+  if (isAccessTokenExpired(sessionAccessToken)) {
+    const accessToken = await getUpdatedJwtPair(sessionRefreshToken);
+
+    if (accessToken) {
+      sessionAccessToken = accessToken;
+    } else {
+      return null;
+    }
+  }
+
+  const soraNetwork = store.state.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
+
+  try {
+    const result = await fetch(getSoraProxyEndpoints(soraNetwork).kycAttemptCountEndpoint, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${sessionAccessToken}`,
+      },
+    });
+
+    const { free_attempt: freeAttempt } = await result.json();
+
+    return freeAttempt;
+  } catch (error) {
+    console.error('[SoraCard]: Error while getting KYC attempt', error);
   }
 };
 
