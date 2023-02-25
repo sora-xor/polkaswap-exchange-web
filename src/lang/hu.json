@@ -136,7 +136,10 @@
         "successCopy": "A tárca címe a vágólapra másolva",
         "copy": "Cím másolása",
         "switch": "Fiókváltás",
-        "walletAddress": "Pénztárca címe"
+        "walletAddress": "Pénztárca címe",
+        "delete": "Fiók törlése",
+        "rename": "Fiók átnevezése",
+        "export": ".json exportálása"
     },
     "history": {
         "clearHistory": "Előzmények törlése",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Érvénytelen bip39 emlékeztető van megadva",
             "mnemonicLength": "A mnemonikának {number} szót kell tartalmaznia",
             "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
-        }
+        },
+        "assetsAtRiskText": "Veszélyben lévő eszközök!",
+        "deleteAccountText": "A fiókot nem lehet visszaállítani kezdő kifejezés, .json fájl nélkül, vagy ha azt valamilyen kiterjesztéssel tárolják. Ön ki lesz jelentkezve."
     },
     "hashiBridgeText": "{Hashi} híd",
     "disclaimerTitle": "Jogi nyilatkozat:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "Hamarosan...",
     "confirmText": "Megerősítés",
     "createTokenTextNFT": "NFT létrehozása",
-    "doNotShowText": "Ne mutasd ezt még egyszer"
+    "doNotShowText": "Ne mutasd ezt még egyszer",
+    "accountText": "számla | fiókok"
 }

@@ -136,7 +136,10 @@
         "successCopy": "钱包地址已被复制到剪贴板上",
         "copy": "复制地址",
         "switch": "切换账户",
-        "walletAddress": "钱包地址"
+        "walletAddress": "钱包地址",
+        "delete": "删除帐户",
+        "rename": "重命名帐户",
+        "export": "导出.json"
     },
     "history": {
         "clearHistory": "清除历史记录",
@@ -1098,7 +1101,9 @@
             "mnemonic": "指定无效的bip39助记符",
             "mnemonicLength": "助记符应包含{number}单词",
             "jsonFields": "JSON 文件没有必填字段"
-        }
+        },
+        "assetsAtRiskText": "资产有风险！",
+        "deleteAccountText": "如果没有助记词、.json 文件或存储在某些扩展名中，则无法恢复帐户。您将被注销。"
     },
     "hashiBridgeText": "{Hashi}桥",
     "disclaimerTitle": "免责声明:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "即将推出",
     "confirmText": "确认",
     "createTokenTextNFT": "创建 NFT",
-    "doNotShowText": "不要再给我看这个"
+    "doNotShowText": "不要再给我看这个",
+    "accountText": "帐户 | 帐户"
 }

@@ -136,7 +136,10 @@
         "successCopy": "L'indirizzo del wallet è stato copiato negli appunti",
         "copy": "Copia indirizzo",
         "switch": "Cambia account",
-        "walletAddress": "Indirizzo del portafoglio"
+        "walletAddress": "Indirizzo del portafoglio",
+        "delete": "Eliminare l'account",
+        "rename": "Rinomina account",
+        "export": "Esporta .json"
     },
     "history": {
         "clearHistory": "Cancellare la cronologia",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Specificato mnemonico bip39 non valido",
             "mnemonicLength": "Il mnemonico deve contenere {numero} di parole",
             "jsonFields": "Il file JSON non ha campi obbligatori"
-        }
+        },
+        "assetsAtRiskText": "Beni a rischio!",
+        "deleteAccountText": "L'account non può essere recuperato senza una frase seme, un file .json o se è memorizzato in un'estensione. Verrai disconnesso."
     },
     "hashiBridgeText": "Ponte {Hashi}",
     "disclaimerTitle": "Disclaimer:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "Prossimamente",
     "confirmText": "Conferma",
     "createTokenTextNFT": "Crea NFT",
-    "doNotShowText": "Non mostrarmelo di nuovo"
+    "doNotShowText": "Non mostrarmelo di nuovo",
+    "accountText": "conto | conti"
 }

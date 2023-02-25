@@ -136,7 +136,10 @@
         "successCopy": "Ti daakọ adirẹsi apamọwọ si agekuru naa",
         "copy": "Da Adirẹsi ko",
         "switch": "Yi Ifowosi pada",
-        "walletAddress": "Adirẹsi apamọwọ"
+        "walletAddress": "Adirẹsi apamọwọ",
+        "delete": "Pa akọọlẹ rẹ kuro",
+        "rename": "Fun lorukọ mii iroyin",
+        "export": "okeere .json"
     },
     "history": {
         "clearHistory": "Nu itan kuro",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Bip39 mnemonic ti ko tọ ni pato",
             "mnemonicLength": "Mnemonic yẹ ki o ni awọn ọrọ {number} ninu",
             "jsonFields": "Faili JSON ko ni awọn aaye ti a beere"
-        }
+        },
+        "assetsAtRiskText": "Awọn dukia ni ewu!",
+        "deleteAccountText": "Akoto ko le gba pada laisi gbolohun ọrọ irugbin, faili .json tabi ti o ba wa ni ipamọ ni diẹ ninu itẹsiwaju. O yoo wa ni ibuwolu jade."
     },
     "hashiBridgeText": "{Hashi} Afara",
     "disclaimerTitle": "Akiyesi:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "Nbọ laipẹ",
     "confirmText": "Jẹrisi",
     "createTokenTextNFT": "Ṣẹda NFT",
-    "doNotShowText": "Maṣe fi eyi han mi lẹẹkansi"
+    "doNotShowText": "Maṣe fi eyi han mi lẹẹkansi",
+    "accountText": "iroyin | awọn iroyin"
 }
