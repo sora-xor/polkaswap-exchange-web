@@ -5,6 +5,8 @@ module.exports = defineConfig({
   publicPath: './',
   configureWebpack: (config) => {
     config.plugins.push(new NodePolyfillPlugin());
+    // It's set temporary just api init in workers
+    config.experiments = { topLevelAwait: true };
     // bundle all dependencies from node_modules to vendors
     config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
     config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
@@ -22,11 +24,33 @@ module.exports = defineConfig({
         });
       });
 
-    config.module.rules.unshift({
-      // should be before 'ts-loader'
-      test: /\.worker\.ts$/,
-      loader: 'worker-loader',
-    });
+    config.module.rules.unshift(
+      {
+        // should be before 'ts-loader'
+        test: /\.worker\.ts$/,
+        loader: 'worker-loader',
+        options: {
+          worker: {
+            type: 'Worker',
+            options: {
+              type: 'module',
+            },
+          },
+        },
+      },
+      {
+        test: /\.shared-worker\.ts$/,
+        loader: 'worker-loader',
+        options: {
+          worker: {
+            type: 'SharedWorker',
+            options: {
+              type: 'module',
+            },
+          },
+        },
+      }
+    );
 
     if (process.env.NODE_ENV === 'production') {
       const buildDateTime = Date.now();

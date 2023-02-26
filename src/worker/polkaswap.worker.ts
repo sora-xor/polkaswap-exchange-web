@@ -1,22 +1,23 @@
-// Copyright 2019-2022 @polkadot/extension authors & contributors
-// SPDX-License-Identifier: Apache-2.0
 /// <reference lib="WebWorker" />
 
-// export empty type because of tsc --isolatedModules flag
+import { info, parseEvents, getApi } from './base';
+import { WorkerEvent } from './events';
+
 export type {};
-declare const self: ServiceWorkerGlobalScope;
+declare const self: DedicatedWorkerGlobalScope;
 
-self.addEventListener('install', async () => {
-  console.info('WORKER:install');
-});
+const api = await getApi();
 
-self.addEventListener('message', ({ data }) => {
-  console.info('WORKER:message');
-  return data;
-});
-
-self.addEventListener('activate', () => {
-  console.info('WORKER:activate');
-});
-
-// initial setup
+self.onmessage = async ({ data }) => {
+  info('self.onmessage::' + data.command);
+  switch (data.command) {
+    case WorkerEvent.Close:
+      info('Closing & api.disconnect');
+      await api.disconnect();
+      self.close();
+      break;
+    default:
+      await parseEvents(self, api, data.command);
+      break;
+  }
+};
