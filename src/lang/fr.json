@@ -136,7 +136,10 @@
         "successCopy": "L'adresse du portefeuille est copiée dans le presse-papiers",
         "copy": "Copier l'adresse",
         "switch": "Changer de compte",
-        "walletAddress": "Adresse du portefeuille"
+        "walletAddress": "Adresse du portefeuille",
+        "delete": "Supprimer le compte",
+        "rename": "Renommer le compte",
+        "export": "Exporter .json"
     },
     "history": {
         "clearHistory": "Effacer l'historique",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Mnémonique bip39 non valide spécifié",
             "mnemonicLength": "Le mnémonique doit contenir {number} mots",
             "jsonFields": "Le fichier JSON n'a pas de champs obligatoires"
-        }
+        },
+        "assetsAtRiskText": "Actifs en péril !",
+        "deleteAccountText": "Le compte ne peut pas être récupéré sans une phrase de départ, un fichier .json ou s'il est stocké dans une extension. Vous serez déconnecté."
     },
     "hashiBridgeText": "Pont {Hashi}",
     "disclaimerTitle": "Avertissement:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "Bientôt disponible",
     "confirmText": "Confirmer",
     "createTokenTextNFT": "Créer NFT",
-    "doNotShowText": "Ne me montre plus ça"
+    "doNotShowText": "Ne me montre plus ça",
+    "accountText": "compte | comptes"
 }

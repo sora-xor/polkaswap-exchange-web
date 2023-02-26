@@ -136,7 +136,10 @@
         "successCopy": "Adresa peněženky je zkopírována do schránky",
         "copy": "Zkopírovat adresu",
         "switch": "Přepnout na jiný účet",
-        "walletAddress": "Adresa peněženky"
+        "walletAddress": "Adresa peněženky",
+        "delete": "smazat účet",
+        "rename": "Přejmenovat účet",
+        "export": "Exportujte soubor .json"
     },
     "history": {
         "clearHistory": "Vymazat historii",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Byla zadána neplatná mnemotechnická pomůcka bip39",
             "mnemonicLength": "Mnemotechnika by měla obsahovat {number} slov",
             "jsonFields": "Soubor JSON neobsahuje povinná pole"
-        }
+        },
+        "assetsAtRiskText": "Majetek v ohrožení!",
+        "deleteAccountText": "Účet nelze obnovit bez počáteční fráze, souboru .json nebo pokud je uložen v nějaké příponě. Budete odhlášeni."
     },
     "hashiBridgeText": "Most {Hashi}",
     "disclaimerTitle": "Disclaimer \/ Zřeknutí se odpovědnosti:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "Již brzy",
     "confirmText": "Potvrdit",
     "createTokenTextNFT": "Vytvořte NFT",
-    "doNotShowText": "Už mi to neukazuj"
+    "doNotShowText": "Už mi to neukazuj",
+    "accountText": "účet | účty"
 }

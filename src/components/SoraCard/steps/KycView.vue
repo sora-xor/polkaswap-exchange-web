@@ -73,6 +73,8 @@ export default class KycView extends Mixins(TranslationMixin) {
 
     const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
 
+    await unloadScript(kycService.sdkURL).catch(() => {});
+
     loadScript(kycService.sdkURL)
       .then(() => {
         // @ts-expect-error no-undef
@@ -158,9 +160,7 @@ export default class KycView extends Mixins(TranslationMixin) {
     padding: 0;
   }
 }
-</style>
 
-<style lang="scss">
 .sora-card-kyc-view {
   height: 800px;
 
