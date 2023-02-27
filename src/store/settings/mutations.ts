@@ -74,6 +74,14 @@ const mutations = defineMutations<SettingsState>()({
     state.language = value;
     settingsStorage.set('language', value);
   },
+  updateDisplayRegions(state): void {
+    try {
+      state.displayRegions = new Intl.DisplayNames([state.language], { type: 'region' });
+    } catch (error) {
+      console.warn('Intl.DisplayNames issue', error);
+      state.displayRegions = null;
+    }
+  },
   setFeatureFlags(state, featureFlags: FeatureFlags = {}): void {
     state.featureFlags = { ...state.featureFlags, ...featureFlags };
   },

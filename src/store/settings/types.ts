@@ -17,6 +17,7 @@ export type SettingsState = {
   transactionDeadline: number;
   node: Partial<Node>;
   language: string;
+  displayRegions: Nullable<Intl.DisplayNames>;
   defaultNodes: Array<Node>;
   customNodes: Array<Node>;
   nodeAddressConnecting: string;

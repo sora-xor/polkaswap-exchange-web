@@ -17,7 +17,7 @@
         :placeholder="t('nameText')"
         v-model="nodeModel.name"
         :maxlength="128"
-        :disabled="existing && !removable"
+        :disabled="inputDisabled"
       />
     </s-form-item>
     <s-form-item prop="address">
@@ -25,8 +25,16 @@
         class="node-info-input s-typography-input-field"
         :placeholder="t('addressText')"
         v-model="nodeModel.address"
-        :disabled="existing && !removable"
+        :disabled="inputDisabled"
         @change="changeNodeAddress"
+      />
+    </s-form-item>
+    <s-form-item v-if="formattedLocation" prop="location">
+      <s-input
+        class="node-info-input s-typography-input-field"
+        :placeholder="t('locationText')"
+        :value="formattedLocation"
+        :disabled="inputDisabled"
       />
     </s-form-item>
     <s-button
@@ -58,10 +66,11 @@ import { lazyComponent } from '@/router';
 import { Components, Links } from '@/consts';
 import { wsRegexp, dnsPathRegexp, ipv4Regexp } from '@/utils/regexp';
 import { NodeModel } from './consts';
+import { formatLocation } from './utils';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import type { Node } from '@/types/nodes';
+import type { Node, NodeItem } from '@/types/nodes';
 
 const checkAddress = (
   translate: TranslationMixin['t']
@@ -97,7 +106,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) handleBack!: FnWithoutArgs;
   @Prop({ default: () => {}, type: Function }) handleNode!: (node: any, isNewNode: boolean) => void;
   @Prop({ default: () => {}, type: Function }) removeNode!: (node: any) => void;
-  @Prop({ default: () => ({}), type: Object }) node!: any;
+  @Prop({ default: () => ({}), type: Object }) node!: NodeItem;
   @Prop({ default: false, type: Boolean }) existing!: boolean;
   @Prop({ default: false, type: Boolean }) loading!: boolean;
   @Prop({ default: false, type: Boolean }) removable!: boolean;
@@ -122,6 +131,18 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     );
   }
 
+  /** Will be shown only for default nodes */
+  get formattedLocation(): Nullable<string> {
+    if (!(this.existing && this.node?.location)) {
+      return null;
+    }
+    return formatLocation(this.node.location);
+  }
+
+  get inputDisabled(): boolean {
+    return this.existing && !this.removable;
+  }
+
   get buttonText(): string {
     if (!this.existing) return this.t('selectNodeDialog.addNode');
     if (this.nodeDataChanged) return this.t('selectNodeDialog.updateNode');
@@ -139,7 +160,9 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   }
 
   get title(): string {
-    return this.existing ? this.node.title : this.t('selectNodeDialog.customNode');
+    const customNodeText = this.t('selectNodeDialog.customNode');
+    if (!this.existing) return customNodeText;
+    return this.node.title ?? customNodeText;
   }
 
   get nodeDataChanged(): boolean {
