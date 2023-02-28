@@ -1,31 +1,72 @@
 <template>
   <div class="app-status s-flex">
-    <div v-if="blockNumber" class="app-status__item block-number">
-      <s-tooltip :content="t('blockNumberText')" placement="top" tabindex="-1">
-        <a class="block-number-link" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
-          <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
-        </a>
-      </s-tooltip>
+    <div v-if="blockNumber" class="app-status__item block-number" :class="blockNumberClass">
+      <a class="block-number-link" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
+        <span class="block-number-icon" /><span>{{ blockNumberFormatted }}</span>
+      </a>
     </div>
-    <s-tooltip :content="nodeConnectionTooltip" placement="top" tabindex="-1">
-      <div class="app-status__item node">
-        <s-icon name="globe-16" size="16" :class="nodeConnectionClass" />
+    <footer-popper :status="nodeConnectionClass">
+      <div slot="reference" class="app-status__item node" :class="nodeConnectionClass">
+        <s-icon name="globe-16" size="16" />
         <span class="app-status__text">{{ nodeConnectionText }}</span>
       </div>
-    </s-tooltip>
-    <s-tooltip :content="internetConnectionTooltip" placement="top" tabindex="-1">
-      <div class="app-status__item internet">
-        <s-icon name="wi-fi-16" size="16" :class="internetConnectionClass" />
+      <div v-if="isNodeConnected" class="item s-flex">
+        <div class="item__title s-flex">
+          <div class="item__label s-flex">
+            <span>{{ t('selectNodeConnected') }}</span>
+            <span>{{ node.chain }}</span>
+          </div>
+          <s-button class="item__action" size="small" type="secondary" @click="openNodeSelectionDialog">
+            {{ t('selectNodeText') }}
+          </s-button>
+        </div>
+        <div class="item__desc">
+          <span>{{ node.address }}</span>
+          <span v-if="formattedLocation">{{ formattedLocation }}</span>
+        </div>
+      </div>
+    </footer-popper>
+    <footer-popper :status="internetConnectionClass">
+      <div slot="reference" class="app-status__item internet" :class="internetConnectionClass">
+        <s-icon name="wi-fi-16" size="16" />
         <span class="app-status__text">{{ internetConnectionText }}</span>
       </div>
-    </s-tooltip>
-    <s-tooltip :content="subqueryConnectionTooltip" placement="top" tabindex="-1">
-      <div class="app-status__item statistic">
-        <s-icon name="software-cloud-24" size="16" :class="subqueryConnectionClass" />
+      <div class="item s-flex">
+        <div class="item__title s-flex">
+          <div class="item__label s-flex">
+            <span>{{ 'Your internet speed' }}</span>
+            <span>{{ internetConnectionSpeedMb + ' mbps' }}</span>
+          </div>
+          <s-button class="item__action" size="small" type="secondary" @click="refreshPage">
+            {{ t('connection.action.refresh') }}
+          </s-button>
+        </div>
+        <div class="item__desc">
+          <span>{{ internetConnectionDesc }}</span>
+        </div>
+      </div>
+    </footer-popper>
+    <footer-popper :status="subqueryConnectionClass">
+      <div slot="reference" class="app-status__item internet" :class="subqueryConnectionClass">
+        <s-icon name="software-cloud-24" size="16" />
         <span class="app-status__text">{{ subqueryConnectionText }}</span>
       </div>
-    </s-tooltip>
-    <s-button v-if="isUnstable" size="mini" type="primary" @click="refreshPage">REFRESH</s-button>
+      <div class="item s-flex">
+        <div class="item__title s-flex">
+          <div class="item__label s-flex">
+            <span>{{ 'LOL' }}</span>
+            <span>{{ 'lol' }}</span>
+          </div>
+          <s-button class="item__action" size="small" type="secondary" @click="refreshPage">
+            {{ 'Select services' }}
+          </s-button>
+        </div>
+        <div class="item__desc">
+          <span>{{ 'VERY LOL' }}</span>
+        </div>
+      </div>
+    </footer-popper>
+    <app-footer-no-internet-dialog />
   </div>
 </template>
 
@@ -36,27 +77,36 @@ import { FPNumber } from '@sora-substrate/util';
 import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import FooterPopper from './FooterPopper.vue';
+import AppFooterNoInternetDialog from './AppFooterNoInternetDialog.vue';
 
 import { state, getter, mutation } from '@/store/decorators';
 import type { Node } from '@/types/nodes';
+import { formatLocation } from '@/components/Settings/Node/utils';
 
-@Component
+@Component({
+  components: {
+    FooterPopper,
+    AppFooterNoInternetDialog,
+  },
+})
 export default class AppFooter extends Mixins(TranslationMixin) {
   @mutation.settings.setInternetConnectionEnabled private setEnabled!: VoidFunction;
   @mutation.settings.setInternetConnectionDisabled private setDisabled!: VoidFunction;
   @mutation.settings.setInternetConnectionSpeed private setSpeedMb!: VoidFunction;
   @getter.settings.isInternetConnectionEnabled private isInternetConnectionEnabled!: boolean;
   @getter.settings.isInternetConnectionStable private isInternetConnectionStable!: boolean;
-  @getter.settings.internetConnectionSpeedMb private internetConnectionSpeedMb!: number;
+  @getter.settings.internetConnectionSpeedMb internetConnectionSpeedMb!: number;
 
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.settings.blockNumber blockNumber!: number;
 
   @state.wallet.settings.subqueryStatus private subqueryStatus!: WALLET_TYPES.ConnectionStatus;
 
-  @getter.settings.nodeIsConnecting private isNodeConnecting!: boolean;
-  @getter.settings.nodeIsConnected private isNodeConnected!: boolean;
-  @state.settings.node private node!: Partial<Node>;
+  @getter.settings.nodeIsConnecting isNodeConnecting!: boolean;
+  @getter.settings.nodeIsConnected isNodeConnected!: boolean;
+  @state.settings.node node!: Partial<Node>;
+  @mutation.settings.setSelectNodeDialogVisibility private setSelectNodeDialogVisibility!: (flag: boolean) => void;
 
   get internetConnectionClass(): Status {
     if (!this.isInternetConnectionEnabled) return Status.ERROR;
@@ -71,14 +121,14 @@ export default class AppFooter extends Mixins(TranslationMixin) {
     return `${base} stable`;
   }
 
-  get internetConnectionTooltip(): string {
+  get internetConnectionDesc(): string {
     if (!this.isInternetConnectionEnabled) {
-      return `Your Internet Connection is Disabled.\n All features are unavailable.\n\n You should connect and try again.`;
+      return 'Disconnected';
     }
     if (!this.isInternetConnectionStable) {
-      return `Your Internet Connection is Unstable.\n Speed: ${this.internetConnectionSpeedMb} Mb/s.\n\n It's recommended to find better Internet Connection`;
+      return 'Slow connection';
     }
-    return `Your Internet Connection is Stable.\n Speed: ${this.internetConnectionSpeedMb} Mb/s`;
+    return 'Optimal speed';
   }
 
   get subqueryConnectionClass(): Status {
@@ -102,7 +152,7 @@ export default class AppFooter extends Mixins(TranslationMixin) {
       case WALLET_TYPES.ConnectionStatus.Loading:
         return `${base} loading`;
       case WALLET_TYPES.ConnectionStatus.Available:
-        return `${base} stable`;
+        return `${base} available`;
       default:
         return `${base} unavailable`;
     }
@@ -145,6 +195,17 @@ export default class AppFooter extends Mixins(TranslationMixin) {
     return `Node is disconnected.\n You cannot use all features. \nYou might try to select another node or refresh a page.`;
   }
 
+  get formattedLocation(): Nullable<string> {
+    if (!this.node?.location) {
+      return null;
+    }
+    return formatLocation(this.node.location);
+  }
+
+  openNodeSelectionDialog(): void {
+    this.setSelectNodeDialogVisibility(true);
+  }
+
   get isUnstable(): boolean {
     return (
       !this.isInternetConnectionStable ||
@@ -177,14 +238,73 @@ export default class AppFooter extends Mixins(TranslationMixin) {
     return new FPNumber(this.blockNumber).toLocaleString();
   }
 
+  readonly blockNumberClass = Status.SUCCESS;
+
+  getPopoverClass(status: string): string {
+    return `app-status__tooltip ${status}`;
+  }
+
   refreshPage(): void {
     window.location.reload();
   }
 }
 </script>
 
+<style lang="scss">
+$status-classes: 'error', 'warning', 'success';
+
+.app-status__tooltip.el-popover.el-popper {
+  .item {
+    flex-direction: column;
+    &__title {
+      justify-content: space-between;
+    }
+    &__label {
+      flex-direction: column;
+      > :first-child {
+        font-weight: 300;
+        font-size: 12px;
+        line-height: 150%;
+      }
+      > :last-child {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 150%;
+      }
+    }
+    &__desc {
+      margin: 8px 0;
+      > * {
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 150%;
+        padding: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+      }
+      > :first-child {
+        margin-right: 8px;
+      }
+    }
+    &__action {
+      box-shadow: none;
+      margin-left: 30px;
+    }
+  }
+  @each $status in $status-classes {
+    &.#{$status} {
+      .item__desc > * {
+        // background-color: var(--s-color-status-#{$status}-background);
+      }
+    }
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 // icons: globe-16 software-cloud-checked-24 software-cloud-24 notifications-alert-triangle-24 refresh-16
+$status-classes: 'error', 'warning', 'success';
+
 .app-status {
   font-size: var(--s-font-size-extra-mini);
   font-weight: 300;
@@ -198,15 +318,13 @@ export default class AppFooter extends Mixins(TranslationMixin) {
     margin-right: 10px;
     display: flex;
     align-items: center;
-    > i {
-      &.error {
-        color: var(--s-color-status-error);
-      }
-      &.warning {
-        color: var(--s-color-status-warning);
-      }
-      &.success {
-        color: var(--s-color-status-success);
+    &:hover {
+      opacity: 0.5;
+      cursor: pointer;
+    }
+    @each $status in $status-classes {
+      &.#{$status} i {
+        color: var(--s-color-status-#{$status});
       }
     }
   }
