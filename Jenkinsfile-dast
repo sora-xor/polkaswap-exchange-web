@@ -10,4 +10,4 @@ def pipeline = new org.soramitsu.DASTPipeline(
     arachniURL: arachniURL,
     jobList: jobList
 )
-pipeline.runPipeline()
+pipeline.runPipeline() 
