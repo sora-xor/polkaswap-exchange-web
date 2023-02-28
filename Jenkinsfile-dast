@@ -8,6 +8,5 @@ String arachniURL             = targetEnvironment == 'deploy/exchange-stage1' ? 
 def pipeline = new org.soramitsu.DASTPipeline(
     steps: this,
     arachniURL: arachniURL,
-    jobList: jobList
 )
-pipeline.runPipeline() 
+pipeline.runPipeline()
