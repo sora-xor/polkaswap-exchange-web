@@ -377,7 +377,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     // console.dir(value);
     // console.groupEnd();
 
-    const message = this.getMessage(value, this.shouldBalanceBeHidden);
+    const message = this.getOperationMessage(value, this.shouldBalanceBeHidden);
     const isNewTx = !oldValue || oldValue.id !== value.id;
     const recipients = this.recipients.filter((item) => item.txId === value.id);
 
@@ -390,7 +390,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
           status: RecipientStatus.FAILED,
         });
       });
-    } else if (value.status === TransactionStatus.InBlock || isNewTx) {
+    } else if (value.status === TransactionStatus.Finalized) {
       if (isNewTx) {
         recipients.forEach((reciever) => {
           this.setRecipientStatus({
