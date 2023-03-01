@@ -24,7 +24,6 @@
       :loading="parentLoading || loading"
       :is-empty="data.length === 0"
       :is-error="isFetchingError"
-      :y-label="false"
       @retry="updateData"
     >
       <formatted-amount class="chart-price" :value="amount.amount">
@@ -106,6 +105,8 @@ const getExtremum = (data, prop: string, min = false) => {
   return data.reduce((acc, item) => Math[min ? 'min' : 'max'](acc, item[prop]), min ? Infinity : 0);
 };
 
+const getBaseLog = (val: number) => Math.log(val) / Math.log(10);
+
 const parse = (node: AssetSnapshotEntity): ChartData => {
   return {
     timestamp: +node.timestamp * 1000,
@@ -154,14 +155,6 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
     return calcPriceChange(this.firstValue, this.lastValue);
   }
 
-  get supplyRange(): [number, number] {
-    const max = getExtremum(this.data, 'value');
-    const min = getExtremum(this.data, 'value', true);
-    const diff = (max - min) * 1.05; // boundary
-
-    return [max, min - diff];
-  }
-
   get mintBurnRange(): [number, number] {
     const max = Math.max(getExtremum(this.data, 'mint'), getExtremum(this.data, 'burn'));
     const min = Math.min(getExtremum(this.data, 'mint', true), getExtremum(this.data, 'burn', true));
@@ -181,21 +174,39 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
       },
       grid: this.gridSpec({
         top: 40,
+        left: 50,
+        right: 40,
       }),
       xAxis: this.xAxisSpec(),
       yAxis: [
-        {
-          type: 'value',
-          show: false,
-          max: this.supplyRange[0],
-          min: this.supplyRange[1],
-        },
-        {
-          type: 'value',
-          show: false,
-          max: this.mintBurnRange[0],
-          min: this.mintBurnRange[1],
-        },
+        this.yAxisSpec({
+          name: 'Supply',
+          nameGap: 22,
+          nameTextStyle: {
+            align: 'right',
+          },
+          axisLabel: {
+            formatter: (value) => {
+              const val = new FPNumber(value);
+              const { amount, suffix } = formatAmountWithSuffix(val);
+              return `${amount} ${suffix}`;
+            },
+          },
+        }),
+        this.yAxisSpec({
+          name: 'Change',
+          nameGap: 22,
+          type: 'log',
+          min: 1,
+          axisLabel: {
+            formatter: (value) => {
+              const val = new FPNumber(value);
+              const { amount, suffix } = formatAmountWithSuffix(val);
+              return `${amount} ${suffix}`;
+            },
+          },
+          splitLine: false,
+        }),
       ],
       tooltip: this.tooltipSpec({
         formatter: (params) => {
@@ -225,7 +236,8 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           yAxisIndex: 0,
           areaStyle: undefined,
         }),
-        this.lineSeriesSpec({
+        this.seriesSpec({
+          type: 'scatter',
           encode: { y: 'mint' },
           itemStyle: {
             color: this.theme.color.status.success,
@@ -233,8 +245,12 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           name: 'Remint',
           yAxisIndex: 1,
           areaStyle: undefined,
+          symbolSize: (val) => {
+            return getBaseLog(val[2]);
+          },
         }),
-        this.lineSeriesSpec({
+        this.seriesSpec({
+          type: 'scatter',
           encode: { y: 'burn' },
           itemStyle: {
             color: this.theme.color.status.error,
@@ -242,12 +258,15 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           name: 'Burn',
           yAxisIndex: 1,
           areaStyle: undefined,
+          symbolSize: (val) => {
+            return getBaseLog(val[3]);
+          },
         }),
       ],
       legend: {
         orient: 'horizontal',
         top: 0,
-        left: 0,
+        left: 'center',
         icon: 'circle',
         textStyle: {
           color: this.theme.color.base.content.primary,
@@ -266,6 +285,8 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   }
 
   changeToken(token: Asset): void {
+    if (this.token.address === token.address) return;
+
     this.token = token;
     this.updateData();
   }

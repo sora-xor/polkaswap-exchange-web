@@ -275,21 +275,21 @@ export const calcPriceChange = (current: FPNumber, prev: FPNumber): FPNumber => 
 };
 
 // [TODO]: move to FPNumber
-export const formatAmountWithSuffix = (value: FPNumber): AmountWithSuffix => {
+export const formatAmountWithSuffix = (value: FPNumber, precision = 2): AmountWithSuffix => {
   const val = value.toNumber();
   const format = (value: string) => new FPNumber(value).toLocaleString();
 
   if (Math.trunc(val / 1_000_000_000) > 0) {
-    const amount = format((val / 1_000_000_000).toFixed(2));
+    const amount = format((val / 1_000_000_000).toFixed(precision));
     return { amount, suffix: 'B' };
   } else if (Math.trunc(val / 1_000_000) > 0) {
-    const amount = format((val / 1_000_000).toFixed(2));
+    const amount = format((val / 1_000_000).toFixed(precision));
     return { amount, suffix: 'M' };
   } else if (Math.trunc(val / 1_000) > 0) {
-    const amount = format((val / 1_000).toFixed(2));
+    const amount = format((val / 1_000).toFixed(precision));
     return { amount, suffix: 'K' };
   } else {
-    const amount = format(val.toFixed(2));
+    const amount = format(val.toFixed(precision));
     return { amount, suffix: '' };
   }
 };

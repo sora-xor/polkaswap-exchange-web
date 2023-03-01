@@ -25,6 +25,10 @@ export default class StatsCard extends Mixins() {}
 
 <style lang="scss" scoped>
 .stats-card {
+  &.s-card.neumorphic.s-size-big {
+    padding: $inner-spacing-big $inner-spacing-big $inner-spacing-medium;
+  }
+
   &-header {
     display: flex;
     flex-flow: row wrap;

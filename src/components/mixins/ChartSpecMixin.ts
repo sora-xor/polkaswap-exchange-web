@@ -5,6 +5,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
+const LABEL_PADDING = 4;
 const AXIS_OFFSET = 8;
 const AXIS_LABEL_CSS = {
   fontFamily: 'Sora',
@@ -87,6 +88,42 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
     })(options);
   }
 
+  yAxisSpec(options: any = {}) {
+    return merge({
+      type: 'value',
+      offset: AXIS_OFFSET,
+      scale: true,
+      axisLabel: {
+        ...AXIS_LABEL_CSS,
+        margin: 0,
+        padding: LABEL_PADDING - 1,
+      },
+      axisLine: {
+        lineStyle: {
+          color: this.theme.color.base.content.secondary,
+        },
+      },
+      axisPointer: {
+        lineStyle: {
+          color: this.theme.color.status.success,
+        },
+        label: {
+          ...AXIS_LABEL_CSS,
+          backgroundColor: this.theme.color.status.success,
+          fontWeight: 400,
+          padding: [LABEL_PADDING, LABEL_PADDING],
+          color: this.theme.color.base.onAccent,
+        },
+      },
+      splitLine: {
+        lineStyle: {
+          color: this.theme.color.base.content.tertiary,
+          opacity: 0.2,
+        },
+      },
+    })(options);
+  }
+
   tooltipSpec(options: any = {}) {
     return merge({
       show: true,
@@ -99,6 +136,18 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
         fontSize: 11,
         fontFamily: 'Sora',
         fontWeight: 400,
+      },
+    })(options);
+  }
+
+  seriesSpec(options: any = {}) {
+    return merge({
+      encode: {
+        y: 'value',
+      },
+      showSymbol: false,
+      itemStyle: {
+        color: this.theme.color.theme.accent,
       },
     })(options);
   }

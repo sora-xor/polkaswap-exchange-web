@@ -15,7 +15,6 @@
       :loading="parentLoading || loading"
       :is-empty="data.length === 0"
       :is-error="isFetchingError"
-      :y-label="false"
       @retry="updateData"
     >
       <formatted-amount class="chart-price" :value="amount.amount">
@@ -136,12 +135,19 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
         source: this.data.map((item) => [item.timestamp, item.value]),
         dimensions: ['timestamp', 'value'],
       },
-      grid: this.gridSpec(),
+      grid: this.gridSpec({
+        left: 45,
+      }),
       xAxis: this.xAxisSpec(),
-      yAxis: {
-        show: false,
-        type: 'value',
-      },
+      yAxis: this.yAxisSpec({
+        axisLabel: {
+          formatter: (value) => {
+            const val = new FPNumber(value);
+            const { amount, suffix } = formatAmountWithSuffix(val);
+            return `${amount} ${suffix}`;
+          },
+        },
+      }),
       tooltip: this.tooltipSpec({
         formatter: (params) => {
           const { data } = params[0];

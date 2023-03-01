@@ -28,7 +28,7 @@
             {{ text }}
           </s-dropdown-item>
           <div
-            v-if="!notificationActivated && isBrowserNotificationApiAvailable"
+            v-if="isNotificationOptionShown"
             @click="openNotificationDialog"
             class="notif-option el-dropdown-menu__item header-menu__item"
           >
@@ -50,7 +50,7 @@
         <s-icon :name="icon" :size="iconSize" />
       </s-button>
       <s-button
-        v-if="!notificationActivated && isBrowserNotificationApiAvailable"
+        v-if="isNotificationOptionShown"
         type="action"
         :tooltip="t('browserNotificationDialog.button')"
         @click="openNotificationDialog"
@@ -116,7 +116,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   get isNotificationOptionShown(): boolean {
-    return !this.notificationActivated;
+    return !this.notificationActivated && this.isBrowserNotificationApiAvailable;
   }
 
   private getThemeIcon(isDropdown = false): string {
@@ -270,9 +270,7 @@ $icon-size: 28px;
   &__bell {
     width: $icon-size;
     height: $icon-size;
-    margin-right: $basic-spacing-mini;
     margin: auto;
-    margin-top: calc(#{$icon-size} / 2);
   }
 
   &__bell--dropdown {

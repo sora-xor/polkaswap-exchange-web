@@ -473,42 +473,18 @@ export default class SwapChart extends Mixins(
       xAxis: this.xAxisSpec({
         boundaryGap: this.isLineChart ? false : [0.005, 0.005],
       }),
-      yAxis: {
-        type: 'value',
-        offset: AXIS_OFFSET,
-        scale: true,
+      yAxis: this.yAxisSpec({
         axisLabel: {
-          ...AXIS_LABEL_CSS,
-          margin: 0,
-          padding: LABEL_PADDING - 1,
           formatter: (value) => {
             return value.toFixed(this.precision);
           },
         },
-        axisLine: {
-          lineStyle: {
-            color: this.theme.color.base.content.secondary,
-          },
-        },
         axisPointer: {
-          lineStyle: {
-            color: this.theme.color.status.success,
-          },
           label: {
-            ...AXIS_LABEL_CSS,
-            backgroundColor: this.theme.color.status.success,
-            fontWeight: 400,
-            padding: [LABEL_PADDING, LABEL_PADDING],
             precision: this.precision,
-            color: this.theme.color.base.onAccent,
           },
         },
-        splitLine: {
-          lineStyle: {
-            color: this.theme.color.base.content.tertiary,
-          },
-        },
-      },
+      }),
       dataZoom: [
         {
           type: 'inside',
