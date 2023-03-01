@@ -5,6 +5,10 @@ String targetEnvironment      = environments
 String jobList                = targetEnvironment
 String arachniURL             = targetEnvironment == 'deploy/exchange-stage1' ? 'https://test.polkaswap.io' : 'https://exchange.dev.sora2.tachi.soramitsu.co.jp/'
 
+properties([
+    pipelineTriggers([upstream( jobList )])
+])
+
 def pipeline = new org.soramitsu.DASTPipeline(
     steps: this,
     arachniURL: arachniURL,
