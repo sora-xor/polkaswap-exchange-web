@@ -1112,12 +1112,19 @@
     },
     "tooltips": {
         "roi": "{ROI} là viết tắt của Lợi tức đầu tư. Nó được tính bằng cách chia lợi nhuận kiếm được từ một khoản đầu tư cho chi phí của khoản đầu tư đó theo tỷ lệ phần trăm tương đương.",
-        "tvl": "{TVL} là viết tắt của Tổng giá trị bị khóa. Nó đại diện cho các mã thông báo bị khóa trong các nhóm tính bằng đô la tương đương."
+        "tvl": "{TVL} là viết tắt của Tổng giá trị bị khóa. Nó đại diện cho các mã thông báo bị khóa trong các nhóm tính bằng đô la tương đương.",
+        "volume": "Khối lượng đề cập đến tổng số lượng tài sản đã được giao dịch hoặc trao đổi trên mạng trong một khoảng thời gian cụ thể. Khối lượng là một số liệu quan trọng để đo tính thanh khoản và hoạt động tổng thể của mạng.",
+        "fees": "Phí trên chuỗi khối {Sora} đề cập đến các khoản phí phát sinh khi thực hiện các giao dịch trên mạng. Các khoản phí này được thanh toán bằng XOR, tiền điện tử gốc của Mạng {Sora} . Số tiền phí được xác định bởi mức độ phức tạp và quy mô của giao dịch được thực hiện",
+        "supply": "Nguồn cung cấp mã thông báo đề cập đến tổng số mã thông báo đã được tạo và đang lưu hành trên mạng. Nguồn cung cấp mã thông báo có thể dao động dựa trên số lượng mã thông báo được đặt cọc, đốt hoặc chuyển trên mạng.",
+        "transactions": "Giao dịch đề cập đến quá trình gửi hoặc nhận tài sản kỹ thuật số trên mạng, bao gồm các hoạt động thanh khoản, cũng như hoán đổi.",
+        "accounts": "Tài khoản là địa chỉ kỹ thuật số chứa tài sản của người dùng trên mạng. Mỗi tài khoản được liên kết với một địa chỉ công khai duy nhất và một khóa riêng cho phép người dùng truy cập và quản lý tài sản của họ.",
+        "bridgeTransactions": "Cầu nối {from} đến {to} đề cập đến quá trình chuyển nội dung giữa mạng {from} và mạng {to} bằng cầu nối. Cây cầu cho phép khả năng tương tác của hai mạng, cho phép người dùng di chuyển tài sản giữa chúng một cách liền mạch."
     },
     "createTokenText": "Tạo",
     "comingSoonText": "Sắp ra mắt",
     "confirmText": "Xác nhận",
     "createTokenTextNFT": "Tạo NFT",
     "doNotShowText": "Đừng cho tôi xem cái này nữa",
-    "accountText": "tài khoản | tài khoản"
+    "accountText": "tài khoản | tài khoản",
+    "networkStatisticsText": "thống kê mạng"
 }
