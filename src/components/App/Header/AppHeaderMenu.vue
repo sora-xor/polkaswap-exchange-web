@@ -238,7 +238,7 @@ $icon-size: 28px;
   &__button i {
     font-size: $icon-size !important; // cuz font-size is inline style
   }
-  &__item.el-dropdown-menu__item {
+  & &__item.el-dropdown-menu__item {
     line-height: $dropdown-item-line-height;
     font-weight: 300;
     font-size: var(--s-font-size-small);

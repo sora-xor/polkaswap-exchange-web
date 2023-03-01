@@ -55,7 +55,7 @@ $gap: $inner-spacing-medium;
   width: 100%;
 
   &--50 {
-    @include desktop {
+    @include large-desktop {
       @include columns(2, $gap);
     }
   }

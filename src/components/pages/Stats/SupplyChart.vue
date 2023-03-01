@@ -1,6 +1,11 @@
 <template>
   <stats-card>
-    <template #title>Total Supply</template>
+    <template #title>
+      <span>Supply</span>
+      <s-tooltip border-radius="mini" :content="t('tooltips.supply')">
+        <s-icon name="info-16" size="14px" />
+      </s-tooltip>
+    </template>
 
     <template #filters>
       <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
@@ -152,7 +157,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   get supplyRange(): [number, number] {
     const max = getExtremum(this.data, 'value');
     const min = getExtremum(this.data, 'value', true);
-    const diff = max - min;
+    const diff = (max - min) * 1.05; // boundary
 
     return [max, min - diff];
   }
@@ -160,7 +165,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   get mintBurnRange(): [number, number] {
     const max = Math.max(getExtremum(this.data, 'mint'), getExtremum(this.data, 'burn'));
     const min = Math.min(getExtremum(this.data, 'mint', true), getExtremum(this.data, 'burn', true));
-    const diff = max - min;
+    const diff = (max - min) * 1.05; // boundary
     return [max + diff, min];
   }
 
@@ -174,7 +179,9 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
         source: this.data.map((item) => [item.timestamp, item.value, item.mint, item.burn]),
         dimensions: ['timestamp', 'supply', 'mint', 'burn'],
       },
-      grid: this.gridSpec(),
+      grid: this.gridSpec({
+        top: 40,
+      }),
       xAxis: this.xAxisSpec(),
       yAxis: [
         {
@@ -191,7 +198,22 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
         },
       ],
       tooltip: this.tooltipSpec({
-        valueFormatter: (value) => formatDecimalPlaces(value),
+        formatter: (params) => {
+          return `
+              <table>
+                ${params
+                  .map(
+                    (param) => `
+                  <tr>
+                    <td>${param.marker} ${param.seriesName}</td>
+                    <td align="right">${formatDecimalPlaces(param.data[param.seriesIndex + 1])}</td>
+                  </tr>
+                `
+                  )
+                  .join('')}
+              </table>
+            `;
+        },
       }),
       series: [
         this.lineSeriesSpec({
@@ -225,10 +247,13 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
       legend: {
         orient: 'horizontal',
         top: 0,
-        right: 0,
+        left: 0,
         icon: 'circle',
         textStyle: {
-          color: this.theme.color.base.content.secondary,
+          color: this.theme.color.base.content.primary,
+          fontSize: 12,
+          fontWeight: 400,
+          lineHeight: 1.5,
         },
         selectedMode: false,
       },

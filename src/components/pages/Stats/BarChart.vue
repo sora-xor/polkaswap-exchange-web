@@ -2,7 +2,7 @@
   <stats-card>
     <template #title>
       <span>{{ title }}</span>
-      <s-tooltip v-if="tooltip" border-radius="mini" :content="tooltip">
+      <s-tooltip border-radius="mini" :content="tooltip">
         <s-icon name="info-16" size="14px" />
       </s-tooltip>
     </template>
@@ -153,7 +153,7 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   get tooltip(): string {
-    return this.fees ? this.t('networkFeeTooltipText') : '';
+    return this.t(this.fees ? 'tooltips.fees' : 'tooltips.volume');
   }
 
   get firstValue(): FPNumber {
@@ -198,7 +198,13 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
           return this.fees ? `${amount} ${XOR.symbol}` : `$ ${amount}`;
         },
       }),
-      series: [this.barSeriesSpec()],
+      series: [
+        this.barSeriesSpec({
+          itemStyle: {
+            color: '#C86FFF', // new purple color
+          },
+        }),
+      ],
     };
   }
 

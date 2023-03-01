@@ -1,15 +1,25 @@
 <template>
   <stats-card>
-    <template #title>{{ t('pageTitle.Stats') }}</template>
+    <template #title>{{ t('networkStatisticsText') }}</template>
 
     <template #filters>
       <stats-filter :disabled="loading" :filters="filters" :value="filter" @input="changeFilter" />
     </template>
 
     <div class="stats-row">
-      <div v-for="{ title, value, change } in statsColumns" :key="title" class="stats-column" v-loading="loading">
+      <div
+        v-for="{ title, tooltip, value, change } in statsColumns"
+        :key="title"
+        class="stats-column"
+        v-loading="loading"
+      >
         <s-card size="small" border-radius="mini">
-          <div slot="header" class="stats-card-title">{{ title }}</div>
+          <div slot="header" class="stats-card-title">
+            <span>{{ title }}</span>
+            <s-tooltip border-radius="mini" :content="tooltip">
+              <s-icon name="info-16" size="14px" />
+            </s-tooltip>
+          </div>
           <div class="stats-card-data">
             <formatted-amount
               class="stats-card-value"
@@ -63,6 +73,7 @@ type NetworkStatsColumn = {
   value: AmountWithSuffix;
   change: FPNumber;
   title: string;
+  tooltip: string;
 };
 
 const StatsQuery = gql<EntitiesQueryResponse<NetworkSnapshotEntity>>`
@@ -132,18 +143,22 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin, Translatio
     return [
       {
         title: this.tc('transactionText', 2),
+        tooltip: this.t('tooltips.transactions'),
         prop: 'transactions',
       },
       {
         title: this.tc('accountText', 2),
+        tooltip: this.t('tooltips.accounts'),
         prop: 'accounts',
       },
       {
         title: [Ethereum, Arrow, Sora].join(' '),
+        tooltip: this.t('tooltips.bridgeTransactions', { from: Ethereum, to: Sora }),
         prop: 'bridgeIncomingTransactions',
       },
       {
         title: [Sora, Arrow, Ethereum].join(' '),
+        tooltip: this.t('tooltips.bridgeTransactions', { from: Sora, to: Ethereum }),
         prop: 'bridgeOutgoingTransactions',
       },
     ];
@@ -152,13 +167,13 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin, Translatio
   get statsColumns(): NetworkStatsColumn[] {
     const { currData: curr, prevData: prev } = this;
 
-    return this.columns.map(({ prop, title }) => {
+    return this.columns.map(({ prop, title, tooltip }) => {
       const propCurr = curr?.[prop] ?? FPNumber.ZERO;
       const propPrev = prev?.[prop] ?? FPNumber.ZERO;
       const propChange = calcPriceChange(propCurr, propPrev);
       const value = formatAmountWithSuffix(propCurr);
 
-      return { title, value, change: propChange };
+      return { title, tooltip, value, change: propChange };
     });
   }
 
@@ -230,6 +245,10 @@ $gap: $inner-spacing-mini;
 
 .stats-card {
   &-title {
+    display: flex;
+    align-items: center;
+    gap: $inner-spacing-mini;
+
     color: var(--s-color-base-content-secondary);
     font-size: var(--s-font-size-small);
     font-weight: 800;
