@@ -20,7 +20,7 @@
             {{ t('selectNodeText') }}
           </s-button>
         </div>
-        <div class="item__desc">
+        <div class="item__desc s-flex">
           <span>{{ node.address }}</span>
           <span v-if="formattedLocation">{{ formattedLocation }}</span>
         </div>
@@ -41,7 +41,7 @@
             {{ t('connection.action.refresh') }}
           </s-button>
         </div>
-        <div class="item__desc">
+        <div class="item__desc s-flex">
           <span>{{ internetConnectionDesc }}</span>
         </div>
       </div>
@@ -61,7 +61,7 @@
             {{ 'Select services' }}
           </s-button>
         </div>
-        <div class="item__desc">
+        <div class="item__desc s-flex">
           <span>{{ 'VERY LOL' }}</span>
         </div>
       </div>
@@ -273,7 +273,8 @@ $status-classes: 'error', 'warning', 'success';
       }
     }
     &__desc {
-      margin: 8px 0;
+      flex-wrap: wrap;
+      margin-top: 8px;
       > * {
         font-weight: 400;
         font-size: 12px;
@@ -281,6 +282,7 @@ $status-classes: 'error', 'warning', 'success';
         padding: 6px;
         background: rgba(255, 255, 255, 0.08);
         border-radius: 8px;
+        margin-bottom: 8px;
       }
       > :first-child {
         margin-right: 8px;
