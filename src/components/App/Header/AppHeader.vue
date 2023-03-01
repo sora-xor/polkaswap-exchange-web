@@ -15,9 +15,6 @@
       <moonpay-history-button class="moonpay-button moonpay-button--history" />
     </div>
     <div class="app-controls s-flex" :class="{ 'without-moonpay': !areMoonpayButtonsVisible }">
-      <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
-        <token-logo class="node-control__logo token-logo" v-bind="nodeLogo" />
-      </s-button>
       <account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
       <app-header-menu />
     </div>
@@ -63,7 +60,7 @@ import { getter, mutation } from '@/store/decorators';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin) {
+export default class AppHeader extends Mixins(WalletConnectMixin) {
   readonly PageNames = PageNames;
 
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
@@ -76,13 +73,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   goTo = goTo;
 
-  get nodeTooltip(): string {
-    if (this.nodeIsConnected) {
-      return this.t('selectNodeConnected', { chain: this.node.chain });
-    }
-    return this.t('selectNodeText');
-  }
-
   get nodeLogo() {
     return {
       size: WALLET_CONSTS.LogoSize.MEDIUM,
@@ -92,10 +82,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin, NodeErrorMixin
 
   get areMoonpayButtonsVisible(): boolean {
     return this.moonpayEnabled && this.isLoggedIn;
-  }
-
-  openNodeSelectionDialog(): void {
-    this.setSelectNodeDialogVisibility(true);
   }
 
   async openMoonpayDialog(): Promise<void> {
