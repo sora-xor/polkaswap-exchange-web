@@ -175,27 +175,16 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
       grid: this.gridSpec({
         top: 40,
         left: 50,
-        right: 40,
+        right: 50,
       }),
       xAxis: this.xAxisSpec(),
       yAxis: [
         this.yAxisSpec({
-          name: 'Supply',
+          name: 'Remint & Burn',
           nameGap: 22,
           nameTextStyle: {
-            align: 'right',
+            align: 'center',
           },
-          axisLabel: {
-            formatter: (value) => {
-              const val = new FPNumber(value);
-              const { amount, suffix } = formatAmountWithSuffix(val);
-              return `${amount} ${suffix}`;
-            },
-          },
-        }),
-        this.yAxisSpec({
-          name: 'Change',
-          nameGap: 22,
           type: 'log',
           min: 1,
           axisLabel: {
@@ -206,6 +195,20 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
             },
           },
           splitLine: false,
+        }),
+        this.yAxisSpec({
+          name: 'Supply',
+          nameGap: 22,
+          nameTextStyle: {
+            align: 'left',
+          },
+          axisLabel: {
+            formatter: (value) => {
+              const val = new FPNumber(value);
+              const { amount, suffix } = formatAmountWithSuffix(val);
+              return `${amount} ${suffix}`;
+            },
+          },
         }),
       ],
       tooltip: this.tooltipSpec({
@@ -233,34 +236,36 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
             color: this.theme.color.status.warning,
           },
           name: 'Supply',
-          yAxisIndex: 0,
+          yAxisIndex: 1,
           areaStyle: undefined,
         }),
         this.seriesSpec({
-          type: 'scatter',
+          type: 'bar',
           encode: { y: 'mint' },
           itemStyle: {
             color: this.theme.color.status.success,
+            opacity: 0.5,
           },
           name: 'Remint',
-          yAxisIndex: 1,
+          yAxisIndex: 0,
           areaStyle: undefined,
-          symbolSize: (val) => {
-            return getBaseLog(val[2]);
-          },
+          // symbolSize: (val) => {
+          //   return getBaseLog(val[2]);
+          // },
         }),
         this.seriesSpec({
-          type: 'scatter',
+          type: 'bar',
           encode: { y: 'burn' },
           itemStyle: {
             color: this.theme.color.status.error,
+            opacity: 0.5,
           },
           name: 'Burn',
-          yAxisIndex: 1,
+          yAxisIndex: 0,
           areaStyle: undefined,
-          symbolSize: (val) => {
-            return getBaseLog(val[3]);
-          },
+          // symbolSize: (val) => {
+          //   return getBaseLog(val[3]);
+          // },
         }),
       ],
       legend: {
