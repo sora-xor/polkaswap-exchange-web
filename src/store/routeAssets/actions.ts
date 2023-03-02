@@ -13,7 +13,7 @@ import type { DexQuoteData } from '@/store/swap/types';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import type { QuotePayload, SwapResult } from '@sora-substrate/liquidity-proxy/build/types';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { findLast, groupBy, sumBy } from 'lodash';
+import { findLast, groupBy } from 'lodash';
 import { NumberLike } from '@sora-substrate/math';
 import { Messages } from '@sora-substrate/util/build/logger';
 import { assert } from '@polkadot/util';
@@ -33,12 +33,12 @@ const actions = defineActions({
     dispatch.subscribeOnReserves();
   },
   cancelProcessing(context) {
-    const { commit, rootGetters, dispatch } = routeAssetsActionContext(context);
+    const { commit, dispatch } = routeAssetsActionContext(context);
     dispatch.cleanSwapReservesSubscription();
     commit.clearData();
   },
   async updateRecipients(context, file?: File): Promise<void> {
-    const { commit, rootGetters, dispatch, rootState } = routeAssetsActionContext(context);
+    const { commit, dispatch, rootState } = routeAssetsActionContext(context);
     if (!file) {
       commit.clearData();
       return;
@@ -99,7 +99,7 @@ const actions = defineActions({
   },
 
   deleteRecipient(context, id): void {
-    const { commit, rootState } = routeAssetsActionContext(context);
+    const { commit } = routeAssetsActionContext(context);
     commit.deleteRecipient(id);
   },
 
@@ -149,7 +149,7 @@ const actions = defineActions({
   },
 
   async setSubscriptionPayload(context, { data, inputAssetId, outputAssetId }): Promise<void> {
-    const { state, rootState, getters, commit, dispatch } = routeAssetsActionContext(context);
+    const { state, dispatch } = routeAssetsActionContext(context);
 
     const { dexId, payload } = data;
     // tbc & xst is enabled only on dex 0
@@ -270,7 +270,7 @@ function getAssetUSDPrice(asset, fiatPriceObject) {
 }
 
 function getTransferParams(context, inputAsset, recipient) {
-  const { rootState, getters, rootGetters } = routeAssetsActionContext(context);
+  const { rootState } = routeAssetsActionContext(context);
   if (recipient.asset.address === inputAsset.address) {
     const priceObject = rootState.wallet.account.fiatPriceObject;
     const amount = Number(recipient.usd) / Number(getAssetUSDPrice(recipient.asset, priceObject));
@@ -334,9 +334,6 @@ function getTransferParams(context, inputAsset, recipient) {
       };
     } catch (error: any) {
       throw new Error(error);
-      return {
-        recipient,
-      };
     }
   }
 }
@@ -377,7 +374,7 @@ function getTransferParams(context, inputAsset, recipient) {
 // ______________________________________________________________________
 
 async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> {
-  const { commit, getters, rootCommit, rootState } = routeAssetsActionContext(context);
+  const { commit, getters, rootCommit } = routeAssetsActionContext(context);
   const inputAsset = getters.inputToken;
   const newData = data.map((item) => {
     const decimals = item.swapAndSendData.asset.decimals;
@@ -493,7 +490,7 @@ function calcTxParams(
   };
 }
 
-function getAmountAndDexId(context: any, assetFrom: any, assetTo: any, usd: any) {
+function getAmountAndDexId(context: any, assetFrom: Asset, assetTo: Asset, usd: number) {
   const { rootState, getters, rootGetters } = routeAssetsActionContext(context);
   const subscription = getters.subscriptions.find((sub) => sub.assetAddress === assetTo.address);
   if (!subscription) return null;
