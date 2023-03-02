@@ -396,9 +396,6 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
   // const formattedToAddress = receiver.slice(0, 2) === 'cn' ? receiver : this.root.formatAddress(receiver);
   const maxInputAmount = getAssetBalance(inputAsset);
   const params = calcTxParams(inputAsset, maxInputAmount, undefined, undefined);
-  // console.dir(groupedData);
-  // console.dir(params);
-
   await withLoading(async () => {
     try {
       // const { params, options } = tx;
@@ -503,8 +500,6 @@ function getAmountAndDexId(context: any, assetFrom: any, assetTo: any, usd: any)
   const { paths, payload, liquiditySources, dexQuoteData } = subscription;
   const tokenEquivalent =
     Number(usd) / Number(FPNumber.fromCodecValue(rootState.wallet.account.fiatPriceObject[assetTo.address], 18));
-  console.log(`tokenEquivalent - ${tokenEquivalent}`);
-  console.log(`usd - ${usd}`);
   const dexes = api.dex.dexList;
   const results = dexes.reduce<{ [dexId: number]: SwapResult }>((buffer, { dexId }) => {
     const swapResult = api.swap.getResult(
@@ -541,7 +536,6 @@ function getAmountAndDexId(context: any, assetFrom: any, assetTo: any, usd: any)
   }
 
   const { amount, amountWithoutImpact, fee, rewards } = results[bestDexId];
-  console.log(`amount - ${FPNumber.fromCodecValue(amount).toNumber()}`);
   return { amountFrom: amount, amountTo: tokenEquivalent, bestDexId, allDexes: results };
 }
 
