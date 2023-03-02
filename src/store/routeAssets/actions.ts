@@ -13,7 +13,7 @@ import type { DexQuoteData } from '@/store/swap/types';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import type { QuotePayload, SwapResult } from '@sora-substrate/liquidity-proxy/build/types';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { findLast, groupBy, sumBy } from 'lodash';
+import { findLast, groupBy } from 'lodash';
 import { NumberLike } from '@sora-substrate/math';
 import { Messages } from '@sora-substrate/util/build/logger';
 import { assert } from '@polkadot/util';
@@ -33,12 +33,12 @@ const actions = defineActions({
     dispatch.subscribeOnReserves();
   },
   cancelProcessing(context) {
-    const { commit, rootGetters, dispatch } = routeAssetsActionContext(context);
+    const { commit, dispatch } = routeAssetsActionContext(context);
     dispatch.cleanSwapReservesSubscription();
     commit.clearData();
   },
   async updateRecipients(context, file?: File): Promise<void> {
-    const { commit, rootGetters, dispatch, rootState } = routeAssetsActionContext(context);
+    const { commit, dispatch, rootState } = routeAssetsActionContext(context);
     if (!file) {
       commit.clearData();
       return;
@@ -99,7 +99,7 @@ const actions = defineActions({
   },
 
   deleteRecipient(context, id): void {
-    const { commit, rootState } = routeAssetsActionContext(context);
+    const { commit } = routeAssetsActionContext(context);
     commit.deleteRecipient(id);
   },
 
@@ -149,7 +149,7 @@ const actions = defineActions({
   },
 
   async setSubscriptionPayload(context, { data, inputAssetId, outputAssetId }): Promise<void> {
-    const { state, rootState, getters, commit, dispatch } = routeAssetsActionContext(context);
+    const { state, dispatch } = routeAssetsActionContext(context);
 
     const { dexId, payload } = data;
     // tbc & xst is enabled only on dex 0
@@ -249,11 +249,8 @@ const actions = defineActions({
       });
       return getTransferParams(context, inputAsset, recipient);
     });
-    const transfers = data.filter((item) => item?.transfer);
-    const swapAndSend = data.filter((item) => !item?.transfer);
 
-    await executeBatchSwapAndSend(context, swapAndSend);
-    await executeTransfer(context, transfers);
+    await executeBatchSwapAndSend(context, data);
   },
 
   cleanSwapReservesSubscription(context): void {
@@ -273,7 +270,7 @@ function getAssetUSDPrice(asset, fiatPriceObject) {
 }
 
 function getTransferParams(context, inputAsset, recipient) {
-  const { rootState, getters, rootGetters } = routeAssetsActionContext(context);
+  const { rootState } = routeAssetsActionContext(context);
   if (recipient.asset.address === inputAsset.address) {
     const priceObject = rootState.wallet.account.fiatPriceObject;
     const amount = Number(recipient.usd) / Number(getAssetUSDPrice(recipient.asset, priceObject));
@@ -298,53 +295,19 @@ function getTransferParams(context, inputAsset, recipient) {
         extrinsic: transfer,
         history: history,
       },
+      swapAndSendData: {
+        address: recipient.wallet,
+        targetAmount: amount,
+        asset: recipient.asset,
+        // dexId: bestDexId,
+      },
     };
   } else {
-    const subscription = getters.subscriptions.find((sub) => sub.assetAddress === recipient.asset.address);
-    if (!subscription) return null;
-    const { paths, payload, liquiditySources, dexQuoteData } = subscription;
-    const tokenEquivalent =
-      Number(recipient.usd) /
-      Number(FPNumber.fromCodecValue(rootState.wallet.account.fiatPriceObject[recipient.asset.address], 18));
-    const dexes = api.dex.dexList;
-
     try {
-      // TODO: [ARCH] Asset -> Asset | AccountAsset
-      const results = dexes.reduce<{ [dexId: number]: SwapResult }>((buffer, { dexId }) => {
-        const swapResult = api.swap.getResult(
-          inputAsset,
-          recipient.asset,
-          `${tokenEquivalent}`,
-          true,
-          [rootGetters.swap.swapLiquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
-          (dexQuoteData as Record<DexId, DexQuoteData>)[dexId].paths,
-          (dexQuoteData as Record<DexId, DexQuoteData>)[dexId].payload as QuotePayload,
-          dexId as DexId
-        );
+      const swapData = getAmountAndDexId(context, inputAsset, recipient.asset, recipient.usd);
+      if (!swapData) return null;
 
-        return { ...buffer, [dexId]: swapResult };
-      }, {});
-
-      let bestDexId: number = DexId.XOR;
-
-      for (const currentDexId in results) {
-        const currAmount = FPNumber.fromCodecValue(results[currentDexId].amount);
-        const bestAmount = FPNumber.fromCodecValue(results[bestDexId].amount);
-
-        if (currAmount.isZero()) continue;
-
-        if (
-          FPNumber.isLessThan(currAmount, bestAmount)
-          // &&
-          // this.isExchangeB
-          // ||
-          // (FPNumber.isLessThan(bestAmount, currAmount) && !this.isExchangeB)
-        ) {
-          bestDexId = +currentDexId;
-        }
-      }
-
-      const { amount, amountWithoutImpact, fee, rewards } = results[bestDexId];
+      const { amountFrom, amountTo, bestDexId } = swapData;
 
       return {
         action: async () =>
@@ -352,8 +315,8 @@ function getTransferParams(context, inputAsset, recipient) {
             recipient.wallet,
             inputAsset,
             recipient.asset,
-            amount,
-            tokenEquivalent,
+            amountFrom,
+            amountTo,
             undefined,
             true,
             undefined,
@@ -361,7 +324,8 @@ function getTransferParams(context, inputAsset, recipient) {
           ),
         swapAndSendData: {
           address: recipient.wallet,
-          targetAmount: tokenEquivalent,
+          targetAmount: amountTo,
+          amountFrom,
           asset: recipient.asset,
           dexId: bestDexId,
         },
@@ -370,9 +334,6 @@ function getTransferParams(context, inputAsset, recipient) {
       };
     } catch (error: any) {
       throw new Error(error);
-      return {
-        recipient,
-      };
     }
   }
 }
@@ -415,124 +376,73 @@ function getTransferParams(context, inputAsset, recipient) {
 async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> {
   const { commit, getters, rootCommit } = routeAssetsActionContext(context);
   const inputAsset = getters.inputToken;
-  const groupedData = Object.values(groupBy(data, 'assetAddress'));
-  const processArrayData = groupedData.map((recipients) => {
-    const recievers = recipients.map((item) => {
-      const decimals = item.swapAndSendData.asset.decimals;
-      const targetAmount = new FPNumber(item.swapAndSendData.targetAmount, decimals).toCodecString();
-      return {
-        accountId: item.swapAndSendData.address,
-        targetAmount,
-        recipientId: item.recipient.id,
-        targetAmountNum: Number(item.swapAndSendData.targetAmount),
-        dexId: item.swapAndSendData.dexId,
-      };
-    });
-    const maxInputAmount = getAssetBalance(inputAsset);
-    const outputAsset = recipients[0].swapAndSendData.asset;
-    if (!api.assets.getAsset(outputAsset.address)) {
-      api.assets.addAccountAsset(outputAsset.address);
-    }
-    const dexId = recievers[0].dexId;
-    const options = {
-      approxSum: sumBy(recievers, (item: any) => item.targetAmountNum),
-      outputAsset,
-    };
+  const newData = data.map((item) => {
+    const decimals = item.swapAndSendData.asset.decimals;
+    const targetAmount = new FPNumber(item.swapAndSendData.targetAmount, decimals).toCodecString();
     return {
-      recievers,
-      params: calcTxParams(inputAsset, outputAsset, maxInputAmount, undefined, dexId),
-      options,
+      accountId: item.swapAndSendData.address,
+      targetAmount,
+      assetAddress: item.swapAndSendData.asset.address,
+      recipientId: item.recipient.id,
+      targetAmountNum: Number(item.swapAndSendData.targetAmount),
+      dexId: item.swapAndSendData.dexId,
     };
   });
+  const groupedData = Object.entries(groupBy(newData, 'assetAddress'));
 
   // const formattedToAddress = receiver.slice(0, 2) === 'cn' ? receiver : this.root.formatAddress(receiver);
-
-  async function processArray(transactions) {
-    for (const tx of transactions) {
-      await withLoading(async () => {
-        try {
-          const { params, options } = tx;
-          const time = Date.now();
-          await api
-            .submitExtrinsic(
-              (api.api.tx.liquidityProxy as any).swapTransferBatch(tx.recievers, ...params.args),
-              api.account.pair,
-              {
-                symbol: inputAsset.symbol,
-                assetAddress: inputAsset.address,
-                amount2: `${options.approxSum.toFixed(6)}`,
-                symbol2: options.outputAsset.symbol,
-                asset2Address: options.outputAsset.address,
-                to: api.account.pair.address,
-                type: Operation.SwapAndSend,
-              }
-            )
-            .then(async () => {
-              const lastTx = await getLastTransaction(time);
-              rootCommit.wallet.transactions.addActiveTx(lastTx.id as string);
-              tx.recievers.forEach((reciever) => {
-                commit.setRecipientTxId({
-                  id: reciever.recipientId,
-                  txId: lastTx.id,
-                });
+  const maxInputAmount = getAssetBalance(inputAsset);
+  const params = calcTxParams(inputAsset, maxInputAmount, undefined, undefined);
+  await withLoading(async () => {
+    try {
+      // const { params, options } = tx;
+      const time = Date.now();
+      await api
+        .submitExtrinsic(
+          (api.api.tx.liquidityProxy as any).swapTransferBatch(groupedData, ...params.args),
+          api.account.pair,
+          {
+            symbol: inputAsset.symbol,
+            assetAddress: inputAsset.address,
+            to: api.account.pair.address,
+            type: Operation.SwapAndSend,
+          }
+        )
+        .then(async () => {
+          const lastTx = await getLastTransaction(time);
+          rootCommit.wallet.transactions.addActiveTx(lastTx.id as string);
+          groupedData.forEach((recievers) => {
+            recievers[1].forEach((receiver) => {
+              commit.setRecipientTxId({
+                id: receiver.recipientId,
+                txId: lastTx.id,
               });
-            })
-            .catch((err) => {
-              console.dir(err);
-              tx.recievers.forEach((reciever) => {
-                commit.setRecipientStatus({
-                  id: reciever.recipientId,
-                  status: RecipientStatus.FAILED,
-                });
-              });
-            });
-        } catch (err) {
-          console.dir(err);
-          tx.recievers.forEach((reciever) => {
-            commit.setRecipientStatus({
-              id: reciever.recipientId,
-              status: RecipientStatus.FAILED,
             });
           });
-        }
+        })
+        .catch((err) => {
+          console.dir(err);
+          groupedData.forEach((recievers) => {
+            recievers[1].forEach((receiver) => {
+              commit.setRecipientStatus({
+                id: receiver.recipientId,
+                status: RecipientStatus.FAILED,
+              });
+            });
+          });
+        });
+    } catch (err) {
+      console.dir(err);
+      groupedData.forEach((recievers) => {
+        recievers[1].forEach((receiver) => {
+          commit.setRecipientStatus({
+            id: receiver.recipientId,
+            status: RecipientStatus.FAILED,
+          });
+        });
       });
     }
-  }
-
-  await processArray(processArrayData);
-}
-
-async function executeTransfer(context, data: Array<any>): Promise<any> {
-  const { commit, rootCommit } = routeAssetsActionContext(context);
-  if (data.length < 1) return;
-  const time = Date.now();
-  await api
-    .submitExtrinsic(api.api.tx.utility.batchAll(data.map((item) => item.transfer.extrinsic)), api.account.pair, {
-      symbol: data[0].recipient.asset.symbol,
-      from: api.account.pair.address,
-      to: api.account.pair.address,
-      assetAddress: data[0].recipient.asset.symbol,
-      type: Operation.Transfer,
-    })
-    .then(async () => {
-      const lastTx = await getLastTransaction(time);
-      rootCommit.wallet.transactions.addActiveTx(lastTx.id as string);
-      data.forEach((reciever) => {
-        commit.setRecipientTxId({
-          id: reciever.recipient.id,
-          txId: lastTx.id,
-        });
-      });
-    })
-    .catch((err) => {
-      data.forEach((tr) => {
-        commit.setRecipientStatus({
-          id: tr.recipient.id,
-          status: RecipientStatus.FAILED,
-        });
-      });
-      throw new Error(err);
-    });
+  });
 }
 
 async function getLastTransaction(time: number): Promise<any> {
@@ -559,26 +469,71 @@ async function withLoading<T = void>(func: FnWithoutArgs<T> | AsyncFnWithoutArgs
 }
 
 function calcTxParams(
-  assetFrom: Asset | AccountAsset,
-  assetTo: Asset | AccountAsset,
+  asset: Asset | AccountAsset,
   maxAmount: NumberLike,
   liquiditySource = LiquiditySourceTypes.Default,
   dexId = DexId.XOR
 ) {
   assert(api.account, Messages.connectWallet);
-  const decimals = assetTo.decimals;
+  const decimals = asset.decimals;
   const amount = FPNumber.fromCodecValue(maxAmount, decimals).toCodecString();
   const liquiditySources = liquiditySource ? [liquiditySource] : [];
   return {
     args: [
       dexId,
-      assetFrom.address,
-      assetTo.address,
+      asset.address,
+      // assetTo.address,
       amount,
       liquiditySources,
       liquiditySource === LiquiditySourceTypes.Default ? 'Disabled' : 'AllowSelected',
     ],
   };
+}
+
+function getAmountAndDexId(context: any, assetFrom: Asset, assetTo: Asset, usd: number) {
+  const { rootState, getters, rootGetters } = routeAssetsActionContext(context);
+  const subscription = getters.subscriptions.find((sub) => sub.assetAddress === assetTo.address);
+  if (!subscription) return null;
+  const { paths, payload, liquiditySources, dexQuoteData } = subscription;
+  const tokenEquivalent =
+    Number(usd) / Number(FPNumber.fromCodecValue(rootState.wallet.account.fiatPriceObject[assetTo.address], 18));
+  const dexes = api.dex.dexList;
+  const results = dexes.reduce<{ [dexId: number]: SwapResult }>((buffer, { dexId }) => {
+    const swapResult = api.swap.getResult(
+      assetFrom,
+      assetTo,
+      `${tokenEquivalent}`,
+      true,
+      [rootGetters.swap.swapLiquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
+      (dexQuoteData as Record<DexId, DexQuoteData>)[dexId].paths,
+      (dexQuoteData as Record<DexId, DexQuoteData>)[dexId].payload as QuotePayload,
+      dexId as DexId
+    );
+
+    return { ...buffer, [dexId]: swapResult };
+  }, {});
+
+  let bestDexId: number = DexId.XOR;
+
+  for (const currentDexId in results) {
+    const currAmount = FPNumber.fromCodecValue(results[currentDexId].amount);
+    const bestAmount = FPNumber.fromCodecValue(results[bestDexId].amount);
+
+    if (currAmount.isZero()) continue;
+
+    if (
+      FPNumber.isLessThan(currAmount, bestAmount)
+      // &&
+      // this.isExchangeB
+      // ||
+      // (FPNumber.isLessThan(bestAmount, currAmount) && !this.isExchangeB)
+    ) {
+      bestDexId = +currentDexId;
+    }
+  }
+
+  const { amount, amountWithoutImpact, fee, rewards } = results[bestDexId];
+  return { amountFrom: amount, amountTo: tokenEquivalent, bestDexId, allDexes: results };
 }
 
 export default actions;

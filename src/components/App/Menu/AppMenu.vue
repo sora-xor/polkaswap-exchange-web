@@ -1,7 +1,12 @@
 <template>
   <s-scrollbar
     class="app-menu app-sidebar-scrollbar"
-    :class="{ visible, 'app-menu__about': isAboutPageOpened, 'app-menu__loading': pageLoading }"
+    :class="{
+      visible,
+      'app-menu__about': isAboutPageOpened,
+      'app-menu__loading': pageLoading,
+      'app-menu__route-assets': isRouteAssetsPage,
+    }"
   >
     <aside class="app-sidebar">
       <slot name="head"></slot>
@@ -95,6 +100,7 @@ import {
 
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
+import { AdarPageNames } from '@/modules/ADAR/consts';
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 @Component({
@@ -147,6 +153,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   openSoraDownloadDialog(): void {
     this.$emit('open-download-dialog');
+  }
+
+  get isRouteAssetsPage(): boolean {
+    return this.$route.name === AdarPageNames.RouteAssets;
   }
 
   /** To ignore left click */
@@ -317,6 +327,11 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
 
+    &__route-assets {
+      @include tablet {
+        position: relative;
+      }
+    }
     &__loading {
       z-index: $app-above-loader-layer;
     }

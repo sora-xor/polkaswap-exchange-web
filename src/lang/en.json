@@ -1050,12 +1050,31 @@
                     "assets": "Assets",
                     "usd": "usd",
                     "wallets": "wallets",
-                    "amount": "amount",
+                    "amount": "ESTIMATED AMOUNTS",
+                    "calculated": "calculated",
+                    "issues": "issues found",
+                    "payeers": "payeers",
+                    "processing": "processing",
+                    "waiting": "waiting",
                     "title": "Process routing template",
-                    "description": "Our system is processing your uploaded Routing Template"
+                    "description": "Our system is processing your uploaded Routing Template",
+                    "fixButton": "fix issues"
                 }
             },
-            "dialogs": {},
+            "dialogs": {
+                "fixIssuesDialog": {
+                    "title": "Fix or remove issues",
+                    "recipient": "recipient",
+                    "wallets": "wallets",
+                    "fieldStatusCorrect": "{field} correct",
+                    "fieldStatusIncorrect": "{field} incorrect",
+                    "usd": "usd",
+                    "assets": "Assets",
+                    "amount": "estimated amount",
+                    "fixButton": "fix issue",
+                    "deleteButton": "delete recipient"
+                }
+            },
             "messages": {}
         }
     },    

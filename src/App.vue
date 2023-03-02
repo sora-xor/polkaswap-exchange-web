@@ -390,7 +390,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
           status: RecipientStatus.FAILED,
         });
       });
-    } else if (value.status === TransactionStatus.InBlock || isNewTx) {
+    } else if (value.status === TransactionStatus.Finalized) {
       if (isNewTx) {
         recipients.forEach((reciever) => {
           this.setRecipientStatus({
