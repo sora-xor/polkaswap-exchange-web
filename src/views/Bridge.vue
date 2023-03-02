@@ -493,7 +493,7 @@ export default class Bridge extends Mixins(
   }
 
   getBridgeItemTitle(isSoraNetwork = false): string {
-    return this.t(this.formatNetwork(isSoraNetwork));
+    return this.formatNetwork(isSoraNetwork);
   }
 
   getCopyTooltip(isSoraNetwork = false): string {
@@ -514,7 +514,7 @@ export default class Bridge extends Mixins(
   }
 
   async handleConfirmTransaction(): Promise<void> {
-    if (!this.isXorSufficientForNextOperation) {
+    if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
       await this.waitOnNextTxFailureConfirmation();
       if (!this.isWarningFeeDialogConfirmed) {

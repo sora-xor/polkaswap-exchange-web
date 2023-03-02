@@ -7,8 +7,6 @@
     "importText": "Importera",
     "settingsText": "Inställningar",
     "addAssetText": "Lägg till tillgång",
-    "createTokenText": "Skapa token",
-    "comingSoonText": "Kommer Snart",
     "successText": "Framgång",
     "warningText": "Varning",
     "swapText": "Byt",
@@ -19,7 +17,6 @@
     "sendText": "Skicka",
     "addressText": "Adress",
     "amountText": "Belopp",
-    "confirmText": "Bekräfta",
     "errorText": "Fel",
     "insufficientBalanceText": "Otillräckligt {tokenSymbol} saldo",
     "unknownErrorText": "FEL Något gick fel...",
@@ -105,14 +102,15 @@
         },
         "selectWallet": "Välj en plånbok att arbeta med",
         "wallet": {
-            "install": "Installera"
+            "install": "Installera",
+            "connected": "Ansluten",
+            "notConnected": "Ej ansluten"
         }
     },
     "wallet": {
         "title": "{Sora}-Nätverkskonto",
         "WalletAssets": "Tillgångar",
         "WalletActivity": "Aktivitet",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -127,18 +125,21 @@
         "enterAmount": "Ange belopp",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Bekräfta transaktion",
-        "confirm": "@:confirmText",
         "errorAddress": "Ogiltig adress. Vänligen kontrollera den och försök igen.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Skicka tokens mellan {Sora}-nätverkskonton",
         "addressWarning": "Tokens skickas till {Sora}-adressen nedan. Se till att mottagaren kan få tillgång till {Sora}-kedjan för att använda dessa skickade tokens:",
-        "addressError": "Du kan inte skicka tokens till samma konto som du för närvarande är ansluten till."
+        "addressError": "Du kan inte skicka tokens till samma konto som du för närvarande är ansluten till.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Plånboksadressen kopieras till klippbordet",
         "copy": "Kopiera adress",
         "switch": "Byt konto",
-        "walletAddress": "Plånboksadress"
+        "walletAddress": "Plånboksadress",
+        "delete": "Radera konto",
+        "rename": "Byt namn på konto",
+        "export": "Exportera .json"
     },
     "history": {
         "clearHistory": "Rensa historik",
@@ -152,7 +153,6 @@
     },
     "assets": {
         "empty": "Det finns inga tillgångar",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -179,8 +179,6 @@
         "receive": "Ta emot {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Tillgång {symbol} har lagts till framgångsrikt!",
         "empty": "Inga tokens hittades",
         "alreadyAttached": "Token var redan bifogad",
@@ -198,13 +196,10 @@
         "searchInputText": "Sök efter Tillgångs-ID, Namn eller Ticker-symbol"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Skapa och utplacera anpassad tillgång på {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Ange symbol för token",
         "enterName": "Ange namn för token",
         "enterSupply": "Ange token utbud",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Transaktion inskickad",
             "desc": "Skapa {symbol} token"
@@ -230,10 +225,6 @@
             "placeholder": "Utökningsbar tillgång",
             "desc": "Möjlighet att mynta fler tokens."
         },
-        "titleCommon": "Skapa",
-        "confirmTokenTitleCommon": "Skapa Token",
-        "confirmTokenTitleNFT": "Skapa NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Tillhandahåll innehåll",
         "selectLocalFile": "Välj lokal fil",
         "CreateSimpleToken": "Token",
@@ -267,7 +258,14 @@
         "divisible": {
             "placeholder": "Delbar",
             "desc": "NFT:s förmåga att delas i bråkdelar. Likviditet tillhandahållande fungerar endast med delbara tillgångar"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Skapa",
+        "confirmTokenTitleCommon": "Skapa Token",
+        "confirmTokenTitleNFT": "Skapa NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Transaktions detaljer",
@@ -293,11 +291,8 @@
             "submitted": "Transaktion inskickad med avgift på {fee} {symbol}",
             "confirmed": "Transaktion bekräftad"
         },
-        "viewIn": {
-            "sorascan": "Visa i SORAScan",
-            "subscan": "VIsa i Subscan"
-        },
         "txId": "Transaktions-ID",
+        "viewIn": "Visa i {explorer}",
         "referrer": "Referrer",
         "referral": "Hänvisning"
     },
@@ -333,7 +328,6 @@
         "AddLiquidity": "Lägg Till Likviditet",
         "AddLiquidityId": "Lägg till Likviditet",
         "RemoveLiquidity": "Ta Bort Likviditet",
-        "PageNotFound": "Sidan Hittades Inte",
         "Rewards": "Rewards",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Pooler",
@@ -433,26 +427,7 @@
         "from": "Från",
         "to": "Till"
     },
-    "pageNotFound": {
-        "title": "Sida hittades inte",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -502,8 +477,8 @@
         "price": "Pris",
         "transactionSubmitted": "Transaktion inskickad",
         "transactionMessage": "{firstToken} och {secondToken}",
-        "confirm": "Bekräfta",
-        "ok": "OK"
+        "ok": "OK",
+        "confirm": "Bekräfta"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +529,6 @@
         "connectWallets": "Anslut plånböcker för att se respektive transaktionshistorik.",
         "soraNetworkFee": "{Sora} Nätverksavgift",
         "ethereumNetworkFee": "{Ethereum} Nätverksavgift",
-        "tooltipValue": "@:comingSoonText",
         "total": "Totalsumma",
         "viewHistory": "Visa transaktionshistorik",
         "transactionSubmitted": "Transaktion inskickad",
@@ -562,11 +536,10 @@
         "notRegisteredAsset": "Tillgång {assetSymbol} är ej registrerad",
         "selectNetwork": "Välj nätverk",
         "networkInfo": "Brygga {Sora} Nätverk med:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Kopiera nätverksadress",
         "soraAddress": "{Sora} adress",
-        "ethereumAddress": "{Ethereum} adress"
+        "ethereumAddress": "{Ethereum} adress",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Välj en token",
@@ -618,7 +591,6 @@
             "done": "Slutförd",
             "waitingForConfirmation": "Väntar på bekräftelse..."
         },
-        "viewInEtherscan": "Visa i {Etherscan}",
         "networkTitle": "{network} transaktion",
         "transactionHash": "Transaktionshash",
         "networkInfo": {
@@ -717,7 +689,7 @@
         "outputMessage": "Utdata är beräknad ungefärligt. Om priset ändras mer än {slippageTolerance} så återgår din transaktion.",
         "confirmTitle": "Du kommer att mottaga",
         "shareOfPool": "Andel av poolen efter transaktionen",
-        "locked": "{percent} av din pool är i insats"
+        "locked": "{percent} av din pool är i {lock}"
     },
     "dexSettings": {
         "title": "Inställningar",
@@ -932,7 +904,6 @@
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",
         "confirm": {
-            "text": "Bekräfta",
             "bond": "Bekräfta bond",
             "unbond": "Bekräfta unbond",
             "inviteTitle": "Du har blivit inbjuden till {AppName}",
@@ -941,7 +912,8 @@
             "freeOfCharge": "Denna åtgärd är kostnadsfri",
             "hasReferrerTitle": "Du har redan ställt in din inbjudare",
             "hasReferrerDescription": "Tyvärr kan du bara tillämpa en",
-            "ok": "OK"
+            "ok": "OK",
+            "text": "Bekräfta"
         },
         "referrer": {
             "title": "Lägg till din referrer",
@@ -958,7 +930,6 @@
         "insufficientBondedAmount": "För att bjuda in fler hänvisningar, bond minst {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaktions Detaljer",
-    "createTokenTextNFT": "Skapa NFT",
     "code": {
         "download": "Ladda ner QR-Kod",
         "upload": "Skanna QR",
@@ -1130,7 +1101,9 @@
             "mnemonic": "En ogiltig bip39-minnesanteckning har angetts.",
             "mnemonicLength": "Mnemonic bör innehålla {number} ord",
             "jsonFields": "JSON-fil har inte obligatoriska fält"
-        }
+        },
+        "assetsAtRiskText": "Tillgångar i riskzonen!",
+        "deleteAccountText": "Kontot kan inte återställas utan en fröfras, .json-fil eller om det är lagrat i något tillägg. Du kommer att loggas ut."
     },
     "hashiBridgeText": "{Hashi} bro",
     "disclaimerTitle": "Ansvarsfriskrivning:",
@@ -1140,5 +1113,11 @@
     "tooltips": {
         "roi": "{ROI} står för Return on Investment. Den beräknas genom att dividera den vinst som tjänats in på en investering med kostnaden för den investeringen i en motsvarande procentsats.",
         "tvl": "{TVL} står för Total Value Locked. Det representerar tokens inlåsta i poolerna i motsvarande dollar."
-    }
+    },
+    "createTokenText": "Skapa token",
+    "comingSoonText": "Kommer Snart",
+    "confirmText": "Bekräfta",
+    "createTokenTextNFT": "Skapa NFT",
+    "doNotShowText": "Visa mig inte det här igen",
+    "accountText": "konto | konton"
 }

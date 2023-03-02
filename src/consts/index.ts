@@ -122,7 +122,6 @@ export enum PageNames {
   RewardsTabs = 'RewardsTabs',
   ReferralBonding = 'ReferralBonding',
   ReferralUnbonding = 'ReferralUnbonding',
-  PageNotFound = 'PageNotFound',
   BridgeContainer = 'BridgeContainer',
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
@@ -159,11 +158,13 @@ export enum Components {
   SoraCard = 'SoraCard',
   SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
   SoraCardKYC = 'SoraCard/SoraCardKYC',
+  ConfirmationInfo = 'SoraCard/ConfirmationInfo',
   TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
   ToSDialog = 'SoraCard/steps/ToSDialog',
   RoadMap = 'SoraCard/steps/RoadMap',
+  Phone = 'SoraCard/steps/Phone',
+  Email = 'SoraCard/steps/Email',
   KycView = 'SoraCard/steps/KycView',
-  ConfirmationInfo = 'SoraCard/steps/ConfirmationInfo',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',
   StatusActionBadge = 'Swap/StatusActionBadge',
@@ -221,6 +222,8 @@ export enum Components {
   // Button
   SortButton = 'Button/SortButton',
   SvgIconButton = 'Button/SvgIconButton/SvgIconButton',
+  X1Dialog = 'X1/X1Dialog',
+  PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
 }
 
 export enum RewardsTabsItems {
@@ -232,13 +235,20 @@ export interface SidebarMenuItem {
   icon?: string;
   title: string;
   disabled?: boolean;
+  /**
+   * When page has a redirection it's better to set the final route to avoid errors from router.
+   *
+   * So, when the final route is different from title `index` should be used for menu
+   */
+  index?: string;
 }
 
-interface SidebarMenuItemLink extends SidebarMenuItem {
+export interface SidebarMenuItemLink extends SidebarMenuItem {
+  /** It's required for href if it's used */
   href?: string;
 }
 
-const MainMenu: Array<SidebarMenuItem> = [
+const MainMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'arrows-arrow-bold-right-24',
     title: AdarPageNames.RouteAssets,
@@ -246,6 +256,7 @@ const MainMenu: Array<SidebarMenuItem> = [
   {
     icon: 'arrows-swap-90-24',
     title: PageNames.Swap,
+    href: '/#/swap',
   },
   // {
   //   icon: 'finance-send-24',
@@ -265,10 +276,11 @@ const MainMenu: Array<SidebarMenuItem> = [
   // },
 ];
 
-const AccountMenu: Array<SidebarMenuItem> = [
+const AccountMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'finance-wallet-24',
     title: PageNames.Wallet,
+    href: '/#/wallet',
   },
   // {
   //   icon: 'basic-circle-star-24',
@@ -340,8 +352,19 @@ export const StoreLinks = {
 };
 
 export const TosExternalLinks = {
-  Terms: `https://soracard.com/terms/`,
-  Privacy: `https://soracard.com/privacy/`,
+  Terms: `https://soracard.com/terms/en/polkaswap/`,
+  Privacy: `https://soracard.com/privacy/en/polkaswap/`,
+  getLinks: function (darkMode = 'light') {
+    return darkMode === 'dark'
+      ? {
+          Terms: this.Terms.concat('?dark'),
+          Privacy: this.Privacy.concat('?dark'),
+        }
+      : {
+          Terms: this.Terms,
+          Privacy: this.Privacy,
+        };
+  },
 };
 
 export const FaucetLink: SidebarMenuItemLink = {
@@ -362,10 +385,10 @@ export const RewardsChildPages = [
 
 export const StakingChildPages = [DemeterPageNames.Staking];
 export const ExploreChildPages = [
-  PageNames.ExploreTokens,
-  PageNames.ExplorePools,
-  PageNames.ExploreFarming,
+  PageNames.ExploreFarming, // By default
   PageNames.ExploreStaking,
+  PageNames.ExplorePools,
+  PageNames.ExploreTokens,
 ];
 
 export enum Topics {

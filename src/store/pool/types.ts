@@ -1,5 +1,6 @@
 import type { Subscription } from 'rxjs';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { AccountLockedPool } from '@sora-substrate/util/build/ceresLiquidityLocker/types';
 import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 export type PoolState = {
@@ -8,6 +9,8 @@ export type PoolState = {
   accountLiquidityUpdates: Nullable<Subscription>;
   poolApyObject: PoolApyObject;
   poolApySubscription: Nullable<VoidFunction>;
+  accountLockedLiquidity: readonly AccountLockedPool[];
+  accountLockedLiquiditySubscription: Nullable<Subscription>;
 };
 
 export type LiquidityParams = {

@@ -7,8 +7,6 @@
     "importText": "Uvoz",
     "settingsText": "Postavke",
     "addAssetText": "Dodajte sredstvo",
-    "createTokenText": "Stvorite",
-    "comingSoonText": "Dolazi uskoro",
     "successText": "Uspješno provedeno",
     "warningText": "Upozorenje",
     "swapText": "Zamijenite",
@@ -19,7 +17,6 @@
     "sendText": "Pošaljite",
     "addressText": "Adresa",
     "amountText": "Iznos",
-    "confirmText": "Potvrdite",
     "errorText": "Pogreška",
     "insufficientBalanceText": "Nedovoljno stanje {tokenSymbol}",
     "unknownErrorText": "POGREŠKA Nešto je pošlo po zlu...",
@@ -105,14 +102,15 @@
         },
         "selectWallet": "Odaberite novčanik s kojim ćete raditi",
         "wallet": {
-            "install": "Instalirati"
+            "install": "Instalirati",
+            "connected": "Povezan",
+            "notConnected": "Nije povezano"
         }
     },
     "wallet": {
         "title": "Račun mreže {Sora}",
         "WalletAssets": "Sredstva",
         "WalletActivity": "Aktivnost",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -127,18 +125,21 @@
         "enterAmount": "Unesite iznos",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Potvrdite transakciju",
-        "confirm": "@:confirmText",
         "errorAddress": "Neispravna adresa. Molimo provjerite i pokušajte ponovo.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Šaljite tokene između {Sora} mrežnih računa",
         "addressWarning": "Tokeni će biti poslani na {Sora} adresu ispod. Provjerite može li primatelj pristupiti lancu {Sora} za korištenje tokena:",
-        "addressError": "Ne možete slati tokene na isti račun s kojim ste trenutno povezani."
+        "addressError": "Ne možete slati tokene na isti račun s kojim ste trenutno povezani.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Adresa novčanika kopira se u međuspremnik",
         "copy": "Kopirajte adresu",
         "switch": "Promjenite račun",
-        "walletAddress": "Adresa novčanika"
+        "walletAddress": "Adresa novčanika",
+        "delete": "Izbriši račun",
+        "rename": "Preimenuj račun",
+        "export": "Izvezi .json"
     },
     "history": {
         "clearHistory": "Očistite povijest",
@@ -152,7 +153,6 @@
     },
     "assets": {
         "empty": "Nema sredstava",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -179,8 +179,6 @@
         "receive": "Primite {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Sredstvo {symbol} je uspješno dodano!",
         "empty": "Tokeni nisu pronađeni",
         "alreadyAttached": "Token je već bio priložen",
@@ -198,13 +196,10 @@
         "searchInputText": "Pretraživanje po ID-u sredstva, nazivu ili simbolu oznake"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Izradite i primijenite prilagođena sredstva na {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Unesite simbol tokena",
         "enterName": "Unesite naziv tokena",
         "enterSupply": "Unesite opskrbu tokenom",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Transakcija je poslana",
             "desc": "Napravite {symbol} token"
@@ -230,10 +225,6 @@
             "placeholder": "Proširiva opskrba",
             "desc": "Sposobnost izdavanja više tokena."
         },
-        "titleCommon": "Stvorite",
-        "confirmTokenTitleCommon": "Napravite token",
-        "confirmTokenTitleNFT": "Napravite NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Dajte sadržaj",
         "selectLocalFile": "Odaberite lokalnu datoteku",
         "CreateSimpleToken": "Token",
@@ -267,7 +258,14 @@
         "divisible": {
             "placeholder": "Djeljivo",
             "desc": "Sposobnost NFT-a da se podijeli na razlomke. Rezerviranje likvidnosti funkcionira samo s djeljivom sredstvom"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Stvorite",
+        "confirmTokenTitleCommon": "Napravite token",
+        "confirmTokenTitleNFT": "Napravite NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Detalji transakcije",
@@ -293,11 +291,8 @@
             "submitted": "Transakcija poslana uz naknadu od {fee} {symbol}",
             "confirmed": "Transakcija potvrđena"
         },
-        "viewIn": {
-            "sorascan": "Pogledajte u SORAScan",
-            "subscan": "Pogledajte u Subscanu"
-        },
         "txId": "ID transakcije",
+        "viewIn": "Pogledajte u {explorer}",
         "referrer": "Preporučitelj",
         "referral": "Preporuka"
     },
@@ -333,7 +328,6 @@
         "AddLiquidity": "Dodajte likvidnost",
         "AddLiquidityId": "Dodajte likvidnost",
         "RemoveLiquidity": "Uklonite likvidnost",
-        "PageNotFound": "Stranica nije pronađena",
         "Rewards": "Nagrade",
         "Explore\/Tokens": "Tokeni",
         "Explore\/Pools": "Bazeni",
@@ -433,26 +427,7 @@
         "from": "Od",
         "to": "Do"
     },
-    "pageNotFound": {
-        "title": "Stranica nije pronađena",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -502,8 +477,8 @@
         "price": "Cijena",
         "transactionSubmitted": "Transakcija je poslana",
         "transactionMessage": "{firstToken} i {secondToken}",
-        "confirm": "Potvrdite",
-        "ok": "U redu"
+        "ok": "U redu",
+        "confirm": "Potvrdite"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +529,6 @@
         "connectWallets": "Povežite novčanike da biste vidjeli odgovarajuću povijest transakcija.",
         "soraNetworkFee": "{Sora} mrežna naknada",
         "ethereumNetworkFee": "{Ethereum} mrežna naknada",
-        "tooltipValue": "@:comingSoonText",
         "total": "Ukupno",
         "viewHistory": "Prikazite povijesti transakcija",
         "transactionSubmitted": "Transakcija je poslana",
@@ -562,11 +536,10 @@
         "notRegisteredAsset": "Sredstvo {assetSymbol} nije registrirano",
         "selectNetwork": "Odaberite mrežu",
         "networkInfo": "Bridge {Sora} mrežna naknada s:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Kopiraj mrežnu adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Odaberite token",
@@ -618,7 +591,6 @@
             "done": "Potpuno",
             "waitingForConfirmation": "Čeka se potvrda..."
         },
-        "viewInEtherscan": "Prikažite u {Etherscan}u",
         "networkTitle": "{network} transakcija",
         "transactionHash": "Hash transakcije",
         "networkInfo": {
@@ -717,7 +689,7 @@
         "outputMessage": "Procjenjuje se izlazna količina. Ako se cijena promijeni više od {slippageTolerance}%, vaša će se transakcija vratiti.",
         "confirmTitle": "Dobit ćete",
         "shareOfPool": "Udio u pulu nakon transakcije",
-        "locked": "{percent} vašeg bazena je u ulozi"
+        "locked": "{percent} vašeg bazena je u {lock}"
     },
     "dexSettings": {
         "title": "Postavke",
@@ -932,7 +904,6 @@
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",
         "confirm": {
-            "text": "Potvrdite",
             "bond": "Potvrdite bond",
             "unbond": "Potvrdite unbond",
             "inviteTitle": "Pozvani ste u {AppName}",
@@ -941,7 +912,8 @@
             "freeOfCharge": "Ova akcija je besplatna",
             "hasReferrerTitle": "Već ste postavili svog preporučitelja",
             "hasReferrerDescription": "Nažalost, možete postaviti samo jedan",
-            "ok": "U redu"
+            "ok": "U redu",
+            "text": "Potvrdite"
         },
         "referrer": {
             "title": "Dodajte svog referera",
@@ -958,7 +930,6 @@
         "insufficientBondedAmount": "Da biste pozvali više preporuka, povežite najmanje {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detalji transakcije",
-    "createTokenTextNFT": "Napravite NFT",
     "code": {
         "download": "Preuzmite QR kod",
         "upload": "Skeniraj QR",
@@ -1130,7 +1101,9 @@
             "mnemonic": "Naveden je nevažeći mnemonik bip39",
             "mnemonicLength": "Mnemotehnika treba sadržavati {number} riječi",
             "jsonFields": "JSON datoteka nema obavezna polja"
-        }
+        },
+        "assetsAtRiskText": "Imovina u opasnosti!",
+        "deleteAccountText": "Račun se ne može oporaviti bez početne fraze, .json datoteke ili ako je pohranjena u nekoj ekstenziji. Bit ćete odjavljeni."
     },
     "hashiBridgeText": "{Hashi} most",
     "disclaimerTitle": "Disclaimer:",
@@ -1140,5 +1113,11 @@
     "tooltips": {
         "roi": "{ROI} je kratica za povrat ulaganja. Izračunava se dijeljenjem dobiti ostvarene ulaganjem troškom tog ulaganja u postotnom ekvivalentu.",
         "tvl": "{TVL} je kratica za Total Value Locked. Predstavlja tokene zaključane u bazenima u dolarskoj protuvrijednosti."
-    }
+    },
+    "createTokenText": "Stvorite",
+    "comingSoonText": "Dolazi uskoro",
+    "confirmText": "Potvrdite",
+    "createTokenTextNFT": "Napravite NFT",
+    "doNotShowText": "Ne pokazuj mi ovo više",
+    "accountText": "račun | računi"
 }

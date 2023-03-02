@@ -7,8 +7,6 @@
     "importText": "Nhập",
     "settingsText": "Cài đặt",
     "addAssetText": "Thêm tài sản",
-    "createTokenText": "Tạo",
-    "comingSoonText": "Sắp ra mắt",
     "successText": "Thành công",
     "warningText": "Cảnh báo",
     "swapText": "Hoán đổi",
@@ -19,7 +17,6 @@
     "sendText": "Gửi",
     "addressText": "Địa chỉ",
     "amountText": "Số lượng",
-    "confirmText": "Xác nhận",
     "errorText": "Lỗi",
     "insufficientBalanceText": "Số dư {tokenSymbol} không đủ",
     "unknownErrorText": "LỖI Có gì đó không ổn...",
@@ -105,14 +102,15 @@
         },
         "selectWallet": "Chọn một ví để kết nối",
         "wallet": {
-            "install": "Cài đặt"
+            "install": "Cài đặt",
+            "connected": "kết nối",
+            "notConnected": "Không kết nối"
         }
     },
     "wallet": {
         "title": "Tài khoản Mạng {Sora}",
         "WalletAssets": "Tài sản",
         "WalletActivity": "Hoạt động",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -127,18 +125,21 @@
         "enterAmount": "Nhập số tiền",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Xác nhận giao dịch",
-        "confirm": "@:confirmText",
         "errorAddress": "Địa chỉ không hợp lệ. Vui lòng kiểm tra và thử lại.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Gửi token giữa những tài khoản cùng Mạng {Sora}",
         "addressWarning": "Những Token này sẽ được chuyển đến địa chỉ {Sora} bên dưới. Hãy đảm bảo rằng người nhận có thể truy cập vào Chuỗi {Sora} để sử dụng những token này.",
-        "addressError": "Bạn không thể gửi những token này đến cùng tài khoản mà bạn đang kết nối"
+        "addressError": "Bạn không thể gửi những token này đến cùng tài khoản mà bạn đang kết nối",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Địa chỉ ví được sao chép vào bảng tạm",
         "copy": "Sao chép địa chỉ",
         "switch": "Chuyển đổi tài khoản",
-        "walletAddress": "Địa chỉ ví"
+        "walletAddress": "Địa chỉ ví",
+        "delete": "Xóa tài khoản",
+        "rename": "Đổi tên tài khoản",
+        "export": "Xuất .json"
     },
     "history": {
         "clearHistory": "Xóa lịch sử",
@@ -152,7 +153,6 @@
     },
     "assets": {
         "empty": "Không có tài sản",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -179,8 +179,6 @@
         "receive": "Nhận {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Tài sản {symbol} đã được thêm vào thành công!",
         "empty": "Không tìm thấy token",
         "alreadyAttached": "Token đã được thêm vào",
@@ -198,13 +196,10 @@
         "searchInputText": "Tìm kiếm theo ID, tên hoặc ký hiệu mã"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Tạo và triển khai tài sản tùy chỉnh trên {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Nhập mã token",
         "enterName": "Nhập mã token",
         "enterSupply": "Nhập số lượng token",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Giao dịch đã gửi đi",
             "desc": "Tạo token {symbol}"
@@ -230,10 +225,6 @@
             "placeholder": "Nguồn cung mở rộng",
             "desc": "Có thể mint được nhiều token hơn"
         },
-        "titleCommon": "Tạo",
-        "confirmTokenTitleCommon": "Tạo Token",
-        "confirmTokenTitleNFT": "Tạo NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Cung cấp nội dung",
         "selectLocalFile": "Chọn tập tin từ máy",
         "CreateSimpleToken": "Token",
@@ -267,7 +258,14 @@
         "divisible": {
             "placeholder": "Chia hết",
             "desc": "NFT có thể chia thành các phần phân nhỏ khác nhau. Việc cung cấp thanh khoản Liquedity chỉ hoạt động với tài sản có thể phân chia được"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Tạo",
+        "confirmTokenTitleCommon": "Tạo Token",
+        "confirmTokenTitleNFT": "Tạo NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Chi tiết giao dịch",
@@ -293,11 +291,8 @@
             "submitted": "Giao dịch được gửi với phí {fee} {symbol}",
             "confirmed": "Giao dịch đã được xác nhận"
         },
-        "viewIn": {
-            "sorascan": "Xem trên SORAscan",
-            "subscan": "Xem trong Subscan"
-        },
         "txId": "ID giao dịch",
+        "viewIn": "Xem trong {explorer}",
         "referrer": "Người giới thiệu",
         "referral": "Giới thiệu"
     },
@@ -333,7 +328,6 @@
         "AddLiquidity": "Thêm Thanh Khoản",
         "AddLiquidityId": "Thêm Thanh Khoản",
         "RemoveLiquidity": "Rút Thanh Khoản",
-        "PageNotFound": "Trang không tìm thấy",
         "Rewards": "Phần thưởng",
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "hồ bơi",
@@ -433,26 +427,7 @@
         "from": "Từ",
         "to": "Đến"
     },
-    "pageNotFound": {
-        "title": "Không tìm thấy trang",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "Mạng chính {Ethereum}",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -502,8 +477,8 @@
         "price": "Giá",
         "transactionSubmitted": "Giao dịch đã được gửi đi",
         "transactionMessage": "{firstToken} và {secondToken}",
-        "confirm": "Xác nhận",
-        "ok": "OK"
+        "ok": "OK",
+        "confirm": "Xác nhận"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +529,6 @@
         "connectWallets": "Kết nối ví để xem lịch sử giao dịch tương ứng.",
         "soraNetworkFee": "Phí mạng {Sora}",
         "ethereumNetworkFee": "Phí mạng {Ethereum}",
-        "tooltipValue": "@:comingSoonText",
         "total": "Tất cả",
         "viewHistory": "Xem lịch sử giao dịch",
         "transactionSubmitted": "Giao dịch đã được gửi đi",
@@ -562,11 +536,10 @@
         "notRegisteredAsset": "Tài sản {assetSymbol} không được đăng ký",
         "selectNetwork": "Chọn mạng",
         "networkInfo": "Cầu nối Mạng {Sora} với:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Sao chép địa chỉ mạng",
         "soraAddress": "địa chỉ {Sora}",
-        "ethereumAddress": "địa chỉ {Ethereum}"
+        "ethereumAddress": "địa chỉ {Ethereum}",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Chọn token",
@@ -618,7 +591,6 @@
             "done": "Hoàn tất",
             "waitingForConfirmation": "Đang chờ xác nhận..."
         },
-        "viewInEtherscan": "Xem trên {Etherscan}",
         "networkTitle": "giao dịch {network}",
         "transactionHash": "Chi tiết giao dịch",
         "networkInfo": {
@@ -717,7 +689,7 @@
         "outputMessage": "Kết quả là ước lượng. Nếu giá biến động hơn {slippageTolerance}% thì giao dịch của bạn sẽ hoàn tác.",
         "confirmTitle": "Bạn sẽ nhận được",
         "shareOfPool": "Cổ phần của Pool sau giao dịch",
-        "locked": "{percent} nhóm của bạn đang được đặt cược"
+        "locked": "{percent} nhóm của bạn đang bị {lock}"
     },
     "dexSettings": {
         "title": "Cài đặt",
@@ -932,7 +904,6 @@
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",
         "confirm": {
-            "text": "Xác nhận",
             "bond": "Xác nhận bond",
             "unbond": "Xác nhận unbond",
             "inviteTitle": "Bạn đã được mời tham gia {AppName}",
@@ -941,7 +912,8 @@
             "freeOfCharge": "Hành động này là miễn phí",
             "hasReferrerTitle": "Bạn đã thêm người giới thiệu của bạn",
             "hasReferrerDescription": "Thật không may, bạn chỉ có thể đặt một",
-            "ok": "OK"
+            "ok": "OK",
+            "text": "Xác nhận"
         },
         "referrer": {
             "title": "Thêm người đã giới thiệu bạn",
@@ -958,7 +930,6 @@
         "insufficientBondedAmount": "Để mời thêm giới thiệu, hãy bond ít nhất {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Chi tiết giao dịch",
-    "createTokenTextNFT": "Tạo NFT",
     "code": {
         "download": "Tải xuống mã QR",
         "upload": "Quét mã QR",
@@ -1130,7 +1101,9 @@
             "mnemonic": "Đã chỉ định ghi nhớ bip39 không hợp lệ",
             "mnemonicLength": "Cụm từ ghi nhớ phải chứa {number} từ",
             "jsonFields": "Tệp JSON không có các trường bắt buộc"
-        }
+        },
+        "assetsAtRiskText": "Tài sản có nguy cơ!",
+        "deleteAccountText": "Không thể khôi phục tài khoản nếu không có cụm từ gốc, tệp .json hoặc nếu tài khoản được lưu trữ trong một số tiện ích mở rộng. Bạn sẽ được đăng xuất."
     },
     "hashiBridgeText": "Cầu {Hashi}",
     "disclaimerTitle": "Disclaimer:",
@@ -1140,5 +1113,11 @@
     "tooltips": {
         "roi": "{ROI} là viết tắt của Lợi tức đầu tư. Nó được tính bằng cách chia lợi nhuận kiếm được từ một khoản đầu tư cho chi phí của khoản đầu tư đó theo tỷ lệ phần trăm tương đương.",
         "tvl": "{TVL} là viết tắt của Tổng giá trị bị khóa. Nó đại diện cho các mã thông báo bị khóa trong các nhóm tính bằng đô la tương đương."
-    }
+    },
+    "createTokenText": "Tạo",
+    "comingSoonText": "Sắp ra mắt",
+    "confirmText": "Xác nhận",
+    "createTokenTextNFT": "Tạo NFT",
+    "doNotShowText": "Đừng cho tôi xem cái này nữa",
+    "accountText": "tài khoản | tài khoản"
 }

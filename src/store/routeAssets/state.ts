@@ -7,7 +7,9 @@ function initialState(): RouteAssetsState {
     file: null,
     subscriptions: [],
     enabledAssetsSubscription: null,
-    enabledAssets: {},
+    enabledAssets: {
+      lockedSources: [],
+    },
     processingState: {
       currentStageIndex: 0,
       inputToken: XOR,
