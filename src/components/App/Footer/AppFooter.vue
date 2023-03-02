@@ -5,66 +5,49 @@
         <span class="block-number-icon" /><span>{{ blockNumberFormatted }}</span>
       </a>
     </div>
-    <footer-popper :status="nodeConnectionClass">
+    <footer-popper :status="nodeConnectionClass" :action-text="t('selectNodeText')" @action="openNodeSelectionDialog">
       <div slot="reference" class="app-status__item node" :class="nodeConnectionClass">
         <s-icon name="globe-16" size="16" />
         <span class="app-status__text">{{ nodeConnectionText }}</span>
       </div>
-      <div v-if="isNodeConnected" class="item s-flex">
-        <div class="item__title s-flex">
-          <div class="item__label s-flex">
-            <span>{{ t('selectNodeConnected') }}</span>
-            <span>{{ node.chain }}</span>
-          </div>
-          <s-button class="item__action" size="small" type="secondary" @click="openNodeSelectionDialog">
-            {{ t('selectNodeText') }}
-          </s-button>
-        </div>
-        <div class="item__desc s-flex">
-          <span>{{ node.address }}</span>
-          <span v-if="formattedLocation">{{ formattedLocation }}</span>
-        </div>
-      </div>
+      <template #label>
+        <span>{{ t('selectNodeConnected') }}</span>
+        <span>{{ node.chain }}</span>
+      </template>
+      <template>
+        <span>{{ node.address }}</span>
+        <span v-if="formattedLocation">{{ formattedLocation }}</span>
+      </template>
     </footer-popper>
-    <footer-popper :status="internetConnectionClass">
+    <footer-popper
+      :status="internetConnectionClass"
+      :action-text="t('connection.action.refresh')"
+      @action="refreshPage"
+    >
       <div slot="reference" class="app-status__item internet" :class="internetConnectionClass">
         <s-icon name="wi-fi-16" size="16" />
         <span class="app-status__text">{{ internetConnectionText }}</span>
       </div>
-      <div class="item s-flex">
-        <div class="item__title s-flex">
-          <div class="item__label s-flex">
-            <span>{{ 'Your internet speed' }}</span>
-            <span>{{ internetConnectionSpeedMb + ' mbps' }}</span>
-          </div>
-          <s-button class="item__action" size="small" type="secondary" @click="refreshPage">
-            {{ t('connection.action.refresh') }}
-          </s-button>
-        </div>
-        <div class="item__desc s-flex">
-          <span>{{ internetConnectionDesc }}</span>
-        </div>
-      </div>
+      <template #label>
+        <span>{{ 'Your internet speed' }}</span>
+        <span>{{ internetConnectionSpeedMb + ' mbps' }}</span>
+      </template>
+      <template>
+        <span>{{ internetConnectionDesc }}</span>
+      </template>
     </footer-popper>
-    <footer-popper :status="subqueryConnectionClass">
+    <footer-popper :status="subqueryConnectionClass" :action-text="'Select services'" @action="refreshPage">
       <div slot="reference" class="app-status__item internet" :class="subqueryConnectionClass">
         <s-icon name="software-cloud-24" size="16" />
         <span class="app-status__text">{{ subqueryConnectionText }}</span>
       </div>
-      <div class="item s-flex">
-        <div class="item__title s-flex">
-          <div class="item__label s-flex">
-            <span>{{ 'LOL' }}</span>
-            <span>{{ 'lol' }}</span>
-          </div>
-          <s-button class="item__action" size="small" type="secondary" @click="refreshPage">
-            {{ 'Select services' }}
-          </s-button>
-        </div>
-        <div class="item__desc s-flex">
-          <span>{{ 'VERY LOL' }}</span>
-        </div>
-      </div>
+      <template #label>
+        <span>{{ 'LOL' }}</span>
+        <span>{{ 'lol' }}</span>
+      </template>
+      <template>
+        <span>{{ 'VERY LOL' }}</span>
+      </template>
     </footer-popper>
     <app-footer-no-internet-dialog />
   </div>
@@ -249,59 +232,6 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   }
 }
 </script>
-
-<style lang="scss">
-$status-classes: 'error', 'warning', 'success';
-
-.app-status__tooltip.el-popover.el-popper {
-  .item {
-    flex-direction: column;
-    &__title {
-      justify-content: space-between;
-    }
-    &__label {
-      flex-direction: column;
-      > :first-child {
-        font-weight: 300;
-        font-size: 12px;
-        line-height: 150%;
-      }
-      > :last-child {
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 150%;
-      }
-    }
-    &__desc {
-      flex-wrap: wrap;
-      margin-top: 8px;
-      > * {
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 150%;
-        padding: 6px;
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 8px;
-        margin-bottom: 8px;
-      }
-      > :first-child {
-        margin-right: 8px;
-      }
-    }
-    &__action {
-      box-shadow: none;
-      margin-left: 30px;
-    }
-  }
-  @each $status in $status-classes {
-    &.#{$status} {
-      .item__desc > * {
-        // background-color: var(--s-color-status-#{$status}-background);
-      }
-    }
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 // icons: globe-16 software-cloud-checked-24 software-cloud-24 notifications-alert-triangle-24 refresh-16
