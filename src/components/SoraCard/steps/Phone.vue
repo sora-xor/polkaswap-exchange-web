@@ -237,16 +237,12 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 
     this.authLogin
       .on('SendOtp-Success', () => {
-        console.log('SendOtp-Success');
-
         this.smsSent = true;
         this.$nextTick(() => {
           this.inputOtp.focus();
         });
       })
       .on('MinimalRegistrationReq', () => {
-        console.log('MinimalRegistrationReq');
-
         this.sendOtpBtnLoading = false;
 
         if (this.userApplied) {
@@ -273,8 +269,6 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
         this.sendOtpBtnLoading = false;
       })
       .on('Otp-Verification-Success', async () => {
-        console.log('Otp-Verification-Success PHONE.vue');
-
         await this.getUserStatus();
 
         if (!this.currentStatus) {
@@ -311,8 +305,6 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
         }
       })
       .on('Verification-Email-Sent-Success', () => {
-        console.log('Verification-Email-Sent-Success PHONE.vue');
-
         this.sendOtpBtnLoading = false;
 
         if (this.userApplied) {
