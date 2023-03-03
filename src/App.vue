@@ -503,7 +503,7 @@ ul ul {
   &__title {
     color: var(--s-color-theme-accent);
   }
-  a:not(:active) {
+  a {
     @include focus-outline;
   }
 }
@@ -679,6 +679,7 @@ $sora-logo-width: 173.7px;
   &__image {
     width: $sora-logo-width;
     height: $sora-logo-height;
+    @include focus-outline;
   }
 }
 </style>
