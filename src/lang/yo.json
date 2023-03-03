@@ -7,8 +7,6 @@
     "importText": "Gbe wọle",
     "settingsText": "Ètò",
     "addAssetText": "Ṣafikun dukia",
-    "createTokenText": "Ṣẹda token",
-    "comingSoonText": "Nbọ laipẹ",
     "successText": "Aṣeyọri",
     "warningText": "Ikilọ",
     "swapText": "Iŕopo",
@@ -19,7 +17,6 @@
     "sendText": "Firanṣẹ",
     "addressText": "Adirẹsi",
     "amountText": "Iye",
-    "confirmText": "Jẹrisi",
     "errorText": "Aṣiṣe",
     "insufficientBalanceText": "Iye {tokenSymbol} Oto",
     "unknownErrorText": "ASISE Nkankan ti ko to ti sele...",
@@ -105,14 +102,15 @@
         },
         "selectWallet": "Yan apamọwọ kan lati ṣiṣẹ pẹlu",
         "wallet": {
-            "install": "Fi sori ẹrọ"
+            "install": "Fi sori ẹrọ",
+            "connected": "Ti sopọ",
+            "notConnected": "Ko ti sopọ"
         }
     },
     "wallet": {
         "title": "Ifowosi {Sora} Nẹtiwọọki",
         "WalletAssets": "Awọn dukia",
         "WalletActivity": "Iṣẹ iṣe",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -127,18 +125,21 @@
         "enterAmount": "Tẹ iye sii",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Jẹrisi idunadura",
-        "confirm": "@:confirmText",
         "errorAddress": "Adirẹsi ti ko wulo. Jọwọ ṣayẹwo rẹ ki o tun gbiyanju.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Fi awọn tokini ranṣẹ laarin awọn iroyin nẹtiwọọki {Sora}",
         "addressWarning": "Awọn ami-tokini yoo firanṣẹ si adirẹsi {Sora} ni isalẹ. Rii daju pe olugba le wọle si ẹwọn {Sora} lati lo awọn tokini:",
-        "addressError": "O ko le fi awọn tokini ranṣẹ si akọọlẹ kanna ti o sopọ si lọwọlọwọ."
+        "addressError": "O ko le fi awọn tokini ranṣẹ si akọọlẹ kanna ti o sopọ si lọwọlọwọ.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Ti daakọ adirẹsi apamọwọ si agekuru naa",
         "copy": "Da Adirẹsi ko",
         "switch": "Yi Ifowosi pada",
-        "walletAddress": "Adirẹsi apamọwọ"
+        "walletAddress": "Adirẹsi apamọwọ",
+        "delete": "Pa akọọlẹ rẹ kuro",
+        "rename": "Fun lorukọ mii iroyin",
+        "export": "okeere .json"
     },
     "history": {
         "clearHistory": "Nu itan kuro",
@@ -152,7 +153,6 @@
     },
     "assets": {
         "empty": "Ko si dukia kankan",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -179,8 +179,6 @@
         "receive": "Gba {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "A fi dukia {symbol} kun ni aṣeyọri!",
         "empty": "No tokini found",
         "alreadyAttached": "Tokini yii ti ni asopọ tẹlẹ",
@@ -198,13 +196,10 @@
         "searchInputText": "Wa nipasẹ ID Dukia, Orukọ tabi Aami Tika"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Ṣẹda ki o ran awọn dukia atowunwa lori {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Tẹ aami token sii",
         "enterName": "Tẹ orukọ token sii",
         "enterSupply": "Tẹ ipese token sii",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Iṣowo ti a fi silẹ",
             "desc": "Ṣẹda {symbol} tokini"
@@ -230,10 +225,6 @@
             "placeholder": "Ipese Extensible",
             "desc": "Agbara lati mint awọn token diẹ sii."
         },
-        "titleCommon": "Ṣẹda",
-        "confirmTokenTitleCommon": "Ṣẹda Tokini",
-        "confirmTokenTitleNFT": "Ṣẹda NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Pese akoonu",
         "selectLocalFile": "Yan faili agbegbe",
         "CreateSimpleToken": "Àmi",
@@ -267,7 +258,14 @@
         "divisible": {
             "placeholder": "Pinpin",
             "desc": "Agbara NFT lati pin si awọn apakan ida. Ipese olomi nikan ṣiṣẹ pẹlu awọn ohun-ini pinpin"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Ṣẹda",
+        "confirmTokenTitleCommon": "Ṣẹda Tokini",
+        "confirmTokenTitleNFT": "Ṣẹda NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Awọn alaye iṣowo",
@@ -293,11 +291,8 @@
             "submitted": "Iṣowo ti a fi silẹ pẹlu owo ti {fee} {symbol}",
             "confirmed": "Iṣowo ti a ti gba"
         },
-        "viewIn": {
-            "sorascan": "Wo ni SORAScan",
-            "subscan": "Wo ni Subscan"
-        },
         "txId": "Id Idunadura",
+        "viewIn": "Wo ni {explorer}",
         "referrer": "Atọkasi",
         "referral": "Ifiranṣẹ"
     },
@@ -333,7 +328,6 @@
         "AddLiquidity": "Fi liquidity si",
         "AddLiquidityId": "Fi liquidity si",
         "RemoveLiquidity": "Yọ liquidity kuro",
-        "PageNotFound": "A o ri ojuwe",
         "Rewards": "Ere",
         "Explore\/Tokens": "Awọn ami-ami",
         "Explore\/Pools": "Pools",
@@ -433,26 +427,7 @@
         "from": "Lati",
         "to": "Si"
     },
-    "pageNotFound": {
-        "title": "A o ri ojuwe",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Agbara Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -502,8 +477,8 @@
         "price": "Iye",
         "transactionSubmitted": "Iṣowo ti a fi silẹ",
         "transactionMessage": "{firstToken} ati {secondToken}",
-        "confirm": "Jẹrisi",
-        "ok": "O DARA"
+        "ok": "O DARA",
+        "confirm": "Jẹrisi"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +529,6 @@
         "connectWallets": "So awọn woleti pọ lati wo itan iṣowo kọọkan.",
         "soraNetworkFee": "{Sora} Owo Nẹtiwọọki",
         "ethereumNetworkFee": "{Ethereum} Owo Nẹtiwọọki",
-        "tooltipValue": "@:comingSoonText",
         "total": "Lapapọ",
         "viewHistory": "Wo awọn itan-iṣowo",
         "transactionSubmitted": "Iṣowo ti a fi silẹ",
@@ -562,11 +536,10 @@
         "notRegisteredAsset": "Dukia {assetSymbol} ko forukọsilẹ",
         "selectNetwork": "Yan nẹtiwọọki",
         "networkInfo": "Safara {Sora} Nẹtiwọọki pẹlu:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Daakọ adirẹsi nẹtiwọki",
         "soraAddress": "{Sora} adirẹsi",
-        "ethereumAddress": "{Ethereum} adirẹsi"
+        "ethereumAddress": "{Ethereum} adirẹsi",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Yan Tokini kan",
@@ -618,7 +591,6 @@
             "done": "Pari",
             "waitingForConfirmation": "Nduro fun idaniloju..."
         },
-        "viewInEtherscan": "Wo ni {Etherscan}",
         "networkTitle": "idunadura {network}",
         "transactionHash": "Ami Iṣowo",
         "networkInfo": {
@@ -717,7 +689,7 @@
         "outputMessage": "Ti ṣe iṣiro iṣẹjade. Ti idiyele ba yipada diẹ sii ju {slippageTolerance} % iṣowo rẹ yoo pada.",
         "confirmTitle": "Iwo yoo gba",
         "shareOfPool": "Pinpin pool lẹhin idunadura",
-        "locked": "{percent} ti adagun-omi rẹ wa ni idiyele"
+        "locked": "{percent} ti adagun-omi rẹ wa ni {lock}"
     },
     "dexSettings": {
         "title": "Ètò",
@@ -932,7 +904,6 @@
         "bondTitle": "Dipọ XOR",
         "unbondTitle": "Yọ XOR kuro",
         "confirm": {
-            "text": "Jẹrisi",
             "bond": "Jẹrisi dipọ",
             "unbond": "Jẹrisi yiyọ kuro",
             "inviteTitle": "O ti pe ọ si {AppName} nipasẹ itọkasi kan",
@@ -941,7 +912,8 @@
             "freeOfCharge": "Iṣe yii jẹ ọfẹ",
             "hasReferrerTitle": "O ti ṣeto olutọka rẹ tẹlẹ",
             "hasReferrerDescription": "Laanu, o le ṣeto ọkan nikan",
-            "ok": "O DARA"
+            "ok": "O DARA",
+            "text": "Jẹrisi"
         },
         "referrer": {
             "title": "Ṣafikun olutọka rẹ",
@@ -958,7 +930,6 @@
         "insufficientBondedAmount": "Lati pe awọn itọka si diẹ sii, di o kere ju {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Idunadura Awọn alaye",
-    "createTokenTextNFT": "Ṣẹda NFT",
     "code": {
         "download": "Ṣe igbasilẹ koodu QR",
         "upload": "Ṣayẹwo QR",
@@ -1130,7 +1101,9 @@
             "mnemonic": "Bip39 mnemonic ti ko tọ ni pato",
             "mnemonicLength": "Mnemonic yẹ ki o ni awọn ọrọ {number} ninu",
             "jsonFields": "Faili JSON ko ni awọn aaye ti a beere"
-        }
+        },
+        "assetsAtRiskText": "Awọn dukia ni ewu!",
+        "deleteAccountText": "Akoto ko le gba pada laisi gbolohun ọrọ irugbin, faili .json tabi ti o ba wa ni ipamọ ni diẹ ninu itẹsiwaju. O yoo wa ni ibuwolu jade."
     },
     "hashiBridgeText": "{Hashi} Afara",
     "disclaimerTitle": "Akiyesi:",
@@ -1140,5 +1113,11 @@
     "tooltips": {
         "roi": "{ROI} duro fun Pada lori Idoko-owo. O ṣe iṣiro nipasẹ pinpin èrè ti o jo'gun lori idoko-owo nipasẹ idiyele ti idoko-owo yẹn ni deede ogorun kan.",
         "tvl": "{TVL} duro fun Titiipa Iye Lapapọ. O duro fun awọn ami titiipa ninu awọn adagun-odo ni deede dola."
-    }
+    },
+    "createTokenText": "Ṣẹda token",
+    "comingSoonText": "Nbọ laipẹ",
+    "confirmText": "Jẹrisi",
+    "createTokenTextNFT": "Ṣẹda NFT",
+    "doNotShowText": "Maṣe fi eyi han mi lẹẹkansi",
+    "accountText": "iroyin | awọn iroyin"
 }

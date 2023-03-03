@@ -1,6 +1,7 @@
 import { defineMutations } from 'direct-vuex';
 import type { Subscription } from 'rxjs';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { AccountLockedPool } from '@sora-substrate/util/build/ceresLiquidityLocker/types';
 import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import type { PoolState } from './types';
@@ -25,6 +26,16 @@ const mutations = defineMutations<PoolState>()({
   },
   resetAccountLiquidity(state): void {
     state.accountLiquidity = [];
+  },
+  setAccountLockedLiquidity(state, lockedLiquidity: AccountLockedPool[]): void {
+    state.accountLockedLiquidity = Object.freeze([...lockedLiquidity]); // update vuex state by creating new copy of array
+  },
+  setAccountLockedLiquidityUpdates(state, subscription: Subscription): void {
+    state.accountLockedLiquiditySubscription = subscription;
+  },
+  resetAccountLockedLiquidityUpdates(state): void {
+    state.accountLockedLiquiditySubscription?.unsubscribe();
+    state.accountLockedLiquiditySubscription = null;
   },
   setPoolApyObject(state, object: PoolApyObject): void {
     state.poolApyObject = object;

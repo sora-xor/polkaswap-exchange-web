@@ -24,11 +24,11 @@ async function updateNetworkChainGenesisHash(context: ActionContext<any, any>): 
   }
 }
 
-async function closeConnectionWithInfo(isConnected?: boolean) {
+async function closeConnectionWithInfo() {
   const { endpoint: currentEndpoint, opened } = connection;
 
   if (currentEndpoint && opened) {
-    await connection.close(isConnected);
+    await connection.close();
     console.info('Disconnected from node', currentEndpoint);
   }
 }
@@ -86,12 +86,23 @@ const actions = defineActions({
     };
     const isReconnection = !connectionOpenOptions.once;
     const connectingNodeChanged = () => endpoint !== state.nodeAddressConnecting;
+
     const connectionOnDisconnected = async () => {
-      await closeConnectionWithInfo(false);
+      await closeConnectionWithInfo();
       if (typeof onDisconnect === 'function') {
         onDisconnect(node as Node);
       }
-      dispatch.connectToNode({ node, onError, onDisconnect, onReconnect, connectionOptions: { once: false } });
+      dispatch.connectToNode({
+        node,
+        onError,
+        onDisconnect,
+        onReconnect,
+        connectionOptions: { ...connectionOpenOptions, once: false },
+      });
+    };
+
+    const connectionOnReady = () => {
+      connection.addEventListener('disconnected', connectionOnDisconnected);
     };
 
     try {
@@ -106,7 +117,7 @@ const actions = defineActions({
 
       await connection.open(endpoint, {
         ...connectionOpenOptions,
-        eventListeners: [['disconnected', connectionOnDisconnected]],
+        eventListeners: [['ready', connectionOnReady]],
       });
 
       if (connectingNodeChanged()) return;

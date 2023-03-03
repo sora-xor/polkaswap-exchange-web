@@ -7,8 +7,6 @@
     "importText": "Import",
     "settingsText": "Pengaturan",
     "addAssetText": "Tambahkan aset",
-    "createTokenText": "Buat token",
-    "comingSoonText": "Segera Hadir",
     "successText": "Sukses",
     "warningText": "Peringatan",
     "swapText": "Swap",
@@ -19,7 +17,6 @@
     "sendText": "Kirim",
     "addressText": "Alamat",
     "amountText": "Jumlah",
-    "confirmText": "Konfirmasi",
     "errorText": "Error",
     "insufficientBalanceText": "Saldo {tokenSymbol} tidak mencukupi",
     "unknownErrorText": "ERROR Terjadi kesalahan...",
@@ -105,14 +102,15 @@
         },
         "selectWallet": "Pilih dompet untuk digunakan",
         "wallet": {
-            "install": "Install"
+            "install": "Install",
+            "connected": "Terhubung",
+            "notConnected": "Tidak terhubung"
         }
     },
     "wallet": {
         "title": "Akun Jaringan {Sora}",
         "WalletAssets": "Aset",
         "WalletActivity": "Aktivitas",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -127,18 +125,21 @@
         "enterAmount": "Masukkan jumlah",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Konfirmasi transaksi",
-        "confirm": "@:confirmText",
         "errorAddress": "Alamat tidak valid. Silakan periksa dan coba lagi.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Kirim token antar akun jaringan {Sora}",
         "addressWarning": "Token akan dikirim ke alamat {Sora} di bawah ini. Pastikan penerima dapat mengakses rantai {Sora} untuk menggunakan token:",
-        "addressError": "Anda tidak dapat mengirim token ke akun yang sama dengan yang saat ini terhubung dengan Anda."
+        "addressError": "Anda tidak dapat mengirim token ke akun yang sama dengan yang saat ini terhubung dengan Anda.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Alamat dompet disalin ke clipboard",
         "copy": "Salin alamat",
         "switch": "Ganti akun",
-        "walletAddress": "Alamat dompet"
+        "walletAddress": "Alamat dompet",
+        "delete": "Hapus akun",
+        "rename": "Ganti nama akun",
+        "export": "Ekspor .json"
     },
     "history": {
         "clearHistory": "Bersihkan riwayat",
@@ -152,7 +153,6 @@
     },
     "assets": {
         "empty": "Tidak ada aset",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -179,8 +179,6 @@
         "receive": "Terima {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Aset {symbol} berhasil ditambahkan!",
         "empty": "Tidak ada token yang ditemukan",
         "alreadyAttached": "Token sudah terlampir",
@@ -198,13 +196,10 @@
         "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Buat dan terapkan kostum aset di {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Masukkan simbol token",
         "enterName": "Masukkan nama token",
         "enterSupply": "Masukkan suplai token",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Transaksi dikirim",
             "desc": "Buat token {symbol}"
@@ -230,10 +225,6 @@
             "placeholder": "Suplai yang dapat diperluas",
             "desc": "Kemampuan untuk mencetak lebih banyak token."
         },
-        "titleCommon": "Membuat",
-        "confirmTokenTitleCommon": "Buat Token",
-        "confirmTokenTitleNFT": "Buat NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Menyediakan konten",
         "selectLocalFile": "Pilih file lokal",
         "CreateSimpleToken": "Token",
@@ -267,7 +258,14 @@
         "divisible": {
             "placeholder": "Terbagi",
             "desc": "Kemampuan NFT untuk membagi menjadi bagian-bagian pecahan. Penyediaan likuiditas hanya berfungsi dengan aset yang dapat dibagi"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Membuat",
+        "confirmTokenTitleCommon": "Buat Token",
+        "confirmTokenTitleNFT": "Buat NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Rincian transaksi",
@@ -293,11 +291,8 @@
             "submitted": "Transaksi diajukan dengan biaya {fee} {symbol}",
             "confirmed": "Transaksi dikonfirmasi"
         },
-        "viewIn": {
-            "sorascan": "Lihat di Sorascan",
-            "subscan": "Lihat di Subscan"
-        },
         "txId": "Id transaksi",
+        "viewIn": "Lihat di {explorer}",
         "referrer": "Perujuk",
         "referral": "Rujukan"
     },
@@ -333,7 +328,6 @@
         "AddLiquidity": "Tambah Likuiditas",
         "AddLiquidityId": "Tambah Likuiditas",
         "RemoveLiquidity": "Hapus Likuiditas",
-        "PageNotFound": "Halaman Tidak Ditemukan",
         "Rewards": "Hadiah",
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "Kolam",
@@ -433,26 +427,7 @@
         "from": "Dari",
         "to": "Untuk"
     },
-    "pageNotFound": {
-        "title": "Halaman tidak ditemukan",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Testnet Volta",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -502,8 +477,8 @@
         "price": "Harga",
         "transactionSubmitted": "Transaksi dikirim",
         "transactionMessage": "{firstToken} dan {secondToken}",
-        "confirm": "Konfirmasi",
-        "ok": "Oke"
+        "ok": "Oke",
+        "confirm": "Konfirmasi"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +529,6 @@
         "connectWallets": "Hubungkan dompet untuk melihat riwayat masing-masing transaksi.",
         "soraNetworkFee": "Biaya Jaringan {Sora}",
         "ethereumNetworkFee": "Biaya Jaringan {Ethereum}",
-        "tooltipValue": "@:comingSoonText",
         "total": "Total",
         "viewHistory": "Lihat riwayat transaksi",
         "transactionSubmitted": "Transaksi dikirim",
@@ -562,11 +536,10 @@
         "notRegisteredAsset": "Aset {assetSymbol} tidak terdaftar",
         "selectNetwork": "Pilih jaringan",
         "networkInfo": "Bridge Jaringan {Sora} dengan:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Salin alamat jaringan",
         "soraAddress": "{Sora} alamat",
-        "ethereumAddress": "{Ethereum} alamat"
+        "ethereumAddress": "{Ethereum} alamat",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",
@@ -618,7 +591,6 @@
             "done": "Berhasil",
             "waitingForConfirmation": "Menunggu konfirmasi..."
         },
-        "viewInEtherscan": "Lihat di {Etherscan}",
         "networkTitle": "Transaksi {network}",
         "transactionHash": "Hash transaksi",
         "networkInfo": {
@@ -717,7 +689,7 @@
         "outputMessage": "Output merupakan estimasi. Jika harga berubah lebih dari {slippageTolerance}% transaksi Anda akan dikembalikan.",
         "confirmTitle": "Anda akan menerima",
         "shareOfPool": "Pembagian pool setelah transaksi",
-        "locked": "{percent} dari kolam Anda sedang dipertaruhkan"
+        "locked": "{percent} dari kolam Anda sedang {lock}"
     },
     "dexSettings": {
         "title": "Pengaturan",
@@ -932,7 +904,6 @@
         "bondTitle": "Ikatan XOR",
         "unbondTitle": "Lepaskan ikatan XOR",
         "confirm": {
-            "text": "Konfirmasi",
             "bond": "Konfirmasi ikatan",
             "unbond": "Konfirmasi pelepasan ikatan",
             "inviteTitle": "Anda telah diundang ke {AppName}",
@@ -941,7 +912,8 @@
             "freeOfCharge": "Tindakan ini tidak dipungut biaya",
             "hasReferrerTitle": "Anda telah menetapkan perujuk Anda",
             "hasReferrerDescription": "Sayangnya, Anda hanya dapat mengatur satu",
-            "ok": "Oke"
+            "ok": "Oke",
+            "text": "Konfirmasi"
         },
         "referrer": {
             "title": "Tambahkan pengarah Anda",
@@ -958,7 +930,6 @@
         "insufficientBondedAmount": "Untuk mengundang lebih banyak rujukan, beri ikatan setidaknya {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Detil transaksi",
-    "createTokenTextNFT": "Buat NFT",
     "code": {
         "download": "Unduh Kode QR",
         "upload": "Pindai QR",
@@ -1130,7 +1101,9 @@
             "mnemonic": "Mnemonic bip39 yang ditentukan tidak valid",
             "mnemonicLength": "Mnemonic harus berisi {number} kata",
             "jsonFields": "File JSON tidak memiliki bidang yang wajib diisi"
-        }
+        },
+        "assetsAtRiskText": "Aset berisiko!",
+        "deleteAccountText": "Akun tidak dapat dipulihkan tanpa seed frase, file .json atau jika disimpan dalam beberapa ekstensi. Anda akan keluar."
     },
     "hashiBridgeText": "Jembatan {Hashi}",
     "disclaimerTitle": "Penafian:",
@@ -1140,5 +1113,11 @@
     "tooltips": {
         "roi": "{ROI} adalah singkatan dari Pengembalian Investasi. Ini dihitung dengan membagi laba yang diperoleh dari investasi dengan biaya investasi itu dalam persentase yang setara.",
         "tvl": "{TVL} adalah singkatan dari Total Value Locked. Ini mewakili token yang dikunci di kumpulan dalam setara dolar."
-    }
+    },
+    "createTokenText": "Buat token",
+    "comingSoonText": "Segera Hadir",
+    "confirmText": "Konfirmasi",
+    "createTokenTextNFT": "Buat NFT",
+    "doNotShowText": "Jangan tunjukkan ini lagi",
+    "accountText": "akun | akun"
 }

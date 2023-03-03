@@ -7,8 +7,6 @@
     "importText": "Importieren",
     "settingsText": "Einstellungen",
     "addAssetText": "Asset hinzufügen",
-    "createTokenText": "Erstellen",
-    "comingSoonText": "Demnächst verfügbar",
     "successText": "Erfolgreich abgelaufen",
     "warningText": "Warnung",
     "swapText": "Tauschen",
@@ -19,7 +17,6 @@
     "sendText": "Senden",
     "addressText": "Adresse",
     "amountText": "Betrag",
-    "confirmText": "Bestätigen",
     "errorText": "Fehler",
     "insufficientBalanceText": "Unzureichender {tokenSymbol} Saldo",
     "unknownErrorText": "FEHLER! Etwas ist schiefgelaufen...",
@@ -105,14 +102,15 @@
         },
         "selectWallet": "Wähle eine Wallet zum Arbeiten aus",
         "wallet": {
-            "install": "Installieren"
+            "install": "Installieren",
+            "connected": "In Verbindung gebracht",
+            "notConnected": "Nicht verbunden"
         }
     },
     "wallet": {
         "title": "{Sora}-Netzwerk-Konto",
         "WalletAssets": "Assets",
         "WalletActivity": "Aktivität",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -127,18 +125,21 @@
         "enterAmount": "Betrag eingeben",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Bestätige die Transaktion",
-        "confirm": "@:confirmText",
         "errorAddress": "Ungültige Adresse. Bitte, überprüfe die Adresse und versuche es erneut.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Sende Token zwischen {Sora}-Netzwerkkonten",
         "addressWarning": "Token werden an die unten angegebene {Sora}-Adresse gesendet. Stell bitte sicher, dass der Empfänger auf die {Sora}-Chain zugreifen kann, um die Token zu verwenden:",
-        "addressError": "Du kannst keine Token an dasselbe Konto senden, mit dem du derzeit verbunden bist."
+        "addressError": "Du kannst keine Token an dasselbe Konto senden, mit dem du derzeit verbunden bist.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Wallet Adresse wurde in die Zwischenablage kopiert",
         "copy": "Adresse kopieren",
         "switch": "Konto wechseln",
-        "walletAddress": "Wallet-Adresse"
+        "walletAddress": "Wallet-Adresse",
+        "delete": "Konto löschen",
+        "rename": "Bennene den Account um",
+        "export": "Exportieren Sie .json"
     },
     "history": {
         "clearHistory": "Verlauf löschen",
@@ -152,7 +153,6 @@
     },
     "assets": {
         "empty": "Keine Assets vorhanden",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -179,8 +179,6 @@
         "receive": "Erhalte {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Asset {symbol} wurde erfolgreich hinzugefügt!",
         "empty": "Keine Token gefunden",
         "alreadyAttached": "Der Token wurde schon hinzugefügt",
@@ -198,13 +196,10 @@
         "searchInputText": "Suche nach Asset-ID, Name oder Tickersymbol"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Erstelle und nutze benutzerdefinierte Assets auf {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Token-Symbol eingeben",
         "enterName": "Token-Name eingeben",
         "enterSupply": "Token-Vorrat eingeben",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Transaktion übermittelt",
             "desc": "Erstelle {symbol} Token"
@@ -230,10 +225,6 @@
             "placeholder": "Erweiterbarer Vorrat",
             "desc": "Fähigkeit, mehr Token zu minten."
         },
-        "titleCommon": "Erstellen",
-        "confirmTokenTitleCommon": "Token erstellen",
-        "confirmTokenTitleNFT": "NFT erstellen",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Inhalt bereitstellen",
         "selectLocalFile": "Lokale Datei auswählen",
         "CreateSimpleToken": "Token",
@@ -267,7 +258,14 @@
         "divisible": {
             "placeholder": "Teilbar",
             "desc": "Fähigkeit von NFT, in Bruchteile zu unterteilen. Liquiditätsbereitstellung funktioniert nur mit teilbaren Assets"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Erstellen",
+        "confirmTokenTitleCommon": "Token erstellen",
+        "confirmTokenTitleNFT": "NFT erstellen",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Transaktionsdetails",
@@ -293,11 +291,8 @@
             "submitted": "Transaktion mit einer Gebühr von {fee} {symbol} übermittelt",
             "confirmed": "Transaktion bestätigt"
         },
-        "viewIn": {
-            "sorascan": "Auf SORAScan ansehen",
-            "subscan": "Auf Subscan ansehen"
-        },
         "txId": "Transaktions-ID",
+        "viewIn": "Auf {explorer} ansehen",
         "referrer": "Referrer",
         "referral": "Referral"
     },
@@ -333,7 +328,6 @@
         "AddLiquidity": "Liquidität hinzufügen",
         "AddLiquidityId": "Liquidität hinzufügen",
         "RemoveLiquidity": "Liquidität entfernen",
-        "PageNotFound": "Seite nicht gefunden",
         "Rewards": "Belohnungen",
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "Toto",
@@ -433,26 +427,7 @@
         "from": "Von",
         "to": "An"
     },
-    "pageNotFound": {
-        "title": "Seite nicht gefunden",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -502,8 +477,8 @@
         "price": "Preis",
         "transactionSubmitted": "Transaktion übermittelt",
         "transactionMessage": "{firstToken} und {secondToken}",
-        "confirm": "Bestätigen",
-        "ok": "OK"
+        "ok": "OK",
+        "confirm": "Bestätigen"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +529,6 @@
         "connectWallets": "Verbinde Wallets, um den jeweiligen Transaktionsverlauf anzuzeigen.",
         "soraNetworkFee": "{Sora} Netzwerkgebühr",
         "ethereumNetworkFee": "{Ethereum} Netzwerkgebühr",
-        "tooltipValue": "@:comingSoonText",
         "total": "Gesamt",
         "viewHistory": "Transaktionsverlauf anzeigen",
         "transactionSubmitted": "Transaktion übermittelt",
@@ -562,11 +536,10 @@
         "notRegisteredAsset": "Asset {assetSymbol} ist nicht registriert",
         "selectNetwork": "Netzwerk auswählen",
         "networkInfo": "Bridge {Sora} Netzwerk mit:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Netzwerkadresse kopieren",
         "soraAddress": "{Sora} Adresse",
-        "ethereumAddress": "{Ethereum} Adresse"
+        "ethereumAddress": "{Ethereum} Adresse",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Wähle ein Token",
@@ -618,7 +591,6 @@
             "done": "Erfolgreich",
             "waitingForConfirmation": "Warten auf Bestätigung..."
         },
-        "viewInEtherscan": "Auf {Etherscan} anzeigen",
         "networkTitle": "{network} Transaktion",
         "transactionHash": "Transaktions-ID",
         "networkInfo": {
@@ -717,7 +689,7 @@
         "outputMessage": "Die Ausgabe ist geschätzt. Wenn sich der Preis um mehr als {slippageTolerance}% ändert, wird die Transaktion rückgängig gemacht.",
         "confirmTitle": "Du erhältst",
         "shareOfPool": "Anteil am Pool nach der Transaktion",
-        "locked": "{percent} deines Pools befinden sich im Staking"
+        "locked": "{percent} deines Pools befinden sich im {lock}"
     },
     "dexSettings": {
         "title": "Einstellungen",
@@ -932,7 +904,6 @@
         "bondTitle": "XOR bonden",
         "unbondTitle": "XOR unbonden",
         "confirm": {
-            "text": "Bestätigen",
             "bond": "Bonden bestätigen",
             "unbond": "Unbonden bestätigen",
             "inviteTitle": "Du wurdest zu {AppName} eingeladen",
@@ -941,7 +912,8 @@
             "freeOfCharge": "Diese Aktion ist kostenfrei",
             "hasReferrerTitle": "Du hast deinen Referrer bereits festgelegt",
             "hasReferrerDescription": "Du kannst leider nur einen festlegen",
-            "ok": "OK"
+            "ok": "OK",
+            "text": "Bestätigen"
         },
         "referrer": {
             "title": "Fügen deinen Referrer hinzu",
@@ -958,7 +930,6 @@
         "insufficientBondedAmount": "Um weitere Empfehlungen zu veschicken, bonde mindestens {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaktionsdetails",
-    "createTokenTextNFT": "NFT erstellen",
     "code": {
         "download": "QR-Code herunterladen",
         "upload": "QR scannen",
@@ -1130,7 +1101,9 @@
             "mnemonic": "Ungültige bip39-Mnemonik angegeben",
             "mnemonicLength": "Mnemonik sollte {number} Wörter enthalten",
             "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder"
-        }
+        },
+        "assetsAtRiskText": "Vermögen in Gefahr!",
+        "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet."
     },
     "hashiBridgeText": "{Hashi} Brücke",
     "disclaimerTitle": "Haftungsausschluss:",
@@ -1140,5 +1113,11 @@
     "tooltips": {
         "roi": "{ROI} steht für Return on Investment. Es wird berechnet, indem der mit einer Investition erzielte Gewinn durch die Kosten dieser Investition in einem prozentualen Äquivalent dividiert wird.",
         "tvl": "{TVL} steht für Total Value Locked. Es stellt Token dar, die in den Pools im Dollaräquivalent gesperrt sind."
-    }
+    },
+    "createTokenText": "Erstellen",
+    "comingSoonText": "Demnächst verfügbar",
+    "confirmText": "Bestätigen",
+    "createTokenTextNFT": "NFT erstellen",
+    "doNotShowText": "Zeig mir das nicht noch einmal",
+    "accountText": "Konto | Konten"
 }

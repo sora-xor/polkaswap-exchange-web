@@ -1,122 +1,99 @@
 <template>
   <div>
-    <div v-loading="loading" v-if="loading" class="loading-page container"></div>
-    <sora-card-intro v-if="step === Step.Intro" @confirm-apply="confirmApply" />
-    <sora-card-kyc v-else-if="step === Step.KYC" @go-to-intro="openIntro" />
+    <confirmation-info v-loading="loading" v-if="step === Step.ConfirmationInfo" />
+    <sora-card-intro v-else-if="step === Step.StartPage" @confirm-apply="confirmApply" />
+    <sora-card-kyc v-else-if="step === Step.KYC" @go-to-start="openStartPage" :userApplied="userApplied" />
   </div>
 </template>
 
 <script lang="ts">
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import { action } from '@/store/decorators';
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
 
-import { Component, Mixins } from 'vue-property-decorator';
+import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
+import { action, getter } from '@/store/decorators';
+import { goTo, lazyComponent } from '@/router';
+import { Components, PageNames } from '@/consts';
+import type { VerificationStatus } from '@/types/card';
 
 enum Step {
-  Intro = 'Intro',
+  StartPage = 'StartPage',
   KYC = 'KYC',
+  ConfirmationInfo = 'ConfirmationInfo',
 }
 
 @Component({
   components: {
     SoraCardIntro: lazyComponent(Components.SoraCardIntroPage),
     SoraCardKyc: lazyComponent(Components.SoraCardKYC),
+    ConfirmationInfo: lazyComponent(Components.ConfirmationInfo),
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
-  @action.pool.subscribeOnAccountLiquidityList private subscribeOnAccountLiquidityList!: AsyncFnWithoutArgs;
-  @action.pool.subscribeOnAccountLiquidityUpdates private subscribeOnAccountLiquidityUpdates!: AsyncFnWithoutArgs;
+  @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
+  @getter.settings.soraCardEnabled private soraCardEnabled!: Nullable<boolean>;
+
+  @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
   @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncFnWithoutArgs;
-  @action.pool.unsubscribeAccountLiquidityListAndUpdates private unsubscribeLPUpdates!: AsyncFnWithoutArgs;
 
-  step: Step = Step.Intro;
-  isUserPassedKyc = false;
+  step: Nullable<Step> = null;
+  userApplied = false;
 
   Step = Step;
 
-  confirmApply(): void {
+  @Watch('soraCardEnabled', { immediate: true })
+  private checkAvailability(value: Nullable<boolean>): void {
+    if (value === false) {
+      goTo(PageNames.Swap);
+    }
+  }
+
+  confirmApply(userApplied: boolean): void {
+    this.userApplied = userApplied;
     this.step = Step.KYC;
   }
 
-  openIntro(): void {
-    this.step = Step.Intro;
-  }
-
-  async created(): Promise<void> {
-    if (this.isUserPassedKyc) {
-      this.step = Step.KYC;
+  openStartPage(withoutCheck: boolean): void {
+    if (withoutCheck) {
+      this.step = Step.ConfirmationInfo;
+      return;
     }
 
-    this.setStartSubscriptions([
-      this.subscribeOnAccountLiquidityList,
-      this.subscribeOnAccountLiquidityUpdates,
-      this.subscribeToTotalXorBalance,
-    ]);
-    this.setResetSubscriptions([this.unsubscribeFromTotalXorBalance, this.unsubscribeLPUpdates]);
+    this.checkKyc();
+  }
+
+  async checkKyc(): Promise<void> {
+    await this.getUserStatus();
+
+    if (this.currentStatus) {
+      this.step = Step.ConfirmationInfo;
+    } else {
+      this.step = Step.StartPage;
+    }
+  }
+
+  created(): void {
+    this.subscribeToTotalXorBalance();
   }
 
   async beforeDestroy(): Promise<void> {
     await this.unsubscribeFromTotalXorBalance();
   }
+
+  mounted(): void {
+    this.checkKyc();
+  }
 }
 </script>
 
 <style lang="scss">
-$color: #ee2233;
-
-.sora-card__loader {
-  height: 619px;
-  position: absolute;
-  margin-top: 15px;
-}
-
-.sora-card__btn {
-  margin-top: 24px;
-  width: 100%;
-  background-color: $color !important;
+.el-button.neumorphic.s-primary.sora-card__btn {
+  margin-top: var(--s-size-mini);
 
   span.text {
     font-variation-settings: 'wght' 700 !important;
     font-size: 19px;
-    color: #fff;
   }
-}
-.is-loading {
-  span.text {
-    color: transparent !important;
-  }
-}
-
-.sora-card__no-spam {
-  text-align: center;
-  color: var(--s-color-base-content-secondary);
-  margin-bottom: 8px;
-}
-
-.sora-card__input-description {
-  color: var(--s-color-base-content-primary);
-  font-size: var(--s-font-size-extra-small);
-  font-weight: 300;
-  line-height: var(--s-line-height-base);
-  padding: var(--s-basic-spacing) calc(var(--s-basic-spacing) * 1.5) calc(var(--s-basic-spacing) * 2);
-}
-
-[design-system-theme='light'] {
-  .sora-card {
-    &__intro-name {
-      color: #ee2233 !important;
-    }
-  }
-}
-
-.loading-page {
-  position: absolute;
-  height: 618px;
-  width: 470px;
-  margin-top: -18px;
 }
 </style>

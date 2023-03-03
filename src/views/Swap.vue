@@ -91,7 +91,7 @@
         data-test-name="confirmSwap"
         type="primary"
         :disabled="isConfirmSwapDisabled"
-        :loading="isSelectAssetLoading"
+        :loading="loading || isSelectAssetLoading"
         @click="handleConfirmSwap"
       >
         <template v-if="!areTokensSelected">
@@ -402,7 +402,7 @@ export default class Swap extends Mixins(
     this.setToValue('');
   }
 
-  handleInputFieldFrom(value: string, recount = true): void {
+  handleInputFieldFrom(value: string): void {
     if (!this.areTokensSelected || asZeroValue(value)) {
       this.resetFieldTo();
     }
@@ -411,12 +411,10 @@ export default class Swap extends Mixins(
 
     this.setFromValue(value);
 
-    if (recount) {
-      this.recountSwapValues();
-    }
+    this.recountSwapValues();
   }
 
-  handleInputFieldTo(value: string, recount = true): void {
+  handleInputFieldTo(value: string): void {
     if (!this.areTokensSelected || asZeroValue(value)) {
       this.resetFieldFrom();
     }
@@ -425,9 +423,7 @@ export default class Swap extends Mixins(
 
     this.setToValue(value);
 
-    if (recount) {
-      this.recountSwapValues();
-    }
+    this.recountSwapValues();
   }
 
   private runRecountSwapValues(): void {
@@ -477,7 +473,7 @@ export default class Swap extends Mixins(
       this.setAmountWithoutImpact(amountWithoutImpact as string);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
-      this.setPath(path);
+      this.setPath(path as string[]);
       this.selectDexId(bestDexId);
     } catch (error: any) {
       console.error(error);
@@ -508,6 +504,8 @@ export default class Swap extends Mixins(
 
     if (!this.areTokensSelected) return;
 
+    this.loading = true;
+
     this.liquidityReservesSubscription = api.swap
       .subscribeOnAllDexesReserves(
         (this.tokenFrom as AccountAsset).address,
@@ -518,6 +516,7 @@ export default class Swap extends Mixins(
       .subscribe((results) => {
         results.forEach((result) => this.setSubscriptionPayload(result));
         this.runRecountSwapValues();
+        this.loading = false;
       });
   }
 
@@ -538,17 +537,9 @@ export default class Swap extends Mixins(
   }
 
   async handleSwitchTokens(): Promise<void> {
-    if (!(this.tokenFrom && this.tokenTo)) return;
+    if (!this.areTokensSelected) return;
 
     await this.switchTokens();
-
-    if (this.isExchangeB) {
-      this.setExchangeB(false);
-      this.handleInputFieldFrom(this.toValue);
-    } else {
-      this.setExchangeB(true);
-      this.handleInputFieldTo(this.fromValue);
-    }
 
     this.subscribeOnSwapReserves();
   }
