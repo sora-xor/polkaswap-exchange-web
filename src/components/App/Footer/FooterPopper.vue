@@ -1,6 +1,15 @@
 <template>
-  <el-popover :popper-class="computedPopperClass" placement="top" trigger="click">
-    <slot slot="reference" name="reference" />
+  <el-popover ref="popover" :popper-class="computedPopperClass" placement="top" trigger="click">
+    <div
+      slot="reference"
+      class="app-status__item s-flex"
+      :class="computedClass"
+      @keypress.enter="handleEnterClick"
+      @blur="handleBlur"
+    >
+      <s-icon :name="icon" size="16" />
+      <span class="app-status__text">{{ panelText }}</span>
+    </div>
     <div class="item s-flex">
       <div class="item__title s-flex">
         <div class="item__label s-flex">
@@ -18,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
 import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
 
 const cssPopperClass = 'app-status__tooltip';
@@ -26,15 +35,33 @@ const cssPopperClass = 'app-status__tooltip';
 @Component
 export default class FooterPopper extends Vue {
   @Prop({ required: true, type: String }) readonly status!: Status;
+  @Prop({ required: true, type: String }) readonly icon!: string;
+  @Prop({ type: String, default: '' }) readonly panelClass!: Nullable<string>;
   @Prop({ type: String, default: '' }) readonly actionText!: Nullable<string>;
+  @Prop({ required: true, type: String }) readonly panelText!: string;
+
+  @Ref('popover') popover!: any;
 
   get computedPopperClass(): string {
     const css = [cssPopperClass, this.status].filter((item) => !!item);
     return css.join(' ');
   }
 
+  get computedClass(): string {
+    const css = [this.panelClass, this.status].filter((item) => !!item);
+    return css.join(' ');
+  }
+
   handleActionClick(): void {
     this.$emit('action');
+  }
+
+  handleEnterClick(): void {
+    this.popover?.doToggle();
+  }
+
+  handleBlur(): void {
+    this.popover?.doClose();
   }
 }
 </script>
@@ -103,6 +130,25 @@ $status-classes: 'error', 'warning', 'success';
       box-shadow: none;
       margin-left: 30px;
     }
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+$status-classes: 'error', 'warning', 'success';
+
+.app-status {
+  &__item {
+    @include app-status-item;
+
+    @each $status in $status-classes {
+      &.#{$status} i {
+        color: var(--s-color-status-#{$status});
+      }
+    }
+  }
+  &__text {
+    margin-left: 6px;
   }
 }
 </style>

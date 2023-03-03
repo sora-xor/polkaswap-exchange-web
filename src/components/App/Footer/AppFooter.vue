@@ -1,15 +1,16 @@
 <template>
   <div class="app-status s-flex">
-    <div v-if="blockNumber" class="app-status__item block-number" :class="blockNumberClass">
-      <a class="block-number-link" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
-        <span class="block-number-icon" /><span>{{ blockNumberFormatted }}</span>
-      </a>
-    </div>
-    <footer-popper :status="nodeConnectionClass" :action-text="t('selectNodeText')" @action="openNodeSelectionDialog">
-      <div slot="reference" class="app-status__item node" :class="nodeConnectionClass">
-        <s-icon name="globe-16" size="16" />
-        <span class="app-status__text">{{ nodeConnectionText }}</span>
-      </div>
+    <a v-if="blockNumber" class="block-number s-flex" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
+      <span class="block-number-icon" /><span>{{ blockNumberFormatted }}</span>
+    </a>
+    <footer-popper
+      icon="globe-16"
+      panel-class="node"
+      :panel-text="nodeConnectionText"
+      :status="nodeConnectionClass"
+      :action-text="t('selectNodeText')"
+      @action="openNodeSelectionDialog"
+    >
       <template #label>
         <span>{{ t('selectNodeConnected') }}</span>
         <span>{{ node.chain }}</span>
@@ -20,14 +21,13 @@
       </template>
     </footer-popper>
     <footer-popper
+      icon="wi-fi-16"
+      panel-class="internet"
+      :panel-text="internetConnectionText"
       :status="internetConnectionClass"
       :action-text="t('connection.action.refresh')"
       @action="refreshPage"
     >
-      <div slot="reference" class="app-status__item internet" :class="internetConnectionClass">
-        <s-icon name="wi-fi-16" size="16" />
-        <span class="app-status__text">{{ internetConnectionText }}</span>
-      </div>
       <template #label>
         <span>{{ 'Your internet speed' }}</span>
         <span>{{ internetConnectionSpeedMb + ' mbps' }}</span>
@@ -36,11 +36,14 @@
         <span>{{ internetConnectionDesc }}</span>
       </template>
     </footer-popper>
-    <footer-popper :status="subqueryConnectionClass" :action-text="'Select services'" @action="refreshPage">
-      <div slot="reference" class="app-status__item internet" :class="subqueryConnectionClass">
-        <s-icon name="software-cloud-24" size="16" />
-        <span class="app-status__text">{{ subqueryConnectionText }}</span>
-      </div>
+    <footer-popper
+      icon="software-cloud-24"
+      panel-class="statistics"
+      :panel-text="subqueryConnectionText"
+      :status="subqueryConnectionClass"
+      :action-text="'Select services'"
+      @action="refreshPage"
+    >
       <template #label>
         <span>{{ 'LOL' }}</span>
         <span>{{ 'lol' }}</span>
@@ -221,12 +224,6 @@ export default class AppFooter extends Mixins(TranslationMixin) {
     return new FPNumber(this.blockNumber).toLocaleString();
   }
 
-  readonly blockNumberClass = Status.SUCCESS;
-
-  getPopoverClass(status: string): string {
-    return `app-status__tooltip ${status}`;
-  }
-
   refreshPage(): void {
     window.location.reload();
   }
@@ -235,8 +232,6 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
 <style lang="scss" scoped>
 // icons: globe-16 software-cloud-checked-24 software-cloud-24 notifications-alert-triangle-24 refresh-16
-$status-classes: 'error', 'warning', 'success';
-
 .app-status {
   font-size: var(--s-font-size-extra-mini);
   font-weight: 300;
@@ -245,32 +240,12 @@ $status-classes: 'error', 'warning', 'success';
   background-color: var(--s-color-utility-surface);
   justify-content: center;
   align-items: center;
-  &__item {
-    margin-left: 10px;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-    &:hover {
-      opacity: 0.5;
-      cursor: pointer;
-    }
-    @each $status in $status-classes {
-      &.#{$status} i {
-        color: var(--s-color-status-#{$status});
-      }
-    }
-  }
-  &__text {
-    margin-left: 6px;
-  }
 }
 .block-number {
-  &-link {
-    display: flex;
-    align-items: center;
-    color: var(--s-color-status-success);
-    text-decoration: none;
-  }
+  color: var(--s-color-status-success);
+  text-decoration: none;
+  @include app-status-item;
+
   &-icon {
     $block-icon-size: 7px;
     background-color: var(--s-color-status-success);
