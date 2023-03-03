@@ -241,9 +241,7 @@ $app-controls-shadow--dark: inset 1px 1px 2px #52523d;
     margin-left: auto;
   }
 
-  @include desktop {
-    margin-left: auto;
-  }
+  margin-left: auto;
 
   &--moonpay {
     margin-left: auto;

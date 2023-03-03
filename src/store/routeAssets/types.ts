@@ -63,3 +63,9 @@ export type RouteAssetsState = {
   processingState: ProcessingState;
   enabledAssets: PrimaryMarketsEnabledAssets;
 };
+
+export type PresetSwapData = {
+  assetFrom: Asset;
+  assetTo: Asset;
+  valueTo: number;
+};

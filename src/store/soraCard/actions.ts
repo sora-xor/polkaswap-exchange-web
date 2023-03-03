@@ -1,24 +1,27 @@
 import { defineActions } from 'direct-vuex';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 
-import { getXorPerEuroRatio, waitForAccountPair } from '@/utils';
+import { waitForAccountPair } from '@/utils';
+import { defineUserStatus, getXorPerEuroRatio, soraCard } from '@/utils/card';
 import { soraCardActionContext } from './../soraCard';
+import { Status } from '@/types/card';
+import { loadScript, unloadScript } from 'vue-plugin-load-script';
 
 const actions = defineActions({
-  calculateXorRestPrice(context, xorPerEuro): void {
+  calculateXorRestPrice(context, xorPerEuro: FPNumber): void {
     const { state, commit } = soraCardActionContext(context);
     const { totalXorBalance } = state;
     const euroToPay = FPNumber.HUNDRED.add(FPNumber.ONE).sub(totalXorBalance.mul(xorPerEuro));
     const euroToPayInXor = euroToPay.div(xorPerEuro);
 
-    commit.setXorPriceToDeposit(euroToPayInXor);
+    commit.setXorPriceToDeposit(euroToPayInXor.dp(3)); // it's rounded cuz it'll be shown in Bridge
   },
 
-  async calculateXorBalanceInEuros(context, xorTotalBalance: FPNumber): Promise<void> {
+  async calculateXorBalanceInEuros(context, { xorPerEuro, xorTotalBalance }): Promise<void> {
     const { commit, dispatch } = soraCardActionContext(context);
+
     try {
-      const xorPerEuro: string = await getXorPerEuroRatio();
       const xorPerEuroFPN = FPNumber.fromNatural(xorPerEuro);
       const euroBalance = xorTotalBalance.mul(xorPerEuroFPN).toNumber();
       commit.setEuroBalance(euroBalance.toString());
@@ -36,21 +39,60 @@ const actions = defineActions({
 
     if (!rootGetters.wallet.account.isLoggedIn) return;
 
-    await waitForAccountPair(async () => {
-      const subscription = api.assets.getTotalXorBalanceObservable().subscribe((xorTotalBalance: FPNumber) => {
-        commit.setTotalXorBalance(xorTotalBalance);
-        dispatch.calculateXorBalanceInEuros(xorTotalBalance);
-      });
+    const xorPerEuro: string = await getXorPerEuroRatio();
 
-      commit.setTotalXorBalanceUpdates(subscription);
+    await waitForAccountPair(async () => {
+      await new Promise<void>((resolve) => {
+        const subscription = api.assets.getTotalXorBalanceObservable().subscribe(async (xorTotalBalance: FPNumber) => {
+          commit.setTotalXorBalance(xorTotalBalance);
+          await dispatch.calculateXorBalanceInEuros({ xorPerEuro, xorTotalBalance });
+          resolve();
+        });
+
+        commit.setTotalXorBalanceUpdates(subscription);
+      });
+      // After first call
+      commit.setEuroBalanceLoaded(true);
     });
   },
 
   async unsubscribeFromTotalXorBalance(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
-    setTimeout(() => {
-      commit.resetTotalXorBalanceUpdates();
-    }, 1000 * 60 * 5);
+    commit.resetTotalXorBalanceUpdates();
+  },
+
+  async getUserStatus(context): Promise<void> {
+    const { commit } = soraCardActionContext(context);
+
+    const { kycStatus, verificationStatus }: Status = await defineUserStatus();
+
+    commit.setKycStatus(kycStatus);
+    commit.setVerificationStatus(verificationStatus);
+  },
+
+  async initPayWingsAuthSdk(context): Promise<void> {
+    const { commit, rootState } = soraCardActionContext(context);
+    const soraNetwork = rootState.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
+    const { authService } = soraCard(soraNetwork);
+
+    await unloadScript(authService.sdkURL).catch(() => {
+      /* no need to handle */
+    });
+
+    await loadScript(authService.sdkURL).then(() => {
+      // TODO: annotate via TS main calls
+      // @ts-expect-error no undefined
+      const login = Paywings.WebSDK.create({
+        Domain: 'soracard.com',
+        UnifiedLoginApiKey: authService.apiKey,
+        env: authService.env,
+        AccessTokenTypeID: 1,
+        UserTypeID: 2,
+        ClientDescription: 'Auth',
+      });
+
+      commit.setPayWingsAuthSdk(login);
+    });
   },
 });
 

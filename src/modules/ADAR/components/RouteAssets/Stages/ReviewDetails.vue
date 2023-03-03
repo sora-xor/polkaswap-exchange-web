@@ -45,21 +45,44 @@
           </div>
           <warning-message
             class="warning-message"
-            :text="noIssues ? 'ALL ISSUES ARE FIXED' : 'insufficient funds'"
+            :text="noIssues ? 'balance is ok' : 'insufficient funds'"
             :isError="!noIssues"
           />
         </div>
-        <s-divider />
-        <div class="field" v-if="!noIssues">
-          <div class="field__label">remaining AMOUNT required</div>
-          <div class="field__value">
-            <s-button type="primary" class="s-typography-button--mini add-button" @click.stop="onAddFundsClick">
-              {{ 'Add' }}
-            </s-button>
-            {{ formatNumber(remainingAmountRequired) }}
-            <token-logo class="token-logo" :token="inputToken" />
+        <template v-if="!noIssues">
+          <s-divider />
+          <div class="field">
+            <div class="field__label">remaining AMOUNT required</div>
+            <div class="field__value">
+              <s-button
+                type="primary"
+                class="s-typography-button--mini add-button"
+                @click.stop="onAddFundsClick('routing')"
+              >
+                {{ 'Add' }}
+              </s-button>
+              {{ formatNumber(remainingAmountRequired) }}
+              <token-logo class="token-logo" :token="inputToken" />
+            </div>
           </div>
-        </div>
+        </template>
+        <template v-if="showXorRequiredField">
+          <s-divider />
+          <div class="field">
+            <div class="field__label">XOR fee required</div>
+            <div class="field__value">
+              <s-button
+                type="primary"
+                class="s-typography-button--mini add-button"
+                @click.stop="onAddFundsClick('fee')"
+              >
+                {{ 'Add' }}
+              </s-button>
+              {{ formatNumber(xorFeeRequired) }}
+              <token-logo class="token-logo" :token="xor" />
+            </div>
+          </div>
+        </template>
         <s-divider v-if="!noIssues" />
         <div class="buttons-container">
           <s-button type="primary" class="s-typography-button--big" :disabled="!noIssues" @click.stop="onContinueClick">
@@ -87,12 +110,12 @@
         <s-divider />
         <div class="field">
           <div class="field__label">token AMOUNT required</div>
-          <div class="field__value">{{ formatNumber(assetData.total) }}</div>
-          <div class="field__value usd">{{ formatNumber(assetData.usd) }}</div>
+          <div class="field__value">{{ formatNumberJs(assetData.total) }}</div>
+          <div class="field__value usd">{{ formatNumberJs(assetData.usd) }}</div>
         </div>
       </div>
     </div>
-    <swap-dialog :visible.sync="showSwapDialog"></swap-dialog>
+    <swap-dialog :visible.sync="showSwapDialog" :presetSwapData="swapData"></swap-dialog>
     <select-input-asset-dialog
       :visible.sync="showSelectInputAssetDialog"
       @onInputAssetSelected="onInputAssetSelected"
@@ -102,19 +125,18 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { Components } from '@/consts';
 import { AdarComponents } from '@/modules/ADAR/consts';
-import { lazyComponent } from '@/router';
 import { adarLazyComponent } from '@/modules/ADAR/router';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
-import { components, mixins, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { groupBy, sumBy } from 'lodash';
-import { Recipient } from '@/store/routeAssets/types';
-import { CodecString, FPNumber } from '@sora-substrate/util/build';
+import type { PresetSwapData, Recipient } from '@/store/routeAssets/types';
+import { CodecString, FPNumber, NetworkFeesObject, Operation } from '@sora-substrate/util/build';
 import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import { formatAssetBalance, getAssetBalance } from '@/utils';
+import { getAssetBalance } from '@/utils';
 import WarningMessage from '../WarningMessage.vue';
+import { XOR, VAL } from '@sora-substrate/util/build/assets/consts';
+import { ZeroStringValue } from '@/consts';
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
@@ -132,6 +154,8 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   @action.routeAssets.setInputToken setInputToken!: (asset: Asset) => void;
   @action.routeAssets.cancelProcessing private cancelProcessing!: () => void;
   @action.routeAssets.runAssetsRouting private runAssetsRouting!: any;
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @getter.assets.xor xor!: Nullable<AccountAsset>;
 
   showSwapDialog = false;
   showSelectInputAssetDialog = false;
@@ -142,24 +166,53 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   }
 
   get noIssues() {
-    return this.remainingAmountRequired <= 0;
+    return this.remainingAmountRequired.toNumber() <= 0;
   }
 
   get usdToBeRouted() {
-    return this.formatNumber(this.recipients?.reduce((partialSum, a) => partialSum + Number(a.usd), 0));
+    return this.formatNumber(new FPNumber(this.recipients?.reduce((partialSum, a) => partialSum + Number(a.usd), 0)));
   }
 
   get estimatedAmount() {
-    const sum = sumBy(this.summaryData, (item) => item.required);
-    return sum * 1.05;
+    const sum = sumBy(this.summaryData, (item) => item.required) * 1.05;
+    const isInputAssetXor = this.inputToken?.symbol === XOR.symbol;
+    return isInputAssetXor ? new FPNumber(sum).add(this.xorFeeAmount) : new FPNumber(sum);
   }
 
   get totalTokensAvailable() {
     return this.formattedBalance;
   }
 
+  get xorNetworkFee() {
+    return FPNumber.fromCodecValue(this.networkFees[Operation.SwapAndSend]).toNumber();
+  }
+
   get remainingAmountRequired() {
-    return this.estimatedAmount - this.fpBalance.toNumber();
+    const isInputAssetXor = this.inputToken?.symbol === XOR.symbol;
+    return isInputAssetXor
+      ? this.estimatedAmount.add(this.xorFeeAmount).sub(this.fpBalance)
+      : this.estimatedAmount.sub(this.fpBalance);
+  }
+
+  get xorFeeAmount() {
+    return this.summaryData.reduce((sum, item) => {
+      const isTransfer = item.asset.address === this.inputToken.address;
+      const fee = isTransfer ? this.networkFees[Operation.Transfer] : this.networkFees[Operation.SwapAndSend];
+      return sum.add(FPNumber.fromCodecValue(fee));
+    }, FPNumber.ZERO);
+  }
+
+  get xorFeeRequired() {
+    return this.xorFeeAmount.mul(new FPNumber(1.05)).sub(this.xorBalance);
+  }
+
+  get showXorRequiredField() {
+    return this.xorFeeAmount > this.xorBalance && this.inputToken.address !== XOR.address;
+  }
+
+  get xorBalance() {
+    const xorBalance = this.xor?.balance;
+    return this.getFPNumberFromCodec(xorBalance?.transferable ?? ZeroStringValue, this.xor?.decimals);
   }
 
   get summaryData() {
@@ -181,6 +234,40 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
     });
   }
 
+  action: 'fee' | 'routing' = 'fee';
+
+  get routingSwapData(): PresetSwapData {
+    const isInputAssetXor = this.inputToken?.symbol === XOR?.symbol;
+    const assetFrom = isInputAssetXor ? VAL : XOR;
+    const assetTo = this.inputToken;
+    const valueTo = this.remainingAmountRequired.toNumber();
+    return {
+      assetFrom,
+      assetTo,
+      valueTo,
+    };
+  }
+
+  get xorFeeSwapData(): PresetSwapData {
+    const assetFrom = VAL;
+    const assetTo = XOR;
+    const valueTo = this.xorFeeRequired.toNumber();
+    return {
+      assetFrom,
+      assetTo,
+      valueTo,
+    };
+  }
+
+  get swapData(): PresetSwapData {
+    return this.action === 'fee' ? this.xorFeeSwapData : this.routingSwapData;
+  }
+
+  onAddFundsClick(action: 'fee' | 'routing') {
+    this.action = action;
+    this.showSwapDialog = true;
+  }
+
   get fpBalance(): FPNumber {
     if (!this.getTokenBalance) return FPNumber.ZERO;
 
@@ -198,7 +285,7 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   }
 
   getAssetUSDPrice(asset: Asset) {
-    return FPNumber.fromCodecValue(this.fiatPriceObject[asset.address] ?? 0, 18);
+    return FPNumber.fromCodecValue(this.fiatPriceObject[asset.address] ?? 0, asset.decimals);
   }
 
   get getTokenBalance(): CodecString {
@@ -206,7 +293,7 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
     return getAssetBalance(asset);
   }
 
-  formatNumber(num) {
+  formatNumberJs(num) {
     return !num || !Number.isFinite(num)
       ? '-'
       : num.toLocaleString('en-US', {
@@ -214,9 +301,17 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
         });
   }
 
-  onAddFundsClick() {
-    this.showSwapDialog = true;
+  formatNumber(num: FPNumber) {
+    return !num || !num.isFinity()
+      ? '-'
+      : num.toNumber().toLocaleString('en-US', {
+          maximumFractionDigits: 4,
+        });
   }
+
+  // onAddFundsClick() {
+  //   this.showSwapDialog = true;
+  // }
 
   cancelButtonAction() {
     this.cancelProcessing();

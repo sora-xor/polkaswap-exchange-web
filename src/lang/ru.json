@@ -7,8 +7,6 @@
     "importText": "Импорт",
     "settingsText": "Настройки",
     "addAssetText": "Добавить актив",
-    "createTokenText": "Создать токен",
-    "comingSoonText": "Скоро будет доступно",
     "successText": "Успешно",
     "warningText": "Предупреждение",
     "swapText": "Обмен",
@@ -19,7 +17,6 @@
     "sendText": "Отправить",
     "addressText": "Адрес",
     "amountText": "Сумма",
-    "confirmText": "Подтвердить",
     "errorText": "Ошибка",
     "insufficientBalanceText": "Недостаточный баланс {tokenSymbol}",
     "unknownErrorText": "ОШИБКА Что-то пошло не так...",
@@ -105,14 +102,15 @@
         },
         "selectWallet": "Выберите кошелек для работы",
         "wallet": {
-            "install": "Установить"
+            "install": "Установить",
+            "connected": "Подключено",
+            "notConnected": "Не подключен"
         }
     },
     "wallet": {
         "title": "Аккаунт сети {Sora}",
         "WalletAssets": "Активы",
         "WalletActivity": "Активность",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -127,18 +125,21 @@
         "enterAmount": "Введите сумму",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Подтвердить транзакцию",
-        "confirm": "@:confirmText",
         "errorAddress": "Неверный адрес. Пожалуйста, перепроверьте и попробуйте еще раз.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Отправка токенов между учетными записями сети {Sora}",
         "addressWarning": "Токены будут отправлены на адрес {Sora}, указанный ниже. Убедитесь, что получатель может получить доступ к сети {Sora} для использования токенов:",
-        "addressError": "Вы не можете отправлять токены в ту же учетную запись, к которой вы в настоящее время подключены."
+        "addressError": "Вы не можете отправлять токены в ту же учетную запись, к которой вы в настоящее время подключены.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Адрес кошелька скопирован в буфер обмена",
         "copy": "Копировать адрес",
         "switch": "Сменить аккаунт",
-        "walletAddress": "Адрес кошелька"
+        "walletAddress": "Адрес кошелька",
+        "delete": "Удалить аккаунт",
+        "rename": "Переименовать аккаунт",
+        "export": "Экспорт .json"
     },
     "history": {
         "clearHistory": "Очистить историю",
@@ -152,7 +153,6 @@
     },
     "assets": {
         "empty": "Нет активов",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -179,8 +179,6 @@
         "receive": "Получить {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Актив {symbol} был добавлен успешно!",
         "empty": "Токен не найден",
         "alreadyAttached": "Этот токен был уже добавлен",
@@ -198,13 +196,10 @@
         "searchInputText": "Поиск по идентификатору актива, имени или символу тикера"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Создание и развертывание своего актива на {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Введите символ токена",
         "enterName": "Введите название токена",
         "enterSupply": "Введите количество токенов",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Транзакция отправлена",
             "desc": "Создать {symbol} токен "
@@ -230,10 +225,6 @@
             "placeholder": "Увеличиваемая эмиссия",
             "desc": "Возможность выпустить больше токенов."
         },
-        "titleCommon": "Создать",
-        "confirmTokenTitleCommon": "Создать токен",
-        "confirmTokenTitleNFT": "Создать NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Предоставить контент",
         "selectLocalFile": "Выберите локальный файл",
         "CreateSimpleToken": "Токен",
@@ -267,7 +258,14 @@
         "divisible": {
             "placeholder": "Делимый",
             "desc": "Способность NFT делиться на дробные части. Предоставление ликвидности работает только с делимыми активами"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Создать",
+        "confirmTokenTitleCommon": "Создать токен",
+        "confirmTokenTitleNFT": "Создать NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Детали транзакции",
@@ -293,11 +291,8 @@
             "submitted": "Транзакция отправлена с комиссией в размере {fee} {symbol}",
             "confirmed": "Транзакция подтверждена"
         },
-        "viewIn": {
-            "sorascan": "Смотреть в SORAScan",
-            "subscan": "Смотреть в Subscan"
-        },
         "txId": "ID транзакции",
+        "viewIn": "Смотреть в {explorer}",
         "referrer": "Реферер",
         "referral": "Реферал"
     },
@@ -333,7 +328,6 @@
         "AddLiquidity": "Добавить ликвидность",
         "AddLiquidityId": "Добавить ликвидность",
         "RemoveLiquidity": "Забрать ликвидность",
-        "PageNotFound": "Страница не найдена",
         "Rewards": "Награды",
         "Explore\/Tokens": "Токены",
         "Explore\/Pools": "Пулы",
@@ -433,26 +427,7 @@
         "from": "Из",
         "to": "На"
     },
-    "pageNotFound": {
-        "title": "Страница не найдена",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Сеть для разработчиков",
-        "Test": "{Sora} Тестовая сеть",
-        "Prod": "{Sora} Основная сеть",
-        "Stage": "{Sora} Тестовая сеть"
-    },
-    "evm": {
-        "main": "Основная сеть {Ethereum}",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -502,8 +477,8 @@
         "price": "Цена",
         "transactionSubmitted": "Транзакция отправлена",
         "transactionMessage": "{firstToken} и {secondToken}",
-        "confirm": "Подтвердить",
-        "ok": "OK"
+        "ok": "OK",
+        "confirm": "Подтвердить"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +529,6 @@
         "connectWallets": "Подключите кошельки для просмотра соответствующей истории транзакций.",
         "soraNetworkFee": "{Sora} Комиссия сети",
         "ethereumNetworkFee": "{Ethereum} Комиссия сети",
-        "tooltipValue": "@:comingSoonText",
         "total": "Всего",
         "viewHistory": "Посмотреть историю транзакции",
         "transactionSubmitted": "Транзакция отправлена",
@@ -562,11 +536,10 @@
         "notRegisteredAsset": "Актив {assetSymbol} не зарегистрирован",
         "selectNetwork": "Выбрать сеть",
         "networkInfo": "Соединить {Sora} Сеть с:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Скопировать адрес сети",
         "soraAddress": "{Sora} адрес",
-        "ethereumAddress": "{Ethereum} адрес"
+        "ethereumAddress": "{Ethereum} адрес",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
@@ -618,7 +591,6 @@
             "done": "Выполнено",
             "waitingForConfirmation": "Ожидание подтверждения..."
         },
-        "viewInEtherscan": "Посмотреть в {Etherscan}",
         "networkTitle": "{network} транзакция",
         "transactionHash": "Хеш транзакции",
         "networkInfo": {
@@ -717,7 +689,7 @@
         "outputMessage": "Вывод является оценочным. Если цена изменится более чем на {slippageTolerance}%, ваша транзакция будет отменена.",
         "confirmTitle": "Вы получите",
         "shareOfPool": "Доля пула после транзакции",
-        "locked": "{percent} вашего пула находится в стейкинге"
+        "locked": "{percent} вашего пула находится в {lock}"
     },
     "dexSettings": {
         "title": "Настройки",
@@ -932,7 +904,6 @@
         "bondTitle": "Зарезервировать XOR",
         "unbondTitle": "Вывести XOR из резерва",
         "confirm": {
-            "text": "Подтвердить",
             "bond": "Подтвердить резерв",
             "unbond": "Подтвердить вывод из резерва",
             "inviteTitle": "Вас пригласили в {AppName}",
@@ -941,7 +912,8 @@
             "freeOfCharge": "Данная транзакция бесплатна",
             "hasReferrerTitle": "Вы уже установили реферера",
             "hasReferrerDescription": "К сожалению, вы можете установить только одного реферера",
-            "ok": "OK"
+            "ok": "OK",
+            "text": "Подтвердить"
         },
         "referrer": {
             "title": "Добавьте реферера",
@@ -958,7 +930,6 @@
         "insufficientBondedAmount": "Чтобы приглашать больше пользователей, привяжите не менее {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Детали транзакции",
-    "createTokenTextNFT": "Создать NFT",
     "code": {
         "download": "Скачать QR-код",
         "upload": "Сканировать QR-код",
@@ -1130,7 +1101,9 @@
             "mnemonic": "Указана недопустимая мнемоника bip39",
             "mnemonicLength": "Мнемоника должна содержать {number} слов",
             "jsonFields": "JSON-файл не содержит обязательных полей"
-        }
+        },
+        "assetsAtRiskText": "Активы под угрозой!",
+        "deleteAccountText": "Аккаунт не может быть восстановлен без исходной фразы, файла .json или если он хранится в каком-либо расширении. Вы выйдете из системы."
     },
     "hashiBridgeText": "Мост {Hashi}",
     "disclaimerTitle": "Отказ от ответственности:",
@@ -1140,5 +1113,11 @@
     "tooltips": {
         "roi": "{ROI} означает рентабельность инвестиций. Она рассчитывается путем деления прибыли, полученной от инвестиции, на стоимость этой инвестиции в процентном эквиваленте.",
         "tvl": "{TVL} означает «Общая заблокированная стоимость». Она представляет токены, заблокированные в пулах, в долларовом эквиваленте."
-    }
+    },
+    "createTokenText": "Создать токен",
+    "comingSoonText": "Скоро будет доступно",
+    "confirmText": "Подтвердить",
+    "createTokenTextNFT": "Создать NFT",
+    "doNotShowText": "Больше не показывать",
+    "accountText": "аккаунт | аккаунты"
 }

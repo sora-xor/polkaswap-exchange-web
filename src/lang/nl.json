@@ -7,8 +7,6 @@
     "importText": "Importeren",
     "settingsText": "Instellingen",
     "addAssetText": "Asset toevoegen",
-    "createTokenText": "Maak token",
-    "comingSoonText": "Binnenkort beschikbaar",
     "successText": "Succes",
     "warningText": "Waarschuwing",
     "swapText": "Swap",
@@ -19,7 +17,6 @@
     "sendText": "Verzend",
     "addressText": "Adres",
     "amountText": "Bedrag",
-    "confirmText": "Bevestigen",
     "errorText": "Fout",
     "insufficientBalanceText": "Onvoldoende {tokenSymbol} saldo",
     "unknownErrorText": "ERROR Er is iets misgegaan...",
@@ -105,14 +102,15 @@
         },
         "selectWallet": "Selecteer een portemonnee om mee te werken",
         "wallet": {
-            "install": "Installeren"
+            "install": "Installeren",
+            "connected": "Verbonden",
+            "notConnected": "Niet verbonden"
         }
     },
     "wallet": {
         "title": "{Sora} Netwerk account",
         "WalletAssets": "Assets",
         "WalletActivity": "Activiteit",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -127,18 +125,21 @@
         "enterAmount": "Voer bedrag in",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Bevestig transactie",
-        "confirm": "@:confirmText",
         "errorAddress": "Ongeldig adres. Controleer het en probeer het opnieuw.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Verzend tokens tussen accounts op het {Sora}-netwerk",
         "addressWarning": "Tokens worden naar het onderstaande {Sora}-adres gestuurd. Zorg ervoor dat de ontvanger toegang heeft tot de {Sora}-chain om de tokens te gebruiken:",
-        "addressError": "U kunt geen tokens verzenden naar hetzelfde account waarmee u momenteel bent verbonden."
+        "addressError": "U kunt geen tokens verzenden naar hetzelfde account waarmee u momenteel bent verbonden.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Wallet-adres werd gekopieerd naar het klembord",
         "copy": "Adres kopiëren",
         "switch": "Van account wisselen",
-        "walletAddress": "Portemonnee adres"
+        "walletAddress": "Portemonnee adres",
+        "delete": "Account verwijderen",
+        "rename": "Hernoem account",
+        "export": "Exporteer .json"
     },
     "history": {
         "clearHistory": "Geschiedenis wissen",
@@ -152,7 +153,6 @@
     },
     "assets": {
         "empty": "Er zijn geen assets",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -179,8 +179,6 @@
         "receive": "Ontvang {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Asset {symbol} is succesvol toegevoegd!",
         "empty": "Geen tokens gevonden",
         "alreadyAttached": "Token was al gekoppeld",
@@ -198,13 +196,10 @@
         "searchInputText": "Zoeken op activa-ID, naam of tickersymbool"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Creëer en implementeer aangepaste asset op {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Tokensymbool invoeren",
         "enterName": "Tokennaam invoeren",
         "enterSupply": "Tokenvoorraad invoeren",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Transactie ingediend",
             "desc": "Maak {symbol} token"
@@ -230,10 +225,6 @@
             "placeholder": "Uitbreidbaar aanbod",
             "desc": "Mogelijkheid om meer tokens te munten."
         },
-        "titleCommon": "Creëren",
-        "confirmTokenTitleCommon": "Token maken",
-        "confirmTokenTitleNFT": "NFT maken",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Inhoud bieden",
         "selectLocalFile": "Selecteer lokaal bestand",
         "CreateSimpleToken": "Token",
@@ -267,7 +258,14 @@
         "divisible": {
             "placeholder": "Deelbaar",
             "desc": "Mogelijkheid van NFT om te verdelen in fractionele delen. Liquiditeitsvoorziening werkt alleen met deelbare activa"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Creëren",
+        "confirmTokenTitleCommon": "Token maken",
+        "confirmTokenTitleNFT": "NFT maken",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Transactiegegevens",
@@ -293,11 +291,8 @@
             "submitted": "Transactie ingediend met vergoeding van {fee} {symbol}",
             "confirmed": "Transactie bevestigd"
         },
-        "viewIn": {
-            "sorascan": "Bekijk in Sorascan",
-            "subscan": "Bekijk in Subscan"
-        },
         "txId": "Transactie ID",
+        "viewIn": "Bekijk in {explorer}",
         "referrer": "Verwijzer",
         "referral": "Verwijzing"
     },
@@ -333,7 +328,6 @@
         "AddLiquidity": "Liquiditeit toevoegen",
         "AddLiquidityId": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
-        "PageNotFound": "Pagina niet gevonden",
         "Rewards": "Beloningen",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Zwembaden",
@@ -433,26 +427,7 @@
         "from": "Van",
         "to": "Naar"
     },
-    "pageNotFound": {
-        "title": "Pagina niet gevonden",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -502,8 +477,8 @@
         "price": "Prijs",
         "transactionSubmitted": "Transactie ingediend",
         "transactionMessage": "{firstToken} en {secondToken}",
-        "confirm": "Bevestigen",
-        "ok": "OK"
+        "ok": "OK",
+        "confirm": "Bevestigen"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -554,7 +529,6 @@
         "connectWallets": "Verbind wallets om hun respectievelijke transactiegeschiedenis te bekijken.",
         "soraNetworkFee": "{Sora} Netwerk Vergoeding",
         "ethereumNetworkFee": "{Ethereum} Netwerk Vergoeding",
-        "tooltipValue": "@:comingSoonText",
         "total": "Totaal",
         "viewHistory": "Transactiegeschiedenis bekijken",
         "transactionSubmitted": "Ingediende verrichting",
@@ -562,11 +536,10 @@
         "notRegisteredAsset": "Asset {assetSymbol} is niet geregistreerd",
         "selectNetwork": "Selecteer netwerk",
         "networkInfo": "Bridge {Sora} Netwerk met:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Netwerkadres kopiëren",
         "soraAddress": "{Sora} adres",
-        "ethereumAddress": "{Ethereum} adres"
+        "ethereumAddress": "{Ethereum} adres",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Kies een token",
@@ -618,7 +591,6 @@
             "done": "Compleet",
             "waitingForConfirmation": "Wachten op bevestiging..."
         },
-        "viewInEtherscan": "Bekijk in {Etherscan}",
         "networkTitle": "{network} transactie",
         "transactionHash": "Transactie hash",
         "networkInfo": {
@@ -717,7 +689,7 @@
         "outputMessage": "De output wordt geschat. Als de prijs meer dan {slippageTolerance}% verandert, zal uw transactie worden teruggedraaid.",
         "confirmTitle": "U ontvangt",
         "shareOfPool": "Aandeel van pool na transactie",
-        "locked": "{percent} van uw pool is in staking"
+        "locked": "{percent} van uw pool is in {lock}"
     },
     "dexSettings": {
         "title": "Instellingen",
@@ -932,7 +904,6 @@
         "bondTitle": "Bond XOR",
         "unbondTitle": "Ontbonden XOR",
         "confirm": {
-            "text": "Bevestigen",
             "bond": "Bevestig obligatie",
             "unbond": "Ontbinding bevestigen",
             "inviteTitle": "Je bent uitgenodigd voor {AppName}",
@@ -941,7 +912,8 @@
             "freeOfCharge": "Deze actie is gratis",
             "hasReferrerTitle": "Je hebt je verwijzer al ingesteld",
             "hasReferrerDescription": "Helaas kun je er maar één instellen",
-            "ok": "OK"
+            "ok": "OK",
+            "text": "Bevestigen"
         },
         "referrer": {
             "title": "Voeg uw verwijzer toe",
@@ -958,7 +930,6 @@
         "insufficientBondedAmount": "Om meer verwijzingen uit te nodigen, bindt u ten minste {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transactie Details",
-    "createTokenTextNFT": "NFT maken",
     "code": {
         "download": "Downloaden QR-code",
         "upload": "QR code scannen",
@@ -1130,7 +1101,9 @@
             "mnemonic": "Ongeldig bip39 geheugensteuntje opgegeven",
             "mnemonicLength": "Mnemonic moet {number} woorden bevatten",
             "jsonFields": "JSON-bestand heeft geen verplichte velden"
-        }
+        },
+        "assetsAtRiskText": "Activa in gevaar!",
+        "deleteAccountText": "Account kan niet worden hersteld zonder een seed-zin, een .json bestand of als het is opgeslagen in een extensie. U wordt uitgelogd."
     },
     "hashiBridgeText": "{Hashi} brug",
     "disclaimerTitle": "Disclaimer:",
@@ -1140,5 +1113,11 @@
     "tooltips": {
         "roi": "{ROI} staat voor Return on Investment. Het wordt berekend door de winst op een investering te delen door de kosten van die investering in een procentueel equivalent.",
         "tvl": "{TVL} staat voor Total Value Locked. Het vertegenwoordigt tokens die in de pools zijn opgesloten in het equivalent van de dollar."
-    }
+    },
+    "createTokenText": "Maak token",
+    "comingSoonText": "Binnenkort beschikbaar",
+    "confirmText": "Bevestigen",
+    "createTokenTextNFT": "NFT maken",
+    "doNotShowText": "Laat me dit niet nog een keer zien",
+    "accountText": "rekening | rekeningen"
 }
