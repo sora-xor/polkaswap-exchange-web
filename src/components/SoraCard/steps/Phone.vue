@@ -231,6 +231,8 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     await this.$nextTick();
     this.inputCode.focus();
 
+    localStorage.removeItem('PW-Email');
+
     await this.initPayWingsAuthSdk();
 
     if (!this.authLogin) return;
