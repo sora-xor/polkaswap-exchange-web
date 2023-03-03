@@ -110,8 +110,8 @@
         <s-divider />
         <div class="field">
           <div class="field__label">token AMOUNT required</div>
-          <div class="field__value">{{ formatNumber(assetData.total) }}</div>
-          <div class="field__value usd">{{ formatNumber(assetData.usd) }}</div>
+          <div class="field__value">{{ formatNumberJs(assetData.total) }}</div>
+          <div class="field__value usd">{{ formatNumberJs(assetData.usd) }}</div>
         </div>
       </div>
     </div>
@@ -136,6 +136,7 @@ import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import { getAssetBalance } from '@/utils';
 import WarningMessage from '../WarningMessage.vue';
 import { XOR, VAL } from '@sora-substrate/util/build/assets/consts';
+import { ZeroStringValue } from '@/consts';
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
@@ -154,6 +155,7 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   @action.routeAssets.cancelProcessing private cancelProcessing!: () => void;
   @action.routeAssets.runAssetsRouting private runAssetsRouting!: any;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @getter.assets.xor xor!: Nullable<AccountAsset>;
 
   showSwapDialog = false;
   showSelectInputAssetDialog = false;
@@ -164,17 +166,17 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   }
 
   get noIssues() {
-    return this.remainingAmountRequired <= 0;
+    return this.remainingAmountRequired.toNumber() <= 0;
   }
 
   get usdToBeRouted() {
-    return this.formatNumber(this.recipients?.reduce((partialSum, a) => partialSum + Number(a.usd), 0));
+    return this.formatNumber(new FPNumber(this.recipients?.reduce((partialSum, a) => partialSum + Number(a.usd), 0)));
   }
 
   get estimatedAmount() {
     const sum = sumBy(this.summaryData, (item) => item.required) * 1.05;
     const isInputAssetXor = this.inputToken?.symbol === XOR.symbol;
-    return isInputAssetXor ? sum + this.xorFeeAmount : sum;
+    return isInputAssetXor ? new FPNumber(sum).add(this.xorFeeAmount) : new FPNumber(sum);
   }
 
   get totalTokensAvailable() {
@@ -188,20 +190,20 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   get remainingAmountRequired() {
     const isInputAssetXor = this.inputToken?.symbol === XOR.symbol;
     return isInputAssetXor
-      ? this.estimatedAmount + this.xorFeeAmount - this.fpBalance.toNumber()
-      : this.estimatedAmount - this.fpBalance.toNumber();
+      ? this.estimatedAmount.add(this.xorFeeAmount).sub(this.fpBalance)
+      : this.estimatedAmount.sub(this.fpBalance);
   }
 
   get xorFeeAmount() {
     return this.summaryData.reduce((sum, item) => {
       const isTransfer = item.asset.address === this.inputToken.address;
       const fee = isTransfer ? this.networkFees[Operation.Transfer] : this.networkFees[Operation.SwapAndSend];
-      return sum + FPNumber.fromCodecValue(fee).toNumber();
-    }, 0);
+      return sum.add(FPNumber.fromCodecValue(fee));
+    }, FPNumber.ZERO);
   }
 
   get xorFeeRequired() {
-    return this.xorFeeAmount * 1.05 - this.xorBalance;
+    return this.xorFeeAmount.mul(new FPNumber(1.05)).sub(this.xorBalance);
   }
 
   get showXorRequiredField() {
@@ -209,8 +211,8 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   }
 
   get xorBalance() {
-    const asset = this.accountAssets.find((item) => item.address === XOR.address);
-    return FPNumber.fromCodecValue(getAssetBalance(asset), asset?.decimals).toNumber();
+    const xorBalance = this.xor?.balance;
+    return this.getFPNumberFromCodec(xorBalance?.transferable ?? ZeroStringValue, this.xor?.decimals);
   }
 
   get summaryData() {
@@ -238,7 +240,7 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
     const isInputAssetXor = this.inputToken?.symbol === XOR?.symbol;
     const assetFrom = isInputAssetXor ? VAL : XOR;
     const assetTo = this.inputToken;
-    const valueTo = this.remainingAmountRequired;
+    const valueTo = this.remainingAmountRequired.toNumber();
     return {
       assetFrom,
       assetTo,
@@ -249,7 +251,7 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   get xorFeeSwapData(): PresetSwapData {
     const assetFrom = VAL;
     const assetTo = XOR;
-    const valueTo = this.xorFeeRequired;
+    const valueTo = this.xorFeeRequired.toNumber();
     return {
       assetFrom,
       assetTo,
@@ -283,7 +285,7 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   }
 
   getAssetUSDPrice(asset: Asset) {
-    return FPNumber.fromCodecValue(this.fiatPriceObject[asset.address] ?? 0, 18);
+    return FPNumber.fromCodecValue(this.fiatPriceObject[asset.address] ?? 0, asset.decimals);
   }
 
   get getTokenBalance(): CodecString {
@@ -291,14 +293,18 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
     return getAssetBalance(asset);
   }
 
-  get xor() {
-    return XOR;
-  }
-
-  formatNumber(num) {
+  formatNumberJs(num) {
     return !num || !Number.isFinite(num)
       ? '-'
       : num.toLocaleString('en-US', {
+          maximumFractionDigits: 4,
+        });
+  }
+
+  formatNumber(num: FPNumber) {
+    return !num || !num.isFinity()
+      ? '-'
+      : num.toNumber().toLocaleString('en-US', {
           maximumFractionDigits: 4,
         });
   }
