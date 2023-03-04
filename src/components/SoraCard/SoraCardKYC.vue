@@ -109,7 +109,8 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
 
     if (state.showBanner) {
       // user has KYC finished, show info banner
-      this.$emit('go-to-start');
+      const withoutCheck = true;
+      this.$emit('go-to-start', withoutCheck);
     }
   }
 
@@ -118,7 +119,7 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
   }
 
   redirectToView(success: boolean): void {
-    success ? this.$emit('go-to-start') : (this.step = KycProcess.RoadMap);
+    success ? this.$emit('go-to-start', success) : (this.step = KycProcess.RoadMap);
   }
 
   mounted(): void {

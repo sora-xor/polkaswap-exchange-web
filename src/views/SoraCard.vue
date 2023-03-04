@@ -54,7 +54,12 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
     this.step = Step.KYC;
   }
 
-  openStartPage(): void {
+  openStartPage(withoutCheck: boolean): void {
+    if (withoutCheck) {
+      this.step = Step.ConfirmationInfo;
+      return;
+    }
+
     this.checkKyc();
   }
 
