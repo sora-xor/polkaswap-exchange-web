@@ -3,15 +3,17 @@
     <s-input maxlength="320" placeholder="Email" v-model="email" :disabled="loading" type="email" />
     <p class="sora-card__email-input-description">{{ emailInputDescription }}</p>
     <s-icon v-if="emailSent" name="basic-check-mark-24" size="16px" />
-    <s-input
-      class="sora-card__input-name"
-      maxlength="50"
-      placeholder="First Name"
-      v-model="firstName"
-      :disabled="loading"
-    />
-    <s-input maxlength="50" placeholder="Last Name" v-model="lastName" :disabled="loading" />
-    <p class="sora-card__name-input-description">Use your real name.</p>
+    <div v-if="showNameInputs">
+      <s-input
+        class="sora-card__input-name"
+        maxlength="50"
+        placeholder="First Name"
+        v-model="firstName"
+        :disabled="loading"
+      />
+      <s-input maxlength="50" placeholder="Last Name" v-model="lastName" :disabled="loading" />
+      <p class="sora-card__name-input-description">Use your real name.</p>
+    </div>
     <s-button
       type="primary"
       :disabled="sendBtnDisabled"
@@ -41,6 +43,7 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   firstName = '';
   lastName = '';
   email = '';
+  prefilledEmail = '';
   emailSent = false;
   emailSentFirstTime = false;
   emailResendText = '';
@@ -56,19 +59,34 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   handleSendEmail(): void {
     this.startEmailCountDown();
 
-    if (!this.emailSentFirstTime) {
+    if (this.isPrefilledEmailValid) {
+      // user wants to change unconfirmed email
+      if (this.prefilledEmail !== this.email) {
+        this.authLogin.ChangeUnconfirmedEmail({ Email: this.email }).catch((error) => {
+          console.error('[SoraCard]: Error while changing email', error);
+        });
+
+        this.emailSent = true;
+
+        return;
+      }
+    }
+
+    // user signs on for the first time
+    if (!this.emailSentFirstTime && !this.isPrefilledEmailValid) {
       this.authLogin
         .UserMinimalRegistration({ Email: this.email, FirstName: this.firstName, LastName: this.lastName })
         .catch((error) => {
-          console.error(error);
+          console.error('[SoraCard]: Error while email setup', error);
         });
 
       this.emailSentFirstTime = true;
       return;
     }
 
-    this.authLogin.SendVerificationEmail().catch(function (error) {
-      console.error(error);
+    // user tries to resend email several times
+    this.authLogin.SendVerificationEmail().catch((error) => {
+      console.error('[SoraCard]: Error while resending email', error);
     });
 
     this.emailSent = true;
@@ -86,10 +104,31 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
 
   get sendBtnDisabled(): boolean {
     if (this.emailSent) return true;
-    if (this.firstName && this.lastName) {
-      return !EmailValidator.validate(this.email);
+
+    if (this.isPrefilledEmailValid) {
+      if (EmailValidator.validate(this.email)) {
+        return false;
+      }
+
+      return true;
+    } else {
+      if (this.firstName && this.lastName) {
+        return !EmailValidator.validate(this.email);
+      }
+
+      return true;
     }
-    return true;
+  }
+
+  get showNameInputs(): boolean {
+    return this.prefilledEmail === 'undefined' || !this.prefilledEmail;
+  }
+
+  get isPrefilledEmailValid() {
+    if (this.prefilledEmail !== 'undefined' || !!this.prefilledEmail) {
+      return EmailValidator.validate(this.prefilledEmail);
+    }
+    return false;
   }
 
   startEmailCountDown(): void {
@@ -105,6 +144,12 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   mounted(): void {
+    this.prefilledEmail = localStorage.getItem('PW-Email') || 'undefined';
+
+    if (this.prefilledEmail !== 'undefined') {
+      this.email = this.prefilledEmail;
+    }
+
     if (!this.authLogin) return;
 
     this.authLogin

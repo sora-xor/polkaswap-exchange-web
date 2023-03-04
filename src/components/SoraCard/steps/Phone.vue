@@ -236,6 +236,8 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     await this.$nextTick();
     this.inputCode.focus();
 
+    localStorage.removeItem('PW-Email');
+
     await this.initPayWingsAuthSdk();
 
     if (!this.authLogin) return;
@@ -324,6 +326,32 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 
           this.$emit('confirm', state);
         }
+      })
+      .on('Verification-Email-Sent-Success', () => {
+        this.sendOtpBtnLoading = false;
+
+        if (this.userApplied) {
+          this.$notify({
+            title: '',
+            message: 'KYC process has not been finished.',
+            type: 'info',
+          });
+        }
+
+        if (!this.isEuroBalanceEnough) {
+          this.notPassedKycAndNotHasXorEnough = true;
+
+          return;
+        }
+
+        const state = {
+          goToEmail: true,
+          startKyc: false,
+          showBanner: false,
+        };
+
+        this.$emit('confirm', state);
+        this.sendOtpBtnLoading = false;
       });
   }
 }
