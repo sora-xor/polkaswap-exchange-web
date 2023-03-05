@@ -12,7 +12,7 @@ const getters = defineGetters<SoraCardState>()({
   isEuroBalanceEnough(...args): boolean {
     const { state } = soraCardGetterContext(args);
     const euroBalance = parseInt(state.euroBalance, 10);
-    return euroBalance > 100;
+    return euroBalance >= 95;
   },
   currentStatus(...args): Nullable<VerificationStatus> {
     // return VerificationStatus.Rejected;
