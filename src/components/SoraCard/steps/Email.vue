@@ -1,18 +1,24 @@
 <template>
   <div class="sora-card">
-    <s-input maxlength="320" placeholder="Email" v-model="email" :disabled="loading" type="email" />
+    <s-input
+      maxlength="320"
+      :placeholder="t('card.emailPlaceholder')"
+      v-model="email"
+      :disabled="loading"
+      type="email"
+    />
     <p class="sora-card__email-input-description">{{ emailInputDescription }}</p>
     <s-icon v-if="emailSent" name="basic-check-mark-24" size="16px" />
     <div v-if="showNameInputs">
       <s-input
         class="sora-card__input-name"
         maxlength="50"
-        placeholder="First Name"
+        :placeholder="t('card.firstNamePlaceholder')"
         v-model="firstName"
         :disabled="loading"
       />
-      <s-input maxlength="50" placeholder="Last Name" v-model="lastName" :disabled="loading" />
-      <p class="sora-card__name-input-description">Use your real name.</p>
+      <s-input maxlength="50" :placeholder="t('card.lastNamePlaceholder')" v-model="lastName" :disabled="loading" />
+      <p class="sora-card__name-input-description">{{ t('card.personalNameInputDesc') }}</p>
     </div>
     <s-button
       type="primary"
@@ -52,8 +58,8 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   @Watch('emailResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
     const digit = value.toString().length > 1 ? '' : '0';
-    const countDown = `${digit}${value}`;
-    this.emailResendText = `RESEND AVAILABLE IN 00:${countDown}`;
+    const countDown = `00:${digit}${value}`;
+    this.emailResendText = this.t('card.resendInBtn', { value: countDown });
   }
 
   handleSendEmail(): void {
@@ -93,13 +99,13 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   get emailInputDescription(): string {
-    if (this.emailSent) return 'We’ve sent you the magic link. Check your email!';
-    return 'We’ll send you a verification email.';
+    if (this.emailSent) return this.t('card.emailInputAfterSendDesc');
+    return this.t('card.emailInputBeforeSendDesc');
   }
 
   get buttonText() {
     if (this.emailSent) return this.emailResendText;
-    return 'SEND VERIFICATION EMAIL';
+    return this.t('card.sendEmailLinkBtn');
   }
 
   get sendBtnDisabled(): boolean {

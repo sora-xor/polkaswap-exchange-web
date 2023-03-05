@@ -44,18 +44,6 @@ import { VerificationStatus } from '@/types/card';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { clearTokensFromLocalStorage } from '@/utils/card';
 
-// Lokalise
-const pendingTitle = 'Your KYC is completed. Waiting for the results';
-const acceptedTitle = 'Your application has been approved';
-const rejectedTitle = 'Application rejected';
-const tryAgainText = 'Try to complete KYC again';
-const pendingText =
-  'You have successfully completed your KYC application. The review is pending, you can expect a decision shortly.';
-const acceptedText = 'Your KYC verification is successful and we are already preparing to send you the SORA card!';
-const rejectedText = "Rejection reason: Some information is missing from the document, or it's partially visible";
-//
-const pendingIcon = 'time-time-24';
-
 @Component
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @state.soraCard.hasFreeAttempts hasFreeAttempts!: boolean;
@@ -65,52 +53,55 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
 
   VerificationStatus = VerificationStatus;
 
-  get buttonText(): string {
-    return tryAgainText;
-  }
+  readonly pendingTitle = this.t('card.statusPendingTitle');
+  readonly pendingText = this.t('card.statusPendingText');
+  readonly acceptedTitle = this.t('card.statusAcceptTitle');
+  readonly acceptedText = this.t('card.statusAcceptText');
+  readonly rejectedTitle = this.t('card.statusRejectTitle');
+  readonly rejectedText = this.t('card.statusRejectText');
 
   get title(): string {
-    if (!this.currentStatus) return pendingTitle;
+    if (!this.currentStatus) return this.pendingTitle;
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
-        return pendingTitle;
+        return this.pendingTitle;
       case VerificationStatus.Accepted:
-        return acceptedTitle;
+        return this.acceptedTitle;
       case VerificationStatus.Rejected:
-        return rejectedTitle;
+        return this.rejectedTitle;
       default:
-        return pendingTitle;
+        return this.pendingTitle;
     }
   }
 
   get text(): string {
-    if (!this.currentStatus) return pendingText;
+    if (!this.currentStatus) return this.pendingText;
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
-        return pendingText;
+        return this.pendingText;
       case VerificationStatus.Accepted:
-        return acceptedText;
+        return this.acceptedText;
       case VerificationStatus.Rejected:
-        return rejectedText;
+        return this.rejectedText;
       default:
-        return pendingText;
+        return this.pendingText;
     }
   }
 
   get icon(): string {
-    if (!this.currentStatus) return pendingIcon;
+    if (!this.currentStatus) return 'time-time-24';
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
-        return pendingIcon;
+        return 'time-time-24';
       case VerificationStatus.Accepted:
         return 'basic-check-marks-24';
       case VerificationStatus.Rejected:
         return 'basic-close-24';
       default:
-        return pendingIcon;
+        return 'time-time-24';
     }
   }
 
@@ -165,6 +156,14 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   }
   &__rejection {
     width: 100%;
+  }
+  &__status-info-test {
+    white-space: pre-line;
+    margin-top: $basic-spacing;
+    text-align: center;
+    width: 85%;
+    font-weight: 300;
+    line-height: 150%;
   }
   &__btn {
     width: 100%;
