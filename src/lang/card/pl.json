@@ -11,6 +11,7 @@
         "phonePlaceholder": "Numer telefonu",
         "sendEmailLinkBtn": "Wyślij link",
         "statusAcceptText": "Twoja weryfikacja KYC przebiegła pomyślnie i już przygotowujemy się do wysłania Ci karty SORA!",
+        "noFreeAttemptsDesc": "",
         "noFreeKycTitle": "",
         "unsupportedCountries": "Nieobsługiwane kraje",
         "getSoraCardTitle": "Zdobądź kartę SORA",
@@ -43,12 +44,13 @@
         "emailInputBeforeSendDesc": "Wyślemy Ci e-mail weryfikacyjny.",
         "emailInputAfterSendDesc": "Wysłaliśmy Ci magiczny link. Sprawdź swój email!",
         "personalNameInputDesc": "Użyj swojego prawdziwego imienia.",
-        "resendEmailLinkBtn": "Ponowne wysłanie dostępne za 00: {value}",
         "infoMessageTryAgain": "Coś poszło nie tak. Proszę spróbuj ponownie",
         "blacklistedCountriesExcuse": "Niestety, w tej chwili nie jesteśmy w stanie obsługiwać następujących krajów:",
         "statusPendingText": "Pomyślnie ukończyłeś aplikację KYC. Przegląd jest w toku i wkrótce możesz spodziewać się decyzji. <br \/> <br \/> Zwykle decyzja jest podejmowana tego samego dnia, ale w niektórych przypadkach może to potrwać do 3 dni.",
         "statusPendingTitle": "KYC zakończone. Czekam na wyniki",
         "statusAcceptTitle": "Twoje zgłoszenie zostało zatwierdzone",
-        "resendInBtn": "WYŚLIJ PONOWNIE W {value}"
+        "resendInBtn": "WYŚLIJ PONOWNIE W {value}",
+        "statusRejectTitle": "Wniosek odrzucony",
+        "statusRejectText": "Twoja aplikacja została odrzucona przez audyt wewnętrzny, przed ponownym złożeniem wniosku zapoznaj się dokładnie z naszymi wymaganiami i T&S"
     }
 }

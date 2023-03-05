@@ -11,6 +11,7 @@
         "phonePlaceholder": "Telefonszám",
         "sendEmailLinkBtn": "Link elküldése",
         "statusAcceptText": "A KYC ellenőrzése sikeres, és már készülünk a SORA kártya elküldésére!",
+        "noFreeAttemptsDesc": "",
         "noFreeKycTitle": "",
         "unsupportedCountries": "Nem támogatott országok",
         "getSoraCardTitle": "Szerezzen SORA kártyát",
@@ -43,12 +44,13 @@
         "emailInputBeforeSendDesc": "Ellenőrző e-mailt küldünk Önnek.",
         "emailInputAfterSendDesc": "Elküldtük a varázslinket. Nézd meg az e-mailedet!",
         "personalNameInputDesc": "Használd az igazi nevedet.",
-        "resendEmailLinkBtn": "Újraküldés elérhető 00-ban: {value}",
         "infoMessageTryAgain": "Valami elromlott. Kérlek próbáld újra",
         "blacklistedCountriesExcuse": "Sajnos jelenleg nem áll módunkban támogatni a következő országokat:",
         "statusPendingText": "Sikeresen kitöltötte KYC-jelentkezését. A felülvizsgálat függőben van, és hamarosan döntésre számíthat. <br \/> <br \/> Általában még aznap megszületik a döntés, de egyes esetekben akár 3 napig is eltarthat.",
         "statusPendingTitle": "A KYC befejeződött. Várjuk az eredményeket",
         "statusAcceptTitle": "Jelentkezését jóváhagyták",
-        "resendInBtn": "ÚJRAKÜLDÉS {value}"
+        "resendInBtn": "ÚJRAKÜLDÉS {value}",
+        "statusRejectTitle": "Jelentkezés elutasítva",
+        "statusRejectText": "Pályázatát a belső ellenőrzés elutasította. Kérjük, az újbóli jelentkezés előtt figyelmesen olvassa el követelményeinket és ÁSZF-ünket"
     }
 }

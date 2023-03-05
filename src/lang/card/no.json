@@ -11,6 +11,7 @@
         "phonePlaceholder": "Telefonnummer",
         "sendEmailLinkBtn": "Send lenke",
         "statusAcceptText": "KYC-verifiseringen din er vellykket, og vi forbereder oss allerede på å sende deg SORA-kortet!",
+        "noFreeAttemptsDesc": "",
         "noFreeKycTitle": "",
         "unsupportedCountries": "Land som ikke støttes",
         "getSoraCardTitle": "Få SORA-kort",
@@ -43,12 +44,13 @@
         "emailInputBeforeSendDesc": "Vi sender deg en bekreftelses-e-post.",
         "emailInputAfterSendDesc": "Vi har sendt deg den magiske lenken. Sjekk e-posten!",
         "personalNameInputDesc": "Bruk ditt virkelige navn.",
-        "resendEmailLinkBtn": "Send på nytt tilgjengelig om 00: {value}",
         "infoMessageTryAgain": "Noe gikk galt. Vær så snill, prøv på nytt",
         "blacklistedCountriesExcuse": "Dessverre kan vi for øyeblikket ikke støtte følgende land:",
         "statusPendingText": "Du har fullført KYC-søknaden din. Evalueringen avventer, og du kan forvente en avgjørelse innen kort tid. <br \/> <br \/> Vanligvis tas avgjørelsen samme dag, men kan i noen tilfeller ta opptil 3 dager.",
         "statusPendingTitle": "KYC fullført. Venter på resultatene",
         "statusAcceptTitle": "Søknaden din er godkjent",
-        "resendInBtn": "SEND PÅ NYTT I {value}"
+        "resendInBtn": "SEND PÅ NYTT I {value}",
+        "statusRejectTitle": "Søknad avslått",
+        "statusRejectText": "Søknaden din har blitt avvist av internrevisjon, vennligst sjekk våre krav og T&S nøye før du søker på nytt"
     }
 }

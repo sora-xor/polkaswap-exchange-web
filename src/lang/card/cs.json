@@ -11,6 +11,7 @@
         "phonePlaceholder": "Telefonní číslo",
         "sendEmailLinkBtn": "Poslat odkaz",
         "statusAcceptText": "Vaše ověření KYC bylo úspěšné a my se již připravujeme na zaslání karty SORA!",
+        "noFreeAttemptsDesc": "",
         "noFreeKycTitle": "",
         "unsupportedCountries": "Nepodporované země",
         "getSoraCardTitle": "Získejte kartu SORA",
@@ -43,12 +44,13 @@
         "emailInputBeforeSendDesc": "Zašleme vám ověřovací e-mail.",
         "emailInputAfterSendDesc": "Poslali jsme vám kouzelný odkaz. Zkontroluj si email!",
         "personalNameInputDesc": "Použijte své skutečné jméno.",
-        "resendEmailLinkBtn": "Opětovné odeslání dostupné za 00: {value}",
         "infoMessageTryAgain": "Něco se pokazilo. Prosím zkuste to znovu",
         "blacklistedCountriesExcuse": "Bohužel v tuto chvíli nejsme schopni podporovat následující země:",
         "statusPendingText": "Úspěšně jste dokončili svou žádost KYC. Kontrola čeká a brzy můžete očekávat rozhodnutí. <br \/> <br \/> Obvykle je rozhodnutí učiněno ve stejný den, ale v některých případech může trvat až 3 dny.",
         "statusPendingTitle": "KYC dokončeno. Čekání na výsledky",
         "statusAcceptTitle": "Vaše žádost byla schválena",
-        "resendInBtn": "ZNOVU ODESLAT V {value}"
+        "resendInBtn": "ZNOVU ODESLAT V {value}",
+        "statusRejectTitle": "Přihláška zamítnuta",
+        "statusRejectText": "Vaše žádost byla zamítnuta interním auditem. Než se znovu přihlásíte, pečlivě si prostudujte naše požadavky a T&S"
     }
 }

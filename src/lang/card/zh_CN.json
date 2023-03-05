@@ -11,6 +11,7 @@
         "phonePlaceholder": "电话号码",
         "sendEmailLinkBtn": "发送链接",
         "statusAcceptText": "您的 KYC 验证成功，我们已经准备向您发送 SORA 卡！",
+        "noFreeAttemptsDesc": "",
         "noFreeKycTitle": "",
         "unsupportedCountries": "不受支持的国家",
         "getSoraCardTitle": "索拉卡",
@@ -43,12 +44,13 @@
         "emailInputBeforeSendDesc": "我们会向您发送一封验证邮件。",
         "emailInputAfterSendDesc": "我们已经向您发送了神奇的链接。查看你的电子邮件！",
         "personalNameInputDesc": "使用您的真实姓名。",
-        "resendEmailLinkBtn": "可在 00 重新发送： {value}",
         "infoMessageTryAgain": "出了些问题。请再试一次",
         "blacklistedCountriesExcuse": "很遗憾，目前我们无法支持以下国家\/地区：",
         "statusPendingText": "您已成功完成 KYC 申请。审查正在进行中，您可以期待很快做出决定。 <br \/> <br \/>通常在同一天做出决定，但在某些情况下可能需要长达 3 天的时间。",
         "statusPendingTitle": "KYC完成。等待结果",
         "statusAcceptTitle": "您的申请已获批准",
-        "resendInBtn": "重发{value}"
+        "resendInBtn": "重发{value}",
+        "statusRejectTitle": "申请被拒绝",
+        "statusRejectText": "您的申请已被内部审核拒绝，请在再次申请前仔细查看我们的要求和 T&S"
     }
 }

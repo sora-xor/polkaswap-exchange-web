@@ -11,6 +11,7 @@
         "phonePlaceholder": "Nomba fonu",
         "sendEmailLinkBtn": "Fi ọna asopọ ranṣẹ",
         "statusAcceptText": "Ijẹrisi KYC rẹ ṣaṣeyọri ati pe a ti mura tẹlẹ lati fi kaadi SORA ranṣẹ si ọ!",
+        "noFreeAttemptsDesc": "",
         "noFreeKycTitle": "",
         "unsupportedCountries": "Awọn orilẹ-ede ti ko ni atilẹyin",
         "getSoraCardTitle": "Gba kaadi SORA",
@@ -43,12 +44,13 @@
         "emailInputBeforeSendDesc": "A yoo fi imeeli ijerisi ranṣẹ si ọ.",
         "emailInputAfterSendDesc": "A ti fi ọna asopọ idan ranṣẹ si ọ. Ṣayẹwo imeeli rẹ!",
         "personalNameInputDesc": "Lo orukọ gidi rẹ.",
-        "resendEmailLinkBtn": "Tun-firanṣẹ wa ni 00: {value}",
         "infoMessageTryAgain": "Nnkan o lo daadaa. Jọwọ gbiyanju lẹẹkansi",
         "blacklistedCountriesExcuse": "Laanu, ni akoko yii a ko ni anfani lati ṣe atilẹyin awọn orilẹ-ede wọnyi:",
         "statusPendingText": "O ti pari ohun elo KYC rẹ ni aṣeyọri. Atunwo naa wa ni isunmọtosi ati pe o le nireti ipinnu kan laipẹ. <br \/> <br \/> Nigbagbogbo ipinnu ni a ṣe ni ọjọ kanna, ṣugbọn ni awọn igba miiran le gba to ọjọ mẹta.",
         "statusPendingTitle": "KYC ti pari. Nduro fun awọn esi",
         "statusAcceptTitle": "Ohun elo rẹ ti fọwọsi",
-        "resendInBtn": "Tun fi ranṣẹ sinu {value}"
+        "resendInBtn": "Tun fi ranṣẹ sinu {value}",
+        "statusRejectTitle": "Ohun elo kọ",
+        "statusRejectText": "Ohun elo rẹ ti kọ nipasẹ iṣayẹwo inu, jọwọ ṣayẹwo awọn ibeere wa ati T&S ni pẹkipẹki ṣaaju lilo lẹẹkansi"
     }
 }

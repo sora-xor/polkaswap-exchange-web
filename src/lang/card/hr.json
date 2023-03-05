@@ -11,6 +11,7 @@
         "phonePlaceholder": "Broj telefona",
         "sendEmailLinkBtn": "Pošalji link",
         "statusAcceptText": "Vaša KYC verifikacija je uspješna i već se pripremamo poslati vam SORA karticu!",
+        "noFreeAttemptsDesc": "",
         "noFreeKycTitle": "",
         "unsupportedCountries": "Nepodržane zemlje",
         "getSoraCardTitle": "Nabavite SORA karticu",
@@ -43,12 +44,13 @@
         "emailInputBeforeSendDesc": "Poslat ćemo vam e-poruku za potvrdu.",
         "emailInputAfterSendDesc": "Poslali smo vam čarobni link. Provjerite e-poštu!",
         "personalNameInputDesc": "Koristite svoje pravo ime.",
-        "resendEmailLinkBtn": "Ponovno slanje dostupno za 00: {value}",
         "infoMessageTryAgain": "Nešto je pošlo po zlu. Molim te pokušaj ponovno",
         "blacklistedCountriesExcuse": "Nažalost, u ovom trenutku nismo u mogućnosti podržati sljedeće zemlje:",
         "statusPendingText": "Uspješno ste završili svoju KYC prijavu. Pregled je u tijeku i odluku možete očekivati uskoro. <br \/> <br \/> Obično se odluka donosi isti dan, ali u nekim slučajevima može potrajati i do 3 dana.",
         "statusPendingTitle": "KYC završen. Čekamo rezultate",
         "statusAcceptTitle": "Vaša prijava je odobrena",
-        "resendInBtn": "PONOVO POŠALJI ZA {value}"
+        "resendInBtn": "PONOVO POŠALJI ZA {value}",
+        "statusRejectTitle": "Prijava odbijena",
+        "statusRejectText": "Vašu je prijavu odbila interna revizija, pažljivo provjerite naše zahtjeve i T&S prije ponovne prijave"
     }
 }
