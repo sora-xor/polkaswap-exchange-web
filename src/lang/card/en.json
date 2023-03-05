@@ -11,7 +11,6 @@
         "phonePlaceholder": "Phone Number",
         "sendEmailLinkBtn": "Send link",
         "statusAcceptText": "Your KYC verification is successful and we are already preparing to send you the SORA card!",
-        "noFreeAttemptsDesc": "You have used your free attempt to pass the KYC process.\\n\\nWe kindly ask you to wait until the next upgrade of the application to proceed with paid attempts.",
         "noFreeKycTitle": "No more free attempts",
         "unsupportedCountries": "Unsupported Countries",
         "getSoraCardTitle": "Get SORA Card",
@@ -48,9 +47,11 @@
         "blacklistedCountriesExcuse": "Unfortunately, at this moment we’re not able to support the following countries:",
         "statusPendingText": "You have successfully completed your KYC application. The review is pending and you can expect a decision shortly.<br \/><br \/>Usually the decision is made the same day, but in some cases can take up to 3 days.",
         "statusPendingTitle": "KYC completed. Waiting for the results",
-        "statusAcceptTitle": "Your application has been approved",
         "resendInBtn": "RESEND IN {value}",
         "statusRejectTitle": "Application rejected",
-        "statusRejectText": "Your application has been rejected by internal audit, please check out our requirements and T&S carefully before applying again"
+        "statusRejectText": "Your application has been rejected by internal audit, please check out our requirements and T&S carefully before applying again",
+        "statusAcceptTitle": "Application approved",
+        "noFreeAttemptsDesc": "You have used your free attempt to pass the KYC process. We kindly ask you to wait until the next upgrade of the application to proceed with paid attempts.",
+        "retryKycBtn": "Try to complete KYC again"
     }
 }

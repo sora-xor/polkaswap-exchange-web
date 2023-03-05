@@ -14,7 +14,7 @@
     </div>
 
     <div class="sora-card__header">{{ title }}</div>
-    <p class="sora-card__status-info">{{ text }}</p>
+    <p class="sora-card__status-info" v-html="text" />
 
     <div v-if="currentStatus === VerificationStatus.Rejected" class="sora-card__rejection">
       <s-button
@@ -23,13 +23,12 @@
         class="sora-card__btn s-typography-button--large"
         @click="handleKycRetry"
       >
-        <span class="text">Try to complete KYC again</span>
+        <span class="text">{{ t('card.retryKycBtn') }}</span>
       </s-button>
       <div v-else class="sora-card__no-more-free-kyc">
-        <h4>No more free attempts</h4>
+        <h4>{{ t('card.noFreeKycTitle') }}</h4>
         <p class="sora-card__no-more-free-kyc-text">
-          You have used your free attempts to pass the KYC process. We kindly ask you to wait until the next update of
-          the application to proceed with paid attempts.
+          {{ t('card.noFreeAttemptsDesc') }}
         </p>
       </div>
     </div>
@@ -150,7 +149,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   &__status-info {
     margin-top: $basic-spacing;
     text-align: center;
-    width: 85%;
+    width: 90%;
     font-weight: 300;
     line-height: 150%;
   }
@@ -190,6 +189,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       bottom: 0px;
       position: absolute;
       border-radius: 50%;
+      opacity: 0.95;
 
       &-element {
         display: block;
@@ -199,11 +199,9 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
 
       &--waiting {
         background-color: var(--s-color-base-content-secondary);
-        opacity: 0.95;
       }
       &--success {
         background-color: var(--s-color-theme-secondary);
-        opacity: 0.95;
       }
       &--reject {
         background-color: var(--s-color-status-error);

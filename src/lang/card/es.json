@@ -11,8 +11,7 @@
         "phonePlaceholder": "Número de teléfono",
         "sendEmailLinkBtn": "Enviar enlace",
         "statusAcceptText": "¡Tu verificación KYC fue exitosa y ya nos estamos preparando para enviarte la tarjeta SORA!",
-        "noFreeAttemptsDesc": "",
-        "noFreeKycTitle": "",
+        "noFreeKycTitle": "No más intentos gratis",
         "unsupportedCountries": "Países no admitidos",
         "getSoraCardTitle": "Obtenga la tarjeta SORA",
         "alreadyAppliedTip": "ya he aplicado",
@@ -48,9 +47,11 @@
         "blacklistedCountriesExcuse": "Lamentablemente, en este momento no podemos admitir los siguientes países:",
         "statusPendingText": "Ha completado con éxito su solicitud KYC. La revisión está pendiente y puede esperar una decisión en breve. <br \/> <br \/> Por lo general, la decisión se toma el mismo día, pero en algunos casos puede demorar hasta 3 días.",
         "statusPendingTitle": "KYC completado. Esperando los resultados",
-        "statusAcceptTitle": "Su solicitud ha sido aprobada",
         "resendInBtn": "REENVIAR EN {value}",
         "statusRejectTitle": "Solicitud rechazada",
-        "statusRejectText": "Su solicitud ha sido rechazada por la auditoría interna, consulte nuestros requisitos y T&S detenidamente antes de volver a presentar la solicitud."
+        "statusRejectText": "Su solicitud ha sido rechazada por la auditoría interna, consulte nuestros requisitos y T&S detenidamente antes de volver a presentar la solicitud.",
+        "statusAcceptTitle": "Solicitud aprobada",
+        "noFreeAttemptsDesc": "Ha utilizado su intento gratuito para pasar el proceso KYC. Le pedimos amablemente que espere hasta la próxima actualización de la aplicación para continuar con los intentos pagados.",
+        "retryKycBtn": "Complete KYC nuevamente"
     }
 }

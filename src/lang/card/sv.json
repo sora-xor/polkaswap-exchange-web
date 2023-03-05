@@ -11,8 +11,7 @@
         "phonePlaceholder": "Telefonnummer",
         "sendEmailLinkBtn": "Skicka länk",
         "statusAcceptText": "Din KYC-verifiering är framgångsrik och vi förbereder redan för att skicka SORA-kortet till dig!",
-        "noFreeAttemptsDesc": "",
-        "noFreeKycTitle": "",
+        "noFreeKycTitle": "Inga fler gratisförsök",
         "unsupportedCountries": "Länder som inte stöds",
         "getSoraCardTitle": "Skaffa SORA-kort",
         "alreadyAppliedTip": "Jag har redan ansökt",
@@ -48,9 +47,11 @@
         "blacklistedCountriesExcuse": "Tyvärr kan vi för närvarande inte stödja följande länder:",
         "statusPendingText": "Du har slutfört din KYC-ansökan. Granskningen väntar och du kan förvänta dig ett beslut inom kort. <br \/> <br \/> Vanligtvis tas beslutet samma dag, men kan i vissa fall ta upp till 3 dagar.",
         "statusPendingTitle": "KYC avslutat. Väntar på resultatet",
-        "statusAcceptTitle": "Din ansökan har godkänts",
         "resendInBtn": "SKICKA OM I {value}",
         "statusRejectTitle": "Ansökan avslogs",
-        "statusRejectText": "Din ansökan har avvisats av internrevision, vänligen kontrollera våra krav och T&S noggrant innan du ansöker igen"
+        "statusRejectText": "Din ansökan har avvisats av internrevision, vänligen kontrollera våra krav och T&S noggrant innan du ansöker igen",
+        "statusAcceptTitle": "Ansökan godkänd",
+        "noFreeAttemptsDesc": "Du har använt ditt fria försök att klara KYC-processen. Vi ber dig att vänta till nästa uppgradering av applikationen för att fortsätta med betalda försök.",
+        "retryKycBtn": "Slutför KYC igen"
     }
 }

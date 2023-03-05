@@ -11,7 +11,6 @@
         "phonePlaceholder": "Numéro de téléphone",
         "sendEmailLinkBtn": "Envoyer le lien",
         "statusAcceptText": "Votre vérification KYC a été validée et nous préparons déjà votre carte pour vous l'envoyer!",
-        "noFreeAttemptsDesc": "Vous avez épuisé votre nombre d'essais gratuits pour l'opération de KYC.\nNous vous prions d'attendre la prochaine mise à jour pour continuer avec les essais payants",
         "noFreeKycTitle": "Nombre d'essais gratuits épuisé",
         "unsupportedCountries": "Pays non pris en charge",
         "getSoraCardTitle": "Obtenir la carte SORA",
@@ -48,9 +47,11 @@
         "blacklistedCountriesExcuse": "Malheureusement, pour le moment, nous ne sommes pas en mesure de prendre en charge les pays suivants:",
         "statusPendingText": "Vous avez terminé avec succès votre demande KYC. L'examen est en cours et vous pouvez vous attendre à une décision sous peu. <br \/> <br \/> Habituellement, la décision est prise le jour même, mais dans certains cas, cela peut prendre jusqu'à 3 jours.",
         "statusPendingTitle": "KYC terminé. En attendant les résultats",
-        "statusAcceptTitle": "Votre candidature a été approuvée",
         "resendInBtn": "RENVOYER DANS {value}",
         "statusRejectTitle": "Demande rejetée",
-        "statusRejectText": "Votre candidature a été rejetée par l'audit interne, veuillez vérifier attentivement nos exigences et nos conditions générales avant de postuler à nouveau"
+        "statusRejectText": "Votre candidature a été rejetée par l'audit interne, veuillez vérifier attentivement nos exigences et nos conditions générales avant de postuler à nouveau",
+        "statusAcceptTitle": "Demande approuvée",
+        "noFreeAttemptsDesc": "Vous avez utilisé votre tentative gratuite pour réussir le processus KYC. Nous vous prions de bien vouloir attendre la prochaine mise à jour de l'application pour procéder aux tentatives payantes.",
+        "retryKycBtn": "Complétez à nouveau KYC"
     }
 }

@@ -15,7 +15,7 @@ const getters = defineGetters<SoraCardState>()({
     return euroBalance >= 95;
   },
   currentStatus(...args): Nullable<VerificationStatus> {
-    // CHECKME: carefully check what each status defines.
+    // CHECKME: carefully check what each status defines. // TODO: [Tech] move this logic to backend
     const { state } = soraCardGetterContext(args);
     const { kycStatus, verificationStatus } = state;
 
