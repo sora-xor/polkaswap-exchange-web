@@ -11,7 +11,6 @@
         "phonePlaceholder": "Telefoonnummer",
         "sendEmailLinkBtn": "Link nogmaals versturen",
         "statusAcceptText": "Uw KYC-verificatie is succesvol en we zijn al bezig met de voorbereidingen om u de SORA Card te sturen!",
-        "noFreeAttemptsDesc": "Je hebt je gratis pogingen gebruikt om het KYC proces kostenloos te doorlopen. We vragen je te wachten tot de volgende upgrade van de applicatie om verder te gaan met pogingen tegen betaling.",
         "noFreeKycTitle": "Geen gratis KYC pogingen meer",
         "unsupportedCountries": "Niet-ondersteunde landen",
         "getSoraCardTitle": "Koop een SORA-kaart",
@@ -48,9 +47,11 @@
         "blacklistedCountriesExcuse": "Helaas kunnen we op dit moment de volgende landen niet ondersteunen:",
         "statusPendingText": "U heeft uw KYC-aanvraag succesvol afgerond. De beoordeling is in behandeling en u kunt binnenkort een beslissing verwachten. <br \/> <br \/> Meestal wordt de beslissing dezelfde dag genomen, maar in sommige gevallen kan het tot 3 dagen duren.",
         "statusPendingTitle": "KYC voltooid. Wachten op de resultaten",
-        "statusAcceptTitle": "Uw aanvraag is goedgekeurd",
         "resendInBtn": "OPNIEUW VERZENDEN BINNEN {value}",
         "statusRejectTitle": "Aanvraag afgewezen",
-        "statusRejectText": "Uw aanvraag is afgewezen door een interne audit. Bekijk onze vereisten en T&S zorgvuldig voordat u opnieuw solliciteert"
+        "statusRejectText": "Uw aanvraag is afgewezen door een interne audit. Bekijk onze vereisten en T&S zorgvuldig voordat u opnieuw solliciteert",
+        "statusAcceptTitle": "Aanvraag goedgekeurd",
+        "noFreeAttemptsDesc": "Je hebt je gratis poging gebruikt om door het KYC-proces te komen. We vragen u vriendelijk om te wachten tot de volgende upgrade van de applicatie om door te gaan met betaalde pogingen.",
+        "retryKycBtn": "Voltooi KYC opnieuw"
     }
 }

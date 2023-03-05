@@ -11,8 +11,7 @@
         "phonePlaceholder": "Số điện thoại",
         "sendEmailLinkBtn": "Gửi link",
         "statusAcceptText": "Xác minh KYC của bạn thành công và chúng tôi đang chuẩn bị gửi cho bạn thẻ SORA!",
-        "noFreeAttemptsDesc": "",
-        "noFreeKycTitle": "",
+        "noFreeKycTitle": "Không còn nỗ lực miễn phí",
         "unsupportedCountries": "Các quốc gia không được hỗ trợ",
         "getSoraCardTitle": "Nhận thẻ SORA",
         "alreadyAppliedTip": "tôi đã nộp đơn",
@@ -48,9 +47,11 @@
         "blacklistedCountriesExcuse": "Rất tiếc, tại thời điểm này, chúng tôi không thể hỗ trợ các quốc gia sau:",
         "statusPendingText": "Bạn đã hoàn thành thành công ứng dụng KYC của mình. Quá trình xem xét đang chờ xử lý và bạn có thể sớm nhận được quyết định. <br \/> <br \/> Thông thường quyết định được đưa ra trong ngày, nhưng trong một số trường hợp có thể mất đến 3 ngày.",
         "statusPendingTitle": "KYC đã hoàn tất. Đang chờ kết quả",
-        "statusAcceptTitle": "Đơn đăng ký của bạn đã được phê duyệt",
         "resendInBtn": "GỬI LẠI VÀO {value}",
         "statusRejectTitle": "Đơn bị từ chối",
-        "statusRejectText": "Đơn đăng ký của bạn đã bị kiểm toán nội bộ từ chối, vui lòng kiểm tra kỹ các yêu cầu và T&S của chúng tôi trước khi đăng ký lại"
+        "statusRejectText": "Đơn đăng ký của bạn đã bị kiểm toán nội bộ từ chối, vui lòng kiểm tra kỹ các yêu cầu và T&S của chúng tôi trước khi đăng ký lại",
+        "statusAcceptTitle": "Ứng dụng đã được phê duyệt",
+        "noFreeAttemptsDesc": "Bạn đã sử dụng nỗ lực miễn phí của mình để vượt qua quy trình KYC. Chúng tôi vui lòng yêu cầu bạn đợi cho đến lần nâng cấp tiếp theo của ứng dụng để tiếp tục với các lần thử trả phí.",
+        "retryKycBtn": "Hoàn thành KYC lại"
     }
 }
