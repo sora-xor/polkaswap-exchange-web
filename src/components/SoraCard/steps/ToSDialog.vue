@@ -1,17 +1,19 @@
 <template>
   <dialog-base :visible.sync="isVisible" class="terms-of-service-dialog" :title="title">
-    <div v-if="!srcLink" class="sora-card__excuse">
-      Unfortunately, at this moment we’re not able to support the following countries:
-    </div>
     <div v-if="srcLink" v-loading="loading" class="tos__section">
       <iframe @load="onIFrameLoad" :src="srcLink" width="100%" height="600px" frameborder="0"></iframe>
     </div>
-    <div v-else class="tos__section">
-      <ul class="sora-card__unsupported-countries">
-        <li v-for="[key, value] in unsupportedCountries" :key="key">
-          <span class="flags">{{ countryCodeEmoji(key) }} </span> {{ value }}
-        </li>
-      </ul>
+    <div v-else>
+      <div class="sora-card__excuse">
+        {{ t('card.blacklistedCountriesExcuse') }}
+      </div>
+      <div class="tos__section">
+        <ul class="sora-card__unsupported-countries">
+          <li v-for="[key, value] in unsupportedCountries" :key="key">
+            <span class="flags">{{ countryCodeEmoji(key) }} </span> {{ value }}
+          </li>
+        </ul>
+      </div>
     </div>
   </dialog-base>
 </template>
