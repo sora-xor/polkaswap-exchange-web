@@ -20,6 +20,10 @@
         {{ freeStartUsingDesc }}
       </p>
     </div>
+    <div class="sora-card__unsupported-countries-disclaimer">
+      Residents from certain countries can not apply for SORA Card at this moment
+      <span class="sora-card__unsupported-countries-disclaimer--link">See the list</span>
+    </div>
     <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
       <div v-if="isEuroBalanceEnough || !isLoggedIn" class="sora-card__options--enough-euro">
         <s-button
@@ -240,11 +244,26 @@ Get a Euro IBAN account and a Mastercard Debit Card`;
     width: 100%;
   }
 
-  &__user-applied {
-    margin-top: 24px;
+  &__unsupported-countries-disclaimer {
     color: var(--s-color-base-content-secondary);
+    text-align: center;
+    margin-top: var(--s-size-mini);
+    width: 75%;
+    &--link {
+      border-bottom: 1px solid var(--s-color-theme-accent);
+      color: var(--s-color-theme-accent);
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__user-applied {
+    margin-top: calc(var(--s-basic-spacing) * 2);
+    color: var(--s-color-theme-accent);
+    text-transform: uppercase;
+    font-weight: 500;
     padding-bottom: calc(var(--s-basic-spacing) / 2);
-    border-bottom: 1px solid var(--s-color-base-content-secondary);
     &:hover {
       cursor: pointer;
     }
