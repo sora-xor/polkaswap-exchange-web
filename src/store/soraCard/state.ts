@@ -14,6 +14,7 @@ function initialState(): SoraCardState {
     authLogin: null,
     hasFreeAttempts: null,
     wantsToPassKycAgain: false,
+    rejectReason: null,
   };
 }
 

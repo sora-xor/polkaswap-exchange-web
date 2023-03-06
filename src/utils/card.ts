@@ -43,9 +43,9 @@ export async function defineUserStatus(): Promise<Status> {
     }
   }
 
-  const { kycStatus, verificationStatus } = await getUserStatus(sessionAccessToken);
+  const { kycStatus, verificationStatus, rejectReason } = await getUserStatus(sessionAccessToken);
 
-  return { kycStatus, verificationStatus };
+  return { kycStatus, verificationStatus, rejectReason };
 }
 
 async function getUpdatedJwtPair(refreshToken: string): Promise<Nullable<string>> {
@@ -96,9 +96,10 @@ async function getUserStatus(accessToken: string): Promise<Status> {
 
     const verificationStatus: VerificationStatus = lastRecord.verification_status;
     const kycStatus: KycStatus = lastRecord.kyc_status;
+    const rejectReason: string = lastRecord.additional_description;
 
     if (Object.keys(VerificationStatus).includes(verificationStatus) && Object.keys(KycStatus).includes(kycStatus)) {
-      return { verificationStatus, kycStatus };
+      return { verificationStatus, kycStatus, rejectReason };
     }
 
     return emptyStatusFields();

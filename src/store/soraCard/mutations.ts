@@ -38,6 +38,9 @@ const mutations = defineMutations<SoraCardState>()({
   setWillToPassKycAgain(state, will: boolean) {
     state.wantsToPassKycAgain = will;
   },
+  setRejectReason(state, rejectReason: string) {
+    state.rejectReason = rejectReason;
+  },
 });
 
 export default mutations;

@@ -46,6 +46,7 @@ import { clearTokensFromLocalStorage } from '@/utils/card';
 @Component
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @state.soraCard.hasFreeAttempts hasFreeAttempts!: boolean;
+  @state.soraCard.rejectReason rejectReason!: string;
   @getter.soraCard.currentStatus currentStatus!: VerificationStatus;
   @mutation.soraCard.setWillToPassKycAgain setWillToPassKycAgain!: (boolean) => void;
   @action.soraCard.getUserKycAttempt getUserKycAttempt!: AsyncFnWithoutArgs;
@@ -57,7 +58,13 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   readonly acceptedTitle = this.t('card.statusAcceptTitle');
   readonly acceptedText = this.t('card.statusAcceptText');
   readonly rejectedTitle = this.t('card.statusRejectTitle');
-  readonly rejectedText = this.t('card.statusRejectText');
+
+  get rejectedText(): string {
+    if (this.currentStatus === VerificationStatus.Rejected && this.rejectReason) {
+      return `Rejection reason: ${this.rejectReason}`;
+    }
+    return this.t('card.statusRejectText');
+  }
 
   get title(): string {
     if (!this.currentStatus) return this.pendingTitle;

@@ -13,4 +13,5 @@ export type SoraCardState = {
   authLogin: any;
   hasFreeAttempts: Nullable<boolean>;
   wantsToPassKycAgain: boolean;
+  rejectReason: Nullable<string>;
 };
