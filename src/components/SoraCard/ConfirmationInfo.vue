@@ -164,6 +164,14 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     font-weight: 300;
     line-height: 150%;
   }
+  &__status-info-test {
+    white-space: pre-line;
+    margin-top: $basic-spacing;
+    text-align: center;
+    width: 85%;
+    font-weight: 300;
+    line-height: 150%;
+  }
   &__btn {
     width: 100%;
   }
