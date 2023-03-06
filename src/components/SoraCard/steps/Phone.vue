@@ -13,7 +13,7 @@
         <s-input
           ref="phone"
           class="phone-number"
-          placeholder="Phone number"
+          :placeholder="t('card.phonePlaceholder')"
           v-maska="'############'"
           v-model="phoneNumber"
           :disabled="phoneInputDisabled"
@@ -34,7 +34,7 @@
     </div>
     <s-input
       ref="otp"
-      placeholder="Verification code"
+      :placeholder="t('card.otpPlaceholder')"
       v-maska="'######'"
       v-model="verificationCode"
       :disabled="otpInputDisabled"
@@ -57,7 +57,7 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { action, getter, state } from '@/store/decorators';
+import { action, getter, mutation, state } from '@/store/decorators';
 import { VerificationStatus } from '@/types/card';
 
 const MIN_PHONE_LENGTH_WITH_CODE = 8;
@@ -67,13 +67,18 @@ const RESEND_INTERVAL = 59;
 @Component
 export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.soraCard.authLogin private authLogin!: any;
+  @state.soraCard.hasFreeAttempts hasFreeAttempts!: boolean;
+  @state.soraCard.wantsToPassKycAgain wantsToPassKycAgain!: boolean;
   @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
   @getter.soraCard.isEuroBalanceEnough private isEuroBalanceEnough!: boolean;
 
+  @mutation.soraCard.setWillToPassKycAgain setWillToPassKycAgain!: (boolean) => void;
+
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.initPayWingsAuthSdk private initPayWingsAuthSdk!: AsyncFnWithoutArgs;
+  @action.soraCard.getUserKycAttempt getUserKycAttempt!: AsyncFnWithoutArgs;
 
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
@@ -94,8 +99,8 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   @Watch('smsResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
     const digit = value.toString().length > 1 ? '' : '0';
-    const countDown = `${digit}${value}`;
-    this.smsResendText = `RESEND IN 0:${countDown}`;
+    const countDown = `0:${digit}${value}`;
+    this.smsResendText = this.t('card.resendInBtn', { value: countDown });
   }
 
   @Watch('isEuroBalanceEnough', { immediate: true })
@@ -112,7 +117,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
       this.sendOtpBtnLoading = false;
       this.verificationCode = '';
       this.$notify({
-        message: 'Code is incorrect',
+        message: this.t('card.infoMessageWrongOtp'),
         type: 'error',
         title: '',
       });
@@ -169,14 +174,14 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 
   get buttonText(): string {
     if (this.verificationCode.length !== OTP_CODE_LENGTH) {
-      return 'ENTER THE VERIFICATION CODE';
+      return this.t('card.enterCodeBtn');
     }
 
     if (this.notPassedKycAndNotHasXorEnough) {
       return this.t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
     }
 
-    return 'CONFIRM SMS CODE';
+    return this.t('card.confirmCodeBtn');
   }
 
   set buttonText(value) {
@@ -185,7 +190,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 
   get sendSmsButtonText(): string {
     if (this.smsSent) return this.smsResendText;
-    return 'SEND SMS CODE';
+    return this.t('card.sendCodeBtn');
   }
 
   get isMainnet(): boolean {
@@ -207,11 +212,9 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 
   get phoneInputDescription(): string {
     if (this.smsSent) {
-      return this.isMainnet
-        ? 'We’ve sent you an SMS code. Check your messages!'
-        : 'Your code for testing purposes: 123456';
+      return this.isMainnet ? this.t('card.phoneInputAfterSendDesc') : 'Your code for testing purposes: 123456';
     }
-    return 'We’ll send you an SMS code.';
+    return this.t('card.phoneInputBeforeSendDesc');
   }
 
   startSmsCountDown(): void {
@@ -250,7 +253,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
         if (this.userApplied) {
           this.$notify({
             title: '',
-            message: 'KYC process has not been finished.',
+            message: this.t('card.infoMessageNoKYC'),
             type: 'info',
           });
         }
@@ -273,11 +276,27 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
       .on('Otp-Verification-Success', async () => {
         await this.getUserStatus();
 
+        if (this.currentStatus === VerificationStatus.Rejected) {
+          await this.getUserKycAttempt();
+
+          if (this.wantsToPassKycAgain && this.hasFreeAttempts) {
+            const state = {
+              goToEmail: false,
+              startKyc: true,
+              showBanner: false,
+            };
+
+            this.$emit('confirm', state);
+            this.setWillToPassKycAgain(false);
+            return;
+          }
+        }
+
         if (!this.currentStatus) {
           if (this.userApplied) {
             this.$notify({
               title: '',
-              message: 'KYC process has not been finished.',
+              message: this.t('card.infoMessageNoKYC'),
               type: 'info',
             });
           }

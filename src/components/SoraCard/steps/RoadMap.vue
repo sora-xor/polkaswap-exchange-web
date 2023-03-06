@@ -5,8 +5,8 @@
         <div class="map__section">
           <email-icon class="map__icon"></email-icon>
           <div class="text">
-            <h4 class="map__point">Verify contact info</h4>
-            <span class="map__point-desc">Email and phone number</span>
+            <h4 class="map__point">{{ t('card.roadmap.contactInfoTitle') }}</h4>
+            <span class="map__point-desc">{{ t('card.roadmap.contactInfoDesc') }}</span>
             <div class="line"></div>
           </div>
           <div v-if="firstPointChecked" class="point point--checked">
@@ -18,8 +18,8 @@
         <div class="map__section">
           <user-icon class="map__icon"></user-icon>
           <div class="text">
-            <h4 class="map__point">Verify documents</h4>
-            <span class="map__point-desc">Selfie with a document</span>
+            <h4 class="map__point">{{ t('card.roadmap.docsTitle') }}</h4>
+            <span class="map__point-desc">{{ t('card.roadmap.docsDesc') }}</span>
             <div class="line"></div>
           </div>
           <div v-if="secondPointChecked" class="point point--checked">
@@ -31,8 +31,8 @@
         <div class="map__section">
           <card-icon class="map__icon"></card-icon>
           <div class="text">
-            <h4 class="map__point">Submit personal data</h4>
-            <span class="map__point-desc">Full name & proof of address</span>
+            <h4 class="map__point">{{ t('card.roadmap.personalDataTitle') }}</h4>
+            <span class="map__point-desc">{{ t('card.roadmap.personalDataTitle') }}</span>
             <div class="line line--last"></div>
           </div>
           <div v-if="thirdPointChecked" class="point point--checked">
@@ -53,7 +53,7 @@
       class="sora-card__btn s-typography-button--large"
       @click="handleConfirm"
     >
-      <span class="text">{{ btnText }}</span>
+      <span class="text">{{ t('card.letsStartBtn') }}</span>
     </s-button>
     <notification-enabling-page v-if="permissionDialogVisibility">
       {{ t('code.allowanceRequest') }}
@@ -68,7 +68,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
 import CardIcon from '@/assets/img/sora-card/card.svg?inline';
 import UserIcon from '@/assets/img/sora-card/user.svg?inline';
-import { clearTokensFromSessionStorage } from '@/utils/card';
+import { clearTokensFromLocalStorage } from '@/utils/card';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
@@ -93,7 +93,6 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   thirdPointChecked = false;
   thirdPointCurrent = false;
 
-  btnText = 'LET’S START';
   btnDisabled = false;
   btnLoading = false;
 
@@ -112,7 +111,7 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   mounted(): void {
-    clearTokensFromSessionStorage();
+    clearTokensFromLocalStorage();
 
     if (this.userApplied) {
       this.firstPointCurrent = true;
