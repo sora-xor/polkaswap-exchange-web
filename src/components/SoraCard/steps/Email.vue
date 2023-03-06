@@ -162,10 +162,6 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
       .on('Verification-Email-Sent-Success', () => {
         this.emailSent = true;
       })
-      .on('Otp-Verification-Success', () => {
-        // Tokens are stored in local storage localStorage.getItem('PW-token'); localStorage.getItem('PW-refresh-token');
-        /* Minimal registration is required */
-      })
       .on('Verification-Email-ReSent-Success', () => {
         this.emailSent = true;
       })
