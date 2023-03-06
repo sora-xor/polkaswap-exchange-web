@@ -1,16 +1,11 @@
 @Library('jenkins-library@SNE-261-arachni')
 
-String environments           = 'deploy/exchange-dev, deploy/exchange-stage1'
-String targetEnvironment      = environments
-String jobList                = targetEnvironment
-String arachniURL             = targetEnvironment == 'deploy/exchange-stage1' ? 'https://test.polkaswap.io' : 'https://exchange.dev.sora2.tachi.soramitsu.co.jp/'
-
-properties([
-    pipelineTriggers([upstream( jobList )])
-])
+String targetEnvironment = 'deploy/exchange-stage1'
+String arachniURL        = 'https://test.polkaswap.io'
 
 def pipeline = new org.soramitsu.DASTPipeline(
     steps: this,
     arachniURL: arachniURL,
+    targetEnvironment: targetEnvironment
 )
 pipeline.runPipeline()
