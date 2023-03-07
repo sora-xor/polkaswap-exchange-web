@@ -52,6 +52,9 @@
         "statusRejectText": "Your application has been rejected by internal audit, please check out our requirements and T&S carefully before applying again",
         "statusAcceptTitle": "Application approved",
         "noFreeAttemptsDesc": "You have used your free attempt to pass the KYC process. We kindly ask you to wait until the next upgrade of the application to proceed with paid attempts.",
-        "retryKycBtn": "Try to complete KYC again"
+        "retryKycBtn": "Try to complete KYC again",
+        "unsupportedCountriesLink": "See the list",
+        "unsupportedCountriesDisclaimer": "Residents from certain countries can not apply for SORA Card at this moment",
+        "statusRejectReason": "Rejection reason"
     }
 }

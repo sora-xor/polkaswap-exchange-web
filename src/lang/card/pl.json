@@ -52,6 +52,9 @@
         "statusRejectText": "Twoja aplikacja została odrzucona przez audyt wewnętrzny, przed ponownym złożeniem wniosku zapoznaj się dokładnie z naszymi wymaganiami i T&S",
         "statusAcceptTitle": "Aplikacja zatwierdzona",
         "noFreeAttemptsDesc": "Wykorzystałeś swoją bezpłatną próbę przejścia procesu KYC. Uprzejmie prosimy o zaczekanie do następnej aktualizacji aplikacji, aby przystąpić do płatnych prób.",
-        "retryKycBtn": "Ukończ KYC ponownie"
+        "retryKycBtn": "Ukończ KYC ponownie",
+        "unsupportedCountriesLink": "Zobacz listę",
+        "unsupportedCountriesDisclaimer": "Mieszkańcy niektórych krajów nie mogą w tej chwili ubiegać się o kartę SORA",
+        "statusRejectReason": "Powód odrzucenia"
     }
 }

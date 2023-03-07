@@ -52,6 +52,9 @@
         "statusRejectText": "Ihre Bewerbung wurde von der internen Revision abgelehnt. Bitte lesen Sie unsere Anforderungen und AGB sorgfältig durch, bevor Sie sich erneut bewerben",
         "statusAcceptTitle": "Antrag genehmigt",
         "noFreeAttemptsDesc": "Sie haben Ihren kostenlosen Versuch genutzt, um den KYC-Prozess zu bestehen. Wir bitten Sie, bis zum nächsten Upgrade der Anwendung zu warten, um mit kostenpflichtigen Versuchen fortzufahren.",
-        "retryKycBtn": "Führen Sie KYC erneut durch"
+        "retryKycBtn": "Führen Sie KYC erneut durch",
+        "unsupportedCountriesLink": "Siehe die Liste",
+        "unsupportedCountriesDisclaimer": "Einwohner bestimmter Länder können derzeit keine SORA Card beantragen",
+        "statusRejectReason": "Ablehnungsgrund"
     }
 }

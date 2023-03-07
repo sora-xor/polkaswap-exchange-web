@@ -1,11 +1,11 @@
 {
     "card": {
         "termsAndConditions": "algemene voorwaarden",
-        "disclaimerCollectData": "Om een IBAN-rekening voor de SORA-kaart te krijgen, moeten gebruikers een KYC-procedure ondergaan bij de uitgever van de kaart. Dit is verplichte naleving. De SORA-gemeenschap verzamelt geen persoonlijke gegevens en zal dat ook niet doen.",
+        "disclaimerCollectData": "Om een IBAN-rekening voor deSORA Card te krijgen, moeten gebruikers een KYC-procedure ondergaan bij de uitgever van de kaart. De SORA community verzamelt geen persoonlijke gegevens van de gebruiker, deze worden enkel door de uitgever van de kaart verwerkt.",
         "privacyPolicy": "Privacybeleid",
         "acceptAndContinue": "Accepteren en doorgaan",
         "emailPlaceholder": "E-mail",
-        "sendCodeBtn": "Verzenden",
+        "sendCodeBtn": "SMS code verzenden",
         "firstNamePlaceholder": "Voornaam",
         "lastNamePlaceholder": "Achternaam",
         "phonePlaceholder": "Telefoonnummer",
@@ -52,6 +52,9 @@
         "statusRejectText": "Uw aanvraag is afgewezen door een interne audit. Bekijk onze vereisten en T&S zorgvuldig voordat u opnieuw solliciteert",
         "statusAcceptTitle": "Aanvraag goedgekeurd",
         "noFreeAttemptsDesc": "Je hebt je gratis poging gebruikt om door het KYC-proces te komen. We vragen u vriendelijk om te wachten tot de volgende upgrade van de applicatie om door te gaan met betaalde pogingen.",
-        "retryKycBtn": "Voltooi KYC opnieuw"
+        "retryKycBtn": "Voltooi KYC opnieuw",
+        "unsupportedCountriesLink": "Zie de lijst",
+        "unsupportedCountriesDisclaimer": "Inwoners uit bepaalde landen kunnen op dit moment geen SORA Card aanvragen",
+        "statusRejectReason": "Reden afwijzing"
     }
 }
