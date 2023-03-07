@@ -52,6 +52,9 @@
         "statusRejectText": "Vaša žiadosť bola zamietnutá interným auditom. Pred opätovnou žiadosťou si pozorne prečítajte naše požiadavky a T&S",
         "statusAcceptTitle": "Žiadosť schválená",
         "noFreeAttemptsDesc": "Využili ste svoj bezplatný pokus na absolvovanie procesu KYC. Prosíme vás, aby ste s platenými pokusmi počkali do ďalšej inovácie aplikácie.",
-        "retryKycBtn": "Dokončite KYC znova"
+        "retryKycBtn": "Dokončite KYC znova",
+        "unsupportedCountriesLink": "Pozrite si zoznam",
+        "unsupportedCountriesDisclaimer": "Obyvatelia niektorých krajín v súčasnosti nemôžu požiadať o kartu SORA",
+        "statusRejectReason": "Dôvod odmietnutia"
     }
 }

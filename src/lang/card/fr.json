@@ -49,9 +49,12 @@
         "statusPendingTitle": "KYC terminé. En attendant les résultats",
         "resendInBtn": "RENVOYER DANS {value}",
         "statusRejectTitle": "Demande rejetée",
-        "statusRejectText": "Votre candidature a été rejetée par l'audit interne, veuillez vérifier attentivement nos exigences et nos conditions générales avant de postuler à nouveau",
+        "statusRejectText": "Votre candidature a été rejetée par l'audit interne, veuillez vérifier attentivement nos exigences et nos conditions générales avant de postuler de nouveau",
         "statusAcceptTitle": "Demande approuvée",
-        "noFreeAttemptsDesc": "Vous avez utilisé votre tentative gratuite pour réussir le processus KYC. Nous vous prions de bien vouloir attendre la prochaine mise à jour de l'application pour procéder aux tentatives payantes.",
-        "retryKycBtn": "Complétez à nouveau KYC"
+        "noFreeAttemptsDesc": "Vous avez utilisé votre tentative gratuite pour réussir le processus de KYC. Nous vous prions de bien vouloir attendre la prochaine mise à jour de l'application pour procéder aux tentatives payantes",
+        "retryKycBtn": "Complétez à nouveau la procédure de KYC",
+        "unsupportedCountriesLink": "Voir la liste",
+        "unsupportedCountriesDisclaimer": "Les résidents de certains pays ne peuvent pas demander de carte SORA pour le moment",
+        "statusRejectReason": "Motif de rejet"
     }
 }

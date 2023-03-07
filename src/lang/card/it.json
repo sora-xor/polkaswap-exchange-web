@@ -52,6 +52,9 @@
         "statusRejectText": "La tua domanda è stata respinta dall'audit interno, controlla attentamente i nostri requisiti e T&S prima di fare nuovamente domanda",
         "statusAcceptTitle": "Domanda approvata",
         "noFreeAttemptsDesc": "Hai utilizzato il tuo tentativo gratuito per superare il processo KYC. Si prega di attendere il prossimo aggiornamento dell'applicazione per procedere con i tentativi a pagamento.",
-        "retryKycBtn": "Completa di nuovo KYC"
+        "retryKycBtn": "Completa di nuovo KYC",
+        "unsupportedCountriesLink": "Vedi l'elenco",
+        "unsupportedCountriesDisclaimer": "I residenti di alcuni paesi non possono richiedere SORA Card in questo momento",
+        "statusRejectReason": "Motivo del rifiuto"
     }
 }

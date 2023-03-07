@@ -52,6 +52,9 @@
         "statusRejectText": "Permohonan Anda telah ditolak oleh audit internal, harap periksa persyaratan dan T&S kami dengan saksama sebelum mengajukan permohonan kembali",
         "statusAcceptTitle": "Permohonan disetujui",
         "noFreeAttemptsDesc": "Anda telah menggunakan percobaan gratis untuk melewati proses KYC. Kami dengan hormat meminta Anda untuk menunggu hingga pemutakhiran aplikasi berikutnya untuk melanjutkan upaya berbayar.",
-        "retryKycBtn": "Selesaikan KYC lagi"
+        "retryKycBtn": "Selesaikan KYC lagi",
+        "unsupportedCountriesLink": "Lihat daftarnya",
+        "unsupportedCountriesDisclaimer": "Penduduk dari negara tertentu tidak dapat mengajukan SORA Card untuk saat ini",
+        "statusRejectReason": "Alasan penolakan"
     }
 }

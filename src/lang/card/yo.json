@@ -52,6 +52,9 @@
         "statusRejectText": "Ohun elo rẹ ti kọ nipasẹ iṣayẹwo inu, jọwọ ṣayẹwo awọn ibeere wa ati T&S ni pẹkipẹki ṣaaju lilo lẹẹkansi",
         "statusAcceptTitle": "Ohun elo fọwọsi",
         "noFreeAttemptsDesc": "O ti lo igbiyanju ọfẹ rẹ lati kọja ilana KYC naa. A fi inurere beere lọwọ rẹ lati duro titi ti iṣagbega atẹle ti ohun elo lati tẹsiwaju pẹlu awọn igbiyanju isanwo.",
-        "retryKycBtn": "Pari KYC lẹẹkansi"
+        "retryKycBtn": "Pari KYC lẹẹkansi",
+        "unsupportedCountriesLink": "Wo atokọ naa",
+        "unsupportedCountriesDisclaimer": "Awọn olugbe lati awọn orilẹ-ede kan ko le beere fun Kaadi SORA ni akoko yii",
+        "statusRejectReason": "Idi ijusile"
     }
 }

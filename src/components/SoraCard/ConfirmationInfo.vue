@@ -61,7 +61,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
 
   get rejectedText(): string {
     if (this.currentStatus === VerificationStatus.Rejected && this.rejectReason) {
-      return `Rejection reason: ${this.rejectReason}`;
+      return `${this.t('card.statusRejectReason')}: ${this.rejectReason}`;
     }
     return this.t('card.statusRejectText');
   }
