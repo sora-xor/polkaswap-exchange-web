@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR, KnownAssets } from '@sora-substrate/util/build/assets/consts';
 import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
