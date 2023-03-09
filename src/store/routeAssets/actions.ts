@@ -17,6 +17,7 @@ import { findLast, groupBy, sumBy } from 'lodash';
 import { NumberLike } from '@sora-substrate/math';
 import { Messages } from '@sora-substrate/util/build/logger';
 import { assert } from '@polkadot/util';
+import { slippageMultiplier } from '@/modules/ADAR/consts';
 
 const actions = defineActions({
   processingNextStage(context) {
@@ -392,10 +393,12 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
   const findAsset = (assetName: string) => {
     return assetsTable.find((item: Asset) => item.address === assetName);
   };
+  let inputTokenAmount: FPNumber = FPNumber.ZERO;
   const swapTransferData = groupedData.map((entry) => {
     const [outcomeAssetId, receivers] = entry;
     const approxSum = sumBy(receivers, (receiver) => receiver.usd);
     const dexIdData = getAmountAndDexId(context, inputAsset, findAsset(outcomeAssetId) as Asset, approxSum);
+    inputTokenAmount = inputTokenAmount.add(FPNumber.fromCodecValue(dexIdData?.amountFrom as string));
     const dexId = dexIdData?.bestDexId;
     return {
       outcomeAssetId,
@@ -404,8 +407,7 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
     };
   });
 
-  // const formattedToAddress = receiver.slice(0, 2) === 'cn' ? receiver : this.root.formatAddress(receiver);
-  const maxInputAmount = getAssetBalance(inputAsset);
+  const maxInputAmount = inputTokenAmount.mul(new FPNumber(slippageMultiplier)).toCodecString();
   const params = calcTxParams(inputAsset, maxInputAmount, undefined);
   await withLoading(async () => {
     try {
