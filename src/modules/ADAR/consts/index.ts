@@ -39,3 +39,5 @@ function createStage(title: string, componentName: string): Stage {
     component: componentName,
   };
 }
+
+export const slippageMultiplier = 1.15;
