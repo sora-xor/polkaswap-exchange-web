@@ -3,24 +3,24 @@
     <div class="content">
       <section class="description-section text-center">
         <div>
-          <div>
-            <h1>Advanced Digital Asset Routing</h1>
-            <h3 style="line-height: 1.2; font-weight: 300">
-              ADAR saves business owners of small and medium-sized businesses (SMBs) time and money by making it easy
-              and cost effective to pay large numbers of global suppliers and employees on a recurring basis
-            </h3>
-          </div>
-          <div class="description-section__ref">
-            <a href="https://www.adar.com" target="_blank">learn more</a>
-          </div>
           <img
-            src="/adar/about/about1.png"
+            src="/adar/about/about1.svg"
             alt="ADAR desktop app"
             class="description-section__picture"
             data-aos="fade-up"
             data-aos-delay="200"
             loading="lazy"
           />
+          <div>
+            <!-- <h1>Advanced Digital Asset Routing</h1> -->
+            <h3 style="line-height: 1.2; font-weight: 300">
+              ADAR Saves Business Owners Of Small And Medium-Sized Businesses (SMBs) Time And Money By Making It Easy
+              And Cost Effective To Pay Large Numbers Of Global Suppliers And Employees On A Recurring Basis
+            </h3>
+          </div>
+          <div class="description-section__ref">
+            <a href="https://www.adar.com" target="_blank">learn more</a>
+          </div>
         </div>
       </section>
     </div>
@@ -164,8 +164,6 @@ export default class About extends Mixins(TranslationMixin) {
     &__picture {
       width: 1000px;
       margin: 40px auto;
-      border-radius: 12px;
-      box-shadow: var(--s-shadow-element-pressed);
       pointer-events: none;
     }
 

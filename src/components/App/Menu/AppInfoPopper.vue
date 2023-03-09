@@ -48,7 +48,8 @@ import { app, SocialNetworkLinks, Links } from '@/consts';
 
 @Component
 export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  readonly SocialNetworkLinks = SocialNetworkLinks;
+  // readonly SocialNetworkLinks = SocialNetworkLinks;
+  readonly SocialNetworkLinks = [];
   readonly app = app;
 
   specVersion: Nullable<number> = null;
@@ -61,18 +62,18 @@ export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.Loadi
 
   get textLinks(): Array<{ title: string; href: string }> {
     return [
-      {
-        title: this.t('helpDialog.privacyPolicy'),
-        href: Links.privacy,
-      },
+      // {
+      //   title: this.t('helpDialog.privacyPolicy'),
+      //   href: Links.privacy,
+      // },
       {
         title: this.t('releaseNotesText'),
         href: Links.releaseNotes,
       },
-      {
-        title: this.t('helpDialog.termsOfService'),
-        href: Links.terms,
-      },
+      // {
+      //   title: this.t('helpDialog.termsOfService'),
+      //   href: Links.terms,
+      // },
     ];
   }
 
