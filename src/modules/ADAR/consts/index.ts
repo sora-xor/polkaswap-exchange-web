@@ -40,4 +40,4 @@ function createStage(title: string, componentName: string): Stage {
   };
 }
 
-export const slippageMultiplier = 1.15;
+export const slippageMultiplier = 1.05;
