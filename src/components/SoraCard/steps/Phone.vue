@@ -65,7 +65,7 @@ const OTP_CODE_LENGTH = 6;
 const RESEND_INTERVAL = 59;
 
 @Component
-export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.NotificationMixin) {
   @state.soraCard.authLogin private authLogin!: any;
   @state.soraCard.hasFreeAttempts hasFreeAttempts!: boolean;
   @state.soraCard.wantsToPassKycAgain wantsToPassKycAgain!: boolean;
@@ -116,11 +116,8 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
     this.authLogin.PayWingsOtpCredentialVerification(this.verificationCode).catch((error) => {
       this.sendOtpBtnLoading = false;
       this.verificationCode = '';
-      this.$notify({
-        message: this.t('card.infoMessageWrongOtp'),
-        type: 'error',
-        title: '',
-      });
+
+      this.showAppNotification(this.t('card.infoMessageWrongOtp'), 'error');
       console.error('[SoraCard]: Auth', error);
     });
 
@@ -251,11 +248,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
         this.sendOtpBtnLoading = false;
 
         if (this.userApplied) {
-          this.$notify({
-            title: '',
-            message: this.t('card.infoMessageNoKYC'),
-            type: 'info',
-          });
+          this.showAppNotification(this.t('card.infoMessageNoKYC'), 'info');
         }
 
         if (!this.isEuroBalanceEnough) {
@@ -294,11 +287,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 
         if (!this.currentStatus) {
           if (this.userApplied) {
-            this.$notify({
-              title: '',
-              message: this.t('card.infoMessageNoKYC'),
-              type: 'info',
-            });
+            this.showAppNotification(this.t('card.infoMessageNoKYC'), 'info');
           }
 
           if (!this.isEuroBalanceEnough) {
@@ -329,11 +318,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
         this.sendOtpBtnLoading = false;
 
         if (this.userApplied) {
-          this.$notify({
-            title: '',
-            message: 'KYC process has not been finished.',
-            type: 'info',
-          });
+          this.showAppNotification('KYC process has not been finished.', 'info');
         }
 
         if (!this.isEuroBalanceEnough) {
@@ -406,6 +391,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
 }
 
 input[type='number'] {
+  appearance: textfield;
   -moz-appearance: textfield;
 }
 

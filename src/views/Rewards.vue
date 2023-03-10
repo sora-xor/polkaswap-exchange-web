@@ -127,7 +127,8 @@ export default class Rewards extends Mixins(
   SubscriptionsMixin,
   mixins.FormattedAmountMixin,
   WalletConnectMixin,
-  mixins.TransactionMixin
+  mixins.TransactionMixin,
+  mixins.NotificationMixin
 ) {
   @state.rewards.feeFetching private feeFetching!: boolean;
   @state.rewards.rewardsFetching private rewardsFetching!: boolean;
@@ -400,10 +401,7 @@ export default class Rewards extends Mixins(
     await this.getExternalRewards(this.evmAddress);
 
     if (!this.rewardsAvailable && showNotification) {
-      this.$notify({
-        message: this.t('rewards.notification.empty'),
-        title: '',
-      });
+      this.showAppNotification(this.t('rewards.notification.empty'));
     }
   }
 
