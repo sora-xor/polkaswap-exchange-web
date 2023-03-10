@@ -189,7 +189,7 @@ export default class BridgeTransactionsHistory extends Mixins(
     const classes = [iconClass];
 
     if (this.isWaitingForAction(item)) {
-      classes.push(`${iconClass}--warning`);
+      classes.push(`${iconClass}--info`);
     } else if (item.status === BridgeTxStatus.Failed) {
       classes.push(`${iconClass}--error`);
     } else if (item.status === BridgeTxStatus.Done) {
@@ -391,8 +391,8 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     &--error {
       color: var(--s-color-status-error);
     }
-    &--warning {
-      color: var(--s-color-status-warning);
+    &--info {
+      color: var(--s-color-status-info);
     }
     &--pending {
       color: var(--s-color-base-content-secondary);

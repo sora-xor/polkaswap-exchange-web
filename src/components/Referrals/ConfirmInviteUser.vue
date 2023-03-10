@@ -128,7 +128,7 @@ $invite-user-icon-size: 64px;
   &-info.s-icon-basic-check-mark-24 {
     margin-right: calc(#{$inner-spacing-small} / 2);
     line-height: var(--s-line-height-big);
-    color: var(--s-color-status-warning);
+    color: var(--s-color-status-info);
   }
 }
 </style>
