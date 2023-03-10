@@ -38,10 +38,10 @@ export default {
 
 export function getTokenEquivalent(
   priceObject: FiatPriceObject,
-  assetTo: Asset | AccountAsset | WhitelistArrayItem,
+  asset: Asset | AccountAsset | WhitelistArrayItem,
   usd: number | string
 ): FPNumber {
-  return new FPNumber(usd).div(FPNumber.fromCodecValue(priceObject[assetTo.address], assetTo.decimals));
+  return new FPNumber(usd).div(FPNumber.fromCodecValue(priceObject[asset.address], asset.decimals));
 }
 
 export function getAssetUSDPrice(asset, fiatPriceObject) {
