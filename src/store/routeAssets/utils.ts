@@ -1,6 +1,9 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { Recipient } from './types';
 import { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import { FPNumber, Operation } from '@sora-substrate/util/build';
+import { FiatPriceObject } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 export default {
   validate(recipient: Recipient) {
@@ -32,3 +35,16 @@ export default {
     return amount && !isNaN(amount) && Number.isFinite(amount);
   },
 };
+
+export function getTokenEquivalent(
+  priceObject: FiatPriceObject,
+  assetTo: Asset | AccountAsset | WhitelistArrayItem,
+  usd: number | string
+): FPNumber {
+  return new FPNumber(usd).div(FPNumber.fromCodecValue(priceObject[assetTo.address], assetTo.decimals));
+}
+
+export function getAssetUSDPrice(asset, fiatPriceObject) {
+  if (!asset) return null;
+  return FPNumber.fromCodecValue(fiatPriceObject[asset.address], asset.decimals);
+}
