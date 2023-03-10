@@ -1,6 +1,6 @@
 <template>
   <div>
-    <confirmation-info v-loading="loading" v-if="step === Step.ConfirmationInfo" />
+    <confirmation-info v-if="step === Step.ConfirmationInfo" v-loading="loading" @confirm-apply="openStartPage" />
     <sora-card-intro v-else-if="step === Step.StartPage" @confirm-apply="confirmApply" />
     <sora-card-kyc v-else-if="step === Step.KYC" @go-to-start="openStartPage" :userApplied="userApplied" />
   </div>
@@ -11,10 +11,10 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import { action, getter } from '@/store/decorators';
+import { action, getter, mutation } from '@/store/decorators';
 import { goTo, lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import type { VerificationStatus } from '@/types/card';
+import { KycStatus, VerificationStatus } from '@/types/card';
 
 enum Step {
   StartPage = 'StartPage',
@@ -32,6 +32,9 @@ enum Step {
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
   @getter.settings.soraCardEnabled private soraCardEnabled!: Nullable<boolean>;
+
+  @mutation.soraCard.setKycStatus setKycStatus!: (kycStatus: KycStatus) => void;
+  @mutation.soraCard.setVerificationStatus setVerificationStatus!: (verStatus: VerificationStatus) => void;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
@@ -56,6 +59,8 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
 
   openStartPage(withoutCheck: boolean): void {
     if (withoutCheck) {
+      this.setKycStatus(KycStatus.Completed);
+      this.setVerificationStatus(VerificationStatus.Pending);
       this.step = Step.ConfirmationInfo;
       return;
     }
