@@ -10,6 +10,7 @@ export enum VerificationStatus {
   Pending = 'Pending',
   Accepted = 'Accepted',
   Rejected = 'Rejected',
+  None = 'None',
 }
 
 export type Token = 'accessToken' | 'refreshToken';
