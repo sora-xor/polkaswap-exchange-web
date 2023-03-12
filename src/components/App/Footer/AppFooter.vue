@@ -42,7 +42,7 @@
       :panel-text="subqueryConnectionText"
       :status="subqueryConnectionClass"
       :action-text="'Select services'"
-      @action="refreshPage"
+      @action="openStatisticsDialog"
     >
       <template #label>
         <span>{{ 'LOL' }}</span>
@@ -52,7 +52,8 @@
         <span>{{ 'VERY LOL' }}</span>
       </template>
     </footer-popper>
-    <app-footer-no-internet-dialog />
+    <no-internet-dialog />
+    <statistics-dialog :visible.sync="showStatisticsDialog" />
   </div>
 </template>
 
@@ -64,7 +65,8 @@ import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import FooterPopper from './FooterPopper.vue';
-import AppFooterNoInternetDialog from './AppFooterNoInternetDialog.vue';
+import NoInternetDialog from './NoInternetDialog.vue';
+import StatisticsDialog from './StatisticsDialog.vue';
 
 import { state, getter, mutation } from '@/store/decorators';
 import type { Node } from '@/types/nodes';
@@ -73,7 +75,8 @@ import { formatLocation } from '@/components/Settings/Node/utils';
 @Component({
   components: {
     FooterPopper,
-    AppFooterNoInternetDialog,
+    NoInternetDialog,
+    StatisticsDialog,
   },
 })
 export default class AppFooter extends Mixins(TranslationMixin) {
@@ -93,6 +96,8 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   @getter.settings.nodeIsConnected isNodeConnected!: boolean;
   @state.settings.node node!: Partial<Node>;
   @mutation.settings.setSelectNodeDialogVisibility private setSelectNodeDialogVisibility!: (flag: boolean) => void;
+
+  showStatisticsDialog = false;
 
   get internetConnectionClass(): Status {
     if (!this.isInternetConnectionEnabled) return Status.ERROR;
@@ -122,7 +127,7 @@ export default class AppFooter extends Mixins(TranslationMixin) {
       case WALLET_TYPES.ConnectionStatus.Unavailable:
         return Status.ERROR;
       case WALLET_TYPES.ConnectionStatus.Loading:
-        return Status.WARNING;
+        return Status.DEFAULT;
       case WALLET_TYPES.ConnectionStatus.Available:
         return Status.SUCCESS;
       default:
@@ -131,7 +136,7 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   }
 
   get subqueryConnectionText(): string {
-    const base = 'Statistics service';
+    const base = 'Statistics';
     switch (this.subqueryStatus) {
       case WALLET_TYPES.ConnectionStatus.Unavailable:
         return `${base} unavailable`;
@@ -140,27 +145,13 @@ export default class AppFooter extends Mixins(TranslationMixin) {
       case WALLET_TYPES.ConnectionStatus.Available:
         return `${base} available`;
       default:
-        return `${base} unavailable`;
-    }
-  }
-
-  get subqueryConnectionTooltip(): string {
-    const base = 'Statistics service';
-    switch (this.subqueryStatus) {
-      case WALLET_TYPES.ConnectionStatus.Unavailable:
-        return `${base} is unavailable.\n So, charts, history & other historical data might be wrong or unavailable.\n You might try to refresh a page.`;
-      case WALLET_TYPES.ConnectionStatus.Loading:
-        return `${base} is loading.\n Charts, hitsory & other historical data will be loaded soon`;
-      case WALLET_TYPES.ConnectionStatus.Available:
-        return `${base} is stable`;
-      default:
-        return `${base} is unavailable.\n So, charts & history & other historical data might be wrong or unavailable.\n You might try to refresh a page.`;
+        return `${base} loading`;
     }
   }
 
   get nodeConnectionClass(): Status {
     if (this.isNodeConnected) return Status.SUCCESS;
-    if (this.isNodeConnecting) return Status.WARNING;
+    if (this.isNodeConnecting) return Status.DEFAULT;
     return Status.ERROR;
   }
 
@@ -190,6 +181,10 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
   openNodeSelectionDialog(): void {
     this.setSelectNodeDialogVisibility(true);
+  }
+
+  openStatisticsDialog(): void {
+    this.showStatisticsDialog = true;
   }
 
   get isUnstable(): boolean {

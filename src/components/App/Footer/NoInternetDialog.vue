@@ -24,7 +24,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter } from '@/store/decorators';
 
 @Component
-export default class AppFooterNoInternetDialog extends Mixins(TranslationMixin) {
+export default class NoInternetDialog extends Mixins(TranslationMixin) {
   @getter.settings.isInternetConnectionEnabled isInternetConnectionEnabled!: boolean;
 
   refreshPage(): void {

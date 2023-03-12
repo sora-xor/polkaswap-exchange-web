@@ -1,5 +1,12 @@
 <template>
-  <el-popover ref="popover" :popper-class="computedPopperClass" placement="top" trigger="click">
+  <el-popover
+    ref="popover"
+    placement="top"
+    trigger="click"
+    :popper-class="computedPopperClass"
+    :disabled="loading"
+    :tabindex="tabindex"
+  >
     <div
       slot="reference"
       class="app-status__item s-flex"
@@ -7,7 +14,8 @@
       @keypress.enter="handleEnterClick"
       @blur="handleBlur"
     >
-      <s-icon :name="icon" size="16" />
+      <span v-if="loading" class="app-status__loading" />
+      <s-icon v-else :name="icon" size="16" />
       <span class="app-status__text">{{ panelText }}</span>
     </div>
     <div class="item s-flex">
@@ -50,6 +58,14 @@ export default class FooterPopper extends Vue {
   get computedClass(): string {
     const css = [this.panelClass, this.status].filter((item) => !!item);
     return css.join(' ');
+  }
+
+  get loading(): boolean {
+    return this.status === Status.DEFAULT;
+  }
+
+  get tabindex(): number {
+    return this.loading ? -1 : 0;
   }
 
   handleActionClick(): void {
@@ -129,6 +145,8 @@ $status-classes: 'error', 'warning', 'success';
     &__action {
       box-shadow: none;
       margin-left: 30px;
+      background: #f7f3f4;
+      color: #2a171f;
     }
   }
 }
@@ -146,6 +164,12 @@ $status-classes: 'error', 'warning', 'success';
         color: var(--s-color-status-#{$status});
       }
     }
+  }
+  &__loading {
+    height: var(--s-font-size-mini);
+    width: var(--s-font-size-mini);
+    background-image: url('~@/assets/img/status-pending.svg');
+    @include loading;
   }
   &__text {
     margin-left: 6px;
