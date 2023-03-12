@@ -253,7 +253,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
         if (this.userApplied) {
           this.$notify({
             title: '',
-            message: 'Looks like this is your first time. Please, create a new application',
+            message: this.t('card.infoMessageNoKYC'),
             type: 'info',
           });
         }
@@ -331,7 +331,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
         if (this.userApplied) {
           this.$notify({
             title: '',
-            message: 'Looks like this is your first time. Please create a new application',
+            message: this.t('card.infoMessageNoKYC'),
             type: 'info',
           });
         }
