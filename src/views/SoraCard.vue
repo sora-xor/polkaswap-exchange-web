@@ -35,8 +35,8 @@ enum Step {
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
-  @state.soraCard.hasFreeAttempts hasFreeAttempts!: boolean;
-  @state.soraCard.wantsToPassKycAgain wantsToPassKycAgain!: boolean;
+  @state.soraCard.hasFreeAttempts private hasFreeAttempts!: boolean;
+  @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
 
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
   @getter.settings.soraCardEnabled private soraCardEnabled!: Nullable<boolean>;

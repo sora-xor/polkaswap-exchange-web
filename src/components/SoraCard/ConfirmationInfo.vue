@@ -96,7 +96,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   }
 
   get icon(): string {
-    if (!this.currentStatus || !this.hasFreeAttempts) return 'time-time-24';
+    if (!(this.currentStatus && this.hasFreeAttempts)) return 'time-time-24';
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
@@ -113,7 +113,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   get computedIconClass(): string {
     const base = 'sora-card__card-icon';
 
-    if (!this.currentStatus || !this.hasFreeAttempts) return `${base}--waiting`;
+    if (!(this.currentStatus && this.hasFreeAttempts)) return `${base}--waiting`;
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
