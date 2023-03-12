@@ -244,7 +244,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log('router.beforeEach');
+  console.info('router.beforeEach');
   const prev = from.name as Nullable<PageNames>;
   const current = to.name as PageNames;
   const setRoute = (name: PageNames, withNext = true) => {

@@ -198,7 +198,7 @@ export default class AddLiquidity extends Mixins(
   }
 
   async mounted(): Promise<void> {
-    console.log('mounted');
+    console.info('mounted');
     await this.withParentLoading(async () => {
       this.parseCurrentRoute();
       if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
@@ -213,7 +213,7 @@ export default class AddLiquidity extends Mixins(
   }
 
   destroyed(): void {
-    console.log('destroyed');
+    console.info('destroyed');
     this.resetData();
   }
 
