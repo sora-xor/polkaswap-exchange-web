@@ -136,7 +136,10 @@
         "successCopy": "Wallet-adres werd gekopieerd naar het klembord",
         "copy": "Adres kopiëren",
         "switch": "Van account wisselen",
-        "walletAddress": "Portemonnee adres"
+        "walletAddress": "Portemonnee adres",
+        "delete": "Account verwijderen",
+        "rename": "Hernoem account",
+        "export": "Exporteer .json"
     },
     "history": {
         "clearHistory": "Geschiedenis wissen",
@@ -1098,7 +1101,9 @@
             "mnemonic": "Ongeldig bip39 geheugensteuntje opgegeven",
             "mnemonicLength": "Mnemonic moet {number} woorden bevatten",
             "jsonFields": "JSON-bestand heeft geen verplichte velden"
-        }
+        },
+        "assetsAtRiskText": "Activa in gevaar!",
+        "deleteAccountText": "Account kan niet worden hersteld zonder een seed-zin, een .json bestand of als het is opgeslagen in een extensie. U wordt uitgelogd."
     },
     "hashiBridgeText": "{Hashi} brug",
     "disclaimerTitle": "Disclaimer:",
@@ -1113,5 +1118,6 @@
     "comingSoonText": "Binnenkort beschikbaar",
     "confirmText": "Bevestigen",
     "createTokenTextNFT": "NFT maken",
-    "doNotShowText": "Laat me dit niet nog een keer zien"
+    "doNotShowText": "Laat me dit niet nog een keer zien",
+    "accountText": "rekening | rekeningen"
 }

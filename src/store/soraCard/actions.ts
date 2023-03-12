@@ -3,10 +3,10 @@ import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 
 import { waitForAccountPair } from '@/utils';
-import { defineUserStatus, getXorPerEuroRatio, soraCard } from '@/utils/card';
+import { defineUserStatus, getXorPerEuroRatio, getFreeKycAttemptCount, soraCard } from '@/utils/card';
 import { soraCardActionContext } from './../soraCard';
 import { Status } from '@/types/card';
-import { loadScript } from 'vue-plugin-load-script';
+import { loadScript, unloadScript } from 'vue-plugin-load-script';
 
 const actions = defineActions({
   calculateXorRestPrice(context, xorPerEuro: FPNumber): void {
@@ -15,7 +15,7 @@ const actions = defineActions({
     const euroToPay = FPNumber.HUNDRED.add(FPNumber.ONE).sub(totalXorBalance.mul(xorPerEuro));
     const euroToPayInXor = euroToPay.div(xorPerEuro);
 
-    commit.setXorPriceToDeposit(euroToPayInXor.dp(3)); // it's rounded cuz it'll be shown in Bridge
+    commit.setXorPriceToDeposit(euroToPayInXor.dp(3)); // TODO: round up number
   },
 
   async calculateXorBalanceInEuros(context, { xorPerEuro, xorTotalBalance }): Promise<void> {
@@ -64,16 +64,22 @@ const actions = defineActions({
   async getUserStatus(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
 
-    const { kycStatus, verificationStatus }: Status = await defineUserStatus();
+    const { kycStatus, verificationStatus, rejectReason }: Status = await defineUserStatus();
 
     commit.setKycStatus(kycStatus);
     commit.setVerificationStatus(verificationStatus);
+
+    if (rejectReason) commit.setRejectReason(rejectReason);
   },
 
   async initPayWingsAuthSdk(context): Promise<void> {
     const { commit, rootState } = soraCardActionContext(context);
     const soraNetwork = rootState.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
     const { authService } = soraCard(soraNetwork);
+
+    await unloadScript(authService.sdkURL).catch(() => {
+      /* no need to handle */
+    });
 
     await loadScript(authService.sdkURL).then(() => {
       // TODO: annotate via TS main calls
@@ -89,6 +95,13 @@ const actions = defineActions({
 
       commit.setPayWingsAuthSdk(login);
     });
+  },
+
+  async getUserKycAttempt(context): Promise<void> {
+    const { commit } = soraCardActionContext(context);
+    const isFreeAttemptAvailable = await getFreeKycAttemptCount();
+
+    commit.setHasKycAttempts(isFreeAttemptAvailable);
   },
 });
 
