@@ -35,6 +35,7 @@ enum KycProcess {
 })
 export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly openKycForm!: boolean;
 
   step: KycProcess = KycProcess.TermsAndConditions;
 
@@ -123,6 +124,11 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
   mounted(): void {
     if (this.userApplied) {
       this.step = KycProcess.RoadMap;
+      return;
+    }
+
+    if (this.openKycForm) {
+      this.step = KycProcess.KycView;
     }
   }
 }
