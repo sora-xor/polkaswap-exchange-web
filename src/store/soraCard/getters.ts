@@ -19,27 +19,30 @@ const getters = defineGetters<SoraCardState>()({
     const { state } = soraCardGetterContext(args);
     const { kycStatus, verificationStatus } = state;
 
-    if ([kycStatus, verificationStatus].includes(VerificationStatus.Rejected)) {
-      return VerificationStatus.Rejected;
-    }
-
     if (!kycStatus) return null;
     if (!verificationStatus) return null;
-    if (kycStatus === KycStatus.Started) return null;
+    if (kycStatus === KycStatus.Started) return null; // KYC was initiated
 
-    if (
-      [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
-      verificationStatus === VerificationStatus.Pending
-    ) {
+    // KycStatus.Completed means data was uploaded and verification started
+    // KycStatus.Completed always implies VerificationStatus.Pending
+    // KycStatus.Successful is final, it is not possible to have KycStatus.Successful and VerificationStatus.Pending
+    if (kycStatus === KycStatus.Completed) {
       return VerificationStatus.Pending;
     }
 
-    if (
-      [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
-      verificationStatus === VerificationStatus.Accepted
-    ) {
+    // VerificationStatus.Accepted is final and implies KycStatus.Successful
+    // KycStatus.Completed and VerificationStatus.Accepted impossible
+    if (kycStatus === KycStatus.Successful) {
       return VerificationStatus.Accepted;
     }
+    
+    // Both failed and rejected must be checked
+    // failed - aborted by the user
+    // rejected - verification failed
+    if ([KycStatus.Failed, KycStatus.Rejected].includes(kycStatus)) {
+      return VerificationStatus.Rejected;
+    }
+
   },
 });
 
