@@ -52,6 +52,9 @@
         "statusRejectText": "Pályázatát a belső ellenőrzés elutasította. Kérjük, az újbóli jelentkezés előtt figyelmesen olvassa el követelményeinket és ÁSZF-ünket",
         "statusAcceptTitle": "Pályázat jóváhagyva",
         "noFreeAttemptsDesc": "Felhasználta az ingyenes kísérletet a KYC folyamat átadására. Kérjük, várjon az alkalmazás következő frissítéséig a fizetős próbálkozások folytatásához.",
-        "retryKycBtn": "Töltse ki újra a KYC-t"
+        "retryKycBtn": "Töltse ki újra a KYC-t",
+        "unsupportedCountriesLink": "Lásd a listát",
+        "unsupportedCountriesDisclaimer": "Egyes országok lakosai jelenleg nem igényelhetnek SORA kártyát",
+        "statusRejectReason": "Elutasítás oka"
     }
 }

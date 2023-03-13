@@ -50,6 +50,7 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   lastName = '';
   email = '';
   prefilledEmail = '';
+  unconfirmedEmail = '';
   emailSent = false;
   emailSentFirstTime = false;
   emailResendText = '';
@@ -65,13 +66,14 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   handleSendEmail(): void {
     this.startEmailCountDown();
 
-    if (this.isPrefilledEmailValid) {
+    if (this.isPrefilledEmailValid || this.isEmailMismatch) {
       // user wants to change unconfirmed email
       if (this.prefilledEmail !== this.email) {
         this.authLogin.ChangeUnconfirmedEmail({ Email: this.email }).catch((error) => {
           console.error('[SoraCard]: Error while changing email', error);
         });
 
+        this.unconfirmedEmail = this.email;
         this.emailSent = true;
 
         return;
@@ -86,6 +88,7 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
           console.error('[SoraCard]: Error while email setup', error);
         });
 
+      this.unconfirmedEmail = this.email;
       this.emailSentFirstTime = true;
       return;
     }
@@ -130,11 +133,16 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
     return this.prefilledEmail === 'undefined' || !this.prefilledEmail;
   }
 
-  get isPrefilledEmailValid() {
+  get isPrefilledEmailValid(): boolean {
     if (this.prefilledEmail !== 'undefined' || !!this.prefilledEmail) {
       return EmailValidator.validate(this.prefilledEmail);
     }
     return false;
+  }
+
+  get isEmailMismatch(): boolean {
+    if (!this.unconfirmedEmail) return false;
+    return this.unconfirmedEmail !== this.email;
   }
 
   startEmailCountDown(): void {
@@ -162,14 +170,11 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
       .on('Verification-Email-Sent-Success', () => {
         this.emailSent = true;
       })
-      .on('Otp-Verification-Success', () => {
-        // Tokens are stored in local storage localStorage.getItem('PW-token'); localStorage.getItem('PW-refresh-token');
-        /* Minimal registration is required */
-      })
       .on('Verification-Email-ReSent-Success', () => {
         this.emailSent = true;
       })
       .on('Email-verified', () => {
+        this.unconfirmedEmail = '';
         this.$emit('confirm');
       });
   }

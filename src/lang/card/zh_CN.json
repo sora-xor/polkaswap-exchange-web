@@ -52,6 +52,9 @@
         "statusRejectText": "您的申请已被内部审核拒绝，请在再次申请前仔细查看我们的要求和 T&S",
         "statusAcceptTitle": "申请获批",
         "noFreeAttemptsDesc": "您已使用免费尝试通过 KYC 流程。我们恳请您等到应用程序的下一次升级后再进行付费尝试。",
-        "retryKycBtn": "再次完成KYC"
+        "retryKycBtn": "再次完成KYC",
+        "unsupportedCountriesLink": "查看列表",
+        "unsupportedCountriesDisclaimer": "部分国家居民暂不能申请SORA卡",
+        "statusRejectReason": "拒绝原因"
     }
 }

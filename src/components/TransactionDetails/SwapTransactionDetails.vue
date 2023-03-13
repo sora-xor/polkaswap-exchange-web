@@ -23,6 +23,7 @@
         </div>
       </info-line>
       <info-line
+        v-if="false /** TODO: [1.9] enable it later */"
         :label="t('swap.liquidityProviderFee')"
         :label-tooltip="liquidityProviderFeeTooltipText"
         :value="formattedLiquidityProviderFee"
@@ -80,7 +81,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.swap.liquidityProviderFee private liquidityProviderFee!: CodecString;
   @state.swap.rewards private rewards!: Array<LPRewardsInfo>;
-  @state.swap.path private path!: Array<string>;
+  @state.swap.route private route!: Array<string>;
   @state.swap.isExchangeB isExchangeB!: boolean;
   @state.swap.selectedDexId private selectedDexId!: number;
 
@@ -101,7 +102,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   }
 
   get swapRoute(): Array<string> {
-    return this.path.map((assetId) => this.getAsset(assetId)?.symbol ?? '?');
+    return this.route.map((assetId) => this.getAsset(assetId)?.symbol ?? '?');
   }
 
   get priceValues(): Array<PriceValue> {

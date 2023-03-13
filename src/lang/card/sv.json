@@ -52,6 +52,9 @@
         "statusRejectText": "Din ansökan har avvisats av internrevision, vänligen kontrollera våra krav och T&S noggrant innan du ansöker igen",
         "statusAcceptTitle": "Ansökan godkänd",
         "noFreeAttemptsDesc": "Du har använt ditt fria försök att klara KYC-processen. Vi ber dig att vänta till nästa uppgradering av applikationen för att fortsätta med betalda försök.",
-        "retryKycBtn": "Slutför KYC igen"
+        "retryKycBtn": "Slutför KYC igen",
+        "unsupportedCountriesLink": "Se listan",
+        "unsupportedCountriesDisclaimer": "Invånare från vissa länder kan inte ansöka om SORA-kort för närvarande",
+        "statusRejectReason": "Orsak till avslag"
     }
 }

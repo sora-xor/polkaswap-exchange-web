@@ -14,7 +14,24 @@
     </div>
 
     <div class="sora-card__header">{{ title }}</div>
-    <p class="sora-card__status-info">{{ text }}</p>
+    <p class="sora-card__status-info" v-html="text" />
+
+    <div v-if="currentStatus === VerificationStatus.Rejected" class="sora-card__rejection">
+      <s-button
+        v-if="hasFreeAttempts"
+        type="primary"
+        class="sora-card__btn s-typography-button--large"
+        @click="handleKycRetry"
+      >
+        <span class="text">{{ t('card.retryKycBtn') }}</span>
+      </s-button>
+      <div v-else class="sora-card__no-more-free-kyc">
+        <h4>{{ t('card.noFreeKycTitle') }}</h4>
+        <p class="sora-card__no-more-free-kyc-text">
+          {{ t('card.noFreeAttemptsDesc') }}
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -23,18 +40,30 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { VerificationStatus } from '@/types/card';
-import { getter } from '@/store/decorators';
+import { action, getter, mutation, state } from '@/store/decorators';
 
 @Component
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
+  @state.soraCard.hasFreeAttempts hasFreeAttempts!: boolean;
+  @state.soraCard.rejectReason rejectReason!: string;
   @getter.soraCard.currentStatus currentStatus!: VerificationStatus;
+  @mutation.soraCard.setWillToPassKycAgain setWillToPassKycAgain!: (boolean) => void;
+  @action.soraCard.getUserKycAttempt getUserKycAttempt!: AsyncFnWithoutArgs;
+
+  VerificationStatus = VerificationStatus;
 
   readonly pendingTitle = this.t('card.statusPendingTitle');
   readonly pendingText = this.t('card.statusPendingText');
   readonly acceptedTitle = this.t('card.statusAcceptTitle');
   readonly acceptedText = this.t('card.statusAcceptText');
   readonly rejectedTitle = this.t('card.statusRejectTitle');
-  readonly rejectedText = this.t('card.statusRejectText');
+
+  get rejectedText(): string {
+    if (this.currentStatus === VerificationStatus.Rejected && this.rejectReason) {
+      return `${this.t('card.statusRejectReason')}: ${this.rejectReason}`;
+    }
+    return this.t('card.statusRejectText');
+  }
 
   get title(): string {
     if (!this.currentStatus) return this.pendingTitle;
@@ -67,7 +96,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   }
 
   get icon(): string {
-    if (!this.currentStatus) return 'time-time-24';
+    if (!(this.currentStatus && this.hasFreeAttempts)) return 'time-time-24';
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
@@ -84,7 +113,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   get computedIconClass(): string {
     const base = 'sora-card__card-icon';
 
-    if (!this.currentStatus) return `${base}--waiting`;
+    if (!(this.currentStatus && this.hasFreeAttempts)) return `${base}--waiting`;
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
@@ -96,6 +125,15 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       default:
         return '';
     }
+  }
+
+  handleKycRetry(): void {
+    this.setWillToPassKycAgain(true);
+    this.$emit('confirm-apply');
+  }
+
+  async mounted(): Promise<void> {
+    await this.getUserKycAttempt();
   }
 }
 </script>
@@ -116,6 +154,17 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   &__status-info {
     margin-top: $basic-spacing;
     text-align: center;
+    width: 90%;
+    font-weight: 300;
+    line-height: 150%;
+  }
+  &__rejection {
+    width: 100%;
+  }
+  &__status-info-test {
+    white-space: pre-line;
+    margin-top: $basic-spacing;
+    text-align: center;
     width: 85%;
     font-weight: 300;
     line-height: 150%;
@@ -131,6 +180,15 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   &__btn {
     width: 100%;
   }
+  &__no-more-free-kyc {
+    margin-top: var(--s-size-mini);
+    text-align: center;
+
+    &-text {
+      font-weight: 300;
+      line-height: 150%;
+    }
+  }
   &__card {
     position: relative;
 
@@ -144,6 +202,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       bottom: 0px;
       position: absolute;
       border-radius: 50%;
+      opacity: 0.95;
 
       &-element {
         display: block;
@@ -153,11 +212,9 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
 
       &--waiting {
         background-color: var(--s-color-base-content-secondary);
-        opacity: 0.95;
       }
       &--success {
         background-color: var(--s-color-theme-secondary);
-        opacity: 0.95;
       }
       &--reject {
         background-color: var(--s-color-status-error);

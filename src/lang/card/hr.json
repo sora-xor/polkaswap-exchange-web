@@ -52,6 +52,9 @@
         "statusRejectText": "Vašu je prijavu odbila interna revizija, pažljivo provjerite naše zahtjeve i T&S prije ponovne prijave",
         "statusAcceptTitle": "Prijava odobrena",
         "noFreeAttemptsDesc": "Iskoristili ste svoj besplatni pokušaj prolaska KYC procesa. Ljubazno vas molimo da pričekate do sljedeće nadogradnje aplikacije kako biste nastavili s plaćenim pokušajima.",
-        "retryKycBtn": "Ponovno ispunite KYC"
+        "retryKycBtn": "Ponovno ispunite KYC",
+        "unsupportedCountriesLink": "Pogledajte popis",
+        "unsupportedCountriesDisclaimer": "Stanovnici određenih zemalja trenutno ne mogu podnijeti zahtjev za SORA karticu",
+        "statusRejectReason": "Razlog odbijanja"
     }
 }

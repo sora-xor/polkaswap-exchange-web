@@ -52,6 +52,9 @@
         "statusRejectText": "Su solicitud ha sido rechazada por la auditoría interna, consulte nuestros requisitos y T&S detenidamente antes de volver a presentar la solicitud.",
         "statusAcceptTitle": "Solicitud aprobada",
         "noFreeAttemptsDesc": "Ha utilizado su intento gratuito para pasar el proceso KYC. Le pedimos amablemente que espere hasta la próxima actualización de la aplicación para continuar con los intentos pagados.",
-        "retryKycBtn": "Complete KYC nuevamente"
+        "retryKycBtn": "Complete KYC nuevamente",
+        "unsupportedCountriesLink": "ver la lista",
+        "unsupportedCountriesDisclaimer": "Los residentes de ciertos países no pueden solicitar la Tarjeta SORA en este momento",
+        "statusRejectReason": "Motivo de rechazo"
     }
 }

@@ -13,7 +13,7 @@
         <span class="sora-card__balance-indicator-text--bold">{{ feeDesc }}</span>
       </p>
     </div>
-    <div v-if="isPriceCalculated && isLoggedIn" class="sora-card__balance-indicator">
+    <div v-if="wasEuroBalanceLoaded && isLoggedIn" class="sora-card__balance-indicator">
       <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
       <p class="sora-card__balance-indicator-text" v-html="freeStartUsingDesc" />
     </div>
@@ -60,7 +60,7 @@ import { getter, state } from '@/store/decorators';
 import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
 import { delay } from '@/utils';
-import { clearTokensFromSessionStorage } from '@/utils/card';
+import { clearTokensFromLocalStorage } from '@/utils/card';
 import TranslationMixin from '../mixins/TranslationMixin';
 
 enum BuyButtonType {
@@ -102,7 +102,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
-  isPriceCalculated = false;
   showX1Dialog = false;
   showPaywingsDialog = false;
 
@@ -134,7 +133,11 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   }
 
   get btnLoading(): boolean {
-    return this.loading || !this.isPriceCalculated;
+    if (!this.isLoggedIn) {
+      return this.loading;
+    }
+
+    return this.loading || !this.wasEuroBalanceLoaded;
   }
 
   private openX1(): void {
@@ -175,20 +178,9 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   }
 
   loginUser(): void {
-    clearTokensFromSessionStorage();
+    clearTokensFromLocalStorage();
     const userApplied = true;
     this.$emit('confirm-apply', userApplied);
-  }
-
-  async priceLoading(): Promise<void> {
-    this.isPriceCalculated = false;
-    // TODO: write logic to do actual check for price calculations
-    await delay(700); // don't allow user do too preliminary click before its balance calculated
-    this.isPriceCalculated = true;
-  }
-
-  mounted(): void {
-    this.priceLoading();
   }
 }
 </script>

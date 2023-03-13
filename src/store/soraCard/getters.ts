@@ -15,9 +15,13 @@ const getters = defineGetters<SoraCardState>()({
     return euroBalance >= 95;
   },
   currentStatus(...args): Nullable<VerificationStatus> {
-    // CHECKME: carefully check what each status defines.
+    // CHECKME: carefully check what each status defines. // TODO: [Tech] move this logic to backend
     const { state } = soraCardGetterContext(args);
     const { kycStatus, verificationStatus } = state;
+
+    if ([kycStatus, verificationStatus].includes(VerificationStatus.Rejected)) {
+      return VerificationStatus.Rejected;
+    }
 
     if (!kycStatus) return null;
     if (!verificationStatus) return null;
@@ -35,10 +39,6 @@ const getters = defineGetters<SoraCardState>()({
       verificationStatus === VerificationStatus.Accepted
     ) {
       return VerificationStatus.Accepted;
-    }
-
-    if ([KycStatus.Failed, KycStatus.Rejected].includes(kycStatus)) {
-      return VerificationStatus.Rejected;
     }
   },
 });
