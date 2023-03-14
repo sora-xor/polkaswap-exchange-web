@@ -123,6 +123,19 @@ export default class StatisticsDialog extends Mixins(mixins.DialogMixin, Transla
 </script>
 
 <style lang="scss">
+.statistics-dialog__item {
+  &.el-radio {
+    &.s-medium {
+      height: initial;
+    }
+    .el-radio__label {
+      flex: 1;
+    }
+  }
+}
+</style>
+
+<style lang="scss" scoped>
 .statistics-dialog {
   &__group {
     &-title {
@@ -143,16 +156,6 @@ export default class StatisticsDialog extends Mixins(mixins.DialogMixin, Transla
     align-items: center;
     padding: 12px 24px;
     white-space: normal;
-
-    &.el-radio {
-      &.s-medium {
-        height: initial;
-      }
-
-      .el-radio__label {
-        flex: 1;
-      }
-    }
   }
 }
 .service-item {
@@ -200,10 +203,5 @@ export default class StatisticsDialog extends Mixins(mixins.DialogMixin, Transla
       }
     }
   }
-}
-</style>
-
-<style lang="scss" scoped>
-.statistics-dialog {
 }
 </style>
