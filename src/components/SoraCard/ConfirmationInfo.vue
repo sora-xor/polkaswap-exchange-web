@@ -41,7 +41,6 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { VerificationStatus } from '@/types/card';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { clearTokensFromLocalStorage } from '@/utils/card';
 
 @Component
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
@@ -97,7 +96,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   }
 
   get icon(): string {
-    if (!this.currentStatus) return 'time-time-24';
+    if (!(this.currentStatus && this.hasFreeAttempts)) return 'time-time-24';
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
@@ -114,7 +113,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   get computedIconClass(): string {
     const base = 'sora-card__card-icon';
 
-    if (!this.currentStatus) return `${base}--waiting`;
+    if (!(this.currentStatus && this.hasFreeAttempts)) return `${base}--waiting`;
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
@@ -129,7 +128,6 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   }
 
   handleKycRetry(): void {
-    clearTokensFromLocalStorage();
     this.setWillToPassKycAgain(true);
     this.$emit('confirm-apply');
   }

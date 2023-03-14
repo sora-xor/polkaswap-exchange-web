@@ -318,7 +318,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
         this.sendOtpBtnLoading = false;
 
         if (this.userApplied) {
-          this.showAppNotification('KYC process has not been finished.', 'info');
+          this.showAppNotification(this.t('card.infoMessageNoKYC'), 'info');
         }
 
         if (!this.isEuroBalanceEnough) {
