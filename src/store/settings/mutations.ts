@@ -23,6 +23,12 @@ const mutations = defineMutations<SettingsState>()({
   },
   setDefaultNodes(state, nodes: Array<Node>): void {
     state.defaultNodes = [...nodes];
+    if (!state.node) return;
+    const defaultNode = state.defaultNodes.find((item) => item.address === state.node.address);
+    if (!defaultNode) return;
+    // If node from default nodes list - keep this node from localstorage up to date
+    state.node = { ...defaultNode };
+    settingsStorage.set('node', JSON.stringify(state.node));
   },
   setCustomNodes(state, nodes: Array<Node>): void {
     state.customNodes = [...nodes];
