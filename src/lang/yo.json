@@ -1112,12 +1112,19 @@
     },
     "tooltips": {
         "roi": "{ROI} duro fun Pada lori Idoko-owo. O ṣe iṣiro nipasẹ pinpin èrè ti o jo'gun lori idoko-owo nipasẹ idiyele ti idoko-owo yẹn ni deede ogorun kan.",
-        "tvl": "{TVL} duro fun Titiipa Iye Lapapọ. O duro fun awọn ami titiipa ninu awọn adagun-odo ni deede dola."
+        "tvl": "{TVL} duro fun Titiipa Iye Lapapọ. O duro fun awọn ami titiipa ninu awọn adagun-odo ni deede dola.",
+        "volume": "Iwọn didun ntokasi si lapapọ iye ti ohun ìní ti a ti ta tabi paarọ lori awọn nẹtiwọki lori kan pato akoko. Iwọn didun jẹ metiriki pataki fun wiwọn oloomi ati iṣẹ ṣiṣe gbogbogbo ti nẹtiwọọki.",
+        "fees": "Awọn idiyele lori blockchain {Sora} tọka si awọn idiyele ti o jẹ fun ṣiṣe awọn iṣowo lori nẹtiwọọki. Awọn owo wọnyi ni a san ni XOR, cryptocurrency abinibi ti Nẹtiwọọki {Sora} . Iye owo ọya jẹ ipinnu nipasẹ idiju ati iwọn ti idunadura ti n ṣiṣẹ",
+        "supply": "Ipese tokini tọka si nọmba lapapọ ti awọn ami ti a ti ṣẹda ati ti o wa ni sisan lori nẹtiwọọki. Ipese ami le yipada da lori iye awọn ami ti o wa ni ifipamọ, sun, tabi gbigbe lori nẹtiwọọki.",
+        "transactions": "Awọn iṣowo n tọka si ilana ti fifiranṣẹ tabi gbigba awọn ohun-ini oni-nọmba lori nẹtiwọọki, pẹlu awọn iṣẹ oloomi, ati awọn swaps.",
+        "accounts": "Awọn akọọlẹ jẹ awọn adirẹsi oni-nọmba ti o mu awọn ohun-ini olumulo mu lori nẹtiwọọki. Iwe akọọlẹ kọọkan ni nkan ṣe pẹlu adiresi gbogbogbo alailẹgbẹ ati bọtini ikọkọ ti o fun laaye olumulo laaye lati wọle ati ṣakoso awọn ohun-ini wọn.",
+        "bridgeTransactions": "{from} si {to} Afara n tọka si ilana gbigbe ohun-ini laarin {from} ati {to} awọn nẹtiwọọki nipa lilo afara. Afara naa ngbanilaaye fun ibaraenisepo ti awọn nẹtiwọọki meji, ṣiṣe awọn olumulo laaye lati gbe awọn ohun-ini lainidi laarin wọn."
     },
     "createTokenText": "Ṣẹda token",
     "comingSoonText": "Nbọ laipẹ",
     "confirmText": "Jẹrisi",
     "createTokenTextNFT": "Ṣẹda NFT",
     "doNotShowText": "Maṣe fi eyi han mi lẹẹkansi",
-    "accountText": "iroyin | awọn iroyin"
+    "accountText": "iroyin | awọn iroyin",
+    "networkStatisticsText": "Awọn iṣiro nẹtiwọki"
 }

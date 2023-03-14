@@ -1112,12 +1112,19 @@
     },
     "tooltips": {
         "roi": "{ROI} je kratica za povrat ulaganja. Izračunava se dijeljenjem dobiti ostvarene ulaganjem troškom tog ulaganja u postotnom ekvivalentu.",
-        "tvl": "{TVL} je kratica za Total Value Locked. Predstavlja tokene zaključane u bazenima u dolarskoj protuvrijednosti."
+        "tvl": "{TVL} je kratica za Total Value Locked. Predstavlja tokene zaključane u bazenima u dolarskoj protuvrijednosti.",
+        "volume": "Volumen se odnosi na ukupnu količinu imovine kojom se trgovalo ili razmjenjivalo na mreži tijekom određenog vremenskog razdoblja. Volumen je važna metrika za mjerenje likvidnosti i ukupne aktivnosti mreže.",
+        "fees": "Naknade na {Sora} blockchainu odnose se na troškove koji nastaju za izvršavanje transakcija na mreži. Te se naknade plaćaju u XOR-u, izvornoj kriptovaluti mreže {Sora} . Visina naknade određena je složenošću i veličinom transakcije koja se izvršava",
+        "supply": "Zaliha tokena odnosi se na ukupan broj tokena koji su stvoreni i koji su u optjecaju na mreži. Zaliha tokena može varirati ovisno o količini tokena koji se ulažu, spaljuju ili prenose na mreži.",
+        "transactions": "Transakcije se odnose na proces slanja ili primanja digitalnih sredstava na mreži, uključujući operacije likvidnosti, kao i zamjene.",
+        "accounts": "Računi su digitalne adrese koje drže korisničku imovinu na mreži. Svaki račun povezan je s jedinstvenom javnom adresom i privatnim ključem koji korisniku omogućuje pristup i upravljanje svojom imovinom.",
+        "bridgeTransactions": "{from} to {to} most odnosi se na proces prijenosa sredstava između {from} i {to} mreža pomoću mosta. Most omogućuje interoperabilnost dviju mreža, omogućujući korisnicima neometano premještanje imovine između njih."
     },
     "createTokenText": "Stvorite",
     "comingSoonText": "Dolazi uskoro",
     "confirmText": "Potvrdite",
     "createTokenTextNFT": "Napravite NFT",
     "doNotShowText": "Ne pokazuj mi ovo više",
-    "accountText": "račun | računi"
+    "accountText": "račun | računi",
+    "networkStatisticsText": "Statistika mreže"
 }

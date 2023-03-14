@@ -1112,12 +1112,19 @@
     },
     "tooltips": {
         "roi": "{ROI} significa Retorno de la Inversión. Se calcula dividiendo la ganancia obtenida en una inversión por el costo de esa inversión en un porcentaje equivalente.",
-        "tvl": "{TVL} significa valor total bloqueado. Representa tokens bloqueados en los pares de liquidez en su equivalente en dólares."
+        "tvl": "{TVL} significa valor total bloqueado. Representa tokens bloqueados en los pares de liquidez en su equivalente en dólares.",
+        "volume": "El volumen se refiere a la cantidad total de activos que se han negociado o intercambiado en la red durante un período de tiempo específico. El volumen es una métrica importante para medir la liquidez y la actividad general de la red.",
+        "fees": "Las tarifas en la cadena de bloques {Sora} se refieren a los cargos en los que se incurre por ejecutar transacciones en la red. Estas tarifas se pagan en XOR, la criptomoneda nativa de {Sora} Network. El monto de la tarifa está determinado por la complejidad y el tamaño de la transacción que se ejecuta",
+        "supply": "El suministro de tokens se refiere a la cantidad total de tokens que se han creado y están en circulación en la red. El suministro de tokens puede fluctuar según la cantidad de tokens que se depositan, queman o transfieren en la red.",
+        "transactions": "Las transacciones se refieren al proceso de envío o recepción de activos digitales en la red, incluidas las operaciones de liquidez, así como los intercambios.",
+        "accounts": "Las cuentas son direcciones digitales que contienen los activos de los usuarios en la red. Cada cuenta está asociada con una dirección pública única y una clave privada que le permite al usuario acceder y administrar sus activos.",
+        "bridgeTransactions": "{from} to {to} bridge se refiere al proceso de transferencia de activos entre las redes {from} y {to} mediante un puente. El puente permite la interoperabilidad de las dos redes, lo que permite a los usuarios mover activos entre ellas sin inconvenientes."
     },
     "createTokenText": "Crear",
     "comingSoonText": "Próximamente",
     "confirmText": "Confirmar",
     "createTokenTextNFT": "Crear NFT",
     "doNotShowText": "No me muestres esto de nuevo",
-    "accountText": "cuenta | cuentas"
+    "accountText": "cuenta | cuentas",
+    "networkStatisticsText": "Estadísticas de red"
 }

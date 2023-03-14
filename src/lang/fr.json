@@ -1112,12 +1112,19 @@
     },
     "tooltips": {
         "roi": "{ROI} signifie retour sur investissement. Il est calculé en divisant le bénéfice réalisé sur un investissement par le coût de cet investissement en pourcentage équivalent.",
-        "tvl": "{TVL} signifie Total Value Locked. Il représente les jetons verrouillés dans les pools en équivalent dollar."
+        "tvl": "{TVL} signifie Total Value Locked. Il représente les jetons verrouillés dans les pools en équivalent dollar.",
+        "volume": "Le volume fait référence au montant total des actifs qui ont été négociés ou échangés sur le réseau sur une période de temps spécifique. Le volume est une mesure importante pour mesurer la liquidité et l'activité globale du réseau.",
+        "fees": "Les frais sur la blockchain {Sora} font référence aux frais encourus pour l'exécution des transactions sur le réseau. Ces frais sont payés en XOR, la crypto-monnaie native du réseau {Sora} . Le montant des frais est déterminé par la complexité et la taille de la transaction en cours d'exécution",
+        "supply": "La fourniture de jetons fait référence au nombre total de jetons qui ont été créés et qui sont en circulation sur le réseau. L'offre de jetons peut fluctuer en fonction de la quantité de jetons jalonnés, brûlés ou transférés sur le réseau.",
+        "transactions": "Les transactions font référence au processus d'envoi ou de réception d'actifs numériques sur le réseau, y compris les opérations de liquidité, ainsi que les swaps.",
+        "accounts": "Les comptes sont des adresses numériques qui contiennent les actifs de l'utilisateur sur le réseau. Chaque compte est associé à une adresse publique unique et à une clé privée qui permet à l'utilisateur d'accéder et de gérer ses actifs.",
+        "bridgeTransactions": "Le pont {from} vers {to} fait référence au processus de transfert d'actifs entre les réseaux {from} et {to} à l'aide d'un pont. Le pont permet l'interopérabilité des deux réseaux, permettant aux utilisateurs de déplacer en toute transparence des actifs entre eux."
     },
     "createTokenText": "Créer un jeton",
     "comingSoonText": "Bientôt disponible",
     "confirmText": "Confirmer",
     "createTokenTextNFT": "Créer NFT",
     "doNotShowText": "Ne me montre plus ça",
-    "accountText": "compte | comptes"
+    "accountText": "compte | comptes",
+    "networkStatisticsText": "Statistiques du réseau"
 }
