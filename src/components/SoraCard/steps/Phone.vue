@@ -67,18 +67,18 @@ const RESEND_INTERVAL = 59;
 @Component
 export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.NotificationMixin) {
   @state.soraCard.authLogin private authLogin!: any;
-  @state.soraCard.hasFreeAttempts hasFreeAttempts!: boolean;
-  @state.soraCard.wantsToPassKycAgain wantsToPassKycAgain!: boolean;
+  @state.soraCard.hasFreeAttempts private hasFreeAttempts!: boolean;
+  @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
   @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
   @getter.soraCard.isEuroBalanceEnough private isEuroBalanceEnough!: boolean;
 
-  @mutation.soraCard.setWillToPassKycAgain setWillToPassKycAgain!: (boolean) => void;
+  @mutation.soraCard.setWillToPassKycAgain private setWillToPassKycAgain!: (boolean) => void;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.initPayWingsAuthSdk private initPayWingsAuthSdk!: AsyncFnWithoutArgs;
-  @action.soraCard.getUserKycAttempt getUserKycAttempt!: AsyncFnWithoutArgs;
+  @action.soraCard.getUserKycAttempt private getUserKycAttempt!: AsyncFnWithoutArgs;
 
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
@@ -88,7 +88,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
 
   private countryCodeInternal = '';
   private phoneNumberInternal = '';
-  private smsResendText = '';
+  private smsCountDown = '';
   private smsResendCount = RESEND_INTERVAL;
   private notPassedKycAndNotHasXorEnough = false;
 
@@ -99,8 +99,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   @Watch('smsResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
     const digit = value.toString().length > 1 ? '' : '0';
-    const countDown = `0:${digit}${value}`;
-    this.smsResendText = this.t('card.resendInBtn', { value: countDown });
+    this.smsCountDown = `0:${digit}${value}`;
   }
 
   @Watch('isEuroBalanceEnough', { immediate: true })
@@ -158,7 +157,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
 
   /** Real example when `countryCode` is empty */
   get countryCodePlaceholder(): string {
-    return this.countryCode ? 'Code' : '+44';
+    return this.countryCode ? 'Code' : '+44'; // TODO: [CARD] Translate Code: this.t('card.code')
   }
 
   get buttonDisabled() {
@@ -186,7 +185,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   }
 
   get sendSmsButtonText(): string {
-    if (this.smsSent) return this.smsResendText;
+    if (this.smsSent) return this.t('card.resendInBtn', { value: this.smsCountDown });
     return this.t('card.sendCodeBtn');
   }
 

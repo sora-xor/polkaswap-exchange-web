@@ -36,6 +36,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import EmailValidator from 'email-validator';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { state } from '@/store/decorators';
@@ -44,23 +45,23 @@ const RESEND_INTERVAL = 59;
 
 @Component
 export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.soraCard.authLogin authLogin!: any;
+  @state.soraCard.authLogin private authLogin!: any;
+
+  private emailCountDown = '';
+  private prefilledEmail = '';
+  private unconfirmedEmail = '';
+  private emailSentFirstTime = false;
+  private emailResendCount = RESEND_INTERVAL;
 
   firstName = '';
   lastName = '';
   email = '';
-  prefilledEmail = '';
-  unconfirmedEmail = '';
   emailSent = false;
-  emailSentFirstTime = false;
-  emailResendText = '';
-  emailResendCount = RESEND_INTERVAL;
 
   @Watch('emailResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
     const digit = value.toString().length > 1 ? '' : '0';
-    const countDown = `00:${digit}${value}`;
-    this.emailResendText = this.t('card.resendInBtn', { value: countDown });
+    this.emailCountDown = `00:${digit}${value}`;
   }
 
   handleSendEmail(): void {
@@ -107,7 +108,9 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   get buttonText() {
-    if (this.emailSent) return this.emailResendText;
+    if (this.emailSent && this.emailCountDown) {
+      return this.t('card.resendInBtn', { value: this.emailCountDown });
+    }
     return this.t('card.sendEmailLinkBtn');
   }
 
