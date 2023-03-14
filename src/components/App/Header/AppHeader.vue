@@ -19,7 +19,6 @@
       <app-header-menu />
     </div>
 
-    <select-node-dialog />
     <select-language-dialog />
 
     <template v-if="moonpayEnabled">
@@ -51,7 +50,6 @@ import { getter, mutation } from '@/store/decorators';
     AccountButton: lazyComponent(Components.AccountButton),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     AppHeaderMenu: lazyComponent(Components.AppHeaderMenu),
-    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     Moonpay: lazyComponent(Components.Moonpay),
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),

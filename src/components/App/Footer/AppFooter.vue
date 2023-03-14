@@ -52,6 +52,7 @@
         <span>{{ 'VERY LOL' }}</span>
       </template>
     </footer-popper>
+    <select-node-dialog />
     <no-internet-dialog />
     <statistics-dialog :visible.sync="showStatisticsDialog" />
   </div>
@@ -68,15 +69,18 @@ import FooterPopper from './FooterPopper.vue';
 import NoInternetDialog from './NoInternetDialog.vue';
 import StatisticsDialog from './StatisticsDialog.vue';
 
+import { formatLocation } from './Node/utils';
 import { state, getter, mutation } from '@/store/decorators';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 import type { Node } from '@/types/nodes';
-import { formatLocation } from '@/components/Settings/Node/utils';
 
 @Component({
   components: {
     FooterPopper,
     NoInternetDialog,
     StatisticsDialog,
+    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
   },
 })
 export default class AppFooter extends Mixins(TranslationMixin) {
