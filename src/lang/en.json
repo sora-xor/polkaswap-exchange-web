@@ -1147,13 +1147,16 @@
             "label": "Statistic services",
             "desc": {
                 "unavailable": "All services are disconnected",
+                "loading": "All services are loading",
                 "available": "All services are stable"
             },
             "action": "Select services",
             "dialog": {
                 "title": "{Sora} Network service selection",
                 "fiat": "Fiat values",
-                "chartsAndActivity": "Charts & Activity"
+                "chartsAndActivity": "Charts & Activity",
+                "online": "Online",
+                "offline": "Offline"
             }
         }
     },

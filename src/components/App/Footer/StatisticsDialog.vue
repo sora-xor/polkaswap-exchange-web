@@ -17,8 +17,8 @@
                 <div class="service-item__name">{{ service.name }}</div>
                 <div class="service-item__endpoint">{{ service.endpoint }}</div>
               </div>
-              <div class="service-item__status">
-                {{ service.online ? 'Online' : 'Offline' }}
+              <div class="service-item__status" :class="service.online ? 'success' : 'error'">
+                {{ t(service.online ? 'footer.statistics.dialog.online' : 'footer.statistics.dialog.offline') }}
               </div>
             </div>
           </s-radio>
@@ -182,13 +182,23 @@ export default class StatisticsDialog extends Mixins(mixins.DialogMixin, Transla
   }
 
   &__status {
+    $status-classes: 'error', 'success';
+
     padding: 2px 6px;
     border-radius: 8px;
-    background: #b9ebdb;
-    color: #34ad87;
     font-weight: 400;
     font-size: 12px;
     letter-spacing: -0.02em;
+
+    @each $status in $status-classes {
+      &.#{$status} {
+        color: var(--s-color-status-#{$status});
+        background-color: var(--s-color-status-#{$status}-background);
+        [design-system-theme='dark'] & {
+          --s-color-status-#{$status}: var(--s-color-base-on-accent);
+        }
+      }
+    }
   }
 }
 </style>
