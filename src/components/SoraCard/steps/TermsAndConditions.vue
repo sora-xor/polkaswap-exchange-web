@@ -35,11 +35,12 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, TosExternalLinks } from '@/consts';
 import { lazyComponent } from '@/router';
-import TranslationMixin from '../../mixins/TranslationMixin';
 import { getter } from '@/store/decorators';
-import { Theme } from '@soramitsu/soramitsu-js-ui';
 
 @Component({
   components: {

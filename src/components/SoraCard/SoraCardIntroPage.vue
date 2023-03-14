@@ -55,9 +55,8 @@ import { FPNumber } from '@sora-substrate/math';
 import { getter, state } from '@/store/decorators';
 import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
-import { delay } from '@/utils';
 import { clearTokensFromLocalStorage } from '@/utils/card';
-import TranslationMixin from '../mixins/TranslationMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 enum BuyButtonType {
   X1,
