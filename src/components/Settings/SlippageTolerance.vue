@@ -204,33 +204,21 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
   }
 
   .el-collapse.neumorphic .el-icon-arrow-right {
-    all: initial;
-    * {
-      all: unset;
-    }
-
     transition: transform 0.3s;
 
     margin-left: 6px;
-    height: 15px !important;
-    width: 15.8px !important;
+    height: 15px;
+    line-height: 15px;
+    width: 15.8px;
+    padding: 0;
 
     background-color: var(--s-color-base-content-tertiary);
     color: var(--s-color-base-on-accent) !important;
     border-radius: var(--s-border-radius-medium);
-
-    &:hover {
-      cursor: pointer !important;
-    }
   }
 
   .el-collapse-item__header {
     height: 36px;
-  }
-
-  .el-collapse-item__header .el-icon-arrow-right.is-active {
-    transform: scale(1, -1);
-    transition: transform 0.3s;
   }
 
   .el-collapse-item__content {
