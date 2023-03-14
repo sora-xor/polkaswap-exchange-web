@@ -1160,6 +1160,7 @@
             }
         }
     },
+    "locationText": "Location",
     "createTokenText": "Create",
     "comingSoonText": "Coming Soon",
     "confirmText": "Confirm",
