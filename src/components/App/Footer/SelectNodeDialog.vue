@@ -38,7 +38,7 @@ import { AppHandledError } from '@/utils/error';
 import { getter, state, action } from '@/store/decorators';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 
-import { NodeModel } from './consts';
+import { NodeModel } from './Node/consts';
 
 const NodeListView = 'NodeListView';
 const NodeInfoView = 'NodeInfoView';

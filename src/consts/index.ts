@@ -172,7 +172,7 @@ export enum Components {
   MarketAlgorithm = 'Settings/MarketAlgorithm',
   SelectNode = 'App/Footer/Node/SelectNode',
   NodeInfo = 'App/Footer/Node/NodeInfo',
-  SelectNodeDialog = 'App/Footer/Node/SelectNodeDialog',
+  SelectNodeDialog = 'App/Footer/SelectNodeDialog',
   ExternalLink = 'ExternalLink',
   // HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',
