@@ -215,6 +215,7 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
     background-color: var(--s-color-base-content-tertiary);
     color: var(--s-color-base-on-accent) !important;
     border-radius: var(--s-border-radius-medium);
+    font-size: 16px;
   }
 
   .el-collapse-item__header {
