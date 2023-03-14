@@ -17,7 +17,7 @@
       </template>
       <template>
         <span>{{ node.address }}</span>
-        <span v-if="formattedLocation">{{ formattedLocation }}</span>
+        <span v-if="formattedNodeLocation">{{ formattedNodeLocation }}</span>
       </template>
     </footer-popper>
     <footer-popper
@@ -25,12 +25,12 @@
       panel-class="internet"
       :panel-text="internetConnectionText"
       :status="internetConnectionClass"
-      :action-text="t('connection.action.refresh')"
+      :action-text="t('footer.internet.action')"
       @action="refreshPage"
     >
       <template #label>
-        <span>{{ 'Your internet speed' }}</span>
-        <span>{{ internetConnectionSpeedMb + ' mbps' }}</span>
+        <span>{{ t('footer.internet.label') }}</span>
+        <span>{{ internetConnectionSpeedMbText }}</span>
       </template>
       <template>
         <span>{{ internetConnectionDesc }}</span>
@@ -39,17 +39,14 @@
     <footer-popper
       icon="software-cloud-24"
       panel-class="statistics"
-      :panel-text="subqueryConnectionText"
-      :status="subqueryConnectionClass"
-      :action-text="'Select services'"
+      :panel-text="statisticsConnectionText"
+      :status="statisticsConnectionClass"
+      :action-text="t('footer.statistics.action')"
       @action="openStatisticsDialog"
     >
       <template #label>
-        <span>{{ 'LOL' }}</span>
-        <span>{{ 'lol' }}</span>
-      </template>
-      <template>
-        <span>{{ 'VERY LOL' }}</span>
+        <span>{{ t('footer.statistics.label') }}</span>
+        <span>{{ statisticsConnectionDesc }}</span>
       </template>
     </footer-popper>
     <select-node-dialog />
@@ -84,132 +81,9 @@ import type { Node } from '@/types/nodes';
   },
 })
 export default class AppFooter extends Mixins(TranslationMixin) {
-  @mutation.settings.setInternetConnectionEnabled private setEnabled!: VoidFunction;
-  @mutation.settings.setInternetConnectionDisabled private setDisabled!: VoidFunction;
-  @mutation.settings.setInternetConnectionSpeed private setSpeedMb!: VoidFunction;
-  @getter.settings.isInternetConnectionEnabled private isInternetConnectionEnabled!: boolean;
-  @getter.settings.isInternetConnectionStable private isInternetConnectionStable!: boolean;
-  @getter.settings.internetConnectionSpeedMb internetConnectionSpeedMb!: number;
-
+  // Block explorer
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.settings.blockNumber blockNumber!: number;
-
-  @state.wallet.settings.subqueryStatus private subqueryStatus!: WALLET_TYPES.ConnectionStatus;
-
-  @getter.settings.nodeIsConnecting isNodeConnecting!: boolean;
-  @getter.settings.nodeIsConnected isNodeConnected!: boolean;
-  @state.settings.node node!: Partial<Node>;
-  @mutation.settings.setSelectNodeDialogVisibility private setSelectNodeDialogVisibility!: (flag: boolean) => void;
-
-  showStatisticsDialog = false;
-
-  get internetConnectionClass(): Status {
-    if (!this.isInternetConnectionEnabled) return Status.ERROR;
-    if (!this.isInternetConnectionStable) return Status.WARNING;
-    return Status.SUCCESS;
-  }
-
-  get internetConnectionText(): string {
-    const base = 'Internet';
-    if (!this.isInternetConnectionEnabled) return `${base} disabled`;
-    if (!this.isInternetConnectionStable) return `${base} unstable`;
-    return `${base} stable`;
-  }
-
-  get internetConnectionDesc(): string {
-    if (!this.isInternetConnectionEnabled) {
-      return 'Disconnected';
-    }
-    if (!this.isInternetConnectionStable) {
-      return 'Slow connection';
-    }
-    return 'Optimal speed';
-  }
-
-  get subqueryConnectionClass(): Status {
-    switch (this.subqueryStatus) {
-      case WALLET_TYPES.ConnectionStatus.Unavailable:
-        return Status.ERROR;
-      case WALLET_TYPES.ConnectionStatus.Loading:
-        return Status.DEFAULT;
-      case WALLET_TYPES.ConnectionStatus.Available:
-        return Status.SUCCESS;
-      default:
-        return Status.ERROR;
-    }
-  }
-
-  get subqueryConnectionText(): string {
-    const base = 'Statistics';
-    switch (this.subqueryStatus) {
-      case WALLET_TYPES.ConnectionStatus.Unavailable:
-        return `${base} unavailable`;
-      case WALLET_TYPES.ConnectionStatus.Loading:
-        return `${base} loading`;
-      case WALLET_TYPES.ConnectionStatus.Available:
-        return `${base} available`;
-      default:
-        return `${base} loading`;
-    }
-  }
-
-  get nodeConnectionClass(): Status {
-    if (this.isNodeConnected) return Status.SUCCESS;
-    if (this.isNodeConnecting) return Status.DEFAULT;
-    return Status.ERROR;
-  }
-
-  get nodeConnectionText(): string {
-    const base = 'Node';
-    if (this.isNodeConnected) return `${base} connected`;
-    if (this.isNodeConnecting) return `${base} re-connecting`;
-    return `${base} disconnected`;
-  }
-
-  get nodeConnectionTooltip(): string {
-    if (this.isNodeConnected) {
-      return this.t('selectNodeConnected', { chain: this.node.chain });
-    }
-    if (this.isNodeConnecting) {
-      return `Node is connecting.\n You will be able to use all features until it is connected`;
-    }
-    return `Node is disconnected.\n You cannot use all features. \nYou might try to select another node or refresh a page.`;
-  }
-
-  get formattedLocation(): Nullable<string> {
-    if (!this.node?.location) {
-      return null;
-    }
-    return formatLocation(this.node.location);
-  }
-
-  openNodeSelectionDialog(): void {
-    this.setSelectNodeDialogVisibility(true);
-  }
-
-  openStatisticsDialog(): void {
-    this.showStatisticsDialog = true;
-  }
-
-  get isUnstable(): boolean {
-    return (
-      !this.isInternetConnectionStable ||
-      this.subqueryStatus === WALLET_TYPES.ConnectionStatus.Unavailable ||
-      !(this.isNodeConnected || this.isNodeConnecting)
-    );
-  }
-
-  created(): void {
-    window.addEventListener('offline', this.setDisabled);
-    window.addEventListener('online', this.setEnabled);
-    (navigator as any)?.connection?.addEventListener('change', this.setSpeedMb);
-  }
-
-  beforeDestroy(): void {
-    window.removeEventListener('offline', this.setDisabled);
-    window.removeEventListener('online', this.setEnabled);
-    (navigator as any)?.connection?.removeEventListener('change', this.setSpeedMb);
-  }
 
   get blockExplorerLink(): Nullable<string> {
     const links = getExplorerLinks(this.soraNetwork);
@@ -223,14 +97,133 @@ export default class AppFooter extends Mixins(TranslationMixin) {
     return new FPNumber(this.blockNumber).toLocaleString();
   }
 
+  // Node connection
+  @getter.settings.nodeIsConnecting isNodeConnecting!: boolean;
+  @getter.settings.nodeIsConnected isNodeConnected!: boolean;
+  @state.settings.node node!: Partial<Node>;
+  @mutation.settings.setSelectNodeDialogVisibility private setSelectNodeDialogVisibility!: (flag: boolean) => void;
+
+  private get nodeConnectionStatusKey(): string {
+    if (this.isNodeConnected) return 'connected';
+    if (this.isNodeConnecting) return 'loading';
+    return 'disconnected';
+  }
+
+  get nodeConnectionClass(): Status {
+    if (this.isNodeConnected) return Status.SUCCESS;
+    if (this.isNodeConnecting) return Status.DEFAULT;
+    return Status.ERROR;
+  }
+
+  get nodeConnectionText(): string {
+    return this.t(`footer.node.title.${this.nodeConnectionStatusKey}`);
+  }
+
+  get formattedNodeLocation(): Nullable<string> {
+    if (!this.node?.location) {
+      return null;
+    }
+    return formatLocation(this.node.location);
+  }
+
+  openNodeSelectionDialog(): void {
+    this.setSelectNodeDialogVisibility(true);
+  }
+
+  // Internet connection
+  @mutation.settings.setInternetConnectionEnabled private setEnabled!: VoidFunction;
+  @mutation.settings.setInternetConnectionDisabled private setDisabled!: VoidFunction;
+  @mutation.settings.setInternetConnectionSpeed private setSpeedMb!: VoidFunction;
+  @getter.settings.isInternetConnectionEnabled private isInternetConnectionEnabled!: boolean;
+  @getter.settings.isInternetConnectionStable private isInternetConnectionStable!: boolean;
+  @getter.settings.internetConnectionSpeedMb internetConnectionSpeedMb!: number;
+
+  private get internetStatusKey(): string {
+    if (!this.isInternetConnectionEnabled) return 'disabled';
+    if (!this.isInternetConnectionStable) return 'unstable';
+    return 'stable';
+  }
+
+  get internetConnectionClass(): Status {
+    if (!this.isInternetConnectionEnabled) return Status.ERROR;
+    if (!this.isInternetConnectionStable) return Status.WARNING;
+    return Status.SUCCESS;
+  }
+
+  get internetConnectionText(): string {
+    return this.t(`footer.internet.title.${this.internetStatusKey}`);
+  }
+
+  get internetConnectionDesc(): string {
+    return this.t(`footer.internet.desc.${this.internetStatusKey}`);
+  }
+
+  get internetConnectionSpeedMbText(): string {
+    return `${this.internetConnectionSpeedMb} ${this.TranslationConsts.mbps}`;
+  }
+
   refreshPage(): void {
     window.location.reload();
+  }
+
+  // Statistics connection
+  @state.wallet.settings.subqueryStatus private subqueryStatus!: WALLET_TYPES.ConnectionStatus;
+
+  showStatisticsDialog = false;
+
+  get statisticsConnectionClass(): Status {
+    switch (this.subqueryStatus) {
+      case WALLET_TYPES.ConnectionStatus.Unavailable:
+        return Status.ERROR;
+      case WALLET_TYPES.ConnectionStatus.Loading:
+        return Status.DEFAULT;
+      case WALLET_TYPES.ConnectionStatus.Available:
+        return Status.SUCCESS;
+      default:
+        return Status.DEFAULT;
+    }
+  }
+
+  private get statisticsStatusKey(): string {
+    switch (this.subqueryStatus) {
+      case WALLET_TYPES.ConnectionStatus.Unavailable:
+        return 'unavailable';
+      case WALLET_TYPES.ConnectionStatus.Loading:
+        return 'loading';
+      case WALLET_TYPES.ConnectionStatus.Available:
+        return 'available';
+      default:
+        return 'loading';
+    }
+  }
+
+  get statisticsConnectionText(): string {
+    return this.t(`footer.statistics.title.${this.statisticsStatusKey}`);
+  }
+
+  get statisticsConnectionDesc(): string {
+    return this.t(`footer.statistics.desc.${this.statisticsStatusKey}`);
+  }
+
+  openStatisticsDialog(): void {
+    this.showStatisticsDialog = true;
+  }
+
+  created(): void {
+    window.addEventListener('offline', this.setDisabled);
+    window.addEventListener('online', this.setEnabled);
+    (navigator as any)?.connection?.addEventListener('change', this.setSpeedMb);
+  }
+
+  beforeDestroy(): void {
+    window.removeEventListener('offline', this.setDisabled);
+    window.removeEventListener('online', this.setEnabled);
+    (navigator as any)?.connection?.removeEventListener('change', this.setSpeedMb);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-// icons: globe-16 software-cloud-checked-24 software-cloud-24 notifications-alert-triangle-24 refresh-16
 .app-status {
   font-size: var(--s-font-size-extra-mini);
   font-weight: 300;

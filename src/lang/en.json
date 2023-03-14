@@ -1114,6 +1114,44 @@
         "roi": "{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.",
         "tvl": "{TVL} stands for Total Value Locked. It represents tokens locked in the pools in the dollar equivalent."
     },
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Node connected",
+                "loading": "Node re-connecting",
+                "disconnected": "Node disconnected"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet disabled",
+                "unstable": "Internet unstable",
+                "stable": "Internet stable"
+            },
+            "label": "Your internet speed",
+            "desc": {
+                "disabled": "Disconnected",
+                "unstable": "Slow connection",
+                "stable": "Optimal speed"
+            },
+            "action": "Refresh {Polkaswap}",
+            "dialogTitle": "Connect to internet source",
+            "dialogDesc": "{Polkaswap} requires internet connection for stable experience"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistics unavailable",
+                "loading": "Statistics loading",
+                "available": "Statistics available"
+            },
+            "label": "Statistic services",
+            "desc": {
+                "unavailable": "All services are disconnected",
+                "available": "All services are stable"
+            },
+            "action": "Select services"
+        }
+    },
     "createTokenText": "Create",
     "comingSoonText": "Coming Soon",
     "confirmText": "Confirm",
