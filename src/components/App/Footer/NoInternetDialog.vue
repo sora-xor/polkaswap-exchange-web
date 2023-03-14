@@ -46,31 +46,34 @@ $no-internet-dialog-width-limit: 465px;
 </style>
 
 <style lang="scss" scoped>
+$no-internet-icon-size: 72px;
+$no-internet-font-weight: 300;
+
 .no-internet {
   &__content {
     flex-direction: column;
     align-items: center;
   }
   &__icon {
-    height: 72px;
-    width: 72px;
+    height: $no-internet-icon-size;
+    width: $no-internet-icon-size;
     background-color: var(--s-color-status-error);
-    border-radius: 24px;
+    border-radius: var(--s-border-radius-small);
     align-items: center;
     justify-content: center;
-    margin-bottom: 16px;
+    margin-bottom: $inner-spacing-medium;
     > i {
       color: var(--s-color-base-on-accent);
     }
   }
   &__title {
-    margin-bottom: 16px;
-    font-weight: 300;
-    font-size: 24px;
+    margin-bottom: $inner-spacing-medium;
+    font-weight: $no-internet-font-weight;
+    font-size: var(--s-font-size-large);
   }
   &__desc {
-    font-weight: 300;
-    font-size: 14px;
+    font-weight: $no-internet-font-weight;
+    font-size: var(--s-font-size-small);
     letter-spacing: var(--s-letter-spacing-small);
   }
   &__action {

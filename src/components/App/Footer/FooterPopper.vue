@@ -85,10 +85,13 @@ export default class FooterPopper extends Vue {
 <style lang="scss">
 $tooltip-placements: 'top'; // add another styles if needed
 $status-classes: 'error', 'warning', 'success';
+$footer-label-line-height: 150%;
+$footer-action-color: #2a171f;
+$footer-action-background-color: #f7f3f4;
 
 .app-status__tooltip.el-popover.el-popper {
   border-color: var(--s-color-base-border-secondary);
-  border-radius: var(--s-border-radius-mini); // border-radius: 12px;
+  border-radius: var(--s-border-radius-mini);
   box-shadow: var(--s-shadow-tooltip);
   padding: $inner-spacing-mini $inner-spacing-small;
   color: var(--s-color-base-on-accent);
@@ -117,36 +120,36 @@ $status-classes: 'error', 'warning', 'success';
       flex-direction: column;
       > :first-child {
         font-weight: 300;
-        font-size: 12px;
-        line-height: 150%;
+        font-size: var(--s-font-size-mini);
+        line-height: $footer-label-line-height;
       }
       > :last-child {
         font-weight: 500;
-        font-size: 14px;
-        line-height: 150%;
+        font-size: var(--s-font-size-small);
+        line-height: $footer-label-line-height;
       }
     }
     &__desc {
       flex-wrap: wrap;
-      margin-top: 8px;
+      margin-top: $inner-spacing-mini;
       > * {
         font-weight: 400;
-        font-size: 12px;
-        line-height: 150%;
+        font-size: var(--s-font-size-mini);
+        line-height: $footer-label-line-height;
         padding: 6px;
         background: rgba(255, 255, 255, 0.08);
         border-radius: 8px;
-        margin-bottom: 8px;
+        margin-bottom: $inner-spacing-mini;
       }
       > :first-child {
-        margin-right: 8px;
+        margin-right: $inner-spacing-mini;
       }
     }
     &__action {
       box-shadow: none;
       margin-left: 30px;
-      background: #f7f3f4;
-      color: #2a171f;
+      background: $footer-action-background-color;
+      color: $footer-action-color;
     }
   }
 }

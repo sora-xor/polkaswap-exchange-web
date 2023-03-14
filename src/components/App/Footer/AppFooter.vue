@@ -224,6 +224,8 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
+$block-icon-size: 7px;
+
 .app-status {
   font-size: var(--s-font-size-extra-mini);
   font-weight: 300;
@@ -239,7 +241,6 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   @include app-status-item;
 
   &-icon {
-    $block-icon-size: 7px;
     background-color: var(--s-color-status-success);
     border-radius: 50%;
     height: $block-icon-size;

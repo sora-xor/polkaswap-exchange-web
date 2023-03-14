@@ -136,6 +136,8 @@ export default class StatisticsDialog extends Mixins(mixins.DialogMixin, Transla
 </style>
 
 <style lang="scss" scoped>
+$statistics-border-radius: 8px;
+
 .statistics-dialog {
   &__group {
     &-title {
@@ -148,13 +150,13 @@ export default class StatisticsDialog extends Mixins(mixins.DialogMixin, Transla
 
   &__block {
     flex-direction: column;
-    margin-top: 12px;
+    margin-top: $inner-spacing-small;
   }
 
   &__item {
     margin-right: 0;
     align-items: center;
-    padding: 12px 24px;
+    padding: $inner-spacing-small $inner-spacing-big;
     white-space: normal;
   }
 }
@@ -178,7 +180,7 @@ export default class StatisticsDialog extends Mixins(mixins.DialogMixin, Transla
     background: var(--s-color-base-background);
     padding: 6px;
     margin-top: 6px;
-    border-radius: 8px;
+    border-radius: $statistics-border-radius;
     color: var(--s-color-base-content-secondary);
     font-size: var(--s-font-size-mini);
     font-weight: 300;
@@ -188,10 +190,10 @@ export default class StatisticsDialog extends Mixins(mixins.DialogMixin, Transla
     $status-classes: 'error', 'success';
 
     padding: 2px 6px;
-    border-radius: 8px;
+    border-radius: $statistics-border-radius;
     font-weight: 400;
-    font-size: 12px;
-    letter-spacing: -0.02em;
+    font-size: var(--s-font-size-mini);
+    letter-spacing: var(--s-letter-spacing-small);
 
     @each $status in $status-classes {
       &.#{$status} {
