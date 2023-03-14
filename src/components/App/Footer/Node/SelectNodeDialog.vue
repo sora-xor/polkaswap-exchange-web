@@ -46,7 +46,6 @@ const NodeInfoView = 'NodeInfoView';
 @Component({
   components: {
     DialogBase: components.DialogBase,
-    ExternalLink: lazyComponent(Components.ExternalLink),
     SelectNode: lazyComponent(Components.SelectNode),
     NodeInfo: lazyComponent(Components.NodeInfo),
   },
