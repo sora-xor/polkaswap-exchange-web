@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "Crear NFT",
     "doNotShowText": "No me muestres esto de nuevo",
     "accountText": "cuenta | cuentas",
-    "networkStatisticsText": "Estadísticas de red"
+    "networkStatisticsText": "Estadísticas de red",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Nodo conectado",
+                "loading": "Reconexión de nodos",
+                "disconnected": "Nodo desconectado"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet deshabilitado",
+                "unstable": "Internet inestable",
+                "stable": "Internet estable"
+            },
+            "label": "tu velocidad de internet",
+            "desc": {
+                "disabled": "Desconectado",
+                "unstable": "Conexión lenta",
+                "stable": "Velocidad óptima"
+            },
+            "action": "Actualizar {Polkaswap}",
+            "dialogTitle": "Conectarse a la fuente de Internet",
+            "dialogDesc": "{Polkaswap} requiere conexión a Internet para una experiencia estable"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Estadísticas no disponibles",
+                "loading": "Carga de estadísticas",
+                "available": "Estadísticas disponibles"
+            },
+            "label": "Servicios de estadísticas",
+            "desc": {
+                "unavailable": "Todos los servicios están desconectados.",
+                "loading": "Todos los servicios están cargando",
+                "available": "Todos los servicios son estables."
+            },
+            "action": "Seleccionar servicios",
+            "dialog": {
+                "title": "{Sora} Selección de servicio de red",
+                "fiat": "Valores fiduciarios",
+                "chartsAndActivity": "Gráficos y actividad",
+                "online": "En línea",
+                "offline": "Desconectado"
+            }
+        }
+    },
+    "locationText": "Ubicación"
 }

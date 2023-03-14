@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "Utwórz token NFT",
     "doNotShowText": "Nie pokazuj mi tego więcej",
     "accountText": "konto | konta",
-    "networkStatisticsText": "Statystyki sieci"
+    "networkStatisticsText": "Statystyki sieci",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Węzeł podłączony",
+                "loading": "Ponowne łączenie węzła",
+                "disconnected": "Węzeł odłączony"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet wyłączony",
+                "unstable": "Internet niestabilny",
+                "stable": "Stabilny internet"
+            },
+            "label": "Twoja prędkość internetu",
+            "desc": {
+                "disabled": "Bezładny",
+                "unstable": "Wolne połączenie",
+                "stable": "Optymalna prędkość"
+            },
+            "action": "Odśwież {Polkaswap}",
+            "dialogTitle": "Połącz się ze źródłem internetowym",
+            "dialogDesc": "{Polkaswap} wymaga połączenia internetowego do stabilnego działania"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statystyki niedostępne",
+                "loading": "Ładowanie statystyk",
+                "available": "Dostępne statystyki"
+            },
+            "label": "Usługi statystyczne",
+            "desc": {
+                "unavailable": "Wszystkie usługi są odłączone",
+                "loading": "Trwa ładowanie wszystkich usług",
+                "available": "Wszystkie usługi są stabilne"
+            },
+            "action": "Wybierz usługi",
+            "dialog": {
+                "title": "{Sora} Wybór usługi sieciowej",
+                "fiat": "wartości Fiata",
+                "chartsAndActivity": "Wykresy i aktywność",
+                "online": "online",
+                "offline": "offline"
+            }
+        }
+    },
+    "locationText": "Lokalizacja"
 }

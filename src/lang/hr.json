@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "Napravite NFT",
     "doNotShowText": "Ne pokazuj mi ovo više",
     "accountText": "račun | računi",
-    "networkStatisticsText": "Statistika mreže"
+    "networkStatisticsText": "Statistika mreže",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Čvor povezan",
+                "loading": "Ponovno povezivanje čvora",
+                "disconnected": "Čvor je prekinut"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet onemogućen",
+                "unstable": "Internet nestabilan",
+                "stable": "Internet stabilan"
+            },
+            "label": "Vaša brzina interneta",
+            "desc": {
+                "disabled": "Isključeno",
+                "unstable": "Spora veza",
+                "stable": "Optimalna brzina"
+            },
+            "action": "Osvježi {Polkaswap}",
+            "dialogTitle": "Spojite se na internetski izvor",
+            "dialogDesc": "{Polkaswap} zahtijeva internetsku vezu za stabilno iskustvo"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistika nije dostupna",
+                "loading": "Učitavanje statistike",
+                "available": "Dostupna statistika"
+            },
+            "label": "Statističke usluge",
+            "desc": {
+                "unavailable": "Sve usluge su isključene",
+                "loading": "Sve usluge se učitavaju",
+                "available": "Sve usluge su stabilne"
+            },
+            "action": "Odaberite usluge",
+            "dialog": {
+                "title": "{Sora} Odabir mrežne usluge",
+                "fiat": "Fiat vrijednosti",
+                "chartsAndActivity": "Grafikoni i aktivnosti",
+                "online": "Na liniji",
+                "offline": "Izvan mreže"
+            }
+        }
+    },
+    "locationText": "Mjesto"
 }

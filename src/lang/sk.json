@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "Vytvorte NFT",
     "doNotShowText": "Už mi to neukazuj",
     "accountText": "účet | účtov",
-    "networkStatisticsText": "Štatistiky siete"
+    "networkStatisticsText": "Štatistiky siete",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Uzol pripojený",
+                "loading": "Opätovné pripojenie uzla",
+                "disconnected": "Uzol je odpojený"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet je zakázaný",
+                "unstable": "Internet je nestabilný",
+                "stable": "Internet stabilný"
+            },
+            "label": "Rýchlosť vášho internetu",
+            "desc": {
+                "disabled": "Odpojené",
+                "unstable": "Pomalé pripojenie",
+                "stable": "Optimálna rýchlosť"
+            },
+            "action": "Obnoviť {Polkaswap}",
+            "dialogTitle": "Pripojte sa k zdroju internetu",
+            "dialogDesc": "{Polkaswap} vyžaduje internetové pripojenie na stabilné používanie"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Štatistika nie je k dispozícii",
+                "loading": "Načítavanie štatistík",
+                "available": "Dostupné štatistiky"
+            },
+            "label": "Štatistické služby",
+            "desc": {
+                "unavailable": "Všetky služby sú odpojené",
+                "loading": "Všetky služby sa načítavajú",
+                "available": "Všetky služby sú stabilné"
+            },
+            "action": "Vyberte služby",
+            "dialog": {
+                "title": "{Sora} Výber sieťovej služby",
+                "fiat": "Hodnoty Fiat",
+                "chartsAndActivity": "Grafy a aktivita",
+                "online": "Online",
+                "offline": "Offline"
+            }
+        }
+    },
+    "locationText": "Poloha"
 }

@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "Create NFT",
     "doNotShowText": "Don’t show me this again",
     "accountText": "account | accounts",
-    "networkStatisticsText": "Network statistics"
+    "networkStatisticsText": "Network statistics",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Node connected",
+                "loading": "Node re-connecting",
+                "disconnected": "Node disconnected"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet disabled",
+                "unstable": "Internet unstable",
+                "stable": "Internet stable"
+            },
+            "label": "Your internet speed",
+            "desc": {
+                "disabled": "Disconnected",
+                "unstable": "Slow connection",
+                "stable": "Optimal speed"
+            },
+            "action": "Refresh {Polkaswap}",
+            "dialogTitle": "Connect to internet source",
+            "dialogDesc": "{Polkaswap} requires internet connection for stable experience"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistics unavailable",
+                "loading": "Statistics loading",
+                "available": "Statistics available"
+            },
+            "label": "Statistics services",
+            "desc": {
+                "unavailable": "All services are disconnected",
+                "loading": "All services are loading",
+                "available": "All services are stable"
+            },
+            "action": "Select services",
+            "dialog": {
+                "title": "{Sora} Network service selection",
+                "fiat": "Fiat values",
+                "chartsAndActivity": "Charts & Activity",
+                "online": "Online",
+                "offline": "Offline"
+            }
+        }
+    },
+    "locationText": "Location"
 }

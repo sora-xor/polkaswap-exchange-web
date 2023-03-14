@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "Создать NFT",
     "doNotShowText": "Больше не показывать",
     "accountText": "аккаунт | аккаунты",
-    "networkStatisticsText": "Статистика сети"
+    "networkStatisticsText": "Статистика сети",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Нода подключена",
+                "loading": "Нода переподключается",
+                "disconnected": "Нода отключена"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Интернет отключен",
+                "unstable": "Интернет нестабилен",
+                "stable": "Интернет стабилен"
+            },
+            "label": "Ваша скорость интернета",
+            "desc": {
+                "disabled": "Отключено",
+                "unstable": "Медленное соединение",
+                "stable": "Оптимальная скорость"
+            },
+            "action": "Обновить {Polkaswap}",
+            "dialogTitle": "Подключиться к источнику Интернета",
+            "dialogDesc": "{Polkaswap} требует подключения к Интернету для стабильной работы"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Статистика недоступна",
+                "loading": "Статистика загружается",
+                "available": "Статистика доступна"
+            },
+            "label": "Сервисы статистики",
+            "desc": {
+                "unavailable": "Все сервисы отключены",
+                "loading": "Все сервисы загружаются",
+                "available": "Все сервисы работают стабильно"
+            },
+            "action": "Выберите сервисы",
+            "dialog": {
+                "title": "Выбор сервисов {Sora} сети",
+                "fiat": "Фиатные значения",
+                "chartsAndActivity": "Графики и активность",
+                "online": "Онлайн",
+                "offline": "Оффлайн"
+            }
+        }
+    },
+    "locationText": "Расположение"
 }

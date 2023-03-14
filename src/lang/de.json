@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "NFT erstellen",
     "doNotShowText": "Zeig mir das nicht noch einmal",
     "accountText": "Konto | Konten",
-    "networkStatisticsText": "Netzwerkstatistiken"
+    "networkStatisticsText": "Netzwerkstatistiken",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Knoten verbunden",
+                "loading": "Knoten erneut verbinden",
+                "disconnected": "Knoten getrennt"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet deaktiviert",
+                "unstable": "Internet instabil",
+                "stable": "Internet stabil"
+            },
+            "label": "Ihre Internetgeschwindigkeit",
+            "desc": {
+                "disabled": "Getrennt",
+                "unstable": "Langsame Verbindung",
+                "stable": "Optimale Geschwindigkeit"
+            },
+            "action": "{Polkaswap} aktualisieren",
+            "dialogTitle": "Verbinden Sie sich mit der Internetquelle",
+            "dialogDesc": "{Polkaswap} erfordert eine Internetverbindung für eine stabile Erfahrung"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistiken nicht verfügbar",
+                "loading": "Statistiken werden geladen",
+                "available": "Statistiken verfügbar"
+            },
+            "label": "Statistikdienste",
+            "desc": {
+                "unavailable": "Alle Dienste sind getrennt",
+                "loading": "Alle Dienste werden geladen",
+                "available": "Alle Dienste sind stabil"
+            },
+            "action": "Dienste auswählen",
+            "dialog": {
+                "title": "{Sora} Netzwerkdienstauswahl",
+                "fiat": "Fiat-Werte",
+                "chartsAndActivity": "Diagramme & Aktivität",
+                "online": "Online",
+                "offline": "Offline"
+            }
+        }
+    },
+    "locationText": "Standort"
 }
