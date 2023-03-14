@@ -173,6 +173,7 @@ export enum Components {
   SelectNode = 'App/Footer/Node/SelectNode',
   NodeInfo = 'App/Footer/Node/NodeInfo',
   SelectNodeDialog = 'App/Footer/SelectNodeDialog',
+  StatisticsDialog = 'App/Footer/StatisticsDialog',
   ExternalLink = 'ExternalLink',
   // HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',

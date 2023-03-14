@@ -57,14 +57,14 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { getExplorerLinks, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
+import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import FooterPopper from './FooterPopper.vue';
 import NoInternetDialog from './NoInternetDialog.vue';
-import StatisticsDialog from './StatisticsDialog.vue';
 
 import { formatLocation } from './Node/utils';
 import { state, getter, mutation } from '@/store/decorators';
@@ -76,7 +76,7 @@ import type { Node } from '@/types/nodes';
   components: {
     FooterPopper,
     NoInternetDialog,
-    StatisticsDialog,
+    StatisticsDialog: lazyComponent(Components.StatisticsDialog),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
   },
 })

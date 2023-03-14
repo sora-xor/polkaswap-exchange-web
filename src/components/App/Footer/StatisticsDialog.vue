@@ -1,12 +1,12 @@
 <template>
-  <dialog-base class="statistics-dialog" :visible.sync="isVisible" :title="'SORA Network service selection'">
+  <dialog-base class="statistics-dialog" :visible.sync="isVisible" :title="t('footer.statistics.dialog.title')">
     <s-scrollbar class="statistics-dialog__scrollbar">
       <div class="statistics-dialog__group" v-for="(group, index) in groupServices" :key="group.key">
-        <span class="statistics-dialog__group-title">{{ group.title }}</span>
+        <span class="statistics-dialog__group-title">{{ t(group.title) }}</span>
         <s-radio-group v-model="model[group.key]" class="statistics-dialog__block s-flex" disabled>
           <s-radio
             v-for="service in group.services"
-            :key="service.endpoint"
+            :key="service.key"
             :label="service.endpoint"
             :value="service.endpoint"
             size="medium"
@@ -31,10 +31,16 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '../../mixins/TranslationMixin';
 import QrCode from '../../../assets/img/mobile/qr-code.svg?inline';
+import { state } from '@/store/decorators';
+
+type StatisticsModel = {
+  fiat: Nullable<string>;
+  chartsAndActivity: Nullable<string>;
+};
 
 @Component({
   components: {
@@ -43,67 +49,76 @@ import QrCode from '../../../assets/img/mobile/qr-code.svg?inline';
   },
 })
 export default class StatisticsDialog extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  readonly groupServices = [
-    {
-      key: 'fiat',
-      title: 'Fiat services',
-      services: [
-        {
-          name: 'Subquery Fiat Service',
-          endpoint: 'wss://ww.mof.sora1.org',
-          online: true,
-        },
-        {
-          name: 'Ceres Fiat Service',
-          endpoint: 'wss://ww.mof.sora2.org',
-          online: true,
-        },
-        // {
-        //   name: 'Subsquid Fiat Service',
-        //   endpoint: 'coming soon...',
-        //   online: false,
-        // },
-      ],
-    },
-    {
-      key: 'charts',
-      title: 'Charts services',
-      services: [
-        {
-          name: 'Subquery Fiat Service',
-          endpoint: 'wss://ww.mof.sora3.org',
-          online: true,
-        },
-        // {
-        //   name: 'Subsquid Fiat Service',
-        //   endpoint: 'coming soon...',
-        //   online: false,
-        // },
-      ],
-    },
-    {
-      key: 'activity',
-      title: 'Activity services',
-      services: [
-        {
-          name: 'Subquery Fiat Service',
-          endpoint: 'wss://ww.mof.sora4.org',
-          online: true,
-        },
-        // {
-        //   name: 'Subsquid Fiat Service',
-        //   endpoint: 'coming soon...',
-        //   online: false,
-        // },
-      ],
-    },
-  ];
+  @state.wallet.settings.subqueryEndpoint private subqueryEndpoint!: Nullable<string>;
+  @state.wallet.settings.subqueryStatus private subqueryStatus!: WALLET_TYPES.ConnectionStatus;
 
-  model = {
-    fiat: 'wss://ww.mof.sora1.org',
-    charts: 'wss://ww.mof.sora3.org',
-    activity: 'wss://ww.mof.sora4.org',
-  };
+  get isSubqueryOnline(): boolean {
+    return this.subqueryStatus === WALLET_TYPES.ConnectionStatus.Available;
+  }
+
+  get groupServices() {
+    return [
+      {
+        key: 'fiat',
+        title: 'footer.statistics.dialog.fiat',
+        services: [
+          {
+            key: 'fiatSubquery',
+            name: 'Subquery',
+            endpoint: this.subqueryEndpoint,
+            online: this.isSubqueryOnline,
+          },
+          {
+            key: 'fiatCeres',
+            name: 'Ceres',
+            endpoint: 'https://cerestoken.io/api/prices',
+            online: true,
+          },
+          {
+            key: 'fiatSubsquid',
+            name: 'Subsquid',
+            endpoint: 'coming soon...',
+            online: false,
+          },
+        ],
+      },
+      {
+        key: 'chartsAndActivity',
+        title: 'footer.statistics.dialog.chartsAndActivity',
+        services: [
+          {
+            key: 'chartsAndActivitySubquery',
+            name: 'Subquery',
+            endpoint: this.subqueryEndpoint,
+            online: this.isSubqueryOnline,
+          },
+          {
+            key: 'chartsAndActivitySubsquid',
+            name: 'Subsquid',
+            endpoint: 'coming soon...',
+            online: false,
+          },
+        ],
+      },
+    ];
+  }
+
+  private get modelInit(): StatisticsModel {
+    return {
+      fiat: this.subqueryEndpoint,
+      chartsAndActivity: this.subqueryEndpoint,
+    };
+  }
+
+  private _model: Nullable<StatisticsModel> = undefined;
+
+  get model() {
+    return this._model ?? this.modelInit;
+  }
+
+  set model(value: StatisticsModel) {
+    this._model = value;
+  }
 }
 </script>
 
