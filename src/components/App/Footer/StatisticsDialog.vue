@@ -163,11 +163,14 @@ $statistics-border-radius: 8px;
 .service-item {
   align-items: center;
   justify-content: space-between;
+  flex-wrap: nowrap;
   letter-spacing: var(--s-letter-spacing-small);
   line-height: var(--s-line-height-medium);
 
   &__label {
     flex-direction: column;
+    flex: 1;
+    margin-right: $inner-spacing-mini;
   }
 
   &__name {
