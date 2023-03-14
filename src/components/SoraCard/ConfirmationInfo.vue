@@ -96,7 +96,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   }
 
   get icon(): string {
-    if (!(this.currentStatus && this.hasFreeAttempts)) return 'time-time-24';
+    if (this.currentStatus === VerificationStatus.Rejected && !this.hasFreeAttempts) return 'time-time-24';
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
@@ -113,7 +113,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   get computedIconClass(): string {
     const base = 'sora-card__card-icon';
 
-    if (!(this.currentStatus && this.hasFreeAttempts)) return `${base}--waiting`;
+    if (this.currentStatus === VerificationStatus.Rejected && !this.hasFreeAttempts) return `${base}--waiting`;
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
@@ -123,7 +123,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       case VerificationStatus.Rejected:
         return `${base}--reject`;
       default:
-        return '';
+        return `${base}--waiting`;
     }
   }
 
@@ -198,8 +198,8 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     &-icon {
       height: 40px;
       width: 40px;
-      right: -10px;
-      bottom: 0px;
+      right: -14px;
+      bottom: -4px;
       position: absolute;
       border-radius: 50%;
       opacity: 0.95;

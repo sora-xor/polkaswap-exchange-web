@@ -18,8 +18,10 @@
       <p class="sora-card__balance-indicator-text" v-html="freeStartUsingDesc" />
     </div>
     <div class="sora-card__unsupported-countries-disclaimer">
-      Residents from certain countries can not apply for SORA Card at this moment
-      <span class="sora-card__unsupported-countries-disclaimer--link">See the list</span>
+      {{ t('card.unsupportedCountriesDisclaimer') }}
+      <span class="sora-card__unsupported-countries-disclaimer--link" @click="openList">{{
+        t('card.unsupportedCountriesLink')
+      }}</span>
     </div>
     <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
       <div v-if="isEuroBalanceEnough || !isLoggedIn" class="sora-card__options--enough-euro">
@@ -48,6 +50,7 @@
     <span v-if="isLoggedIn" @click="loginUser" class="sora-card__user-applied">{{ alreadyAppliedText }}</span>
     <x1-dialog :visible.sync="showX1Dialog" />
     <paywings-dialog :visible.sync="showPaywingsDialog" />
+    <tos-dialog :visible.sync="showListDialog" :title="t('card.unsupportedCountries')" />
   </div>
 </template>
 
@@ -59,7 +62,6 @@ import { FPNumber } from '@sora-substrate/math';
 import { getter, state } from '@/store/decorators';
 import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
-import { delay } from '@/utils';
 import { clearTokensFromLocalStorage } from '@/utils/card';
 import TranslationMixin from '../mixins/TranslationMixin';
 
@@ -75,6 +77,7 @@ const hundred = '100';
   components: {
     X1Dialog: lazyComponent(Components.X1Dialog),
     PaywingsDialog: lazyComponent(Components.PaywingsDialog),
+    TosDialog: lazyComponent(Components.ToSDialog),
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
@@ -104,6 +107,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
   showX1Dialog = false;
   showPaywingsDialog = false;
+  showListDialog = false;
 
   @Watch('euroBalance', { immediate: true })
   private handleEuroBalanceTranslationChange(value: number): void {
@@ -152,6 +156,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     if (!this.isEuroBalanceEnough) {
       router.push({ name: PageNames.Bridge, params: { xorToDeposit: this.xorToDeposit.toString() } });
     }
+  }
+
+  openList(): void {
+    this.showListDialog = true;
   }
 
   buyTokens(type: BuyButtonType): void {
