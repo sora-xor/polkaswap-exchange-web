@@ -34,12 +34,12 @@ enum Step {
     ConfirmationInfo: lazyComponent(Components.ConfirmationInfo),
   },
 })
-export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
+export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
   @state.soraCard.hasFreeAttempts private hasFreeAttempts!: boolean;
   @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
 
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
-  @getter.settings.soraCardEnabled private soraCardEnabled!: Nullable<boolean>;
+  @getter.settings.soraCardEnabled soraCardEnabled!: Nullable<boolean>;
 
   @mutation.soraCard.setKycStatus setKycStatus!: (kycStatus: KycStatus) => void;
   @mutation.soraCard.setVerificationStatus setVerificationStatus!: (verStatus: VerificationStatus) => void;

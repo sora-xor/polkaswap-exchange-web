@@ -1112,12 +1112,66 @@
     },
     "tooltips": {
         "roi": "{ROI} oznacza zwrot z inwestycji. Oblicza się go, dzieląc zysk uzyskany z inwestycji przez koszt tej inwestycji w ekwiwalencie procentowym.",
-        "tvl": "{TVL} oznacza całkowitą zablokowaną wartość. Reprezentuje tokeny zamknięte w pulach w ekwiwalencie dolara."
+        "tvl": "{TVL} oznacza całkowitą zablokowaną wartość. Reprezentuje tokeny zamknięte w pulach w ekwiwalencie dolara.",
+        "volume": "Wolumen odnosi się do całkowitej kwoty aktywów, którymi handlowano lub wymieniano w sieci w określonym czasie. Wolumen jest ważnym miernikiem do pomiaru płynności i ogólnej aktywności sieci.",
+        "fees": "Opłaty na blockchainie {Sora} odnoszą się do opłat, które są naliczane za wykonywanie transakcji w sieci. Opłaty te są uiszczane w XOR, natywnej kryptowalucie sieci {Sora} . Wysokość opłaty uzależniona jest od złożoności i wielkości realizowanej transakcji",
+        "supply": "Podaż tokenów odnosi się do całkowitej liczby tokenów, które zostały utworzone i są w obiegu w sieci. Podaż tokenów może się zmieniać w zależności od liczby tokenów postawionych, spalonych lub przesłanych w sieci.",
+        "transactions": "Transakcje odnoszą się do procesu wysyłania lub odbierania zasobów cyfrowych w sieci, w tym operacji płynnościowych, a także swapów.",
+        "accounts": "Konta to adresy cyfrowe, które przechowują zasoby użytkownika w sieci. Każde konto jest powiązane z unikalnym adresem publicznym i kluczem prywatnym, który umożliwia użytkownikowi dostęp do zasobów i zarządzanie nimi.",
+        "bridgeTransactions": "Most {from} do {to} odnosi się do procesu przesyłania zasobów między sieciami {from} i {to} za pomocą mostu. Most umożliwia interoperacyjność obu sieci, umożliwiając użytkownikom płynne przenoszenie zasobów między nimi."
     },
     "createTokenText": "Utwórz token",
     "comingSoonText": "Już wkrótce...",
     "confirmText": "Potwierdź",
     "createTokenTextNFT": "Utwórz token NFT",
     "doNotShowText": "Nie pokazuj mi tego więcej",
-    "accountText": "konto | konta"
+    "accountText": "konto | konta",
+    "networkStatisticsText": "Statystyki sieci",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Węzeł podłączony",
+                "loading": "Ponowne łączenie węzła",
+                "disconnected": "Węzeł odłączony"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet wyłączony",
+                "unstable": "Internet niestabilny",
+                "stable": "Stabilny internet"
+            },
+            "label": "Twoja prędkość internetu",
+            "desc": {
+                "disabled": "Bezładny",
+                "unstable": "Wolne połączenie",
+                "stable": "Optymalna prędkość"
+            },
+            "action": "Odśwież {Polkaswap}",
+            "dialogTitle": "Połącz się ze źródłem internetowym",
+            "dialogDesc": "{Polkaswap} wymaga połączenia internetowego do stabilnego działania"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statystyki niedostępne",
+                "loading": "Ładowanie statystyk",
+                "available": "Dostępne statystyki"
+            },
+            "label": "Usługi statystyczne",
+            "desc": {
+                "unavailable": "Wszystkie usługi są odłączone",
+                "loading": "Trwa ładowanie wszystkich usług",
+                "available": "Wszystkie usługi są stabilne"
+            },
+            "action": "Wybierz usługi",
+            "dialog": {
+                "title": "{Sora} Wybór usługi sieciowej",
+                "fiat": "wartości Fiata",
+                "chartsAndActivity": "Wykresy i aktywność",
+                "online": "online",
+                "offline": "offline"
+            }
+        }
+    },
+    "locationText": "Lokalizacja"
 }

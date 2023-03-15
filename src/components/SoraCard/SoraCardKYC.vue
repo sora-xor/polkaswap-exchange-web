@@ -13,7 +13,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import TranslationMixin from '../mixins/TranslationMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 enum KycProcess {
   TermsAndConditions,

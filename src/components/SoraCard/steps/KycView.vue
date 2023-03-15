@@ -17,14 +17,14 @@
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { v4 as uuidv4 } from 'uuid';
+import { WALLET_CONSTS, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { state } from '@/store/decorators';
 import { soraCard } from '@/utils/card';
 
 @Component
-export default class KycView extends Mixins(TranslationMixin) {
+export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
   @Prop({ default: '', type: String }) readonly accessToken!: string;
@@ -59,11 +59,9 @@ export default class KycView extends Mixins(TranslationMixin) {
     } catch (data) {
       console.error('[SoraCard]: Error while initiating KYC', data);
 
-      this.$notify({
-        message: this.t('card.infoMessageTryAgain'),
-        title: '',
-      });
+      this.showAppNotification(this.t('card.infoMessageTryAgain'));
       this.$emit('confirm-kyc', false);
+
       unloadScript(kycService.sdkURL);
     }
   }
@@ -121,11 +119,9 @@ export default class KycView extends Mixins(TranslationMixin) {
           .on('Error', (data) => {
             console.error('[SoraCard]: Error while initiating KYC', data);
 
-            this.$notify({
-              message: this.t('card.infoMessageTryAgain'),
-              title: '',
-            });
+            this.showAppNotification(this.t('card.infoMessageTryAgain'));
             this.$emit('confirm-kyc', false);
+
             unloadScript(kycService.sdkURL);
 
             // Integrator will be notified if user cancels KYC or something went wrong
@@ -147,7 +143,7 @@ export default class KycView extends Mixins(TranslationMixin) {
       });
     setTimeout(() => {
       this.loadingKycView = false;
-    }, 5000);
+    }, 5_000);
   }
 }
 </script>
