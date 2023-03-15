@@ -17,6 +17,8 @@ import { findLast, groupBy, sumBy } from 'lodash';
 import { NumberLike } from '@sora-substrate/math';
 import { Messages } from '@sora-substrate/util/build/logger';
 import { assert } from '@polkadot/util';
+import { slippageMultiplier } from '@/modules/ADAR/consts';
+import { getTokenEquivalent, getAssetUSDPrice } from './utils';
 
 const actions = defineActions({
   processingNextStage(context) {
@@ -264,42 +266,18 @@ const actions = defineActions({
   },
 });
 
-function getAssetUSDPrice(asset, fiatPriceObject) {
-  if (!asset) return null;
-  return FPNumber.fromCodecValue(fiatPriceObject[asset.address], 18).toFixed(18);
-}
-
 function getTransferParams(context, inputAsset, recipient) {
   const { rootState } = routeAssetsActionContext(context);
   if (recipient.asset.address === inputAsset.address) {
     const priceObject = rootState.wallet.account.fiatPriceObject;
-    const amount = Number(recipient.usd) / Number(getAssetUSDPrice(recipient.asset, priceObject));
-    const transfer = api.api.tx.assets.transfer(
-      inputAsset.address,
-      recipient.wallet,
-      new FPNumber(amount, inputAsset.decimals).toCodecString()
-    );
-    const formattedToAddress =
-      recipient.wallet.slice(0, 2) === 'cn' ? recipient.wallet : formatAddress(recipient.wallet);
-    const history = {
-      symbol: recipient.asset.symbol,
-      to: formattedToAddress,
-      amount: `${amount}`,
-      assetAddress: recipient.wallet,
-      type: Operation.Transfer,
-    };
+    const amount = getTokenEquivalent(priceObject, recipient.asset, recipient.usd);
     return {
-      action: async () => await api.transfer(recipient.asset, recipient.wallet, amount),
+      action: async () => await api.transfer(recipient.asset, recipient.wallet, amount.toString()),
       recipient,
-      transfer: {
-        extrinsic: transfer,
-        history: history,
-      },
       swapAndSendData: {
         address: recipient.wallet,
         targetAmount: amount,
         asset: recipient.asset,
-        // dexId: bestDexId,
       },
     };
   } else {
@@ -315,8 +293,8 @@ function getTransferParams(context, inputAsset, recipient) {
             recipient.wallet,
             inputAsset,
             recipient.asset,
-            amountFrom,
-            amountTo,
+            amountFrom.toString(),
+            amountTo.toString(),
             undefined,
             true,
             undefined,
@@ -377,8 +355,7 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
   const { commit, getters, rootCommit, rootState } = routeAssetsActionContext(context);
   const inputAsset = getters.inputToken;
   const newData = data.map((item) => {
-    const decimals = item.swapAndSendData.asset.decimals;
-    const targetAmount = new FPNumber(item.swapAndSendData.targetAmount, decimals).toCodecString();
+    const targetAmount = item.swapAndSendData.targetAmount.toCodecString();
     return {
       accountId: item.swapAndSendData.address,
       targetAmount,
@@ -392,10 +369,14 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
   const findAsset = (assetName: string) => {
     return assetsTable.find((item: Asset) => item.address === assetName);
   };
+  let inputTokenAmount: FPNumber = FPNumber.ZERO;
   const swapTransferData = groupedData.map((entry) => {
     const [outcomeAssetId, receivers] = entry;
-    const approxSum = sumBy(receivers, (receiver) => receiver.usd);
-    const dexIdData = getAmountAndDexId(context, inputAsset, findAsset(outcomeAssetId) as Asset, approxSum);
+    const approxSum = receivers.reduce((sum, receiver) => {
+      return sum.add(new FPNumber(receiver.usd));
+    }, FPNumber.ZERO);
+    const dexIdData = getAmountAndDexId(context, inputAsset, findAsset(outcomeAssetId) as Asset, approxSum.toString());
+    inputTokenAmount = inputTokenAmount.add(dexIdData?.amountFrom);
     const dexId = dexIdData?.bestDexId;
     return {
       outcomeAssetId,
@@ -404,8 +385,7 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
     };
   });
 
-  // const formattedToAddress = receiver.slice(0, 2) === 'cn' ? receiver : this.root.formatAddress(receiver);
-  const maxInputAmount = getAssetBalance(inputAsset);
+  const maxInputAmount = inputTokenAmount.mul(new FPNumber(slippageMultiplier)).toCodecString();
   const params = calcTxParams(inputAsset, maxInputAmount, undefined);
   await withLoading(async () => {
     try {
@@ -493,9 +473,7 @@ function calcTxParams(
   const liquiditySources = liquiditySource ? [liquiditySource] : [];
   return {
     args: [
-      // dexId,
       asset.address,
-      // assetTo.address,
       amount,
       liquiditySources,
       liquiditySource === LiquiditySourceTypes.Default ? 'Disabled' : 'AllowSelected',
@@ -503,20 +481,22 @@ function calcTxParams(
   };
 }
 
-function getAmountAndDexId(context: any, assetFrom: Asset, assetTo: Asset, usd: number) {
+function getAmountAndDexId(context: any, assetFrom: Asset, assetTo: Asset, usd: number | string) {
   const { rootState, getters, rootGetters } = routeAssetsActionContext(context);
+  const tokenEquivalent = getTokenEquivalent(rootState.wallet.account.fiatPriceObject, assetTo, usd);
+  if (assetFrom.address === assetTo.address)
+    return { amountFrom: tokenEquivalent, amountTo: tokenEquivalent, bestDexId: 0 };
   const subscription = getters.subscriptions.find((sub) => sub.assetAddress === assetTo.address);
-  if (!subscription) return null;
+  if (!subscription) {
+    throw new Error('Subscription did not found');
+  }
   const { paths, payload, liquiditySources, dexQuoteData } = subscription;
-  const tokenEquivalent = new FPNumber(usd)
-    .div(FPNumber.fromCodecValue(rootState.wallet.account.fiatPriceObject[assetTo.address], assetTo.decimals))
-    .toNumber();
   const dexes = api.dex.dexList;
   const results = dexes.reduce<{ [dexId: number]: SwapResult }>((buffer, { dexId }) => {
     const swapResult = api.swap.getResult(
       assetFrom,
       assetTo,
-      `${tokenEquivalent}`,
+      tokenEquivalent.toString(),
       true,
       [rootGetters.swap.swapLiquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
       (dexQuoteData as Record<DexId, DexQuoteData>)[dexId].paths,
@@ -547,7 +527,7 @@ function getAmountAndDexId(context: any, assetFrom: Asset, assetTo: Asset, usd: 
   }
 
   const { amount, amountWithoutImpact, fee, rewards } = results[bestDexId];
-  return { amountFrom: amount, amountTo: tokenEquivalent, bestDexId, allDexes: results };
+  return { amountFrom: FPNumber.fromCodecValue(amount), amountTo: tokenEquivalent, bestDexId, allDexes: results };
 }
 
 export default actions;
