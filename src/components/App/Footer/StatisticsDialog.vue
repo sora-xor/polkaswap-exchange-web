@@ -34,7 +34,6 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '../../mixins/TranslationMixin';
-import QrCode from '../../../assets/img/mobile/qr-code.svg?inline';
 import { state } from '@/store/decorators';
 
 type StatisticsModel = {
@@ -45,7 +44,6 @@ type StatisticsModel = {
 @Component({
   components: {
     DialogBase: components.DialogBase,
-    QrCode,
   },
 })
 export default class StatisticsDialog extends Mixins(mixins.DialogMixin, TranslationMixin) {
