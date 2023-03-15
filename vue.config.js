@@ -24,7 +24,6 @@ module.exports = defineConfig({
       });
 
     if (process.env.NODE_ENV === 'production') {
-      config.mode = 'production';
       config.plugins.push(new TerserWebpackPlugin());
       const buildDateTime = Date.now();
       config.output.filename = `js/[name].[contenthash:8].${buildDateTime}.js`;
