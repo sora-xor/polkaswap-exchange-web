@@ -189,7 +189,7 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
 
   downloadPDF() {
     const doc = new JsPDF({ putOnlyUsedFonts: true, orientation: 'landscape' });
-    const headers = ['№', 'Name', 'Wallet', 'USD', 'Input Token', 'Token', 'Amount', 'Status'];
+    const headers = ['№', 'NAME', 'WALLET', 'USD', 'INPUT TOKEN', 'TOKEN', 'AMOUNT', 'STATUS'];
     const data = this.recipients.map((recipient, idx) => {
       return [
         `${idx + 1}`,
@@ -205,6 +205,40 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
     autoTable(doc, {
       head: [headers],
       body: data,
+      margin: { top: 5, left: 5, right: 5, bottom: 5 },
+      styles: {
+        lineColor: [237, 228, 231],
+        lineWidth: 0.3,
+        fontSize: 10,
+      },
+      headStyles: {
+        textColor: [161, 154, 157],
+        fillColor: [253, 247, 251],
+      },
+      bodyStyles: {
+        fillColor: [253, 247, 251],
+        textColor: [38, 38, 45],
+        cellPadding: { top: 10, right: 5, bottom: 10, left: 5 },
+      },
+      alternateRowStyles: {
+        fillColor: [255, 250, 251],
+      },
+      columnStyles: {
+        7: {
+          fontStyle: 'bold',
+        },
+      },
+      didParseCell: function (data) {
+        if (data.row.section === 'body') {
+          if (data.cell.text.includes(RecipientStatus.FAILED)) {
+            data.cell.styles.textColor = [231, 76, 60];
+          }
+          if (data.cell.text.includes(RecipientStatus.SUCCESS)) {
+            data.cell.styles.textColor = [52, 173, 135];
+          }
+        }
+      },
+      // includeHiddenHtml: true
     });
     doc.save(`ADAR-${new Date().toLocaleDateString('en-GB')}.pdf`);
   }
