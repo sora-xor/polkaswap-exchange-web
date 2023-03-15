@@ -19,8 +19,9 @@
               <div class="select-node-info__label">
                 {{ node.title }}
               </div>
-              <div class="select-node-info__address">
-                {{ node.address }}
+              <div class="select-node-info__desc s-flex">
+                <div>{{ node.address }}</div>
+                <div v-if="node.location">{{ formatLocation(node.location) }}</div>
               </div>
             </div>
             <div class="select-node-badge">
@@ -46,9 +47,10 @@
 <script lang="ts">
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
 
-import { NodeItem } from '@/types/nodes';
-
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { formatLocation } from './utils';
+
+import type { NodeItem } from '@/types/nodes';
 
 @Component
 export default class SelectNode extends Mixins(TranslationMixin) {
@@ -59,6 +61,8 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 
   @ModelSync('value', 'input', { type: String })
   readonly currentAddressValue!: string;
+
+  formatLocation = formatLocation;
 }
 </script>
 
@@ -80,6 +84,8 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 <style lang="scss" scoped>
 $node-list-item-height: 66px;
 $node-list-items: 5;
+$node-desc-spacing: 6px;
+$node-desc-border-radius: 8px;
 
 .select-node {
   flex-direction: column;
@@ -116,11 +122,19 @@ $node-list-items: 5;
       @include radio-title;
     }
 
-    &__address {
+    &__desc {
+      flex-wrap: wrap;
       color: var(--s-color-base-content-secondary);
       font-size: var(--s-font-size-mini);
       font-weight: 300;
       line-height: var(--s-line-height-medium);
+      > div {
+        background: var(--s-color-base-background);
+        padding: $node-desc-spacing;
+        margin-top: $node-desc-spacing;
+        margin-right: $inner-spacing-mini;
+        border-radius: $node-desc-border-radius;
+      }
     }
   }
 

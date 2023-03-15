@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "NFT maken",
     "doNotShowText": "Laat me dit niet nog een keer zien",
     "accountText": "rekening | rekeningen",
-    "networkStatisticsText": "Netwerkstatistieken"
+    "networkStatisticsText": "Netwerkstatistieken",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Knooppunt aangesloten",
+                "loading": "Knooppunt maakt opnieuw verbinding",
+                "disconnected": "Knooppunt losgekoppeld"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet uitgeschakeld",
+                "unstable": "Internet onstabiel",
+                "stable": "Internet stabiel"
+            },
+            "label": "Je internetsnelheid",
+            "desc": {
+                "disabled": "Losgekoppeld",
+                "unstable": "Langzame verbinding",
+                "stable": "Optimale snelheid"
+            },
+            "action": "Vernieuw {Polkaswap}",
+            "dialogTitle": "Maak verbinding met internetbron",
+            "dialogDesc": "{Polkaswap} vereist een internetverbinding voor een stabiele ervaring"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistieken niet beschikbaar",
+                "loading": "Statistieken laden",
+                "available": "Statistieken beschikbaar"
+            },
+            "label": "Statistische diensten",
+            "desc": {
+                "unavailable": "Alle diensten zijn losgekoppeld",
+                "loading": "Alle services worden geladen",
+                "available": "Alle diensten zijn stabiel"
+            },
+            "action": "Selecteer diensten",
+            "dialog": {
+                "title": "{Sora} Netwerkserviceselectie",
+                "fiat": "Fiat-waarden",
+                "chartsAndActivity": "Grafieken & Activiteit",
+                "online": "Online",
+                "offline": "offline"
+            }
+        }
+    },
+    "locationText": "Plaats"
 }

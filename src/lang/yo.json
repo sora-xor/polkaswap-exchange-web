@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "Ṣẹda NFT",
     "doNotShowText": "Maṣe fi eyi han mi lẹẹkansi",
     "accountText": "iroyin | awọn iroyin",
-    "networkStatisticsText": "Awọn iṣiro nẹtiwọki"
+    "networkStatisticsText": "Awọn iṣiro nẹtiwọki",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Node ti sopọ",
+                "loading": "Node tun-so pọ",
+                "disconnected": "Node ge asopọ"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Ayelujara alaabo",
+                "unstable": "Internet riru",
+                "stable": "Iduroṣinṣin Intanẹẹti"
+            },
+            "label": "Iyara intanẹẹti rẹ",
+            "desc": {
+                "disabled": "Ge asopọ",
+                "unstable": "Asopọ lọra",
+                "stable": "Iyara to dara julọ"
+            },
+            "action": "Tuntun {Polkaswap}",
+            "dialogTitle": "Sopọ si orisun intanẹẹti",
+            "dialogDesc": "{Polkaswap} nilo asopọ intanẹẹti fun iriri iduroṣinṣin"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Awọn iṣiro ko si",
+                "loading": "Ikojọpọ statistiki",
+                "available": "Awọn iṣiro wa"
+            },
+            "label": "Awọn iṣẹ iṣiro",
+            "desc": {
+                "unavailable": "Gbogbo awọn iṣẹ ti ge asopọ",
+                "loading": "Gbogbo awọn iṣẹ ti wa ni ikojọpọ",
+                "available": "Gbogbo awọn iṣẹ jẹ iduroṣinṣin"
+            },
+            "action": "Yan awọn iṣẹ",
+            "dialog": {
+                "title": "Aṣayan iṣẹ nẹtiwọki {Sora}",
+                "fiat": "Awọn iye Fiat",
+                "chartsAndActivity": "Awọn aworan atọka & Iṣẹ-ṣiṣe",
+                "online": "Online",
+                "offline": "Aisinipo"
+            }
+        }
+    },
+    "locationText": "Ipo"
 }

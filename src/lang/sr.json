@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "Креирајте НФТ",
     "doNotShowText": "Не показуј ми ово поново",
     "accountText": "рачун | рачуни",
-    "networkStatisticsText": "Мрежна статистика"
+    "networkStatisticsText": "Мрежна статистика",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Чвор повезан",
+                "loading": "Поновно повезивање чвора",
+                "disconnected": "Чвор је прекинут"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Интернет онемогућен",
+                "unstable": "Интернет нестабилан",
+                "stable": "Интернет стабилан"
+            },
+            "label": "Ваша брзина интернета",
+            "desc": {
+                "disabled": "Дисцоннецтед",
+                "unstable": "Спора веза",
+                "stable": "Оптимална брзина"
+            },
+            "action": "Освежи {Polkaswap}",
+            "dialogTitle": "Повежите се на интернет извор",
+            "dialogDesc": "{Polkaswap} захтева интернет везу за стабилно искуство"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Статистика није доступна",
+                "loading": "Статистика се учитава",
+                "available": "Доступна статистика"
+            },
+            "label": "Статистичке службе",
+            "desc": {
+                "unavailable": "Све услуге су искључене",
+                "loading": "Све услуге се учитавају",
+                "available": "Све услуге су стабилне"
+            },
+            "action": "Изаберите услуге",
+            "dialog": {
+                "title": "{Sora} Избор мрежне услуге",
+                "fiat": "Фиат вредности",
+                "chartsAndActivity": "Графикони и активности",
+                "online": "Онлине",
+                "offline": "Одсутан"
+            }
+        }
+    },
+    "locationText": "Локација"
 }

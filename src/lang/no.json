@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "Lag NFT",
     "doNotShowText": "Ikke vis meg dette igjen",
     "accountText": "konto | kontoer",
-    "networkStatisticsText": "Nettverksstatistikk"
+    "networkStatisticsText": "Nettverksstatistikk",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Node tilkoblet",
+                "loading": "Node kobler til på nytt",
+                "disconnected": "Node frakoblet"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internett deaktivert",
+                "unstable": "Internett ustabilt",
+                "stable": "Internett stabil"
+            },
+            "label": "Internett-hastigheten din",
+            "desc": {
+                "disabled": "Koblet fra",
+                "unstable": "Sakte tilkobling",
+                "stable": "Optimal hastighet"
+            },
+            "action": "Oppdater {Polkaswap}",
+            "dialogTitle": "Koble til internettkilde",
+            "dialogDesc": "{Polkaswap} krever internettforbindelse for stabil opplevelse"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistikk utilgjengelig",
+                "loading": "Statistikk laster",
+                "available": "Statistikk tilgjengelig"
+            },
+            "label": "Statistikktjenester",
+            "desc": {
+                "unavailable": "Alle tjenester er frakoblet",
+                "loading": "Alle tjenester lastes inn",
+                "available": "Alle tjenester er stabile"
+            },
+            "action": "Velg tjenester",
+            "dialog": {
+                "title": "{Sora} Valg av nettverkstjeneste",
+                "fiat": "Fiat-verdier",
+                "chartsAndActivity": "Diagrammer og aktivitet",
+                "online": "på nett",
+                "offline": "Frakoblet"
+            }
+        }
+    },
+    "locationText": "plassering"
 }

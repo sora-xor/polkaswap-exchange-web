@@ -192,6 +192,7 @@ const actions = defineActions({
     updateDocumentTitle();
     updateFpNumberLocale(locale);
     commit.setLanguage(locale);
+    commit.updateDisplayRegions(); // based on locale
   },
   async setBlockNumber(context): Promise<void> {
     const { commit } = settingsActionContext(context);

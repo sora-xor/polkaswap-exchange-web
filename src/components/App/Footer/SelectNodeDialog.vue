@@ -33,12 +33,12 @@ import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web
 
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { NodeModel } from '@/components/App/Settings/Node/consts';
 import { Node, NodeItem, ConnectToNodeOptions } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
 import { getter, state, action } from '@/store/decorators';
-
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
+
+import { NodeModel } from './Node/consts';
 
 const NodeListView = 'NodeListView';
 const NodeInfoView = 'NodeInfoView';
@@ -46,7 +46,6 @@ const NodeInfoView = 'NodeInfoView';
 @Component({
   components: {
     DialogBase: components.DialogBase,
-    ExternalLink: lazyComponent(Components.ExternalLink),
     SelectNode: lazyComponent(Components.SelectNode),
     NodeInfo: lazyComponent(Components.NodeInfo),
   },

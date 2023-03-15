@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "Skapa NFT",
     "doNotShowText": "Visa mig inte det här igen",
     "accountText": "konto | konton",
-    "networkStatisticsText": "Nätverksstatistik"
+    "networkStatisticsText": "Nätverksstatistik",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Nod ansluten",
+                "loading": "Noden återansluter",
+                "disconnected": "Noden frånkopplad"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet inaktiverat",
+                "unstable": "Internet instabilt",
+                "stable": "Internet stabil"
+            },
+            "label": "Din internethastighet",
+            "desc": {
+                "disabled": "Osammanhängande",
+                "unstable": "Långsam uppkoppling",
+                "stable": "Optimal hastighet"
+            },
+            "action": "Uppdatera {Polkaswap}",
+            "dialogTitle": "Anslut till internetkälla",
+            "dialogDesc": "{Polkaswap} kräver internetanslutning för en stabil upplevelse"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistik inte tillgänglig",
+                "loading": "Statistik laddas",
+                "available": "Statistik tillgänglig"
+            },
+            "label": "Statistiktjänster",
+            "desc": {
+                "unavailable": "Alla tjänster är frånkopplade",
+                "loading": "Alla tjänster laddas",
+                "available": "Alla tjänster är stabila"
+            },
+            "action": "Välj tjänster",
+            "dialog": {
+                "title": "{Sora} Val av nätverkstjänst",
+                "fiat": "Fiat värden",
+                "chartsAndActivity": "Diagram och aktivitet",
+                "online": "Uppkopplad",
+                "offline": "Off-line"
+            }
+        }
+    },
+    "locationText": "Plats"
 }

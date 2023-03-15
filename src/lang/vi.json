@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "Tạo NFT",
     "doNotShowText": "Đừng cho tôi xem cái này nữa",
     "accountText": "tài khoản | tài khoản",
-    "networkStatisticsText": "thống kê mạng"
+    "networkStatisticsText": "thống kê mạng",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Nút được kết nối",
+                "loading": "Kết nối lại nút",
+                "disconnected": "Nút bị ngắt kết nối"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet bị vô hiệu hóa",
+                "unstable": "Internet không ổn định",
+                "stable": "Internet ổn định"
+            },
+            "label": "Tốc độ internet của bạn",
+            "desc": {
+                "disabled": "ngắt kết nối",
+                "unstable": "Kết nối chậm",
+                "stable": "tốc độ tối ưu"
+            },
+            "action": "Làm mới {Polkaswap}",
+            "dialogTitle": "Kết nối với nguồn internet",
+            "dialogDesc": "{Polkaswap} yêu cầu kết nối internet để có trải nghiệm ổn định"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Thống kê không có sẵn",
+                "loading": "tải thống kê",
+                "available": "thống kê có sẵn"
+            },
+            "label": "Dịch vụ thống kê",
+            "desc": {
+                "unavailable": "Tất cả các dịch vụ bị ngắt kết nối",
+                "loading": "Tất cả các dịch vụ đang tải",
+                "available": "Mọi dịch vụ đều ổn định"
+            },
+            "action": "Chọn dịch vụ",
+            "dialog": {
+                "title": "{Sora} Lựa chọn dịch vụ mạng",
+                "fiat": "Giá trị Fiat",
+                "chartsAndActivity": "Biểu đồ & Hoạt động",
+                "online": "Trực tuyến",
+                "offline": "ngoại tuyến"
+            }
+        }
+    },
+    "locationText": "Vị trí"
 }

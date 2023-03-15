@@ -1126,5 +1126,52 @@
     "createTokenTextNFT": "Buat NFT",
     "doNotShowText": "Jangan tunjukkan ini lagi",
     "accountText": "akun | akun",
-    "networkStatisticsText": "Statistik jaringan"
+    "networkStatisticsText": "Statistik jaringan",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Node terhubung",
+                "loading": "Node terhubung kembali",
+                "disconnected": "Node terputus"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet dinonaktifkan",
+                "unstable": "Internet tidak stabil",
+                "stable": "Internet stabil"
+            },
+            "label": "Kecepatan internet Anda",
+            "desc": {
+                "disabled": "Terputus",
+                "unstable": "Koneksi lambat",
+                "stable": "Kecepatan optimal"
+            },
+            "action": "Segarkan {Polkaswap}",
+            "dialogTitle": "Hubungkan ke sumber internet",
+            "dialogDesc": "{Polkaswap} membutuhkan koneksi internet untuk pengalaman yang stabil"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistik tidak tersedia",
+                "loading": "Pemuatan statistik",
+                "available": "Statistik tersedia"
+            },
+            "label": "Layanan statistik",
+            "desc": {
+                "unavailable": "Semua layanan terputus",
+                "loading": "Semua layanan sedang dimuat",
+                "available": "Semua layanan stabil"
+            },
+            "action": "Pilih layanan",
+            "dialog": {
+                "title": "{Sora} Pemilihan layanan jaringan",
+                "fiat": "Nilai Fiat",
+                "chartsAndActivity": "Bagan & Aktivitas",
+                "online": "On line",
+                "offline": "Luring"
+            }
+        }
+    },
+    "locationText": "Lokasi"
 }
