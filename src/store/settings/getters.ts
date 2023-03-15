@@ -67,7 +67,8 @@ const getters = defineGetters<SettingsState>()({
   /** Stable Connection - more or equal **1 Mb/s** */
   isInternetConnectionStable(...args): boolean {
     const { getters } = settingsGetterContext(args);
-    return getters.internetConnectionSpeedMb >= 1;
+    // `!getters.internetConnectionSpeedMb` for the case when `navigator.connection` isn't supported
+    return getters.internetConnectionSpeedMb >= 1 || !getters.internetConnectionSpeedMb;
   },
 });
 

@@ -159,7 +159,7 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   }
 
   get internetConnectionSpeedMbText(): string {
-    return `${this.internetConnectionSpeedMb} ${this.TranslationConsts.mbps}`;
+    return this.internetConnectionSpeedMb ? `${this.internetConnectionSpeedMb} ${this.TranslationConsts.mbps}` : '';
   }
 
   refreshPage(): void {
