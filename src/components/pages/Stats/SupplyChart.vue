@@ -101,11 +101,9 @@ const toNumber = (value: string): number => {
   return fp.isFinity() ? fp.toNumber() : 0;
 };
 
-const getExtremum = (data, prop: string, min = false) => {
+const getExtremum = (data: ChartData[], prop: string, min = false) => {
   return data.reduce((acc, item) => Math[min ? 'min' : 'max'](acc, item[prop]), min ? Infinity : 0);
 };
-
-const getBaseLog = (val: number) => Math.log(val) / Math.log(10);
 
 const parse = (node: AssetSnapshotEntity): ChartData => {
   return {
@@ -233,7 +231,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
         this.lineSeriesSpec({
           encode: { y: 'value' },
           itemStyle: {
-            color: this.theme.color.status.warning,
+            color: this.theme.color.status.info,
           },
           name: 'Supply',
           yAxisIndex: 1,
@@ -249,9 +247,6 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           name: 'Remint',
           yAxisIndex: 0,
           areaStyle: undefined,
-          // symbolSize: (val) => {
-          //   return getBaseLog(val[2]);
-          // },
         }),
         this.seriesSpec({
           type: 'bar',
@@ -263,9 +258,6 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           name: 'Burn',
           yAxisIndex: 0,
           areaStyle: undefined,
-          // symbolSize: (val) => {
-          //   return getBaseLog(val[3]);
-          // },
         }),
       ],
       legend: {
