@@ -331,7 +331,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
         if (this.userApplied) {
           this.$notify({
             title: '',
-            message: 'KYC process has not been finished.',
+            message: this.t('card.infoMessageNoKYC'),
             type: 'info',
           });
         }
