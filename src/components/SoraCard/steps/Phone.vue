@@ -95,6 +95,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   verificationCode = '';
   smsSent = false;
   sendOtpBtnLoading = false;
+  notFoundPhoneWhenApplied = false;
 
   @Watch('smsResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
@@ -169,7 +170,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
   }
 
   get otpInputDisabled(): boolean {
-    return !this.smsSent || !this.isPhoneNumberValid;
+    return !this.smsSent || !this.isPhoneNumberValid || this.notFoundPhoneWhenApplied;
   }
 
   get buttonText(): string {
@@ -224,6 +225,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
       if (this.smsResendCount < 0) {
         this.smsSent = false;
         this.verificationCode = '';
+        this.notFoundPhoneWhenApplied = false;
         this.smsResendCount = RESEND_INTERVAL;
         clearInterval(interval);
       }
@@ -253,9 +255,14 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
         if (this.userApplied) {
           this.$notify({
             title: '',
-            message: this.t('card.infoMessageNoKYC'),
+            message: 'No mobile number found, please recheck it and try again.',
             type: 'info',
           });
+
+          this.notFoundPhoneWhenApplied = true;
+          this.verificationCode = '';
+
+          return;
         }
 
         if (!this.isEuroBalanceEnough) {
@@ -327,14 +334,6 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin)
       })
       .on('Verification-Email-Sent-Success', () => {
         this.sendOtpBtnLoading = false;
-
-        if (this.userApplied) {
-          this.$notify({
-            title: '',
-            message: this.t('card.infoMessageNoKYC'),
-            type: 'info',
-          });
-        }
 
         if (!this.isEuroBalanceEnough) {
           this.notPassedKycAndNotHasXorEnough = true;
