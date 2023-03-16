@@ -9,6 +9,7 @@
         "firstNamePlaceholder": "Nome di battesimo",
         "lastNamePlaceholder": "Cognome",
         "phonePlaceholder": "Numero di telefono",
+        "statusPendingTitle": "Verifica in corso",
         "sendEmailLinkBtn": "Invia il link",
         "statusAcceptText": "La tua verifica KYC è andata a buon fine e ci stiamo già preparando per inviarti la carta SORA!",
         "noFreeKycTitle": "Niente più tentativi gratuiti",
@@ -45,8 +46,7 @@
         "personalNameInputDesc": "Usa il tuo vero nome.",
         "infoMessageTryAgain": "Qualcosa è andato storto. Per favore riprova",
         "blacklistedCountriesExcuse": "Purtroppo, al momento non siamo in grado di supportare i seguenti Paesi:",
-        "statusPendingText": "Hai completato con successo la tua domanda KYC. La revisione è in sospeso e puoi aspettarti una decisione a breve. <br \/> <br \/> Di solito la decisione viene presa lo stesso giorno, ma in alcuni casi possono essere necessari fino a 3 giorni.",
-        "statusPendingTitle": "KYC completato. In attesa dei risultati",
+        "statusPendingText": "Avete completato con successo la vostra richiesta KYC. La revisione è in corso e la decisione è attesa a breve.<br \/><br \/>Di solito la decisione viene presa il giorno stesso e in alcuni casi può richiedere fino a 3 giorni.",
         "resendInBtn": "RINVIA IN {value}",
         "statusRejectTitle": "Domanda respinta",
         "statusRejectText": "La tua domanda è stata respinta dall'audit interno, controlla attentamente i nostri requisiti e T&S prima di fare nuovamente domanda",
@@ -55,6 +55,8 @@
         "retryKycBtn": "Completa di nuovo KYC",
         "unsupportedCountriesLink": "Vedi l'elenco",
         "unsupportedCountriesDisclaimer": "I residenti di alcuni paesi non possono richiedere SORA Card in questo momento",
-        "statusRejectReason": "Motivo del rifiuto"
+        "statusRejectReason": "Motivo del rifiuto",
+        "userNotFound": "Nessun numero di cellulare trovato, ricontrollalo e riprova.",
+        "code": "Codice"
     }
 }
