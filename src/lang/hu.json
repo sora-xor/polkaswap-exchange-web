@@ -7,8 +7,6 @@
     "importText": "Importálás",
     "settingsText": "Beállítások",
     "addAssetText": "Eszköz hozzáadása",
-    "createTokenText": "Token létrehozása",
-    "comingSoonText": "Hamarosan...",
     "successText": "Siker",
     "warningText": "Figyelmeztetés",
     "swapText": "Váltás",
@@ -19,7 +17,6 @@
     "sendText": "Küldés",
     "addressText": "Cím",
     "amountText": "Összeg",
-    "confirmText": "Megerősítés",
     "errorText": "HIba",
     "insufficientBalanceText": "Elégtelen {tokenSymbol} egyenleg",
     "unknownErrorText": "HIBA Valami elromlott...",
@@ -43,7 +40,7 @@
             "ClaimRewards": "A jutalom sikeresen igényelve {rewards}",
             "ReferralReserveXor": "Sikeresen lekötött XOR",
             "ReferralUnreserveXor": "Sikeresen feloldott XOR",
-            "ReferralSetInvitedUser": "Az ajánló sikeresen be van állítva",
+            "ReferralSetInvitedUser": "Az {role} {address} sikeresen be van állítva",
             "SwapAndSend": "{amount} {symbol} kicserélve {amount2} {symbol2} -re és {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Mellékelt {symbol} és {symbol2} {amount} LP token",
             "DemeterFarmingWithdrawLiquidity": "{symbol} és {symbol2} {amount} LP token eltávolítva",
@@ -63,8 +60,8 @@
             "ClaimRewards": "Nem sikerült igényelni a jutalmakat {rewards}",
             "ReferralReserveXor": "Nem sikerült a XOR lekötése",
             "ReferralUnreserveXor": "Nem sikerült feloldani az XOR-t",
-            "ReferralSetInvitedUser": "Nem sikerült beállítani az ajánlást",
-            "SwapAndSend": "Nem sikerült átváltani a {amount} {symbol} -t {amount2} {symbol2}-re",
+            "ReferralSetInvitedUser": "Nem sikerült beállítani az {role} {address}",
+            "SwapAndSend": "Nem sikerült az {amount} {symbol} {amount2} {symbol2} és {action} {direction} {address} értékre",
             "DemeterFarmingDepositLiquidity": "Nem sikerült megadni az {amount} {symbol} és {symbol2} LP tokeneket",
             "DemeterFarmingWithdrawLiquidity": "Nem sikerült eltávolítani az {amount} {symbol} és {symbol2} LP tokeneket",
             "DemeterFarmingStakeToken": "Nem sikerült hozzáadni {amount} {symbol}",
@@ -75,7 +72,7 @@
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
-        "ReferralSetInvitedUser": "Ajánló megadása",
+        "ReferralSetInvitedUser": "{role} megadása",
         "SwapAndSend": "Váltás és küldés",
         "DemeterFarmingDepositLiquidity": "Tét Likviditás",
         "DemeterFarmingWithdrawLiquidity": "Likviditás visszavonása",
@@ -88,13 +85,13 @@
     "polkadotjs": {
         "noExtensions": "Nem találtunk {PolkadotJs} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Úgy tűnik, hogy a {extension} bővítményben nincsenek fiókok. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
-        "noAccount": "{PolkadotJs} fiókhiba. Kérjük, ellenőrizd fiókodat a {PolkadotJs} bővítményben.",
+        "noAccount": "{extension} fiókhiba. Kérjük, ellenőrizd fiókodat a {extension} bővítményben.",
         "noExtension": "Nem található {extension} bővítmény. Kérjük, telepítse, és töltse be újra ezt az oldalt",
         "noSigner": "Hozzáférés megtagadva. Nyissa meg a {extension} bővítmény beállításait, és nyissa meg a „Webhely-hozzáférés kezelése” lehetőséget az engedélyezéshez."
     },
     "connection": {
-        "title": "SORA hálózati fiók",
-        "text": "Csatlakoztasd {Sora} Network fiókjaidat vagy hozz létre újakat a {PolkadotJs} böngészőbővítménnyel. Ez a bővítmény lehetővé teszi a tranzakciók biztonságos aláírását és az eszközök kezelését a {Sora} hálózaton.",
+        "title": "{Sora} hálózati fiók",
+        "text": "Csatlakoztassa vagy hozza létre {Sora} hálózati fiókját {extensions} bővítménnyel. Ezek a bővítmények lehetővé teszik a tranzakciók biztonságos aláírását és az eszközök kezelését a {Sora} hálózaton.",
         "noAccounts": "Nincs fiók a {extension} böngészőbővítményben. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
         "action": {
@@ -105,14 +102,15 @@
         },
         "selectWallet": "Válasszon egy pénztárcát, amellyel dolgozni szeretne",
         "wallet": {
-            "install": "Telepítés"
+            "install": "Telepítés",
+            "connected": "csatlakoztatva",
+            "notConnected": "Nem kapcsolódik"
         }
     },
     "wallet": {
         "title": "{Sora} hálózati fiók",
         "WalletAssets": "Eszközök",
         "WalletActivity": "Aktivitás",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -127,18 +125,21 @@
         "enterAmount": "Összeg megadása",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Tranzakció megerősítése",
-        "confirm": "@:confirmText",
         "errorAddress": "Érvénytelen cím. Kérjük, ellenőrizd és próbáld újra.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Tokenek küldése a {Sora} hálózat fiókjai között",
         "addressWarning": "A tokeneket az alábbi {Sora} címre küldjük. Győződj meg arról, hogy a címzett hozzáférhet a {Sora} lánchoz a tokenek használatához:",
-        "addressError": "Nem küldhetsz tokent ugyanahhoz a fiókhoz, amelyhez jelenleg csatlakozol."
+        "addressError": "Nem küldhetsz tokent ugyanahhoz a fiókhoz, amelyhez jelenleg csatlakozol.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "A tárca címe a vágólapra másolva",
         "copy": "Cím másolása",
         "switch": "Fiókváltás",
-        "walletAddress": "Pénztárca címe"
+        "walletAddress": "Pénztárca címe",
+        "delete": "Fiók törlése",
+        "rename": "Fiók átnevezése",
+        "export": ".json exportálása"
     },
     "history": {
         "clearHistory": "Előzmények törlése",
@@ -152,7 +153,6 @@
     },
     "assets": {
         "empty": "Nincsenek eszközök",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -179,8 +179,6 @@
         "receive": "{symbol} fogadása"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Az eszköz {symbol} sikeresen hozzáadva!",
         "empty": "Nem található token",
         "alreadyAttached": "Tokent már csatolták",
@@ -192,22 +190,16 @@
         "scam": "ÁTVERÉS",
         "next": "Következő",
         "AddAssetToken": {
-            "title": "Tokenek",
+            "title": "Valuták",
             "switchBtn": "Csak ellenőrzött eszközök"
-        },
-        "AddAssetNFT": {
-            "title": "NFT-k"
         },
         "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Egyéni eszköz létrehozása és telepítése a {Sora} hálózaton",
-        "action": "@:createTokenText",
         "enterSymbol": "Írd be a token szimbólumot",
         "enterName": "Írd be a token nevét",
         "enterSupply": "Add meg a token kínálatot",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Tranzakció elküldve",
             "desc": "{symbol} token létrehozása"
@@ -233,14 +225,9 @@
             "placeholder": "Bővíthető kínálat",
             "desc": "Képesség több token generálására."
         },
-        "titleCommon": "Létrehozás",
-        "confirmTokenTitleCommon": "Token létrehozása",
-        "confirmTokenTitleNFT": "NFT létrehozása",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Tartalom megadása",
         "selectLocalFile": "Helyi fájl kiválasztása",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Forrás",
@@ -271,7 +258,14 @@
         "divisible": {
             "placeholder": "Osztható",
             "desc": "Az NFTképessége, hogy frakcionált részekre oszlik. A likviditási tartalékképzés csak osztható eszközökkel működik."
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Létrehozás",
+        "confirmTokenTitleCommon": "Token létrehozása",
+        "confirmTokenTitleNFT": "NFT létrehozása",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Tranzakció részletei",
@@ -297,11 +291,8 @@
             "submitted": "{fee} {symbol} díjjal benyújtott tranzakció",
             "confirmed": "A tranzakció megerősítve"
         },
-        "viewIn": {
-            "sorascan": "Megtekintés SORAScan-en",
-            "subscan": "Megtekintés Subscan-ben"
-        },
         "txId": "Tranzakció azonosítója",
+        "viewIn": "Megtekintés {explorer}-ben",
         "referrer": "Ajánló",
         "referral": "Ajánlás"
     },
@@ -337,9 +328,12 @@
         "AddLiquidity": "Poolhoz hozzáadás",
         "AddLiquidityId": "Poolhoz hozzáadás",
         "RemoveLiquidity": "Poolból eltávolítás",
-        "PageNotFound": "Az oldal nem található",
-        "Tokens": "Tokenek",
-        "Rewards": "Jutalmak"
+        "Rewards": "Jutalmak",
+        "Explore\/Tokens": "Tokenek",
+        "Explore\/Pools": "Totó",
+        "Explore\/Staking": "Letét",
+        "Explore\/Farming": "Farmolás",
+        "Staking": "Letét"
     },
     "mainMenu": {
         "Swap": "Váltás",
@@ -352,8 +346,9 @@
         "Stats": "Statisztikák",
         "Support": "Támogatás",
         "CreatePair": "Pár létrehozása",
-        "Tokens": "Tokenek",
-        "StakingContainer": "Letét"
+        "StakingContainer": "Letét",
+        "Explore\/Container": "Kutat",
+        "SoraCard": "{Sora} Kártya"
     },
     "social": {
         "twitter": "Twitter",
@@ -383,7 +378,7 @@
         "learnMore": "@:learnMoreText",
         "network": {
             "title": "Mi az a {Sora}?",
-            "description": "A {AppName} a {Sora} hálózatra épül, és a {Sora} tokent (XOR) használják a Polkaswapon a gáz\/díjak és a likviditás biztosításához. A {Sora} Network lehetővé teszi a csökkentett díjakat, a gyorsabb tranzakciókat és az egyszerűbb konszenzus véglegesítést, és arra összpontosít, hogy más blokklánc ökoszisztémák, például az {Ethereum} közötti átjárhatóságot biztosítsa."
+            "description": "A {AppName} a {Sora} hálózatra épül, és a {Sora} tokent (XOR) használják a {AppName} a gáz\/díjak és a likviditás biztosításához. A {Sora} Network lehetővé teszi a csökkentett díjakat, a gyorsabb tranzakciókat és az egyszerűbb konszenzus véglegesítést, és arra összpontosít, hogy más blokklánc ökoszisztémák, például az {Ethereum} közötti átjárhatóságot biztosítsa."
         },
         "polkadot": {
             "title": "Mi az a {PolkadotJs}?",
@@ -393,8 +388,8 @@
     "node": {
         "errors": {
             "connection": "Hiba történt a csomóponthoz való csatlakozás során\n{address}\n",
-            "network": "A csomópont\n{address}\negy másik hálózatból származik\n",
-            "existing": "Ez a csomópont már hozzá van adva: '{title}'\n"
+            "network": "A csomópont\n{address}\n egy másik hálózatból származik\n",
+            "existing": "Ez a csomópont már hozzá van adva: {title}\n"
         },
         "messages": {
             "connected": "Csomóponttal létrehozott kapcsolat\n{address}\n",
@@ -432,26 +427,7 @@
         "from": "-tól",
         "to": "Számára"
     },
-    "pageNotFound": {
-        "title": "Az oldal nem található",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Teszthálózat",
-        "Prod": "{Sora} Főhálózat",
-        "Stage": "{Sora} Teszthálózat"
-    },
-    "evm": {
-        "main": "{Ethereum} főhálózat",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Teszthálózat",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -501,8 +477,8 @@
         "price": "Ár",
         "transactionSubmitted": "Tranzakció elküldve",
         "transactionMessage": "{firstToken} és {secondToken}",
-        "confirm": "Megerősítés",
-        "ok": "Rendben"
+        "ok": "Rendben",
+        "confirm": "Megerősítés"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -553,7 +529,6 @@
         "connectWallets": "Csatlakoztasd a tárcákat a tranzakciós előzmények megtekintéséhez.",
         "soraNetworkFee": "{Sora} hálózati díj",
         "ethereumNetworkFee": "{Ethereum} Hálózati díj",
-        "tooltipValue": "@:comingSoonText",
         "total": "Összesen",
         "viewHistory": "Tranzakciók előzményeinek megtekintése",
         "transactionSubmitted": "Tranzakció elküldve",
@@ -561,11 +536,10 @@
         "notRegisteredAsset": "Az eszköz {assetSymbol} nincs regisztrálva",
         "selectNetwork": "Hálózat kiválasztása",
         "networkInfo": "{Sora} hálózati híd a következőkkel:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Hálózati cím másolása",
         "soraAddress": "{Sora} cím",
-        "ethereumAddress": "{Ethereum} cím"
+        "ethereumAddress": "{Ethereum} cím",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",
@@ -595,7 +569,7 @@
     },
     "bridgeTransaction": {
         "details": "{from} - {to}",
-        "for": "számára",
+        "for": " számára ",
         "steps": {
             "step": "{step}. a 2 -ből",
             "step1": "1.",
@@ -617,7 +591,6 @@
             "done": "Teljesítve",
             "waitingForConfirmation": "Megerősítésre vár..."
         },
-        "viewInEtherscan": "Megtekintés {Etherscan}en",
         "networkTitle": "{network} tranzakció",
         "transactionHash": "Tranzakciós hash",
         "networkInfo": {
@@ -678,7 +651,7 @@
         "pricePool": "Árak és díjak",
         "shareOfPool": "A pool részesedése",
         "firstPerSecond": "@:firstPerSecond",
-        "firstSecondPoolTokens": "{first} - {second} Pool",
+        "firstSecondPoolTokens": "{first}-{second} Pool",
         "connect": "Pénztárca csatlakoztatása",
         "supply": "Kínálat",
         "yourPosition": "Pozíciód",
@@ -695,7 +668,7 @@
     "confirmSupply": {
         "title": "A pool részesedésed",
         "outputDescription": "Becsült eredmény. Ha az ár a {slippageTolerance}%-nál nagyobb mértékben változik, a tranzakció visszafordul.",
-        "poolTokensBurned": "{first} - {second} Elégetett pool tokenek",
+        "poolTokensBurned": "{first}-{second} Elégetett pool tokenek",
         "price": "Ár"
     },
     "addLiquidity": {
@@ -716,7 +689,7 @@
         "outputMessage": "Becsült eredmény. Ha az ár a {slippageTolerance}%-nál nagyobb mértékben változik, a tranzakció visszafordul.",
         "confirmTitle": "Kapni fogsz",
         "shareOfPool": "A pool részesedése a tranzakció után",
-        "locked": "A készlet {percent} -a tétben van"
+        "locked": "A készlet {percent} -a {lock} van"
     },
     "dexSettings": {
         "title": "Beállítások",
@@ -823,9 +796,7 @@
         "title": "Nyelv"
     },
     "tokens": {
-        "title": "Listázott tokenek",
         "symbol": "Szimbólum",
-        "name": "Név",
         "assetId": "Eszköz azonosítója"
     },
     "memorandum": "{AppName} Memorandum és Általános Szerződési Feltételek",
@@ -911,7 +882,7 @@
         "bondedXOR": "XOR lekötve",
         "referralsNumber": "{number} ajánlások",
         "startInviting": "Kössle XOR-t, és hívj meg másokat",
-        "preview": "Hívj meg új felhasználókat, és 10%-ot kapsz a tranzakciós díjaikból.<br \/> Kezdetben köss le bármilyen összegű XOR-t <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Tudjon meg többet<\/a>",
+        "preview": "Hívj meg új felhasználókat, és 10%-ot kapsz a tranzakciós díjaikból.<br\/> Kezdetben köss le bármilyen összegű XOR-t <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Tudjon meg többet<\/a>",
         "deposit": "Befizetés",
         "balance": "Egyenleg",
         "networkFee": "@:networkFeeText",
@@ -933,16 +904,16 @@
         "bondTitle": "XOR lekötése",
         "unbondTitle": "XOR feloldása",
         "confirm": {
-            "text": "Megerősítés",
             "bond": "Lekötés megerősítése",
             "unbond": "Feloldás megerősítése",
-            "inviteTitle": "Meghívtak a Polkaswapba",
+            "inviteTitle": "Meghívtak a {AppName}",
             "inviteDescription": "Minden tranzakció után a díj 10%-a az Ön ajánlójához kerül, anélkül, hogy Önnek többletköltségei származnának.",
             "signInvitation": "Jóváhagy",
             "freeOfCharge": "Ez az intézkedés ingyenes",
             "hasReferrerTitle": "Már beállítottad az ajánlót",
             "hasReferrerDescription": "Sajnos csak egyet lehet beállítani",
-            "ok": "Rendben"
+            "ok": "Rendben",
+            "text": "Megerősítés"
         },
         "referrer": {
             "title": "Az ajánló hozzáadása",
@@ -959,7 +930,6 @@
         "insufficientBondedAmount": "További hivatkozások meghívásához legalább {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Tranzakció részletei",
-    "createTokenTextNFT": "NFT létrehozása",
     "code": {
         "download": "QR-kód letöltése",
         "upload": "QR-kód beolvasása",
@@ -1024,39 +994,39 @@
     "historyErrorMessages": {
         "generalError": "Valami elromlott",
         "balances": {
-            "LiquidityRestrictions": "A számla likviditási korlátozása megakadályozza a pénzfelvételt"
+            "liquidityrestrictions": "A számla likviditási korlátozása megakadályozza a pénzfelvételt"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "A forrásegyenleg nem elég nagy",
-            "TargetBalanceIsNotLargeEnough": "Az úti cél egyenlege nem elég nagy",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "A megadott összegek túlságosan változatosak",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Az összegek túllépik a szükséges határokat",
-            "UnableToDepositXorLessThanMinimum": "XOR kisebb, mint a minimális érték (0,007)",
-            "ZeroValueInAmountParameter": "Az Amount paraméter értéke nulla"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "A forrásegyenleg nem elég nagy",
+            "targetbalanceisnotlargeenough": "Az úti cél egyenlege nem elég nagy",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "A megadott összegek túlságosan változatosak",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Az összegek túllépik a szükséges határokat",
+            "unabletodepositxorlessthanminimum": "XOR kisebb, mint a minimális érték (0,007)",
+            "zerovalueinamountparameter": "Az Amount paraméter értéke nulla"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "A medencepár már létezik",
-            "SlippageLimitExceeded": "A csúszástűrés nem érte el a megfelelő határokat"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "A medencepár már létezik",
+            "slippagelimitexceeded": "A csúszástűrés nem érte el a megfelelő határokat"
         },
         "referrals": {
-            "AlreadyHasReferrer": "A fióknak már van hivatkozója",
-            "ReferrerInsufficientBalance": "A hivatkozónak nincs elég lefoglalt egyenlege"
+            "alreadyhasreferrer": "A fióknak már van hivatkozója",
+            "referrerinsufficientbalance": "A hivatkozónak nincs elég lefoglalt egyenlege"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "A jutalomprogram már véget ért",
-            "CantCalculateReward": "Nem sikerült a jutalom kiszámítása",
-            "NoRewardsForAsset": "Ehhez az eszközhöz nem jár jutalom"
+        "vestedrewards": {
+            "rewardssupplyshortage": "A jutalomprogram már véget ért",
+            "cantcalculatereward": "Nem sikerült a jutalom kiszámítása",
+            "norewardsforasset": "Ehhez az eszközhöz nem jár jutalom"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "A kiválasztott likviditási forrás nem engedélyezett"
+        "liquidityproxy": {
+            "forbiddenfilter": "A kiválasztott likviditási forrás nem engedélyezett"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Fedezethiány",
-            "InsufficientLPTokens": "Nincs elegendő likviditási biztosíték token",
-            "PoolDoesNotHaveRewards": "A medence nem jár jutalmakkal"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Fedezethiány",
+            "insufficientlptokens": "Nincs elegendő likviditási biztosíték token",
+            "pooldoesnothaverewards": "A medence nem jár jutalmakkal"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Hiba történt az ár kiszámításakor"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Hiba történt az ár kiszámításakor"
         }
     },
     "receivedText": "Bejövő",
@@ -1073,8 +1043,7 @@
     "ofText": "{first} a {second}",
     "filter": {
         "all": "Összes",
-        "token": "Tokenek",
-        "nft": "NFT-k",
+        "token": "Valuták",
         "verifiedOnly": "Csak ellenőrzött eszközök megjelenítése",
         "zeroBalance": "0 egyenlegeszköz elrejtése",
         "showAssets": "Eszközök megjelenítése",
@@ -1132,8 +1101,77 @@
             "mnemonic": "Érvénytelen bip39 emlékeztető van megadva",
             "mnemonicLength": "A mnemonikának {number} szót kell tartalmaznia",
             "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
-        }
+        },
+        "assetsAtRiskText": "Veszélyben lévő eszközök!",
+        "deleteAccountText": "A fiókot nem lehet visszaállítani kezdő kifejezés, .json fájl nélkül, vagy ha azt valamilyen kiterjesztéssel tárolják. Ön ki lesz jelentkezve."
     },
     "hashiBridgeText": "{Hashi} híd",
-    "disclaimerTitle": "Jogi nyilatkozat:"
+    "disclaimerTitle": "Jogi nyilatkozat:",
+    "explore": {
+        "showOnlyMyPositions": "Csak az én pozíciómat mutasd"
+    },
+    "tooltips": {
+        "roi": "A {ROI} a befektetés megtérülését jelenti. Kiszámítása úgy történik, hogy a befektetésen megszerzett nyereséget elosztjuk a befektetés százalékban kifejezett költségével.",
+        "tvl": "A {TVL} a Total Value Locked rövidítése. A készletekbe zárt tokeneket jelenti dollárban kifejezve.",
+        "volume": "A mennyiség azon eszközök teljes mennyiségére vonatkozik, amelyekkel kereskedtek vagy cseréltek a hálózaton egy adott időszak alatt. A volumen fontos mérőszám a hálózat likviditásának és általános tevékenységének mérésére.",
+        "fees": "A {Sora} blokklánc díjai a hálózaton történő tranzakciók végrehajtása során felmerülő költségekre vonatkoznak. Ezeket a díjakat XOR-ban, a {Sora} hálózat natív kriptovalutájában fizetik. A díj összegét a végrehajtott tranzakció összetettsége és nagysága határozza meg",
+        "supply": "A tokenkészlet a létrehozott és a hálózaton forgalomban lévő tokenek teljes számát jelenti. A tokenkészlet a hálózaton tétbe helyezett, elégetett vagy átvitt tokenek mennyisége alapján ingadozhat.",
+        "transactions": "A tranzakciók a digitális eszközök hálózaton történő küldésének vagy fogadásának folyamatát jelentik, beleértve a likviditási műveleteket, valamint a swapokat.",
+        "accounts": "A fiókok digitális címek, amelyek a felhasználó eszközeit tárolják a hálózaton. Minden fiókhoz egyedi nyilvános cím és privát kulcc tartozik, amely lehetővé teszi a felhasználó számára, hogy hozzáférjen és kezelje eszközeit.",
+        "bridgeTransactions": "A(z {from} to {to} híd arra a folyamatra utal, amely a {from} és {to} hálózatok közötti eszközök átvitelét hidat használja. A híd lehetővé teszi a két hálózat interoperabilitását, lehetővé téve a felhasználók számára, hogy zökkenőmentesen mozgassák az eszközöket közöttük."
+    },
+    "createTokenText": "Token létrehozása",
+    "comingSoonText": "Hamarosan...",
+    "confirmText": "Megerősítés",
+    "createTokenTextNFT": "NFT létrehozása",
+    "doNotShowText": "Ne mutasd ezt még egyszer",
+    "accountText": "számla | fiókok",
+    "networkStatisticsText": "Hálózati statisztikák",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Csomópont csatlakoztatva",
+                "loading": "Csomópont újracsatlakozás",
+                "disconnected": "A csomópont megszakadt"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet letiltva",
+                "unstable": "Az internet instabil",
+                "stable": "Internet stabil"
+            },
+            "label": "Az internet sebessége",
+            "desc": {
+                "disabled": "Szétkapcsolt",
+                "unstable": "Lassú kapcsolat",
+                "stable": "Optimális sebesség"
+            },
+            "action": "{Polkaswap} frissítése",
+            "dialogTitle": "Csatlakozzon az internetes forráshoz",
+            "dialogDesc": "{Polkaswap} használatához internetkapcsolat szükséges a stabil élmény érdekében"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "A statisztika nem elérhető",
+                "loading": "Statisztika betöltése",
+                "available": "Statisztikák elérhetőek"
+            },
+            "label": "Statisztikai szolgáltatások",
+            "desc": {
+                "unavailable": "Minden szolgáltatás le van választva",
+                "loading": "Minden szolgáltatás betöltődik",
+                "available": "Minden szolgáltatás stabil"
+            },
+            "action": "Válassza ki a szolgáltatásokat",
+            "dialog": {
+                "title": "{Sora} Hálózati szolgáltatás kiválasztása",
+                "fiat": "Fiat értékek",
+                "chartsAndActivity": "Diagramok és tevékenység",
+                "online": "Online",
+                "offline": "Offline"
+            }
+        }
+    },
+    "locationText": "Elhelyezkedés"
 }

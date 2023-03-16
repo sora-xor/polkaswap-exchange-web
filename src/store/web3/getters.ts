@@ -27,6 +27,9 @@ const getters = defineGetters<Web3State>()({
   },
   isValidNetworkType(...args): boolean {
     const { state, getters } = web3GetterContext(args);
+    if (!state.networkType) {
+      return false;
+    }
     return state.networkType === getters.defaultNetworkType;
   },
 });

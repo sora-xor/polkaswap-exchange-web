@@ -21,8 +21,6 @@ export function initialState(): RewardsState {
     transactionError: false,
     transactionStep: 1,
     signature: '',
-    accountMarketMakerInfo: null,
-    accountMarketMakerUpdates: null,
     liquidityProvisionRewardsSubscription: null,
     vestedRewardsSubscription: null,
     crowdloanRewardsSubscription: null,

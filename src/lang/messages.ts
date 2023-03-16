@@ -3,9 +3,10 @@ import { en as walletEn, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation, TransactionStatus } from '@sora-substrate/util';
 import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 
+import { DemeterPageNames } from '../modules/demeterFarming/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
 import { EvmNetworkType } from '../utils/ethers-util';
-import { MoonpayNotifications } from '../components/Moonpay/consts';
+import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 
 export default {
   // Wallet project keys
@@ -15,6 +16,7 @@ export default {
   hashiBridgeText: '{Hashi} bridge',
   moonpayText: 'MoonPay',
   changeNetworkText: 'Change network in {Metamask}',
+  accountText: 'account | accounts',
   transactionText: 'transaction | transactions',
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
@@ -63,14 +65,17 @@ export default {
     [PageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',
     [PageNames.About]: 'About',
-    [PageNames.Stats]: 'Stats',
+    [PageNames.Stats]: 'Statistics',
     [PageNames.Support]: 'Support',
     [PageNames.Wallet]: 'Wallet',
     [PageNames.Rewards]: 'Rewards',
-    [PageNames.Tokens]: 'Tokens',
+    [PageNames.ExploreTokens]: 'Tokens',
+    [PageNames.ExplorePools]: 'Pools',
+    [PageNames.ExploreStaking]: 'Staking',
+    [PageNames.ExploreFarming]: 'Farming',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
-    [PageNames.PageNotFound]: 'Page Not Found',
+    [DemeterPageNames.Staking]: 'Staking',
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',
@@ -80,9 +85,9 @@ export default {
     [PageNames.Wallet]: 'Account',
     [PageNames.Rewards]: 'Rewards',
     [PageNames.About]: 'About',
-    [PageNames.Stats]: 'Stats',
+    [PageNames.Stats]: 'Statistics',
     [PageNames.Support]: 'Support',
-    [PageNames.Tokens]: 'Tokens',
+    [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
   },
   headerMenu: {
@@ -183,7 +188,7 @@ export default {
     [Operation.ClaimRewards]: 'Claim Rewards',
     [Operation.ReferralReserveXor]: 'Bond XOR',
     [Operation.ReferralUnreserveXor]: 'Unbond XOR',
-    [Operation.ReferralSetInvitedUser]: 'Set Referral',
+    [Operation.ReferralSetInvitedUser]: 'Set {role}',
     [Operation.DemeterFarmingDepositLiquidity]: 'Add Liquidity Stake',
     [Operation.DemeterFarmingWithdrawLiquidity]: 'Remove Liquidity Stake',
     [Operation.DemeterFarmingStakeToken]: 'Add Stake',
@@ -202,7 +207,7 @@ export default {
       [Operation.ClaimRewards]: 'Reward claimed successfully {rewards}',
       [Operation.ReferralReserveXor]: 'Bonded XOR successfully',
       [Operation.ReferralUnreserveXor]: 'Unbonded XOR successfully',
-      [Operation.ReferralSetInvitedUser]: 'Set Referral',
+      [Operation.ReferralSetInvitedUser]: 'Set {role} {address}',
       [Operation.DemeterFarmingDepositLiquidity]: 'Supplied {symbol} and {symbol2} {amount} LP tokens',
       [Operation.DemeterFarmingWithdrawLiquidity]: 'Removed {symbol} and {symbol2} {amount} LP tokens',
       [Operation.DemeterFarmingStakeToken]: 'Added {amount} {symbol}',
@@ -221,7 +226,7 @@ export default {
       [Operation.ClaimRewards]: 'Failed to claim rewards {rewards}',
       [Operation.ReferralReserveXor]: 'Failed to bond XOR',
       [Operation.ReferralUnreserveXor]: 'Failed to unbonded XOR',
-      [Operation.ReferralSetInvitedUser]: 'Failed to set referral',
+      [Operation.ReferralSetInvitedUser]: 'Failed to set {role} {address}',
       [Operation.DemeterFarmingDepositLiquidity]: 'Failed to supply {amount} {symbol} and {symbol2} LP tokens',
       [Operation.DemeterFarmingWithdrawLiquidity]: 'Failed to remove {amount} {symbol} and {symbol2} LP tokens',
       [Operation.DemeterFarmingStakeToken]: 'Failed to add {amount} {symbol}',
@@ -231,26 +236,7 @@ export default {
       [Operation.EthBridgeOutgoing]: 'Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}',
     },
   },
-  pageNotFound: {
-    title: 'Page not found',
-    body: '404',
-  },
   metamask: '{Metamask}',
-  sora: {
-    [WALLET_CONSTS.SoraNetwork.Dev]: '{Sora} Devnet',
-    [WALLET_CONSTS.SoraNetwork.Test]: '{Sora} Testnet',
-    [WALLET_CONSTS.SoraNetwork.Stage]: '{Sora} Testnet',
-    [WALLET_CONSTS.SoraNetwork.Prod]: '{Sora} Mainnet',
-  },
-  evm: {
-    [EvmNetworkType.Mainnet]: '{Ethereum} Mainnet',
-    [EvmNetworkType.Ropsten]: '{Ethereum} Ropsten',
-    [EvmNetworkType.Rinkeby]: '{Ethereum} Rinkeby',
-    [EvmNetworkType.Kovan]: '{Ethereum} Kovan',
-    [EvmNetworkType.Goerli]: '{Ethereum} Goerli',
-    [EvmNetworkType.Private]: 'Volta Testnet',
-    [EvmNetworkType.EWC]: 'Energy Web Chain',
-  },
   providers: {
     metamask: '{Metamask}',
   },
@@ -374,8 +360,6 @@ export default {
     notRegisteredAsset: 'Asset {assetSymbol} is not registered',
     selectNetwork: 'Select network',
     networkInfo: 'Bridge {Sora} Network with:',
-    ethereum: '{Ethereum}',
-    energy: '@:evm.EWC',
     copy: 'Copy network address',
     soraAddress: '{Sora} address',
     ethereumAddress: '{Ethereum} address',
@@ -433,7 +417,6 @@ export default {
       waitingForConfirmation: 'Waiting for confirmation...',
     },
     blocksLeft: '{count} blocks left...',
-    viewInEtherscan: 'View in {Etherscan}',
     networkTitle: '{network} transaction',
     transactionHash: 'Transaction hash',
     networkInfo: {
@@ -534,13 +517,14 @@ export default {
       'Output is estimated. If the price changes more than {slippageTolerance}% your transaction will revert.',
     confirmTitle: 'You will receive',
     shareOfPool: 'Share of pool after transaction',
-    locked: '{percent} of your pool is in staking',
+    locked: '{percent} of your pool is in {lock}',
   },
   tokens: {
-    title: 'Listed Tokens',
     symbol: 'Symbol',
-    name: 'Name',
     assetId: 'Asset ID',
+  },
+  explore: {
+    showOnlyMyPositions: 'Show only my positions',
   },
   dexSettings: {
     title: 'Transaction settings',
@@ -804,4 +788,20 @@ export default {
   },
   assetDeposit: 'Asset balance has been deposited',
   ofText: '{first} of {second}',
+  tooltips: {
+    roi: '{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.',
+    tvl: '{TVL} stands for Total Value Locked. It represents tokens locked in the pools in the dollar equivalent.',
+    volume:
+      'Volume refers to the total amount of assets that have been traded or exchanged on the network over a specific period of time. The volume is an important metric for measuring the liquidity and overall activity of the network.',
+    fees: 'Fees on the {Sora} blockchain refer to the charges that are incurred for executing transactions on the network. These fees are paid in XOR, the native cryptocurrency of the {Sora} Network. The fee amount is determined by the complexity and size of the transaction being executed',
+    supply:
+      'Token supply refers to the total number of tokens that have been created and are in circulation on the network. The token supply can fluctuate based on the amount of tokens being staked, burned, or transferred on the network.',
+    transactions:
+      'Transactions refer to the process of sending or receiving digital assets on the network, including liquidity operations, as well as swaps.',
+    accounts:
+      "Accounts are digital addresses that hold user's assets on the network. Each account is associated with a unique public address and a private key that allows the user to access and manage their assets.",
+    bridgeTransactions:
+      '{from} to {to} bridge refers to the process of transferring assets between the {from} and {to} networks using a bridge. The bridge allows for the interoperability of the two networks, enabling users to seamlessly move assets between them.',
+  },
+  networkStatisticsText: 'Network statistics',
 };

@@ -20,9 +20,12 @@ $bridge-height: 515px;
 $select-asset-item-height: 71px;
 $checkbox-width: 20px;
 $header-height: 64px;
+$footer-height: 32px;
 
 // layout layers (z-index)
 $app-background-layer: -1;
 $app-body-layer: 0;
 $app-content-layer: 1;
 $app-sidebar-layer: 4;
+$app-loader-layer: 2000;
+$app-above-loader-layer: 2001;

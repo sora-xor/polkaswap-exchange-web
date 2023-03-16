@@ -11,7 +11,7 @@ type Contracts = Partial<{
 export type Web3State = {
   evmAddress: string;
   evmBalance: CodecString;
-  networkType: string;
+  networkType: Nullable<string>;
   subNetworks: Array<SubNetwork>;
   evmNetwork: BridgeNetworks;
   contractAddress: { [key in BridgeNetworks]: Contracts };

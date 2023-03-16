@@ -51,9 +51,9 @@ function bridgeDataToHistoryItem(
 const actions = defineActions({
   async updateBalanceSubscription(context): Promise<void> {
     const { getters, commit, rootGetters } = bridgeActionContext(context);
-    const updateBalance = (balance: AccountBalance) => commit.setAssetBalance(balance);
+    const updateBalance = (balance: Nullable<AccountBalance>) => commit.setAssetBalance(balance);
 
-    balanceSubscriptions.remove('asset', { updateBalance });
+    balanceSubscriptions.remove('asset');
 
     if (
       rootGetters.wallet.account.isLoggedIn &&
@@ -64,10 +64,7 @@ const actions = defineActions({
     }
   },
   async resetBalanceSubscription(context): Promise<void> {
-    const { commit } = bridgeActionContext(context);
-    balanceSubscriptions.remove('asset', {
-      updateBalance: (balance: AccountBalance) => commit.setAssetBalance(balance),
-    });
+    balanceSubscriptions.remove('asset');
   },
   async setAssetAddress(context, address?: string): Promise<void> {
     const { commit, dispatch } = bridgeActionContext(context);
@@ -96,7 +93,7 @@ const actions = defineActions({
     return bridgeHistory;
   },
   // TODO: Need to restore transactions for all networks
-  async updateHistory(context): Promise<void> {
+  async updateHistory(context, clearHistory = false): Promise<void> {
     const { commit, state, dispatch, rootState, rootGetters } = bridgeActionContext(context);
     if (state.historyLoading) return;
 
@@ -111,6 +108,10 @@ const actions = defineActions({
     );
     const contracts = compact(contractsArray);
     const updateCallback = () => commit.setHistory();
+
+    if (clearHistory) {
+      await bridgeHistory.clearHistory(updateCallback);
+    }
 
     await bridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, updateCallback);
 

@@ -1,25 +1,27 @@
-import { Vue, Component } from 'vue-property-decorator';
+import { Mixins, Component } from 'vue-property-decorator';
 import { BridgeNetworks } from '@sora-substrate/util';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import { EvmNetworkType } from '@/utils/ethers-util';
 import { state, getter } from '@/store/decorators';
 
+import TranslationMixin from './TranslationMixin';
+
 @Component
-export default class NetworkFormatterMixin extends Vue {
-  @state.web3.networkType networkType!: EvmNetworkType;
+export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
+  @state.web3.networkType networkType!: Nullable<EvmNetworkType>;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   @getter.web3.defaultNetworkType defaultNetworkType!: Nullable<EvmNetworkType>;
 
   formatNetwork(isSora: boolean, isDefaultNetworkType = false): string {
     if (isSora && this.soraNetwork) {
-      return `sora.${this.soraNetwork}`;
+      return this.TranslationConsts.soraNetwork[this.soraNetwork];
     }
 
     const network = isDefaultNetworkType ? this.defaultNetworkType : this.networkType;
 
-    return network ? `evm.${network}` : '';
+    return network ? this.TranslationConsts.bridgeNetwork[network] : '';
   }
 
   getEvmIcon(externalNetwork?: BridgeNetworks): string {

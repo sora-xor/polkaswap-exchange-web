@@ -3,11 +3,12 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { api } from '@sora-substrate/util';
 
+import store from '@/store';
+import { updateDocumentTitle } from '@/utils';
 import { PageNames, BridgeChildPages } from '@/consts';
+
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 import { demeterLazyView } from '@/modules/demeterFarming/router';
-
-import store from '@/store';
 
 Vue.use(VueRouter);
 
@@ -16,7 +17,14 @@ const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet;
 const lazyComponent = (name: string) => () => import(`@/components/${name}.vue`);
 const lazyView = (name: string) => () => import(`@/views/${name}.vue`);
 
-function goTo(name: PageNames): void {
+/**
+ * Use this function instead just `router.push` when page loading is required.
+ *
+ * It checks wallet routing, page loading and the current route.
+ * if the current route isn't the same as param, then it will wait for `router.push`
+ */
+async function goTo(name: PageNames): Promise<void> {
+  const current = router.currentRoute.name;
   if (name === PageNames.Wallet) {
     if (!store.getters.wallet.account.isLoggedIn) {
       store.commit.wallet.router.navigate({ name: WALLET_CONSTS.RouteNames.WalletConnection });
@@ -24,10 +32,15 @@ function goTo(name: PageNames): void {
       store.commit.wallet.router.navigate({ name: WALLET_DEFAULT_ROUTE });
     }
   }
-  if (router.currentRoute.name === name) {
+  if (current === name) {
     return;
   }
-  router.push({ name });
+  try {
+    store.commit.router.setLoading(true);
+    await router.push({ name });
+  } finally {
+    store.commit.router.setLoading(false);
+  }
 }
 
 const routes: Array<RouteConfig> = [
@@ -49,6 +62,11 @@ const routes: Array<RouteConfig> = [
     path: '/wallet',
     name: PageNames.Wallet,
     component: lazyView(PageNames.Wallet),
+  },
+  {
+    path: '/card',
+    name: PageNames.SoraCard,
+    component: lazyView(PageNames.SoraCard),
   },
   {
     path: '/bridge',
@@ -85,6 +103,7 @@ const routes: Array<RouteConfig> = [
             path: '',
             name: DemeterPageNames.Pool,
             component: demeterLazyView(DemeterPageNames.Pool),
+            props: { isFarmingPage: true },
           },
           {
             path: 'add/:firstAddress?/:secondAddress?',
@@ -116,8 +135,51 @@ const routes: Array<RouteConfig> = [
             path: '',
             name: DemeterPageNames.Staking,
             component: demeterLazyView(DemeterPageNames.Staking),
+            props: { isFarmingPage: false },
           },
         ],
+      },
+    ],
+  },
+  {
+    path: '/explore',
+    name: PageNames.ExploreContainer,
+    component: lazyView(PageNames.ExploreContainer),
+    redirect: { name: PageNames.ExploreFarming },
+    children: [
+      {
+        path: 'demeter',
+        component: demeterLazyView(DemeterPageNames.DataContainer),
+        children: [
+          {
+            path: 'staking',
+            name: PageNames.ExploreStaking,
+            component: lazyView(PageNames.ExploreDemeter),
+            props: { isFarmingPage: false },
+          },
+          {
+            path: 'farming',
+            name: PageNames.ExploreFarming,
+            component: lazyView(PageNames.ExploreDemeter),
+            props: { isFarmingPage: true },
+          },
+        ],
+      },
+      {
+        path: 'pools',
+        component: lazyView(PageNames.PoolContainer),
+        children: [
+          {
+            path: '',
+            name: PageNames.ExplorePools,
+            component: lazyView(PageNames.ExplorePools),
+          },
+        ],
+      },
+      {
+        path: 'tokens',
+        name: PageNames.ExploreTokens,
+        component: lazyView(PageNames.ExploreTokens),
       },
     ],
   },
@@ -144,9 +206,8 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/referral',
-    name: PageNames.Referral,
+    name: PageNames.ReferralProgram,
     component: lazyView(PageNames.RewardsTabs),
-    meta: { isReferralProgram: true },
     children: [
       {
         path: ':referrerAddress?',
@@ -158,11 +219,6 @@ const routes: Array<RouteConfig> = [
     ],
   },
   {
-    path: '/tokens',
-    name: PageNames.Tokens,
-    component: lazyView(PageNames.Tokens),
-  },
-  {
     path: '/moonpay-history',
     name: PageNames.MoonpayHistory,
     component: lazyView(PageNames.MoonpayHistory),
@@ -171,6 +227,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/stats',
     name: PageNames.Stats,
+    component: lazyView(PageNames.Stats),
   },
   {
     path: '/support',
@@ -179,9 +236,6 @@ const routes: Array<RouteConfig> = [
   {
     path: '*',
     redirect: '/swap',
-    // TODO: Turn on redirect to PageNotFound
-    // name: PageNames.PageNotFound,
-    // component: lazyComponent(PageNames.PageNotFound)
   },
 ];
 
@@ -192,8 +246,14 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const prev = from.name as Nullable<PageNames>;
+  const current = to.name as PageNames;
+  const setRoute = (name: PageNames, withNext = true) => {
+    store.commit.router.setRoute({ prev, current: name });
+    next(withNext ? { name } : undefined);
+    updateDocumentTitle(to);
+  };
   const isLoggedIn = store.getters.wallet.account.isLoggedIn;
-  if (prev !== PageNames.BridgeTransaction && to.name === PageNames.BridgeTransactionsHistory) {
+  if (prev !== PageNames.BridgeTransaction && current === PageNames.BridgeTransactionsHistory) {
     store.commit.bridge.setHistoryPage(1);
   }
   if (to.matched.some((record) => record.meta.isInvitationRoute)) {
@@ -201,30 +261,21 @@ router.beforeEach((to, from, next) => {
       store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
     }
     if (isLoggedIn) {
-      next({ name: PageNames.Referral });
-      store.commit.router.setRoute({ prev, current: PageNames.Referral });
+      setRoute(PageNames.ReferralProgram);
       return;
     }
   }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (
-      BridgeChildPages.includes(to.name as PageNames) &&
-      isLoggedIn &&
-      !store.getters.web3.isExternalAccountConnected
-    ) {
-      next({ name: PageNames.Bridge });
-      store.commit.router.setRoute({ prev, current: PageNames.Bridge });
+    if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.web3.isExternalAccountConnected) {
+      setRoute(PageNames.Bridge);
       return;
     }
-
     if (!isLoggedIn) {
-      next({ name: PageNames.Wallet });
-      store.commit.router.setRoute({ prev, current: PageNames.Wallet });
+      setRoute(PageNames.Wallet);
       return;
     }
   }
-  store.commit.router.setRoute({ prev, current: to.name as PageNames });
-  next();
+  setRoute(current, false);
 });
 
 export { lazyComponent, lazyView, goTo };

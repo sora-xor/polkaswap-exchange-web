@@ -1,15 +1,11 @@
 const { defineConfig } = require('@vue/cli-service');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const TerserWebpackPlugin = require('terser-webpack-plugin');
 
 module.exports = defineConfig({
   publicPath: './',
   configureWebpack: (config) => {
     config.plugins.push(new NodePolyfillPlugin());
-    config.stats = {
-      preset: 'verbose',
-      loggingTrace: true,
-      moduleTrace: true,
-    };
     // bundle all dependencies from node_modules to vendors
     config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
     config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
@@ -28,6 +24,7 @@ module.exports = defineConfig({
       });
 
     if (process.env.NODE_ENV === 'production') {
+      config.plugins.push(new TerserWebpackPlugin());
       const buildDateTime = Date.now();
       config.output.filename = `js/[name].[contenthash:8].${buildDateTime}.js`;
       config.output.chunkFilename = `js/[name].[contenthash:8].${buildDateTime}.js`;
@@ -87,9 +84,4 @@ module.exports = defineConfig({
   },
   productionSourceMap: false,
   runtimeCompiler: true,
-  devServer: {
-    client: {
-      logging: 'log',
-    },
-  },
 });

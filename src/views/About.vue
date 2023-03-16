@@ -157,8 +157,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import Web3Logo from '@/components/logo/Web3.vue';
-import { app } from '@/consts';
+import Web3Logo from '@/components/shared/Logo/Web3.vue';
 import { getter } from '@/store/decorators';
 
 @Component({
@@ -278,7 +277,7 @@ export default class About extends Mixins(TranslationMixin) {
 }
 
 .about {
-  margin: auto;
+  margin: -$inner-spacing-big auto 0;
   min-width: 800px;
   &-main {
     display: flex;
@@ -330,34 +329,6 @@ export default class About extends Mixins(TranslationMixin) {
       transform: translate(-50%, -50%);
       width: fit-content;
     }
-
-    &-block-1 {
-      top: 26%;
-      right: 7.5%;
-      width: 40%;
-
-      position: absolute;
-    }
-    &-block-2 {
-      top: 38%;
-      right: 5.5%;
-      width: 45%;
-
-      position: absolute;
-    }
-    &-block-3 {
-      top: 54%;
-      right: 5.5%;
-      width: 45%;
-
-      position: absolute;
-    }
-    &-shadow-1 {
-      position: absolute;
-      top: -110%;
-      z-index: $app-background-layer;
-      width: 100%;
-    }
   }
   &-liquidity {
     min-width: 800px;
@@ -375,34 +346,6 @@ export default class About extends Mixins(TranslationMixin) {
       left: 32%;
       transform: translate(-50%, -50%);
       width: 40%;
-    }
-
-    &-block-1 {
-      top: 56.5%;
-      left: 30.5%;
-      width: 37%;
-      position: absolute;
-      transform: translate(-50%, -50%);
-    }
-    &-block-2 {
-      top: 75%;
-      left: 36%;
-      width: 55%;
-      position: absolute;
-      transform: translate(-50%, -50%);
-    }
-    &-block-3 {
-      top: 94%;
-      left: 36%;
-      width: 55%;
-      position: absolute;
-      transform: translate(-50%, -50%);
-    }
-    &-shadow-1 {
-      position: absolute;
-      top: -110%;
-      z-index: $app-background-layer;
-      width: 100%;
     }
   }
   &-swap {
@@ -422,34 +365,6 @@ export default class About extends Mixins(TranslationMixin) {
       transform: translate(-50%, -50%);
       width: 40%;
     }
-
-    &-block-1 {
-      top: 24%;
-      right: 7.5%;
-      width: 40%;
-
-      position: absolute;
-    }
-    &-block-2 {
-      top: 28%;
-      right: 5.5%;
-      width: 45%;
-
-      position: absolute;
-    }
-    &-block-3 {
-      top: 48%;
-      right: 5.5%;
-      width: 45%;
-
-      position: absolute;
-    }
-    &-shadow-1 {
-      position: absolute;
-      top: -150%;
-      z-index: $app-background-layer;
-      width: 100%;
-    }
   }
   &-pswap {
     min-width: 800px;
@@ -468,27 +383,6 @@ export default class About extends Mixins(TranslationMixin) {
       transform: translate(-50%, -50%);
       width: 40%;
     }
-
-    &-block-1 {
-      top: 36%;
-      right: 33%;
-      width: 33%;
-
-      position: absolute;
-    }
-    &-block-2 {
-      top: 62%;
-      left: 32%;
-      width: 50%;
-
-      position: absolute;
-    }
-    &-shadow-1 {
-      position: absolute;
-      top: -70%;
-      z-index: $app-background-layer;
-      width: 100%;
-    }
   }
   &-video {
     display: flex;
@@ -500,17 +394,6 @@ export default class About extends Mixins(TranslationMixin) {
     .preview {
       min-width: 70%;
       cursor: pointer;
-    }
-
-    &-shadow-1 {
-      position: absolute;
-      top: -100%;
-      z-index: $app-background-layer;
-      width: 120%;
-
-      @media screen and (max-width: 1200px) {
-        width: 100%;
-      }
     }
   }
   &-links {
@@ -548,13 +431,9 @@ export default class About extends Mixins(TranslationMixin) {
         width: 50px;
       }
       .title {
-        font-family: Sora;
-        font-style: normal;
         font-weight: bold;
         font-size: 36px;
         line-height: 100%;
-
-        letter-spacing: var(--s-letter-spacing-small);
 
         padding: 10px 0;
 
@@ -573,13 +452,6 @@ export default class About extends Mixins(TranslationMixin) {
         height: 100%;
         width: 100%;
       }
-    }
-
-    &-shadow-1 {
-      position: absolute;
-      top: 0;
-      z-index: $app-background-layer;
-      width: 100%;
     }
   }
   &-network {
@@ -604,14 +476,10 @@ export default class About extends Mixins(TranslationMixin) {
 }
 
 .text {
-  font-family: Sora;
-  font-style: normal;
   font-weight: 200;
   font-size: 18px;
   line-height: 1.4;
   z-index: $app-content-layer;
-
-  letter-spacing: var(--s-letter-spacing-small);
 
   color: var(--s-color-base-content-primary);
   @media screen and (min-width: 1400px) {
@@ -669,10 +537,7 @@ export default class About extends Mixins(TranslationMixin) {
     }
   }
 
-  font-family: Sora;
-  font-style: normal;
   font-weight: 800;
-  letter-spacing: var(--s-letter-spacing-small);
   box-decoration-break: clone;
   -webkit-text-fill-color: transparent;
   -webkit-box-decoration-break: clone;

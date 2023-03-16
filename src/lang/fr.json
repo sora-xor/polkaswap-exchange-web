@@ -7,8 +7,6 @@
     "importText": "Importer",
     "settingsText": "Paramètres",
     "addAssetText": "Ajouter un actif",
-    "createTokenText": "Créer un jeton",
-    "comingSoonText": "Bientôt disponible",
     "successText": "Succès",
     "warningText": "Attention",
     "swapText": "Échanger",
@@ -19,7 +17,6 @@
     "sendText": "Envoyer",
     "addressText": "Adresse",
     "amountText": "Montant",
-    "confirmText": "Confirmer",
     "errorText": "Erreur",
     "insufficientBalanceText": "Solde {tokenSymbol} insuffisant",
     "unknownErrorText": "ERREUR Une erreur s'est produite...",
@@ -43,7 +40,7 @@
             "ClaimRewards": "Récompense réclamée avec succès {rewards}",
             "ReferralReserveXor": "XOR lié avec succès",
             "ReferralUnreserveXor": "XOR avec succès délié",
-            "ReferralSetInvitedUser": "La référence est définie avec succès",
+            "ReferralSetInvitedUser": "La {role} {address} est définie avec succès",
             "SwapAndSend": "Échange de {amount} {symbol} contre {amount2} {symbol2} et {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Fourni {symbol} et {symbol2} {amount} jetons LP",
             "DemeterFarmingWithdrawLiquidity": "Suppression des jetons LP {symbol} et {symbol2} {amount}",
@@ -63,7 +60,7 @@
             "ClaimRewards": "Échec de la réclamation des récompenses {rewards}",
             "ReferralReserveXor": "Échec de la liaison XOR",
             "ReferralUnreserveXor": "Échec de la dissociation XOR",
-            "ReferralSetInvitedUser": "Échec de la définition de la référence",
+            "ReferralSetInvitedUser": "Échec de la définition de la {role} {address}",
             "SwapAndSend": "Échec de l'échange de {amount} {symbol} contre {amount2} {symbol2} et {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Impossible de fournir {amount} {symbol} et {symbol2} jetons LP",
             "DemeterFarmingWithdrawLiquidity": "Échec de la suppression de {amount} {symbol} et {symbol2} jetons LP",
@@ -75,7 +72,7 @@
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
-        "ReferralSetInvitedUser": "Définir la référence",
+        "ReferralSetInvitedUser": "Définir la {role}",
         "SwapAndSend": "Échanger et envoyer",
         "DemeterFarmingDepositLiquidity": "Liquidité de la participation",
         "DemeterFarmingWithdrawLiquidity": "Libérer la liquidité",
@@ -88,13 +85,13 @@
     "polkadotjs": {
         "noExtensions": "Aucune extension {PolkadotJs} n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
         "noAccounts": "Il semble n’y avoir aucun compte dans votre extension {extension}. Ajoutez un compte et réessayez.",
-        "noAccount": "Erreur de compte {extension} . Veuillez vérifier votre compte dans l' {extension}",
+        "noAccount": "Erreur de compte {extension}. Veuillez vérifier votre compte dans l' {extension}",
         "noExtension": "Aucune {extension} n'a été trouvée. Veuillez l'installer et recharger cette page",
         "noSigner": "Accès refusé. Accédez aux paramètres de l' {extension} et ouvrez \"Gérer l'accès au site Web\" pour autoriser."
     },
     "connection": {
         "title": "Compte réseau {Sora}",
-        "text": "Connectez vos comptes de réseau {Sora} ou créez-en de nouveaux avec l'extension de navigateur {PolkadotJs} Cette extension vous permet de signer en toute sécurité des transactions et de gérer vos jetons dans le réseau {Sora}.",
+        "text": "Connectez ou créez votre compte réseau {Sora} avec les {extensions}. Ces extensions vous permettent de signer en toute sécurité des transactions et de gérer des actifs dans {Sora} Network.",
         "noAccounts": "Aucun compte n'a été trouvé dans votre extension de navigateur {extension} Veuillez ajouter un compte et réessayer.",
         "selectAccount": "Sélectionnez le compte approprié",
         "action": {
@@ -105,14 +102,15 @@
         },
         "selectWallet": "Sélectionnez un portefeuille avec lequel travailler",
         "wallet": {
-            "install": "Installer"
+            "install": "Installer",
+            "connected": "Connecté",
+            "notConnected": "Pas connecté"
         }
     },
     "wallet": {
         "title": "Compte réseau {Sora}",
         "WalletAssets": "Actifs",
         "WalletActivity": "Activité",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -127,18 +125,21 @@
         "enterAmount": "Entrez le montant",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Confirmer la transaction",
-        "confirm": "@:confirmText",
         "errorAddress": "Adresse invalide. Veuillez la vérifier et réessayer.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Envoyer des jetons entre des comptes du réseau {Sora}",
         "addressWarning": "Les jetons seront envoyés à l'adresse {Sora} ci-dessous. Assurez-vous que le destinataire peut accéder à la chaîne {Sora} pour utiliser les jetons:",
-        "addressError": "Vous ne pouvez pas envoyer de jetons au même compte auquel vous êtes actuellement connecté."
+        "addressError": "Vous ne pouvez pas envoyer de jetons au même compte auquel vous êtes actuellement connecté.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "L'adresse du portefeuille est copiée dans le presse-papiers",
         "copy": "Copier l'adresse",
         "switch": "Changer de compte",
-        "walletAddress": "Adresse du portefeuille"
+        "walletAddress": "Adresse du portefeuille",
+        "delete": "Supprimer le compte",
+        "rename": "Renommer le compte",
+        "export": "Exporter .json"
     },
     "history": {
         "clearHistory": "Effacer l'historique",
@@ -152,7 +153,6 @@
     },
     "assets": {
         "empty": "Il n'y a pas d'actifs",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -179,8 +179,6 @@
         "receive": "Recevoir {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "L'actif {symbol} a été ajouté avec succès!",
         "empty": "Aucun jeton trouvé",
         "alreadyAttached": "Le jeton était déjà attaché",
@@ -192,22 +190,16 @@
         "scam": "ARNAQUE",
         "next": "Suivant",
         "AddAssetToken": {
-            "title": "Jetons",
+            "title": "Devises",
             "switchBtn": "Actifs vérifiés uniquement"
-        },
-        "AddAssetNFT": {
-            "title": "NFTs"
         },
         "searchInputText": "Rechercher par ID d'actif, nom ou symbole boursier"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Créer et déployer des ressources personnalisées sur {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Entrez le symbole du jeton",
         "enterName": "Entrez le nom du jeton",
         "enterSupply": "Saisir l'offre de jeton",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Transaction soumise",
             "desc": "Créer un jeton {symbol}"
@@ -233,14 +225,9 @@
             "placeholder": "Approvisionnement extensible",
             "desc": "Possibilité de miner plus de jetons."
         },
-        "titleCommon": "Créer",
-        "confirmTokenTitleCommon": "Créer un jeton",
-        "confirmTokenTitleNFT": "Créer NFT",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Fournir du contenu",
         "selectLocalFile": "Sélectionnez le fichier local",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "La source",
@@ -271,7 +258,14 @@
         "divisible": {
             "placeholder": "Divisible",
             "desc": "Capacité de NFT à se diviser en parties fractionnaires. Le provisionnement de liquidité ne fonctionne qu'avec des actifs divisibles"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Créer",
+        "confirmTokenTitleCommon": "Créer un jeton",
+        "confirmTokenTitleNFT": "Créer NFT",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Détails de la transaction",
@@ -297,11 +291,8 @@
             "submitted": "Transaction soumise avec des frais de {fee} {symbol}",
             "confirmed": "Transaction confirmée"
         },
-        "viewIn": {
-            "sorascan": "Afficher dans SORAScan",
-            "subscan": "Visualisez dans Subscan"
-        },
         "txId": "Id de la transaction",
+        "viewIn": "Visualisez dans {explorer}",
         "referrer": "Référent",
         "referral": "Référence"
     },
@@ -337,9 +328,12 @@
         "AddLiquidity": "Ajouter de la liquidité",
         "AddLiquidityId": "Ajouter de la liquidité",
         "RemoveLiquidity": "Retirer de la liquidité",
-        "PageNotFound": "Page introuvable",
-        "Tokens": "Jetons",
-        "Rewards": "Récompenses"
+        "Rewards": "Récompenses",
+        "Explore\/Tokens": "Jetons",
+        "Explore\/Pools": "Piscines",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Échanger",
@@ -352,8 +346,9 @@
         "Stats": "Statistiques",
         "Support": "Support",
         "CreatePair": "Créer une paire",
-        "Tokens": "Jetons",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Explorer",
+        "SoraCard": "{Sora} Carte"
     },
     "social": {
         "twitter": "Twitter",
@@ -392,12 +387,12 @@
     },
     "node": {
         "errors": {
-            "connection": "Une erreur s'est produite lors de la connexion au nœud\n {address}\n",
-            "network": "Le nœud\n {address}\n vient d'un autre réseau\n",
-            "existing": "Ce nœud est déjà ajouté: '{title}'\n"
+            "connection": "Une erreur s'est produite lors de la connexion au nœud\n{address}\n",
+            "network": "Le nœud\n{address}\n vient d'un autre réseau\n",
+            "existing": "Ce nœud est déjà ajouté: {title}\n"
         },
         "messages": {
-            "connected": "Connexion établie avec nœud\n {address}\n",
+            "connected": "Connexion établie avec nœud\n{address}\n",
             "selectNode": "Veuillez sélectionner le nœud à connecter dans la liste des nœuds"
         },
         "warnings": {
@@ -432,26 +427,7 @@
         "from": "De",
         "to": "À"
     },
-    "pageNotFound": {
-        "title": "Page introuvable",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Chaîne Web énergétique"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -460,7 +436,7 @@
         "description": "Échange inter-chaînes d'actifs, création et listing simples de nouveaux actifs, et les échanges les plus simples jamais réalisés. L'avenir interopérable de {Polkadot} est là et nous sommes aux avant-postes !",
         "trading": {
             "title": "Trading plus rapide",
-            "first": "{AppName} est un protocole AMM-DEX non dépositaire pour l'échange de jetons basé sur le réseau {Polkadot}, les parachains et les blockchains connectés via des ponts.",
+            "first": "{AppName} est un protocole AMM DEX non dépositaire et inter-chaînes pour l'échange de jetons basé sur les chaînes de relais {Polkadot} et {Kusama} , les parachains {Polkadot} et {Kusama} et les chaînes de blocs directement connectées via des ponts.",
             "second": "{AppName} supprime les intermédiaires de confiance et offre la possibilité d'un trading plus rapide",
             "third": "{AppName} est un projet communautaire et les développeurs collaborent sur le code open source en utilisant le"
         },
@@ -501,8 +477,8 @@
         "price": "Prix",
         "transactionSubmitted": "Transaction soumise",
         "transactionMessage": "{firstToken} et {secondToken}",
-        "confirm": "Confirmer",
-        "ok": "OK"
+        "ok": "OK",
+        "confirm": "Confirmer"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -553,7 +529,6 @@
         "connectWallets": "Connectez les portefeuilles pour afficher l'historique des transactions.",
         "soraNetworkFee": "{Sora} Frais de réseau",
         "ethereumNetworkFee": "{Ethereum} Frais de réseau",
-        "tooltipValue": "@:comingSoonText",
         "total": "Total",
         "viewHistory": "Afficher l'historique des transactions",
         "transactionSubmitted": "Transaction soumise",
@@ -561,11 +536,10 @@
         "notRegisteredAsset": "L'actif {assetSymbol} n'est pas enregistré",
         "selectNetwork": "Sélectionner un réseau",
         "networkInfo": "Pont {Sora} Réseau avec:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Copier l'adresse réseau",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse"
+        "ethereumAddress": "{Ethereum} adresse",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -595,7 +569,7 @@
     },
     "bridgeTransaction": {
         "details": "{from} pour {to}",
-        "for": "pour",
+        "for": " pour ",
         "steps": {
             "step": "{step} sur 2",
             "step1": "1er",
@@ -617,7 +591,6 @@
             "done": "Compléter",
             "waitingForConfirmation": "En attente de confirmation..."
         },
-        "viewInEtherscan": "Afficher dans {Etherscan}",
         "networkTitle": "transaction {network}",
         "transactionHash": "Hash de transaction",
         "networkInfo": {
@@ -643,7 +616,7 @@
         "expectedMetaMaskAddress": "Adresse attendue dans {Metamask}:",
         "allowToken": "Autoriser {AppName} à utiliser votre {tokenSymbol}",
         "approveToken": "Veuillez noter qu'il n'est nécessaire d'approuver le jeton qu'une seule fois. Si votre extension a plusieurs demandes d'approbation de jetons, assurez-vous de ne confirmer que la dernière tout en rejetant le reste.",
-        "blocksLeft": "{count} blocs restants..."
+        "blocksLeft": "{count} blocs restants..."
     },
     "bridgeHistory": {
         "title": "Historique",
@@ -678,7 +651,7 @@
         "pricePool": "Prix et frais",
         "shareOfPool": "Part du pool",
         "firstPerSecond": "@:firstPerSecond",
-        "firstSecondPoolTokens": "{first} - {second} Pool",
+        "firstSecondPoolTokens": "{first}-{second} Pool",
         "connect": "Connecter le portefeuille",
         "supply": "Fournir",
         "yourPosition": "Votre position",
@@ -716,13 +689,13 @@
         "outputMessage": "Le montant à recevoir est estimé. Si le prix change de plus de {slippageTolerance}%, votre transaction sera annulée.",
         "confirmTitle": "Vous allez recevoir",
         "shareOfPool": "Part du pool après transaction",
-        "locked": "{percent} de votre pool est en jalonnement"
+        "locked": "{percent} de votre pool est en {lock}"
     },
     "dexSettings": {
         "title": "Réglages",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
-            "main": "- possibilité de choisir entre le marché primaire (TBC), le marché secondaire (XYK) ou un algorithme intelligent combiné pour garantir le meilleur prix pour une transaction donnée."
+            "main": " - possibilité de choisir entre le marché primaire (TBC), le marché secondaire (XYK) ou un algorithme intelligent combiné pour garantir le meilleur prix pour une transaction donnée."
         },
         "slippageTolerance": "TOLÉRANCE DIFFERENCE DE PRIX",
         "slippageToleranceHint": "Votre transaction sera annulée si le prix change défavorablement de plus de ce pourcentage.",
@@ -761,9 +734,9 @@
             "success": "Récompense réclamée avec succès"
         },
         "transactions": {
-            "confimation": "Confirmez {order} sur {total} transactions...",
+            "confimation": "Confirmez {order} sur {total} transactions...",
             "success": "Vous allez prochainement recevoir vos recompenses",
-            "failed": "{order} des {total} transactions ont échoué. @:retryText"
+            "failed": "{order} des {total} transactions ont échoué. @:retryText"
         },
         "signing": {
             "extension": "L'extension de navigateur {PolkadotJs}",
@@ -797,7 +770,7 @@
             "MarketMakerVolume": "Market Making",
             "LiquidityProvisionFarming": "Farming"
         },
-        "vested": "Acquis",
+        "vested": "acquis",
         "forText": "pour",
         "totalVested": "Récompenses totales",
         "claimableAmountDoneVesting": "Récompenses réclamables",
@@ -823,9 +796,7 @@
         "title": "Langue"
     },
     "tokens": {
-        "title": "Jetons listés",
         "symbol": "Symbole",
-        "name": "Nom",
         "assetId": "ID Actif"
     },
     "memorandum": "Note et conditions d'utilisation de {AppName}",
@@ -893,7 +864,7 @@
     "marketMakerCountdown": {
         "title": "Compte à rebours market maker",
         "blocks": "blocs",
-        "daysLeft": "Jours restants",
+        "daysLeft": "jours restants",
         "txs": "TXs",
         "volume": "MM Volume TX",
         "description": "20 millions de PSWAP\/mois seront distribués aux teneurs de marché avec au moins 500 tx\/mois valorisés sur 1 XOR."
@@ -911,7 +882,7 @@
         "bondedXOR": "XOR Vérouillé",
         "referralsNumber": "{number} références",
         "startInviting": "Bond XOR pour référer les autres",
-        "preview": "Invitez de nouveaux utilisateurs et obtenez 10% de leurs frais de transaction. <br \/> Pour commencer, collez n'importe quel montant de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> En savoir plus <\/a>",
+        "preview": "Invitez de nouveaux utilisateurs et obtenez 10% de leurs frais de transaction. <br\/> Pour commencer, collez n'importe quel montant de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> En savoir plus <\/a>",
         "deposit": "Déposer",
         "balance": "Solde",
         "networkFee": "@:networkFeeText",
@@ -933,7 +904,6 @@
         "bondTitle": "Lier XOR",
         "unbondTitle": "Délier XOR",
         "confirm": {
-            "text": "Confirmer",
             "bond": "Confirmer le lien",
             "unbond": "Confirmer la dissociation",
             "inviteTitle": "Vous avez été invité à {AppName}",
@@ -942,7 +912,8 @@
             "freeOfCharge": "Cette action est gratuite",
             "hasReferrerTitle": "Vous avez déjà défini votre référent",
             "hasReferrerDescription": "Malheureusement, vous ne pouvez définir qu'un seul",
-            "ok": "OK"
+            "ok": "OK",
+            "text": "Confirmer"
         },
         "referrer": {
             "title": "Ajoutez votre référent",
@@ -959,7 +930,6 @@
         "insufficientBondedAmount": "Pour inviter plus de références, liez au moins {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Détails de la transaction",
-    "createTokenTextNFT": "Créer NFT",
     "code": {
         "download": "Télécharger QR Code",
         "upload": "Scanner le QR code",
@@ -978,7 +948,7 @@
     "mobilePopup": {
         "sideMenu": "Obtenez {Sora} Wallet",
         "header": "Téléchargez le portefeuille {Sora} avec les fonctionnalités {polkaswapHighlight}",
-        "info": "Échangez des jetons de différents réseaux - {Sora}, {Ethereum}, Polkadot, {Kusama}. Fournissez un pool de liquidités et gagnez% des frais de change."
+        "info": "Échangez des jetons de différents réseaux - {Sora}, {Ethereum}, {Polkadot}, {Kusama}. Fournissez un pool de liquidités et gagnez% des frais de change."
     },
     "releaseNotesText": "Notes de version",
     "copiedText": "Copié!",
@@ -1024,39 +994,39 @@
     "historyErrorMessages": {
         "generalError": "Quelque chose s'est mal passé",
         "balances": {
-            "LiquidityRestrictions": "Les restrictions de liquidité du compte empêchent le retrait"
+            "liquidityrestrictions": "Les restrictions de liquidité du compte empêchent le retrait"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Le solde de la source n'est pas assez grand",
-            "TargetBalanceIsNotLargeEnough": "Le solde de la destination n'est pas assez important",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Les montants fournis sont trop variés",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Les montants sont en dehors des limites requises",
-            "UnableToDepositXorLessThanMinimum": "XOR inférieur à la valeur minimale (0,007)",
-            "ZeroValueInAmountParameter": "Le paramètre de montant a une valeur nulle"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Le solde de la source n'est pas assez grand",
+            "targetbalanceisnotlargeenough": "Le solde de la destination n'est pas assez important",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Les montants fournis sont trop variés",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Les montants sont en dehors des limites requises",
+            "unabletodepositxorlessthanminimum": "XOR inférieur à la valeur minimale (0,007)",
+            "zerovalueinamountparameter": "Le paramètre de montant a une valeur nulle"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "La paire de pool existe déjà",
-            "SlippageLimitExceeded": "La tolérance de glissement n'a pas atteint les limites appropriées"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "La paire de pool existe déjà",
+            "slippagelimitexceeded": "La tolérance de glissement n'a pas atteint les limites appropriées"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Le compte a déjà un référent",
-            "ReferrerInsufficientBalance": "Le parrain n'a pas assez de solde réservé"
+            "alreadyhasreferrer": "Le compte a déjà un référent",
+            "referrerinsufficientbalance": "Le parrain n'a pas assez de solde réservé"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Le programme de récompenses est déjà terminé",
-            "CantCalculateReward": "Échec du calcul de la récompense",
-            "NoRewardsForAsset": "Il n'y a pas de récompenses pour cet actif"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Le programme de récompenses est déjà terminé",
+            "cantcalculatereward": "Échec du calcul de la récompense",
+            "norewardsforasset": "Il n'y a pas de récompenses pour cet actif"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "La source de liquidité sélectionnée n'est pas autorisée"
+        "liquidityproxy": {
+            "forbiddenfilter": "La source de liquidité sélectionnée n'est pas autorisée"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Fonds insuffisants",
-            "InsufficientLPTokens": "Jetons de provision de liquidité insuffisants",
-            "PoolDoesNotHaveRewards": "La piscine n'a pas de récompenses"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Fonds insuffisants",
+            "insufficientlptokens": "Jetons de provision de liquidité insuffisants",
+            "pooldoesnothaverewards": "La piscine n'a pas de récompenses"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Une erreur s'est produite lors du calcul du prix"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Une erreur s'est produite lors du calcul du prix"
         }
     },
     "receivedText": "Reçu",
@@ -1073,8 +1043,7 @@
     "ofText": "{first} de {second}",
     "filter": {
         "all": "Tous",
-        "token": "Jetons",
-        "nft": "NFT",
+        "token": "Devises",
         "verifiedOnly": "Afficher uniquement les actifs vérifiés",
         "zeroBalance": "Cachez 0 solde actif",
         "showAssets": "Afficher les actifs",
@@ -1132,8 +1101,77 @@
             "mnemonic": "Mnémonique bip39 non valide spécifié",
             "mnemonicLength": "Le mnémonique doit contenir {number} mots",
             "jsonFields": "Le fichier JSON n'a pas de champs obligatoires"
-        }
+        },
+        "assetsAtRiskText": "Actifs en péril !",
+        "deleteAccountText": "Le compte ne peut pas être récupéré sans une phrase de départ, un fichier .json ou s'il est stocké dans une extension. Vous serez déconnecté."
     },
     "hashiBridgeText": "Pont {Hashi}",
-    "disclaimerTitle": "Avertissement:"
+    "disclaimerTitle": "Avertissement:",
+    "explore": {
+        "showOnlyMyPositions": "Afficher uniquement mes positions"
+    },
+    "tooltips": {
+        "roi": "{ROI} signifie retour sur investissement. Il est calculé en divisant le bénéfice réalisé sur un investissement par le coût de cet investissement en pourcentage équivalent.",
+        "tvl": "{TVL} signifie Total Value Locked. Il représente les jetons verrouillés dans les pools en équivalent dollar.",
+        "volume": "Le volume fait référence au montant total des actifs qui ont été négociés ou échangés sur le réseau sur une période de temps spécifique. Le volume est une mesure importante pour mesurer la liquidité et l'activité globale du réseau.",
+        "fees": "Les frais sur la blockchain {Sora} font référence aux frais encourus pour l'exécution des transactions sur le réseau. Ces frais sont payés en XOR, la crypto-monnaie native du réseau {Sora} . Le montant des frais est déterminé par la complexité et la taille de la transaction en cours d'exécution",
+        "supply": "La fourniture de jetons fait référence au nombre total de jetons qui ont été créés et qui sont en circulation sur le réseau. L'offre de jetons peut fluctuer en fonction de la quantité de jetons jalonnés, brûlés ou transférés sur le réseau.",
+        "transactions": "Les transactions font référence au processus d'envoi ou de réception d'actifs numériques sur le réseau, y compris les opérations de liquidité, ainsi que les swaps.",
+        "accounts": "Les comptes sont des adresses numériques qui contiennent les actifs de l'utilisateur sur le réseau. Chaque compte est associé à une adresse publique unique et à une clé privée qui permet à l'utilisateur d'accéder et de gérer ses actifs.",
+        "bridgeTransactions": "Le pont {from} vers {to} fait référence au processus de transfert d'actifs entre les réseaux {from} et {to} à l'aide d'un pont. Le pont permet l'interopérabilité des deux réseaux, permettant aux utilisateurs de déplacer en toute transparence des actifs entre eux."
+    },
+    "createTokenText": "Créer un jeton",
+    "comingSoonText": "Bientôt disponible",
+    "confirmText": "Confirmer",
+    "createTokenTextNFT": "Créer NFT",
+    "doNotShowText": "Ne me montre plus ça",
+    "accountText": "compte | comptes",
+    "networkStatisticsText": "Statistiques du réseau",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Nœud connecté",
+                "loading": "Reconnexion du nœud",
+                "disconnected": "Nœud déconnecté"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet désactivé",
+                "unstable": "Internet instable",
+                "stable": "Internet stable"
+            },
+            "label": "Votre débit Internet",
+            "desc": {
+                "disabled": "Débranché",
+                "unstable": "Connection lente",
+                "stable": "Vitesse optimale"
+            },
+            "action": "Actualiser {Polkaswap}",
+            "dialogTitle": "Connectez-vous à la source Internet",
+            "dialogDesc": "{Polkaswap} nécessite une connexion Internet pour une expérience stable"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistiques non disponibles",
+                "loading": "Chargement des statistiques",
+                "available": "Statistiques disponibles"
+            },
+            "label": "Services statistiques",
+            "desc": {
+                "unavailable": "Tous les services sont déconnectés",
+                "loading": "Tous les services sont en cours de chargement",
+                "available": "Tous les services sont stables"
+            },
+            "action": "Sélectionnez les services",
+            "dialog": {
+                "title": "{Sora} Sélection du service réseau",
+                "fiat": "Valeurs Fiat",
+                "chartsAndActivity": "Graphiques et activité",
+                "online": "En ligne",
+                "offline": "Hors ligne"
+            }
+        }
+    },
+    "locationText": "Emplacement"
 }

@@ -7,12 +7,19 @@ function initialState(): AddLiquidityState {
     secondTokenAddress: '',
     firstTokenValue: '',
     secondTokenValue: '',
+    firstTokenBalance: null,
     secondTokenBalance: null,
-    reserve: null,
-    minted: ZeroStringValue,
-    totalSupply: ZeroStringValue,
     focusedField: null,
+    minted: ZeroStringValue,
+    // pool reserves
+    reserve: null,
+    reserveSubscription: null,
+    // pool lp tokens
+    totalSupply: ZeroStringValue,
+    totalSupplySubscription: null,
+    // pool availability
     isAvailable: false,
+    availabilitySubscription: null,
   };
 }
 
