@@ -2597,10 +2597,10 @@
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
 
-"@soramitsu/soraneo-wallet-web@1.15.10":
-  version "1.15.10"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.15.10.tgz#d5aed74a63a927588d08c23571bc0d429bbb33a5"
-  integrity sha512-sdlhh+2QjYFxyylgGpS4IDfddx2S+UR4Cq4eyvkCFqwJHQCSfsVxYES/oeZwmxpzEHt0rxX513t1fzlqaNBq/g==
+"@soramitsu/soraneo-wallet-web@1.16.0-beta.0":
+  version "1.16.0-beta.0"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.16.0-beta.0.tgz#9963712a4c2152ff48daeed19f3406d008bf1082"
+  integrity sha512-gT4vkZ9tH6MpRqb5QHR34o2+d/jlE/0MATFylR8VkjtAlBMSICN56PZtU89mOzMUEkPMN2V6tGDitrHLuOfV2Q==
   dependencies:
     "@polkadot/vue-identicon" "2.9.14"
     "@sora-substrate/util" "1.15.8"
@@ -2625,6 +2625,7 @@
     vue "2.6.14"
     vue-class-component "^7.2.6"
     vue-i18n "^8.28.2"
+    vue-plugin-load-script "^2.1.1"
     vue-property-decorator "^9.1.2"
     vue-virtual-scroller "^1.1.2"
     vuedraggable "^2.24.3"
@@ -14688,7 +14689,7 @@ vue-observe-visibility@^0.4.4:
   resolved "https://registry.yarnpkg.com/vue-observe-visibility/-/vue-observe-visibility-0.4.6.tgz#878cb8ebcf3078e40807af29774e97105ebd519e"
   integrity sha512-xo0CEVdkjSjhJoDdLSvoZoQrw/H2BlzB5jrCBKGZNXN2zdZgMuZ9BKrxXDjNP2AxlcCoKc8OahI3F3r3JGLv2Q==
 
-vue-plugin-load-script@^2.x.x:
+vue-plugin-load-script@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/vue-plugin-load-script/-/vue-plugin-load-script-2.1.1.tgz#5c16fbb428dae38440022dbf7ab02bf0b2429e26"
   integrity sha512-IViO0hNj4O39M8I1taX74B5PR5RI7IrlEt+dvAjOk3NRLwQ7ZrdexUo9+K++KBzGPJtaVL1+emTyMWeOtjZojw==
