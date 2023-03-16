@@ -55,6 +55,8 @@
         "retryKycBtn": "Dokončete znovu KYC",
         "unsupportedCountriesLink": "Podívejte se na seznam",
         "unsupportedCountriesDisclaimer": "Obyvatelé některých zemí v tuto chvíli nemohou žádat o kartu SORA",
-        "statusRejectReason": "Důvod odmítnutí"
+        "statusRejectReason": "Důvod odmítnutí",
+        "userNotFound": "Nebylo nalezeno žádné číslo mobilního telefonu, zkontrolujte ho znovu a zkuste to znovu.",
+        "code": "Kód"
     }
 }

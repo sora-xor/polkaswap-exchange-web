@@ -14,7 +14,7 @@
     </div>
 
     <div class="sora-card__header">{{ t(titleKey) }}</div>
-    <p class="sora-card__status-info">{{ text }}</p>
+    <p class="sora-card__status-info" v-html="text" />
 
     <div v-if="currentStatus === VerificationStatus.Rejected" class="sora-card__rejection">
       <s-button

@@ -55,6 +55,8 @@
         "retryKycBtn": "Поново завршите КИЦ",
         "unsupportedCountriesLink": "Погледајте листу",
         "unsupportedCountriesDisclaimer": "Становници одређених земаља у овом тренутку не могу аплицирати за СОРА картицу",
-        "statusRejectReason": "Разлог одбијања"
+        "statusRejectReason": "Разлог одбијања",
+        "userNotFound": "Није пронађен број мобилног телефона, проверите га поново и покушајте поново.",
+        "code": "Код"
     }
 }

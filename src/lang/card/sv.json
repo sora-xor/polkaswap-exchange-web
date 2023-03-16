@@ -55,6 +55,8 @@
         "retryKycBtn": "Slutför KYC igen",
         "unsupportedCountriesLink": "Se listan",
         "unsupportedCountriesDisclaimer": "Invånare från vissa länder kan inte ansöka om SORA-kort för närvarande",
-        "statusRejectReason": "Orsak till avslag"
+        "statusRejectReason": "Orsak till avslag",
+        "userNotFound": "Inget mobilnummer hittades, kontrollera det igen och försök igen.",
+        "code": "Koda"
     }
 }

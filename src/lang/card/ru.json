@@ -55,6 +55,8 @@
         "retryKycBtn": "Пройдите KYC еще раз",
         "unsupportedCountriesLink": "Посмотреть список",
         "unsupportedCountriesDisclaimer": "Жители некоторых стран не могут подать заявку на карту SORA Card в данный момент.",
-        "statusRejectReason": "Причина отклонения"
+        "statusRejectReason": "Причина отклонения",
+        "userNotFound": "Номер мобильного телефона не найден, проверьте его еще раз и повторите попытку.",
+        "code": "Код"
     }
 }

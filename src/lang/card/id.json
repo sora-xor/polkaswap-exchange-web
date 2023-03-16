@@ -55,6 +55,8 @@
         "retryKycBtn": "Selesaikan KYC lagi",
         "unsupportedCountriesLink": "Lihat daftarnya",
         "unsupportedCountriesDisclaimer": "Penduduk dari negara tertentu tidak dapat mengajukan SORA Card untuk saat ini",
-        "statusRejectReason": "Alasan penolakan"
+        "statusRejectReason": "Alasan penolakan",
+        "userNotFound": "Nomor ponsel tidak ditemukan, harap periksa kembali dan coba lagi.",
+        "code": "Kode"
     }
 }

@@ -55,6 +55,8 @@
         "retryKycBtn": "Complete KYC nuevamente",
         "unsupportedCountriesLink": "ver la lista",
         "unsupportedCountriesDisclaimer": "Los residentes de ciertos países no pueden solicitar la Tarjeta SORA en este momento",
-        "statusRejectReason": "Motivo de rechazo"
+        "statusRejectReason": "Motivo de rechazo",
+        "userNotFound": "No se ha encontrado ningún número de móvil, vuelva a comprobarlo e inténtelo de nuevo.",
+        "code": "Código"
     }
 }

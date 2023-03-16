@@ -158,7 +158,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
 
   /** Real example when `countryCode` is empty */
   get countryCodePlaceholder(): string {
-    return this.countryCode ? 'Code' : '+44'; // TODO: [CARD] Translate Code: this.t('card.code')
+    return this.countryCode ? this.t('card.code') : '+44';
   }
 
   get buttonDisabled() {
@@ -249,7 +249,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
         this.sendOtpBtnLoading = false;
 
         if (this.userApplied) {
-          this.showAppNotification('No mobile number found, please recheck it and try again.', 'info');
+          this.showAppNotification(this.t('card.userNotFound'), 'info');
           this.notFoundPhoneWhenApplied = true;
           this.verificationCode = '';
           return;

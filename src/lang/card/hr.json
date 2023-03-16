@@ -55,6 +55,8 @@
         "retryKycBtn": "Ponovno ispunite KYC",
         "unsupportedCountriesLink": "Pogledajte popis",
         "unsupportedCountriesDisclaimer": "Stanovnici određenih zemalja trenutno ne mogu podnijeti zahtjev za SORA karticu",
-        "statusRejectReason": "Razlog odbijanja"
+        "statusRejectReason": "Razlog odbijanja",
+        "userNotFound": "Broj mobitela nije pronađen, provjerite ga i pokušajte ponovno.",
+        "code": "Kodirati"
     }
 }

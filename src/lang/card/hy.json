@@ -55,6 +55,8 @@
         "retryKycBtn": "Կրկին լրացրեք KYC-ը",
         "unsupportedCountriesLink": "Տես ցանկը",
         "unsupportedCountriesDisclaimer": "Որոշ երկրների բնակիչներ այս պահին չեն կարող դիմել SORA քարտի համար",
-        "statusRejectReason": "Մերժման պատճառը"
+        "statusRejectReason": "Մերժման պատճառը",
+        "userNotFound": "Բջջային հեռախոսահամար չի գտնվել, խնդրում ենք կրկին ստուգել այն և նորից փորձել:",
+        "code": "Կոդ"
     }
 }

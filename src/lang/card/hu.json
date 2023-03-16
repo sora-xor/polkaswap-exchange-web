@@ -55,6 +55,8 @@
         "retryKycBtn": "Töltse ki újra a KYC-t",
         "unsupportedCountriesLink": "Lásd a listát",
         "unsupportedCountriesDisclaimer": "Egyes országok lakosai jelenleg nem igényelhetnek SORA kártyát",
-        "statusRejectReason": "Elutasítás oka"
+        "statusRejectReason": "Elutasítás oka",
+        "userNotFound": "Nem található mobilszám. Kérjük, ellenőrizze újra, és próbálja újra.",
+        "code": "Kód"
     }
 }

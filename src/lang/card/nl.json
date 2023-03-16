@@ -55,6 +55,8 @@
         "retryKycBtn": "Voltooi KYC opnieuw",
         "unsupportedCountriesLink": "Zie de lijst",
         "unsupportedCountriesDisclaimer": "Inwoners uit bepaalde landen kunnen op dit moment geen SORA Card aanvragen",
-        "statusRejectReason": "Reden afwijzing"
+        "statusRejectReason": "Reden afwijzing",
+        "userNotFound": "Geen mobiel nummer gevonden, controleer het opnieuw en probeer het opnieuw.",
+        "code": "Code"
     }
 }

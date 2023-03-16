@@ -55,6 +55,8 @@
         "retryKycBtn": "Pari KYC lẹẹkansi",
         "unsupportedCountriesLink": "Wo atokọ naa",
         "unsupportedCountriesDisclaimer": "Awọn olugbe lati awọn orilẹ-ede kan ko le beere fun Kaadi SORA ni akoko yii",
-        "statusRejectReason": "Idi ijusile"
+        "statusRejectReason": "Idi ijusile",
+        "userNotFound": "Ko si nọmba alagbeka ti a rii, jọwọ tun ṣayẹwo rẹ ki o tun gbiyanju lẹẹkansi.",
+        "code": "Koodu"
     }
 }

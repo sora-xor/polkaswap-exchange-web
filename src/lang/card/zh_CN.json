@@ -55,6 +55,8 @@
         "retryKycBtn": "再次完成KYC",
         "unsupportedCountriesLink": "查看列表",
         "unsupportedCountriesDisclaimer": "部分国家居民暂不能申请SORA卡",
-        "statusRejectReason": "拒绝原因"
+        "statusRejectReason": "拒绝原因",
+        "userNotFound": "未找到手机号码，请重新检查并重试。",
+        "code": "代码"
     }
 }

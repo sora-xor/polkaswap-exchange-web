@@ -19,6 +19,8 @@ const getters = defineGetters<SoraCardState>()({
     const { state } = soraCardGetterContext(args);
     const { kycStatus, verificationStatus } = state;
 
+    return VerificationStatus.Pending;
+
     if ([kycStatus, verificationStatus].includes(VerificationStatus.Rejected)) {
       return VerificationStatus.Rejected;
     }
