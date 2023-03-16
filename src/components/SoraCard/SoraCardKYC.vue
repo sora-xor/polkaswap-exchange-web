@@ -1,5 +1,12 @@
 <template>
-  <wallet-base v-loading="loading" :title="title" :show-back="showBackBtn" @back="handleBack" class="sora-card">
+  <wallet-base
+    v-loading="loading"
+    :title="title"
+    :show-back="showBackBtn"
+    :title-center="true"
+    @back="handleBack"
+    class="sora-card"
+  >
     <terms-and-conditions v-if="step === KycProcess.TermsAndConditions" @confirm="confirmToS" />
     <road-map v-else-if="step === KycProcess.RoadMap" @confirm="confirmSignIn" :userApplied="userApplied" />
     <phone v-else-if="step === KycProcess.Phone" @confirm="confirmPhone" :userApplied="userApplied" />
@@ -137,15 +144,6 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
   }
 }
 </script>
-
-<style lang="scss">
-.sora-card {
-  .base-title {
-    padding-right: 0 !important;
-    text-align: center;
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 .el-card {
