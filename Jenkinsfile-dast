@@ -1,4 +1,4 @@
-@Library('jenkins-library@SNE-261-arachni')
+@Library('jenkins-library')
 
 String targetEnvironment = 'deploy/exchange-stage1'
 String arachniURL        = 'https://test.polkaswap.io'
