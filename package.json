@@ -16,8 +16,6 @@
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "generate-lang-json": "ts-node --skip-project ./scripts/generateLocaleJson.ts",
-    "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps",
     "test:unit": "vue-cli-service test:unit --testPathIgnorePatterns Translation.spec.ts",
     "test:translation": "vue-cli-service test:unit -- Translation.spec.ts",
     "test:e2e": "vue-cli-service test:e2e",
@@ -25,7 +23,7 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
-    "@soramitsu/soraneo-wallet-web": "^1.15.10",
+    "@soramitsu/soraneo-wallet-web": "1.15.10",
     "@walletconnect/web3-provider": "^1.8.0",
     "base-64": "^1.0.0",
     "core-js": "^3.26.0",

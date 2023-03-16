@@ -11,35 +11,36 @@
     </div>
     <div class="tos__section">
       <div class="tos__section-block" @click="openDialog('t&c')">
-        <span class="tos__section-point">{{ termsAndConditionsTitle }}</span>
+        <span class="tos__section-point">{{ t(termsAndConditionsTitle) }}</span>
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>
       <div class="line" />
       <div class="tos__section-block" @click="openDialog('privacyPolicy')">
-        <span class="tos__section-point">{{ privacyPolicyTitle }}</span>
+        <span class="tos__section-point">{{ t(privacyPolicyTitle) }}</span>
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>
       <div class="line" />
       <div class="tos__section-block" @click="openDialog('unsupported')">
-        <span class="tos__section-point">{{ unsupportedCountriesTitle }}</span>
+        <span class="tos__section-point">{{ t(unsupportedCountriesTitle) }}</span>
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>
     </div>
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirmToS">
       <span class="text">{{ t('card.acceptAndContinue') }}</span>
     </s-button>
-    <tos-dialog :visible.sync="showDialog" :srcLink="link" :title="dialogTitle" :key="link" />
+    <tos-dialog :visible.sync="showDialog" :srcLink="link" :title="t(dialogTitle)" :key="link" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, TosExternalLinks } from '@/consts';
 import { lazyComponent } from '@/router';
-import TranslationMixin from '../../mixins/TranslationMixin';
 import { getter } from '@/store/decorators';
-import { Theme } from '@soramitsu/soramitsu-js-ui';
 
 @Component({
   components: {
@@ -47,16 +48,15 @@ import { Theme } from '@soramitsu/soramitsu-js-ui';
   },
 })
 export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  readonly termsAndConditionsTitle = 'card.termsAndConditions';
+  readonly privacyPolicyTitle = 'card.privacyPolicy';
+  readonly unsupportedCountriesTitle = 'card.unsupportedCountries';
+
+  @getter.libraryTheme private libraryTheme!: Theme;
+
   showDialog = false;
-  nonSupportedCountriesDialog = false;
-  dialogTitle = '';
+  dialogTitle = this.termsAndConditionsTitle;
   link = '';
-
-  termsAndConditionsTitle = this.t('card.termsAndConditions');
-  privacyPolicyTitle = this.t('card.privacyPolicy');
-  unsupportedCountriesTitle = this.t('card.unsupportedCountries');
-
-  @getter.libraryTheme libraryTheme!: Theme;
 
   get termsLink(): string {
     return TosExternalLinks.getLinks(this.libraryTheme).Terms;

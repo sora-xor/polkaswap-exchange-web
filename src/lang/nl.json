@@ -1112,12 +1112,66 @@
     },
     "tooltips": {
         "roi": "{ROI} staat voor Return on Investment. Het wordt berekend door de winst op een investering te delen door de kosten van die investering in een procentueel equivalent.",
-        "tvl": "{TVL} staat voor Total Value Locked. Het vertegenwoordigt tokens die in de pools zijn opgesloten in het equivalent van de dollar."
+        "tvl": "{TVL} staat voor Total Value Locked. Het vertegenwoordigt tokens die in de pools zijn opgesloten in het equivalent van de dollar.",
+        "volume": "Volume verwijst naar de totale hoeveelheid activa die gedurende een bepaalde periode op het netwerk is verhandeld of uitgewisseld. Het volume is een belangrijke maatstaf voor het meten van de liquiditeit en de algehele activiteit van het netwerk.",
+        "fees": "Kosten op de {Sora} -blockchain verwijzen naar de kosten die worden gemaakt voor het uitvoeren van transacties op het netwerk. Deze vergoedingen worden betaald in XOR, de native cryptocurrency van het {Sora} -netwerk. Het bedrag van de vergoeding wordt bepaald door de complexiteit en omvang van de transactie die wordt uitgevoerd",
+        "supply": "Tokenaanbod verwijst naar het totale aantal tokens dat is aangemaakt en in omloop is op het netwerk. Het tokenaanbod kan fluctueren op basis van het aantal tokens dat wordt ingezet, verbrand of overgedragen op het netwerk.",
+        "transactions": "Transacties verwijzen naar het proces van het verzenden of ontvangen van digitale activa op het netwerk, inclusief liquiditeitsoperaties, evenals swaps.",
+        "accounts": "Accounts zijn digitale adressen die de activa van de gebruiker op het netwerk bevatten. Elk account is gekoppeld aan een uniek openbaar adres en een privésleutel waarmee de gebruiker toegang heeft tot zijn activa en deze kan beheren.",
+        "bridgeTransactions": "{from} to {to} bridge verwijst naar het proces van het overbrengen van activa tussen de {from} en {to} netwerken met behulp van een bridge. De brug zorgt voor de interoperabiliteit van de twee netwerken, waardoor gebruikers naadloos activa tussen hen kunnen verplaatsen."
     },
     "createTokenText": "Maak token",
     "comingSoonText": "Binnenkort beschikbaar",
     "confirmText": "Bevestigen",
     "createTokenTextNFT": "NFT maken",
     "doNotShowText": "Laat me dit niet nog een keer zien",
-    "accountText": "rekening | rekeningen"
+    "accountText": "rekening | rekeningen",
+    "networkStatisticsText": "Netwerkstatistieken",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Knooppunt aangesloten",
+                "loading": "Knooppunt maakt opnieuw verbinding",
+                "disconnected": "Knooppunt losgekoppeld"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet uitgeschakeld",
+                "unstable": "Internet onstabiel",
+                "stable": "Internet stabiel"
+            },
+            "label": "Je internetsnelheid",
+            "desc": {
+                "disabled": "Losgekoppeld",
+                "unstable": "Langzame verbinding",
+                "stable": "Optimale snelheid"
+            },
+            "action": "Vernieuw {Polkaswap}",
+            "dialogTitle": "Maak verbinding met internetbron",
+            "dialogDesc": "{Polkaswap} vereist een internetverbinding voor een stabiele ervaring"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistieken niet beschikbaar",
+                "loading": "Statistieken laden",
+                "available": "Statistieken beschikbaar"
+            },
+            "label": "Statistische diensten",
+            "desc": {
+                "unavailable": "Alle diensten zijn losgekoppeld",
+                "loading": "Alle services worden geladen",
+                "available": "Alle diensten zijn stabiel"
+            },
+            "action": "Selecteer diensten",
+            "dialog": {
+                "title": "{Sora} Netwerkserviceselectie",
+                "fiat": "Fiat-waarden",
+                "chartsAndActivity": "Grafieken & Activiteit",
+                "online": "Online",
+                "offline": "offline"
+            }
+        }
+    },
+    "locationText": "Plaats"
 }
