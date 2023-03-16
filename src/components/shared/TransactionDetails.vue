@@ -45,7 +45,9 @@ export default class TransactionDetails extends Mixins(TranslationMixin) {
     color: var(--s-color-base-content-tertiary);
     margin-left: 7px;
     height: 16px;
+    line-height: 1;
     width: 13px;
+    position: relative;
   }
 
   .el-collapse-item__header {
@@ -59,15 +61,6 @@ export default class TransactionDetails extends Mixins(TranslationMixin) {
       &:hover {
         cursor: pointer;
       }
-    }
-  }
-
-  .el-collapse-item__header .el-icon-arrow-right.is-active {
-    transform: scale(1, -1);
-    transition: transform 0.3s;
-
-    &:hover {
-      cursor: pointer !important;
     }
   }
 
