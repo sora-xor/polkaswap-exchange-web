@@ -222,28 +222,7 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
 export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBasePageMixin, ExplorePageMixin) {
   @Watch('pools', { deep: true })
   private async updatePoolsData() {
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        const buffer = {};
-        const isFarm = this.isFarmingPage;
-        const keys = this.list.map((item) => lpKey(item.baseAsset, item.poolAsset));
-        const poolKeys = [...new Set(keys)];
-
-        await Promise.allSettled(
-          poolKeys.map(async (key) => {
-            if (!buffer[key]) {
-              const poolData = await this.getPoolData(key, isFarm);
-
-              if (poolData) {
-                buffer[key] = poolData;
-              }
-            }
-          })
-        );
-
-        this.poolsData = buffer;
-      });
-    });
+    await this.updateExploreData();
   }
 
   // override ExplorePageMixin
@@ -353,6 +332,35 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
     if (!this.isAccountItems) return this.items;
 
     return this.items.filter((item) => item.isAccountItem);
+  }
+
+  // ExplorePageMixin method implementation
+  async updateExploreData(): Promise<void> {
+    // return if method is already called by "watch" or "mounted"
+    if (this.loading) return;
+
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        const buffer = {};
+        const isFarm = this.isFarmingPage;
+        const keys = this.list.map((item) => lpKey(item.baseAsset, item.poolAsset));
+        const poolKeys = [...new Set(keys)];
+
+        await Promise.allSettled(
+          poolKeys.map(async (key) => {
+            if (!buffer[key]) {
+              const poolData = await this.getPoolData(key, isFarm);
+
+              if (poolData) {
+                buffer[key] = poolData;
+              }
+            }
+          })
+        );
+
+        this.poolsData = buffer;
+      });
+    });
   }
 
   private async getPoolData(key: string, isFarm: boolean): Promise<Nullable<PoolData>> {

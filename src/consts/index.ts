@@ -128,10 +128,10 @@ export enum PageNames {
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
   StakingContainer = 'StakingContainer',
+  // just for router name & different titles
   ExploreContainer = 'Explore/Container',
   ExploreTokens = 'Explore/Tokens',
   ExploreDemeter = 'Explore/Demeter',
-  // just for router name & different titles
   ExploreFarming = 'Explore/Farming',
   ExploreStaking = 'Explore/Staking',
   ExplorePools = 'Explore/Pools',
@@ -139,17 +139,18 @@ export enum PageNames {
 }
 
 export enum Components {
-  GenericPageHeader = 'GenericPageHeader',
-  AppHeader = 'App/Header/AppHeader',
-  AppHeaderMenu = 'App/Header/AppHeaderMenu',
-  AccountButton = 'App/Header/AccountButton',
+  // App
   AppLogoButton = 'App/Header/AppLogoButton',
+  AppMobilePopup = 'App/MobilePopup',
+  AppBrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
+  AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
+  SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
   AppFooter = 'App/Footer/AppFooter',
-  AppMenu = 'App/Menu/AppMenu',
-  AppInfoPopper = 'App/Menu/AppInfoPopper',
-  BrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
-  BrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
-  PairTokenLogo = 'PairTokenLogo',
+  StatisticsDialog = 'App/Footer/StatisticsDialog',
+  SelectNodeDialog = 'App/Footer/SelectNodeDialog',
+  SelectNode = 'App/Footer/Node/SelectNode',
+  NodeInfo = 'App/Footer/Node/NodeInfo',
+  // other
   SoraCard = 'SoraCard',
   SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
   SoraCardKYC = 'SoraCard/SoraCardKYC',
@@ -160,64 +161,71 @@ export enum Components {
   Phone = 'SoraCard/steps/Phone',
   Email = 'SoraCard/steps/Email',
   KycView = 'SoraCard/steps/KycView',
-  SwapConfirm = 'Swap/Confirm',
-  SwapChart = 'Swap/Chart',
-  StatusActionBadge = 'Swap/StatusActionBadge',
-  ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
-  ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
-  SettingsDialog = 'SettingsDialog',
-  SettingsHeader = 'Settings/Header',
-  SettingsTabs = 'Settings/Tabs',
-  SlippageTolerance = 'Settings/SlippageTolerance',
-  MarketAlgorithm = 'Settings/MarketAlgorithm',
-  SelectNode = 'App/Footer/Node/SelectNode',
-  NodeInfo = 'App/Footer/Node/NodeInfo',
-  SelectNodeDialog = 'App/Footer/SelectNodeDialog',
-  StatisticsDialog = 'App/Footer/StatisticsDialog',
-  ExternalLink = 'ExternalLink',
-  // HelpDialog = 'HelpDialog',
-  AboutNetworkDialog = 'AboutNetworkDialog',
-  SidebarItemContent = 'SidebarItemContent',
-  SelectNetwork = 'SelectNetwork',
-  ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
-  NetworkFeeWarningDialog = 'NetworkFeeWarningDialog',
-  BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
-  GradientBox = 'Rewards/GradientBox',
-  TokensRow = 'Rewards/TokensRow',
-  RewardsAmountHeader = 'Rewards/AmountHeader',
-  RewardsAmountTable = 'Rewards/AmountTable',
-  RewardItemTooltip = 'Rewards/RewardItemTooltip',
-  ReferralsConfirmBonding = 'Referrals/ConfirmBonding',
-  ReferralsConfirmInviteUser = 'Referrals/ConfirmInviteUser',
-  TokenSelectButton = 'Input/TokenSelectButton',
-  TokenInput = 'Input/TokenInput',
-  SelectLanguageDialog = 'SelectLanguageDialog',
-  SelectAssetList = 'SelectAsset/List',
-  SelectToken = 'SelectAsset/SelectToken',
-  SelectRegisteredAsset = 'SelectAsset/SelectRegisteredAsset',
-  ValueStatusWrapper = 'ValueStatusWrapper',
-  SimpleNotification = 'SimpleNotification',
-  Moonpay = 'Moonpay/Moonpay',
-  MoonpayWidget = 'Moonpay/MoonpayWidget',
-  MoonpayNotification = 'Moonpay/MoonpayNotification',
-  MoonpayConfirmation = 'Moonpay/MoonpayConfirmation',
-  MoonpayHistoryButton = 'Moonpay/MoonpayHistoryButton',
-  TransactionDetails = 'TransactionDetails/TransactionDetails',
-  SwapTransactionDetails = 'TransactionDetails/SwapTransactionDetails',
-  AddLiquidityTransactionDetails = 'TransactionDetails/AddLiquidityTransactionDetails',
-  RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
-  BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
-  BridgeTransferNotification = 'Bridge/TransferNotification',
-  MobilePopup = 'MobilePopup/MobilePopup',
-  // Pool
-  PoolInfo = 'Pool/PoolInfo',
-  PriceChange = 'PriceChange',
-  // Button
-  SortButton = 'Button/SortButton',
-  SvgIconButton = 'Button/SvgIconButton/SvgIconButton',
+  // Paywings
   X1Dialog = 'X1/X1Dialog',
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
+  // Add Liquidity Page
+  AddLiquidityConfirm = 'pages/AddLiquidity/Confirm',
+  AddLiquidityTransactionDetails = 'pages/AddLiquidity/TransactionDetails',
+  // Remove Liquidity Page
+  RemoveLiquidityConfirm = 'pages/RemoveLiquidity/Confirm',
+  RemoveLiquidityTransactionDetails = 'pages/RemoveLiquidity/TransactionDetails',
+  // Bridge Page
+  BridgeTransactionDetails = 'pages/Bridge/TransactionDetails',
+  BridgeTransferNotification = 'pages/Bridge/TransferNotification',
+  BridgeSelectAsset = 'pages/Bridge/SelectAsset',
+  BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
+  // Moonpay Page
+  Moonpay = 'pages/Moonpay/Moonpay',
+  MoonpayWidget = 'pages/Moonpay/Widget',
+  MoonpayNotification = 'pages/Moonpay/Notification',
+  MoonpayConfirmation = 'pages/Moonpay/Confirmation',
+  MoonpayHistoryButton = 'pages/Moonpay/HistoryButton',
+  // Swap Page
+  SwapConfirm = 'pages/Swap/Confirm',
+  SwapChart = 'pages/Swap/Chart',
+  SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
+  SwapTransactionDetails = 'pages/Swap/TransactionDetails',
+  SwapSettings = 'pages/Swap/Settings/Settings',
+  // Referrals Page
+  ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
+  ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
+  // Rewards Page
+  RewardsAmountHeader = 'pages/Rewards/AmountHeader',
+  RewardsAmountTable = 'pages/Rewards/AmountTable',
+  RewardsGradientBox = 'pages/Rewards/GradientBox',
+  // Wallet Page
+  WalletAboutNetworkDialog = 'pages/Wallet/AboutNetworkDialog',
+  // Shared
+  GenericPageHeader = 'shared/GenericPageHeader',
+  ExternalLink = 'shared/ExternalLink',
+  TokensRow = 'shared/TokensRow',
+  PairTokenLogo = 'shared/PairTokenLogo',
+  PriceChange = 'shared/PriceChange',
+  ValueStatusWrapper = 'shared/ValueStatusWrapper',
+  TransactionDetails = 'shared/TransactionDetails',
+  PoolInfo = 'shared/PoolInfo',
+  // Shared Buttons
+  SortButton = 'shared/Button/SortButton',
+  SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',
+  // Shared Input
+  TokenInput = 'shared/Input/TokenInput',
+  TokenSelectButton = 'shared/Input/TokenSelectButton',
+  TokenSelectDropdown = 'shared/Input/TokenSelectDropdown',
+  // Shared Dialogs
+  ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
+  NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',
+  // Shared Asset selection
+  SelectAssetList = 'shared/SelectAsset/List',
+  SelectToken = 'shared/SelectAsset/SelectToken',
+  // Shared Settings
+  SettingsTabs = 'shared/Settings/Tabs',
+  SlippageTolerance = 'shared/Settings/SlippageTolerance',
+  // Shared Stats
+  StatsCard = 'shared/Stats/StatsCard',
+  StatsFilter = 'shared/Stats/StatsFilter',
+  // Shared Chart
+  ChartSkeleton = 'shared/Chart/ChartSkeleton',
 }
 
 export enum RewardsTabsItems {
@@ -285,6 +293,10 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     title: PageNames.ExploreContainer,
     href: '/#/explore',
     index: PageNames.ExploreFarming,
+  },
+  {
+    icon: 'various-planet-24',
+    title: PageNames.Stats,
   },
   {
     icon: 'sora-card',

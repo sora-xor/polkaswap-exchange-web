@@ -118,7 +118,6 @@ $node-desc-border-radius: 8px;
 
     &__label {
       color: var(--s-color-base-content-primary);
-      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
       @include radio-title;
     }
@@ -128,7 +127,6 @@ $node-desc-border-radius: 8px;
       color: var(--s-color-base-content-secondary);
       font-size: var(--s-font-size-mini);
       font-weight: 300;
-      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
       > div {
         background: var(--s-color-base-background);

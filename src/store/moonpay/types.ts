@@ -1,7 +1,7 @@
 import type { BridgeHistory } from '@sora-substrate/util';
 
 import type { MoonpayApi, MoonpayCurrency, MoonpayTransaction } from '@/utils/moonpay';
-import type { MoonpayNotifications } from '@/components/Moonpay/consts';
+import type { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 
 export type MoonpayState = {
   api: MoonpayApi;

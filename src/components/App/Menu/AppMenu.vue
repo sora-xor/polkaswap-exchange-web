@@ -26,7 +26,7 @@
               tabindex="0"
               class="menu-item"
             >
-              <sidebar-item-content
+              <app-sidebar-item-content
                 tag="a"
                 rel="nofollow noopener"
                 tabindex="-1"
@@ -48,7 +48,7 @@
           active-text-color="var(--s-color-base-content-tertiary)"
           active-hover-color="transparent"
         >
-          <sidebar-item-content
+          <app-sidebar-item-content
             v-if="false"
             v-button
             icon="star-16"
@@ -59,7 +59,7 @@
             rel="nofollow noopener"
             class="el-menu-item menu-item--small marketing"
           />
-          <sidebar-item-content
+          <app-sidebar-item-content
             v-button
             icon="symbols-24"
             :title="t('mobilePopup.sideMenu')"
@@ -68,7 +68,7 @@
             @click.native="openSoraDownloadDialog"
           />
           <app-info-popper>
-            <sidebar-item-content
+            <app-sidebar-item-content
               v-button
               icon="info-16"
               :title="t('footerMenu.info')"
@@ -76,7 +76,7 @@
               tabindex="0"
             />
           </app-info-popper>
-          <sidebar-item-content
+          <app-sidebar-item-content
             v-if="faucetUrl"
             :icon="FaucetLink.icon"
             :title="t(`footerMenu.${FaucetLink.title}`)"
@@ -98,6 +98,9 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
+import AppSidebarItemContent from './SidebarItemContent.vue';
+import AppInfoPopper from './AppInfoPopper.vue';
+
 import {
   PageNames,
   PoolChildPages,
@@ -108,17 +111,15 @@ import {
   SidebarMenuGroups,
   SidebarMenuItemLink,
   FaucetLink,
-  Components,
 } from '@/consts';
 
-import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 @Component({
   components: {
-    AppInfoPopper: lazyComponent(Components.AppInfoPopper),
-    SidebarItemContent: lazyComponent(Components.SidebarItemContent),
+    AppInfoPopper,
+    AppSidebarItemContent,
   },
 })
 export default class AppMenu extends Mixins(TranslationMixin) {
@@ -324,7 +325,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
 
-    @include tablet {
+    @include large-desktop {
       position: absolute;
       right: initial;
     }
@@ -404,7 +405,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       font-size: var(--s-font-size-extra-mini);
       font-weight: 300;
       padding: 0;
-      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
       color: var(--s-color-base-content-secondary);
 
