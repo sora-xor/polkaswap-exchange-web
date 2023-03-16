@@ -11,6 +11,8 @@ def pipeline = new org.js.AppPipeline(steps: this,
     buildDockerImage: 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu-extended',
     dockerRegistryCred: 'bot-polkaswap-rw',
     buildEnvironment: buildEnvironment,
+    sonarProjectName: 'polkaswap-exchange-web',
+    sonarProjectKey: 'jp.co.soramitsu:polkaswap-exchange-web',
     secretScannerExclusion: 'Jenkinsfile-UCAN',
     copyStaticToBranch: true,
     copyToBranches: ['fleek-pre', 'fleek'],
@@ -18,7 +20,11 @@ def pipeline = new org.js.AppPipeline(steps: this,
     ipfsHashNotification: true,
     fleekDefaultSiteName: 'long-firefly-8047',
     ipfsHashChatID: '-1001375555544',
-    stageDeploy: true,
-    downstreamJob: '../deploy/exchange-stage1'
+    k8sPrDeploy: true,
+    vaultPrPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/environments/tachi/",
+    vaultUser: "polkaswap-ro",
+    vaultCredId: "pswapVaultCreds",
+    valuesDestPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/",
+    devValuesPath: "dev/dev/"
 )
 pipeline.runPipeline()

@@ -6,12 +6,12 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import { state, getter } from '@/store/decorators';
 
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+
 @Component
-export default class BaseTokenPairMixin extends Mixins(mixins.TranslationMixin, mixins.FormattedAmountMixin) {
+export default class BaseTokenPairMixin extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
   readonly XOR_SYMBOL = XOR.symbol;
 
-  @state.prices.price price!: string;
-  @state.prices.priceReversed priceReversed!: string;
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
   @state.addLiquidity.firstTokenValue firstTokenValue!: string;
   @state.addLiquidity.secondTokenValue secondTokenValue!: string;
@@ -19,6 +19,8 @@ export default class BaseTokenPairMixin extends Mixins(mixins.TranslationMixin, 
 
   @getter.addLiquidity.firstToken firstToken!: Nullable<AccountAsset>;
   @getter.addLiquidity.secondToken secondToken!: Nullable<AccountAsset>;
+  @getter.addLiquidity.price price!: string;
+  @getter.addLiquidity.priceReversed priceReversed!: string;
 
   get firstTokenSymbol(): string {
     return this.firstToken?.symbol ?? '';

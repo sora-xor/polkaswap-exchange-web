@@ -23,6 +23,12 @@ const mutations = defineMutations<SettingsState>()({
   },
   setDefaultNodes(state, nodes: Array<Node>): void {
     state.defaultNodes = [...nodes];
+    if (!state.node) return;
+    const defaultNode = state.defaultNodes.find((item) => item.address === state.node.address);
+    if (!defaultNode) return;
+    // If node from default nodes list - keep this node from localstorage up to date
+    state.node = { ...defaultNode };
+    settingsStorage.set('node', JSON.stringify(state.node));
   },
   setCustomNodes(state, nodes: Array<Node>): void {
     state.customNodes = [...nodes];
@@ -74,6 +80,14 @@ const mutations = defineMutations<SettingsState>()({
     state.language = value;
     settingsStorage.set('language', value);
   },
+  updateDisplayRegions(state): void {
+    try {
+      state.displayRegions = new Intl.DisplayNames([state.language], { type: 'region' });
+    } catch (error) {
+      console.warn('Intl.DisplayNames issue', error);
+      state.displayRegions = null;
+    }
+  },
   setFeatureFlags(state, featureFlags: FeatureFlags = {}): void {
     state.featureFlags = { ...state.featureFlags, ...featureFlags };
   },
@@ -86,6 +100,15 @@ const mutations = defineMutations<SettingsState>()({
   resetBlockNumberSubscription(state): void {
     state.blockNumberUpdates?.unsubscribe();
     state.blockNumberUpdates = null;
+  },
+  setInternetConnectionEnabled(state): void {
+    state.internetConnection = true;
+  },
+  setInternetConnectionDisabled(state): void {
+    state.internetConnection = false;
+  },
+  setInternetConnectionSpeed(state): void {
+    state.internetConnectionSpeed = ((navigator as any)?.connection?.downlink as number) ?? 0;
   },
 });
 

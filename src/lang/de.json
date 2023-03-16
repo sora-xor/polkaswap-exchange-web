@@ -7,8 +7,6 @@
     "importText": "Importieren",
     "settingsText": "Einstellungen",
     "addAssetText": "Asset hinzufügen",
-    "createTokenText": "Erstellen",
-    "comingSoonText": "Demnächst verfügbar",
     "successText": "Erfolgreich abgelaufen",
     "warningText": "Warnung",
     "swapText": "Tauschen",
@@ -19,7 +17,6 @@
     "sendText": "Senden",
     "addressText": "Adresse",
     "amountText": "Betrag",
-    "confirmText": "Bestätigen",
     "errorText": "Fehler",
     "insufficientBalanceText": "Unzureichender {tokenSymbol} Saldo",
     "unknownErrorText": "FEHLER! Etwas ist schiefgelaufen...",
@@ -43,7 +40,7 @@
             "ClaimRewards": "Belohnung erfolgreich beansprucht {rewards}",
             "ReferralReserveXor": "Bonden von XOR erfolgreich",
             "ReferralUnreserveXor": "Unbonden von XOR erfolgreich",
-            "ReferralSetInvitedUser": "Referral wurde erfolgreich eingerichtet",
+            "ReferralSetInvitedUser": "{role} {address} wurde erfolgreich eingerichtet",
             "SwapAndSend": "{amount} {symbol} gegen {amount2} {symbol2} und {action} {direction} {address} getauscht",
             "DemeterFarmingDepositLiquidity": "{symbol} und {symbol2} {amount} LP-Token bereitgestellt",
             "DemeterFarmingWithdrawLiquidity": "{symbol} und {symbol2} {amount} LP-Token entfernt",
@@ -54,7 +51,7 @@
             "EthBridgeOutgoing": "Übertragen von {amount} {symbol} von {Sora} nach {Ethereum}"
         },
         "error": {
-            "Transfer": "Senden von {amount} {symbol} an {address} fehlgeschlagen",
+            "Transfer": "Fehler bei {action} {amount} {symbol} {direction} {address}",
             "Swap": "Tausch von {amount} {symbol} gegen {amount2} {symbol2} fehlgeschlagen",
             "AddLiquidity": "Fehler bei der Bereitstellung von {amount} {symbol} und {amount2} {symbol2}",
             "RemoveLiquidity": "Fehler beim Entfernen von {amount} {symbol} und {amount2} {symbol2}",
@@ -63,7 +60,7 @@
             "ClaimRewards": "Belohnungen konnten nicht beansprucht werden {rewards}",
             "ReferralReserveXor": "Bonden von XOR fehlgeschlagen",
             "ReferralUnreserveXor": "Unbonden von XOR fehlgeschlagen",
-            "ReferralSetInvitedUser": "Festlegen des Referrals fehlgeschlagen",
+            "ReferralSetInvitedUser": "Festlegen des {role} {address} fehlgeschlagen",
             "SwapAndSend": "{amount} {symbol} konnte nicht gegen {amount2} {symbol2} und {action} {direction} {address} getauscht werden",
             "DemeterFarmingDepositLiquidity": "{amount} {symbol} und {symbol2} LP-Token konnten nicht bereitgestellt werden",
             "DemeterFarmingWithdrawLiquidity": "{amount} {symbol} und {symbol2} LP-Token konnten nicht entfernt werden",
@@ -75,7 +72,7 @@
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
-        "ReferralSetInvitedUser": "Referral festlegen",
+        "ReferralSetInvitedUser": "{role} festlegen",
         "SwapAndSend": "Tauschen und senden",
         "DemeterFarmingDepositLiquidity": "Stake Liquidität",
         "DemeterFarmingWithdrawLiquidity": "Unstake Liquidität",
@@ -93,8 +90,8 @@
         "noSigner": "Zugriff abgelehnt. Gehe zu den Erweiterungseinstellungen von {extension} und öffne \"Website-Zugriff verwalten\", um dies zuzulassen."
     },
     "connection": {
-        "title": "SORA-Netzwerk-Konto",
-        "text": "Verbinde deine {Sora}-Netzwerk-Konten oder erstelle neue Konten mit der {PolkadotJs} -Browser-Erweiterung. Diese Erweiterung ermöglicht es dir, Transaktionen sicher zu unterzeichnen und Assets im {Sora}-Netzwerk zu verwalten.",
+        "title": "{Sora}-Netzwerk-Konto",
+        "text": "Verbinden oder erstellen Sie Ihr {Sora} -Netzwerkkonto mit {extensions} -Erweiterungen. Mit diesen Erweiterungen können Sie Transaktionen sicher signieren und Vermögenswerte im {Sora} -Netzwerk verwalten.",
         "noAccounts": "Es wurde kein Konto in deiner {extension} Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
         "action": {
@@ -105,14 +102,15 @@
         },
         "selectWallet": "Wähle eine Wallet zum Arbeiten aus",
         "wallet": {
-            "install": "Installieren"
+            "install": "Installieren",
+            "connected": "In Verbindung gebracht",
+            "notConnected": "Nicht verbunden"
         }
     },
     "wallet": {
         "title": "{Sora}-Netzwerk-Konto",
         "WalletAssets": "Assets",
         "WalletActivity": "Aktivität",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -127,18 +125,21 @@
         "enterAmount": "Betrag eingeben",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "Bestätige die Transaktion",
-        "confirm": "@:confirmText",
         "errorAddress": "Ungültige Adresse. Bitte, überprüfe die Adresse und versuche es erneut.",
         "feeTooltip": "@:networkFeeTooltipText",
         "tooltip": "Sende Token zwischen {Sora}-Netzwerkkonten",
         "addressWarning": "Token werden an die unten angegebene {Sora}-Adresse gesendet. Stell bitte sicher, dass der Empfänger auf die {Sora}-Chain zugreifen kann, um die Token zu verwenden:",
-        "addressError": "Du kannst keine Token an dasselbe Konto senden, mit dem du derzeit verbunden bist."
+        "addressError": "Du kannst keine Token an dasselbe Konto senden, mit dem du derzeit verbunden bist.",
+        "confirm": "@:confirmText"
     },
     "account": {
         "successCopy": "Wallet Adresse wurde in die Zwischenablage kopiert",
         "copy": "Adresse kopieren",
         "switch": "Konto wechseln",
-        "walletAddress": "Wallet-Adresse"
+        "walletAddress": "Wallet-Adresse",
+        "delete": "Konto löschen",
+        "rename": "Bennene den Account um",
+        "export": "Exportieren Sie .json"
     },
     "history": {
         "clearHistory": "Verlauf löschen",
@@ -152,7 +153,6 @@
     },
     "assets": {
         "empty": "Keine Assets vorhanden",
-        "add": "@:addAssetText",
         "swap": "@:swapText",
         "send": "@:sendText",
         "receive": "@:account.copy",
@@ -179,8 +179,6 @@
         "receive": "Erhalte {symbol}"
     },
     "addAsset": {
-        "title": "@:addAssetText",
-        "action": "@:addAssetText",
         "success": "Asset {symbol} wurde erfolgreich hinzugefügt!",
         "empty": "Keine Token gefunden",
         "alreadyAttached": "Der Token wurde schon hinzugefügt",
@@ -192,22 +190,16 @@
         "scam": "BETRUG",
         "next": "Weiter",
         "AddAssetToken": {
-            "title": "Token",
+            "title": "Währungen",
             "switchBtn": "Nur verifizierte Assets"
-        },
-        "AddAssetNFT": {
-            "title": "NFTs"
         },
         "searchInputText": "Suche nach Asset-ID, Name oder Tickersymbol"
     },
     "createToken": {
-        "title": "@:createTokenText",
         "desc": "Erstelle und nutze benutzerdefinierte Assets auf {Sora}",
-        "action": "@:createTokenText",
         "enterSymbol": "Token-Symbol eingeben",
         "enterName": "Token-Name eingeben",
         "enterSupply": "Token-Vorrat eingeben",
-        "confirm": "@:confirmText",
         "success": {
             "title": "Transaktion übermittelt",
             "desc": "Erstelle {symbol} Token"
@@ -233,14 +225,9 @@
             "placeholder": "Erweiterbarer Vorrat",
             "desc": "Fähigkeit, mehr Token zu minten."
         },
-        "titleCommon": "Erstellen",
-        "confirmTokenTitleCommon": "Token erstellen",
-        "confirmTokenTitleNFT": "NFT erstellen",
-        "actionNFT": "@:createTokenTextNFT",
         "provideContent": "Inhalt bereitstellen",
         "selectLocalFile": "Lokale Datei auswählen",
         "CreateSimpleToken": "Token",
-        "CreateNftToken": "NFT",
         "nft": {
             "source": {
                 "label": "Quelle",
@@ -271,7 +258,14 @@
         "divisible": {
             "placeholder": "Teilbar",
             "desc": "Fähigkeit von NFT, in Bruchteile zu unterteilen. Liquiditätsbereitstellung funktioniert nur mit teilbaren Assets"
-        }
+        },
+        "title": "@:createTokenText",
+        "action": "@:createTokenText",
+        "confirm": "@:confirmText",
+        "titleCommon": "Erstellen",
+        "confirmTokenTitleCommon": "Token erstellen",
+        "confirmTokenTitleNFT": "NFT erstellen",
+        "actionNFT": "@:createTokenTextNFT"
     },
     "transaction": {
         "title": "Transaktionsdetails",
@@ -297,11 +291,8 @@
             "submitted": "Transaktion mit einer Gebühr von {fee} {symbol} übermittelt",
             "confirmed": "Transaktion bestätigt"
         },
-        "viewIn": {
-            "sorascan": "Auf SORAScan ansehen",
-            "subscan": "Auf Subscan ansehen"
-        },
         "txId": "Transaktions-ID",
+        "viewIn": "Auf {explorer} ansehen",
         "referrer": "Referrer",
         "referral": "Referral"
     },
@@ -337,9 +328,12 @@
         "AddLiquidity": "Liquidität hinzufügen",
         "AddLiquidityId": "Liquidität hinzufügen",
         "RemoveLiquidity": "Liquidität entfernen",
-        "PageNotFound": "Seite nicht gefunden",
-        "Tokens": "Token",
-        "Rewards": "Belohnungen"
+        "Rewards": "Belohnungen",
+        "Explore\/Tokens": "Token",
+        "Explore\/Pools": "Toto",
+        "Explore\/Staking": "Staking",
+        "Explore\/Farming": "Farming",
+        "Staking": "Staking"
     },
     "mainMenu": {
         "Swap": "Tauschen",
@@ -352,8 +346,9 @@
         "Stats": "Statistiken",
         "Support": "Support",
         "CreatePair": "Erstelle ein Paar",
-        "Tokens": "Token",
-        "StakingContainer": "Staking"
+        "StakingContainer": "Staking",
+        "Explore\/Container": "Entdecken",
+        "SoraCard": "{Sora} Karte"
     },
     "social": {
         "twitter": "Twitter",
@@ -393,11 +388,11 @@
     "node": {
         "errors": {
             "connection": "Beim Verbinden mit dem Node ist ein Fehler aufgetreten\n {address}\n",
-            "network": "Der Node\n {address}\n ist aus einem anderen Netzwerk\n",
-            "existing": "Dieser Node wurde bereits hinzugefügt: '{title}'\n"
+            "network": "Der Node\n{address}\n ist aus einem anderen Netzwerk\n",
+            "existing": "Dieser Node wurde bereits hinzugefügt: {title}\n"
         },
         "messages": {
-            "connected": "Verbindung mit dem Node hergestellt\n {address}\n",
+            "connected": "Verbindung mit dem Node hergestellt\n{address}\n",
             "selectNode": "Bitte, wähle den zu verbindenden Node aus der Nodeliste"
         },
         "warnings": {
@@ -432,26 +427,7 @@
         "from": "Von",
         "to": "An"
     },
-    "pageNotFound": {
-        "title": "Seite nicht gefunden",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -479,7 +455,7 @@
         "pswap": {
             "title": "PSWAP Token",
             "first": "PSWAP wurde von der Community Governance erstellt, indem über seine Veröffentlichung abgestimmt wurde. Es ist ein Utility- und Governance-Token, der verwendet wird, um Liquiditätsanbieter auf {AppName} zu belohnen. Im Gegensatz zu den meisten anderen Belohnungstoken wird PSWAP mit Transaktionen verbrannt und das Angebot nimmt im Laufe der Zeit ab.",
-            "second": "Die {percent}% Gebühr für jeden Tausch auf der {Polkadot} DEX wird genutzt, um PSWAP-Token zurückzukaufen, die dann verbrannt werden. Zu Beginn werden 90% der verbrannten PSWAP-Token neu gemintet, um sie an die Liquiditätsanbieter zu verteilen, aber mit der Zeit verringert sich der Prozentsatz auf letztlich 35% nach 4 Jahren."
+            "second": "Die {percent}% Gebühr für jeden Tausch auf der {AppName} DEX wird genutzt, um PSWAP-Token zurückzukaufen, die dann verbrannt werden. Zu Beginn werden 90% der verbrannten PSWAP-Token neu gemintet, um sie an die Liquiditätsanbieter zu verteilen, aber mit der Zeit verringert sich der Prozentsatz auf letztlich 35% nach 4 Jahren."
         },
         "links": {
             "first": {
@@ -501,8 +477,8 @@
         "price": "Preis",
         "transactionSubmitted": "Transaktion übermittelt",
         "transactionMessage": "{firstToken} und {secondToken}",
-        "confirm": "Bestätigen",
-        "ok": "OK"
+        "ok": "OK",
+        "confirm": "Bestätigen"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -553,7 +529,6 @@
         "connectWallets": "Verbinde Wallets, um den jeweiligen Transaktionsverlauf anzuzeigen.",
         "soraNetworkFee": "{Sora} Netzwerkgebühr",
         "ethereumNetworkFee": "{Ethereum} Netzwerkgebühr",
-        "tooltipValue": "@:comingSoonText",
         "total": "Gesamt",
         "viewHistory": "Transaktionsverlauf anzeigen",
         "transactionSubmitted": "Transaktion übermittelt",
@@ -561,11 +536,10 @@
         "notRegisteredAsset": "Asset {assetSymbol} ist nicht registriert",
         "selectNetwork": "Netzwerk auswählen",
         "networkInfo": "Bridge {Sora} Netzwerk mit:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Netzwerkadresse kopieren",
         "soraAddress": "{Sora} Adresse",
-        "ethereumAddress": "{Ethereum} Adresse"
+        "ethereumAddress": "{Ethereum} Adresse",
+        "tooltipValue": "@:comingSoonText"
     },
     "selectRegisteredAsset": {
         "title": "Wähle ein Token",
@@ -617,7 +591,6 @@
             "done": "Erfolgreich",
             "waitingForConfirmation": "Warten auf Bestätigung..."
         },
-        "viewInEtherscan": "Auf {Etherscan} anzeigen",
         "networkTitle": "{network} Transaktion",
         "transactionHash": "Transaktions-ID",
         "networkInfo": {
@@ -716,13 +689,13 @@
         "outputMessage": "Die Ausgabe ist geschätzt. Wenn sich der Preis um mehr als {slippageTolerance}% ändert, wird die Transaktion rückgängig gemacht.",
         "confirmTitle": "Du erhältst",
         "shareOfPool": "Anteil am Pool nach der Transaktion",
-        "locked": "{percent} deines Pools befinden sich im Staking"
+        "locked": "{percent} deines Pools befinden sich im {lock}"
     },
     "dexSettings": {
         "title": "Einstellungen",
         "marketAlgorithm": "@.upper:marketAlgorithmText",
         "marketAlgorithmTooltip": {
-            "main": "- die Möglichkeit, zwischen dem Primärmarkt (TBC), dem Sekundärmarkt (XYK) oder einem kombinierten intelligenten Algorithmus zu wählen, der den besten Preis für eine bestimmte Transaktion garantiert."
+            "main": " - die Möglichkeit, zwischen dem Primärmarkt (TBC), dem Sekundärmarkt (XYK) oder einem kombinierten intelligenten Algorithmus zu wählen, der den besten Preis für eine bestimmte Transaktion garantiert."
         },
         "slippageTolerance": "ABWEICHUNGSTOLERANZ",
         "slippageToleranceHint": "Die Transaktion wird rückgängig gemacht, wenn sich der Preis um mehr als diesen Prozentsatz zu deinen Ungunsten verändert.",
@@ -823,9 +796,7 @@
         "title": "Sprache"
     },
     "tokens": {
-        "title": "Gelistete Token",
         "symbol": "Symbol",
-        "name": "Name",
         "assetId": "Asset-ID"
     },
     "memorandum": "{AppName} Memorandum und Nutzungsbedingungen",
@@ -892,8 +863,8 @@
     "learnMoreText": "Mehr erfahren",
     "marketMakerCountdown": {
         "title": "Market Maker Countdown",
-        "blocks": "Blocks",
-        "daysLeft": "Tage übrig",
+        "blocks": "blocks",
+        "daysLeft": "tage übrig",
         "txs": "Transaktionen",
         "volume": "MM Transaktions-Volume",
         "description": "20 Millionen PSWAP \/ Monat werden an Market Makers mit mindestens 500 Transaktionen \/ Monat im Wert von über 1 XOR verteilt."
@@ -911,7 +882,7 @@
         "bondedXOR": "XOR gebonded",
         "referralsNumber": "{number} Referrals",
         "startInviting": "Bonde XOR, um andere zu empfehlen",
-        "preview": "Lade neue Nutzer ein und erhalte 10% von deren Transaktionsgebühren.<br \/>Um zu beginnen, bonde eine beliebige Menge an XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Mehr erfahren<\/a>",
+        "preview": "Lade neue Nutzer ein und erhalte 10% von deren Transaktionsgebühren.<br\/>Um zu beginnen, bonde eine beliebige Menge an XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Mehr erfahren<\/a>",
         "deposit": "Einzahlung",
         "balance": "Saldo",
         "networkFee": "@:networkFeeText",
@@ -933,7 +904,6 @@
         "bondTitle": "XOR bonden",
         "unbondTitle": "XOR unbonden",
         "confirm": {
-            "text": "Bestätigen",
             "bond": "Bonden bestätigen",
             "unbond": "Unbonden bestätigen",
             "inviteTitle": "Du wurdest zu {AppName} eingeladen",
@@ -942,7 +912,8 @@
             "freeOfCharge": "Diese Aktion ist kostenfrei",
             "hasReferrerTitle": "Du hast deinen Referrer bereits festgelegt",
             "hasReferrerDescription": "Du kannst leider nur einen festlegen",
-            "ok": "OK"
+            "ok": "OK",
+            "text": "Bestätigen"
         },
         "referrer": {
             "title": "Fügen deinen Referrer hinzu",
@@ -959,7 +930,6 @@
         "insufficientBondedAmount": "Um weitere Empfehlungen zu veschicken, bonde mindestens {inviteUserFee} XOR"
     },
     "transactionDetailsText": "Transaktionsdetails",
-    "createTokenTextNFT": "NFT erstellen",
     "code": {
         "download": "QR-Code herunterladen",
         "upload": "QR scannen",
@@ -1024,39 +994,39 @@
     "historyErrorMessages": {
         "generalError": "Etwas ist schief gelaufen",
         "balances": {
-            "LiquidityRestrictions": "Einschränkungen der Kontoliquidität verhindern eine Auszahlung"
+            "liquidityrestrictions": "Einschränkungen der Kontoliquidität verhindern eine Auszahlung"
         },
-        "poolXyk": {
-            "SourceBalanceIsNotLargeEnough": "Quellguthaben ist nicht groß genug",
-            "TargetBalanceIsNotLargeEnough": "Zielguthaben ist nicht groß genug",
-            "ImpossibleToDecideValidPairValuesFromRangeForThisPool": "Vorausgesetzte Beträge sind zu unterschiedlich",
-            "CalculatedValueIsNotMeetsRequiredBoundaries": "Die Beträge liegen außerhalb der erforderlichen Grenzen",
-            "UnableToDepositXorLessThanMinimum": "XOR niedriger als der Mindestwert (0,007)",
-            "ZeroValueInAmountParameter": "Betragsparameter hat Nullwert"
+        "poolxyk": {
+            "sourcebalanceisnotlargeenough": "Quellguthaben ist nicht groß genug",
+            "targetbalanceisnotlargeenough": "Zielguthaben ist nicht groß genug",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "Vorausgesetzte Beträge sind zu unterschiedlich",
+            "calculatedvalueisnotmeetsrequiredboundaries": "Die Beträge liegen außerhalb der erforderlichen Grenzen",
+            "unabletodepositxorlessthanminimum": "XOR niedriger als der Mindestwert (0,007)",
+            "zerovalueinamountparameter": "Betragsparameter hat Nullwert"
         },
-        "xstPool": {
-            "PoolAlreadyInitializedForPair": "Poolpaar existiert bereits",
-            "SlippageLimitExceeded": "Slippagetoleranz hat die richtige Grenze nicht erreicht"
+        "xstpool": {
+            "poolalreadyinitializedforpair": "Poolpaar existiert bereits",
+            "slippagelimitexceeded": "Slippagetoleranz hat die richtige Grenze nicht erreicht"
         },
         "referrals": {
-            "AlreadyHasReferrer": "Das Konto hat bereits einen Referrer",
-            "ReferrerInsufficientBalance": "Referrer hat nicht genug Guthaben"
+            "alreadyhasreferrer": "Das Konto hat bereits einen Referrer",
+            "referrerinsufficientbalance": "Referrer hat nicht genug Guthaben"
         },
-        "vestedRewards": {
-            "RewardsSupplyShortage": "Das Prämienprogramm ist bereits beendet",
-            "CantCalculateReward": "Prämienberechnung konnte nicht durchgeführt werden",
-            "NoRewardsForAsset": "Für dieses Asset gibt es keine Belohnungen"
+        "vestedrewards": {
+            "rewardssupplyshortage": "Das Prämienprogramm ist bereits beendet",
+            "cantcalculatereward": "Prämienberechnung konnte nicht durchgeführt werden",
+            "norewardsforasset": "Für dieses Asset gibt es keine Belohnungen"
         },
-        "liquidityProxy": {
-            "ForbiddenFilter": "Ausgewählte Liquiditätsquelle ist nicht zulässig"
+        "liquidityproxy": {
+            "forbiddenfilter": "Ausgewählte Liquiditätsquelle ist nicht zulässig"
         },
-        "demeterFarmingPlatform": {
-            "InsufficientFunds": "Unzureichende Mittel",
-            "InsufficientLPTokens": "Unzureichende Liquiditätsbereitstellungstoken",
-            "PoolDoesNotHaveRewards": "Pool hat keine Belohnungen"
+        "demeterfarmingplatform": {
+            "insufficientfunds": "Unzureichende Mittel",
+            "insufficientlptokens": "Unzureichende Liquiditätsbereitstellungstoken",
+            "pooldoesnothaverewards": "Pool hat keine Belohnungen"
         },
-        "multicollateralBondingCurvePool": {
-            "PriceCalculationFailed": "Bei der Berechnung des Preises ist ein Fehler aufgetreten"
+        "multicollateralbondingcurvepool": {
+            "pricecalculationfailed": "Bei der Berechnung des Preises ist ein Fehler aufgetreten"
         }
     },
     "receivedText": "Erhalten",
@@ -1073,8 +1043,7 @@
     "ofText": "{first} von {second}",
     "filter": {
         "all": "Alle",
-        "token": "Token",
-        "nft": "NFTs",
+        "token": "Währungen",
         "verifiedOnly": "Nur verifizierte Assets anzeigen",
         "zeroBalance": "0 Guthaben ausblenden",
         "showAssets": "Vermögen anzeigen",
@@ -1132,8 +1101,77 @@
             "mnemonic": "Ungültige bip39-Mnemonik angegeben",
             "mnemonicLength": "Mnemonik sollte {number} Wörter enthalten",
             "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder"
-        }
+        },
+        "assetsAtRiskText": "Vermögen in Gefahr!",
+        "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet."
     },
     "hashiBridgeText": "{Hashi} Brücke",
-    "disclaimerTitle": "Haftungsausschluss:"
+    "disclaimerTitle": "Haftungsausschluss:",
+    "explore": {
+        "showOnlyMyPositions": "Nur meine Positionen anzeigen"
+    },
+    "tooltips": {
+        "roi": "{ROI} steht für Return on Investment. Es wird berechnet, indem der mit einer Investition erzielte Gewinn durch die Kosten dieser Investition in einem prozentualen Äquivalent dividiert wird.",
+        "tvl": "{TVL} steht für Total Value Locked. Es stellt Token dar, die in den Pools im Dollaräquivalent gesperrt sind.",
+        "volume": "Das Volumen bezieht sich auf die Gesamtmenge der Vermögenswerte, die über einen bestimmten Zeitraum im Netzwerk gehandelt oder ausgetauscht wurden. Das Volumen ist eine wichtige Kennzahl zur Messung der Liquidität und der Gesamtaktivität des Netzwerks.",
+        "fees": "Gebühren auf der {Sora} -Blockchain beziehen sich auf die Gebühren, die für die Ausführung von Transaktionen im Netzwerk anfallen. Diese Gebühren werden in XOR, der nativen Kryptowährung des {Sora} -Netzwerks, bezahlt. Die Höhe der Gebühr richtet sich nach der Komplexität und Größe der ausgeführten Transaktion",
+        "supply": "Die Token-Versorgung bezieht sich auf die Gesamtzahl der Token, die erstellt wurden und im Netzwerk im Umlauf sind. Die Token-Versorgung kann je nach Menge der Token, die im Netzwerk gestaket, verbrannt oder übertragen werden, schwanken.",
+        "transactions": "Transaktionen beziehen sich auf den Prozess des Sendens oder Empfangens digitaler Assets im Netzwerk, einschließlich Liquiditätsoperationen sowie Swaps.",
+        "accounts": "Konten sind digitale Adressen, die das Vermögen des Benutzers im Netzwerk enthalten. Jedes Konto ist mit einer eindeutigen öffentlichen Adresse und einem privaten Schlüssel verknüpft, der es dem Benutzer ermöglicht, auf sein Vermögen zuzugreifen und es zu verwalten.",
+        "bridgeTransactions": "{from} to {to} Bridge bezieht sich auf den Prozess der Übertragung von Assets zwischen den Netzwerken {from} und {to} mithilfe einer Bridge. Die Bridge ermöglicht die Interoperabilität der beiden Netzwerke, sodass Benutzer Assets nahtlos zwischen ihnen verschieben können."
+    },
+    "createTokenText": "Erstellen",
+    "comingSoonText": "Demnächst verfügbar",
+    "confirmText": "Bestätigen",
+    "createTokenTextNFT": "NFT erstellen",
+    "doNotShowText": "Zeig mir das nicht noch einmal",
+    "accountText": "Konto | Konten",
+    "networkStatisticsText": "Netzwerkstatistiken",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Knoten verbunden",
+                "loading": "Knoten erneut verbinden",
+                "disconnected": "Knoten getrennt"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet deaktiviert",
+                "unstable": "Internet instabil",
+                "stable": "Internet stabil"
+            },
+            "label": "Ihre Internetgeschwindigkeit",
+            "desc": {
+                "disabled": "Getrennt",
+                "unstable": "Langsame Verbindung",
+                "stable": "Optimale Geschwindigkeit"
+            },
+            "action": "{Polkaswap} aktualisieren",
+            "dialogTitle": "Verbinden Sie sich mit der Internetquelle",
+            "dialogDesc": "{Polkaswap} erfordert eine Internetverbindung für eine stabile Erfahrung"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistiken nicht verfügbar",
+                "loading": "Statistiken werden geladen",
+                "available": "Statistiken verfügbar"
+            },
+            "label": "Statistikdienste",
+            "desc": {
+                "unavailable": "Alle Dienste sind getrennt",
+                "loading": "Alle Dienste werden geladen",
+                "available": "Alle Dienste sind stabil"
+            },
+            "action": "Dienste auswählen",
+            "dialog": {
+                "title": "{Sora} Netzwerkdienstauswahl",
+                "fiat": "Fiat-Werte",
+                "chartsAndActivity": "Diagramme & Aktivität",
+                "online": "Online",
+                "offline": "Offline"
+            }
+        }
+    },
+    "locationText": "Standort"
 }

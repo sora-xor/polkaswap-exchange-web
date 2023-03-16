@@ -1,6 +1,6 @@
 import type { Subscription } from 'rxjs';
 import type { CodecString } from '@sora-substrate/util';
-import type { RewardInfo, RewardsInfo, AccountMarketMakerInfo } from '@sora-substrate/util/build/rewards/types';
+import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 import type { RewardsAmountHeaderItem } from '@/types/rewards';
 
 export type RewardsState = {
@@ -24,8 +24,6 @@ export type RewardsState = {
   receivedRewards: RewardsAmountHeaderItem[];
   transactionStep: number;
   signature: string;
-  accountMarketMakerInfo: Nullable<AccountMarketMakerInfo>;
-  accountMarketMakerUpdates: Nullable<Subscription>;
   liquidityProvisionRewardsSubscription: Nullable<Subscription>;
   vestedRewardsSubscription: Nullable<Subscription>;
   crowdloanRewardsSubscription: Nullable<Subscription>;

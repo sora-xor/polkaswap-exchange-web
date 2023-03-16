@@ -10,4 +10,5 @@ export enum DemeterComponents {
   StakeDialog = 'StakeDialog',
   ClaimDialog = 'ClaimDialog',
   CalculatorDialog = 'CalculatorDialog',
+  CalculatorButton = 'CalculatorButton',
 }

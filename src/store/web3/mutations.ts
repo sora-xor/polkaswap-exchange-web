@@ -30,7 +30,6 @@ const mutations = defineMutations<Web3State>()({
   },
   setNetworkType(state, networkType: string): void {
     state.networkType = networkType;
-    ethersUtil.storeEvmNetworkType(networkType);
   },
   setSubNetworks(state, subNetworks: Array<SubNetwork>): void {
     state.subNetworks = subNetworks;

@@ -2,6 +2,7 @@ import debounce from 'lodash/debounce';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { RegisteredAccountAsset, FPNumber, CodecString } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
+import type { Route } from 'vue-router';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
@@ -10,6 +11,7 @@ import i18n from '@/lang';
 import { app, ZeroStringValue } from '@/consts';
 
 import storage from './storage';
+import type { AmountWithSuffix } from '@/types/formats';
 import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 export const copyToClipboard = async (text: string): Promise<void> => {
@@ -213,11 +215,12 @@ export const updateFpNumberLocale = (locale: string): void => {
   FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(locale).substring(1, 2);
 };
 
-export const updateDocumentTitle = (to?: any) => {
+export const updateDocumentTitle = (to?: Route) => {
   const page = to ?? router.currentRoute;
-
-  if (page && page.name && i18n.te(`pageTitle.${page.name}`)) {
-    document.title = `${i18n.t(`pageTitle.${page.name}`)} - ${app.name}`;
+  const pageName = page?.name;
+  // TODO: update pageTitle list: remove duplicates, add missed / change logic
+  if (pageName && i18n.te(`pageTitle.${pageName}`)) {
+    document.title = `${i18n.t(`pageTitle.${pageName}`)} - ${app.name}`;
   } else {
     document.title = app.title;
   }
@@ -243,12 +246,12 @@ export const toQueryString = (params: any): string => {
     .join('&');
 };
 
-export const waitForAccountPair = async (func: VoidFunction): Promise<any> => {
+export const waitForAccountPair = async (func?: FnWithoutArgs | AsyncFnWithoutArgs): Promise<any> => {
   if (!api.accountPair) {
     await delay();
     return await waitForAccountPair(func);
   } else {
-    return func();
+    return func?.();
   }
 };
 
@@ -269,4 +272,31 @@ export const calcPriceChange = (current: FPNumber, prev: FPNumber): FPNumber => 
   if (prev.isZero()) return FPNumber.gt(current, FPNumber.ZERO) ? FPNumber.HUNDRED : FPNumber.ZERO;
 
   return current.sub(prev).div(prev).mul(FPNumber.HUNDRED);
+};
+
+// [TODO]: move to FPNumber
+export const formatAmountWithSuffix = (value: FPNumber, precision = 2): AmountWithSuffix => {
+  const val = value.toNumber();
+  const format = (value: string) => new FPNumber(value).toLocaleString();
+
+  if (Math.trunc(val / 1_000_000_000) > 0) {
+    const amount = format((val / 1_000_000_000).toFixed(precision));
+    return { amount, suffix: 'B' };
+  } else if (Math.trunc(val / 1_000_000) > 0) {
+    const amount = format((val / 1_000_000).toFixed(precision));
+    return { amount, suffix: 'M' };
+  } else if (Math.trunc(val / 1_000) > 0) {
+    const amount = format((val / 1_000).toFixed(precision));
+    return { amount, suffix: 'K' };
+  } else {
+    const amount = format(val.toFixed(precision));
+    return { amount, suffix: '' };
+  }
+};
+
+export const formatDecimalPlaces = (value: FPNumber | number, asPercent = false): string => {
+  const formatted = new FPNumber(value.toFixed(2)).toLocaleString();
+  const postfix = asPercent ? '%' : '';
+
+  return `${formatted}${postfix}`;
 };

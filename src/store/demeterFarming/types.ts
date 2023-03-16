@@ -13,10 +13,10 @@ export type DemeterLiquidityParams = {
 };
 
 export type DemeterFarmingState = {
-  pools: Array<DemeterPool>;
+  pools: readonly DemeterPool[];
   poolsUpdates: Nullable<Subscription>;
-  tokens: Array<DemeterRewardToken>;
+  tokens: readonly DemeterRewardToken[];
   tokensUpdates: Nullable<Subscription>;
-  accountPools: Array<DemeterAccountPool>;
+  accountPools: readonly DemeterAccountPool[];
   accountPoolsUpdates: Nullable<Subscription>;
 };

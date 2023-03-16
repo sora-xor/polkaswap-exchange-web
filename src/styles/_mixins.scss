@@ -8,6 +8,10 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
+@mixin columns($columns, $gap) {
+  width: calc((100% / $columns) - ((#{$gap} * (#{$columns} - 1)) / $columns));
+}
+
 @mixin token-styles {
   .token {
     display: flex;
@@ -34,7 +38,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 }
 
 @mixin container-styles {
-  margin: $inner-spacing-big auto 0;
+  margin: 0 auto 0;
   padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini * 4;
   min-height: $inner-window-height;
   max-width: $inner-window-width;
@@ -59,18 +63,18 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     font-size: var(--s-font-size-mini);
     font-weight: 300;
     line-height: var(--s-line-height-medium);
-    letter-spacing: var(--s-letter-spacing-small);
 
     &--footer {
       margin-top: $inner-spacing-tiny;
       margin-bottom: 0;
       min-height: $inner-spacing-mini * 2.25;
+
       .formatted-amount--fiat-value {
         flex-grow: 1;
         margin-right: calc(var(--s-basic-spacing) / 2);
         font-size: var(--s-font-size-small);
-        font-weight: 600;
-        word-break: break-all;
+        white-space: nowrap;
+
         + .token-address {
           margin-left: var(--s-basic-spacing);
         }
@@ -252,7 +256,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
 @mixin bridge-content ($min-height: 400px) {
   min-height: $min-height;
-  margin-top: $basic-spacing * 2;
   width: 100%;
 }
 
@@ -260,7 +263,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   height: var(--s-size-small);
   font-size: $s-font-size-input;
   line-height: var(--s-line-height-small);
-  letter-spacing: var(--s-letter-spacing-small);
 }
 
 @mixin svg-icon ($url: '', $width: var(--s-icon-font-size-mini), $height: $width) {
@@ -315,7 +317,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   text-transform:  uppercase;
   font-size: $s-font-size-button;
   line-height: var(--s-line-height-small);
-  letter-spacing: var(--s-letter-spacing-small);
 }
 
 @mixin next-button {
@@ -578,5 +579,250 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     @if $withOffset == true {
       outline-offset: -1px;
     }
+  }
+}
+
+@mixin explore-table {
+  $fixed-column-width: 280px;
+  $cell-index-width: 40px;
+  $cell-logo-width: 36px;
+  $tokens-row-width: 52px;
+
+  // table misc styles
+  .explore-table {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1;
+
+    &__primary {
+      color: var(--s-color-base-content-secondary);
+    }
+    &__secondary {
+      color: var(--s-color-base-content-quaternary);
+      font-size: var(--s-font-size-extra-mini);
+    }
+    &__accent {
+      color: var(--s-color-fiat-value);
+    }
+    &-cell {
+      display: flex;
+      align-items: center;
+
+      & + & {
+        margin-top: $inner-spacing-mini;
+      }
+
+      & > *:not(:last-child) {
+        margin-right: $inner-spacing-mini;
+      }
+    }
+    &-pagination {
+      display: flex;
+      margin-top: $inner-spacing-medium;
+    
+      .el-pagination__total {
+        margin: auto;
+      }
+    }
+  }
+
+  // el-table style overrides
+  .explore-table.el-table {
+    background: transparent;
+    font-size: var(--s-font-size-medium);
+    font-weight: 600;
+
+    thead {
+      text-transform: uppercase;
+      font-size: var(--s-font-size-small);
+      letter-spacing: var(--s-letter-spacing-mini);
+
+      [class^='s-icon-'],
+      [class*=' s-icon-'] {
+        @include icon-styles;
+      }
+    }
+
+    tr {
+      background-color: transparent;
+    }
+
+    tr,
+    th {
+      &,
+      &:hover,
+      &.hover-row {
+        & > td,
+        & > th {
+          background: var(--s-color-utility-surface);
+          .cell {
+            padding: $inner-spacing-tiny $inner-spacing-mini;
+          }
+        }
+      }
+    }
+
+    th.el-table__cell.is-leaf,
+    td.el-table__cell {
+      border-color: var(--s-color-base-border-secondary);
+    }
+
+    .el-table__fixed {
+      height: 100% !important; // overrides element-ui js style property
+
+      &:before,
+      &:after {
+        content: unset;
+      }
+
+      .el-table__fixed-body-wrapper {
+        height: 100% !important; // overrides element-ui js style property
+      }
+    }
+
+    .el-table__body-wrapper {
+      height: auto !important; // overrides element-ui js style property
+
+      &.is-scrolling-left ~ .el-table__fixed {
+        box-shadow: inherit;
+      }
+
+      .el-scrollbar__bar.is-horizontal {
+        right: 0;
+        left: unset;
+        width: calc(100% - #{$fixed-column-width});
+      }
+    }
+
+    &.el-table--scrollable-x {
+      .el-table__body-wrapper {
+        overflow-x: hidden;
+      }
+    }
+
+    .el-table__empty-block {
+      width: 100% !important; // overrides element-ui js style property
+    }
+
+    .el-table__empty-text {
+      color: var(--s-color-base-content-tertiary); // TODO [1.4]: remove after fix in ui-lib
+    }
+
+    .cell {
+      word-break: normal;
+    }
+  }
+
+  // table cell styles
+  .explore-table-item {
+    &-index {
+      width: $cell-index-width;
+      display: inline-block;
+      vertical-align: middle;
+
+      &--body {
+        color: var(--s-color-base-content-tertiary);
+        font-size: var(--s-font-size-small);
+        font-weight: 800;
+      }
+
+      &--head {
+        cursor: pointer;
+
+        &.active {
+          color: var(--s-color-theme-accent);
+        }
+      }
+    }
+    &-logo {
+      display: inline-block;
+      vertical-align: middle;
+      text-align: center;
+      margin: 0 $inner-spacing-mini;
+      width: $cell-logo-width;
+
+      &--plain {
+        margin: 0;
+        width: initial;
+      }
+    }
+    &-info {
+      display: inline-block;
+      vertical-align: middle;
+      line-height: var(--s-line-height-medium);
+      letter-spacing: var(--s-letter-spacing-mini);
+      margin: 0 $inner-spacing-mini;
+
+      &--head {
+        flex-flow: column wrap;
+        line-height: var(--s-line-height-small);
+
+        & > span {
+          margin-right: $inner-spacing-tiny;
+          white-space: nowrap;
+        }
+      }
+
+      &--body {
+        font-weight: 300;
+      }
+    }
+    &-symbol {
+      flex: 1;
+      background-color: var(--s-color-base-border-secondary);
+      border-radius: var(--s-border-radius-medium);
+      font-size: var(--s-font-size-big);
+      font-weight: 800;
+      line-height: var(--s-line-height-big);
+      text-align: center;
+    }
+    &-name {
+      font-size: var(--s-font-size-extra-small);
+      font-weight: 600;
+    }
+    &-address {
+      display: flex;
+      font-size: var(--s-font-size-extra-mini);
+    }
+    &-tokens {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: flex-end;
+    }
+    &-price {
+      font-size: var(--s-font-size-medium);
+      white-space: nowrap;
+    }
+    &-amount.formatted-amount--fiat-value {
+      color: var(--s-color-base-content-primary) !important;
+    }
+    &-address {
+      .tokens-item-address__value {
+        &.token-address {
+          font-size: var(--s-font-size-extra-mini);
+          font-weight: 400;
+          color: var(--s-color-base-content-primary);
+        }
+      }
+    }
+  }
+}
+
+@mixin app-status-item {
+  $disabled-class: 'default';
+
+  align-items: center;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 8px;
+  height: $footer-height - 2px;
+  &:not(.#{$disabled-class}) {
+    &:hover {
+      opacity: 0.5;
+      cursor: pointer;
+    }
+    @include focus-outline;
   }
 }

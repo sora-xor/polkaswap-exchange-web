@@ -1,11 +1,9 @@
 import invert from 'lodash/fp/invert';
-import { KnownAssets, KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 import pkg from '../../package.json';
-import { KnownBridgeAsset } from '../utils/ethers-util';
 
 export const app = {
   version: pkg.version,
@@ -76,7 +74,6 @@ export const Links = {
   nodes: {
     tutorial: 'https://medium.com/sora-xor/how-to-run-a-sora-testnet-node-a4d42a9de1af',
   },
-  marketMaker: 'https://medium.com/polkaswap/pswap-rewards-part-3-polkaswap-market-making-rebates-1856f62ccfaa',
   faq: 'https://wiki.sora.org/polkaswap/polkaswap-faq',
   terms: 'https://wiki.sora.org/polkaswap/terms',
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
@@ -120,12 +117,10 @@ export enum PageNames {
   RemoveLiquidity = 'RemoveLiquidity',
   Farming = 'Farming',
   Rewards = 'Rewards',
-  Referral = 'Referral',
-  RewardsTabs = 'RewardsTabs',
   ReferralProgram = 'ReferralProgram',
+  RewardsTabs = 'RewardsTabs',
   ReferralBonding = 'ReferralBonding',
   ReferralUnbonding = 'ReferralUnbonding',
-  PageNotFound = 'PageNotFound',
   BridgeContainer = 'BridgeContainer',
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
@@ -133,73 +128,104 @@ export enum PageNames {
   Tokens = 'Tokens',
   MoonpayHistory = 'MoonpayHistory',
   StakingContainer = 'StakingContainer',
+  // just for router name & different titles
+  ExploreContainer = 'Explore/Container',
+  ExploreTokens = 'Explore/Tokens',
+  ExploreDemeter = 'Explore/Demeter',
+  ExploreFarming = 'Explore/Farming',
+  ExploreStaking = 'Explore/Staking',
+  ExplorePools = 'Explore/Pools',
+  SoraCard = 'SoraCard',
 }
 
 export enum Components {
-  GenericPageHeader = 'GenericPageHeader',
-  AppHeader = 'App/Header/AppHeader',
-  AppHeaderMenu = 'App/Header/AppHeaderMenu',
-  AccountButton = 'App/Header/AccountButton',
+  // App
   AppLogoButton = 'App/Header/AppLogoButton',
-  MarketMakerCountdown = 'App/Header/MarketMakerCountdown/MarketMakerCountdown',
-  AppMenu = 'App/Menu/AppMenu',
-  AppInfoPopper = 'App/Menu/AppInfoPopper',
-  BrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
-  BrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
-  PairTokenLogo = 'PairTokenLogo',
-  SwapConfirm = 'Swap/Confirm',
-  SwapChart = 'Swap/Chart',
-  StatusActionBadge = 'Swap/StatusActionBadge',
-  ConfirmRemoveLiquidity = 'ConfirmRemoveLiquidity',
-  ConfirmTokenPairDialog = 'ConfirmTokenPairDialog',
-  SettingsDialog = 'SettingsDialog',
-  SettingsHeader = 'Settings/Header',
-  SettingsTabs = 'Settings/Tabs',
-  SlippageTolerance = 'Settings/SlippageTolerance',
-  MarketAlgorithm = 'Settings/MarketAlgorithm',
-  ChartsSwitch = 'Settings/ChartsSwitch',
-  SelectNode = 'Settings/Node/SelectNode',
-  NodeInfo = 'Settings/Node/NodeInfo',
-  SelectNodeDialog = 'SelectNodeDialog',
-  ExternalLink = 'ExternalLink',
-  // HelpDialog = 'HelpDialog',
-  AboutNetworkDialog = 'AboutNetworkDialog',
-  SidebarItemContent = 'SidebarItemContent',
-  SelectNetwork = 'SelectNetwork',
-  ConfirmBridgeTransactionDialog = 'ConfirmBridgeTransactionDialog',
-  NetworkFeeWarningDialog = 'NetworkFeeWarningDialog',
-  BridgeTransaction = 'BridgeTransaction',
-  BridgeTransactionsHistory = 'BridgeTransactionsHistory',
-  GradientBox = 'Rewards/GradientBox',
-  TokensRow = 'Rewards/TokensRow',
-  RewardsAmountHeader = 'Rewards/AmountHeader',
-  RewardsAmountTable = 'Rewards/AmountTable',
-  RewardItemTooltip = 'Rewards/RewardItemTooltip',
-  ReferralsConfirmBonding = 'Referrals/ConfirmBonding',
-  ReferralsConfirmInviteUser = 'Referrals/ConfirmInviteUser',
-  TokenSelectButton = 'Input/TokenSelectButton',
-  TokenInput = 'Input/TokenInput',
-  SelectLanguageDialog = 'SelectLanguageDialog',
-  SelectAssetList = 'SelectAsset/List',
-  SelectToken = 'SelectAsset/SelectToken',
-  SelectRegisteredAsset = 'SelectAsset/SelectRegisteredAsset',
-  ValueStatusWrapper = 'ValueStatusWrapper',
-  SimpleNotification = 'SimpleNotification',
-  Moonpay = 'Moonpay/Moonpay',
-  MoonpayWidget = 'Moonpay/MoonpayWidget',
-  MoonpayNotification = 'Moonpay/MoonpayNotification',
-  MoonpayConfirmation = 'Moonpay/MoonpayConfirmation',
-  MoonpayHistoryButton = 'Moonpay/MoonpayHistoryButton',
-  TransactionDetails = 'TransactionDetails/TransactionDetails',
-  SwapTransactionDetails = 'TransactionDetails/SwapTransactionDetails',
-  AddLiquidityTransactionDetails = 'TransactionDetails/AddLiquidityTransactionDetails',
-  RemoveLiquidityTransactionDetails = 'TransactionDetails/RemoveLiquidityTransactionDetails',
-  BridgeTransactionDetails = 'TransactionDetails/BridgeTransactionDetails',
-  BridgeTransferNotification = 'Bridge/TransferNotification',
-  MobilePopup = 'MobilePopup/MobilePopup',
-  // Pool
-  PoolInfo = 'Pool/PoolInfo',
-  PriceChange = 'PriceChange',
+  AppMobilePopup = 'App/MobilePopup',
+  AppBrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
+  AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
+  SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
+  AppFooter = 'App/Footer/AppFooter',
+  StatisticsDialog = 'App/Footer/StatisticsDialog',
+  SelectNodeDialog = 'App/Footer/SelectNodeDialog',
+  SelectNode = 'App/Footer/Node/SelectNode',
+  NodeInfo = 'App/Footer/Node/NodeInfo',
+  // other
+  SoraCard = 'SoraCard',
+  SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
+  SoraCardKYC = 'SoraCard/SoraCardKYC',
+  ConfirmationInfo = 'SoraCard/ConfirmationInfo',
+  TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
+  ToSDialog = 'SoraCard/steps/ToSDialog',
+  RoadMap = 'SoraCard/steps/RoadMap',
+  Phone = 'SoraCard/steps/Phone',
+  Email = 'SoraCard/steps/Email',
+  KycView = 'SoraCard/steps/KycView',
+  // Paywings
+  X1Dialog = 'X1/X1Dialog',
+  PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
+  // Add Liquidity Page
+  AddLiquidityConfirm = 'pages/AddLiquidity/Confirm',
+  AddLiquidityTransactionDetails = 'pages/AddLiquidity/TransactionDetails',
+  // Remove Liquidity Page
+  RemoveLiquidityConfirm = 'pages/RemoveLiquidity/Confirm',
+  RemoveLiquidityTransactionDetails = 'pages/RemoveLiquidity/TransactionDetails',
+  // Bridge Page
+  BridgeTransactionDetails = 'pages/Bridge/TransactionDetails',
+  BridgeTransferNotification = 'pages/Bridge/TransferNotification',
+  BridgeSelectAsset = 'pages/Bridge/SelectAsset',
+  BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
+  // Moonpay Page
+  Moonpay = 'pages/Moonpay/Moonpay',
+  MoonpayWidget = 'pages/Moonpay/Widget',
+  MoonpayNotification = 'pages/Moonpay/Notification',
+  MoonpayConfirmation = 'pages/Moonpay/Confirmation',
+  MoonpayHistoryButton = 'pages/Moonpay/HistoryButton',
+  // Swap Page
+  SwapConfirm = 'pages/Swap/Confirm',
+  SwapChart = 'pages/Swap/Chart',
+  SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
+  SwapTransactionDetails = 'pages/Swap/TransactionDetails',
+  SwapSettings = 'pages/Swap/Settings/Settings',
+  // Referrals Page
+  ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
+  ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
+  // Rewards Page
+  RewardsAmountHeader = 'pages/Rewards/AmountHeader',
+  RewardsAmountTable = 'pages/Rewards/AmountTable',
+  RewardsGradientBox = 'pages/Rewards/GradientBox',
+  // Wallet Page
+  WalletAboutNetworkDialog = 'pages/Wallet/AboutNetworkDialog',
+  // Shared
+  GenericPageHeader = 'shared/GenericPageHeader',
+  ExternalLink = 'shared/ExternalLink',
+  TokensRow = 'shared/TokensRow',
+  PairTokenLogo = 'shared/PairTokenLogo',
+  PriceChange = 'shared/PriceChange',
+  ValueStatusWrapper = 'shared/ValueStatusWrapper',
+  TransactionDetails = 'shared/TransactionDetails',
+  PoolInfo = 'shared/PoolInfo',
+  // Shared Buttons
+  SortButton = 'shared/Button/SortButton',
+  SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',
+  // Shared Input
+  TokenInput = 'shared/Input/TokenInput',
+  TokenSelectButton = 'shared/Input/TokenSelectButton',
+  TokenSelectDropdown = 'shared/Input/TokenSelectDropdown',
+  // Shared Dialogs
+  ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
+  NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',
+  // Shared Asset selection
+  SelectAssetList = 'shared/SelectAsset/List',
+  SelectToken = 'shared/SelectAsset/SelectToken',
+  // Shared Settings
+  SettingsTabs = 'shared/Settings/Tabs',
+  SlippageTolerance = 'shared/Settings/SlippageTolerance',
+  // Shared Stats
+  StatsCard = 'shared/Stats/StatsCard',
+  StatsFilter = 'shared/Stats/StatsFilter',
+  // Shared Chart
+  ChartSkeleton = 'shared/Chart/ChartSkeleton',
 }
 
 export enum RewardsTabsItems {
@@ -207,54 +233,80 @@ export enum RewardsTabsItems {
   ReferralProgram = PageNames.ReferralProgram,
 }
 
-interface SidebarMenuItem {
-  icon: string;
+export interface SidebarMenuItem {
+  icon?: string;
   title: string;
   disabled?: boolean;
+  /**
+   * When page has a redirection it's better to set the final route to avoid errors from router.
+   *
+   * So, when the final route is different from title `index` should be used for menu
+   */
+  index?: string;
 }
 
-interface SidebarMenuItemLink extends SidebarMenuItem {
+export interface SidebarMenuItemLink extends SidebarMenuItem {
+  /** It's required for href if it's used */
   href?: string;
 }
 
-const MainMenu: Array<SidebarMenuItem> = [
+const MainMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'arrows-swap-90-24',
     title: PageNames.Swap,
+    href: '/#/swap',
   },
   {
     icon: 'basic-drop-24',
     title: PageNames.Pool,
+    href: '/#/pool',
   },
   {
     icon: 'basic-layers-24',
     title: PageNames.StakingContainer,
+    href: '/#/staking',
+    index: DemeterPageNames.Staking,
   },
   {
     icon: 'grid-block-distribute-vertically-24',
     title: PageNames.Bridge,
+    href: '/#/bridge',
   },
 ];
 
-const AccountMenu: Array<SidebarMenuItem> = [
+const AccountMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'finance-wallet-24',
     title: PageNames.Wallet,
+    href: '/#/wallet',
   },
   {
     icon: 'basic-circle-star-24',
     title: PageNames.Rewards,
+    href: '/#/rewards',
   },
 ];
 
-const OtherPagesMenu: Array<SidebarMenuItem> = [
+const OtherPagesMenu: Array<SidebarMenuItemLink> = [
   {
-    icon: 'various-bone-24',
-    title: PageNames.Tokens,
+    icon: 'various-items-24',
+    title: PageNames.ExploreContainer,
+    href: '/#/explore',
+    index: PageNames.ExploreFarming,
+  },
+  {
+    icon: 'various-planet-24',
+    title: PageNames.Stats,
+  },
+  {
+    icon: 'sora-card',
+    title: PageNames.SoraCard,
+    href: '/#/card',
   },
   {
     icon: 'file-file-text-24',
     title: PageNames.About,
+    href: '/#/about',
   },
 ];
 
@@ -274,13 +326,13 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     title: 'twitter',
     href: 'https://twitter.com/polkaswap',
   },
-  // TODO: Update this icon name to appropriate one after font fix
+  // TODO: [FONT] Update this icon name to appropriate one after font fix
   {
     icon: 'symbols-hash-24',
     title: 'reddit',
     href: 'https://www.reddit.com/r/Polkaswap',
   },
-  // TODO: Update this icon name to appropriate one after font fix
+  // TODO: [FONT] Update this icon name to appropriate one after font fix
   {
     icon: 'symbols-peace-24',
     title: 'medium',
@@ -298,23 +350,45 @@ export const StoreLinks = {
   GooglePlay: 'https://play.google.com/store/apps/details?id=jp.co.soramitsu.sora',
 };
 
+export const TosExternalLinks = {
+  Terms: `https://soracard.com/terms/en/polkaswap/`,
+  Privacy: `https://soracard.com/privacy/en/polkaswap/`,
+  getLinks: function (darkMode = 'light') {
+    return darkMode === 'dark'
+      ? {
+          Terms: this.Terms.concat('?dark'),
+          Privacy: this.Privacy.concat('?dark'),
+        }
+      : {
+          Terms: this.Terms,
+          Privacy: this.Privacy,
+        };
+  },
+};
+
 export const FaucetLink: SidebarMenuItemLink = {
   icon: 'software-terminal-24',
   title: 'faucet',
 };
 
-export const SidebarMenuGroups = [MainMenu, AccountMenu, OtherPagesMenu];
+export const SidebarMenuGroups = [...MainMenu, ...AccountMenu, ...OtherPagesMenu];
 
 export const BridgeChildPages = [PageNames.BridgeTransaction, PageNames.BridgeTransactionsHistory];
 export const PoolChildPages = [PageNames.AddLiquidity, PageNames.RemoveLiquidity];
 export const RewardsChildPages = [
   PageNames.Rewards,
-  PageNames.Referral,
+  PageNames.ReferralProgram,
   PageNames.ReferralBonding,
   PageNames.ReferralUnbonding,
 ];
 
 export const StakingChildPages = [DemeterPageNames.Staking];
+export const ExploreChildPages = [
+  PageNames.ExploreFarming, // By default
+  PageNames.ExploreStaking,
+  PageNames.ExplorePools,
+  PageNames.ExploreTokens,
+];
 
 export enum Topics {
   SwapTokens = 'SwapTokens',
@@ -334,38 +408,6 @@ export enum EvmSymbol {
   ETH = 'ETH',
   VT = 'VT',
 }
-
-const gasLimit = {
-  approve: 70000,
-  sendERC20ToSidechain: 86000,
-  sendEthToSidechain: 50000,
-  mintTokensByPeers: 255000,
-  receiveByEthereumAssetAddress: 250000,
-  receiveBySidechainAssetId: 255000,
-};
-/**
- * It's in gwei.
- * Zero index means ETH -> SORA
- * First index means SORA -> ETH
- */
-export const EthereumGasLimits = [
-  // ETH -> SORA
-  {
-    [XOR.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.sendEthToSidechain,
-    [KnownBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-  },
-  // SORA -> ETH
-  {
-    [XOR.address]: gasLimit.mintTokensByPeers,
-    [KnownAssets.get(KnownSymbols.VAL).address]: gasLimit.mintTokensByPeers,
-    [KnownAssets.get(KnownSymbols.PSWAP).address]: gasLimit.receiveBySidechainAssetId,
-    [KnownAssets.get(KnownSymbols.ETH).address]: gasLimit.receiveByEthereumAssetAddress,
-    [KnownBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
-  },
-];
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';

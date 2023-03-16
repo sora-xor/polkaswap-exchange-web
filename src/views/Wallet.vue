@@ -9,7 +9,7 @@
       @bridge="handleBridge"
       @learn-more="openAboutNetworkDialog"
     />
-    <about-network-dialog :visible.sync="showAboutNetworkDialog" />
+    <wallet-about-network-dialog :visible.sync="showAboutNetworkDialog" />
   </div>
 </template>
 
@@ -27,7 +27,7 @@ import { action, getter } from '@/store/decorators';
 
 @Component({
   components: {
-    AboutNetworkDialog: lazyComponent(Components.AboutNetworkDialog),
+    WalletAboutNetworkDialog: lazyComponent(Components.WalletAboutNetworkDialog),
   },
 })
 export default class Wallet extends Mixins(TranslationMixin) {
@@ -79,22 +79,21 @@ export default class Wallet extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .container--wallet {
-  padding: 0;
-  > .el-card {
-    &__header {
-      padding-top: 0;
-      padding-right: 0;
-      padding-left: 0;
-    }
-    &__body {
-      padding: $inner-spacing-medium 0 0;
-    }
-  }
   .history .history-items {
     padding: 0 $inner-spacing-mini;
   }
   .s-icon-basic-check-mark-24 {
     @include icon-styles;
+  }
+
+  @include large-mobile(true) {
+    .account-credentials_description {
+      .account-credentials_address {
+        .first {
+          width: 36px;
+        }
+      }
+    }
   }
 }
 </style>

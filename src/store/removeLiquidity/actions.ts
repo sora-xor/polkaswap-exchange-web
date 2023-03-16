@@ -1,127 +1,87 @@
-import debounce from 'lodash/debounce';
 import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 import type { ActionContext } from 'vuex';
 
 import { removeLiquidityActionContext } from '@/store/removeLiquidity';
-import type { LiquidityParams } from '../pool/types';
+import { FocusedField } from './types';
 
-async function getTotalSupply(context: ActionContext<any, any>): Promise<void> {
-  const { state, getters, commit } = removeLiquidityActionContext(context);
-  const { firstToken, secondToken } = getters;
+function updateFirstTokenAmount(context: ActionContext<any, any>): void {
+  const { state, commit, getters } = removeLiquidityActionContext(context);
 
-  if (!(firstToken && secondToken)) {
-    return;
-  }
-  try {
-    const [_, pts] = await api.poolXyk.estimatePoolTokensMinted(
-      firstToken,
-      secondToken,
-      state.firstTokenAmount,
-      state.secondTokenAmount,
-      state.reserveA,
-      state.reserveB
-    );
-    commit.setTotalSupply(pts);
-  } catch (error) {
-    console.error('removeLiquidity:getTotalSupply', error);
-    commit.setTotalSupply();
+  const value = state.secondTokenAmount;
+
+  if (value && Number.isFinite(+value)) {
+    const part = new FPNumber(value).div(getters.secondTokenBalance);
+
+    commit.setRemovePart(Math.round(part.mul(FPNumber.HUNDRED).toNumber()).toString());
+    commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
+    commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance).toString());
+  } else {
+    commit.setRemovePart();
+    commit.setLiquidityAmount();
+    commit.setFirstTokenAmount();
   }
 }
 
-async function getLiquidityReserves(context: ActionContext<any, any>): Promise<void> {
-  const { state, commit } = removeLiquidityActionContext(context);
-  try {
-    const [reserveA, reserveB] = await api.poolXyk.getReserves(state.firstTokenAddress, state.secondTokenAddress);
-    commit.setLiquidityReserves({ reserveA, reserveB });
-  } catch (error) {
-    console.error('removeLiquidity:getLiquidityReserves', error);
+function updateSecondTokenAmount(context: ActionContext<any, any>): void {
+  const { state, commit, getters } = removeLiquidityActionContext(context);
+
+  const value = state.firstTokenAmount;
+
+  if (value && Number.isFinite(+value)) {
+    const part = Number.isFinite(+value) ? new FPNumber(value).div(getters.firstTokenBalance) : FPNumber.ZERO;
+
+    commit.setRemovePart(Math.round(part.mul(FPNumber.HUNDRED).toNumber()).toString());
+    commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
+    commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance).toString());
+  } else {
+    commit.setRemovePart();
+    commit.setLiquidityAmount();
+    commit.setSecondTokenAmount();
   }
 }
 
-const getRemoveLiquidityData = debounce(
-  async (context: ActionContext<any, any>) => {
-    await getLiquidityReserves(context);
-    await getTotalSupply(context);
-  },
-  500,
-  { leading: true }
-);
+function updateRemovePart(context: ActionContext<any, any>): void {
+  const { state, commit, getters } = removeLiquidityActionContext(context);
+
+  const part = new FPNumber(state.removePart).div(FPNumber.HUNDRED);
+
+  if (!part.isZero()) {
+    commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
+    commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance).toString());
+    commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance).toString());
+  } else {
+    commit.setLiquidityAmount();
+    commit.setFirstTokenAmount();
+    commit.setSecondTokenAmount();
+  }
+}
 
 const actions = defineActions({
-  async setLiquidity(context, { firstAddress, secondAddress }: LiquidityParams): Promise<void> {
+  async setRemovePart(context, removePart: string): Promise<void> {
     const { commit } = removeLiquidityActionContext(context);
-    try {
-      commit.setAddresses({ firstAddress, secondAddress });
 
-      await getRemoveLiquidityData(context);
-    } catch (error) {
-      console.error(error);
-    }
+    commit.setFocusedField(FocusedField.Percent);
+    commit.setRemovePart(removePart);
+
+    updateRemovePart(context);
   },
-  async setRemovePart(context, removePart: number): Promise<void> {
-    const { commit, state, getters } = removeLiquidityActionContext(context);
+  async setFirstTokenAmount(context, value: string): Promise<void> {
+    const { commit } = removeLiquidityActionContext(context);
 
-    if (!state.focusedField || state.focusedField === 'removePart') {
-      commit.setFocusedField('removePart');
-      const partAmount = new FPNumber(Math.round(removePart));
+    commit.setFocusedField(FocusedField.First);
+    commit.setFirstTokenAmount(value);
 
-      if (removePart) {
-        const part = partAmount.div(FPNumber.HUNDRED);
-        commit.setRemovePart(partAmount.toNumber());
-        commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
-        commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance).toString());
-        commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance).toString());
-      } else {
-        commit.setRemovePart();
-        commit.setLiquidityAmount();
-        commit.setFirstTokenAmount();
-        commit.setSecondTokenAmount();
-      }
-
-      await getRemoveLiquidityData(context);
-    }
+    updateSecondTokenAmount(context);
   },
-  async setFirstTokenAmount(context, firstTokenAmount: string): Promise<void> {
-    const { commit, state, getters } = removeLiquidityActionContext(context);
+  async setSecondTokenAmount(context, value: string): Promise<void> {
+    const { commit } = removeLiquidityActionContext(context);
 
-    if (!state.focusedField || state.focusedField === 'firstTokenAmount') {
-      commit.setFocusedField('firstTokenAmount');
-      if (firstTokenAmount) {
-        if (!Number.isNaN(firstTokenAmount)) {
-          const part = new FPNumber(firstTokenAmount).div(getters.firstTokenBalance);
-          commit.setRemovePart(Math.round(part.mul(FPNumber.HUNDRED).toNumber()));
-          commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
-          commit.setFirstTokenAmount(firstTokenAmount);
-          commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance).toString());
-        }
-      } else {
-        commit.setFirstTokenAmount();
-      }
+    commit.setFocusedField(FocusedField.Second);
+    commit.setSecondTokenAmount(value);
 
-      await getRemoveLiquidityData(context);
-    }
-  },
-  async setSecondTokenAmount(context, secondTokenAmount: string): Promise<void> {
-    const { commit, state, getters } = removeLiquidityActionContext(context);
-
-    if (!state.focusedField || state.focusedField === 'secondTokenAmount') {
-      commit.setFocusedField('secondTokenAmount');
-      if (secondTokenAmount) {
-        if (!Number.isNaN(secondTokenAmount)) {
-          const part = new FPNumber(secondTokenAmount).div(getters.secondTokenBalance);
-          commit.setRemovePart(Math.round(part.mul(FPNumber.HUNDRED).toNumber()));
-          commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
-          commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance).toString());
-          commit.setSecondTokenAmount(secondTokenAmount);
-        }
-      } else {
-        commit.setSecondTokenAmount();
-      }
-
-      await getRemoveLiquidityData(context);
-    }
+    updateFirstTokenAmount(context);
   },
   async removeLiquidity(context): Promise<void> {
     const { state, getters, rootState } = removeLiquidityActionContext(context);
@@ -133,9 +93,9 @@ const actions = defineActions({
       firstToken,
       secondToken,
       state.liquidityAmount,
-      state.reserveA,
-      state.reserveB,
-      state.totalSupply,
+      getters.reserveA,
+      getters.reserveB,
+      getters.totalSupply,
       rootState.settings.slippageTolerance
     );
   },
@@ -145,6 +105,7 @@ const actions = defineActions({
     commit.setLiquidityAmount();
     commit.setFirstTokenAmount();
     commit.setSecondTokenAmount();
+    commit.resetFocusedField();
   },
 });
 

@@ -287,12 +287,12 @@ import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecima
 
 @Component({
   components: {
+    BridgeSelectAsset: lazyComponent(Components.BridgeSelectAsset),
+    BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
+    BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    SelectNetwork: lazyComponent(Components.SelectNetwork),
-    SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
-    BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
@@ -327,10 +327,10 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setAmount setAmount!: (value: string) => void;
 
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
-  @action.bridge.resetBridgeForm private resetBridgeForm!: AsyncVoidFn;
-  @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncVoidFn;
-  @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncVoidFn;
-  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncVoidFn;
+  @action.bridge.resetBridgeForm private resetBridgeForm!: AsyncFnWithoutArgs;
+  @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<BridgeHistory>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
 
@@ -448,7 +448,7 @@ export default class Bridge extends Mixins(
 
     return this.isXorSufficientForNextTx({
       type: this.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
-      isXorAccountAsset: isXorAccountAsset(this.asset),
+      isXor: isXorAccountAsset(this.asset),
       amount: this.getFPNumber(this.amount),
     });
   }
@@ -477,9 +477,15 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(balance, decimals);
   }
 
-  created(): void {
-    // we should reset data only on created, because it's used on another bridge views
-    this.resetBridgeForm();
+  async created(): Promise<void> {
+    if (this.$route.params.xorToDeposit) {
+      await this.selectAsset(this.xor);
+      this.setSoraToEvm(false);
+      this.setAmount(this.$route.params.xorToDeposit);
+    } else {
+      // we should reset data only on created, because it's used on another bridge views
+      this.resetBridgeForm();
+    }
   }
 
   destroyed(): void {
@@ -487,7 +493,7 @@ export default class Bridge extends Mixins(
   }
 
   getBridgeItemTitle(isSoraNetwork = false): string {
-    return this.t(this.formatNetwork(isSoraNetwork));
+    return this.formatNetwork(isSoraNetwork);
   }
 
   getCopyTooltip(isSoraNetwork = false): string {
@@ -508,7 +514,7 @@ export default class Bridge extends Mixins(
   }
 
   async handleConfirmTransaction(): Promise<void> {
-    if (!this.isXorSufficientForNextOperation) {
+    if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
       await this.waitOnNextTxFailureConfirmation();
       if (!this.isWarningFeeDialogConfirmed) {
@@ -632,7 +638,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       justify-content: space-between;
       flex-wrap: wrap;
       font-size: var(--s-font-size-mini);
-      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
       color: var(--s-color-base-content-primary);
     }

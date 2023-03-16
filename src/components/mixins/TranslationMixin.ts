@@ -18,17 +18,41 @@ const OrdinalRules = {
 
     return `${n}th`;
   },
-};
+} as const;
+
+const TranslationConsts = {
+  // extending consts
+  ...WALLET_CONSTS.TranslationConsts,
+  AppName: app.name,
+  APR: 'APR', // Annual percentage rate
+  TVL: 'TVL',
+  Kusama: 'Kusama',
+  Metamask: 'MetaMask',
+  Polkaswap: 'Polkaswap',
+  ROI: 'ROI', // Return of investment
+  // Networks from ETH Bridge
+  bridgeNetwork: {
+    EWC: 'Energy Web Chain',
+    private: 'Volta Testnet',
+    goerli: 'Ethereum Goerli',
+    kovan: 'Ethereum Kovan',
+    rinkeby: 'Ethereum Rinkeby',
+    ropsten: 'Ethereum Ropsten',
+    main: 'Ethereum Mainnet',
+  },
+  // Select EVM network dialog
+  evmNetwork: {
+    ethereum: 'Ethereum',
+    energy: 'Energy Web Chain',
+  },
+  mbps: 'mbps',
+} as const;
 
 @Component
 export default class TranslationMixin extends Mixins(mixins.TranslationMixin) {
   @state.settings.language language!: string;
 
-  readonly TranslationConsts = {
-    ...WALLET_CONSTS.TranslationConsts,
-    // extending consts
-    AppName: app.name,
-  };
+  readonly TranslationConsts = TranslationConsts;
 
   tOrdinal(n) {
     return OrdinalRules[this.$i18n.locale]?.(n) ?? n;

@@ -17,10 +17,10 @@ import { action } from '@/store/decorators';
 
 @Component
 export default class DemeterDataContainer extends Mixins(SubscriptionsMixin) {
-  @action.demeterFarming.subscribeOnPools private subscribeOnPools!: AsyncVoidFn;
-  @action.demeterFarming.subscribeOnTokens private subscribeOnTokens!: AsyncVoidFn;
-  @action.demeterFarming.subscribeOnAccountPools private subscribeOnAccountPools!: AsyncVoidFn;
-  @action.demeterFarming.unsubscribeUpdates private unsubscribeDemeter!: AsyncVoidFn;
+  @action.demeterFarming.subscribeOnPools private subscribeOnPools!: AsyncFnWithoutArgs;
+  @action.demeterFarming.subscribeOnTokens private subscribeOnTokens!: AsyncFnWithoutArgs;
+  @action.demeterFarming.subscribeOnAccountPools private subscribeOnAccountPools!: AsyncFnWithoutArgs;
+  @action.demeterFarming.unsubscribeUpdates private unsubscribeDemeter!: AsyncFnWithoutArgs;
 
   created(): void {
     this.setStartSubscriptions([this.subscribeOnPools, this.subscribeOnTokens, this.subscribeOnAccountPools]);

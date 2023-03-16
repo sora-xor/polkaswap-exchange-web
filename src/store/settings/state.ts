@@ -18,6 +18,7 @@ function initialState(): SettingsState {
     browserNotifsPermission: isBrowserNotificationApiAvailable ? Notification.permission : 'default',
     node: node ? JSON.parse(node) : {},
     language: getLocale(),
+    displayRegions: undefined,
     defaultNodes: [],
     customNodes: customNodes ? JSON.parse(customNodes) : [],
     nodeAddressConnecting: '',
@@ -29,7 +30,9 @@ function initialState(): SettingsState {
     browserNotifPopupVisibility: false,
     browserNotifPopupBlockedVisibility: false,
     blockNumber: 0,
-    blockNumberUpdates: null,
+    blockNumberUpdates: undefined,
+    internetConnection: undefined,
+    internetConnectionSpeed: undefined,
   };
 }
 

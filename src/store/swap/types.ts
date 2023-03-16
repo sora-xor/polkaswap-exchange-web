@@ -26,6 +26,7 @@ export type SwapState = {
   isExchangeB: boolean;
   enabledAssets: PrimaryMarketsEnabledAssets;
   rewards: Array<LPRewardsInfo>;
+  route: string[];
   selectedDexId: number;
   dexQuoteData: Record<number, DexQuoteData>;
 };

@@ -62,7 +62,7 @@ const actions = defineActions({
     const { commit } = web3ActionContext(context);
     let networkType = '';
     if (!network) {
-      networkType = await ethersUtil.getEvmNetworkType();
+      networkType = await ethersUtil.fetchEvmNetworkType();
     } else {
       networkType = EvmNetworkTypeName[network];
     }
