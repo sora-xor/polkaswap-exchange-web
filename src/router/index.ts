@@ -230,10 +230,6 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Stats),
   },
   {
-    path: '/support',
-    name: PageNames.Support,
-  },
-  {
     path: '*',
     redirect: '/swap',
   },
