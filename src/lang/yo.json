@@ -111,7 +111,6 @@
         "title": "Ifowosi {Sora} Nẹtiwọọki",
         "WalletAssets": "Awọn dukia",
         "WalletActivity": "Iṣẹ iṣe",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "Ti daakọ adirẹsi apamọwọ si agekuru naa",
         "copy": "Da Adirẹsi ko",
         "switch": "Yi Ifowosi pada",
-        "walletAddress": "Adirẹsi apamọwọ"
+        "walletAddress": "Adirẹsi apamọwọ",
+        "delete": "Pa akọọlẹ rẹ kuro",
+        "rename": "Fun lorukọ mii iroyin",
+        "export": "okeere .json"
     },
     "history": {
         "clearHistory": "Nu itan kuro",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:",
         "details": "Awọn alaye",
-        "assetId": "Idanimo dukia",
-        "add": "@:addAssetText"
+        "assetId": "Idanimo dukia"
     },
     "asset": {
         "remove": "Yọ dukia kuro",
@@ -192,9 +193,7 @@
             "title": "Awọn owo nina",
             "switchBtn": "Awọn ohun-ini ti a rii daju nikan"
         },
-        "searchInputText": "Wa nipasẹ ID Dukia, Orukọ tabi Aami Tika",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Wa nipasẹ ID Dukia, Orukọ tabi Aami Tika"
     },
     "createToken": {
         "desc": "Ṣẹda ki o ran awọn dukia atowunwa lori {Sora}",
@@ -292,11 +291,8 @@
             "submitted": "Iṣowo ti a fi silẹ pẹlu owo ti {fee} {symbol}",
             "confirmed": "Iṣowo ti a ti gba"
         },
-        "viewIn": {
-            "sorascan": "Wo ni SORAScan",
-            "subscan": "Wo ni Subscan"
-        },
         "txId": "Id Idunadura",
+        "viewIn": "Wo ni {explorer}",
         "referrer": "Atọkasi",
         "referral": "Ifiranṣẹ"
     },
@@ -332,7 +328,6 @@
         "AddLiquidity": "Fi liquidity si",
         "AddLiquidityId": "Fi liquidity si",
         "RemoveLiquidity": "Yọ liquidity kuro",
-        "PageNotFound": "A o ri ojuwe",
         "Rewards": "Ere",
         "Explore\/Tokens": "Awọn ami-ami",
         "Explore\/Pools": "Pools",
@@ -432,26 +427,7 @@
         "from": "Lati",
         "to": "Si"
     },
-    "pageNotFound": {
-        "title": "A o ri ojuwe",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Agbara Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +536,6 @@
         "notRegisteredAsset": "Dukia {assetSymbol} ko forukọsilẹ",
         "selectNetwork": "Yan nẹtiwọọki",
         "networkInfo": "Safara {Sora} Nẹtiwọọki pẹlu:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Daakọ adirẹsi nẹtiwọki",
         "soraAddress": "{Sora} adirẹsi",
         "ethereumAddress": "{Ethereum} adirẹsi",
@@ -617,7 +591,6 @@
             "done": "Pari",
             "waitingForConfirmation": "Nduro fun idaniloju..."
         },
-        "viewInEtherscan": "Wo ni {Etherscan}",
         "networkTitle": "idunadura {network}",
         "transactionHash": "Ami Iṣowo",
         "networkInfo": {
@@ -1128,7 +1101,9 @@
             "mnemonic": "Bip39 mnemonic ti ko tọ ni pato",
             "mnemonicLength": "Mnemonic yẹ ki o ni awọn ọrọ {number} ninu",
             "jsonFields": "Faili JSON ko ni awọn aaye ti a beere"
-        }
+        },
+        "assetsAtRiskText": "Awọn dukia ni ewu!",
+        "deleteAccountText": "Akoto ko le gba pada laisi gbolohun ọrọ irugbin, faili .json tabi ti o ba wa ni ipamọ ni diẹ ninu itẹsiwaju. O yoo wa ni ibuwolu jade."
     },
     "hashiBridgeText": "{Hashi} Afara",
     "disclaimerTitle": "Akiyesi:",
@@ -1137,11 +1112,66 @@
     },
     "tooltips": {
         "roi": "{ROI} duro fun Pada lori Idoko-owo. O ṣe iṣiro nipasẹ pinpin èrè ti o jo'gun lori idoko-owo nipasẹ idiyele ti idoko-owo yẹn ni deede ogorun kan.",
-        "tvl": "{TVL} duro fun Titiipa Iye Lapapọ. O duro fun awọn ami titiipa ninu awọn adagun-odo ni deede dola."
+        "tvl": "{TVL} duro fun Titiipa Iye Lapapọ. O duro fun awọn ami titiipa ninu awọn adagun-odo ni deede dola.",
+        "volume": "Iwọn didun ntokasi si lapapọ iye ti ohun ìní ti a ti ta tabi paarọ lori awọn nẹtiwọki lori kan pato akoko. Iwọn didun jẹ metiriki pataki fun wiwọn oloomi ati iṣẹ ṣiṣe gbogbogbo ti nẹtiwọọki.",
+        "fees": "Awọn idiyele lori blockchain {Sora} tọka si awọn idiyele ti o jẹ fun ṣiṣe awọn iṣowo lori nẹtiwọọki. Awọn owo wọnyi ni a san ni XOR, cryptocurrency abinibi ti Nẹtiwọọki {Sora} . Iye owo ọya jẹ ipinnu nipasẹ idiju ati iwọn ti idunadura ti n ṣiṣẹ",
+        "supply": "Ipese tokini tọka si nọmba lapapọ ti awọn ami ti a ti ṣẹda ati ti o wa ni sisan lori nẹtiwọọki. Ipese ami le yipada da lori iye awọn ami ti o wa ni ifipamọ, sun, tabi gbigbe lori nẹtiwọọki.",
+        "transactions": "Awọn iṣowo n tọka si ilana ti fifiranṣẹ tabi gbigba awọn ohun-ini oni-nọmba lori nẹtiwọọki, pẹlu awọn iṣẹ oloomi, ati awọn swaps.",
+        "accounts": "Awọn akọọlẹ jẹ awọn adirẹsi oni-nọmba ti o mu awọn ohun-ini olumulo mu lori nẹtiwọọki. Iwe akọọlẹ kọọkan ni nkan ṣe pẹlu adiresi gbogbogbo alailẹgbẹ ati bọtini ikọkọ ti o fun laaye olumulo laaye lati wọle ati ṣakoso awọn ohun-ini wọn.",
+        "bridgeTransactions": "{from} si {to} Afara n tọka si ilana gbigbe ohun-ini laarin {from} ati {to} awọn nẹtiwọọki nipa lilo afara. Afara naa ngbanilaaye fun ibaraenisepo ti awọn nẹtiwọọki meji, ṣiṣe awọn olumulo laaye lati gbe awọn ohun-ini lainidi laarin wọn."
     },
     "createTokenText": "Ṣẹda token",
     "comingSoonText": "Nbọ laipẹ",
     "confirmText": "Jẹrisi",
     "createTokenTextNFT": "Ṣẹda NFT",
-    "doNotShowText": "Maṣe fi eyi han mi lẹẹkansi"
+    "doNotShowText": "Maṣe fi eyi han mi lẹẹkansi",
+    "accountText": "iroyin | awọn iroyin",
+    "networkStatisticsText": "Awọn iṣiro nẹtiwọki",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Node ti sopọ",
+                "loading": "Node tun-so pọ",
+                "disconnected": "Node ge asopọ"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Ayelujara alaabo",
+                "unstable": "Internet riru",
+                "stable": "Iduroṣinṣin Intanẹẹti"
+            },
+            "label": "Iyara intanẹẹti rẹ",
+            "desc": {
+                "disabled": "Ge asopọ",
+                "unstable": "Asopọ lọra",
+                "stable": "Iyara to dara julọ"
+            },
+            "action": "Tuntun {Polkaswap}",
+            "dialogTitle": "Sopọ si orisun intanẹẹti",
+            "dialogDesc": "{Polkaswap} nilo asopọ intanẹẹti fun iriri iduroṣinṣin"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Awọn iṣiro ko si",
+                "loading": "Ikojọpọ statistiki",
+                "available": "Awọn iṣiro wa"
+            },
+            "label": "Awọn iṣẹ iṣiro",
+            "desc": {
+                "unavailable": "Gbogbo awọn iṣẹ ti ge asopọ",
+                "loading": "Gbogbo awọn iṣẹ ti wa ni ikojọpọ",
+                "available": "Gbogbo awọn iṣẹ jẹ iduroṣinṣin"
+            },
+            "action": "Yan awọn iṣẹ",
+            "dialog": {
+                "title": "Aṣayan iṣẹ nẹtiwọki {Sora}",
+                "fiat": "Awọn iye Fiat",
+                "chartsAndActivity": "Awọn aworan atọka & Iṣẹ-ṣiṣe",
+                "online": "Online",
+                "offline": "Aisinipo"
+            }
+        }
+    },
+    "locationText": "Ipo"
 }

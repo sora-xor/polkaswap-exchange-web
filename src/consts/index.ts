@@ -121,7 +121,6 @@ export enum PageNames {
   RewardsTabs = 'RewardsTabs',
   ReferralBonding = 'ReferralBonding',
   ReferralUnbonding = 'ReferralUnbonding',
-  PageNotFound = 'PageNotFound',
   BridgeContainer = 'BridgeContainer',
   Bridge = 'Bridge',
   BridgeTransaction = 'BridgeTransaction',
@@ -145,6 +144,7 @@ export enum Components {
   AppHeaderMenu = 'App/Header/AppHeaderMenu',
   AccountButton = 'App/Header/AccountButton',
   AppLogoButton = 'App/Header/AppLogoButton',
+  AppFooter = 'App/Footer/AppFooter',
   AppMenu = 'App/Menu/AppMenu',
   AppInfoPopper = 'App/Menu/AppInfoPopper',
   BrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
@@ -157,6 +157,8 @@ export enum Components {
   TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
   ToSDialog = 'SoraCard/steps/ToSDialog',
   RoadMap = 'SoraCard/steps/RoadMap',
+  Phone = 'SoraCard/steps/Phone',
+  Email = 'SoraCard/steps/Email',
   KycView = 'SoraCard/steps/KycView',
   SwapConfirm = 'Swap/Confirm',
   SwapChart = 'Swap/Chart',
@@ -168,9 +170,10 @@ export enum Components {
   SettingsTabs = 'Settings/Tabs',
   SlippageTolerance = 'Settings/SlippageTolerance',
   MarketAlgorithm = 'Settings/MarketAlgorithm',
-  SelectNode = 'Settings/Node/SelectNode',
-  NodeInfo = 'Settings/Node/NodeInfo',
-  SelectNodeDialog = 'SelectNodeDialog',
+  SelectNode = 'App/Footer/Node/SelectNode',
+  NodeInfo = 'App/Footer/Node/NodeInfo',
+  SelectNodeDialog = 'App/Footer/SelectNodeDialog',
+  StatisticsDialog = 'App/Footer/StatisticsDialog',
   ExternalLink = 'ExternalLink',
   // HelpDialog = 'HelpDialog',
   AboutNetworkDialog = 'AboutNetworkDialog',
@@ -226,54 +229,72 @@ export interface SidebarMenuItem {
   icon?: string;
   title: string;
   disabled?: boolean;
+  /**
+   * When page has a redirection it's better to set the final route to avoid errors from router.
+   *
+   * So, when the final route is different from title `index` should be used for menu
+   */
+  index?: string;
 }
 
-interface SidebarMenuItemLink extends SidebarMenuItem {
+export interface SidebarMenuItemLink extends SidebarMenuItem {
+  /** It's required for href if it's used */
   href?: string;
 }
 
-const MainMenu: Array<SidebarMenuItem> = [
+const MainMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'arrows-swap-90-24',
     title: PageNames.Swap,
+    href: '/#/swap',
   },
   {
     icon: 'basic-drop-24',
     title: PageNames.Pool,
+    href: '/#/pool',
   },
   {
     icon: 'basic-layers-24',
     title: PageNames.StakingContainer,
+    href: '/#/staking',
+    index: DemeterPageNames.Staking,
   },
   {
     icon: 'grid-block-distribute-vertically-24',
     title: PageNames.Bridge,
+    href: '/#/bridge',
   },
 ];
 
-const AccountMenu: Array<SidebarMenuItem> = [
+const AccountMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'finance-wallet-24',
     title: PageNames.Wallet,
+    href: '/#/wallet',
   },
   {
     icon: 'basic-circle-star-24',
     title: PageNames.Rewards,
+    href: '/#/rewards',
   },
 ];
 
-const OtherPagesMenu: Array<SidebarMenuItem> = [
+const OtherPagesMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'various-items-24',
     title: PageNames.ExploreContainer,
+    href: '/#/explore',
+    index: PageNames.ExploreFarming,
   },
   {
     icon: 'sora-card',
     title: PageNames.SoraCard,
+    href: '/#/card',
   },
   {
     icon: 'file-file-text-24',
     title: PageNames.About,
+    href: '/#/about',
   },
 ];
 
@@ -351,10 +372,10 @@ export const RewardsChildPages = [
 
 export const StakingChildPages = [DemeterPageNames.Staking];
 export const ExploreChildPages = [
-  PageNames.ExploreTokens,
-  PageNames.ExplorePools,
-  PageNames.ExploreFarming,
+  PageNames.ExploreFarming, // By default
   PageNames.ExploreStaking,
+  PageNames.ExplorePools,
+  PageNames.ExploreTokens,
 ];
 
 export enum Topics {

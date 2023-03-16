@@ -20,6 +20,10 @@ const getters = defineGetters<SettingsState>()({
     const { state, getters } = settingsGetterContext(args);
     return [...state.defaultNodes, ...getters.customNodes];
   },
+  nodeIsConnecting(...args): boolean {
+    const { state } = settingsGetterContext(args);
+    return !!state.nodeAddressConnecting;
+  },
   nodeIsConnected(...args): boolean {
     const { state } = settingsGetterContext(args);
     return !!state.node?.address && !state.nodeAddressConnecting && connection.opened;
@@ -44,13 +48,27 @@ const getters = defineGetters<SettingsState>()({
     const { state } = settingsGetterContext(args);
     return !!state.featureFlags.charts && state.сhartsEnabled;
   },
-  soraCardEnabled(...args): boolean {
+  soraCardEnabled(...args): Nullable<boolean> {
     const { state } = settingsGetterContext(args);
-    return !!state.featureFlags.soraCard;
+    return state.featureFlags.soraCard;
   },
   notificationActivated(...args): boolean {
     const { state } = settingsGetterContext(args);
     return state.browserNotifsPermission === 'granted';
+  },
+  isInternetConnectionEnabled(...args): boolean {
+    const { state } = settingsGetterContext(args);
+    return state.internetConnection ?? navigator.onLine;
+  },
+  internetConnectionSpeedMb(...args): number {
+    const { state } = settingsGetterContext(args);
+    return state.internetConnectionSpeed ?? ((navigator as any)?.connection?.downlink as number) ?? 0;
+  },
+  /** Stable Connection - more or equal **1 Mb/s** */
+  isInternetConnectionStable(...args): boolean {
+    const { getters } = settingsGetterContext(args);
+    // `!getters.internetConnectionSpeedMb` for the case when `navigator.connection` isn't supported
+    return getters.internetConnectionSpeedMb >= 1 || !getters.internetConnectionSpeedMb;
   },
 });
 

@@ -111,7 +111,6 @@
         "title": "Compte réseau {Sora}",
         "WalletAssets": "Actifs",
         "WalletActivity": "Activité",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "L'adresse du portefeuille est copiée dans le presse-papiers",
         "copy": "Copier l'adresse",
         "switch": "Changer de compte",
-        "walletAddress": "Adresse du portefeuille"
+        "walletAddress": "Adresse du portefeuille",
+        "delete": "Supprimer le compte",
+        "rename": "Renommer le compte",
+        "export": "Exporter .json"
     },
     "history": {
         "clearHistory": "Effacer l'historique",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "Valeur total de vos actifs:",
         "details": "Détails",
-        "assetId": "ID de l'Actif",
-        "add": "@:addAssetText"
+        "assetId": "ID de l'Actif"
     },
     "asset": {
         "remove": "Retirer l'actif",
@@ -192,9 +193,7 @@
             "title": "Devises",
             "switchBtn": "Actifs vérifiés uniquement"
         },
-        "searchInputText": "Rechercher par ID d'actif, nom ou symbole boursier",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Rechercher par ID d'actif, nom ou symbole boursier"
     },
     "createToken": {
         "desc": "Créer et déployer des ressources personnalisées sur {Sora}",
@@ -292,11 +291,8 @@
             "submitted": "Transaction soumise avec des frais de {fee} {symbol}",
             "confirmed": "Transaction confirmée"
         },
-        "viewIn": {
-            "sorascan": "Afficher dans SORAScan",
-            "subscan": "Visualisez dans Subscan"
-        },
         "txId": "Id de la transaction",
+        "viewIn": "Visualisez dans {explorer}",
         "referrer": "Référent",
         "referral": "Référence"
     },
@@ -332,7 +328,6 @@
         "AddLiquidity": "Ajouter de la liquidité",
         "AddLiquidityId": "Ajouter de la liquidité",
         "RemoveLiquidity": "Retirer de la liquidité",
-        "PageNotFound": "Page introuvable",
         "Rewards": "Récompenses",
         "Explore\/Tokens": "Jetons",
         "Explore\/Pools": "Piscines",
@@ -432,26 +427,7 @@
         "from": "De",
         "to": "À"
     },
-    "pageNotFound": {
-        "title": "Page introuvable",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Chaîne Web énergétique"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +536,6 @@
         "notRegisteredAsset": "L'actif {assetSymbol} n'est pas enregistré",
         "selectNetwork": "Sélectionner un réseau",
         "networkInfo": "Pont {Sora} Réseau avec:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Copier l'adresse réseau",
         "soraAddress": "{Sora} adresse",
         "ethereumAddress": "{Ethereum} adresse",
@@ -617,7 +591,6 @@
             "done": "Compléter",
             "waitingForConfirmation": "En attente de confirmation..."
         },
-        "viewInEtherscan": "Afficher dans {Etherscan}",
         "networkTitle": "transaction {network}",
         "transactionHash": "Hash de transaction",
         "networkInfo": {
@@ -1128,7 +1101,9 @@
             "mnemonic": "Mnémonique bip39 non valide spécifié",
             "mnemonicLength": "Le mnémonique doit contenir {number} mots",
             "jsonFields": "Le fichier JSON n'a pas de champs obligatoires"
-        }
+        },
+        "assetsAtRiskText": "Actifs en péril !",
+        "deleteAccountText": "Le compte ne peut pas être récupéré sans une phrase de départ, un fichier .json ou s'il est stocké dans une extension. Vous serez déconnecté."
     },
     "hashiBridgeText": "Pont {Hashi}",
     "disclaimerTitle": "Avertissement:",
@@ -1137,11 +1112,66 @@
     },
     "tooltips": {
         "roi": "{ROI} signifie retour sur investissement. Il est calculé en divisant le bénéfice réalisé sur un investissement par le coût de cet investissement en pourcentage équivalent.",
-        "tvl": "{TVL} signifie Total Value Locked. Il représente les jetons verrouillés dans les pools en équivalent dollar."
+        "tvl": "{TVL} signifie Total Value Locked. Il représente les jetons verrouillés dans les pools en équivalent dollar.",
+        "volume": "Le volume fait référence au montant total des actifs qui ont été négociés ou échangés sur le réseau sur une période de temps spécifique. Le volume est une mesure importante pour mesurer la liquidité et l'activité globale du réseau.",
+        "fees": "Les frais sur la blockchain {Sora} font référence aux frais encourus pour l'exécution des transactions sur le réseau. Ces frais sont payés en XOR, la crypto-monnaie native du réseau {Sora} . Le montant des frais est déterminé par la complexité et la taille de la transaction en cours d'exécution",
+        "supply": "La fourniture de jetons fait référence au nombre total de jetons qui ont été créés et qui sont en circulation sur le réseau. L'offre de jetons peut fluctuer en fonction de la quantité de jetons jalonnés, brûlés ou transférés sur le réseau.",
+        "transactions": "Les transactions font référence au processus d'envoi ou de réception d'actifs numériques sur le réseau, y compris les opérations de liquidité, ainsi que les swaps.",
+        "accounts": "Les comptes sont des adresses numériques qui contiennent les actifs de l'utilisateur sur le réseau. Chaque compte est associé à une adresse publique unique et à une clé privée qui permet à l'utilisateur d'accéder et de gérer ses actifs.",
+        "bridgeTransactions": "Le pont {from} vers {to} fait référence au processus de transfert d'actifs entre les réseaux {from} et {to} à l'aide d'un pont. Le pont permet l'interopérabilité des deux réseaux, permettant aux utilisateurs de déplacer en toute transparence des actifs entre eux."
     },
     "createTokenText": "Créer un jeton",
     "comingSoonText": "Bientôt disponible",
     "confirmText": "Confirmer",
     "createTokenTextNFT": "Créer NFT",
-    "doNotShowText": "Ne me montre plus ça"
+    "doNotShowText": "Ne me montre plus ça",
+    "accountText": "compte | comptes",
+    "networkStatisticsText": "Statistiques du réseau",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Nœud connecté",
+                "loading": "Reconnexion du nœud",
+                "disconnected": "Nœud déconnecté"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet désactivé",
+                "unstable": "Internet instable",
+                "stable": "Internet stable"
+            },
+            "label": "Votre débit Internet",
+            "desc": {
+                "disabled": "Débranché",
+                "unstable": "Connection lente",
+                "stable": "Vitesse optimale"
+            },
+            "action": "Actualiser {Polkaswap}",
+            "dialogTitle": "Connectez-vous à la source Internet",
+            "dialogDesc": "{Polkaswap} nécessite une connexion Internet pour une expérience stable"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistiques non disponibles",
+                "loading": "Chargement des statistiques",
+                "available": "Statistiques disponibles"
+            },
+            "label": "Services statistiques",
+            "desc": {
+                "unavailable": "Tous les services sont déconnectés",
+                "loading": "Tous les services sont en cours de chargement",
+                "available": "Tous les services sont stables"
+            },
+            "action": "Sélectionnez les services",
+            "dialog": {
+                "title": "{Sora} Sélection du service réseau",
+                "fiat": "Valeurs Fiat",
+                "chartsAndActivity": "Graphiques et activité",
+                "online": "En ligne",
+                "offline": "Hors ligne"
+            }
+        }
+    },
+    "locationText": "Emplacement"
 }

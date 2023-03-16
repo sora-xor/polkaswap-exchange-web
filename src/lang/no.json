@@ -111,7 +111,6 @@
         "title": "{Sora} Nettverkskonto",
         "WalletAssets": "Aktiva",
         "WalletActivity": "Aktivitet",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "Lommebokadressen kopieres til utklippstavlen",
         "copy": "Kopier adresse",
         "switch": "Bytt konto",
-        "walletAddress": "Lommebokadresse"
+        "walletAddress": "Lommebokadresse",
+        "delete": "Slett konto",
+        "rename": "Gi nytt navn til kontoen",
+        "export": "Eksporter .json"
     },
     "history": {
         "clearHistory": "Slett historikk",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "Totalverdi aktiva:",
         "details": "Detaljer",
-        "assetId": "Aktivum ID",
-        "add": "@:addAssetText"
+        "assetId": "Aktivum ID"
     },
     "asset": {
         "remove": "Fjern aktiva",
@@ -192,9 +193,7 @@
             "title": "Valutaer",
             "switchBtn": "Kun bekreftede eiendeler"
         },
-        "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Søk etter aktiva-ID, navn eller ticker-symbol"
     },
     "createToken": {
         "desc": "Opprett og distribuer egendefinert token på {Sora}",
@@ -292,11 +291,8 @@
             "submitted": "Transaksjon sendt med gebyr på {fee} {symbol}",
             "confirmed": "Transaksjon bekreftet"
         },
-        "viewIn": {
-            "sorascan": "Vis i SORAScan",
-            "subscan": "Vis i Subscan"
-        },
         "txId": "Transaksjons ID",
+        "viewIn": "Vis i {explorer}",
         "referrer": "Henviser",
         "referral": "Henvisning"
     },
@@ -332,7 +328,6 @@
         "AddLiquidity": "Legg til likviditet",
         "AddLiquidityId": "Legg til likviditet",
         "RemoveLiquidity": "Fjern likviditet",
-        "PageNotFound": "Side ikke funnet",
         "Rewards": "Belønninger",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Bassenger",
@@ -432,26 +427,7 @@
         "from": "Fra",
         "to": "Til"
     },
-    "pageNotFound": {
-        "title": "Side ikke funnet",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +536,6 @@
         "notRegisteredAsset": "Aktivum {assetSymbol} er ikke registrert",
         "selectNetwork": "Velg nettverk",
         "networkInfo": "Bridge {Sora} Network med:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Kopier nettverksadressen",
         "soraAddress": "{Sora} adresse",
         "ethereumAddress": "{Ethereum} adresse",
@@ -617,7 +591,6 @@
             "done": "Ferdig",
             "waitingForConfirmation": "Venter på bekreftelse..."
         },
-        "viewInEtherscan": "Vis i {Etherscan}",
         "networkTitle": "{network} transaksjon",
         "transactionHash": "Transaksjon hash",
         "networkInfo": {
@@ -1128,7 +1101,9 @@
             "mnemonic": "Ugyldig bip39 mnemonic spesifisert",
             "mnemonicLength": "Mnemonic skal inneholde {number} ord",
             "jsonFields": "JSON-filen har ikke obligatoriske felt"
-        }
+        },
+        "assetsAtRiskText": "Eiendeler i fare!",
+        "deleteAccountText": "Kontoen kan ikke gjenopprettes uten en frøfrase, .json-fil eller hvis den er lagret i en filtype. Du vil bli logget ut."
     },
     "hashiBridgeText": "{Hashi} bro",
     "disclaimerTitle": "Ansvarsfraskrivelse:",
@@ -1137,11 +1112,66 @@
     },
     "tooltips": {
         "roi": "{ROI} står for Return on Investment. Den beregnes ved å dele fortjenesten opptjent på en investering med kostnaden for den investeringen i en prosentekvivalent.",
-        "tvl": "{TVL} står for Total Value Locked. Det representerer tokens som er låst i bassengene i dollarekvivalenten."
+        "tvl": "{TVL} står for Total Value Locked. Det representerer tokens som er låst i bassengene i dollarekvivalenten.",
+        "volume": "Volum refererer til den totale mengden eiendeler som har blitt handlet eller byttet på nettverket over en bestemt tidsperiode. Volumet er en viktig metrikk for å måle likviditeten og den totale aktiviteten til nettverket.",
+        "fees": "Gebyrer på {Sora} blokkjeden refererer til kostnadene som påløper for å utføre transaksjoner på nettverket. Disse avgiftene betales i XOR, den opprinnelige kryptovalutaen til {Sora} -nettverket. Gebyrbeløpet bestemmes av kompleksiteten og størrelsen på transaksjonen som utføres",
+        "supply": "Tokenforsyning refererer til det totale antallet tokens som er opprettet og er i omløp på nettverket. Tokentilførselen kan variere basert på mengden tokens som settes inn, brennes eller overføres på nettverket.",
+        "transactions": "Transaksjoner refererer til prosessen med å sende eller motta digitale eiendeler på nettverket, inkludert likviditetsoperasjoner, samt bytteavtaler.",
+        "accounts": "Kontoer er digitale adresser som holder brukerens eiendeler på nettverket. Hver konto er knyttet til en unik offentlig adresse og en privat nøkkel som lar brukeren få tilgang til og administrere sine eiendeler.",
+        "bridgeTransactions": "{from} til {to} -broen refererer til prosessen med å overføre eiendeler mellom {from} og {to} -nettverket ved hjelp av en bro. Broen gir mulighet for interoperabilitet mellom de to nettverkene, slik at brukere sømløst kan flytte eiendeler mellom dem."
     },
     "createTokenText": "Opprett token",
     "comingSoonText": "Kommer snart",
     "confirmText": "Bekrefte",
     "createTokenTextNFT": "Lag NFT",
-    "doNotShowText": "Ikke vis meg dette igjen"
+    "doNotShowText": "Ikke vis meg dette igjen",
+    "accountText": "konto | kontoer",
+    "networkStatisticsText": "Nettverksstatistikk",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Node tilkoblet",
+                "loading": "Node kobler til på nytt",
+                "disconnected": "Node frakoblet"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internett deaktivert",
+                "unstable": "Internett ustabilt",
+                "stable": "Internett stabil"
+            },
+            "label": "Internett-hastigheten din",
+            "desc": {
+                "disabled": "Koblet fra",
+                "unstable": "Sakte tilkobling",
+                "stable": "Optimal hastighet"
+            },
+            "action": "Oppdater {Polkaswap}",
+            "dialogTitle": "Koble til internettkilde",
+            "dialogDesc": "{Polkaswap} krever internettforbindelse for stabil opplevelse"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistikk utilgjengelig",
+                "loading": "Statistikk laster",
+                "available": "Statistikk tilgjengelig"
+            },
+            "label": "Statistikktjenester",
+            "desc": {
+                "unavailable": "Alle tjenester er frakoblet",
+                "loading": "Alle tjenester lastes inn",
+                "available": "Alle tjenester er stabile"
+            },
+            "action": "Velg tjenester",
+            "dialog": {
+                "title": "{Sora} Valg av nettverkstjeneste",
+                "fiat": "Fiat-verdier",
+                "chartsAndActivity": "Diagrammer og aktivitet",
+                "online": "på nett",
+                "offline": "Frakoblet"
+            }
+        }
+    },
+    "locationText": "plassering"
 }

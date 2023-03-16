@@ -12,14 +12,7 @@
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap" />
       </app-menu>
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
-        <s-scrollbar class="app-body-scrollbar">
-          <div v-if="blockNumber && !isCurrentPageTooWide" class="block-number">
-            <s-tooltip :content="t('blockNumberText')" placement="bottom" tabindex="-1">
-              <a class="block-number-link" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
-                <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
-              </a>
-            </s-tooltip>
-          </div>
+        <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <div class="app-disclaimer-container">
@@ -47,6 +40,7 @@
         </s-scrollbar>
       </div>
     </div>
+    <app-footer />
     <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
     <bridge-transfer-notification />
     <mobile-popup :visible.sync="showMobilePopup" />
@@ -61,9 +55,11 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { FPNumber, History, connection, HistoryItem } from '@sora-substrate/util';
-import { components, mixins, getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { connection } from '@sora-substrate/util';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import type { History, HistoryItem } from '@sora-substrate/util';
+import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
@@ -77,7 +73,7 @@ import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { preloadFontFace, updateDocumentTitle } from '@/utils';
 import { getLocale } from '@/lang';
-import type { ConnectToNodeOptions } from '@/types/nodes';
+import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 import type { SubNetwork } from '@/utils/ethers-util';
 import type { FeatureFlags } from '@/store/settings/types';
 
@@ -86,6 +82,7 @@ import type { FeatureFlags } from '@/store/settings/types';
     SoraLogo,
     AppHeader: lazyComponent(Components.AppHeader),
     AppMenu: lazyComponent(Components.AppMenu),
+    AppFooter: lazyComponent(Components.AppFooter),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
@@ -102,12 +99,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showMobilePopup = false;
   showNotifsDarkPage = false;
 
-  @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer storageReferrer!: string;
   @state.settings.browserNotifPopupVisibility browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility browserNotifPopupBlocked!: boolean;
-  @state.settings.blockNumber blockNumber!: number;
+  @state.router.loading pageLoading!: boolean;
 
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
@@ -278,18 +274,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     return cssClasses;
   }
 
-  get blockNumberFormatted(): string {
-    return new FPNumber(this.blockNumber).toLocaleString();
-  }
-
-  get blockExplorerLink(): Nullable<string> {
-    const links = getExplorerLinks(this.soraNetwork);
-    if (!links.length) {
-      return null;
-    }
-    return links[0].value;
-  }
-
   get showBrowserNotifPopup(): boolean {
     return this.browserNotifPopup;
   }
@@ -416,33 +400,6 @@ ul ul {
   }
 }
 
-.block-number {
-  display: none;
-
-  &-link {
-    display: flex;
-    align-items: center;
-    color: var(--s-color-status-success);
-    font-size: var(--s-font-size-extra-mini);
-    text-decoration: none;
-    font-weight: 300;
-    position: absolute;
-    top: 10px;
-    right: 24px;
-    line-height: 150%;
-  }
-
-  &-icon {
-    $block-icon-size: 7px;
-
-    background-color: var(--s-color-status-success);
-    border-radius: 50%;
-    height: $block-icon-size;
-    width: $block-icon-size;
-    margin-right: 2px;
-  }
-}
-
 .el-notification.sora {
   background: var(--s-color-brand-day);
   box-shadow: var(--s-shadow-tooltip);
@@ -548,7 +505,7 @@ ul ul {
   &__title {
     color: var(--s-color-theme-accent);
   }
-  a:not(:active) {
+  a {
     @include focus-outline;
   }
 }
@@ -590,10 +547,6 @@ i.icon-divider {
       padding-right: $inner-spacing-large;
     }
   }
-
-  .block-number {
-    display: block;
-  }
 }
 
 @include desktop {
@@ -619,10 +572,6 @@ i.icon-divider {
             max-width: calc(#{$bridge-width} * 2 + #{$basic-spacing-small});
           }
         }
-      }
-
-      .block-number-link {
-        z-index: $app-body-layer;
       }
     }
   }
@@ -652,7 +601,7 @@ $sora-logo-width: 173.7px;
     display: flex;
     align-items: stretch;
     overflow: hidden;
-    height: calc(100vh - #{$header-height});
+    height: calc(100vh - #{$header-height} - #{$footer-height});
     position: relative;
   }
 
@@ -732,6 +681,7 @@ $sora-logo-width: 173.7px;
   &__image {
     width: $sora-logo-width;
     height: $sora-logo-height;
+    @include focus-outline;
   }
 }
 </style>

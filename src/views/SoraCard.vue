@@ -1,20 +1,25 @@
 <template>
   <div>
-    <confirmation-info v-loading="loading" v-if="step === Step.ConfirmationInfo" />
+    <confirmation-info v-if="step === Step.ConfirmationInfo" v-loading="loading" @confirm-apply="openStartPage" />
     <sora-card-intro v-else-if="step === Step.StartPage" @confirm-apply="confirmApply" />
-    <sora-card-kyc v-else-if="step === Step.KYC" @go-to-start="openStartPage" :userApplied="userApplied" />
+    <sora-card-kyc
+      v-else-if="step === Step.KYC"
+      @go-to-start="openStartPage"
+      :userApplied="userApplied"
+      :openKycForm="openKycForm"
+    />
   </div>
 </template>
 
 <script lang="ts">
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import { action, getter } from '@/store/decorators';
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
 
-import { Component, Mixins } from 'vue-property-decorator';
-import { VerificationStatus } from '@/types/card';
+import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
+import { action, state, getter, mutation } from '@/store/decorators';
+import { goTo, lazyComponent } from '@/router';
+import { Components, PageNames } from '@/consts';
+import { KycStatus, VerificationStatus } from '@/types/card';
 
 enum Step {
   StartPage = 'StartPage',
@@ -29,8 +34,15 @@ enum Step {
     ConfirmationInfo: lazyComponent(Components.ConfirmationInfo),
   },
 })
-export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
+export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
+  @state.soraCard.hasFreeAttempts private hasFreeAttempts!: boolean;
+  @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
+
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
+  @getter.settings.soraCardEnabled soraCardEnabled!: Nullable<boolean>;
+
+  @mutation.soraCard.setKycStatus setKycStatus!: (kycStatus: KycStatus) => void;
+  @mutation.soraCard.setVerificationStatus setVerificationStatus!: (verStatus: VerificationStatus) => void;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
@@ -38,8 +50,16 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
 
   step: Nullable<Step> = null;
   userApplied = false;
+  openKycForm = false;
 
   Step = Step;
+
+  @Watch('soraCardEnabled', { immediate: true })
+  private checkAvailability(value: Nullable<boolean>): void {
+    if (value === false) {
+      goTo(PageNames.Swap);
+    }
+  }
 
   confirmApply(userApplied: boolean): void {
     this.userApplied = userApplied;
@@ -48,6 +68,8 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
 
   openStartPage(withoutCheck: boolean): void {
     if (withoutCheck) {
+      this.setKycStatus(KycStatus.Completed);
+      this.setVerificationStatus(VerificationStatus.Pending);
       this.step = Step.ConfirmationInfo;
       return;
     }
@@ -55,18 +77,38 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
     this.checkKyc();
   }
 
+  get hasTokens(): boolean {
+    const accessToken = localStorage.getItem('PW-token');
+    const refreshToken = localStorage.getItem('PW-refresh-token');
+
+    return !!accessToken && !!refreshToken;
+  }
+
   async checkKyc(): Promise<void> {
     await this.getUserStatus();
 
+    if (this.currentStatus === VerificationStatus.Rejected && this.wantsToPassKycAgain && this.hasFreeAttempts) {
+      this.openKycForm = true;
+      this.step = Step.KYC;
+      return;
+    }
+
     if (this.currentStatus) {
       this.step = Step.ConfirmationInfo;
-    } else {
-      this.step = Step.StartPage;
+      return;
     }
+
+    if (this.hasTokens) {
+      this.openKycForm = true;
+      this.step = Step.KYC;
+      return;
+    }
+
+    this.step = Step.StartPage;
   }
 
-  async created(): Promise<void> {
-    await this.subscribeToTotalXorBalance();
+  created(): void {
+    this.subscribeToTotalXorBalance();
   }
 
   async beforeDestroy(): Promise<void> {
@@ -80,32 +122,12 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
 </script>
 
 <style lang="scss">
-// $color: #ee2233; // TODO: [STYLES] likely to be changed
-
 .el-button.neumorphic.s-primary.sora-card__btn {
   margin-top: var(--s-size-mini);
-  // background-color: $color;
 
   span.text {
     font-variation-settings: 'wght' 700 !important;
     font-size: 19px;
-    // color: #fff;
   }
 }
-
-// TODO: relates to chosen color scheme
-// .sora-card {
-//   .is-loading {
-//     span.text {
-//       color: transparent !important;
-//     }
-//   }
-
-//   .el-button.neumorphic.s-primary.sora-card__btn.is-disabled {
-//     background-color: unset;
-//     .text {
-//       color: unset;
-//     }
-//   }
-// }
 </style>

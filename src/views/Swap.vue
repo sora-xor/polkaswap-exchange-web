@@ -221,7 +221,7 @@ export default class Swap extends Mixins(
   @mutation.swap.setLiquidityProviderFee private setLiquidityProviderFee!: (value: CodecString) => void;
   @mutation.swap.setPrimaryMarketsEnabledAssets private setEnabledAssets!: (args: PrimaryMarketsEnabledAssets) => void;
   @mutation.swap.setRewards private setRewards!: (rewards: Array<LPRewardsInfo>) => void;
-  @mutation.swap.setPath private setPath!: (path: Array<string>) => void;
+  @mutation.swap.setRoute private setRoute!: (route: Array<string>) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
@@ -443,6 +443,7 @@ export default class Swap extends Mixins(
           value,
           this.isExchangeB,
           [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
+          this.enabledAssets,
           this.dexQuoteData[dexId].paths,
           this.dexQuoteData[dexId].payload as QuotePayload,
           dexId as DexId
@@ -467,13 +468,13 @@ export default class Swap extends Mixins(
         }
       }
 
-      const { amount, amountWithoutImpact, fee, rewards, path } = results[bestDexId];
+      const { amount, amountWithoutImpact, fee, rewards, route } = results[bestDexId];
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact as string);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
-      this.setPath(path as string[]);
+      this.setRoute(route as string[]);
       this.selectDexId(bestDexId);
     } catch (error: any) {
       console.error(error);
@@ -541,7 +542,7 @@ export default class Swap extends Mixins(
 
     await this.switchTokens();
 
-    this.subscribeOnSwapReserves();
+    this.runRecountSwapValues();
   }
 
   handleMaxValue(): void {
