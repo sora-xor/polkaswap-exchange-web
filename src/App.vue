@@ -43,9 +43,9 @@
     <app-footer />
     <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
     <bridge-transfer-notification />
-    <mobile-popup :visible.sync="showMobilePopup" />
-    <browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
-    <browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
+    <app-mobile-popup :visible.sync="showMobilePopup" />
+    <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
+    <app-browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
@@ -64,8 +64,11 @@ import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
-import SoraLogo from '@/components/logo/Sora.vue';
-import MobilePopup from '@/components/MobilePopup/MobilePopup.vue';
+
+import SoraLogo from '@/components/shared/Logo/Sora.vue';
+import AppHeader from '@/components/App/Header/AppHeader.vue';
+import AppFooter from '@/components/App/Footer/AppFooter.vue';
+import AppMenu from '@/components/App/Menu/AppMenu.vue';
 
 import { PageNames, Components, Language, Links } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
@@ -80,17 +83,17 @@ import type { FeatureFlags } from '@/store/settings/types';
 @Component({
   components: {
     SoraLogo,
-    AppHeader: lazyComponent(Components.AppHeader),
-    AppMenu: lazyComponent(Components.AppMenu),
-    AppFooter: lazyComponent(Components.AppFooter),
+    AppHeader,
+    AppFooter,
+    AppMenu,
+    AppMobilePopup: lazyComponent(Components.AppMobilePopup),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
+    AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),
+    AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
-    BrowserNotifsEnableDialog: lazyComponent(Components.BrowserNotifsEnableDialog),
-    BrowserNotifsBlockedDialog: lazyComponent(Components.BrowserNotifsBlockedDialog),
     NotificationEnablingPage: components.NotificationEnablingPage,
     ConfirmDialog: components.ConfirmDialog,
-    MobilePopup,
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
@@ -188,7 +191,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   get privacyLink(): string {
-    return this.generateDisclaimerLink(Links.privacy, this.t('helpDialog.privacyPolicy'));
+    return this.generateDisclaimerLink(Links.privacy, this.t('footerMenu.privacy'));
   }
 
   get polkaswapFaqLink(): string {
@@ -351,6 +354,7 @@ html {
   overflow-y: hidden;
   font-size: var(--s-font-size-small);
   line-height: var(--s-line-height-base);
+  letter-spacing: var(--s-letter-spacing-small);
 }
 
 ul ul {
@@ -528,18 +532,6 @@ i.icon-divider {
   @include icon-styles;
 }
 
-@include large-desktop(true) {
-  .app-main[class*='app-main--explore/'] {
-    .app-menu {
-      position: relative;
-
-      @include large-mobile(true) {
-        position: fixed;
-      }
-    }
-  }
-}
-
 @include tablet {
   .app-footer {
     flex-direction: row;
@@ -563,13 +555,13 @@ i.icon-divider {
         padding-left: $basic-spacing * 2;
         .app-disclaimer {
           $margin-left: 10px;
-          max-width: calc(#{$bridge-width} + #{$margin-left});
+          max-width: calc(#{$inner-window-width} + #{$margin-left});
           padding-right: $inner-spacing-big;
           padding-left: calc(#{$inner-spacing-big} + #{$margin-left});
           &-container {
             margin-left: auto;
             margin-right: auto;
-            max-width: calc(#{$bridge-width} * 2 + #{$basic-spacing-small});
+            max-width: calc(#{$inner-window-width} * 2 + #{$basic-spacing-small});
           }
         }
       }
@@ -583,7 +575,7 @@ i.icon-divider {
       .app-content {
         .app-disclaimer {
           &-container {
-            max-width: calc(#{$bridge-width} * 3 + #{$basic-spacing-small} * 4);
+            max-width: calc(#{$inner-window-width} * 3 + #{$basic-spacing-small} * 4);
           }
         }
       }
@@ -627,7 +619,7 @@ $sora-logo-width: 173.7px;
 
   &-content {
     flex: 1;
-    margin: auto;
+    margin: $inner-spacing-big auto 0;
 
     .app-disclaimer-container {
       margin-left: auto;
@@ -643,7 +635,6 @@ $sora-logo-width: 173.7px;
     font-size: var(--s-font-size-extra-mini);
     font-weight: 300;
     line-height: var(--s-line-height-extra-small);
-    letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
   }
 
