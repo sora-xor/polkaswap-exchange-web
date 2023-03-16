@@ -9,6 +9,7 @@
         "firstNamePlaceholder": "Fornavn",
         "lastNamePlaceholder": "Etternavn",
         "phonePlaceholder": "Telefonnummer",
+        "statusPendingTitle": "Verifisering pågår",
         "sendEmailLinkBtn": "Send lenke",
         "statusAcceptText": "KYC-verifiseringen din er vellykket, og vi forbereder oss allerede på å sende deg SORA-kortet!",
         "noFreeKycTitle": "Ingen flere gratisforsøk",
@@ -45,13 +46,17 @@
         "personalNameInputDesc": "Bruk ditt virkelige navn.",
         "infoMessageTryAgain": "Noe gikk galt. Vær så snill, prøv på nytt",
         "blacklistedCountriesExcuse": "Dessverre kan vi for øyeblikket ikke støtte følgende land:",
-        "statusPendingText": "Du har fullført KYC-søknaden din. Evalueringen avventer, og du kan forvente en avgjørelse innen kort tid. <br \/> <br \/> Vanligvis tas avgjørelsen samme dag, men kan i noen tilfeller ta opptil 3 dager.",
-        "statusPendingTitle": "KYC fullført. Venter på resultatene",
+        "statusPendingText": "Du har fullført KYC-søknaden din. Evalueringen avventer, og du kan forvente en avgjørelse innen kort tid. <br \/> <br \/> Vanligvis tas avgjørelsen samme dag og kan i noen tilfeller ta opptil 3 dager.",
         "resendInBtn": "SEND PÅ NYTT I {value}",
         "statusRejectTitle": "Søknad avslått",
         "statusRejectText": "Søknaden din har blitt avvist av internrevisjon, vennligst sjekk våre krav og T&S nøye før du søker på nytt",
         "statusAcceptTitle": "Søknad godkjent",
         "noFreeAttemptsDesc": "Du har brukt ditt gratis forsøk på å bestå KYC-prosessen. Vi ber deg vente til neste oppgradering av applikasjonen for å fortsette med betalte forsøk.",
-        "retryKycBtn": "Fullfør KYC igjen"
+        "retryKycBtn": "Fullfør KYC igjen",
+        "unsupportedCountriesLink": "Se listen",
+        "unsupportedCountriesDisclaimer": "Innbyggere fra enkelte land kan ikke søke om SORA-kort for øyeblikket",
+        "statusRejectReason": "Grunn til avvisning",
+        "userNotFound": "Finner ikke mobilnummer, sjekk det på nytt og prøv på nytt.",
+        "code": "Kode"
     }
 }

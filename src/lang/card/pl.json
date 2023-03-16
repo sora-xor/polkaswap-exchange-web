@@ -9,6 +9,7 @@
         "firstNamePlaceholder": "Imię",
         "lastNamePlaceholder": "Nazwisko",
         "phonePlaceholder": "Numer telefonu",
+        "statusPendingTitle": "Trwa weryfikacja",
         "sendEmailLinkBtn": "Wyślij link",
         "statusAcceptText": "Twoja weryfikacja KYC przebiegła pomyślnie i już przygotowujemy się do wysłania Ci karty SORA!",
         "noFreeKycTitle": "Nigdy więcej bezpłatnych prób",
@@ -45,13 +46,17 @@
         "personalNameInputDesc": "Użyj swojego prawdziwego imienia.",
         "infoMessageTryAgain": "Coś poszło nie tak. Proszę spróbuj ponownie",
         "blacklistedCountriesExcuse": "Niestety, w tej chwili nie jesteśmy w stanie obsługiwać następujących krajów:",
-        "statusPendingText": "Pomyślnie ukończyłeś aplikację KYC. Przegląd jest w toku i wkrótce możesz spodziewać się decyzji. <br \/> <br \/> Zwykle decyzja jest podejmowana tego samego dnia, ale w niektórych przypadkach może to potrwać do 3 dni.",
-        "statusPendingTitle": "KYC zakończone. Czekam na wyniki",
+        "statusPendingText": "Pomyślnie ukończyłeś aplikację KYC. Przegląd jest w toku i wkrótce możesz spodziewać się decyzji. <br \/> <br \/> Zwykle decyzja jest podejmowana tego samego dnia, aw niektórych przypadkach może trwać do 3 dni.",
         "resendInBtn": "WYŚLIJ PONOWNIE W {value}",
         "statusRejectTitle": "Wniosek odrzucony",
         "statusRejectText": "Twoja aplikacja została odrzucona przez audyt wewnętrzny, przed ponownym złożeniem wniosku zapoznaj się dokładnie z naszymi wymaganiami i T&S",
         "statusAcceptTitle": "Aplikacja zatwierdzona",
         "noFreeAttemptsDesc": "Wykorzystałeś swoją bezpłatną próbę przejścia procesu KYC. Uprzejmie prosimy o zaczekanie do następnej aktualizacji aplikacji, aby przystąpić do płatnych prób.",
-        "retryKycBtn": "Ukończ KYC ponownie"
+        "retryKycBtn": "Ukończ KYC ponownie",
+        "unsupportedCountriesLink": "Zobacz listę",
+        "unsupportedCountriesDisclaimer": "Mieszkańcy niektórych krajów nie mogą w tej chwili ubiegać się o kartę SORA",
+        "statusRejectReason": "Powód odrzucenia",
+        "userNotFound": "Nie znaleziono numeru telefonu komórkowego, sprawdź go ponownie i spróbuj ponownie.",
+        "code": "Kod"
     }
 }

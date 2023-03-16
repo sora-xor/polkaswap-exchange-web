@@ -3,7 +3,7 @@
     <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
       <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
         <div class="swap-settings-buttons">
-          <status-action-badge>
+          <swap-status-action-badge>
             <template #label>{{ t('marketText') }}:</template>
             <template #value>{{ swapMarketAlgorithm }}</template>
             <template #action>
@@ -14,7 +14,7 @@
                 @click="openSettingsDialog"
               />
             </template>
-          </status-action-badge>
+          </swap-status-action-badge>
 
           <svg-icon-button
             v-if="chartsFlagEnabled"
@@ -132,9 +132,15 @@
         :isInsufficientBalance="isInsufficientBalance"
         @confirm="confirmSwap"
       />
-      <settings-dialog :visible.sync="showSettings" />
+      <swap-settings :visible.sync="showSettings" />
     </s-form>
-    <swap-chart v-if="chartsEnabled" :token-from="tokenFrom" :token-to="tokenTo" :is-available="isAvailable" />
+    <swap-chart
+      v-if="chartsEnabled"
+      :token-from="tokenFrom"
+      :token-to="tokenTo"
+      :is-available="isAvailable"
+      class="swap-chart"
+    />
   </div>
 </template>
 
@@ -174,16 +180,16 @@ import { action, getter, mutation, state } from '@/store/decorators';
 
 @Component({
   components: {
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    SettingsDialog: lazyComponent(Components.SettingsDialog),
-    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    SelectToken: lazyComponent(Components.SelectToken),
+    SwapSettings: lazyComponent(Components.SwapSettings),
     SwapConfirm: lazyComponent(Components.SwapConfirm),
-    StatusActionBadge: lazyComponent(Components.StatusActionBadge),
-    TokenInput: lazyComponent(Components.TokenInput),
-    ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
+    SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     SwapChart: lazyComponent(Components.SwapChart),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
+    SelectToken: lazyComponent(Components.SelectToken),
+    TokenInput: lazyComponent(Components.TokenInput),
+    ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     SvgIconButton: lazyComponent(Components.SvgIconButton),
     FormattedAmount: components.FormattedAmount,
   },
@@ -221,7 +227,7 @@ export default class Swap extends Mixins(
   @mutation.swap.setLiquidityProviderFee private setLiquidityProviderFee!: (value: CodecString) => void;
   @mutation.swap.setPrimaryMarketsEnabledAssets private setEnabledAssets!: (args: PrimaryMarketsEnabledAssets) => void;
   @mutation.swap.setRewards private setRewards!: (rewards: Array<LPRewardsInfo>) => void;
-  @mutation.swap.setPath private setPath!: (path: Array<string>) => void;
+  @mutation.swap.setRoute private setRoute!: (route: Array<string>) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
@@ -443,6 +449,7 @@ export default class Swap extends Mixins(
           value,
           this.isExchangeB,
           [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
+          this.enabledAssets,
           this.dexQuoteData[dexId].paths,
           this.dexQuoteData[dexId].payload as QuotePayload,
           dexId as DexId
@@ -467,13 +474,13 @@ export default class Swap extends Mixins(
         }
       }
 
-      const { amount, amountWithoutImpact, fee, rewards, path } = results[bestDexId];
+      const { amount, amountWithoutImpact, fee, rewards, route } = results[bestDexId];
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact as string);
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
-      this.setPath(path as string[]);
+      this.setRoute(route as string[]);
       this.selectDexId(bestDexId);
     } catch (error: any) {
       console.error(error);
@@ -541,7 +548,7 @@ export default class Swap extends Mixins(
 
     await this.switchTokens();
 
-    this.subscribeOnSwapReserves();
+    this.runRecountSwapValues();
   }
 
   handleMaxValue(): void {
@@ -619,37 +626,12 @@ export default class Swap extends Mixins(
 
 <style lang="scss">
 .app-main--has-charts {
-  .container--charts {
-    min-width: calc(#{$bridge-width} * 0.75);
-  }
-}
-@include desktop {
-  .app-main--has-charts {
-    .swap-container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: $inner-spacing-medium;
-      .el-form {
-        flex-shrink: 0;
-      }
-      .el-form,
-      .container--charts {
-        margin-right: $basic-spacing-small;
-        margin-left: $basic-spacing-small;
-      }
-    }
-    .el-form--actions {
-      flex-shrink: 0;
-    }
-  }
-}
+  .swap-chart {
+    flex-grow: 1;
+    max-width: $inner-window-width;
 
-@include large-desktop {
-  .app-main--has-charts {
-    .container--charts {
-      max-width: calc(#{$bridge-width} * 2);
-      flex-grow: 1;
+    @include large-desktop {
+      max-width: calc(#{$inner-window-width} * 2);
     }
   }
 }
@@ -669,6 +651,22 @@ export default class Swap extends Mixins(
       border-color: transparent;
       box-shadow: var(--s-shadow-element-pressed);
     }
+  }
+}
+
+.swap-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: $inner-spacing-medium;
+
+  @include desktop(true) {
+    max-width: $inner-window-width;
+  }
+
+  @include desktop {
+    flex-flow: row nowrap;
   }
 }
 

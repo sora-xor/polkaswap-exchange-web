@@ -157,7 +157,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import Web3Logo from '@/components/logo/Web3.vue';
+import Web3Logo from '@/components/shared/Logo/Web3.vue';
 import { getter } from '@/store/decorators';
 
 @Component({
@@ -277,7 +277,7 @@ export default class About extends Mixins(TranslationMixin) {
 }
 
 .about {
-  margin: auto;
+  margin: -$inner-spacing-big auto 0;
   min-width: 800px;
   &-main {
     display: flex;
@@ -431,13 +431,9 @@ export default class About extends Mixins(TranslationMixin) {
         width: 50px;
       }
       .title {
-        font-family: Sora;
-        font-style: normal;
         font-weight: bold;
         font-size: 36px;
         line-height: 100%;
-
-        letter-spacing: var(--s-letter-spacing-small);
 
         padding: 10px 0;
 
@@ -480,14 +476,10 @@ export default class About extends Mixins(TranslationMixin) {
 }
 
 .text {
-  font-family: Sora;
-  font-style: normal;
   font-weight: 200;
   font-size: 18px;
   line-height: 1.4;
   z-index: $app-content-layer;
-
-  letter-spacing: var(--s-letter-spacing-small);
 
   color: var(--s-color-base-content-primary);
   @media screen and (min-width: 1400px) {
@@ -542,10 +534,7 @@ export default class About extends Mixins(TranslationMixin) {
     }
   }
 
-  font-family: Sora;
-  font-style: normal;
   font-weight: 800;
-  letter-spacing: var(--s-letter-spacing-small);
   box-decoration-break: clone;
   -webkit-text-fill-color: transparent;
   -webkit-box-decoration-break: clone;

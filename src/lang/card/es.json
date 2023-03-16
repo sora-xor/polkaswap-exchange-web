@@ -9,6 +9,7 @@
         "firstNamePlaceholder": "Nombre de pila",
         "lastNamePlaceholder": "Apellido",
         "phonePlaceholder": "Número de teléfono",
+        "statusPendingTitle": "Verificación en progreso",
         "sendEmailLinkBtn": "Enviar enlace",
         "statusAcceptText": "¡Tu verificación KYC fue exitosa y ya nos estamos preparando para enviarte la tarjeta SORA!",
         "noFreeKycTitle": "No más intentos gratis",
@@ -45,13 +46,17 @@
         "personalNameInputDesc": "Usa tu nombre real.",
         "infoMessageTryAgain": "Algo salió mal. Inténtalo de nuevo",
         "blacklistedCountriesExcuse": "Lamentablemente, en este momento no podemos admitir los siguientes países:",
-        "statusPendingText": "Ha completado con éxito su solicitud KYC. La revisión está pendiente y puede esperar una decisión en breve. <br \/> <br \/> Por lo general, la decisión se toma el mismo día, pero en algunos casos puede demorar hasta 3 días.",
-        "statusPendingTitle": "KYC completado. Esperando los resultados",
+        "statusPendingText": "Ha completado correctamente su solicitud KYC. La revisión está pendiente y puede esperar una decisión en breve.<br \/><br \/>Normalmente la decisión se toma el mismo día y en algunos casos puede tardar hasta 3 días.",
         "resendInBtn": "REENVIAR EN {value}",
         "statusRejectTitle": "Solicitud rechazada",
         "statusRejectText": "Su solicitud ha sido rechazada por la auditoría interna, consulte nuestros requisitos y T&S detenidamente antes de volver a presentar la solicitud.",
         "statusAcceptTitle": "Solicitud aprobada",
         "noFreeAttemptsDesc": "Ha utilizado su intento gratuito para pasar el proceso KYC. Le pedimos amablemente que espere hasta la próxima actualización de la aplicación para continuar con los intentos pagados.",
-        "retryKycBtn": "Complete KYC nuevamente"
+        "retryKycBtn": "Complete KYC nuevamente",
+        "unsupportedCountriesLink": "ver la lista",
+        "unsupportedCountriesDisclaimer": "Los residentes de ciertos países no pueden solicitar la Tarjeta SORA en este momento",
+        "statusRejectReason": "Motivo de rechazo",
+        "userNotFound": "No se ha encontrado ningún número de móvil, vuelva a comprobarlo e inténtelo de nuevo.",
+        "code": "Código"
     }
 }

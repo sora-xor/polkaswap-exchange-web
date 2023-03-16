@@ -14,12 +14,10 @@ const i18n = new VueI18n({
   locale: Language.EN,
   fallbackLocale: Language.EN,
   messages: {
-    [Language.EN]: en,
+    [Language.EN]: { ...en, ...enCard },
   },
   silentTranslationWarn: process.env.NODE_ENV === 'production',
 });
-
-i18n.mergeLocaleMessage(Language.EN, enCard);
 
 const loadedLanguages: Array<string> = [Language.EN];
 
@@ -81,7 +79,7 @@ export async function setI18nLocale(lang: Language): Promise<void> {
     );
 
     const { default: messagesCard } = await import(
-      /* webpackChunkName: "lang-[request]" */
+      /* webpackChunkName: "lang-card-[request]" */
       /* webpackMode: "lazy" */
       `@/lang/card/${filename}.json`
     );

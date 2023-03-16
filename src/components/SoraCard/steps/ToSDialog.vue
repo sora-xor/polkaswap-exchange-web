@@ -10,7 +10,7 @@
       <div class="tos__section">
         <ul class="sora-card__unsupported-countries">
           <li v-for="[key, value] in unsupportedCountries" :key="key">
-            <span class="flags">{{ countryCodeEmoji(key) }} </span> {{ value }}
+            <span class="flags">{{ countryCodeEmoji(key) }} </span> {{ formatCountryName(key, value) }}
           </li>
         </ul>
       </div>
@@ -24,6 +24,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -34,10 +35,26 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
   @Prop({ default: '', type: String }) readonly srcLink!: string;
   @Prop({ default: '', type: String }) readonly title!: string;
 
+  @state.settings.displayRegions private displayRegions!: Nullable<Intl.DisplayNames>;
+
   loading = true;
   flags: string[] = [];
 
   countryCodeEmoji = countryCodeEmoji;
+
+  formatCountryName(key: string, defaultValue: string): string {
+    try {
+      const isoCode = key.toUpperCase();
+      if (!this.displayRegions) {
+        return defaultValue;
+      }
+      const name = this.displayRegions.of(isoCode);
+      return name ?? defaultValue;
+    } catch (error) {
+      console.warn('Unsupported format of SORA Card Blacklisted Country', error);
+      return defaultValue;
+    }
+  }
 
   get unsupportedCountries(): Array<string>[] {
     return Object.entries(this.blacklistedCountries);

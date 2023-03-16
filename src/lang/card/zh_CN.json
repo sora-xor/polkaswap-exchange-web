@@ -9,6 +9,7 @@
         "firstNamePlaceholder": "名",
         "lastNamePlaceholder": "姓",
         "phonePlaceholder": "电话号码",
+        "statusPendingTitle": "正在进行验证",
         "sendEmailLinkBtn": "发送链接",
         "statusAcceptText": "您的 KYC 验证成功，我们已经准备向您发送 SORA 卡！",
         "noFreeKycTitle": "没有更多的免费尝试",
@@ -45,13 +46,17 @@
         "personalNameInputDesc": "使用您的真实姓名。",
         "infoMessageTryAgain": "出了些问题。请再试一次",
         "blacklistedCountriesExcuse": "很遗憾，目前我们无法支持以下国家\/地区：",
-        "statusPendingText": "您已成功完成 KYC 申请。审查正在进行中，您可以期待很快做出决定。 <br \/> <br \/>通常在同一天做出决定，但在某些情况下可能需要长达 3 天的时间。",
-        "statusPendingTitle": "KYC完成。等待结果",
+        "statusPendingText": "你已经成功完成了你的KYC申请。<br \/><br \/>通常情况下，决定是在同一天作出的，在某些情况下可能需要3天。",
         "resendInBtn": "重发{value}",
         "statusRejectTitle": "申请被拒绝",
         "statusRejectText": "您的申请已被内部审核拒绝，请在再次申请前仔细查看我们的要求和 T&S",
         "statusAcceptTitle": "申请获批",
         "noFreeAttemptsDesc": "您已使用免费尝试通过 KYC 流程。我们恳请您等到应用程序的下一次升级后再进行付费尝试。",
-        "retryKycBtn": "再次完成KYC"
+        "retryKycBtn": "再次完成KYC",
+        "unsupportedCountriesLink": "查看列表",
+        "unsupportedCountriesDisclaimer": "部分国家居民暂不能申请SORA卡",
+        "statusRejectReason": "拒绝原因",
+        "userNotFound": "未找到手机号码，请重新检查并重试。",
+        "code": "代码"
     }
 }

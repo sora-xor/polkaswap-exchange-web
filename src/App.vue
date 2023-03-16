@@ -13,13 +13,6 @@
       </app-menu>
       <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
         <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
-          <div v-if="blockNumber && !isCurrentPageTooWide" class="block-number">
-            <s-tooltip :content="t('blockNumberText')" placement="bottom" tabindex="-1">
-              <a class="block-number-link" :href="blockExplorerLink" target="_blank" rel="nofollow noopener">
-                <span class="block-number-icon"></span><span>{{ blockNumberFormatted }}</span>
-              </a>
-            </s-tooltip>
-          </div>
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <disclaimer v-if="disclaimerVisibility" />
@@ -35,11 +28,12 @@
         </s-scrollbar>
       </div>
     </div>
+    <app-footer />
     <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
     <bridge-transfer-notification />
-    <mobile-popup :visible.sync="showMobilePopup" />
-    <browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
-    <browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
+    <app-mobile-popup :visible.sync="showMobilePopup" />
+    <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
+    <app-browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
@@ -49,22 +43,20 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { FPNumber, History, connection, HistoryItem } from '@sora-substrate/util';
-import {
-  components,
-  mixins,
-  getExplorerLinks,
-  WALLET_CONSTS,
-  WALLET_TYPES,
-  settingsStorage,
-} from '@soramitsu/soraneo-wallet-web';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { connection } from '@sora-substrate/util';
+import { components, mixins, settingsStorage } from '@soramitsu/soraneo-wallet-web';
+import type { History, HistoryItem } from '@sora-substrate/util';
+import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
-import SoraLogo from '@/components/logo/Sora.vue';
-import MobilePopup from '@/components/MobilePopup/MobilePopup.vue';
+
+import SoraLogo from '@/components/shared/Logo/Sora.vue';
+import AppHeader from '@/components/App/Header/AppHeader.vue';
+import AppFooter from '@/components/App/Footer/AppFooter.vue';
+import AppMenu from '@/components/App/Menu/AppMenu.vue';
 
 import { PageNames, Components, Language, Links } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
@@ -72,24 +64,25 @@ import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { preloadFontFace, updateDocumentTitle } from '@/utils';
 import { getLocale } from '@/lang';
-import type { ConnectToNodeOptions } from '@/types/nodes';
+import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 import type { SubNetwork } from '@/utils/ethers-util';
 import type { FeatureFlags } from '@/store/settings/types';
 
 @Component({
   components: {
     SoraLogo,
-    AppHeader: lazyComponent(Components.AppHeader),
-    AppMenu: lazyComponent(Components.AppMenu),
+    AppHeader,
+    AppFooter,
+    AppMenu,
+    AppMobilePopup: lazyComponent(Components.AppMobilePopup),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     Disclaimer: lazyComponent(Components.Disclaimer),
+    AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),
+    AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
-    BrowserNotifsEnableDialog: lazyComponent(Components.BrowserNotifsEnableDialog),
-    BrowserNotifsBlockedDialog: lazyComponent(Components.BrowserNotifsBlockedDialog),
     NotificationEnablingPage: components.NotificationEnablingPage,
     ConfirmDialog: components.ConfirmDialog,
-    MobilePopup,
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
@@ -98,13 +91,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showMobilePopup = false;
   showNotifsDarkPage = false;
 
-  @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer storageReferrer!: string;
   @state.settings.browserNotifPopupVisibility browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility browserNotifPopupBlocked!: boolean;
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
-  @state.settings.blockNumber blockNumber!: number;
   @state.router.loading pageLoading!: boolean;
 
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
@@ -258,18 +249,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     return cssClasses;
   }
 
-  get blockNumberFormatted(): string {
-    return new FPNumber(this.blockNumber).toLocaleString();
-  }
-
-  get blockExplorerLink(): Nullable<string> {
-    const links = getExplorerLinks(this.soraNetwork);
-    if (!links.length) {
-      return null;
-    }
-    return links[0].value;
-  }
-
   get showBrowserNotifPopup(): boolean {
     return this.browserNotifPopup;
   }
@@ -355,6 +334,7 @@ html {
   overflow-y: hidden;
   font-size: var(--s-font-size-small);
   line-height: var(--s-line-height-base);
+  letter-spacing: var(--s-letter-spacing-small);
 }
 
 ul ul {
@@ -401,33 +381,6 @@ ul ul {
     &-scrollbar {
       flex: 1;
     }
-  }
-}
-
-.block-number {
-  display: none;
-
-  &-link {
-    display: flex;
-    align-items: center;
-    color: var(--s-color-status-success);
-    font-size: var(--s-font-size-extra-mini);
-    text-decoration: none;
-    font-weight: 300;
-    position: absolute;
-    top: 10px;
-    right: 24px;
-    line-height: 150%;
-  }
-
-  &-icon {
-    $block-icon-size: 7px;
-
-    background-color: var(--s-color-status-success);
-    border-radius: 50%;
-    height: $block-icon-size;
-    width: $block-icon-size;
-    margin-right: 2px;
   }
 }
 
@@ -551,25 +504,9 @@ i.icon-divider {
   @include icon-styles;
 }
 
-@include large-desktop(true) {
-  .app-main[class*='app-main--explore/'] {
-    .app-menu {
-      position: relative;
-
-      @include large-mobile(true) {
-        position: fixed;
-      }
-    }
-  }
-}
-
 @include tablet {
   .app-footer {
     flex-direction: row;
-  }
-
-  .block-number {
-    display: block;
   }
 }
 
@@ -586,10 +523,6 @@ i.icon-divider {
         width: 100%;
         padding-left: $basic-spacing * 2;
       }
-
-      .block-number-link {
-        z-index: $app-body-layer;
-      }
     }
   }
 }
@@ -604,7 +537,7 @@ $sora-logo-width: 173.7px;
     display: flex;
     align-items: stretch;
     overflow: hidden;
-    height: calc(100vh - #{$header-height});
+    height: calc(100vh - #{$header-height} - #{$footer-height});
     position: relative;
   }
 
@@ -661,6 +594,7 @@ $sora-logo-width: 173.7px;
   &__image {
     width: $sora-logo-width;
     height: $sora-logo-height;
+    @include focus-outline;
   }
 }
 </style>

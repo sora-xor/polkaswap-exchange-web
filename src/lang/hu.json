@@ -1112,12 +1112,66 @@
     },
     "tooltips": {
         "roi": "A {ROI} a befektetés megtérülését jelenti. Kiszámítása úgy történik, hogy a befektetésen megszerzett nyereséget elosztjuk a befektetés százalékban kifejezett költségével.",
-        "tvl": "A {TVL} a Total Value Locked rövidítése. A készletekbe zárt tokeneket jelenti dollárban kifejezve."
+        "tvl": "A {TVL} a Total Value Locked rövidítése. A készletekbe zárt tokeneket jelenti dollárban kifejezve.",
+        "volume": "A mennyiség azon eszközök teljes mennyiségére vonatkozik, amelyekkel kereskedtek vagy cseréltek a hálózaton egy adott időszak alatt. A volumen fontos mérőszám a hálózat likviditásának és általános tevékenységének mérésére.",
+        "fees": "A {Sora} blokklánc díjai a hálózaton történő tranzakciók végrehajtása során felmerülő költségekre vonatkoznak. Ezeket a díjakat XOR-ban, a {Sora} hálózat natív kriptovalutájában fizetik. A díj összegét a végrehajtott tranzakció összetettsége és nagysága határozza meg",
+        "supply": "A tokenkészlet a létrehozott és a hálózaton forgalomban lévő tokenek teljes számát jelenti. A tokenkészlet a hálózaton tétbe helyezett, elégetett vagy átvitt tokenek mennyisége alapján ingadozhat.",
+        "transactions": "A tranzakciók a digitális eszközök hálózaton történő küldésének vagy fogadásának folyamatát jelentik, beleértve a likviditási műveleteket, valamint a swapokat.",
+        "accounts": "A fiókok digitális címek, amelyek a felhasználó eszközeit tárolják a hálózaton. Minden fiókhoz egyedi nyilvános cím és privát kulcc tartozik, amely lehetővé teszi a felhasználó számára, hogy hozzáférjen és kezelje eszközeit.",
+        "bridgeTransactions": "A(z {from} to {to} híd arra a folyamatra utal, amely a {from} és {to} hálózatok közötti eszközök átvitelét hidat használja. A híd lehetővé teszi a két hálózat interoperabilitását, lehetővé téve a felhasználók számára, hogy zökkenőmentesen mozgassák az eszközöket közöttük."
     },
     "createTokenText": "Token létrehozása",
     "comingSoonText": "Hamarosan...",
     "confirmText": "Megerősítés",
     "createTokenTextNFT": "NFT létrehozása",
     "doNotShowText": "Ne mutasd ezt még egyszer",
-    "accountText": "számla | fiókok"
+    "accountText": "számla | fiókok",
+    "networkStatisticsText": "Hálózati statisztikák",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Csomópont csatlakoztatva",
+                "loading": "Csomópont újracsatlakozás",
+                "disconnected": "A csomópont megszakadt"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet letiltva",
+                "unstable": "Az internet instabil",
+                "stable": "Internet stabil"
+            },
+            "label": "Az internet sebessége",
+            "desc": {
+                "disabled": "Szétkapcsolt",
+                "unstable": "Lassú kapcsolat",
+                "stable": "Optimális sebesség"
+            },
+            "action": "{Polkaswap} frissítése",
+            "dialogTitle": "Csatlakozzon az internetes forráshoz",
+            "dialogDesc": "{Polkaswap} használatához internetkapcsolat szükséges a stabil élmény érdekében"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "A statisztika nem elérhető",
+                "loading": "Statisztika betöltése",
+                "available": "Statisztikák elérhetőek"
+            },
+            "label": "Statisztikai szolgáltatások",
+            "desc": {
+                "unavailable": "Minden szolgáltatás le van választva",
+                "loading": "Minden szolgáltatás betöltődik",
+                "available": "Minden szolgáltatás stabil"
+            },
+            "action": "Válassza ki a szolgáltatásokat",
+            "dialog": {
+                "title": "{Sora} Hálózati szolgáltatás kiválasztása",
+                "fiat": "Fiat értékek",
+                "chartsAndActivity": "Diagramok és tevékenység",
+                "online": "Online",
+                "offline": "Offline"
+            }
+        }
+    },
+    "locationText": "Elhelyezkedés"
 }

@@ -62,7 +62,7 @@ export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.Loadi
   get textLinks(): Array<{ title: string; href: string }> {
     return [
       {
-        title: this.t('helpDialog.privacyPolicy'),
+        title: this.t('footerMenu.privacy'),
         href: Links.privacy,
       },
       {
@@ -121,7 +121,6 @@ $social-link-min-height: 34px;
 
 .app-info {
   line-height: var(--s-line-height-medium);
-  letter-spacing: var(--s-letter-spacing-small);
 
   & > *:not(:last-child) {
     margin-bottom: $inner-spacing-small;

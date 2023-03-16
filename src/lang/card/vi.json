@@ -9,6 +9,7 @@
         "firstNamePlaceholder": "Họ",
         "lastNamePlaceholder": "Họ",
         "phonePlaceholder": "Số điện thoại",
+        "statusPendingTitle": "Đang xác minh",
         "sendEmailLinkBtn": "Gửi link",
         "statusAcceptText": "Xác minh KYC của bạn thành công và chúng tôi đang chuẩn bị gửi cho bạn thẻ SORA!",
         "noFreeKycTitle": "Không còn nỗ lực miễn phí",
@@ -45,13 +46,17 @@
         "personalNameInputDesc": "Sử dụng tên thật của bạn.",
         "infoMessageTryAgain": "Đã xảy ra sự cố. Vui lòng thử lại",
         "blacklistedCountriesExcuse": "Rất tiếc, tại thời điểm này, chúng tôi không thể hỗ trợ các quốc gia sau:",
-        "statusPendingText": "Bạn đã hoàn thành thành công ứng dụng KYC của mình. Quá trình xem xét đang chờ xử lý và bạn có thể sớm nhận được quyết định. <br \/> <br \/> Thông thường quyết định được đưa ra trong ngày, nhưng trong một số trường hợp có thể mất đến 3 ngày.",
-        "statusPendingTitle": "KYC đã hoàn tất. Đang chờ kết quả",
+        "statusPendingText": "Bạn đã hoàn tất thành công đơn đăng ký KYC của mình. Quá trình xem xét đang chờ xử lý và bạn có thể mong đợi một quyết định trong thời gian ngắn.<br \/><br \/>Thông thường quyết định được đưa ra trong cùng một ngày và trong một số trường hợp có thể mất đến 3 ngày.",
         "resendInBtn": "GỬI LẠI VÀO {value}",
         "statusRejectTitle": "Đơn bị từ chối",
         "statusRejectText": "Đơn đăng ký của bạn đã bị kiểm toán nội bộ từ chối, vui lòng kiểm tra kỹ các yêu cầu và T&S của chúng tôi trước khi đăng ký lại",
         "statusAcceptTitle": "Ứng dụng đã được phê duyệt",
         "noFreeAttemptsDesc": "Bạn đã sử dụng nỗ lực miễn phí của mình để vượt qua quy trình KYC. Chúng tôi vui lòng yêu cầu bạn đợi cho đến lần nâng cấp tiếp theo của ứng dụng để tiếp tục với các lần thử trả phí.",
-        "retryKycBtn": "Hoàn thành KYC lại"
+        "retryKycBtn": "Hoàn thành KYC lại",
+        "unsupportedCountriesLink": "xem danh sách",
+        "unsupportedCountriesDisclaimer": "Cư dân từ một số quốc gia không thể đăng ký Thẻ SORA tại thời điểm này",
+        "statusRejectReason": "lý do từ chối",
+        "userNotFound": "Không tìm thấy số điện thoại di động nào, vui lòng kiểm tra lại và thử lại.",
+        "code": "Mã số"
     }
 }

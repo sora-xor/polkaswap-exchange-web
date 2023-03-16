@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div class="sora-card__header">{{ title }}</div>
+    <div class="sora-card__header">{{ t(titleKey) }}</div>
     <p class="sora-card__status-info" v-html="text" />
 
     <div v-if="currentStatus === VerificationStatus.Rejected" class="sora-card__rejection">
@@ -38,10 +38,14 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { VerificationStatus } from '@/types/card';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { clearTokensFromLocalStorage } from '@/utils/card';
+
+const pendingTitle = 'card.statusPendingTitle';
+const pendingText = 'card.statusPendingText';
+const pendingIcon = 'time-time-24';
 
 @Component
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
@@ -53,68 +57,62 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
 
   VerificationStatus = VerificationStatus;
 
-  readonly pendingTitle = this.t('card.statusPendingTitle');
-  readonly pendingText = this.t('card.statusPendingText');
-  readonly acceptedTitle = this.t('card.statusAcceptTitle');
-  readonly acceptedText = this.t('card.statusAcceptText');
-  readonly rejectedTitle = this.t('card.statusRejectTitle');
-
-  get rejectedText(): string {
+  private get rejectedText(): string {
     if (this.currentStatus === VerificationStatus.Rejected && this.rejectReason) {
-      return `Rejection reason: ${this.rejectReason}`;
+      return `${this.t('card.statusRejectReason')}: ${this.rejectReason}`;
     }
     return this.t('card.statusRejectText');
   }
 
-  get title(): string {
-    if (!this.currentStatus) return this.pendingTitle;
+  get titleKey(): string {
+    if (!this.currentStatus) return pendingTitle;
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
-        return this.pendingTitle;
+        return pendingTitle;
       case VerificationStatus.Accepted:
-        return this.acceptedTitle;
+        return 'card.statusAcceptTitle';
       case VerificationStatus.Rejected:
-        return this.rejectedTitle;
+        return 'card.statusRejectTitle';
       default:
-        return this.pendingTitle;
+        return pendingTitle;
     }
   }
 
   get text(): string {
-    if (!this.currentStatus) return this.pendingText;
+    if (!this.currentStatus) return this.t(pendingText);
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
-        return this.pendingText;
+        return this.t(pendingText);
       case VerificationStatus.Accepted:
-        return this.acceptedText;
+        return this.t('card.statusAcceptText');
       case VerificationStatus.Rejected:
         return this.rejectedText;
       default:
-        return this.pendingText;
+        return this.t(pendingText);
     }
   }
 
   get icon(): string {
-    if (!this.currentStatus) return 'time-time-24';
+    if (this.currentStatus === VerificationStatus.Rejected && !this.hasFreeAttempts) return 'time-time-24';
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
-        return 'time-time-24';
+        return pendingIcon;
       case VerificationStatus.Accepted:
         return 'basic-check-marks-24';
       case VerificationStatus.Rejected:
         return 'basic-close-24';
       default:
-        return 'time-time-24';
+        return pendingIcon;
     }
   }
 
   get computedIconClass(): string {
     const base = 'sora-card__card-icon';
 
-    if (!this.currentStatus) return `${base}--waiting`;
+    if (this.currentStatus === VerificationStatus.Rejected && !this.hasFreeAttempts) return `${base}--waiting`;
 
     switch (this.currentStatus) {
       case VerificationStatus.Pending:
@@ -124,12 +122,11 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       case VerificationStatus.Rejected:
         return `${base}--reject`;
       default:
-        return '';
+        return `${base}--waiting`;
     }
   }
 
   handleKycRetry(): void {
-    clearTokensFromLocalStorage();
     this.setWillToPassKycAgain(true);
     this.$emit('confirm-apply');
   }
@@ -200,8 +197,8 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     &-icon {
       height: 40px;
       width: 40px;
-      right: -10px;
-      bottom: 0px;
+      right: -14px;
+      bottom: -4px;
       position: absolute;
       border-radius: 50%;
       opacity: 0.95;

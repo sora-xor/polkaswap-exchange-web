@@ -9,6 +9,7 @@
         "firstNamePlaceholder": "Ime",
         "lastNamePlaceholder": "Prezime",
         "phonePlaceholder": "Broj telefona",
+        "statusPendingTitle": "Provjera u tijeku",
         "sendEmailLinkBtn": "Pošalji link",
         "statusAcceptText": "Vaša KYC verifikacija je uspješna i već se pripremamo poslati vam SORA karticu!",
         "noFreeKycTitle": "Nema više besplatnih pokušaja",
@@ -45,13 +46,17 @@
         "personalNameInputDesc": "Koristite svoje pravo ime.",
         "infoMessageTryAgain": "Nešto je pošlo po zlu. Molim te pokušaj ponovno",
         "blacklistedCountriesExcuse": "Nažalost, u ovom trenutku nismo u mogućnosti podržati sljedeće zemlje:",
-        "statusPendingText": "Uspješno ste završili svoju KYC prijavu. Pregled je u tijeku i odluku možete očekivati uskoro. <br \/> <br \/> Obično se odluka donosi isti dan, ali u nekim slučajevima može potrajati i do 3 dana.",
-        "statusPendingTitle": "KYC završen. Čekamo rezultate",
+        "statusPendingText": "Uspješno ste završili svoju KYC prijavu. Pregled je u tijeku i odluku možete očekivati uskoro. <br \/> <br \/> Obično se odluka donosi isti dan, au nekim slučajevima može potrajati i do 3 dana.",
         "resendInBtn": "PONOVO POŠALJI ZA {value}",
         "statusRejectTitle": "Prijava odbijena",
         "statusRejectText": "Vašu je prijavu odbila interna revizija, pažljivo provjerite naše zahtjeve i T&S prije ponovne prijave",
         "statusAcceptTitle": "Prijava odobrena",
         "noFreeAttemptsDesc": "Iskoristili ste svoj besplatni pokušaj prolaska KYC procesa. Ljubazno vas molimo da pričekate do sljedeće nadogradnje aplikacije kako biste nastavili s plaćenim pokušajima.",
-        "retryKycBtn": "Ponovno ispunite KYC"
+        "retryKycBtn": "Ponovno ispunite KYC",
+        "unsupportedCountriesLink": "Pogledajte popis",
+        "unsupportedCountriesDisclaimer": "Stanovnici određenih zemalja trenutno ne mogu podnijeti zahtjev za SORA karticu",
+        "statusRejectReason": "Razlog odbijanja",
+        "userNotFound": "Broj mobitela nije pronađen, provjerite ga i pokušajte ponovno.",
+        "code": "Kodirati"
     }
 }

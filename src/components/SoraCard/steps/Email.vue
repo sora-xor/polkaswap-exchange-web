@@ -36,6 +36,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import EmailValidator from 'email-validator';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { state } from '@/store/decorators';
@@ -44,34 +45,36 @@ const RESEND_INTERVAL = 59;
 
 @Component
 export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.soraCard.authLogin authLogin!: any;
+  @state.soraCard.authLogin private authLogin!: any;
+
+  private emailCountDown = '';
+  private prefilledEmail = '';
+  private unconfirmedEmail = '';
+  private emailSentFirstTime = false;
+  private emailResendCount = RESEND_INTERVAL;
 
   firstName = '';
   lastName = '';
   email = '';
-  prefilledEmail = '';
   emailSent = false;
-  emailSentFirstTime = false;
-  emailResendText = '';
-  emailResendCount = RESEND_INTERVAL;
 
   @Watch('emailResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
     const digit = value.toString().length > 1 ? '' : '0';
-    const countDown = `00:${digit}${value}`;
-    this.emailResendText = this.t('card.resendInBtn', { value: countDown });
+    this.emailCountDown = `00:${digit}${value}`;
   }
 
   handleSendEmail(): void {
     this.startEmailCountDown();
 
-    if (this.isPrefilledEmailValid) {
+    if (this.isPrefilledEmailValid || this.isEmailMismatch) {
       // user wants to change unconfirmed email
       if (this.prefilledEmail !== this.email) {
         this.authLogin.ChangeUnconfirmedEmail({ Email: this.email }).catch((error) => {
           console.error('[SoraCard]: Error while changing email', error);
         });
 
+        this.unconfirmedEmail = this.email;
         this.emailSent = true;
 
         return;
@@ -86,6 +89,7 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
           console.error('[SoraCard]: Error while email setup', error);
         });
 
+      this.unconfirmedEmail = this.email;
       this.emailSentFirstTime = true;
       return;
     }
@@ -104,7 +108,9 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   get buttonText() {
-    if (this.emailSent) return this.emailResendText;
+    if (this.emailSent && this.emailCountDown) {
+      return this.t('card.resendInBtn', { value: this.emailCountDown });
+    }
     return this.t('card.sendEmailLinkBtn');
   }
 
@@ -130,11 +136,16 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
     return this.prefilledEmail === 'undefined' || !this.prefilledEmail;
   }
 
-  get isPrefilledEmailValid() {
+  get isPrefilledEmailValid(): boolean {
     if (this.prefilledEmail !== 'undefined' || !!this.prefilledEmail) {
       return EmailValidator.validate(this.prefilledEmail);
     }
     return false;
+  }
+
+  get isEmailMismatch(): boolean {
+    if (!this.unconfirmedEmail) return false;
+    return this.unconfirmedEmail !== this.email;
   }
 
   startEmailCountDown(): void {
@@ -166,6 +177,7 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
         this.emailSent = true;
       })
       .on('Email-verified', () => {
+        this.unconfirmedEmail = '';
         this.$emit('confirm');
       });
   }
