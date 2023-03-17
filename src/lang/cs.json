@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "O projektu",
         "Stats": "Statistiky",
-        "Support": "Podpora",
         "Wallet": "Peněženka",
         "CreatePair": "Vytvořit pár",
         "AddLiquidity": "Přidat likviditu",
@@ -344,7 +343,6 @@
         "Rewards": "Odměny",
         "About": "O projektu",
         "Stats": "Statistiky",
-        "Support": "Podpora",
         "CreatePair": "Vytvořit pár",
         "StakingContainer": "Stakování",
         "Explore\/Container": "Prozkoumat",
@@ -857,7 +855,9 @@
         "settings": "Nastavení",
         "switchTheme": "Přepnout do režimu {theme}",
         "switchLanguage": "Vybrat jazyk",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Zobrazit vyloučení odpovědnosti",
+        "hideDisclaimer": "Skrýt vyloučení odpovědnosti"
     },
     "sentText": "Odesláno",
     "learnMoreText": "Zjistit více",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Umístění"
+    "locationText": "Umístění",
+    "acceptText": "Přijmout a skrýt"
 }

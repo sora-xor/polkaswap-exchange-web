@@ -13,13 +13,11 @@
     "searchText": "Search",
     "cancelText": "Cancel",
     "saveText": "Save",
-    "acceptText": "Accept & Hide",
     "logoutText": "Log out",
     "sendText": "Send",
     "addressText": "Address",
     "amountText": "Amount",
     "errorText": "Error",
-    "doNotShowText": "Don’t show me this again",
     "insufficientBalanceText": "Insufficient {tokenSymbol} balance",
     "unknownErrorText": "ERROR Something went wrong...",
     "transactionSubmittedText": "Transaction was submitted",
@@ -324,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "About",
         "Stats": "Statistics",
-        "Support": "Support",
         "Wallet": "Wallet",
         "CreatePair": "Create Pair",
         "AddLiquidity": "Add Liquidity",
@@ -346,7 +343,6 @@
         "Rewards": "Rewards",
         "About": "About",
         "Stats": "Statistics",
-        "Support": "Support",
         "CreatePair": "Create Pair",
         "StakingContainer": "Staking",
         "Explore\/Container": "Explore",
@@ -1177,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Location"
+    "locationText": "Location",
+    "acceptText": "Accept & Hide"
 }

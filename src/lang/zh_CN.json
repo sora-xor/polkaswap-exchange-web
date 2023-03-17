@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "关于",
         "Stats": "统计数据",
-        "Support": "支持",
         "Wallet": "钱包",
         "CreatePair": "创建一对",
         "AddLiquidity": "增加流动性",
@@ -344,7 +343,6 @@
         "Rewards": "奖励",
         "About": "关于",
         "Stats": "统计数据",
-        "Support": "支持",
         "CreatePair": "创建流动性对",
         "StakingContainer": "质押",
         "Explore\/Container": "探索",
@@ -857,7 +855,9 @@
         "settings": "设置",
         "switchTheme": "切换到{theme}模式",
         "switchLanguage": "选择语言",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "显示免责声明",
+        "hideDisclaimer": "隐藏免责声明"
     },
     "sentText": "已发送",
     "learnMoreText": "了解更多",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "地点"
+    "locationText": "地点",
+    "acceptText": "接受并隐藏"
 }

@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "O giełdzie",
         "Stats": "Statystyki",
-        "Support": "Pomoc",
         "Wallet": "Portfel",
         "CreatePair": "Tworzenie pary",
         "AddLiquidity": "Dodawanie płynności",
@@ -344,7 +343,6 @@
         "Rewards": "Wynagrodzenie",
         "About": "O giełdzie",
         "Stats": "Statystyki",
-        "Support": "Pomoc",
         "CreatePair": "Utwórz parę",
         "StakingContainer": "Staking",
         "Explore\/Container": "Badać",
@@ -857,7 +855,9 @@
         "settings": "Ustawienia",
         "switchTheme": "Przełącz na tryb {theme}",
         "switchLanguage": "Wybierz język",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Pokaż zastrzeżenie",
+        "hideDisclaimer": "Ukryj wyłączenie odpowiedzialności"
     },
     "sentText": "Wysłano",
     "learnMoreText": "Dowiedz się więcej",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Lokalizacja"
+    "locationText": "Lokalizacja",
+    "acceptText": "Zaakceptuj i ukryj"
 }

@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "Om",
         "Stats": "Statistikk",
-        "Support": "Brukerstøtte",
         "Wallet": "Lommebok",
         "CreatePair": "Opprett par",
         "AddLiquidity": "Legg til likviditet",
@@ -344,7 +343,6 @@
         "Rewards": "Belønninger",
         "About": "Om",
         "Stats": "Statistikk",
-        "Support": "Brukerstøtte",
         "CreatePair": "Opprett par",
         "StakingContainer": "Staking",
         "Explore\/Container": "Utforske",
@@ -857,7 +855,9 @@
         "settings": "Innstillinger",
         "switchTheme": "Bytt til {theme} -modus",
         "switchLanguage": "Velg språk",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Vis ansvarsfraskrivelse",
+        "hideDisclaimer": "Skjul ansvarsfraskrivelse"
     },
     "sentText": "Sendt",
     "learnMoreText": "Lær mer",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "plassering"
+    "locationText": "plassering",
+    "acceptText": "Godta og skjul"
 }

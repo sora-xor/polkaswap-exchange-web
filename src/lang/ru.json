@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "О приложении",
         "Stats": "Статистика",
-        "Support": "Поддержка",
         "Wallet": "Кошелек",
         "CreatePair": "Создать пару",
         "AddLiquidity": "Добавить ликвидность",
@@ -344,7 +343,6 @@
         "Rewards": "Награды",
         "About": "О приложении",
         "Stats": "Статистика",
-        "Support": "Поддержка",
         "CreatePair": "Создать пару",
         "StakingContainer": "Стекинг",
         "Explore\/Container": "Исследовать",
@@ -857,7 +855,9 @@
         "settings": "Настройки",
         "switchTheme": "Перейти в {theme} режим",
         "switchLanguage": "Изменить язык",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Показать дисклеймер",
+        "hideDisclaimer": "Скрыть дисклеймер"
     },
     "sentText": "Отправить",
     "learnMoreText": "Узнать больше",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Расположение"
+    "locationText": "Расположение",
+    "acceptText": "Принять и скрыть"
 }
