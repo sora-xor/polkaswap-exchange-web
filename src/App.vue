@@ -49,7 +49,7 @@
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
-    <confirm-dialog v-if="isDesktop" />
+    <confirm-dialog />
   </s-design-system-provider>
 </template>
 
