@@ -76,8 +76,14 @@ export default class FooterPopper extends Vue {
     this.popover?.doToggle();
   }
 
-  handleBlur(): void {
-    this.popover?.doClose();
+  /** Click outside or tab event on another popper */
+  handleBlur(event: FocusEvent): void {
+    const el: Nullable<HTMLElement> = this.popover.popperElm;
+    const eventEl = event.relatedTarget as Nullable<HTMLElement>;
+    if (!(el && eventEl)) return;
+    if (!(el === eventEl || el.contains(eventEl))) {
+      this.popover?.doClose();
+    }
   }
 }
 </script>
@@ -118,6 +124,7 @@ $footer-action-background-color: #f7f3f4;
     }
     &__label {
       flex-direction: column;
+      word-break: break-word;
       > :first-child {
         font-weight: 300;
         font-size: var(--s-font-size-mini);
