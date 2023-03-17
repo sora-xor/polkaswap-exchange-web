@@ -209,7 +209,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   justify-content: center;
   align-items: center;
   max-width: 520px;
-  margin-top: 30px;
 
   &__intro {
     display: flex;

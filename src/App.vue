@@ -556,8 +556,7 @@ $sora-logo-width: 173.7px;
 
   &-content {
     flex: 1;
-    margin: auto;
-    width: 100%;
+    margin: $inner-spacing-big auto 0;
   }
 
   &-footer {
