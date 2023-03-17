@@ -9,6 +9,7 @@
         "firstNamePlaceholder": "Förnamn",
         "lastNamePlaceholder": "Efternamn",
         "phonePlaceholder": "Telefonnummer",
+        "statusPendingTitle": "Verifiering pågår",
         "sendEmailLinkBtn": "Skicka länk",
         "statusAcceptText": "Din KYC-verifiering är framgångsrik och vi förbereder redan för att skicka SORA-kortet till dig!",
         "noFreeKycTitle": "Inga fler gratisförsök",
@@ -45,8 +46,7 @@
         "personalNameInputDesc": "Använd ditt riktiga namn.",
         "infoMessageTryAgain": "Något gick fel. Var god försök igen",
         "blacklistedCountriesExcuse": "Tyvärr kan vi för närvarande inte stödja följande länder:",
-        "statusPendingText": "Du har slutfört din KYC-ansökan. Granskningen väntar och du kan förvänta dig ett beslut inom kort. <br \/> <br \/> Vanligtvis tas beslutet samma dag, men kan i vissa fall ta upp till 3 dagar.",
-        "statusPendingTitle": "KYC avslutat. Väntar på resultatet",
+        "statusPendingText": "Du har slutfört din KYC-ansökan. Granskningen är pågående och du kan förvänta dig ett beslut inom kort.<br \/><br \/>Vanligtvis fattas beslutet samma dag, men i vissa fall kan det ta upp till tre dagar.",
         "resendInBtn": "SKICKA OM I {value}",
         "statusRejectTitle": "Ansökan avslogs",
         "statusRejectText": "Din ansökan har avvisats av internrevision, vänligen kontrollera våra krav och T&S noggrant innan du ansöker igen",
@@ -55,6 +55,8 @@
         "retryKycBtn": "Slutför KYC igen",
         "unsupportedCountriesLink": "Se listan",
         "unsupportedCountriesDisclaimer": "Invånare från vissa länder kan inte ansöka om SORA-kort för närvarande",
-        "statusRejectReason": "Orsak till avslag"
+        "statusRejectReason": "Orsak till avslag",
+        "userNotFound": "Inget mobilnummer hittades, kontrollera det igen och försök igen.",
+        "code": "Koda"
     }
 }

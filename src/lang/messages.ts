@@ -29,6 +29,7 @@ export default {
   connectWalletTextTooltip: 'Connect to {Sora} Network with {PolkadotJs}',
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
+  acceptText: 'Accept & Hide',
   comingSoonText: 'Coming Soon',
   releaseNotesText: 'Release notes',
   memorandum: '{AppName} Memorandum and Terms of Services',
@@ -97,6 +98,8 @@ export default {
     switchTheme: 'Switch to {theme} Mode',
     switchLanguage: 'Choose Language',
     selectNode: '@:selectNodeText',
+    showDisclaimer: 'Show Disclaimer',
+    hideDisclaimer: 'Hide Disclaimer',
   },
   social: {
     wiki: '{Sora} Wiki',

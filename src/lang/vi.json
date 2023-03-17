@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "Giới thiệu",
         "Stats": "Thống kê",
-        "Support": "Hỗ trợ",
         "Wallet": "Ví",
         "CreatePair": "Tạo một cặp token",
         "AddLiquidity": "Thêm Thanh Khoản",
@@ -344,7 +343,6 @@
         "Rewards": "Phần thưởng",
         "About": "Giới thiệu",
         "Stats": "Thống kê",
-        "Support": "Hỗ trợ",
         "CreatePair": "Tạo một cặp token",
         "StakingContainer": "Staking",
         "Explore\/Container": "Khám phá",
@@ -857,7 +855,9 @@
         "settings": "Cài đặt",
         "switchTheme": "Chuyển sang chế độ {theme}",
         "switchLanguage": "Chọn ngôn ngữ",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Hiển thị tuyên bố miễn trừ trách nhiệm",
+        "hideDisclaimer": "Ẩn tuyên bố từ chối trách nhiệm"
     },
     "sentText": "Đã gửi",
     "learnMoreText": "Tìm hiểu thêm",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Vị trí"
+    "locationText": "Vị trí",
+    "acceptText": "Chấp nhận & Ẩn"
 }

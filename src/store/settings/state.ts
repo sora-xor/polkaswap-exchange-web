@@ -6,6 +6,7 @@ import type { SettingsState } from './types';
 function initialState(): SettingsState {
   const node = settingsStorage.get('node');
   const customNodes = settingsStorage.get('customNodes');
+  const disclaimerApprove = settingsStorage.get('disclaimerApprove');
   const сhartsEnabled = storage.get('сhartsEnabled');
   const isBrowserNotificationApiAvailable = 'Notification' in window;
   return {
@@ -13,6 +14,7 @@ function initialState(): SettingsState {
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: (storage.get('marketAlgorithm') || DefaultMarketAlgorithm) as MarketAlgorithms,
     сhartsEnabled: сhartsEnabled ? Boolean(JSON.parse(сhartsEnabled)) : true,
+    userDisclaimerApprove: disclaimerApprove ? JSON.parse(disclaimerApprove) : false,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     isBrowserNotificationApiAvailable,
     browserNotifsPermission: isBrowserNotificationApiAvailable ? Notification.permission : 'default',
@@ -27,6 +29,7 @@ function initialState(): SettingsState {
     faucetUrl: '',
     selectNodeDialogVisibility: false,
     selectLanguageDialogVisibility: false,
+    disclaimerVisibility: false,
     browserNotifPopupVisibility: false,
     browserNotifPopupBlockedVisibility: false,
     blockNumber: 0,

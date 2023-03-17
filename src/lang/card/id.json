@@ -9,12 +9,13 @@
         "firstNamePlaceholder": "Nama depan",
         "lastNamePlaceholder": "nama keluarga",
         "phonePlaceholder": "Nomor telepon",
+        "statusPendingTitle": "Verifikasi sedang berlangsung",
         "sendEmailLinkBtn": "Kirim tautan",
         "statusAcceptText": "Verifikasi KYC Anda berhasil dan kami sedang mempersiapkan untuk mengirimkan kartu SORA kepada Anda!",
         "noFreeKycTitle": "Tidak ada lagi percobaan gratis",
         "unsupportedCountries": "Negara yang Tidak Didukung",
         "getSoraCardTitle": "Dapatkan Kartu SORA",
-        "alreadyAppliedTip": "Saya sudah melamar",
+        "alreadyAppliedTip": "Saya sudah mendaftar",
         "getSoraCardBtn": "Dapatkan Kartu SORA secara gratis",
         "bridgeTokensBtn": "Token jembatan",
         "depositX1Btn": "Beli XOR",
@@ -45,8 +46,7 @@
         "personalNameInputDesc": "Gunakan nama asli Anda.",
         "infoMessageTryAgain": "Ada yang salah. Silakan, coba lagi",
         "blacklistedCountriesExcuse": "Sayangnya, saat ini kami tidak dapat mendukung negara-negara berikut:",
-        "statusPendingText": "Anda telah berhasil menyelesaikan aplikasi KYC Anda. Peninjauan sedang menunggu keputusan dan Anda dapat mengharapkan keputusan segera. <br \/> <br \/> Biasanya pengambilan keputusan dilakukan pada hari yang sama, namun terkadang bisa memakan waktu hingga 3 hari.",
-        "statusPendingTitle": "KYC selesai. Menunggu hasil",
+        "statusPendingText": "Anda telah berhasil menyelesaikan aplikasi KYC Anda. Peninjauan sedang berlangsung dan Anda akan segera mendapatkan keputusan.<br \/><br \/>Biasanya keputusan dibuat pada hari yang sama dan dalam beberapa kasus dapat memakan waktu hingga 3 hari.",
         "resendInBtn": "KIRIM ULANG KE {value}",
         "statusRejectTitle": "Lamaran ditolak",
         "statusRejectText": "Permohonan Anda telah ditolak oleh audit internal, harap periksa persyaratan dan T&S kami dengan saksama sebelum mengajukan permohonan kembali",
@@ -55,6 +55,8 @@
         "retryKycBtn": "Selesaikan KYC lagi",
         "unsupportedCountriesLink": "Lihat daftarnya",
         "unsupportedCountriesDisclaimer": "Penduduk dari negara tertentu tidak dapat mengajukan SORA Card untuk saat ini",
-        "statusRejectReason": "Alasan penolakan"
+        "statusRejectReason": "Alasan penolakan",
+        "userNotFound": "Nomor ponsel tidak ditemukan, harap periksa kembali dan coba lagi.",
+        "code": "Kode"
     }
 }

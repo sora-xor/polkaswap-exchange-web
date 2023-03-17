@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "Acerca de",
         "Stats": "Estadísticas",
-        "Support": "Soporte",
         "Wallet": "Cartera",
         "CreatePair": "Crear par",
         "AddLiquidity": "Añadir Liquidez",
@@ -344,7 +343,6 @@
         "Rewards": "Recompensas",
         "About": "Acerca de",
         "Stats": "Estadísticas",
-        "Support": "Soporte",
         "CreatePair": "Crear par",
         "StakingContainer": "Staking",
         "Explore\/Container": "Explorar",
@@ -857,7 +855,9 @@
         "settings": "Ajustes",
         "switchTheme": "Cambiar al modo {theme}",
         "switchLanguage": "Elige lenguaje",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Mostrar descargo de responsabilidad",
+        "hideDisclaimer": "Ocultar descargo de responsabilidad"
     },
     "sentText": "Enviado",
     "learnMoreText": "Aprende más",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Ubicación"
+    "locationText": "Ubicación",
+    "acceptText": "Aceptar y ocultar"
 }
