@@ -15,19 +15,7 @@
         <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
-            <div class="app-disclaimer-container">
-              <p
-                class="app-disclaimer"
-                v-html="
-                  t('disclaimer', {
-                    disclaimerPrefix,
-                    polkaswapFaqLink,
-                    memorandumLink,
-                    privacyLink,
-                  })
-                "
-              />
-            </div>
+            <disclaimer v-if="disclaimerVisibility" />
           </div>
           <footer class="app-footer">
             <div class="sora-logo">
@@ -56,7 +44,7 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { connection } from '@sora-substrate/util';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, settingsStorage } from '@soramitsu/soraneo-wallet-web';
 import type { History, HistoryItem } from '@sora-substrate/util';
 import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
@@ -88,6 +76,7 @@ import type { FeatureFlags } from '@/store/settings/types';
     AppMenu,
     AppMobilePopup: lazyComponent(Components.AppMobilePopup),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
+    Disclaimer: lazyComponent(Components.Disclaimer),
     AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),
     AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
@@ -106,6 +95,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.referrals.storageReferrer storageReferrer!: string;
   @state.settings.browserNotifPopupVisibility browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility browserNotifPopupBlocked!: boolean;
+  @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.router.loading pageLoading!: boolean;
 
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
@@ -122,6 +112,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
+  @mutation.settings.setDisclaimerDialogVisibility private setDisclaimerDialogVisibility!: () => void;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
@@ -182,26 +173,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  get disclaimerPrefix(): string {
-    return `<span class="app-disclaimer__title">${this.t('disclaimerTitle')}</span>`;
-  }
-
-  get memorandumLink(): string {
-    return this.generateDisclaimerLink(Links.terms, this.t('memorandum'));
-  }
-
-  get privacyLink(): string {
-    return this.generateDisclaimerLink(Links.privacy, this.t('footerMenu.privacy'));
-  }
-
-  get polkaswapFaqLink(): string {
-    return this.generateDisclaimerLink(Links.faq, this.t('FAQ'));
-  }
-
-  generateDisclaimerLink(href: string, content: string): string {
-    return `<a href="${href}" target="_blank" rel="nofollow noopener" class="link" title="${content}">${content}</a>`;
-  }
-
   async confirmInvititation(): Promise<void> {
     await this.getReferrer();
     if (this.storageReferrer) {
@@ -250,6 +221,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // connection to node
       await this.runAppConnectionToNode();
       updateDocumentTitle(); // For the first load
+      this.showDisclaimer();
     });
   }
 
@@ -312,6 +284,14 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   setDarkPage(value: boolean) {
     this.showNotifsDarkPage = value;
+  }
+
+  showDisclaimer(): void {
+    const disclaimerApprove = settingsStorage.get('disclaimerApprove');
+
+    if (!disclaimerApprove) {
+      setTimeout(() => this.setDisclaimerDialogVisibility(), 3000);
+    }
   }
 
   handleAppMenuClick(e: Event): void {
@@ -505,14 +485,6 @@ ul ul {
     border-radius: var(--s-border-radius-medium);
   }
 }
-.app-disclaimer {
-  &__title {
-    color: var(--s-color-theme-accent);
-  }
-  a {
-    @include focus-outline;
-  }
-}
 
 .link {
   color: var(--s-color-base-content-primary);
@@ -535,9 +507,6 @@ i.icon-divider {
 @include tablet {
   .app-footer {
     flex-direction: row;
-    .app-disclaimer-container {
-      padding-right: $inner-spacing-large;
-    }
   }
 }
 
@@ -553,31 +522,6 @@ i.icon-divider {
       .app-content {
         width: 100%;
         padding-left: $basic-spacing * 2;
-        .app-disclaimer {
-          $margin-left: 10px;
-          max-width: calc(#{$inner-window-width} + #{$margin-left});
-          padding-right: $inner-spacing-big;
-          padding-left: calc(#{$inner-spacing-big} + #{$margin-left});
-          &-container {
-            margin-left: auto;
-            margin-right: auto;
-            max-width: calc(#{$inner-window-width} * 2 + #{$basic-spacing-small});
-          }
-        }
-      }
-    }
-  }
-}
-
-@include large-desktop {
-  .app-main {
-    &.app-main--has-charts {
-      .app-content {
-        .app-disclaimer {
-          &-container {
-            max-width: calc(#{$inner-window-width} * 3 + #{$basic-spacing-small} * 4);
-          }
-        }
       }
     }
   }
@@ -604,13 +548,6 @@ $sora-logo-width: 173.7px;
     flex-flow: column nowrap;
     &__about {
       overflow: hidden;
-
-      .app-content .app-disclaimer-container {
-        width: 100%;
-        max-width: 900px;
-        padding: 0 20px;
-        margin: 0 auto 120px;
-      }
       .app-footer {
         justify-content: center;
       }
@@ -620,22 +557,7 @@ $sora-logo-width: 173.7px;
   &-content {
     flex: 1;
     margin: $inner-spacing-big auto 0;
-
-    .app-disclaimer-container {
-      margin-left: auto;
-      margin-bottom: $inner-spacing-big;
-      margin-right: auto;
-      max-width: calc(#{$inner-window-width} - #{$basic-spacing-medium * 2});
-      text-align: justify;
-    }
-  }
-
-  &-disclaimer {
-    margin-top: $basic-spacing-medium;
-    font-size: var(--s-font-size-extra-mini);
-    font-weight: 300;
-    line-height: var(--s-line-height-extra-small);
-    color: var(--s-color-base-content-secondary);
+    width: 100%;
   }
 
   &-footer {

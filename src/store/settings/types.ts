@@ -14,6 +14,7 @@ export type SettingsState = {
   slippageTolerance: string;
   marketAlgorithm: MarketAlgorithms;
   сhartsEnabled: boolean;
+  userDisclaimerApprove: boolean;
   transactionDeadline: number;
   node: Partial<Node>;
   language: string;
@@ -26,6 +27,7 @@ export type SettingsState = {
   faucetUrl: string;
   selectNodeDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
+  disclaimerVisibility: boolean;
   browserNotifPopupVisibility: boolean;
   browserNotifPopupBlockedVisibility: boolean;
   isBrowserNotificationApiAvailable: boolean;

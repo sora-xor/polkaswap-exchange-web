@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "Om",
         "Stats": "Statistik",
-        "Support": "Assistans",
         "Wallet": "Plånbok",
         "CreatePair": "Skapa Par",
         "AddLiquidity": "Lägg Till Likviditet",
@@ -344,7 +343,6 @@
         "Rewards": "Belöningar",
         "About": "Om",
         "Stats": "Statistik",
-        "Support": "Assistans",
         "CreatePair": "Skapa Par",
         "StakingContainer": "Utsättning",
         "Explore\/Container": "Utforska",
@@ -857,7 +855,9 @@
         "settings": "Inställningar",
         "switchTheme": "Byt till {theme} Läge",
         "switchLanguage": "Välj Språk",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Visa ansvarsfriskrivning",
+        "hideDisclaimer": "Dölj ansvarsfriskrivning"
     },
     "sentText": "Skickat",
     "learnMoreText": "Lär dig mer",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Plats"
+    "locationText": "Plats",
+    "acceptText": "Acceptera och dölj"
 }

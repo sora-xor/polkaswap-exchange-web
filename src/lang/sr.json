@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "О томе",
         "Stats": "Статистикa",
-        "Support": "Подршка",
         "Wallet": "Новчаник",
         "CreatePair": "Направите пар",
         "AddLiquidity": "Додати ликвидност",
@@ -344,7 +343,6 @@
         "Rewards": "Награде",
         "About": "О",
         "Stats": "Статистикa",
-        "Support": "Подршка",
         "CreatePair": "Направите пар",
         "StakingContainer": "Стeкинг",
         "Explore\/Container": "Истражите",
@@ -857,7 +855,9 @@
         "settings": "Подешавања",
         "switchTheme": "Пребаците се на {theme} mод",
         "switchLanguage": "Изаберите језик",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Схов Дисцлаимер",
+        "hideDisclaimer": "Сакриј одрицање одговорности"
     },
     "sentText": "Poslato",
     "learnMoreText": "Сазнајте више",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Локација"
+    "locationText": "Локација",
+    "acceptText": "Прихвати и сакриј"
 }

@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "Informazioni su",
         "Stats": "Statistiche",
-        "Support": "Supporto",
         "Wallet": "Portafoglio",
         "CreatePair": "Crea una Pair",
         "AddLiquidity": "Aggiungi liquidità",
@@ -344,7 +343,6 @@
         "Rewards": "Ricompense",
         "About": "Informazioni su",
         "Stats": "Statistiche",
-        "Support": "Supporto",
         "CreatePair": "Crea una pair",
         "StakingContainer": "Staking",
         "Explore\/Container": "Esplorare",
@@ -857,7 +855,9 @@
         "settings": "Impostazioni",
         "switchTheme": "Passa alla modalità {theme}",
         "switchLanguage": "Scegli la lingua",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Mostra esclusione di responsabilità",
+        "hideDisclaimer": "Nascondi Dichiarazione di non responsabilità"
     },
     "sentText": "Inviato",
     "learnMoreText": "Per saperne di più",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Posizione"
+    "locationText": "Posizione",
+    "acceptText": "Accetta e nascondi"
 }
