@@ -231,8 +231,8 @@
           :sora-network-fee="soraNetworkFee"
         />
       </s-card>
-      <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-      <!-- <select-network :visible.sync="showSelectNetworkDialog" :value="evmNetwork" :sub-networks="subNetworks" @input="selectNetwork" /> -->
+      <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
+      <!-- <bridge-select-network :visible.sync="showSelectNetworkDialog" :value="evmNetwork" :sub-networks="subNetworks" @input="selectNetwork" /> -->
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
         :is-valid-network-type="isValidNetworkType"
