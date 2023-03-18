@@ -87,13 +87,20 @@
         "noAccounts": "There seems to be no accounts in your {extension} extension. Please add an account and try again.",
         "noAccount": "{extension} account error. Please check your account in the {extension} extension",
         "noExtension": "No {extension} extension was found. Please install it and reload this page",
-        "noSigner": "Access denied. Go to {extension} extension settings and open \"Manage Website Access\" to allow."
+        "noSigner": "Access denied. Go to {extension} extension settings and open \"Manage Website Access\" to allow.",
+        "connectionError": "An error occured while connecting the wallet. You can try to connect the wallet via {extension} again"
     },
     "connection": {
         "title": "{Sora} Network account",
-        "text": "Connect or create your {Sora} Network account with {extensions} extensions. These extensions allow you to securely sign transactions and manage assets in {Sora} Network.",
+        "text": "Extensions & Google store your {Sora} Network account securely. They allow you to sign transactions & manage assets.",
+        "internalTitle": "Connect via {wallet}",
+        "internalText": "You can create or link an existing account via {wallet}. It stores accounts using encryption.",
         "noAccounts": "No account found in your {extension} browser extension. Please add an account and try again.",
         "selectAccount": "Select account to work with",
+        "list": {
+            "simplest": "Simplest option",
+            "extensions": "Extensions"
+        },
         "action": {
             "install": "Install extension",
             "learnMore": "Learn more",
@@ -1087,6 +1094,7 @@
         "confirmSeedText": "Confirm the seed phrase by clicking words in the correct order",
         "errorMnemonicText": "Incorrect seed phrase order",
         "exportOptionText": "Export .json account file",
+        "exportJsonDescriptionText": "Export your account from {PolkadotJs} compatible browser extension in .json format to upload it here.",
         "exportJsonText": "You will always be able to access your account by importing that .json file. Do not share it with anyone!",
         "addAccount": "Add an account",
         "dialog": {
@@ -1174,5 +1182,7 @@
         }
     },
     "locationText": "Location",
-    "acceptText": "Accept & Hide"
+    "acceptText": "Accept & Hide",
+    "copyPhraseText": "Copy Phrase",
+    "stepText": "Step"
 }
