@@ -228,19 +228,11 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
 
 <style lang="scss">
 .dialog-wrapper.select-node-dialog {
-  .el-dialog .el-dialog__body {
-    padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-mini * 4;
-  }
-
   &--add-node {
     .el-dialog {
       .el-dialog__header {
         padding: 0;
         display: none;
-      }
-
-      .el-dialog__body {
-        padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini * 4;
       }
     }
   }

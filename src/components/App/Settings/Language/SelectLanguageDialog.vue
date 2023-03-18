@@ -66,9 +66,6 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .dialog-wrapper.select-language-dialog {
-  .el-dialog .el-dialog__body {
-    padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-mini * 4;
-  }
   .el-radio {
     margin-right: 0;
   }

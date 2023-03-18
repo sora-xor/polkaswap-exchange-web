@@ -139,11 +139,3 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
   }
 }
 </script>
-
-<style lang="scss">
-.dialog-wrapper.moonpay-dialog {
-  .el-dialog .el-dialog__body {
-    padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-big;
-  }
-}
-</style>
