@@ -189,7 +189,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 .sora-card__options {
   .el-loading-mask {
     padding: 0px 20px 20px;
-    margin: 0 -20px -20px;
+    margin: 0 -20px -2px;
     background-color: var(--s-color-utility-surface);
     .el-loading-spinner {
       margin-left: calc(50% - var(--s-size-medium) + 10px / 2);
