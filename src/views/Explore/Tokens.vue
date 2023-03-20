@@ -133,7 +133,7 @@
           </template>
         </s-table-column>
         <!-- Velocity -->
-        <s-table-column width="104" header-align="right" align="right">
+        <s-table-column width="88" header-align="right" align="right">
           <template #header>
             <sort-button name="velocity" :sort="{ order, property }" @change-sort="changeSort">
               <span class="explore-table__primary">VC.</span>

@@ -806,7 +806,7 @@ export default {
     bridgeTransactions:
       '{from} to {to} bridge refers to the process of transferring assets between the {from} and {to} networks using a bridge. The bridge allows for the interoperability of the two networks, enabling users to seamlessly move assets between them.',
     velocity:
-      'Token velocity is the number of times token changes accounts on average. It indicates the level of trading activity and liquidity.',
+      'Token velocity is the number of times token changes accounts during period (month) on average. It indicates the level of trading activity and liquidity.',
   },
   networkStatisticsText: 'Network statistics',
 };
