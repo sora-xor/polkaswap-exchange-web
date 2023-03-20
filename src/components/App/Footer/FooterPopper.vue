@@ -6,6 +6,7 @@
     :popper-class="computedPopperClass"
     :disabled="loading"
     :tabindex="tabindex"
+    @show="handleShow"
   >
     <div
       slot="reference"
@@ -35,8 +36,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
+import { Component, Prop, Vue, Ref, Watch } from 'vue-property-decorator';
 import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
+import { delay } from '@/utils';
 
 const cssPopperClass = 'app-status__tooltip';
 
@@ -49,6 +51,16 @@ export default class FooterPopper extends Vue {
   @Prop({ required: true, type: String }) readonly panelText!: string;
 
   @Ref('popover') popover!: any;
+
+  /** Fix issue with negative left values */
+  async handleShow(): Promise<void> {
+    await delay(100);
+    const left = (this.popover?.popperElm as Nullable<HTMLElement>)?.style?.getPropertyValue('left');
+    if (!left) return;
+    if (left.includes('-')) {
+      (this.popover?.popperElm as HTMLElement).style.setProperty('left', '0');
+    }
+  }
 
   get computedPopperClass(): string {
     const css = [cssPopperClass, this.status].filter((item) => !!item);
