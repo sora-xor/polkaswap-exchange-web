@@ -1118,7 +1118,8 @@
         "supply": "Ipese tokini tọka si nọmba lapapọ ti awọn ami ti a ti ṣẹda ati ti o wa ni sisan lori nẹtiwọọki. Ipese ami le yipada da lori iye awọn ami ti o wa ni ifipamọ, sun, tabi gbigbe lori nẹtiwọọki.",
         "transactions": "Awọn iṣowo n tọka si ilana ti fifiranṣẹ tabi gbigba awọn ohun-ini oni-nọmba lori nẹtiwọọki, pẹlu awọn iṣẹ oloomi, ati awọn swaps.",
         "accounts": "Awọn akọọlẹ jẹ awọn adirẹsi oni-nọmba ti o mu awọn ohun-ini olumulo mu lori nẹtiwọọki. Iwe akọọlẹ kọọkan ni nkan ṣe pẹlu adiresi gbogbogbo alailẹgbẹ ati bọtini ikọkọ ti o fun laaye olumulo laaye lati wọle ati ṣakoso awọn ohun-ini wọn.",
-        "bridgeTransactions": "{from} si {to} Afara n tọka si ilana gbigbe ohun-ini laarin {from} ati {to} awọn nẹtiwọọki nipa lilo afara. Afara naa ngbanilaaye fun ibaraenisepo ti awọn nẹtiwọọki meji, ṣiṣe awọn olumulo laaye lati gbe awọn ohun-ini lainidi laarin wọn."
+        "bridgeTransactions": "{from} si {to} Afara n tọka si ilana gbigbe ohun-ini laarin {from} ati {to} awọn nẹtiwọọki nipa lilo afara. Afara naa ngbanilaaye fun ibaraenisepo ti awọn nẹtiwọọki meji, ṣiṣe awọn olumulo laaye lati gbe awọn ohun-ini lainidi laarin wọn.",
+        "velocity": "Iyara tokini jẹ nọmba awọn akoko ti ami iyipada awọn akọọlẹ lakoko akoko (oṣu) ni apapọ. O tọkasi ipele ti iṣẹ iṣowo ati oloomi."
     },
     "createTokenText": "Ṣẹda token",
     "comingSoonText": "Nbọ laipẹ",

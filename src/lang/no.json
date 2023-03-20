@@ -1118,7 +1118,8 @@
         "supply": "Tokenforsyning refererer til det totale antallet tokens som er opprettet og er i omløp på nettverket. Tokentilførselen kan variere basert på mengden tokens som settes inn, brennes eller overføres på nettverket.",
         "transactions": "Transaksjoner refererer til prosessen med å sende eller motta digitale eiendeler på nettverket, inkludert likviditetsoperasjoner, samt bytteavtaler.",
         "accounts": "Kontoer er digitale adresser som holder brukerens eiendeler på nettverket. Hver konto er knyttet til en unik offentlig adresse og en privat nøkkel som lar brukeren få tilgang til og administrere sine eiendeler.",
-        "bridgeTransactions": "{from} til {to} -broen refererer til prosessen med å overføre eiendeler mellom {from} og {to} -nettverket ved hjelp av en bro. Broen gir mulighet for interoperabilitet mellom de to nettverkene, slik at brukere sømløst kan flytte eiendeler mellom dem."
+        "bridgeTransactions": "{from} til {to} -broen refererer til prosessen med å overføre eiendeler mellom {from} og {to} -nettverket ved hjelp av en bro. Broen gir mulighet for interoperabilitet mellom de to nettverkene, slik at brukere sømløst kan flytte eiendeler mellom dem.",
+        "velocity": "Tokenhastighet er antall ganger token endrer konto i løpet av perioden (måned) i gjennomsnitt. Det indikerer nivået på handelsaktivitet og likviditet."
     },
     "createTokenText": "Opprett token",
     "comingSoonText": "Kommer snart",

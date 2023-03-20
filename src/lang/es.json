@@ -1118,7 +1118,8 @@
         "supply": "El suministro de tokens se refiere a la cantidad total de tokens que se han creado y están en circulación en la red. El suministro de tokens puede fluctuar según la cantidad de tokens que se depositan, queman o transfieren en la red.",
         "transactions": "Las transacciones se refieren al proceso de envío o recepción de activos digitales en la red, incluidas las operaciones de liquidez, así como los intercambios.",
         "accounts": "Las cuentas son direcciones digitales que contienen los activos de los usuarios en la red. Cada cuenta está asociada con una dirección pública única y una clave privada que le permite al usuario acceder y administrar sus activos.",
-        "bridgeTransactions": "{from} to {to} bridge se refiere al proceso de transferencia de activos entre las redes {from} y {to} mediante un puente. El puente permite la interoperabilidad de las dos redes, lo que permite a los usuarios mover activos entre ellas sin inconvenientes."
+        "bridgeTransactions": "{from} to {to} bridge se refiere al proceso de transferencia de activos entre las redes {from} y {to} mediante un puente. El puente permite la interoperabilidad de las dos redes, lo que permite a los usuarios mover activos entre ellas sin inconvenientes.",
+        "velocity": "La velocidad del token es la cantidad de veces que el token cambia de cuenta durante un período (mes) en promedio. Indica el nivel de actividad comercial y liquidez."
     },
     "createTokenText": "Crear",
     "comingSoonText": "Próximamente",

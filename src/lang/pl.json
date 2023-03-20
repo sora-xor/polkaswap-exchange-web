@@ -1118,7 +1118,8 @@
         "supply": "Podaż tokenów odnosi się do całkowitej liczby tokenów, które zostały utworzone i są w obiegu w sieci. Podaż tokenów może się zmieniać w zależności od liczby tokenów postawionych, spalonych lub przesłanych w sieci.",
         "transactions": "Transakcje odnoszą się do procesu wysyłania lub odbierania zasobów cyfrowych w sieci, w tym operacji płynnościowych, a także swapów.",
         "accounts": "Konta to adresy cyfrowe, które przechowują zasoby użytkownika w sieci. Każde konto jest powiązane z unikalnym adresem publicznym i kluczem prywatnym, który umożliwia użytkownikowi dostęp do zasobów i zarządzanie nimi.",
-        "bridgeTransactions": "Most {from} do {to} odnosi się do procesu przesyłania zasobów między sieciami {from} i {to} za pomocą mostu. Most umożliwia interoperacyjność obu sieci, umożliwiając użytkownikom płynne przenoszenie zasobów między nimi."
+        "bridgeTransactions": "Most {from} do {to} odnosi się do procesu przesyłania zasobów między sieciami {from} i {to} za pomocą mostu. Most umożliwia interoperacyjność obu sieci, umożliwiając użytkownikom płynne przenoszenie zasobów między nimi.",
+        "velocity": "Szybkość tokena to średnia liczba zmian tokena na kontach w okresie (miesiącu). Wskazuje poziom aktywności handlowej i płynności."
     },
     "createTokenText": "Utwórz token",
     "comingSoonText": "Już wkrótce...",
