@@ -855,7 +855,9 @@
         "settings": "Innstillinger",
         "switchTheme": "Bytt til {theme} -modus",
         "switchLanguage": "Velg språk",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Vis ansvarsfraskrivelse",
+        "hideDisclaimer": "Skjul ansvarsfraskrivelse"
     },
     "sentText": "Sendt",
     "learnMoreText": "Lær mer",
@@ -1171,5 +1173,6 @@
             }
         }
     },
-    "locationText": "plassering"
+    "locationText": "plassering",
+    "acceptText": "Godta og skjul"
 }

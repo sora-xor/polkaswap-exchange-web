@@ -39,7 +39,6 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
           const date = dayjs(+value);
           const isNewDay = date.hour() === 0 && date.minute() === 0;
           const isNewMonth = date.date() === 1 && isNewDay;
-          // TODO: "LT" formatted labels (hours) sometimes overlaps (AM\PM issue)
           const timeFormat = isNewMonth ? 'MMM' : isNewDay ? 'D' : 'HH:mm';
           const formatted = this.formatDate(+value, timeFormat);
 

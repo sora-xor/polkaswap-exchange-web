@@ -855,7 +855,9 @@
         "settings": "Postavke",
         "switchTheme": "Prijeđite na {theme} modus",
         "switchLanguage": "Odaberite jezik",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Prikaži Odricanje od odgovornosti",
+        "hideDisclaimer": "Sakrij izjavu o odricanju odgovornosti"
     },
     "sentText": "Poslano",
     "learnMoreText": "Saznajte više",
@@ -1171,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Mjesto"
+    "locationText": "Mjesto",
+    "acceptText": "Prihvati i sakrij"
 }

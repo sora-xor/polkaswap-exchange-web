@@ -855,7 +855,9 @@
         "settings": "Beállítások",
         "switchTheme": "Váltás {theme} módra",
         "switchLanguage": "Nyelv kiválasztása",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Felelősségi nyilatkozat megjelenítése",
+        "hideDisclaimer": "Felelősségi nyilatkozat elrejtése"
     },
     "sentText": "Küldött",
     "learnMoreText": "Tudj meg többet",
@@ -1171,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Elhelyezkedés"
+    "locationText": "Elhelyezkedés",
+    "acceptText": "Elfogadás és elrejtés"
 }

@@ -855,7 +855,9 @@
         "settings": "Instellingen",
         "switchTheme": "Overschakelen naar {theme} -modus",
         "switchLanguage": "Kies een taal",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Disclaimer tonen",
+        "hideDisclaimer": "Disclaimer verbergen"
     },
     "sentText": "Verzonden",
     "learnMoreText": "Kom meer te weten",
@@ -1171,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Plaats"
+    "locationText": "Plaats",
+    "acceptText": "Accepteren & verbergen"
 }

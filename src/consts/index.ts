@@ -145,11 +145,12 @@ export enum Components {
   AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
   SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
   AppFooter = 'App/Footer/AppFooter',
+  Disclaimer = 'Disclaimer',
   StatisticsDialog = 'App/Footer/StatisticsDialog',
   SelectNodeDialog = 'App/Footer/SelectNodeDialog',
   SelectNode = 'App/Footer/Node/SelectNode',
   NodeInfo = 'App/Footer/Node/NodeInfo',
-  // other
+  // SORA Card
   SoraCard = 'SoraCard',
   SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
   SoraCardKYC = 'SoraCard/SoraCardKYC',

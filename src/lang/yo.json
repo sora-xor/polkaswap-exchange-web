@@ -855,7 +855,9 @@
         "settings": "Ètò",
         "switchTheme": "Yipada si {theme} Ipo",
         "switchLanguage": "Yan Ede",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Ṣafihan AlAIgBA",
+        "hideDisclaimer": "Tọju AlAIgBA"
     },
     "sentText": "Ti firanṣẹ",
     "learnMoreText": "Kọ ẹkọ si",
@@ -1171,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Ipo"
+    "locationText": "Ipo",
+    "acceptText": "Gba & Tọju"
 }

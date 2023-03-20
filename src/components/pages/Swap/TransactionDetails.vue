@@ -23,7 +23,6 @@
         </div>
       </info-line>
       <info-line
-        v-if="false /** TODO: [1.9] enable it later */"
         :label="t('swap.liquidityProviderFee')"
         :label-tooltip="liquidityProviderFeeTooltipText"
         :value="formattedLiquidityProviderFee"

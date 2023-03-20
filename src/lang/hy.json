@@ -855,7 +855,9 @@
         "settings": "Կարգավորումներ",
         "switchTheme": "Անցնել {theme} ռեժիմի",
         "switchLanguage": "Ընտրեք Լեզուն",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Ցույց տալ հերքումը",
+        "hideDisclaimer": "Թաքցնել հերքումը"
     },
     "sentText": "Ուղարկված է",
     "learnMoreText": "Իմանալ ավելին",
@@ -1171,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Գտնվելու վայրը"
+    "locationText": "Գտնվելու վայրը",
+    "acceptText": "Ընդունել և թաքցնել"
 }

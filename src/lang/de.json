@@ -855,7 +855,9 @@
         "settings": "Einstellungen",
         "switchTheme": "Wechseln Sie in den {theme}-Modus",
         "switchLanguage": "Sprache wählen",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Haftungsausschluss anzeigen",
+        "hideDisclaimer": "Haftungsausschluss ausblenden"
     },
     "sentText": "Gesendet",
     "learnMoreText": "Mehr erfahren",
@@ -1171,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Standort"
+    "locationText": "Standort",
+    "acceptText": "Akzeptieren & ausblenden"
 }
