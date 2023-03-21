@@ -265,6 +265,8 @@ export default class CalculatorDialog extends Mixins(PoolCardMixin, mixins.Dialo
 
 <style lang="scss" scoped>
 .calculator-dialog {
+  padding-bottom: $inner-spacing-medium;
+
   & > *:not(:first-child) {
     margin-top: $inner-spacing-medium;
   }
