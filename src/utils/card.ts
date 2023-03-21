@@ -180,6 +180,33 @@ export const clearTokensFromLocalStorage = () => {
   localStorage.removeItem('PW-refresh-token');
 };
 
+export const clearPayWingsKeysFromLocalStorage = () => {
+  localStorage.removeItem('PW-ProcessID');
+  localStorage.removeItem('PW-conf');
+  localStorage.removeItem('PW-Country');
+  localStorage.removeItem('PW-PhoneNumber');
+  localStorage.removeItem('PW-PhoneNumberValid');
+  localStorage.removeItem('PW-Email');
+  localStorage.removeItem('PW-AuthUserID');
+  localStorage.removeItem('PW-DocumentSubtype');
+  localStorage.removeItem('PW-KycReferenceID');
+  localStorage.removeItem('PW-KycStart');
+  localStorage.removeItem('PW-otpID');
+  localStorage.removeItem('PW-OTPLength');
+  localStorage.removeItem('PW-FirstName');
+  localStorage.removeItem('PW-MiddleName');
+  localStorage.removeItem('PW-LastName');
+  localStorage.removeItem('PW-Check');
+  localStorage.removeItem('PW-WhitelabelReferenceID');
+  localStorage.removeItem('PW-KycReferenceID');
+  localStorage.removeItem('PW-documents');
+  localStorage.removeItem('PW-document');
+  localStorage.removeItem('PW-VideoID');
+  localStorage.removeItem('PW-Authorization');
+  localStorage.removeItem('PW-retry');
+  localStorage.removeItem('PW-AppReferenceID');
+};
+
 const emptyStatusFields = (): Status => ({
   verificationStatus: undefined,
   kycStatus: undefined,
