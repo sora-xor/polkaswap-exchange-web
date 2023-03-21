@@ -72,6 +72,9 @@ import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import type { Node } from '@/types/nodes';
 
+/** Max limit provided by navigator.connection.downlink */
+const MAX_INTERNET_CONNECTION_LIMIT = 10;
+
 @Component({
   components: {
     FooterPopper,
@@ -159,7 +162,9 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   }
 
   get internetConnectionSpeedMbText(): string {
-    return this.internetConnectionSpeedMb ? `${this.internetConnectionSpeedMb} ${this.TranslationConsts.mbps}` : '';
+    if (!this.internetConnectionSpeedMb) return '';
+    const suffix = this.internetConnectionSpeedMb === MAX_INTERNET_CONNECTION_LIMIT ? '≥ ' : '';
+    return `${suffix}${this.internetConnectionSpeedMb} ${this.TranslationConsts.mbps}`;
   }
 
   refreshPage(): void {
