@@ -630,7 +630,7 @@ export default class Swap extends Mixins(
     flex-grow: 1;
     max-width: $inner-window-width;
 
-    @include large-desktop {
+    @include desktop {
       max-width: calc(#{$inner-window-width} * 2);
     }
   }
@@ -660,10 +660,6 @@ export default class Swap extends Mixins(
   justify-content: center;
   align-items: flex-start;
   gap: $inner-spacing-medium;
-
-  @include desktop(true) {
-    max-width: $inner-window-width;
-  }
 
   @include desktop {
     flex-flow: row nowrap;

@@ -1118,7 +1118,8 @@
         "supply": "Pasokan token mengacu pada jumlah total token yang telah dibuat dan beredar di jaringan. Pasokan token dapat berfluktuasi berdasarkan jumlah token yang dipertaruhkan, dibakar, atau ditransfer di jaringan.",
         "transactions": "Transaksi mengacu pada proses pengiriman atau penerimaan aset digital di jaringan, termasuk operasi likuiditas, serta pertukaran.",
         "accounts": "Akun adalah alamat digital yang menyimpan aset pengguna di jaringan. Setiap akun dikaitkan dengan alamat publik unik dan kunci pribadi yang memungkinkan pengguna mengakses dan mengelola aset mereka.",
-        "bridgeTransactions": "Jembatan {from} to {to} mengacu pada proses transfer aset antara jaringan {from} dan {to} menggunakan jembatan. Jembatan memungkinkan untuk interoperabilitas dari dua jaringan, memungkinkan pengguna untuk memindahkan aset dengan mulus di antara keduanya."
+        "bridgeTransactions": "Jembatan {from} to {to} mengacu pada proses transfer aset antara jaringan {from} dan {to} menggunakan jembatan. Jembatan memungkinkan untuk interoperabilitas dari dua jaringan, memungkinkan pengguna untuk memindahkan aset dengan mulus di antara keduanya.",
+        "velocity": "Kecepatan token adalah rata-rata berapa kali token mengubah akun selama periode (bulan). Ini menunjukkan tingkat aktivitas perdagangan dan likuiditas."
     },
     "createTokenText": "Buat token",
     "comingSoonText": "Segera Hadir",
