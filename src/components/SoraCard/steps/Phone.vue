@@ -95,6 +95,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   verificationCode = '';
   smsSent = false;
   sendOtpBtnLoading = false;
+  notFoundPhoneWhenApplied = false;
 
   @Watch('smsResendCount', { immediate: true })
   private handleSmsCountChange(value: number): void {
@@ -157,7 +158,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
 
   /** Real example when `countryCode` is empty */
   get countryCodePlaceholder(): string {
-    return this.countryCode ? 'Code' : '+44'; // TODO: [CARD] Translate Code: this.t('card.code')
+    return this.countryCode ? this.t('card.code') : '+44';
   }
 
   get buttonDisabled() {
@@ -165,7 +166,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   }
 
   get otpInputDisabled(): boolean {
-    return !this.smsSent || !this.isPhoneNumberValid;
+    return !this.smsSent || !this.isPhoneNumberValid || this.notFoundPhoneWhenApplied;
   }
 
   get buttonText(): string {
@@ -220,6 +221,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
       if (this.smsResendCount < 0) {
         this.smsSent = false;
         this.verificationCode = '';
+        this.notFoundPhoneWhenApplied = false;
         this.smsResendCount = RESEND_INTERVAL;
         clearInterval(interval);
       }
@@ -247,7 +249,10 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
         this.sendOtpBtnLoading = false;
 
         if (this.userApplied) {
-          this.showAppNotification(this.t('card.infoMessageNoKYC'), 'info');
+          this.showAppNotification(this.t('card.userNotFound'), 'info');
+          this.notFoundPhoneWhenApplied = true;
+          this.verificationCode = '';
+          return;
         }
 
         if (!this.isEuroBalanceEnough) {

@@ -17,6 +17,12 @@
       <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
       <p class="sora-card__balance-indicator-text" v-html="freeStartUsingDesc" />
     </div>
+    <div class="sora-card__unsupported-countries-disclaimer">
+      {{ t('card.unsupportedCountriesDisclaimer') }}
+      <span class="sora-card__unsupported-countries-disclaimer--link" @click="openList">{{
+        t('card.unsupportedCountriesLink')
+      }}</span>
+    </div>
     <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
       <div v-if="isEuroBalanceEnough || !isLoggedIn" class="sora-card__options--enough-euro">
         <s-button
@@ -44,6 +50,7 @@
     <span v-if="isLoggedIn" @click="loginUser" class="sora-card__user-applied">{{ t('card.alreadyAppliedTip') }}</span>
     <x1-dialog :visible.sync="showX1Dialog" />
     <paywings-dialog :visible.sync="showPaywingsDialog" />
+    <tos-dialog :visible.sync="showListDialog" :title="t('card.unsupportedCountries')" />
   </div>
 </template>
 
@@ -70,6 +77,7 @@ const hundred = '100';
   components: {
     X1Dialog: lazyComponent(Components.X1Dialog),
     PaywingsDialog: lazyComponent(Components.PaywingsDialog),
+    TosDialog: lazyComponent(Components.ToSDialog),
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
@@ -89,6 +97,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
   showX1Dialog = false;
   showPaywingsDialog = false;
+  showListDialog = false;
 
   get freeStartUsingDesc(): string {
     if (!this.euroBalance) {
@@ -141,6 +150,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     }
   }
 
+  openList(): void {
+    this.showListDialog = true;
+  }
+
   buyTokens(type: BuyButtonType): void {
     switch (type) {
       case BuyButtonType.X1:
@@ -176,7 +189,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 .sora-card__options {
   .el-loading-mask {
     padding: 0px 20px 20px;
-    margin: 0 -20px -20px;
+    margin: 0 -20px -2px;
     background-color: var(--s-color-utility-surface);
     .el-loading-spinner {
       margin-left: calc(50% - var(--s-size-medium) + 10px / 2);
@@ -196,7 +209,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   justify-content: center;
   align-items: center;
   max-width: 520px;
-  margin-top: 30px;
 
   &__intro {
     display: flex;
@@ -227,11 +239,26 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     width: 100%;
   }
 
-  &__user-applied {
-    margin-top: 24px;
+  &__unsupported-countries-disclaimer {
     color: var(--s-color-base-content-secondary);
+    text-align: center;
+    margin-top: var(--s-size-mini);
+    width: 75%;
+    &--link {
+      border-bottom: 1px solid var(--s-color-theme-accent);
+      color: var(--s-color-theme-accent);
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__user-applied {
+    margin-top: calc(var(--s-basic-spacing) * 2);
+    color: var(--s-color-theme-accent);
+    text-transform: uppercase;
+    font-weight: 500;
     padding-bottom: calc(var(--s-basic-spacing) / 2);
-    border-bottom: 1px solid var(--s-color-base-content-secondary);
     &:hover {
       cursor: pointer;
     }

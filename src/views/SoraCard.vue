@@ -81,6 +81,8 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
     const accessToken = localStorage.getItem('PW-token');
     const refreshToken = localStorage.getItem('PW-refresh-token');
 
+    if (refreshToken === 'undefined') return false;
+
     return !!accessToken && !!refreshToken;
   }
 

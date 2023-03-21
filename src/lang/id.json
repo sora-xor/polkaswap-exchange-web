@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "Tentang",
         "Stats": "Statistik",
-        "Support": "Dukungan",
         "Wallet": "Dompet",
         "CreatePair": "Buat Pair",
         "AddLiquidity": "Tambah Likuiditas",
@@ -344,7 +343,6 @@
         "Rewards": "Hadiah",
         "About": "Tentang",
         "Stats": "Statistik",
-        "Support": "Dukungan",
         "CreatePair": "Buat Pair",
         "StakingContainer": "Staking",
         "Explore\/Container": "Menjelajahi",
@@ -857,7 +855,9 @@
         "settings": "Pengaturan",
         "switchTheme": "Beralih ke Mode {theme}",
         "switchLanguage": "Pilih bahasa",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Tampilkan Penafian",
+        "hideDisclaimer": "Sembunyikan Penafian"
     },
     "sentText": "Terkirim",
     "learnMoreText": "Pelajari lebih lanjut",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Lokasi"
+    "locationText": "Lokasi",
+    "acceptText": "Terima & Sembunyikan"
 }

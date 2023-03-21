@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "About",
         "Stats": "Statistics",
-        "Support": "Support",
         "Wallet": "Wallet",
         "CreatePair": "Create Pair",
         "AddLiquidity": "Add Liquidity",
@@ -344,7 +343,6 @@
         "Rewards": "Rewards",
         "About": "About",
         "Stats": "Statistics",
-        "Support": "Support",
         "CreatePair": "Create Pair",
         "StakingContainer": "Staking",
         "Explore\/Container": "Explore",
@@ -857,7 +855,9 @@
         "settings": "Settings",
         "switchTheme": "Switch to {theme} Mode",
         "switchLanguage": "Choose Language",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Show Disclaimer",
+        "hideDisclaimer": "Hide Disclaimer"
     },
     "sentText": "Sent",
     "learnMoreText": "Learn more",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Location"
+    "locationText": "Location",
+    "acceptText": "Accept & Hide"
 }

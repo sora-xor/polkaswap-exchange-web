@@ -102,11 +102,6 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 
 <style lang="scss">
 .explore-tabs {
-  &-container {
-    margin-top: $inner-spacing-big;
-    min-height: var(--s-size-small);
-  }
-
   .el-tabs__header {
     margin: 0 auto;
   }

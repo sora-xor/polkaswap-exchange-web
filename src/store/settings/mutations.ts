@@ -67,6 +67,9 @@ const mutations = defineMutations<SettingsState>()({
   setSelectLanguageDialogVisibility(state, value: boolean): void {
     state.selectLanguageDialogVisibility = value;
   },
+  setDisclaimerDialogVisibility(state): void {
+    state.disclaimerVisibility = !state.disclaimerVisibility;
+  },
   setBrowserNotifsPopupEnabled(state, value: boolean): void {
     state.browserNotifPopupVisibility = value;
   },
@@ -79,6 +82,10 @@ const mutations = defineMutations<SettingsState>()({
   setLanguage(state, value: Language): void {
     state.language = value;
     settingsStorage.set('language', value);
+  },
+  setUserDisclaimerApprove(state): void {
+    state.userDisclaimerApprove = true;
+    settingsStorage.set('disclaimerApprove', true);
   },
   updateDisplayRegions(state): void {
     try {

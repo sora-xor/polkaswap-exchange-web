@@ -8,6 +8,10 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
+@mixin columns($columns, $gap) {
+  width: calc((100% / $columns) - ((#{$gap} * (#{$columns} - 1)) / $columns));
+}
+
 @mixin token-styles {
   .token {
     display: flex;
@@ -34,7 +38,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 }
 
 @mixin container-styles {
-  margin: $inner-spacing-big auto 0;
+  margin: 0 auto 0;
   padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini * 4;
   min-height: $inner-window-height;
   max-width: $inner-window-width;
@@ -59,7 +63,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     font-size: var(--s-font-size-mini);
     font-weight: 300;
     line-height: var(--s-line-height-medium);
-    letter-spacing: var(--s-letter-spacing-small);
 
     &--footer {
       margin-top: $inner-spacing-tiny;
@@ -253,7 +256,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
 @mixin bridge-content ($min-height: 400px) {
   min-height: $min-height;
-  margin-top: $basic-spacing * 2;
   width: 100%;
 }
 
@@ -261,7 +263,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   height: var(--s-size-small);
   font-size: $s-font-size-input;
   line-height: var(--s-line-height-small);
-  letter-spacing: var(--s-letter-spacing-small);
 }
 
 @mixin svg-icon ($url: '', $width: var(--s-icon-font-size-mini), $height: $width) {
@@ -316,7 +317,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   text-transform:  uppercase;
   font-size: $s-font-size-button;
   line-height: var(--s-line-height-small);
-  letter-spacing: var(--s-letter-spacing-small);
 }
 
 @mixin next-button {
@@ -774,7 +774,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       font-size: var(--s-font-size-big);
       font-weight: 800;
       line-height: var(--s-line-height-big);
-      letter-spacing: var(--s-letter-spacing-small);
       text-align: center;
     }
     &-name {

@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "O aplikácii",
         "Stats": "Štatistiky",
-        "Support": "Podpora",
         "Wallet": "Peňaženka",
         "CreatePair": "Vytvoriť pár",
         "AddLiquidity": "Pridať likviditu",
@@ -344,7 +343,6 @@
         "Rewards": "Odmeny",
         "About": "O aplikácii",
         "Stats": "Štatistiky",
-        "Support": "Podpora",
         "CreatePair": "Vytvoriť pár",
         "StakingContainer": "Stakovanie",
         "Explore\/Container": "Preskúmať",
@@ -857,7 +855,9 @@
         "settings": "Nastavenia",
         "switchTheme": "Prepnite do režimu {theme}",
         "switchLanguage": "Vyberte Jazyk",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Zobraziť vylúčenie zodpovednosti",
+        "hideDisclaimer": "Skryť vylúčenie zodpovednosti"
     },
     "sentText": "Odoslané",
     "learnMoreText": "Dozvedieť sa viac",
@@ -1173,5 +1173,6 @@
             }
         }
     },
-    "locationText": "Poloha"
+    "locationText": "Poloha",
+    "acceptText": "Prijať a skryť"
 }
