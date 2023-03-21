@@ -1118,7 +1118,8 @@
         "supply": "Nguồn cung cấp mã thông báo đề cập đến tổng số mã thông báo đã được tạo và đang lưu hành trên mạng. Nguồn cung cấp mã thông báo có thể dao động dựa trên số lượng mã thông báo được đặt cọc, đốt hoặc chuyển trên mạng.",
         "transactions": "Giao dịch đề cập đến quá trình gửi hoặc nhận tài sản kỹ thuật số trên mạng, bao gồm các hoạt động thanh khoản, cũng như hoán đổi.",
         "accounts": "Tài khoản là địa chỉ kỹ thuật số chứa tài sản của người dùng trên mạng. Mỗi tài khoản được liên kết với một địa chỉ công khai duy nhất và một khóa riêng cho phép người dùng truy cập và quản lý tài sản của họ.",
-        "bridgeTransactions": "Cầu nối {from} đến {to} đề cập đến quá trình chuyển nội dung giữa mạng {from} và mạng {to} bằng cầu nối. Cây cầu cho phép khả năng tương tác của hai mạng, cho phép người dùng di chuyển tài sản giữa chúng một cách liền mạch."
+        "bridgeTransactions": "Cầu nối {from} đến {to} đề cập đến quá trình chuyển nội dung giữa mạng {from} và mạng {to} bằng cầu nối. Cây cầu cho phép khả năng tương tác của hai mạng, cho phép người dùng di chuyển tài sản giữa chúng một cách liền mạch.",
+        "velocity": "Tốc độ mã thông báo là số lần mã thông báo thay đổi tài khoản trung bình trong khoảng thời gian (tháng). Nó cho biết mức độ hoạt động giao dịch và tính thanh khoản."
     },
     "createTokenText": "Tạo",
     "comingSoonText": "Sắp ra mắt",

@@ -1118,7 +1118,8 @@
         "supply": "La fornitura di token si riferisce al numero totale di token che sono stati creati e sono in circolazione sulla rete. L'offerta di token può variare in base alla quantità di token messi in staking, bruciati o trasferiti sulla rete.",
         "transactions": "Le transazioni si riferiscono al processo di invio o ricezione di risorse digitali sulla rete, comprese le operazioni di liquidità e gli swap.",
         "accounts": "Gli account sono indirizzi digitali che contengono le risorse dell'utente sulla rete. Ogni account è associato a un indirizzo pubblico univoco e a una chiave privata che consente all'utente di accedere e gestire le proprie risorse.",
-        "bridgeTransactions": "Il bridge {from} to {to} si riferisce al processo di trasferimento delle risorse tra le reti {from} e {to} utilizzando un bridge. Il bridge consente l'interoperabilità delle due reti, consentendo agli utenti di spostare senza problemi le risorse tra di loro."
+        "bridgeTransactions": "Il bridge {from} to {to} si riferisce al processo di trasferimento delle risorse tra le reti {from} e {to} utilizzando un bridge. Il bridge consente l'interoperabilità delle due reti, consentendo agli utenti di spostare senza problemi le risorse tra di loro.",
+        "velocity": "La velocità del token è il numero di volte in cui il token cambia account durante il periodo (mese) in media. Indica il livello di attività di negoziazione e liquidità."
     },
     "createTokenText": "Creare un token",
     "comingSoonText": "Prossimamente",

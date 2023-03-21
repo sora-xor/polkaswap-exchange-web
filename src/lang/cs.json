@@ -1118,7 +1118,8 @@
         "supply": "Zásoba tokenů se týká celkového počtu tokenů, které byly vytvořeny a jsou v oběhu v síti. Zásoba tokenů může kolísat v závislosti na množství tokenů vsazených, spálených nebo přenášených v síti.",
         "transactions": "Transakce se týkají procesu odesílání nebo přijímání digitálních aktiv v síti, včetně operací s likviditou a také swapů.",
         "accounts": "Účty jsou digitální adresy, které uchovávají majetek uživatele v síti. Každý účet je spojen s jedinečnou veřejnou adresou a soukromým klíčem, který uživateli umožňuje přístup a správu jeho majetku.",
-        "bridgeTransactions": "Most {from} do {to} označuje proces přenosu aktiv mezi sítěmi {from} a {to} pomocí mostu. Most umožňuje interoperabilitu obou sítí a umožňuje uživatelům bezproblémově přesouvat prostředky mezi nimi."
+        "bridgeTransactions": "Most {from} do {to} označuje proces přenosu aktiv mezi sítěmi {from} a {to} pomocí mostu. Most umožňuje interoperabilitu obou sítí a umožňuje uživatelům bezproblémově přesouvat prostředky mezi nimi.",
+        "velocity": "Rychlost tokenu je průměrný počet změn účtů během období (měsíce). Udává úroveň obchodní aktivity a likvidity."
     },
     "createTokenText": "Vytvořit",
     "comingSoonText": "Již brzy",
