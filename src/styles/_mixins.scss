@@ -767,15 +767,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         font-weight: 300;
       }
     }
-    &-symbol {
-      flex: 1;
-      background-color: var(--s-color-base-border-secondary);
-      border-radius: var(--s-border-radius-medium);
-      font-size: var(--s-font-size-big);
-      font-weight: 800;
-      line-height: var(--s-line-height-big);
-      text-align: center;
-    }
     &-name {
       font-size: var(--s-font-size-extra-small);
       font-weight: 600;

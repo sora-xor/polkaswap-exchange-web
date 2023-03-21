@@ -40,6 +40,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 import { VerificationStatus } from '@/types/card';
 import { action, getter, mutation, state } from '@/store/decorators';
 
@@ -133,6 +134,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
 
   async mounted(): Promise<void> {
     await this.getUserKycAttempt();
+    clearPayWingsKeysFromLocalStorage();
   }
 }
 </script>

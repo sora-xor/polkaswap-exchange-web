@@ -1118,7 +1118,8 @@
         "supply": "La fourniture de jetons fait référence au nombre total de jetons qui ont été créés et qui sont en circulation sur le réseau. L'offre de jetons peut fluctuer en fonction de la quantité de jetons jalonnés, brûlés ou transférés sur le réseau.",
         "transactions": "Les transactions font référence au processus d'envoi ou de réception d'actifs numériques sur le réseau, y compris les opérations de liquidité, ainsi que les swaps.",
         "accounts": "Les comptes sont des adresses numériques qui contiennent les actifs de l'utilisateur sur le réseau. Chaque compte est associé à une adresse publique unique et à une clé privée qui permet à l'utilisateur d'accéder et de gérer ses actifs.",
-        "bridgeTransactions": "Le pont {from} vers {to} fait référence au processus de transfert d'actifs entre les réseaux {from} et {to} à l'aide d'un pont. Le pont permet l'interopérabilité des deux réseaux, permettant aux utilisateurs de déplacer en toute transparence des actifs entre eux."
+        "bridgeTransactions": "Le pont {from} vers {to} fait référence au processus de transfert d'actifs entre les réseaux {from} et {to} à l'aide d'un pont. Le pont permet l'interopérabilité des deux réseaux, permettant aux utilisateurs de déplacer en toute transparence des actifs entre eux.",
+        "velocity": "La vélocité du jeton est le nombre de fois que le jeton change de compte au cours d'une période (mois) en moyenne. Il indique le niveau d'activité commerciale et de liquidité."
     },
     "createTokenText": "Créer un jeton",
     "comingSoonText": "Bientôt disponible",

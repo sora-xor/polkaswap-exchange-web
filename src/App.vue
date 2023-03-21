@@ -564,7 +564,7 @@ $sora-logo-width: 173.7px;
     display: flex;
     flex-direction: column-reverse;
     justify-content: flex-end;
-    padding: 0 $basic-spacing-medium $basic-spacing-medium;
+    padding: $basic-spacing-medium;
   }
 }
 

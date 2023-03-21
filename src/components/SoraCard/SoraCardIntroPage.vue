@@ -62,7 +62,7 @@ import { FPNumber } from '@sora-substrate/math';
 import { getter, state } from '@/store/decorators';
 import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
-import { clearTokensFromLocalStorage } from '@/utils/card';
+import { clearPayWingsKeysFromLocalStorage, clearTokensFromLocalStorage } from '@/utils/card';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 enum BuyButtonType {
@@ -182,6 +182,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     const userApplied = true;
     this.$emit('confirm-apply', userApplied);
   }
+
+  mounted(): void {
+    clearPayWingsKeysFromLocalStorage();
+  }
 }
 </script>
 
@@ -189,7 +193,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 .sora-card__options {
   .el-loading-mask {
     padding: 0px 20px 20px;
-    margin: 0 -20px -20px;
+    margin: 0 -20px -2px;
     background-color: var(--s-color-utility-surface);
     .el-loading-spinner {
       margin-left: calc(50% - var(--s-size-medium) + 10px / 2);
