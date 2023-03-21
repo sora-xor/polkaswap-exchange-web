@@ -6,6 +6,7 @@
     :popper-class="computedPopperClass"
     :disabled="loading"
     :tabindex="tabindex"
+    @show="handleShow"
   >
     <div
       slot="reference"
@@ -35,8 +36,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
+import { Component, Prop, Vue, Ref, Watch } from 'vue-property-decorator';
 import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
+import { delay } from '@/utils';
 
 const cssPopperClass = 'app-status__tooltip';
 
@@ -49,6 +51,16 @@ export default class FooterPopper extends Vue {
   @Prop({ required: true, type: String }) readonly panelText!: string;
 
   @Ref('popover') popover!: any;
+
+  /** Fix issue with negative left values */
+  async handleShow(): Promise<void> {
+    await delay(100);
+    const left = (this.popover?.popperElm as Nullable<HTMLElement>)?.style?.getPropertyValue('left');
+    if (!left) return;
+    if (left.includes('-')) {
+      (this.popover?.popperElm as HTMLElement).style.setProperty('left', '0');
+    }
+  }
 
   get computedPopperClass(): string {
     const css = [cssPopperClass, this.status].filter((item) => !!item);
@@ -76,8 +88,14 @@ export default class FooterPopper extends Vue {
     this.popover?.doToggle();
   }
 
-  handleBlur(): void {
-    this.popover?.doClose();
+  /** Click outside or tab event on another popper */
+  handleBlur(event: FocusEvent): void {
+    const el: Nullable<HTMLElement> = this.popover.popperElm;
+    const eventEl = event.relatedTarget as Nullable<HTMLElement>;
+    if (!(el && eventEl)) return;
+    if (!(el === eventEl || el.contains(eventEl))) {
+      this.popover?.doClose();
+    }
   }
 }
 </script>
@@ -118,6 +136,7 @@ $footer-action-background-color: #f7f3f4;
     }
     &__label {
       flex-direction: column;
+      word-break: break-word;
       > :first-child {
         font-weight: 300;
         font-size: var(--s-font-size-mini);
