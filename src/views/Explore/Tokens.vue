@@ -9,7 +9,7 @@
       class="explore-table"
     >
       <!-- Index -->
-      <s-table-column width="320" label="#" fixed-position="left">
+      <s-table-column width="280" label="#" fixed-position="left">
         <template #header>
           <div class="explore-table-item-index">
             <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
@@ -28,7 +28,8 @@
           <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
           <token-logo class="explore-table-item-logo" :token-symbol="row.symbol" />
           <div class="explore-table-item-info explore-table-item-info--body">
-            <div class="explore-table-item-name">{{ row.name }}</div>
+            <div class="explore-table-item-name">{{ row.symbol }}</div>
+            <div class="explore-table__secondary">{{ row.name }}</div>
             <div class="explore-table-item-address">
               <token-address
                 class="explore-table-item-address__value"
@@ -39,17 +40,6 @@
               />
             </div>
           </div>
-        </template>
-      </s-table-column>
-      <!-- Symbol -->
-      <s-table-column width="108" header-align="center" align="center" prop="symbol">
-        <template #header>
-          <sort-button name="symbol" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="explore-table__primary">{{ t('tokens.symbol') }}</span>
-          </sort-button>
-        </template>
-        <template v-slot="{ row }">
-          <div class="explore-table-item-symbol">{{ row.symbol }}</div>
         </template>
       </s-table-column>
       <!-- Price -->
