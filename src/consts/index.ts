@@ -110,7 +110,6 @@ export enum PageNames {
   Swap = 'Swap',
   Pool = 'Pool',
   Stats = 'Stats',
-  Support = 'Support',
   Wallet = 'Wallet',
   PoolContainer = 'PoolContainer',
   AddLiquidity = 'AddLiquidity',
@@ -298,6 +297,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'various-planet-24',
     title: PageNames.Stats,
+    href: '/#/stats',
   },
   {
     icon: 'sora-card',
@@ -327,18 +327,18 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     title: 'twitter',
     href: 'https://twitter.com/polkaswap',
   },
-  // TODO: [FONT] Update this icon name to appropriate one after font fix
+  // TODO: [FONT] Update these icon names to appropriate one after font fix
   {
     icon: 'symbols-hash-24',
     title: 'reddit',
     href: 'https://www.reddit.com/r/Polkaswap',
   },
-  // TODO: [FONT] Update this icon name to appropriate one after font fix
   {
     icon: 'symbols-peace-24',
     title: 'medium',
     href: 'https://medium.com/polkaswap',
   },
+  // ____________________________________
   {
     icon: 'symbols-github-24',
     title: 'github',
