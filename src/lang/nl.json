@@ -1118,7 +1118,8 @@
         "supply": "Tokenaanbod verwijst naar het totale aantal tokens dat is aangemaakt en in omloop is op het netwerk. Het tokenaanbod kan fluctueren op basis van het aantal tokens dat wordt ingezet, verbrand of overgedragen op het netwerk.",
         "transactions": "Transacties verwijzen naar het proces van het verzenden of ontvangen van digitale activa op het netwerk, inclusief liquiditeitsoperaties, evenals swaps.",
         "accounts": "Accounts zijn digitale adressen die de activa van de gebruiker op het netwerk bevatten. Elk account is gekoppeld aan een uniek openbaar adres en een privésleutel waarmee de gebruiker toegang heeft tot zijn activa en deze kan beheren.",
-        "bridgeTransactions": "{from} to {to} bridge verwijst naar het proces van het overbrengen van activa tussen de {from} en {to} netwerken met behulp van een bridge. De brug zorgt voor de interoperabiliteit van de twee netwerken, waardoor gebruikers naadloos activa tussen hen kunnen verplaatsen."
+        "bridgeTransactions": "{from} to {to} bridge verwijst naar het proces van het overbrengen van activa tussen de {from} en {to} netwerken met behulp van een bridge. De brug zorgt voor de interoperabiliteit van de twee netwerken, waardoor gebruikers naadloos activa tussen hen kunnen verplaatsen.",
+        "velocity": "Tokensnelheid is het aantal keren dat token gemiddeld van account wisselt gedurende een periode (maand). Het geeft het niveau van handelsactiviteit en liquiditeit aan."
     },
     "createTokenText": "Maak token",
     "comingSoonText": "Binnenkort beschikbaar",
