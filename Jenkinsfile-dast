@@ -1,11 +1,9 @@
-@Library('jenkins-library')
+@Library('jenkins-library@feature/SNE-309/dast-trigger')
 
-String targetEnvironment = 'deploy/exchange-stage1'
-String arachniURL        = 'https://test.polkaswap.io'
+String targetURL = 'https://test.polkaswap.io'
 
 def pipeline = new org.soramitsu.DASTPipeline(
     steps: this,
-    arachniURL: arachniURL,
-    targetEnvironment: targetEnvironment
+    targetURL: targetURL,
 )
 pipeline.runPipeline()
