@@ -110,7 +110,7 @@
     "wallet": {
         "title": "Račun mreže {Sora}",
         "WalletAssets": "Sredstva",
-        "WalletActivity": "Aktivnost",
+        "WalletHistory": "Aktivnost",
         "createToken": "@:createTokenText"
     },
     "walletSend": {

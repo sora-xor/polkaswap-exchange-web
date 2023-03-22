@@ -110,7 +110,7 @@
     "wallet": {
         "title": "Tài khoản Mạng {Sora}",
         "WalletAssets": "Tài sản",
-        "WalletActivity": "Hoạt động",
+        "WalletHistory": "Hoạt động",
         "createToken": "@:createTokenText"
     },
     "walletSend": {

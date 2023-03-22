@@ -110,7 +110,7 @@
     "wallet": {
         "title": "{Sora} hálózati fiók",
         "WalletAssets": "Eszközök",
-        "WalletActivity": "Aktivitás",
+        "WalletHistory": "Aktivitás",
         "createToken": "@:createTokenText"
     },
     "walletSend": {

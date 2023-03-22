@@ -110,7 +110,7 @@
     "wallet": {
         "title": "{Sora} Nettverkskonto",
         "WalletAssets": "Aktiva",
-        "WalletActivity": "Aktivitet",
+        "WalletHistory": "Aktivitet",
         "createToken": "@:createTokenText"
     },
     "walletSend": {

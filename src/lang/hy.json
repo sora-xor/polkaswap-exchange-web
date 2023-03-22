@@ -110,7 +110,7 @@
     "wallet": {
         "title": "{Sora} ցանցի հաշիվ",
         "WalletAssets": "Ակտիվներ",
-        "WalletActivity": "Գործունեություն",
+        "WalletHistory": "Գործունեություն",
         "createToken": "@:createTokenText"
     },
     "walletSend": {

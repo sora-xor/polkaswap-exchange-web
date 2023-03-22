@@ -110,7 +110,7 @@
     "wallet": {
         "title": "{Sora}网络账户",
         "WalletAssets": "资产",
-        "WalletActivity": "活动",
+        "WalletHistory": "活动",
         "createToken": "@:createTokenText"
     },
     "walletSend": {

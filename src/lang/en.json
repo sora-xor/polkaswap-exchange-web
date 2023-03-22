@@ -117,7 +117,7 @@
     "wallet": {
         "title": "{Sora} Network account",
         "WalletAssets": "Assets",
-        "WalletActivity": "Activity",
+        "WalletHistory": "Activity",
         "createToken": "@:createTokenText"
     },
     "walletSend": {

@@ -110,7 +110,7 @@
     "wallet": {
         "title": "Akun Jaringan {Sora}",
         "WalletAssets": "Aset",
-        "WalletActivity": "Aktivitas",
+        "WalletHistory": "Aktivitas",
         "createToken": "@:createTokenText"
     },
     "walletSend": {

@@ -110,7 +110,7 @@
     "wallet": {
         "title": "Рачун мреже {Sora}",
         "WalletAssets": "Средства",
-        "WalletActivity": "Активност",
+        "WalletHistory": "Активност",
         "createToken": "@:createTokenText"
     },
     "walletSend": {

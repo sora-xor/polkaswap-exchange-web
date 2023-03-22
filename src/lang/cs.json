@@ -110,7 +110,7 @@
     "wallet": {
         "title": "Účet sítě {Sora}",
         "WalletAssets": "Aktiva",
-        "WalletActivity": "Aktivita",
+        "WalletHistory": "Aktivita",
         "createToken": "@:createTokenText"
     },
     "walletSend": {

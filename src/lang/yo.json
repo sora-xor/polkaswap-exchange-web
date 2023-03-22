@@ -110,7 +110,7 @@
     "wallet": {
         "title": "Ifowosi {Sora} Nẹtiwọọki",
         "WalletAssets": "Awọn dukia",
-        "WalletActivity": "Iṣẹ iṣe",
+        "WalletHistory": "Iṣẹ iṣe",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
