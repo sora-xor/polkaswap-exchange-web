@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "关于",
         "Stats": "统计数据",
-        "Support": "支持",
         "Wallet": "钱包",
         "CreatePair": "创建一对",
         "AddLiquidity": "增加流动性",
@@ -344,7 +343,6 @@
         "Rewards": "奖励",
         "About": "关于",
         "Stats": "统计数据",
-        "Support": "支持",
         "CreatePair": "创建流动性对",
         "StakingContainer": "质押",
         "Explore\/Container": "探索",
@@ -857,7 +855,9 @@
         "settings": "设置",
         "switchTheme": "切换到{theme}模式",
         "switchLanguage": "选择语言",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "显示免责声明",
+        "hideDisclaimer": "隐藏免责声明"
     },
     "sentText": "已发送",
     "learnMoreText": "了解更多",
@@ -1112,12 +1112,68 @@
     },
     "tooltips": {
         "roi": "{ROI}代表投资回报率。它的计算方法是将投资赚取的利润除以该投资的成本（以等值百分比表示）。",
-        "tvl": "{TVL}代表锁定的总价值。它代表以美元等价物锁定在池中的代币。"
+        "tvl": "{TVL}代表锁定的总价值。它代表以美元等价物锁定在池中的代币。",
+        "volume": "交易量是指在特定时间段内在网络上交易或交换的资产总量。交易量是衡量网络流动性和整体活动的重要指标。",
+        "fees": "{Sora}区块链上的费用是指在网络上执行交易所产生的费用。这些费用以{Sora}网络的原生加密货币 XOR 支付。费用金额取决于正在执行的交易的复杂性和规模",
+        "supply": "代币供应量是指已创建并在网络上流通的代币总数。代币供应量可能会根据网络上质押、销毁或转移的代币数量而波动。",
+        "transactions": "交易是指在网络上发送或接收数字资产的过程，包括流动性操作，以及掉期。",
+        "accounts": "帐户是在网络上保存用户资产的数字地址。每个帐户都与一个唯一的公共地址和一个私钥相关联，允许用户访问和管理他们的资产。",
+        "bridgeTransactions": "{from} to {to} bridge 是指使用网桥在{from}和{to}网络之间转移资产的过程。该桥允许两个网络的互操作性，使用户能够在它们之间无缝移动资产。",
+        "velocity": "Token velocity 是代币在一个时期（月）内平均更换账户的次数。它表明交易活动和流动性的水平。"
     },
     "createTokenText": "创建",
     "comingSoonText": "即将推出",
     "confirmText": "确认",
     "createTokenTextNFT": "创建 NFT",
     "doNotShowText": "不要再给我看这个",
-    "accountText": "帐户 | 帐户"
+    "accountText": "帐户 | 帐户",
+    "networkStatisticsText": "网络统计",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "节点已连接",
+                "loading": "节点重新连接",
+                "disconnected": "节点断开"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "互联网禁用",
+                "unstable": "网络不稳定",
+                "stable": "网络稳定"
+            },
+            "label": "你的网速",
+            "desc": {
+                "disabled": "断开连接",
+                "unstable": "连接缓慢",
+                "stable": "最佳速度"
+            },
+            "action": "刷新{Polkaswap}",
+            "dialogTitle": "连接到互联网资源",
+            "dialogDesc": "{Polkaswap}需要互联网连接以获得稳定的体验"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "无法统计",
+                "loading": "统计加载",
+                "available": "可用的统计数据"
+            },
+            "label": "统计服务",
+            "desc": {
+                "unavailable": "所有服务都断开",
+                "loading": "所有服务正在加载",
+                "available": "所有服务稳定"
+            },
+            "action": "选择服务",
+            "dialog": {
+                "title": "{Sora}网络服务选择",
+                "fiat": "法定价值",
+                "chartsAndActivity": "图表和活动",
+                "online": "在线的",
+                "offline": "离线"
+            }
+        }
+    },
+    "locationText": "地点",
+    "acceptText": "接受并隐藏"
 }

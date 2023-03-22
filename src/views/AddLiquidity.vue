@@ -87,7 +87,7 @@
       @select="selectToken"
     />
 
-    <confirm-token-pair-dialog
+    <add-liquidity-confirm
       :visible.sync="showConfirmDialog"
       :parent-loading="parentLoading || loading"
       :share-of-pool="shareOfPool"
@@ -136,13 +136,13 @@ type SetValue = (v: string) => Promise<void>;
 
 @Component({
   components: {
+    AddLiquidityConfirm: lazyComponent(Components.AddLiquidityConfirm),
+    AddLiquidityTransactionDetails: lazyComponent(Components.AddLiquidityTransactionDetails),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenInput: lazyComponent(Components.TokenInput),
-    AddLiquidityTransactionDetails: lazyComponent(Components.AddLiquidityTransactionDetails),
     InfoLine: components.InfoLine,
   },
 })

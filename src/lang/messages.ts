@@ -6,7 +6,7 @@ import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 import { DemeterPageNames } from '../modules/demeterFarming/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
 import { EvmNetworkType } from '../utils/ethers-util';
-import { MoonpayNotifications } from '../components/Moonpay/consts';
+import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 
 export default {
   // Wallet project keys
@@ -16,6 +16,7 @@ export default {
   hashiBridgeText: '{Hashi} bridge',
   moonpayText: 'MoonPay',
   changeNetworkText: 'Change network in {Metamask}',
+  accountText: 'account | accounts',
   transactionText: 'transaction | transactions',
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
@@ -28,6 +29,7 @@ export default {
   connectWalletTextTooltip: 'Connect to {Sora} Network with {PolkadotJs}',
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
+  acceptText: 'Accept & Hide',
   comingSoonText: 'Coming Soon',
   releaseNotesText: 'Release notes',
   memorandum: '{AppName} Memorandum and Terms of Services',
@@ -64,8 +66,7 @@ export default {
     [PageNames.Pool]: 'Pool',
     [PageNames.Bridge]: '@:bridgeText',
     [PageNames.About]: 'About',
-    [PageNames.Stats]: 'Stats',
-    [PageNames.Support]: 'Support',
+    [PageNames.Stats]: 'Statistics',
     [PageNames.Wallet]: 'Wallet',
     [PageNames.Rewards]: 'Rewards',
     [PageNames.ExploreTokens]: 'Tokens',
@@ -84,8 +85,7 @@ export default {
     [PageNames.Wallet]: 'Account',
     [PageNames.Rewards]: 'Rewards',
     [PageNames.About]: 'About',
-    [PageNames.Stats]: 'Stats',
-    [PageNames.Support]: 'Support',
+    [PageNames.Stats]: 'Statistics',
     [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
   },
@@ -96,6 +96,8 @@ export default {
     switchTheme: 'Switch to {theme} Mode',
     switchLanguage: 'Choose Language',
     selectNode: '@:selectNodeText',
+    showDisclaimer: 'Show Disclaimer',
+    hideDisclaimer: 'Hide Disclaimer',
   },
   social: {
     wiki: '{Sora} Wiki',
@@ -790,5 +792,19 @@ export default {
   tooltips: {
     roi: '{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.',
     tvl: '{TVL} stands for Total Value Locked. It represents tokens locked in the pools in the dollar equivalent.',
+    volume:
+      'Volume refers to the total amount of assets that have been traded or exchanged on the network over a specific period of time. The volume is an important metric for measuring the liquidity and overall activity of the network.',
+    fees: 'Fees on the {Sora} blockchain refer to the charges that are incurred for executing transactions on the network. These fees are paid in XOR, the native cryptocurrency of the {Sora} Network. The fee amount is determined by the complexity and size of the transaction being executed',
+    supply:
+      'Token supply refers to the total number of tokens that have been created and are in circulation on the network. The token supply can fluctuate based on the amount of tokens being staked, burned, or transferred on the network.',
+    transactions:
+      'Transactions refer to the process of sending or receiving digital assets on the network, including liquidity operations, as well as swaps.',
+    accounts:
+      "Accounts are digital addresses that hold user's assets on the network. Each account is associated with a unique public address and a private key that allows the user to access and manage their assets.",
+    bridgeTransactions:
+      '{from} to {to} bridge refers to the process of transferring assets between the {from} and {to} networks using a bridge. The bridge allows for the interoperability of the two networks, enabling users to seamlessly move assets between them.',
+    velocity:
+      'Token velocity is the number of times token changes accounts during period (month) on average. It indicates the level of trading activity and liquidity.',
   },
+  networkStatisticsText: 'Network statistics',
 };

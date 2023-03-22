@@ -34,7 +34,7 @@ enum Step {
     ConfirmationInfo: lazyComponent(Components.ConfirmationInfo),
   },
 })
-export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
+export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
   @state.soraCard.hasFreeAttempts private hasFreeAttempts!: boolean;
   @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
 
@@ -81,6 +81,8 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Subsc
   get hasTokens(): boolean {
     const accessToken = localStorage.getItem('PW-token');
     const refreshToken = localStorage.getItem('PW-refresh-token');
+
+    if (refreshToken === 'undefined') return false;
 
     return !!accessToken && !!refreshToken;
   }

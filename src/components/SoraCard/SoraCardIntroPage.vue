@@ -2,20 +2,26 @@
   <div class="container sora-card">
     <s-image src="card/sora-card.png" lazy fit="cover" draggable="false" class="unselectable sora-card__image" />
     <div class="sora-card__intro">
-      <h3 class="sora-card__intro-title">{{ getCardTitle }}</h3>
+      <h3 class="sora-card__intro-title">{{ t('card.getSoraCardTitle') }}</h3>
       <span class="sora-card__intro-info">
-        {{ getCardText }}
+        {{ t('card.getSoraCardDesc') }}
       </span>
     </div>
     <div v-if="isLoggedIn" class="sora-card__balance-indicator">
       <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
       <p class="sora-card__balance-indicator-text">
-        <span class="sora-card__balance-indicator-text--bold">{{ feeDesc }}</span>
+        <span class="sora-card__balance-indicator-text--bold">{{ t('card.reIssuanceFee') }}</span>
       </p>
     </div>
     <div v-if="wasEuroBalanceLoaded && isLoggedIn" class="sora-card__balance-indicator">
       <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
       <p class="sora-card__balance-indicator-text" v-html="freeStartUsingDesc" />
+    </div>
+    <div class="sora-card__unsupported-countries-disclaimer">
+      {{ t('card.unsupportedCountriesDisclaimer') }}
+      <span class="sora-card__unsupported-countries-disclaimer--link" @click="openList">{{
+        t('card.unsupportedCountriesLink')
+      }}</span>
     </div>
     <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
       <div v-if="isEuroBalanceEnough || !isLoggedIn" class="sora-card__options--enough-euro">
@@ -25,7 +31,7 @@
           :loading="btnLoading"
           @click="handleConfirm"
         >
-          <span class="text"> {{ buttonText }}</span>
+          <span class="text"> {{ t(buttonText) }}</span>
         </s-button>
       </div>
       <div v-else class="sora-card__options--not-enough-euro s-flex">
@@ -37,13 +43,14 @@
           :loading="btnLoading"
           @click="buyTokens(item.type)"
         >
-          <span class="text">{{ item.text }}</span>
+          <span class="text">{{ t(item.text) }}</span>
         </s-button>
       </div>
     </div>
-    <span v-if="isLoggedIn" @click="loginUser" class="sora-card__user-applied">{{ alreadyAppliedText }}</span>
+    <span v-if="isLoggedIn" @click="loginUser" class="sora-card__user-applied">{{ t('card.alreadyAppliedTip') }}</span>
     <x1-dialog :visible.sync="showX1Dialog" />
     <paywings-dialog :visible.sync="showPaywingsDialog" />
+    <tos-dialog :visible.sync="showListDialog" :title="t('card.unsupportedCountries')" />
   </div>
 </template>
 
@@ -55,9 +62,8 @@ import { FPNumber } from '@sora-substrate/math';
 import { getter, state } from '@/store/decorators';
 import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
-import { delay } from '@/utils';
-import { clearTokensFromLocalStorage } from '@/utils/card';
-import TranslationMixin from '../mixins/TranslationMixin';
+import { clearPayWingsKeysFromLocalStorage, clearTokensFromLocalStorage } from '@/utils/card';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 enum BuyButtonType {
   X1,
@@ -71,24 +77,15 @@ const hundred = '100';
   components: {
     X1Dialog: lazyComponent(Components.X1Dialog),
     PaywingsDialog: lazyComponent(Components.PaywingsDialog),
+    TosDialog: lazyComponent(Components.ToSDialog),
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  readonly buyUsingX1 = this.t('card.depositX1Btn');
-  readonly buyUsingBridge = this.t('card.bridgeTokensBtn');
-  // buyUsingPaywings = 'ISSUE CARD FOR €12';
-  readonly getCardForFree = this.t('card.getSoraCardBtn');
-  readonly alreadyAppliedText = this.t('card.alreadyAppliedTip');
-  readonly getCardTitle = this.t('card.getSoraCardTitle');
-  readonly getCardText = this.t('card.getSoraCardDesc');
-  readonly feeDesc = this.t('card.reIssuanceFee');
-  freeStartUsingDesc = '';
-
   readonly buyOptions: Array<BuyButton> = [
-    { type: BuyButtonType.X1, text: this.buyUsingX1, button: 'primary' },
-    { type: BuyButtonType.Bridge, text: this.buyUsingBridge, button: 'secondary' },
-    // TODO: [CARD] bring back when option becomes available
-    // { type: BuyButtonType.Paywings, text: buyUsingPaywings, button: 'tertiary' },
+    { type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' },
+    { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'secondary' },
+    // TODO: [CARD] bring back when option becomes available & check this translation key below
+    // { type: BuyButtonType.Paywings, text: 'card.buyUsingPaywings', button: 'tertiary' },
   ];
 
   @state.soraCard.euroBalance private euroBalance!: string;
@@ -100,18 +97,21 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
   showX1Dialog = false;
   showPaywingsDialog = false;
+  showListDialog = false;
 
-  @Watch('euroBalance', { immediate: true })
-  private handleEuroBalanceTranslationChange(value: number): void {
-    this.freeStartUsingDesc = this.t('card.freeStartDesc', { value: this.balanceIndicatorAmount });
+  get freeStartUsingDesc(): string {
+    if (!this.euroBalance) {
+      return '';
+    }
+    return this.t('card.freeStartDesc', { value: this.balanceIndicatorAmount });
   }
 
   get buttonText(): string {
     if (!this.isLoggedIn) {
-      return this.t('connectWalletText');
+      return 'connectWalletText';
     }
 
-    return this.getCardForFree;
+    return 'card.getSoraCardBtn';
   }
 
   get balanceIndicatorAmount(): string {
@@ -150,6 +150,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     }
   }
 
+  openList(): void {
+    this.showListDialog = true;
+  }
+
   buyTokens(type: BuyButtonType): void {
     switch (type) {
       case BuyButtonType.X1:
@@ -178,6 +182,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     const userApplied = true;
     this.$emit('confirm-apply', userApplied);
   }
+
+  mounted(): void {
+    clearPayWingsKeysFromLocalStorage();
+  }
 }
 </script>
 
@@ -185,7 +193,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 .sora-card__options {
   .el-loading-mask {
     padding: 0px 20px 20px;
-    margin: 0 -20px -20px;
+    margin: 0 -20px -2px;
     background-color: var(--s-color-utility-surface);
     .el-loading-spinner {
       margin-left: calc(50% - var(--s-size-medium) + 10px / 2);
@@ -205,7 +213,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   justify-content: center;
   align-items: center;
   max-width: 520px;
-  margin-top: 30px;
 
   &__intro {
     display: flex;
@@ -236,11 +243,26 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     width: 100%;
   }
 
-  &__user-applied {
-    margin-top: 24px;
+  &__unsupported-countries-disclaimer {
     color: var(--s-color-base-content-secondary);
+    text-align: center;
+    margin-top: var(--s-size-mini);
+    width: 75%;
+    &--link {
+      border-bottom: 1px solid var(--s-color-theme-accent);
+      color: var(--s-color-theme-accent);
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__user-applied {
+    margin-top: calc(var(--s-basic-spacing) * 2);
+    color: var(--s-color-theme-accent);
+    text-transform: uppercase;
+    font-weight: 500;
     padding-bottom: calc(var(--s-basic-spacing) / 2);
-    border-bottom: 1px solid var(--s-color-base-content-secondary);
     &:hover {
       cursor: pointer;
     }

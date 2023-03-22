@@ -230,10 +230,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/stats',
     name: PageNames.Stats,
-  },
-  {
-    path: '/support',
-    name: PageNames.Support,
+    component: lazyView(PageNames.Stats),
   },
   {
     path: '*',

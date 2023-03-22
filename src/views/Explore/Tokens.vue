@@ -9,7 +9,7 @@
       class="explore-table"
     >
       <!-- Index -->
-      <s-table-column width="320" label="#" fixed-position="left">
+      <s-table-column width="280" label="#" fixed-position="left">
         <template #header>
           <div class="explore-table-item-index">
             <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
@@ -28,7 +28,8 @@
           <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
           <token-logo class="explore-table-item-logo" :token-symbol="row.symbol" />
           <div class="explore-table-item-info explore-table-item-info--body">
-            <div class="explore-table-item-name">{{ row.name }}</div>
+            <div class="explore-table-item-name">{{ row.symbol }}</div>
+            <div class="explore-table__secondary">{{ row.name }}</div>
             <div class="explore-table-item-address">
               <token-address
                 class="explore-table-item-address__value"
@@ -39,17 +40,6 @@
               />
             </div>
           </div>
-        </template>
-      </s-table-column>
-      <!-- Symbol -->
-      <s-table-column width="108" header-align="center" align="center" prop="symbol">
-        <template #header>
-          <sort-button name="symbol" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="explore-table__primary">{{ t('tokens.symbol') }}</span>
-          </sort-button>
-        </template>
-        <template v-slot="{ row }">
-          <div class="explore-table-item-symbol">{{ row.symbol }}</div>
         </template>
       </s-table-column>
       <!-- Price -->
@@ -96,7 +86,7 @@
         <!-- 1D Volume -->
         <s-table-column width="104" header-align="right" align="right">
           <template #header>
-            <sort-button name="volumeWeek" :sort="{ order, property }" @change-sort="changeSort">
+            <sort-button name="volumeDay" :sort="{ order, property }" @change-sort="changeSort">
               <span class="explore-table__primary">1D Vol.</span>
             </sort-button>
           </template>
@@ -104,10 +94,10 @@
             <formatted-amount
               is-fiat-value
               :font-weight-rate="FontWeightRate.MEDIUM"
-              :value="row.volumeWeekFormatted.amount"
+              :value="row.volumeDayFormatted.amount"
               class="explore-table-item-price explore-table-item-amount"
             >
-              {{ row.volumeWeekFormatted.suffix }}
+              {{ row.volumeDayFormatted.suffix }}
             </formatted-amount>
           </template>
         </s-table-column>
@@ -130,6 +120,24 @@
             >
               {{ row.tvlFormatted.suffix }}
             </formatted-amount>
+          </template>
+        </s-table-column>
+        <!-- Velocity -->
+        <s-table-column width="88" header-align="right" align="right">
+          <template #header>
+            <sort-button name="velocity" :sort="{ order, property }" @change-sort="changeSort">
+              <span class="explore-table__primary">VC.</span>
+              <s-tooltip border-radius="mini" :content="t('tooltips.velocity')">
+                <s-icon name="info-16" size="14px" />
+              </s-tooltip>
+            </sort-button>
+          </template>
+          <template v-slot="{ row }">
+            <formatted-amount
+              :font-weight-rate="FontWeightRate.MEDIUM"
+              :value="row.velocityFormatted"
+              class="explore-table-item-price explore-table-item-amount"
+            />
           </template>
         </s-table-column>
       </template>
@@ -170,10 +178,13 @@ import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 type AssetData = AssetEntity & {
+  hourSnapshots: {
+    nodes: AssetSnapshotEntity[];
+  };
   daySnapshots: {
     nodes: AssetSnapshotEntity[];
   };
-  weekSnapshot: {
+  weekStartSnapshot: {
     nodes: AssetSnapshotEntity[];
   };
 };
@@ -182,7 +193,9 @@ type TokenData = {
   reserves: FPNumber;
   startPriceDay: FPNumber;
   startPriceWeek: FPNumber;
-  volume: FPNumber;
+  volumeDay: FPNumber;
+  volumeMonth: FPNumber;
+  supply: FPNumber;
 };
 
 type TableItem = {
@@ -192,14 +205,18 @@ type TableItem = {
   priceChangeDayFP: FPNumber;
   priceChangeWeek: number;
   priceChangeWeekFP: FPNumber;
-  volumeWeek: number;
-  volumeWeekFormatted: AmountWithSuffix;
+  volumeDay: number;
+  volumeDayFormatted: AmountWithSuffix;
   tvl: number;
   tvlFormatted: AmountWithSuffix;
+  // mcap: number;
+  // mcapFormatted: AmountWithSuffix;
+  velocity: number;
+  velocityFormatted: string;
 } & Asset;
 
 const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
-  query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
+  query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int, $monthTimestamp: Int) {
     entities: assets(after: $after, filter: { and: [{ id: { in: $ids } }, { liquidity: { greaterThan: "1" } }] }) {
       pageInfo {
         hasNextPage
@@ -208,7 +225,8 @@ const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
       nodes {
         id
         liquidity
-        daySnapshots: data(
+        supply
+        hourSnapshots: data(
           filter: { and: [{ timestamp: { greaterThanOrEqualTo: $dayTimestamp } }, { type: { equalTo: HOUR } }] }
           orderBy: [TIMESTAMP_ASC]
         ) {
@@ -218,15 +236,21 @@ const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
             volume
           }
         }
-        weekSnapshot: data(
+        daySnapshots: data(
+          filter: { and: [{ timestamp: { greaterThanOrEqualTo: $monthTimestamp } }, { type: { equalTo: DAY } }] }
+          orderBy: [TIMESTAMP_ASC]
+        ) {
+          nodes {
+            volume
+          }
+        }
+        weekStartSnapshot: data(
           filter: { timestamp: { greaterThanOrEqualTo: $weekTimestamp } }
           orderBy: [TIMESTAMP_ASC]
           first: 1
         ) {
           nodes {
-            timestamp
             priceUSD
-            volume
           }
         }
       }
@@ -234,19 +258,23 @@ const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
   }
 `;
 
-const parse = (item: AssetData): Record<string, TokenData> => {
-  const volume = item.daySnapshots.nodes.reduce((buffer, snapshot) => {
-    const hourVolume = new FPNumber(snapshot.volume.amountUSD);
+const calcVolume = (nodes: AssetSnapshotEntity[]): FPNumber => {
+  return nodes.reduce((buffer, snapshot) => {
+    const snapshotVolume = new FPNumber(snapshot.volume.amountUSD);
 
-    return buffer.add(hourVolume);
+    return buffer.add(snapshotVolume);
   }, FPNumber.ZERO);
+};
 
+const parse = (item: AssetData): Record<string, TokenData> => {
   return {
     [item.id]: {
       reserves: FPNumber.fromCodecValue(item.liquidity ?? 0),
-      startPriceDay: new FPNumber(item.daySnapshots.nodes?.[0]?.priceUSD?.open ?? 0),
-      startPriceWeek: new FPNumber(item.weekSnapshot.nodes?.[0]?.priceUSD?.open ?? 0),
-      volume,
+      startPriceDay: new FPNumber(item.hourSnapshots.nodes?.[0]?.priceUSD?.open ?? 0),
+      startPriceWeek: new FPNumber(item.weekStartSnapshot.nodes?.[0]?.priceUSD?.open ?? 0),
+      supply: FPNumber.fromCodecValue(item.supply ?? 0),
+      volumeDay: calcVolume(item.hourSnapshots.nodes),
+      volumeMonth: calcVolume(item.daySnapshots.nodes),
     },
   };
 };
@@ -281,12 +309,15 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
       const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0);
       const fpPriceDay = tokenData?.startPriceDay ?? FPNumber.ZERO;
       const fpPriceWeek = tokenData?.startPriceWeek ?? FPNumber.ZERO;
-      const fpVolumeWeek = tokenData?.volume ?? FPNumber.ZERO;
+      const fpVolumeDay = tokenData?.volumeDay ?? FPNumber.ZERO;
+      const fpVolumeMonth = tokenData?.volumeMonth ?? FPNumber.ZERO;
       const fpPriceChangeDay = calcPriceChange(fpPrice, fpPriceDay);
       const fpPriceChangeWeek = calcPriceChange(fpPrice, fpPriceWeek);
 
       const reserves = tokenData?.reserves ?? FPNumber.ZERO;
       const tvl = reserves.mul(fpPrice);
+      const mcap = (tokenData?.supply ?? FPNumber.ZERO).mul(fpPrice);
+      const velocity = mcap.isZero() ? FPNumber.ZERO : fpVolumeMonth.div(mcap);
 
       buffer.push({
         ...asset,
@@ -296,10 +327,14 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
         priceChangeDayFP: fpPriceChangeDay,
         priceChangeWeek: fpPriceChangeWeek.toNumber(),
         priceChangeWeekFP: fpPriceChangeWeek,
-        volumeWeek: fpVolumeWeek.toNumber(),
-        volumeWeekFormatted: formatAmountWithSuffix(fpVolumeWeek),
+        volumeDay: fpVolumeDay.toNumber(),
+        volumeDayFormatted: formatAmountWithSuffix(fpVolumeDay),
         tvl: tvl.toNumber(),
         tvlFormatted: formatAmountWithSuffix(tvl),
+        // mcap: mcap.toNumber(),
+        // mcapFormatted: formatAmountWithSuffix(mcap),
+        velocity: velocity.toNumber(),
+        velocityFormatted: String(velocity.toNumber(2)),
       });
 
       return buffer;
@@ -319,9 +354,10 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     const now = Math.floor(Date.now() / (5 * 60 * 1000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
     const dayTimestamp = now - 60 * 60 * 24; // latest day snapshot (unix)
     const weekTimestamp = now - 60 * 60 * 24 * 7; // latest week snapshot (unix)
+    const monthTimestamp = now - 60 * 60 * 24 * 30; // latest month snapshot (unix)
     const ids = this.items.map((item) => item.address); // only whitelisted assets
 
-    const variables = { ids, dayTimestamp, weekTimestamp };
+    const variables = { ids, dayTimestamp, weekTimestamp, monthTimestamp };
     const items = await SubqueryExplorerService.fetchAllEntities(AssetsQuery, variables, parse);
 
     if (!items) return {};

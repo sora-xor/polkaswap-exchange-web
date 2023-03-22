@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "Om",
         "Stats": "Statistik",
-        "Support": "Assistans",
         "Wallet": "Plånbok",
         "CreatePair": "Skapa Par",
         "AddLiquidity": "Lägg Till Likviditet",
@@ -344,7 +343,6 @@
         "Rewards": "Belöningar",
         "About": "Om",
         "Stats": "Statistik",
-        "Support": "Assistans",
         "CreatePair": "Skapa Par",
         "StakingContainer": "Utsättning",
         "Explore\/Container": "Utforska",
@@ -857,7 +855,9 @@
         "settings": "Inställningar",
         "switchTheme": "Byt till {theme} Läge",
         "switchLanguage": "Välj Språk",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Visa ansvarsfriskrivning",
+        "hideDisclaimer": "Dölj ansvarsfriskrivning"
     },
     "sentText": "Skickat",
     "learnMoreText": "Lär dig mer",
@@ -1112,12 +1112,68 @@
     },
     "tooltips": {
         "roi": "{ROI} står för Return on Investment. Den beräknas genom att dividera den vinst som tjänats in på en investering med kostnaden för den investeringen i en motsvarande procentsats.",
-        "tvl": "{TVL} står för Total Value Locked. Det representerar tokens inlåsta i poolerna i motsvarande dollar."
+        "tvl": "{TVL} står för Total Value Locked. Det representerar tokens inlåsta i poolerna i motsvarande dollar.",
+        "volume": "Volym avser det totala beloppet av tillgångar som har handlats eller bytts ut i nätverket under en viss tidsperiod. Volymen är ett viktigt mått för att mäta nätverkets likviditet och övergripande aktivitet.",
+        "fees": "Avgifter på blockkedjan {Sora} avser de avgifter som uppstår för att utföra transaktioner på nätverket. Dessa avgifter betalas i XOR, den ursprungliga kryptovalutan i {Sora} -nätverket. Avgiftsbeloppet bestäms av komplexiteten och storleken på den transaktion som genomförs",
+        "supply": "Token-tillförsel avser det totala antalet tokens som har skapats och är i omlopp på nätverket. Tokentillgången kan fluktuera baserat på mängden tokens som satsas, bränns eller överförs på nätverket.",
+        "transactions": "Transaktioner avser processen att skicka eller ta emot digitala tillgångar på nätverket, inklusive likviditetsoperationer, såväl som swappar.",
+        "accounts": "Konton är digitala adresser som håller användarens tillgångar i nätverket. Varje konto är associerat med en unik offentlig adress och en privat nyckel som låter användaren komma åt och hantera sina tillgångar.",
+        "bridgeTransactions": "{from} till {to} -bryggan hänvisar till processen att överföra tillgångar mellan {from} och {to} -nätverken med hjälp av en brygga. Bryggan möjliggör interoperabilitet mellan de två nätverken, vilket gör det möjligt för användare att sömlöst flytta tillgångar mellan dem.",
+        "velocity": "Tokenhastighet är antalet gånger token byter konton under period (månad) i genomsnitt. Det indikerar nivån på handelsaktivitet och likviditet."
     },
     "createTokenText": "Skapa token",
     "comingSoonText": "Kommer Snart",
     "confirmText": "Bekräfta",
     "createTokenTextNFT": "Skapa NFT",
     "doNotShowText": "Visa mig inte det här igen",
-    "accountText": "konto | konton"
+    "accountText": "konto | konton",
+    "networkStatisticsText": "Nätverksstatistik",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Nod ansluten",
+                "loading": "Noden återansluter",
+                "disconnected": "Noden frånkopplad"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet inaktiverat",
+                "unstable": "Internet instabilt",
+                "stable": "Internet stabil"
+            },
+            "label": "Din internethastighet",
+            "desc": {
+                "disabled": "Osammanhängande",
+                "unstable": "Långsam uppkoppling",
+                "stable": "Optimal hastighet"
+            },
+            "action": "Uppdatera {Polkaswap}",
+            "dialogTitle": "Anslut till internetkälla",
+            "dialogDesc": "{Polkaswap} kräver internetanslutning för en stabil upplevelse"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistik inte tillgänglig",
+                "loading": "Statistik laddas",
+                "available": "Statistik tillgänglig"
+            },
+            "label": "Statistiktjänster",
+            "desc": {
+                "unavailable": "Alla tjänster är frånkopplade",
+                "loading": "Alla tjänster laddas",
+                "available": "Alla tjänster är stabila"
+            },
+            "action": "Välj tjänster",
+            "dialog": {
+                "title": "{Sora} Val av nätverkstjänst",
+                "fiat": "Fiat värden",
+                "chartsAndActivity": "Diagram och aktivitet",
+                "online": "Uppkopplad",
+                "offline": "Off-line"
+            }
+        }
+    },
+    "locationText": "Plats",
+    "acceptText": "Acceptera och dölj"
 }

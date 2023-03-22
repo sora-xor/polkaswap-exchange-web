@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "Informazioni su",
         "Stats": "Statistiche",
-        "Support": "Supporto",
         "Wallet": "Portafoglio",
         "CreatePair": "Crea una Pair",
         "AddLiquidity": "Aggiungi liquidità",
@@ -344,7 +343,6 @@
         "Rewards": "Ricompense",
         "About": "Informazioni su",
         "Stats": "Statistiche",
-        "Support": "Supporto",
         "CreatePair": "Crea una pair",
         "StakingContainer": "Staking",
         "Explore\/Container": "Esplorare",
@@ -857,7 +855,9 @@
         "settings": "Impostazioni",
         "switchTheme": "Passa alla modalità {theme}",
         "switchLanguage": "Scegli la lingua",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Mostra esclusione di responsabilità",
+        "hideDisclaimer": "Nascondi Dichiarazione di non responsabilità"
     },
     "sentText": "Inviato",
     "learnMoreText": "Per saperne di più",
@@ -1112,12 +1112,68 @@
     },
     "tooltips": {
         "roi": "{ROI} sta per ritorno sull'investimento. Viene calcolato dividendo il profitto ottenuto su un investimento per il costo di tale investimento in una percentuale equivalente.",
-        "tvl": "{TVL} sta per Total Value Locked. Rappresenta i token bloccati nei pool nell'equivalente in dollari."
+        "tvl": "{TVL} sta per Total Value Locked. Rappresenta i token bloccati nei pool nell'equivalente in dollari.",
+        "volume": "Il volume si riferisce alla quantità totale di attività che sono state negoziate o scambiate sulla rete in un determinato periodo di tempo. Il volume è una metrica importante per misurare la liquidità e l'attività complessiva della rete.",
+        "fees": "Le commissioni sulla blockchain {Sora} si riferiscono alle spese sostenute per l'esecuzione delle transazioni sulla rete. Queste commissioni sono pagate in XOR, la criptovaluta nativa del Network {Sora} . L'importo della commissione è determinato dalla complessità e dalle dimensioni della transazione eseguita",
+        "supply": "La fornitura di token si riferisce al numero totale di token che sono stati creati e sono in circolazione sulla rete. L'offerta di token può variare in base alla quantità di token messi in staking, bruciati o trasferiti sulla rete.",
+        "transactions": "Le transazioni si riferiscono al processo di invio o ricezione di risorse digitali sulla rete, comprese le operazioni di liquidità e gli swap.",
+        "accounts": "Gli account sono indirizzi digitali che contengono le risorse dell'utente sulla rete. Ogni account è associato a un indirizzo pubblico univoco e a una chiave privata che consente all'utente di accedere e gestire le proprie risorse.",
+        "bridgeTransactions": "Il bridge {from} to {to} si riferisce al processo di trasferimento delle risorse tra le reti {from} e {to} utilizzando un bridge. Il bridge consente l'interoperabilità delle due reti, consentendo agli utenti di spostare senza problemi le risorse tra di loro.",
+        "velocity": "La velocità del token è il numero di volte in cui il token cambia account durante il periodo (mese) in media. Indica il livello di attività di negoziazione e liquidità."
     },
     "createTokenText": "Creare un token",
     "comingSoonText": "Prossimamente",
     "confirmText": "Conferma",
     "createTokenTextNFT": "Crea NFT",
     "doNotShowText": "Non mostrarmelo di nuovo",
-    "accountText": "conto | conti"
+    "accountText": "conto | conti",
+    "networkStatisticsText": "Statistiche di rete",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Nodo connesso",
+                "loading": "Riconnessione del nodo",
+                "disconnected": "Nodo disconnesso"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet disattivato",
+                "unstable": "Internet instabile",
+                "stable": "Internet stabile"
+            },
+            "label": "La tua velocità di Internet",
+            "desc": {
+                "disabled": "Disconnesso",
+                "unstable": "Connessione lenta",
+                "stable": "Velocità ottimale"
+            },
+            "action": "Aggiorna {Polkaswap}",
+            "dialogTitle": "Connettiti alla fonte Internet",
+            "dialogDesc": "{Polkaswap} richiede una connessione a Internet per un'esperienza stabile"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistiche non disponibili",
+                "loading": "Caricamento delle statistiche",
+                "available": "Statistiche disponibili"
+            },
+            "label": "Servizi di statistica",
+            "desc": {
+                "unavailable": "Tutti i servizi sono disconnessi",
+                "loading": "Tutti i servizi sono in fase di caricamento",
+                "available": "Tutti i servizi sono stabili"
+            },
+            "action": "Seleziona i servizi",
+            "dialog": {
+                "title": "{Sora} Selezione del servizio di rete",
+                "fiat": "Valori Fiat",
+                "chartsAndActivity": "Grafici e attività",
+                "online": "in linea",
+                "offline": "disconnesso"
+            }
+        }
+    },
+    "locationText": "Posizione",
+    "acceptText": "Accetta e nascondi"
 }
