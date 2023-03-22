@@ -4,6 +4,6 @@
 
 def pipeline = new org.soramitsu.DASTPipeline(
     steps: this,
-    targetURL: targetURL,
+//    targetURL: targetURL,
 )
 pipeline.runPipeline()
