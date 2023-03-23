@@ -405,6 +405,13 @@ ul ul {
         top: -2px;
         left: -2px;
       }
+
+      &.el-icon-success {
+        &,
+        &:hover {
+          color: var(--s-color-status-success);
+        }
+      }
     }
     &__content {
       margin-top: 0;

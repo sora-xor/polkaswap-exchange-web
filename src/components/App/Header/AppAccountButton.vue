@@ -60,6 +60,13 @@ $account-control-name-max-width: 200px;
     }
   }
 
+  &.el-button.neumorphic.s-medium {
+    @include tablet(true) {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+
   &-title {
     display: none;
     font-size: var(--s-font-size-small);
