@@ -1,9 +1,6 @@
 @Library('jenkins-library@feature/SNE-309/dast-trigger')
 
-// String targetURL = ''
-
 def pipeline = new org.soramitsu.DASTPipeline(
     steps: this,
-//    targetURL: targetURL,
 )
 pipeline.runPipeline()
