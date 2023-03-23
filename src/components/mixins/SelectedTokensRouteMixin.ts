@@ -13,12 +13,16 @@ const MAX_SYMBOL_LENGTH = 7;
 export default class SelectedTokenRouteMixin extends Vue {
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
+  @getter.assets.assetsDataTable private assetsDataTable!: Record<string, Asset>;
 
   private wasRedirected = false;
 
   private getRouteAddress(param: string): string {
-    if (!param || param.length > MAX_SYMBOL_LENGTH) {
+    if (!param) {
       return param;
+    }
+    if (param.length > MAX_SYMBOL_LENGTH) {
+      return this.assetsDataTable[param] ? param : '';
     }
     return this.whitelistIdsBySymbol[param.toUpperCase()] ?? '';
   }
