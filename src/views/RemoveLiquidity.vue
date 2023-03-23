@@ -221,15 +221,10 @@ export default class RemoveLiquidity extends Mixins(
 
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
-      this.setAddresses({
+      this.setData({
         firstAddress: this.firstRouteAddress,
         secondAddress: this.secondRouteAddress,
       });
-      // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-      if (!this.liquidity) {
-        return this.handleBack();
-      }
-
       this.addListenerToSliderDragButton();
     });
   }
@@ -320,6 +315,18 @@ export default class RemoveLiquidity extends Mixins(
 
   get isMaxButtonAvailable(): boolean {
     return !this.liquidityLocked && Number(this.removePart) !== this.MAX_PART;
+  }
+
+  // Do not remove async because of mixin overrides
+  async setData(params: { firstAddress: string; secondAddress: string }): Promise<void> {
+    this.setAddresses({
+      firstAddress: params.firstAddress,
+      secondAddress: params.secondAddress,
+    });
+    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+    if (!this.liquidity) {
+      return this.handleBack();
+    }
   }
 
   handleRemovePartChange(value: string | number): void {

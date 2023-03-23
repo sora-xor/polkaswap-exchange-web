@@ -2,6 +2,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { WALLET_TYPES, api } from '@soramitsu/soraneo-wallet-web';
 import { XSTUSD, XOR } from '@sora-substrate/util/build/assets/consts';
 import type { AccountAsset, Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { NavigationGuardNext, Route } from 'vue-router';
 
 import { getter } from '@/store/decorators';
 import { PageNames } from '@/consts';
@@ -13,37 +14,16 @@ export default class SelectedTokenRouteMixin extends Vue {
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
 
-  /** First token address from route object */
-  get firstRouteAddress(): string {
-    const first = this.$route.params.first;
-    if (!first || first.length > MAX_SYMBOL_LENGTH) {
-      return first;
+  private wasRedirected = false;
+
+  private getRouteAddress(param: string): string {
+    if (!param || param.length > MAX_SYMBOL_LENGTH) {
+      return param;
     }
-    return this.whitelistIdsBySymbol[first.toUpperCase()] ?? '';
+    return this.whitelistIdsBySymbol[param.toUpperCase()] ?? '';
   }
 
-  /** Second token address from route object */
-  get secondRouteAddress(): string {
-    const second = this.$route.params.second;
-    if (!second || second.length > MAX_SYMBOL_LENGTH) {
-      return second;
-    }
-    return this.whitelistIdsBySymbol[second.toUpperCase()] ?? '';
-  }
-
-  /**
-   * Checks the correctness of parameters.
-   *
-   * Some of cases:
-   * (a) `true` - without params;
-   * (b) `false` - when assets are equal;
-   * (c) SWAP: `true` when both parameters are parsed as asset ids;
-   * (d) ADD/REMOVE LIQUIDITY: `true` when both parameters are parsed as asset ids and first is from baseAssetIds;
-   */
-  get isValidRoute(): boolean {
-    const { first, second } = this.$route.params;
-    const firstAddress = this.firstRouteAddress;
-    const secondAddress = this.secondRouteAddress;
+  private getIsValidRoute(first: string, second: string, firstAddress: string, secondAddress: string): boolean {
     // VALID: without params
     if (!(first || second)) return true;
     // INVALID: assets are equal
@@ -59,22 +39,76 @@ export default class SelectedTokenRouteMixin extends Vue {
     }
   }
 
-  /** Sould be used in Add liquidity & Swap during mount */
-  parseCurrentRoute(): void {
-    if (!this.isValidRoute) {
-      this.$router.replace({ name: this.$route.name as string, params: undefined });
-    }
-    if (
-      this.$route.name === PageNames.AddLiquidity &&
-      this.firstRouteAddress === XSTUSD.address &&
-      this.secondRouteAddress === XOR.address
-    ) {
+  /* virtual */
+  async setData(params: { firstAddress: string; secondAddress: string }) {
+    console.warn('[SelectedTokensRouteMixin]: setData was not set');
+  }
+
+  /** First token address from route object */
+  get firstRouteAddress(): string {
+    return this.getRouteAddress(this.$route.params.first);
+  }
+
+  /** Second token address from route object */
+  get secondRouteAddress(): string {
+    return this.getRouteAddress(this.$route.params.second);
+  }
+
+  /**
+   * Checks the correctness of parameters.
+   *
+   * Some of cases:
+   * (a) `true` - without params;
+   * (b) `false` - when assets are equal;
+   * (c) SWAP: `true` when both parameters are parsed as asset ids;
+   * (d) ADD/REMOVE LIQUIDITY: `true` when both parameters are parsed as asset ids and first is from baseAssetIds;
+   */
+  get isValidRoute(): boolean {
+    const { first, second } = this.$route.params;
+    const firstAddress = this.firstRouteAddress;
+    const secondAddress = this.secondRouteAddress;
+    return this.getIsValidRoute(first, second, firstAddress, secondAddress);
+  }
+
+  /**
+   * Sould be used in Add liquidity & Swap during mount
+   *
+   * Returns is valid state for routing life cycle
+   */
+  parseCurrentRoute(params?: {
+    isValidRoute: boolean;
+    name: string;
+    firstAddress: string;
+    secondAddress: string;
+    first: string;
+    second: string;
+  }): boolean {
+    const isValidRoute = params ? params.isValidRoute : this.isValidRoute;
+    const name = params ? params.name : (this.$route.name as string);
+    const first = params ? params.first : this.$route.params.first;
+    const second = params ? params.second : this.$route.params.second;
+    const firstAddress = params ? params.firstAddress : this.firstRouteAddress;
+    const secondAddress = params ? params.secondAddress : this.secondRouteAddress;
+    if (!isValidRoute) {
+      this.wasRedirected = true;
+      if (name === PageNames.RemoveLiquidity) {
+        this.$router.push({ name: PageNames.Pool });
+      } else if (this.$route.params) {
+        this.$router.replace({ name, params: undefined });
+      }
+      return false;
+    } else if (name === PageNames.AddLiquidity && firstAddress === XSTUSD.address && secondAddress === XOR.address) {
       // Invert route for Add liquidity XSTUSD-XOR pair
-      const first = XOR.symbol;
-      const second = XSTUSD.symbol;
+      const xor = XOR.symbol;
+      const xstusd = XSTUSD.symbol;
       // Do nothing when routes are the same
-      if (this.$route.params.first === first && this.$route.params.second === second) return;
-      this.$router.replace({ name: this.$route.name as string, params: { first, second } });
+      if (first === xor && second === xstusd) return true;
+      this.wasRedirected = true;
+      this.$router.replace({ name, params: { first: xor, second: xstusd } });
+      this.setData({ firstAddress, secondAddress }); // We need to set data for add liquidity here
+      return false;
+    } else {
+      return true;
     }
   }
 
@@ -88,6 +122,33 @@ export default class SelectedTokenRouteMixin extends Vue {
     const second = this.whitelist[secondParam.address] ? secondParam.symbol : secondParam.address;
     // Do nothing when routes are the same
     if (this.$route.params.first === first && this.$route.params.second === second) return;
+    this.wasRedirected = true;
     this.$router.replace({ name: this.$route.name as string, params: { first, second } });
+  }
+
+  beforeRouteUpdate(to: Route, from: Route, next: NavigationGuardNext<Vue>) {
+    if (this.wasRedirected) {
+      this.wasRedirected = false; // Do nothing because it was done programmatically
+    } else {
+      const first = to.params.first;
+      const second = to.params.second;
+      const firstAddress = this.getRouteAddress(first);
+      const secondAddress = this.getRouteAddress(second);
+      const isValidRoute = this.getIsValidRoute(first, second, firstAddress, secondAddress);
+
+      const isValidState = this.parseCurrentRoute({
+        isValidRoute,
+        name: to.name as string,
+        first,
+        second,
+        firstAddress,
+        secondAddress,
+      });
+
+      if (!isValidState) return; // Because of another redirection
+
+      this.setData({ firstAddress, secondAddress });
+    }
+    next();
   }
 }

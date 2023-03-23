@@ -577,6 +577,12 @@ export default class Swap extends Mixins(
     this.showSelectTokenDialog = true;
   }
 
+  async setData(params: { firstAddress: string; secondAddress: string }): Promise<void> {
+    await this.setTokenFromAddress(params.firstAddress);
+    await this.setTokenToAddress(params.secondAddress);
+    this.subscribeOnSwapReserves();
+  }
+
   async handleSelectToken(token: AccountAsset): Promise<void> {
     if (token) {
       await this.withSelectAssetLoading(async () => {

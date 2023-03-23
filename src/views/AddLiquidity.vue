@@ -165,15 +165,15 @@ export default class AddLiquidity extends Mixins(
   @getter.addLiquidity.liquidityInfo liquidityInfo!: Nullable<AccountLiquidity>;
   @getter.addLiquidity.isNotFirstLiquidityProvider isNotFirstLiquidityProvider!: boolean;
 
-  @action.addLiquidity.setFirstTokenAddress setFirstTokenAddress!: (address: string) => Promise<void>;
-  @action.addLiquidity.setSecondTokenAddress setSecondTokenAddress!: (address: string) => Promise<void>;
+  @action.addLiquidity.setFirstTokenAddress private setFirstTokenAddress!: (address: string) => Promise<void>;
+  @action.addLiquidity.setSecondTokenAddress private setSecondTokenAddress!: (address: string) => Promise<void>;
+  @action.addLiquidity.addLiquidity private addLiquidity!: AsyncFnWithoutArgs;
+  @action.addLiquidity.updateSubscriptions private updateSubscriptions!: AsyncFnWithoutArgs;
+  @action.addLiquidity.resetSubscriptions private resetSubscriptions!: AsyncFnWithoutArgs;
+  @action.addLiquidity.resetData private resetData!: AsyncFnWithoutArgs;
+  @action.addLiquidity.setDataFromLiquidity setData!: (args: LiquidityParams) => Promise<void>; // public because of mixin
   @action.addLiquidity.setFirstTokenValue setFirstTokenValue!: (address: string) => Promise<void>;
   @action.addLiquidity.setSecondTokenValue setSecondTokenValue!: (address: string) => Promise<void>;
-  @action.addLiquidity.addLiquidity private addLiquidity!: AsyncFnWithoutArgs;
-  @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>;
-  @action.addLiquidity.updateSubscriptions updateSubscriptions!: AsyncFnWithoutArgs;
-  @action.addLiquidity.resetSubscriptions resetSubscriptions!: AsyncFnWithoutArgs;
-  @action.addLiquidity.resetData resetData!: AsyncFnWithoutArgs;
 
   @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
 
@@ -198,7 +198,6 @@ export default class AddLiquidity extends Mixins(
   }
 
   async mounted(): Promise<void> {
-    console.info('mounted');
     await this.withParentLoading(async () => {
       this.parseCurrentRoute();
       if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
@@ -213,7 +212,6 @@ export default class AddLiquidity extends Mixins(
   }
 
   destroyed(): void {
-    console.info('destroyed');
     this.resetData();
   }
 
