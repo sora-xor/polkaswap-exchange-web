@@ -1,6 +1,6 @@
 @Library('jenkins-library@feature/SNE-309/dast-trigger')
 
 def pipeline = new org.soramitsu.DASTPipeline(
-    steps: this,
+    steps: this
 )
 pipeline.runPipeline()
