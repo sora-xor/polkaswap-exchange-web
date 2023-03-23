@@ -25,7 +25,7 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
     return this.parentLoading || this.loading;
   }
 
-  mounted(): void {
+  beforeMount(): void {
     this.updateSubscriptions();
   }
 
