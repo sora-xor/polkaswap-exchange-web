@@ -15,7 +15,7 @@
         <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
-            <disclaimer v-if="disclaimerVisibility" />
+            <app-disclaimer v-if="disclaimerVisibility" />
           </div>
           <footer class="app-footer">
             <div class="sora-logo">
@@ -76,7 +76,7 @@ import type { FeatureFlags } from '@/store/settings/types';
     AppMenu,
     AppMobilePopup: lazyComponent(Components.AppMobilePopup),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
-    Disclaimer: lazyComponent(Components.Disclaimer),
+    AppDisclaimer: lazyComponent(Components.AppDisclaimer),
     AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),
     AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
@@ -112,7 +112,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
-  @mutation.settings.setDisclaimerDialogVisibility private setDisclaimerDialogVisibility!: () => void;
+  @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
@@ -290,7 +290,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     const disclaimerApprove = settingsStorage.get('disclaimerApprove');
 
     if (!disclaimerApprove) {
-      setTimeout(() => this.setDisclaimerDialogVisibility(), 3000);
+      setTimeout(() => this.toggleDisclaimerDialogVisibility(), 3_000);
     }
   }
 

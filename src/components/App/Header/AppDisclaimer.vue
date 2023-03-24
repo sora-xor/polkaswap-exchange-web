@@ -43,22 +43,22 @@ import { mutation, state } from '@/store/decorators';
 import { Links } from '@/consts';
 
 @Component
-export default class Disclaimer extends Mixins(TranslationMixin) {
+export default class AppDisclaimer extends Mixins(TranslationMixin) {
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
-  @mutation.settings.setUserDisclaimerApprove private setUserDisclaimerApprove!: () => void;
-  @mutation.settings.setDisclaimerDialogVisibility private setDisclaimerDialogVisibility!: () => void;
+  @mutation.settings.setUserDisclaimerApprove private setUserDisclaimerApprove!: FnWithoutArgs;
+  @mutation.settings.toggleDisclaimerDialogVisibility private toggleVisibility!: FnWithoutArgs;
 
   loadingAcceptBtn = false;
 
   async handleAccept(): Promise<void> {
     this.loadingAcceptBtn = true;
-    await delay(1200);
+    await delay(1_200);
     this.setUserDisclaimerApprove();
-    this.setDisclaimerDialogVisibility();
+    this.toggleVisibility();
   }
 
   handleClose(): void {
-    this.setDisclaimerDialogVisibility();
+    this.toggleVisibility();
   }
 
   get disclaimerTitle(): string {

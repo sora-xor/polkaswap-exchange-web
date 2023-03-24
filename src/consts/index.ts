@@ -145,7 +145,7 @@ export enum Components {
   AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
   SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
   AppFooter = 'App/Footer/AppFooter',
-  Disclaimer = 'Disclaimer',
+  AppDisclaimer = 'App/Header/AppDisclaimer',
   StatisticsDialog = 'App/Footer/StatisticsDialog',
   SelectNodeDialog = 'App/Footer/SelectNodeDialog',
   SelectNode = 'App/Footer/Node/SelectNode',
