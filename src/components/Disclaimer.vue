@@ -36,6 +36,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { delay } from '@/utils';
 import { mutation, state } from '@/store/decorators';
@@ -87,8 +88,13 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
-.disclaimer__prefix {
-  color: var(--s-color-theme-accent);
+.disclaimer {
+  &__prefix {
+    color: var(--s-color-theme-accent);
+  }
+  .link {
+    @include focus-outline;
+  }
 }
 </style>
 
