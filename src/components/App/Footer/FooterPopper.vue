@@ -165,10 +165,15 @@ $footer-action-background-color: #f7f3f4;
       }
     }
     &__action {
-      box-shadow: none;
       margin-left: 30px;
-      background: $footer-action-background-color;
-      color: $footer-action-color;
+      &,
+      &:hover,
+      &:focus,
+      &:active {
+        box-shadow: none;
+        background: $footer-action-background-color;
+        color: $footer-action-color;
+      }
     }
   }
 }

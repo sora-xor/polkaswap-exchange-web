@@ -131,6 +131,7 @@ import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types'
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
+import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
@@ -155,7 +156,8 @@ export default class RemoveLiquidity extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.TransactionMixin,
   ConfirmDialogMixin,
-  NetworkFeeDialogMixin
+  NetworkFeeDialogMixin,
+  SelectedTokenRouteMixin
 ) {
   readonly XOR_SYMBOL = XOR.symbol;
   readonly MAX_PART = 100;
@@ -219,15 +221,10 @@ export default class RemoveLiquidity extends Mixins(
 
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
-      this.setAddresses({
+      this.setData({
         firstAddress: this.firstRouteAddress,
         secondAddress: this.secondRouteAddress,
       });
-      // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-      if (!this.liquidity) {
-        return this.handleBack();
-      }
-
       this.addListenerToSliderDragButton();
     });
   }
@@ -239,16 +236,6 @@ export default class RemoveLiquidity extends Mixins(
 
   get sliderValue(): Nullable<number> {
     return this.removePart ? Number(this.removePart) : undefined;
-  }
-
-  /** First token address from route object */
-  get firstRouteAddress(): string {
-    return this.$route.params.firstAddress;
-  }
-
-  /** Second token address from route object */
-  get secondRouteAddress(): string {
-    return this.$route.params.secondAddress;
   }
 
   get isEmptyAmount(): boolean {
@@ -328,6 +315,18 @@ export default class RemoveLiquidity extends Mixins(
 
   get isMaxButtonAvailable(): boolean {
     return !this.liquidityLocked && Number(this.removePart) !== this.MAX_PART;
+  }
+
+  // Do not remove async because of mixin overrides
+  async setData(params: { firstAddress: string; secondAddress: string }): Promise<void> {
+    this.setAddresses({
+      firstAddress: params.firstAddress,
+      secondAddress: params.secondAddress,
+    });
+    // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
+    if (!this.liquidity) {
+      return this.handleBack();
+    }
   }
 
   handleRemovePartChange(value: string | number): void {

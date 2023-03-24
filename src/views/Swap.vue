@@ -164,6 +164,7 @@ import type { DexQuoteData } from '@/store/swap/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
+import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
 
 import {
   isMaxButtonAvailable,
@@ -198,7 +199,8 @@ export default class Swap extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.LoadingMixin,
   TranslationMixin,
-  TokenSelectMixin
+  TokenSelectMixin,
+  SelectedTokenRouteMixin
 ) {
   @state.settings.сhartsEnabled сhartsEnabled!: boolean;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
@@ -387,7 +389,11 @@ export default class Swap extends Mixins(
 
   created() {
     this.withApi(async () => {
-      if (!this.tokenFrom) {
+      this.parseCurrentRoute();
+      if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
+        await this.setTokenFromAddress(this.firstRouteAddress);
+        await this.setTokenToAddress(this.secondRouteAddress);
+      } else if (!this.tokenFrom) {
         await this.setTokenFromAddress(XOR.address);
         await this.setTokenToAddress();
       }
@@ -548,6 +554,7 @@ export default class Swap extends Mixins(
 
     await this.switchTokens();
 
+    this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
     this.runRecountSwapValues();
   }
 
@@ -570,6 +577,12 @@ export default class Swap extends Mixins(
     this.showSelectTokenDialog = true;
   }
 
+  async setData(params: { firstAddress: string; secondAddress: string }): Promise<void> {
+    await this.setTokenFromAddress(params.firstAddress);
+    await this.setTokenToAddress(params.secondAddress);
+    this.subscribeOnSwapReserves();
+  }
+
   async handleSelectToken(token: AccountAsset): Promise<void> {
     if (token) {
       await this.withSelectAssetLoading(async () => {
@@ -581,6 +594,7 @@ export default class Swap extends Mixins(
         this.subscribeOnSwapReserves();
       });
     }
+    this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
   }
 
   handleConfirmSwap(): void {
