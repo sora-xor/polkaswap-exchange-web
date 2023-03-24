@@ -111,7 +111,6 @@
         "title": "Sieťový účet {Sora}",
         "WalletAssets": "Aktíva",
         "WalletActivity": "Aktivita",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "Adresa peňaženky bola skopírovaná do schránky",
         "copy": "Kopírovať adresu",
         "switch": "Prepnúť účet",
-        "walletAddress": "Adresa peňaženky"
+        "walletAddress": "Adresa peňaženky",
+        "delete": "Zmazať účet",
+        "rename": "Premenovať účet",
+        "export": "Exportujte súbor .json"
     },
     "history": {
         "clearHistory": "Vymazať históriu",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "Celková hodnota vašich aktív:",
         "details": "Podrobnosti",
-        "assetId": "ID aktíva",
-        "add": "@:addAssetText"
+        "assetId": "ID aktíva"
     },
     "asset": {
         "remove": "Odobrať aktívum",
@@ -192,9 +193,7 @@
             "title": "Meny",
             "switchBtn": "Iba overené aktíva"
         },
-        "searchInputText": "Vyhľadávajte podľa Asset ID, Name alebo Ticker Symbol",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Vyhľadávajte podľa Asset ID, Name alebo Ticker Symbol"
     },
     "createToken": {
         "desc": "Vytvorte a nasaďte vlastné aktívum na {Sora}",
@@ -292,11 +291,8 @@
             "submitted": "Transakcia bola odoslaná s poplatkom vo výške {fee} {symbol}",
             "confirmed": "Transakcia potvrdená"
         },
-        "viewIn": {
-            "sorascan": "Zobraziť v SORAScan",
-            "subscan": "Zobraziť v Subscan"
-        },
         "txId": "ID transakcie",
+        "viewIn": "Zobraziť v {explorer}",
         "referrer": "Sprostredkovateľ",
         "referral": "Doporučenie"
     },
@@ -326,13 +322,11 @@
         "Bridge": "@:bridgeText",
         "About": "O aplikácii",
         "Stats": "Štatistiky",
-        "Support": "Podpora",
         "Wallet": "Peňaženka",
         "CreatePair": "Vytvoriť pár",
         "AddLiquidity": "Pridať likviditu",
         "AddLiquidityId": "Pridať likviditu",
         "RemoveLiquidity": "Odobrať likviditu",
-        "PageNotFound": "Stránka nebola nájdená",
         "Rewards": "Odmeny",
         "Explore\/Tokens": "Tokeny",
         "Explore\/Pools": "Bazény",
@@ -349,7 +343,6 @@
         "Rewards": "Odmeny",
         "About": "O aplikácii",
         "Stats": "Štatistiky",
-        "Support": "Podpora",
         "CreatePair": "Vytvoriť pár",
         "StakingContainer": "Stakovanie",
         "Explore\/Container": "Preskúmať",
@@ -432,26 +425,7 @@
         "from": "Od",
         "to": "Komu"
     },
-    "pageNotFound": {
-        "title": "Stránka nebola nájdená",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Testnet",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +534,6 @@
         "notRegisteredAsset": "Aktívum {assetSymbol} nie je zaregistrované",
         "selectNetwork": "Vybrať sieť",
         "networkInfo": "Prepojiť {Sora} sieť s:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Skopírujte sieťovú adresu",
         "soraAddress": "{Sora} adresa",
         "ethereumAddress": "{Ethereum} adresa",
@@ -617,7 +589,6 @@
             "done": "Dokončené",
             "waitingForConfirmation": "Čaká sa na potvrdenie…"
         },
-        "viewInEtherscan": "Zobraziť v {Etherscan}",
         "networkTitle": "{network} transakcia",
         "transactionHash": "Hash transakcie",
         "networkInfo": {
@@ -884,7 +855,9 @@
         "settings": "Nastavenia",
         "switchTheme": "Prepnite do režimu {theme}",
         "switchLanguage": "Vyberte Jazyk",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Zobraziť vylúčenie zodpovednosti",
+        "hideDisclaimer": "Skryť vylúčenie zodpovednosti"
     },
     "sentText": "Odoslané",
     "learnMoreText": "Dozvedieť sa viac",
@@ -1128,7 +1101,9 @@
             "mnemonic": "Zadaný nesprávny mnemotechnický znak bip39",
             "mnemonicLength": "Mnemotechnika by mala obsahovať {number} slov",
             "jsonFields": "Súbor JSON neobsahuje povinné polia"
-        }
+        },
+        "assetsAtRiskText": "Majetok v ohrození!",
+        "deleteAccountText": "Účet nie je možné obnoviť bez počiatočnej frázy, súboru .json alebo ak je uložený v nejakej prípone. Budete odhlásení."
     },
     "hashiBridgeText": "Most {Hashi}",
     "disclaimerTitle": "Vylúčenie zodpovednosti:",
@@ -1137,11 +1112,68 @@
     },
     "tooltips": {
         "roi": "{ROI} znamená návratnosť investícií. Vypočítava sa vydelením zisku získaného z investície nákladmi na túto investíciu v percentuálnom ekvivalente.",
-        "tvl": "{TVL} znamená Total Value Locked. Predstavuje tokeny uzamknuté v bazénoch v ekvivalente dolára."
+        "tvl": "{TVL} znamená Total Value Locked. Predstavuje tokeny uzamknuté v bazénoch v ekvivalente dolára.",
+        "volume": "Objem sa vzťahuje na celkové množstvo aktív, ktoré boli zobchodované alebo vymenené v sieti počas určitého časového obdobia. Objem je dôležitou metrikou na meranie likvidity a celkovej aktivity siete.",
+        "fees": "Poplatky na blockchaine {Sora} sa vzťahujú na poplatky, ktoré vznikajú pri vykonávaní transakcií v sieti. Tieto poplatky sa platia v XOR, natívnej kryptomene siete {Sora} . Výška poplatku je určená zložitosťou a veľkosťou vykonávanej transakcie",
+        "supply": "Zásoba tokenov sa vzťahuje na celkový počet tokenov, ktoré boli vytvorené a sú v obehu v sieti. Zásoba tokenov môže kolísať v závislosti od množstva tokenov, ktoré sa vkladajú, pália alebo prenášajú v sieti.",
+        "transactions": "Transakcie sa týkajú procesu odosielania alebo prijímania digitálnych aktív v sieti, vrátane operácií s likviditou, ako aj swapov.",
+        "accounts": "Účty sú digitálne adresy, ktoré uchovávajú aktíva používateľov v sieti. Každý účet je spojený s jedinečnou verejnou adresou a súkromným kľúčom, ktorý používateľovi umožňuje pristupovať k jeho majetku a spravovať ho.",
+        "bridgeTransactions": "{from} do {to} sa vzťahuje na proces prenosu aktív medzi sieťami {from} a {to} pomocou mosta. Most umožňuje interoperabilitu týchto dvoch sietí, čo používateľom umožňuje bezproblémovo presúvať prostriedky medzi nimi.",
+        "velocity": "Rýchlosť tokenu je priemerný počet zmien účtov počas obdobia (mesiaca). Označuje úroveň obchodnej aktivity a likviditu."
     },
     "createTokenText": "Vytvoriť token",
     "comingSoonText": "Pripravujeme…",
     "confirmText": "Potvrdiť",
     "createTokenTextNFT": "Vytvorte NFT",
-    "doNotShowText": "Už mi to neukazuj"
+    "doNotShowText": "Už mi to neukazuj",
+    "accountText": "účet | účtov",
+    "networkStatisticsText": "Štatistiky siete",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Uzol pripojený",
+                "loading": "Opätovné pripojenie uzla",
+                "disconnected": "Uzol je odpojený"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet je zakázaný",
+                "unstable": "Internet je nestabilný",
+                "stable": "Internet stabilný"
+            },
+            "label": "Rýchlosť vášho internetu",
+            "desc": {
+                "disabled": "Odpojené",
+                "unstable": "Pomalé pripojenie",
+                "stable": "Optimálna rýchlosť"
+            },
+            "action": "Obnoviť {Polkaswap}",
+            "dialogTitle": "Pripojte sa k zdroju internetu",
+            "dialogDesc": "{Polkaswap} vyžaduje internetové pripojenie na stabilné používanie"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Štatistika nie je k dispozícii",
+                "loading": "Načítavanie štatistík",
+                "available": "Dostupné štatistiky"
+            },
+            "label": "Štatistické služby",
+            "desc": {
+                "unavailable": "Všetky služby sú odpojené",
+                "loading": "Všetky služby sa načítavajú",
+                "available": "Všetky služby sú stabilné"
+            },
+            "action": "Vyberte služby",
+            "dialog": {
+                "title": "{Sora} Výber sieťovej služby",
+                "fiat": "Hodnoty Fiat",
+                "chartsAndActivity": "Grafy a aktivita",
+                "online": "Online",
+                "offline": "Offline"
+            }
+        }
+    },
+    "locationText": "Poloha",
+    "acceptText": "Prijať a skryť"
 }

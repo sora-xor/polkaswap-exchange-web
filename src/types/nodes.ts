@@ -4,6 +4,7 @@ export interface Node {
   chain: string;
   name: string;
   address: string;
+  location?: string;
 }
 
 export interface NodeItem extends Node {

@@ -87,7 +87,7 @@
       @select="selectToken"
     />
 
-    <confirm-token-pair-dialog
+    <add-liquidity-confirm
       :visible.sync="showConfirmDialog"
       :parent-loading="parentLoading || loading"
       :share-of-pool="shareOfPool"
@@ -114,7 +114,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { XOR, XSTUSD } from '@sora-substrate/util/build/assets/consts';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -123,6 +123,7 @@ import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import BaseTokenPairMixin from '@/components/mixins/BaseTokenPairMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
+import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
@@ -135,13 +136,13 @@ type SetValue = (v: string) => Promise<void>;
 
 @Component({
   components: {
+    AddLiquidityConfirm: lazyComponent(Components.AddLiquidityConfirm),
+    AddLiquidityTransactionDetails: lazyComponent(Components.AddLiquidityTransactionDetails),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SelectToken: lazyComponent(Components.SelectToken),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
-    ConfirmTokenPairDialog: lazyComponent(Components.ConfirmTokenPairDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenInput: lazyComponent(Components.TokenInput),
-    AddLiquidityTransactionDetails: lazyComponent(Components.AddLiquidityTransactionDetails),
     InfoLine: components.InfoLine,
   },
 })
@@ -151,7 +152,8 @@ export default class AddLiquidity extends Mixins(
   BaseTokenPairMixin,
   NetworkFeeDialogMixin,
   ConfirmDialogMixin,
-  TokenSelectMixin
+  TokenSelectMixin,
+  SelectedTokenRouteMixin
 ) {
   readonly FocusedField = FocusedField;
 
@@ -163,15 +165,15 @@ export default class AddLiquidity extends Mixins(
   @getter.addLiquidity.liquidityInfo liquidityInfo!: Nullable<AccountLiquidity>;
   @getter.addLiquidity.isNotFirstLiquidityProvider isNotFirstLiquidityProvider!: boolean;
 
-  @action.addLiquidity.setFirstTokenAddress setFirstTokenAddress!: (address: string) => Promise<void>;
-  @action.addLiquidity.setSecondTokenAddress setSecondTokenAddress!: (address: string) => Promise<void>;
+  @action.addLiquidity.setFirstTokenAddress private setFirstTokenAddress!: (address: string) => Promise<void>;
+  @action.addLiquidity.setSecondTokenAddress private setSecondTokenAddress!: (address: string) => Promise<void>;
+  @action.addLiquidity.addLiquidity private addLiquidity!: AsyncFnWithoutArgs;
+  @action.addLiquidity.updateSubscriptions private updateSubscriptions!: AsyncFnWithoutArgs;
+  @action.addLiquidity.resetSubscriptions private resetSubscriptions!: AsyncFnWithoutArgs;
+  @action.addLiquidity.resetData private resetData!: AsyncFnWithoutArgs;
+  @action.addLiquidity.setDataFromLiquidity setData!: (args: LiquidityParams) => Promise<void>; // public because of mixin
   @action.addLiquidity.setFirstTokenValue setFirstTokenValue!: (address: string) => Promise<void>;
   @action.addLiquidity.setSecondTokenValue setSecondTokenValue!: (address: string) => Promise<void>;
-  @action.addLiquidity.addLiquidity private addLiquidity!: AsyncFnWithoutArgs;
-  @action.addLiquidity.setDataFromLiquidity private setData!: (args: LiquidityParams) => Promise<void>;
-  @action.addLiquidity.updateSubscriptions updateSubscriptions!: AsyncFnWithoutArgs;
-  @action.addLiquidity.resetSubscriptions resetSubscriptions!: AsyncFnWithoutArgs;
-  @action.addLiquidity.resetData resetData!: AsyncFnWithoutArgs;
 
   @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
 
@@ -197,15 +199,12 @@ export default class AddLiquidity extends Mixins(
 
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
-      if (this.firstRouteAddress && this.secondRouteAddress) {
+      this.parseCurrentRoute();
+      if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
         await this.setData({
           firstAddress: this.firstRouteAddress,
           secondAddress: this.secondRouteAddress,
         });
-        // If user don't have the liquidity (navigated through the address bar) redirect to the Pool page
-        if (!this.liquidityInfo) {
-          return this.handleBack();
-        }
       } else {
         await this.setFirstTokenAddress(XOR.address);
       }
@@ -214,16 +213,6 @@ export default class AddLiquidity extends Mixins(
 
   destroyed(): void {
     this.resetData();
-  }
-
-  /** First token address from route object */
-  get firstRouteAddress(): string {
-    return this.$route.params.firstAddress;
-  }
-
-  /** Second token address from route object */
-  get secondRouteAddress(): string {
-    return this.$route.params.secondAddress;
   }
 
   get areTokensSelected(): boolean {
@@ -318,8 +307,13 @@ export default class AddLiquidity extends Mixins(
         } else {
           await this.setSecondTokenAddress(address);
         }
+        if (this.firstToken?.address === XSTUSD.address && this.secondToken?.address === XOR.address) {
+          await this.setFirstTokenAddress(XOR.address);
+          await this.setSecondTokenAddress(XSTUSD.address);
+        }
       });
     }
+    this.updateRouteAfterSelectTokens(this.firstToken, this.secondToken);
   }
 
   async handleConfirmAddLiquidity(): Promise<void> {
