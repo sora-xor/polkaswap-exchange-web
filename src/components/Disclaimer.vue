@@ -86,6 +86,12 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
 }
 </script>
 
+<style lang="scss">
+.disclaimer__prefix {
+  color: var(--s-color-theme-accent);
+}
+</style>
+
 <style lang="scss" scoped>
 .disclaimer {
   background-color: var(--s-color-utility-surface);
@@ -98,7 +104,7 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
   position: absolute;
   top: var(--s-size-mini);
   right: var(--s-size-mini);
-  z-index: 5;
+  z-index: $app-above-loader-layer;
 
   &__header {
     display: flex;
@@ -137,11 +143,5 @@ export default class Disclaimer extends Mixins(TranslationMixin) {
     margin-top: $basic-spacing;
     width: 100%;
   }
-}
-</style>
-
-<style lang="scss">
-.disclaimer__prefix {
-  color: var(--s-color-theme-accent);
 }
 </style>
