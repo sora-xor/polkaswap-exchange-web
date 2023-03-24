@@ -111,7 +111,6 @@
         "title": "Akun Jaringan {Sora}",
         "WalletAssets": "Aset",
         "WalletActivity": "Aktivitas",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "Alamat dompet disalin ke clipboard",
         "copy": "Salin alamat",
         "switch": "Ganti akun",
-        "walletAddress": "Alamat dompet"
+        "walletAddress": "Alamat dompet",
+        "delete": "Hapus akun",
+        "rename": "Ganti nama akun",
+        "export": "Ekspor .json"
     },
     "history": {
         "clearHistory": "Bersihkan riwayat",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "Nilai total aset Anda:",
         "details": "Rincian",
-        "assetId": "ID Aset",
-        "add": "@:addAssetText"
+        "assetId": "ID Aset"
     },
     "asset": {
         "remove": "Hapus aset",
@@ -192,9 +193,7 @@
             "title": "Mata Uang",
             "switchBtn": "Hanya aset yang diverifikasi"
         },
-        "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Cari berdasarkan ID Aset, Nama, atau Simbol Ticker"
     },
     "createToken": {
         "desc": "Buat dan terapkan kostum aset di {Sora}",
@@ -292,11 +291,8 @@
             "submitted": "Transaksi diajukan dengan biaya {fee} {symbol}",
             "confirmed": "Transaksi dikonfirmasi"
         },
-        "viewIn": {
-            "sorascan": "Lihat di Sorascan",
-            "subscan": "Lihat di Subscan"
-        },
         "txId": "Id transaksi",
+        "viewIn": "Lihat di {explorer}",
         "referrer": "Perujuk",
         "referral": "Rujukan"
     },
@@ -326,13 +322,11 @@
         "Bridge": "@:bridgeText",
         "About": "Tentang",
         "Stats": "Statistik",
-        "Support": "Dukungan",
         "Wallet": "Dompet",
         "CreatePair": "Buat Pair",
         "AddLiquidity": "Tambah Likuiditas",
         "AddLiquidityId": "Tambah Likuiditas",
         "RemoveLiquidity": "Hapus Likuiditas",
-        "PageNotFound": "Halaman Tidak Ditemukan",
         "Rewards": "Hadiah",
         "Explore\/Tokens": "Token",
         "Explore\/Pools": "Kolam",
@@ -349,7 +343,6 @@
         "Rewards": "Hadiah",
         "About": "Tentang",
         "Stats": "Statistik",
-        "Support": "Dukungan",
         "CreatePair": "Buat Pair",
         "StakingContainer": "Staking",
         "Explore\/Container": "Menjelajahi",
@@ -432,26 +425,7 @@
         "from": "Dari",
         "to": "Untuk"
     },
-    "pageNotFound": {
-        "title": "Halaman tidak ditemukan",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Testnet Volta",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +534,6 @@
         "notRegisteredAsset": "Aset {assetSymbol} tidak terdaftar",
         "selectNetwork": "Pilih jaringan",
         "networkInfo": "Bridge Jaringan {Sora} dengan:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Salin alamat jaringan",
         "soraAddress": "{Sora} alamat",
         "ethereumAddress": "{Ethereum} alamat",
@@ -617,7 +589,6 @@
             "done": "Berhasil",
             "waitingForConfirmation": "Menunggu konfirmasi..."
         },
-        "viewInEtherscan": "Lihat di {Etherscan}",
         "networkTitle": "Transaksi {network}",
         "transactionHash": "Hash transaksi",
         "networkInfo": {
@@ -884,7 +855,9 @@
         "settings": "Pengaturan",
         "switchTheme": "Beralih ke Mode {theme}",
         "switchLanguage": "Pilih bahasa",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Tampilkan Penafian",
+        "hideDisclaimer": "Sembunyikan Penafian"
     },
     "sentText": "Terkirim",
     "learnMoreText": "Pelajari lebih lanjut",
@@ -1128,7 +1101,9 @@
             "mnemonic": "Mnemonic bip39 yang ditentukan tidak valid",
             "mnemonicLength": "Mnemonic harus berisi {number} kata",
             "jsonFields": "File JSON tidak memiliki bidang yang wajib diisi"
-        }
+        },
+        "assetsAtRiskText": "Aset berisiko!",
+        "deleteAccountText": "Akun tidak dapat dipulihkan tanpa seed frase, file .json atau jika disimpan dalam beberapa ekstensi. Anda akan keluar."
     },
     "hashiBridgeText": "Jembatan {Hashi}",
     "disclaimerTitle": "Penafian:",
@@ -1137,11 +1112,68 @@
     },
     "tooltips": {
         "roi": "{ROI} adalah singkatan dari Pengembalian Investasi. Ini dihitung dengan membagi laba yang diperoleh dari investasi dengan biaya investasi itu dalam persentase yang setara.",
-        "tvl": "{TVL} adalah singkatan dari Total Value Locked. Ini mewakili token yang dikunci di kumpulan dalam setara dolar."
+        "tvl": "{TVL} adalah singkatan dari Total Value Locked. Ini mewakili token yang dikunci di kumpulan dalam setara dolar.",
+        "volume": "Volume mengacu pada jumlah total aset yang telah diperdagangkan atau dipertukarkan di jaringan selama periode waktu tertentu. Volume adalah metrik penting untuk mengukur likuiditas dan keseluruhan aktivitas jaringan.",
+        "fees": "Biaya pada blockchain {Sora} mengacu pada biaya yang dikeluarkan untuk melakukan transaksi di jaringan. Biaya ini dibayarkan dalam XOR, mata uang kripto asli dari Jaringan {Sora} . Jumlah biaya ditentukan oleh kompleksitas dan ukuran transaksi yang dijalankan",
+        "supply": "Pasokan token mengacu pada jumlah total token yang telah dibuat dan beredar di jaringan. Pasokan token dapat berfluktuasi berdasarkan jumlah token yang dipertaruhkan, dibakar, atau ditransfer di jaringan.",
+        "transactions": "Transaksi mengacu pada proses pengiriman atau penerimaan aset digital di jaringan, termasuk operasi likuiditas, serta pertukaran.",
+        "accounts": "Akun adalah alamat digital yang menyimpan aset pengguna di jaringan. Setiap akun dikaitkan dengan alamat publik unik dan kunci pribadi yang memungkinkan pengguna mengakses dan mengelola aset mereka.",
+        "bridgeTransactions": "Jembatan {from} to {to} mengacu pada proses transfer aset antara jaringan {from} dan {to} menggunakan jembatan. Jembatan memungkinkan untuk interoperabilitas dari dua jaringan, memungkinkan pengguna untuk memindahkan aset dengan mulus di antara keduanya.",
+        "velocity": "Kecepatan token adalah rata-rata berapa kali token mengubah akun selama periode (bulan). Ini menunjukkan tingkat aktivitas perdagangan dan likuiditas."
     },
     "createTokenText": "Buat token",
     "comingSoonText": "Segera Hadir",
     "confirmText": "Konfirmasi",
     "createTokenTextNFT": "Buat NFT",
-    "doNotShowText": "Jangan tunjukkan ini lagi"
+    "doNotShowText": "Jangan tunjukkan ini lagi",
+    "accountText": "akun | akun",
+    "networkStatisticsText": "Statistik jaringan",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Node terhubung",
+                "loading": "Node terhubung kembali",
+                "disconnected": "Node terputus"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet dinonaktifkan",
+                "unstable": "Internet tidak stabil",
+                "stable": "Internet stabil"
+            },
+            "label": "Kecepatan internet Anda",
+            "desc": {
+                "disabled": "Terputus",
+                "unstable": "Koneksi lambat",
+                "stable": "Kecepatan optimal"
+            },
+            "action": "Segarkan {Polkaswap}",
+            "dialogTitle": "Hubungkan ke sumber internet",
+            "dialogDesc": "{Polkaswap} membutuhkan koneksi internet untuk pengalaman yang stabil"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistik tidak tersedia",
+                "loading": "Pemuatan statistik",
+                "available": "Statistik tersedia"
+            },
+            "label": "Layanan statistik",
+            "desc": {
+                "unavailable": "Semua layanan terputus",
+                "loading": "Semua layanan sedang dimuat",
+                "available": "Semua layanan stabil"
+            },
+            "action": "Pilih layanan",
+            "dialog": {
+                "title": "{Sora} Pemilihan layanan jaringan",
+                "fiat": "Nilai Fiat",
+                "chartsAndActivity": "Bagan & Aktivitas",
+                "online": "On line",
+                "offline": "Luring"
+            }
+        }
+    },
+    "locationText": "Lokasi",
+    "acceptText": "Terima & Sembunyikan"
 }

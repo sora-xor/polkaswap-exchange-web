@@ -1,5 +1,6 @@
 import Vue from 'vue';
-import VueRouter, { NavigationGuardNext, RouteConfig } from 'vue-router';
+import VueRouter, { RouteConfig } from 'vue-router';
+import { Component } from 'vue-property-decorator';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { api } from '@sora-substrate/util';
 
@@ -12,12 +13,21 @@ import { demeterLazyView } from '@/modules/demeterFarming/router';
 
 Vue.use(VueRouter);
 
+Component.registerHooks(['beforeRouteEnter', 'beforeRouteUpdate', 'beforeRouteLeave']);
+
 const WALLET_DEFAULT_ROUTE = WALLET_CONSTS.RouteNames.Wallet;
 
 const lazyComponent = (name: string) => () => import(`@/components/${name}.vue`);
 const lazyView = (name: string) => () => import(`@/views/${name}.vue`);
 
-function goTo(name: PageNames): void {
+/**
+ * Use this function instead just `router.push` when page loading is required.
+ *
+ * It checks wallet routing, page loading and the current route.
+ * if the current route isn't the same as param, then it will wait for `router.push`
+ */
+async function goTo(name: PageNames): Promise<void> {
+  const current = router.currentRoute.name;
   if (name === PageNames.Wallet) {
     if (!store.getters.wallet.account.isLoggedIn) {
       store.commit.wallet.router.navigate({ name: WALLET_CONSTS.RouteNames.WalletConnection });
@@ -25,10 +35,15 @@ function goTo(name: PageNames): void {
       store.commit.wallet.router.navigate({ name: WALLET_DEFAULT_ROUTE });
     }
   }
-  if (router.currentRoute.name === name) {
+  if (current === name) {
     return;
   }
-  router.push({ name });
+  try {
+    store.commit.router.setLoading(true);
+    await router.push({ name });
+  } finally {
+    store.commit.router.setLoading(false);
+  }
 }
 
 const routes: Array<RouteConfig> = [
@@ -37,7 +52,7 @@ const routes: Array<RouteConfig> = [
     redirect: '/swap',
   },
   {
-    path: '/swap',
+    path: '/swap/:first?/:second?',
     name: PageNames.Swap,
     component: lazyView(PageNames.Swap),
   },
@@ -94,13 +109,13 @@ const routes: Array<RouteConfig> = [
             props: { isFarmingPage: true },
           },
           {
-            path: 'add/:firstAddress?/:secondAddress?',
+            path: 'add/:first?/:second?',
             name: PageNames.AddLiquidity,
             component: lazyView(PageNames.AddLiquidity),
             meta: { requiresAuth: true },
           },
           {
-            path: 'remove/:firstAddress/:secondAddress',
+            path: 'remove/:first/:second',
             name: PageNames.RemoveLiquidity,
             component: lazyView(PageNames.RemoveLiquidity),
             meta: { requiresAuth: true },
@@ -215,17 +230,11 @@ const routes: Array<RouteConfig> = [
   {
     path: '/stats',
     name: PageNames.Stats,
-  },
-  {
-    path: '/support',
-    name: PageNames.Support,
+    component: lazyView(PageNames.Stats),
   },
   {
     path: '*',
     redirect: '/swap',
-    // TODO: Turn on redirect to PageNotFound
-    // name: PageNames.PageNotFound,
-    // component: lazyComponent(PageNames.PageNotFound)
   },
 ];
 
@@ -264,10 +273,6 @@ router.beforeEach((to, from, next) => {
       setRoute(PageNames.Wallet);
       return;
     }
-  }
-  if (!store.getters.settings.soraCardEnabled && to.name === PageNames.SoraCard) {
-    setRoute(PageNames.Swap);
-    return;
   }
   setRoute(current, false);
 });
