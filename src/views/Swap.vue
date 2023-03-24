@@ -1,6 +1,6 @@
 <template>
   <div class="swap-container">
-    <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
+    <s-form v-loading="parentLoading" class="container container--swap el-form--actions" :show-message="false">
       <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
         <div class="swap-settings-buttons">
           <swap-status-action-badge>
@@ -678,6 +678,10 @@ export default class Swap extends Mixins(
   @include desktop {
     flex-flow: row nowrap;
   }
+}
+
+.container--swap {
+  margin: 0;
 }
 
 .page-header--swap {

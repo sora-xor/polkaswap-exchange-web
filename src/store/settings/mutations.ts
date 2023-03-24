@@ -2,9 +2,10 @@ import { defineMutations } from 'direct-vuex';
 import type { Subscription } from 'rxjs';
 
 import storage, { settingsStorage } from '@/utils/storage';
+import { MarketAlgorithms } from '@/consts';
 import type { Node } from '@/types/nodes';
+import type { Language } from '@/consts';
 import type { FeatureFlags, SettingsState } from './types';
-import { Language, MarketAlgorithms } from '@/consts';
 
 const mutations = defineMutations<SettingsState>()({
   setNodeRequest(state, { node, isReconnection = false }: { node?: Nullable<Node>; isReconnection?: boolean }): void {
@@ -67,7 +68,7 @@ const mutations = defineMutations<SettingsState>()({
   setSelectLanguageDialogVisibility(state, value: boolean): void {
     state.selectLanguageDialogVisibility = value;
   },
-  setDisclaimerDialogVisibility(state): void {
+  toggleDisclaimerDialogVisibility(state): void {
     state.disclaimerVisibility = !state.disclaimerVisibility;
   },
   setBrowserNotifsPopupEnabled(state, value: boolean): void {
