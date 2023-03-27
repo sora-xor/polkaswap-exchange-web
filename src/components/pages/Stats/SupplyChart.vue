@@ -178,10 +178,10 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
       xAxis: this.xAxisSpec(),
       yAxis: [
         this.yAxisSpec({
-          name: 'Remint & Burn',
-          nameGap: 22,
+          name: 'Remint\nBurn',
+          nameGap: 12,
           nameTextStyle: {
-            align: 'center',
+            align: 'right',
           },
           type: 'log',
           min: 1,
