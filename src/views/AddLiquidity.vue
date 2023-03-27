@@ -171,7 +171,7 @@ export default class AddLiquidity extends Mixins(
   @action.addLiquidity.updateSubscriptions private updateSubscriptions!: AsyncFnWithoutArgs;
   @action.addLiquidity.resetSubscriptions private resetSubscriptions!: AsyncFnWithoutArgs;
   @action.addLiquidity.resetData private resetData!: AsyncFnWithoutArgs;
-  @action.addLiquidity.setDataFromLiquidity setData!: (args: LiquidityParams) => Promise<void>; // public because of mixin
+  @action.addLiquidity.setDataFromLiquidity setData!: (args: LiquidityParams) => Promise<void>; // Overrides SelectedTokenRouteMixin
   @action.addLiquidity.setFirstTokenValue setFirstTokenValue!: (address: string) => Promise<void>;
   @action.addLiquidity.setSecondTokenValue setSecondTokenValue!: (address: string) => Promise<void>;
 
