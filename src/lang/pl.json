@@ -1168,9 +1168,7 @@
             "dialog": {
                 "title": "{Sora} Wybór usługi sieciowej",
                 "fiat": "wartości Fiata",
-                "chartsAndActivity": "Wykresy i aktywność",
-                "online": "online",
-                "offline": "offline"
+                "chartsAndActivity": "Wykresy i aktywność"
             }
         }
     },

@@ -1168,9 +1168,7 @@
             "dialog": {
                 "title": "{Sora} Selección de servicio de red",
                 "fiat": "Valores fiduciarios",
-                "chartsAndActivity": "Gráficos y actividad",
-                "online": "En línea",
-                "offline": "Desconectado"
+                "chartsAndActivity": "Gráficos y actividad"
             }
         }
     },
