@@ -1,7 +1,7 @@
 <template>
   <div class="rewards">
     <div class="rewards-content" v-loading="parentLoading || loading">
-      <gradient-box class="rewards-block" :symbol="gradientSymbol">
+      <rewards-gradient-box class="rewards-block" :symbol="gradientSymbol">
         <div :class="['rewards-box', libraryTheme]">
           <tokens-row :assets="rewardTokens" />
           <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
@@ -73,7 +73,7 @@
             {{ transactionStatusMessage }}
           </div>
         </div>
-      </gradient-box>
+      </rewards-gradient-box>
       <div v-if="!claimingInProgressOrFinished && hintText" class="rewards-block rewards-hint">
         {{ hintText }}
       </div>
@@ -115,11 +115,11 @@ import type { ClaimRewardsParams } from '@/store/rewards/types';
 
 @Component({
   components: {
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    GradientBox: lazyComponent(Components.GradientBox),
-    TokensRow: lazyComponent(Components.TokensRow),
+    RewardsGradientBox: lazyComponent(Components.RewardsGradientBox),
     RewardsAmountHeader: lazyComponent(Components.RewardsAmountHeader),
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable),
+    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    TokensRow: lazyComponent(Components.TokensRow),
     InfoLine: components.InfoLine,
   },
 })
@@ -127,7 +127,8 @@ export default class Rewards extends Mixins(
   SubscriptionsMixin,
   mixins.FormattedAmountMixin,
   WalletConnectMixin,
-  mixins.TransactionMixin
+  mixins.TransactionMixin,
+  mixins.NotificationMixin
 ) {
   @state.rewards.feeFetching private feeFetching!: boolean;
   @state.rewards.rewardsFetching private rewardsFetching!: boolean;
@@ -398,10 +399,7 @@ export default class Rewards extends Mixins(
     await this.getExternalRewards(this.evmAddress);
 
     if (!this.rewardsAvailable && showNotification) {
-      this.$notify({
-        message: this.t('rewards.notification.empty'),
-        title: '',
-      });
+      this.showAppNotification(this.t('rewards.notification.empty'));
     }
   }
 

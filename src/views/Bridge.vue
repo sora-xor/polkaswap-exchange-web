@@ -246,8 +246,8 @@
           :sora-network-fee="soraNetworkFee"
         />
       </s-card>
-      <select-registered-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-      <select-network :selected-evm-network="selectedEvmNetwork" @change="changeEvmNetwork" />
+      <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
+      <bridge-select-network :selected-evm-network="selectedEvmNetwork" @change="changeEvmNetwork" />
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
         :is-valid-network-type="isValidNetwork"
@@ -302,12 +302,12 @@ import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 @Component({
   components: {
+    BridgeSelectAsset: lazyComponent(Components.BridgeSelectAsset),
+    BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
+    BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    SelectNetwork: lazyComponent(Components.SelectNetwork),
-    SelectRegisteredAsset: lazyComponent(Components.SelectRegisteredAsset),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
-    BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     StatusActionBadge: lazyComponent(Components.StatusActionBadge),
     FormattedAmount: components.FormattedAmount,
@@ -507,7 +507,7 @@ export default class Bridge extends Mixins(
   }
 
   getBridgeItemTitle(isSoraNetwork = false): string {
-    return this.t(this.formatNetwork(isSoraNetwork));
+    return this.formatNetwork(isSoraNetwork);
   }
 
   getCopyTooltip(isSoraNetwork = false): string {
@@ -663,7 +663,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       justify-content: space-between;
       flex-wrap: wrap;
       font-size: var(--s-font-size-mini);
-      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
       color: var(--s-color-base-content-primary);
     }

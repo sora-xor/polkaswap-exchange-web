@@ -82,8 +82,8 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
-import MoonpayBridgeInitMixin from '@/components/Moonpay/MoonpayBridgeInitMixin';
-import MoonpayLogo from '@/components/logo/Moonpay.vue';
+import MoonpayBridgeInitMixin from '@/components/pages/Moonpay/BridgeInitMixin';
+import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getCssVariableValue, toQueryString } from '@/utils';
@@ -346,7 +346,6 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     align-items: center;
     border-radius: var(--s-border-radius-small);
     flex-flow: row nowrap;
-    letter-spacing: var(--s-letter-spacing-small);
     line-height: var(--s-line-height-medium);
     font-size: var(--s-font-size-small);
     font-weight: 300;

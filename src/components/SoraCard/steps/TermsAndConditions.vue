@@ -1,41 +1,46 @@
 <template>
   <div class="tos" v-loading="parentLoading">
     <div class="tos__disclaimer">
-      <h4 class="tos__disclaimer-header">Discaimer</h4>
+      <h4 class="tos__disclaimer-header">{{ t('disclaimerTitle') }}</h4>
       <p class="tos__disclaimer-paragraph">
-        To get an IBAN account needed for the SORA Card, users are required to undergo a KYC process with the card
-        issuer. This is required compliance. The SORA community does not and will not collect any of your personal data.
+        {{ t('card.disclaimerCollectData') }}
       </p>
-      <div class="tos__disclaimer-warning-icon">
+      <div class="tos__disclaimer-warning icon">
         <s-icon name="notifications-alert-triangle-24" size="28px" />
       </div>
     </div>
     <div class="tos__section">
       <div class="tos__section-block" @click="openDialog('t&c')">
-        <span class="tos__section-point">Terms & Conditions</span>
+        <span class="tos__section-point">{{ t(termsAndConditionsTitle) }}</span>
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>
       <div class="line" />
       <div class="tos__section-block" @click="openDialog('privacyPolicy')">
-        <span class="tos__section-point">Privacy Policy</span>
+        <span class="tos__section-point">{{ t(privacyPolicyTitle) }}</span>
+        <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
+      </div>
+      <div class="line" />
+      <div class="tos__section-block" @click="openDialog('unsupported')">
+        <span class="tos__section-point">{{ t(unsupportedCountriesTitle) }}</span>
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>
     </div>
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirmToS">
-      <span class="text">ACCEPT & CONTINUE</span>
+      <span class="text">{{ t('card.acceptAndContinue') }}</span>
     </s-button>
-    <tos-dialog :visible.sync="showDialog" :srcLink="link" :key="link" />
+    <tos-dialog :visible.sync="showDialog" :srcLink="link" :title="t(dialogTitle)" :key="link" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, TosExternalLinks } from '@/consts';
 import { lazyComponent } from '@/router';
-import TranslationMixin from '../../mixins/TranslationMixin';
 import { getter } from '@/store/decorators';
-import { Theme } from '@soramitsu/soramitsu-js-ui';
 
 @Component({
   components: {
@@ -43,10 +48,15 @@ import { Theme } from '@soramitsu/soramitsu-js-ui';
   },
 })
 export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  showDialog = false;
-  link = '';
+  readonly termsAndConditionsTitle = 'card.termsAndConditions';
+  readonly privacyPolicyTitle = 'card.privacyPolicy';
+  readonly unsupportedCountriesTitle = 'card.unsupportedCountries';
 
-  @getter.libraryTheme libraryTheme!: Theme;
+  @getter.libraryTheme private libraryTheme!: Theme;
+
+  showDialog = false;
+  dialogTitle = this.termsAndConditionsTitle;
+  link = '';
 
   get termsLink(): string {
     return TosExternalLinks.getLinks(this.libraryTheme).Terms;
@@ -57,22 +67,28 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
   }
 
   handleConfirmToS(): void {
-    this.$emit('confirm-tos');
+    this.$emit('confirm');
   }
 
   openDialog(policy: string): void {
     if (policy === 't&c') {
       this.link = this.termsLink;
+      this.dialogTitle = this.termsAndConditionsTitle;
     }
     if (policy === 'privacyPolicy') {
       this.link = this.privacyLink;
+      this.dialogTitle = this.privacyPolicyTitle;
+    }
+    if (policy === 'unsupported') {
+      this.link = '';
+      this.dialogTitle = this.unsupportedCountriesTitle;
     }
     this.showDialog = true;
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .tos {
   &__disclaimer {
     width: 100%;
@@ -93,16 +109,16 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
       margin-bottom: calc(var(--s-basic-spacing) / 2);
     }
 
-    &-warning-icon {
+    &-warning.icon {
       position: absolute;
       background-color: #479aef;
-      border: 2.25257px solid #f7f3f4 !important;
-      box-shadow: -4px -3px 30px rgba(255, 255, 255, 0.9), 20px 20px 60px rgba(0, 0, 0, 0.1), inset 1px 1px 10px #ffffff;
+      border: 2.25257px solid #f7f3f4;
+      box-shadow: var(--s-shadow-element-pressed);
       top: 20px;
       right: 20px;
       border-radius: 50%;
       color: #fff;
-      width: 46px !important;
+      width: 46px;
       height: 46px;
 
       .s-icon-notifications-alert-triangle-24 {

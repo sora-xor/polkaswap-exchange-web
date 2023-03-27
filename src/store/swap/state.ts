@@ -16,7 +16,7 @@ export function initialState(): SwapState {
       lockedSources: [],
     },
     rewards: [],
-    path: [],
+    route: [],
     selectedDexId: DexId.XOR,
     dexQuoteData: {},
   };

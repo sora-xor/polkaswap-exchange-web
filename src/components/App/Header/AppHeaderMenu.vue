@@ -18,17 +18,18 @@
       >
         <template #menu>
           <s-dropdown-item
-            v-for="{ value, icon, text } in dropdownHeaderMenuItems"
+            v-for="{ value, icon, text, disabled } in dropdownHeaderMenuItems"
             :key="value"
             class="header-menu__item"
             :data-test-name="value"
             :icon="icon"
             :value="value"
+            :disabled="disabled"
           >
             {{ text }}
           </s-dropdown-item>
           <div
-            v-if="!notificationActivated && isBrowserNotificationApiAvailable"
+            v-if="isNotificationOptionShown"
             @click="openNotificationDialog"
             class="notif-option el-dropdown-menu__item header-menu__item"
           >
@@ -40,17 +41,18 @@
     </s-button>
     <template v-else>
       <s-button
-        v-for="{ value, icon, text } in headerMenuItems"
+        v-for="{ value, icon, text, disabled } in headerMenuItems"
         :key="value"
         type="action"
         class="s-pressed"
         :tooltip="text"
         @click="handleSelectHeaderMenu(value)"
+        :disabled="disabled"
       >
         <s-icon :name="icon" :size="iconSize" />
       </s-button>
       <s-button
-        v-if="!notificationActivated && isBrowserNotificationApiAvailable"
+        v-if="isNotificationOptionShown"
         type="action"
         :tooltip="t('browserNotificationDialog.button')"
         @click="openNotificationDialog"
@@ -76,12 +78,14 @@ enum HeaderMenuType {
   Theme = 'theme',
   Language = 'language',
   Notification = 'notification',
+  Disclaimer = 'disclaimer',
 }
 
 type MenuItem = {
   value: HeaderMenuType;
   icon: string;
   text: string;
+  disabled?: boolean;
 };
 
 const BREAKPOINT = 1440;
@@ -95,8 +99,11 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
 
+  @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
+  @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @state.settings.isBrowserNotificationApiAvailable isBrowserNotificationApiAvailable!: boolean;
+
   @getter.libraryTheme private libraryTheme!: Theme;
   @getter.settings.notificationActivated notificationActivated!: boolean;
 
@@ -104,6 +111,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopupEnabled!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
+  @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
 
   isLargeDesktop: boolean = window.innerWidth >= BREAKPOINT;
 
@@ -116,7 +124,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   }
 
   get isNotificationOptionShown(): boolean {
-    return !this.notificationActivated;
+    return !this.notificationActivated && this.isBrowserNotificationApiAvailable;
   }
 
   private getThemeIcon(isDropdown = false): string {
@@ -134,6 +142,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   get themeText(): string {
     const theme = this.t(this.themeTitle);
     return this.t('headerMenu.switchTheme', { theme });
+  }
+
+  get disclaimerText(): string {
+    return this.disclaimerVisibility ? this.t('headerMenu.hideDisclaimer') : this.t('headerMenu.showDisclaimer');
   }
 
   private getHideBalancesIcon(isDropdown = false): string {
@@ -165,6 +177,12 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         icon: 'basic-globe-24',
         text: this.t('headerMenu.switchLanguage'),
       },
+      {
+        value: HeaderMenuType.Disclaimer,
+        icon: 'info-16',
+        text: this.disclaimerText,
+        disabled: this.discalimerDisabled,
+      },
     ];
   }
 
@@ -174,6 +192,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   get dropdownHeaderMenuItems(): Array<MenuItem> {
     return this.getHeaderMenuItems(true);
+  }
+
+  get discalimerDisabled(): boolean {
+    return this.disclaimerVisibility && !this.userDisclaimerApprove;
   }
 
   mounted(): void {
@@ -210,6 +232,10 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       case HeaderMenuType.Language:
         this.setLanguageDialogVisibility(true);
         break;
+      case HeaderMenuType.Disclaimer:
+        if (this.discalimerDisabled) return;
+        this.toggleDisclaimerDialogVisibility();
+        break;
     }
   }
 }
@@ -238,11 +264,10 @@ $icon-size: 28px;
   &__button i {
     font-size: $icon-size !important; // cuz font-size is inline style
   }
-  &__item.el-dropdown-menu__item {
+  & &__item.el-dropdown-menu__item {
     line-height: $dropdown-item-line-height;
     font-weight: 300;
     font-size: var(--s-font-size-small);
-    letter-spacing: var(--s-letter-spacing-small);
     font-feature-settings: 'case' on;
     color: var(--s-color-base-content-secondary);
     display: flex;
@@ -271,9 +296,7 @@ $icon-size: 28px;
   &__bell {
     width: $icon-size;
     height: $icon-size;
-    margin-right: $basic-spacing-mini;
     margin: auto;
-    margin-top: calc(#{$icon-size} / 2);
   }
 
   &__bell--dropdown {
@@ -285,5 +308,10 @@ $icon-size: 28px;
   &:hover &__bell--dropdown {
     color: var(--s-color-base-content-secondary);
   }
+}
+
+.el-dropdown-menu__item.header-menu__item.is-disabled {
+  pointer-events: initial;
+  cursor: not-allowed;
 }
 </style>

@@ -18,15 +18,36 @@ const OrdinalRules = {
 
     return `${n}th`;
   },
-};
+} as const;
 
 const TranslationConsts = {
-  ...WALLET_CONSTS.TranslationConsts,
   // extending consts
+  ...WALLET_CONSTS.TranslationConsts,
   AppName: app.name,
+  APR: 'APR', // Annual percentage rate
   TVL: 'TVL',
   EVM: 'EVM',
-};
+  Kusama: 'Kusama',
+  Metamask: 'MetaMask',
+  Polkaswap: 'Polkaswap',
+  ROI: 'ROI', // Return of investment
+  // Networks from ETH Bridge
+  bridgeNetwork: {
+    EWC: 'Energy Web Chain',
+    private: 'Volta Testnet',
+    goerli: 'Ethereum Goerli',
+    kovan: 'Ethereum Kovan',
+    rinkeby: 'Ethereum Rinkeby',
+    ropsten: 'Ethereum Ropsten',
+    main: 'Ethereum Mainnet',
+  },
+  // Select EVM network dialog
+  evmNetwork: {
+    ethereum: 'Ethereum',
+    energy: 'Energy Web Chain',
+  },
+  mbps: 'mbps',
+} as const;
 
 @Component
 export default class TranslationMixin extends Mixins(mixins.TranslationMixin) {

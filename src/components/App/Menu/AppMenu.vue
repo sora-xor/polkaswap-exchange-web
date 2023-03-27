@@ -1,5 +1,8 @@
 <template>
-  <s-scrollbar class="app-menu app-sidebar-scrollbar" :class="{ visible, 'app-menu__about': isAboutPageOpened }">
+  <s-scrollbar
+    class="app-menu app-sidebar-scrollbar"
+    :class="{ visible, 'app-menu__about': isAboutPageOpened, 'app-menu__loading': pageLoading }"
+  >
     <aside class="app-sidebar">
       <slot name="head"></slot>
       <div class="app-sidebar-menu">
@@ -18,12 +21,20 @@
             <s-menu-item
               v-button
               :key="item.title"
-              :index="item.title"
+              :index="item.index || item.title"
               :disabled="item.disabled"
               tabindex="0"
               class="menu-item"
             >
-              <sidebar-item-content :icon="item.icon" :title="t(`mainMenu.${item.title}`)" />
+              <app-sidebar-item-content
+                tag="a"
+                rel="nofollow noopener"
+                tabindex="-1"
+                :href="item.href"
+                :icon="item.icon"
+                :title="t(`mainMenu.${item.title}`)"
+                @click.native="preventAnchorNavigation"
+              />
             </s-menu-item>
           </s-menu-item-group>
         </s-menu>
@@ -37,7 +48,7 @@
           active-text-color="var(--s-color-base-content-tertiary)"
           active-hover-color="transparent"
         >
-          <sidebar-item-content
+          <app-sidebar-item-content
             v-if="false"
             v-button
             icon="star-16"
@@ -48,7 +59,7 @@
             rel="nofollow noopener"
             class="el-menu-item menu-item--small marketing"
           />
-          <sidebar-item-content
+          <app-sidebar-item-content
             v-button
             icon="symbols-24"
             :title="t('mobilePopup.sideMenu')"
@@ -57,7 +68,7 @@
             @click.native="openSoraDownloadDialog"
           />
           <app-info-popper>
-            <sidebar-item-content
+            <app-sidebar-item-content
               v-button
               icon="info-16"
               :title="t('footerMenu.info')"
@@ -65,7 +76,7 @@
               tabindex="0"
             />
           </app-info-popper>
-          <sidebar-item-content
+          <app-sidebar-item-content
             v-if="faucetUrl"
             :icon="FaucetLink.icon"
             :title="t(`footerMenu.${FaucetLink.title}`)"
@@ -87,6 +98,9 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
+import AppSidebarItemContent from './SidebarItemContent.vue';
+import AppInfoPopper from './AppInfoPopper.vue';
+
 import {
   PageNames,
   PoolChildPages,
@@ -95,18 +109,17 @@ import {
   StakingChildPages,
   ExploreChildPages,
   SidebarMenuGroups,
-  SidebarMenuItem,
+  SidebarMenuItemLink,
   FaucetLink,
-  Components,
 } from '@/consts';
 
-import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
+import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 @Component({
   components: {
-    AppInfoPopper: lazyComponent(Components.AppInfoPopper),
-    SidebarItemContent: lazyComponent(Components.SidebarItemContent),
+    AppInfoPopper,
+    AppSidebarItemContent,
   },
 })
 export default class AppMenu extends Mixins(TranslationMixin) {
@@ -115,6 +128,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) readonly onSelect!: FnWithoutArgs;
 
   @state.settings.faucetUrl faucetUrl!: string;
+  @state.router.loading pageLoading!: boolean;
   @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
@@ -125,7 +139,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
   }
 
-  get sidebarMenuItems(): Array<SidebarMenuItem> {
+  get sidebarMenuItems(): Array<SidebarMenuItemLink> {
     if (this.soraCardEnabled) return SidebarMenuGroups;
     return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.SoraCard);
   }
@@ -142,16 +156,21 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       return PageNames.Rewards;
     }
     if (StakingChildPages.includes(currentName)) {
-      return PageNames.StakingContainer;
+      return DemeterPageNames.Staking;
     }
     if (ExploreChildPages.includes(currentName)) {
-      return PageNames.ExploreContainer;
+      return PageNames.ExploreFarming;
     }
     return currentName as string;
   }
 
   openSoraDownloadDialog(): void {
     this.$emit('open-download-dialog');
+  }
+
+  /** To ignore left click */
+  preventAnchorNavigation(e?: Event): void {
+    e?.preventDefault();
   }
 }
 </script>
@@ -306,7 +325,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
 
-    @include tablet {
+    @include large-desktop {
       position: absolute;
       right: initial;
     }
@@ -315,6 +334,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       @include tablet {
         position: relative;
       }
+    }
+
+    &__loading {
+      z-index: $app-above-loader-layer;
     }
   }
 
@@ -382,7 +405,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       font-size: var(--s-font-size-extra-mini);
       font-weight: 300;
       padding: 0;
-      letter-spacing: var(--s-letter-spacing-small);
       line-height: var(--s-line-height-medium);
       color: var(--s-color-base-content-secondary);
 

@@ -1,14 +1,16 @@
-import { Vue, Component } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import { state, getter } from '@/store/decorators';
 
+import TranslationMixin from './TranslationMixin';
+
 import { EvmLinkType, EVM_NETWORKS } from '@/consts/evm';
 import type { EvmNetworkData } from '@/consts/evm';
 
 @Component
-export default class NetworkFormatterMixin extends Vue {
+export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @getter.web3.connectedEvmNetwork connectedEvmNetwork!: Nullable<EvmNetworkData>;
 
@@ -16,7 +18,7 @@ export default class NetworkFormatterMixin extends Vue {
 
   formatNetwork(isSora: boolean): string {
     if (isSora && this.soraNetwork) {
-      return `sora.${this.soraNetwork}`;
+      return this.TranslationConsts.soraNetwork[this.soraNetwork];
     }
 
     return this.connectedEvmNetwork ? `evm.${this.connectedEvmNetwork.id}` : '';

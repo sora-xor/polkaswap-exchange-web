@@ -111,7 +111,6 @@
         "title": "Рачун мреже {Sora}",
         "WalletAssets": "Средства",
         "WalletActivity": "Активност",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "Адреса новчаника се копира у међуспремник",
         "copy": "Копирајте адресу",
         "switch": "Промените рачун",
-        "walletAddress": "Адреса новчаника"
+        "walletAddress": "Адреса новчаника",
+        "delete": "Обрисати налог",
+        "rename": "Преименујте налог",
+        "export": "Извези .јсон"
     },
     "history": {
         "clearHistory": "Очистите историју",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "Укупна вредност средства:",
         "details": "Детаљи",
-        "assetId": "ИД средства",
-        "add": "@:addAssetText"
+        "assetId": "ИД средства"
     },
     "asset": {
         "remove": "Уклоните средство",
@@ -192,9 +193,7 @@
             "title": "Валуте",
             "switchBtn": "Само верификована средства"
         },
-        "searchInputText": "Претрага по ИД средства, имену или симболу ознаке",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Претрага по ИД средства, имену или симболу ознаке"
     },
     "createToken": {
         "desc": "Креирајте и примените прилагођено средство на {Sora}",
@@ -292,11 +291,8 @@
             "submitted": "Трансакција је послата уз накнаду од {fee} {symbol}",
             "confirmed": "Трансакција потврђена"
         },
-        "viewIn": {
-            "sorascan": "Погледајте у SORAScan",
-            "subscan": "Прикажите у Субскену"
-        },
         "txId": "ИД трансакције",
+        "viewIn": "Прикажите у {explorer}",
         "referrer": "Предложилтељ",
         "referral": "Препорука"
     },
@@ -326,13 +322,11 @@
         "Bridge": "@:bridgeText",
         "About": "О томе",
         "Stats": "Статистикa",
-        "Support": "Подршка",
         "Wallet": "Новчаник",
         "CreatePair": "Направите пар",
         "AddLiquidity": "Додати ликвидност",
         "AddLiquidityId": "Додати ликвидност",
         "RemoveLiquidity": "Уклони ликвидност",
-        "PageNotFound": "Страница није пронађена",
         "Rewards": "Награде",
         "Explore\/Tokens": "Токени",
         "Explore\/Pools": "Базени",
@@ -349,7 +343,6 @@
         "Rewards": "Награде",
         "About": "О",
         "Stats": "Статистикa",
-        "Support": "Подршка",
         "CreatePair": "Направите пар",
         "StakingContainer": "Стeкинг",
         "Explore\/Container": "Истражите",
@@ -432,26 +425,7 @@
         "from": "Од",
         "to": "До"
     },
-    "pageNotFound": {
-        "title": "Страница није пронађена",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Девнет",
-        "Test": "{Sora} Тестнет",
-        "Prod": "{Sora} Меиннет",
-        "Stage": "{Sora} Тестнет"
-    },
-    "evm": {
-        "main": "{Ethereum} Mainnet",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum} Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Волта Тестнет",
-        "EWC": "Energy Wеб Čejn"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +534,6 @@
         "notRegisteredAsset": "Средство {assetSymbol} није регистровано",
         "selectNetwork": "Изаберите мрежу",
         "networkInfo": "Бриџ {Sora} мрежа са:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Копирајте мрежну адресу",
         "soraAddress": "{Sora} adresa",
         "ethereumAddress": "{Ethereum} adresa",
@@ -617,7 +589,6 @@
             "done": "Комплетно",
             "waitingForConfirmation": "Чека се потврда..."
         },
-        "viewInEtherscan": "Погледајте у {Etherscan}",
         "networkTitle": "{network} трансакција",
         "transactionHash": "Хеш трансакције",
         "networkInfo": {
@@ -884,7 +855,9 @@
         "settings": "Подешавања",
         "switchTheme": "Пребаците се на {theme} mод",
         "switchLanguage": "Изаберите језик",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Схов Дисцлаимер",
+        "hideDisclaimer": "Сакриј одрицање одговорности"
     },
     "sentText": "Poslato",
     "learnMoreText": "Сазнајте више",
@@ -1128,7 +1101,9 @@
             "mnemonic": "Наведена је неважећа мнемоника бип39",
             "mnemonicLength": "Мнемоника треба да садржи {number} речи",
             "jsonFields": "ЈСОН датотека нема обавезна поља"
-        }
+        },
+        "assetsAtRiskText": "Имовина у опасности!",
+        "deleteAccountText": "Налог се не може опоравити без почетне фразе, .јсон датотеке или ако је сачуван у некој екстензији. Бићете одјављени."
     },
     "hashiBridgeText": "{Hashi} most",
     "disclaimerTitle": "Одрицање одговорности:",
@@ -1137,11 +1112,68 @@
     },
     "tooltips": {
         "roi": "{ROI} označava povraćaj investicije. Obračunava se deljenjem dobiti ostvarene na investiciji po trošku te investicije u procentualno ekvivalentnom iznosu.",
-        "tvl": "{TVL} označava da je ukupna vrednost zaključana. Predstavlja simbole zakljuиane u bazenima u dolarskom ekvivalentu."
+        "tvl": "{TVL} označava da je ukupna vrednost zaključana. Predstavlja simbole zakljuиane u bazenima u dolarskom ekvivalentu.",
+        "volume": "Обим се односи на укупан износ средстава којима се трговало или размењивало на мрежи током одређеног временског периода. Обим је важан показатељ за мерење ликвидности и укупне активности мреже.",
+        "fees": "Накнаде на блокчејну {Sora} односе се на трошкове који су настали за извршавање трансакција на мрежи. Ове накнаде се плаћају у КСОР-у, изворној криптовалути мреже {Sora} . Висина накнаде је одређена сложеношћу и величином трансакције која се извршава",
+        "supply": "Набавка токена се односи на укупан број токена који су креирани и који су у оптицају на мрежи. Набавка токена може да варира у зависности од количине токена који се стављају, спаљују или преносе на мрежу.",
+        "transactions": "Трансакције се односе на процес слања или примања дигиталне имовине на мрежи, укључујући операције ликвидности, као и замену.",
+        "accounts": "Налози су дигиталне адресе које држе имовину корисника на мрежи. Сваки налог је повезан са јединственом јавном адресом и приватним кључем који омогућава кориснику да приступи и управља својим средствима.",
+        "bridgeTransactions": "Мост {from} до {to} се односи на процес преноса средстава између {from} и {to} мрежа помоћу моста. Мост омогућава интероперабилност две мреже, омогућавајући корисницима да неприметно премештају средства између њих.",
+        "velocity": "Брзина токена је колико пута токен мења рачуне у просеку током периода (месеца). Указује на ниво трговачке активности и ликвидности."
     },
     "createTokenText": "Креирајте",
     "comingSoonText": "Долази ускоро",
     "confirmText": "Потврдите",
     "createTokenTextNFT": "Креирајте НФТ",
-    "doNotShowText": "Не показуј ми ово поново"
+    "doNotShowText": "Не показуј ми ово поново",
+    "accountText": "рачун | рачуни",
+    "networkStatisticsText": "Мрежна статистика",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Чвор повезан",
+                "loading": "Поновно повезивање чвора",
+                "disconnected": "Чвор је прекинут"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Интернет онемогућен",
+                "unstable": "Интернет нестабилан",
+                "stable": "Интернет стабилан"
+            },
+            "label": "Ваша брзина интернета",
+            "desc": {
+                "disabled": "Дисцоннецтед",
+                "unstable": "Спора веза",
+                "stable": "Оптимална брзина"
+            },
+            "action": "Освежи {Polkaswap}",
+            "dialogTitle": "Повежите се на интернет извор",
+            "dialogDesc": "{Polkaswap} захтева интернет везу за стабилно искуство"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Статистика није доступна",
+                "loading": "Статистика се учитава",
+                "available": "Доступна статистика"
+            },
+            "label": "Статистичке службе",
+            "desc": {
+                "unavailable": "Све услуге су искључене",
+                "loading": "Све услуге се учитавају",
+                "available": "Све услуге су стабилне"
+            },
+            "action": "Изаберите услуге",
+            "dialog": {
+                "title": "{Sora} Избор мрежне услуге",
+                "fiat": "Фиат вредности",
+                "chartsAndActivity": "Графикони и активности",
+                "online": "Онлине",
+                "offline": "Одсутан"
+            }
+        }
+    },
+    "locationText": "Локација",
+    "acceptText": "Прихвати и сакриј"
 }

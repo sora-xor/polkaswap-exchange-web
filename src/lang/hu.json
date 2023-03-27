@@ -111,7 +111,6 @@
         "title": "{Sora} hálózati fiók",
         "WalletAssets": "Eszközök",
         "WalletActivity": "Aktivitás",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "A tárca címe a vágólapra másolva",
         "copy": "Cím másolása",
         "switch": "Fiókváltás",
-        "walletAddress": "Pénztárca címe"
+        "walletAddress": "Pénztárca címe",
+        "delete": "Fiók törlése",
+        "rename": "Fiók átnevezése",
+        "export": ".json exportálása"
     },
     "history": {
         "clearHistory": "Előzmények törlése",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "Az összes eszköz értéke:",
         "details": "Részletek",
-        "assetId": "Eszköz azonosítója",
-        "add": "@:addAssetText"
+        "assetId": "Eszköz azonosítója"
     },
     "asset": {
         "remove": "Eszköz eltávolítása",
@@ -192,9 +193,7 @@
             "title": "Valuták",
             "switchBtn": "Csak ellenőrzött eszközök"
         },
-        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Keresés eszközazonosító, név vagy ticker szimbólum alapján"
     },
     "createToken": {
         "desc": "Egyéni eszköz létrehozása és telepítése a {Sora} hálózaton",
@@ -292,11 +291,8 @@
             "submitted": "{fee} {symbol} díjjal benyújtott tranzakció",
             "confirmed": "A tranzakció megerősítve"
         },
-        "viewIn": {
-            "sorascan": "Megtekintés SORAScan-en",
-            "subscan": "Megtekintés Subscan-ben"
-        },
         "txId": "Tranzakció azonosítója",
+        "viewIn": "Megtekintés {explorer}-ben",
         "referrer": "Ajánló",
         "referral": "Ajánlás"
     },
@@ -326,13 +322,11 @@
         "Bridge": "@:bridgeText",
         "About": "Leírás",
         "Stats": "Statisztikák",
-        "Support": "Támogatás",
         "Wallet": "Tárca",
         "CreatePair": "Pár létrehozása",
         "AddLiquidity": "Poolhoz hozzáadás",
         "AddLiquidityId": "Poolhoz hozzáadás",
         "RemoveLiquidity": "Poolból eltávolítás",
-        "PageNotFound": "Az oldal nem található",
         "Rewards": "Jutalmak",
         "Explore\/Tokens": "Tokenek",
         "Explore\/Pools": "Totó",
@@ -349,7 +343,6 @@
         "Rewards": "Jutalmak",
         "About": "Leírás",
         "Stats": "Statisztikák",
-        "Support": "Támogatás",
         "CreatePair": "Pár létrehozása",
         "StakingContainer": "Letét",
         "Explore\/Container": "Kutat",
@@ -432,26 +425,7 @@
         "from": "-tól",
         "to": "Számára"
     },
-    "pageNotFound": {
-        "title": "Az oldal nem található",
-        "body": "404"
-    },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Teszthálózat",
-        "Prod": "{Sora} Főhálózat",
-        "Stage": "{Sora} Teszthálózat"
-    },
-    "evm": {
-        "main": "{Ethereum} főhálózat",
-        "ropsten": "{Ethereum} Ropsten",
-        "rinkeby": "{Ethereum Rinkeby",
-        "kovan": "{Ethereum} Kovan",
-        "goerli": "{Ethereum} Goerli",
-        "private": "Volta Teszthálózat",
-        "EWC": "Energy Web Chain"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },
@@ -560,8 +534,6 @@
         "notRegisteredAsset": "Az eszköz {assetSymbol} nincs regisztrálva",
         "selectNetwork": "Hálózat kiválasztása",
         "networkInfo": "{Sora} hálózati híd a következőkkel:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Hálózati cím másolása",
         "soraAddress": "{Sora} cím",
         "ethereumAddress": "{Ethereum} cím",
@@ -617,7 +589,6 @@
             "done": "Teljesítve",
             "waitingForConfirmation": "Megerősítésre vár..."
         },
-        "viewInEtherscan": "Megtekintés {Etherscan}en",
         "networkTitle": "{network} tranzakció",
         "transactionHash": "Tranzakciós hash",
         "networkInfo": {
@@ -884,7 +855,9 @@
         "settings": "Beállítások",
         "switchTheme": "Váltás {theme} módra",
         "switchLanguage": "Nyelv kiválasztása",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Felelősségi nyilatkozat megjelenítése",
+        "hideDisclaimer": "Felelősségi nyilatkozat elrejtése"
     },
     "sentText": "Küldött",
     "learnMoreText": "Tudj meg többet",
@@ -1128,7 +1101,9 @@
             "mnemonic": "Érvénytelen bip39 emlékeztető van megadva",
             "mnemonicLength": "A mnemonikának {number} szót kell tartalmaznia",
             "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
-        }
+        },
+        "assetsAtRiskText": "Veszélyben lévő eszközök!",
+        "deleteAccountText": "A fiókot nem lehet visszaállítani kezdő kifejezés, .json fájl nélkül, vagy ha azt valamilyen kiterjesztéssel tárolják. Ön ki lesz jelentkezve."
     },
     "hashiBridgeText": "{Hashi} híd",
     "disclaimerTitle": "Jogi nyilatkozat:",
@@ -1137,11 +1112,68 @@
     },
     "tooltips": {
         "roi": "A {ROI} a befektetés megtérülését jelenti. Kiszámítása úgy történik, hogy a befektetésen megszerzett nyereséget elosztjuk a befektetés százalékban kifejezett költségével.",
-        "tvl": "A {TVL} a Total Value Locked rövidítése. A készletekbe zárt tokeneket jelenti dollárban kifejezve."
+        "tvl": "A {TVL} a Total Value Locked rövidítése. A készletekbe zárt tokeneket jelenti dollárban kifejezve.",
+        "volume": "A mennyiség azon eszközök teljes mennyiségére vonatkozik, amelyekkel kereskedtek vagy cseréltek a hálózaton egy adott időszak alatt. A volumen fontos mérőszám a hálózat likviditásának és általános tevékenységének mérésére.",
+        "fees": "A {Sora} blokklánc díjai a hálózaton történő tranzakciók végrehajtása során felmerülő költségekre vonatkoznak. Ezeket a díjakat XOR-ban, a {Sora} hálózat natív kriptovalutájában fizetik. A díj összegét a végrehajtott tranzakció összetettsége és nagysága határozza meg",
+        "supply": "A tokenkészlet a létrehozott és a hálózaton forgalomban lévő tokenek teljes számát jelenti. A tokenkészlet a hálózaton tétbe helyezett, elégetett vagy átvitt tokenek mennyisége alapján ingadozhat.",
+        "transactions": "A tranzakciók a digitális eszközök hálózaton történő küldésének vagy fogadásának folyamatát jelentik, beleértve a likviditási műveleteket, valamint a swapokat.",
+        "accounts": "A fiókok digitális címek, amelyek a felhasználó eszközeit tárolják a hálózaton. Minden fiókhoz egyedi nyilvános cím és privát kulcc tartozik, amely lehetővé teszi a felhasználó számára, hogy hozzáférjen és kezelje eszközeit.",
+        "bridgeTransactions": "A(z {from} to {to} híd arra a folyamatra utal, amely a {from} és {to} hálózatok közötti eszközök átvitelét hidat használja. A híd lehetővé teszi a két hálózat interoperabilitását, lehetővé téve a felhasználók számára, hogy zökkenőmentesen mozgassák az eszközöket közöttük.",
+        "velocity": "A token sebessége az, hogy átlagosan hányszor változtatja meg a token fiókját az időszak (hónap) során. A kereskedési aktivitás és a likviditás szintjét jelzi."
     },
     "createTokenText": "Token létrehozása",
     "comingSoonText": "Hamarosan...",
     "confirmText": "Megerősítés",
     "createTokenTextNFT": "NFT létrehozása",
-    "doNotShowText": "Ne mutasd ezt még egyszer"
+    "doNotShowText": "Ne mutasd ezt még egyszer",
+    "accountText": "számla | fiókok",
+    "networkStatisticsText": "Hálózati statisztikák",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Csomópont csatlakoztatva",
+                "loading": "Csomópont újracsatlakozás",
+                "disconnected": "A csomópont megszakadt"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet letiltva",
+                "unstable": "Az internet instabil",
+                "stable": "Internet stabil"
+            },
+            "label": "Az internet sebessége",
+            "desc": {
+                "disabled": "Szétkapcsolt",
+                "unstable": "Lassú kapcsolat",
+                "stable": "Optimális sebesség"
+            },
+            "action": "{Polkaswap} frissítése",
+            "dialogTitle": "Csatlakozzon az internetes forráshoz",
+            "dialogDesc": "{Polkaswap} használatához internetkapcsolat szükséges a stabil élmény érdekében"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "A statisztika nem elérhető",
+                "loading": "Statisztika betöltése",
+                "available": "Statisztikák elérhetőek"
+            },
+            "label": "Statisztikai szolgáltatások",
+            "desc": {
+                "unavailable": "Minden szolgáltatás le van választva",
+                "loading": "Minden szolgáltatás betöltődik",
+                "available": "Minden szolgáltatás stabil"
+            },
+            "action": "Válassza ki a szolgáltatásokat",
+            "dialog": {
+                "title": "{Sora} Hálózati szolgáltatás kiválasztása",
+                "fiat": "Fiat értékek",
+                "chartsAndActivity": "Diagramok és tevékenység",
+                "online": "Online",
+                "offline": "Offline"
+            }
+        }
+    },
+    "locationText": "Elhelyezkedés",
+    "acceptText": "Elfogadás és elrejtés"
 }

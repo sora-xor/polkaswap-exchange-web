@@ -111,7 +111,6 @@
         "title": "{Sora} Network account",
         "WalletAssets": "Assets",
         "WalletActivity": "Activity",
-        "addAsset": "@:addAssetText",
         "createToken": "@:createTokenText"
     },
     "walletSend": {
@@ -137,7 +136,10 @@
         "successCopy": "Wallet address is copied to the clipboard",
         "copy": "Copy address",
         "switch": "Switch account",
-        "walletAddress": "Wallet address"
+        "walletAddress": "Wallet address",
+        "delete": "Delete account",
+        "rename": "Rename account",
+        "export": "Export .json"
     },
     "history": {
         "clearHistory": "Clear history",
@@ -169,8 +171,7 @@
         },
         "totalAssetsValue": "Total assets value:",
         "details": "Details",
-        "assetId": "Asset ID",
-        "add": "@:addAssetText"
+        "assetId": "Asset ID"
     },
     "asset": {
         "remove": "Remove asset",
@@ -192,9 +193,7 @@
             "title": "Currencies",
             "switchBtn": "Verified assets only"
         },
-        "searchInputText": "Search by Asset ID, Name or Ticker Symbol",
-        "title": "@:addAssetText",
-        "action": "@:addAssetText"
+        "searchInputText": "Search by Asset ID, Name or Ticker Symbol"
     },
     "createToken": {
         "desc": "Create and deploy custom asset on {Sora}",
@@ -292,11 +291,8 @@
             "submitted": "Transaction submitted with fee of {fee} {symbol}",
             "confirmed": "Transaction confirmed"
         },
-        "viewIn": {
-            "sorascan": "View in SORAScan",
-            "subscan": "View in Subscan"
-        },
         "txId": "Transaction Id",
+        "viewIn": "View in {explorer}",
         "referrer": "Referrer",
         "referral": "Referral"
     },
@@ -325,14 +321,12 @@
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
         "About": "About",
-        "Stats": "Stats",
-        "Support": "Support",
+        "Stats": "Statistics",
         "Wallet": "Wallet",
         "CreatePair": "Create Pair",
         "AddLiquidity": "Add Liquidity",
         "AddLiquidityId": "Add Liquidity",
         "RemoveLiquidity": "Remove Liquidity",
-        "PageNotFound": "Page Not Found",
         "Rewards": "Rewards",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Pools",
@@ -348,8 +342,7 @@
         "Wallet": "Account",
         "Rewards": "Rewards",
         "About": "About",
-        "Stats": "Stats",
-        "Support": "Support",
+        "Stats": "Statistics",
         "CreatePair": "Create Pair",
         "StakingContainer": "Staking",
         "Explore\/Container": "Explore",
@@ -431,10 +424,6 @@
     "transfers": {
         "from": "From",
         "to": "To"
-    },
-    "pageNotFound": {
-        "title": "Page not found",
-        "body": "404"
     },
     "metamask": "{Metamask}",
     "sora": {
@@ -561,8 +550,6 @@
         "notRegisteredAsset": "Asset {assetSymbol} is not registered",
         "selectNetwork": "Select network",
         "networkInfo": "Bridge {Sora} Network with:",
-        "ethereum": "{Ethereum}",
-        "energy": "@:evm.EWC",
         "copy": "Copy network address",
         "soraAddress": "{Sora} address",
         "ethereumAddress": "{Ethereum} address",
@@ -618,7 +605,6 @@
             "done": "Complete",
             "waitingForConfirmation": "Waiting for confirmation..."
         },
-        "viewInEtherscan": "View in {Etherscan}",
         "networkTitle": "{network} transaction",
         "transactionHash": "Transaction hash",
         "networkInfo": {
@@ -886,7 +872,9 @@
         "settings": "Settings",
         "switchTheme": "Switch to {theme} Mode",
         "switchLanguage": "Choose Language",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Show Disclaimer",
+        "hideDisclaimer": "Hide Disclaimer"
     },
     "sentText": "Sent",
     "learnMoreText": "Learn more",
@@ -1131,7 +1119,9 @@
             "mnemonic": "Invalid bip39 mnemonic specified",
             "mnemonicLength": "Mnemonic should contain {number} words",
             "jsonFields": "JSON file does not have required fields"
-        }
+        },
+        "assetsAtRiskText": "Assets at risk!",
+        "deleteAccountText": "Account can’t be recovered without a seed phrase, .json file or if it’s stored in some extension. You will be logged out."
     },
     "hashiBridgeText": "{Hashi} bridge",
     "disclaimerTitle": "Disclaimer:",
@@ -1140,11 +1130,68 @@
     },
     "tooltips": {
         "roi": "{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.",
-        "tvl": "{TVL} stands for Total Value Locked. It represents tokens locked in the pools in the dollar equivalent."
+        "tvl": "{TVL} stands for Total Value Locked. It represents tokens locked in the pools in the dollar equivalent.",
+        "volume": "Volume refers to the total amount of assets that have been traded or exchanged on the network over a specific period of time. The volume is an important metric for measuring the liquidity and overall activity of the network.",
+        "fees": "Fees on the {Sora} blockchain refer to the charges that are incurred for executing transactions on the network. These fees are paid in XOR, the native cryptocurrency of the {Sora} Network. The fee amount is determined by the complexity and size of the transaction being executed",
+        "supply": "Token supply refers to the total number of tokens that have been created and are in circulation on the network. The token supply can fluctuate based on the amount of tokens being staked, burned, or transferred on the network.",
+        "transactions": "Transactions refer to the process of sending or receiving digital assets on the network, including liquidity operations, as well as swaps.",
+        "accounts": "Accounts are digital addresses that hold user's assets on the network. Each account is associated with a unique public address and a private key that allows the user to access and manage their assets.",
+        "bridgeTransactions": "{from} to {to} bridge refers to the process of transferring assets between the {from} and {to} networks using a bridge. The bridge allows for the interoperability of the two networks, enabling users to seamlessly move assets between them.",
+        "velocity": "Token velocity is the number of times token changes accounts during period (month) on average. It indicates the level of trading activity and liquidity."
     },
     "createTokenText": "Create",
     "comingSoonText": "Coming Soon",
     "confirmText": "Confirm",
     "createTokenTextNFT": "Create NFT",
-    "doNotShowText": "Don’t show me this again"
+    "doNotShowText": "Don’t show me this again",
+    "accountText": "account | accounts",
+    "networkStatisticsText": "Network statistics",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Node connected",
+                "loading": "Node re-connecting",
+                "disconnected": "Node disconnected"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet disabled",
+                "unstable": "Internet unstable",
+                "stable": "Internet stable"
+            },
+            "label": "Your internet speed",
+            "desc": {
+                "disabled": "Disconnected",
+                "unstable": "Slow connection",
+                "stable": "Optimal speed"
+            },
+            "action": "Refresh {Polkaswap}",
+            "dialogTitle": "Connect to internet source",
+            "dialogDesc": "{Polkaswap} requires internet connection for stable experience"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistics unavailable",
+                "loading": "Statistics loading",
+                "available": "Statistics available"
+            },
+            "label": "Statistics services",
+            "desc": {
+                "unavailable": "All services are disconnected",
+                "loading": "All services are loading",
+                "available": "All services are stable"
+            },
+            "action": "Select services",
+            "dialog": {
+                "title": "{Sora} Network service selection",
+                "fiat": "Fiat values",
+                "chartsAndActivity": "Charts & Activity",
+                "online": "Online",
+                "offline": "Offline"
+            }
+        }
+    },
+    "locationText": "Location",
+    "acceptText": "Accept & Hide"
 }

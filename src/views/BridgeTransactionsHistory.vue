@@ -274,7 +274,6 @@ export default class BridgeTransactionsHistory extends Mixins(
     display: flex;
     align-items: baseline;
     font-weight: 600;
-    letter-spacing: var(--s-letter-spacing-small);
   }
   &--search {
     .el-input__inner {
@@ -394,8 +393,8 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     &--error {
       color: var(--s-color-status-error);
     }
-    &--warning {
-      color: var(--s-color-status-warning);
+    &--info {
+      color: var(--s-color-status-info);
     }
     &--pending {
       color: var(--s-color-base-content-secondary);
