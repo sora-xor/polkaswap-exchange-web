@@ -307,5 +307,7 @@ export default class CalculatorDialog extends Mixins(PoolCardMixin, mixins.Dialo
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+
+  @include focus-outline;
 }
 </style>
