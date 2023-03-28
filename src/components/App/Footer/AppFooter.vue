@@ -230,12 +230,6 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 }
 </script>
 
-<style lang="scss">
-.node-location {
-  font-family: 'Twemoji Country Flags';
-}
-</style>
-
 <style lang="scss" scoped>
 $block-icon-size: 7px;
 
