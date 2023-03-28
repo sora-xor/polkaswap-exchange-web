@@ -31,7 +31,7 @@
     </s-form-item>
     <s-form-item v-if="formattedLocation" prop="location">
       <s-input
-        class="node-info-input s-typography-input-field"
+        class="node-info-input flag-emodji-input s-typography-input-field"
         :placeholder="t('locationText')"
         :value="formattedLocation"
         :disabled="inputDisabled"
@@ -135,7 +135,9 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     if (!(this.existing && this.node?.location)) {
       return null;
     }
-    return formatLocation(this.node.location);
+    const location = formatLocation(this.node.location);
+    if (!location) return null;
+    return location.name ? `${location.name} ${location.flag}` : location.flag;
   }
 
   get inputDisabled(): boolean {
