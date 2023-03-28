@@ -10,7 +10,7 @@
       <div class="tos__section">
         <ul class="sora-card__unsupported-countries">
           <li v-for="[key, value] in unsupportedCountries" :key="key">
-            <span class="flags">{{ countryCodeEmoji(key) }} </span> {{ formatCountryName(key, value) }}
+            <span class="flags flag-emodji">{{ countryCodeEmoji(key) }}</span> {{ formatCountryName(key, value) }}
           </li>
         </ul>
       </div>
