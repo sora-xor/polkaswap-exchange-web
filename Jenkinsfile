@@ -25,6 +25,10 @@ def pipeline = new org.js.AppPipeline(steps: this,
     vaultUser: "polkaswap-ro",
     vaultCredId: "pswapVaultCreds",
     valuesDestPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/",
-    devValuesPath: "dev/dev/"
+    devValuesPath: "dev/dev/",
+    esoPRSecret: "sora2-${steps.env.CHANGE_ID}-polkaswap-exchange-pr-polkaswap-exchange-web-eso-base.yaml",
+    initialSecretName: "sora2-dev-polkaswap-exchange-polkaswap-exchange-web-eso-base",
+    initialNameSpace: "sora2-dev-web",
+    targetNameSpace: "sora2-${steps.env.CHANGE_ID}-web"
 )
 pipeline.runPipeline()
