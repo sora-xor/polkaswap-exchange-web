@@ -1168,9 +1168,7 @@
             "dialog": {
                 "title": "{Sora} Pemilihan layanan jaringan",
                 "fiat": "Nilai Fiat",
-                "chartsAndActivity": "Bagan & Aktivitas",
-                "online": "On line",
-                "offline": "Luring"
+                "chartsAndActivity": "Bagan & Aktivitas"
             }
         }
     },

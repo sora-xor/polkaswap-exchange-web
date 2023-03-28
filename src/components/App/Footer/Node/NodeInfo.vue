@@ -46,7 +46,7 @@
     >
       {{ buttonText }}
     </s-button>
-    <a :href="tutorialLink" class="node-info-button" target="_blank" rel="noreferrer noopener">
+    <a :href="tutorialLink" class="node-info-button" tabindex="-1" target="_blank" rel="noreferrer noopener">
       <s-button
         type="tertiary"
         class="node-info-tutorial-button s-typography-button--big"
