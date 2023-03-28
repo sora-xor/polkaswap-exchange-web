@@ -1168,9 +1168,7 @@
             "dialog": {
                 "title": "{Sora} Výber sieťovej služby",
                 "fiat": "Hodnoty Fiat",
-                "chartsAndActivity": "Grafy a aktivita",
-                "online": "Online",
-                "offline": "Offline"
+                "chartsAndActivity": "Grafy a aktivita"
             }
         }
     },

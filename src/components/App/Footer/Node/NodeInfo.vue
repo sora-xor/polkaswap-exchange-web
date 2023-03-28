@@ -31,7 +31,7 @@
     </s-form-item>
     <s-form-item v-if="formattedLocation" prop="location">
       <s-input
-        class="node-info-input s-typography-input-field"
+        class="node-info-input flag-emodji-input s-typography-input-field"
         :placeholder="t('locationText')"
         :value="formattedLocation"
         :disabled="inputDisabled"
@@ -46,7 +46,7 @@
     >
       {{ buttonText }}
     </s-button>
-    <a :href="tutorialLink" class="node-info-button" target="_blank" rel="noreferrer noopener">
+    <a :href="tutorialLink" class="node-info-button" tabindex="-1" target="_blank" rel="noreferrer noopener">
       <s-button
         type="tertiary"
         class="node-info-tutorial-button s-typography-button--big"
@@ -135,7 +135,9 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     if (!(this.existing && this.node?.location)) {
       return null;
     }
-    return formatLocation(this.node.location);
+    const location = formatLocation(this.node.location);
+    if (!location) return null;
+    return location.name ? `${location.name} ${location.flag}` : location.flag;
   }
 
   get inputDisabled(): boolean {

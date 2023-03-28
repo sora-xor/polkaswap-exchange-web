@@ -1168,9 +1168,7 @@
             "dialog": {
                 "title": "{Sora} Избор мрежне услуге",
                 "fiat": "Фиат вредности",
-                "chartsAndActivity": "Графикони и активности",
-                "online": "Онлине",
-                "offline": "Одсутан"
+                "chartsAndActivity": "Графикони и активности"
             }
         }
     },
