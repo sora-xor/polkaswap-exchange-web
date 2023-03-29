@@ -58,7 +58,7 @@ import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppFooter from '@/components/App/Footer/AppFooter.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 
-import { PageNames, Components, Language, Links } from '@/consts';
+import { PageNames, Components, Language } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -91,18 +91,18 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showMobilePopup = false;
   showNotifsDarkPage = false;
 
+  @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
+  @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer storageReferrer!: string;
-  @state.settings.browserNotifPopupVisibility browserNotifPopup!: boolean;
-  @state.settings.browserNotifPopupBlockedVisibility browserNotifPopupBlocked!: boolean;
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.router.loading pageLoading!: boolean;
 
+  @getter.settings.chartsEnabled private chartsEnabled!: boolean;
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;
-  @getter.settings.chartsEnabled chartsEnabled!: boolean;
 
   @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
   @mutation.wallet.settings.setSubqueryEndpoint private setSubqueryEndpoint!: (endpoint: string) => void;
