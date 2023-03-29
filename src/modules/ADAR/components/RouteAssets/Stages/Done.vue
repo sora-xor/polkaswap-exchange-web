@@ -40,8 +40,13 @@
         >
           {{ 'RE-RUN FAILED TRANSACTIONS' }}
         </s-button>
-        <s-button type="secondary" class="s-typography-button--big" @click.stop="downloadPDF">
-          {{ 'DOWNLOAD PDF OVERVIEW' }}
+        <s-button
+          v-if="!withErrors"
+          type="secondary"
+          class="s-typography-button--big"
+          @click.stop="onReportDownloadClick()"
+        >
+          {{ 'DOWNLOAD Report' }}
         </s-button>
         <s-button
           type="link"
@@ -87,6 +92,12 @@
       :visible.sync="showFinishRoutingDialog"
       @onConfirmClick="onFinishRouting"
     ></confirm-finish-routing-dialog>
+    <select-report-format-dialog
+      :visible.sync="showSelectReportFormatDialog"
+      @onConfirmClick="onFinishRouting"
+      @onPDFSelect="downloadPDF"
+      @onCSVSelect="downloadCSV"
+    ></select-report-format-dialog>
   </div>
 </template>
 
@@ -99,7 +110,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
 import { components, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { groupBy, sumBy } from 'lodash';
-import { Recipient, RecipientStatus } from '@/store/routeAssets/types';
+import { Recipient, RecipientStatus, TransactionInfo } from '@/store/routeAssets/types';
 import { FPNumber } from '@sora-substrate/util/build';
 import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import WarningMessage from '../WarningMessage.vue';
@@ -111,6 +122,7 @@ import autoTable from 'jspdf-autotable';
     WarningMessage,
     FailedTransactionsDialog: adarLazyComponent(AdarComponents.RouteAssetsFailedTransactionsDialog),
     ConfirmFinishRoutingDialog: adarLazyComponent(AdarComponents.RouteAssetsConfirmFinishRoutingDialog),
+    SelectReportFormatDialog: adarLazyComponent(AdarComponents.RouteAssetsSelectReportFormatDialog),
   },
 })
 export default class RoutingCompleted extends Mixins(TranslationMixin) {
@@ -118,12 +130,15 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
   @getter.routeAssets.completedRecipients private completedRecipients!: Array<Recipient>;
   @getter.routeAssets.incompletedRecipients private incompletedRecipients!: Array<Recipient>;
   @getter.routeAssets.recipients private recipients!: Array<Recipient>;
+  @getter.routeAssets.batchTxInfo private batchTxInfo!: TransactionInfo;
+  @getter.routeAssets.batchTxDatetime private batchTxDatetime!: Nullable<Date>;
   @state.wallet.account.fiatPriceObject private fiatPriceObject!: any;
   @state.wallet.account.accountAssets private accountAssets!: Array<AccountAsset>;
   @action.routeAssets.cancelProcessing private cancelProcessing!: () => void;
 
   showFailedTransactionsDialog = false;
   showFinishRoutingDialog = false;
+  showSelectReportFormatDialog = false;
 
   get incompletedRecipientsLength() {
     return this.incompletedRecipients.length;
@@ -187,10 +202,14 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
     this.showFinishRoutingDialog = false;
   }
 
-  downloadPDF() {
-    const doc = new JsPDF({ putOnlyUsedFonts: true, orientation: 'landscape' });
-    const headers = ['№', 'NAME', 'WALLET', 'USD', 'INPUT TOKEN', 'TOKEN', 'AMOUNT', 'STATUS'];
-    const data = this.recipients.map((recipient, idx) => {
+  onReportDownloadClick() {
+    this.showSelectReportFormatDialog = true;
+  }
+
+  headers = ['№', 'NAME', 'WALLET', 'USD', 'INPUT TOKEN', 'TOKEN', 'AMOUNT', 'RATE', 'STATUS'];
+
+  get reportData() {
+    return this.recipients.map((recipient, idx) => {
       return [
         `${idx + 1}`,
         recipient.name.toString(),
@@ -199,12 +218,46 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
         this.inputToken.symbol,
         recipient.asset.symbol,
         (recipient.amount?.toFixed(5) || '').toString(),
+        recipient.exchangeRate || '',
         recipient.status.toString(),
       ];
     });
+  }
+
+  downloadCSV() {
+    const { txId, blockId, from } = this.batchTxInfo;
+    const datetime = this.batchTxDatetime;
+    const csvContent =
+      'data:text/csv;charset=utf-8,' +
+      `Transaction Id - ${txId}\n` +
+      `Block Id - ${blockId}\n` +
+      `Sender wallet - ${from}\n` +
+      `Datetime - ${datetime?.toLocaleString()}\n` +
+      this.headers.join(',') +
+      '\n' +
+      this.reportData.map((e) => e.join(',')).join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `ADAR-${new Date().toLocaleDateString('en-GB')}.csv`);
+    document.body.appendChild(link); // Required for FF
+
+    link.click();
+  }
+
+  downloadPDF() {
+    const doc = new JsPDF({ putOnlyUsedFonts: true, orientation: 'landscape' });
+    const { txId, blockId, from } = this.batchTxInfo;
+    const datetime = this.batchTxDatetime;
+    doc.setFontSize(12);
+    doc.text(`Transaction Id - ${txId}`, 5, 5);
+    doc.text(`Block Id - ${blockId}`, 5, 10);
+    doc.text(`Sender wallet - ${from}`, 5, 15);
+    doc.text(`Datetime - ${datetime?.toLocaleString()}`, 5, 20);
     autoTable(doc, {
-      head: [headers],
-      body: data,
+      head: [this.headers],
+      body: this.reportData,
+      startY: 25,
       margin: { top: 5, left: 5, right: 5, bottom: 5 },
       styles: {
         lineColor: [237, 228, 231],
@@ -224,7 +277,7 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
         fillColor: [255, 250, 251],
       },
       columnStyles: {
-        7: {
+        8: {
           fontStyle: 'bold',
         },
       },

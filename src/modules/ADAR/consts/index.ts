@@ -21,6 +21,7 @@ export enum AdarComponents {
   RouteAssetsSwapDialog = 'RouteAssets/SwapDialog',
   RouteAssetsFailedTransactionsDialog = 'RouteAssets/FailedTransactionsDialog',
   RouteAssetsConfirmFinishRoutingDialog = 'RouteAssets/ConfirmFinishingRoutingDialog',
+  RouteAssetsSelectReportFormatDialog = 'RouteAssets/SelectReportFormatDialog',
 }
 
 export const Stages: Array<Stage> = [

@@ -18,6 +18,7 @@ export type Recipient = {
   id: string;
   isCompleted?: boolean;
   txId?: string;
+  exchangeRate?: string;
 };
 
 export type RouteAssetsSubscription = {
@@ -34,6 +35,7 @@ export type RouteAssetsSubscription = {
 export enum RecipientStatus {
   PENDING = 'Pending',
   FAILED = 'Failed',
+  PASSED = 'Passed',
   ADDRESS_INVALID = 'Address invalid',
   ADDRESS_VALID = 'Address valid',
   SUCCESS = 'Success',
@@ -44,10 +46,18 @@ export type RoutedToken = {
   amount: number;
 };
 
+export type TransactionInfo = {
+  txId: string;
+  blockId: string;
+  from: string;
+};
+
 export type ProcessingState = {
   currentStageIndex: number;
   inputToken: Asset;
   tokensRouted?: Array<RoutedToken>;
+  txInfo?: TransactionInfo;
+  datetime?: Date;
 };
 
 export type Stage = {
