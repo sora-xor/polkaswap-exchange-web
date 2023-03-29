@@ -39,6 +39,13 @@
         </div>
         <s-divider />
         <div class="field">
+          <div class="field__label">ESTImated ADAR fee (0.75%)</div>
+          <div class="field__value">
+            {{ formatNumber(adarFee) }} <token-logo class="token-logo" :token="inputToken" />
+          </div>
+        </div>
+        <s-divider />
+        <div class="field">
           <div class="field__label">Total Tokens available</div>
           <div class="field__value">
             {{ totalTokensAvailable }} <token-logo class="token-logo" :token="inputToken" />
@@ -125,7 +132,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { AdarComponents } from '@/modules/ADAR/consts';
+import { AdarComponents, adarFee } from '@/modules/ADAR/consts';
 import { adarLazyComponent } from '@/modules/ADAR/router';
 import { action, getter, state } from '@/store/decorators';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
@@ -179,6 +186,18 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
     return isInputAssetXor ? new FPNumber(sum).add(this.xorFeeAmount) : new FPNumber(sum);
   }
 
+  get adarFeeMultiplier() {
+    return new FPNumber(adarFee);
+  }
+
+  get adarFee() {
+    return this.estimatedAmount.mul(this.adarFeeMultiplier);
+  }
+
+  get estimatedAmountWithFees() {
+    return this.estimatedAmount.add(this.adarFee);
+  }
+
   get totalTokensAvailable() {
     return this.formattedBalance;
   }
@@ -190,8 +209,8 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   get remainingAmountRequired() {
     const isInputAssetXor = this.inputToken?.symbol === XOR.symbol;
     return isInputAssetXor
-      ? this.estimatedAmount.add(this.xorFeeAmount).sub(this.fpBalance)
-      : this.estimatedAmount.sub(this.fpBalance);
+      ? this.estimatedAmountWithFees.add(this.xorFeeAmount).sub(this.fpBalance)
+      : this.estimatedAmountWithFees.sub(this.fpBalance);
   }
 
   get xorFeeAmount() {
