@@ -40,4 +40,6 @@ function createStage(title: string, componentName: string): Stage {
   };
 }
 
-export const slippageMultiplier = 1.05;
+export const slippageMultiplier = '1.05';
+
+export const adarFee = '0.0075';
