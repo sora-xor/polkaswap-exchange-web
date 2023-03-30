@@ -8,7 +8,14 @@
         :name="rewardsTab"
       />
     </s-tabs>
-    <component :is="currentTab" :parent-loading="parentLoading" />
+
+    <router-view
+      v-bind="{
+        parentLoading: parentLoading,
+        ...$attrs,
+      }"
+      v-on="$listeners"
+    />
   </div>
 </template>
 
@@ -17,15 +24,10 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PageNames, RewardsTabsItems } from '@/consts';
-import router, { lazyView } from '@/router';
+import { RewardsTabsItems } from '@/consts';
+import router from '@/router';
 
-@Component({
-  components: {
-    Rewards: lazyView(PageNames.Rewards),
-    ReferralProgram: lazyView(PageNames.ReferralProgram),
-  },
-})
+@Component
 export default class RewardsTabs extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   readonly RewardsTabsItems = RewardsTabsItems;
 
