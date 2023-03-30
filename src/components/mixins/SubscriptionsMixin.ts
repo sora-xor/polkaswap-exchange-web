@@ -1,7 +1,21 @@
 import { Component, Watch, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import type { NavigationGuardNext, Route } from 'vue-router';
 
 import { getter } from '@/store/decorators';
+
+const isComponentReusedInRoute = (vm: Vue, route: Route): boolean => {
+  const componentName = vm.$options.name;
+
+  if (!componentName) return false;
+
+  const componentSubscriptionsReused = route.matched.some((match) => {
+    const name = (match.components.default as any).options?.name as string;
+    return !!name && name === componentName;
+  });
+
+  return componentSubscriptionsReused;
+};
 
 @Component
 export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
@@ -25,12 +39,20 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
     return this.parentLoading || this.loading;
   }
 
-  beforeMount(): void {
-    this.updateSubscriptions();
+  beforeRouteEnter(to: Route, from: Route, next: NavigationGuardNext<Vue>): void {
+    next((vm) => {
+      if (!isComponentReusedInRoute(vm, from)) {
+        (vm as this).updateSubscriptions();
+      }
+    });
   }
 
-  beforeDestroy(): void {
-    this.resetSubscriptions();
+  beforeRouteLeave(to: Route, from: Route, next: NavigationGuardNext<Vue>): void {
+    if (!isComponentReusedInRoute(this, to)) {
+      this.resetSubscriptions();
+    }
+
+    next();
   }
 
   public setStartSubscriptions(list: AsyncFnWithoutArgs[]) {
