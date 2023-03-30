@@ -34,10 +34,12 @@ export default class Widget extends Vue {
 </style>
 
 <style lang="scss" scoped>
+$widget-border-radius: 20px;
+
 .widget {
   flex: 1;
   border: none;
-  border-radius: 20px;
+  border-radius: $widget-border-radius;
 
   &-container {
     display: flex;
@@ -49,7 +51,7 @@ export default class Widget extends Vue {
     &--bordered {
       .widget {
         box-shadow: var(--s-shadow-element);
-        padding: $inner-spacing-mini;
+        padding: $widget-border-radius $inner-spacing-mini;
         margin: $inner-spacing-tiny;
       }
     }
