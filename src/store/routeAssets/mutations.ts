@@ -1,13 +1,8 @@
 import { defineMutations } from 'direct-vuex';
 
-import type { RouteAssetsState, Recipient } from './types';
+import type { RouteAssetsState, Recipient, TransactionInfo } from './types';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type {
-  QuotePaths,
-  PrimaryMarketsEnabledAssets,
-  QuotePayload,
-  LPRewardsInfo,
-} from '@sora-substrate/liquidity-proxy/build/types';
+import type { PrimaryMarketsEnabledAssets } from '@sora-substrate/liquidity-proxy/build/types';
 
 const mutations = defineMutations<RouteAssetsState>()({
   setData(state, { file, recipients }: { file: File; recipients: Array<Recipient> }): void {
@@ -19,6 +14,8 @@ const mutations = defineMutations<RouteAssetsState>()({
     state.recipients = [];
     state.processingState.currentStageIndex = 0;
     state.processingState.inputToken = XOR;
+    state.processingState.txInfo = undefined;
+    state.processingState.datetime = undefined;
   },
   setSubscriptions(state, subscriptions = []): void {
     state.subscriptions = subscriptions;
@@ -48,6 +45,12 @@ const mutations = defineMutations<RouteAssetsState>()({
       recipient.amount = amount;
     }
   },
+  setRecipientExchangeRate(state, { id, rate }) {
+    const recipient = state.recipients.find((recipient) => recipient.id === id);
+    if (recipient) {
+      recipient.exchangeRate = rate;
+    }
+  },
   setInputToken(state, asset) {
     state.processingState.inputToken = asset;
   },
@@ -74,6 +77,12 @@ const mutations = defineMutations<RouteAssetsState>()({
   },
   setTokensRouted(state, tokens) {
     state.processingState.tokensRouted = tokens.maps((token) => ({ token, amount: 0 }));
+  },
+  setTxInfo(state, txInfo: TransactionInfo) {
+    state.processingState.txInfo = txInfo;
+  },
+  setTxDatetime(state, date: Date) {
+    state.processingState.datetime = date;
   },
   setPrimaryMarketsEnabledAssets(state, assets: PrimaryMarketsEnabledAssets): void {
     state.enabledAssets = Object.freeze({ ...assets });

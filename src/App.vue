@@ -69,7 +69,7 @@ import type { ConnectToNodeOptions } from '@/types/nodes';
 import type { SubNetwork } from '@/utils/ethers-util';
 import type { FeatureFlags } from '@/store/settings/types';
 import getters from './store/web3/getters';
-import { RecipientStatus } from './store/routeAssets/types';
+import { RecipientStatus, TransactionInfo } from './store/routeAssets/types';
 
 @Component({
   components: {
@@ -360,6 +360,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.routeAssets.setRecipientStatus private setRecipientStatus!: any;
   @mutation.routeAssets.setRecipientCompleted private setRecipientCompleted!: any;
   @getter.wallet.transactions.activeTxs activeTransactions!: Array<HistoryItem>;
+  @mutation.routeAssets.setTxInfo private setTxInfo!: (txInfo: TransactionInfo) => void;
 
   handleChangeTransactionADAR(value: Nullable<HistoryItem>, oldValue: Nullable<HistoryItem>): void {
     if (
@@ -390,16 +391,26 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
           status: RecipientStatus.FAILED,
         });
       });
-    } else if (value.status === TransactionStatus.InBlock || isNewTx) {
+    } else if (value.status === TransactionStatus.InBlock) {
       if (isNewTx) {
+        const { id, blockId, from } = value;
+        this.setTxInfo({ txId: id as string, blockId: blockId as string, from: from as string });
         recipients.forEach((reciever) => {
           this.setRecipientStatus({
             id: reciever.id,
-            status: RecipientStatus.SUCCESS,
+            status: RecipientStatus.PASSED,
           });
-          this.setRecipientCompleted(reciever.id);
+          // this.setRecipientCompleted(reciever.id);
         });
       }
+    } else if (value.status === TransactionStatus.Finalized) {
+      recipients.forEach((reciever) => {
+        this.setRecipientStatus({
+          id: reciever.id,
+          status: RecipientStatus.SUCCESS,
+        });
+        this.setRecipientCompleted(reciever.id);
+      });
     }
     // remove active tx on finalized or error status
     // this.removeActiveTxs([value.id as string]);

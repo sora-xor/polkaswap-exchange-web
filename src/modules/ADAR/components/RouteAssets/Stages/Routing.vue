@@ -46,7 +46,9 @@ export default class RoutingAssets extends Mixins(TranslationMixin) {
   @getter.routeAssets.recipientsTokens recipientsTokens!: Asset[];
 
   get continueButtonDisabled() {
-    return !!this.recipients.find((recipient) => recipient.status === RecipientStatus.PENDING);
+    return !!this.recipients.find(
+      (recipient) => recipient.status === RecipientStatus.PENDING || recipient.status === RecipientStatus.PASSED
+    );
   }
 
   onContinueClick() {
@@ -56,6 +58,7 @@ export default class RoutingAssets extends Mixins(TranslationMixin) {
   getStatus(asset) {
     const transactions = this.recipients.filter((recipient) => recipient.asset.address === asset.address);
     if (transactions.some((recipient) => recipient.status === RecipientStatus.FAILED)) return 'failed';
+    if (transactions.some((recipient) => recipient.status === RecipientStatus.PASSED)) return 'passed';
     return transactions.find((recipient) => recipient.status === RecipientStatus.PENDING) ? 'waiting' : 'routed';
   }
 
@@ -119,7 +122,8 @@ export default class RoutingAssets extends Mixins(TranslationMixin) {
           color: var(--s-color-status-success);
         }
       }
-      &_waiting {
+      &_waiting,
+      &_passed {
         color: var(--s-color-status-warning);
         font-weight: 600;
         fill: var(--s-color-status-warning);
