@@ -30,12 +30,12 @@
       />
     </s-form-item>
     <s-form-item v-if="formattedLocation" prop="location">
-      <s-input
-        class="node-info-input s-typography-input-field"
-        :placeholder="t('locationText')"
-        :value="formattedLocation"
-        :disabled="inputDisabled"
-      />
+      <div class="node-info-input location-input s-typography-input-field">
+        <span class="location-input__placeholder">{{ t('locationText') }}</span>
+        <span class="location-input__value">
+          {{ formattedLocation.name }} <span class="flag-emodji">{{ formattedLocation.flag }}</span>
+        </span>
+      </div>
     </s-form-item>
     <s-button
       native-type="submit"
@@ -131,7 +131,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   }
 
   /** Will be shown only for default nodes */
-  get formattedLocation(): Nullable<string> {
+  get formattedLocation() {
     if (!(this.existing && this.node?.location)) {
       return null;
     }
@@ -224,6 +224,8 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
 </style>
 
 <style lang="scss" scoped>
+$min-s-input-height: 58px;
+
 .node-info {
   flex-direction: column;
   align-items: center;
@@ -236,6 +238,31 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   &-button,
   &-tutorial-button {
     width: 100%;
+  }
+}
+.location-input {
+  display: flex;
+  flex-direction: column;
+  border-color: var(--s-color-base-disabled);
+  color: var(--s-color-base-content-secondary);
+  box-shadow: var(--s-shadow-element);
+  background: var(--s-color-base-background);
+  border-width: 0;
+  padding: $inner-spacing-mini $inner-spacing-medium;
+  height: auto;
+  min-height: $min-s-input-height;
+  border-radius: var(--s-border-radius-small);
+  border-style: solid;
+  letter-spacing: var(--s-letter-spacing-small);
+  cursor: not-allowed;
+
+  &__value {
+    font-weight: 400;
+  }
+
+  &__placeholder {
+    font-size: var(--s-font-size-mini);
+    font-weight: 300;
   }
 }
 </style>
