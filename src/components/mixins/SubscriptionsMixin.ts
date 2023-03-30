@@ -9,12 +9,13 @@ const isComponentReusedInRoute = (vm: Vue, route: Route): boolean => {
 
   if (!componentName) return false;
 
-  const componentSubscriptionsReused = route.matched.some((match) => {
+  const componentReused = route.matched.some((match) => {
     const name = (match.components.default as any).options?.name as string;
+
     return !!name && name === componentName;
   });
 
-  return componentSubscriptionsReused;
+  return componentReused;
 };
 
 @Component
