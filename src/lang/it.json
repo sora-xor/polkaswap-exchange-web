@@ -1168,9 +1168,7 @@
             "dialog": {
                 "title": "{Sora} Selezione del servizio di rete",
                 "fiat": "Valori Fiat",
-                "chartsAndActivity": "Grafici e attività",
-                "online": "in linea",
-                "offline": "disconnesso"
+                "chartsAndActivity": "Grafici e attività"
             }
         }
     },

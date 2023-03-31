@@ -18,7 +18,7 @@
                 <div class="service-item__endpoint">{{ service.endpoint }}</div>
               </div>
               <div class="service-item__status" :class="service.online ? 'success' : 'error'">
-                {{ t(service.online ? 'footer.statistics.dialog.online' : 'footer.statistics.dialog.offline') }}
+                {{ service.online ? TranslationConsts.online : TranslationConsts.offline }}
               </div>
             </div>
           </s-radio>

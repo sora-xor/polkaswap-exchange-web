@@ -1168,9 +1168,7 @@
             "dialog": {
                 "title": "{Sora} Hálózati szolgáltatás kiválasztása",
                 "fiat": "Fiat értékek",
-                "chartsAndActivity": "Diagramok és tevékenység",
-                "online": "Online",
-                "offline": "Offline"
+                "chartsAndActivity": "Diagramok és tevékenység"
             }
         }
     },
