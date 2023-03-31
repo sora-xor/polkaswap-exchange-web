@@ -127,13 +127,10 @@ const isAccessTokenExpired = (accessToken: string): boolean => {
 
 export const getXorPerEuroRatio = async () => {
   try {
-    const priceResult = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=sora&vs_currencies=eur', {
-      cache: 'no-cache',
-    });
-
+    const priceResult = await fetch('https://backend.dev.sora-card.tachi.soramitsu.co.jp/prices/xor_euro');
     const parsedData = await priceResult.json();
 
-    return parsedData.sora.eur;
+    return parsedData.price;
   } catch (error) {
     console.error(error);
   }

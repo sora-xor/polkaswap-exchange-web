@@ -939,7 +939,7 @@
         "allowanceError": "Check your camera availability and browser permissions to use it",
         "receive": "Receive",
         "camera": "Camera",
-        "allowanceRequest": "Press “Allow” access to camera"
+        "allowanceRequest": "Press “Allow” to access camera"
     },
     "bridgeTransferNotification": {
         "addToken": "Add {symbol} to {Metamask}",
