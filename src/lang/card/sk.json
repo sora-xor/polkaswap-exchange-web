@@ -49,7 +49,7 @@
         "statusPendingText": "Úspešne ste dokončili svoju žiadosť o KYC. Preskúmanie prebieha a rozhodnutie môžete očakávať v krátkom čase.<br \/><br \/>Zvyčajne sa rozhodnutie vydáva v ten istý deň a v niektorých prípadoch môže trvať až 3 dni.",
         "resendInBtn": "ZNOVA ODOSLAŤ O {value}",
         "statusRejectTitle": "Žiadosť bola zamietnutá",
-        "statusRejectText": "Vaša žiadosť bola zamietnutá interným auditom. Pred opätovnou žiadosťou si pozorne prečítajte naše požiadavky a T&S",
+        "statusRejectText": "Vaša žiadosť bola interným auditom zamietnutá, pred opätovným podaním žiadosti si pozorne prečítajte naše požiadavky a podmienky služby.",
         "statusAcceptTitle": "Žiadosť schválená",
         "noFreeAttemptsDesc": "Využili ste svoj bezplatný pokus na absolvovanie procesu KYC. Prosíme vás, aby ste s platenými pokusmi počkali do ďalšej inovácie aplikácie.",
         "retryKycBtn": "Dokončite KYC znova",

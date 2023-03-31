@@ -49,7 +49,7 @@
         "statusPendingText": "You have successfully completed your KYC application. The review is pending and you can expect a decision shortly.<br \/><br \/>Usually the decision is made the same day and in some cases can take up to 3 days.",
         "resendInBtn": "RESEND IN {value}",
         "statusRejectTitle": "Application rejected",
-        "statusRejectText": "Your application has been rejected by internal audit, please check out our requirements and T&S carefully before applying again",
+        "statusRejectText": "Your application has been rejected by internal audit, please check out our requirements and terms of service carefully before applying again",
         "statusAcceptTitle": "Application approved",
         "noFreeAttemptsDesc": "You have used your free attempt to pass the KYC process. We kindly ask you to wait until the next upgrade of the application to proceed with paid attempts.",
         "retryKycBtn": "Try to complete KYC again",
