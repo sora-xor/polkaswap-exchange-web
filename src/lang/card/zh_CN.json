@@ -49,7 +49,7 @@
         "statusPendingText": "你已经成功完成了你的KYC申请。<br \/><br \/>通常情况下，决定是在同一天作出的，在某些情况下可能需要3天。",
         "resendInBtn": "重发{value}",
         "statusRejectTitle": "申请被拒绝",
-        "statusRejectText": "您的申请已被内部审核拒绝，请在再次申请前仔细查看我们的要求和 T&S",
+        "statusRejectText": "您的申请已被内部审计拒绝，请在再次申请前仔细查看我们的要求和服务条款。",
         "statusAcceptTitle": "申请获批",
         "noFreeAttemptsDesc": "您已使用免费尝试通过 KYC 流程。我们恳请您等到应用程序的下一次升级后再进行付费尝试。",
         "retryKycBtn": "再次完成KYC",

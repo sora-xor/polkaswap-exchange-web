@@ -49,7 +49,7 @@
         "statusPendingText": "Pomyślnie ukończyłeś aplikację KYC. Przegląd jest w toku i wkrótce możesz spodziewać się decyzji. <br \/> <br \/> Zwykle decyzja jest podejmowana tego samego dnia, aw niektórych przypadkach może trwać do 3 dni.",
         "resendInBtn": "WYŚLIJ PONOWNIE W {value}",
         "statusRejectTitle": "Wniosek odrzucony",
-        "statusRejectText": "Twoja aplikacja została odrzucona przez audyt wewnętrzny, przed ponownym złożeniem wniosku zapoznaj się dokładnie z naszymi wymaganiami i T&S",
+        "statusRejectText": "Twoje zgłoszenie zostało odrzucone przez audyt wewnętrzny, przed ponownym zgłoszeniem sprawdź dokładnie nasze wymagania i regulamin.",
         "statusAcceptTitle": "Aplikacja zatwierdzona",
         "noFreeAttemptsDesc": "Wykorzystałeś swoją bezpłatną próbę przejścia procesu KYC. Uprzejmie prosimy o zaczekanie do następnej aktualizacji aplikacji, aby przystąpić do płatnych prób.",
         "retryKycBtn": "Ukończ KYC ponownie",

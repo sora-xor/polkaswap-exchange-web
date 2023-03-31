@@ -49,7 +49,7 @@
         "statusPendingText": "Vous avez complété avec succès votre demande KYC. L'examen est en cours et vous pouvez vous attendre à recevoir une décision sous peu.<br \/><br \/>En général, la décision est prise le jour même, mais dans certains cas, elle peut prendre jusqu'à trois jours.",
         "resendInBtn": "RENVOYER DANS {value}",
         "statusRejectTitle": "Demande rejetée",
-        "statusRejectText": "Votre candidature a été rejetée par l'audit interne, veuillez vérifier attentivement nos exigences et nos conditions générales avant de postuler de nouveau",
+        "statusRejectText": "Votre candidature a été rejetée par l'audit interne. Veuillez consulter attentivement nos exigences et nos conditions d'utilisation avant de postuler à nouveau.",
         "statusAcceptTitle": "Demande approuvée",
         "noFreeAttemptsDesc": "Vous avez utilisé votre tentative gratuite pour réussir le processus de KYC. Nous vous prions de bien vouloir attendre la prochaine mise à jour de l'application pour procéder aux tentatives payantes",
         "retryKycBtn": "Complétez à nouveau la procédure de KYC",

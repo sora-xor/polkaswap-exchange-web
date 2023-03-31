@@ -49,7 +49,7 @@
         "statusPendingText": "Anda telah berhasil menyelesaikan aplikasi KYC Anda. Peninjauan sedang berlangsung dan Anda akan segera mendapatkan keputusan.<br \/><br \/>Biasanya keputusan dibuat pada hari yang sama dan dalam beberapa kasus dapat memakan waktu hingga 3 hari.",
         "resendInBtn": "KIRIM ULANG KE {value}",
         "statusRejectTitle": "Lamaran ditolak",
-        "statusRejectText": "Permohonan Anda telah ditolak oleh audit internal, harap periksa persyaratan dan T&S kami dengan saksama sebelum mengajukan permohonan kembali",
+        "statusRejectText": "Permohonan Anda telah ditolak oleh audit internal, mohon periksa persyaratan dan ketentuan layanan kami dengan cermat sebelum mengajukan permohonan lagi",
         "statusAcceptTitle": "Permohonan disetujui",
         "noFreeAttemptsDesc": "Anda telah menggunakan percobaan gratis untuk melewati proses KYC. Kami dengan hormat meminta Anda untuk menunggu hingga pemutakhiran aplikasi berikutnya untuk melanjutkan upaya berbayar.",
         "retryKycBtn": "Selesaikan KYC lagi",
