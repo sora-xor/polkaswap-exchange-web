@@ -4,20 +4,6 @@ import type { NavigationGuardNext, Route } from 'vue-router';
 
 import { getter } from '@/store/decorators';
 
-const isComponentReusedInRoute = (vm: Vue, route: Route): boolean => {
-  const componentName = vm.$options.name;
-
-  if (!componentName) return false;
-
-  const componentReused = route.matched.some((match) => {
-    const name = (match.components.default as any).options?.name as string;
-
-    return !!name && name === componentName;
-  });
-
-  return componentReused;
-};
-
 @Component
 export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
@@ -40,19 +26,16 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
     return this.parentLoading || this.loading;
   }
 
-  beforeRouteEnter(to: Route, from: Route, next: NavigationGuardNext<Vue>): void {
-    next((vm) => {
-      if (!isComponentReusedInRoute(vm, from)) {
-        (vm as this).updateSubscriptions();
-      }
-    });
+  beforeMount(): void {
+    this.updateSubscriptions();
   }
 
-  beforeRouteLeave(to: Route, from: Route, next: NavigationGuardNext<Vue>): void {
-    if (!isComponentReusedInRoute(this, to)) {
-      this.resetSubscriptions();
-    }
-
+  // [TODO]
+  // We need subscription management
+  // when every subscription have own unsubscribe call, which is not stored in vuex
+  // to change this hook to beforeDestroy
+  async beforeRouteLeave(to: Route, from: Route, next: NavigationGuardNext<Vue>): Promise<void> {
+    await this.resetSubscriptions();
     next();
   }
 
