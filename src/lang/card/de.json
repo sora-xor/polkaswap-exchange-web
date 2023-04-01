@@ -49,7 +49,7 @@
         "statusPendingText": "Sie haben Ihren KYC-Antrag erfolgreich abgeschlossen. Die Prüfung ist noch nicht abgeschlossen und Sie können in Kürze mit einer Entscheidung rechnen.<br \/><br \/>In der Regel wird die Entscheidung noch am selben Tag getroffen, in einigen Fällen kann sie bis zu 3 Tage dauern.",
         "resendInBtn": "ERNEUT SENDEN IN {value}",
         "statusRejectTitle": "Antrag abgelehnt",
-        "statusRejectText": "Ihre Bewerbung wurde von der internen Revision abgelehnt. Bitte lesen Sie unsere Anforderungen und AGB sorgfältig durch, bevor Sie sich erneut bewerben",
+        "statusRejectText": "Ihre Bewerbung wurde von der internen Prüfung abgelehnt. Bitte lesen Sie unsere Anforderungen und Nutzungsbedingungen sorgfältig durch, bevor Sie sich erneut bewerben",
         "statusAcceptTitle": "Antrag genehmigt",
         "noFreeAttemptsDesc": "Sie haben Ihren kostenlosen Versuch genutzt, um den KYC-Prozess zu bestehen. Wir bitten Sie, bis zum nächsten Upgrade der Anwendung zu warten, um mit kostenpflichtigen Versuchen fortzufahren.",
         "retryKycBtn": "Führen Sie KYC erneut durch",

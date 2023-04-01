@@ -49,7 +49,7 @@
         "statusPendingText": "Ön sikeresen kitöltötte KYC kérelmét. A felülvizsgálat folyamatban van, és hamarosan várható a döntés.<br \/><br \/>A döntés általában még aznap megszületik, de egyes esetekben akár 3 napot is igénybe vehet.",
         "resendInBtn": "ÚJRAKÜLDÉS {value}",
         "statusRejectTitle": "Jelentkezés elutasítva",
-        "statusRejectText": "Pályázatát a belső ellenőrzés elutasította. Kérjük, az újbóli jelentkezés előtt figyelmesen olvassa el követelményeinket és ÁSZF-ünket",
+        "statusRejectText": "Jelentkezését a belső ellenőrzés elutasította, kérjük, mielőtt újra jelentkezik, figyelmesen olvassa el követelményeinket és szolgáltatási feltételeinket.",
         "statusAcceptTitle": "Pályázat jóváhagyva",
         "noFreeAttemptsDesc": "Felhasználta az ingyenes kísérletet a KYC folyamat átadására. Kérjük, várjon az alkalmazás következő frissítéséig a fizetős próbálkozások folytatásához.",
         "retryKycBtn": "Töltse ki újra a KYC-t",
