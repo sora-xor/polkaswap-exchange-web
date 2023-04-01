@@ -49,7 +49,7 @@
         "statusPendingText": "U heeft uw KYC-aanvraag succesvol afgerond. De beoordeling is in behandeling en u kunt binnenkort een beslissing verwachten.<br \/><br \/>Meestal wordt de beslissing dezelfde dag genomen en in sommige gevallen kan dit tot 3 dagen duren.",
         "resendInBtn": "OPNIEUW VERZENDEN BINNEN {value}",
         "statusRejectTitle": "Aanvraag afgewezen",
-        "statusRejectText": "Uw aanvraag is afgewezen door een interne audit. Bekijk onze vereisten en T&S zorgvuldig voordat u opnieuw solliciteert",
+        "statusRejectText": "Uw aanvraag is afgewezen door een interne audit. Bekijk onze vereisten en servicevoorwaarden zorgvuldig voordat u opnieuw solliciteert",
         "statusAcceptTitle": "Aanvraag goedgekeurd",
         "noFreeAttemptsDesc": "Je hebt je gratis poging gebruikt om door het KYC-proces te komen. We vragen u vriendelijk om te wachten tot de volgende upgrade van de applicatie om door te gaan met betaalde pogingen.",
         "retryKycBtn": "Voltooi KYC opnieuw",

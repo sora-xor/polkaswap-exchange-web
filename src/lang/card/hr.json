@@ -49,7 +49,7 @@
         "statusPendingText": "Uspješno ste završili svoju KYC prijavu. Pregled je u tijeku i odluku možete očekivati uskoro. <br \/> <br \/> Obično se odluka donosi isti dan, au nekim slučajevima može potrajati i do 3 dana.",
         "resendInBtn": "PONOVO POŠALJI ZA {value}",
         "statusRejectTitle": "Prijava odbijena",
-        "statusRejectText": "Vašu je prijavu odbila interna revizija, pažljivo provjerite naše zahtjeve i T&S prije ponovne prijave",
+        "statusRejectText": "Vašu je prijavu odbila interna revizija, pažljivo provjerite naše zahtjeve i uvjete pružanja usluge prije ponovne prijave",
         "statusAcceptTitle": "Prijava odobrena",
         "noFreeAttemptsDesc": "Iskoristili ste svoj besplatni pokušaj prolaska KYC procesa. Ljubazno vas molimo da pričekate do sljedeće nadogradnje aplikacije kako biste nastavili s plaćenim pokušajima.",
         "retryKycBtn": "Ponovno ispunite KYC",
