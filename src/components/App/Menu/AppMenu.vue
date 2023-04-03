@@ -59,10 +59,10 @@
             class="el-menu-item menu-item--small"
             tabindex="0"
             @click.native="openSoraDownloadDialog"
-          />
+          /> -->
           <app-info-popper>
             <sidebar-item-content icon="info-16" :title="t('footerMenu.info')" class="el-menu-item menu-item--small" />
-          </app-info-popper> -->
+          </app-info-popper>
           <sidebar-item-content
             v-if="faucetUrl"
             :icon="FaucetLink.icon"

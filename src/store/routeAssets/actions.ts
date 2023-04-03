@@ -267,10 +267,12 @@ const actions = defineActions({
 });
 
 function getTransferParams(context, inputAsset, recipient) {
-  const { rootState } = routeAssetsActionContext(context);
+  const { rootState, commit } = routeAssetsActionContext(context);
   if (recipient.asset.address === inputAsset.address) {
     const priceObject = rootState.wallet.account.fiatPriceObject;
     const amount = getTokenEquivalent(priceObject, recipient.asset, recipient.usd);
+    const exchangeRate = getAssetUSDPrice(recipient.asset, priceObject);
+    commit.setRecipientExchangeRate({ id: recipient.id, rate: exchangeRate?.toFixed() });
     return {
       action: async () => await api.transfer(recipient.asset, recipient.wallet, amount.toString()),
       recipient,
@@ -285,7 +287,8 @@ function getTransferParams(context, inputAsset, recipient) {
       const swapData = getAmountAndDexId(context, inputAsset, recipient.asset, recipient.usd);
       if (!swapData) return null;
 
-      const { amountFrom, amountTo, bestDexId } = swapData;
+      const { amountFrom, amountTo, exchangeRate, bestDexId } = swapData;
+      commit.setRecipientExchangeRate({ id: recipient.id, rate: exchangeRate?.toFixed() });
 
       return {
         action: async () =>
@@ -405,6 +408,8 @@ async function executeBatchSwapAndSend(context, data: Array<any>): Promise<any> 
         .then(async () => {
           const lastTx = await getLastTransaction(time);
           rootCommit.wallet.transactions.addActiveTx(lastTx.id as string);
+          commit.setTxInfo({ txId: lastTx.id, blockId: lastTx.blockId, from: lastTx.from });
+          commit.setTxDatetime(new Date());
           swapTransferData.forEach((swapTransferItem) => {
             swapTransferItem.receivers.forEach((receiver) => {
               commit.setRecipientTxId({
@@ -483,9 +488,11 @@ function calcTxParams(
 
 function getAmountAndDexId(context: any, assetFrom: Asset, assetTo: Asset, usd: number | string) {
   const { rootState, getters, rootGetters } = routeAssetsActionContext(context);
-  const tokenEquivalent = getTokenEquivalent(rootState.wallet.account.fiatPriceObject, assetTo, usd);
+  const fiatPriceObject = rootState.wallet.account.fiatPriceObject;
+  const tokenEquivalent = getTokenEquivalent(fiatPriceObject, assetTo, usd);
+  const exchangeRate = getAssetUSDPrice(assetTo, fiatPriceObject);
   if (assetFrom.address === assetTo.address)
-    return { amountFrom: tokenEquivalent, amountTo: tokenEquivalent, bestDexId: 0 };
+    return { amountFrom: tokenEquivalent, amountTo: tokenEquivalent, exchangeRate, bestDexId: 0 };
   const subscription = getters.subscriptions.find((sub) => sub.assetAddress === assetTo.address);
   if (!subscription) {
     throw new Error('Subscription did not found');
@@ -527,7 +534,13 @@ function getAmountAndDexId(context: any, assetFrom: Asset, assetTo: Asset, usd: 
   }
 
   const { amount, amountWithoutImpact, fee, rewards } = results[bestDexId];
-  return { amountFrom: FPNumber.fromCodecValue(amount), amountTo: tokenEquivalent, bestDexId, allDexes: results };
+  return {
+    amountFrom: FPNumber.fromCodecValue(amount),
+    amountTo: tokenEquivalent,
+    exchangeRate,
+    bestDexId,
+    allDexes: results,
+  };
 }
 
 export default actions;

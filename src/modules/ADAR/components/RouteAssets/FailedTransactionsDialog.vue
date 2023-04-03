@@ -101,7 +101,7 @@
           </s-table-column>
 
           <!-- BUTTON -->
-          <s-table-column>
+          <!-- <s-table-column>
             <template v-slot="{ row }">
               <s-button
                 type="primary"
@@ -112,7 +112,7 @@
                 {{ 'RE-RUN' }}
               </s-button>
             </template>
-          </s-table-column>
+          </s-table-column> -->
         </s-table>
         <s-pagination
           class="failed-transactions-table-pagination"

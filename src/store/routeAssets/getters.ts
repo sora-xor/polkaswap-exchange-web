@@ -1,7 +1,7 @@
 import { defineGetters } from 'direct-vuex';
 
 import { routeAssetsGetterContext } from '@/store/routeAssets';
-import type { Recipient, RouteAssetsState, RouteAssetsSubscription } from './types';
+import type { Recipient, RouteAssetsState, RouteAssetsSubscription, TransactionInfo } from './types';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import state from './state';
 import { Stages } from '@/modules/ADAR/consts';
@@ -59,6 +59,14 @@ const getters = defineGetters<RouteAssetsState>()({
   },
   isProcessed(...args) {
     return false;
+  },
+  batchTxInfo(...args): Nullable<TransactionInfo> {
+    const { state } = routeAssetsGetterContext(args);
+    return state.processingState.txInfo;
+  },
+  batchTxDatetime(...args): Nullable<Date> {
+    const { state } = routeAssetsGetterContext(args);
+    return state.processingState.datetime;
   },
 });
 

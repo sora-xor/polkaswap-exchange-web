@@ -1,9 +1,9 @@
 {
-  "name": "polkaswap-exchange-web",
-  "version": "1.15.0",
+  "name": "adar",
+  "version": "0.1.4",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
+    "url": "https://github.com/soramitsu/adar.git"
   },
   "license": "Apache-2.0",
   "private": true,
