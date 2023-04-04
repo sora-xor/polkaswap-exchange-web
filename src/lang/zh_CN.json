@@ -1173,5 +1173,6 @@
         }
     },
     "locationText": "地点",
-    "acceptText": "接受并隐藏"
+    "acceptText": "接受并隐藏",
+    "newAccountsText": "新帐户"
 }
