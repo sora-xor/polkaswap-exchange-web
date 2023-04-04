@@ -1173,5 +1173,6 @@
         }
     },
     "locationText": "Emplacement",
-    "acceptText": "Accepter et masquer"
+    "acceptText": "Accepter et masquer",
+    "newAccountsText": "Nouveaux comptes"
 }
