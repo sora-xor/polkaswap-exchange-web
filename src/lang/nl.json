@@ -1168,12 +1168,11 @@
             "dialog": {
                 "title": "{Sora} Netwerkserviceselectie",
                 "fiat": "Fiat-waarden",
-                "chartsAndActivity": "Grafieken & Activiteit",
-                "online": "Online",
-                "offline": "offline"
+                "chartsAndActivity": "Grafieken & Activiteit"
             }
         }
     },
     "locationText": "Plaats",
-    "acceptText": "Accepteren & verbergen"
+    "acceptText": "Accepteren & verbergen",
+    "newAccountsText": "Nieuwe rekeningen"
 }

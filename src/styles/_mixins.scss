@@ -817,3 +817,19 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     @include focus-outline;
   }
 }
+
+@mixin browser-notification-dialog {
+  display: flex;
+  flex-direction: column;
+
+  &__info {
+    text-align: center;
+    margin: $basic-spacing $basic-spacing * 2;
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  &__btn {
+    margin-bottom: $basic-spacing;
+  }
+}

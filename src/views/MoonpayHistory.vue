@@ -61,7 +61,7 @@
         />
       </template>
       <template v-else>
-        <moonpay-widget :src="detailsWidgetUrl" />
+        <widget :src="detailsWidgetUrl" />
         <s-button
           v-if="isCompletedTransaction"
           :type="actionButtonType"
@@ -103,7 +103,7 @@ const DetailsView = 'details';
     MoonpayLogo,
     FormattedAmount: components.FormattedAmount,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    MoonpayWidget: lazyComponent(Components.MoonpayWidget),
+    Widget: lazyComponent(Components.Widget),
     HistoryPagination: components.HistoryPagination,
   },
 })

@@ -1168,12 +1168,11 @@
             "dialog": {
                 "title": "{Sora} Pemilihan layanan jaringan",
                 "fiat": "Nilai Fiat",
-                "chartsAndActivity": "Bagan & Aktivitas",
-                "online": "On line",
-                "offline": "Luring"
+                "chartsAndActivity": "Bagan & Aktivitas"
             }
         }
     },
     "locationText": "Lokasi",
-    "acceptText": "Terima & Sembunyikan"
+    "acceptText": "Terima & Sembunyikan",
+    "newAccountsText": "Akun baru"
 }

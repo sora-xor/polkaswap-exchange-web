@@ -177,7 +177,6 @@ export enum Components {
   BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
   // Moonpay Page
   Moonpay = 'pages/Moonpay/Moonpay',
-  MoonpayWidget = 'pages/Moonpay/Widget',
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
   MoonpayHistoryButton = 'pages/Moonpay/HistoryButton',
@@ -205,6 +204,7 @@ export enum Components {
   ValueStatusWrapper = 'shared/ValueStatusWrapper',
   TransactionDetails = 'shared/TransactionDetails',
   PoolInfo = 'shared/PoolInfo',
+  Widget = 'shared/Widget',
   // Shared Buttons
   SortButton = 'shared/Button/SortButton',
   SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',

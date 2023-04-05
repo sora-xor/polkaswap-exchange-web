@@ -1168,12 +1168,11 @@
             "dialog": {
                 "title": "Aṣayan iṣẹ nẹtiwọki {Sora}",
                 "fiat": "Awọn iye Fiat",
-                "chartsAndActivity": "Awọn aworan atọka & Iṣẹ-ṣiṣe",
-                "online": "Online",
-                "offline": "Aisinipo"
+                "chartsAndActivity": "Awọn aworan atọka & Iṣẹ-ṣiṣe"
             }
         }
     },
     "locationText": "Ipo",
-    "acceptText": "Gba & Tọju"
+    "acceptText": "Gba & Tọju",
+    "newAccountsText": "Awọn iroyin titun"
 }

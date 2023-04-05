@@ -49,7 +49,7 @@
         "statusPendingText": "O ti pari ohun elo KYC rẹ ni aṣeyọri. Atunwo naa wa ni isunmọtosi ati pe o le nireti ipinnu kan laipẹ. <br \/> <br \/> Nigbagbogbo ipinnu naa ni a ṣe ni ọjọ kanna ati ni awọn igba miiran le gba to ọjọ mẹta.",
         "resendInBtn": "Tun fi ranṣẹ sinu {value}",
         "statusRejectTitle": "Ohun elo kọ",
-        "statusRejectText": "Ohun elo rẹ ti kọ nipasẹ iṣayẹwo inu, jọwọ ṣayẹwo awọn ibeere wa ati T&S ni pẹkipẹki ṣaaju lilo lẹẹkansi",
+        "statusRejectText": "A ti kọ ohun elo rẹ silẹ nipasẹ ayẹwo inu, jọwọ ṣayẹwo awọn ibeere wa ati awọn ofin ti iṣẹ daradara ṣaaju ki o to tun waye",
         "statusAcceptTitle": "Ohun elo fọwọsi",
         "noFreeAttemptsDesc": "O ti lo igbiyanju ọfẹ rẹ lati kọja ilana KYC naa. A fi inurere beere lọwọ rẹ lati duro titi ti iṣagbega atẹle ti ohun elo lati tẹsiwaju pẹlu awọn igbiyanju isanwo.",
         "retryKycBtn": "Pari KYC lẹẹkansi",

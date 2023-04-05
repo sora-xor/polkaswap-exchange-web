@@ -1168,12 +1168,11 @@
             "dialog": {
                 "title": "{Sora} Výber sieťovej služby",
                 "fiat": "Hodnoty Fiat",
-                "chartsAndActivity": "Grafy a aktivita",
-                "online": "Online",
-                "offline": "Offline"
+                "chartsAndActivity": "Grafy a aktivita"
             }
         }
     },
     "locationText": "Poloha",
-    "acceptText": "Prijať a skryť"
+    "acceptText": "Prijať a skryť",
+    "newAccountsText": "Nové účty"
 }

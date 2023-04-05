@@ -390,7 +390,9 @@ export default class Swap extends Mixins(
   created() {
     this.withApi(async () => {
       this.parseCurrentRoute();
-      if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
+      if (this.tokenFrom && this.tokenTo) {
+        this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
+      } else if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
         await this.setTokenFromAddress(this.firstRouteAddress);
         await this.setTokenToAddress(this.secondRouteAddress);
       } else if (!this.tokenFrom) {
@@ -577,6 +579,7 @@ export default class Swap extends Mixins(
     this.showSelectTokenDialog = true;
   }
 
+  /** Overrides SelectedTokenRouteMixin */
   async setData(params: { firstAddress: string; secondAddress: string }): Promise<void> {
     await this.setTokenFromAddress(params.firstAddress);
     await this.setTokenToAddress(params.secondAddress);

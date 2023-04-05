@@ -1168,12 +1168,11 @@
             "dialog": {
                 "title": "{Sora} Valg av nettverkstjeneste",
                 "fiat": "Fiat-verdier",
-                "chartsAndActivity": "Diagrammer og aktivitet",
-                "online": "på nett",
-                "offline": "Frakoblet"
+                "chartsAndActivity": "Diagrammer og aktivitet"
             }
         }
     },
     "locationText": "plassering",
-    "acceptText": "Godta og skjul"
+    "acceptText": "Godta og skjul",
+    "newAccountsText": "Nye kontoer"
 }

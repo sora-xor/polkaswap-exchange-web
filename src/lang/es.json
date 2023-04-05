@@ -1168,12 +1168,11 @@
             "dialog": {
                 "title": "{Sora} Selección de servicio de red",
                 "fiat": "Valores fiduciarios",
-                "chartsAndActivity": "Gráficos y actividad",
-                "online": "En línea",
-                "offline": "Desconectado"
+                "chartsAndActivity": "Gráficos y actividad"
             }
         }
     },
     "locationText": "Ubicación",
-    "acceptText": "Aceptar y ocultar"
+    "acceptText": "Aceptar y ocultar",
+    "newAccountsText": "Nuevas cuentas"
 }

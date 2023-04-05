@@ -7,7 +7,16 @@ $font-weight-600: 'wght' 600;
 $font-weight-700: 'wght' 700;
 $font-weight-800: 'wght' 800;
 
+$country-emoji-font: 'Twemoji Country Flags';
+
 @include generic-input-lines;
+
+.flag-emodji {
+  &,
+  &-input input.el-input__inner {
+    font-family: $country-emoji-font;
+  }
+}
 
 /* Networks Icons */
 $s-icon-sora: '\0041';
