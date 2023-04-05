@@ -225,17 +225,18 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
   }
 
   downloadCSV() {
-    const { txId, blockId, from } = this.batchTxInfo;
+    const { txId, blockId, from, blockNumber } = this.batchTxInfo;
     const datetime = this.batchTxDatetime;
     const csvContent =
       'data:text/csv;charset=utf-8,' +
-      `Transaction Id - ${txId}\n` +
-      `Block Id - ${blockId}\n` +
-      `Sender wallet - ${from}\n` +
-      `Datetime - ${datetime?.toLocaleString()}\n` +
+      // `Transaction Id - ${txId}\n` +
+      // `Block Hash - ${blockId}\n` +
+      // `Sender wallet - ${from}\n` +
+      `Datetime - ${datetime?.toUTCString()}\n` +
       this.headers.join(',') +
+      `,TRANSACTION ID,BLOCK NUMBER,SENDER WALLET` +
       '\n' +
-      this.reportData.map((e) => e.join(',')).join('\n');
+      this.reportData.map((e) => `${e.join(',')},${txId},${blockNumber},${from}`).join('\n');
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
@@ -247,17 +248,18 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
 
   downloadPDF() {
     const doc = new JsPDF({ putOnlyUsedFonts: true, orientation: 'landscape' });
-    const { txId, blockId, from } = this.batchTxInfo;
+    const { txId, blockId, from, blockNumber } = this.batchTxInfo;
     const datetime = this.batchTxDatetime;
     doc.setFontSize(12);
     doc.text(`Transaction Id - ${txId}`, 5, 5);
-    doc.text(`Block Id - ${blockId}`, 5, 10);
-    doc.text(`Sender wallet - ${from}`, 5, 15);
-    doc.text(`Datetime - ${datetime?.toLocaleString()}`, 5, 20);
+    doc.text(`Block Number - ${blockNumber}`, 5, 10);
+    doc.text(`Block Id - ${blockId}`, 5, 15);
+    doc.text(`Sender wallet - ${from}`, 5, 20);
+    doc.text(`Datetime - ${datetime?.toUTCString()}`, 5, 25);
     autoTable(doc, {
       head: [this.headers],
       body: this.reportData,
-      startY: 25,
+      startY: 30,
       margin: { top: 5, left: 5, right: 5, bottom: 5 },
       styles: {
         lineColor: [237, 228, 231],
