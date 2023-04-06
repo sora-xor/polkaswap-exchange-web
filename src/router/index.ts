@@ -11,6 +11,8 @@ import { PageNames, BridgeChildPages } from '@/consts';
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 import { demeterLazyView } from '@/modules/demeterFarming/router';
 
+import * as Sentry from '@sentry/vue';
+
 Vue.use(VueRouter);
 
 Component.registerHooks(['beforeRouteEnter', 'beforeRouteUpdate', 'beforeRouteLeave']);
@@ -283,5 +285,34 @@ router.beforeEach((to, from, next) => {
   setRoute(current, false);
 });
 
+// Sentry confinguration:
+Sentry.init({
+  Vue,
+
+  // for now i used adar-test dsn. I'll change it later
+  // dsn: 'https://71e73a867f6f4e0ca045bdb27347c525@sentry.soramitsu.co.jp/7',
+  dsn: 'https://562a0a5f5f8945ce99dc59322bca7e5e@o4504655239512064.ingest.sentry.io/4504959049400320',
+  integrations: [
+    new Sentry.BrowserTracing({
+      routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+
+      // As the documentation mention:
+
+      // If your frontend is making requests to a different domain, you'll need to add it there to propagate
+
+      // the sentry-trace and baggage headers to the backend services, which is required to link transactions
+
+      // together as part of a single trace.
+
+      tracingOrigins: ['adar.com', 'localhost', /^\//, 'api.subquery.network', 'whitelist.polkaswap2.io'],
+    }),
+  ],
+
+  // tracesSampleRate == 1.0 is to capture 100%
+
+  // of transactions for performance monitoring.
+
+  tracesSampleRate: 1.0,
+});
 export { lazyComponent, lazyView, goTo };
 export default router;

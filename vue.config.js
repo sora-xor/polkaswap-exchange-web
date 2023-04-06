@@ -1,10 +1,27 @@
 const { defineConfig } = require('@vue/cli-service');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
+// ------------sentry configuration------
+const SentryWebpackPlugin = require('@sentry/webpack-plugin');
 
 module.exports = defineConfig({
   publicPath: './',
   configureWebpack: (config) => {
+    // -----------sentry configuration ---------
+
+    config.devtool = 'source-map';
+    config.plugins.push(
+      new SentryWebpackPlugin({
+        org: 'naghme',
+        project: 'javascript-vue',
+        release: '1.1.0-test',
+        // directory for build artifacts:
+        include: './dist',
+
+        authToken: '346cae0f755042b9886c939cdf5b222b6b0f89f0119d46dcb8e4fa65caf2f116',
+      })
+    );
+
     config.plugins.push(new NodePolyfillPlugin());
     // bundle all dependencies from node_modules to vendors
     config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
@@ -82,6 +99,7 @@ module.exports = defineConfig({
       attrs: ['test', 'testid', 'test-name'],
     },
   },
+
   productionSourceMap: false,
   runtimeCompiler: true,
 });

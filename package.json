@@ -10,7 +10,7 @@
   "author": "jihoon@tutanota.de <jihoon@tutanota.de>",
   "main": "index.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve && sentry-cli",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "electron:build": "vue-cli-service electron:build",
@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
+    "@sentry/vue": "^7.46.0",
     "@soramitsu/soraneo-wallet-web": "1.15.12",
     "@walletconnect/web3-provider": "^1.8.0",
     "base-64": "^1.0.0",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@babel/runtime": "^7.20.0",
+    "@sentry/webpack-plugin": "^1.20.0",
     "@types/electron-devtools-installer": "^2.2.2",
     "@types/jest": "^29.2.0",
     "@types/jsdom": "^20.0.0",
