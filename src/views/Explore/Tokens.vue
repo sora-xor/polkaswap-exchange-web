@@ -148,14 +148,14 @@
       </template>
     </s-table>
 
-    <s-pagination
+    <history-pagination
       class="explore-table-pagination"
-      :layout="'prev, total, next'"
-      :current-page.sync="currentPage"
-      :page-size="pageAmount"
-      :total="filteredItems.length"
-      @prev-click="handlePrevClick"
-      @next-click="handleNextClick"
+      :current-page="currentPage"
+      :page-amount="pageAmount"
+      :total="total"
+      :last-page="lastPage"
+      :loading="loadingState"
+      @pagination-click="handlePaginationClick"
     />
   </div>
 </template>
@@ -236,7 +236,6 @@ const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
           orderBy: [TIMESTAMP_ASC]
         ) {
           nodes {
-            timestamp
             priceUSD
             volume
           }
@@ -291,6 +290,7 @@ const parse = (item: AssetData): Record<string, TokenData> => {
     TokenAddress: components.TokenAddress,
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
+    HistoryPagination: components.HistoryPagination,
   },
 })
 export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
@@ -350,7 +350,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   async updateExploreData(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.tokensData = await this.fetchTokensData();
+        this.tokensData = Object.freeze(await this.fetchTokensData());
       });
     });
   }
