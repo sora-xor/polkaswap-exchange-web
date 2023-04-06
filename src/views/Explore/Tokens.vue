@@ -161,6 +161,7 @@
 </template>
 
 <script lang="ts">
+import last from 'lodash/fp/last';
 import { gql } from '@urql/core';
 import { FPNumber } from '@sora-substrate/util';
 import { Component, Mixins } from 'vue-property-decorator';
@@ -189,9 +190,6 @@ type AssetData = AssetEntity & {
   daySnapshots: {
     nodes: AssetSnapshotEntity[];
   };
-  weekStartSnapshot: {
-    nodes: AssetSnapshotEntity[];
-  };
 };
 
 type TokenData = {
@@ -199,8 +197,7 @@ type TokenData = {
   startPriceDay: FPNumber;
   startPriceWeek: FPNumber;
   volumeDay: FPNumber;
-  volumeMonth: FPNumber;
-  supply: FPNumber;
+  volumeWeek: FPNumber;
 };
 
 type TableItem = {
@@ -221,7 +218,7 @@ type TableItem = {
 } & Asset;
 
 const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
-  query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int, $monthTimestamp: Int) {
+  query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
     entities: assets(after: $after, filter: { and: [{ id: { in: $ids } }, { liquidity: { greaterThan: "1" } }] }) {
       pageInfo {
         hasNextPage
@@ -230,10 +227,9 @@ const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
       nodes {
         id
         liquidity
-        supply
         hourSnapshots: data(
           filter: { and: [{ timestamp: { greaterThanOrEqualTo: $dayTimestamp } }, { type: { equalTo: HOUR } }] }
-          orderBy: [TIMESTAMP_ASC]
+          orderBy: [TIMESTAMP_DESC]
         ) {
           nodes {
             priceUSD
@@ -241,20 +237,12 @@ const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
           }
         }
         daySnapshots: data(
-          filter: { and: [{ timestamp: { greaterThanOrEqualTo: $monthTimestamp } }, { type: { equalTo: DAY } }] }
-          orderBy: [TIMESTAMP_ASC]
-        ) {
-          nodes {
-            volume
-          }
-        }
-        weekStartSnapshot: data(
-          filter: { timestamp: { greaterThanOrEqualTo: $weekTimestamp } }
-          orderBy: [TIMESTAMP_ASC]
-          first: 1
+          filter: { and: [{ timestamp: { greaterThanOrEqualTo: $weekTimestamp } }, { type: { equalTo: DAY } }] }
+          orderBy: [TIMESTAMP_DESC]
         ) {
           nodes {
             priceUSD
+            volume
           }
         }
       }
@@ -274,11 +262,10 @@ const parse = (item: AssetData): Record<string, TokenData> => {
   return {
     [item.id]: {
       reserves: FPNumber.fromCodecValue(item.liquidity ?? 0),
-      startPriceDay: new FPNumber(item.hourSnapshots.nodes?.[0]?.priceUSD?.open ?? 0),
-      startPriceWeek: new FPNumber(item.weekStartSnapshot.nodes?.[0]?.priceUSD?.open ?? 0),
-      supply: FPNumber.fromCodecValue(item.supply ?? 0),
+      startPriceDay: new FPNumber(last(item.hourSnapshots.nodes)?.priceUSD?.open ?? 0),
+      startPriceWeek: new FPNumber(last(item.daySnapshots.nodes)?.priceUSD?.open ?? 0),
       volumeDay: calcVolume(item.hourSnapshots.nodes),
-      volumeMonth: calcVolume(item.daySnapshots.nodes),
+      volumeWeek: calcVolume(item.daySnapshots.nodes),
     },
   };
 };
@@ -315,14 +302,13 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
       const fpPriceDay = tokenData?.startPriceDay ?? FPNumber.ZERO;
       const fpPriceWeek = tokenData?.startPriceWeek ?? FPNumber.ZERO;
       const fpVolumeDay = tokenData?.volumeDay ?? FPNumber.ZERO;
-      const fpVolumeMonth = tokenData?.volumeMonth ?? FPNumber.ZERO;
+      const fpVolumeWeek = tokenData?.volumeWeek ?? FPNumber.ZERO;
       const fpPriceChangeDay = calcPriceChange(fpPrice, fpPriceDay);
       const fpPriceChangeWeek = calcPriceChange(fpPrice, fpPriceWeek);
 
       const reserves = tokenData?.reserves ?? FPNumber.ZERO;
       const tvl = reserves.mul(fpPrice);
-      const mcap = (tokenData?.supply ?? FPNumber.ZERO).mul(fpPrice);
-      const velocity = mcap.isZero() ? FPNumber.ZERO : fpVolumeMonth.div(mcap);
+      const velocity = tvl.isZero() ? FPNumber.ZERO : fpVolumeWeek.div(tvl);
 
       buffer.push({
         ...asset,
@@ -359,10 +345,9 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     const now = Math.floor(Date.now() / (5 * 60 * 1000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
     const dayTimestamp = now - 60 * 60 * 24; // latest day snapshot (unix)
     const weekTimestamp = now - 60 * 60 * 24 * 7; // latest week snapshot (unix)
-    const monthTimestamp = now - 60 * 60 * 24 * 30; // latest month snapshot (unix)
     const ids = this.items.map((item) => item.address); // only whitelisted assets
 
-    const variables = { ids, dayTimestamp, weekTimestamp, monthTimestamp };
+    const variables = { ids, dayTimestamp, weekTimestamp };
     const items = await SubqueryExplorerService.fetchAllEntities(AssetsQuery, variables, parse);
 
     if (!items) return {};
