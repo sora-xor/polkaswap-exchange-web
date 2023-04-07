@@ -6,7 +6,7 @@ import { EvmNetworkId } from '@sora-substrate/util/build/evm/consts';
 
 import { DemeterPageNames } from '../modules/demeterFarming/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
-import { MoonpayNotifications } from '@/components/Moonpay/consts';
+import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 
 export default {
   // Wallet project keys

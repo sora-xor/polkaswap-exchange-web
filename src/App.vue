@@ -66,7 +66,6 @@ import { action, getter, mutation, state } from '@/store/decorators';
 import { preloadFontFace, updateDocumentTitle } from '@/utils';
 import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
-import type { SubNetwork } from '@/utils/ethers-util';
 import type { FeatureFlags } from '@/store/settings/types';
 import type { EthBridgeSettings } from '@/store/web3/types';
 

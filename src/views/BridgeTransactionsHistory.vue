@@ -2,7 +2,7 @@
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
-        <status-action-badge v-if="selectedEvmNetwork" class="status-action-badge--history">
+        <swap-status-action-badge v-if="selectedEvmNetwork" class="status-action-badge--history">
           <template #value>{{ selectedEvmNetwork.shortName }}</template>
           <template #action>
             <s-button
@@ -14,7 +14,7 @@
               @click="setSelectNetworkDialogVisibility(true)"
             />
           </template>
-        </status-action-badge>
+        </swap-status-action-badge>
       </generic-page-header>
       <s-form class="history-form" :show-message="false">
         <search-input
@@ -72,7 +72,7 @@
       </s-form>
     </s-card>
 
-    <select-network :selected-evm-network="selectedEvmNetwork" @change="changeEvmNetwork" />
+    <bridge-select-network :selected-evm-network="selectedEvmNetwork" @change="changeEvmNetwork" />
   </div>
 </template>
 
@@ -96,8 +96,8 @@ import type { EvmAccountAsset } from '@/store/assets/types';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    StatusActionBadge: lazyComponent(Components.StatusActionBadge),
-    SelectNetwork: lazyComponent(Components.SelectNetwork),
+    SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
+    BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
     SearchInput: components.SearchInput,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,

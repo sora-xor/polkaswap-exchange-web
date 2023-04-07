@@ -21,7 +21,7 @@
               @click="handleViewTransactionsHistory"
             />
 
-            <status-action-badge v-if="selectedEvmNetwork">
+            <swap-status-action-badge v-if="selectedEvmNetwork">
               <template #value>{{ selectedEvmNetwork.shortName }}</template>
               <template #action>
                 <s-button
@@ -33,7 +33,7 @@
                   @click="handleChangeNetwork"
                 />
               </template>
-            </status-action-badge>
+            </swap-status-action-badge>
           </div>
         </generic-page-header>
         <s-float-input
@@ -309,7 +309,7 @@ import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
-    StatusActionBadge: lazyComponent(Components.StatusActionBadge),
+    SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
