@@ -1,5 +1,6 @@
 import type { Subscription } from 'rxjs';
 
+import type { Alert } from '@/types/alert';
 import type { MarketAlgorithms } from '@/consts';
 import type { Node } from '@/types/nodes';
 
@@ -10,6 +11,8 @@ export type FeatureFlags = {
 };
 
 export type SettingsState = {
+  alerts: Array<Alert>;
+  allowTopUpAlert: boolean;
   featureFlags: FeatureFlags;
   slippageTolerance: string;
   marketAlgorithm: MarketAlgorithms;
@@ -28,6 +31,7 @@ export type SettingsState = {
   selectNodeDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
   disclaimerVisibility: boolean;
+  alertSettingsVisibility: boolean;
   browserNotifPopupVisibility: boolean;
   browserNotifPopupBlockedVisibility: boolean;
   isBrowserNotificationApiAvailable: boolean;

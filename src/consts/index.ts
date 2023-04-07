@@ -12,6 +12,8 @@ export const app = {
   title: 'Polkaswap — The DEX for the Interoperable Future.',
 };
 
+export const MAX_ALERTS_NUMBER = 5;
+
 export const WalletPermissions = {
   sendAssets: true, // enable 'send' button in assets list
   swapAssets: true, // enable 'swap' button in assets list
@@ -143,6 +145,10 @@ export enum Components {
   AppMobilePopup = 'App/MobilePopup',
   AppBrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
   AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
+  Alerts = 'App/Alerts/Alerts',
+  AlertList = 'App/Alerts/AlertList',
+  CreateAlert = 'App/Alerts/CreateAlert',
+  AlertsSelectAsset = 'pages/Alerts/SelectAsset',
   SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
   AppFooter = 'App/Footer/AppFooter',
   AppDisclaimer = 'App/Header/AppDisclaimer',

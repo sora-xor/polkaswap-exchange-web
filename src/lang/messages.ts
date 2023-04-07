@@ -7,6 +7,7 @@ import { DemeterPageNames } from '../modules/demeterFarming/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
 import { EvmNetworkType } from '../utils/ethers-util';
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
+import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
 
 export default {
   // Wallet project keys
@@ -88,6 +89,12 @@ export default {
     [PageNames.Stats]: 'Statistics',
     [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
+  },
+  alerts: {
+    [AlertTypeTabs.Drop]: 'Drops below',
+    [AlertTypeTabs.Raise]: 'Raises above',
+    [AlertFrequencyTabs.Once]: 'Once',
+    [AlertFrequencyTabs.Always]: 'Always',
   },
   headerMenu: {
     showBalances: 'Show Balances',

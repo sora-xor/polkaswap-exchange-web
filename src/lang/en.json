@@ -348,6 +348,12 @@
         "Explore\/Container": "Explore",
         "SoraCard": "{Sora} Card"
     },
+    "alerts": {
+      "Drop": "Drops below",
+      "Raise": "Raises above",
+      "Once": "Once",
+      "Always": "Always"
+    },
     "social": {
         "twitter": "Twitter",
         "telegram": "Telegram",
@@ -1031,7 +1037,7 @@
     },
     "receivedText": "Received",
     "browserNotificationDialog": {
-        "title": "Enable browser notifications",
+        "title": "Set Notifications",
         "info": "We will send you only relevant updates about your wallet, for example: asset balance changes",
         "button": "Enable notifications",
         "agree": "Yes, I understand",
