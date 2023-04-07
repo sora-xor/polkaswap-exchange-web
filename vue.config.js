@@ -14,7 +14,8 @@ module.exports = defineConfig({
       new SentryWebpackPlugin({
         org: 'naghme',
         project: 'javascript-vue',
-        release: '1.1.0-test',
+        release: '1.4.0-test',
+        LOG_LEVEL: 'debug',
         // directory for build artifacts:
         include: './dist',
 

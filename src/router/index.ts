@@ -289,9 +289,10 @@ router.beforeEach((to, from, next) => {
 Sentry.init({
   Vue,
 
-  // for now i used adar-test dsn. I'll change it later
+  // for now i used my account . I'll change it later
   // dsn: 'https://71e73a867f6f4e0ca045bdb27347c525@sentry.soramitsu.co.jp/7',
   dsn: 'https://562a0a5f5f8945ce99dc59322bca7e5e@o4504655239512064.ingest.sentry.io/4504959049400320',
+  release: '1.4.0-test',
   integrations: [
     new Sentry.BrowserTracing({
       routingInstrumentation: Sentry.vueRouterInstrumentation(router),
@@ -304,7 +305,7 @@ Sentry.init({
 
       // together as part of a single trace.
 
-      tracingOrigins: ['adar.com', 'localhost', /^\//, 'api.subquery.network', 'whitelist.polkaswap2.io'],
+      tracingOrigins: ['localhost', /^\//],
     }),
   ],
 
