@@ -322,8 +322,6 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
         volumeDayFormatted: formatAmountWithSuffix(fpVolumeDay),
         tvl: tvl.toNumber(),
         tvlFormatted: formatAmountWithSuffix(tvl),
-        // mcap: mcap.toNumber(),
-        // mcapFormatted: formatAmountWithSuffix(mcap),
         velocity: velocity.toNumber(),
         velocityFormatted: String(velocity.toNumber(2)),
       });
