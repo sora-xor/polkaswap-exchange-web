@@ -127,8 +127,13 @@
           <template #header>
             <sort-button name="velocity" :sort="{ order, property }" @change-sort="changeSort">
               <span class="explore-table__primary">VC.</span>
-              <s-tooltip border-radius="mini" :content="t('tooltips.velocity')">
+              <s-tooltip border-radius="mini">
                 <s-icon name="info-16" size="14px" />
+                <template #content>
+                  <div>{{ t('tooltips.velocity') }}</div>
+                  <br />
+                  <span style="font-weight: 500">Velocity = Trading Volume USD / Market Cap USD</span>
+                </template>
               </s-tooltip>
             </sort-button>
           </template>

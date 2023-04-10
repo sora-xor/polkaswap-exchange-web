@@ -41,6 +41,9 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, TosExternalLinks } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
+import { delay } from '@/utils';
+
+type TermsAndConditionsType = 't&c' | 'privacyPolicy' | 'unsupported';
 
 @Component({
   components: {
@@ -70,19 +73,18 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
     this.$emit('confirm');
   }
 
-  openDialog(policy: string): void {
+  async openDialog(policy: TermsAndConditionsType): Promise<void> {
     if (policy === 't&c') {
       this.link = this.termsLink;
       this.dialogTitle = this.termsAndConditionsTitle;
-    }
-    if (policy === 'privacyPolicy') {
+    } else if (policy === 'privacyPolicy') {
       this.link = this.privacyLink;
       this.dialogTitle = this.privacyPolicyTitle;
-    }
-    if (policy === 'unsupported') {
+    } else if (policy === 'unsupported') {
       this.link = '';
       this.dialogTitle = this.unsupportedCountriesTitle;
     }
+    await delay(); // small delay is required for dialog re-rendering
     this.showDialog = true;
   }
 }

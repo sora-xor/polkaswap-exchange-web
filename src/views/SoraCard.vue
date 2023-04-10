@@ -56,7 +56,6 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
 
   @Watch('soraCardEnabled', { immediate: true })
   private checkAvailability(value: Nullable<boolean>): void {
-    console.info('SoraCard.vue::soraCardEnabled:', value); // For tests on PR env
     if (value === false) {
       goTo(PageNames.Swap);
     }

@@ -17,7 +17,9 @@
       </template>
       <template>
         <span>{{ node.address }}</span>
-        <span v-if="formattedNodeLocation">{{ formattedNodeLocation }}</span>
+        <span v-if="formattedNodeLocation">
+          {{ formattedNodeLocation.name }} <span class="flag-emodji">{{ formattedNodeLocation.flag }}</span>
+        </span>
       </template>
     </footer-popper>
     <footer-popper
@@ -122,7 +124,7 @@ export default class AppFooter extends Mixins(TranslationMixin) {
     return this.t(`footer.node.title.${this.nodeConnectionStatusKey}`);
   }
 
-  get formattedNodeLocation(): Nullable<string> {
+  get formattedNodeLocation() {
     if (!this.node?.location) {
       return null;
     }

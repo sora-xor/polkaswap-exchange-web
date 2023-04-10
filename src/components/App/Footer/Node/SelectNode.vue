@@ -21,7 +21,7 @@
               </div>
               <div class="select-node-info__desc s-flex">
                 <div>{{ node.address }}</div>
-                <div v-if="node.location">{{ formatLocation(node.location) }}</div>
+                <div v-if="node.location" v-html="formatNodeLocation(node.location)" />
               </div>
             </div>
             <div class="select-node-badge">
@@ -62,7 +62,13 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   @ModelSync('value', 'input', { type: String })
   readonly currentAddressValue!: string;
 
-  formatLocation = formatLocation;
+  formatNodeLocation(code: string): string {
+    const location = formatLocation(code);
+    if (!location) return '';
+    const flag = `<span class="flag-emodji">${location.flag}</span>`;
+    if (!location.name) return flag;
+    return `${location.name} ${flag}`;
+  }
 }
 </script>
 

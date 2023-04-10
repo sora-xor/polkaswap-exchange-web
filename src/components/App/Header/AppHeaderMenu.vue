@@ -291,12 +291,11 @@ $icon-size: 28px;
 
 .notif-option {
   display: flex;
-  justify-content: center;
 
   &__bell {
     width: $icon-size;
     height: $icon-size;
-    margin: auto;
+    margin: auto 0;
   }
 
   &__bell--dropdown {
