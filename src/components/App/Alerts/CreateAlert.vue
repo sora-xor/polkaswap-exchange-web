@@ -122,15 +122,15 @@ export default class CreateAlert extends Mixins(
   mixins.LoadingMixin,
   mixins.FormattedAmountMixin
 ) {
-  @state.settings.alerts alerts!: Array<Alert>;
+  @state.wallet.settings.alerts alerts!: Array<Alert>;
 
   @getter.assets.whitelistAssets assets!: Array<Asset>;
   @getter.assets.xor private xor!: AccountAsset;
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WhitelistIdsBySymbol;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => AccountAsset;
 
-  @mutation.settings.addPriceAlert addPriceAlert!: (alert: Alert) => void;
-  @mutation.settings.editPriceAlert editPriceAlert!: (alert: any) => void;
+  @mutation.wallet.settings.addPriceAlert addPriceAlert!: (alert: Alert) => void;
+  @mutation.wallet.settings.editPriceAlert editPriceAlert!: (alert: any) => void;
 
   @Prop({ default: null, type: Object }) readonly alertToEdit!: any;
 
@@ -223,6 +223,7 @@ export default class CreateAlert extends Mixins(
   }
 
   handleAlertCreation(): void {
+    // TODO change type drop or raise before setting!
     if (this.isEditMode) {
       const type = this.currentTypeTab === 'Drop' ? 'onDrop' : 'onRaise';
       const once = this.currentFrequencyTab === 'Once';

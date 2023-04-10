@@ -61,15 +61,15 @@ export default class AlertList extends Mixins(
   mixins.NotificationMixin,
   mixins.FormattedAmountMixin
 ) {
-  @state.settings.alerts alerts!: Array<Alert>;
-  @state.settings.allowTopUpAlert allowTopUpAlert!: boolean;
+  @state.wallet.settings.alerts alerts!: Array<Alert>;
+  @state.wallet.settings.allowTopUpAlert allowTopUpAlert!: boolean;
   @state.settings.isBrowserNotificationApiAvailable isBrowserNotificationApiAvailable!: boolean;
 
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WhitelistIdsBySymbol;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => AccountAsset;
 
-  @mutation.settings.removePriceAlert removePriceAlert!: (position: number) => void;
-  @mutation.settings.setDepositNotifications private setDepositNotifications!: (flag: boolean) => void;
+  @mutation.wallet.settings.removePriceAlert removePriceAlert!: (position: number) => void;
+  @mutation.wallet.settings.setDepositNotifications private setDepositNotifications!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopupEnabled!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
 

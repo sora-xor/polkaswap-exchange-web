@@ -11,8 +11,6 @@ export type FeatureFlags = {
 };
 
 export type SettingsState = {
-  alerts: Array<Alert>;
-  allowTopUpAlert: boolean;
   featureFlags: FeatureFlags;
   slippageTolerance: string;
   marketAlgorithm: MarketAlgorithms;

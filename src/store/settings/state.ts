@@ -1,21 +1,15 @@
 import { DefaultMarketAlgorithm, DefaultSlippageTolerance, MarketAlgorithms } from '@/consts';
 import { getLocale } from '@/lang';
 import storage, { settingsStorage } from '@/utils/storage';
-import type { Alert } from '@/types/alert';
 import type { SettingsState } from './types';
 
 function initialState(): SettingsState {
-  const priceAlerts = settingsStorage.get('alerts');
-  const alerts = priceAlerts && JSON.parse(priceAlerts);
   const node = settingsStorage.get('node');
   const customNodes = settingsStorage.get('customNodes');
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
-  const allowTopUpAlerts = settingsStorage.get('allowTopUpAlerts');
   const сhartsEnabled = storage.get('сhartsEnabled');
   const isBrowserNotificationApiAvailable = 'Notification' in window;
   return {
-    alerts: (alerts || []) as Array<Alert>,
-    allowTopUpAlert: allowTopUpAlerts ? Boolean(JSON.parse(allowTopUpAlerts)) : false,
     featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: (storage.get('marketAlgorithm') || DefaultMarketAlgorithm) as MarketAlgorithms,

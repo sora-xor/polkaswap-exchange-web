@@ -122,24 +122,6 @@ const mutations = defineMutations<SettingsState>()({
   setInternetConnectionSpeed(state): void {
     state.internetConnectionSpeed = ((navigator as any)?.connection?.downlink as number) ?? 0;
   },
-  setDepositNotifications(state, allow: boolean): void {
-    state.allowTopUpAlert = allow;
-    settingsStorage.set('allowTopUpAlerts', allow);
-  },
-  addPriceAlert(state, alert: Alert): void {
-    const alerts = [alert, ...state.alerts].slice(0, MAX_ALERTS_NUMBER);
-    state.alerts = alerts;
-    settingsStorage.set('alerts', JSON.stringify(alerts));
-  },
-  removePriceAlert(state, position: number): void {
-    state.alerts.splice(position, 1);
-    settingsStorage.set('alerts', JSON.stringify(state.alerts));
-  },
-
-  editPriceAlert(state, { alert, position }): void {
-    state.alerts[position] = alert;
-    settingsStorage.set('alerts', JSON.stringify(state.alerts));
-  },
 });
 
 export default mutations;
