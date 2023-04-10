@@ -1,4 +1,4 @@
-@Library('jenkins-library@fix/pipeline-js') _
+@Library('jenkins-library') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
