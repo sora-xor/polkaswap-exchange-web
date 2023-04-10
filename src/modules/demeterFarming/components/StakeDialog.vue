@@ -1,19 +1,7 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="title">
     <div class="stake-dialog">
-      <s-row v-if="poolAsset" flex align="middle">
-        <pair-token-logo
-          v-if="baseAsset"
-          key="pair"
-          :first-token="baseAsset"
-          :second-token="poolAsset"
-          class="title-logo"
-        />
-        <token-logo v-else key="token" :token="poolAsset" class="title-logo" />
-        <span class="stake-dialog-title">
-          <template v-if="baseAsset">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
-        </span>
-      </s-row>
+      <dialog-title :base-asset="baseAsset" :pool-asset="poolAsset" :is-farm="isFarm" />
 
       <div v-if="isAdding" class="stake-dialog-info">
         <template v-if="pricesAvailable">
@@ -130,6 +118,9 @@ import { FPNumber, Operation } from '@sora-substrate/util';
 
 import PoolCardMixin from '../mixins/PoolCardMixin';
 
+import { demeterLazyComponent } from '../router';
+import { DemeterComponents } from '../consts';
+
 import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
 import { getMaxValue, isXorAccountAsset } from '@/utils';
@@ -140,11 +131,10 @@ import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component({
   components: {
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    DialogTitle: demeterLazyComponent(DemeterComponents.DialogTitle),
     TokenInput: lazyComponent(Components.TokenInput),
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
-    TokenLogo: components.TokenLogo,
   },
 })
 export default class StakeDialog extends Mixins(PoolCardMixin, mixins.DialogMixin, mixins.LoadingMixin) {
@@ -303,15 +293,6 @@ export default class StakeDialog extends Mixins(PoolCardMixin, mixins.DialogMixi
 
   & > *:not(:first-child) {
     margin-top: $inner-spacing-medium;
-  }
-
-  &-title {
-    font-size: var(--s-heading2-font-size);
-    font-weight: 800;
-  }
-
-  .title-logo {
-    margin-right: $inner-spacing-mini;
   }
 }
 

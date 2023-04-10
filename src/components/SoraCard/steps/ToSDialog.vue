@@ -1,9 +1,7 @@
 <template>
   <dialog-base :visible.sync="isVisible" class="terms-of-service-dialog" :title="title">
-    <div v-if="srcLink" v-loading="loading" class="tos__section">
-      <iframe @load="onIFrameLoad" :src="srcLink" width="100%" height="600px" frameborder="0"></iframe>
-    </div>
-    <div v-else>
+    <widget v-if="srcLink" class="tos__section" with-border :src="srcLink" />
+    <template v-else>
       <div class="sora-card__excuse">
         {{ t('card.blacklistedCountriesExcuse') }}
       </div>
@@ -14,7 +12,7 @@
           </li>
         </ul>
       </div>
-    </div>
+    </template>
   </dialog-base>
 </template>
 
@@ -25,10 +23,13 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
 
 @Component({
   components: {
     DialogBase: components.DialogBase,
+    Widget: lazyComponent(Components.Widget),
   },
 })
 export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {
@@ -36,9 +37,6 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
   @Prop({ default: '', type: String }) readonly title!: string;
 
   @state.settings.displayRegions private displayRegions!: Nullable<Intl.DisplayNames>;
-
-  loading = true;
-  flags: string[] = [];
 
   countryCodeEmoji = countryCodeEmoji;
 
@@ -81,38 +79,27 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
     sy: 'Syria',
     th: 'Thailand',
     us: 'United States',
-  };
-
-  onIFrameLoad(): void {
-    this.loading = false;
-  }
+  } as const;
 }
 </script>
 
 <style lang="scss">
-.terms-of-service-dialog .el-dialog {
-  margin-top: 12vh !important;
-  max-width: 1000px !important;
+.dialog-wrapper.terms-of-service-dialog .el-dialog:not(.is-fullscreen) {
+  max-width: 1000px;
 }
 </style>
 
 <style lang="scss" scoped>
 .tos__section {
   width: 100%;
-  height: 600px;
   background-color: transparent;
-  box-shadow: var(--s-shadow-element);
-  border-radius: 10px;
-  padding: 0;
-  padding-left: $basic-spacing;
-  padding-right: $inner-spacing-tiny;
-  padding-top: $inner-spacing-mini;
   overflow: hidden;
+  margin-bottom: calc(var(--s-basic-spacing) * 2);
 }
 
 .sora-card {
   &__unsupported-countries {
-    margin-top: 24px;
+    padding-left: 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
 

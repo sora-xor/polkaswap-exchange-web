@@ -1,19 +1,7 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="`${TranslationConsts.APR} ${t('demeterFarming.calculator')}`">
     <div class="calculator-dialog">
-      <s-row v-if="poolAsset" flex align="middle">
-        <pair-token-logo
-          v-if="isFarm && baseAsset"
-          key="pair"
-          :first-token="baseAsset"
-          :second-token="poolAsset"
-          class="title-logo"
-        />
-        <token-logo v-else key="token" :token="poolAsset" class="title-logo" />
-        <span class="calculator-dialog-title">
-          <template v-if="isFarm">{{ baseAsset.symbol }}-</template>{{ poolAsset.symbol }}
-        </span>
-      </s-row>
+      <dialog-title :base-asset="baseAsset" :pool-asset="poolAsset" :is-farm="isFarm" />
 
       <s-form class="el-form--actions" :show-message="false">
         <template v-if="isFarm && baseAsset">
@@ -76,17 +64,19 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import PoolCardMixin from '../mixins/PoolCardMixin';
 
+import { demeterLazyComponent } from '../router';
+import { DemeterComponents } from '../consts';
+
 import { lazyComponent } from '@/router';
 import { Components, Links } from '@/consts';
 import { getAssetBalance, isMaxButtonAvailable, getMaxValue, formatDecimalPlaces } from '@/utils';
 
 @Component({
   components: {
-    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    DialogTitle: demeterLazyComponent(DemeterComponents.DialogTitle),
     TokenInput: lazyComponent(Components.TokenInput),
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
-    TokenLogo: components.TokenLogo,
   },
 })
 export default class CalculatorDialog extends Mixins(PoolCardMixin, mixins.DialogMixin, mixins.LoadingMixin) {
@@ -269,15 +259,6 @@ export default class CalculatorDialog extends Mixins(PoolCardMixin, mixins.Dialo
 
   & > *:not(:first-child) {
     margin-top: $inner-spacing-medium;
-  }
-
-  &-title {
-    font-size: var(--s-heading2-font-size);
-    font-weight: 800;
-  }
-
-  .title-logo {
-    margin-right: $inner-spacing-mini;
   }
 
   @include vertical-divider('icon-divider', $inner-spacing-medium);

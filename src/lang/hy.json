@@ -939,7 +939,7 @@
         "allowanceError": "Ստուգեք ձեր տեսախցիկի առկայությունը և դիտարկիչի թույլտվությունները՝ այն օգտագործելու համար",
         "receive": "Ստանալ",
         "camera": "Տեսախցիկ",
-        "allowanceRequest": "Սեղմեք «Թույլատրել» մուտքը տեսախցիկ"
+        "allowanceRequest": "Սեղմեք «Թույլատրել»՝ տեսախցիկ մուտք գործելու համար"
     },
     "bridgeTransferNotification": {
         "addToken": "Ավելացնել {symbol} է {Metamask}",
@@ -1173,5 +1173,6 @@
         }
     },
     "locationText": "Գտնվելու վայրը",
-    "acceptText": "Ընդունել և թաքցնել"
+    "acceptText": "Ընդունել և թաքցնել",
+    "newAccountsText": "Նոր հաշիվներ"
 }

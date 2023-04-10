@@ -3,7 +3,7 @@
     <template #title>
       <moonpay-logo :theme="libraryTheme" />
     </template>
-    <moonpay-widget :src="widgetUrl" />
+    <widget :src="widgetUrl" />
   </dialog-base>
 </template>
 
@@ -28,7 +28,7 @@ import type { MoonpayTransaction } from '@/utils/moonpay';
   components: {
     DialogBase: components.DialogBase,
     MoonpayLogo,
-    MoonpayWidget: lazyComponent(Components.MoonpayWidget),
+    Widget: lazyComponent(Components.Widget),
   },
 })
 export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {

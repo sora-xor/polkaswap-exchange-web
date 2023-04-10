@@ -147,7 +147,7 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin, Translatio
         prop: 'transactions',
       },
       {
-        title: this.tc('accountText', 2),
+        title: this.t('newAccountsText'),
         tooltip: this.t('tooltips.accounts'),
         prop: 'accounts',
       },
