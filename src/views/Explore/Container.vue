@@ -113,11 +113,10 @@ $container-max-width: 75vw;
 $search-input-width: 290px;
 
 .container--explore {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: $inner-spacing-medium;
   margin: $inner-spacing-big $inner-spacing-big 0;
-
-  & > *:not(:last-child) {
-    margin-bottom: $inner-spacing-medium;
-  }
 
   @include tablet {
     max-width: $container-max-width;
