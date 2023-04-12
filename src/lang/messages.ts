@@ -18,6 +18,7 @@ export default {
   moonpayText: 'MoonPay',
   changeNetworkText: 'Change network in {Metamask}',
   accountText: 'account | accounts',
+  newAccountsText: 'New accounts',
   transactionText: 'transaction | transactions',
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',
