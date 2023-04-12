@@ -96,8 +96,8 @@ export default class AlertList extends Mixins(
   }
 
   getDescription(alert: Alert) {
-    if (alert.type === 'onDrop') return `${alert.token} drops below ${alert.price}`;
-    return `${alert.token} raises above ${alert.price}`;
+    if (alert.type === 'onDrop') return `${alert.token} drops below $${alert.price}`;
+    return `${alert.token} raises above $${alert.price}`;
   }
 
   getInfo(alert: Alert) {
@@ -105,12 +105,35 @@ export default class AlertList extends Mixins(
     const value = this.getFiatAmount('1', asset);
     if (!value) return;
     const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
-    const deltaPercent = this.getDeltaPercent(29, 34);
-    return `${deltaPercent}% · current price: $${integer}.${decimal.substring(0, 2)}`;
+    // const deltaPercent = this.getDeltaPercent('29', alert.price);
+    return `${'deltaPercent'}% · current price: $${integer}.${decimal.substring(0, 2)}`;
   }
 
   getDeltaPercent(currentPrice, desiredPrice): string {
-    return '20.3';
+    const desiredPrice1 = currentPrice.replace('$', '');
+    const currentPrice1 = desiredPrice.formattedFiatValue.replace('$', '');
+
+    const price1 = FPNumber.fromNatural(desiredPrice1);
+    const price2 = FPNumber.fromNatural(currentPrice1);
+
+    if (FPNumber.eq(price1, price2)) {
+      return '0.00';
+    }
+
+    return '0.00';
+
+    // const delta = price1.sub(price2);
+    // let percent = delta.div(price2).mul(FPNumber.HUNDRED);
+
+    // if (FPNumber.lt(percent, FPNumber.ZERO)) {
+    //   this.currentTypeTab = AlertTypeTabs.Drop;
+    //   this.negativeDelta = true;
+    //   percent = percent.negative();
+    // } else {
+    //   this.currentTypeTab = AlertTypeTabs.Raise;
+    //   this.negativeDelta = false;
+    // }
+    // return this.getFormattedValue(percent.toLocaleString());
   }
 
   handleCreateAlert(): void {

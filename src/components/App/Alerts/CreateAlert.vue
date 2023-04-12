@@ -21,17 +21,16 @@
       :delimiters="delimiters"
       :decimals="asset.decimals"
       :placeholder="formattedFiatValue"
-      @input="handleInput"
+      :maxlength="8"
     >
+      <div v-if="amount" slot="left" class="price-input__prefix">$</div>
       <div class="price-input-inner" slot="top">
-        <div class="price-input-inner-title">{{ `${asset.symbol} price` }}</div>
+        <div>{{ `${asset.symbol} price` }}</div>
         <div class="price-input-inner-ratio">
           <span class="price-input-current-title">{{ 'current price' }}</span>
           <formatted-amount-with-fiat-value
             value-can-be-hidden
-            fiat-format-as-value
-            with-left-shift
-            value-class="price-input-current-value"
+            value-class="input-value--primary"
             value="1"
             :asset-symbol="asset.symbol"
             :fiat-value="rate"
@@ -97,7 +96,7 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
-import { AccountAsset, AccountBalance, Asset, WhitelistIdsBySymbol } from '@sora-substrate/util/build/assets/types';
+import { AccountAsset, Asset, WhitelistIdsBySymbol } from '@sora-substrate/util/build/assets/types';
 
 import { getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
@@ -181,7 +180,7 @@ export default class CreateAlert extends Mixins(
   get formattedFiatValue(): string {
     const value = this.getFiatAmount('1', this.asset);
     if (!value) return '';
-    return this.getFormattedValue(value);
+    return `$${this.getFormattedValue(value)}`;
   }
 
   getFormattedValue(value: string) {
@@ -207,23 +206,7 @@ export default class CreateAlert extends Mixins(
     return '';
   }
 
-  getMaska() {
-    // TODO: mask for input
-    if (this.amount.length < 5) return '$###';
-    if (this.amount.length === 5) return '$#,###';
-    if (this.amount.length === 6) return '$#,###';
-    if (this.amount.length === 7) return '$##,###';
-  }
-
-  handleInput(value: string) {
-    const result = new FPNumber(value.substring(1), 18).toLocaleString();
-
-    if (value === '$') this.amount = '';
-    // this.amount = result;
-  }
-
   handleAlertCreation(): void {
-    // TODO change type drop or raise before setting!
     if (this.isEditMode) {
       const type = this.currentTypeTab === 'Drop' ? 'onDrop' : 'onRaise';
       const once = this.currentFrequencyTab === 'Once';
@@ -277,18 +260,22 @@ export default class CreateAlert extends Mixins(
 .price-input {
   margin-bottom: $basic-spacing;
 
+  &__prefix {
+    font-size: var(--s-font-size-large);
+    line-height: var(--s-line-height-small);
+    font-weight: 700;
+  }
+
   &-inner {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: $basic-spacing;
+    margin-bottom: $inner-spacing-mini;
     font-size: var(--s-font-size-mini);
     font-weight: 300;
     line-height: var(--s-line-height-medium);
     text-transform: uppercase;
 
-    &-title {
-    }
     &-ratio {
       display: flex;
     }
@@ -301,14 +288,19 @@ export default class CreateAlert extends Mixins(
       display: inline-flex;
       align-items: baseline;
     }
-    &-value {
-    }
   }
-}
-i.s-icon-info-16 {
-  color: var(--s-color-base-content-tertiary);
-  &:hover {
-    cursor: pointer;
+
+  .el-input__inner {
+    font-size: var(--s-font-size-large);
+    line-height: var(--s-line-height-small);
+    font-weight: 700;
+  }
+
+  i.s-icon-info-16 {
+    color: var(--s-color-base-content-tertiary);
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 </style>

@@ -95,6 +95,16 @@ export default {
     [AlertTypeTabs.Raise]: 'Raises above',
     [AlertFrequencyTabs.Once]: 'Once',
     [AlertFrequencyTabs.Always]: 'Always',
+    alertsTitle: 'Alerts',
+    alertsTooltip:
+      'Price alerts are notifications that can be set by you to receive updates when the price of a particular token reaches certain point you set',
+    createBtn: 'Create new price alert',
+    enableBtn: 'Enable incoming asset notifications',
+    currentPrice: 'current price',
+    typeTooltip:
+      "Choose either 'drops below' or 'raises above' option to specify the alert condition for tracking important price movements. These options allow you receive timely notifications when the value of your asset either falls below or rises above your designated threshold.",
+    frequencyTooltip:
+      "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed.",
   },
   headerMenu: {
     showBalances: 'Show Balances',
