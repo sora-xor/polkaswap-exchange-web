@@ -1,6 +1,5 @@
 import type { Subscription } from 'rxjs';
 
-import type { Alert } from '@/types/alert';
 import type { MarketAlgorithms } from '@/consts';
 import type { Node } from '@/types/nodes';
 

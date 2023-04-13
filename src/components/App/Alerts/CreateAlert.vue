@@ -1,13 +1,7 @@
 <template>
   <div class="setup-price-alert">
-    <span class="setup-price-alert__title">Alert type</span>
-    <s-tooltip
-      slot="suffix"
-      border-radius="mini"
-      :content="t('createToken.nft.link.tooltip')"
-      placement="top"
-      tabindex="-1"
-    >
+    <span class="setup-price-alert__title">{{ t('alerts.alertTypeTitle') }}</span>
+    <s-tooltip slot="suffix" border-radius="mini" :content="t('alerts.typeTooltip')" placement="top" tabindex="-1">
       <s-icon name="info-16" size="16px" />
     </s-tooltip>
     <s-tabs class="setup-price-alert__tab" v-model="currentTypeTab" type="rounded">
@@ -61,14 +55,8 @@
         </div>
       </div>
     </s-float-input>
-    <span class="setup-price-alert__title">Alert frequency</span>
-    <s-tooltip
-      slot="suffix"
-      border-radius="mini"
-      :content="t('createToken.nft.link.tooltip')"
-      placement="top"
-      tabindex="-1"
-    >
+    <span class="setup-price-alert__title">{{ t('alerts.alertFrequencyTitle') }}</span>
+    <s-tooltip slot="suffix" border-radius="mini" :content="t('alerts.frequencyTooltip')" placement="top" tabindex="-1">
       <s-icon name="info-16" size="16px" />
     </s-tooltip>
     <s-tabs class="setup-price-alert__tab" v-model="currentFrequencyTab" type="rounded">
@@ -81,7 +69,7 @@
       :disabled="btnDisabled"
       @click="handleAlertCreation"
     >
-      {{ 'FINISH ALERT SETUP' }}
+      {{ t('alerts.finishBtn') }}
     </s-button>
     <alerts-select-asset
       :visible.sync="showSelectTokenDialog"
@@ -103,7 +91,7 @@ import { formatAddress } from '@/utils';
 import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
 import { lazyComponent } from '@/router';
 import { Components, MAX_ALERTS_NUMBER } from '@/consts';
-import { Alert } from '@/types/alert';
+import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 @Component({
   components: {
@@ -208,8 +196,8 @@ export default class CreateAlert extends Mixins(
 
   handleAlertCreation(): void {
     if (this.isEditMode) {
-      const type = this.currentTypeTab === 'Drop' ? 'onDrop' : 'onRaise';
-      const once = this.currentFrequencyTab === 'Once';
+      const type = this.currentTypeTab;
+      const once = this.currentFrequencyTab === 'once';
       this.editPriceAlert({
         alert: { token: this.asset.symbol, price: this.amount, type, once },
         position: this.alertToEdit.position,
@@ -219,8 +207,8 @@ export default class CreateAlert extends Mixins(
     }
 
     if (this.alerts.length > MAX_ALERTS_NUMBER) return;
-    const type = this.currentTypeTab === 'Drop' ? 'onDrop' : 'onRaise';
-    const once = this.currentFrequencyTab === 'Once';
+    const type = this.currentTypeTab;
+    const once = this.currentFrequencyTab === 'once';
     this.addPriceAlert({ token: this.asset.symbol, price: this.amount, type, once });
     this.$emit('back');
   }
@@ -243,7 +231,7 @@ export default class CreateAlert extends Mixins(
   mounted(): void {
     if (this.isEditMode) {
       this.amount = this.alertToEdit.price;
-      this.currentTypeTab = this.alertToEdit.type === 'onDrop' ? AlertTypeTabs.Drop : AlertTypeTabs.Raise;
+      this.currentTypeTab = this.alertToEdit.type;
       this.currentFrequencyTab = this.alertToEdit.once ? AlertFrequencyTabs.Once : AlertFrequencyTabs.Always;
       this.selectAsset(this.getAsset(this.whitelistIdsBySymbol[this.alertToEdit.token]));
     } else {
@@ -257,6 +245,8 @@ export default class CreateAlert extends Mixins(
 </script>
 
 <style lang="scss">
+.price-input {
+}
 .price-input {
   margin-bottom: $basic-spacing;
 
@@ -278,6 +268,10 @@ export default class CreateAlert extends Mixins(
 
     &-ratio {
       display: flex;
+      .formatted-amount--fiat-value {
+        text-align: right;
+        margin-left: calc(var(--s-basic-spacing) / 2);
+      }
     }
   }
 
@@ -302,17 +296,15 @@ export default class CreateAlert extends Mixins(
       cursor: pointer;
     }
   }
+
+  .asset-id:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 }
 </style>
 
 <style lang="scss">
-.price-input {
-  &-inner-ratio {
-    .formatted-amount--fiat-value {
-      text-align: right;
-    }
-  }
-}
 .setup-price-alert {
   @include custom-tabs;
 

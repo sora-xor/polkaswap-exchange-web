@@ -11,14 +11,15 @@
         <template #description>
           <span class="current-price">{{ getInfo(alert) }}</span>
         </template>
+        <div class="alerts-list__type">{{ getType(alert) }}</div>
         <el-popover popper-class="settings-alert-popover" trigger="click" :visible-arrow="false">
           <div class="settings-alert-option" @click="handleEditAlert(alert, index)">
             <s-icon name="el-icon-edit" />
-            <span>Edit alert</span>
+            <span>{{ t('alerts.edit') }}</span>
           </div>
           <div class="settings-alert-option" @click="handleDeleteAlert(index)">
             <s-icon name="el-icon-delete" />
-            <span>Delete alert</span>
+            <span>{{ t('alerts.delete') }}</span>
           </div>
           <div slot="reference">
             <s-icon class="options-icon" name="basic-more-vertical-24" />
@@ -29,24 +30,24 @@
     </div>
     <div v-if="showCreateAlertBtn" class="settings-alert-section">
       <s-button class="el-dialog__close" type="action" icon="plus-16" @click="handleCreateAlert" />
-      <span class="create">Create new price alert</span>
+      <span class="create">{{ t('alerts.createBtn') }}</span>
     </div>
     <div class="settings-alert-section">
       <s-switch v-model="topUpNotifs" :disabled="loading" @change="handleTopUpNotifs"></s-switch>
-      <span>{{ 'Enable incoming asset deposit notifications' }}</span>
+      <span>{{ t('alerts.enableSwitch') }}</span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber } from '@sora-substrate/math';
 
 import { getter, mutation, state } from '@/store/decorators';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import type { Alert } from '@/types/alert';
 import { WhitelistIdsBySymbol } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 import { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import { FPNumber } from '@sora-substrate/math';
+import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 import { MAX_ALERTS_NUMBER } from '@/consts';
 
 @Component({
@@ -90,14 +91,15 @@ export default class AlertList extends Mixins(
       }
       return true;
     } else {
-      this.showAppNotification("Notifications aren't supported by your browser", 'error');
+      this.showAppNotification(this.t('alerts.noSupportMsg'), 'error');
       return false;
     }
   }
 
   getDescription(alert: Alert) {
-    if (alert.type === 'onDrop') return `${alert.token} drops below $${alert.price}`;
-    return `${alert.token} raises above $${alert.price}`;
+    if (alert.type === 'drop')
+      return `${this.t('alerts.onDropDesc', { token: alert.token, price: `$${alert.price}` })}`;
+    return `${this.t('alerts.onRaiseDesc', { token: alert.token, price: `$${alert.price}` })}`;
   }
 
   getInfo(alert: Alert) {
@@ -106,7 +108,11 @@ export default class AlertList extends Mixins(
     if (!value) return;
     const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
     // const deltaPercent = this.getDeltaPercent('29', alert.price);
-    return `${'deltaPercent'}% · current price: $${integer}.${decimal.substring(0, 2)}`;
+    return `${'deltaPercent'}% · ${this.t('alerts.currentPrice')}: $${integer}.${decimal.substring(0, 2)}`;
+  }
+
+  getType(alert: Alert) {
+    return alert.once ? this.t('alerts.once') : this.t('alerts.always');
   }
 
   getDeltaPercent(currentPrice, desiredPrice): string {
@@ -175,6 +181,16 @@ export default class AlertList extends Mixins(
 .alerts-list {
   &__item {
     margin-bottom: $inner-spacing-mini;
+  }
+
+  &__type {
+    border-radius: calc(var(--s-border-radius-mini) / 2);
+    padding: $inner-spacing-mini;
+    background-color: var(--s-color-utility-surface);
+    color: var(--s-color-base-content-secondary);
+    &:hover {
+      cursor: default;
+    }
   }
   span.condition {
     font-weight: 400;

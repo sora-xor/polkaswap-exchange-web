@@ -1,11 +1,11 @@
 export enum AlertTypeTabs {
-  Drop = 'Drop',
-  Raise = 'Raise',
+  Drop = 'drop',
+  Raise = 'raise',
 }
 
 export enum AlertFrequencyTabs {
-  Once = 'Once',
-  Always = 'Always',
+  Once = 'once',
+  Always = 'always',
 }
 
 export interface TabItem {

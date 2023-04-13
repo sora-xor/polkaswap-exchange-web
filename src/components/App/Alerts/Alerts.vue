@@ -11,7 +11,7 @@ import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { Alert } from '@/types/alert';
+import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 enum AlertPages {
   AlertList,
@@ -25,7 +25,7 @@ enum AlertPages {
     CreateAlert: lazyComponent(Components.CreateAlert),
   },
 })
-export default class Alerts extends Mixins(mixins.DialogMixin) {
+export default class Alerts extends Mixins(mixins.DialogMixin, mixins.TransactionMixin) {
   alertToEdit: Nullable<Partial<Alert>> = {};
 
   step = AlertPages.AlertList;
@@ -33,8 +33,8 @@ export default class Alerts extends Mixins(mixins.DialogMixin) {
   AlertPages = AlertPages;
 
   get title(): string {
-    if (this.step === AlertPages.CreateAlert) return 'Set up price alert';
-    return 'Alerts';
+    if (this.step === AlertPages.CreateAlert) return this.t('alerts.alertsCreateTitle');
+    return this.t('alerts.alertsTitle');
   }
 
   get showBack(): boolean {
@@ -43,7 +43,7 @@ export default class Alerts extends Mixins(mixins.DialogMixin) {
   }
 
   get tooltipText(): string {
-    return 'Price alerts are notifications that can be set by you to receive updates when the price of a particular token reaches certain point you set';
+    return this.t('alerts.alertsTooltip');
   }
 
   handleCreate(): void {

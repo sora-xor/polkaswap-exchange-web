@@ -2,8 +2,7 @@ import { defineMutations } from 'direct-vuex';
 import type { Subscription } from 'rxjs';
 
 import storage, { settingsStorage } from '@/utils/storage';
-import { MarketAlgorithms, MAX_ALERTS_NUMBER } from '@/consts';
-import type { Alert } from '@/types/alert';
+import { MarketAlgorithms } from '@/consts';
 import type { Node } from '@/types/nodes';
 import type { Language } from '@/consts';
 import type { FeatureFlags, SettingsState } from './types';
