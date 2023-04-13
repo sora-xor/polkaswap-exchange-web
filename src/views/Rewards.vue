@@ -149,7 +149,6 @@ export default class Rewards extends Mixins(
   @state.rewards.selectedCrowdloan private selectedCrowdloanRewards!: Array<RewardInfo>;
 
   @getter.assets.xor private xor!: AccountAsset;
-  @getter.rewards.transactionStepsCount private transactionStepsCount!: number;
   @getter.rewards.externalRewardsAvailable private externalRewardsAvailable!: boolean;
   @getter.rewards.rewardsAvailable rewardsAvailable!: boolean;
   @getter.rewards.internalRewardsAvailable internalRewardsAvailable!: boolean;
@@ -205,6 +204,10 @@ export default class Rewards extends Mixins(
     if (typeof this.unwatchEthereum === 'function') {
       this.unwatchEthereum();
     }
+  }
+
+  get transactionStepsCount(): number {
+    return this.externalRewardsSelected ? 2 : 1;
   }
 
   get rewardsReceived(): boolean {
