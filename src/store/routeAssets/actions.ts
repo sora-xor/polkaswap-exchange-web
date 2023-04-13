@@ -266,8 +266,8 @@ const actions = defineActions({
   },
 
   async getBlockNumber(context, blockId): Promise<string> {
-    const header = await api.api.rpc.chain.getHeader(blockId);
-    return header.number.toString();
+    const apiInstanceAtBlock = await api.api.at(blockId);
+    return (await apiInstanceAtBlock.query.system.number()).toString();
   },
 });
 
