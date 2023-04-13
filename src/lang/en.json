@@ -355,8 +355,8 @@
       "always": "Always",
       "edit": "Edit alert",
       "delete": "Delete alert",
-      "onDropDesc": "{token} drops below ${price}",
-      "onRaiseDesc": "{token} raises above ${price}",
+      "onDropDesc": "{token} drops below {price}",
+      "onRaiseDesc": "{token} raises above {price}",
       "alertsTitle": "Alerts",
       "alertsCreateTitle": "Set up price alert",
       "alertsTooltip":
