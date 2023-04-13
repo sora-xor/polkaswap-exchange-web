@@ -83,7 +83,7 @@ const NetworkVolumeQuery = gql<EntitiesQueryResponse<NetworkSnapshotEntity>>`
   }
 `;
 
-const getTotalValue = (data: ChartData[]): FPNumber => {
+const getTotalValue = (data: readonly ChartData[]): FPNumber => {
   return data.reduce((acc, item) => acc.add(item.value), FPNumber.ZERO);
 };
 
@@ -138,8 +138,8 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
 
   filter: SnapshotFilter = NETWORK_STATS_FILTERS[0];
 
-  data: ChartData[] = [];
-  prevData: ChartData[] = [];
+  data: readonly ChartData[] = [];
+  prevData: readonly ChartData[] = [];
 
   isFetchingError = false;
 
@@ -249,8 +249,8 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
             this.fetchData(fees, aTime, bTime, type),
           ]);
 
-          this.data = this.normalizeData(curr, seconds * 1000, now * 1000, aTime * 1000);
-          this.prevData = prev;
+          this.data = Object.freeze(this.normalizeData(curr, seconds * 1000, now * 1000, aTime * 1000));
+          this.prevData = Object.freeze(prev);
 
           this.isFetchingError = false;
         } catch (error) {

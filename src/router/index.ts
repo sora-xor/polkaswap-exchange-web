@@ -95,12 +95,12 @@ const routes: Array<RouteConfig> = [
     ],
   },
   {
-    path: '/pool',
-    component: lazyView(PageNames.PoolContainer),
+    path: '',
+    component: demeterLazyView(DemeterPageNames.DataContainer),
     children: [
       {
-        path: '',
-        component: demeterLazyView(DemeterPageNames.DataContainer),
+        path: '/pool',
+        component: lazyView(PageNames.PoolContainer),
         children: [
           {
             path: '',
@@ -122,20 +122,14 @@ const routes: Array<RouteConfig> = [
           },
         ],
       },
-    ],
-  },
-  {
-    path: '/staking',
-    name: PageNames.StakingContainer,
-    component: lazyView(PageNames.StakingContainer),
-    redirect: { name: DemeterPageNames.Staking },
-    children: [
       {
-        path: 'demeter',
-        component: demeterLazyView(DemeterPageNames.DataContainer),
+        path: '/staking',
+        name: PageNames.StakingContainer,
+        component: lazyView(PageNames.StakingContainer),
+        redirect: { name: DemeterPageNames.Staking },
         children: [
           {
-            path: '',
+            path: 'demeter',
             name: DemeterPageNames.Staking,
             component: demeterLazyView(DemeterPageNames.Staking),
             props: { isFarmingPage: false },
