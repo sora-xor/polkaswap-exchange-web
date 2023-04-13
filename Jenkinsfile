@@ -26,6 +26,6 @@ def pipeline = new org.js.AppPipeline(steps: this,
     vaultCredId: "pswapVaultCreds",
     valuesDestPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/",
     devValuesPath: "dev/dev/",
-    downstreamJobList: 'polkaswap/e2e-tests/hash_test'
+    downstreamJob: 'polkaswap/e2e-tests/hash_test'
 )
 pipeline.runPipeline()
