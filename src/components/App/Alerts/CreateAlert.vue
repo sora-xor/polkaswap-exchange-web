@@ -145,8 +145,7 @@ export default class CreateAlert extends Mixins(
       return '0.00';
     }
 
-    const delta = desiredPrice.sub(currentPrice);
-    let percent = delta.div(currentPrice).mul(FPNumber.HUNDRED);
+    let percent = this.getDeltaPercent(desiredPrice, currentPrice);
 
     if (FPNumber.lt(percent, FPNumber.ZERO)) {
       this.currentTypeTab = AlertTypeTabs.Drop;
@@ -166,9 +165,16 @@ export default class CreateAlert extends Mixins(
     return this.getFormattedValue(value);
   }
 
-  getFormattedValue(value: string) {
+  // TODO: move to FormattedAmountMixin mixin
+  getFormattedValue(value: string): string {
     const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
     return `${integer}.${decimal.substring(0, 2)}`;
+  }
+
+  // TODO: move to FormattedAmountMixin mixin
+  getDeltaPercent(desiredPrice: FPNumber, currentPrice: FPNumber): FPNumber {
+    const delta = desiredPrice.sub(currentPrice);
+    return delta.div(currentPrice).mul(FPNumber.HUNDRED);
   }
 
   get copyValueAssetId(): string {
