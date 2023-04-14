@@ -27,6 +27,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     valuesDestPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/",
     devValuesPath: "dev/dev/",
     initialSecretName: "sora2-dev-polkaswap-exchange-polkaswap-exchange-web-eso-base",
-    initialNameSpace: "sora2-dev-web"
+    initialNameSpace: "sora2-dev-web",
+    targetNameSpace: "sora2-${env.CHANGE_ID}-web"
 )
 pipeline.runPipeline()
