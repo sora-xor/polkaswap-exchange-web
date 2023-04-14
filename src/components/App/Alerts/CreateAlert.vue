@@ -14,7 +14,7 @@
       has-locale-string
       :delimiters="delimiters"
       :decimals="asset.decimals"
-      :placeholder="formattedFiatValue"
+      :placeholder="`$${formattedFiatValue}`"
       :maxlength="8"
     >
       <div v-if="amount" slot="left" class="price-input__prefix">$</div>
@@ -71,12 +71,6 @@
     >
       {{ t('alerts.finishBtn') }}
     </s-button>
-    <alerts-select-asset
-      :visible.sync="showSelectTokenDialog"
-      :asset="asset"
-      :disabled-custom="true"
-      @select="selectAsset"
-    />
   </div>
 </template>
 
@@ -123,8 +117,6 @@ export default class CreateAlert extends Mixins(
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  showSelectTokenDialog = false;
-
   amount = '';
   asset = {} as AccountAsset;
   negativeDelta = false;
@@ -140,19 +132,21 @@ export default class CreateAlert extends Mixins(
   }
 
   getDeltaPercentage(): string {
-    const desiredPrice = this.amount.replace('$', '');
-    const currentPrice = this.formattedFiatValue.replace('$', '');
+    const desiredPrice = FPNumber.fromNatural(this.amount);
+    let currentPrice = FPNumber.fromNatural(this.formattedFiatValue);
 
-    const price1 = FPNumber.fromNatural(desiredPrice);
-    const price2 = FPNumber.fromNatural(currentPrice);
+    // if current price is zero, set minimal value for proper calculations
+    if (FPNumber.eq(currentPrice, FPNumber.ZERO)) {
+      currentPrice = FPNumber.fromNatural('0.0000001');
+    }
 
-    if (FPNumber.eq(price1, price2) || !this.amount) {
+    if (FPNumber.eq(desiredPrice, currentPrice) || !this.amount) {
       this.negativeDelta = false;
       return '0.00';
     }
 
-    const delta = price1.sub(price2);
-    let percent = delta.div(price2).mul(FPNumber.HUNDRED);
+    const delta = desiredPrice.sub(currentPrice);
+    let percent = delta.div(currentPrice).mul(FPNumber.HUNDRED);
 
     if (FPNumber.lt(percent, FPNumber.ZERO)) {
       this.currentTypeTab = AlertTypeTabs.Drop;
@@ -162,13 +156,14 @@ export default class CreateAlert extends Mixins(
       this.currentTypeTab = AlertTypeTabs.Raise;
       this.negativeDelta = false;
     }
+
     return this.getFormattedValue(percent.toLocaleString());
   }
 
   get formattedFiatValue(): string {
     const value = this.getFiatAmount('1', this.asset);
     if (!value) return '';
-    return `$${this.getFormattedValue(value)}`;
+    return this.getFormattedValue(value);
   }
 
   getFormattedValue(value: string) {
@@ -214,11 +209,10 @@ export default class CreateAlert extends Mixins(
   }
 
   openSelectAssetDialog(): void {
-    this.showSelectTokenDialog = true;
+    this.$emit('open-select-token');
   }
 
   selectAsset(selectedAsset?): void {
-    // TODO: disallow XSTUSD asset to choose in asset list
     if (!selectedAsset) return;
     this.asset = selectedAsset;
   }
@@ -240,13 +234,15 @@ export default class CreateAlert extends Mixins(
       this.currentFrequencyTab = AlertFrequencyTabs.Once;
       this.selectAsset(this.xor);
     }
+
+    this.$root.$on('selectAlertAsset', (selectedAsset) => {
+      this.selectAsset(selectedAsset);
+    });
   }
 }
 </script>
 
 <style lang="scss">
-.price-input {
-}
 .price-input {
   margin-bottom: $basic-spacing;
 
