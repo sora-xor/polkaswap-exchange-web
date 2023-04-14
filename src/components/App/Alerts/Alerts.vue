@@ -5,7 +5,7 @@
       :visible.sync="isVisible"
       :show-back="showBack"
       @back="handleBack"
-      :tooltip="tooltipText"
+      :tooltip="t('alerts.alertsTooltip')"
     >
       <alert-list v-if="step === AlertPages.AlertList" @create="handleCreate" @edit-alert="handleEdit" />
       <create-alert
@@ -59,10 +59,6 @@ export default class Alerts extends Mixins(mixins.DialogMixin, mixins.Transactio
   get showBack(): boolean {
     if (this.step === AlertPages.CreateAlert) return true;
     return false;
-  }
-
-  get tooltipText(): string {
-    return this.t('alerts.alertsTooltip');
   }
 
   openSelectTokenDialog() {

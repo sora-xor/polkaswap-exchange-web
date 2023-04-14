@@ -2,7 +2,7 @@
   <div class="setup-price-alert">
     <span class="setup-price-alert__title">{{ t('alerts.alertTypeTitle') }}</span>
     <s-tooltip slot="suffix" border-radius="mini" :content="t('alerts.typeTooltip')" placement="top" tabindex="-1">
-      <s-icon name="info-16" size="16px" />
+      <s-icon name="info-16" size="14px" />
     </s-tooltip>
     <s-tabs class="setup-price-alert__tab" v-model="currentTypeTab" type="rounded">
       <s-tab v-for="tab in AlertTypeTabs" :key="tab" :label="t(`alerts.${tab}`)" :name="tab" />
@@ -57,7 +57,7 @@
     </s-float-input>
     <span class="setup-price-alert__title">{{ t('alerts.alertFrequencyTitle') }}</span>
     <s-tooltip slot="suffix" border-radius="mini" :content="t('alerts.frequencyTooltip')" placement="top" tabindex="-1">
-      <s-icon name="info-16" size="16px" />
+      <s-icon name="info-16" size="14px" />
     </s-tooltip>
     <s-tabs class="setup-price-alert__tab" v-model="currentFrequencyTab" type="rounded">
       <s-tab v-for="tab in AlertFrequencyTabs" :key="tab" :label="t(`alerts.${tab}`)" :name="tab" />
@@ -319,7 +319,7 @@ export default class CreateAlert extends Mixins(
     margin-bottom: $inner-spacing-mini;
     margin-right: 6px;
     display: inline-block;
-    font-size: 14px;
+    font-size: var(--s-font-size-small);
     line-height: 18px;
     text-transform: uppercase;
     letter-spacing: -0.02em;
