@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@duty/13-04-23/fix-js-lib-secretstore-step') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
@@ -22,7 +22,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     ipfsHashChatID: '-1001375555544',
     k8sPrDeploy: true,
     vaultPrPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/environments/tachi/",
-    vaultUser: "polkaswap-ro",
+    vaultUser: "polkaswap-rw",
     vaultCredId: "pswapVaultCreds",
     valuesDestPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/",
     devValuesPath: "dev/dev/",
