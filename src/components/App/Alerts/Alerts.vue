@@ -23,7 +23,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 
-import { Components } from '@/consts';
+import { Components, NumberedAlert } from '@/consts';
 import { lazyComponent } from '@/router';
 import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 import { getter } from '@/store/decorators';
@@ -43,9 +43,8 @@ enum AlertPages {
   },
 })
 export default class Alerts extends Mixins(mixins.DialogMixin, mixins.TransactionMixin) {
-  alertToEdit: Nullable<Partial<Alert>> = {};
+  alertToEdit: Nullable<NumberedAlert> = null;
   showAlertSelectTokenDialog = false;
-  @getter.assets.xor private xor!: AccountAsset;
 
   step = AlertPages.AlertList;
 
@@ -70,7 +69,7 @@ export default class Alerts extends Mixins(mixins.DialogMixin, mixins.Transactio
     this.step = AlertPages.CreateAlert;
   }
 
-  handleEdit(alert: Alert): void {
+  handleEdit(alert: NumberedAlert): void {
     this.alertToEdit = alert;
     this.step = AlertPages.CreateAlert;
   }

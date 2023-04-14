@@ -82,10 +82,11 @@ import { AccountAsset, Asset, WhitelistIdsBySymbol } from '@sora-substrate/util/
 
 import { getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
-import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
 import { lazyComponent } from '@/router';
 import { Components, MAX_ALERTS_NUMBER } from '@/consts';
+import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
 import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
+import type { EditableAlertObject, NumberedAlert } from '@/consts';
 
 @Component({
   components: {
@@ -111,9 +112,9 @@ export default class CreateAlert extends Mixins(
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => AccountAsset;
 
   @mutation.wallet.settings.addPriceAlert addPriceAlert!: (alert: Alert) => void;
-  @mutation.wallet.settings.editPriceAlert editPriceAlert!: (alert: any) => void;
+  @mutation.wallet.settings.editPriceAlert editPriceAlert!: (alert: EditableAlertObject) => void;
 
-  @Prop({ default: null, type: Object }) readonly alertToEdit!: any;
+  @Prop({ default: null, type: Object }) readonly alertToEdit!: NumberedAlert;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
@@ -231,7 +232,7 @@ export default class CreateAlert extends Mixins(
   mounted(): void {
     if (this.isEditMode) {
       this.amount = this.alertToEdit.price;
-      this.currentTypeTab = this.alertToEdit.type;
+      this.currentTypeTab = this.alertToEdit.type === 'drop' ? AlertTypeTabs.Drop : AlertTypeTabs.Raise;
       this.currentFrequencyTab = this.alertToEdit.once ? AlertFrequencyTabs.Once : AlertFrequencyTabs.Always;
       this.selectAsset(this.getAsset(this.whitelistIdsBySymbol[this.alertToEdit.token]));
     } else {

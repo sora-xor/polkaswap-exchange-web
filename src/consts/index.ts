@@ -1,5 +1,6 @@
 import invert from 'lodash/fp/invert';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
@@ -237,6 +238,15 @@ export enum Components {
 export enum RewardsTabsItems {
   Rewards = PageNames.Rewards,
   ReferralProgram = PageNames.ReferralProgram,
+}
+
+export interface EditableAlertObject {
+  alert: Alert;
+  position: number;
+}
+
+export interface NumberedAlert extends Alert {
+  position: number;
 }
 
 export interface SidebarMenuItem {
