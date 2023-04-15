@@ -181,7 +181,7 @@ export default class AlertList extends Mixins(
     this.$emit('edit-alert', { ...alert, position });
   }
 
-  handleTopUpNotifs(value): void {
+  handleTopUpNotifs(value: boolean): void {
     this.isNotificationsEnabledByUser();
     this.setDepositNotifications(value);
   }

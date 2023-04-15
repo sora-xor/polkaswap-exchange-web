@@ -78,14 +78,14 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
-import { AccountAsset, Asset, WhitelistIdsBySymbol } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, Asset, WhitelistIdsBySymbol } from '@sora-substrate/util/build/assets/types';
+import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 import { getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
 import { lazyComponent } from '@/router';
 import { Components, MAX_ALERTS_NUMBER } from '@/consts';
 import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
-import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 import type { EditableAlertObject, NumberedAlert } from '@/consts';
 
 @Component({
@@ -232,7 +232,7 @@ export default class CreateAlert extends Mixins(
     this.$emit('open-select-token');
   }
 
-  selectAsset(selectedAsset?): void {
+  selectAsset(selectedAsset?: AccountAsset): void {
     if (!selectedAsset) return;
     this.asset = selectedAsset;
   }
@@ -255,7 +255,7 @@ export default class CreateAlert extends Mixins(
       this.selectAsset(this.xor);
     }
 
-    this.$root.$on('selectAlertAsset', (selectedAsset) => {
+    this.$root.$on('selectAlertAsset', (selectedAsset: AccountAsset) => {
       this.selectAsset(selectedAsset);
     });
   }

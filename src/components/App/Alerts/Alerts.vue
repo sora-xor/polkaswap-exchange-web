@@ -22,6 +22,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import { Components, NumberedAlert } from '@/consts';
 import { lazyComponent } from '@/router';
@@ -75,7 +76,7 @@ export default class Alerts extends Mixins(mixins.DialogMixin, mixins.Transactio
     this.step = AlertPages.AlertList;
   }
 
-  selectAsset(selectedAsset?): void {
+  selectAsset(selectedAsset?: AccountAsset): void {
     // TODO: disallow XSTUSD asset to choose in asset list
     if (!selectedAsset) return;
     this.$root.$emit('selectAlertAsset', selectedAsset);
