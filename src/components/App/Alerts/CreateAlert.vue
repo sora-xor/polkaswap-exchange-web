@@ -14,8 +14,8 @@
       has-locale-string
       :delimiters="delimiters"
       :decimals="asset.decimals"
-      :placeholder="`$${formattedFiatValue}`"
-      :maxlength="8"
+      :placeholder="`$${placeholder}`"
+      :maxlength="9"
     >
       <div v-if="amount" slot="left" class="price-input__prefix">$</div>
       <div class="price-input-inner" slot="top">
@@ -27,7 +27,7 @@
             value-class="input-value--primary"
             value="1"
             :asset-symbol="asset.symbol"
-            :fiat-value="rate"
+            :fiat-value="fiatAmountValue"
           />
         </div>
       </div>
@@ -128,13 +128,9 @@ export default class CreateAlert extends Mixins(
   AlertFrequencyTabs = AlertFrequencyTabs;
   AlertTypeTabs = AlertTypeTabs;
 
-  get rate(): Nullable<string> {
-    return this.getFiatAmount('1', this.asset);
-  }
-
   getDeltaPercentage(): string {
     const desiredPrice = FPNumber.fromNatural(this.amount);
-    let currentPrice = FPNumber.fromNatural(this.formattedFiatValue);
+    let currentPrice = FPNumber.fromNatural(this.fiatAmountValue);
 
     // if current price is zero, set minimal value for proper calculations
     if (FPNumber.eq(currentPrice, FPNumber.ZERO)) {
@@ -157,25 +153,42 @@ export default class CreateAlert extends Mixins(
       this.negativeDelta = false;
     }
 
-    return this.getFormattedValue(percent.toLocaleString());
+    return this.showMostFittingValue(percent.toLocaleString());
   }
 
-  get formattedFiatValue(): string {
-    const value = this.getFiatAmount('1', this.asset);
-    if (!value) return '';
-    return this.getFormattedValue(value);
+  get placeholder(): string {
+    return this.showMostFittingValue(this.fiatAmountValue);
   }
 
   // TODO: move to FormattedAmountMixin mixin
-  getFormattedValue(value: string): string {
+  showMostFittingValue(value, precisionForLowCostAsset = 18) {
     const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
-    return `${integer}.${decimal.substring(0, 2)}`;
+
+    if (parseInt(integer) > 0) {
+      return this.getFormattedValue(value, 2);
+    }
+
+    if (decimal && parseInt(decimal.substring(0, 2)) > 0) {
+      return this.getFormattedValue(value, 2);
+    }
+
+    return this.getFormattedValue(value, precisionForLowCostAsset);
+  }
+
+  // TODO: move to FormattedAmountMixin mixin
+  getFormattedValue(value: string, precision = 18): string {
+    const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
+    return `${integer}.${decimal.substring(0, precision)}`;
   }
 
   // TODO: move to FormattedAmountMixin mixin
   getDeltaPercent(desiredPrice: FPNumber, currentPrice: FPNumber): FPNumber {
     const delta = desiredPrice.sub(currentPrice);
     return delta.div(currentPrice).mul(FPNumber.HUNDRED);
+  }
+
+  get fiatAmountValue() {
+    return this.getFiatAmount('1', this.asset) || '';
   }
 
   get copyValueAssetId(): string {

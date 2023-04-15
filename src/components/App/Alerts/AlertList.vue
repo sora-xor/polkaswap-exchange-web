@@ -103,12 +103,11 @@ export default class AlertList extends Mixins(
   }
 
   getInfo(alert: Alert) {
-    const asset = this.getAsset(this.whitelistIdsBySymbol[alert.token]);
-    const value = this.getFiatAmount('1', asset);
-    if (!value) return;
-
-    const currentPrice = this.getFormattedValue(value);
     const desiredPrice = alert.price;
+    const asset = this.getAsset(this.whitelistIdsBySymbol[alert.token]);
+    const currentPrice = this.getFiatAmount('1', asset);
+
+    if (!currentPrice) return;
 
     let deltaPercent = this.getDeltaPercentage(currentPrice, desiredPrice);
     if (deltaPercent.includes('-')) {
@@ -117,13 +116,28 @@ export default class AlertList extends Mixins(
       deltaPercent = deltaPercent.replace('', '+ ');
     }
 
-    return `${deltaPercent}% · ${this.t('alerts.currentPrice')}: $${currentPrice}`;
+    return `${deltaPercent}% · ${this.t('alerts.currentPrice')}: $${this.showMostFittingValue(currentPrice)}`;
   }
 
   // TODO: move to FormattedAmountMixin mixin
-  getFormattedValue(value: string): string {
+  showMostFittingValue(value, precisionForLowCostAsset = 18) {
     const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
-    return `${integer}.${decimal.substring(0, 2)}`;
+
+    if (parseInt(integer) > 0) {
+      return this.getFormattedValue(value, 2);
+    }
+
+    if (decimal && parseInt(decimal.substring(0, 2)) > 0) {
+      return this.getFormattedValue(value, 2);
+    }
+
+    return this.getFormattedValue(value, precisionForLowCostAsset);
+  }
+
+  // TODO: move to FormattedAmountMixin mixin
+  getFormattedValue(value: string, precision = 18): string {
+    const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
+    return `${integer}.${decimal.substring(0, precision)}`;
   }
 
   // TODO: move to FormattedAmountMixin mixin
@@ -151,7 +165,7 @@ export default class AlertList extends Mixins(
 
     const percent = this.getDeltaPercent(desiredPrice, currentPrice);
 
-    return this.getFormattedValue(percent.toLocaleString());
+    return this.showMostFittingValue(percent.toLocaleString());
   }
 
   handleCreateAlert(): void {

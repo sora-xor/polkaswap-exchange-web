@@ -25,9 +25,6 @@ import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 
 import { Components, NumberedAlert } from '@/consts';
 import { lazyComponent } from '@/router';
-import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
-import { getter } from '@/store/decorators';
-import { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 enum AlertPages {
   AlertList,
