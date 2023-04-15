@@ -187,6 +187,10 @@ export default class AlertList extends Mixins(
   }
 
   mounted(): void {
+    if (Notification.permission !== 'granted') {
+      this.setDepositNotifications(false);
+    }
+
     this.topUpNotifs = this.allowTopUpAlert;
   }
 }
