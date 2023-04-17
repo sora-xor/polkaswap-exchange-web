@@ -50,6 +50,7 @@ export type TransactionInfo = {
   txId: string;
   blockId: string;
   from: string;
+  blockNumber?: string;
 };
 
 export type ProcessingState = {

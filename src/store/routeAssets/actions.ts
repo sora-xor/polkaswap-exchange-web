@@ -264,6 +264,11 @@ const actions = defineActions({
     commit.setSubscriptions([]);
     commit.cleanEnabledAssetsSubscription();
   },
+
+  async getBlockNumber(context, blockId): Promise<string> {
+    const apiInstanceAtBlock = await api.api.at(blockId);
+    return (await apiInstanceAtBlock.query.system.number()).toString();
+  },
 });
 
 function getTransferParams(context, inputAsset, recipient) {
