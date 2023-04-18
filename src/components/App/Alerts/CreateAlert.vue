@@ -4,7 +4,7 @@
     <s-tooltip slot="suffix" border-radius="mini" :content="t('alerts.typeTooltip')" placement="top" tabindex="-1">
       <s-icon name="info-16" size="14px" />
     </s-tooltip>
-    <s-tabs class="setup-price-alert__tab" v-model="currentTypeTab" type="rounded">
+    <s-tabs class="setup-price-alert__tab" v-model="currentTypeTab" type="rounded" @click="handleTabClick">
       <s-tab v-for="tab in AlertTypeTabs" :key="tab" :label="t(`alerts.${tab}`)" :name="tab" />
     </s-tabs>
     <s-float-input
@@ -43,7 +43,7 @@
         <span class="delta-percent">
           <span :class="activeSignClass('+')"> + </span>
           <span class="slash">/</span>
-          <span :class="activeSignClass('-')"> - </span> {{ getDeltaPercentage() }}%
+          <span :class="activeSignClass('-')"> - </span> {{ deltaPercentage }}%
         </span>
         <div class="asset-highlight">
           {{ asset.name || asset.symbol }}
@@ -121,6 +121,7 @@ export default class CreateAlert extends Mixins(
   amount = '';
   asset = {} as AccountAsset;
   negativeDelta = false;
+  autoChoice = true;
 
   currentTypeTab: AlertTypeTabs = AlertTypeTabs.Drop;
   currentFrequencyTab: AlertFrequencyTabs = AlertFrequencyTabs.Once;
@@ -128,7 +129,7 @@ export default class CreateAlert extends Mixins(
   AlertFrequencyTabs = AlertFrequencyTabs;
   AlertTypeTabs = AlertTypeTabs;
 
-  getDeltaPercentage(): string {
+  get deltaPercentage(): string {
     const desiredPrice = FPNumber.fromNatural(this.amount);
     let currentPrice = FPNumber.fromNatural(this.fiatAmountValue);
 
@@ -145,19 +146,25 @@ export default class CreateAlert extends Mixins(
     let percent = this.getDeltaPercent(desiredPrice, currentPrice);
 
     if (FPNumber.lt(percent, FPNumber.ZERO)) {
-      this.currentTypeTab = AlertTypeTabs.Drop;
       this.negativeDelta = true;
       percent = percent.negative();
+
+      if (this.autoChoice) this.currentTypeTab = AlertTypeTabs.Drop;
     } else {
-      this.currentTypeTab = AlertTypeTabs.Raise;
       this.negativeDelta = false;
+      if (this.autoChoice) this.currentTypeTab = AlertTypeTabs.Raise;
     }
 
+    this.autoChoice = true;
     return this.showMostFittingValue(percent.toLocaleString());
   }
 
   get placeholder(): string {
     return this.showMostFittingValue(this.fiatAmountValue);
+  }
+
+  handleTabClick(): void {
+    this.autoChoice = false;
   }
 
   // TODO: move to FormattedAmountMixin mixin
@@ -210,11 +217,28 @@ export default class CreateAlert extends Mixins(
   }
 
   handleAlertCreation(): void {
+    const desiredPrice = FPNumber.fromNatural(this.amount);
+    const currentPrice = FPNumber.fromNatural(this.fiatAmountValue);
+    let wasNotified = false;
+
+    // NOTE: handle abnormal situation when user wants specific alert despite the market
+    if (this.currentTypeTab === 'drop') {
+      if (FPNumber.lt(currentPrice, desiredPrice)) wasNotified = true;
+    }
+
+    if (this.currentTypeTab === 'raise') {
+      if (FPNumber.gt(currentPrice, desiredPrice)) wasNotified = true;
+    }
+
     if (this.isEditMode) {
-      const type = this.currentTypeTab;
-      const once = this.currentFrequencyTab === 'once';
       this.editPriceAlert({
-        alert: { token: this.asset.symbol, price: this.amount, type, once },
+        alert: {
+          token: this.asset.symbol,
+          price: this.amount,
+          type: this.currentTypeTab,
+          once: this.currentFrequencyTab === 'once',
+          wasNotified,
+        },
         position: this.alertToEdit.position,
       });
       this.$emit('back');
@@ -222,9 +246,14 @@ export default class CreateAlert extends Mixins(
     }
 
     if (this.alerts.length > MAX_ALERTS_NUMBER) return;
-    const type = this.currentTypeTab;
-    const once = this.currentFrequencyTab === 'once';
-    this.addPriceAlert({ token: this.asset.symbol, price: this.amount, type, once });
+
+    this.addPriceAlert({
+      token: this.asset.symbol,
+      price: this.amount,
+      type: this.currentTypeTab,
+      once: this.currentFrequencyTab === 'once',
+      wasNotified,
+    });
     this.$emit('back');
   }
 
