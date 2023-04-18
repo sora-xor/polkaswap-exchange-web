@@ -773,6 +773,7 @@
         "totalVested": "Все вознаграждения",
         "claimableAmountDoneVesting": "Требуемая сумма (наделение завершено)",
         "groups": {
+            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Стратегические вознаграждения",
             "external": "Вознаграждения за подключенный аккаунт {Ethereum}",
             "crowdloan": "Crowdloan вознаграждения"

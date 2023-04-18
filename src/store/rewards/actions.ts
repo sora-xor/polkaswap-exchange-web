@@ -1,6 +1,5 @@
 import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
@@ -21,21 +20,24 @@ async function getCrowdloanRewardsSubscription(context: ActionContext<any, any>)
   let subscription!: Subscription;
 
   await new Promise<void>((resolve) => {
-    subscription = observable.subscribe((rewards) => {
-      // XOR is not claimable
-      const crowdloanRewards = rewards.filter((item) => item.asset.address !== XOR.address);
+    subscription = observable.subscribe((crowdloanGroups) => {
+      const crowdloanRewards = crowdloanGroups.reduce((buffer, group) => {
+        const tag = group[0].type[1];
+        buffer[tag] = group;
+        return buffer;
+      }, {});
 
       commit.setRewards({ crowdloanRewards });
-      const crowdloanRewardsAreAvailable = getters.crowdloanRewardsAvailable.length;
 
       // select available rewards for first time
-      if (!state.crowdloanRewardsSubscription && crowdloanRewardsAreAvailable) {
-        dispatch.setSelectedRewards({ selectedCrowdloan: [...getters.crowdloanRewardsAvailable] });
+      if (!state.crowdloanRewardsSubscription && Object.keys(getters.crowdloanRewardsAvailable).length) {
+        dispatch.setSelectedRewards({ selectedCrowdloan: { ...getters.crowdloanRewardsAvailable } });
       }
       // deselect if no rewards after update
-      if (state.selectedCrowdloan.length && !crowdloanRewardsAreAvailable) {
-        dispatch.setSelectedRewards({ selectedCrowdloan: [] });
+      if (Object.keys(state.selectedCrowdloan) && !Object.keys(getters.crowdloanRewardsAvailable).length) {
+        dispatch.setSelectedRewards({ selectedCrowdloan: {} });
       }
+
       resolve();
     });
   });

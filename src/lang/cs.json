@@ -773,6 +773,7 @@
         "totalVested": "Celkové odměny",
         "claimableAmountDoneVesting": "Nárokovatelné odměny",
         "groups": {
+            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Strategické odměny",
             "external": "Odměny za připojený účet {Ethereum}",
             "crowdloan": "Crowdloan odměny"

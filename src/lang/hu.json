@@ -773,6 +773,7 @@
         "totalVested": "Összes jutalom",
         "claimableAmountDoneVesting": "Igényelhető jutalmak",
         "groups": {
+            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Stratégiai jutalmak",
             "external": "A csatlakoztatott {Ethereum} fiók jutalmai",
             "crowdloan": "Crowdloan jutalmak"

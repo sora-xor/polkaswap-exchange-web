@@ -773,6 +773,7 @@
         "totalVested": "Total hadiah",
         "claimableAmountDoneVesting": "Jumlah yang dapat diklaim (selesai vesting)",
         "groups": {
+            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Imbalan Strategis",
             "external": "Hadiah untuk akun {Ethereum} yang terhubung",
             "crowdloan": "Hadiah Crowdloan"

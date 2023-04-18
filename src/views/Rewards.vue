@@ -29,11 +29,14 @@
               />
               <rewards-amount-table
                 class="rewards-table"
-                v-model="selectedCrowdloanRewardsModel"
-                :item="crowdloanRewardsGroupItem"
+                v-for="(group, index) in crowdloanRewardsGroupItems"
+                :key="index"
+                :value="getSelectedCrowdloanRewardsModel(group.title)"
+                :item="group"
                 :theme="libraryTheme"
-                complex-group
+                :disabled="!crowdloanRewardsAvailable[group.title]"
                 is-codec-string
+                @input="setSelectedCrowdloanRewardsModel($event, group.title)"
               />
               <rewards-amount-table
                 class="rewards-table"
@@ -93,10 +96,12 @@
 </template>
 
 <script lang="ts">
+import unset from 'lodash/fp/unset';
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import { RewardType } from '@sora-substrate/util/build/rewards/consts';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
@@ -139,14 +144,14 @@ export default class Rewards extends Mixins(
   @state.rewards.fee fee!: CodecString;
 
   @state.rewards.vestedRewards private vestedRewards!: RewardsInfo;
-  @state.rewards.crowdloanRewards private crowdloanRewards!: Array<RewardInfo>;
+  @state.rewards.crowdloanRewards private crowdloanRewards!: Record<string, RewardInfo[]>;
   @state.rewards.internalRewards internalRewards!: RewardInfo;
   @state.rewards.externalRewards externalRewards!: Array<RewardInfo>;
 
   @state.rewards.selectedVested private selectedVestedRewards!: Nullable<RewardsInfo>;
   @state.rewards.selectedInternal private selectedInternalRewards!: Nullable<RewardInfo>;
   @state.rewards.selectedExternal private selectedExternalRewards!: Array<RewardInfo>;
-  @state.rewards.selectedCrowdloan private selectedCrowdloanRewards!: Array<RewardInfo>;
+  @state.rewards.selectedCrowdloan private selectedCrowdloanRewards!: Record<string, RewardInfo[]>;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.rewards.transactionStepsCount private transactionStepsCount!: number;
@@ -154,6 +159,7 @@ export default class Rewards extends Mixins(
   @getter.rewards.rewardsAvailable rewardsAvailable!: boolean;
   @getter.rewards.internalRewardsAvailable internalRewardsAvailable!: boolean;
   @getter.rewards.vestedRewardsAvailable vestedRewardsAvailable!: boolean;
+  @getter.rewards.crowdloanRewardsAvailable crowdloanRewardsAvailable!: Record<string, RewardInfo[]>;
   @getter.rewards.rewardsByAssetsList rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
   @getter.rewards.externalRewardsSelected externalRewardsSelected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
@@ -229,7 +235,7 @@ export default class Rewards extends Mixins(
 
   get externalRewardsGroupItem(): RewardInfoGroup {
     return {
-      type: this.t('rewards.groups.external'),
+      type: [RewardType.Externals, this.t('rewards.groups.external')],
       limit: groupRewardsByAssetsList(this.externalRewards),
       rewards: this.externalRewards,
     };
@@ -240,7 +246,7 @@ export default class Rewards extends Mixins(
     const pswap = KnownAssets.get(KnownSymbols.PSWAP);
 
     return {
-      type: this.t('rewards.groups.strategic'),
+      type: [RewardType.Strategic, this.t('rewards.groups.strategic')],
       title: this.t('rewards.claimableAmountDoneVesting'),
       limit: [
         {
@@ -256,14 +262,20 @@ export default class Rewards extends Mixins(
     };
   }
 
-  get crowdloanRewardsGroupItem(): RewardInfoGroup {
-    return {
-      type: this.t('rewards.groups.crowdloan'),
-      rewards: this.crowdloanRewards.map((item) => ({
-        ...item,
-        total: FPNumber.fromCodecValue(item.total ?? 0, item.asset.decimals).toLocaleString(),
-      })),
-    };
+  get crowdloanRewardsGroupItems(): RewardInfoGroup[] {
+    return Object.entries(this.crowdloanRewards).map(([tag, rewards]) => {
+      return {
+        type: [RewardType.Crowdloan, tag],
+        title: tag,
+        limit: rewards.map((item) => ({
+          ...item,
+          total: {
+            amount: FPNumber.fromCodecValue(item.total ?? 0, item.asset.decimals).toLocaleString(),
+            asset: item.asset,
+          },
+        })),
+      };
+    });
   }
 
   get selectedInternalRewardsModel(): boolean {
@@ -293,17 +305,13 @@ export default class Rewards extends Mixins(
     this.setSelectedRewards({ selectedVested });
   }
 
-  get selectedCrowdloanRewardsModel(): Array<string> {
-    return this.selectedCrowdloanRewards.map((item) => item.type);
+  getSelectedCrowdloanRewardsModel(tag: string): boolean {
+    return !!this.selectedCrowdloanRewards[tag];
   }
 
-  set selectedCrowdloanRewardsModel(value: Array<string>) {
-    const selectedCrowdloan = this.crowdloanRewards.reduce<RewardInfo[]>((buffer, item) => {
-      if (value.includes(item.type)) {
-        buffer.push(item);
-      }
-      return buffer;
-    }, []);
+  setSelectedCrowdloanRewardsModel(value: boolean, tag: string) {
+    const copy = { ...this.selectedCrowdloanRewards };
+    const selectedCrowdloan = value ? { ...copy, [tag]: this.crowdloanRewards[tag] } : unset(tag, copy);
 
     this.setSelectedRewards({ selectedCrowdloan });
   }

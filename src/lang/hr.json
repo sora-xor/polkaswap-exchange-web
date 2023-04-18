@@ -773,6 +773,7 @@
         "totalVested": "Ukupne nagrade",
         "claimableAmountDoneVesting": "Nagrade koje se mogu tražiti",
         "groups": {
+            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Strateške nagrade",
             "external": "Nagrade za povezani {Ethereum} račun",
             "crowdloan": "Crowdloan nagrade"

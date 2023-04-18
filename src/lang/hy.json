@@ -773,6 +773,7 @@
         "totalVested": "երաշխավորված",
         "claimableAmountDoneVesting": "Պահանջվող գումարը (կատարված ապահովումը)",
         "groups": {
+            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Ռազմավարական պարգևներ",
             "external": "Պարգևատրումներ կապված {Ethereum} հաշվի համար",
             "crowdloan": "Crowdloan պարգևներ"

@@ -773,9 +773,10 @@
         "totalVested": "Total rewards",
         "claimableAmountDoneVesting": "Claimable rewards",
         "groups": {
-            "strategic": "Strategic Rewards",
-            "external": "Rewards for the connected {Ethereum} account",
-            "crowdloan": "Crowdloan rewards"
+            "Provision": "@:rewards.events.LiquidityProvision",
+            "Strategic": "Strategic Rewards",
+            "External": "Rewards for the connected {Ethereum} account",
+            "Crowdloan": "Crowdloan rewards"
         },
         "Rewards": "Rewards",
         "ReferralProgram": "@:referralProgram.title"

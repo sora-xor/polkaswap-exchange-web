@@ -5,7 +5,7 @@
       <template v-if="showTable">
         <div v-if="formatted.subtitle" class="amount-table-item__subtitle">{{ formatted.subtitle }}</div>
         <el-checkbox-group v-model="innerModel">
-          <component :is="tableGroupComponent" class="amount-table-item-group" :disabled="disabled" size="big">
+          <el-checkbox class="amount-table-item-group" :disabled="disabled" size="big">
             <div class="amount-table-item-content">
               <div class="amount-table-item-content__header">
                 <div v-for="(limitItem, index) in formatted.limit" class="amount-table-item__amount" :key="index">
@@ -27,32 +27,24 @@
                     "
                     :fiat-font-size-rate="FontSizeRate.MEDIUM"
                   >
-                    <rewards-item-tooltip
-                      v-if="formatted.total && index === 0"
-                      :value="formatted.total.amount"
-                      :asset="formatted.total.asset"
-                    />
+                    <template v-if="formatted.total && index === 0">
+                      <rewards-item-tooltip :value="formatted.total.amount" :asset="formatted.total.asset" />
+                    </template>
+                    <template v-else-if="limitItem.total">
+                      <rewards-item-tooltip :value="limitItem.total.amount" :asset="limitItem.total.asset" />
+                    </template>
                   </formatted-amount-with-fiat-value>
                 </div>
               </div>
               <div v-if="formatted.rewards && formatted.rewards.length !== 0" class="amount-table-item-content__body">
-                <component
-                  :is="tableItemComponent"
-                  v-for="(rewardItem, index) in formatted.rewards"
-                  :key="rewardItem.type"
-                  :label="rewardItem.type"
-                  :disabled="isDisabledRewardItem(rewardItem)"
-                  :class="['amount-table-subitem', { complex: complexGroup }]"
-                >
+                <div v-for="(rewardItem, index) in formatted.rewards" :key="index" class="amount-table-subitem">
                   <s-divider v-if="!simpleGroup || index === 0" :class="['amount-table-divider', theme]" />
                   <div class="amount-table-subitem__title">
                     <template v-if="simpleGroup">—</template>
                     <template v-else-if="formatted.total">
                       {{ t('rewards.totalVested') }} {{ t('rewards.forText') }}
                     </template>
-                    <template v-if="!complexGroup">
-                      {{ rewardItem.title }}
-                    </template>
+                    {{ rewardItem.title }}
                   </div>
                   <template v-if="!simpleGroup && rewardItem.limit">
                     <div v-for="(limitItem, index) in rewardItem.limit" :key="index" class="amount-table-subitem__row">
@@ -74,10 +66,10 @@
                       </formatted-amount-with-fiat-value>
                     </div>
                   </template>
-                </component>
+                </div>
               </div>
             </div>
-          </component>
+          </el-checkbox>
         </el-checkbox-group>
       </template>
     </div>
@@ -90,17 +82,30 @@ import { Component, Prop, Mixins, ModelSync } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type ElCheckbox from 'element-ui/lib/checkbox';
-import type { RewardInfo } from '@sora-substrate/util/build/rewards/types';
+import type { RewardInfo, RewardTypedEvent } from '@sora-substrate/util/build/rewards/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import RewardsItemTooltip from './ItemTooltip.vue';
 
-import { RewardsAmountTableItem, RewardInfoGroup } from '@/types/rewards';
 import { asZeroValue } from '@/utils';
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
+
+import type { RewardInfoGroup, RewardsAmountHeaderItem } from '@/types/rewards';
+
+interface RewardsAmountTableItem {
+  type?: RewardTypedEvent;
+  title?: string;
+  subtitle?: string;
+  total?: string | RewardsAmountHeaderItem;
+  limit?: Array<RewardsAmountHeaderItem>;
+  rewards?: Array<RewardsAmountTableItem>;
+}
+
+const toLimit = (asset: Asset, amount: string, total?: string): { asset: Asset; amount: string; total?: string } => ({
+  amount,
+  asset,
+  total,
+});
 
 @Component({
   components: {
@@ -115,7 +120,6 @@ export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMix
   @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo;
   @Prop({ default: true, type: Boolean }) showTable!: boolean;
   @Prop({ default: false, type: Boolean }) simpleGroup!: boolean;
-  @Prop({ default: false, type: Boolean }) complexGroup!: boolean;
   @Prop({ default: false, type: [Boolean, Array] }) value!: boolean | string[];
   @Prop({ default: false, type: Boolean }) isCodecString!: boolean;
   @Prop({ default: false, type: Boolean }) disabled!: boolean;
@@ -128,36 +132,18 @@ export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMix
     return this.formatItem(this.item);
   }
 
-  get tableGroupComponent(): ElCheckbox | HTMLDivElement {
-    return this.complexGroup ? 'div' : 'el-checkbox';
-  }
-
-  get tableItemComponent(): ElCheckbox | HTMLDivElement {
-    return this.complexGroup ? 'el-checkbox' : 'div';
-  }
-
   formatItem(item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
-    const toLimit = (asset: Asset, amount: string, total: string): { asset: Asset; amount: string; total: string } => ({
-      amount,
-      asset,
-      total,
-    });
-
-    const key = `rewards.events.${item.type}`;
-    const title = this.te(key) ? this.t(key) : item.type;
+    const isGroup = 'limit' in item && Array.isArray(item.limit);
+    const [rewardType, rewardEvent] = item.type;
+    const key = isGroup ? `rewards.groups.${rewardType}` : `rewards.events.${rewardEvent}`;
+    const title = this.te(key) ? this.t(key) : '';
     const subtitle = 'title' in item ? item.title : '';
     const total = 'total' in item ? item.total : undefined;
-    const rewards = 'rewards' in item && Array.isArray(item.rewards) ? item.rewards.map(this.formatItem) : [];
+    const rewards = isGroup ? item.rewards?.map(this.formatItem) : [];
     const limit =
-      'rewards' in item && Array.isArray(item.rewards)
+      'limit' in item
         ? (item as RewardInfoGroup).limit
-        : [
-            toLimit(
-              (item as RewardInfo).asset,
-              (item as RewardInfo).amount,
-              (item as any).total // TODO: remove any
-            ),
-          ];
+        : [toLimit((item as RewardInfo).asset, (item as RewardInfo).amount, (item as RewardInfo).total)];
 
     return {
       type: item.type,
@@ -170,7 +156,7 @@ export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMix
   }
 
   isDisabledRewardItem(item: RewardsAmountTableItem): boolean {
-    return asZeroValue(item.limit?.[0]?.amount);
+    return asZeroValue(item.limit?.[0]?.amount ?? 0);
   }
 }
 </script>
@@ -278,6 +264,10 @@ export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMix
   }
 
   &-item {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: $inner-spacing-mini;
+
     &-group {
       display: flex;
       flex-flow: nowrap;
@@ -300,15 +290,13 @@ export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMix
       line-height: var(--s-line-height-medium);
       font-weight: 400;
       text-transform: uppercase;
-      margin-bottom: $inner-spacing-mini;
     }
 
     &__subtitle {
-      font-size: var(--s-font-size-small);
+      font-size: var(--s-font-size-mini);
       line-height: var(--s-line-height-reset);
       font-weight: 300;
       text-transform: uppercase;
-      margin-bottom: $inner-spacing-tiny;
     }
 
     &__amount {
