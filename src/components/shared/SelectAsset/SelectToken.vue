@@ -72,6 +72,18 @@ enum Tabs {
   Custom = 'custom',
 }
 
+function getNonWhitelistDivisibleAssets<T extends Asset | AccountAsset>(
+  assets: T[],
+  whitelist: Whitelist
+): Record<string, T> {
+  return assets.reduce((buffer, asset) => {
+    if (!api.assets.isWhitelist(asset, whitelist) && asset.decimals) {
+      buffer[asset.address] = asset;
+    }
+    return buffer;
+  }, {});
+}
+
 @Component({
   components: {
     DialogBase: components.DialogBase,
@@ -88,17 +100,15 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset;
-  @Prop({ default: false, type: Boolean }) readonly accountAssetsOnly!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly notNullBalanceOnly!: boolean;
   @Prop({ default: false, type: Boolean }) readonly disabledCustom!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMainTokenProviders!: boolean;
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
+  @state.wallet.account.assets private assets!: Asset[];
+  @state.wallet.account.accountAssets private accountAssets!: AccountAsset[];
 
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
-  @getter.assets.nonWhitelistDivisibleAssets private nonWhitelistAssets!: Record<string, Asset>;
-  @getter.assets.nonWhitelistDivisibleAccountAssets private nonWhitelistAccountAssets!: Record<string, AccountAsset>;
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
   @getter.wallet.account.whitelist public whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
@@ -113,16 +123,22 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     this.tabValue = first(this.tokenTabs);
   }
 
+  get nonWhitelistAssets(): Record<string, Asset> {
+    return getNonWhitelistDivisibleAssets(this.assets, this.whitelist);
+  }
+
+  get nonWhitelistAccountAssets(): Record<string, AccountAsset> {
+    return getNonWhitelistDivisibleAssets(this.accountAssets, this.whitelist);
+  }
+
   get whitelistAssetsList(): Array<AccountAsset> {
     const whiteList = this.isMainTokenProviders ? this.getMainSources() : this.whitelistAssets;
 
-    const { asset: excludeAsset, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this;
+    const { asset: excludeAsset, accountAssetsAddressTable } = this;
 
     return this.getAssetsWithBalances({
       assets: whiteList,
       accountAssetsAddressTable,
-      notNullBalanceOnly,
-      accountAssetsOnly,
       excludeAsset,
     }).sort(this.sortByBalance());
   }
@@ -161,14 +177,12 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get sortedNonWhitelistAccountAssets(): Array<AccountAsset> {
-    const { asset: excludeAsset, accountAssetsAddressTable, notNullBalanceOnly, accountAssetsOnly } = this;
+    const { asset: excludeAsset, accountAssetsAddressTable } = this;
     // TODO: we already have balances in nonWhitelistAccountAssets.
     // Need to improve that logic
     return this.getAssetsWithBalances({
       assets: Object.values(this.nonWhitelistAccountAssets),
       accountAssetsAddressTable,
-      notNullBalanceOnly,
-      accountAssetsOnly,
       excludeAsset,
     }).sort(this.sortByBalance());
   }
