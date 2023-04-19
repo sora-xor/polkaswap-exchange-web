@@ -56,10 +56,6 @@ const getters = defineGetters<RewardsState>()({
     const { state } = rewardsGetterContext(args);
     return state.selectedExternal.length !== 0;
   },
-  transactionStepsCount(...args): number {
-    const { getters } = rewardsGetterContext(args);
-    return getters.externalRewardsSelected ? 2 : 1;
-  },
   rewardsByAssetsList(...args): Array<RewardsAmountHeaderItem> {
     const { getters } = rewardsGetterContext(args);
     if (!getters.rewardsAvailable) {

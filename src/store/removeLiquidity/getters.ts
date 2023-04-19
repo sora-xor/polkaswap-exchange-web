@@ -12,6 +12,9 @@ const getters = defineGetters<RemoveLiquidityState>()({
   liquidity(...args): Nullable<AccountLiquidity> {
     const { state, rootState } = removeLiquidityGetterContext(args);
     const { firstTokenAddress, secondTokenAddress } = state;
+
+    if (!(firstTokenAddress && secondTokenAddress)) return undefined;
+
     return rootState.pool.accountLiquidity.find(
       (liquidity) => liquidity.firstAddress === firstTokenAddress && liquidity.secondAddress === secondTokenAddress
     );
