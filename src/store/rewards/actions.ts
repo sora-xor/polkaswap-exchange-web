@@ -16,12 +16,12 @@ async function getCrowdloanRewardsSubscription(context: ActionContext<any, any>)
   const { commit, dispatch, getters } = rewardsActionContext(context);
 
   // [TODO]: Remove this after 1.16.6
-  const crowdloans = await api.api.query.vestedRewards.crowdloanInfos.entries();
-  const crowdloanNames = crowdloans.reduce<Record<string, string>>((buffer, [key]) => {
+  const crowdloansKeys = await api.api.query.vestedRewards.crowdloanInfos.keys();
+  const crowdloanNames = crowdloansKeys.reduce<Record<string, string>>((buffer, key) => {
     const hex = key.args[0].toString();
-    const utf = new TextDecoder().decode(key.args[0]);
+    const utf8 = new TextDecoder().decode(key.args[0]);
 
-    buffer[hex] = utf;
+    buffer[hex] = utf8;
 
     return buffer;
   }, {});
