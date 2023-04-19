@@ -773,7 +773,6 @@
         "totalVested": "Ricompense totali",
         "claimableAmountDoneVesting": "Importo che puoi ottenere (maturazione effettuata)",
         "groups": {
-            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Strategic Rewards",
             "external": "Ricompense per l'account {Ethereum} connesso",
             "crowdloan": "Premi Crowdloan"

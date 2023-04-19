@@ -773,7 +773,6 @@
         "totalVested": "Totale beloningen",
         "claimableAmountDoneVesting": "Opeisbare beloningen",
         "groups": {
-            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Strategische beloningen",
             "external": "Beloningen voor het verbonden {Ethereum}-account",
             "crowdloan": "Crowdloan beloningen"

@@ -773,7 +773,6 @@
         "totalVested": "总奖励",
         "claimableAmountDoneVesting": "可申领金额(完成归属)",
         "groups": {
-            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "战略奖励",
             "external": "连接的{Ethereum}帐户的奖励",
             "crowdloan": "众贷奖励"

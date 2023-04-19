@@ -773,7 +773,6 @@
         "totalVested": "Recompensas totales",
         "claimableAmountDoneVesting": "Recompensas reclamables",
         "groups": {
-            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Recompensas estratégicas",
             "external": "Recompensas para la cuenta de {Ethereum} conectada",
             "crowdloan": "Recompensas de préstamo colectivo"

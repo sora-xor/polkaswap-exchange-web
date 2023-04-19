@@ -773,7 +773,6 @@
         "totalVested": "Tổng giải thưởng",
         "claimableAmountDoneVesting": "Phần thưởng có thể nhận",
         "groups": {
-            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Phần thưởng chiến lược",
             "external": "Phần thưởng cho tài khoản {Ethereum} được kết nối",
             "crowdloan": "Phần thưởng Crowdloan"

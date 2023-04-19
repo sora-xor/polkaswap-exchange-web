@@ -773,7 +773,6 @@
         "totalVested": "Apapo Ta fun",
         "claimableAmountDoneVesting": "Iye ti o ni ẹtọ (ti a ṣe)",
         "groups": {
-            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Ere Awọn ilana",
             "external": "Awọn ere fun iroyin {Ethereum} ti a sopọ",
             "crowdloan": "Crowdloan ere"

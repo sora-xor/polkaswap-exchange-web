@@ -773,7 +773,6 @@
         "totalVested": "Celkové odmeny",
         "claimableAmountDoneVesting": "Nárokovateľné odmeny",
         "groups": {
-            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Strategické odmeny",
             "external": "Odmeny za pripojený {Ethereum} účet",
             "crowdloan": "Crowdloan odmeny"

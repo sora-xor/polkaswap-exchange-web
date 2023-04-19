@@ -1,78 +1,78 @@
 <template>
   <div class="amount-table">
-    <div class="amount-table-item">
-      <div class="amount-table-item__title">{{ formatted.title }}</div>
-      <template v-if="showTable">
+    <div class="amount-table-title">{{ title }}</div>
+    <el-checkbox-group v-if="showTable" v-model="innerModel">
+      <div v-for="(formatted, index) in formattedItems" :key="index" class="amount-table-item">
+        <s-divider v-if="index !== 0" :class="['amount-table-divider', theme]" />
         <div v-if="formatted.subtitle" class="amount-table-item__subtitle">{{ formatted.subtitle }}</div>
-        <el-checkbox-group v-model="innerModel">
-          <el-checkbox class="amount-table-item-group" :disabled="disabled" size="big">
-            <div class="amount-table-item-content">
-              <div class="amount-table-item-content__header">
-                <div v-for="(limitItem, index) in formatted.limit" class="amount-table-item__amount" :key="index">
-                  <formatted-amount-with-fiat-value
-                    value-class="amount-table-value"
-                    with-left-shift
-                    value-can-be-hidden
-                    :value="
-                      isCodecString
-                        ? getFPNumberFromCodec(limitItem.amount, limitItem.asset.decimals).toLocaleString()
-                        : limitItem.amount
-                    "
-                    :font-size-rate="FontSizeRate.MEDIUM"
-                    :asset-symbol="limitItem.asset.symbol"
-                    :fiat-value="
-                      isCodecString
-                        ? getFiatAmountByCodecString(limitItem.amount, limitItem.asset)
-                        : getFiatAmountByString(limitItem.amount, limitItem.asset)
-                    "
-                    :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                  >
-                    <template v-if="formatted.total && index === 0">
-                      <rewards-item-tooltip :value="formatted.total.amount" :asset="formatted.total.asset" />
-                    </template>
-                    <template v-else-if="limitItem.total">
-                      <rewards-item-tooltip :value="limitItem.total.amount" :asset="limitItem.total.asset" />
-                    </template>
-                  </formatted-amount-with-fiat-value>
-                </div>
-              </div>
-              <div v-if="formatted.rewards && formatted.rewards.length !== 0" class="amount-table-item-content__body">
-                <div v-for="(rewardItem, index) in formatted.rewards" :key="index" class="amount-table-subitem">
-                  <s-divider v-if="!simpleGroup || index === 0" :class="['amount-table-divider', theme]" />
-                  <div class="amount-table-subitem__title">
-                    <template v-if="simpleGroup">—</template>
-                    <template v-else-if="formatted.total">
-                      {{ t('rewards.totalVested') }} {{ t('rewards.forText') }}
-                    </template>
-                    {{ rewardItem.title }}
-                  </div>
-                  <template v-if="!simpleGroup && rewardItem.limit">
-                    <div v-for="(limitItem, index) in rewardItem.limit" :key="index" class="amount-table-subitem__row">
-                      <formatted-amount-with-fiat-value
-                        value-class="amount-table-value"
-                        with-left-shift
-                        value-can-be-hidden
-                        :value="formatCodecNumber(limitItem.amount)"
-                        :font-size-rate="FontSizeRate.MEDIUM"
-                        :asset-symbol="limitItem.asset.symbol"
-                        :fiat-value="getFiatAmountByCodecString(limitItem.amount, limitItem.asset)"
-                        :fiat-font-size-rate="FontSizeRate.MEDIUM"
-                      >
-                        <rewards-item-tooltip
-                          v-if="limitItem.total"
-                          :value="limitItem.total"
-                          :asset="limitItem.asset"
-                        />
-                      </formatted-amount-with-fiat-value>
-                    </div>
+        <el-checkbox
+          :label="formatted.type[1]"
+          :disabled="isDisabledRewardItem(formatted)"
+          size="big"
+          class="amount-table-item-group"
+        >
+          <div class="amount-table-item-content">
+            <div class="amount-table-item-content__header">
+              <div v-for="(limitItem, index) in formatted.limit" class="amount-table-item__amount" :key="index">
+                <formatted-amount-with-fiat-value
+                  value-class="amount-table-value"
+                  with-left-shift
+                  value-can-be-hidden
+                  :value="
+                    isCodecString
+                      ? getFPNumberFromCodec(limitItem.amount, limitItem.asset.decimals).toLocaleString()
+                      : limitItem.amount
+                  "
+                  :font-size-rate="FontSizeRate.MEDIUM"
+                  :asset-symbol="limitItem.asset.symbol"
+                  :fiat-value="
+                    isCodecString
+                      ? getFiatAmountByCodecString(limitItem.amount, limitItem.asset)
+                      : getFiatAmountByString(limitItem.amount, limitItem.asset)
+                  "
+                  :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                >
+                  <template v-if="formatted.total && index === 0">
+                    <rewards-item-tooltip :value="formatted.total.amount" :asset="formatted.total.asset" />
                   </template>
-                </div>
+                  <template v-else-if="limitItem.total">
+                    <rewards-item-tooltip :value="limitItem.total.amount" :asset="limitItem.total.asset" />
+                  </template>
+                </formatted-amount-with-fiat-value>
               </div>
             </div>
-          </el-checkbox>
-        </el-checkbox-group>
-      </template>
-    </div>
+            <div v-if="formatted.rewards && formatted.rewards.length !== 0" class="amount-table-item-content__body">
+              <div v-for="(rewardItem, index) in formatted.rewards" :key="index" class="amount-table-subitem">
+                <s-divider v-if="!simpleGroup || index === 0" :class="['amount-table-divider', theme]" />
+                <div class="amount-table-subitem__title">
+                  <template v-if="simpleGroup">—</template>
+                  <template v-else-if="formatted.total">
+                    {{ t('rewards.totalVested') }} {{ t('rewards.forText') }}
+                  </template>
+                  {{ rewardItem.title }}
+                </div>
+                <template v-if="!simpleGroup && rewardItem.limit">
+                  <div v-for="(limitItem, index) in rewardItem.limit" :key="index" class="amount-table-subitem__row">
+                    <formatted-amount-with-fiat-value
+                      value-class="amount-table-value"
+                      with-left-shift
+                      value-can-be-hidden
+                      :value="formatCodecNumber(limitItem.amount)"
+                      :font-size-rate="FontSizeRate.MEDIUM"
+                      :asset-symbol="limitItem.asset.symbol"
+                      :fiat-value="getFiatAmountByCodecString(limitItem.amount, limitItem.asset)"
+                      :fiat-font-size-rate="FontSizeRate.MEDIUM"
+                    >
+                      <rewards-item-tooltip v-if="limitItem.total" :value="limitItem.total" :asset="limitItem.asset" />
+                    </formatted-amount-with-fiat-value>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+        </el-checkbox>
+      </div>
+    </el-checkbox-group>
     <slot />
   </div>
 </template>
@@ -117,25 +117,25 @@ const toLimit = (asset: Asset, amount: string, total?: string): { asset: Asset; 
 export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
-  @Prop({ default: () => {}, type: Object }) item!: RewardInfoGroup | RewardInfo;
+  @Prop({ default: () => [], type: Array }) items!: Array<RewardInfoGroup | RewardInfo>;
+  @Prop({ default: '', type: String }) title!: string;
   @Prop({ default: true, type: Boolean }) showTable!: boolean;
   @Prop({ default: false, type: Boolean }) simpleGroup!: boolean;
   @Prop({ default: false, type: [Boolean, Array] }) value!: boolean | string[];
   @Prop({ default: false, type: Boolean }) isCodecString!: boolean;
-  @Prop({ default: false, type: Boolean }) disabled!: boolean;
   @Prop({ default: Theme.LIGHT, type: String }) theme!: Theme;
 
   @ModelSync('value', 'input', { type: [Boolean, Array] })
   readonly innerModel!: boolean | string[];
 
-  get formatted(): RewardsAmountTableItem {
-    return this.formatItem(this.item);
+  get formattedItems(): RewardsAmountTableItem[] {
+    return this.items.map(this.formatItem);
   }
 
   formatItem(item: RewardInfoGroup | RewardInfo): RewardsAmountTableItem {
     const isGroup = 'limit' in item && Array.isArray(item.limit);
     const [rewardType, rewardEvent] = item.type;
-    const key = isGroup ? `rewards.groups.${rewardType}` : `rewards.events.${rewardEvent}`;
+    const key = `rewards.events.${rewardEvent}`;
     const title = this.te(key) ? this.t(key) : '';
     const subtitle = 'title' in item ? item.title : '';
     const total = 'total' in item ? item.total : undefined;
@@ -263,10 +263,22 @@ export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMix
     }
   }
 
+  &-title {
+    font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-medium);
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: $inner-spacing-mini;
+  }
+
   &-item {
     display: flex;
     flex-flow: column nowrap;
     gap: $inner-spacing-mini;
+
+    & + & {
+      margin-top: $inner-spacing-mini;
+    }
 
     &-group {
       display: flex;
@@ -285,18 +297,12 @@ export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMix
       }
     }
 
-    &__title {
-      font-size: var(--s-font-size-mini);
-      line-height: var(--s-line-height-medium);
-      font-weight: 400;
-      text-transform: uppercase;
-    }
-
     &__subtitle {
       font-size: var(--s-font-size-mini);
       line-height: var(--s-line-height-reset);
       font-weight: 300;
       text-transform: uppercase;
+      margin-bottom: $inner-spacing-tiny;
     }
 
     &__amount {

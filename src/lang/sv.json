@@ -773,7 +773,6 @@
         "totalVested": "Sammanlagda belöningar",
         "claimableAmountDoneVesting": "Belöningar som kan göras anspråk på ",
         "groups": {
-            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Strategiska belöningar",
             "external": "Belöningar för det anslutna {Ethereum}-kontot",
             "crowdloan": "Crowdloan rewards"

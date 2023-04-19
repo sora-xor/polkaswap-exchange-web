@@ -773,7 +773,6 @@
         "totalVested": "Wynagrodzenia łącznie",
         "claimableAmountDoneVesting": "Przysługujące wynagrodzenie dostępne do wypłaty",
         "groups": {
-            "provision": "@:rewards.events.LiquidityProvision",
             "strategic": "Wynagrodzenie strategiczne",
             "external": "Wynagrodzenie dla podłączonego konta sieci {Ethereum}",
             "crowdloan": "Nagrody Crowdloan"
