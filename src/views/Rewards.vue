@@ -155,10 +155,10 @@ export default class Rewards extends Mixins(
   @getter.rewards.transactionStepsCount private transactionStepsCount!: number;
   @getter.rewards.externalRewardsAvailable private externalRewardsAvailable!: boolean;
   @getter.rewards.rewardsAvailable rewardsAvailable!: boolean;
-  @getter.rewards.internalRewardsAvailable internalRewardsAvailable!: boolean;
-  @getter.rewards.vestedRewardsAvailable vestedRewardsAvailable!: boolean;
-  @getter.rewards.rewardsByAssetsList rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
-  @getter.rewards.externalRewardsSelected externalRewardsSelected!: boolean;
+  @getter.rewards.internalRewardsAvailable private internalRewardsAvailable!: boolean;
+  @getter.rewards.vestedRewardsAvailable private vestedRewardsAvailable!: boolean;
+  @getter.rewards.rewardsByAssetsList private rewardsByAssetsList!: Array<RewardsAmountHeaderItem>;
+  @getter.rewards.externalRewardsSelected private externalRewardsSelected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
 
   @mutation.rewards.reset private reset!: FnWithoutArgs;
