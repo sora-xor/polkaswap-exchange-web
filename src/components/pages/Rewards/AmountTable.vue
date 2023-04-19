@@ -302,7 +302,6 @@ export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMix
       line-height: var(--s-line-height-reset);
       font-weight: 300;
       text-transform: uppercase;
-      margin-bottom: $inner-spacing-tiny;
     }
 
     &__amount {
@@ -315,7 +314,6 @@ export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMix
   }
 
   &-subitem {
-    margin: $inner-spacing-mini 0;
     font-weight: 300;
     text-transform: uppercase;
 
@@ -326,6 +324,7 @@ export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMix
 
     &__title {
       line-height: var(--s-line-height-reset);
+      margin-top: $inner-spacing-mini;
     }
 
     &__row {
@@ -339,7 +338,7 @@ export default class RewardsAmountTable extends Mixins(mixins.FormattedAmountMix
   &-divider {
     opacity: 0.5;
     margin-top: 0;
-    margin-bottom: $inner-spacing-mini;
+    margin-bottom: 0;
   }
 }
 </style>
