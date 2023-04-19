@@ -1,6 +1,6 @@
 <template>
   <div class="select-report-fromat-dialog">
-    <dialog-base :visible.sync="isVisible" custom-class="dialog__select-report-fromat">
+    <dialog-base :visible.sync="isVisible" custom-class="dialog__select-report-format">
       <div class="route-assets__page-header-title">Select report file format</div>
       <div class="route-assets__page-header-description">
         {{ `You can either use the PDF or CSV format.` }}
@@ -39,6 +39,9 @@ export default class SelectReportFormatDialog extends Mixins(mixins.TransactionM
 </script>
 
 <style lang="scss" scoped>
+.route-assets__page-header-description {
+  margin: $inner-spacing-medium 0;
+}
 .browse-button {
   width: 100%;
   margin-right: 0;
@@ -49,5 +52,6 @@ export default class SelectReportFormatDialog extends Mixins(mixins.TransactionM
   display: flex;
   // flex-direction: column;
   gap: 12px;
+  margin-bottom: $inner-spacing-medium;
 }
 </style>

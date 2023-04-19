@@ -32,16 +32,23 @@
         </div>
         <s-divider />
         <div class="field">
-          <div class="field__label">ESTImated TOKENs required (+5%)</div>
+          <div class="field__label">ESTImated ADAR fee (0.75%)</div>
           <div class="field__value">
-            {{ formatNumber(estimatedAmount) }} <token-logo class="token-logo" :token="inputToken" />
+            {{ formatNumber(adarFee) }} <token-logo class="token-logo" :token="inputToken" />
           </div>
         </div>
         <s-divider />
         <div class="field">
-          <div class="field__label">ESTImated ADAR fee (0.75%)</div>
+          <div class="field__label">ESTImated Network fee (5%)</div>
           <div class="field__value">
-            {{ formatNumber(adarFee) }} <token-logo class="token-logo" :token="inputToken" />
+            {{ formatNumber(estimatedNetworkFee) }} <token-logo class="token-logo" :token="inputToken" />
+          </div>
+        </div>
+        <s-divider />
+        <div class="field">
+          <div class="field__label">Total tokens required</div>
+          <div class="field__value">
+            {{ formatNumber(estimatedAmountWithFees) }} <token-logo class="token-logo" :token="inputToken" />
           </div>
         </div>
         <s-divider />
@@ -132,7 +139,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import { AdarComponents, adarFee } from '@/modules/ADAR/consts';
+import { AdarComponents, adarFee, slippageMultiplier } from '@/modules/ADAR/consts';
 import { adarLazyComponent } from '@/modules/ADAR/router';
 import { action, getter, state } from '@/store/decorators';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
@@ -181,7 +188,7 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   }
 
   get estimatedAmount() {
-    const sum = sumBy(this.summaryData, (item) => item.required) * 1.05;
+    const sum = sumBy(this.summaryData, (item) => item.required);
     const isInputAssetXor = this.inputToken?.symbol === XOR.symbol;
     return isInputAssetXor ? new FPNumber(sum).add(this.xorFeeAmount) : new FPNumber(sum);
   }
@@ -190,12 +197,20 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
     return new FPNumber(adarFee);
   }
 
+  get networkFeeMultiplier() {
+    return new FPNumber(slippageMultiplier);
+  }
+
   get adarFee() {
-    return this.estimatedAmount.mul(this.adarFeeMultiplier);
+    return this.estimatedAmount.add(this.estimatedNetworkFee).mul(this.adarFeeMultiplier);
+  }
+
+  get estimatedNetworkFee() {
+    return this.estimatedAmount.mul(this.networkFeeMultiplier);
   }
 
   get estimatedAmountWithFees() {
-    return this.estimatedAmount.add(this.adarFee);
+    return this.estimatedAmount.add(this.adarFee).add(this.estimatedNetworkFee);
   }
 
   get totalTokensAvailable() {
