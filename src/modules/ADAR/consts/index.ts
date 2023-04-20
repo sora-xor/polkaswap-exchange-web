@@ -43,4 +43,4 @@ function createStage(title: string, componentName: string): Stage {
 
 export const slippageMultiplier = '0.05';
 
-export const adarFee = '0.0075';
+export const adarFee = '0.0025';

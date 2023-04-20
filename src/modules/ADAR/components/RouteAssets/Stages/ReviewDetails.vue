@@ -32,7 +32,7 @@
         </div>
         <s-divider />
         <div class="field">
-          <div class="field__label">ESTImated ADAR fee (0.75%)</div>
+          <div class="field__label">ESTImated ADAR fee ({{ adarFeePercent }}%)</div>
           <div class="field__value">
             {{ formatNumber(adarFee) }} <token-logo class="token-logo" :token="inputToken" />
           </div>
@@ -195,6 +195,10 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
 
   get adarFeeMultiplier() {
     return new FPNumber(adarFee);
+  }
+
+  get adarFeePercent() {
+    return this.adarFeeMultiplier.mul(FPNumber.HUNDRED).toString();
   }
 
   get networkFeeMultiplier() {
