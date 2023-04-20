@@ -15,31 +15,12 @@ import state from './state';
 async function getCrowdloanRewardsSubscription(context: ActionContext<any, any>): Promise<Subscription> {
   const { commit, dispatch, getters } = rewardsActionContext(context);
 
-  // [TODO]: Remove this after 1.16.6
-  const crowdloansKeys = await api.api.query.vestedRewards.crowdloanInfos.keys();
-  const crowdloanNames = crowdloansKeys.reduce<Record<string, string>>((buffer, key) => {
-    const hex = key.args[0].toString();
-    const utf8 = new TextDecoder().decode(key.args[0]);
-
-    buffer[hex] = utf8;
-
-    return buffer;
-  }, {});
-
   const observable = await api.rewards.getCrowdloanRewardsSubscription();
 
   let subscription!: Subscription;
 
   await new Promise<void>((resolve) => {
-    subscription = observable.subscribe((crowdloanGroups) => {
-      // [TODO]: Remove this after 1.16.6
-      const crowdloanRewards = crowdloanGroups.reduce((buffer, group) => {
-        const tagHex = group[0].type[1];
-        const tag = crowdloanNames[tagHex];
-        buffer[tag] = group;
-        return buffer;
-      }, {});
-
+    subscription = observable.subscribe((crowdloanRewards) => {
       commit.setRewards({ crowdloanRewards });
 
       // select available rewards for first time
