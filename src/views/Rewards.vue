@@ -236,7 +236,7 @@ export default class Rewards extends Mixins(
   get externalRewardsGroupItems(): RewardInfoGroup[] {
     return [
       {
-        type: [RewardType.Externals, this.t('rewards.groups.external')],
+        type: [RewardType.External, this.t('rewards.groups.external')],
         limit: groupRewardsByAssetsList(this.externalRewards),
         rewards: this.externalRewards,
       },
