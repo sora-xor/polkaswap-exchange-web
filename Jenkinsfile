@@ -22,10 +22,12 @@ def pipeline = new org.js.AppPipeline(steps: this,
     ipfsHashChatID: '-1001375555544',
     k8sPrDeploy: true,
     vaultPrPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/environments/tachi/",
-    vaultUser: "polkaswap-ro",
+    vaultUser: "polkaswap-rw",
     vaultCredId: "pswapVaultCreds",
     valuesDestPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/",
     devValuesPath: "dev/dev/",
-    downstreamJob: 'polkaswap/e2e-tests/hash_test'
+    initialSecretName: "sora2-dev-polkaswap-exchange-polkaswap-exchange-web-eso-base",
+    initialNameSpace: "sora2-dev-web",
+    targetNameSpace: "sora2-\${steps.env.CHANGE_ID}-web"
 )
 pipeline.runPipeline()

@@ -60,7 +60,7 @@ $token-logo-width: 20px;
 </style>
 
 <style lang="scss" scoped>
-$status-badge-width: 140px;
+$status-badge-width: 143px;
 
 .status-badge {
   display: flex;

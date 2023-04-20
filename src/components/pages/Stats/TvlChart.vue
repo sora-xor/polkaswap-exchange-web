@@ -106,7 +106,7 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
 
   filter: SnapshotFilter = NETWORK_STATS_FILTERS[0];
 
-  data: ChartData[] = [];
+  data: readonly ChartData[] = [];
   isFetchingError = false;
 
   created(): void {
@@ -189,7 +189,7 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
           const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
           const to = now - seconds * count;
 
-          this.data = await this.fetchData(now, to, type);
+          this.data = Object.freeze(await this.fetchData(now, to, type));
           this.isFetchingError = false;
         } catch (error) {
           console.error(error);
