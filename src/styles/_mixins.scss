@@ -446,6 +446,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
     &__arrow {
       margin-right: 0;
+      flex-shrink: 0;
     }
 
     &.is-active {
@@ -619,10 +620,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &-pagination {
       display: flex;
       margin-top: $inner-spacing-medium;
-    
-      .el-pagination__total {
-        margin: auto;
-      }
     }
   }
 

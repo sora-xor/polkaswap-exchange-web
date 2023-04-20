@@ -76,7 +76,7 @@ const mutations = defineMutations<RewardsState>()({
   resetCrowdloanRewardsUpdates(state) {
     state.crowdloanRewardsSubscription?.unsubscribe();
     state.crowdloanRewardsSubscription = null;
-    state.crowdloanRewards = [];
+    state.crowdloanRewards = {};
   },
 });
 

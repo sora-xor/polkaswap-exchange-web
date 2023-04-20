@@ -47,7 +47,7 @@ export default class PageMixin extends Mixins(BasePageMixin, mixins.TransactionM
     });
   }
 
-  getStatusBadgeVisibility(address: string, activeCollapseItems: string[]): boolean {
-    return !activeCollapseItems.includes(address);
+  isActiveCollapseItem(address: string, activeCollapseItems: string[]): boolean {
+    return activeCollapseItems.includes(address);
   }
 }

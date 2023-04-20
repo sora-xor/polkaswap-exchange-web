@@ -18,13 +18,17 @@
           <div>
             <h3 class="staking-info-title">{{ token.asset.symbol }}</h3>
             <div
-              v-show="getStatusBadgeVisibility(token.asset.address, activeCollapseItems)"
+              v-show="!isActiveCollapseItem(token.asset.address, activeCollapseItems)"
               class="s-flex staking-info-badges"
             >
               <status-badge
                 v-for="item in token.items"
                 :key="item.pool.rewardAsset"
-                v-bind="item"
+                :pool="item.pool"
+                :account-pool="item.accountPool"
+                :pool-asset="item.poolAsset"
+                :reward-asset="item.rewardAsset"
+                :apr="item.apr"
                 @add="changePoolStake($event, true)"
                 class="staking-info-badge"
               />
@@ -32,17 +36,25 @@
           </div>
         </template>
 
-        <pool-card
-          v-for="item in token.items"
-          :key="item.pool.rewardAsset"
-          v-bind="item"
-          @add="changePoolStake($event, true)"
-          @remove="changePoolStake($event, false)"
-          @claim="claimPoolRewards"
-          @calculator="showPoolCalculator"
-          show-balance
-          class="staking-info-card"
-        />
+        <template v-if="isActiveCollapseItem(token.asset.address, activeCollapseItems)">
+          <pool-card
+            v-for="item in token.items"
+            :key="item.pool.rewardAsset"
+            :pool="item.pool"
+            :account-pool="item.accountPool"
+            :base-asset="item.baseAsset"
+            :pool-asset="item.poolAsset"
+            :reward-asset="item.rewardAsset"
+            :apr="item.apr"
+            :tvl="item.tvl"
+            @add="changePoolStake($event, true)"
+            @remove="changePoolStake($event, false)"
+            @claim="claimPoolRewards"
+            @calculator="showPoolCalculator"
+            show-balance
+            class="staking-info-card"
+          />
+        </template>
       </s-collapse-item>
     </s-collapse>
 
@@ -165,11 +177,7 @@ $title-height: 42px;
 
 .staking-info-badges {
   flex-flow: wrap;
-  margin: -$inner-spacing-mini / 2;
-
-  & > * {
-    margin: $inner-spacing-mini / 2;
-  }
+  gap: $inner-spacing-mini / 2;
 }
 
 .staking-info {
