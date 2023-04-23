@@ -103,9 +103,8 @@ export default class BridgeTransactionsHistory extends Mixins(
 ) {
   @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;
   @state.bridge.historyLoading historyLoading!: boolean;
+  @state.bridge.historyPage historyPage!: number;
   @action.bridge.updateHistory private updateHistory!: (clearHistory?: boolean) => Promise<void>;
-
-  @getter.bridge.historyPage historyPage!: number;
 
   pageAmount = 8; // override PaginationSearchMixin
   loading = true;

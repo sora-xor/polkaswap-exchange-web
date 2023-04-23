@@ -143,14 +143,14 @@
       </s-table-column>
     </s-table>
 
-    <s-pagination
+    <history-pagination
       class="explore-table-pagination"
-      :layout="'prev, total, next'"
-      :current-page.sync="currentPage"
-      :page-size="pageAmount"
-      :total="filteredItems.length"
-      @prev-click="handlePrevClick"
-      @next-click="handleNextClick"
+      :current-page="currentPage"
+      :page-amount="pageAmount"
+      :total="total"
+      :last-page="lastPage"
+      :loading="loadingState"
+      @pagination-click="handlePaginationClick"
     />
 
     <calculator-dialog :visible.sync="showCalculatorDialog" v-bind="selectedDerivedPool" :liquidity="liquidity" />
@@ -217,6 +217,7 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
     SortButton: lazyComponent(Components.SortButton),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
+    HistoryPagination: components.HistoryPagination,
   },
 })
 export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBasePageMixin, ExplorePageMixin) {
@@ -358,7 +359,7 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
           })
         );
 
-        this.poolsData = buffer;
+        this.poolsData = Object.freeze(buffer);
       });
     });
   }

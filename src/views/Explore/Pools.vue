@@ -95,14 +95,14 @@
       </s-table-column>
     </s-table>
 
-    <s-pagination
+    <history-pagination
       class="explore-table-pagination"
-      :layout="'prev, total, next'"
-      :current-page.sync="currentPage"
-      :page-size="pageAmount"
-      :total="filteredItems.length"
-      @prev-click="handlePrevClick"
-      @next-click="handleNextClick"
+      :current-page="currentPage"
+      :page-amount="pageAmount"
+      :total="total"
+      :last-page="lastPage"
+      :loading="loadingState"
+      @pagination-click="handlePaginationClick"
     />
   </div>
 </template>
@@ -143,6 +143,7 @@ type TableItem = {
     SortButton: lazyComponent(Components.SortButton),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
+    HistoryPagination: components.HistoryPagination,
   },
 })
 export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMixin, PoolApyMixin) {
@@ -226,7 +227,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
   async updateExploreData(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.poolReserves = await api.poolXyk.getAllReserves();
+        this.poolReserves = Object.freeze(await api.poolXyk.getAllReserves());
       });
     });
   }
