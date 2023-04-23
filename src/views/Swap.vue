@@ -265,7 +265,6 @@ export default class Swap extends Mixins(
   showSelectTokenDialog = false;
   showConfirmSwapDialog = false;
   liquidityReservesSubscription: Nullable<Subscription> = null;
-  enabledAssetsSubscription: Nullable<Subscription> = null;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
   get tokenFromSymbol(): string {
@@ -496,17 +495,10 @@ export default class Swap extends Mixins(
     }
   }
 
-  private cleanEnabledAssetsSubscription(): void {
-    this.enabledAssetsSubscription?.unsubscribe();
-    this.enabledAssetsSubscription = null;
-  }
-
-  private subscribeOnEnabledAssetsAndSwapReserves(): void {
-    this.cleanEnabledAssetsSubscription();
-    this.enabledAssetsSubscription = api.swap.subscribeOnPrimaryMarketsEnabledAssets().subscribe((enabledAssets) => {
-      this.setEnabledAssets(enabledAssets);
-      this.subscribeOnSwapReserves();
-    });
+  private async subscribeOnEnabledAssetsAndSwapReserves(): Promise<void> {
+    const enabledAssets = await api.swap.getPrimaryMarketsEnabledAssets();
+    this.setEnabledAssets(enabledAssets);
+    this.subscribeOnSwapReserves();
   }
 
   private cleanSwapReservesSubscription(): void {
@@ -627,7 +619,6 @@ export default class Swap extends Mixins(
 
   private resetSwapSubscriptions(): void {
     this.resetBalanceSubscriptions();
-    this.cleanEnabledAssetsSubscription();
     this.cleanSwapReservesSubscription();
   }
 
