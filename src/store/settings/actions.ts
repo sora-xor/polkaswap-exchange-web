@@ -142,7 +142,7 @@ const actions = defineActions({
         if (!state.chainGenesisHash) {
           await updateNetworkChainGenesisHash(context);
         }
-        if (nodeChainGenesisHash !== state.chainGenesisHash) {
+        if (state.chainGenesisHash && nodeChainGenesisHash !== state.chainGenesisHash) {
           // disconnect from node to prevent network subscriptions activation
           await closeConnectionWithInfo();
 
