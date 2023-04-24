@@ -86,7 +86,7 @@ const actions = defineActions({
     }
 
     // tbc & xst is enabled only on dex 0
-    const enabledAssets = dexId === DexId.XOR ? state.enabledAssets : { tbc: [], xst: [], lockedSources: [] };
+    const enabledAssets = dexId === DexId.XOR ? state.enabledAssets : { tbc: [], xst: {}, lockedSources: [] };
     const baseAssetId = api.dex.getBaseAssetId(dexId);
     const syntheticBaseAssetId = api.dex.getSyntheticBaseAssetId(dexId);
 

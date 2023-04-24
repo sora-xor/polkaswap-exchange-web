@@ -37,9 +37,9 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
 
   @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.moonpay.lastCompletedTransaction lastCompletedTransaction!: Nullable<MoonpayTransaction>;
   @getter.libraryTheme libraryTheme!: Theme;
 
+  @state.moonpay.transactions private transactions!: Array<MoonpayTransaction>;
   @state.moonpay.pollingTimestamp private pollingTimestamp!: number;
   @state.moonpay.dialogVisibility private dialogVisibility!: boolean;
 
@@ -76,6 +76,14 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
     if (!transaction || (prevTransaction && prevTransaction.id === transaction.id)) return;
 
     await this.prepareBridgeForTransfer(transaction);
+  }
+
+  get lastCompletedTransaction(): Nullable<MoonpayTransaction> {
+    if (this.pollingTimestamp === 0) return undefined;
+
+    return this.transactions.find(
+      (tx) => Date.parse(tx.createdAt) >= this.pollingTimestamp && tx.status === 'completed'
+    );
   }
 
   get visibility(): boolean {

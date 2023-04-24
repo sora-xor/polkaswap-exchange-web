@@ -1,12 +1,12 @@
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import { en as walletEn, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { en as walletEn } from '@soramitsu/soraneo-wallet-web';
 import { Operation, TransactionStatus } from '@sora-substrate/util';
 import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 import { EvmNetworkId } from '@sora-substrate/util/build/evm/consts';
 
 import { DemeterPageNames } from '../modules/demeterFarming/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
-import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
+import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 
 export default {
   // Wallet project keys

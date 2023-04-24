@@ -1,5 +1,5 @@
 import { defineActions } from 'direct-vuex';
-import { initWallet, connection, api } from '@soramitsu/soraneo-wallet-web';
+import { initWallet, waitForCore, connection, api } from '@soramitsu/soraneo-wallet-web';
 import type { ActionContext } from 'vuex';
 
 import { settingsActionContext } from '@/store/settings';
@@ -42,17 +42,24 @@ const actions = defineActions({
     const { node, onError, currentNodeIndex = 0, ...restOptions } = options;
     const defaultNode = getters.nodeList[currentNodeIndex];
     const requestedNode = (node || (state.node.address ? state.node : defaultNode)) as Nullable<Node>;
+    const walletOptions = {
+      permissions: WalletPermissions,
+      updateEthBridgeHistory: updateEthBridgeHistory(context),
+    };
 
     try {
-      await dispatch.setNode({ node: requestedNode, onError, ...restOptions });
+      // Run in parallel
+      // 1) Wallet core initialization (node connection independent)
+      // 2) Connection to node
+      await Promise.all([
+        waitForCore(walletOptions),
+        dispatch.setNode({ node: requestedNode, onError, ...restOptions }),
+      ]);
 
-      // wallet init & update flow
+      // Wallet node connection dependent logic
       if (!rootState.wallet.settings.isWalletLoaded) {
         try {
-          await initWallet({
-            permissions: WalletPermissions,
-            updateEthBridgeHistory: updateEthBridgeHistory(context),
-          });
+          await initWallet(walletOptions);
         } catch (error) {
           console.error(error);
           throw error;

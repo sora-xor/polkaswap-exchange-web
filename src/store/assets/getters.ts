@@ -1,7 +1,7 @@
 import { defineGetters } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 import { assetsGetterContext } from '@/store/assets';
 import type { AssetsState, RegisteredAccountAssetWithDecimals } from './types';
@@ -12,24 +12,6 @@ const getters = defineGetters<AssetsState>()({
     return rootState.wallet.account.assets.filter((asset: Asset) =>
       api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist)
     );
-  },
-  nonWhitelistDivisibleAssets(...args): Record<string, Asset> {
-    const { rootState, rootGetters } = assetsGetterContext(args);
-    return rootState.wallet.account.assets.reduce((buffer, asset: Asset) => {
-      if (!api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist) && asset.decimals) {
-        buffer[asset.address] = asset;
-      }
-      return buffer;
-    }, {});
-  },
-  nonWhitelistDivisibleAccountAssets(...args): Record<string, AccountAsset> {
-    const { rootState, rootGetters } = assetsGetterContext(args);
-    return rootState.wallet.account.accountAssets.reduce((buffer, asset: AccountAsset) => {
-      if (!api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist) && asset.decimals) {
-        buffer[asset.address] = asset;
-      }
-      return buffer;
-    }, {});
   },
   assetsDataTable(...args): Record<string, Asset> {
     const { rootState } = assetsGetterContext(args);

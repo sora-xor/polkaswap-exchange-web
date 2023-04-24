@@ -3,15 +3,9 @@ import { FPNumber } from '@sora-substrate/math';
 
 import { demeterFarmingGetterContext } from './index';
 
-import type { DemeterRewardToken } from '@sora-substrate/util/build/demeterFarming/types';
 import type { DemeterFarmingState } from './types';
 
 const getters = defineGetters<DemeterFarmingState>()({
-  tokenInfos(...args): DataMap<DemeterRewardToken> {
-    const { state } = demeterFarmingGetterContext(args);
-
-    return state.tokens.reduce((buffer, token) => ({ ...buffer, [token.assetId]: token }), {});
-  },
   getLockedAmount(...args): (baseAsset: string, poolAsset: string, isFarm: boolean) => FPNumber {
     const { state } = demeterFarmingGetterContext(args);
 

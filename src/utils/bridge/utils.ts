@@ -34,6 +34,21 @@ export const waitForEvmTransactionStatus = async (
   }
 };
 
+export const waitForEvmTransactionMined = async (hash?: string, updatedCallback?: (hash: string) => void) => {
+  if (!hash) throw new Error('[Bridge]: evm hash cannot be empty!');
+
+  await waitForEvmTransactionStatus(
+    hash,
+    async (replaceHash: string) => {
+      updatedCallback?.(replaceHash);
+      await waitForEvmTransactionMined(replaceHash, updatedCallback);
+    },
+    (cancelHash) => {
+      throw new Error(`[Bridge]: The transaction was canceled by the user [${cancelHash}]`);
+    }
+  );
+};
+
 export const getEvmTransactionRecieptByHash = async (
   transactionHash: string
 ): Promise<{ evmNetworkFee: string; blockHeight: number; from: string } | null> => {

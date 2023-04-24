@@ -93,7 +93,7 @@ import { MoonpayTransactionStatus } from '@/utils/moonpay';
 import { action, getter, state } from '@/store/decorators';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type { MoonpayTransaction, MoonpayCurrenciesById } from '@/utils/moonpay';
+import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '@/utils/moonpay';
 
 const HistoryView = 'history';
 const DetailsView = 'details';
@@ -110,10 +110,10 @@ const DetailsView = 'details';
 export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin, MoonpayBridgeInitMixin) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
 
-  @state.moonpay.transactions transactions!: Array<MoonpayTransaction>;
+  @state.moonpay.transactions private transactions!: Array<MoonpayTransaction>;
+  @state.moonpay.currencies private currencies!: MoonpayCurrency[];
 
   @getter.web3.isValidNetwork private isValidNetwork!: boolean;
-  @getter.moonpay.currenciesById private currenciesById!: MoonpayCurrenciesById;
   @getter.libraryTheme libraryTheme!: Theme;
 
   @action.moonpay.getTransactions private getTransactions!: AsyncFnWithoutArgs;
@@ -156,6 +156,16 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     if (typeof this.unwatchEthereum === 'function') {
       this.unwatchEthereum();
     }
+  }
+
+  get currenciesById(): MoonpayCurrenciesById {
+    return this.currencies.reduce(
+      (result, item) => ({
+        ...result,
+        [item.id]: item,
+      }),
+      {}
+    );
   }
 
   get emptyHistory(): boolean {

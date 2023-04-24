@@ -549,6 +549,7 @@ $sora-logo-width: 173.7px;
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
+    max-width: 100%;
     &__about {
       overflow: hidden;
       .app-footer {

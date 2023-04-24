@@ -75,7 +75,7 @@
             </template>
           </pool-info>
 
-          <slot name="append" v-bind="liquidityItem" />
+          <slot name="append" v-bind="{ liquidity: liquidityItem, activeCollapseItems }" />
         </s-collapse-item>
       </s-collapse>
     </div>
