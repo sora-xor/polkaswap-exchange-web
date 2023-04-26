@@ -95,11 +95,6 @@ div.transaction-row_value {
   color: var(--s-color-base-content-quaternary) !important;
   font-weight: 600;
 }
-
-i.el-notification__icon.el-icon-success,
-i.el-notification__icon.el-icon-success:hover {
-  color: var(--s-color-status-success) !important;
-}
 /*_______________________ CURRENT UI FIXES FOR CONSISTENCY (GENERALLY BASED ON TEST USERS FEEDBACK) _______________________*/
 button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-medium.s-border-radius-small.s-primary.s-i-position-left
   span {

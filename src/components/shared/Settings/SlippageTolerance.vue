@@ -224,7 +224,6 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
 
   .el-collapse-item__content {
     padding: 0 !important;
-    margin-bottom: $inner-spacing-mini;
   }
 
   .el-collapse--item .is-active .el-collapse {
@@ -233,7 +232,6 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
 
   .info-line {
     font-size: 14px !important;
-    line-height: 2.5 !important;
     font-weight: 300;
     border: none !important;
 
@@ -253,17 +251,10 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
   width: 100%;
   flex-wrap: wrap;
   align-items: flex-end;
+  gap: $inner-spacing-mini;
 
   &-default {
     flex: 1;
-
-    @include large-mobile(true) {
-      margin-bottom: $inner-spacing-mini;
-    }
-
-    @include large-mobile {
-      margin-right: $inner-spacing-medium;
-    }
   }
 
   &-custom {

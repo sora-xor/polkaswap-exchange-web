@@ -87,11 +87,12 @@
         "noAccounts": "Dường như không có tài khoản nào trong tiện ích (extension) {extension}. Vui lòng thêm tài khoản và thử lại.",
         "noAccount": "Tài khoản {extension} gặp lỗi. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) {extension}.",
         "noExtension": "Không tìm thấy {extension} . Vui lòng cài đặt nó và tải lại trang này",
-        "noSigner": "Quyền truy cập bị từ chối. Đi tới cài đặt tiện ích {extension} và mở \"Quản lý quyền truy cập trang web\" để cho phép."
+        "noSigner": "Quyền truy cập bị từ chối. Đi tới cài đặt tiện ích {extension} và mở \"Quản lý quyền truy cập trang web\" để cho phép.",
+        "connectionError": "Đã xảy ra lỗi khi kết nối ví. Bạn có thể thử kết nối lại ví qua {extension}"
     },
     "connection": {
         "title": "Tài khoản Mạng {Sora}",
-        "text": "Kết nối hoặc tạo tài khoản Mạng {Sora} của bạn với các {extensions}. Các tiện ích mở rộng này cho phép bạn ký các giao dịch và quản lý tài sản trong Mạng {Sora} một cách an toàn.",
+        "text": "Tiện ích mở rộng & Google lưu trữ an toàn tài khoản Mạng {Sora} của bạn. Chúng cho phép bạn ký giao dịch và quản lý tài sản.",
         "noAccounts": "Không có tài khoản nào trong tiện ích (extension) {extension} của bạn. Vui lòng thêm tài khoản và thử lại.",
         "selectAccount": "Chọn tài khoản để dùng",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Cài đặt",
             "connected": "kết nối",
             "notConnected": "Không kết nối"
+        },
+        "internalTitle": "Kết nối qua {wallet}",
+        "internalText": "Bạn có thể tạo hoặc liên kết tài khoản hiện có qua {wallet} . Nó lưu trữ tài khoản sử dụng mã hóa.",
+        "list": {
+            "simplest": "tùy chọn đơn giản nhất",
+            "extensions": "tiện ích mở rộng"
         }
     },
     "wallet": {
         "title": "Tài khoản Mạng {Sora}",
         "WalletAssets": "Tài sản",
-        "WalletActivity": "Hoạt động",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Hoạt động"
     },
     "walletSend": {
         "title": "Gửi",
@@ -1103,7 +1110,13 @@
             "jsonFields": "Tệp JSON không có các trường bắt buộc"
         },
         "assetsAtRiskText": "Tài sản có nguy cơ!",
-        "deleteAccountText": "Không thể khôi phục tài khoản nếu không có cụm từ gốc, tệp .json hoặc nếu tài khoản được lưu trữ trong một số tiện ích mở rộng. Bạn sẽ được đăng xuất."
+        "deleteAccountText": "Không thể khôi phục tài khoản nếu không có cụm từ gốc, tệp .json hoặc nếu tài khoản được lưu trữ trong một số tiện ích mở rộng. Bạn sẽ được đăng xuất.",
+        "importSteps": {
+            "selectWallet": "Chuyển đến ví bạn sử dụng",
+            "selectAccount": "Chọn tài khoản bạn muốn xuất",
+            "exportAccount": "Xuất tệp {JSON}"
+        },
+        "exportTutorialsText": "Xuất hướng dẫn"
     },
     "hashiBridgeText": "Cầu {Hashi}",
     "disclaimerTitle": "Disclaimer:",
@@ -1174,5 +1187,8 @@
     },
     "locationText": "Vị trí",
     "acceptText": "Chấp nhận & Ẩn",
-    "newAccountsText": "tài khoản mới"
+    "newAccountsText": "tài khoản mới",
+    "dragAndDropText": "Kéo và thả hoặc chọn tệp {extension}",
+    "copyPhraseText": "Sao chép cụm từ",
+    "stepText": "Bước chân"
 }

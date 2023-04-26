@@ -87,11 +87,12 @@
         "noAccounts": "您的{extension}扩展中似乎没有账户。请添加一个账户并再次尝试。",
         "noAccount": "{extension} 帐户错误. 请在{extension} 中检查您的帐户",
         "noExtension": "未找到{extension}扩展名。请安装它并重新加载此页面",
-        "noSigner": "拒绝访问。转到{extension}扩展设置并打开“管理网站访问”以允许。"
+        "noSigner": "拒绝访问。转到{extension}扩展设置并打开“管理网站访问”以允许。",
+        "connectionError": "连接钱包时发生错误。您可以尝试再次通过{extension}连接钱包"
     },
     "connection": {
         "title": "{Sora}网络账户",
-        "text": "连接或创建具有 {extensions} 扩展的 {Sora} 网络帐户。这些扩展允许您安全地签署交易并管理{Sora}网络中的资产。",
+        "text": "扩展程序和 Google 安全地存储您的{Sora} Network 帐户。它们允许您签署交易和管理资产。",
         "noAccounts": "在您的{extension}浏览器扩展中没有找到账户。请添加一个账户并重试。",
         "selectAccount": "选择要使用的账户",
         "action": {
@@ -105,13 +106,19 @@
             "install": "安装",
             "connected": "连接的",
             "notConnected": "未连接"
+        },
+        "internalTitle": "通过{wallet}连接",
+        "internalText": "您可以通过{wallet}创建或链接现有帐户。它使用加密存储帐户。",
+        "list": {
+            "simplest": "最简单的选择",
+            "extensions": "扩展"
         }
     },
     "wallet": {
         "title": "{Sora}网络账户",
         "WalletAssets": "资产",
-        "WalletActivity": "活动",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "活动"
     },
     "walletSend": {
         "title": "发送",
@@ -1103,7 +1110,13 @@
             "jsonFields": "JSON 文件没有必填字段"
         },
         "assetsAtRiskText": "资产有风险！",
-        "deleteAccountText": "如果没有助记词、.json 文件或存储在某些扩展名中，则无法恢复帐户。您将被注销。"
+        "deleteAccountText": "如果没有助记词、.json 文件或存储在某些扩展名中，则无法恢复帐户。您将被注销。",
+        "importSteps": {
+            "selectWallet": "转到您使用的钱包",
+            "selectAccount": "选择您要导出的帐户",
+            "exportAccount": "导出{JSON}文件"
+        },
+        "exportTutorialsText": "导出教程"
     },
     "hashiBridgeText": "{Hashi}桥",
     "disclaimerTitle": "免责声明:",
@@ -1174,5 +1187,8 @@
     },
     "locationText": "地点",
     "acceptText": "接受并隐藏",
-    "newAccountsText": "新帐户"
+    "newAccountsText": "新帐户",
+    "dragAndDropText": "拖放或选择{extension}文件",
+    "copyPhraseText": "复制短语",
+    "stepText": "步"
 }

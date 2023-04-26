@@ -92,8 +92,6 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
   $metamask-icon-filter: drop-shadow(-5px -5px 10px #ffffff) drop-shadow(1px 1px 10px rgba(0, 0, 0, 0.1));
 
   .el-dialog .el-dialog__body {
-    padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-big;
-
     .metamask-icon > .asset-logo {
       background-color: var(--s-color-base-content-secondary);
       background-image: url('~@/assets/img/metamask.svg');

@@ -87,11 +87,12 @@
         "noAccounts": "Čini se da u vašem proširenju {extension} nema računa. Dodajte račun i pokušajte ponovo.",
         "noAccount": "{extension} pogreška računa. Provjerite svoj račun u proširenju {extension}",
         "noExtension": "Nije pronađeno {extension} . Instalirajte ga i ponovno učitajte ovu stranicu",
-        "noSigner": "Pristup odbijen. Idite na postavke {extension} i otvorite \"Upravljanje pristupom web-mjestu\" da dopustite."
+        "noSigner": "Pristup odbijen. Idite na postavke {extension} i otvorite \"Upravljanje pristupom web-mjestu\" da dopustite.",
+        "connectionError": "Došlo je do pogreške prilikom povezivanja novčanika. Možete ponovno pokušati povezati novčanik putem {extension}"
     },
     "connection": {
         "title": "Račun mreže {Sora}",
-        "text": "Povežite ili izradite svoj {Sora} mrežni račun s {extensions}. Ova proširenja vam omogućuju sigurno potpisivanje transakcija i upravljanje sredstvima u mreži {Sora}.",
+        "text": "Proširenja i Google sigurno pohranjuju vaš račun mreže {Sora} . Omogućuju vam potpisivanje transakcija i upravljanje imovinom.",
         "noAccounts": "U proširenju preglednika {extension} nije pronađen račun. Dodajte račun i pokušajte ponovno.",
         "selectAccount": "Odaberite račun za rad",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Instalirati",
             "connected": "Povezan",
             "notConnected": "Nije povezano"
+        },
+        "internalTitle": "Povežite se putem {wallet}",
+        "internalText": "Možete stvoriti ili povezati postojeći račun putem {wallet} . Pohranjuje račune pomoću enkripcije.",
+        "list": {
+            "simplest": "Najjednostavnija opcija",
+            "extensions": "Ekstenzije"
         }
     },
     "wallet": {
         "title": "Račun mreže {Sora}",
         "WalletAssets": "Sredstva",
-        "WalletActivity": "Aktivnost",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Aktivnost"
     },
     "walletSend": {
         "title": "Pošaljite",
@@ -1103,7 +1110,13 @@
             "jsonFields": "JSON datoteka nema obavezna polja"
         },
         "assetsAtRiskText": "Imovina u opasnosti!",
-        "deleteAccountText": "Račun se ne može oporaviti bez početne fraze, .json datoteke ili ako je pohranjena u nekoj ekstenziji. Bit ćete odjavljeni."
+        "deleteAccountText": "Račun se ne može oporaviti bez početne fraze, .json datoteke ili ako je pohranjena u nekoj ekstenziji. Bit ćete odjavljeni.",
+        "importSteps": {
+            "selectWallet": "Idite na novčanik koji koristite",
+            "selectAccount": "Odaberite račun koji želite izvesti",
+            "exportAccount": "Izvezite datoteku {JSON}"
+        },
+        "exportTutorialsText": "Upute za izvoz"
     },
     "hashiBridgeText": "{Hashi} most",
     "disclaimerTitle": "Disclaimer:",
@@ -1174,5 +1187,8 @@
     },
     "locationText": "Mjesto",
     "acceptText": "Prihvati i sakrij",
-    "newAccountsText": "Novi računi"
+    "newAccountsText": "Novi računi",
+    "dragAndDropText": "Povucite i ispustite ili odaberite {extension} datoteku",
+    "copyPhraseText": "Kopiraj frazu",
+    "stepText": "Korak"
 }
