@@ -87,11 +87,12 @@
         "noAccounts": "Zdá sa, že vo vašom rozšírení {extension} nie sú žiadne účty. Pridajte účet a skúste to znova.",
         "noAccount": "Chyba účtu {extension}. Skontrolujte váš účet v rozšírení {extension}",
         "noExtension": "Nenašlo sa žiadne {extension} . Nainštalujte si ho a znova načítajte túto stránku",
-        "noSigner": "Prístup zamietnutý. Prejdite do nastavení {extension} a otvorte položku Spravovať prístup k webovým stránkam."
+        "noSigner": "Prístup zamietnutý. Prejdite do nastavení {extension} a otvorte položku Spravovať prístup k webovým stránkam.",
+        "connectionError": "Pri pripájaní peňaženky sa vyskytla chyba. Môžete skúsiť znova pripojiť peňaženku cez {extension}"
     },
     "connection": {
         "title": "Sieťový účet {Sora}",
-        "text": "Pripojte alebo vytvorte svoj účet siete {Sora} s {extensions}. Tieto rozšírenia vám umožňujú bezpečne podpisovať transakcie a spravovať aktíva v sieti {Sora}.",
+        "text": "Rozšírenia a Google bezpečne ukladajú váš účet siete {Sora} . Umožňujú vám podpisovať transakcie a spravovať aktíva.",
         "noAccounts": "Vo vašom rozšírení prehliadača {extension} nebol nájdený žiadny účet. Pridajte účet a skúste to znova.",
         "selectAccount": "Vyberte účet, s ktorým chcete pracovať",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Inštalácia",
             "connected": "Pripojené",
             "notConnected": "Nepripojený"
+        },
+        "internalTitle": "Pripojte sa cez {wallet}",
+        "internalText": "Existujúci účet môžete vytvoriť alebo prepojiť prostredníctvom služby {wallet} . Ukladá účty pomocou šifrovania.",
+        "list": {
+            "simplest": "Najjednoduchšia možnosť",
+            "extensions": "Rozšírenia"
         }
     },
     "wallet": {
         "title": "Sieťový účet {Sora}",
         "WalletAssets": "Aktíva",
-        "WalletHistory": "Aktivita",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Aktivita"
     },
     "walletSend": {
         "title": "Odoslať",
@@ -1103,7 +1110,13 @@
             "jsonFields": "Súbor JSON neobsahuje povinné polia"
         },
         "assetsAtRiskText": "Majetok v ohrození!",
-        "deleteAccountText": "Účet nie je možné obnoviť bez počiatočnej frázy, súboru .json alebo ak je uložený v nejakej prípone. Budete odhlásení."
+        "deleteAccountText": "Účet nie je možné obnoviť bez počiatočnej frázy, súboru .json alebo ak je uložený v nejakej prípone. Budete odhlásení.",
+        "importSteps": {
+            "selectWallet": "Prejdite do peňaženky, ktorú používate",
+            "selectAccount": "Vyberte účet, ktorý chcete exportovať",
+            "exportAccount": "Exportujte súbor {JSON}"
+        },
+        "exportTutorialsText": "Exportujte návody"
     },
     "hashiBridgeText": "Most {Hashi}",
     "disclaimerTitle": "Vylúčenie zodpovednosti:",
@@ -1174,5 +1187,8 @@
     },
     "locationText": "Poloha",
     "acceptText": "Prijať a skryť",
-    "newAccountsText": "Nové účty"
+    "newAccountsText": "Nové účty",
+    "dragAndDropText": "Presuňte myšou alebo vyberte súbor {extension}",
+    "copyPhraseText": "Kopírovať frázu",
+    "stepText": "Krok"
 }

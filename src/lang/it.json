@@ -87,11 +87,12 @@
         "noAccounts": "Sembra che non ci siano account nella tua estensione {extension}. Aggiungi un account e riprova.",
         "noAccount": "Errore dell'account {extension}. Controlla il tuo account nell'estensione {extension}",
         "noExtension": "Non è stata trovata alcuna {extension} . Si prega di installarlo e ricaricare questa pagina",
-        "noSigner": "Accesso negato. Vai alle impostazioni {extension} e apri \"Gestisci accesso al sito web\" per consentire."
+        "noSigner": "Accesso negato. Vai alle impostazioni {extension} e apri \"Gestisci accesso al sito web\" per consentire.",
+        "connectionError": "Si è verificato un errore durante la connessione del portafoglio. Puoi provare a connettere nuovamente il portafoglio tramite {extension}"
     },
     "connection": {
         "title": "{Sora} Network account",
-        "text": "Collega o crea il tuo account di rete {Sora} con {extensions}. Queste estensioni ti consentono di firmare in modo sicuro le transazioni e gestire le risorse nella rete {Sora}.",
+        "text": "Le estensioni e Google memorizzano il tuo account {Sora} Network in modo sicuro. Ti consentono di firmare transazioni e gestire risorse.",
         "noAccounts": "Nessun account trovato nell'estensione del browser {extension} Aggiungi un account e riprova.",
         "selectAccount": "Seleziona l'account con cui lavorare",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Installare",
             "connected": "Collegato",
             "notConnected": "Non connesso"
+        },
+        "internalTitle": "Connettiti tramite {wallet}",
+        "internalText": "Puoi creare o collegare un account esistente tramite {wallet} . Memorizza gli account utilizzando la crittografia.",
+        "list": {
+            "simplest": "Opzione più semplice",
+            "extensions": "Estensioni"
         }
     },
     "wallet": {
         "title": "{Sora} Network account",
         "WalletAssets": "Assets",
-        "WalletHistory": "Attività",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Attività"
     },
     "walletSend": {
         "title": "Invia",
@@ -1103,7 +1110,13 @@
             "jsonFields": "Il file JSON non ha campi obbligatori"
         },
         "assetsAtRiskText": "Beni a rischio!",
-        "deleteAccountText": "L'account non può essere recuperato senza una frase seme, un file .json o se è memorizzato in un'estensione. Verrai disconnesso."
+        "deleteAccountText": "L'account non può essere recuperato senza una frase seme, un file .json o se è memorizzato in un'estensione. Verrai disconnesso.",
+        "importSteps": {
+            "selectWallet": "Vai al portafoglio di tuo uso",
+            "selectAccount": "Seleziona l'account che desideri esportare",
+            "exportAccount": "Esporta il file {JSON}"
+        },
+        "exportTutorialsText": "Esporta tutorial"
     },
     "hashiBridgeText": "Ponte {Hashi}",
     "disclaimerTitle": "Disclaimer:",
@@ -1174,5 +1187,8 @@
     },
     "locationText": "Posizione",
     "acceptText": "Accetta e nascondi",
-    "newAccountsText": "Nuovi account"
+    "newAccountsText": "Nuovi account",
+    "dragAndDropText": "Trascina e rilascia o scegli il file {extension}",
+    "copyPhraseText": "Copia frase",
+    "stepText": "Fare un passo"
 }

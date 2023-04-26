@@ -87,11 +87,12 @@
         "noAccounts": "Úgy tűnik, hogy a {extension} bővítményben nincsenek fiókok. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "noAccount": "{extension} fiókhiba. Kérjük, ellenőrizd fiókodat a {extension} bővítményben.",
         "noExtension": "Nem található {extension} bővítmény. Kérjük, telepítse, és töltse be újra ezt az oldalt",
-        "noSigner": "Hozzáférés megtagadva. Nyissa meg a {extension} bővítmény beállításait, és nyissa meg a „Webhely-hozzáférés kezelése” lehetőséget az engedélyezéshez."
+        "noSigner": "Hozzáférés megtagadva. Nyissa meg a {extension} bővítmény beállításait, és nyissa meg a „Webhely-hozzáférés kezelése” lehetőséget az engedélyezéshez.",
+        "connectionError": "Hiba történt a pénztárca csatlakoztatása közben. Megpróbálhatja újra csatlakoztatni a pénztárcát a {extension} segítségével"
     },
     "connection": {
         "title": "{Sora} hálózati fiók",
-        "text": "Csatlakoztassa vagy hozza létre {Sora} hálózati fiókját {extensions} bővítménnyel. Ezek a bővítmények lehetővé teszik a tranzakciók biztonságos aláírását és az eszközök kezelését a {Sora} hálózaton.",
+        "text": "A bővítmények és a Google biztonságosan tárolja {Sora} Network-fiókját. Lehetővé teszik a tranzakciók aláírását és az eszközök kezelését.",
         "noAccounts": "Nincs fiók a {extension} böngészőbővítményben. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Telepítés",
             "connected": "csatlakoztatva",
             "notConnected": "Nem kapcsolódik"
+        },
+        "internalTitle": "Csatlakozás a következőn keresztül {wallet}",
+        "internalText": "Létrehozhat vagy összekapcsolhat meglévő fiókot {wallet} segítségével. Titkosítással tárolja a fiókokat.",
+        "list": {
+            "simplest": "A legegyszerűbb lehetőség",
+            "extensions": "Kiterjesztések"
         }
     },
     "wallet": {
         "title": "{Sora} hálózati fiók",
         "WalletAssets": "Eszközök",
-        "WalletHistory": "Aktivitás",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Aktivitás"
     },
     "walletSend": {
         "title": "Küldés",
@@ -1103,7 +1110,13 @@
             "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
         },
         "assetsAtRiskText": "Veszélyben lévő eszközök!",
-        "deleteAccountText": "A fiókot nem lehet visszaállítani kezdő kifejezés, .json fájl nélkül, vagy ha azt valamilyen kiterjesztéssel tárolják. Ön ki lesz jelentkezve."
+        "deleteAccountText": "A fiókot nem lehet visszaállítani kezdő kifejezés, .json fájl nélkül, vagy ha azt valamilyen kiterjesztéssel tárolják. Ön ki lesz jelentkezve.",
+        "importSteps": {
+            "selectWallet": "Menjen a használt pénztárcához",
+            "selectAccount": "Válassza ki az exportálni kívánt fiókot",
+            "exportAccount": "Exportálja a {JSON} fájlt"
+        },
+        "exportTutorialsText": "Oktatóanyagok exportálása"
     },
     "hashiBridgeText": "{Hashi} híd",
     "disclaimerTitle": "Jogi nyilatkozat:",
@@ -1174,5 +1187,8 @@
     },
     "locationText": "Elhelyezkedés",
     "acceptText": "Elfogadás és elrejtés",
-    "newAccountsText": "Új fiókok"
+    "newAccountsText": "Új fiókok",
+    "dragAndDropText": "Fogd és vidd, vagy válasszon {extension} fájlt",
+    "copyPhraseText": "Kifejezés másolása",
+    "stepText": "Lépés"
 }
