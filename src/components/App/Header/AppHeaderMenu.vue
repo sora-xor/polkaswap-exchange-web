@@ -111,7 +111,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopupEnabled!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
-  @mutation.settings.setDisclaimerDialogVisibility private setDisclaimerDialogVisibility!: () => void;
+  @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
 
   isLargeDesktop: boolean = window.innerWidth >= BREAKPOINT;
 
@@ -234,7 +234,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         break;
       case HeaderMenuType.Disclaimer:
         if (this.discalimerDisabled) return;
-        this.setDisclaimerDialogVisibility();
+        this.toggleDisclaimerDialogVisibility();
         break;
     }
   }
@@ -291,12 +291,11 @@ $icon-size: 28px;
 
 .notif-option {
   display: flex;
-  justify-content: center;
 
   &__bell {
     width: $icon-size;
     height: $icon-size;
-    margin: auto;
+    margin: auto 0;
   }
 
   &__bell--dropdown {

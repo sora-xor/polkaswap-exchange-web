@@ -1168,12 +1168,11 @@
             "dialog": {
                 "title": "{Sora} Lựa chọn dịch vụ mạng",
                 "fiat": "Giá trị Fiat",
-                "chartsAndActivity": "Biểu đồ & Hoạt động",
-                "online": "Trực tuyến",
-                "offline": "ngoại tuyến"
+                "chartsAndActivity": "Biểu đồ & Hoạt động"
             }
         }
     },
     "locationText": "Vị trí",
-    "acceptText": "Chấp nhận & Ẩn"
+    "acceptText": "Chấp nhận & Ẩn",
+    "newAccountsText": "tài khoản mới"
 }

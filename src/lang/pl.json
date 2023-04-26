@@ -1168,12 +1168,11 @@
             "dialog": {
                 "title": "{Sora} Wybór usługi sieciowej",
                 "fiat": "wartości Fiata",
-                "chartsAndActivity": "Wykresy i aktywność",
-                "online": "online",
-                "offline": "offline"
+                "chartsAndActivity": "Wykresy i aktywność"
             }
         }
     },
     "locationText": "Lokalizacja",
-    "acceptText": "Zaakceptuj i ukryj"
+    "acceptText": "Zaakceptuj i ukryj",
+    "newAccountsText": "Nowe konta"
 }

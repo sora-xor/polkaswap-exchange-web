@@ -2,33 +2,42 @@
   <div>
     <pool-base v-bind="{ parentLoading, ...$attrs }" v-on="$listeners">
       <template #title-append="{ liquidity, activeCollapseItems }">
-        <div
-          v-show="getStatusBadgeVisibility(liquidity.address, activeCollapseItems)"
-          class="s-flex farming-pool-badges"
-        >
+        <div v-show="!isActiveCollapseItem(liquidity.address, activeCollapseItems)" class="s-flex farming-pool-badges">
           <status-badge
             v-for="(item, index) in getLiquidityFarmingPools(liquidity)"
             :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}-${index}`"
             :liquidity="liquidity"
-            v-bind="item"
+            :pool="item.pool"
+            :account-pool="item.accountPool"
+            :pool-asset="item.poolAsset"
+            :reward-asset="item.rewardAsset"
+            :apr="item.apr"
             @add="changePoolStake($event, true)"
             class="farming-pool-badge"
           />
         </div>
       </template>
-      <template #append="liquidity">
-        <pool-card
-          v-for="(item, index) in getLiquidityFarmingPools(liquidity)"
-          :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}-${index}`"
-          :liquidity="liquidity"
-          v-bind="item"
-          @add="changePoolStake($event, true)"
-          @remove="changePoolStake($event, false)"
-          @claim="claimPoolRewards"
-          @calculator="showPoolCalculator"
-          border
-          class="demeter-pool"
-        />
+      <template #append="{ liquidity, activeCollapseItems }">
+        <template v-if="isActiveCollapseItem(liquidity.address, activeCollapseItems)">
+          <pool-card
+            v-for="(item, index) in getLiquidityFarmingPools(liquidity)"
+            :key="`${item.pool.poolAsset}-${item.pool.rewardAsset}-${index}`"
+            :liquidity="liquidity"
+            :pool="item.pool"
+            :account-pool="item.accountPool"
+            :base-asset="item.baseAsset"
+            :pool-asset="item.poolAsset"
+            :reward-asset="item.rewardAsset"
+            :apr="item.apr"
+            :tvl="item.tvl"
+            @add="changePoolStake($event, true)"
+            @remove="changePoolStake($event, false)"
+            @claim="claimPoolRewards"
+            @calculator="showPoolCalculator"
+            border
+            class="demeter-pool"
+          />
+        </template>
       </template>
     </pool-base>
 
@@ -128,11 +137,7 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
 <style lang="scss" scoped>
 .farming-pool-badges {
   flex-flow: wrap;
-  margin: -$inner-spacing-mini / 2;
-
-  & > * {
-    margin: $inner-spacing-mini / 2;
-  }
+  gap: $inner-spacing-mini / 2;
 }
 .demeter-pool {
   margin-top: $inner-spacing-medium;

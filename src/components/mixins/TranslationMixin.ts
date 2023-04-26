@@ -46,6 +46,8 @@ const TranslationConsts = {
     energy: 'Energy Web Chain',
   },
   mbps: 'mbps',
+  online: 'Online',
+  offline: 'Offline',
 } as const;
 
 @Component

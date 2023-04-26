@@ -145,7 +145,7 @@ export enum Components {
   AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
   SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
   AppFooter = 'App/Footer/AppFooter',
-  Disclaimer = 'Disclaimer',
+  AppDisclaimer = 'App/Header/AppDisclaimer',
   StatisticsDialog = 'App/Footer/StatisticsDialog',
   SelectNodeDialog = 'App/Footer/SelectNodeDialog',
   SelectNode = 'App/Footer/Node/SelectNode',
@@ -177,7 +177,6 @@ export enum Components {
   BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
   // Moonpay Page
   Moonpay = 'pages/Moonpay/Moonpay',
-  MoonpayWidget = 'pages/Moonpay/Widget',
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
   MoonpayHistoryButton = 'pages/Moonpay/HistoryButton',
@@ -205,6 +204,7 @@ export enum Components {
   ValueStatusWrapper = 'shared/ValueStatusWrapper',
   TransactionDetails = 'shared/TransactionDetails',
   PoolInfo = 'shared/PoolInfo',
+  Widget = 'shared/Widget',
   // Shared Buttons
   SortButton = 'shared/Button/SortButton',
   SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',

@@ -1,11 +1,10 @@
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import { en as walletEn, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { en as walletEn } from '@soramitsu/soraneo-wallet-web';
 import { Operation, TransactionStatus } from '@sora-substrate/util';
 import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 
 import { DemeterPageNames } from '../modules/demeterFarming/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
-import { EvmNetworkType } from '../utils/ethers-util';
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 
 export default {
@@ -17,6 +16,7 @@ export default {
   moonpayText: 'MoonPay',
   changeNetworkText: 'Change network in {Metamask}',
   accountText: 'account | accounts',
+  newAccountsText: 'New accounts',
   transactionText: 'transaction | transactions',
   transactionSubmittedText: 'Transaction was submitted',
   unknownErrorText: 'ERROR Something went wrong...',

@@ -95,12 +95,12 @@ const routes: Array<RouteConfig> = [
     ],
   },
   {
-    path: '/pool',
-    component: lazyView(PageNames.PoolContainer),
+    path: '',
+    component: demeterLazyView(DemeterPageNames.DataContainer),
     children: [
       {
-        path: '',
-        component: demeterLazyView(DemeterPageNames.DataContainer),
+        path: '/pool',
+        component: lazyView(PageNames.PoolContainer),
         children: [
           {
             path: '',
@@ -122,20 +122,14 @@ const routes: Array<RouteConfig> = [
           },
         ],
       },
-    ],
-  },
-  {
-    path: '/staking',
-    name: PageNames.StakingContainer,
-    component: lazyView(PageNames.StakingContainer),
-    redirect: { name: DemeterPageNames.Staking },
-    children: [
       {
-        path: 'demeter',
-        component: demeterLazyView(DemeterPageNames.DataContainer),
+        path: '/staking',
+        name: PageNames.StakingContainer,
+        component: lazyView(PageNames.StakingContainer),
+        redirect: { name: DemeterPageNames.Staking },
         children: [
           {
-            path: '',
+            path: 'demeter',
             name: DemeterPageNames.Staking,
             component: demeterLazyView(DemeterPageNames.Staking),
             props: { isFarmingPage: false },
@@ -188,8 +182,28 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/rewards',
-    name: PageNames.Rewards,
     component: lazyView(PageNames.RewardsTabs),
+    children: [
+      {
+        path: '',
+        name: PageNames.Rewards,
+        component: lazyView(PageNames.Rewards),
+      },
+      {
+        path: '/referral', // because of leading slash, path will be absolute: #/referral
+        name: PageNames.ReferralProgram,
+        component: lazyView(PageNames.ReferralProgram),
+        children: [
+          {
+            path: ':referrerAddress?',
+            meta: {
+              isInvitationRoute: true,
+              requiresAuth: true,
+            },
+          },
+        ],
+      },
+    ],
   },
   {
     path: '/referral/bond',
@@ -206,20 +220,6 @@ const routes: Array<RouteConfig> = [
     meta: {
       requiresAuth: true,
     },
-  },
-  {
-    path: '/referral',
-    name: PageNames.ReferralProgram,
-    component: lazyView(PageNames.RewardsTabs),
-    children: [
-      {
-        path: ':referrerAddress?',
-        meta: {
-          isInvitationRoute: true,
-          requiresAuth: true,
-        },
-      },
-    ],
   },
   {
     path: '/moonpay-history',

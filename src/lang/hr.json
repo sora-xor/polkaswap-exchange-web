@@ -1168,12 +1168,11 @@
             "dialog": {
                 "title": "{Sora} Odabir mrežne usluge",
                 "fiat": "Fiat vrijednosti",
-                "chartsAndActivity": "Grafikoni i aktivnosti",
-                "online": "Na liniji",
-                "offline": "Izvan mreže"
+                "chartsAndActivity": "Grafikoni i aktivnosti"
             }
         }
     },
     "locationText": "Mjesto",
-    "acceptText": "Prihvati i sakrij"
+    "acceptText": "Prihvati i sakrij",
+    "newAccountsText": "Novi računi"
 }

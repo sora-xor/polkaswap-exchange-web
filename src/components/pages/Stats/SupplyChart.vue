@@ -101,7 +101,7 @@ const toNumber = (value: string): number => {
   return fp.isFinity() ? fp.toNumber() : 0;
 };
 
-const getExtremum = (data: ChartData[], prop: string, min = false) => {
+const getExtremum = (data: readonly ChartData[], prop: string, min = false) => {
   return data.reduce((acc, item) => Math[min ? 'min' : 'max'](acc, item[prop]), min ? Infinity : 0);
 };
 
@@ -133,7 +133,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   filter: SnapshotFilter = ASSET_SUPPLY_LINE_FILTERS[0];
   token = XOR;
 
-  data: ChartData[] = [];
+  data: readonly ChartData[] = [];
 
   isFetchingError = false;
 
@@ -178,10 +178,10 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
       xAxis: this.xAxisSpec(),
       yAxis: [
         this.yAxisSpec({
-          name: 'Remint & Burn',
-          nameGap: 22,
+          name: 'Remint\nBurn',
+          nameGap: 12,
           nameTextStyle: {
-            align: 'center',
+            align: 'right',
           },
           type: 'log',
           min: 1,
@@ -298,10 +298,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
           const aTime = now - seconds * count;
 
-          const data = await this.fetchData(id, now, aTime, type);
-
-          this.data = data;
-
+          this.data = Object.freeze(await this.fetchData(id, now, aTime, type));
           this.isFetchingError = false;
         } catch (error) {
           console.error(error);

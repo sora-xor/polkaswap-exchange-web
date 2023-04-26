@@ -317,7 +317,7 @@ export default class RemoveLiquidity extends Mixins(
     return !this.liquidityLocked && Number(this.removePart) !== this.MAX_PART;
   }
 
-  // Do not remove async because of mixin overrides
+  /** Overrides SelectedTokenRouteMixin */
   async setData(params: { firstAddress: string; secondAddress: string }): Promise<void> {
     this.setAddresses({
       firstAddress: params.firstAddress,

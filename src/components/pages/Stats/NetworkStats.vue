@@ -147,7 +147,7 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin, Translatio
         prop: 'transactions',
       },
       {
-        title: this.tc('accountText', 2),
+        title: this.t('newAccountsText'),
         tooltip: this.t('tooltips.accounts'),
         prop: 'accounts',
       },
@@ -205,8 +205,8 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin, Translatio
 
         const [curr, prev] = await Promise.all([this.fetchData(now, aTime, type), this.fetchData(aTime, bTime, type)]);
 
-        this.currData = this.groupData(curr);
-        this.prevData = this.groupData(prev);
+        this.currData = Object.freeze(this.groupData(curr));
+        this.prevData = Object.freeze(this.groupData(prev));
       });
     });
   }

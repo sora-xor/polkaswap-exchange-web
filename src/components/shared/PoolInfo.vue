@@ -23,6 +23,9 @@ export default class PoolInfo extends Vue {}
 
 <style lang="scss">
 .pool-info {
+  display: flex;
+  flex-direction: column;
+
   & > *:not(:last-child) {
     margin-bottom: $inner-spacing-medium;
   }

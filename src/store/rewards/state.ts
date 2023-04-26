@@ -8,12 +8,12 @@ export function initialState(): RewardsState {
     externalRewards: [],
     internalRewards: null,
     vestedRewards: null,
-    crowdloanRewards: [],
+    crowdloanRewards: {},
     // selected rewards
     selectedInternal: null,
     selectedExternal: [],
     selectedVested: null,
-    selectedCrowdloan: [],
+    selectedCrowdloan: {},
     // flags
     rewardsFetching: false,
     rewardsClaiming: false,

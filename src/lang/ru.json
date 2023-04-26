@@ -1168,12 +1168,11 @@
             "dialog": {
                 "title": "Выбор сервисов {Sora} сети",
                 "fiat": "Фиатные значения",
-                "chartsAndActivity": "Графики и активность",
-                "online": "Онлайн",
-                "offline": "Оффлайн"
+                "chartsAndActivity": "Графики и активность"
             }
         }
     },
     "locationText": "Расположение",
-    "acceptText": "Принять и скрыть"
+    "acceptText": "Принять и скрыть",
+    "newAccountsText": "Новые аккаунты"
 }

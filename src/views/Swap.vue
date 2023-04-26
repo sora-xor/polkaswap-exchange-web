@@ -1,6 +1,6 @@
 <template>
   <div class="swap-container">
-    <s-form v-loading="parentLoading" class="container el-form--actions" :show-message="false">
+    <s-form v-loading="parentLoading" class="container container--swap el-form--actions" :show-message="false">
       <generic-page-header class="page-header--swap" :title="t('exchange.Swap')">
         <div class="swap-settings-buttons">
           <swap-status-action-badge>
@@ -265,7 +265,6 @@ export default class Swap extends Mixins(
   showSelectTokenDialog = false;
   showConfirmSwapDialog = false;
   liquidityReservesSubscription: Nullable<Subscription> = null;
-  enabledAssetsSubscription: Nullable<Subscription> = null;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
   get tokenFromSymbol(): string {
@@ -390,7 +389,9 @@ export default class Swap extends Mixins(
   created() {
     this.withApi(async () => {
       this.parseCurrentRoute();
-      if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
+      if (this.tokenFrom && this.tokenTo) {
+        this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
+      } else if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
         await this.setTokenFromAddress(this.firstRouteAddress);
         await this.setTokenToAddress(this.secondRouteAddress);
       } else if (!this.tokenFrom) {
@@ -494,17 +495,10 @@ export default class Swap extends Mixins(
     }
   }
 
-  private cleanEnabledAssetsSubscription(): void {
-    this.enabledAssetsSubscription?.unsubscribe();
-    this.enabledAssetsSubscription = null;
-  }
-
-  private subscribeOnEnabledAssetsAndSwapReserves(): void {
-    this.cleanEnabledAssetsSubscription();
-    this.enabledAssetsSubscription = api.swap.subscribeOnPrimaryMarketsEnabledAssets().subscribe((enabledAssets) => {
-      this.setEnabledAssets(enabledAssets);
-      this.subscribeOnSwapReserves();
-    });
+  private async subscribeOnEnabledAssetsAndSwapReserves(): Promise<void> {
+    const enabledAssets = await api.swap.getPrimaryMarketsEnabledAssets();
+    this.setEnabledAssets(enabledAssets);
+    this.subscribeOnSwapReserves();
   }
 
   private cleanSwapReservesSubscription(): void {
@@ -577,6 +571,7 @@ export default class Swap extends Mixins(
     this.showSelectTokenDialog = true;
   }
 
+  /** Overrides SelectedTokenRouteMixin */
   async setData(params: { firstAddress: string; secondAddress: string }): Promise<void> {
     await this.setTokenFromAddress(params.firstAddress);
     await this.setTokenToAddress(params.secondAddress);
@@ -624,7 +619,6 @@ export default class Swap extends Mixins(
 
   private resetSwapSubscriptions(): void {
     this.resetBalanceSubscriptions();
-    this.cleanEnabledAssetsSubscription();
     this.cleanSwapReservesSubscription();
   }
 
@@ -678,6 +672,10 @@ export default class Swap extends Mixins(
   @include desktop {
     flex-flow: row nowrap;
   }
+}
+
+.container--swap {
+  margin: 0;
 }
 
 .page-header--swap {

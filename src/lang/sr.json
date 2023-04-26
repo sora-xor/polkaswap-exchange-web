@@ -1168,12 +1168,11 @@
             "dialog": {
                 "title": "{Sora} Избор мрежне услуге",
                 "fiat": "Фиат вредности",
-                "chartsAndActivity": "Графикони и активности",
-                "online": "Онлине",
-                "offline": "Одсутан"
+                "chartsAndActivity": "Графикони и активности"
             }
         }
     },
     "locationText": "Локација",
-    "acceptText": "Прихвати и сакриј"
+    "acceptText": "Прихвати и сакриј",
+    "newAccountsText": "Нови налози"
 }

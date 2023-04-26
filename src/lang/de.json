@@ -1168,12 +1168,11 @@
             "dialog": {
                 "title": "{Sora} Netzwerkdienstauswahl",
                 "fiat": "Fiat-Werte",
-                "chartsAndActivity": "Diagramme & Aktivität",
-                "online": "Online",
-                "offline": "Offline"
+                "chartsAndActivity": "Diagramme & Aktivität"
             }
         }
     },
     "locationText": "Standort",
-    "acceptText": "Akzeptieren & ausblenden"
+    "acceptText": "Akzeptieren & ausblenden",
+    "newAccountsText": "Neue Konten"
 }
