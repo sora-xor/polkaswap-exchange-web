@@ -7,8 +7,6 @@ import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
 
-import { asZeroValue, getAssetBalance } from '@/utils';
-
 @Component
 export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearchMixin) {
   @Watch('visible')
@@ -50,27 +48,17 @@ export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearch
   public getAssetsWithBalances({
     assets,
     accountAssetsAddressTable,
-    notNullBalanceOnly = false,
-    accountAssetsOnly = false,
     excludeAsset,
   }: {
     assets: Array<Asset | RegisteredAccountAsset>;
     accountAssetsAddressTable: WALLET_TYPES.AccountAssetsTable;
-    notNullBalanceOnly?: boolean;
-    accountAssetsOnly?: boolean;
     excludeAsset?: Asset | AccountAsset;
   }): Array<AccountAsset | RegisteredAccountAsset> {
     return assets.reduce((result: Array<AccountAsset>, item) => {
       if (!item || (excludeAsset && item.address === excludeAsset.address)) return result;
 
       const accountAsset = accountAssetsAddressTable[item.address];
-
-      if (accountAssetsOnly && !accountAsset) return result;
-
       const balance = accountAsset?.balance;
-
-      if (notNullBalanceOnly && asZeroValue(getAssetBalance(accountAsset))) return result;
-
       const prepared = {
         ...item,
         balance,
