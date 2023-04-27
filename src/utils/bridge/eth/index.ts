@@ -15,6 +15,8 @@ import {
   updateHistoryParams,
 } from '@/utils/bridge/eth/utils';
 
+import store from '@/store';
+
 import type { BridgeHistory } from '@sora-substrate/util';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import type { SignTxResult } from '@/store/bridge/types';
@@ -33,11 +35,12 @@ type SignedEvmTxResult = SignTxResult;
 
 type AddAsset = (address: string) => Promise<void>;
 type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAssetWithDecimals>;
+type SignEvm = (id: string) => Promise<SignedEvmTxResult>;
+type SignSora = (id: string) => Promise<void>;
 type GetActiveHistoryItem = () => Nullable<BridgeHistory>;
 type GetBridgeHistoryInstance = () => Promise<EthBridgeHistory>;
 type GetTransaction = (id: string) => BridgeHistory;
 type ShowNotification = (tx: BridgeHistory) => void;
-type SignEvm = (id: string) => Promise<SignedEvmTxResult>;
 
 interface Constructable<T> {
   new (...args: any): T;
@@ -62,38 +65,43 @@ interface BridgeCommonOptions {
 interface BridgeConstructorOptions<BridgeReducer, TransactionStatuses> extends BridgeCommonOptions {
   reducers: Partial<Record<BridgeOperations, Constructable<BridgeReducer>>>;
   signEvm: Partial<Record<BridgeOperations, SignEvm>>;
+  signSora: Partial<Record<BridgeOperations, SignSora>>;
   stopOn: TransactionStatuses[];
 }
 
 interface BridgeReducerOptions extends BridgeCommonOptions {
   signEvm: SignEvm;
+  signSora?: SignSora;
 }
 
 class BridgeTransactionStateHandler {
   protected readonly signEvm!: SignEvm;
+  protected readonly signSora!: SignSora | undefined;
   protected readonly addAsset!: AddAsset;
-  protected readonly updateHistory!: VoidFunction;
-  protected readonly showNotification!: ShowNotification;
   protected readonly getAssetByAddress!: GetAssetByAddress;
+  protected readonly updateHistory!: FnWithoutArgs;
+  protected readonly showNotification!: ShowNotification;
   protected readonly getActiveHistoryItem!: GetActiveHistoryItem;
   protected readonly getBridgeHistoryInstance!: GetBridgeHistoryInstance;
   protected readonly getTransaction!: GetTransaction;
 
   constructor({
     signEvm,
+    signSora,
     addAsset,
+    getAssetByAddress,
     updateHistory,
     showNotification,
-    getAssetByAddress,
     getActiveHistoryItem,
     getBridgeHistoryInstance,
     getTransaction,
   }: BridgeReducerOptions) {
     this.signEvm = signEvm;
+    this.signSora = signSora;
     this.addAsset = addAsset;
+    this.getAssetByAddress = getAssetByAddress;
     this.updateHistory = updateHistory;
     this.showNotification = showNotification;
-    this.getAssetByAddress = getAssetByAddress;
     this.getActiveHistoryItem = getActiveHistoryItem;
     this.getBridgeHistoryInstance = getBridgeHistoryInstance;
     this.getTransaction = getTransaction;
@@ -236,21 +244,15 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
             await this.beforeSubmit(id);
             this.updateTransactionParams(id, { transactionState: ETH_BRIDGE_STATES.SORA_PENDING });
 
-            const { txId, blockId, to, amount, assetAddress } = this.getTransaction(id);
-
-            if (!amount) throw new Error('[Bridge]: TX "amount" cannot be empty');
-            if (!assetAddress) throw new Error('[Bridge]: TX "assetAddress" cannot be empty');
-            if (!to) throw new Error('[Bridge]: TX "to" cannot be empty');
-
-            const asset = this.getAssetByAddress(assetAddress);
-
-            if (!asset || !asset.externalAddress)
-              throw new Error(`[Bridge]: TX asset is not registered: ${assetAddress}`);
+            const { txId, blockId } = getTransaction(id);
 
             // transaction not signed
             if (!txId) {
-              await ethBridgeApi.transferToEth(asset, to, amount, id);
+              if (!this.signSora) throw new Error('[Bridge] signSora method is not defined');
+
+              await this.signSora(id);
             }
+
             // signed sora transaction has to be parsed by subquery
             if (txId && !blockId) {
               // format account address to sora format
@@ -435,6 +437,7 @@ class Bridge<BridgeReducer extends BridgeTransactionStateHandler, TransactionSta
   constructor({
     reducers,
     signEvm,
+    signSora,
     stopOn,
     getTransaction,
     ...rest
@@ -442,7 +445,12 @@ class Bridge<BridgeReducer extends BridgeTransactionStateHandler, TransactionSta
     this.getTransaction = getTransaction;
     this.stopOn = stopOn;
     this.reducers = Object.entries(reducers).reduce((acc, [operation, Reducer]) => {
-      acc[operation] = new Reducer({ ...rest, getTransaction, signEvm: signEvm[operation] });
+      acc[operation] = new Reducer({
+        ...rest,
+        getTransaction,
+        signEvm: signEvm[operation],
+        signSora: signSora[operation],
+      });
       return acc;
     }, {});
   }
@@ -481,6 +489,9 @@ class Bridge<BridgeReducer extends BridgeTransactionStateHandler, TransactionSta
 //   signEvm: {
 //     [Operation.EthBridgeIncoming]: (id: string) => store.dispatch.bridge.signEvmTransactionEvmToSora(id),
 //     [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEvmTransactionSoraToEvm(id),
+//   },
+//   signSora: {
+//     [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signSoraTransactionSoraToEvm(id),
 //   },
 //   stopOn: [BridgeTxStatus.Done, BridgeTxStatus.Failed],
 //   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),

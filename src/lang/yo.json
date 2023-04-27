@@ -87,11 +87,12 @@
         "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
         "noAccount": "{extension} aṣiṣe ifowosi. Jọwọ ṣayẹwo akọọlẹ rẹ ninu itẹsiwaju {extension}",
         "noExtension": "A ko ri {extension} . Jọwọ fi sii ki o tun gbee si oju-iwe yii",
-        "noSigner": "Ti kọ iraye si. Lọ si awọn eto {extension} ki o si ṣi “Ṣakoso Wiwọle Oju opo wẹẹbu” lati gba laaye."
+        "noSigner": "Ti kọ iraye si. Lọ si awọn eto {extension} ki o si ṣi “Ṣakoso Wiwọle Oju opo wẹẹbu” lati gba laaye.",
+        "connectionError": "Aṣiṣe waye lakoko asopọ apamọwọ. O le gbiyanju lati so apamọwọ pọ nipasẹ {extension} lẹẹkansi"
     },
     "connection": {
         "title": "Ifowosi {Sora} Nẹtiwọọki",
-        "text": "Sopọ tabi ṣẹda akọọlẹ {Sora} rẹ pẹlu {extensions}. Awọn amugbooro wọnyi gba ọ laaye lati fowo si awọn iṣowo ni aabo ati ṣakoso awọn ohun-ini ni {Sora}.",
+        "text": "Awọn amugbooro & Google tọju akọọlẹ Nẹtiwọọki {Sora} rẹ ni aabo. Wọn gba ọ laaye lati fowo si awọn iṣowo & ṣakoso awọn ohun-ini.",
         "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
         "selectAccount": "Yan ifowosi lati ṣiṣẹ pẹlu rẹ",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Fi sori ẹrọ",
             "connected": "Ti sopọ",
             "notConnected": "Ko ti sopọ"
+        },
+        "internalTitle": "Sopọ nipasẹ {wallet}",
+        "internalText": "O le ṣẹda tabi sopọ mọ akọọlẹ ti o wa tẹlẹ nipasẹ {wallet} . O tọju awọn akọọlẹ nipa lilo fifi ẹnọ kọ nkan.",
+        "list": {
+            "simplest": "Aṣayan ti o rọrun julọ",
+            "extensions": "Awọn amugbooro"
         }
     },
     "wallet": {
         "title": "Ifowosi {Sora} Nẹtiwọọki",
         "WalletAssets": "Awọn dukia",
-        "WalletActivity": "Iṣẹ iṣe",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Iṣẹ iṣe"
     },
     "walletSend": {
         "title": "Firanṣẹ",
@@ -1103,7 +1110,13 @@
             "jsonFields": "Faili JSON ko ni awọn aaye ti a beere"
         },
         "assetsAtRiskText": "Awọn dukia ni ewu!",
-        "deleteAccountText": "Akoto ko le gba pada laisi gbolohun ọrọ irugbin, faili .json tabi ti o ba wa ni ipamọ ni diẹ ninu itẹsiwaju. O yoo wa ni ibuwolu jade."
+        "deleteAccountText": "Akoto ko le gba pada laisi gbolohun ọrọ irugbin, faili .json tabi ti o ba wa ni ipamọ ni diẹ ninu itẹsiwaju. O yoo wa ni ibuwolu jade.",
+        "importSteps": {
+            "selectWallet": "Lọ si apamọwọ ti lilo rẹ",
+            "selectAccount": "Yan akọọlẹ ti o fẹ lati okeere",
+            "exportAccount": "Faili {JSON} okeere"
+        },
+        "exportTutorialsText": "okeere Tutorial"
     },
     "hashiBridgeText": "{Hashi} Afara",
     "disclaimerTitle": "Akiyesi:",
@@ -1174,5 +1187,8 @@
     },
     "locationText": "Ipo",
     "acceptText": "Gba & Tọju",
-    "newAccountsText": "Awọn iroyin titun"
+    "newAccountsText": "Awọn iroyin titun",
+    "dragAndDropText": "Fa & ju silẹ tabi yan faili {extension}",
+    "copyPhraseText": "Daakọ Gbolohun",
+    "stepText": "Igbesẹ"
 }

@@ -37,7 +37,7 @@
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
-    <confirm-dialog v-if="isDesktop" />
+    <confirm-dialog />
   </s-design-system-provider>
 </template>
 
@@ -407,6 +407,13 @@ ul ul {
         position: absolute;
         top: -2px;
         left: -2px;
+      }
+
+      &.el-icon-success {
+        &,
+        &:hover {
+          color: var(--s-color-status-success);
+        }
       }
     }
     &__content {
