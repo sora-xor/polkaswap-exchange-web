@@ -27,7 +27,7 @@ import type { EvmNetworkData } from '@/consts/evm';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class SelectNetwork extends Mixins(TranslationMixin) {
+export default class BridgeSelectNetwork extends Mixins(TranslationMixin) {
   @Prop({ default: () => null, type: Object }) readonly selectedEvmNetwork!: EvmNetworkData;
 
   @state.web3.selectNetworkDialogVisibility selectNetworkDialogVisibility!: boolean;

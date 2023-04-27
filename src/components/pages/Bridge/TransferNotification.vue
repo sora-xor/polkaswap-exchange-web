@@ -39,7 +39,7 @@ import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class TransferNotification extends Mixins(TranslationMixin) {
+export default class BridgeTransferNotification extends Mixins(TranslationMixin) {
   @state.bridge.notificationData private tx!: Nullable<EvmHistory>;
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
