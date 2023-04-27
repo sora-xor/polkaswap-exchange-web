@@ -247,7 +247,7 @@ const actions = defineActions({
   async signSoraTransactionSoraToEvm(context, id: string) {
     const { rootGetters, rootDispatch } = bridgeActionContext(context);
 
-    const tx = bridgeApi.getHistory(id);
+    const tx = evmBridgeApi.getHistory(id);
 
     if (!tx) throw new Error(`Transaction not found: ${id}`);
 
@@ -262,7 +262,7 @@ const actions = defineActions({
     if (!asset || !asset.externalAddress) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
 
     await rootDispatch.wallet.transactions.beforeTransactionSign();
-    await bridgeApi.transferToEth(asset, to, amount, id);
+    await evmBridgeApi.transferToEth(asset, to, amount, id);
   },
 
   async signEvmTransactionEvmToSora(context, id: string): Promise<void> {
