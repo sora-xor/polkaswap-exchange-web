@@ -1,8 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import { Component } from 'vue-property-decorator';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { api } from '@sora-substrate/util';
+import { WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
 
 import store from '@/store';
 import { updateDocumentTitle } from '@/utils';
