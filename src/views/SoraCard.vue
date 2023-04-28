@@ -4,16 +4,17 @@
     <sora-card-intro v-else-if="step === Step.StartPage" @confirm-apply="confirmApply" />
     <sora-card-kyc
       v-else-if="step === Step.KYC"
-      @go-to-start="openStartPage"
       :userApplied="userApplied"
       :openKycForm="openKycForm"
+      @go-to-start="openStartPage"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import type { NavigationGuardNext, Route } from 'vue-router';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import { action, state, getter, mutation } from '@/store/decorators';
@@ -35,24 +36,25 @@ enum Step {
   },
 })
 export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
+  readonly Step = Step;
+
   @state.soraCard.hasFreeAttempts private hasFreeAttempts!: boolean;
   @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
 
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
   @getter.settings.soraCardEnabled soraCardEnabled!: Nullable<boolean>;
 
-  @mutation.soraCard.setKycStatus setKycStatus!: (kycStatus: KycStatus) => void;
-  @mutation.soraCard.setVerificationStatus setVerificationStatus!: (verStatus: VerificationStatus) => void;
+  @mutation.soraCard.setKycStatus private setKycStatus!: (kycStatus: KycStatus) => void;
+  @mutation.soraCard.setVerificationStatus private setVerificationStatus!: (verStatus: VerificationStatus) => void;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
   @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncFnWithoutArgs;
+  @action.wallet.account.loginAccount private loginAccount!: (payload: WALLET_TYPES.PolkadotJsAccount) => Promise<void>;
 
   step: Nullable<Step> = null;
   userApplied = false;
   openKycForm = false;
-
-  Step = Step;
 
   @Watch('soraCardEnabled', { immediate: true })
   private checkAvailability(value: Nullable<boolean>): void {
@@ -109,8 +111,30 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
     this.step = Step.StartPage;
   }
 
-  created(): void {
+  private async handleAccountChange(to?: Route): Promise<void> {
+    const accountId = (to ?? this.$route).query?.fearless as Nullable<string>;
+    const name = (to ?? this.$route).query?.name as Nullable<string>;
+
+    if (accountId && name) {
+      if (api.validateAddress(accountId)) {
+        await this.loginAccount({
+          address: accountId,
+          name,
+          source: WALLET_CONSTS.AppWallet.PolkadotJS,
+        });
+      }
+    }
+
     this.subscribeToTotalXorBalance();
+  }
+
+  created(): void {
+    this.withApi(this.handleAccountChange);
+  }
+
+  async beforeRouteUpdate(to: Route, from: Route, next: NavigationGuardNext<Vue>): Promise<void> {
+    await this.handleAccountChange(to);
+    next();
   }
 
   async beforeDestroy(): Promise<void> {
