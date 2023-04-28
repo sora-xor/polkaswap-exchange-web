@@ -87,11 +87,12 @@
         "noAccounts": "Es scheint keine Konten in deiner {extension} Erweiterung zu geben. Bitte, füge ein Konto hinzu und versuche es erneut.",
         "noAccount": "{extension} Kontofehler. Bitte überprüfe dein Konto in der {extension} Erweiterung",
         "noExtension": "Es wurde keine {extension} gefunden. Bitte installiere es und lade diese Seite neu",
-        "noSigner": "Zugriff abgelehnt. Gehe zu den Erweiterungseinstellungen von {extension} und öffne \"Website-Zugriff verwalten\", um dies zuzulassen."
+        "noSigner": "Zugriff abgelehnt. Gehe zu den Erweiterungseinstellungen von {extension} und öffne \"Website-Zugriff verwalten\", um dies zuzulassen.",
+        "connectionError": "Beim Verbinden der Wallet ist ein Fehler aufgetreten. Sie können erneut versuchen, das Wallet über {extension} zu verbinden"
     },
     "connection": {
         "title": "{Sora}-Netzwerk-Konto",
-        "text": "Verbinden oder erstellen Sie Ihr {Sora} -Netzwerkkonto mit {extensions} -Erweiterungen. Mit diesen Erweiterungen können Sie Transaktionen sicher signieren und Vermögenswerte im {Sora} -Netzwerk verwalten.",
+        "text": "Erweiterungen und Google speichern Ihr {Sora} Network-Konto sicher. Sie ermöglichen es Ihnen, Transaktionen zu unterzeichnen und Vermögenswerte zu verwalten.",
         "noAccounts": "Es wurde kein Konto in deiner {extension} Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Installieren",
             "connected": "In Verbindung gebracht",
             "notConnected": "Nicht verbunden"
+        },
+        "internalTitle": "Über {wallet} verbinden",
+        "internalText": "Sie können ein bestehendes Konto über {wallet} erstellen oder verknüpfen. Es speichert Konten mit Verschlüsselung.",
+        "list": {
+            "simplest": "Einfachste Möglichkeit",
+            "extensions": "Erweiterungen"
         }
     },
     "wallet": {
         "title": "{Sora}-Netzwerk-Konto",
         "WalletAssets": "Assets",
-        "WalletActivity": "Aktivität",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Aktivität"
     },
     "walletSend": {
         "title": "Senden",
@@ -1103,7 +1110,13 @@
             "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder"
         },
         "assetsAtRiskText": "Vermögen in Gefahr!",
-        "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet."
+        "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet.",
+        "importSteps": {
+            "selectWallet": "Gehen Sie zur Brieftasche Ihrer Verwendung",
+            "selectAccount": "Wählen Sie das Konto aus, das Sie exportieren möchten",
+            "exportAccount": "Exportieren Sie die {JSON} -Datei"
+        },
+        "exportTutorialsText": "Tutorials exportieren"
     },
     "hashiBridgeText": "{Hashi} Brücke",
     "disclaimerTitle": "Haftungsausschluss:",
@@ -1174,5 +1187,8 @@
     },
     "locationText": "Standort",
     "acceptText": "Akzeptieren & ausblenden",
-    "newAccountsText": "Neue Konten"
+    "newAccountsText": "Neue Konten",
+    "dragAndDropText": "Drag & Drop oder Datei {extension} auswählen",
+    "copyPhraseText": "Satz kopieren",
+    "stepText": "Schritt"
 }

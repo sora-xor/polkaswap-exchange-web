@@ -26,7 +26,7 @@ import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 type SignedEvmTxResult = SignTxResult;
 
 type SignEvm = (id: string) => Promise<SignedEvmTxResult>;
-type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAssetWithDecimals>;
+type SignSora = (id: string) => Promise<void>;
 type GetActiveHistoryItem = () => Nullable<BridgeHistory>;
 type GetBridgeHistoryInstance = () => Promise<EthBridgeHistory>;
 type ShowNotification = (tx: BridgeHistory) => void;
@@ -34,42 +34,45 @@ type ShowNotification = (tx: BridgeHistory) => void;
 interface BridgeCommonOptions {
   updateHistory: FnWithoutArgs;
   showNotification: ShowNotification;
-  getAssetByAddress: GetAssetByAddress;
   getActiveHistoryItem: GetActiveHistoryItem;
   getBridgeHistoryInstance: GetBridgeHistoryInstance;
 }
 
 interface BridgeOptions extends BridgeCommonOptions {
-  sign: {
+  signEvm: {
     [Operation.EthBridgeOutgoing]: SignEvm;
     [Operation.EthBridgeIncoming]: SignEvm;
+  };
+  signSora: {
+    [Operation.EthBridgeOutgoing]: SignSora;
   };
 }
 
 interface BridgeReducerOptions extends BridgeCommonOptions {
   signEvm: SignEvm;
+  signSora?: SignSora;
 }
 
 class BridgeTransactionStateHandler {
   protected readonly signEvm!: SignEvm;
+  protected readonly signSora!: SignSora | undefined;
   protected readonly updateHistory!: FnWithoutArgs;
   protected readonly showNotification!: ShowNotification;
-  protected readonly getAssetByAddress!: GetAssetByAddress;
   protected readonly getActiveHistoryItem!: GetActiveHistoryItem;
   protected readonly getBridgeHistoryInstance!: GetBridgeHistoryInstance;
 
   constructor({
     signEvm,
+    signSora,
     updateHistory,
     showNotification,
-    getAssetByAddress,
     getActiveHistoryItem,
     getBridgeHistoryInstance,
   }: BridgeReducerOptions) {
     this.signEvm = signEvm;
+    this.signSora = signSora;
     this.updateHistory = updateHistory;
     this.showNotification = showNotification;
-    this.getAssetByAddress = getAssetByAddress;
     this.getActiveHistoryItem = getActiveHistoryItem;
     this.getBridgeHistoryInstance = getBridgeHistoryInstance;
   }
@@ -208,21 +211,15 @@ class EthBridgeOutgoingStateReducer extends BridgeTransactionStateHandler {
             await this.beforeSubmit(id);
             this.updateTransactionParams(id, { transactionState: STATES.SORA_PENDING });
 
-            const { txId, blockId, to, amount, assetAddress } = getTransaction(id);
-
-            if (!amount) throw new Error('[Bridge]: TX "amount" cannot be empty');
-            if (!assetAddress) throw new Error('[Bridge]: TX "assetAddress" cannot be empty');
-            if (!to) throw new Error('[Bridge]: TX "to" cannot be empty');
-
-            const asset = this.getAssetByAddress(assetAddress);
-
-            if (!asset || !asset.externalAddress)
-              throw new Error(`[Bridge]: TX asset is not registered: ${assetAddress}`);
+            const { txId, blockId } = getTransaction(id);
 
             // transaction not signed
             if (!txId) {
-              await bridgeApi.transferToEth(asset, to, amount, id);
+              if (!this.signSora) throw new Error('[Bridge] signSora method is not defined');
+
+              await this.signSora(id);
             }
+
             // signed sora transaction has to be parsed by subquery
             if (txId && !blockId) {
               // format account address to sora format
@@ -414,10 +411,10 @@ class Bridge {
     [Operation.EthBridgeIncoming]: EthBridgeIncomingStateReducer,
   };
 
-  constructor({ sign, ...rest }: BridgeOptions) {
+  constructor({ signEvm, signSora, ...rest }: BridgeOptions) {
     this.reducers = Object.entries(Bridge.OPERATION_REDUCERS).reduce((acc, [operation, Reducer]) => {
       if (!(operation in acc)) {
-        const reducer = new Reducer({ ...rest, signEvm: sign[operation] });
+        const reducer = new Reducer({ ...rest, signEvm: signEvm[operation], signSora: signSora[operation] });
 
         acc[operation] = reducer;
       }
@@ -451,13 +448,15 @@ class Bridge {
 }
 
 const appBridge = new Bridge({
-  sign: {
+  signEvm: {
     [Operation.EthBridgeIncoming]: (id: string) => store.dispatch.bridge.signEvmTransactionEvmToSora(id),
     [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEvmTransactionSoraToEvm(id),
   },
+  signSora: {
+    [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signSoraTransactionSoraToEvm(id),
+  },
   updateHistory: () => store.commit.bridge.setHistory(),
   showNotification: (tx: BridgeHistory) => store.commit.bridge.setNotificationData(tx),
-  getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
   getActiveHistoryItem: () => store.getters.bridge.historyItem,
   getBridgeHistoryInstance: () => store.dispatch.bridge.getBridgeHistoryInstance(),
 });

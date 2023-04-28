@@ -87,11 +87,12 @@
         "noAccounts": "Det verkar inte finnas några konton i ditt {extension} tillägg. Vänligen lägg till ett konto och försök igen.",
         "noAccount": "{extension} konto fel. Vänligen kontrollera ditt konto i {extension}-tillägget.",
         "noExtension": "Inget {extension} -tillägg hittades. Installera det och ladda om den här sidan",
-        "noSigner": "Tillträde beviljas ej. Gå till tilläggsinställningarna för {extension} och öppna \"Hantera webbplatsåtkomst\" för att tillåta."
+        "noSigner": "Tillträde beviljas ej. Gå till tilläggsinställningarna för {extension} och öppna \"Hantera webbplatsåtkomst\" för att tillåta.",
+        "connectionError": "Ett fel uppstod vid anslutning av plånboken. Du kan försöka ansluta plånboken via {extension} igen"
     },
     "connection": {
         "title": "{Sora}-Nätverkskonto",
-        "text": "Anslut eller skapa ditt {Sora} Network-konto med {extensions} -tillägg. Med dessa tillägg kan du säkert signera transaktioner och hantera tillgångar i {Sora} -nätverket.",
+        "text": "Tillägg och Google lagrar ditt {Sora} Network-konto säkert. De låter dig signera transaktioner och hantera tillgångar.",
         "noAccounts": "Inget konto hittades i ditt {extension} webbläsartillägg. Vänligen lägg till ett konto och försök igen.",
         "selectAccount": "Välj konto att arbeta med",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Installera",
             "connected": "Ansluten",
             "notConnected": "Ej ansluten"
+        },
+        "internalTitle": "Anslut via {wallet}",
+        "internalText": "Du kan skapa eller länka ett befintligt konto via {wallet} . Den lagrar konton med kryptering.",
+        "list": {
+            "simplest": "Enklaste alternativet",
+            "extensions": "Tillägg"
         }
     },
     "wallet": {
         "title": "{Sora}-Nätverkskonto",
         "WalletAssets": "Tillgångar",
-        "WalletActivity": "Aktivitet",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Aktivitet"
     },
     "walletSend": {
         "title": "Skicka",
@@ -1103,7 +1110,13 @@
             "jsonFields": "JSON-fil har inte obligatoriska fält"
         },
         "assetsAtRiskText": "Tillgångar i riskzonen!",
-        "deleteAccountText": "Kontot kan inte återställas utan en fröfras, .json-fil eller om det är lagrat i något tillägg. Du kommer att loggas ut."
+        "deleteAccountText": "Kontot kan inte återställas utan en fröfras, .json-fil eller om det är lagrat i något tillägg. Du kommer att loggas ut.",
+        "importSteps": {
+            "selectWallet": "Gå till plånboken för din användning",
+            "selectAccount": "Välj det konto du vill exportera",
+            "exportAccount": "Exportera {JSON} -filen"
+        },
+        "exportTutorialsText": "Exportera självstudier"
     },
     "hashiBridgeText": "{Hashi} bro",
     "disclaimerTitle": "Ansvarsfriskrivning:",
@@ -1174,5 +1187,8 @@
     },
     "locationText": "Plats",
     "acceptText": "Acceptera och dölj",
-    "newAccountsText": "Nya konton"
+    "newAccountsText": "Nya konton",
+    "dragAndDropText": "Dra och släpp eller välj filen {extension}",
+    "copyPhraseText": "Kopiera fras",
+    "stepText": "Steg"
 }

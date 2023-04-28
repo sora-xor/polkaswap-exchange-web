@@ -87,11 +87,12 @@
         "noAccounts": "Er lijken geen accounts te zijn in uw {extension} extensie. Voeg een account toe en probeer het opnieuw.",
         "noAccount": "{extension}-accountfout. Controleer uw account in de {extension}-extensie",
         "noExtension": "Er is geen {extension} -extensie gevonden. Installeer het en laad deze pagina opnieuw",
-        "noSigner": "Toegang geweigerd. Ga naar {extension} extensie-instellingen en open \"Websitetoegang beheren\" om toe te staan."
+        "noSigner": "Toegang geweigerd. Ga naar {extension} extensie-instellingen en open \"Websitetoegang beheren\" om toe te staan.",
+        "connectionError": "Er is een fout opgetreden tijdens het verbinden van de portemonnee. U kunt opnieuw proberen de portemonnee via {extension} te verbinden"
     },
     "connection": {
         "title": "{Sora} Netwerk account",
-        "text": "Verbind of maak je {Sora} Netwerkaccount aan met {extensions} extensies. Met deze extensies kun je veilig transacties ondertekenen en activa beheren in {Sora} Network.",
+        "text": "Extensies en Google slaan uw {Sora} Network-account veilig op. Hiermee kunt u transacties ondertekenen en activa beheren.",
         "noAccounts": "Geen account gevonden in uw {extension} browser extensie. Voeg een account toe en probeer het opnieuw.",
         "selectAccount": "Selecteer account om mee te werken",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Installeren",
             "connected": "Verbonden",
             "notConnected": "Niet verbonden"
+        },
+        "internalTitle": "Maak verbinding via {wallet}",
+        "internalText": "U kunt een bestaand account aanmaken of koppelen via {wallet} . Het slaat accounts op met behulp van codering.",
+        "list": {
+            "simplest": "Eenvoudigste optie",
+            "extensions": "Extensies"
         }
     },
     "wallet": {
         "title": "{Sora} Netwerk account",
         "WalletAssets": "Assets",
-        "WalletActivity": "Activiteit",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Activiteit"
     },
     "walletSend": {
         "title": "Verzenden",
@@ -1103,7 +1110,13 @@
             "jsonFields": "JSON-bestand heeft geen verplichte velden"
         },
         "assetsAtRiskText": "Activa in gevaar!",
-        "deleteAccountText": "Account kan niet worden hersteld zonder een seed-zin, een .json bestand of als het is opgeslagen in een extensie. U wordt uitgelogd."
+        "deleteAccountText": "Account kan niet worden hersteld zonder een seed-zin, een .json bestand of als het is opgeslagen in een extensie. U wordt uitgelogd.",
+        "importSteps": {
+            "selectWallet": "Ga naar de portemonnee van uw gebruik",
+            "selectAccount": "Selecteer het account dat u wilt exporteren",
+            "exportAccount": "Exporteer het {JSON} -bestand"
+        },
+        "exportTutorialsText": "Tutorials exporteren"
     },
     "hashiBridgeText": "{Hashi} brug",
     "disclaimerTitle": "Disclaimer:",
@@ -1174,5 +1187,8 @@
     },
     "locationText": "Plaats",
     "acceptText": "Accepteren & verbergen",
-    "newAccountsText": "Nieuwe rekeningen"
+    "newAccountsText": "Nieuwe rekeningen",
+    "dragAndDropText": "Drag & drop of kies {extension} bestand",
+    "copyPhraseText": "Kopieer zin",
+    "stepText": "Stap"
 }
