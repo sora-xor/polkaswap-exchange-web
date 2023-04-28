@@ -112,13 +112,13 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
   }
 
   private async handleAccountChange(to?: Route): Promise<void> {
-    const accountId = (to ?? this.$route).query?.fearless as Nullable<string>;
+    const address = (to ?? this.$route).query?.fearless as Nullable<string>;
     const name = (to ?? this.$route).query?.name as Nullable<string>;
 
-    if (accountId && name) {
-      if (api.validateAddress(accountId)) {
+    if (address && name) {
+      if (api.validateAddress(address)) {
         await this.loginAccount({
-          address: accountId,
+          address,
           name,
           source: WALLET_CONSTS.AppWallet.FearlessWallet,
         });
