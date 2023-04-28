@@ -19,9 +19,9 @@
     >
       <div v-if="amount" slot="left" class="price-input__prefix">$</div>
       <div class="price-input-inner" slot="top">
-        <div>{{ `${asset.symbol} price` }}</div>
+        <div>{{ `${asset.symbol} ${t('exchange.price')}` }}</div>
         <div class="price-input-inner-ratio">
-          <span class="price-input-current-title">{{ 'current price' }}</span>
+          <span class="price-input-current-title">{{ t('alerts.currentPrice') }}</span>
           <formatted-amount-with-fiat-value
             value-can-be-hidden
             value-class="input-value--primary"
