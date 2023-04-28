@@ -120,7 +120,7 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
         await this.loginAccount({
           address: accountId,
           name,
-          source: WALLET_CONSTS.AppWallet.PolkadotJS,
+          source: WALLET_CONSTS.AppWallet.FearlessWallet,
         });
       }
     }
