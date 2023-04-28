@@ -107,7 +107,7 @@
             "connected": "Připojeno",
             "notConnected": "Nepřipojený"
         },
-        "internalTitle": "Připojit přes {wallet}",
+        "internalTitle": "",
         "internalText": "Stávající účet můžete vytvořit nebo propojit prostřednictvím {wallet} . Ukládá účty pomocí šifrování.",
         "list": {
             "simplest": "Nejjednodušší možnost",
@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Přijato",
     "browserNotificationDialog": {
-        "title": "Povolit oznámení prohlížeče",
+        "title": "Nastavit oznámení",
         "info": "Budeme vám zasílat pouze relevantní aktualizace o vaší peněžence, například: změny zůstatku aktiv",
         "button": "Povolit upozornění",
         "agree": "Ano, rozumím",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Majetek v ohrožení!",
         "deleteAccountText": "Účet nelze obnovit bez počáteční fráze, souboru .json nebo pokud je uložen v nějaké příponě. Budete odhlášeni.",
         "importSteps": {
-            "selectWallet": "Přejděte do peněženky, kterou používáte",
+            "selectWallet": "",
             "selectAccount": "Vyberte účet, který chcete exportovat",
-            "exportAccount": "Exportujte soubor {JSON}"
+            "exportAccount": ""
         },
         "exportTutorialsText": "Export výukových programů"
     },
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Nové účty",
     "dragAndDropText": "Přetáhněte nebo vyberte soubor {extension}",
     "copyPhraseText": "Kopírovat frázi",
-    "stepText": "Krok"
+    "stepText": "Krok",
+    "alerts": {
+        "drop": "Kapky níže",
+        "raise": "Zvyšuje výše",
+        "once": "Jednou",
+        "always": "Vždy",
+        "edit": "Upravit upozornění",
+        "delete": "Smazat upozornění",
+        "onDropDesc": "{token} klesá pod {price}",
+        "onRaiseDesc": "{token} zvyšuje nad {price}",
+        "alertsTitle": "Upozornění",
+        "alertsCreateTitle": "Nastavit upozornění na cenu",
+        "alertsTooltip": "Upozornění na cenu jsou upozornění, která si můžete nastavit tak, abyste dostávali aktualizace, když cena konkrétního tokenu dosáhne určitého bodu, který nastavíte",
+        "createBtn": "Vytvořit nové upozornění na cenu",
+        "finishBtn": "Dokončete nastavení upozornění",
+        "enableSwitch": "Povolit oznámení o vkladu majetku",
+        "currentPrice": "aktuální cena",
+        "alertTypeTitle": "Typ upozornění",
+        "typeTooltip": "Chcete-li zadat varovnou podmínku pro sledování důležitých cenových pohybů, vyberte možnost „pokles pod“ nebo „navýšení výše“. Tyto možnosti vám umožňují dostávat včasná upozornění, když hodnota vašeho aktiva klesne pod nebo překročí vaši stanovenou hranici",
+        "alertFrequencyTitle": "Frekvence upozornění",
+        "frequencyTooltip": "Výběrem mezi „jednou“ a „vždy“ určíte, jak často budete dostávat upozornění pro vybraný typ upozornění. „Jednou“ odešle jediné upozornění, když je podmínka splněna, zatímco „vždy“ vás bude i nadále upozorňovat při každém překročení cenového prahu",
+        "noSupportMsg": "Váš prohlížeč nepodporuje upozornění"
+    }
 }

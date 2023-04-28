@@ -107,7 +107,7 @@
             "connected": "Ti sopọ",
             "notConnected": "Ko ti sopọ"
         },
-        "internalTitle": "Sopọ nipasẹ {wallet}",
+        "internalTitle": "",
         "internalText": "O le ṣẹda tabi sopọ mọ akọọlẹ ti o wa tẹlẹ nipasẹ {wallet} . O tọju awọn akọọlẹ nipa lilo fifi ẹnọ kọ nkan.",
         "list": {
             "simplest": "Aṣayan ti o rọrun julọ",
@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Ti gba",
     "browserNotificationDialog": {
-        "title": "Mu awọn iwifunni ẹrọ aṣawakiri ṣiṣẹ",
+        "title": "Ṣeto Awọn iwifunni",
         "info": "A yoo fi awọn imudojuiwọn ti o yẹ nikan ranṣẹ si ọ nipa apamọwọ rẹ, fun apẹẹrẹ: awọn iyipada iwọntunwọnsi dukia",
         "button": "Mu awọn iwifunni ṣiṣẹ",
         "agree": "Bẹẹni, Mo loye",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Awọn dukia ni ewu!",
         "deleteAccountText": "Akoto ko le gba pada laisi gbolohun ọrọ irugbin, faili .json tabi ti o ba wa ni ipamọ ni diẹ ninu itẹsiwaju. O yoo wa ni ibuwolu jade.",
         "importSteps": {
-            "selectWallet": "Lọ si apamọwọ ti lilo rẹ",
+            "selectWallet": "",
             "selectAccount": "Yan akọọlẹ ti o fẹ lati okeere",
-            "exportAccount": "Faili {JSON} okeere"
+            "exportAccount": ""
         },
         "exportTutorialsText": "okeere Tutorial"
     },
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Awọn iroyin titun",
     "dragAndDropText": "Fa & ju silẹ tabi yan faili {extension}",
     "copyPhraseText": "Daakọ Gbolohun",
-    "stepText": "Igbesẹ"
+    "stepText": "Igbesẹ",
+    "alerts": {
+        "drop": "Silẹ ni isalẹ",
+        "raise": "Gbe soke",
+        "once": "Lẹẹkan",
+        "always": "Nigbagbogbo",
+        "edit": "Itaniji Ṣatunkọ",
+        "delete": "Pa itaniji rẹ",
+        "onDropDesc": "{token} lọ silẹ ni isalẹ {price}",
+        "onRaiseDesc": "{token} ga ju {price}",
+        "alertsTitle": "Awọn itaniji",
+        "alertsCreateTitle": "Ṣeto itaniji idiyele",
+        "alertsTooltip": "Awọn itaniji idiyele jẹ awọn iwifunni ti o le ṣeto nipasẹ rẹ lati gba awọn imudojuiwọn nigbati idiyele ti ami-ami kan pato de aaye kan ti o ṣeto",
+        "createBtn": "Ṣẹda titun owo gbigbọn",
+        "finishBtn": "Pari iṣeto titaniji",
+        "enableSwitch": "Mu awọn iwifunni idogo dukia ṣiṣẹ",
+        "currentPrice": "lọwọlọwọ owo",
+        "alertTypeTitle": "Iru itaniji",
+        "typeTooltip": "Yan boya 'ju silẹ ni isalẹ' tabi 'gbe loke' aṣayan lati tokasi ipo itaniji fun titọpa awọn agbeka idiyele pataki. Awọn aṣayan wọnyi gba ọ laaye lati gba awọn iwifunni akoko nigbati iye dukia rẹ boya ṣubu ni isalẹ tabi dide loke iloro ti a yàn",
+        "alertFrequencyTitle": "Itaniji igbohunsafẹfẹ",
+        "frequencyTooltip": "Yan laarin 'lẹẹkan' ati 'nigbagbogbo' lati pinnu iye igba ti o gba awọn iwifunni fun iru gbigbọn ti o yan. 'Lẹẹkan' yoo fi ifitonileti kan ranṣẹ nigbati ipo naa ba ti pade, lakoko ti 'nigbagbogbo' yoo tẹsiwaju lati fi to ọ leti ni igbakugba ti ẹnu-ọna idiyele ti kọja",
+        "noSupportMsg": "Awọn iwifunni ko ni atilẹyin nipasẹ ẹrọ aṣawakiri rẹ"
+    }
 }

@@ -107,7 +107,7 @@
             "connected": "Conectado",
             "notConnected": "No conectado"
         },
-        "internalTitle": "Conéctese a través de {wallet}",
+        "internalTitle": "",
         "internalText": "Puede crear o vincular una cuenta existente a través de {wallet} . Almacena cuentas usando encriptación.",
         "list": {
             "simplest": "opción más simple",
@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Recibido",
     "browserNotificationDialog": {
-        "title": "Habilitar notificaciones del navegador",
+        "title": "Establecer notificaciones",
         "info": "Le enviaremos solo actualizaciones relevantes sobre su billetera, por ejemplo: cambios en el saldo de activos",
         "button": "Permitir notificaciones",
         "agree": "Si, entiendo",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "¡Activos en riesgo!",
         "deleteAccountText": "La cuenta no se puede recuperar sin una frase inicial, un archivo .json o si está almacenada en alguna extensión. Serás desconectado.",
         "importSteps": {
-            "selectWallet": "Ir a la billetera de su uso",
+            "selectWallet": "",
             "selectAccount": "Seleccione la cuenta que desea exportar",
-            "exportAccount": "Exportar el archivo {JSON}"
+            "exportAccount": ""
         },
         "exportTutorialsText": "Tutoriales de exportación"
     },
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Nuevas cuentas",
     "dragAndDropText": "Arrastrar y soltar o elegir el archivo {extension}",
     "copyPhraseText": "Copiar frase",
-    "stepText": "Paso"
+    "stepText": "Paso",
+    "alerts": {
+        "drop": "Cae por debajo",
+        "raise": "eleva por encima",
+        "once": "Una vez",
+        "always": "Siempre",
+        "edit": "Editar alerta",
+        "delete": "Eliminar alerta",
+        "onDropDesc": "{token} cae por debajo de {price}",
+        "onRaiseDesc": "{token} sube por encima de {price}",
+        "alertsTitle": "Alertas",
+        "alertsCreateTitle": "Configurar alerta de precio",
+        "alertsTooltip": "Las alertas de precios son notificaciones que usted puede configurar para recibir actualizaciones cuando el precio de un token en particular alcance cierto punto que usted establezca.",
+        "createBtn": "Crear nueva alerta de precio",
+        "finishBtn": "Finalizar configuración de alerta",
+        "enableSwitch": "Habilitar notificaciones de depósito de activos",
+        "currentPrice": "precio actual",
+        "alertTypeTitle": "Tipo de alerta",
+        "typeTooltip": "Elija la opción 'cae por debajo' o 'sube por encima' para especificar la condición de alerta para el seguimiento de movimientos de precios importantes. Estas opciones le permiten recibir notificaciones oportunas cuando el valor de su activo cae por debajo o sube por encima de su umbral designado",
+        "alertFrequencyTitle": "Frecuencia de alerta",
+        "frequencyTooltip": "Seleccione entre 'una vez' y 'siempre' para determinar con qué frecuencia recibe notificaciones para el tipo de alerta elegido. 'Una vez' enviará una única notificación cuando se cumpla la condición, mientras que 'siempre' seguirá notificándote cada vez que se supere el umbral de precio.",
+        "noSupportMsg": "Las notificaciones no son compatibles con su navegador"
+    }
 }

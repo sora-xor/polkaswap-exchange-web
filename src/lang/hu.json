@@ -107,7 +107,7 @@
             "connected": "csatlakoztatva",
             "notConnected": "Nem kapcsolódik"
         },
-        "internalTitle": "Csatlakozás a következőn keresztül {wallet}",
+        "internalTitle": "",
         "internalText": "Létrehozhat vagy összekapcsolhat meglévő fiókot {wallet} segítségével. Titkosítással tárolja a fiókokat.",
         "list": {
             "simplest": "A legegyszerűbb lehetőség",
@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Bejövő",
     "browserNotificationDialog": {
-        "title": "Engedélyezze a böngésző értesítéseit",
+        "title": "Értesítések beállítása",
         "info": "Csak releváns frissítéseket küldünk Önnek a pénztárcájáról, például: eszközegyenleg-változások",
         "button": "Értesítések engedélyezése",
         "agree": "Igen, értem",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Veszélyben lévő eszközök!",
         "deleteAccountText": "A fiókot nem lehet visszaállítani kezdő kifejezés, .json fájl nélkül, vagy ha azt valamilyen kiterjesztéssel tárolják. Ön ki lesz jelentkezve.",
         "importSteps": {
-            "selectWallet": "Menjen a használt pénztárcához",
+            "selectWallet": "",
             "selectAccount": "Válassza ki az exportálni kívánt fiókot",
-            "exportAccount": "Exportálja a {JSON} fájlt"
+            "exportAccount": ""
         },
         "exportTutorialsText": "Oktatóanyagok exportálása"
     },
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Új fiókok",
     "dragAndDropText": "Fogd és vidd, vagy válasszon {extension} fájlt",
     "copyPhraseText": "Kifejezés másolása",
-    "stepText": "Lépés"
+    "stepText": "Lépés",
+    "alerts": {
+        "drop": "Alul leesik",
+        "raise": "Feljebb emelkedik",
+        "once": "Egyszer",
+        "always": "Mindig",
+        "edit": "Figyelmeztetés szerkesztése",
+        "delete": "Figyelmeztetés törlése",
+        "onDropDesc": "{token} {price} alá esik",
+        "onRaiseDesc": "{token} {price} fölé emel",
+        "alertsTitle": "Figyelmeztetések",
+        "alertsCreateTitle": "Árriasztás beállítása",
+        "alertsTooltip": "Az árriasztások olyan értesítések, amelyeket Ön beállíthat, hogy frissítéseket kapjon, amikor egy adott token ára elér egy meghatározott pontot",
+        "createBtn": "Hozzon létre új árriasztást",
+        "finishBtn": "Fejezze be a riasztás beállítását",
+        "enableSwitch": "Eszközbefizetési értesítések engedélyezése",
+        "currentPrice": "jelenlegi ár",
+        "alertTypeTitle": "Figyelmeztetés típusa",
+        "typeTooltip": "Válassza az „alul csökken” vagy a „feljebb emelkedik” opciót, ha figyelmeztetési feltételt szeretne megadni a fontos ármozgások nyomon követéséhez. Ezek az opciók lehetővé teszik, hogy időben értesítést kapjon, ha az eszköz értéke a kijelölt küszöb alá esik vagy fölé emelkedik.",
+        "alertFrequencyTitle": "Riasztási gyakoriság",
+        "frequencyTooltip": "Válassza az „egyszer” és a „mindig” lehetőséget annak meghatározásához, hogy milyen gyakran kap értesítést a kiválasztott riasztástípusról. Az „Egyszer” egyetlen értesítést küld, ha a feltétel teljesül, míg az „always” továbbra is értesít minden alkalommal, amikor az árküszöböt átlépi.",
+        "noSupportMsg": "Az Ön böngészője nem támogatja az értesítéseket"
+    }
 }

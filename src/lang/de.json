@@ -107,7 +107,7 @@
             "connected": "In Verbindung gebracht",
             "notConnected": "Nicht verbunden"
         },
-        "internalTitle": "Über {wallet} verbinden",
+        "internalTitle": "",
         "internalText": "Sie können ein bestehendes Konto über {wallet} erstellen oder verknüpfen. Es speichert Konten mit Verschlüsselung.",
         "list": {
             "simplest": "Einfachste Möglichkeit",
@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Erhalten",
     "browserNotificationDialog": {
-        "title": "Aktivieren Sie Browserbenachrichtigungen",
+        "title": "Benachrichtigungen festlegen",
         "info": "Wir senden Ihnen nur relevante Updates zu Ihrem Wallet, zum Beispiel: Änderungen des Vermögensstands",
         "button": "Benachrichtigungen aktivieren",
         "agree": "Ja ich verstehe",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Vermögen in Gefahr!",
         "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet.",
         "importSteps": {
-            "selectWallet": "Gehen Sie zur Brieftasche Ihrer Verwendung",
+            "selectWallet": "",
             "selectAccount": "Wählen Sie das Konto aus, das Sie exportieren möchten",
-            "exportAccount": "Exportieren Sie die {JSON} -Datei"
+            "exportAccount": ""
         },
         "exportTutorialsText": "Tutorials exportieren"
     },
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Neue Konten",
     "dragAndDropText": "Drag & Drop oder Datei {extension} auswählen",
     "copyPhraseText": "Satz kopieren",
-    "stepText": "Schritt"
+    "stepText": "Schritt",
+    "alerts": {
+        "drop": "Tropfen unten",
+        "raise": "Erhebt sich oben",
+        "once": "Einmal",
+        "always": "Stets",
+        "edit": "Benachrichtigung bearbeiten",
+        "delete": "Benachrichtigung löschen",
+        "onDropDesc": "{token} fällt unter {price}",
+        "onRaiseDesc": "{token} steigt über {price}",
+        "alertsTitle": "Warnungen",
+        "alertsCreateTitle": "Preisalarm einrichten",
+        "alertsTooltip": "Preisalarme sind Benachrichtigungen, die von Ihnen eingestellt werden können, um Updates zu erhalten, wenn der Preis eines bestimmten Tokens einen bestimmten, von Ihnen festgelegten Punkt erreicht",
+        "createBtn": "Neuen Preisalarm erstellen",
+        "finishBtn": "Schließen Sie die Alarmeinrichtung ab",
+        "enableSwitch": "Aktivieren Sie Benachrichtigungen zur Hinterlegung von Vermögenswerten",
+        "currentPrice": "derzeitiger Preis",
+        "alertTypeTitle": "Alarmtyp",
+        "typeTooltip": "Wählen Sie entweder die Option „fällt unter“ oder „erhöht sich“, um die Alarmbedingung für die Verfolgung wichtiger Preisbewegungen festzulegen. Diese Optionen ermöglichen es Ihnen, zeitnahe Benachrichtigungen zu erhalten, wenn der Wert Ihres Vermögens entweder unter oder über Ihren festgelegten Schwellenwert fällt",
+        "alertFrequencyTitle": "Alarmhäufigkeit",
+        "frequencyTooltip": "Wählen Sie zwischen „Einmal“ und „Immer“, um festzulegen, wie oft Sie Benachrichtigungen für den ausgewählten Alarmtyp erhalten. „Einmal“ sendet eine einzelne Benachrichtigung, wenn die Bedingung erfüllt ist, während „immer“ Sie weiterhin jedes Mal benachrichtigt, wenn die Preisschwelle überschritten wird",
+        "noSupportMsg": "Benachrichtigungen werden von Ihrem Browser nicht unterstützt"
+    }
 }

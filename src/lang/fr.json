@@ -107,7 +107,7 @@
             "connected": "Connecté",
             "notConnected": "Pas connecté"
         },
-        "internalTitle": "Connectez-vous via {wallet}",
+        "internalTitle": "",
         "internalText": "Vous pouvez créer ou lier un compte existant via {wallet} . Il stocke les comptes en utilisant le cryptage.",
         "list": {
             "simplest": "Option la plus simple",
@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Reçu",
     "browserNotificationDialog": {
-        "title": "Activer les notifications du navigateur",
+        "title": "Définir les notifications",
         "info": "Nous vous enverrons uniquement les mises à jour pertinentes concernant votre portefeuille, par exemple : les modifications du solde des actifs",
         "button": "Activer les notifications",
         "agree": "Oui je comprends",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Actifs en péril !",
         "deleteAccountText": "Le compte ne peut pas être récupéré sans une phrase de départ, un fichier .json ou s'il est stocké dans une extension. Vous serez déconnecté.",
         "importSteps": {
-            "selectWallet": "Accédez au portefeuille de votre utilisation",
+            "selectWallet": "",
             "selectAccount": "Sélectionnez le compte que vous souhaitez exporter",
-            "exportAccount": "Exportez le fichier {JSON}"
+            "exportAccount": ""
         },
         "exportTutorialsText": "Exporter des tutoriels"
     },
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Nouveaux comptes",
     "dragAndDropText": "Faites glisser et déposez ou choisissez le fichier {extension}",
     "copyPhraseText": "Copier la phrase",
-    "stepText": "Marcher"
+    "stepText": "Marcher",
+    "alerts": {
+        "drop": "Tombe au-dessous",
+        "raise": "Monte au-dessus",
+        "once": "Une fois",
+        "always": "Toujours",
+        "edit": "Modifier l'alerte",
+        "delete": "Supprimer l'alerte",
+        "onDropDesc": "{token} tombe en dessous de {price}",
+        "onRaiseDesc": "{token} augmente au-dessus de {price}",
+        "alertsTitle": "Alertes",
+        "alertsCreateTitle": "Configurer une alerte de prix",
+        "alertsTooltip": "Les alertes de prix sont des notifications que vous pouvez définir pour recevoir des mises à jour lorsque le prix d'un jeton particulier atteint un certain point que vous avez défini",
+        "createBtn": "Créer une nouvelle alerte de prix",
+        "finishBtn": "Terminer la configuration de l'alerte",
+        "enableSwitch": "Activer les notifications de dépôt d'actifs",
+        "currentPrice": "prix actuel",
+        "alertTypeTitle": "Type d'alerte",
+        "typeTooltip": "Choisissez l'option \"baisse en dessous\" ou \"augmente au-dessus\" pour spécifier la condition d'alerte pour le suivi des mouvements de prix importants. Ces options vous permettent de recevoir des notifications en temps opportun lorsque la valeur de votre actif tombe en dessous ou dépasse votre seuil désigné.",
+        "alertFrequencyTitle": "Fréquence d'alerte",
+        "frequencyTooltip": "Sélectionnez entre « une fois » et « toujours » pour déterminer la fréquence à laquelle vous recevez des notifications pour le type d'alerte choisi. \"Une fois\" enverra une seule notification lorsque la condition est remplie, tandis que \"toujours\" continuera à vous informer chaque fois que le seuil de prix est franchi",
+        "noSupportMsg": "Les notifications ne sont pas prises en charge par votre navigateur"
+    }
 }

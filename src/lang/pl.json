@@ -107,7 +107,7 @@
             "connected": "Połączony",
             "notConnected": "Nie połączony"
         },
-        "internalTitle": "Połącz przez {wallet}",
+        "internalTitle": "",
         "internalText": "Możesz utworzyć lub połączyć istniejące konto za pośrednictwem {wallet} . Przechowuje konta przy użyciu szyfrowania.",
         "list": {
             "simplest": "Najprostsza opcja",
@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Otrzymano",
     "browserNotificationDialog": {
-        "title": "Włącz powiadomienia przeglądarki",
+        "title": "Ustaw powiadomienia",
         "info": "Prześlemy Ci tylko istotne aktualizacje dotyczące Twojego portfela, na przykład: zmiany salda aktywów",
         "button": "Włącz powiadomienia",
         "agree": "Tak, rozumiem",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Aktywa zagrożone!",
         "deleteAccountText": "Konta nie można odzyskać bez frazy początkowej, pliku .json lub jeśli jest on przechowywany w jakimś rozszerzeniu. Zostaniesz wylogowany.",
         "importSteps": {
-            "selectWallet": "Przejdź do używanego portfela",
+            "selectWallet": "",
             "selectAccount": "Wybierz konto, które chcesz wyeksportować",
-            "exportAccount": "Wyeksportuj plik {JSON}"
+            "exportAccount": ""
         },
         "exportTutorialsText": "Eksportuj samouczki"
     },
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Nowe konta",
     "dragAndDropText": "Przeciągnij i upuść lub wybierz plik {extension}",
     "copyPhraseText": "Skopiuj frazę",
-    "stepText": "Krok"
+    "stepText": "Krok",
+    "alerts": {
+        "drop": "Krople poniżej",
+        "raise": "Podnosi powyżej",
+        "once": "Raz",
+        "always": "Zawsze",
+        "edit": "Edytuj alert",
+        "delete": "Usuń alert",
+        "onDropDesc": "{token} spada poniżej {price}",
+        "onRaiseDesc": "{token} podnosi powyżej {price}",
+        "alertsTitle": "Alerty",
+        "alertsCreateTitle": "Ustaw alert cenowy",
+        "alertsTooltip": "Alerty cenowe to powiadomienia, które możesz ustawić, aby otrzymywać aktualizacje, gdy cena określonego tokena osiągnie określony przez Ciebie punkt",
+        "createBtn": "Utwórz nowy alert cenowy",
+        "finishBtn": "Zakończ konfigurację alertu",
+        "enableSwitch": "Włącz powiadomienia o depozytach aktywów",
+        "currentPrice": "aktualna cena",
+        "alertTypeTitle": "Typ alertu",
+        "typeTooltip": "Wybierz opcję „spada poniżej” lub „podbija powyżej”, aby określić warunek alertu do śledzenia ważnych ruchów cen. Opcje te umożliwiają otrzymywanie na czas powiadomień, gdy wartość aktywów spadnie poniżej lub wzrośnie powyżej wyznaczonego progu",
+        "alertFrequencyTitle": "Częstotliwość alertów",
+        "frequencyTooltip": "Wybierz pomiędzy „raz” a „zawsze”, aby określić, jak często będziesz otrzymywać powiadomienia dla wybranego typu alertu. „Raz” wyśle pojedyncze powiadomienie, gdy warunek zostanie spełniony, a „zawsze” będzie nadal powiadamiać Cię za każdym razem, gdy próg cenowy zostanie przekroczony",
+        "noSupportMsg": "Twoja przeglądarka nie obsługuje powiadomień"
+    }
 }
