@@ -27,8 +27,9 @@ const actions = defineActions({
 
     try {
       const accountAddress = rootState.web3.evmAddress;
+      const evmNetworkId = rootState.web3.evmNetworkSelected;
 
-      const networkAssets = rootState.web3.evmNetwork === 5 ? GOERLI_ASSETS : await evmBridgeApi.getNetworkAssets();
+      const networkAssets = await evmBridgeApi.getNetworkAssets(evmNetworkId as number);
 
       const networkAssetsWithBalance = await Promise.all(
         Object.entries(networkAssets).map(async ([soraAddress, assetData]) => {

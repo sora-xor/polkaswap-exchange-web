@@ -34,6 +34,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     this.setResetSubscriptions([this.unsubscribeFromHistory, this.unsubscribeEvmBlockHeaders, this.unsubscribeFromEvm]);
 
     await this.withParentLoading(async () => {
+      await this.restoreNetworkType();
       await this.restoreSelectedEvmNetwork();
       await this.onConnectedEvmNetworkChange();
     });

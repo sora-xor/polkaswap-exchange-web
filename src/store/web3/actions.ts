@@ -2,6 +2,7 @@ import { defineActions } from 'direct-vuex';
 
 import { web3ActionContext } from '@/store/web3';
 import ethersUtil from '@/utils/ethers-util';
+import { BridgeType } from '@/consts/evm';
 
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 import type { Provider } from '@/utils/ethers-util';
@@ -37,11 +38,25 @@ const actions = defineActions({
 
     if (getters.selectedEvmNetwork) return;
 
-    const selectedEvmNetworkId = ethersUtil.getSelectedEvmNetwork() || getters.availableEvmNetworks[0]?.id;
+    const selectedEvmNetworkId =
+      ethersUtil.getSelectedEvmNetwork() || getters.availableNetworks[BridgeType.HASHI]?.[0]?.id;
 
     if (selectedEvmNetworkId) {
       commit.setSelectedEvmNetwork(selectedEvmNetworkId);
     }
+  },
+
+  /**
+   * Restore selected by user network type (Hashi, EVM, Substrate)
+   */
+  async restoreNetworkType(context): Promise<void> {
+    const { commit, state } = web3ActionContext(context);
+
+    if (state.networkType) return;
+
+    const networkType = ethersUtil.getSelectedBridgeType() ?? BridgeType.HASHI;
+
+    commit.setNetworkType(networkType);
   },
 });
 

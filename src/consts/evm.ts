@@ -13,6 +13,12 @@ export interface EvmNetworkData {
   shortName: string;
 }
 
+export enum BridgeType {
+  HASHI = 'HASHI',
+  EVM = 'EVM',
+  SUB = 'SUB',
+}
+
 export enum EvmLinkType {
   Account = 'Account',
   Transaction = 'Transaction',

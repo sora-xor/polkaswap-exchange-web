@@ -21,7 +21,7 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
       return this.TranslationConsts.soraNetwork[this.soraNetwork];
     }
 
-    return this.connectedEvmNetwork ? `evm.${this.connectedEvmNetwork.id}` : '';
+    return this.connectedEvmNetwork?.name ?? '';
   }
 
   // TODO [EVM] add network icons

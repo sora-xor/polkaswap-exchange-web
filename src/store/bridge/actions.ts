@@ -1,7 +1,7 @@
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { BridgeCurrencyType, BridgeHistory, BridgeNetworks, FPNumber, Operation } from '@sora-substrate/util';
 import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
@@ -19,6 +19,8 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
 import type { EvmHistory, EvmNetwork, EvmTransaction } from '@sora-substrate/util/build/evm/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+
+(window as any).api = api;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -179,31 +181,31 @@ const actions = defineActions({
   subscribeOnHistory(context): void {
     const { commit, dispatch, rootState, rootGetters } = bridgeActionContext(context);
 
-    dispatch.unsubscribeFromHistory();
+    // dispatch.unsubscribeFromHistory();
 
-    if (!rootGetters.wallet.account.isLoggedIn) return;
+    // if (!rootGetters.wallet.account.isLoggedIn) return;
 
-    const externalNetwork = rootState.web3.evmNetworkSelected;
+    // const externalNetwork = rootState.web3.evmNetworkSelected;
 
-    const hashesSubscription = evmBridgeApi.subscribeOnUserTxHashes(externalNetwork).subscribe((hashes) => {
-      commit.resetHistoryDataSubscription();
+    // const hashesSubscription = evmBridgeApi.subscribeOnUserTxHashes(externalNetwork).subscribe((hashes) => {
+    //   commit.resetHistoryDataSubscription();
 
-      const dataSubscription = evmBridgeApi
-        .subscribeOnTxsDetails(externalNetwork, hashes)
-        .subscribe((transactions: EvmTransaction[]) => {
-          const externalHistory = evmTransactionsToEvmHistory(rootGetters.assets.assetDataByAddress, transactions);
+    //   const dataSubscription = evmBridgeApi
+    //     .subscribeOnTxsDetails(externalNetwork, hashes)
+    //     .subscribe((transactions: EvmTransaction[]) => {
+    //       const externalHistory = evmTransactionsToEvmHistory(rootGetters.assets.assetDataByAddress, transactions);
 
-          commit.setExternalHistory(externalHistory);
+    //       commit.setExternalHistory(externalHistory);
 
-          for (const id in externalHistory) {
-            dispatch.removeInternalHistory({ tx: externalHistory[id], force: false });
-          }
-        });
+    //       for (const id in externalHistory) {
+    //         dispatch.removeInternalHistory({ tx: externalHistory[id], force: false });
+    //       }
+    //     });
 
-      commit.setHistoryDataSubscription(dataSubscription);
-    });
+    //   commit.setHistoryDataSubscription(dataSubscription);
+    // });
 
-    commit.setHistoryHashesSubscription(hashesSubscription);
+    // commit.setHistoryHashesSubscription(hashesSubscription);
   },
 
   unsubscribeFromHistory(context): void {

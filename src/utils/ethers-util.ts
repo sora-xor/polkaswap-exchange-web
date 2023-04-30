@@ -10,6 +10,7 @@ import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import storage from './storage';
 import { ZeroStringValue } from '@/consts';
+import { BridgeType } from '@/consts/evm';
 
 import type { EvmNetworkData } from '@/consts/evm';
 
@@ -463,6 +464,18 @@ function storeSelectedEvmNetwork(evmNetwork: EvmNetwork) {
   storage.set('evmNetwork' as any, evmNetwork);
 }
 
+function getSelectedBridgeType(): Nullable<BridgeType> {
+  const result = storage.get('bridgeType' as any);
+  const value = result ? JSON.parse(result) : null;
+
+  return value;
+}
+
+function storeSelectedBridgeType(bridgeType: BridgeType) {
+  // [TODO EVM]: remove any
+  storage.set('bridgeType' as any, bridgeType);
+}
+
 export default {
   onConnect,
   getAccount,
@@ -491,4 +504,7 @@ export default {
   // evm network storage
   getSelectedEvmNetwork,
   storeSelectedEvmNetwork,
+  // bridge type
+  getSelectedBridgeType,
+  storeSelectedBridgeType,
 };

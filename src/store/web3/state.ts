@@ -2,6 +2,7 @@ import ethersUtil from '@/utils/ethers-util';
 import { EvmNetworkId } from '@sora-substrate/util/build/evm/consts';
 
 import { ZeroStringValue } from '@/consts';
+import { BridgeType } from '@/consts/evm';
 
 import type { Web3State } from './types';
 
@@ -12,6 +13,7 @@ export function initialState(): Web3State {
     evmNetwork: null, // evm network in provider
     evmNetworksIds: [],
     evmNetworkSelected: null, // evm network selected by user
+    networkType: ethersUtil.getSelectedBridgeType() ?? BridgeType.HASHI,
 
     selectNetworkDialogVisibility: false,
 

@@ -2,17 +2,17 @@ import { defineMutations } from 'direct-vuex';
 import { CodecString } from '@sora-substrate/util';
 
 import ethersUtil from '@/utils/ethers-util';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { initialState } from './state';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import type { EthBridgeContracts } from '@/utils/bridge/eth/types';
 import type { Web3State } from './types';
+import type { BridgeType } from '@/consts/evm';
 
 const mutations = defineMutations<Web3State>()({
   reset(state): void {
     // we shouldn't reset networks, which were set from env & contracts
-    const networkSettingsKeys = ['evmNetwork', 'evmNetworksIds', 'evmNetworkSelected', 'ethBridge'];
+    const networkSettingsKeys = ['evmNetwork', 'evmNetworksIds', 'evmNetworkSelected', 'networkType', 'ethBridge'];
     const s = initialState();
 
     Object.keys(s)
@@ -40,10 +40,13 @@ const mutations = defineMutations<Web3State>()({
   setSelectedEvmNetwork(state, networkId: EvmNetwork): void {
     state.evmNetworkSelected = networkId;
     ethersUtil.storeSelectedEvmNetwork(networkId);
-    evmBridgeApi.externalNetwork = networkId;
   },
   setEvmBalance(state, balance: CodecString): void {
     state.evmBalance = balance;
+  },
+
+  setNetworkType(state, networkType: BridgeType) {
+    state.networkType = networkType;
   },
 
   setSelectNetworkDialogVisibility(state, flag: boolean): void {

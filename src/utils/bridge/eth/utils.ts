@@ -7,6 +7,7 @@ import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util'
 
 import { rootActionContext } from '@/store';
 import { delay } from '@/utils';
+import { BridgeType } from '@/consts/evm';
 import ethersUtil, { KnownEthBridgeAsset } from '@/utils/ethers-util';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
@@ -189,7 +190,7 @@ export const updateEthBridgeHistory =
         web3: { ethBridgeEvmNetwork, ethBridgeContractAddress },
       } = rootState;
 
-      const evmNetworkData = rootGetters.web3.availableEvmNetworks.find(
+      const evmNetworkData = rootGetters.web3.availableNetworks[BridgeType.HASHI].find(
         (network) => network.id === ethBridgeEvmNetwork
       );
 

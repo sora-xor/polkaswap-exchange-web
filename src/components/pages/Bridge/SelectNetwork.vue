@@ -1,25 +1,35 @@
 <template>
   <dialog-base :visible.sync="visibility" :title="t('bridge.selectNetwork')" class="networks">
     <p class="networks-info">{{ t('bridge.networkInfo') }}</p>
-    <s-radio-group v-model="selectedEvmNetworkId">
-      <s-radio v-for="network in availableEvmNetworks" :key="network.id" :label="network.id" class="network">
-        <span class="network-name">{{ t(`evm.${network.id}`) }}</span>
-        <token-logo :token-symbol="network.nativeCurrency.symbol" />
-      </s-radio>
-    </s-radio-group>
+    <div v-for="(networks, type) in availableNetworks" :key="type">
+      <div>{{ type }}</div>
+      <s-radio-group v-model="selectedNetworkTuple">
+        <s-radio
+          v-for="network in networks"
+          :key="`${type}-${network.id}`"
+          :label="`${type}-${network.id}`"
+          class="network"
+        >
+          <span class="network-name">{{ network.name }}</span>
+          <token-logo :token-symbol="network.nativeCurrency.symbol" />
+        </s-radio>
+      </s-radio-group>
+    </div>
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import { getter, mutation, state } from '@/store/decorators';
+import { action, getter, mutation, state } from '@/store/decorators';
 
-import type { EvmNetworkData } from '@/consts/evm';
+import type { BridgeType, EvmNetworkData } from '@/consts/evm';
+
+const DELIMETER = '-';
 
 @Component({
   components: {
@@ -28,13 +38,16 @@ import type { EvmNetworkData } from '@/consts/evm';
   },
 })
 export default class BridgeSelectNetwork extends Mixins(TranslationMixin) {
-  @Prop({ default: () => null, type: Object }) readonly selectedEvmNetwork!: EvmNetworkData;
-
+  @state.web3.networkType private networkType!: Nullable<BridgeType>;
+  @state.web3.evmNetworkSelected private evmNetworkSelected!: Nullable<EvmNetwork>;
   @state.web3.selectNetworkDialogVisibility selectNetworkDialogVisibility!: boolean;
 
-  @getter.web3.availableEvmNetworks availableEvmNetworks!: EvmNetworkData;
+  @getter.web3.availableNetworks availableNetworks!: EvmNetworkData;
 
-  @mutation.web3.setSelectNetworkDialogVisibility setSelectNetworkDialogVisibility!: (flag: boolean) => void;
+  @mutation.web3.setNetworkType private setNetworkType!: (networkType: BridgeType) => void;
+  @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
+
+  @action.web3.selectEvmNetwork selectEvmNetwork!: (networkId: EvmNetwork) => void;
 
   get visibility(): boolean {
     return this.selectNetworkDialogVisibility;
@@ -44,12 +57,15 @@ export default class BridgeSelectNetwork extends Mixins(TranslationMixin) {
     this.setSelectNetworkDialogVisibility(flag);
   }
 
-  get selectedEvmNetworkId(): Nullable<EvmNetwork> {
-    return this.selectedEvmNetwork?.id ?? null;
+  get selectedNetworkTuple(): string {
+    return [this.networkType, this.evmNetworkSelected].join(DELIMETER);
   }
 
-  set selectedEvmNetworkId(value: Nullable<EvmNetwork>) {
-    this.$emit('change', value);
+  set selectedNetworkTuple(value: string) {
+    const [networkType, evmNetworkSelected] = value.split(DELIMETER);
+
+    this.setNetworkType(networkType as BridgeType);
+    this.selectEvmNetwork(Number(evmNetworkSelected));
   }
 }
 </script>
