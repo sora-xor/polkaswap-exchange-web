@@ -107,7 +107,7 @@
             "connected": "kết nối",
             "notConnected": "Không kết nối"
         },
-        "internalTitle": "",
+        "internalTitle": "Kết nối qua {wallet}",
         "internalText": "Bạn có thể tạo hoặc liên kết tài khoản hiện có qua {wallet} . Nó lưu trữ tài khoản sử dụng mã hóa.",
         "list": {
             "simplest": "tùy chọn đơn giản nhất",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Tài sản có nguy cơ!",
         "deleteAccountText": "Không thể khôi phục tài khoản nếu không có cụm từ gốc, tệp .json hoặc nếu tài khoản được lưu trữ trong một số tiện ích mở rộng. Bạn sẽ được đăng xuất.",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "Chuyển đến ví bạn sử dụng",
             "selectAccount": "Chọn tài khoản bạn muốn xuất",
-            "exportAccount": ""
+            "exportAccount": "Xuất tệp {JSON}"
         },
         "exportTutorialsText": "Xuất hướng dẫn"
     },

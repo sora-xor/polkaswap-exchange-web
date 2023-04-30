@@ -107,7 +107,7 @@
             "connected": "In Verbindung gebracht",
             "notConnected": "Nicht verbunden"
         },
-        "internalTitle": "",
+        "internalTitle": "Über {wallet} verbinden",
         "internalText": "Sie können ein bestehendes Konto über {wallet} erstellen oder verknüpfen. Es speichert Konten mit Verschlüsselung.",
         "list": {
             "simplest": "Einfachste Möglichkeit",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Vermögen in Gefahr!",
         "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet.",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "Gehen Sie zur Brieftasche Ihrer Verwendung",
             "selectAccount": "Wählen Sie das Konto aus, das Sie exportieren möchten",
-            "exportAccount": ""
+            "exportAccount": "Exportieren Sie die {JSON} -Datei"
         },
         "exportTutorialsText": "Tutorials exportieren"
     },

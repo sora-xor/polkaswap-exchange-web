@@ -107,7 +107,7 @@
             "connected": "连接的",
             "notConnected": "未连接"
         },
-        "internalTitle": "",
+        "internalTitle": "通过{wallet}连接",
         "internalText": "您可以通过{wallet}创建或链接现有帐户。它使用加密存储帐户。",
         "list": {
             "simplest": "最简单的选择",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "资产有风险！",
         "deleteAccountText": "如果没有助记词、.json 文件或存储在某些扩展名中，则无法恢复帐户。您将被注销。",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "转到您使用的钱包",
             "selectAccount": "选择您要导出的帐户",
-            "exportAccount": ""
+            "exportAccount": "导出{JSON}文件"
         },
         "exportTutorialsText": "导出教程"
     },

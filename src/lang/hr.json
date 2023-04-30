@@ -107,7 +107,7 @@
             "connected": "Povezan",
             "notConnected": "Nije povezano"
         },
-        "internalTitle": "",
+        "internalTitle": "Povežite se putem {wallet}",
         "internalText": "Možete stvoriti ili povezati postojeći račun putem {wallet} . Pohranjuje račune pomoću enkripcije.",
         "list": {
             "simplest": "Najjednostavnija opcija",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Imovina u opasnosti!",
         "deleteAccountText": "Račun se ne može oporaviti bez početne fraze, .json datoteke ili ako je pohranjena u nekoj ekstenziji. Bit ćete odjavljeni.",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "Idite na novčanik koji koristite",
             "selectAccount": "Odaberite račun koji želite izvesti",
-            "exportAccount": ""
+            "exportAccount": "Izvezite datoteku {JSON}"
         },
         "exportTutorialsText": "Upute za izvoz"
     },

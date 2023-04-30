@@ -107,7 +107,7 @@
             "connected": "Połączony",
             "notConnected": "Nie połączony"
         },
-        "internalTitle": "",
+        "internalTitle": "Połącz przez {wallet}",
         "internalText": "Możesz utworzyć lub połączyć istniejące konto za pośrednictwem {wallet} . Przechowuje konta przy użyciu szyfrowania.",
         "list": {
             "simplest": "Najprostsza opcja",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Aktywa zagrożone!",
         "deleteAccountText": "Konta nie można odzyskać bez frazy początkowej, pliku .json lub jeśli jest on przechowywany w jakimś rozszerzeniu. Zostaniesz wylogowany.",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "Przejdź do używanego portfela",
             "selectAccount": "Wybierz konto, które chcesz wyeksportować",
-            "exportAccount": ""
+            "exportAccount": "Wyeksportuj plik {JSON}"
         },
         "exportTutorialsText": "Eksportuj samouczki"
     },

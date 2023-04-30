@@ -107,7 +107,7 @@
             "connected": "Tilkoblet",
             "notConnected": "Ikke tilkoblet"
         },
-        "internalTitle": "",
+        "internalTitle": "Koble til via {wallet}",
         "internalText": "Du kan opprette eller koble til en eksisterende konto via {wallet} . Den lagrer kontoer ved hjelp av kryptering.",
         "list": {
             "simplest": "Det enkleste alternativet",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Eiendeler i fare!",
         "deleteAccountText": "Kontoen kan ikke gjenopprettes uten en frøfrase, .json-fil eller hvis den er lagret i en filtype. Du vil bli logget ut.",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "Gå til lommeboken du bruker",
             "selectAccount": "Velg kontoen du vil eksportere",
-            "exportAccount": ""
+            "exportAccount": "Eksporter {JSON} -filen"
         },
         "exportTutorialsText": "Eksporter opplæringsprogrammer"
     },

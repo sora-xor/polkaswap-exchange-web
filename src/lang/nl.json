@@ -107,7 +107,7 @@
             "connected": "Verbonden",
             "notConnected": "Niet verbonden"
         },
-        "internalTitle": "",
+        "internalTitle": "Maak verbinding via {wallet}",
         "internalText": "U kunt een bestaand account aanmaken of koppelen via {wallet} . Het slaat accounts op met behulp van codering.",
         "list": {
             "simplest": "Eenvoudigste optie",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Activa in gevaar!",
         "deleteAccountText": "Account kan niet worden hersteld zonder een seed-zin, een .json bestand of als het is opgeslagen in een extensie. U wordt uitgelogd.",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "Ga naar de portemonnee van uw gebruik",
             "selectAccount": "Selecteer het account dat u wilt exporteren",
-            "exportAccount": ""
+            "exportAccount": "Exporteer het {JSON} -bestand"
         },
         "exportTutorialsText": "Tutorials exporteren"
     },

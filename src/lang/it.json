@@ -107,7 +107,7 @@
             "connected": "Collegato",
             "notConnected": "Non connesso"
         },
-        "internalTitle": "",
+        "internalTitle": "Connettiti tramite {wallet}",
         "internalText": "Puoi creare o collegare un account esistente tramite {wallet} . Memorizza gli account utilizzando la crittografia.",
         "list": {
             "simplest": "Opzione più semplice",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Beni a rischio!",
         "deleteAccountText": "L'account non può essere recuperato senza una frase seme, un file .json o se è memorizzato in un'estensione. Verrai disconnesso.",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "Vai al portafoglio di tuo uso",
             "selectAccount": "Seleziona l'account che desideri esportare",
-            "exportAccount": ""
+            "exportAccount": "Esporta il file {JSON}"
         },
         "exportTutorialsText": "Esporta tutorial"
     },

@@ -107,7 +107,7 @@
             "connected": "Ansluten",
             "notConnected": "Ej ansluten"
         },
-        "internalTitle": "",
+        "internalTitle": "Anslut via {wallet}",
         "internalText": "Du kan skapa eller länka ett befintligt konto via {wallet} . Den lagrar konton med kryptering.",
         "list": {
             "simplest": "Enklaste alternativet",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Tillgångar i riskzonen!",
         "deleteAccountText": "Kontot kan inte återställas utan en fröfras, .json-fil eller om det är lagrat i något tillägg. Du kommer att loggas ut.",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "Gå till plånboken för din användning",
             "selectAccount": "Välj det konto du vill exportera",
-            "exportAccount": ""
+            "exportAccount": "Exportera {JSON} -filen"
         },
         "exportTutorialsText": "Exportera självstudier"
     },

@@ -107,7 +107,7 @@
             "connected": "Ti sopọ",
             "notConnected": "Ko ti sopọ"
         },
-        "internalTitle": "",
+        "internalTitle": "Sopọ nipasẹ {wallet}",
         "internalText": "O le ṣẹda tabi sopọ mọ akọọlẹ ti o wa tẹlẹ nipasẹ {wallet} . O tọju awọn akọọlẹ nipa lilo fifi ẹnọ kọ nkan.",
         "list": {
             "simplest": "Aṣayan ti o rọrun julọ",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Awọn dukia ni ewu!",
         "deleteAccountText": "Akoto ko le gba pada laisi gbolohun ọrọ irugbin, faili .json tabi ti o ba wa ni ipamọ ni diẹ ninu itẹsiwaju. O yoo wa ni ibuwolu jade.",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "Lọ si apamọwọ ti lilo rẹ",
             "selectAccount": "Yan akọọlẹ ti o fẹ lati okeere",
-            "exportAccount": ""
+            "exportAccount": "Faili {JSON} okeere"
         },
         "exportTutorialsText": "okeere Tutorial"
     },

@@ -107,7 +107,7 @@
             "connected": "Připojeno",
             "notConnected": "Nepřipojený"
         },
-        "internalTitle": "",
+        "internalTitle": "Připojit přes {wallet}",
         "internalText": "Stávající účet můžete vytvořit nebo propojit prostřednictvím {wallet} . Ukládá účty pomocí šifrování.",
         "list": {
             "simplest": "Nejjednodušší možnost",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Majetek v ohrožení!",
         "deleteAccountText": "Účet nelze obnovit bez počáteční fráze, souboru .json nebo pokud je uložen v nějaké příponě. Budete odhlášeni.",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "Přejděte do peněženky, kterou používáte",
             "selectAccount": "Vyberte účet, který chcete exportovat",
-            "exportAccount": ""
+            "exportAccount": "Exportujte soubor {JSON}"
         },
         "exportTutorialsText": "Export výukových programů"
     },

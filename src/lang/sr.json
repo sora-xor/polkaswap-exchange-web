@@ -107,7 +107,7 @@
             "connected": "Повезан",
             "notConnected": "Није повезан"
         },
-        "internalTitle": "",
+        "internalTitle": "Повежите се преко {wallet}",
         "internalText": "Можете да направите или повежете постојећи налог преко {wallet} . Чува налоге користећи шифровање.",
         "list": {
             "simplest": "Најједноставнија опција",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Имовина у опасности!",
         "deleteAccountText": "Налог се не може опоравити без почетне фразе, .јсон датотеке или ако је сачуван у некој екстензији. Бићете одјављени.",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "Идите на новчаник који користите",
             "selectAccount": "Изаберите налог који желите да извезете",
-            "exportAccount": ""
+            "exportAccount": "Извезите {JSON} датотеку"
         },
         "exportTutorialsText": "Извоз туторијала"
     },

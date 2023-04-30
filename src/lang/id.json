@@ -107,7 +107,7 @@
             "connected": "Terhubung",
             "notConnected": "Tidak terhubung"
         },
-        "internalTitle": "",
+        "internalTitle": "Terhubung melalui {wallet}",
         "internalText": "Anda dapat membuat atau menautkan akun yang sudah ada melalui {wallet} . Ini menyimpan akun menggunakan enkripsi.",
         "list": {
             "simplest": "Opsi paling sederhana",
@@ -1112,9 +1112,9 @@
         "assetsAtRiskText": "Aset berisiko!",
         "deleteAccountText": "Akun tidak dapat dipulihkan tanpa seed frase, file .json atau jika disimpan dalam beberapa ekstensi. Anda akan keluar.",
         "importSteps": {
-            "selectWallet": "",
+            "selectWallet": "Buka dompet yang Anda gunakan",
             "selectAccount": "Pilih akun yang ingin Anda ekspor",
-            "exportAccount": ""
+            "exportAccount": "Ekspor file {JSON}"
         },
         "exportTutorialsText": "Ekspor tutorial"
     },
