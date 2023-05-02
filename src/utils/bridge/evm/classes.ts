@@ -71,28 +71,7 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
   }
 
   private async checkTxId(id: string): Promise<void> {
-    const { txId, to, amount, assetAddress } = this.getTransaction(id);
-
-    if (!amount) {
-      throw new Error(`[${this.constructor.name}]: Transaction "amount" cannot be empty`);
-    }
-    if (!assetAddress) {
-      throw new Error(`[${this.constructor.name}]: Transaction "assetAddress" cannot be empty`);
-    }
-    if (!to) {
-      throw new Error(`[${this.constructor.name}]: Transaction recipient "to" cannot be empty`);
-    }
-
-    const asset = this.getAssetByAddress(assetAddress);
-
-    if (!asset || !asset.externalAddress) {
-      throw new Error(`[${this.constructor.name}]: Transaction asset is not registered: ${assetAddress}`);
-    }
-
-    // if transaction is not signed, submit extrinsic
-    if (!txId) {
-      await evmBridgeApi.burn(asset, to, amount, id);
-    }
+    await this.signSora(id);
     // update history to change tx status in ui
     this.updateHistory();
   }
@@ -133,7 +112,13 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
   }
 
   private async subscribeOnTxBySoraHash(id: string): Promise<void> {
-    const { hash, externalNetwork } = this.getTransaction(id);
+    const { hash, externalNetwork, from } = this.getTransaction(id);
+
+    if (!from) {
+      throw new Error(
+        `[${this.constructor.name}]: Transaction "from" is empty, unable to subscribe on transacton data`
+      );
+    }
 
     if (!hash) {
       throw new Error(
@@ -149,9 +134,9 @@ export class EvmBridgeOutgoingReducer extends BridgeTransactionStateHandler<EvmH
 
     try {
       await new Promise<EvmTxStatus>((resolve, reject) => {
-        subscription = evmBridgeApi.subscribeOnTxDetails(externalNetwork, hash).subscribe((data) => {
+        subscription = evmBridgeApi.subscribeOnTxDetails(from, externalNetwork, hash).subscribe((data) => {
           if (!data) {
-            reject(new Error(`[${this.constructor.name}]: Unable to get transacton data by "hash": "${hash}"`));
+            return reject(new Error(`[${this.constructor.name}]: Unable to get transacton data by "hash": "${hash}"`));
           }
 
           this.removeTransactionByHash({ tx: { hash }, force: true });

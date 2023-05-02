@@ -36,7 +36,7 @@ const mutations = defineMutations<BridgeState>()({
   },
 
   setInternalHistory(state): void {
-    state.historyInternal = { ...evmBridgeApi.history };
+    state.historyInternal = { ...evmBridgeApi.history } as Record<string, EvmHistory>;
   },
   setExternalHistory(state, history: Record<string, EvmHistory>): void {
     state.historyExternal = { ...history };

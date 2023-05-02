@@ -39,20 +39,22 @@ function evmTransactionToEvmHistoryItem(
   const asset = assetDataByAddress(tx.soraAssetAddress);
   const transactionState = tx.status;
 
-  // TODO [EVM] add: txId, blockId, startTime, endTime
+  // TODO [EVM] add: blockId
   return {
     id,
-    txId: id, // TODO [EVM] remove mock
+    txId: id,
     type: tx.direction === EvmDirection.Outgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,
     hash: tx.soraHash,
     transactionState,
-    externalNetwork: evmBridgeApi.externalNetwork,
+    externalNetwork: tx.externalNetwork,
     evmHash: tx.evmHash,
     amount: FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString(),
     assetAddress: asset?.address,
     symbol: asset?.symbol,
     from: tx.soraAccount,
     to: tx.evmAccount,
+    startTime: tx.startTimestamp ?? 0,
+    endTime: tx.endTimestamp ?? 0,
   };
 }
 
@@ -134,11 +136,11 @@ const actions = defineActions({
 
     const { hash, txId, evmHash } = tx;
 
-    const item = evmBridgeApi.historyList.find(
-      (item: EvmHistory) => item.hash === hash || item.txId === txId || item.evmHash === evmHash
+    const item = (evmBridgeApi.historyList as EvmHistory[]).find(
+      (item) => item.hash === hash || item.txId === txId || item.evmHash === evmHash
     );
 
-    if (!item) return;
+    if (!item || !item.id) return;
 
     const inProgress = state.inProgressIds[item.id];
     // in not force mode, do not remove tx in progress
@@ -171,8 +173,11 @@ const actions = defineActions({
 
     const externalNetwork = rootState.web3.evmNetworkSelected;
 
-    const hashes = await evmBridgeApi.getUserTxHashes(externalNetwork);
-    const transactions = await evmBridgeApi.getTxsDetails(externalNetwork, hashes);
+    if (!externalNetwork) return;
+
+    const accountAddress = rootState.wallet.account.address;
+
+    const transactions = await evmBridgeApi.getUserTxs(accountAddress, externalNetwork);
     const externalHistory = evmTransactionsToEvmHistory(rootGetters.assets.assetDataByAddress, transactions);
 
     commit.setExternalHistory(externalHistory);
@@ -249,12 +254,13 @@ const actions = defineActions({
   async signSoraTransactionSoraToEvm(context, id: string) {
     const { rootGetters, rootDispatch } = bridgeActionContext(context);
 
-    const tx = evmBridgeApi.getHistory(id);
+    const tx = evmBridgeApi.getHistory(id) as EvmHistory;
 
     if (!tx) throw new Error(`Transaction not found: ${id}`);
 
-    const { to, amount, assetAddress } = tx;
+    const { to, amount, assetAddress, externalNetwork } = tx;
 
+    if (!externalNetwork) throw new Error('Transaction "externalNetwork" cannot be empty');
     if (!amount) throw new Error('Transaction "amount" cannot be empty');
     if (!assetAddress) throw new Error('Transaction "assetAddress" cannot be empty');
     if (!to) throw new Error('Transaction "to" cannot be empty');
@@ -263,8 +269,10 @@ const actions = defineActions({
 
     if (!asset || !asset.externalAddress) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
 
-    await rootDispatch.wallet.transactions.beforeTransactionSign();
-    await evmBridgeApi.transferToEth(asset, to, amount, id);
+    if (!tx.txId) {
+      await rootDispatch.wallet.transactions.beforeTransactionSign();
+      await evmBridgeApi.burn(externalNetwork, asset, to, amount, id);
+    }
   },
 
   async signEvmTransactionEvmToSora(context, id: string): Promise<void> {

@@ -17,6 +17,9 @@ const evmBridge = new Bridge<EvmHistory, EvmBridgeOutgoingReducer | EvmBridgeInc
     [Operation.EvmIncoming]: async (id: string) => {},
     [Operation.EvmOutgoing]: async (id: string) => {},
   },
+  signSora: {
+    [Operation.EvmOutgoing]: async (id: string) => store.dispatch.bridge.signSoraTransactionSoraToEvm(id),
+  },
   // states
   boundaryStates: {
     done: EvmTxStatus.Done,
@@ -26,7 +29,7 @@ const evmBridge = new Bridge<EvmHistory, EvmBridgeOutgoingReducer | EvmBridgeInc
   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
   getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
   // transaction
-  getTransaction: (id: string) => evmBridgeApi.getHistory(id) || store.getters.bridge.history[id],
+  getTransaction: (id: string) => (evmBridgeApi.getHistory(id) as EvmHistory) || store.getters.bridge.history[id],
   updateTransaction,
   // ui integration
   showNotification: (tx: EvmHistory) => store.commit.bridge.setNotificationData(tx),

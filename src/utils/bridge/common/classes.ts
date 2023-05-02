@@ -4,6 +4,7 @@ import { delay } from '@/utils';
 
 import type {
   SignEvm,
+  SignSora,
   AddAsset,
   GetAssetByAddress,
   GetTransaction,
@@ -29,6 +30,7 @@ type TransactionHandlerPayload<Transaction extends EvmHistory> = {
 
 export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
   protected readonly signEvm!: SignEvm;
+  protected readonly signSora!: SignSora;
   // asset
   protected readonly addAsset!: AddAsset;
   protected readonly getAssetByAddress!: GetAssetByAddress;
@@ -47,6 +49,7 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
 
   constructor({
     signEvm,
+    signSora,
     // asset
     addAsset,
     getAssetByAddress,
@@ -64,6 +67,7 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     boundaryStates,
   }: BridgeReducerOptions<Transaction>) {
     this.signEvm = signEvm;
+    this.signSora = signSora;
     this.addAsset = addAsset;
     this.getAssetByAddress = getAssetByAddress;
     this.getTransaction = getTransaction;
@@ -164,16 +168,28 @@ interface BridgeConstructorOptions<
 > extends BridgeCommonOptions<Transaction> {
   reducers: Record<Transaction['type'], Constructable<BridgeReducer>>;
   signEvm: Partial<Record<Transaction['type'], SignEvm>>;
+  signSora: Partial<Record<Transaction['type'], SignSora>>;
 }
 
 export class Bridge<Transaction extends EvmHistory, BridgeReducer extends BridgeTransactionStateHandler<Transaction>> {
   protected reducers!: Partial<Record<Transaction['type'], BridgeReducer>>;
   protected readonly getTransaction!: GetTransaction<Transaction>;
 
-  constructor({ reducers, signEvm, getTransaction, ...rest }: BridgeConstructorOptions<Transaction, BridgeReducer>) {
+  constructor({
+    reducers,
+    signEvm,
+    signSora,
+    getTransaction,
+    ...rest
+  }: BridgeConstructorOptions<Transaction, BridgeReducer>) {
     this.getTransaction = getTransaction;
     this.reducers = Object.entries<Constructable<BridgeReducer>>(reducers).reduce((acc, [operation, Reducer]) => {
-      acc[operation] = new Reducer({ ...rest, getTransaction, signEvm: signEvm[operation] });
+      acc[operation] = new Reducer({
+        ...rest,
+        getTransaction,
+        signEvm: signEvm[operation],
+        signSora: signSora[operation],
+      });
       return acc;
     }, {});
   }

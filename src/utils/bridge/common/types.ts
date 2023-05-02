@@ -12,6 +12,7 @@ export type GetTransaction<T> = (id: string) => T;
 export type UpdateTransaction<T> = (id: string, params: Partial<T>) => void;
 export type ShowNotification<T> = (tx: T) => void;
 export type SignEvm = (id: string) => Promise<void>;
+export type SignSora = (id: string) => Promise<void>;
 export type TransactionBoundaryStates<T extends EvmHistory> = {
   done: T['transactionState'];
   failed: T['transactionState'];
@@ -41,4 +42,5 @@ export interface BridgeCommonOptions<T extends EvmHistory> {
 
 export interface BridgeReducerOptions<T extends EvmHistory> extends BridgeCommonOptions<T> {
   signEvm: SignEvm;
+  signSora: SignSora;
 }
