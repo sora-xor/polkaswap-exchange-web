@@ -116,12 +116,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
   @mutation.web3.setEvmNetworksIds private setEvmNetworksIds!: (data: EvmNetwork[]) => void;
-  @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => void;
   @mutation.web3.setMoonpayEvmNetwork private setMoonpayEvmNetwork!: (evmNetwork: EvmNetwork) => void;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
 
   @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
+  @action.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => Promise<void>;
   @action.wallet.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncFnWithoutArgs;
   @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncFnWithoutArgs;
   @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncFnWithoutArgs;
@@ -206,12 +206,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       }
 
       await this.setApiKeys(data?.API_KEYS);
+      await this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.setEvmNetworksIds(data.EVM_NETWORKS_IDS);
-      this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setMoonpayEvmNetwork(data.MOONPAY_EVM_ID);
 
       if (data.FAUCET_URL) {

@@ -9,8 +9,9 @@ import type { CodecString } from '@sora-substrate/util';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import storage from './storage';
+import axiosInstance from '@/api';
 import { ZeroStringValue } from '@/consts';
-import { BridgeType } from '@/consts/evm';
+import { BridgeType, KnownHashiBridgeAsset } from '@/consts/evm';
 
 import type { EvmNetworkData } from '@/consts/evm';
 
@@ -44,10 +45,25 @@ interface AbiItem {
   gas?: number;
 }
 
-export enum KnownBridgeAsset {
-  VAL = 'VAL',
-  XOR = 'XOR',
-  Other = 'OTHER',
+export type JsonContract =
+  | {
+      abi: AbiItem;
+      evm: {
+        bytecode: {
+          object: string;
+        };
+      };
+    }
+  | undefined;
+
+export enum ContractNetwork {
+  Ethereum = 'ethereum',
+  Other = 'other',
+}
+
+export enum Contract {
+  Internal = 'internal',
+  Other = 'other',
 }
 
 export const ABI = {
@@ -118,19 +134,6 @@ type ethersProvider = ethers.providers.Web3Provider;
 let provider: any = null;
 let ethersInstance: ethersProvider | null = null;
 
-// TODO [EVM] Move to utils/bridge/eth
-export enum KnownEthBridgeAsset {
-  VAL = 'VAL',
-  XOR = 'XOR',
-  Other = 'OTHER',
-}
-
-// TODO [EVM] Move to utils/bridge/eth
-export enum OtherContractType {
-  Bridge = 'BRIDGE',
-  ERC20 = 'ERC20',
-}
-
 export enum Provider {
   Metamask,
   WalletConnect,
@@ -164,7 +167,7 @@ const EthereumGasLimits = [
     [VAL.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     [PSWAP.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     [ETH.address]: gasLimit.sendEthToSidechain,
-    [KnownEthBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownHashiBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
   },
   // SORA -> ETH
   {
@@ -172,7 +175,7 @@ const EthereumGasLimits = [
     [VAL.address]: gasLimit.mintTokensByPeers,
     [PSWAP.address]: gasLimit.receiveBySidechainAssetId,
     [ETH.address]: gasLimit.receiveByEthereumAssetAddress,
-    [KnownEthBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
+    [KnownHashiBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
   },
 ];
 
@@ -389,7 +392,7 @@ async function getEvmNetworkFee(address: string, isSoraToEvm: boolean): Promise<
     const ethersInstance = await getEthersInstance();
     const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
     const gasLimits = EthereumGasLimits[+isSoraToEvm];
-    const key = address in gasLimits ? address : KnownEthBridgeAsset.Other;
+    const key = address in gasLimits ? address : KnownHashiBridgeAsset.Other;
     const gasLimit = gasLimits[key];
     const fee = calcEvmFee(gasPrice, gasLimit);
 
@@ -476,6 +479,11 @@ function storeSelectedBridgeType(bridgeType: BridgeType) {
   storage.set('bridgeType' as any, bridgeType);
 }
 
+async function readSmartContract(network: ContractNetwork, name: string): Promise<JsonContract> {
+  const { data } = await axiosInstance.get(`/abi/${network}/${name}`);
+  return data;
+}
+
 export default {
   onConnect,
   getAccount,
@@ -507,4 +515,6 @@ export default {
   // bridge type
   getSelectedBridgeType,
   storeSelectedBridgeType,
+  // load smart contract
+  readSmartContract,
 };

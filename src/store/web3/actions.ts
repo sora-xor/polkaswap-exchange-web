@@ -1,11 +1,13 @@
+import { ethers } from 'ethers';
 import { defineActions } from 'direct-vuex';
 
 import { web3ActionContext } from '@/store/web3';
-import ethersUtil from '@/utils/ethers-util';
-import { BridgeType } from '@/consts/evm';
+import ethersUtil, { ContractNetwork, Contract } from '@/utils/ethers-util';
+import { BridgeType, KnownHashiBridgeAsset, OtherContractType } from '@/consts/evm';
 
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 import type { Provider } from '@/utils/ethers-util';
+import type { EthBridgeSettings } from './types';
 
 const actions = defineActions({
   async connectExternalAccount(context, provider: Provider): Promise<void> {
@@ -57,6 +59,52 @@ const actions = defineActions({
     const networkType = ethersUtil.getSelectedBridgeType() ?? BridgeType.HASHI;
 
     commit.setNetworkType(networkType);
+  },
+
+  async getEvmTokenAddressByAssetId(context, soraAssetId: string): Promise<string> {
+    const { getters } = web3ActionContext(context);
+    try {
+      if (!soraAssetId) {
+        return '';
+      }
+      const contractAbi = getters.contractAbi(KnownHashiBridgeAsset.Other)[OtherContractType.Bridge].abi;
+      const contractAddress = getters.contractAddress(KnownHashiBridgeAsset.Other);
+      if (!contractAddress || !contractAbi) {
+        console.error('Contract address/abi is not found');
+        return '';
+      }
+      const ethersInstance = await ethersUtil.getEthersInstance();
+      const contractInstance = new ethers.Contract(contractAddress, contractAbi, ethersInstance.getSigner());
+      const methodArgs = [soraAssetId];
+      const externalAddress = await contractInstance._sidechainTokens(...methodArgs);
+      return externalAddress;
+    } catch (error) {
+      console.error(error);
+      return '';
+    }
+  },
+
+  async setEthBridgeSettings(context, settings: EthBridgeSettings): Promise<void> {
+    const { commit } = web3ActionContext(context);
+    const INTERNAL = await ethersUtil.readSmartContract(ContractNetwork.Ethereum, `${Contract.Internal}/MASTER.json`);
+    const BRIDGE = await ethersUtil.readSmartContract(
+      ContractNetwork.Ethereum,
+      `${Contract.Other}/${OtherContractType.Bridge}.json`
+    );
+    const ERC20 = await ethersUtil.readSmartContract(
+      ContractNetwork.Ethereum,
+      `${Contract.Other}/${OtherContractType.ERC20}.json`
+    );
+
+    const contracts = {
+      XOR: INTERNAL,
+      VAL: INTERNAL,
+      OTHER: { BRIDGE, ERC20 },
+    };
+
+    const { evmNetwork, address } = settings;
+
+    commit.setEthBridgeSettings({ evmNetwork, address, contracts });
   },
 });
 

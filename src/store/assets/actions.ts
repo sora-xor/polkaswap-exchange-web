@@ -16,6 +16,7 @@ const GOERLI_ASSETS = {
 };
 
 const actions = defineActions({
+  // EVM network type
   async updateRegisteredAssets(context, reset?: boolean): Promise<void> {
     const { state, commit, rootCommit, rootState } = assetsActionContext(context);
 
@@ -35,7 +36,7 @@ const actions = defineActions({
         Object.entries(networkAssets).map(async ([soraAddress, assetData]) => {
           const accountAsset = {
             // TODO [EVM] change contract to evmAddress after js-lib update
-            address: (assetData as any).contract as string,
+            address: (assetData as any).evmAddress as string,
             balance: ZeroStringValue,
             decimals: 18,
           };

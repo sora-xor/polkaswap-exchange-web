@@ -16,7 +16,6 @@ function initialState(): BridgeState {
     historyPage: 1,
     historyId: '',
     historyLoading: false,
-    historyHashesSubscription: null,
     historyDataSubscription: null,
     waitingForApprove: {},
     inProgressIds: {},

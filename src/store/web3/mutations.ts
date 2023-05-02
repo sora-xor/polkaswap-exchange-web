@@ -5,7 +5,7 @@ import ethersUtil from '@/utils/ethers-util';
 import { initialState } from './state';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
-import type { EthBridgeContracts } from '@/utils/bridge/eth/types';
+import type { EthBridgeContractsAddresses, EthBridgeSmartContracts } from '@/utils/bridge/eth/types';
 import type { Web3State } from './types';
 import type { BridgeType } from '@/consts/evm';
 
@@ -53,13 +53,25 @@ const mutations = defineMutations<Web3State>()({
     state.selectNetworkDialogVisibility = flag;
   },
 
-  // for eth bridge history
-  setEthBridgeSettings(state, { evmNetwork, address }: { evmNetwork: EvmNetwork; address: EthBridgeContracts }): void {
+  // for hashi bridge
+  setEthBridgeSettings(
+    state,
+    {
+      evmNetwork,
+      address,
+      contracts,
+    }: { evmNetwork: EvmNetwork; address: EthBridgeContractsAddresses; contracts: EthBridgeSmartContracts }
+  ): void {
     state.ethBridgeEvmNetwork = evmNetwork;
     state.ethBridgeContractAddress = {
       XOR: address.XOR,
       VAL: address.VAL,
       OTHER: address.OTHER,
+    };
+    state.ethBridgeSmartContracts = {
+      XOR: contracts.XOR,
+      VAL: contracts.VAL,
+      OTHER: contracts.OTHER,
     };
   },
 

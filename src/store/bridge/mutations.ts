@@ -49,14 +49,6 @@ const mutations = defineMutations<BridgeState>()({
     state.historyId = id || '';
   },
 
-  setHistoryHashesSubscription(state, subscription: Subscription): void {
-    state.historyHashesSubscription = subscription;
-  },
-  resetHistoryHashesSubscription(state): void {
-    state.historyHashesSubscription?.unsubscribe();
-    state.historyHashesSubscription = null;
-  },
-
   setHistoryDataSubscription(state, subscription: Subscription): void {
     state.historyDataSubscription = subscription;
   },

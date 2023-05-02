@@ -8,10 +8,11 @@ import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import { bridgeActionContext } from '@/store/bridge';
 import { MaxUint256 } from '@/consts';
+import { OtherContractType, KnownHashiBridgeAsset } from '@/consts/evm';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { waitForApprovedRequest } from '@/utils/bridge/eth/utils';
-import ethersUtil, { ABI, KnownEthBridgeAsset, OtherContractType } from '@/utils/ethers-util';
+import ethersUtil, { ABI } from '@/utils/ethers-util';
 import type { SignTxResult } from './types';
 
 // EVM
@@ -130,6 +131,22 @@ const actions = defineActions({
     const blockNumber = value ?? (await (await ethersUtil.getEthersInstance()).getBlockNumber());
     commit.setEvmBlockNumber(blockNumber);
   },
+  /**
+   * Fetch EVM Network fee for selected bridge asset
+   */
+  async getEvmNetworkFee(context): Promise<void> {
+    const { getters, commit, state } = bridgeActionContext(context);
+    if (!getters.asset?.address) {
+      return;
+    }
+    commit.getEvmNetworkFeeRequest();
+    try {
+      const fee = await ethersUtil.getEvmNetworkFee(getters.asset.address, state.isSoraToEvm);
+      commit.getEvmNetworkFeeSuccess(fee);
+    } catch (error) {
+      commit.getEvmNetworkFeeFailure();
+    }
+  },
 
   removeInternalHistory(context, { tx, force = false }: { tx: Partial<EvmHistory>; force: boolean }): void {
     const { commit, state, rootState } = bridgeActionContext(context);
@@ -209,32 +226,12 @@ const actions = defineActions({
 
     //   commit.setHistoryDataSubscription(dataSubscription);
     // });
-
-    // commit.setHistoryHashesSubscription(hashesSubscription);
   },
 
   unsubscribeFromHistory(context): void {
     const { commit } = bridgeActionContext(context);
 
     commit.resetHistoryDataSubscription();
-    commit.resetHistoryHashesSubscription();
-  },
-
-  /**
-   * Fetch EVM Network fee for selected bridge asset
-   */
-  async getEvmNetworkFee(context): Promise<void> {
-    const { getters, commit, state } = bridgeActionContext(context);
-    if (!getters.asset?.address) {
-      return;
-    }
-    commit.getEvmNetworkFeeRequest();
-    try {
-      const fee = await ethersUtil.getEvmNetworkFee(getters.asset.address, state.isSoraToEvm);
-      commit.getEvmNetworkFeeSuccess(fee);
-    } catch (error) {
-      commit.getEvmNetworkFeeFailure();
-    }
   },
 
   async generateHistoryItem(context, playground): Promise<EvmHistory> {
@@ -285,12 +282,12 @@ const actions = defineActions({
     // if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
     // checkEvmNetwork(context);
     // try {
-    //   const contract = rootGetters.web3.contractAbi(KnownEthBridgeAsset.Other);
+    //   const contract = rootGetters.web3.contractAbi(KnownHashiBridgeAsset.Other);
     //   const evmAccount = rootState.web3.evmAddress;
     //   const isExternalAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
     //   if (!isExternalAccountConnected) throw new Error('Connect account in Metamask');
     //   const ethersInstance = await ethersUtil.getEthersInstance();
-    //   const contractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other) as string;
+    //   const contractAddress = rootGetters.web3.contractAddress(KnownHashiBridgeAsset.Other) as string;
     //   const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
     //   // don't check allowance for native EVM token
     //   if (!isNativeEvmToken) {

@@ -17,7 +17,6 @@ export type BridgeState = {
   historyPage: number;
   historyId: string;
   historyLoading: boolean;
-  historyHashesSubscription: Nullable<Subscription>;
   historyDataSubscription: Nullable<Subscription>;
   waitingForApprove: Record<string, boolean>;
   inProgressIds: Record<string, boolean>;

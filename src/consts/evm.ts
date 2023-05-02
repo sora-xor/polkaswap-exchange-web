@@ -24,6 +24,17 @@ export enum EvmLinkType {
   Transaction = 'Transaction',
 }
 
+export enum KnownHashiBridgeAsset {
+  VAL = 'VAL',
+  XOR = 'XOR',
+  Other = 'OTHER',
+}
+
+export enum OtherContractType {
+  Bridge = 'BRIDGE',
+  ERC20 = 'ERC20',
+}
+
 // EVM networks data
 // This data could be added to Metamask automatically using "switchOrAddChain" function
 export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
