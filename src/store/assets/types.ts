@@ -4,6 +4,7 @@ export type EvmAccountAsset = {
   address: string;
   decimals: number;
   balance: CodecString;
+  contract?: string;
 };
 
 // TODO: move externalDecimals to RegisteredAccountAsset;
