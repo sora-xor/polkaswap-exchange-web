@@ -312,7 +312,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txEvmNetworkFee(): CodecString {
-    return this.historyItem?.evmNetworkFee ?? this.evmNetworkFee;
+    return this.historyItem?.externalNetworkFee ?? this.evmNetworkFee;
   }
 
   get txEvmNetworkFeeFormatted(): string {
@@ -333,7 +333,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txEvmHash(): string {
-    return this.historyItem?.evmHash ?? '';
+    return this.historyItem?.externalHash ?? '';
   }
 
   get txEvmHashFormatted(): string {
@@ -407,7 +407,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txId(): Nullable<string> {
-    return this.isSoraToEvm ? this.historyItem?.txId : this.historyItem?.evmHash;
+    return this.isSoraToEvm ? this.historyItem?.txId : this.historyItem?.externalHash;
   }
 
   get soraTxId(): Nullable<string> {

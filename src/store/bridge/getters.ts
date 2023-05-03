@@ -5,6 +5,7 @@ import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import { bridgeGetterContext } from '@/store/bridge';
 import { ZeroStringValue } from '@/consts';
+import { BridgeType } from '@/consts/evm';
 import ethersUtil from '@/utils/ethers-util';
 import type { BridgeState } from './types';
 import type { RegisteredAccountAssetWithDecimals } from '../assets/types';
@@ -25,14 +26,29 @@ const getters = defineGetters<BridgeState>()({
     const { getters } = bridgeGetterContext(args);
     return !!getters.asset?.externalAddress;
   },
+  operation(...args): Operation {
+    const { state, rootState } = bridgeGetterContext(args);
+    const networkType = rootState.web3.networkType;
+
+    // [TODO]: add SUB network operations
+    if (networkType === BridgeType.HASHI) {
+      return state.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming;
+    } else {
+      return state.isSoraToEvm ? Operation.EvmOutgoing : Operation.EvmIncoming;
+    }
+  },
   // TODO [EVM] update js-lib
   soraNetworkFee(...args): CodecString {
-    const { state, rootState } = bridgeGetterContext(args);
-    // In direction EVM -> SORA sora network fee is 0
-    return state.isSoraToEvm ? rootState.wallet.settings.networkFees[Operation.EvmOutgoing] : ZeroStringValue;
+    const { getters, rootState } = bridgeGetterContext(args);
+    return rootState.wallet.settings.networkFees[getters.operation] ?? ZeroStringValue;
   },
   evmNetworkFee(...args): CodecString {
-    const { state } = bridgeGetterContext(args);
+    const { state, rootState } = bridgeGetterContext(args);
+    const networkType = rootState.web3.networkType;
+
+    if (networkType === BridgeType.HASHI) {
+      return state.evmNetworkFee;
+    }
     // In direction SORA -> EVM evm network fee is 0
     return !state.isSoraToEvm ? state.evmNetworkFee : ZeroStringValue;
   },

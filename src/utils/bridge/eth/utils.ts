@@ -19,7 +19,7 @@ export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
     return !tx.blockId && !tx.txId;
   } else if (tx.type === Operation.EthBridgeIncoming) {
-    return !tx.ethereumHash;
+    return !tx.externalHash;
   } else {
     return true;
   }
@@ -27,7 +27,7 @@ export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
 
 export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
-    return !tx.ethereumHash;
+    return !tx.externalHash;
   } else if (tx.type === Operation.EthBridgeIncoming) {
     return false;
   } else {
@@ -79,14 +79,14 @@ export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeA
 };
 
 export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash: string; blockId: string }> => {
-  if (!tx.ethereumHash) throw new Error('[Bridge]: ethereumHash cannot be empty!');
+  if (!tx.externalHash) throw new Error('[Bridge]: externalHash cannot be empty!');
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} received`);
 
   let subscription!: Subscription;
 
   await new Promise<void>((resolve, reject) => {
-    subscription = ethBridgeApi.subscribeOnRequest(tx.ethereumHash as string).subscribe((request) => {
+    subscription = ethBridgeApi.subscribeOnRequest(tx.externalHash as string).subscribe((request) => {
       if (request) {
         switch (request.status) {
           case BridgeTxStatus.Failed:
@@ -103,8 +103,8 @@ export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash:
 
   subscription.unsubscribe();
 
-  const soraHash = await ethBridgeApi.getSoraHashByEthereumHash(tx.ethereumHash as string);
-  const soraBlockHash = await ethBridgeApi.getSoraBlockHashByRequestHash(tx.ethereumHash as string);
+  const soraHash = await ethBridgeApi.getSoraHashByEthereumHash(tx.externalHash as string);
+  const soraBlockHash = await ethBridgeApi.getSoraBlockHashByRequestHash(tx.externalHash as string);
 
   return { hash: soraHash, blockId: soraBlockHash };
 };
@@ -155,12 +155,12 @@ export const waitForSoraTransactionHash = async (id: string): Promise<string> =>
 export const waitForEvmTransaction = async (id: string) => {
   const transaction = getTransaction(id);
 
-  if (!transaction.ethereumHash) throw new Error('[Bridge]: ethereumHash cannot be empty!');
+  if (!transaction.externalHash) throw new Error('[Bridge]: externalHash cannot be empty!');
 
   await waitForEvmTransactionStatus(
-    transaction.ethereumHash,
-    (ethereumHash: string) => {
-      updateHistoryParams(id, { ethereumHash });
+    transaction.externalHash,
+    (externalHash: string) => {
+      updateHistoryParams(id, { externalHash });
       waitForEvmTransaction(id);
     },
     () => {

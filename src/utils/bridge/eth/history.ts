@@ -232,7 +232,7 @@ export class EthBridgeHistory {
       const localHistoryItem = currentHistory.find((item: BridgeHistory) => {
         return (
           item.txId === historyElement.id ||
-          (isOutgoing ? item.hash === requestHash : item.ethereumHash === requestHash)
+          (isOutgoing ? item.hash === requestHash : item.externalHash === requestHash)
         );
       });
 
@@ -262,7 +262,7 @@ export class EthBridgeHistory {
       const recieptData = ethereumHash ? await getEvmTransactionRecieptByHash(ethereumHash) : null;
 
       const to = isOutgoing ? historyElementData.sidechainAddress : recieptData?.from;
-      const ethereumNetworkFee = recieptData?.evmNetworkFee;
+      const externalNetworkFee = recieptData?.evmNetworkFee;
       const blockHeight = ethereumTx ? String(ethereumTx.blockNumber) : undefined;
       const evmTimestamp = ethereumTx?.timestamp
         ? ethereumTx.timestamp * 1000
@@ -308,7 +308,7 @@ export class EthBridgeHistory {
         hash,
         ethereumHash,
         soraNetworkFee,
-        ethereumNetworkFee,
+        externalNetworkFee,
         transactionState,
         externalNetwork,
         to,

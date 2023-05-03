@@ -48,7 +48,7 @@ function evmTransactionToEvmHistoryItem(
     hash: tx.soraHash,
     transactionState,
     externalNetwork: tx.externalNetwork,
-    evmHash: tx.evmHash,
+    externalHash: tx.evmHash,
     amount: FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString(),
     assetAddress: asset?.address,
     symbol: asset?.symbol,
@@ -151,10 +151,10 @@ const actions = defineActions({
   removeInternalHistory(context, { tx, force = false }: { tx: Partial<EvmHistory>; force: boolean }): void {
     const { commit, state, rootState } = bridgeActionContext(context);
 
-    const { hash, txId, evmHash } = tx;
+    const { hash, txId, externalHash } = tx;
 
     const item = (evmBridgeApi.historyList as EvmHistory[]).find(
-      (item) => item.hash === hash || item.txId === txId || item.evmHash === evmHash
+      (item) => item.hash === hash || item.txId === txId || item.externalHash === externalHash
     );
 
     if (!item || !item.id) return;
@@ -175,7 +175,7 @@ const actions = defineActions({
     if (item.payload?.moonpayId) {
       rootState.moonpay.api.accountRecords = {
         ...rootState.moonpay.api.accountRecords,
-        [item.payload.moonpayId]: item.evmHash,
+        [item.payload.moonpayId]: item.externalHash,
       };
     }
     // remove tx from history
@@ -268,7 +268,7 @@ const actions = defineActions({
 
     if (!tx.txId) {
       await rootDispatch.wallet.transactions.beforeTransactionSign();
-      await evmBridgeApi.burn(externalNetwork, asset, to, amount, id);
+      await evmBridgeApi.burn(asset, to, amount, externalNetwork, id);
     }
   },
 

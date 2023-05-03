@@ -132,6 +132,8 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
         transactionState: rejectState,
         endTime,
       });
+
+      this.removeTransactionFromProgress(id);
     }
   }
 
@@ -151,6 +153,8 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
 
       this.showNotification(tx);
     }
+
+    this.removeTransactionFromProgress(id);
   }
 
   beforeSubmit(id: string): void {
@@ -159,6 +163,8 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     if (!activeTransaction || activeTransaction.id !== id) {
       throw new Error(`[Bridge]: Transaction ${id} stopped, user should sign transaction in ui`);
     }
+
+    this.addTransactionToProgress(id);
   }
 }
 

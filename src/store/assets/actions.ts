@@ -10,16 +10,6 @@ import { BridgeType } from '@/consts/evm';
 
 import type { EvmAccountAsset } from '@/store/assets/types';
 
-// TODO [EVM] remove then evm bridge will support Goerli for Moonpay
-const GOERLI_ASSETS = {
-  '0x0200060000000000000000000000000000000000000000000000000000000000': {
-    contract: '0x9550949c46E27761B57f5391a25a7725444a938b',
-  },
-  '0x0200070000000000000000000000000000000000000000000000000000000000': {
-    contract: '0x0000000000000000000000000000000000000000',
-  },
-};
-
 async function getEthRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, EvmAccountAsset>[]> {
   const { rootDispatch, rootState, rootCommit } = assetsActionContext(context);
 

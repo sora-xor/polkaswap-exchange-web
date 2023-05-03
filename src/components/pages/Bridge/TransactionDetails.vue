@@ -1,7 +1,6 @@
 <template>
   <transaction-details :info-only="infoOnly">
     <info-line
-      v-if="isSoraToEvm"
       :label="t('bridge.soraNetworkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
       :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
@@ -10,7 +9,6 @@
       is-formatted
     />
     <info-line
-      v-else
       :label="t('bridge.ethereumNetworkFee')"
       :label-tooltip="t('ethNetworkFeeTooltipText')"
       :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"

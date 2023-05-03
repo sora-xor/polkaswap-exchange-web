@@ -174,15 +174,15 @@ class BridgeTransactionStateHandler {
     await waitForEvmTransaction(id);
 
     const tx = this.getTransaction(id);
-    const { evmNetworkFee, blockHeight } = (await getEvmTransactionRecieptByHash(tx.ethereumHash as string)) || {};
+    const { evmNetworkFee, blockHeight } = (await getEvmTransactionRecieptByHash(tx.externalHash as string)) || {};
 
     if (!evmNetworkFee || !blockHeight) {
-      this.updateTransactionParams(id, { ethereumHash: undefined, ethereumNetworkFee: undefined });
-      throw new Error(`[Bridge]: Ethereum transaction not found, hash: ${tx.ethereumHash}. 'ethereumHash' is reset`);
+      this.updateTransactionParams(id, { externalHash: undefined, externalNetworkFee: undefined });
+      throw new Error(`[Bridge]: Ethereum transaction not found, hash: ${tx.externalHash}. 'externalHash' is reset`);
     }
 
     // In BridgeHistory 'blockHeight' will store evm block number
-    this.updateTransactionParams(id, { ethereumNetworkFee: evmNetworkFee, blockHeight });
+    this.updateTransactionParams(id, { externalNetworkFee: evmNetworkFee, blockHeight });
   }
 
   async onEvmSubmitted(id: string): Promise<void> {
@@ -190,15 +190,15 @@ class BridgeTransactionStateHandler {
 
     const tx = this.getTransaction(id);
 
-    if (!tx.ethereumHash) {
+    if (!tx.externalHash) {
       await this.beforeSubmit(id);
 
       try {
-        const { hash: ethereumHash, fee } = await this.signEvm(id);
+        const { hash: externalHash, fee } = await this.signEvm(id);
 
         this.updateTransactionParams(id, {
-          ethereumHash,
-          ethereumNetworkFee: fee ?? tx.ethereumNetworkFee,
+          externalHash,
+          externalNetworkFee: fee ?? tx.externalNetworkFee,
         });
       } catch (error: any) {
         // maybe transaction already completed, try to restore ethereum transaction hash
