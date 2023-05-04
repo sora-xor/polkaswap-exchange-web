@@ -16,7 +16,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { v4 as uuidv4 } from 'uuid';
-import { WALLET_CONSTS, mixins, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS, mixins, ScriptLoader, getWallet } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
@@ -24,7 +24,8 @@ import { soraCard } from '@/utils/card';
 
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin) {
-  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.account.selectedWallet private selectedWallet!: WALLET_CONSTS.AppWallet;
 
   @Prop({ default: '', type: String }) readonly accessToken!: string;
 
@@ -126,10 +127,17 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
             // Integrator will be notified if user cancels KYC or something went wrong
             // alert('Something went wrong ' + data.StatusDescription);
           })
-          .on('Success', (data) => {
+          .on('Success', async (data) => {
             // Integrator handles UI from this point on on successful kyc
             // alert('Kyc was successfull, integrator takes control of flow from now on')
 
+            // TODO: ADD CHECK WHEN IT'S REQUIRED
+            const refreshToken = localStorage.getItem('PW-refresh-token');
+            if (this.selectedWallet === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
+              console.info(refreshToken);
+              const wallet = await getWallet(this.selectedWallet);
+              await wallet.provider?.send('pub(soraCard.token)', [refreshToken]);
+            }
             this.$emit('confirm-kyc', true);
             ScriptLoader.unload(kycService.sdkURL);
 
