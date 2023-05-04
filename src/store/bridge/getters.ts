@@ -3,10 +3,13 @@ import { Operation } from '@sora-substrate/util';
 import type { CodecString } from '@sora-substrate/util';
 import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { bridgeGetterContext } from '@/store/bridge';
 import { ZeroStringValue } from '@/consts';
 import { BridgeType } from '@/consts/evm';
 import ethersUtil from '@/utils/ethers-util';
+import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 import type { BridgeState } from './types';
 import type { RegisteredAccountAssetWithDecimals } from '../assets/types';
 
@@ -52,7 +55,7 @@ const getters = defineGetters<BridgeState>()({
     // In direction SORA -> EVM evm network fee is 0
     return !state.isSoraToEvm ? state.evmNetworkFee : ZeroStringValue;
   },
-  history(...args): Record<string, EvmHistory> {
+  history(...args): Record<string, IBridgeTransaction> {
     const { state, rootState } = bridgeGetterContext(args);
 
     const externalNetwork = rootState.web3.evmNetworkSelected;
@@ -68,7 +71,7 @@ const getters = defineGetters<BridgeState>()({
       return { ...buffer, [item.id]: item };
     }, {});
   },
-  historyItem(...args): Nullable<EvmHistory> {
+  historyItem(...args): Nullable<IBridgeTransaction> {
     const { state, getters } = bridgeGetterContext(args);
 
     if (!state.historyId) return null;
@@ -83,6 +86,12 @@ const getters = defineGetters<BridgeState>()({
     const currentAddress = rootState.web3.evmAddress;
 
     return !historyAddress || ethersUtil.addressesAreEqual(historyAddress, currentAddress);
+  },
+  bridgeApi(...args) {
+    const { rootState } = bridgeGetterContext(args);
+    const api = rootState.web3.networkType === BridgeType.HASHI ? ethBridgeApi : evmBridgeApi;
+
+    return api;
   },
 });
 

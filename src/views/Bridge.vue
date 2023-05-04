@@ -587,7 +587,6 @@ export default class Bridge extends Mixins(
 
   changeEvmNetwork(evmNetwork: EvmNetwork): void {
     this.selectEvmNetwork(evmNetwork);
-    this.subscribeOnHistory();
   }
 }
 </script>

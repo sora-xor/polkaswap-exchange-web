@@ -1,12 +1,11 @@
 import omit from 'lodash/fp/omit';
 import { defineMutations } from 'direct-vuex';
-import type { Subscription } from 'rxjs';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import { ZeroStringValue } from '@/consts';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
+import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 import type { BridgeState } from './types';
 
 const mutations = defineMutations<BridgeState>()({
@@ -35,9 +34,15 @@ const mutations = defineMutations<BridgeState>()({
     state.evmNetworkFeeFetching = false;
   },
 
-  setInternalHistory(state): void {
-    state.historyInternal = { ...evmBridgeApi.history } as Record<string, EvmHistory>;
+  /**
+   * Set bridge transactions from localstorage (ethBridgeApi or evmBridgeApi)
+   */
+  setInternalHistory(state, history: Record<string, IBridgeTransaction>): void {
+    state.historyInternal = { ...history };
   },
+  /**
+   * Set bridge transactions from external sources (f.e. network or etherscan)
+   */
   setExternalHistory(state, history: Record<string, EvmHistory>): void {
     state.historyExternal = { ...history };
   },
@@ -47,14 +52,6 @@ const mutations = defineMutations<BridgeState>()({
   },
   setHistoryId(state, id?: string): void {
     state.historyId = id || '';
-  },
-
-  setHistoryDataSubscription(state, subscription: Subscription): void {
-    state.historyDataSubscription = subscription;
-  },
-  resetHistoryDataSubscription(state): void {
-    state.historyDataSubscription?.unsubscribe();
-    state.historyDataSubscription = null;
   },
 
   addTxIdInProgress(state, id: string): void {
@@ -76,7 +73,7 @@ const mutations = defineMutations<BridgeState>()({
   setHistoryLoading(state, value: boolean): void {
     state.historyLoading = value;
   },
-  setNotificationData(state, tx: Nullable<EvmHistory> = null) {
+  setNotificationData(state, tx: Nullable<IBridgeTransaction> = null) {
     state.notificationData = tx;
   },
 });

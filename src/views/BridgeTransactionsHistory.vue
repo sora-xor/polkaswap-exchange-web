@@ -148,7 +148,7 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   created(): void {
     this.withParentLoading(async () => {
-      this.setHistory();
+      this.updateHistory();
 
       if (this.historyPage !== 1) {
         this.currentPage = this.historyPage;
@@ -163,7 +163,6 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   changeEvmNetwork(evmNetwork: EvmNetwork): void {
     this.setSelectedEvmNetwork(evmNetwork);
-    this.subscribeOnHistory();
   }
 
   getFilteredHistory(history: Array<EvmHistory>): Array<EvmHistory> {

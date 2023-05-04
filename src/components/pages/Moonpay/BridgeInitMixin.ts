@@ -70,7 +70,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       throw new Error('bridgeTransactionData is empty');
     }
 
-    this.setHistory();
+    this.updateHistory();
 
     const tx = this.getBridgeHistoryItemByMoonpayId(this.bridgeTransactionData.payload.moonpayId);
 

@@ -1,13 +1,14 @@
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { BridgeCurrencyType, BridgeHistory, BridgeNetworks, FPNumber, Operation } from '@sora-substrate/util';
 import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import { bridgeActionContext } from '@/store/bridge';
 import { MaxUint256 } from '@/consts';
-import { OtherContractType, KnownEthBridgeAsset } from '@/consts/evm';
+import { OtherContractType, KnownEthBridgeAsset, BridgeType } from '@/consts/evm';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import ethersUtil, { ABI } from '@/utils/ethers-util';
 import type { SignTxResult } from './types';
@@ -75,11 +76,17 @@ function evmTransactionsToEvmHistory(
 function bridgeDataToHistoryItem(
   context: ActionContext<any, any>,
   { date = Date.now(), payload = {}, ...params } = {}
-): EvmHistory {
+): EvmHistory | BridgeHistory {
   const { getters, state, rootState } = bridgeActionContext(context);
+  const networkType = rootState.web3.networkType;
+  const isEthBridge = networkType === BridgeType.HASHI;
+  const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : EvmTxStatus.Pending;
+  const externalNetwork = isEthBridge
+    ? BridgeNetworks.ETH_NETWORK_ID
+    : (rootState.web3.evmNetworkSelected as EvmNetwork);
 
   return {
-    type: (params as any).type ?? (state.isSoraToEvm ? Operation.EvmOutgoing : Operation.EvmIncoming),
+    type: (params as any).type ?? getters.operation,
     amount: (params as any).amount ?? state.amount,
     symbol: (params as any).symbol ?? getters.asset?.symbol,
     assetAddress: (params as any).assetAddress ?? getters.asset?.address,
@@ -87,10 +94,10 @@ function bridgeDataToHistoryItem(
     endTime: date,
     status: '',
     hash: '',
-    transactionState: EvmTxStatus.Pending,
+    transactionState,
     soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
-    // evmNetworkFee: (params as any).evmNetworkFee ?? getters.evmNetworkFee,
-    externalNetwork: rootState.web3.evmNetworkSelected as unknown as EvmNetwork,
+    externalNetworkFee: (params as any).evmNetworkFee ?? getters.evmNetworkFee,
+    externalNetwork,
     to: (params as any).to ?? rootState.web3.evmAddress,
     payload,
   };
@@ -148,8 +155,14 @@ const actions = defineActions({
     }
   },
 
+  updateInternalHistory(context): void {
+    const { getters, commit } = bridgeActionContext(context);
+    const history = getters.bridgeApi.history;
+    commit.setInternalHistory(history);
+  },
+
   removeInternalHistory(context, { tx, force = false }: { tx: Partial<EvmHistory>; force: boolean }): void {
-    const { commit, state, rootState } = bridgeActionContext(context);
+    const { commit, dispatch, state, rootState } = bridgeActionContext(context);
 
     const { hash, txId, externalHash } = tx;
 
@@ -180,7 +193,8 @@ const actions = defineActions({
     }
     // remove tx from history
     evmBridgeApi.removeHistory(item.id);
-    commit.setInternalHistory();
+
+    dispatch.updateInternalHistory();
   },
 
   async getHistory(context): Promise<void> {
@@ -200,50 +214,16 @@ const actions = defineActions({
     commit.setExternalHistory(externalHistory);
   },
 
-  subscribeOnHistory(context): void {
-    const { commit, dispatch, rootState, rootGetters } = bridgeActionContext(context);
-
-    // dispatch.unsubscribeFromHistory();
-
-    // if (!rootGetters.wallet.account.isLoggedIn) return;
-
-    // const externalNetwork = rootState.web3.evmNetworkSelected;
-
-    // const hashesSubscription = evmBridgeApi.subscribeOnUserTxHashes(externalNetwork).subscribe((hashes) => {
-    //   commit.resetHistoryDataSubscription();
-
-    //   const dataSubscription = evmBridgeApi
-    //     .subscribeOnTxsDetails(externalNetwork, hashes)
-    //     .subscribe((transactions: EvmTransaction[]) => {
-    //       const externalHistory = evmTransactionsToEvmHistory(rootGetters.assets.assetDataByAddress, transactions);
-
-    //       commit.setExternalHistory(externalHistory);
-
-    //       for (const id in externalHistory) {
-    //         dispatch.removeInternalHistory({ tx: externalHistory[id], force: false });
-    //       }
-    //     });
-
-    //   commit.setHistoryDataSubscription(dataSubscription);
-    // });
-  },
-
-  unsubscribeFromHistory(context): void {
-    const { commit } = bridgeActionContext(context);
-
-    commit.resetHistoryDataSubscription();
-  },
-
-  async generateHistoryItem(context, playground): Promise<EvmHistory> {
-    const { commit } = bridgeActionContext(context);
+  async generateHistoryItem(context, playground): Promise<EvmHistory | BridgeHistory> {
+    const { dispatch, getters } = bridgeActionContext(context);
     const historyData = bridgeDataToHistoryItem(context, playground);
-    const historyItem = evmBridgeApi.generateHistoryItem(historyData);
+    const historyItem = getters.bridgeApi.generateHistoryItem(historyData as any);
 
     if (!historyItem) {
       throw new Error('[Bridge]: "generateHistoryItem" failed');
     }
 
-    commit.setInternalHistory();
+    dispatch.updateInternalHistory();
 
     return historyItem;
   },

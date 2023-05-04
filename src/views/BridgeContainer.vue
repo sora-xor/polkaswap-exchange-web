@@ -22,16 +22,14 @@ import { action } from '@/store/decorators';
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
   @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.updateEvmBlockNumber private updateEvmBlockNumber!: (block?: number) => Promise<void>;
-  @action.bridge.subscribeOnHistory subscribeOnHistory!: AsyncFnWithoutArgs;
-  @action.bridge.unsubscribeFromHistory unsubscribeFromHistory!: AsyncFnWithoutArgs;
   @action.assets.updateRegisteredAssets private updateExternalBalances!: (reset?: boolean) => Promise<void>;
 
   private unwatchEthereum!: FnWithoutArgs;
   private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
 
   async created(): Promise<void> {
-    this.setStartSubscriptions([this.subscribeOnHistory, this.subscribeToEvmBlockHeaders, this.subscribeOnEvm]);
-    this.setResetSubscriptions([this.unsubscribeFromHistory, this.unsubscribeEvmBlockHeaders, this.unsubscribeFromEvm]);
+    this.setStartSubscriptions([this.subscribeToEvmBlockHeaders, this.subscribeOnEvm]);
+    this.setResetSubscriptions([this.unsubscribeEvmBlockHeaders, this.unsubscribeFromEvm]);
 
     await this.withParentLoading(async () => {
       await this.restoreNetworkType();

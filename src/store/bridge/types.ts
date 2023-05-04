@@ -1,7 +1,7 @@
-import type { Subscription } from 'rxjs';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+
+import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 export type BridgeState = {
   isSoraToEvm: boolean;
@@ -12,15 +12,14 @@ export type BridgeState = {
   evmNetworkFeeFetching: boolean;
   evmBlockNumber: number;
   // history sources (unsynced localstorage & network)
-  historyInternal: Record<string, EvmHistory>;
-  historyExternal: Record<string, EvmHistory>;
+  historyInternal: Record<string, IBridgeTransaction>;
+  historyExternal: Record<string, IBridgeTransaction>;
   historyPage: number;
   historyId: string;
   historyLoading: boolean;
-  historyDataSubscription: Nullable<Subscription>;
   waitingForApprove: Record<string, boolean>;
   inProgressIds: Record<string, boolean>;
-  notificationData: Nullable<EvmHistory>;
+  notificationData: Nullable<IBridgeTransaction>;
 };
 
 export type SignTxResult = {

@@ -19,11 +19,11 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   @mutation.bridge.setSoraToEvm setSoraToEvm!: (value: boolean) => void;
   @mutation.bridge.setHistoryPage setHistoryPage!: (historyPage?: number) => void;
   @mutation.bridge.setHistoryId setHistoryId!: (id?: string) => void;
-  @mutation.bridge.setInternalHistory setHistory!: FnWithoutArgs;
 
   @action.bridge.setAssetAddress setAssetAddress!: (address?: string) => Promise<void>;
   @action.bridge.generateHistoryItem generateHistoryItem!: (history?: any) => Promise<EvmHistory>;
   @action.bridge.getHistory getHistory!: AsyncFnWithoutArgs;
+  @action.bridge.updateInternalHistory updateHistory!: FnWithoutArgs;
 
   getSoraNetworkFee(type: Operation): CodecString {
     return this.isOutgoingType(type) ? this.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;

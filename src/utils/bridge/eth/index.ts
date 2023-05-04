@@ -32,16 +32,13 @@ const ethBridge: EthBridge = new Bridge({
   updateTransaction: updateHistoryParams,
   // ui integration
   showNotification: (tx: BridgeHistory) => store.commit.bridge.setNotificationData(tx as any),
-  updateHistory: () => {
-    console.info('updateHistory');
-  },
   getActiveTransaction: () => {
     console.info('getActiveTransaction');
     return null;
   },
   addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
   removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
-  // updateHistory: () => store.commit.bridge.setHistory(),
+  updateHistory: () => store.dispatch.bridge.updateInternalHistory(),
   // getActiveTransaction: () => store.getters.bridge.historyItem,
   getBridgeHistoryInstance: () => store.dispatch.bridge.getEthBridgeHistoryInstance(),
 });

@@ -213,7 +213,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import evmBridge from '@/utils/bridge/evm';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { state, getter, mutation } from '@/store/decorators';
+import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/evm/utils';
@@ -246,7 +246,7 @@ export default class BridgeTransaction extends Mixins(
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
   @getter.bridge.historyItem private historyItem!: Nullable<EvmHistory>;
 
-  @mutation.bridge.setInternalHistory setHistory!: FnWithoutArgs;
+  @action.bridge.updateInternalHistory updateHistory!: FnWithoutArgs;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
 
   get viewInEtherscan(): string {
@@ -522,7 +522,7 @@ export default class BridgeTransaction extends Mixins(
 
       if (tx.id && !this.txInProcess && isUnsignedTx(tx)) {
         evmBridgeApi.removeHistory(tx.id);
-        this.setHistory(); // hack to update another views because of unknown hooks exucution order
+        this.updateHistory(); // hack to update another views because of unknown hooks exucution order
       }
     }
 
