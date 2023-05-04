@@ -41,7 +41,7 @@ const actions = defineActions({
     if (getters.selectedEvmNetwork) return;
 
     const selectedEvmNetworkId =
-      ethersUtil.getSelectedEvmNetwork() || getters.availableNetworks[BridgeType.HASHI]?.[0]?.id;
+      ethersUtil.getSelectedEvmNetwork() || getters.availableNetworks[BridgeType.ETH]?.[0]?.id;
 
     if (selectedEvmNetworkId) {
       commit.setSelectedEvmNetwork(selectedEvmNetworkId);
@@ -56,7 +56,7 @@ const actions = defineActions({
 
     if (state.networkType) return;
 
-    const networkType = ethersUtil.getSelectedBridgeType() ?? BridgeType.HASHI;
+    const networkType = ethersUtil.getSelectedBridgeType() ?? BridgeType.ETH;
 
     commit.setNetworkType(networkType);
   },

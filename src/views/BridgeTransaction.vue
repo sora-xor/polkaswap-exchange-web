@@ -80,11 +80,17 @@
       <info-line
         is-formatted
         :label="t('bridgeTransaction.networkInfo.transactionFee')"
-        :value="isSoraToEvm ? txSoraNetworkFeeFormatted : txEvmNetworkFeeFormatted"
-        :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
+        :value="txSoraNetworkFeeFormatted"
+        :asset-symbol="KnownSymbols.XOR"
         :fiat-value="txSoraNetworkFeeFiatValue"
+      />
+      <info-line
+        is-formatted
+        :label="t('bridgeTransaction.networkInfo.transactionFee')"
+        :value="txEvmNetworkFeeFormatted"
+        :asset-symbol="evmTokenSymbol"
       >
-        <template v-if="!isSoraToEvm && txEvmNetworkFeeFormatted" #info-line-value-prefix>
+        <template v-if="txEvmNetworkFeeFormatted" #info-line-value-prefix>
           <span class="info-line-value-prefix">~</span>
         </template>
       </info-line>
@@ -204,7 +210,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString, BridgeHistory } from '@sora-substrate/util';
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -214,10 +220,18 @@ import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
-import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/evm/utils';
+import {
+  isOutgoingTransaction as isOutgoingEvmTransaction,
+  isUnsignedTx as isUnsignedEvmTx,
+} from '@/utils/bridge/evm/utils';
+import {
+  isOutgoingTransaction as isOutgoingEthTransaction,
+  isUnsignedTx as isUnsignedEthTx,
+} from '@/utils/bridge/eth/utils';
 
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 import type { EvmLinkType } from '@/consts/evm';
+import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 const FORMATTED_HASH_LENGTH = 24;
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
@@ -243,7 +257,8 @@ export default class BridgeTransaction extends Mixins(
   @state.router.prev private prevRoute!: Nullable<PageNames>;
 
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
-  @getter.bridge.historyItem private historyItem!: Nullable<EvmHistory>;
+  @getter.bridge.historyItem private historyItem!: Nullable<IBridgeTransaction>;
+  @getter.bridge.isEthBridge private isEthBridge!: boolean;
 
   @action.bridge.removeHistory private removeHistory!: ({ tx, force }: { tx: any; force?: boolean }) => Promise<void>;
   @action.bridge.handleBridgeTransaction private handleBridgeTransaction!: (id: string) => Promise<void>;
@@ -251,6 +266,14 @@ export default class BridgeTransaction extends Mixins(
 
   get viewInEtherscan(): string {
     return this.t('transaction.viewIn', { explorer: this.TranslationConsts.Etherscan });
+  }
+
+  get txIsUnsigned(): boolean {
+    if (!this.historyItem?.id) return false;
+
+    return this.isEthBridge
+      ? isUnsignedEthTx(this.historyItem as BridgeHistory)
+      : isUnsignedEvmTx(this.historyItem as EvmHistory);
   }
 
   get txInProcess(): boolean {
@@ -280,7 +303,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isSoraToEvm(): boolean {
-    return isOutgoingTransaction(this.historyItem);
+    return this.isEthBridge
+      ? isOutgoingEthTransaction(this.historyItem as BridgeHistory)
+      : isOutgoingEvmTransaction(this.historyItem as EvmHistory);
   }
 
   get formattedAmount(): string {
@@ -296,7 +321,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get evmIcon(): string {
-    return this.externalNetworkId ? this.getEvmIcon(this.externalNetworkId) : '';
+    return this.getEvmIcon(this.externalNetworkId);
   }
 
   get txSoraNetworkFee(): CodecString {
@@ -354,16 +379,22 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isTxFailed(): boolean {
-    return [EvmTxStatus.Failed, ETH_BRIDGE_STATES.EVM_REJECTED, ETH_BRIDGE_STATES.SORA_REJECTED].includes(
-      this.txState as any
-    );
+    // ETH
+    if ([ETH_BRIDGE_STATES.EVM_REJECTED, ETH_BRIDGE_STATES.SORA_REJECTED].includes(this.txState as any)) return true;
+    // EVM
+    if (this.txState === EvmTxStatus.Failed) return true;
+    // OTHER
+    return false;
   }
 
   get isTxCompleted(): boolean {
-    return [
-      EvmTxStatus.Done,
-      this.isSoraToEvm ? ETH_BRIDGE_STATES.SORA_COMMITED : ETH_BRIDGE_STATES.EVM_COMMITED,
-    ].includes(this.txState as any);
+    // ETH
+    if (this.txState === (this.isSoraToEvm ? ETH_BRIDGE_STATES.SORA_COMMITED : ETH_BRIDGE_STATES.EVM_COMMITED))
+      return true;
+    // EVM
+    if (this.txState === EvmTxStatus.Done) return true;
+    // OTHER
+    return false;
   }
 
   get isTxPending(): boolean {
@@ -522,12 +553,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   beforeDestroy(): void {
-    if (this.historyItem) {
+    if (!this.txInProcess && this.txIsUnsigned) {
       const tx = { ...this.historyItem };
-
-      if (tx.id && !this.txInProcess && isUnsignedTx(tx)) {
-        this.removeHistory({ tx, force: true });
-      }
+      this.removeHistory({ tx, force: true });
     }
 
     // reset active history item
@@ -567,14 +595,9 @@ export default class BridgeTransaction extends Mixins(
 </script>
 
 <style lang="scss">
-$collapse-horisontal-padding: $inner-spacing-medium;
 $header-icon-size: 52px;
 $header-spinner-size: 62px;
 $header-font-size: var(--s-heading3-font-size);
-$collapse-header-title-font-size: $s-heading3-caps-font-size;
-$collapse-header-title-line-height: var(--s-line-height-base);
-$collapse-header-title-height: calc(#{$collapse-header-title-font-size} * #{$collapse-header-title-line-height});
-$collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-height});
 
 .transaction {
   &-container {

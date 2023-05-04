@@ -13,7 +13,7 @@ export function initialState(): Web3State {
     evmNetwork: null, // evm network in provider
     evmNetworksIds: [],
     evmNetworkSelected: null, // evm network selected by user
-    networkType: ethersUtil.getSelectedBridgeType() ?? BridgeType.HASHI,
+    networkType: ethersUtil.getSelectedBridgeType() ?? BridgeType.ETH,
 
     selectNetworkDialogVisibility: false,
 

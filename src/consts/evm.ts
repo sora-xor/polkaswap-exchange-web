@@ -14,7 +14,7 @@ export interface EvmNetworkData {
 }
 
 export enum BridgeType {
-  HASHI = 'HASHI',
+  ETH = 'ETH',
   EVM = 'EVM',
   SUB = 'SUB',
 }

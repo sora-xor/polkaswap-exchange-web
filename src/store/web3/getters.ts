@@ -17,7 +17,7 @@ const getters = defineGetters<Web3State>()({
     const evm = state.evmNetworksIds.map((evmNetworkId) => EVM_NETWORKS[evmNetworkId]);
 
     return {
-      [BridgeType.HASHI]: hashi,
+      [BridgeType.ETH]: hashi,
       [BridgeType.EVM]: evm,
       [BridgeType.SUB]: [],
     };

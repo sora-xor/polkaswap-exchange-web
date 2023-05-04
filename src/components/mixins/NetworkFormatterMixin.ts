@@ -25,7 +25,7 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
   }
 
   // TODO [EVM] add network icons
-  getEvmIcon(evmNetwork?: EvmNetwork): string {
+  getEvmIcon(evmNetwork?: Nullable<EvmNetwork>): string {
     return 'eth';
   }
 

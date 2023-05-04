@@ -82,8 +82,7 @@ function bridgeDataToHistoryItem(
   { date = Date.now(), payload = {}, ...params } = {}
 ): EvmHistory | BridgeHistory {
   const { getters, state, rootState } = bridgeActionContext(context);
-  const networkType = rootState.web3.networkType;
-  const isEthBridge = networkType === BridgeType.HASHI;
+  const isEthBridge = getters.isEthBridge;
   const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : EvmTxStatus.Pending;
   const externalNetwork = isEthBridge
     ? BridgeNetworks.ETH_NETWORK_ID
@@ -220,15 +219,13 @@ const actions = defineActions({
   },
 
   async handleBridgeTransaction(context, id: string): Promise<void> {
-    const { rootState } = bridgeActionContext(context);
+    const { getters } = bridgeActionContext(context);
 
-    switch (rootState.web3.networkType) {
-      case BridgeType.HASHI:
-        await ethBridge.handleTransaction(id);
-        break;
-      case BridgeType.EVM:
-        await evmBridge.handleTransaction(id);
-        break;
+    if (getters.isEthBridge) {
+      return await ethBridge.handleTransaction(id);
+    }
+    if (getters.isEvmBridge) {
+      return await evmBridge.handleTransaction(id);
     }
   },
 

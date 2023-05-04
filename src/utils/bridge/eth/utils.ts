@@ -35,6 +35,14 @@ export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
   }
 };
 
+export const isUnsignedTx = (tx: BridgeHistory): boolean => {
+  return isUnsignedFromPart(tx);
+};
+
+export const isOutgoingTransaction = (tx: Nullable<BridgeHistory>): boolean => {
+  return tx?.type === Operation.EthBridgeOutgoing;
+};
+
 export const getTransaction = (id: string): BridgeHistory => {
   const tx = ethBridgeApi.getHistory(id) as BridgeHistory;
 
@@ -46,10 +54,6 @@ export const getTransaction = (id: string): BridgeHistory => {
 export const updateTransaction = async (id: string, params = {}) => {
   const tx = getTransaction(id);
   ethBridgeApi.saveHistory({ ...tx, ...params });
-};
-
-export const isOutgoingTransaction = (tx: Nullable<BridgeHistory>): boolean => {
-  return tx?.type === Operation.EthBridgeOutgoing;
 };
 
 export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeApprovedRequest> => {
@@ -190,7 +194,7 @@ export const updateEthBridgeHistory =
         web3: { ethBridgeEvmNetwork, ethBridgeContractAddress },
       } = rootState;
 
-      const evmNetworkData = rootGetters.web3.availableNetworks[BridgeType.HASHI].find(
+      const evmNetworkData = rootGetters.web3.availableNetworks[BridgeType.ETH].find(
         (network) => network.id === ethBridgeEvmNetwork
       );
 

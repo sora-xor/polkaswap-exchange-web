@@ -108,7 +108,7 @@ const actions = defineActions({
     try {
       const networkAssetsWithBalance = await (async () => {
         switch (networkType) {
-          case BridgeType.HASHI: {
+          case BridgeType.ETH: {
             return await getEthRegisteredAssets(context);
           }
           case BridgeType.EVM: {
