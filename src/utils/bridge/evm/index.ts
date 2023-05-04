@@ -3,8 +3,10 @@ import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
 import { Operation } from '@sora-substrate/util';
 
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { EvmBridge, EvmBridgeOutgoingReducer, EvmBridgeIncomingReducer } from '@/utils/bridge/evm/classes';
+import { EvmBridgeOutgoingReducer, EvmBridgeIncomingReducer } from '@/utils/bridge/evm/classes/reducers';
+import { EvmBridge } from '@/utils/bridge/evm/classes/bridge';
 import { updateTransaction } from '@/utils/bridge/evm/utils';
+
 import store from '@/store';
 
 const evmBridge = new EvmBridge({

@@ -3,19 +3,18 @@ import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 import type { Subscription } from 'rxjs';
 
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { Bridge, BridgeTransactionStateHandler } from '@/utils/bridge/common/classes';
+import { BridgeReducer } from '@/utils/bridge/common/classes';
 
 import { delay } from '@/utils';
 import { waitForSoraTransactionHash } from '@/utils/bridge/evm/utils';
 
-import type { RemoveTransactionByHash, BridgeReducerOptions } from '@/utils/bridge/common/types';
-import type { BridgeConstructorOptions } from '@/utils/bridge/common/classes';
+import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
 
-type EvmBridgeReducerOptions<T extends EvmHistory> = BridgeReducerOptions<T> & {
+type EvmBridgeReducerOptions<T extends EvmHistory> = IBridgeReducerOptions<T> & {
   removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;
 };
 
-class EvmBridgeTransactionStateHandler extends BridgeTransactionStateHandler<EvmHistory> {
+export class EvmBridgeReducer extends BridgeReducer<EvmHistory> {
   protected readonly removeTransactionByHash!: RemoveTransactionByHash<EvmHistory>;
 
   constructor(options: EvmBridgeReducerOptions<EvmHistory>) {
@@ -25,7 +24,7 @@ class EvmBridgeTransactionStateHandler extends BridgeTransactionStateHandler<Evm
   }
 }
 
-export class EvmBridgeIncomingReducer extends EvmBridgeTransactionStateHandler {
+export class EvmBridgeIncomingReducer extends EvmBridgeReducer {
   async changeState(transaction: EvmHistory): Promise<void> {
     if (!transaction.id) throw new Error(`[${this.constructor.name}]: Transaction ID cannot be empty`);
 
@@ -50,7 +49,7 @@ export class EvmBridgeIncomingReducer extends EvmBridgeTransactionStateHandler {
   }
 }
 
-export class EvmBridgeOutgoingReducer extends EvmBridgeTransactionStateHandler {
+export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
   async changeState(transaction: EvmHistory): Promise<void> {
     if (!transaction.id) throw new Error(`[${this.constructor.name}]: Transaction ID cannot be empty`);
 
@@ -174,9 +173,3 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeTransactionStateHandler {
     }
   }
 }
-
-interface EvmBridgeConstructorOptions extends BridgeConstructorOptions<EvmHistory, EvmBridgeTransactionStateHandler> {
-  removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;
-}
-
-export class EvmBridge extends Bridge<EvmHistory, EvmBridgeTransactionStateHandler, EvmBridgeConstructorOptions> {}

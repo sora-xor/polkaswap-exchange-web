@@ -2,7 +2,7 @@ import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 import type { BridgeHistory } from '@sora-substrate/util';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
-export type BridgeTransaction = EvmHistory | BridgeHistory;
+export type IBridgeTransaction = EvmHistory | BridgeHistory;
 
 export type AddAsset = (address: string) => Promise<void>;
 export type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAssetWithDecimals>;
@@ -15,7 +15,7 @@ export type UpdateTransaction<T> = (id: string, params: Partial<T>) => void;
 export type ShowNotification<T> = (tx: T) => void;
 export type SignEvm = (id: string) => Promise<any>;
 export type SignSora = (id: string) => Promise<void>;
-export type TransactionBoundaryStates<T extends BridgeTransaction> = {
+export type TransactionBoundaryStates<T extends IBridgeTransaction> = {
   done: T['transactionState'];
   failed: T['transactionState'];
 };
@@ -26,7 +26,14 @@ export interface Constructable<T> {
   new (...args: any): T;
 }
 
-export interface BridgeCommonOptions<T extends BridgeTransaction> {
+export type TransactionHandlerPayload<Transaction extends IBridgeTransaction> = {
+  nextState: Transaction['transactionState'];
+  rejectState: Transaction['transactionState'];
+  status?: any;
+  handler?: (id: string) => Promise<void>;
+};
+
+export interface IBridgeOptions<T extends IBridgeTransaction> {
   // asset
   addAsset: AddAsset;
   getAssetByAddress: GetAssetByAddress;
@@ -43,7 +50,25 @@ export interface BridgeCommonOptions<T extends BridgeTransaction> {
   boundaryStates: TransactionBoundaryStates<T>;
 }
 
-export interface BridgeReducerOptions<T extends BridgeTransaction> extends BridgeCommonOptions<T> {
+export interface IBridgeReducerOptions<T extends IBridgeTransaction> extends IBridgeOptions<T> {
   signEvm: SignEvm;
   signSora: SignSora;
+}
+
+export interface IBridgeReducer<T extends IBridgeTransaction> {
+  process: (transaction: T) => Promise<void>;
+  changeState: (transaction: T) => Promise<void>;
+  handleState: (id: string, payload: TransactionHandlerPayload<T>) => Promise<void>;
+  updateTransactionParams: (id: string, params: Partial<T>) => Promise<void>;
+  beforeSubmit: (id: string) => void;
+  onComplete: (id: string) => Promise<void>;
+}
+
+export interface IBridgeConstructorOptions<
+  Transaction extends IBridgeTransaction,
+  Reducer extends IBridgeReducer<Transaction>
+> extends IBridgeOptions<Transaction> {
+  reducers: Record<Transaction['type'], Constructable<Reducer>>;
+  signEvm: Partial<Record<Transaction['type'], SignEvm>>;
+  signSora: Partial<Record<Transaction['type'], SignSora>>;
 }

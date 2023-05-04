@@ -9,24 +9,18 @@ import type {
   GetActiveTransaction,
   AddTransactionToProgress,
   RemoveTransactionFromProgress,
-  RemoveTransactionByHash,
   UpdateTransaction,
   ShowNotification,
   TransactionBoundaryStates,
   Constructable,
-  BridgeCommonOptions,
-  BridgeReducerOptions,
-  BridgeTransaction,
+  IBridgeReducerOptions,
+  IBridgeReducer,
+  IBridgeTransaction,
+  IBridgeConstructorOptions,
+  TransactionHandlerPayload,
 } from '@/utils/bridge/common/types';
 
-type TransactionHandlerPayload<Transaction extends BridgeTransaction> = {
-  nextState: Transaction['transactionState'];
-  rejectState: Transaction['transactionState'];
-  status?: any;
-  handler?: (id: string) => Promise<void>;
-};
-
-export class BridgeTransactionStateHandler<Transaction extends BridgeTransaction> {
+export class BridgeReducer<Transaction extends IBridgeTransaction> implements IBridgeReducer<Transaction> {
   protected readonly signEvm!: SignEvm;
   protected readonly signSora!: SignSora;
   // asset
@@ -61,7 +55,7 @@ export class BridgeTransactionStateHandler<Transaction extends BridgeTransaction
     removeTransactionFromProgress,
     // boundary states
     boundaryStates,
-  }: BridgeReducerOptions<Transaction>) {
+  }: IBridgeReducerOptions<Transaction>) {
     this.signEvm = signEvm;
     this.signSora = signSora;
     this.addAsset = addAsset;
@@ -160,19 +154,10 @@ export class BridgeTransactionStateHandler<Transaction extends BridgeTransaction
   }
 }
 
-export interface BridgeConstructorOptions<
-  Transaction extends BridgeTransaction,
-  BridgeReducer extends BridgeTransactionStateHandler<Transaction>
-> extends BridgeCommonOptions<Transaction> {
-  reducers: Record<Transaction['type'], Constructable<BridgeReducer>>;
-  signEvm: Partial<Record<Transaction['type'], SignEvm>>;
-  signSora: Partial<Record<Transaction['type'], SignSora>>;
-}
-
 export class Bridge<
-  Transaction extends BridgeTransaction,
-  Reducer extends BridgeTransactionStateHandler<Transaction>,
-  ConstructorOptions extends BridgeConstructorOptions<Transaction, Reducer>
+  Transaction extends IBridgeTransaction,
+  Reducer extends IBridgeReducer<Transaction>,
+  ConstructorOptions extends IBridgeConstructorOptions<Transaction, Reducer>
 > {
   protected reducers!: Partial<Record<Transaction['type'], Reducer>>;
   protected readonly getTransaction!: GetTransaction<Transaction>;
@@ -194,7 +179,7 @@ export class Bridge<
    * Get necessary reducer and handle transaction
    * @param id transaction id
    */
-  async handleTransaction(id: string) {
+  async handleTransaction(id: string): Promise<void> {
     const transaction = this.getTransaction(id);
     const reducer = this.reducers[transaction.type];
 
