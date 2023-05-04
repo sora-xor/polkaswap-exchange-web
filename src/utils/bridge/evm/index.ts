@@ -3,13 +3,15 @@ import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
 import { Operation } from '@sora-substrate/util';
 
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
+import { Bridge } from '@/utils/bridge/common/classes';
 import { EvmBridgeOutgoingReducer, EvmBridgeIncomingReducer } from '@/utils/bridge/evm/classes/reducers';
-import { EvmBridge } from '@/utils/bridge/evm/classes/bridge';
 import { updateTransaction } from '@/utils/bridge/evm/utils';
 
 import store from '@/store';
 
-const evmBridge = new EvmBridge({
+import type { EvmBridge } from '@/utils/bridge/evm/classes/bridge';
+
+const evmBridge: EvmBridge = new Bridge({
   reducers: {
     [Operation.EvmIncoming]: EvmBridgeIncomingReducer,
     [Operation.EvmOutgoing]: EvmBridgeOutgoingReducer,
@@ -19,7 +21,7 @@ const evmBridge = new EvmBridge({
     [Operation.EvmOutgoing]: async (id: string) => {},
   },
   signSora: {
-    [Operation.EvmOutgoing]: async (id: string) => store.dispatch.bridge.signSoraTransactionSoraToEvm(id),
+    [Operation.EvmOutgoing]: async (id: string) => store.dispatch.bridge.signEvmBridgeOutgoingSora(id),
   },
   // states
   boundaryStates: {

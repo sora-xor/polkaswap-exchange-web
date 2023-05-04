@@ -62,7 +62,6 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
             let currentId = id;
             try {
               this.beforeSubmit(currentId);
-              this.addTransactionToProgress(currentId);
               await this.updateTransactionParams(currentId, { transactionState: EvmTxStatus.Pending });
               await this.checkTxId(currentId);
               await this.checkTxBlockId(currentId);
@@ -87,9 +86,14 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
   }
 
   private async checkTxId(id: string): Promise<void> {
-    await this.signSora(id);
-    // update history to change tx status in ui
-    this.updateHistory();
+    const { txId } = this.getTransaction(id);
+
+    // transaction not signed
+    if (!txId) {
+      await this.signSora(id);
+      // update history to change tx status in ui
+      this.updateHistory();
+    }
   }
 
   private async checkTxBlockId(id: string): Promise<void> {

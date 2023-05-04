@@ -7,7 +7,7 @@ import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util'
 
 import { rootActionContext } from '@/store';
 import { delay } from '@/utils';
-import { BridgeType, KnownHashiBridgeAsset } from '@/consts/evm';
+import { BridgeType, KnownEthBridgeAsset } from '@/consts/evm';
 import ethersUtil from '@/utils/ethers-util';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
@@ -210,7 +210,7 @@ export const updateEthBridgeHistory =
 
       const assets = rootGetters.assets.assetsDataTable;
       const contracts = compact(
-        Object.values(KnownHashiBridgeAsset).map<Nullable<string>>((key) => ethBridgeContractAddress[key])
+        Object.values(KnownEthBridgeAsset).map<Nullable<string>>((key) => ethBridgeContractAddress[key])
       );
 
       const ethBridgeHistory = new EthBridgeHistory(etherscanApiKey);

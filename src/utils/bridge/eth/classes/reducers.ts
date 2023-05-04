@@ -118,8 +118,6 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
 
             // transaction not signed
             if (!txId) {
-              if (!this.signSora) throw new Error('[Bridge] signSora method is not defined');
-
               await this.signSora(id);
             }
 

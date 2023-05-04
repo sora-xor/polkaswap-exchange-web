@@ -1,23 +1,24 @@
 import { BridgeTxStatus, Operation } from '@sora-substrate/util';
 import type { BridgeHistory } from '@sora-substrate/util';
 
+import { Bridge } from '@/utils/bridge/common/classes';
 import { EthBridgeOutgoingReducer, EthBridgeIncomingReducer } from '@/utils/bridge/eth/classes/reducers';
-import { EthBridge } from '@/utils/bridge/eth/classes/bridge';
 import { getTransaction, updateHistoryParams } from '@/utils/bridge/eth/utils';
-
 import store from '@/store';
 
-const ethBridge = new EthBridge({
+import type { EthBridge } from '@/utils/bridge/eth/classes/bridge';
+
+const ethBridge: EthBridge = new Bridge({
   reducers: {
     [Operation.EthBridgeIncoming]: EthBridgeIncomingReducer,
     [Operation.EthBridgeOutgoing]: EthBridgeOutgoingReducer,
   },
   signEvm: {
-    [Operation.EthBridgeIncoming]: (id: string) => store.dispatch.bridge.signEvmTransactionEvmToSora(id),
-    [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEvmTransactionSoraToEvm(id),
+    [Operation.EthBridgeIncoming]: (id: string) => store.dispatch.bridge.signEthBridgeIncomingEvm(id),
+    [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEthBridgeOutgoingEvm(id),
   },
   signSora: {
-    [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signSoraTransactionSoraToEvm(id),
+    [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEthBridgeOutgoingSora(id),
   },
   boundaryStates: {
     done: BridgeTxStatus.Done,

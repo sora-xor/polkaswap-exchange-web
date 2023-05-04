@@ -3,7 +3,7 @@ import { defineGetters } from 'direct-vuex';
 import { web3GetterContext } from '@/store/web3';
 import { EVM_NETWORKS, BridgeType } from '@/consts/evm';
 
-import type { EvmNetworkData, KnownHashiBridgeAsset } from '@/consts/evm';
+import type { EvmNetworkData, KnownEthBridgeAsset } from '@/consts/evm';
 import type { Web3State } from './types';
 
 const getters = defineGetters<Web3State>()({
@@ -35,14 +35,14 @@ const getters = defineGetters<Web3State>()({
     return state.evmNetwork === state.evmNetworkSelected;
   },
 
-  contractAbi(...args): (asset: KnownHashiBridgeAsset) => Nullable<any> {
-    return (asset: KnownHashiBridgeAsset) => {
+  contractAbi(...args): (asset: KnownEthBridgeAsset) => Nullable<any> {
+    return (asset: KnownEthBridgeAsset) => {
       const { state } = web3GetterContext(args);
       return state.ethBridgeSmartContracts[asset];
     };
   },
-  contractAddress(...args): (asset: KnownHashiBridgeAsset) => Nullable<string> {
-    return (asset: KnownHashiBridgeAsset) => {
+  contractAddress(...args): (asset: KnownEthBridgeAsset) => Nullable<string> {
+    return (asset: KnownEthBridgeAsset) => {
       const { state } = web3GetterContext(args);
       return state.ethBridgeContractAddress[asset];
     };

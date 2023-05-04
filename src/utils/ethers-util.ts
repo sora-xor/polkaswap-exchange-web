@@ -11,7 +11,7 @@ import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 import storage from './storage';
 import axiosInstance from '@/api';
 import { ZeroStringValue } from '@/consts';
-import { BridgeType, KnownHashiBridgeAsset } from '@/consts/evm';
+import { BridgeType, KnownEthBridgeAsset } from '@/consts/evm';
 
 import type { EvmNetworkData } from '@/consts/evm';
 
@@ -167,7 +167,7 @@ const EthereumGasLimits = [
     [VAL.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     [PSWAP.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
     [ETH.address]: gasLimit.sendEthToSidechain,
-    [KnownHashiBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
+    [KnownEthBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
   },
   // SORA -> ETH
   {
@@ -175,7 +175,7 @@ const EthereumGasLimits = [
     [VAL.address]: gasLimit.mintTokensByPeers,
     [PSWAP.address]: gasLimit.receiveBySidechainAssetId,
     [ETH.address]: gasLimit.receiveByEthereumAssetAddress,
-    [KnownHashiBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
+    [KnownEthBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
   },
 ];
 
@@ -392,7 +392,7 @@ async function getEvmNetworkFee(address: string, isSoraToEvm: boolean): Promise<
     const ethersInstance = await getEthersInstance();
     const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
     const gasLimits = EthereumGasLimits[+isSoraToEvm];
-    const key = address in gasLimits ? address : KnownHashiBridgeAsset.Other;
+    const key = address in gasLimits ? address : KnownEthBridgeAsset.Other;
     const gasLimit = gasLimits[key];
     const fee = calcEvmFee(gasPrice, gasLimit);
 

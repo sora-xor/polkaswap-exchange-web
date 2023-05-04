@@ -24,7 +24,7 @@ export enum EvmLinkType {
   Transaction = 'Transaction',
 }
 
-export enum KnownHashiBridgeAsset {
+export enum KnownEthBridgeAsset {
   VAL = 'VAL',
   XOR = 'XOR',
   Other = 'OTHER',

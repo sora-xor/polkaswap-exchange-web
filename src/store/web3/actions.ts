@@ -3,7 +3,7 @@ import { defineActions } from 'direct-vuex';
 
 import { web3ActionContext } from '@/store/web3';
 import ethersUtil, { ContractNetwork, Contract } from '@/utils/ethers-util';
-import { BridgeType, KnownHashiBridgeAsset, OtherContractType } from '@/consts/evm';
+import { BridgeType, KnownEthBridgeAsset, OtherContractType } from '@/consts/evm';
 
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 import type { Provider } from '@/utils/ethers-util';
@@ -67,8 +67,8 @@ const actions = defineActions({
       if (!soraAssetId) {
         return '';
       }
-      const contractAbi = getters.contractAbi(KnownHashiBridgeAsset.Other)[OtherContractType.Bridge].abi;
-      const contractAddress = getters.contractAddress(KnownHashiBridgeAsset.Other);
+      const contractAbi = getters.contractAbi(KnownEthBridgeAsset.Other)[OtherContractType.Bridge].abi;
+      const contractAddress = getters.contractAddress(KnownEthBridgeAsset.Other);
       if (!contractAddress || !contractAbi) {
         console.error('Contract address/abi is not found');
         return '';
