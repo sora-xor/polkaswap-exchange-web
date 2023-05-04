@@ -15,6 +15,9 @@ import { waitForApprovedRequest } from '@/utils/bridge/eth/utils';
 import ethersUtil, { ABI } from '@/utils/ethers-util';
 import type { SignTxResult } from './types';
 
+// ETH
+import { EthBridgeHistory } from '@/utils/bridge/eth/history';
+
 // EVM
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
@@ -352,6 +355,17 @@ const actions = defineActions({
     //   console.error(error);
     //   throw error;
     // }
+  },
+
+  // ETH BRIDGE
+  async getEthBridgeHistoryInstance(context): Promise<EthBridgeHistory> {
+    const { rootState } = bridgeActionContext(context);
+    const etherscanApiKey = rootState.wallet.settings.apiKeys?.etherscan;
+    const bridgeHistory = new EthBridgeHistory(etherscanApiKey);
+
+    await bridgeHistory.init();
+
+    return bridgeHistory;
   },
 });
 

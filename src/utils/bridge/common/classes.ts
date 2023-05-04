@@ -1,5 +1,3 @@
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
-
 import { delay } from '@/utils';
 
 import type {
@@ -18,17 +16,17 @@ import type {
   Constructable,
   BridgeCommonOptions,
   BridgeReducerOptions,
+  BridgeTransaction,
 } from '@/utils/bridge/common/types';
-import { evmBridgeApi } from '../evm/api';
 
-type TransactionHandlerPayload<Transaction extends EvmHistory> = {
+type TransactionHandlerPayload<Transaction extends BridgeTransaction> = {
   nextState: Transaction['transactionState'];
   rejectState: Transaction['transactionState'];
   status?: any;
   handler?: (id: string) => Promise<void>;
 };
 
-export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
+export class BridgeTransactionStateHandler<Transaction extends BridgeTransaction> {
   protected readonly signEvm!: SignEvm;
   protected readonly signSora!: SignSora;
   // asset
@@ -41,7 +39,6 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
   protected readonly updateHistory!: VoidFunction;
   protected readonly showNotification!: ShowNotification<Transaction>;
   protected readonly getActiveTransaction!: GetActiveTransaction<Transaction>;
-  protected readonly removeTransactionByHash!: RemoveTransactionByHash<Transaction>;
   protected readonly addTransactionToProgress!: AddTransactionToProgress;
   protected readonly removeTransactionFromProgress!: RemoveTransactionFromProgress;
   // boundary states
@@ -60,7 +57,6 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     updateHistory,
     showNotification,
     getActiveTransaction,
-    removeTransactionByHash,
     addTransactionToProgress,
     removeTransactionFromProgress,
     // boundary states
@@ -72,7 +68,6 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     this.getAssetByAddress = getAssetByAddress;
     this.getTransaction = getTransaction;
     this.getActiveTransaction = getActiveTransaction;
-    this.removeTransactionByHash = removeTransactionByHash;
     this.updateTransaction = updateTransaction;
     this.updateHistory = updateHistory;
     this.showNotification = showNotification;
@@ -96,10 +91,7 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
   }
 
   async updateTransactionParams(id: string, params = {}): Promise<void> {
-    if (id in evmBridgeApi.history) {
-      this.updateTransaction(id, params);
-    }
-
+    this.updateTransaction(id, params);
     this.updateHistory();
     // TODO: remove after fix submitExtrinsic in js-lib
     await delay();
@@ -161,15 +153,15 @@ export class BridgeTransactionStateHandler<Transaction extends EvmHistory> {
     const activeTransaction = this.getActiveTransaction();
 
     if (!activeTransaction || activeTransaction.id !== id) {
-      throw new Error(`[Bridge]: Transaction ${id} stopped, user should sign transaction in ui`);
+      throw new Error(`[${this.constructor.name}]: Transaction ${id} stopped, user should sign transaction in ui`);
     }
 
     this.addTransactionToProgress(id);
   }
 }
 
-interface BridgeConstructorOptions<
-  Transaction extends EvmHistory,
+export interface BridgeConstructorOptions<
+  Transaction extends BridgeTransaction,
   BridgeReducer extends BridgeTransactionStateHandler<Transaction>
 > extends BridgeCommonOptions<Transaction> {
   reducers: Record<Transaction['type'], Constructable<BridgeReducer>>;
@@ -177,19 +169,17 @@ interface BridgeConstructorOptions<
   signSora: Partial<Record<Transaction['type'], SignSora>>;
 }
 
-export class Bridge<Transaction extends EvmHistory, BridgeReducer extends BridgeTransactionStateHandler<Transaction>> {
-  protected reducers!: Partial<Record<Transaction['type'], BridgeReducer>>;
+export class Bridge<
+  Transaction extends BridgeTransaction,
+  Reducer extends BridgeTransactionStateHandler<Transaction>,
+  ConstructorOptions extends BridgeConstructorOptions<Transaction, Reducer>
+> {
+  protected reducers!: Partial<Record<Transaction['type'], Reducer>>;
   protected readonly getTransaction!: GetTransaction<Transaction>;
 
-  constructor({
-    reducers,
-    signEvm,
-    signSora,
-    getTransaction,
-    ...rest
-  }: BridgeConstructorOptions<Transaction, BridgeReducer>) {
+  constructor({ reducers, signEvm, signSora, getTransaction, ...rest }: ConstructorOptions) {
     this.getTransaction = getTransaction;
-    this.reducers = Object.entries<Constructable<BridgeReducer>>(reducers).reduce((acc, [operation, Reducer]) => {
+    this.reducers = Object.entries<Constructable<Reducer>>(reducers).reduce((acc, [operation, Reducer]) => {
       acc[operation] = new Reducer({
         ...rest,
         getTransaction,
@@ -209,7 +199,7 @@ export class Bridge<Transaction extends EvmHistory, BridgeReducer extends Bridge
     const reducer = this.reducers[transaction.type];
 
     if (!reducer) {
-      throw new Error(`[Bridge] No reducer for operation: '${transaction.type}'`);
+      throw new Error(`[${this.constructor.name}]: No reducer for operation: '${transaction.type}'`);
     } else {
       await reducer.process(transaction);
     }
