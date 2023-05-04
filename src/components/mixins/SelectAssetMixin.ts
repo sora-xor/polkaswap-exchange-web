@@ -7,11 +7,11 @@ import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
 
 import { getter } from '@/store/decorators';
 
-import type { RegisteredAccountAssetObject, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 @Component
 export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearchMixin) {
-  @getter.assets.assetsDataTable assetsDataTable!: RegisteredAccountAssetObject;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
 
   @Watch('visible')
   async handleVisibleChangeToFocusSearch(value: boolean): Promise<void> {
@@ -55,7 +55,11 @@ export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearch
   public getAssetsWithBalances(addresses: string[], excludeAddress = ''): Array<RegisteredAccountAssetWithDecimals> {
     return addresses.reduce<RegisteredAccountAssetWithDecimals[]>((buffer, address) => {
       if (address !== excludeAddress) {
-        buffer.push(this.assetsDataTable[address]);
+        const asset = this.getAsset(address);
+
+        if (asset) {
+          buffer.push(asset);
+        }
       }
       return buffer;
     }, []);
