@@ -2,7 +2,7 @@
   <div>
     <dialog-base
       :title="title"
-      :visible.sync="isVisible"
+      :visible.sync="showAlertsPopup"
       :show-back="showBack"
       @back="handleBack"
       :tooltip="t('alerts.alertsTooltip')"
@@ -26,6 +26,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import { Components, NumberedAlert } from '@/consts';
 import { lazyComponent } from '@/router';
+import { mutation, state } from '@/store/decorators';
 
 enum AlertPages {
   AlertList,
@@ -40,13 +41,25 @@ enum AlertPages {
     AlertsSelectAsset: lazyComponent(Components.SelectToken),
   },
 })
-export default class Alerts extends Mixins(mixins.DialogMixin, mixins.TransactionMixin) {
+export default class Alerts extends Mixins(mixins.TransactionMixin) {
+  @state.settings.alertSettingsVisibility private alertSettingsVisibility!: boolean;
+
+  @mutation.settings.setAlertSettingsPopup private setAlertSettingsPopup!: (flag: boolean) => void;
+
   alertToEdit: Nullable<NumberedAlert> = null;
   showAlertSelectTokenDialog = false;
 
   step = AlertPages.AlertList;
 
   AlertPages = AlertPages;
+
+  get showAlertsPopup(): boolean {
+    return this.alertSettingsVisibility;
+  }
+
+  set showAlertsPopup(value) {
+    this.setAlertSettingsPopup(value);
+  }
 
   get title(): string {
     if (this.step === AlertPages.CreateAlert) return this.t('alerts.alertsCreateTitle');

@@ -37,7 +37,7 @@
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
-    <alerts :visible.sync="showAlertsPopup" />
+    <alerts />
     <confirm-dialog />
   </s-design-system-provider>
 </template>
@@ -93,7 +93,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showMobilePopup = false;
   showNotifsDarkPage = false;
 
-  @state.settings.alertSettingsVisibility private alertSettingsVisibility!: boolean;
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
@@ -113,7 +112,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setNetworkChainGenesisHash private setNetworkChainGenesisHash!: (hash?: string) => void;
   @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
-  @mutation.settings.setAlertSettingsPopup private setAlertSettingsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
@@ -251,14 +249,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       cssClasses.push(`${baseClass}--has-charts`);
     }
     return cssClasses;
-  }
-
-  get showAlertsPopup(): boolean {
-    return this.alertSettingsVisibility;
-  }
-
-  set showAlertsPopup(value) {
-    this.setAlertSettingsPopup(value);
   }
 
   get showBrowserNotifPopup(): boolean {

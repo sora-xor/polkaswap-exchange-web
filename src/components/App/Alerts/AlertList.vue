@@ -81,18 +81,20 @@ export default class AlertList extends Mixins(
   }
 
   isNotificationsEnabledByUser(): boolean {
-    if (this.isBrowserNotificationApiAvailable) {
-      if (Notification.permission === 'denied') {
-        this.setBrowserNotifsPopupBlocked(true);
-        return false;
-      } else if (Notification.permission === 'default') {
-        this.setBrowserNotifsPopupEnabled(true);
-        return false;
-      }
-      return true;
-    } else {
+    if (!this.isBrowserNotificationApiAvailable) {
       this.showAppNotification(this.t('alerts.noSupportMsg'), 'error');
       return false;
+    }
+
+    switch (Notification.permission) {
+      case 'denied':
+        this.setBrowserNotifsPopupBlocked(true);
+        return false;
+      case 'default':
+        this.setBrowserNotifsPopupEnabled(true);
+        return false;
+      default:
+        return true;
     }
   }
 
