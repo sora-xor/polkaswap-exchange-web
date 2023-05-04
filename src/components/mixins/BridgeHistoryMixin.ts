@@ -22,7 +22,6 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
 
   @action.bridge.setAssetAddress setAssetAddress!: (address?: string) => Promise<void>;
   @action.bridge.generateHistoryItem generateHistoryItem!: (history?: any) => Promise<EvmHistory>;
-  @action.bridge.getHistory getHistory!: AsyncFnWithoutArgs;
   @action.bridge.updateInternalHistory updateHistory!: FnWithoutArgs;
 
   getSoraNetworkFee(type: Operation): CodecString {

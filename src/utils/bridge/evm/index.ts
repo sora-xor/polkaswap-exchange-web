@@ -42,7 +42,7 @@ const evmBridge: EvmBridge = new Bridge({
   removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
   // custom
   removeTransactionByHash: (options: { tx: Partial<EvmHistory>; force: boolean }) =>
-    store.dispatch.bridge.removeInternalHistory(options),
+    store.dispatch.bridge.removeHistory(options),
 });
 
 export default evmBridge;

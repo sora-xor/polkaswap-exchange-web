@@ -210,18 +210,17 @@ import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/evm/type
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
-import evmBridge from '@/utils/bridge/evm';
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/evm/utils';
 
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 import type { EvmLinkType } from '@/consts/evm';
 
 const FORMATTED_HASH_LENGTH = 24;
+const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 @Component({
   components: {
@@ -246,7 +245,8 @@ export default class BridgeTransaction extends Mixins(
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
   @getter.bridge.historyItem private historyItem!: Nullable<EvmHistory>;
 
-  @action.bridge.updateInternalHistory updateHistory!: FnWithoutArgs;
+  @action.bridge.removeHistory private removeHistory!: ({ tx, force }: { tx: any; force?: boolean }) => Promise<void>;
+  @action.bridge.handleBridgeTransaction private handleBridgeTransaction!: (id: string) => Promise<void>;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
 
   get viewInEtherscan(): string {
@@ -353,16 +353,21 @@ export default class BridgeTransaction extends Mixins(
     return this.historyItem?.transactionState ?? EvmTxStatus.Pending;
   }
 
-  get isTxPending(): boolean {
-    return this.txState === EvmTxStatus.Pending;
-  }
-
   get isTxFailed(): boolean {
-    return this.txState === EvmTxStatus.Failed;
+    return [EvmTxStatus.Failed, ETH_BRIDGE_STATES.EVM_REJECTED, ETH_BRIDGE_STATES.SORA_REJECTED].includes(
+      this.txState as any
+    );
   }
 
   get isTxCompleted(): boolean {
-    return this.txState === EvmTxStatus.Done;
+    return [
+      EvmTxStatus.Done,
+      this.isSoraToEvm ? ETH_BRIDGE_STATES.SORA_COMMITED : ETH_BRIDGE_STATES.EVM_COMMITED,
+    ].includes(this.txState as any);
+  }
+
+  get isTxPending(): boolean {
+    return !this.isTxFailed && !this.isTxCompleted;
   }
 
   get headerIconClasses(): string {
@@ -521,8 +526,7 @@ export default class BridgeTransaction extends Mixins(
       const tx = { ...this.historyItem };
 
       if (tx.id && !this.txInProcess && isUnsignedTx(tx)) {
-        evmBridgeApi.removeHistory(tx.id);
-        this.updateHistory(); // hack to update another views because of unknown hooks exucution order
+        this.removeHistory({ tx, force: true });
       }
     }
 
@@ -551,7 +555,7 @@ export default class BridgeTransaction extends Mixins(
   async handleTransaction(withAutoStart = true): Promise<void> {
     await this.checkConnectionToExternalAccount(async () => {
       if (withAutoStart && this.historyItem?.id) {
-        await evmBridge.handleTransaction(this.historyItem.id);
+        await this.handleBridgeTransaction(this.historyItem.id);
       }
     });
   }

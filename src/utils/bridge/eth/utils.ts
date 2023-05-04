@@ -160,7 +160,7 @@ export const waitForEvmTransaction = async (id: string) => {
   await waitForEvmTransactionStatus(
     transaction.externalHash,
     (externalHash: string) => {
-      updateHistoryParams(id, { externalHash });
+      updateTransaction(id, { externalHash });
       waitForEvmTransaction(id);
     },
     () => {

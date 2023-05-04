@@ -15,16 +15,18 @@ import ethersUtil, { ABI } from '@/utils/ethers-util';
 import type { SignTxResult } from './types';
 
 // ETH
+import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import { waitForApprovedRequest } from '@/utils/bridge/eth/utils';
 
 // EVM
+import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
 import type { EvmHistory, EvmNetwork, EvmTransaction } from '@sora-substrate/util/build/evm/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
-import { IBridgeTransaction } from '@/utils/bridge/common/types';
+import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -181,7 +183,7 @@ const actions = defineActions({
     commit.setInternalHistory(history);
   },
 
-  removeInternalHistory(context, { tx, force = false }: { tx: Partial<EvmHistory>; force: boolean }): void {
+  removeHistory(context, { tx, force = false }: { tx: Partial<IBridgeTransaction>; force: boolean }): void {
     const { commit, dispatch, getters, state, rootState } = bridgeActionContext(context);
 
     const { hash, txId, externalHash } = tx;
@@ -217,6 +219,20 @@ const actions = defineActions({
     dispatch.updateInternalHistory();
   },
 
+  async handleBridgeTransaction(context, id: string): Promise<void> {
+    const { rootState } = bridgeActionContext(context);
+
+    switch (rootState.web3.networkType) {
+      case BridgeType.HASHI:
+        await ethBridge.handleTransaction(id);
+        break;
+      case BridgeType.EVM:
+        await evmBridge.handleTransaction(id);
+        break;
+    }
+  },
+
+  // EVM
   async updateEvmHistory(context): Promise<void> {
     const { commit, rootState, rootGetters } = bridgeActionContext(context);
 
