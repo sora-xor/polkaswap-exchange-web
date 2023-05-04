@@ -37,7 +37,7 @@ const evmBridge: EvmBridge = new Bridge({
   // ui integration
   showNotification: (tx: EvmHistory) => store.commit.bridge.setNotificationData(tx),
   updateHistory: () => store.dispatch.bridge.updateInternalHistory(),
-  getActiveTransaction: () => store.getters.bridge.historyItem,
+  getActiveTransaction: () => store.getters.bridge.historyItem as EvmHistory,
   addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
   removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
   // custom

@@ -1,5 +1,6 @@
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
+import compact from 'lodash/fp/compact';
 
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { BridgeCurrencyType, BridgeHistory, BridgeNetworks, FPNumber, Operation } from '@sora-substrate/util';
@@ -23,6 +24,7 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
 import type { EvmHistory, EvmNetwork, EvmTransaction } from '@sora-substrate/util/build/evm/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+import { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -118,14 +120,17 @@ const actions = defineActions({
       balanceSubscriptions.add('asset', { updateBalance, token: getters.asset });
     }
   },
+
   async resetBalanceSubscription(context): Promise<void> {
     balanceSubscriptions.remove('asset');
   },
+
   async setAssetAddress(context, address?: string): Promise<void> {
     const { commit, dispatch } = bridgeActionContext(context);
     commit.setAssetAddress(address);
     dispatch.updateBalanceSubscription();
   },
+
   // Reset balance subscription & amount, but save selected asset
   async resetBridgeForm(context): Promise<void> {
     const { commit, dispatch } = bridgeActionContext(context);
@@ -133,6 +138,7 @@ const actions = defineActions({
     commit.setAmount();
     commit.setSoraToEvm(true);
   },
+
   async updateEvmBlockNumber(context, value?: number): Promise<void> {
     const { commit } = bridgeActionContext(context);
     const blockNumber = value ?? (await (await ethersUtil.getEthersInstance()).getBlockNumber());
@@ -155,6 +161,20 @@ const actions = defineActions({
     }
   },
 
+  async generateHistoryItem(context, playground): Promise<EvmHistory | BridgeHistory> {
+    const { dispatch, getters } = bridgeActionContext(context);
+    const historyData = bridgeDataToHistoryItem(context, playground);
+    const historyItem = getters.bridgeApi.generateHistoryItem(historyData as any);
+
+    if (!historyItem) {
+      throw new Error('[Bridge]: "generateHistoryItem" failed');
+    }
+
+    dispatch.updateInternalHistory();
+
+    return historyItem;
+  },
+
   updateInternalHistory(context): void {
     const { getters, commit } = bridgeActionContext(context);
     const history = getters.bridgeApi.history;
@@ -162,11 +182,11 @@ const actions = defineActions({
   },
 
   removeInternalHistory(context, { tx, force = false }: { tx: Partial<EvmHistory>; force: boolean }): void {
-    const { commit, dispatch, state, rootState } = bridgeActionContext(context);
+    const { commit, dispatch, getters, state, rootState } = bridgeActionContext(context);
 
     const { hash, txId, externalHash } = tx;
 
-    const item = (evmBridgeApi.historyList as EvmHistory[]).find(
+    const item = (getters.bridgeApi.historyList as IBridgeTransaction[]).find(
       (item) => item.hash === hash || item.txId === txId || item.externalHash === externalHash
     );
 
@@ -192,12 +212,12 @@ const actions = defineActions({
       };
     }
     // remove tx from history
-    evmBridgeApi.removeHistory(item.id);
+    getters.bridgeApi.removeHistory(item.id);
 
     dispatch.updateInternalHistory();
   },
 
-  async getHistory(context): Promise<void> {
+  async updateEvmHistory(context): Promise<void> {
     const { commit, rootState, rootGetters } = bridgeActionContext(context);
 
     if (!rootGetters.wallet.account.isLoggedIn) return;
@@ -212,20 +232,6 @@ const actions = defineActions({
     const externalHistory = evmTransactionsToEvmHistory(rootGetters.assets.assetDataByAddress, transactions);
 
     commit.setExternalHistory(externalHistory);
-  },
-
-  async generateHistoryItem(context, playground): Promise<EvmHistory | BridgeHistory> {
-    const { dispatch, getters } = bridgeActionContext(context);
-    const historyData = bridgeDataToHistoryItem(context, playground);
-    const historyItem = getters.bridgeApi.generateHistoryItem(historyData as any);
-
-    if (!historyItem) {
-      throw new Error('[Bridge]: "generateHistoryItem" failed');
-    }
-
-    dispatch.updateInternalHistory();
-
-    return historyItem;
   },
 
   async signEvmBridgeOutgoingSora(context, id: string) {
@@ -261,6 +267,31 @@ const actions = defineActions({
     await bridgeHistory.init();
 
     return bridgeHistory;
+  },
+
+  async updateEthHistory(context, clearHistory = false): Promise<void> {
+    const { commit, state, dispatch, rootState, rootGetters } = bridgeActionContext(context);
+    if (state.historyLoading) return;
+
+    commit.setHistoryLoading(true);
+
+    const bridgeHistory = await dispatch.getEthBridgeHistoryInstance();
+    const address = rootState.wallet.account.address;
+    const assets = rootGetters.assets.assetsDataTable;
+    const networkFees = rootState.wallet.settings.networkFees;
+    const contractsArray = Object.values(KnownEthBridgeAsset).map<Nullable<string>>((key) =>
+      rootGetters.web3.contractAddress(key)
+    );
+    const contracts = compact(contractsArray);
+    const updateCallback = () => dispatch.updateInternalHistory();
+
+    if (clearHistory) {
+      await bridgeHistory.clearHistory(updateCallback);
+    }
+
+    await bridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, updateCallback);
+
+    commit.setHistoryLoading(false);
   },
 
   async signEthBridgeOutgoingSora(context, id: string): Promise<void> {

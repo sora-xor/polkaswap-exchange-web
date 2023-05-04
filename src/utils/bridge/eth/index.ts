@@ -3,7 +3,7 @@ import type { BridgeHistory } from '@sora-substrate/util';
 
 import { Bridge } from '@/utils/bridge/common/classes';
 import { EthBridgeOutgoingReducer, EthBridgeIncomingReducer } from '@/utils/bridge/eth/classes/reducers';
-import { getTransaction, updateHistoryParams } from '@/utils/bridge/eth/utils';
+import { getTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
 import store from '@/store';
 
 import type { EthBridge } from '@/utils/bridge/eth/classes/bridge';
@@ -29,17 +29,13 @@ const ethBridge: EthBridge = new Bridge({
   getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
   // transaction
   getTransaction,
-  updateTransaction: updateHistoryParams,
+  updateTransaction,
   // ui integration
   showNotification: (tx: BridgeHistory) => store.commit.bridge.setNotificationData(tx as any),
-  getActiveTransaction: () => {
-    console.info('getActiveTransaction');
-    return null;
-  },
   addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
   removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
   updateHistory: () => store.dispatch.bridge.updateInternalHistory(),
-  // getActiveTransaction: () => store.getters.bridge.historyItem,
+  getActiveTransaction: () => store.getters.bridge.historyItem as BridgeHistory,
   getBridgeHistoryInstance: () => store.dispatch.bridge.getEthBridgeHistoryInstance(),
 });
 

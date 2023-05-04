@@ -43,7 +43,7 @@ export const getTransaction = (id: string): BridgeHistory => {
   return tx;
 };
 
-export const updateHistoryParams = async (id: string, params = {}) => {
+export const updateTransaction = async (id: string, params = {}) => {
   const tx = getTransaction(id);
   ethBridgeApi.saveHistory({ ...tx, ...params });
 };

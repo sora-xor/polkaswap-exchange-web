@@ -1,6 +1,6 @@
 import omit from 'lodash/fp/omit';
 import { defineMutations } from 'direct-vuex';
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString, HistoryItem } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
@@ -37,7 +37,7 @@ const mutations = defineMutations<BridgeState>()({
   /**
    * Set bridge transactions from localstorage (ethBridgeApi or evmBridgeApi)
    */
-  setInternalHistory(state, history: Record<string, IBridgeTransaction>): void {
+  setInternalHistory(state, history: Record<string, HistoryItem>): void {
     state.historyInternal = { ...history };
   },
   /**
