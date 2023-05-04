@@ -66,6 +66,7 @@ const NetworkTvlQuery = gql<EntitiesQueryResponse<NetworkSnapshotEntity>>`
           { type: { equalTo: $type } }
           { timestamp: { lessThanOrEqualTo: $from } }
           { timestamp: { greaterThanOrEqualTo: $to } }
+          { liquidityUSD: { greaterThan: "0" } }
         ]
       }
     ) {
