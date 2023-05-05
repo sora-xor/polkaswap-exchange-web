@@ -21,7 +21,7 @@ import { WALLET_CONSTS, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
-import { soraCard } from '@/utils/card';
+import { soraCard, getUpdatedJwtPair } from '@/utils/card';
 
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin) {
@@ -66,7 +66,19 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
     }
   }
 
+  async updateJwtPairByInterval(): Promise<void> {
+    const setNewJwtPair = async () => {
+      const refreshToken = localStorage.getItem('PW-refresh-token');
+      if (refreshToken) await getUpdatedJwtPair(refreshToken);
+    };
+
+    setNewJwtPair();
+    setInterval(setNewJwtPair, 60_000 * 19.5); // 30 seconds less before token expiration
+  }
+
   async mounted(): Promise<void> {
+    this.updateJwtPairByInterval();
+
     const { kycService, soraProxy } = soraCard(this.soraNetwork);
 
     const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);

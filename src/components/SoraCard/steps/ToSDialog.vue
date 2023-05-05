@@ -61,24 +61,44 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
   blacklistedCountries = {
     dz: 'Algeria',
     bd: 'Bangladesh',
+    bb: 'Barbados',
     by: 'Belarus',
     bo: 'Bolivia',
+    bf: 'Burkina Faso',
     kh: 'Cambodia',
+    ky: 'Cayman Islands',
+    cd: 'Congo',
     cn: 'China',
     cu: 'Cuba',
+    gi: 'Gibraltar',
     gh: 'Ghana',
+    ht: 'Haiti',
     ir: 'Iran',
+    jm: 'Jamaica',
     jo: 'Jordan',
     kp: 'Korea',
     kg: 'Kyrgyzstan',
     mk: 'Macedonia',
+    ml: 'Mali',
+    mz: 'Mozambique',
+    mm: 'Myanmar',
     np: 'Nepal',
     ng: 'Nigeria',
+    pa: 'Panama',
+    ph: 'Philippines',
     ru: 'Russian Federation',
     sd: 'Sudan',
+    sn: 'Senegal',
+    za: 'South Africa',
+    ss: 'South Sudan',
     sy: 'Syria',
+    tz: 'Tanzania',
+    tr: 'Turkey',
     th: 'Thailand',
+    ug: 'Uganda',
+    ae: 'United Arab Emirates',
     us: 'United States',
+    ye: 'Yemen',
   } as const;
 }
 </script>
@@ -101,7 +121,7 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
   &__unsupported-countries {
     padding-left: 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
 
     li {
       list-style: none;
