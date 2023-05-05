@@ -353,7 +353,7 @@ const actions = defineActions({
     const symbol = asset.symbol as KnownEthBridgeAsset;
     const evmAccount = rootState.web3.evmAddress;
     const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
-    const isEthereumChain = isValOrXor && rootState.web3.evmNetwork === BridgeNetworks.ETH_NETWORK_ID;
+    const isEthereumChain = isValOrXor;
     const bridgeAsset: KnownEthBridgeAsset = isEthereumChain ? symbol : KnownEthBridgeAsset.Other;
     const contractMap = {
       [KnownEthBridgeAsset.XOR]: rootGetters.web3.contractAbi(KnownEthBridgeAsset.XOR),

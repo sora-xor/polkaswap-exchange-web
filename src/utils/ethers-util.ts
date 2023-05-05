@@ -468,8 +468,8 @@ function storeSelectedEvmNetwork(evmNetwork: EvmNetwork) {
 }
 
 function getSelectedBridgeType(): Nullable<BridgeType> {
-  const result = storage.get('bridgeType' as any);
-  const value = result ? JSON.parse(result) : null;
+  const result = storage.get('bridgeType' as any) as BridgeType;
+  const value = result || null;
 
   return value;
 }

@@ -2,25 +2,15 @@ import { defineMutations } from 'direct-vuex';
 import { CodecString } from '@sora-substrate/util';
 
 import ethersUtil from '@/utils/ethers-util';
-import { initialState } from './state';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+
+import { ZeroStringValue } from '@/consts';
 
 import type { EthBridgeContractsAddresses, EthBridgeSmartContracts } from '@/utils/bridge/eth/types';
 import type { Web3State } from './types';
 import type { BridgeType } from '@/consts/evm';
 
 const mutations = defineMutations<Web3State>()({
-  reset(state): void {
-    // we shouldn't reset networks, which were set from env & contracts
-    const networkSettingsKeys = ['evmNetwork', 'evmNetworksIds', 'evmNetworkSelected', 'networkType', 'ethBridge'];
-    const s = initialState();
-
-    Object.keys(s)
-      .filter((key) => !networkSettingsKeys.includes(key))
-      .forEach((key) => {
-        state[key] = s[key];
-      });
-  },
   setEvmAddress(state, address: string): void {
     state.evmAddress = address;
     ethersUtil.storeEvmUserAddress(address);
@@ -36,6 +26,9 @@ const mutations = defineMutations<Web3State>()({
   setEvmNetwork(state, networkId: EvmNetwork): void {
     state.evmNetwork = networkId;
   },
+  resetEvmNetwork(state): void {
+    state.evmNetwork = null;
+  },
   // by user
   setSelectedEvmNetwork(state, networkId: EvmNetwork): void {
     state.evmNetworkSelected = networkId;
@@ -44,9 +37,13 @@ const mutations = defineMutations<Web3State>()({
   setEvmBalance(state, balance: CodecString): void {
     state.evmBalance = balance;
   },
+  resetEvmBalance(state): void {
+    state.evmBalance = ZeroStringValue;
+  },
 
   setNetworkType(state, networkType: BridgeType) {
     state.networkType = networkType;
+    ethersUtil.storeSelectedBridgeType(networkType);
   },
 
   setSelectNetworkDialogVisibility(state, flag: boolean): void {
