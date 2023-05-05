@@ -12,10 +12,9 @@ import {
 } from '@soramitsu/soraneo-wallet-web';
 
 import ethersUtil from '@/utils/ethers-util';
-import { getEvmTransactionRecieptByHash } from '@/utils/bridge/utils';
+import { getEvmTransactionRecieptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
 
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { isOutgoingTransaction } from '@/utils/bridge/eth/utils';
 
 import { ZeroStringValue } from '@/consts';
 

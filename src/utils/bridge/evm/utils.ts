@@ -7,10 +7,6 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 
 export const SORA_REQUESTS_TIMEOUT = 6_000; // Block production time
 
-export const isOutgoingTransaction = (tx: Nullable<EvmHistory>): boolean => {
-  return tx?.type === Operation.EvmOutgoing;
-};
-
 export const isUnsignedTx = (tx: EvmHistory): boolean => {
   if (tx.type === Operation.EvmOutgoing) {
     return !tx.blockId && !tx.txId;

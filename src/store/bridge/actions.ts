@@ -26,6 +26,7 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
 import type { EvmHistory, EvmTransaction } from '@sora-substrate/util/build/evm/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+
 import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
@@ -80,7 +81,7 @@ function evmTransactionsToEvmHistory(
 function bridgeDataToHistoryItem(
   context: ActionContext<any, any>,
   { date = Date.now(), payload = {}, ...params } = {}
-): EvmHistory | BridgeHistory {
+): IBridgeTransaction {
   const { getters, state, rootState } = bridgeActionContext(context);
   const isEthBridge = getters.isEthBridge;
   const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : EvmTxStatus.Pending;
@@ -160,7 +161,7 @@ const actions = defineActions({
     }
   },
 
-  async generateHistoryItem(context, playground): Promise<EvmHistory | BridgeHistory> {
+  async generateHistoryItem(context, playground): Promise<IBridgeTransaction> {
     const { dispatch, getters } = bridgeActionContext(context);
     const historyData = bridgeDataToHistoryItem(context, playground);
     const historyItem = getters.bridgeApi.generateHistoryItem(historyData as any);
@@ -177,7 +178,7 @@ const actions = defineActions({
   updateInternalHistory(context): void {
     const { getters, commit } = bridgeActionContext(context);
     const history = getters.bridgeApi.history;
-    commit.setInternalHistory(history);
+    commit.setInternalHistory(history as Record<string, IBridgeTransaction>);
   },
 
   removeHistory(context, { tx, force = false }: { tx: Partial<IBridgeTransaction>; force: boolean }): void {

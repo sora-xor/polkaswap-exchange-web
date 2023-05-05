@@ -1,5 +1,5 @@
 import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
-import type { BridgeHistory, Operation } from '@sora-substrate/util';
+import type { BridgeHistory } from '@sora-substrate/util';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 export type IBridgeTransaction = EvmHistory | BridgeHistory;

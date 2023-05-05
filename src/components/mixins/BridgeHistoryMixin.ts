@@ -2,16 +2,16 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import type { CodecString } from '@sora-substrate/util';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import router from '@/router';
 import { PageNames, ZeroStringValue } from '@/consts';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { state, mutation, action, getter } from '@/store/decorators';
 
+import type { IBridgeTransaction } from '@/utils/bridge/common/types';
+
 @Component
-export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
-  @getter.bridge.history history!: Record<string, EvmHistory>;
+export default class BridgeHistoryMixin<T extends IBridgeTransaction> extends Mixins(mixins.LoadingMixin) {
+  @getter.bridge.history history!: Record<string, T>;
 
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
   @state.router.prev prevRoute!: Nullable<PageNames>;
@@ -21,7 +21,7 @@ export default class BridgeHistoryMixin extends Mixins(mixins.LoadingMixin) {
   @mutation.bridge.setHistoryId setHistoryId!: (id?: string) => void;
 
   @action.bridge.setAssetAddress setAssetAddress!: (address?: string) => Promise<void>;
-  @action.bridge.generateHistoryItem generateHistoryItem!: (history?: any) => Promise<EvmHistory>;
+  @action.bridge.generateHistoryItem generateHistoryItem!: (history?: any) => Promise<T>;
   @action.bridge.updateInternalHistory updateHistory!: FnWithoutArgs;
 
   getSoraNetworkFee(type: Operation): CodecString {

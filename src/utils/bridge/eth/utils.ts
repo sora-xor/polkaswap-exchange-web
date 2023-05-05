@@ -11,7 +11,7 @@ import { BridgeType, KnownEthBridgeAsset } from '@/consts/evm';
 import ethersUtil from '@/utils/ethers-util';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
-import { waitForEvmTransactionStatus } from '@/utils/bridge/utils';
+import { waitForEvmTransactionStatus } from '@/utils/bridge/common/utils';
 
 const SORA_REQUESTS_TIMEOUT = 6_000; // Block production time
 
@@ -37,10 +37,6 @@ export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
 
 export const isUnsignedTx = (tx: BridgeHistory): boolean => {
   return isUnsignedFromPart(tx);
-};
-
-export const isOutgoingTransaction = (tx: Nullable<BridgeHistory>): boolean => {
-  return tx?.type === Operation.EthBridgeOutgoing;
 };
 
 export const getTransaction = (id: string): BridgeHistory => {

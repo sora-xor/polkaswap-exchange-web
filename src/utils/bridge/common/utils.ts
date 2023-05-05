@@ -1,5 +1,9 @@
 import { ethers } from 'ethers';
+import { Operation } from '@sora-substrate/util';
+
 import ethersUtil from '@/utils/ethers-util';
+
+import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 export const waitForEvmTransactionStatus = async (
   hash: string,
@@ -66,4 +70,10 @@ export const getEvmTransactionRecieptByHash = async (
   } catch (error) {
     return null;
   }
+};
+
+export const isOutgoingTransaction = (transaction: Nullable<IBridgeTransaction>): boolean => {
+  if (!transaction?.type) return false;
+
+  return [Operation.EthBridgeOutgoing, Operation.EvmOutgoing].includes(transaction.type);
 };

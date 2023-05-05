@@ -1,7 +1,6 @@
 import { defineGetters } from 'direct-vuex';
 import { Operation } from '@sora-substrate/util';
 import type { CodecString } from '@sora-substrate/util';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';

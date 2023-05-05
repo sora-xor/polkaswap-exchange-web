@@ -1,6 +1,8 @@
 import type { CodecString, HistoryItem } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
+import type { IBridgeTransaction } from '@/utils/bridge/common/types';
+
 export type BridgeState = {
   isSoraToEvm: boolean;
   assetAddress: string;
@@ -10,14 +12,14 @@ export type BridgeState = {
   evmNetworkFeeFetching: boolean;
   evmBlockNumber: number;
   // history sources (unsynced localstorage & network)
-  historyInternal: Record<string, HistoryItem>;
-  historyExternal: Record<string, HistoryItem>;
+  historyInternal: Record<string, IBridgeTransaction>;
+  historyExternal: Record<string, IBridgeTransaction>;
   historyPage: number;
   historyId: string;
   historyLoading: boolean;
   waitingForApprove: Record<string, boolean>;
   inProgressIds: Record<string, boolean>;
-  notificationData: Nullable<HistoryItem>;
+  notificationData: Nullable<IBridgeTransaction>;
 };
 
 export type SignTxResult = {

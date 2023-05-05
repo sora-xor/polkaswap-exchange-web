@@ -220,14 +220,10 @@ import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
-import {
-  isOutgoingTransaction as isOutgoingEvmTransaction,
-  isUnsignedTx as isUnsignedEvmTx,
-} from '@/utils/bridge/evm/utils';
-import {
-  isOutgoingTransaction as isOutgoingEthTransaction,
-  isUnsignedTx as isUnsignedEthTx,
-} from '@/utils/bridge/eth/utils';
+import { isUnsignedTx as isUnsignedEvmTx } from '@/utils/bridge/evm/utils';
+import { isUnsignedTx as isUnsignedEthTx } from '@/utils/bridge/eth/utils';
+
+import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
 
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 import type { EvmLinkType } from '@/consts/evm';
@@ -303,9 +299,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isSoraToEvm(): boolean {
-    return this.isEthBridge
-      ? isOutgoingEthTransaction(this.historyItem as BridgeHistory)
-      : isOutgoingEvmTransaction(this.historyItem as EvmHistory);
+    return isOutgoingTransaction(this.historyItem);
   }
 
   get formattedAmount(): string {

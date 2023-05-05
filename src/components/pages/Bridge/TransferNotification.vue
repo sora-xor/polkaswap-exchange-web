@@ -25,12 +25,12 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import ethersUtil from '@/utils/ethers-util';
-import { isOutgoingTransaction } from '@/utils/bridge/evm/utils';
+import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { getter, state, mutation } from '@/store/decorators';
 
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 import type { Whitelist } from '@sora-substrate/util/build/assets/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 @Component({
   components: {
@@ -40,12 +40,12 @@ import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
   },
 })
 export default class BridgeTransferNotification extends Mixins(TranslationMixin) {
-  @state.bridge.notificationData private tx!: Nullable<EvmHistory>;
+  @state.bridge.notificationData private tx!: Nullable<IBridgeTransaction>;
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
 
-  @mutation.bridge.setNotificationData private setNotificationData!: (tx?: EvmHistory) => void;
+  @mutation.bridge.setNotificationData private setNotificationData!: (tx?: IBridgeTransaction) => void;
 
   get visibility(): boolean {
     return !!this.tx;

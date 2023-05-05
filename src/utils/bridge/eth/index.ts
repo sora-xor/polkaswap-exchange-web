@@ -1,4 +1,4 @@
-import { BridgeTxStatus, Operation } from '@sora-substrate/util';
+import { Operation } from '@sora-substrate/util';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { BridgeHistory } from '@sora-substrate/util';
 
@@ -8,7 +8,6 @@ import { getTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
 import store from '@/store';
 
 import type { EthBridge } from '@/utils/bridge/eth/classes/bridge';
-import { EVM_NETWORKS } from '@/consts/evm';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 

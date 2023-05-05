@@ -3,7 +3,7 @@ import { BridgeTxStatus } from '@sora-substrate/util';
 import { SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
-import { getEvmTransactionRecieptByHash } from '@/utils/bridge/utils';
+import { getEvmTransactionRecieptByHash } from '@/utils/bridge/common/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 
 import { ethBridgeApi } from '@/utils/bridge/eth/api';

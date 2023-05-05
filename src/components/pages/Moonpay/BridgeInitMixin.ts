@@ -1,8 +1,8 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Operation } from '@sora-substrate/util';
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString, BridgeHistory } from '@sora-substrate/util';
 import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
@@ -26,7 +26,7 @@ const createError = (text: string, notification: MoonpayNotifications) => {
 @Component
 export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, WalletConnectMixin) {
   @state.moonpay.api moonpayApi!: MoonpayApi;
-  @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<EvmHistory>;
+  @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<BridgeHistory>;
   @state.web3.evmBalance evmBalance!: CodecString;
   @state.web3.moonpayEvmNetwork moonpayEvmNetwork!: EvmNetwork;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
@@ -66,7 +66,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
     }
   }
 
-  async getBridgeMoonpayTransaction(): Promise<EvmHistory> {
+  async getBridgeMoonpayTransaction(): Promise<BridgeHistory> {
     if (!this.bridgeTransactionData) {
       throw new Error('bridgeTransactionData is empty');
     }
@@ -78,18 +78,18 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
     if (!tx) {
       const historyItem = await this.generateHistoryItem(this.bridgeTransactionData);
 
-      return historyItem;
+      return historyItem as BridgeHistory;
     }
 
     return tx;
   }
 
-  getBridgeHistoryItemByMoonpayId(moonpayId: string): Nullable<EvmHistory> {
+  getBridgeHistoryItemByMoonpayId(moonpayId: string): Nullable<BridgeHistory> {
     const externalHash = this.moonpayApi.accountRecords?.[moonpayId];
 
     if (!externalHash) return null;
 
-    return Object.values(this.history).find((item) => item.externalHash === externalHash);
+    return Object.values(this.history).find((item) => item.externalHash === externalHash) as Nullable<BridgeHistory>;
   }
 
   async startBridgeForMoonpayTransaction(): Promise<void> {
@@ -102,7 +102,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
    * @param transaction moonpay transaction data
    * @returns string - bridge history item id
    */
-  async prepareBridgeHistoryItemData(transaction: MoonpayTransaction): Promise<EvmHistory> {
+  async prepareBridgeHistoryItemData(transaction: MoonpayTransaction): Promise<BridgeHistory> {
     return await this.withLoading(async () => {
       // this is not really good, but we should change evm network before fetching transaction data
       await this.prepareEvmNetwork();
@@ -159,7 +159,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       }
 
       return {
-        type: Operation.EvmIncoming,
+        type: Operation.EthBridgeIncoming,
         amount: String(amount),
         symbol: asset.symbol,
         assetAddress: asset.address,
@@ -170,7 +170,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         payload: {
           moonpayId: transaction.id,
         },
-      } as EvmHistory;
+      };
     });
   }
 
