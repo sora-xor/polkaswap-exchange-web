@@ -73,7 +73,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
     };
 
     setNewJwtPair();
-    setInterval(setNewJwtPair, 60_000 * 19.5); // 30 seconds less before token expiration
+    setInterval(setNewJwtPair, 60_000 * 19.85); // 10 seconds less before token expiration
   }
 
   async mounted(): Promise<void> {
