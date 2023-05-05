@@ -25,7 +25,7 @@ import { soraCard } from '@/utils/card';
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin) {
   @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
-  @state.wallet.account.selectedWallet private selectedWallet!: WALLET_CONSTS.AppWallet;
+  @state.wallet.account.source private source!: WALLET_CONSTS.AppWallet;
 
   @Prop({ default: '', type: String }) readonly accessToken!: string;
 
@@ -133,9 +133,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
 
             // TODO: ADD CHECK WHEN IT'S REQUIRED
             const refreshToken = localStorage.getItem('PW-refresh-token');
-            if (this.selectedWallet === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
+            if (this.source === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
               console.info(refreshToken);
-              const wallet = await getWallet(this.selectedWallet);
+              const wallet = await getWallet(this.source);
               await wallet.provider?.send('pub(soraCard.token)', [refreshToken]);
             }
             this.$emit('confirm-kyc', true);
