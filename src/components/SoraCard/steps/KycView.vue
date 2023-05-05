@@ -143,8 +143,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
 
             const refreshToken = localStorage.getItem('PW-refresh-token');
             if (this.source === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
-              const windowInjectedWeb3 = window as WindowInjectedWeb3;
-              await windowInjectedWeb3.injectedWeb3?.['fearless-wallet']?.saveSoraCardToken?.(refreshToken);
+              await (window as WindowInjectedWeb3).injectedWeb3?.['fearless-wallet']?.saveSoraCardToken?.(refreshToken);
             }
             this.$emit('confirm-kyc', true);
             ScriptLoader.unload(kycService.sdkURL);
