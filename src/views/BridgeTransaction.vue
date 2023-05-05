@@ -389,7 +389,7 @@ export default class BridgeTransaction extends Mixins(
 
   get isTxCompleted(): boolean {
     // ETH
-    if (this.txState === (this.isSoraToEvm ? ETH_BRIDGE_STATES.SORA_COMMITED : ETH_BRIDGE_STATES.EVM_COMMITED))
+    if (this.txState === (this.isSoraToEvm ? ETH_BRIDGE_STATES.EVM_COMMITED : ETH_BRIDGE_STATES.SORA_COMMITED))
       return true;
     // EVM
     if (this.txState === EvmTxStatus.Done) return true;

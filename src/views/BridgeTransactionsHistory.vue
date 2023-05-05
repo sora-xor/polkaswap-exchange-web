@@ -89,9 +89,12 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { state } from '@/store/decorators';
+import { state, getter } from '@/store/decorators';
+import { isOutgoingTransaction as isOutgoingEthTransaction } from '@/utils/bridge/eth/utils';
 
 import type { EvmAccountAsset } from '@/store/assets/types';
+
+const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 @Component({
   components: {
@@ -112,8 +115,9 @@ export default class BridgeTransactionsHistory extends Mixins(
   mixins.NumberFormatterMixin
 ) {
   @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
-
   @state.bridge.historyPage historyPage!: number;
+
+  @getter.bridge.isEthBridge private isEthBridge!: boolean;
 
   pageAmount = 8; // override PaginationSearchMixin
   loading = true;
@@ -192,13 +196,26 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.formatDate(response?.startTime ?? Date.now());
   }
 
+  isFailedState(item): boolean {
+    return this.isEthBridge
+      ? [ETH_BRIDGE_STATES.SORA_REJECTED, ETH_BRIDGE_STATES.EVM_REJECTED].includes(item.transactionState)
+      : item.transactionState === EvmTxStatus.Failed;
+  }
+
+  isSuccessState(item): boolean {
+    return this.isEthBridge
+      ? item.transactionState ===
+          (isOutgoingEthTransaction(item) ? ETH_BRIDGE_STATES.EVM_COMMITED : ETH_BRIDGE_STATES.SORA_COMMITED)
+      : item.transactionState === EvmTxStatus.Done;
+  }
+
   historyStatusClasses(item: EvmHistory): string {
     const iconClass = 'history-item-status';
     const classes = [iconClass];
 
-    if (item.transactionState === EvmTxStatus.Failed) {
+    if (this.isFailedState(item)) {
       classes.push(`${iconClass}--error`);
-    } else if (item.transactionState === EvmTxStatus.Done) {
+    } else if (this.isSuccessState(item)) {
       classes.push(`${iconClass}--success`);
     } else {
       classes.push(`${iconClass}--pending`);
@@ -208,9 +225,9 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   historyStatusIconName(item: EvmHistory): string {
-    if (item.transactionState === EvmTxStatus.Failed) {
+    if (this.isFailedState(item)) {
       return 'basic-clear-X-24';
-    } else if (item.transactionState === EvmTxStatus.Done) {
+    } else if (this.isSuccessState(item)) {
       return 'basic-check-marks-24';
     } else {
       return 'time-time-24';

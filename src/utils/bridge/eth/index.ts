@@ -1,4 +1,5 @@
 import { BridgeTxStatus, Operation } from '@sora-substrate/util';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { BridgeHistory } from '@sora-substrate/util';
 
 import { Bridge } from '@/utils/bridge/common/classes';
@@ -7,6 +8,9 @@ import { getTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
 import store from '@/store';
 
 import type { EthBridge } from '@/utils/bridge/eth/classes/bridge';
+import { EVM_NETWORKS } from '@/consts/evm';
+
+const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 const ethBridge: EthBridge = new Bridge({
   reducers: {
@@ -21,8 +25,14 @@ const ethBridge: EthBridge = new Bridge({
     [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEthBridgeOutgoingSora(id),
   },
   boundaryStates: {
-    done: BridgeTxStatus.Done,
-    failed: BridgeTxStatus.Failed,
+    [Operation.EthBridgeIncoming]: {
+      done: ETH_BRIDGE_STATES.SORA_COMMITED,
+      failed: [ETH_BRIDGE_STATES.SORA_REJECTED, ETH_BRIDGE_STATES.EVM_REJECTED],
+    },
+    [Operation.EthBridgeOutgoing]: {
+      done: ETH_BRIDGE_STATES.EVM_COMMITED,
+      failed: [ETH_BRIDGE_STATES.SORA_REJECTED, ETH_BRIDGE_STATES.EVM_REJECTED],
+    },
   },
   // assets
   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),

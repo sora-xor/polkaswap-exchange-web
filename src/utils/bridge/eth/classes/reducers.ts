@@ -34,10 +34,6 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
     this.getBridgeHistoryInstance = options.getBridgeHistoryInstance;
   }
 
-  updateTransactionStep(id: string): void {
-    this.updateTransactionParams(id, { transactionStep: 2 });
-  }
-
   async onEvmPending(id: string): Promise<void> {
     await waitForEvmTransaction(id);
 
@@ -94,6 +90,7 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
 
 export class EthBridgeOutgoingReducer extends EthBridgeReducer {
   async changeState(transaction: BridgeHistory): Promise<void> {
+    console.log('changeState');
     if (!transaction.id) throw new Error('[Bridge]: TX ID cannot be empty');
 
     switch (transaction.transactionState) {
@@ -163,7 +160,6 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
         return await this.handleState(transaction.id, {
           nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
-          handler: async (id: string) => this.updateTransactionStep(id),
         });
       }
 
@@ -245,7 +241,6 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
         return await this.handleState(transaction.id, {
           nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
-          handler: async (id: string) => this.updateTransactionStep(id),
         });
       }
 

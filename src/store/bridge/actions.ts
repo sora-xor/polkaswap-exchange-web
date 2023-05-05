@@ -3,13 +3,13 @@ import { ethers } from 'ethers';
 import compact from 'lodash/fp/compact';
 
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { BridgeCurrencyType, BridgeHistory, BridgeNetworks, FPNumber, Operation } from '@sora-substrate/util';
+import { BridgeCurrencyType, BridgeHistory, FPNumber, Operation } from '@sora-substrate/util';
 import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 import { bridgeActionContext } from '@/store/bridge';
 import { MaxUint256 } from '@/consts';
-import { OtherContractType, KnownEthBridgeAsset, BridgeType } from '@/consts/evm';
+import { OtherContractType, KnownEthBridgeAsset } from '@/consts/evm';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import ethersUtil, { ABI } from '@/utils/ethers-util';
 import type { SignTxResult } from './types';
@@ -24,7 +24,7 @@ import { waitForApprovedRequest } from '@/utils/bridge/eth/utils';
 import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
-import type { EvmHistory, EvmNetwork, EvmTransaction } from '@sora-substrate/util/build/evm/types';
+import type { EvmHistory, EvmTransaction } from '@sora-substrate/util/build/evm/types';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
@@ -84,9 +84,7 @@ function bridgeDataToHistoryItem(
   const { getters, state, rootState } = bridgeActionContext(context);
   const isEthBridge = getters.isEthBridge;
   const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : EvmTxStatus.Pending;
-  const externalNetwork = isEthBridge
-    ? BridgeNetworks.ETH_NETWORK_ID
-    : (rootState.web3.evmNetworkSelected as EvmNetwork);
+  const externalNetwork = rootState.web3.evmNetworkSelected as number;
 
   return {
     type: (params as any).type ?? getters.operation,

@@ -79,8 +79,13 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
 
     const tx = this.getTransaction(transaction.id as string);
 
-    if (tx && !Object.values(this.boundaryStates).includes(tx.transactionState)) {
-      await this.process(tx);
+    if (tx) {
+      const { done, failed } = this.boundaryStates[tx.type];
+      const state = tx.transactionState;
+
+      if (state !== done && !failed.includes(state)) {
+        await this.process(tx);
+      }
     }
   }
 
@@ -95,6 +100,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     id: string,
     { nextState, rejectState, handler, status }: TransactionHandlerPayload<Transaction>
   ): Promise<void> {
+    console.log('handleState', id, nextState, status);
     try {
       const transaction = this.getTransaction(id);
 
@@ -112,7 +118,8 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
       console.error(error);
 
       const transaction = this.getTransaction(id);
-      const endTime = transaction.transactionState === this.boundaryStates.failed ? transaction.endTime : Date.now();
+      const failedStates = this.boundaryStates[transaction.type].failed;
+      const endTime = failedStates.includes(transaction.transactionState) ? transaction.endTime : Date.now();
 
       await this.updateTransactionParams(id, {
         transactionState: rejectState,
@@ -124,12 +131,12 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
   }
 
   async onComplete(id: string): Promise<void> {
+    const tx = this.getTransaction(id);
+
     await this.updateTransactionParams(id, {
-      transactionState: this.boundaryStates.done,
+      transactionState: this.boundaryStates[tx.type].done,
       endTime: Date.now(),
     });
-
-    const tx = this.getTransaction(id);
 
     if (tx) {
       if (tx.assetAddress && !this.getAssetByAddress(tx.assetAddress)) {
