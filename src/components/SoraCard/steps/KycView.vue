@@ -16,11 +16,21 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { v4 as uuidv4 } from 'uuid';
-import { WALLET_CONSTS, mixins, ScriptLoader, getWallet } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS, mixins, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
 import { soraCard } from '@/utils/card';
+
+type WindowInjectedWeb3 = typeof window & {
+  injectedWeb3?: {
+    'fearless-wallet'?: {
+      enable: (origin: string) => Promise<void>;
+      saveSoraCardToken?: (token: string) => Promise<void>;
+      version: string;
+    };
+  };
+};
 
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin) {
@@ -131,12 +141,10 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
             // Integrator handles UI from this point on on successful kyc
             // alert('Kyc was successfull, integrator takes control of flow from now on')
 
-            // TODO: ADD CHECK WHEN IT'S REQUIRED
             const refreshToken = localStorage.getItem('PW-refresh-token');
             if (this.source === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
-              console.info(refreshToken);
-              const wallet = await getWallet(this.source);
-              await wallet.provider?.send('pub(soraCard.token)', [refreshToken]);
+              const windowInjectedWeb3 = window as WindowInjectedWeb3;
+              await windowInjectedWeb3.injectedWeb3?.['fearless-wallet']?.saveSoraCardToken?.(refreshToken);
             }
             this.$emit('confirm-kyc', true);
             ScriptLoader.unload(kycService.sdkURL);
