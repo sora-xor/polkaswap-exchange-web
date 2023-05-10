@@ -163,8 +163,11 @@
         :disabled="confirmationButtonDisabled"
         @click="handleTransaction"
       >
+        <template v-if="comfirmationBlocksLeft">
+          {{ t('bridgeTransaction.blocksLeft', { count: comfirmationBlocksLeft }) }}
+        </template>
         <span
-          v-if="isTxPending"
+          v-else-if="isTxPending"
           v-html="
             t('bridgeTransaction.pending', {
               network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`),
