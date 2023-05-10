@@ -637,8 +637,7 @@
         "expectedMetaMaskAddress": "Expected address in {Metamask}:",
         "allowToken": "Allow {AppName} to use your {tokenSymbol}",
         "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.",
-        "blocksLeft": "{count} blocks left...",
-        "accountAddress": "{network} @:accountAddressText"
+        "blocksLeft": "{count} blocks left..."
     },
     "bridgeHistory": {
         "title": "History",
