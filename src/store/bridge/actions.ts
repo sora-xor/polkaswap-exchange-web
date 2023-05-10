@@ -182,6 +182,16 @@ const actions = defineActions({
     commit.setInternalHistory(history as Record<string, IBridgeTransaction>);
   },
 
+  async updateExternalHistory(context, clearHistory = false): Promise<void> {
+    const { getters, dispatch } = bridgeActionContext(context);
+
+    if (getters.isEthBridge) {
+      await dispatch.updateEthHistory(clearHistory);
+    } else {
+      await dispatch.updateEvmHistory();
+    }
+  },
+
   removeHistory(context, { tx, force = false }: { tx: Partial<IBridgeTransaction>; force: boolean }): void {
     const { commit, dispatch, getters, state, rootState } = bridgeActionContext(context);
 
@@ -292,8 +302,8 @@ const actions = defineActions({
     const address = rootState.wallet.account.address;
     const assets = rootGetters.assets.assetsDataTable;
     const networkFees = rootState.wallet.settings.networkFees;
-    const contractsArray = Object.values(KnownEthBridgeAsset).map<Nullable<string>>((key) =>
-      rootGetters.web3.contractAddress(key)
+    const contractsArray = Object.values(KnownEthBridgeAsset).map((key) =>
+      rootGetters.web3.contractAddress(key as KnownEthBridgeAsset)
     );
     const contracts = compact(contractsArray);
     const updateCallback = () => dispatch.updateInternalHistory();

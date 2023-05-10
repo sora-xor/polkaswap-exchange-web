@@ -78,7 +78,7 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
           );
 
           if (transaction) {
-            this.updateTransactionParams(id, { ethereumHash: transaction.hash });
+            this.updateTransactionParams(id, { externalHash: transaction.hash });
             return;
           }
         }

@@ -71,7 +71,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       throw new Error('bridgeTransactionData is empty');
     }
 
-    this.updateHistory();
+    this.updateInternalHistory();
 
     const tx = this.getBridgeHistoryItemByMoonpayId(this.bridgeTransactionData.payload.moonpayId);
 
@@ -164,7 +164,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         symbol: asset.symbol,
         assetAddress: asset.address,
         soraNetworkFee: this.getSoraNetworkFee(Operation.EthBridgeIncoming),
-        evmNetworkFee: evmNetworkFee,
+        externalNetworkFee: evmNetworkFee,
         externalNetwork: this.moonpayEvmNetwork,
         to: ethTransferData.to,
         payload: {

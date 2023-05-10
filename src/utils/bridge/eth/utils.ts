@@ -154,7 +154,7 @@ export const waitForSoraTransactionHash = async (id: string): Promise<string> =>
 
 export const waitForEvmTransaction = async (id: string) => {
   const transaction = getTransaction(id);
-  const updatedCallback = (ethereumHash: string) => updateTransaction(id, { ethereumHash });
+  const updatedCallback = (externalHash: string) => updateTransaction(id, { externalHash });
 
   await waitForEvmTransactionMined(transaction.externalHash, updatedCallback);
 };

@@ -539,7 +539,7 @@
         "strategicBonusApy": "Strategic Bonus APY"
     },
     "bridge": {
-        "title": "{Hashi} Bridge",
+        "title": "Bridge",
         "info": "Convert tokens between the {Sora} and {Ethereum} networks.",
         "balance": "Balance",
         "connectWallet": "@:connectWalletText",

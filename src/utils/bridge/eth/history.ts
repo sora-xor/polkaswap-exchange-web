@@ -142,14 +142,14 @@ export class EthBridgeHistory {
   }
 
   public async findEthTxBySoraHash(
-    address: string,
+    accountAddress: string,
     hash: string,
     fromTimestamp: number,
     contracts?: string[]
   ): Promise<ethers.providers.TransactionResponse | null> {
-    if (!address || !hash) return null;
+    if (!accountAddress || !hash) return null;
 
-    const transactions = await this.getEthAccountTransactions(address, fromTimestamp, contracts);
+    const transactions = await this.getEthAccountTransactions(accountAddress, fromTimestamp, contracts);
 
     try {
       return await Promise.any(
@@ -164,14 +164,14 @@ export class EthBridgeHistory {
     }
   }
 
-  public async findEthTxByEthereumHash(ethereumHash: string): Promise<ethers.providers.TransactionResponse> {
+  public async findEthTxByEthereumHash(externalHash: string): Promise<ethers.providers.TransactionResponse> {
     for (const address in this.ethAccountTransactionsMap) {
-      if (ethereumHash in this.ethAccountTransactionsMap[address]) {
-        return this.ethAccountTransactionsMap[address][ethereumHash];
+      if (externalHash in this.ethAccountTransactionsMap[address]) {
+        return this.ethAccountTransactionsMap[address][externalHash];
       }
     }
 
-    return await ethersUtil.getEvmTransaction(ethereumHash);
+    return await ethersUtil.getEvmTransaction(externalHash);
   }
 
   public async fetchHistoryElements(address: string, timestamp = 0, ids?: string[]): Promise<HistoryElement[]> {
@@ -257,8 +257,8 @@ export class EthBridgeHistory {
         ? await this.findEthTxBySoraHash(historyElementData.sidechainAddress, hash, fromTimestamp, contracts)
         : await this.findEthTxByEthereumHash(requestHash);
 
-      const ethereumHash = ethereumTx?.hash ?? '';
-      const recieptData = ethereumHash ? await getEvmTransactionRecieptByHash(ethereumHash) : null;
+      const externalHash = ethereumTx?.hash ?? '';
+      const recieptData = externalHash ? await getEvmTransactionRecieptByHash(externalHash) : null;
 
       const to = isOutgoing ? historyElementData.sidechainAddress : recieptData?.from;
       const externalNetworkFee = recieptData?.evmNetworkFee;
@@ -272,7 +272,7 @@ export class EthBridgeHistory {
       const [startTime, endTime] = isOutgoing ? [soraTimestamp, evmTimestamp] : [evmTimestamp, soraTimestamp];
 
       const transactionState = isOutgoing
-        ? ethereumHash
+        ? externalHash
           ? ETH_BRIDGE_STATES.EVM_COMMITED
           : soraPartCompleted
           ? ETH_BRIDGE_STATES.EVM_REJECTED
@@ -282,7 +282,7 @@ export class EthBridgeHistory {
         : ETH_BRIDGE_STATES.SORA_COMMITED;
 
       const status = isOutgoing
-        ? ethereumHash
+        ? externalHash
           ? BridgeTxStatus.Done
           : soraPartCompleted
           ? BridgeTxStatus.Failed
@@ -305,7 +305,7 @@ export class EthBridgeHistory {
         status,
         transactionStep,
         hash,
-        ethereumHash,
+        externalHash,
         soraNetworkFee,
         externalNetworkFee,
         transactionState,

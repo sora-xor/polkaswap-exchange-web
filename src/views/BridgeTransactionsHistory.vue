@@ -2,7 +2,14 @@
   <div class="history-container">
     <s-card v-loading="parentLoading" class="history-content" border-radius="medium" shadow="always" primary>
       <generic-page-header has-button-back :title="t('bridgeHistory.title')" @back="handleBack">
-        <swap-status-action-badge v-if="selectedEvmNetwork" class="status-action-badge--history">
+        <s-button
+          type="action"
+          icon="arrows-swap-90-24"
+          :disabled="historyLoading"
+          :tooltip="t('bridgeHistory.restoreHistory')"
+          @click="updateExternalHistory(true)"
+        />
+        <!-- <swap-status-action-badge v-if="selectedEvmNetwork" class="status-action-badge--history">
           <template #value>{{ selectedEvmNetwork.shortName }}</template>
           <template #action>
             <s-button
@@ -14,7 +21,7 @@
               @click="setSelectNetworkDialogVisibility(true)"
             />
           </template>
-        </swap-status-action-badge>
+        </swap-status-action-badge> -->
       </generic-page-header>
       <s-form class="history-form" :show-message="false">
         <search-input
@@ -152,7 +159,8 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   created(): void {
     this.withParentLoading(async () => {
-      this.updateHistory();
+      this.updateInternalHistory();
+      this.updateExternalHistory();
 
       if (this.historyPage !== 1) {
         this.currentPage = this.historyPage;

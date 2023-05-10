@@ -16,6 +16,7 @@ export default class BridgeHistoryMixin<T extends IBridgeTransaction> extends Mi
 
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
   @state.router.prev prevRoute!: Nullable<PageNames>;
+  @state.bridge.historyLoading historyLoading!: boolean;
 
   @mutation.bridge.setSoraToEvm setSoraToEvm!: (value: boolean) => void;
   @mutation.bridge.setHistoryPage setHistoryPage!: (historyPage?: number) => void;
@@ -23,7 +24,8 @@ export default class BridgeHistoryMixin<T extends IBridgeTransaction> extends Mi
 
   @action.bridge.setAssetAddress setAssetAddress!: (address?: string) => Promise<void>;
   @action.bridge.generateHistoryItem generateHistoryItem!: (history?: any) => Promise<T>;
-  @action.bridge.updateInternalHistory updateHistory!: FnWithoutArgs;
+  @action.bridge.updateInternalHistory updateInternalHistory!: FnWithoutArgs;
+  @action.bridge.updateExternalHistory updateExternalHistory!: (clearHistory?: boolean) => Promise<void>;
 
   getSoraNetworkFee(type: Operation): CodecString {
     return this.isOutgoingType(type) ? this.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
