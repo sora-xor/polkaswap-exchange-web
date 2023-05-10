@@ -22,9 +22,20 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
 import { soraCard } from '@/utils/card';
 
+type WindowInjectedWeb3 = typeof window & {
+  injectedWeb3?: {
+    'fearless-wallet'?: {
+      enable: (origin: string) => Promise<void>;
+      saveSoraCardToken?: (token: string) => Promise<void>;
+      version: string;
+    };
+  };
+};
+
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin) {
-  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.account.source private source!: WALLET_CONSTS.AppWallet;
 
   @Prop({ default: '', type: String }) readonly accessToken!: string;
 
@@ -126,10 +137,14 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
             // Integrator will be notified if user cancels KYC or something went wrong
             // alert('Something went wrong ' + data.StatusDescription);
           })
-          .on('Success', (data) => {
+          .on('Success', async (data) => {
             // Integrator handles UI from this point on on successful kyc
             // alert('Kyc was successfull, integrator takes control of flow from now on')
 
+            const refreshToken = localStorage.getItem('PW-refresh-token');
+            if (this.source === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
+              await (window as WindowInjectedWeb3).injectedWeb3?.['fearless-wallet']?.saveSoraCardToken?.(refreshToken);
+            }
             this.$emit('confirm-kyc', true);
             ScriptLoader.unload(kycService.sdkURL);
 
