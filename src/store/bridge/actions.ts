@@ -12,6 +12,7 @@ import { MaxUint256 } from '@/consts';
 import { OtherContractType, KnownEthBridgeAsset } from '@/consts/evm';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import ethersUtil, { ABI } from '@/utils/ethers-util';
+import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import type { SignTxResult } from './types';
 
 // ETH
@@ -439,8 +440,8 @@ const actions = defineActions({
           ];
           checkEvmNetwork(context);
           const transaction = await tokenInstance.approve(...methodArgs);
-          await transaction.wait(2);
-          commit.removeTxIdFromApprove(tx.id);
+          commit.removeTxIdFromApprove(tx.id); // change ui state after approve in client
+          await waitForEvmTransactionMined(transaction.hash); // wait for 1 confirm block
         }
       }
       const soraAccountAddress = rootState.wallet.account.address;
