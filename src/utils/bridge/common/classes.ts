@@ -100,7 +100,6 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     id: string,
     { nextState, rejectState, handler, status }: TransactionHandlerPayload<Transaction>
   ): Promise<void> {
-    console.log('handleState', id, nextState, status);
     try {
       const transaction = this.getTransaction(id);
 
@@ -133,12 +132,12 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
   async onComplete(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
-    await this.updateTransactionParams(id, {
-      transactionState: this.boundaryStates[tx.type].done,
-      endTime: Date.now(),
-    });
-
     if (tx) {
+      await this.updateTransactionParams(id, {
+        transactionState: this.boundaryStates[tx.type].done,
+        endTime: Date.now(),
+      });
+
       if (tx.assetAddress && !this.getAssetByAddress(tx.assetAddress)) {
         // Add asset to account assets
         this.addAsset(tx.assetAddress);

@@ -6,6 +6,7 @@ import type { CodecString } from '@sora-substrate/util';
 import router from '@/router';
 import { PageNames, ZeroStringValue } from '@/consts';
 import { state, mutation, action, getter } from '@/store/decorators';
+import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
 
 import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
@@ -28,8 +29,8 @@ export default class BridgeHistoryMixin<T extends IBridgeTransaction> extends Mi
     return this.isOutgoingType(type) ? this.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
   }
 
-  isOutgoingType(type: Nullable<string>): boolean {
-    return type === Operation.EvmOutgoing;
+  isOutgoingType(type: Operation): boolean {
+    return isOutgoingTransaction({ type } as IBridgeTransaction);
   }
 
   async showHistory(id?: string): Promise<void> {

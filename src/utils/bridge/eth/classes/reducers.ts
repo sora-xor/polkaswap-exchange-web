@@ -90,7 +90,6 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
 
 export class EthBridgeOutgoingReducer extends EthBridgeReducer {
   async changeState(transaction: BridgeHistory): Promise<void> {
-    console.log('changeState');
     if (!transaction.id) throw new Error('[Bridge]: TX ID cannot be empty');
 
     switch (transaction.transactionState) {
@@ -140,7 +139,7 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
 
       case ETH_BRIDGE_STATES.SORA_PENDING: {
         return await this.handleState(transaction.id, {
-          nextState: ETH_BRIDGE_STATES.SORA_COMMITED,
+          nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
           handler: async (id: string) => {
             const hash = await waitForSoraTransactionHash(id);
@@ -153,13 +152,6 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
 
             this.updateTransactionParams(id, { to });
           },
-        });
-      }
-
-      case ETH_BRIDGE_STATES.SORA_COMMITED: {
-        return await this.handleState(transaction.id, {
-          nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
-          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
         });
       }
 
@@ -183,16 +175,10 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
         return await this.handleState(transaction.id, {
           nextState: ETH_BRIDGE_STATES.EVM_COMMITED,
           rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
-          handler: async (id: string) => await this.onEvmPending(id),
-        });
-      }
-
-      case ETH_BRIDGE_STATES.EVM_COMMITED: {
-        return await this.handleState(transaction.id, {
-          status: BridgeTxStatus.Done,
-          nextState: ETH_BRIDGE_STATES.EVM_COMMITED,
-          rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
-          handler: async (id: string) => this.onComplete(id),
+          handler: async (id: string) => {
+            await this.onEvmPending(id);
+            await this.onComplete(id);
+          },
         });
       }
 
@@ -231,16 +217,9 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
 
       case ETH_BRIDGE_STATES.EVM_PENDING: {
         return await this.handleState(transaction.id, {
-          nextState: ETH_BRIDGE_STATES.EVM_COMMITED,
+          nextState: ETH_BRIDGE_STATES.SORA_PENDING,
           rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
           handler: async (id: string) => await this.onEvmPending(id),
-        });
-      }
-
-      case ETH_BRIDGE_STATES.EVM_COMMITED: {
-        return await this.handleState(transaction.id, {
-          nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
-          rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
         });
       }
 
@@ -252,14 +231,6 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
         });
       }
 
-      case ETH_BRIDGE_STATES.SORA_SUBMITTED: {
-        return await this.handleState(transaction.id, {
-          status: BridgeTxStatus.Pending,
-          nextState: ETH_BRIDGE_STATES.SORA_PENDING,
-          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
-        });
-      }
-
       case ETH_BRIDGE_STATES.SORA_PENDING: {
         return await this.handleState(transaction.id, {
           nextState: ETH_BRIDGE_STATES.SORA_COMMITED,
@@ -268,16 +239,8 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
             const tx = this.getTransaction(id);
             const { hash, blockId } = await waitForIncomingRequest(tx);
             this.updateTransactionParams(id, { hash, blockId });
+            await this.onComplete(id);
           },
-        });
-      }
-
-      case ETH_BRIDGE_STATES.SORA_COMMITED: {
-        return await this.handleState(transaction.id, {
-          status: BridgeTxStatus.Done,
-          nextState: ETH_BRIDGE_STATES.SORA_COMMITED,
-          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
-          handler: async (id: string) => this.onComplete(id),
         });
       }
 
