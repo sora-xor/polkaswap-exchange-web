@@ -10,7 +10,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token">
-          <i class="s-icon--network s-icon-sora" />
+          <i class="network-icon network-icon--sora" />
           {{ tokenSymbol }}
         </div>
       </div>
@@ -18,7 +18,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token token-ethereum">
-          <i :class="`s-icon--network s-icon-${getEvmIcon(evmNetwork)}`" />
+          <i :class="`network-icon network-icon--${getEvmIcon(evmNetwork)}`" />
           {{ tokenSymbol }}
         </div>
       </div>
@@ -161,12 +161,10 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
     margin-right: $inner-spacing-medium;
     flex-shrink: 0;
   }
-  .s-icon {
-    &-sora,
-    &-eth {
-      margin-right: $inner-spacing-medium;
-      font-size: 21px;
-    }
+  .network-icon {
+    margin-right: $inner-spacing-medium;
+    width: 32px;
+    height: 32px;
   }
 }
 </style>

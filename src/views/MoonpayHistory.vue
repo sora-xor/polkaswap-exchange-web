@@ -30,7 +30,7 @@
                     :font-size-rate="FontSizeRate.MEDIUM"
                     :asset-symbol="item.formatted.crypto"
                   />
-                  <i class="s-icon--network s-icon-eth" />&nbsp; <span>{{ t('forText') }}</span>
+                  <i class="network-icon network-icon--ethereum" />&nbsp; <span>{{ t('forText') }}</span>
                   &nbsp;
                 </template>
                 <formatted-amount
@@ -401,7 +401,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
       }
     }
 
-    .s-icon--network {
+    .network-icon {
       margin-left: $separator-margin;
     }
   }

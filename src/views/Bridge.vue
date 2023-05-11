@@ -52,7 +52,7 @@
             <div class="input-title">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
               <span class="input-title--network">{{ getBridgeItemTitle(isSoraToEvm) }}</span>
-              <i :class="`s-icon-${isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
+              <i :class="`network-icon network-icon--${getEvmIcon(isSoraToEvm ? 0 : evmNetwork)}`" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
@@ -142,7 +142,7 @@
             <div class="input-title" @click="handleChangeNetwork">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
               <span class="input-title--network">{{ getBridgeItemTitle(!isSoraToEvm) }}</span>
-              <i :class="`s-icon-${!isSoraToEvm ? 'sora' : getEvmIcon(evmNetwork)}`" />
+              <i :class="`network-icon network-icon--${getEvmIcon(!isSoraToEvm ? 0 : evmNetwork)}`" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
@@ -639,11 +639,10 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       &--network {
         white-space: nowrap;
       }
-      i {
-        margin-top: 1px;
-        font-size: $s-heading3-caps-font-size;
-        @include icon-styles;
-      }
+    }
+    .network-icon {
+      width: 16px;
+      height: 16px;
     }
   }
 

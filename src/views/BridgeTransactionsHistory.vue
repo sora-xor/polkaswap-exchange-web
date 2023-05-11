@@ -45,18 +45,10 @@
               <div class="history-item-info">
                 <div class="history-item-title p4">
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
-                  <i
-                    :class="`s-icon--network s-icon-${
-                      isOutgoingType(item.type) ? 'sora' : getEvmIcon(item.externalNetwork)
-                    }`"
-                  />
+                  <i :class="`network-icon network-icon--${getEvmIcon(isOutgoingType(item.type) ? 0 : evmNetwork)}`" />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
-                  <i
-                    :class="`s-icon--network s-icon-${
-                      !isOutgoingType(item.type) ? 'sora' : getEvmIcon(item.externalNetwork)
-                    }`"
-                  />
+                  <i :class="`network-icon network-icon--${getEvmIcon(!isOutgoingType(item.type) ? 0 : evmNetwork)}`" />
                 </div>
                 <div class="history-item-date">{{ formatHistoryDate(item) }}</div>
               </div>
@@ -385,15 +377,10 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
     line-height: var(--s-line-height-big);
     white-space: nowrap;
 
-    .s-icon {
-      &--network {
-        margin-left: $separator-margin;
-      }
-      &-sora,
-      &-eth {
-        position: relative;
-        top: 1px;
-      }
+    .network-icon {
+      margin-left: $separator-margin;
+      width: 16px;
+      height: 16px;
     }
     &-separator {
       font-weight: normal;

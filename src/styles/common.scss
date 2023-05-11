@@ -19,43 +19,34 @@ $country-emoji-font: 'Twemoji Country Flags';
 }
 
 /* Networks Icons */
-$s-icon-sora: '\0041';
-$s-icon-eth: '\0044';
-$s-icon-energy: '\0048';
-.s-icon-sora {
-  &:before {
-    content: $s-icon-sora;
+.network-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  &--sora {
+    background-image: url('~@/assets/img/networks/sora.svg')
   }
-}
-.s-icon-eth {
-  &:before {
-    content: $s-icon-eth;
+  &--ethereum {
+    background-image: url('~@/assets/img/networks/ethereum.svg')
   }
-}
-.s-icon-energy {
-  &.s-icon--network {
-    &, &:hover {
-      color: #a566ff !important;
-    }
+  &--ethereum-classic {
+    background-image: url('~@/assets/img/networks/ethereum-classic.svg')
   }
-  &:before {
-    content: $s-icon-energy;
+  &--avalanche {
+    background-image: url('~@/assets/img/networks/avalanche.svg')
   }
-}
-[design-system-theme="light"] {
-  .s-icon--network.s-icon {
-    &-sora {
-      &,
-      &:hover {
-        color: #e3232c !important;
-      }
-    }
-    &-eth {
-      &,
-      &:hover {
-        color: #627eea !important;
-      }
-    }
+  &--klaytn {
+    background-image: url('~@/assets/img/networks/klaytn.svg')
+  }
+  &--polygon {
+    background-image: url('~@/assets/img/networks/polygon.svg')
+  }
+  &--binance-smart-chain {
+    background-image: url('~@/assets/img/networks/binance-smart-chain.svg')
   }
 }
 

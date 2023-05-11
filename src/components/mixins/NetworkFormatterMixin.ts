@@ -1,5 +1,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { EvmNetworkId } from '@sora-substrate/util/build/evm/consts';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import { state, getter } from '@/store/decorators';
@@ -26,7 +27,28 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
 
   // TODO [EVM] add network icons
   getEvmIcon(evmNetwork?: Nullable<EvmNetwork>): string {
-    return 'eth';
+    switch (evmNetwork) {
+      // special case
+      case 0:
+        return 'sora';
+      case EvmNetworkId.BinanceSmartChainMainnet:
+      case EvmNetworkId.BinanceSmartChainTestnet:
+        return 'binance-smart-chain';
+      case EvmNetworkId.PolygonMainnet:
+      case EvmNetworkId.PolygonTestnetMumbai:
+        return 'polygon';
+      case EvmNetworkId.KlaytnMainnet:
+      case EvmNetworkId.KlaytnTestnetBaobab:
+        return 'klaytn';
+      case EvmNetworkId.AvalancheMainnet:
+      case EvmNetworkId.AvalancheTestnetFuji:
+        return 'avalanche';
+      case EvmNetworkId.EthereumClassicMainnet:
+      case EvmNetworkId.EthereumClassicTestnetMordor:
+        return 'ethereum-classic';
+      default:
+        return 'ethereum';
+    }
   }
 
   // TODO [EVM] check network explorers links

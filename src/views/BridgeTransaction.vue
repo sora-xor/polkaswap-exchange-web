@@ -476,11 +476,11 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get firstNetworkIcon(): string {
-    return `s-icon--network s-icon-${this.isSoraToEvm ? 'sora' : this.evmIcon}`;
+    return `network-icon network-icon--${this.isSoraToEvm ? 'sora' : this.evmIcon}`;
   }
 
   get secondNetworkIcon(): string {
-    return `s-icon--network s-icon-${this.isSoraToEvm ? this.evmIcon : 'sora'}`;
+    return `network-icon network-icon--${this.isSoraToEvm ? this.evmIcon : 'sora'}`;
   }
 
   get hashCopyTooltip(): string {
@@ -694,9 +694,6 @@ $header-font-size: var(--s-heading3-font-size);
   .transaction-content .s-input {
     background-color: var(--s-color-base-on-accent);
   }
-  .s-icon--network {
-    color: var(--s-color-base-content-tertiary);
-  }
 }
 </style>
 
@@ -798,8 +795,7 @@ $network-title-max-width: 250px;
     margin-bottom: $inner-spacing-mini;
     font-weight: 700;
     line-height: var(--s-line-height-medium);
-    .s-icon--network {
-      font-size: var(--s-heading4-font-size);
+    .network-icon {
       margin-left: calc(#{$inner-spacing-mini} / 4);
     }
     &-separator {
