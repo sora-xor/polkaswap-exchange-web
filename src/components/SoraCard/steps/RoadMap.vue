@@ -100,12 +100,14 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   permissionDialogVisibility = false;
 
   async handleConfirm(): Promise<void> {
-    try {
-      const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('SoraCard');
+    if (!this.userApplied) {
+      try {
+        const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('SoraCard');
 
-      if (!mediaDevicesAllowance) return;
-    } catch (error) {
-      console.error('[SoraCard]: Camera error.', error);
+        if (!mediaDevicesAllowance) return;
+      } catch (error) {
+        console.error('[SoraCard]: Camera error.', error);
+      }
     }
 
     this.$emit('confirm');
