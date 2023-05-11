@@ -29,9 +29,12 @@ const getters = defineGetters<AddLiquidityState>()({
   },
   liquidityInfo(...args): Nullable<AccountLiquidity> {
     const { state, rootState } = addLiquidityGetterContext(args);
+    const { firstTokenAddress, secondTokenAddress } = state;
+
+    if (!(firstTokenAddress && secondTokenAddress)) return undefined;
+
     return rootState.pool.accountLiquidity.find(
-      (liquidity) =>
-        liquidity.firstAddress === state.firstTokenAddress && liquidity.secondAddress === state.secondTokenAddress
+      (liquidity) => liquidity.firstAddress === firstTokenAddress && liquidity.secondAddress === secondTokenAddress
     );
   },
   reserveA(...args): CodecString {

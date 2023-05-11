@@ -102,11 +102,6 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 
 <style lang="scss">
 .explore-tabs {
-  &-container {
-    margin-top: $inner-spacing-big;
-    min-height: var(--s-size-small);
-  }
-
   .el-tabs__header {
     margin: 0 auto;
   }
@@ -118,11 +113,10 @@ $container-max-width: 75vw;
 $search-input-width: 290px;
 
 .container--explore {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: $inner-spacing-medium;
   margin: $inner-spacing-big $inner-spacing-big 0;
-
-  & > *:not(:last-child) {
-    margin-bottom: $inner-spacing-medium;
-  }
 
   @include tablet {
     max-width: $container-max-width;

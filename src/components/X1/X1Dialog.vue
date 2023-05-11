@@ -31,11 +31,11 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { X1Api, X1Widget } from '@/utils/x1';
-import { getter, state } from '@/store/decorators';
-
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
+
+import { X1Api, X1Widget } from '@/utils/x1';
+import { getter, state } from '@/store/decorators';
 
 @Component({
   components: {

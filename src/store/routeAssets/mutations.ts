@@ -1,6 +1,6 @@
 import { defineMutations } from 'direct-vuex';
 
-import type { RouteAssetsState, Recipient, TransactionInfo } from './types';
+import type { RouteAssetsState, Recipient, TransactionInfo, RouteAssetsSubscription } from './types';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { PrimaryMarketsEnabledAssets } from '@sora-substrate/liquidity-proxy/build/types';
 
@@ -17,8 +17,34 @@ const mutations = defineMutations<RouteAssetsState>()({
     state.processingState.txInfo = undefined;
     state.processingState.datetime = undefined;
   },
-  setSubscriptions(state, subscriptions = []): void {
+  setSubscriptions(state, subscriptions: Array<RouteAssetsSubscription> = []): void {
     state.subscriptions = subscriptions;
+  },
+  addSubscription(state, subscription: RouteAssetsSubscription): void {
+    state.subscriptions.push(subscription);
+  },
+  addSubscribeObjectToSubscription(state, { reservesSubscribe, outputAssetId }) {
+    const subscription = state.subscriptions.find((item) => item.assetAddress === outputAssetId);
+    if (subscription) {
+      subscription.liquidityReservesSubscription = reservesSubscribe;
+    }
+  },
+  addPathsAndPayloadToSubscription(state, { outputAssetId, paths, payload, dexId, liquiditySources }): void {
+    const subscription = state.subscriptions.find((item) => item.assetAddress === outputAssetId);
+    if (subscription) {
+      subscription.paths = paths;
+      subscription.liquiditySources = liquiditySources;
+      subscription.payload = payload;
+      subscription.dexId = dexId;
+      subscription.dexQuoteData = {
+        ...subscription.dexQuoteData,
+        [dexId]: Object.freeze({
+          payload,
+          paths,
+          pairLiquiditySources: liquiditySources,
+        }),
+      };
+    }
   },
   setEnabledAssetsSubscription(state, subscription): void {
     state.enabledAssetsSubscription = subscription;
