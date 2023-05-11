@@ -1,50 +1,56 @@
 <template>
   <div v-loading="parentLoading">
-    <div class="map">
-      <div class="map__text-info">
-        <div class="map__section">
-          <email-icon class="map__icon"></email-icon>
+    <div class="tos__disclaimer">
+      <h4 class="tos__disclaimer-header">{{ 'Attention' }}</h4>
+      <p class="tos__disclaimer-paragraph">
+        {{
+          'You have only 2 attempts to pass the KYC process without extra wating time. To maximize your chances of success please follow these simple guidelines:'
+        }}
+      </p>
+      <div class="tos__disclaimer-warning icon">
+        <s-icon name="notifications-alert-triangle-24" size="28px" />
+      </div>
+    </div>
+    <div class="kyc-instructions">
+      <div class="kyc-instructions__text-info">
+        <div class="kyc-instructions__section">
+          <span class="kyc-instructions__number">1</span>
           <div class="text">
-            <h4 class="map__point">{{ t('card.roadmap.contactInfoTitle') }}</h4>
-            <span class="map__point-desc">{{ t('card.roadmap.contactInfoDesc') }}</span>
+            <h4 class="kyc-instructions__point">{{ 'Submit a photo of your ID document' }}</h4>
+            <span class="kyc-instructions__point-desc">{{
+              'Passport, Driver License, ID card or Residence Permit'
+            }}</span>
             <div class="line"></div>
           </div>
-          <div v-if="firstPointChecked" class="point point--checked">
-            <s-icon name="basic-check-mark-24" size="12px" />
-          </div>
-          <div v-else-if="firstPointCurrent" class="point point--current" />
-          <div v-else class="point" />
         </div>
-        <div class="map__section">
-          <user-icon class="map__icon"></user-icon>
+        <div class="kyc-instructions__section">
+          <span class="kyc-instructions__number">2</span>
           <div class="text">
-            <h4 class="map__point">{{ t('card.roadmap.docsTitle') }}</h4>
-            <span class="map__point-desc">{{ t('card.roadmap.docsDesc') }}</span>
+            <h4 class="kyc-instructions__point">{{ 'Take a selfie' }}</h4>
+            <span class="kyc-instructions__point-desc">{{ 'The guidance will be provided during the process' }}</span>
             <div class="line"></div>
           </div>
-          <div v-if="secondPointChecked" class="point point--checked">
-            <s-icon name="basic-check-mark-24" size="12px" />
-          </div>
-          <div v-else-if="secondPointCurrent" class="point point--current" />
-          <div v-else class="point" />
         </div>
-        <div class="map__section">
-          <card-icon class="map__icon"></card-icon>
+        <div class="kyc-instructions__section">
+          <span class="kyc-instructions__number">3</span>
           <div class="text">
-            <h4 class="map__point">{{ t('card.roadmap.personalDataTitle') }}</h4>
-            <span class="map__point-desc">{{ t('card.roadmap.personalDataTitle') }}</span>
+            <h4 class="kyc-instructions__point">{{ 'Submit a photo of proof of address' }}</h4>
+            <span class="kyc-instructions__point-desc">{{
+              'An official document (utility bill, bank statement, government statement or correspondence) that contains your full name and address, and that is no older then 3 months'
+            }}</span>
+            <div class="line"></div>
+          </div>
+        </div>
+        <div class="kyc-instructions__section">
+          <span class="kyc-instructions__number">4</span>
+          <div class="text">
+            <h4 class="kyc-instructions__point">{{ 'Submit your personal info' }}</h4>
+            <span class="kyc-instructions__point-desc">{{ 'Fill in the form with your name and address' }}</span>
             <div class="line line--last"></div>
           </div>
-          <div v-if="thirdPointChecked" class="point point--checked">
-            <s-icon name="basic-check-mark-24" size="12px" />
-          </div>
-          <div v-else-if="thirdPointCurrent" class="point point--current" />
-          <div v-else class="point" />
         </div>
       </div>
     </div>
-
-    <div id="authOpen"></div>
 
     <s-button
       :loading="btnLoading"
@@ -53,7 +59,7 @@
       class="sora-card__btn s-typography-button--large"
       @click="handleConfirm"
     >
-      <span class="text">{{ t('card.letsStartBtn') }}</span>
+      <span class="text">{{ 'Ok, I’m ready' }}</span>
     </s-button>
     <notification-enabling-page v-if="permissionDialogVisibility">
       {{ t('code.allowanceRequest') }}
@@ -87,13 +93,6 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
 
   @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
-  firstPointChecked = false;
-  firstPointCurrent = true;
-  secondPointChecked = false;
-  secondPointCurrent = false;
-  thirdPointChecked = false;
-  thirdPointCurrent = false;
-
   btnDisabled = false;
   btnLoading = false;
 
@@ -113,25 +112,14 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
 
   mounted(): void {
     clearTokensFromLocalStorage();
-
-    if (this.userApplied) {
-      this.firstPointCurrent = true;
-      this.secondPointChecked = true;
-      this.thirdPointChecked = true;
-    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.map {
+.kyc-instructions {
   display: flex;
   width: 100%;
-  background-color: var(--s-color-base-background);
-  border-radius: var(--s-border-radius-small);
-  box-shadow: var(--s-shadow-dialog);
-  padding: 20px $basic-spacing;
-  margin-bottom: $basic-spacing;
 
   &__section {
     display: flex;
@@ -148,7 +136,6 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
 
     .line {
       height: 1px;
-      width: 270px;
       margin-top: $basic-spacing;
       background-color: var(--s-color-base-border-secondary);
 
@@ -157,37 +144,14 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
         margin: 0;
       }
     }
-
-    .dotted {
-      width: 1px;
-      height: 50px;
-      background-color: #d9d9d9;
-    }
-
-    .point {
-      align-self: center;
-      margin-left: 30px;
-      width: 20px;
-      height: 20px;
-      background-color: #f4f0f1;
-      border-radius: 50%;
-      border: 1px solid var(--s-color-base-content-secondary);
-
-      &--current {
-        border-color: var(--s-color-theme-accent);
-        background-color: rgba(248, 8, 123, 0.1);
-      }
-
-      &--checked {
-        background-color: var(--s-color-theme-accent);
-        border-color: var(--s-color-theme-accent);
-      }
-    }
   }
 
-  &__icon {
-    margin: 5px $basic-spacing 0 0;
-    color: var(--s-color-base-content-tertiary);
+  &__number {
+    width: 24px;
+    height: 24px;
+    font-weight: 600;
+    font-size: 24px;
+    color: #a19a9d;
   }
 
   &__point {

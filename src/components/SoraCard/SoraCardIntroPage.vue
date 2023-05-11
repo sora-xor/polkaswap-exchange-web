@@ -1,21 +1,54 @@
 <template>
-  <div class="container sora-card">
-    <s-image src="card/sora-card.png" lazy fit="cover" draggable="false" class="unselectable sora-card__image" />
-    <div class="sora-card__intro">
-      <h3 class="sora-card__intro-title">{{ t('card.getSoraCardTitle') }}</h3>
-      <span class="sora-card__intro-info">
-        {{ t('card.getSoraCardDesc') }}
-      </span>
-    </div>
-    <div v-if="isLoggedIn" class="sora-card__balance-indicator">
-      <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
-      <p class="sora-card__balance-indicator-text">
-        <span class="sora-card__balance-indicator-text--bold">{{ t('card.reIssuanceFee') }}</span>
-      </p>
-    </div>
-    <div v-if="wasEuroBalanceLoaded && isLoggedIn" class="sora-card__balance-indicator">
-      <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
-      <p class="sora-card__balance-indicator-text" v-html="freeStartUsingDesc" />
+  <div class="sora-card-intro">
+    <div class="container sora-card">
+      <s-image src="card/sora-card.png" lazy fit="cover" draggable="false" class="unselectable sora-card__image" />
+      <div class="sora-card__intro">
+        <h3 class="sora-card__intro-title">{{ t('card.getSoraCardTitle') }}</h3>
+        <span class="sora-card__intro-info">
+          {{ t('card.getSoraCardDesc') }}
+        </span>
+      </div>
+      <div v-if="isLoggedIn" class="sora-card__balance-indicator">
+        <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
+        <p class="sora-card__balance-indicator-text">
+          <span class="sora-card__balance-indicator-text--bold">{{ '$0 annual service fee' }}</span>
+        </p>
+      </div>
+      <div v-if="wasEuroBalanceLoaded && isLoggedIn" class="sora-card__balance-indicator">
+        <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
+        <p class="sora-card__balance-indicator-text">Free card issuance</p>
+        <p>You hold $100 worth of XOR in your SORA Account</p>
+      </div>
+      <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
+        <div v-if="isEuroBalanceEnough || !isLoggedIn" class="sora-card__options--enough-euro">
+          <s-button
+            type="primary"
+            class="sora-card__btn s-typography-button--large"
+            :loading="btnLoading"
+            @click="handleConfirm"
+          >
+            <span class="text"> {{ t(buttonText) }}</span>
+          </s-button>
+        </div>
+        <div v-else class="sora-card__options--not-enough-euro s-flex">
+          <s-button
+            v-for="item in buyOptions"
+            class="sora-card__btn sora-card__btn--buy s-typography-button--large"
+            :key="item.type"
+            :type="item.button"
+            :loading="btnLoading"
+            @click="buyTokens(item.type)"
+          >
+            <span class="text">{{ t(item.text) }}</span>
+          </s-button>
+        </div>
+      </div>
+      <span v-if="isLoggedIn" @click="loginUser" class="sora-card__user-applied">{{
+        t('card.alreadyAppliedTip')
+      }}</span>
+      <x1-dialog :visible.sync="showX1Dialog" />
+      <paywings-dialog :visible.sync="showPaywingsDialog" />
+      <tos-dialog :visible.sync="showListDialog" :title="t('card.unsupportedCountries')" />
     </div>
     <div class="sora-card__unsupported-countries-disclaimer">
       {{ t('card.unsupportedCountriesDisclaimer') }}
@@ -23,34 +56,6 @@
         t('card.unsupportedCountriesLink')
       }}</span>
     </div>
-    <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
-      <div v-if="isEuroBalanceEnough || !isLoggedIn" class="sora-card__options--enough-euro">
-        <s-button
-          type="primary"
-          class="sora-card__btn s-typography-button--large"
-          :loading="btnLoading"
-          @click="handleConfirm"
-        >
-          <span class="text"> {{ t(buttonText) }}</span>
-        </s-button>
-      </div>
-      <div v-else class="sora-card__options--not-enough-euro s-flex">
-        <s-button
-          v-for="item in buyOptions"
-          class="sora-card__btn sora-card__btn--buy s-typography-button--large"
-          :key="item.type"
-          :type="item.button"
-          :loading="btnLoading"
-          @click="buyTokens(item.type)"
-        >
-          <span class="text">{{ t(item.text) }}</span>
-        </s-button>
-      </div>
-    </div>
-    <span v-if="isLoggedIn" @click="loginUser" class="sora-card__user-applied">{{ t('card.alreadyAppliedTip') }}</span>
-    <x1-dialog :visible.sync="showX1Dialog" />
-    <paywings-dialog :visible.sync="showPaywingsDialog" />
-    <tos-dialog :visible.sync="showListDialog" :title="t('card.unsupportedCountries')" />
   </div>
 </template>
 
@@ -202,11 +207,16 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 }
 
 .sora-card__balance-indicator-text--bold {
-  font-weight: 600;
+  font-size: 24px;
 }
 </style>
 
 <style lang="scss" scoped>
+.sora-card-intro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .sora-card {
   display: flex;
   flex-direction: column;
@@ -244,13 +254,15 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   }
 
   &__unsupported-countries-disclaimer {
+    position: absolute;
     color: var(--s-color-base-content-secondary);
     text-align: center;
-    margin-top: var(--s-size-mini);
-    width: 75%;
+    font-size: 16px;
+    bottom: -70px;
+    width: 24%;
+    line-height: 24px;
     &--link {
-      border-bottom: 1px solid var(--s-color-theme-accent);
-      color: var(--s-color-theme-accent);
+      border-bottom: 1px solid;
       &:hover {
         cursor: pointer;
       }
@@ -278,6 +290,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     padding: calc(var(--s-basic-spacing) / 2) var(--s-basic-spacing);
     margin-top: var(--s-basic-spacing);
     border-radius: calc(var(--s-basic-spacing) / 2);
+    width: 100%;
     &-text {
       display: inline-block;
       font-size: var(--s-font-size-small);
@@ -292,7 +305,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     }
 
     .sora-card__icon--checked {
-      color: var(--s-color-theme-accent);
+      color: var(--s-color-status-success);
     }
   }
 

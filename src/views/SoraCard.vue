@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sora-card-wrapper">
     <confirmation-info v-if="step === Step.ConfirmationInfo" v-loading="loading" @confirm-apply="openStartPage" />
     <sora-card-intro v-else-if="step === Step.StartPage" @confirm-apply="confirmApply" />
     <sora-card-kyc
@@ -148,6 +148,10 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
 </script>
 
 <style lang="scss">
+.sora-card-wrapper {
+  position: relative;
+}
+
 .el-button.neumorphic.s-primary.sora-card__btn {
   margin-top: var(--s-size-mini);
 
