@@ -32,8 +32,6 @@ export function initialState(): Web3State {
         ERC20: undefined,
       },
     },
-    // moonpay
-    moonpayEvmNetwork: null,
   };
 }
 

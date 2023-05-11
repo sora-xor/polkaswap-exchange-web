@@ -19,7 +19,7 @@ import type { SignTxResult } from './types';
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
-import { waitForApprovedRequest } from '@/utils/bridge/eth/utils';
+import { waitForApprovedRequest, updateEthBridgeHistory } from '@/utils/bridge/eth/utils';
 
 // EVM
 import evmBridge from '@/utils/bridge/evm';
@@ -293,26 +293,16 @@ const actions = defineActions({
   },
 
   async updateEthHistory(context, clearHistory = false): Promise<void> {
-    const { commit, state, dispatch, rootState, rootGetters } = bridgeActionContext(context);
+    const { commit, state, dispatch } = bridgeActionContext(context);
+
     if (state.historyLoading) return;
 
     commit.setHistoryLoading(true);
 
-    const bridgeHistory = await dispatch.getEthBridgeHistoryInstance();
-    const address = rootState.wallet.account.address;
-    const assets = rootGetters.assets.assetsDataTable;
-    const networkFees = rootState.wallet.settings.networkFees;
-    const contractsArray = Object.values(KnownEthBridgeAsset).map((key) =>
-      rootGetters.web3.contractAddress(key as KnownEthBridgeAsset)
-    );
-    const contracts = compact(contractsArray);
     const updateCallback = () => dispatch.updateInternalHistory();
+    const updateHistoryFn = updateEthBridgeHistory(context);
 
-    if (clearHistory) {
-      await bridgeHistory.clearHistory(updateCallback);
-    }
-
-    await bridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, updateCallback);
+    await updateHistoryFn(clearHistory, updateCallback);
 
     commit.setHistoryLoading(false);
   },

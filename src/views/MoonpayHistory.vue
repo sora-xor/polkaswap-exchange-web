@@ -129,7 +129,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     this.withApi(async () => {
       this.initMoonpayApi(); // MoonpayBridgeInitMixin
 
-      this.setSelectedEvmNetwork(this.moonpayEvmNetwork);
+      this.setSelectedEvmNetwork(this.ethBridgeEvmNetwork);
       await this.connectEvmNetwork();
 
       await Promise.all([this.getTransactions(), this.getCurrencies()]);

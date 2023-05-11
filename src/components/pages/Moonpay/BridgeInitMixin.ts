@@ -28,7 +28,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @state.moonpay.api moonpayApi!: MoonpayApi;
   @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<BridgeHistory>;
   @state.web3.evmBalance evmBalance!: CodecString;
-  @state.web3.moonpayEvmNetwork moonpayEvmNetwork!: EvmNetwork;
+  @state.web3.ethBridgeEvmNetwork ethBridgeEvmNetwork!: EvmNetwork;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
 
@@ -47,7 +47,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @action.assets.updateRegisteredAssets private updateRegisteredAssets!: (reset?: boolean) => Promise<void>;
 
   async prepareEvmNetwork(): Promise<void> {
-    this.selectEvmNetwork(this.moonpayEvmNetwork); // WalletConnectMixin
+    this.selectEvmNetwork(this.ethBridgeEvmNetwork); // WalletConnectMixin
   }
 
   initMoonpayApi(): void {
@@ -165,7 +165,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         assetAddress: asset.address,
         soraNetworkFee: this.getSoraNetworkFee(Operation.EthBridgeIncoming),
         externalNetworkFee: evmNetworkFee,
-        externalNetwork: this.moonpayEvmNetwork,
+        externalNetwork: this.ethBridgeEvmNetwork,
         to: ethTransferData.to,
         payload: {
           moonpayId: transaction.id,

@@ -165,7 +165,7 @@ export const waitForEvmTransaction = async (id: string) => {
  */
 export const updateEthBridgeHistory =
   (context: ActionContext<any, any>) =>
-  async (setHistoryCallback?: VoidFunction): Promise<void> => {
+  async (clearHistory = false, updateCallback?: VoidFunction): Promise<void> => {
     try {
       const { rootState, rootGetters } = rootActionContext(context);
 
@@ -206,7 +206,12 @@ export const updateEthBridgeHistory =
       const ethBridgeHistory = new EthBridgeHistory(etherscanApiKey);
 
       await ethBridgeHistory.init();
-      await ethBridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, setHistoryCallback);
+
+      if (clearHistory) {
+        await ethBridgeHistory.clearHistory(updateCallback);
+      }
+
+      await ethBridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, updateCallback);
     } catch (error) {
       console.error(error);
     }

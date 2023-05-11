@@ -34,7 +34,7 @@ type HistoryElementData = SUBQUERY_TYPES.HistoryElementEthBridgeOutgoing &
   SUBQUERY_TYPES.HistoryElementEthBridgeIncoming;
 
 export class EthBridgeHistory {
-  private readonly externalNetwork = BridgeNetworks.ETH_NETWORK_ID;
+  private externalNetwork!: number;
 
   private ethAccountTransactionsMap: DataMap<EthTransactionsMap> = {};
   private ethBlockLogsMap: DataMap<Promise<EthLogsMap>> = {};
@@ -63,6 +63,7 @@ export class EthBridgeHistory {
     const network = await ethersInstance.getNetwork();
 
     this.etherscanInstance = new ethers.providers.EtherscanProvider(network, this.etherscanApiKey);
+    this.externalNetwork = await ethersUtil.getEvmNetworkId();
   }
 
   private async getEthStartBlock(timestampMs: number): Promise<number> {

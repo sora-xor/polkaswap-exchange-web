@@ -18,6 +18,8 @@ $country-emoji-font: 'Twemoji Country Flags';
   }
 }
 
+$networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polygon', 'binance-smart-chain';
+
 /* Networks Icons */
 .network-icon {
   display: inline-block;
@@ -27,26 +29,10 @@ $country-emoji-font: 'Twemoji Country Flags';
   background-repeat: no-repeat;
   background-position: center;
 
-  &--sora {
-    background-image: url('~@/assets/img/networks/sora.svg')
-  }
-  &--ethereum {
-    background-image: url('~@/assets/img/networks/ethereum.svg')
-  }
-  &--ethereum-classic {
-    background-image: url('~@/assets/img/networks/ethereum-classic.svg')
-  }
-  &--avalanche {
-    background-image: url('~@/assets/img/networks/avalanche.svg')
-  }
-  &--klaytn {
-    background-image: url('~@/assets/img/networks/klaytn.svg')
-  }
-  &--polygon {
-    background-image: url('~@/assets/img/networks/polygon.svg')
-  }
-  &--binance-smart-chain {
-    background-image: url('~@/assets/img/networks/binance-smart-chain.svg')
+  @each $network in $networks {
+    &--#{$network} {
+      background-image: url('~@/assets/img/networks/#{$network}.svg')
+    }
   }
 }
 

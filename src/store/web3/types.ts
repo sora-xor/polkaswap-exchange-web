@@ -37,5 +37,4 @@ export type Web3State = {
   ethBridgeEvmNetwork: EvmNetwork;
   ethBridgeContractAddress: EthBridgeContractsAddresses;
   ethBridgeSmartContracts: EthBridgeSmartContracts;
-  moonpayEvmNetwork: Nullable<EvmNetwork>;
 };

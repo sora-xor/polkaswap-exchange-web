@@ -3,7 +3,6 @@ import { initWallet, waitForCore, connection, api } from '@soramitsu/soraneo-wal
 import type { ActionContext } from 'vuex';
 
 import { settingsActionContext } from '@/store/settings';
-import { updateEthBridgeHistory } from '@/utils/bridge/eth/utils';
 import { Language, WalletPermissions } from '@/consts';
 import { getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { updateDocumentTitle, updateFpNumberLocale } from '@/utils';
@@ -44,7 +43,6 @@ const actions = defineActions({
     const requestedNode = (node || (state.node.address ? state.node : defaultNode)) as Nullable<Node>;
     const walletOptions = {
       permissions: WalletPermissions,
-      updateEthBridgeHistory: updateEthBridgeHistory(context),
     };
 
     try {

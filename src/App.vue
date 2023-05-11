@@ -116,7 +116,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
   @mutation.web3.setEvmNetworksIds private setEvmNetworksIds!: (data: EvmNetwork[]) => void;
-  @mutation.web3.setMoonpayEvmNetwork private setMoonpayEvmNetwork!: (evmNetwork: EvmNetwork) => void;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
 
@@ -212,7 +211,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.setEvmNetworksIds(data.EVM_NETWORKS_IDS);
-      this.setMoonpayEvmNetwork(data.MOONPAY_EVM_ID);
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);
