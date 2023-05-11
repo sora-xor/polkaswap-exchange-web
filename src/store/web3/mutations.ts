@@ -18,8 +18,11 @@ const mutations = defineMutations<Web3State>()({
     state.evmAddress = '';
     ethersUtil.removeEvmUserAddress();
   },
-  setEvmNetworksIds(state, networksIds: EvmNetwork[]): void {
-    state.evmNetworksIds = networksIds;
+  setEvmNetworksApp(state, networksIds: EvmNetwork[]): void {
+    state.evmNetworksApp = networksIds;
+  },
+  setEvmNetworksChain(state, networksIds: EvmNetwork[]): void {
+    state.evmNetworksChain = networksIds;
   },
   // by provider
   setEvmNetwork(state, networkId: EvmNetwork): void {

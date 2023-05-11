@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import { defineActions } from 'direct-vuex';
+import { api } from '@soramitsu/soraneo-wallet-web';
 
 import { web3ActionContext } from '@/store/web3';
 import ethersUtil, { ContractNetwork, Contract } from '@/utils/ethers-util';
@@ -35,13 +36,19 @@ const actions = defineActions({
     }
   },
 
+  async getSupportedNetworks(context): Promise<void> {
+    const { commit } = web3ActionContext(context);
+    const networksIds = await api.evm.getAvailableNetworks();
+    commit.setEvmNetworksChain(networksIds);
+  },
+
   async restoreSelectedEvmNetwork(context): Promise<void> {
     const { commit, getters } = web3ActionContext(context);
 
     if (getters.selectedEvmNetwork) return;
 
     const selectedEvmNetworkId =
-      ethersUtil.getSelectedEvmNetwork() || getters.availableNetworks[BridgeType.ETH]?.[0]?.id;
+      ethersUtil.getSelectedEvmNetwork() || getters.availableNetworks[BridgeType.ETH]?.[0]?.data?.id;
 
     if (selectedEvmNetworkId) {
       commit.setSelectedEvmNetwork(selectedEvmNetworkId);

@@ -2,7 +2,13 @@
   <dialog-base :visible.sync="visibility" :title="t('bridge.selectNetwork')" class="networks">
     <p class="networks-info">{{ t('bridge.networkInfo') }}</p>
     <s-radio-group v-model="selectedNetworkTuple">
-      <s-radio v-for="{ id, value, name } in networks" :key="value" :label="value" class="network">
+      <s-radio
+        v-for="{ id, value, name, disabled } in networks"
+        :key="value"
+        :label="value"
+        :disabled="disabled"
+        class="network"
+      >
         <span class="network-name">{{ name }}</span>
         <i :class="['network-icon', `network-icon--${getEvmIcon(id)}`]" />
       </s-radio>
@@ -34,7 +40,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
   @state.web3.evmNetworkSelected private evmNetworkSelected!: Nullable<EvmNetwork>;
   @state.web3.selectNetworkDialogVisibility selectNetworkDialogVisibility!: boolean;
 
-  @getter.web3.availableNetworks availableNetworks!: Record<BridgeType, EvmNetworkData[]>;
+  @getter.web3.availableNetworks availableNetworks!: Record<BridgeType, { disabled: boolean; data: EvmNetworkData }[]>;
 
   @mutation.web3.setNetworkType private setNetworkType!: (networkType: BridgeType) => void;
   @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
@@ -49,16 +55,17 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
     this.setSelectNetworkDialogVisibility(flag);
   }
 
-  get networks(): { id: number; value: string; name: string }[] {
+  get networks(): { id: number; value: string; name: string; disabled: boolean }[] {
     return Object.entries(this.availableNetworks)
       .map(([type, networks]) => {
-        return networks.map(({ id, name }) => {
+        return networks.map(({ disabled, data: { id, name } }) => {
           const networkName = type === BridgeType.ETH ? `${name} (${this.t('hashiBridgeText')})` : name;
 
           return {
             id,
             value: `${type}-${id}`,
             name: networkName,
+            disabled,
           };
         });
       })
@@ -124,9 +131,6 @@ $network-logo-font-size: 24px;
     padding: $inner-spacing-small 0;
     &-name {
       @include radio-title;
-    }
-    + .network {
-      border-top: 1px solid var(--s-color-base-border-secondary);
     }
     &-icon {
       height: $network-logo-size;

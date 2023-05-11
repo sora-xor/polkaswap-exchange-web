@@ -11,7 +11,8 @@ export function initialState(): Web3State {
     evmAddress: ethersUtil.getEvmUserAddress(),
     evmBalance: ZeroStringValue,
     evmNetwork: null, // evm network in provider
-    evmNetworksIds: [],
+    evmNetworksApp: [], // evm networks from app config
+    evmNetworksChain: [], // evm networks from chain config
     evmNetworkSelected: null, // evm network selected by user
     networkType: ethersUtil.getSelectedBridgeType() ?? BridgeType.ETH,
 

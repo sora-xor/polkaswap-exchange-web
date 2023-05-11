@@ -11,10 +11,14 @@ const getters = defineGetters<Web3State>()({
     const { state } = web3GetterContext(args);
     return !!state.evmAddress && state.evmAddress !== 'undefined';
   },
-  availableNetworks(...args): Record<BridgeType, EvmNetworkData[]> {
+  availableNetworks(...args): Record<BridgeType, { disabled: boolean; data: EvmNetworkData }[]> {
     const { state } = web3GetterContext(args);
-    const hashi = [state.ethBridgeEvmNetwork].map((evmNetworkId) => EVM_NETWORKS[evmNetworkId]);
-    const evm = state.evmNetworksIds.map((evmNetworkId) => EVM_NETWORKS[evmNetworkId]);
+    const format = (id: number) => ({ disabled: !state.evmNetworksChain.includes(id), data: EVM_NETWORKS[id] });
+    const hashi = [state.ethBridgeEvmNetwork].map((evmNetworkId) => ({
+      disabled: false,
+      data: EVM_NETWORKS[evmNetworkId],
+    }));
+    const evm = state.evmNetworksApp.map(format);
 
     return {
       [BridgeType.ETH]: hashi,

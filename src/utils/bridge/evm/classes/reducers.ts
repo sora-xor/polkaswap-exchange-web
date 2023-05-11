@@ -150,7 +150,11 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
 
     try {
       await new Promise<EvmTxStatus>((resolve, reject) => {
-        subscription = evmBridgeApi.subscribeOnTxDetails(from, externalNetwork, hash).subscribe((data) => {
+        const observable = evmBridgeApi.subscribeOnTxDetails(from, externalNetwork, hash);
+
+        if (!observable) throw new Error(`[${this.constructor.name}]: Unable to subscribe on transacton data`);
+
+        subscription = observable.subscribe((data) => {
           if (!data) {
             return reject(new Error(`[${this.constructor.name}]: Unable to get transacton data by "hash": "${hash}"`));
           }

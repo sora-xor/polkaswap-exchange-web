@@ -181,7 +181,7 @@ export const updateEthBridgeHistory =
       } = rootState;
 
       const evmNetworkData = rootGetters.web3.availableNetworks[BridgeType.ETH].find(
-        (network) => network.id === ethBridgeEvmNetwork
+        ({ data }) => data.id === ethBridgeEvmNetwork
       );
 
       if (!evmNetworkData) {
@@ -190,7 +190,7 @@ export const updateEthBridgeHistory =
         );
       }
 
-      await ethersUtil.switchOrAddChain(evmNetworkData);
+      await ethersUtil.switchOrAddChain(evmNetworkData.data);
 
       if ((await ethersUtil.getEvmNetworkId()) !== ethBridgeEvmNetwork) {
         throw new Error(

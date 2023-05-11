@@ -115,7 +115,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: VoidFunction;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: VoidFunction;
-  @mutation.web3.setEvmNetworksIds private setEvmNetworksIds!: (data: EvmNetwork[]) => void;
+  @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: VoidFunction;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
 
@@ -210,7 +210,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
-      this.setEvmNetworksIds(data.EVM_NETWORKS_IDS);
+      this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);
