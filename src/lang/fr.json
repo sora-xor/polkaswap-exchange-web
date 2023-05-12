@@ -523,13 +523,9 @@
         "strategicBonusApy": "Bonus stratégique APY"
     },
     "bridge": {
-        "title": "Pont {Hashi}",
+        "title": "Pont",
         "info": "Convertissez les jetons entre les réseaux {Sora} et {Ethereum}.",
         "balance": "Solde",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Suivant",
         "connectWallets": "Connectez les portefeuilles pour afficher l'historique des transactions.",
         "soraNetworkFee": "{Sora} Frais de réseau",
@@ -543,8 +539,7 @@
         "networkInfo": "Pont {Sora} Réseau avec:",
         "copy": "Copier l'adresse réseau",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adresse"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Confirmez la transaction",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Confirmez la transaction"
     },
     "bridgeTransaction": {
         "details": "{from} pour {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaction en attente...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Créer une nouvelle transaction",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText dans {Metamask}",
-        "expectedAddress": "Adresse attendue dans {Metamask}",
         "title": "Transaction de pont",
         "expectedMetaMaskAddress": "Adresse attendue dans {Metamask}:",
         "allowToken": "Autoriser {AppName} à utiliser votre {tokenSymbol}",
@@ -1212,5 +1199,6 @@
         "alertFrequencyTitle": "Fréquence d'alerte",
         "frequencyTooltip": "Sélectionnez entre « une fois » et « toujours » pour déterminer la fréquence à laquelle vous recevez des notifications pour le type d'alerte choisi. \"Une fois\" enverra une seule notification lorsque la condition est remplie, tandis que \"toujours\" continuera à vous informer chaque fois que le seuil de prix est franchi",
         "noSupportMsg": "Les notifications ne sont pas prises en charge par votre navigateur"
-    }
+    },
+    "accountAddressText": "Adresse du compte"
 }

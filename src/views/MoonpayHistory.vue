@@ -244,7 +244,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
 
     if (this.bridgeTxToSora) return this.t('moonpay.buttons.view');
     if (!this.externalAccountIsMoonpayRecipient) return this.t('bridgeTransaction.changeAccount');
-    if (!this.isValidNetwork) return this.t('bridgeTransaction.changeNetwork');
+    if (!this.isValidNetwork) return this.t('changeNetworkText');
 
     return this.t('moonpay.buttons.transfer');
   }

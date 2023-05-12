@@ -2,7 +2,7 @@
   <dialog-base :visible.sync="isVisible">
     <template #title>
       <slot name="title">
-        <span class="el-dialog__title">{{ t('confirmBridgeTransactionDialog.confirmTransaction') }}</span>
+        <span class="el-dialog__title">{{ t('confirmTransactionText') }}</span>
       </slot>
     </template>
     <slot name="content-title" />
@@ -38,10 +38,10 @@
         @click="handleConfirm"
       >
         <template v-if="!isValidNetwork">
-          {{ t('confirmBridgeTransactionDialog.changeNetwork') }}
+          {{ t('changeNetworkText') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol }) }}
         </template>
         <template v-else>
           {{ confirmText }}
@@ -88,7 +88,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   @Prop({ default: '', type: String }) readonly confirmButtonText!: string;
 
   get confirmText(): string {
-    return this.confirmButtonText || this.t('confirmBridgeTransactionDialog.buttonConfirm');
+    return this.confirmButtonText || this.t('confirmText');
   }
 
   get isConfirmButtonDisabled(): boolean {

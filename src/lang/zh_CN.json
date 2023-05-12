@@ -523,13 +523,9 @@
         "strategicBonusApy": "战略奖金APY"
     },
     "bridge": {
-        "title": "{Hashi}桥",
+        "title": "转接桥",
         "info": "在{Sora}和{Ethereum}网络之间转换代币。",
         "balance": "余额",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "下一个",
         "connectWallets": "连接钱包以查看各自的交易历史。",
         "soraNetworkFee": "{Sora} 网络费用",
@@ -543,8 +539,7 @@
         "networkInfo": "与 {Sora} 网络桥接：",
         "copy": "复制网络地址",
         "soraAddress": "{Sora} 地址",
-        "ethereumAddress": "{Ethereum} 地址",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} 地址"
     },
     "selectRegisteredAsset": {
         "title": "选择一个代币",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "确认交易",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "确认交易"
     },
     "bridgeTransaction": {
         "details": "{from}为{to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} 交易等待确认...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "创建新的交易",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText 中的 {Metamask}",
-        "expectedAddress": "在{Metamask}中预期的地址",
         "title": "转接桥交易",
         "expectedMetaMaskAddress": "{Metamask} 中的预期地址：",
         "allowToken": "允许 {AppName} 使用您的{tokenSymbol}",
@@ -1212,5 +1199,6 @@
         "alertFrequencyTitle": "警报频率",
         "frequencyTooltip": "在“一次”和“始终”之间进行选择以确定您接收所选警报类型通知的频率。 “Once”会在满足条件时发送一条通知，而“always”会在每次超过价格阈值时继续通知您",
         "noSupportMsg": "您的浏览器不支持通知"
-    }
+    },
+    "accountAddressText": "账户地址"
 }

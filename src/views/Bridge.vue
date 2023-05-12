@@ -105,7 +105,7 @@
                   {{ formatAddress(accountAddressFrom, 8) }}
                 </span>
               </s-tooltip>
-              <span>{{ t('bridge.connected') }}</span>
+              <span>{{ t('connectedText') }}</span>
             </div>
             <s-button
               v-else
@@ -114,7 +114,7 @@
               type="primary"
               @click="isSoraToEvm ? connectInternalWallet() : connectExternalWallet()"
             >
-              {{ t('bridge.connectWallet') }}
+              {{ t('connectWalletText') }}
             </s-button>
           </template>
         </s-float-input>
@@ -179,7 +179,7 @@
                   {{ formatAddress(accountAddressTo, 8) }}
                 </span>
               </s-tooltip>
-              <span>{{ t('bridge.connected') }}</span>
+              <span>{{ t('connectedText') }}</span>
             </div>
             <s-button
               v-else
@@ -188,7 +188,7 @@
               type="primary"
               @click="!isSoraToEvm ? connectInternalWallet() : connectExternalWallet()"
             >
-              {{ t('bridge.connectWallet') }}
+              {{ t('connectWalletText') }}
             </s-button>
           </template>
         </s-float-input>
@@ -199,7 +199,7 @@
           type="primary"
           @click="changeProviderNetwork"
         >
-          {{ t('bridge.changeNetwork') }}
+          {{ t('changeNetworkText') }}
         </s-button>
 
         <s-button
@@ -224,13 +224,13 @@
             {{ t('buttons.enterAmount') }}
           </template>
           <template v-else-if="isInsufficientBalance">
-            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: assetSymbol }) }}
+            {{ t('insufficientBalanceText', { tokenSymbol: assetSymbol }) }}
           </template>
           <template v-else-if="isInsufficientXorForFee">
-            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
+            {{ t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR }) }}
           </template>
           <template v-else-if="isInsufficientEvmNativeTokenForFee">
-            {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: evmTokenSymbol }) }}
+            {{ t('insufficientBalanceText', { tokenSymbol: evmTokenSymbol }) }}
           </template>
           <template v-else>
             {{ t('bridge.next') }}
