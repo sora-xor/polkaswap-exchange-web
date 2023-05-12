@@ -1038,7 +1038,7 @@
     },
     "receivedText": "已收到",
     "browserNotificationDialog": {
-        "title": "启用浏览器通知",
+        "title": "设置通知",
         "info": "我们只会向您发送有关您钱包的相关更新，例如：资产余额变化",
         "button": "启用通知",
         "agree": "是的我明白",
@@ -1190,5 +1190,27 @@
     "newAccountsText": "新帐户",
     "dragAndDropText": "拖放或选择{extension}文件",
     "copyPhraseText": "复制短语",
-    "stepText": "步"
+    "stepText": "步",
+    "alerts": {
+        "drop": "掉落在下方",
+        "raise": "提高以上",
+        "once": "一次",
+        "always": "总是",
+        "edit": "编辑提醒",
+        "delete": "删除警报",
+        "onDropDesc": "{token}跌破{price}",
+        "onRaiseDesc": "{token}提高到{price}以上",
+        "alertsTitle": "警报",
+        "alertsCreateTitle": "设置价格提醒",
+        "alertsTooltip": "价格提醒是您可以设置的通知，以便在特定代币的价格达到您设置的特定点时接收更新",
+        "createBtn": "创建新的价格提醒",
+        "finishBtn": "完成警报设置",
+        "enableSwitch": "启用资产存款通知",
+        "currentPrice": "时价",
+        "alertTypeTitle": "警报类型",
+        "typeTooltip": "选择“低于”或“高于”选项来指定跟踪重要价格变动的警报条件。这些选项允许您在资产价值低于或高于指定阈值时及时收到通知",
+        "alertFrequencyTitle": "警报频率",
+        "frequencyTooltip": "在“一次”和“始终”之间进行选择以确定您接收所选警报类型通知的频率。 “Once”会在满足条件时发送一条通知，而“always”会在每次超过价格阈值时继续通知您",
+        "noSupportMsg": "您的浏览器不支持通知"
+    }
 }

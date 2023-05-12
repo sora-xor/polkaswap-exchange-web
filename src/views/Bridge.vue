@@ -334,6 +334,7 @@ export default class Bridge extends Mixins(
 
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
+  @getter.bridge.operation private operation!: Operation;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;
@@ -460,7 +461,7 @@ export default class Bridge extends Mixins(
     if (!this.asset) return false;
 
     return this.isXorSufficientForNextTx({
-      type: this.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming,
+      type: this.operation,
       isXor: isXorAccountAsset(this.asset),
       amount: this.getFPNumber(this.amount),
     });

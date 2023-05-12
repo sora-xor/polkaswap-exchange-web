@@ -523,7 +523,7 @@
         "strategicBonusApy": "Strategic Bonus APY"
     },
     "bridge": {
-        "title": "Bridge",
+        "title": "{Hashi} Bridge",
         "info": "Convert tokens between the {Sora} and {Ethereum} networks.",
         "balance": "Balance",
         "connectWallet": "@:connectWalletText",
@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Received",
     "browserNotificationDialog": {
-        "title": "Enable browser notifications",
+        "title": "Set Notifications",
         "info": "We will send you only relevant updates about your wallet, for example: asset balance changes",
         "button": "Enable notifications",
         "agree": "Yes, I understand",
@@ -1048,7 +1048,6 @@
     "assetDeposit": "Asset balance has been deposited",
     "noDataText": "No data",
     "ofText": "{first} of {second}",
-    "accountAddressText": "Account address",
     "filter": {
         "all": "All",
         "token": "Currencies",
@@ -1191,5 +1190,28 @@
     "newAccountsText": "New accounts",
     "dragAndDropText": "Drag & drop or choose {extension} file",
     "copyPhraseText": "Copy Phrase",
-    "stepText": "Step"
+    "stepText": "Step",
+    "alerts": {
+        "drop": "Drops below",
+        "raise": "Raises above",
+        "once": "Once",
+        "always": "Always",
+        "edit": "Edit alert",
+        "delete": "Delete alert",
+        "onDropDesc": "{token} drops below {price}",
+        "onRaiseDesc": "{token} raises above {price}",
+        "alertsTitle": "Alerts",
+        "alertsCreateTitle": "Set up price alert",
+        "alertsTooltip": "Price alerts are notifications that can be set by you to receive updates when the price of a particular token reaches certain point you set",
+        "createBtn": "Create new price alert",
+        "finishBtn": "Finish alert setup",
+        "enableSwitch": "Enable asset deposit notifications",
+        "currentPrice": "current price",
+        "alertTypeTitle": "Alert type",
+        "typeTooltip": "Choose either 'drops below' or 'raises above' option to specify alert condition for tracking important price movements. These options allow you receive timely notifications when the value of your asset either falls below or rises above your designated threshold",
+        "alertFrequencyTitle": "Alert frequency",
+        "frequencyTooltip": "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed",
+        "noSupportMsg": "Notifications aren't supported by your browser"
+    },
+    "accountAddressText": "Account address"
 }

@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Tok imot",
     "browserNotificationDialog": {
-        "title": "Aktiver nettleservarsler",
+        "title": "Angi varsler",
         "info": "Vi sender deg bare relevante oppdateringer om lommeboken din, for eksempel: endringer i aktivabalansen",
         "button": "Aktiver varsler",
         "agree": "Ja jeg forstår",
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Nye kontoer",
     "dragAndDropText": "Dra og slipp eller velg {extension} -fil",
     "copyPhraseText": "Kopier frase",
-    "stepText": "Steg"
+    "stepText": "Steg",
+    "alerts": {
+        "drop": "Faller under",
+        "raise": "Hever seg over",
+        "once": "En gang",
+        "always": "Alltid",
+        "edit": "Rediger varsel",
+        "delete": "Slett varsel",
+        "onDropDesc": "{token} synker under {price}",
+        "onRaiseDesc": "{token} hever over {price}",
+        "alertsTitle": "Varsler",
+        "alertsCreateTitle": "Sett opp prisvarsel",
+        "alertsTooltip": "Prisvarsler er varsler du kan stille inn til å motta oppdateringer når prisen på et bestemt token når et bestemt punkt du angir",
+        "createBtn": "Opprett nytt prisvarsel",
+        "finishBtn": "Fullfør varseloppsettet",
+        "enableSwitch": "Aktiver innskuddsvarslinger",
+        "currentPrice": "gjeldende pris",
+        "alertTypeTitle": "Varslingstype",
+        "typeTooltip": "Velg enten \"fall under\" eller \"hever over\" for å spesifisere varselbetingelse for sporing av viktige prisbevegelser. Disse alternativene lar deg motta rettidige varsler når verdien av eiendelen din enten faller under eller stiger over den angitte terskelen",
+        "alertFrequencyTitle": "Varslingsfrekvens",
+        "frequencyTooltip": "Velg mellom \"en gang\" og \"alltid\" for å bestemme hvor ofte du mottar varsler for den valgte varslingstypen. 'Once' vil sende ett enkelt varsel når betingelsen er oppfylt, mens 'alltid' vil fortsette å varsle deg hver gang prisgrensen krysses",
+        "noSupportMsg": "Varsler støttes ikke av nettleseren din"
+    }
 }
