@@ -143,7 +143,7 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
       list-style: none;
       margin: $basic-spacing-small;
       font-weight: 600;
-      font-size: 16px;
+      font-size: var(--s-font-size-medium);
 
       .flags {
         margin-right: $inner-spacing-tiny;
