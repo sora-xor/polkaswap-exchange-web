@@ -91,6 +91,8 @@ const actions = defineActions({
     const syntheticBaseAssetId = api.dex.getSyntheticBaseAssetId(dexId);
 
     const { paths, liquiditySources } = getPathsAndPairLiquiditySources(
+      inputAssetId,
+      outputAssetId,
       payload,
       enabledAssets,
       baseAssetId,

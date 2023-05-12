@@ -18,9 +18,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { app } from '../../../consts';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -29,15 +27,19 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
     DialogBase: components.DialogBase,
   },
 })
-export default class BrowserNotifsBlockedDialog extends Mixins(
+export default class AppBrowserNotifsBlockedDialog extends Mixins(
   TranslationMixin,
   mixins.DialogMixin,
   mixins.LoadingMixin
 ) {
-  app = app;
-
   agree(): void {
     this.closeDialog();
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.browser-notification-dialog {
+  @include browser-notification-dialog;
+}
+</style>

@@ -5,6 +5,7 @@ export enum DemeterPageNames {
 }
 
 export enum DemeterComponents {
+  DialogTitle = 'DialogTitle',
   StatusBadge = 'StatusBadge',
   PoolCard = 'PoolCard',
   StakeDialog = 'StakeDialog',

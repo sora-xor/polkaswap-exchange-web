@@ -3,7 +3,7 @@ import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 
 import { waitForAccountPair } from '@/utils';
-import { defineUserStatus, getXorPerEuroRatio, soraCard } from '@/utils/card';
+import { defineUserStatus, getXorPerEuroRatio, getFreeKycAttemptCount, soraCard } from '@/utils/card';
 import { soraCardActionContext } from './../soraCard';
 import { Status } from '@/types/card';
 import { loadScript, unloadScript } from 'vue-plugin-load-script';
@@ -15,7 +15,7 @@ const actions = defineActions({
     const euroToPay = FPNumber.HUNDRED.add(FPNumber.ONE).sub(totalXorBalance.mul(xorPerEuro));
     const euroToPayInXor = euroToPay.div(xorPerEuro);
 
-    commit.setXorPriceToDeposit(euroToPayInXor.dp(3)); // it's rounded cuz it'll be shown in Bridge
+    commit.setXorPriceToDeposit(euroToPayInXor.dp(3)); // TODO: round up number
   },
 
   async calculateXorBalanceInEuros(context, { xorPerEuro, xorTotalBalance }): Promise<void> {
@@ -64,10 +64,12 @@ const actions = defineActions({
   async getUserStatus(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
 
-    const { kycStatus, verificationStatus }: Status = await defineUserStatus();
+    const { kycStatus, verificationStatus, rejectReason }: Status = await defineUserStatus();
 
     commit.setKycStatus(kycStatus);
     commit.setVerificationStatus(verificationStatus);
+
+    if (rejectReason) commit.setRejectReason(rejectReason);
   },
 
   async initPayWingsAuthSdk(context): Promise<void> {
@@ -93,6 +95,13 @@ const actions = defineActions({
 
       commit.setPayWingsAuthSdk(login);
     });
+  },
+
+  async getUserKycAttempt(context): Promise<void> {
+    const { commit } = soraCardActionContext(context);
+    const isFreeAttemptAvailable = await getFreeKycAttemptCount();
+
+    commit.setHasKycAttempts(isFreeAttemptAvailable);
   },
 });
 

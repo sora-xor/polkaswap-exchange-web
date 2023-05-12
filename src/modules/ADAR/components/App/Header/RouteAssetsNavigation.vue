@@ -16,7 +16,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
-import AdarLogo from '@/components/logo/Adar.vue';
+import AdarLogo from '@/components/shared/Logo/Adar.vue';
 import { getter } from '@/store/decorators';
 import { Stages } from '@/modules/ADAR/consts';
 

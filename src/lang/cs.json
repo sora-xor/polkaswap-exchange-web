@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "O projektu",
         "Stats": "Statistiky",
-        "Support": "Podpora",
         "Wallet": "Peněženka",
         "CreatePair": "Vytvořit pár",
         "AddLiquidity": "Přidat likviditu",
@@ -344,7 +343,6 @@
         "Rewards": "Odměny",
         "About": "O projektu",
         "Stats": "Statistiky",
-        "Support": "Podpora",
         "CreatePair": "Vytvořit pár",
         "StakingContainer": "Stakování",
         "Explore\/Container": "Prozkoumat",
@@ -857,7 +855,9 @@
         "settings": "Nastavení",
         "switchTheme": "Přepnout do režimu {theme}",
         "switchLanguage": "Vybrat jazyk",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Zobrazit vyloučení odpovědnosti",
+        "hideDisclaimer": "Skrýt vyloučení odpovědnosti"
     },
     "sentText": "Odesláno",
     "learnMoreText": "Zjistit více",
@@ -1112,12 +1112,67 @@
     },
     "tooltips": {
         "roi": "{ROI} znamená návratnost investic. Vypočítá se vydělením zisku získaného z investice náklady na tuto investici v procentuálním ekvivalentu.",
-        "tvl": "{TVL} znamená Total Value Locked. Představuje tokeny zamčené v poolech v ekvivalentu dolaru."
+        "tvl": "{TVL} znamená Total Value Locked. Představuje tokeny zamčené v poolech v ekvivalentu dolaru.",
+        "volume": "Objem se vztahuje k celkovému množství aktiv, která byla zobchodována nebo vyměněna v síti za určité časové období. Objem je důležitou metrikou pro měření likvidity a celkové aktivity sítě.",
+        "fees": "Poplatky na blockchainu {Sora} odkazují na poplatky, které vznikají za provádění transakcí v síti. Tyto poplatky se platí v XOR, nativní kryptoměně sítě {Sora} . Výše poplatku je určena složitostí a velikostí prováděné transakce",
+        "supply": "Zásoba tokenů se týká celkového počtu tokenů, které byly vytvořeny a jsou v oběhu v síti. Zásoba tokenů může kolísat v závislosti na množství tokenů vsazených, spálených nebo přenášených v síti.",
+        "transactions": "Transakce se týkají procesu odesílání nebo přijímání digitálních aktiv v síti, včetně operací s likviditou a také swapů.",
+        "accounts": "Účty jsou digitální adresy, které uchovávají majetek uživatele v síti. Každý účet je spojen s jedinečnou veřejnou adresou a soukromým klíčem, který uživateli umožňuje přístup a správu jeho majetku.",
+        "bridgeTransactions": "Most {from} do {to} označuje proces přenosu aktiv mezi sítěmi {from} a {to} pomocí mostu. Most umožňuje interoperabilitu obou sítí a umožňuje uživatelům bezproblémově přesouvat prostředky mezi nimi.",
+        "velocity": "Rychlost tokenu je průměrný počet změn účtů během období (měsíce). Udává úroveň obchodní aktivity a likvidity."
     },
     "createTokenText": "Vytvořit",
     "comingSoonText": "Již brzy",
     "confirmText": "Potvrdit",
     "createTokenTextNFT": "Vytvořte NFT",
     "doNotShowText": "Už mi to neukazuj",
-    "accountText": "účet | účty"
+    "accountText": "účet | účty",
+    "networkStatisticsText": "Síťové statistiky",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Uzel připojen",
+                "loading": "Opětovné připojení uzlu",
+                "disconnected": "Uzel odpojen"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Internet zakázán",
+                "unstable": "Internet nestabilní",
+                "stable": "Internet stabilní"
+            },
+            "label": "Rychlost vašeho internetu",
+            "desc": {
+                "disabled": "Odpojeno",
+                "unstable": "Pomalé připojení",
+                "stable": "Optimální rychlost"
+            },
+            "action": "Obnovit {Polkaswap}",
+            "dialogTitle": "Připojte se ke zdroji internetu",
+            "dialogDesc": "{Polkaswap} vyžaduje připojení k internetu pro stabilní provoz"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Statistiky nejsou k dispozici",
+                "loading": "Načítání statistik",
+                "available": "Dostupné statistiky"
+            },
+            "label": "Statistické služby",
+            "desc": {
+                "unavailable": "Všechny služby jsou odpojeny",
+                "loading": "Všechny služby se načítají",
+                "available": "Všechny služby jsou stabilní"
+            },
+            "action": "Vyberte služby",
+            "dialog": {
+                "title": "{Sora} Výběr síťové služby",
+                "fiat": "Hodnoty Fiat",
+                "chartsAndActivity": "Grafy a aktivity"
+            }
+        }
+    },
+    "locationText": "Umístění",
+    "acceptText": "Přijmout a skrýt",
+    "newAccountsText": "Nové účty"
 }

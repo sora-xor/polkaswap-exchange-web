@@ -25,8 +25,8 @@ export type SwapState = {
   liquidityProviderFee: CodecString;
   isExchangeB: boolean;
   enabledAssets: PrimaryMarketsEnabledAssets;
-  rewards: Array<LPRewardsInfo>;
-  path: string[];
+  rewards: readonly LPRewardsInfo[];
+  route: readonly string[];
   selectedDexId: number;
   dexQuoteData: Record<number, DexQuoteData>;
 };

@@ -322,7 +322,6 @@
         "Bridge": "@:bridgeText",
         "About": "О томе",
         "Stats": "Статистикa",
-        "Support": "Подршка",
         "Wallet": "Новчаник",
         "CreatePair": "Направите пар",
         "AddLiquidity": "Додати ликвидност",
@@ -344,7 +343,6 @@
         "Rewards": "Награде",
         "About": "О",
         "Stats": "Статистикa",
-        "Support": "Подршка",
         "CreatePair": "Направите пар",
         "StakingContainer": "Стeкинг",
         "Explore\/Container": "Истражите",
@@ -857,7 +855,9 @@
         "settings": "Подешавања",
         "switchTheme": "Пребаците се на {theme} mод",
         "switchLanguage": "Изаберите језик",
-        "selectNode": "@:selectNodeText"
+        "selectNode": "@:selectNodeText",
+        "showDisclaimer": "Схов Дисцлаимер",
+        "hideDisclaimer": "Сакриј одрицање одговорности"
     },
     "sentText": "Poslato",
     "learnMoreText": "Сазнајте више",
@@ -1112,12 +1112,67 @@
     },
     "tooltips": {
         "roi": "{ROI} označava povraćaj investicije. Obračunava se deljenjem dobiti ostvarene na investiciji po trošku te investicije u procentualno ekvivalentnom iznosu.",
-        "tvl": "{TVL} označava da je ukupna vrednost zaključana. Predstavlja simbole zakljuиane u bazenima u dolarskom ekvivalentu."
+        "tvl": "{TVL} označava da je ukupna vrednost zaključana. Predstavlja simbole zakljuиane u bazenima u dolarskom ekvivalentu.",
+        "volume": "Обим се односи на укупан износ средстава којима се трговало или размењивало на мрежи током одређеног временског периода. Обим је важан показатељ за мерење ликвидности и укупне активности мреже.",
+        "fees": "Накнаде на блокчејну {Sora} односе се на трошкове који су настали за извршавање трансакција на мрежи. Ове накнаде се плаћају у КСОР-у, изворној криптовалути мреже {Sora} . Висина накнаде је одређена сложеношћу и величином трансакције која се извршава",
+        "supply": "Набавка токена се односи на укупан број токена који су креирани и који су у оптицају на мрежи. Набавка токена може да варира у зависности од количине токена који се стављају, спаљују или преносе на мрежу.",
+        "transactions": "Трансакције се односе на процес слања или примања дигиталне имовине на мрежи, укључујући операције ликвидности, као и замену.",
+        "accounts": "Налози су дигиталне адресе које држе имовину корисника на мрежи. Сваки налог је повезан са јединственом јавном адресом и приватним кључем који омогућава кориснику да приступи и управља својим средствима.",
+        "bridgeTransactions": "Мост {from} до {to} се односи на процес преноса средстава између {from} и {to} мрежа помоћу моста. Мост омогућава интероперабилност две мреже, омогућавајући корисницима да неприметно премештају средства између њих.",
+        "velocity": "Брзина токена је колико пута токен мења рачуне у просеку током периода (месеца). Указује на ниво трговачке активности и ликвидности."
     },
     "createTokenText": "Креирајте",
     "comingSoonText": "Долази ускоро",
     "confirmText": "Потврдите",
     "createTokenTextNFT": "Креирајте НФТ",
     "doNotShowText": "Не показуј ми ово поново",
-    "accountText": "рачун | рачуни"
+    "accountText": "рачун | рачуни",
+    "networkStatisticsText": "Мрежна статистика",
+    "footer": {
+        "node": {
+            "title": {
+                "connected": "Чвор повезан",
+                "loading": "Поновно повезивање чвора",
+                "disconnected": "Чвор је прекинут"
+            }
+        },
+        "internet": {
+            "title": {
+                "disabled": "Интернет онемогућен",
+                "unstable": "Интернет нестабилан",
+                "stable": "Интернет стабилан"
+            },
+            "label": "Ваша брзина интернета",
+            "desc": {
+                "disabled": "Дисцоннецтед",
+                "unstable": "Спора веза",
+                "stable": "Оптимална брзина"
+            },
+            "action": "Освежи {Polkaswap}",
+            "dialogTitle": "Повежите се на интернет извор",
+            "dialogDesc": "{Polkaswap} захтева интернет везу за стабилно искуство"
+        },
+        "statistics": {
+            "title": {
+                "unavailable": "Статистика није доступна",
+                "loading": "Статистика се учитава",
+                "available": "Доступна статистика"
+            },
+            "label": "Статистичке службе",
+            "desc": {
+                "unavailable": "Све услуге су искључене",
+                "loading": "Све услуге се учитавају",
+                "available": "Све услуге су стабилне"
+            },
+            "action": "Изаберите услуге",
+            "dialog": {
+                "title": "{Sora} Избор мрежне услуге",
+                "fiat": "Фиат вредности",
+                "chartsAndActivity": "Графикони и активности"
+            }
+        }
+    },
+    "locationText": "Локација",
+    "acceptText": "Прихвати и сакриј",
+    "newAccountsText": "Нови налози"
 }

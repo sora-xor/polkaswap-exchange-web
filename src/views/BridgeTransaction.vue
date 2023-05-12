@@ -1042,7 +1042,6 @@ $network-title-max-width: 250px;
       font-size: var(--s-font-size-small);
       line-height: var(--s-line-height-reset);
       font-weight: 600;
-      letter-spacing: var(--s-letter-spacing-small);
       text-transform: inherit;
       text-align: left;
       max-width: $network-title-max-width;

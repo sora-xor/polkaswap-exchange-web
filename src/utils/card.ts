@@ -8,11 +8,15 @@ const getSoraProxyEndpoints = (soraNetwork: string) => {
   const test = {
     referenceNumberEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/get-reference-number',
     lastKycStatusEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/kyc-last-status',
+    kycAttemptCountEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/kyc-attempt-count',
+    newAccessTokenEndpoint: 'https://api-auth-test.soracard.com/RequestNewAccessToken',
   };
 
   const prod = {
     referenceNumberEndpoint: '',
     lastKycStatusEndpoint: '',
+    kycAttemptCountEndpoint: '',
+    newAccessTokenEndpoint: '',
   };
 
   return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
@@ -20,7 +24,7 @@ const getSoraProxyEndpoints = (soraNetwork: string) => {
 
 // Defines user's KYC status.
 // If accessToken expired, tries to get new JWT pair via refreshToken;
-// if not, forces user to pass phone number again to create new JWT pair in sessionStorage.
+// if not, forces user to pass phone number again to create new JWT pair in localStorage.
 export async function defineUserStatus(): Promise<Status> {
   const sessionRefreshToken = localStorage.getItem('PW-refresh-token');
   let sessionAccessToken = localStorage.getItem('PW-token');
@@ -39,9 +43,9 @@ export async function defineUserStatus(): Promise<Status> {
     }
   }
 
-  const { kycStatus, verificationStatus } = await getUserStatus(sessionAccessToken);
+  const { kycStatus, verificationStatus, rejectReason } = await getUserStatus(sessionAccessToken);
 
-  return { kycStatus, verificationStatus };
+  return { kycStatus, verificationStatus, rejectReason };
 }
 
 async function getUpdatedJwtPair(refreshToken: string): Promise<Nullable<string>> {
@@ -50,7 +54,7 @@ async function getUpdatedJwtPair(refreshToken: string): Promise<Nullable<string>
   const buffer = Buffer.from(apiKey);
 
   try {
-    const response = await fetch('https://api-auth-test.soracard.com/RequestNewAccessToken', {
+    const response = await fetch(getSoraProxyEndpoints(soraNetwork).newAccessTokenEndpoint, {
       method: 'POST',
       headers: {
         Authorization: `Basic ${buffer.toString('base64')}, Bearer ${refreshToken}`,
@@ -92,9 +96,10 @@ async function getUserStatus(accessToken: string): Promise<Status> {
 
     const verificationStatus: VerificationStatus = lastRecord.verification_status;
     const kycStatus: KycStatus = lastRecord.kyc_status;
+    const rejectReason: string = lastRecord.additional_description;
 
     if (Object.keys(VerificationStatus).includes(verificationStatus) && Object.keys(KycStatus).includes(kycStatus)) {
-      return { verificationStatus, kycStatus };
+      return { verificationStatus, kycStatus, rejectReason };
     }
 
     return emptyStatusFields();
@@ -122,19 +127,81 @@ const isAccessTokenExpired = (accessToken: string): boolean => {
 
 export const getXorPerEuroRatio = async () => {
   try {
-    const priceResult = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=sora&vs_currencies=eur');
-
+    const priceResult = await fetch('https://backend.dev.sora-card.tachi.soramitsu.co.jp/prices/xor_euro');
     const parsedData = await priceResult.json();
 
-    return parsedData.sora.eur;
+    return parsedData.price;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const clearTokensFromSessionStorage = () => {
+export const getFreeKycAttemptCount = async () => {
+  const sessionRefreshToken = localStorage.getItem('PW-refresh-token');
+  let sessionAccessToken = localStorage.getItem('PW-token');
+
+  if (!(sessionAccessToken && sessionRefreshToken)) {
+    return null;
+  }
+
+  if (isAccessTokenExpired(sessionAccessToken)) {
+    const accessToken = await getUpdatedJwtPair(sessionRefreshToken);
+
+    if (accessToken) {
+      sessionAccessToken = accessToken;
+    } else {
+      return null;
+    }
+  }
+
+  const soraNetwork = store.state.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
+
+  try {
+    const result = await fetch(getSoraProxyEndpoints(soraNetwork).kycAttemptCountEndpoint, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${sessionAccessToken}`,
+      },
+    });
+
+    const { free_attempt: freeAttempt } = await result.json();
+
+    return freeAttempt;
+  } catch (error) {
+    console.error('[SoraCard]: Error while getting KYC attempt', error);
+  }
+};
+
+export const clearTokensFromLocalStorage = () => {
   localStorage.removeItem('PW-token');
   localStorage.removeItem('PW-refresh-token');
+};
+
+export const clearPayWingsKeysFromLocalStorage = () => {
+  localStorage.removeItem('PW-ProcessID');
+  localStorage.removeItem('PW-conf');
+  localStorage.removeItem('PW-Country');
+  localStorage.removeItem('PW-PhoneNumber');
+  localStorage.removeItem('PW-PhoneNumberValid');
+  localStorage.removeItem('PW-Email');
+  localStorage.removeItem('PW-AuthUserID');
+  localStorage.removeItem('PW-DocumentSubtype');
+  localStorage.removeItem('PW-KycReferenceID');
+  localStorage.removeItem('PW-KycStart');
+  localStorage.removeItem('PW-otpID');
+  localStorage.removeItem('PW-OTPLength');
+  localStorage.removeItem('PW-FirstName');
+  localStorage.removeItem('PW-MiddleName');
+  localStorage.removeItem('PW-LastName');
+  localStorage.removeItem('PW-Check');
+  localStorage.removeItem('PW-WhitelabelReferenceID');
+  localStorage.removeItem('PW-KycReferenceID');
+  localStorage.removeItem('PW-documents');
+  localStorage.removeItem('PW-document');
+  localStorage.removeItem('PW-VideoID');
+  localStorage.removeItem('PW-Authorization');
+  localStorage.removeItem('PW-retry');
+  localStorage.removeItem('PW-AppReferenceID');
 };
 
 const emptyStatusFields = (): Status => ({
