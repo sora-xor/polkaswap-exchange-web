@@ -53,6 +53,7 @@
                 <div class="history-item-date">{{ formatHistoryDate(item) }}</div>
               </div>
               <div :class="historyStatusClasses(item)">
+                <div class="history-item-status-text">{{ historyStatusText(item) }}</div>
                 <s-icon class="history-item-status-icon" :name="historyStatusIconName(item)" size="16" />
               </div>
             </div>
@@ -78,22 +79,20 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
+import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { state, getter } from '@/store/decorators';
+import { state } from '@/store/decorators';
 
 import type { EvmAccountAsset } from '@/store/assets/types';
 import type { IBridgeTransaction } from '@/utils/bridge/common/types';
-
-const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 @Component({
   components: {
@@ -108,6 +107,7 @@ const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 export default class BridgeTransactionsHistory extends Mixins(
   TranslationMixin,
   BridgeMixin,
+  BridgeTransactionMixin,
   BridgeHistoryMixin,
   NetworkFormatterMixin,
   mixins.PaginationSearchMixin,
@@ -115,8 +115,6 @@ export default class BridgeTransactionsHistory extends Mixins(
 ) {
   @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
   @state.bridge.historyPage historyPage!: number;
-
-  @getter.bridge.isEthBridge private isEthBridge!: boolean;
 
   pageAmount = 8; // override PaginationSearchMixin
   loading = true;
@@ -196,24 +194,13 @@ export default class BridgeTransactionsHistory extends Mixins(
     return this.formatDate(response?.startTime ?? Date.now());
   }
 
-  isFailedState(item: IBridgeTransaction): boolean {
-    return this.isEthBridge
-      ? [ETH_BRIDGE_STATES.SORA_REJECTED, ETH_BRIDGE_STATES.EVM_REJECTED].includes(item.transactionState as any)
-      : item.transactionState === EvmTxStatus.Failed;
-  }
-
-  isSuccessState(item: IBridgeTransaction): boolean {
-    return this.isEthBridge
-      ? item.transactionState ===
-          (this.isOutgoingType(item.type) ? ETH_BRIDGE_STATES.EVM_COMMITED : ETH_BRIDGE_STATES.SORA_COMMITED)
-      : item.transactionState === EvmTxStatus.Done;
-  }
-
   historyStatusClasses(item: IBridgeTransaction): string {
     const iconClass = 'history-item-status';
     const classes = [iconClass];
 
-    if (this.isFailedState(item)) {
+    if (this.isWaitingForAction(item)) {
+      classes.push(`${iconClass}--info`);
+    } else if (this.isFailedState(item)) {
       classes.push(`${iconClass}--error`);
     } else if (this.isSuccessState(item)) {
       classes.push(`${iconClass}--success`);
@@ -225,12 +212,22 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   historyStatusIconName(item: IBridgeTransaction): string {
-    if (this.isFailedState(item)) {
+    if (this.isWaitingForAction(item)) {
+      return 'notifications-alert-triangle-24';
+    } else if (this.isFailedState(item)) {
       return 'basic-clear-X-24';
     } else if (this.isSuccessState(item)) {
       return 'basic-check-marks-24';
     } else {
       return 'time-time-24';
+    }
+  }
+
+  historyStatusText(item: IBridgeTransaction): string {
+    if (this.isWaitingForAction(item)) {
+      return this.t('bridgeHistory.statusAction');
+    } else {
+      return '';
     }
   }
 

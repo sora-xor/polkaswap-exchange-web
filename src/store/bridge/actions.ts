@@ -353,8 +353,7 @@ const actions = defineActions({
     const symbol = asset.symbol as KnownEthBridgeAsset;
     const evmAccount = rootState.web3.evmAddress;
     const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
-    const isEthereumChain = isValOrXor;
-    const bridgeAsset: KnownEthBridgeAsset = isEthereumChain ? symbol : KnownEthBridgeAsset.Other;
+    const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
     const contractMap = {
       [KnownEthBridgeAsset.XOR]: rootGetters.web3.contractAbi(KnownEthBridgeAsset.XOR),
       [KnownEthBridgeAsset.VAL]: rootGetters.web3.contractAbi(KnownEthBridgeAsset.VAL),
@@ -364,20 +363,20 @@ const actions = defineActions({
     const jsonInterface = contract[OtherContractType.Bridge]?.abi ?? contract.abi;
     const contractAddress = rootGetters.web3.contractAddress(bridgeAsset) as string;
     const contractInstance = new ethers.Contract(contractAddress, jsonInterface, ethersInstance.getSigner());
-    const method = isEthereumChain
+    const method = isValOrXor
       ? 'mintTokensByPeers'
       : request.currencyType === BridgeCurrencyType.TokenAddress
       ? 'receiveByEthereumAssetAddress'
       : 'receiveBySidechainAssetId';
     const methodArgs: Array<any> = [
-      isEthereumChain || request.currencyType === BridgeCurrencyType.TokenAddress
+      isValOrXor || request.currencyType === BridgeCurrencyType.TokenAddress
         ? asset.externalAddress // address tokenAddress OR
         : asset.address, // bytes32 assetId
       new FPNumber(tx.amount, asset.externalDecimals).toCodecString(), // uint256 amount
       evmAccount, // address beneficiary
     ];
     methodArgs.push(
-      ...(isEthereumChain
+      ...(isValOrXor
         ? [
             tx.hash, // bytes32 txHash
             request.v, // uint8[] memory v

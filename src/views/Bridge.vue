@@ -410,11 +410,11 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientXorForFee(): boolean {
-    return this.isSoraToEvm && hasInsufficientXorForFee(this.xor, this.soraNetworkFee);
+    return hasInsufficientXorForFee(this.xor, this.soraNetworkFee);
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return !this.isSoraToEvm && hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee);
+    return hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee);
   }
 
   get isInsufficientBalance(): boolean {

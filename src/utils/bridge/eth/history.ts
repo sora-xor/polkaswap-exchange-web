@@ -252,7 +252,6 @@ export class EthBridgeHistory {
       // [WARNING]: api.query.ethBridge storage usage
       const soraPartCompleted =
         !isOutgoing || (!!hash && (await ethBridgeApi.getRequestStatus(hash))) === BridgeTxStatus.Ready;
-      const transactionStep = soraPartCompleted ? 2 : 1;
 
       const ethereumTx = isOutgoing
         ? await this.findEthTxBySoraHash(historyElementData.sidechainAddress, hash, fromTimestamp, contracts)
@@ -304,7 +303,6 @@ export class EthBridgeHistory {
         startTime,
         endTime,
         status,
-        transactionStep,
         hash,
         externalHash,
         soraNetworkFee,

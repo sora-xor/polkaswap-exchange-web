@@ -170,14 +170,7 @@
         <template v-if="comfirmationBlocksLeft">
           {{ t('bridgeTransaction.blocksLeft', { count: comfirmationBlocksLeft }) }}
         </template>
-        <span
-          v-else-if="isTxPending"
-          v-html="
-            t('bridgeTransaction.pending', {
-              network: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'ethereum'}`),
-            })
-          "
-        />
+        <template v-else-if="isTxPending">{{ t('bridgeTransaction.pending') }}</template>
         <template v-else-if="!(isSoraToEvm || isExternalAccountConnected)">{{
           t('bridgeTransaction.connectWallet')
         }}</template>
@@ -191,6 +184,7 @@
         <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
           t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: evmTokenSymbol })
         }}</template>
+        <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
         <template v-else-if="isTxFailed">{{ t('bridgeTransaction.retry') }}</template>
         <template v-else-if="txWaitingForApprove">{{
           t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
@@ -221,6 +215,7 @@ import type { CodecString, BridgeHistory } from '@sora-substrate/util';
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
+import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import router, { lazyComponent } from '@/router';
@@ -237,7 +232,6 @@ import type { EvmLinkType } from '@/consts/evm';
 import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 const FORMATTED_HASH_LENGTH = 24;
-const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 @Component({
   components: {
@@ -251,6 +245,7 @@ export default class BridgeTransaction extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.CopyAddressMixin,
   BridgeMixin,
+  BridgeTransactionMixin,
   NetworkFormatterMixin
 ) {
   readonly KnownSymbols = KnownSymbols;
@@ -370,22 +365,15 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isTxFailed(): boolean {
-    // ETH
-    if ([ETH_BRIDGE_STATES.EVM_REJECTED, ETH_BRIDGE_STATES.SORA_REJECTED].includes(this.txState as any)) return true;
-    // EVM
-    if (this.txState === EvmTxStatus.Failed) return true;
-    // OTHER
-    return false;
+    return this.isFailedState(this.historyItem);
   }
 
   get isTxCompleted(): boolean {
-    // ETH
-    if (this.txState === (this.isSoraToEvm ? ETH_BRIDGE_STATES.EVM_COMMITED : ETH_BRIDGE_STATES.SORA_COMMITED))
-      return true;
-    // EVM
-    if (this.txState === EvmTxStatus.Done) return true;
-    // OTHER
-    return false;
+    return this.isSuccessState(this.historyItem);
+  }
+
+  get isTxWaiting(): boolean {
+    return this.isWaitingForAction(this.historyItem);
   }
 
   get isTxPending(): boolean {
@@ -396,7 +384,9 @@ export default class BridgeTransaction extends Mixins(
     const iconClass = 'header-icon';
     const classes = [iconClass];
 
-    if (this.isTxFailed) {
+    if (this.isTxWaiting) {
+      classes.push(`${iconClass}--wait`);
+    } else if (this.isTxFailed) {
       classes.push(`${iconClass}--error`);
     } else if (this.isTxCompleted) {
       classes.push(`${iconClass}--success`);
@@ -408,6 +398,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get transactionStatus(): string {
+    if (this.isTxWaiting) {
+      return this.t('bridgeTransaction.statuses.waitingForConfirmation');
+    }
     if (this.isTxFailed) {
       return this.t('bridgeTransaction.statuses.failed');
     }
@@ -576,7 +569,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get failedClass(): string {
-    return this.isTxFailed ? 'info-line--error' : '';
+    return this.isTxFailed && !this.isTxWaiting ? 'info-line--error' : '';
   }
 
   private formatTransactionDate(transactionDate?: number): string {

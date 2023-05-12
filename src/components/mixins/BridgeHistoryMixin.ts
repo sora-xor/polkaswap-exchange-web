@@ -1,10 +1,9 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import type { CodecString } from '@sora-substrate/util';
 
 import router from '@/router';
-import { PageNames, ZeroStringValue } from '@/consts';
+import { PageNames } from '@/consts';
 import { state, mutation, action, getter } from '@/store/decorators';
 import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
 
@@ -26,10 +25,6 @@ export default class BridgeHistoryMixin<T extends IBridgeTransaction> extends Mi
   @action.bridge.generateHistoryItem generateHistoryItem!: (history?: any) => Promise<T>;
   @action.bridge.updateInternalHistory updateInternalHistory!: FnWithoutArgs;
   @action.bridge.updateExternalHistory updateExternalHistory!: (clearHistory?: boolean) => Promise<void>;
-
-  getSoraNetworkFee(type: Operation): CodecString {
-    return this.isOutgoingType(type) ? this.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
-  }
 
   isOutgoingType(type: Operation): boolean {
     return isOutgoingTransaction({ type } as IBridgeTransaction);

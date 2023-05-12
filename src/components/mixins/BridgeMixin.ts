@@ -4,7 +4,7 @@ import type { CodecString } from '@sora-substrate/util';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import { action, getter, mutation, state } from '@/store/decorators';
+import { getter, mutation, state } from '@/store/decorators';
 import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 @Component
