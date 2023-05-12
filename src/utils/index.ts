@@ -3,6 +3,7 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Route } from 'vue-router';
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
@@ -12,7 +13,6 @@ import { app, ZeroStringValue } from '@/consts';
 
 import storage from './storage';
 import type { AmountWithSuffix } from '@/types/formats';
-import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
@@ -26,9 +26,7 @@ export const formatAddress = (address: string, length = address.length / 2): str
   return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`;
 };
 
-export const isXorAccountAsset = (
-  asset: Asset | AccountAsset | AccountLiquidity | RegisteredAccountAssetWithDecimals
-): boolean => {
+export const isXorAccountAsset = (asset: Asset | AccountAsset | AccountLiquidity | RegisteredAccountAsset): boolean => {
   return asset ? asset.address === XOR.address : false;
 };
 
@@ -41,10 +39,10 @@ export const isNativeEvmTokenAddress = (address: string): boolean => {
 
 export const isMaxButtonAvailable = (
   areAssetsSelected: boolean,
-  asset: AccountAsset | AccountLiquidity | RegisteredAccountAssetWithDecimals,
+  asset: AccountAsset | AccountLiquidity | RegisteredAccountAsset,
   amount: string | number,
   fee: CodecString,
-  xorAsset: AccountAsset | RegisteredAccountAssetWithDecimals,
+  xorAsset: AccountAsset | RegisteredAccountAsset,
   parseAsLiquidity = false,
   isXorOutputSwap = false
 ): boolean => {
@@ -59,7 +57,7 @@ export const isMaxButtonAvailable = (
 };
 
 const getMaxBalance = (
-  asset: AccountAsset | AccountLiquidity | RegisteredAccountAssetWithDecimals, // TODO: [Release 1.7] fix RegisteredAccountAsset
+  asset: AccountAsset | AccountLiquidity | RegisteredAccountAsset,
   fee: CodecString,
   isExternalBalance = false,
   parseAsLiquidity = false,
@@ -75,7 +73,7 @@ const getMaxBalance = (
   if (
     !asZeroValue(fee) &&
     ((!isExternalBalance && isXorAccountAsset(asset)) ||
-      (isExternalBalance && isNativeEvmTokenAddress((asset as RegisteredAccountAssetWithDecimals).externalAddress))) &&
+      (isExternalBalance && isNativeEvmTokenAddress((asset as RegisteredAccountAsset).externalAddress))) &&
     !isBondedBalance
   ) {
     const fpFee = FPNumber.fromCodecValue(fee);
@@ -86,7 +84,7 @@ const getMaxBalance = (
 };
 
 export const getMaxValue = (
-  asset: AccountAsset | RegisteredAccountAssetWithDecimals,
+  asset: AccountAsset | RegisteredAccountAsset,
   fee: CodecString,
   isExternalBalance = false,
   isBondedBalance = false
@@ -95,7 +93,7 @@ export const getMaxValue = (
 };
 
 export const hasInsufficientBalance = (
-  asset: AccountAsset | RegisteredAccountAssetWithDecimals,
+  asset: AccountAsset | RegisteredAccountAsset,
   amount: string | number,
   fee: CodecString,
   isExternalBalance = false,
@@ -108,7 +106,7 @@ export const hasInsufficientBalance = (
 };
 
 export const hasInsufficientXorForFee = (
-  xorAsset: Nullable<AccountAsset | RegisteredAccountAssetWithDecimals>,
+  xorAsset: Nullable<AccountAsset | RegisteredAccountAsset>,
   fee: CodecString,
   isXorOutputSwap = false
 ): boolean => {
@@ -145,13 +143,13 @@ export const asZeroValue = (value: any): boolean => {
 };
 
 export const getAssetBalance = (
-  asset: Nullable<AccountAsset | AccountLiquidity | RegisteredAccountAssetWithDecimals>,
+  asset: Nullable<AccountAsset | AccountLiquidity | RegisteredAccountAsset>,
   { internal = true, parseAsLiquidity = false, isBondedBalance = false } = {}
 ) => {
   if (!asset) return ZeroStringValue;
 
   if (!internal) {
-    return (asset as RegisteredAccountAssetWithDecimals)?.externalBalance;
+    return (asset as RegisteredAccountAsset)?.externalBalance;
   }
 
   if (parseAsLiquidity) {

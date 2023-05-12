@@ -15,9 +15,9 @@ import {
   waitForEvmTransaction,
 } from '@/utils/bridge/eth/utils';
 
-import type { BridgeHistory } from '@sora-substrate/util';
+import type { BridgeHistory, IBridgeTransaction } from '@sora-substrate/util';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
-import type { IBridgeTransaction, IBridgeReducerOptions, GetBridgeHistoryInstance } from '@/utils/bridge/common/types';
+import type { IBridgeReducerOptions, GetBridgeHistoryInstance } from '@/utils/bridge/common/types';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 

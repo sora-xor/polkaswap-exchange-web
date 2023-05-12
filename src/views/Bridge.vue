@@ -278,6 +278,7 @@ import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -297,9 +298,6 @@ import {
   asZeroValue,
 } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
-
-import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
-import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 @Component({
   components: {
@@ -334,7 +332,7 @@ export default class Bridge extends Mixins(
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
 
-  @getter.bridge.asset asset!: Nullable<RegisteredAccountAssetWithDecimals>;
+  @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
@@ -560,7 +558,7 @@ export default class Bridge extends Mixins(
     this.showSelectTokenDialog = true;
   }
 
-  async selectAsset(selectedAsset?: RegisteredAccountAssetWithDecimals): Promise<void> {
+  async selectAsset(selectedAsset?: RegisteredAccountAsset): Promise<void> {
     if (!selectedAsset) return;
 
     await this.withSelectAssetLoading(async () => {

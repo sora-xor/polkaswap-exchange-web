@@ -108,7 +108,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     }
   }
 
-  // TODO: Check why we can't choose another account
   async changeExternalWallet(options?: any): Promise<void> {
     // For now it's only Metamask
     if (this.isExternalWalletConnecting) {

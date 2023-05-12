@@ -79,6 +79,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -92,7 +93,6 @@ import { Components, PageNames } from '@/consts';
 import { state } from '@/store/decorators';
 
 import type { EvmAccountAsset } from '@/store/assets/types';
-import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 @Component({
   components: {

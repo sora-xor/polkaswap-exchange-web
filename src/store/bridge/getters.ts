@@ -1,6 +1,6 @@
 import { defineGetters } from 'direct-vuex';
 import { Operation } from '@sora-substrate/util';
-import type { CodecString } from '@sora-substrate/util';
+import type { IBridgeTransaction, CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
 
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
@@ -8,18 +8,16 @@ import { bridgeGetterContext } from '@/store/bridge';
 import { ZeroStringValue } from '@/consts';
 import { BridgeType } from '@/consts/evm';
 import ethersUtil from '@/utils/ethers-util';
-import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 import type { BridgeState } from './types';
-import type { RegisteredAccountAssetWithDecimals } from '../assets/types';
 
 const getters = defineGetters<BridgeState>()({
-  asset(...args): Nullable<RegisteredAccountAssetWithDecimals> {
+  asset(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = bridgeGetterContext(args);
     const token = rootGetters.assets.assetDataByAddress(state.assetAddress);
     const balance = state.assetBalance;
 
     if (balance) {
-      return { ...token, balance } as RegisteredAccountAssetWithDecimals;
+      return { ...token, balance } as RegisteredAccountAsset;
     }
 
     return token;
@@ -48,13 +46,8 @@ const getters = defineGetters<BridgeState>()({
     }
   },
   soraNetworkFee(...args): CodecString {
-    const { state, getters, rootState } = bridgeGetterContext(args);
-    if (getters.isEthBridge) {
-      // In direction EVM -> SORA sora network fee is 0
-      return state.isSoraToEvm ? rootState.wallet.settings.networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
-    } else {
-      return rootState.wallet.settings.networkFees[getters.operation] ?? ZeroStringValue;
-    }
+    const { getters, rootState } = bridgeGetterContext(args);
+    return rootState.wallet.settings.networkFees[getters.operation] ?? ZeroStringValue;
   },
   evmNetworkFee(...args): CodecString {
     const { state, getters } = bridgeGetterContext(args);

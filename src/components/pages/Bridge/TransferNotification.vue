@@ -21,6 +21,7 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
+import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -29,8 +30,6 @@ import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { getter, state, mutation } from '@/store/decorators';
 
 import type { Whitelist } from '@sora-substrate/util/build/assets/types';
-import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
-import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 @Component({
   components: {
@@ -43,7 +42,7 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
   @state.bridge.notificationData private tx!: Nullable<IBridgeTransaction>;
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   @mutation.bridge.setNotificationData private setNotificationData!: (tx?: IBridgeTransaction) => void;
 
@@ -57,7 +56,7 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
     }
   }
 
-  get asset(): Nullable<RegisteredAccountAssetWithDecimals> {
+  get asset(): Nullable<RegisteredAccountAsset> {
     if (!this.tx?.assetAddress) return null;
 
     return this.getAsset(this.tx.assetAddress);

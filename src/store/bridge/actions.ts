@@ -1,11 +1,11 @@
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
-import compact from 'lodash/fp/compact';
 
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { BridgeCurrencyType, BridgeHistory, FPNumber, Operation } from '@sora-substrate/util';
 import type { ActionContext } from 'vuex';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
 
 import { bridgeActionContext } from '@/store/bridge';
 import { MaxUint256 } from '@/consts';
@@ -26,9 +26,6 @@ import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
 import type { EvmHistory, EvmTransaction } from '@sora-substrate/util/build/evm/types';
-import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
-
-import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -40,7 +37,7 @@ function checkEvmNetwork(context: ActionContext<any, any>): void {
 }
 
 function evmTransactionToEvmHistoryItem(
-  assetDataByAddress: (address: string) => Nullable<RegisteredAccountAssetWithDecimals>,
+  assetDataByAddress: (address: string) => Nullable<RegisteredAccountAsset>,
   tx: EvmTransaction
 ): EvmHistory {
   const id = tx.soraHash || tx.evmHash;
@@ -67,7 +64,7 @@ function evmTransactionToEvmHistoryItem(
 }
 
 function evmTransactionsToEvmHistory(
-  assetDataByAddress: (address: string) => Nullable<RegisteredAccountAssetWithDecimals>,
+  assetDataByAddress: (address: string) => Nullable<RegisteredAccountAsset>,
   txs: EvmTransaction[]
 ): Record<string, EvmHistory> {
   return txs.reduce((buffer, tx) => {

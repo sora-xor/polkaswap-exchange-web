@@ -32,6 +32,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -40,7 +41,7 @@ import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state } from '@/store/decorators';
 
-import type { EvmAccountAsset, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+import type { EvmAccountAsset } from '@/store/assets/types';
 
 @Component({
   components: {
@@ -56,18 +57,18 @@ export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAs
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
 
-  get assetsList(): Array<RegisteredAccountAssetWithDecimals> {
+  get assetsList(): Array<RegisteredAccountAsset> {
     const assetsAddresses = Object.keys(this.registeredAssets);
     const excludeAddress = this.asset?.address;
 
     return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance(!this.isSoraToEvm));
   }
 
-  get filteredAssets(): Array<RegisteredAccountAssetWithDecimals> {
+  get filteredAssets(): Array<RegisteredAccountAsset> {
     return this.filterAssetsByQuery(
       this.assetsList,
       !this.isSoraToEvm
-    )(this.searchQuery) as Array<RegisteredAccountAssetWithDecimals>;
+    )(this.searchQuery) as Array<RegisteredAccountAsset>;
   }
 
   get hasFilteredAssets(): boolean {

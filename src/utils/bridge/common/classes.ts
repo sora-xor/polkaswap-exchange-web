@@ -1,4 +1,5 @@
 import { delay } from '@/utils';
+import type { IBridgeTransaction } from '@sora-substrate/util';
 
 import type {
   SignEvm,
@@ -15,7 +16,6 @@ import type {
   Constructable,
   IBridgeReducerOptions,
   IBridgeReducer,
-  IBridgeTransaction,
   IBridgeConstructorOptions,
   TransactionHandlerPayload,
 } from '@/utils/bridge/common/types';

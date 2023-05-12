@@ -1,11 +1,10 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { getter, mutation, state } from '@/store/decorators';
-import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
@@ -16,7 +15,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
   @getter.bridge.soraNetworkFee soraNetworkFee!: CodecString;
   @getter.bridge.evmNetworkFee evmNetworkFee!: CodecString;
-  @getter.assets.xor xor!: RegisteredAccountAssetWithDecimals;
+  @getter.assets.xor xor!: RegisteredAccountAsset;
 
   @mutation.web3.setSelectNetworkDialogVisibility setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 

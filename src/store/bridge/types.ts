@@ -1,7 +1,5 @@
-import type { CodecString, HistoryItem } from '@sora-substrate/util';
+import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
-
-import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 export type BridgeState = {
   isSoraToEvm: boolean;

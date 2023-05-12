@@ -1,11 +1,7 @@
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
-import type { BridgeHistory } from '@sora-substrate/util';
-import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
-
-export type IBridgeTransaction = EvmHistory | BridgeHistory;
+import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
 
 export type AddAsset = (address: string) => Promise<void>;
-export type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAssetWithDecimals>;
+export type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAsset>;
 export type GetActiveTransaction<T> = () => Nullable<T>;
 export type AddTransactionToProgress = (id: string) => void;
 export type RemoveTransactionFromProgress = (id: string) => void;

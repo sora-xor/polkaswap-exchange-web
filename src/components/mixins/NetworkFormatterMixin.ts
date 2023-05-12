@@ -25,7 +25,6 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
     return this.connectedEvmNetwork?.name ?? '';
   }
 
-  // TODO [EVM] add network icons
   getEvmIcon(evmNetwork?: Nullable<EvmNetwork>): string {
     switch (evmNetwork) {
       // special case

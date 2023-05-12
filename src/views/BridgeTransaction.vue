@@ -211,7 +211,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
-import type { CodecString, BridgeHistory } from '@sora-substrate/util';
+import type { CodecString, BridgeHistory, IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
@@ -224,12 +224,9 @@ import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { isUnsignedTx as isUnsignedEvmTx } from '@/utils/bridge/evm/utils';
 import { isUnsignedTx as isUnsignedEthTx } from '@/utils/bridge/eth/utils';
-
 import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
 
-import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
 import type { EvmLinkType } from '@/consts/evm';
-import type { IBridgeTransaction } from '@/utils/bridge/common/types';
 
 const FORMATTED_HASH_LENGTH = 24;
 
@@ -254,7 +251,7 @@ export default class BridgeTransaction extends Mixins(
   @state.bridge.inProgressIds private inProgressIds!: Record<string, boolean>;
   @state.router.prev private prevRoute!: Nullable<PageNames>;
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
   @getter.bridge.historyItem private historyItem!: Nullable<IBridgeTransaction>;
   @getter.bridge.isEthBridge private isEthBridge!: boolean;
 
@@ -294,7 +291,7 @@ export default class BridgeTransaction extends Mixins(
     return this.asset ? this.getFiatAmountByString(this.amount, this.asset) : null;
   }
 
-  get asset(): Nullable<RegisteredAccountAssetWithDecimals> {
+  get asset(): Nullable<RegisteredAccountAsset> {
     if (!this.historyItem?.assetAddress) return null;
 
     return this.getAsset(this.historyItem.assetAddress);

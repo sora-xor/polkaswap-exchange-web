@@ -7,11 +7,8 @@ export type EvmAccountAsset = {
   contract?: string;
 };
 
-// TODO: move externalDecimals to RegisteredAccountAsset;
-export type RegisteredAccountAssetWithDecimals = RegisteredAccountAsset & { externalDecimals: number };
-
 export type RegisteredAccountAssetObject = {
-  [key: string]: RegisteredAccountAssetWithDecimals;
+  [key: string]: RegisteredAccountAsset;
 };
 
 export type AssetsState = {
