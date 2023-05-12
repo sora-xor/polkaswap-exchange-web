@@ -51,11 +51,11 @@ export class EthBridgeHistory {
   }
 
   public get historySyncTimestamp(): number {
-    return +(ethBridgeApi.accountStorage?.get('bridgeHistorySyncTimestamp') || 0);
+    return +(ethBridgeApi.accountStorage?.get('ethBridgeHistorySyncTimestamp') || 0);
   }
 
   public set historySyncTimestamp(timestamp: number) {
-    ethBridgeApi.accountStorage?.set('bridgeHistorySyncTimestamp', timestamp);
+    ethBridgeApi.accountStorage?.set('ethBridgeHistorySyncTimestamp', timestamp);
   }
 
   public async init(): Promise<void> {
