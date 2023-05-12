@@ -433,22 +433,6 @@
         "to": "To"
     },
     "metamask": "{Metamask}",
-    "sora": {
-        "Dev": "{Sora} Devnet",
-        "Test": "{Sora} Testnet",
-        "Prod": "{Sora} Mainnet",
-        "Stage": "{Sora} Testnet"
-    },
-    "evm": {
-        "1": "{Ethereum} Mainnet",
-        "3": "{Ethereum} Ropsten Testnet",
-        "4": "{Ethereum} Rinkeby Testnet",
-        "5": "{Ethereum} Goerli Testnet",
-        "42": "{Ethereum} Kovan Testnet",
-        "63": "{Ethereum} Classic Mordor Testnet",
-        "1001": "Klaytn Baobab Testnet",
-        "8217": "Klaytn Cypress Mainnet"
-    },
     "providers": {
         "metamask": "{Metamask}"
     },

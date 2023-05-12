@@ -8,7 +8,7 @@ import { XOR, VAL, PSWAP, ETH } from '@sora-substrate/util/build/assets/consts';
 import type { CodecString } from '@sora-substrate/util';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
-import storage from './storage';
+import { settingsStorage } from '@/utils/storage';
 import axiosInstance from '@/api';
 import { ZeroStringValue } from '@/consts';
 import { BridgeType, KnownEthBridgeAsset } from '@/consts/evm';
@@ -444,39 +444,36 @@ function isNativeEvmTokenAddress(address: string): boolean {
 }
 
 function getEvmUserAddress(): string {
-  return storage.get('evmAddress') || '';
+  return settingsStorage.get('evmAddress') || '';
 }
 
 function storeEvmUserAddress(address: string): void {
-  storage.set('evmAddress', address);
+  settingsStorage.set('evmAddress', address);
 }
 
 function removeEvmUserAddress(): void {
-  storage.remove('evmAddress');
+  settingsStorage.remove('evmAddress');
 }
 
 function getSelectedEvmNetwork(): Nullable<EvmNetwork> {
-  // [TODO EVM]: remove any
-  const evmNetwork = Number(storage.get('evmNetwork' as any));
+  const evmNetwork = Number(settingsStorage.get('evmNetwork'));
 
   return Number.isFinite(evmNetwork) ? evmNetwork : null;
 }
 
 function storeSelectedEvmNetwork(evmNetwork: EvmNetwork) {
-  // [TODO EVM]: remove any
-  storage.set('evmNetwork' as any, evmNetwork);
+  settingsStorage.set('evmNetwork' as any, evmNetwork);
 }
 
 function getSelectedBridgeType(): Nullable<BridgeType> {
-  const result = storage.get('bridgeType' as any) as BridgeType;
+  const result = settingsStorage.get('bridgeType') as BridgeType;
   const value = result || null;
 
   return value;
 }
 
 function storeSelectedBridgeType(bridgeType: BridgeType) {
-  // [TODO EVM]: remove any
-  storage.set('bridgeType' as any, bridgeType);
+  settingsStorage.set('bridgeType' as any, bridgeType);
 }
 
 async function readSmartContract(network: ContractNetwork, name: string): Promise<JsonContract> {
