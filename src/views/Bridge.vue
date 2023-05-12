@@ -396,7 +396,6 @@ export default class Bridge extends Mixins(
     const decimals = this.asset.decimals;
     const fpBalance = this.getFPNumberFromCodec(balance, decimals);
     const fpAmount = this.getFPNumber(this.amount, decimals);
-    // TODO: Check if we have appropriate network fee currency (XOR/ETH) for both networks
     if (isXorAccountAsset(this.asset) && this.isSoraToEvm) {
       const fpFee = this.getFPNumberFromCodec(this.soraNetworkFee, decimals);
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee);
