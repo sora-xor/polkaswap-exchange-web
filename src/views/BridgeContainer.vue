@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { ethers } from 'ethers';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -27,6 +27,13 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
 
   private unwatchEthereum!: FnWithoutArgs;
   private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
+
+  @Watch('evmAddress')
+  private updateAccountExternalBalances(value: string) {
+    if (value) {
+      this.updateExternalBalances();
+    }
+  }
 
   async created(): Promise<void> {
     this.setStartSubscriptions([this.subscribeToEvmBlockHeaders, this.subscribeOnEvm]);
