@@ -8,7 +8,7 @@ import type { Web3State } from './types';
 
 export function initialState(): Web3State {
   return {
-    evmAddress: ethersUtil.getEvmUserAddress(),
+    evmAddress: '', // ethersUtil.getEvmUserAddress()
     evmBalance: ZeroStringValue,
     evmNetwork: null, // evm network in provider
     evmNetworksApp: [], // evm networks from app config
