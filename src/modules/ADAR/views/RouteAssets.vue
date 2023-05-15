@@ -74,9 +74,10 @@ export default class RouteAssets extends Mixins(mixins.LoadingMixin, Translation
 <style lang="scss">
 .route-assets {
   max-width: 988px;
-  margin: $inner-spacing-medium auto;
+  margin: 0 auto $inner-spacing-medium;
   .container {
     max-width: none;
+    margin: $inner-spacing-medium auto;
   }
 
   &__page-header-title {
