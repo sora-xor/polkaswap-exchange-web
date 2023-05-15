@@ -206,7 +206,7 @@ export default class ReviewDetails extends Mixins(mixins.TransactionMixin) {
   }
 
   get adarFee() {
-    return this.estimatedAmount.add(this.estimatedNetworkFee).mul(this.adarFeeMultiplier);
+    return this.estimatedAmount.mul(this.adarFeeMultiplier);
   }
 
   get estimatedNetworkFee() {
