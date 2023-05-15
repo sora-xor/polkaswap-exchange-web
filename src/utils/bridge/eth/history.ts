@@ -2,7 +2,7 @@ import flatten from 'lodash/fp/flatten';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { ethers } from 'ethers';
-import { BridgeNetworks, BridgeTxStatus, Operation } from '@sora-substrate/util';
+import { BridgeTxStatus, Operation } from '@sora-substrate/util';
 import {
   api,
   historyElementsFilter,
@@ -22,6 +22,30 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
+
+const getTransactionState = (isOutgoing: boolean, soraPartCompleted: boolean, externalHash: string, hash: string) => {
+  return isOutgoing
+    ? externalHash
+      ? ETH_BRIDGE_STATES.EVM_COMMITED
+      : soraPartCompleted
+      ? ETH_BRIDGE_STATES.EVM_REJECTED
+      : hash
+      ? ETH_BRIDGE_STATES.SORA_PENDING
+      : ETH_BRIDGE_STATES.SORA_REJECTED
+    : ETH_BRIDGE_STATES.SORA_COMMITED;
+};
+
+const getStatus = (isOutgoing: boolean, soraPartCompleted: boolean, externalHash: string, hash: string) => {
+  return isOutgoing
+    ? externalHash
+      ? BridgeTxStatus.Done
+      : soraPartCompleted
+      ? BridgeTxStatus.Failed
+      : hash
+      ? BridgeTxStatus.Pending
+      : BridgeTxStatus.Failed
+    : BridgeTxStatus.Done;
+};
 
 type TimestampMap<T> = {
   [key: number]: T;
@@ -226,14 +250,11 @@ export class EthBridgeHistory {
           ? Operation.EthBridgeIncoming
           : Operation.EthBridgeOutgoing;
       const isOutgoing = isOutgoingTransaction({ type });
-      const historyElementData = historyElement.data as HistoryElementData;
-      const requestHash = historyElementData.requestHash;
+      const { id: txId, blockHash: blockId, data: historyElementData } = historyElement;
+      const { requestHash, amount, assetId: assetAddress, sidechainAddress } = historyElementData as HistoryElementData;
 
       const localHistoryItem = currentHistory.find((item: BridgeHistory) => {
-        return (
-          item.txId === historyElement.id ||
-          (isOutgoing ? item.hash === requestHash : item.externalHash === requestHash)
-        );
+        return item.txId === txId || (isOutgoing ? item.hash === requestHash : item.externalHash === requestHash);
       });
 
       // skip, if local bridge transaction has "Done" status
@@ -241,12 +262,7 @@ export class EthBridgeHistory {
 
       // [WARNING]: api.query.ethBridge storage usage
       const hash = isOutgoing ? requestHash : await ethBridgeApi.getSoraHashByEthereumHash(requestHash);
-      const amount = historyElementData.amount;
-      const assetAddress = historyElementData.assetId;
-      const from = address;
       const symbol = assets[assetAddress]?.symbol;
-      const blockId = historyElement.blockHash;
-      const txId = historyElement.id;
       const soraNetworkFee = isOutgoing ? networkFees[Operation.EthBridgeOutgoing] : ZeroStringValue;
       const soraTimestamp = historyElement.timestamp * 1000;
       // [WARNING]: api.query.ethBridge storage usage
@@ -254,13 +270,13 @@ export class EthBridgeHistory {
         !isOutgoing || (!!hash && (await ethBridgeApi.getRequestStatus(hash))) === BridgeTxStatus.Ready;
 
       const ethereumTx = isOutgoing
-        ? await this.findEthTxBySoraHash(historyElementData.sidechainAddress, hash, fromTimestamp, contracts)
+        ? await this.findEthTxBySoraHash(sidechainAddress, hash, fromTimestamp, contracts)
         : await this.findEthTxByEthereumHash(requestHash);
 
       const externalHash = ethereumTx?.hash ?? '';
       const recieptData = externalHash ? await getEvmTransactionRecieptByHash(externalHash) : null;
 
-      const to = isOutgoing ? historyElementData.sidechainAddress : recieptData?.from;
+      const to = isOutgoing ? sidechainAddress : recieptData?.from;
       const externalNetworkFee = recieptData?.evmNetworkFee;
       const blockHeight = ethereumTx ? String(ethereumTx.blockNumber) : undefined;
       const evmTimestamp = ethereumTx?.timestamp
@@ -270,33 +286,15 @@ export class EthBridgeHistory {
         : Date.now();
 
       const [startTime, endTime] = isOutgoing ? [soraTimestamp, evmTimestamp] : [evmTimestamp, soraTimestamp];
-
-      const transactionState = isOutgoing
-        ? externalHash
-          ? ETH_BRIDGE_STATES.EVM_COMMITED
-          : soraPartCompleted
-          ? ETH_BRIDGE_STATES.EVM_REJECTED
-          : hash
-          ? ETH_BRIDGE_STATES.SORA_PENDING
-          : ETH_BRIDGE_STATES.SORA_REJECTED
-        : ETH_BRIDGE_STATES.SORA_COMMITED;
-
-      const status = isOutgoing
-        ? externalHash
-          ? BridgeTxStatus.Done
-          : soraPartCompleted
-          ? BridgeTxStatus.Failed
-          : hash
-          ? BridgeTxStatus.Pending
-          : BridgeTxStatus.Failed
-        : BridgeTxStatus.Done;
+      const transactionState = getTransactionState(isOutgoing, soraPartCompleted, externalHash, hash);
+      const status = getStatus(isOutgoing, soraPartCompleted, externalHash, hash);
 
       const historyItemData = {
         txId,
         type,
         blockId,
         blockHeight,
-        from,
+        from: address,
         amount,
         symbol,
         assetAddress,
