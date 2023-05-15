@@ -1,6 +1,6 @@
 <template>
   <dialog-base :visible.sync="isVisible" class="x1-dialog">
-    <div v-if="!isMainnet" class="disclaimer">
+    <div v-if="showTestEnvDisclaimer" class="disclaimer">
       <div class="disclaimer-warning-icon">
         <s-icon name="notifications-alert-triangle-24" size="42px" />
       </div>
@@ -87,6 +87,10 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
 
   get isMainnet(): boolean {
     return this.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod;
+  }
+
+  get showTestEnvDisclaimer(): boolean {
+    return !this.isMainnet && !this.showErrorInfoBanner;
   }
 
   loadX1(): void {
