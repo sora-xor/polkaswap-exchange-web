@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Mottagen",
     "browserNotificationDialog": {
-        "title": "Aktivera webbläsaraviseringar",
+        "title": "Ställ in aviseringar",
         "info": "Vi skickar endast relevanta uppdateringar om din plånbok, till exempel: förändringar av tillgångssaldo",
         "button": "Aktivera aviseringar",
         "agree": "Ja, jag förstår",
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Nya konton",
     "dragAndDropText": "Dra och släpp eller välj filen {extension}",
     "copyPhraseText": "Kopiera fras",
-    "stepText": "Steg"
+    "stepText": "Steg",
+    "alerts": {
+        "drop": "Faller under",
+        "raise": "Höjs över",
+        "once": "En gång",
+        "always": "Alltid",
+        "edit": "Redigera varning",
+        "delete": "Ta bort varning",
+        "onDropDesc": "{token} sjunker under {price}",
+        "onRaiseDesc": "{token} höjer över {price}",
+        "alertsTitle": "Varningar",
+        "alertsCreateTitle": "Ställ in prisavisering",
+        "alertsTooltip": "Prisaviseringar är aviseringar som kan ställas in av dig för att ta emot uppdateringar när priset på en viss token når en viss punkt som du anger",
+        "createBtn": "Skapa ny prisavisering",
+        "finishBtn": "Slutför varningskonfigurationen",
+        "enableSwitch": "Aktivera aviseringar om insättning av tillgångar",
+        "currentPrice": "nuvarande pris",
+        "alertTypeTitle": "Varningstyp",
+        "typeTooltip": "Välj antingen alternativet \"sjunker under\" eller \"höjer över\" för att ange varningsvillkor för att spåra viktiga prisrörelser. Dessa alternativ låter dig få aviseringar i rätt tid när värdet på din tillgång antingen faller under eller stiger över din angivna tröskel",
+        "alertFrequencyTitle": "Varningsfrekvens",
+        "frequencyTooltip": "Välj mellan \"en gång\" och \"alltid\" för att avgöra hur ofta du får aviseringar för den valda varningstypen. \"Once\" kommer att skicka ett enda meddelande när villkoret är uppfyllt, medan \"alltid\" kommer att fortsätta att meddela dig varje gång priströskeln passeras",
+        "noSupportMsg": "Aviseringar stöds inte av din webbläsare"
+    }
 }

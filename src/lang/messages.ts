@@ -6,6 +6,7 @@ import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 import { DemeterPageNames } from '../modules/demeterFarming/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
+import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
 
 export default {
   // Wallet project keys
@@ -88,6 +89,30 @@ export default {
     [PageNames.Stats]: 'Statistics',
     [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
+  },
+  alerts: {
+    [AlertTypeTabs.Drop]: 'Drops below',
+    [AlertTypeTabs.Raise]: 'Raises above',
+    [AlertFrequencyTabs.Once]: 'Once',
+    [AlertFrequencyTabs.Always]: 'Always',
+    edit: 'Edit alert',
+    delete: 'Delete alert',
+    onDropDesc: '{token} drops below {price}',
+    onRaiseDesc: '{token} raises above {price}',
+    alertsTitle: 'Alerts',
+    alertsTooltip:
+      'Price alerts are notifications that can be set by you to receive updates when the price of a particular token reaches certain point you set',
+    createBtn: 'Create new price alert',
+    finishBtn: 'Finish alert setup',
+    enableSwitch: 'Enable asset deposit notifications',
+    currentPrice: 'current price',
+    alertTyptTitle: 'Alert type',
+    typeTooltip:
+      "Choose either 'drops below' or 'raises above' option to specify the alert condition for tracking important price movements. These options allow you receive timely notifications when the value of your asset either falls below or rises above your designated threshold.",
+    alertFrequencyTitle: 'Alert frequency',
+    frequencyTooltip:
+      "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed.",
+    noSupportMsg: "Notifications aren't supported by your browser",
   },
   headerMenu: {
     showBalances: 'Show Balances',

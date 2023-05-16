@@ -107,7 +107,7 @@
             "connected": "Pripojené",
             "notConnected": "Nepripojený"
         },
-        "internalTitle": "Pripojte sa cez {wallet}",
+        "internalTitle": "Pripojiť cez {wallet}",
         "internalText": "Existujúci účet môžete vytvoriť alebo prepojiť prostredníctvom služby {wallet} . Ukladá účty pomocou šifrovania.",
         "list": {
             "simplest": "Najjednoduchšia možnosť",
@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Prijaté",
     "browserNotificationDialog": {
-        "title": "Povoliť upozornenia prehliadača",
+        "title": "Nastavenie oznámení",
         "info": "Budeme vám posielať iba relevantné aktualizácie o vašej peňaženke, napríklad: zmeny stavu aktív",
         "button": "Povoliť upozornenia",
         "agree": "Áno rozumiem",
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Nové účty",
     "dragAndDropText": "Presuňte myšou alebo vyberte súbor {extension}",
     "copyPhraseText": "Kopírovať frázu",
-    "stepText": "Krok"
+    "stepText": "Krok",
+    "alerts": {
+        "drop": "Kvapky nižšie",
+        "raise": "Zvyšuje vyššie",
+        "once": "Raz",
+        "always": "Vždy",
+        "edit": "Upraviť upozornenie",
+        "delete": "Odstrániť upozornenie",
+        "onDropDesc": "{token} klesne pod {price}",
+        "onRaiseDesc": "{token} zvyšuje nad {price}",
+        "alertsTitle": "Upozornenia",
+        "alertsCreateTitle": "Nastaviť upozornenie na cenu",
+        "alertsTooltip": "Upozornenia na cenu sú upozornenia, ktoré si môžete nastaviť tak, aby dostávali aktualizácie, keď cena konkrétneho tokenu dosiahne určitý bod, ktorý si nastavíte",
+        "createBtn": "Vytvorte nové upozornenie na cenu",
+        "finishBtn": "Dokončite nastavenie upozornenia",
+        "enableSwitch": "Povoliť upozornenia na vklad majetku",
+        "currentPrice": "súčasná cena",
+        "alertTypeTitle": "Typ upozornenia",
+        "typeTooltip": "Vyberte možnosť „poklesy pod“ alebo „zvýšenie nad“, aby ste určili výstražnú podmienku pre sledovanie dôležitých pohybov cien. Tieto možnosti vám umožňujú dostávať včasné upozornenia, keď hodnota vášho majetku klesne pod alebo prekročí vami určenú hranicu",
+        "alertFrequencyTitle": "Frekvencia varovania",
+        "frequencyTooltip": "Vyberte si medzi „raz“ a „vždy“, aby ste určili, ako často budete dostávať upozornenia pre vybraný typ upozornenia. „Raz“ odošle jediné upozornenie, keď je podmienka splnená, zatiaľ čo „vždy“ vás bude naďalej upozorňovať pri každom prekročení cenového limitu",
+        "noSupportMsg": "Váš prehliadač nepodporuje upozornenia"
+    }
 }

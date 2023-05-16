@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Diterima",
     "browserNotificationDialog": {
-        "title": "Aktifkan pemberitahuan browser",
+        "title": "Setel Notifikasi",
         "info": "Kami hanya akan mengirimkan pembaruan yang relevan tentang dompet Anda, misalnya: perubahan saldo aset",
         "button": "Aktifkan notifikasi",
         "agree": "Ya saya mengerti",
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Akun baru",
     "dragAndDropText": "Seret & lepas atau pilih file {extension}",
     "copyPhraseText": "Salin Frasa",
-    "stepText": "Melangkah"
+    "stepText": "Melangkah",
+    "alerts": {
+        "drop": "Jatuh di bawah",
+        "raise": "Menaikkan di atas",
+        "once": "Sekali",
+        "always": "Selalu",
+        "edit": "Edit lansiran",
+        "delete": "Hapus lansiran",
+        "onDropDesc": "{token} turun di bawah {price}",
+        "onRaiseDesc": "{token} naik di atas {price}",
+        "alertsTitle": "Lansiran",
+        "alertsCreateTitle": "Siapkan peringatan harga",
+        "alertsTooltip": "Peringatan harga adalah pemberitahuan yang dapat Anda atur untuk menerima pembaruan saat harga token tertentu mencapai titik tertentu yang Anda tetapkan",
+        "createBtn": "Buat peringatan harga baru",
+        "finishBtn": "Selesaikan penyiapan lansiran",
+        "enableSwitch": "Aktifkan notifikasi setoran aset",
+        "currentPrice": "harga sekarang",
+        "alertTypeTitle": "Jenis peringatan",
+        "typeTooltip": "Pilih opsi 'turun di bawah' atau 'naik di atas' untuk menentukan kondisi waspada untuk melacak pergerakan harga penting. Opsi ini memungkinkan Anda menerima pemberitahuan tepat waktu saat nilai aset Anda turun di bawah atau naik di atas ambang batas yang Anda tetapkan",
+        "alertFrequencyTitle": "Frekuensi peringatan",
+        "frequencyTooltip": "Pilih antara 'sekali' dan 'selalu' untuk menentukan seberapa sering Anda menerima pemberitahuan untuk jenis lansiran yang dipilih. 'Sekali' akan mengirimkan satu notifikasi saat kondisi terpenuhi, sementara 'selalu' akan terus memberi tahu Anda setiap kali ambang harga dilewati",
+        "noSupportMsg": "Notifikasi tidak didukung oleh browser Anda"
+    }
 }
