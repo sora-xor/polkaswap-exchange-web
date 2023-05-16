@@ -37,6 +37,7 @@
     <notification-enabling-page v-if="showNotifsDarkPage">
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
+    <alerts />
     <confirm-dialog />
   </s-design-system-provider>
 </template>
@@ -75,6 +76,7 @@ import type { EthBridgeSettings } from '@/store/web3/types';
     AppHeader,
     AppFooter,
     AppMenu,
+    Alerts: lazyComponent(Components.Alerts),
     AppMobilePopup: lazyComponent(Components.AppMobilePopup),
     AppLogoButton: lazyComponent(Components.AppLogoButton),
     AppDisclaimer: lazyComponent(Components.AppDisclaimer),

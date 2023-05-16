@@ -30,6 +30,7 @@ function initialState(): SettingsState {
     selectNodeDialogVisibility: false,
     selectLanguageDialogVisibility: false,
     disclaimerVisibility: false,
+    alertSettingsVisibility: false,
     browserNotifPopupVisibility: false,
     browserNotifPopupBlockedVisibility: false,
     blockNumber: 0,
