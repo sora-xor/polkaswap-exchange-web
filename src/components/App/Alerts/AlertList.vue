@@ -33,7 +33,7 @@
       <span class="create">{{ t('alerts.createBtn') }}</span>
     </div>
     <div class="settings-alert-section">
-      <s-switch v-model="topUpNotifs" :disabled="loading" @change="handleTopUpNotifs"></s-switch>
+      <s-switch v-model="topUpNotifs" :disabled="loading" @change="handleTopUpNotifs" />
       <span>{{ t('alerts.enableSwitch') }}</span>
     </div>
   </div>
@@ -43,12 +43,12 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Alert, WhitelistIdsBySymbol } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 import { getter, mutation, state } from '@/store/decorators';
-import { WhitelistIdsBySymbol } from '@soramitsu/soraneo-wallet-web/lib/types/common';
-import { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 import { MAX_ALERTS_NUMBER } from '@/consts';
+import { getDeltaPercent } from '@/utils';
 
 @Component({
   components: {
@@ -63,13 +63,13 @@ export default class AlertList extends Mixins(
   mixins.FormattedAmountMixin
 ) {
   @state.wallet.settings.alerts alerts!: Array<Alert>;
-  @state.wallet.settings.allowTopUpAlert allowTopUpAlert!: boolean;
-  @state.settings.isBrowserNotificationApiAvailable isBrowserNotificationApiAvailable!: boolean;
+  @state.wallet.settings.allowTopUpAlert private allowTopUpAlert!: boolean;
+  @state.settings.isBrowserNotificationApiAvailable private isBrowserNotificationApiAvailable!: boolean;
 
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WhitelistIdsBySymbol;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => AccountAsset;
 
-  @mutation.wallet.settings.removePriceAlert removePriceAlert!: (position: number) => void;
+  @mutation.wallet.settings.removePriceAlert private removePriceAlert!: (position: number) => void;
   @mutation.wallet.settings.setDepositNotifications private setDepositNotifications!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopupEnabled!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
@@ -104,7 +104,7 @@ export default class AlertList extends Mixins(
       : this.t('alerts.onRaiseDesc', { token: alert.token, price: `$${alert.price}` });
   }
 
-  getInfo(alert: Alert) {
+  getInfo(alert: Alert): string | undefined {
     const desiredPrice = alert.price;
     const asset = this.getAsset(this.whitelistIdsBySymbol[alert.token]);
     const currentPrice = this.getFiatAmount('1', asset);
@@ -121,7 +121,12 @@ export default class AlertList extends Mixins(
     return `${deltaPercent}% · ${this.t('alerts.currentPrice')}: $${this.showMostFittingValue(currentPrice)}`;
   }
 
-  // TODO: move to FormattedAmountMixin mixin
+  /* 
+    Refactor: move subsequent methods into FPNumber
+    examples:
+    0.152345 -> 0.15
+    0.000043 -> 0.000043
+  */
   showMostFittingValue(value, precisionForLowCostAsset = 18) {
     const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
 
@@ -136,16 +141,9 @@ export default class AlertList extends Mixins(
     return this.getFormattedValue(value, precisionForLowCostAsset);
   }
 
-  // TODO: move to FormattedAmountMixin mixin
   getFormattedValue(value: string, precision = 18): string {
     const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
     return `${integer}.${decimal.substring(0, precision)}`;
-  }
-
-  // TODO: move to FormattedAmountMixin mixin
-  getDeltaPercent(desiredPrice: FPNumber, currentPrice: FPNumber): FPNumber {
-    const delta = desiredPrice.sub(currentPrice);
-    return delta.div(currentPrice).mul(FPNumber.HUNDRED);
   }
 
   getType(alert: Alert) {
@@ -165,7 +163,7 @@ export default class AlertList extends Mixins(
       return '0.00';
     }
 
-    const percent = this.getDeltaPercent(desiredPrice, currentPrice);
+    const percent = getDeltaPercent(desiredPrice, currentPrice);
 
     return this.showMostFittingValue(percent.toLocaleString());
   }

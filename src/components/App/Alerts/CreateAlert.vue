@@ -82,7 +82,7 @@ import type { AccountAsset, Asset, WhitelistIdsBySymbol } from '@sora-substrate/
 import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 import { getter, mutation, state } from '@/store/decorators';
-import { formatAddress } from '@/utils';
+import { formatAddress, getDeltaPercent } from '@/utils';
 import { lazyComponent } from '@/router';
 import { Components, MAX_ALERTS_NUMBER } from '@/consts';
 import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
@@ -126,8 +126,8 @@ export default class CreateAlert extends Mixins(
   currentTypeTab: AlertTypeTabs = AlertTypeTabs.Drop;
   currentFrequencyTab: AlertFrequencyTabs = AlertFrequencyTabs.Once;
 
-  AlertFrequencyTabs = AlertFrequencyTabs;
-  AlertTypeTabs = AlertTypeTabs;
+  readonly AlertFrequencyTabs = AlertFrequencyTabs;
+  readonly AlertTypeTabs = AlertTypeTabs;
 
   get deltaPercentage(): string {
     const desiredPrice = FPNumber.fromNatural(this.amount);
@@ -143,15 +143,13 @@ export default class CreateAlert extends Mixins(
       return '0.00';
     }
 
-    let percent = this.getDeltaPercent(desiredPrice, currentPrice);
+    let percent = getDeltaPercent(desiredPrice, currentPrice);
+    this.negativeDelta = FPNumber.lt(percent, FPNumber.ZERO);
 
-    if (FPNumber.lt(percent, FPNumber.ZERO)) {
-      this.negativeDelta = true;
+    if (this.negativeDelta) {
       percent = percent.negative();
-
       if (this.autoChoice) this.currentTypeTab = AlertTypeTabs.Drop;
     } else {
-      this.negativeDelta = false;
       if (this.autoChoice) this.currentTypeTab = AlertTypeTabs.Raise;
     }
 
@@ -167,7 +165,12 @@ export default class CreateAlert extends Mixins(
     this.autoChoice = false;
   }
 
-  // TODO: move to FormattedAmountMixin mixin
+  /* 
+    Refactor: move subsequent methods into FPNumber
+    examples:
+    0.152345 -> 0.15
+    0.000043 -> 0.000043
+  */
   showMostFittingValue(value, precisionForLowCostAsset = 18) {
     const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
 
@@ -182,16 +185,9 @@ export default class CreateAlert extends Mixins(
     return this.getFormattedValue(value, precisionForLowCostAsset);
   }
 
-  // TODO: move to FormattedAmountMixin mixin
   getFormattedValue(value: string, precision = 18): string {
     const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
     return `${integer}.${decimal.substring(0, precision)}`;
-  }
-
-  // TODO: move to FormattedAmountMixin mixin
-  getDeltaPercent(desiredPrice: FPNumber, currentPrice: FPNumber): FPNumber {
-    const delta = desiredPrice.sub(currentPrice);
-    return delta.div(currentPrice).mul(FPNumber.HUNDRED);
   }
 
   get fiatAmountValue() {
@@ -224,9 +220,7 @@ export default class CreateAlert extends Mixins(
     // NOTE: handle abnormal situation when user wants specific alert despite the market
     if (this.currentTypeTab === 'drop') {
       if (FPNumber.lt(currentPrice, desiredPrice)) wasNotified = true;
-    }
-
-    if (this.currentTypeTab === 'raise') {
+    } else if (this.currentTypeTab === 'raise') {
       if (FPNumber.gt(currentPrice, desiredPrice)) wasNotified = true;
     }
 

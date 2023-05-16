@@ -15,7 +15,7 @@
         :alert-to-edit="alertToEdit"
       />
     </dialog-base>
-    <alerts-select-asset :visible.sync="showAlertSelectTokenDialog" :disabled-custom="true" @select="selectAsset" />
+    <alerts-select-asset :visible.sync="showAlertSelectTokenDialog" disabled-custom @select="selectAsset" />
   </div>
 </template>
 
@@ -51,7 +51,7 @@ export default class Alerts extends Mixins(mixins.TransactionMixin) {
 
   step = AlertPages.AlertList;
 
-  AlertPages = AlertPages;
+  readonly AlertPages = AlertPages;
 
   get showAlertsPopup(): boolean {
     return this.alertSettingsVisibility;
@@ -67,8 +67,7 @@ export default class Alerts extends Mixins(mixins.TransactionMixin) {
   }
 
   get showBack(): boolean {
-    if (this.step === AlertPages.CreateAlert) return true;
-    return false;
+    return this.step === AlertPages.CreateAlert;
   }
 
   openSelectTokenDialog() {
@@ -90,7 +89,7 @@ export default class Alerts extends Mixins(mixins.TransactionMixin) {
   }
 
   selectAsset(selectedAsset?: AccountAsset): void {
-    // TODO: disallow XSTUSD asset to choose in asset list
+    // disallow XSTUSD asset to choose in asset list
     if (!selectedAsset) return;
     this.$root.$emit('selectAlertAsset', selectedAsset);
   }

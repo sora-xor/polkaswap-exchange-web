@@ -92,6 +92,11 @@ export const getMaxValue = (
   return getMaxBalance(asset, fee, isExternalBalance, false, isBondedBalance).toString();
 };
 
+export const getDeltaPercent = (desiredPrice: FPNumber, currentPrice: FPNumber): FPNumber => {
+  const delta = desiredPrice.sub(currentPrice);
+  return delta.div(currentPrice).mul(FPNumber.HUNDRED);
+};
+
 export const hasInsufficientBalance = (
   asset: AccountAsset | RegisteredAccountAsset,
   amount: string | number,
