@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Nhận được",
     "browserNotificationDialog": {
-        "title": "Bật thông báo trình duyệt",
+        "title": "Đặt thông báo",
         "info": "Chúng tôi sẽ chỉ gửi cho bạn các cập nhật có liên quan về ví của bạn, ví dụ: thay đổi số dư tài sản",
         "button": "Bật thông báo",
         "agree": "Vâng, tôi hiểu",
@@ -1190,5 +1190,27 @@
     "newAccountsText": "tài khoản mới",
     "dragAndDropText": "Kéo và thả hoặc chọn tệp {extension}",
     "copyPhraseText": "Sao chép cụm từ",
-    "stepText": "Bước chân"
+    "stepText": "Bước chân",
+    "alerts": {
+        "drop": "Giọt bên dưới",
+        "raise": "Tăng lên trên",
+        "once": "Một lần",
+        "always": "Luôn luôn",
+        "edit": "Chỉnh sửa cảnh báo",
+        "delete": "Xóa cảnh báo",
+        "onDropDesc": "{token} giảm xuống dưới {price}",
+        "onRaiseDesc": "{token} tăng trên {price}",
+        "alertsTitle": "cảnh báo",
+        "alertsCreateTitle": "Thiết lập cảnh báo giá",
+        "alertsTooltip": "Thông báo về giá là thông báo mà bạn có thể đặt để nhận thông tin cập nhật khi giá của một mã thông báo cụ thể đạt đến điểm nhất định mà bạn đã đặt",
+        "createBtn": "Tạo thông báo giá mới",
+        "finishBtn": "Hoàn tất thiết lập cảnh báo",
+        "enableSwitch": "Bật thông báo gửi tài sản",
+        "currentPrice": "giá hiện tại",
+        "alertTypeTitle": "Loại cảnh báo",
+        "typeTooltip": "Chọn tùy chọn 'giảm xuống bên dưới' hoặc 'tăng lên trên' để chỉ định điều kiện cảnh báo để theo dõi các biến động giá quan trọng. Các tùy chọn này cho phép bạn nhận được thông báo kịp thời khi giá trị tài sản của bạn giảm xuống dưới hoặc tăng lên trên ngưỡng được chỉ định của bạn",
+        "alertFrequencyTitle": "Tần suất cảnh báo",
+        "frequencyTooltip": "Chọn giữa 'một lần' và 'luôn luôn' để xác định tần suất bạn nhận được thông báo cho loại cảnh báo đã chọn. 'Một lần' sẽ gửi một thông báo khi điều kiện được đáp ứng, trong khi 'luôn luôn' sẽ tiếp tục thông báo cho bạn mỗi khi vượt qua ngưỡng giá",
+        "noSupportMsg": "Thông báo không được trình duyệt của bạn hỗ trợ"
+    }
 }

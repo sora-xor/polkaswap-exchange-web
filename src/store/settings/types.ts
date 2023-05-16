@@ -28,6 +28,7 @@ export type SettingsState = {
   selectNodeDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
   disclaimerVisibility: boolean;
+  alertSettingsVisibility: boolean;
   browserNotifPopupVisibility: boolean;
   browserNotifPopupBlockedVisibility: boolean;
   isBrowserNotificationApiAvailable: boolean;

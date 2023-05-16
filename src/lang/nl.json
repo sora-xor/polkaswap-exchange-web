@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Ontvangen",
     "browserNotificationDialog": {
-        "title": "Browsermeldingen inschakelen",
+        "title": "Meldingen instellen",
         "info": "We sturen u alleen relevante updates over uw portemonnee, bijvoorbeeld: wijzigingen in activasaldo",
         "button": "Notificaties aanzetten",
         "agree": "Ja ik begrijp het",
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Nieuwe rekeningen",
     "dragAndDropText": "Drag & drop of kies {extension} bestand",
     "copyPhraseText": "Kopieer zin",
-    "stepText": "Stap"
+    "stepText": "Stap",
+    "alerts": {
+        "drop": "Zakt onder",
+        "raise": "Stijgt boven",
+        "once": "Eenmaal",
+        "always": "Altijd",
+        "edit": "Melding bewerken",
+        "delete": "Melding verwijderen",
+        "onDropDesc": "{token} zakt onder {price}",
+        "onRaiseDesc": "{token} verhoogt boven {price}",
+        "alertsTitle": "Waarschuwingen",
+        "alertsCreateTitle": "Prijsalarm instellen",
+        "alertsTooltip": "Prijswaarschuwingen zijn meldingen die door u kunnen worden ingesteld om updates te ontvangen wanneer de prijs van een bepaald token een bepaald door u ingesteld punt bereikt",
+        "createBtn": "Nieuwe prijswaarschuwing maken",
+        "finishBtn": "Voltooi de instelling van de waarschuwing",
+        "enableSwitch": "Meldingen van activastortingen inschakelen",
+        "currentPrice": "huidige prijs",
+        "alertTypeTitle": "Waarschuwingstype",
+        "typeTooltip": "Kies de optie 'drops below' of 'raises above' om een waarschuwingsconditie op te geven voor het volgen van belangrijke prijsbewegingen. Met deze opties ontvangt u tijdige meldingen wanneer de waarde van uw vermogen onder of boven de door u aangegeven drempelwaarde komt",
+        "alertFrequencyTitle": "Alert frequentie",
+        "frequencyTooltip": "Kies tussen 'eenmalig' en 'altijd' om te bepalen hoe vaak u meldingen ontvangt voor het gekozen waarschuwingstype. 'Eenmaal' stuurt een enkele melding wanneer aan de voorwaarde is voldaan, terwijl 'altijd' u op de hoogte blijft houden telkens wanneer de prijsdrempel wordt overschreden",
+        "noSupportMsg": "Meldingen worden niet ondersteund door je browser"
+    }
 }

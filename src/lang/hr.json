@@ -1038,7 +1038,7 @@
     },
     "receivedText": "Primljeno",
     "browserNotificationDialog": {
-        "title": "Omogući obavijesti preglednika",
+        "title": "Postavite obavijesti",
         "info": "Poslat ćemo vam samo relevantna ažuriranja o vašem novčaniku, na primjer: promjene stanja imovine",
         "button": "Omogući obavijesti",
         "agree": "Da, razumijem",
@@ -1190,5 +1190,27 @@
     "newAccountsText": "Novi računi",
     "dragAndDropText": "Povucite i ispustite ili odaberite {extension} datoteku",
     "copyPhraseText": "Kopiraj frazu",
-    "stepText": "Korak"
+    "stepText": "Korak",
+    "alerts": {
+        "drop": "Kapi ispod",
+        "raise": "Podiže iznad",
+        "once": "Jednom",
+        "always": "Stalno",
+        "edit": "Uredi upozorenje",
+        "delete": "Izbriši upozorenje",
+        "onDropDesc": "{token} pada ispod {price}",
+        "onRaiseDesc": "{token} podiže iznad {price}",
+        "alertsTitle": "upozorenja",
+        "alertsCreateTitle": "Postavite upozorenje o cijenama",
+        "alertsTooltip": "Upozorenja o cijenama su obavijesti koje možete postaviti kako biste primali ažuriranja kada cijena određenog tokena dosegne određenu točku koju ste postavili",
+        "createBtn": "Stvorite novo upozorenje o cijeni",
+        "finishBtn": "Dovršite postavljanje upozorenja",
+        "enableSwitch": "Omogući obavijesti o depozitu imovine",
+        "currentPrice": "Trenutna cijena",
+        "alertTypeTitle": "Vrsta upozorenja",
+        "typeTooltip": "Odaberite opciju 'pada ispod' ili 'diže se' kako biste odredili uvjet upozorenja za praćenje važnih kretanja cijene. Ove vam opcije omogućuju primanje pravovremenih obavijesti kada vrijednost vaše imovine padne ispod ili poraste iznad vašeg određenog praga",
+        "alertFrequencyTitle": "Učestalost upozorenja",
+        "frequencyTooltip": "Odaberite između 'jednom' i 'uvijek' kako biste odredili koliko često primate obavijesti za odabranu vrstu upozorenja. \"Jednom\" će poslati jednu obavijest kada je uvjet ispunjen, dok će \"uvijek\" nastaviti obavještavati vas svaki put kada se prijeđe cjenovni prag",
+        "noSupportMsg": "Vaš preglednik ne podržava obavijesti"
+    }
 }
