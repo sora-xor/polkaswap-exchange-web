@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@feature/DOPS-2441/separate-fleek') _
 
 def pipeline = new org.js.AppPipeline(steps: this,
     dockerImageName: 'adar/web',
@@ -6,16 +6,16 @@ def pipeline = new org.js.AppPipeline(steps: this,
     dockerRegistryCred: 'bot-adar-rw',
     // buildEnvironment: buildEnvironment,
     dockerImageTags: ['adar': 'latest', 'adar-dev': 'dev'],
-    copyStaticToBranch: true,
     sonarProjectName: 'adar-web',
     sonarProjectKey: 'jp.co.soramitsu:adar-web',
-    stageDeploy: true,
-    downstreamJob: '../deploy/web-stage1',
-    copyToBranches: ['fleek-pre', 'fleek'],
-    copyFile: 'env.json',
+    //stageDeploy: true,
+    //downstreamJob: '../deploy/web-stage1',
+    copyStaticToBranch: true,
+    fleekDefaultSiteNameStage: 'dawn-block-3896',
+    fleekBranchStage: 'fleek-pre',
+    copyFileStage: 'env.json',
     // ipfsHashNotification: true,
-    fleekDefaultSiteName: 'dawn-block-3896',
-    secretScannerExclusion: '.*env.json',
-    // ipfsHashChatID: '-1001375555544'
+    // ipfsHashChatID: '-1001375555544',
+    secretScannerExclusion: '.*env.json'
 )
 pipeline.runPipeline()
