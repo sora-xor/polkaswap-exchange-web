@@ -167,17 +167,16 @@ export class EthBridgeHistory {
   public async getEthAccountTransactions(
     address: string,
     fromTimestamp: number,
-    contract: string
+    contracts?: string[]
   ): Promise<EthTransactionsMap> {
-    const addressToLower = address.toLowerCase();
-    const contractToLower = contract.toLowerCase();
-    const key = `${addressToLower}_${contractToLower}`;
+    const key = address.toLowerCase();
+    const contractsToLower = (contracts || []).map((contract) => contract.toLowerCase());
 
     if (!this.ethAccountTransactionsMap[key]) {
       const ethStartBlock = await this.getEthStartBlock(fromTimestamp);
       const history = await this.etherscanInstance.getHistory(address, ethStartBlock);
       const filtered = history.reduce<EthTransactionsMap>((buffer, tx) => {
-        if (!!tx.to && contractToLower === tx.to.toLowerCase()) {
+        if (!contracts || (!!tx.to && contractsToLower.includes(tx.to.toLowerCase()))) {
           buffer[tx.hash] = tx;
         }
 
@@ -207,12 +206,11 @@ export class EthBridgeHistory {
   public async findEthTxBySoraHash(
     accountAddress: string,
     hash: string,
-    fromTimestamp: number,
-    symbol: string
+    fromTimestamp: number
   ): Promise<ethers.providers.TransactionResponse | null> {
     if (!accountAddress || !hash) return null;
-    const contract = this.contracts[symbol] ?? this.contracts.OTHER;
-    const transactions = await this.getEthAccountTransactions(accountAddress, fromTimestamp, contract);
+    const contracts = Object.values(this.contracts);
+    const transactions = await this.getEthAccountTransactions(accountAddress, fromTimestamp, contracts);
 
     for (const tx of Object.values(transactions)) {
       try {
@@ -280,7 +278,7 @@ export class EthBridgeHistory {
 
     const currentHistory = ethBridgeApi.historyList as BridgeHistory[];
 
-    const { externalNetwork, contracts } = this;
+    const { externalNetwork } = this;
 
     const fromTimestamp = await this.getFromTimestamp(historyElements);
     const historySyncTimestampUpdated = first(historyElements)?.timestamp as number;
@@ -305,7 +303,7 @@ export class EthBridgeHistory {
       const soraTimestamp = historyElement.timestamp * 1000;
       const soraPartCompleted = await isSoraPartCompleted(isOutgoing, hash);
       const ethereumTx = isOutgoing
-        ? await this.findEthTxBySoraHash(sidechainAddress, hash, fromTimestamp, symbol)
+        ? await this.findEthTxBySoraHash(sidechainAddress, hash, fromTimestamp)
         : await this.findEthTxByEthereumHash(requestHash);
 
       const externalHash = ethereumTx?.hash ?? '';
