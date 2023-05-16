@@ -285,6 +285,7 @@ export class EthBridgeHistory {
     address: string,
     assets: Record<string, Asset>,
     networkFees: NetworkFeesObject,
+    inProgressIds: Record<string, boolean>,
     contracts?: string[],
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
@@ -309,6 +310,8 @@ export class EthBridgeHistory {
         isLocalHistoryItem(item, txId, isOutgoing, requestHash)
       );
 
+      // don't restore transaction what is in process in app
+      if ((localHistoryItem?.id as string) in inProgressIds) continue;
       if (hasFinishedState(localHistoryItem)) continue;
 
       const hash = await getSoraHash(isOutgoing, requestHash);

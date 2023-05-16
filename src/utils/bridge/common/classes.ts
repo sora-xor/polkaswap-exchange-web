@@ -89,7 +89,6 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
   }
 
   updateTransactionParams(id: string, params = {}): void {
-    console.log(id, params);
     this.updateTransaction(id, params);
     this.updateHistory();
   }

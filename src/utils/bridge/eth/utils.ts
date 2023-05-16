@@ -178,6 +178,7 @@ export const updateEthBridgeHistory =
           },
         },
         web3: { ethBridgeEvmNetwork, ethBridgeContractAddress },
+        bridge: { inProgressIds },
       } = rootState;
 
       const evmNetworkData = rootGetters.web3.availableNetworks[BridgeType.ETH].find(
@@ -211,7 +212,14 @@ export const updateEthBridgeHistory =
         await ethBridgeHistory.clearHistory(updateCallback);
       }
 
-      await ethBridgeHistory.updateAccountHistory(address, assets, networkFees, contracts, updateCallback);
+      await ethBridgeHistory.updateAccountHistory(
+        address,
+        assets,
+        networkFees,
+        inProgressIds,
+        contracts,
+        updateCallback
+      );
     } catch (error) {
       console.error(error);
     }
