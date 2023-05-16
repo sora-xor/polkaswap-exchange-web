@@ -30,7 +30,6 @@ export interface Constructable<T> {
 export type TransactionHandlerPayload<Transaction extends IBridgeTransaction> = {
   nextState: Transaction['transactionState'];
   rejectState: Transaction['transactionState'];
-  status?: any;
   handler?: (id: string) => Promise<void>;
 };
 
@@ -60,7 +59,7 @@ export interface IBridgeReducer<T extends IBridgeTransaction> {
   process: (transaction: T) => Promise<void>;
   changeState: (transaction: T) => Promise<void>;
   handleState: (id: string, payload: TransactionHandlerPayload<T>) => Promise<void>;
-  updateTransactionParams: (id: string, params: Partial<T>) => Promise<void>;
+  updateTransactionParams: (id: string, params: Partial<T>) => void;
   beforeSubmit: (id: string) => void;
   onComplete: (id: string) => Promise<void>;
 }

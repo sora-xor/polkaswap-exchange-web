@@ -61,7 +61,7 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
           handler: async (id: string) => {
             let currentId = id;
             this.beforeSubmit(currentId);
-            await this.updateTransactionParams(currentId, { transactionState: EvmTxStatus.Pending });
+            this.updateTransactionParams(currentId, { transactionState: EvmTxStatus.Pending });
             await this.checkTxId(currentId);
             await this.checkTxBlockId(currentId);
 
@@ -122,7 +122,7 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
 
     const hash = await waitForSoraTransactionHash(id);
 
-    await this.updateTransactionParams(id, { hash });
+    this.updateTransactionParams(id, { hash });
 
     return hash;
   }

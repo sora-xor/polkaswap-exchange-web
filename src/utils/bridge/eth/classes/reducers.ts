@@ -1,5 +1,4 @@
 import first from 'lodash/fp/first';
-import { BridgeTxStatus } from '@sora-substrate/util';
 import { SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
@@ -52,8 +51,6 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
   }
 
   async onEvmSubmitted(id: string): Promise<void> {
-    this.updateTransactionParams(id, { transactionState: ETH_BRIDGE_STATES.EVM_PENDING });
-
     const tx = this.getTransaction(id);
 
     if (!tx.externalHash) {
@@ -95,7 +92,6 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
     switch (transaction.transactionState) {
       case ETH_BRIDGE_STATES.INITIAL: {
         return await this.handleState(transaction.id, {
-          status: BridgeTxStatus.Pending,
           nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
         });
@@ -103,12 +99,10 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
 
       case ETH_BRIDGE_STATES.SORA_SUBMITTED: {
         return await this.handleState(transaction.id, {
-          status: BridgeTxStatus.Pending,
           nextState: ETH_BRIDGE_STATES.SORA_PENDING,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
           handler: async (id: string) => {
             this.beforeSubmit(id);
-            this.updateTransactionParams(id, { transactionState: ETH_BRIDGE_STATES.SORA_PENDING });
 
             const { txId, blockId } = getTransaction(id);
 
@@ -157,14 +151,12 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
 
       case ETH_BRIDGE_STATES.SORA_REJECTED:
         return await this.handleState(transaction.id, {
-          status: BridgeTxStatus.Pending,
           nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
         });
 
       case ETH_BRIDGE_STATES.EVM_SUBMITTED: {
         return await this.handleState(transaction.id, {
-          status: BridgeTxStatus.Pending,
           nextState: ETH_BRIDGE_STATES.EVM_PENDING,
           rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
           handler: async (id: string) => await this.onEvmSubmitted(id),
@@ -184,7 +176,6 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
 
       case ETH_BRIDGE_STATES.EVM_REJECTED: {
         return await this.handleState(transaction.id, {
-          status: BridgeTxStatus.Pending,
           nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
         });
@@ -200,7 +191,6 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
     switch (transaction.transactionState) {
       case ETH_BRIDGE_STATES.INITIAL: {
         return await this.handleState(transaction.id, {
-          status: BridgeTxStatus.Pending,
           nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
         });
@@ -208,7 +198,6 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
 
       case ETH_BRIDGE_STATES.EVM_SUBMITTED: {
         return await this.handleState(transaction.id, {
-          status: BridgeTxStatus.Pending,
           nextState: ETH_BRIDGE_STATES.EVM_PENDING,
           rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
           handler: async (id: string) => await this.onEvmSubmitted(id),
@@ -225,7 +214,6 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
 
       case ETH_BRIDGE_STATES.EVM_REJECTED: {
         return await this.handleState(transaction.id, {
-          status: BridgeTxStatus.Pending,
           nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
         });
@@ -246,7 +234,6 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
 
       case ETH_BRIDGE_STATES.SORA_REJECTED: {
         return await this.handleState(transaction.id, {
-          status: BridgeTxStatus.Pending,
           nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
         });

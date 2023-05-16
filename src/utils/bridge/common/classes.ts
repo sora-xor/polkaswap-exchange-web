@@ -1,4 +1,3 @@
-import { delay } from '@/utils';
 import type { IBridgeTransaction } from '@sora-substrate/util';
 
 import type {
@@ -89,30 +88,22 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     }
   }
 
-  async updateTransactionParams(id: string, params = {}): Promise<void> {
+  updateTransactionParams(id: string, params = {}): void {
+    console.log(id, params);
     this.updateTransaction(id, params);
     this.updateHistory();
-    // TODO: remove after fix submitExtrinsic in js-lib
-    await delay();
   }
 
   async handleState(
     id: string,
-    { nextState, rejectState, handler, status }: TransactionHandlerPayload<Transaction>
+    { nextState, rejectState, handler }: TransactionHandlerPayload<Transaction>
   ): Promise<void> {
     try {
-      const transaction = this.getTransaction(id);
-
-      // optional update
-      if (status && transaction.status !== status) {
-        await this.updateTransactionParams(id, { status });
-      }
-
       if (typeof handler === 'function') {
         await handler(id);
       }
 
-      await this.updateTransactionParams(id, { transactionState: nextState });
+      this.updateTransactionParams(id, { transactionState: nextState });
     } catch (error) {
       console.error(error);
 
@@ -120,7 +111,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
       const failedStates = this.boundaryStates[transaction.type].failed;
       const endTime = failedStates.includes(transaction.transactionState) ? transaction.endTime : Date.now();
 
-      await this.updateTransactionParams(id, {
+      this.updateTransactionParams(id, {
         transactionState: rejectState,
         endTime,
       });
@@ -133,8 +124,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     const tx = this.getTransaction(id);
 
     if (tx) {
-      await this.updateTransactionParams(id, {
-        transactionState: this.boundaryStates[tx.type].done,
+      this.updateTransactionParams(id, {
         endTime: Date.now(),
       });
 

@@ -69,16 +69,14 @@ const getTransactionState = (isOutgoing: boolean, soraPartCompleted: boolean, ex
     : ETH_BRIDGE_STATES.SORA_COMMITED;
 };
 
-const getStatus = (isOutgoing: boolean, soraPartCompleted: boolean, externalHash: string, hash: string) => {
+const hasFinishedState = (item: Nullable<BridgeHistory>) => {
+  if (!item) return false;
+
+  const isOutgoing = isOutgoingTransaction(item);
+
   return isOutgoing
-    ? externalHash
-      ? BridgeTxStatus.Done
-      : soraPartCompleted
-      ? BridgeTxStatus.Failed
-      : hash
-      ? BridgeTxStatus.Pending
-      : BridgeTxStatus.Failed
-    : BridgeTxStatus.Done;
+    ? item.transactionState === ETH_BRIDGE_STATES.EVM_COMMITED
+    : item.transactionState === ETH_BRIDGE_STATES.SORA_COMMITED;
 };
 
 const getReceiptData = async (externalHash: string) => {
@@ -311,8 +309,7 @@ export class EthBridgeHistory {
         isLocalHistoryItem(item, txId, isOutgoing, requestHash)
       );
 
-      // skip, if local bridge transaction has "Done" status
-      if (localHistoryItem?.status === BridgeTxStatus.Done) continue;
+      if (hasFinishedState(localHistoryItem)) continue;
 
       const hash = await getSoraHash(isOutgoing, requestHash);
       const symbol = assets[assetAddress]?.symbol;
@@ -333,7 +330,6 @@ export class EthBridgeHistory {
 
       const [startTime, endTime] = getTimes(isOutgoing, soraTimestamp, evmTimestamp);
       const transactionState = getTransactionState(isOutgoing, soraPartCompleted, externalHash, hash);
-      const status = getStatus(isOutgoing, soraPartCompleted, externalHash, hash);
 
       const historyItemData = {
         txId,
@@ -346,7 +342,6 @@ export class EthBridgeHistory {
         assetAddress,
         startTime,
         endTime,
-        status,
         hash,
         externalHash,
         soraNetworkFee,
