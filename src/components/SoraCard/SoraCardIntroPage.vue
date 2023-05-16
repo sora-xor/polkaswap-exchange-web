@@ -20,35 +20,15 @@
         <p>You hold $100 worth of XOR in your SORA Account</p>
       </div>
       <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
-        <div v-if="isEuroBalanceEnough || !isLoggedIn" class="sora-card__options--enough-euro">
-          <s-button
-            type="primary"
-            class="sora-card__btn s-typography-button--large"
-            :loading="btnLoading"
-            @click="handleConfirm"
-          >
-            <span class="text"> {{ t(buttonText) }}</span>
-          </s-button>
-        </div>
-        <div v-else class="sora-card__options--not-enough-euro s-flex">
-          <s-button
-            v-for="item in buyOptions"
-            class="sora-card__btn sora-card__btn--buy s-typography-button--large"
-            :key="item.type"
-            :type="item.button"
-            :loading="btnLoading"
-            @click="buyTokens(item.type)"
-          >
-            <span class="text">{{ t(item.text) }}</span>
-          </s-button>
-        </div>
+        <s-button
+          type="primary"
+          class="sora-card__btn s-typography-button--large"
+          :loading="btnLoading"
+          @click="handleClick"
+        >
+          <span class="text"> {{ 'Log in or Sign up' }}</span>
+        </s-button>
       </div>
-      <span v-if="isLoggedIn" @click="loginUser" class="sora-card__user-applied">{{
-        t('card.alreadyAppliedTip')
-      }}</span>
-      <x1-dialog :visible.sync="showX1Dialog" />
-      <paywings-dialog :visible.sync="showPaywingsDialog" />
-      <tos-dialog :visible.sync="showListDialog" :title="t('card.unsupportedCountries')" />
     </div>
     <div class="sora-card__unsupported-countries-disclaimer">
       {{ t('card.unsupportedCountriesDisclaimer') }}
@@ -56,6 +36,7 @@
         t('card.unsupportedCountriesLink')
       }}</span>
     </div>
+    <tos-dialog :visible.sync="showListDialog" :title="t('card.unsupportedCountries')" />
   </div>
 </template>
 
@@ -70,12 +51,6 @@ import { PageNames, Components } from '@/consts';
 import { clearPayWingsKeysFromLocalStorage, clearTokensFromLocalStorage } from '@/utils/card';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-enum BuyButtonType {
-  X1,
-  Bridge,
-  Paywings,
-}
-type BuyButton = { type: BuyButtonType; text: string; button: 'primary' | 'secondary' | 'tertiary' };
 const hundred = '100';
 
 @Component({
@@ -86,13 +61,6 @@ const hundred = '100';
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  readonly buyOptions: Array<BuyButton> = [
-    { type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' },
-    { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'secondary' },
-    // TODO: [CARD] bring back when option becomes available & check this translation key below
-    // { type: BuyButtonType.Paywings, text: 'card.buyUsingPaywings', button: 'tertiary' },
-  ];
-
   @state.soraCard.euroBalance private euroBalance!: string;
   @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
   @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
@@ -138,7 +106,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
       return this.loading;
     }
 
-    return this.loading || !this.wasEuroBalanceLoaded;
+    return false;
   }
 
   private openX1(): void {
@@ -159,33 +127,13 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     this.showListDialog = true;
   }
 
-  buyTokens(type: BuyButtonType): void {
-    switch (type) {
-      case BuyButtonType.X1:
-        this.openX1();
-        break;
-      case BuyButtonType.Bridge:
-        this.bridgeTokens();
-        break;
-      case BuyButtonType.Paywings:
-        this.issueCardByPaywings();
-        break;
-    }
-  }
-
-  handleConfirm(): void {
+  handleClick(): void {
     if (!this.isLoggedIn) {
       router.push({ name: PageNames.Wallet });
       return;
     }
 
     this.$emit('confirm-apply');
-  }
-
-  loginUser(): void {
-    clearTokensFromLocalStorage();
-    const userApplied = true;
-    this.$emit('confirm-apply', userApplied);
   }
 
   mounted(): void {
@@ -269,17 +217,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     }
   }
 
-  &__user-applied {
-    margin-top: calc(var(--s-basic-spacing) * 2);
-    color: var(--s-color-theme-accent);
-    text-transform: uppercase;
-    font-weight: 500;
-    padding-bottom: calc(var(--s-basic-spacing) / 2);
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
   &__image {
     margin-top: -56px;
     height: 311px;
@@ -306,16 +243,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
     .sora-card__icon--checked {
       color: var(--s-color-status-success);
-    }
-  }
-
-  &__btn {
-    width: 100%;
-    &--buy {
-      margin-top: var(--s-size-mini);
-      .text {
-        font-size: var(--s-heading4-font-size);
-      }
     }
   }
 }

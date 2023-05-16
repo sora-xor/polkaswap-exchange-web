@@ -12,6 +12,7 @@
       <road-map v-else-if="step === KycProcess.RoadMap" @confirm="confirmSignIn" :userApplied="userApplied" />
       <phone v-else-if="step === KycProcess.Phone" @confirm="confirmPhone" :userApplied="userApplied" />
       <email v-else-if="step === KycProcess.Email" @confirm="confirmEmail" />
+      <payment v-else-if="step === KycProcess.Payment" @confirm="confirmPayment" />
       <kyc-view v-else-if="step === KycProcess.KycView" @confirm-kyc="redirectToView" />
     </wallet-base>
     <div v-if="step === KycProcess.TermsAndConditions" class="post-disclaimer">
@@ -29,9 +30,10 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 enum KycProcess {
   TermsAndConditions,
-  RoadMap,
   Phone,
   Email,
+  Payment,
+  RoadMap,
   KycView,
 }
 
@@ -39,9 +41,10 @@ enum KycProcess {
   components: {
     WalletBase: components.WalletBase,
     TermsAndConditions: lazyComponent(Components.TermsAndConditions),
-    RoadMap: lazyComponent(Components.RoadMap),
     Phone: lazyComponent(Components.Phone),
     Email: lazyComponent(Components.Email),
+    Payment: lazyComponent(Components.Payment),
+    RoadMap: lazyComponent(Components.RoadMap),
     KycView: lazyComponent(Components.KycView),
   },
 })
@@ -64,18 +67,18 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
       return;
     }
 
-    if (this.step === KycProcess.RoadMap) {
-      this.step = KycProcess.TermsAndConditions;
-      return;
-    }
-
     if (this.step === KycProcess.Phone) {
-      this.step = KycProcess.RoadMap;
+      this.step = KycProcess.TermsAndConditions;
       return;
     }
 
     if (this.step === KycProcess.Email) {
       this.step = KycProcess.Phone;
+      return;
+    }
+
+    if (this.step === KycProcess.RoadMap) {
+      this.step = KycProcess.TermsAndConditions;
       return;
     }
 
@@ -102,11 +105,12 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
   }
 
   get showBackBtn(): boolean {
-    return !(this.step === KycProcess.KycView);
+    return !(this.step === KycProcess.KycView || this.step === KycProcess.Payment);
   }
 
   confirmToS(): void {
-    this.step = KycProcess.RoadMap;
+    this.step = KycProcess.Payment;
+    // this.step = KycProcess.Phone;
   }
 
   confirmSignIn(): void {
@@ -130,6 +134,14 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
   }
 
   confirmEmail(): void {
+    // TODO: decide here whether user should pay or can proceed with KYC
+    this.step = KycProcess.Payment;
+
+    // user already has record, no need to pay
+    this.step = KycProcess.RoadMap;
+  }
+
+  confirmPayment(): void {
     this.step = KycProcess.KycView;
   }
 

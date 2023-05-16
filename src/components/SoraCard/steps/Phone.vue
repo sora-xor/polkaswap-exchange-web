@@ -90,7 +90,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   private phoneNumberInternal = '';
   private smsCountDown = '';
   private smsResendCount = RESEND_INTERVAL;
-  private notPassedKycAndNotHasXorEnough = false;
+  // private notPassedKycAndNotHasXorEnough = false;
 
   verificationCode = '';
   smsSent = false;
@@ -106,7 +106,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   @Watch('isEuroBalanceEnough', { immediate: true })
   private handleXorDeposit(isEnough: boolean): void {
     if (isEnough) {
-      this.notPassedKycAndNotHasXorEnough = false;
+      // this.notPassedKycAndNotHasXorEnough = false;
       this.verificationCode = '';
       this.smsSent = false;
     }
@@ -162,7 +162,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   }
 
   get buttonDisabled() {
-    return this.verificationCode.length !== OTP_CODE_LENGTH || this.notPassedKycAndNotHasXorEnough;
+    return this.verificationCode.length !== OTP_CODE_LENGTH;
   }
 
   get otpInputDisabled(): boolean {
@@ -174,9 +174,9 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
       return this.t('card.enterCodeBtn');
     }
 
-    if (this.notPassedKycAndNotHasXorEnough) {
-      return this.t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
-    }
+    // if (this.notPassedKycAndNotHasXorEnough) {
+    //   return this.t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
+    // }
 
     return this.t('card.confirmCodeBtn');
   }
@@ -255,11 +255,11 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
           return;
         }
 
-        if (!this.isEuroBalanceEnough) {
-          this.notPassedKycAndNotHasXorEnough = true;
+        // if (!this.isEuroBalanceEnough) {
+        //   this.notPassedKycAndNotHasXorEnough = true;
 
-          return;
-        }
+        //   return;
+        // }
 
         const state = {
           goToEmail: true,
@@ -295,7 +295,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
           }
 
           if (!this.isEuroBalanceEnough) {
-            this.notPassedKycAndNotHasXorEnough = true;
+            // this.notPassedKycAndNotHasXorEnough = true;
             this.sendOtpBtnLoading = false;
 
             return;
@@ -325,11 +325,11 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
           this.showAppNotification(this.t('card.infoMessageNoKYC'), 'info');
         }
 
-        if (!this.isEuroBalanceEnough) {
-          this.notPassedKycAndNotHasXorEnough = true;
+        // if (!this.isEuroBalanceEnough) {
+        //   this.notPassedKycAndNotHasXorEnough = true;
 
-          return;
-        }
+        //   return;
+        // }
 
         const state = {
           goToEmail: true,

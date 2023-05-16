@@ -157,9 +157,10 @@ export enum Components {
   ConfirmationInfo = 'SoraCard/ConfirmationInfo',
   TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
   ToSDialog = 'SoraCard/steps/ToSDialog',
-  RoadMap = 'SoraCard/steps/RoadMap',
   Phone = 'SoraCard/steps/Phone',
   Email = 'SoraCard/steps/Email',
+  Payment = 'SoraCard/steps/Payment',
+  RoadMap = 'SoraCard/steps/RoadMap',
   KycView = 'SoraCard/steps/KycView',
   // Paywings
   X1Dialog = 'X1/X1Dialog',
