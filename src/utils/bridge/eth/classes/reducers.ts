@@ -66,12 +66,13 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
       } catch (error: any) {
         // maybe transaction already completed, try to restore ethereum transaction hash
         if (error.code === ethers.errors.UNPREDICTABLE_GAS_LIMIT) {
-          const { to, hash, startTime } = tx;
+          const { to, hash, startTime, symbol } = tx;
           const bridgeHistory = await this.getBridgeHistoryInstance();
           const transaction = await bridgeHistory.findEthTxBySoraHash(
             to as string,
             hash as string,
-            startTime as number
+            startTime as number,
+            symbol as string
           );
 
           if (transaction) {

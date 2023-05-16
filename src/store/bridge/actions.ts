@@ -280,11 +280,11 @@ const actions = defineActions({
 
   // ETH BRIDGE
   async getEthBridgeHistoryInstance(context): Promise<EthBridgeHistory> {
-    const { rootState } = bridgeActionContext(context);
+    const { rootState, state } = bridgeActionContext(context);
     const etherscanApiKey = rootState.wallet.settings.apiKeys?.etherscan;
     const bridgeHistory = new EthBridgeHistory(etherscanApiKey);
 
-    await bridgeHistory.init();
+    await bridgeHistory.init(rootState.web3.ethBridgeContractAddress);
 
     return bridgeHistory;
   },

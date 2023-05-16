@@ -200,26 +200,16 @@ export const updateEthBridgeHistory =
       }
 
       const assets = rootGetters.assets.assetsDataTable;
-      const contracts = compact(
-        Object.values(KnownEthBridgeAsset).map<Nullable<string>>((key) => ethBridgeContractAddress[key])
-      );
 
       const ethBridgeHistory = new EthBridgeHistory(etherscanApiKey);
 
-      await ethBridgeHistory.init();
+      await ethBridgeHistory.init(ethBridgeContractAddress);
 
       if (clearHistory) {
         await ethBridgeHistory.clearHistory(updateCallback);
       }
 
-      await ethBridgeHistory.updateAccountHistory(
-        address,
-        assets,
-        networkFees,
-        inProgressIds,
-        contracts,
-        updateCallback
-      );
+      await ethBridgeHistory.updateAccountHistory(address, assets, networkFees, inProgressIds, updateCallback);
     } catch (error) {
       console.error(error);
     }
