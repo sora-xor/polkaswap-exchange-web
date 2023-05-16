@@ -9,6 +9,7 @@
           :tooltip="t('bridgeHistory.restoreHistory')"
           @click="updateExternalHistory(true)"
         />
+        <!-- [TODO]: decide should user be able to change network in history or not -->
         <!-- <swap-status-action-badge v-if="selectedEvmNetwork" class="status-action-badge--history">
           <template #value>{{ selectedEvmNetwork.shortName }}</template>
           <template #action>
@@ -50,7 +51,7 @@
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
                   <i :class="`network-icon network-icon--${getEvmIcon(!isOutgoingType(item.type) ? 0 : evmNetwork)}`" />
                 </div>
-                <div class="history-item-date">{{ formatHistoryDate(item) }}</div>
+                <div class="history-item-date">{{ formatDatetime(item) }}</div>
               </div>
               <div :class="historyStatusClasses(item)">
                 <div class="history-item-status-text">{{ historyStatusText(item) }}</div>
@@ -82,7 +83,6 @@ import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web
 import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
@@ -105,7 +105,6 @@ import type { EvmAccountAsset } from '@/store/assets/types';
   },
 })
 export default class BridgeTransactionsHistory extends Mixins(
-  TranslationMixin,
   BridgeMixin,
   BridgeTransactionMixin,
   BridgeHistoryMixin,
@@ -187,11 +186,6 @@ export default class BridgeTransactionsHistory extends Mixins(
     const decimals = this.registeredAssets?.[historyItem.assetAddress]?.decimals;
 
     return this.formatStringValue(historyItem.amount, decimals);
-  }
-
-  formatHistoryDate(response: IBridgeTransaction): string {
-    // We use current date if request is failed
-    return this.formatDate(response?.startTime ?? Date.now());
   }
 
   historyStatusClasses(item: IBridgeTransaction): string {

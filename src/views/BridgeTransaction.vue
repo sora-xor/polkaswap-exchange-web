@@ -63,7 +63,7 @@
       </div>
 
       <info-line :class="failedClass" :label="t('bridgeTransaction.networkInfo.status')" :value="transactionStatus" />
-      <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="txStartDate" />
+      <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="txDate" />
       <info-line
         v-if="amount"
         is-formatted
@@ -351,8 +351,8 @@ export default class BridgeTransaction extends Mixins(
     return this.formatAddress(this.txEvmHash, FORMATTED_HASH_LENGTH);
   }
 
-  get txStartDate(): string {
-    return this.formatTransactionDate(this.historyItem?.startTime);
+  get txDate(): string {
+    return this.formatDatetime(this.historyItem);
   }
 
   get txState(): string {
@@ -565,12 +565,6 @@ export default class BridgeTransaction extends Mixins(
 
   get failedClass(): string {
     return this.isTxFailed && !this.isTxWaiting ? 'info-line--error' : '';
-  }
-
-  private formatTransactionDate(transactionDate?: number): string {
-    // We use current date if request is failed
-    const date = transactionDate ? new Date(transactionDate) : new Date();
-    return this.formatDate(date.getTime());
   }
 
   async handleTransaction(withAutoStart = true): Promise<void> {
