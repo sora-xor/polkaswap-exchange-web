@@ -121,12 +121,13 @@ export default class AlertList extends Mixins(
     return `${deltaPercent}% · ${this.t('alerts.currentPrice')}: $${this.showMostFittingValue(currentPrice)}`;
   }
 
-  /* 
-    Refactor: move subsequent methods into FPNumber
-    examples:
-    0.152345 -> 0.15
-    0.000043 -> 0.000043
-  */
+  /**
+   * Returns formatted value in most suitable form
+   * @param value
+   *
+   * 0.152345 -> 0.15
+   * 0.000043 -> 0.000043
+   */
   showMostFittingValue(value, precisionForLowCostAsset = 18) {
     const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
 
