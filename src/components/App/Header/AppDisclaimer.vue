@@ -21,6 +21,11 @@
           })
         "
       />
+      <p class="disclaimer__text-fiat">
+        Please note that the fiat values associated with cryptocurrencies on our website are provided by external
+        services (Subquery, Subsquid, Ceres API) are approximate. Given the inherent complexity of these calculations,
+        absolute precision at all times cannot be guaranteed.
+      </p>
     </div>
     <s-button
       v-if="!userDisclaimerApprove"
@@ -143,6 +148,10 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
     line-height: var(--s-line-height-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
+
+    &-fiat {
+      margin-top: $basic-spacing;
+    }
   }
 
   &__accept-btn {
