@@ -523,13 +523,9 @@
         "strategicBonusApy": "Стратешки бонус APY"
     },
     "bridge": {
-        "title": "Мост {Hashi}",
+        "title": "Мост",
         "info": "Претворите токене између {Sora} и {Ethereum} мрежа.",
         "balance": "Салдо",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Следећи",
         "connectWallets": "Повежите новчанике да бисте видели одговарајућу историју трансакција.",
         "soraNetworkFee": "{Sora} мрежна накнада",
@@ -543,8 +539,7 @@
         "networkInfo": "Бриџ {Sora} мрежа са:",
         "copy": "Копирајте мрежну адресу",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adresa"
     },
     "selectRegisteredAsset": {
         "title": "Изаберите токен",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Потврдите трансакцију",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Потврдите трансакцију"
     },
     "bridgeTransaction": {
         "details": "{from} за {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} трансакција на чекању...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Правите нову трансакцију",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText у {Metamask}",
-        "expectedAddress": "Очекивана адреса у {Metamask}",
         "title": "Бриџ трансакције",
         "expectedMetaMaskAddress": "Очекивана адреса у {Metamask}:",
         "allowToken": "Дозволите {AppName} да користи ваш {tokenSymbol}",
@@ -1119,7 +1106,7 @@
         "exportTutorialsText": "Извоз туторијала"
     },
     "hashiBridgeText": "{Hashi} most",
-    "disclaimerTitle": "Одрицање одговорности:",
+    "disclaimerTitle": "Одрицање одговорности",
     "explore": {
         "showOnlyMyPositions": "Prikaži samo moje pozicije"
     },
@@ -1212,5 +1199,7 @@
         "alertFrequencyTitle": "Учесталост упозорења",
         "frequencyTooltip": "Изаберите између „једном“ и „увек“ да бисте одредили колико често добијате обавештења за изабрани тип упозорења. „Једном“ ће послати једно обавештење када је услов испуњен, док ће „увек“ наставити да вас обавештава сваки пут када се пређе праг цене",
         "noSupportMsg": "Ваш претраживач не подржава обавештења"
-    }
+    },
+    "accountAddressText": "Адреса рачуна",
+    "fiatDisclaimer": "Имајте на уму да су фиат вредности повезане са криптовалутама на нашој веб страници обезбеђене од стране екстерних сервиса (Субкуери, Субскуид, Церес АПИ) су приближне. С обзиром на инхерентну сложеност ових прорачуна, не може се гарантовати апсолутна прецизност у сваком тренутку."
 }

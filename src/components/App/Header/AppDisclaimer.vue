@@ -21,11 +21,7 @@
           })
         "
       />
-      <p class="disclaimer__text-fiat">
-        Please note that the fiat values associated with cryptocurrencies on our website are provided by external
-        services (Subquery, Subsquid, Ceres API) are approximate. Given the inherent complexity of these calculations,
-        absolute precision at all times cannot be guaranteed.
-      </p>
+      <p class="disclaimer__text-fiat">{{ t('fiatDisclaimer') }}</p>
     </div>
     <s-button
       v-if="!userDisclaimerApprove"
@@ -71,7 +67,7 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   }
 
   get disclaimerPrefix(): string {
-    return `<span class="disclaimer__prefix">${this.t('disclaimerTitle')}</span>`;
+    return `<span class="disclaimer__prefix">${this.t('disclaimerTitle')}:</span>`;
   }
 
   get memorandumLink(): string {

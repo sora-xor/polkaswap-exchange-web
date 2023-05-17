@@ -523,13 +523,9 @@
         "strategicBonusApy": "Bonificación estratégica APY"
     },
     "bridge": {
-        "title": "Puente {Hashi}",
+        "title": "Puente",
         "info": "Convierte tokens entre las redes {Sora} y {Ethereum}.",
         "balance": "Balance",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Siguiente",
         "connectWallets": "Conecte las carteras para ver el respectivo historial de transacciones.",
         "soraNetworkFee": "{Sora} comisión de red",
@@ -543,8 +539,7 @@
         "networkInfo": "Puente de la red {Sora} con:",
         "copy": "Copiar dirección de red",
         "soraAddress": "Dirección de {Sora}",
-        "ethereumAddress": "dirección {Ethereum}",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "dirección {Ethereum}"
     },
     "selectRegisteredAsset": {
         "title": "Seleccione un Token",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Confirmar transacción",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Confirmar transacción"
     },
     "bridgeTransaction": {
         "details": "{from} para {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transacción pendiente...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Crear nueva transacción",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText en {Metamask}",
-        "expectedAddress": "Dirección esperada en {Metamask}",
         "title": "Transacción puente",
         "expectedMetaMaskAddress": "Dirección esperada en {Metamask}",
         "allowToken": "Permitir que {AppName} utilice su {tokenSymbol}",
@@ -1119,7 +1106,7 @@
         "exportTutorialsText": "Tutoriales de exportación"
     },
     "hashiBridgeText": "Puente {Hashi}",
-    "disclaimerTitle": "Aviso legal:",
+    "disclaimerTitle": "Aviso legal",
     "explore": {
         "showOnlyMyPositions": "Mostrar solo mis posiciones"
     },
@@ -1212,5 +1199,7 @@
         "alertFrequencyTitle": "Frecuencia de alerta",
         "frequencyTooltip": "Seleccione entre 'una vez' y 'siempre' para determinar con qué frecuencia recibe notificaciones para el tipo de alerta elegido. 'Una vez' enviará una única notificación cuando se cumpla la condición, mientras que 'siempre' seguirá notificándote cada vez que se supere el umbral de precio.",
         "noSupportMsg": "Las notificaciones no son compatibles con su navegador"
-    }
+    },
+    "accountAddressText": "Dirección de la cuenta",
+    "fiatDisclaimer": "Tenga en cuenta que los valores fiduciarios asociados con las criptomonedas en nuestro sitio web son proporcionados por servicios externos (Subquery, Subsquid, Ceres API) y son aproximados. Dada la complejidad inherente a estos cálculos, no se puede garantizar la precisión absoluta en todo momento."
 }

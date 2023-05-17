@@ -523,13 +523,9 @@
         "strategicBonusApy": "APY strategického bonusu"
     },
     "bridge": {
-        "title": "{Hashi} Bridge",
+        "title": "Bridge",
         "info": "Převeďte tokeny mezi sítěmi {Sora} a {Ethereum}.",
         "balance": "Zůstatek",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Další",
         "connectWallets": "Připojte peněženky pro zobrazení historie příslušných transakcí.",
         "soraNetworkFee": "{Sora} síťový poplatek",
@@ -543,8 +539,7 @@
         "networkInfo": "Přemostit {Sora} síť s:",
         "copy": "Zkopírujte síťovou adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adresa"
     },
     "selectRegisteredAsset": {
         "title": "Vyberte token",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Potvrďte transakci",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Potvrďte transakci"
     },
     "bridgeTransaction": {
         "details": "{from} za {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transakce čeká na vyřízení...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Vytvořit novou transakci",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText v {Metamask}",
-        "expectedAddress": "Očekávaná adresa v {Metamask}",
         "title": "Bridge transakce",
         "expectedMetaMaskAddress": "Očekávaná adresa v {Metamask}:",
         "allowToken": "Povolit {AppName} používat vaše {tokenSymbol}",
@@ -1119,7 +1106,7 @@
         "exportTutorialsText": "Export výukových programů"
     },
     "hashiBridgeText": "Most {Hashi}",
-    "disclaimerTitle": "Disclaimer \/ Zřeknutí se odpovědnosti:",
+    "disclaimerTitle": "Disclaimer \/ Zřeknutí se odpovědnosti",
     "explore": {
         "showOnlyMyPositions": "Zobrazit pouze moje pozice"
     },
@@ -1212,5 +1199,7 @@
         "alertFrequencyTitle": "Frekvence upozornění",
         "frequencyTooltip": "Výběrem mezi „jednou“ a „vždy“ určíte, jak často budete dostávat upozornění pro vybraný typ upozornění. „Jednou“ odešle jediné upozornění, když je podmínka splněna, zatímco „vždy“ vás bude i nadále upozorňovat při každém překročení cenového prahu",
         "noSupportMsg": "Váš prohlížeč nepodporuje upozornění"
-    }
+    },
+    "accountAddressText": "Adresa účtu",
+    "fiatDisclaimer": "Vezměte prosím na vědomí, že hodnoty fiat spojené s kryptoměnami na našich webových stránkách jsou poskytovány externími službami (Subquery, Subsquid, Ceres API) jsou přibližné. Vzhledem k přirozené složitosti těchto výpočtů nelze zaručit absolutní přesnost za všech okolností."
 }

@@ -523,13 +523,9 @@
         "strategicBonusApy": "Strategic Bonus APY"
     },
     "bridge": {
-        "title": "{Hashi} Bridge",
+        "title": "Bridge",
         "info": "Convert tokens between the {Sora} and {Ethereum} networks.",
         "balance": "Balance",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Next",
         "connectWallets": "Connect wallets to view respective transaction history.",
         "soraNetworkFee": "{Sora} Network Fee",
@@ -543,8 +539,7 @@
         "networkInfo": "Bridge {Sora} Network with:",
         "copy": "Copy network address",
         "soraAddress": "{Sora} address",
-        "ethereumAddress": "{Ethereum} address",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} address"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Confirm transaction",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Confirm transaction"
     },
     "bridgeTransaction": {
         "details": "{from} for {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaction pending...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Create new transaction",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText in {Metamask}",
-        "expectedAddress": "Expected address in {Metamask}",
         "title": "Bridge Transaction",
         "expectedMetaMaskAddress": "Expected address in {Metamask}:",
         "allowToken": "Allow {AppName} to use your {tokenSymbol}",
@@ -1119,7 +1106,7 @@
         "exportTutorialsText": "Export tutorials"
     },
     "hashiBridgeText": "{Hashi} bridge",
-    "disclaimerTitle": "Disclaimer:",
+    "disclaimerTitle": "Disclaimer",
     "explore": {
         "showOnlyMyPositions": "Show only my positions"
     },
@@ -1212,5 +1199,7 @@
         "alertFrequencyTitle": "Alert frequency",
         "frequencyTooltip": "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed",
         "noSupportMsg": "Notifications aren't supported by your browser"
-    }
+    },
+    "accountAddressText": "Account address",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API)  are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed."
 }

@@ -523,13 +523,9 @@
         "strategicBonusApy": "Стратегический бонус APY"
     },
     "bridge": {
-        "title": "Мост {Hashi}",
+        "title": "Мост",
         "info": "Конвертировать токены между {Sora} и {Ethereum} сетями.",
         "balance": "Баланс",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Далее",
         "connectWallets": "Подключите кошельки для просмотра соответствующей истории транзакций.",
         "soraNetworkFee": "{Sora} Комиссия сети",
@@ -543,8 +539,7 @@
         "networkInfo": "Соединить {Sora} Сеть с:",
         "copy": "Скопировать адрес сети",
         "soraAddress": "{Sora} адрес",
-        "ethereumAddress": "{Ethereum} адрес",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} адрес"
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Подтвердить транзакцию",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Подтвердить транзакцию"
     },
     "bridgeTransaction": {
         "details": "{from} для {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} транзакция в процессе...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Создать новую транзакцию",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText в {Metamask}",
-        "expectedAddress": "Ожидаемый адрес в {Metamask}",
         "title": "Транзакция Моста",
         "expectedMetaMaskAddress": "Ожидаемый адрес в {Metamask}",
         "allowToken": "Разрешить {AppName} использовать ваши {tokenSymbol}",
@@ -1119,7 +1106,7 @@
         "exportTutorialsText": "Инструкции по экспорту"
     },
     "hashiBridgeText": "Мост {Hashi}",
-    "disclaimerTitle": "Отказ от ответственности:",
+    "disclaimerTitle": "Отказ от ответственности",
     "explore": {
         "showOnlyMyPositions": "Показать только мои позиции"
     },
@@ -1212,5 +1199,7 @@
         "alertFrequencyTitle": "Частота предупреждений",
         "frequencyTooltip": "Выберите между «один раз» и «всегда», чтобы определить, как часто вы будете получать уведомления для выбранного типа предупреждений. «Один раз» будет отправлять одно уведомление при выполнении условия, а «всегда» будет продолжать уведомлять вас каждый раз, когда порог цены пересекается.",
         "noSupportMsg": "Уведомления не поддерживаются вашим браузером"
-    }
+    },
+    "accountAddressText": "Адрес аккаунта",
+    "fiatDisclaimer": "Обратите внимание, что фиатные значения, связанные с криптовалютами на нашем веб-сайте, предоставленные внешними сервисами (Subquery, Subsquid, Ceres API), являются приблизительными. Учитывая присущую этим вычислениям сложность, невозможно гарантировать абсолютную точность в любое время."
 }
