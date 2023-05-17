@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { ethers } from 'ethers';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -22,18 +22,11 @@ import { action } from '@/store/decorators';
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
   @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.updateEvmBlockNumber private updateEvmBlockNumber!: (block?: number) => Promise<void>;
-  @action.assets.updateRegisteredAssets private updateExternalBalances!: (reset?: boolean) => Promise<void>;
+  @action.assets.updateRegisteredAssets private updateExternalBalances!: (force?: boolean) => Promise<void>;
   @action.web3.getSupportedNetworks private getSupportedNetworks!: AsyncFnWithoutArgs;
 
   private unwatchEthereum!: FnWithoutArgs;
   private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
-
-  @Watch('evmAddress')
-  private updateAccountExternalBalances(value: string) {
-    if (value) {
-      this.updateExternalBalances();
-    }
-  }
 
   async created(): Promise<void> {
     this.setStartSubscriptions([this.subscribeToEvmBlockHeaders, this.subscribeOnEvm]);
@@ -56,12 +49,13 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
           this.switchExternalAccount(addressList[0]);
-          this.updateExternalBalances();
+          this.updateExternalBalances(true);
         } else {
           this.disconnectExternalAccount();
         }
       },
       onNetworkChange: (networkHex: string) => {
+        console.log('onNetworkChange');
         this.onConnectedEvmNetworkChange(networkHex);
       },
       onDisconnect: () => {

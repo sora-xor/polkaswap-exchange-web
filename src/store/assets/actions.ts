@@ -2,6 +2,7 @@ import isEmpty from 'lodash/fp/isEmpty';
 import { defineActions } from 'direct-vuex';
 import type { ActionContext } from 'vuex';
 
+import { delay } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 import { assetsActionContext } from '@/store/assets';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
@@ -105,12 +106,21 @@ async function getEvmRegisteredAssets(context: ActionContext<any, any>): Promise
 
 const actions = defineActions({
   // for common usage
-  async updateRegisteredAssets(context, reset?: boolean): Promise<void> {
-    const { state, commit, rootState } = assetsActionContext(context);
+  async updateRegisteredAssets(context, force?: boolean): Promise<void> {
+    const { state, commit, dispatch, rootState } = assetsActionContext(context);
 
-    if (state.registeredAssetsFetching) return;
+    if (state.registeredAssetsFetching) {
+      if (force) {
+        await delay(250);
+        return await dispatch.updateRegisteredAssets(force);
+      } else {
+        return;
+      }
+    }
 
-    if (reset) commit.resetRegisteredAssets();
+    if (force) {
+      commit.resetRegisteredAssets();
+    }
 
     const networkType = rootState.web3.networkType;
 

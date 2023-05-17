@@ -386,7 +386,10 @@ export default class Bridge extends Mixins(
   }
 
   get isMaxAvailable(): boolean {
-    if (!this.areNetworksConnected || !this.isRegisteredAsset || !this.asset) {
+    if (!(this.areNetworksConnected && this.asset)) {
+      return false;
+    }
+    if (!this.isRegisteredAsset && !this.isSoraToEvm) {
       return false;
     }
     const balance = getAssetBalance(this.asset, { internal: this.isSoraToEvm });
@@ -479,7 +482,7 @@ export default class Bridge extends Mixins(
   }
 
   formatBalance(isSora = true): string {
-    if (!this.isRegisteredAsset || !this.asset) {
+    if (!this.asset || (!this.isRegisteredAsset && !isSora)) {
       return '-';
     }
     const balance = getAssetBalance(this.asset, { internal: isSora });
