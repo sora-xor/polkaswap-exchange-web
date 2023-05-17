@@ -55,7 +55,6 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
         }
       },
       onNetworkChange: (networkHex: string) => {
-        console.log('onNetworkChange');
         this.onConnectedEvmNetworkChange(networkHex);
       },
       onDisconnect: () => {
