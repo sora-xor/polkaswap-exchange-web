@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/fp/isEmpty';
 import { defineActions } from 'direct-vuex';
 import type { ActionContext } from 'vuex';
 
@@ -11,20 +12,30 @@ import { BridgeType } from '@/consts/evm';
 import type { EvmAccountAsset } from '@/store/assets/types';
 
 async function getEthRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, EvmAccountAsset>[]> {
-  const { rootDispatch, rootState, rootCommit } = assetsActionContext(context);
+  const { rootDispatch, rootState, rootCommit, state } = assetsActionContext(context);
 
   const accountAddress = rootState.web3.evmAddress;
-  const networkAssets = await ethBridgeApi.getRegisteredAssets();
+
+  let registeredAssets: Record<string, EvmAccountAsset> = {};
+
+  if (isEmpty(state.registeredAssets)) {
+    const networkAssets = await ethBridgeApi.getRegisteredAssets();
+
+    registeredAssets = networkAssets.reduce((buffer, asset) => {
+      buffer[asset.address] = {
+        address: asset.externalAddress,
+        balance: ZeroStringValue,
+        decimals: +asset.externalDecimals,
+      };
+      return buffer;
+    }, {});
+  } else {
+    registeredAssets = { ...state.registeredAssets };
+  }
 
   const networkAssetsWithBalance = await Promise.all(
-    networkAssets.map(async (assetData) => {
-      const soraAddress = assetData.address;
-      const accountAsset = {
-        address: assetData.externalAddress,
-        balance: ZeroStringValue,
-        decimals: +assetData.externalDecimals,
-      };
-
+    Object.entries(registeredAssets).map(async ([soraAddress, assetData]) => {
+      const accountAsset = { ...assetData };
       try {
         if (!accountAsset.address) {
           accountAsset.address = await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress);
