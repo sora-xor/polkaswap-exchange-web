@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="sora-card__options--not-enough-euro s-flex">
-      <s-button
+      <!-- <s-button
         v-for="item in buyOptions"
         class="sora-card__btn sora-card__btn--buy s-typography-button--large"
         :key="item.type"
@@ -17,7 +17,7 @@
         @click="buyTokens(item.type)"
       >
         <span class="text">{{ t(item.text) }}</span>
-      </s-button>
+      </s-button> -->
     </div>
     <!-- <x1-dialog :visible.sync="showX1Dialog" />
     <paywings-dialog :visible.sync="showPaywingsDialog" /> -->
@@ -46,27 +46,27 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
     // { type: BuyButtonType.Paywings, text: 'card.buyUsingPaywings', button: 'tertiary' },
   ];
 
-  get btnLoading(): boolean {
-    if (!this.isLoggedIn) {
-      return this.loading;
-    }
+  // get btnLoading(): boolean {
+  //   if (!this.isLoggedIn) {
+  //     return this.loading;
+  //   }
 
-    return this.loading || !this.wasEuroBalanceLoaded;
-  }
+  //   return this.loading || !this.wasEuroBalanceLoaded;
+  // }
 
-  buyTokens(type: BuyButtonType): void {
-    switch (type) {
-      case BuyButtonType.X1:
-        this.openX1();
-        break;
-      case BuyButtonType.Bridge:
-        this.bridgeTokens();
-        break;
-      case BuyButtonType.Paywings:
-        this.issueCardByPaywings();
-        break;
-    }
-  }
+  // buyTokens(type: BuyButtonType): void {
+  //   switch (type) {
+  //     case BuyButtonType.X1:
+  //       this.openX1();
+  //       break;
+  //     case BuyButtonType.Bridge:
+  //       this.bridgeTokens();
+  //       break;
+  //     case BuyButtonType.Paywings:
+  //       this.issueCardByPaywings();
+  //       break;
+  //   }
+  // }
 }
 </script>
 

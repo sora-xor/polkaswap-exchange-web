@@ -8,16 +8,26 @@
           {{ t('card.getSoraCardDesc') }}
         </span>
       </div>
-      <div v-if="isLoggedIn" class="sora-card__balance-indicator">
+      <div v-if="isLoggedIn" class="sora-card__info">
         <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
-        <p class="sora-card__balance-indicator-text">
-          <span class="sora-card__balance-indicator-text--bold">{{ '$0 annual service fee' }}</span>
+        <p class="sora-card__info-text">
+          <span class="sora-card__info-text">{{ '$0 annual service fee' }}</span>
         </p>
       </div>
-      <div v-if="wasEuroBalanceLoaded && isLoggedIn" class="sora-card__balance-indicator">
-        <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
-        <p class="sora-card__balance-indicator-text">Free card issuance</p>
-        <p>You hold $100 worth of XOR in your SORA Account</p>
+      <div v-if="wasEuroBalanceLoaded && isLoggedIn" class="sora-card__info">
+        <div v-if="isEuroBalanceEnough">
+          <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
+          <p class="sora-card__info-text">Free card issuance</p>
+          <p class="sora-card__info-text-details">You hold $100 worth of XOR in your SORA Account</p>
+          <span class="sora-card__info-text">You’re getting the card for free!</span>
+        </div>
+        <div v-else class="sora-card__info-text-details">
+          <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
+          <p class="sora-card__info-text">Free card issuance</p>
+          <p class="sora-card__info-text-details">
+            If you hold, stake or provide liquidity for at least €100 worth of XOR in your SORA account
+          </p>
+        </div>
       </div>
       <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
         <s-button
@@ -153,10 +163,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     }
   }
 }
-
-.sora-card__balance-indicator-text--bold {
-  font-size: 24px;
-}
 </style>
 
 <style lang="scss" scoped>
@@ -222,15 +228,23 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     height: 311px;
   }
 
-  &__balance-indicator {
+  &__info {
     background-color: var(--s-color-base-border-primary);
-    padding: calc(var(--s-basic-spacing) / 2) var(--s-basic-spacing);
+    padding: 16px;
     margin-top: var(--s-basic-spacing);
     border-radius: calc(var(--s-basic-spacing) / 2);
     width: 100%;
     &-text {
       display: inline-block;
-      font-size: var(--s-font-size-small);
+      font-size: var(--s-font-size-big);
+      &-details {
+        color: var(--s-color-base-content-secondary);
+        margin-top: 4px;
+        margin-left: 24px;
+        width: 91%;
+        line-height: 150%;
+        font-size: var(--s-font-size-medium);
+      }
       &--bold {
         font-weight: 600;
       }
@@ -244,6 +258,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     .sora-card__icon--checked {
       color: var(--s-color-status-success);
     }
+  }
+
+  &__btn {
+    width: 100%;
   }
 }
 
