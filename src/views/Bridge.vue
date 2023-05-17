@@ -339,10 +339,9 @@ export default class Bridge extends Mixins(
 
   @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
-  @mutation.bridge.setAmount setAmount!: (value: string) => void;
+  @mutation.bridge.setAmount setAmount!: (value?: string) => void;
 
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
-  @action.bridge.resetBridgeForm private resetBridgeForm!: AsyncFnWithoutArgs;
   @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncFnWithoutArgs;
   @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncFnWithoutArgs;
   @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
@@ -499,8 +498,8 @@ export default class Bridge extends Mixins(
       this.setSoraToEvm(false);
       this.setAmount(this.$route.params.xorToDeposit);
     } else {
-      // we should reset data only on created, because it's used on another bridge views
-      this.resetBridgeForm();
+      this.setAmount();
+      this.updateBalanceSubscription();
     }
   }
 

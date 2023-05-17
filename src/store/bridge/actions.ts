@@ -129,14 +129,6 @@ const actions = defineActions({
     dispatch.updateBalanceSubscription();
   },
 
-  // Reset balance subscription & amount, but save selected asset
-  async resetBridgeForm(context): Promise<void> {
-    const { commit, dispatch } = bridgeActionContext(context);
-    dispatch.resetBalanceSubscription();
-    commit.setAmount();
-    commit.setSoraToEvm(true);
-  },
-
   async updateEvmBlockNumber(context, value?: number): Promise<void> {
     const { commit } = bridgeActionContext(context);
     const blockNumber = value ?? (await (await ethersUtil.getEthersInstance()).getBlockNumber());
