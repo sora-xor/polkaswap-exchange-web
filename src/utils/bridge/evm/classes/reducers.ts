@@ -1,4 +1,5 @@
 import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 import type { Subscription } from 'rxjs';
 
@@ -13,6 +14,8 @@ import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bri
 type EvmBridgeReducerOptions<T extends EvmHistory> = IBridgeReducerOptions<T> & {
   removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;
 };
+
+const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS;
 
 export class EvmBridgeReducer extends BridgeReducer<EvmHistory> {
   protected readonly removeTransactionByHash!: RemoveTransactionByHash<EvmHistory>;
@@ -100,7 +103,10 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
     }
 
     try {
-      await Promise.race([this.waitForSoraBlockId(id), new Promise((resolve, reject) => setTimeout(reject, 18000))]);
+      await Promise.race([
+        this.waitForSoraBlockId(id),
+        new Promise((resolve, reject) => setTimeout(reject, BLOCK_PRODUCE_TIME * 3)),
+      ]);
     } catch (error) {
       console.info(`[${this.constructor.name}]: Implement "blockId" restoration`);
     }
