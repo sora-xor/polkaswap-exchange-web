@@ -163,8 +163,8 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   }
   .network-icon {
     margin-right: $inner-spacing-medium;
-    width: 32px;
-    height: 32px;
+    width: var(--s-size-small);
+    height: var(--s-size-small);
   }
 }
 </style>

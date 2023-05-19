@@ -641,8 +641,8 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
       }
     }
     .network-icon {
-      width: 16px;
-      height: 16px;
+      width: calc(var(--s-size-small) / 2);
+      height: calc(var(--s-size-small) / 2);
     }
   }
 

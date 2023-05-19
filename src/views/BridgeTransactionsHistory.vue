@@ -370,8 +370,8 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
 
     .network-icon {
       margin-left: $separator-margin;
-      width: 16px;
-      height: 16px;
+      width: calc(var(--s-size-small) / 2);
+      height: calc(var(--s-size-small) / 2);
     }
     &-separator {
       font-weight: normal;
