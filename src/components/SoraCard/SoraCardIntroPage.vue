@@ -15,11 +15,11 @@
         </p>
       </div>
       <div v-if="wasEuroBalanceLoaded && isLoggedIn" class="sora-card__info">
-        <div v-if="isEuroBalanceEnough">
+        <div v-if="!isEuroBalanceEnough">
           <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
           <p class="sora-card__info-text">Free card issuance</p>
           <p class="sora-card__info-text-details">You hold $100 worth of XOR in your SORA Account</p>
-          <span class="sora-card__info-text">You’re getting the card for free!</span>
+          <p class="sora-card__info-text-details">You’re getting the card for free!</p>
         </div>
         <div v-else class="sora-card__info-text-details">
           <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
@@ -244,6 +244,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
         width: 91%;
         line-height: 150%;
         font-size: var(--s-font-size-medium);
+      }
+      &-details:nth-child(even) {
+        color: inherit;
+        font-size: var(--s-font-size-big);
       }
       &--bold {
         font-weight: 600;
