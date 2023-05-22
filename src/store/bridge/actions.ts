@@ -409,7 +409,7 @@ const actions = defineActions({
       // don't check allowance for native EVM token
       if (!isNativeEvmToken) {
         const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
-        if (FPNumber.lte(new FPNumber(allowance), new FPNumber(tx.amount))) {
+        if (FPNumber.isLessThan(new FPNumber(allowance), new FPNumber(tx.amount))) {
           commit.addTxIdInApprove(tx.id);
           const tokenInstance = new ethers.Contract(
             asset.externalAddress,
