@@ -3,12 +3,11 @@ import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 
 import { web3ActionContext } from '@/store/web3';
-import ethersUtil, { ContractNetwork, Contract } from '@/utils/ethers-util';
-import { BridgeType, KnownEthBridgeAsset, OtherContractType } from '@/consts/evm';
+import ethersUtil from '@/utils/ethers-util';
+import { BridgeType, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 import type { Provider } from '@/utils/ethers-util';
-import type { EthBridgeSettings } from './types';
 
 const actions = defineActions({
   async connectExternalAccount(context, provider: Provider): Promise<void> {
@@ -79,7 +78,7 @@ const actions = defineActions({
       if (!soraAssetId) {
         return '';
       }
-      const contractAbi = getters.contractAbi(KnownEthBridgeAsset.Other)[OtherContractType.Bridge].abi;
+      const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi;
       const contractAddress = getters.contractAddress(KnownEthBridgeAsset.Other);
       if (!contractAddress || !contractAbi) {
         console.error('Contract address/abi is not found');
@@ -94,29 +93,6 @@ const actions = defineActions({
       console.error(error);
       return '';
     }
-  },
-
-  async setEthBridgeSettings(context, settings: EthBridgeSettings): Promise<void> {
-    const { commit } = web3ActionContext(context);
-    const INTERNAL = await ethersUtil.readSmartContract(ContractNetwork.Ethereum, `${Contract.Internal}/MASTER.json`);
-    const BRIDGE = await ethersUtil.readSmartContract(
-      ContractNetwork.Ethereum,
-      `${Contract.Other}/${OtherContractType.Bridge}.json`
-    );
-    const ERC20 = await ethersUtil.readSmartContract(
-      ContractNetwork.Ethereum,
-      `${Contract.Other}/${OtherContractType.ERC20}.json`
-    );
-
-    const contracts = {
-      XOR: INTERNAL,
-      VAL: INTERNAL,
-      OTHER: { BRIDGE, ERC20 },
-    };
-
-    const { evmNetwork, address } = settings;
-
-    commit.setEthBridgeSettings({ evmNetwork, address, contracts });
   },
 });
 

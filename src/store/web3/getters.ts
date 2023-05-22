@@ -38,13 +38,6 @@ const getters = defineGetters<Web3State>()({
     const { state } = web3GetterContext(args);
     return state.evmNetwork === state.evmNetworkSelected;
   },
-
-  contractAbi(...args): (asset: KnownEthBridgeAsset) => Nullable<any> {
-    return (asset: KnownEthBridgeAsset) => {
-      const { state } = web3GetterContext(args);
-      return state.ethBridgeSmartContracts[asset];
-    };
-  },
   contractAddress(...args): (asset: KnownEthBridgeAsset) => Nullable<string> {
     return (asset: KnownEthBridgeAsset) => {
       const { state } = web3GetterContext(args);

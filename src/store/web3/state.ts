@@ -25,14 +25,6 @@ export function initialState(): Web3State {
       VAL: '',
       OTHER: '',
     },
-    ethBridgeSmartContracts: {
-      XOR: undefined,
-      VAL: undefined,
-      OTHER: {
-        BRIDGE: undefined,
-        ERC20: undefined,
-      },
-    },
   };
 }
 

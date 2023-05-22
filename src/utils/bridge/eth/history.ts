@@ -16,15 +16,15 @@ import { getEvmTransactionRecieptByHash, isOutgoingTransaction } from '@/utils/b
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 
 import { ZeroStringValue } from '@/consts';
+import { SmartContracts, SmartContractType, KnownEthBridgeAsset } from '@/consts/evm';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
 import type { EthBridgeContractsAddresses } from '@/store/web3/types';
 
-const BRIDGE_ABI = new ethers.utils.Interface([
-  'function mintTokensByPeers(address tokenAddress,uint256 amount,address beneficiary,bytes32 txHash,uint8[] v,bytes32[] r,bytes32[] s,address from)',
-  'function receiveByEthereumAssetAddress(address tokenAddress,uint256 amount,address to,address from,bytes32 txHash,uint8[] v,bytes32[] r,bytes32[] s)',
-  'function receiveBySidechainAssetId(bytes32 sidechainAssetId,uint256 amount,address to,address from,bytes32 txHash,uint8[] v,bytes32[] r,bytes32[] s)',
+const BRIDGE_INTERFACE = new ethers.utils.Interface([
+  ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.XOR].abi, // XOR or VAL
+  ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi, // Other
 ]);
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
@@ -212,7 +212,7 @@ export class EthBridgeHistory {
 
     for (const tx of Object.values(transactions)) {
       try {
-        const decodedInput = BRIDGE_ABI.parseTransaction(tx);
+        const decodedInput = BRIDGE_INTERFACE.parseTransaction(tx);
 
         if (decodedInput.args.txHash.toLowerCase() === hash.toLowerCase()) {
           return tx;

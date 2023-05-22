@@ -5,6 +5,7 @@ import { ethers } from 'ethers';
 import { moonpayActionContext } from '@/store/moonpay';
 import ethersUtil from '@/utils/ethers-util';
 import { EthAddress } from '@/consts';
+import { SmartContracts, SmartContractType } from '@/consts/evm';
 import type { MoonpayEVMTransferAssetData } from '@/utils/moonpay';
 
 const POLLING_INTERVAL = 15_000;
@@ -82,7 +83,7 @@ const actions = defineActions({
         };
       } else {
         // Parse ERC-20 transfer
-        const abi = ['function transfer(address to, uint256 value)'];
+        const abi = SmartContracts[SmartContractType.ERC20].abi;
         const inter = new ethers.utils.Interface(abi);
         const decodedInput = inter.parseTransaction({ data: tx.data });
         const address = tx.to ?? ''; // asset address

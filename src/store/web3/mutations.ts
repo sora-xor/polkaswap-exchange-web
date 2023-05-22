@@ -6,7 +6,7 @@ import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import { ZeroStringValue } from '@/consts';
 
-import type { Web3State, EthBridgeContractsAddresses, EthBridgeSmartContracts } from './types';
+import type { Web3State, EthBridgeContractsAddresses, EthBridgeSettings } from './types';
 import type { BridgeType } from '@/consts/evm';
 
 const mutations = defineMutations<Web3State>()({
@@ -53,24 +53,12 @@ const mutations = defineMutations<Web3State>()({
   },
 
   // for hashi bridge
-  setEthBridgeSettings(
-    state,
-    {
-      evmNetwork,
-      address,
-      contracts,
-    }: { evmNetwork: EvmNetwork; address: EthBridgeContractsAddresses; contracts: EthBridgeSmartContracts }
-  ): void {
+  setEthBridgeSettings(state, { evmNetwork, address }: EthBridgeSettings): void {
     state.ethBridgeEvmNetwork = evmNetwork;
     state.ethBridgeContractAddress = {
       XOR: address.XOR,
       VAL: address.VAL,
       OTHER: address.OTHER,
-    };
-    state.ethBridgeSmartContracts = {
-      XOR: contracts.XOR,
-      VAL: contracts.VAL,
-      OTHER: contracts.OTHER,
     };
   },
 });

@@ -9,9 +9,9 @@ import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate
 
 import { bridgeActionContext } from '@/store/bridge';
 import { MaxUint256 } from '@/consts';
-import { OtherContractType, KnownEthBridgeAsset } from '@/consts/evm';
+import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
-import ethersUtil, { ABI } from '@/utils/ethers-util';
+import ethersUtil from '@/utils/ethers-util';
 import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import type { SignTxResult } from './types';
 
@@ -343,13 +343,8 @@ const actions = defineActions({
     const evmAccount = rootState.web3.evmAddress;
     const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
     const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
-    const contractMap = {
-      [KnownEthBridgeAsset.XOR]: rootGetters.web3.contractAbi(KnownEthBridgeAsset.XOR),
-      [KnownEthBridgeAsset.VAL]: rootGetters.web3.contractAbi(KnownEthBridgeAsset.VAL),
-      [KnownEthBridgeAsset.Other]: rootGetters.web3.contractAbi(KnownEthBridgeAsset.Other),
-    };
-    const contract = contractMap[bridgeAsset];
-    const jsonInterface = contract[OtherContractType.Bridge]?.abi ?? contract.abi;
+    const contract = SmartContracts[SmartContractType.EthBridge][bridgeAsset];
+    const jsonInterface = contract.abi;
     const contractAddress = rootGetters.web3.contractAddress(bridgeAsset) as string;
     const contractInstance = new ethers.Contract(contractAddress, jsonInterface, ethersInstance.getSigner());
     const method = isValOrXor
@@ -405,7 +400,6 @@ const actions = defineActions({
     if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
     checkEvmNetwork(context);
     try {
-      const contract = rootGetters.web3.contractAbi(KnownEthBridgeAsset.Other);
       const evmAccount = rootState.web3.evmAddress;
       const isExternalAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
       if (!isExternalAccountConnected) throw new Error('Connect account in Metamask');
@@ -419,7 +413,7 @@ const actions = defineActions({
           commit.addTxIdInApprove(tx.id);
           const tokenInstance = new ethers.Contract(
             asset.externalAddress,
-            contract[OtherContractType.ERC20].abi,
+            SmartContracts[SmartContractType.ERC20].abi,
             ethersInstance.getSigner()
           );
           const methodArgs = [
@@ -436,13 +430,17 @@ const actions = defineActions({
       const accountId = await ethersUtil.accountAddressToHex(soraAccountAddress);
       const contractInstance = new ethers.Contract(
         contractAddress,
-        contract[OtherContractType.Bridge].abi,
+        SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi,
         ethersInstance.getSigner()
       );
       const decimals = isNativeEvmToken
         ? undefined
         : await (async () => {
-            const tokenInstance = new ethers.Contract(asset.externalAddress, ABI.balance, ethersInstance.getSigner());
+            const tokenInstance = new ethers.Contract(
+              asset.externalAddress,
+              SmartContracts[SmartContractType.ERC20].abi,
+              ethersInstance.getSigner()
+            );
             const decimals = await tokenInstance.decimals();
             return +decimals;
           })();

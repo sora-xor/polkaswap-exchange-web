@@ -9,125 +9,10 @@ import type { CodecString } from '@sora-substrate/util';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import { settingsStorage } from '@/utils/storage';
-import axiosInstance from '@/api';
 import { ZeroStringValue } from '@/consts';
-import { BridgeType, KnownEthBridgeAsset } from '@/consts/evm';
+import { BridgeType, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 
 import type { EvmNetworkData } from '@/consts/evm';
-
-type AbiType = 'function' | 'constructor' | 'event' | 'fallback';
-type StateMutabilityType = 'pure' | 'view' | 'nonpayable' | 'payable';
-
-interface AbiInput {
-  name: string;
-  type: string;
-  indexed?: boolean;
-  components?: AbiInput[];
-  internalType?: string;
-}
-
-interface AbiOutput {
-  name: string;
-  type: string;
-  components?: AbiOutput[];
-  internalType?: string;
-}
-
-interface AbiItem {
-  anonymous?: boolean;
-  constant?: boolean;
-  inputs?: AbiInput[];
-  name?: string;
-  outputs?: AbiOutput[];
-  payable?: boolean;
-  stateMutability?: StateMutabilityType;
-  type: AbiType;
-  gas?: number;
-}
-
-export type JsonContract =
-  | {
-      abi: AbiItem;
-      evm: {
-        bytecode: {
-          object: string;
-        };
-      };
-    }
-  | undefined;
-
-export enum ContractNetwork {
-  Ethereum = 'ethereum',
-  Other = 'other',
-}
-
-export enum Contract {
-  Internal = 'internal',
-  Other = 'other',
-}
-
-export const ABI = {
-  balance: [
-    // balanceOf
-    {
-      constant: true,
-      inputs: [
-        {
-          internalType: 'address',
-          name: 'who',
-          type: 'address',
-        },
-      ],
-      name: 'balanceOf',
-      outputs: [
-        {
-          internalType: 'uint256',
-          name: '',
-          type: 'uint256',
-        },
-      ],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function',
-    },
-    // decimals
-    {
-      constant: true,
-      inputs: [],
-      name: 'decimals',
-      outputs: [{ name: '', type: 'uint8' }],
-      type: 'function',
-    },
-  ],
-  allowance: [
-    {
-      constant: true,
-      inputs: [
-        {
-          internalType: 'address',
-          name: 'owner',
-          type: 'address',
-        },
-        {
-          internalType: 'address',
-          name: 'spender',
-          type: 'address',
-        },
-      ],
-      name: 'allowance',
-      outputs: [
-        {
-          internalType: 'uint256',
-          name: '',
-          type: 'uint256',
-        },
-      ],
-      payable: false,
-      stateMutability: 'view',
-      type: 'function',
-    },
-  ],
-};
 
 type ethersProvider = ethers.providers.Web3Provider;
 
@@ -237,7 +122,11 @@ async function getAccountAssetBalance(
       if (isNativeEvmToken) {
         value = await getAccountBalance(accountAddress);
       } else {
-        const tokenInstance = new ethers.Contract(assetAddress, ABI.balance, ethersInstance.getSigner());
+        const tokenInstance = new ethers.Contract(
+          assetAddress,
+          SmartContracts[SmartContractType.ERC20].abi,
+          ethersInstance.getSigner()
+        );
         const methodArgs = [accountAddress];
         const balance = await tokenInstance.balanceOf(...methodArgs);
         decimals = await tokenInstance.decimals();
@@ -254,7 +143,11 @@ async function getAccountAssetBalance(
 
 async function getAllowance(accountAddress: string, contractAddress: string, assetAddress: string): Promise<string> {
   const ethersInstance = await getEthersInstance();
-  const tokenInstance = new ethers.Contract(assetAddress, ABI.allowance, ethersInstance.getSigner());
+  const tokenInstance = new ethers.Contract(
+    assetAddress,
+    SmartContracts[SmartContractType.ERC20].abi,
+    ethersInstance.getSigner()
+  );
   const methodArgs = [accountAddress, contractAddress];
   const allowance = await tokenInstance.allowance(...methodArgs);
 
@@ -477,11 +370,6 @@ function storeSelectedBridgeType(bridgeType: BridgeType) {
   settingsStorage.set('bridgeType' as any, bridgeType);
 }
 
-async function readSmartContract(network: ContractNetwork, name: string): Promise<JsonContract> {
-  const { data } = await axiosInstance.get(`/abi/${network}/${name}`);
-  return data;
-}
-
 export default {
   onConnect,
   getAccount,
@@ -513,6 +401,4 @@ export default {
   // bridge type
   getSelectedBridgeType,
   storeSelectedBridgeType,
-  // load smart contract
-  readSmartContract,
 };
