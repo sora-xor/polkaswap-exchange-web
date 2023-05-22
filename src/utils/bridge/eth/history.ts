@@ -1,4 +1,3 @@
-import flatten from 'lodash/fp/flatten';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { ethers } from 'ethers';
