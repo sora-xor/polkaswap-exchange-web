@@ -1,6 +1,6 @@
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
 import { Operation } from '@sora-substrate/util';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { Bridge } from '@/utils/bridge/common/classes';
@@ -9,7 +9,14 @@ import { updateTransaction } from '@/utils/bridge/evm/utils';
 
 import store from '@/store';
 
-import type { EvmBridge } from '@/utils/bridge/evm/classes/bridge';
+import type { RemoveTransactionByHash, IBridgeConstructorOptions } from '@/utils/bridge/common/types';
+import type { EvmBridgeReducer } from '@/utils/bridge/evm/classes/reducers';
+
+interface EvmBridgeConstructorOptions extends IBridgeConstructorOptions<EvmHistory, EvmBridgeReducer> {
+  removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;
+}
+
+type EvmBridge = Bridge<EvmHistory, EvmBridgeReducer, EvmBridgeConstructorOptions>;
 
 const evmBridge: EvmBridge = new Bridge({
   reducers: {

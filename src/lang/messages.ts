@@ -1,5 +1,5 @@
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import { en as walletEn, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { en as walletEn } from '@soramitsu/soraneo-wallet-web';
 import { Operation, TransactionStatus } from '@sora-substrate/util';
 import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 

@@ -178,7 +178,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'MATIC',
       decimals: 18,
     },
-    rpcUrls: ['https://rpc-mumbai.maticvigil.com'],
+    rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
     blockExplorerUrls: ['https://mumbai.polygonscan.com'],
     shortName: 'Mumbai',
   },

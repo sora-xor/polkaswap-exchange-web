@@ -9,20 +9,6 @@
           :tooltip="t('bridgeHistory.restoreHistory')"
           @click="updateExternalHistory(true)"
         />
-        <!-- [TODO]: decide should user be able to change network in history or not -->
-        <!-- <swap-status-action-badge v-if="selectedEvmNetwork" class="status-action-badge--history">
-          <template #value>{{ selectedEvmNetwork.shortName }}</template>
-          <template #action>
-            <s-button
-              class="el-button--settings"
-              type="action"
-              icon="basic-settings-24"
-              :tooltip="t('bridge.selectNetwork')"
-              tooltip-placement="bottom-end"
-              @click="setSelectNetworkDialogVisibility(true)"
-            />
-          </template>
-        </swap-status-action-badge> -->
       </generic-page-header>
       <s-form class="history-form" :show-message="false">
         <search-input

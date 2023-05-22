@@ -35,7 +35,7 @@ async function closeConnectionWithInfo() {
 
 const actions = defineActions({
   async connectToNode(context, options: ConnectToNodeOptions = {}): Promise<void> {
-    const { dispatch, commit, state, rootDispatch, rootState, getters } = settingsActionContext(context);
+    const { dispatch, commit, state, rootState, getters } = settingsActionContext(context);
     if (!state.nodeConnectionAllowance) return;
 
     const { node, onError, currentNodeIndex = 0, ...restOptions } = options;

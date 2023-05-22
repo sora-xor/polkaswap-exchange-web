@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/fp/isEmpty';
+import { FPNumber } from '@sora-substrate/util';
 import { defineActions } from 'direct-vuex';
 import type { ActionContext } from 'vuex';
 
@@ -78,7 +79,7 @@ async function getEvmRegisteredAssets(context: ActionContext<any, any>): Promise
         address: assetData.evmAddress as string,
         balance: ZeroStringValue,
         contract: assetData.contract,
-        decimals: 18,
+        decimals: FPNumber.DEFAULT_PRECISION,
       };
 
       try {
@@ -104,10 +105,28 @@ async function getEvmRegisteredAssets(context: ActionContext<any, any>): Promise
   return networkAssetsWithBalance;
 }
 
+async function getRegisteredAssetsWithBalances(
+  context: ActionContext<any, any>
+): Promise<Record<string, EvmAccountAsset>[]> {
+  const { rootState } = assetsActionContext(context);
+
+  switch (rootState.web3.networkType) {
+    case BridgeType.ETH: {
+      return await getEthRegisteredAssets(context);
+    }
+    case BridgeType.EVM: {
+      return await getEvmRegisteredAssets(context);
+    }
+    case BridgeType.SUB: {
+      return [];
+    }
+  }
+}
+
 const actions = defineActions({
   // for common usage
   async updateRegisteredAssets(context, force?: boolean): Promise<void> {
-    const { state, commit, dispatch, rootState } = assetsActionContext(context);
+    const { state, commit, dispatch } = assetsActionContext(context);
 
     if (state.registeredAssetsFetching) {
       if (force) {
@@ -122,26 +141,11 @@ const actions = defineActions({
       commit.resetRegisteredAssets();
     }
 
-    const networkType = rootState.web3.networkType;
-
     commit.setRegisteredAssetsFetching(true);
 
     try {
-      const networkAssetsWithBalance = await (async () => {
-        switch (networkType) {
-          case BridgeType.ETH: {
-            return await getEthRegisteredAssets(context);
-          }
-          case BridgeType.EVM: {
-            return await getEvmRegisteredAssets(context);
-          }
-          case BridgeType.SUB: {
-            return [];
-          }
-        }
-      })();
-
-      const registeredAssets = networkAssetsWithBalance.reduce((buffer, asset) => ({ ...buffer, ...asset }), {});
+      const registeredAssetsWithBalances = await getRegisteredAssetsWithBalances(context);
+      const registeredAssets = registeredAssetsWithBalances.reduce((buffer, asset) => ({ ...buffer, ...asset }), {});
 
       commit.setRegisteredAssets(registeredAssets);
     } catch (error) {

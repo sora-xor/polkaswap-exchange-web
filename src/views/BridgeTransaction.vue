@@ -75,14 +75,14 @@
       />
       <info-line
         is-formatted
-        :label="getNetworkText(true, 'bridgeTransaction.networkInfo.transactionFee')"
+        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', true)"
         :value="txSoraNetworkFeeFormatted"
         :asset-symbol="KnownSymbols.XOR"
         :fiat-value="txSoraNetworkFeeFiatValue"
       />
       <info-line
         is-formatted
-        :label="getNetworkText(false, 'bridgeTransaction.networkInfo.transactionFee')"
+        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', false)"
         :value="txEvmNetworkFeeFormatted"
         :asset-symbol="evmTokenSymbol"
       >
@@ -93,7 +93,7 @@
 
       <div v-if="txSoraHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
-          :placeholder="getNetworkText(true, 'bridgeTransaction.transactionHash')"
+          :placeholder="getNetworkText('bridgeTransaction.transactionHash', true)"
           :value="txSoraHashFormatted"
           readonly
         />
@@ -132,7 +132,7 @@
 
       <div v-if="txEvmHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
-          :placeholder="getNetworkText(false, 'bridgeTransaction.transactionHash')"
+          :placeholder="getNetworkText('bridgeTransaction.transactionHash', false)"
           :value="txEvmHashFormatted"
           readonly
         />
@@ -418,7 +418,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txEvmAddressPlaceholder(): string {
-    return this.getNetworkText(false, 'accountAddressText');
+    return this.getNetworkText('accountAddressText', false);
   }
 
   get txEvmAddressCopyTooltip(): string {
@@ -475,7 +475,7 @@ export default class BridgeTransaction extends Mixins(
     return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
   }
 
-  getNetworkText(isSora = true, key: string): string {
+  getNetworkText(key: string, isSora = true): string {
     const network = isSora ? this.TranslationConsts.Sora : this.TranslationConsts.EVM;
     const text = this.t(key);
     return `${network} ${text}`;

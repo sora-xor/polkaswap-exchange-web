@@ -117,7 +117,7 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
 
     if (blockId) return Promise.resolve();
 
-    await delay(1000);
+    await delay(1_000);
     await this.waitForSoraBlockId(id);
   }
 

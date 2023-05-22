@@ -5,9 +5,18 @@ import type { BridgeHistory } from '@sora-substrate/util';
 import { Bridge } from '@/utils/bridge/common/classes';
 import { EthBridgeOutgoingReducer, EthBridgeIncomingReducer } from '@/utils/bridge/eth/classes/reducers';
 import { getTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
+
 import store from '@/store';
 
-import type { EthBridge } from '@/utils/bridge/eth/classes/bridge';
+import type { GetBridgeHistoryInstance, IBridgeConstructorOptions } from '@/utils/bridge/common/types';
+import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
+import type { EthBridgeReducer } from '@/utils/bridge/eth/classes/reducers';
+
+interface EthBridgeConstructorOptions extends IBridgeConstructorOptions<BridgeHistory, EthBridgeReducer> {
+  getBridgeHistoryInstance: GetBridgeHistoryInstance<EthBridgeHistory>;
+}
+
+type EthBridge = Bridge<BridgeHistory, EthBridgeReducer, EthBridgeConstructorOptions>;
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 

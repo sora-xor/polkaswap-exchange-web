@@ -190,7 +190,7 @@ const actions = defineActions({
       (item) => item.hash === hash || item.txId === txId || item.externalHash === externalHash
     );
 
-    if (!item || !item.id) return;
+    if (!(item && item.id)) return;
 
     const inProgress = state.inProgressIds[item.id];
     // in not force mode, do not remove tx in progress
@@ -272,7 +272,7 @@ const actions = defineActions({
 
   // ETH BRIDGE
   async getEthBridgeHistoryInstance(context): Promise<EthBridgeHistory> {
-    const { rootState, state } = bridgeActionContext(context);
+    const { rootState } = bridgeActionContext(context);
     const etherscanApiKey = rootState.wallet.settings.apiKeys?.etherscan;
     const bridgeHistory = new EthBridgeHistory(etherscanApiKey);
 

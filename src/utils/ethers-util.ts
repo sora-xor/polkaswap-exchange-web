@@ -228,7 +228,7 @@ async function getAccountAssetBalance(
   assetAddress: string
 ): Promise<{ value: CodecString; decimals: number }> {
   let value = ZeroStringValue;
-  let decimals = 18;
+  let decimals = FPNumber.DEFAULT_PRECISION;
 
   if (accountAddress && assetAddress) {
     try {
@@ -355,7 +355,8 @@ async function switchOrAddChain(network: EvmNetworkData, chainName?: string): Pr
     });
   } catch (switchError: any) {
     console.error(switchError);
-
+    // Chain is not added to wallet
+    // "Unrecognized chain ID. Try adding the chain using wallet_addEthereumChain first."
     if (switchError.code === 4902) {
       try {
         await ethereum.request({

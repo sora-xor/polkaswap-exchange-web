@@ -90,7 +90,8 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
     if (!transaction.id) throw new Error('[Bridge]: TX ID cannot be empty');
 
     switch (transaction.transactionState) {
-      case ETH_BRIDGE_STATES.INITIAL: {
+      case ETH_BRIDGE_STATES.INITIAL:
+      case ETH_BRIDGE_STATES.SORA_REJECTED: {
         return await this.handleState(transaction.id, {
           nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
@@ -149,12 +150,6 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
         });
       }
 
-      case ETH_BRIDGE_STATES.SORA_REJECTED:
-        return await this.handleState(transaction.id, {
-          nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
-          rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
-        });
-
       case ETH_BRIDGE_STATES.EVM_SUBMITTED: {
         return await this.handleState(transaction.id, {
           nextState: ETH_BRIDGE_STATES.EVM_PENDING,
@@ -189,7 +184,8 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
     if (!transaction.id) throw new Error('[Bridge]: TX ID cannot be empty');
 
     switch (transaction.transactionState) {
-      case ETH_BRIDGE_STATES.INITIAL: {
+      case ETH_BRIDGE_STATES.INITIAL:
+      case ETH_BRIDGE_STATES.EVM_REJECTED: {
         return await this.handleState(transaction.id, {
           nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
@@ -209,13 +205,6 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
           nextState: ETH_BRIDGE_STATES.SORA_PENDING,
           rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
           handler: async (id: string) => await this.onEvmPending(id),
-        });
-      }
-
-      case ETH_BRIDGE_STATES.EVM_REJECTED: {
-        return await this.handleState(transaction.id, {
-          nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
-          rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
         });
       }
 

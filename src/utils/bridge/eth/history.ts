@@ -65,15 +65,17 @@ const isSoraPartCompleted = async (isOutgoing: boolean, soraHash: string) => {
 };
 
 const getTransactionState = (isOutgoing: boolean, soraPartCompleted: boolean, externalHash: string, hash: string) => {
-  return isOutgoing
-    ? externalHash
-      ? ETH_BRIDGE_STATES.EVM_COMMITED
-      : soraPartCompleted
-      ? ETH_BRIDGE_STATES.EVM_REJECTED
-      : hash
-      ? ETH_BRIDGE_STATES.SORA_PENDING
-      : ETH_BRIDGE_STATES.SORA_REJECTED
-    : ETH_BRIDGE_STATES.SORA_COMMITED;
+  if (!isOutgoing) return ETH_BRIDGE_STATES.SORA_COMMITED;
+
+  if (externalHash) {
+    return ETH_BRIDGE_STATES.EVM_COMMITED;
+  } else if (soraPartCompleted) {
+    return ETH_BRIDGE_STATES.EVM_REJECTED;
+  } else if (hash) {
+    return ETH_BRIDGE_STATES.SORA_PENDING;
+  } else {
+    return ETH_BRIDGE_STATES.SORA_REJECTED;
+  }
 };
 
 const hasFinishedState = (item: Nullable<BridgeHistory>) => {
@@ -126,9 +128,6 @@ export class EthBridgeHistory {
 
   private etherscanApiKey!: string;
   private etherscanInstance!: ethers.providers.EtherscanProvider;
-
-  // Withdrawal (bytes32 txHash)
-  public readonly outgoingTopic = '0x0ce781a18c10c8289803c7c4cfd532d797113c4b41c9701ffad7d0a632ac555b';
 
   constructor(etherscanApiKey: string) {
     this.etherscanApiKey = etherscanApiKey;
@@ -208,7 +207,7 @@ export class EthBridgeHistory {
     hash: string,
     fromTimestamp: number
   ): Promise<ethers.providers.TransactionResponse | null> {
-    if (!accountAddress || !hash) return null;
+    if (!(accountAddress && hash)) return null;
     const contracts = Object.values(this.contracts);
     const transactions = await this.getEthAccountTransactions(accountAddress, fromTimestamp, contracts);
 

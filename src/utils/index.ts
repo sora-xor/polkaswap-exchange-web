@@ -14,6 +14,8 @@ import { app, ZeroStringValue } from '@/consts';
 import storage from './storage';
 import type { AmountWithSuffix } from '@/types/formats';
 
+type AssetWithBalance = AccountAsset | AccountLiquidity | RegisteredAccountAsset;
+
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
     return navigator.clipboard.writeText(text);
@@ -26,7 +28,7 @@ export const formatAddress = (address: string, length = address.length / 2): str
   return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`;
 };
 
-export const isXorAccountAsset = (asset: Asset | AccountAsset | AccountLiquidity | RegisteredAccountAsset): boolean => {
+export const isXorAccountAsset = (asset: Asset | AssetWithBalance): boolean => {
   return asset ? asset.address === XOR.address : false;
 };
 
@@ -39,7 +41,7 @@ export const isNativeEvmTokenAddress = (address: string): boolean => {
 
 export const isMaxButtonAvailable = (
   areAssetsSelected: boolean,
-  asset: AccountAsset | AccountLiquidity | RegisteredAccountAsset,
+  asset: AssetWithBalance,
   amount: string | number,
   fee: CodecString,
   xorAsset: AccountAsset | RegisteredAccountAsset,
@@ -57,7 +59,7 @@ export const isMaxButtonAvailable = (
 };
 
 const getMaxBalance = (
-  asset: AccountAsset | AccountLiquidity | RegisteredAccountAsset,
+  asset: AssetWithBalance,
   fee: CodecString,
   isExternalBalance = false,
   parseAsLiquidity = false,
@@ -148,7 +150,7 @@ export const asZeroValue = (value: any): boolean => {
 };
 
 export const getAssetBalance = (
-  asset: Nullable<AccountAsset | AccountLiquidity | RegisteredAccountAsset>,
+  asset: Nullable<AssetWithBalance>,
   { internal = true, parseAsLiquidity = false, isBondedBalance = false } = {}
 ) => {
   if (!asset) return ZeroStringValue;

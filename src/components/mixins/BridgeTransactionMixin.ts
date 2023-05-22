@@ -13,9 +13,13 @@ const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 @Component
 export default class BridgeTransactionMixin extends Mixins(TranslationMixin) {
   isFailedState(item: Nullable<IBridgeTransaction>): boolean {
-    if (!item) return false;
+    if (!(item && item.transactionState)) return false;
     // ETH
-    if ([ETH_BRIDGE_STATES.EVM_REJECTED, ETH_BRIDGE_STATES.SORA_REJECTED].includes(item.transactionState as any))
+    if (
+      [ETH_BRIDGE_STATES.EVM_REJECTED as string, ETH_BRIDGE_STATES.SORA_REJECTED as string].includes(
+        item.transactionState
+      )
+    )
       return true;
     // EVM
     if (item.transactionState === EvmTxStatus.Failed) return true;

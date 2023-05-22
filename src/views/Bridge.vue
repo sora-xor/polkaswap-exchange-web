@@ -388,7 +388,7 @@ export default class Bridge extends Mixins(
     if (!(this.areNetworksConnected && this.asset)) {
       return false;
     }
-    if (!this.isRegisteredAsset && !this.isSoraToEvm) {
+    if (!(this.isRegisteredAsset || this.isSoraToEvm)) {
       return false;
     }
     const balance = getAssetBalance(this.asset, { internal: this.isSoraToEvm });
@@ -481,7 +481,7 @@ export default class Bridge extends Mixins(
   }
 
   formatBalance(isSora = true): string {
-    if (!this.asset || (!this.isRegisteredAsset && !isSora)) {
+    if (!(this.asset && (this.isRegisteredAsset || isSora))) {
       return '-';
     }
     const balance = getAssetBalance(this.asset, { internal: isSora });
