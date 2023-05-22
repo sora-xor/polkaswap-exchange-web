@@ -197,7 +197,7 @@
           v-if="!isValidNetwork"
           class="el-button--next s-typography-button--big"
           type="primary"
-          @click="changeProviderNetwork"
+          @click="updateEvmNetwork"
         >
           {{ t('changeNetworkText') }}
         </s-button>
@@ -530,7 +530,7 @@ export default class Bridge extends Mixins(
 
   async handleConfirmButtonClick(): Promise<void> {
     if (!this.isValidNetwork) {
-      this.changeProviderNetwork();
+      this.updateEvmNetwork();
       return;
     }
 

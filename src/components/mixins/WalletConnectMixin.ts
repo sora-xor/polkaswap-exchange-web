@@ -62,6 +62,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @mutation.web3.resetEvmBalance private resetEvmBalance!: FnWithoutArgs;
 
   @action.web3.connectExternalAccount private connectExternalAccount!: (provider: Provider) => Promise<void>;
+  @action.web3.updateEvmNetwork updateEvmNetwork!: AsyncFnWithoutArgs;
   @action.web3.connectEvmNetwork connectEvmNetwork!: (networkHex?: string) => Promise<void>;
   @action.web3.selectEvmNetwork selectEvmNetwork!: (networkId: EvmNetwork) => Promise<void>;
   @action.web3.restoreSelectedEvmNetwork restoreSelectedEvmNetwork!: AsyncFnWithoutArgs;
@@ -131,13 +132,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     } else {
       await func();
     }
-  }
-
-  async changeProviderNetwork(): Promise<void> {
-    if (this.selectedEvmNetwork) {
-      await ethersUtil.switchOrAddChain(this.selectedEvmNetwork);
-    }
-    await this.connectEvmNetwork();
   }
 
   disconnectExternalAccount(): void {
