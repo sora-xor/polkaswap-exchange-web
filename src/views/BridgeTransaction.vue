@@ -170,6 +170,9 @@
         <template v-if="comfirmationBlocksLeft">
           {{ t('bridgeTransaction.blocksLeft', { count: comfirmationBlocksLeft }) }}
         </template>
+        <template v-else-if="txWaitingForApprove">{{
+          t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
+        }}</template>
         <template v-else-if="isTxPending">{{ t('bridgeTransaction.pending') }}</template>
         <template v-else-if="!(isSoraToEvm || isExternalAccountConnected)">{{ t('connectWalletText') }}</template>
         <template v-else-if="!(isSoraToEvm || isValidNetwork)">{{ t('changeNetworkText') }}</template>
@@ -184,9 +187,6 @@
         }}</template>
         <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
         <template v-else-if="isTxFailed">{{ t('retryText') }}</template>
-        <template v-else-if="txWaitingForApprove">{{
-          t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
-        }}</template>
         <template v-else>{{
           t('bridgeTransaction.confirm', {
             direction: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'metamask'}`),
