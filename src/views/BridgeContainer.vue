@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { ethers } from 'ethers';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 
@@ -22,8 +22,13 @@ import { action } from '@/store/decorators';
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
   @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.updateEvmBlockNumber private updateEvmBlockNumber!: (block?: number) => Promise<void>;
-  @action.assets.updateRegisteredAssets private updateExternalBalances!: (force?: boolean) => Promise<void>;
+  @action.assets.updateRegisteredAssets private updateRegisteredAssets!: (force?: boolean) => Promise<void>;
   @action.web3.getSupportedNetworks private getSupportedNetworks!: AsyncFnWithoutArgs;
+
+  @Watch('evmAddress')
+  private updateExternalBalances(): void {
+    this.updateRegisteredAssets(true);
+  }
 
   private unwatchEthereum!: FnWithoutArgs;
   private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
@@ -41,15 +46,14 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   }
 
   private async onConnectedEvmNetworkChange(networkHex?: string) {
-    await Promise.all([this.connectEvmNetwork(networkHex), this.updateExternalBalances(true), this.getEvmNetworkFee()]);
+    await Promise.all([this.connectEvmNetwork(networkHex), this.updateRegisteredAssets(true), this.getEvmNetworkFee()]);
   }
 
   private async subscribeOnEvm(): Promise<void> {
     this.unwatchEthereum = await ethersUtil.watchEthereum({
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
-          this.switchExternalAccount(addressList[0]);
-          this.updateExternalBalances(true);
+          this.changeExternalWallet({ address: addressList[0] });
         } else {
           this.disconnectExternalAccount();
         }
@@ -78,7 +82,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
 
       this.blockHeadersSubscriber = ethersInstance.on('block', (blockNumber) => {
         this.updateEvmBlockNumber(blockNumber);
-        this.updateExternalBalances();
+        this.updateRegisteredAssets();
         this.getEvmNetworkFee();
       });
     } catch (error) {

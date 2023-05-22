@@ -3,7 +3,6 @@ import { FPNumber } from '@sora-substrate/util';
 import { defineActions } from 'direct-vuex';
 import type { ActionContext } from 'vuex';
 
-import { delay } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 import { assetsActionContext } from '@/store/assets';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
@@ -126,16 +125,9 @@ async function getRegisteredAssetsWithBalances(
 const actions = defineActions({
   // for common usage
   async updateRegisteredAssets(context, force?: boolean): Promise<void> {
-    const { state, commit, dispatch } = assetsActionContext(context);
+    const { commit, state } = assetsActionContext(context);
 
-    if (state.registeredAssetsFetching) {
-      if (force) {
-        await delay(250);
-        return await dispatch.updateRegisteredAssets(force);
-      } else {
-        return;
-      }
-    }
+    if (state.registeredAssetsFetching && !force) return;
 
     if (force) {
       commit.resetRegisteredAssets();

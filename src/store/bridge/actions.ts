@@ -329,8 +329,6 @@ const actions = defineActions({
 
     if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
 
-    checkEvmNetwork(context);
-
     const request = await waitForApprovedRequest(tx); // If it causes an error, then -> catch -> SORA_REJECTED
 
     if (!getters.isTxEvmAccount) {
@@ -376,8 +374,8 @@ const actions = defineActions({
             request.s, // bytes32[] memory s
           ])
     );
-    checkEvmNetwork(context);
 
+    checkEvmNetwork(context);
     const transaction: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs);
 
     const fee = transaction.gasPrice
@@ -398,81 +396,78 @@ const actions = defineActions({
     if (!tx.assetAddress) throw new Error('TX assetAddress cannot be empty!');
     const asset = rootGetters.assets.assetDataByAddress(tx.assetAddress);
     if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
-    checkEvmNetwork(context);
-    try {
-      const evmAccount = rootState.web3.evmAddress;
-      const isExternalAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
-      if (!isExternalAccountConnected) throw new Error('Connect account in Metamask');
-      const ethersInstance = await ethersUtil.getEthersInstance();
-      const contractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other) as string;
-      const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
-      // don't check allowance for native EVM token
-      if (!isNativeEvmToken) {
-        const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
-        if (FPNumber.isLessThan(new FPNumber(allowance), new FPNumber(tx.amount))) {
-          commit.addTxIdInApprove(tx.id);
+
+    const evmAccount = rootState.web3.evmAddress;
+    const isExternalAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
+    if (!isExternalAccountConnected) throw new Error('Connect account in Metamask');
+    const ethersInstance = await ethersUtil.getEthersInstance();
+    const contractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other) as string;
+    const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
+    // don't check allowance for native EVM token
+    if (!isNativeEvmToken) {
+      const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
+      if (FPNumber.isLessThan(new FPNumber(allowance), new FPNumber(tx.amount))) {
+        commit.addTxIdInApprove(tx.id);
+        const tokenInstance = new ethers.Contract(
+          asset.externalAddress,
+          SmartContracts[SmartContractType.ERC20].abi,
+          ethersInstance.getSigner()
+        );
+        const methodArgs = [
+          contractAddress, // address spender
+          MaxUint256, // uint256 amount
+        ];
+
+        let transaction: any;
+        try {
+          checkEvmNetwork(context);
+          transaction = await tokenInstance.approve(...methodArgs);
+        } finally {
+          commit.removeTxIdFromApprove(tx.id); // change ui state after approve in client
+        }
+        await waitForEvmTransactionMined(transaction.hash); // wait for 1 confirm block
+      }
+    }
+    const soraAccountAddress = rootState.wallet.account.address;
+    const accountId = await ethersUtil.accountAddressToHex(soraAccountAddress);
+    const contractInstance = new ethers.Contract(
+      contractAddress,
+      SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi,
+      ethersInstance.getSigner()
+    );
+    const decimals = isNativeEvmToken
+      ? undefined
+      : await (async () => {
           const tokenInstance = new ethers.Contract(
             asset.externalAddress,
             SmartContracts[SmartContractType.ERC20].abi,
             ethersInstance.getSigner()
           );
-          const methodArgs = [
-            contractAddress, // address spender
-            MaxUint256, // uint256 amount
-          ];
-          checkEvmNetwork(context);
-          const transaction = await tokenInstance.approve(...methodArgs);
-          commit.removeTxIdFromApprove(tx.id); // change ui state after approve in client
-          await waitForEvmTransactionMined(transaction.hash); // wait for 1 confirm block
-        }
-      }
-      const soraAccountAddress = rootState.wallet.account.address;
-      const accountId = await ethersUtil.accountAddressToHex(soraAccountAddress);
-      const contractInstance = new ethers.Contract(
-        contractAddress,
-        SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi,
-        ethersInstance.getSigner()
-      );
-      const decimals = isNativeEvmToken
-        ? undefined
-        : await (async () => {
-            const tokenInstance = new ethers.Contract(
-              asset.externalAddress,
-              SmartContracts[SmartContractType.ERC20].abi,
-              ethersInstance.getSigner()
-            );
-            const decimals = await tokenInstance.decimals();
-            return +decimals;
-          })();
-      const amount = new FPNumber(tx.amount, decimals).toCodecString();
-      const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain';
-      const methodArgs = isNativeEvmToken
-        ? [
-            accountId, // bytes32 to
-          ]
-        : [
-            accountId, // bytes32 to
-            amount, // uint256 amount
-            asset.externalAddress, // address tokenAddress
-          ];
-      const overrides = isNativeEvmToken ? { value: amount } : {};
-      checkEvmNetwork(context);
-      const transaction: ethers.providers.TransactionResponse = await contractInstance[method](
-        ...methodArgs,
-        overrides
-      );
-      const fee = transaction.gasPrice
-        ? ethersUtil.calcEvmFee(transaction.gasPrice.toNumber(), transaction.gasLimit.toNumber())
-        : undefined;
-      return {
-        hash: transaction.hash,
-        fee,
-      };
-    } catch (error) {
-      commit.removeTxIdFromApprove(tx.id);
-      console.error(error);
-      throw error;
-    }
+          const decimals = await tokenInstance.decimals();
+          return +decimals;
+        })();
+    const amount = new FPNumber(tx.amount, decimals).toCodecString();
+    const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain';
+    const methodArgs = isNativeEvmToken
+      ? [
+          accountId, // bytes32 to
+        ]
+      : [
+          accountId, // bytes32 to
+          amount, // uint256 amount
+          asset.externalAddress, // address tokenAddress
+        ];
+    const overrides = isNativeEvmToken ? { value: amount } : {};
+
+    checkEvmNetwork(context);
+    const transaction: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs, overrides);
+    const fee = transaction.gasPrice
+      ? ethersUtil.calcEvmFee(transaction.gasPrice.toNumber(), transaction.gasLimit.toNumber())
+      : undefined;
+    return {
+      hash: transaction.hash,
+      fee,
+    };
   },
 });
 

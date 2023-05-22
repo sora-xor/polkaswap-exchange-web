@@ -401,7 +401,11 @@ export default class Bridge extends Mixins(
       const fpFee = this.getFPNumberFromCodec(this.soraNetworkFee, decimals);
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee);
     }
-    if (ethersUtil.isNativeEvmTokenAddress(this.asset.externalAddress) && !this.isSoraToEvm) {
+    if (
+      this.asset.externalAddress &&
+      ethersUtil.isNativeEvmTokenAddress(this.asset.externalAddress) &&
+      !this.isSoraToEvm
+    ) {
       const fpFee = this.getFPNumberFromCodec(this.evmNetworkFee);
       return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee);
     }

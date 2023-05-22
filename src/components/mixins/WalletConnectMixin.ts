@@ -57,7 +57,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   // update selected evm network without metamask request
   @mutation.web3.setSelectedEvmNetwork setSelectedEvmNetwork!: (evmNetworkId: EvmNetwork) => void;
   @mutation.web3.resetEvmAddress private resetEvmAddress!: FnWithoutArgs;
-  @mutation.web3.setEvmAddress switchExternalAccount!: (address: string) => void;
+  @mutation.web3.setEvmAddress setEvmAddress!: (address: string) => void;
   @mutation.web3.resetEvmNetwork private resetEvmNetwork!: FnWithoutArgs;
   @mutation.web3.resetEvmBalance private resetEvmBalance!: FnWithoutArgs;
 
@@ -116,7 +116,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     }
     this.isExternalWalletConnecting = true;
     try {
-      this.switchExternalAccount(options.address);
+      this.setEvmAddress(options.address);
     } catch (error) {
       console.error(error);
     } finally {
