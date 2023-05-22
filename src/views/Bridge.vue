@@ -247,7 +247,7 @@
         />
       </s-card>
       <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-      <bridge-select-network :selected-evm-network="selectedEvmNetwork" @change="changeEvmNetwork" />
+      <bridge-select-network />
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
         :is-valid-network-type="isValidNetwork"
@@ -584,10 +584,6 @@ export default class Bridge extends Mixins(
       this.setHistoryId(id);
       router.push({ name: PageNames.BridgeTransaction });
     });
-  }
-
-  changeEvmNetwork(evmNetwork: EvmNetwork): void {
-    this.selectEvmNetwork(evmNetwork);
   }
 }
 </script>
