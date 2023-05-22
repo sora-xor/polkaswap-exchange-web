@@ -277,7 +277,6 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';

@@ -6,7 +6,7 @@ import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import { ZeroStringValue } from '@/consts';
 
-import type { Web3State, EthBridgeContractsAddresses, EthBridgeSettings } from './types';
+import type { Web3State, EthBridgeSettings } from './types';
 import type { BridgeType } from '@/consts/evm';
 
 const mutations = defineMutations<Web3State>()({
