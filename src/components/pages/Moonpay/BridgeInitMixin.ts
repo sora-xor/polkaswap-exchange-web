@@ -44,7 +44,8 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
     hash: string
   ) => Promise<Nullable<MoonpayEVMTransferAssetData>>;
 
-  @action.assets.updateRegisteredAssets private updateRegisteredAssets!: (reset?: boolean) => Promise<void>;
+  @action.assets.updateRegisteredAssets private updateRegisteredAssets!: AsyncFnWithoutArgs;
+  @action.assets.updateExternalBalances private updateExternalBalances!: AsyncFnWithoutArgs;
 
   async prepareEvmNetwork(): Promise<void> {
     this.selectEvmNetwork(this.ethBridgeEvmNetwork); // WalletConnectMixin
@@ -128,6 +129,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
 
       // while registered assets updating, evmBalance updating too
       await this.updateRegisteredAssets();
+      await this.updateExternalBalances();
 
       const [soraAddress] =
         Object.entries(this.registeredAssets).find(([soraAddress, registeredAsset]) =>

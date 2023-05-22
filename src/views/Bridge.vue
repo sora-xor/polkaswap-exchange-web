@@ -330,6 +330,7 @@ export default class Bridge extends Mixins(
   @state.bridge.amount amount!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
+  @state.assets.registeredAssetsBalancesUpdating registeredAssetsBalancesUpdating!: boolean;
 
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
@@ -458,7 +459,12 @@ export default class Bridge extends Mixins(
   }
 
   get isConfirmTxLoading(): boolean {
-    return this.isSelectAssetLoading || this.evmNetworkFeeFetching || this.registeredAssetsFetching;
+    return (
+      this.isSelectAssetLoading ||
+      this.evmNetworkFeeFetching ||
+      this.registeredAssetsFetching ||
+      this.registeredAssetsBalancesUpdating
+    );
   }
 
   get isXorSufficientForNextOperation(): boolean {

@@ -14,6 +14,9 @@ const mutations = defineMutations<AssetsState>()({
     state.registeredAssets = {};
     state.registeredAssetsFetching = false;
   },
+  setRegisteredAssetsBalancesUpdating(state, flag = false): void {
+    state.registeredAssetsBalancesUpdating = flag;
+  },
 });
 
 export default mutations;

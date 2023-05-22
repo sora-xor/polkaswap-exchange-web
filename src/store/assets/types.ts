@@ -14,4 +14,5 @@ export type RegisteredAccountAssetObject = {
 export type AssetsState = {
   registeredAssets: Record<string, EvmAccountAsset>;
   registeredAssetsFetching: boolean;
+  registeredAssetsBalancesUpdating: boolean;
 };
