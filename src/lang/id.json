@@ -523,13 +523,9 @@
         "strategicBonusApy": "Bonus Strategis APY"
     },
     "bridge": {
-        "title": "{Hashi} Bridge",
+        "title": "Bridge",
         "info": "Tukar token antara jaringan {Sora} dan {Ethereum}.",
         "balance": "Saldo",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Berikutnya",
         "connectWallets": "Hubungkan dompet untuk melihat riwayat masing-masing transaksi.",
         "soraNetworkFee": "Biaya Jaringan {Sora}",
@@ -543,8 +539,7 @@
         "networkInfo": "Bridge Jaringan {Sora} dengan:",
         "copy": "Salin alamat jaringan",
         "soraAddress": "{Sora} alamat",
-        "ethereumAddress": "{Ethereum} alamat",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} alamat"
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Konfirmasi transaksi",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Konfirmasi transaksi"
     },
     "bridgeTransaction": {
         "details": "{from} untuk {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaksi tertunda...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Buat transaksi baru",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText di {Metamask}",
-        "expectedAddress": "Alamat yang diharapkan di {Metamask}",
         "title": "Jembatan Transaksi",
         "expectedMetaMaskAddress": "Alamat yang diharapkan di {Metamask}",
         "allowToken": "Izinkan {AppName} untuk menggunakan {tokenSymbol}",
@@ -1119,7 +1106,7 @@
         "exportTutorialsText": "Ekspor tutorial"
     },
     "hashiBridgeText": "Jembatan {Hashi}",
-    "disclaimerTitle": "Penafian:",
+    "disclaimerTitle": "Penafian",
     "explore": {
         "showOnlyMyPositions": "Hanya tampilkan posisi saya"
     },
@@ -1204,13 +1191,15 @@
         "alertsCreateTitle": "Siapkan peringatan harga",
         "alertsTooltip": "Peringatan harga adalah pemberitahuan yang dapat Anda atur untuk menerima pembaruan saat harga token tertentu mencapai titik tertentu yang Anda tetapkan",
         "createBtn": "Buat peringatan harga baru",
-        "finishBtn": "Selesaikan penyiapan lansiran",
         "enableSwitch": "Aktifkan notifikasi setoran aset",
         "currentPrice": "harga sekarang",
         "alertTypeTitle": "Jenis peringatan",
         "typeTooltip": "Pilih opsi 'turun di bawah' atau 'naik di atas' untuk menentukan kondisi waspada untuk melacak pergerakan harga penting. Opsi ini memungkinkan Anda menerima pemberitahuan tepat waktu saat nilai aset Anda turun di bawah atau naik di atas ambang batas yang Anda tetapkan",
         "alertFrequencyTitle": "Frekuensi peringatan",
         "frequencyTooltip": "Pilih antara 'sekali' dan 'selalu' untuk menentukan seberapa sering Anda menerima pemberitahuan untuk jenis lansiran yang dipilih. 'Sekali' akan mengirimkan satu notifikasi saat kondisi terpenuhi, sementara 'selalu' akan terus memberi tahu Anda setiap kali ambang harga dilewati",
-        "noSupportMsg": "Notifikasi tidak didukung oleh browser Anda"
-    }
+        "noSupportMsg": "Notifikasi tidak didukung oleh browser Anda",
+        "finishBtn": "Untuk menyelesaikan"
+    },
+    "accountAddressText": "Alamat akun",
+    "fiatDisclaimer": "Harap perhatikan bahwa nilai fiat yang terkait dengan cryptocurrency di situs web kami disediakan oleh layanan eksternal (Subquery, Subsquid, Ceres API) adalah perkiraan. Mengingat kerumitan perhitungan ini, presisi mutlak setiap saat tidak dapat dijamin."
 }

@@ -523,13 +523,9 @@
         "strategicBonusApy": "Stratégiai bónusz APY"
     },
     "bridge": {
-        "title": "{Hashi} híd",
+        "title": "Híd",
         "info": "Tokenek konvertálása a {Sora} és {Ethereum} hálózatok között.",
         "balance": "Egyenleg",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Következő",
         "connectWallets": "Csatlakoztasd a tárcákat a tranzakciós előzmények megtekintéséhez.",
         "soraNetworkFee": "{Sora} hálózati díj",
@@ -543,8 +539,7 @@
         "networkInfo": "{Sora} hálózati híd a következőkkel:",
         "copy": "Hálózati cím másolása",
         "soraAddress": "{Sora} cím",
-        "ethereumAddress": "{Ethereum} cím",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} cím"
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Tranzakció megerősítése",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Tranzakció megerősítése"
     },
     "bridgeTransaction": {
         "details": "{from} - {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} tranzakció folyamatban...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Új tranzakció létrehozása",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText a {Metamask}-ban",
-        "expectedAddress": "Várható {Metamask} cím",
         "title": "Híd tranzakció",
         "expectedMetaMaskAddress": "Várható cím a {Metamask}:",
         "allowToken": "Engedélyezd, hogy a {AppName} használhassa a {tokenSymbol}",
@@ -1119,7 +1106,7 @@
         "exportTutorialsText": "Oktatóanyagok exportálása"
     },
     "hashiBridgeText": "{Hashi} híd",
-    "disclaimerTitle": "Jogi nyilatkozat:",
+    "disclaimerTitle": "Jogi nyilatkozat",
     "explore": {
         "showOnlyMyPositions": "Csak az én pozíciómat mutasd"
     },
@@ -1204,13 +1191,15 @@
         "alertsCreateTitle": "Árriasztás beállítása",
         "alertsTooltip": "Az árriasztások olyan értesítések, amelyeket Ön beállíthat, hogy frissítéseket kapjon, amikor egy adott token ára elér egy meghatározott pontot",
         "createBtn": "Hozzon létre új árriasztást",
-        "finishBtn": "Fejezze be a riasztás beállítását",
         "enableSwitch": "Eszközbefizetési értesítések engedélyezése",
         "currentPrice": "jelenlegi ár",
         "alertTypeTitle": "Figyelmeztetés típusa",
         "typeTooltip": "Válassza az „alul csökken” vagy a „feljebb emelkedik” opciót, ha figyelmeztetési feltételt szeretne megadni a fontos ármozgások nyomon követéséhez. Ezek az opciók lehetővé teszik, hogy időben értesítést kapjon, ha az eszköz értéke a kijelölt küszöb alá esik vagy fölé emelkedik.",
         "alertFrequencyTitle": "Riasztási gyakoriság",
         "frequencyTooltip": "Válassza az „egyszer” és a „mindig” lehetőséget annak meghatározásához, hogy milyen gyakran kap értesítést a kiválasztott riasztástípusról. Az „Egyszer” egyetlen értesítést küld, ha a feltétel teljesül, míg az „always” továbbra is értesít minden alkalommal, amikor az árküszöböt átlépi.",
-        "noSupportMsg": "Az Ön böngészője nem támogatja az értesítéseket"
-    }
+        "noSupportMsg": "Az Ön böngészője nem támogatja az értesítéseket",
+        "finishBtn": "Teljesíteni"
+    },
+    "accountAddressText": "Fiók címe",
+    "fiatDisclaimer": "Felhívjuk figyelmét, hogy a weboldalunkon a kriptovalutákhoz társított fiat értékeket külső szolgáltatások (Subquery, Subsquid, Ceres API) biztosítják, hozzávetőlegesek. Tekintettel ezeknek a számításoknak a bonyolultságára, nem garantálható a mindenkori abszolút pontosság."
 }
