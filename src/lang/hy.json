@@ -523,13 +523,9 @@
         "strategicBonusApy": "Ռազմավարական բոնուս APY"
     },
     "bridge": {
-        "title": "{Hashi} կամուրջ",
+        "title": "Կամուրջ",
         "info": "Փոխարկել տոկենները {Sora} և {Ethereum} ցանցերի միջև:",
         "balance": "Բալանս",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Հաջորդը",
         "connectWallets": "Միացրեք դրամապանակները ՝ համապատասխան գործարքի պատմությունը դիտելու համար:",
         "soraNetworkFee": "{Sora} ցանցային վճար",
@@ -543,8 +539,7 @@
         "networkInfo": "Միացեք {Sora} Ցանցով.",
         "copy": "Պատճենել ցանցի հասցեն",
         "soraAddress": "{Sora} հասցե",
-        "ethereumAddress": "{Ethereum} հասցե",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} հասցե"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Հաստատել գործարքը",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Հաստատել գործարքը"
     },
     "bridgeTransaction": {
         "details": "{from} համար {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} գործարքը սպասման մեջ է...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Ստեղծել նոր գործարք",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText in {Metamask}",
-        "expectedAddress": "Սպասվող հասցե @հասցեում ՝ {Metamask}",
         "title": "Կամուրջի գործարք",
         "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ {Metamask}",
         "allowToken": "Թույլ տվեք {AppName} ին օգտագործել ձեր {tokenSymbol}",
@@ -1212,5 +1199,6 @@
         "alertFrequencyTitle": "Զգուշացման հաճախականությունը",
         "frequencyTooltip": "Ընտրեք «մեկ անգամ» և «միշտ» միջև՝ որոշելու համար, թե որքան հաճախ եք ստանում ծանուցումներ ընտրված ազդանշանի տեսակի համար: «Once»-ը մեկ ծանուցում կուղարկի, երբ պայմանը կատարվի, մինչդեռ «միշտ»-ը կշարունակի ծանուցել ձեզ ամեն անգամ, երբ գնային շեմը հատվի:",
         "noSupportMsg": "Ծանուցումները չեն աջակցվում ձեր դիտարկիչի կողմից"
-    }
+    },
+    "accountAddressText": "Հաշվի հասցեն"
 }

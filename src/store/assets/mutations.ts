@@ -1,18 +1,21 @@
 import { defineMutations } from 'direct-vuex';
 
-import type { AssetsState, RegisterAssetWithExternalBalance } from './types';
+import type { AssetsState, EvmAccountAsset } from './types';
 
 const mutations = defineMutations<AssetsState>()({
   setRegisteredAssetsFetching(state, value: boolean): void {
     state.registeredAssetsFetching = value;
   },
-  setRegisteredAssets(state, assets: Array<RegisterAssetWithExternalBalance>): void {
+  setRegisteredAssets(state, assets: Record<string, EvmAccountAsset>): void {
     state.registeredAssets = assets;
     state.registeredAssetsFetching = false;
   },
   resetRegisteredAssets(state): void {
-    state.registeredAssets = [];
+    state.registeredAssets = {};
     state.registeredAssetsFetching = false;
+  },
+  setRegisteredAssetsBalancesUpdating(state, flag = false): void {
+    state.registeredAssetsBalancesUpdating = flag;
   },
 });
 

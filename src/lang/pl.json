@@ -523,13 +523,9 @@
         "strategicBonusApy": "Procentowa roczna stopa dochodu bonusu strategicznego"
     },
     "bridge": {
-        "title": "Most {Hashi}",
+        "title": "Most",
         "info": "Konwertuj tokeny między sieciami {Sora} i {Ethereum}.",
         "balance": "Saldo",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Dalej",
         "connectWallets": "Połącz z portfelami, aby zobaczyć historię poszczególnych transakcji.",
         "soraNetworkFee": "Opłata sieciowa sieci {Sora}",
@@ -543,8 +539,7 @@
         "networkInfo": "Połącz za pomocą mostu sieć {Sora} z:",
         "copy": "Skopiuj adres sieciowy",
         "soraAddress": "{Sora} adres",
-        "ethereumAddress": "{Ethereum} adres",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adres"
     },
     "selectRegisteredAsset": {
         "title": "Wybierz token",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Potwierdź transakcję",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Potwierdź transakcję"
     },
     "bridgeTransaction": {
         "details": "{from} do {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "Transakcja {network} w toku...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Utwórz nową transakcję",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText w portfelu {Metamask}",
-        "expectedAddress": "Spodziewany adres w portfelu {Metamask}",
         "title": "Transakcja mostowa",
         "expectedMetaMaskAddress": "Spodziewany adres w portfelu {Metamask}:",
         "allowToken": "Zezwól {AppName} na użycie Twojego {tokenSymbol}",
@@ -1212,5 +1199,6 @@
         "alertFrequencyTitle": "Częstotliwość alertów",
         "frequencyTooltip": "Wybierz pomiędzy „raz” a „zawsze”, aby określić, jak często będziesz otrzymywać powiadomienia dla wybranego typu alertu. „Raz” wyśle pojedyncze powiadomienie, gdy warunek zostanie spełniony, a „zawsze” będzie nadal powiadamiać Cię za każdym razem, gdy próg cenowy zostanie przekroczony",
         "noSupportMsg": "Twoja przeglądarka nie obsługuje powiadomień"
-    }
+    },
+    "accountAddressText": "Adres konta"
 }

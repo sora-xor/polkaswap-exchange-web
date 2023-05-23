@@ -77,6 +77,6 @@ const localGetterContext = <O extends StoreOrModuleOptions>(args: any, moduleNam
   };
 };
 
-export { modules, localGetterContext, localActionContext };
+export { modules, localGetterContext, localActionContext, rootGetterContext, rootActionContext };
 
 export default store;

@@ -523,13 +523,9 @@
         "strategicBonusApy": "Strategisk Bonus APY"
     },
     "bridge": {
-        "title": "{Hashi}-Brygga",
+        "title": "Brygga",
         "info": "Konvertera tokens mellan {Sora} och {Ethereum} nätverken.",
         "balance": "Saldo",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Nästa",
         "connectWallets": "Anslut plånböcker för att se respektive transaktionshistorik.",
         "soraNetworkFee": "{Sora} Nätverksavgift",
@@ -543,8 +539,7 @@
         "networkInfo": "Brygga {Sora} Nätverk med:",
         "copy": "Kopiera nätverksadress",
         "soraAddress": "{Sora} adress",
-        "ethereumAddress": "{Ethereum} adress",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adress"
     },
     "selectRegisteredAsset": {
         "title": "Välj en token",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Bekräfta transaktion",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Bekräfta transaktion"
     },
     "bridgeTransaction": {
         "details": "{from} för {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaktion väntande...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Skapa ny transaktion",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText i {Metamask}",
-        "expectedAddress": "Förväntad adress i {Metamask}",
         "title": "Transaktion över Brygga",
         "expectedMetaMaskAddress": "Förväntad adress i {Metamask}:",
         "allowToken": "Tillåt {AppName} att använda din {tokenSymbol}",
@@ -1212,5 +1199,6 @@
         "alertFrequencyTitle": "Varningsfrekvens",
         "frequencyTooltip": "Välj mellan \"en gång\" och \"alltid\" för att avgöra hur ofta du får aviseringar för den valda varningstypen. \"Once\" kommer att skicka ett enda meddelande när villkoret är uppfyllt, medan \"alltid\" kommer att fortsätta att meddela dig varje gång priströskeln passeras",
         "noSupportMsg": "Aviseringar stöds inte av din webbläsare"
-    }
+    },
+    "accountAddressText": "Kontoadress"
 }

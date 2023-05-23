@@ -1,36 +1,48 @@
 import { defineGetters } from 'direct-vuex';
 
 import { web3GetterContext } from '@/store/web3';
+import { EVM_NETWORKS, BridgeType } from '@/consts/evm';
+
+import type { EvmNetworkData, KnownEthBridgeAsset } from '@/consts/evm';
 import type { Web3State } from './types';
-import type { EvmNetworkType, KnownBridgeAsset } from '@/utils/ethers-util';
 
 const getters = defineGetters<Web3State>()({
-  contractAbi(...args): (asset: KnownBridgeAsset) => Nullable<any> {
-    return (asset: KnownBridgeAsset) => {
-      const { state } = web3GetterContext(args);
-      return state.smartContracts[state.evmNetwork][asset];
-    };
-  },
-  contractAddress(...args): (asset: KnownBridgeAsset) => Nullable<string> {
-    return (asset: KnownBridgeAsset) => {
-      const { state } = web3GetterContext(args);
-      return state.contractAddress[state.evmNetwork][asset];
-    };
-  },
   isExternalAccountConnected(...args): boolean {
     const { state } = web3GetterContext(args);
     return !!state.evmAddress && state.evmAddress !== 'undefined';
   },
-  defaultNetworkType(...args): Nullable<EvmNetworkType> {
+  availableNetworks(...args): Record<BridgeType, { disabled: boolean; data: EvmNetworkData }[]> {
     const { state } = web3GetterContext(args);
-    return state.subNetworks?.find((network: any) => network.id === state.evmNetwork)?.defaultType;
+    const format = (id: number) => ({ disabled: !state.evmNetworksChain.includes(id), data: EVM_NETWORKS[id] });
+    const hashi = [state.ethBridgeEvmNetwork].map((evmNetworkId) => ({
+      disabled: false,
+      data: EVM_NETWORKS[evmNetworkId],
+    }));
+    const evm = state.evmNetworksApp.map(format);
+
+    return {
+      [BridgeType.ETH]: hashi,
+      [BridgeType.EVM]: evm,
+      [BridgeType.SUB]: [],
+    };
   },
-  isValidNetworkType(...args): boolean {
-    const { state, getters } = web3GetterContext(args);
-    if (!state.networkType) {
-      return false;
-    }
-    return state.networkType === getters.defaultNetworkType;
+  connectedEvmNetwork(...args): Nullable<EvmNetworkData> {
+    const { state } = web3GetterContext(args);
+    return state.evmNetwork ? EVM_NETWORKS[state.evmNetwork] : null;
+  },
+  selectedEvmNetwork(...args): Nullable<EvmNetworkData> {
+    const { state } = web3GetterContext(args);
+    return state.evmNetworkSelected ? EVM_NETWORKS[state.evmNetworkSelected] : null;
+  },
+  isValidNetwork(...args): boolean {
+    const { state } = web3GetterContext(args);
+    return state.evmNetwork === state.evmNetworkSelected;
+  },
+  contractAddress(...args): (asset: KnownEthBridgeAsset) => Nullable<string> {
+    return (asset: KnownEthBridgeAsset) => {
+      const { state } = web3GetterContext(args);
+      return state.ethBridgeContractAddress[asset];
+    };
   },
 });
 

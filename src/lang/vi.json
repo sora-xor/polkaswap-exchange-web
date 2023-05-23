@@ -523,13 +523,9 @@
         "strategicBonusApy": "Tiền thưởng chiến lược APY"
     },
     "bridge": {
-        "title": "Cầu nối {Hashi}",
+        "title": "Cầu nối",
         "info": "Chuyển token giữa mạng {Sora} và {Ethereum}.",
         "balance": "Số dư",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Kế tiếp",
         "connectWallets": "Kết nối ví để xem lịch sử giao dịch tương ứng.",
         "soraNetworkFee": "Phí mạng {Sora}",
@@ -543,8 +539,7 @@
         "networkInfo": "Cầu nối Mạng {Sora} với:",
         "copy": "Sao chép địa chỉ mạng",
         "soraAddress": "địa chỉ {Sora}",
-        "ethereumAddress": "địa chỉ {Ethereum}",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "địa chỉ {Ethereum}"
     },
     "selectRegisteredAsset": {
         "title": "Chọn token",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Xác nhận giao dịch",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Xác nhận giao dịch"
     },
     "bridgeTransaction": {
         "details": "{from} tới {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} giao dịch đang chờ xử lý...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Tạo giao dịch mới",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText trong {Metamask}",
-        "expectedAddress": "Địa chỉ dự kiến trên {Metamask}",
         "title": "Giao dịch cầu nối",
         "expectedMetaMaskAddress": "Địa chỉ dự kiến trên {Metamask}:",
         "allowToken": "Cho phép {AppName} được dùng {tokenSymbol} của bạn",
@@ -1212,5 +1199,6 @@
         "alertFrequencyTitle": "Tần suất cảnh báo",
         "frequencyTooltip": "Chọn giữa 'một lần' và 'luôn luôn' để xác định tần suất bạn nhận được thông báo cho loại cảnh báo đã chọn. 'Một lần' sẽ gửi một thông báo khi điều kiện được đáp ứng, trong khi 'luôn luôn' sẽ tiếp tục thông báo cho bạn mỗi khi vượt qua ngưỡng giá",
         "noSupportMsg": "Thông báo không được trình duyệt của bạn hỗ trợ"
-    }
+    },
+    "accountAddressText": "Địa chỉ tài khoản"
 }
