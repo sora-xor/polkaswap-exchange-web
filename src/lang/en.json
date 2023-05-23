@@ -1197,7 +1197,9 @@
         "typeTooltip": "Choose either 'drops below' or 'raises above' option to specify alert condition for tracking important price movements. These options allow you receive timely notifications when the value of your asset either falls below or rises above your designated threshold",
         "alertFrequencyTitle": "Alert frequency",
         "frequencyTooltip": "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed",
-        "noSupportMsg": "Notifications aren't supported by your browser"
+        "noSupportMsg": "Notifications aren't supported by your browser",
+        "finishBtn": "Finish alert setup"
     },
-    "accountAddressText": "Account address"
+    "accountAddressText": "Account address",
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API)  are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed."
 }

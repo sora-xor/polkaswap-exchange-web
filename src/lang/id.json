@@ -1197,7 +1197,9 @@
         "typeTooltip": "Pilih opsi 'turun di bawah' atau 'naik di atas' untuk menentukan kondisi waspada untuk melacak pergerakan harga penting. Opsi ini memungkinkan Anda menerima pemberitahuan tepat waktu saat nilai aset Anda turun di bawah atau naik di atas ambang batas yang Anda tetapkan",
         "alertFrequencyTitle": "Frekuensi peringatan",
         "frequencyTooltip": "Pilih antara 'sekali' dan 'selalu' untuk menentukan seberapa sering Anda menerima pemberitahuan untuk jenis lansiran yang dipilih. 'Sekali' akan mengirimkan satu notifikasi saat kondisi terpenuhi, sementara 'selalu' akan terus memberi tahu Anda setiap kali ambang harga dilewati",
-        "noSupportMsg": "Notifikasi tidak didukung oleh browser Anda"
+        "noSupportMsg": "Notifikasi tidak didukung oleh browser Anda",
+        "finishBtn": "Untuk menyelesaikan"
     },
-    "accountAddressText": "Alamat akun"
+    "accountAddressText": "Alamat akun",
+    "fiatDisclaimer": "Harap perhatikan bahwa nilai fiat yang terkait dengan cryptocurrency di situs web kami disediakan oleh layanan eksternal (Subquery, Subsquid, Ceres API) adalah perkiraan. Mengingat kerumitan perhitungan ini, presisi mutlak setiap saat tidak dapat dijamin."
 }
