@@ -41,7 +41,9 @@ const actions = defineActions({
     const { node, onError, currentNodeIndex = 0, ...restOptions } = options;
     const defaultNode = getters.nodeList[currentNodeIndex];
     const requestedNode = (node || (state.node.address ? state.node : defaultNode)) as Nullable<Node>;
-    const walletOptions = { permissions: WalletPermissions };
+    const walletOptions = {
+      permissions: WalletPermissions,
+    };
 
     try {
       // Run in parallel

@@ -1191,14 +1191,14 @@
         "alertsCreateTitle": "Preisalarm einrichten",
         "alertsTooltip": "Preisalarme sind Benachrichtigungen, die von Ihnen eingestellt werden können, um Updates zu erhalten, wenn der Preis eines bestimmten Tokens einen bestimmten, von Ihnen festgelegten Punkt erreicht",
         "createBtn": "Neuen Preisalarm erstellen",
-        "finishBtn": "Schließen Sie die Alarmeinrichtung ab",
         "enableSwitch": "Aktivieren Sie Benachrichtigungen zur Hinterlegung von Vermögenswerten",
         "currentPrice": "derzeitiger Preis",
         "alertTypeTitle": "Alarmtyp",
         "typeTooltip": "Wählen Sie entweder die Option „fällt unter“ oder „erhöht sich“, um die Alarmbedingung für die Verfolgung wichtiger Preisbewegungen festzulegen. Diese Optionen ermöglichen es Ihnen, zeitnahe Benachrichtigungen zu erhalten, wenn der Wert Ihres Vermögens entweder unter oder über Ihren festgelegten Schwellenwert fällt",
         "alertFrequencyTitle": "Alarmhäufigkeit",
         "frequencyTooltip": "Wählen Sie zwischen „Einmal“ und „Immer“, um festzulegen, wie oft Sie Benachrichtigungen für den ausgewählten Alarmtyp erhalten. „Einmal“ sendet eine einzelne Benachrichtigung, wenn die Bedingung erfüllt ist, während „immer“ Sie weiterhin jedes Mal benachrichtigt, wenn die Preisschwelle überschritten wird",
-        "noSupportMsg": "Benachrichtigungen werden von Ihrem Browser nicht unterstützt"
+        "noSupportMsg": "Benachrichtigungen werden von Ihrem Browser nicht unterstützt",
+        "finishBtn": "Fertigstellen"
     },
     "accountAddressText": "Kontoadresse",
     "fiatDisclaimer": "Bitte beachten Sie, dass die mit Kryptowährungen auf unserer Website verbundenen Fiat-Werte, die von externen Diensten (Subquery, Subsquid, Ceres API) bereitgestellt werden, ungefähre Werte sind. Aufgrund der inhärenten Komplexität dieser Berechnungen kann eine absolute Genauigkeit zu jedem Zeitpunkt nicht garantiert werden."

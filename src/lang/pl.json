@@ -1191,14 +1191,14 @@
         "alertsCreateTitle": "Ustaw alert cenowy",
         "alertsTooltip": "Alerty cenowe to powiadomienia, które możesz ustawić, aby otrzymywać aktualizacje, gdy cena określonego tokena osiągnie określony przez Ciebie punkt",
         "createBtn": "Utwórz nowy alert cenowy",
-        "finishBtn": "Zakończ konfigurację alertu",
         "enableSwitch": "Włącz powiadomienia o depozytach aktywów",
         "currentPrice": "aktualna cena",
         "alertTypeTitle": "Typ alertu",
         "typeTooltip": "Wybierz opcję „spada poniżej” lub „podbija powyżej”, aby określić warunek alertu do śledzenia ważnych ruchów cen. Opcje te umożliwiają otrzymywanie na czas powiadomień, gdy wartość aktywów spadnie poniżej lub wzrośnie powyżej wyznaczonego progu",
         "alertFrequencyTitle": "Częstotliwość alertów",
         "frequencyTooltip": "Wybierz pomiędzy „raz” a „zawsze”, aby określić, jak często będziesz otrzymywać powiadomienia dla wybranego typu alertu. „Raz” wyśle pojedyncze powiadomienie, gdy warunek zostanie spełniony, a „zawsze” będzie nadal powiadamiać Cię za każdym razem, gdy próg cenowy zostanie przekroczony",
-        "noSupportMsg": "Twoja przeglądarka nie obsługuje powiadomień"
+        "noSupportMsg": "Twoja przeglądarka nie obsługuje powiadomień",
+        "finishBtn": "Ukończyć"
     },
     "accountAddressText": "Adres konta",
     "fiatDisclaimer": "Należy pamiętać, że wartości fiducjarne związane z kryptowalutami na naszej stronie dostarczane przez zewnętrzne usługi (Subquery, Subsquid, Ceres API) są przybliżone. Biorąc pod uwagę naturalną złożoność tych obliczeń, nie można zagwarantować absolutnej precyzji przez cały czas."

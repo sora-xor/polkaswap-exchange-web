@@ -469,6 +469,7 @@ export default {
     allowToken: 'Allow {AppName} to use your {tokenSymbol}',
     approveToken:
       'Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.',
+    accountAddress: '{network} @:accountAddressText',
   },
   bridgeHistory: {
     title: 'History',
@@ -816,6 +817,7 @@ export default {
   },
   assetDeposit: 'Asset balance has been deposited',
   ofText: '{first} of {second}',
+  accountAddressText: 'Account address',
   tooltips: {
     roi: '{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.',
     tvl: '{TVL} stands for Total Value Locked. It represents tokens locked in the pools in the dollar equivalent.',

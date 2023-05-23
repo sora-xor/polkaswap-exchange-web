@@ -178,8 +178,6 @@ export default class Rewards extends Mixins(
     this.setStartSubscriptions([this.subscribeOnRewards]);
     this.setResetSubscriptions([this.unsubscribeFromRewards]);
 
-    this.setEvmNetworkType();
-
     this.unwatchEthereum = await ethersUtil.watchEthereum({
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
@@ -188,11 +186,11 @@ export default class Rewards extends Mixins(
           this.disconnectExternalAccountProcess();
         }
       },
-      onNetworkChange: (networkId: string) => {
-        this.setEvmNetworkType(networkId);
+      onNetworkChange: (networkHex: string) => {
+        this.connectEvmNetwork(networkHex);
       },
       onDisconnect: () => {
-        this.disconnectExternalAccountProcess();
+        this.disconnectExternalNetwork();
       },
     });
   }

@@ -1191,7 +1191,6 @@
         "alertsCreateTitle": "Set up price alert",
         "alertsTooltip": "Price alerts are notifications that can be set by you to receive updates when the price of a particular token reaches certain point you set",
         "createBtn": "Create new price alert",
-        "finishBtn": "Finish alert setup",
         "enableSwitch": "Enable asset deposit notifications",
         "currentPrice": "current price",
         "alertTypeTitle": "Alert type",

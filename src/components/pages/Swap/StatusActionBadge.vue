@@ -20,6 +20,7 @@ export default class SwapStatusActionBadge extends Vue {}
 </style>
 
 <style lang="scss" scoped>
+$max-width: 150px;
 $base-class: '.status-action-badge';
 
 .s-card#{$base-class} {
@@ -33,6 +34,7 @@ $base-class: '.status-action-badge';
   text-transform: uppercase;
   overflow: unset;
   box-shadow: var(--s-shadow-element);
+  max-width: $max-width;
 
   #{$base-class}__label {
     margin-right: $inner-spacing-tiny;
@@ -40,6 +42,8 @@ $base-class: '.status-action-badge';
 
   #{$base-class}__value {
     color: var(--s-color-theme-accent);
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   #{$base-class}__action {

@@ -1191,14 +1191,14 @@
         "alertsCreateTitle": "Nastavit upozornění na cenu",
         "alertsTooltip": "Upozornění na cenu jsou upozornění, která si můžete nastavit tak, abyste dostávali aktualizace, když cena konkrétního tokenu dosáhne určitého bodu, který nastavíte",
         "createBtn": "Vytvořit nové upozornění na cenu",
-        "finishBtn": "Dokončete nastavení upozornění",
         "enableSwitch": "Povolit oznámení o vkladu majetku",
         "currentPrice": "aktuální cena",
         "alertTypeTitle": "Typ upozornění",
         "typeTooltip": "Chcete-li zadat varovnou podmínku pro sledování důležitých cenových pohybů, vyberte možnost „pokles pod“ nebo „navýšení výše“. Tyto možnosti vám umožňují dostávat včasná upozornění, když hodnota vašeho aktiva klesne pod nebo překročí vaši stanovenou hranici",
         "alertFrequencyTitle": "Frekvence upozornění",
         "frequencyTooltip": "Výběrem mezi „jednou“ a „vždy“ určíte, jak často budete dostávat upozornění pro vybraný typ upozornění. „Jednou“ odešle jediné upozornění, když je podmínka splněna, zatímco „vždy“ vás bude i nadále upozorňovat při každém překročení cenového prahu",
-        "noSupportMsg": "Váš prohlížeč nepodporuje upozornění"
+        "noSupportMsg": "Váš prohlížeč nepodporuje upozornění",
+        "finishBtn": "Dokončit"
     },
     "accountAddressText": "Adresa účtu",
     "fiatDisclaimer": "Vezměte prosím na vědomí, že hodnoty fiat spojené s kryptoměnami na našich webových stránkách jsou poskytovány externími službami (Subquery, Subsquid, Ceres API) jsou přibližné. Vzhledem k přirozené složitosti těchto výpočtů nelze zaručit absolutní přesnost za všech okolností."
