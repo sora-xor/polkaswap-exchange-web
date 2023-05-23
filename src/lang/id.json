@@ -1106,7 +1106,7 @@
         "exportTutorialsText": "Ekspor tutorial"
     },
     "hashiBridgeText": "Jembatan {Hashi}",
-    "disclaimerTitle": "Penafian:",
+    "disclaimerTitle": "Penafian",
     "explore": {
         "showOnlyMyPositions": "Hanya tampilkan posisi saya"
     },
@@ -1191,7 +1191,6 @@
         "alertsCreateTitle": "Siapkan peringatan harga",
         "alertsTooltip": "Peringatan harga adalah pemberitahuan yang dapat Anda atur untuk menerima pembaruan saat harga token tertentu mencapai titik tertentu yang Anda tetapkan",
         "createBtn": "Buat peringatan harga baru",
-        "finishBtn": "Selesaikan penyiapan lansiran",
         "enableSwitch": "Aktifkan notifikasi setoran aset",
         "currentPrice": "harga sekarang",
         "alertTypeTitle": "Jenis peringatan",

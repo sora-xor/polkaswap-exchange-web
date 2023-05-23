@@ -1106,7 +1106,7 @@
         "exportTutorialsText": "Tutoriales de exportación"
     },
     "hashiBridgeText": "Puente {Hashi}",
-    "disclaimerTitle": "Aviso legal:",
+    "disclaimerTitle": "Aviso legal",
     "explore": {
         "showOnlyMyPositions": "Mostrar solo mis posiciones"
     },
@@ -1191,14 +1191,15 @@
         "alertsCreateTitle": "Configurar alerta de precio",
         "alertsTooltip": "Las alertas de precios son notificaciones que usted puede configurar para recibir actualizaciones cuando el precio de un token en particular alcance cierto punto que usted establezca.",
         "createBtn": "Crear nueva alerta de precio",
-        "finishBtn": "Finalizar configuración de alerta",
         "enableSwitch": "Habilitar notificaciones de depósito de activos",
         "currentPrice": "precio actual",
         "alertTypeTitle": "Tipo de alerta",
         "typeTooltip": "Elija la opción 'cae por debajo' o 'sube por encima' para especificar la condición de alerta para el seguimiento de movimientos de precios importantes. Estas opciones le permiten recibir notificaciones oportunas cuando el valor de su activo cae por debajo o sube por encima de su umbral designado",
         "alertFrequencyTitle": "Frecuencia de alerta",
         "frequencyTooltip": "Seleccione entre 'una vez' y 'siempre' para determinar con qué frecuencia recibe notificaciones para el tipo de alerta elegido. 'Una vez' enviará una única notificación cuando se cumpla la condición, mientras que 'siempre' seguirá notificándote cada vez que se supere el umbral de precio.",
-        "noSupportMsg": "Las notificaciones no son compatibles con su navegador"
+        "noSupportMsg": "Las notificaciones no son compatibles con su navegador",
+        "finishBtn": "Completar"
     },
-    "accountAddressText": "Dirección de la cuenta"
+    "accountAddressText": "Dirección de la cuenta",
+    "fiatDisclaimer": "Tenga en cuenta que los valores fiduciarios asociados con las criptomonedas en nuestro sitio web son proporcionados por servicios externos (Subquery, Subsquid, Ceres API) y son aproximados. Dada la complejidad inherente a estos cálculos, no se puede garantizar la precisión absoluta en todo momento."
 }

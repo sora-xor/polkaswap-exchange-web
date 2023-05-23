@@ -1106,7 +1106,7 @@
         "exportTutorialsText": "Exporter des tutoriels"
     },
     "hashiBridgeText": "Pont {Hashi}",
-    "disclaimerTitle": "Avertissement:",
+    "disclaimerTitle": "Avertissement",
     "explore": {
         "showOnlyMyPositions": "Afficher uniquement mes positions"
     },
@@ -1191,14 +1191,15 @@
         "alertsCreateTitle": "Configurer une alerte de prix",
         "alertsTooltip": "Les alertes de prix sont des notifications que vous pouvez définir pour recevoir des mises à jour lorsque le prix d'un jeton particulier atteint un certain point que vous avez défini",
         "createBtn": "Créer une nouvelle alerte de prix",
-        "finishBtn": "Terminer la configuration de l'alerte",
         "enableSwitch": "Activer les notifications de dépôt d'actifs",
         "currentPrice": "prix actuel",
         "alertTypeTitle": "Type d'alerte",
         "typeTooltip": "Choisissez l'option \"baisse en dessous\" ou \"augmente au-dessus\" pour spécifier la condition d'alerte pour le suivi des mouvements de prix importants. Ces options vous permettent de recevoir des notifications en temps opportun lorsque la valeur de votre actif tombe en dessous ou dépasse votre seuil désigné.",
         "alertFrequencyTitle": "Fréquence d'alerte",
         "frequencyTooltip": "Sélectionnez entre « une fois » et « toujours » pour déterminer la fréquence à laquelle vous recevez des notifications pour le type d'alerte choisi. \"Une fois\" enverra une seule notification lorsque la condition est remplie, tandis que \"toujours\" continuera à vous informer chaque fois que le seuil de prix est franchi",
-        "noSupportMsg": "Les notifications ne sont pas prises en charge par votre navigateur"
+        "noSupportMsg": "Les notifications ne sont pas prises en charge par votre navigateur",
+        "finishBtn": "Compléter"
     },
-    "accountAddressText": "Adresse du compte"
+    "accountAddressText": "Adresse du compte",
+    "fiatDisclaimer": "Veuillez noter que les valeurs fiduciaires associées aux crypto-monnaies sur notre site Web sont fournies par des services externes (Subquery, Subsquid, Ceres API) sont approximatives. Compte tenu de la complexité inhérente à ces calculs, une précision absolue à tout moment ne peut être garantie."
 }

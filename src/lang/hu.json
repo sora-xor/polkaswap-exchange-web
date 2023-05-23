@@ -1106,7 +1106,7 @@
         "exportTutorialsText": "Oktatóanyagok exportálása"
     },
     "hashiBridgeText": "{Hashi} híd",
-    "disclaimerTitle": "Jogi nyilatkozat:",
+    "disclaimerTitle": "Jogi nyilatkozat",
     "explore": {
         "showOnlyMyPositions": "Csak az én pozíciómat mutasd"
     },
@@ -1191,14 +1191,15 @@
         "alertsCreateTitle": "Árriasztás beállítása",
         "alertsTooltip": "Az árriasztások olyan értesítések, amelyeket Ön beállíthat, hogy frissítéseket kapjon, amikor egy adott token ára elér egy meghatározott pontot",
         "createBtn": "Hozzon létre új árriasztást",
-        "finishBtn": "Fejezze be a riasztás beállítását",
         "enableSwitch": "Eszközbefizetési értesítések engedélyezése",
         "currentPrice": "jelenlegi ár",
         "alertTypeTitle": "Figyelmeztetés típusa",
         "typeTooltip": "Válassza az „alul csökken” vagy a „feljebb emelkedik” opciót, ha figyelmeztetési feltételt szeretne megadni a fontos ármozgások nyomon követéséhez. Ezek az opciók lehetővé teszik, hogy időben értesítést kapjon, ha az eszköz értéke a kijelölt küszöb alá esik vagy fölé emelkedik.",
         "alertFrequencyTitle": "Riasztási gyakoriság",
         "frequencyTooltip": "Válassza az „egyszer” és a „mindig” lehetőséget annak meghatározásához, hogy milyen gyakran kap értesítést a kiválasztott riasztástípusról. Az „Egyszer” egyetlen értesítést küld, ha a feltétel teljesül, míg az „always” továbbra is értesít minden alkalommal, amikor az árküszöböt átlépi.",
-        "noSupportMsg": "Az Ön böngészője nem támogatja az értesítéseket"
+        "noSupportMsg": "Az Ön böngészője nem támogatja az értesítéseket",
+        "finishBtn": "Teljesíteni"
     },
-    "accountAddressText": "Fiók címe"
+    "accountAddressText": "Fiók címe",
+    "fiatDisclaimer": "Felhívjuk figyelmét, hogy a weboldalunkon a kriptovalutákhoz társított fiat értékeket külső szolgáltatások (Subquery, Subsquid, Ceres API) biztosítják, hozzávetőlegesek. Tekintettel ezeknek a számításoknak a bonyolultságára, nem garantálható a mindenkori abszolút pontosság."
 }

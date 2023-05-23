@@ -1106,7 +1106,7 @@
         "exportTutorialsText": "Exportera självstudier"
     },
     "hashiBridgeText": "{Hashi} bro",
-    "disclaimerTitle": "Ansvarsfriskrivning:",
+    "disclaimerTitle": "Ansvarsfriskrivning",
     "explore": {
         "showOnlyMyPositions": "Visa bara mina positioner"
     },
@@ -1191,14 +1191,15 @@
         "alertsCreateTitle": "Ställ in prisavisering",
         "alertsTooltip": "Prisaviseringar är aviseringar som kan ställas in av dig för att ta emot uppdateringar när priset på en viss token når en viss punkt som du anger",
         "createBtn": "Skapa ny prisavisering",
-        "finishBtn": "Slutför varningskonfigurationen",
         "enableSwitch": "Aktivera aviseringar om insättning av tillgångar",
         "currentPrice": "nuvarande pris",
         "alertTypeTitle": "Varningstyp",
         "typeTooltip": "Välj antingen alternativet \"sjunker under\" eller \"höjer över\" för att ange varningsvillkor för att spåra viktiga prisrörelser. Dessa alternativ låter dig få aviseringar i rätt tid när värdet på din tillgång antingen faller under eller stiger över din angivna tröskel",
         "alertFrequencyTitle": "Varningsfrekvens",
         "frequencyTooltip": "Välj mellan \"en gång\" och \"alltid\" för att avgöra hur ofta du får aviseringar för den valda varningstypen. \"Once\" kommer att skicka ett enda meddelande när villkoret är uppfyllt, medan \"alltid\" kommer att fortsätta att meddela dig varje gång priströskeln passeras",
-        "noSupportMsg": "Aviseringar stöds inte av din webbläsare"
+        "noSupportMsg": "Aviseringar stöds inte av din webbläsare",
+        "finishBtn": "Att slutföra"
     },
-    "accountAddressText": "Kontoadress"
+    "accountAddressText": "Kontoadress",
+    "fiatDisclaimer": "Observera att fiat-värdena förknippade med kryptovalutor på vår webbplats tillhandahålls av externa tjänster (Subquery, Subsquid, Ceres API) är ungefärliga. Med tanke på den inneboende komplexiteten i dessa beräkningar kan absolut precision inte alltid garanteras."
 }
