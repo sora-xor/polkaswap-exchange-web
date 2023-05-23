@@ -51,6 +51,7 @@ import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web'
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 
@@ -66,8 +67,8 @@ import { action, getter, mutation, state } from '@/store/decorators';
 import { preloadFontFace, updateDocumentTitle } from '@/utils';
 import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
-import type { SubNetwork } from '@/utils/ethers-util';
 import type { FeatureFlags } from '@/store/settings/types';
+import type { EthBridgeSettings } from '@/store/web3/types';
 
 @Component({
   components: {
@@ -117,7 +118,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
-  @mutation.web3.setSubNetworks private setSubNetworks!: (data: Array<SubNetwork>) => void;
+  @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
+  @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => Promise<void>;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
 
   @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
@@ -127,7 +129,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
   @action.settings.setBlockNumber private setBlockNumber!: AsyncFnWithoutArgs;
-  @action.web3.setSmartContracts private setSmartContracts!: (data: Array<SubNetwork>) => Promise<void>;
   @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
   @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
     asset: WhitelistArrayItem;
@@ -206,12 +207,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       }
 
       await this.setApiKeys(data?.API_KEYS);
+      await this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
-      this.setSubNetworks(data.SUB_NETWORKS);
-      await this.setSmartContracts(data.SUB_NETWORKS);
+      this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);

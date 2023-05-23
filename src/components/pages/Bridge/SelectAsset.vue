@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -39,7 +39,9 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
+import { state } from '@/store/decorators';
+
+import type { EvmAccountAsset } from '@/store/assets/types';
 
 @Component({
   components: {
@@ -51,17 +53,15 @@ import { state, getter } from '@/store/decorators';
 export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
-  @state.assets.registeredAssets private registeredAssets!: Array<RegisteredAccountAsset>;
+  @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
-  @getter.wallet.account.accountAssetsAddressTable private accountAssetsAddressTable!: WALLET_TYPES.AccountAssetsTable;
 
   get assetsList(): Array<RegisteredAccountAsset> {
-    const { registeredAssets: assets, accountAssetsAddressTable, asset: excludeAsset } = this;
+    const assetsAddresses = Object.keys(this.registeredAssets);
+    const excludeAddress = this.asset?.address;
 
-    return this.getAssetsWithBalances({ assets, accountAssetsAddressTable, excludeAsset }).sort(
-      this.sortByBalance(!this.isSoraToEvm)
-    ) as Array<RegisteredAccountAsset>;
+    return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance(!this.isSoraToEvm));
   }
 
   get filteredAssets(): Array<RegisteredAccountAsset> {

@@ -74,6 +74,8 @@ $s-transition-default: all 0.125s ease-in-out;
 // Asset item height
 $s-asset-item-height: 71px;
 $s-asset-item-height--fiat: 86px;
+// override dark theme on disabled
+$s-color-base-on-disabled--dark: #C29AB7;
 
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
 

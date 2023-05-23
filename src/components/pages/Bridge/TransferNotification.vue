@@ -21,15 +21,14 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
+import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import ethersUtil from '@/utils/ethers-util';
-import { isEthereumAddress } from '@/utils';
-import { isOutgoingTransaction } from '@/utils/bridge';
+import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { getter, state, mutation } from '@/store/decorators';
 
-import type { BridgeHistory, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';
 import type { Whitelist } from '@sora-substrate/util/build/assets/types';
 
 @Component({
@@ -40,12 +39,12 @@ import type { Whitelist } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class BridgeTransferNotification extends Mixins(TranslationMixin) {
-  @state.bridge.notificationData private tx!: Nullable<BridgeHistory>;
+  @state.bridge.notificationData private tx!: Nullable<IBridgeTransaction>;
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
-  @mutation.bridge.setNotificationData private setNotificationData!: (tx?: BridgeHistory) => void;
+  @mutation.bridge.setNotificationData private setNotificationData!: (tx?: IBridgeTransaction) => void;
 
   get visibility(): boolean {
     return !!this.tx;
@@ -68,7 +67,9 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
   }
 
   get addTokenBtnVisibility(): boolean {
-    return !!this.asset && !isEthereumAddress(this.asset.externalAddress) && isOutgoingTransaction(this.tx);
+    return (
+      !!this.asset && !ethersUtil.isNativeEvmTokenAddress(this.asset.externalAddress) && isOutgoingTransaction(this.tx)
+    );
   }
 
   close(): void {
@@ -78,8 +79,7 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
   async addToken(): Promise<void> {
     if (!this.asset) return;
 
-    const { externalAddress, externalDecimals, symbol, address } = this.asset as RegisteredAccountAsset &
-      RegisteredAsset;
+    const { externalAddress, externalDecimals, symbol, address } = this.asset;
     const image = this.whitelist[address]?.icon;
     await ethersUtil.addToken(externalAddress, symbol, +externalDecimals, image);
   }

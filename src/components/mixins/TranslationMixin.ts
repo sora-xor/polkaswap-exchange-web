@@ -26,6 +26,7 @@ const TranslationConsts = {
   AppName: app.name,
   APR: 'APR', // Annual percentage rate
   TVL: 'TVL',
+  EVM: 'EVM',
   Kusama: 'Kusama',
   Metamask: 'MetaMask',
   Polkaswap: 'Polkaswap',

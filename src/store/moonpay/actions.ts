@@ -5,8 +5,8 @@ import { ethers } from 'ethers';
 import { moonpayActionContext } from '@/store/moonpay';
 import ethersUtil from '@/utils/ethers-util';
 import { EthAddress } from '@/consts';
+import { SmartContracts, SmartContractType } from '@/consts/evm';
 import type { MoonpayEVMTransferAssetData } from '@/utils/moonpay';
-import type { RegisterAssetWithExternalBalance } from '../assets/types';
 
 const POLLING_INTERVAL = 15_000;
 
@@ -83,7 +83,7 @@ const actions = defineActions({
         };
       } else {
         // Parse ERC-20 transfer
-        const abi = ['function transfer(address to, uint256 value)'];
+        const abi = SmartContracts[SmartContractType.ERC20].abi;
         const inter = new ethers.utils.Interface(abi);
         const decodedInput = inter.parseTransaction({ data: tx.data });
         const address = tx.to ?? ''; // asset address
@@ -103,21 +103,6 @@ const actions = defineActions({
       console.error(error);
       return null;
     }
-  },
-  async findRegisteredAssetByExternalAddress(
-    context,
-    externalAddress: string
-  ): Promise<Nullable<RegisterAssetWithExternalBalance>> {
-    const { rootState, rootDispatch } = moonpayActionContext(context);
-    if (!externalAddress) return undefined;
-
-    await rootDispatch.assets.updateRegisteredAssets();
-
-    const registeredAssets = rootState.assets.registeredAssets;
-    const searchAddress = externalAddress.toLowerCase();
-    const asset = registeredAssets.find((asset) => asset.externalAddress.toLowerCase() === searchAddress);
-
-    return asset;
   },
 });
 
