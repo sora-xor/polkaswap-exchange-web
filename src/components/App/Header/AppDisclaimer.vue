@@ -21,6 +21,7 @@
           })
         "
       />
+      <p class="disclaimer__text-fiat">{{ t('fiatDisclaimer') }}</p>
     </div>
     <s-button
       v-if="!userDisclaimerApprove"
@@ -66,7 +67,7 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   }
 
   get disclaimerPrefix(): string {
-    return `<span class="disclaimer__prefix">${this.t('disclaimerTitle')}</span>`;
+    return `<span class="disclaimer__prefix">${this.t('disclaimerTitle')}:</span>`;
   }
 
   get memorandumLink(): string {
@@ -143,6 +144,10 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
     line-height: var(--s-line-height-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
+
+    &-fiat {
+      margin-top: $basic-spacing;
+    }
   }
 
   &__accept-btn {

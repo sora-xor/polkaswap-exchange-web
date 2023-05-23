@@ -523,13 +523,9 @@
         "strategicBonusApy": "Strateški bonus APY"
     },
     "bridge": {
-        "title": "Most {Hashi}-a",
+        "title": "Most",
         "info": "Pretvorite tokene između mreža {Sora} i {Ethereum}.",
         "balance": "Stanje",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Sljedeći",
         "connectWallets": "Povežite novčanike da biste vidjeli odgovarajuću povijest transakcija.",
         "soraNetworkFee": "{Sora} mrežna naknada",
@@ -543,8 +539,7 @@
         "networkInfo": "Bridge {Sora} mrežna naknada s:",
         "copy": "Kopiraj mrežnu adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adresa"
     },
     "selectRegisteredAsset": {
         "title": "Odaberite token",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Potvrdite transakciju",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Potvrdite transakciju"
     },
     "bridgeTransaction": {
         "details": "{from} za {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transakcija na čekanju...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Izradite novu transakciju",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText u {Metamask}",
-        "expectedAddress": "Očekivana adresa u {Metamask}",
         "title": "Bridge transakcije",
         "expectedMetaMaskAddress": "Očekivana adresa u {Metamask}:",
         "allowToken": "Dopustite {AppName} da koristi vaš {tokenSymbol}",
@@ -1204,13 +1191,15 @@
         "alertsCreateTitle": "Postavite upozorenje o cijenama",
         "alertsTooltip": "Upozorenja o cijenama su obavijesti koje možete postaviti kako biste primali ažuriranja kada cijena određenog tokena dosegne određenu točku koju ste postavili",
         "createBtn": "Stvorite novo upozorenje o cijeni",
-        "finishBtn": "Dovršite postavljanje upozorenja",
         "enableSwitch": "Omogući obavijesti o depozitu imovine",
         "currentPrice": "Trenutna cijena",
         "alertTypeTitle": "Vrsta upozorenja",
         "typeTooltip": "Odaberite opciju 'pada ispod' ili 'diže se' kako biste odredili uvjet upozorenja za praćenje važnih kretanja cijene. Ove vam opcije omogućuju primanje pravovremenih obavijesti kada vrijednost vaše imovine padne ispod ili poraste iznad vašeg određenog praga",
         "alertFrequencyTitle": "Učestalost upozorenja",
         "frequencyTooltip": "Odaberite između 'jednom' i 'uvijek' kako biste odredili koliko često primate obavijesti za odabranu vrstu upozorenja. \"Jednom\" će poslati jednu obavijest kada je uvjet ispunjen, dok će \"uvijek\" nastaviti obavještavati vas svaki put kada se prijeđe cjenovni prag",
-        "noSupportMsg": "Vaš preglednik ne podržava obavijesti"
-    }
+        "noSupportMsg": "Vaš preglednik ne podržava obavijesti",
+        "finishBtn": "Dovršiti"
+    },
+    "accountAddressText": "Adresa računa",
+    "fiatDisclaimer": "Imajte na umu da su fiat vrijednosti povezane s kriptovalutama na našoj web stranici dane od strane vanjskih usluga (Subquery, Subsquid, Ceres API) približne. S obzirom na inherentnu složenost ovih izračuna, ne može se jamčiti apsolutna preciznost u svakom trenutku."
 }

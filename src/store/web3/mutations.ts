@@ -1,25 +1,15 @@
-import Vue from 'vue';
 import { defineMutations } from 'direct-vuex';
-import { BridgeNetworks, CodecString } from '@sora-substrate/util';
+import { CodecString } from '@sora-substrate/util';
 
 import ethersUtil from '@/utils/ethers-util';
-import { bridgeApi } from '@/utils/bridge';
-import { initialState } from './state';
-import type { SubNetwork } from '@/utils/ethers-util';
-import type { Web3State } from './types';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+
+import { ZeroStringValue } from '@/consts';
+
+import type { Web3State, EthBridgeSettings } from './types';
+import type { BridgeType } from '@/consts/evm';
 
 const mutations = defineMutations<Web3State>()({
-  reset(state): void {
-    // we shouldn't reset networks, which were set from env & contracts
-    const networkSettingsKeys = ['contractAddress', 'subNetworks', 'smartContracts'];
-    const s = initialState();
-
-    Object.keys(s)
-      .filter((key) => !networkSettingsKeys.includes(key))
-      .forEach((key) => {
-        state[key] = s[key];
-      });
-  },
   setEvmAddress(state, address: string): void {
     state.evmAddress = address;
     ethersUtil.storeEvmUserAddress(address);
@@ -28,38 +18,48 @@ const mutations = defineMutations<Web3State>()({
     state.evmAddress = '';
     ethersUtil.removeEvmUserAddress();
   },
-  setNetworkType(state, networkType: string): void {
-    state.networkType = networkType;
+  setEvmNetworksApp(state, networksIds: EvmNetwork[]): void {
+    state.evmNetworksApp = networksIds;
   },
-  setSubNetworks(state, subNetworks: Array<SubNetwork>): void {
-    state.subNetworks = subNetworks;
+  setEvmNetworksChain(state, networksIds: EvmNetwork[]): void {
+    state.evmNetworksChain = networksIds;
   },
-  setEvmNetwork(state, network: BridgeNetworks): void {
-    state.evmNetwork = network;
-    bridgeApi.externalNetwork = network;
+  // by provider
+  setEvmNetwork(state, networkId: EvmNetwork): void {
+    state.evmNetwork = networkId;
+  },
+  resetEvmNetwork(state): void {
+    state.evmNetwork = null;
+  },
+  // by user
+  setSelectedEvmNetwork(state, networkId: EvmNetwork): void {
+    state.evmNetworkSelected = networkId;
+    ethersUtil.storeSelectedEvmNetwork(networkId);
   },
   setEvmBalance(state, balance: CodecString): void {
     state.evmBalance = balance;
   },
-  setEthSmartContracts(state, { contracts, address }): void {
-    Vue.set(state.smartContracts, BridgeNetworks.ETH_NETWORK_ID, {
-      XOR: contracts.XOR,
-      VAL: contracts.VAL,
-      OTHER: contracts.OTHER,
-    });
-    Vue.set(state.contractAddress, BridgeNetworks.ETH_NETWORK_ID, {
+  resetEvmBalance(state): void {
+    state.evmBalance = ZeroStringValue;
+  },
+
+  setNetworkType(state, networkType: BridgeType) {
+    state.networkType = networkType;
+    ethersUtil.storeSelectedBridgeType(networkType);
+  },
+
+  setSelectNetworkDialogVisibility(state, flag: boolean): void {
+    state.selectNetworkDialogVisibility = flag;
+  },
+
+  // for hashi bridge
+  setEthBridgeSettings(state, { evmNetwork, address }: EthBridgeSettings): void {
+    state.ethBridgeEvmNetwork = evmNetwork;
+    state.ethBridgeContractAddress = {
       XOR: address.XOR,
       VAL: address.VAL,
       OTHER: address.OTHER,
-    });
-  },
-  setEnergySmartContracts(state, { contracts, address }): void {
-    Vue.set(state.smartContracts, BridgeNetworks.ENERGY_NETWORK_ID, {
-      OTHER: contracts.OTHER,
-    });
-    Vue.set(state.contractAddress, BridgeNetworks.ENERGY_NETWORK_ID, {
-      OTHER: address.OTHER,
-    });
+    };
   },
 });
 

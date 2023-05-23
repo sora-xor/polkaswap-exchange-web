@@ -523,13 +523,9 @@
         "strategicBonusApy": "Procentowa roczna stopa dochodu bonusu strategicznego"
     },
     "bridge": {
-        "title": "Most {Hashi}",
+        "title": "Most",
         "info": "Konwertuj tokeny między sieciami {Sora} i {Ethereum}.",
         "balance": "Saldo",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Dalej",
         "connectWallets": "Połącz z portfelami, aby zobaczyć historię poszczególnych transakcji.",
         "soraNetworkFee": "Opłata sieciowa sieci {Sora}",
@@ -543,8 +539,7 @@
         "networkInfo": "Połącz za pomocą mostu sieć {Sora} z:",
         "copy": "Skopiuj adres sieciowy",
         "soraAddress": "{Sora} adres",
-        "ethereumAddress": "{Ethereum} adres",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adres"
     },
     "selectRegisteredAsset": {
         "title": "Wybierz token",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Potwierdź transakcję",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Potwierdź transakcję"
     },
     "bridgeTransaction": {
         "details": "{from} do {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "Transakcja {network} w toku...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Utwórz nową transakcję",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText w portfelu {Metamask}",
-        "expectedAddress": "Spodziewany adres w portfelu {Metamask}",
         "title": "Transakcja mostowa",
         "expectedMetaMaskAddress": "Spodziewany adres w portfelu {Metamask}:",
         "allowToken": "Zezwól {AppName} na użycie Twojego {tokenSymbol}",
@@ -1119,7 +1106,7 @@
         "exportTutorialsText": "Eksportuj samouczki"
     },
     "hashiBridgeText": "Most {Hashi}",
-    "disclaimerTitle": "Zastrzeżenie:",
+    "disclaimerTitle": "Zastrzeżenie",
     "explore": {
         "showOnlyMyPositions": "Pokaż tylko moje pozycje"
     },
@@ -1204,13 +1191,15 @@
         "alertsCreateTitle": "Ustaw alert cenowy",
         "alertsTooltip": "Alerty cenowe to powiadomienia, które możesz ustawić, aby otrzymywać aktualizacje, gdy cena określonego tokena osiągnie określony przez Ciebie punkt",
         "createBtn": "Utwórz nowy alert cenowy",
-        "finishBtn": "Zakończ konfigurację alertu",
         "enableSwitch": "Włącz powiadomienia o depozytach aktywów",
         "currentPrice": "aktualna cena",
         "alertTypeTitle": "Typ alertu",
         "typeTooltip": "Wybierz opcję „spada poniżej” lub „podbija powyżej”, aby określić warunek alertu do śledzenia ważnych ruchów cen. Opcje te umożliwiają otrzymywanie na czas powiadomień, gdy wartość aktywów spadnie poniżej lub wzrośnie powyżej wyznaczonego progu",
         "alertFrequencyTitle": "Częstotliwość alertów",
         "frequencyTooltip": "Wybierz pomiędzy „raz” a „zawsze”, aby określić, jak często będziesz otrzymywać powiadomienia dla wybranego typu alertu. „Raz” wyśle pojedyncze powiadomienie, gdy warunek zostanie spełniony, a „zawsze” będzie nadal powiadamiać Cię za każdym razem, gdy próg cenowy zostanie przekroczony",
-        "noSupportMsg": "Twoja przeglądarka nie obsługuje powiadomień"
-    }
+        "noSupportMsg": "Twoja przeglądarka nie obsługuje powiadomień",
+        "finishBtn": "Ukończyć"
+    },
+    "accountAddressText": "Adres konta",
+    "fiatDisclaimer": "Należy pamiętać, że wartości fiducjarne związane z kryptowalutami na naszej stronie dostarczane przez zewnętrzne usługi (Subquery, Subsquid, Ceres API) są przybliżone. Biorąc pod uwagę naturalną złożoność tych obliczeń, nie można zagwarantować absolutnej precyzji przez cały czas."
 }

@@ -1,19 +1,30 @@
-import type { BridgeNetworks, CodecString } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
-import type { SubNetwork } from '@/utils/ethers-util';
+import type { BridgeType } from '@/consts/evm';
 
-type Contracts = Partial<{
+export type EthBridgeContractsAddresses = {
   XOR: string;
   VAL: string;
   OTHER: string;
-}>;
+};
+
+export type EthBridgeSettings = {
+  evmNetwork: EvmNetwork;
+  address: EthBridgeContractsAddresses;
+};
 
 export type Web3State = {
   evmAddress: string;
   evmBalance: CodecString;
-  networkType: Nullable<string>;
-  subNetworks: Array<SubNetwork>;
-  evmNetwork: BridgeNetworks;
-  contractAddress: { [key in BridgeNetworks]: Contracts };
-  smartContracts: { [key in BridgeNetworks]: Contracts };
+  evmNetwork: Nullable<EvmNetwork>;
+  evmNetworksApp: EvmNetwork[];
+  evmNetworksChain: EvmNetwork[];
+  evmNetworkSelected: Nullable<EvmNetwork>;
+  networkType: BridgeType;
+
+  selectNetworkDialogVisibility: boolean;
+
+  ethBridgeEvmNetwork: EvmNetwork;
+  ethBridgeContractAddress: EthBridgeContractsAddresses;
 };

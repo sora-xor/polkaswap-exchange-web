@@ -1,8 +1,9 @@
 import debounce from 'lodash/debounce';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { RegisteredAccountAsset, FPNumber, CodecString } from '@sora-substrate/util';
+import { FPNumber, CodecString } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { Route } from 'vue-router';
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
@@ -12,7 +13,8 @@ import { app, ZeroStringValue } from '@/consts';
 
 import storage from './storage';
 import type { AmountWithSuffix } from '@/types/formats';
-import type { RegisterAssetWithExternalBalance, RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+
+type AssetWithBalance = AccountAsset | AccountLiquidity | RegisteredAccountAsset;
 
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {
@@ -26,11 +28,11 @@ export const formatAddress = (address: string, length = address.length / 2): str
   return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`;
 };
 
-export const isXorAccountAsset = (asset: Asset | AccountAsset | RegisteredAccountAsset | AccountLiquidity): boolean => {
+export const isXorAccountAsset = (asset: Asset | AssetWithBalance): boolean => {
   return asset ? asset.address === XOR.address : false;
 };
 
-export const isEthereumAddress = (address: string): boolean => {
+export const isNativeEvmTokenAddress = (address: string): boolean => {
   const numberString = address.replace(/^0x/, '');
   const number = parseInt(numberString, 16);
 
@@ -39,7 +41,7 @@ export const isEthereumAddress = (address: string): boolean => {
 
 export const isMaxButtonAvailable = (
   areAssetsSelected: boolean,
-  asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity,
+  asset: AssetWithBalance,
   amount: string | number,
   fee: CodecString,
   xorAsset: AccountAsset | RegisteredAccountAsset,
@@ -57,7 +59,7 @@ export const isMaxButtonAvailable = (
 };
 
 const getMaxBalance = (
-  asset: AccountAsset | RegisteredAccountAsset | AccountLiquidity | RegisterAssetWithExternalBalance, // TODO: [Release 1.7] fix RegisteredAccountAsset
+  asset: AssetWithBalance,
   fee: CodecString,
   isExternalBalance = false,
   parseAsLiquidity = false,
@@ -73,7 +75,7 @@ const getMaxBalance = (
   if (
     !asZeroValue(fee) &&
     ((!isExternalBalance && isXorAccountAsset(asset)) ||
-      (isExternalBalance && isEthereumAddress((asset as RegisteredAccountAsset).externalAddress))) &&
+      (isExternalBalance && isNativeEvmTokenAddress((asset as RegisteredAccountAsset).externalAddress))) &&
     !isBondedBalance
   ) {
     const fpFee = FPNumber.fromCodecValue(fee);
@@ -84,7 +86,7 @@ const getMaxBalance = (
 };
 
 export const getMaxValue = (
-  asset: AccountAsset | RegisteredAccountAsset | RegisterAssetWithExternalBalance,
+  asset: AccountAsset | RegisteredAccountAsset,
   fee: CodecString,
   isExternalBalance = false,
   isBondedBalance = false
@@ -148,13 +150,7 @@ export const asZeroValue = (value: any): boolean => {
 };
 
 export const getAssetBalance = (
-  asset: Nullable<
-    | AccountAsset
-    | AccountLiquidity
-    | RegisteredAccountAsset
-    | RegisteredAccountAssetWithDecimals
-    | RegisterAssetWithExternalBalance
-  >,
+  asset: Nullable<AssetWithBalance>,
   { internal = true, parseAsLiquidity = false, isBondedBalance = false } = {}
 ) => {
   if (!asset) return ZeroStringValue;
@@ -199,12 +195,6 @@ export const formatAssetBalance = (
   const decimals = getAssetDecimals(asset, { internal });
 
   return FPNumber.fromCodecValue(balance, decimals).toLocaleString();
-};
-
-export const findAssetInCollection = (asset, collection) => {
-  if (!Array.isArray(collection) || !asset?.address) return undefined;
-
-  return collection.find((item) => item.address === asset.address);
 };
 
 export const debouncedInputHandler = (fn: any, timeout = 500, options = { leading: true }) =>
