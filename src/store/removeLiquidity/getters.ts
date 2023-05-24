@@ -1,12 +1,12 @@
 import { defineGetters } from 'direct-vuex';
 import { FPNumber } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 import { removeLiquidityGetterContext } from '@/store/removeLiquidity';
 import { ZeroStringValue } from '@/consts';
 import type { RemoveLiquidityState } from './types';
-import type { RegisteredAccountAssetWithDecimals } from '../assets/types';
 
 const getters = defineGetters<RemoveLiquidityState>()({
   liquidity(...args): Nullable<AccountLiquidity> {
@@ -83,7 +83,7 @@ const getters = defineGetters<RemoveLiquidityState>()({
 
     return balance.sub(maxLocked);
   },
-  firstToken(...args): Nullable<RegisteredAccountAssetWithDecimals> {
+  firstToken(...args): Nullable<RegisteredAccountAsset> {
     const { getters, rootGetters } = removeLiquidityGetterContext(args);
     const firstAddress = getters.liquidity?.firstAddress;
     if (!firstAddress) {
@@ -91,7 +91,7 @@ const getters = defineGetters<RemoveLiquidityState>()({
     }
     return rootGetters.assets.assetDataByAddress(firstAddress);
   },
-  secondToken(...args): Nullable<RegisteredAccountAssetWithDecimals> {
+  secondToken(...args): Nullable<RegisteredAccountAsset> {
     const { getters, rootGetters } = removeLiquidityGetterContext(args);
     const secondAddress = getters.liquidity?.secondAddress;
     if (!secondAddress) {

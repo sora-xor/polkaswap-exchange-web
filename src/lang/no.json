@@ -523,13 +523,9 @@
         "strategicBonusApy": "Strategisk bonus APY"
     },
     "bridge": {
-        "title": "{Hashi} broen",
+        "title": "Bro",
         "info": "Konverter tokens mellom {Sora} og {Ethereum} -nettverkene.",
         "balance": "Balanse",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Neste",
         "connectWallets": "Koble til lommebøker for å se respektive transaksjonshistorikk.",
         "soraNetworkFee": "{Sora} Nettverksgebyr",
@@ -543,8 +539,7 @@
         "networkInfo": "Bridge {Sora} Network med:",
         "copy": "Kopier nettverksadressen",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adresse"
     },
     "selectRegisteredAsset": {
         "title": "Velg token",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Bekreft transaksjon",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Bekreft transaksjon"
     },
     "bridgeTransaction": {
         "details": "{from} for {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaksjon pågår...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Opprett ny transaksjon",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText i {Metamask}",
-        "expectedAddress": "Forventet adresse i {Metamask}",
         "title": "Bro Transaksjon",
         "expectedMetaMaskAddress": "Forventet adresse i {Metamask}:",
         "allowToken": "Tillat {AppName} å bruke {tokenSymbol}",
@@ -1119,7 +1106,7 @@
         "exportTutorialsText": "Eksporter opplæringsprogrammer"
     },
     "hashiBridgeText": "{Hashi} bro",
-    "disclaimerTitle": "Ansvarsfraskrivelse:",
+    "disclaimerTitle": "Ansvarsfraskrivelse",
     "explore": {
         "showOnlyMyPositions": "Vis bare mine posisjoner"
     },
@@ -1204,13 +1191,15 @@
         "alertsCreateTitle": "Sett opp prisvarsel",
         "alertsTooltip": "Prisvarsler er varsler du kan stille inn til å motta oppdateringer når prisen på et bestemt token når et bestemt punkt du angir",
         "createBtn": "Opprett nytt prisvarsel",
-        "finishBtn": "Fullfør varseloppsettet",
         "enableSwitch": "Aktiver innskuddsvarslinger",
         "currentPrice": "gjeldende pris",
         "alertTypeTitle": "Varslingstype",
         "typeTooltip": "Velg enten \"fall under\" eller \"hever over\" for å spesifisere varselbetingelse for sporing av viktige prisbevegelser. Disse alternativene lar deg motta rettidige varsler når verdien av eiendelen din enten faller under eller stiger over den angitte terskelen",
         "alertFrequencyTitle": "Varslingsfrekvens",
         "frequencyTooltip": "Velg mellom \"en gang\" og \"alltid\" for å bestemme hvor ofte du mottar varsler for den valgte varslingstypen. 'Once' vil sende ett enkelt varsel når betingelsen er oppfylt, mens 'alltid' vil fortsette å varsle deg hver gang prisgrensen krysses",
-        "noSupportMsg": "Varsler støttes ikke av nettleseren din"
-    }
+        "noSupportMsg": "Varsler støttes ikke av nettleseren din",
+        "finishBtn": "Å fullføre"
+    },
+    "accountAddressText": "Kontoadresse",
+    "fiatDisclaimer": "Vær oppmerksom på at fiat-verdiene knyttet til kryptovalutaer på nettsiden vår leveres av eksterne tjenester (Subquery, Subsquid, Ceres API) er omtrentlige. Gitt den iboende kompleksiteten til disse beregningene, kan absolutt presisjon til enhver tid ikke garanteres."
 }

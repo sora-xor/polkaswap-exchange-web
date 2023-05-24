@@ -112,7 +112,6 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
   @getter.wallet.account.whitelist public whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol public whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
-  @getter.wallet.account.accountAssetsAddressTable private accountAssetsAddressTable!: WALLET_TYPES.AccountAssetsTable;
 
   @action.wallet.account.addAsset private addAsset!: (address?: string) => Promise<void>;
 
@@ -133,14 +132,10 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   get whitelistAssetsList(): Array<AccountAsset> {
     const whiteList = this.isMainTokenProviders ? this.getMainSources() : this.whitelistAssets;
+    const assetsAddresses = whiteList.map((asset) => asset.address);
+    const excludeAddress = this.asset?.address;
 
-    const { asset: excludeAsset, accountAssetsAddressTable } = this;
-
-    return this.getAssetsWithBalances({
-      assets: whiteList,
-      accountAssetsAddressTable,
-      excludeAsset,
-    }).sort(this.sortByBalance());
+    return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance());
   }
 
   get filteredWhitelistTokens(): Array<AccountAsset> {
@@ -177,14 +172,12 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get sortedNonWhitelistAccountAssets(): Array<AccountAsset> {
-    const { asset: excludeAsset, accountAssetsAddressTable } = this;
+    const { asset: excludeAsset } = this;
     // TODO: we already have balances in nonWhitelistAccountAssets.
     // Need to improve that logic
-    return this.getAssetsWithBalances({
-      assets: Object.values(this.nonWhitelistAccountAssets),
-      accountAssetsAddressTable,
-      excludeAsset,
-    }).sort(this.sortByBalance());
+    return this.getAssetsWithBalances(Object.keys(this.nonWhitelistAccountAssets), excludeAsset?.address).sort(
+      this.sortByBalance()
+    );
   }
 
   private getMainSources(): Array<Asset> {

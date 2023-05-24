@@ -421,10 +421,5 @@ export const AboutTopics = [
   { title: Topics.PriceFeeds, icon: 'software-terminal-24' },
 ];
 
-export enum EvmSymbol {
-  ETH = 'ETH',
-  VT = 'VT',
-}
-
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';

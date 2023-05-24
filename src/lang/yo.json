@@ -523,13 +523,9 @@
         "strategicBonusApy": "Ajeseku Ilana APY"
     },
     "bridge": {
-        "title": "Afara {Hashi}",
+        "title": "Afara",
         "info": "Yi awọn token pada laarin awọn nẹtiwọọki {Sora} ati {Ethereum}.",
         "balance": "Iśeku",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Itele",
         "connectWallets": "So awọn woleti pọ lati wo itan iṣowo kọọkan.",
         "soraNetworkFee": "{Sora} Owo Nẹtiwọọki",
@@ -543,8 +539,7 @@
         "networkInfo": "Safara {Sora} Nẹtiwọọki pẹlu:",
         "copy": "Daakọ adirẹsi nẹtiwọki",
         "soraAddress": "{Sora} adirẹsi",
-        "ethereumAddress": "{Ethereum} adirẹsi",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adirẹsi"
     },
     "selectRegisteredAsset": {
         "title": "Yan Tokini kan",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Jẹrisi idunadura",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Jẹrisi idunadura"
     },
     "bridgeTransaction": {
         "details": "{from} fun {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "idunadura ni isunmọtosi ni {network}",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Ṣẹda idunadura tuntun",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText Inu {Metamask}",
-        "expectedAddress": "Adirẹsi ti a nireti ni {Metamask}",
         "title": "Idunadura Bridge",
         "expectedMetaMaskAddress": "Adirẹsi ti a nireti ni {Metamask}",
         "allowToken": "Gba {AppName} lati lo {tokenSymbol}",
@@ -1119,7 +1106,7 @@
         "exportTutorialsText": "okeere Tutorial"
     },
     "hashiBridgeText": "{Hashi} Afara",
-    "disclaimerTitle": "Akiyesi:",
+    "disclaimerTitle": "Akiyesi",
     "explore": {
         "showOnlyMyPositions": "Ṣe afihan awọn ipo mi nikan"
     },
@@ -1204,13 +1191,15 @@
         "alertsCreateTitle": "Ṣeto itaniji idiyele",
         "alertsTooltip": "Awọn itaniji idiyele jẹ awọn iwifunni ti o le ṣeto nipasẹ rẹ lati gba awọn imudojuiwọn nigbati idiyele ti ami-ami kan pato de aaye kan ti o ṣeto",
         "createBtn": "Ṣẹda titun owo gbigbọn",
-        "finishBtn": "Pari iṣeto titaniji",
         "enableSwitch": "Mu awọn iwifunni idogo dukia ṣiṣẹ",
         "currentPrice": "lọwọlọwọ owo",
         "alertTypeTitle": "Iru itaniji",
         "typeTooltip": "Yan boya 'ju silẹ ni isalẹ' tabi 'gbe loke' aṣayan lati tokasi ipo itaniji fun titọpa awọn agbeka idiyele pataki. Awọn aṣayan wọnyi gba ọ laaye lati gba awọn iwifunni akoko nigbati iye dukia rẹ boya ṣubu ni isalẹ tabi dide loke iloro ti a yàn",
         "alertFrequencyTitle": "Itaniji igbohunsafẹfẹ",
         "frequencyTooltip": "Yan laarin 'lẹẹkan' ati 'nigbagbogbo' lati pinnu iye igba ti o gba awọn iwifunni fun iru gbigbọn ti o yan. 'Lẹẹkan' yoo fi ifitonileti kan ranṣẹ nigbati ipo naa ba ti pade, lakoko ti 'nigbagbogbo' yoo tẹsiwaju lati fi to ọ leti ni igbakugba ti ẹnu-ọna idiyele ti kọja",
-        "noSupportMsg": "Awọn iwifunni ko ni atilẹyin nipasẹ ẹrọ aṣawakiri rẹ"
-    }
+        "noSupportMsg": "Awọn iwifunni ko ni atilẹyin nipasẹ ẹrọ aṣawakiri rẹ",
+        "finishBtn": "Lati pari"
+    },
+    "accountAddressText": "adirẹsi iroyin",
+    "fiatDisclaimer": "Jọwọ ṣe akiyesi pe awọn iye fiat ti o ni nkan ṣe pẹlu awọn owo nẹtiwoki lori oju opo wẹẹbu wa ni a pese nipasẹ awọn iṣẹ ita (Subquery, Subsquid, Ceres API) jẹ isunmọ. Fi fun idiju atorunwa ti awọn iṣiro wọnyi, pipe pipe ni gbogbo igba ko le ṣe iṣeduro."
 }

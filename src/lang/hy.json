@@ -523,13 +523,9 @@
         "strategicBonusApy": "Ռազմավարական բոնուս APY"
     },
     "bridge": {
-        "title": "{Hashi} կամուրջ",
+        "title": "Կամուրջ",
         "info": "Փոխարկել տոկենները {Sora} և {Ethereum} ցանցերի միջև:",
         "balance": "Բալանս",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Հաջորդը",
         "connectWallets": "Միացրեք դրամապանակները ՝ համապատասխան գործարքի պատմությունը դիտելու համար:",
         "soraNetworkFee": "{Sora} ցանցային վճար",
@@ -543,8 +539,7 @@
         "networkInfo": "Միացեք {Sora} Ցանցով.",
         "copy": "Պատճենել ցանցի հասցեն",
         "soraAddress": "{Sora} հասցե",
-        "ethereumAddress": "{Ethereum} հասցե",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} հասցե"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Հաստատել գործարքը",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Հաստատել գործարքը"
     },
     "bridgeTransaction": {
         "details": "{from} համար {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} գործարքը սպասման մեջ է...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Ստեղծել նոր գործարք",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText in {Metamask}",
-        "expectedAddress": "Սպասվող հասցե @հասցեում ՝ {Metamask}",
         "title": "Կամուրջի գործարք",
         "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ {Metamask}",
         "allowToken": "Թույլ տվեք {AppName} ին օգտագործել ձեր {tokenSymbol}",
@@ -1119,7 +1106,7 @@
         "exportTutorialsText": "Արտահանման ձեռնարկներ"
     },
     "hashiBridgeText": "{Hashi} կամուրջ",
-    "disclaimerTitle": "Հրաժարում պատասխանատվությունից:",
+    "disclaimerTitle": "Հրաժարում պատասխանատվությունից",
     "explore": {
         "showOnlyMyPositions": "Ցույց տալ միայն իմ դիրքերը"
     },
@@ -1204,13 +1191,15 @@
         "alertsCreateTitle": "Կարգավորեք գների ծանուցում",
         "alertsTooltip": "Գնային ծանուցումները ծանուցումներ են, որոնք կարող եք սահմանել ձեր կողմից՝ թարմացումներ ստանալու համար, երբ որոշակի նշանի գինը հասնում է ձեր սահմանած որոշակի կետին:",
         "createBtn": "Ստեղծեք նոր գնային ծանուցում",
-        "finishBtn": "Ավարտեք ազդանշանի կարգավորումը",
         "enableSwitch": "Միացնել ակտիվների ավանդի մասին ծանուցումները",
         "currentPrice": "ընթացիկ գինը",
         "alertTypeTitle": "Զգուշացման տեսակը",
         "typeTooltip": "Ընտրեք կա՛մ «իջնում է ներքևում», կա՛մ «բարձրացնում է վերևում» տարբերակը՝ գների կարևոր տեղաշարժերին հետևելու ազդանշանային պայմանը նշելու համար: Այս ընտրանքները թույլ են տալիս ժամանակին ծանուցումներ ստանալ, երբ ձեր ակտիվի արժեքը կամ իջնի ձեր նշանակված շեմից կամ բարձրանա:",
         "alertFrequencyTitle": "Զգուշացման հաճախականությունը",
         "frequencyTooltip": "Ընտրեք «մեկ անգամ» և «միշտ» միջև՝ որոշելու համար, թե որքան հաճախ եք ստանում ծանուցումներ ընտրված ազդանշանի տեսակի համար: «Once»-ը մեկ ծանուցում կուղարկի, երբ պայմանը կատարվի, մինչդեռ «միշտ»-ը կշարունակի ծանուցել ձեզ ամեն անգամ, երբ գնային շեմը հատվի:",
-        "noSupportMsg": "Ծանուցումները չեն աջակցվում ձեր դիտարկիչի կողմից"
-    }
+        "noSupportMsg": "Ծանուցումները չեն աջակցվում ձեր դիտարկիչի կողմից",
+        "finishBtn": "Ավարտելու համար"
+    },
+    "accountAddressText": "Հաշվի հասցեն",
+    "fiatDisclaimer": "Խնդրում ենք նկատի ունենալ, որ մեր կայքում կրիպտոարժույթների հետ կապված fiat արժեքները տրամադրվում են արտաքին ծառայությունների կողմից (Subquery, Subsquid, Ceres API) մոտավոր են: Հաշվի առնելով այս հաշվարկների բնորոշ բարդությունը, բացարձակ ճշգրտությունը բոլոր ժամանակներում չի կարող երաշխավորվել:"
 }

@@ -3,32 +3,6 @@
     {
       "inputs": [
         {
-          "internalType": "address[]",
-          "name": "initialPeers",
-          "type": "address[]"
-        },
-        {
-          "internalType": "address",
-          "name": "addressVAL",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "addressXOR",
-          "type": "address"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "networkId",
-          "type": "bytes32"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "bytes32",
           "name": "",
           "type": "bytes32"

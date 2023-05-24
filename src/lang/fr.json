@@ -523,13 +523,9 @@
         "strategicBonusApy": "Bonus stratégique APY"
     },
     "bridge": {
-        "title": "Pont {Hashi}",
+        "title": "Pont",
         "info": "Convertissez les jetons entre les réseaux {Sora} et {Ethereum}.",
         "balance": "Solde",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Suivant",
         "connectWallets": "Connectez les portefeuilles pour afficher l'historique des transactions.",
         "soraNetworkFee": "{Sora} Frais de réseau",
@@ -543,8 +539,7 @@
         "networkInfo": "Pont {Sora} Réseau avec:",
         "copy": "Copier l'adresse réseau",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adresse"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -566,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Confirmez la transaction",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Confirmez la transaction"
     },
     "bridgeTransaction": {
         "details": "{from} pour {to}",
@@ -609,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaction en attente...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Créer une nouvelle transaction",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText dans {Metamask}",
-        "expectedAddress": "Adresse attendue dans {Metamask}",
         "title": "Transaction de pont",
         "expectedMetaMaskAddress": "Adresse attendue dans {Metamask}:",
         "allowToken": "Autoriser {AppName} à utiliser votre {tokenSymbol}",
@@ -1119,7 +1106,7 @@
         "exportTutorialsText": "Exporter des tutoriels"
     },
     "hashiBridgeText": "Pont {Hashi}",
-    "disclaimerTitle": "Avertissement:",
+    "disclaimerTitle": "Avertissement",
     "explore": {
         "showOnlyMyPositions": "Afficher uniquement mes positions"
     },
@@ -1204,13 +1191,15 @@
         "alertsCreateTitle": "Configurer une alerte de prix",
         "alertsTooltip": "Les alertes de prix sont des notifications que vous pouvez définir pour recevoir des mises à jour lorsque le prix d'un jeton particulier atteint un certain point que vous avez défini",
         "createBtn": "Créer une nouvelle alerte de prix",
-        "finishBtn": "Terminer la configuration de l'alerte",
         "enableSwitch": "Activer les notifications de dépôt d'actifs",
         "currentPrice": "prix actuel",
         "alertTypeTitle": "Type d'alerte",
         "typeTooltip": "Choisissez l'option \"baisse en dessous\" ou \"augmente au-dessus\" pour spécifier la condition d'alerte pour le suivi des mouvements de prix importants. Ces options vous permettent de recevoir des notifications en temps opportun lorsque la valeur de votre actif tombe en dessous ou dépasse votre seuil désigné.",
         "alertFrequencyTitle": "Fréquence d'alerte",
         "frequencyTooltip": "Sélectionnez entre « une fois » et « toujours » pour déterminer la fréquence à laquelle vous recevez des notifications pour le type d'alerte choisi. \"Une fois\" enverra une seule notification lorsque la condition est remplie, tandis que \"toujours\" continuera à vous informer chaque fois que le seuil de prix est franchi",
-        "noSupportMsg": "Les notifications ne sont pas prises en charge par votre navigateur"
-    }
+        "noSupportMsg": "Les notifications ne sont pas prises en charge par votre navigateur",
+        "finishBtn": "Compléter"
+    },
+    "accountAddressText": "Adresse du compte",
+    "fiatDisclaimer": "Veuillez noter que les valeurs fiduciaires associées aux crypto-monnaies sur notre site Web sont fournies par des services externes (Subquery, Subsquid, Ceres API) sont approximatives. Compte tenu de la complexité inhérente à ces calculs, une précision absolue à tout moment ne peut être garantie."
 }
