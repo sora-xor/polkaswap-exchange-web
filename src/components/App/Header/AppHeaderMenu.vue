@@ -177,12 +177,12 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         icon: 'basic-globe-24',
         text: this.t('headerMenu.switchLanguage'),
       },
-      // {
-      //   value: HeaderMenuType.Disclaimer,
-      //   icon: 'info-16',
-      //   text: this.disclaimerText,
-      //   disabled: this.discalimerDisabled,
-      // },
+      {
+        value: HeaderMenuType.Disclaimer,
+        icon: 'info-16',
+        text: this.disclaimerText,
+        disabled: this.discalimerDisabled,
+      },
     ];
   }
 

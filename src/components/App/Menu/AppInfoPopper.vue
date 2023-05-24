@@ -45,6 +45,7 @@ import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import { app, SocialNetworkLinks, Links } from '@/consts';
+import { Links as AdarLinks } from '@/modules/ADAR/consts';
 
 @Component
 export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.LoadingMixin) {
@@ -62,18 +63,18 @@ export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.Loadi
 
   get textLinks(): Array<{ title: string; href: string }> {
     return [
-      // {
-      //   title: this.t('helpDialog.privacyPolicy'),
-      //   href: Links.privacy,
-      // },
+      {
+        title: this.t('helpDialog.privacyPolicy'),
+        href: AdarLinks.privacy,
+      },
       {
         title: this.t('releaseNotesText'),
         href: Links.releaseNotes,
       },
-      // {
-      //   title: this.t('helpDialog.termsOfService'),
-      //   href: Links.terms,
-      // },
+      {
+        title: this.t('helpDialog.termsOfService'),
+        href: AdarLinks.terms,
+      },
     ];
   }
 

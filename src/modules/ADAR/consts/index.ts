@@ -34,6 +34,11 @@ export const Stages: Array<Stage> = [
   createStage('Done', 'done'),
 ];
 
+export const Links = {
+  terms: '/adar/terms/ADARUpdatedTerms.html',
+  privacy: '/adar/terms/ADARPrivacyPolicy.html',
+};
+
 function createStage(title: string, componentName: string): Stage {
   return {
     title,

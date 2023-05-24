@@ -15,6 +15,7 @@
         <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
+            <app-disclaimer v-if="disclaimerVisibility" />
             <!-- <p class="app-disclaimer" v-html="t('disclaimer')" /> -->
           </div>
           <footer class="app-footer">
