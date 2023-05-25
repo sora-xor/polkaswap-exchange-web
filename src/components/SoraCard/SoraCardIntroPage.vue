@@ -14,20 +14,21 @@
           <span class="sora-card__info-text">{{ '$0 annual service fee' }}</span>
         </p>
       </div>
-      <div v-if="wasEuroBalanceLoaded && isLoggedIn" class="sora-card__info">
-        <div v-if="!isEuroBalanceEnough">
-          <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
-          <p class="sora-card__info-text">Free card issuance</p>
-          <p class="sora-card__info-text-details">You hold $100 worth of XOR in your SORA Account</p>
-          <p class="sora-card__info-text-details">You’re getting the card for free!</p>
+      <div v-if="wasEuroBalanceLoaded && isLoggedIn">
+        <div v-if="isEuroBalanceEnough" class="sora-card__info">
+          <div class="sora-card__balance-section">
+            <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
+            <div>
+              <p class="sora-card__info-text">Free card issuance</p>
+              <p class="sora-card__info-text-details sora-card__info-text-details--secondary">
+                You hold $100 worth of XOR in your SORA Account
+              </p>
+              <span class="progress-bar progress-bar--complete" />
+              <p class="sora-card__info-text-details">You’re getting the card for free!</p>
+            </div>
+          </div>
         </div>
-        <div v-else class="sora-card__info-text-details">
-          <s-icon :class="getIconClass()" name="basic-check-mark-24" size="16px" />
-          <p class="sora-card__info-text">Free card issuance</p>
-          <p class="sora-card__info-text-details">
-            If you hold, stake or provide liquidity for at least €100 worth of XOR in your SORA account
-          </p>
-        </div>
+        <balance-indicator v-else />
       </div>
       <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
         <s-button
@@ -36,7 +37,7 @@
           :loading="btnLoading"
           @click="handleClick"
         >
-          <span class="text"> {{ 'Log in or Sign up' }}</span>
+          <span class="text"> {{ buttonText }}</span>
         </s-button>
       </div>
     </div>
@@ -51,28 +52,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { FPNumber } from '@sora-substrate/math';
 
 import { getter, state } from '@/store/decorators';
 import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
-import { clearPayWingsKeysFromLocalStorage, clearTokensFromLocalStorage } from '@/utils/card';
+import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-const hundred = '100';
 
 @Component({
   components: {
-    X1Dialog: lazyComponent(Components.X1Dialog),
-    PaywingsDialog: lazyComponent(Components.PaywingsDialog),
+    BalanceIndicator: lazyComponent(Components.BalanceIndicator),
     TosDialog: lazyComponent(Components.ToSDialog),
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  @state.soraCard.euroBalance private euroBalance!: string;
-  @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
   @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
 
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
@@ -82,33 +77,12 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   showPaywingsDialog = false;
   showListDialog = false;
 
-  get freeStartUsingDesc(): string {
-    if (!this.euroBalance) {
-      return '';
-    }
-    return this.t('card.freeStartDesc', { value: this.balanceIndicatorAmount });
-  }
-
   get buttonText(): string {
     if (!this.isLoggedIn) {
-      return 'connectWalletText';
+      return this.t('connectWalletText');
     }
 
-    return 'card.getSoraCardBtn';
-  }
-
-  get balanceIndicatorAmount(): string {
-    const euroBalance = parseInt(this.euroBalance, 10);
-    return `<span class="sora-card__balance-indicator-text--bold">€${
-      this.isEuroBalanceEnough ? hundred : euroBalance
-    }/${hundred}</span>`;
-  }
-
-  getIconClass(): string {
-    if (this.isEuroBalanceEnough) {
-      return 'sora-card__icon--checked';
-    }
-    return '';
+    return 'Log in or Sign up';
   }
 
   get btnLoading(): boolean {
@@ -117,20 +91,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     }
 
     return false;
-  }
-
-  private openX1(): void {
-    this.showX1Dialog = true;
-  }
-
-  private issueCardByPaywings(): void {
-    this.showPaywingsDialog = true;
-  }
-
-  private bridgeTokens(): void {
-    if (!this.isEuroBalanceEnough) {
-      router.push({ name: PageNames.Bridge, params: { xorToDeposit: this.xorToDeposit.toString() } });
-    }
   }
 
   openList(): void {
@@ -161,6 +121,70 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     .el-loading-spinner {
       margin-left: calc(50% - var(--s-size-medium) + 10px / 2);
     }
+  }
+}
+
+.sora-card {
+  &__balance-section {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__info {
+    background-color: var(--s-color-base-border-primary);
+    padding: 16px;
+    margin-top: var(--s-basic-spacing);
+    border-radius: calc(var(--s-basic-spacing) / 2);
+    width: 100%;
+    &-text {
+      display: inline-block;
+      font-size: var(--s-font-size-big);
+      &-details {
+        margin-top: 4px;
+        width: 91%;
+        line-height: 150%;
+        font-size: var(--s-font-size-big);
+      }
+      &-details--secondary {
+        color: var(--s-color-base-content-secondary);
+      }
+      &--bold {
+        font-weight: 600;
+      }
+    }
+
+    .sora-card__icon {
+      &--checked {
+        margin-right: var(--s-basic-spacing);
+        color: var(--s-color-status-success);
+      }
+
+      &--closed {
+        margin-right: var(--s-basic-spacing);
+        color: var(--s-color-base-content-secondary);
+      }
+    }
+  }
+}
+
+.progress-bar {
+  display: block;
+  width: 96%;
+  height: 4px;
+  border-radius: 16px;
+  margin: 8px 0;
+  background: #e8e1e1;
+
+  &--complete {
+    background: #34ad87;
+  }
+
+  &--in-progress {
+    display: block;
+    border-radius: 16px;
+    background: #a19a9d;
+    height: 4px;
+    width: 0%;
   }
 }
 </style>
@@ -228,64 +252,8 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
     height: 311px;
   }
 
-  &__info {
-    background-color: var(--s-color-base-border-primary);
-    padding: 16px;
-    margin-top: var(--s-basic-spacing);
-    border-radius: calc(var(--s-basic-spacing) / 2);
-    width: 100%;
-    &-text {
-      display: inline-block;
-      font-size: var(--s-font-size-big);
-      &-details {
-        color: var(--s-color-base-content-secondary);
-        margin-top: 4px;
-        margin-left: 24px;
-        width: 91%;
-        line-height: 150%;
-        font-size: var(--s-font-size-medium);
-      }
-      &-details:nth-child(even) {
-        color: inherit;
-        font-size: var(--s-font-size-big);
-      }
-      &--bold {
-        font-weight: 600;
-      }
-    }
-
-    .s-icon-basic-check-mark-24 {
-      margin-right: var(--s-basic-spacing);
-      color: var(--s-color-base-content-tertiary);
-    }
-
-    .sora-card__icon--checked {
-      color: var(--s-color-status-success);
-    }
-  }
-
   &__btn {
     width: 100%;
   }
-}
-
-.line {
-  width: 100%;
-  display: flex;
-  margin-top: var(--s-basic-spacing);
-  margin-bottom: var(--s-basic-spacing);
-  flex-direction: row;
-  text-transform: uppercase;
-  color: var(--s-color-base-content-secondary);
-}
-
-.line::before,
-.line::after {
-  content: '';
-  flex: 1 1;
-  border-bottom: 2px solid var(--s-color-base-border-primary);
-  margin: auto;
-  margin-left: 10px;
-  margin-right: 10px;
 }
 </style>

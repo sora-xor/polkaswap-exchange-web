@@ -1,11 +1,8 @@
 <template>
   <div class="sora-card">
     <div class="sora-card__threshold">
-      <h3 class="sora-card__threshold">You need 4.16 XOR to receive a free card</h3>
-      <div class="sora-card__threshold-limits">
-        <p>Free card issuance</p>
-        <p>If you hold, stake or provide liquidity for at least €100 worth of XOR in your SORA account</p>
-      </div>
+      <h3 class="sora-card__threshold">{{ title }}</h3>
+      <balance-indicator />
     </div>
     <div class="sora-card__options--not-enough-euro s-flex">
       <!-- <s-button
@@ -26,9 +23,13 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+import type { FPNumber } from '@sora-substrate/math';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { lazyComponent } from '@/router';
+import { Components } from '@/consts';
+import { state } from '@/store/decorators';
 
 enum BuyButtonType {
   X1,
@@ -37,8 +38,14 @@ enum BuyButtonType {
 }
 type BuyButton = { type: BuyButtonType; text: string; button: 'primary' | 'secondary' | 'tertiary' };
 
-@Component
+@Component({
+  components: {
+    BalanceIndicator: lazyComponent(Components.BalanceIndicator),
+  },
+})
 export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
+
   readonly buyOptions: Array<BuyButton> = [
     { type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' },
     { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'secondary' },
@@ -46,12 +53,30 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
     // { type: BuyButtonType.Paywings, text: 'card.buyUsingPaywings', button: 'tertiary' },
   ];
 
+  get title(): string {
+    return `You need ${this.xorToDeposit.format(3)} XOR to receive a free card`;
+  }
+
   // get btnLoading(): boolean {
   //   if (!this.isLoggedIn) {
   //     return this.loading;
   //   }
 
   //   return this.loading || !this.wasEuroBalanceLoaded;
+  // }
+
+  // private openX1(): void {
+  //   this.showX1Dialog = true;
+  // }
+
+  // private issueCardByPaywings(): void {
+  //   this.showPaywingsDialog = true;
+  // }
+
+  // private bridgeTokens(): void {
+  //   if (!this.isEuroBalanceEnough) {
+  //     router.push({ name: PageNames.Bridge, params: { xorToDeposit: this.xorToDeposit.toString() } });
+  //   }
   // }
 
   // buyTokens(type: BuyButtonType): void {

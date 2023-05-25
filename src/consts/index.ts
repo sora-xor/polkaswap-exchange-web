@@ -154,6 +154,7 @@ export enum Components {
   SoraCard = 'SoraCard',
   SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
   SoraCardKYC = 'SoraCard/SoraCardKYC',
+  BalanceIndicator = 'SoraCard/common/BalanceIndicator',
   ConfirmationInfo = 'SoraCard/ConfirmationInfo',
   TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
   ToSDialog = 'SoraCard/steps/ToSDialog',
