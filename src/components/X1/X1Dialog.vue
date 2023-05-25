@@ -46,7 +46,6 @@
 </template>
 
 <script lang="ts">
-import { loadScript, unloadScript } from 'vue-plugin-load-script';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
 
