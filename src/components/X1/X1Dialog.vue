@@ -93,32 +93,19 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
     return !this.isMainnet && !this.showErrorInfoBanner;
   }
 
-  loadX1(): void {
-    // TODO: return to class method call
-    // ScriptLoader.load(this.X1Widget.sdkUrl).then(() => {
-    //   setTimeout(() => {
-    //     this.loadingX1 = false;
-    //   }, 1500);
-    // });
-
-    loadScript(this.X1Widget.sdkUrl)
-      .then(() => {
-        setTimeout(() => {
-          this.loadingX1 = false;
-        }, 1500);
-      })
-      .catch(() => {
-        this.showErrorInfoBanner = true;
-        this.loadingX1 = false;
-      });
+  async loadX1(): Promise<void> {
+    try {
+      await ScriptLoader.load(this.X1Widget.sdkUrl, false);
+    } catch {
+      this.showErrorInfoBanner = true;
+      this.loadingX1 = false;
+    } finally {
+      this.loadingX1 = false;
+    }
   }
 
   unloadX1(): void {
-    // TODO: return to class method call
-    // ScriptLoader.unload(this.X1Widget.sdkUrl, false);
-    unloadScript(this.X1Widget.sdkUrl).catch(() => {
-      /* no need to handle */
-    });
+    ScriptLoader.unload(this.X1Widget.sdkUrl, false);
   }
 
   mounted(): void {
