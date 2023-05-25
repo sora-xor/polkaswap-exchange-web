@@ -169,7 +169,7 @@ export enum Components {
   Email = 'SoraCard/steps/Email',
   KycView = 'SoraCard/steps/KycView',
   // Paywings
-  X1Dialog = 'X1/X1Dialog',
+
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
   // Add Liquidity Page
   AddLiquidityConfirm = 'pages/AddLiquidity/Confirm',
@@ -187,6 +187,8 @@ export enum Components {
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
   MoonpayHistoryButton = 'pages/Moonpay/HistoryButton',
+  // X1 Page
+  X1Dialog = 'pages/X1/X1Dialog',
   // Swap Page
   SwapConfirm = 'pages/Swap/Confirm',
   SwapChart = 'pages/Swap/Chart',
