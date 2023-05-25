@@ -70,7 +70,7 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   }
 
   get memorandumLink(): string {
-    return this.generateDisclaimerLink(Links.terms, this.t('memorandum'));
+    return this.generateDisclaimerLink(Links.terms, this.$t('memorandum', { AppName: 'Polkaswap' }).toString());
   }
 
   get privacyLink(): string {
@@ -78,7 +78,7 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   }
 
   get polkaswapFaqLink(): string {
-    return this.generateDisclaimerLink(Links.faq, this.t('FAQ'));
+    return this.generateDisclaimerLink(Links.faq, this.$t('FAQ', { AppName: 'Polkaswap' }).toString());
   }
 
   generateDisclaimerLink(href: string, content: string): string {

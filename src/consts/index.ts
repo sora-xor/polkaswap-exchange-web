@@ -309,7 +309,7 @@ const OtherPagesMenu: Array<SidebarMenuItem> = [
   //   title: PageNames.SoraCard,
   // },
   {
-    icon: 'file-file-text-24',
+    icon: 'adar-about',
     title: AdarPageNames.About,
   },
 ];
