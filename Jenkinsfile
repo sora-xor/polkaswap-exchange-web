@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@feature/SUP-3607/polkaswap-noindex') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
@@ -30,6 +30,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     initialNameSpace: "sora2-dev-web",
     targetNameSpace: "sora2-${env.CHANGE_ID}-web",
     targetSecretName: "sora2-${env.CHANGE_ID}-polkaswap-exchange-pr-polkaswap-exchange-web-eso-base",
-    downstreamJob: 'polkaswap/e2e-tests/hash_test'
+    downstreamJob: 'polkaswap/e2e-tests/hash_test',
+    noIndex: true
 )
 pipeline.runPipeline()
