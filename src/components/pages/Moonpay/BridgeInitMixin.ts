@@ -48,7 +48,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @action.assets.updateExternalBalances private updateExternalBalances!: AsyncFnWithoutArgs;
 
   async prepareEvmNetwork(): Promise<void> {
-    this.selectEvmNetwork(this.ethBridgeEvmNetwork); // WalletConnectMixin
+    this.selectExternalNetwork(this.ethBridgeEvmNetwork); // WalletConnectMixin
   }
 
   initMoonpayApi(): void {

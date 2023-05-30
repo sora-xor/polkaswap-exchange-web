@@ -1,4 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import router from '@/router';
@@ -9,7 +10,7 @@ import { action, getter, mutation, state } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import type { EvmNetworkData } from '@/consts/evm';
+import type { NetworkData } from '@/types/bridge';
 
 const checkExtensionKey = 'provider.messages.checkExtension';
 const installExtensionKey = 'provider.messages.installExtension';
@@ -52,19 +53,19 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.web3.isExternalAccountConnected isExternalAccountConnected!: boolean;
 
-  @getter.web3.selectedEvmNetwork selectedEvmNetwork!: Nullable<EvmNetworkData>;
+  @getter.web3.selectedNetwork selectedNetwork!: Nullable<NetworkData>;
 
   // update selected evm network without metamask request
-  @mutation.web3.setSelectedEvmNetwork setSelectedEvmNetwork!: (evmNetworkId: EvmNetwork) => void;
+  @mutation.web3.setSelectedNetwork setSelectedNetwork!: (networkId: BridgeNetworkId) => void;
   @mutation.web3.resetEvmAddress private resetEvmAddress!: FnWithoutArgs;
   @mutation.web3.setEvmAddress setEvmAddress!: (address: string) => void;
-  @mutation.web3.resetEvmNetwork private resetEvmNetwork!: FnWithoutArgs;
+  @mutation.web3.resetProvidedNetwork private resetProvidedNetwork!: FnWithoutArgs;
   @mutation.web3.resetEvmBalance private resetEvmBalance!: FnWithoutArgs;
 
   @action.web3.connectExternalAccount private connectExternalAccount!: (provider: Provider) => Promise<void>;
-  @action.web3.updateEvmNetwork updateEvmNetwork!: AsyncFnWithoutArgs;
+  @action.web3.updateNetworkProvided updateNetworkProvided!: AsyncFnWithoutArgs;
   @action.web3.connectEvmNetwork connectEvmNetwork!: (networkHex?: string) => Promise<void>;
-  @action.web3.selectEvmNetwork selectEvmNetwork!: (networkId: EvmNetwork) => Promise<void>;
+  @action.web3.selectExternalNetwork selectExternalNetwork!: (networkId: BridgeNetworkId) => Promise<void>;
   @action.web3.restoreSelectedEvmNetwork restoreSelectedEvmNetwork!: AsyncFnWithoutArgs;
   @action.web3.restoreNetworkType restoreNetworkType!: AsyncFnWithoutArgs;
 
@@ -140,6 +141,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   disconnectExternalNetwork(): void {
-    this.resetEvmNetwork();
+    this.resetProvidedNetwork();
   }
 }

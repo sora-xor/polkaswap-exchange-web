@@ -1,13 +1,13 @@
 import { ethers } from 'ethers';
 import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import { web3ActionContext } from '@/store/web3';
 import ethersUtil from '@/utils/ethers-util';
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { Provider } from '@/utils/ethers-util';
 
 const actions = defineActions({
@@ -20,24 +20,28 @@ const actions = defineActions({
   async connectEvmNetwork(context, networkHex?: string): Promise<void> {
     const { commit } = web3ActionContext(context);
     const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
-    commit.setEvmNetwork(evmNetwork);
+    commit.setProvidedNetwork(evmNetwork);
   },
 
-  async selectEvmNetwork(context, evmNetwork: EvmNetwork): Promise<void> {
+  async selectExternalNetwork(context, network: BridgeNetworkId): Promise<void> {
     const { commit, dispatch } = web3ActionContext(context);
-    commit.setSelectedEvmNetwork(evmNetwork);
-    await dispatch.updateEvmNetwork();
+    commit.setSelectedNetwork(network);
+    await dispatch.updateNetworkProvided();
   },
 
-  async updateEvmNetwork(context): Promise<void> {
+  async updateNetworkProvided(context): Promise<void> {
     const { dispatch, getters, state } = web3ActionContext(context);
-    const { selectedEvmNetwork: selected } = getters;
-    const { evmNetwork: connectedId } = state;
+    const { selectedNetwork: selected } = getters;
+    const { networkProvided, networkType } = state;
 
     // if connected network is not equal to selected, request for provider to change network
-    if (selected && selected.id !== connectedId) {
-      await ethersUtil.switchOrAddChain(selected);
-      await dispatch.connectEvmNetwork();
+    if (selected && selected.id !== networkProvided) {
+      if (networkType === BridgeNetworkType.Sub) {
+        // [TODO]
+      } else {
+        await ethersUtil.switchOrAddChain(selected);
+        await dispatch.connectEvmNetwork();
+      }
     }
   },
 
@@ -50,13 +54,13 @@ const actions = defineActions({
   async restoreSelectedEvmNetwork(context): Promise<void> {
     const { commit, getters } = web3ActionContext(context);
 
-    if (getters.selectedEvmNetwork) return;
+    if (getters.selectedNetwork) return;
 
     const selectedEvmNetworkId =
-      ethersUtil.getSelectedEvmNetwork() || getters.availableNetworks[BridgeNetworkType.EvmLegacy]?.[0]?.data?.id;
+      ethersUtil.getSelectedNetwork() || getters.availableNetworks[BridgeNetworkType.EvmLegacy]?.[0]?.data?.id;
 
     if (selectedEvmNetworkId) {
-      commit.setSelectedEvmNetwork(selectedEvmNetworkId);
+      commit.setSelectedNetwork(selectedEvmNetworkId);
     }
   },
 

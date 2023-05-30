@@ -10,10 +10,14 @@ export function initialState(): Web3State {
   return {
     evmAddress: '', // ethersUtil.getEvmUserAddress()
     evmBalance: ZeroStringValue,
-    evmNetwork: null, // evm network in provider
-    evmNetworksApp: [], // evm networks from app config
-    evmNetworkSelected: null, // evm network selected by user
+
     networkType: ethersUtil.getSelectedBridgeType() ?? BridgeNetworkType.EvmLegacy,
+    networkProvided: null, // evm network in provider
+    networkSelected: null, // evm network selected by user
+
+    evmNetworksApp: [], // evm networks from app config
+    subNetworksApp: [], // sub netowrks from app config
+
     supportedApps: {
       [BridgeNetworkType.EvmLegacy]: {},
       [BridgeNetworkType.Evm]: {},

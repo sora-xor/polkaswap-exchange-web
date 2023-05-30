@@ -7,13 +7,15 @@ import { XOR, VAL, PSWAP, ETH } from '@sora-substrate/util/build/assets/consts';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import type { CodecString } from '@sora-substrate/util';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import { settingsStorage } from '@/utils/storage';
 import { ZeroStringValue } from '@/consts';
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 
-import type { EvmNetworkData } from '@/consts/evm';
+import type { NetworkData } from '@/types/bridge';
+import { json } from 'stream/consumers';
 
 type ethersProvider = ethers.providers.Web3Provider;
 
@@ -234,7 +236,7 @@ async function addToken(address: string, symbol: string, decimals: number, image
  * @param network network data
  * @param chainName translated chain name
  */
-async function switchOrAddChain(network: EvmNetworkData, chainName?: string): Promise<void> {
+async function switchOrAddChain(network: NetworkData, chainName?: string): Promise<void> {
   const ethereum = (window as any).ethereum;
   const chainId = ethers.utils.hexValue(network.id);
 
@@ -350,14 +352,14 @@ function removeEvmUserAddress(): void {
   settingsStorage.remove('evmAddress');
 }
 
-function getSelectedEvmNetwork(): Nullable<EvmNetwork> {
-  const evmNetwork = Number(settingsStorage.get('evmNetwork'));
+function getSelectedNetwork(): Nullable<BridgeNetworkId> {
+  const network = settingsStorage.get('evmNetwork');
 
-  return Number.isFinite(evmNetwork) ? evmNetwork : null;
+  return network ? JSON.parse(network) : null;
 }
 
-function storeSelectedEvmNetwork(evmNetwork: EvmNetwork) {
-  settingsStorage.set('evmNetwork' as any, evmNetwork);
+function storeSelectedNetwork(network: BridgeNetworkId) {
+  settingsStorage.set('evmNetwork' as any, JSON.stringify(network));
 }
 
 function getSelectedBridgeType(): Nullable<BridgeNetworkType> {
@@ -397,8 +399,8 @@ export default {
   storeEvmUserAddress,
   removeEvmUserAddress,
   // evm network storage
-  getSelectedEvmNetwork,
-  storeSelectedEvmNetwork,
+  getSelectedNetwork,
+  storeSelectedNetwork,
   // bridge type
   getSelectedBridgeType,
   storeSelectedBridgeType,

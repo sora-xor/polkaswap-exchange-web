@@ -21,8 +21,8 @@
               @click="handleViewTransactionsHistory"
             />
 
-            <swap-status-action-badge v-if="selectedEvmNetwork">
-              <template #value>{{ selectedEvmNetwork.shortName }}</template>
+            <swap-status-action-badge v-if="selectedNetwork">
+              <template #value>{{ selectedNetwork.shortName }}</template>
               <template #action>
                 <s-button
                   class="el-button--settings"
@@ -52,7 +52,7 @@
             <div class="input-title">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
               <span class="input-title--network">{{ getBridgeItemTitle(isSoraToEvm) }}</span>
-              <i :class="`network-icon network-icon--${getEvmIcon(isSoraToEvm ? 0 : evmNetwork)}`" />
+              <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkProvided)}`" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
@@ -142,7 +142,7 @@
             <div class="input-title" @click="handleChangeNetwork">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
               <span class="input-title--network">{{ getBridgeItemTitle(!isSoraToEvm) }}</span>
-              <i :class="`network-icon network-icon--${getEvmIcon(!isSoraToEvm ? 0 : evmNetwork)}`" />
+              <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkProvided)}`" />
             </div>
             <div v-if="isNetworkAConnected && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
@@ -197,7 +197,7 @@
           v-if="!isValidNetwork"
           class="el-button--next s-typography-button--big"
           type="primary"
-          @click="updateEvmNetwork"
+          @click="updateNetworkProvided"
         >
           {{ t('changeNetworkText') }}
         </s-button>
@@ -256,7 +256,7 @@
         :asset="asset"
         :amount="amount"
         :evm-token-symbol="evmTokenSymbol"
-        :evm-network="evmNetwork"
+        :evm-network="networkProvided"
         :evm-network-fee="evmNetworkFee"
         :sora-network-fee="soraNetworkFee"
         @confirm="confirmTransaction"
@@ -539,7 +539,7 @@ export default class Bridge extends Mixins(
 
   async handleConfirmButtonClick(): Promise<void> {
     if (!this.isValidNetwork) {
-      this.updateEvmNetwork();
+      this.updateNetworkProvided();
       return;
     }
 

@@ -30,7 +30,7 @@ async function getEthRegisteredAssets(context: ActionContext<any, any>): Promise
 async function getEvmRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, EvmAccountAsset>[]> {
   const { rootState } = assetsActionContext(context);
 
-  const evmNetworkId = rootState.web3.evmNetworkSelected;
+  const evmNetworkId = rootState.web3.networkSelected;
   const networkAssets = await evmBridgeApi.getRegisteredAssets(evmNetworkId as number);
 
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {

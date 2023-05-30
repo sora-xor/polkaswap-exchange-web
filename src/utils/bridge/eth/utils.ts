@@ -180,21 +180,21 @@ export const updateEthBridgeHistory =
         bridge: { inProgressIds },
       } = rootState;
 
-      const evmNetworkData = rootGetters.web3.availableNetworks[BridgeNetworkType.EvmLegacy].find(
+      const networkData = rootGetters.web3.availableNetworks[BridgeNetworkType.EvmLegacy].find(
         ({ data }) => data.id === ethBridgeEvmNetwork
       );
 
-      if (!evmNetworkData) {
+      if (!networkData) {
         throw new Error(
           `[HASHI Bridge History]: Network "${ethBridgeEvmNetwork}" is not available in app. Please check app config`
         );
       }
 
-      await ethersUtil.switchOrAddChain(evmNetworkData.data);
+      await ethersUtil.switchOrAddChain(networkData.data);
 
       if ((await ethersUtil.getEvmNetworkId()) !== ethBridgeEvmNetwork) {
         throw new Error(
-          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmNetwork}" is connected, "${ethBridgeEvmNetwork}" expected`
+          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.networkProvided}" is connected, "${ethBridgeEvmNetwork}" expected`
         );
       }
 

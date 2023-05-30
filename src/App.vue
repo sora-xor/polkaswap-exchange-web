@@ -52,6 +52,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 
@@ -119,6 +120,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
+  @mutation.web3.setSubNetworksApp private setSubNetworksApp!: (data: SubNetwork[]) => void;
   @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => Promise<void>;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
 
@@ -213,6 +215,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
+      this.setSubNetworksApp(data.SUB_NETWORKS_IDS);
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);

@@ -84,7 +84,7 @@ function bridgeDataToHistoryItem(
   const { getters, state, rootState } = bridgeActionContext(context);
   const isEthBridge = getters.isEthBridge;
   const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : BridgeTxStatus.Pending;
-  const externalNetwork = rootState.web3.evmNetworkSelected as number;
+  const externalNetwork = rootState.web3.networkSelected as number;
 
   return {
     type: (params as any).type ?? getters.operation,
@@ -235,13 +235,13 @@ const actions = defineActions({
 
     if (!rootGetters.wallet.account.isLoggedIn) return;
 
-    const externalNetwork = rootState.web3.evmNetworkSelected;
+    const externalNetwork = rootState.web3.networkSelected;
 
     if (!externalNetwork) return;
 
     const accountAddress = rootState.wallet.account.address;
 
-    const transactions = await evmBridgeApi.getUserTransactions(accountAddress, externalNetwork);
+    const transactions = await evmBridgeApi.getUserTransactions(accountAddress, externalNetwork as EvmNetwork);
     const externalHistory = evmTransactionsToEvmHistory(rootGetters.assets.assetDataByAddress, transactions);
 
     commit.setExternalHistory(externalHistory);

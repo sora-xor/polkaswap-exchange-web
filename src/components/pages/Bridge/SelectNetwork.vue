@@ -10,7 +10,7 @@
         class="network"
       >
         <span class="network-name">{{ name }}</span>
-        <i :class="['network-icon', `network-icon--${getEvmIcon(id)}`]" />
+        <i :class="['network-icon', `network-icon--${getNetworkIcon(id)}`]" />
       </s-radio>
     </s-radio-group>
   </dialog-base>
@@ -20,12 +20,12 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import { action, getter, mutation, state } from '@/store/decorators';
-import type { EvmNetworkData } from '@/consts/evm';
+import type { NetworkData } from '@/types/bridge';
 
 const DELIMETER = '-';
 
@@ -37,18 +37,18 @@ const DELIMETER = '-';
 })
 export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
   @state.web3.networkType private networkType!: Nullable<BridgeNetworkType>;
-  @state.web3.evmNetworkSelected private evmNetworkSelected!: Nullable<EvmNetwork>;
+  @state.web3.networkSelected private networkSelected!: Nullable<BridgeNetworkId>;
   @state.web3.selectNetworkDialogVisibility selectNetworkDialogVisibility!: boolean;
 
   @getter.web3.availableNetworks availableNetworks!: Record<
     BridgeNetworkType,
-    { disabled: boolean; data: EvmNetworkData }[]
+    { disabled: boolean; data: NetworkData }[]
   >;
 
   @mutation.web3.setNetworkType private setNetworkType!: (networkType: BridgeNetworkType) => void;
   @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
-  @action.web3.selectEvmNetwork selectEvmNetwork!: (networkId: EvmNetwork) => void;
+  @action.web3.selectExternalNetwork selectExternalNetwork!: (networkId: BridgeNetworkId) => void;
 
   get visibility(): boolean {
     return this.selectNetworkDialogVisibility;
@@ -58,7 +58,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
     this.setSelectNetworkDialogVisibility(flag);
   }
 
-  get networks(): { id: number; value: string; name: string; disabled: boolean }[] {
+  get networks(): { id: BridgeNetworkId; value: string; name: string; disabled: boolean }[] {
     return Object.entries(this.availableNetworks)
       .map(([type, networks]) => {
         return networks.map(({ disabled, data: { id, name } }) => {
@@ -76,14 +76,15 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
   }
 
   get selectedNetworkTuple(): string {
-    return [this.networkType, this.evmNetworkSelected].join(DELIMETER);
+    return [this.networkType, this.networkSelected].join(DELIMETER);
   }
 
   set selectedNetworkTuple(value: string) {
-    const [networkType, evmNetworkSelected] = value.split(DELIMETER);
-
+    const [networkType, networkSelected] = value.split(DELIMETER);
+    const networkFormatted =
+      networkType === BridgeNetworkType.Sub ? (networkSelected as BridgeNetworkId) : Number(networkSelected);
     this.setNetworkType(networkType as BridgeNetworkType);
-    this.selectEvmNetwork(Number(evmNetworkSelected));
+    this.selectExternalNetwork(networkFormatted);
   }
 }
 </script>

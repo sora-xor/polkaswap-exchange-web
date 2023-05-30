@@ -312,7 +312,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get evmIcon(): string {
-    return this.getEvmIcon(this.externalNetworkId);
+    return this.getNetworkIcon(this.externalNetworkId);
   }
 
   get txSoraNetworkFee(): CodecString {

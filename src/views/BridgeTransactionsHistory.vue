@@ -32,10 +32,14 @@
               <div class="history-item-info">
                 <div class="history-item-title p4">
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
-                  <i :class="`network-icon network-icon--${getEvmIcon(isOutgoingType(item.type) ? 0 : evmNetwork)}`" />
+                  <i
+                    :class="`network-icon network-icon--${getNetworkIcon(isOutgoingType(item.type) ? 0 : evmNetwork)}`"
+                  />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
-                  <i :class="`network-icon network-icon--${getEvmIcon(!isOutgoingType(item.type) ? 0 : evmNetwork)}`" />
+                  <i
+                    :class="`network-icon network-icon--${getNetworkIcon(!isOutgoingType(item.type) ? 0 : evmNetwork)}`"
+                  />
                 </div>
                 <div class="history-item-date">{{ formatDatetime(item) }}</div>
               </div>
@@ -59,7 +63,7 @@
       </s-form>
     </s-card>
 
-    <bridge-select-network :selected-evm-network="selectedEvmNetwork" @change="changeEvmNetwork" />
+    <bridge-select-network :selected-evm-network="selectedNetwork" @change="changeEvmNetwork" />
   </div>
 </template>
 
@@ -149,7 +153,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   changeEvmNetwork(evmNetwork: EvmNetwork): void {
-    this.setSelectedEvmNetwork(evmNetwork);
+    this.setSelectedNetwork(evmNetwork);
   }
 
   getFilteredHistory(history: Array<IBridgeTransaction>): Array<IBridgeTransaction> {

@@ -18,7 +18,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token token-ethereum">
-          <i :class="`network-icon network-icon--${getEvmIcon(evmNetwork)}`" />
+          <i :class="`network-icon network-icon--${getNetworkIcon(evmNetwork)}`" />
           {{ tokenSymbol }}
         </div>
       </div>

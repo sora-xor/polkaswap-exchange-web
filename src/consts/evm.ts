@@ -5,18 +5,7 @@ import INTERNAL_ABI from '@/abi/ethereum/internal/MASTER.json';
 import BRIDGE_ABI from '@/abi/ethereum/other/BRIDGE.json';
 import ERC20_ABI from '@/abi/ethereum/other/ERC20.json';
 
-export interface EvmNetworkData {
-  id: EvmNetworkId;
-  name: string;
-  nativeCurrency: {
-    name: string;
-    symbol: string;
-    decimals: number;
-  };
-  rpcUrls: string[];
-  blockExplorerUrls: string[];
-  shortName: string;
-}
+import type { NetworkData } from '@/types/bridge';
 
 export enum EvmLinkType {
   Account = 'Account',
@@ -45,7 +34,7 @@ export const SmartContracts = {
 
 // EVM networks data
 // This data could be added to Metamask automatically using "switchOrAddChain" function
-export const EVM_NETWORKS: Record<EvmNetwork, EvmNetworkData> = {
+export const EVM_NETWORKS: Record<EvmNetwork, NetworkData> = {
   [EvmNetworkId.EthereumMainnet]: {
     id: EvmNetworkId.EthereumMainnet,
     name: 'Ethereum Mainnet',
