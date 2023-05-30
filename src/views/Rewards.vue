@@ -187,7 +187,7 @@ export default class Rewards extends Mixins(
         }
       },
       onNetworkChange: (networkHex: string) => {
-        this.connectEvmNetwork(networkHex);
+        this.connectExternalNetwork(networkHex);
       },
       onDisconnect: () => {
         this.disconnectExternalNetwork();

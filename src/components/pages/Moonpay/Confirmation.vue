@@ -63,7 +63,7 @@ export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) 
       isSoraToEvm: false,
       amount: this.bridgeTransactionData.amount,
       asset: this.whitelist[this.bridgeTransactionData.assetAddress as string],
-      evmNetwork: this.bridgeTransactionData.externalNetwork,
+      network: this.bridgeTransactionData.externalNetwork,
       externalNetworkFee: this.bridgeTransactionData.externalNetworkFee,
       soraNetworkFee: this.bridgeTransactionData.soraNetworkFee,
       isValidNetwork: this.isValidNetwork,

@@ -130,7 +130,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
       this.initMoonpayApi(); // MoonpayBridgeInitMixin
 
       this.setSelectedNetwork(this.ethBridgeEvmNetwork);
-      await this.connectEvmNetwork();
+      await this.connectExternalNetwork();
 
       await Promise.all([this.getTransactions(), this.getCurrencies()]);
 
@@ -143,7 +143,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
           }
         },
         onNetworkChange: (networkHex: string) => {
-          this.connectEvmNetwork(networkHex);
+          this.connectExternalNetwork(networkHex);
         },
         onDisconnect: () => {
           this.disconnectExternalNetwork();

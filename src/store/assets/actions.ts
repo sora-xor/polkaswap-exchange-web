@@ -1,11 +1,13 @@
 import { defineActions } from 'direct-vuex';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { ActionContext } from 'vuex';
 
 import ethersUtil from '@/utils/ethers-util';
 import { assetsActionContext } from '@/store/assets';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { ZeroStringValue } from '@/consts';
 
 import type { EvmAccountAsset } from '@/store/assets/types';
@@ -49,6 +51,27 @@ async function getEvmRegisteredAssets(context: ActionContext<any, any>): Promise
   return registeredAssets;
 }
 
+async function getSubRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, EvmAccountAsset>[]> {
+  const { rootState } = assetsActionContext(context);
+
+  const subNetwork = rootState.web3.networkSelected;
+  const networkAssets = await subBridgeApi.getRegisteredAssets(subNetwork as SubNetwork);
+
+  const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
+    const accountAsset = {
+      address: '', // [TODO]
+      balance: ZeroStringValue,
+      decimals: assetData.decimals,
+    };
+
+    return {
+      [soraAddress]: accountAsset,
+    };
+  });
+
+  return registeredAssets;
+}
+
 async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, EvmAccountAsset>[]> {
   const { rootState } = assetsActionContext(context);
 
@@ -60,7 +83,7 @@ async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Re
       return await getEvmRegisteredAssets(context);
     }
     case BridgeNetworkType.Sub: {
-      return [];
+      return await getSubRegisteredAssets(context);
     }
   }
 }
@@ -86,6 +109,9 @@ const actions = defineActions({
 
   async updateExternalBalances(context): Promise<void> {
     const { commit, state, rootDispatch, rootCommit, rootState } = assetsActionContext(context);
+
+    // [TODO]
+    if (rootState.web3.networkType === BridgeNetworkType.Sub) return;
 
     commit.setRegisteredAssetsBalancesUpdating(true);
 

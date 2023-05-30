@@ -31,6 +31,11 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     this.updateExternalBalances();
   }
 
+  @Watch('networkProvided')
+  private updateProvidedNetworkData(): void {
+    this.onConnectedNetworkChange();
+  }
+
   private unwatchEthereum!: FnWithoutArgs;
   private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
 
@@ -42,18 +47,18 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
       await this.getSupportedApps();
       await this.restoreNetworkType();
       await this.restoreSelectedEvmNetwork();
-      await this.onConnectedEvmNetworkChange();
+      await this.onConnectedNetworkChange();
     });
   }
 
-  private async onEvmNetworkUpdate(): Promise<void> {
+  private async updateBalancesAndFees(): Promise<void> {
     await Promise.all([this.updateExternalBalances(), this.getEvmNetworkFee()]);
   }
 
-  private async onConnectedEvmNetworkChange(networkHex?: string) {
-    await this.connectEvmNetwork(networkHex);
+  private async onConnectedNetworkChange(networkHex?: string) {
+    await this.connectExternalNetwork(networkHex);
     await this.updateRegisteredAssets();
-    await this.onEvmNetworkUpdate();
+    await this.updateBalancesAndFees();
   }
 
   private async subscribeOnEvm(): Promise<void> {
@@ -65,9 +70,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
           this.disconnectExternalAccount();
         }
       },
-      onNetworkChange: (networkHex: string) => {
-        this.onConnectedEvmNetworkChange(networkHex);
-      },
+      onNetworkChange: () => {},
       onDisconnect: () => {
         this.disconnectExternalNetwork();
       },
@@ -89,7 +92,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
 
       this.blockHeadersSubscriber = ethersInstance.on('block', (blockNumber) => {
         this.updateEvmBlockNumber(blockNumber);
-        this.onEvmNetworkUpdate();
+        this.updateBalancesAndFees();
       });
     } catch (error) {
       console.error(error);

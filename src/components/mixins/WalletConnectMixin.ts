@@ -49,6 +49,7 @@ const handleMetamaskError = (error: any): string => {
 @Component
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @state.web3.evmAddress evmAddress!: string;
+  @state.web3.networkProvided networkProvided!: BridgeNetworkId;
 
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.web3.isExternalAccountConnected isExternalAccountConnected!: boolean;
@@ -64,7 +65,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
 
   @action.web3.connectExternalAccount private connectExternalAccount!: (provider: Provider) => Promise<void>;
   @action.web3.updateNetworkProvided updateNetworkProvided!: AsyncFnWithoutArgs;
-  @action.web3.connectEvmNetwork connectEvmNetwork!: (networkHex?: string) => Promise<void>;
+  @action.web3.connectExternalNetwork connectExternalNetwork!: (networkHex?: string) => Promise<void>;
   @action.web3.selectExternalNetwork selectExternalNetwork!: (networkId: BridgeNetworkId) => Promise<void>;
   @action.web3.restoreSelectedEvmNetwork restoreSelectedEvmNetwork!: AsyncFnWithoutArgs;
   @action.web3.restoreNetworkType restoreNetworkType!: AsyncFnWithoutArgs;

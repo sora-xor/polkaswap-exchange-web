@@ -18,7 +18,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token token-ethereum">
-          <i :class="`network-icon network-icon--${getNetworkIcon(evmNetwork)}`" />
+          <i :class="`network-icon network-icon--${getNetworkIcon(network)}`" />
           {{ tokenSymbol }}
         </div>
       </div>
@@ -56,7 +56,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString } from '@sora-substrate/util';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
@@ -76,7 +76,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   TranslationMixin,
   NetworkFormatterMixin
 ) {
-  @Prop({ default: 0, type: Number }) readonly evmNetwork!: EvmNetwork;
+  @Prop({ default: 0, type: [Number, String] }) readonly network!: BridgeNetworkId;
   @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;
   @Prop({ default: () => undefined, type: Object }) readonly asset!: Nullable<Asset>;
   @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;

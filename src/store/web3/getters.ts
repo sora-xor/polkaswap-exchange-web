@@ -64,23 +64,18 @@ const getters = defineGetters<Web3State>()({
 
     if (!state.networkProvided) return null;
 
-    if (state.networkType === BridgeNetworkType.Sub) {
-      // [TODO]: sub networks
-      return EVM_NETWORKS[state.networkProvided] ?? null;
-    } else {
-      return EVM_NETWORKS[state.networkProvided] ?? null;
-    }
+    const networks = state.networkType === BridgeNetworkType.Sub ? SUB_NETWORKS : EVM_NETWORKS;
+
+    return networks[state.networkProvided] ?? null;
   },
   selectedNetwork(...args): Nullable<NetworkData> {
     const { state } = web3GetterContext(args);
+
     if (!state.networkSelected) return null;
 
-    if (state.networkType === BridgeNetworkType.Sub) {
-      // [TODO]: sub networks
-      return EVM_NETWORKS[state.networkSelected] ?? null;
-    } else {
-      return EVM_NETWORKS[state.networkSelected] ?? null;
-    }
+    const networks = state.networkType === BridgeNetworkType.Sub ? SUB_NETWORKS : EVM_NETWORKS;
+
+    return networks[state.networkSelected] ?? null;
   },
   isValidNetwork(...args): boolean {
     const { state } = web3GetterContext(args);

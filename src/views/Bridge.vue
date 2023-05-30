@@ -21,8 +21,10 @@
               @click="handleViewTransactionsHistory"
             />
 
-            <swap-status-action-badge v-if="selectedNetwork">
-              <template #value>{{ selectedNetwork.shortName }}</template>
+            <swap-status-action-badge>
+              <template #value>
+                {{ selectedNetwork ? selectedNetwork.shortName : '-' }}
+              </template>
               <template #action>
                 <s-button
                   class="el-button--settings"
@@ -255,8 +257,8 @@
         :is-insufficient-balance="isInsufficientBalance"
         :asset="asset"
         :amount="amount"
+        :network="networkProvided"
         :evm-token-symbol="evmTokenSymbol"
-        :evm-network="networkProvided"
         :evm-network-fee="evmNetworkFee"
         :sora-network-fee="soraNetworkFee"
         @confirm="confirmTransaction"

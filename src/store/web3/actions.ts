@@ -23,6 +23,16 @@ const actions = defineActions({
     commit.setProvidedNetwork(evmNetwork);
   },
 
+  async connectExternalNetwork(context, network?: string): Promise<void> {
+    const { state, dispatch } = web3ActionContext(context);
+
+    if (state.networkType === BridgeNetworkType.Sub) {
+      // [TODO] action to connect substrate network
+    } else {
+      await dispatch.connectEvmNetwork(network);
+    }
+  },
+
   async selectExternalNetwork(context, network: BridgeNetworkId): Promise<void> {
     const { commit, dispatch } = web3ActionContext(context);
     commit.setSelectedNetwork(network);
@@ -30,18 +40,18 @@ const actions = defineActions({
   },
 
   async updateNetworkProvided(context): Promise<void> {
-    const { dispatch, getters, state } = web3ActionContext(context);
+    const { dispatch, getters, state, commit } = web3ActionContext(context);
     const { selectedNetwork: selected } = getters;
-    const { networkProvided, networkType } = state;
+    const { networkType } = state;
 
-    // if connected network is not equal to selected, request for provider to change network
-    if (selected && selected.id !== networkProvided) {
-      if (networkType === BridgeNetworkType.Sub) {
-        // [TODO]
-      } else {
-        await ethersUtil.switchOrAddChain(selected);
-        await dispatch.connectEvmNetwork();
-      }
+    if (!selected) return;
+
+    if (networkType === BridgeNetworkType.Sub) {
+      // [TODO] action to connect substrate network
+      commit.setProvidedNetwork(selected.id);
+    } else {
+      await ethersUtil.switchOrAddChain(selected);
+      await dispatch.connectEvmNetwork();
     }
   },
 
