@@ -4,13 +4,14 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { XOR, VAL, PSWAP, ETH } from '@sora-substrate/util/build/assets/consts';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import { settingsStorage } from '@/utils/storage';
 import { ZeroStringValue } from '@/consts';
-import { BridgeType, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
+import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 
 import type { EvmNetworkData } from '@/consts/evm';
 
@@ -359,14 +360,14 @@ function storeSelectedEvmNetwork(evmNetwork: EvmNetwork) {
   settingsStorage.set('evmNetwork' as any, evmNetwork);
 }
 
-function getSelectedBridgeType(): Nullable<BridgeType> {
-  const result = settingsStorage.get('bridgeType') as BridgeType;
+function getSelectedBridgeType(): Nullable<BridgeNetworkType> {
+  const result = settingsStorage.get('bridgeType') as BridgeNetworkType;
   const value = result || null;
 
   return value;
 }
 
-function storeSelectedBridgeType(bridgeType: BridgeType) {
+function storeSelectedBridgeType(bridgeType: BridgeNetworkType) {
   settingsStorage.set('bridgeType' as any, bridgeType);
 }
 

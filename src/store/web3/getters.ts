@@ -1,7 +1,8 @@
 import { defineGetters } from 'direct-vuex';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import { web3GetterContext } from '@/store/web3';
-import { EVM_NETWORKS, BridgeType } from '@/consts/evm';
+import { EVM_NETWORKS } from '@/consts/evm';
 
 import type { EvmNetworkData, KnownEthBridgeAsset } from '@/consts/evm';
 import type { Web3State } from './types';
@@ -11,19 +12,21 @@ const getters = defineGetters<Web3State>()({
     const { state } = web3GetterContext(args);
     return !!state.evmAddress && state.evmAddress !== 'undefined';
   },
-  availableNetworks(...args): Record<BridgeType, { disabled: boolean; data: EvmNetworkData }[]> {
+  availableNetworks(...args): Record<BridgeNetworkType, { disabled: boolean; data: EvmNetworkData }[]> {
     const { state } = web3GetterContext(args);
-    const format = (id: number) => ({ disabled: !state.evmNetworksChain.includes(id), data: EVM_NETWORKS[id] });
-    const hashi = [state.ethBridgeEvmNetwork].map((evmNetworkId) => ({
+    const hashi = [state.ethBridgeEvmNetwork].map((id) => ({
       disabled: false,
-      data: EVM_NETWORKS[evmNetworkId],
+      data: EVM_NETWORKS[id],
     }));
-    const evm = state.evmNetworksApp.map(format);
+    const evm = state.evmNetworksApp.map((id) => ({
+      disabled: !state.supportedApps?.[BridgeNetworkType.Evm]?.[id],
+      data: EVM_NETWORKS[id],
+    }));
 
     return {
-      [BridgeType.ETH]: hashi,
-      [BridgeType.EVM]: evm,
-      [BridgeType.SUB]: [],
+      [BridgeNetworkType.EvmLegacy]: hashi,
+      [BridgeNetworkType.Evm]: evm,
+      [BridgeNetworkType.Sub]: [],
     };
   },
   connectedEvmNetwork(...args): Nullable<EvmNetworkData> {

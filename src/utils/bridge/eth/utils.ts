@@ -1,12 +1,12 @@
 import { Operation, BridgeTxStatus } from '@sora-substrate/util';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { ActionContext } from 'vuex';
 import type { Subscription } from 'rxjs';
 import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
 
 import { rootActionContext } from '@/store';
 import { delay } from '@/utils';
-import { BridgeType } from '@/consts/evm';
 import ethersUtil from '@/utils/ethers-util';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
@@ -180,7 +180,7 @@ export const updateEthBridgeHistory =
         bridge: { inProgressIds },
       } = rootState;
 
-      const evmNetworkData = rootGetters.web3.availableNetworks[BridgeType.ETH].find(
+      const evmNetworkData = rootGetters.web3.availableNetworks[BridgeNetworkType.EvmLegacy].find(
         ({ data }) => data.id === ethBridgeEvmNetwork
       );
 

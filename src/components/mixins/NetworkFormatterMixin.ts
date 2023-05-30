@@ -1,7 +1,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { EvmNetworkId } from '@sora-substrate/util/build/evm/consts';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import { state, getter } from '@/store/decorators';
 

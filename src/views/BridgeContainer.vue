@@ -24,7 +24,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @action.bridge.updateEvmBlockNumber private updateEvmBlockNumber!: (block?: number) => Promise<void>;
   @action.assets.updateRegisteredAssets private updateRegisteredAssets!: AsyncFnWithoutArgs;
   @action.assets.updateExternalBalances private updateExternalBalances!: AsyncFnWithoutArgs;
-  @action.web3.getSupportedNetworks private getSupportedNetworks!: AsyncFnWithoutArgs;
+  @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
 
   @Watch('evmAddress')
   private updateAccountExternalBalances(): void {
@@ -39,7 +39,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     this.setResetSubscriptions([this.unsubscribeEvmBlockHeaders, this.unsubscribeFromEvm]);
 
     await this.withParentLoading(async () => {
-      await this.getSupportedNetworks();
+      await this.getSupportedApps();
       await this.restoreNetworkType();
       await this.restoreSelectedEvmNetwork();
       await this.onConnectedEvmNetworkChange();

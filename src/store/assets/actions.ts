@@ -1,6 +1,5 @@
-import isEmpty from 'lodash/fp/isEmpty';
-import { FPNumber } from '@sora-substrate/util';
 import { defineActions } from 'direct-vuex';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { ActionContext } from 'vuex';
 
 import ethersUtil from '@/utils/ethers-util';
@@ -8,7 +7,6 @@ import { assetsActionContext } from '@/store/assets';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { ZeroStringValue } from '@/consts';
-import { BridgeType } from '@/consts/evm';
 
 import type { EvmAccountAsset } from '@/store/assets/types';
 
@@ -33,14 +31,14 @@ async function getEvmRegisteredAssets(context: ActionContext<any, any>): Promise
   const { rootState } = assetsActionContext(context);
 
   const evmNetworkId = rootState.web3.evmNetworkSelected;
-  const networkAssets = await evmBridgeApi.getNetworkAssets(evmNetworkId as number);
+  const networkAssets = await evmBridgeApi.getRegisteredAssets(evmNetworkId as number);
 
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
     const accountAsset = {
-      address: assetData.evmAddress as string,
+      address: assetData.address as string,
       balance: ZeroStringValue,
-      contract: assetData.contract,
-      decimals: FPNumber.DEFAULT_PRECISION,
+      contract: '', // map with appKinds
+      decimals: assetData.decimals,
     };
 
     return {
@@ -55,13 +53,13 @@ async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Re
   const { rootState } = assetsActionContext(context);
 
   switch (rootState.web3.networkType) {
-    case BridgeType.ETH: {
+    case BridgeNetworkType.EvmLegacy: {
       return await getEthRegisteredAssets(context);
     }
-    case BridgeType.EVM: {
+    case BridgeNetworkType.Evm: {
       return await getEvmRegisteredAssets(context);
     }
-    case BridgeType.SUB: {
+    case BridgeNetworkType.Sub: {
       return [];
     }
   }

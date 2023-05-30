@@ -2,7 +2,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { Operation } from '@sora-substrate/util';
 import type { CodecString, BridgeHistory } from '@sora-substrate/util';
 import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import ethersUtil from '@/utils/ethers-util';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';

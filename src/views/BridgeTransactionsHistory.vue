@@ -67,7 +67,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { IBridgeTransaction } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';

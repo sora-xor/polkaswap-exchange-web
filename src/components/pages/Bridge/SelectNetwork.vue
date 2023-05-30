@@ -19,12 +19,12 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 
 import { action, getter, mutation, state } from '@/store/decorators';
-import { BridgeType } from '@/consts/evm';
 import type { EvmNetworkData } from '@/consts/evm';
 
 const DELIMETER = '-';
@@ -36,13 +36,16 @@ const DELIMETER = '-';
   },
 })
 export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
-  @state.web3.networkType private networkType!: Nullable<BridgeType>;
+  @state.web3.networkType private networkType!: Nullable<BridgeNetworkType>;
   @state.web3.evmNetworkSelected private evmNetworkSelected!: Nullable<EvmNetwork>;
   @state.web3.selectNetworkDialogVisibility selectNetworkDialogVisibility!: boolean;
 
-  @getter.web3.availableNetworks availableNetworks!: Record<BridgeType, { disabled: boolean; data: EvmNetworkData }[]>;
+  @getter.web3.availableNetworks availableNetworks!: Record<
+    BridgeNetworkType,
+    { disabled: boolean; data: EvmNetworkData }[]
+  >;
 
-  @mutation.web3.setNetworkType private setNetworkType!: (networkType: BridgeType) => void;
+  @mutation.web3.setNetworkType private setNetworkType!: (networkType: BridgeNetworkType) => void;
   @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
   @action.web3.selectEvmNetwork selectEvmNetwork!: (networkId: EvmNetwork) => void;
@@ -59,7 +62,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
     return Object.entries(this.availableNetworks)
       .map(([type, networks]) => {
         return networks.map(({ disabled, data: { id, name } }) => {
-          const networkName = type === BridgeType.ETH ? `${name} (${this.t('hashiBridgeText')})` : name;
+          const networkName = type === BridgeNetworkType.EvmLegacy ? `${name} (${this.t('hashiBridgeText')})` : name;
 
           return {
             id,
@@ -79,7 +82,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
   set selectedNetworkTuple(value: string) {
     const [networkType, evmNetworkSelected] = value.split(DELIMETER);
 
-    this.setNetworkType(networkType as BridgeType);
+    this.setNetworkType(networkType as BridgeNetworkType);
     this.selectEvmNetwork(Number(evmNetworkSelected));
   }
 }

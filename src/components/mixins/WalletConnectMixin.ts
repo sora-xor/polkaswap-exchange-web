@@ -1,5 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import router from '@/router';
 import { getWalletAddress, formatAddress } from '@/utils';

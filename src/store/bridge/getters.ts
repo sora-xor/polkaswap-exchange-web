@@ -1,12 +1,12 @@
 import { defineGetters } from 'direct-vuex';
 import { Operation } from '@sora-substrate/util';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { IBridgeTransaction, CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
 
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { bridgeGetterContext } from '@/store/bridge';
 import { ZeroStringValue } from '@/consts';
-import { BridgeType } from '@/consts/evm';
 import ethersUtil from '@/utils/ethers-util';
 import type { BridgeState } from './types';
 
@@ -29,12 +29,12 @@ const getters = defineGetters<BridgeState>()({
   isEthBridge(...args): boolean {
     const { rootState } = bridgeGetterContext(args);
 
-    return rootState.web3.networkType === BridgeType.ETH;
+    return rootState.web3.networkType === BridgeNetworkType.EvmLegacy;
   },
   isEvmBridge(...args): boolean {
     const { rootState } = bridgeGetterContext(args);
 
-    return rootState.web3.networkType === BridgeType.EVM;
+    return rootState.web3.networkType === BridgeNetworkType.Evm;
   },
   operation(...args): Operation {
     const { state, getters } = bridgeGetterContext(args);

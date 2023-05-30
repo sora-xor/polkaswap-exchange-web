@@ -56,7 +56,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString } from '@sora-substrate/util';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';

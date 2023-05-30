@@ -1,7 +1,7 @@
 import type { CodecString } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
-
-import type { BridgeType } from '@/consts/evm';
+import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import type { SupportedApps } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 export type EthBridgeContractsAddresses = {
   XOR: string;
@@ -17,11 +17,11 @@ export type EthBridgeSettings = {
 export type Web3State = {
   evmAddress: string;
   evmBalance: CodecString;
+  networkType: BridgeNetworkType;
   evmNetwork: Nullable<EvmNetwork>;
-  evmNetworksApp: EvmNetwork[];
-  evmNetworksChain: EvmNetwork[];
   evmNetworkSelected: Nullable<EvmNetwork>;
-  networkType: BridgeType;
+  evmNetworksApp: EvmNetwork[];
+  supportedApps: SupportedApps;
 
   selectNetworkDialogVisibility: boolean;
 

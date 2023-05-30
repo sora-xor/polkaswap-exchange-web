@@ -1,6 +1,6 @@
-import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
+import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { Operation } from '@sora-substrate/util';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { Bridge } from '@/utils/bridge/common/classes';
@@ -33,8 +33,8 @@ const evmBridge: EvmBridge = new Bridge({
   // states
   boundaryStates: {
     [Operation.EvmOutgoing]: {
-      done: EvmTxStatus.Done,
-      failed: [EvmTxStatus.Failed],
+      done: BridgeTxStatus.Done,
+      failed: [BridgeTxStatus.Failed],
     },
   },
   // assets

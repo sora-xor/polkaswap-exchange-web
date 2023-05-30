@@ -1,13 +1,13 @@
 import { defineMutations } from 'direct-vuex';
 import { CodecString } from '@sora-substrate/util';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import type { SupportedApps } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import ethersUtil from '@/utils/ethers-util';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
-
 import { ZeroStringValue } from '@/consts';
 
 import type { Web3State, EthBridgeSettings } from './types';
-import type { BridgeType } from '@/consts/evm';
 
 const mutations = defineMutations<Web3State>()({
   setEvmAddress(state, address: string): void {
@@ -21,8 +21,8 @@ const mutations = defineMutations<Web3State>()({
   setEvmNetworksApp(state, networksIds: EvmNetwork[]): void {
     state.evmNetworksApp = networksIds;
   },
-  setEvmNetworksChain(state, networksIds: EvmNetwork[]): void {
-    state.evmNetworksChain = networksIds;
+  setSupportedApps(state, supportedApps: SupportedApps): void {
+    state.supportedApps = supportedApps;
   },
   // by provider
   setEvmNetwork(state, networkId: EvmNetwork): void {
@@ -43,7 +43,7 @@ const mutations = defineMutations<Web3State>()({
     state.evmBalance = ZeroStringValue;
   },
 
-  setNetworkType(state, networkType: BridgeType) {
+  setNetworkType(state, networkType: BridgeNetworkType) {
     state.networkType = networkType;
     ethersUtil.storeSelectedBridgeType(networkType);
   },

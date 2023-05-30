@@ -208,9 +208,9 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
+import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { CodecString, BridgeHistory, IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
-import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
@@ -356,7 +356,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txState(): string {
-    return this.historyItem?.transactionState ?? EvmTxStatus.Pending;
+    return this.historyItem?.transactionState ?? BridgeTxStatus.Pending;
   }
 
   get isTxFailed(): boolean {

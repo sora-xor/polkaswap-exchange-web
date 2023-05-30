@@ -1,6 +1,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
+import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { IBridgeTransaction } from '@sora-substrate/util';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -22,7 +22,7 @@ export default class BridgeTransactionMixin extends Mixins(TranslationMixin) {
     )
       return true;
     // EVM
-    if (item.transactionState === EvmTxStatus.Failed) return true;
+    if (item.transactionState === BridgeTxStatus.Failed) return true;
     // OTHER
     return false;
   }
@@ -36,7 +36,7 @@ export default class BridgeTransactionMixin extends Mixins(TranslationMixin) {
     )
       return true;
     // EVM
-    if (item.transactionState === EvmTxStatus.Done) return true;
+    if (item.transactionState === BridgeTxStatus.Done) return true;
     // OTHER
     return false;
   }

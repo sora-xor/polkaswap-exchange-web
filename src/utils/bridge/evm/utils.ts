@@ -1,6 +1,6 @@
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation } from '@sora-substrate/util';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import { delay } from '@/utils';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';

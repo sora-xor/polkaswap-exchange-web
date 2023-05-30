@@ -1,12 +1,13 @@
 import { ethers } from 'ethers';
 import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import { web3ActionContext } from '@/store/web3';
 import ethersUtil from '@/utils/ethers-util';
-import { BridgeType, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
+import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { Provider } from '@/utils/ethers-util';
 
 const actions = defineActions({
@@ -40,10 +41,10 @@ const actions = defineActions({
     }
   },
 
-  async getSupportedNetworks(context): Promise<void> {
+  async getSupportedApps(context): Promise<void> {
     const { commit } = web3ActionContext(context);
-    const networksIds = await api.evm.getAvailableNetworks();
-    commit.setEvmNetworksChain(networksIds);
+    const supportedApps = await api.bridgeProxy.getListApps();
+    commit.setSupportedApps(supportedApps);
   },
 
   async restoreSelectedEvmNetwork(context): Promise<void> {
@@ -52,7 +53,7 @@ const actions = defineActions({
     if (getters.selectedEvmNetwork) return;
 
     const selectedEvmNetworkId =
-      ethersUtil.getSelectedEvmNetwork() || getters.availableNetworks[BridgeType.ETH]?.[0]?.data?.id;
+      ethersUtil.getSelectedEvmNetwork() || getters.availableNetworks[BridgeNetworkType.EvmLegacy]?.[0]?.data?.id;
 
     if (selectedEvmNetworkId) {
       commit.setSelectedEvmNetwork(selectedEvmNetworkId);
@@ -67,7 +68,7 @@ const actions = defineActions({
 
     if (state.networkType) return;
 
-    const networkType = ethersUtil.getSelectedBridgeType() ?? BridgeType.ETH;
+    const networkType = ethersUtil.getSelectedBridgeType() ?? BridgeNetworkType.EvmLegacy;
 
     commit.setNetworkType(networkType);
   },

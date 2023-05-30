@@ -1,7 +1,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import type { CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { getter, mutation, state } from '@/store/decorators';
