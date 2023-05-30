@@ -45,7 +45,7 @@ const getters = defineGetters<Web3State>()({
 
       if (data) {
         buffer.push({
-          disabled: !state.supportedApps?.[BridgeNetworkType.Sub]?.[id],
+          disabled: !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id),
           data,
         });
       }

@@ -27,6 +27,13 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { NetworkData } from '@/types/bridge';
 
+type NetworkItem = {
+  id: BridgeNetworkId;
+  value: string;
+  name: string;
+  disabled: boolean;
+};
+
 const DELIMETER = '-';
 
 @Component({
@@ -58,7 +65,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
     this.setSelectNetworkDialogVisibility(flag);
   }
 
-  get networks(): { id: BridgeNetworkId; value: string; name: string; disabled: boolean }[] {
+  get networks(): NetworkItem[] {
     return Object.entries(this.availableNetworks)
       .map(([type, networks]) => {
         return networks.map(({ disabled, data: { id, name } }) => {
@@ -72,7 +79,10 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
           };
         });
       })
-      .flat(1);
+      .flat(1)
+      .sort((a, b) => {
+        return +a.disabled - +b.disabled;
+      });
   }
 
   get selectedNetworkTuple(): string {
