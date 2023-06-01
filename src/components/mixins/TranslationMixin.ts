@@ -29,7 +29,6 @@ const TranslationConsts = {
   EVM: 'EVM',
   Kusama: 'Kusama',
   Metamask: 'MetaMask',
-  Polkaswap: 'Polkaswap',
   ROI: 'ROI', // Return of investment
   // Networks from ETH Bridge
   bridgeNetwork: {
