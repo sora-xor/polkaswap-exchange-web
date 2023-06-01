@@ -318,7 +318,7 @@
     "retryText": "Reintentar",
     "networkFeeText": "Tarifa de red",
     "networkFeeTooltipText": "La comisión de la red se utiliza para garantizar el crecimiento y el rendimiento estable del sistema {Sora}.",
-    "ethNetworkFeeTooltipText": "Por favor, tenga en cuenta que las tarifas de la red {Ethereum} mostradas en {AppName} son sólo estimaciones aproximadas, puede ver la cantidad correcta de la tarifa en su cartera {Ethereum} conectada antes de confirmar la transacción.",
+    "ethNetworkFeeTooltipText": "Por favor, tenga en cuenta que las tarifas de la red {network} mostradas en {AppName} son sólo estimaciones aproximadas, puede ver la cantidad correcta de la tarifa en su cartera {network} conectada antes de confirmar la transacción.",
     "marketText": "Mercado",
     "marketAlgorithmText": "Algoritmo de mercado",
     "firstPerSecond": "{first} por {second}",

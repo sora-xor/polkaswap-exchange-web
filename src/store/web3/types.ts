@@ -17,6 +17,8 @@ export type EthBridgeSettings = {
 
 export type Web3State = {
   evmAddress: string;
+  subAddress: string;
+
   evmBalance: CodecString;
 
   networkType: BridgeNetworkType;

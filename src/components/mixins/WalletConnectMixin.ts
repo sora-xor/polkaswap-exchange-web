@@ -1,6 +1,5 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import router from '@/router';
 import { getWalletAddress, formatAddress } from '@/utils';
@@ -48,10 +47,12 @@ const handleMetamaskError = (error: any): string => {
 
 @Component
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
+  @state.web3.subAddress subAddress!: string;
   @state.web3.evmAddress evmAddress!: string;
   @state.web3.networkProvided networkProvided!: BridgeNetworkId;
 
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
+  @getter.web3.externalAccount externalAccount!: string;
   @getter.web3.isExternalAccountConnected isExternalAccountConnected!: boolean;
 
   @getter.web3.selectedNetwork selectedNetwork!: Nullable<NetworkData>;

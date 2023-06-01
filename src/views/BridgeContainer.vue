@@ -26,7 +26,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @action.assets.updateExternalBalances private updateExternalBalances!: AsyncFnWithoutArgs;
   @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
 
-  @Watch('evmAddress')
+  @Watch('externalAccount')
   private updateAccountExternalBalances(): void {
     this.updateExternalBalances();
   }

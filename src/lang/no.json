@@ -318,7 +318,7 @@
     "retryText": "Prøv igjen",
     "networkFeeText": "Nettverksgebyr",
     "networkFeeTooltipText": "Nettverksavgift brukes til å sikre {Sora} -systemets vekst og stabile ytelse.",
-    "ethNetworkFeeTooltipText": "Vær oppmerksom på at {Ethereum}-nettverksgebyrene som vises på {AppName} bare er grove estimater, du kan se riktig gebyrbeløp i den tilkoblede {Ethereum}-lommeboken før du bekrefter transaksjonen.",
+    "ethNetworkFeeTooltipText": "Vær oppmerksom på at {network}-nettverksgebyrene som vises på {AppName} bare er grove estimater, du kan se riktig gebyrbeløp i den tilkoblede {network}-lommeboken før du bekrefter transaksjonen.",
     "marketText": "Marked",
     "marketAlgorithmText": "Markedsalgoritme",
     "firstPerSecond": "{first} per {second}",

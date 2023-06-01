@@ -318,7 +318,7 @@
     "retryText": "Retry",
     "networkFeeText": "Network Fee",
     "networkFeeTooltipText": "Network fee is used to ensure {Sora} system's growth and stable performance.",
-    "ethNetworkFeeTooltipText": "Please note that the {Ethereum} network fees displayed on {AppName} are only rough estimations, you can see the correct fee amount in your connected {Ethereum} wallet prior to confirming the transaction.",
+    "ethNetworkFeeTooltipText": "Please note that the {network} network fees displayed on {AppName} are only rough estimations, you can see the correct fee amount in your connected {network} wallet prior to confirming the transaction.",
     "marketText": "Market",
     "marketAlgorithmText": "Market algorithm",
     "firstPerSecond": "{first} per {second}",

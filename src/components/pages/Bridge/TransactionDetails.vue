@@ -9,8 +9,8 @@
       is-formatted
     />
     <info-line
-      :label="t('bridge.ethereumNetworkFee')"
-      :label-tooltip="t('ethNetworkFeeTooltipText')"
+      :label="formattedNetworkFeeLabel"
+      :label-tooltip="t('ethNetworkFeeTooltipText', { network: networkName })"
       :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
       :asset-symbol="evmTokenSymbol"
       is-formatted
@@ -28,6 +28,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
 
+import type { NetworkData } from '@/types/bridge';
+
 @Component({
   components: {
     TransactionDetails: lazyComponent(Components.TransactionDetails),
@@ -42,6 +44,15 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
+  @Prop({ default: () => null, type: Object }) readonly network!: NetworkData;
+
+  get networkName(): string {
+    return this.network?.shortName ?? '';
+  }
+
+  get formattedNetworkFeeLabel(): string {
+    return `${this.networkName} ${this.t('networkFeeText')}`;
+  }
 
   get formattedSoraNetworkFee(): string {
     return this.formatCodecNumber(this.soraNetworkFee);

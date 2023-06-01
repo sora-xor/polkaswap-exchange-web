@@ -318,7 +318,7 @@
     "retryText": "Spróbuj ponownie",
     "networkFeeText": "Opłata sieciowa",
     "networkFeeTooltipText": "Opłata sieciowa służy zapewnieniu rozwoju i stabilności systemu {Sora}.",
-    "ethNetworkFeeTooltipText": "Należy mieć na uwadze, że opłaty w sieci {Ethereum} widoczne na {AppName} to jedynie przybliżone oszacowanie. Przed potwierdzeniem transakcji można zobaczyć prawidłową kwotę opłaty w podłączonym portfelu sieci {Ethereum}.",
+    "ethNetworkFeeTooltipText": "Należy mieć na uwadze, że opłaty w sieci {network} widoczne na {AppName} to jedynie przybliżone oszacowanie. Przed potwierdzeniem transakcji można zobaczyć prawidłową kwotę opłaty w podłączonym portfelu sieci {network}.",
     "marketText": "Rynek",
     "marketAlgorithmText": "Algorytm rynkowy",
     "firstPerSecond": "{first} za {second}",

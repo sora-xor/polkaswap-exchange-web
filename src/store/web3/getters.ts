@@ -15,9 +15,20 @@ type AvailableNetwork = {
 };
 
 const getters = defineGetters<Web3State>()({
+  externalAccount(...args): string {
+    const { state, rootState } = web3GetterContext(args);
+
+    if (state.networkType === BridgeNetworkType.Sub) {
+      // [TODO] use state.subAddress
+      return rootState.wallet.account.address;
+    } else {
+      return state.evmAddress;
+    }
+  },
   isExternalAccountConnected(...args): boolean {
-    const { state } = web3GetterContext(args);
-    return !!state.evmAddress && state.evmAddress !== 'undefined';
+    const { getters } = web3GetterContext(args);
+
+    return !!getters.externalAccount && getters.externalAccount !== 'undefined';
   },
   availableNetworks(...args): Record<BridgeNetworkType, AvailableNetwork[]> {
     const { state } = web3GetterContext(args);

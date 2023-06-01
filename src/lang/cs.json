@@ -318,7 +318,7 @@
     "retryText": "Zkuste znovu",
     "networkFeeText": "Síťový poplatek",
     "networkFeeTooltipText": "Síťový poplatek slouží k zajištění růstu a stabilního výkonu systému {Sora}.",
-    "ethNetworkFeeTooltipText": "Nezapomeňte prosím, že poplatky sítě {Ethereum} zobrazené na {AppName} jsou pouze hrubé odhady, správnou výši poplatku si můžete prohlédnout ve vaší připojené {Ethereum} peněžence před potvrzením transakce.",
+    "ethNetworkFeeTooltipText": "Nezapomeňte prosím, že poplatky sítě {network} zobrazené na {AppName} jsou pouze hrubé odhady, správnou výši poplatku si můžete prohlédnout ve vaší připojené {network} peněžence před potvrzením transakce.",
     "marketText": "Trh",
     "marketAlgorithmText": "Algoritmus trhu",
     "firstPerSecond": "{first} za {second}",

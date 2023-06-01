@@ -318,7 +318,7 @@
     "retryText": "Coba lagi",
     "networkFeeText": "Biaya Jaringan",
     "networkFeeTooltipText": "Biaya jaringan digunakan untuk memastikan pertumbuhan sistem {Sora} dan kinerja yang stabil.",
-    "ethNetworkFeeTooltipText": "Mohon diingat bahwa biaya jaringan {Ethereum} yang ditampilkan di {AppName} hanya perkiraan sementara, Anda dapat melihat jumlah biaya yang benar di dompet {Ethereum} Anda yang terhubung sebelum mengonfirmasi transaksi.",
+    "ethNetworkFeeTooltipText": "Mohon diingat bahwa biaya jaringan {network} yang ditampilkan di {AppName} hanya perkiraan sementara, Anda dapat melihat jumlah biaya yang benar di dompet {network} Anda yang terhubung sebelum mengonfirmasi transaksi.",
     "marketText": "Pasar",
     "marketAlgorithmText": "Algoritma pasar",
     "firstPerSecond": "{first} per {second}",

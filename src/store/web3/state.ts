@@ -9,6 +9,8 @@ import type { Web3State } from './types';
 export function initialState(): Web3State {
   return {
     evmAddress: '', // ethersUtil.getEvmUserAddress()
+    subAddress: '', // for future usage
+
     evmBalance: ZeroStringValue,
 
     networkType: ethersUtil.getSelectedBridgeType() ?? BridgeNetworkType.EvmLegacy,

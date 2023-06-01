@@ -126,6 +126,7 @@
           data-test-name="switchToken"
           type="action"
           icon="arrows-swap-90-24"
+          :disabled="isSubBridge"
           @click="handleSwitchItems"
         />
 
@@ -246,6 +247,7 @@
           :evm-token-symbol="evmTokenSymbol"
           :evm-network-fee="evmNetworkFee"
           :sora-network-fee="soraNetworkFee"
+          :network="selectedNetwork"
         />
       </s-card>
       <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
@@ -337,6 +339,7 @@ export default class Bridge extends Mixins(
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
   @getter.bridge.operation private operation!: Operation;
+  @getter.bridge.isSubBridge isSubBridge!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;
@@ -484,14 +487,18 @@ export default class Bridge extends Mixins(
   }
 
   get accountAddressFrom(): string {
-    return !this.isSoraToEvm ? this.evmAddress : this.getWalletAddress();
+    return !this.isSoraToEvm ? this.externalAccount : this.getWalletAddress();
   }
 
   get accountAddressTo(): string {
-    return this.isSoraToEvm ? this.evmAddress : this.getWalletAddress();
+    return this.isSoraToEvm ? this.externalAccount : this.getWalletAddress();
   }
 
   formatBalance(isSora = true): string {
+    // [TODO] balance for token in substrate network
+    if (!isSora && this.isSubBridge) {
+      return '-';
+    }
     if (!(this.asset && (this.isRegisteredAsset || isSora))) {
       return '-';
     }

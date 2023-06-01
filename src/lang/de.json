@@ -318,7 +318,7 @@
     "retryText": "Wiederholen",
     "networkFeeText": "Netzwerkgebühr",
     "networkFeeTooltipText": "Die Netzwerkgebühr wird verwendet, um das Wachstum und eine stabile Leistung des {Sora} -Systems sicherzustellen.",
-    "ethNetworkFeeTooltipText": "Bitte, beachte, dass die auf {AppName} angezeigten {Ethereum}-Netzwerkgebühren nur grobe Schätzungen sind. Du kannst den korrekten Gebührenbetrag in deinem verbundenen {Ethereum}-Wallet sehen, bevor du die Transaktion bestätigst.",
+    "ethNetworkFeeTooltipText": "Bitte, beachte, dass die auf {AppName} angezeigten {network}-Netzwerkgebühren nur grobe Schätzungen sind. Du kannst den korrekten Gebührenbetrag in deinem verbundenen {network}-Wallet sehen, bevor du die Transaktion bestätigst.",
     "marketText": "Markt",
     "marketAlgorithmText": "Marktalgorithmus",
     "firstPerSecond": "{first} pro {second}",

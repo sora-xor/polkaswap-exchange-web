@@ -23,8 +23,18 @@ const getters = defineGetters<BridgeState>()({
     return token;
   },
   isRegisteredAsset(...args): boolean {
-    const { getters } = bridgeGetterContext(args);
-    return !!getters.asset?.externalAddress;
+    const { getters, rootState } = bridgeGetterContext(args);
+
+    const { asset, isSubBridge } = getters;
+    const { registeredAssets } = rootState.assets;
+
+    if (!asset) return false;
+    if (!(asset.address in registeredAssets)) return false;
+
+    // [TODO]: We don't have external address for substrate bridge yet
+    if (isSubBridge) return true;
+
+    return !!asset?.externalAddress;
   },
   isEthBridge(...args): boolean {
     const { rootState } = bridgeGetterContext(args);
@@ -35,6 +45,11 @@ const getters = defineGetters<BridgeState>()({
     const { rootState } = bridgeGetterContext(args);
 
     return rootState.web3.networkType === BridgeNetworkType.Evm;
+  },
+  isSubBridge(...args): boolean {
+    const { rootState } = bridgeGetterContext(args);
+
+    return rootState.web3.networkType === BridgeNetworkType.Sub;
   },
   operation(...args): Operation {
     const { state, getters } = bridgeGetterContext(args);

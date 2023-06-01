@@ -318,7 +318,7 @@
     "retryText": "Thử lại",
     "networkFeeText": "Phí Mạng",
     "networkFeeTooltipText": "Phí mạng được sử dụng để đảm bảo hệ thống {Sora} phát triển và hoạt động ổn định.",
-    "ethNetworkFeeTooltipText": "Xin lưu ý rằng phí mạng {Ethereum} được hiển thị trên {AppName} chỉ là ước tính sơ bộ, bạn có thể thấy chi phí chính xác trong ví {Ethereum} của mình trước khi xác nhận giao dịch.",
+    "ethNetworkFeeTooltipText": "Xin lưu ý rằng phí mạng {network} được hiển thị trên {AppName} chỉ là ước tính sơ bộ, bạn có thể thấy chi phí chính xác trong ví {network} của mình trước khi xác nhận giao dịch.",
     "marketText": "Thị trường",
     "marketAlgorithmText": "Thuật toán thị trường",
     "firstPerSecond": "{first} mỗi {second}",

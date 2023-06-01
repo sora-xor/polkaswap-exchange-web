@@ -54,22 +54,49 @@ async function getEvmRegisteredAssets(context: ActionContext<any, any>): Promise
 async function getSubRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, EvmAccountAsset>[]> {
   const { rootState } = assetsActionContext(context);
 
-  const subNetwork = rootState.web3.networkSelected;
-  const networkAssets = await subBridgeApi.getRegisteredAssets(subNetwork as SubNetwork);
+  return [
+    // KAR
+    {
+      '0x005963f9e01c987ae213bca46603d8b569ebbf91d3c52ab59207d7e4dae87bff': {
+        address: '',
+        balance: '0',
+        decimals: 12,
+      },
+    },
+    // AUSD
+    {
+      '0x00c9b0c0ce84da8283187401b673c5ece0b307f270036076f129fc4edfb9083f': {
+        address: '',
+        balance: '0',
+        decimals: 12,
+      },
+    },
+    // LKSM
+    {
+      '0x00f62e4fbc53f2fd30879da96b6b9a928ca5cc5573df86c8e583446023803860': {
+        address: '',
+        balance: '0',
+        decimals: 12,
+      },
+    },
+  ];
 
-  const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
-    const accountAsset = {
-      address: '', // [TODO]
-      balance: ZeroStringValue,
-      decimals: assetData.decimals,
-    };
+  // const subNetwork = rootState.web3.networkSelected;
+  // const networkAssets = await subBridgeApi.getRegisteredAssets(subNetwork as SubNetwork);
 
-    return {
-      [soraAddress]: accountAsset,
-    };
-  });
+  // const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
+  //   const accountAsset = {
+  //     address: '', // [TODO]
+  //     balance: ZeroStringValue,
+  //     decimals: assetData.decimals,
+  //   };
 
-  return registeredAssets;
+  //   return {
+  //     [soraAddress]: accountAsset,
+  //   };
+  // });
+
+  // return registeredAssets;
 }
 
 async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, EvmAccountAsset>[]> {

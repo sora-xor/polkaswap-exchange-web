@@ -318,7 +318,7 @@
     "retryText": "Tun gbiyanju",
     "networkFeeText": "Owo ọya Nẹtiwọọki",
     "networkFeeTooltipText": "A lo owo ọya nẹtiwọọki lati rii daju idagbasoke eto {Sora} ati iṣẹ iduroṣinṣin.",
-    "ethNetworkFeeTooltipText": "Jọwọ ṣe akiyesi pe awọn owo nẹtiwọọki {Ethereum} ti o han lori {AppName} jẹ awọn idiyele ti o nira nikan, o le wo iye owo ọya ti o tọ ninu apamọwọ {Ethereum} ti o sopọ ṣaaju fifi idi iṣeduro naa mulẹ.",
+    "ethNetworkFeeTooltipText": "Jọwọ ṣe akiyesi pe awọn owo nẹtiwọọki {network} ti o han lori {AppName} jẹ awọn idiyele ti o nira nikan, o le wo iye owo ọya ti o tọ ninu apamọwọ {network} ti o sopọ ṣaaju fifi idi iṣeduro naa mulẹ.",
     "marketText": "Oja",
     "marketAlgorithmText": "Alugoridimu ọja",
     "firstPerSecond": "{first} lori {second}",

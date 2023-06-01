@@ -318,7 +318,7 @@
     "retryText": "Próbáld újra",
     "networkFeeText": "Hálózati díj",
     "networkFeeTooltipText": "A hálózati díjat a {Sora} rendszer növekedésének és stabil teljesítményének biztosítására használják.",
-    "ethNetworkFeeTooltipText": "Felhívjuk figyelmedet, hogy a {AppName}-on feltüntetett {Ethereum} hálózati díjak csak durva becslések, a tranzakció megerősítése előtt a csatlakoztatott {Ethereum} tárcádban láthatod a helyes díj összegét.",
+    "ethNetworkFeeTooltipText": "Felhívjuk figyelmedet, hogy a {AppName}-on feltüntetett {network} hálózati díjak csak durva becslések, a tranzakció megerősítése előtt a csatlakoztatott {network} tárcádban láthatod a helyes díj összegét.",
     "marketText": "Piac",
     "marketAlgorithmText": "Piaci algoritmus",
     "firstPerSecond": "{first} \/ {second}",

@@ -318,7 +318,7 @@
     "retryText": "Pokušajte ponovo",
     "networkFeeText": "Mrežna naknada",
     "networkFeeTooltipText": "Naknada za mrežu koristi se kako bi se osigurao rast i stabilne performanse sustava {Sora}.",
-    "ethNetworkFeeTooltipText": "Imajte na umu da su naknade za {Ethereum} mrežu prikazane na {AppName} samo grube procjene, možete vidjeti točan iznos naknade u povezanom {Ethereum} novčaniku prije potvrde transakcije.",
+    "ethNetworkFeeTooltipText": "Imajte na umu da su naknade za {network} mrežu prikazane na {AppName} samo grube procjene, možete vidjeti točan iznos naknade u povezanom {network} novčaniku prije potvrde transakcije.",
     "marketText": "Tržište",
     "marketAlgorithmText": "Algoritam tržišta",
     "firstPerSecond": "{first} po {second}",

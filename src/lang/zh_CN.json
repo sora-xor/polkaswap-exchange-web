@@ -318,7 +318,7 @@
     "retryText": "重试",
     "networkFeeText": "网络费用",
     "networkFeeTooltipText": "网络费是用来保证{Sora}系统的增长和稳定的性能。",
-    "ethNetworkFeeTooltipText": "请注意， {AppName}上显示的{Ethereum}网络费用仅为粗略估算，您可以在确认交易之前在已连接的{Ethereum}钱包中查看正确的费用金额。",
+    "ethNetworkFeeTooltipText": "请注意， {AppName}上显示的{network}网络费用仅为粗略估算，您可以在确认交易之前在已连接的{network}钱包中查看正确的费用金额。",
     "marketText": "市场",
     "marketAlgorithmText": "市场算法",
     "firstPerSecond": "{first}每{second}",

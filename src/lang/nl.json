@@ -318,7 +318,7 @@
     "retryText": "Probeer opnieuw",
     "networkFeeText": "Netwerkvergoeding",
     "networkFeeTooltipText": "Netwerkvergoeding wordt gebruikt om de groei en stabiele prestaties van het {Sora}-systeem te garanderen.",
-    "ethNetworkFeeTooltipText": "Houd er rekening mee dat de {Ethereum}-netwerkkosten die worden weergegeven op {AppName} slechts ruwe schattingen zijn, u kunt het juiste bedrag in uw verbonden {Ethereum}-wallet zien voordat u de transactie bevestigt.",
+    "ethNetworkFeeTooltipText": "Houd er rekening mee dat de {network}-netwerkkosten die worden weergegeven op {AppName} slechts ruwe schattingen zijn, u kunt het juiste bedrag in uw verbonden {network}-wallet zien voordat u de transactie bevestigt.",
     "marketText": "Markt",
     "marketAlgorithmText": "Markt algoritme",
     "firstPerSecond": "{first} per {second}",

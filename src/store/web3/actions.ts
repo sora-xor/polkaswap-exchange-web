@@ -3,12 +3,33 @@ import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import type { ActionContext } from 'vuex';
 
 import { web3ActionContext } from '@/store/web3';
 import ethersUtil from '@/utils/ethers-util';
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 
 import type { Provider } from '@/utils/ethers-util';
+
+async function connectEvmNetwork(context: ActionContext<any, any>, networkHex?: string): Promise<void> {
+  const { commit } = web3ActionContext(context);
+  const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
+  commit.setProvidedNetwork(evmNetwork);
+}
+
+async function connectSubNetwork(context: ActionContext<any, any>, network?: SubNetwork): Promise<void> {
+  // [TODO] connect to substrate network
+  // this code just takes network from storage
+  const { commit, rootCommit } = web3ActionContext(context);
+  const provided = network || ethersUtil.getSelectedNetwork();
+
+  if (provided) {
+    commit.setProvidedNetwork(provided);
+  }
+  // only outgoing direction
+  rootCommit.bridge.setSoraToEvm(true);
+}
 
 const actions = defineActions({
   async connectExternalAccount(context, provider: Provider): Promise<void> {
@@ -17,19 +38,13 @@ const actions = defineActions({
     commit.setEvmAddress(address);
   },
 
-  async connectEvmNetwork(context, networkHex?: string): Promise<void> {
-    const { commit } = web3ActionContext(context);
-    const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
-    commit.setProvidedNetwork(evmNetwork);
-  },
-
   async connectExternalNetwork(context, network?: string): Promise<void> {
-    const { state, dispatch } = web3ActionContext(context);
+    const { state } = web3ActionContext(context);
 
     if (state.networkType === BridgeNetworkType.Sub) {
-      // [TODO] action to connect substrate network
+      await connectSubNetwork(context, network as SubNetwork);
     } else {
-      await dispatch.connectEvmNetwork(network);
+      await connectEvmNetwork(context, network);
     }
   },
 
@@ -40,19 +55,17 @@ const actions = defineActions({
   },
 
   async updateNetworkProvided(context): Promise<void> {
-    const { dispatch, getters, state, commit } = web3ActionContext(context);
+    const { dispatch, getters, state } = web3ActionContext(context);
     const { selectedNetwork: selected } = getters;
     const { networkType } = state;
 
     if (!selected) return;
 
-    if (networkType === BridgeNetworkType.Sub) {
-      // [TODO] action to connect substrate network
-      commit.setProvidedNetwork(selected.id);
-    } else {
+    if (networkType !== BridgeNetworkType.Sub) {
       await ethersUtil.switchOrAddChain(selected);
-      await dispatch.connectEvmNetwork();
     }
+
+    await dispatch.connectExternalNetwork();
   },
 
   async getSupportedApps(context): Promise<void> {

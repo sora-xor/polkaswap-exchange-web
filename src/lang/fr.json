@@ -318,7 +318,7 @@
     "retryText": "Réessayer",
     "networkFeeText": "Frais de réseau",
     "networkFeeTooltipText": "Les frais de réseau sont utilisés pour assurer la croissance et les performances stables du système {Sora}.",
-    "ethNetworkFeeTooltipText": "Veuillez noter que les frais de réseau {Ethereum} affichés sur {AppName} ne sont que des estimations approximatives, vous pouvez voir le montant exact des frais dans votre portefeuille {Ethereum} connecté avant de confirmer la transaction.",
+    "ethNetworkFeeTooltipText": "Veuillez noter que les frais de réseau {network} affichés sur {AppName} ne sont que des estimations approximatives, vous pouvez voir le montant exact des frais dans votre portefeuille {network} connecté avant de confirmer la transaction.",
     "marketText": "Marché",
     "marketAlgorithmText": "Algorithme de marché",
     "firstPerSecond": "{first} par {second}",

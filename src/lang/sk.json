@@ -318,7 +318,7 @@
     "retryText": "Opakovať",
     "networkFeeText": "Sieťový poplatok",
     "networkFeeTooltipText": "Sieťový poplatok slúži na zabezpečenie rastu a stabilného výkonu systému {Sora}.",
-    "ethNetworkFeeTooltipText": "Upozorňujeme, že poplatky za sieť {Ethereum} zobrazené v aplikácii {AppName} sú len približné. Správnu výšku poplatku môžete vidieť vo svojej pripojenej {Ethereum} peňaženke pred potvrdením transakcie.",
+    "ethNetworkFeeTooltipText": "Upozorňujeme, že poplatky za sieť {network} zobrazené v aplikácii {AppName} sú len približné. Správnu výšku poplatku môžete vidieť vo svojej pripojenej {network} peňaženke pred potvrdením transakcie.",
     "marketText": "Trh",
     "marketAlgorithmText": "Trhový algoritmus",
     "firstPerSecond": "{first} za {second}",
