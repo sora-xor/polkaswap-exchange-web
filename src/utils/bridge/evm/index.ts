@@ -23,7 +23,7 @@ const evmBridge: EvmBridge = new Bridge({
     [Operation.EvmIncoming]: EvmBridgeIncomingReducer,
     [Operation.EvmOutgoing]: EvmBridgeOutgoingReducer,
   },
-  signEvm: {
+  signExternal: {
     [Operation.EvmIncoming]: async (id: string) => {},
     [Operation.EvmOutgoing]: async (id: string) => {},
   },

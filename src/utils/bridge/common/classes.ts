@@ -1,7 +1,7 @@
 import type { IBridgeTransaction } from '@sora-substrate/util';
 
 import type {
-  SignEvm,
+  SignExternal,
   SignSora,
   AddAsset,
   GetAssetByAddress,
@@ -20,7 +20,7 @@ import type {
 } from '@/utils/bridge/common/types';
 
 export class BridgeReducer<Transaction extends IBridgeTransaction> implements IBridgeReducer<Transaction> {
-  protected readonly signEvm!: SignEvm;
+  protected readonly signExternal!: SignExternal;
   protected readonly signSora!: SignSora;
   // asset
   protected readonly addAsset!: AddAsset;
@@ -38,7 +38,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
   protected readonly boundaryStates!: TransactionBoundaryStates<Transaction>;
 
   constructor({
-    signEvm,
+    signExternal,
     signSora,
     // asset
     addAsset,
@@ -55,7 +55,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     // boundary states
     boundaryStates,
   }: IBridgeReducerOptions<Transaction>) {
-    this.signEvm = signEvm;
+    this.signExternal = signExternal;
     this.signSora = signSora;
     this.addAsset = addAsset;
     this.getAssetByAddress = getAssetByAddress;
@@ -157,13 +157,13 @@ export class Bridge<
   protected reducers!: Partial<Record<Transaction['type'], Reducer>>;
   protected readonly getTransaction!: GetTransaction<Transaction>;
 
-  constructor({ reducers, signEvm, signSora, getTransaction, ...rest }: ConstructorOptions) {
+  constructor({ reducers, signExternal, signSora, getTransaction, ...rest }: ConstructorOptions) {
     this.getTransaction = getTransaction;
     this.reducers = Object.entries<Constructable<Reducer>>(reducers).reduce((acc, [operation, Reducer]) => {
       acc[operation] = new Reducer({
         ...rest,
         getTransaction,
-        signEvm: signEvm[operation],
+        signExternal: signExternal[operation],
         signSora: signSora[operation],
       });
       return acc;

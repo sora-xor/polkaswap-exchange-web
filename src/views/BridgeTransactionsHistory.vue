@@ -33,12 +33,16 @@
                 <div class="history-item-title p4">
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
                   <i
-                    :class="`network-icon network-icon--${getNetworkIcon(isOutgoingType(item.type) ? 0 : evmNetwork)}`"
+                    :class="`network-icon network-icon--${getNetworkIcon(
+                      isOutgoingType(item.type) ? 0 : networkProvided
+                    )}`"
                   />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
                   <i
-                    :class="`network-icon network-icon--${getNetworkIcon(!isOutgoingType(item.type) ? 0 : evmNetwork)}`"
+                    :class="`network-icon network-icon--${getNetworkIcon(
+                      !isOutgoingType(item.type) ? 0 : networkProvided
+                    )}`"
                   />
                 </div>
                 <div class="history-item-date">{{ formatDatetime(item) }}</div>
@@ -63,7 +67,7 @@
       </s-form>
     </s-card>
 
-    <bridge-select-network :selected-evm-network="selectedNetwork" @change="changeEvmNetwork" />
+    <bridge-select-network :selected-evm-network="selectedNetwork" />
   </div>
 </template>
 
@@ -71,7 +75,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { IBridgeTransaction } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
@@ -150,10 +153,6 @@ export default class BridgeTransactionsHistory extends Mixins(
     }).finally(() => {
       this.loading = false;
     });
-  }
-
-  changeEvmNetwork(evmNetwork: EvmNetwork): void {
-    this.setSelectedNetwork(evmNetwork);
   }
 
   getFilteredHistory(history: Array<IBridgeTransaction>): Array<IBridgeTransaction> {

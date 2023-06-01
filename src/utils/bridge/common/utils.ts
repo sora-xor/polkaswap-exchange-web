@@ -1,8 +1,14 @@
 import { ethers } from 'ethers';
 import { Operation } from '@sora-substrate/util';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { IBridgeTransaction } from '@sora-substrate/util';
 
 import ethersUtil from '@/utils/ethers-util';
+import { delay } from '@/utils';
+
+import type { GetTransaction } from '@/utils/bridge/common/types';
+
+const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS; // Block production time
 
 export const waitForEvmTransactionStatus = async (
   hash: string,
@@ -74,5 +80,58 @@ export const getEvmTransactionRecieptByHash = async (
 export const isOutgoingTransaction = (transaction: Nullable<IBridgeTransaction>): boolean => {
   if (!transaction?.type) return false;
 
-  return [Operation.EthBridgeOutgoing, Operation.EvmOutgoing].includes(transaction.type);
+  return [Operation.EthBridgeOutgoing, Operation.EvmOutgoing, Operation.SubstrateOutgoing].includes(transaction.type);
 };
+
+export const waitForSoraTransactionHash =
+  <T extends IBridgeTransaction>(options: { section: string; extrincicMethod: string; eventMethod: string }) =>
+  async (id: string, getTransaction: GetTransaction<T>): Promise<string> => {
+    const tx = getTransaction(id);
+
+    console.log(tx);
+
+    if (tx.hash) return tx.hash;
+
+    if (tx.status) {
+      const blockId = tx.blockId;
+
+      if (!blockId) throw new Error('[Bridge]: Unable to retrieve transaction hash, transaction "blockId" is empty');
+
+      const extrinsics = await api.system.getExtrinsicsFromBlock(blockId);
+
+      if (extrinsics.length) {
+        const blockEvents = await api.system.getBlockEvents(blockId);
+
+        const extrinsicIndex = extrinsics.findIndex((item) => {
+          const {
+            signer,
+            method: { method, section },
+          } = item;
+
+          return signer.toString() === tx.from && section === options.section && method === options.extrincicMethod;
+        });
+
+        if (!Number.isFinite(extrinsicIndex)) throw new Error('[Bridge]: Transaction was failed');
+
+        const event = blockEvents.find(
+          ({ phase, event }) =>
+            phase.isApplyExtrinsic &&
+            phase.asApplyExtrinsic.eq(extrinsicIndex) &&
+            event.section === options.section &&
+            event.method === options.eventMethod
+        );
+
+        if (!event) {
+          throw new Error('[Bridge]: Transaction was failed');
+        }
+
+        const hash = event.event.data[0].toString();
+
+        return hash;
+      }
+    }
+
+    await delay(BLOCK_PRODUCE_TIME);
+
+    return await waitForSoraTransactionHash(options)(id, getTransaction);
+  };

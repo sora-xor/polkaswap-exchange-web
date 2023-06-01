@@ -25,8 +25,13 @@ import { waitForApprovedRequest, updateEthBridgeHistory } from '@/utils/bridge/e
 import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { BridgeTxStatus, BridgeTxDirection } from '@sora-substrate/util/build/bridgeProxy/consts';
-import type { BridgeTransactionData } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { BridgeTransactionData, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+
+// SUB
+import subBridge from '@/utils/bridge/sub';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
+import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
@@ -84,7 +89,8 @@ function bridgeDataToHistoryItem(
   const { getters, state, rootState } = bridgeActionContext(context);
   const isEthBridge = getters.isEthBridge;
   const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : BridgeTxStatus.Pending;
-  const externalNetwork = rootState.web3.networkSelected as number;
+  // [TODO] use BridgeNetworkId
+  const externalNetwork = rootState.web3.networkSelected as any;
 
   return {
     type: (params as any).type ?? getters.operation,
@@ -227,6 +233,9 @@ const actions = defineActions({
     if (getters.isEvmBridge) {
       return await evmBridge.handleTransaction(id);
     }
+    if (getters.isSubBridge) {
+      return await subBridge.handleTransaction(id);
+    }
   },
 
   // EVM
@@ -268,6 +277,31 @@ const actions = defineActions({
     if (!tx.txId) {
       await rootDispatch.wallet.transactions.beforeTransactionSign();
       await evmBridgeApi.transfer(asset, to, amount, externalNetwork, id);
+    }
+  },
+
+  async signSubBridgeOutgoingSora(context, id: string) {
+    const { rootGetters, rootDispatch } = bridgeActionContext(context);
+
+    const tx = subBridgeApi.getHistory(id) as SubHistory;
+
+    if (!tx) throw new Error(`Transaction not found: ${id}`);
+
+    const { to, amount, assetAddress, externalNetwork } = tx;
+
+    if (!externalNetwork) throw new Error('Transaction "externalNetwork" cannot be empty');
+    if (!amount) throw new Error('Transaction "amount" cannot be empty');
+    if (!assetAddress) throw new Error('Transaction "assetAddress" cannot be empty');
+    if (!to) throw new Error('Transaction "to" cannot be empty');
+
+    const asset = rootGetters.assets.assetDataByAddress(assetAddress);
+
+    // [TODO] check for externalAddress removed
+    if (!asset) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
+
+    if (!tx.txId) {
+      await rootDispatch.wallet.transactions.beforeTransactionSign();
+      await subBridgeApi.transfer(asset, to, amount, externalNetwork, id);
     }
   },
 

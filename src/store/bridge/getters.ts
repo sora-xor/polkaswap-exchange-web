@@ -5,6 +5,7 @@ import type { IBridgeTransaction, CodecString, RegisteredAccountAsset } from '@s
 
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { bridgeGetterContext } from '@/store/bridge';
 import { ZeroStringValue } from '@/consts';
 import ethersUtil from '@/utils/ethers-util';
@@ -56,8 +57,10 @@ const getters = defineGetters<BridgeState>()({
     // [TODO]: add SUB network operations
     if (getters.isEthBridge) {
       return state.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming;
-    } else {
+    } else if (getters.isEvmBridge) {
       return state.isSoraToEvm ? Operation.EvmOutgoing : Operation.EvmIncoming;
+    } else {
+      return state.isSoraToEvm ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming;
     }
   },
   soraNetworkFee(...args): CodecString {
@@ -102,11 +105,12 @@ const getters = defineGetters<BridgeState>()({
 
     return !historyAddress || ethersUtil.addressesAreEqual(historyAddress, currentAddress);
   },
-  bridgeApi(...args): typeof ethBridgeApi | typeof evmBridgeApi {
+  bridgeApi(...args): typeof ethBridgeApi | typeof evmBridgeApi | typeof subBridgeApi {
     const { getters } = bridgeGetterContext(args);
-    const api = getters.isEthBridge ? ethBridgeApi : evmBridgeApi;
 
-    return api;
+    if (getters.isSubBridge) return subBridgeApi;
+
+    return getters.isEthBridge ? ethBridgeApi : evmBridgeApi;
   },
 });
 

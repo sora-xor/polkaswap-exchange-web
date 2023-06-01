@@ -600,6 +600,7 @@ export default class Bridge extends Mixins(
       }
 
       this.setHistoryId(id);
+
       router.push({ name: PageNames.BridgeTransaction });
     });
   }
