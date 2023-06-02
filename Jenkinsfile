@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@feature/DOPS-2406-limit-the-execution') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
@@ -31,6 +31,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     targetNameSpace: "sora2-${env.CHANGE_ID}-web",
     targetSecretName: "sora2-${env.CHANGE_ID}-polkaswap-exchange-pr-polkaswap-exchange-web-eso-base",
     downstreamJob: 'polkaswap/e2e-tests/hash_test',
-    noIndex: true
+    noIndex: true,
+    timeoutOption: '1'
 )
 pipeline.runPipeline()
