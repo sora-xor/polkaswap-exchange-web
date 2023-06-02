@@ -24,7 +24,7 @@ import { waitForApprovedRequest, updateEthBridgeHistory } from '@/utils/bridge/e
 // EVM
 import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { BridgeTxStatus, BridgeTxDirection } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { BridgeTransactionData, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
@@ -86,11 +86,16 @@ function bridgeDataToHistoryItem(
   context: ActionContext<any, any>,
   { date = Date.now(), payload = {}, ...params } = {}
 ): IBridgeTransaction {
-  const { getters, state, rootState } = bridgeActionContext(context);
-  const isEthBridge = getters.isEthBridge;
+  const { getters, state, rootState, rootGetters } = bridgeActionContext(context);
+  const { isEthBridge, isEvmBridge } = getters;
   const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : BridgeTxStatus.Pending;
   // [TODO] use BridgeNetworkId
   const externalNetwork = rootState.web3.networkSelected as any;
+  const externalNetworkType = isEthBridge
+    ? BridgeNetworkType.EvmLegacy
+    : isEvmBridge
+    ? BridgeNetworkType.Evm
+    : BridgeNetworkType.Sub;
 
   return {
     type: (params as any).type ?? getters.operation,
@@ -105,7 +110,8 @@ function bridgeDataToHistoryItem(
     soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
     externalNetworkFee: (params as any).evmNetworkFee ?? getters.evmNetworkFee,
     externalNetwork,
-    to: (params as any).to ?? rootState.web3.evmAddress,
+    externalNetworkType,
+    to: (params as any).to ?? rootGetters.web3.externalAccount,
     payload,
   };
 }

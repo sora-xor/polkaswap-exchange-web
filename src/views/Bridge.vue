@@ -339,7 +339,6 @@ export default class Bridge extends Mixins(
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
   @getter.bridge.operation private operation!: Operation;
-  @getter.bridge.isSubBridge isSubBridge!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;

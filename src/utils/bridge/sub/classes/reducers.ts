@@ -62,13 +62,13 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           nextState: BridgeTxStatus.Done,
           rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
-            let currentId = id;
+            const currentId = id;
             this.beforeSubmit(currentId);
             this.updateTransactionParams(currentId, { transactionState: BridgeTxStatus.Pending });
             await this.checkTxId(currentId);
+            await this.waitForTxStatus(currentId);
             await this.checkTxBlockId(currentId);
-
-            currentId = await this.checkTxSoraHash(currentId);
+            await this.checkTxSoraHash(currentId);
             await this.subscribeOnTxBySoraHash(currentId);
             await this.onComplete(currentId);
           },
@@ -96,9 +96,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
   }
 
   private async checkTxBlockId(id: string): Promise<void> {
-    const { txId } = this.getTransaction(id);
+    const tx = this.getTransaction(id);
 
-    if (!txId) {
+    if (!tx.txId) {
       throw new Error(`[${this.constructor.name}]: Transaction "id" is empty, first sign the transaction`);
     }
 
@@ -110,6 +110,15 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     } catch (error) {
       console.info(`[${this.constructor.name}]: Implement "blockId" restoration`);
     }
+  }
+
+  private async waitForTxStatus(id: string): Promise<void> {
+    const { status } = this.getTransaction(id);
+
+    if (status) return Promise.resolve();
+
+    await delay(1_000);
+    await this.waitForTxStatus(id);
   }
 
   private async waitForSoraBlockId(id: string): Promise<void> {
@@ -134,7 +143,13 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
   }
 
   private async subscribeOnTxBySoraHash(id: string): Promise<void> {
-    const { hash, externalNetwork, from } = this.getTransaction(id);
+    const tx = this.getTransaction(id);
+
+    if (!tx) {
+      throw new Error(`[${this.constructor.name}]: Transaction ${id} not found`);
+    }
+
+    const { from, externalNetwork, hash } = tx;
 
     if (!from) {
       throw new Error(
@@ -164,8 +179,6 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           if (!data) {
             return reject(new Error(`[${this.constructor.name}]: Unable to get transacton data by "hash": "${hash}"`));
           }
-
-          this.removeTransactionByHash({ tx: { hash }, force: true });
 
           const status = data.status;
 

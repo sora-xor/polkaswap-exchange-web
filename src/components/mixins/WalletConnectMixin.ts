@@ -54,8 +54,9 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.web3.externalAccount externalAccount!: string;
   @getter.web3.isExternalAccountConnected isExternalAccountConnected!: boolean;
-
   @getter.web3.selectedNetwork selectedNetwork!: Nullable<NetworkData>;
+
+  @getter.bridge.isSubBridge isSubBridge!: boolean;
 
   // update selected evm network without metamask request
   @mutation.web3.setSelectedNetwork setSelectedNetwork!: (networkId: BridgeNetworkId) => void;
@@ -128,6 +129,10 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   async checkConnectionToExternalAccount(func: FnWithoutArgs | AsyncFnWithoutArgs): Promise<void> {
+    if (this.isSubBridge) {
+      return await func();
+    }
+
     const connected = await ethersUtil.checkAccountIsConnected(this.evmAddress);
 
     if (!connected) {
