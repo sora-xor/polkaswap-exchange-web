@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@feature/SNE-341-dependency-confusion-scan-step-in-js-ci') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
