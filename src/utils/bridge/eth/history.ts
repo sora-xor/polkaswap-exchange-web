@@ -5,9 +5,9 @@ import { BridgeTxStatus, Operation } from '@sora-substrate/util';
 import {
   api,
   historyElementsFilter,
-  SubqueryExplorerService,
   SUBQUERY_TYPES,
   WALLET_CONSTS,
+  getCurrentIndexer,
 } from '@soramitsu/soraneo-wallet-web';
 
 import ethersUtil from '@/utils/ethers-util';
@@ -245,13 +245,14 @@ export class EthBridgeHistory {
 
     do {
       const variables = { after, filter, first: 100 };
-      const response = await SubqueryExplorerService.account.getHistory(variables);
+      const indexer = getCurrentIndexer();
+      const response = await indexer.services.explorer.account.getHistoryPaged(variables);
 
       if (!response) return history;
 
       hasNext = !!response.pageInfo?.hasNextPage;
       after = response.pageInfo?.endCursor ?? '';
-      history.push(...response.nodes);
+      history.push(...response.edges.map((edge) => edge.node));
     } while (hasNext);
 
     return history;

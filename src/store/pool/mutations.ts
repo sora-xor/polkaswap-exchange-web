@@ -2,7 +2,7 @@ import { defineMutations } from 'direct-vuex';
 import type { Subscription } from 'rxjs';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { AccountLockedPool } from '@sora-substrate/util/build/ceresLiquidityLocker/types';
-import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 import type { PoolState } from './types';
 

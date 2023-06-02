@@ -38,17 +38,11 @@
 <script lang="ts">
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
-import { gql } from '@urql/core';
 import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
 import { XOR, VAL, PSWAP, XSTUSD, XST, TBCD } from '@sora-substrate/util/build/assets/consts';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type {
-  SnapshotTypes,
-  EntitiesQueryResponse,
-  AssetSnapshotEntity,
-} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 
@@ -59,6 +53,7 @@ import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/
 
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
+import { fetchData } from '@/indexer/queries/assetSupply';
 
 type ChartData = {
   timestamp: number;
@@ -67,51 +62,8 @@ type ChartData = {
   burn: number;
 };
 
-const AssetSupplyQuery = gql<EntitiesQueryResponse<AssetSnapshotEntity>>`
-  query AssetSupplyQuery($after: Cursor, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
-    entities: assetSnapshots(
-      after: $after
-      orderBy: TIMESTAMP_DESC
-      filter: {
-        and: [
-          { type: { equalTo: $type } }
-          { assetId: { equalTo: $id } }
-          { timestamp: { lessThanOrEqualTo: $from } }
-          { timestamp: { greaterThanOrEqualTo: $to } }
-        ]
-      }
-    ) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      nodes {
-        timestamp
-        supply
-        mint
-        burn
-      }
-    }
-  }
-`;
-
-const toNumber = (value: string): number => {
-  const fp = FPNumber.fromCodecValue(value);
-
-  return fp.isFinity() ? fp.toNumber() : 0;
-};
-
 const getExtremum = (data: readonly ChartData[], prop: string, min = false) => {
   return data.reduce((acc, item) => Math[min ? 'min' : 'max'](acc, item[prop]), min ? Infinity : 0);
-};
-
-const parse = (node: AssetSnapshotEntity): ChartData => {
-  return {
-    timestamp: +node.timestamp * 1000,
-    value: toNumber(node.supply),
-    mint: toNumber(node.mint),
-    burn: toNumber(node.burn),
-  };
 };
 
 @Component({
@@ -288,7 +240,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
     this.updateData();
   }
 
-  private async updateData(): Promise<void> {
+  async updateData(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
         try {
@@ -298,7 +250,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
           const aTime = now - seconds * count;
 
-          this.data = Object.freeze(await this.fetchData(id, now, aTime, type));
+          this.data = Object.freeze(await fetchData(id, now, aTime, type));
           this.isFetchingError = false;
         } catch (error) {
           console.error(error);
@@ -306,12 +258,6 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
         }
       });
     });
-  }
-
-  private async fetchData(id: string, from: number, to: number, type: SnapshotTypes): Promise<ChartData[]> {
-    const data = await SubqueryExplorerService.fetchAllEntities(AssetSupplyQuery, { id, from, to, type }, parse);
-
-    return data ?? [];
   }
 }
 </script>

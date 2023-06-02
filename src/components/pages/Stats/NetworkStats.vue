@@ -38,15 +38,9 @@
 </template>
 
 <script lang="ts">
-import { gql } from '@urql/core';
 import { FPNumber } from '@sora-substrate/math';
 import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type {
-  SnapshotTypes,
-  EntitiesQueryResponse,
-  NetworkSnapshotEntity,
-} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
@@ -57,6 +51,8 @@ import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 
 import type { AmountWithSuffix } from '@/types/formats';
 import type { SnapshotFilter } from '@/types/filters';
+
+import { fetchData } from '@/indexer/queries/stats';
 
 type NetworkSnapshot = {
   accounts: FPNumber;
@@ -74,44 +70,6 @@ type NetworkStatsColumn = {
   change: FPNumber;
   title: string;
   tooltip: string;
-};
-
-const StatsQuery = gql<EntitiesQueryResponse<NetworkSnapshotEntity>>`
-  query StatsQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
-    entities: networkSnapshots(
-      after: $after
-      orderBy: TIMESTAMP_DESC
-      filter: {
-        and: [
-          { type: { equalTo: $type } }
-          { timestamp: { lessThanOrEqualTo: $from } }
-          { timestamp: { greaterThanOrEqualTo: $to } }
-        ]
-      }
-    ) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      nodes {
-        timestamp
-        accounts
-        transactions
-        bridgeIncomingTransactions
-        bridgeOutgoingTransactions
-      }
-    }
-  }
-`;
-
-const parse = (node: NetworkSnapshotEntity): NetworkSnapshotData => {
-  return {
-    timestamp: +node.timestamp * 1000,
-    accounts: new FPNumber(node.accounts),
-    transactions: new FPNumber(node.transactions),
-    bridgeIncomingTransactions: new FPNumber(node.bridgeIncomingTransactions),
-    bridgeOutgoingTransactions: new FPNumber(node.bridgeOutgoingTransactions),
-  };
 };
 
 @Component({
@@ -203,18 +161,12 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin, Translatio
         const aTime = now - seconds * count;
         const bTime = aTime - seconds * count;
 
-        const [curr, prev] = await Promise.all([this.fetchData(now, aTime, type), this.fetchData(aTime, bTime, type)]);
+        const [curr, prev] = await Promise.all([fetchData(now, aTime, type), fetchData(aTime, bTime, type)]);
 
         this.currData = Object.freeze(this.groupData(curr));
         this.prevData = Object.freeze(this.groupData(prev));
       });
     });
-  }
-
-  private async fetchData(from: number, to: number, type: SnapshotTypes): Promise<NetworkSnapshotData[]> {
-    const data = await SubqueryExplorerService.fetchAllEntities(StatsQuery, { from, to, type }, parse);
-
-    return data ?? [];
   }
 }
 </script>

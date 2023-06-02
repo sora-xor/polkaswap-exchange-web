@@ -65,13 +65,7 @@ import last from 'lodash/fp/last';
 import { graphic } from 'echarts';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
-import {
-  components,
-  mixins,
-  SubqueryExplorerService,
-  WALLET_CONSTS,
-  SUBQUERY_TYPES,
-} from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, getCurrentIndexer, WALLET_CONSTS, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 
@@ -88,7 +82,7 @@ import type {
   PageInfo,
   AssetSnapshotEntity,
   FiatPriceObject,
-} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { SnapshotTypes } = SUBQUERY_TYPES;
 
@@ -589,7 +583,8 @@ export default class SwapChart extends Mixins(
 
     do {
       const first = Math.min(fetchCount, 100); // how many items should be fetched by request
-      const response = await SubqueryExplorerService.price.getHistoricalPriceForAsset(
+      const indexer = getCurrentIndexer();
+      const response = await indexer.services.explorer.price.getHistoricalPriceForAsset(
         address,
         type as any,
         first,
@@ -600,8 +595,8 @@ export default class SwapChart extends Mixins(
 
       hasNextPage = response.pageInfo.hasNextPage;
       endCursor = response.pageInfo.endCursor;
-      nodes.push(...response.nodes);
-      fetchCount -= response.nodes.length;
+      nodes.push(...response.edges.map((edge) => edge.node));
+      fetchCount -= response.edges.length;
     } while (hasNextPage && fetchCount > 0);
 
     return { nodes, hasNextPage, endCursor };

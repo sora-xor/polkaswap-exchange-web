@@ -109,6 +109,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
   @mutation.wallet.settings.setSubqueryEndpoint private setSubqueryEndpoint!: (endpoint: string) => void;
+  @mutation.wallet.settings.setSubsquidEndpoint private setSubsquidEndpoint!: (endpoint: string) => void;
   @mutation.settings.setDefaultNodes private setDefaultNodes!: (nodes: Array<Node>) => void;
   @mutation.settings.setNetworkChainGenesisHash private setNetworkChainGenesisHash!: (hash?: string) => void;
   @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
@@ -211,6 +212,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       this.setFeatureFlags(data?.FEATURE_FLAGS);
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
+      this.setSubsquidEndpoint(data.SUBSQUID_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
 

@@ -1,6 +1,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 import { state } from '@/store/decorators';
 
