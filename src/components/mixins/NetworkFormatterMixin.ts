@@ -1,14 +1,14 @@
-import { Component, Mixins } from 'vue-property-decorator';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { EvmNetworkId } from '@sora-substrate/util/build/evm/consts';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
+import { EvmLinkType, EVM_NETWORKS } from '@/consts/evm';
+import type { EvmNetworkData } from '@/consts/evm';
 import { state, getter } from '@/store/decorators';
 
 import TranslationMixin from './TranslationMixin';
 
-import { EvmLinkType, EVM_NETWORKS } from '@/consts/evm';
-import type { EvmNetworkData } from '@/consts/evm';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 @Component
 export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {

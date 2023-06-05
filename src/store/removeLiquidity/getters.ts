@@ -1,12 +1,13 @@
-import { defineGetters } from 'direct-vuex';
 import { FPNumber } from '@sora-substrate/util';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineGetters } from 'direct-vuex';
+
+import { ZeroStringValue } from '@/consts';
+import { removeLiquidityGetterContext } from '@/store/removeLiquidity';
+
+import type { RemoveLiquidityState } from './types';
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-
-import { removeLiquidityGetterContext } from '@/store/removeLiquidity';
-import { ZeroStringValue } from '@/consts';
-import type { RemoveLiquidityState } from './types';
 
 const getters = defineGetters<RemoveLiquidityState>()({
   liquidity(...args): Nullable<AccountLiquidity> {

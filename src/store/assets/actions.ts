@@ -1,16 +1,16 @@
-import isEmpty from 'lodash/fp/isEmpty';
 import { FPNumber } from '@sora-substrate/util';
 import { defineActions } from 'direct-vuex';
-import type { ActionContext } from 'vuex';
+import isEmpty from 'lodash/fp/isEmpty';
 
-import ethersUtil from '@/utils/ethers-util';
-import { assetsActionContext } from '@/store/assets';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { ZeroStringValue } from '@/consts';
 import { BridgeType } from '@/consts/evm';
-
+import { assetsActionContext } from '@/store/assets';
 import type { EvmAccountAsset } from '@/store/assets/types';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
+import ethersUtil from '@/utils/ethers-util';
+
+import type { ActionContext } from 'vuex';
 
 async function getEthRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, EvmAccountAsset>[]> {
   const networkAssets = await ethBridgeApi.getRegisteredAssets();

@@ -1,11 +1,12 @@
-import first from 'lodash/fp/first';
 import { SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
+import first from 'lodash/fp/first';
 
-import { getEvmTransactionRecieptByHash } from '@/utils/bridge/common/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
-
+import type { IBridgeReducerOptions, GetBridgeHistoryInstance } from '@/utils/bridge/common/types';
+import { getEvmTransactionRecieptByHash } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import {
   getTransaction,
   waitForApprovedRequest,
@@ -15,8 +16,6 @@ import {
 } from '@/utils/bridge/eth/utils';
 
 import type { BridgeHistory, IBridgeTransaction } from '@sora-substrate/util';
-import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
-import type { IBridgeReducerOptions, GetBridgeHistoryInstance } from '@/utils/bridge/common/types';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 

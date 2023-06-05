@@ -71,14 +71,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, ModelSync, Prop } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, ModelSync, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
+import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';

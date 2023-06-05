@@ -1,8 +1,8 @@
-import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
-import { state } from '@/store/decorators';
 import { app } from '@/consts';
+import { state } from '@/store/decorators';
 
 const OrdinalRules = {
   en: (v) => {

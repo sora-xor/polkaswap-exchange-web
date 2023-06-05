@@ -30,18 +30,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
+import type { EvmAccountAsset } from '@/store/assets/types';
 import { state } from '@/store/decorators';
 
-import type { EvmAccountAsset } from '@/store/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

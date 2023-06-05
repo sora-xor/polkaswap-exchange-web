@@ -1,12 +1,13 @@
-import { Component, Mixins } from 'vue-property-decorator';
 import { Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import type { IBridgeTransaction } from '@sora-substrate/util';
+import { Component, Mixins } from 'vue-property-decorator';
 
-import router from '@/router';
 import { PageNames } from '@/consts';
+import router from '@/router';
 import { state, mutation, action, getter } from '@/store/decorators';
 import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
+
+import type { IBridgeTransaction } from '@sora-substrate/util';
 
 @Component
 export default class BridgeHistoryMixin<T extends IBridgeTransaction> extends Mixins(mixins.LoadingMixin) {

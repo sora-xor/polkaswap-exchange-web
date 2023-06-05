@@ -19,14 +19,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString } from '@sora-substrate/util';
-
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
+import { lazyComponent } from '@/router';
+
+import type { CodecString } from '@sora-substrate/util';
 
 @Component({
   components: {

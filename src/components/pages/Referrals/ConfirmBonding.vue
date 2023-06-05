@@ -31,10 +31,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Operation, CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import { PageNames } from '@/consts';
 import { state } from '@/store/decorators';

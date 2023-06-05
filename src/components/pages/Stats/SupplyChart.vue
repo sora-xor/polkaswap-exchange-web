@@ -36,29 +36,28 @@
 </template>
 
 <script lang="ts">
-import first from 'lodash/fp/first';
-import last from 'lodash/fp/last';
-import { gql } from '@urql/core';
-import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
 import { XOR, VAL, PSWAP, XSTUSD, XST, TBCD } from '@sora-substrate/util/build/assets/consts';
+import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { gql } from '@urql/core';
+import first from 'lodash/fp/first';
+import last from 'lodash/fp/last';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
+import { Components } from '@/consts';
+import { SECONDS_IN_TYPE, ASSET_SUPPLY_LINE_FILTERS } from '@/consts/snapshots';
+import { lazyComponent } from '@/router';
+import type { SnapshotFilter } from '@/types/filters';
+import type { AmountWithSuffix } from '@/types/formats';
+import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
+
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type {
   SnapshotTypes,
   EntitiesQueryResponse,
   AssetSnapshotEntity,
 } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
-
-import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
-
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
-import { SECONDS_IN_TYPE, ASSET_SUPPLY_LINE_FILTERS } from '@/consts/snapshots';
-import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
-
-import type { SnapshotFilter } from '@/types/filters';
-import type { AmountWithSuffix } from '@/types/formats';
 
 type ChartData = {
   timestamp: number;

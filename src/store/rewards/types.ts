@@ -1,7 +1,8 @@
-import type { Subscription } from 'rxjs';
+import type { RewardsAmountHeaderItem } from '@/types/rewards';
+
 import type { CodecString } from '@sora-substrate/util';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
-import type { RewardsAmountHeaderItem } from '@/types/rewards';
+import type { Subscription } from 'rxjs';
 
 export type RewardsState = {
   // fee

@@ -1,12 +1,12 @@
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import isNil from 'lodash/fp/isNil';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
-
 import { getter } from '@/store/decorators';
+
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearchMixin) {
