@@ -27,8 +27,6 @@ async function connectSubNetwork(context: ActionContext<any, any>, network?: Sub
   if (provided) {
     commit.setProvidedNetwork(provided);
   }
-  // only outgoing direction
-  rootCommit.bridge.setSoraToEvm(true);
 }
 
 const actions = defineActions({
@@ -39,13 +37,17 @@ const actions = defineActions({
   },
 
   async connectExternalNetwork(context, network?: string): Promise<void> {
-    const { state } = web3ActionContext(context);
+    const { state, rootCommit } = web3ActionContext(context);
 
     if (state.networkType === BridgeNetworkType.Sub) {
       await connectSubNetwork(context, network as SubNetwork);
     } else {
       await connectEvmNetwork(context, network);
     }
+
+    // reset bridge direction & history
+    rootCommit.bridge.setSoraToEvm(true);
+    rootCommit.bridge.setExternalHistory({});
   },
 
   async selectExternalNetwork(context, network: BridgeNetworkId): Promise<void> {

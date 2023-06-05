@@ -218,9 +218,7 @@ const actions = defineActions({
   },
 
   async updateExternalHistory(context, clearHistory = false): Promise<void> {
-    const { commit, dispatch, getters } = bridgeActionContext(context);
-    // reset before update
-    commit.setExternalHistory({});
+    const { dispatch, getters } = bridgeActionContext(context);
 
     if (getters.isEthBridge) {
       return await dispatch.updateEthHistory(clearHistory);
@@ -306,7 +304,7 @@ const actions = defineActions({
       if (tx.id) {
         externalHistory[tx.id] = tx;
 
-        await dispatch.removeHistory({ tx, force: true });
+        await dispatch.removeHistory({ tx, force: false });
       }
     }
 
@@ -361,7 +359,7 @@ const actions = defineActions({
       if (tx.id) {
         externalHistory[tx.id] = tx;
 
-        await dispatch.removeHistory({ tx, force: true });
+        await dispatch.removeHistory({ tx, force: false });
       }
     }
 
