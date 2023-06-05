@@ -1,8 +1,9 @@
-import { Component, Watch, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import type { NavigationGuardNext, Route } from 'vue-router';
+import { Component, Watch, Mixins } from 'vue-property-decorator';
 
 import { getter } from '@/store/decorators';
+
+import type { NavigationGuardNext, Route } from 'vue-router';
 
 @Component
 export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {

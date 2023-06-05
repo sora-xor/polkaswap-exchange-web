@@ -1,4 +1,5 @@
 import { Component, Ref, Vue } from 'vue-property-decorator';
+
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 

@@ -108,23 +108,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { api, components } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
+import { api, components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import PoolApyMixin from '@/components/mixins/PoolApyMixin';
-
-import { state, getter } from '@/store/decorators';
-import { lazyComponent } from '@/router';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { state, getter } from '@/store/decorators';
+import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, formatDecimalPlaces, asZeroValue } from '@/utils';
 
 import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-import type { AmountWithSuffix } from '@/types/formats';
 
 type TableItem = {
   baseAsset: Asset;

@@ -1,8 +1,8 @@
-import ethersUtil from '@/utils/ethers-util';
 import { EvmNetworkId } from '@sora-substrate/util/build/evm/consts';
 
 import { ZeroStringValue } from '@/consts';
 import { BridgeType } from '@/consts/evm';
+import ethersUtil from '@/utils/ethers-util';
 
 import type { Web3State } from './types';
 

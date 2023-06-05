@@ -54,18 +54,19 @@
 </template>
 
 <script lang="ts">
+import { XOR, XSTUSD } from '@sora-substrate/util/build/assets/consts';
+import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
-import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
-import { XOR, XSTUSD } from '@sora-substrate/util/build/assets/consts';
+
+import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 enum Tabs {
   Assets = 'assets',

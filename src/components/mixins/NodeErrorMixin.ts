@@ -1,11 +1,12 @@
-import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
-import TranslationMixin from './TranslationMixin';
-import { AppHandledError } from '@/utils/error';
-import { delay } from '@/utils';
 import { state, getter, mutation } from '@/store/decorators';
 import type { Node } from '@/types/nodes';
+import { delay } from '@/utils';
+import { AppHandledError } from '@/utils/error';
+
+import TranslationMixin from './TranslationMixin';
 
 @Component
 export default class NodeErrorMixin extends Mixins(TranslationMixin, mixins.NotificationMixin) {

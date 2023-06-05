@@ -1,9 +1,10 @@
-import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation } from '@sora-substrate/util';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import { delay } from '@/utils';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
+
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
 
 const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS; // Block production time
 

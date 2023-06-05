@@ -43,17 +43,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR, KnownAssets } from '@sora-substrate/util/build/assets/consts';
-import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
+
+import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 type PriceValue = {
   id: 'from' | 'to';

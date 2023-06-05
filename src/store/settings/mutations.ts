@@ -1,11 +1,12 @@
 import { defineMutations } from 'direct-vuex';
-import type { Subscription } from 'rxjs';
 
-import storage, { settingsStorage } from '@/utils/storage';
 import { MarketAlgorithms } from '@/consts';
-import type { Node } from '@/types/nodes';
 import type { Language } from '@/consts';
+import type { Node } from '@/types/nodes';
+import storage, { settingsStorage } from '@/utils/storage';
+
 import type { FeatureFlags, SettingsState } from './types';
+import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<SettingsState>()({
   setNodeRequest(state, { node, isReconnection = false }: { node?: Nullable<Node>; isReconnection?: boolean }): void {

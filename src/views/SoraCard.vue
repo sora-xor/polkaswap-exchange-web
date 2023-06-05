@@ -12,15 +12,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, mixins, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import type { NavigationGuardNext, Route } from 'vue-router';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import { action, state, getter, mutation } from '@/store/decorators';
-import { goTo, lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
+import { goTo, lazyComponent } from '@/router';
+import { action, state, getter, mutation } from '@/store/decorators';
 import { KycStatus, VerificationStatus } from '@/types/card';
+
+import type { NavigationGuardNext, Route } from 'vue-router';
 
 enum Step {
   StartPage = 'StartPage',

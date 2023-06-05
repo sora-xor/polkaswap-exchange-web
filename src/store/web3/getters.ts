@@ -1,9 +1,9 @@
 import { defineGetters } from 'direct-vuex';
 
-import { web3GetterContext } from '@/store/web3';
 import { EVM_NETWORKS, BridgeType } from '@/consts/evm';
-
 import type { EvmNetworkData, KnownEthBridgeAsset } from '@/consts/evm';
+import { web3GetterContext } from '@/store/web3';
+
 import type { Web3State } from './types';
 
 const getters = defineGetters<Web3State>()({

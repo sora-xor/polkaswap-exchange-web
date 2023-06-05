@@ -62,15 +62,14 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import { lazyComponent } from '@/router';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, Links } from '@/consts';
+import { lazyComponent } from '@/router';
+import type { Node, NodeItem } from '@/types/nodes';
 import { wsRegexp, dnsPathRegexp, ipv4Regexp } from '@/utils/regexp';
+
 import { NodeModel } from './consts';
 import { formatLocation } from './utils';
-
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import type { Node, NodeItem } from '@/types/nodes';
 
 const checkAddress = (
   translate: TranslationMixin['t']

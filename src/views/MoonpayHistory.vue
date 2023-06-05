@@ -78,22 +78,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import type { BridgeHistory } from '@sora-substrate/util';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import MoonpayBridgeInitMixin from '@/components/pages/Moonpay/BridgeInitMixin';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
-
-import ethersUtil from '@/utils/ethers-util';
-import { getCssVariableValue, toQueryString } from '@/utils';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { MoonpayTransactionStatus } from '@/utils/moonpay';
 import { action, getter, state } from '@/store/decorators';
-
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { getCssVariableValue, toQueryString } from '@/utils';
+import ethersUtil from '@/utils/ethers-util';
+import { MoonpayTransactionStatus } from '@/utils/moonpay';
 import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '@/utils/moonpay';
+
+import type { BridgeHistory } from '@sora-substrate/util';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 const HistoryView = 'history';
 const DetailsView = 'details';

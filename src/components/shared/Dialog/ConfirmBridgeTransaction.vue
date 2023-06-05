@@ -52,16 +52,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { CodecString } from '@sora-substrate/util';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { ZeroStringValue, Components } from '@/consts';
 import { lazyComponent } from '@/router';
+
+import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 @Component({
   components: {

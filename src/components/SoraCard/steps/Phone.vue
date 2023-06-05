@@ -52,9 +52,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch, Ref } from 'vue-property-decorator';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop, Watch, Ref } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, mutation, state } from '@/store/decorators';

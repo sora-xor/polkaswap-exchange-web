@@ -38,25 +38,24 @@
 </template>
 
 <script lang="ts">
-import { gql } from '@urql/core';
 import { FPNumber } from '@sora-substrate/math';
-import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { gql } from '@urql/core';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components } from '@/consts';
+import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
+import { lazyComponent } from '@/router';
+import type { SnapshotFilter } from '@/types/filters';
+import type { AmountWithSuffix } from '@/types/formats';
+import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
+
 import type {
   SnapshotTypes,
   EntitiesQueryResponse,
   NetworkSnapshotEntity,
 } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
-
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
-import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
-import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
-
-import type { AmountWithSuffix } from '@/types/formats';
-import type { SnapshotFilter } from '@/types/filters';
 
 type NetworkSnapshot = {
   accounts: FPNumber;

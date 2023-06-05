@@ -19,16 +19,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import ethersUtil from '@/utils/ethers-util';
-import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { getter, state, mutation } from '@/store/decorators';
+import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
+import ethersUtil from '@/utils/ethers-util';
 
+import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Whitelist } from '@sora-substrate/util/build/assets/types';
 
 @Component({

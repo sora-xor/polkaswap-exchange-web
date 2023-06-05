@@ -1,4 +1,5 @@
 import { MoonpayApi } from '@/utils/moonpay';
+
 import type { MoonpayState } from './types';
 
 function initialState(): MoonpayState {
