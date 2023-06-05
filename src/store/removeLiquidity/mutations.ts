@@ -1,6 +1,7 @@
 import { defineMutations } from 'direct-vuex';
 
 import type { LiquidityParams } from '@/store/pool/types';
+
 import type { FocusedField, RemoveLiquidityState } from './types';
 
 const mutations = defineMutations<RemoveLiquidityState>()({

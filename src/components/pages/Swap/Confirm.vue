@@ -37,15 +37,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { state, getter } from '@/store/decorators';
+
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
-import { state, getter } from '@/store/decorators';
 
 @Component({
   components: {

@@ -12,7 +12,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-
 import { action } from '@/store/decorators';
 
 @Component

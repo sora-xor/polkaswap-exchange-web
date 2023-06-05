@@ -27,13 +27,12 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import MoonpayBridgeInitMixin from '@/components/pages/Moonpay/BridgeInitMixin';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
-
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { Whitelist } from '@sora-substrate/util/build/assets/types';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 @Component({
   components: {
@@ -45,7 +44,7 @@ export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) 
   @state.moonpay.confirmationVisibility private confirmationVisibility!: boolean;
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
-  @getter.web3.isValidNetworkType private isValidNetworkType!: boolean;
+  @getter.web3.isValidNetwork private isValidNetwork!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
 
   get visibility(): boolean {
@@ -64,9 +63,9 @@ export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) 
       amount: this.bridgeTransactionData.amount,
       asset: this.whitelist[this.bridgeTransactionData.assetAddress as string],
       evmNetwork: this.bridgeTransactionData.externalNetwork,
-      evmNetworkFee: this.bridgeTransactionData.ethereumNetworkFee,
+      externalNetworkFee: this.bridgeTransactionData.externalNetworkFee,
       soraNetworkFee: this.bridgeTransactionData.soraNetworkFee,
-      isValidNetworkType: this.isValidNetworkType,
+      isValidNetwork: this.isValidNetwork,
     };
   }
 }

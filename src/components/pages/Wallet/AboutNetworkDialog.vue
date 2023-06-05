@@ -9,11 +9,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
 import { Components, Links } from '@/consts';
 import { lazyComponent } from '@/router';
 
@@ -40,16 +39,6 @@ export default class AboutNetworkDialog extends Mixins(TranslationMixin, mixins.
   }
 }
 </script>
-
-<style lang="scss">
-.dialog-wrapper.about-network-dialog {
-  .el-dialog {
-    &__body {
-      padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-mini * 4;
-    }
-  }
-}
-</style>
 
 <style scoped lang="scss">
 .about-network {

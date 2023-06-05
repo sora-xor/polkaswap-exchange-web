@@ -19,14 +19,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString } from '@sora-substrate/util';
-
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import { Components, EvmSymbol, ZeroStringValue } from '@/consts';
+
+import type { CodecString } from '@sora-substrate/util';
 
 @Component({
   components: {
@@ -35,11 +36,11 @@ import { Components, EvmSymbol, ZeroStringValue } from '@/consts';
   },
 })
 export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  readonly EvmSymbol = EvmSymbol;
   readonly XOR_SYMBOL = XOR.symbol;
 
+  @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
-  @Prop({ default: EvmSymbol.ETH, type: String }) readonly evmTokenSymbol!: string;
+  @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
 

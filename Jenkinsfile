@@ -13,7 +13,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     buildEnvironment: buildEnvironment,
     sonarProjectName: 'polkaswap-exchange-web',
     sonarProjectKey: 'jp.co.soramitsu:polkaswap-exchange-web',
-    secretScannerExclusion: 'Jenkinsfile-UCAN',
+    secretScannerExclusion: 'Jenkinsfile-UCAN|.*env.json',
     copyStaticToBranch: true,
     copyToBranches: ['fleek-pre', 'fleek'],
     copyFile: 'env.json',
@@ -28,6 +28,9 @@ def pipeline = new org.js.AppPipeline(steps: this,
     devValuesPath: "dev/dev/",
     initialSecretName: "sora2-dev-polkaswap-exchange-polkaswap-exchange-web-eso-base",
     initialNameSpace: "sora2-dev-web",
-    targetNameSpace: "sora2-\${steps.env.CHANGE_ID}-web"
+    targetNameSpace: "sora2-${env.CHANGE_ID}-web",
+    targetSecretName: "sora2-${env.CHANGE_ID}-polkaswap-exchange-pr-polkaswap-exchange-web-eso-base",
+    downstreamJob: 'polkaswap/e2e-tests/hash_test',
+    noIndex: true
 )
 pipeline.runPipeline()

@@ -87,11 +87,12 @@
         "noAccounts": "Sembra che non ci siano account nella tua estensione {extension}. Aggiungi un account e riprova.",
         "noAccount": "Errore dell'account {extension}. Controlla il tuo account nell'estensione {extension}",
         "noExtension": "Non è stata trovata alcuna {extension} . Si prega di installarlo e ricaricare questa pagina",
-        "noSigner": "Accesso negato. Vai alle impostazioni {extension} e apri \"Gestisci accesso al sito web\" per consentire."
+        "noSigner": "Accesso negato. Vai alle impostazioni {extension} e apri \"Gestisci accesso al sito web\" per consentire.",
+        "connectionError": "Si è verificato un errore durante la connessione del portafoglio. Puoi provare a connettere nuovamente il portafoglio tramite {extension}"
     },
     "connection": {
         "title": "{Sora} Network account",
-        "text": "Collega o crea il tuo account di rete {Sora} con {extensions}. Queste estensioni ti consentono di firmare in modo sicuro le transazioni e gestire le risorse nella rete {Sora}.",
+        "text": "Le estensioni e Google memorizzano il tuo account {Sora} Network in modo sicuro. Ti consentono di firmare transazioni e gestire risorse.",
         "noAccounts": "Nessun account trovato nell'estensione del browser {extension} Aggiungi un account e riprova.",
         "selectAccount": "Seleziona l'account con cui lavorare",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Installare",
             "connected": "Collegato",
             "notConnected": "Non connesso"
+        },
+        "internalTitle": "Connettiti tramite {wallet}",
+        "internalText": "Puoi creare o collegare un account esistente tramite {wallet} . Memorizza gli account utilizzando la crittografia.",
+        "list": {
+            "simplest": "Opzione più semplice",
+            "extensions": "Estensioni"
         }
     },
     "wallet": {
         "title": "{Sora} Network account",
         "WalletAssets": "Assets",
-        "WalletActivity": "Attività",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Attività"
     },
     "walletSend": {
         "title": "Invia",
@@ -516,13 +523,9 @@
         "strategicBonusApy": "Bonus Strategico APY"
     },
     "bridge": {
-        "title": "{Hashi} Bridge",
+        "title": "Bridge",
         "info": "Converti i token tra le reti {Sora} e {Ethereum}.",
         "balance": "Saldo",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Next",
         "connectWallets": "Collega i wallets per visualizzare la rispettiva cronologia delle transazioni.",
         "soraNetworkFee": "{Sora} Network fee",
@@ -536,8 +539,7 @@
         "networkInfo": "Bridge {Sora} Network con:",
         "copy": "Copia l'indirizzo di rete",
         "soraAddress": "{Sora} indirizzo",
-        "ethereumAddress": "{Ethereum} indirizzo",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} indirizzo"
     },
     "selectRegisteredAsset": {
         "title": "Seleziona un token",
@@ -559,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Conferma la transazione",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Conferma la transazione"
     },
     "bridgeTransaction": {
         "details": "{from} per {to}",
@@ -602,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transazione in coda...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Crea una nuova transazione",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText in {Metamask}",
-        "expectedAddress": "Indirizzo previsto in {Metamask}",
         "title": "Transazione sul Bridge",
         "expectedMetaMaskAddress": "Indirizzo previsto in {Metamask}",
         "allowToken": "Consenti a {AppName} di utilizzare il tuo {tokenSymbol}",
@@ -1031,7 +1025,7 @@
     },
     "receivedText": "Ricevuto",
     "browserNotificationDialog": {
-        "title": "Abilita le notifiche del browser",
+        "title": "Imposta notifiche",
         "info": "Ti invieremo solo gli aggiornamenti rilevanti sul tuo portafoglio, ad esempio: modifiche al saldo patrimoniale",
         "button": "Attivare le notifiche",
         "agree": "Si, capisco",
@@ -1103,10 +1097,16 @@
             "jsonFields": "Il file JSON non ha campi obbligatori"
         },
         "assetsAtRiskText": "Beni a rischio!",
-        "deleteAccountText": "L'account non può essere recuperato senza una frase seme, un file .json o se è memorizzato in un'estensione. Verrai disconnesso."
+        "deleteAccountText": "L'account non può essere recuperato senza una frase seme, un file .json o se è memorizzato in un'estensione. Verrai disconnesso.",
+        "importSteps": {
+            "selectWallet": "Vai al portafoglio di tuo uso",
+            "selectAccount": "Seleziona l'account che desideri esportare",
+            "exportAccount": "Esporta il file {JSON}"
+        },
+        "exportTutorialsText": "Esporta tutorial"
     },
     "hashiBridgeText": "Ponte {Hashi}",
-    "disclaimerTitle": "Disclaimer:",
+    "disclaimerTitle": "Disclaimer",
     "explore": {
         "showOnlyMyPositions": "Mostra solo le mie posizioni"
     },
@@ -1174,5 +1174,32 @@
     },
     "locationText": "Posizione",
     "acceptText": "Accetta e nascondi",
-    "newAccountsText": "Nuovi account"
+    "newAccountsText": "Nuovi account",
+    "dragAndDropText": "Trascina e rilascia o scegli il file {extension}",
+    "copyPhraseText": "Copia frase",
+    "stepText": "Fare un passo",
+    "alerts": {
+        "drop": "Scende al di sotto",
+        "raise": "Alza sopra",
+        "once": "Una volta",
+        "always": "Sempre",
+        "edit": "Modifica avviso",
+        "delete": "Elimina avviso",
+        "onDropDesc": "{token} scende sotto {price}",
+        "onRaiseDesc": "{token} rilancia oltre {price}",
+        "alertsTitle": "Avvisi",
+        "alertsCreateTitle": "Imposta avviso di prezzo",
+        "alertsTooltip": "Gli avvisi sui prezzi sono notifiche che possono essere impostate da te per ricevere aggiornamenti quando il prezzo di un particolare token raggiunge un determinato punto da te impostato",
+        "createBtn": "Crea nuovo avviso di prezzo",
+        "enableSwitch": "Abilita le notifiche di deposito di beni",
+        "currentPrice": "prezzo attuale",
+        "alertTypeTitle": "Tipo di avviso",
+        "typeTooltip": "Scegli l'opzione 'scende sotto' o 'aumenta sopra' per specificare la condizione di allerta per tenere traccia di movimenti di prezzo importanti. Queste opzioni ti consentono di ricevere notifiche tempestive quando il valore della tua risorsa scende al di sotto o sale al di sopra della soglia designata",
+        "alertFrequencyTitle": "Frequenza degli avvisi",
+        "frequencyTooltip": "Seleziona tra \"una volta\" e \"sempre\" per determinare la frequenza con cui ricevi le notifiche per il tipo di avviso scelto. \"Una volta\" invierà una singola notifica quando la condizione è soddisfatta, mentre \"sempre\" continuerà a notificarti ogni volta che viene superata la soglia di prezzo",
+        "noSupportMsg": "Le notifiche non sono supportate dal tuo browser",
+        "finishBtn": "Completare"
+    },
+    "accountAddressText": "Indirizzo dell'account",
+    "fiatDisclaimer": "Si noti che i valori fiat associati alle criptovalute sul nostro sito Web sono forniti da servizi esterni (Subquery, Subsquid, Ceres API) sono approssimativi. Data la complessità intrinseca di questi calcoli, non è sempre possibile garantire la precisione assoluta."
 }

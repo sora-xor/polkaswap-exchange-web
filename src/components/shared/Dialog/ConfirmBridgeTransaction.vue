@@ -2,7 +2,7 @@
   <dialog-base :visible.sync="isVisible">
     <template #title>
       <slot name="title">
-        <span class="el-dialog__title">{{ t('confirmBridgeTransactionDialog.confirmTransaction') }}</span>
+        <span class="el-dialog__title">{{ t('confirmTransactionText') }}</span>
       </slot>
     </template>
     <slot name="content-title" />
@@ -10,7 +10,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token">
-          <i class="s-icon--network s-icon-sora" />
+          <i class="network-icon network-icon--sora" />
           {{ tokenSymbol }}
         </div>
       </div>
@@ -18,7 +18,7 @@
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmount }}</span>
         <div v-if="asset" class="token token-ethereum">
-          <i :class="`s-icon--network s-icon-${getEvmIcon(evmNetwork)}`" />
+          <i :class="`network-icon network-icon--${getEvmIcon(evmNetwork)}`" />
           {{ tokenSymbol }}
         </div>
       </div>
@@ -37,11 +37,11 @@
         :disabled="isConfirmButtonDisabled"
         @click="handleConfirm"
       >
-        <template v-if="!isValidNetworkType">
-          {{ t('confirmBridgeTransactionDialog.changeNetwork') }}
+        <template v-if="!isValidNetwork">
+          {{ t('changeNetworkText') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol }) }}
         </template>
         <template v-else>
           {{ confirmText }}
@@ -52,15 +52,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { CodecString } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { CodecString, BridgeNetworks } from '@sora-substrate/util';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { EvmSymbol, ZeroStringValue, Components } from '@/consts';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { ZeroStringValue, Components } from '@/consts';
 import { lazyComponent } from '@/router';
+
+import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 @Component({
   components: {
@@ -75,23 +77,23 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   TranslationMixin,
   NetworkFormatterMixin
 ) {
+  @Prop({ default: 0, type: Number }) readonly evmNetwork!: EvmNetwork;
   @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;
   @Prop({ default: () => undefined, type: Object }) readonly asset!: Nullable<Asset>;
-  @Prop({ default: BridgeNetworks.ETH_NETWORK_ID, type: Number }) readonly evmNetwork!: BridgeNetworks;
-  @Prop({ default: EvmSymbol.ETH, type: String }) readonly evmTokenSymbol!: string;
+  @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
-  @Prop({ default: true, type: Boolean }) readonly isValidNetworkType!: boolean;
+  @Prop({ default: true, type: Boolean }) readonly isValidNetwork!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: '', type: String }) readonly confirmButtonText!: string;
 
   get confirmText(): string {
-    return this.confirmButtonText || this.t('confirmBridgeTransactionDialog.buttonConfirm');
+    return this.confirmButtonText || this.t('confirmText');
   }
 
   get isConfirmButtonDisabled(): boolean {
-    return !this.isValidNetworkType || this.isInsufficientBalance;
+    return !this.isValidNetwork || this.isInsufficientBalance;
   }
 
   get assetsClasses(): Array<string> {
@@ -160,12 +162,10 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
     margin-right: $inner-spacing-medium;
     flex-shrink: 0;
   }
-  .s-icon {
-    &-sora,
-    &-eth {
-      margin-right: $inner-spacing-medium;
-      font-size: 21px;
-    }
+  .network-icon {
+    margin-right: $inner-spacing-medium;
+    width: var(--s-size-small);
+    height: var(--s-size-small);
   }
 }
 </style>

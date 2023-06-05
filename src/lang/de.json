@@ -87,11 +87,12 @@
         "noAccounts": "Es scheint keine Konten in deiner {extension} Erweiterung zu geben. Bitte, füge ein Konto hinzu und versuche es erneut.",
         "noAccount": "{extension} Kontofehler. Bitte überprüfe dein Konto in der {extension} Erweiterung",
         "noExtension": "Es wurde keine {extension} gefunden. Bitte installiere es und lade diese Seite neu",
-        "noSigner": "Zugriff abgelehnt. Gehe zu den Erweiterungseinstellungen von {extension} und öffne \"Website-Zugriff verwalten\", um dies zuzulassen."
+        "noSigner": "Zugriff abgelehnt. Gehe zu den Erweiterungseinstellungen von {extension} und öffne \"Website-Zugriff verwalten\", um dies zuzulassen.",
+        "connectionError": "Beim Verbinden der Wallet ist ein Fehler aufgetreten. Sie können erneut versuchen, das Wallet über {extension} zu verbinden"
     },
     "connection": {
         "title": "{Sora}-Netzwerk-Konto",
-        "text": "Verbinden oder erstellen Sie Ihr {Sora} -Netzwerkkonto mit {extensions} -Erweiterungen. Mit diesen Erweiterungen können Sie Transaktionen sicher signieren und Vermögenswerte im {Sora} -Netzwerk verwalten.",
+        "text": "Erweiterungen und Google speichern Ihr {Sora} Network-Konto sicher. Sie ermöglichen es Ihnen, Transaktionen zu unterzeichnen und Vermögenswerte zu verwalten.",
         "noAccounts": "Es wurde kein Konto in deiner {extension} Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Installieren",
             "connected": "In Verbindung gebracht",
             "notConnected": "Nicht verbunden"
+        },
+        "internalTitle": "Über {wallet} verbinden",
+        "internalText": "Sie können ein bestehendes Konto über {wallet} erstellen oder verknüpfen. Es speichert Konten mit Verschlüsselung.",
+        "list": {
+            "simplest": "Einfachste Möglichkeit",
+            "extensions": "Erweiterungen"
         }
     },
     "wallet": {
         "title": "{Sora}-Netzwerk-Konto",
         "WalletAssets": "Assets",
-        "WalletActivity": "Aktivität",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Aktivität"
     },
     "walletSend": {
         "title": "Senden",
@@ -516,13 +523,9 @@
         "strategicBonusApy": "Strategischer Bonus APY"
     },
     "bridge": {
-        "title": "{Hashi}-Bridge",
+        "title": "Bridge",
         "info": "Konvertiere Token zwischen dem {Sora} und {Ethereum} Netzwerk.",
         "balance": "Saldo",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Weiter",
         "connectWallets": "Verbinde Wallets, um den jeweiligen Transaktionsverlauf anzuzeigen.",
         "soraNetworkFee": "{Sora} Netzwerkgebühr",
@@ -536,8 +539,7 @@
         "networkInfo": "Bridge {Sora} Netzwerk mit:",
         "copy": "Netzwerkadresse kopieren",
         "soraAddress": "{Sora} Adresse",
-        "ethereumAddress": "{Ethereum} Adresse",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} Adresse"
     },
     "selectRegisteredAsset": {
         "title": "Wähle ein Token",
@@ -559,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Bestätige die Transaktion",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Bestätige die Transaktion"
     },
     "bridgeTransaction": {
         "details": "{from} zu {to}",
@@ -602,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} Transaktion ausstehend...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Erstelle eine neue Transaktion",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText in {Metamask}",
-        "expectedAddress": "Erwartete Adresse in {Metamask}",
         "title": "Bridge-Transaktion",
         "expectedMetaMaskAddress": "In {Metamask} erwartete Adresse:",
         "allowToken": "Erlaube {AppName}, deine {tokenSymbol} zu verwenden",
@@ -1031,7 +1025,7 @@
     },
     "receivedText": "Erhalten",
     "browserNotificationDialog": {
-        "title": "Aktivieren Sie Browserbenachrichtigungen",
+        "title": "Benachrichtigungen festlegen",
         "info": "Wir senden Ihnen nur relevante Updates zu Ihrem Wallet, zum Beispiel: Änderungen des Vermögensstands",
         "button": "Benachrichtigungen aktivieren",
         "agree": "Ja ich verstehe",
@@ -1103,10 +1097,16 @@
             "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder"
         },
         "assetsAtRiskText": "Vermögen in Gefahr!",
-        "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet."
+        "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet.",
+        "importSteps": {
+            "selectWallet": "Gehen Sie zur Brieftasche Ihrer Verwendung",
+            "selectAccount": "Wählen Sie das Konto aus, das Sie exportieren möchten",
+            "exportAccount": "Exportieren Sie die {JSON} -Datei"
+        },
+        "exportTutorialsText": "Tutorials exportieren"
     },
     "hashiBridgeText": "{Hashi} Brücke",
-    "disclaimerTitle": "Haftungsausschluss:",
+    "disclaimerTitle": "Haftungsausschluss",
     "explore": {
         "showOnlyMyPositions": "Nur meine Positionen anzeigen"
     },
@@ -1174,5 +1174,32 @@
     },
     "locationText": "Standort",
     "acceptText": "Akzeptieren & ausblenden",
-    "newAccountsText": "Neue Konten"
+    "newAccountsText": "Neue Konten",
+    "dragAndDropText": "Drag & Drop oder Datei {extension} auswählen",
+    "copyPhraseText": "Satz kopieren",
+    "stepText": "Schritt",
+    "alerts": {
+        "drop": "Tropfen unten",
+        "raise": "Erhebt sich oben",
+        "once": "Einmal",
+        "always": "Stets",
+        "edit": "Benachrichtigung bearbeiten",
+        "delete": "Benachrichtigung löschen",
+        "onDropDesc": "{token} fällt unter {price}",
+        "onRaiseDesc": "{token} steigt über {price}",
+        "alertsTitle": "Warnungen",
+        "alertsCreateTitle": "Preisalarm einrichten",
+        "alertsTooltip": "Preisalarme sind Benachrichtigungen, die von Ihnen eingestellt werden können, um Updates zu erhalten, wenn der Preis eines bestimmten Tokens einen bestimmten, von Ihnen festgelegten Punkt erreicht",
+        "createBtn": "Neuen Preisalarm erstellen",
+        "enableSwitch": "Aktivieren Sie Benachrichtigungen zur Hinterlegung von Vermögenswerten",
+        "currentPrice": "derzeitiger Preis",
+        "alertTypeTitle": "Alarmtyp",
+        "typeTooltip": "Wählen Sie entweder die Option „fällt unter“ oder „erhöht sich“, um die Alarmbedingung für die Verfolgung wichtiger Preisbewegungen festzulegen. Diese Optionen ermöglichen es Ihnen, zeitnahe Benachrichtigungen zu erhalten, wenn der Wert Ihres Vermögens entweder unter oder über Ihren festgelegten Schwellenwert fällt",
+        "alertFrequencyTitle": "Alarmhäufigkeit",
+        "frequencyTooltip": "Wählen Sie zwischen „Einmal“ und „Immer“, um festzulegen, wie oft Sie Benachrichtigungen für den ausgewählten Alarmtyp erhalten. „Einmal“ sendet eine einzelne Benachrichtigung, wenn die Bedingung erfüllt ist, während „immer“ Sie weiterhin jedes Mal benachrichtigt, wenn die Preisschwelle überschritten wird",
+        "noSupportMsg": "Benachrichtigungen werden von Ihrem Browser nicht unterstützt",
+        "finishBtn": "Fertigstellen"
+    },
+    "accountAddressText": "Kontoadresse",
+    "fiatDisclaimer": "Bitte beachten Sie, dass die mit Kryptowährungen auf unserer Website verbundenen Fiat-Werte, die von externen Diensten (Subquery, Subsquid, Ceres API) bereitgestellt werden, ungefähre Werte sind. Aufgrund der inhärenten Komplexität dieser Berechnungen kann eine absolute Genauigkeit zu jedem Zeitpunkt nicht garantiert werden."
 }

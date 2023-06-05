@@ -43,18 +43,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { components } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString } from '@sora-substrate/util';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import { components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import BaseTokenPairMixin from '@/components/mixins/BaseTokenPairMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import PoolApyMixin from '@/components/mixins/PoolApyMixin';
-
-import { lazyComponent } from '@/router';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
+
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 @Component({
   components: {

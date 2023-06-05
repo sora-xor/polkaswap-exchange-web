@@ -22,7 +22,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
 import { getter } from '@/store/decorators';
 
 @Component

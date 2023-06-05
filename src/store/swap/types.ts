@@ -1,11 +1,11 @@
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { CodecString } from '@sora-substrate/util';
 import type {
   QuotePaths,
   QuotePayload,
   PrimaryMarketsEnabledAssets,
   LPRewardsInfo,
 } from '@sora-substrate/liquidity-proxy/build/types';
+import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 export type DexQuoteData = {

@@ -1,23 +1,24 @@
+import { vuex } from '@soramitsu/soraneo-wallet-web';
+import { createDirectStore, StoreOrModuleOptions } from 'direct-vuex';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { createDirectStore, StoreOrModuleOptions } from 'direct-vuex';
-import { vuex } from '@soramitsu/soraneo-wallet-web';
-import type { DirectActions, DirectGetters, DirectMutations, DirectState } from 'direct-vuex/types/direct-types';
 
-import router from './router';
-import web3 from './web3';
-import assets from './assets';
-import settings from './settings';
-import swap from './swap';
-import referrals from './referrals';
-import pool from './pool';
-import moonpay from './moonpay';
-import bridge from './bridge';
 import addLiquidity from './addLiquidity';
+import assets from './assets';
+import bridge from './bridge';
+import demeterFarming from './demeterFarming';
+import moonpay from './moonpay';
+import pool from './pool';
+import referrals from './referrals';
 import removeLiquidity from './removeLiquidity';
 import rewards from './rewards';
-import demeterFarming from './demeterFarming';
+import router from './router';
+import settings from './settings';
 import soraCard from './soraCard';
+import swap from './swap';
+import web3 from './web3';
+
+import type { DirectActions, DirectGetters, DirectMutations, DirectState } from 'direct-vuex/types/direct-types';
 
 Vue.use(Vuex);
 
@@ -77,6 +78,6 @@ const localGetterContext = <O extends StoreOrModuleOptions>(args: any, moduleNam
   };
 };
 
-export { modules, localGetterContext, localActionContext };
+export { modules, localGetterContext, localActionContext, rootGetterContext, rootActionContext };
 
 export default store;

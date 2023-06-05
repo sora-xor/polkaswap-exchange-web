@@ -1,21 +1,33 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('bridge.selectNetwork')" class="networks">
+  <dialog-base :visible.sync="visibility" :title="t('bridge.selectNetwork')" class="networks">
     <p class="networks-info">{{ t('bridge.networkInfo') }}</p>
-    <s-radio-group v-model="selectedNetworkId">
-      <s-radio v-for="network in subNetworks" :key="network.id" :label="network.id" class="network">
-        <span class="network-name">{{ TranslationConsts.evmNetwork[network.name] }}</span>
-        <token-logo :token-symbol="network.symbol" />
+    <s-radio-group v-model="selectedNetworkTuple">
+      <s-radio
+        v-for="{ id, value, name, disabled } in networks"
+        :key="value"
+        :label="value"
+        :disabled="disabled"
+        class="network"
+      >
+        <span class="network-name">{{ name }}</span>
+        <i :class="['network-icon', `network-icon--${getEvmIcon(id)}`]" />
       </s-radio>
     </s-radio-group>
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { SubNetwork } from '@/utils/ethers-util';
+import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
+import { BridgeType } from '@/consts/evm';
+import type { EvmNetworkData } from '@/consts/evm';
+import { action, getter, mutation, state } from '@/store/decorators';
+
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+
+const DELIMETER = '-';
 
 @Component({
   components: {
@@ -23,10 +35,53 @@ import { SubNetwork } from '@/utils/ethers-util';
     TokenLogo: components.TokenLogo,
   },
 })
-export default class BridgeSelectNetwork extends Mixins(TranslationMixin, mixins.DialogMixin) {
-  @Prop({ default: () => [], type: Array }) subNetworks!: Array<SubNetwork>;
-  @ModelSync('value', 'input', { type: Number })
-  readonly selectedNetworkId!: number;
+export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
+  @state.web3.networkType private networkType!: Nullable<BridgeType>;
+  @state.web3.evmNetworkSelected private evmNetworkSelected!: Nullable<EvmNetwork>;
+  @state.web3.selectNetworkDialogVisibility selectNetworkDialogVisibility!: boolean;
+
+  @getter.web3.availableNetworks availableNetworks!: Record<BridgeType, { disabled: boolean; data: EvmNetworkData }[]>;
+
+  @mutation.web3.setNetworkType private setNetworkType!: (networkType: BridgeType) => void;
+  @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
+
+  @action.web3.selectEvmNetwork selectEvmNetwork!: (networkId: EvmNetwork) => void;
+
+  get visibility(): boolean {
+    return this.selectNetworkDialogVisibility;
+  }
+
+  set visibility(flag: boolean) {
+    this.setSelectNetworkDialogVisibility(flag);
+  }
+
+  get networks(): { id: number; value: string; name: string; disabled: boolean }[] {
+    return Object.entries(this.availableNetworks)
+      .map(([type, networks]) => {
+        return networks.map(({ disabled, data: { id, name } }) => {
+          const networkName = type === BridgeType.ETH ? `${name} (${this.t('hashiBridgeText')})` : name;
+
+          return {
+            id,
+            value: `${type}-${id}`,
+            name: networkName,
+            disabled,
+          };
+        });
+      })
+      .flat(1);
+  }
+
+  get selectedNetworkTuple(): string {
+    return [this.networkType, this.evmNetworkSelected].join(DELIMETER);
+  }
+
+  set selectedNetworkTuple(value: string) {
+    const [networkType, evmNetworkSelected] = value.split(DELIMETER);
+
+    this.setNetworkType(networkType as BridgeType);
+    this.selectEvmNetwork(Number(evmNetworkSelected));
+  }
 }
 </script>
 
@@ -42,6 +97,7 @@ $radio-checked-size: 18px;
   .el-radio__label {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
   .el-radio__label {
     padding-left: $inner-spacing-small;
@@ -51,7 +107,8 @@ $radio-checked-size: 18px;
 </style>
 
 <style lang="scss" scoped>
-$network-logo-size: 49px;
+$network-logo-size: 48px;
+$network-logo-font-size: 24px;
 
 .networks-info,
 .network-name {
@@ -75,16 +132,10 @@ $network-logo-size: 49px;
     &-name {
       @include radio-title;
     }
-    + .network {
-      border-top: 1px solid var(--s-color-base-border-secondary);
-    }
-    .token-logo {
+    &-icon {
       height: $network-logo-size;
       width: $network-logo-size;
     }
-  }
-  .token-logo {
-    margin-left: auto;
   }
 }
 </style>
