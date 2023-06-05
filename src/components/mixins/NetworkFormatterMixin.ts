@@ -1,42 +1,75 @@
-import { Mixins, Component } from 'vue-property-decorator';
-import { BridgeNetworks } from '@sora-substrate/util';
+import { EvmNetworkId } from '@sora-substrate/util/build/evm/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
-import { EvmNetworkType } from '@/utils/ethers-util';
+import { EvmLinkType, EVM_NETWORKS } from '@/consts/evm';
+import type { EvmNetworkData } from '@/consts/evm';
 import { state, getter } from '@/store/decorators';
 
 import TranslationMixin from './TranslationMixin';
 
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+
 @Component
 export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
-  @state.web3.networkType networkType!: Nullable<EvmNetworkType>;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+  @getter.web3.connectedEvmNetwork connectedEvmNetwork!: Nullable<EvmNetworkData>;
 
-  @getter.web3.defaultNetworkType defaultNetworkType!: Nullable<EvmNetworkType>;
+  readonly EvmLinkType = EvmLinkType;
 
-  formatNetwork(isSora: boolean, isDefaultNetworkType = false): string {
+  formatNetwork(isSora: boolean): string {
     if (isSora && this.soraNetwork) {
       return this.TranslationConsts.soraNetwork[this.soraNetwork];
     }
 
-    const network = isDefaultNetworkType ? this.defaultNetworkType : this.networkType;
-
-    return network ? this.TranslationConsts.bridgeNetwork[network] : '';
+    return this.connectedEvmNetwork?.name ?? '';
   }
 
-  getEvmIcon(externalNetwork?: BridgeNetworks): string {
-    if (externalNetwork === BridgeNetworks.ENERGY_NETWORK_ID) {
-      return 'energy';
+  getEvmIcon(evmNetwork?: Nullable<EvmNetwork>): string {
+    switch (evmNetwork) {
+      // special case
+      case 0:
+        return 'sora';
+      case EvmNetworkId.BinanceSmartChainMainnet:
+      case EvmNetworkId.BinanceSmartChainTestnet:
+        return 'binance-smart-chain';
+      case EvmNetworkId.PolygonMainnet:
+      case EvmNetworkId.PolygonTestnetMumbai:
+        return 'polygon';
+      case EvmNetworkId.KlaytnMainnet:
+      case EvmNetworkId.KlaytnTestnetBaobab:
+        return 'klaytn';
+      case EvmNetworkId.AvalancheMainnet:
+      case EvmNetworkId.AvalancheTestnetFuji:
+        return 'avalanche';
+      case EvmNetworkId.EthereumClassicMainnet:
+      case EvmNetworkId.EthereumClassicTestnetMordor:
+        return 'ethereum-classic';
+      default:
+        return 'ethereum';
     }
-    return 'eth';
   }
 
-  getEtherscanLink(hash: string, isDefaultNetworkType = false): string {
-    const network = isDefaultNetworkType ? this.defaultNetworkType : this.networkType;
-    // TODO: Generate the link for Energy Web Chain
-    if (!(network && hash) || network === EvmNetworkType.Private) {
+  // TODO [EVM] check network explorers links
+  getEvmExplorerLink(hash: string, type: EvmLinkType, networkId: EvmNetwork): string {
+    if (!hash) return '';
+
+    const network = EVM_NETWORKS[networkId];
+
+    if (!network) {
+      console.error(`Network id "${networkId}" is not defined in "EVM_NETWORKS"`);
       return '';
     }
-    return `https://${network !== EvmNetworkType.Mainnet ? network + '.' : ''}etherscan.io/tx/${hash}`;
+
+    const explorerUrl = network.blockExplorerUrls[0];
+
+    if (!explorerUrl) {
+      console.error(`"blockExplorerUrls" is not provided for EVM network id "${networkId}"`);
+      return '';
+    }
+
+    const path = type === EvmLinkType.Transaction ? 'tx' : 'address';
+
+    return `${explorerUrl}/${path}/${hash}`;
   }
 }

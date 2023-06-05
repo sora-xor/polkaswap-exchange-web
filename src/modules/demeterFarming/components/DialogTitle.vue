@@ -15,13 +15,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-
 import type { DemeterAsset } from '@/modules/demeterFarming/types';
+import { lazyComponent } from '@/router';
 
 @Component({
   components: {

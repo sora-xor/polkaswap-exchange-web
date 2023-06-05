@@ -1,12 +1,11 @@
 import Vue from 'vue';
 
-import store from './store';
-import './store/decorators';
 import App from './App.vue';
-import router from './router';
-
 import i18n from './lang';
+import router from './router';
+import store from './store';
 
+import './store/decorators';
 import './plugins';
 import './styles';
 

@@ -1,10 +1,12 @@
-import omit from 'lodash/fp/omit';
 import { defineMutations } from 'direct-vuex';
-import type { Subscription } from 'rxjs';
+import omit from 'lodash/fp/omit';
 
 import storage from '@/utils/storage';
+
 import { initialState } from './state';
+
 import type { ReferralsState } from './types';
+import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<ReferralsState>()({
   resetReferrer(state): void {

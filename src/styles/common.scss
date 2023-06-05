@@ -18,45 +18,21 @@ $country-emoji-font: 'Twemoji Country Flags';
   }
 }
 
+$networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polygon', 'binance-smart-chain';
+
 /* Networks Icons */
-$s-icon-sora: '\0041';
-$s-icon-eth: '\0044';
-$s-icon-energy: '\0048';
-.s-icon-sora {
-  &:before {
-    content: $s-icon-sora;
-  }
-}
-.s-icon-eth {
-  &:before {
-    content: $s-icon-eth;
-  }
-}
-[design-system-theme='light'] {
-  .s-icon--network.s-icon {
-    &-sora {
-      &,
-      &:hover {
-        color: #e3232c !important;
-      }
+.network-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  @each $network in $networks {
+    &--#{$network} {
+      background-image: url('~@/assets/img/networks/#{$network}.svg')
     }
-    &-eth {
-      &,
-      &:hover {
-        color: #627eea !important;
-      }
-    }
-  }
-}
-.s-icon-energy {
-  &.s-icon--network {
-    &,
-    &:hover {
-      color: #a566ff !important;
-    }
-  }
-  &:before {
-    content: $s-icon-energy;
   }
 }
 
@@ -94,11 +70,6 @@ div.transaction-row_key {
 div.transaction-row_value {
   color: var(--s-color-base-content-quaternary) !important;
   font-weight: 600;
-}
-
-i.el-notification__icon.el-icon-success,
-i.el-notification__icon.el-icon-success:hover {
-  color: var(--s-color-status-success) !important;
 }
 /*_______________________ CURRENT UI FIXES FOR CONSISTENCY (GENERALLY BASED ON TEST USERS FEEDBACK) _______________________*/
 button.el-button.el-tooltip.el-button--primary.el-button--medium.is-disabled.s-medium.s-border-radius-small.s-primary.s-i-position-left

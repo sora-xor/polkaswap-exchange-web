@@ -1,6 +1,6 @@
-import type { Subscription } from 'rxjs';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { Subscription } from 'rxjs';
 
 export enum FocusedField {
   First = 'firstTokenValue',

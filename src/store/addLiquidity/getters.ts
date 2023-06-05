@@ -1,29 +1,30 @@
-import { defineGetters } from 'direct-vuex';
-import { api } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
+import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineGetters } from 'direct-vuex';
+
+import { ZeroStringValue } from '@/consts';
+import { addLiquidityGetterContext } from '@/store/addLiquidity';
+
+import type { AddLiquidityState } from './types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
-import { addLiquidityGetterContext } from '@/store/addLiquidity';
-import { ZeroStringValue } from '@/consts';
-import type { AddLiquidityState } from './types';
-import type { RegisteredAccountAssetWithDecimals } from '../assets/types';
-
 const getters = defineGetters<AddLiquidityState>()({
-  firstToken(...args): Nullable<RegisteredAccountAssetWithDecimals> {
+  firstToken(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = addLiquidityGetterContext(args);
     const token = rootGetters.assets.assetDataByAddress(state.firstTokenAddress);
     const balance = state.firstTokenBalance;
     if (balance) {
-      return { ...token, balance } as RegisteredAccountAssetWithDecimals;
+      return { ...token, balance } as RegisteredAccountAsset;
     }
     return token;
   },
-  secondToken(...args): Nullable<RegisteredAccountAssetWithDecimals> {
+  secondToken(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = addLiquidityGetterContext(args);
     const token = rootGetters.assets.assetDataByAddress(state.secondTokenAddress);
     const balance = state.secondTokenBalance;
     if (balance) {
-      return { ...token, balance } as RegisteredAccountAssetWithDecimals;
+      return { ...token, balance } as RegisteredAccountAsset;
     }
     return token;
   },

@@ -14,14 +14,12 @@
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components, MarketAlgorithms } from '@/consts';
+import { lazyComponent } from '@/router';
+import { state, getter, mutation } from '@/store/decorators';
+import type { TabItem } from '@/types/tabs';
 
 import SwapSettingsHeader from './Header.vue';
-
-import { lazyComponent } from '@/router';
-import { Components, MarketAlgorithms } from '@/consts';
-import { state, getter, mutation } from '@/store/decorators';
-
-import type { TabItem } from '@/types/tabs';
 
 @Component({
   components: {

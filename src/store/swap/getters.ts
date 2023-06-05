@@ -1,35 +1,35 @@
-import isEmpty from 'lodash/fp/isEmpty';
-import { defineGetters } from 'direct-vuex';
-import { api } from '@soramitsu/soraneo-wallet-web';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { CodecString } from '@sora-substrate/util';
+import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineGetters } from 'direct-vuex';
+import isEmpty from 'lodash/fp/isEmpty';
 
-import { swapGetterContext } from '@/store/swap';
 import {
   LiquiditySourceForMarketAlgorithm,
   MarketAlgorithmForLiquiditySource,
   MarketAlgorithms,
   ZeroStringValue,
 } from '@/consts';
+import { swapGetterContext } from '@/store/swap';
+
 import type { SwapState } from './types';
-import type { RegisteredAccountAssetWithDecimals } from '../assets/types';
+import type { CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
 
 const getters = defineGetters<SwapState>()({
-  tokenFrom(...args): Nullable<RegisteredAccountAssetWithDecimals> {
+  tokenFrom(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = swapGetterContext(args);
     const token = rootGetters.assets.assetDataByAddress(state.tokenFromAddress);
     const balance = state.tokenFromBalance;
     if (balance) {
-      return { ...token, balance } as RegisteredAccountAssetWithDecimals;
+      return { ...token, balance } as RegisteredAccountAsset;
     }
     return token;
   },
-  tokenTo(...args): Nullable<RegisteredAccountAssetWithDecimals> {
+  tokenTo(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = swapGetterContext(args);
     const token = rootGetters.assets.assetDataByAddress(state.tokenToAddress);
     const balance = state.tokenToBalance;
     if (balance) {
-      return { ...token, balance } as RegisteredAccountAssetWithDecimals;
+      return { ...token, balance } as RegisteredAccountAsset;
     }
     return token;
   },

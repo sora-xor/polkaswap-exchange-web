@@ -1,9 +1,11 @@
-import invert from 'lodash/fp/invert';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import invert from 'lodash/fp/invert';
 
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 import pkg from '../../package.json';
+
+import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 export const app = {
   version: pkg.version,
@@ -11,6 +13,8 @@ export const app = {
   email: 'jihoon@tutanota.de',
   title: 'Polkaswap — The DEX for the Interoperable Future.',
 };
+
+export const MAX_ALERTS_NUMBER = 5;
 
 export const WalletPermissions = {
   sendAssets: true, // enable 'send' button in assets list
@@ -143,6 +147,10 @@ export enum Components {
   AppMobilePopup = 'App/MobilePopup',
   AppBrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
   AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
+  Alerts = 'App/Alerts/Alerts',
+  AlertList = 'App/Alerts/AlertList',
+  CreateAlert = 'App/Alerts/CreateAlert',
+  AlertsSelectAsset = 'pages/Alerts/SelectAsset',
   SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
   AppFooter = 'App/Footer/AppFooter',
   AppDisclaimer = 'App/Header/AppDisclaimer',
@@ -231,6 +239,15 @@ export enum Components {
 export enum RewardsTabsItems {
   Rewards = PageNames.Rewards,
   ReferralProgram = PageNames.ReferralProgram,
+}
+
+export interface EditableAlertObject {
+  alert: Alert;
+  position: number;
+}
+
+export interface NumberedAlert extends Alert {
+  position: number;
 }
 
 export interface SidebarMenuItem {
@@ -404,11 +421,6 @@ export const AboutTopics = [
   { title: Topics.AddLiquidity, icon: 'basic-drop-24' },
   { title: Topics.PriceFeeds, icon: 'software-terminal-24' },
 ];
-
-export enum EvmSymbol {
-  ETH = 'ETH',
-  VT = 'VT',
-}
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';

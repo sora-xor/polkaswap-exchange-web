@@ -60,10 +60,6 @@
 </template>
 
 <script lang="ts">
-import isEqual from 'lodash/fp/isEqual';
-import last from 'lodash/fp/last';
-import { graphic } from 'echarts';
-import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import {
   components,
@@ -72,17 +68,20 @@ import {
   WALLET_CONSTS,
   SUBQUERY_TYPES,
 } from '@soramitsu/soraneo-wallet-web';
+import { graphic } from 'echarts';
+import isEqual from 'lodash/fp/isEqual';
+import last from 'lodash/fp/last';
+import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
-
 import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
-import { debouncedInputHandler, getTextWidth, calcPriceChange, formatDecimalPlaces } from '@/utils';
+import { lazyComponent } from '@/router';
 import { Timeframes } from '@/types/filters';
-
 import type { SnapshotFilter } from '@/types/filters';
+import { debouncedInputHandler, getTextWidth, calcPriceChange, formatDecimalPlaces } from '@/utils';
+
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type {
   PageInfo,

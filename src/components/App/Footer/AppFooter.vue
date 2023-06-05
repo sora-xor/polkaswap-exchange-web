@@ -58,21 +58,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { getExplorerLinks, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
 import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
-import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { getExplorerLinks, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { state, getter, mutation } from '@/store/decorators';
+import type { Node } from '@/types/nodes';
+
 import FooterPopper from './FooterPopper.vue';
+import { formatLocation } from './Node/utils';
 import NoInternetDialog from './NoInternetDialog.vue';
 
-import { formatLocation } from './Node/utils';
-import { state, getter, mutation } from '@/store/decorators';
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
-import type { Node } from '@/types/nodes';
+import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 /** Max limit provided by navigator.connection.downlink */
 const MAX_INTERNET_CONNECTION_LIMIT = 10;

@@ -87,11 +87,12 @@
         "noAccounts": "Il semble n’y avoir aucun compte dans votre extension {extension}. Ajoutez un compte et réessayez.",
         "noAccount": "Erreur de compte {extension}. Veuillez vérifier votre compte dans l' {extension}",
         "noExtension": "Aucune {extension} n'a été trouvée. Veuillez l'installer et recharger cette page",
-        "noSigner": "Accès refusé. Accédez aux paramètres de l' {extension} et ouvrez \"Gérer l'accès au site Web\" pour autoriser."
+        "noSigner": "Accès refusé. Accédez aux paramètres de l' {extension} et ouvrez \"Gérer l'accès au site Web\" pour autoriser.",
+        "connectionError": "Une erreur s'est produite lors de la connexion du portefeuille. Vous pouvez réessayer de connecter le portefeuille via {extension}"
     },
     "connection": {
         "title": "Compte réseau {Sora}",
-        "text": "Connectez ou créez votre compte réseau {Sora} avec les {extensions}. Ces extensions vous permettent de signer en toute sécurité des transactions et de gérer des actifs dans {Sora} Network.",
+        "text": "Les extensions et Google stockent votre compte réseau {Sora} en toute sécurité. Ils vous permettent de signer des transactions et de gérer des actifs.",
         "noAccounts": "Aucun compte n'a été trouvé dans votre extension de navigateur {extension} Veuillez ajouter un compte et réessayer.",
         "selectAccount": "Sélectionnez le compte approprié",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Installer",
             "connected": "Connecté",
             "notConnected": "Pas connecté"
+        },
+        "internalTitle": "Connectez-vous via {wallet}",
+        "internalText": "Vous pouvez créer ou lier un compte existant via {wallet} . Il stocke les comptes en utilisant le cryptage.",
+        "list": {
+            "simplest": "Option la plus simple",
+            "extensions": "Rallonges"
         }
     },
     "wallet": {
         "title": "Compte réseau {Sora}",
         "WalletAssets": "Actifs",
-        "WalletActivity": "Activité",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Activité"
     },
     "walletSend": {
         "title": "Envoyer",
@@ -516,13 +523,9 @@
         "strategicBonusApy": "Bonus stratégique APY"
     },
     "bridge": {
-        "title": "Pont {Hashi}",
+        "title": "Pont",
         "info": "Convertissez les jetons entre les réseaux {Sora} et {Ethereum}.",
         "balance": "Solde",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Suivant",
         "connectWallets": "Connectez les portefeuilles pour afficher l'historique des transactions.",
         "soraNetworkFee": "{Sora} Frais de réseau",
@@ -536,8 +539,7 @@
         "networkInfo": "Pont {Sora} Réseau avec:",
         "copy": "Copier l'adresse réseau",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adresse"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -559,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Confirmez la transaction",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Confirmez la transaction"
     },
     "bridgeTransaction": {
         "details": "{from} pour {to}",
@@ -602,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaction en attente...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Créer une nouvelle transaction",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText dans {Metamask}",
-        "expectedAddress": "Adresse attendue dans {Metamask}",
         "title": "Transaction de pont",
         "expectedMetaMaskAddress": "Adresse attendue dans {Metamask}:",
         "allowToken": "Autoriser {AppName} à utiliser votre {tokenSymbol}",
@@ -1031,7 +1025,7 @@
     },
     "receivedText": "Reçu",
     "browserNotificationDialog": {
-        "title": "Activer les notifications du navigateur",
+        "title": "Définir les notifications",
         "info": "Nous vous enverrons uniquement les mises à jour pertinentes concernant votre portefeuille, par exemple : les modifications du solde des actifs",
         "button": "Activer les notifications",
         "agree": "Oui je comprends",
@@ -1103,10 +1097,16 @@
             "jsonFields": "Le fichier JSON n'a pas de champs obligatoires"
         },
         "assetsAtRiskText": "Actifs en péril !",
-        "deleteAccountText": "Le compte ne peut pas être récupéré sans une phrase de départ, un fichier .json ou s'il est stocké dans une extension. Vous serez déconnecté."
+        "deleteAccountText": "Le compte ne peut pas être récupéré sans une phrase de départ, un fichier .json ou s'il est stocké dans une extension. Vous serez déconnecté.",
+        "importSteps": {
+            "selectWallet": "Accédez au portefeuille de votre utilisation",
+            "selectAccount": "Sélectionnez le compte que vous souhaitez exporter",
+            "exportAccount": "Exportez le fichier {JSON}"
+        },
+        "exportTutorialsText": "Exporter des tutoriels"
     },
     "hashiBridgeText": "Pont {Hashi}",
-    "disclaimerTitle": "Avertissement:",
+    "disclaimerTitle": "Avertissement",
     "explore": {
         "showOnlyMyPositions": "Afficher uniquement mes positions"
     },
@@ -1174,5 +1174,32 @@
     },
     "locationText": "Emplacement",
     "acceptText": "Accepter et masquer",
-    "newAccountsText": "Nouveaux comptes"
+    "newAccountsText": "Nouveaux comptes",
+    "dragAndDropText": "Faites glisser et déposez ou choisissez le fichier {extension}",
+    "copyPhraseText": "Copier la phrase",
+    "stepText": "Marcher",
+    "alerts": {
+        "drop": "Tombe au-dessous",
+        "raise": "Monte au-dessus",
+        "once": "Une fois",
+        "always": "Toujours",
+        "edit": "Modifier l'alerte",
+        "delete": "Supprimer l'alerte",
+        "onDropDesc": "{token} tombe en dessous de {price}",
+        "onRaiseDesc": "{token} augmente au-dessus de {price}",
+        "alertsTitle": "Alertes",
+        "alertsCreateTitle": "Configurer une alerte de prix",
+        "alertsTooltip": "Les alertes de prix sont des notifications que vous pouvez définir pour recevoir des mises à jour lorsque le prix d'un jeton particulier atteint un certain point que vous avez défini",
+        "createBtn": "Créer une nouvelle alerte de prix",
+        "enableSwitch": "Activer les notifications de dépôt d'actifs",
+        "currentPrice": "prix actuel",
+        "alertTypeTitle": "Type d'alerte",
+        "typeTooltip": "Choisissez l'option \"baisse en dessous\" ou \"augmente au-dessus\" pour spécifier la condition d'alerte pour le suivi des mouvements de prix importants. Ces options vous permettent de recevoir des notifications en temps opportun lorsque la valeur de votre actif tombe en dessous ou dépasse votre seuil désigné.",
+        "alertFrequencyTitle": "Fréquence d'alerte",
+        "frequencyTooltip": "Sélectionnez entre « une fois » et « toujours » pour déterminer la fréquence à laquelle vous recevez des notifications pour le type d'alerte choisi. \"Une fois\" enverra une seule notification lorsque la condition est remplie, tandis que \"toujours\" continuera à vous informer chaque fois que le seuil de prix est franchi",
+        "noSupportMsg": "Les notifications ne sont pas prises en charge par votre navigateur",
+        "finishBtn": "Compléter"
+    },
+    "accountAddressText": "Adresse du compte",
+    "fiatDisclaimer": "Veuillez noter que les valeurs fiduciaires associées aux crypto-monnaies sur notre site Web sont fournies par des services externes (Subquery, Subsquid, Ceres API) sont approximatives. Compte tenu de la complexité inhérente à ces calculs, une précision absolue à tout moment ne peut être garantie."
 }

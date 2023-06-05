@@ -12,10 +12,11 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
 
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

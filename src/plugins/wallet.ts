@@ -1,5 +1,5 @@
-import Vue from 'vue';
 import Wallet from '@soramitsu/soraneo-wallet-web';
+import Vue from 'vue';
 
 import store from '@/store';
 

@@ -158,27 +158,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
-import { api, components } from '@soramitsu/soraneo-wallet-web';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
+import { api, components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import DemeterBasePageMixin from '@/modules/demeterFarming/mixins/BasePageMixin';
-
-import { demeterLazyComponent } from '@/modules/demeterFarming/router';
-import { DemeterComponents } from '@/modules/demeterFarming/consts';
-
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { DemeterComponents } from '@/modules/demeterFarming/consts';
+import DemeterBasePageMixin from '@/modules/demeterFarming/mixins/BasePageMixin';
+import { demeterLazyComponent } from '@/modules/demeterFarming/router';
+import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+import { lazyComponent } from '@/router';
+import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { DemeterPool } from '@sora-substrate/util/build/demeterFarming/types';
-import type { AmountWithSuffix } from '@/types/formats';
-import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 type PoolData = {
   price: FPNumber;

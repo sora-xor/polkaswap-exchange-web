@@ -1,6 +1,7 @@
 import { DefaultMarketAlgorithm, DefaultSlippageTolerance, MarketAlgorithms } from '@/consts';
 import { getLocale } from '@/lang';
 import storage, { settingsStorage } from '@/utils/storage';
+
 import type { SettingsState } from './types';
 
 function initialState(): SettingsState {
@@ -30,6 +31,7 @@ function initialState(): SettingsState {
     selectNodeDialogVisibility: false,
     selectLanguageDialogVisibility: false,
     disclaimerVisibility: false,
+    alertSettingsVisibility: false,
     browserNotifPopupVisibility: false,
     browserNotifPopupBlockedVisibility: false,
     blockNumber: 0,
