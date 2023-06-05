@@ -21,7 +21,13 @@ module.exports = {
       'error',
       {
         'newlines-between': 'always',
-        alphabetize: { order: 'asc' },
+        alphabetize: { order: 'asc', caseInsensitive: true },
+        pathGroups: [
+          {
+            pattern: '@/**',
+            group: 'internal',
+          },
+        ],
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
       },
     ],
