@@ -19,10 +19,10 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { api, mixins, components, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins, components, WALLET_TYPES, WALLET_CONSTS, getWalletAccounts } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state, action, mutation } from '@/store/decorators';
+import { state, mutation } from '@/store/decorators';
 
 @Component({
   components: {
@@ -33,20 +33,15 @@ import { state, action, mutation } from '@/store/decorators';
   },
 })
 export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  @action.wallet.account.subscribeToWalletAccounts private subscribe!: AsyncFnWithoutArgs;
-
-  @mutation.wallet.account.setSelectedWallet private setSelectedWallet!: (
-    wallet?: WALLET_CONSTS.AppWallet
-  ) => Promise<void>;
-
-  @mutation.wallet.account.resetWalletAccountsSubscription private unsubscribe!: FnWithoutArgs;
+  @state.web3.selectAccountDialogVisibility private selectAccountDialogVisibility!: boolean;
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
+
+  @state.web3.subAddress private subAddress!: string;
   @mutation.web3.setSubAddress private setSubAddress!: (address: string) => void;
 
   @state.wallet.account.source private source!: Nullable<WALLET_CONSTS.AppWallet>;
-  @state.wallet.account.polkadotJsAccounts polkadotJsAccounts!: Array<WALLET_TYPES.PolkadotJsAccount>;
-  @state.web3.subAddress private subAddress!: string;
-  @state.web3.selectAccountDialogVisibility private selectAccountDialogVisibility!: boolean;
+
+  private accounts: Array<WALLET_TYPES.PolkadotJsAccount> = [];
 
   get visibility(): boolean {
     return this.selectAccountDialogVisibility;
@@ -57,20 +52,16 @@ export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, Tra
   }
 
   @Watch('visibility')
-  private async updateAccountsSubscription(visibility: boolean): Promise<void> {
-    await this.withLoading(async () => {
-      if (visibility && this.source) {
-        this.setSelectedWallet(this.source);
-        await this.subscribe();
-      } else {
-        this.setSelectedWallet();
-        this.unsubscribe();
-      }
-    });
+  private updateAccountsSubscription(visibility: boolean): void {
+    if (visibility) {
+      this.getAccounts();
+    } else {
+      this.resetAccounts();
+    }
   }
 
   get accountList() {
-    return this.polkadotJsAccounts.map((account) => ({
+    return this.accounts.map((account) => ({
       account,
       isConnected: this.isConnectedAccount(account),
     }));
@@ -78,6 +69,22 @@ export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, Tra
 
   private isConnectedAccount(account: WALLET_TYPES.PolkadotJsAccount): boolean {
     return api.formatAddress(account.address) === this.subAddress;
+  }
+
+  private async getAccounts(): Promise<void> {
+    await this.withLoading(async () => {
+      try {
+        if (!this.source) return;
+        this.accounts = await getWalletAccounts(this.source);
+      } catch {
+        this.resetAccounts();
+        this.visibility = false;
+      }
+    });
+  }
+
+  private resetAccounts(): void {
+    this.accounts = [];
   }
 
   handleSelectAccount(account: WALLET_TYPES.PolkadotJsAccount): void {

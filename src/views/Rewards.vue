@@ -181,7 +181,7 @@ export default class Rewards extends Mixins(
     this.unwatchEthereum = await ethersUtil.watchEthereum({
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
-          this.changeExternalAccountProcess({ address: addressList[0] });
+          this.changeExternalAccountProcess(addressList[0]);
         } else {
           this.disconnectExternalAccountProcess();
         }
@@ -427,8 +427,8 @@ export default class Rewards extends Mixins(
     await this.checkExternalRewards();
   }
 
-  private async changeExternalAccountProcess(options?: any): Promise<void> {
-    await this.changeExternalWallet(options);
+  private async changeExternalAccountProcess(address: string): Promise<void> {
+    await this.setEvmAddress(address);
     await this.checkExternalRewards();
   }
 

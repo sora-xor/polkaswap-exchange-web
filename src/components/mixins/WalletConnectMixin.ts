@@ -88,7 +88,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
 
   async connectExternalWallet(): Promise<void> {
     if (this.isSubBridge) {
-      // to select from wallet accounts
       this.setSelectAccountDialogVisibility(true);
     } else {
       await this.connectEvmWallet();
@@ -122,27 +121,8 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     }
   }
 
-  async changeExternalWallet(options?: any): Promise<void> {
-    // For now it's only Metamask
-    if (this.isExternalWalletConnecting) {
-      return;
-    }
-    this.isExternalWalletConnecting = true;
-    try {
-      this.setEvmAddress(options.address);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      this.isExternalWalletConnecting = false;
-    }
-  }
-
   async checkConnectionToExternalAccount(func: FnWithoutArgs | AsyncFnWithoutArgs): Promise<void> {
-    if (this.isSubBridge) {
-      return await func();
-    }
-
-    const connected = await ethersUtil.checkAccountIsConnected(this.evmAddress);
+    const connected = this.isSubBridge ? !!this.subAddress : await ethersUtil.checkAccountIsConnected(this.evmAddress);
 
     if (!connected) {
       await this.connectExternalWallet();

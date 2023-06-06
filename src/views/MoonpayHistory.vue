@@ -137,7 +137,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
           if (addressList.length) {
-            this.changeExternalWallet({ address: addressList[0] });
+            this.setEvmAddress(addressList[0]);
           } else {
             this.disconnectExternalAccount();
           }
