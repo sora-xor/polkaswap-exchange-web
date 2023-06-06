@@ -26,8 +26,6 @@ export function initialState(): Web3State {
       [BridgeNetworkType.Sub]: [],
     }, // supported apps from chain
 
-    selectNetworkDialogVisibility: false,
-
     // eth bridge history
     ethBridgeEvmNetwork: EvmNetworkId.EthereumSepolia,
     ethBridgeContractAddress: {
@@ -35,6 +33,10 @@ export function initialState(): Web3State {
       VAL: '',
       OTHER: '',
     },
+
+    // dialogs
+    selectNetworkDialogVisibility: false,
+    selectAccountDialogVisibility: false,
   };
 }
 

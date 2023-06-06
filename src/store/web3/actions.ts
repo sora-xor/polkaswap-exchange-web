@@ -30,7 +30,7 @@ async function connectSubNetwork(context: ActionContext<any, any>, network?: Sub
 }
 
 const actions = defineActions({
-  async connectExternalAccount(context, provider: Provider): Promise<void> {
+  async connectEvmAccount(context, provider: Provider): Promise<void> {
     const { commit } = web3ActionContext(context);
     const address = await ethersUtil.onConnect({ provider });
     commit.setEvmAddress(address);

@@ -41,7 +41,7 @@ const evmBridge: EvmBridge = new Bridge({
   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
   getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
   // transaction
-  getTransaction: (id: string) => (evmBridgeApi.getHistory(id) as EvmHistory) || store.getters.bridge.history[id],
+  getTransaction: (id: string) => (store.getters.bridge.history[id] || evmBridgeApi.getHistory(id)) as EvmHistory,
   updateTransaction,
   // ui integration
   showNotification: (tx: EvmHistory) => store.commit.bridge.setNotificationData(tx),

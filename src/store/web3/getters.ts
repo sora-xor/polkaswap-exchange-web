@@ -16,11 +16,10 @@ type AvailableNetwork = {
 
 const getters = defineGetters<Web3State>()({
   externalAccount(...args): string {
-    const { state, rootState } = web3GetterContext(args);
+    const { state } = web3GetterContext(args);
 
     if (state.networkType === BridgeNetworkType.Sub) {
-      // [TODO] use state.subAddress
-      return rootState.wallet.account.address;
+      return state.subAddress;
     } else {
       return state.evmAddress;
     }

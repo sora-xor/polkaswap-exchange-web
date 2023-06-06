@@ -29,8 +29,9 @@ export type Web3State = {
   subNetworksApp: SubNetwork[];
   supportedApps: SupportedApps;
 
-  selectNetworkDialogVisibility: boolean;
-
   ethBridgeEvmNetwork: EvmNetwork;
   ethBridgeContractAddress: EthBridgeContractsAddresses;
+
+  selectNetworkDialogVisibility: boolean;
+  selectAccountDialogVisibility: boolean;
 };

@@ -182,7 +182,10 @@
                   {{ formatAddress(accountAddressTo, 8) }}
                 </span>
               </s-tooltip>
-              <span>{{ t('connectedText') }}</span>
+              <span v-if="isSubBridge" class="bridge-network-address" @click="connectExternalWallet">
+                {{ t('changeAccountText') }}
+              </span>
+              <span v-else>{{ t('connectedText') }}</span>
             </div>
             <s-button
               v-else
@@ -251,6 +254,7 @@
         />
       </s-card>
       <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
+      <bridge-select-account />
       <bridge-select-network />
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
@@ -306,6 +310,7 @@ import ethersUtil from '@/utils/ethers-util';
   components: {
     BridgeSelectAsset: lazyComponent(Components.BridgeSelectAsset),
     BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
+    BridgeSelectAccount: lazyComponent(Components.BridgeSelectAccount),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),

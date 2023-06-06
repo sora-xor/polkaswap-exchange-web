@@ -44,8 +44,7 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { connection } from '@sora-substrate/util';
-import { components, mixins, settingsStorage } from '@soramitsu/soraneo-wallet-web';
+import { connection, components, mixins, settingsStorage } from '@soramitsu/soraneo-wallet-web';
 import type { History, HistoryItem } from '@sora-substrate/util';
 import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';

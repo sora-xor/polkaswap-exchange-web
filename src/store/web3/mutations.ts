@@ -19,6 +19,11 @@ const mutations = defineMutations<Web3State>()({
     state.evmAddress = '';
     ethersUtil.removeEvmUserAddress();
   },
+
+  setSubAddress(state, address: string): void {
+    state.subAddress = address;
+  },
+
   setEvmNetworksApp(state, networksIds: EvmNetwork[]): void {
     state.evmNetworksApp = networksIds;
   },
@@ -54,6 +59,10 @@ const mutations = defineMutations<Web3State>()({
 
   setSelectNetworkDialogVisibility(state, flag: boolean): void {
     state.selectNetworkDialogVisibility = flag;
+  },
+
+  setSelectAccountDialogVisibility(state, flag: boolean): void {
+    state.selectAccountDialogVisibility = flag;
   },
 
   // for hashi bridge

@@ -41,7 +41,7 @@ const subBridge: SubBridge = new Bridge({
   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
   getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
   // transaction
-  getTransaction: (id: string) => (subBridgeApi.getHistory(id) as SubHistory) || store.getters.bridge.history[id],
+  getTransaction: (id: string) => (store.getters.bridge.history[id] || subBridgeApi.getHistory(id)) as SubHistory,
   updateTransaction,
   // ui integration
   showNotification: (tx: SubHistory) => store.commit.bridge.setNotificationData(tx),

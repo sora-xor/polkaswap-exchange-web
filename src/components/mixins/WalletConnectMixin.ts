@@ -64,8 +64,9 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @mutation.web3.setEvmAddress setEvmAddress!: (address: string) => void;
   @mutation.web3.resetProvidedNetwork private resetProvidedNetwork!: FnWithoutArgs;
   @mutation.web3.resetEvmBalance private resetEvmBalance!: FnWithoutArgs;
+  @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
 
-  @action.web3.connectExternalAccount private connectExternalAccount!: (provider: Provider) => Promise<void>;
+  @action.web3.connectEvmAccount private connectEvmAccount!: (provider: Provider) => Promise<void>;
   @action.web3.updateNetworkProvided updateNetworkProvided!: AsyncFnWithoutArgs;
   @action.web3.connectExternalNetwork connectExternalNetwork!: (networkHex?: string) => Promise<void>;
   @action.web3.selectExternalNetwork selectExternalNetwork!: (networkId: BridgeNetworkId) => Promise<void>;
@@ -86,12 +87,20 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   async connectExternalWallet(): Promise<void> {
+    if (this.isSubBridge) {
+      // to select from wallet accounts
+      this.setSelectAccountDialogVisibility(true);
+    } else {
+      await this.connectEvmWallet();
+    }
+  }
+
+  private async connectEvmWallet(): Promise<void> {
+    this.isExternalWalletConnecting = true;
     // For now it's only Metamask
     const provider = Provider.Metamask;
-
-    this.isExternalWalletConnecting = true;
     try {
-      await this.connectExternalAccount(provider);
+      await this.connectEvmAccount(provider);
     } catch (error: any) {
       const name = this.t(getProviderName(provider));
       const key = this.te(error.message) ? error.message : handleProviderError(provider, error);
