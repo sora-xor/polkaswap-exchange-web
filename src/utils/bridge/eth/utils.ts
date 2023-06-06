@@ -1,21 +1,25 @@
 import { Operation, BridgeTxStatus } from '@sora-substrate/util';
-import { ethers } from 'ethers';
-import type { Subscription } from 'rxjs';
-import type { BridgeHistory, BridgeApprovedRequest, BridgeNetworks } from '@sora-substrate/util';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import { bridgeApi } from './api';
-
+import { BridgeType } from '@/consts/evm';
+import { rootActionContext } from '@/store';
 import { delay } from '@/utils';
+import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import ethersUtil from '@/utils/ethers-util';
-import { api } from '@soramitsu/soraneo-wallet-web';
 
-const SORA_REQUESTS_TIMEOUT = 6_000; // Block production time
+import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
+import type { Subscription } from 'rxjs';
+import type { ActionContext } from 'vuex';
+
+const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS; // Block production time
 
 export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
     return !tx.blockId && !tx.txId;
   } else if (tx.type === Operation.EthBridgeIncoming) {
-    return !tx.ethereumHash;
+    return !tx.externalHash;
   } else {
     return true;
   }
@@ -23,7 +27,7 @@ export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
 
 export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
-    return !tx.ethereumHash;
+    return !tx.externalHash;
   } else if (tx.type === Operation.EthBridgeIncoming) {
     return false;
   } else {
@@ -31,21 +35,21 @@ export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
   }
 };
 
+export const isUnsignedTx = (tx: BridgeHistory): boolean => {
+  return isUnsignedFromPart(tx);
+};
+
 export const getTransaction = (id: string): BridgeHistory => {
-  const tx = bridgeApi.getHistory(id) as BridgeHistory;
+  const tx = ethBridgeApi.getHistory(id) as BridgeHistory;
 
   if (!tx) throw new Error(`[Bridge]: Transaction is not exists: ${id}`);
 
   return tx;
 };
 
-export const updateHistoryParams = async (id: string, params = {}) => {
+export const updateTransaction = async (id: string, params = {}) => {
   const tx = getTransaction(id);
-  bridgeApi.saveHistory({ ...tx, ...params });
-};
-
-export const isOutgoingTransaction = (tx: Nullable<BridgeHistory>): boolean => {
-  return tx?.type === Operation.EthBridgeOutgoing;
+  ethBridgeApi.saveHistory({ ...tx, ...params });
 };
 
 export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeApprovedRequest> => {
@@ -56,7 +60,7 @@ export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeA
   let subscription!: Subscription;
 
   await new Promise<void>((resolve, reject) => {
-    subscription = bridgeApi.subscribeOnRequestStatus(tx.hash as string).subscribe((status) => {
+    subscription = ethBridgeApi.subscribeOnRequestStatus(tx.hash as string).subscribe((status) => {
       switch (status) {
         case BridgeTxStatus.Failed:
         case BridgeTxStatus.Frozen:
@@ -71,18 +75,18 @@ export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeA
 
   subscription.unsubscribe();
 
-  return bridgeApi.getApprovedRequest(tx.hash as string);
+  return ethBridgeApi.getApprovedRequest(tx.hash as string);
 };
 
 export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash: string; blockId: string }> => {
-  if (!tx.ethereumHash) throw new Error('[Bridge]: ethereumHash cannot be empty!');
+  if (!tx.externalHash) throw new Error('[Bridge]: externalHash cannot be empty!');
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} received`);
 
   let subscription!: Subscription;
 
   await new Promise<void>((resolve, reject) => {
-    subscription = bridgeApi.subscribeOnRequest(tx.ethereumHash as string).subscribe((request) => {
+    subscription = ethBridgeApi.subscribeOnRequest(tx.externalHash as string).subscribe((request) => {
       if (request) {
         switch (request.status) {
           case BridgeTxStatus.Failed:
@@ -99,8 +103,8 @@ export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash:
 
   subscription.unsubscribe();
 
-  const soraHash = await bridgeApi.getSoraHashByEthereumHash(tx.ethereumHash as string);
-  const soraBlockHash = await bridgeApi.getSoraBlockHashByRequestHash(tx.ethereumHash as string);
+  const soraHash = await ethBridgeApi.getSoraHashByEthereumHash(tx.externalHash as string);
+  const soraBlockHash = await ethBridgeApi.getSoraBlockHashByRequestHash(tx.externalHash as string);
 
   return { hash: soraHash, blockId: soraBlockHash };
 };
@@ -143,81 +147,70 @@ export const waitForSoraTransactionHash = async (id: string): Promise<string> =>
     return hash;
   }
 
-  await delay(SORA_REQUESTS_TIMEOUT);
+  await delay(BLOCK_PRODUCE_TIME);
 
   return await waitForSoraTransactionHash(id);
 };
 
-export const waitForEvmTransactionStatus = async (
-  hash: string,
-  replaceCallback: (hash: string) => any,
-  cancelCallback: (hash: string) => any
-) => {
-  const ethersInstance = await ethersUtil.getEthersInstance();
-  try {
-    // the confirmations value was reduced from 5 to 1
-    // since after the block release, we can be sure that the transaction is completed
-    const confirmations = 1;
-    const timeout = 0;
-    const currentBlock = await ethersInstance.getBlockNumber();
-    const blockOffset = currentBlock - 20;
-    const { data, from, nonce, to, value } = await ethersInstance.getTransaction(hash);
-    await ethersInstance._waitForTransaction(hash, confirmations, timeout, {
-      data,
-      from,
-      nonce,
-      to: to ?? '',
-      value,
-      startBlock: blockOffset,
-    });
-  } catch (error: any) {
-    if (error.code === ethers.errors.TRANSACTION_REPLACED) {
-      if (error.reason === 'repriced' || error.reason === 'replaced') {
-        replaceCallback(error.replacement.hash);
-      } else if (error.reason === 'canceled') {
-        cancelCallback(error.replacement.hash);
-      }
-    }
-  }
-};
-
-export const waitForEvmTransactionMined = async (hash?: string, updatedCallback?: (hash: string) => void) => {
-  if (!hash) throw new Error('[Bridge]: evm hash cannot be empty!');
-
-  await waitForEvmTransactionStatus(
-    hash,
-    async (replaceHash: string) => {
-      updatedCallback?.(replaceHash);
-      await waitForEvmTransactionMined(replaceHash, updatedCallback);
-    },
-    (cancelHash) => {
-      throw new Error(`[Bridge]: The transaction was canceled by the user [${cancelHash}]`);
-    }
-  );
-};
-
 export const waitForEvmTransaction = async (id: string) => {
   const transaction = getTransaction(id);
-  const updatedCallback = (ethereumHash: string) => updateHistoryParams(id, { ethereumHash });
+  const updatedCallback = (externalHash: string) => updateTransaction(id, { externalHash });
 
-  await waitForEvmTransactionMined(transaction.ethereumHash, updatedCallback);
+  await waitForEvmTransactionMined(transaction.externalHash, updatedCallback);
 };
 
-export const getEvmTxRecieptByHash = async (
-  ethereumHash: string
-): Promise<{ ethereumNetworkFee: string; blockHeight: number; from: string } | null> => {
-  try {
-    const {
-      from,
-      effectiveGasPrice,
-      gasUsed,
-      blockNumber: blockHeight,
-    } = await ethersUtil.getEvmTransactionReceipt(ethereumHash);
+/**
+ * Restore ETH bridge account transactions, using Subquery & Etherscan
+ * @param context store context
+ */
+export const updateEthBridgeHistory =
+  (context: ActionContext<any, any>) =>
+  async (clearHistory = false, updateCallback?: VoidFunction): Promise<void> => {
+    try {
+      const { rootState, rootGetters } = rootActionContext(context);
 
-    const ethereumNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
+      const {
+        wallet: {
+          account: { address },
+          settings: {
+            apiKeys: { etherscan: etherscanApiKey },
+            networkFees,
+          },
+        },
+        web3: { ethBridgeEvmNetwork, ethBridgeContractAddress },
+        bridge: { inProgressIds },
+      } = rootState;
 
-    return { ethereumNetworkFee, blockHeight, from };
-  } catch (error) {
-    return null;
-  }
-};
+      const evmNetworkData = rootGetters.web3.availableNetworks[BridgeType.ETH].find(
+        ({ data }) => data.id === ethBridgeEvmNetwork
+      );
+
+      if (!evmNetworkData) {
+        throw new Error(
+          `[HASHI Bridge History]: Network "${ethBridgeEvmNetwork}" is not available in app. Please check app config`
+        );
+      }
+
+      await ethersUtil.switchOrAddChain(evmNetworkData.data);
+
+      if ((await ethersUtil.getEvmNetworkId()) !== ethBridgeEvmNetwork) {
+        throw new Error(
+          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmNetwork}" is connected, "${ethBridgeEvmNetwork}" expected`
+        );
+      }
+
+      const assets = rootGetters.assets.assetsDataTable;
+
+      const ethBridgeHistory = new EthBridgeHistory(etherscanApiKey);
+
+      await ethBridgeHistory.init(ethBridgeContractAddress);
+
+      if (clearHistory) {
+        await ethBridgeHistory.clearHistory(updateCallback);
+      }
+
+      await ethBridgeHistory.updateAccountHistory(address, assets, networkFees, inProgressIds, updateCallback);
+    } catch (error) {
+      console.error(error);
+    }
+  };

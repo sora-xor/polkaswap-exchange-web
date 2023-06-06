@@ -1,5 +1,5 @@
-import { defineGetters } from 'direct-vuex';
 import { FPNumber } from '@sora-substrate/math';
+import { defineGetters } from 'direct-vuex';
 
 import { poolGetterContext } from './index';
 

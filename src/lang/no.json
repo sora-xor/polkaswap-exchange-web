@@ -87,11 +87,12 @@
         "noAccounts": "Det ser ikke ut til å være noen kontoer i {extension} utvidelsen. Legg til en konto, og prøv på nytt.",
         "noAccount": "{extension} kontofeil. Sjekk kontoen din i {extension} utvidelsen",
         "noExtension": "Ingen {extension} -utvidelse ble funnet. Installer den og last inn denne siden på nytt",
-        "noSigner": "Ingen tilgang. Gå til utvidelsesinnstillingene for {extension} og åpne «Administrer nettstedtilgang» for å tillate."
+        "noSigner": "Ingen tilgang. Gå til utvidelsesinnstillingene for {extension} og åpne «Administrer nettstedtilgang» for å tillate.",
+        "connectionError": "Det oppstod en feil under tilkobling av lommeboken. Du kan prøve å koble til lommeboken via {extension} igjen"
     },
     "connection": {
         "title": "{Sora} Nettverkskonto",
-        "text": "Koble til eller opprett din {Sora} Network-konto med {extensions} -utvidelser. Disse utvidelsene lar deg signere transaksjoner og administrere aktiva i {Sora} -nettverket på en sikker måte.",
+        "text": "Utvidelser og Google lagrer {Sora} Network-kontoen din sikkert. De lar deg signere transaksjoner og administrere eiendeler.",
         "noAccounts": "Finner ingen konto i nettleserutvidelsen {extension}. Legg til en konto, og prøv på nytt.",
         "selectAccount": "Velg kontoen du vil arbeide med",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Installere",
             "connected": "Tilkoblet",
             "notConnected": "Ikke tilkoblet"
+        },
+        "internalTitle": "Koble til via {wallet}",
+        "internalText": "Du kan opprette eller koble til en eksisterende konto via {wallet} . Den lagrer kontoer ved hjelp av kryptering.",
+        "list": {
+            "simplest": "Det enkleste alternativet",
+            "extensions": "Utvidelser"
         }
     },
     "wallet": {
         "title": "{Sora} Nettverkskonto",
         "WalletAssets": "Aktiva",
-        "WalletActivity": "Aktivitet",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Aktivitet"
     },
     "walletSend": {
         "title": "Send",
@@ -516,13 +523,9 @@
         "strategicBonusApy": "Strategisk bonus APY"
     },
     "bridge": {
-        "title": "{Hashi} broen",
+        "title": "Bro",
         "info": "Konverter tokens mellom {Sora} og {Ethereum} -nettverkene.",
         "balance": "Balanse",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Neste",
         "connectWallets": "Koble til lommebøker for å se respektive transaksjonshistorikk.",
         "soraNetworkFee": "{Sora} Nettverksgebyr",
@@ -536,8 +539,7 @@
         "networkInfo": "Bridge {Sora} Network med:",
         "copy": "Kopier nettverksadressen",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adresse"
     },
     "selectRegisteredAsset": {
         "title": "Velg token",
@@ -559,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Bekreft transaksjon",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Bekreft transaksjon"
     },
     "bridgeTransaction": {
         "details": "{from} for {to}",
@@ -602,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaksjon pågår...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Opprett ny transaksjon",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText i {Metamask}",
-        "expectedAddress": "Forventet adresse i {Metamask}",
         "title": "Bro Transaksjon",
         "expectedMetaMaskAddress": "Forventet adresse i {Metamask}:",
         "allowToken": "Tillat {AppName} å bruke {tokenSymbol}",
@@ -1031,7 +1025,7 @@
     },
     "receivedText": "Tok imot",
     "browserNotificationDialog": {
-        "title": "Aktiver nettleservarsler",
+        "title": "Angi varsler",
         "info": "Vi sender deg bare relevante oppdateringer om lommeboken din, for eksempel: endringer i aktivabalansen",
         "button": "Aktiver varsler",
         "agree": "Ja jeg forstår",
@@ -1103,10 +1097,16 @@
             "jsonFields": "JSON-filen har ikke obligatoriske felt"
         },
         "assetsAtRiskText": "Eiendeler i fare!",
-        "deleteAccountText": "Kontoen kan ikke gjenopprettes uten en frøfrase, .json-fil eller hvis den er lagret i en filtype. Du vil bli logget ut."
+        "deleteAccountText": "Kontoen kan ikke gjenopprettes uten en frøfrase, .json-fil eller hvis den er lagret i en filtype. Du vil bli logget ut.",
+        "importSteps": {
+            "selectWallet": "Gå til lommeboken du bruker",
+            "selectAccount": "Velg kontoen du vil eksportere",
+            "exportAccount": "Eksporter {JSON} -filen"
+        },
+        "exportTutorialsText": "Eksporter opplæringsprogrammer"
     },
     "hashiBridgeText": "{Hashi} bro",
-    "disclaimerTitle": "Ansvarsfraskrivelse:",
+    "disclaimerTitle": "Ansvarsfraskrivelse",
     "explore": {
         "showOnlyMyPositions": "Vis bare mine posisjoner"
     },
@@ -1174,5 +1174,32 @@
     },
     "locationText": "plassering",
     "acceptText": "Godta og skjul",
-    "newAccountsText": "Nye kontoer"
+    "newAccountsText": "Nye kontoer",
+    "dragAndDropText": "Dra og slipp eller velg {extension} -fil",
+    "copyPhraseText": "Kopier frase",
+    "stepText": "Steg",
+    "alerts": {
+        "drop": "Faller under",
+        "raise": "Hever seg over",
+        "once": "En gang",
+        "always": "Alltid",
+        "edit": "Rediger varsel",
+        "delete": "Slett varsel",
+        "onDropDesc": "{token} synker under {price}",
+        "onRaiseDesc": "{token} hever over {price}",
+        "alertsTitle": "Varsler",
+        "alertsCreateTitle": "Sett opp prisvarsel",
+        "alertsTooltip": "Prisvarsler er varsler du kan stille inn til å motta oppdateringer når prisen på et bestemt token når et bestemt punkt du angir",
+        "createBtn": "Opprett nytt prisvarsel",
+        "enableSwitch": "Aktiver innskuddsvarslinger",
+        "currentPrice": "gjeldende pris",
+        "alertTypeTitle": "Varslingstype",
+        "typeTooltip": "Velg enten \"fall under\" eller \"hever over\" for å spesifisere varselbetingelse for sporing av viktige prisbevegelser. Disse alternativene lar deg motta rettidige varsler når verdien av eiendelen din enten faller under eller stiger over den angitte terskelen",
+        "alertFrequencyTitle": "Varslingsfrekvens",
+        "frequencyTooltip": "Velg mellom \"en gang\" og \"alltid\" for å bestemme hvor ofte du mottar varsler for den valgte varslingstypen. 'Once' vil sende ett enkelt varsel når betingelsen er oppfylt, mens 'alltid' vil fortsette å varsle deg hver gang prisgrensen krysses",
+        "noSupportMsg": "Varsler støttes ikke av nettleseren din",
+        "finishBtn": "Å fullføre"
+    },
+    "accountAddressText": "Kontoadresse",
+    "fiatDisclaimer": "Vær oppmerksom på at fiat-verdiene knyttet til kryptovalutaer på nettsiden vår leveres av eksterne tjenester (Subquery, Subsquid, Ceres API) er omtrentlige. Gitt den iboende kompleksiteten til disse beregningene, kan absolutt presisjon til enhver tid ikke garanteres."
 }

@@ -1,5 +1,5 @@
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { FPNumber } from '@sora-substrate/math';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type {
   DemeterPool,
   DemeterAccountPool,

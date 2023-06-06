@@ -1,5 +1,6 @@
-import { KycStatus, VerificationStatus } from '@/types/card';
 import { defineMutations } from 'direct-vuex';
+
+import { KycStatus, VerificationStatus } from '@/types/card';
 
 import type { SoraCardState } from './types';
 

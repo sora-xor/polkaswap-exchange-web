@@ -16,13 +16,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import { formatAddress } from '@/utils';
 import { getter } from '@/store/decorators';
+import { formatAddress } from '@/utils';
 
 @Component({
   components: {
@@ -57,6 +56,13 @@ $account-control-name-max-width: 200px;
   &:focus {
     [class^='s-icon-'] {
       color: var(--s-color-base-content-secondary);
+    }
+  }
+
+  &.el-button.neumorphic.s-medium {
+    @include tablet(true) {
+      padding-left: 5px;
+      padding-right: 5px;
     }
   }
 

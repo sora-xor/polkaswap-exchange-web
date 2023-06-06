@@ -8,21 +8,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
+import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { getter, state, mutation, action } from '@/store/decorators';
+import { getCssVariableValue } from '@/utils';
+import type { MoonpayTransaction } from '@/utils/moonpay';
+
 import MoonpayBridgeInitMixin from './BridgeInitMixin';
 
-import { getCssVariableValue } from '@/utils';
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
-import { getter, state, mutation, action } from '@/store/decorators';
-import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
-
-import type { MoonpayTransaction } from '@/utils/moonpay';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
   components: {
@@ -147,11 +147,3 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
   }
 }
 </script>
-
-<style lang="scss">
-.dialog-wrapper.moonpay-dialog {
-  .el-dialog .el-dialog__body {
-    padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-big;
-  }
-}
-</style>

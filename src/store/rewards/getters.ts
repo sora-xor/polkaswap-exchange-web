@@ -1,12 +1,13 @@
-import { defineGetters } from 'direct-vuex';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
-import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
+import { defineGetters } from 'direct-vuex';
 
 import { rewardsGetterContext } from '@/store/rewards';
-import { asZeroValue } from '@/utils';
 import { RewardsAmountHeaderItem } from '@/types/rewards';
+import { asZeroValue } from '@/utils';
+
 import type { RewardsState } from './types';
+import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 
 const getters = defineGetters<RewardsState>()({
   claimableRewards(...args): Array<RewardInfo | RewardsInfo> {

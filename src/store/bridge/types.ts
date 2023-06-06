@@ -1,4 +1,4 @@
-import type { BridgeHistory, CodecString } from '@sora-substrate/util';
+import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 export type BridgeState = {
@@ -9,13 +9,15 @@ export type BridgeState = {
   evmNetworkFee: CodecString;
   evmNetworkFeeFetching: boolean;
   evmBlockNumber: number;
-  history: Array<BridgeHistory>;
+  // history sources (unsynced localstorage & network)
+  historyInternal: Record<string, IBridgeTransaction>;
+  historyExternal: Record<string, IBridgeTransaction>;
   historyPage: number;
   historyId: string;
   historyLoading: boolean;
   waitingForApprove: Record<string, boolean>;
   inProgressIds: Record<string, boolean>;
-  notificationData: Nullable<BridgeHistory>;
+  notificationData: Nullable<IBridgeTransaction>;
 };
 
 export type SignTxResult = {

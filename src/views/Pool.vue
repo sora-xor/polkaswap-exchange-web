@@ -95,17 +95,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import PoolApyMixin from '@/components/mixins/PoolApyMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components, PageNames } from '@/consts';
+import router, { lazyComponent } from '@/router';
+import { getter, state } from '@/store/decorators';
+
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import PoolApyMixin from '@/components/mixins/PoolApyMixin';
-
-import router, { lazyComponent } from '@/router';
-import { Components, PageNames } from '@/consts';
-import { getter, state } from '@/store/decorators';
 
 type LiquidityItem = AccountLiquidity & {
   firstAsset?: Nullable<AccountAsset>;

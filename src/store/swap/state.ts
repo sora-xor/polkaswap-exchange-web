@@ -1,4 +1,5 @@
 import { DexId } from '@sora-substrate/util/build/dex/consts';
+
 import type { SwapState } from './types';
 
 export function initialState(): SwapState {
@@ -13,6 +14,8 @@ export function initialState(): SwapState {
     liquidityProviderFee: '',
     isExchangeB: false,
     enabledAssets: {
+      tbc: [],
+      xst: {},
       lockedSources: [],
     },
     rewards: [],

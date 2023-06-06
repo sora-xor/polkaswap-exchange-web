@@ -56,14 +56,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import PoolApyMixin from '@/components/mixins/PoolApyMixin';
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
 import { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+
+import PoolApyMixin from '@/components/mixins/PoolApyMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 
 @Component({
   components: {

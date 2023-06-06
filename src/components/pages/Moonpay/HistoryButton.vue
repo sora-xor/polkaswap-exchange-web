@@ -13,18 +13,16 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import type { BridgeHistory } from '@sora-substrate/util';
 
-import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import { goTo } from '@/router';
 import { PageNames } from '@/consts';
+import { goTo } from '@/router';
 import { state, mutation } from '@/store/decorators';
 
-// TODO: [arch] Is BridgeHistoryMixin used OR not?
+import type { BridgeHistory } from '@sora-substrate/util';
+
 @Component
-export default class MoonpayHistoryButton extends Mixins(BridgeHistoryMixin, TranslationMixin) {
+export default class MoonpayHistoryButton extends Mixins(TranslationMixin) {
   @state.moonpay.bridgeTransactionData private bridgeTransactionData!: Nullable<BridgeHistory>;
   @state.moonpay.startBridgeButtonVisibility private startBridgeButtonVisibility!: boolean;
 

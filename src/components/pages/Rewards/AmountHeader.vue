@@ -15,12 +15,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { FPNumber } from '@sora-substrate/math';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import { RewardsAmountHeaderItem } from '@/types/rewards';
+
+import type { FPNumber } from '@sora-substrate/math';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

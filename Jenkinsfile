@@ -15,7 +15,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     copyFile: 'env.json',
     // ipfsHashNotification: true,
     fleekDefaultSiteName: 'dawn-block-3896',
-    secretScannerExclusion: '.*env.json',
+    secretScannerExclusion: 'Jenkinsfile-UCAN|.*env.json',
     // ipfsHashChatID: '-1001375555544'
 )
 pipeline.runPipeline()

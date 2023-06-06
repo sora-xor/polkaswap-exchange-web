@@ -1,12 +1,12 @@
+import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar';
+import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
+import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Vue from 'vue';
 import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
-import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
-import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar';
 
 import { getter } from '@/store/decorators';
 
-import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
 
 @Component
 export default class ExplorePageMixin extends Mixins(
@@ -26,7 +26,7 @@ export default class ExplorePageMixin extends Mixins(
   }
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
+  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   order = '';
   property = '';

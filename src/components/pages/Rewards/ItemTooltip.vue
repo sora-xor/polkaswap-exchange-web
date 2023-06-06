@@ -16,11 +16,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import { Component, Prop, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

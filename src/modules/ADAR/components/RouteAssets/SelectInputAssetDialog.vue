@@ -22,9 +22,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
+
 import { state } from '@/store/decorators';
 @Component({
   components: {

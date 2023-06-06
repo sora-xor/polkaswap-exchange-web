@@ -138,19 +138,22 @@
 </template>
 
 <script lang="ts">
+import { CodecString, FPNumber, NetworkFeesObject, Operation } from '@sora-substrate/util/build';
+import { XOR, VAL } from '@sora-substrate/util/build/assets/consts';
+import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { groupBy, sumBy } from 'lodash';
 import { Component, Mixins } from 'vue-property-decorator';
+
+import { ZeroStringValue } from '@/consts';
 import { AdarComponents, adarFee, slippageMultiplier } from '@/modules/ADAR/consts';
 import { adarLazyComponent } from '@/modules/ADAR/router';
 import { action, getter, state } from '@/store/decorators';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { groupBy, sumBy } from 'lodash';
 import type { PresetSwapData, Recipient } from '@/store/routeAssets/types';
-import { CodecString, FPNumber, NetworkFeesObject, Operation } from '@sora-substrate/util/build';
-import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import { getAssetBalance } from '@/utils';
+
 import WarningMessage from '../WarningMessage.vue';
-import { XOR, VAL } from '@sora-substrate/util/build/assets/consts';
-import { ZeroStringValue } from '@/consts';
+
 @Component({
   components: {
     TokenLogo: components.TokenLogo,

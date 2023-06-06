@@ -166,7 +166,8 @@ $primary-button-box-shadow: 0px 0px 20px #99910d;
         &:focus,
         &.focusing,
         &.s-pressed {
-          box-shadow: var(--s-shadow-element-pressed);
+          box-shadow: 1px 1px 5px rgba(255, 255, 255, 0.7), -1px -1px 5px #ffffff, 0px 0px 20px rgba(247, 84, 163, 0.5);
+          // box-shadow: var(--s-shadow-element-pressed);
         }
       }
       &,
@@ -860,5 +861,37 @@ $primary-button-box-shadow: 0px 0px 20px #99910d;
 
   &__btn {
     margin-bottom: $basic-spacing;
+  }
+}
+
+@mixin custom-tabs {
+  $tabs-class: '.el-tabs';
+
+  .s-tabs {
+    &#{$tabs-class} {
+      #{$tabs-class}__header {
+        width: 100%;
+      }
+      #{$tabs-class} {
+        &__header {
+          #{$tabs-class}__item {
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+  #{$tabs-class} {
+    &__header {
+      margin-bottom: 0;
+    }
+    &__nav {
+      width: 100%;
+    }
+    &__item {
+      width: 50%;
+      text-align: center;
+      font-size: var(--s-font-size-medium);
+    }
   }
 }

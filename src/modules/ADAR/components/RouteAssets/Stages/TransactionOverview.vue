@@ -165,18 +165,19 @@
 </template>
 
 <script lang="ts">
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
+
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import { AdarComponents } from '@/modules/ADAR/consts';
-import router, { lazyComponent } from '@/router';
 import { adarLazyComponent } from '@/modules/ADAR/router';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import router, { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { RecipientStatus } from '@/store/routeAssets/types';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { copyToClipboard, formatAddress } from '@/utils';
 import validate from '@/store/routeAssets/utils';
+import { copyToClipboard, formatAddress } from '@/utils';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
