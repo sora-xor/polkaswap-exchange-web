@@ -1,15 +1,14 @@
 import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
-import type { Subscription } from 'rxjs';
-
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { BridgeReducer } from '@/utils/bridge/common/classes';
 
 import { delay } from '@/utils';
+import { BridgeReducer } from '@/utils/bridge/common/classes';
+import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { waitForSoraTransactionHash } from '@/utils/bridge/evm/utils';
 
-import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
+import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+import type { Subscription } from 'rxjs';
 
 type EvmBridgeReducerOptions<T extends EvmHistory> = IBridgeReducerOptions<T> & {
   removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;

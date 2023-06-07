@@ -1,12 +1,12 @@
-import { Component, Mixins } from 'vue-property-decorator';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
-import type { IBridgeTransaction } from '@sora-substrate/util';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import { isUnsignedToPart } from '@/utils/bridge/eth/utils';
 import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
+import { isUnsignedToPart } from '@/utils/bridge/eth/utils';
+
+import type { IBridgeTransaction } from '@sora-substrate/util';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 

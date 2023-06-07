@@ -1,21 +1,19 @@
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/math';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
+import type { DemeterAsset, DemeterPoolDerived, DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
 import { state, getter } from '@/store/decorators';
+import { formatDecimalPlaces } from '@/utils';
 
 import AprMixin from './AprMixin';
 
-import { formatDecimalPlaces } from '@/utils';
-
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type {
   DemeterPool,
   DemeterAccountPool,
   DemeterRewardToken,
 } from '@sora-substrate/util/build/demeterFarming/types';
-
-import type { DemeterAsset, DemeterPoolDerived, DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 type Pool = DemeterPool | DemeterAccountPool;
 

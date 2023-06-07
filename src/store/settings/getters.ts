@@ -1,11 +1,12 @@
-import { defineGetters } from 'direct-vuex';
 import { connection } from '@soramitsu/soraneo-wallet-web';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { defineGetters } from 'direct-vuex';
 
-import { settingsGetterContext } from '@/store/settings';
 import { LiquiditySourceForMarketAlgorithm } from '@/consts';
-import type { NodesHashTable, SettingsState } from './types';
+import { settingsGetterContext } from '@/store/settings';
 import type { Node } from '@/types/nodes';
+
+import type { NodesHashTable, SettingsState } from './types';
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 const getters = defineGetters<SettingsState>()({
   defaultNodesHashTable(...args): NodesHashTable {

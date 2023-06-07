@@ -75,18 +75,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+
+import { Components, MAX_ALERTS_NUMBER } from '@/consts';
+import type { EditableAlertObject, NumberedAlert } from '@/consts';
+import { lazyComponent } from '@/router';
+import { getter, mutation, state } from '@/store/decorators';
+import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
+import { formatAddress, getDeltaPercent } from '@/utils';
+
 import type { AccountAsset, Asset, WhitelistIdsBySymbol } from '@sora-substrate/util/build/assets/types';
 import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
-
-import { getter, mutation, state } from '@/store/decorators';
-import { formatAddress, getDeltaPercent } from '@/utils';
-import { lazyComponent } from '@/router';
-import { Components, MAX_ALERTS_NUMBER } from '@/consts';
-import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
-import type { EditableAlertObject, NumberedAlert } from '@/consts';
 
 @Component({
   components: {

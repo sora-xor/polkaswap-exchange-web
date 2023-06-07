@@ -1,5 +1,3 @@
-import type { IBridgeTransaction } from '@sora-substrate/util';
-
 import type {
   SignEvm,
   SignSora,
@@ -18,6 +16,8 @@ import type {
   IBridgeConstructorOptions,
   TransactionHandlerPayload,
 } from '@/utils/bridge/common/types';
+
+import type { IBridgeTransaction } from '@sora-substrate/util';
 
 export class BridgeReducer<Transaction extends IBridgeTransaction> implements IBridgeReducer<Transaction> {
   protected readonly signEvm!: SignEvm;

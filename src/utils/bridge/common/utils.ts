@@ -1,8 +1,9 @@
-import { ethers } from 'ethers';
 import { Operation } from '@sora-substrate/util';
-import type { IBridgeTransaction } from '@sora-substrate/util';
+import { ethers } from 'ethers';
 
 import ethersUtil from '@/utils/ethers-util';
+
+import type { IBridgeTransaction } from '@sora-substrate/util';
 
 export const waitForEvmTransactionStatus = async (
   hash: string,

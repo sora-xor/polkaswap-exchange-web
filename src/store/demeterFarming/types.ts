@@ -1,10 +1,10 @@
-import type { Subscription } from 'rxjs';
 import type { FPNumber } from '@sora-substrate/math';
 import type {
   DemeterPool,
   DemeterAccountPool,
   DemeterRewardToken,
 } from '@sora-substrate/util/build/demeterFarming/types';
+import type { Subscription } from 'rxjs';
 
 export type DemeterLiquidityParams = {
   pool: DemeterPool;

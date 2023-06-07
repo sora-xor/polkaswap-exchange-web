@@ -151,14 +151,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
 import Web3Logo from '@/components/shared/Logo/Web3.vue';
 import { getter } from '@/store/decorators';
+
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 @Component({
   components: {

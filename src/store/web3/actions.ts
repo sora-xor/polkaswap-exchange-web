@@ -1,13 +1,13 @@
-import { ethers } from 'ethers';
-import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineActions } from 'direct-vuex';
+import { ethers } from 'ethers';
 
+import { BridgeType, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
 import ethersUtil from '@/utils/ethers-util';
-import { BridgeType, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
+import type { Provider } from '@/utils/ethers-util';
 
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
-import type { Provider } from '@/utils/ethers-util';
 
 const actions = defineActions({
   async connectExternalAccount(context, provider: Provider): Promise<void> {

@@ -1,15 +1,14 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
-
-import router from '@/router';
-import { getWalletAddress, formatAddress } from '@/utils';
-import { PageNames } from '@/consts';
-import ethersUtil, { Provider } from '@/utils/ethers-util';
-import { action, getter, mutation, state } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
+import { PageNames } from '@/consts';
 import type { EvmNetworkData } from '@/consts/evm';
+import router from '@/router';
+import { action, getter, mutation, state } from '@/store/decorators';
+import { getWalletAddress, formatAddress } from '@/utils';
+import ethersUtil, { Provider } from '@/utils/ethers-util';
+
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 const checkExtensionKey = 'provider.messages.checkExtension';
 const installExtensionKey = 'provider.messages.installExtension';

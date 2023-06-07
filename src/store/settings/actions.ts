@@ -1,14 +1,15 @@
+import { initWallet, waitForCore, connection, api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
-import { initWallet, waitForCore, connection, api } from '@soramitsu/soraneo-wallet-web';
-import type { ActionContext } from 'vuex';
 
-import { settingsActionContext } from '@/store/settings';
 import { Language, WalletPermissions } from '@/consts';
 import { getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
+import { settingsActionContext } from '@/store/settings';
+import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 import { updateDocumentTitle, updateFpNumberLocale } from '@/utils';
 import { AppHandledError } from '@/utils/error';
 import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
-import type { ConnectToNodeOptions, Node } from '@/types/nodes';
+
+import type { ActionContext } from 'vuex';
 
 const NODE_CONNECTION_TIMEOUT = 60_000;
 
@@ -43,6 +44,7 @@ const actions = defineActions({
     const requestedNode = (node || (state.node.address ? state.node : defaultNode)) as Nullable<Node>;
     const walletOptions = {
       permissions: WalletPermissions,
+      appName: WALLET_CONSTS.TranslationConsts.Polkaswap,
     };
 
     try {

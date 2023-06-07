@@ -14,16 +14,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
-import { isXorAccountAsset } from '@/utils';
+import router, { lazyComponent } from '@/router';
 import { action, getter } from '@/store/decorators';
+import { isXorAccountAsset } from '@/utils';
+
+import type { AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

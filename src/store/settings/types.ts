@@ -1,7 +1,7 @@
-import type { Subscription } from 'rxjs';
-
 import type { MarketAlgorithms } from '@/consts';
 import type { Node } from '@/types/nodes';
+
+import type { Subscription } from 'rxjs';
 
 export type FeatureFlags = {
   moonpay?: boolean;

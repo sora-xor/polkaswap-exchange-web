@@ -49,19 +49,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset, AccountBalance } from '@sora-substrate/util/build/assets/types';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import { getMaxValue, hasInsufficientBalance, asZeroValue, getAssetBalance } from '@/utils';
-import router, { lazyComponent } from '@/router';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
+import router, { lazyComponent } from '@/router';
 import { getter, mutation, state } from '@/store/decorators';
+import { getMaxValue, hasInsufficientBalance, asZeroValue, getAssetBalance } from '@/utils';
+
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import type { AccountAsset, AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

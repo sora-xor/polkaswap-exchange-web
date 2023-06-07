@@ -1,15 +1,13 @@
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-
-import { getAssetBalance } from '@/utils';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
-
 import type { DemeterAsset } from '@/modules/demeterFarming/types';
+import { getAssetBalance } from '@/utils';
+
+import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 @Component
 export default class PoolStatusMixin extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {

@@ -7,8 +7,8 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { Component, Prop, Vue } from 'vue-property-decorator';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({
   components: {

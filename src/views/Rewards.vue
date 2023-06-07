@@ -95,26 +95,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { RewardType } from '@sora-substrate/util/build/rewards/consts';
+import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { action, getter, mutation, state } from '@/store/decorators';
+import type { ClaimRewardsParams } from '@/store/rewards/types';
+import type { RewardsAmountHeaderItem, RewardInfoGroup, SelectedRewards } from '@/types/rewards';
+import { hasInsufficientXorForFee } from '@/utils';
+import ethersUtil from '@/utils/ethers-util';
+
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-
-import ethersUtil from '@/utils/ethers-util';
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
-import { hasInsufficientXorForFee } from '@/utils';
-import { action, getter, mutation, state } from '@/store/decorators';
-
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-
-import type { RewardsAmountHeaderItem, RewardInfoGroup, SelectedRewards } from '@/types/rewards';
-import type { ClaimRewardsParams } from '@/store/rewards/types';
 
 @Component({
   components: {

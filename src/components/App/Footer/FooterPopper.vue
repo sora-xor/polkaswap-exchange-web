@@ -36,8 +36,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Ref, Watch } from 'vue-property-decorator';
 import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
+import { Component, Prop, Vue, Ref, Watch } from 'vue-property-decorator';
+
 import { delay } from '@/utils';
 
 const cssPopperClass = 'app-status__tooltip';

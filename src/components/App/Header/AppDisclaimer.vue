@@ -39,9 +39,9 @@
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { delay } from '@/utils';
-import { mutation, state } from '@/store/decorators';
 import { Links } from '@/consts';
+import { mutation, state } from '@/store/decorators';
+import { delay } from '@/utils';
 
 @Component
 export default class AppDisclaimer extends Mixins(TranslationMixin) {

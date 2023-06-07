@@ -1,16 +1,17 @@
 import { Operation, BridgeTxStatus } from '@sora-substrate/util';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { ActionContext } from 'vuex';
-import type { Subscription } from 'rxjs';
-import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
 
+import { BridgeType } from '@/consts/evm';
 import { rootActionContext } from '@/store';
 import { delay } from '@/utils';
-import { BridgeType } from '@/consts/evm';
-import ethersUtil from '@/utils/ethers-util';
+import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
-import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
+import ethersUtil from '@/utils/ethers-util';
+
+import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
+import type { Subscription } from 'rxjs';
+import type { ActionContext } from 'vuex';
 
 const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS; // Block production time
 

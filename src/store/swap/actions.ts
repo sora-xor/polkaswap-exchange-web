@@ -1,13 +1,14 @@
-import { defineActions } from 'direct-vuex';
-import { api } from '@soramitsu/soraneo-wallet-web';
 import { getPathsAndPairLiquiditySources } from '@sora-substrate/liquidity-proxy';
-import type { ActionContext } from 'vuex';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { QuotePayload } from '@sora-substrate/liquidity-proxy/build/types';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
+import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineActions } from 'direct-vuex';
 
 import { swapActionContext } from '@/store/swap';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
+
+import type { QuotePayload } from '@sora-substrate/liquidity-proxy/build/types';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { ActionContext } from 'vuex';
 
 enum Direction {
   From = 'from',

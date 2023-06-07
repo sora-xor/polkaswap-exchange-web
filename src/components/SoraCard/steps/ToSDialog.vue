@@ -17,14 +17,14 @@
 </template>
 
 <script lang="ts">
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { countryCodeEmoji } from 'country-code-emoji';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state } from '@/store/decorators';
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { state } from '@/store/decorators';
 
 @Component({
   components: {

@@ -36,14 +36,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
+
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

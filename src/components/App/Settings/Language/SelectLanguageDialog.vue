@@ -25,13 +25,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
-
-import { Language, Languages } from '@/consts';
-import { state, action, mutation } from '@/store/decorators';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Language, Languages } from '@/consts';
+import { state, action, mutation } from '@/store/decorators';
 
 @Component({
   components: {

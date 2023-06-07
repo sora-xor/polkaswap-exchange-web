@@ -1,7 +1,9 @@
 import { vuex } from '@soramitsu/soraneo-wallet-web';
 
 import store from '@/store';
+
 import { Modules } from './consts';
+
 import type { StateDecorators, GettersDecorators, CommitDecorators, DispatchDecorators } from './types';
 
 const { VuexOperation, createDecoratorsObject, attachDecorator } = vuex;

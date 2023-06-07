@@ -78,19 +78,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Mixins, ModelSync } from 'vue-property-decorator';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { RewardInfo, RewardTypedEvent } from '@sora-substrate/util/build/rewards/types';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Prop, Mixins, ModelSync } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import type { RewardInfoGroup, RewardsAmountHeaderItem } from '@/types/rewards';
+import { asZeroValue } from '@/utils';
 
 import RewardsItemTooltip from './ItemTooltip.vue';
 
-import { asZeroValue } from '@/utils';
-
-import type { RewardInfoGroup, RewardsAmountHeaderItem } from '@/types/rewards';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { RewardInfo, RewardTypedEvent } from '@sora-substrate/util/build/rewards/types';
 
 interface RewardsAmountTableItem {
   type?: RewardTypedEvent;

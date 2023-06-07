@@ -1,13 +1,12 @@
-import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import { action } from '@/store/decorators';
+import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 import BasePageMixin from './BasePageMixin';
 
 import type { DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
-
-import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component
 export default class PageMixin extends Mixins(BasePageMixin, mixins.TransactionMixin) {

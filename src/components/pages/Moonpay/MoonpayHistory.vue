@@ -70,23 +70,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import MoonpayBridgeInitMixin from '../../../components/pages/Moonpay/BridgeInitMixin';
+import MoonpayLogo from '../../../components/shared/Logo/Moonpay.vue';
+import X1exLogo from '../../../components/shared/Logo/X1ex.vue';
+import { Components } from '../../../consts';
+import { lazyComponent } from '../../../router';
+import { action, getter, state } from '../../../store/decorators';
+import { getCssVariableValue, toQueryString } from '../../../utils';
+import ethersUtil from '../../../utils/ethers-util';
+import { MoonpayTransactionStatus } from '../../../utils/moonpay';
+
+import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '../../../utils/moonpay';
 import type { BridgeHistory } from '@sora-substrate/util';
-
-import MoonpayBridgeInitMixin from '@/components/pages/Moonpay/BridgeInitMixin';
-import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
-import X1exLogo from '@/components/shared/Logo/X1ex.vue';
-
-import ethersUtil from '@/utils/ethers-util';
-import { getCssVariableValue, toQueryString } from '@/utils';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-import { MoonpayTransactionStatus } from '@/utils/moonpay';
-import { action, getter, state } from '@/store/decorators';
-
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '@/utils/moonpay';
 
 const HistoryView = 'history';
 const DetailsView = 'details';

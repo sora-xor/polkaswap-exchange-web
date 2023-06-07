@@ -60,9 +60,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import BellIcon from '@/assets/img/browser-notification/bell.svg?inline';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
