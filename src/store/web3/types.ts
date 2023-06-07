@@ -18,6 +18,7 @@ export type EthBridgeSettings = {
 export type Web3State = {
   evmAddress: string;
   subAddress: string;
+  soraAddress: string;
 
   evmBalance: CodecString;
 

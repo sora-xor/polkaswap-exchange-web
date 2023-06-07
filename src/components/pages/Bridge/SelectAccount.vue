@@ -19,7 +19,7 @@
         {{ t('saveText') }}
       </s-button>
 
-      <connection-items v-loading="loading" :size="accountList.length" :visible="4">
+      <connection-items v-loading="loading" :size="accountList.length" :visible="3">
         <wallet-account
           v-button
           v-for="{ account, isConnected } in accountList"
