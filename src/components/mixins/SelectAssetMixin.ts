@@ -20,21 +20,6 @@ export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearch
     this.clearAndFocusSearch();
   }
 
-  query = '';
-
-  get searchQuery(): string {
-    return this.query.trim().toLowerCase();
-  }
-
-  public handleClearSearch(): void {
-    this.query = '';
-  }
-
-  public clearAndFocusSearch(): void {
-    this.handleClearSearch();
-    this.focusSearchInput();
-  }
-
   public sortByBalance(external = false) {
     const isEmpty = (a): boolean => (external ? !+a.externalBalance : isNil(a.balance) || !+a.balance.transferable);
 
