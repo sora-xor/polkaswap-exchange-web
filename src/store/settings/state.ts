@@ -27,6 +27,7 @@ function initialState(): SettingsState {
     nodeConnectionAllowance: true,
     chainGenesisHash: '',
     faucetUrl: '',
+    payOptionsVisibility: false,
     selectNodeDialogVisibility: false,
     selectLanguageDialogVisibility: false,
     disclaimerVisibility: false,

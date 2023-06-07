@@ -5,6 +5,7 @@ import type { Node } from '@/types/nodes';
 
 export type FeatureFlags = {
   moonpay?: boolean;
+  x1ex?: boolean;
   charts?: boolean;
   soraCard?: boolean;
 };
@@ -25,6 +26,7 @@ export type SettingsState = {
   nodeConnectionAllowance: boolean;
   chainGenesisHash: string;
   faucetUrl: string;
+  payOptionsVisibility: boolean;
   selectNodeDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
   disclaimerVisibility: boolean;

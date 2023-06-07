@@ -40,6 +40,14 @@ const getters = defineGetters<SettingsState>()({
     const { state, getters } = settingsGetterContext(args);
     return !!getters.moonpayApiKey && !!state.featureFlags.moonpay;
   },
+  x1ApiKey(...args): string {
+    const { rootState } = settingsGetterContext(args);
+    return rootState.wallet.settings.apiKeys.x1ex;
+  },
+  x1Enabled(...args): boolean {
+    const { state, getters } = settingsGetterContext(args);
+    return !!getters.x1ApiKey && !!state.featureFlags.x1ex;
+  },
   chartsFlagEnabled(...args): boolean {
     const { state } = settingsGetterContext(args);
     return !!state.featureFlags.charts;

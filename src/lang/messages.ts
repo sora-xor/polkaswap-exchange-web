@@ -6,7 +6,7 @@ import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 import { DemeterPageNames } from '../modules/demeterFarming/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
-import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
+import { AlertFrequencyTabs, AlertTypeTabs, FiatOptionTabs } from '@/types/tabs';
 
 export default {
   // Wallet project keys
@@ -115,6 +115,10 @@ export default {
     frequencyTooltip:
       "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed.",
     noSupportMsg: "Notifications aren't supported by your browser",
+  },
+  fiatPayment: {
+    [FiatOptionTabs.moonpay]: 'MoonPay',
+    [FiatOptionTabs.x1ex]: 'x1ex',
   },
   headerMenu: {
     showBalances: 'Show Balances',

@@ -1201,5 +1201,9 @@
         "finishBtn": "Finish alert setup"
     },
     "accountAddressText": "Account address",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API)  are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed."
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API)  are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatPayment": {
+      "MoonpayHistory": "MoonPay",
+      "X1History": "x1ex"
+    }
 }

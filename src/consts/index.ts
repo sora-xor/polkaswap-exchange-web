@@ -128,7 +128,8 @@ export enum PageNames {
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
-  MoonpayHistory = 'MoonpayHistory',
+  FiatDepositOptions = 'FiatDepositOptions',
+  FiatTxHistory = 'FiatTxHistory',
   StakingContainer = 'StakingContainer',
   // just for router name & different titles
   ExploreContainer = 'Explore/Container',
@@ -169,7 +170,6 @@ export enum Components {
   Email = 'SoraCard/steps/Email',
   KycView = 'SoraCard/steps/KycView',
   // Paywings
-
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
   // Add Liquidity Page
   AddLiquidityConfirm = 'pages/AddLiquidity/Confirm',
@@ -186,9 +186,10 @@ export enum Components {
   Moonpay = 'pages/Moonpay/Moonpay',
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
-  MoonpayHistoryButton = 'pages/Moonpay/HistoryButton',
+  MoonpayHistory = 'pages/Moonpay/MoonpayHistory',
   // X1 Page
   X1Dialog = 'pages/X1/X1Dialog',
+  X1History = 'pages/X1/X1History',
   // Swap Page
   SwapConfirm = 'pages/Swap/Confirm',
   SwapChart = 'pages/Swap/Chart',
@@ -224,6 +225,7 @@ export enum Components {
   // Shared Dialogs
   ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
   NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',
+  PaymentErrorDialog = 'shared/Dialog/PaymentError',
   // Shared Asset selection
   SelectAssetList = 'shared/SelectAsset/List',
   SelectToken = 'shared/SelectAsset/SelectToken',
