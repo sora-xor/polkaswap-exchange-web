@@ -3,7 +3,6 @@ import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts'
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import { ZeroStringValue } from '@/consts';
-import { getWalletAddress } from '@/utils';
 
 import type { Web3State } from './types';
 
@@ -11,7 +10,6 @@ export function initialState(): Web3State {
   return {
     evmAddress: '', // external evm address
     subAddress: '', // external sub address
-    soraAddress: getWalletAddress(), // internal sora address
 
     evmBalance: ZeroStringValue,
 

@@ -520,8 +520,8 @@ const actions = defineActions({
     if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
 
     const evmAccount = rootState.web3.evmAddress;
-    const isExternalAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
-    if (!isExternalAccountConnected) throw new Error('Connect account in Metamask');
+    const isEvmAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
+    if (!isEvmAccountConnected) throw new Error('Connect account in Metamask');
     const ethersInstance = await ethersUtil.getEthersInstance();
     const contractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other) as string;
     const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);

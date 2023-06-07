@@ -47,7 +47,7 @@
               >
                 <div class="rewards-footer">
                   <s-divider />
-                  <div v-if="isExternalAccountConnected" class="rewards-account">
+                  <div v-if="evmAddress" class="rewards-account">
                     <span>{{ formatAddress(evmAddress, 8) }}</span>
                     <span>{{ t('rewards.connected') }}</span>
                   </div>
@@ -367,7 +367,7 @@ export default class Rewards extends Mixins(
   }
 
   get externalRewardsHintText(): string {
-    if (!this.isExternalAccountConnected) return this.t('rewards.hint.connectExternalAccount');
+    if (!this.evmAddress) return this.t('rewards.hint.connectExternalAccount');
     if (!this.externalRewardsAvailable) return this.t('rewards.hint.connectAnotherAccount');
     return '';
   }
@@ -396,7 +396,7 @@ export default class Rewards extends Mixins(
 
   async handleAction(): Promise<void> {
     if (!this.isSoraAccountConnected) {
-      return this.connectInternalWallet();
+      return this.connectSoraWallet();
     }
     if (this.rewardsAvailable) {
       return await this.claimRewardsProcess();
@@ -418,7 +418,7 @@ export default class Rewards extends Mixins(
   }
 
   async connectExternalAccountProcess(): Promise<void> {
-    await this.connectExternalWallet();
+    await this.connectEvmWallet();
     await this.checkExternalRewards();
   }
 

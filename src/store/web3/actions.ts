@@ -8,6 +8,7 @@ import type { ActionContext } from 'vuex';
 
 import { web3ActionContext } from '@/store/web3';
 import ethersUtil from '@/utils/ethers-util';
+import { getWalletAddress } from '@/utils';
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 
 import type { Provider } from '@/utils/ethers-util';
@@ -21,7 +22,7 @@ async function connectEvmNetwork(context: ActionContext<any, any>, networkHex?: 
 async function connectSubNetwork(context: ActionContext<any, any>, network?: SubNetwork): Promise<void> {
   // [TODO] connect to substrate network
   // this code just takes network from storage
-  const { commit, rootCommit } = web3ActionContext(context);
+  const { commit } = web3ActionContext(context);
   const provided = network || ethersUtil.getSelectedNetwork();
 
   if (provided) {

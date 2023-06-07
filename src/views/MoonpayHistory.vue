@@ -240,7 +240,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   }
 
   get actionButtonText(): string {
-    if (!this.isExternalAccountConnected) return this.t('connectWalletText');
+    if (!this.evmAddress) return this.t('connectWalletText');
 
     if (this.bridgeTxToSora) return this.t('moonpay.buttons.view');
     if (!this.externalAccountIsMoonpayRecipient) return this.t('bridgeTransaction.changeAccount');
@@ -288,10 +288,8 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
 
   async navigateToDetails(item): Promise<void> {
     try {
-      await this.checkConnectionToExternalAccount(async () => {
-        this.selectedItem = item;
-        this.changeView(DetailsView);
-      });
+      this.selectedItem = item;
+      this.changeView(DetailsView);
     } catch (error) {
       console.error(error);
     }

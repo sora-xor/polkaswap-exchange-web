@@ -24,11 +24,7 @@ const getters = defineGetters<Web3State>()({
       return state.evmAddress;
     }
   },
-  isExternalAccountConnected(...args): boolean {
-    const { getters } = web3GetterContext(args);
 
-    return !!getters.externalAccount && getters.externalAccount !== 'undefined';
-  },
   availableNetworks(...args): Record<BridgeNetworkType, AvailableNetwork[]> {
     const { state } = web3GetterContext(args);
 

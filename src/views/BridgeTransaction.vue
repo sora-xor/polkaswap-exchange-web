@@ -174,7 +174,7 @@
           t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
         }}</template>
         <template v-else-if="isTxPending">{{ t('bridgeTransaction.pending') }}</template>
-        <template v-else-if="!(isSoraToEvm || isExternalAccountConnected)">{{ t('connectWalletText') }}</template>
+        <template v-else-if="isAnotherEvmAddress">{{ t('changeAccountText') }}</template>
         <template v-else-if="!(isSoraToEvm || isValidNetwork)">{{ t('changeNetworkText') }}</template>
         <template v-else-if="isInsufficientBalance">{{
           t('insufficientBalanceText', { tokenSymbol: assetSymbol })
@@ -249,6 +249,7 @@ export default class BridgeTransaction extends Mixins(
 
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
   @getter.bridge.historyItem private historyItem!: Nullable<IBridgeTransaction>;
+  @getter.web3.externalAccount private externalAccount!: string;
 
   @action.bridge.removeHistory private removeHistory!: ({ tx, force }: { tx: any; force?: boolean }) => Promise<void>;
   @action.bridge.handleBridgeTransaction private handleBridgeTransaction!: (id: string) => Promise<void>;
@@ -448,9 +449,14 @@ export default class BridgeTransaction extends Mixins(
     return hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.txEvmNetworkFee);
   }
 
+  get isAnotherEvmAddress(): boolean {
+    return this.isSoraToEvm && this.txExternalAccount !== this.externalAccount;
+  }
+
   get confirmationButtonDisabled(): boolean {
     return (
       !(this.isSoraToEvm || this.isValidNetwork) ||
+      this.isAnotherEvmAddress ||
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
@@ -563,11 +569,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   async handleTransaction(withAutoStart = true): Promise<void> {
-    await this.checkConnectionToExternalAccount(async () => {
-      if (withAutoStart && this.historyItem?.id) {
-        await this.handleBridgeTransaction(this.historyItem.id);
-      }
-    });
+    if (withAutoStart && this.historyItem?.id) {
+      await this.handleBridgeTransaction(this.historyItem.id);
+    }
   }
 
   handleBack(): void {

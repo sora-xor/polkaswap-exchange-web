@@ -16,7 +16,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import ethersUtil from '@/utils/ethers-util';
-import { action } from '@/store/decorators';
+import { action, getter } from '@/store/decorators';
 
 @Component
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
@@ -25,6 +25,8 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @action.assets.updateRegisteredAssets private updateRegisteredAssets!: AsyncFnWithoutArgs;
   @action.assets.updateExternalBalances private updateExternalBalances!: AsyncFnWithoutArgs;
   @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
+
+  @getter.web3.externalAccount private externalAccount!: string;
 
   @Watch('externalAccount')
   private updateAccountExternalBalances(): void {

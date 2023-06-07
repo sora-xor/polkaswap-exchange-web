@@ -37,6 +37,23 @@ const getters = defineGetters<BridgeState>()({
 
     return !!asset?.externalAddress;
   },
+
+  sender(...args): string {
+    const { state, rootState, getters } = bridgeGetterContext(args);
+
+    if (getters.isSubBridge) return rootState.wallet.account.address;
+
+    return state.isSoraToEvm ? rootState.wallet.account.address : rootState.web3.evmAddress;
+  },
+
+  recepient(...args): string {
+    const { state, rootState, getters } = bridgeGetterContext(args);
+
+    if (getters.isSubBridge) return rootState.web3.subAddress;
+
+    return state.isSoraToEvm ? rootState.web3.evmAddress : rootState.wallet.account.address;
+  },
+
   isEthBridge(...args): boolean {
     const { rootState } = bridgeGetterContext(args);
 

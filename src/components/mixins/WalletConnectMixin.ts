@@ -4,7 +4,7 @@ import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/typ
 import router from '@/router';
 import { getWalletAddress, formatAddress } from '@/utils';
 import { PageNames } from '@/consts';
-import ethersUtil, { Provider } from '@/utils/ethers-util';
+import { Provider } from '@/utils/ethers-util';
 import { action, getter, mutation, state } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -52,8 +52,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @state.web3.networkProvided networkProvided!: BridgeNetworkId;
 
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
-  @getter.web3.externalAccount externalAccount!: string;
-  @getter.web3.isExternalAccountConnected isExternalAccountConnected!: boolean;
   @getter.web3.selectedNetwork selectedNetwork!: Nullable<NetworkData>;
 
   @getter.bridge.isSubBridge isSubBridge!: boolean;
@@ -78,23 +76,15 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
 
   isExternalWalletConnecting = false;
 
-  get areNetworksConnected(): boolean {
-    return this.isSoraAccountConnected && this.isExternalAccountConnected;
-  }
-
-  connectInternalWallet(): void {
+  connectSoraWallet(): void {
     router.push({ name: PageNames.Wallet });
   }
 
-  async connectExternalWallet(): Promise<void> {
-    if (this.isSubBridge) {
-      this.setSelectAccountDialogVisibility(true);
-    } else {
-      await this.connectEvmWallet();
-    }
+  connectSubWallet(): void {
+    this.setSelectAccountDialogVisibility(true);
   }
 
-  private async connectEvmWallet(): Promise<void> {
+  async connectEvmWallet(): Promise<void> {
     this.isExternalWalletConnecting = true;
     // For now it's only Metamask
     const provider = Provider.Metamask;
@@ -118,16 +108,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
       });
     } finally {
       this.isExternalWalletConnecting = false;
-    }
-  }
-
-  async checkConnectionToExternalAccount(func: FnWithoutArgs | AsyncFnWithoutArgs): Promise<void> {
-    const connected = this.isSubBridge ? !!this.subAddress : await ethersUtil.checkAccountIsConnected(this.evmAddress);
-
-    if (!connected) {
-      await this.connectExternalWallet();
-    } else {
-      await func();
     }
   }
 

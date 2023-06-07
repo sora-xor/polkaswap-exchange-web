@@ -44,7 +44,7 @@ import { api, mixins, components, WALLET_TYPES, WALLET_CONSTS, getWalletAccounts
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SearchInputMixin from '@/components/mixins/SearchInputMixin';
 
-import { state, mutation } from '@/store/decorators';
+import { state, mutation, getter } from '@/store/decorators';
 
 @Component({
   components: {
@@ -57,11 +57,12 @@ import { state, mutation } from '@/store/decorators';
 export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, TranslationMixin, SearchInputMixin) {
   @state.web3.selectAccountDialogVisibility private selectAccountDialogVisibility!: boolean;
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
-
-  @state.web3.subAddress private subAddress!: string;
   @mutation.web3.setSubAddress private setSubAddress!: (address: string) => void;
 
   @state.wallet.account.source private source!: Nullable<WALLET_CONSTS.AppWallet>;
+  @getter.wallet.account.isConnectedAccount private isConnectedAccount!: (
+    account: WALLET_TYPES.PolkadotJsAccount
+  ) => boolean;
 
   private accounts: Array<WALLET_TYPES.PolkadotJsAccount> = [];
 
@@ -92,10 +93,6 @@ export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, Tra
 
   get validAddress(): boolean {
     return !!this.query && api.validateAddress(this.query);
-  }
-
-  private isConnectedAccount(account: WALLET_TYPES.PolkadotJsAccount): boolean {
-    return api.formatAddress(account.address) === this.subAddress;
   }
 
   private async getAccounts(): Promise<void> {
