@@ -7,13 +7,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import Swap from '@/views/Swap.vue';
-import type { PresetSwapData } from '@/store/routeAssets/types';
 import { FPNumber, NetworkFeesObject, Operation } from '@sora-substrate/util/build';
-import { state } from '@/store/decorators';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+
+import { state } from '@/store/decorators';
+import type { PresetSwapData } from '@/store/routeAssets/types';
+import Swap from '@/views/Swap.vue';
+
 @Component({
   components: {
     DialogBase: components.DialogBase,

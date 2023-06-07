@@ -1,4 +1,5 @@
 import { ZeroStringValue } from '@/consts';
+
 import type { BridgeState } from './types';
 
 function initialState(): BridgeState {
@@ -10,7 +11,9 @@ function initialState(): BridgeState {
     evmNetworkFee: ZeroStringValue,
     evmNetworkFeeFetching: false,
     evmBlockNumber: 0,
-    history: [],
+    // history sources
+    historyInternal: {}, // localstorage history
+    historyExternal: {}, // network history
     historyPage: 1,
     historyId: '',
     historyLoading: false,

@@ -1,8 +1,10 @@
-import { KycStatus, VerificationStatus } from '@/types/card';
 import { defineGetters } from 'direct-vuex';
-import { soraCardGetterContext } from '.';
+
+import { KycStatus, VerificationStatus } from '@/types/card';
 
 import { SoraCardState } from './types';
+
+import { soraCardGetterContext } from '.';
 
 const getters = defineGetters<SoraCardState>()({
   accountAddress(...args): string {

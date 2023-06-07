@@ -44,6 +44,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action } from '@/store/decorators';
 @Component({

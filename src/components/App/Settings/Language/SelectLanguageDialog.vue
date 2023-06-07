@@ -25,13 +25,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
-
-import { Language, Languages } from '@/consts';
-import { state, action, mutation } from '@/store/decorators';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Language, Languages } from '@/consts';
+import { state, action, mutation } from '@/store/decorators';
 
 @Component({
   components: {
@@ -66,9 +65,6 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .dialog-wrapper.select-language-dialog {
-  .el-dialog .el-dialog__body {
-    padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-mini * 4;
-  }
   .el-radio {
     margin-right: 0;
   }

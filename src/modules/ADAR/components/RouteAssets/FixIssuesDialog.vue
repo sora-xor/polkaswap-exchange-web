@@ -74,13 +74,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
-import { mixins, components, api, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { Recipient } from '@/store/routeAssets/types';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { action, mutation, state } from '@/store/decorators';
 import { FPNumber } from '@sora-substrate/util/build';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { mixins, components, api, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+
+import { action, mutation, state } from '@/store/decorators';
+import { Recipient } from '@/store/routeAssets/types';
 import validate from '@/store/routeAssets/utils';
+
 import WarningMessage from './WarningMessage.vue';
 
 const initModel: any = {

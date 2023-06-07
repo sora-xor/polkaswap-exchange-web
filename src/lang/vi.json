@@ -87,11 +87,12 @@
         "noAccounts": "Dường như không có tài khoản nào trong tiện ích (extension) {extension}. Vui lòng thêm tài khoản và thử lại.",
         "noAccount": "Tài khoản {extension} gặp lỗi. Vui lòng kiểm tra tài khoản của bạn trong tiện ích (extension) {extension}.",
         "noExtension": "Không tìm thấy {extension} . Vui lòng cài đặt nó và tải lại trang này",
-        "noSigner": "Quyền truy cập bị từ chối. Đi tới cài đặt tiện ích {extension} và mở \"Quản lý quyền truy cập trang web\" để cho phép."
+        "noSigner": "Quyền truy cập bị từ chối. Đi tới cài đặt tiện ích {extension} và mở \"Quản lý quyền truy cập trang web\" để cho phép.",
+        "connectionError": "Đã xảy ra lỗi khi kết nối ví. Bạn có thể thử kết nối lại ví qua {extension}"
     },
     "connection": {
         "title": "Tài khoản Mạng {Sora}",
-        "text": "Kết nối hoặc tạo tài khoản Mạng {Sora} của bạn với các {extensions}. Các tiện ích mở rộng này cho phép bạn ký các giao dịch và quản lý tài sản trong Mạng {Sora} một cách an toàn.",
+        "text": "Tiện ích mở rộng & Google lưu trữ an toàn tài khoản Mạng {Sora} của bạn. Chúng cho phép bạn ký giao dịch và quản lý tài sản.",
         "noAccounts": "Không có tài khoản nào trong tiện ích (extension) {extension} của bạn. Vui lòng thêm tài khoản và thử lại.",
         "selectAccount": "Chọn tài khoản để dùng",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Cài đặt",
             "connected": "kết nối",
             "notConnected": "Không kết nối"
+        },
+        "internalTitle": "Kết nối qua {wallet}",
+        "internalText": "Bạn có thể tạo hoặc liên kết tài khoản hiện có qua {wallet} . Nó lưu trữ tài khoản sử dụng mã hóa.",
+        "list": {
+            "simplest": "tùy chọn đơn giản nhất",
+            "extensions": "tiện ích mở rộng"
         }
     },
     "wallet": {
         "title": "Tài khoản Mạng {Sora}",
         "WalletAssets": "Tài sản",
-        "WalletActivity": "Hoạt động",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Hoạt động"
     },
     "walletSend": {
         "title": "Gửi",
@@ -516,13 +523,9 @@
         "strategicBonusApy": "Tiền thưởng chiến lược APY"
     },
     "bridge": {
-        "title": "Cầu nối {Hashi}",
+        "title": "Cầu nối",
         "info": "Chuyển token giữa mạng {Sora} và {Ethereum}.",
         "balance": "Số dư",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Kế tiếp",
         "connectWallets": "Kết nối ví để xem lịch sử giao dịch tương ứng.",
         "soraNetworkFee": "Phí mạng {Sora}",
@@ -536,8 +539,7 @@
         "networkInfo": "Cầu nối Mạng {Sora} với:",
         "copy": "Sao chép địa chỉ mạng",
         "soraAddress": "địa chỉ {Sora}",
-        "ethereumAddress": "địa chỉ {Ethereum}",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "địa chỉ {Ethereum}"
     },
     "selectRegisteredAsset": {
         "title": "Chọn token",
@@ -559,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Xác nhận giao dịch",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Xác nhận giao dịch"
     },
     "bridgeTransaction": {
         "details": "{from} tới {to}",
@@ -602,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} giao dịch đang chờ xử lý...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Tạo giao dịch mới",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText trong {Metamask}",
-        "expectedAddress": "Địa chỉ dự kiến trên {Metamask}",
         "title": "Giao dịch cầu nối",
         "expectedMetaMaskAddress": "Địa chỉ dự kiến trên {Metamask}:",
         "allowToken": "Cho phép {AppName} được dùng {tokenSymbol} của bạn",
@@ -1031,7 +1025,7 @@
     },
     "receivedText": "Nhận được",
     "browserNotificationDialog": {
-        "title": "Bật thông báo trình duyệt",
+        "title": "Đặt thông báo",
         "info": "Chúng tôi sẽ chỉ gửi cho bạn các cập nhật có liên quan về ví của bạn, ví dụ: thay đổi số dư tài sản",
         "button": "Bật thông báo",
         "agree": "Vâng, tôi hiểu",
@@ -1103,10 +1097,16 @@
             "jsonFields": "Tệp JSON không có các trường bắt buộc"
         },
         "assetsAtRiskText": "Tài sản có nguy cơ!",
-        "deleteAccountText": "Không thể khôi phục tài khoản nếu không có cụm từ gốc, tệp .json hoặc nếu tài khoản được lưu trữ trong một số tiện ích mở rộng. Bạn sẽ được đăng xuất."
+        "deleteAccountText": "Không thể khôi phục tài khoản nếu không có cụm từ gốc, tệp .json hoặc nếu tài khoản được lưu trữ trong một số tiện ích mở rộng. Bạn sẽ được đăng xuất.",
+        "importSteps": {
+            "selectWallet": "Chuyển đến ví bạn sử dụng",
+            "selectAccount": "Chọn tài khoản bạn muốn xuất",
+            "exportAccount": "Xuất tệp {JSON}"
+        },
+        "exportTutorialsText": "Xuất hướng dẫn"
     },
     "hashiBridgeText": "Cầu {Hashi}",
-    "disclaimerTitle": "Disclaimer:",
+    "disclaimerTitle": "Disclaimer",
     "explore": {
         "showOnlyMyPositions": "Chỉ hiển thị vị trí của tôi"
     },
@@ -1174,5 +1174,32 @@
     },
     "locationText": "Vị trí",
     "acceptText": "Chấp nhận & Ẩn",
-    "newAccountsText": "tài khoản mới"
+    "newAccountsText": "tài khoản mới",
+    "dragAndDropText": "Kéo và thả hoặc chọn tệp {extension}",
+    "copyPhraseText": "Sao chép cụm từ",
+    "stepText": "Bước chân",
+    "alerts": {
+        "drop": "Giọt bên dưới",
+        "raise": "Tăng lên trên",
+        "once": "Một lần",
+        "always": "Luôn luôn",
+        "edit": "Chỉnh sửa cảnh báo",
+        "delete": "Xóa cảnh báo",
+        "onDropDesc": "{token} giảm xuống dưới {price}",
+        "onRaiseDesc": "{token} tăng trên {price}",
+        "alertsTitle": "cảnh báo",
+        "alertsCreateTitle": "Thiết lập cảnh báo giá",
+        "alertsTooltip": "Thông báo về giá là thông báo mà bạn có thể đặt để nhận thông tin cập nhật khi giá của một mã thông báo cụ thể đạt đến điểm nhất định mà bạn đã đặt",
+        "createBtn": "Tạo thông báo giá mới",
+        "enableSwitch": "Bật thông báo gửi tài sản",
+        "currentPrice": "giá hiện tại",
+        "alertTypeTitle": "Loại cảnh báo",
+        "typeTooltip": "Chọn tùy chọn 'giảm xuống bên dưới' hoặc 'tăng lên trên' để chỉ định điều kiện cảnh báo để theo dõi các biến động giá quan trọng. Các tùy chọn này cho phép bạn nhận được thông báo kịp thời khi giá trị tài sản của bạn giảm xuống dưới hoặc tăng lên trên ngưỡng được chỉ định của bạn",
+        "alertFrequencyTitle": "Tần suất cảnh báo",
+        "frequencyTooltip": "Chọn giữa 'một lần' và 'luôn luôn' để xác định tần suất bạn nhận được thông báo cho loại cảnh báo đã chọn. 'Một lần' sẽ gửi một thông báo khi điều kiện được đáp ứng, trong khi 'luôn luôn' sẽ tiếp tục thông báo cho bạn mỗi khi vượt qua ngưỡng giá",
+        "noSupportMsg": "Thông báo không được trình duyệt của bạn hỗ trợ",
+        "finishBtn": "Hoàn thành"
+    },
+    "accountAddressText": "Địa chỉ tài khoản",
+    "fiatDisclaimer": "Xin lưu ý rằng các giá trị fiat được liên kết với tiền điện tử trên trang web của chúng tôi được cung cấp bởi các dịch vụ bên ngoài (Subquery, Subsquid, Ceres API) là gần đúng. Do sự phức tạp vốn có của các tính toán này, không thể đảm bảo độ chính xác tuyệt đối mọi lúc."
 }

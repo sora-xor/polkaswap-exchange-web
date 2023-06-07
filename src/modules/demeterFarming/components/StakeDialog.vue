@@ -112,22 +112,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
-import PoolCardMixin from '../mixins/PoolCardMixin';
-
-import { demeterLazyComponent } from '../router';
-import { DemeterComponents } from '../consts';
-
-import { lazyComponent } from '@/router';
 import { Components, ZeroStringValue } from '@/consts';
+import { lazyComponent } from '@/router';
+import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 import { getMaxValue, isXorAccountAsset } from '@/utils';
+
+import { DemeterComponents } from '../consts';
+import PoolCardMixin from '../mixins/PoolCardMixin';
+import { demeterLazyComponent } from '../router';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 
 @Component({
   components: {

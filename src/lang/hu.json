@@ -87,11 +87,12 @@
         "noAccounts": "Úgy tűnik, hogy a {extension} bővítményben nincsenek fiókok. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "noAccount": "{extension} fiókhiba. Kérjük, ellenőrizd fiókodat a {extension} bővítményben.",
         "noExtension": "Nem található {extension} bővítmény. Kérjük, telepítse, és töltse be újra ezt az oldalt",
-        "noSigner": "Hozzáférés megtagadva. Nyissa meg a {extension} bővítmény beállításait, és nyissa meg a „Webhely-hozzáférés kezelése” lehetőséget az engedélyezéshez."
+        "noSigner": "Hozzáférés megtagadva. Nyissa meg a {extension} bővítmény beállításait, és nyissa meg a „Webhely-hozzáférés kezelése” lehetőséget az engedélyezéshez.",
+        "connectionError": "Hiba történt a pénztárca csatlakoztatása közben. Megpróbálhatja újra csatlakoztatni a pénztárcát a {extension} segítségével"
     },
     "connection": {
         "title": "{Sora} hálózati fiók",
-        "text": "Csatlakoztassa vagy hozza létre {Sora} hálózati fiókját {extensions} bővítménnyel. Ezek a bővítmények lehetővé teszik a tranzakciók biztonságos aláírását és az eszközök kezelését a {Sora} hálózaton.",
+        "text": "A bővítmények és a Google biztonságosan tárolja {Sora} Network-fiókját. Lehetővé teszik a tranzakciók aláírását és az eszközök kezelését.",
         "noAccounts": "Nincs fiók a {extension} böngészőbővítményben. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Telepítés",
             "connected": "csatlakoztatva",
             "notConnected": "Nem kapcsolódik"
+        },
+        "internalTitle": "Csatlakozás a következőn keresztül {wallet}",
+        "internalText": "Létrehozhat vagy összekapcsolhat meglévő fiókot {wallet} segítségével. Titkosítással tárolja a fiókokat.",
+        "list": {
+            "simplest": "A legegyszerűbb lehetőség",
+            "extensions": "Kiterjesztések"
         }
     },
     "wallet": {
         "title": "{Sora} hálózati fiók",
         "WalletAssets": "Eszközök",
-        "WalletActivity": "Aktivitás",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Aktivitás"
     },
     "walletSend": {
         "title": "Küldés",
@@ -516,13 +523,9 @@
         "strategicBonusApy": "Stratégiai bónusz APY"
     },
     "bridge": {
-        "title": "{Hashi} híd",
+        "title": "Híd",
         "info": "Tokenek konvertálása a {Sora} és {Ethereum} hálózatok között.",
         "balance": "Egyenleg",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Következő",
         "connectWallets": "Csatlakoztasd a tárcákat a tranzakciós előzmények megtekintéséhez.",
         "soraNetworkFee": "{Sora} hálózati díj",
@@ -536,8 +539,7 @@
         "networkInfo": "{Sora} hálózati híd a következőkkel:",
         "copy": "Hálózati cím másolása",
         "soraAddress": "{Sora} cím",
-        "ethereumAddress": "{Ethereum} cím",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} cím"
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",
@@ -559,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Tranzakció megerősítése",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Tranzakció megerősítése"
     },
     "bridgeTransaction": {
         "details": "{from} - {to}",
@@ -602,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} tranzakció folyamatban...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Új tranzakció létrehozása",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText a {Metamask}-ban",
-        "expectedAddress": "Várható {Metamask} cím",
         "title": "Híd tranzakció",
         "expectedMetaMaskAddress": "Várható cím a {Metamask}:",
         "allowToken": "Engedélyezd, hogy a {AppName} használhassa a {tokenSymbol}",
@@ -1031,7 +1025,7 @@
     },
     "receivedText": "Bejövő",
     "browserNotificationDialog": {
-        "title": "Engedélyezze a böngésző értesítéseit",
+        "title": "Értesítések beállítása",
         "info": "Csak releváns frissítéseket küldünk Önnek a pénztárcájáról, például: eszközegyenleg-változások",
         "button": "Értesítések engedélyezése",
         "agree": "Igen, értem",
@@ -1103,10 +1097,16 @@
             "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
         },
         "assetsAtRiskText": "Veszélyben lévő eszközök!",
-        "deleteAccountText": "A fiókot nem lehet visszaállítani kezdő kifejezés, .json fájl nélkül, vagy ha azt valamilyen kiterjesztéssel tárolják. Ön ki lesz jelentkezve."
+        "deleteAccountText": "A fiókot nem lehet visszaállítani kezdő kifejezés, .json fájl nélkül, vagy ha azt valamilyen kiterjesztéssel tárolják. Ön ki lesz jelentkezve.",
+        "importSteps": {
+            "selectWallet": "Menjen a használt pénztárcához",
+            "selectAccount": "Válassza ki az exportálni kívánt fiókot",
+            "exportAccount": "Exportálja a {JSON} fájlt"
+        },
+        "exportTutorialsText": "Oktatóanyagok exportálása"
     },
     "hashiBridgeText": "{Hashi} híd",
-    "disclaimerTitle": "Jogi nyilatkozat:",
+    "disclaimerTitle": "Jogi nyilatkozat",
     "explore": {
         "showOnlyMyPositions": "Csak az én pozíciómat mutasd"
     },
@@ -1174,5 +1174,32 @@
     },
     "locationText": "Elhelyezkedés",
     "acceptText": "Elfogadás és elrejtés",
-    "newAccountsText": "Új fiókok"
+    "newAccountsText": "Új fiókok",
+    "dragAndDropText": "Fogd és vidd, vagy válasszon {extension} fájlt",
+    "copyPhraseText": "Kifejezés másolása",
+    "stepText": "Lépés",
+    "alerts": {
+        "drop": "Alul leesik",
+        "raise": "Feljebb emelkedik",
+        "once": "Egyszer",
+        "always": "Mindig",
+        "edit": "Figyelmeztetés szerkesztése",
+        "delete": "Figyelmeztetés törlése",
+        "onDropDesc": "{token} {price} alá esik",
+        "onRaiseDesc": "{token} {price} fölé emel",
+        "alertsTitle": "Figyelmeztetések",
+        "alertsCreateTitle": "Árriasztás beállítása",
+        "alertsTooltip": "Az árriasztások olyan értesítések, amelyeket Ön beállíthat, hogy frissítéseket kapjon, amikor egy adott token ára elér egy meghatározott pontot",
+        "createBtn": "Hozzon létre új árriasztást",
+        "enableSwitch": "Eszközbefizetési értesítések engedélyezése",
+        "currentPrice": "jelenlegi ár",
+        "alertTypeTitle": "Figyelmeztetés típusa",
+        "typeTooltip": "Válassza az „alul csökken” vagy a „feljebb emelkedik” opciót, ha figyelmeztetési feltételt szeretne megadni a fontos ármozgások nyomon követéséhez. Ezek az opciók lehetővé teszik, hogy időben értesítést kapjon, ha az eszköz értéke a kijelölt küszöb alá esik vagy fölé emelkedik.",
+        "alertFrequencyTitle": "Riasztási gyakoriság",
+        "frequencyTooltip": "Válassza az „egyszer” és a „mindig” lehetőséget annak meghatározásához, hogy milyen gyakran kap értesítést a kiválasztott riasztástípusról. Az „Egyszer” egyetlen értesítést küld, ha a feltétel teljesül, míg az „always” továbbra is értesít minden alkalommal, amikor az árküszöböt átlépi.",
+        "noSupportMsg": "Az Ön böngészője nem támogatja az értesítéseket",
+        "finishBtn": "Teljesíteni"
+    },
+    "accountAddressText": "Fiók címe",
+    "fiatDisclaimer": "Felhívjuk figyelmét, hogy a weboldalunkon a kriptovalutákhoz társított fiat értékeket külső szolgáltatások (Subquery, Subsquid, Ceres API) biztosítják, hozzávetőlegesek. Tekintettel ezeknek a számításoknak a bonyolultságára, nem garantálható a mindenkori abszolút pontosság."
 }

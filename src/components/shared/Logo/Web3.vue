@@ -98,8 +98,8 @@ h1.3v-4.8C142.4,32.5,141.7,31.3,139.9,31.3z"
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Web3Logo extends Vue {

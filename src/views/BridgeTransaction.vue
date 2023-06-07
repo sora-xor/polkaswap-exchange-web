@@ -10,310 +10,220 @@
         @click="handleViewTransactionsHistory"
       />
     </generic-page-header>
-    <div class="transaction-content">
-      <template>
-        <div class="header">
-          <div v-loading="isTransactionFromPending || isTransactionToPending" :class="headerIconClasses" />
-          <h5 class="header-details">
-            <formatted-amount
-              class="info-line-value"
-              value-can-be-hidden
-              :value="formattedAmount"
-              :asset-symbol="assetSymbol"
-            >
-              <i :class="firstNetworkIcon" />
-            </formatted-amount>
-            <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
-            <formatted-amount
-              class="info-line-value"
-              value-can-be-hidden
-              :value="formattedAmount"
-              :asset-symbol="assetSymbol"
-            >
-              <i :class="secondNetworkIcon" />
-            </formatted-amount>
-          </h5>
-          <p class="header-status">{{ headerStatus }}</p>
-        </div>
-        <s-collapse borders :value="activeCollapseItems">
-          <s-collapse-item :name="collapseItems.from">
-            <template #title>
-              <div class="network-info-title">
-                <h3>
-                  {{
-                    `${t('bridgeTransaction.steps.step', { step: '1' })} ${t('bridgeTransaction.networkTitle', {
-                      network: formattedNetworkStep1,
-                    })}`
-                  }}
-                </h3>
-                <span :class="firstTxIconStatusClasses" />
-              </div>
-            </template>
-            <div v-if="transactionFromHash" :class="firstTxHashContainerClasses">
-              <s-input
-                :placeholder="t('bridgeTransaction.transactionHash')"
-                :value="firstTxHash"
-                readonly
-                tabindex="-1"
-              />
-              <s-button
-                class="s-button--hash-copy"
-                type="action"
-                alternative
-                icon="basic-copy-24"
-                :tooltip="copyTransactionHashTooltip"
-                @click="handleCopyAddress(transactionFromHash, $event)"
-              />
-              <s-dropdown
-                v-if="hasExplorerLinksForFirstTx"
-                class="s-dropdown--hash-menu"
-                borderRadius="mini"
-                type="ellipsis"
-                icon="basic-more-vertical-24"
-                placement="bottom-end"
-                tabindex="0"
-                @select="isSoraToEvm ? undefined : handleOpenEtherscan()"
-              >
-                <template slot="menu">
-                  <template v-if="isSoraToEvm">
-                    <a
-                      v-for="link in soraExpolrerLinks"
-                      :key="link.type"
-                      class="transaction-link"
-                      :href="link.value"
-                      target="_blank"
-                      rel="nofollow noopener"
-                    >
-                      <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
-                        {{ t('transaction.viewIn', { explorer: link.type }) }}
-                      </s-dropdown-item>
-                    </a>
-                  </template>
-                  <s-dropdown-item v-else class="s-dropdown-menu__item">
-                    <span>{{ viewInEtherscan }}</span>
-                  </s-dropdown-item>
-                </template>
-              </s-dropdown>
-            </div>
-            <info-line
-              :class="failedClassStep1"
-              :label="t('bridgeTransaction.networkInfo.status')"
-              :value="statusFrom"
-            />
-            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionFromDate" />
-            <info-line
-              v-if="amount"
-              is-formatted
-              value-can-be-hidden
-              :label="t('bridgeTransaction.networkInfo.amount')"
-              :value="`-${formattedAmount}`"
-              :asset-symbol="assetSymbol"
-              :fiat-value="firstAmountFiatValue"
-            />
-            <info-line
-              is-formatted
-              :label="t('bridgeTransaction.networkInfo.transactionFee')"
-              :value="isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
-              :asset-symbol="isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
-              :fiat-value="soraFeeFiatValue"
-            >
-              <template v-if="!isSoraToEvm && formattedEvmNetworkFee" #info-line-value-prefix>
-                <span class="info-line-value-prefix">~</span>
-              </template>
-            </info-line>
-            <s-button
-              v-if="!isTransactionFromCompleted"
-              type="primary"
-              class="s-typograhy-button--big"
-              :disabled="isFirstConfirmationButtonDisabled"
-              @click="handleTransaction()"
-            >
-              <span
-                v-if="isTransactionFromPending"
-                v-html="t('bridgeTransaction.pending', { network: transactionPendingNetwork })"
-              />
-              <template v-else-if="!(isSoraToEvm || isExternalAccountConnected)">{{
-                t('bridgeTransaction.connectWallet')
-              }}</template>
-              <template v-else-if="!(isSoraToEvm || isValidNetworkType)">{{
-                t('bridgeTransaction.changeNetwork')
-              }}</template>
-              <template v-else-if="isInsufficientBalance">{{
-                t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: assetSymbol })
-              }}</template>
-              <template v-else-if="isInsufficientXorForFee">{{
-                t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: KnownSymbols.XOR })
-              }}</template>
-              <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
-                t('confirmBridgeTransactionDialog.insufficientBalance', { tokenSymbol: evmTokenSymbol })
-              }}</template>
-              <template v-else-if="isTransactionFromFailed">{{ t('bridgeTransaction.retry') }}</template>
-              <template v-else-if="txWaitingForApprove">{{
-                t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
-              }}</template>
-              <template v-else>{{
-                t('bridgeTransaction.confirm', {
-                  direction: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'metamask'}`),
-                })
-              }}</template>
-            </s-button>
 
-            <div v-if="txWaitingForApprove" class="transaction-approval-text">
-              {{ t('bridgeTransaction.approveToken') }}
-            </div>
-          </s-collapse-item>
-          <s-collapse-item :name="collapseItems.to">
-            <template #title>
-              <div class="network-info-title">
-                <h3>
-                  {{
-                    `${t('bridgeTransaction.steps.step', { step: '2' })} ${t('bridgeTransaction.networkTitle', {
-                      network: formattedNetworkStep2,
-                    })}`
-                  }}
-                </h3>
-                <span v-if="isTransactionFromCompleted" :class="secondTxIconStatusClasses" />
-              </div>
-            </template>
-            <div v-if="isSoraToEvm && !isTxEvmAccount && !isTransactionToCompleted" class="transaction-error">
-              <span class="transaction-error__title">{{ t('bridgeTransaction.expectedMetaMaskAddress') }}</span>
-              <span class="transaction-error__value">{{ transactionEvmAddress }}</span>
-            </div>
-            <div v-if="isTransactionFromCompleted && transactionToHash" :class="secondTxHashContainerClasses">
-              <s-input
-                :placeholder="t('bridgeTransaction.transactionHash')"
-                :value="secondTxHash"
-                readonly
-                tabindex="-1"
-              />
-              <s-button
-                class="s-button--hash-copy"
-                type="action"
-                alternative
-                icon="basic-copy-24"
-                :tooltip="copyTransactionHashTooltip"
-                @click="handleCopyAddress(transactionToHash, $event)"
-              />
-              <s-dropdown
-                v-if="hasExplorerLinksForSecondTx"
-                class="s-dropdown--hash-menu"
-                borderRadius="mini"
-                type="ellipsis"
-                icon="basic-more-vertical-24"
-                placement="bottom-end"
-                tabindex="0"
-                @select="!isSoraToEvm ? undefined : handleOpenEtherscan()"
-              >
-                <template slot="menu">
-                  <template v-if="!isSoraToEvm">
-                    <a
-                      v-for="link in soraExpolrerLinks"
-                      :key="link.type"
-                      class="transaction-link"
-                      :href="link.value"
-                      target="_blank"
-                      rel="nofollow noopener"
-                    >
-                      <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
-                        {{ t('transaction.viewIn', { explorer: link.type }) }}
-                      </s-dropdown-item>
-                    </a>
-                  </template>
-                  <s-dropdown-item v-else class="s-dropdown-menu__item">
-                    <span>{{ viewInEtherscan }}</span>
-                  </s-dropdown-item>
-                </template>
-              </s-dropdown>
-            </div>
-            <info-line :class="failedClassStep2" :label="t('bridgeTransaction.networkInfo.status')" :value="statusTo" />
-            <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="transactionToDate" />
-            <info-line
-              v-if="amount"
-              is-formatted
-              value-can-be-hidden
-              :label="t('bridgeTransaction.networkInfo.amount')"
-              :value="formattedAmount"
-              :asset-symbol="assetSymbol"
-              :fiat-value="secondAmountFiatValue"
-            />
-            <info-line
-              :label="t('bridgeTransaction.networkInfo.transactionFee')"
-              :value="!isSoraToEvm ? formattedSoraNetworkFee : formattedEvmNetworkFee"
-              :asset-symbol="!isSoraToEvm ? KnownSymbols.XOR : evmTokenSymbol"
-              :fiat-value="soraNetworkFeeFiatValue"
-              is-formatted
+    <div class="transaction-content">
+      <div class="header">
+        <div v-loading="isTxPending" :class="headerIconClasses" />
+        <h5 class="header-details">
+          <formatted-amount
+            class="info-line-value"
+            value-can-be-hidden
+            :value="formattedAmount"
+            :asset-symbol="assetSymbol"
+          >
+            <i :class="firstNetworkIcon" />
+          </formatted-amount>
+          <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
+          <formatted-amount
+            class="info-line-value"
+            value-can-be-hidden
+            :value="formattedAmount"
+            :asset-symbol="assetSymbol"
+          >
+            <i :class="secondNetworkIcon" />
+          </formatted-amount>
+        </h5>
+      </div>
+
+      <div v-if="txEvmAddress" class="transaction-hash-container transaction-hash-container--with-dropdown">
+        <s-input :placeholder="txEvmAddressPlaceholder" :value="txEvmAddressFormatted" readonly />
+        <s-button
+          class="s-button--hash-copy"
+          type="action"
+          alternative
+          icon="basic-copy-24"
+          :tooltip="txEvmAddressCopyTooltip"
+          @click="handleCopyAddress(txEvmAddress, $event)"
+        />
+
+        <s-dropdown
+          class="s-dropdown--hash-menu"
+          borderRadius="mini"
+          type="ellipsis"
+          icon="basic-more-vertical-24"
+          placement="bottom-end"
+          @select="handleOpenEvmExplorer(txEvmAddress, EvmLinkType.Account, externalNetworkId)"
+        >
+          <template slot="menu">
+            <s-dropdown-item class="s-dropdown-menu__item">
+              <span>{{ viewInEtherscan }}</span>
+            </s-dropdown-item>
+          </template>
+        </s-dropdown>
+      </div>
+
+      <info-line :class="failedClass" :label="t('bridgeTransaction.networkInfo.status')" :value="transactionStatus" />
+      <info-line :label="t('bridgeTransaction.networkInfo.date')" :value="txDate" />
+      <info-line
+        v-if="amount"
+        is-formatted
+        value-can-be-hidden
+        :label="t('bridgeTransaction.networkInfo.amount')"
+        :value="formattedAmount"
+        :asset-symbol="assetSymbol"
+        :fiat-value="amountFiatValue"
+      />
+      <info-line
+        is-formatted
+        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', true)"
+        :value="txSoraNetworkFeeFormatted"
+        :asset-symbol="KnownSymbols.XOR"
+        :fiat-value="txSoraNetworkFeeFiatValue"
+      />
+      <info-line
+        is-formatted
+        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', false)"
+        :value="txEvmNetworkFeeFormatted"
+        :asset-symbol="evmTokenSymbol"
+      >
+        <template v-if="txEvmNetworkFeeFormatted" #info-line-value-prefix>
+          <span class="info-line-value-prefix">~</span>
+        </template>
+      </info-line>
+
+      <div v-if="txSoraHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
+        <s-input
+          :placeholder="getNetworkText('bridgeTransaction.transactionHash', true)"
+          :value="txSoraHashFormatted"
+          readonly
+        />
+        <s-button
+          class="s-button--hash-copy"
+          type="action"
+          alternative
+          icon="basic-copy-24"
+          :tooltip="hashCopyTooltip"
+          @click="handleCopyAddress(txSoraHash, $event)"
+        />
+        <s-dropdown
+          v-if="soraExplorerLinks.length"
+          class="s-dropdown--hash-menu"
+          borderRadius="mini"
+          type="ellipsis"
+          icon="basic-more-vertical-24"
+          placement="bottom-end"
+        >
+          <template slot="menu">
+            <a
+              v-for="link in soraExplorerLinks"
+              :key="link.type"
+              class="transaction-link"
+              :href="link.value"
+              target="_blank"
+              rel="nofollow noopener"
             >
-              <template v-if="isSoraToEvm && formattedEvmNetworkFee" #info-line-value-prefix>
-                <span class="info-line-value-prefix">~</span>
-              </template>
-            </info-line>
-            <s-button
-              v-if="isTransactionFromCompleted && !isTransactionToCompleted"
-              type="primary"
-              class="s-typograhy-button--big"
-              :disabled="isSecondConfirmationButtonDisabled"
-              @click="handleTransaction()"
-            >
-              <template v-if="isSoraToEvm && !isExternalAccountConnected">{{
-                t('bridgeTransaction.connectWallet')
-              }}</template>
-              <template v-else-if="isSoraToEvm && !isTxEvmAccount">{{ t('bridgeTransaction.changeAccount') }}</template>
-              <template v-else-if="isSoraToEvm && !isValidNetworkType">{{
-                t('bridgeTransaction.changeNetwork')
-              }}</template>
-              <template v-else-if="comfirmationBlocksLeft">
-                {{ t('bridgeTransaction.blocksLeft', { count: comfirmationBlocksLeft }) }}
-              </template>
-              <span
-                v-else-if="isTransactionToPending"
-                v-html="
-                  t('bridgeTransaction.pending', {
-                    network: t(`bridgeTransaction.${!isSoraToEvm ? 'sora' : 'ethereum'}`),
-                  })
-                "
-              />
-              <template v-else-if="isSoraToEvm ? isInsufficientEvmNativeTokenForFee : isInsufficientXorForFee">{{
-                t('confirmBridgeTransactionDialog.insufficientBalance', {
-                  tokenSymbol: isSoraToEvm ? evmTokenSymbol : KnownSymbols.XOR,
-                })
-              }}</template>
-              <template v-else-if="isTransactionToFailed">{{ t('bridgeTransaction.retry') }}</template>
-              <template v-else>{{
-                t('bridgeTransaction.confirm', {
-                  direction: t(`bridgeTransaction.${!isSoraToEvm ? 'sora' : 'metamask'}`),
-                })
-              }}</template>
-            </s-button>
-          </s-collapse-item>
-        </s-collapse>
-      </template>
+              <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
+                {{ t('transaction.viewIn', { explorer: link.type }) }}
+              </s-dropdown-item>
+            </a>
+          </template>
+        </s-dropdown>
+      </div>
+
+      <div v-if="txEvmHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
+        <s-input
+          :placeholder="getNetworkText('bridgeTransaction.transactionHash', false)"
+          :value="txEvmHashFormatted"
+          readonly
+        />
+        <s-button
+          class="s-button--hash-copy"
+          type="action"
+          alternative
+          icon="basic-copy-24"
+          :tooltip="hashCopyTooltip"
+          @click="handleCopyAddress(txEvmHash, $event)"
+        />
+        <s-dropdown
+          class="s-dropdown--hash-menu"
+          borderRadius="mini"
+          type="ellipsis"
+          icon="basic-more-vertical-24"
+          placement="bottom-end"
+          @select="handleOpenEvmExplorer(txEvmHash, EvmLinkType.Transaction, externalNetworkId)"
+        >
+          <template slot="menu">
+            <s-dropdown-item class="s-dropdown-menu__item">
+              <span>{{ viewInEtherscan }}</span>
+            </s-dropdown-item>
+          </template>
+        </s-dropdown>
+      </div>
+
+      <s-button
+        v-if="!isTxCompleted"
+        type="primary"
+        class="s-typograhy-button--big"
+        :disabled="confirmationButtonDisabled"
+        @click="handleTransaction"
+      >
+        <template v-if="comfirmationBlocksLeft">
+          {{ t('bridgeTransaction.blocksLeft', { count: comfirmationBlocksLeft }) }}
+        </template>
+        <template v-else-if="txWaitingForApprove">{{
+          t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
+        }}</template>
+        <template v-else-if="isTxPending">{{ t('bridgeTransaction.pending') }}</template>
+        <template v-else-if="!(isSoraToEvm || isExternalAccountConnected)">{{ t('connectWalletText') }}</template>
+        <template v-else-if="!(isSoraToEvm || isValidNetwork)">{{ t('changeNetworkText') }}</template>
+        <template v-else-if="isInsufficientBalance">{{
+          t('insufficientBalanceText', { tokenSymbol: assetSymbol })
+        }}</template>
+        <template v-else-if="isInsufficientXorForFee">{{
+          t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR })
+        }}</template>
+        <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
+          t('insufficientBalanceText', { tokenSymbol: evmTokenSymbol })
+        }}</template>
+        <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
+        <template v-else-if="isTxFailed">{{ t('retryText') }}</template>
+        <template v-else>{{
+          t('bridgeTransaction.confirm', {
+            direction: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'metamask'}`),
+          })
+        }}</template>
+      </s-button>
+
+      <div v-if="txWaitingForApprove" class="transaction-approval-text">
+        {{ t('bridgeTransaction.approveToken') }}
+      </div>
     </div>
-    <s-button
-      v-if="isTransactionToCompleted"
-      class="s-typography-button--large"
-      type="secondary"
-      @click="navigateToBridge"
-    >
+    <s-button v-if="isTxCompleted" class="s-typography-button--large" type="secondary" @click="navigateToBridge">
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString, BridgeHistory, BridgeNetworks } from '@sora-substrate/util';
+import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
+import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
+import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-
-import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
+import type { EvmLinkType } from '@/consts/evm';
+import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
-import { bridgeApi, STATES, isOutgoingTransaction, isUnsignedFromPart } from '@/utils/bridge';
-import type { RegisteredAccountAssetWithDecimals } from '@/store/assets/types';
+import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
+import { isUnsignedTx as isUnsignedEthTx } from '@/utils/bridge/eth/utils';
+import { isUnsignedTx as isUnsignedEvmTx } from '@/utils/bridge/evm/utils';
+
+import type { CodecString, BridgeHistory, IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 const FORMATTED_HASH_LENGTH = 24;
 
@@ -329,28 +239,33 @@ export default class BridgeTransaction extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.CopyAddressMixin,
   BridgeMixin,
+  BridgeTransactionMixin,
   NetworkFormatterMixin
 ) {
   readonly KnownSymbols = KnownSymbols;
-  readonly collapseItems = {
-    from: 'step-from',
-    to: 'step-to',
-  };
 
   @state.bridge.waitingForApprove private waitingForApprove!: Record<string, boolean>;
   @state.bridge.inProgressIds private inProgressIds!: Record<string, boolean>;
   @state.router.prev private prevRoute!: Nullable<PageNames>;
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAssetWithDecimals>;
-  @getter.bridge.historyItem private historyItem!: Nullable<BridgeHistory>;
-  @getter.bridge.isTxEvmAccount isTxEvmAccount!: boolean;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.bridge.historyItem private historyItem!: Nullable<IBridgeTransaction>;
+  @getter.bridge.isEthBridge private isEthBridge!: boolean;
 
-  @mutation.bridge.setHistory setHistory!: FnWithoutArgs;
+  @action.bridge.removeHistory private removeHistory!: ({ tx, force }: { tx: any; force?: boolean }) => Promise<void>;
+  @action.bridge.handleBridgeTransaction private handleBridgeTransaction!: (id: string) => Promise<void>;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
-  @action.bridge.handleBridgeTx private handleBridgeTx!: (id: string) => Promise<void>;
 
   get viewInEtherscan(): string {
     return this.t('transaction.viewIn', { explorer: this.TranslationConsts.Etherscan });
+  }
+
+  get txIsUnsigned(): boolean {
+    if (!this.historyItem?.id) return false;
+
+    return this.isEthBridge
+      ? isUnsignedEthTx(this.historyItem as BridgeHistory)
+      : isUnsignedEvmTx(this.historyItem as EvmHistory);
   }
 
   get txInProcess(): boolean {
@@ -369,7 +284,11 @@ export default class BridgeTransaction extends Mixins(
     return this.historyItem?.amount ?? '';
   }
 
-  get asset(): Nullable<RegisteredAccountAssetWithDecimals> {
+  get amountFiatValue(): Nullable<string> {
+    return this.asset ? this.getFiatAmountByString(this.amount, this.asset) : null;
+  }
+
+  get asset(): Nullable<RegisteredAccountAsset> {
     if (!this.historyItem?.assetAddress) return null;
 
     return this.getAsset(this.historyItem.assetAddress);
@@ -387,203 +306,134 @@ export default class BridgeTransaction extends Mixins(
     return this.asset?.symbol ?? '';
   }
 
+  get externalNetworkId(): Nullable<EvmNetwork> {
+    return this.historyItem?.externalNetwork as unknown as EvmNetwork;
+  }
+
   get evmIcon(): string {
-    return this.getEvmIcon(this.historyItem?.externalNetwork as BridgeNetworks);
+    return this.getEvmIcon(this.externalNetworkId);
   }
 
   get txSoraNetworkFee(): CodecString {
     return this.historyItem?.soraNetworkFee ?? this.soraNetworkFee;
   }
 
+  get txSoraNetworkFeeFormatted(): string {
+    return this.getStringFromCodec(this.txSoraNetworkFee, this.xor?.decimals);
+  }
+
+  get txSoraNetworkFeeFiatValue(): Nullable<string> {
+    return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
+  }
+
   get txEvmNetworkFee(): CodecString {
-    return this.historyItem?.ethereumNetworkFee ?? this.evmNetworkFee;
+    return this.historyItem?.externalNetworkFee ?? this.evmNetworkFee;
   }
 
-  get transactionFromHash(): string {
-    return (this.isSoraToEvm ? this.historyItem?.hash : this.historyItem?.ethereumHash) ?? '';
+  get txEvmNetworkFeeFormatted(): string {
+    return this.formatCodecNumber(this.txEvmNetworkFee);
   }
 
-  get transactionToHash(): string {
-    return (!this.isSoraToEvm ? this.historyItem?.hash : this.historyItem?.ethereumHash) ?? '';
+  get txSoraHash(): string {
+    return this.historyItem?.hash ?? '';
   }
 
-  get transactionFromDate(): string {
-    return this.formatTransactionDate(this.historyItem?.startTime);
+  get txSoraHashFormatted(): string {
+    return this.formatAddress(this.txSoraHash, FORMATTED_HASH_LENGTH);
   }
 
-  get transactionToDate(): string {
-    return this.formatTransactionDate(this.historyItem?.endTime);
+  get txEvmHash(): string {
+    return this.historyItem?.externalHash ?? '';
   }
 
-  get soraFeeFiatValue(): Nullable<string> {
-    if (this.isSoraToEvm) {
-      return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
-    }
-    return null;
+  get txEvmHashFormatted(): string {
+    return this.formatAddress(this.txEvmHash, FORMATTED_HASH_LENGTH);
   }
 
-  get firstAmountFiatValue(): Nullable<string> {
-    if (this.isSoraToEvm && this.asset) {
-      return this.getFiatAmountByString(this.amount, this.asset);
-    }
-    return null;
+  get txDate(): string {
+    return this.formatDatetime(this.historyItem);
   }
 
-  get secondAmountFiatValue(): Nullable<string> {
-    if (!this.isSoraToEvm && this.asset) {
-      return this.getFiatAmountByString(this.amount, this.asset);
-    }
-    return null;
+  get txState(): string {
+    return this.historyItem?.transactionState ?? EvmTxStatus.Pending;
   }
 
-  get currentState(): string {
-    return this.historyItem?.transactionState ?? STATES.INITIAL;
+  get isTxFailed(): boolean {
+    return this.isFailedState(this.historyItem);
   }
 
-  get isTransferStarted(): boolean {
-    return this.currentState !== STATES.INITIAL;
+  get isTxCompleted(): boolean {
+    return this.isSuccessState(this.historyItem);
   }
 
-  get isTransactionFromPending(): boolean {
-    return this.currentState === (this.isSoraToEvm ? STATES.SORA_PENDING : STATES.EVM_PENDING);
+  get isTxWaiting(): boolean {
+    return this.isWaitingForAction(this.historyItem);
   }
 
-  get isTransactionToPending(): boolean {
-    return this.currentState === (!this.isSoraToEvm ? STATES.SORA_PENDING : STATES.EVM_PENDING);
-  }
-
-  get isTransactionFromFailed(): boolean {
-    return this.currentState === (this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED);
-  }
-
-  get isTransactionToFailed(): boolean {
-    return this.currentState === (!this.isSoraToEvm ? STATES.SORA_REJECTED : STATES.EVM_REJECTED);
-  }
-
-  get isTransactionFromCompleted(): boolean {
-    return this.isTransferStarted && !this.isTransactionFromPending && !this.isTransactionFromFailed;
-  }
-
-  get isTransactionToCompleted(): boolean {
-    return this.currentState === (!this.isSoraToEvm ? STATES.SORA_COMMITED : STATES.EVM_COMMITED);
-  }
-
-  get transactionStep(): number {
-    return this.historyItem?.transactionStep ?? 1;
-  }
-
-  get copyTransactionHashTooltip(): string {
-    return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
-  }
-
-  get activeCollapseItems(): Array<string> {
-    if (this.isTransactionToCompleted) {
-      return [];
-    }
-    if (this.isTransactionFromCompleted) {
-      return [this.collapseItems.to];
-    }
-
-    return [this.collapseItems.from, this.collapseItems.to];
+  get isTxPending(): boolean {
+    return !this.isTxFailed && !this.isTxCompleted;
   }
 
   get headerIconClasses(): string {
     const iconClass = 'header-icon';
     const classes = [iconClass];
 
-    if (this.isTransactionFromFailed || this.isTransactionToFailed) {
+    if (this.isTxWaiting) {
+      classes.push(`${iconClass}--wait`);
+    } else if (this.isTxFailed) {
       classes.push(`${iconClass}--error`);
-    } else if (this.isTransactionToCompleted) {
+    } else if (this.isTxCompleted) {
       classes.push(`${iconClass}--success`);
-    } else if (this.isTransactionFromCompleted) {
+    } else {
       classes.push(`${iconClass}--wait`);
     }
 
     return classes.join(' ');
   }
 
-  get headerStatus(): string {
-    const failedAndPendingParams = {
-      step: this.t('bridgeTransaction.steps.step', {
-        step: this.t(`bridgeTransaction.steps.step${this.transactionStep}`),
-      }),
-    };
-    if (this.isTransactionFromPending || this.isTransactionToPending) {
-      return this.t('bridgeTransaction.status.pending', failedAndPendingParams);
+  get transactionStatus(): string {
+    if (this.isTxWaiting) {
+      return this.t('bridgeTransaction.statuses.waitingForConfirmation');
     }
-    if (this.isTransactionFromFailed || this.isTransactionToFailed) {
-      return this.t('bridgeTransaction.status.failed', failedAndPendingParams);
-    }
-    if (this.isTransactionToCompleted) {
-      return this.t('bridgeTransaction.status.convertionComplete');
-    }
-    return this.t('bridgeTransaction.status.confirm');
-  }
-
-  get statusFrom(): string {
-    if (this.isTransactionFromPending) {
-      if (!this.isSoraToEvm && !this.transactionFromHash) {
-        return this.t('bridgeTransaction.statuses.waitingForConfirmation');
-      }
-      return this.t('bridgeTransaction.statuses.pending') + '...';
-    }
-    if (this.isTransactionFromFailed) {
+    if (this.isTxFailed) {
       return this.t('bridgeTransaction.statuses.failed');
     }
-    if (this.isTransactionFromCompleted) {
+    if (this.isTxCompleted) {
       return this.t('bridgeTransaction.statuses.done');
     }
+    if (!this.txId) {
+      return this.t('bridgeTransaction.statuses.waitingForConfirmation');
+    }
 
-    return this.t('bridgeTransaction.statuses.waiting') + '...';
+    return this.t('bridgeTransaction.statuses.pending') + '...';
   }
 
-  get statusTo(): string {
-    if (this.isTransactionToPending) {
-      if (this.isSoraToEvm && !this.transactionToHash) {
-        return this.t('bridgeTransaction.statuses.waitingForConfirmation');
-      }
-      return this.t('bridgeTransaction.statuses.pending') + '...';
-    }
-    if (this.isTransactionToFailed) {
-      return this.t('bridgeTransaction.statuses.failed');
-    }
-    if (this.isTransactionToCompleted) {
-      return this.t('bridgeTransaction.statuses.done');
-    }
-    return this.t('bridgeTransaction.statuses.waiting') + '...';
-  }
-
-  get transactionEvmAddress(): string {
+  get txEvmAddress(): string {
     return this.historyItem?.to ?? '';
   }
 
+  get txEvmAddressFormatted(): string {
+    return this.formatAddress(this.txEvmAddress, FORMATTED_HASH_LENGTH);
+  }
+
+  get txEvmAddressPlaceholder(): string {
+    return this.getNetworkText('accountAddressText', false);
+  }
+
+  get txEvmAddressCopyTooltip(): string {
+    return this.copyTooltip(this.txEvmAddressPlaceholder);
+  }
+
+  get txId(): Nullable<string> {
+    return this.isSoraToEvm ? this.historyItem?.txId : this.historyItem?.externalHash;
+  }
+
   get soraTxId(): Nullable<string> {
-    if (!this.historyItem?.id) {
-      return null;
-    }
-    return this.historyItem.txId;
+    return this.historyItem?.txId;
   }
 
   get soraTxBlockId(): Nullable<string> {
-    if (!this.historyItem?.id) {
-      return null;
-    }
-    return this.historyItem.blockId;
-  }
-
-  get formattedSoraNetworkFee(): string {
-    return this.getStringFromCodec(this.txSoraNetworkFee, this.xor?.decimals);
-  }
-
-  get soraNetworkFeeFiatValue(): Nullable<string> {
-    if (this.isSoraToEvm) {
-      return null;
-    }
-    return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
-  }
-
-  get formattedEvmNetworkFee(): string {
-    return this.formatCodecNumber(this.txEvmNetworkFee);
+    return this.historyItem?.blockId;
   }
 
   get isInsufficientBalance(): boolean {
@@ -602,41 +452,41 @@ export default class BridgeTransaction extends Mixins(
     return hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.txEvmNetworkFee);
   }
 
-  get isFirstConfirmationButtonDisabled(): boolean {
+  get confirmationButtonDisabled(): boolean {
     return (
-      !(this.isSoraToEvm || this.isValidNetworkType) ||
-      !this.isTransferStarted ||
+      !(this.isSoraToEvm || this.isValidNetwork) ||
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
-      this.isTransactionFromPending
-    );
-  }
-
-  get isSecondConfirmationButtonDisabled(): boolean {
-    return (
-      (this.isSoraToEvm && !(this.isValidNetworkType && this.isTxEvmAccount)) ||
-      (this.isSoraToEvm ? this.isInsufficientEvmNativeTokenForFee : this.isInsufficientXorForFee) ||
-      this.isTransactionToPending
+      this.isTxPending
     );
   }
 
   get firstNetworkIcon(): string {
-    return `s-icon--network s-icon-${this.isSoraToEvm ? 'sora' : this.evmIcon}`;
+    return `network-icon network-icon--${this.isSoraToEvm ? 'sora' : this.evmIcon}`;
   }
 
   get secondNetworkIcon(): string {
-    return `s-icon--network s-icon-${this.isSoraToEvm ? this.evmIcon : 'sora'}`;
+    return `network-icon network-icon--${this.isSoraToEvm ? this.evmIcon : 'sora'}`;
   }
 
-  handleOpenEtherscan(): void {
-    const hash = this.isSoraToEvm ? this.transactionToHash : this.transactionFromHash;
-    const url = this.getEtherscanLink(hash, true);
+  get hashCopyTooltip(): string {
+    return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
+  }
+
+  getNetworkText(key: string, isSora = true): string {
+    const network = isSora ? this.TranslationConsts.Sora : this.TranslationConsts.EVM;
+    const text = this.t(key);
+    return `${network} ${text}`;
+  }
+
+  handleOpenEvmExplorer(hash: string, type: EvmLinkType, networkId: EvmNetwork): void {
+    const url = this.getEvmExplorerLink(hash, type, networkId);
     const win = window.open(url, '_blank');
     win && win.focus();
   }
 
-  get soraExpolrerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+  get soraExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
     if (!this.soraNetwork) {
       return [];
     }
@@ -673,14 +523,6 @@ export default class BridgeTransaction extends Mixins(
       .filter((value) => !!value.value); // Polkadot explorer won't be shown without block
   }
 
-  get firstTxHash(): string {
-    return this.formatAddress(this.transactionFromHash, FORMATTED_HASH_LENGTH);
-  }
-
-  get secondTxHash(): string {
-    return this.formatAddress(this.transactionToHash, FORMATTED_HASH_LENGTH);
-  }
-
   handleViewTransactionsHistory(): void {
     router.push({ name: PageNames.BridgeTransactionsHistory });
   }
@@ -696,122 +538,38 @@ export default class BridgeTransaction extends Mixins(
     }
 
     await this.withParentLoading(async () => {
-      const withAutoStart =
-        !this.txInProcess && (!this.isTransferStarted || this.isTransactionFromPending || this.isTransactionToPending);
+      const withAutoStart = !this.txInProcess && this.isTxPending;
 
       await this.handleTransaction(withAutoStart);
     });
   }
 
   beforeDestroy(): void {
-    if (this.historyItem) {
+    if (!this.txInProcess && this.txIsUnsigned) {
       const tx = { ...this.historyItem };
-
-      if (tx.id && !this.txInProcess && isUnsignedFromPart(tx)) {
-        bridgeApi.removeHistory(tx.id);
-        this.setHistory(); // hack to update another views because of unknown hooks exucution order
-      }
+      this.removeHistory({ tx, force: true });
     }
 
     // reset active history item
     this.setHistoryId();
   }
 
-  private getTxIconStatusClasses(isSecondTransaction?: boolean): string {
-    const iconClass = 'network-info-icon';
-    const classes = [iconClass];
-    const isError = isSecondTransaction ? this.isTransactionToFailed : this.isTransactionFromFailed;
-    const isCompleted = isSecondTransaction ? this.isTransactionToCompleted : this.isTransactionFromCompleted;
-
-    if (isError) {
-      classes.push(`${iconClass}--error`);
-    } else if (isCompleted) {
-      classes.push(`${iconClass}--success`);
-    } else {
-      classes.push(`${iconClass}--pending`);
-    }
-
-    return classes.join(' ');
-  }
-
-  get firstTxIconStatusClasses(): string {
-    return this.getTxIconStatusClasses();
-  }
-
-  get secondTxIconStatusClasses(): string {
-    return this.getTxIconStatusClasses(true);
-  }
-
-  private getHashContainerClasses(hasMenuDropdown = true): string {
-    const container = 'transaction-hash-container';
-    const classes = [container];
-    if (hasMenuDropdown) {
-      classes.push(`${container}--with-dropdown`);
-    }
-    return classes.join(' ');
-  }
-
-  get hasExplorerLinksForFirstTx(): boolean {
-    return (this.isSoraToEvm && !!this.soraExpolrerLinks.length) || !this.isSoraToEvm;
-  }
-
-  get hasExplorerLinksForSecondTx(): boolean {
-    return (!this.isSoraToEvm && !!this.soraExpolrerLinks.length) || this.isSoraToEvm;
-  }
-
-  get firstTxHashContainerClasses(): string {
-    return this.getHashContainerClasses(this.hasExplorerLinksForFirstTx);
-  }
-
-  get secondTxHashContainerClasses(): string {
-    return this.getHashContainerClasses(this.hasExplorerLinksForSecondTx);
-  }
-
-  get formattedNetworkStep1(): string {
-    return this.formatNetwork(this.isSoraToEvm, true);
-  }
-
-  get formattedNetworkStep2(): string {
-    return this.formatNetwork(!this.isSoraToEvm, true);
-  }
-
   get comfirmationBlocksLeft(): number {
-    if (this.isSoraToEvm || !this.isTransactionToPending || !this.historyItem?.blockHeight || !this.evmBlockNumber)
-      return 0;
+    if (this.isSoraToEvm || !this.historyItem?.blockHeight || !this.evmBlockNumber) return 0;
 
     const blocksLeft = +this.historyItem.blockHeight + 30 - this.evmBlockNumber;
 
     return Math.max(blocksLeft, 0);
   }
 
-  get failedClassStep1(): string {
-    return this.getFailedClass(this.isTransactionFromFailed);
-  }
-
-  get failedClassStep2(): string {
-    return this.getFailedClass(this.isTransactionToFailed);
-  }
-
-  get transactionPendingNetwork(): string {
-    return `<span class="network-title">${this.t(
-      `bridgeTransaction.${this.isSoraToEvm ? 'sora' : 'ethereum'}`
-    )}</span>`;
-  }
-
-  private getFailedClass(transactionFailed?: boolean): string {
-    return transactionFailed ? 'info-line--error' : '';
-  }
-
-  private formatTransactionDate(transactionDate?: number): string {
-    // We use current date if request is failed
-    const date = transactionDate ? new Date(transactionDate) : new Date();
-    return this.formatDate(date.getTime());
+  get failedClass(): string {
+    return this.isTxFailed && !this.isTxWaiting ? 'info-line--error' : '';
   }
 
   async handleTransaction(withAutoStart = true): Promise<void> {
     await this.checkConnectionToExternalAccount(async () => {
       if (withAutoStart && this.historyItem?.id) {
-        await this.handleBridgeTx(this.historyItem.id);
+        await this.handleBridgeTransaction(this.historyItem.id);
       }
     });
   }
@@ -823,14 +581,9 @@ export default class BridgeTransaction extends Mixins(
 </script>
 
 <style lang="scss">
-$collapse-horisontal-padding: $inner-spacing-medium;
 $header-icon-size: 52px;
 $header-spinner-size: 62px;
 $header-font-size: var(--s-heading3-font-size);
-$collapse-header-title-font-size: $s-heading3-caps-font-size;
-$collapse-header-title-line-height: var(--s-line-height-base);
-$collapse-header-title-height: calc(#{$collapse-header-title-font-size} * #{$collapse-header-title-line-height});
-$collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-height});
 
 .transaction {
   &-container {
@@ -922,9 +675,6 @@ $collapse-header-height: calc(#{$basic-spacing * 4} + #{$collapse-header-title-h
   .transaction-content .s-input {
     background-color: var(--s-color-base-on-accent);
   }
-  .s-icon--network {
-    color: var(--s-color-base-content-tertiary);
-  }
 }
 </style>
 
@@ -950,10 +700,18 @@ $network-title-max-width: 250px;
   &-content {
     @include bridge-content(285px);
     margin-top: $inner-spacing-big;
+
+    & > *:not(:first-child) {
+      margin-top: $inner-spacing-medium;
+    }
   }
   &-hash-container {
     position: relative;
-    margin-bottom: $inner-spacing-mini;
+
+    & + & {
+      margin-top: $inner-spacing-small;
+    }
+
     .s-button--hash-copy,
     .s-dropdown--hash-menu {
       position: absolute;
@@ -1018,8 +776,7 @@ $network-title-max-width: 250px;
     margin-bottom: $inner-spacing-mini;
     font-weight: 700;
     line-height: var(--s-line-height-medium);
-    .s-icon--network {
-      font-size: var(--s-heading4-font-size);
+    .network-icon {
       margin-left: calc(#{$inner-spacing-mini} / 4);
     }
     &-separator {
@@ -1029,25 +786,6 @@ $network-title-max-width: 250px;
       font-weight: 300;
     }
   }
-}
-.network-info {
-  &-title {
-    display: flex;
-    align-items: baseline;
-    padding-right: $inner-spacing-mini;
-    padding-left: $inner-spacing-mini;
-
-    h3 {
-      margin-right: $inner-spacing-mini;
-      font-size: var(--s-font-size-small);
-      line-height: var(--s-line-height-reset);
-      font-weight: 600;
-      text-transform: inherit;
-      text-align: left;
-      max-width: $network-title-max-width;
-    }
-  }
-  @include status-icon(true);
 }
 .transaction-link {
   color: inherit;

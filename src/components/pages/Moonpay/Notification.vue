@@ -11,16 +11,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
-
 import { mutation, state, getter } from '@/store/decorators';
+
 import { MoonpayNotifications } from './consts';
+
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 @Component({
   components: {

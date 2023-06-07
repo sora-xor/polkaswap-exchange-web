@@ -14,8 +14,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Vue, Component, Prop } from 'vue-property-decorator';
+
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({

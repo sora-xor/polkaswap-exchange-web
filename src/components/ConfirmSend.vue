@@ -30,17 +30,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
+import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 // import DialogMixin from '@/components/mixins/DialogMixin';
 // import DialogBase from '@/components/DialogBase.vue';
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
+
+import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

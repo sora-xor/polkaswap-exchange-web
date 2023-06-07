@@ -36,13 +36,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
-import { VerificationStatus } from '@/types/card';
 import { action, getter, mutation, state } from '@/store/decorators';
+import { VerificationStatus } from '@/types/card';
+import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 
 const pendingTitle = 'card.statusPendingTitle';
 const pendingText = 'card.statusPendingText';

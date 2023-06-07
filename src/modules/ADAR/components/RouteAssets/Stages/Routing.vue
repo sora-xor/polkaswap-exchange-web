@@ -29,12 +29,13 @@
 </template>
 
 <script lang="ts">
+import { Asset } from '@sora-substrate/util/build/assets/types';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter } from '@/store/decorators';
 import { Recipient, RecipientStatus } from '@/store/routeAssets/types';
-import { Asset } from '@sora-substrate/util/build/assets/types';
-import { components } from '@soramitsu/soraneo-wallet-web';
 @Component({
   components: {
     TokenLogo: components.TokenLogo,

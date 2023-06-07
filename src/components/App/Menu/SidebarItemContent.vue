@@ -16,9 +16,10 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import SideMenuCard from '@/assets/img/sora-card/sidebar.svg?inline';
+
 import SideMenuAdarAbout from '@/assets/img/adar/sidebar.svg?inline';
+import SideMenuCard from '@/assets/img/sora-card/sidebar.svg?inline';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component({
   components: {

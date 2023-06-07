@@ -116,6 +116,8 @@ $neu-button-primary-box-shadow-hover--dark: 1px 1px 5px rgba(0, 0, 0, 0.7), -1px
 // Asset item height
 $s-asset-item-height: 71px;
 $s-asset-item-height--fiat: 86px;
+// override dark theme on disabled
+$s-color-base-on-disabled--dark: #C29AB7;
 
 @import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
 

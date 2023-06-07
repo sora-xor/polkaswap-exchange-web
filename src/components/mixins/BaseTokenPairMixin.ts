@@ -1,12 +1,12 @@
-import { Component, Mixins } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-
-import { state, getter } from '@/store/decorators';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { state, getter } from '@/store/decorators';
+
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class BaseTokenPairMixin extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {

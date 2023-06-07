@@ -1,7 +1,7 @@
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { defineMutations } from 'direct-vuex';
 
 import type { RouteAssetsState, Recipient, TransactionInfo, RouteAssetsSubscription } from './types';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
 import type { PrimaryMarketsEnabledAssets } from '@sora-substrate/liquidity-proxy/build/types';
 
 const mutations = defineMutations<RouteAssetsState>()({

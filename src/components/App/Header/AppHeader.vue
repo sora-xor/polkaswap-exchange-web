@@ -21,7 +21,7 @@
     <route-assets-navigation v-if="showRouteAssetsNavigation" class="app-controls s-flex" />
     <div
       class="app-controls app-controls--settings-panel s-flex"
-      :class="{ 'app-controls--settings-panel--dark': themeIsDark }"
+      :class="{ 'without-moonpay': !areMoonpayButtonsVisible }"
     >
       <!-- <market-maker-countdown /> -->
       <!-- <s-button type="action" class="node-control s-pressed" :tooltip="nodeTooltip" @click="openNodeSelectionDialog">
@@ -42,21 +42,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import PolkaswapLogo from '@/components/shared/Logo/Polkaswap.vue';
+import { PageNames, Components } from '@/consts';
+import { AdarComponents } from '@/modules/ADAR/consts';
+import { adarLazyComponent } from '@/modules/ADAR/router';
+import { lazyComponent, goTo } from '@/router';
+import { getter, mutation } from '@/store/decorators';
+
 import AppAccountButton from './AppAccountButton.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
 import AppLogoButton from './AppLogoButton.vue';
 
-import { lazyComponent, goTo } from '@/router';
-import { PageNames, Components } from '@/consts';
-import { AdarComponents } from '@/modules/ADAR/consts';
-import { adarLazyComponent } from '@/modules/ADAR/router';
-import { getter, mutation } from '@/store/decorators';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 @Component({
   components: {
@@ -91,10 +93,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
       size: WALLET_CONSTS.LogoSize.MEDIUM,
       tokenSymbol: XOR.symbol,
     };
-  }
-
-  get themeIsDark() {
-    return this.libraryTheme === Theme.DARK;
   }
 
   get showRouteAssetsNavigation() {

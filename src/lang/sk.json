@@ -87,11 +87,12 @@
         "noAccounts": "Zdá sa, že vo vašom rozšírení {extension} nie sú žiadne účty. Pridajte účet a skúste to znova.",
         "noAccount": "Chyba účtu {extension}. Skontrolujte váš účet v rozšírení {extension}",
         "noExtension": "Nenašlo sa žiadne {extension} . Nainštalujte si ho a znova načítajte túto stránku",
-        "noSigner": "Prístup zamietnutý. Prejdite do nastavení {extension} a otvorte položku Spravovať prístup k webovým stránkam."
+        "noSigner": "Prístup zamietnutý. Prejdite do nastavení {extension} a otvorte položku Spravovať prístup k webovým stránkam.",
+        "connectionError": "Pri pripájaní peňaženky sa vyskytla chyba. Môžete skúsiť znova pripojiť peňaženku cez {extension}"
     },
     "connection": {
         "title": "Sieťový účet {Sora}",
-        "text": "Pripojte alebo vytvorte svoj účet siete {Sora} s {extensions}. Tieto rozšírenia vám umožňujú bezpečne podpisovať transakcie a spravovať aktíva v sieti {Sora}.",
+        "text": "Rozšírenia a Google bezpečne ukladajú váš účet siete {Sora} . Umožňujú vám podpisovať transakcie a spravovať aktíva.",
         "noAccounts": "Vo vašom rozšírení prehliadača {extension} nebol nájdený žiadny účet. Pridajte účet a skúste to znova.",
         "selectAccount": "Vyberte účet, s ktorým chcete pracovať",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Inštalácia",
             "connected": "Pripojené",
             "notConnected": "Nepripojený"
+        },
+        "internalTitle": "Pripojiť cez {wallet}",
+        "internalText": "Existujúci účet môžete vytvoriť alebo prepojiť prostredníctvom služby {wallet} . Ukladá účty pomocou šifrovania.",
+        "list": {
+            "simplest": "Najjednoduchšia možnosť",
+            "extensions": "Rozšírenia"
         }
     },
     "wallet": {
         "title": "Sieťový účet {Sora}",
         "WalletAssets": "Aktíva",
-        "WalletActivity": "Aktivita",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Aktivita"
     },
     "walletSend": {
         "title": "Odoslať",
@@ -516,13 +523,9 @@
         "strategicBonusApy": "Strategický bonus APY"
     },
     "bridge": {
-        "title": "{Hashi} prepojenie",
+        "title": "Most",
         "info": "Konverzia tokenov medzi sieťami {Sora} a {Ethereum}.",
         "balance": "Zostatok",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Nasledujúci",
         "connectWallets": "Pripojením peňaženiek zobrazíte príslušnú históriu transakcií.",
         "soraNetworkFee": "{Sora} poplatok za sieť",
@@ -536,8 +539,7 @@
         "networkInfo": "Prepojiť {Sora} sieť s:",
         "copy": "Skopírujte sieťovú adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} adresa"
     },
     "selectRegisteredAsset": {
         "title": "Vybrať token",
@@ -559,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Potvrdiť transakciu",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Potvrdiť transakciu"
     },
     "bridgeTransaction": {
         "details": "{from} pre {to}",
@@ -602,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transakcia vo fáze spracovania…",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Vytvoriť novú transakciu",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText v {Metamask}",
-        "expectedAddress": "Očakávaná adresa v {Metamask}",
         "title": "Preklenovacia transakcia",
         "expectedMetaMaskAddress": "Očakávaná adresa v {Metamask}:",
         "allowToken": "Povoliť {AppName} použitie vášho {tokenSymbol}",
@@ -1031,7 +1025,7 @@
     },
     "receivedText": "Prijaté",
     "browserNotificationDialog": {
-        "title": "Povoliť upozornenia prehliadača",
+        "title": "Nastavenie oznámení",
         "info": "Budeme vám posielať iba relevantné aktualizácie o vašej peňaženke, napríklad: zmeny stavu aktív",
         "button": "Povoliť upozornenia",
         "agree": "Áno rozumiem",
@@ -1103,10 +1097,16 @@
             "jsonFields": "Súbor JSON neobsahuje povinné polia"
         },
         "assetsAtRiskText": "Majetok v ohrození!",
-        "deleteAccountText": "Účet nie je možné obnoviť bez počiatočnej frázy, súboru .json alebo ak je uložený v nejakej prípone. Budete odhlásení."
+        "deleteAccountText": "Účet nie je možné obnoviť bez počiatočnej frázy, súboru .json alebo ak je uložený v nejakej prípone. Budete odhlásení.",
+        "importSteps": {
+            "selectWallet": "Prejdite do peňaženky, ktorú používate",
+            "selectAccount": "Vyberte účet, ktorý chcete exportovať",
+            "exportAccount": "Exportujte súbor {JSON}"
+        },
+        "exportTutorialsText": "Exportujte návody"
     },
     "hashiBridgeText": "Most {Hashi}",
-    "disclaimerTitle": "Vylúčenie zodpovednosti:",
+    "disclaimerTitle": "Vylúčenie zodpovednosti",
     "explore": {
         "showOnlyMyPositions": "Zobraziť iba moje pozície"
     },
@@ -1174,5 +1174,32 @@
     },
     "locationText": "Poloha",
     "acceptText": "Prijať a skryť",
-    "newAccountsText": "Nové účty"
+    "newAccountsText": "Nové účty",
+    "dragAndDropText": "Presuňte myšou alebo vyberte súbor {extension}",
+    "copyPhraseText": "Kopírovať frázu",
+    "stepText": "Krok",
+    "alerts": {
+        "drop": "Kvapky nižšie",
+        "raise": "Zvyšuje vyššie",
+        "once": "Raz",
+        "always": "Vždy",
+        "edit": "Upraviť upozornenie",
+        "delete": "Odstrániť upozornenie",
+        "onDropDesc": "{token} klesne pod {price}",
+        "onRaiseDesc": "{token} zvyšuje nad {price}",
+        "alertsTitle": "Upozornenia",
+        "alertsCreateTitle": "Nastaviť upozornenie na cenu",
+        "alertsTooltip": "Upozornenia na cenu sú upozornenia, ktoré si môžete nastaviť tak, aby dostávali aktualizácie, keď cena konkrétneho tokenu dosiahne určitý bod, ktorý si nastavíte",
+        "createBtn": "Vytvorte nové upozornenie na cenu",
+        "enableSwitch": "Povoliť upozornenia na vklad majetku",
+        "currentPrice": "súčasná cena",
+        "alertTypeTitle": "Typ upozornenia",
+        "typeTooltip": "Vyberte možnosť „poklesy pod“ alebo „zvýšenie nad“, aby ste určili výstražnú podmienku pre sledovanie dôležitých pohybov cien. Tieto možnosti vám umožňujú dostávať včasné upozornenia, keď hodnota vášho majetku klesne pod alebo prekročí vami určenú hranicu",
+        "alertFrequencyTitle": "Frekvencia varovania",
+        "frequencyTooltip": "Vyberte si medzi „raz“ a „vždy“, aby ste určili, ako často budete dostávať upozornenia pre vybraný typ upozornenia. „Raz“ odošle jediné upozornenie, keď je podmienka splnená, zatiaľ čo „vždy“ vás bude naďalej upozorňovať pri každom prekročení cenového limitu",
+        "noSupportMsg": "Váš prehliadač nepodporuje upozornenia",
+        "finishBtn": "Dokončiť"
+    },
+    "accountAddressText": "Adresa účtu",
+    "fiatDisclaimer": "Upozorňujeme, že fiat hodnoty spojené s kryptomenami na našej webovej stránke sú poskytované externými službami (Subquery, Subsquid, Ceres API) sú približné. Vzhľadom na prirodzenú zložitosť týchto výpočtov nie je možné zaručiť vždy absolútnu presnosť."
 }

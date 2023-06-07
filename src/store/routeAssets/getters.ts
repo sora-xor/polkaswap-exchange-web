@@ -1,11 +1,12 @@
-import { defineGetters } from 'direct-vuex';
-
-import { routeAssetsGetterContext } from '@/store/routeAssets';
-import type { Recipient, RouteAssetsState, RouteAssetsSubscription, TransactionInfo } from './types';
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { Stages } from '@/modules/ADAR/consts';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import { defineGetters } from 'direct-vuex';
 import { Subscription } from 'rxjs';
+
+import { Stages } from '@/modules/ADAR/consts';
+import { routeAssetsGetterContext } from '@/store/routeAssets';
+
+import type { Recipient, RouteAssetsState, RouteAssetsSubscription, TransactionInfo } from './types';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 const getters = defineGetters<RouteAssetsState>()({
   recipients(...args): Array<Recipient> {
