@@ -1,18 +1,17 @@
-import { ethers } from 'ethers';
-import WalletConnectProvider from '@walletconnect/web3-provider';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { XOR, VAL, PSWAP, ETH } from '@sora-substrate/util/build/assets/consts';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import { ethers } from 'ethers';
+
+import { ZeroStringValue } from '@/consts';
+import { BridgeType, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
+import type { EvmNetworkData } from '@/consts/evm';
+import { settingsStorage } from '@/utils/storage';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
-
-import { settingsStorage } from '@/utils/storage';
-import { ZeroStringValue } from '@/consts';
-import { BridgeType, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
-
-import type { EvmNetworkData } from '@/consts/evm';
 
 type ethersProvider = ethers.providers.Web3Provider;
 

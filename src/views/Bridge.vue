@@ -272,21 +272,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
-import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
+import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
-
-import { getter, action, mutation, state } from '@/store/decorators';
-import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
+import router, { lazyComponent } from '@/router';
+import { getter, action, mutation, state } from '@/store/decorators';
 import {
   isXorAccountAsset,
   hasInsufficientBalance,
@@ -297,6 +294,9 @@ import {
   asZeroValue,
 } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
+
+import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

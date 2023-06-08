@@ -62,15 +62,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
+import CardIcon from '@/assets/img/sora-card/card.svg?inline';
+import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
+import UserIcon from '@/assets/img/sora-card/user.svg?inline';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, state } from '@/store/decorators';
 import { clearTokensFromLocalStorage } from '@/utils/card';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
-import CardIcon from '@/assets/img/sora-card/card.svg?inline';
-import UserIcon from '@/assets/img/sora-card/user.svg?inline';
 
 @Component({
   components: {

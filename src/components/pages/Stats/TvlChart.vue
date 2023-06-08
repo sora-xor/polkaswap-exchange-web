@@ -28,6 +28,10 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/math';
+import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { gql } from '@urql/core';
+import { graphic } from 'echarts';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { graphic } from 'echarts';
@@ -36,15 +40,59 @@ import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web
 import { FPNumber } from '@sora-substrate/math';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
-
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
-import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
-
+import { lazyComponent } from '@/router';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import { ChartData, fetchData } from '@/indexer/queries/networkTvl';
+import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
+
+import type {
+  SnapshotTypes,
+  EntitiesQueryResponse,
+  NetworkSnapshotEntity,
+} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
+
+type ChartData = {
+  timestamp: number;
+  value: number;
+};
+
+const NetworkTvlQuery = gql<EntitiesQueryResponse<NetworkSnapshotEntity>>`
+  query NetworkTvlQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
+    entities: networkSnapshots(
+      after: $after
+      orderBy: TIMESTAMP_DESC
+      filter: {
+        and: [
+          { type: { equalTo: $type } }
+          { timestamp: { lessThanOrEqualTo: $from } }
+          { timestamp: { greaterThanOrEqualTo: $to } }
+          { liquidityUSD: { greaterThan: "0" } }
+        ]
+      }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        timestamp
+        liquidityUSD
+      }
+    }
+  }
+`;
+
+const parse = (node: NetworkSnapshotEntity): ChartData => {
+  const value = +node.liquidityUSD;
+
+  return {
+    timestamp: +node.timestamp * 1000,
+    value: Number.isFinite(value) ? value : 0,
+  };
+};
 
 @Component({
   components: {

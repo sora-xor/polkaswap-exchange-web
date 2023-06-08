@@ -1,9 +1,9 @@
-import { Component, Mixins } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { DemeterPool, DemeterRewardToken } from '@sora-substrate/util/build/demeterFarming/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 const BLOCKS_PER_YEAR = new FPNumber(5_256_000);
 

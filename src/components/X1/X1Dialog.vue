@@ -46,11 +46,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import { X1Api, X1Widget } from '@/utils/x1';
 import { getter, state } from '@/store/decorators';
+import { X1Api, X1Widget } from '@/utils/x1';
 
 @Component({
   components: {

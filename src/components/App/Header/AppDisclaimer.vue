@@ -1,7 +1,7 @@
 <template>
   <div class="disclaimer">
     <div class="disclaimer__header">
-      <div class="disclaimer__header-title">{{ disclaimerTitle }}</div>
+      <div class="disclaimer__header-title">{{ t('disclaimerTitle') }}</div>
       <s-icon
         v-if="userDisclaimerApprove"
         class="disclaimer__header-close-btn"
@@ -39,9 +39,9 @@
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { delay } from '@/utils';
-import { mutation, state } from '@/store/decorators';
 import { Links } from '@/consts';
+import { mutation, state } from '@/store/decorators';
+import { delay } from '@/utils';
 
 @Component
 export default class AppDisclaimer extends Mixins(TranslationMixin) {
@@ -60,10 +60,6 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
 
   handleClose(): void {
     this.toggleVisibility();
-  }
-
-  get disclaimerTitle(): string {
-    return this.t('disclaimerTitle').slice(0, -1);
   }
 
   get disclaimerPrefix(): string {

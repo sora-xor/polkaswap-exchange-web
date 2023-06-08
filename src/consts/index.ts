@@ -1,10 +1,11 @@
-import invert from 'lodash/fp/invert';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
+import invert from 'lodash/fp/invert';
 
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 import pkg from '../../package.json';
+
+import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 export const app = {
   version: pkg.version,

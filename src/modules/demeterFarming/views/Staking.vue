@@ -79,20 +79,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
-
-import PageMixin from '../mixins/PageMixin';
-import { demeterLazyComponent } from '../router';
-import { DemeterComponents } from '../consts';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+import { lazyComponent } from '@/router';
+
+import { DemeterComponents } from '../consts';
+import PageMixin from '../mixins/PageMixin';
+import { demeterLazyComponent } from '../router';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
 
 type StakingItem = {
   asset: Asset;

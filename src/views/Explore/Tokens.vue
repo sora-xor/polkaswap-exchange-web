@@ -112,7 +112,9 @@
             </sort-button>
           </template>
           <template v-slot="{ row }">
+            <span v-if="isSynthetic(row)">—</span>
             <formatted-amount
+              v-else
               is-fiat-value
               :font-weight-rate="FontWeightRate.MEDIUM"
               :value="row.tvlFormatted.amount"
@@ -138,7 +140,9 @@
             </sort-button>
           </template>
           <template v-slot="{ row }">
+            <span v-if="isSynthetic(row)">—</span>
             <formatted-amount
+              v-else
               :font-weight-rate="FontWeightRate.MEDIUM"
               :value="row.velocityFormatted"
               class="explore-table-item-price explore-table-item-amount"
@@ -162,9 +166,22 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { Component, Mixins } from 'vue-property-decorator';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { XSTUSD } from '@sora-substrate/util/build/assets/consts';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
+import { components, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
+import { gql } from '@urql/core';
+import last from 'lodash/fp/last';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { getter } from '@/store/decorators';
+import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
+import { syntheticAssetRegexp } from '@/utils/regexp';
+
+import type { AmountWithSuffix } from '../../types/formats';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { AmountWithSuffix } from '@/types/formats';
 
@@ -260,6 +277,10 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
       return buffer;
     }, []);
+  }
+
+  isSynthetic(row: TableItem): boolean {
+    return syntheticAssetRegexp.test(row.address) || row.address === XSTUSD.address;
   }
 
   // ExplorePageMixin method implementation

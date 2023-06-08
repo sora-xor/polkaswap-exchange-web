@@ -20,13 +20,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import { Components, NumberedAlert } from '@/consts';
 import { lazyComponent } from '@/router';
 import { mutation, state } from '@/store/decorators';
+
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 enum AlertPages {
   AlertList,

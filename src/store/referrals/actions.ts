@@ -1,5 +1,5 @@
-import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineActions } from 'direct-vuex';
 
 import { referralsActionContext } from '@/store/referrals';
 

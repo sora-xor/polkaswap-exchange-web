@@ -1,6 +1,3 @@
-import first from 'lodash/fp/first';
-import last from 'lodash/fp/last';
-import { ethers } from 'ethers';
 import { BridgeTxStatus, Operation } from '@sora-substrate/util';
 import {
   api,
@@ -9,18 +6,19 @@ import {
   WALLET_CONSTS,
   getCurrentIndexer,
 } from '@soramitsu/soraneo-wallet-web';
-
-import ethersUtil from '@/utils/ethers-util';
-import { getEvmTransactionRecieptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
-
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { ethers } from 'ethers';
+import first from 'lodash/fp/first';
+import last from 'lodash/fp/last';
 
 import { ZeroStringValue } from '@/consts';
 import { SmartContracts, SmartContractType, KnownEthBridgeAsset } from '@/consts/evm';
-
-import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
 import type { EthBridgeContractsAddresses } from '@/store/web3/types';
+import { getEvmTransactionRecieptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import ethersUtil from '@/utils/ethers-util';
+
+import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 const BRIDGE_INTERFACE = new ethers.utils.Interface([
   ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.XOR].abi, // XOR or VAL

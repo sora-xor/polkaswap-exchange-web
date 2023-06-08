@@ -1,7 +1,7 @@
+import type { BridgeType } from '@/consts/evm';
+
 import type { CodecString } from '@sora-substrate/util';
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
-
-import type { BridgeType } from '@/consts/evm';
 
 export type EthBridgeContractsAddresses = {
   XOR: string;

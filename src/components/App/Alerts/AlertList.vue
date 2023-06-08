@@ -40,15 +40,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import { MAX_ALERTS_NUMBER } from '@/consts';
+import { getter, mutation, state } from '@/store/decorators';
+import { getDeltaPercent } from '@/utils';
+
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Alert, WhitelistIdsBySymbol } from '@soramitsu/soraneo-wallet-web/lib/types/common';
-
-import { getter, mutation, state } from '@/store/decorators';
-import { MAX_ALERTS_NUMBER } from '@/consts';
-import { getDeltaPercent } from '@/utils';
 
 @Component({
   components: {

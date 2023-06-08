@@ -28,17 +28,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { CodecString, Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
-
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import { lazyComponent } from '@/router';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
+
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: { InfoLine: components.InfoLine, TransactionDetails: lazyComponent(Components.TransactionDetails) },

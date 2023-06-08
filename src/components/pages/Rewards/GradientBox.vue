@@ -6,6 +6,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+
 import type { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 
 @Component

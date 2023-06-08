@@ -1,14 +1,15 @@
-import { defineGetters } from 'direct-vuex';
 import { Operation } from '@sora-substrate/util';
-import type { IBridgeTransaction, CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
+import { defineGetters } from 'direct-vuex';
 
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { bridgeGetterContext } from '@/store/bridge';
 import { ZeroStringValue } from '@/consts';
 import { BridgeType } from '@/consts/evm';
+import { bridgeGetterContext } from '@/store/bridge';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import ethersUtil from '@/utils/ethers-util';
+
 import type { BridgeState } from './types';
+import type { IBridgeTransaction, CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
 
 const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {

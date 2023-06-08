@@ -55,15 +55,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/math';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import { getter, state } from '@/store/decorators';
-import router, { lazyComponent } from '@/router';
-import { PageNames, Components } from '@/consts';
-import { clearPayWingsKeysFromLocalStorage, clearTokensFromLocalStorage } from '@/utils/card';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { PageNames, Components } from '@/consts';
+import router, { lazyComponent } from '@/router';
+import { getter, state } from '@/store/decorators';
+import { clearPayWingsKeysFromLocalStorage, clearTokensFromLocalStorage } from '@/utils/card';
 
 enum BuyButtonType {
   X1,

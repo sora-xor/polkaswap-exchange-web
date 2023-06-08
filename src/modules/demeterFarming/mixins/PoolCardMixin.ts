@@ -1,16 +1,15 @@
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import PoolStatusMixin from './PoolStatusMixin';
-
+import type { DemeterAsset } from '@/modules/demeterFarming/types';
 import { getter, state } from '@/store/decorators';
 import { hasInsufficientXorForFee } from '@/utils';
 
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { NetworkFeesObject, CodecString } from '@sora-substrate/util';
+import PoolStatusMixin from './PoolStatusMixin';
 
-import type { DemeterAsset } from '@/modules/demeterFarming/types';
+import type { NetworkFeesObject, CodecString } from '@sora-substrate/util';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class PoolCardMixin extends Mixins(PoolStatusMixin) {

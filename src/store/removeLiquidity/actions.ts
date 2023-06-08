@@ -1,10 +1,12 @@
-import { defineActions } from 'direct-vuex';
-import { api } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
-import type { ActionContext } from 'vuex';
+import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineActions } from 'direct-vuex';
 
 import { removeLiquidityActionContext } from '@/store/removeLiquidity';
+
 import { FocusedField } from './types';
+
+import type { ActionContext } from 'vuex';
 
 function updateFirstTokenAmount(context: ActionContext<any, any>): void {
   const { state, commit, getters } = removeLiquidityActionContext(context);

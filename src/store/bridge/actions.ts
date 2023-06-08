@@ -1,31 +1,27 @@
+import { BridgeCurrencyType, BridgeHistory, FPNumber, Operation } from '@sora-substrate/util';
+import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { BridgeCurrencyType, BridgeHistory, FPNumber, Operation } from '@sora-substrate/util';
-import type { ActionContext } from 'vuex';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
-
-import { bridgeActionContext } from '@/store/bridge';
 import { MaxUint256 } from '@/consts';
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
-import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
-import ethersUtil from '@/utils/ethers-util';
+import { bridgeActionContext } from '@/store/bridge';
 import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
-import type { SignTxResult } from './types';
-
-// ETH
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import { waitForApprovedRequest, updateEthBridgeHistory } from '@/utils/bridge/eth/utils';
-
-// EVM
 import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
+import ethersUtil from '@/utils/ethers-util';
+import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
+
+import type { SignTxResult } from './types';
+import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { EvmHistory, EvmTransaction } from '@sora-substrate/util/build/evm/types';
+import type { ActionContext } from 'vuex';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 

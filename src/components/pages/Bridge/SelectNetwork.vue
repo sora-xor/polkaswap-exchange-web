@@ -17,15 +17,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-
-import { action, getter, mutation, state } from '@/store/decorators';
 import { BridgeType } from '@/consts/evm';
 import type { EvmNetworkData } from '@/consts/evm';
+import { action, getter, mutation, state } from '@/store/decorators';
+
+import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 const DELIMETER = '-';
 
