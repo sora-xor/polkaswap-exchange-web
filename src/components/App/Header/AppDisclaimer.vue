@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Ref } from 'vue-property-decorator';
+import { Component, Mixins, Ref, Vue } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Links } from '@/consts';
@@ -56,7 +56,7 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   loadingAcceptBtn = false;
   isActiveAccptBtn = false;
 
-  @Ref('acceptBtn') private readonly acceptBtn;
+  @Ref('acceptBtn') private readonly acceptBtn!: Vue;
 
   async handleAccept(): Promise<void> {
     this.loadingAcceptBtn = true;
