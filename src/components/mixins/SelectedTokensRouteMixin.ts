@@ -1,9 +1,10 @@
-import { XSTUSD, XOR } from '@sora-substrate/util/build/assets/consts';
+import { XSTUSD, XOR, XST } from '@sora-substrate/util/build/assets/consts';
 import { WALLET_TYPES, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Vue } from 'vue-property-decorator';
 
 import { PageNames } from '@/consts';
 import { getter } from '@/store/decorators';
+import { syntheticAssetRegexp } from '@/utils/regexp';
 
 import type { AccountAsset, Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
 import type { NavigationGuardNext, Route } from 'vue-router';
@@ -37,8 +38,22 @@ export default class SelectedTokenRouteMixin extends Vue {
     const bothArePresented = !!(firstAddress && secondAddress);
     switch (this.$route.name) {
       case PageNames.RemoveLiquidity:
-      case PageNames.AddLiquidity:
         return bothArePresented && api.dex.baseAssetsIds.includes(firstAddress);
+      case PageNames.AddLiquidity: {
+        if (!(bothArePresented && api.dex.baseAssetsIds.includes(firstAddress))) {
+          return false;
+        }
+        if (firstAddress === XOR.address && secondAddress === XSTUSD.address) {
+          return false; // XOR-XSTUSD isn't allowed
+        }
+        if (firstAddress === XSTUSD.address && [XOR.address, XST.address].includes(secondAddress)) {
+          return false; // XSTUSD-XOR & XSTUSD-XST aren't allowed
+        }
+        if (syntheticAssetRegexp.test(secondAddress)) {
+          return false; // synthetic pairs aren't allowed
+        }
+        return true;
+      }
       default:
         return bothArePresented;
     }
@@ -80,20 +95,10 @@ export default class SelectedTokenRouteMixin extends Vue {
    *
    * Returns is valid state for routing life cycle
    */
-  parseCurrentRoute(params?: {
-    isValidRoute: boolean;
-    name: string;
-    firstAddress: string;
-    secondAddress: string;
-    first: string;
-    second: string;
-  }): boolean {
+  parseCurrentRoute(params?: { isValidRoute: boolean; name: string }): boolean {
     const isValidRoute = params ? params.isValidRoute : this.isValidRoute;
     const name = params ? params.name : (this.$route.name as string);
-    const first = params ? params.first : this.$route.params.first;
-    const second = params ? params.second : this.$route.params.second;
-    const firstAddress = params ? params.firstAddress : this.firstRouteAddress;
-    const secondAddress = params ? params.secondAddress : this.secondRouteAddress;
+
     if (!isValidRoute) {
       this.wasRedirected = true;
       if (name === PageNames.RemoveLiquidity) {
@@ -101,16 +106,6 @@ export default class SelectedTokenRouteMixin extends Vue {
       } else if (this.$route.params) {
         this.$router.replace({ name, params: undefined });
       }
-      return false;
-    } else if (name === PageNames.AddLiquidity && firstAddress === XSTUSD.address && secondAddress === XOR.address) {
-      // Invert route for Add liquidity XSTUSD-XOR pair
-      const xor = XOR.symbol;
-      const xstusd = XSTUSD.symbol;
-      // Do nothing when routes are the same
-      if (first === xor && second === xstusd) return true;
-      this.wasRedirected = true;
-      this.$router.replace({ name, params: { first: xor, second: xstusd } });
-      this.setData({ firstAddress, secondAddress }); // We need to set data for add liquidity here
       return false;
     } else {
       return true;
@@ -144,10 +139,6 @@ export default class SelectedTokenRouteMixin extends Vue {
       const isValidState = this.parseCurrentRoute({
         isValidRoute,
         name: to.name as string,
-        first,
-        second,
-        firstAddress,
-        secondAddress,
       });
 
       if (!isValidState) return; // Because of another redirection
