@@ -45,9 +45,8 @@
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { connection } from '@sora-substrate/util';
-import { components, mixins, settingsStorage } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, settingsStorage, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type { History, HistoryItem } from '@sora-substrate/util';
-import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
@@ -67,8 +66,11 @@ import { action, getter, mutation, state } from '@/store/decorators';
 import { preloadFontFace, updateDocumentTitle } from '@/utils';
 import { getLocale } from '@/lang';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
+import type { Indexer } from '@/types/indexers';
 import type { FeatureFlags } from '@/store/settings/types';
 import type { EthBridgeSettings } from '@/store/web3/types';
+
+const { IndexerType } = WALLET_CONSTS;
 
 @Component({
   components: {
@@ -111,6 +113,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.wallet.settings.setSubqueryEndpoint private setSubqueryEndpoint!: (endpoint: string) => void;
   @mutation.wallet.settings.setSubsquidEndpoint private setSubsquidEndpoint!: (endpoint: string) => void;
   @mutation.settings.setDefaultNodes private setDefaultNodes!: (nodes: Array<Node>) => void;
+  @mutation.settings.setDefaultIndexers private setDefaultIndexers!: (nodes: Array<Indexer>) => void;
   @mutation.settings.setNetworkChainGenesisHash private setNetworkChainGenesisHash!: (hash?: string) => void;
   @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
@@ -211,10 +214,19 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
       this.setSoraNetwork(data.NETWORK_TYPE);
-      this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
-      this.setSubsquidEndpoint(data.SUBSQUID_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
+
+      if (!data.SUBQUERY_INDEXER) {
+        throw new Error('SUBQUERY_INDEXER is not set');
+      }
+      if (!data.SUBSQUID_INDEXER) {
+        throw new Error('SUBSQUID_INDEXER is not set');
+      }
+
+      this.setDefaultIndexers([data.SUBQUERY_INDEXER, data.SUBSQUID_INDEXER]);
+      this.setSubqueryEndpoint(data.SUBQUERY_INDEXER.address);
+      this.setSubsquidEndpoint(data.SUBSQUID_INDEXER.address);
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);

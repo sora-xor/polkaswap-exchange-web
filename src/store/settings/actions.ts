@@ -9,6 +9,7 @@ import { updateDocumentTitle, updateFpNumberLocale } from '@/utils';
 import { AppHandledError } from '@/utils/error';
 import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
+import type { ConnectToIndexerOptions, Indexer } from '@/types/indexers';
 
 const NODE_CONNECTION_TIMEOUT = 60_000;
 
@@ -175,6 +176,12 @@ const actions = defineActions({
       }
       throw err;
     }
+  },
+  async setIndexer(context, indexer: Indexer): Promise<void> {
+    const { commit, rootCommit } = settingsActionContext(context);
+
+    rootCommit.wallet.settings.setIndexerType(indexer.type);
+    commit.setIndexer(indexer);
   },
   async addCustomNode(context, node: Node): Promise<void> {
     const { commit, getters } = settingsActionContext(context);

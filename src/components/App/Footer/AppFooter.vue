@@ -23,6 +23,21 @@
       </template>
     </footer-popper>
     <footer-popper
+      icon="globe-16"
+      panel-class="indexer"
+      :panel-text="indexer.name"
+      :status="indexerClass"
+      :action-text="t('selectIndexerText')"
+      @action="openIndexerSelectionDialog"
+    >
+      <template #label>
+        <span>{{ indexer.name }}</span>
+      </template>
+      <template>
+        <span>{{ indexer.address }}</span>
+      </template>
+    </footer-popper>
+    <footer-popper
       icon="wi-fi-16"
       panel-class="internet"
       :panel-text="internetConnectionText"
@@ -52,6 +67,7 @@
       </template>
     </footer-popper>
     <select-node-dialog />
+    <select-indexer-dialog />
     <no-internet-dialog />
     <statistics-dialog :visible.sync="showStatisticsDialog" />
   </div>
@@ -73,6 +89,7 @@ import { state, getter, mutation } from '@/store/decorators';
 import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
 import type { Node } from '@/types/nodes';
+import type { Indexer } from '@/types/indexers';
 
 /** Max limit provided by navigator.connection.downlink */
 const MAX_INTERNET_CONNECTION_LIMIT = 10;
@@ -83,6 +100,7 @@ const MAX_INTERNET_CONNECTION_LIMIT = 10;
     NoInternetDialog,
     StatisticsDialog: lazyComponent(Components.StatisticsDialog),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
+    SelectIndexerDialog: lazyComponent(Components.SelectIndexerDialog),
   },
 })
 export default class AppFooter extends Mixins(TranslationMixin) {
@@ -106,7 +124,11 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   @getter.settings.nodeIsConnecting isNodeConnecting!: boolean;
   @getter.settings.nodeIsConnected isNodeConnected!: boolean;
   @state.settings.node node!: Partial<Node>;
+  @state.settings.indexer indexer!: Partial<Indexer>;
   @mutation.settings.setSelectNodeDialogVisibility private setSelectNodeDialogVisibility!: (flag: boolean) => void;
+  @mutation.settings.setSelectIndexerDialogVisibility private setSelectIndexerDialogVisibility!: (
+    flag: boolean
+  ) => void;
 
   private get nodeConnectionStatusKey(): string {
     if (this.isNodeConnected) return 'connected';
@@ -124,6 +146,10 @@ export default class AppFooter extends Mixins(TranslationMixin) {
     return this.t(`footer.node.title.${this.nodeConnectionStatusKey}`);
   }
 
+  get indexerClass(): Status {
+    return Status.SUCCESS;
+  }
+
   get formattedNodeLocation() {
     if (!this.node?.location) {
       return null;
@@ -133,6 +159,10 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
   openNodeSelectionDialog(): void {
     this.setSelectNodeDialogVisibility(true);
+  }
+
+  openIndexerSelectionDialog(): void {
+    this.setSelectIndexerDialogVisibility(true);
   }
 
   // Internet connection

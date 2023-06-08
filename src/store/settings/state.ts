@@ -5,6 +5,7 @@ import type { SettingsState } from './types';
 
 function initialState(): SettingsState {
   const node = settingsStorage.get('node');
+  const indexer = settingsStorage.get('indexer');
   const customNodes = settingsStorage.get('customNodes');
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
   const сhartsEnabled = storage.get('сhartsEnabled');
@@ -19,15 +20,18 @@ function initialState(): SettingsState {
     isBrowserNotificationApiAvailable,
     browserNotifsPermission: isBrowserNotificationApiAvailable ? Notification.permission : 'default',
     node: node ? JSON.parse(node) : {},
+    indexer: indexer ? JSON.parse(indexer) : {},
     language: getLocale(),
     displayRegions: undefined,
     defaultNodes: [],
     customNodes: customNodes ? JSON.parse(customNodes) : [],
+    defaultIndexers: [],
     nodeAddressConnecting: '',
     nodeConnectionAllowance: true,
     chainGenesisHash: '',
     faucetUrl: '',
     selectNodeDialogVisibility: false,
+    selectIndexerDialogVisibility: false,
     selectLanguageDialogVisibility: false,
     disclaimerVisibility: false,
     alertSettingsVisibility: false,

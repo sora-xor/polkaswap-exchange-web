@@ -77,6 +77,9 @@ export const Links = {
   nodes: {
     tutorial: 'https://medium.com/sora-xor/how-to-run-a-sora-testnet-node-a4d42a9de1af',
   },
+  indexers: {
+    tutorial: '',
+  },
   faq: 'https://wiki.sora.org/polkaswap/polkaswap-faq',
   terms: 'https://wiki.sora.org/polkaswap/terms',
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
@@ -157,6 +160,9 @@ export enum Components {
   SelectNodeDialog = 'App/Footer/SelectNodeDialog',
   SelectNode = 'App/Footer/Node/SelectNode',
   NodeInfo = 'App/Footer/Node/NodeInfo',
+  SelectIndexerDialog = 'App/Footer/SelectIndexerDialog',
+  SelectIndexer = 'App/Footer/Indexer/SelectIndexer',
+  IndexerInfo = 'App/Footer/Indexer/IndexerInfo',
   // SORA Card
   SoraCard = 'SoraCard',
   SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
