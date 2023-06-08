@@ -103,8 +103,6 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
   }
 
   showErrorMessage(): void {
-    console.info('called');
-
     this.showErrorInfoBanner = true;
   }
 
@@ -114,8 +112,6 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     }
 
     if (!this.moonpayEnabled) {
-      console.info('Moonpay not enabled');
-
       return this.showErrorMessage();
     }
 
