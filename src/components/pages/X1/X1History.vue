@@ -23,12 +23,13 @@ export default class X1History extends Mixins() {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .x1-history {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   height: 60px;
+  margin-bottom: 98px;
 }
 </style>

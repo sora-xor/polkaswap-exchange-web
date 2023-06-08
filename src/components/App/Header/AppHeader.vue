@@ -3,7 +3,7 @@
     <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
     <div class="app-controls app-controls--fiat-payment s-flex" @click="goTo(PageNames.FiatDepositOptions)">
-      <s-button type="tertiary" size="medium" @click="openPayOptions">
+      <s-button type="tertiary" size="medium">
         <pair-token-logo :first-token="xor" :second-token="eth" size="small" />
         <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
@@ -54,8 +54,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
   @getter.assets.xor xor!: Nullable<AccountAsset>;
   @getter.assets.eth eth!: Nullable<AccountAsset>;
 
-  @mutation.settings.setPayOptionsVisibility private setPayOptionsVisibility!: (flag: boolean) => void;
-
   goTo = goTo;
 
   get nodeLogo() {
@@ -63,13 +61,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
       size: WALLET_CONSTS.LogoSize.MEDIUM,
       tokenSymbol: XOR.symbol,
     };
-  }
-
-  async openPayOptions(): Promise<void> {
-    if (!this.isSoraAccountConnected) {
-      return this.connectInternalWallet();
-    }
-    this.setPayOptionsVisibility(true);
   }
 
   toggleMenu(): void {

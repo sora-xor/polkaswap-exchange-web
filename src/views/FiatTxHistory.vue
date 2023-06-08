@@ -11,6 +11,9 @@
       <s-tab v-for="tab in FiatOptionTabs" :key="tab" :label="t(`fiatPayment.${tab}`)" :name="tab" />
     </s-tabs>
     <component :is="currentTab" />
+    <s-button v-if="!isLoggedIn" class="go-wallet-btn" type="primary" @click="goTo(PageNames.Wallet)">{{
+      t('connectWalletText')
+    }}</s-button>
   </div>
 </template>
 
@@ -20,6 +23,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import { Components, PageNames } from '../consts';
 import { goTo, lazyComponent } from '../router';
+import { getter } from '../store/decorators';
 import { FiatOptionTabs } from '../types/tabs';
 
 @Component({
@@ -30,6 +34,8 @@ import { FiatOptionTabs } from '../types/tabs';
   },
 })
 export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, mixins.LoadingMixin) {
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+
   FiatOptionTabs = FiatOptionTabs;
 
   currentTab = FiatOptionTabs.moonpay;
@@ -45,6 +51,10 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, mixin
 
   &-tabs {
     margin-bottom: 16px;
+  }
+
+  .go-wallet-btn {
+    width: 100%;
   }
 }
 </style>

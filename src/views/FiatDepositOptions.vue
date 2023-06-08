@@ -5,13 +5,13 @@
         <moonpay-logo :theme="libraryTheme" />
         <h4>Buy ETH via MoonPay</h4>
         <span>Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge</span>
-        <s-button type="primary" @click="openMoonpayDialog">{{ 'BUY ETH VIA MOONPAY' }}</s-button>
+        <s-button type="primary" @click="openMoonpayDialog">{{ moonpayTextBtn }}</s-button>
       </div>
       <div class="pay-options__option pay-options-x1">
         <x1ex-logo :theme="libraryTheme" />
         <h4>Buy XOR with your card</h4>
         <span>Purchase XOR tokens with your debit or credit card.</span>
-        <s-button type="primary" @click="openX1">{{ 'BUY XOR WITH CARD' }}</s-button>
+        <s-button type="primary" @click="openX1">{{ x1TextBtn }}</s-button>
       </div>
       <div class="pay-options__history-btn" @click="openFiatTxHistory">
         <span>My Purchases</span>
@@ -58,27 +58,16 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
   },
 })
 export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, WalletConnectMixin) {
-  @state.settings.payOptionsVisibility private payOptionsVisibility!: boolean;
   @state.moonpay.bridgeTransactionData private bridgeTransactionData!: Nullable<BridgeHistory>;
   @state.moonpay.startBridgeButtonVisibility private startBridgeButtonVisibility!: boolean;
 
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
-  @mutation.settings.setPayOptionsVisibility private setPayOptionsVisibility!: (flag: boolean) => void;
   @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
 
   showX1Dialog = false;
   showErrorInfoBanner = false;
-
-  get visibility(): boolean {
-    return this.payOptionsVisibility;
-  }
-
-  set visibility(flag: boolean) {
-    this.setPayOptionsVisibility(flag);
-  }
 
   get hasPendingTx(): boolean {
     // TODO: add localStorage savings in case user closes tab and returns
@@ -93,12 +82,23 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     return baseClass.join(' ');
   }
 
+  get moonpayTextBtn(): string {
+    return !this.isSoraAccountConnected ? this.t('connectWalletText') : 'BUY ETH VIA MOONPAY';
+  }
+
+  get x1TextBtn(): string {
+    return !this.isSoraAccountConnected ? this.t('connectWalletText') : 'BUY XOR WITH CARD';
+  }
+
   openFiatTxHistory(): void {
-    this.visibility = false;
     goTo(PageNames.FiatTxHistory);
   }
 
   openX1(): void {
+    if (!this.isSoraAccountConnected) {
+      return this.connectInternalWallet();
+    }
+
     this.showX1Dialog = true;
   }
 
@@ -109,6 +109,10 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
   }
 
   async openMoonpayDialog(): Promise<void> {
+    if (!this.isSoraAccountConnected) {
+      return this.connectInternalWallet();
+    }
+
     if (!this.moonpayEnabled) {
       console.info('Moonpay not enabled');
 

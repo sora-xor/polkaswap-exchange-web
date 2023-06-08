@@ -63,9 +63,6 @@ const mutations = defineMutations<SettingsState>()({
   setFaucetUrl(state, url: string): void {
     state.faucetUrl = url;
   },
-  setPayOptionsVisibility(state, value: boolean): void {
-    state.payOptionsVisibility = value;
-  },
   setSelectNodeDialogVisibility(state, value: boolean): void {
     state.selectNodeDialogVisibility = value;
   },

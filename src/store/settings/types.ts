@@ -26,7 +26,6 @@ export type SettingsState = {
   nodeConnectionAllowance: boolean;
   chainGenesisHash: string;
   faucetUrl: string;
-  payOptionsVisibility: boolean;
   selectNodeDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
   disclaimerVisibility: boolean;
