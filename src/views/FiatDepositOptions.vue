@@ -103,14 +103,14 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
   }
 
   showErrorMessage(): void {
-    console.log('called');
+    console.info('called');
 
     this.showErrorInfoBanner = true;
   }
 
   async openMoonpayDialog(): Promise<void> {
     if (!this.moonpayEnabled) {
-      console.log('Moonpay not enabled');
+      console.info('Moonpay not enabled');
 
       return this.showErrorMessage();
     }
