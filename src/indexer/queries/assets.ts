@@ -1,10 +1,10 @@
-import last from 'lodash/fp/last';
-import { gql } from '@urql/core';
 import { FPNumber } from '@sora-substrate/util';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
-import type { AssetEntity, AssetSnapshotEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import { gql } from '@urql/core';
+import last from 'lodash/fp/last';
+
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type {
   SubqueryAssetEntity,
   SubqueryAssetSnapshotEntity,
@@ -15,6 +15,7 @@ import type {
   SubsquidAssetSnapshotEntity,
   SubsquidConnectionQueryResponse,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
+import type { AssetEntity, AssetSnapshotEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
 

@@ -1,5 +1,6 @@
-import type { ProviderInterfaceEmitted, ProviderInterfaceEmitCb } from '@polkadot/rpc-provider/types';
 import { IndexerType } from '@soramitsu/soraneo-wallet-web/lib/consts';
+
+import type { ProviderInterfaceEmitted, ProviderInterfaceEmitCb } from '@polkadot/rpc-provider/types';
 
 export interface Indexer {
   name: string;

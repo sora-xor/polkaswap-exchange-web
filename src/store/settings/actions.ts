@@ -4,15 +4,13 @@ import { defineActions } from 'direct-vuex';
 import { Language, WalletPermissions } from '@/consts';
 import { getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { settingsActionContext } from '@/store/settings';
-import type { ConnectToNodeOptions, Node } from '@/types/nodes';
+import type { ConnectToIndexerOptions, Indexer } from '@/types/indexers';
+import type { ConnectToNodeOptions, Node, ConnectToNodeOptions, Node } from '@/types/nodes';
 import { updateDocumentTitle, updateFpNumberLocale } from '@/utils';
 import { AppHandledError } from '@/utils/error';
 import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
-import type { ConnectToNodeOptions, Node } from '@/types/nodes';
-import type { ConnectToIndexerOptions, Indexer } from '@/types/indexers';
 
 import type { ActionContext } from 'vuex';
-
 
 const NODE_CONNECTION_TIMEOUT = 60_000;
 

@@ -39,25 +39,17 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { gql } from '@urql/core';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
+import { fetchData } from '@/indexer/queries/stats';
 import { lazyComponent } from '@/router';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
-
-import type {
-  SnapshotTypes,
-  EntitiesQueryResponse,
-  NetworkSnapshotEntity,
-} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
-
-import { fetchData } from '@/indexer/queries/stats';
 
 type NetworkSnapshot = {
   accounts: FPNumber;

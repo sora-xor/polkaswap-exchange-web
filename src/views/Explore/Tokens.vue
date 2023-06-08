@@ -168,31 +168,20 @@
 import { FPNumber } from '@sora-substrate/util';
 import { XSTUSD } from '@sora-substrate/util/build/assets/consts';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
-import { components, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
-import { gql } from '@urql/core';
-import last from 'lodash/fp/last';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { fetchTokensData } from '@/indexer/queries/assets';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
+import type { AmountWithSuffix } from '@/types/formats';
 import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
 
-import type { AmountWithSuffix } from '../../types/formats';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { AmountWithSuffix } from '@/types/formats';
-
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
-import { getter } from '@/store/decorators';
-
-import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { fetchTokensData } from '@/indexer/queries/assets';
 
 type TokenData = {
   reserves: FPNumber;

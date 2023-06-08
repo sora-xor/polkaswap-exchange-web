@@ -1,10 +1,9 @@
 import { defineMutations } from 'direct-vuex';
 
 import { MarketAlgorithms } from '@/consts';
-
 import type { Language } from '@/consts';
-import type { Node } from '@/types/nodes';
 import type { Indexer } from '@/types/indexers';
+import type { Node } from '@/types/nodes';
 import storage, { settingsStorage } from '@/utils/storage';
 
 import type { FeatureFlags, SettingsState } from './types';

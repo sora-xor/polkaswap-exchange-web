@@ -45,13 +45,7 @@
 <script lang="ts">
 import { connection } from '@sora-substrate/util';
 import { components, mixins, settingsStorage, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import type { History, HistoryItem } from '@sora-substrate/util';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
-import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
-
-import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import axiosInstance, { updateBaseUrl } from '@/api';
 import AppFooter from '@/components/App/Footer/AppFooter.vue';
@@ -63,13 +57,9 @@ import { PageNames, Components, Language } from '@/consts';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-
-import { preloadFontFace, updateDocumentTitle } from '@/utils';
-import { getLocale } from '@/lang';
-import type { ConnectToNodeOptions, Node } from '@/types/nodes';
-import type { Indexer } from '@/types/indexers';
 import type { FeatureFlags } from '@/store/settings/types';
 import type { EthBridgeSettings } from '@/store/web3/types';
+import type { Indexer } from '@/types/indexers';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 import { preloadFontFace, updateDocumentTitle } from '@/utils';
 
@@ -78,9 +68,6 @@ import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types
 import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-
-const { IndexerType } = WALLET_CONSTS;
 
 @Component({
   components: {

@@ -3,8 +3,8 @@ import { defineGetters } from 'direct-vuex';
 
 import { LiquiditySourceForMarketAlgorithm } from '@/consts';
 import { settingsGetterContext } from '@/store/settings';
-import type { Node } from '@/types/nodes';
 import type { Indexer } from '@/types/indexers';
+import type { Node } from '@/types/nodes';
 
 import type { NodesHashTable, IndexersHashTable, SettingsState } from './types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';

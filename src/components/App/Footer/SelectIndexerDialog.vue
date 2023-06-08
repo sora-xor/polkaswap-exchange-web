@@ -5,14 +5,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
-import { Indexer } from '@/types/indexers';
-import { getter, state, mutation } from '@/store/decorators';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { getter, state, mutation } from '@/store/decorators';
+import { Indexer } from '@/types/indexers';
 
 const IndexerListView = 'IndexerListView';
 const IndexerInfoView = 'IndexerInfoView';

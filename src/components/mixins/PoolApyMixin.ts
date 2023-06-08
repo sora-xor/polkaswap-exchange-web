@@ -1,9 +1,9 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
-import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import { state } from '@/store/decorators';
 
+import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 @Component

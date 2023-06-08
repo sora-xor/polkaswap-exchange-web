@@ -35,7 +35,6 @@
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
 import type { Indexer } from '@/types/indexers';
 
 @Component
