@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { XOR, ETH } from '@sora-substrate/util/build/assets/consts';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
@@ -52,6 +52,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
 
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
+  @getter.assets.eth eth!: Nullable<AccountAsset>;
 
   @mutation.settings.setPayOptionsVisibility private setPayOptionsVisibility!: (flag: boolean) => void;
 
@@ -61,13 +62,6 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
     return {
       size: WALLET_CONSTS.LogoSize.MEDIUM,
       tokenSymbol: XOR.symbol,
-    };
-  }
-
-  get eth() {
-    return {
-      name: ETH.name,
-      tokenSymbol: ETH.symbol,
     };
   }
 
