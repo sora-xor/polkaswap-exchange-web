@@ -292,7 +292,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     const disclaimerApprove = settingsStorage.get('disclaimerApprove');
 
     if (!disclaimerApprove) {
-      setTimeout(() => this.toggleDisclaimerDialogVisibility(), 3_000);
+      setTimeout(() => this.toggleDisclaimerDialogVisibility(), 12_000);
     }
   }
 

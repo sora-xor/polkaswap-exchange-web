@@ -22,25 +22,24 @@
             })
           "
         />
-        <p class="disclaimer__text-fiat">{{ t('fiatDisclaimer') }}</p>
-        <s-button
-          v-if="!userDisclaimerApprove"
-          :loading="loadingAcceptBtn"
-          type="primary"
-          @click="handleAccept"
-          class="disclaimer__accept-btn"
-          ref="acceptBtn"
-          :disabled="!isActiveAccptBtn"
-        >
-          {{ t('acceptText') }}
-        </s-button>
+        <p class="disclaimer__text-fiat" ref="endLine">{{ t('fiatDisclaimer') }}</p>
       </div>
     </s-scrollbar>
+    <s-button
+      v-if="!userDisclaimerApprove"
+      :loading="loadingAcceptBtn"
+      type="primary"
+      @click="handleAccept"
+      class="disclaimer__accept-btn"
+      :disabled="!isActiveAccptBtn"
+    >
+      {{ t('acceptText') }}
+    </s-button>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Ref, Vue } from 'vue-property-decorator';
+import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Links } from '@/consts';
@@ -56,7 +55,7 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   loadingAcceptBtn = false;
   isActiveAccptBtn = false;
 
-  @Ref('acceptBtn') private readonly acceptBtn!: Vue;
+  @Ref('endLine') private readonly endLine!: HTMLElement;
 
   async handleAccept(): Promise<void> {
     this.loadingAcceptBtn = true;
@@ -93,14 +92,14 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          this.makeAcceptBtnActive();
+          this.makeAcceptBtnActive(700);
         }
       },
-      { threshold: 0.75 }
+      { threshold: 0.95 }
     );
 
-    if (this.acceptBtn.$el) {
-      observer.observe(this.acceptBtn.$el);
+    if (this.endLine) {
+      observer.observe(this.endLine);
     } else {
       this.makeAcceptBtnActive(2_000);
     }
@@ -140,10 +139,9 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   padding: calc(var(--s-size-small) / 2);
   position: absolute;
   top: var(--s-size-mini);
-  height: 310px;
   right: var(--s-size-mini);
   z-index: $app-above-loader-layer;
-  padding: $basic-spacing 6px 0 20px;
+  padding: $basic-spacing 6px 12px 20px;
 
   &__header {
     display: flex;
