@@ -4,7 +4,6 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { state } from '@/store/decorators';
 
 import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
-import type { PoolApyObject } from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 @Component
 export default class PoolApyMixin extends Mixins() {

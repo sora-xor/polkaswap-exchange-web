@@ -61,13 +61,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import {
-  components,
-  mixins,
-  SubqueryExplorerService,
-  WALLET_CONSTS,
-  SUBQUERY_TYPES,
-} from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, getCurrentIndexer, WALLET_CONSTS, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
