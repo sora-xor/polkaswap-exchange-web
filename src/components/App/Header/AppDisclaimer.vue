@@ -10,33 +10,37 @@
         @click.native="handleClose"
       />
     </div>
-    <div class="disclaimer__text">
-      <p
-        v-html="
-          t('disclaimer', {
-            disclaimerPrefix,
-            polkaswapFaqLink,
-            memorandumLink,
-            privacyLink,
-          })
-        "
-      />
-      <p class="disclaimer__text-fiat">{{ t('fiatDisclaimer') }}</p>
-    </div>
-    <s-button
-      v-if="!userDisclaimerApprove"
-      :loading="loadingAcceptBtn"
-      type="primary"
-      @click="handleAccept"
-      class="disclaimer__accept-btn"
-    >
-      {{ t('acceptText') }}
-    </s-button>
+    <s-scrollbar class="statistics-dialog__scrollbar">
+      <div class="disclaimer__text">
+        <p
+          v-html="
+            t('disclaimer', {
+              disclaimerPrefix,
+              polkaswapFaqLink,
+              memorandumLink,
+              privacyLink,
+            })
+          "
+        />
+        <p class="disclaimer__text-fiat">{{ t('fiatDisclaimer') }}</p>
+        <s-button
+          v-if="!userDisclaimerApprove"
+          :loading="loadingAcceptBtn"
+          type="primary"
+          @click="handleAccept"
+          class="disclaimer__accept-btn"
+          ref="acceptBtn"
+          :disabled="!isActiveAccptBtn"
+        >
+          {{ t('acceptText') }}
+        </s-button>
+      </div>
+    </s-scrollbar>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Links } from '@/consts';
@@ -50,6 +54,9 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleVisibility!: FnWithoutArgs;
 
   loadingAcceptBtn = false;
+  isActiveAccptBtn = false;
+
+  @Ref('acceptBtn') private readonly acceptBtn;
 
   async handleAccept(): Promise<void> {
     this.loadingAcceptBtn = true;
@@ -81,6 +88,33 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   generateDisclaimerLink(href: string, content: string): string {
     return `<a href="${href}" target="_blank" rel="nofollow noopener" class="link" title="${content}">${content}</a>`;
   }
+
+  checkUserScroll(): void {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          this.makeAcceptBtnActive();
+        }
+      },
+      { threshold: 0.75 }
+    );
+
+    if (this.acceptBtn.$el) {
+      observer.observe(this.acceptBtn.$el);
+    } else {
+      this.makeAcceptBtnActive(2_000);
+    }
+  }
+
+  makeAcceptBtnActive(ms = 1_000): void {
+    setTimeout(() => {
+      this.isActiveAccptBtn = true;
+    }, ms);
+  }
+
+  mounted(): void {
+    this.checkUserScroll();
+  }
 }
 </script>
 
@@ -106,12 +140,16 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   padding: calc(var(--s-size-small) / 2);
   position: absolute;
   top: var(--s-size-mini);
+  height: 310px;
   right: var(--s-size-mini);
   z-index: $app-above-loader-layer;
+  padding: $basic-spacing 6px 0 20px;
 
   &__header {
     display: flex;
     justify-content: space-between;
+    margin-bottom: $basic-spacing / 2;
+
     &-title {
       font-weight: 600;
       font-size: var(--s-font-size-small);
@@ -130,16 +168,15 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   }
 
   &__text {
-    box-shadow: var(--s-shadow-dialog);
     border-radius: var(--s-border-radius-medium);
-    background-color: var(--s-color-base-background);
-    margin-top: 6px;
-    padding: $basic-spacing;
+    padding: 0 $basic-spacing 10px 0;
     font-size: var(--s-font-size-extra-mini);
     font-weight: 300;
+    height: 260px;
     line-height: var(--s-line-height-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
+    margin-bottom: -12px;
 
     &-fiat {
       margin-top: $basic-spacing;
