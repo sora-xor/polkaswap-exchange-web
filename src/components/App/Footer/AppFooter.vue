@@ -23,7 +23,7 @@
       </template>
     </footer-popper>
     <footer-popper
-      icon="globe-16"
+      icon="software-database-24"
       panel-class="indexer"
       :panel-text="indexer.name"
       :status="indexerClass"
