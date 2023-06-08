@@ -17,8 +17,8 @@ export function initialState(): Web3State {
     networkProvided: null, // evm network in provider
     networkSelected: null, // evm network selected by user
 
-    evmNetworksApp: [], // evm networks from app config
-    subNetworksApp: [], // sub netowrks from app config
+    evmNetworkApps: [], // evm networks from app config
+    subNetworkApps: {}, // sub netowrks from app config
 
     supportedApps: {
       [BridgeNetworkType.EvmLegacy]: {},

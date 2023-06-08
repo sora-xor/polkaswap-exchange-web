@@ -15,6 +15,15 @@ export type EthBridgeSettings = {
   address: EthBridgeContractsAddresses;
 };
 
+export type SubNetworkApps = Partial<
+  Record<
+    SubNetwork,
+    {
+      addresses: string[];
+    }
+  >
+>;
+
 export type Web3State = {
   evmAddress: string;
   subAddress: string;
@@ -25,8 +34,8 @@ export type Web3State = {
   networkProvided: Nullable<BridgeNetworkId>;
   networkSelected: Nullable<BridgeNetworkId>;
 
-  evmNetworksApp: EvmNetwork[];
-  subNetworksApp: SubNetwork[];
+  evmNetworkApps: EvmNetwork[];
+  subNetworkApps: SubNetworkApps;
   supportedApps: SupportedApps;
 
   ethBridgeEvmNetwork: EvmNetwork;

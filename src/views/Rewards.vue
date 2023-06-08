@@ -423,7 +423,7 @@ export default class Rewards extends Mixins(
   }
 
   private async disconnectExternalAccountProcess(): Promise<void> {
-    this.disconnectExternalAccount();
+    this.disconnectEvmAccount();
     await this.checkExternalRewards();
   }
 

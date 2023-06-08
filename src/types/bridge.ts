@@ -8,7 +8,7 @@ export interface NetworkData {
     symbol: string;
     decimals: number;
   };
-  rpcUrls: string[];
+  endpointUrls: string[];
   blockExplorerUrls: string[];
   shortName: string;
 }

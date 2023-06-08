@@ -8,7 +8,7 @@ import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/cons
 import ethersUtil from '@/utils/ethers-util';
 import { ZeroStringValue } from '@/consts';
 
-import type { Web3State, EthBridgeSettings } from './types';
+import type { Web3State, EthBridgeSettings, SubNetworkApps } from './types';
 
 const mutations = defineMutations<Web3State>()({
   setEvmAddress(state, address: string): void {
@@ -25,10 +25,10 @@ const mutations = defineMutations<Web3State>()({
   },
 
   setEvmNetworksApp(state, networksIds: EvmNetwork[]): void {
-    state.evmNetworksApp = networksIds;
+    state.evmNetworkApps = networksIds;
   },
-  setSubNetworksApp(state, networksIds: SubNetwork[]): void {
-    state.subNetworksApp = networksIds;
+  setSubNetworkApps(state, apps: SubNetworkApps): void {
+    state.subNetworkApps = apps;
   },
   setSupportedApps(state, supportedApps: SupportedApps): void {
     state.supportedApps = supportedApps;

@@ -139,7 +139,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
           if (addressList.length) {
             this.setEvmAddress(addressList[0]);
           } else {
-            this.disconnectExternalAccount();
+            this.disconnectEvmAccount();
           }
         },
         onNetworkChange: (networkHex: string) => {

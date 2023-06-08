@@ -69,7 +69,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
         if (addressList.length) {
           this.setEvmAddress(addressList[0]);
         } else {
-          this.disconnectExternalAccount();
+          this.disconnectEvmAccount();
         }
       },
       onNetworkChange: () => {},

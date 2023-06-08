@@ -1,5 +1,6 @@
 import { defineGetters } from 'direct-vuex';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
 import { web3GetterContext } from '@/store/web3';
 import { EVM_NETWORKS } from '@/consts/evm';
@@ -33,7 +34,7 @@ const getters = defineGetters<Web3State>()({
       data: EVM_NETWORKS[id],
     }));
 
-    const evm = state.evmNetworksApp.reduce<AvailableNetwork[]>((buffer, id) => {
+    const evm = state.evmNetworkApps.reduce<AvailableNetwork[]>((buffer, id) => {
       const data = EVM_NETWORKS[id];
 
       if (data) {
@@ -46,12 +47,15 @@ const getters = defineGetters<Web3State>()({
       return buffer;
     }, []);
 
-    const sub = state.subNetworksApp.reduce<AvailableNetwork[]>((buffer, id) => {
+    const sub = Object.entries(state.subNetworkApps).reduce<AvailableNetwork[]>((buffer, [id, { addresses }]) => {
       const data = SUB_NETWORKS[id];
 
       if (data) {
+        // add wss endpoints to endpointUrls
+        data.endpointUrls.push(...addresses);
+
         buffer.push({
-          disabled: !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id),
+          disabled: !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork),
           data,
         });
       }

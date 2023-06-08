@@ -11,8 +11,8 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'KSM',
       decimals: 18,
     },
-    rpcUrls: [''],
-    blockExplorerUrls: [''],
+    endpointUrls: [],
+    blockExplorerUrls: [],
     shortName: 'Kusama',
   },
   [SubNetwork.Polkadot]: {
@@ -23,8 +23,8 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'DOT',
       decimals: 18,
     },
-    rpcUrls: [''],
-    blockExplorerUrls: [''],
+    endpointUrls: [],
+    blockExplorerUrls: [],
     shortName: 'Polkadot',
   },
   [SubNetwork.Rococo]: {
@@ -35,8 +35,8 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'ROC',
       decimals: 18,
     },
-    rpcUrls: [''],
-    blockExplorerUrls: [''],
+    endpointUrls: [],
+    blockExplorerUrls: [],
     shortName: 'Rococo',
   },
   [SubNetwork.Karura]: {
@@ -47,8 +47,8 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'KAR',
       decimals: 12,
     },
-    rpcUrls: [''],
-    blockExplorerUrls: [''],
+    endpointUrls: [],
+    blockExplorerUrls: [],
     shortName: 'Karura',
   },
 };

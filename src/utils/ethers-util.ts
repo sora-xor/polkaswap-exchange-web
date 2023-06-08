@@ -261,7 +261,7 @@ async function switchOrAddChain(network: NetworkData, chainName?: string): Promi
             {
               chainId,
               chainName: chainName || network.name,
-              rpcUrls: network.rpcUrls,
+              endpointUrls: network.endpointUrls,
               nativeCurrency: network.nativeCurrency,
               blockExplorerUrls: network.blockExplorerUrls,
             },

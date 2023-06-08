@@ -111,7 +111,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     }
   }
 
-  disconnectExternalAccount(): void {
+  disconnectEvmAccount(): void {
     this.resetEvmAddress();
     this.resetEvmBalance();
   }
