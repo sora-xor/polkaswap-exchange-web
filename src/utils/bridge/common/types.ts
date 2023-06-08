@@ -30,7 +30,7 @@ export interface Constructable<T> {
 export type TransactionHandlerPayload<Transaction extends IBridgeTransaction> = {
   nextState: Transaction['transactionState'];
   rejectState: Transaction['transactionState'];
-  handler?: (id: string) => Promise<void>;
+  handler?: (id: string) => Promise<string | void>;
 };
 
 export interface IBridgeOptions<T extends IBridgeTransaction> {

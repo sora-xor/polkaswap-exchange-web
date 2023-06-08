@@ -1,3 +1,4 @@
+import { TransactionStatus } from '@sora-substrate/util';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
@@ -46,6 +47,9 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
         return await this.handleState(transaction.id, {
           nextState: BridgeTxStatus.Pending,
           rejectState: BridgeTxStatus.Failed,
+          handler: async (id) => {
+            throw new Error(`[${this.constructor.name}]: Not implemented yet :(`);
+          },
         });
       }
     }
@@ -62,15 +66,16 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           nextState: BridgeTxStatus.Done,
           rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
-            const currentId = id;
+            let currentId = id;
             this.beforeSubmit(currentId);
             this.updateTransactionParams(currentId, { transactionState: BridgeTxStatus.Pending });
             await this.checkTxId(currentId);
             await this.waitForTxStatus(currentId);
             await this.checkTxBlockId(currentId);
-            await this.checkTxSoraHash(currentId);
+            currentId = await this.checkTxSoraHash(currentId);
             await this.subscribeOnTxBySoraHash(currentId);
             await this.onComplete(currentId);
+            return currentId;
           },
         });
       }
@@ -79,6 +84,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         return await this.handleState(transaction.id, {
           nextState: BridgeTxStatus.Pending,
           rejectState: BridgeTxStatus.Failed,
+          handler: async (id) => {
+            throw new Error(`[${this.constructor.name}]: Not implemented yet :(`);
+          },
         });
       }
     }
@@ -86,7 +94,6 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
   private async checkTxId(id: string): Promise<void> {
     const { txId } = this.getTransaction(id);
-
     // transaction not signed
     if (!txId) {
       await this.signSora(id);
@@ -96,9 +103,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
   }
 
   private async checkTxBlockId(id: string): Promise<void> {
-    const tx = this.getTransaction(id);
+    const { txId } = this.getTransaction(id);
 
-    if (!tx.txId) {
+    if (!txId) {
       throw new Error(`[${this.constructor.name}]: Transaction "id" is empty, first sign the transaction`);
     }
 
@@ -115,7 +122,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
   private async waitForTxStatus(id: string): Promise<void> {
     const { status } = this.getTransaction(id);
 
-    if (status) return Promise.resolve();
+    if ([TransactionStatus.Finalized, TransactionStatus.Error].includes(status as TransactionStatus))
+      return Promise.resolve();
 
     await delay(1_000);
     await this.waitForTxStatus(id);
@@ -137,19 +145,20 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       eventMethod: 'RequestStatusUpdate',
     })(id, this.getTransaction);
 
+    const prevTx = this.getTransaction(id);
+
+    // create new local tx where id = hash
+    subBridgeApi.saveHistory({ ...prevTx, id: hash, hash });
+    // update current tx hash
     this.updateTransactionParams(id, { hash });
+    // remove prev one where id is generated
+    this.removeTransactionByHash({ tx: { ...prevTx }, force: true });
 
     return hash;
   }
 
   private async subscribeOnTxBySoraHash(id: string): Promise<void> {
-    const tx = this.getTransaction(id);
-
-    if (!tx) {
-      throw new Error(`[${this.constructor.name}]: Transaction ${id} not found`);
-    }
-
-    const { from, externalNetwork, hash } = tx;
+    const { from, externalNetwork, hash } = this.getTransaction(id);
 
     if (!from) {
       throw new Error(

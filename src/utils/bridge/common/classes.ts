@@ -76,16 +76,18 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
   async process(transaction: Transaction) {
     await this.changeState(transaction);
 
-    const tx = this.getTransaction(transaction.id as string);
+    try {
+      const tx = this.getTransaction(transaction.id as string);
 
-    if (tx) {
-      const { done, failed } = this.boundaryStates[tx.type];
-      const state = tx.transactionState;
+      if (tx) {
+        const { done, failed } = this.boundaryStates[tx.type];
+        const state = tx.transactionState;
 
-      if (state !== done && !failed.includes(state)) {
-        await this.process(tx);
+        if (state !== done && !failed.includes(state)) {
+          await this.process(tx);
+        }
       }
-    }
+    } catch {}
   }
 
   updateTransactionParams(id: string, params = {}): void {
@@ -98,11 +100,9 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     { nextState, rejectState, handler }: TransactionHandlerPayload<Transaction>
   ): Promise<void> {
     try {
-      if (typeof handler === 'function') {
-        await handler(id);
-      }
+      const updatedId = handler ? (await handler(id)) ?? id : id;
 
-      this.updateTransactionParams(id, { transactionState: nextState });
+      this.updateTransactionParams(updatedId, { transactionState: nextState });
     } catch (error) {
       console.error(error);
 

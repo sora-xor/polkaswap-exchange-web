@@ -234,24 +234,26 @@ const actions = defineActions({
   removeHistory(context, { tx, force = false }: { tx: Partial<IBridgeTransaction>; force: boolean }): void {
     const { commit, dispatch, getters, state, rootState } = bridgeActionContext(context);
 
-    const { hash, txId, externalHash } = tx;
+    const { id, hash } = tx;
 
-    const item = (getters.bridgeApi.historyList as IBridgeTransaction[]).find(
-      (item) => item.hash === hash || item.txId === txId || item.externalHash === externalHash
-    );
+    if (!id) return;
 
-    if (!(item && item.id)) return;
+    const item = getters.bridgeApi.history[id] as IBridgeTransaction;
 
-    const inProgress = state.inProgressIds[item.id];
+    if (!item) return;
+
+    const inProgress = state.inProgressIds[id];
     // in not force mode, do not remove tx in progress
     if (!force && inProgress) return;
     // update in progress id if needed
     if (hash && inProgress) {
+      console.log('hash && inProgress');
       commit.addTxIdInProgress(hash);
-      commit.removeTxIdFromProgress(item.id);
+      commit.removeTxIdFromProgress(id);
     }
     // update active view if needed
-    if (hash && state.historyId === item.id) {
+    if (hash && state.historyId === id) {
+      console.log('state.historyId === id', state.historyId === id);
       commit.setHistoryId(hash);
     }
     // update moonpay records if needed
@@ -262,7 +264,7 @@ const actions = defineActions({
       };
     }
     // remove tx from history
-    getters.bridgeApi.removeHistory(item.id);
+    getters.bridgeApi.removeHistory(id);
 
     dispatch.updateInternalHistory();
   },
@@ -302,9 +304,13 @@ const actions = defineActions({
       const tx = await evmTxDataToHistory(rootGetters.assets.assetDataByAddress, txData);
 
       if (tx.id) {
-        externalHistory[tx.id] = tx;
+        const inProgress = state.inProgressIds[tx.id];
 
-        await dispatch.removeHistory({ tx, force: false });
+        if (!inProgress) {
+          externalHistory[tx.id] = tx;
+
+          await dispatch.removeHistory({ tx, force: false });
+        }
       }
     }
 
@@ -357,9 +363,13 @@ const actions = defineActions({
       const tx = await subTxDataToHistory(rootGetters.assets.assetDataByAddress, txData);
 
       if (tx.id) {
-        externalHistory[tx.id] = tx;
+        const inProgress = state.inProgressIds[tx.id];
 
-        await dispatch.removeHistory({ tx, force: false });
+        if (!inProgress) {
+          externalHistory[tx.id] = tx;
+
+          await dispatch.removeHistory({ tx, force: false });
+        }
       }
     }
 

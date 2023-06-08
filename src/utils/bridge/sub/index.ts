@@ -5,7 +5,7 @@ import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/type
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { Bridge } from '@/utils/bridge/common/classes';
 import { SubBridgeOutgoingReducer, SubBridgeIncomingReducer } from '@/utils/bridge/sub/classes/reducers';
-import { updateTransaction } from '@/utils/bridge/sub/utils';
+import { getTransaction, updateTransaction } from '@/utils/bridge/sub/utils';
 
 import store from '@/store';
 
@@ -41,7 +41,7 @@ const subBridge: SubBridge = new Bridge({
   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
   getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
   // transaction
-  getTransaction: (id: string) => (store.getters.bridge.history[id] || subBridgeApi.getHistory(id)) as SubHistory,
+  getTransaction: (id: string) => (getTransaction(id) || store.getters.bridge.history[id]) as SubHistory,
   updateTransaction,
   // ui integration
   showNotification: (tx: SubHistory) => store.commit.bridge.setNotificationData(tx),
