@@ -1,5 +1,6 @@
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import store from '@/store';
+
+import store from '../store';
 
 export interface X1Widget {
   sdkUrl: string;

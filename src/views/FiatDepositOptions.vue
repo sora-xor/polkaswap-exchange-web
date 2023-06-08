@@ -32,18 +32,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import WalletConnectMixin from '../components/mixins/WalletConnectMixin';
+import MoonpayLogo from '../components/shared/Logo/Moonpay.vue';
+import X1exLogo from '../components/shared/Logo/X1ex.vue';
+import { Components, PageNames } from '../consts';
+import { goTo, lazyComponent } from '../router';
+import { mutation, state, getter } from '../store/decorators';
+
 import type { BridgeHistory } from '@sora-substrate/util';
-
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-
-import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
-import X1exLogo from '@/components/shared/Logo/X1ex.vue';
-import { mutation, state, getter } from '@/store/decorators';
-import { goTo, lazyComponent } from '@/router';
-import { Components, PageNames } from '@/consts';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 @Component({
   components: {

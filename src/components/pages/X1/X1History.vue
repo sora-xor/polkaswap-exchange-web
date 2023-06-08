@@ -6,11 +6,12 @@
 </template>
 
 <script lang="ts">
-import { getter } from '@/store/decorators';
 import { Mixins, Component } from 'vue-property-decorator';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
-import X1exLogo from '@/components/shared/Logo/X1ex.vue';
+import { getter } from '../../../store/decorators';
+import X1exLogo from '../../shared/Logo/X1ex.vue';
+
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 @Component({
   components: {

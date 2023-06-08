@@ -15,13 +15,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
-import { Components, PageNames } from '@/consts';
-import { goTo, lazyComponent } from '@/router';
-
-import { FiatOptionTabs } from '@/types/tabs';
+import { Components, PageNames } from '../consts';
+import { goTo, lazyComponent } from '../router';
+import { FiatOptionTabs } from '../types/tabs';
 
 @Component({
   components: {
