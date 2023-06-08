@@ -66,6 +66,8 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
     try {
       await ScriptLoader.load(this.X1Widget.sdkUrl, false);
     } catch {
+      console.info('catch');
+
       this.closeWidget();
     } finally {
       setTimeout(() => {
@@ -82,6 +84,7 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
     this.loadingX1 = false;
     this.unloadX1();
     this.closeDialog();
+    console.info('x1 error');
     this.$emit('error');
   }
 
