@@ -21,12 +21,15 @@ async function connectEvmNetwork(context: ActionContext<any, any>, networkHex?: 
 async function connectSubNetwork(context: ActionContext<any, any>, network?: SubNetwork): Promise<void> {
   // [TODO] connect to substrate network
   // this code just takes network from storage
-  const { commit } = web3ActionContext(context);
+  const { commit, rootCommit } = web3ActionContext(context);
   const provided = network || ethersUtil.getSelectedNetwork();
 
   if (provided) {
     commit.setProvidedNetwork(provided);
   }
+
+  // only outgoing direction
+  rootCommit.bridge.setSoraToEvm(true);
 }
 
 const actions = defineActions({

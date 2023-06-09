@@ -126,6 +126,7 @@
           data-test-name="switchToken"
           type="action"
           icon="arrows-swap-90-24"
+          :disabled="isSubBridge"
           @click="handleSwitchItems"
         />
 
