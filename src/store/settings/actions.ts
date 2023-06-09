@@ -179,12 +179,6 @@ const actions = defineActions({
       throw err;
     }
   },
-  async setIndexer(context, indexer: Indexer): Promise<void> {
-    const { commit, rootCommit } = settingsActionContext(context);
-
-    rootCommit.wallet.settings.setIndexerType(indexer.type);
-    commit.setIndexer(indexer);
-  },
   async addCustomNode(context, node: Node): Promise<void> {
     const { commit, getters } = settingsActionContext(context);
     const nodes = [...getters.customNodes, node];

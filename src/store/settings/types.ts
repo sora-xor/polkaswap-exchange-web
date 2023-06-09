@@ -18,12 +18,10 @@ export type SettingsState = {
   userDisclaimerApprove: boolean;
   transactionDeadline: number;
   node: Partial<Node>;
-  indexer: Partial<Indexer>;
   language: string;
   displayRegions: Nullable<Intl.DisplayNames>;
   defaultNodes: Array<Node>;
   customNodes: Array<Node>;
-  defaultIndexers: Array<Indexer>;
   nodeAddressConnecting: string;
   nodeConnectionAllowance: boolean;
   chainGenesisHash: string;
@@ -45,8 +43,4 @@ export type SettingsState = {
 
 export type NodesHashTable = {
   [address: string]: Node;
-};
-
-export type IndexersHashTable = {
-  [address: string]: Indexer;
 };

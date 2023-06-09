@@ -1179,8 +1179,8 @@
             "action": "Select services",
             "dialog": {
                 "title": "{Sora} Network service selection",
-                "fiat": "Fiat values",
-                "chartsAndActivity": "Charts & Activity"
+                "indexer": "Indexer",
+                "useCeres": "Use Ceres for fiat values"
             }
         }
     },

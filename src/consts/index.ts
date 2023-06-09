@@ -78,9 +78,6 @@ export const Links = {
   nodes: {
     tutorial: 'https://medium.com/sora-xor/how-to-run-a-sora-testnet-node-a4d42a9de1af',
   },
-  indexers: {
-    tutorial: '',
-  },
   faq: 'https://wiki.sora.org/polkaswap/polkaswap-faq',
   terms: 'https://wiki.sora.org/polkaswap/terms',
   privacy: 'https://wiki.sora.org/polkaswap/privacy',

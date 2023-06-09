@@ -1,37 +1,44 @@
 <template>
-  <div class="select-indexer s-flex">
-    <div class="select-indexer-description">
-      {{ t('selectIndexerDialog.selectIndexerForEnvironment', { environment }) }}
-    </div>
-    <s-scrollbar class="select-indexer-scrollbar">
-      <s-radio-group v-model="currentAddressValue" class="select-indexer-list s-flex">
-        <s-radio
-          v-for="indexer in indexers"
-          :key="indexer.address"
-          :label="indexer.address"
-          :value="indexer.address"
-          :disabled="disableSelect"
-          size="medium"
-          class="select-indexer-list__item s-flex"
-        >
-          <div class="select-indexer-item s-flex">
-            <div class="select-indexer-info s-flex">
-              <div class="select-indexer-info__label">
-                {{ indexer.name }}
+  <div class="statistics-dialog">
+    <s-scrollbar class="statistics-dialog__scrollbar">
+      <div class="statistics-dialog__group">
+        <span class="statistics-dialog__group-title">{{ t('footer.statistics.dialog.indexer') }}</span>
+        <s-radio-group v-model="indexerType" class="statistics-dialog__block s-flex">
+          <s-radio
+            v-for="indexer in indexers"
+            :key="indexer.type"
+            :label="indexer.type"
+            :value="indexer.type"
+            size="medium"
+            class="statistics-dialog__item s-flex"
+          >
+            <div class="service-item s-flex">
+              <div class="service-item__label s-flex">
+                <div class="service-item__name">{{ indexer.name }}</div>
+                <div class="service-item__endpoint">{{ indexer.endpoint }}</div>
               </div>
-              <div class="select-indexer-info__desc s-flex">
-                <div>{{ indexer.type }}</div>
-                <div>{{ indexer.address }}</div>
+              <div class="service-item__status" :class="indexer.online ? 'success' : 'error'">
+                {{ indexer.online ? TranslationConsts.online : TranslationConsts.offline }}
               </div>
             </div>
+          </s-radio>
+        </s-radio-group>
+        <s-divider />
+        <div class="statistics-dialog__group">
+          <div class="statistics-dialog__item">
+            <div class="switcher">
+              <s-switch :value="false" />
+              <span>{{ t('footer.statistics.dialog.useCeres') }}</span>
+            </div>
           </div>
-        </s-radio>
-      </s-radio-group>
+        </div>
+      </div>
     </s-scrollbar>
   </div>
 </template>
 
 <script lang="ts">
+import { IndexerType } from '@soramitsu/soraneo-wallet-web/lib/consts';
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -40,109 +47,108 @@ import type { Indexer } from '@/types/indexers';
 @Component
 export default class SelectIndexer extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) indexers!: Array<Indexer>;
-  @Prop({ default: '', type: String }) environment!: string;
-  @Prop({ default: false, type: Boolean }) disableSelect!: boolean;
 
-  @ModelSync('value', 'input', { type: String })
-  readonly currentAddressValue!: string;
+  @ModelSync('value', 'input', { type: String }) readonly indexerType!: IndexerType;
 }
 </script>
 
 <style lang="scss">
-.select-indexer-list__item.el-radio {
-  &.s-medium {
-    height: initial;
+.statistics-dialog__item {
+  &.el-radio {
+    &.s-medium {
+      height: initial;
+    }
+    .el-radio__label {
+      flex: 1;
+    }
   }
-
-  .el-radio__label {
-    flex: 1;
-  }
-}
-.select-indexer-scrollbar {
-  @include scrollbar(-$inner-spacing-big);
 }
 </style>
 
 <style lang="scss" scoped>
-$indexer-list-item-height: 66px;
-$indexer-list-items: 5;
-$indexer-desc-spacing: 6px;
-$indexer-desc-border-radius: 8px;
+$statistics-border-radius: 8px;
 
-.select-indexer {
-  flex-direction: column;
-
-  & > *:not(:last-child) {
-    margin-bottom: $inner-spacing-medium;
-  }
-
-  &-list {
-    max-height: calc(#{$indexer-list-item-height} * #{$indexer-list-items});
-    flex-direction: column;
-
-    &__item {
-      margin-right: 0;
-      align-items: center;
-      padding: $inner-spacing-small $inner-spacing-big;
-      white-space: normal;
+.statistics-dialog {
+  &__group {
+    &-title {
+      font-weight: 600;
+      letter-spacing: var(--s-letter-spacing-small);
+      line-height: var(--s-line-height-small);
+      font-size: var(--s-font-size-small);
     }
   }
 
-  &-item {
-    flex: 1;
+  &__block {
+    flex-direction: column;
+    margin-top: $inner-spacing-small;
+  }
+
+  &__item {
+    margin-right: 0;
     align-items: center;
+    padding: $inner-spacing-small $inner-spacing-big;
+    white-space: normal;
   }
+}
+.service-item {
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  letter-spacing: var(--s-letter-spacing-small);
+  line-height: var(--s-line-height-medium);
 
-  &-info {
+  &__label {
     flex-direction: column;
     flex: 1;
-    margin-right: $inner-spacing-small;
+    margin-right: $inner-spacing-mini;
+  }
 
-    &__label {
-      color: var(--s-color-base-content-primary);
-      line-height: var(--s-line-height-medium);
-      @include radio-title;
-    }
+  &__name {
+    color: var(--s-color-base-content-primary);
+    font-size: var(--s-font-size-medium);
+    font-weight: 600;
+  }
 
-    &__desc {
-      flex-wrap: wrap;
-      color: var(--s-color-base-content-secondary);
-      font-size: var(--s-font-size-mini);
-      font-weight: 300;
-      line-height: var(--s-line-height-medium);
-      > div {
-        background: var(--s-color-base-background);
-        padding: $indexer-desc-spacing;
-        margin-top: $indexer-desc-spacing;
-        margin-right: $inner-spacing-mini;
-        border-radius: $indexer-desc-border-radius;
+  &__endpoint {
+    background: var(--s-color-base-background);
+    padding: 6px;
+    margin-top: 6px;
+    border-radius: $statistics-border-radius;
+    color: var(--s-color-base-content-secondary);
+    font-size: var(--s-font-size-mini);
+    font-weight: 300;
+  }
+
+  &__status {
+    $status-classes: 'error', 'success';
+
+    padding: 2px 6px;
+    border-radius: $statistics-border-radius;
+    font-weight: 400;
+    font-size: var(--s-font-size-mini);
+    letter-spacing: var(--s-letter-spacing-small);
+
+    @each $status in $status-classes {
+      &.#{$status} {
+        color: var(--s-color-status-#{$status});
+        background-color: var(--s-color-status-#{$status}-background);
+        [design-system-theme='dark'] & {
+          --s-color-status-#{$status}: var(--s-color-base-on-accent);
+        }
       }
     }
   }
+}
 
-  &-details {
-    padding: 0;
-  }
+.switcher {
+  display: flex;
+  align-items: center;
 
-  &-button {
-    width: 100%;
-  }
-
-  &-badge {
-    width: var(--s-size-mini);
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    .el-icon-loading {
-      color: var(--s-color-base-content-tertiary);
-    }
-  }
-
-  &-description {
-    font-size: var(--s-font-size-extra-small);
-    font-weight: 300;
-    line-height: var(--s-line-height-base);
-    padding: 0 $inner-spacing-small;
+  & > span {
+    margin-left: $inner-spacing-small;
+    color: var(--s-color-base-content-primary);
+    font-size: var(--s-font-size-medium);
+    font-weight: 600;
   }
 }
 </style>

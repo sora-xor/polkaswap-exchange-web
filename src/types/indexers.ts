@@ -5,7 +5,8 @@ import type { ProviderInterfaceEmitted, ProviderInterfaceEmitCb } from '@polkado
 export interface Indexer {
   name: string;
   type: IndexerType;
-  address: string;
+  endpoint: string;
+  online: boolean;
 }
 
 export interface RunConnectionOptions {

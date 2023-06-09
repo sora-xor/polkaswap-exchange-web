@@ -1,17 +1,22 @@
 <template>
-  <dialog-base :visible.sync="visibility" :title="t('selectIndexerDialog.title')" class="select-indexer-dialog">
-    <select-indexer v-model="connectedIndexerAddress" :indexers="indexerList" :environment="soraNetwork" />
+  <dialog-base :visible.sync="visibility" :title="t('footer.statistics.dialog.title')" class="select-indexer-dialog">
+    <select-indexer
+      v-model="selectedIndexerType"
+      :ceres-api="useCeresApi"
+      :indexers="indexers"
+      :environment="soraNetwork"
+    />
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, state, mutation } from '@/store/decorators';
+import { state, mutation } from '@/store/decorators';
 import { Indexer } from '@/types/indexers';
 
 const IndexerListView = 'IndexerListView';
@@ -25,16 +30,49 @@ const IndexerInfoView = 'IndexerInfoView';
   },
 })
 export default class SelectIndexerDialog extends Mixins(TranslationMixin, mixins.NotificationMixin) {
-  @state.settings.indexer indexer!: Partial<Indexer>;
   @state.settings.selectIndexerDialogVisibility private selectIndexerDialogVisibility!: boolean;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-
-  @getter.settings.indexerList indexerList!: Array<Indexer>;
+  @state.wallet.settings.subqueryEndpoint subqueryEndpoint!: Indexer['endpoint'];
+  @state.wallet.settings.subsquidEndpoint subsquidEndpoint!: Indexer['endpoint'];
+  @state.wallet.settings.subqueryStatus private subqueryStatus!: WALLET_TYPES.ConnectionStatus;
+  @state.wallet.settings.subsquidStatus private subsquidStatus!: WALLET_TYPES.ConnectionStatus;
+  @state.wallet.settings.indexerType indexerType!: Indexer['type'];
 
   @mutation.settings.setSelectIndexerDialogVisibility setSelectIndexerDialogVisibility!: (flag: boolean) => void;
-  @mutation.settings.setIndexer setIndexer!: (indexer: Indexer) => void;
+  @mutation.wallet.settings.setIndexerType setIndexerType!: (type: WALLET_CONSTS.IndexerType) => void;
 
   currentView = IndexerListView;
+
+  get isSubqueryOnline(): boolean {
+    return this.subqueryStatus === WALLET_TYPES.ConnectionStatus.Available;
+  }
+
+  get isSubsquidOnline(): boolean {
+    return this.subsquidStatus === WALLET_TYPES.ConnectionStatus.Available;
+  }
+
+  get indexers(): Indexer[] {
+    return [
+      {
+        name: 'Subquery',
+        type: WALLET_CONSTS.IndexerType.SUBQUERY,
+        endpoint: this.subqueryEndpoint,
+        online: this.isSubqueryOnline,
+      },
+      {
+        name: 'Subsquid',
+        type: WALLET_CONSTS.IndexerType.SUBSQUID,
+        endpoint: this.subsquidEndpoint,
+        online: this.isSubsquidOnline,
+      },
+    ];
+  }
+
+  get indexer(): Indexer {
+    const indexer = this.indexers.find((indexer) => indexer.type === this.indexerType);
+    if (!indexer) throw new Error('Unknown indexer type');
+    return indexer;
+  }
 
   get visibility(): boolean {
     return this.selectIndexerDialogVisibility;
@@ -47,22 +85,26 @@ export default class SelectIndexerDialog extends Mixins(TranslationMixin, mixins
     }
   }
 
-  get connectedIndexerAddress(): string {
-    return this.indexer?.address ?? '';
+  get useCeresApi(): boolean {
+    return true;
   }
 
-  set connectedIndexerAddress(address: string) {
-    if (address === this.indexer.address) return;
+  get selectedIndexerType(): WALLET_CONSTS.IndexerType {
+    return this.indexerType ?? '';
+  }
 
-    const indexer = this.findIndexerInListByAddress(address);
+  set selectedIndexerType(type: WALLET_CONSTS.IndexerType) {
+    if (type === this.indexerType) return;
+
+    const indexer = this.findIndexerInListByType(type);
 
     this.handleIndexer(indexer);
   }
 
   handleIndexer(indexer: Indexer): void {
-    this.setIndexer(indexer);
+    this.setIndexerType(indexer.type);
 
-    if (this.indexer.address === indexer.address && this.currentView === IndexerInfoView) {
+    if (this.indexer.type === indexer.type && this.currentView === IndexerInfoView) {
       this.handleBack();
     }
   }
@@ -75,12 +117,12 @@ export default class SelectIndexerDialog extends Mixins(TranslationMixin, mixins
     this.currentView = view;
   }
 
-  private findInList(list: Indexer[], address: string): any {
-    return list.find((item) => item.address === address);
+  private findInList(list: Indexer[], type: string): any {
+    return list.find((item) => item.type === type);
   }
 
-  private findIndexerInListByAddress(address: string): any {
-    return this.findInList(this.indexerList, address);
+  private findIndexerInListByType(type: WALLET_CONSTS.IndexerType): any {
+    return this.findInList(this.indexers, type);
   }
 }
 </script>

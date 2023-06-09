@@ -3,10 +3,9 @@ import { defineGetters } from 'direct-vuex';
 
 import { LiquiditySourceForMarketAlgorithm } from '@/consts';
 import { settingsGetterContext } from '@/store/settings';
-import type { Indexer } from '@/types/indexers';
 import type { Node } from '@/types/nodes';
 
-import type { NodesHashTable, IndexersHashTable, SettingsState } from './types';
+import type { NodesHashTable, SettingsState } from './types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 const getters = defineGetters<SettingsState>()({
@@ -29,17 +28,6 @@ const getters = defineGetters<SettingsState>()({
   nodeIsConnected(...args): boolean {
     const { state } = settingsGetterContext(args);
     return !!state.node?.address && !state.nodeAddressConnecting && connection.opened;
-  },
-  defaultIndexersHashTable(...args): IndexersHashTable {
-    const { state } = settingsGetterContext(args);
-    return state.defaultIndexers.reduce<IndexersHashTable>(
-      (result, indexer: Indexer) => ({ ...result, [indexer.address]: indexer }),
-      {}
-    );
-  },
-  indexerList(...args): Array<Indexer> {
-    const { state, getters } = settingsGetterContext(args);
-    return [...state.defaultIndexers];
   },
   liquiditySource(...args): LiquiditySourceTypes {
     const { state } = settingsGetterContext(args);

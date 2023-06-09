@@ -23,21 +23,6 @@
       </template>
     </footer-popper>
     <footer-popper
-      icon="software-database-24"
-      panel-class="indexer"
-      :panel-text="indexer.name"
-      :status="indexerClass"
-      :action-text="t('selectIndexerText')"
-      @action="openIndexerSelectionDialog"
-    >
-      <template #label>
-        <span>{{ indexer.name }}</span>
-      </template>
-      <template>
-        <span>{{ indexer.address }}</span>
-      </template>
-    </footer-popper>
-    <footer-popper
       icon="wi-fi-16"
       panel-class="internet"
       :panel-text="internetConnectionText"
@@ -59,7 +44,7 @@
       :panel-text="statisticsConnectionText"
       :status="statisticsConnectionClass"
       :action-text="t('footer.statistics.action')"
-      @action="openStatisticsDialog"
+      @action="openIndexerSelectionDialog"
     >
       <template #label>
         <span>{{ t('footer.statistics.label') }}</span>
@@ -83,7 +68,6 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter, mutation } from '@/store/decorators';
-import type { Indexer } from '@/types/indexers';
 import type { Node } from '@/types/nodes';
 
 import FooterPopper from './FooterPopper.vue';
@@ -105,6 +89,7 @@ const MAX_INTERNET_CONNECTION_LIMIT = 10;
 export default class AppFooter extends Mixins(TranslationMixin) {
   // Block explorer
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+  @state.wallet.settings.indexerType private indexerType!: WALLET_CONSTS.IndexerType;
   @state.settings.blockNumber blockNumber!: number;
 
   get blockExplorerLink(): Nullable<string> {
@@ -123,7 +108,6 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   @getter.settings.nodeIsConnecting isNodeConnecting!: boolean;
   @getter.settings.nodeIsConnected isNodeConnected!: boolean;
   @state.settings.node node!: Partial<Node>;
-  @state.settings.indexer indexer!: Partial<Indexer>;
   @mutation.settings.setSelectNodeDialogVisibility private setSelectNodeDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.setSelectIndexerDialogVisibility private setSelectIndexerDialogVisibility!: (
     flag: boolean
@@ -143,10 +127,6 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
   get nodeConnectionText(): string {
     return this.t(`footer.node.title.${this.nodeConnectionStatusKey}`);
-  }
-
-  get indexerClass(): Status {
-    return Status.SUCCESS;
   }
 
   get formattedNodeLocation() {
@@ -204,11 +184,20 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
   // Statistics connection
   @state.wallet.settings.subqueryStatus private subqueryStatus!: WALLET_TYPES.ConnectionStatus;
+  @state.wallet.settings.subsquidStatus private subsquidStatus!: WALLET_TYPES.ConnectionStatus;
 
   showStatisticsDialog = false;
 
+  get indexerStatus(): WALLET_TYPES.ConnectionStatus {
+    if (this.indexerType === WALLET_CONSTS.IndexerType.SUBQUERY) {
+      return this.subqueryStatus;
+    } else {
+      return this.subsquidStatus;
+    }
+  }
+
   get statisticsConnectionClass(): Status {
-    switch (this.subqueryStatus) {
+    switch (this.indexerStatus) {
       case WALLET_TYPES.ConnectionStatus.Unavailable:
         return Status.ERROR;
       case WALLET_TYPES.ConnectionStatus.Loading:

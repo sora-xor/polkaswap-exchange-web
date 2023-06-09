@@ -2,7 +2,6 @@ import { defineMutations } from 'direct-vuex';
 
 import { MarketAlgorithms } from '@/consts';
 import type { Language } from '@/consts';
-import type { Indexer } from '@/types/indexers';
 import type { Node } from '@/types/nodes';
 import storage, { settingsStorage } from '@/utils/storage';
 
@@ -36,19 +35,6 @@ const mutations = defineMutations<SettingsState>()({
   setCustomNodes(state, nodes: Array<Node>): void {
     state.customNodes = [...nodes];
     settingsStorage.set('customNodes', JSON.stringify(nodes));
-  },
-  setIndexer(state, indexer: Indexer): void {
-    state.indexer = { ...indexer };
-    settingsStorage.set('indexer', JSON.stringify(indexer));
-  },
-  setDefaultIndexers(state, indexers: Array<Indexer>): void {
-    state.defaultIndexers = [...indexers];
-    if (!state.indexer) return;
-    const defaultIndexer = state.defaultIndexers.find((item) => item.address === state.indexer.address);
-    if (!defaultIndexer) return;
-    // If indexer from default indexers list - keep this indexer from localstorage up to date
-    state.indexer = { ...defaultIndexer };
-    settingsStorage.set('indexer', JSON.stringify(state.indexer));
   },
   resetNode(state): void {
     state.node = {};
