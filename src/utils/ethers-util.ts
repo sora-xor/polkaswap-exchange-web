@@ -1,5 +1,3 @@
-import { json } from 'stream/consumers';
-
 import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
@@ -14,7 +12,6 @@ import type { NetworkData } from '@/types/bridge';
 import { settingsStorage } from '@/utils/storage';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 type ethersProvider = ethers.providers.Web3Provider;

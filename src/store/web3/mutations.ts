@@ -7,7 +7,6 @@ import ethersUtil from '@/utils/ethers-util';
 
 import type { Web3State, EthBridgeSettings, SubNetworkApps } from './types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { SupportedApps, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const mutations = defineMutations<Web3State>()({

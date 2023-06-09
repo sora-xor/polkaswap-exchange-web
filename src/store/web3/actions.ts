@@ -6,7 +6,6 @@ import { ethers } from 'ethers';
 
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
-import { getWalletAddress } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 import type { Provider } from '@/utils/ethers-util';
 

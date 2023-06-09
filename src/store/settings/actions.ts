@@ -1,4 +1,4 @@
-import { initWallet, waitForCore, connection, api } from '@soramitsu/soraneo-wallet-web';
+import { initWallet, waitForCore, connection, api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
 import { Language, WalletPermissions } from '@/consts';
@@ -44,6 +44,7 @@ const actions = defineActions({
     const requestedNode = (node || (state.node.address ? state.node : defaultNode)) as Nullable<Node>;
     const walletOptions = {
       permissions: WalletPermissions,
+      appName: WALLET_CONSTS.TranslationConsts.Polkaswap,
     };
 
     try {
