@@ -16,13 +16,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import { formatAddress } from '@/utils';
 import { getter } from '@/store/decorators';
+import { formatAddress } from '@/utils';
 
 @Component({
   components: {

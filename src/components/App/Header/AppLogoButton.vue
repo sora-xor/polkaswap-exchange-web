@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 import PolkaswapLogo from '@/components/shared/Logo/Polkaswap.vue';
 

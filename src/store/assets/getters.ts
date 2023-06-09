@@ -1,11 +1,12 @@
-import { defineGetters } from 'direct-vuex';
-import { api } from '@soramitsu/soraneo-wallet-web';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineGetters } from 'direct-vuex';
 
 import { assetsGetterContext } from '@/store/assets';
+
 import type { AssetsState } from './types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 const getters = defineGetters<AssetsState>()({
   whitelistAssets(...args): Array<Asset> {

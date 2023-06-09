@@ -1,21 +1,21 @@
-import { ethers } from 'ethers';
-import WalletConnectProvider from '@walletconnect/web3-provider';
+import { json } from 'stream/consumers';
+
 import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { XOR, VAL, PSWAP, ETH } from '@sora-substrate/util/build/assets/consts';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import { ethers } from 'ethers';
 
-import type { CodecString } from '@sora-substrate/util';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
-
-import { settingsStorage } from '@/utils/storage';
 import { ZeroStringValue } from '@/consts';
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
-
 import type { NetworkData } from '@/types/bridge';
-import { json } from 'stream/consumers';
+import { settingsStorage } from '@/utils/storage';
+
+import type { CodecString } from '@sora-substrate/util';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 type ethersProvider = ethers.providers.Web3Provider;
 

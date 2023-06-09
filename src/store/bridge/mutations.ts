@@ -1,10 +1,11 @@
-import omit from 'lodash/fp/omit';
 import { defineMutations } from 'direct-vuex';
-import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import omit from 'lodash/fp/omit';
 
 import { ZeroStringValue } from '@/consts';
+
 import type { BridgeState } from './types';
+import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 const mutations = defineMutations<BridgeState>()({
   setSoraToEvm(state, isSoraToEvm: boolean): void {

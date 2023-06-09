@@ -1,5 +1,5 @@
-import { defineActions } from 'direct-vuex';
 import { api, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
+import { defineActions } from 'direct-vuex';
 
 import { poolActionContext } from '@/store/pool';
 import { waitForAccountPair } from '@/utils';

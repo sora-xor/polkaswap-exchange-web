@@ -1,11 +1,11 @@
-import { defineActions } from 'direct-vuex';
 import { FPNumber } from '@sora-substrate/util';
+import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
-import { moonpayActionContext } from '@/store/moonpay';
-import ethersUtil from '@/utils/ethers-util';
 import { EthAddress } from '@/consts';
 import { SmartContracts, SmartContractType } from '@/consts/evm';
+import { moonpayActionContext } from '@/store/moonpay';
+import ethersUtil from '@/utils/ethers-util';
 import type { MoonpayEVMTransferAssetData } from '@/utils/moonpay';
 
 const POLLING_INTERVAL = 15_000;

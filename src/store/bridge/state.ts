@@ -1,4 +1,5 @@
 import { ZeroStringValue } from '@/consts';
+
 import type { BridgeState } from './types';
 
 function initialState(): BridgeState {

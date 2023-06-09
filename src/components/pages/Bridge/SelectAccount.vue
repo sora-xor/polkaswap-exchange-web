@@ -38,12 +38,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { api, mixins, components, WALLET_TYPES, WALLET_CONSTS, getWalletAccounts } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SearchInputMixin from '@/components/mixins/SearchInputMixin';
-
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state, mutation, getter } from '@/store/decorators';
 
 @Component({

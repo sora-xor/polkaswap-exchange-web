@@ -93,14 +93,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import AppSidebarItemContent from './SidebarItemContent.vue';
-import AppInfoPopper from './AppInfoPopper.vue';
-
 import {
   PageNames,
   PoolChildPages,
@@ -112,9 +108,11 @@ import {
   SidebarMenuItemLink,
   FaucetLink,
 } from '@/consts';
-
-import { getter, state } from '@/store/decorators';
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
+import { getter, state } from '@/store/decorators';
+
+import AppInfoPopper from './AppInfoPopper.vue';
+import AppSidebarItemContent from './SidebarItemContent.vue';
 
 @Component({
   components: {

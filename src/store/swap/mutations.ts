@@ -1,17 +1,18 @@
-import omit from 'lodash/fp/omit';
 import { defineMutations } from 'direct-vuex';
-import type { CodecString } from '@sora-substrate/util';
+import omit from 'lodash/fp/omit';
+
+import { initialState } from './state';
+
+import type { SwapState } from './types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type {
   QuotePaths,
   PrimaryMarketsEnabledAssets,
   QuotePayload,
   LPRewardsInfo,
 } from '@sora-substrate/liquidity-proxy/build/types';
-
-import { initialState } from './state';
-import type { SwapState } from './types';
+import type { CodecString } from '@sora-substrate/util';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 const mutations = defineMutations<SwapState>()({
   reset(state): void {

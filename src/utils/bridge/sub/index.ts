@@ -1,16 +1,15 @@
-import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { Operation } from '@sora-substrate/util';
-import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-
-import { subBridgeApi } from '@/utils/bridge/sub/api';
-import { Bridge } from '@/utils/bridge/common/classes';
-import { SubBridgeOutgoingReducer, SubBridgeIncomingReducer } from '@/utils/bridge/sub/classes/reducers';
-import { getTransaction, updateTransaction } from '@/utils/bridge/sub/utils';
+import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import store from '@/store';
-
+import { Bridge } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeConstructorOptions } from '@/utils/bridge/common/types';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
+import { SubBridgeOutgoingReducer, SubBridgeIncomingReducer } from '@/utils/bridge/sub/classes/reducers';
 import type { SubBridgeReducer } from '@/utils/bridge/sub/classes/reducers';
+import { getTransaction, updateTransaction } from '@/utils/bridge/sub/utils';
+
+import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 interface SubBridgeConstructorOptions extends IBridgeConstructorOptions<SubHistory, SubBridgeReducer> {
   removeTransactionByHash: RemoveTransactionByHash<SubHistory>;

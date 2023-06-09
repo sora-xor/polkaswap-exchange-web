@@ -1,17 +1,17 @@
-import { ethers } from 'ethers';
-import { defineActions } from 'direct-vuex';
-import { api } from '@soramitsu/soraneo-wallet-web';
-import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineActions } from 'direct-vuex';
+import { ethers } from 'ethers';
+
+import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
+import { web3ActionContext } from '@/store/web3';
+import { getWalletAddress } from '@/utils';
+import ethersUtil from '@/utils/ethers-util';
+import type { Provider } from '@/utils/ethers-util';
+
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { ActionContext } from 'vuex';
-
-import { web3ActionContext } from '@/store/web3';
-import ethersUtil from '@/utils/ethers-util';
-import { getWalletAddress } from '@/utils';
-import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
-
-import type { Provider } from '@/utils/ethers-util';
 
 async function connectEvmNetwork(context: ActionContext<any, any>, networkHex?: string): Promise<void> {
   const { commit } = web3ActionContext(context);

@@ -1,21 +1,20 @@
-import { Component, Mixins } from 'vue-property-decorator';
 import { Operation } from '@sora-substrate/util';
-import type { CodecString, BridgeHistory } from '@sora-substrate/util';
-import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
-
-import ethersUtil from '@/utils/ethers-util';
-import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
-import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
-import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
-import { state, action, mutation, getter } from '@/store/decorators';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-
-import type { MoonpayTransaction } from '@/utils/moonpay';
+import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import type { RegisteredAccountAssetObject, EvmAccountAsset } from '@/store/assets/types';
+import { state, action, mutation, getter } from '@/store/decorators';
 import type { BridgeTxData } from '@/store/moonpay/types';
+import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
+import ethersUtil from '@/utils/ethers-util';
+import type { MoonpayTransaction } from '@/utils/moonpay';
+import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
+
+import type { CodecString, BridgeHistory } from '@sora-substrate/util';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 const createError = (text: string, notification: MoonpayNotifications) => {
   const error = new Error(text);

@@ -1,15 +1,14 @@
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-import type { Subscription } from 'rxjs';
-
-import { subBridgeApi } from '@/utils/bridge/sub/api';
-import { BridgeReducer } from '@/utils/bridge/common/classes';
 
 import { delay } from '@/utils';
-import { waitForSoraTransactionHash } from '@/utils/bridge/common/utils';
-
+import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
+import { waitForSoraTransactionHash } from '@/utils/bridge/common/utils';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
+
+import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { Subscription } from 'rxjs';
 
 type SubBridgeReducerOptions<T extends SubHistory> = IBridgeReducerOptions<T> & {
   removeTransactionByHash: RemoveTransactionByHash<SubHistory>;

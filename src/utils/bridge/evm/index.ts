@@ -1,16 +1,15 @@
-import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { Operation } from '@sora-substrate/util';
-import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
-
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { Bridge } from '@/utils/bridge/common/classes';
-import { EvmBridgeOutgoingReducer, EvmBridgeIncomingReducer } from '@/utils/bridge/evm/classes/reducers';
-import { updateTransaction } from '@/utils/bridge/evm/utils';
+import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import store from '@/store';
-
+import { Bridge } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeConstructorOptions } from '@/utils/bridge/common/types';
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
+import { EvmBridgeOutgoingReducer, EvmBridgeIncomingReducer } from '@/utils/bridge/evm/classes/reducers';
 import type { EvmBridgeReducer } from '@/utils/bridge/evm/classes/reducers';
+import { updateTransaction } from '@/utils/bridge/evm/utils';
+
+import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 interface EvmBridgeConstructorOptions extends IBridgeConstructorOptions<EvmHistory, EvmBridgeReducer> {
   removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;

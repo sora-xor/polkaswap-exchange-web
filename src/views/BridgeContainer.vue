@@ -9,14 +9,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { ethers } from 'ethers';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { ethers } from 'ethers';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import ethersUtil from '@/utils/ethers-util';
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { action, getter } from '@/store/decorators';
+import ethersUtil from '@/utils/ethers-util';
 
 @Component
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {

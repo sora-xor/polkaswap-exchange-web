@@ -1,7 +1,8 @@
-import * as enJson from '../../../src/lang/en.json';
-import * as ruJson from '../../../src/lang/ru.json';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+
 import * as csJson from '../../../src/lang/cs.json';
 import * as deJson from '../../../src/lang/de.json';
+import * as enJson from '../../../src/lang/en.json';
 import * as esJson from '../../../src/lang/es.json';
 import * as frJson from '../../../src/lang/fr.json';
 import * as hrJson from '../../../src/lang/hr.json';
@@ -12,14 +13,13 @@ import * as itJson from '../../../src/lang/it.json';
 import * as nlJson from '../../../src/lang/nl.json';
 import * as noJson from '../../../src/lang/no.json';
 import * as plJson from '../../../src/lang/pl.json';
+import * as ruJson from '../../../src/lang/ru.json';
 import * as skJson from '../../../src/lang/sk.json';
 import * as srJson from '../../../src/lang/sr.json';
 import * as svJson from '../../../src/lang/sv.json';
 import * as viJson from '../../../src/lang/vi.json';
 import * as yoJson from '../../../src/lang/yo.json';
 import * as zhCnJson from '../../../src/lang/zh_CN.json';
-
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 const TranslationConsts = WALLET_CONSTS.TranslationConsts;
 

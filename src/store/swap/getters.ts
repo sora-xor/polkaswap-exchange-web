@@ -1,17 +1,18 @@
-import isEmpty from 'lodash/fp/isEmpty';
-import { defineGetters } from 'direct-vuex';
-import { api } from '@soramitsu/soraneo-wallet-web';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
+import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineGetters } from 'direct-vuex';
+import isEmpty from 'lodash/fp/isEmpty';
 
-import { swapGetterContext } from '@/store/swap';
 import {
   LiquiditySourceForMarketAlgorithm,
   MarketAlgorithmForLiquiditySource,
   MarketAlgorithms,
   ZeroStringValue,
 } from '@/consts';
+import { swapGetterContext } from '@/store/swap';
+
 import type { SwapState } from './types';
+import type { CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
 
 const getters = defineGetters<SwapState>()({
   tokenFrom(...args): Nullable<RegisteredAccountAsset> {

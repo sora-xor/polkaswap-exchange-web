@@ -1,14 +1,14 @@
-import { defineMutations } from 'direct-vuex';
 import { CodecString } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import type { SupportedApps, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { defineMutations } from 'direct-vuex';
 
-import ethersUtil from '@/utils/ethers-util';
 import { ZeroStringValue } from '@/consts';
+import ethersUtil from '@/utils/ethers-util';
 
 import type { Web3State, EthBridgeSettings, SubNetworkApps } from './types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import type { SupportedApps, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const mutations = defineMutations<Web3State>()({
   setEvmAddress(state, address: string): void {

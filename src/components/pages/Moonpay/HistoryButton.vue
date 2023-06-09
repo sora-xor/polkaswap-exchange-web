@@ -13,13 +13,13 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator';
-import type { BridgeHistory } from '@sora-substrate/util';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import { goTo } from '@/router';
 import { PageNames } from '@/consts';
+import { goTo } from '@/router';
 import { state, mutation } from '@/store/decorators';
+
+import type { BridgeHistory } from '@sora-substrate/util';
 
 @Component
 export default class MoonpayHistoryButton extends Mixins(TranslationMixin) {

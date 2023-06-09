@@ -67,21 +67,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
-import PageMixin from '../mixins/PageMixin';
-
-import { demeterLazyComponent } from '../router';
-import { DemeterComponents } from '../consts';
-
-import { lazyView } from '@/router';
 import { PageNames } from '@/consts';
-
+import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+import { lazyView } from '@/router';
 import { state } from '@/store/decorators';
 
+import { DemeterComponents } from '../consts';
+import PageMixin from '../mixins/PageMixin';
+import { demeterLazyComponent } from '../router';
+
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
 
 @Component({
   inheritAttrs: false,

@@ -48,9 +48,9 @@
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { formatLocation } from './utils';
-
 import type { NodeItem } from '@/types/nodes';
+
+import { formatLocation } from './utils';
 
 @Component
 export default class SelectNode extends Mixins(TranslationMixin) {

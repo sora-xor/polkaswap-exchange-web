@@ -36,13 +36,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { state, mutation } from '@/store/decorators';
 import type { TabItem } from '@/types/tabs';
 

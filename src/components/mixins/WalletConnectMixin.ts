@@ -1,15 +1,14 @@
 import { Component, Mixins } from 'vue-property-decorator';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-
-import router from '@/router';
-import { getWalletAddress, formatAddress } from '@/utils';
-import { PageNames } from '@/consts';
-import { Provider } from '@/utils/ethers-util';
-import { action, getter, mutation, state } from '@/store/decorators';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
+import { PageNames } from '@/consts';
+import router from '@/router';
+import { action, getter, mutation, state } from '@/store/decorators';
 import type { NetworkData } from '@/types/bridge';
+import { getWalletAddress, formatAddress } from '@/utils';
+import { Provider } from '@/utils/ethers-util';
+
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const checkExtensionKey = 'provider.messages.checkExtension';
 const installExtensionKey = 'provider.messages.installExtension';

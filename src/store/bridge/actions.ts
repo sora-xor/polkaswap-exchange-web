@@ -1,38 +1,32 @@
+import { BridgeCurrencyType, BridgeHistory, FPNumber, Operation } from '@sora-substrate/util';
+import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
-import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { BridgeCurrencyType, BridgeHistory, FPNumber, Operation } from '@sora-substrate/util';
-import type { ActionContext } from 'vuex';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
-
-import { bridgeActionContext } from '@/store/bridge';
 import { MaxUint256 } from '@/consts';
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
-import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
-import ethersUtil from '@/utils/ethers-util';
+import { bridgeActionContext } from '@/store/bridge';
 import { waitForEvmTransactionMined, findUserTxIdInBlock } from '@/utils/bridge/common/utils';
-import type { SignTxResult } from './types';
-
-// ETH
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import { waitForApprovedRequest, updateEthBridgeHistory } from '@/utils/bridge/eth/utils';
-
-// EVM
 import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import type { BridgeTransactionData } from '@sora-substrate/util/build/bridgeProxy/types';
-import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
-
-// SUB
 import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
-import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import ethersUtil from '@/utils/ethers-util';
+import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
+
+import type { SignTxResult } from './types';
+import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { BridgeTransactionData } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { ActionContext } from 'vuex';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 

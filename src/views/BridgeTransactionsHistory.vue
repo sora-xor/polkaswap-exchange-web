@@ -72,20 +72,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { IBridgeTransaction } from '@sora-substrate/util';
+import { Component, Mixins } from 'vue-property-decorator';
 
+import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
-import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-
-import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
+import router, { lazyComponent } from '@/router';
+import type { EvmAccountAsset } from '@/store/assets/types';
 import { state } from '@/store/decorators';
 
-import type { EvmAccountAsset } from '@/store/assets/types';
+import type { IBridgeTransaction } from '@sora-substrate/util';
 
 @Component({
   components: {

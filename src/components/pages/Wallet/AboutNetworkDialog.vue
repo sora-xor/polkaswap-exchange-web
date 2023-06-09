@@ -9,11 +9,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
 import { Components, Links } from '@/consts';
 import { lazyComponent } from '@/router';
 

@@ -1,14 +1,14 @@
-import { defineGetters } from 'direct-vuex';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { defineGetters } from 'direct-vuex';
 
-import { web3GetterContext } from '@/store/web3';
 import { EVM_NETWORKS } from '@/consts/evm';
-import { SUB_NETWORKS } from '@/consts/sub';
-
 import type { KnownEthBridgeAsset } from '@/consts/evm';
+import { SUB_NETWORKS } from '@/consts/sub';
+import { web3GetterContext } from '@/store/web3';
 import type { NetworkData } from '@/types/bridge';
+
 import type { Web3State } from './types';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
 type AvailableNetwork = {
   disabled: boolean;

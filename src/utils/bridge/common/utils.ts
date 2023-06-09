@@ -1,18 +1,17 @@
-import { ethers } from 'ethers';
-import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation, isBridgeOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/util';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { ethers } from 'ethers';
+
+import { delay } from '@/utils';
+import type { GetTransaction } from '@/utils/bridge/common/types';
+import { isUnsignedTx as isUnsignedEthTx } from '@/utils/bridge/eth/utils';
+import { isUnsignedTx as isUnsignedEvmTx } from '@/utils/bridge/evm/utils';
+import { isUnsignedTx as isUnsignedSubTx } from '@/utils/bridge/sub/utils';
+import ethersUtil from '@/utils/ethers-util';
+
 import type { IBridgeTransaction, BridgeHistory } from '@sora-substrate/util';
 import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-
-import ethersUtil from '@/utils/ethers-util';
-import { delay } from '@/utils';
-
-import { isUnsignedTx as isUnsignedEvmTx } from '@/utils/bridge/evm/utils';
-import { isUnsignedTx as isUnsignedEthTx } from '@/utils/bridge/eth/utils';
-import { isUnsignedTx as isUnsignedSubTx } from '@/utils/bridge/sub/utils';
-
-import type { GetTransaction } from '@/utils/bridge/common/types';
 
 const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS; // Block production time
 

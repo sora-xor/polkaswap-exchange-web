@@ -17,15 +17,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { components } from '@soramitsu/soraneo-wallet-web';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import { components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { NetworkData } from '@/types/bridge';
+
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 type NetworkItem = {
   id: BridgeNetworkId;

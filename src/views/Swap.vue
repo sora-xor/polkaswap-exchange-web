@@ -145,27 +145,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { Subscription } from 'rxjs';
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import type {
-  QuotePayload,
-  PrimaryMarketsEnabledAssets,
-  LPRewardsInfo,
-  SwapResult,
-} from '@sora-substrate/liquidity-proxy/build/types';
-import type { DexQuoteData } from '@/store/swap/types';
+import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
-
+import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components, MarketAlgorithms, PageNames, ZeroStringValue } from '@/consts';
+import router, { lazyComponent } from '@/router';
+import { action, getter, mutation, state } from '@/store/decorators';
+import type { DexQuoteData } from '@/store/swap/types';
 import {
   isMaxButtonAvailable,
   getMaxValue,
@@ -175,9 +168,16 @@ import {
   getAssetBalance,
   debouncedInputHandler,
 } from '@/utils';
-import router, { lazyComponent } from '@/router';
-import { Components, MarketAlgorithms, PageNames, ZeroStringValue } from '@/consts';
-import { action, getter, mutation, state } from '@/store/decorators';
+
+import type {
+  QuotePayload,
+  PrimaryMarketsEnabledAssets,
+  LPRewardsInfo,
+  SwapResult,
+} from '@sora-substrate/liquidity-proxy/build/types';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import type { Subscription } from 'rxjs';
 
 @Component({
   components: {

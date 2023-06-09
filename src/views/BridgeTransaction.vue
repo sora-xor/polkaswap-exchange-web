@@ -205,24 +205,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
-import type { CodecString, IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-
-import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
+import type { EvmLinkType } from '@/consts/evm';
+import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/common/utils';
 
-import type { EvmLinkType } from '@/consts/evm';
+import type { CodecString, IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 const FORMATTED_HASH_LENGTH = 24;
 

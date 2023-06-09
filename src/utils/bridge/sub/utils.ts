@@ -1,7 +1,8 @@
 import { Operation } from '@sora-substrate/util';
-import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+
+import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 export const isUnsignedTx = (tx: SubHistory): boolean => {
   if (tx.type === Operation.SubstrateOutgoing) {

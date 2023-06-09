@@ -1,14 +1,13 @@
-import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
-import { Component } from 'vue-property-decorator';
 import { WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
+import VueRouter, { RouteConfig } from 'vue-router';
 
-import store from '@/store';
-import { updateDocumentTitle } from '@/utils';
 import { PageNames, BridgeChildPages } from '@/consts';
-
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 import { demeterLazyView } from '@/modules/demeterFarming/router';
+import store from '@/store';
+import { updateDocumentTitle } from '@/utils';
 
 Vue.use(VueRouter);
 

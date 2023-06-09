@@ -1,16 +1,16 @@
-import { defineActions } from 'direct-vuex';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
-import type { ActionContext } from 'vuex';
+import { defineActions } from 'direct-vuex';
 
-import ethersUtil from '@/utils/ethers-util';
-import { assetsActionContext } from '@/store/assets';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { ZeroStringValue } from '@/consts';
-
+import { assetsActionContext } from '@/store/assets';
 import type { EvmAccountAsset } from '@/store/assets/types';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
+import ethersUtil from '@/utils/ethers-util';
+
+import type { ActionContext } from 'vuex';
 
 async function getEthRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, EvmAccountAsset>[]> {
   const networkAssets = await ethBridgeApi.getRegisteredAssets();

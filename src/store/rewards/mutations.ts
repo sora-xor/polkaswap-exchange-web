@@ -1,11 +1,13 @@
-import omit from 'lodash/fp/omit';
 import { defineMutations } from 'direct-vuex';
-import type { Subscription } from 'rxjs';
-import type { CodecString } from '@sora-substrate/util';
+import omit from 'lodash/fp/omit';
+
+import type { SelectedRewards, AccountRewards, RewardsAmountHeaderItem } from '@/types/rewards';
 
 import { initialState } from './state';
+
 import type { RewardsState } from './types';
-import type { SelectedRewards, AccountRewards, RewardsAmountHeaderItem } from '@/types/rewards';
+import type { CodecString } from '@sora-substrate/util';
+import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<RewardsState>()({
   reset(state): void {
