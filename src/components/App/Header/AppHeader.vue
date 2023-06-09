@@ -2,8 +2,9 @@
   <header class="header">
     <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
-    <div class="app-controls app-controls--fiat-payment s-flex" @click="goTo(PageNames.FiatDepositOptions)">
-      <s-button type="tertiary" size="medium">
+    <div class="app-controls app-controls--fiat-payment s-flex">
+      <app-ad />
+      <s-button type="tertiary" size="medium" @click="goTo(PageNames.FiatDepositOptions)">
         <pair-token-logo :first-token="xor" :second-token="eth" size="small" />
         <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
@@ -25,9 +26,10 @@ import WalletConnectMixin from '../../../components/mixins/WalletConnectMixin';
 import PolkaswapLogo from '../../../components/shared/Logo/Polkaswap.vue';
 import { PageNames, Components } from '../../../consts';
 import { lazyComponent, goTo } from '../../../router';
-import { getter, mutation } from '../../../store/decorators';
+import { getter } from '../../../store/decorators';
 
 import AppAccountButton from './AppAccountButton.vue';
+import AppAd from './AppAd.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
 import AppLogoButton from './AppLogoButton.vue';
 
@@ -38,6 +40,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
   components: {
     PolkaswapLogo,
     AppAccountButton,
+    AppAd,
     AppHeaderMenu,
     AppLogoButton,
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
