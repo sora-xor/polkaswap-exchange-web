@@ -12,7 +12,7 @@ import { MaxUint256 } from '@/consts';
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 import ethersUtil from '@/utils/ethers-util';
-import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
+import { waitForEvmTransactionMined, findUserTxIdInBlock } from '@/utils/bridge/common/utils';
 import type { SignTxResult } from './types';
 
 // ETH
@@ -90,11 +90,12 @@ async function subTxDataToHistory(
   const soraBlockNumber = isOutgoing ? tx.startBlock : tx.endBlock;
   const evmBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
   const blockId = await api.system.getBlockHash(soraBlockNumber);
+  const txId = await findUserTxIdInBlock(blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
   const startTime = await api.system.getBlockTimestamp(blockId);
 
   return {
     id,
-    txId: id,
+    txId,
     blockId,
     blockHeight: String(evmBlockNumber),
     type: isOutgoing ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming,
@@ -247,13 +248,11 @@ const actions = defineActions({
     if (!force && inProgress) return;
     // update in progress id if needed
     if (hash && inProgress) {
-      console.log('hash && inProgress');
       commit.addTxIdInProgress(hash);
       commit.removeTxIdFromProgress(id);
     }
     // update active view if needed
     if (hash && state.historyId === id) {
-      console.log('state.historyId === id', state.historyId === id);
       commit.setHistoryId(hash);
     }
     // update moonpay records if needed
@@ -344,7 +343,7 @@ const actions = defineActions({
 
   // SUB
   async updateSubHistory(context): Promise<void> {
-    const { commit, dispatch, state, rootState, rootGetters } = bridgeActionContext(context);
+    const { commit, dispatch, getters, state, rootState, rootGetters } = bridgeActionContext(context);
 
     if (!rootGetters.wallet.account.isLoggedIn) return;
     if (state.historyLoading) return;
@@ -357,23 +356,25 @@ const actions = defineActions({
 
     const accountAddress = rootState.wallet.account.address;
     const transactions = await subBridgeApi.getUserTransactions(accountAddress, externalNetwork as SubNetwork);
-    const externalHistory = {};
 
     for (const txData of transactions) {
       const tx = await subTxDataToHistory(rootGetters.assets.assetDataByAddress, txData);
 
       if (tx.id) {
-        const inProgress = state.inProgressIds[tx.id];
+        const internalHistory = getters.bridgeApi.historyList as IBridgeTransaction[];
+        const internalDuplicate = internalHistory.find((item) => item.hash === tx.hash || item.txId === tx.txId);
+        const inProgress = !!internalDuplicate?.id && state.inProgressIds[internalDuplicate.id];
 
         if (!inProgress) {
-          externalHistory[tx.id] = tx;
+          if (internalDuplicate) {
+            await dispatch.removeHistory({ tx: internalDuplicate, force: false });
+          }
 
-          await dispatch.removeHistory({ tx, force: false });
+          commit.updateExternalHistoryItem(tx);
         }
       }
     }
 
-    commit.setExternalHistory(externalHistory);
     commit.setHistoryLoading(false);
   },
 

@@ -83,6 +83,31 @@ export const getEvmTransactionRecieptByHash = async (
   }
 };
 
+export const findUserTxIdInBlock = async (
+  blockHash: string,
+  soraHash: string,
+  eventMethod: string,
+  eventSection: string
+): Promise<string | undefined> => {
+  const blockEvents = await api.system.getBlockEvents(blockHash);
+
+  const event = blockEvents.find(
+    ({ phase, event }) =>
+      phase.isApplyExtrinsic &&
+      event.section === eventSection &&
+      event.method === eventMethod &&
+      event.data?.[0]?.toString() === soraHash
+  );
+
+  if (!event) return undefined;
+
+  const index = event.phase.asApplyExtrinsic.toNumber();
+  const extrinsics = await api.system.getExtrinsicsFromBlock(blockHash);
+  const userExtrinsic = extrinsics[index];
+
+  return userExtrinsic.hash.toString();
+};
+
 export const waitForSoraTransactionHash =
   <T extends IBridgeTransaction>(options: { section: string; extrincicMethod: string; eventMethod: string }) =>
   async (id: string, getTransaction: GetTransaction<T>): Promise<string> => {
@@ -98,8 +123,6 @@ export const waitForSoraTransactionHash =
       const extrinsics = await api.system.getExtrinsicsFromBlock(blockId);
 
       if (extrinsics.length) {
-        const blockEvents = await api.system.getBlockEvents(blockId);
-
         const extrinsicIndex = extrinsics.findIndex((item) => {
           const {
             signer,
@@ -110,6 +133,8 @@ export const waitForSoraTransactionHash =
         });
 
         if (!Number.isFinite(extrinsicIndex)) throw new Error('[Bridge]: Transaction was failed');
+
+        const blockEvents = await api.system.getBlockEvents(blockId);
 
         const event = blockEvents.find(
           ({ phase, event }) =>

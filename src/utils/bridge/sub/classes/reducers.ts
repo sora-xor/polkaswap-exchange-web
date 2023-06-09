@@ -1,4 +1,3 @@
-import { TransactionStatus } from '@sora-substrate/util';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
@@ -66,13 +65,13 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           nextState: BridgeTxStatus.Done,
           rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
-            let currentId = id;
+            const currentId = id;
             this.beforeSubmit(currentId);
             this.updateTransactionParams(currentId, { transactionState: BridgeTxStatus.Pending });
             await this.checkTxId(currentId);
             await this.waitForTxStatus(currentId);
             await this.checkTxBlockId(currentId);
-            currentId = await this.checkTxSoraHash(currentId);
+            await this.checkTxSoraHash(currentId);
             await this.subscribeOnTxBySoraHash(currentId);
             await this.onComplete(currentId);
             return currentId;
@@ -122,8 +121,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
   private async waitForTxStatus(id: string): Promise<void> {
     const { status } = this.getTransaction(id);
 
-    if ([TransactionStatus.Finalized, TransactionStatus.Error].includes(status as TransactionStatus))
-      return Promise.resolve();
+    if (status) return Promise.resolve();
 
     await delay(1_000);
     await this.waitForTxStatus(id);
@@ -145,14 +143,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       eventMethod: 'RequestStatusUpdate',
     })(id, this.getTransaction);
 
-    const prevTx = this.getTransaction(id);
-
-    // create new local tx where id = hash
-    subBridgeApi.saveHistory({ ...prevTx, id: hash, hash });
-    // update current tx hash
     this.updateTransactionParams(id, { hash });
-    // remove prev one where id is generated
-    this.removeTransactionByHash({ tx: { ...prevTx }, force: true });
 
     return hash;
   }
