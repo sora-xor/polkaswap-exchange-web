@@ -1,26 +1,31 @@
 import { BridgeCurrencyType, BridgeHistory, FPNumber, Operation } from '@sora-substrate/util';
-import { EvmTxStatus, EvmDirection } from '@sora-substrate/util/build/evm/consts';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
 import { MaxUint256 } from '@/consts';
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
 import { bridgeActionContext } from '@/store/bridge';
-import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
+import { waitForEvmTransactionMined, findUserTxIdInBlock } from '@/utils/bridge/common/utils';
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import { waitForApprovedRequest, updateEthBridgeHistory } from '@/utils/bridge/eth/utils';
 import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
+import subBridge from '@/utils/bridge/sub';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
 import ethersUtil from '@/utils/ethers-util';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import type { SignTxResult } from './types';
 import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { EvmHistory, EvmTransaction } from '@sora-substrate/util/build/evm/types';
+import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { BridgeTransactionData } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { ActionContext } from 'vuex';
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
@@ -32,54 +37,93 @@ function checkEvmNetwork(context: ActionContext<any, any>): void {
   }
 }
 
-function evmTransactionToEvmHistoryItem(
+async function evmTxDataToHistory(
   assetDataByAddress: (address: string) => Nullable<RegisteredAccountAsset>,
-  tx: EvmTransaction
-): EvmHistory {
-  const id = tx.soraHash || tx.evmHash;
+  tx: BridgeTransactionData
+): Promise<EvmHistory> {
+  const id = tx.soraHash;
   const asset = assetDataByAddress(tx.soraAssetAddress);
   const transactionState = tx.status;
+  const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
+  const soraBlockNumber = isOutgoing ? tx.startBlock : tx.endBlock;
+  const evmBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
+  const blockId = await api.system.getBlockHash(soraBlockNumber);
+  const startTime = await api.system.getBlockTimestamp(blockId);
 
-  // TODO [EVM] add: blockId
   return {
     id,
     txId: id,
-    type: tx.direction === EvmDirection.Outgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,
+    blockId,
+    blockHeight: String(evmBlockNumber),
+    type: isOutgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,
     hash: tx.soraHash,
     transactionState,
-    externalNetwork: tx.externalNetwork,
-    externalHash: tx.evmHash,
+    externalNetwork: tx.externalNetwork as EvmNetwork,
+    externalNetworkType: BridgeNetworkType.Evm,
+    // for now we don't know it
+    externalHash: '',
     amount: FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString(),
     assetAddress: asset?.address,
     symbol: asset?.symbol,
     from: tx.soraAccount,
-    to: tx.evmAccount,
-    startTime: tx.startTimestamp ?? 0,
-    endTime: tx.endTimestamp ?? 0,
+    to: tx.externalAccount,
+    // for now we only know sora block, assume what this is start & end times
+    startTime: startTime,
+    endTime: startTime,
   };
 }
 
-function evmTransactionsToEvmHistory(
+async function subTxDataToHistory(
   assetDataByAddress: (address: string) => Nullable<RegisteredAccountAsset>,
-  txs: EvmTransaction[]
-): Record<string, EvmHistory> {
-  return txs.reduce((buffer, tx) => {
-    const historyItem = evmTransactionToEvmHistoryItem(assetDataByAddress, tx);
+  tx: BridgeTransactionData
+): Promise<SubHistory> {
+  const id = tx.soraHash;
+  const asset = assetDataByAddress(tx.soraAssetAddress);
+  const transactionState = tx.status;
+  const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
+  const soraBlockNumber = isOutgoing ? tx.startBlock : tx.endBlock;
+  const evmBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
+  const blockId = await api.system.getBlockHash(soraBlockNumber);
+  const txId = await findUserTxIdInBlock(blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
+  const startTime = await api.system.getBlockTimestamp(blockId);
 
-    if (!historyItem.id) return buffer;
-
-    return { ...buffer, [historyItem.id]: historyItem };
-  }, {});
+  return {
+    id,
+    txId,
+    blockId,
+    blockHeight: String(evmBlockNumber),
+    type: isOutgoing ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming,
+    hash: tx.soraHash,
+    transactionState,
+    externalNetwork: tx.externalNetwork as SubNetwork,
+    externalNetworkType: BridgeNetworkType.Sub,
+    // for now we don't know it
+    externalHash: '',
+    amount: FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString(),
+    assetAddress: asset?.address,
+    symbol: asset?.symbol,
+    from: tx.soraAccount,
+    to: tx.externalAccount,
+    // for now we only know sora block, assume what this is start & end times
+    startTime: startTime,
+    endTime: startTime,
+  };
 }
 
 function bridgeDataToHistoryItem(
   context: ActionContext<any, any>,
   { date = Date.now(), payload = {}, ...params } = {}
 ): IBridgeTransaction {
-  const { getters, state, rootState } = bridgeActionContext(context);
-  const isEthBridge = getters.isEthBridge;
-  const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : EvmTxStatus.Pending;
-  const externalNetwork = rootState.web3.evmNetworkSelected as number;
+  const { getters, state, rootState, rootGetters } = bridgeActionContext(context);
+  const { isEthBridge, isEvmBridge } = getters;
+  const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : BridgeTxStatus.Pending;
+  // [TODO] use BridgeNetworkId
+  const externalNetwork = rootState.web3.networkSelected as any;
+  const externalNetworkType = isEthBridge
+    ? BridgeNetworkType.EvmLegacy
+    : isEvmBridge
+    ? BridgeNetworkType.Evm
+    : BridgeNetworkType.Sub;
 
   return {
     type: (params as any).type ?? getters.operation,
@@ -94,7 +138,8 @@ function bridgeDataToHistoryItem(
     soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
     externalNetworkFee: (params as any).evmNetworkFee ?? getters.evmNetworkFee,
     externalNetwork,
-    to: (params as any).to ?? rootState.web3.evmAddress,
+    externalNetworkType,
+    to: (params as any).to ?? rootGetters.web3.externalAccount,
     payload,
   };
 }
@@ -168,36 +213,40 @@ const actions = defineActions({
   },
 
   async updateExternalHistory(context, clearHistory = false): Promise<void> {
-    const { getters, dispatch } = bridgeActionContext(context);
+    const { dispatch, getters } = bridgeActionContext(context);
 
     if (getters.isEthBridge) {
-      await dispatch.updateEthHistory(clearHistory);
-    } else {
-      await dispatch.updateEvmHistory();
+      return await dispatch.updateEthHistory(clearHistory);
+    }
+    if (getters.isEvmBridge) {
+      return await dispatch.updateEvmHistory();
+    }
+    if (getters.isSubBridge) {
+      return await dispatch.updateSubHistory();
     }
   },
 
   removeHistory(context, { tx, force = false }: { tx: Partial<IBridgeTransaction>; force: boolean }): void {
     const { commit, dispatch, getters, state, rootState } = bridgeActionContext(context);
 
-    const { hash, txId, externalHash } = tx;
+    const { id, hash } = tx;
 
-    const item = (getters.bridgeApi.historyList as IBridgeTransaction[]).find(
-      (item) => item.hash === hash || item.txId === txId || item.externalHash === externalHash
-    );
+    if (!id) return;
 
-    if (!(item && item.id)) return;
+    const item = getters.bridgeApi.history[id] as IBridgeTransaction;
 
-    const inProgress = state.inProgressIds[item.id];
+    if (!item) return;
+
+    const inProgress = state.inProgressIds[id];
     // in not force mode, do not remove tx in progress
     if (!force && inProgress) return;
     // update in progress id if needed
     if (hash && inProgress) {
       commit.addTxIdInProgress(hash);
-      commit.removeTxIdFromProgress(item.id);
+      commit.removeTxIdFromProgress(id);
     }
     // update active view if needed
-    if (hash && state.historyId === item.id) {
+    if (hash && state.historyId === id) {
       commit.setHistoryId(hash);
     }
     // update moonpay records if needed
@@ -208,7 +257,7 @@ const actions = defineActions({
       };
     }
     // remove tx from history
-    getters.bridgeApi.removeHistory(item.id);
+    getters.bridgeApi.removeHistory(id);
 
     dispatch.updateInternalHistory();
   },
@@ -222,24 +271,44 @@ const actions = defineActions({
     if (getters.isEvmBridge) {
       return await evmBridge.handleTransaction(id);
     }
+    if (getters.isSubBridge) {
+      return await subBridge.handleTransaction(id);
+    }
   },
 
   // EVM
   async updateEvmHistory(context): Promise<void> {
-    const { commit, rootState, rootGetters } = bridgeActionContext(context);
+    const { commit, dispatch, state, rootState, rootGetters } = bridgeActionContext(context);
 
     if (!rootGetters.wallet.account.isLoggedIn) return;
+    if (state.historyLoading) return;
 
-    const externalNetwork = rootState.web3.evmNetworkSelected;
+    const externalNetwork = rootState.web3.networkSelected;
 
     if (!externalNetwork) return;
 
-    const accountAddress = rootState.wallet.account.address;
+    commit.setHistoryLoading(true);
 
-    const transactions = await evmBridgeApi.getUserTxs(accountAddress, externalNetwork);
-    const externalHistory = evmTransactionsToEvmHistory(rootGetters.assets.assetDataByAddress, transactions);
+    const accountAddress = rootState.wallet.account.address;
+    const transactions = await evmBridgeApi.getUserTransactions(accountAddress, externalNetwork as EvmNetwork);
+    const externalHistory = {};
+
+    for (const txData of transactions) {
+      const tx = await evmTxDataToHistory(rootGetters.assets.assetDataByAddress, txData);
+
+      if (tx.id) {
+        const inProgress = state.inProgressIds[tx.id];
+
+        if (!inProgress) {
+          externalHistory[tx.id] = tx;
+
+          await dispatch.removeHistory({ tx, force: false });
+        }
+      }
+    }
 
     commit.setExternalHistory(externalHistory);
+    commit.setHistoryLoading(false);
   },
 
   async signEvmBridgeOutgoingSora(context, id: string) {
@@ -262,7 +331,69 @@ const actions = defineActions({
 
     if (!tx.txId) {
       await rootDispatch.wallet.transactions.beforeTransactionSign();
-      await evmBridgeApi.burn(asset, to, amount, externalNetwork, id);
+      await evmBridgeApi.transfer(asset, to, amount, externalNetwork, id);
+    }
+  },
+
+  // SUB
+  async updateSubHistory(context): Promise<void> {
+    const { commit, dispatch, getters, state, rootState, rootGetters } = bridgeActionContext(context);
+
+    if (!rootGetters.wallet.account.isLoggedIn) return;
+    if (state.historyLoading) return;
+
+    const externalNetwork = rootState.web3.networkSelected;
+
+    if (!externalNetwork) return;
+
+    commit.setHistoryLoading(true);
+
+    const accountAddress = rootState.wallet.account.address;
+    const transactions = await subBridgeApi.getUserTransactions(accountAddress, externalNetwork as SubNetwork);
+
+    for (const txData of transactions) {
+      const tx = await subTxDataToHistory(rootGetters.assets.assetDataByAddress, txData);
+
+      if (tx.id) {
+        const internalHistory = getters.bridgeApi.historyList as IBridgeTransaction[];
+        const internalDuplicate = internalHistory.find((item) => item.hash === tx.hash || item.txId === tx.txId);
+        const inProgress = !!internalDuplicate?.id && state.inProgressIds[internalDuplicate.id];
+
+        if (!inProgress) {
+          if (internalDuplicate) {
+            await dispatch.removeHistory({ tx: internalDuplicate, force: false });
+          }
+
+          commit.updateExternalHistoryItem(tx);
+        }
+      }
+    }
+
+    commit.setHistoryLoading(false);
+  },
+
+  async signSubBridgeOutgoingSora(context, id: string) {
+    const { rootGetters, rootDispatch } = bridgeActionContext(context);
+
+    const tx = subBridgeApi.getHistory(id) as SubHistory;
+
+    if (!tx) throw new Error(`Transaction not found: ${id}`);
+
+    const { to, amount, assetAddress, externalNetwork } = tx;
+
+    if (!externalNetwork) throw new Error('Transaction "externalNetwork" cannot be empty');
+    if (!amount) throw new Error('Transaction "amount" cannot be empty');
+    if (!assetAddress) throw new Error('Transaction "assetAddress" cannot be empty');
+    if (!to) throw new Error('Transaction "to" cannot be empty');
+
+    const asset = rootGetters.assets.assetDataByAddress(assetAddress);
+
+    // [TODO] check for externalAddress removed
+    if (!asset) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
+
+    if (!tx.txId) {
+      await rootDispatch.wallet.transactions.beforeTransactionSign();
+      await subBridgeApi.transfer(asset, to, amount, externalNetwork, id);
     }
   },
 
@@ -394,8 +525,8 @@ const actions = defineActions({
     if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
 
     const evmAccount = rootState.web3.evmAddress;
-    const isExternalAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
-    if (!isExternalAccountConnected) throw new Error('Connect account in Metamask');
+    const isEvmAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
+    if (!isEvmAccountConnected) throw new Error('Connect account in Metamask');
     const ethersInstance = await ethersUtil.getEthersInstance();
     const contractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other) as string;
     const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);

@@ -318,7 +318,7 @@
     "retryText": "重试",
     "networkFeeText": "网络费用",
     "networkFeeTooltipText": "网络费是用来保证{Sora}系统的增长和稳定的性能。",
-    "ethNetworkFeeTooltipText": "请注意， {AppName}上显示的{Ethereum}网络费用仅为粗略估算，您可以在确认交易之前在已连接的{Ethereum}钱包中查看正确的费用金额。",
+    "ethNetworkFeeTooltipText": "请注意， {AppName}上显示的{network}网络费用只是粗略估计，您可以在确认交易前在连接的{network}钱包中查看正确的费用金额。",
     "marketText": "市场",
     "marketAlgorithmText": "市场算法",
     "firstPerSecond": "{first}每{second}",
@@ -547,7 +547,7 @@
             "title": "代币",
             "placeholder": "按资产 ID、名称或代币符号进行筛选",
             "networkLabelSora": "{Sora} 网络代币",
-            "networkLabelEthereum": "{Ethereum}网络镜像代币",
+            "networkLabelEthereum": "{network}网络镜像令牌",
             "emptyListMessage": "没有结果"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "钱包名称",
-            "desc": "这是你的钱包的公开名称，每个人都可以看到。"
+            "desc": "这是您可以看到的钱包名称"
         },
         "password": {
             "placeholder": "密码",
@@ -1094,7 +1094,8 @@
             "passwords": "密码不匹配",
             "mnemonic": "指定无效的bip39助记符",
             "mnemonicLength": "助记符应包含{number}单词",
-            "jsonFields": "JSON 文件没有必填字段"
+            "jsonFields": "JSON 文件没有必填字段",
+            "alreadyImported": "帐户已导入{address}"
         },
         "assetsAtRiskText": "资产有风险！",
         "deleteAccountText": "如果没有助记词、.json 文件或存储在某些扩展名中，则无法恢复帐户。您将被注销。",

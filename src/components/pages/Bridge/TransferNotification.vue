@@ -42,6 +42,7 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.bridge.isSubBridge private isSubBridge!: boolean;
 
   @mutation.bridge.setNotificationData private setNotificationData!: (tx?: IBridgeTransaction) => void;
 
@@ -66,6 +67,8 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
   }
 
   get addTokenBtnVisibility(): boolean {
+    if (this.isSubBridge) return false;
+
     return (
       !!this.asset && !ethersUtil.isNativeEvmTokenAddress(this.asset.externalAddress) && isOutgoingTransaction(this.tx)
     );
