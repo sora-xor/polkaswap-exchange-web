@@ -318,7 +318,7 @@
     "retryText": "Reintentar",
     "networkFeeText": "Tarifa de red",
     "networkFeeTooltipText": "La comisión de la red se utiliza para garantizar el crecimiento y el rendimiento estable del sistema {Sora}.",
-    "ethNetworkFeeTooltipText": "Por favor, tenga en cuenta que las tarifas de la red {network} mostradas en {AppName} son sólo estimaciones aproximadas, puede ver la cantidad correcta de la tarifa en su cartera {network} conectada antes de confirmar la transacción.",
+    "ethNetworkFeeTooltipText": "Tenga en cuenta que las tarifas de la red {network} que se muestran en {AppName} son solo estimaciones aproximadas, puede ver el monto de la tarifa correcta en su billetera {network} conectada antes de confirmar la transacción.",
     "marketText": "Mercado",
     "marketAlgorithmText": "Algoritmo de mercado",
     "firstPerSecond": "{first} por {second}",
@@ -547,7 +547,7 @@
             "title": "Tokens",
             "placeholder": "Filtrar por ID de Activo, Nombre o Símbolo bursátil (ticker)",
             "networkLabelSora": "{Sora} Tokens de la red",
-            "networkLabelEthereum": "{Ethereum} Tokens espejo de la red",
+            "networkLabelEthereum": "tokens espejo de red {network}",
             "emptyListMessage": "No hay resultados"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Nombre de la billetera",
-            "desc": "Este es el nombre público de su cartera que será visible para todos"
+            "desc": "Este es el nombre de su billetera que será visible para usted"
         },
         "password": {
             "placeholder": "Contraseña",
@@ -1094,7 +1094,8 @@
             "passwords": "Las contraseñas no coinciden",
             "mnemonic": "Mnemónico bip39 especificado no válido",
             "mnemonicLength": "El mnemónico debe contener {number} palabras",
-            "jsonFields": "El archivo JSON no tiene los campos requeridos"
+            "jsonFields": "El archivo JSON no tiene los campos requeridos",
+            "alreadyImported": "Cuenta ya importada {address}"
         },
         "assetsAtRiskText": "¡Activos en riesgo!",
         "deleteAccountText": "La cuenta no se puede recuperar sin una frase inicial, un archivo .json o si está almacenada en alguna extensión. Serás desconectado.",

@@ -318,7 +318,7 @@
     "retryText": "Prøv igjen",
     "networkFeeText": "Nettverksgebyr",
     "networkFeeTooltipText": "Nettverksavgift brukes til å sikre {Sora} -systemets vekst og stabile ytelse.",
-    "ethNetworkFeeTooltipText": "Vær oppmerksom på at {network}-nettverksgebyrene som vises på {AppName} bare er grove estimater, du kan se riktig gebyrbeløp i den tilkoblede {network}-lommeboken før du bekrefter transaksjonen.",
+    "ethNetworkFeeTooltipText": "Vær oppmerksom på at {network} -nettverksavgiftene som vises på {AppName} bare er grove anslag. Du kan se det riktige gebyrbeløpet i den tilkoblede {network} -lommeboken din før du bekrefter transaksjonen.",
     "marketText": "Marked",
     "marketAlgorithmText": "Markedsalgoritme",
     "firstPerSecond": "{first} per {second}",
@@ -547,7 +547,7 @@
             "title": "Tokens",
             "placeholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol",
             "networkLabelSora": "{Sora} nettverk tokens",
-            "networkLabelEthereum": "{Ethereum} nettverk speil tokens",
+            "networkLabelEthereum": "{network} nettverksspeiltokener",
             "emptyListMessage": "Ingen resultat"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Lommeboknavn",
-            "desc": "Dette er det offentlige navnet på lommeboken din som vil være synlig for alle"
+            "desc": "Dette er navnet på lommeboken din som vil være synlig for deg"
         },
         "password": {
             "placeholder": "Passord",
@@ -1094,7 +1094,8 @@
             "passwords": "Passordene stemte ikke",
             "mnemonic": "Ugyldig bip39 mnemonic spesifisert",
             "mnemonicLength": "Mnemonic skal inneholde {number} ord",
-            "jsonFields": "JSON-filen har ikke obligatoriske felt"
+            "jsonFields": "JSON-filen har ikke obligatoriske felt",
+            "alreadyImported": "Kontoen er allerede importert {address}"
         },
         "assetsAtRiskText": "Eiendeler i fare!",
         "deleteAccountText": "Kontoen kan ikke gjenopprettes uten en frøfrase, .json-fil eller hvis den er lagret i en filtype. Du vil bli logget ut.",

@@ -519,7 +519,12 @@ export default class Bridge extends Mixins(
   }
 
   getCopyTooltip(isSoraNetwork = false): string {
-    return this.copyTooltip(isSoraNetwork ? this.t('bridge.soraAddress') : this.t('bridge.ethereumAddress'));
+    if (isSoraNetwork) return this.copyTooltip(this.t('bridge.soraAddress'));
+
+    const networkName = this.providedNetwork?.shortName ?? '';
+    const text = `${networkName} ${this.t('addressText')}`;
+
+    return this.copyTooltip(text);
   }
 
   async handleSwitchItems(): Promise<void> {

@@ -318,7 +318,7 @@
     "retryText": "Spróbuj ponownie",
     "networkFeeText": "Opłata sieciowa",
     "networkFeeTooltipText": "Opłata sieciowa służy zapewnieniu rozwoju i stabilności systemu {Sora}.",
-    "ethNetworkFeeTooltipText": "Należy mieć na uwadze, że opłaty w sieci {network} widoczne na {AppName} to jedynie przybliżone oszacowanie. Przed potwierdzeniem transakcji można zobaczyć prawidłową kwotę opłaty w podłączonym portfelu sieci {network}.",
+    "ethNetworkFeeTooltipText": "Pamiętaj, że opłaty sieciowe {network} wyświetlane w {AppName} to tylko przybliżone szacunki. Przed potwierdzeniem transakcji możesz zobaczyć prawidłową kwotę opłaty w połączonym portfelu {network} .",
     "marketText": "Rynek",
     "marketAlgorithmText": "Algorytm rynkowy",
     "firstPerSecond": "{first} za {second}",
@@ -547,7 +547,7 @@
             "title": "Tokeny",
             "placeholder": "Filtruj według identyfikatora waluty, nazwy lub symbolu giełdowego",
             "networkLabelSora": "Tokeny sieci {Sora}",
-            "networkLabelEthereum": "Tokeny lustrzane sieci {Ethereum}",
+            "networkLabelEthereum": "Tokeny lustrzane sieci {network}",
             "emptyListMessage": "Brak wyników"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Nazwa portfela",
-            "desc": "To jest publiczna nazwa Twojego portfela, która będzie widoczna dla wszystkich"
+            "desc": "To nazwa Twojego portfela, która będzie dla Ciebie widoczna"
         },
         "password": {
             "placeholder": "Hasło",
@@ -1094,7 +1094,8 @@
             "passwords": "Hasła nie pasują",
             "mnemonic": "Podano nieprawidłowy mnemonik bip39",
             "mnemonicLength": "Mnemonik powinien zawierać {number} słów",
-            "jsonFields": "Plik JSON nie zawiera wymaganych pól"
+            "jsonFields": "Plik JSON nie zawiera wymaganych pól",
+            "alreadyImported": "Konto już zaimportowane {address}"
         },
         "assetsAtRiskText": "Aktywa zagrożone!",
         "deleteAccountText": "Konta nie można odzyskać bez frazy początkowej, pliku .json lub jeśli jest on przechowywany w jakimś rozszerzeniu. Zostaniesz wylogowany.",

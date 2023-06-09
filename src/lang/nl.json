@@ -318,7 +318,7 @@
     "retryText": "Probeer opnieuw",
     "networkFeeText": "Netwerkvergoeding",
     "networkFeeTooltipText": "Netwerkvergoeding wordt gebruikt om de groei en stabiele prestaties van het {Sora}-systeem te garanderen.",
-    "ethNetworkFeeTooltipText": "Houd er rekening mee dat de {network}-netwerkkosten die worden weergegeven op {AppName} slechts ruwe schattingen zijn, u kunt het juiste bedrag in uw verbonden {network}-wallet zien voordat u de transactie bevestigt.",
+    "ethNetworkFeeTooltipText": "Houd er rekening mee dat de {network} -netwerkkosten die worden weergegeven op {AppName} slechts ruwe schattingen zijn. U kunt het juiste bedrag in uw aangesloten {network} -portemonnee zien voordat u de transactie bevestigt.",
     "marketText": "Markt",
     "marketAlgorithmText": "Markt algoritme",
     "firstPerSecond": "{first} per {second}",
@@ -547,7 +547,7 @@
             "title": "Tokens",
             "placeholder": "Filter op Asset-ID, naam of Tickersymbool",
             "networkLabelSora": "{Sora} netwerk tokens",
-            "networkLabelEthereum": "{Ethereum} netwerk spiegel tokens",
+            "networkLabelEthereum": "{network} netwerkspiegeltokens",
             "emptyListMessage": "Geen resultaten"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Naam portemonnee",
-            "desc": "Dit is de openbare naam van uw portemonnee die voor iedereen zichtbaar zal zijn"
+            "desc": "Dit is de naam van uw portemonnee die voor u zichtbaar zal zijn"
         },
         "password": {
             "placeholder": "Wachtwoord",
@@ -1094,7 +1094,8 @@
             "passwords": "Wachtwoorden kwamen niet overeen",
             "mnemonic": "Ongeldig bip39 geheugensteuntje opgegeven",
             "mnemonicLength": "Mnemonic moet {number} woorden bevatten",
-            "jsonFields": "JSON-bestand heeft geen verplichte velden"
+            "jsonFields": "JSON-bestand heeft geen verplichte velden",
+            "alreadyImported": "Account al geïmporteerd {address}"
         },
         "assetsAtRiskText": "Activa in gevaar!",
         "deleteAccountText": "Account kan niet worden hersteld zonder een seed-zin, een .json bestand of als het is opgeslagen in een extensie. U wordt uitgelogd.",

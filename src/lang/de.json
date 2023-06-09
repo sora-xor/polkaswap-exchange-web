@@ -318,7 +318,7 @@
     "retryText": "Wiederholen",
     "networkFeeText": "Netzwerkgebühr",
     "networkFeeTooltipText": "Die Netzwerkgebühr wird verwendet, um das Wachstum und eine stabile Leistung des {Sora} -Systems sicherzustellen.",
-    "ethNetworkFeeTooltipText": "Bitte, beachte, dass die auf {AppName} angezeigten {network}-Netzwerkgebühren nur grobe Schätzungen sind. Du kannst den korrekten Gebührenbetrag in deinem verbundenen {network}-Wallet sehen, bevor du die Transaktion bestätigst.",
+    "ethNetworkFeeTooltipText": "Bitte beachten Sie, dass es sich bei den auf {AppName} angezeigten {network} -Netzwerkgebühren nur um grobe Schätzungen handelt. Sie können den korrekten Gebührenbetrag in Ihrem verbundenen {network} -Wallet sehen, bevor Sie die Transaktion bestätigen.",
     "marketText": "Markt",
     "marketAlgorithmText": "Marktalgorithmus",
     "firstPerSecond": "{first} pro {second}",
@@ -547,7 +547,7 @@
             "title": "Token",
             "placeholder": "Filter nach Asset-ID, Name oder Tickersymbol",
             "networkLabelSora": "{Sora} Netzwerktoken",
-            "networkLabelEthereum": "{Ethereum} Netzwerksmirror-Token",
+            "networkLabelEthereum": "{network} Netzwerkspiegel-Token",
             "emptyListMessage": "Keine Ergebnisse"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Wallet-Name",
-            "desc": "Dies ist der öffentliche Name Ihrer Brieftasche, der für alle sichtbar ist"
+            "desc": "Dies ist der Name Ihres Wallets, der für Sie sichtbar ist"
         },
         "password": {
             "placeholder": "Passwort",
@@ -1094,7 +1094,8 @@
             "passwords": "Passwörter stimmten nicht überein",
             "mnemonic": "Ungültige bip39-Mnemonik angegeben",
             "mnemonicLength": "Mnemonik sollte {number} Wörter enthalten",
-            "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder"
+            "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder",
+            "alreadyImported": "Konto bereits importiert {address}"
         },
         "assetsAtRiskText": "Vermögen in Gefahr!",
         "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet.",
