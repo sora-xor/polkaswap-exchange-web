@@ -145,6 +145,16 @@ function bridgeDataToHistoryItem(
 }
 
 const actions = defineActions({
+  resetForm(context) {
+    const { commit, dispatch } = bridgeActionContext(context);
+
+    commit.setSoraToEvm(true);
+    commit.setExternalHistory({});
+    commit.setAmount();
+
+    dispatch.setAssetAddress();
+  },
+
   async updateBalanceSubscription(context): Promise<void> {
     const { getters, commit, rootGetters } = bridgeActionContext(context);
     const updateBalance = (balance: Nullable<AccountBalance>) => commit.setAssetBalance(balance);

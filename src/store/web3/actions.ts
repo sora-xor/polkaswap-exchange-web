@@ -21,15 +21,12 @@ async function connectEvmNetwork(context: ActionContext<any, any>, networkHex?: 
 async function connectSubNetwork(context: ActionContext<any, any>, network?: SubNetwork): Promise<void> {
   // [TODO] connect to substrate network
   // this code just takes network from storage
-  const { commit, rootCommit } = web3ActionContext(context);
+  const { commit } = web3ActionContext(context);
   const provided = network || ethersUtil.getSelectedNetwork();
 
   if (provided) {
     commit.setProvidedNetwork(provided);
   }
-
-  // only outgoing direction
-  rootCommit.bridge.setSoraToEvm(true);
 }
 
 const actions = defineActions({
@@ -40,17 +37,15 @@ const actions = defineActions({
   },
 
   async connectExternalNetwork(context, network?: string): Promise<void> {
-    const { state, rootCommit } = web3ActionContext(context);
+    const { state, rootDispatch } = web3ActionContext(context);
 
     if (state.networkType === BridgeNetworkType.Sub) {
       await connectSubNetwork(context, network as SubNetwork);
     } else {
       await connectEvmNetwork(context, network);
     }
-
-    // reset bridge direction & history
-    rootCommit.bridge.setSoraToEvm(true);
-    rootCommit.bridge.setExternalHistory({});
+    // reset bridge form
+    rootDispatch.bridge.resetForm();
   },
 
   async selectExternalNetwork(context, network: BridgeNetworkId): Promise<void> {
