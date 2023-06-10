@@ -5,7 +5,7 @@
     <div class="app-controls app-controls--fiat-payment s-flex">
       <app-ad />
       <s-button type="tertiary" size="medium" @click="goTo(PageNames.FiatDepositOptions)">
-        <pair-token-logo :first-token="xor" :second-token="eth" size="small" />
+        <pair-token-logo class="app-menu-payment" :first-token="xor" :second-token="eth" size="small" />
         <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
     </div>
@@ -75,6 +75,12 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
 <style lang="scss">
 .settings-control:hover > span > .header-menu__button i {
   color: var(--s-color-base-content-secondary);
+}
+
+.app-menu-payment {
+  .token-logo.second-logo .asset-logo {
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_15602_344599)'%3E%3Cpath d='M9.99998 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 9.99998 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 9.99998 19Z' fill='%23627EEA'/%3E%3Cpath d='M9.99805 3.45166V8.29193L14.0891 10.12L9.99805 3.45166Z' fill='white' fill-opacity='0.6'/%3E%3Cpath d='M9.99881 3.45166L5.90723 10.12L9.99881 8.29193V3.45166Z' fill='white'/%3E%3Cpath d='M9.99805 13.2565V16.5453L14.0918 10.8816L9.99805 13.2565Z' fill='white' fill-opacity='0.6'/%3E%3Cpath d='M9.99783 16.5453V13.2559L5.90625 10.8816L9.99783 16.5453Z' fill='white'/%3E%3Cpath d='M9.99805 12.4953L14.0891 10.12L9.99805 8.29297V12.4953Z' fill='white' fill-opacity='0.2'/%3E%3Cpath d='M5.90625 10.12L9.99783 12.4953V8.29297L5.90625 10.12Z' fill='white' fill-opacity='0.6'/%3E%3C/g%3E%3Crect x='0.5' y='0.5' width='19' height='19' rx='9.5' stroke='%23F4F0F1'/%3E%3Cdefs%3E%3CclipPath id='clip0_15602_344599'%3E%3Crect x='1' y='1' width='18' height='18' rx='9' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E") !important;
+  }
 }
 </style>
 

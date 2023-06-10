@@ -3,9 +3,11 @@
     <div v-if="showSoraCardAd" class="ad-sora-card" @click="goTo(PageNames.SoraCard)">
       <span class="ad-call-to-action">
         {{ 'Get SORA Card' }}
+        <s-icon name="arrows-arrow-top-right-24" />
       </span>
       <sora-card-banner />
     </div>
+    <div v-if="showXstArticle" class="ad-xst-article" />
   </div>
 </template>
 
@@ -30,27 +32,31 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
   PageNames = PageNames;
 
   @Watch('soraCardEnabled', { immediate: true })
-  private checkAvailability(value: Nullable<boolean>): void {
+  private checkCardAvailability(value: Nullable<boolean>): void {
     this.chooseAdToShow();
   }
 
   showSoraCardAd = false;
+  showXstArticle = false;
+
+  probability = () => Math.random();
 
   chooseAdToShow(): void {
     // TODO: add check if already applied for SORA Card
     if (this.soraCardEnabled) {
-      const probabilityToShowAd = Math.random();
-
-      // 50% chance that message pops up
-      if (probabilityToShowAd < 0.5) {
+      // 50% chance to show SORA Card ad
+      if (this.probability() < 0.5) {
         this.showSoraCardAd = true;
       }
+      // 80% chance to show XST ad
+    } else if (this.probability() > 0.2) {
+      this.showXstArticle = true;
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .ad {
   &-call-to-action {
     position: absolute;
@@ -72,6 +78,12 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
 
   &:hover {
     cursor: pointer;
+  }
+
+  .s-icon-arrows-arrow-top-right-24 {
+    position: absolute;
+    margin-left: 3px;
+    color: #fff;
   }
 }
 </style>
