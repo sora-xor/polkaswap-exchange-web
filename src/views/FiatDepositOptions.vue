@@ -71,8 +71,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
 
   get hasPendingTx(): boolean {
     // TODO: add localStorage savings in case user closes tab and returns
-    // combine with X1 history API
-    // return true;
+    // (combine with X1 history API)
     return this.startBridgeButtonVisibility && !!this.bridgeTransactionData;
   }
 
