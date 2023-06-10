@@ -15,7 +15,7 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import SoraCardBanner from '@/assets/img/ads/soracard1.svg?inline';
+import SoraCardBanner from '@/assets/img/ads/soracard.svg?inline';
 import { PageNames } from '@/consts';
 import { goTo } from '@/router';
 import { getter } from '@/store/decorators';
