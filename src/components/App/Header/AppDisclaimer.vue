@@ -89,14 +89,21 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   }
 
   checkUserScroll(): void {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          this.makeAcceptBtnActive(300);
-        }
-      },
-      { threshold: 0.95 }
-    );
+    let observer;
+
+    try {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            this.makeAcceptBtnActive(300);
+          }
+        },
+        { threshold: 0.95 }
+      );
+    } catch {
+      this.makeAcceptBtnActive(2_000);
+      return;
+    }
 
     if (this.endLine) {
       observer.observe(this.endLine);
