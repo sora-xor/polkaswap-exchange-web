@@ -10,7 +10,7 @@
         @click.native="handleClose"
       />
     </div>
-    <s-scrollbar class="statistics-dialog__scrollbar">
+    <s-scrollbar>
       <div class="disclaimer__text">
         <p
           v-html="
@@ -112,10 +112,9 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
     }
   }
 
-  makeAcceptBtnActive(ms = 1_000): void {
-    setTimeout(() => {
-      this.isActiveAccptBtn = true;
-    }, ms);
+  async makeAcceptBtnActive(ms = 1_000): Promise<void> {
+    await delay(ms);
+    this.isActiveAccptBtn = true;
   }
 
   mounted(): void {
