@@ -5,29 +5,29 @@ import { delay } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
 import { waitForSoraTransactionHash } from '@/utils/bridge/common/utils';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
 
-import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
 
-type EvmBridgeReducerOptions<T extends EvmHistory> = IBridgeReducerOptions<T> & {
-  removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;
+type SubBridgeReducerOptions<T extends SubHistory> = IBridgeReducerOptions<T> & {
+  removeTransactionByHash: RemoveTransactionByHash<SubHistory>;
 };
 
 const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS;
 
-export class EvmBridgeReducer extends BridgeReducer<EvmHistory> {
-  protected readonly removeTransactionByHash!: RemoveTransactionByHash<EvmHistory>;
+export class SubBridgeReducer extends BridgeReducer<SubHistory> {
+  protected readonly removeTransactionByHash!: RemoveTransactionByHash<SubHistory>;
 
-  constructor(options: EvmBridgeReducerOptions<EvmHistory>) {
+  constructor(options: SubBridgeReducerOptions<SubHistory>) {
     super(options);
 
     this.removeTransactionByHash = options.removeTransactionByHash;
   }
 }
 
-export class EvmBridgeIncomingReducer extends EvmBridgeReducer {
-  async changeState(transaction: EvmHistory): Promise<void> {
+export class SubBridgeIncomingReducer extends SubBridgeReducer {
+  async changeState(transaction: SubHistory): Promise<void> {
     if (!transaction.id) throw new Error(`[${this.constructor.name}]: Transaction ID cannot be empty`);
 
     switch (transaction.transactionState) {
@@ -54,8 +54,8 @@ export class EvmBridgeIncomingReducer extends EvmBridgeReducer {
   }
 }
 
-export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
-  async changeState(transaction: EvmHistory): Promise<void> {
+export class SubBridgeOutgoingReducer extends SubBridgeReducer {
+  async changeState(transaction: SubHistory): Promise<void> {
     if (!transaction.id) throw new Error(`[${this.constructor.name}]: Transaction ID cannot be empty`);
 
     switch (transaction.transactionState) {
@@ -64,15 +64,16 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
           nextState: BridgeTxStatus.Done,
           rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
-            let currentId = id;
+            const currentId = id;
             this.beforeSubmit(currentId);
             this.updateTransactionParams(currentId, { transactionState: BridgeTxStatus.Pending });
             await this.checkTxId(currentId);
+            await this.waitForTxStatus(currentId);
             await this.checkTxBlockId(currentId);
-
-            currentId = await this.checkTxSoraHash(currentId);
+            await this.checkTxSoraHash(currentId);
             await this.subscribeOnTxBySoraHash(currentId);
             await this.onComplete(currentId);
+            return currentId;
           },
         });
       }
@@ -91,7 +92,6 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
 
   private async checkTxId(id: string): Promise<void> {
     const { txId } = this.getTransaction(id);
-
     // transaction not signed
     if (!txId) {
       await this.signSora(id);
@@ -117,6 +117,15 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
     }
   }
 
+  private async waitForTxStatus(id: string): Promise<void> {
+    const { status } = this.getTransaction(id);
+
+    if (status) return Promise.resolve();
+
+    await delay(1_000);
+    await this.waitForTxStatus(id);
+  }
+
   private async waitForSoraBlockId(id: string): Promise<void> {
     const { blockId } = this.getTransaction(id);
 
@@ -139,7 +148,7 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
   }
 
   private async subscribeOnTxBySoraHash(id: string): Promise<void> {
-    const { hash, externalNetwork, from } = this.getTransaction(id);
+    const { from, externalNetwork, hash } = this.getTransaction(id);
 
     if (!from) {
       throw new Error(
@@ -161,7 +170,7 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
 
     try {
       await new Promise<BridgeTxStatus>((resolve, reject) => {
-        const observable = evmBridgeApi.subscribeOnTransactionDetails(from, externalNetwork, hash);
+        const observable = subBridgeApi.subscribeOnTransactionDetails(from, externalNetwork, hash);
 
         if (!observable) throw new Error(`[${this.constructor.name}]: Unable to subscribe on transacton data`);
 
@@ -169,8 +178,6 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
           if (!data) {
             return reject(new Error(`[${this.constructor.name}]: Unable to get transacton data by "hash": "${hash}"`));
           }
-
-          this.removeTransactionByHash({ tx: { hash }, force: true });
 
           const status = data.status;
 

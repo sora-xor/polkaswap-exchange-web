@@ -43,8 +43,7 @@
 </template>
 
 <script lang="ts">
-import { connection } from '@sora-substrate/util';
-import { components, mixins, settingsStorage, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { api, connection, components, mixins, settingsStorage } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import axiosInstance, { updateBaseUrl } from '@/api';
@@ -58,13 +57,13 @@ import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { FeatureFlags } from '@/store/settings/types';
-import type { EthBridgeSettings } from '@/store/web3/types';
+import type { EthBridgeSettings, SubNetworkApps } from '@/store/web3/types';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 import { preloadFontFace, updateDocumentTitle } from '@/utils';
 
 import type { History, HistoryItem } from '@sora-substrate/util';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
@@ -120,6 +119,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
+  @mutation.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
   @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => Promise<void>;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
 
@@ -213,6 +213,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
+      this.setSubNetworkApps(data.SUB_NETWORKS);
+
+      if (data.PARACHAIN_IDS) {
+        api.bridgeProxy.sub.parachainIds = data.PARACHAIN_IDS;
+      }
 
       if (!data.SUBQUERY_ENDPOINT) {
         throw new Error('SUBQUERY_ENDPOINT is not set');

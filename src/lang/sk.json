@@ -318,7 +318,7 @@
     "retryText": "Opakovať",
     "networkFeeText": "Sieťový poplatok",
     "networkFeeTooltipText": "Sieťový poplatok slúži na zabezpečenie rastu a stabilného výkonu systému {Sora}.",
-    "ethNetworkFeeTooltipText": "Upozorňujeme, že poplatky za sieť {Ethereum} zobrazené v aplikácii {AppName} sú len približné. Správnu výšku poplatku môžete vidieť vo svojej pripojenej {Ethereum} peňaženke pred potvrdením transakcie.",
+    "ethNetworkFeeTooltipText": "Upozorňujeme, že sieťové poplatky {network} zobrazené v {AppName} sú len hrubé odhady. Správnu výšku poplatku si môžete pozrieť vo svojej pripojenej peňaženke {network} pred potvrdením transakcie.",
     "marketText": "Trh",
     "marketAlgorithmText": "Trhový algoritmus",
     "firstPerSecond": "{first} za {second}",
@@ -547,7 +547,7 @@
             "title": "Tokeny",
             "placeholder": "Filtrovať podľa ID, názvu alebo symbolu aktíva",
             "networkLabelSora": "Tokeny siete {Sora}",
-            "networkLabelEthereum": "Zrkadlové tokeny siete {Ethereum}",
+            "networkLabelEthereum": "{network} sieťové zrkadlové tokeny",
             "emptyListMessage": "Žiadne výsledky"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Názov peňaženky",
-            "desc": "Toto je verejný názov vašej peňaženky, ktorý bude viditeľný pre všetkých"
+            "desc": "Toto je názov vašej peňaženky, ktorý sa vám zobrazí"
         },
         "password": {
             "placeholder": "Heslo",
@@ -1094,7 +1094,8 @@
             "passwords": "Heslá sa nezhodovali",
             "mnemonic": "Zadaný nesprávny mnemotechnický znak bip39",
             "mnemonicLength": "Mnemotechnika by mala obsahovať {number} slov",
-            "jsonFields": "Súbor JSON neobsahuje povinné polia"
+            "jsonFields": "Súbor JSON neobsahuje povinné polia",
+            "alreadyImported": "Účet už bol importovaný {address}"
         },
         "assetsAtRiskText": "Majetok v ohrození!",
         "deleteAccountText": "Účet nie je možné obnoviť bez počiatočnej frázy, súboru .json alebo ak je uložený v nejakej prípone. Budete odhlásení.",

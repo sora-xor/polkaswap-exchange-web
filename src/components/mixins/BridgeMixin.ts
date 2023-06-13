@@ -5,15 +5,15 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { getter, mutation, state } from '@/store/decorators';
 
 import type { CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
   @state.web3.evmBalance evmBalance!: CodecString;
-  @state.web3.evmNetwork evmNetwork!: EvmNetwork;
   @state.bridge.evmBlockNumber evmBlockNumber!: number;
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
+  @getter.bridge.sender sender!: string;
+  @getter.bridge.recepient recepient!: string;
   @getter.bridge.soraNetworkFee soraNetworkFee!: CodecString;
   @getter.bridge.evmNetworkFee evmNetworkFee!: CodecString;
   @getter.assets.xor xor!: RegisteredAccountAsset;
@@ -21,6 +21,6 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @mutation.web3.setSelectNetworkDialogVisibility setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
   get evmTokenSymbol(): string {
-    return this.selectedEvmNetwork?.nativeCurrency?.symbol ?? '';
+    return this.selectedNetwork?.nativeCurrency?.symbol ?? '';
   }
 }
