@@ -66,8 +66,6 @@
         </div>
       </s-form>
     </s-card>
-
-    <bridge-select-network :selected-evm-network="selectedNetwork" />
   </div>
 </template>
 
@@ -90,7 +88,6 @@ import type { IBridgeTransaction } from '@sora-substrate/util';
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
-    BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
     SearchInput: components.SearchInput,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,

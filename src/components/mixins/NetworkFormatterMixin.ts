@@ -1,9 +1,11 @@
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import { EvmLinkType, EVM_NETWORKS } from '@/consts/evm';
+import { SUB_NETWORKS } from '@/consts/sub';
 import { state, getter } from '@/store/decorators';
 import type { NetworkData } from '@/types/bridge';
 
@@ -18,12 +20,28 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
 
   readonly EvmLinkType = EvmLinkType;
 
-  formatNetwork(isSora: boolean): string {
+  formatProvidedNetwork(isSora: boolean): string {
     if (isSora && this.soraNetwork) {
       return this.TranslationConsts.soraNetwork[this.soraNetwork];
     }
 
     return this.providedNetwork?.name ?? '';
+  }
+
+  formatNetworkShortName(isSora: boolean): string {
+    if (isSora) {
+      return this.TranslationConsts.Sora;
+    }
+
+    return this.providedNetwork?.shortName ?? '';
+  }
+
+  getNetworkName(type: Nullable<BridgeNetworkType>, id: Nullable<BridgeNetworkId>): string {
+    if (!(type && id)) return '';
+
+    const networks = type === BridgeNetworkType.Sub ? SUB_NETWORKS : EVM_NETWORKS;
+
+    return networks[id]?.shortName ?? '';
   }
 
   getNetworkIcon(network?: Nullable<BridgeNetworkId>): string {
