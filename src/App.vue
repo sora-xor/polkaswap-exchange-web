@@ -43,7 +43,15 @@
 </template>
 
 <script lang="ts">
-import { api, connection, components, mixins, settingsStorage } from '@soramitsu/soraneo-wallet-web';
+import {
+  api,
+  connection,
+  components,
+  mixins,
+  settingsStorage,
+  WALLET_CONSTS,
+  WALLET_TYPES,
+} from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import axiosInstance, { updateBaseUrl } from '@/api';
@@ -66,8 +74,6 @@ import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-
-const { IndexerType } = WALLET_CONSTS;
 
 @Component({
   components: {
