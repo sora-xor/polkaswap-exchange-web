@@ -1,16 +1,12 @@
-import { Component, Ref, Vue } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import SearchInputMixin from '@/components/mixins/SearchInputMixin';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
-export default class AssetsSearchMixin extends Vue {
-  @Ref('search') readonly search!: any;
-
-  public focusSearchInput(): void {
-    this.search?.focus();
-  }
-
+export default class AssetsSearchMixin extends Mixins(SearchInputMixin) {
   public filterAssetsByQuery(assets: Array<Asset | AccountAsset | RegisteredAccountAsset>, isRegisteredAssets = false) {
     const addressField = isRegisteredAssets ? 'externalAddress' : 'address';
 

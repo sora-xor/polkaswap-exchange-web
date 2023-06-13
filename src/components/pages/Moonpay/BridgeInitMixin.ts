@@ -9,11 +9,11 @@ import { state, action, mutation, getter } from '@/store/decorators';
 import type { BridgeTxData } from '@/store/moonpay/types';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
-import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
 import type { MoonpayTransaction } from '@/utils/moonpay';
+import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
 
 import type { CodecString, BridgeHistory } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 const createError = (text: string, notification: MoonpayNotifications) => {
@@ -47,7 +47,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @action.assets.updateExternalBalances private updateExternalBalances!: AsyncFnWithoutArgs;
 
   async prepareEvmNetwork(): Promise<void> {
-    this.selectEvmNetwork(this.ethBridgeEvmNetwork); // WalletConnectMixin
+    this.selectExternalNetwork(this.ethBridgeEvmNetwork); // WalletConnectMixin
   }
 
   initMoonpayApi(): void {

@@ -318,7 +318,7 @@
     "retryText": "Tun gbiyanju",
     "networkFeeText": "Owo ọya Nẹtiwọọki",
     "networkFeeTooltipText": "A lo owo ọya nẹtiwọọki lati rii daju idagbasoke eto {Sora} ati iṣẹ iduroṣinṣin.",
-    "ethNetworkFeeTooltipText": "Jọwọ ṣe akiyesi pe awọn owo nẹtiwọọki {Ethereum} ti o han lori {AppName} jẹ awọn idiyele ti o nira nikan, o le wo iye owo ọya ti o tọ ninu apamọwọ {Ethereum} ti o sopọ ṣaaju fifi idi iṣeduro naa mulẹ.",
+    "ethNetworkFeeTooltipText": "Jọwọ ṣe akiyesi pe awọn owo netiwọki {network} ti o han lori {AppName} jẹ awọn iṣiro inira nikan, o le rii iye ọya ti o pe ninu apamọwọ {network} ti o sopọ ṣaaju ṣiṣe iṣeduro iṣowo naa.",
     "marketText": "Oja",
     "marketAlgorithmText": "Alugoridimu ọja",
     "firstPerSecond": "{first} lori {second}",
@@ -547,7 +547,7 @@
             "title": "Awon Tokini",
             "placeholder": "Àlẹmọ nipasẹ Idanimo dukia, Orukọ tabi Aami Ticker",
             "networkLabelSora": "{Sora} awon tokini netiwooki",
-            "networkLabelEthereum": "{Ethereum} awọn ami digi nẹtiwọọki",
+            "networkLabelEthereum": "{network} awọn ami digi nẹtiwọki",
             "emptyListMessage": "Ko si awọn abajade"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Orukọ apamọwọ",
-            "desc": "Eyi ni orukọ gbogbo eniyan ti apamọwọ rẹ eyiti yoo han si gbogbo eniyan"
+            "desc": "Eyi ni orukọ apamọwọ rẹ ti yoo han si ọ"
         },
         "password": {
             "placeholder": "Ọrọigbaniwọle",
@@ -1094,7 +1094,8 @@
             "passwords": "Awọn ọrọ igbaniwọle ko baramu",
             "mnemonic": "Bip39 mnemonic ti ko tọ ni pato",
             "mnemonicLength": "Mnemonic yẹ ki o ni awọn ọrọ {number} ninu",
-            "jsonFields": "Faili JSON ko ni awọn aaye ti a beere"
+            "jsonFields": "Faili JSON ko ni awọn aaye ti a beere",
+            "alreadyImported": "akowọle ti ko wọle tẹlẹ {address}"
         },
         "assetsAtRiskText": "Awọn dukia ni ewu!",
         "deleteAccountText": "Akoto ko le gba pada laisi gbolohun ọrọ irugbin, faili .json tabi ti o ba wa ni ipamọ ni diẹ ninu itẹsiwaju. O yoo wa ni ibuwolu jade.",
