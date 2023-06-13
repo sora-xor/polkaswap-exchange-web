@@ -92,7 +92,7 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          this.makeAcceptBtnActive(700);
+          this.makeAcceptBtnActive(300);
         }
       },
       { threshold: 0.95 }
