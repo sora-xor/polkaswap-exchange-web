@@ -143,7 +143,6 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   width: 24%;
   min-width: 335px;
   max-width: 550px;
-  padding: calc(var(--s-size-small) / 2);
   position: absolute;
   top: var(--s-size-mini);
   right: var(--s-size-mini);
